@@ -1,0 +1,11 @@
+# Base members that read an offset one of their derived classes declares, and that have been
+# measured and refused.
+#
+# tools/base_reads_derived.py fails on any that is not listed here. A row says the
+# contradiction is real and names what stops it being settled.
+#
+# The file is empty. The rows it held were settled by declaring the shared words on one class
+# and reaching them through it: src/engine/devicector.h ObjectSpawnSlots and TailSlot, and
+# src/ui/screens/teamsetupuiscreen.h TeamSetupUIScreen, which starts at 0x478 and owns the run the two setup
+# screens declared. Every body involved stayed at 100 per cent.
+class,method,offset,reason

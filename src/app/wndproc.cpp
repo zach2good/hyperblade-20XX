@@ -1,0 +1,467 @@
+#include "common/compat.h"
+#include "graphics/colorpalette.h"
+#include "globals.h"
+#include "engine/gameoptions.h"
+#include "appglobals.h"
+#include "input/keyboarddeviceobj.h"
+#include "ui/widget.h"
+#include "ui/screen.h"
+
+#include "wndproc.h"
+#include "app/menuids.h"
+#include "gameapp.h"
+#include "sound/audiomgr.h"
+#include "app/bringup.h"
+#include "input/joystickmgr.h"
+#include "graphics/renderer.h"
+#include "graphics/renderoptions.h"
+#include "graphics/d3drend.h"
+#include "graphics/display.h"
+#include "graphics/gdi.h"
+#include "ui/mainwindow.h"
+#include "graphics/swrend.h"
+#include "engine/gameengine.h"
+#include "engine/game.h"
+
+// Key and button messages go to the input device during a match and to the screen otherwise.
+
+// FUNCTION: HYPERX 0x0044c330
+LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+        case WM_PAINT:
+            WndProc::HandlePaint(hWnd);
+            return 0;
+
+        case WM_ERASEBKGND:
+            return 1;
+
+        case WM_ACTIVATE:
+            if (g_pActiveScreen != NULL)
+            {
+                g_pActiveScreen->SetRepaintBackground(1);
+            }
+            // Falls through
+
+        default:
+            break;
+
+        case WM_SIZE:
+            SWRend::RefreshBltDestRect(hWnd, wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
+            return 0;
+
+        case WM_CREATE:
+            if (MainWindow::OnCreate(hWnd, lParam) != 0)
+            {
+                return 0;
+            }
+
+            return -1;
+
+        case WM_DESTROY:
+#ifdef HYPERX_BRINGUP
+            // A fast run can reach the game's own match end before the frame budget.
+            BringUp::DumpPlanMessages();
+#endif
+
+            if (g_bHelpOpen != 0)
+            {
+                WinHelpA(hWnd, NULL, HELP_QUIT, 0);
+            }
+
+            GameApp::Shutdown(hWnd);
+            g_bShuttingDown = 1;
+            return 0;
+
+        case WM_ACTIVATEAPP:
+            WndProc::OnActivate(hWnd, wParam, lParam);
+            return 0;
+
+#ifdef HYPERX_BRINGUP
+        // A drag runs a modal loop, and a timer keeps the frames coming through it.
+        case WM_ENTERSIZEMOVE:
+            BringUp::OnEnterSizeMove(hWnd);
+            break;
+
+        case WM_EXITSIZEMOVE:
+            BringUp::OnExitSizeMove(hWnd);
+            break;
+
+        case WM_TIMER:
+            if (BringUp::OnTimer(hWnd, wParam) != 0)
+            {
+                return 0;
+            }
+
+            break;
+#endif
+
+        case WM_COMMAND:
+            MainWindow::OnCommand(hWnd, LOWORD(wParam), lParam, HIWORD(wParam));
+            return 0;
+
+        case WM_MOUSEMOVE:
+            if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+            {
+                g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, wParam, lParam);
+            }
+
+            return 0;
+
+        case WM_KEYDOWN:
+        case WM_LBUTTONDOWN:
+        case WM_RBUTTONDOWN:
+#ifdef HYPERX_BRINGUP
+            // The WM_KEYUP for a held key can go to another window, so bring-up remembers it.
+            BringUp::NoteKey(uMsg, wParam);
+#endif
+
+            if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+            {
+                if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+                {
+                    // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
+                    if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown(wParam) == -1)
+                    {
+                        GameApp::HandleGlobalKeyEvent(hWnd, wParam);
+                    }
+
+                    return 0;
+                }
+            }
+            else if (g_pActiveScreen != NULL)
+            {
+                if (uMsg == WM_KEYDOWN)
+                {
+                    if (wParam == VK_F1)
+                    {
+                        GameApp::ShowHelp(hWnd);
+                        return 0;
+                    }
+
+                    g_pActiveScreen->HandleKeyMessage(WM_KEYDOWN, wParam, lParam);
+                }
+                else
+                {
+                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, lParam);
+                }
+
+                return 0;
+            }
+
+            if (wParam == 'Q' || wParam == VK_ESCAPE || wParam == VK_PAUSE)
+            {
+                GameApp::HandleGlobalKeyEvent(hWnd, wParam);
+            }
+
+            return 0;
+
+        case WM_PALETTECHANGED:
+            if (hWnd == (HWND)wParam || hWnd == GetParent((HWND)wParam))
+            {
+                break;
+            }
+
+            // Falls through
+
+        case WM_QUERYNEWPALETTE:
+            g_clrNearest           = GetNearestColor(g_gameApp.m_hScreenDC, g_clrNearest);
+            g_nNearestPaletteIndex = GetNearestPaletteIndex(g_gameApp.m_hPalette, g_clrNearest);
+
+            if (g_hSplashPalette != NULL)
+            {
+                const HDC  hdc         = GetDC(hWnd);
+                HPALETTE   hOldPalette = SelectPalette(hdc, g_hSplashPalette, uMsg != WM_QUERYNEWPALETTE);
+                const UINT nRealized   = RealizePalette(hdc);
+
+                SelectPalette(hdc, hOldPalette, TRUE);
+                ReleaseDC(hWnd, hdc);
+                return nRealized;
+            }
+
+            if (g_pColorPalette == NULL)
+            {
+                return 0;
+            }
+
+            return g_pColorPalette->RealizePalette() & 0xff;
+
+        case MM_JOY1MOVE:
+            g_pJoystickMgr->HandleJoyAxis(g_nJoystickId1, wParam, LOWORD(lParam), HIWORD(lParam));
+            return 0;
+
+        case MM_JOY2MOVE:
+            g_pJoystickMgr->HandleJoyAxis(g_nJoystickId2, wParam, LOWORD(lParam), HIWORD(lParam));
+            return 0;
+
+        case MM_MCINOTIFY:
+            if (wParam == MCI_NOTIFY_SUCCESSFUL && g_pAudioMgr != NULL)
+            {
+                if (g_pGameEngine == NULL || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || (short)g_pGameEngine->m_wRunState != ENGINE_RUN_PLAYING)
+                {
+                    if (g_pGameOptions != NULL && g_pGameOptions->m_nInstallLevel != 0)
+                    {
+                        g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
+                    }
+                }
+                else
+                {
+                    g_pAudioMgr->PlayCDTrack(CD_TRACK_RANDOM);
+                }
+            }
+            break;
+
+        case MM_JOY1BUTTONDOWN:
+            g_pJoystickMgr->HandleButtonPress(g_nJoystickId1, wParam, lParam, HIWORD(lParam));
+            return 0;
+
+        case MM_JOY1BUTTONUP:
+            g_pJoystickMgr->HandleButtonRelease(g_nJoystickId1, wParam, lParam, HIWORD(lParam));
+            return 0;
+
+        case MM_JOY2BUTTONDOWN:
+            g_pJoystickMgr->HandleButtonPress(g_nJoystickId2, wParam, lParam, HIWORD(lParam));
+            return 0;
+
+        case MM_JOY2BUTTONUP:
+            g_pJoystickMgr->HandleButtonRelease(g_nJoystickId2, wParam, lParam, HIWORD(lParam));
+            return 0;
+
+        case WM_KEYUP:
+        case WM_LBUTTONUP:
+        case WM_RBUTTONUP:
+#ifdef HYPERX_BRINGUP
+            BringUp::NoteKey(uMsg, wParam);
+#endif
+
+            if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+            {
+                if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
+                {
+                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, lParam);
+                }
+            }
+            else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+            {
+                g_pInputDevice->HandleKeyUp(wParam);
+                return 0;
+            }
+
+            break;
+    }
+
+    return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+}
+
+// FUNCTION: HYPERX 0x0044c910
+int __cdecl WndProc::HandlePaint(HWND hWnd)
+{
+    if (g_pActiveScreen == NULL || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    {
+        ValidateRgn(hWnd, NULL);
+
+        if (!g_bIsWindowCreated)
+        {
+            return 1;
+        }
+
+        if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_bCursorHidden != 0)
+        {
+            Game::RunFrame();
+        }
+    }
+    else
+    {
+        g_pActiveScreen->PaintToWindow();
+
+#ifdef HYPERX_BRINGUP
+        // The bring-up window is resizable, and the menus paint only their 640x480.
+        BringUp::ClearSurround(hWnd, 640, 480);
+#endif
+    }
+
+    if (g_bIsWindowCreated && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+// FUNCTION: HYPERX 0x0044d190
+int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
+{
+#ifdef HYPERX_BRINGUP
+    // HoldActive pins m_bIsActive, so the flag cannot tell whether this is news.
+    if (g_bShuttingDown == 0 && BringUp::FocusChanged(bActive) != 0)
+#else
+    if (g_bShuttingDown == 0 && bActive != g_gameApp.m_bIsActive)
+#endif
+    {
+        g_gameApp.m_bIsActive = (unsigned char)bActive;
+
+        if ((unsigned char)bActive != 0)
+        {
+            SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
+            SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL);
+
+            if (g_bFullScreen != 0)
+            {
+                GDI::QueryDisplayCaps();
+
+                if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+                {
+                    Display::ChangeColorDepth(2);
+                }
+                else
+                {
+                    Display::ChangeColorDepth(0);
+                    GameApp::ClearSplashPalette();
+                }
+            }
+
+            if (g_gameApp.m_hWndActiveDialog != 0)
+            {
+                SendMessageA(g_gameApp.m_hWndActiveDialog, WM_ERASEBKGND, 0, 0);
+                return 0;
+            }
+
+            if (g_bSingleStepActive != 0)
+            {
+                g_gameApp.m_bCursorWasVisible = GameApp::SetCursorVisible(0);
+                Game::RunFrame();
+                return 0;
+            }
+
+            if (g_pGameEngine != 0)
+            {
+                if (g_gameApp.m_wRunStateOnDeactivate == ENGINE_RUN_PLAYING)
+                {
+                    g_pGameEngine->SetRunState(1, 0);
+                }
+
+                if (g_pGameEngine != 0 && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+                {
+                    g_gameApp.m_bCursorWasVisible = GameApp::SetCursorVisible(g_gameApp.WasCursorVisible());
+                    return 0;
+                }
+            }
+
+            GameEngine::TogglePause(hWnd, 0);
+            SendMessageA(hWnd, WM_PAINT, 0, 0);
+            GameEngine::TogglePause(hWnd, 0);
+        }
+        else
+        {
+#ifdef HYPERX_BRINGUP
+            // The WM_KEYUP for a key held across the focus change goes to another window.
+            BringUp::ReleaseHeldKeys();
+#endif
+
+            SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
+
+            if (g_bSingleStepActive == 0 && g_pGameEngine != 0)
+            {
+                g_gameApp.m_wRunStateOnDeactivate = g_pGameEngine->m_wRunState;
+
+                if (g_gameApp.m_wRunStateOnDeactivate == ENGINE_RUN_PLAYING)
+                {
+                    g_pGameEngine->SetRunState(0, 0);
+                }
+            }
+
+            g_gameApp.m_bCursorWasVisible = GameApp::SetCursorVisible(1);
+
+            if (g_bFullScreen != 0)
+            {
+                Display::ChangeColorDepth(1);
+            }
+        }
+    }
+
+    return 0;
+}
+
+// FUNCTION: HYPERX 0x004939b0
+unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand)
+{
+    RenderOptions opt = Renderer::GetRenderOptions();
+
+    if (opt.bTextured != 0)
+    {
+        switch (nCommand)
+        {
+            case ID_RENDER_PERSPECTIVE:
+                g_bPerspectiveTexturing = (g_bPerspectiveTexturing == 0);
+
+                unsigned int uPerspectiveCheck;
+
+                if (g_bPerspectiveTexturing)
+                {
+                    uPerspectiveCheck = MF_CHECKED;
+                }
+                else
+                {
+                    uPerspectiveCheck = MF_UNCHECKED;
+                }
+
+                CheckMenuItem(hMenu, ID_RENDER_PERSPECTIVE, uPerspectiveCheck);
+
+                D3DRend::SetQualityIfEnabled(1, g_bPerspectiveTexturing);
+
+                return g_bPerspectiveTexturing;
+
+            case ID_RENDER_BILINEAR_FILTER:
+                g_bBilinearFilter = (g_bBilinearFilter == 0);
+
+                unsigned int uFilterCheck;
+
+                if (g_bBilinearFilter)
+                {
+                    uFilterCheck = MF_CHECKED;
+                }
+                else
+                {
+                    uFilterCheck = MF_UNCHECKED;
+                }
+
+                CheckMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, uFilterCheck);
+
+                D3DRend::SetQualityIfEnabled(2, g_bBilinearFilter);
+
+                return g_bBilinearFilter;
+
+            case ID_RENDER_MDM_TEXTURES:
+                g_cMdmTexLoaded = (g_cMdmTexLoaded == 0);
+                g_bLoadingMode  = 1;
+
+                unsigned int uMdmCheck;
+
+                if (g_cMdmTexLoaded)
+                {
+                    uMdmCheck = MF_CHECKED;
+                }
+                else
+                {
+                    uMdmCheck = MF_UNCHECKED;
+                }
+
+                CheckMenuItem(hMenu, ID_RENDER_MDM_TEXTURES, uMdmCheck);
+
+                EnableMenuItem(hMenu, ID_RENDER_PERSPECTIVE, !g_cMdmTexLoaded);
+
+                if (opt.bFiltered != 0)
+                {
+                    EnableMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, !g_cMdmTexLoaded);
+                }
+
+                return g_cMdmTexLoaded;
+        }
+    }
+
+    return 0;
+}
+
+int          g_nNearestPaletteIndex = 7;
+unsigned int g_clrNearest           = 0x00808080;

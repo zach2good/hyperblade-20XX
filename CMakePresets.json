@@ -1,0 +1,51 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vc6",
+      "hidden": true,
+      "generator": "NMake Makefiles",
+      "toolchainFile": "${sourceDir}/cmake/toolchain-vc6sp3.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "vc6sp3",
+      "displayName": "Measured build",
+      "inherits": "vc6",
+      "binaryDir": "${sourceDir}/build"
+    },
+    {
+      "name": "bringup",
+      "displayName": "Bring-up build",
+      "inherits": "vc6",
+      "binaryDir": "${sourceDir}/build-bringup",
+      "cacheVariables": {
+        "HYPERX_BRINGUP": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vc6sp3",
+      "configurePreset": "vc6sp3"
+    },
+    {
+      "name": "verify",
+      "configurePreset": "vc6sp3",
+      "targets": [
+        "verify"
+      ]
+    },
+    {
+      "name": "bringup",
+      "configurePreset": "bringup"
+    }
+  ]
+}

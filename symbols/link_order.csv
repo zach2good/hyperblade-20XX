@@ -1,0 +1,67 @@
+# The object that owns each marked $E thunk, read by tools/check_link_order.py.
+#
+# Several objects define each $En, and reccmp pairs them by name in address order on both sides,
+# so these owners must link in the order of their client addresses. docs/MATCHING.md, Link order,
+# has the derivation.
+#
+# Columns: address,object,evidence
+0x00408e70,trackingellipsoidstatics.cpp,g_camTrackEllipsoid's atexit registration; its initialiser 0x00408e10 heads the physics code before CollisionEllipsoid's 0x00408e90
+0x00408e80,trackingellipsoidstatics.cpp,g_camTrackEllipsoid's destructor thunk; jumps to CollisionEllipsoid::~CollisionEllipsoid
+0x00424e50,animplayer.cpp,ComputeScale's blend transform; pushed by AnimPlayer::ComputeScale at 0x00424b40
+0x00442920,frametimer.cpp,g_frameTimer's atexit registration; FrameTimer's code follows at 0x00442940
+0x00442930,frametimer.cpp,g_frameTimer's destructor thunk; pushed by 0x00442920
+0x0044c050,globals.cpp,g_gameApp's atexit registration; its initialiser is table entry 74 at 0x0044c030
+0x0044c060,globals.cpp,g_gameApp's destructor thunk; pushed by 0x0044c050
+0x00439570,globals.cpp,atexit registration of the 0x00439520 unit's object
+0x00439580,globals.cpp,destructor thunk pushed by 0x00439570
+0x00439520,globals.cpp,g_displayMode's initialiser thunk; table entry 99, in the unit with 0x00439570
+0x00439530,globals.cpp,g_displayMode's initialiser; jumped to by 0x00439520
+0x0046d670,config.cpp,g_flNetTracking's initialiser thunk; table entry 193 in the unit ahead of Config
+0x00430db0,ddraw.cpp,g_flScreenDotsPerCmProjection's initialiser thunk; table entry 69
+0x0045c6c0,arenaellipsoidstatic.cpp,g_arenaEllipsoid's atexit registration; jumped to by its initialiser thunk 0x0045c680
+0x0046d530,config.cpp,first initialiser thunk of the unit ahead of Config's code at 0x0046d700
+0x0046d6e0,config.cpp,g_strPrefs's atexit registration; the unit ahead of Config at 0x0046d700
+0x0046d6f0,config.cpp,g_strPrefs's destructor thunk; pushed by 0x0046d6e0
+0x0046f330,meshbone.cpp,DrawFaces' s_worldView; pushed by MeshBone::DrawFaces at 0x0046f060
+0x004716e0,engineobject.cpp,UpdateRenderSlotTransform's scratch transform; pushed by 0x00471630
+0x00474140,rokobject.cpp,ApplyRenderSlotPose's scratch transform; pushed by 0x00473f40
+0x00474480,playerobject.cpp,UpdateRenderSlotTransform's scratch transform; pushed by 0x004743d0
+0x0048fcf0,dsoundmgr.cpp,atexit registration in the unit whose initialisers start at 0x0048fc50
+0x0048fd00,dsoundmgr.cpp,destructor thunk pushed by 0x0048fcf0
+0x0048fd90,soundchannel.cpp,atexit registration in the unit whose initialisers start at 0x0048fc50
+0x0048fde0,soundchannel.cpp,g_mixerWaveOut's atexit registration; pushes 0x0048fdf0
+0x0048fda0,soundchannel.cpp,g_mixerCompactDisc's destructor thunk; pushed by 0x0048fd90
+0x0048fdf0,soundchannel.cpp,destructor thunk in the unit whose initialisers start at 0x0048fc50
+0x004017c0,planactiontracking.cpp,the PlanTracking triple's thunk; planactiontracking.cpp's unit heads at 0x004017c0
+0x004017e0,planactiontracking.cpp,the PlanTracking triple's thunk; planactiontracking.cpp's unit heads at 0x004017c0
+0x00401800,planactiontracking.cpp,the PlanTracking triple's thunk; planactiontracking.cpp's unit heads at 0x004017c0
+0x00401810,planactiontracking.cpp,the PlanTracking triple's initialiser; planactiontracking.cpp's unit heads at 0x004017c0
+0x00403180,planactionlaunch.cpp,the PlanLaunch triple's thunk; planactionlaunch.cpp's unit heads at 0x00403180
+0x004031a0,planactionlaunch.cpp,the PlanLaunch triple's thunk; planactionlaunch.cpp's unit heads at 0x00403180
+0x004031c0,planactionlaunch.cpp,the PlanLaunch triple's thunk; planactionlaunch.cpp's unit heads at 0x00403180
+0x004031d0,planactionlaunch.cpp,the PlanLaunch triple's initialiser; planactionlaunch.cpp's unit heads at 0x00403180
+0x00421920,cameraobject.cpp,the Camera triple's thunk; cameraobject.cpp's unit heads at 0x00421920
+0x00421940,cameraobject.cpp,the Camera triple's thunk; cameraobject.cpp's unit heads at 0x00421920
+0x00421960,cameraobject.cpp,the Camera triple's thunk; cameraobject.cpp's unit heads at 0x00421920
+0x00421970,cameraobject.cpp,the Camera triple's initialiser; cameraobject.cpp's unit heads at 0x00421920
+0x00408db0,trackingellipsoidstatics.cpp,the Tracking triple's thunk; trackingellipsoidstatics.cpp's unit heads at 0x00408db0
+0x00408dd0,trackingellipsoidstatics.cpp,the Tracking triple's thunk; trackingellipsoidstatics.cpp's unit heads at 0x00408db0
+0x00408df0,trackingellipsoidstatics.cpp,the Tracking triple's thunk; trackingellipsoidstatics.cpp's unit heads at 0x00408db0
+0x00408e00,trackingellipsoidstatics.cpp,the Tracking triple's initialiser; trackingellipsoidstatics.cpp's unit heads at 0x00408db0
+0x00436d90,texture.cpp,g_ptSurfacePixels's initialiser thunk; texture.cpp's code follows at 0x00436db0
+0x00473a20,rokobject.cpp,the RokObject triple's thunk; rokobject.cpp's unit heads at 0x00473a20
+0x0046eeb0,meshbone.cpp,the VertexColour triple's thunk; meshbone.cpp's unit heads at 0x0046eeb0
+0x0046d570,config.cpp,the steering triple's last thunk; marked so g_mixerWaveOut's $E8 in soundchannel.cpp pairs
+0x0046d580,config.cpp,the steering triple's last initialiser; marked so g_mixerWaveOut's $E7 in soundchannel.cpp pairs
+0x0046eef0,meshbone.cpp,the VertexColour triple's last thunk; marked so g_mixerWaveOut's $E8 pairs
+0x0046ef00,meshbone.cpp,the VertexColour triple's last initialiser; marked so g_mixerWaveOut's $E7 pairs
+0x00473a60,rokobject.cpp,the RokObject triple's last thunk; marked so g_mixerWaveOut's $E8 pairs
+0x00473a70,rokobject.cpp,the RokObject triple's last initialiser; marked so g_mixerWaveOut's $E7 pairs
+0x00430d30,ddraw.cpp,the Projection unit's first initialiser thunk; table entry 63, ahead of DirectDraw's code at 0x00430e40
+0x00430d80,ddraw.cpp,g_flDotPitchCmProjection's initialiser thunk; table entry 67
+0x00430d90,ddraw.cpp,g_flDotPitchCmProjection's initialiser; jumped to by 0x00430d80
+0x00430de0,ddraw.cpp,the LightLevel triple's first thunk; marked so EngineObject's scratch transform thunk pairs
+0x0046d650,config.cpp,an initialiser thunk of the unit ahead of Config's code; marked so EngineObject's scratch transform thunk pairs
+0x004394c0,mem.cpp,the DisplayMode triple's thunk; mem.cpp's unit heads at 0x004394c0
+0x00439500,mem.cpp,the DisplayMode triple's last thunk; mem.cpp's unit heads at 0x004394c0
+0x00439510,mem.cpp,the DisplayMode triple's last initialiser; mem.cpp's unit heads at 0x004394c0

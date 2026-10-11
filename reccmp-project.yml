@@ -1,0 +1,31 @@
+# reccmp pairs this project's build against the original, function by function,
+# through the // FUNCTION: HYPERX 0xADDR annotations in src/.
+#
+# reccmp is AGPL-3.0. It is an external dependency and its source is not vendored here.
+#
+# Point it at HYPERX_sym.exe, not HYPERX.exe. reccmp needs a PDB and the matching
+# build deliberately has no debug directory, because the original has none.
+#
+# The two are linked from the same object files, but their code differs. HYPERX.exe
+# links /OPT:REF and HYPERX_sym.exe links /OPT:NOREF, and in VC6 /OPT:REF implies
+# identical-COMDAT folding. So the two images differ in function identity as well as
+# in which functions survive, and a function whose bytes depend on folding can only
+# be read out of HYPERX.exe.
+#
+# The original is never committed to this repository. reccmp-user.yml, which is
+# git-ignored, says where your copy lives.
+
+project: hyperblade-decomp
+
+targets:
+  HYPERX:
+    filename: HYPERX.EXE
+    source-root: src
+    # The original is linked /FIXED and has no relocations, so reccmp cannot find its
+    # x87 constants, static guards or library data on its own. These files name them.
+    data-sources:
+      - symbols/float_constants.csv
+      - symbols/static_guards.csv
+      - symbols/library_data.csv
+    hash:
+      sha256: 514bcec6805f27136bed6e4de8796e75d99f224a94e3d7098a4477b029ea24cd

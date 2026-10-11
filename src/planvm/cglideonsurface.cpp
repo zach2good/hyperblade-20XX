@@ -1,0 +1,641 @@
+#include "common/compat.h"
+#include "planvm/agendaitemids.h"
+#include "physics/physicsbody.h"
+#include "planvm/agendaitem.h"
+#include "engine/crelaxyaw.h"
+#include "planvm/cglideonsurface.h"
+#include "engine/devicector.h"
+#include "engine/objectclasses.h"
+#include "planvm.h"
+#include "globals.h"
+#include "engine/objectstats.h"
+#include "math/vector.h"
+#include "physics/collisionellipsoid.h"
+#include "engine/gameengine.h"
+#include "common/fieldat.h"
+#include "physics/banking.h"
+#include "common/stub.h"
+#include "net/session.h"
+#include <math.h>
+#include "app/gameapp.h"
+#include "engine/playerobject.h"
+#include "net/gamesession.h"
+#include "physics/collisionplane.h"
+#include "math/mathops.h"
+#include "common/pooledownerroot.h"
+#include "engine/statids.h"
+#include "engine/messageids.h"
+
+#define ROK_CARRIER_SPEED_SCALE 0.9f
+
+// Thirty a second, in .data rather than .rdata.
+// GLOBAL: HYPERX 0x004bb63c
+extern float g_flBankFreeSpeed;
+
+// FUNCTION: HYPERX 0x0040c0b0
+void CGlideOnSurface::Bind(EngineObject* pOwner, GameBehaviorObject*)
+{
+    m_pNext  = 0;
+    m_wKind  = Agenda_CGlideOnSurface;
+    m_bReady = 0;
+    m_pOwner = pOwner;
+
+    m_pflFriction       = &pOwner->GetPhysicsBody()->flFriction;
+    m_pVel              = &pOwner->GetPhysicsBody()->vel;
+    m_pVelDir           = &pOwner->GetPhysicsBody()->velDir;
+    m_pVelDirPrev       = &pOwner->GetPhysicsBody()->velDirLatched;
+    m_pAxis             = &pOwner->GetPhysicsBody()->axis;
+    m_pPos              = &pOwner->GetPhysicsBody()->pos;
+    m_pPosCopy          = &pOwner->GetPhysicsBody()->prevPos;
+    m_pSurface          = pOwner->GetPhysicsBody()->pShell;
+    m_pNormal           = &pOwner->GetPhysicsBody()->surfNormal;
+    m_pBankScale        = &pOwner->GetPhysicsBody()->flGravDeltaVel;
+    m_pSpeed            = &pOwner->GetPhysicsBody()->flSpeed;
+    m_pBaseSpeed        = &pOwner->GetPhysicsBody()->flForwardSpeedDt;
+    m_pLowAlt           = &pOwner->GetPhysicsBody()->flSteerScale;
+    m_pBankForce        = &pOwner->GetPhysicsBody()->bankForce;
+    m_pSmoothVel        = &pOwner->GetPhysicsBody()->smoothVel;
+    m_pPlayer           = pOwner->GetPhysicsBody()->pPlayer;
+    m_pTargetPos        = &pOwner->GetPhysicsBody()->netTarget;
+    m_pNetTargetPending = &pOwner->GetPhysicsBody()->bNetTargetPending;
+    m_pnPrevTick        = &pOwner->GetPhysicsBody()->nPrevTick;
+    m_pMove             = &pOwner->GetPhysicsBody()->move;
+    m_pnHeldBindings    = &pOwner->GetPhysicsBody()->nHeldBindings;
+
+    m_nOnSurface = 0;
+}
+
+// FUNCTION: HYPERX 0x0040c200
+void CGlideOnSurface::OnListChanged()
+{
+    if (m_bReady == 0)
+    {
+        m_pNext             = 0;
+        m_pOwner            = 0;
+        m_pflFriction       = 0;
+        m_pVel              = 0;
+        m_pVelDir           = 0;
+        m_pVelDirPrev       = 0;
+        m_pAxis             = 0;
+        m_pPos              = 0;
+        m_pPosCopy          = 0;
+        m_pSurface          = 0;
+        m_pNormal           = 0;
+        m_pBankScale        = 0;
+        m_pSpeed            = 0;
+        m_pBaseSpeed        = 0;
+        m_pLowAlt           = 0;
+        m_pBankForce        = 0;
+        m_pSmoothVel        = 0;
+        m_pTargetPos        = 0;
+        m_pNetTargetPending = 0;
+        m_pMove             = 0;
+        m_pnHeldBindings    = 0;
+        m_nOnSurface        = 0;
+        m_bReady            = 1;
+
+        g_apAgendaItemPools[m_wKind]->Insert(this);
+    }
+}
+
+namespace TerrainStep
+{
+
+static inline Vec3 Sum(const Vec3& vA, const Vec3& vB)
+{
+    Vec3 vOut;
+
+    vOut.x = vA.x + vB.x;
+    vOut.y = vA.y + vB.y;
+    vOut.z = vA.z + vB.z;
+
+    return vOut;
+}
+
+} // namespace TerrainStep
+
+// FUNCTION: HYPERX 0x0040c270
+void CGlideOnSurface::UpdateTerrainPhysics(int)
+{
+    PhysicsBody* pBody;
+    Vec3*        pVelDir;
+    Vec3*        pVelDirPrev;
+    Vec3*        pTerm;
+    Vec3*        pFound;
+    float        flTarget;
+    float        flDouble;
+    float        flAlt;
+    Vec3         vBank;
+    Vec3         vSaved;
+    Vec3         vCross;
+    Vec3         vTarget;
+    Vec3         vWorld;
+    float        flSum;
+    short        nCarrierSlot;
+    char         bCarryingRok;
+
+    vSaved = *m_pNormal;
+
+    flDouble = *m_pflFriction * 2.0f;
+
+    m_pSurface = m_pOwner->GetPhysicsBody()->pShell;
+
+    *m_pPosCopy = *m_pPos;
+
+    *m_pVelDirPrev = *m_pVelDir;
+
+    if (*m_pflFriction >= 1.0)
+    {
+        m_pVelDir->x = m_pOwner->GetLocalTransformPtr()->m_a[0][1];
+        m_pVelDir->y = m_pOwner->GetLocalTransformPtr()->m_a[1][1];
+        m_pVelDir->z = m_pOwner->GetLocalTransformPtr()->m_a[2][1];
+
+        Vec3::ScaleTo(m_pVelDir, 0.01f, m_pVel);
+
+        m_pSmoothVel->z = 0.0f;
+        m_pSmoothVel->y = 0.0f;
+        m_pSmoothVel->x = 0.0f;
+        m_pBankForce->z = 0.0f;
+        m_pBankForce->y = 0.0f;
+        m_pBankForce->x = 0.0f;
+
+        if (m_nOnSurface != 0)
+        {
+            return;
+        }
+    }
+    else
+    {
+        vTarget = TerrainStep::Sum(*m_pVel, *m_pPosCopy);
+
+        m_pSurface->RayIntersection(m_pNormal, &vTarget, m_pPos);
+
+        const Vec3 vDiff = m_pPos->Minus(m_pPosCopy);
+        Vec3       vStep;
+
+        vStep.x          = vDiff.x + m_pSmoothVel->x;
+        vStep.y          = vDiff.y + m_pSmoothVel->y;
+        vStep.z          = vDiff.z + m_pSmoothVel->z;
+        const float flSx = vStep.x + m_pBankForce->x;
+        const float flSy = vStep.y + m_pBankForce->y;
+        const float flSz = vStep.z + m_pBankForce->z;
+
+        vStep.x = flSx;
+        vStep.y = flSy;
+        vStep.z = flSz;
+
+        Vec3 vOut = vStep;
+
+        *m_pSpeed = (float)sqrt(flSz * flSz + flSy * flSy + flSx * flSx);
+
+        float* pSpeed = m_pSpeed;
+
+        if (g_pGameEngine->m_clock.flInvDelta * *pSpeed > 0.001f)
+        {
+            const float flLen = *pSpeed;
+            Vec3* const pDst  = m_pVelDir;
+            Vec3        vDir;
+
+            vDir.x  = flSx * (g_flOneAgendaItem / flLen);
+            vDir.y  = flSy * (g_flOneAgendaItem / flLen);
+            vDir.z  = flSz * (g_flOneAgendaItem / flLen);
+            pDst->x = vDir.x;
+            pDst->y = vDir.y;
+            pDst->z = vDir.z;
+        }
+        else
+        {
+            pVelDir = m_pVelDir;
+
+            float flLen = (float)sqrt(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z);
+
+            if (flLen == 0.0f)
+            {
+                pVelDirPrev = m_pVelDirPrev;
+
+                flLen = (float)sqrt(pVelDirPrev->x * pVelDirPrev->x + pVelDirPrev->y * pVelDirPrev->y + pVelDirPrev->z * pVelDirPrev->z);
+
+                if (flLen != 0.0f)
+                {
+                    *pVelDir = *pVelDirPrev;
+                }
+                else
+                {
+                    m_pPos->NormalizeTo(pVelDir);
+                }
+            }
+        }
+
+        pFound = m_pSurface->NormalAtPoint(m_pPos);
+
+        if (pFound == 0)
+        {
+            // STRING: HYPERX 0x004bb6c0
+            g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
+        }
+
+        *m_pNormal = *pFound;
+
+        const Vec3 vNormal = *m_pNormal;
+
+        if (m_pPos->z > g_flZeroAgendaItem)
+        {
+            m_pOwner->PostSceneEvent(MSG_FLY, 0);
+        }
+
+        float* const pBankScale = m_pBankScale;
+        vBank.x                 = vNormal.z * *pBankScale * vNormal.x;
+        vBank.z                 = (-(vNormal.x * vNormal.x) - vNormal.y * vNormal.y) * *pBankScale;
+        vBank.y                 = vNormal.y * *pBankScale;
+        vBank.y *= vNormal.z;
+
+        if (m_pOwner->GetSlot() < PLAYER_OBJECT_COUNT)
+        {
+            pVelDir = m_pVelDir;
+            flAlt   = vBank.y * pVelDir->y + vBank.z * pVelDir->z + vBank.x * pVelDir->x;
+
+            if (flAlt < 0.0)
+            {
+                Vec3::ScaleTo(pVelDir, flAlt, &vBank);
+            }
+            else
+            {
+                vBank.x = vBank.y = vBank.z = 0.0f;
+            }
+        }
+
+        flDouble = g_pGameEngine->m_clock.GetDelta() * *m_pBankScale * vNormal.z * flDouble * 12.0f;
+
+        int nSlot = m_pOwner->GetSlot();
+
+        if (g_pGameEngine->m_clock.GetInvDelta() * *m_pSpeed < g_flBankFreeSpeed && (nSlot <= GOALIE_SLOT_B || (nSlot >= SLOT_BODY_PART && nSlot <= SLOT_BODY_PART_LAST)))
+        {
+            pBody = m_pOwner->GetPhysicsBody();
+
+            if (pBody->nHeldBindings == 0)
+            {
+                pVelDirPrev = m_pVelDirPrev;
+                pVelDir     = m_pVelDir;
+
+                flTarget = pVelDir->GetZ() * pVelDirPrev->z + pVelDir->GetY() * pVelDirPrev->y + pVelDirPrev->x * pVelDir->x;
+
+                if (flTarget > g_flZeroAgendaItem)
+                {
+                    m_pOwner->PostSceneEvent(MSG_GLIDE_TO_STOP, 0);
+                }
+                else if (nSlot < SLOT_BODY_PART || nSlot > SLOT_BODY_PART_LAST)
+                {
+                    CRelaxYaw* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
+
+                    PlanState* const pPlan = m_pOwner->GetPlanState();
+                    pRelax->Bind(m_pOwner, pPlan->m_pCurrent);
+
+                    pVelDirPrev = m_pVelDirPrev;
+                    pVelDir     = m_pVelDir;
+
+                    vCross.x = pVelDir->GetY() * pVelDirPrev->z - pVelDirPrev->GetY() * pVelDir->z;
+                    vCross.y = pVelDir->z * pVelDirPrev->x - pVelDir->x * pVelDirPrev->z;
+                    vCross.z = pVelDirPrev->GetY() * pVelDir->x - pVelDir->y * pVelDirPrev->x;
+
+                    if (vCross.z > 0.0)
+                    {
+                        pRelax->m_flAngle = (float)acos(flTarget);
+                    }
+                    else
+                    {
+                        pRelax->m_flAngle = -(float)acos(flTarget);
+                    }
+
+                    pRelax->Activate();
+                }
+            }
+        }
+        else
+        {
+            vOut.x += vBank.x;
+            vOut.y += vBank.y;
+            vOut.z += vBank.z;
+        }
+
+        pTerm    = m_pSmoothVel;
+        pTerm->z = g_flZeroAgendaItem;
+        pTerm    = m_pSmoothVel;
+        pTerm->y = g_flZeroAgendaItem;
+        pTerm    = m_pSmoothVel;
+        pTerm->x = g_flZeroAgendaItem;
+        pTerm    = m_pBankForce;
+        pTerm->z = g_flZeroAgendaItem;
+        pTerm    = m_pBankForce;
+        pTerm->y = g_flZeroAgendaItem;
+        pTerm    = m_pBankForce;
+        pTerm->x = g_flZeroAgendaItem;
+
+        pBody = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
+
+        AttachPak* const pRokAttach = pBody->pAttach;
+
+        bCarryingRok = (char)(pRokAttach != 0 && (nCarrierSlot = pRokAttach->nSlot) < PLAYER_OBJECT_COUNT && nCarrierSlot == m_pOwner->GetSlot());
+
+        if (m_pPos->z > g_flZeroAgendaItem)
+        {
+            flAlt = g_flOneAgendaItem;
+        }
+        else
+        {
+            flAlt = *m_pLowAlt;
+        }
+
+        if (bCarryingRok != 0)
+        {
+            flTarget = ROK_CARRIER_SPEED_SCALE;
+        }
+        else
+        {
+            flTarget = g_flOneAgendaItem;
+        }
+
+        ObjectStats* const pStats = &((PlayerObject*)m_pOwner)->m_stats;
+
+        if (pStats != 0)
+        {
+            flSum = pStats->GetWeightedStat(RATING_SPEED) * 0.05f + 0.65f;
+        }
+        else
+        {
+            flSum = g_flOneAgendaItem;
+        }
+
+        flTarget = *m_pBaseSpeed * flSum * flTarget * flAlt * g_flMaxSpeed;
+
+        pSpeed = m_pSpeed;
+
+        if (*pSpeed > flTarget)
+        {
+            *m_pVelDir = vOut;
+
+            Math::Vec3Normalize(m_pVelDir);
+
+            *pSpeed = flTarget;
+            flTarget -= flDouble;
+
+            vOut = m_pVelDir->Scaled(flTarget);
+        }
+        else if (flDouble <= *pSpeed)
+        {
+            const Vec3 vDrag = m_pVelDir->Scaled(flDouble);
+            const Vec3 vNext = vOut.Minus(&vDrag);
+
+            Vec3* const pVel = m_pVel;
+
+            if (vNext.z * pVel->z + vNext.y * pVel->y + vNext.x * pVel->x < g_flZeroAgendaItem)
+            {
+                if (m_pOwner->GetSlot() <= GOALIE_SLOT_B)
+                {
+                    pBody = m_pOwner->GetPhysicsBody();
+
+                    if (pBody->nHeldBindings == 0)
+                    {
+                        m_pOwner->PostSceneEvent(MSG_GLIDE_TO_STOP, 0);
+
+                        vOut.y = 0.0f;
+                        vOut.x = 0.0f;
+                        vOut.z = 0.0f;
+                    }
+                }
+            }
+            else
+            {
+                vOut = vNext;
+            }
+        }
+
+        *m_pVel = vOut;
+
+        Vec3 vPos;
+
+        vWorld = *m_pOwner->GetWorldPos(&vPos);
+
+        pFound = g_arenaEllipsoid.NormalAtPoint(&vWorld);
+
+        if (pFound != 0)
+        {
+            pBody             = m_pOwner->GetPhysicsBody();
+            pBody->surfNormal = *pFound;
+
+            m_pOwner->GetPhysicsBody()->pShell = &g_arenaEllipsoid;
+
+            vSaved.x = pFound->x;
+            vSaved.y = pFound->y;
+            vSaved.z = pFound->z;
+        }
+
+        pVelDir           = m_pVelDir;
+        const float flDot = (vSaved.z * pVelDir->z + vSaved.y * pVelDir->y) + vSaved.x * pVelDir->x;
+
+        const Vec3 vProj = vSaved.Scaled(flDot);
+
+        pVelDir->x -= vProj.x;
+        pVelDir->y -= vProj.y;
+        pVelDir->z -= vProj.z;
+
+        Math::Vec3Normalize(m_pVelDir);
+
+        if (m_nOnSurface != 0)
+        {
+            return;
+        }
+    }
+
+    Vec3::ScaleTo(m_pVel, g_pGameEngine->m_clock.GetInvDelta(), &vCross);
+
+    pBody       = m_pOwner->GetPhysicsBody();
+    pBody->step = vCross;
+}
+
+#define MS_PER_SECOND 1000.0f
+
+// The session's lag counter is in milliseconds and the term it feeds is in seconds.
+#define SESSION_LAG_SCALE 0.001f
+
+HYPERBLADE_FIELD_AT(CGlideOnSurface, m_pflFriction, 0x10);
+
+// FUNCTION: HYPERX 0x0040cb00
+void CGlideOnSurface::Process(int nArg)
+{
+    UpdateTerrainPhysics(nArg);
+
+    AgendaItem* const pNext = m_pNext;
+
+    if (pNext != 0)
+    {
+        pNext->Process(nArg);
+    }
+}
+
+// m_pNetTargetPending is the network correction; its z drift reads the x term back.
+// FUNCTION: HYPERX 0x0040cb20
+void CGlideOnSurface::Release(int nTick)
+{
+    PhysicsBody* pBody;
+
+    if (m_nOnSurface != 0)
+    {
+        UpdateTerrainPhysics(nTick);
+
+        if (m_pNext != 0)
+        {
+            m_pNext->Release(nTick);
+        }
+
+        return;
+    }
+
+    *m_pPosCopy = *m_pPos;
+
+    if (*m_pNetTargetPending != 0)
+    {
+        Vec3 vStep;
+        Vec3 vLag;
+
+        *m_pNetTargetPending = 0;
+
+        pBody = m_pOwner->GetPhysicsBody();
+        vStep = pBody->step;
+
+        const unsigned int nElapsed =
+            (unsigned int)(long)(g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
+        const unsigned int nTickBase = g_pGameEngine->m_clock.nPrevTickMs;
+        const float        flDelta   = g_pGameEngine->m_clock.flDelta;
+
+        pBody = m_pOwner->GetPhysicsBody();
+        Vec3::ScaleTo(&pBody->step, flDelta, m_pVel);
+
+        if (nElapsed > 0)
+        {
+            const float flDrift =
+                ((float)(nTickBase + nElapsed) - (float)*m_pnPrevTick) / (g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
+
+            vLag.x = flDrift * m_pVel->x;
+            vLag.y = flDrift * m_pVel->y;
+        }
+        else
+        {
+            vLag.x = 0.0f;
+            vLag.y = 0.0f;
+        }
+
+        float flLag;
+
+        if (g_pGameSession != 0)
+        {
+            flLag = g_pGameSession->nLagMs * SESSION_LAG_SCALE;
+        }
+        else
+        {
+            flLag = 0.0f;
+        }
+
+        pBody = m_pOwner->GetPhysicsBody();
+        Vec3::ScaleTo(&pBody->step, flLag, &vStep);
+
+        m_pMove->target.x = vStep.x + m_pTargetPos->x + vLag.x;
+        m_pMove->target.y = vStep.y + m_pTargetPos->y + vLag.y;
+        m_pMove->target.z = vStep.z + m_pTargetPos->z + vLag.x;
+
+        if (*m_pflFriction < 1.0)
+        {
+            m_pOwner->GetPhysicsBody()->IntegrateMotion();
+        }
+        else
+        {
+            Vec3* pDir;
+            Vec3* pTarget;
+            Vec3  vNormal;
+            Vec3  vProj;
+
+            vNormal = *m_pNormal;
+
+            m_pVel->NormalizeTo(m_pVelDir);
+
+            pDir = m_pVelDir;
+
+            float flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
+
+            vProj.x = flDot;
+            vProj.x *= vNormal.x;
+            vProj.y = flDot * vNormal.y;
+            vProj.z = flDot * vNormal.z;
+
+            pDir->x -= vProj.x;
+            pDir->y -= vProj.y;
+            pDir->z -= vProj.z;
+
+            Math::Vec3Normalize(m_pVelDir);
+
+            pTarget = m_pTargetPos;
+            pBody   = m_pOwner->GetPhysicsBody();
+
+            pBody->prevPos = pBody->pos;
+            pBody->pos     = *pTarget;
+        }
+    }
+    else
+    {
+        if (*m_pflFriction < 1.0)
+        {
+            m_pMove->target.x = m_pTargetPos->x + m_pVel->x;
+            m_pMove->target.y = m_pTargetPos->y + m_pVel->y;
+            m_pMove->target.z = m_pTargetPos->z + m_pVel->z;
+
+            *m_pTargetPos = m_pMove->target;
+
+            m_pOwner->GetPhysicsBody()->IntegrateMotion();
+        }
+        else
+        {
+            Vec3  vNormal;
+            Vec3* pDir;
+            Vec3  vProj;
+
+            vNormal = *m_pNormal;
+
+            m_pVel->NormalizeTo(m_pVelDir);
+
+            pDir = m_pVelDir;
+
+            const float flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
+
+            vProj.x = flDot;
+            vProj.x *= vNormal.x;
+            vProj.y = flDot * vNormal.y;
+            vProj.z = flDot * vNormal.z;
+
+            pDir->x -= vProj.x;
+            pDir->y -= vProj.y;
+            pDir->z -= vProj.z;
+
+            Math::Vec3Normalize(m_pVelDir);
+        }
+    }
+
+    Vec3* const pNormal = g_arenaEllipsoid.NormalAtPoint(m_pPos);
+
+    if (pNormal != 0)
+    {
+        pBody = m_pOwner->GetPhysicsBody();
+
+        pBody->surfNormal = *pNormal;
+
+        pBody = m_pOwner->GetPhysicsBody();
+
+        pBody->pShell = &g_arenaEllipsoid;
+    }
+
+    if (m_pNext != 0)
+    {
+        m_pNext->Release(nTick);
+    }
+}
+
+// Thirty a second: above it a terrain frame adds its bank vector whatever the owner's class.
+float g_flBankFreeSpeed = 30.0f;

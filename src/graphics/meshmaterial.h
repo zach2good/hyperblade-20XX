@@ -1,0 +1,85 @@
+// A negative nBackIndex means no back material; a back material makes a face two sided.
+
+#ifndef HYPERBLADE_MESHMATERIAL_H
+#define HYPERBLADE_MESHMATERIAL_H
+
+#include "graphics/materialname.h"
+
+#include "common/staticassert.h"
+#include "anim/animclip.h"
+
+// The stride is twenty two, where natural packing gives twenty four.
+#pragma pack(push, 2)
+
+class FileObj;
+
+struct MeshMaterial
+{
+    // D3DRend::DrawFace is unoptimised and still expands this constructor and the destructor inline.
+    // FUNCTION: HYPERX 0x00436380
+    inline MeshMaterial()
+    {
+        flAmbient     = 0.0f;
+        flDiffuse     = 0.0f;
+        flEmissive    = 0.0f;
+        nTextureIndex = 0;
+        nBackIndex    = -1;
+        nColour       = 0;
+    }
+
+    inline ~MeshMaterial()
+    {
+    }
+
+    unsigned char GetRed() const
+    {
+        return (unsigned char)(nColour >> 16);
+    }
+
+    unsigned char GetGreen() const
+    {
+        return (unsigned char)(nColour >> 8);
+    }
+
+    unsigned char GetBlue() const
+    {
+        return (unsigned char)nColour;
+    }
+
+    // 0xAARRGGBB; the low channel is a palette index to the software paths.
+    union
+    {
+        int           nColour;
+        unsigned char acChannel[4];
+    }; // 0x00
+
+    float flAmbient;  // 0x04
+    float flDiffuse;  // 0x08
+    float flEmissive; // 0x0c
+
+    // A one-based name index, replaced by the cache entry it loads.
+    union
+    {
+        int                  nTextureIndex;
+        class TexCacheEntry* pTexture;
+    }; // 0x10
+
+    short nBackIndex; // 0x14
+
+    static char __cdecl CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const struct Vec3* pNormal);
+
+    static char __cdecl ParseFile(FileObj* pFile, const char* pszModelName, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
+};
+
+#pragma pack(pop)
+
+STATIC_ASSERT(sizeof(MeshMaterial) == 0x16);
+
+enum FaceShade
+{
+    SHADE_BLACK  = 0,
+    SHADE_WHITE  = 1,
+    SHADE_SCALED = 2
+};
+
+#endif

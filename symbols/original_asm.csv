@@ -1,0 +1,16 @@
+# Routines the original wrote in assembly, which the tree keeps as assembly.
+#
+# A row needs the idioms in the original's own instructions that VC6 never emits: PUSHAD/POPAD,
+# PUSHF, EBP as a data register, a hand-saved ESP, dead loads, values passed between arms on the
+# stack, a caller's frame read through its EBP. A frame pointer alone is not proof.
+# docs/ANNOTATIONS.md, Hand-written assembly, gives the rule; tools/check_asm_bodies.py checks it.
+address,name,evidence
+0x00439590,Mem::ZeroBlock192,"REP STOSW after REP STOSD from one pointer, which VC6 never emits: every C form of the runs is REP STOSD. A frame pointer in an /O2 function with no locals."
+0x004395c0,Mem::ZeroBlockUnrolled128,"Two dead loads in an unrolled fill: MOV EAX,[EDI] and MOV EBX,[EDI+0x20] are never read before both are overwritten. Then REP STOSW and REP STOSB from the base again."
+0x00416cf0,Anim::UnpackFixed16ToFloat,"Each word is loaded with MOV AX, leaving the top of EAX alone, and the sign is taken by JC on the carry of SHL EAX,17. VC6 emits neither at /O2. A frame pointer with no locals."
+0x00493f80,MDM1::LZSSDecompress,"No compiler prologue: PUSH EBP, MOV EAX,-1, PUSHAD. The answer is stored into the PUSHAD frame's EAX slot at [ESP+0x1c] and returned by POPAD. It branches on the flags its helper returns."
+0x0049403a,MDM1::RefillInputWindow,"Reads its caller's arguments through the caller's EBP, takes and returns the read position in ESI, and returns the callback's count in the flags by OR EAX,EAX. Saves ESP in ESI round the callback."
+0x0044ab40,SWRend::FillSpans,"Each arm pushes EBP inside the compiler's frame and walks the right edge stack in it. The unrolled fill loads [EDI] into EBX and [EDI+0x20] into EDX and overwrites both unread. MOV EBX,0 and MOV ECX,0 at /O2."
+0x0044ad00,SWRend::ScanEdge,"PUSH ESP, PUSH EBP and PUSHF inside the compiler's frame, restored by POPF, POP EBP, POP ESP. EBP is the step counter. The leftward flag in BH. Values pass between arms by PUSH EDX and POP EBP."
+0x0044af70,SWRend::DrawLine,"PUSH EBP inside the compiler's frame, then EBP as the step counter. The colour in BL and two direction flags in BH. Values pass between arms by PUSH and POP EBP. MOV EBX,0 at /O2."
+0x0044f240,SWRend::BlitRLESprite,"The run copy only: REP MOVSB for an odd byte, REP MOVSW for a word, then REP MOVSD, with the count split by AND and SUB in EBX. VC6 never emits REP MOVSW, and its memcpy copies dwords first."

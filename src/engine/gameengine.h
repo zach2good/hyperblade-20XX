@@ -1,0 +1,368 @@
+// The game engine object; the size is a floor.
+
+#ifndef HYPERBLADE_GAMEENGINE_H
+#define HYPERBLADE_GAMEENGINE_H
+
+#include "common/compat.h"
+#include "common/fieldat.h"
+#include "engine/engineobject.h"
+#include "engine/coachobject.h"
+#include "engine/collisionobjectids.h"
+#include "common/commonglobals.h"
+
+// The length of each of the scene message queue's five arrays.
+#define PENDING_QUEUE_LENGTH 0x400
+
+struct ArenaState;
+class EngineObject;
+class PlayerObject;
+class CameraObject;
+class RokObject;
+class KeyboardDeviceObj;
+class FileObj;
+class ObjectDef;
+class ParticleSystem;
+struct TeamBlock;
+struct TeamsBlock;
+
+#include "teamblock.h"
+#include "devicector.h"
+#include "engine/engineclock.h"
+#include "graphics/texture.h"
+#include "engineglobals.h"
+#include "graphics/graphics.h"
+
+class AgendaItem;
+class CollInteractor;
+class BoundBubble;
+class GameBehaviorObject;
+
+class SaveObject;
+
+// What the layout builder returns: 64 bytes shared by a widget's layout and a camera's viewport.
+struct LayoutState
+{
+    RECT  rcPrev; // 0x00
+    void* pBits;  // 0x10
+    // Nought in a widget's, the camera's own transform in the camera's.
+    class CameraProjectionState* pCamera;      // 0x14
+    int                          nPrevWidth;   // 0x18
+    int                          nPrevHeight;  // 0x1c
+    int                          nWidth;       // 0x20
+    int                          nHeight;      // 0x24
+    int                          nPitch;       // 0x28
+    int                          nByteSize;    // 0x2c
+    float                        flPrevRight;  // 0x30
+    float                        flPrevBottom; // 0x34
+    int                          nHalfWidth;   // 0x38
+    int                          nHalfHeight;  // 0x3c
+};
+
+// The six end-of-match awards.
+#define AWARD_COUNT 6
+
+// GameEngine::m_wRunState: no match, playing, paused, or a restart the next frame runs.
+#define ENGINE_RUN_STOPPED 0
+#define ENGINE_RUN_PLAYING 1
+#define ENGINE_RUN_PAUSED  2
+#define ENGINE_RUN_RESTART 3
+
+// The cameras and input devices the factory builds at most.
+#define CAMERA_LIMIT 4
+#define DEVICE_LIMIT 2
+
+struct GameEngine
+{
+    // Reached through g_pGameEngine rather than this.
+    static int __cdecl CountEntitiesInRange(short nWhich);
+    static int         CoachConditionNever(void);
+
+    // The linker folded this empty body onto KeyConfigDialog::SaveKeysAs, which carries the marker.
+    static int CoachConditionUnused(void)
+    {
+        return 0;
+    }
+
+    static int __cdecl               IsAnyPlayerInjured(void);
+    static void                      ShowRokValue(short nRokValue);
+    static int                       CheckOpposedCarriersRace(void);
+    static int                       CheckCarrierBreakaway(void);
+    static int                       CheckGoalieOutOfPosition(void);
+    static void                      DestroyAgendaItemPools(void);
+    static void                      CreateAgendaItemPools(void);
+    static int __cdecl               IsComputerTeam(int nSlot);
+    static int                       CheckWeaponOutWhileRokCarried(void);
+    static void __cdecl              SubstituteRecoveredReserve(unsigned int nTeam);
+    static int __cdecl               FindNearestLiveMultiplier(EngineObject* pFrom);
+    static int                       CheckHandicapCondition(void);
+    static void                      InitAgendaItemPools(void);
+    static int                       CheckAnyPlayerNeedsSub(void);
+    static unsigned short __fastcall TogglePause(HWND hWnd, int bRestyle);
+    static int __cdecl               SelectSubstitute(EngineObject* pActor);
+    static int __cdecl               IsTeamWinning(unsigned char nTeam);
+
+    void Reset();
+
+    void ResetPeriodToFirst();
+    void PerFrameUpdate();
+
+    void Init(const char* pszConfig);
+    void StartMatch();
+    void SetInstance(HINSTANCE hInstance, int nUnused);
+
+    char ReadSlotLabel(int nSlot, char* pszLabel, int nMax);
+    char PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender, int bFromInput);
+
+    class ObjectDef* GetArenaRokDef();
+    class ObjectDef* GetTeamRokDef(int nSlot);
+    void             UnregisterObject(int nSlot);
+    void             RegisterObject(int nSlot, EngineObject* pObject);
+    char             SyncRenderQueueSize();
+    void             ReplaceEntity(int nKind, class ObjectDef* pDef);
+
+    void SetAttackMode(int nOn);
+    void SetTeammateMode(int nOn);
+
+    void SetHomeScore(int nScoreHome);
+    void SetAwayScore(int nScoreAway);
+
+    char HasAward(int nSlot) const;
+    void SetAward(int nSlot, char cValue);
+    GameEngine();
+
+    void ClearAwards();
+    char EvalArcherAward();
+    char EvalAnvilAward();
+
+    TeamBlock* ParseTeamHTMFile(class FileObj* pFile);
+    static int FindTeamDefinition(class FileObj* pFile, char** ppLine, char* pszToken);
+
+    ReserveRows* GetReserveRows(const TeamBlock* pTeam);
+
+    float GetGravityDt() const
+    {
+        return m_flGravityDt;
+    }
+
+    short GetViewedSlot() const
+    {
+        return m_nViewedSlot;
+    }
+
+    EngineObject* GetSlot(int nSlot) const
+    {
+        return m_ppSlots[nSlot];
+    }
+
+    int   m_nLoadCost;    // 0x0000
+    short m_nLoadedCount; // 0x0004
+    short m_nObjectCount; // 0x0006, bounds the walk over m_ppObjects
+    short m_nSlotCount;   // 0x0008
+    // The slot count the render queues were last sized for.
+    short m_nQueuedSlotCount; // 0x000a
+
+    // Indexed by model id: 0 to 5 the dromers, 6 the Rok, 7 and 8 the goals, 23 God, 0x36 Mine.
+    EngineObject** m_ppSlots; // 0x000c
+
+    // Walked from 0 to m_nObjectCount.
+    EngineObject** m_ppObjects; // 0x0010
+
+    // The typed views of m_ppSlots; each is defined beside its class.
+    PlayerObject*      GetPlayer(int nSlot) const;
+    CameraObject*      GetCamera(int nSlot) const;
+    RokObject*         GetRok() const;
+    KeyboardDeviceObj* GetInputDevice(int nSlot) const;
+    ParticleSystem*    GetParticleSystem(int nSlot) const;
+    void               SetColObject(short nSlot, class BoundBubble* pBubble);
+    class BoundBubble* GetColObjPtr(short nSlot) const;
+
+    // The cameras the factory builds, counted by m_wCameraCount.
+    CameraObject* m_apCameras[CAMERA_LIMIT]; // 0x0014
+    // The devices the factory builds, counted by m_wDeviceCount.
+    EngineObject* m_apDevices[DEVICE_LIMIT]; // 0x0024
+    short         m_wDeviceCount;            // 0x002c
+    short         m_wCameraCount;            // 0x002e
+    // One per type range, holding the highest id handed out in it.
+    unsigned char m_abTypeHighWater[id_GOB_NUM_OF_TYPES]; // 0x0030
+
+    // The slot being watched, followed or viewed.
+    short m_nViewedSlot; // 0x0050
+    short m_wUnusedA;    // 0x0052
+    // One bubble per CollisionObjectID before id_COB_NOCOB.
+    class BoundBubble* m_ppColObjects[COB_NONE]; // 0x0054
+    // Read as one dword and as a word pair.
+    unsigned short m_wRunState;     // 0x0228
+    short          m_nPendingCount; // 0x022a
+    // Five parallel queues of PENDING_QUEUE_LENGTH words; MSG_NOMSG terminates the first.
+    int m_aQueueMessage[PENDING_QUEUE_LENGTH];   // 0x022c
+    int m_aQueueSlot[PENDING_QUEUE_LENGTH];      // 0x122c
+    int m_aQueueArg[PENDING_QUEUE_LENGTH];       // 0x222c
+    int m_aQueueSender[PENDING_QUEUE_LENGTH];    // 0x322c
+    int m_aQueueFromInput[PENDING_QUEUE_LENGTH]; // 0x422c
+
+    // The clock block; every m_flPrev* is written from the field above it.
+    EngineClock m_clock;       // 0x522c
+    float       m_flGravityDt; // 0x5278
+    // Written by the constructor and read by nothing.
+    float m_flPrevGravityDt; // 0x527c
+    short m_wUnusedB;        // 0x5280
+    short m_wUnusedC;        // 0x5282
+    short m_wUnusedD;        // 0x5284
+    // The two tracked objects.
+    EngineObject* m_apTracked[2]; // 0x5288
+    // The home team's definition, and the score block the end of a match clears.
+    TeamBlock* m_pTeamA; // 0x5290
+    TeamBlock* m_pTeamB; // 0x5294
+    // src/engine/arenastate.h holds the record.
+    struct ArenaState* m_pArena;         // 0x5298
+    unsigned short     m_nTeamHomeIndex; // 0x529c
+    unsigned short     m_nTeamAwayIndex; // 0x529e
+    unsigned short     m_nArenaIndex;    // 0x52a0
+    int                m_nPending;       // 0x52a4
+    // Minus one means no score yet.
+    int m_nScoreHome;  // 0x52a8
+    int m_nScoreAway;  // 0x52ac
+    int m_nDifficulty; // 0x52b0
+    int m_nBrutality;  // 0x52b4
+    // The screen size step, 0 to 6.
+    int m_nScreenSize;     // 0x52b8
+    int m_nPeriodLengthMs; // 0x52bc
+    int m_nAttackMode;     // 0x52c0
+    // The teammate mode, read from the options under g_pszTeammateModeKey.
+    int m_nTeammateMode; // 0x52c4
+    // One flag per award, which the awards screen shows.
+    char m_abAward[AWARD_COUNT]; // 0x52c8
+    char m_bFollowingOther;      // 0x52ce
+    char m_bEndPeriodRequested;  // 0x52cf
+    // Tested before ending a period and set when one ends.
+    char               m_bPeriodEnded; // 0x52d0
+    struct TeamsBlock* m_pTeamTable;   // 0x52d4
+    class SaveObject*  m_pSaveObject;  // 0x52d8
+    int                m_bMatchOver;   // 0x52dc
+
+    void DispatchCollisionToRule(class CollInteractor* pChain);
+    void SetRunState(short bRunning, int nReason);
+    void BroadcastEvent(int nEvent, int nParam, int nSender);
+
+    // Answers null at the end of the file; the model id is written back through the second argument.
+    class ObjectDef* ParseObjectDefinition(class FileObj* pFile, unsigned int* pnModelId);
+    EngineObject*    CreateObject(class ObjectDef* pDef, unsigned int nModelId);
+    char             LoadConfigFile(const char* pszFileName);
+    char             LoadGameConfig(const char* pszFileName);
+    char             LoadObjectsFromConfig(const char* pszFileName);
+
+    // The five commands a game configuration file is made of.
+    class ObjectDef* Cmd_DefineObject(char* pszLine, unsigned int* pnModelId);
+    char             Cmd_SetMotionParams(char* pszLine, class ObjectDef* pDef);
+    int              Cmd_SetRatings(char* pszLine, class ObjectDef* pDef, int nMode, int nLevel);
+    char             Cmd_SetCollisionObject(char* pszLine, class ObjectDef* pDef, unsigned int nModelId);
+    void             MapModifierToId(short nModelId, class BubbleCmd* pCmd);
+    char             Cmd_SetPlans(char* pszLine, class ObjectDef* pDef);
+    // Reads only g_nPlayerMode.
+    unsigned char IsExhibitionMode();
+
+    void TickClock();
+
+    char       LoadHomeTeam(const char* pszTeamPath);
+    char       LoadAwayTeam(const char* pszTeamPath);
+    TeamBlock* LoadTeamFromFile(const char* pszTeamPath, int nTeam);
+
+    char LoadArena(const char* pszArenaPath);
+
+    char SetTeams(short nHome, short nAway);
+
+    // Always answers one, and its caller discards it.
+    char UpdateTeamSounds(short nHome, short nAway);
+    char SetArena(short nArena);
+
+    unsigned char IsTournamentMode();
+
+    // Every caller drops the answer.
+    char          SubstitutePlayer(int nSlot, int nWith);
+    static int    SubstituteSlot(int nTeam, int nSeat);
+    unsigned char IsFitSubstitute(unsigned int nSlot, int nWhich);
+
+    void SetScreenSize(int nStep);
+    void ProcessInputCommandQueue();
+    void SyncPlayerDataToTeam();
+    void AdvanceTournamentBracket();
+
+    // Answers whether the slot was written; only tournament player mode writes one.
+    char WriteSaveFile(int nSlot, const char* pszLabel);
+    char ReadSaveFile(int nSlot);
+
+    char SetDifficultyLevel(unsigned int nLevel);
+    void UnloadArena();
+    ~GameEngine();
+    char RemoveFromSortedList(short nId);
+
+    // Each writes the setting back to the ini file as well, and only when it changed.
+    void SetBrutality(int nValue);
+    void SetPeriodLengthMs(int nValue);
+
+    int GetEntityCountOfType(int nType);
+    // Each is m_abTypeHighWater[N] less the baseline for a fixed N.
+    int  GetArmoryCount() const;
+    int  GetSwarfCount() const;
+    int  GetMineCount() const;
+    void DeactivateParticleSystems();
+
+    // Answers the first particle system with nothing alive, or nothing.
+    class ParticleSystem* FindFreeParticleSystem();
+
+    void UnloadEntitySet(struct TeamBlock* pSet);
+    char UnloadHomeTeam();
+    char UnloadAwayTeam();
+    char InsertObjectSorted(short nId);
+
+    int           GetHomeScore() const;
+    int           GetAwayScore() const;
+    int           GetDifficultyLevel() const;
+    char          AreAllPlayersInjured();
+    void          BeginMatchPlay();
+    unsigned char IsHomeTeamDead();
+    unsigned char IsAwayTeamDead();
+    void          RestartMatch();
+    void          BroadcastCollisionEvents();
+    void          SyncNetworkStateToObjects();
+    void          ClearPendingEvents();
+    void          InitPlanSystems();
+    void          InitMatchTimers();
+    int           IncrementHomeScore();
+    int           IncrementAwayScore();
+    unsigned char IsHomeTeamInjured();
+    unsigned char IsAwayTeamInjured();
+};
+
+// VC6 has no static_assert; a negative array bound makes a wrong offset fail to compile.
+
+HYPERBLADE_FIELD_AT(GameEngine, m_nObjectCount, 0x0006);
+HYPERBLADE_FIELD_AT(GameEngine, m_ppSlots, 0x000c);
+HYPERBLADE_FIELD_AT(GameEngine, m_ppObjects, 0x0010);
+HYPERBLADE_FIELD_AT(GameEngine, m_abTypeHighWater, 0x0030);
+HYPERBLADE_FIELD_AT(GameEngine, m_nViewedSlot, 0x0050);
+HYPERBLADE_FIELD_AT(GameEngine, m_ppColObjects, 0x0054);
+HYPERBLADE_FIELD_AT(GameEngine, m_wRunState, 0x0228);
+HYPERBLADE_FIELD_AT(GameEngine, m_aQueueMessage, 0x022c);
+HYPERBLADE_FIELD_AT(GameEngine, m_aQueueSlot, 0x122c);
+HYPERBLADE_FIELD_AT(GameEngine, m_aQueueArg, 0x222c);
+HYPERBLADE_FIELD_AT(GameEngine, m_aQueueSender, 0x322c);
+HYPERBLADE_FIELD_AT(GameEngine, m_aQueueFromInput, 0x422c);
+HYPERBLADE_FIELD_AT(GameEngine, m_clock, 0x522c);
+HYPERBLADE_FIELD_AT(GameEngine, m_flGravityDt, 0x5278);
+HYPERBLADE_FIELD_AT(EngineClock, flInvDelta, 0x00);
+HYPERBLADE_FIELD_AT(EngineClock, flDelta, 0x10);
+HYPERBLADE_FIELD_AT(EngineClock, flDeltaSquared, 0x18);
+HYPERBLADE_FIELD_AT(EngineClock, nTickMs, 0x34);
+HYPERBLADE_FIELD_AT(EngineClock, nPeriod, 0x3e);
+HYPERBLADE_FIELD_AT(GameEngine, m_pTeamA, 0x5290);
+HYPERBLADE_FIELD_AT(GameEngine, m_nTeamHomeIndex, 0x529c);
+HYPERBLADE_FIELD_AT(GameEngine, m_nArenaIndex, 0x52a0);
+HYPERBLADE_FIELD_AT(GameEngine, m_nBrutality, 0x52b4);
+HYPERBLADE_FIELD_AT(GameEngine, m_nTeammateMode, 0x52c4);
+HYPERBLADE_FIELD_AT(GameEngine, m_bFollowingOther, 0x52ce);
+HYPERBLADE_FIELD_AT(GameEngine, m_pTeamTable, 0x52d4);
+HYPERBLADE_FIELD_AT(GameEngine, m_pSaveObject, 0x52d8);
+HYPERBLADE_FIELD_AT(GameEngine, m_bMatchOver, 0x52dc);
+
+#endif

@@ -1,0 +1,53 @@
+#include "common/compat.h"
+#include "common/cbeattachedpool.h"
+#include "planvm/agendaitem.h"
+#include "engine/cbeattached.h"
+#include "poolcounts.h"
+
+// FUNCTION: HYPERX 0x00412ef0
+void CBeAttachedPool::Init()
+{
+    AgendaItem* pNode = new CBeAttached;
+
+    m_pHead           = pNode;
+    AgendaItem* pPool = pNode;
+
+    short nRemaining = (short)g_nPoolCountCBeAttached;
+
+    while (nRemaining-- > 0)
+    {
+        pNode = new CBeAttached;
+
+        pPool->m_pNext = pNode;
+        pPool          = pNode;
+    }
+}
+
+// FUNCTION: HYPERX 0x00412fa0
+void* CBeAttachedPool::Alloc()
+{
+    AgendaItem* const pHead = m_pHead;
+
+    m_pHead        = pHead->m_pNext;
+    pHead->m_pNext = 0;
+
+    if (m_pHead == 0)
+    {
+        m_pHead = new CBeAttached;
+    }
+
+    return pHead;
+}
+
+// FUNCTION: HYPERX 0x00415000
+CBeAttachedPool::~CBeAttachedPool()
+{
+    while (m_pHead != 0)
+    {
+        AgendaItem* const pNext = m_pHead->m_pNext;
+
+        delete m_pHead;
+
+        m_pHead = pNext;
+    }
+}

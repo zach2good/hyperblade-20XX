@@ -1,0 +1,24 @@
+#ifndef HYPERBLADE_BEHOBJGLIDEBETWEENFACINGPOOL_H
+#define HYPERBLADE_BEHOBJGLIDEBETWEENFACINGPOOL_H
+
+#include "common/behaviorowner.h"
+
+// VTABLE: HYPERX 0x004b25a0
+class BehObjGlideBetweenFacingPool : public BehaviorOwner
+{
+public:
+    BehObjGlideBetweenFacingPool()
+    {
+        m_pHead = 0;
+    }
+
+    virtual void  Init();
+    virtual void* Alloc();
+
+    ~BehObjGlideBetweenFacingPool();
+};
+
+// SYNTHETIC: HYPERX 0x00420ac0
+// BehObjGlideBetweenFacingPool::`scalar deleting destructor'
+
+#endif

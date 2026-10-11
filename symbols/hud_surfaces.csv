@@ -1,0 +1,43 @@
+# What the database calls each HUD surface and what this tree calls it.
+#
+# HUD__LayoutSurfaces and HUD__CreateSurfaces between them touch every one of
+# these, five thousand bytes of code, and the two sets of names agree on almost
+# nothing. A blank tree name is one this tree has never named.
+address,database,tree,note
+0x004cd4d0,DAT_004cd4d0,g_ptHudMargin.x,
+0x004cd4d4,DAT_004cd4d4,g_ptHudMargin.y,
+0x004cd4dc,DAT_004cd4dc,g_ptHudInset.y,
+0x004cd4e8,g_pHUD_TeamAScoreText,g_hudSurfaces.pTeamAScoreText,
+0x004cd4ec,g_pHUD_TeamBScoreText,g_hudSurfaces.pTeamBScoreText,
+0x004cd4f0,DAT_004cd4f0,g_hudSurfaces.pClockText,
+0x004cd4f8,DAT_004cd4f8,g_hudSurfaces.pSpeedMeter,
+0x004cd4fc,DAT_004cd4fc,g_hudSurfaces.pTeamADamageBar1,
+0x004cd500,DAT_004cd500,g_hudSurfaces.pTeamADamageBar2,
+0x004cd504,DAT_004cd504,g_hudSurfaces.pTeamBDamageBar1,
+0x004cd508,DAT_004cd508,g_hudSurfaces.pTeamBDamageBar2,
+0x004cd50c,g_pHUD_NetworkSurface,g_hudSurfaces.pNetworkIcon,
+0x004cd524,g_pHUD_MessageFrame,g_hudSurfaces.pMessageFrame,
+0x004cd528,g_pHUD_MessageText,g_hudSurfaces.pMessageText,
+0x004cd52c,g_pHUD_TeamADamageSurface,g_hudSurfaces.pTeamAFrame,the team A logo border frdamgA not a damage surface
+0x004cd530,g_pHUD_TeamBDamageSurface,g_hudSurfaces.pTeamBFrame,the team B logo border frdamgB not a damage surface
+0x004cd534,g_pHUD_TeamALossSurface,g_hudSurfaces.pTeamABitmap,the default logo hudlos is Los Angeles not a loss
+0x004cd538,g_pHUD_TeamBSeaSurface,g_hudSurfaces.pTeamBBitmap,the default logo hudsea is Seattle
+0x004cd544,g_pHUD_ShotCamFrame,g_hudSurfaces.pHeadCamFrame,
+0x004cd548,g_pHUD_CameraReticle,g_hudSurfaces.pReticle,
+0x004cd550,g_pHUD_ShotPositionBitmap,g_hudSurfaces.pShotPowerMeter,
+0x004cd554,DAT_004cd554,g_hudSurfaces.pRadar,
+0x004cd558,g_pHUD_PeriodFrame,g_hudSurfaces.pPeriodFrame,
+0x004cd55c,g_pHUD_PeriodOverlay,g_hudSurfaces.pPeriodOverlay,
+0x004cd560,g_pHUD_TimerText1,g_hudSurfaces.pExitMatchText,string 159 'Enter' to exit match not a timer
+0x004cd564,g_pHUD_TimerText2,g_hudSurfaces.pContinueText,string 160 'Esc' to continue not a timer
+0x004cd570,g_pHUD_PlayerWidget0,g_hudSurfaces.apPlayerWidgets,eight of them
+0x004cd590,g_pHUD_ScoreTicker1,g_hudSurfaces.apTeamNames,two of them; the team names not a score ticker
+0x004cd594,DAT_004cd594,g_hudSurfaces.apTeamNames[1],
+0x004cdac8,DAT_004cdac8,g_ddrawDevice.pFpsText,
+0x004cedd8,_DAT_004cedd8,g_ptHudClockAnchor.x,
+0x004ceddc,_DAT_004ceddc,g_ptHudClockAnchor.y,
+0x004cede0,_DAT_004cede0,g_ptHudFpsAnchor.x,
+0x004cede4,_DAT_004cede4,g_ptHudFpsAnchor.y,
+0x004ceeb4,_DAT_004ceeb4,,the right margin, screen width less ten
+0x004d0950,g_dwSWViewportWidth,g_nPrevWidth,
+0x004d0954,g_nSWViewportHeight,g_nPrevHeight,

@@ -1,0 +1,1514 @@
+#include "common/compat.h"
+#include "engine/gameoptions.h"
+#include "globals.h"
+#include "graphics/graphicsglobals.h"
+#include "engine/engineglobals.h"
+#include "common/pathstring.h"
+#include "appglobals.h"
+#include "common/fileobj.h"
+#include "common/commonglobals.h"
+#include "engine/cameraobject.h"
+#include "engine/gameengine.h"
+#include "graphics/renderer.h"
+#include "graphics/texture.h"
+#include "graphics/ddrawapi.h"
+#include "app/window.h"
+#include "graphics/gdi.h"
+#include "common/string.h"
+struct GameApp;
+#include "ui/torchbitmaps.h"
+#include "ui/buttonwidget.h"
+#include "ui/screens/dromeexteriorscreen.h"
+class GameConfigUIScreen;
+class KeyConfigScreen;
+class JumbotronScreen;
+#include "ui/screens/lobbyscreen.h"
+class AwardsUIScreen;
+#include "ui/pausemenu.h"
+#include "ui/saveload.h"
+#include "ui/screens/saveloaduiscreen.h"
+#include "ui/widget.h"
+#include "ui/screen.h"
+#include "ui/screens/leaguesetupuiscreen.h"
+#include "gameapp.h"
+#include "ui/screens/gameconfiguiscreen.h"
+#include "ui/screens/mainmenuscreen.h"
+#include "ui/screens/tournamentsetupuiscreen.h"
+#include "ui/screens/headtoheadsetupuiscreen.h"
+#include "ui/screens/awardsuiscreen.h"
+#include "ui/screens/keyconfigscreen.h"
+#include "ui/screens/jumbotronscreen.h"
+#include "ui/screens/finalceremonyscreen.h"
+#include "input/inputglobals.h"
+#include "sound/audiomgr.h"
+#include "engine/messagequeue.h"
+#include "input/keyboarddeviceobj.h"
+#include "engine/objectclasses.h"
+#include "engine/teamblock.h"
+#include "engine/devicector.h"
+#include "net/gamesession.h"
+#include <stdarg.h>
+#include <windows.h>
+#include <string.h>
+#include <mbstring.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "app/bringup.h"
+#include "ui/screens/championshipsetupuiscreen.h"
+#include "graphics/viewextent.h"
+#include "ui/screens/pausemenufullscreen.h"
+#include "ui/screens/pausemenuminimalscreen.h"
+#include "ui/screens/pausemenunosavescreen.h"
+#include "ui/screens/multisetupoptionsscreen.h"
+#include "ui/screens/gameintroscreen.h"
+#include "ui/screens/trainingendscreen.h"
+#include "engine/engineobject.h"
+#include "input/joystickmgr.h"
+#include "graphics/colorpalette.h"
+#include "config.h"
+#include "frametimer.h"
+#include <new.h>
+#include "graphics/display.h"
+#include "ui/infobarbase.h"
+#include "graphics/cgpalette.h"
+#include "ui/animationpeekdialog.h"
+#include "input/input.h"
+#include "app/win32.h"
+#include "app/wndproc.h"
+#include "app/menuids.h"
+#include "net/network.h"
+#include "engine/game.h"
+#include "graphics/d3dviewport.h"
+#include "app/dialogresources.h"
+#include "app/stringids.h"
+#include "common/staticinit.h"
+
+float g_flUnusedConfigDialogA = g_flZeroConfigDialog;
+float g_flUnusedConfigDialogB = g_flZeroConfigDialog;
+float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
+
+// id_ACF_AnimationPeek in DATA/ENUMIDS.H: the plan action table registers this body at 16.
+// FUNCTION: HYPERX 0x004013d0
+void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int nWindow)
+{
+    const HWND hWnd = (HWND)nWindow;
+
+    GameEngine::TogglePause(hWnd, 0);
+
+    DialogBoxParamA((HINSTANCE)GetWindowLongA(hWnd, GWL_HINSTANCE),
+                    MAKEINTRESOURCEA(DIALOG_ANIMATION_PEEK),
+                    hWnd,
+                    GameApp::AnimationPeekDialogProc,
+                    0);
+
+    GameEngine::TogglePause(hWnd, 0);
+}
+
+// FUNCTION: HYPERX 0x004017a0
+void GameApp::Fatal(const char* pszFormat, ...)
+{
+    va_list argList;
+
+    va_start(argList, pszFormat);
+
+    FatalErrorFmt(m_hWnd, pszFormat, argList);
+
+    va_end(argList);
+}
+
+// FUNCTION: HYPERX 0x00411be0
+void GameApp::Error(const char* pszFormat, ...)
+{
+    va_list argList;
+
+    va_start(argList, pszFormat);
+
+    ErrorFmt(m_hWnd, pszFormat, argList);
+
+    va_end(argList);
+}
+
+// The Animation Peek dialog's procedure, which GameApp::AnimationPeek opens.
+// FUNCTION: HYPERX 0x004179e0
+BOOL CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
+{
+    switch (nMsg)
+    {
+        case WM_INITDIALOG:
+            return AnimationPeekDialog::OnInit(hDlg, wParam, lParam);
+
+        case WM_COMMAND:
+            AnimationPeekDialog::OnCommand(hDlg, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
+
+            return 0;
+    }
+
+    return 0;
+}
+
+// FUNCTION: HYPERX 0x00418c10
+void GameApp::SetModelPath(int bTexEnabled)
+{
+#ifdef HYPERX_BRINGUP
+    BringUp::ForceModelSet(&bTexEnabled);
+#endif
+    if (bTexEnabled != 0)
+    {
+        // STRING: HYPERX 0x004bba8c
+        g_gameApp.m_strModelPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Models\\Mdltxt"));
+    }
+    else
+    {
+        // STRING: HYPERX 0x004bba7c
+        g_gameApp.m_strModelPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Models\\Mdlshd"));
+    }
+}
+
+// FUNCTION: HYPERX 0x00418e10
+HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShowCmd, LPSTR lpCmdLine)
+{
+    LPCSTR pszAppClassName;
+    HMENU  hAppMenu;
+
+#ifdef HYPERX_BRINGUP
+    // An unaware process is DPI-virtualised, and the menu capture would read stretched pixels.
+    BringUp::BeforeWindow();
+#endif
+
+    _set_new_handler(GameApp::OutOfMemoryHandler);
+    GameApp::InitializeResourcePaths(hInstance);
+    GameApp::ParseCommandLine(lpCmdLine);
+
+#ifdef HYPERX_BRINGUP
+    // A modern desktop keeps its own mode, so the game runs windowed.
+    BringUp::ChooseDisplay();
+#endif
+
+    if (hPrevInstance == 0)
+    {
+        pszAppClassName = g_gameApp.m_strCaption.m_pchData;
+
+        if (GameApp::RegisterWindowClass(hInstance, pszAppClassName) == 0)
+        {
+            return 0;
+        }
+    }
+
+    g_pColorPalette = new ColorPalette;
+
+    pszAppClassName = g_gameApp.m_strCaption.m_pchData;
+    const HWND hWnd = GameApp::CreateMainWindow(hInstance, pszAppClassName, 0);
+
+    g_gameApp.m_hMenu = GetMenu(hWnd);
+    CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_LARGE, MF_CHECKED);
+
+    if (g_pJoystickMgr == 0)
+    {
+        hAppMenu = g_gameApp.m_hMenu;
+        EnableMenuItem(hAppMenu, ID_MENU_TWO_PLAYER, MF_GRAYED);
+    }
+
+    hAppMenu = g_gameApp.m_hMenu;
+    EnableMenuItem(hAppMenu, ID_MENU_MIDI_OFF, MF_DISABLED | MF_GRAYED);
+
+    g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
+
+    HPALETTE hPalette             = g_gameApp.m_hPalette;
+    g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd, g_gameApp.GetScreenDC(), hPalette);
+
+    ShowWindow(hWnd, nShowCmd);
+    GameApp::SetCursorVisible(1);
+
+    HCURSOR hCursor = LoadCursorA(0, IDC_WAIT);
+    SetCursor(hCursor);
+
+    g_nSplashFrame   = 0;
+    g_nSplashTimerId = timeSetEvent(3000, 500, GameApp::SplashTimerCallback, (DWORD)hWnd, TIME_PERIODIC);
+    GameApp::SplashTimerCallback(g_nSplashTimerId, 0, (DWORD)hWnd, 0, 0);
+
+    Network::ValidateStaticObjects();
+
+    // STRING: HYPERX 0x004bba9c
+    Config::LoadPreferences(hWnd, "Prefs.txt");
+
+    HDC hSoftBackDC = g_hSoftBackDC;
+    hPalette        = g_gameApp.m_hPalette;
+    Game::InitializeEngine(hWnd, hInstance, hPalette, hSoftBackDC);
+
+    GameApp::SetupViewports();
+
+    Graphics::Initialize(g_cD3DActive == 0);
+
+    hSoftBackDC = g_hSoftBackDC;
+    g_frameTimer.ProcessInitialFrameUpdate(hWnd, hSoftBackDC);
+
+    if (g_nSplashTimerId != 0)
+    {
+        timeKillEvent(g_nSplashTimerId);
+    }
+
+    g_nSplashTimerId = 0;
+
+#ifdef HYPERX_BRINGUP
+    // Holds each splash frame long enough to see, and lets a tooling run start in another state.
+    BringUp::HoldSplash(hWnd);
+    BringUp::ForceStartState();
+#else
+    if (g_hSplashOwnedPalette != 0)
+    {
+        Screen::ClearBlack(g_hSplashOwnedPalette);
+    }
+#endif
+
+    g_hSplashPalette = 0;
+
+    if (g_hSplashOwnedPalette != 0)
+    {
+        DeleteObject((HGDIOBJ)g_hSplashOwnedPalette);
+    }
+
+    g_hSplashOwnedPalette = 0;
+
+    hCursor = LoadCursorA(0, IDC_ARROW);
+    SetCursor(hCursor);
+
+    GameApp::SetCursorVisible(0);
+
+    if (g_bNoSoundArg != 0)
+    {
+        g_pAudioMgr->wNoSound = 1;
+    }
+
+    return hWnd;
+}
+
+// FUNCTION: HYPERX 0x00419070
+void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
+{
+    g_gameApp.m_hInstance = hInstance;
+
+    char* const pszClassName = g_gameApp.m_stringPool.LoadText(hInstance, STRING_HYPERBLADE);
+
+    g_gameApp.m_strCaption.Assign(String::SafeStrlen(pszClassName), pszClassName);
+
+    PathString strDirectory(MAX_PATH);
+
+    char* const pszBuffer = strDirectory.m_str.Reserve(MAX_PATH);
+
+    if (pszBuffer != 0)
+    {
+        if (GetModuleFileNameA(0, pszBuffer, MAX_PATH) > 0)
+        {
+            char* const pszSlash = (char*)_mbsrchr((unsigned char*)pszBuffer, '\\');
+
+            if (pszSlash != 0)
+            {
+                *CharNextA(pszSlash) = 0;
+            }
+        }
+
+        strDirectory.m_str.SetLength(-1);
+    }
+
+    // STRING: HYPERX 0x004bbad8
+    g_gameApp.m_strExeDir.m_str.AssignFromString(String::Concat(strDirectory.m_str, "Data\\"));
+
+    // STRING: HYPERX 0x004bbad0
+    g_gameApp.m_strAssetsPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "assets8"));
+
+    // STRING: HYPERX 0x004bbac4
+    g_gameApp.m_strAnimDataPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "AnimData"));
+
+    GameApp::SetModelPath(g_cD3DActive);
+
+    // STRING: HYPERX 0x004bbabc
+    g_gameApp.m_strPlansPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Plans"));
+
+    // STRING: HYPERX 0x004bbab4
+    g_gameApp.m_strSoundsPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Sounds"));
+
+    // STRING: HYPERX 0x004bbaa8
+    g_gameApp.m_strTexturesPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Textures"));
+}
+
+// The paint block sets and restores four GDI attributes with nothing drawn between.
+// FUNCTION: HYPERX 0x00419290
+void __stdcall GameApp::SplashTimerCallback(UINT, UINT, DWORD dwUser, DWORD, DWORD)
+{
+    HPALETTE hPalette;
+
+    if (g_bSplashBusy != 0)
+    {
+        return;
+    }
+
+    g_nSplashFrame++;
+    g_bSplashBusy = 1;
+
+    if (g_hSplashOwnedPalette != 0)
+    {
+        Screen::ClearBlack(g_hSplashOwnedPalette);
+    }
+
+    if (g_nSplashFrame == 1 && g_nSplashTimerId != 0)
+    {
+        // STRING: HYPERX 0x004bbaf4
+        hPalette              = GDI::DrawBitmapToWindow((HWND)dwUser, "SPLASHWZ");
+        g_hSplashOwnedPalette = hPalette;
+        g_hSplashPalette      = hPalette;
+    }
+    else if (g_nSplashFrame == 2 && g_nSplashTimerId != 0)
+    {
+        // STRING: HYPERX 0x004bbae8
+        hPalette = GDI::DrawBitmapToWindow((HWND)dwUser, "SPLASHAC");
+
+        if (g_hSplashPalette == 0)
+        {
+            g_hSplashPalette = hPalette;
+        }
+
+        if (g_hSplashOwnedPalette == 0)
+        {
+            g_hSplashOwnedPalette = hPalette;
+        }
+    }
+    else
+    {
+        // STRING: HYPERX 0x004bbae0
+        hPalette = GDI::DrawBitmapToWindow((HWND)dwUser, "HBLOGO");
+
+        if (g_hSplashPalette == 0)
+        {
+            g_hSplashPalette = hPalette;
+        }
+
+        if (g_hSplashOwnedPalette == 0)
+        {
+            g_hSplashOwnedPalette = hPalette;
+        }
+
+        if (g_nSplashTimerId != 0)
+        {
+            timeKillEvent(g_nSplashTimerId);
+        }
+
+        g_nSplashTimerId = 0;
+    }
+
+    const HDC hdc = GetDC((HWND)dwUser);
+
+    if (hdc != 0)
+    {
+        HGDIOBJ        hOldObject = SelectObject(hdc, GetStockObject(SYSTEM_FONT));
+        const COLORREF crOldText  = SetTextColor(hdc, RGB(255, 255, 255));
+        const COLORREF crOldBk    = SetBkColor(hdc, 0);
+        const int      nOldBkMode = SetBkMode(hdc, TRANSPARENT);
+
+        SetTextColor(hdc, crOldText);
+        SetBkColor(hdc, crOldBk);
+        SetBkMode(hdc, nOldBkMode);
+        SelectObject(hdc, hOldObject);
+
+        ReleaseDC((HWND)dwUser, hdc);
+    }
+
+    g_bSplashBusy = 0;
+}
+
+// 'x' is a separator as well as a flag. v1.0.0.1 swapped -w and -x from v1.0.0.0.
+// FUNCTION: HYPERX 0x00419420
+void GameApp::ParseCommandLine(LPSTR lpCmdLine)
+{
+    int nSaved;
+
+    // STRING: HYPERX 0x004bbb00
+    char* p = strpbrk(lpCmdLine, "\"");
+
+    if (p != 0)
+    {
+        p         = strpbrk(p + 1, "\"");
+        lpCmdLine = p + 1;
+    }
+
+    p = (char*)_mbschr((const unsigned char*)lpCmdLine, ' ');
+
+    if (p == 0)
+    {
+        return;
+    }
+
+    while (*p == ' ' || *p == '\r' || *p == '\n' || *p == 'x')
+    {
+        p = CharNextA(p);
+    }
+
+    if (*p != '-')
+    {
+        return;
+    }
+
+    do
+    {
+        p = CharNextA(p);
+
+        switch (*p)
+        {
+            case 'd':
+                g_bEmulationOnly = 1;
+                p                = CharNextA(p);
+                break;
+
+            case 'e':
+                nSaved = g_nSavedSoftRenderer;
+
+                if (nSaved == -1)
+                {
+                    nSaved               = g_cUseSoftRenderer;
+                    g_nSavedSoftRenderer = nSaved;
+                }
+
+                g_cUseSoftRenderer = (nSaved == 0);
+
+                if (g_cUseSoftRenderer != 0)
+                {
+                    g_bFullScreen = 1;
+                }
+
+                p = CharNextA(p);
+                break;
+
+            case 'f':
+                g_bFullScreen = 1;
+                p             = CharNextA(p);
+                break;
+
+            case 'w':
+                g_bFullScreen = 0;
+                p             = CharNextA(p);
+                break;
+
+            case 'x':
+                g_bForceSoftwareRender = 1;
+                g_cUseSoftRenderer     = 1;
+                p                      = CharNextA(p);
+                break;
+
+            case 's':
+                g_bNoSoundArg = 1;
+                p             = CharNextA(p);
+                break;
+
+            case 'm':
+                g_bShadedDromeModels = 1;
+                p                    = CharNextA(p);
+                break;
+
+            case 't':
+                g_bTripleBufferEnabled = 0;
+                p                      = CharNextA(p);
+                break;
+        }
+
+        while (*p == ' ' || *p == '\r' || *p == '\n' || *p == 'x')
+        {
+            p = CharNextA(p);
+        }
+    } while (*p == '-');
+}
+
+// FUNCTION: HYPERX 0x00419580
+void __cdecl GameApp::Shutdown(HWND)
+{
+    if (g_pJoystickMgr != 0)
+    {
+        delete g_pJoystickMgr;
+        g_pJoystickMgr = 0;
+    }
+
+    if (g_bSessionActive != 0)
+    {
+        GameSession::Disconnect();
+    }
+
+    Game::ShutdownEngine();
+
+    ColorPalette* const pPalette = g_pColorPalette;
+
+    if (pPalette != 0)
+    {
+        pPalette->Release();
+        operator delete(pPalette);
+        g_pColorPalette = 0;
+    }
+
+    Renderer::DestroyBackBuffer();
+
+    if (g_pLeftStack != 0)
+    {
+        free(g_pLeftStack);
+        g_pLeftStack = 0;
+    }
+
+    if (g_pRightStack != 0)
+    {
+        free(g_pRightStack);
+        g_pRightStack = 0;
+    }
+
+    GameApp::ClipCursorToWindow(0);
+
+    int nCursorCount = ShowCursor(TRUE);
+    while (nCursorCount < 0)
+    {
+        nCursorCount = ShowCursor(TRUE);
+    }
+
+    PostQuitMessage(0);
+}
+
+// FUNCTION: HYPERX 0x00419640
+void __stdcall GameApp::OnStartup(void)
+{
+    if (g_gameApp.m_hWnd != 0)
+    {
+        Renderer::InitializeLightDirections();
+        return;
+    }
+
+    // STRING: HYPERX 0x004bbb04
+    g_gameApp.Fatal("InitApp - Null window handle.");
+}
+
+// Never returns. The pattern String is never released.
+// FUNCTION: HYPERX 0x00419670
+void __stdcall GameApp::OnExit(void)
+{
+    WIN32_FIND_DATAA findData;
+    char             szPath[MAX_PATH];
+
+    if (g_pGameOptions != 0 && g_pGameOptions->m_nInstallLevel < 2)
+    {
+        String* const pPattern = new String;
+
+        pPattern->Resize(MAX_PATH);
+
+        // STRING: HYPERX 0x004bbb2c
+        sprintf(pPattern->m_pchData, "%s\\satun*.wav", g_gameApp.m_strSoundsPath.m_str.m_pchData);
+
+        const HANDLE hFind = FindFirstFileA(*pPattern, &findData);
+
+        if (hFind != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                // STRING: HYPERX 0x004bbb24
+                sprintf(szPath, "%s\\%s", g_gameApp.m_strSoundsPath.m_str.m_pchData, findData.cFileName);
+
+                DeleteFileA(szPath);
+            } while (FindNextFileA(hFind, &findData) != 0);
+
+            FindClose(hFind);
+        }
+    }
+
+    Window::EnsureClassRegistered(0);
+
+    if (g_gameApp.m_hWnd != 0 && DestroyWindow(g_gameApp.m_hWnd) == 0)
+    {
+        exit(GetLastError());
+    }
+
+    ExitProcess(0);
+}
+
+#define CDROM_NOT_FOUND  (-1)
+#define CDROM_NOT_WANTED (-2)
+
+// Runs before WinMain.
+// FUNCTION: HYPERX 0x00422f90
+GameApp::GameApp(short nStringCount)
+: m_strExeDir(MAX_PATH)
+, m_strAssetsPath(MAX_PATH)
+, m_strAnimDataPath(MAX_PATH)
+, m_strModelPath(MAX_PATH)
+, m_strPlansPath(MAX_PATH)
+, m_strSoundsPath(MAX_PATH)
+, m_strTexturesPath(MAX_PATH)
+, m_nFrameRate(0)
+, m_hWnd(0)
+, m_hInstance(0)
+, m_hPalette(0)
+, m_hScreenDC(0)
+, m_hMenu(0)
+, m_nEngineState(ESTATE_LOBBY)
+, m_bIsActive(0)
+, m_wRunStateOnDeactivate(ENGINE_RUN_PLAYING)
+, m_bCursorWasVisible(1)
+, m_hWndActiveDialog(0)
+, m_stringPool(nStringCount)
+{
+    m_pfnShutdown = 0;
+    m_nCDRomDrive = CDROM_NOT_FOUND;
+
+    m_vLightSpherical.x = m_vLightSpherical.y = m_vLightSpherical.z = g_flAppInitZero;
+}
+
+#define CDROM_DRIVE_COUNT ('Z' - 'A' + 1)
+
+// FUNCTION: HYPERX 0x00423140
+void GameApp::SetWindowAndCallbacks(HWND hWnd, void(__stdcall* pfnStartup)(void), void(__stdcall* pfnShutdown)(void))
+{
+    m_hWnd        = hWnd;
+    m_pfnShutdown = pfnShutdown;
+
+    if (pfnStartup != 0)
+    {
+        pfnStartup();
+    }
+}
+
+// FUNCTION: HYPERX 0x00423160
+void __fastcall GameApp::OnShutdown()
+{
+    if (g_pAudioMgr != 0)
+    {
+        g_pAudioMgr->StopCD();
+    }
+
+    if (m_pfnShutdown != 0)
+    {
+        m_pfnShutdown();
+    }
+}
+
+// FUNCTION: HYPERX 0x00423180
+int GameApp::FindCDRomDrive(bool bRequired)
+{
+    char  szCaption[MAX_PATH];
+    char  szFileSystem[MAX_PATH];
+    char  szLabel[MAX_PATH];
+    char  szText[MAX_PATH];
+    char  szVolume[MAX_PATH];
+    char  szScanRoot[4];
+    DWORD dwOut;
+    char  szRoot[4];
+
+    // STRING: HYPERX 0x004bc418
+    memcpy(szScanRoot, "A:\\", sizeof("A:\\"));
+
+    HINSTANCE hInstance = m_hInstance;
+    strcpy(szLabel, m_stringPool.LoadText(hInstance, STRING_HYPERBLADE_UPPERCASE));
+    hInstance = m_hInstance;
+    strcpy(szCaption, m_stringPool.LoadText(hInstance, STRING_CD_NOT_FOUND));
+
+    if (bRequired)
+    {
+        hInstance = m_hInstance;
+        strcpy(szText, m_stringPool.LoadText(hInstance, STRING_INSERT_CD_OR_EXIT));
+    }
+    else
+    {
+        hInstance = m_hInstance;
+        strcpy(szText, m_stringPool.LoadText(hInstance, STRING_INSERT_CD_OR_RETURN));
+    }
+
+    int nDrive = m_nCDRomDrive;
+
+    if (nDrive != CDROM_NOT_FOUND)
+    {
+        if (nDrive == CDROM_NOT_WANTED)
+        {
+            goto done;
+        }
+
+        // STRING: HYPERX 0x004bc418
+        memcpy(szRoot, "A:\\", sizeof("A:\\"));
+        szRoot[0] += nDrive;
+
+        if (GetVolumeInformationA(szRoot, szVolume, MAX_PATH, &dwOut, &dwOut, &dwOut, szFileSystem, MAX_PATH) == 0)
+        {
+            szVolume[0] = 0;
+        }
+
+        if (_mbscmp((const unsigned char*)szVolume, (const unsigned char*)szLabel) == 0)
+        {
+            return m_nCDRomDrive;
+        }
+    }
+
+    for (;;)
+    {
+        nDrive        = 0;
+        szScanRoot[0] = 'A';
+
+        do
+        {
+            if (Win32::IsCDRomDrive(szScanRoot) != 0)
+            {
+                // STRING: HYPERX 0x004bc418
+                memcpy(szRoot, "A:\\", sizeof("A:\\"));
+                szRoot[0] += nDrive;
+
+                if (GetVolumeInformationA(szRoot, szVolume, MAX_PATH, &dwOut, &dwOut, &dwOut, szFileSystem, MAX_PATH) == 0)
+                {
+                    szVolume[0] = 0;
+                }
+
+                if (_mbscmp((const unsigned char*)szVolume, (const unsigned char*)szLabel) == 0)
+                {
+                    m_nCDRomDrive = nDrive;
+
+                    goto done;
+                }
+            }
+
+            szScanRoot[0]++;
+            nDrive++;
+        } while (nDrive < CDROM_DRIVE_COUNT);
+
+        m_nCDRomDrive = CDROM_NOT_FOUND;
+
+        if (GameApp::ShowMessageBox(GetActiveWindow(), szText, szCaption, MB_OKCANCEL) == IDCANCEL)
+        {
+            if (!bRequired)
+            {
+                break;
+            }
+
+            OnShutdown();
+        }
+    }
+
+done:
+    return m_nCDRomDrive;
+}
+
+#define CD_COPY_BLOCK 0x8000
+
+#define CD_OPEN_READ  1
+#define CD_OPEN_WRITE 2
+
+// The scan carries on over the string it has just rewritten.
+// FUNCTION: HYPERX 0x004233d0
+char* GameApp::ResolveCDRomPath(char* pszPath)
+{
+    char* p;
+
+    if (pszPath[1] == ':' && g_gameApp.FindCDRomDrive(true) >= 0)
+    {
+        for (p = pszPath; *p != 0; p++)
+        {
+            if (_mbctolower(p[0]) == 'd' && _mbctolower(p[1]) == 'a' && _mbctolower(p[2]) == 't' && _mbctolower(p[3]) == 'a')
+            {
+                char* pszDest = pszPath + 3;
+
+                while (*p != 0)
+                {
+                    *pszDest = *p;
+                    pszDest++;
+                    p++;
+                }
+
+                *pszDest = 0;
+
+                pszPath[0] = (char)(g_gameApp.FindCDRomDrive(false) + 'A');
+            }
+        }
+    }
+
+    return pszPath;
+}
+
+// A short write reports and carries on, so a full disc gives one message box per block.
+// FUNCTION: HYPERX 0x00423480
+void GameApp::CopyCDFile(const char* pszName)
+{
+    char         szTarget[MAX_PATH];
+    char         szSource[MAX_PATH];
+    char         szMessage[MAX_PATH];
+    char         szCaption[MAX_PATH];
+    unsigned int nRead;
+
+    strcpy(szTarget, pszName);
+    strcpy(szSource, szTarget);
+
+    GameApp::ResolveCDRomPath(szSource);
+
+    if (_mbscmp((const unsigned char*)szTarget, (const unsigned char*)szSource) == 0)
+    {
+        return;
+    }
+
+    char* const pBuffer = (char*)malloc(CD_COPY_BLOCK);
+
+    if (pBuffer == 0)
+    {
+        return;
+    }
+
+    OwnedFile fileSource;
+
+    const int bSourceOpen = fileSource.m_file.Open(szSource, CD_OPEN_READ) & 0xff;
+
+    OwnedFile fileTarget;
+
+    int bTargetOpen = fileTarget.m_file.Open(szTarget, CD_OPEN_WRITE) & 0xff;
+
+    if (bSourceOpen != 0 && bTargetOpen != 0)
+    {
+        do
+        {
+            nRead = (unsigned int)fileSource.m_file.Read(pBuffer, CD_COPY_BLOCK);
+
+            if (nRead > 0)
+            {
+                if (nRead != (unsigned int)fileTarget.m_file.Write(pBuffer, (int)nRead))
+                {
+                    strcpy(szCaption,
+                           m_stringPool.LoadText(m_hInstance, STRING_ERROR_DISK_FULL));
+                    strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_DISK_FULL));
+
+                    GameApp::ShowMessageBox(GetActiveWindow(), szMessage, szCaption, MB_OK);
+
+                    OnShutdown();
+                }
+            }
+        } while (nRead > 0);
+    }
+    else
+    {
+        // The title and the text go in swapped, so the box reads "Error" under a long title.
+        strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_ERROR));
+
+        const char* const pszCaption =
+            m_stringPool.LoadText(m_hInstance, STRING_CD_FILE_OPEN_FAILED + (bSourceOpen != 0));
+
+        GameApp::ShowMessageBox(GetActiveWindow(), szMessage, pszCaption, MB_OK);
+    }
+
+    free(pBuffer);
+}
+
+// FUNCTION: HYPERX 0x00423730
+HBITMAP GameApp::LoadGDIBitmap(const char* pszName)
+{
+    PathString strPath(MAX_PATH);
+    HBITMAP    hbm;
+
+    // STRING: HYPERX 0x004bc45c
+    strPath.m_str.FormatResourcePath(m_strAssetsPath.m_str, pszName, "bmp");
+
+    BITMAPINFOHEADER* pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
+
+    if (pDib != 0)
+    {
+        DWORD cColors = pDib->biClrUsed;
+
+        if (cColors == 0 && pDib->biBitCount <= 8)
+        {
+            cColors = 1 << pDib->biBitCount;
+        }
+
+        hbm = CreateDIBitmap(GetScreenDC(), pDib, CBM_INIT, GDI::ColorTable(pDib) + cColors, (BITMAPINFO*)pDib, DIB_RGB_COLORS);
+
+        free(pDib);
+
+        if (hbm == 0)
+        {
+            // STRING: HYPERX 0x004bc42c
+            g_gameApp.Error("Problem Creating DIBitmap %s, check palette!", pszName);
+        }
+
+        return hbm;
+    }
+
+    // STRING: HYPERX 0x004bc41c
+    g_gameApp.Error("Cannot open %s!", pszName);
+
+    return 0;
+}
+
+#define ERROR_BOX_STYLE (MB_SETFOREGROUND | MB_SYSTEMMODAL | MB_ICONHAND)
+
+#ifdef HYPERX_BRINGUP
+// A modal box has nobody to dismiss it in a tooling run.
+#define ERROR_BOX(w, t, c) BringUp::TraceText("errorBox", t)
+#else
+#define ERROR_BOX(w, t, c) MessageBoxA(w, t, c, ERROR_BOX_STYLE)
+#endif
+
+// FUNCTION: HYPERX 0x004238b0
+void GameApp::ReportLastError(HWND)
+{
+    char* pszMessage;
+
+    if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, 0, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&pszMessage, 0, 0) != 0)
+    {
+        Error(pszMessage);
+
+        LocalFree(pszMessage);
+    }
+}
+
+// FUNCTION: HYPERX 0x00423900
+void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
+{
+    HWND hWndOwner;
+
+    const int nCursor = GameApp::SetCursorVisible(1);
+
+    String strCaption = m_strCaption.m_pchData;
+
+    strCaption.AppendData(String::SafeStrlen(g_pszCaptionSeparator),
+                          g_pszCaptionSeparator);
+
+    char* const pszDetail = m_stringPool.LoadText(m_hInstance, STRING_ALERT);
+
+    strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
+
+    MessageBeep(MB_ICONHAND);
+
+    if (hWnd != 0)
+    {
+        hWndOwner = hWnd;
+    }
+    else
+    {
+        hWndOwner = m_hWnd;
+    }
+
+    ERROR_BOX(hWndOwner, strMessage.m_pchData, strCaption.m_pchData);
+
+    GameApp::SetCursorVisible(nCursor);
+}
+
+// FUNCTION: HYPERX 0x00423a00
+void GameApp::FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args)
+{
+    String strFormat(pszFormat);
+
+    FatalErrorFmt(hWnd, strFormat.m_pchData, args);
+}
+
+#ifdef HYPERX_BRINGUP
+// The shutdown walks a half-built object graph and jumps into the heap, so bring-up skips it.
+#define SHUT_DOWN(pApp) BringUp::OnFatalSkipped()
+#else
+#define SHUT_DOWN(pApp) pApp->OnShutdown()
+#endif
+
+// FUNCTION: HYPERX 0x00423a70
+void GameApp::ErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
+{
+    String::FormatAlloc(&m_stringPool.m_strMessage, pszFormat, args);
+
+    ShowErrorBox(hWnd, m_stringPool.m_strMessage);
+
+    m_stringPool.m_strMessage.Empty();
+}
+
+// FUNCTION: HYPERX 0x00423ab0
+void GameApp::FatalErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
+{
+    String::FormatAlloc(&m_stringPool.m_strMessage, pszFormat, args);
+
+    FatalError(hWnd, m_stringPool.m_strMessage);
+
+    m_stringPool.m_strMessage.Empty();
+}
+
+// FUNCTION: HYPERX 0x00423af0
+void GameApp::FatalError(HWND hWnd, String strMessage)
+{
+    ShowErrorBox(hWnd, strMessage);
+
+    SHUT_DOWN(this);
+}
+
+// FUNCTION: HYPERX 0x0042f3b0
+void GameApp::FatalString(const char* pszFormat, ...)
+{
+    va_list argList;
+
+    va_start(argList, pszFormat);
+
+    FatalErrorFmtString(m_hWnd, pszFormat, argList);
+
+    va_end(argList);
+}
+
+// FUNCTION: HYPERX 0x0044b350
+void __cdecl GameApp::SetupViewports(void)
+{
+    int nPrevHeight;
+
+    CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+
+    int nPrevWidth = g_nPrevWidth;
+
+    if (nPrevWidth == 0 || (nPrevHeight = g_nPrevHeight) == 0)
+    {
+        nPrevHeight   = g_nBackBufferHeight;
+        nPrevWidth    = g_nBackBufferWidth;
+        g_nPrevWidth  = nPrevWidth;
+        g_nPrevHeight = nPrevHeight;
+    }
+
+    // The client computes both insets before pushing either (0x0044b395 to 0x0044b3ae).
+    const int nInsetY = (g_nBackBufferHeight - nPrevHeight) / 2;
+    const int nInsetX = (g_nBackBufferWidth - nPrevWidth) / 2;
+
+    pCamera->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy, g_nBackBufferWidth, g_nBackBufferHeight, g_nBackBufferWidth, nPrevWidth, nPrevHeight, nInsetX, nInsetY);
+
+    pCamera->InitViewTransforms();
+
+    const float flScale = pCamera->m_flHalfFov;
+
+    CameraObject* const pView = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
+
+    if (g_pRenderer == 0 || pView == 0)
+    {
+        return;
+    }
+
+    Texture* pSource = g_pRenderer->GetHeadCamSurface();
+
+    if (g_cUseSoftRenderer == 0 && g_cD3DActive == 1 && pSource != 0)
+    {
+        pView->SetViewTransform(1, pSource);
+
+        if (g_ddrawDevice.bD3DActive != 0)
+        {
+            D3DViewport::SetForTexture(pView->nViewportId, pSource);
+        }
+    }
+    else
+    {
+        ViewExtent size;
+        ViewExtent offset;
+
+        size   = g_pRenderer->GetHeadCamSize();
+        offset = g_pRenderer->GetHeadCamOrigin();
+
+        pView->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy,
+                                                g_nBackBufferWidth,
+                                                g_nBackBufferHeight,
+                                                g_nBackBufferWidth,
+                                                size.x,
+                                                size.y,
+                                                offset.x,
+                                                offset.y);
+    }
+
+    pView->m_flHalfFov = flScale * 0.16666667f;
+
+    // Twice in the original.
+    pView->InitViewTransforms();
+    pView->InitViewTransforms();
+}
+
+// FUNCTION: HYPERX 0x0044bca0
+int __cdecl GameApp::SetCursorVisible(int bVisible)
+{
+    int nCount;
+
+    const int bWasVisible = (g_bCursorHidden == 0);
+    g_bCursorHidden       = (bVisible == 0);
+
+    if (bVisible != 0)
+    {
+        GameApp::ClipCursorToWindow(0);
+
+        SetCursor(LoadCursorA(0, IDC_ARROW));
+
+        nCount = ShowCursor(TRUE);
+
+        while (nCount < 0)
+        {
+            nCount = ShowCursor(TRUE);
+        }
+
+        SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, TRUE, 0, 0);
+
+        if (g_cUseSoftRenderer == 0)
+        {
+            DDraw::FlipToGDISurface(bVisible);
+        }
+    }
+    else
+    {
+#ifdef HYPERX_BRINGUP
+        // Clipping to a window that may never show leaves the desktop unusable.
+        GameApp::ClipCursorToWindow(0);
+#else
+        GameApp::ClipCursorToWindow(g_hWndGame);
+#endif
+
+        nCount = ShowCursor(FALSE);
+
+        while (nCount >= 0)
+        {
+            nCount = ShowCursor(FALSE);
+        }
+
+        SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, FALSE, 0, 0);
+    }
+
+    return bWasVisible;
+}
+
+// FUNCTION: HYPERX 0x0044c160
+int GameApp::MainUpdate(HWND hWnd)
+{
+#ifdef HYPERX_BRINGUP
+    // Nothing gives a tooling run the focus, and without it this does nothing.
+    BringUp::BeforeFrame();
+#endif
+
+    if (g_gameApp.m_bIsActive)
+    {
+#ifdef HYPERX_BRINGUP
+        // tools/check_match.py follows the engine state through this.
+        BringUp::TraceChange("engineState", (int)g_gameApp.m_nEngineState);
+#endif
+
+        ValidateRgn(hWnd, 0);
+
+        if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+        {
+            Game::UpdateState();
+        }
+        else
+        {
+            Game::RunFrame();
+            g_nPrevEngineState = ESTATE_MATCH_LIVE;
+        }
+
+        FrameTimer::EndFrameUpdate(&g_frameTimer);
+
+#ifdef HYPERX_BRINGUP
+        // Paces the frame, which a modern machine runs too fast, and drives a tooling run.
+        BringUp::AfterFrame(hWnd);
+#endif
+    }
+
+    return g_gameApp.m_bIsActive == 0;
+}
+
+// FUNCTION: HYPERX 0x0044ca00
+void __cdecl GameApp::ShowHelp(HWND hWnd)
+{
+    String strHelpPath(g_gameApp.m_strExeDir.m_str);
+    char*  pszSlash = (char*)_mbsrchr((unsigned char*)strHelpPath.m_pchData, '\\');
+    if (pszSlash != 0 && (pszSlash = (char*)_mbsrchr((unsigned char*)pszSlash, '\\')) != 0)
+    {
+        pszSlash[1] = 0;
+    }
+
+    // STRING: HYPERX 0x004c2de8
+    strHelpPath.AppendData(String::SafeStrlen("HELP.HLP"), "HELP.HLP");
+
+    if (WinHelpA(hWnd, strHelpPath.m_pchData, HELP_FORCEFILE, 0) != 0)
+    {
+        g_bHelpOpen = 1;
+    }
+}
+
+// FUNCTION: HYPERX 0x0046eea0
+int __cdecl GameApp::GetInstallLevel(void)
+{
+    return g_nInstallLevel;
+}
+
+// FUNCTION: HYPERX 0x0047aca0
+void __cdecl GameApp::ClipCursorToWindow(HWND hWnd)
+{
+    RECT rect;
+
+    if (hWnd != 0)
+    {
+        GetClientRect(hWnd, &rect);
+
+        MapWindowPoints(hWnd, 0, (LPPOINT)&rect, 2);
+
+        ClipCursor(&rect);
+
+        return;
+    }
+
+    ClipCursor(0);
+}
+
+// FUNCTION: HYPERX 0x0047adb0
+int __cdecl GameApp::ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
+{
+    const int bWasVisible = GameApp::SetCursorVisible(1);
+
+    const int nResult = MessageBoxA(hWnd, pszText, pszCaption, nType);
+
+    GameApp::SetCursorVisible(bWasVisible);
+
+    return nResult;
+}
+
+// Returning zero tells the runtime not to retry.
+// FUNCTION: HYPERX 0x0047adf0
+int __cdecl GameApp::OutOfMemoryHandler(unsigned int)
+{
+    // STRING: HYPERX 0x004c682c
+    g_gameApp.Fatal("In C++ \"new\" method: Memory pool empty!");
+
+    return 0;
+}
+
+// FUNCTION: HYPERX 0x0048ceb0
+void __cdecl GameApp::ResetToSinglePlayer(void)
+{
+    g_nMainMenuTopChoice   = 1;
+    g_nMainMenuMatchChoice = 0;
+    g_nPlayerMode          = PLAYER_MODE_EXHIBITION;
+    g_nMainMenuPage        = 0;
+}
+
+// FUNCTION: HYPERX 0x0048f490
+LRESULT __cdecl GameApp::ClearSplashPalette(void)
+{
+    g_hSplashPalette = 0;
+
+    return SendMessageA(g_gameApp.m_hWnd, WM_QUERYNEWPALETTE, 0, 0);
+}
+
+// A failed allocation is stored through unchecked, as the original does.
+// FUNCTION: HYPERX 0x004922f0
+void __stdcall GameApp::InstantiateState(void)
+{
+    int                nReturnState;
+    MatchInfoUIScreen* pScreen;
+
+    if (g_pScreenMatchInfo != 0)
+    {
+        nReturnState            = g_pScreenMatchInfo->m_nNextState;
+        g_nMatchInfoReturnState = nReturnState;
+    }
+
+    if (g_pScreenSaveLoad != 0)
+    {
+        nReturnState           = g_pScreenSaveLoad->m_nReturnState;
+        g_nSaveLoadReturnState = nReturnState;
+    }
+
+    if (g_pScreenGameConfig != 0)
+    {
+        nReturnState             = g_pScreenGameConfig->m_nReturnState;
+        g_nGameConfigReturnState = nReturnState;
+    }
+
+    delete g_pActiveScreen;
+
+    g_pActiveScreen = 0;
+
+    if (g_pScreenMatchInfo != 0)
+    {
+        g_pScreenMatchInfo = 0;
+    }
+
+    if (g_pScreenSaveLoad != 0)
+    {
+        g_pScreenSaveLoad = 0;
+    }
+
+    if (g_pScreenGameConfig != 0)
+    {
+        g_pScreenGameConfig = 0;
+    }
+
+    switch (g_gameApp.m_nEngineState)
+    {
+        case ESTATE_LOBBY:
+            g_pActiveScreen = new LobbyScreen;
+            break;
+
+        case ESTATE_MAIN_MENU:
+            g_pActiveScreen = new MainMenuScreen;
+            break;
+
+        case ESTATE_SAVE_LOAD:
+            g_pScreenSaveLoad = new SaveLoadUIScreen;
+
+            if (g_nPrevEngineState != ESTATE_PAUSE_MINIMAL)
+            {
+                g_pScreenSaveLoad->m_nReturnState = g_nPrevEngineState;
+                g_pActiveScreen                   = g_pScreenSaveLoad;
+
+                break;
+            }
+
+            g_pScreenSaveLoad->m_nReturnState = g_nSaveLoadReturnState;
+            g_pActiveScreen                   = g_pScreenSaveLoad;
+            break;
+
+        case ESTATE_TOURNAMENT_SETUP:
+            g_pActiveScreen = new TournamentSetupUIScreen;
+            break;
+
+        case ESTATE_HEAD_TO_HEAD_SETUP:
+            g_pActiveScreen = new HeadToHeadSetupUIScreen;
+            break;
+
+        case ESTATE_MATCH_INFO:
+            g_pScreenMatchInfo = new MatchInfoUIScreen;
+            nReturnState       = g_nPrevEngineState;
+
+            if (g_nPrevEngineState == ESTATE_PAUSE_MINIMAL || g_nPrevEngineState == ESTATE_SAVE_LOAD)
+            {
+                nReturnState = g_nMatchInfoReturnState;
+            }
+
+            g_pScreenMatchInfo->m_nNextState = nReturnState;
+            g_pActiveScreen                  = g_pScreenMatchInfo;
+            break;
+
+        case ESTATE_CHAMPIONSHIP_SETUP:
+            pScreen               = new ChampionshipSetupUIScreen;
+            pScreen->m_nNextState = g_nMatchInfoReturnState;
+            g_pActiveScreen       = pScreen;
+            break;
+
+        case ESTATE_LEAGUE_SETUP:
+            pScreen               = new LeagueSetupUIScreen;
+            pScreen->m_nNextState = g_nMatchInfoReturnState;
+            g_pActiveScreen       = pScreen;
+            break;
+
+        case ESTATE_GAME_CLIPS_VIEWER:
+            // STRING: HYPERX 0x004c8c2c
+            g_gameApp.Fatal("Invalid state detected: GameClipsViewer\n");
+            break;
+
+        case ESTATE_AWARDS:
+            pScreen               = new AwardsUIScreen;
+            pScreen->m_nNextState = g_nMatchInfoReturnState;
+            g_pActiveScreen       = pScreen;
+            break;
+
+        case ESTATE_GAME_CONFIG:
+            g_pScreenGameConfig = new GameConfigUIScreen;
+            nReturnState        = g_nPrevEngineState;
+
+            if (g_nPrevEngineState == ESTATE_PAUSE_MINIMAL || g_nPrevEngineState == ESTATE_KEY_CONFIG)
+            {
+                nReturnState = g_nGameConfigReturnState;
+            }
+
+            g_pScreenGameConfig->m_nReturnState = nReturnState;
+            g_pActiveScreen                     = g_pScreenGameConfig;
+            break;
+
+        case ESTATE_KEY_CONFIG:
+            g_pActiveScreen = new KeyConfigScreen;
+            break;
+
+        case ESTATE_DROME_EXTERIOR:
+            g_pActiveScreen = new DromeExteriorScreen;
+            break;
+
+        case ESTATE_JUMBOTRON:
+            g_pActiveScreen = new JumbotronScreen;
+            break;
+
+        case ESTATE_PAUSE_FULL:
+            g_pActiveScreen = new PauseMenuFullScreen;
+            break;
+
+        case ESTATE_PAUSE_MINIMAL:
+            g_pActiveScreen = new PauseMenuMinimalScreen;
+            break;
+
+        case ESTATE_PAUSE_NO_SAVE:
+            g_pActiveScreen = new PauseMenuNoSaveScreen;
+            break;
+
+        case 1:
+        case 2:
+        case ESTATE_MATCH_LIVE:
+            g_pActiveScreen = 0;
+
+            return;
+
+        case ESTATE_MULTI_SETUP_OPTIONS:
+            g_pActiveScreen = new MultiSetupOptionsScreen;
+            break;
+
+        case ESTATE_FINAL_CEREMONY:
+            g_pActiveScreen = new FinalCeremonyScreen;
+            break;
+
+        case ESTATE_GAME_INTRO:
+            g_pActiveScreen = new GameIntroScreen;
+            break;
+
+        case ESTATE_TRAINING_END:
+            g_pActiveScreen = new TrainingEndScreen;
+            break;
+
+        default:
+            return;
+    }
+
+    if (g_pActiveScreen != 0)
+    {
+        g_pActiveScreen->InitFrame();
+    }
+}
+
+// Zero only when the class neither existed nor registered.
+// FUNCTION: HYPERX 0x004937f0
+unsigned int __cdecl GameApp::RegisterWindowClass(HINSTANCE hInstance, LPCSTR pszClassName)
+{
+    WNDCLASSA wc;
+
+    const unsigned int nExisting = GetClassInfoA(hInstance, pszClassName, &wc);
+
+    if (nExisting != 0)
+    {
+        return nExisting;
+    }
+
+    wc.style       = CS_BYTEALIGNWINDOW | CS_BYTEALIGNCLIENT | CS_OWNDC;
+    wc.lpfnWndProc = WndProc::MainWndProc;
+    wc.cbWndExtra  = 0;
+    wc.cbClsExtra  = 0;
+    wc.hInstance   = hInstance;
+    // STRING: HYPERX 0x004c8ccc
+    wc.hIcon         = LoadIconA(hInstance, "APPICON");
+    wc.hCursor       = 0;
+    wc.hbrBackground = 0;
+    // STRING: HYPERX 0x004c8cc4
+    wc.lpszMenuName  = "AppMenu";
+    wc.lpszClassName = pszClassName;
+
+    return RegisterClassA(&wc) != 0;
+}
+
+// FUNCTION: HYPERX 0x00493870
+HWND __cdecl GameApp::CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam)
+{
+    RECT rc;
+
+    GetWindowRect(GetDesktopWindow(), &rc);
+
+    if (g_bFullScreen == 0)
+    {
+        if (rc.right > 640)
+        {
+            rc.right = 640;
+        }
+
+        if (rc.bottom > 480)
+        {
+            rc.bottom = 480;
+        }
+    }
+
+    return CreateWindowExA(0, pszClassName, pszClassName, WS_BORDER, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 0, 0, hInstance, pParam);
+}

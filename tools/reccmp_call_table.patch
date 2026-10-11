@@ -1,0 +1,30 @@
+# reccmp: resolve the displacement of a call through a table.
+#
+# reccmp compares `call dword ptr [reg*4 + 0xADDR]` as a raw address on both sides, so a call
+# table never pairs, even when the table carries a marker. The same operand on a MOV resolves
+# to `g_table[8] (OFFSET)` and pairs, because sanitize() runs displace_replace_regex on every
+# instruction except the absolute indirect CALL. This patch runs it there too.
+#
+# The project's figures assume it. A checkout without it scores the call-table rows lower and
+# reads that as a regression. Apply it with `patch -p1` from the directory that holds the
+# installed `reccmp` package, as README.md shows.
+# The fix belongs upstream.
+#
+# This file is a change to reccmp and falls under reccmp's licence, AGPL-3.0.
+
+--- a/reccmp/compare/asm/parse.py
++++ b/reccmp/compare/asm/parse.py
+@@ -175,6 +175,13 @@
+         if inst_mnemonic == "call":
+             # Special handling for absolute indirect CALL.
+             op_str = ptr_replace_regex.sub(self.hex_replace_indirect, inst_op_str)
++
++            # A call through a table displacement, `call dword ptr [reg*4 + 0xADDR]`,
++            # gets no substitution at all from the line above, because ptr_replace_regex
++            # anchors on the opening bracket. The identical operand on a MOV does get one,
++            # from displace_replace_regex below, so a call table compares as two raw
++            # addresses and never pairs even when the table carries a marker.
++            op_str = displace_replace_regex.sub(self.hex_replace_relocated, op_str)
+         else:
+             op_str = ptr_replace_regex.sub(self.hex_replace_always, inst_op_str)
+ 

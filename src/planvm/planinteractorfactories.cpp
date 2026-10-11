@@ -1,0 +1,96 @@
+#include "common/compat.h"
+#include "globals.h"
+#include "common/pooledownerroot.h"
+#include "anim/animbinding.h"
+#include "collinteractor.h"
+#include "msginteractor.h"
+#include "engine/gameengine.h"
+#include "gamebehaviorobject.h"
+#include "planstate.h"
+#include "planvm/planinteractorfactories.h"
+
+// FUNCTION: HYPERX 0x0045d810
+void PlanInteractorFactories::ResetAll(void)
+{
+    g_pCollInteractorPool->Init();
+
+    g_pMsgInteractorPool->Init();
+}
+
+// FUNCTION: HYPERX 0x0045d830
+void PlanInteractorFactories::DestroyAll(void)
+{
+    if (g_pCollInteractorPool != 0)
+    {
+        g_pCollInteractorPool = g_pCollInteractorPool->Destroy();
+    }
+
+    if (g_pMsgInteractorPool != 0)
+    {
+        g_pMsgInteractorPool = g_pMsgInteractorPool->Destroy();
+    }
+}
+
+// Links after the previous interactor, else heads the behaviour's chain, else the plan state's.
+// FUNCTION: HYPERX 0x0045dca0
+CollInteractor* __cdecl PlanInteractorFactories::CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
+{
+    CollInteractor* pInteractor;
+
+    if (pNode == 0)
+    {
+        pObject->GetPlanState();
+    }
+
+    pInteractor = ((CollInteractor*)g_pCollInteractorPool->Alloc())->Setup(pObject, pInstr);
+
+    if (pPrevious == 0)
+    {
+        if (pNode != 0)
+        {
+            pNode->m_pCollInteractors = pInteractor;
+
+            return pInteractor;
+        }
+
+        pObject->GetPlanState()->m_pCollInteractors = pInteractor;
+
+        return pInteractor;
+    }
+
+    pPrevious->pNext = pInteractor;
+
+    return pInteractor;
+}
+
+// Links after the previous interactor, else heads the behaviour's chain, else the plan state's.
+// FUNCTION: HYPERX 0x0045df60
+MsgInteractor* __cdecl PlanInteractorFactories::CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
+{
+    MsgInteractor* pInteractor;
+
+    if (pNode == 0)
+    {
+        pObject->GetPlanState();
+    }
+
+    pInteractor = ((MsgInteractor*)g_pMsgInteractorPool->Alloc())->Setup(pObject, pInstr);
+
+    if (pPrevious == 0)
+    {
+        if (pNode != 0)
+        {
+            pNode->m_pMsgInteractors = pInteractor;
+
+            return pInteractor;
+        }
+
+        pObject->GetPlanState()->m_pMsgInteractors = pInteractor;
+
+        return pInteractor;
+    }
+
+    pPrevious->pNext = pInteractor;
+
+    return pInteractor;
+}
