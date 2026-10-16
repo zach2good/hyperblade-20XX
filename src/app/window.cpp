@@ -43,7 +43,11 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
 
     s_bSized = true;
 
-    SDL_SetWindowSize(s_pWindow, (int)g_dwDisplayWidth, (int)g_dwDisplayHeight);
+    constexpr auto START_WIDTH  = 1920;
+    constexpr auto START_HEIGHT = 1080;
+
+    SDL_SetWindowSize(s_pWindow, START_WIDTH, START_HEIGHT);
+    SDL_SetWindowPosition(s_pWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 // The original swaps X and Y too; SWP_NOMOVE ignores both.
@@ -343,6 +347,16 @@ Window::NativeWindow Window::Native()
 void Window::Show()
 {
     SDL_ShowWindow(s_pWindow);
+}
+
+void Window::ApplyCurrentSize()
+{
+    auto nWidth  = 0;
+    auto nHeight = 0;
+
+    SDL_GetWindowSizeInPixels(s_pWindow, &nWidth, &nHeight);
+
+    WndProc::MainWndProc(g_gameApp.m_hWnd, WM_SIZE, SIZE_RESTORED, MAKELPARAM(nWidth, nHeight));
 }
 
 int Window::ShowMessage(const char* pszText, const char* pszCaption, unsigned int nType)

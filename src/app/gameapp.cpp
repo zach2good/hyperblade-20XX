@@ -219,6 +219,8 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
 
     Graphics::Initialize(g_cD3DActive == 0);
 
+    Window::ApplyCurrentSize();
+
     hSoftBackDC = g_hSoftBackDC;
     g_frameTimer.ProcessInitialFrameUpdate(hWnd, hSoftBackDC);
 

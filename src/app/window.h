@@ -30,6 +30,9 @@ void         Destroy();
 // SDL draws the cursor over the window from its own state, so the game sets it only here.
 void SetBusyCursor(bool bBusy);
 
+// The engine ignores the window's size while it loads, so it is handed over once loading is done.
+void ApplyCurrentSize();
+
 // Takes MB_OK, MB_OKCANCEL or MB_YESNO with an icon flag, and returns IDOK, IDCANCEL, IDYES or IDNO.
 int ShowMessage(const char* pszText, const char* pszCaption, unsigned int nType);
 
