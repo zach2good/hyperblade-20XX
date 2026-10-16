@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include "graphics/hudlayer.h"
+#include "graphics/softrenderer.h"
 #include "engine/gameoptions.h"
 #include "globals.h"
 #include "graphics/graphicsglobals.h"
@@ -187,8 +188,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
     // STRING: HYPERX 0x004bba9c
     Config::LoadPreferences(hWnd, "Prefs.txt");
 
-    HDC hSoftBackDC = g_hSoftBackDC;
-    Game::InitializeEngine(hWnd, hInstance, hSoftBackDC);
+    Game::InitializeEngine(hWnd, hInstance);
 
     GameApp::SetupViewports();
 
@@ -196,8 +196,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 
     Window::ApplyCurrentSize();
 
-    hSoftBackDC = g_hSoftBackDC;
-    g_frameTimer.ProcessInitialFrameUpdate(hWnd, hSoftBackDC);
+    g_frameTimer.ProcessInitialFrameUpdate(hWnd);
 
     if (g_bNoSoundArg != 0)
     {
@@ -392,7 +391,7 @@ void GameApp::Shutdown(HWND)
         g_pColorPalette = 0;
     }
 
-    Renderer::DestroyBackBuffer();
+    SoftRenderer::FreeBackBuffer();
 
     if (g_pLeftStack != 0)
     {

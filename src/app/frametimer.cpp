@@ -95,7 +95,7 @@ double FrameTimer::BenchmarkResolution(void)
 }
 
 // FUNCTION: HYPERX 0x00442ca0
-void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC)
+void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd)
 {
     if (bFrameTimesOn == 0)
     {

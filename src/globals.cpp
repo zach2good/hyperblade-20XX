@@ -60,7 +60,6 @@ const char* const  g_pszWaveExtension        = "wav";
 const float        g_flCamWatchMidpointScale = 0.5f;
 FileVersion        g_modelVersion            = { 1, 7, 0, 0, 0 };
 GameApp            g_gameApp(2);
-HDC                g_hSoftBackDC;
 HPALETTE           g_hSplashPalette;
 AudioMgr*          g_pAudioMgr;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
@@ -306,10 +305,7 @@ int        g_nDisplayBitsPerPixel = 8;
 int        g_nDisplayHorzRes;
 int        g_nDisplayVertRes;
 int        g_nPaletteAnimated;
-HGDIOBJ    g_hSoftBackOldBitmap;
-HBITMAP    g_hSoftBackBitmap;
 HANDLE     g_hNetworkThread;
-HDC        g_hTextDC;
 #include "graphics/transparentqueue.h"
 TransparentEntry  g_transparentSiftEntry;
 TransparentEntry* g_pTransparentQueue;

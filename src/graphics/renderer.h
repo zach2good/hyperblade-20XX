@@ -30,7 +30,6 @@ public:
     static void          DrawWholeScene(void);
     static RenderOptions GetRenderOptions();
     static void          SetCameraTransformAndViewport(LayoutState block);
-    static void          DestroyBackBuffer(void);
 
     virtual ~Renderer()
     {
@@ -40,7 +39,7 @@ public:
     virtual void Unused()                                                 = 0;
     virtual void LayoutSurfaces()                                         = 0;
     virtual void DrawScene(int nFlags)                                    = 0;
-    virtual void DrawHUD(int nFlags, HDC hDC)                             = 0;
+    virtual void DrawHUD(int nFlags)                                      = 0;
     virtual void SetMessageText(const char* pszText, unsigned long nCode) = 0;
     virtual void ShowMessage()                                            = 0;
 

@@ -32,23 +32,6 @@ int Display::Initialize(HWND hWnd, HDC hDisplayDC)
 
     Window::ApplyFullscreenStyle(g_hWndGame, 0);
 
-    g_hSoftBackDC = 0;
-
-    const HDC hdc = GetDC(0);
-
-    if (hdc != 0)
-    {
-        g_hSoftBackDC = CreateCompatibleDC(hdc);
-        ReleaseDC(0, hdc);
-    }
-
-    if (g_hSoftBackDC == 0)
-    {
-        // STRING: HYPERX 0x004c2d48
-        g_gameApp.Fatal("Error allocating graphics device context!");
-        exit(1);
-    }
-
     g_cMdmTexLoaded = (char)Graphics::LoadMdmTexDLL();
     Display::ApplyRenderOptions(g_gameApp.m_hMenu, g_cMdmTexLoaded & 0xff, 0);
 

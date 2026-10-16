@@ -480,115 +480,103 @@ extern int g_nInfoBarLastAwayScore;
 
 // Slot four. The quit prompts hide once five seconds have passed since they went up.
 // FUNCTION: HYPERX 0x004508f0
-void InfoBar::DrawHUD(int bFull, HDC hDC)
+void InfoBar::DrawHUD(int bFull)
 {
     char szText[CLOCK_BUFFER];
 
-    const HDC hSaved = g_hTextDC;
+    const int nElapsed = g_pGameEngine->m_nPeriodLengthMs - g_pGameEngine->m_clock.nPauseStartMs + g_pGameEngine->m_clock.nPeriodStartMs;
 
-    if (hDC != 0)
+    const int nSeconds = (int)((nElapsed % MS_PER_MINUTE) * 0.001f);
+    const int nMinutes = (int)(nElapsed * 1.6666667e-005f);
+
+    const int nActive = g_frameTimer.bFrameTimesOn;
+
+    if (g_nInfoBarLastSeconds != nSeconds || nSeconds == 0)
     {
-        g_hTextDC = hDC;
-    }
+        g_nInfoBarLastSeconds = nSeconds;
 
-    if (g_hTextDC != 0)
-    {
-        const int nElapsed = g_pGameEngine->m_nPeriodLengthMs - g_pGameEngine->m_clock.nPauseStartMs + g_pGameEngine->m_clock.nPeriodStartMs;
+        // STRING: HYPERX 0x004c0d70
+        sprintf(szText, "%d:%02d", nMinutes, nSeconds);
 
-        const int nSeconds = (int)((nElapsed % MS_PER_MINUTE) * 0.001f);
-        const int nMinutes = (int)(nElapsed * 1.6666667e-005f);
-
-        const int nActive = g_frameTimer.bFrameTimesOn;
-
-        if (g_nInfoBarLastSeconds != nSeconds || nSeconds == 0)
-        {
-            g_nInfoBarLastSeconds = nSeconds;
-
-            // STRING: HYPERX 0x004c0d70
-            sprintf(szText, "%d:%02d", nMinutes, nSeconds);
-
-            m_tClock.SetText(szText, (COLORREF)TEXT_COLOUR);
-
-            if (nActive != 0)
-            {
-                m_tFrameRate.SetText(g_szFpsText, (COLORREF)TEXT_COLOUR);
-            }
-        }
-
-        m_tClock.Draw();
+        m_tClock.SetText(szText, (COLORREF)TEXT_COLOUR);
 
         if (nActive != 0)
         {
-            m_tFrameRate.Draw();
+            m_tFrameRate.SetText(g_szFpsText, (COLORREF)TEXT_COLOUR);
         }
-
-        if (bFull == 0)
-        {
-            g_hTextDC = hSaved;
-            return;
-        }
-
-        int nScore = g_pGameEngine->GetHomeScore();
-
-        if (nScore != g_nInfoBarLastHomeScore)
-        {
-            // STRING: HYPERX 0x004bb814
-            sprintf(szText, "%d", nScore);
-
-            m_tHomeScore.SetText(szText, (COLORREF)TEXT_COLOUR);
-
-            g_nInfoBarLastHomeScore = nScore;
-        }
-
-        m_tHomeScore.Draw();
-
-        nScore = g_pGameEngine->GetAwayScore();
-
-        if (nScore != g_nInfoBarLastAwayScore)
-        {
-            // STRING: HYPERX 0x004bb814
-            sprintf(szText, "%d", nScore);
-
-            m_tAwayScore.SetText(szText, (COLORREF)TEXT_COLOUR);
-
-            g_nInfoBarLastAwayScore = nScore;
-        }
-
-        m_tAwayScore.Draw();
-
-        UpdateRokValue();
-
-        if (m_bMessageVisible != 0)
-        {
-            m_tMessage.Draw();
-        }
-
-        if (m_bQuitPromptVisible != 0)
-        {
-            if (g_pGameEngine->m_clock.nTickMs - m_nQuitPromptTick >= QUIT_PROMPT_INTERVAL)
-            {
-                HideQuitPrompt();
-            }
-            else
-            {
-                m_tExitMatchPrompt.Draw();
-                m_tContinuePrompt.Draw();
-            }
-        }
-
-        if (m_bShotPowerDrawn != 0)
-        {
-            m_tShotCameraLabel.Draw();
-        }
-        else if (m_bHeadCamTextDue != 0)
-        {
-            m_tHeadCamText.Draw();
-        }
-
-        UpdateOwnTeamDisplay();
-        UpdateFoeTeamDisplay();
-        g_hTextDC = hSaved;
     }
+
+    m_tClock.Draw();
+
+    if (nActive != 0)
+    {
+        m_tFrameRate.Draw();
+    }
+
+    if (bFull == 0)
+    {
+        return;
+    }
+
+    int nScore = g_pGameEngine->GetHomeScore();
+
+    if (nScore != g_nInfoBarLastHomeScore)
+    {
+        // STRING: HYPERX 0x004bb814
+        sprintf(szText, "%d", nScore);
+
+        m_tHomeScore.SetText(szText, (COLORREF)TEXT_COLOUR);
+
+        g_nInfoBarLastHomeScore = nScore;
+    }
+
+    m_tHomeScore.Draw();
+
+    nScore = g_pGameEngine->GetAwayScore();
+
+    if (nScore != g_nInfoBarLastAwayScore)
+    {
+        // STRING: HYPERX 0x004bb814
+        sprintf(szText, "%d", nScore);
+
+        m_tAwayScore.SetText(szText, (COLORREF)TEXT_COLOUR);
+
+        g_nInfoBarLastAwayScore = nScore;
+    }
+
+    m_tAwayScore.Draw();
+
+    UpdateRokValue();
+
+    if (m_bMessageVisible != 0)
+    {
+        m_tMessage.Draw();
+    }
+
+    if (m_bQuitPromptVisible != 0)
+    {
+        if (g_pGameEngine->m_clock.nTickMs - m_nQuitPromptTick >= QUIT_PROMPT_INTERVAL)
+        {
+            HideQuitPrompt();
+        }
+        else
+        {
+            m_tExitMatchPrompt.Draw();
+            m_tContinuePrompt.Draw();
+        }
+    }
+
+    if (m_bShotPowerDrawn != 0)
+    {
+        m_tShotCameraLabel.Draw();
+    }
+    else if (m_bHeadCamTextDue != 0)
+    {
+        m_tHeadCamText.Draw();
+    }
+
+    UpdateOwnTeamDisplay();
+    UpdateFoeTeamDisplay();
 }
 
 #define ENGINE_FOLLOW_LIMIT 6
@@ -939,21 +927,13 @@ extern char g_abInfoBarFontName[0x50];
 #define BAR_MAX_HEIGHT  8
 
 // FUNCTION: HYPERX 0x00451280
-InfoBar::InfoBar(HDC hDC)
+InfoBar::InfoBar()
 {
     char szName[INFOBAR_NAME_BUFFER];
     Vec3 vLimits;
     int  i;
 
     strcpy(g_abInfoBarFontName, "MS Sans Serif");
-
-    g_hTextDC = hDC;
-
-    // The original stores a palette here as the text DC; the software back buffer is the DC.
-    if (g_hSoftBackDC != 0)
-    {
-        g_hTextDC = g_hSoftBackDC;
-    }
 
     m_sPeriodFrame.LoadByName("frper");
 

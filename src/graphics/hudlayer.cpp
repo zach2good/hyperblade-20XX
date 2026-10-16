@@ -4,6 +4,7 @@
 #include "graphics/viewextent.h"
 #include <algorithm>
 #include <string.h>
+#include <vector>
 
 // The HUD was laid out for 480 lines; it keeps about that many however tall the window is.
 constexpr auto HUD_LINES = 480;
@@ -17,12 +18,9 @@ struct DrawTarget
     int            nPitch;
     int            nWidth;
     int            nHeight;
-    HDC            hSoftDC;
-    HDC            hTextDC;
 };
 
-HDC     s_hLayerDC     = 0;
-HBITMAP s_hLayerBitmap = 0;
+std::vector<unsigned char> s_layerPixels;
 
 // The back buffer while the layer is entered, so the layer can be fitted and composited to it.
 DrawTarget s_backBuffer = {};
@@ -44,49 +42,22 @@ void Fit(const DrawTarget& backBuffer)
     s_nOriginX = (backBuffer.nWidth - nWidth * s_nScale) / 2;
     s_nOriginY = (backBuffer.nHeight - nHeight * s_nScale) / 2;
 
-    if (s_hLayerBitmap != 0 && nWidth == s_layer.nWidth && nHeight == s_layer.nHeight)
+    if (!s_layerPixels.empty() && nWidth == s_layer.nWidth && nHeight == s_layer.nHeight)
     {
         return;
     }
 
-    if (s_hLayerDC == 0)
-    {
-        s_hLayerDC = CreateCompatibleDC(backBuffer.hSoftDC);
-    }
+    s_layerPixels.assign((size_t)(nWidth * nHeight), 0);
 
-    if (s_hLayerBitmap != 0)
-    {
-        DeleteObject(s_hLayerBitmap);
-    }
-
-    struct
-    {
-        BITMAPINFOHEADER header;
-        RGBQUAD          colours[256];
-    } info = {};
-
-    info.header.biSize     = sizeof(info.header);
-    info.header.biWidth    = nWidth;
-    info.header.biHeight   = -nHeight;
-    info.header.biPlanes   = 1;
-    info.header.biBitCount = 8;
-
-    void* pBits    = 0;
-    s_hLayerBitmap = CreateDIBSection(s_hLayerDC, (BITMAPINFO*)&info, DIB_RGB_COLORS, &pBits, 0, 0);
-
-    SelectObject(s_hLayerDC, s_hLayerBitmap);
-
-    s_layer.pBits   = (unsigned char*)pBits;
+    s_layer.pBits   = s_layerPixels.data();
     s_layer.nPitch  = nWidth;
     s_layer.nWidth  = nWidth;
     s_layer.nHeight = nHeight;
-    s_layer.hSoftDC = s_hLayerDC;
-    s_layer.hTextDC = s_hLayerDC;
 }
 
 DrawTarget Current()
 {
-    return DrawTarget{ g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight, g_hSoftBackDC, g_hTextDC };
+    return DrawTarget{ g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight };
 }
 
 void Use(const DrawTarget& target)
@@ -95,8 +66,6 @@ void Use(const DrawTarget& target)
     g_nSurfacePitchCopy   = target.nPitch;
     g_nBackBufferWidth    = target.nWidth;
     g_nBackBufferHeight   = target.nHeight;
-    g_hSoftBackDC         = target.hSoftDC;
-    g_hTextDC             = target.hTextDC;
 }
 
 } // namespace
@@ -108,7 +77,7 @@ int HudLayer::Scale()
 
 void HudLayer::Enter()
 {
-    if (s_bEntered != 0 || g_hSoftBackDC == 0 || g_nBackBufferWidth <= 0 || g_nBackBufferHeight <= 0)
+    if (s_bEntered != 0 || g_pBackBufferBitsCopy == 0 || g_nBackBufferWidth <= 0 || g_nBackBufferHeight <= 0)
     {
         return;
     }

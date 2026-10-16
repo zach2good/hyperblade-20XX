@@ -9,6 +9,7 @@ namespace SoftRenderer
 {
 
 int        ResizeBackBuffer(int* pWidth, int* pHeight);
+void       FreeBackBuffer();
 RLESprite* LoadRLESprite(const char* pszName);
 
 } // namespace SoftRenderer

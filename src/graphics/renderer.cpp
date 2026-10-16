@@ -222,21 +222,6 @@ void Renderer::DrawWholeScene(void)
     g_pScene->DrawShadowAndTransparentPass(&g_arenaEllipsoid);
 }
 
-// FUNCTION: HYPERX 0x0044b7c0
-void Renderer::DestroyBackBuffer(void)
-{
-    if (g_hSoftBackDC != 0)
-    {
-        SelectObject(g_hSoftBackDC, g_hSoftBackOldBitmap);
-
-        DeleteObject(g_hSoftBackBitmap);
-
-        DeleteDC(g_hSoftBackDC);
-
-        g_hSoftBackDC = 0;
-    }
-}
-
 // FUNCTION: HYPERX 0x0044bc30
 int Renderer::PresentFrame(void)
 {

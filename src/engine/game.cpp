@@ -93,7 +93,7 @@ void Game::Draw(float flAlpha)
 
         g_pRenderer->DrawScene(g_renderFlags.bDisplayHUDArt);
         // The original passes no DC; src/ui/infobar.cpp makes the back buffer the text DC.
-        g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt, 0);
+        g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt);
 
         HudLayer::Leave();
     }
@@ -111,7 +111,7 @@ void Game::Draw(float flAlpha)
 
 // Builds the game's owners in the original's order, timing each stage.
 // FUNCTION: HYPERX 0x0045c700
-void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HDC hSoftBackDC)
+void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance)
 {
     int nStart = GameApp::GetInstallLevel();
 
@@ -163,7 +163,7 @@ void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HDC hSoftBackDC)
 
     nStart = GameApp::GetInstallLevel();
 
-    g_pRenderer = InfoBarBase::Create(hSoftBackDC);
+    g_pRenderer = InfoBarBase::Create();
 
     // STRING: HYPERX 0x004c41b4
     g_pGameEngine->Init("game.cfg");

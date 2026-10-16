@@ -47,7 +47,7 @@ public:
     virtual void HideQuitPrompt();
     void         BeginTick() override;
 
-    explicit InfoBar(HDC hDC);
+    InfoBar();
     ~InfoBar();
 
     // Nothrow, which gives the destructor the original's unwind.
@@ -56,7 +56,7 @@ public:
     virtual void LayoutSurfaces();
 
     virtual void DrawScene(int bDraw);
-    virtual void DrawHUD(int bFull, HDC hDC);
+    void         DrawHUD(int bFull) override;
 
     virtual void SetMessageText(const char* pszText, unsigned long color);
     virtual void ShowMessage();

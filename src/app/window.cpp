@@ -168,7 +168,7 @@ LPARAM Window::ToMenuPoint(HWND hWnd, LPARAM lParam)
 // which the back buffer needs, and PresentFrame centres what that leaves.
 void Window::OnSize(WPARAM nKind, int cx, int cy)
 {
-    if (nKind == SIZE_MINIMIZED || g_hSoftBackBitmap == 0)
+    if (nKind == SIZE_MINIMIZED || g_pBackBufferBitsCopy == 0)
     {
         return;
     }

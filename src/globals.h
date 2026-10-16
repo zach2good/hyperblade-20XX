@@ -125,9 +125,6 @@ extern int g_nBackBufferHeight;
 // GLOBAL: HYPERX 0x004d0a18
 extern int g_nBackBufferWidth;
 
-// GLOBAL: HYPERX 0x004ceea4
-extern HDC g_hSoftBackDC;
-
 // The HUD art toggle the debug menu flips; the second byte holds one and nothing reads it.
 struct RenderFlags
 {
@@ -208,15 +205,6 @@ extern int g_nNetSetupState;
 
 struct ClipExtents;
 extern ClipExtents g_projRenderParams;
-
-// GLOBAL: HYPERX 0x004cefcc
-extern HDC g_hTextDC;
-
-// GLOBAL: HYPERX 0x004ceea8
-extern HGDIOBJ g_hSoftBackOldBitmap;
-
-// GLOBAL: HYPERX 0x004ceeac
-extern HBITMAP g_hSoftBackBitmap;
 
 // GLOBAL: HYPERX 0x004cb788
 extern HANDLE g_hNetworkThread;
