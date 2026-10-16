@@ -5,10 +5,12 @@ build/report.json and symbols/functions.csv, counted as tools/progress.py counts
 row it does not recognise is a fault too, so no figure goes unchecked. Every figure must be exact,
 the share to the two decimals the README prints. It refuses to run on a stale report.
 
-Informational by default. Pass --strict when updating the README, to fail on drift.
+Informational by default. Pass --strict when updating the README, to fail on drift, or --write
+to put the measured figures in place.
 
     python tools/check_readme.py            # report drift, always exit 0
     python tools/check_readme.py --strict   # exit non-zero on drift
+    python tools/check_readme.py --write    # rewrite the drifted figures
 """
 import csv
 import json
@@ -122,6 +124,34 @@ def stated(text):
     return says, unknown, True
 
 
+def figure_text(key, value):
+    if key == "share":
+        return "%.2f" % value
+    return format(int(value), ",")
+
+
+def written(text, have):
+    """The README with every figure it states replaced by the measured one."""
+    headline = re.compile(r"\*\*[\d,]+ of [\d,]+ game functions match exactly: [\d,]+ bytes, "
+                          r"[\d.]+ per cent of game code\.\*\*")
+    text = headline.sub("**%s of %s game functions match exactly: %s bytes, %s per cent of game code.**"
+                        % tuple(figure_text(key, have[key])
+                                for key in ("exact", "game_count", "exact_bytes", "share")), text)
+
+    lines = text.split("\n")
+    for index, line in enumerate(lines):
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if not line.startswith("|") or len(cells) != 2:
+            continue
+        keys = next((k for prefix, k in TABLE if cells[0].startswith(prefix)), None)
+        if keys is None:
+            continue
+        values = iter(figure_text(key, have[key]) for key in keys)
+        value = NUMBER.sub(lambda unused: next(values), cells[1])
+        lines[index] = "| %s | %s |" % (cells[0], value)
+    return "\n".join(lines)
+
+
 def main():
     strict = "--strict" in sys.argv
     if not os.path.exists(REPORT):
@@ -140,6 +170,13 @@ def main():
 
     have = measured()
     text = open(README, encoding="utf-8").read()
+
+    if "--write" in sys.argv:
+        text = written(text, have)
+        with open(README, encoding="utf-8", newline="") as handle:
+            ending = "\r\n" if "\r\n" in handle.read() else "\n"
+        with open(README, "w", encoding="utf-8", newline=ending) as handle:
+            handle.write(text)
     says, unknown, has_table = stated(text)
 
     bad = []
