@@ -1,10 +1,12 @@
-# The build reads resources out of your own copy of the game, which no hosted runner has, so CI
-# compiles every source without linking an image, and checks the formatting.
+# The exe needs nothing from the game to build, so CI links it, runs the tests that need no game
+# data, and uploads the drop-in zip. A pushed v* tag publishes that zip as a GitHub release.
 
 name: ci
 
 on:
   push:
+    branches: ["**"]
+    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -24,8 +26,8 @@ jobs:
           pip install clang-format==22.1.8
           git ls-files 'src/*.cpp' 'src/*.h' 'tests/*.cpp' | xargs clang-format --dry-run --Werror
 
-  compile:
-    name: Compile (MSVC x64)
+  build:
+    name: Build (MSVC x64)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
@@ -40,7 +42,39 @@ jobs:
           path: .cpm-cache
           key: cpm-${{ runner.os }}-${{ hashFiles('cmake/dependencies.cmake') }}
 
-      - name: Configure and compile, without the game
+      - name: Configure and build
         run: |
-          cmake --preset msvc-x64 -DHYPERX_COMPILE_ONLY=ON
+          cmake --preset msvc-x64
           cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force package | Out-Null
+          Copy-Item build/out/hyperblade_20XX.exe, build/out/SDL3.dll package/
+          Compress-Archive -Path package/* -DestinationPath hyperblade_20XX.zip -Force
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hyperblade_20XX
+          path: hyperblade_20XX.zip
+
+  release:
+    name: Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [format, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: hyperblade_20XX
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: hyperblade_20XX.zip
+          generate_release_notes: true
