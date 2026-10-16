@@ -208,6 +208,9 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     g_nSplashFrame = 0;
     GameApp::NextSplash(hWnd);
 
+    // Windows shows its start-up busy cursor until a new program first takes its messages.
+    Window::Pump();
+
     Network::ValidateStaticObjects();
 
     // STRING: HYPERX 0x004bba9c
