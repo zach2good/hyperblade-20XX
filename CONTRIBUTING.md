@@ -176,6 +176,9 @@ A checker that reports a fault makes a claim. Reproduce it before you act on it.
   and are allowed.
 - It keeps the program's behaviour and stays within C++98.
 
+CI checks the second point for you. It scores your pull request's image against a private copy of
+the original, sets a `score` status, and comments with what `check_regressions.py` found.
+
 ## Where records go
 
 A spelling that failed goes in `symbols/retired.csv`, one row per function, with the columns
