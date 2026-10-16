@@ -18,6 +18,9 @@ void Canvas(const void* pBits, int nPitch, int nWidth, int nHeight);
 // Whether the renderer runs on a GPU device, so the hardware renderer can draw.
 bool HasGPU();
 
+// True while a frame is inside SDL's renderer, which can deliver window messages from its waits.
+bool Busy();
+
 } // namespace Presenter
 
 #endif

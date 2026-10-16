@@ -21,6 +21,25 @@ SDL_Texture* s_pCanvas = 0;
 SDL_Palette* s_pFramePalette = 0;
 SDL_Palette* s_pHudPalette   = 0;
 
+bool s_bBusy = false;
+
+class BusyScope
+{
+public:
+    BusyScope()
+    {
+        s_bBusy = true;
+    }
+
+    ~BusyScope()
+    {
+        s_bBusy = false;
+    }
+
+    BusyScope(const BusyScope&)            = delete;
+    BusyScope& operator=(const BusyScope&) = delete;
+};
+
 // Keeps a streaming texture at the asked size and format, recreating it when either changes.
 SDL_Texture* Fit(SDL_Texture* pTexture, SDL_PixelFormat nFormat, int nWidth, int nHeight, SDL_ScaleMode nScale)
 {
@@ -134,6 +153,8 @@ bool Ready()
 
 void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nHeight, const RGBQUAD* pColours)
 {
+    const auto busy = BusyScope();
+
     if (pBits == 0 || nWidth <= 0 || nHeight <= 0 || Ready() == false)
     {
         return;
@@ -204,6 +225,8 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 
 void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
 {
+    const auto busy = BusyScope();
+
     if (pBits == 0 || Ready() == false)
     {
         return;
@@ -232,4 +255,9 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
 bool Presenter::HasGPU()
 {
     return Ready() && SDL_GetGPURendererDevice(s_pRenderer) != 0;
+}
+
+bool Presenter::Busy()
+{
+    return s_bBusy;
 }

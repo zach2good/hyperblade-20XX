@@ -16,6 +16,7 @@
 #include "ui/debugmenu.h"
 #include <SDL3/SDL.h>
 #include <array>
+#include <variant>
 #include <span>
 #include <algorithm>
 
@@ -214,21 +215,8 @@ void Window::OnSizeMenus(HWND hWnd, WPARAM nKind)
 static bool s_bQuit         = false;
 static bool s_bInLiveUpdate = false;
 
-// The input the game reads raw keeps its Win32 form: key codes, button flags and client points.
-static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
+static void HandleWin32Message(const MSG* pMsg)
 {
-    if (pMsg->message == WM_QUIT)
-    {
-        s_bQuit = true;
-
-        return true;
-    }
-
-    if (pMsg->hwnd == 0 || pMsg->hwnd != g_gameApp.m_hWnd)
-    {
-        return true;
-    }
-
     switch (pMsg->message)
     {
         // F2 opens and closes the debug menu, so it always gets through.
@@ -263,22 +251,13 @@ static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
         default:
             break;
     }
-
-    return true;
 }
 
 // A watch sees each window event as SDL's window procedure raises it, as the game saw the
 // message, and keeps running through the modal loop of a drag.
-static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
+static void HandleWindowEvent(SDL_Event* pEvent)
 {
     const HWND hWnd = g_gameApp.m_hWnd;
-
-    if (hWnd == 0)
-    {
-        return true;
-    }
-
-    DebugMenu::OnEvent(DebugMenu::Event{ pEvent });
 
     switch (pEvent->type)
     {
@@ -328,6 +307,92 @@ static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
         default:
             break;
     }
+}
+
+// SDL's renderer can deliver window messages from inside its own waits, and the game must not
+// draw again from there, so they wait here until the frame is out.
+using Deferred = std::variant<MSG, SDL_Event>;
+
+// ponytail: a frame defers a handful at most; past this many the rest are dropped.
+static std::array<Deferred, 64> s_aDeferred;
+static size_t                   s_nDeferred = 0;
+
+static void Defer(const Deferred& deferred)
+{
+    if (s_nDeferred < s_aDeferred.size())
+    {
+        s_aDeferred[s_nDeferred++] = deferred;
+    }
+}
+
+static void ReplayDeferred()
+{
+    // Copied out first, as a replayed message can present a frame that defers more.
+    auto       aPending = s_aDeferred;
+    const auto nPending = s_nDeferred;
+
+    s_nDeferred = 0;
+
+    for (size_t i = 0; i < nPending; i++)
+    {
+        if (auto* const pMsg = std::get_if<MSG>(&aPending[i]))
+        {
+            HandleWin32Message(pMsg);
+        }
+        else
+        {
+            HandleWindowEvent(&std::get<SDL_Event>(aPending[i]));
+        }
+    }
+}
+
+// The input the game reads raw keeps its Win32 form: key codes, button flags and client points.
+static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
+{
+    if (pMsg->message == WM_QUIT)
+    {
+        s_bQuit = true;
+
+        return true;
+    }
+
+    if (pMsg->hwnd == 0 || pMsg->hwnd != g_gameApp.m_hWnd)
+    {
+        return true;
+    }
+
+    if (Presenter::Busy())
+    {
+        Defer(*pMsg);
+
+        return true;
+    }
+
+    ReplayDeferred();
+    HandleWin32Message(pMsg);
+
+    return true;
+}
+
+static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
+{
+    if (g_gameApp.m_hWnd == 0)
+    {
+        return true;
+    }
+
+    // ImGui queues what it is given, so it can take events mid-frame.
+    DebugMenu::OnEvent(DebugMenu::Event{ pEvent });
+
+    if (Presenter::Busy())
+    {
+        Defer(*pEvent);
+
+        return true;
+    }
+
+    ReplayDeferred();
+    HandleWindowEvent(pEvent);
 
     return true;
 }
@@ -458,6 +523,8 @@ void Window::Destroy()
 bool Window::Pump()
 {
     SDL_PumpEvents();
+
+    ReplayDeferred();
 
     // Everything the game needs was handled as it arrived.
     SDL_FlushEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST);
