@@ -111,12 +111,7 @@ public:
     // MFC's SafeStrlen.
     static int SafeStrlen(const char* psz)
     {
-        if (psz == 0)
-        {
-            return 0;
-        }
-
-        return lstrlenA(psz);
+        return psz == 0 ? 0 : lstrlenA(psz);
     }
 
     static void FormatAlloc(String* pString, const char* pszFormat, va_list argList);
