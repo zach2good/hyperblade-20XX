@@ -248,16 +248,16 @@ void CameraProjectionState::RotateY(float flAngle)
     else
     {
         double dOld = m_a[0][0];
-        m_a[0][0]   = flCos * dOld - flAngle * m_a[0][2];
-        m_a[0][2]   = (flCos * m_a[0][2]) + flAngle * dOld;
+        m_a[0][0]   = (float)(flCos * dOld - flAngle * m_a[0][2]);
+        m_a[0][2]   = (float)((flCos * m_a[0][2]) + flAngle * dOld);
 
         dOld      = m_a[1][0];
-        m_a[1][0] = flCos * dOld - flAngle * m_a[1][2];
-        m_a[1][2] = flCos * m_a[1][2] + (flAngle * dOld);
+        m_a[1][0] = (float)(flCos * dOld - flAngle * m_a[1][2]);
+        m_a[1][2] = (float)(flCos * m_a[1][2] + (flAngle * dOld));
 
         dOld      = m_a[2][0];
-        m_a[2][0] = flCos * dOld - flAngle * m_a[2][2];
-        m_a[2][2] = flCos * m_a[2][2] + flAngle * dOld;
+        m_a[2][0] = (float)(flCos * dOld - flAngle * m_a[2][2]);
+        m_a[2][2] = (float)(flCos * m_a[2][2] + flAngle * dOld);
 
         m_a[0][3] = m_a[0][0] * GetTranslateX() + (m_a[0][1] * m_vTranslate.y) + GetElement(0, 2) * m_vTranslate.z;
         m_a[1][3] = (GetElement(1, 0) * m_vTranslate.x + m_a[1][1] * m_vTranslate.y) + m_a[1][2] * m_vTranslate.z;
@@ -286,16 +286,16 @@ void CameraProjectionState::RotateX(float flAngle)
     else
     {
         double dOld = m_a[0][1];
-        m_a[0][1]   = flCos * dOld + flAngle * m_a[0][2];
-        m_a[0][2]   = flCos * m_a[0][2] - flAngle * dOld;
+        m_a[0][1]   = (float)(flCos * dOld + flAngle * m_a[0][2]);
+        m_a[0][2]   = (float)(flCos * m_a[0][2] - flAngle * dOld);
 
         dOld      = m_a[1][1];
-        m_a[1][1] = flCos * dOld + flAngle * m_a[1][2];
-        m_a[1][2] = flCos * m_a[1][2] - flAngle * dOld;
+        m_a[1][1] = (float)(flCos * dOld + flAngle * m_a[1][2]);
+        m_a[1][2] = (float)(flCos * m_a[1][2] - flAngle * dOld);
 
         dOld      = m_a[2][1];
-        m_a[2][1] = flCos * dOld + flAngle * m_a[2][2];
-        m_a[2][2] = flCos * m_a[2][2] - flAngle * dOld;
+        m_a[2][1] = (float)(flCos * dOld + flAngle * m_a[2][2]);
+        m_a[2][2] = (float)(flCos * m_a[2][2] - flAngle * dOld);
 
         m_a[0][3] = (m_a[0][0] * m_vTranslate.x + GetElement(0, 1) * m_vTranslate.y) + m_a[0][2] * m_vTranslate.z;
         m_a[1][3] = (m_a[1][0] * m_vTranslate.x + GetElement(1, 2) * m_vTranslate.z) + m_a[1][1] * m_vTranslate.GetY();
@@ -324,16 +324,16 @@ void CameraProjectionState::RotateZ(float flAngle)
     else
     {
         double dOld = m_a[0][0];
-        m_a[0][0]   = flCos * dOld + flAngle * m_a[0][1];
-        m_a[0][1]   = flCos * m_a[0][1] - flAngle * dOld;
+        m_a[0][0]   = (float)(flCos * dOld + flAngle * m_a[0][1]);
+        m_a[0][1]   = (float)(flCos * m_a[0][1] - flAngle * dOld);
 
         dOld      = m_a[1][0];
-        m_a[1][0] = flCos * dOld + flAngle * m_a[1][1];
-        m_a[1][1] = flCos * m_a[1][1] - flAngle * dOld;
+        m_a[1][0] = (float)(flCos * dOld + flAngle * m_a[1][1]);
+        m_a[1][1] = (float)(flCos * m_a[1][1] - flAngle * dOld);
 
         dOld      = m_a[2][0];
-        m_a[2][0] = flCos * dOld + flAngle * m_a[2][1];
-        m_a[2][1] = flCos * m_a[2][1] - flAngle * dOld;
+        m_a[2][0] = (float)(flCos * dOld + flAngle * m_a[2][1]);
+        m_a[2][1] = (float)(flCos * m_a[2][1] - flAngle * dOld);
 
         m_a[0][3] = m_a[0][0] * m_vTranslate.x + (m_a[0][1] * m_vTranslate.y) + m_a[0][2] * m_vTranslate.z;
         m_a[1][3] = GetElement(1, 0) * m_vTranslate.x + m_a[1][1] * m_vTranslate.y + m_a[1][2] * m_vTranslate.z;

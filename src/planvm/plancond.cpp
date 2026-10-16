@@ -540,7 +540,7 @@ void __cdecl PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, 
 // FUNCTION: HYPERX 0x0045e770
 void __cdecl PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 {
-    const PossessionSyncWord packed = { nArg };
+    const PossessionSyncWord packed = { (unsigned int)nArg };
 
     TeamBlock*    pTeam;
     PlayerObject* pObject;
@@ -604,7 +604,7 @@ extern int g_nPauseRequestStreak;
 // FUNCTION: HYPERX 0x0045e890
 void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const SystemSyncWord packed = { nArg };
+    const SystemSyncWord packed = { (unsigned int)nArg };
 
     int nTotal;
 

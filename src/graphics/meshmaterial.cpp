@@ -152,7 +152,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 else
                 {
                     int nCopy = NAME_COPY_MAX;
-                    nLength   = strlen(szValue);
+                    nLength   = (int)strlen(szValue);
 
                     if (nLength < nCopy)
                     {

@@ -737,5 +737,5 @@ void PlanState::Reinitialize()
 
 // One DECLARE_BEHAVIOR node, a leaf child of six and the string "x", then END_PLAN.
 PlanWord g_aReinitPlanImage[9] = {
-    { PLAN_MARKER_NODE }, { CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR }, { 2 }, { 6 }, { PLAN_MARKER_STRING }, { 'x' }, { 0 }, { PLAN_MARKER_NODE }, { CATEGORY_END_PLAN }
+    { (int)PLAN_MARKER_NODE }, { CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR }, { 2 }, { 6 }, { (int)PLAN_MARKER_STRING }, { 'x' }, { 0 }, { (int)PLAN_MARKER_NODE }, { (int)CATEGORY_END_PLAN }
 };

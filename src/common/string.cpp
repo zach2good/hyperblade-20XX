@@ -31,7 +31,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
     {
         if (*lpsz != '%' || *(lpsz = STEP(lpsz)) == '%')
         {
-            nMaxLen += _mbclen((const unsigned char*)lpsz);
+            nMaxLen += (int)_mbclen((const unsigned char*)lpsz);
             continue;
         }
 
@@ -142,7 +142,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
                 break;
 
             case 0x53:
-                nItemLen = wcslen((const wchar_t*)va_arg(argList, const unsigned short*));
+                nItemLen = (int)wcslen((const wchar_t*)va_arg(argList, const unsigned short*));
 
                 if (nItemLen < 1)
                 {
@@ -163,7 +163,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
             case 0x73 | FORCE_UNICODE:
             case 0x53 | FORCE_UNICODE:
-                nItemLen = wcslen((const wchar_t*)va_arg(argList, const unsigned short*));
+                nItemLen = (int)wcslen((const wchar_t*)va_arg(argList, const unsigned short*));
 
                 if (nItemLen < 1)
                 {
@@ -568,7 +568,7 @@ int __cdecl String::ExtractToken(const char* pszSource, LPSTR pszDest, const cha
 
             if (pszEnd != 0)
             {
-                nLength = pszEnd - pszStart;
+                nLength = (int)(pszEnd - pszStart);
 
                 if (nLength != 0 && lstrcpynA(pszDest, pszStart, nLength + 1) != 0)
                 {
@@ -581,7 +581,7 @@ int __cdecl String::ExtractToken(const char* pszSource, LPSTR pszDest, const cha
             }
             else
             {
-                nLength = strlen(pszStart);
+                nLength = (int)strlen(pszStart);
 
                 if (nLength != 0 && lstrcpynA(pszDest, pszStart, nLength + 1) != 0)
                 {

@@ -113,7 +113,7 @@ int CDDTextSurface::SetFont(const char* pszName, int nSize, const char* pszText,
 
     HGDIOBJ hOld = SelectObject(hdc, m_hFont);
 
-    GetTextExtentPoint32A(hdc, pszText, strlen(pszText), (LPSIZE)&m_ptSize);
+    GetTextExtentPoint32A(hdc, pszText, (int)strlen(pszText), (LPSIZE)&m_ptSize);
 
     m_ptSize.x += TEXT_PADDING;
 

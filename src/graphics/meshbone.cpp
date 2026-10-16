@@ -409,7 +409,7 @@ void MeshBone::DrawFaces()
     }
 
     pBlob            = m_pMesh;
-    const int nCount = pEntry - g_pFaceRecords;
+    const int nCount = (int)(pEntry - g_pFaceRecords);
 
     if (pBlob->SortsFaces() != 0)
     {

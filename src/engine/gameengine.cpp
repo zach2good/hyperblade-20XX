@@ -4730,7 +4730,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 
     memset(&block, 0, sizeof(block));
 
-    const int nLength = strlen(pszLabel);
+    const int nLength = (int)strlen(pszLabel);
 
     block.nTag = SAVE_BLOCK_TAG_VALUE;
 

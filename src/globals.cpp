@@ -661,7 +661,7 @@ class CameraObject*        g_pRadarCameraObject;
 extern int g_bDoubleResMode;
 int        g_bDoubleResMode;
 
-DisplayModeSize g_displayMode = { g_dwDisplayWidth, g_dwDisplayHeight };
+DisplayModeSize g_displayMode = { (int)g_dwDisplayWidth, (int)g_dwDisplayHeight };
 
 // Bit twenty six of the driver capability word.
 // GLOBAL: HYPERX 0x004cee80

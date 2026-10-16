@@ -42,7 +42,7 @@ void JumboTextList::FreeAll()
 // FUNCTION: HYPERX 0x0046bfa0
 int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
-    srand(time(0));
+    srand((unsigned int)time(0));
 
     const char* pszRow = m_ppszText[rand() % m_nCount];
 

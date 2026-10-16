@@ -1434,7 +1434,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
     // STRING: HYPERX 0x004c6f94
     if (_mbsspnp((const unsigned char*)pszText, (const unsigned char*)"xXABCDEFabcdef0123456789.+-_") == 0)
     {
-        const int nLength = strlen(pszText) + 1;
+        const int nLength = (int)strlen(pszText) + 1;
 
         char* pszCopy = new char[nLength];
 

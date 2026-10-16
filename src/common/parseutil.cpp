@@ -71,7 +71,7 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
 
     if (pszEnd == 0)
     {
-        nLength = strlen(pszStart);
+        nLength = (int)strlen(pszStart);
 
         *ppszNext = 0;
     }
@@ -104,7 +104,7 @@ char* __cdecl ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
     if (pszText != 0)
     {
-        int nLeft = strlen(pszText);
+        int nLeft = (int)strlen(pszText);
 
         if (nLeft != 0)
         {

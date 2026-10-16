@@ -838,11 +838,11 @@ int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int*
 {
     struct _finddata_t data;
 
-    const long nHandle = _findfirst(pszPath, &data);
+    const intptr_t nHandle = _findfirst(pszPath, &data);
 
     if (nHandle != FIND_FAILED)
     {
-        *pnWriteTime = data.time_write;
+        *pnWriteTime = (int)data.time_write;
         *pnSize      = data.size;
 
         _findclose(nHandle);

@@ -546,7 +546,7 @@ void Network::OnAcceptPlayerSlot(int nPlayer)
             NetSetupDialog::CheckPlayerReadyButton(g_pGameSession->pLeadPlayer->pState->nSlotFlags);
 
             // STRING: HYPERX 0x004c5e34
-            NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for remote players", _mbslen((const unsigned char*)"SYSTEM: Waiting for remote players"));
+            NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for remote players", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for remote players"));
 
             g_nNetSetupUpdating = 0;
 

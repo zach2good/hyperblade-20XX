@@ -217,7 +217,7 @@ int __cdecl D3DRend::SetupRenderStates(IDirect3DDevice* pDevice, IDirect3DViewpo
 
     data.dwSize              = sizeof(data);
     data.dwInstructionOffset = 0;
-    data.dwInstructionLength = p - pStart;
+    data.dwInstructionLength = (DWORD)(p - pStart);
 
     g_hrD3DResult = pBuffer->SetExecuteData(&data);
 
@@ -401,7 +401,7 @@ int D3DRend::BuildAndSubmitExecuteBuffer(int nVertexCount)
 
         OP_TRIANGLE_LIST((short)g_d3dState.nBatchTriangleCount, pWrite);
 
-        g_d3dState.nBatchInstructionOffset = pWrite - pLocked;
+        g_d3dState.nBatchInstructionOffset = (int)(pWrite - pLocked);
 
         if (pWrite != (char*)g_d3dState.pBatchTriangleBase)
         {
@@ -452,8 +452,8 @@ int D3DRend::BuildAndSubmitExecuteBuffer(int nVertexCount)
 
     g_d3dState.d3dExecuteData.dwSize              = sizeof(g_d3dState.d3dExecuteData);
     g_d3dState.d3dExecuteData.dwVertexCount       = nVertexCount;
-    g_d3dState.d3dExecuteData.dwInstructionOffset = pStream - pLocked;
-    g_d3dState.d3dExecuteData.dwInstructionLength = pWrite - pStream;
+    g_d3dState.d3dExecuteData.dwInstructionOffset = (DWORD)(pStream - pLocked);
+    g_d3dState.d3dExecuteData.dwInstructionLength = (DWORD)(pWrite - pStream);
 
     g_hrD3DResult = g_d3dState.pExecuteBuffer->SetExecuteData(&g_d3dState.d3dExecuteData);
 

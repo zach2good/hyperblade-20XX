@@ -269,7 +269,7 @@ void Widget::Draw(HDC hdc, HPALETTE hPalette, int)
 
     if (m_pszText != 0)
     {
-        GDI::DrawTransparentText(hdc, color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, strlen(m_pszText), m_nTextFlag);
+        GDI::DrawTransparentText(hdc, color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, (int)strlen(m_pszText), m_nTextFlag);
     }
 }
 

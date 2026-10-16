@@ -116,7 +116,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             return 0;
 
         case WM_ACTIVATEAPP:
-            WndProc::OnActivate(hWnd, wParam, lParam);
+            WndProc::OnActivate(hWnd, (unsigned int)wParam, lParam);
             return 0;
 
         case WM_COMMAND:
@@ -126,7 +126,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_MOUSEMOVE:
             if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
             {
-                g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, wParam, Window::ToMenuPoint(hWnd, lParam));
+                g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, (unsigned int)wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
             }
 
             return 0;
@@ -157,9 +157,9 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
                 {
                     // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
-                    if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown(wParam) == -1)
+                    if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown((unsigned int)wParam) == -1)
                     {
-                        GameApp::HandleGlobalKeyEvent(hWnd, wParam);
+                        GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
                     }
 
                     return 0;
@@ -175,11 +175,11 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                         return 0;
                     }
 
-                    g_pActiveScreen->HandleKeyMessage(WM_KEYDOWN, wParam, lParam);
+                    g_pActiveScreen->HandleKeyMessage(WM_KEYDOWN, (unsigned int)wParam, (unsigned int)lParam);
                 }
                 else
                 {
-                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, Window::ToMenuPoint(hWnd, lParam));
+                    g_pActiveScreen->OnMouseMessage(uMsg, (unsigned int)wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
                 }
 
                 return 0;
@@ -187,7 +187,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 
             if (wParam == 'Q' || wParam == VK_ESCAPE || wParam == VK_PAUSE)
             {
-                GameApp::HandleGlobalKeyEvent(hWnd, wParam);
+                GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
             }
 
             return 0;
@@ -231,12 +231,12 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             {
                 if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
                 {
-                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, Window::ToMenuPoint(hWnd, lParam));
+                    g_pActiveScreen->OnMouseMessage(uMsg, (unsigned int)wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
                 }
             }
             else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
             {
-                g_pInputDevice->HandleKeyUp(wParam);
+                g_pInputDevice->HandleKeyUp((unsigned int)wParam);
                 return 0;
             }
 

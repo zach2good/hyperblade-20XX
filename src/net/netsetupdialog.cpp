@@ -1179,21 +1179,22 @@ unsigned int __cdecl NetSetupDialog::SendChatMessage(HWND hDlg, unsigned int, un
     }
     else
     {
+        // The original also passed the player ID, which this format never reads.
         // STRING: HYPERX 0x004c5df8
-        sprintf(szLine, "????: ", g_pGameSession->apPlayers[SESSION_LOCAL_PLAYER]->pState->nPlayerId);
+        sprintf(szLine, "????: ");
     }
 
     g_bChatEntryActive  = 0;
     g_nNetSetupUpdating = 1;
 
-    if (GetDlgItemTextA(hDlg, ID_CHAT_ENTRY, &szLine[strlen(szLine)], CHAT_ROOM - strlen(szLine)) == 0)
+    if (GetDlgItemTextA(hDlg, ID_CHAT_ENTRY, &szLine[strlen(szLine)], (int)(CHAT_ROOM - strlen(szLine))) == 0)
     {
         g_nNetSetupUpdating = 0;
 
         return 1;
     }
 
-    const int nLength = strlen(szLine);
+    const int nLength = (int)strlen(szLine);
 
     SendMessageA(GetDlgItem(hDlg, ID_CHAT_ENTRY), WM_SETTEXT, 0, (LPARAM) "");
 

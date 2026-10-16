@@ -145,7 +145,7 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
 
     *pDst = 0;
 
-    return _write(m_fd, szOut, strlen(szOut));
+    return _write(m_fd, szOut, (unsigned int)strlen(szOut));
 }
 
 // FUNCTION: HYPERX 0x00440670

@@ -571,7 +571,7 @@ int Screen::PaintToWindow()
 
         if (pszCaption != 0)
         {
-            GDI::DrawTransparentText(hdc, 0xffff, m_nCaptionX, m_nCaptionY, pszCaption, strlen(pszCaption), 0);
+            GDI::DrawTransparentText(hdc, 0xffff, m_nCaptionX, m_nCaptionY, pszCaption, (int)strlen(pszCaption), 0);
         }
 
         for (nSlot = 0; nSlot <= m_nLastWidget; nSlot++)

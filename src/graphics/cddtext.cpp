@@ -33,7 +33,7 @@ int CDDText::Draw()
 
         const COLORREF oldColor = SetTextColor(g_hTextDC, m_color);
 
-        TextOutA(g_hTextDC, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_pszText, strlen(m_pszText));
+        TextOutA(g_hTextDC, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_pszText, (int)strlen(m_pszText));
 
         SetTextColor(g_hTextDC, oldColor);
 
@@ -90,7 +90,7 @@ int CDDText::SetText(const char* pszText, COLORREF color)
                 hOldFont = SelectObject(hdc, m_hFont);
             }
 
-            if (GetTextExtentPoint32A(hdc, m_pszText, strlen(m_pszText), &size) != 0)
+            if (GetTextExtentPoint32A(hdc, m_pszText, (int)strlen(m_pszText), &size) != 0)
             {
                 m_ptSize.x = size.cx;
                 m_ptSize.y = size.cy;
