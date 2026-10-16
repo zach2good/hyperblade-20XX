@@ -839,23 +839,7 @@ char PlanVM::SaveBinary(char* pszName)
     char      szPath[PATH_CHARS];
     int       nWord;
 
-    if (GetModuleFileNameA(0, szPath, PATH_CHARS) > 0)
-    {
-        char* const pszSeparator = strrchr(szPath, '\\');
-
-        if (pszSeparator != 0)
-        {
-            *CharNextA(pszSeparator) = 0;
-        }
-    }
-
-    // STRING: HYPERX 0x004c6d60
-    strcat(szPath, "Data\\Plans\\");
-
-    strcat(szPath, pszName);
-
-    // STRING: HYPERX 0x004c6d58
-    strcat(szPath, ".pbn");
+    snprintf(szPath, sizeof(szPath), "%s\\%s.pbn", g_gameApp.m_strPlansPath.m_str.m_pchData, pszName);
 
     if (file.m_file.Open(szPath, FILE_MODE_WRITE) != 0)
     {
@@ -942,22 +926,7 @@ char PlanVM::LoadText(short nCamera, char* pszName)
     char      szPath[PLAN_PATH_CHARS];
     OwnedFile file;
 
-    if (GetModuleFileNameA(0, szPath, PLAN_PATH_CHARS) > 0)
-    {
-        char* const pSeparator = strrchr(szPath, '\\');
-
-        if (pSeparator != 0)
-        {
-            *CharNextA(pSeparator) = '\0';
-        }
-    }
-
-    // STRING: HYPERX 0x004c6d60
-    strcat(szPath, "Data\\Plans\\");
-    strcat(szPath, pszName);
-
-    // STRING: HYPERX 0x004c6dd4
-    strcat(szPath, ".txt");
+    snprintf(szPath, sizeof(szPath), "%s\\%s.txt", g_gameApp.m_strPlansPath.m_str.m_pchData, pszName);
 
     m_nCamera = nCamera;
 

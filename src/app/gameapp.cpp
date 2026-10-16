@@ -241,21 +241,12 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
 
     PathString strDirectory(MAX_PATH);
 
-    char* const pszBuffer = strDirectory.m_str.Reserve(MAX_PATH);
+    // SDL's base path ends in a separator.
+    const char* const pszBase = SDL_GetBasePath();
 
-    if (pszBuffer != 0)
+    if (pszBase != 0)
     {
-        if (GetModuleFileNameA(0, pszBuffer, MAX_PATH) > 0)
-        {
-            char* const pszSlash = (char*)_mbsrchr((unsigned char*)pszBuffer, '\\');
-
-            if (pszSlash != 0)
-            {
-                *CharNextA(pszSlash) = 0;
-            }
-        }
-
-        strDirectory.m_str.SetLength(-1);
+        strDirectory.m_str.Assign(String::SafeStrlen(pszBase), pszBase);
     }
 
     // STRING: HYPERX 0x004bbad8
