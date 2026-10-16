@@ -1,8 +1,8 @@
 """Write the original's resources out as a readable .rc script, with its icons as .ico files.
 
 Covers the menu, the dialogs, the string tables, the version block, the icon groups and the
-combo box lists in type 240 (RT_DLGINIT). The build itself links the raw leaves through
-tools/extract_resources.py; this is for reading them. Nothing written here is committed.
+combo box lists in type 240 (RT_DLGINIT). The game needs none of these at run time; this is for
+reading them. Nothing written here is committed.
 
     python tools/extract_rc.py                        # into build/extracted/resources
     python tools/extract_rc.py <original.exe> <output>
@@ -14,10 +14,62 @@ import struct
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from extract_resources import resource_leaves
+from peinfo import PEFile
 from reference import reference_path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+class Leaf:
+    def __init__(self, type_id, name_id, language, offset, data):
+        self.type_id = type_id
+        self.name_id = name_id
+        self.language = language
+        self.offset = offset
+        self.data = data
+
+
+def read_directory(blob, offset, path, leaves):
+    named, ids = struct.unpack_from("<HH", blob, offset + 12)
+    entry = offset + 16
+
+    for _ in range(named + ids):
+        key, child = struct.unpack_from("<II", blob, entry)
+        entry += 8
+
+        if key & 0x80000000:
+            at = key & 0x7FFFFFFF
+            length = struct.unpack_from("<H", blob, at)[0]
+            key = blob[at + 2:at + 2 + length * 2].decode("utf-16-le")
+
+        path.append(key)
+
+        if child & 0x80000000:
+            read_directory(blob, child & 0x7FFFFFFF, path, leaves)
+        else:
+            rva, size = struct.unpack_from("<II", blob, child)[:2]
+            at = rva - path[0]
+            leaves.append(Leaf(path[1], path[2], path[3], at, blob[at:at + size]))
+
+        path.pop()
+
+
+def resource_leaves(path):
+    image = PEFile(path)
+    section = None
+
+    for candidate in image.sections:
+        if candidate["name"] == ".rsrc":
+            section = candidate
+
+    if not section:
+        raise SystemExit("%s has no .rsrc section" % path)
+
+    blob = image.data[section["rawoff"]:section["rawoff"] + section["rawsize"]]
+    leaves = []
+    read_directory(blob, 0, [section["vaddr"]], leaves)
+
+    return sorted(leaves, key=lambda leaf: leaf.offset)
 
 RT_ICON = 3
 RT_MENU = 4

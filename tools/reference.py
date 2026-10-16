@@ -16,8 +16,8 @@ USER_FILE = os.path.join(ROOT, "hyperx-user.yml")
 
 MISSING = """no copy of the original executable is configured.
 
-This build reads the resources out of your own copy of the game, because the repository
-carries none of the original's content. Write %s:
+This tool reads your own copy of the game, either release, because the repository carries
+none of the original's content. Write %s:
 
 path: C:/path/to/your/HYPERX.EXE
 
