@@ -50,15 +50,15 @@ The software path rescales UVs in place into texel units when it loads its textu
 
 ## Switches
 
-One settings struct, saved under `[Graphics]` in `booie.ini`. Keys toggle it for now, and the
-ImGui debug menu will later. The software renderer ignores everything but the renderer choice.
+One settings struct, saved under `[Graphics]` in `booie.ini`. F2 opens the ImGui debug menu,
+which toggles them. The software renderer ignores everything but the renderer choice.
 
 | Switch | Values |
 | --- | --- |
-| Renderer | software, hardware (F2) |
-| Textures | off, on (F3) |
-| Texture filtering | nearest, linear (F7) |
-| Textured drome | off, on (F8) |
+| Renderer | software, hardware |
+| Textures | off, on |
+| Texture filtering | nearest, linear |
+| Textured drome | off, on |
 | Shading | flat, smooth |
 | Lights | original, several |
 | Shadows | original, shadow-mapped |

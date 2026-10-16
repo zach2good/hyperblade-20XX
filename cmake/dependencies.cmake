@@ -61,3 +61,24 @@ CPMAddPackage(
     DOWNLOAD_ONLY YES)
 
 find_program(DXC_EXECUTABLE dxc PATHS "${dxc_SOURCE_DIR}/bin/x64" NO_DEFAULT_PATH REQUIRED)
+
+# Dear ImGui draws the debug menu, through SDL's renderer.
+set(IMGUI_VERSION 1.92.9b)
+
+CPMAddPackage(
+    NAME imgui
+    VERSION ${IMGUI_VERSION}
+    URL "https://github.com/ocornut/imgui/archive/refs/tags/v${IMGUI_VERSION}.tar.gz"
+    URL_HASH SHA256=21d8a0a565e85dce943e375db00812c2f3f0ab21f3f0f7964e364a63422d7f99
+    DOWNLOAD_ONLY YES)
+
+add_library(imgui STATIC
+    "${imgui_SOURCE_DIR}/imgui.cpp"
+    "${imgui_SOURCE_DIR}/imgui_draw.cpp"
+    "${imgui_SOURCE_DIR}/imgui_tables.cpp"
+    "${imgui_SOURCE_DIR}/imgui_widgets.cpp"
+    "${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp"
+    "${imgui_SOURCE_DIR}/backends/imgui_impl_sdlrenderer3.cpp")
+target_include_directories(imgui SYSTEM PUBLIC "${imgui_SOURCE_DIR}" "${imgui_SOURCE_DIR}/backends")
+target_link_libraries(imgui PUBLIC SDL3::SDL3)
+target_compile_definitions(imgui PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)

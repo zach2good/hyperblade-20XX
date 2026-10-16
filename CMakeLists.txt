@@ -338,6 +338,7 @@ set(HYPERX_SOURCES
     src/ui/buttonwidget.cpp
     src/ui/cddsurfaceowner.cpp
     src/ui/debughud.cpp
+    src/ui/debugmenu.cpp
     src/ui/dialog.cpp
     src/ui/displaywidget.cpp
     src/ui/flipbookwidget.cpp
@@ -383,7 +384,7 @@ set(HYPERX_SOURCES
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
 target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
-target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio)
+target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio imgui)
 
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
 target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
@@ -448,7 +449,7 @@ add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects> res/hyperblade_20XX
 set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
-target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio
+target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui
     kernel32 user32 gdi32 winmm version ddraw dxguid)
 target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
 

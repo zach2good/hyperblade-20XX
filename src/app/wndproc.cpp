@@ -21,7 +21,7 @@
 #include "engine/gameengine.h"
 #include "engine/game.h"
 #include "app/window.h"
-#include "graphics/graphicssettings.h"
+#include "ui/debugmenu.h"
 
 namespace WndProc
 {
@@ -141,26 +141,10 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 return 0;
             }
 
-            // F2 swaps the renderer anywhere, before a match or a menu sees the key.
+            // F2 opens the debug menu anywhere, before a match or a menu sees the key.
             if (uMsg == WM_KEYDOWN && wParam == VK_F2)
             {
-                GraphicsSettings::ToggleRenderer();
-
-                return 0;
-            }
-
-            // F3 turns the hardware renderer's textures on and off.
-            if (uMsg == WM_KEYDOWN && wParam == VK_F3)
-            {
-                GraphicsSettings::ToggleTextures();
-
-                return 0;
-            }
-
-            // F7 swaps nearest and linear texture filtering, as the original's did.
-            if (uMsg == WM_KEYDOWN && wParam == VK_F7)
-            {
-                GraphicsSettings::ToggleLinearFiltering();
+                DebugMenu::Toggle();
 
                 return 0;
             }

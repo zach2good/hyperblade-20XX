@@ -13,6 +13,7 @@
 #include "ui/mainwindow.h"
 #include "app/appglobals.h"
 #include "ui/screen.h"
+#include "ui/debugmenu.h"
 #include <SDL3/SDL.h>
 #include <array>
 #include <span>
@@ -230,13 +231,31 @@ static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
 
     switch (pMsg->message)
     {
+        // F2 opens and closes the debug menu, so it always gets through.
         case WM_KEYDOWN:
-        case WM_KEYUP:
+            if (DebugMenu::WantsKeyboard() && pMsg->wParam != VK_F2)
+            {
+                break;
+            }
+
+            WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
+            break;
+
         case WM_LBUTTONDOWN:
-        case WM_LBUTTONUP:
         case WM_RBUTTONDOWN:
-        case WM_RBUTTONUP:
         case WM_MOUSEMOVE:
+            if (DebugMenu::WantsMouse())
+            {
+                break;
+            }
+
+            WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
+            break;
+
+        // Releases always reach the game, so no key or button is left held.
+        case WM_KEYUP:
+        case WM_LBUTTONUP:
+        case WM_RBUTTONUP:
         case WM_COMMAND:
             WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
             break;
@@ -258,6 +277,8 @@ static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
     {
         return true;
     }
+
+    DebugMenu::OnEvent(DebugMenu::Event{ pEvent });
 
     switch (pEvent->type)
     {

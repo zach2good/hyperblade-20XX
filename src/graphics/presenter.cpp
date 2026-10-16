@@ -5,6 +5,7 @@
 #include "app/window.h"
 #include "graphics/graphicssettings.h"
 #include "graphics/hwrenderer.h"
+#include "ui/debugmenu.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 
@@ -196,6 +197,8 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
         }
     }
 
+    DebugMenu::Draw(DebugMenu::Renderer{ s_pRenderer });
+
     SDL_RenderPresent(s_pRenderer);
 }
 
@@ -220,6 +223,8 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
     SDL_SetRenderDrawColor(s_pRenderer, 0, 0, 0, 0xff);
     SDL_RenderClear(s_pRenderer);
     SDL_RenderTexture(s_pRenderer, s_pCanvas, 0, &rcCanvas);
+
+    DebugMenu::Draw(DebugMenu::Renderer{ s_pRenderer });
 
     SDL_RenderPresent(s_pRenderer);
 }
