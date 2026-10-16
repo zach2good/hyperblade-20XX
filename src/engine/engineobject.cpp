@@ -413,7 +413,9 @@ void EngineObject::ComputeBoundingSphere()
                 pVert = pMesh->Vertices();
             }
 
-            for (iVert = 0; iVert < pMesh->nVertexCount; iVert++)
+            const short nVertexCount = pMesh->nVertexCount;
+
+            for (iVert = 0; iVert < nVertexCount; iVert++)
             {
                 nTotal++;
 
@@ -464,7 +466,7 @@ void EngineObject::ComputeBoundingSphere()
 
                 vP.x = vQ.x * pBone->m_world.m_a[0][0] + vQ.y * pBone->m_world.m_a[0][1] + vQ.z * pBone->m_world.m_a[0][2] + pBone->m_world.m_a[0][3];
                 vP.y = vQ.x * pBone->m_world.m_a[1][0] + (vQ.y * pBone->m_world.m_a[1][1] + vQ.z * pBone->m_world.m_a[1][2]) + pBone->m_world.m_a[1][3];
-                vP.z = vQ.x * pBone->m_world.GetElement(2, 0) + vQ.y * pBone->m_world.m_a[2][1] + vQ.z * pBone->m_world.m_a[2][2] + pBone->m_world.m_a[2][3];
+                vP.z = vQ.x * pBone->m_world.m_a[2][0] + vQ.y * pBone->m_world.m_a[2][1] + vQ.z * pBone->m_world.m_a[2][2] + pBone->m_world.m_a[2][3];
 
                 const float flDx = vP.x - m_vCentre.x;
                 const float flDy = vP.y - m_vCentre.y;
