@@ -19,26 +19,47 @@ Renderer Active();
 // Swaps the renderer and saves the choice; does nothing without a GPU device.
 void ToggleRenderer();
 
-// Whether the hardware renderer draws the textured models with their textures, or the shaded
-// models in their palette colours as the software renderer does.
-bool Textures();
-void ToggleTextures();
+enum class Switch
+{
+    // The textured models with their textures, or the shaded models in their palette colours.
+    TEXTURES,
 
-// Nearest or linear texture filtering, as the original's F7 toggled.
-bool LinearFiltering();
-void ToggleLinearFiltering();
+    // Nearest or linear texture filtering, as the original's F7 toggled.
+    LINEAR_FILTERING,
 
-// Draws a match as often as the loop runs, blending between the 30 Hz ticks, or once a tick.
-bool Uncapped();
-void ToggleUncapped();
+    // Draws a match as often as the loop runs, blending between the 30 Hz ticks, or once a tick.
+    UNCAPPED,
 
-// The textured models at their most detailed, or stepped down with distance as the engine picks.
-bool FullDetail();
-void ToggleFullDetail();
+    // The textured models at their most detailed, or stepped down with distance as the engine picks.
+    FULL_DETAIL,
 
-// Faces lit flat, as the original did, or smoothly across the edges that do not crease.
-bool SmoothShading();
-void ToggleSmoothShading();
+    // Faces lit flat, as the original did, or smoothly across the edges that do not crease.
+    SMOOTH_SHADING,
+
+    // The scene's three lights, at azimuths 303, 54 and 180. The original lights each face by
+    // one of them; a light switched off lights nothing.
+    LIGHT_303,
+    LIGHT_54,
+    LIGHT_180,
+
+    // Each face lit by the one light the original picks, or filled in by the other lights too.
+    SEVERAL_LIGHTS,
+
+    // A point light carried by the rok, added over the rest.
+    ROK_LIGHT,
+
+    // The two lights above the arena cast shadow maps, in place of the original's shadow meshes.
+    SHADOW_MAPS,
+
+    COUNT
+};
+
+bool On(Switch which);
+void Toggle(Switch which);
+
+// How far the rok's light reaches, in world units. Not saved; the debug menu tunes it.
+float RokLightRadius();
+void  SetRokLightRadius(float flRadius);
 
 } // namespace GraphicsSettings
 

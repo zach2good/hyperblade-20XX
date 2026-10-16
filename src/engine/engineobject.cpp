@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include "graphics/hwrenderer.h"
+#include "graphics/graphicssettings.h"
 #include "graphics/hwmodels.h"
 #include <vector>
 #include "engine/messageids.h"
@@ -1510,6 +1511,12 @@ void EngineObject::ApplyRenderSlotPose()
 // The posed shadow, laid on the arena in world space, goes to the GPU with the camera alone.
 void EngineObject::SubmitShadowToHardware() const
 {
+    // Shadow maps stand in for the shadow meshes.
+    if (GraphicsSettings::On(GraphicsSettings::Switch::SHADOW_MAPS))
+    {
+        return;
+    }
+
     const TransformedVertex* const pPosed = &g_pModelVertexBuf[m_wShadowCount];
 
     auto points = std::vector<Vec3>((size_t)m_wShadowCount);
@@ -1540,9 +1547,16 @@ void EngineObject::SubmitShadowToHardware() const
         draw.aPixelFromModel[15] = 1.0f;
     }
 
-    draw.aLightDir[0] = g_lightDirs[0].dir.x;
-    draw.aLightDir[1] = g_lightDirs[0].dir.y;
-    draw.aLightDir[2] = g_lightDirs[0].dir.z;
+    // The points are already in the world, lit by the light the transparent pass picked.
+    draw.aWorldFromModel[0]  = 1.0f;
+    draw.aWorldFromModel[5]  = 1.0f;
+    draw.aWorldFromModel[10] = 1.0f;
+    draw.aWorldFromModel[15] = 1.0f;
+
+    draw.aLightDirs[0][0] = g_lightDirs[0].dir.x;
+    draw.aLightDirs[0][1] = g_lightDirs[0].dir.y;
+    draw.aLightDirs[0][2] = g_lightDirs[0].dir.z;
+    draw.aLightDirs[0][3] = 1.0f;
 
     draw.nViewportX      = g_nViewportOriginX;
     draw.nViewportY      = g_nViewportOriginY;

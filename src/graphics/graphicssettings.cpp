@@ -3,25 +3,38 @@
 #include "graphics/presenter.h"
 #include "engine/gameoptions.h"
 #include "globals.h"
+#include <array>
 
 namespace
 {
 
-constexpr auto SECTION       = "Graphics";
-constexpr auto RENDERER_KEY  = "Renderer";
-constexpr auto TEXTURES_KEY  = "Textures";
-constexpr auto FILTERING_KEY = "LinearFiltering";
-constexpr auto UNCAPPED_KEY  = "Uncapped";
-constexpr auto DETAIL_KEY    = "FullDetail";
-constexpr auto SMOOTH_KEY    = "SmoothShading";
+constexpr auto SECTION      = "Graphics";
+constexpr auto RENDERER_KEY = "Renderer";
 
-auto s_bLoaded   = false;
-auto s_renderer  = GraphicsSettings::Renderer::SOFTWARE;
-auto s_bTextures = true;
-auto s_bLinear   = false;
-auto s_bUncapped = false;
-auto s_bDetail   = true;
-auto s_bSmooth   = false;
+struct SwitchInfo
+{
+    const char* pszKey;
+    bool        bDefault;
+};
+
+constexpr auto SWITCHES = std::array<SwitchInfo, (size_t)GraphicsSettings::Switch::COUNT>{ {
+    { "Textures", true },
+    { "LinearFiltering", false },
+    { "Uncapped", false },
+    { "FullDetail", true },
+    { "SmoothShading", false },
+    { "Light303", true },
+    { "Light54", true },
+    { "Light180", true },
+    { "SeveralLights", false },
+    { "RokLight", false },
+    { "ShadowMaps", false },
+} };
+
+auto s_bLoaded      = false;
+auto s_renderer     = GraphicsSettings::Renderer::SOFTWARE;
+auto s_abOn         = std::array<bool, SWITCHES.size()>{};
+auto s_flRokLightRadius = 200.0f;
 
 void Load()
 {
@@ -37,11 +50,10 @@ void Load()
         s_renderer = GraphicsSettings::Renderer::HARDWARE;
     }
 
-    s_bTextures = g_pGameOptions->ReadInt(SECTION, TEXTURES_KEY, 1) != 0;
-    s_bLinear   = g_pGameOptions->ReadInt(SECTION, FILTERING_KEY, 0) != 0;
-    s_bUncapped = g_pGameOptions->ReadInt(SECTION, UNCAPPED_KEY, 0) != 0;
-    s_bDetail   = g_pGameOptions->ReadInt(SECTION, DETAIL_KEY, 1) != 0;
-    s_bSmooth   = g_pGameOptions->ReadInt(SECTION, SMOOTH_KEY, 0) != 0;
+    for (size_t i = 0; i < SWITCHES.size(); i++)
+    {
+        s_abOn[i] = g_pGameOptions->ReadInt(SECTION, SWITCHES[i].pszKey, (int)SWITCHES[i].bDefault) != 0;
+    }
 }
 
 } // namespace
@@ -80,14 +92,20 @@ void GraphicsSettings::ToggleRenderer()
     g_pGameOptions->WriteInt(SECTION, RENDERER_KEY, (int)s_renderer);
 }
 
-bool GraphicsSettings::Textures()
+bool GraphicsSettings::On(Switch which)
 {
     Load();
 
-    return s_bTextures;
+    // Before the options load, every switch reads as its default.
+    if (!s_bLoaded)
+    {
+        return SWITCHES[(size_t)which].bDefault;
+    }
+
+    return s_abOn[(size_t)which];
 }
 
-void GraphicsSettings::ToggleTextures()
+void GraphicsSettings::Toggle(Switch which)
 {
     Load();
 
@@ -96,91 +114,19 @@ void GraphicsSettings::ToggleTextures()
         return;
     }
 
-    s_bTextures = !s_bTextures;
+    auto& bOn = s_abOn[(size_t)which];
 
-    g_pGameOptions->WriteInt(SECTION, TEXTURES_KEY, (int)s_bTextures);
+    bOn = !bOn;
+
+    g_pGameOptions->WriteInt(SECTION, SWITCHES[(size_t)which].pszKey, (int)bOn);
 }
 
-bool GraphicsSettings::LinearFiltering()
+float GraphicsSettings::RokLightRadius()
 {
-    Load();
-
-    return s_bLinear;
+    return s_flRokLightRadius;
 }
 
-void GraphicsSettings::ToggleLinearFiltering()
+void GraphicsSettings::SetRokLightRadius(float flRadius)
 {
-    Load();
-
-    if (g_pGameOptions == 0)
-    {
-        return;
-    }
-
-    s_bLinear = !s_bLinear;
-
-    g_pGameOptions->WriteInt(SECTION, FILTERING_KEY, (int)s_bLinear);
-}
-
-bool GraphicsSettings::Uncapped()
-{
-    Load();
-
-    return s_bUncapped;
-}
-
-void GraphicsSettings::ToggleUncapped()
-{
-    Load();
-
-    if (g_pGameOptions == 0)
-    {
-        return;
-    }
-
-    s_bUncapped = !s_bUncapped;
-
-    g_pGameOptions->WriteInt(SECTION, UNCAPPED_KEY, (int)s_bUncapped);
-}
-
-bool GraphicsSettings::FullDetail()
-{
-    Load();
-
-    return s_bDetail;
-}
-
-void GraphicsSettings::ToggleFullDetail()
-{
-    Load();
-
-    if (g_pGameOptions == 0)
-    {
-        return;
-    }
-
-    s_bDetail = !s_bDetail;
-
-    g_pGameOptions->WriteInt(SECTION, DETAIL_KEY, (int)s_bDetail);
-}
-
-bool GraphicsSettings::SmoothShading()
-{
-    Load();
-
-    return s_bSmooth;
-}
-
-void GraphicsSettings::ToggleSmoothShading()
-{
-    Load();
-
-    if (g_pGameOptions == 0)
-    {
-        return;
-    }
-
-    s_bSmooth = !s_bSmooth;
-
-    g_pGameOptions->WriteInt(SECTION, SMOOTH_KEY, (int)s_bSmooth);
+    s_flRokLightRadius = flRadius;
 }

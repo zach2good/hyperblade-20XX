@@ -392,7 +392,8 @@ target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_N
     DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
 target_compile_options(hyperx_objects PRIVATE /W3 /permissive /utf-8 /EHsc)
 
-hyperx_add_shaders(hyperx_objects shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl)
+set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
+hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
 
 # Decodes every MDM1 file in the game data against its recorded size.
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
@@ -427,7 +428,7 @@ add_executable(hwpipeline_check tests/hwpipeline_check.cpp src/graphics/hwpipeli
 target_include_directories(hwpipeline_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(hwpipeline_check PRIVATE /W3 /utf-8 /EHsc)
 target_link_libraries(hwpipeline_check PRIVATE SDL3::SDL3)
-hyperx_add_shaders(hwpipeline_check shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl)
+hyperx_add_shaders(hwpipeline_check ${HYPERX_SHADERS})
 add_custom_command(TARGET hwpipeline_check POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:hwpipeline_check> $<TARGET_FILE_DIR:hwpipeline_check>
     COMMAND_EXPAND_LISTS

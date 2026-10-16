@@ -39,16 +39,20 @@ void Ready(SDL_Renderer* pRenderer)
     s_bReady = true;
 }
 
-void Checkbox(const char* pszLabel, bool bValue, void (*pToggle)())
+void Checkbox(const char* pszLabel, GraphicsSettings::Switch which)
 {
-    if (ImGui::Checkbox(pszLabel, &bValue))
+    auto bOn = GraphicsSettings::On(which);
+
+    if (ImGui::Checkbox(pszLabel, &bOn))
     {
-        pToggle();
+        GraphicsSettings::Toggle(which);
     }
 }
 
 void Build()
 {
+    using GraphicsSettings::Switch;
+
     ImGui::SetNextWindowPos(ImVec2(16, 16), ImGuiCond_FirstUseEver);
 
     ImGui::Begin("HyperBlade 20XX", &s_bOpen, ImGuiWindowFlags_AlwaysAutoResize);
@@ -57,20 +61,48 @@ void Build()
 
     ImGui::SeparatorText("Renderer");
 
+    const auto bHardware = GraphicsSettings::Active() == GraphicsSettings::Renderer::HARDWARE;
+
     ImGui::BeginDisabled(!Presenter::HasGPU());
-    Checkbox("Hardware", GraphicsSettings::Active() == GraphicsSettings::Renderer::HARDWARE, GraphicsSettings::ToggleRenderer);
+
+    auto bHardwareBox = bHardware;
+
+    if (ImGui::Checkbox("Hardware", &bHardwareBox))
+    {
+        GraphicsSettings::ToggleRenderer();
+    }
+
     ImGui::EndDisabled();
 
-    ImGui::BeginDisabled(GraphicsSettings::Active() != GraphicsSettings::Renderer::HARDWARE);
-    Checkbox("Textures", GraphicsSettings::Textures(), GraphicsSettings::ToggleTextures);
-    Checkbox("Linear filtering", GraphicsSettings::LinearFiltering(), GraphicsSettings::ToggleLinearFiltering);
-    Checkbox("Full detail models", GraphicsSettings::FullDetail(), GraphicsSettings::ToggleFullDetail);
-    Checkbox("Smooth shading", GraphicsSettings::SmoothShading(), GraphicsSettings::ToggleSmoothShading);
+    ImGui::BeginDisabled(!bHardware);
+    Checkbox("Textures", Switch::TEXTURES);
+    Checkbox("Linear filtering", Switch::LINEAR_FILTERING);
+    Checkbox("Full detail models", Switch::FULL_DETAIL);
+    Checkbox("Smooth shading", Switch::SMOOTH_SHADING);
+
+    ImGui::SeparatorText("Lights");
+
+    Checkbox("Light at 303", Switch::LIGHT_303);
+    Checkbox("Light at 54", Switch::LIGHT_54);
+    Checkbox("Light at 180, from below", Switch::LIGHT_180);
+    Checkbox("Several lights", Switch::SEVERAL_LIGHTS);
+    Checkbox("Rok light", Switch::ROK_LIGHT);
+
+    auto flRadius = GraphicsSettings::RokLightRadius();
+
+    if (ImGui::SliderFloat("Rok light reach", &flRadius, 10.0f, 2000.0f, "%.0f", ImGuiSliderFlags_Logarithmic))
+    {
+        GraphicsSettings::SetRokLightRadius(flRadius);
+    }
+
+    ImGui::SeparatorText("Shadows");
+
+    Checkbox("Shadow maps", Switch::SHADOW_MAPS);
     ImGui::EndDisabled();
 
     ImGui::SeparatorText("Timing");
 
-    Checkbox("Uncapped frame rate (experimental)", GraphicsSettings::Uncapped(), GraphicsSettings::ToggleUncapped);
+    Checkbox("Uncapped frame rate (experimental)", Switch::UNCAPPED);
 
     ImGui::Text("%d ticks/s, clock drift %+.0f ms/s", FramePacing::TicksPerSecond(), FramePacing::DriftMs());
 

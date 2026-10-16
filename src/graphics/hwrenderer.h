@@ -25,8 +25,13 @@ struct Draw
     // The engine's pixel projection times the bone's world matrix, row major on column vectors.
     float aPixelFromModel[16];
 
-    // The light the block is lit by, in the model's space.
-    float aLightDir[4];
+    // The bone's world matrix alone, for shadows and the rok's light.
+    float aWorldFromModel[16];
+
+    // The scene's lights in the model's space, and which of them the original lights the block
+    // by, as MeshUniforms holds them.
+    float aLightDirs[3][4];
+    int   nKeyLight;
 
     int nViewportX;
     int nViewportY;
@@ -51,6 +56,9 @@ void Submit(const Draw& draw);
 
 // Geometry made fresh this frame, such as shadows, drawn as the draw says; its block is ignored.
 void SubmitVertices(const std::vector<HwMesh::Vertex>& vertices, const Draw& draw);
+
+// A point light in the world for this frame only, lighting everything within flRadius.
+void SetPointLight(float flX, float flY, float flZ, float flRadius);
 
 // The model database loaded a model, so a freed mesh block's address may now hold another.
 void ForgetMeshes();

@@ -4,6 +4,10 @@
 #include "mesh.frag.spv.h"
 #include "mesh.vert.dxil.h"
 #include "mesh.vert.spv.h"
+#include "shadow.frag.dxil.h"
+#include "shadow.frag.spv.h"
+#include "shadow.vert.dxil.h"
+#include "shadow.vert.spv.h"
 #include <SDL3/SDL.h>
 #include <cstddef>
 
@@ -41,6 +45,23 @@ unsigned int HwPipeline::ColourFormat()
     return SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
 }
 
+unsigned int HwPipeline::ShadowFormat(Device device)
+{
+    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+
+    constexpr auto USAGE = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
+
+    for (const auto format : { SDL_GPU_TEXTUREFORMAT_D32_FLOAT, SDL_GPU_TEXTUREFORMAT_D24_UNORM })
+    {
+        if (SDL_GPUTextureSupportsFormat(pDevice, format, SDL_GPU_TEXTURETYPE_2D, USAGE))
+        {
+            return format;
+        }
+    }
+
+    return SDL_GPU_TEXTUREFORMAT_D16_UNORM;
+}
+
 unsigned int HwPipeline::DepthFormat(Device device)
 {
     SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
@@ -61,7 +82,7 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
     SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
 
     SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, mesh_vert_dxil, sizeof(mesh_vert_dxil), mesh_vert_spv, sizeof(mesh_vert_spv), 0, 2);
-    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 1, 1);
+    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 3, 2);
 
     SDL_GPUGraphicsPipeline* pPipeline = nullptr;
 
@@ -125,6 +146,59 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
     return Pipeline{ pPipeline };
 }
 
+HwPipeline::Pipeline HwPipeline::CreateShadowPipeline(Device device)
+{
+    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+
+    SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, shadow_vert_dxil, sizeof(shadow_vert_dxil), shadow_vert_spv, sizeof(shadow_vert_spv), 0, 1);
+    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, shadow_frag_dxil, sizeof(shadow_frag_dxil), shadow_frag_spv, sizeof(shadow_frag_spv), 0, 0);
+
+    SDL_GPUGraphicsPipeline* pPipeline = nullptr;
+
+    if (pVertex != nullptr && pFragment != nullptr)
+    {
+        auto buffer  = SDL_GPUVertexBufferDescription{};
+        buffer.pitch = sizeof(HwMesh::Vertex);
+
+        const auto position = SDL_GPUVertexAttribute{ 0, 0, SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3, offsetof(HwMesh::Vertex, aPosition) };
+
+        auto info                                          = SDL_GPUGraphicsPipelineCreateInfo{};
+        info.vertex_shader                                 = pVertex;
+        info.fragment_shader                               = pFragment;
+        info.vertex_input_state.vertex_buffer_descriptions = &buffer;
+        info.vertex_input_state.num_vertex_buffers         = 1;
+        info.vertex_input_state.vertex_attributes          = &position;
+        info.vertex_input_state.num_vertex_attributes      = 1;
+        info.primitive_type                                = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
+        info.rasterizer_state.fill_mode                    = SDL_GPU_FILLMODE_FILL;
+
+        // Both sides cast, so a thin mesh still shadows whichever way it faces.
+        info.rasterizer_state.cull_mode                  = SDL_GPU_CULLMODE_NONE;
+        info.rasterizer_state.enable_depth_bias          = true;
+        info.rasterizer_state.depth_bias_constant_factor = 2.0f;
+        info.rasterizer_state.depth_bias_slope_factor    = 2.0f;
+        info.depth_stencil_state.compare_op              = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
+        info.depth_stencil_state.enable_depth_test       = true;
+        info.depth_stencil_state.enable_depth_write      = true;
+        info.target_info.depth_stencil_format            = (SDL_GPUTextureFormat)ShadowFormat(device);
+        info.target_info.has_depth_stencil_target        = true;
+
+        pPipeline = SDL_CreateGPUGraphicsPipeline(pDevice, &info);
+    }
+
+    if (pVertex != nullptr)
+    {
+        SDL_ReleaseGPUShader(pDevice, pVertex);
+    }
+
+    if (pFragment != nullptr)
+    {
+        SDL_ReleaseGPUShader(pDevice, pFragment);
+    }
+
+    return Pipeline{ pPipeline };
+}
+
 void HwPipeline::Release(Device device, Pipeline pipeline)
 {
     if (pipeline)
@@ -163,6 +237,21 @@ HwPipeline::Sampler HwPipeline::CreateSampler(Device device, bool bLinear)
     info.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
     info.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
     info.max_lod        = 1000.0f;
+
+    return Sampler{ SDL_CreateGPUSampler(device.As<SDL_GPUDevice>(), &info) };
+}
+
+HwPipeline::Sampler HwPipeline::CreateShadowSampler(Device device)
+{
+    auto info              = SDL_GPUSamplerCreateInfo{};
+    info.min_filter        = SDL_GPU_FILTER_LINEAR;
+    info.mag_filter        = SDL_GPU_FILTER_LINEAR;
+    info.mipmap_mode       = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+    info.address_mode_u    = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    info.address_mode_v    = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    info.address_mode_w    = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    info.compare_op        = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
+    info.enable_compare    = true;
 
     return Sampler{ SDL_CreateGPUSampler(device.As<SDL_GPUDevice>(), &info) };
 }

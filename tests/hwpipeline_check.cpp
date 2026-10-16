@@ -107,13 +107,16 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
         uniforms.aClipFromModel[i * 5] = 1.0f;
     }
 
-    uniforms.aLightDir[2] = 1.0f;
+    uniforms.aLightDirs[0][2] = 1.0f;
+    uniforms.aLightDirs[0][3] = 1.0f;
 
     SDL_PushGPUVertexUniformData(pCommands, 0, &uniforms, sizeof(uniforms));
 
+    const auto frame   = HwPipeline::FrameUniforms{};
     const auto colours = HwPipeline::ColourUniforms{};
 
-    SDL_PushGPUVertexUniformData(pCommands, 1, &colours, sizeof(colours));
+    SDL_PushGPUVertexUniformData(pCommands, 1, &frame, sizeof(frame));
+    SDL_PushGPUFragmentUniformData(pCommands, 1, &colours, sizeof(colours));
 
     const auto textureUniforms = HwPipeline::TextureUniforms{ (int)bTextured };
 
@@ -122,11 +125,16 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
     SDL_GPURenderPass* const pPass = SDL_BeginGPURenderPass(pCommands, &colour, 1, &depth);
 
     const auto binding = SDL_GPUBufferBinding{ scene.pVertices, 0 };
-    const auto sampled = SDL_GPUTextureSamplerBinding{ scene.pTexture, scene.pSampler };
+    // The shadow slots are bound but never sampled, as the shadows are off.
+    const SDL_GPUTextureSamplerBinding aSampled[] = {
+        { scene.pTexture, scene.pSampler },
+        { scene.pTexture, scene.pSampler },
+        { scene.pTexture, scene.pSampler },
+    };
 
     SDL_BindGPUGraphicsPipeline(pPass, scene.pPipeline);
     SDL_BindGPUVertexBuffers(pPass, 0, &binding, 1);
-    SDL_BindGPUFragmentSamplers(pPass, 0, &sampled, 1);
+    SDL_BindGPUFragmentSamplers(pPass, 0, aSampled, SDL_arraysize(aSampled));
     SDL_DrawGPUPrimitives(pPass, 3, 1, nFirst, 0);
     SDL_EndGPURenderPass(pPass);
 

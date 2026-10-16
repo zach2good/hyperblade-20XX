@@ -931,7 +931,7 @@ int GameApp::MainUpdate(HWND hWnd)
             return 0;
         }
 
-        const auto bUncapped = g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && GraphicsSettings::Uncapped();
+        const auto bUncapped = g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && GraphicsSettings::On(GraphicsSettings::Switch::UNCAPPED);
 
         if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
         {

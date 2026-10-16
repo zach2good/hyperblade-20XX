@@ -1,53 +1,19 @@
-// Projects each corner with the model's clip matrix and lights its face flat, as D3DRend::DrawFace
-// lit its faces.
+// Projects each corner with the model's clip matrix and hands the fragment shader what it lights
+// the face with: each scene light's term, and where the corner sits in the world and in each
+// shadow map.
 
 cbuffer MeshUniforms : register(b0, space1)
 {
     row_major float4x4 ClipFromModel;
-    float4 LightDir; // w is one in the drome pass.
-    float4 Flags;    // x is one when the colour is a palette index.
+    row_major float4x4 WorldFromModel;
+    float4 LightDirs[3]; // In the model's space; w is the light's strength, zero for off.
+    float4 Flags;        // x: the colour is a palette index. y: the key light, or -1. z: the drome's curve.
 };
 
-cbuffer ColourUniforms : register(b1, space1)
+cbuffer FrameUniforms : register(b1, space1)
 {
-    int LargeRampFirst;
-    int LargeRampLast;
-    int SmallRampLength;
-    int LargeRampLength;
-    float4 Palette[256];
+    row_major float4x4 LightClipFromWorld[2];
 };
-
-// ColorPalette::LookupColorIntensity: the index walks its ramp by the light level, on a curve in
-// the drome pass, and stays at the ramp's foot when the face is unlit.
-float3 PaletteColour(int colour, float level)
-{
-    int length = SmallRampLength;
-
-    if (colour >= LargeRampFirst && colour <= LargeRampLast)
-    {
-        length = LargeRampLength;
-    }
-
-    int index = colour;
-
-    if (level >= 1.0)
-    {
-        index = colour + length;
-    }
-    else if (level > 0.0)
-    {
-        if (LightDir.w != 0.0)
-        {
-            index = (int)pow((float)(length + 1), level) + colour - 1;
-        }
-        else
-        {
-            index = (int)(length * level) + colour;
-        }
-    }
-
-    return Palette[index & 255].rgb;
-}
 
 struct Input
 {
@@ -61,9 +27,15 @@ struct Input
 
 struct Output
 {
-    float4 Colour : TEXCOORD0;
-    float2 UV : TEXCOORD1;
-    float Grey : TEXCOORD2; // The textured face's colour, the material ignored.
+    nointerpolation float4 Base : TEXCOORD0; // The palette index in x, or the RGB from 0 to 255.
+    nointerpolation float4 Mode : TEXCOORD1; // x: palettised. y: the drome's curve.
+    float2 UV : TEXCOORD2;
+    float3 Terms : TEXCOORD3; // Each scene light's term, before its shadow.
+    float2 Material : TEXCOORD4; // Diffuse and ambient.
+    float3 WorldPosition : TEXCOORD5;
+    float3 WorldNormal : TEXCOORD6;
+    float4 ShadowPosition0 : TEXCOORD7;
+    float4 ShadowPosition1 : TEXCOORD8;
     float4 Position : SV_Position;
 };
 
@@ -73,46 +45,42 @@ Output main(Input input)
     output.Position = mul(ClipFromModel, float4(input.Position, 1.0));
     output.UV = input.UV;
 
-    const float level = (LightDir.x * input.Normal.x + (LightDir.y * input.Normal.y + LightDir.z * input.Normal.z)) * input.Diffuse + input.Ambient;
+    const float3 rgb = float3(input.Colour.zyx);
 
-    // D3DRend::DrawFace's textured grey: black at or below zero, white at or above one, else the
-    // level in 255ths, truncated.
-    float grey = 1.0;
-
-    if (level <= 0.0)
-    {
-        grey = 0.0;
-    }
-    else if (level < 1.0)
-    {
-        grey = floor(255.0 * level) / 255.0;
-    }
-
-    output.Grey = grey;
+    output.Base = float4(rgb, 0.0);
 
     if (Flags.x != 0.0)
     {
-        output.Colour = float4(PaletteColour((int)input.Colour.x, level), 1.0);
-
-        return output;
+        output.Base = float4((float)input.Colour.x, 0.0, 0.0, 0.0);
     }
 
-    const float3 rgb = float3(input.Colour.zyx);
+    output.Mode = float4(Flags.x, Flags.z, 0.0, 0.0);
 
-    // MeshMaterial::CalcLightIntensity: black at or below zero, the plain material at or above
-    // one, else each channel scaled and truncated.
-    float3 lit = rgb;
+    // The key light is the one the original lights the face by, signed as it was; the others only
+    // add where they face the surface.
+    float terms[3];
 
-    if (level <= 0.0)
+    for (int i = 0; i < 3; i++)
     {
-        lit = float3(0.0, 0.0, 0.0);
-    }
-    else if (level < 1.0)
-    {
-        lit = floor(rgb * level);
+        const float term = (LightDirs[i].x * input.Normal.x + (LightDirs[i].y * input.Normal.y + LightDirs[i].z * input.Normal.z)) * LightDirs[i].w;
+
+        terms[i] = term;
+
+        if ((float)i != Flags.y)
+        {
+            terms[i] = max(term, 0.0);
+        }
     }
 
-    output.Colour = float4(lit / 255.0, 1.0);
+    output.Terms = float3(terms[0], terms[1], terms[2]);
+    output.Material = float2(input.Diffuse, input.Ambient);
+
+    const float4 world = mul(WorldFromModel, float4(input.Position, 1.0));
+
+    output.WorldPosition = world.xyz;
+    output.WorldNormal = mul((float3x3)WorldFromModel, input.Normal);
+    output.ShadowPosition0 = mul(LightClipFromWorld[0], world);
+    output.ShadowPosition1 = mul(LightClipFromWorld[1], world);
 
     return output;
 }

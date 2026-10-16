@@ -4,8 +4,12 @@
 #include "graphics/hwpipeline.h"
 #include "graphics/hwtexture.h"
 #include "graphics/colorpalette.h"
+#include "graphics/graphicsglobals.h"
 #include "globals.h"
 #include <SDL3/SDL.h>
+#include <algorithm>
+#include <array>
+#include <cmath>
 #include <cstring>
 #include <map>
 #include <utility>
@@ -23,6 +27,9 @@ constexpr auto MAX_DRAWS = 16384u;
 // HwMesh::Build winds front faces clockwise as seen on screen, as the original's D3DCULL_CCW drew.
 constexpr auto FRONT_CLOCKWISE = true;
 
+// ponytail: one map a light covers the whole arena; cascades if close shadows look soft.
+constexpr auto SHADOW_SIZE = 4096;
+
 struct GPURange
 {
     Uint32          nFirst   = 0;
@@ -34,6 +41,8 @@ struct GPUMesh
 {
     SDL_GPUBuffer*        pBuffer = nullptr;
     std::vector<GPURange> ranges;
+    Uint32                nVertexCount = 0;
+    float                 flRadius     = 0.0f; // The farthest vertex from the bone's origin.
 };
 
 using MeshKey = std::pair<const MeshBlock*, const MeshMaterial*>;
@@ -46,6 +55,10 @@ SDL_GPUTexture*          s_pWhite    = nullptr;
 SDL_GPUTexture*          s_pTarget   = nullptr;
 SDL_GPUTexture*          s_pDepth    = nullptr;
 SDL_Texture*             s_pTexture  = nullptr;
+SDL_GPUGraphicsPipeline* s_pShadowPipeline = nullptr;
+SDL_GPUSampler*          s_pShadowSampler  = nullptr;
+SDL_GPUTexture*          s_apShadowMaps[2] = {};
+float                    s_aPointLight[4]  = {};
 int                      s_nWidth    = 0;
 int                      s_nHeight   = 0;
 bool                     s_bTextures = false;
@@ -178,7 +191,26 @@ bool Ready(SDL_Renderer* pRenderer)
         s_pWhite = HwTexture::Find(device, nullptr).As<SDL_GPUTexture>();
     }
 
-    return s_pPipeline != nullptr && s_pNearest != nullptr && s_pLinear != nullptr && s_pWhite != nullptr;
+    if (s_pShadowPipeline == nullptr)
+    {
+        s_pShadowPipeline = HwPipeline::CreateShadowPipeline(device).As<SDL_GPUGraphicsPipeline>();
+    }
+
+    if (s_pShadowSampler == nullptr)
+    {
+        s_pShadowSampler = HwPipeline::CreateShadowSampler(device).As<SDL_GPUSampler>();
+    }
+
+    // Made whether or not shadows are on, as the shader's shadow slots are always bound.
+    for (auto& pMap : s_apShadowMaps)
+    {
+        if (pMap == nullptr)
+        {
+            pMap = CreateTarget((SDL_GPUTextureFormat)HwPipeline::ShadowFormat(device), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, SHADOW_SIZE, SHADOW_SIZE);
+        }
+    }
+
+    return s_pPipeline != nullptr && s_pNearest != nullptr && s_pLinear != nullptr && s_pWhite != nullptr && s_pShadowPipeline != nullptr && s_pShadowSampler != nullptr && s_apShadowMaps[0] != nullptr && s_apShadowMaps[1] != nullptr;
 }
 
 void UploadBuffer(SDL_GPUCopyPass* pCopy, SDL_GPUBuffer* pBuffer, const void* pData, Uint32 nBytes)
@@ -280,7 +312,15 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 
         UploadBuffer(pCopy, pBuffer, built.vertices.data(), nBytes);
 
-        mesh.pBuffer = pBuffer;
+        mesh.pBuffer      = pBuffer;
+        mesh.nVertexCount = (Uint32)built.vertices.size();
+
+        for (const auto& vertex : built.vertices)
+        {
+            const auto& p = vertex.aPosition;
+
+            mesh.flRadius = (std::max)(mesh.flRadius, std::sqrt(p[0] * p[0] + p[1] * p[1] + p[2] * p[2]));
+        }
 
         for (const auto& range : built.ranges)
         {
@@ -344,18 +384,220 @@ HwPipeline::MeshUniforms ClipUniforms(const HwRenderer::Draw& draw)
         }
     }
 
-    std::memcpy(uniforms.aLightDir, draw.aLightDir, sizeof(uniforms.aLightDir));
+    std::memcpy(uniforms.aWorldFromModel, draw.aWorldFromModel, sizeof(uniforms.aWorldFromModel));
+    std::memcpy(uniforms.aLightDirs, draw.aLightDirs, sizeof(uniforms.aLightDirs));
 
     uniforms.aFlags[0] = (float)draw.bPalettised;
+    uniforms.aFlags[1] = (float)draw.nKeyLight;
+    uniforms.aFlags[2] = (float)draw.bArena;
 
     return uniforms;
 }
 
+using Matrix = std::array<float, 16>;
+
+Matrix Multiply(const float* pA, const float* pB)
+{
+    auto out = Matrix{};
+
+    for (int nRow = 0; nRow < 4; nRow++)
+    {
+        for (int nColumn = 0; nColumn < 4; nColumn++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                out[nRow * 4 + nColumn] += pA[nRow * 4 + k] * pB[k * 4 + nColumn];
+            }
+        }
+    }
+
+    return out;
+}
+
+const GPUMesh* FindMesh(const HwRenderer::Draw& draw)
+{
+    if (draw.pBlock == nullptr)
+    {
+        return nullptr;
+    }
+
+    const auto it = s_meshes.find(MeshKey{ draw.pBlock, draw.pMaterials });
+
+    if (it == s_meshes.end() || it->second.pBuffer == nullptr)
+    {
+        return nullptr;
+    }
+
+    return &it->second;
+}
+
+// The arena only receives: it is a closed dome, so its roof would shadow the whole floor.
+const GPUMesh* FindCaster(const HwRenderer::Draw& draw)
+{
+    if (draw.bArena)
+    {
+        return nullptr;
+    }
+
+    return FindMesh(draw);
+}
+
+// An orthographic view down the light over everything that casts, depth 0 nearest the light.
+// With nothing to cast it puts every point past the far plane, which the shader reads as lit.
+Matrix LightClipFromWorld(const Vec3& vToLight)
+{
+    const auto forward = std::array<float, 3>{ -vToLight.x, -vToLight.y, -vToLight.z };
+
+    const auto upAxis = [&]
+    {
+        if (std::abs(forward[2]) > 0.99f)
+        {
+            return std::array<float, 3>{ 0.0f, 1.0f, 0.0f };
+        }
+
+        return std::array<float, 3>{ 0.0f, 0.0f, 1.0f };
+    }();
+
+    auto right = std::array<float, 3>{ forward[1] * upAxis[2] - forward[2] * upAxis[1], forward[2] * upAxis[0] - forward[0] * upAxis[2], forward[0] * upAxis[1] - forward[1] * upAxis[0] };
+
+    const auto flRightLength = std::sqrt(right[0] * right[0] + right[1] * right[1] + right[2] * right[2]);
+
+    for (auto& fl : right)
+    {
+        fl /= flRightLength;
+    }
+
+    const auto up = std::array<float, 3>{ right[1] * forward[2] - right[2] * forward[1], right[2] * forward[0] - right[0] * forward[2], right[0] * forward[1] - right[1] * forward[0] };
+
+    const auto axes = std::array<const std::array<float, 3>*, 3>{ &right, &up, &forward };
+
+    auto aflMin = std::array<float, 3>{ 1e30f, 1e30f, 1e30f };
+    auto aflMax = std::array<float, 3>{ -1e30f, -1e30f, -1e30f };
+
+    for (const auto& draw : s_draws)
+    {
+        const auto* const pMesh = FindCaster(draw);
+
+        if (pMesh == nullptr)
+        {
+            continue;
+        }
+
+        const auto* const w = draw.aWorldFromModel;
+
+        // The bone's largest axis scales the mesh's reach.
+        auto flScale = 0.0f;
+
+        for (int nColumn = 0; nColumn < 3; nColumn++)
+        {
+            flScale = (std::max)(flScale, std::sqrt(w[nColumn] * w[nColumn] + w[4 + nColumn] * w[4 + nColumn] + w[8 + nColumn] * w[8 + nColumn]));
+        }
+
+        const auto flReach = pMesh->flRadius * flScale;
+
+        for (int nAxis = 0; nAxis < 3; nAxis++)
+        {
+            const auto& axis = *axes[(size_t)nAxis];
+
+            const auto flAt = axis[0] * w[3] + axis[1] * w[7] + axis[2] * w[11];
+
+            aflMin[(size_t)nAxis] = (std::min)(aflMin[(size_t)nAxis], flAt - flReach);
+            aflMax[(size_t)nAxis] = (std::max)(aflMax[(size_t)nAxis], flAt + flReach);
+        }
+    }
+
+    auto out = Matrix{};
+
+    if (aflMin[0] > aflMax[0])
+    {
+        out[11] = 2.0f;
+        out[15] = 1.0f;
+
+        return out;
+    }
+
+    for (int nAxis = 0; nAxis < 3; nAxis++)
+    {
+        const auto& axis    = *axes[(size_t)nAxis];
+        const auto  flSpan  = (std::max)(aflMax[(size_t)nAxis] - aflMin[(size_t)nAxis], 1.0f);
+        const auto  flScale = [&]
+        {
+            // Depth runs 0 to 1, the other two -1 to 1.
+            if (nAxis == 2)
+            {
+                return 1.0f / flSpan;
+            }
+
+            return 2.0f / flSpan;
+        }();
+
+        const auto flOffset = [&]
+        {
+            if (nAxis == 2)
+            {
+                return -aflMin[2] * flScale;
+            }
+
+            return -(aflMin[(size_t)nAxis] + aflMax[(size_t)nAxis]) * 0.5f * flScale;
+        }();
+
+        out[nAxis * 4 + 0] = axis[0] * flScale;
+        out[nAxis * 4 + 1] = axis[1] * flScale;
+        out[nAxis * 4 + 2] = axis[2] * flScale;
+        out[nAxis * 4 + 3] = flOffset;
+    }
+
+    out[15] = 1.0f;
+
+    return out;
+}
+
+void DrawShadowMap(SDL_GPUCommandBuffer* pCommands, SDL_GPUTexture* pMap, const Matrix& lightClipFromWorld)
+{
+    auto depth             = SDL_GPUDepthStencilTargetInfo{};
+    depth.texture          = pMap;
+    depth.clear_depth      = 1.0f;
+    depth.load_op          = SDL_GPU_LOADOP_CLEAR;
+    depth.store_op         = SDL_GPU_STOREOP_STORE;
+    depth.stencil_load_op  = SDL_GPU_LOADOP_DONT_CARE;
+    depth.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE;
+
+    SDL_GPURenderPass* const pPass = SDL_BeginGPURenderPass(pCommands, nullptr, 0, &depth);
+
+    SDL_BindGPUGraphicsPipeline(pPass, s_pShadowPipeline);
+
+    for (const auto& draw : s_draws)
+    {
+        const auto* const pMesh = FindCaster(draw);
+
+        if (pMesh == nullptr)
+        {
+            continue;
+        }
+
+        const auto product  = Multiply(lightClipFromWorld.data(), draw.aWorldFromModel);
+        const auto binding  = SDL_GPUBufferBinding{ pMesh->pBuffer, 0 };
+        auto       uniforms = HwPipeline::ShadowUniforms{};
+
+        std::memcpy(uniforms.aLightClipFromModel, product.data(), sizeof(uniforms.aLightClipFromModel));
+
+        SDL_BindGPUVertexBuffers(pPass, 0, &binding, 1);
+        SDL_PushGPUVertexUniformData(pCommands, 0, &uniforms, sizeof(uniforms));
+        SDL_DrawGPUPrimitives(pPass, pMesh->nVertexCount, 1, 0, 0);
+    }
+
+    SDL_EndGPURenderPass(pPass);
+}
+
 // The shaded models' colours are palette indices, lit along the live palette's ramps; the
 // textured models' are RGB.
-HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette)
+HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool bShadows)
 {
     auto uniforms = HwPipeline::ColourUniforms{};
+
+    std::memcpy(uniforms.aPointLight, s_aPointLight, sizeof(uniforms.aPointLight));
+
+    uniforms.aShadows[0] = (float)bShadows;
 
     uniforms.nLargeRampFirst  = g_pColorPalette->m_largeRampBounds.nFirst;
     uniforms.nLargeRampLast   = g_pColorPalette->m_largeRampBounds.nCount;
@@ -405,6 +647,14 @@ void HwRenderer::SubmitVertices(const std::vector<HwMesh::Vertex>& vertices, con
     s_draws.push_back(dynamic);
 }
 
+void HwRenderer::SetPointLight(float flX, float flY, float flZ, float flRadius)
+{
+    s_aPointLight[0] = flX;
+    s_aPointLight[1] = flY;
+    s_aPointLight[2] = flZ;
+    s_aPointLight[3] = flRadius;
+}
+
 void HwRenderer::ForgetMeshes()
 {
     for (const auto& [key, mesh] : s_meshes)
@@ -424,22 +674,30 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
 {
     SDL_Renderer* const pRenderer = renderer.As<SDL_Renderer>();
 
-    s_bTextures = GraphicsSettings::Textures();
-    s_bLinear   = GraphicsSettings::LinearFiltering();
+    using GraphicsSettings::Switch;
+
+    s_bTextures = GraphicsSettings::On(Switch::TEXTURES);
+    s_bLinear   = GraphicsSettings::On(Switch::LINEAR_FILTERING);
     s_nFrame++;
 
     // The cached meshes carry their normals, so a change of shading builds them again.
-    if (GraphicsSettings::SmoothShading() != s_bSmooth)
+    if (GraphicsSettings::On(Switch::SMOOTH_SHADING) != s_bSmooth)
     {
-        s_bSmooth = GraphicsSettings::SmoothShading();
+        s_bSmooth = GraphicsSettings::On(Switch::SMOOTH_SHADING);
 
         ForgetMeshes();
     }
 
-    if (nWidth <= 0 || nHeight <= 0 || !Ready(pRenderer) || !Fit(pRenderer, nWidth, nHeight))
+    const auto clear = [&]
     {
         s_draws.clear();
         s_dynamic.clear();
+        s_aPointLight[3] = 0.0f;
+    };
+
+    if (nWidth <= 0 || nHeight <= 0 || !Ready(pRenderer) || !Fit(pRenderer, nWidth, nHeight))
+    {
+        clear();
 
         return Texture{};
     }
@@ -448,13 +706,30 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
 
     if (pCommands == nullptr)
     {
-        s_draws.clear();
-        s_dynamic.clear();
+        clear();
 
         return Texture{};
     }
 
     UploadMeshes(pCommands);
+
+    const auto bShadows = GraphicsSettings::On(Switch::SHADOW_MAPS);
+
+    auto frame = HwPipeline::FrameUniforms{};
+
+    if (bShadows)
+    {
+        const auto aLightDirs = std::array<Vec3, 2>{ g_lightDirs[1].dir, g_lightDirs[2].dir };
+
+        for (size_t i = 0; i < aLightDirs.size(); i++)
+        {
+            const auto lightClipFromWorld = LightClipFromWorld(aLightDirs[i]);
+
+            std::memcpy(frame.aLightClipFromWorld[i], lightClipFromWorld.data(), sizeof(frame.aLightClipFromWorld[i]));
+
+            DrawShadowMap(pCommands, s_apShadowMaps[i], lightClipFromWorld);
+        }
+    }
 
     auto target        = SDL_GPUColorTargetInfo{};
     target.texture     = s_pTarget;
@@ -470,7 +745,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     depth.stencil_load_op  = SDL_GPU_LOADOP_DONT_CARE;
     depth.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE;
 
-    const auto colours = PaletteUniforms(pPalette);
+    const auto colours = PaletteUniforms(pPalette, bShadows);
 
     SDL_GPUSampler* const pSampler = [&]
     {
@@ -504,7 +779,8 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
             bArena = draw.bArena;
 
             SDL_BindGPUGraphicsPipeline(pPass, s_pPipeline);
-            SDL_PushGPUVertexUniformData(pCommands, 1, &colours, sizeof(colours));
+            SDL_PushGPUVertexUniformData(pCommands, 1, &frame, sizeof(frame));
+            SDL_PushGPUFragmentUniformData(pCommands, 1, &colours, sizeof(colours));
         }
 
         // A block draws from its cached mesh, and the frame's own vertices from the dynamic buffer.
@@ -555,10 +831,15 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
                 return s_pWhite;
             }();
 
-            const auto sampled         = SDL_GPUTextureSamplerBinding{ pTexture, pSampler };
+            const SDL_GPUTextureSamplerBinding aSampled[] = {
+                { pTexture, pSampler },
+                { s_apShadowMaps[0], s_pShadowSampler },
+                { s_apShadowMaps[1], s_pShadowSampler },
+            };
+
             const auto textureUniforms = HwPipeline::TextureUniforms{ (int)bTextured };
 
-            SDL_BindGPUFragmentSamplers(pPass, 0, &sampled, 1);
+            SDL_BindGPUFragmentSamplers(pPass, 0, aSampled, SDL_arraysize(aSampled));
             SDL_PushGPUFragmentUniformData(pCommands, 0, &textureUniforms, sizeof(textureUniforms));
             SDL_DrawGPUPrimitives(pPass, range.nCount, 1, range.nFirst, 0);
         }
@@ -573,8 +854,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     SDL_EndGPURenderPass(pPass);
     SDL_SubmitGPUCommandBuffer(pCommands);
 
-    s_draws.clear();
-    s_dynamic.clear();
+    clear();
 
     return Texture{ s_pTexture };
 }

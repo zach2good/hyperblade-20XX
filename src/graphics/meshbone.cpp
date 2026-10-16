@@ -12,6 +12,7 @@
 #include "meshmaterial.h"
 #include "engine/gameengine.h"
 #include "engine/cameraobject.h"
+#include "engine/objectclasses.h"
 #include "ui/hudglobals.h"
 #include "transparentqueue.h"
 #include "graphics/meshboundingbox.h"
@@ -31,6 +32,7 @@
 #include "graphics/hwrenderer.h"
 #include "graphics/hwmodels.h"
 #include "graphics/graphicssettings.h"
+#include <array>
 #include "engine/objectclasses.h"
 #include "modelcomponent.h"
 #include "engine/cameraprojectionstate.h"
@@ -148,7 +150,7 @@ void MeshBone::SubmitToHardware()
 
     auto bone = HwModels::Bone{ m_pMesh, m_pOwner->m_pModelBlock->m_pMaterials, m_pOwner->m_pModelBlock->m_nMatCount, &m_world };
 
-    const auto bTextured = GraphicsSettings::Textures() && HwModels::Find(*this, HwRenderer::Frame(), bone);
+    const auto bTextured = GraphicsSettings::On(GraphicsSettings::Switch::TEXTURES) && HwModels::Find(*this, HwRenderer::Frame(), bone);
 
     TransformObject pixelFromModel;
 
@@ -195,13 +197,24 @@ void MeshBone::SubmitToHardware()
 
     draw.bArena = m_pOwner == g_pGameEngine->m_ppSlots[SLOT_DROME];
 
+    // The scene's lights, in the order GraphicsSettings numbers them.
+    const auto aWorldLights = std::array<Vec3, 3>{ g_lightDirs[1].dir, g_lightDirs[2].dir, g_vLightDirExtra };
+
     // The arena is lit as Renderer::DrawAllMeshes bakes it: each bone by its own light, along the
-    // drome pass's curve. With more than two bones the first takes the extra light.
-    const auto vWorldLight = [&]
+    // drome pass's curve. With more than two bones the first takes the extra light. Everything
+    // else takes the light the transparent pass picked for it.
+    draw.nKeyLight = [&]
     {
         if (!draw.bArena)
         {
-            return g_lightDirs[0].dir;
+            const auto& vPicked = g_lightDirs[0].dir;
+
+            if (vPicked.x == aWorldLights[1].x && vPicked.y == aWorldLights[1].y && vPicked.z == aWorldLights[1].z)
+            {
+                return 1;
+            }
+
+            return 0;
         }
 
         auto nBone = (int)(this - m_pOwner->m_pBones);
@@ -210,7 +223,7 @@ void MeshBone::SubmitToHardware()
         {
             if (nBone == 0)
             {
-                return g_vLightDirExtra;
+                return 2;
             }
 
             nBone--;
@@ -218,21 +231,67 @@ void MeshBone::SubmitToHardware()
 
         if (nBone == 0)
         {
-            return g_lightDirs[1].dir;
+            return 0;
         }
 
-        return g_lightDirs[2].dir;
+        return 1;
     }();
 
-    Vec3 vLight;
+    using GraphicsSettings::Switch;
+
+    // The original lights each face by its key light alone; with several lights the others fill in.
+    constexpr auto FILL_STRENGTH = 0.4f;
+    constexpr auto LIGHT_SWITCHES = std::array<Switch, 3>{ Switch::LIGHT_303, Switch::LIGHT_54, Switch::LIGHT_180 };
+
     auto world = *bone.pWorld;
 
-    world.TransformDirectionByRows(vWorldLight, &vLight);
+    for (int i = 0; i < 3; i++)
+    {
+        Vec3 vLight;
 
-    draw.aLightDir[0] = vLight.x;
-    draw.aLightDir[1] = vLight.y;
-    draw.aLightDir[2] = vLight.z;
-    draw.aLightDir[3] = (float)draw.bArena;
+        world.TransformDirectionByRows(aWorldLights[(size_t)i], &vLight);
+
+        const auto flStrength = [&]
+        {
+            if (!GraphicsSettings::On(LIGHT_SWITCHES[(size_t)i]))
+            {
+                return 0.0f;
+            }
+
+            if (i == draw.nKeyLight)
+            {
+                return 1.0f;
+            }
+
+            if (GraphicsSettings::On(Switch::SEVERAL_LIGHTS))
+            {
+                return FILL_STRENGTH;
+            }
+
+            return 0.0f;
+        }();
+
+        draw.aLightDirs[i][0] = vLight.x;
+        draw.aLightDirs[i][1] = vLight.y;
+        draw.aLightDirs[i][2] = vLight.z;
+        draw.aLightDirs[i][3] = flStrength;
+    }
+
+    for (int nRow = 0; nRow < 3; nRow++)
+    {
+        for (int nColumn = 0; nColumn < 4; nColumn++)
+        {
+            draw.aWorldFromModel[nRow * 4 + nColumn] = bone.pWorld->m_a[nRow][nColumn];
+        }
+    }
+
+    draw.aWorldFromModel[15] = 1.0f;
+
+    // The rok carries its light from its root bone.
+    if (GraphicsSettings::On(Switch::ROK_LIGHT) && m_pOwner == g_pGameEngine->m_ppSlots[SLOT_ROK] && this == m_pOwner->m_pBones)
+    {
+        HwRenderer::SetPointLight(bone.pWorld->m_a[0][3], bone.pWorld->m_a[1][3], bone.pWorld->m_a[2][3], GraphicsSettings::RokLightRadius());
+    }
 
     draw.nViewportX      = g_nViewportOriginX;
     draw.nViewportY      = g_nViewportOriginY;
