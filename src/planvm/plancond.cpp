@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "math/mathops.h"
 #include "anim/animdb.h"
 #include "planvm/behaviorids.h"
 #include "physics/physicsbody.h"
@@ -7263,7 +7264,7 @@ void __cdecl PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, shor
         pObject = pContext->GetActor();
     }
 
-    float flAngle = -(float)asin(pObject->GetLocalTransformPtr()->m_rotX.flSin);
+    float flAngle = -(float)Math::Asin(pObject->GetLocalTransformPtr()->m_rotX.flSin);
 
     TransformObject* pTransform = pObject->GetLocalTransformPtr();
 

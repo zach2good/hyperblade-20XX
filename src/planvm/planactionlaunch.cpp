@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "math/mathops.h"
 #include "engine/messageids.h"
 #include "planvm/ctracktraj.h"
 #include "planvm/csteertotarget.h"
@@ -198,7 +199,7 @@ void __cdecl PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, i
         flLimit = (250.0f - flDistance) * flThird * 0.004f;
         flLimit += flThird;
 
-        if ((float)acos(vDiff.z * pCarrierDir->z + vDiff.y * pCarrierDir->y + vDiff.x * pCarrierDir->x) > flLimit)
+        if ((float)Math::Acos(vDiff.z * pCarrierDir->z + vDiff.y * pCarrierDir->y + vDiff.x * pCarrierDir->x) > flLimit)
         {
             Vec3* pCarrierVel;
             float flDelta;

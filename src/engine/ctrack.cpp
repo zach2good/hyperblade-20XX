@@ -1,6 +1,7 @@
 // The chase camera: settling countdown, aim point, spring, plain or smart camera, look direction.
 
 #include "common/compat.h"
+#include "math/mathops.h"
 #include "planvm/behaviorids.h"
 #include "planvm/agendaitemids.h"
 #include "planvm/gamebehaviorobject.h"
@@ -397,7 +398,7 @@ void CTrack::Process(int nArg)
 
                 flOnLine = (aTarget.y - flSlope * aTarget.x) + flSlope * pPos[0];
 
-                flOffset = (float)(fabs(flOnLine - pPos[1]) * cos(asin(flAbsY / flHypot)));
+                flOffset = (float)(fabs(flOnLine - pPos[1]) * cos(Math::Asin(flAbsY / flHypot)));
             }
 
             if (flOffset > 2.0f)
@@ -556,7 +557,7 @@ void CTrack::Process(int nArg)
 
         Math::Vec3Normalize(&vWish);
 
-        flAngle = (float)acos(vWish.x * vGap.x + ((vWish.GetY() * vGap.y) + vWish.GetZ() * vGap.z));
+        flAngle = (float)Math::Acos(vWish.x * vGap.x + ((vWish.GetY() * vGap.y) + vWish.GetZ() * vGap.z));
 
         nSteps = min(SWING_STEPS, m_wCountdown);
 
@@ -564,14 +565,14 @@ void CTrack::Process(int nArg)
 
         flStepAngle = flAngle / flCount;
 
-        flDirAngle = (float)acos(vGap.x * g_flCamFracFull + (vGap.GetY() + vGap.z) * g_flZeroTracking);
+        flDirAngle = (float)Math::Acos(vGap.x * g_flCamFracFull + (vGap.GetY() + vGap.z) * g_flZeroTracking);
 
         if (vGap.y < 0.0f)
         {
             flDirAngle = (g_flPi + g_flPi) - flDirAngle;
         }
 
-        flLookAngle = (float)acos(vWish.x * g_flCamFracFull + (vWish.GetY() + vWish.z) * g_flZeroTracking);
+        flLookAngle = (float)Math::Acos(vWish.x * g_flCamFracFull + (vWish.GetY() + vWish.z) * g_flZeroTracking);
 
         if (vWish.y < 0.0f)
         {

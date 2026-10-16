@@ -1,6 +1,7 @@
 // Kind six: a run toward a point between two objects, aimed by a third.
 
 #include "common/compat.h"
+#include "math/mathops.h"
 #include "planvm/agendaitemids.h"
 #include "engine/messageids.h"
 #include "common/behobjglidebetweenfacing.h"
@@ -113,11 +114,11 @@ void CSteerBetweenFacing::Process(int nArg)
 
     if (vAim.y * pAxis->x - vAim.x * pAxis->y > 0.0f)
     {
-        flFacing = (float)acos(flAim);
+        flFacing = (float)Math::Acos(flAim);
     }
     else
     {
-        flFacing = -(float)acos(flAim);
+        flFacing = -(float)Math::Acos(flAim);
     }
 
     m_pOwner->GetPhysicsBody()->flFacing = flFacing;

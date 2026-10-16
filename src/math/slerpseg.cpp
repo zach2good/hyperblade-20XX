@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "math/mathops.h"
 #include "quat.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
@@ -54,7 +55,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
         flDot = m_q0.w * m_q1.w + m_q0.x * m_q1.x + m_q0.y * m_q1.y + m_q0.z * m_q1.z;
     }
 
-    const double dTheta = acos(flDot);
+    const double dTheta = Math::Acos(flDot);
     m_flTheta           = (float)dTheta;
 
     if (dTheta < 0.001)

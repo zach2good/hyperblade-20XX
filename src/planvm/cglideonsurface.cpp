@@ -299,11 +299,11 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
                     if (vCross.z > 0.0)
                     {
-                        pRelax->m_flAngle = (float)acos(flTarget);
+                        pRelax->m_flAngle = (float)Math::Acos(flTarget);
                     }
                     else
                     {
-                        pRelax->m_flAngle = -(float)acos(flTarget);
+                        pRelax->m_flAngle = -(float)Math::Acos(flTarget);
                     }
 
                     pRelax->Activate();
