@@ -630,17 +630,11 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
 
 #define ERROR_BOX(w, t, c) Window::ShowMessage(t, c, ERROR_BOX_STYLE)
 
+// Files open through SDL, so SDL holds the reason the last one failed.
 // FUNCTION: HYPERX 0x004238b0
 void GameApp::ReportLastError(HWND)
 {
-    char* pszMessage;
-
-    if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, 0, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&pszMessage, 0, 0) != 0)
-    {
-        Error(pszMessage);
-
-        LocalFree(pszMessage);
-    }
+    Error("%s", SDL_GetError());
 }
 
 // FUNCTION: HYPERX 0x00423900

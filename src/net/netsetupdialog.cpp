@@ -22,6 +22,7 @@
 #include "net/netsetupdialog.h"
 #include "net/network.h"
 #include "net/syncblock.h"
+#include <cstdlib>
 
 // One allocation holds both directions: a settings block and three catalogs each way.
 union SyncBlockSlot
@@ -79,7 +80,8 @@ unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
         return 0;
     }
 
-    SyncBlockSlot* const pSlots = (SyncBlockSlot*)GlobalLock(GlobalAlloc(GMEM_MOVEABLE, SYNC_SLOT_COUNT * sizeof(SyncBlockSlot)));
+    // One block for every slot; GameSession::FreeAssetBuffer frees it through the first.
+    SyncBlockSlot* const pSlots = (SyncBlockSlot*)std::malloc(SYNC_SLOT_COUNT * sizeof(SyncBlockSlot));
 
     g_syncSend.apBlocks[SYNC_BLOCK_SETTINGS] = &pSlots[0].settings;
 

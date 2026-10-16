@@ -28,6 +28,7 @@
 #include "sound/soundids.h"
 #include "engine/objectphase.h"
 #include <SDL3/SDL.h>
+#include <cstdlib>
 
 #define SCAT_TOKEN_MAX 0x100
 
@@ -1119,8 +1120,7 @@ int GameSession::FreeAssetBuffer(SyncBlocks* pCatalog, SyncBlocks* pDescriptor)
 {
     if (pCatalog->apBlocks[SYNC_BLOCK_SETTINGS] != 0)
     {
-        GlobalUnlock(GlobalHandle(pCatalog->apBlocks[SYNC_BLOCK_SETTINGS]));
-        GlobalFree(GlobalHandle(pCatalog->apBlocks[SYNC_BLOCK_SETTINGS]));
+        std::free(pCatalog->apBlocks[SYNC_BLOCK_SETTINGS]);
     }
 
     pCatalog->apBlocks[SYNC_BLOCK_SETTINGS] = 0;
