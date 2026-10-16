@@ -35,8 +35,8 @@ import bringup_sweep
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BASELINE = os.path.join(ROOT, "tools", "bringup_baseline.json")
-LINKED = os.path.join(ROOT, "build-bringup", "out", "HYPERX.exe")
-MAP = os.path.join(ROOT, "build-bringup", "out", "HYPERX.map")
+LINKED = os.path.join(ROOT, "build-harness", "out", "hyperx.exe")
+MAP = os.path.join(ROOT, "build-harness", "out", "hyperx.map")
 
 IMAGE_BASE = 0x400000
 
@@ -244,20 +244,20 @@ def main():
     arguments = parser.parse_args()
 
     if not os.path.exists(LINKED):
-        print("no build-bringup/out/HYPERX.exe.")
+        print("no build-harness/out/hyperx.exe.")
         print("Build it with tools/bringup_run.py. This checker needs a linked bring-up image")
         print("and the game's assets, so it cannot run on CI; it belongs in the preflight gate.")
         return 2
 
     if not os.path.exists(MAP):
-        print("no build-bringup/out/HYPERX.map, so no crash address can be given a name.")
-        print("Rebuild build-bringup; the map is what makes a baseline survive the next link.")
+        print("no build-harness/out/hyperx.map, so no crash address can be given a name.")
+        print("Rebuild build-harness; the map is what makes a baseline survive the next link.")
         return 2
 
     stale = bringup_sweep.staleSources(LINKED)
 
     if stale and not arguments.stale_ok:
-        print("build-bringup/out/HYPERX.exe is older than %d modified source(s):" % len(stale))
+        print("build-harness/out/hyperx.exe is older than %d modified source(s):" % len(stale))
 
         for one in stale[:5]:
             print("    " + one)

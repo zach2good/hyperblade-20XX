@@ -1,9 +1,7 @@
 #include "common/compat.h"
 #include "d3ddevice.h"
 #include "globals.h"
-#ifdef HYPERX_BRINGUP
 #define TEXTURE_FORMAT_MAX 10
-#endif
 #include "graphicsglobals.h"
 #include "d3ddeviceinit.h"
 #include "d3dshapes.h"
@@ -287,13 +285,11 @@ HRESULT __stdcall D3D::EnumTextureFormatsCallback(DDSURFACEDESC* pFormat, void* 
 {
     int* pnChosen = (int*)pContext;
 
-#ifdef HYPERX_BRINGUP
     // The original does not check: an overflow writes over the device pointer and the viewports.
     if (g_d3dState.nTextureFormatsSeen >= TEXTURE_FORMAT_MAX)
     {
         return DDENUMRET_CANCEL;
     }
-#endif
 
     DDSURFACEDESC* pSlot = &g_d3dState.aTextureFormats[g_d3dState.nTextureFormatsSeen];
 

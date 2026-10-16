@@ -7202,14 +7202,12 @@ void __cdecl PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, i
 
     EngineObject* pTarget = g_pGameEngine->m_ppSlots[nSlot];
 
-#ifdef HYPERX_BRINGUP
-    // The original has no guard here, and a bring-up run can reach it with an empty slot.
+    // The original has no guard here, and a run can reach it with an empty slot.
     if (pTarget == 0)
     {
         *pResult = 1;
         return;
     }
-#endif
 
     pTarget->GetPhysicsBody();
     const Vec3* pForward = &pTarget->GetPhysicsBody()->velDir;

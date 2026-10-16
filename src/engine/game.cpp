@@ -35,9 +35,6 @@
 #include "engine/messageids.h"
 #include "engine/objectclasses.h"
 
-#ifdef HYPERX_BRINGUP
-#endif
-
 float g_flUnusedGame                = g_flZeroGame;
 Vec3  g_vBirdsEyeTrackOffset        = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 Vec3  g_vFirstPersonTrackOffset     = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
@@ -604,15 +601,11 @@ unsigned int __stdcall Game::UpdateState(void)
                 {
                     Screen::ClearBlack();
 
-#ifdef HYPERX_BRINGUP
                     // InitFrame runs before this check, so a run with no screen faults there.
                     if (g_pActiveScreen != 0)
                     {
                         g_pActiveScreen->InitFrame();
                     }
-#else
-                    g_pActiveScreen->InitFrame();
-#endif
 
                     delete g_pActiveScreen;
 

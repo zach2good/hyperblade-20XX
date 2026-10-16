@@ -55,6 +55,8 @@ int __stdcall          FlipOrBlt(void);
 int __stdcall          RestoreAllSurfaces(void);
 unsigned int           InitDeviceAndSurfaces(HPALETTE hPalette);
 int __cdecl            ChangeDisplayMode(int nMode);
+unsigned int           ColourFromMasks(unsigned int nColour, unsigned int nRMask, unsigned int nGMask, unsigned int nBMask);
+unsigned int           CornerColourKey(struct IDirectDrawSurface* pSurface, unsigned int nRMask, unsigned int nGMask, unsigned int nBMask);
 
 } // namespace DDraw
 

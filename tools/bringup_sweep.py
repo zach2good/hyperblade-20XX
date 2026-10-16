@@ -5,13 +5,13 @@ arrives in bursts across a sweep and clears on its own, so judge a sweep against
 
     python tools/bringup_sweep.py                 # states 0 to 28, 60 frames each
     python tools/bringup_sweep.py --states 14,15
-    python tools/bringup_sweep.py --tag before    # keep each state's log under build-bringup
+    python tools/bringup_sweep.py --tag before    # keep each state's log under build-harness
 
-This does not build. Build with tools/bringup_run.py, or cmake --build build-bringup, first.
+This does not build. Build with tools/bringup_run.py, or cmake --build build-harness, first.
 It refuses to run when a source under src/ or cmake/ is newer than the linked image; pass
 --stale-ok to sweep anyway.
 
-It stages: stage() copies build-bringup/out/HYPERX.exe to build-bringup/run/HYPERX_run.exe,
+It stages: stage() copies build-harness/out/hyperx.exe to build-harness/run/HYPERX_run.exe,
 which is what runs. Without the copy, the sweep would run the previous build.
 """
 import argparse
@@ -25,7 +25,7 @@ import bringup_run
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STAGE = os.path.join(ROOT, "build-bringup", "run")
+STAGE = os.path.join(ROOT, "build-harness", "run")
 RUNNABLE = os.path.join(STAGE, "HYPERX_run.exe")
 LOG = os.path.join(STAGE, "bringup.log")
 
@@ -96,7 +96,7 @@ def keep(tag, state, lines):
     if tag is None:
         return
 
-    where = os.path.join(ROOT, "build-bringup", "sweeps", tag)
+    where = os.path.join(ROOT, "build-harness", "sweeps", tag)
 
     if not os.path.isdir(where):
         os.makedirs(where)
@@ -115,15 +115,15 @@ def main():
     parser.add_argument("--timeout", type=int, default=60,
                         help="seconds before this kills a state anyway (default 60)")
     parser.add_argument("--tag", default=None,
-                        help="keep each state's log under build-bringup/sweeps/<tag>")
+                        help="keep each state's log under build-harness/sweeps/<tag>")
     parser.add_argument("--stale-ok", action="store_true",
                         help="sweep even where a source is newer than the linked image")
     arguments = parser.parse_args()
 
-    linked = os.path.join(ROOT, "build-bringup", "out", "HYPERX.exe")
+    linked = os.path.join(ROOT, "build-harness", "out", "hyperx.exe")
 
     if not os.path.exists(linked):
-        raise SystemExit("no build-bringup/out/HYPERX.exe; run tools/bringup_run.py first")
+        raise SystemExit("no build-harness/out/hyperx.exe; run tools/bringup_run.py first")
 
     stale = staleSources(linked)
 

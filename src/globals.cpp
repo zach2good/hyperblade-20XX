@@ -57,11 +57,8 @@ char          g_szFpsText[100];
 unsigned char g_bIsWindowCreated;
 int           g_nPrevEngineState;
 RenderFlags   g_renderFlags = { 1, 1 };
-#ifdef HYPERX_BRINGUP
-int g_cUseSoftRenderer = 1;
-#else
-int g_cUseSoftRenderer;
-#endif
+// The software renderer is the default; the Direct3D 5 path is untested on modern Windows.
+int                g_cUseSoftRenderer = 1;
 int                g_cD3DActive;
 unsigned int       g_dwFrameGameLogicStart;
 InfoBarBase*       g_pRenderer;
@@ -166,18 +163,14 @@ HPALETTE                   g_hDisplayPalette;
 int                        g_bBackBufferReady;
 long                       g_nDisplayWindowID;
 unsigned char              g_cMdmTexLoaded;
-#ifdef HYPERX_BRINGUP
-int g_bForceSoftwareRender = 1;
-#else
-int g_bForceSoftwareRender;
-#endif
-int            g_bEmulationOnly;
-int            g_hrLastResult;
-int            g_nSurfacePitchCopy;
-int            g_nViewportOriginY;
-int            g_nViewportOriginX;
-unsigned char* g_pBackBufferBitsCopy;
-HWND           g_hWndGame;
+int                        g_bForceSoftwareRender = 1;
+int                        g_bEmulationOnly;
+int                        g_hrLastResult;
+int                        g_nSurfacePitchCopy;
+int                        g_nViewportOriginY;
+int                        g_nViewportOriginX;
+unsigned char*             g_pBackBufferBitsCopy;
+HWND                       g_hWndGame;
 // Full screen by default; -w turns it off.
 int g_bFullScreen = 1;
 int g_bUseOffscreenSurface;

@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "engine/game.h"
+#include "app/window.h"
 
 FrameTimer g_frameTimer;
 
@@ -159,4 +160,54 @@ void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
 
     bFresh        = 0;
     bFrameTimesOn = 0;
+}
+
+// Microseconds per frame, and how far behind the deadline may slip before it is reset.
+constexpr auto FRAME_MICROS = 33333u;
+constexpr auto RESYNC_MS    = 1000l;
+
+void FrameTimer::Pace()
+{
+    static auto s_bStarted   = 0;
+    static auto s_dwDeadline = DWORD{ 0 };
+    static auto s_nCarry     = 0u;
+
+    const auto dwNow = timeGetTime();
+
+    if (s_bStarted == 0)
+    {
+        timeBeginPeriod(1);
+
+        s_bStarted   = 1;
+        s_dwDeadline = dwNow;
+    }
+
+    if (Window::InSizeMove() != 0)
+    {
+        s_dwDeadline = dwNow;
+
+        return;
+    }
+
+    s_nCarry += FRAME_MICROS;
+
+    const auto dwStep = s_nCarry / 1000;
+
+    s_nCarry -= dwStep * 1000;
+    s_dwDeadline += dwStep;
+
+    auto lWait = (long)(s_dwDeadline - dwNow);
+
+    if (lWait < -RESYNC_MS)
+    {
+        s_dwDeadline = dwNow;
+
+        return;
+    }
+
+    while (lWait > 0)
+    {
+        Sleep((DWORD)lWait);
+        lWait = (long)(s_dwDeadline - timeGetTime());
+    }
 }

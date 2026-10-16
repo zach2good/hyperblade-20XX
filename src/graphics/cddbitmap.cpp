@@ -3,9 +3,6 @@
 #include "common/pathstring.h"
 #include "graphics/texture.h"
 #include "globals.h"
-#ifdef HYPERX_BRINGUP
-#include "app/bringup.h"
-#endif
 #include "texture.h"
 #include <new.h>
 #include <ddraw.h>
@@ -306,17 +303,15 @@ int CDDBitMap::CopyBitmap(HBITMAP hBitmap)
 
             m_pSurface->Unlock(0);
 
-#ifdef HYPERX_BRINGUP
             // Lock does not see what GDI wrote, so the key is read through GDI once unlocked.
             if (key.dwColorSpaceLowValue == 0)
             {
-                key.dwColorSpaceLowValue  = BringUp::CornerColourKey(m_pSurface,
-                                                                     desc.ddpfPixelFormat.dwRBitMask,
-                                                                     desc.ddpfPixelFormat.dwGBitMask,
-                                                                     desc.ddpfPixelFormat.dwBBitMask);
+                key.dwColorSpaceLowValue  = DDraw::CornerColourKey(m_pSurface,
+                                                                   desc.ddpfPixelFormat.dwRBitMask,
+                                                                   desc.ddpfPixelFormat.dwGBitMask,
+                                                                   desc.ddpfPixelFormat.dwBBitMask);
                 key.dwColorSpaceHighValue = key.dwColorSpaceLowValue;
             }
-#endif
         }
 
         m_pSurface->SetColorKey(DDCKEY_SRCBLT, &key);

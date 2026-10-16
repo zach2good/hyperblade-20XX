@@ -60,6 +60,9 @@ struct FrameTimer
     void   ProcessInitialFrameUpdate(HWND hWnd, HDC hDC);
 
     static double __fastcall EndFrameUpdate(FrameTimer* timer);
+
+    // Holds the frame rate at thirty a second.
+    static void Pace();
 };
 
 #endif

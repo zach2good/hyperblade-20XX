@@ -13,7 +13,7 @@ To reach a match, use --walk: the state that reads the three drome selections do
 in, so a jump straight to it gets an empty match. --trace-pos dumps every object's position every
 N frames.
 
-Build needs an x86 developer environment, because it runs `cmake --build build`. It never captures the screen; snapshots come from bitmaps the game built, and each is
+Build needs an x86 developer environment, because it runs `cmake --build build-harness`. It never captures the screen; snapshots come from bitmaps the game built, and each is
 converted to a PNG beside it. HB_QUIT_AFTER makes the game quit after the given frames, and the
 tool kills anything still alive after the timeout.
 """
@@ -31,7 +31,7 @@ import bmp_to_png
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-BUILD = os.path.join(ROOT, "build")
+BUILD = os.path.join(ROOT, "build-harness")
 STAGE = os.path.join(BUILD, "run")
 
 OUT = os.path.join(BUILD, "out")

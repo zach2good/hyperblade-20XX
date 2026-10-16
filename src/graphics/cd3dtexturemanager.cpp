@@ -21,8 +21,6 @@
 #include "engine/object.h"
 #include "graphics/softtex.h"
 #include "modelcomponent.h"
-#ifdef HYPERX_BRINGUP
-#endif
 
 // Returns zero whatever happened.
 // FUNCTION: HYPERX 0x00433780

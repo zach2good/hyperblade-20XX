@@ -622,13 +622,11 @@ void InfoBar::DrawScene(int bDraw)
             m_nCachedAwayTeam = g_pGameEngine->m_nTeamAwayIndex;
             m_nCachedArena    = g_pGameEngine->m_nArenaIndex;
 
-#ifdef HYPERX_BRINGUP
             // g_hDisplayPalette is a deleted handle here, in the original too, and GDI32 faults on it.
             if (g_pColorPalette != 0 && g_pColorPalette->m_hPalette != 0)
             {
                 g_hDisplayPalette = g_pColorPalette->m_hPalette;
             }
-#endif
 
             g_nRadarBlipColourDromer0 = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER0);
             g_nRadarBlipColourDromer2 = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER2);
@@ -971,13 +969,11 @@ InfoBar::InfoBar(HDC hDC)
 
     g_hTextDC = hDC;
 
-#ifdef HYPERX_BRINGUP
-    // The original stores a palette here as the text DC; bring-up uses the software back buffer.
+    // The original stores a palette here as the text DC; the software back buffer is the DC.
     if (g_hSoftBackDC != 0)
     {
         g_hTextDC = g_hSoftBackDC;
     }
-#endif
 
     m_sPeriodFrame.LoadByName("frper");
 

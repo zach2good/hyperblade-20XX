@@ -16,17 +16,13 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
         SetMenu(hWnd, 0);
     }
 
-#ifdef HYPERX_BRINGUP
-    // A full-screen popup never becomes visible on a modern desktop.
+    // A full-screen popup never becomes visible on a modern desktop, so the game runs framed.
+    RECT rcFrame = { 0, 0, 640, 480 };
+
     SetWindowLongA(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
     SetWindowLongA(hWnd, GWL_ID, 0);
-    SetWindowPos(hWnd, 0, 0, 0, 660, 520, SWP_NOZORDER | SWP_FRAMECHANGED);
-#else
-    SetWindowLongA(hWnd, GWL_STYLE, WS_POPUP);
-    SetWindowLongA(hWnd, GWL_ID, 0);
-
-    Window::OnWindowMove(hWnd, 0);
-#endif
+    AdjustWindowRect(&rcFrame, WS_OVERLAPPEDWINDOW, FALSE);
+    SetWindowPos(hWnd, 0, 0, 0, rcFrame.right - rcFrame.left, rcFrame.bottom - rcFrame.top, SWP_NOZORDER | SWP_NOMOVE | SWP_FRAMECHANGED);
 
     PostMessageA(hWnd, WM_NCPAINT, 0, 0);
 }
@@ -89,16 +85,91 @@ int Window::EnsureClassRegistered(HINSTANCE hInstance)
     g_wndClass.hInstance   = hInstance;
     g_wndClass.hIcon       = 0;
     g_wndClass.hCursor     = 0;
-#ifdef HYPERX_BRINGUP
-    // Bring-up paints on demand, so the class's erase would flash.
+    // The game paints on demand, so the class's erase would flash.
     g_wndClass.hbrBackground = 0;
-#else
-    g_wndClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-#endif
     g_wndClass.lpszMenuName  = 0;
     g_wndClass.lpszClassName = "HyberBlade Atom String";
 
     RegisterClassA(&g_wndClass);
 
     return 0;
+}
+
+// Menus paint and hit-test at the origin unscaled, so only the surround is cleared.
+void Window::ClearSurround(HWND hWnd, int cx, int cy)
+{
+    RECT rcClient;
+
+    GetClientRect(hWnd, &rcClient);
+
+    if (rcClient.right <= cx && rcClient.bottom <= cy)
+    {
+        return;
+    }
+
+    const HDC hdc = GetDC(hWnd);
+
+    if (hdc == 0)
+    {
+        return;
+    }
+
+    RECT rcBar;
+
+    if (rcClient.right > cx)
+    {
+        SetRect(&rcBar, cx, 0, rcClient.right, rcClient.bottom);
+        FillRect(hdc, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
+    }
+
+    if (rcClient.bottom > cy)
+    {
+        SetRect(&rcBar, 0, cy, rcClient.right, rcClient.bottom);
+        FillRect(hdc, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
+    }
+
+    ReleaseDC(hWnd, hdc);
+}
+
+// A drag runs a modal loop inside DispatchMessageA, and this timer keeps the frames coming.
+constexpr auto SIZEMOVE_TIMER_ID = 0x4252u;
+constexpr auto SIZEMOVE_TIMER_MS = 33u;
+
+static int s_bInSizeMove    = 0;
+static int s_bInTimerUpdate = 0;
+
+void Window::OnEnterSizeMove(HWND hWnd)
+{
+    s_bInSizeMove = 1;
+
+    SetTimer(hWnd, SIZEMOVE_TIMER_ID, SIZEMOVE_TIMER_MS, 0);
+}
+
+void Window::OnExitSizeMove(HWND hWnd)
+{
+    KillTimer(hWnd, SIZEMOVE_TIMER_ID);
+
+    s_bInSizeMove = 0;
+}
+
+int Window::OnTimer(HWND hWnd, UINT_PTR nTimerId)
+{
+    if (nTimerId != SIZEMOVE_TIMER_ID)
+    {
+        return 0;
+    }
+
+    if (s_bInTimerUpdate == 0 && s_bInSizeMove != 0)
+    {
+        s_bInTimerUpdate = 1;
+        GameApp::MainUpdate(hWnd);
+        s_bInTimerUpdate = 0;
+    }
+
+    return 1;
+}
+
+int Window::InSizeMove()
+{
+    return s_bInSizeMove;
 }

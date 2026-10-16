@@ -19,6 +19,45 @@
 #include "graphics/face.h"
 #include "graphics/swrend.h"
 
+namespace
+{
+
+// Fewer than three vertices, or one at or behind the eye.
+int FaceUnprojectable()
+{
+    if (g_swFaceBuffer.nCount < 3)
+    {
+        return 1;
+    }
+
+    for (int v = 0; v < g_swFaceBuffer.nCount; v++)
+    {
+        if (g_swFaceBuffer.aVertices[v].pos.w <= 0.0001f)
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+// Takes the two rounded row coordinates, whose low bits are the row once the bias is added. The
+// edge stacks hold one entry per back-buffer row, so that is the bound.
+int EdgeOffScreen(float flRoundY1, float flRoundY2)
+{
+    const int nRow1 = (short)((int)FloatBits(flRoundY1) + g_nViewportOriginY);
+    const int nRow2 = (short)((int)FloatBits(flRoundY2) + g_nViewportOriginY);
+
+    if (nRow1 < 0 || nRow1 >= g_nBackBufferHeight || nRow2 < 0 || nRow2 >= g_nBackBufferHeight)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+} // namespace
+
 float        g_flUnusedSWRendA  = g_flZeroSWRend;
 float        g_flUnusedSWRendB  = g_flZeroSWRend;
 float        g_flUnusedSWRendC  = g_flZeroSWRend;
@@ -127,13 +166,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         return;
     }
 
-#ifdef HYPERX_BRINGUP
     // A clipped face can come back degenerate, and its projection divides by zero.
-    if (BringUp::FaceUnprojectable() != 0)
+    if (FaceUnprojectable() != 0)
     {
         return;
     }
-#endif
 
     char cBackFace = cFlip;
 
@@ -382,13 +419,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         const float flRoundX2 = pVert->pos.x + SW_ROUND_BIAS;
         const float flRoundY2 = pVert->pos.y + SW_ROUND_BIAS;
 
-#ifdef HYPERX_BRINGUP
         // An edge outside the frame's rows would scan past the edge tables.
-        if (BringUp::EdgeOffScreen(flRoundY1, flRoundY2) != 0)
+        if (EdgeOffScreen(flRoundY1, flRoundY2) != 0)
         {
             continue;
         }
-#endif
 
         SWRend::ScanEdge((unsigned short)((int)FloatBits(flRoundX1) + g_nViewportOriginX),
                          (unsigned short)((int)FloatBits(flRoundY1) + g_nViewportOriginY),

@@ -1475,64 +1475,10 @@ void HoldSplash(void* hWindow)
 }
 
 // The deadline advances 33, 33 then 34 ms from itself; an overrun past a second restarts it.
-#define BRINGUP_FRAME_MICROS 33333
-#define BRINGUP_RESYNC_MS    1000
-
-int InSizeMove(void);
 
 int Now(void)
 {
     return (int)timeGetTime();
-}
-
-void PaceFrame(void)
-{
-    static int          s_bStarted   = 0;
-    static DWORD        s_dwDeadline = 0;
-    static unsigned int s_nCarry     = 0;
-
-    const DWORD dwNow = timeGetTime();
-    DWORD       dwStep;
-    long        lWait;
-
-    if (s_bStarted == 0)
-    {
-        // This also refines the engine's clock. HB_COARSE_TIMER=1 leaves the period alone.
-        if (getenv("HB_COARSE_TIMER") == 0)
-        {
-            timeBeginPeriod(1);
-        }
-        s_bStarted   = 1;
-        s_dwDeadline = dwNow;
-        s_nCarry     = 0;
-    }
-
-    if (InSizeMove() != 0)
-    {
-        s_dwDeadline = dwNow;
-
-        return;
-    }
-
-    s_nCarry += BRINGUP_FRAME_MICROS;
-    dwStep = s_nCarry / 1000;
-    s_nCarry -= dwStep * 1000;
-    s_dwDeadline += dwStep;
-
-    lWait = (long)(s_dwDeadline - dwNow);
-
-    if (lWait < -BRINGUP_RESYNC_MS)
-    {
-        s_dwDeadline = dwNow;
-
-        return;
-    }
-
-    while (lWait > 0)
-    {
-        Sleep((DWORD)lWait);
-        lWait = (long)(s_dwDeadline - timeGetTime());
-    }
 }
 
 // Nothing gives a tooling run the focus, and MainUpdate does nothing without the active flag.
@@ -1580,206 +1526,6 @@ int FocusChanged(unsigned int bActive)
     Trace("focus", bFocused);
 
     return 1;
-}
-
-// A key down when the focus leaves never sends WM_KEYUP here.
-static unsigned char s_abKeyHeld[256];
-
-void NoteKey(unsigned int nMessage, unsigned int nKey)
-{
-    if (nKey >= 256)
-    {
-        return;
-    }
-
-    if (nMessage == WM_KEYDOWN)
-    {
-        s_abKeyHeld[nKey] = 1;
-    }
-    else if (nMessage == WM_KEYUP)
-    {
-        s_abKeyHeld[nKey] = 0;
-    }
-}
-
-void ReleaseHeldKeys(void)
-{
-    int nKey;
-    int nReleased = 0;
-
-    for (nKey = 0; nKey < 256; nKey++)
-    {
-        if (s_abKeyHeld[nKey] == 0)
-        {
-            continue;
-        }
-
-        s_abKeyHeld[nKey] = 0;
-        nReleased++;
-
-        if (g_pInputDevice != 0)
-        {
-            g_pInputDevice->HandleKeyUp((unsigned int)nKey);
-        }
-    }
-
-    if (nReleased != 0)
-    {
-        Trace("releasedHeldKeys", nReleased);
-    }
-}
-
-// Stretches the 640x480 back buffer to the client area, letterboxed in black.
-void PresentFrame(void* hWindowDC, void* hBackDC, int cx, int cy)
-{
-    const HDC hdcWindow = (HDC)hWindowDC;
-    const HDC hdcBack   = (HDC)hBackDC;
-    RECT      rcClient;
-    RECT      rcBar;
-    int       cxClient;
-    int       cyClient;
-    int       cxDest;
-    int       cyDest;
-    int       x;
-    int       y;
-
-    GetClientRect(g_gameApp.m_hWnd, &rcClient);
-
-    cxClient = rcClient.right;
-    cyClient = rcClient.bottom;
-
-    if (cxClient <= 0 || cyClient <= 0 || cx <= 0 || cy <= 0)
-    {
-        return;
-    }
-
-    if (cxClient == cx && cyClient == cy)
-    {
-        BitBlt(hdcWindow, 0, 0, cx, cy, hdcBack, 0, 0, SRCCOPY);
-
-        return;
-    }
-
-    cxDest = cxClient;
-    cyDest = cxClient * cy / cx;
-
-    if (cyDest > cyClient)
-    {
-        cyDest = cyClient;
-        cxDest = cyClient * cx / cy;
-    }
-
-    x = (cxClient - cxDest) / 2;
-    y = (cyClient - cyDest) / 2;
-
-    SetStretchBltMode(hdcWindow, COLORONCOLOR);
-    StretchBlt(hdcWindow, x, y, cxDest, cyDest, hdcBack, 0, 0, cx, cy, SRCCOPY);
-
-    if (x > 0)
-    {
-        SetRect(&rcBar, 0, 0, x, cyClient);
-        FillRect(hdcWindow, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-        SetRect(&rcBar, x + cxDest, 0, cxClient, cyClient);
-        FillRect(hdcWindow, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-    }
-
-    if (y > 0)
-    {
-        SetRect(&rcBar, 0, 0, cxClient, y);
-        FillRect(hdcWindow, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-        SetRect(&rcBar, 0, y + cyDest, cxClient, cyClient);
-        FillRect(hdcWindow, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-    }
-}
-
-// Menus paint and hit-test at the origin unscaled, so only the surround is cleared.
-void ClearSurround(void* hWindow, int cx, int cy)
-{
-    const HWND hWnd = (HWND)hWindow;
-    RECT       rcClient;
-    RECT       rcBar;
-    HDC        hdc;
-
-    GetClientRect(hWnd, &rcClient);
-
-    if (rcClient.right <= cx && rcClient.bottom <= cy)
-    {
-        return;
-    }
-
-    hdc = GetDC(hWnd);
-
-    if (hdc == 0)
-    {
-        return;
-    }
-
-    if (rcClient.right > cx)
-    {
-        SetRect(&rcBar, cx, 0, rcClient.right, rcClient.bottom);
-        FillRect(hdc, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-    }
-
-    if (rcClient.bottom > cy)
-    {
-        SetRect(&rcBar, 0, cy, rcClient.right, rcClient.bottom);
-        FillRect(hdc, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-    }
-
-    ReleaseDC(hWnd, hdc);
-}
-
-// A drag runs a modal loop inside DispatchMessageA; the timer keeps frames coming.
-#define SIZEMOVE_TIMER_ID 0x4252
-#define SIZEMOVE_TIMER_MS 33
-
-static int s_bInSizeMove    = 0;
-static int s_bInTimerUpdate = 0;
-
-void OnEnterSizeMove(void* hWindow)
-{
-    const HWND hWnd = (HWND)hWindow;
-
-    s_bInSizeMove = 1;
-
-    SetTimer(hWnd, SIZEMOVE_TIMER_ID, SIZEMOVE_TIMER_MS, 0);
-
-    Trace("enterSizeMove", 1);
-}
-
-void OnExitSizeMove(void* hWindow)
-{
-    const HWND hWnd = (HWND)hWindow;
-
-    KillTimer(hWnd, SIZEMOVE_TIMER_ID);
-
-    s_bInSizeMove = 0;
-
-    Trace("exitSizeMove", 1);
-}
-
-int OnTimer(void* hWindow, unsigned int nTimerId)
-{
-    const HWND hWnd = (HWND)hWindow;
-
-    if (nTimerId != SIZEMOVE_TIMER_ID)
-    {
-        return 0;
-    }
-
-    if (s_bInTimerUpdate == 0 && s_bInSizeMove != 0)
-    {
-        s_bInTimerUpdate = 1;
-        GameApp::MainUpdate(hWnd);
-        s_bInTimerUpdate = 0;
-    }
-
-    return 1;
-}
-
-int InSizeMove(void)
-{
-    return s_bInSizeMove;
 }
 
 static void MaskShape(unsigned int nMask, int* pnShift, unsigned int* pnMax)
@@ -2059,31 +1805,6 @@ void OverrideDisplayMode(int* pnWidth, int* pnHeight)
     Trace("d3dModeForced", *pnWidth);
 }
 
-// An unaware process is DPI-virtualised, and the menu capture would read stretched pixels.
-void BeforeWindow(void)
-{
-    typedef int(WINAPI * SetDpiAwareFn)(void);
-
-    HMODULE       hUser = GetModuleHandleA("user32.dll");
-    SetDpiAwareFn pfnSetAware;
-
-    if (hUser == 0)
-    {
-        return;
-    }
-
-    pfnSetAware = (SetDpiAwareFn)GetProcAddress(hUser, "SetProcessDPIAware");
-
-    if (pfnSetAware == 0)
-    {
-        Trace("dpiAwareUnavailable", 0);
-
-        return;
-    }
-
-    Trace("dpiAware", pfnSetAware());
-}
-
 // HB_TOPMOST=1, because the menu capture reads the screen.
 void RaiseWindow(void)
 {
@@ -2336,14 +2057,6 @@ void ForceModelSet(int* pbTexEnabled)
     Trace("modelsForced", *pbTexEnabled);
 }
 
-// Windowed, as -w makes it: full screen leaves the desktop at 640x480.
-void ChooseDisplay(void)
-{
-    g_bFullScreen = 0;
-
-    SelectResolution();
-}
-
 void BeforeFrame(void)
 {
     HoldActive();
@@ -2353,9 +2066,6 @@ void BeforeFrame(void)
 
 void AfterFrame(void* hWindow)
 {
-    // Nothing in the original waits for the frame.
-    PaceFrame();
-
     SaveBitmap("frame", g_hSoftBackBitmap);
 
     HoldKeys();
@@ -2401,129 +2111,6 @@ void ShortenOvertime(int* pnOvertimeMs)
 }
 
 // Scales each 8-bit channel of a COLORREF into its mask.
-unsigned int ColourFromMasks(unsigned int nColour, unsigned int nRMask, unsigned int nGMask, unsigned int nBMask)
-{
-    const unsigned int anChannel[3] = {
-        nColour & 0xff, (nColour >> 8) & 0xff, (nColour >> 16) & 0xff
-    };
-    const unsigned int anMask[3] = { nRMask, nGMask, nBMask };
-
-    unsigned int nValue = 0;
-    int          i;
-
-    for (i = 0; i < 3; i++)
-    {
-        unsigned int nMask  = anMask[i];
-        int          nShift = 0;
-
-        if (nMask == 0)
-        {
-            continue;
-        }
-
-        while ((nMask & 1) == 0)
-        {
-            nMask >>= 1;
-            nShift++;
-        }
-
-        nValue |= (((anChannel[i] * nMask) / 255) << nShift);
-    }
-
-    return nValue;
-}
-
-// The surface's top-left pixel read through GDI, in the surface's format; zero when unreadable.
-unsigned int CornerColourKey(IDirectDrawSurface* pSurface, unsigned int nRMask, unsigned int nGMask, unsigned int nBMask)
-{
-    HDC          hdcCorner;
-    COLORREF     nCorner;
-    unsigned int nValue;
-
-    if (pSurface->GetDC(&hdcCorner) != 0)
-    {
-        return 0;
-    }
-
-    nCorner = GetPixel(hdcCorner, 0, 0);
-
-    pSurface->ReleaseDC(hdcCorner);
-
-    if (nCorner == CLR_INVALID)
-    {
-        return 0;
-    }
-
-    nValue = ColourFromMasks(nCorner, nRMask, nGMask, nBMask);
-
-    Trace("bitmapKeyFromDC", (int)nValue);
-
-    return nValue;
-}
-
-// The software palette entry nearest a 0xRRGGBB colour.
-int NearestSoftPaletteIndex(unsigned int nColour)
-{
-    const int rTarget = (nColour >> 16) & 0xff;
-    const int gTarget = (nColour >> 8) & 0xff;
-    const int bTarget = nColour & 0xff;
-
-    int  nBest     = 0;
-    long nBestDist = 0x7fffffff;
-    int  i;
-
-    for (i = 0; i < 256; i++)
-    {
-        const int  dr    = (int)g_aSoftTexPalette[i].peRed - rTarget;
-        const int  dg    = (int)g_aSoftTexPalette[i].peGreen - gTarget;
-        const int  db    = (int)g_aSoftTexPalette[i].peBlue - bTarget;
-        const long nDist = dr * dr + dg * dg + db * db;
-
-        if (nDist < nBestDist)
-        {
-            nBestDist = nDist;
-            nBest     = i;
-        }
-    }
-
-    return nBest;
-}
-
-// Fewer than three vertices, or one at or behind the eye.
-int FaceUnprojectable(void)
-{
-    int v;
-
-    if (g_swFaceBuffer.nCount < 3)
-    {
-        return 1;
-    }
-
-    for (v = 0; v < g_swFaceBuffer.nCount; v++)
-    {
-        if (g_swFaceBuffer.aVertices[v].pos.w <= 0.0001f)
-        {
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
-// Takes the two rounded row coordinates, whose low bits are the row once the bias is added.
-int EdgeOffScreen(float flRoundY1, float flRoundY2)
-{
-    const int nRow1 = (short)((int)FloatBits(flRoundY1) + g_nViewportOriginY);
-    const int nRow2 = (short)((int)FloatBits(flRoundY2) + g_nViewportOriginY);
-
-    if (nRow1 < 0 || nRow1 >= g_nPrevHeight || nRow2 < 0 || nRow2 >= g_nPrevHeight)
-    {
-        return 1;
-    }
-
-    return 0;
-}
-
 static int TraceMessageWanted(int nKind)
 {
     static int s_nWanted = -1;

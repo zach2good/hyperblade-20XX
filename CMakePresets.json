@@ -18,7 +18,17 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_C_COMPILER": "cl",
-        "CMAKE_CXX_COMPILER": "cl"
+        "CMAKE_CXX_COMPILER": "cl",
+        "HYPERX_BRINGUP": "OFF"
+      }
+    },
+    {
+      "name": "msvc-x86-harness",
+      "displayName": "MSVC x86, bring-up test harness",
+      "inherits": "msvc-x86",
+      "binaryDir": "${sourceDir}/build-harness",
+      "cacheVariables": {
+        "HYPERX_BRINGUP": "ON"
       }
     }
   ],
@@ -26,6 +36,10 @@
     {
       "name": "msvc-x86",
       "configurePreset": "msvc-x86"
+    },
+    {
+      "name": "msvc-x86-harness",
+      "configurePreset": "msvc-x86-harness"
     }
   ]
 }

@@ -170,18 +170,18 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     LPCSTR pszAppClassName;
     HMENU  hAppMenu;
 
-#ifdef HYPERX_BRINGUP
-    // An unaware process is DPI-virtualised, and the menu capture would read stretched pixels.
-    BringUp::BeforeWindow();
-#endif
+    // An unaware process is DPI-virtualised, and GDI would read and draw stretched pixels.
+    SetProcessDPIAware();
 
     _set_new_handler(GameApp::OutOfMemoryHandler);
     GameApp::InitializeResourcePaths(hInstance);
     GameApp::ParseCommandLine(lpCmdLine);
 
-#ifdef HYPERX_BRINGUP
     // A modern desktop keeps its own mode, so the game runs windowed.
-    BringUp::ChooseDisplay();
+    g_bFullScreen = 0;
+
+#ifdef HYPERX_BRINGUP
+    BringUp::SelectResolution();
 #endif
 
     if (hPrevInstance == 0)
@@ -1137,12 +1137,8 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
     }
     else
     {
-#ifdef HYPERX_BRINGUP
-        // Clipping to a window that may never show leaves the desktop unusable.
+        // A framed window leaves the desktop usable, so the cursor is never clipped to it.
         GameApp::ClipCursorToWindow(0);
-#else
-        GameApp::ClipCursorToWindow(g_hWndGame);
-#endif
 
         nCount = ShowCursor(FALSE);
 
@@ -1186,8 +1182,10 @@ int GameApp::MainUpdate(HWND hWnd)
 
         FrameTimer::EndFrameUpdate(&g_frameTimer);
 
+        // Nothing in the original waits for the frame, and a modern machine runs it too fast.
+        FrameTimer::Pace();
+
 #ifdef HYPERX_BRINGUP
-        // Paces the frame, which a modern machine runs too fast, and drives a tooling run.
         BringUp::AfterFrame(hWnd);
 #endif
     }

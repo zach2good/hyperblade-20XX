@@ -18,8 +18,6 @@
 #include "common/staticinit.h"
 #include "texcacheentry.h"
 #include <stdlib.h>
-#ifdef HYPERX_BRINGUP
-#endif
 #include <string.h>
 #include <d3d.h>
 #include "engine/engineobject.h"

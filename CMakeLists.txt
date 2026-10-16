@@ -10,7 +10,7 @@ if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
     message(FATAL_ERROR "HyperBlade 20XX builds with MSVC for 32-bit x86. Use a preset from CMakePresets.json.")
 endif()
 
-option(HYPERX_BRINGUP "Build the bring-up tracing, snapshots and test switches." ON)
+option(HYPERX_BRINGUP "Build the bring-up test harness: tracing, snapshots and the HB_ switches." OFF)
 
 option(HYPERX_COMPILE_ONLY
     "Compile every source without your copy of the game. Links no image." OFF)
@@ -409,7 +409,7 @@ set_target_properties(hyperx PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
 target_link_libraries(hyperx PRIVATE
     kernel32 user32 gdi32 winmm version ddraw dxguid dsound)
-target_link_options(hyperx PRIVATE /SAFESEH:NO /LARGEADDRESSAWARE)
+target_link_options(hyperx PRIVATE /SAFESEH:NO /LARGEADDRESSAWARE "/MAP:${HYPERX_OUT}/hyperx.map")
 
 # The game data is junctioned in beside the image. mklink /J needs no privilege.
 set(HYPERX_GAME_DATA "" CACHE PATH

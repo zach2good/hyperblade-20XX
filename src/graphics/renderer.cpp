@@ -22,6 +22,38 @@
 #include "ui/debughud.h"
 #include "physics/collisionellipsoid.h"
 
+namespace
+{
+
+// The software palette entry nearest a 0xRRGGBB colour.
+int NearestSoftPaletteIndex(unsigned int nColour)
+{
+    const int rTarget = (nColour >> 16) & 0xff;
+    const int gTarget = (nColour >> 8) & 0xff;
+    const int bTarget = nColour & 0xff;
+
+    auto nBest     = 0;
+    auto nBestDist = 0x7fffffff;
+
+    for (int i = 0; i < 256; i++)
+    {
+        const int dr    = (int)g_aSoftTexPalette[i].peRed - rTarget;
+        const int dg    = (int)g_aSoftTexPalette[i].peGreen - gTarget;
+        const int db    = (int)g_aSoftTexPalette[i].peBlue - bTarget;
+        const int nDist = dr * dr + dg * dg + db * db;
+
+        if (nDist < nBestDist)
+        {
+            nBestDist = nDist;
+            nBest     = i;
+        }
+    }
+
+    return nBest;
+}
+
+} // namespace
+
 // The surface the texture DLL is told to draw into.
 struct DrawPolySurface
 {
@@ -254,12 +286,59 @@ int __stdcall Renderer::PresentFrame(void)
     const int cx     = g_nBackBufferWidth;
     const HDC hdc    = g_hScreenBltDC;
 
-#ifdef HYPERX_BRINGUP
-    // The bring-up window is resizable, so the frame is stretched to the client area.
-    BringUp::PresentFrame(hdc, hdcSrc, cx, cy);
-#else
-    BitBlt(hdc, 0, 0, cx, cy, hdcSrc, 0, 0, SRCCOPY);
-#endif
+    // The window is resizable, so the frame is stretched to the client area and letterboxed.
+    RECT rcClient;
+
+    GetClientRect(g_gameApp.m_hWnd, &rcClient);
+
+    const auto cxClient = (int)rcClient.right;
+    const auto cyClient = (int)rcClient.bottom;
+
+    if (cxClient <= 0 || cyClient <= 0 || cx <= 0 || cy <= 0)
+    {
+        return 1;
+    }
+
+    if (cxClient == cx && cyClient == cy)
+    {
+        BitBlt(hdc, 0, 0, cx, cy, hdcSrc, 0, 0, SRCCOPY);
+
+        return 1;
+    }
+
+    auto cxDest = cxClient;
+    auto cyDest = cxClient * cy / cx;
+
+    if (cyDest > cyClient)
+    {
+        cyDest = cyClient;
+        cxDest = cyClient * cx / cy;
+    }
+
+    const auto x = (cxClient - cxDest) / 2;
+    const auto y = (cyClient - cyDest) / 2;
+
+    SetStretchBltMode(hdc, COLORONCOLOR);
+    StretchBlt(hdc, x, y, cxDest, cyDest, hdcSrc, 0, 0, cx, cy, SRCCOPY);
+
+    const auto hBlack = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    RECT       rcBar;
+
+    if (x > 0)
+    {
+        SetRect(&rcBar, 0, 0, x, cyClient);
+        FillRect(hdc, &rcBar, hBlack);
+        SetRect(&rcBar, x + cxDest, 0, cxClient, cyClient);
+        FillRect(hdc, &rcBar, hBlack);
+    }
+
+    if (y > 0)
+    {
+        SetRect(&rcBar, 0, 0, cxClient, y);
+        FillRect(hdc, &rcBar, hBlack);
+        SetRect(&rcBar, 0, y + cyDest, cxClient, cyClient);
+        FillRect(hdc, &rcBar, hBlack);
+    }
 
     return 1;
 }
@@ -361,13 +440,11 @@ void __cdecl Renderer::ClearFrame(void)
     {
         int nIndex = GetNearestPaletteIndex(g_hDisplayPalette, CLEAR_COLOUR);
 
-#ifdef HYPERX_BRINGUP
         // GetNearestPaletteIndex answers CLR_INVALID once the display palette is gone.
         if (nIndex == -1 || (unsigned int)nIndex >= 256)
         {
-            nIndex = BringUp::NearestSoftPaletteIndex(CLEAR_COLOUR);
+            nIndex = NearestSoftPaletteIndex(CLEAR_COLOUR);
         }
-#endif
 
         memset(g_pBackBufferBitsCopy, nIndex, g_nBackBufferWidth * g_nBackBufferHeight);
     }

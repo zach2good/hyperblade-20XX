@@ -196,7 +196,7 @@ def plan_messages(path):
 
 def message_names():
     """ID_MSG out of the developers' own header, read at run time and never copied here."""
-    path = os.environ.get("HB_ENUMIDS", os.path.join(ROOT, "build", "out", "Data", "ENUMIDS.H"))
+    path = os.environ.get("HB_ENUMIDS", os.path.join(ROOT, "build-harness", "out", "Data", "ENUMIDS.H"))
 
     if not os.path.exists(path):
         return []

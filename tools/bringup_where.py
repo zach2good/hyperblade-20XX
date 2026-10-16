@@ -16,8 +16,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MAP = os.path.join(ROOT, "build-bringup", "out", "HYPERX.map")
-LOG = os.path.join(ROOT, "build-bringup", "run", "bringup.log")
+MAP = os.path.join(ROOT, "build-harness", "out", "hyperx.map")
+LOG = os.path.join(ROOT, "build-harness", "run", "bringup.log")
 
 IMAGE_BASE = 0x400000
 

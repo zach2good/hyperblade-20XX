@@ -2,10 +2,9 @@
 #include "graphics/ddrawcaps.h"
 #include "globals.h"
 #include "graphics/renderstate.h"
-#ifdef HYPERX_BRINGUP
 #include "app/bringup.h"
+
 #define DISPLAY_MODE_MAX 50
-#endif
 #include "graphicsglobals.h"
 #include "d3ddeviceinit.h"
 #include "math/vector.h"
@@ -69,13 +68,11 @@ struct IDirectDrawSurface;
 // FUNCTION: HYPERX 0x00430e40
 HRESULT WINAPI DDraw::EnumDisplayModesCallback(DDSURFACEDESC* pDesc, void*)
 {
-#ifdef HYPERX_BRINGUP
     // The original does not check, and modern DirectDraw lists more than fifty modes.
     if (g_displayState.nDisplayModeCount >= DISPLAY_MODE_MAX)
     {
         return DDENUMRET_CANCEL;
     }
-#endif
 
     if (pDesc->ddpfPixelFormat.dwRGBBitCount == 8 || pDesc->ddpfPixelFormat.dwRGBBitCount == 16)
     {
@@ -1300,15 +1297,12 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 
         nNeeded = (g_dwDisplayBpp >> 3) * g_displayMode.nHeight * g_displayMode.nWidth * 2;
 
-#ifdef HYPERX_BRINGUP
         // Modern DirectDraw reports no video memory, so the back buffer goes to system memory.
         if (capsDriver.dwVidMemTotal == 0)
         {
             g_bUseOffscreenSurface = 1;
         }
-        else
-#endif
-            if (capsDriver.dwVidMemTotal <= nNeeded && g_bFullScreen == 0)
+        else if (capsDriver.dwVidMemTotal <= nNeeded && g_bFullScreen == 0)
         {
             if (capsDriver.dwVidMemTotal > nNeeded / 2)
             {
@@ -1393,56 +1387,7 @@ extern int g_bDoubleResMode;
 // FUNCTION: HYPERX 0x0043ae20
 int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 {
-    const HDC hdc = GetDC(0);
-
-    const int nBits = ::GetDeviceCaps(hdc, PLANES) * ::GetDeviceCaps(hdc, BITSPIXEL);
-
-    ReleaseDC(0, hdc);
-
-#ifdef HYPERX_BRINGUP
-    // Reached on depth alone, and modern Windows offers no 8-bit mode; E_FAIL is already handled.
-    return E_FAIL;
-#endif
-
-    if (nBits != nBpp)
-    {
-        g_hrLastResult = g_ddrawDevice.pDDrawObject->SetCooperativeLevel(hWnd, DDRAW_EXCLUSIVE_FULLSCREEN);
-
-        if (g_hrLastResult != 0)
-        {
-            // STRING: HYPERX 0x004c071c
-            g_gameApp.Error("SetCooperativeLevel failed!\n%s\n",
-                            DDraw::ErrorToString(g_hrLastResult));
-
-            return g_hrLastResult;
-        }
-
-        g_hrLastResult = g_ddrawDevice.pDDrawObject->SetDisplayMode(
-            g_ddrawDevice.nDisplayWidth, g_ddrawDevice.nDisplayHeight, nBpp);
-
-        if (g_hrLastResult != 0)
-        {
-            // STRING: HYPERX 0x004c06c4
-            g_gameApp.Fatal("SetMode failed!\n%s\n", DDraw::ErrorToString(g_hrLastResult));
-
-            return DDraw::FailInitialization(g_hrLastResult & DDRAW_ERROR_CODE_MASK);
-        }
-
-        g_hrLastResult = g_ddrawDevice.pDDrawObject->SetCooperativeLevel(g_hWndGame, DDSCL_NORMAL);
-
-        if (g_hrLastResult == 0)
-        {
-            g_dwDisplayBpp = nBpp;
-
-            return g_hrLastResult;
-        }
-
-        g_gameApp.Error("SetCooperativeLevel failed!\n%s\n",
-                        DDraw::ErrorToString(g_hrLastResult));
-
-        return g_hrLastResult;
-    }
-
+    // Modern Windows offers no 8-bit mode, and callers already handle E_FAIL.
     return E_FAIL;
 }
 
@@ -2301,55 +2246,6 @@ void __stdcall DDraw::DestroyAllSurfaces(void)
 // FUNCTION: HYPERX 0x0043c310
 int __cdecl DDraw::ChangeDisplayMode(int nMode)
 {
-    DEVMODEA dm;
-
-#ifdef HYPERX_BRINGUP
-    return 0;
-#endif
-
-    if (g_ddrawDevice.bIsPrimary == 0)
-    {
-        LONG lResult = 0;
-
-        dm.dmSize = sizeof(dm);
-
-        switch (nMode)
-        {
-            case 0:
-                dm.dmPelsWidth  = g_dwDisplayWidth;
-                dm.dmPelsHeight = g_dwDisplayHeight;
-                dm.dmBitsPerPel = g_dwDisplayBpp;
-                dm.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
-                lResult         = ChangeDisplaySettingsA(&dm, 0);
-                break;
-
-            case 1:
-                if (g_ddrawDevice.bD3DActive != 0 && g_pSavedDesktopMode != 0)
-                {
-                    dm.dmPelsWidth  = g_pSavedDesktopMode->nWidth;
-                    dm.dmPelsHeight = g_pSavedDesktopMode->nHeight;
-                    dm.dmBitsPerPel = g_pSavedDesktopMode->nBpp;
-                    dm.dmFields     = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
-                    lResult         = ChangeDisplaySettingsA(&dm, 0);
-                }
-                break;
-        }
-
-        switch (lResult)
-        {
-            case 0:
-                break;
-
-            case 1:
-                g_hrLastResult = g_ddrawDevice.pDDrawObject->SetCooperativeLevel(g_hWndGame, DDSCL_NORMAL);
-                DDraw::ChangeDisplayMode(1);
-                g_gameApp.Fatal(g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, STRING_HIGH_COLOR));
-                break;
-        }
-
-        return lResult;
-    }
-
     return 0;
 }
 
@@ -2878,13 +2774,11 @@ unsigned int __cdecl DDraw::ColourToPixel(IDirectDrawSurface* pSurface,
         {
             nPixel = ((1 << ddsd.ddpfPixelFormat.dwRGBBitCount) - 1) & *(unsigned int*)ddsd.lpSurface;
 
-#ifdef HYPERX_BRINGUP
             // GDI and Lock no longer see the same memory, so the value is computed from the masks.
             if (nPixel == 0)
             {
-                nPixel = BringUp::ColourFromMasks(nColour, ddsd.ddpfPixelFormat.dwRBitMask, ddsd.ddpfPixelFormat.dwGBitMask, ddsd.ddpfPixelFormat.dwBBitMask);
+                nPixel = DDraw::ColourFromMasks(nColour, ddsd.ddpfPixelFormat.dwRBitMask, ddsd.ddpfPixelFormat.dwGBitMask, ddsd.ddpfPixelFormat.dwBBitMask);
             }
-#endif
 
             pSurface->Unlock(0);
         }
@@ -3335,3 +3229,55 @@ unsigned int g_dwDisplayBpp    = 8;
 
 // The colour mode every HUD picture load is handed.
 int g_nHudColourMode = 1;
+
+// A 0xBBGGRR colour in the surface format the three masks describe.
+unsigned int DDraw::ColourFromMasks(unsigned int nColour, unsigned int nRMask, unsigned int nGMask, unsigned int nBMask)
+{
+    const unsigned int anChannel[3] = { nColour & 0xff, (nColour >> 8) & 0xff, (nColour >> 16) & 0xff };
+    const unsigned int anMask[3]    = { nRMask, nGMask, nBMask };
+
+    auto nValue = 0u;
+
+    for (int i = 0; i < 3; i++)
+    {
+        auto nMask  = anMask[i];
+        auto nShift = 0;
+
+        if (nMask == 0)
+        {
+            continue;
+        }
+
+        while ((nMask & 1) == 0)
+        {
+            nMask >>= 1;
+            nShift++;
+        }
+
+        nValue |= ((anChannel[i] * nMask) / 255) << nShift;
+    }
+
+    return nValue;
+}
+
+// The surface's top-left pixel read through GDI, in the surface's format; zero when unreadable.
+unsigned int DDraw::CornerColourKey(IDirectDrawSurface* pSurface, unsigned int nRMask, unsigned int nGMask, unsigned int nBMask)
+{
+    HDC hdcCorner;
+
+    if (pSurface->GetDC(&hdcCorner) != 0)
+    {
+        return 0;
+    }
+
+    const auto nCorner = GetPixel(hdcCorner, 0, 0);
+
+    pSurface->ReleaseDC(hdcCorner);
+
+    if (nCorner == CLR_INVALID)
+    {
+        return 0;
+    }
+
+    return DDraw::ColourFromMasks(nCorner, nRMask, nGMask, nBMask);
+}

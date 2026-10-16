@@ -22,6 +22,50 @@
 #include "graphics/swrend.h"
 #include "engine/gameengine.h"
 #include "engine/game.h"
+#include "app/window.h"
+
+namespace WndProc
+{
+
+// A key down when the focus leaves never sends WM_KEYUP here.
+static unsigned char s_abKeyHeld[256];
+
+static void NoteKey(UINT nMessage, WPARAM nKey)
+{
+    if (nKey >= 256)
+    {
+        return;
+    }
+
+    if (nMessage == WM_KEYDOWN)
+    {
+        s_abKeyHeld[nKey] = 1;
+    }
+    else if (nMessage == WM_KEYUP)
+    {
+        s_abKeyHeld[nKey] = 0;
+    }
+}
+
+static void ReleaseHeldKeys()
+{
+    for (unsigned int nKey = 0; nKey < 256; nKey++)
+    {
+        if (s_abKeyHeld[nKey] == 0)
+        {
+            continue;
+        }
+
+        s_abKeyHeld[nKey] = 0;
+
+        if (g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(nKey);
+        }
+    }
+}
+
+} // namespace WndProc
 
 // Key and button messages go to the input device during a match and to the screen otherwise.
 
@@ -78,24 +122,22 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             WndProc::OnActivate(hWnd, wParam, lParam);
             return 0;
 
-#ifdef HYPERX_BRINGUP
         // A drag runs a modal loop, and a timer keeps the frames coming through it.
         case WM_ENTERSIZEMOVE:
-            BringUp::OnEnterSizeMove(hWnd);
+            Window::OnEnterSizeMove(hWnd);
             break;
 
         case WM_EXITSIZEMOVE:
-            BringUp::OnExitSizeMove(hWnd);
+            Window::OnExitSizeMove(hWnd);
             break;
 
         case WM_TIMER:
-            if (BringUp::OnTimer(hWnd, wParam) != 0)
+            if (Window::OnTimer(hWnd, wParam) != 0)
             {
                 return 0;
             }
 
             break;
-#endif
 
         case WM_COMMAND:
             MainWindow::OnCommand(hWnd, LOWORD(wParam), lParam, HIWORD(wParam));
@@ -112,10 +154,8 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_KEYDOWN:
         case WM_LBUTTONDOWN:
         case WM_RBUTTONDOWN:
-#ifdef HYPERX_BRINGUP
-            // The WM_KEYUP for a held key can go to another window, so bring-up remembers it.
-            BringUp::NoteKey(uMsg, wParam);
-#endif
+            // The WM_KEYUP for a held key can go to another window, so the key is remembered.
+            WndProc::NoteKey(uMsg, wParam);
 
             if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
             {
@@ -231,9 +271,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_KEYUP:
         case WM_LBUTTONUP:
         case WM_RBUTTONUP:
-#ifdef HYPERX_BRINGUP
-            BringUp::NoteKey(uMsg, wParam);
-#endif
+            WndProc::NoteKey(uMsg, wParam);
 
             if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
             {
@@ -275,10 +313,8 @@ int __cdecl WndProc::HandlePaint(HWND hWnd)
     {
         g_pActiveScreen->PaintToWindow();
 
-#ifdef HYPERX_BRINGUP
-        // The bring-up window is resizable, and the menus paint only their 640x480.
-        BringUp::ClearSurround(hWnd, 640, 480);
-#endif
+        // The window is resizable, and the menus paint only their 640x480.
+        Window::ClearSurround(hWnd, 640, 480);
     }
 
     if (g_bIsWindowCreated && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
@@ -354,10 +390,8 @@ int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
         }
         else
         {
-#ifdef HYPERX_BRINGUP
             // The WM_KEYUP for a key held across the focus change goes to another window.
-            BringUp::ReleaseHeldKeys();
-#endif
+            WndProc::ReleaseHeldKeys();
 
             SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
 
