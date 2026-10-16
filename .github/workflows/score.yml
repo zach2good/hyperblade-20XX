@@ -70,7 +70,7 @@ jobs:
       - name: Name the original
         shell: bash
         run: |
-          printf 'targets:\n  HYPERX:\n    path: %s\n' "$PWD/reference/HYPERX.EXE" > reccmp-user.yml
+          printf 'targets:\n  HYPERX:\n    path: %s\n' "$(pwd -W)/reference/HYPERX.EXE" > reccmp-user.yml
           python tools/reference.py
 
       # The figures assume tools/reccmp_call_table.patch.
