@@ -75,7 +75,9 @@ The developers described ADLIB in Stuart Rosen and Robert Duisberg, "Bringing Li
 how a plan becomes a network of linked objects when an object adopts it. Its one code listing is
 in a syntax the shipped compiler rejects.
 
-[libadlib](https://github.com/vomitselfie/libadlib) is an independent, MIT-licensed reconstruction
-of ADLIB from a different build of `HYPERX.EXE` (1,359,872 bytes, 1996-10-21), so its addresses do
-not apply here, and most of its function names are its own. We take a name from it only where the
-binary's strings, ENUMIDS.H or the article back it, and check the behaviour in our own source.
+The ADLIB reconstruction contributors, *libadlib: An Independent Reconstruction of the ADLIB
+Behavior Runtime*, version 0.1.0, 2026-10-03, MIT licence,
+<https://github.com/vomitselfie/libadlib>. It reconstructs ADLIB from a different build of
+`HYPERX.EXE` (1,359,872 bytes, 1996-10-21), so its addresses do not apply here, and most of its
+function names are its own. We take a name from it only where the binary's strings, ENUMIDS.H or
+the article back it, and check the behaviour in our own source.
