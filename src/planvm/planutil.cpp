@@ -28,9 +28,10 @@ float __cdecl PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
+    EngineObject* const pObjectA = apObjects[nSlotA];
     EngineObject* const pObjectB = apObjects[nSlotB];
 
-    const Vec3* pPosA = apObjects[nSlotA]->GetPositionPtr();
+    const Vec3* pPosA = pObjectA->GetPositionPtr();
     const Vec3* pPosB = pObjectB->GetPositionPtr();
 
     const float flDeltaX = pPosB->x - pPosA->x;
