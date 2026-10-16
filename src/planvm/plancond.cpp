@@ -3867,7 +3867,7 @@ void __cdecl PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int n
 
     if (pArgs->m_pArgs[1].n == PLAN_TOKEN_MESSAGE_DATA)
     {
-        nRequest = (short)(((nFlag & 1) > 0) + 7);
+        nRequest = (nFlag & 1) ? ARENA_TRACK_DOWN : ARENA_TRACK_UP;
     }
     else
     {
