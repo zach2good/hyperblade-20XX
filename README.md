@@ -14,7 +14,7 @@ HyperBlade (1996), rebuilt and improved for modern systems. Built on top of
 You need your own copy of the game. Not affiliated with Activision or WizBang! Software Productions.
 
 <p align="center">
-  <img src="docs/gameplay_1080p.png" alt="A match in the software renderer" width="640">
+  <img src="docs/gameplay_1080p.png" alt="A match on the hardware renderer" width="640">
 </p>
 
 ## Features
@@ -22,24 +22,31 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Drops into your existing HyperBlade install
 - Supports all releases (original disc release (v1.0.0.0), Windows 2000 patch (v1.0.0.1), both with or without the Voodoo2 launcher (HB3DFxV2.exe))
 - Built for 64-bit Windows with a modern C++23 toolchain
+- In-game debug menu on F2
+- Runtime toggles for:
+  - Original software renderer
+  - New hardware renderer
+  - Textured models
+  - Gouraud shading/Phong shading
+  - Rok emits light
+  - Realtime shadows
 - Widescreen support
 - HUD and menu scaling
 - Xbox, PlayStation and Switch controller support
 - Music tracks can play from local rips, rather than the CD
 - Skippable intro splash screens
+- Experimental uncapped frame rate, with the game still simulated at 30 Hz
 - Various bug and crash fixes
 
 ## TODO
 
-- Hardware rendering through SDL3
-- Textures in both renderer modes
 - Update menus to support controller button re-binding
 - Mac, Linux and browser builds via Emscripten
 - Net and local multiplayer
 - Bot-only matches
 - Free-fly spectator mode
 - AI plan bug and balance fixes ([docs/plan_bugs.md](docs/plan_bugs.md))
-- ImGui debug menus, including the original RC, debug and plan menus
+- The original RC, debug and plan menus in the debug menu
 
 ## Install
 
