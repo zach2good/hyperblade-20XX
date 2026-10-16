@@ -10,8 +10,6 @@ if(NOT MSVC)
     message(FATAL_ERROR "HyperBlade 20XX builds with MSVC. Use a preset from CMakePresets.json.")
 endif()
 
-option(HYPERX_BRINGUP "Build the bring-up test harness: tracing, snapshots and the HB_ switches." OFF)
-
 option(HYPERX_COMPILE_ONLY
     "Compile every source without your copy of the game. Links no image." OFF)
 
@@ -38,7 +36,6 @@ set(HYPERX_SOURCES
     src/anim/animregistry.cpp
     src/anim/animscripttable.cpp
     src/anim/animset.cpp
-    src/app/bringup.cpp
     src/app/config.cpp
     src/app/frametimer.cpp
     src/app/gameapp.cpp
@@ -388,10 +385,6 @@ set(HYPERX_SOURCES
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
 target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
-
-if(HYPERX_BRINGUP)
-    target_compile_definitions(hyperx_objects PRIVATE HYPERX_BRINGUP)
-endif()
 
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
 target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS

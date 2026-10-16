@@ -15,7 +15,6 @@
 #include "math/transformobject.h"
 #include "projrender.h"
 #include <string.h>
-#include "app/bringup.h"
 #include "engine/engineobject.h"
 #include "renderoptions.h"
 #include "graphics/ddrawapi.h"

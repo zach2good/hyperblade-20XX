@@ -75,7 +75,6 @@
 #include "engine/rampobject.h"
 #include "ui/infobarbase.h"
 #include "ui/infobar.h"
-#include "app/bringup.h"
 #include "engine/particlesystem.h"
 #include "physics/collisionplane.h"
 #include "physics/collisioncheck.h"
@@ -474,11 +473,6 @@ void __cdecl PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, sh
         nArg = pArgs->m_pArgs[3].n;
     }
 
-#ifdef HYPERX_BRINGUP
-    // tools/check_match.py reads the counts of every message a plan sends.
-    BringUp::CountPlanMessage(nEvent);
-#endif
-
     if (nTarget == PLAN_TOKEN_BROADCAST)
     {
         pActor = pContext->GetActor();
@@ -521,10 +515,6 @@ void __cdecl PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, 
     {
         nParam = pArgs->m_pArgs[3].n;
     }
-
-#ifdef HYPERX_BRINGUP
-    BringUp::CountPlanMessage(nEvent);
-#endif
 
     if (nTarget == PLAN_TOKEN_BROADCAST)
     {
@@ -1098,11 +1088,6 @@ void __cdecl PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, shor
     pBody = pContext->GetActor()->GetPhysicsBody();
 
     pNormal = g_arenaEllipsoid.NormalAtPoint(&pContext->GetActor()->GetPhysicsBody()->pos);
-
-#ifdef HYPERX_BRINGUP
-    // tools/check_match.py flags a null normal, which the copy below reads unchecked.
-    BringUp::Trace("setPosNormal", (int)pNormal);
-#endif
 
     pBody->surfNormal = *pNormal;
 

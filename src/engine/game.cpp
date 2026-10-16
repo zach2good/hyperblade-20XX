@@ -3,7 +3,6 @@
 #include "common/compat.h"
 #include "globals.h"
 #include <stdlib.h>
-#include "app/bringup.h"
 #include "sound/audiomgr.h"
 #include "gameoptions.h"
 #include "ui/screen.h"
@@ -538,10 +537,6 @@ unsigned int __stdcall Game::UpdateState(void)
             case ESTATE_MATCH_START:
                 g_pAudioMgr->FreeGroupBuffers(SOUND_GROUP_PRELOAD);
                 g_pAudioMgr->StopEntry(SOUND_SXXAMBA2);
-#ifdef HYPERX_BRINGUP
-                // Without the menus the table is empty and SetArena loads a null path.
-                BringUp::PickFixture();
-#endif
 
                 g_pGameEngine->SetTeams((short)g_nDromeTeamHome, (short)g_nDromeTeamAway);
                 g_pGameEngine->SetArena((short)g_nDromeArena);
@@ -589,15 +584,8 @@ unsigned int __stdcall Game::UpdateState(void)
                 Game::SetEngineState(ESTATE_LOBBY);
                 pszText = g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, rand() % 3 + STRING_REALLY_QUIT);
 
-#ifdef HYPERX_BRINGUP
-                // A modal box has nobody to answer it in a tooling run.
-                (void)pszText;
-
-                if (BringUp::ConfirmQuit())
-#else
                 if (Win32::AskYesNo(pszText,
                                     g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, STRING_QUIT)) == IDYES)
-#endif
                 {
                     Screen::ClearBlack();
 

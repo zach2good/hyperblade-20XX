@@ -11,7 +11,6 @@
 #include "app/menuids.h"
 #include "gameapp.h"
 #include "sound/audiomgr.h"
-#include "app/bringup.h"
 #include "input/joystickmgr.h"
 #include "graphics/renderer.h"
 #include "graphics/renderoptions.h"
@@ -106,10 +105,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             return -1;
 
         case WM_DESTROY:
-#ifdef HYPERX_BRINGUP
-            // A fast run can reach the game's own match end before the frame budget.
-            BringUp::DumpPlanMessages();
-#endif
 
             if (g_bHelpOpen != 0)
             {
@@ -327,12 +322,7 @@ int __cdecl WndProc::HandlePaint(HWND hWnd)
 // FUNCTION: HYPERX 0x0044d190
 int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 {
-#ifdef HYPERX_BRINGUP
-    // HoldActive pins m_bIsActive, so the flag cannot tell whether this is news.
-    if (g_bShuttingDown == 0 && BringUp::FocusChanged(bActive) != 0)
-#else
     if (g_bShuttingDown == 0 && bActive != g_gameApp.m_bIsActive)
-#endif
     {
         g_gameApp.m_bIsActive = (unsigned char)bActive;
 

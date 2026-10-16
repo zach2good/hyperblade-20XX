@@ -9,7 +9,6 @@
 #include "meshmaterial.h"
 #include "meshbone.h"
 #include "engine/engineobject.h"
-#include "app/bringup.h"
 #include "ui/hudglobals.h"
 #include "projrender.h"
 #include "d3dshapes.h"

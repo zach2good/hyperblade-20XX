@@ -7,7 +7,6 @@
 #include "engine/gameengine.h"
 #include "globals.h"
 #include "app/gameapp.h"
-#include "app/bringup.h"
 #include "plannode.h"
 #include "common/pooledownerroot.h"
 #include "engine/messageids.h"
@@ -76,14 +75,6 @@ void CTimerActivity::OnListChanged()
 // FUNCTION: HYPERX 0x00411b00
 void CTimerActivity::Process(int nArg)
 {
-#ifdef HYPERX_BRINGUP
-    // tools/bringup_run.py --trace-obj follows one object's timers; the owner can be null here.
-    if (m_pOwner != 0)
-    {
-        BringUp::TraceTimerStep(m_pOwner->m_pszName, m_bReady, m_nFireTickMs, m_nEvent);
-    }
-#endif
-
     if (m_bReady != 0)
     {
         Detach();

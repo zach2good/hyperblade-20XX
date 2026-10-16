@@ -2,7 +2,6 @@
 #include "graphics/ddrawcaps.h"
 #include "globals.h"
 #include "graphics/renderstate.h"
-#include "app/bringup.h"
 
 #define DISPLAY_MODE_MAX 50
 #include "graphicsglobals.h"
@@ -1155,11 +1154,6 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
             g_displayMode.nWidth   = g_displayState.aDisplayModes[nMode].nWidth;
             g_displayMode.nHeight  = g_displayState.aDisplayModes[nMode].nHeight;
             g_dwDisplayBpp         = g_displayState.aDisplayModes[nMode].nBpp;
-
-#ifdef HYPERX_BRINGUP
-            // The enumeration overwrites g_dwDisplayWidth on this path, so HB_RES is applied again.
-            BringUp::OverrideDisplayMode(&g_displayMode.nWidth, &g_displayMode.nHeight);
-#endif
         }
     }
 
@@ -2801,21 +2795,12 @@ unsigned int __cdecl DDraw::ColourToPixel(IDirectDrawSurface* pSurface,
 // FUNCTION: HYPERX 0x0043d0b0
 int __stdcall DDraw::Flip(void)
 {
-#ifdef HYPERX_BRINGUP
-    // The Direct3D path's frame is snapshotted as it reaches the screen.
-    BringUp::SaveD3DFrame("frame");
-#endif
-
     return g_ddrawDevice.pDDrawPrimary->Flip(0, DDFLIP_WAIT) == 0;
 }
 
 // FUNCTION: HYPERX 0x0043d0d0
 int __stdcall DDraw::BltFrontFromBack(void)
 {
-#ifdef HYPERX_BRINGUP
-    BringUp::SaveD3DFrame("frame");
-#endif
-
     const HRESULT hr = g_ddrawDevice.pDDrawPrimary->Blt(&g_rcBltDest, g_ddrawDevice.pBackSurface, 0, DDBLT_WAIT, 0);
 
     if (hr == DDERR_SURFACELOST)
@@ -2829,10 +2814,6 @@ int __stdcall DDraw::BltFrontFromBack(void)
 // FUNCTION: HYPERX 0x0043d100
 int __stdcall DDraw::FlipOrBlt(void)
 {
-#ifdef HYPERX_BRINGUP
-    BringUp::SaveD3DFrame("frame");
-#endif
-
     if (g_bFullScreen != 0)
     {
         if (g_bForceSoftwareRender != 0 && g_bHWFlipAvailable == 0)

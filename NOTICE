@@ -35,5 +35,5 @@ and what you may do with it is between you and its rights holders.
 
 THIRD-PARTY CODE IN THIS REPOSITORY
 
-third_party/stb holds stb_image and stb_image_write by Sean Barrett, under the public domain
+third_party/stb holds stb_image by Sean Barrett, under the public domain
 or MIT terms in third_party/stb/LICENSE, not the LGPL.

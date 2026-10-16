@@ -38,13 +38,6 @@ cmake --build build
 `build/out/hyperx.exe`. Without a copy of the game, configure with `-DHYPERX_COMPILE_ONLY=ON`,
 which compiles every source and links nothing.
 
-## Test harness
-
-The `msvc-x86-harness` preset builds into `build-harness/` with the bring-up harness: a trace log,
-snapshots, and the `HB_` switches listed in `src/app/bringup.cpp`. `python tools/check_match.py`
-plays one match on it. The game pauses when its window loses focus, so leave it in front, or set
-`HB_TOPMOST=1`.
-
 ## Pulling from the decomp
 
 The decomp is the `upstream` remote. Its source changes merge into this fork:

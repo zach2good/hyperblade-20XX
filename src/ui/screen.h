@@ -11,15 +11,6 @@ class Widget;
 #define WIDGET_ID_MOUSE  100
 #define WIDGET_ID_RETURN 101
 
-#ifdef HYPERX_BRINGUP
-namespace BringUp
-{
-
-void DumpWidgets();
-
-}
-#endif
-
 // The three virtuals are the whole of 0x004b4040; two are folded across a dozen tables.
 // VTABLE: HYPERX 0x004b4040
 class Screen
@@ -69,9 +60,6 @@ public:
 protected:
     // A frame the screen owns is compared against m_hBackground so it is not deleted twice.
     friend class Widget;
-#ifdef HYPERX_BRINGUP
-    friend void BringUp::DumpWidgets();
-#endif
 
     HBITMAP  m_hBackground; // 0x004
     HPALETTE m_hPalette;    // 0x008

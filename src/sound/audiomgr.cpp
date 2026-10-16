@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <new.h>
 #include <windows.h>
-#include "app/bringup.h"
 #include "sound/wave.h"
 #include "sound/soundids.h"
 
@@ -120,11 +119,7 @@ void AudioMgr::Init(HWND hWindow)
     CDFadeVolume((int)g_pGameOptions->ReadMusicVolume());
 }
 
-#ifdef HYPERX_BRINGUP
-#define LOAD_TRACE_TEXT(w, v) BringUp::TraceText(w, v)
-#else
 #define LOAD_TRACE_TEXT(w, v) ((void)0)
-#endif
 
 // Only mode one reads the bytes; the others keep the offset for the streamer to come back to.
 // FUNCTION: HYPERX 0x00490aa0

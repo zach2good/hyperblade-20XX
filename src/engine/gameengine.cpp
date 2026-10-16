@@ -103,7 +103,6 @@ struct GameApp;
 #include "net/cplayer.h"
 #include "particlesystem.h"
 #include "planvm/collinteractor.h"
-#include "app/bringup.h"
 #include "ui/saveobject.h"
 #include "engine/engineobject.h"
 #include "engine/coachobject.h"
@@ -595,11 +594,6 @@ void GameEngine::TickClock()
     int          nOvertimeMs;
     unsigned int nElapsedMs;
 
-#ifdef HYPERX_BRINGUP
-    // HB_SCORES=a,b forces both scores every frame so the bracket can advance in tournament tests.
-    BringUp::ForceScores(&m_nScoreHome, &m_nScoreAway);
-#endif
-
     m_clock.flPrevDelta           = m_clock.flDelta;
     m_clock.flPrevDeltaSquared    = m_clock.flDeltaSquared;
     m_clock.flPrevInvDelta        = m_clock.flInvDelta;
@@ -640,11 +634,6 @@ void GameEngine::TickClock()
     {
         nOvertimeMs = OVERTIME_EARLY_MS;
     }
-
-#ifdef HYPERX_BRINGUP
-    // HB_OVERTIME_MS shortens the run-on after each period, so a tooling run reaches the match end.
-    BringUp::ShortenOvertime(&nOvertimeMs);
-#endif
 
     if (m_clock.nPauseMark != 1)
     {
@@ -4426,11 +4415,6 @@ void GameEngine::PerFrameUpdate()
 
                 ppObject++;
             }
-
-#ifdef HYPERX_BRINGUP
-            // tools/check_match.py reads the positions this writes every HB_TRACE_POS frames.
-            BringUp::TraceScene(this);
-#endif
 
             GameEngine::BroadcastCollisionEvents();
             ProcessInputCommandQueue();

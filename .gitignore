@@ -1,5 +1,4 @@
 build/
-build-harness/
 out/
 CMakeUserPresets.json
 *.obj
@@ -64,5 +63,3 @@ __pycache__/
 
 
 
-# Baselines that describe your own install. bringup_check.py writes its own with --save.
-tools/bringup_baseline.json

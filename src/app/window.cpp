@@ -4,7 +4,6 @@
 #include "gameapp.h"
 #include "app/window.h"
 #include "wndproc.h"
-#include "app/bringup.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
 #include "engine/gameoptions.h"
@@ -254,12 +253,6 @@ int Window::InSizeMove()
 // which the back buffer needs, and PresentFrame centres what that leaves.
 void Window::OnSize(WPARAM nKind, int cx, int cy)
 {
-#ifdef HYPERX_BRINGUP
-    BringUp::Trace("sizeKind", (int)nKind);
-    BringUp::Trace("sizeWidth", cx);
-    BringUp::Trace("sizeHeight", cy);
-#endif
-
     if (nKind == SIZE_MINIMIZED || g_hSoftBackBitmap == 0)
     {
         return;

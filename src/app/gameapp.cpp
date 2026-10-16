@@ -53,7 +53,6 @@ class AwardsUIScreen;
 #include <mbstring.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "app/bringup.h"
 #include "ui/screens/championshipsetupuiscreen.h"
 #include "graphics/viewextent.h"
 #include "ui/screens/pausemenufullscreen.h"
@@ -149,9 +148,6 @@ BOOL CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, UINT wParam
 // FUNCTION: HYPERX 0x00418c10
 void GameApp::SetModelPath(int bTexEnabled)
 {
-#ifdef HYPERX_BRINGUP
-    BringUp::ForceModelSet(&bTexEnabled);
-#endif
     if (bTexEnabled != 0)
     {
         // STRING: HYPERX 0x004bba8c
@@ -179,10 +175,6 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
 
     // A modern desktop keeps its own mode, so the game runs windowed.
     g_bFullScreen = 0;
-
-#ifdef HYPERX_BRINGUP
-    BringUp::SelectResolution();
-#endif
 
     if (hPrevInstance == 0)
     {
@@ -249,16 +241,10 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
 
     g_nSplashTimerId = 0;
 
-#ifdef HYPERX_BRINGUP
-    // Holds each splash frame long enough to see, and lets a tooling run start in another state.
-    BringUp::HoldSplash(hWnd);
-    BringUp::ForceStartState();
-#else
     if (g_hSplashOwnedPalette != 0)
     {
         Screen::ClearBlack(g_hSplashOwnedPalette);
     }
-#endif
 
     g_hSplashPalette = 0;
 
@@ -930,12 +916,7 @@ HBITMAP GameApp::LoadGDIBitmap(const char* pszName)
 
 #define ERROR_BOX_STYLE (MB_SETFOREGROUND | MB_SYSTEMMODAL | MB_ICONHAND)
 
-#ifdef HYPERX_BRINGUP
-// A modal box has nobody to dismiss it in a tooling run.
-#define ERROR_BOX(w, t, c) BringUp::TraceText("errorBox", t)
-#else
 #define ERROR_BOX(w, t, c) MessageBoxA(w, t, c, ERROR_BOX_STYLE)
-#endif
 
 // FUNCTION: HYPERX 0x004238b0
 void GameApp::ReportLastError(HWND)
@@ -990,12 +971,7 @@ void GameApp::FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args
     FatalErrorFmt(hWnd, strFormat.m_pchData, args);
 }
 
-#ifdef HYPERX_BRINGUP
-// The shutdown walks a half-built object graph and jumps into the heap, so bring-up skips it.
-#define SHUT_DOWN(pApp) BringUp::OnFatalSkipped()
-#else
 #define SHUT_DOWN(pApp) pApp->OnShutdown()
-#endif
 
 // FUNCTION: HYPERX 0x00423a70
 void GameApp::ErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
@@ -1156,18 +1132,8 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
 // FUNCTION: HYPERX 0x0044c160
 int GameApp::MainUpdate(HWND hWnd)
 {
-#ifdef HYPERX_BRINGUP
-    // Nothing gives a tooling run the focus, and without it this does nothing.
-    BringUp::BeforeFrame();
-#endif
-
     if (g_gameApp.m_bIsActive)
     {
-#ifdef HYPERX_BRINGUP
-        // tools/check_match.py follows the engine state through this.
-        BringUp::TraceChange("engineState", (int)g_gameApp.m_nEngineState);
-#endif
-
         ValidateRgn(hWnd, 0);
 
         if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
@@ -1184,10 +1150,6 @@ int GameApp::MainUpdate(HWND hWnd)
 
         // Nothing in the original waits for the frame, and a modern machine runs it too fast.
         FrameTimer::Pace();
-
-#ifdef HYPERX_BRINGUP
-        BringUp::AfterFrame(hWnd);
-#endif
     }
 
     return g_gameApp.m_bIsActive == 0;

@@ -4,9 +4,6 @@
 #include "globals.h"
 #include "graphics/graphicsglobals.h"
 #include "graphics/renderstate.h"
-#ifdef HYPERX_BRINGUP
-#include "app/bringup.h"
-#endif
 #include "d3ddevice.h"
 #include "app/gameapp.h"
 #include "d3dshapes.h"
@@ -71,27 +68,12 @@ int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
 
             Display::ApplyRenderOptions(g_gameApp.m_hMenu, g_d3dState.bD3DTexturesEnabled, g_nRenderStateTextureFilter == D3DFILTER_LINEAR);
 
-#ifdef HYPERX_BRINGUP
-            // The main viewport is sized from the mode entry, so HB_RES has to reach it separately.
+            if (D3DViewport::Setup(&g_d3dState.apViewports[0], g_d3dState.pDevice, g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nWidth, g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nHeight, 0, 0) != 0 && D3DRend::SetupRenderStates(g_d3dState.pDevice, g_d3dState.apViewports[0], g_nRenderStateTexturePerspective) != 0 && D3DRend::CreateMaterial() != 0)
             {
-                int nViewW = g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nWidth;
-                int nViewH = g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nHeight;
+                D3DRend::InitBatchPools();
 
-                BringUp::OverrideDisplayMode(&nViewW, &nViewH);
-
-                if (D3DViewport::Setup(&g_d3dState.apViewports[0], g_d3dState.pDevice, nViewW, nViewH, 0, 0) != 0
-#else
-            if (D3DViewport::Setup(&g_d3dState.apViewports[0], g_d3dState.pDevice, g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nWidth, g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nHeight, 0, 0) != 0
-#endif
-                    && D3DRend::SetupRenderStates(g_d3dState.pDevice, g_d3dState.apViewports[0], g_nRenderStateTexturePerspective) != 0 && D3DRend::CreateMaterial() != 0)
-                {
-                    D3DRend::InitBatchPools();
-
-                    return 1;
-                }
-#ifdef HYPERX_BRINGUP
+                return 1;
             }
-#endif
         }
     }
     else

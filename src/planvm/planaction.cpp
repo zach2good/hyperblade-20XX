@@ -49,7 +49,6 @@
 #include "app/gameapp.h"
 #include "engine/rokobject.h"
 #include "ui/infobar.h"
-#include "app/bringup.h"
 #include "physics/collisionobj.h"
 #include <math.h>
 #include <stdlib.h>

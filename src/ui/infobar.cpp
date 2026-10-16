@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "app/bringup.h"
 #include "graphics/viewextent.h"
 #include "graphics/infobarslot.h"
 #include "ui/cddsurfaceowner.h"
@@ -641,10 +640,6 @@ void InfoBar::DrawScene(int bDraw)
 
         g_pMessageQueue->Update();
 
-#ifdef HYPERX_BRINGUP
-        // tools/check_match.py counts the periods a match plays through this.
-        BringUp::TraceChange("periodNumber", g_pGameEngine->m_clock.nPeriod);
-#endif
         DrawPeriodLight();
 
         if (bDraw != 0)

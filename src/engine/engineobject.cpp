@@ -44,7 +44,6 @@
 #include <mbstring.h>
 #include <windows.h>
 #include <stdio.h>
-#include "app/bringup.h"
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "net/netrecords.h"
@@ -1856,11 +1855,6 @@ void EngineObject::PostSceneMessage(int nMessage, int nArg, int nSender, int bFr
 {
     char szText[0x100];
 
-#ifdef HYPERX_BRINGUP
-    // tools/bringup_run.py --trace-msg follows one message kind.
-    BringUp::TraceMessagePosted(m_pszName, nMessage, m_aSceneHandlerSlot[nMessage]);
-#endif
-
     if (m_aSceneHandlerSlot[nMessage] != 0)
     {
         if (g_pGameEngine->PostSceneMessage(m_nSlot, nMessage, nArg, nSender, bFromInput) == 0)
@@ -1876,10 +1870,6 @@ void EngineObject::PostSceneMessage(int nMessage, int nArg, int nSender, int bFr
 // FUNCTION: HYPERX 0x00472110
 void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short nValue, unsigned int nSender, int bFromInput)
 {
-#ifdef HYPERX_BRINGUP
-    BringUp::TraceMessageDispatched(m_pszName, (int)nMessage, m_aSceneHandlerSlot[nMessage], m_nPhase);
-#endif
-
     if (m_aSceneHandlerSlot[nMessage] != 0)
     {
         if (bFromInput != 0 || m_nPhase != OBJECT_PHASE_NETWORK)

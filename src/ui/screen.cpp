@@ -4,7 +4,6 @@
 #include "common/gametime.h"
 #include "sound/audiomgr.h"
 #include "input/inputglobals.h"
-#include "app/bringup.h"
 #include "graphics/gdi.h"
 struct GameApp;
 #include "uiglobals.h"
@@ -588,11 +587,6 @@ int Screen::PaintToWindow()
     {
         m_apWidgets[nSlot]->Draw(hdc, m_hPalette, nSlot);
     }
-
-#ifdef HYPERX_BRINGUP
-    // A menu paints through GDI, so tools/check_screens.py's snapshot is taken before EndPaint.
-    BringUp::SaveWindowDC("menu", hdc, 640, 480);
-#endif
 
     Window::PresentMenu(g_gameApp.GetMainWindow());
     GDI::EndPaint(&paint);
