@@ -1,6 +1,7 @@
 // The game at the top level: engine setup and teardown, one frame, and the state machine.
 
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "graphics/hudlayer.h"
 #include "globals.h"
 #include <stdlib.h>
@@ -53,12 +54,12 @@ void __stdcall Game::RunFrame(void)
     if (g_frameTimer.bFrameTimesOn)
     {
         g_frameTimer.nClockReads++;
-        g_dwFrameGameLogicStart        = timeGetTime();
+        g_dwFrameGameLogicStart        = (DWORD)SDL_GetTicks();
         g_frameTimer.dwFrameStartTicks = g_dwFrameGameLogicStart;
     }
     else
     {
-        g_dwFrameGameLogicStart = timeGetTime();
+        g_dwFrameGameLogicStart = (DWORD)SDL_GetTicks();
     }
 
     Renderer::BeginScene();
@@ -70,7 +71,7 @@ void __stdcall Game::RunFrame(void)
         nSamples                      = g_frameTimer.nPerfSampleCount;
         dwFrameStart                  = g_frameTimer.dwFrameStartTicks;
         g_frameTimer.nPerfSampleCount = nSamples + 1;
-        g_frameTimer.dAccGameLogicMs  = (double)(timeGetTime() - dwFrameStart) + g_frameTimer.dAccGameLogicMs;
+        g_frameTimer.dAccGameLogicMs  = (double)((DWORD)SDL_GetTicks() - dwFrameStart) + g_frameTimer.dAccGameLogicMs;
     }
 
     if (g_pRenderer != 0)
@@ -110,7 +111,7 @@ void __stdcall Game::RunFrame(void)
         nSamples                      = g_frameTimer.nPerfSampleCount;
         dwFrameStart                  = g_frameTimer.dwFrameStartTicks;
         g_frameTimer.nPerfSampleCount = nSamples + 1;
-        g_frameTimer.dAccRenderMs     = (double)(timeGetTime() - dwFrameStart) + g_frameTimer.dAccRenderMs;
+        g_frameTimer.dAccRenderMs     = (double)((DWORD)SDL_GetTicks() - dwFrameStart) + g_frameTimer.dAccRenderMs;
     }
 
     g_frameTimer.nFrames++;

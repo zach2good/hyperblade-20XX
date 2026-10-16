@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "colorpalette.h"
 #include "globals.h"
 #include "palettefade.h"
@@ -66,7 +67,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_nDuration = 1000;
 
-    m_dwStepped = timeGetTime();
+    m_dwStepped = (DWORD)SDL_GetTicks();
 
     m_bPhase = 1;
 }

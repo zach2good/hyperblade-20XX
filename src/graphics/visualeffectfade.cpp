@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "visualeffectfade.h"
 #include "globals.h"
 #include "colorpalette.h"
@@ -8,11 +9,11 @@
 // FUNCTION: HYPERX 0x0042cf20
 int VisualEffectFade::Tick()
 {
-    if (timeGetTime() - m_dwStepped > m_nDuration)
+    if ((DWORD)SDL_GetTicks() - m_dwStepped > m_nDuration)
     {
         m_bPhase = ApplyPhase(m_bPhase);
 
-        m_dwStepped = timeGetTime();
+        m_dwStepped = (DWORD)SDL_GetTicks();
 
         return 1;
     }

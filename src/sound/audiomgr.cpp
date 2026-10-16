@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "globals.h"
 #include "app/gameapp.h"
 #include "audiomgr.h"
@@ -391,7 +392,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
     if (nTrack == CD_TRACK_RANDOM)
     {
-        srand(timeGetTime());
+        srand((DWORD)SDL_GetTicks());
 
         int nPicked = CD_TRACK_RANDOM;
         int nScan   = g_nCDRecentCursor;

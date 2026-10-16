@@ -315,7 +315,7 @@ void GameApp::NextSplash(HWND hWnd)
         DeleteObject((HGDIOBJ)hPalette);
     }
 
-    s_dwSplashShown = timeGetTime();
+    s_dwSplashShown = (DWORD)SDL_GetTicks();
 }
 
 bool GameApp::UpdateSplash(HWND hWnd)
@@ -325,7 +325,7 @@ bool GameApp::UpdateSplash(HWND hWnd)
         return false;
     }
 
-    if (timeGetTime() - s_dwSplashShown >= SPLASH_MS)
+    if ((DWORD)SDL_GetTicks() - s_dwSplashShown >= SPLASH_MS)
     {
         GameApp::NextSplash(hWnd);
     }

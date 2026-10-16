@@ -601,7 +601,7 @@ void GameEngine::TickClock()
     m_clock.flPrevInvDeltaSquared = m_clock.flInvDeltaSquared;
     m_clock.nPrevTickMs           = m_clock.nTickMs;
 
-    const DWORD dwNow = timeGetTime();
+    const DWORD dwNow = (DWORD)SDL_GetTicks();
     m_clock.nTickMs   = dwNow;
     g_flFrameDelta    = (float)dwNow - m_clock.nPrevTickMs;
 
@@ -1171,7 +1171,7 @@ void GameEngine::InitMatchTimers()
     m_clock.nRingIndex = 0;
     m_clock.nPeriod    = 1;
 
-    const DWORD dwNow = timeGetTime();
+    const DWORD dwNow = (DWORD)SDL_GetTicks();
 
     m_clock.nPeriodStartMs = dwNow;
     m_clock.nPauseStartMs  = dwNow;
@@ -4324,7 +4324,7 @@ void GameEngine::BroadcastCollisionEvents()
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
     short               nIndex;
-    static unsigned int s_dwEventBase = timeGetTime();
+    static unsigned int s_dwEventBase = (DWORD)SDL_GetTicks();
 
     if (g_bDragOff == 0 || nEvent != MSG_START_DRAG)
     {
@@ -4339,13 +4339,13 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 
     if (nEvent == MSG_GOAL_SCORED)
     {
-        s_dwEventBase = timeGetTime();
+        s_dwEventBase = (DWORD)SDL_GetTicks();
 
         m_clock.nPauseMark = 0;
     }
     else if (nEvent == MSG_START_DRAG)
     {
-        s_dwEventBase = timeGetTime();
+        s_dwEventBase = (DWORD)SDL_GetTicks();
 
         m_clock.nPeriodStartMs = s_dwEventBase;
 
@@ -4357,7 +4357,7 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
     {
         if (m_clock.nPauseMark == 0)
         {
-            m_clock.nPauseStartMs = timeGetTime();
+            m_clock.nPauseStartMs = (DWORD)SDL_GetTicks();
 
             m_clock.nPeriodStartMs += m_clock.nPauseStartMs - s_dwEventBase;
         }
@@ -4548,7 +4548,7 @@ char GameEngine::RemoveFromSortedList(short nId)
 // FUNCTION: HYPERX 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
-    static unsigned int s_dwPauseBase = timeGetTime();
+    static unsigned int s_dwPauseBase = (DWORD)SDL_GetTicks();
 
     switch (bRunning)
     {
@@ -4557,7 +4557,7 @@ void GameEngine::SetRunState(short bRunning, int)
             {
                 m_clock.nPauseMark = 1;
 
-                m_clock.nPauseStartMs = timeGetTime();
+                m_clock.nPauseStartMs = (DWORD)SDL_GetTicks();
 
                 m_clock.nPeriodStartMs += m_clock.nPauseStartMs - s_dwPauseBase;
             }
@@ -4571,7 +4571,7 @@ void GameEngine::SetRunState(short bRunning, int)
             break;
 
         case 0:
-            s_dwPauseBase = timeGetTime();
+            s_dwPauseBase = (DWORD)SDL_GetTicks();
 
             m_wRunState = ENGINE_RUN_PAUSED;
 

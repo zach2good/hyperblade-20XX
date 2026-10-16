@@ -1,4 +1,6 @@
 #include "common/compat.h"
+#include <SDL3/SDL.h>
+#include <cstdint>
 #include "globals.h"
 #include "app/gameapp.h"
 #include "appglobals.h"
@@ -19,7 +21,7 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     timer->nPerfSampleCount++;
 
-    const unsigned int dwNow     = timeGetTime();
+    const unsigned int dwNow     = (DWORD)SDL_GetTicks();
     const unsigned int dwElapsed = dwNow - dwStart;
 
     if (timer->bFrameTimesOn == 0 || dwElapsed < 5000)
@@ -53,38 +55,21 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
     return dFrameRate;
 }
 
-// Passes an uninitialised period to timeEndPeriod when timeGetDevCaps fails.
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate(void)
 {
-    unsigned int uPeriod;
     unsigned int nTotal = 0;
 
-    {
-        TIMECAPS tc;
-
-        if (timeGetDevCaps(&tc, sizeof(tc)) == TIMERR_NOERROR)
-        {
-            const unsigned int uClamped = min(max(tc.wPeriodMin, 1), tc.wPeriodMax);
-
-            uPeriod = uClamped;
-
-            timeBeginPeriod(uClamped);
-        }
-    }
-
-    const unsigned int dwStart = timeGetTime();
+    const unsigned int dwStart = (DWORD)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nClockReads++;
 
-        nTotal += timeGetTime();
+        nTotal += (DWORD)SDL_GetTicks();
     }
 
-    const double dResult = ((double)timeGetTime() - dwStart) / nClockReads;
-
-    timeEndPeriod(uPeriod);
+    const double dResult = ((double)(DWORD)SDL_GetTicks() - dwStart) / nClockReads;
 
     Restart();
 
@@ -96,16 +81,16 @@ double FrameTimer::BenchmarkResolution(void)
 {
     unsigned int nTotal = 0;
 
-    const unsigned int dwStart = timeGetTime();
+    const unsigned int dwStart = (DWORD)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nPerfSampleCount++;
 
-        nTotal += (timeGetTime() - dwStart);
+        nTotal += ((DWORD)SDL_GetTicks() - dwStart);
     }
 
-    const double dResult = ((double)timeGetTime() - dwStart) / nPerfSampleCount;
+    const double dResult = ((double)(DWORD)SDL_GetTicks() - dwStart) / nPerfSampleCount;
 
     Restart();
 
@@ -118,14 +103,14 @@ double FrameTimer::BenchmarkTextSpeed(HDC hDC)
     // STRING: HYPERX 0x004c1e78
     g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", (int)floor(30.5));
 
-    const unsigned int dwStart = timeGetTime();
+    const unsigned int dwStart = (DWORD)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 100; nLoop++)
     {
         ExtTextOutA(hDC, 10, 0, 0, 0, g_szFpsText, g_nFpsTextLength, 0);
     }
 
-    const unsigned int dwEnd = timeGetTime();
+    const unsigned int dwEnd = (DWORD)SDL_GetTicks();
 
     const double dResult = ((double)dwEnd - (double)dwStart) * 0.001;
 
@@ -148,7 +133,7 @@ void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
 
     nClockReads++;
 
-    dwFrameStartTime = timeGetTime();
+    dwFrameStartTime = (DWORD)SDL_GetTicks();
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {
@@ -162,45 +147,32 @@ void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
     bFrameTimesOn = 0;
 }
 
-// Microseconds per frame, and how far behind the deadline may slip before it is reset.
-constexpr auto FRAME_MICROS = 33333u;
-constexpr auto RESYNC_MS    = 1000l;
+// Nanoseconds per frame, and how far behind the deadline may slip before it is reset.
+constexpr auto FRAME_NS  = std::uint64_t{ 1000000000 / 30 };
+constexpr auto RESYNC_NS = std::uint64_t{ 1000000000 };
 
 void FrameTimer::Pace()
 {
-    static auto s_bStarted   = 0;
-    static auto s_dwDeadline = DWORD{ 0 };
-    static auto s_nCarry     = 0u;
+    static auto s_nDeadlineNS = std::uint64_t{ 0 };
 
-    const auto dwNow = timeGetTime();
+    const auto nNowNS = SDL_GetTicksNS();
 
-    if (s_bStarted == 0)
+    if (s_nDeadlineNS == 0)
     {
-        timeBeginPeriod(1);
-
-        s_bStarted   = 1;
-        s_dwDeadline = dwNow;
+        s_nDeadlineNS = nNowNS;
     }
 
-    s_nCarry += FRAME_MICROS;
+    s_nDeadlineNS += FRAME_NS;
 
-    const auto dwStep = s_nCarry / 1000;
-
-    s_nCarry -= dwStep * 1000;
-    s_dwDeadline += dwStep;
-
-    auto lWait = (long)(s_dwDeadline - dwNow);
-
-    if (lWait < -RESYNC_MS)
+    if (nNowNS > s_nDeadlineNS + RESYNC_NS)
     {
-        s_dwDeadline = dwNow;
+        s_nDeadlineNS = nNowNS;
 
         return;
     }
 
-    while (lWait > 0)
+    if (s_nDeadlineNS > nNowNS)
     {
-        Sleep((DWORD)lWait);
-        lWait = (long)(s_dwDeadline - timeGetTime());
+        SDL_DelayPrecise(s_nDeadlineNS - nNowNS);
     }
 }

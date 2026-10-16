@@ -1,6 +1,7 @@
 // Each static control's text is a version key, replaced by its value from the version resource.
 
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "globals.h"
 #include "app/gameapp.h"
 #include "app/frametimer.h"
@@ -198,7 +199,7 @@ void SplashDialog::ShowAbout(HINSTANCE hInstance, HWND hWnd)
             {
                 g_frameTimer.nClockReads++;
 
-                g_frameTimer.dwFrameStartTime = timeGetTime();
+                g_frameTimer.dwFrameStartTime = (DWORD)SDL_GetTicks();
 
                 GameEngine::TogglePause(hWnd, 1);
 

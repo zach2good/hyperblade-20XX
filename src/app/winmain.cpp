@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "globals.h"
 #include "app/frametimer.h"
 #include "gameapp.h"
@@ -22,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nSho
         if (g_frameTimer.bFrameTimesOn)
         {
             g_frameTimer.nClockReads++;
-            g_frameTimer.dwFrameStartTime = timeGetTime();
+            g_frameTimer.dwFrameStartTime = (DWORD)SDL_GetTicks();
         }
 
         while (Window::Pump())
