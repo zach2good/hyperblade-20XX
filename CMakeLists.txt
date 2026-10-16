@@ -134,6 +134,7 @@ set(HYPERX_SOURCES
     src/common/cviewitpool.cpp
     src/common/cwatchpool.cpp
     src/common/fileobj.cpp
+    src/common/inifile.cpp
     src/common/flatbehaviorobject.cpp
     src/common/flightbehaviorobject.cpp
     src/common/gametime.cpp
@@ -407,7 +408,14 @@ target_include_directories(wave_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(wave_check PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_compile_options(wave_check PRIVATE /W3 /utf-8 /EHsc)
 
+# Round-trips booie.ini reads and writes.
+add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp)
+target_include_directories(ini_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_options(ini_check PRIVATE /W3 /utf-8 /EHsc)
+
 enable_testing()
+
+add_test(NAME ini COMMAND ini_check)
 
 if(HYPERX_GAME_DATA)
     add_test(NAME mdm1 COMMAND mdm1_check "${HYPERX_GAME_DATA}/Data")

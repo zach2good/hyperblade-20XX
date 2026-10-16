@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/inifile.h"
 #include "gameoptions.h"
 #include "globals.h"
 #include "common/pathstring.h"
@@ -49,7 +50,7 @@ GameOptions::~GameOptions()
 int GameOptions::WriteString(const char* pszSection, const char* pszKey, const char* pszValue)
 {
     // STRING: HYPERX 0x004c64fc
-    const int nResult = WritePrivateProfileStringA(pszSection, pszKey, pszValue, String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"));
+    const int nResult = IniFile::WriteString(String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"), pszSection, pszKey, pszValue);
 
     return nResult;
 }
@@ -69,7 +70,7 @@ void GameOptions::WriteInt(const char* pszSection, const char* pszKey, int nValu
 unsigned int GameOptions::ReadInt(const char* pszSection, const char* pszKey, int nDefault)
 {
     // STRING: HYPERX 0x004c64fc
-    return GetPrivateProfileIntA(pszSection, pszKey, nDefault, String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"));
+    return IniFile::ReadInt(String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"), pszSection, pszKey, nDefault);
 }
 
 // FUNCTION: HYPERX 0x004799a0
