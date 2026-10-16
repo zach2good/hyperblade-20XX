@@ -3,6 +3,7 @@
 
 #include "common/compat.h"
 #include "rlespritesurface.h"
+#include "graphics/text.h"
 
 // VTABLE: HYPERX 0x004b32d4
 class CDDText : public CDDDrawable
@@ -12,7 +13,6 @@ public:
     CDDText()
     : m_pszText(0)
     , m_color(0)
-    , m_hFont(0)
     {
     }
 
@@ -30,7 +30,7 @@ public:
 
     const char* m_pszText; // 0x1c
     COLORREF    m_color;   // 0x20
-    HFONT       m_hFont;   // 0x24
+    Text::Font  m_font;
 };
 
 // SYNTHETIC: HYPERX 0x0044fa20

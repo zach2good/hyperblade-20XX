@@ -235,6 +235,7 @@ set(HYPERX_SOURCES
     src/graphics/swrend.cpp
     src/graphics/texcacheentry.cpp
     src/graphics/visualeffectfade.cpp
+    src/graphics/text.cpp
     src/input/actionbindings.cpp
     src/input/cheat.cpp
     src/input/deviceobject.cpp
