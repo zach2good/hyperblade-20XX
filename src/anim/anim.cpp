@@ -22,7 +22,7 @@ union FloatWord
 
 // Angles are in degrees; each matrix cell packs to 16 bits, the inverse of UnpackFixed16ToFloat.
 // FUNCTION: HYPERX 0x00416ba0
-void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, short nFrames, const AnimClipHeader* pHeader, TransformObject* pTempXform)
+void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, short nFrames, const AnimClipHeader* pHeader, TransformObject* pTempXform)
 {
     const float* pFrameEuler = pInputEulers;
 
@@ -112,7 +112,7 @@ void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOut
 // become the top of the mantissa under a fixed exponent, and bit fifteen picks the sign. The
 // values are a three by three block written into rows of four.
 // FUNCTION: HYPERX 0x00416cf0
-void __cdecl Anim::UnpackFixed16ToFloat(const PackedRotation* pIn, float* pOut)
+void Anim::UnpackFixed16ToFloat(const PackedRotation* pIn, float* pOut)
 {
     for (int nRow = 0; nRow < 3; nRow++)
     {

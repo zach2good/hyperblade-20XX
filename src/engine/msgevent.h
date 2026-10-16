@@ -9,10 +9,10 @@
 namespace MsgEvent
 {
 
-int __cdecl          Pack(short nKind, short nHigh, short nMiddle, short nLow);
-unsigned int __cdecl PackScene(unsigned int nMessage, unsigned int nSender, short nValue);
-void                 UnpackScene(unsigned int nPacked, short* pMessage, short* pSender, short* pValue);
-void                 Unpack(unsigned int nPacked, short* pKind, short* pHigh, short* pMiddle, short* pLow);
+int          Pack(short nKind, short nHigh, short nMiddle, short nLow);
+unsigned int PackScene(unsigned int nMessage, unsigned int nSender, short nValue);
+void         UnpackScene(unsigned int nPacked, short* pMessage, short* pSender, short* pValue);
+void         Unpack(unsigned int nPacked, short* pKind, short* pHigh, short* pMiddle, short* pLow);
 
 } // namespace MsgEvent
 

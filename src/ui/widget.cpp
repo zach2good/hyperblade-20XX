@@ -85,7 +85,7 @@ Widget::~Widget()
     }
 }
 
-extern "C" int __cdecl _purecall(void);
+extern "C" int _purecall(void);
 
 // The seventh argument is the row count; one extra row is allocated, even for a negative count.
 // FUNCTION: HYPERX 0x0042b220
@@ -514,7 +514,7 @@ void Widget::SetTextFlag(int nFlag)
 
 // A stub body kept out of its callers' unit.
 // FUNCTION: HYPERX 0x0042be70
-int __stdcall Widget::RefuseInput(int, int)
+int Widget::RefuseInput(int, int)
 {
     return 0;
 }
@@ -545,7 +545,7 @@ int Widget::IsDisplayOnly()
 }
 
 // FUNCTION: HYPERX 0x0047a8d0
-LayoutState __cdecl Widget::InitLayoutState(void* pBits, int nWidth, int nHeight, int nPitch, int nPrevWidth, int nPrevHeight, int nHalfWidth, int nHalfHeight)
+LayoutState Widget::InitLayoutState(void* pBits, int nWidth, int nHeight, int nPitch, int nPrevWidth, int nPrevHeight, int nHalfWidth, int nHalfHeight)
 {
     LayoutState state;
 

@@ -16,7 +16,7 @@
 
 // Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent. The block leaks.
 // FUNCTION: HYPERX 0x0044f550
-RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
+RLESprite* SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
 {
     char aRun[128];
     char cPixel  = 0;

@@ -24,7 +24,7 @@ extern unsigned char g_bEnergyOn;
 
 // Cases 4 and 0x66 share a resize-check tail: the original jumps into the other case's body.
 // FUNCTION: HYPERX 0x0044cac0
-LRESULT __cdecl MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify)
+LRESULT MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify)
 {
     RECT rect;
 

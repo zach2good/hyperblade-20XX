@@ -18,34 +18,34 @@ union PlanWord;
 namespace PlanArg
 {
 
-short         GetMe(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyTeammate(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyLeadOpponent(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyOtherOpponent(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyGoal(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyLeadTeammate(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyGoalSide(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyGoalZone(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetOpponentsGoal(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetOppnGoalSide(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetOppnGoalZone(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyCollisionBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyTeammatesCOB(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyAwarenessBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyLeadOppnCollBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyOtherOppnCollBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyBodyBubble(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetLeadOppnBodyBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetOtherOppnBodyBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetRampCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetRedRandomizerCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyBackDefWgPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyGoalPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyDragStartPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetBodyPartCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetViewOwner(EngineObject** ppUnused, const PlanWord* pStream, int* pResult);
-float __cdecl ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex);
+short GetMe(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyTeammate(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyLeadOpponent(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyOtherOpponent(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyGoal(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyLeadTeammate(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyGoalSide(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyGoalZone(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetOpponentsGoal(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetOppnGoalSide(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetOppnGoalZone(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyCollisionBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyTeammatesCOB(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyAwarenessBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyLeadOppnCollBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyOtherOppnCollBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyBodyBubble(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetLeadOppnBodyBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetOtherOppnBodyBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetRampCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetRedRandomizerCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyBackDefWgPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyGoalPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetMyDragStartPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetBodyPartCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+short GetViewOwner(EngineObject** ppUnused, const PlanWord* pStream, int* pResult);
+float ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex);
 
 // The linker folded these bodies onto GetMultiplierCollisionObject, which carries the marker.
 inline short GetTurnstileCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)

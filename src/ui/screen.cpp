@@ -790,7 +790,7 @@ void Screen::ShowMatchInfo()
 }
 
 // FUNCTION: HYPERX 0x0048ef30
-void __cdecl Screen::ClearBlack(...)
+void Screen::ClearBlack(...)
 {
     PatBlt(Window::MenuDC(), 0, 0, 640, 480, BLACKNESS);
     Window::PresentMenu(g_gameApp.GetMainWindow());

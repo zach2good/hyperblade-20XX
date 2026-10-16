@@ -244,7 +244,7 @@ void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorOb
 }
 
 // FUNCTION: HYPERX 0x0041cb20
-void __cdecl BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, GameBehaviorObject* pOut)
+void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, GameBehaviorObject* pOut)
 {
     AnimDB* pEntry;
 

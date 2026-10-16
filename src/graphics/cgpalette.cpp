@@ -7,7 +7,7 @@
 #define FLAG_SIZE_MASK 0x07
 
 // FUNCTION: HYPERX 0x004496e0
-int __cdecl CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
+int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
 {
     unsigned short nCount = 0;
 

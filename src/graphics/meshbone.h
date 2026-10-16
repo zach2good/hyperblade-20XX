@@ -63,7 +63,7 @@ static_assert(sizeof(FaceRecord) == 8);
 class MeshBone
 {
 public:
-    void __fastcall DrawFaceList(FaceRecord** ppRecords, int nCount);
+    void DrawFaceList(FaceRecord** ppRecords, int nCount);
 
     MeshBone();
     ~MeshBone();
@@ -171,7 +171,7 @@ public:
 
     static void StoreShadow(class TransformObject* pTarget, float flX, float flY, float flZ);
 
-    static void __fastcall DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
+    static void DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
 };
 
 // The atexit thunk for DrawFaces' s_worldView.

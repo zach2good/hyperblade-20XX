@@ -22,7 +22,7 @@ float g_flScreenDotsPerCmParseUtil   = g_flScreenDotsPerInchParseUtil / g_flCmPe
 
 // The original calls the multibyte _mbsicmp at 0x0049f2d2, not _stricmp.
 // FUNCTION: HYPERX 0x00435f90
-short __cdecl ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable, short nCount)
+short ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable, short nCount)
 {
     for (short iEntry = 0; iEntry < nCount; iEntry++)
     {
@@ -40,7 +40,7 @@ short __cdecl ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable
 
 // An empty token is a failure, so a caller can loop on this until it stops.
 // FUNCTION: HYPERX 0x00487370
-char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext)
+char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext)
 {
     char* pszStart;
     int   nLength;
@@ -111,7 +111,7 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
 }
 
 // FUNCTION: HYPERX 0x00487420
-char* __cdecl ParseUtil::SkipToChar(char* pszText, const char* pszStop)
+char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
     if (pszText != 0)
     {
@@ -145,7 +145,7 @@ char* __cdecl ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 
 // Steps past the character, and answers null when there is none.
 // FUNCTION: HYPERX 0x00487460
-char* __cdecl ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
+char* ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 {
     char* const pAt = ParseUtil::SkipToChar(pszText, pszStop);
 
@@ -159,7 +159,7 @@ char* __cdecl ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 
 // End of file is the byte 0xff, stored and then tested, so only an empty last line answers -1.
 // FUNCTION: HYPERX 0x00493ec0
-int __cdecl ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
+int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 {
     char* const pStart = pszBuffer;
 

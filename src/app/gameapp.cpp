@@ -89,7 +89,7 @@ float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
 
 // id_ACF_AnimationPeek in DATA/ENUMIDS.H. It opened a debug dialog, which went with the resources.
 // FUNCTION: HYPERX 0x004013d0
-void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int)
+void GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int)
 {
 }
 
@@ -374,7 +374,7 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 }
 
 // FUNCTION: HYPERX 0x00419580
-void __cdecl GameApp::Shutdown(HWND)
+void GameApp::Shutdown(HWND)
 {
     Gamepad::Shutdown();
 
@@ -412,7 +412,7 @@ void __cdecl GameApp::Shutdown(HWND)
 }
 
 // FUNCTION: HYPERX 0x00419640
-void __stdcall GameApp::OnStartup(void)
+void GameApp::OnStartup(void)
 {
     if (g_gameApp.m_hWnd != 0)
     {
@@ -426,7 +426,7 @@ void __stdcall GameApp::OnStartup(void)
 
 // Never returns.
 // FUNCTION: HYPERX 0x00419670
-void __stdcall GameApp::OnExit(void)
+void GameApp::OnExit(void)
 {
     Window::Destroy();
 
@@ -468,7 +468,7 @@ GameApp::GameApp(short nStringCount)
 #define CDROM_DRIVE_COUNT ('Z' - 'A' + 1)
 
 // FUNCTION: HYPERX 0x00423140
-void GameApp::SetWindowAndCallbacks(HWND hWnd, void(__stdcall* pfnStartup)(void), void(__stdcall* pfnShutdown)(void))
+void GameApp::SetWindowAndCallbacks(HWND hWnd, void (*pfnStartup)(void), void (*pfnShutdown)(void))
 {
     m_hWnd        = hWnd;
     m_pfnShutdown = pfnShutdown;
@@ -480,7 +480,7 @@ void GameApp::SetWindowAndCallbacks(HWND hWnd, void(__stdcall* pfnStartup)(void)
 }
 
 // FUNCTION: HYPERX 0x00423160
-void __fastcall GameApp::OnShutdown()
+void GameApp::OnShutdown()
 {
     if (g_pAudioMgr != 0)
     {
@@ -720,7 +720,7 @@ void GameApp::FatalString(const char* pszFormat, ...)
 }
 
 // FUNCTION: HYPERX 0x0044b350
-void __cdecl GameApp::SetupViewports(void)
+void GameApp::SetupViewports(void)
 {
     int nPrevHeight;
 
@@ -781,7 +781,7 @@ void __cdecl GameApp::SetupViewports(void)
 }
 
 // FUNCTION: HYPERX 0x0044bca0
-int __cdecl GameApp::SetCursorVisible(int bVisible)
+int GameApp::SetCursorVisible(int bVisible)
 {
     const int bWasVisible = (g_bCursorHidden == 0);
     g_bCursorHidden       = (bVisible == 0);
@@ -856,7 +856,7 @@ int GameApp::MainUpdate(HWND hWnd)
 }
 
 // FUNCTION: HYPERX 0x0044ca00
-void __cdecl GameApp::ShowHelp(HWND hWnd)
+void GameApp::ShowHelp(HWND hWnd)
 {
     String strHelpPath(g_gameApp.m_strExeDir.m_str);
     char*  pszSlash = (char*)strrchr(strHelpPath.m_pchData, '\\');
@@ -875,13 +875,13 @@ void __cdecl GameApp::ShowHelp(HWND hWnd)
 }
 
 // FUNCTION: HYPERX 0x0046eea0
-int __cdecl GameApp::GetInstallLevel(void)
+int GameApp::GetInstallLevel(void)
 {
     return g_nInstallLevel;
 }
 
 // FUNCTION: HYPERX 0x0047adb0
-int __cdecl GameApp::ShowMessageBox(HWND, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
+int GameApp::ShowMessageBox(HWND, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
 {
     const int bWasVisible = GameApp::SetCursorVisible(1);
 
@@ -894,7 +894,7 @@ int __cdecl GameApp::ShowMessageBox(HWND, LPCSTR pszText, LPCSTR pszCaption, UIN
 
 // Returning zero tells the runtime not to retry.
 // FUNCTION: HYPERX 0x0047adf0
-int __cdecl GameApp::OutOfMemoryHandler(size_t)
+int GameApp::OutOfMemoryHandler(size_t)
 {
     // STRING: HYPERX 0x004c682c
     g_gameApp.Fatal("In C++ \"new\" method: Memory pool empty!");
@@ -903,7 +903,7 @@ int __cdecl GameApp::OutOfMemoryHandler(size_t)
 }
 
 // FUNCTION: HYPERX 0x0048ceb0
-void __cdecl GameApp::ResetToSinglePlayer(void)
+void GameApp::ResetToSinglePlayer(void)
 {
     g_nMainMenuTopChoice   = 1;
     g_nMainMenuMatchChoice = 0;
@@ -912,7 +912,7 @@ void __cdecl GameApp::ResetToSinglePlayer(void)
 }
 
 // FUNCTION: HYPERX 0x0048f490
-LRESULT __cdecl GameApp::ClearSplashPalette(void)
+LRESULT GameApp::ClearSplashPalette(void)
 {
     g_hSplashPalette = 0;
 
@@ -921,7 +921,7 @@ LRESULT __cdecl GameApp::ClearSplashPalette(void)
 
 // A failed allocation is stored through unchecked, as the original does.
 // FUNCTION: HYPERX 0x004922f0
-void __stdcall GameApp::InstantiateState(void)
+void GameApp::InstantiateState(void)
 {
     int                nReturnState;
     MatchInfoUIScreen* pScreen;
@@ -1103,7 +1103,7 @@ void __stdcall GameApp::InstantiateState(void)
 }
 
 // FUNCTION: HYPERX 0x00493870
-HWND __cdecl GameApp::CreateMainWindow(HINSTANCE, LPCSTR pszTitle, LPVOID)
+HWND GameApp::CreateMainWindow(HINSTANCE, LPCSTR pszTitle, LPVOID)
 {
     const HWND hWnd = Window::Create(pszTitle);
 

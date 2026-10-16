@@ -72,8 +72,8 @@ struct LayoutState
 struct GameEngine
 {
     // Reached through g_pGameEngine rather than this.
-    static int __cdecl CountEntitiesInRange(short nWhich);
-    static int         CoachConditionNever(void);
+    static int CountEntitiesInRange(short nWhich);
+    static int CoachConditionNever(void);
 
     // The linker folded this empty body onto KeyConfigDialog::SaveKeysAs, which carries the marker.
     static int CoachConditionUnused(void)
@@ -81,23 +81,23 @@ struct GameEngine
         return 0;
     }
 
-    static int __cdecl               IsAnyPlayerInjured(void);
-    static void                      ShowRokValue(short nRokValue);
-    static int                       CheckOpposedCarriersRace(void);
-    static int                       CheckCarrierBreakaway(void);
-    static int                       CheckGoalieOutOfPosition(void);
-    static void                      DestroyAgendaItemPools(void);
-    static void                      CreateAgendaItemPools(void);
-    static int __cdecl               IsComputerTeam(int nSlot);
-    static int                       CheckWeaponOutWhileRokCarried(void);
-    static void __cdecl              SubstituteRecoveredReserve(unsigned int nTeam);
-    static int __cdecl               FindNearestLiveMultiplier(EngineObject* pFrom);
-    static int                       CheckHandicapCondition(void);
-    static void                      InitAgendaItemPools(void);
-    static int                       CheckAnyPlayerNeedsSub(void);
-    static unsigned short __fastcall TogglePause(HWND hWnd, int bRestyle);
-    static int __cdecl               SelectSubstitute(EngineObject* pActor);
-    static int __cdecl               IsTeamWinning(unsigned char nTeam);
+    static int            IsAnyPlayerInjured(void);
+    static void           ShowRokValue(short nRokValue);
+    static int            CheckOpposedCarriersRace(void);
+    static int            CheckCarrierBreakaway(void);
+    static int            CheckGoalieOutOfPosition(void);
+    static void           DestroyAgendaItemPools(void);
+    static void           CreateAgendaItemPools(void);
+    static int            IsComputerTeam(int nSlot);
+    static int            CheckWeaponOutWhileRokCarried(void);
+    static void           SubstituteRecoveredReserve(unsigned int nTeam);
+    static int            FindNearestLiveMultiplier(EngineObject* pFrom);
+    static int            CheckHandicapCondition(void);
+    static void           InitAgendaItemPools(void);
+    static int            CheckAnyPlayerNeedsSub(void);
+    static unsigned short TogglePause(HWND hWnd, int bRestyle);
+    static int            SelectSubstitute(EngineObject* pActor);
+    static int            IsTeamWinning(unsigned char nTeam);
 
     void Reset();
 

@@ -89,7 +89,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 }
 
 // FUNCTION: HYPERX 0x0044f480
-RLESprite* __cdecl SoftRenderer::LoadRLESprite(const char* pszName)
+RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
 {
     PathString strPath(MAX_PATH);
 

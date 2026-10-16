@@ -70,7 +70,7 @@ void PlayerBase::InitDirectPlayParams()
 
 // A rok packet carries the carrier's slot, 0xff if none; the packet goes to every remote id.
 // FUNCTION: HYPERX 0x0042c300
-void __fastcall PlayerBase::BroadcastState(NetSendBuffer* pPacket, int nLength, int nObjectSlot)
+void PlayerBase::BroadcastState(NetSendBuffer* pPacket, int nLength, int nObjectSlot)
 {
     AttachPak* pCarrier;
     short      nCarrier;

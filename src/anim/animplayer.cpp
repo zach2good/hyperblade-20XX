@@ -182,7 +182,7 @@ char AnimPlayer::UpdateTick(void)
 }
 
 // FUNCTION: HYPERX 0x00424760
-int __fastcall AnimPlayer::SetPlayDirection(int nDirection)
+int AnimPlayer::SetPlayDirection(int nDirection)
 {
     const int nWas = m_state.nDirection;
 
@@ -565,7 +565,7 @@ char AnimPlayer::Advance(float flDelta)
 }
 
 // FUNCTION: HYPERX 0x00424f70
-char __fastcall AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)
+char AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)
 {
     if (m_pSet != 0)
     {
@@ -578,7 +578,7 @@ char __fastcall AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int n
 }
 
 // FUNCTION: HYPERX 0x00424fa0
-char __fastcall AnimPlayer::SetPlayState(int nState)
+char AnimPlayer::SetPlayState(int nState)
 {
     if (m_state.nPlayState == AA_DONE)
     {
@@ -609,7 +609,7 @@ char AnimPlayer::ClearAnimationSet()
 }
 
 // FUNCTION: HYPERX 0x00424ff0
-void __fastcall AnimPlayer::SetCallbackTarget(int nSlot, int nArgA, int nArgB)
+void AnimPlayer::SetCallbackTarget(int nSlot, int nArgA, int nArgB)
 {
     m_state.nSlot = nSlot;
     m_state.nArgA = nArgA;
@@ -728,7 +728,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
 // A duration of zero divides by zero.
 
 // FUNCTION: HYPERX 0x004251d0
-void __fastcall AnimPlayer::SetClipDuration(short nIndex, float flDuration)
+void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 {
     m_state.aflClipDuration[nIndex] = flDuration;
 
@@ -746,7 +746,7 @@ void __fastcall AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 
 // A clip whose last frame precedes its first plays backwards with a negated step.
 // FUNCTION: HYPERX 0x00425220
-char __fastcall AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
+char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 {
     int nDirection;
 

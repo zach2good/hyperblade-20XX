@@ -66,7 +66,7 @@ void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Ve
 
 // Maps a CollisionObjectID to its ModelType; an unknown id is fatal.
 // FUNCTION: HYPERX 0x0045e200
-int __cdecl CollisionObj::GetModelId(int nIndex)
+int CollisionObj::GetModelId(int nIndex)
 {
     switch (nIndex)
     {

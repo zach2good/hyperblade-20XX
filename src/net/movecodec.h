@@ -24,8 +24,8 @@ static_assert(sizeof(PackedMove) == 9);
 namespace MoveCodec
 {
 
-void __cdecl Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVelocity);
-int __cdecl  Encode(PackedMove* pOut, const Vec3* pPosition, const Vec3* pVelocity);
+void Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVelocity);
+int  Encode(PackedMove* pOut, const Vec3* pPosition, const Vec3* pVelocity);
 
 } // namespace MoveCodec
 

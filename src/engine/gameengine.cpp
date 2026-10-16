@@ -131,7 +131,7 @@ SurfacePoint g_ptPlanEditorOrigin(0x1c, 0x1c);
 #define TEAM_KEYWORD_COUNT 9
 
 // FUNCTION: HYPERX 0x0040b970
-void __cdecl GameEngine::InitAgendaItemPools(void)
+void GameEngine::InitAgendaItemPools(void)
 {
     int nSlot;
 
@@ -150,7 +150,7 @@ void __cdecl GameEngine::InitAgendaItemPools(void)
 
 // The statement order is the original's: the first pool built goes into slot eleven.
 // FUNCTION: HYPERX 0x0040bbf0
-void __cdecl GameEngine::CreateAgendaItemPools(void)
+void GameEngine::CreateAgendaItemPools(void)
 {
     g_apAgendaItemPools[Agenda_CGlideOnSurface]       = new CGlideOnSurfacePool;
     g_apAgendaItemPools[Agenda_CSlideOnRail]          = new CSlideOnRailPool;
@@ -193,7 +193,7 @@ void __cdecl GameEngine::CreateAgendaItemPools(void)
 // Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
 
 // FUNCTION: HYPERX 0x0040c070
-void __cdecl GameEngine::DestroyAgendaItemPools(void)
+void GameEngine::DestroyAgendaItemPools(void)
 {
     short iSlot = 0;
 
@@ -212,7 +212,7 @@ void __cdecl GameEngine::DestroyAgendaItemPools(void)
 // Colours the multiplier's two materials by the rok's value; the first call saves their rest colours.
 
 // FUNCTION: HYPERX 0x00463220
-void __cdecl GameEngine::ShowRokValue(short nRokValue)
+void GameEngine::ShowRokValue(short nRokValue)
 {
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[SLOT_MULTIPLIER];
 
@@ -261,7 +261,7 @@ void __cdecl GameEngine::ShowRokValue(short nRokValue)
 
 // Counts the mines, then the swarfs, within ten units of slot nWhich.
 // FUNCTION: HYPERX 0x00465530
-int __cdecl GameEngine::CountEntitiesInRange(short nWhich)
+int GameEngine::CountEntitiesInRange(short nWhich)
 {
     int           iEntity;
     EngineObject* pSelf;
@@ -325,7 +325,7 @@ int __cdecl GameEngine::CountEntitiesInRange(short nWhich)
 #define HIDDEN_TEAM_B 2
 
 // FUNCTION: HYPERX 0x00469380
-int __cdecl GameEngine::IsTeamWinning(unsigned char nTeam)
+int GameEngine::IsTeamWinning(unsigned char nTeam)
 {
     if ((nTeam & 1) != 0)
     {
@@ -336,7 +336,7 @@ int __cdecl GameEngine::IsTeamWinning(unsigned char nTeam)
 }
 
 // FUNCTION: HYPERX 0x0047acf0
-unsigned short __fastcall GameEngine::TogglePause(HWND hWnd, int bRestyle)
+unsigned short GameEngine::TogglePause(HWND hWnd, int bRestyle)
 {
     if (g_pGameEngine == 0)
     {

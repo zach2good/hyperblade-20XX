@@ -78,7 +78,7 @@ extern float g_flVelHitSpeedGate;
 
 // A post hit answers 1; a goal within 400 ms of the last answers 3, so it does not score twice.
 // FUNCTION: HYPERX 0x004521d0
-void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
+void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     float flGate;
     // Never stored into the out buffer, only into the vector.
@@ -258,7 +258,7 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
 
 // id_DCF_DromerRampCollision, opcode 68: a miss answers two, a hit one above speed 50.
 // FUNCTION: HYPERX 0x00469430
-void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short* pResult, int)
+void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int             nHit;
     Vec3            vScratch;
@@ -375,7 +375,7 @@ extern float g_flZoneHeight;
 
 // Swept capsules in the acting object's frame; a hit answers nought and a miss one.
 // FUNCTION: HYPERX 0x004697b0
-void __cdecl CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
+void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const short nSlot = (short)nArg;
 
@@ -474,7 +474,7 @@ void __cdecl CollisionCheck::DromerRandomizerCollision(Interactor* pContext, Pla
 
 // id_DCF_DromerLimboCollision, opcode 65: a goal's posts and bar answer nought, its mouth two.
 // FUNCTION: HYPERX 0x00469a70
-void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short* pResult, int)
+void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int             nHitPostA;
     int             nHitPostB;
@@ -632,7 +632,7 @@ void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode
 
 // id_DCF_BouncedInGoal in DATA/ENUMIDS.H: the plan opcode table registers this body at 124.
 // FUNCTION: HYPERX 0x00469ef0
-void __cdecl CollisionCheck::BouncedInGoal(Interactor*, PlanNode*, short* pResult, int)
+void CollisionCheck::BouncedInGoal(Interactor*, PlanNode*, short* pResult, int)
 {
     BoundBubble* const pRok = g_pGameEngine->GetColObjPtr(COB_ROK);
 
@@ -667,7 +667,7 @@ extern float g_flColBoxSizeY;
 
 // 0x004697b0 with the acting object's capsule one unit thick rather than half.
 // FUNCTION: HYPERX 0x00469f90
-void __cdecl CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
+void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const short nSlot = (short)nArg;
 
@@ -766,7 +766,7 @@ void __cdecl CollisionCheck::DromerMultiplierCollision(Interactor* pContext, Pla
 
 // id_DCF_DromerHurdleCollision, opcode 61: slot eight against slot seven's mesh; a hit is nought.
 // FUNCTION: HYPERX 0x0046a250
-void __cdecl CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
+void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3            vScratch;
     Vec3            vLocal;
@@ -884,7 +884,7 @@ inline void CollisionCheck::SetBoxCorners(MeshBoundingBox* pBox, const Vec3* pMi
 
 // id_DCF_RokHurdleCollision, opcode 63: the box's y extent comes from the local z.
 // FUNCTION: HYPERX 0x0046a540
-void __cdecl CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
+void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3            vLocal;
     Vec3            vCentre;
@@ -972,7 +972,7 @@ void __cdecl CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*,
 
 // Y is always zero, so the push-out never moves an object vertically.
 // FUNCTION: HYPERX 0x0046a890
-Vec3* __cdecl CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshBoundingBox* pBox, Vec3* pPoint)
+Vec3* CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshBoundingBox* pBox, Vec3* pPoint)
 {
     Vec3  vNormal;
     Vec3  vPoint;

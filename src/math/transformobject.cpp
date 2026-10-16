@@ -1065,7 +1065,7 @@ char TransformObject::ComputeInverse(TransformObject* pDest)
 }
 
 // FUNCTION: HYPERX 0x00427d60
-void __cdecl TransformObject::Multiply4x4(float* pOut, const float* pA, const float* pB)
+void TransformObject::Multiply4x4(float* pOut, const float* pA, const float* pB)
 {
     pOut[0] = pA[0] * pB[0] + pA[1] * pB[4] + pA[2] * pB[8] + pA[3] * pB[12];
     pOut[1] = pA[0] * pB[1] + pA[1] * pB[5] + pA[2] * pB[9] + pA[3] * pB[13];

@@ -46,7 +46,7 @@ Vec3  g_vNoOffset                   = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZe
 Vec3  g_vZeroMarker                 = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 
 // FUNCTION: HYPERX 0x0044c1b0
-void __stdcall Game::RunFrame(void)
+void Game::RunFrame(void)
 {
     Game::Tick();
     Game::Draw(1.0f);
@@ -111,7 +111,7 @@ void Game::Draw(float flAlpha)
 
 // Builds the game's owners in the original's order, timing each stage.
 // FUNCTION: HYPERX 0x0045c700
-void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC)
+void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC)
 {
     int nStart = GameApp::GetInstallLevel();
 
@@ -184,7 +184,7 @@ void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPa
 
 // The renderer is not nulled, so a second call would tear it down again.
 // FUNCTION: HYPERX 0x0045c9c0
-void __cdecl Game::ShutdownEngine(void)
+void Game::ShutdownEngine(void)
 {
     if (g_pMessageQueue != 0)
     {
@@ -279,7 +279,7 @@ extern "C" unsigned int Game::SetEngineState(unsigned int state)
 
 // Runs on the frame the state changed; every other frame only ticks the current screen.
 // FUNCTION: HYPERX 0x00491de0
-unsigned int __stdcall Game::UpdateState(void)
+unsigned int Game::UpdateState(void)
 {
     char* pszText;
 

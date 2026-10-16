@@ -71,7 +71,7 @@ float g_flUnusedEngineObjectC = g_flZeroEngineObject;
 
 // One collision in five posts teammate or opponent commentary; the two coin tosses differ, as in the original.
 // FUNCTION: HYPERX 0x00406620
-void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
+void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 {
     short nTeam;
     bool  bSameSide;
@@ -152,7 +152,7 @@ void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObjec
 
 // Answers n on one side and 7 - n on the other; the side test uses only X and Y.
 // FUNCTION: HYPERX 0x00406a90
-int __cdecl EngineObject::GetApproachAngleSector(EngineObject* pSelf, EngineObject* pOther)
+int EngineObject::GetApproachAngleSector(EngineObject* pSelf, EngineObject* pOther)
 {
     Vec3 vDir;
     int  nSector;

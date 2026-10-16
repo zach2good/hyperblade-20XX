@@ -92,8 +92,8 @@ class Widget
 {
 public:
     // Free functions in the original.
-    static LayoutState __cdecl InitLayoutState(void* pBits, int nWidth, int nHeight, int nPitch, int nPrevWidth, int nPrevHeight, int nHalfWidth, int nHalfHeight);
-    static int __stdcall       RefuseInput(int nX, int nY);
+    static LayoutState InitLayoutState(void* pBits, int nWidth, int nHeight, int nPitch, int nPrevWidth, int nPrevHeight, int nHalfWidth, int nHalfHeight);
+    static int         RefuseInput(int nX, int nY);
 
 public:
     int  GetTypeID() const;

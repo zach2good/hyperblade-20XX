@@ -14,7 +14,7 @@
 
 // Five kinds have their own offset; every other kind, zero included, returns one.
 // FUNCTION: HYPERX 0x00401410
-int __cdecl AnimSet::GetFieldOffset(short nKind)
+int AnimSet::GetFieldOffset(short nKind)
 {
     switch (nKind)
     {
@@ -42,7 +42,7 @@ int __cdecl AnimSet::GetFieldOffset(short nKind)
 
 // A failed allocation files a null, so the cache's count advances either way.
 // FUNCTION: HYPERX 0x00417220
-AnimClipSet* __cdecl AnimSet::LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int, const char* pszName)
+AnimClipSet* AnimSet::LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int, const char* pszName)
 {
     AnimClipSet* const pSet = new AnimClipSet(pFile, pszName);
 

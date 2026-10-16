@@ -21,8 +21,8 @@ extern const GUID g_guidNetApplication;
 
 struct GameSession
 {
-    static void __stdcall Disconnect(void);
-    static int __cdecl    ValidateAndApplyAssets(struct SyncBlocks* pLocal, struct SyncBlocks* pRemote);
+    static void Disconnect(void);
+    static int  ValidateAndApplyAssets(struct SyncBlocks* pLocal, struct SyncBlocks* pRemote);
 
     // The host and join dialog handlers both build one of these.
     GameSession(HWND hDlg, IDirectPlay* pLobby);
@@ -58,16 +58,16 @@ struct GameSession
 
     int AreAllSlotsReady();
 
-    void __fastcall HandlePlayerDisconnect(int nIndex);
+    void HandlePlayerDisconnect(int nIndex);
 
     // Its body never reads the session.
-    void __fastcall ActivatePlayerSlot(int nSlot, unsigned int bHost);
+    void ActivatePlayerSlot(int nSlot, unsigned int bHost);
 
-    static int __cdecl BuildSyncPacket(struct SyncBlocks* pBlocks, struct SyncBlocks* pRemoteBlocks);
+    static int BuildSyncPacket(struct SyncBlocks* pBlocks, struct SyncBlocks* pRemoteBlocks);
 
-    static int __cdecl GetFileInfo(const char* pszPath, int* pnWriteTime, int* pnSize);
+    static int GetFileInfo(const char* pszPath, int* pnWriteTime, int* pnSize);
 
-    static int __cdecl GetPlansEntry(const char* pszFileName, char* pszName, int nWanted);
+    static int GetPlansEntry(const char* pszFileName, char* pszName, int nWanted);
 
     static int FreeAssetBuffer(struct SyncBlocks* pCatalog, struct SyncBlocks* pDescriptor);
 };

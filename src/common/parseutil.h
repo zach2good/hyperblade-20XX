@@ -9,11 +9,11 @@
 namespace ParseUtil
 {
 
-int __cdecl   ReadLine(FILE* pStream, char* pszBuffer);
-char* __cdecl SkipToChar(char* pszText, const char* pszStop);
-char* __cdecl SkipPastChar(char* pszText, const char* pszStop);
-char __cdecl  ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext);
-short __cdecl FindKeyword(const char* pszWord, const char** ppszTable, short nCount);
+int   ReadLine(FILE* pStream, char* pszBuffer);
+char* SkipToChar(char* pszText, const char* pszStop);
+char* SkipPastChar(char* pszText, const char* pszStop);
+char  ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext);
+short FindKeyword(const char* pszWord, const char** ppszTable, short nCount);
 
 } // namespace ParseUtil
 

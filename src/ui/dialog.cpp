@@ -10,7 +10,7 @@
 extern const char* const g_pszDialogFloatFormat;
 
 // FUNCTION: HYPERX 0x00440760
-BOOL __cdecl Dialog::SetItemText(HWND hDlg, int nIDDlgItem, float flValue)
+BOOL Dialog::SetItemText(HWND hDlg, int nIDDlgItem, float flValue)
 {
     String str;
 
@@ -25,7 +25,7 @@ BOOL __cdecl Dialog::SetItemText(HWND hDlg, int nIDDlgItem, float flValue)
 extern const float g_flDialogFloatDefault;
 
 // FUNCTION: HYPERX 0x004407f0
-float __cdecl Dialog::GetItemFloat(HWND hDlg, int nIDDlgItem, int* pbValid)
+float Dialog::GetItemFloat(HWND hDlg, int nIDDlgItem, int* pbValid)
 {
     char* pszText;
 

@@ -27,21 +27,21 @@ public:
     {
     }
 
-    virtual AnimBinding*    DestroyViaVtable();
-    virtual char            UpdateTick(void)                                                                                         = 0;
-    virtual char            ClearAnimationSet()                                                                                      = 0;
-    virtual char            StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate)                                                 = 0;
-    virtual char            StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags)                                         = 0;
-    virtual char            SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition) = 0;
-    virtual char            StartAnimSetDefaultRate(class AnimDB* pAnimSet)                                                          = 0;
-    virtual char __fastcall AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)                                 = 0;
-    virtual int __fastcall  SetPlayDirection(int nDirection)                                                                         = 0;
-    virtual char __fastcall SetPlayState(int nState)                                                                                 = 0;
-    virtual float           GetPlaybackRate()                                                                                        = 0;
-    virtual void            SetPlaybackRate(float flRate)                                                                            = 0;
-    virtual int             GetPlayState()                                                                                           = 0;
-    virtual void __fastcall SetClipDuration(short nIndex, float flDuration)                                                          = 0;
-    virtual void            UpdateFrame(char bAdvance)                                                                               = 0;
+    virtual AnimBinding* DestroyViaVtable();
+    virtual char         UpdateTick(void)                                                                                         = 0;
+    virtual char         ClearAnimationSet()                                                                                      = 0;
+    virtual char         StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate)                                                 = 0;
+    virtual char         StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags)                                         = 0;
+    virtual char         SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition) = 0;
+    virtual char         StartAnimSetDefaultRate(class AnimDB* pAnimSet)                                                          = 0;
+    virtual char         AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)                                 = 0;
+    virtual int          SetPlayDirection(int nDirection)                                                                         = 0;
+    virtual char         SetPlayState(int nState)                                                                                 = 0;
+    virtual float        GetPlaybackRate()                                                                                        = 0;
+    virtual void         SetPlaybackRate(float flRate)                                                                            = 0;
+    virtual int          GetPlayState()                                                                                           = 0;
+    virtual void         SetClipDuration(short nIndex, float flDuration)                                                          = 0;
+    virtual void         UpdateFrame(char bAdvance)                                                                               = 0;
 
     AnimBinding();
 

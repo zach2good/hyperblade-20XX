@@ -8,7 +8,7 @@
 namespace DirectPlay
 {
 
-char* __cdecl GetErrorString(int hr);
+char* GetErrorString(int hr);
 
 }
 

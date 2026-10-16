@@ -4,7 +4,7 @@
 #include "common/stub.h"
 
 // FUNCTION: HYPERX 0x00452130
-InfoBarBase* __cdecl InfoBarBase::Create(HDC hDC)
+InfoBarBase* InfoBarBase::Create(HDC hDC)
 {
     return new InfoBar(hDC);
 }

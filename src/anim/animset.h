@@ -18,8 +18,8 @@ class AnimRegistry;
 namespace AnimSet
 {
 
-int __cdecl          GetFieldOffset(short nKind);
-AnimClipSet* __cdecl LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int nUnused, const char* pszName);
+int          GetFieldOffset(short nKind);
+AnimClipSet* LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int nUnused, const char* pszName);
 
 } // namespace AnimSet
 

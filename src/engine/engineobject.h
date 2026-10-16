@@ -300,7 +300,7 @@ public:
 
     static void FreeName(char*& pszName);
 
-    static void __cdecl CoachUpdate(class EngineObject* pActor);
+    static void CoachUpdate(class EngineObject* pActor);
 };
 
 // SYNTHETIC: HYPERX 0x00472720

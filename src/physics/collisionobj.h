@@ -10,7 +10,7 @@
 class CollisionObj : public CollisionPlane
 {
 public:
-    static int __cdecl GetModelId(int nIndex);
+    static int GetModelId(int nIndex);
 
 public:
     // 0x00405850 stores this table and jumps to ~CollisionShape, skipping CollisionPlane.

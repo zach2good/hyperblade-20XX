@@ -5,14 +5,14 @@
 
 // Four fields, one per octet, with the top bit set to mark the word; only the low field is masked.
 // FUNCTION: HYPERX 0x0045d730
-int __cdecl MsgEvent::Pack(short nKind, short nHigh, short nMiddle, short nLow)
+int MsgEvent::Pack(short nKind, short nHigh, short nMiddle, short nLow)
 {
     return (((((nKind | 0x80) * 0x100) | nHigh) * 0x100 | nMiddle) * 0x100) | (nLow & 0xff);
 }
 
 // Fields of ten, eight and fourteen bits, each masked to its width.
 // FUNCTION: HYPERX 0x0045d760
-unsigned int __cdecl MsgEvent::PackScene(unsigned int nMessage, unsigned int nSender, short nValue)
+unsigned int MsgEvent::PackScene(unsigned int nMessage, unsigned int nSender, short nValue)
 {
     return ((nMessage & 0x3ff) << 8 | nSender & 0xff) * 0x4000 | nValue & 0x3fff;
 }

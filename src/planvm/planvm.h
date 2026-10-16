@@ -28,8 +28,8 @@ class PlanVM
 {
 public:
     // Free functions in the original, made static members named by the class.
-    static void __cdecl InitRuntimeOpcodeTable(void);
-    static void         LoadAnimationLists(void);
+    static void InitRuntimeOpcodeTable(void);
+    static void LoadAnimationLists(void);
 
 public:
     PlanVM();
@@ -113,9 +113,9 @@ public:
 };
 
 // The stat handlers, indexed by the packed argument's low word; each answers a slot index.
-typedef short(__cdecl* PlanStatFn)(class EngineObject* pActor, PlanNode* pArgs);
+typedef short (*PlanStatFn)(class EngineObject* pActor, PlanNode* pArgs);
 // Two callers read the whole return register, so they call through this view of the table.
-typedef int(__cdecl* PlanStatFnWide)(class EngineObject* pActor, PlanNode* pArgs);
+typedef int (*PlanStatFnWide)(class EngineObject* pActor, PlanNode* pArgs);
 
 // GLOBAL: HYPERX 0x004d1798
 extern PlanStatFn g_apPlanStatFns[PRN_COUNT];

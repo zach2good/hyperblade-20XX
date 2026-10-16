@@ -47,7 +47,7 @@ HRESULT WINAPI DirectPlayCreate(LPGUID pGuid, LPDIRECTPLAY* ppDirectPlay, IUnkno
 
 // An unknown code returns a fixed string rather than a null.
 // FUNCTION: HYPERX 0x00442880
-char* __cdecl DirectPlay::GetErrorString(int hr)
+char* DirectPlay::GetErrorString(int hr)
 {
     // STRING: HYPERX 0x004c1e48
     char* pszText = "unknown error";

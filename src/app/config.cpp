@@ -175,7 +175,7 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR, KeyRow* pRows)
 #define MSG_TOGGLE_MS 0x5dc
 
 // FUNCTION: HYPERX 0x0046d9f0
-void __cdecl GameApp::HandleGlobalKeyEvent(HWND, int nKey)
+void GameApp::HandleGlobalKeyEvent(HWND, int nKey)
 {
     if (g_pRenderer != 0 && g_pRenderer->m_bQuitPromptVisible != 0)
     {
@@ -265,7 +265,7 @@ void __cdecl GameApp::HandleGlobalKeyEvent(HWND, int nKey)
 }
 
 // FUNCTION: HYPERX 0x00480c60
-int __cdecl Config::IsCommentLine(const char* pszLine)
+int Config::IsCommentLine(const char* pszLine)
 {
     char cFirst;
 

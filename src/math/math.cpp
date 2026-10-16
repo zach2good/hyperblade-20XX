@@ -14,7 +14,7 @@ extern const float g_flRandRangeBias;
 
 // A = A * B for four by four matrices, with B read only.
 // FUNCTION: HYPERX 0x0042ff20
-void __fastcall Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
+void Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
 {
     const float flRow0X = pA[0][0];
     const float flRow0Y = pA[0][1];
@@ -58,7 +58,7 @@ void __fastcall Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4]
 }
 
 // FUNCTION: HYPERX 0x00430110
-bool __fastcall Math::Vec3Normalize(Vec3* pVec)
+bool Math::Vec3Normalize(Vec3* pVec)
 {
     const double dLength = sqrt(Vec3::DotInline(pVec, pVec));
 
@@ -79,7 +79,7 @@ bool __fastcall Math::Vec3Normalize(Vec3* pVec)
 }
 
 // FUNCTION: HYPERX 0x004753e0
-int __cdecl Math::RandInt(int nMin, int nMax)
+int Math::RandInt(int nMin, int nMax)
 {
     const float flRoll = Math::RandMagnitude();
 

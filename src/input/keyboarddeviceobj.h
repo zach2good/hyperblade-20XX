@@ -15,8 +15,8 @@ public:
 
     ~KeyboardDeviceObj();
 
-    static int __cdecl  GetActionBitIndex(unsigned int nMask);
-    static char __cdecl BuildActionBindingTable(struct ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice);
+    static int  GetActionBitIndex(unsigned int nMask);
+    static char BuildActionBindingTable(struct ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice);
 
     void CommitKeyBindings(const unsigned int* pnKeys, int nCount);
 

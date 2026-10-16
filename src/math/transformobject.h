@@ -37,7 +37,7 @@ union MatrixRow
 class TransformObject
 {
 public:
-    static void __cdecl Multiply4x4(float* pOut, const float* pA, const float* pB);
+    static void Multiply4x4(float* pOut, const float* pA, const float* pB);
 
 public:
     // The matrix is no longer identity, and its serial steps on, wrapping to zero after the last.

@@ -74,7 +74,7 @@ extern int g_bDromeIniDirty;
 
 // A network or loading frame relights the first slots from fixed directions first.
 // FUNCTION: HYPERX 0x00442d20
-void __cdecl Renderer::DrawAllMeshes(void)
+void Renderer::DrawAllMeshes(void)
 {
     MeshBone* pBone;
 
@@ -164,13 +164,13 @@ void __cdecl Renderer::DrawAllMeshes(void)
 }
 
 // FUNCTION: HYPERX 0x00442f40
-void __cdecl Renderer::SetLoadingMode(void)
+void Renderer::SetLoadingMode(void)
 {
     g_bLoadingMode = 1;
 }
 
 // FUNCTION: HYPERX 0x00442f50
-int __cdecl Renderer::SetDromeTextured(int nEnable)
+int Renderer::SetDromeTextured(int nEnable)
 {
     if (g_cMdmTexLoaded == 0 && !HwRenderer::Capturing())
     {
@@ -190,13 +190,13 @@ int __cdecl Renderer::SetDromeTextured(int nEnable)
 }
 
 // FUNCTION: HYPERX 0x00442fa0
-int __cdecl Renderer::ToggleDromeTextured(void)
+int Renderer::ToggleDromeTextured(void)
 {
     return Renderer::SetDromeTextured(g_nDromeTextured == 0);
 }
 
 // FUNCTION: HYPERX 0x0044b2c0
-void __stdcall Renderer::DrawWholeScene(void)
+void Renderer::DrawWholeScene(void)
 {
     DrawPolySurface surface;
 
@@ -222,7 +222,7 @@ void __stdcall Renderer::DrawWholeScene(void)
 }
 
 // FUNCTION: HYPERX 0x0044b7c0
-void __stdcall Renderer::DestroyBackBuffer(void)
+void Renderer::DestroyBackBuffer(void)
 {
     if (g_hSoftBackDC != 0)
     {
@@ -237,7 +237,7 @@ void __stdcall Renderer::DestroyBackBuffer(void)
 }
 
 // FUNCTION: HYPERX 0x0044bc30
-int __stdcall Renderer::PresentFrame(void)
+int Renderer::PresentFrame(void)
 {
     // The splash owns the screen, so the start-up timing frames are drawn but not shown.
     if (g_nSplashFrame != 0)
@@ -257,19 +257,19 @@ int __stdcall Renderer::PresentFrame(void)
 }
 
 // FUNCTION: HYPERX 0x0044bc80
-void __stdcall Renderer::DrawSceneDispatch(void)
+void Renderer::DrawSceneDispatch(void)
 {
     Renderer::DrawWholeScene();
 }
 
 // FUNCTION: HYPERX 0x0044be80
-RenderOptions __cdecl Renderer::GetRenderOptions()
+RenderOptions Renderer::GetRenderOptions()
 {
     return g_renderOptions;
 }
 
 // FUNCTION: HYPERX 0x0044beb0
-void __cdecl Renderer::SetRenderOption(RenderOption nOption, int nValue)
+void Renderer::SetRenderOption(RenderOption nOption, int nValue)
 {
     switch (nOption)
     {
@@ -299,7 +299,7 @@ LayoutState g_cameraViewportBlock;
 ClipExtents g_projRenderParams;
 
 // FUNCTION: HYPERX 0x0044bf60
-void __cdecl Renderer::ClearFrame(void)
+void Renderer::ClearFrame(void)
 {
     if (g_pBackBufferBitsCopy != 0)
     {
@@ -316,7 +316,7 @@ void __cdecl Renderer::ClearFrame(void)
 }
 
 // FUNCTION: HYPERX 0x0047a980
-void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
+void Renderer::SetCameraTransformAndViewport(LayoutState block)
 {
     g_cameraViewportBlock = block;
     g_pBackBufferBitsCopy = (unsigned char*)block.pBits;
@@ -333,7 +333,7 @@ void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
 
 // Azimuths 303, 54 and 180 degrees; the first fills two table entries.
 // FUNCTION: HYPERX 0x0047aa20
-void __stdcall Renderer::InitializeLightDirections(void)
+void Renderer::InitializeLightDirections(void)
 {
     Vec3 vSpherical2;
     Vec3 vSpherical3;

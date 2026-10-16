@@ -667,7 +667,7 @@ unsigned int ColorPalette::Load(void)
 
 // The drome pass raises the ramp base to the light level and takes one off.
 // FUNCTION: HYPERX 0x004263a0
-unsigned char __fastcall ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigned char cShade, float flIntensity, unsigned char cColour)
+unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigned char cShade, float flIntensity, unsigned char cColour)
 {
     switch (cShade)
     {

@@ -26,7 +26,7 @@ extern StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS];
 
 // Plan chains are counted to at most 256 nodes; four accumulators hold the addressing budget.
 // FUNCTION: HYPERX 0x004415f0
-int __stdcall Level::IndexStationaryObjects(void)
+int Level::IndexStationaryObjects(void)
 {
     int aAcc[4];
     int nNodes;
@@ -119,7 +119,7 @@ int __stdcall Level::IndexStationaryObjects(void)
 
 // Checks that both ends of a network match built the same arena.
 // FUNCTION: HYPERX 0x00442140
-int __cdecl Level::ValidateArenaObjects(SyncBlocks*, SyncBlocks* pRemote)
+int Level::ValidateArenaObjects(SyncBlocks*, SyncBlocks* pRemote)
 {
     const SyncSettingsBlock* pLevel = pRemote->Settings();
 

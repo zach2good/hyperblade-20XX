@@ -4,15 +4,15 @@
 class SplineCurve;
 struct Vec3;
 
-typedef float(__cdecl* SplineEvalFn)(float flT, float, float, float, float);
+typedef float (*SplineEvalFn)(float flT, float, float, float, float);
 
 // A ring of two curves and the walker that steps along it.
 class Spline
 {
 public:
-    static float __cdecl EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float);
-    static float __cdecl EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float);
-    static float __cdecl EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase);
+    static float EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float);
+    static float EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float);
+    static float EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase);
 
 public:
     Spline();

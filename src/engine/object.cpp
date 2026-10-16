@@ -31,7 +31,7 @@ extern float g_flDromeSpanWidth;
 
 // The receiving object always leaves upwards; the translation is not copied.
 // FUNCTION: HYPERX 0x00402dc0
-void __cdecl Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bBoost)
+void Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bBoost)
 {
     Vec3 vVel;
 
@@ -78,7 +78,7 @@ void __cdecl Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest,
 
 // Puts one object six units to one side of another.
 // FUNCTION: HYPERX 0x00402f20
-void __cdecl Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char bMirrored)
+void Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char bMirrored)
 {
     Vec3 vOffset;
     Vec3 vScaled;
@@ -140,7 +140,7 @@ extern const float g_flSteerBoxTopY;
 
 // Picks one of the gate's two posts or the bar between them by where the point is.
 // FUNCTION: HYPERX 0x00404670
-Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
+Vec3* Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 {
     MeshBoundingBox zone;
     MeshBoundingBox box;
@@ -244,7 +244,7 @@ static inline Vec3 ToObjectFrame(EngineObject* pObject, const Vec3* pQueryPos)
 
 // In the original, a slot no range claims returns whatever the frame held.
 // FUNCTION: HYPERX 0x00404910
-Vec3* __cdecl Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos)
+Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos)
 {
     Vec3 vResult = {};
     Vec3 vPoint;
@@ -363,19 +363,19 @@ extern short g_awReactionByDamageAndSector[35];
 // Contact with no energy does not nudge the local player; the reaction is sent as
 // MSG_SET_ANIMATION and then MSG_YER_HIT.
 // FUNCTION: HYPERX 0x00406350
-void __cdecl Object::HandleObjectCollisionBounce(EngineObject* pSelf,
-                                                 EngineObject* pOther,
-                                                 const Vec3*,
-                                                 const Vec3*,
-                                                 float flFacingDot,
-                                                 float flSelfWeight,
-                                                 float flOtherWeight,
-                                                 int   nSelfStopped,
-                                                 int   nOtherStopped,
-                                                 int   nSelfSector,
-                                                 int   nOtherSector,
-                                                 float flSpeed,
-                                                 float)
+void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
+                                         EngineObject* pOther,
+                                         const Vec3*,
+                                         const Vec3*,
+                                         float flFacingDot,
+                                         float flSelfWeight,
+                                         float flOtherWeight,
+                                         int   nSelfStopped,
+                                         int   nOtherStopped,
+                                         int   nSelfSector,
+                                         int   nOtherSector,
+                                         float flSpeed,
+                                         float)
 {
     Vec3  vVelocity;
     Vec3  vNormal;

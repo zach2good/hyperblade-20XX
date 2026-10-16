@@ -12,11 +12,11 @@ struct PlanNode;
 
 struct GameApp
 {
-    static int __cdecl    HandleMatchKeypress(unsigned int nKey);
-    static void __cdecl   ShowHelp(HWND hWnd);
-    static void __cdecl   HandleGlobalKeyEvent(HWND hWnd, int nKey);
-    static void __stdcall OnStartup(void);
-    static void __stdcall OnExit(void);
+    static int  HandleMatchKeypress(unsigned int nKey);
+    static void ShowHelp(HWND hWnd);
+    static void HandleGlobalKeyEvent(HWND hWnd, int nKey);
+    static void OnStartup(void);
+    static void OnExit(void);
 
     // Free functions in the original, reached through g_gameApp.
     static int GetInstallLevel(void);
@@ -27,15 +27,15 @@ struct GameApp
         return m_bCursorWasVisible;
     }
 
-    static void           SetupViewports(void);
-    static void __stdcall InstantiateState(void);
-    static void           ResetToSinglePlayer(void);
-    static int __cdecl    OutOfMemoryHandler(size_t nSize);
-    static void __cdecl   AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
-    static int            ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
-    static LRESULT        ClearSplashPalette(void);
-    static HWND           CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
-    static void __cdecl   Shutdown(HWND hWnd);
+    static void    SetupViewports(void);
+    static void    InstantiateState(void);
+    static void    ResetToSinglePlayer(void);
+    static int     OutOfMemoryHandler(size_t nSize);
+    static void    AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
+    static int     ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
+    static LRESULT ClearSplashPalette(void);
+    static HWND    CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
+    static void    Shutdown(HWND hWnd);
 
     void ReportLastError(HWND hUnused);
     void Error(const char* pszFormat, ...);
@@ -93,13 +93,13 @@ struct GameApp
     // The window class name, which the resource path initialiser loads from the string table.
     String m_strCaption; // 0x50
     // Sixteen bytes, and its string at 0x60 is the one the error reporters format into.
-    StringPool m_stringPool;              // 0x54
-    void(__stdcall* m_pfnShutdown)(void); // 0x64
-    int m_nCDRomDrive;                    // 0x68
+    StringPool m_stringPool;     // 0x54
+    void (*m_pfnShutdown)(void); // 0x64
+    int m_nCDRomDrive;           // 0x68
 
-    void __fastcall OnShutdown();
+    void OnShutdown();
 
-    void SetWindowAndCallbacks(HWND hWnd, void(__stdcall* pfnStartup)(void), void(__stdcall* pfnShutdown)(void));
+    void SetWindowAndCallbacks(HWND hWnd, void (*pfnStartup)(void), void (*pfnShutdown)(void));
 
     void FatalErrorFmt(HWND hWnd, const char* pszFormat, va_list args);
 

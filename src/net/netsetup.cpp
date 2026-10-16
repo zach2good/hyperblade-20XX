@@ -67,7 +67,7 @@ void NetSetup::ProcessAddPlayerMsg(int nDpid, int nSlot, PlayerSlotName* pName)
 
 // The start signal is sent four times, because nothing acknowledges it.
 // FUNCTION: HYPERX 0x00478ec0
-void __cdecl NetSetup::OnPlayerReady(unsigned int nSlot)
+void NetSetup::OnPlayerReady(unsigned int nSlot)
 {
     CPlayer* const pPlayer = g_pGameSession->apPlayers[nSlot];
 
@@ -111,7 +111,7 @@ void __cdecl NetSetup::OnPlayerReady(unsigned int nSlot)
 }
 
 // FUNCTION: HYPERX 0x00478fb0
-void __stdcall NetSetup::OnHostStartGame(void)
+void NetSetup::OnHostStartGame(void)
 {
     if (g_pGameSession->pLeadPlayer != 0 && g_pGameSession->pLeadPlayer->pState->nReady != 0)
     {
@@ -177,7 +177,7 @@ void NetSetup::DisplayChatMessage(int, const char* pszText, int)
 // Resets the slot of a player who has left and marks a disconnect pending.
 
 // FUNCTION: HYPERX 0x00479140
-void __cdecl NetSetup::OnPlayerDisconnect(DWORD nId)
+void NetSetup::OnPlayerDisconnect(DWORD nId)
 {
     if (g_nNetSetupState == NETSETUP_STATE_START)
     {

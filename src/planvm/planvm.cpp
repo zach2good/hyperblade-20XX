@@ -456,7 +456,7 @@ void PlanVM::LoadAnimationLists(void)
 }
 
 // FUNCTION: HYPERX 0x0047cd60
-void __cdecl PlanVM::InitRuntimeOpcodeTable(void)
+void PlanVM::InitRuntimeOpcodeTable(void)
 {
     g_apPlanArgFns[PRN_ME]                        = PlanArg::GetMe;
     g_apPlanArgFns[PRN_MY_TEAMMATE]               = PlanArg::GetMyTeammate;

@@ -80,7 +80,7 @@ extern class TransformObject* g_pCameraTransform;
 
 // Screen coordinates are rounded by adding a large constant and reading the float's low word.
 // FUNCTION: HYPERX 0x0044a200
-void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
+void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
     const TexCoord*     pUVTable;
     TexCacheEntry*      pMatTexture = 0;
@@ -375,7 +375,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
 // A one-indexed heapsort keyed on the depth four bytes into each face.
 // FUNCTION: HYPERX 0x0044aa90
-void __fastcall SWRend::SortFaces(short nCount)
+void SWRend::SortFaces(short nCount)
 {
     FaceRecord* pHeld;
     FaceRecord* pLeft;
@@ -447,7 +447,7 @@ void __fastcall SWRend::SortFaces(short nCount)
 // Fills the spans between the two edge stacks, one row at a time, from g_wSpanYMin to
 // g_wSpanYMax. A row whose right edge is left of its left edge is skipped.
 // FUNCTION: HYPERX 0x0044ab40
-void __cdecl SWRend::FillSpans(int nColour)
+void SWRend::FillSpans(int nColour)
 {
     const auto nTop    = (int)(unsigned short)g_wSpanYMin;
     const auto nBottom = (int)(unsigned short)g_wSpanYMax;
@@ -473,7 +473,7 @@ void __cdecl SWRend::FillSpans(int nColour)
 // widens the span's rows. A flat edge walks nothing. The rising arm widens both bounds by its top
 // row only, as the original does.
 // FUNCTION: HYPERX 0x0044ad00
-unsigned char __cdecl SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2)
+unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2)
 {
     if (nY1 == nY2)
     {
@@ -651,7 +651,7 @@ unsigned char __cdecl SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, u
 }
 
 // FUNCTION: HYPERX 0x0044aeb0
-void __cdecl SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour)
+void SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour)
 {
     g_wSpanYMin = (short)(g_nBackBufferHeight - 1);
     g_wSpanYMax = 0;
@@ -677,7 +677,7 @@ void __cdecl SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int
 // Draws a line into the locked back buffer, one byte per pixel, with Bresenham's method. A line
 // whose height is at least its width and at most one row draws only its first pixel.
 // FUNCTION: HYPERX 0x0044af70
-void __cdecl SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
+void SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
 {
     const auto nPitch = g_nSurfacePitchCopy;
     const auto cPixel = (unsigned char)nColour;
@@ -769,7 +769,7 @@ BOOL SWRend::SetBltDestRect(int nLeft, int nTop, int nRight, int nBottom)
 }
 
 // FUNCTION: HYPERX 0x0044c980
-int __cdecl SWRend::RefreshBltDestRect(HWND hWnd, WPARAM, int, int)
+int SWRend::RefreshBltDestRect(HWND hWnd, WPARAM, int, int)
 {
     POINT ptOrigin;
     RECT  rcClient;
@@ -799,7 +799,7 @@ int __cdecl SWRend::RefreshBltDestRect(HWND hWnd, WPARAM, int, int)
 // opaque pixels, which are copied, and any other byte skips that many transparent ones.
 // Why assembly: no C spelling of the copy gives the byte, word, dword order the original has.
 // FUNCTION: HYPERX 0x0044f240
-void __cdecl SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite)
+void SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite)
 {
     char**         ppRows;
     unsigned char* pData;
@@ -903,7 +903,7 @@ void __cdecl SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLES
 }
 
 // FUNCTION: HYPERX 0x0044f7d0
-void __cdecl SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour)
+void SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour)
 {
     unsigned char* pRow;
     int            nStep;
@@ -954,7 +954,7 @@ void __cdecl SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWi
 
 // With no second material the previous face's stays; the rasteriser reads it only when told to.
 // FUNCTION: HYPERX 0x0046f970
-void __fastcall SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
+void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 {
     MeshMaterial* apMaterials[2];
     int*          pColours;
@@ -994,7 +994,7 @@ void __fastcall SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, shor
 }
 
 // FUNCTION: HYPERX 0x0047fb70
-void __fastcall SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale)
+void SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale)
 {
     pOut->nCount           = 0;
     pOut->nMask            = pIn->nMask;

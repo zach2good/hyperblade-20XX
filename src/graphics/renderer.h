@@ -18,19 +18,19 @@ struct LayoutState;
 class __declspec(novtable) Renderer
 {
 public:
-    static void __stdcall DrawSceneDispatch(void);
-    static int __cdecl    SetDromeTextured(int nEnable);
-    static int __cdecl    ToggleDromeTextured(void);
-    static void           SetRenderOption(RenderOption nOption, int nValue);
-    static void           SetLoadingMode(void);
-    static int __stdcall  PresentFrame(void);
+    static void DrawSceneDispatch(void);
+    static int  SetDromeTextured(int nEnable);
+    static int  ToggleDromeTextured(void);
+    static void SetRenderOption(RenderOption nOption, int nValue);
+    static void SetLoadingMode(void);
+    static int  PresentFrame(void);
 
-    static void                  ClearFrame(void);
-    static void                  DrawAllMeshes(void);
-    static void __stdcall        DrawWholeScene(void);
-    static RenderOptions __cdecl GetRenderOptions();
-    static void                  SetCameraTransformAndViewport(LayoutState block);
-    static void __stdcall        DestroyBackBuffer(void);
+    static void          ClearFrame(void);
+    static void          DrawAllMeshes(void);
+    static void          DrawWholeScene(void);
+    static RenderOptions GetRenderOptions();
+    static void          SetCameraTransformAndViewport(LayoutState block);
+    static void          DestroyBackBuffer(void);
 
     virtual ~Renderer()
     {
@@ -74,7 +74,7 @@ public:
     // between two ticks shows the same.
     virtual void BeginTick() = 0;
 
-    static void __stdcall InitializeLightDirections(void);
+    static void InitializeLightDirections(void);
 };
 
 #endif

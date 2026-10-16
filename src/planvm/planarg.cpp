@@ -25,7 +25,7 @@ float g_flUnusedPlanArgC = g_flZeroPlanArg;
 // Under a PLAN_ARG_LOCAL_REAL high half the low half indexes the actor's local reals; any other word is its own value.
 
 // FUNCTION: HYPERX 0x0045e390
-float __cdecl PlanArg::ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex)
+float PlanArg::ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex)
 {
     PlanWord* const pSlot = pNode->m_pArgs + (short)nIndex;
 

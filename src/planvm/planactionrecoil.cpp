@@ -92,7 +92,7 @@ extern short g_nCheckImpulseOtherSlot;
 extern short g_nCheckImpulseSelfSlot;
 
 // FUNCTION: HYPERX 0x00404d20
-void __cdecl PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
+void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
     BoundBubble*  pColOther;
     EngineObject* pSelf;
@@ -245,7 +245,7 @@ void __cdecl PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, sh
 extern const float g_flWallBoxTopY;
 
 // FUNCTION: HYPERX 0x004050d0
-void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
+void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
     const short nSlot = (short)nArg;
 
@@ -506,7 +506,7 @@ void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, s
 // Action 78: the velocity copy scaled by minus ten is overwritten unread, in the original too.
 
 // FUNCTION: HYPERX 0x00405920
-void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, int nSlot)
+void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, int nSlot)
 {
     BoundBubble*  pColOther;
     Vec3*         pNormalField;
@@ -760,7 +760,7 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
 // Slows the collision's own object to three tenths of its velocity and picks its reaction animation.
 
 // FUNCTION: HYPERX 0x00405fd0
-void __cdecl PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* pAnnounce;
     Vec3          vTemp;
@@ -887,7 +887,7 @@ void __cdecl PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, shor
 #define WEIGHT_FLOOR    0.001f
 
 // FUNCTION: HYPERX 0x00406770
-void __cdecl PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 {
     float flSelfWeight;
     float flOtherWeight;
@@ -984,7 +984,7 @@ void __cdecl PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*,
 // A nearly stopped object leaves along the other's reversed velocity, and always upwards.
 
 // FUNCTION: HYPERX 0x00406ba0
-void __cdecl PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*, int)
+void PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*, int)
 {
     Vec3 vDir;
 

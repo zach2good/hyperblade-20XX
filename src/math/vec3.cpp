@@ -19,7 +19,7 @@ Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
 }
 
 // FUNCTION: HYPERX 0x00430180
-bool __fastcall Vec3::NormalizeTo(Vec3* pOut) const
+bool Vec3::NormalizeTo(Vec3* pOut) const
 {
     const double dLength = sqrt(x * x + y * y + z * z);
 
@@ -40,7 +40,7 @@ bool __fastcall Vec3::NormalizeTo(Vec3* pOut) const
 }
 
 // FUNCTION: HYPERX 0x004301f0
-bool __fastcall Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
+bool Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 {
     const double dLength = sqrt(*pX * *pX + *pZ * *pZ + *pY * *pY);
 
@@ -71,7 +71,7 @@ Vec3* Vec3::ScaleInPlace(float flScale)
 }
 
 // FUNCTION: HYPERX 0x00430320
-void __fastcall Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
+void Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 {
     pOut->x = flScale * pIn->x;
     pOut->y = flScale * pIn->y;
@@ -80,7 +80,7 @@ void __fastcall Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 
 // The second point wins only on a strict improvement.
 // FUNCTION: HYPERX 0x00430340
-Vec3* __fastcall Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
+Vec3* Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
 {
     float dx = pFirst->x - pFrom->x;
     float dy = pFirst->y - pFrom->y;
@@ -103,19 +103,19 @@ Vec3* __fastcall Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
 }
 
 // FUNCTION: HYPERX 0x0044b050
-float __cdecl Vec3::Dot(const Vec3* pA, const Vec3* pB)
+float Vec3::Dot(const Vec3* pA, const Vec3* pB)
 {
     return DotInline(pA, pB);
 }
 
 // FUNCTION: HYPERX 0x00466df0
-float __cdecl Vec3::Length(const Vec3* pVec)
+float Vec3::Length(const Vec3* pVec)
 {
     return pVec->Magnitude();
 }
 
 // FUNCTION: HYPERX 0x004726b0
-void __cdecl Vec3::CrossProduct(const Vec3* pA, const Vec3* pB, Vec3* pOut)
+void Vec3::CrossProduct(const Vec3* pA, const Vec3* pB, Vec3* pOut)
 {
     pOut->x = pA->y * pB->z - pA->z * pB->y;
     pOut->y = pA->z * pB->x - pA->x * pB->z;

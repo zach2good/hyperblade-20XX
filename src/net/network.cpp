@@ -26,7 +26,7 @@ extern int         g_anNetworkSlotObject[16];
 extern const char* g_apNetworkSlotNames[16];
 
 // FUNCTION: HYPERX 0x00440cc0
-int __fastcall Network::AddPlayer(GameSession* pSession, unsigned int nDpid, PlayerSlotName* pName)
+int Network::AddPlayer(GameSession* pSession, unsigned int nDpid, PlayerSlotName* pName)
 {
     const unsigned int nFlags = (unsigned int)pName->cSlotFlags;
     const unsigned int nSlot  = nFlags & PLAYER_NAME_SLOT_MASK;
@@ -74,7 +74,7 @@ int __fastcall Network::AddPlayer(GameSession* pSession, unsigned int nDpid, Pla
 // The list is a set, so an id already there is accepted; a full list answers no, even for one it holds.
 
 // FUNCTION: HYPERX 0x00440dc0
-int __fastcall Network::AddDPID(GameSession* pSession, DWORD nId)
+int Network::AddDPID(GameSession* pSession, DWORD nId)
 {
     const int nCount = pSession->nRemoteCount;
 
@@ -107,7 +107,7 @@ int __fastcall Network::AddDPID(GameSession* pSession, DWORD nId)
 
 // The list is compacted in place.
 // FUNCTION: HYPERX 0x00440e20
-int __fastcall Network::RemoveDPID(GameSession* pSession, DWORD nId)
+int Network::RemoveDPID(GameSession* pSession, DWORD nId)
 {
     int bRemoved = 0;
 
@@ -139,7 +139,7 @@ int __fastcall Network::RemoveDPID(GameSession* pSession, DWORD nId)
 // Each entry's id must equal its index and its kind be zero or one; anything else is fatal.
 
 // FUNCTION: HYPERX 0x004415a0
-int __stdcall Network::ValidateStaticObjects(void)
+int Network::ValidateStaticObjects(void)
 {
     int nResult = 1;
 
@@ -291,7 +291,7 @@ unsigned int Network::AbortAndCleanup(HWND hWnd)
 
 // Four blocks of type 2 to 5: a type byte, a count, then six-byte records.
 // FUNCTION: HYPERX 0x00478690
-void __cdecl Network::SendAssetData(int nRequesterId)
+void Network::SendAssetData(int nRequesterId)
 {
     if (g_pGameSession != 0 && g_pGameSession->bHosting != 0)
     {
@@ -341,7 +341,7 @@ void __cdecl Network::SendAssetData(int nRequesterId)
 
 // A length mismatch complains and stores the block anyway; the sender id is never read.
 // FUNCTION: HYPERX 0x00478840
-void __cdecl Network::ReceiveAssetPacket(const SyncBlockHeader* pPacket, unsigned int nLength, int)
+void Network::ReceiveAssetPacket(const SyncBlockHeader* pPacket, unsigned int nLength, int)
 {
     SyncBlockIndex nBlock;
     unsigned int   nExpected;
@@ -453,7 +453,7 @@ void __cdecl Network::ReceiveAssetPacket(const SyncBlockHeader* pPacket, unsigne
 
 // The host's answer to a slot request; from the last dialog state on, every request is refused.
 // FUNCTION: HYPERX 0x00478aa0
-void __cdecl Network::OnPlayerConnected(DWORD idFrom, int nSlot)
+void Network::OnPlayerConnected(DWORD idFrom, int nSlot)
 {
     PlayerState* pState;
 

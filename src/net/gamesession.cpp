@@ -275,7 +275,7 @@ unsigned int GameSession::CreatePacketCarrier()
 // The plan starts only when the object's current plan is named Human, compared with _strcmpi.
 
 // FUNCTION: HYPERX 0x00440e90
-void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
+void GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
 {
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)g_anNetworkSlotObject[nSlot]];
 
@@ -318,7 +318,7 @@ void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
 // The second slot chain has no final arm; in the original its fall-through reads an unassigned local.
 
 // FUNCTION: HYPERX 0x00441000
-void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
+void GameSession::HandlePlayerDisconnect(int nIndex)
 {
     char szMessage[0x100];
     int  nOther;
@@ -616,7 +616,7 @@ GameSession* GameSession::Destroy()
 
 // The settings are narrowed to their packet width, so both machines agree on a truncated value.
 // FUNCTION: HYPERX 0x004417d0
-int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
+int GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 {
     PathString         strPath(MAX_PATH);
     char               szName[SYNC_NAME_MAX];
@@ -835,7 +835,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 
 // Opens a find handle only to read the write time and size; a missing file answers zero.
 // FUNCTION: HYPERX 0x00441f00
-int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int* pnSize)
+int GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int* pnSize)
 {
     struct _finddata_t data;
 
@@ -860,7 +860,7 @@ int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int*
 
 // Fills the name with eight question marks first; a hash starts a comment line.
 // FUNCTION: HYPERX 0x00441f60
-int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, int nWanted)
+int GameSession::GetPlansEntry(const char* pszFileName, char* pszName, int nWanted)
 {
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH);
     OwnedFile  file;
@@ -915,7 +915,7 @@ int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, i
 // The host's difficulty, brutality, period, arena and teams win; the period arrives in seconds.
 
 // FUNCTION: HYPERX 0x004421d0
-int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* pRemote)
+int GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* pRemote)
 {
     char               szName[ASSET_NAME_MAX];
     TeamsBlock*        pInfo;
@@ -1137,7 +1137,7 @@ int GameSession::FreeAssetBuffer(SyncBlocks* pCatalog, SyncBlocks* pDescriptor)
 }
 
 // FUNCTION: HYPERX 0x004793b0
-void __stdcall GameSession::Disconnect(void)
+void GameSession::Disconnect(void)
 {
     GameSession* const pSession = g_pGameSession;
 

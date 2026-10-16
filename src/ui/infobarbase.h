@@ -28,7 +28,7 @@ public:
     int          m_bQuitPromptVisible; // 0x004
     unsigned int m_nQuitPromptTick;    // 0x008
 
-    static InfoBarBase* __cdecl Create(HDC hDC);
+    static InfoBarBase* Create(HDC hDC);
 };
 
 // SYNTHETIC: HYPERX 0x0043e0d0

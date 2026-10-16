@@ -9,7 +9,7 @@
 class EngineObject;
 union PlanWord;
 
-typedef short(__cdecl* PlanArgFn)(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
+typedef short (*PlanArgFn)(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 
 // GLOBAL: HYPERX 0x004d187c
 extern PlanArgFn g_apPlanArgFns[PRN_COUNT];

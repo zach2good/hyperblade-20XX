@@ -41,7 +41,7 @@ extern int g_nNetProviderCount;
 
 // Modems are hidden unless enabled.
 // FUNCTION: HYPERX 0x00475c70
-BOOL __stdcall NetSetupDialog::AddProvider(LPGUID pGuid, LPSTR pszName, DWORD, DWORD, LPVOID pContext)
+BOOL NetSetupDialog::AddProvider(LPGUID pGuid, LPSTR pszName, DWORD, DWORD, LPVOID pContext)
 {
     const HWND hDlg = (HWND)pContext;
 
@@ -61,7 +61,7 @@ BOOL __stdcall NetSetupDialog::AddProvider(LPGUID pGuid, LPSTR pszName, DWORD, D
 }
 
 // FUNCTION: HYPERX 0x00475cf0
-unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
+unsigned int NetSetupDialog::EnumerateProviders(HWND hDlg)
 {
     SetCursor(LoadCursor(0, IDC_WAIT));
 
@@ -156,7 +156,7 @@ unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
 // The item data is read back from the list head, which is the entry just added.
 
 // FUNCTION: HYPERX 0x00475f30
-BOOL __stdcall NetSetupDialog::AddSessionEntry(LPDPSESSIONDESC pDesc, LPVOID pContext, LPDWORD, DWORD)
+BOOL NetSetupDialog::AddSessionEntry(LPDPSESSIONDESC pDesc, LPVOID pContext, LPDWORD, DWORD)
 {
     const HWND hDlg = (HWND)pContext;
 
@@ -197,7 +197,7 @@ BOOL __stdcall NetSetupDialog::AddSessionEntry(LPDPSESSIONDESC pDesc, LPVOID pCo
 
 // Closes anything open, then creates a fresh lobby from the chosen provider's GUID.
 // FUNCTION: HYPERX 0x00475fe0
-unsigned int __cdecl NetSetupDialog::SearchSessions(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::SearchSessions(HWND hDlg, unsigned int, unsigned int, long)
 {
     DPSESSIONDESC description;
     int           hr;
@@ -296,7 +296,7 @@ extern DPSESSIONDESC* g_pSelectedSession;
 
 // An empty selection restores the dialog and succeeds.
 // FUNCTION: HYPERX 0x00476210
-unsigned int __cdecl NetSetupDialog::SelectSession(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::SelectSession(HWND hDlg, unsigned int, unsigned int, long)
 {
     if (g_nNetSetupState != NETSETUP_STATE_BROWSING)
     {
@@ -337,14 +337,14 @@ unsigned int __cdecl NetSetupDialog::SelectSession(HWND hDlg, unsigned int, unsi
 // Reads only its first argument and answers nought or one.
 
 // FUNCTION: HYPERX 0x00476300
-BOOL __stdcall NetSetupDialog::OnEnumeratedPlayer(DWORD nPlayerId, LPSTR, LPSTR, DWORD, LPVOID)
+BOOL NetSetupDialog::OnEnumeratedPlayer(DWORD nPlayerId, LPSTR, LPSTR, DWORD, LPVOID)
 {
     return Network::AddDPID(g_pGameSession, nPlayerId) != 0;
 }
 
 // The cursor stays an hourglass until VerifyAssets resets it.
 // FUNCTION: HYPERX 0x00476320
-unsigned int __cdecl NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsigned int, long)
 {
     const int nState = g_nNetSetupState;
 
@@ -471,7 +471,7 @@ unsigned int __cdecl NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsign
 
 // Past the three reported refusals, a failed check tears the connection down silently.
 // FUNCTION: HYPERX 0x00476660
-unsigned int __cdecl NetSetupDialog::VerifyAssets(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::VerifyAssets(HWND hDlg, unsigned int, unsigned int, long)
 {
     if (g_nNetSetupState != NETSETUP_STATE_VERIFYING)
     {
@@ -571,7 +571,7 @@ __inline char* NetSetupDialog::TeamCatalogueName(short nIndex)
 
 // The away box skips the home selection and the home box the away one.
 // FUNCTION: HYPERX 0x00476820
-void __cdecl NetSetupDialog::PopulateSelectionLists(HWND hDlg)
+void NetSetupDialog::PopulateSelectionLists(HWND hDlg)
 {
     LRESULT nItem;
 
@@ -627,7 +627,7 @@ void __cdecl NetSetupDialog::PopulateSelectionLists(HWND hDlg)
 
 // Two teams the same is refused after the store, so the selection is on record.
 // FUNCTION: HYPERX 0x00476a90
-unsigned int __cdecl NetSetupDialog::OnSelectionChanged(HWND hDlg, unsigned int, unsigned int nControl, long)
+unsigned int NetSetupDialog::OnSelectionChanged(HWND hDlg, unsigned int, unsigned int nControl, long)
 {
     if (g_nNetSetupState != NETSETUP_STATE_POSITION)
     {
@@ -696,7 +696,7 @@ unsigned int __cdecl NetSetupDialog::OnSelectionChanged(HWND hDlg, unsigned int,
 // The dialog changes shape before the refusals are checked.
 
 // FUNCTION: HYPERX 0x00476bd0
-unsigned int __cdecl NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsigned int, long)
 {
     if (g_nNetSetupState != NETSETUP_STATE_POSITION)
     {
@@ -769,7 +769,7 @@ unsigned int __cdecl NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsign
 // The updating flag is restored rather than cleared, except that an unknown control returns with it set.
 
 // FUNCTION: HYPERX 0x00476da0
-int __cdecl NetSetupDialog::ValidatePlayerName(HWND hDlg, unsigned int, unsigned int, long)
+int NetSetupDialog::ValidatePlayerName(HWND hDlg, unsigned int, unsigned int, long)
 {
     char szName[62];
     int  nLength;
@@ -829,7 +829,7 @@ int __cdecl NetSetupDialog::ValidatePlayerName(HWND hDlg, unsigned int, unsigned
 
 // Controls 0x4c1 to 0x4c4 select slots 2, 1, 4 and 3: home and away pair down the column.
 // FUNCTION: HYPERX 0x00476e30
-unsigned int __cdecl NetSetupDialog::SelectPlayerPosition(HWND hDlg, unsigned int, unsigned int nControl, long)
+unsigned int NetSetupDialog::SelectPlayerPosition(HWND hDlg, unsigned int, unsigned int nControl, long)
 {
     int nLength;
 
@@ -939,7 +939,7 @@ unsigned int __cdecl NetSetupDialog::SelectPlayerPosition(HWND hDlg, unsigned in
 #define ROLE_JOIN (PLAYER_NAME_HUMAN | PLAYER_NAME_LOCAL)
 
 // FUNCTION: HYPERX 0x00477000
-unsigned int __cdecl NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned int, unsigned int, long)
 {
     int            nLength;
     PlayerSlotName entry;
@@ -1154,7 +1154,7 @@ extern int g_bChatEntryActive;
 
 // The chat box keeps four lines; a nameless pending player sends as "????".
 // FUNCTION: HYPERX 0x00477550
-unsigned int __cdecl NetSetupDialog::SendChatMessage(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::SendChatMessage(HWND hDlg, unsigned int, unsigned int, long)
 {
     char         szLine[128];
     PlayerState* pState;
@@ -1221,7 +1221,7 @@ unsigned int __cdecl NetSetupDialog::SendChatMessage(HWND hDlg, unsigned int, un
 
 // The two waiting messages differ by three dots, which shows which side you are on.
 // FUNCTION: HYPERX 0x00477790
-unsigned int __cdecl NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned int, long)
+unsigned int NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned int, long)
 {
     int nPoll;
 
@@ -1333,7 +1333,7 @@ unsigned int __cdecl NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned
 
 // The updating flag is saved and restored rather than cleared.
 // FUNCTION: HYPERX 0x00477b00
-unsigned int __cdecl NetSetupDialog::OnPlayerJoined(unsigned int nFlags, PlayerSlotName* pEntry)
+unsigned int NetSetupDialog::OnPlayerJoined(unsigned int nFlags, PlayerSlotName* pEntry)
 {
     const int nWasUpdating = g_nNetSetupUpdating;
 
@@ -1455,7 +1455,7 @@ int NetSetupDialog::OnTimer(HWND)
 }
 
 // FUNCTION: HYPERX 0x00477ef0
-unsigned int __cdecl NetSetupDialog::RefreshSessionList(HWND hDlg)
+unsigned int NetSetupDialog::RefreshSessionList(HWND hDlg)
 {
     DPSESSIONDESC description;
     int           hr;
@@ -1551,7 +1551,7 @@ int NetSetupDialog::PopulateSessionList(HWND hDlg)
 
 // A timeout is not a failure.
 // FUNCTION: HYPERX 0x00478180
-BOOL __stdcall NetSetupDialog::AddEnumeratedSession(LPDPSESSIONDESC pDesc, LPVOID, LPDWORD, DWORD nFlags)
+BOOL NetSetupDialog::AddEnumeratedSession(LPDPSESSIONDESC pDesc, LPVOID, LPDWORD, DWORD nFlags)
 {
     if ((nFlags & DPESC_TIMEDOUT) != 0 && pDesc == 0)
     {
@@ -1582,7 +1582,7 @@ BOOL __stdcall NetSetupDialog::AddEnumeratedSession(LPDPSESSIONDESC pDesc, LPVOI
 
 // An unexpected state is reported and then carried on with; all four taken is the only failure.
 // FUNCTION: HYPERX 0x004781f0
-unsigned int __cdecl NetSetupDialog::OnChangeSlot(HWND hDlg)
+unsigned int NetSetupDialog::OnChangeSlot(HWND hDlg)
 {
     const int nWasUpdating = g_nNetSetupUpdating;
 

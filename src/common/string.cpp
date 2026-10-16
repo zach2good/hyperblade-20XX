@@ -263,7 +263,7 @@ String* String::FormatResourcePath(const char* pszDirectory, const char* pszName
 
 // A default-constructed string points at the one shared empty buffer.
 // FUNCTION: HYPERX 0x0042f3d0
-char** __stdcall String::GetGlobalStringPtr(void)
+char** String::GetGlobalStringPtr(void)
 {
     return &g_pEmptyStringData;
 }
@@ -333,7 +333,7 @@ String* String::AssignFromString(const String& src)
 }
 
 // FUNCTION: HYPERX 0x0042f550
-String __stdcall String::Concat(const String& source, const char* pszSuffix)
+String String::Concat(const String& source, const char* pszSuffix)
 {
     String temp;
     int    nSuffixLength;
@@ -356,7 +356,7 @@ String __stdcall String::Concat(const String& source, const char* pszSuffix)
 }
 
 // FUNCTION: HYPERX 0x0042f5f0
-void __cdecl String::Format(String* pString, const char* pszFormat, ...)
+void String::Format(String* pString, const char* pszFormat, ...)
 {
     va_list argList;
 
@@ -430,7 +430,7 @@ void String::ClearAndFree(void)
 }
 
 // FUNCTION: HYPERX 0x0042f700
-void __stdcall String::FreeHeader(StringHeader* pHeader)
+void String::FreeHeader(StringHeader* pHeader)
 {
     if (pHeader != g_pEmptyStringHeader)
     {
@@ -545,7 +545,7 @@ void String::MakeUnique(void)
 }
 
 // FUNCTION: HYPERX 0x00480bd0
-int __cdecl String::ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext)
+int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext)
 {
     const char* pszEnd;
     int         nLength;

@@ -11,7 +11,7 @@
 class CPlayer : public PlayerBase
 {
 public:
-    static unsigned int __cdecl NetworkReceiveThreadProc(class CPlayer* pPlayer);
+    static unsigned int NetworkReceiveThreadProc(class CPlayer* pPlayer);
 
 public:
     // Its thread proc is CPlayer::NetworkReceiveThreadProc.
@@ -20,22 +20,22 @@ public:
     virtual ~CPlayer();
     explicit CPlayer(GameSession* pSession);
     // The one slot the base leaves pure.
-    virtual int __fastcall SendPacket(unsigned long idTo, NetMessage* pMessage, unsigned long dwDataSize);
+    virtual int SendPacket(unsigned long idTo, NetMessage* pMessage, unsigned long dwDataSize);
 
-    void __fastcall SendDataMsg(unsigned long idTo, const void* pData, int nLength);
-    void __fastcall SendRawMsg(unsigned long idTo, NetMessage* pMessage, int nLength);
-    void __fastcall SendStringMsg(unsigned long idTo, int nValue, const char* pszText);
-    int __fastcall  SendDropPlayer(unsigned long idTo);
+    void SendDataMsg(unsigned long idTo, const void* pData, int nLength);
+    void SendRawMsg(unsigned long idTo, NetMessage* pMessage, int nLength);
+    void SendStringMsg(unsigned long idTo, int nValue, const char* pszText);
+    int  SendDropPlayer(unsigned long idTo);
 
     // The five two-byte messages: a kind byte and a second byte.
-    void __fastcall SendHostStart(unsigned long idTo);
-    void __fastcall SendPlayerReady(unsigned long idTo);
+    void SendHostStart(unsigned long idTo);
+    void SendPlayerReady(unsigned long idTo);
     // A word, not a byte: its one caller passes a masked slot.
-    void __fastcall SendPlayerConnected(unsigned long idTo, int nValue);
-    void __fastcall SendSlotAccepted(unsigned long idTo, char cValue);
-    void __fastcall SendSlotRejected(unsigned long idTo, char cValue);
+    void SendPlayerConnected(unsigned long idTo, int nValue);
+    void SendSlotAccepted(unsigned long idTo, char cValue);
+    void SendSlotRejected(unsigned long idTo, char cValue);
     // The sixth, whose second byte is never set.
-    void __fastcall SendAssetRequest(unsigned long idTo);
+    void SendAssetRequest(unsigned long idTo);
 
     void AssignObject(int nObject);
 
@@ -69,7 +69,7 @@ public:
 
     void DetachObject();
 
-    unsigned int __fastcall DispatchPacket();
+    unsigned int DispatchPacket();
 
     unsigned int NetworkReceiveLoop();
 

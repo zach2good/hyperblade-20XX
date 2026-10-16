@@ -24,7 +24,7 @@ namespace CGPalette
 {
 
 // Answers the number of colours in the table, or -1 on a read error.
-int __cdecl ReadGifScreen(GifScreen* pScreen, FILE* pFile);
+int ReadGifScreen(GifScreen* pScreen, FILE* pFile);
 
 } // namespace CGPalette
 

@@ -75,7 +75,7 @@
 
 // Applies the same limp swap as GameBehaviorObject::UpdateLimpAnim before handing the animation over.
 // FUNCTION: HYPERX 0x00401000
-void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
+void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     EngineObject* pActor;
     // A second name for the actor, which the original's frame keeps.
@@ -150,7 +150,7 @@ void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, sho
 }
 
 // FUNCTION: HYPERX 0x00401140
-void __cdecl PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, short*, int)
 {
     const unsigned int  nBehavior = pContext->m_nBehaviour;
     GameBehaviorObject* pBehaviour;
@@ -175,7 +175,7 @@ void __cdecl PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNo
 
 // Without a behaviour the four values go to the actor's own event channel.
 // FUNCTION: HYPERX 0x00401190
-void __cdecl PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
+void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     EngineObject*       pActor;
     GameBehaviorObject* pBehavior;
@@ -238,7 +238,7 @@ void __cdecl PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs
 }
 
 // FUNCTION: HYPERX 0x00401250
-void __cdecl PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*, int)
+void PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* const pActor = pContext->GetActor();
 
@@ -248,7 +248,7 @@ void __cdecl PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs
 // The speed is in hundredths and converts as unsigned, so a negative one becomes very large.
 
 // FUNCTION: HYPERX 0x00401270
-void __cdecl PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
+void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* const pActor = pContext->GetActor();
 
@@ -258,7 +258,7 @@ void __cdecl PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode
 }
 
 // FUNCTION: HYPERX 0x004012b0
-void __cdecl PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
+void PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     AnimPlayer* const pRate   = pContext->GetActor()->m_pAnimPlayer;
     AnimPlayer* const pPlayer = pContext->GetActor()->m_pAnimPlayer;
@@ -268,7 +268,7 @@ void __cdecl PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNod
 }
 
 // FUNCTION: HYPERX 0x00401310
-void __cdecl PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
+void PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     PlanWord*     pBlock;
     EngineObject* pActor;

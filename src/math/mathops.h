@@ -10,11 +10,11 @@ struct Vec3;
 namespace Math
 {
 
-void __fastcall MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4]);
-int __cdecl     RandInt(int nMin, int nMax);
-float           Vec3Distance(const Vec3* pA, const Vec3* pB);
-Vec3            SphericalToCartesian(const Vec3* pIn);
-bool __fastcall Vec3Normalize(Vec3* pVec);
+void  MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4]);
+int   RandInt(int nMin, int nMax);
+float Vec3Distance(const Vec3* pA, const Vec3* pB);
+Vec3  SphericalToCartesian(const Vec3* pIn);
+bool  Vec3Normalize(Vec3* pVec);
 
 // Single-precision dot products of unit vectors can land just outside [-1, 1], which VC6's x87
 // intermediates never did, and acos answers NaN there.

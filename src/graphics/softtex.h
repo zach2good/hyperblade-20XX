@@ -20,7 +20,7 @@ class SoftTex
 {
 public:
     // Handed a loaded DIB, not a SoftTex.
-    static RLESprite* __cdecl CompressToRLE(const BITMAPINFOHEADER* pDib);
+    static RLESprite* CompressToRLE(const BITMAPINFOHEADER* pDib);
 
 public:
     SoftTex();

@@ -22,7 +22,7 @@ extern const float g_flThreePlan;
 
 // An angle, not a distance: the cone half-angle the pass conditions read.
 // FUNCTION: HYPERX 0x004600c0
-float __cdecl PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
+float PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 {
     float flFalloff;
 
@@ -46,7 +46,7 @@ float __cdecl PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 }
 
 // FUNCTION: HYPERX 0x004693d0
-int __cdecl PlanUtil::CheckSequenceStep(unsigned int nStep)
+int PlanUtil::CheckSequenceStep(unsigned int nStep)
 {
     if (nStep == 0xffffffff)
     {

@@ -44,8 +44,8 @@ struct ClipVertex;
 struct DrawPolySurface;
 
 // The texture DLL's two entry points, loaded by name.
-typedef void(__cdecl* MdmDrawTexPolyFn)(SoftTexImage* pTexture, ClipVertex* pVertices, int nCount, int nEdges);
-typedef void(__cdecl* MdmInitDrawPolyFn)(DrawPolySurface* pSurface, int nOriginX, int nOriginY);
+typedef void (*MdmDrawTexPolyFn)(SoftTexImage* pTexture, ClipVertex* pVertices, int nCount, int nEdges);
+typedef void (*MdmInitDrawPolyFn)(DrawPolySurface* pSurface, int nOriginX, int nOriginY);
 
 // GLOBAL: HYPERX 0x004ced58
 extern MdmDrawTexPolyFn g_pfnMdmDrawTexPoly;

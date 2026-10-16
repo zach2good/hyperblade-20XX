@@ -1284,7 +1284,7 @@ void InfoBar::HideQuitPrompt()
 // Only five (team one) and four (team two) do anything.
 
 // FUNCTION: HYPERX 0x0047ae70
-void __cdecl InfoBar::IncrementScore(int nWhich)
+void InfoBar::IncrementScore(int nWhich)
 {
     switch (nWhich)
     {

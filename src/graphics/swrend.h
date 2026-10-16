@@ -13,18 +13,18 @@ struct TransformedVertex;
 namespace SWRend
 {
 
-void __cdecl          BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite);
-unsigned char __cdecl ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2);
-void __cdecl          FillSpans(int nColour);
-void __cdecl          FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour);
-void __cdecl          FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour);
-int __cdecl           RefreshBltDestRect(HWND hWnd, WPARAM wParam, int nWidth, int nHeight);
-BOOL                  SetBltDestRect(int nLeft, int nTop, int nRight, int nBottom);
-void __fastcall       SortFaces(short nCount);
-void __fastcall       ClipPolyAgainstPlane(struct ClipPolyBuffer* pIn, struct ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale);
-void __cdecl          DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour);
-void __fastcall       DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
-void __fastcall       DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount);
+void          BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite);
+unsigned char ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2);
+void          FillSpans(int nColour);
+void          FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour);
+void          FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour);
+int           RefreshBltDestRect(HWND hWnd, WPARAM wParam, int nWidth, int nHeight);
+BOOL          SetBltDestRect(int nLeft, int nTop, int nRight, int nBottom);
+void          SortFaces(short nCount);
+void          ClipPolyAgainstPlane(struct ClipPolyBuffer* pIn, struct ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale);
+void          DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour);
+void          DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
+void          DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount);
 
 } // namespace SWRend
 

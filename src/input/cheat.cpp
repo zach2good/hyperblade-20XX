@@ -65,7 +65,7 @@ void Cheat::GeorgeActivate(void)
 }
 
 // FUNCTION: HYPERX 0x00449890
-void __cdecl Cheat::MaxViewedPlayerRatings(void)
+void Cheat::MaxViewedPlayerRatings(void)
 {
     PlayerObject* pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
@@ -258,7 +258,7 @@ int CheatState::ProcessKeypress(char cKey)
 #define MSG_TOGGLE_MS          0x5dc
 
 // FUNCTION: HYPERX 0x00449e20
-int __cdecl GameApp::HandleMatchKeypress(unsigned int nKey)
+int GameApp::HandleMatchKeypress(unsigned int nKey)
 {
     GameEngine*   pEngine;
     int           nSlot;

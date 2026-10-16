@@ -42,13 +42,13 @@ float              g_flUnusedVertexColourB = g_flZeroVertexColour;
 float              g_flUnusedVertexColourC = g_flZeroVertexColour;
 
 // FUNCTION: HYPERX 0x0044be10
-void __fastcall MeshBone::DrawFaceList(FaceRecord** ppRecords, int nCount)
+void MeshBone::DrawFaceList(FaceRecord** ppRecords, int nCount)
 {
     SWRend::DrawFaceList(this, ppRecords, (short)nCount);
 }
 
 // FUNCTION: HYPERX 0x0044be40
-void __fastcall MeshBone::DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
+void MeshBone::DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
     SWRend::DrawFace(pRend, cFlip, pFaceData, ppMaterials, pVertexColour, pVertexBufBase, pFaceNormal, cClipFlags);
 }

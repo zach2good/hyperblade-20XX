@@ -35,11 +35,11 @@ class String
 {
 public:
     // Free functions in the original, made static members named by the class.
-    static int __cdecl      ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext);
-    static String __stdcall Concat(const String& source, const char* pszSuffix);
-    static void __stdcall   FreeHeader(StringHeader* pHeader);
-    static void __cdecl     Format(String* pString, const char* pszFormat, ...);
-    static char** __stdcall GetGlobalStringPtr(void);
+    static int    ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext);
+    static String Concat(const String& source, const char* pszSuffix);
+    static void   FreeHeader(StringHeader* pHeader);
+    static void   Format(String* pString, const char* pszFormat, ...);
+    static char** GetGlobalStringPtr(void);
 
 public:
     String(void)

@@ -30,7 +30,7 @@ inline float Cross2D(const Vec3* pA, const Vec3* pB)
 } // namespace Face
 
 // FUNCTION: HYPERX 0x0044a9a0
-int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut)
+int Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut)
 {
     const char cClip = Face::ClipCodeAndCullCheck(pFace, pVertexBuf);
 
@@ -81,7 +81,7 @@ int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const Transformed
 
 // Screen y grows down, so y below zero is above the top edge. Near is strict and far is not.
 // FUNCTION: HYPERX 0x0047f7b0
-char __fastcall Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* pVertices)
+char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* pVertices)
 {
     const short* pIndices = pFace->aCorners;
 
@@ -167,7 +167,7 @@ char __fastcall Face::ClipCodeAndCullCheck(const MeshFace* pFace, const Transfor
 #define AXIS_Z 2
 
 // FUNCTION: HYPERX 0x0047f8f0
-unsigned char __fastcall Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
+unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
 {
     ClipPolyBuffer* pSwap;
 

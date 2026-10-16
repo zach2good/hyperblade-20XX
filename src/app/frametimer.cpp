@@ -14,7 +14,7 @@ FrameTimer g_frameTimer;
 
 // Reports every five seconds. Every caller discards the result.
 // FUNCTION: HYPERX 0x00442940
-double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
+double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 {
     const unsigned int dwStart = timer->dwFrameStartTime;
     double             dFrameRate;

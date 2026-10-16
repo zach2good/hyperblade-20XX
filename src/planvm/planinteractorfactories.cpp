@@ -33,7 +33,7 @@ void PlanInteractorFactories::DestroyAll(void)
 
 // Links after the previous interactor, else heads the behaviour's chain, else the plan state's.
 // FUNCTION: HYPERX 0x0045dca0
-CollInteractor* __cdecl PlanInteractorFactories::CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
+CollInteractor* PlanInteractorFactories::CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
 {
     CollInteractor* pInteractor;
 
@@ -65,7 +65,7 @@ CollInteractor* __cdecl PlanInteractorFactories::CreateCollInteractor(EngineObje
 
 // Links after the previous interactor, else heads the behaviour's chain, else the plan state's.
 // FUNCTION: HYPERX 0x0045df60
-MsgInteractor* __cdecl PlanInteractorFactories::CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
+MsgInteractor* PlanInteractorFactories::CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
 {
     MsgInteractor* pInteractor;
 

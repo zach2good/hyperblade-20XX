@@ -44,9 +44,9 @@ public:
         return GetSendBufBase()->aBytes + NET_SEND_HEADER_BYTES;
     }
 
-    virtual int __fastcall SendPacket(unsigned long idTo, NetMessage* pMessage, unsigned long dwDataSize) = 0;
+    virtual int SendPacket(unsigned long idTo, NetMessage* pMessage, unsigned long dwDataSize) = 0;
 
-    void __fastcall BroadcastState(NetSendBuffer* pPacket, int nLength, int nObjectSlot);
+    void BroadcastState(NetSendBuffer* pPacket, int nLength, int nObjectSlot);
 
     int nUnusedA; // 0x004
     // The object this player drives.

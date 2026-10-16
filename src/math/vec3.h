@@ -5,12 +5,12 @@
 
 struct Vec3
 {
-    static void __fastcall  ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut);
-    static Vec3* __fastcall FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond);
-    static void __cdecl     CrossProduct(const Vec3* pA, const Vec3* pB, Vec3* pOut);
-    static float __cdecl    Dot(const Vec3* pA, const Vec3* pB);
-    static bool __fastcall  NormalizeScattered(float* pX, float* pY, float* pZ);
-    static float __cdecl    Length(const Vec3* pVec);
+    static void  ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut);
+    static Vec3* FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond);
+    static void  CrossProduct(const Vec3* pA, const Vec3* pB, Vec3* pOut);
+    static float Dot(const Vec3* pA, const Vec3* pB);
+    static bool  NormalizeScattered(float* pX, float* pY, float* pZ);
+    static float Length(const Vec3* pVec);
 
     float x;
     float y;
@@ -19,7 +19,7 @@ struct Vec3
     Vec3* ScaleInPlace(float flScale);
     Vec3* Subtract(Vec3* pOut, const Vec3* pB) const;
 
-    bool __fastcall NormalizeTo(Vec3* pOut) const;
+    bool NormalizeTo(Vec3* pOut) const;
 
     // Inline in the original; Dot is its out-of-line copy.
     static float DotInline(const Vec3* pA, const Vec3* pB)

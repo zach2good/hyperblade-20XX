@@ -8,8 +8,8 @@ struct RLESprite;
 namespace SoftRenderer
 {
 
-int                ResizeBackBuffer(int* pWidth, int* pHeight);
-RLESprite* __cdecl LoadRLESprite(const char* pszName);
+int        ResizeBackBuffer(int* pWidth, int* pHeight);
+RLESprite* LoadRLESprite(const char* pszName);
 
 } // namespace SoftRenderer
 

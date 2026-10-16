@@ -6,7 +6,7 @@ class TransformObject;
 class Quat
 {
 public:
-    static bool __fastcall Normalize(float* pW, float* pX, float* pY, float* pZ);
+    static bool Normalize(float* pW, float* pX, float* pY, float* pZ);
 
 public:
     void FromMatrix(TransformObject* pSource);

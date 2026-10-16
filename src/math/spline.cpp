@@ -116,7 +116,7 @@ Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 // Half an ellipse, reached only through m_pfnEval: the first radius times sqrt(1 - t*t/B).
 
 // FUNCTION: HYPERX 0x00492fe0
-float __cdecl Spline::EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float)
+float Spline::EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
     return (float)sqrt((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq);
 }
@@ -166,7 +166,7 @@ Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
 }
 
 // FUNCTION: HYPERX 0x004930c0
-float __cdecl Spline::EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float)
+float Spline::EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
     return -(float)sqrt((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq);
 }
@@ -246,7 +246,7 @@ Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOff
 }
 
 // FUNCTION: HYPERX 0x00493220
-float __cdecl Spline::EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase)
+float Spline::EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
     return (float)cos(flT * flFrequency + flPhase) * flAmplitude + flOffset;
 }

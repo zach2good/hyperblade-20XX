@@ -20,9 +20,9 @@ struct AnimPendingRequest
 class AnimPlayer : public AnimBinding
 {
 public:
-    void __fastcall SetCallbackTarget(int nSlot, int nArgA, int nArgB);
+    void SetCallbackTarget(int nSlot, int nArgA, int nArgB);
 
-    char __fastcall SetClip(short nClipIndex, float flBlend, short nLoopStart);
+    char SetClip(short nClipIndex, float flBlend, short nLoopStart);
 
     virtual ~AnimPlayer();
 
@@ -43,16 +43,16 @@ public:
         return SelectAnimationSet(pClip, flRate, nFlags, 0);
     }
 
-    virtual char            SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition);
-    virtual char            StartAnimSetDefaultRate(class AnimDB* pAnimSet);
-    virtual char __fastcall AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam);
-    virtual int __fastcall  SetPlayDirection(int nDirection);
-    virtual char __fastcall SetPlayState(int nState);
-    virtual float           GetPlaybackRate();
-    virtual void            SetPlaybackRate(float flRate);
-    virtual int             GetPlayState();
-    virtual void __fastcall SetClipDuration(short nIndex, float flDuration);
-    virtual void            UpdateFrame(char bAdvance);
+    virtual char  SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition);
+    virtual char  StartAnimSetDefaultRate(class AnimDB* pAnimSet);
+    virtual char  AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam);
+    virtual int   SetPlayDirection(int nDirection);
+    virtual char  SetPlayState(int nState);
+    virtual float GetPlaybackRate();
+    virtual void  SetPlaybackRate(float flRate);
+    virtual int   GetPlayState();
+    virtual void  SetClipDuration(short nIndex, float flDuration);
+    virtual void  UpdateFrame(char bAdvance);
 
     AnimPlayer();
 

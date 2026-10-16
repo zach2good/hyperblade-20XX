@@ -13,10 +13,10 @@ struct PlanNode;
 namespace PlanInteractorFactories
 {
 
-MsgInteractor* __cdecl  CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious);
-CollInteractor* __cdecl CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious);
-void                    ResetAll(void);
-void                    DestroyAll(void);
+MsgInteractor*  CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious);
+CollInteractor* CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious);
+void            ResetAll(void);
+void            DestroyAll(void);
 
 } // namespace PlanInteractorFactories
 

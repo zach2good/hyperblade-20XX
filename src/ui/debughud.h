@@ -6,8 +6,8 @@
 namespace DebugHUD
 {
 
-void __cdecl PushLightString(const char* pszSource, short nLength);
-void         UpdateLightingInfo(void);
+void PushLightString(const char* pszSource, short nLength);
+void UpdateLightingInfo(void);
 
 } // namespace DebugHUD
 

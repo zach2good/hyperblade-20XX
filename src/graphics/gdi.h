@@ -34,25 +34,25 @@ inline char* PixelBits(const BITMAPINFOHEADER* pHeader)
     return (char*)(ColorTable(pHeader) + nColours);
 }
 
-HBITMAP                   LoadBitmapHandle(const char* pszName);
-HBITMAP                   LoadBitmapAsBackground(const char* pszName, HPALETTE* phPalette);
-HBITMAP                   LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette);
-void                      SafeDeleteBitmap(HBITMAP hBitmap);
-void                      GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap);
-BITMAPINFOHEADER* __cdecl ReadBitmapFile(const char* pszName);
-BITMAPINFOHEADER*         ReadDIB(FileObj* pFile);
-BITMAPINFOHEADER*         ExpandRLE(BITMAPINFOHEADER* pDib);
-HPALETTE                  CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors);
-HPALETTE                  SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackground);
-UINT                      RealizePalette(HDC hdc);
-HBITMAP                   LoadJPEGImage(const char* pszPath);
-void                      QueryDisplayCaps(void);
-BOOL                      EndPaint(const PAINTSTRUCT* pPaint);
-BOOL                      DeleteObject(HGDIOBJ hObject);
-int                       BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, HPALETTE hPalette, int x1, int y1, DWORD rop);
-void                      DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
-HDC                       BeginPaint(LPPAINTSTRUCT pPaint);
-HPALETTE                  DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName);
+HBITMAP           LoadBitmapHandle(const char* pszName);
+HBITMAP           LoadBitmapAsBackground(const char* pszName, HPALETTE* phPalette);
+HBITMAP           LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette);
+void              SafeDeleteBitmap(HBITMAP hBitmap);
+void              GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap);
+BITMAPINFOHEADER* ReadBitmapFile(const char* pszName);
+BITMAPINFOHEADER* ReadDIB(FileObj* pFile);
+BITMAPINFOHEADER* ExpandRLE(BITMAPINFOHEADER* pDib);
+HPALETTE          CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors);
+HPALETTE          SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackground);
+UINT              RealizePalette(HDC hdc);
+HBITMAP           LoadJPEGImage(const char* pszPath);
+void              QueryDisplayCaps(void);
+BOOL              EndPaint(const PAINTSTRUCT* pPaint);
+BOOL              DeleteObject(HGDIOBJ hObject);
+int               BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, HPALETTE hPalette, int x1, int y1, DWORD rop);
+void              DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
+HDC               BeginPaint(LPPAINTSTRUCT pPaint);
+HPALETTE          DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName);
 
 } // namespace GDI
 

@@ -6,9 +6,9 @@
 namespace Graphics
 {
 
-unsigned int __stdcall LoadMdmTexDLL(void);
-void                   UnloadMdmTexDLL(void);
-void                   Initialize(int bResize);
+unsigned int LoadMdmTexDLL(void);
+void         UnloadMdmTexDLL(void);
+void         Initialize(int bResize);
 
 } // namespace Graphics
 

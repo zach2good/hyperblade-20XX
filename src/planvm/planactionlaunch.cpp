@@ -80,7 +80,7 @@ float              g_flUnusedPlanLaunchC = g_flZeroPlanLaunch;
 
 // The human packs the head camera's aim and shot power into the shot; any other plan sends it unaimed.
 // FUNCTION: HYPERX 0x004031e0
-void __cdecl PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 {
     unsigned int nPacked;
 
@@ -116,7 +116,7 @@ extern const float g_flThreeThrow;
 
 // The packed parameter holds three signed bytes: elevation, spin and range gate.
 // FUNCTION: HYPERX 0x00403290
-void __cdecl PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
+void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const ShotWord shot = { (unsigned int)nArg };
 
@@ -417,7 +417,7 @@ void __cdecl PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, i
 
 // Hands the rok the velocity of whatever the camera is watching, behind four gates.
 // FUNCTION: HYPERX 0x00403a30
-void __cdecl PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3*  pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
     float* pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
@@ -462,7 +462,7 @@ void __cdecl PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 #define HORIZONTAL_SCALE (-0.25f)
 
 // FUNCTION: HYPERX 0x00403cf0
-void __cdecl PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* const pActor = pContext->GetActor();
     PhysicsBody*        pBlock = pActor->GetPhysicsBody();
@@ -496,7 +496,7 @@ void __cdecl PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, shor
 #define JITTER_BIAS 10
 
 // FUNCTION: HYPERX 0x00403d70
-void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
+void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     Vec3* pGoal;
     Vec3  vDiff;
@@ -698,7 +698,7 @@ void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*,
 #define SPEED_FLOOR 10.0f
 
 // FUNCTION: HYPERX 0x00404320
-void __cdecl PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
+void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const PlanWord param = { nArg };
 

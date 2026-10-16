@@ -59,7 +59,7 @@ struct FrameTimer
     double BenchmarkTextSpeed(HDC hDC);
     void   ProcessInitialFrameUpdate(HWND hWnd, HDC hDC);
 
-    static double __fastcall EndFrameUpdate(FrameTimer* timer);
+    static double EndFrameUpdate(FrameTimer* timer);
 
     // Holds the frame rate at thirty a second.
     static void Pace();

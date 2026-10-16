@@ -36,7 +36,7 @@ void DebugHUD::UpdateLightingInfo(void)
 }
 
 // FUNCTION: HYPERX 0x0047ae10
-void __cdecl DebugHUD::PushLightString(const char* pszSource, short nLength)
+void DebugHUD::PushLightString(const char* pszSource, short nLength)
 {
     if (g_nDebugLineNext == 10)
     {

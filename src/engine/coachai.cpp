@@ -101,7 +101,7 @@ float  g_flUnusedDistanceC = g_flZeroDistance;
 double g_dMsPerMinute      = 60.0 * g_dMsPerSecond;
 
 // FUNCTION: HYPERX 0x00428010
-float __cdecl EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
+float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 {
     Vec3 posFirst  = pFirst->GetPhysicsBody()->pos;
     Vec3 posSecond = pSecond->GetPhysicsBody()->pos;
@@ -124,7 +124,7 @@ float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 
 // Spent markers read "Spin" or "ScoreSpin"; with none left the answer is 102, id_MOD_NOMODEL.
 // FUNCTION: HYPERX 0x00428100
-int __cdecl GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
+int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 {
     int i;
 
@@ -160,7 +160,7 @@ int __cdecl GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
     return nNearest;
 }
 
-typedef int(__cdecl* CoachConditionFn)(void);
+typedef int (*CoachConditionFn)(void);
 
 // The thirteen conditions the coach evaluates, in the image's order.
 // GLOBAL: HYPERX 0x004bca88
@@ -176,7 +176,7 @@ extern int g_anCoachConditions[13];
 #define TEAM_AWAY 1
 
 // FUNCTION: HYPERX 0x00428190
-int __cdecl EngineObject::IsRokCarrier(EngineObject* pActor)
+int EngineObject::IsRokCarrier(EngineObject* pActor)
 {
     PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
 
@@ -197,7 +197,7 @@ int __cdecl EngineObject::IsRokCarrier(EngineObject* pActor)
 
 // Neither the slot nor its teammate is a human plan, and the slot is not the viewed one.
 // FUNCTION: HYPERX 0x004281d0
-int __cdecl GameEngine::IsComputerTeam(int nSlot)
+int GameEngine::IsComputerTeam(int nSlot)
 {
     const int nWide = (short)nSlot;
 
@@ -237,7 +237,7 @@ extern const short g_nFinalPeriod;
 
 // The trailing team earns the handicap on a late lead, a weak opponent, or a wide multi spread.
 // FUNCTION: HYPERX 0x004282c0
-int __cdecl GameEngine::CheckHandicapCondition(void)
+int GameEngine::CheckHandicapCondition(void)
 {
     PhysicsBody*  pBlock;
     PlayerObject* pSlot;
@@ -321,7 +321,7 @@ int __cdecl GameEngine::CheckHandicapCondition(void)
 // DamageGate's third arm asks the difficulty and discards the answer.
 
 // FUNCTION: HYPERX 0x004284c0
-int __cdecl GameEngine::IsAnyPlayerInjured(void)
+int GameEngine::IsAnyPlayerInjured(void)
 {
     int i;
 
@@ -345,7 +345,7 @@ int __cdecl GameEngine::IsAnyPlayerInjured(void)
 
 // The swarf and rok carriers must be on opposite sides; both are measured to the rok side's goal.
 // FUNCTION: HYPERX 0x00428550
-int __cdecl GameEngine::CheckOpposedCarriersRace(void)
+int GameEngine::CheckOpposedCarriersRace(void)
 {
     short       nSlotA;
     short       nSlotB;
@@ -423,13 +423,13 @@ int GameEngine::CheckWeaponOutWhileRokCarried(void)
 // The coach condition that never fires; six of the thirteen entries point here.
 
 // FUNCTION: HYPERX 0x004286e0
-int __cdecl GameEngine::CoachConditionNever(void)
+int GameEngine::CoachConditionNever(void)
 {
     return 0;
 }
 
 // FUNCTION: HYPERX 0x004286f0
-int __cdecl GameEngine::CheckGoalieOutOfPosition(void)
+int GameEngine::CheckGoalieOutOfPosition(void)
 {
     PhysicsBody* pNetA;
     PhysicsBody* pNetB;
@@ -462,7 +462,7 @@ int __cdecl GameEngine::CheckGoalieOutOfPosition(void)
 }
 
 // FUNCTION: HYPERX 0x004287d0
-int __cdecl GameEngine::CheckCarrierBreakaway(void)
+int GameEngine::CheckCarrierBreakaway(void)
 {
     AttachPak*  pSlot;
     int         nSlot;
@@ -535,7 +535,7 @@ int GameEngine::CheckAnyPlayerNeedsSub(void)
 
 // A harder game recovers faster: elapsed ms / 13500 over the difficulty gate.
 // FUNCTION: HYPERX 0x00428920
-void __cdecl GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
+void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 {
     TeamBlock* pTeam;
     int        i;
@@ -577,7 +577,7 @@ void __cdecl GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 
 // Near-half slots get a twentieth; the "limp" threshold at 0x004b1408 is a plain speed test here.
 // FUNCTION: HYPERX 0x00428a40
-int __cdecl GameEngine::SelectSubstitute(EngineObject* pActor)
+int GameEngine::SelectSubstitute(EngineObject* pActor)
 {
     short            sIndex;
     int              nWhich;
@@ -712,7 +712,7 @@ int __cdecl GameEngine::SelectSubstitute(EngineObject* pActor)
 
 // The six conditions with a body run in the order 0, 3, 4, 1, 9, 10; case ten discards a strcmp.
 // FUNCTION: HYPERX 0x00428d80
-void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
+void EngineObject::CoachUpdate(EngineObject* pActor)
 {
     int        nSlot;
     AttachPak* pHeld;

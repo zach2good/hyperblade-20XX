@@ -67,7 +67,7 @@
 // The second object's state block is fetched and never used, in the original too.
 
 // FUNCTION: HYPERX 0x0046a9e0
-void __cdecl PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
+void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vPoint;
 
@@ -110,7 +110,7 @@ void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
 }
 
 // FUNCTION: HYPERX 0x0046aad0
-void __cdecl PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
+void PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
 {
     if (pNode->m_nArgCount == ARG_COUNT_WITH_MESSAGE)
     {
@@ -124,7 +124,7 @@ void __cdecl PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, in
 // The kind alternates with the slot's low bit so the two sides of a pairing get different rows.
 
 // FUNCTION: HYPERX 0x0046ab10
-void __cdecl PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*, int)
+void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const char* pszName;
     int         nKind;
@@ -161,7 +161,7 @@ void __cdecl PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs
 
 // A slot of minus one means the actor has no team and nothing is pushed.
 // FUNCTION: HYPERX 0x0046aba0
-void __cdecl PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, int)
+void PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const char* pTeam;
     int         nKind;

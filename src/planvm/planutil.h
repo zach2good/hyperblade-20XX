@@ -6,8 +6,8 @@
 namespace PlanUtil
 {
 
-float __cdecl ComputeConeHalfAngle(short nSlotA, short nSlotB);
-int __cdecl   CheckSequenceStep(unsigned int nStep);
+float ComputeConeHalfAngle(short nSlotA, short nSlotB);
+int   CheckSequenceStep(unsigned int nStep);
 
 } // namespace PlanUtil
 

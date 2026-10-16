@@ -5,9 +5,9 @@
 namespace Display
 {
 
-int          Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette);
-LONG __cdecl ChangeColorDepth(int nDepth);
-void         ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter);
+int  Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette);
+LONG ChangeColorDepth(int nDepth);
+void ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter);
 
 } // namespace Display
 

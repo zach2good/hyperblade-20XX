@@ -8,10 +8,10 @@
 namespace WndProc
 {
 
-int __cdecl          HandlePaint(HWND hWnd);
-int __cdecl          OnActivate(HWND hWnd, unsigned int bActive, LPARAM lParam);
-unsigned int __cdecl HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand);
-LRESULT CALLBACK     MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+int              HandlePaint(HWND hWnd);
+int              OnActivate(HWND hWnd, unsigned int bActive, LPARAM lParam);
+unsigned int     HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand);
+LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 // Input from the window. Keys are Win32 virtual-key codes; nMessage is WM_LBUTTONDOWN, WM_LBUTTONUP,
 // WM_RBUTTONDOWN or WM_RBUTTONUP; buttons are MK_ flags; points are client pixels.

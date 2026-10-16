@@ -100,7 +100,7 @@ void Quat::ToMatrix(TransformObject* pTarget)
 }
 
 // FUNCTION: HYPERX 0x00430260
-bool __fastcall Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
+bool Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
 {
     const float flLength = (float)sqrt(*pW * *pW + *pX * *pX + *pY * *pY + *pZ * *pZ);
 

@@ -65,9 +65,9 @@ struct MeshMaterial
 
     short nBackIndex; // 0x14
 
-    static char __cdecl CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const struct Vec3* pNormal);
+    static char CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const struct Vec3* pNormal);
 
-    static char __cdecl ParseFile(FileObj* pFile, const char* pszModelName, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
+    static char ParseFile(FileObj* pFile, const char* pszModelName, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
 };
 
 // A material as a model file stores it, twenty two bytes with a one-based texture index.

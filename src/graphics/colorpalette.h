@@ -60,10 +60,10 @@ public:
     PaletteRange m_remapRange; // 0x468
     HDC          m_hdc;        // 0x470
 
-    static unsigned char __fastcall LookupColorIntensity(ColorPalette* pPalette,
-                                                         unsigned char cShade,
-                                                         float         flIntensityVal,
-                                                         unsigned char cColour);
+    static unsigned char LookupColorIntensity(ColorPalette* pPalette,
+                                              unsigned char cShade,
+                                              float         flIntensityVal,
+                                              unsigned char cColour);
 };
 
 #endif

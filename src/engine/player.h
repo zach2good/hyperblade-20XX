@@ -8,8 +8,8 @@ class EngineObject;
 namespace Player
 {
 
-void __cdecl          ProcessTrickInput(EngineObject* pPlayer, short* pnInput);
-EngineObject* __cdecl FindBungeeVictim(EngineObject* pActor, float* pflOut);
+void          ProcessTrickInput(EngineObject* pPlayer, short* pnInput);
+EngineObject* FindBungeeVictim(EngineObject* pActor, float* pflOut);
 
 } // namespace Player
 

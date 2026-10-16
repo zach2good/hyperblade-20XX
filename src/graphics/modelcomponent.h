@@ -11,8 +11,8 @@ class FileObj;
 struct ModelComponent
 {
     // Free functions in the original.
-    static void* __cdecl           Read(FileObj* pFile, int* pnSize);
-    static ModelComponent* __cdecl ReadFirst(FileObj* pFile);
+    static void*           Read(FileObj* pFile, int* pnSize);
+    static ModelComponent* ReadFirst(FileObj* pFile);
 
     const MeshBoneDesc* SlotDesc(short nSlot) const
     {
@@ -31,7 +31,7 @@ struct ModelComponent
     // One entry per slot. C++98 has no flexible array member, so the length is declared as one.
     RecordOffset<const MeshBoneDesc> m_aSlotOffsets[1]; // 0x62
 
-    static int __cdecl ReadAll(FileObj* pFile, struct MeshBlock*** pppBlocks, unsigned short* pnCount);
+    static int ReadAll(FileObj* pFile, struct MeshBlock*** pppBlocks, unsigned short* pnCount);
 
     ShadowBlock* GetShadowBlock()
     {

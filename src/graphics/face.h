@@ -19,9 +19,9 @@ struct MeshFace;
 namespace Face
 {
 
-int __fastcall           BackfaceCullAndClipCheck(MeshFace* pFace, const struct TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut);
-char __fastcall          ClipCodeAndCullCheck(const MeshFace* pFace, const struct TransformedVertex* pVertices);
-unsigned char __fastcall ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags);
+int           BackfaceCullAndClipCheck(MeshFace* pFace, const struct TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut);
+char          ClipCodeAndCullCheck(const MeshFace* pFace, const struct TransformedVertex* pVertices);
+unsigned char ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags);
 
 // The clip mask of nCount vertex floats from nFirst on.
 inline int VertexMask(int nFirst, int nCount)

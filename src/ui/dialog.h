@@ -6,8 +6,8 @@
 namespace Dialog
 {
 
-BOOL __cdecl  SetItemText(HWND hDlg, int nIDDlgItem, float flValue);
-float __cdecl GetItemFloat(HWND hDlg, int nIDDlgItem, int* pbValid);
+BOOL  SetItemText(HWND hDlg, int nIDDlgItem, float flValue);
+float GetItemFloat(HWND hDlg, int nIDDlgItem, int* pbValid);
 
 } // namespace Dialog
 

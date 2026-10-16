@@ -74,7 +74,7 @@ void Graphics::Initialize(int bResize)
 
 // Loads only when the command line carries the developer marker.
 // FUNCTION: HYPERX 0x0044b6f0
-unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
+unsigned int Graphics::LoadMdmTexDLL(void)
 {
     LPSTR pszCmdLine = GetCommandLineA();
 

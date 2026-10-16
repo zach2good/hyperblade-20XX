@@ -13,7 +13,7 @@ struct ComponentFileHeader
 };
 
 // FUNCTION: HYPERX 0x004361e0
-ModelComponent* __cdecl ModelComponent::ReadFirst(FileObj* pFile)
+ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
 {
     int                   nSize;
     ModelComponent* const pBlob = (ModelComponent*)ModelComponent::Read(pFile, &nSize);
@@ -28,7 +28,7 @@ ModelComponent* __cdecl ModelComponent::ReadFirst(FileObj* pFile)
 
 // The read error reports the identifier from the iteration before, or nought at the first record.
 // FUNCTION: HYPERX 0x004363a0
-int __cdecl ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned short* pnCount)
+int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned short* pnCount)
 {
     ComponentFileHeader header;
     int                 nSize;
@@ -91,7 +91,7 @@ int __cdecl ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsi
 
 // The block's first word is left to the caller.
 // FUNCTION: HYPERX 0x00436d30
-void* __cdecl ModelComponent::Read(FileObj* pFile, int* pnSize)
+void* ModelComponent::Read(FileObj* pFile, int* pnSize)
 {
     int nSize;
 

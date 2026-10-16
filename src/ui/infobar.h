@@ -29,7 +29,7 @@ class InfoBar : public InfoBarBase
 {
 public:
     // Free functions in the original.
-    static void __cdecl IncrementScore(int nWhich);
+    static void IncrementScore(int nWhich);
 
 public:
     virtual ViewExtent GetPassBarSize();

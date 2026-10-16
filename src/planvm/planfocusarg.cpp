@@ -131,7 +131,7 @@ short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 
 // A slot of six or more, or no tracker, answers minus one.
 // FUNCTION: HYPERX 0x0047cc90
-short __cdecl PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
+short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 {
     PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
 
@@ -154,7 +154,7 @@ short PlanFocusArg::GetLastRokCarrier(EngineObject*, PlanNode*)
 
 // One word from whatever the tracker points at, or minus one for nothing.
 // FUNCTION: HYPERX 0x0047cce0
-short __cdecl PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
+short PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 {
     PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
 
@@ -170,7 +170,7 @@ short __cdecl PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 
 // A non-player or same-parity carrier answers minus one; otherwise three times its team mate's slot.
 // FUNCTION: HYPERX 0x0047cd10
-short __cdecl PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
+short PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
 {
     PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
 

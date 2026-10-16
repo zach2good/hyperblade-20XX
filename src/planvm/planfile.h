@@ -7,8 +7,8 @@ union PlanWord;
 namespace PlanFile
 {
 
-PlanWord*         ReadBinary(struct _iobuf* pFile, unsigned int* pnCount);
-PlanWord* __cdecl OpenBinary(const char* pszName, void** ppUnused);
+PlanWord* ReadBinary(struct _iobuf* pFile, unsigned int* pnCount);
+PlanWord* OpenBinary(const char* pszName, void** ppUnused);
 
 } // namespace PlanFile
 

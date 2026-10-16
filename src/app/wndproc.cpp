@@ -267,7 +267,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 }
 
 // FUNCTION: HYPERX 0x0044c910
-int __cdecl WndProc::HandlePaint(HWND hWnd)
+int WndProc::HandlePaint(HWND hWnd)
 {
     if (g_nSplashFrame != 0)
     {
@@ -305,7 +305,7 @@ int __cdecl WndProc::HandlePaint(HWND hWnd)
 }
 
 // FUNCTION: HYPERX 0x0044d190
-int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
+int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 {
     if (g_bShuttingDown == 0 && bActive != g_gameApp.m_bIsActive)
     {
@@ -392,7 +392,7 @@ int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 }
 
 // FUNCTION: HYPERX 0x004939b0
-unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand)
+unsigned int WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand)
 {
     RenderOptions opt = Renderer::GetRenderOptions();
 

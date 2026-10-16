@@ -18,7 +18,7 @@ class Screen
 public:
     // Free functions in the original.
     // Callers pass the palette or nothing; the body reads neither.
-    static void __cdecl ClearBlack(...);
+    static void ClearBlack(...);
 
 public:
     void InitAllWidgets();

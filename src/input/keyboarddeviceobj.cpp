@@ -113,7 +113,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 
 // An up entry whose action folds to slot zero is reported and the build keeps going.
 // FUNCTION: HYPERX 0x0045cd20
-char __cdecl KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
+char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
 {
     int anUp[INPUT_SLOT_COUNT];
     int anDown[INPUT_SLOT_COUNT];
@@ -245,7 +245,7 @@ char __cdecl KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppT
 // Returns the one-based index of the highest set bit, or zero for an empty mask.
 
 // FUNCTION: HYPERX 0x0045cff0
-int __cdecl KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
+int KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
 {
     if ((nMask & 0xff00) == 0)
     {

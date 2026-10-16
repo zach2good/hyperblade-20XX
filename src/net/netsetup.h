@@ -8,11 +8,11 @@ struct PlayerSlotName;
 namespace NetSetup
 {
 
-void __cdecl   OnPlayerReady(unsigned int nSlot);
-void __cdecl   OnPlayerDisconnect(DWORD nId);
-void           DisplayChatMessage(int nUnused, const char* pszText, int nLength);
-void           ProcessAddPlayerMsg(int nDpid, int nSlot, PlayerSlotName* pName);
-void __stdcall OnHostStartGame(void);
+void OnPlayerReady(unsigned int nSlot);
+void OnPlayerDisconnect(DWORD nId);
+void DisplayChatMessage(int nUnused, const char* pszText, int nLength);
+void ProcessAddPlayerMsg(int nDpid, int nSlot, PlayerSlotName* pName);
+void OnHostStartGame(void);
 
 } // namespace NetSetup
 

@@ -8,10 +8,10 @@ struct KeyRow;
 namespace Config
 {
 
-void        LoadPreferences(HWND hWnd, LPCSTR pszFileName);
-int         ParseFile(HWND hWnd, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRows);
-int         SavePreferences(HWND hWnd, const char* pszText);
-int __cdecl IsCommentLine(const char* pszLine);
+void LoadPreferences(HWND hWnd, LPCSTR pszFileName);
+int  ParseFile(HWND hWnd, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRows);
+int  SavePreferences(HWND hWnd, const char* pszText);
+int  IsCommentLine(const char* pszLine);
 
 } // namespace Config
 

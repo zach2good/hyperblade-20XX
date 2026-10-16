@@ -40,7 +40,7 @@ short AnimFile::VersionCompare(const FileVersion* pLeft, const FileVersion* pRig
 }
 
 // FUNCTION: HYPERX 0x00493cb0
-AnimClipSet* __cdecl AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nFlags, AnimLoadFn pfnLoad)
+AnimClipSet* AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nFlags, AnimLoadFn pfnLoad)
 {
     AnimClipSet* pResult = 0;
     PathString   strPath(MAX_PATH, g_gameApp.m_strAnimDataPath.m_str.m_pchData, pszName, g_pszAnimExtension);
@@ -97,7 +97,7 @@ done:
 }
 
 // FUNCTION: HYPERX 0x00493e60
-int __cdecl AnimFile::CheckVersion(const char* pszName, const FileVersion* pExpected, const FileVersion* pFound)
+int AnimFile::CheckVersion(const char* pszName, const FileVersion* pExpected, const FileVersion* pFound)
 {
     const int nOrder = AnimFile::VersionCompare(pExpected, pFound);
 
