@@ -253,30 +253,12 @@ void Display::ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilt
     EnableMenuItem(hMenu, ID_RENDER_PERSPECTIVE, bTexEnabled == 0);
     EnableMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, bBilinearFilter == 0);
 
-    UINT uTexCheck;
-
-    if (bTexEnabled)
-    {
-        uTexCheck = MF_CHECKED;
-    }
-    else
-    {
-        uTexCheck = MF_UNCHECKED;
-    }
+    const UINT uTexCheck = bTexEnabled ? MF_CHECKED : MF_UNCHECKED;
 
     CheckMenuItem(hMenu, ID_RENDER_MDM_TEXTURES, uTexCheck);
     CheckMenuItem(hMenu, ID_RENDER_PERSPECTIVE, uTexCheck);
 
-    UINT uFilterCheck;
-
-    if (bBilinearFilter)
-    {
-        uFilterCheck = MF_CHECKED;
-    }
-    else
-    {
-        uFilterCheck = MF_UNCHECKED;
-    }
+    const UINT uFilterCheck = bBilinearFilter ? MF_CHECKED : MF_UNCHECKED;
 
     CheckMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, uFilterCheck);
 
