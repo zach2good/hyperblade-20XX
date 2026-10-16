@@ -28,6 +28,10 @@ void ToggleTextures();
 bool LinearFiltering();
 void ToggleLinearFiltering();
 
+// Draws a match as often as the loop runs, blending between the 30 Hz ticks, or once a tick.
+bool Uncapped();
+void ToggleUncapped();
+
 } // namespace GraphicsSettings
 
 #endif

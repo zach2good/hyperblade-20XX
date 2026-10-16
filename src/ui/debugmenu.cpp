@@ -65,6 +65,10 @@ void Build()
     Checkbox("Linear filtering", GraphicsSettings::LinearFiltering(), GraphicsSettings::ToggleLinearFiltering);
     ImGui::EndDisabled();
 
+    ImGui::SeparatorText("Timing");
+
+    Checkbox("Uncapped frame rate", GraphicsSettings::Uncapped(), GraphicsSettings::ToggleUncapped);
+
     ImGui::End();
 }
 

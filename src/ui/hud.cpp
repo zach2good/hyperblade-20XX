@@ -538,31 +538,6 @@ void HUD::DrawScene(int bDraw)
         g_hudSurfaces.pPeriodOverlay->Draw();
     }
 
-    if (g_hudSurfaces.pHeadCamFrame != 0 && m_bHeadCamWanted == 0)
-    {
-        g_hudSurfaces.pHeadCamFrame->SetVisible(0);
-    }
-
-    m_bHeadCamWanted = 0;
-
-    if (g_hudSurfaces.pShotPowerMeter != 0 && m_bShotPowerWanted == 0)
-    {
-        g_hudSurfaces.pShotPowerMeter->SetVisible(0);
-    }
-
-    m_bShotPowerWanted = 0;
-
-    g_hudSurfaces.nHudSurfaceState = 0;
-
-    if (g_hudSurfaces.pPassBar != 0 && m_bPassBarWanted == 0)
-    {
-        g_hudSurfaces.pPassBar->SetVisible(0);
-    }
-
-    m_bPassBarWanted = 0;
-
-    g_pMessageQueue->Update();
-
     if (g_hudSurfaces.pMessageFrame != 0 && g_hudSurfaces.pMessageText != 0 && m_bMessageVisible != 0)
     {
         g_hudSurfaces.pMessageFrame->Draw();
@@ -1423,3 +1398,31 @@ int g_nFoeRowRating1         = -1;
 int g_anFoeRowNameOrder[4] = { 0, 1, 3, 4 };
 int g_anPeriodOverlayX[4]  = { -1, 19, 38, 57 };
 int g_nLastRokValue        = -1;
+
+void HUD::BeginTick()
+{
+    if (g_hudSurfaces.pHeadCamFrame != 0)
+    {
+        g_hudSurfaces.pHeadCamFrame->SetVisible(0);
+    }
+
+    m_bHeadCamWanted = 0;
+
+    if (g_hudSurfaces.pShotPowerMeter != 0)
+    {
+        g_hudSurfaces.pShotPowerMeter->SetVisible(0);
+    }
+
+    m_bShotPowerWanted = 0;
+
+    g_hudSurfaces.nHudSurfaceState = 0;
+
+    if (g_hudSurfaces.pPassBar != 0)
+    {
+        g_hudSurfaces.pPassBar->SetVisible(0);
+    }
+
+    m_bPassBarWanted = 0;
+
+    g_pMessageQueue->Update();
+}

@@ -77,6 +77,10 @@ public:
     virtual void       ShowQuitPrompt()           = 0;
     virtual void       HideQuitPrompt()           = 0;
 
+    // Before each simulation tick: drops what the last tick asked to show, so every frame drawn
+    // between two ticks shows the same.
+    virtual void BeginTick() = 0;
+
     static void __stdcall InitializeLightDirections(void);
 };
 

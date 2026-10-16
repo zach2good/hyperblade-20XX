@@ -59,6 +59,7 @@ public:
     virtual void       ShowPassBar();
     virtual void       ShowQuitPrompt();
     virtual void       HideQuitPrompt();
+    void               BeginTick() override;
 
 public:
     int m_bMessageVisible; // 0x0c

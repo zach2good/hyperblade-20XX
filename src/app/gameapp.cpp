@@ -81,6 +81,8 @@ class AwardsUIScreen;
 #include "app/menuids.h"
 #include "net/network.h"
 #include "engine/game.h"
+#include "engine/framepacing.h"
+#include "graphics/graphicssettings.h"
 #include "graphics/d3dviewport.h"
 #include "app/stringids.h"
 #include "common/staticinit.h"
@@ -929,9 +931,16 @@ int GameApp::MainUpdate(HWND hWnd)
             return 0;
         }
 
+        const auto bUncapped = g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && GraphicsSettings::Uncapped();
+
         if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
         {
             Game::UpdateState();
+        }
+        else if (bUncapped)
+        {
+            Game::Draw(FramePacing::RunTicks());
+            g_nPrevEngineState = ESTATE_MATCH_LIVE;
         }
         else
         {
@@ -942,7 +951,10 @@ int GameApp::MainUpdate(HWND hWnd)
         FrameTimer::EndFrameUpdate(&g_frameTimer);
 
         // Nothing in the original waits for the frame, and a modern machine runs it too fast.
-        FrameTimer::Pace();
+        if (!bUncapped)
+        {
+            FrameTimer::Pace();
+        }
     }
 
     return g_gameApp.m_bIsActive == 0;

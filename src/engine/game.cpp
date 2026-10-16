@@ -28,6 +28,7 @@
 #include "physics/collisionellipsoid.h"
 #include "graphics/display.h"
 #include "engine/game.h"
+#include "engine/framepacing.h"
 #include "app/win32.h"
 #include "graphics/ddrawapi.h"
 #include "common/stub.h"
@@ -48,9 +49,12 @@ Vec3  g_vZeroMarker                 = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZe
 // FUNCTION: HYPERX 0x0044c1b0
 void __stdcall Game::RunFrame(void)
 {
-    unsigned int dwFrameStart;
-    int          nSamples;
+    Game::Tick();
+    Game::Draw(1.0f);
+}
 
+void Game::Tick()
+{
     if (g_frameTimer.bFrameTimesOn)
     {
         g_frameTimer.nClockReads++;
@@ -62,17 +66,27 @@ void __stdcall Game::RunFrame(void)
         g_dwFrameGameLogicStart = (DWORD)SDL_GetTicks();
     }
 
+    if (g_pRenderer != 0)
+    {
+        g_pRenderer->BeginTick();
+    }
+
+    FramePacing::BeginTick();
+
     Renderer::BeginScene();
     g_pGameEngine->PerFrameUpdate();
     Renderer::EndScene();
 
     if (g_frameTimer.bFrameTimesOn != 0)
     {
-        nSamples                      = g_frameTimer.nPerfSampleCount;
-        dwFrameStart                  = g_frameTimer.dwFrameStartTicks;
-        g_frameTimer.nPerfSampleCount = nSamples + 1;
-        g_frameTimer.dAccGameLogicMs  = (double)((DWORD)SDL_GetTicks() - dwFrameStart) + g_frameTimer.dAccGameLogicMs;
+        g_frameTimer.nPerfSampleCount++;
+        g_frameTimer.dAccGameLogicMs += (double)((DWORD)SDL_GetTicks() - g_frameTimer.dwFrameStartTicks);
     }
+}
+
+void Game::Draw(float flAlpha)
+{
+    FramePacing::DrawViews(flAlpha);
 
     if (g_pRenderer != 0)
     {
@@ -108,10 +122,8 @@ void __stdcall Game::RunFrame(void)
 
     if (g_frameTimer.bFrameTimesOn != 0)
     {
-        nSamples                      = g_frameTimer.nPerfSampleCount;
-        dwFrameStart                  = g_frameTimer.dwFrameStartTicks;
-        g_frameTimer.nPerfSampleCount = nSamples + 1;
-        g_frameTimer.dAccRenderMs     = (double)((DWORD)SDL_GetTicks() - dwFrameStart) + g_frameTimer.dAccRenderMs;
+        g_frameTimer.nPerfSampleCount++;
+        g_frameTimer.dAccRenderMs += (double)((DWORD)SDL_GetTicks() - g_frameTimer.dwFrameStartTicks);
     }
 
     g_frameTimer.nFrames++;

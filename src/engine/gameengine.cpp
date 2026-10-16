@@ -2,6 +2,7 @@
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/decisionlog.h"
 #include "gameengine.h"
+#include "engine/framepacing.h"
 #include "globals.h"
 #include "planvm/planvmglobals.h"
 #include "common/pooledownerroot.h"
@@ -603,17 +604,9 @@ void GameEngine::TickClock()
 
     const DWORD dwNow = (DWORD)SDL_GetTicks();
     m_clock.nTickMs   = dwNow;
-    g_flFrameDelta    = (float)dwNow - m_clock.nPrevTickMs;
 
-    if (g_flFrameDelta > MAX_FRAME_TIME_MS)
-    {
-        return;
-    }
-
-    if (g_flFrameDelta < g_flZeroGameEngine)
-    {
-        return;
-    }
+    // The simulation steps a fixed tick, however long the frame took to draw.
+    g_flFrameDelta = FramePacing::TICK_MS;
 
     g_flFrameDelta = g_flFifthGameEngine * g_flFrameDelta * MS_TO_SEC;
 

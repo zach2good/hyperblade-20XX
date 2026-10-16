@@ -639,8 +639,6 @@ void InfoBar::DrawScene(int bDraw)
             g_nRadarLineColour        = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_RADAR_LINE);
         }
 
-        g_pMessageQueue->Update();
-
         DrawPeriodLight();
 
         if (bDraw != 0)
@@ -723,10 +721,6 @@ void InfoBar::DrawScene(int bDraw)
                 }
 
                 m_sHeadCamFrame.Draw();
-
-                m_bHeadCamPending  = 0;
-                m_bShotPowerWanted = 0;
-                m_bReticleVisible  = 0;
             }
         }
     }
@@ -1335,3 +1329,12 @@ int g_anInfoBarFoeDamage[4]    = { -1, -1, -1, -1 };
 int g_anFoeFormationSlotMap[4] = { 0, 1, 3, 4 };
 int g_nInfoBarLastHomeScore    = -1;
 int g_nInfoBarLastAwayScore    = -1;
+
+void InfoBar::BeginTick()
+{
+    m_bHeadCamPending  = 0;
+    m_bShotPowerWanted = 0;
+    m_bReticleVisible  = 0;
+
+    g_pMessageQueue->Update();
+}

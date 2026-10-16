@@ -169,6 +169,7 @@ set(HYPERX_SOURCES
     src/engine/cwatch.cpp
     src/engine/dromeobject.cpp
     src/engine/engineobject.cpp
+    src/engine/framepacing.cpp
     src/engine/game.cpp
     src/engine/gameengine.cpp
     src/engine/gameoptions.cpp

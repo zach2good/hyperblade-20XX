@@ -33,6 +33,9 @@ public:
 
     void ViewIt();
 
+    // Draws the components ViewIt pushed, which the frame pushes again before each draw.
+    void DrawView();
+
     class EngineObject* GetTrackedObject();
     class EngineObject* GetSecondaryTrackedObject();
 

@@ -48,6 +48,7 @@ public:
 
     virtual void ShowQuitPrompt();
     virtual void HideQuitPrompt();
+    void         BeginTick() override;
 
     explicit InfoBar(HDC hDC);
     ~InfoBar();

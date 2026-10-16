@@ -27,6 +27,7 @@
 #include "engine/engineobject.h"
 #include "math/point.h"
 #include "graphics/d3drend.h"
+#include "engine/framepacing.h"
 
 extern const float g_flZeroCamera    = 0.0f;
 float              g_flUnusedCameraA = g_flZeroCamera;
@@ -389,8 +390,23 @@ void CameraObject::ViewIt()
             }
         }
 
-        Renderer::DrawSceneDispatch();
+        // The frame draws what this pushed, blended between this tick and the last.
+        FramePacing::RecordView(*this);
     }
+}
+
+void CameraObject::DrawView()
+{
+    if (g_pScene != this)
+    {
+        D3DRend::FlushBatch(0);
+
+        g_pScene = this;
+
+        Renderer::SetCameraTransformAndViewport(layout);
+    }
+
+    Renderer::DrawSceneDispatch();
 }
 
 // One, the numerator of the boxcar weight.
