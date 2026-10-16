@@ -5,11 +5,6 @@ reads them from the user's own copy of the game into build/. Nothing produced he
 
 A .res carries the leaf bytes verbatim, where a .rc would have RC.EXE rebuild every dialog,
 string table and icon group from text. Type 240 is a private type with no RC statement.
-LINK.EXE runs CVTRES.EXE on the .res, which puts the `000606c7` stamp in the Rich header as the
-original has it.
-
-Leaves are written in the order the original stores their data, not in directory order.
-CVTRES lays data out in the order it reads it, so this reproduces the original's padding.
 
     python tools/extract_resources.py --output build/generated/HYPERX.res
     python tools/extract_resources.py <original.exe> --output <path>

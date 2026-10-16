@@ -6,13 +6,11 @@ tools/extract_resources.py; this is for reading them. Nothing written here is co
 
     python tools/extract_rc.py                        # into build/extracted/resources
     python tools/extract_rc.py <original.exe> <output>
-    python tools/extract_rc.py --check                # also rebuild it with RC.EXE and compare
 """
 
 import argparse
 import os
 import struct
-import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -334,8 +332,6 @@ def main():
     parser.add_argument("original", nargs="?", help="the original executable (default: your copy)")
     parser.add_argument("output", nargs="?",
                         default=os.path.join(ROOT, "build", "extracted", "resources"))
-    parser.add_argument("--check", action="store_true",
-                        help="compile the script with VC6's RC.EXE and compare with the original")
     args = parser.parse_args()
 
     leaves = resource_leaves(args.original or reference_path())
@@ -387,56 +383,7 @@ def main():
 
     print("%d resource(s) written to %s" % (len(leaves), args.output))
 
-    if args.check:
-        return check(target, leaves)
-
     return 0
-
-
-def read_res(path):
-    """The leaves of a 32-bit .res file, keyed by type and name."""
-    def key(blob, at):
-        if blob[at:at + 2] == b"\xff\xff":
-            return struct.unpack_from("<H", blob, at + 2)[0], at + 4
-        end = at
-        while blob[end:end + 2] != b"\0\0":
-            end += 2
-        return blob[at:end].decode("utf-16-le"), end + 2
-
-    blob = open(path, "rb").read()
-    found = {}
-    at = 0
-
-    while at < len(blob):
-        size, header = struct.unpack_from("<II", blob, at)
-        type_id, after = key(blob, at + 8)
-        name_id, _ = key(blob, after)
-        found[(type_id, name_id)] = blob[at + header:at + header + size]
-        at = (at + header + size + 3) & ~3
-
-    return found
-
-
-def check(script, leaves):
-    """Compile the script with VC6's RC.EXE and compare every resource with the original's."""
-    vc6 = os.environ.get("VC6_ROOT")
-    if not vc6:
-        raise SystemExit("--check needs VC6_ROOT, to run its RC.EXE")
-
-    compiled = os.path.splitext(script)[0] + ".res"
-    environment = dict(os.environ, INCLUDE=os.path.join(vc6, "VC98", "Include"))
-    subprocess.run([os.path.join(vc6, "Common", "MSDev98", "Bin", "RC.EXE"), "/r", "/fo",
-                    compiled, script], check=True, env=environment,
-                   cwd=os.path.dirname(script))
-
-    rebuilt = read_res(compiled)
-    differ = [leaf for leaf in leaves if rebuilt.get((leaf.type_id, leaf.name_id)) != leaf.data]
-
-    for leaf in differ:
-        print("DIFFERS type %s, %s" % (leaf.type_id, leaf.name_id))
-
-    print("%d of %d resource(s) rebuild byte for byte" % (len(leaves) - len(differ), len(leaves)))
-    return 1 if differ else 0
 
 
 if __name__ == "__main__":

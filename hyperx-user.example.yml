@@ -1,5 +1,3 @@
 # Copy this file to hyperx-user.yml and point it at your own copy of HYPERX.EXE (v1.0.0.1).
 # hyperx-user.yml is git-ignored, so the path never leaves your machine.
-targets:
-  HYPERX:
-    path: C:/Games/HyperBlade/HYPERX.EXE
+path: C:/Games/HyperBlade/HYPERX.EXE

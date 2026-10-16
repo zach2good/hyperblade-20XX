@@ -19,9 +19,7 @@ MISSING = """no copy of the original executable is configured.
 This build reads the resources out of your own copy of the game, because the repository
 carries none of the original's content. Write %s:
 
-targets:
-  HYPERX:
-    path: C:/path/to/your/HYPERX.EXE
+path: C:/path/to/your/HYPERX.EXE
 
 The file is git-ignored. Setting HYPERX_REFERENCE in the environment overrides it."""
 
