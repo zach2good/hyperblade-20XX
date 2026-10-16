@@ -371,7 +371,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
             // STRING: HYPERX 0x004c8aa0
             mciOpen.lpstrDeviceType = "cdaudio";
 
-            err = mciSendCommandA(0, MCI_OPEN, MCI_OPEN_TYPE, (DWORD)&mciOpen);
+            err = mciSendCommandA(0, MCI_OPEN, MCI_OPEN_TYPE, (DWORD_PTR)&mciOpen);
 
             if (err != 0)
             {
@@ -384,7 +384,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
             mciSet.dwTimeFormat = MCI_FORMAT_TMSF;
 
-            err = mciSendCommandA(wMciDevice, MCI_SET, MCI_SET_TIME_FORMAT, (DWORD)&mciSet);
+            err = mciSendCommandA(wMciDevice, MCI_SET, MCI_SET_TIME_FORMAT, (DWORD_PTR)&mciSet);
 
             if (err != 0)
             {
@@ -398,7 +398,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
         mciStatus.dwItem = MCI_STATUS_NUMBER_OF_TRACKS;
 
-        err = mciSendCommandA(wMciDevice, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&mciStatus);
+        err = mciSendCommandA(wMciDevice, MCI_STATUS, MCI_STATUS_ITEM, (DWORD_PTR)&mciStatus);
 
         if (err != 0)
         {
@@ -476,9 +476,9 @@ void AudioMgr::PlayCDTrack(int nTrack)
             }
 
             mciPlay.dwFrom     = MCI_MAKE_TMSF(nTrack, 0, 0, 0);
-            mciPlay.dwCallback = (DWORD)g_gameApp.m_hWnd;
+            mciPlay.dwCallback = (DWORD_PTR)g_gameApp.m_hWnd;
 
-            err = mciSendCommandA(wMciDevice, MCI_PLAY, nFlags, (DWORD)&mciPlay);
+            err = mciSendCommandA(wMciDevice, MCI_PLAY, nFlags, (DWORD_PTR)&mciPlay);
 
             if (err != 0)
             {

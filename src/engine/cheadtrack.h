@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_CHEADTRACK_H
 #define HYPERBLADE_CHEADTRACK_H
 
-#include "common/fieldat.h"
 #include "planvm/cameraliteagendaitem.h"
 
 class EngineObject;
@@ -23,7 +22,5 @@ public:
 
     char m_bAttached; // 0x18
 };
-
-HYPERBLADE_FIELD_AT(CHeadTrack, m_pWatchPos, 0x10);
 
 #endif

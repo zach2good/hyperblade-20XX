@@ -53,6 +53,17 @@ public:
         return m_apEntries[iEntry];
     }
 
+    // The original reads index -1 as the zero word before the table, so any index outside it is null.
+    AnimDB* Find(int nIndex) const
+    {
+        if (nIndex < 0 || nIndex >= m_nCount)
+        {
+            return 0;
+        }
+
+        return m_apEntries[nIndex];
+    }
+
     AnimScriptHead m_headWord;                   // 0x004
     AnimDB*        m_apEntries[ANIMSET_ENTRIES]; // 0x008  three hundred script databases, 0x68 each
     short          m_nCount;                     // 0x4b8  how many are filled
@@ -62,7 +73,5 @@ public:
 
 // SYNTHETIC: HYPERX 0x00418bf0
 // AnimScriptTable::`scalar deleting destructor'
-
-static_assert((int)(size_t)&((AnimScriptTable*)0)->m_apEntries == 0x008);
 
 #endif

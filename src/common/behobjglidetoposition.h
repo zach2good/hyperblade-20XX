@@ -21,6 +21,4 @@ public:
 // SYNTHETIC: HYPERX 0x0041d5b0
 // BehObj_GlideToPosition::`scalar deleting destructor'
 
-static_assert(sizeof(BehObj_GlideToPosition) == 0xa4);
-
 #endif

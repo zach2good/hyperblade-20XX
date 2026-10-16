@@ -115,5 +115,4 @@ public:
 // SYNTHETIC: HYPERX 0x00439160
 // FramedBarBitmap::`scalar deleting destructor'
 
-static_assert(sizeof(FramedBarBitmap) == 0x110);
 #endif

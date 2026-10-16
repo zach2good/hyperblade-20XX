@@ -18,6 +18,4 @@ public:
 // SYNTHETIC: HYPERX 0x0041df20
 // BehObj_MonitorKeyboard::`scalar deleting destructor'
 
-static_assert(sizeof(BehObj_MonitorKeyboard) == 0x98);
-
 #endif

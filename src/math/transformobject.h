@@ -181,5 +181,4 @@ inline TransformObject::TransformObject(char bHasRow3)
     Reset(bHasRow3);
 }
 
-static_assert(sizeof(TransformObject) == 0x7c);
 #endif

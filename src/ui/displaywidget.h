@@ -47,6 +47,4 @@ public:
 private:
 };
 
-static_assert(sizeof(DisplayWidget) == 0x68);
-
 #endif

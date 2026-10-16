@@ -33,6 +33,6 @@
 
 #define OP_EXIT(ptr) PUTD3DINSTRUCTION(D3DOP_EXIT, 0, 0, ptr)
 
-#define QWORD_ALIGNED(ptr) (((unsigned int)(ptr) & 7) == 0)
+#define QWORD_ALIGNED(ptr) (((UINT_PTR)(ptr) & 7) == 0)
 
 #endif

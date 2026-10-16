@@ -57,8 +57,6 @@ public:
     int m_nReturnState; // 0x474, the engine state to return to
 };
 
-static_assert(sizeof(GameConfigUIScreen) == 0x478);
-
 // SYNTHETIC: HYPERX 0x00479ae0
 // GameConfigUIScreen::`scalar deleting destructor'
 

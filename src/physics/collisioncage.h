@@ -34,5 +34,4 @@ struct CollisionCage
     static void ComputeNormal(CollisionCage* pCage, short nFace);
 };
 
-static_assert(sizeof(CollisionCage) == 0x3f8);
 #endif

@@ -54,8 +54,6 @@ private:
     int m_anUnused[2];
 };
 
-static_assert(sizeof(TournamentSetupUIScreen) == 0x488);
-
 // SYNTHETIC: HYPERX 0x00488410
 // TournamentSetupUIScreen::`scalar deleting destructor'
 

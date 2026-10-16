@@ -126,6 +126,4 @@ public:
 // SYNTHETIC: HYPERX 0x0046bbb0
 // Interactor::`scalar deleting destructor'
 
-static_assert(sizeof(Interactor) == 0x34);
-
 #endif

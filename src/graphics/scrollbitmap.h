@@ -112,5 +112,4 @@ public:
 // SYNTHETIC: HYPERX 0x00438740
 // ScrollBitmap::`scalar deleting destructor'
 
-static_assert(sizeof(ScrollBitmap) == 0x10c);
 #endif

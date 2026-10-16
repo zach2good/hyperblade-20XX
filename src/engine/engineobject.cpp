@@ -1831,10 +1831,11 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
             pBubble   = new BoundBubble(this, pShape);
             m_pBubble = pBubble;
 
-            nTag = (int)pBubble->m_pAttach;
-
-            if ((nTag & EXTRA_USE_DETAIL) == EXTRA_USE_DETAIL)
+            // The whole word is tested, since a real AttachPak's low half can carry the tag's bits.
+            if (((UINT_PTR)pBubble->m_pAttach & ~(UINT_PTR)0xffff) == EXTRA_USE_DETAIL)
             {
+                nTag = (int)(INT_PTR)pBubble->m_pAttach;
+
                 m_pBubble->m_pCage = new CollisionCage(this, nTag & 0xffff);
             }
 

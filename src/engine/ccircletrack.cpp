@@ -5,7 +5,6 @@
 #include "physics/physicsbody.h"
 #include "devicector.h"
 #include "cameraobject.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 #include "engine/ccircletrack.h"
 #include "physics/collisionellipsoid.h"
@@ -18,8 +17,6 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "engine/objectkind.h"
-
-HYPERBLADE_FIELD_AT(CCircleTrack, m_pWatchPos, 0x10);
 
 // FUNCTION: HYPERX 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)

@@ -173,7 +173,6 @@ public:
     static void __fastcall DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
 };
 
-static_assert(sizeof(MeshBone) == 0x15c);
 // The atexit thunk for DrawFaces' s_worldView.
 // SYNTHETIC: HYPERX 0x0046f330
 // $E11

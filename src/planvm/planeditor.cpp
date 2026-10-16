@@ -50,7 +50,7 @@ void PlanEditor::ApplyBehaviorSelection(HWND hDlg, HWND hControl)
 // FUNCTION: HYPERX 0x0047c640
 void PlanEditor::ApplyNodeSelection(HWND hDlg, HWND hControl)
 {
-    PlanVM* const pPlan = (PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA);
+    PlanVM* const pPlan = (PlanVM*)GetWindowLongPtrA(hDlg, GWLP_USERDATA);
 
     SendMessageA(hControl, CB_RESETCONTENT, 0, 0);
 

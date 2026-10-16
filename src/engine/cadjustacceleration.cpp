@@ -1,13 +1,10 @@
 #include "common/compat.h"
 #include "planvm/agendaitemids.h"
-#include "common/fieldat.h"
 #include "engine/cadjustacceleration.h"
 #include "engineobject.h"
 #include "globals.h"
 #include "physics/physicsbody.h"
 #include "common/pooledownerroot.h"
-
-HYPERBLADE_FIELD_AT(CAdjustAcceleration, m_pSmoothVel, 0x10);
 
 // FUNCTION: HYPERX 0x0040f740
 void CAdjustAcceleration::Bind(EngineObject* pOwner, GameBehaviorObject*)

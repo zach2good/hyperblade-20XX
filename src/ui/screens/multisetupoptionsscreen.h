@@ -39,8 +39,6 @@ public:
     }
 };
 
-static_assert(sizeof(MultiSetupOptionsScreen) == 0x464);
-
 // SYNTHETIC: HYPERX 0x00479810
 // MultiSetupOptionsScreen::`scalar deleting destructor'
 

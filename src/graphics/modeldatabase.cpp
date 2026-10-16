@@ -257,7 +257,22 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 
                 MaterialName* paTexNames = 0;
 
-                if (pFile->Read(pMaterials, nMatCount * sizeof(MeshMaterial)) != 0)
+                // The texture field holds a pointer once loaded, so records are read in their file layout.
+                MeshMaterialRecord aRecords[256] = {};
+
+                const int nRead = pFile->Read(aRecords, nMatCount * sizeof(MeshMaterialRecord));
+
+                for (int i = 0; i < nMatCount; i++)
+                {
+                    pMaterials[i].nColour       = aRecords[i].nColour;
+                    pMaterials[i].flAmbient     = aRecords[i].flAmbient;
+                    pMaterials[i].flDiffuse     = aRecords[i].flDiffuse;
+                    pMaterials[i].flEmissive    = aRecords[i].flEmissive;
+                    pMaterials[i].nTextureIndex = aRecords[i].nTextureIndex;
+                    pMaterials[i].nBackIndex    = aRecords[i].nBackIndex;
+                }
+
+                if (nRead != 0)
                 {
                     short nTexCount;
 

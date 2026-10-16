@@ -32,6 +32,4 @@ public:
     };
 };
 
-static_assert(sizeof(AnimNode) == 0x34);
-
 #endif

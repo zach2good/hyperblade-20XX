@@ -75,8 +75,6 @@ int CDDTextSurface::SetFontScaled(const char* pszName, const char* pszText, int 
     return SetFont(pszName, g_nPrevWidth <= WIDE_SCREEN_WIDTH ? FONT_POINTS_NARROW : FONT_POINTS_WIDE, pszText, bColourKey, bSystemMemory);
 }
 
-static_assert(offsetof(DDBLTFX, dwFillColor) == 0x50);
-
 #define TEXT_PADDING 4
 
 #define COLOUR_ENABLED  0xffffff

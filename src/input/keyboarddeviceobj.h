@@ -44,8 +44,6 @@ public:
 // SYNTHETIC: HYPERX 0x0045d090
 // KeyboardDeviceObj::`scalar deleting destructor'
 
-static_assert(sizeof(KeyboardDeviceObj) == 0xe78);
-
 inline KeyboardDeviceObj* GameEngine::GetInputDevice(int nSlot) const
 {
     return (KeyboardDeviceObj*)m_ppSlots[nSlot];

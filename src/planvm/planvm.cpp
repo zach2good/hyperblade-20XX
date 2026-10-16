@@ -810,7 +810,7 @@ PlanVM::PlanVM()
         m_pszText[0] = 0;
     }
 
-    m_pStream = new PlanWord[PLAN_STREAM_WORDS];
+    m_pStream = new PlanWord[PLAN_STREAM_WORDS]();
 }
 
 // FUNCTION: HYPERX 0x0047dab0

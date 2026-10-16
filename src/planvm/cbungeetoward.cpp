@@ -11,7 +11,6 @@
 #include "planvm.h"
 #include "common/stub.h"
 #include "engine/objectclasses.h"
-#include "common/fieldat.h"
 #include "math/vector.h"
 #include "physics/banking.h"
 #include <math.h>
@@ -168,8 +167,6 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
 // The anchor is chased with a lead of four times the target's velocity when m_cLeadTarget is set.
 #define LEAD_SCALE 4.0f
-
-HYPERBLADE_FIELD_AT(CBungeeToward, m_pAccum, 0x10);
 
 // FUNCTION: HYPERX 0x004100f0
 void CBungeeToward::OnListChanged()

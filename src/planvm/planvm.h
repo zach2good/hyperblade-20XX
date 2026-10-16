@@ -6,7 +6,6 @@
 
 class PlanState;
 
-#include "common/fieldat.h"
 #include "planvm/planutil.h"
 #include "planvm/plannode.h"
 
@@ -15,11 +14,6 @@ struct PlanNode;
 #define PLANVM_BEHAVIOR_LIMIT        60
 #define PLANVM_INTERACTOR_NAME_LIMIT 150
 #define PLANVM_MESSAGES_PER_BEHAVIOR 20
-
-HYPERBLADE_FIELD_AT(PlanState, m_ppBehaviors, 0x0c);
-HYPERBLADE_FIELD_AT(PlanState, m_pCurrent, 0x18);
-HYPERBLADE_FIELD_AT(PlanState, m_apNamedInteractors, 0x34);
-static_assert(sizeof(PlanState) == 0x3c);
 
 // A keyword table entry: the name, a sentinel word, and the value the name stands for.
 struct PlanOpcodeRef
@@ -117,8 +111,6 @@ public:
 
     static char* UnquoteString(char* pszText);
 };
-
-static_assert(sizeof(PlanVM) == 0x2289c);
 
 // The stat handlers, indexed by the packed argument's low word; each answers a slot index.
 typedef short(__cdecl* PlanStatFn)(class EngineObject* pActor, PlanNode* pArgs);

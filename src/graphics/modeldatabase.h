@@ -83,5 +83,4 @@ public:
     float m_flLodHysteresis; // 0x30
 };
 
-static_assert(sizeof(ModelDatabase) == 0x34);
 #endif

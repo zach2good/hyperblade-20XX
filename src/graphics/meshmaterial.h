@@ -18,12 +18,12 @@ struct MeshMaterial
     // FUNCTION: HYPERX 0x00436380
     inline MeshMaterial()
     {
-        flAmbient     = 0.0f;
-        flDiffuse     = 0.0f;
-        flEmissive    = 0.0f;
-        nTextureIndex = 0;
-        nBackIndex    = -1;
-        nColour       = 0;
+        flAmbient  = 0.0f;
+        flDiffuse  = 0.0f;
+        flEmissive = 0.0f;
+        pTexture   = 0;
+        nBackIndex = -1;
+        nColour    = 0;
     }
 
     inline ~MeshMaterial()
@@ -70,9 +70,20 @@ struct MeshMaterial
     static char __cdecl ParseFile(FileObj* pFile, const char* pszModelName, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
 };
 
+// A material as a model file stores it, twenty two bytes with a one-based texture index.
+struct MeshMaterialRecord
+{
+    int   nColour;
+    float flAmbient;
+    float flDiffuse;
+    float flEmissive;
+    int   nTextureIndex;
+    short nBackIndex;
+};
+
 #pragma pack(pop)
 
-static_assert(sizeof(MeshMaterial) == 0x16);
+static_assert(sizeof(MeshMaterialRecord) == 0x16);
 
 enum FaceShade
 {

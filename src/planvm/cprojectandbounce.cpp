@@ -9,7 +9,6 @@
 #include "math/vector.h"
 #include "engine/devicector.h"
 #include "engine/gameengine.h"
-#include "common/fieldat.h"
 #include "common/stub.h"
 #include <math.h>
 #include "app/gameapp.h"
@@ -336,8 +335,6 @@ void CProjectAndBounce::IntegrateSpringAndGravity()
                       m_pVelDir);
     }
 }
-
-HYPERBLADE_FIELD_AT(CProjectAndBounce, m_pVelocity, 0x10);
 
 inline void CProjectAndBounce::AddStep(const Vec3* pStep)
 {

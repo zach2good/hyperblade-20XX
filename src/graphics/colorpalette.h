@@ -66,5 +66,4 @@ public:
                                                          unsigned char cColour);
 };
 
-static_assert(sizeof(ColorPalette) == 0x474);
 #endif

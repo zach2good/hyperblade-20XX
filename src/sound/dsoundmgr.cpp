@@ -136,7 +136,7 @@ int DSoundMgr::Init(HWND hWindow)
 
 // A counter, not a flag, guards re-entry: a nested tick is dropped and the count comes back.
 // FUNCTION: HYPERX 0x004906a0
-void __stdcall DSoundMgr::TimerProc(HWND, UINT, UINT, DWORD)
+void __stdcall DSoundMgr::TimerProc(HWND, UINT, UINT_PTR, DWORD)
 {
     g_nSoundTimerDepth++;
 

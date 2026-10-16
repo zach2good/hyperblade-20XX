@@ -5,7 +5,6 @@
 #include "engine/messageids.h"
 #include "engine/devicector.h"
 #include "engine/objectclasses.h"
-#include "common/fieldat.h"
 #include "planvm/csteertotarget.h"
 #include "physics/physicsbody.h"
 #include "globals.h"
@@ -30,8 +29,6 @@
 // 0x004b1648 is the double minus a thousandth and 0x004b15b8 the float.
 #define BANK_DEADZONE_LOW  -0.001
 #define BANK_DEADZONE_HIGH 0.001f
-
-HYPERBLADE_FIELD_AT(CSteerToTarget, m_pAxis, 0x10);
 
 // FUNCTION: HYPERX 0x0040e020
 void CSteerToTarget::Bind(EngineObject* pOwner, GameBehaviorObject*)

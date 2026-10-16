@@ -29,7 +29,8 @@ RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
 
     const unsigned int nStride = (cx + 3) & 0xfffffffc;
 
-    RLESprite* pSprite = (RLESprite*)malloc((cx + 2) * cy * 2 + sizeof(RLESprite));
+    // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
+    RLESprite* pSprite = (RLESprite*)malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2);
 
     if (pSprite == 0)
     {
@@ -100,7 +101,24 @@ RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
         } while (nColumn <= cx);
     }
 
-    return (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
+    // The shrink can move the block, and the row pointers point into it.
+    const auto       nOld    = (UINT_PTR)pSprite;
+    RLESprite* const pShrunk = (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
+
+    if (pShrunk == 0)
+    {
+        return pSprite;
+    }
+
+    if ((UINT_PTR)pShrunk != nOld)
+    {
+        for (unsigned int nRow = 0; nRow < cy; nRow++)
+        {
+            pShrunk->apRows[nRow] = (char*)pShrunk + ((UINT_PTR)pShrunk->apRows[nRow] - nOld);
+        }
+    }
+
+    return pShrunk;
 }
 
 // The newest texture is unlinked first.

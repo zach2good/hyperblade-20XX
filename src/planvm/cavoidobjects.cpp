@@ -5,7 +5,6 @@
 #include "physics/physicsbody.h"
 #include "engine/devicector.h"
 #include "engine/objectclasses.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 #include "planvm/cavoidobjects.h"
 #include "globals.h"
@@ -35,8 +34,6 @@ extern float g_flSwerveMinSpeed;
 // Frames running on the wrong side of the first target; only this function uses it.
 // GLOBAL: HYPERX 0x004cb4d8
 extern short g_nWrongSideFrames;
-
-HYPERBLADE_FIELD_AT(CAvoidObjects, m_pAccum, 0x10);
 
 // FUNCTION: HYPERX 0x0040f830
 void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)

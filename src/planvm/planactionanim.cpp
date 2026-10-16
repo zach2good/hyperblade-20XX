@@ -107,14 +107,7 @@ void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, sho
 
     const AnimScriptTable* pDb = g_pAnimRegistry->m_pScripts;
 
-    if ((short)nIndex < pDb->m_nCount)
-    {
-        pAnim = pDb->m_apEntries[(short)nIndex];
-    }
-    else
-    {
-        pAnim = 0;
-    }
+    pAnim = pDb->Find((short)nIndex);
 
     if (pAnim != 0 && pContext->GetActor()->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
     {

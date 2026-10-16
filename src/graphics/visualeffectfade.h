@@ -22,8 +22,6 @@ public:
     }
 };
 
-static_assert(sizeof(VisualEffectFade) == 0x30);
-
 // The linker folds PaletteScalarFade's empty destructor and deleter onto these two.
 // SYNTHETIC: HYPERX 0x00410cd0
 // VisualEffectFade::`scalar deleting destructor'

@@ -328,7 +328,7 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
     int nIndex;
 
     short     nCapacity = PLAN_NODES_FIRST;
-    PlanWord* aWords    = new PlanWord[nCapacity];
+    PlanWord* aWords    = new PlanWord[nCapacity]();
     memset(aWords, 0, nCapacity * sizeof(PlanWord));
 
     m_nBehaviorCount    = 0;
@@ -352,7 +352,7 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
         if (m_nBehaviorCount == nCapacity)
         {
             nCapacity += PLAN_NODES_GROW;
-            PlanWord* const aGrown = new PlanWord[nCapacity];
+            PlanWord* const aGrown = new PlanWord[nCapacity]();
 
             for (nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
             {
@@ -425,7 +425,8 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         {
             const short nMasked = (short)(pNode->m_nArgCount & 0x7fff);
 
-            PlanWord* pChild = pNode->m_pArgs = new PlanWord[nMasked];
+            // Zeroed: an integer word fills only the low half, and teardown reads child words as nodes.
+            PlanWord* pChild = pNode->m_pArgs = new PlanWord[nMasked]();
 
             for (int nChild = 0; nChild < nMasked; nChild++)
             {

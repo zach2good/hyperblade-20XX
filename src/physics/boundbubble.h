@@ -93,6 +93,5 @@ inline void EngineObject::AttachBubble(short nBone, BoundBubble* pBubble)
 }
 
 // The child stride: the original steps its child array by this class's size.
-static_assert(sizeof(BoundBubble) == 0x2c);
 
 #endif

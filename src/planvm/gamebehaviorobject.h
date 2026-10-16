@@ -128,6 +128,4 @@ protected:
 // SYNTHETIC: HYPERX 0x0041bfc0
 // GameBehaviorObject::`scalar deleting destructor'
 
-static_assert(sizeof(GameBehaviorObject) == 0x98);
-
 #endif

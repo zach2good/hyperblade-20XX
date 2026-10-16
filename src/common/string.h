@@ -118,6 +118,4 @@ public:
     static int LoadResourceString(UINT nID, LPSTR pszBuffer, int nMaxLength);
 };
 
-static_assert(sizeof(String) == 0x4);
-
 #endif

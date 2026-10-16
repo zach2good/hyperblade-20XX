@@ -286,14 +286,7 @@ void __cdecl BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pR
 
     const AnimScriptTable* pTable = g_pAnimRegistry->m_pScripts;
 
-    if (nAnim < pTable->m_nCount)
-    {
-        pEntry = pTable->m_apEntries[nAnim];
-    }
-    else
-    {
-        pEntry = 0;
-    }
+    pEntry = pTable->Find(nAnim);
 
     pOut->m_pPersistentAnimation = pEntry;
     pOut->m_pAnimation           = pEntry;
@@ -320,14 +313,7 @@ void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* 
     const short            nClip     = (short)pNode->m_pArgs[1].n;
     const AnimScriptTable* pRegistry = g_pAnimRegistry->m_pScripts;
 
-    if (nClip < pRegistry->m_nCount)
-    {
-        pClip = pRegistry->m_apEntries[nClip];
-    }
-    else
-    {
-        pClip = 0;
-    }
+    pClip = pRegistry->Find(nClip);
 
     pBehaviour->m_pAnimation = pClip;
 

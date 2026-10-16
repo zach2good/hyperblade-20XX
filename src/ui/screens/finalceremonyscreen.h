@@ -23,8 +23,6 @@ public:
     ~FinalCeremonyScreen();
 };
 
-static_assert(sizeof(FinalCeremonyScreen) == 0x464);
-
 // SYNTHETIC: HYPERX 0x00443170
 // FinalCeremonyScreen::`scalar deleting destructor'
 

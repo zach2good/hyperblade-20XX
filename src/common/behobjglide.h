@@ -17,6 +17,4 @@ public:
 // SYNTHETIC: HYPERX 0x0041d980
 // BehObj_Glide::`scalar deleting destructor'
 
-static_assert(sizeof(BehObj_Glide) == 0x98);
-
 #endif

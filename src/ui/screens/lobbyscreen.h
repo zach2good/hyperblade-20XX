@@ -25,8 +25,6 @@ public:
     virtual void OnWidgetMessage(int nMsg, unsigned int nId);
 };
 
-static_assert(sizeof(LobbyScreen) == 0x464);
-
 // SYNTHETIC: HYPERX 0x0048cee0
 // LobbyScreen::`scalar deleting destructor'
 

@@ -6,7 +6,6 @@
 #include "physics/physicsbody.h"
 #include "objectclasses.h"
 #include "devicector.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 #include "engine/cspeedburst.h"
 #include "engine/objectstats.h"
@@ -20,8 +19,6 @@
 #define DECAY_RATE    0.8f
 #define STAMINA_FLOOR 0.05f
 #define BOOST_EPSILON 1e-5f
-
-HYPERBLADE_FIELD_AT(CSpeedBurst, m_pOpponentA, 0x10);
 
 // FUNCTION: HYPERX 0x004112e0
 CSpeedBurst::CSpeedBurst() throw()

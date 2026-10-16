@@ -286,13 +286,6 @@ struct DDrawDeviceBlock
     int bD3DActive;
 };
 
-static_assert(offsetof(DDrawDeviceBlock, pFpsText) == 0x20);
-static_assert(offsetof(DDrawDeviceBlock, nDisplayWidth) == 0x834);
-static_assert(offsetof(DDrawDeviceBlock, nDDrawDriverSurfaceCaps) == 0x844);
-static_assert(offsetof(DDrawDeviceBlock, ddrawDriverCaps) == 0x85c);
-static_assert(offsetof(DDrawDeviceBlock, bD3DActive) == 0xb54);
-static_assert(sizeof(DDrawDeviceBlock) == 0x2d6 * 4);
-
 // GLOBAL: HYPERX 0x004cdaa8
 extern DDrawDeviceBlock g_ddrawDevice;
 

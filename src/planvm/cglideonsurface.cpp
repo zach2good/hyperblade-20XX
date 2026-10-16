@@ -12,7 +12,6 @@
 #include "math/vector.h"
 #include "physics/collisionellipsoid.h"
 #include "engine/gameengine.h"
-#include "common/fieldat.h"
 #include "physics/banking.h"
 #include "common/stub.h"
 #include "net/session.h"
@@ -456,8 +455,6 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
 // The session's lag counter is in milliseconds and the term it feeds is in seconds.
 #define SESSION_LAG_SCALE 0.001f
-
-HYPERBLADE_FIELD_AT(CGlideOnSurface, m_pflFriction, 0x10);
 
 // FUNCTION: HYPERX 0x0040cb00
 void CGlideOnSurface::Process(int nArg)

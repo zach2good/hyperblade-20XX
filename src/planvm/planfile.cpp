@@ -19,13 +19,22 @@ PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
         g_gameApp.Error("Misread binary plan");
     }
 
-    PlanWord* const pInstructions = new PlanWord[*pnCount];
+    // The file holds 4-byte words; a PlanWord is pointer-sized, so each is widened as it is read.
+    PlanWord* const pInstructions = new PlanWord[*pnCount]();
+    auto* const     pWords        = new int[*pnCount]();
 
-    if (fread(pInstructions, sizeof(PlanWord), *pnCount, pFile) != *pnCount)
+    if (fread(pWords, sizeof(int), *pnCount, pFile) != *pnCount)
     {
         // STRING: HYPERX 0x004bdf94
         g_gameApp.Error("Misread binary plan");
     }
+
+    for (unsigned int i = 0; i < *pnCount; i++)
+    {
+        pInstructions[i].n = pWords[i];
+    }
+
+    delete[] pWords;
 
     return pInstructions;
 }

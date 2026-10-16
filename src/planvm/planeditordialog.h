@@ -6,7 +6,7 @@
 namespace PlanEditorDialog
 {
 
-BOOL CALLBACK         Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam);
+INT_PTR CALLBACK      Proc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam);
 short                 ApplyCameraSelection(HWND hDlg);
 LRESULT               GetBehaviorSel(HWND hDlg);
 LRESULT               GetNodeSel(HWND hDlg);

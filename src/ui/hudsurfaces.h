@@ -61,13 +61,6 @@ struct HudSurfaces
     int nHudSurfaceState;
 };
 
-static_assert(offsetof(HudSurfaces, nUnusedB) == 0x38);
-static_assert(offsetof(HudSurfaces, pHeadCamFrame) == 0x5c);
-static_assert(offsetof(HudSurfaces, apPlayerWidgets) == 0x88);
-static_assert(offsetof(HudSurfaces, bHud320) == 0xb0);
-static_assert(offsetof(HudSurfaces, nShotPowerPosition) == 0x1b8);
-static_assert(sizeof(HudSurfaces) == 0x70 * 4);
-
 // GLOBAL: HYPERX 0x004cd4e8
 extern HudSurfaces g_hudSurfaces;
 

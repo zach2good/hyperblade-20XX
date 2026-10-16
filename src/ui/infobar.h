@@ -4,7 +4,6 @@
 #define HYPERBLADE_INFOBAR_H
 
 #include "common/compat.h"
-#include "common/fieldat.h"
 #include "ui/infobarbase.h"
 
 #include "ui/cddsurfaceowner.h"
@@ -140,18 +139,5 @@ public:
 
 // SYNTHETIC: HYPERX 0x00451cc0
 // InfoBar::`scalar deleting destructor'
-
-HYPERBLADE_FIELD_AT(InfoBar, m_nCachedHomeTeam, 0x00c);
-HYPERBLADE_FIELD_AT(InfoBar, m_nCachedAwayTeam, 0x010);
-HYPERBLADE_FIELD_AT(InfoBar, m_sPeriodFrame, 0x018);
-HYPERBLADE_FIELD_AT(InfoBar, m_sSpeedFrame, 0x08c);
-HYPERBLADE_FIELD_AT(InfoBar, m_kTeamADamage1, 0x160);
-HYPERBLADE_FIELD_AT(InfoBar, m_sTeamBFrame, 0x1f8);
-HYPERBLADE_FIELD_AT(InfoBar, m_bMessageVisible, 0x2fc);
-HYPERBLADE_FIELD_AT(InfoBar, m_radar, 0x370);
-HYPERBLADE_FIELD_AT(InfoBar, m_bHeadCamPending, 0x3b0);
-HYPERBLADE_FIELD_AT(InfoBar, m_bShotPowerWanted, 0x400);
-HYPERBLADE_FIELD_AT(InfoBar, m_atTeamNames, 0x624);
-HYPERBLADE_FIELD_AT(InfoBar, m_bShotPowerDrawn, 0x674);
 
 #endif

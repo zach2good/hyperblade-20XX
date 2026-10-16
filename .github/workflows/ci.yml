@@ -25,7 +25,7 @@ jobs:
           git ls-files 'src/*.cpp' 'src/*.h' | xargs clang-format --dry-run --Werror
 
   compile:
-    name: Compile (MSVC x86)
+    name: Compile (MSVC x64)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
@@ -36,9 +36,9 @@ jobs:
 
       - uses: ilammy/msvc-dev-cmd@v1
         with:
-          arch: x86
+          arch: x64
 
       - name: Configure and compile, without the game
         run: |
-          cmake --preset msvc-x86 -DHYPERX_COMPILE_ONLY=ON
+          cmake --preset msvc-x64 -DHYPERX_COMPILE_ONLY=ON
           cmake --build build

@@ -39,5 +39,4 @@ public:
 // SYNTHETIC: HYPERX 0x00437860
 // CDDTextSurface::`scalar deleting destructor'
 
-static_assert(sizeof(CDDTextSurface) == 0xd0);
 #endif

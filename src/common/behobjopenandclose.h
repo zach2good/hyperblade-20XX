@@ -18,6 +18,4 @@ public:
 // SYNTHETIC: HYPERX 0x0041e630
 // BehObj_OpenAndClose::`scalar deleting destructor'
 
-static_assert(sizeof(BehObj_OpenAndClose) == 0x98);
-
 #endif

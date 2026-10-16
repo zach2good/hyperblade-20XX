@@ -8,7 +8,6 @@
 #include "engine/gameengine.h"
 #include "engine/devicector.h"
 #include "engine/objectclasses.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 #include "planvm/csteerbetweenfacing.h"
 #include "physics/physicsbody.h"
@@ -26,8 +25,6 @@
 
 #define BANK_DEADZONE_LOW  -0.001
 #define BANK_DEADZONE_HIGH 0.001f
-
-HYPERBLADE_FIELD_AT(CSteerBetweenFacing, m_pPath, 0x10);
 
 // FUNCTION: HYPERX 0x0040eda0
 void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)

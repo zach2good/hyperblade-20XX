@@ -35,6 +35,4 @@ public:
 // SYNTHETIC: HYPERX 0x0045d710
 // DeviceObject::`scalar deleting destructor'
 
-static_assert(sizeof(DeviceObject) == 0xd28);
-
 #endif

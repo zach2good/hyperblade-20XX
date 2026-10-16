@@ -297,9 +297,9 @@ String::String(LPCSTR psz)
 
     if (psz != 0)
     {
-        if (HIWORD(psz) == 0)
+        if (IS_INTRESOURCE(psz))
         {
-            AssignResourceId((unsigned int)psz & 0xffff);
+            AssignResourceId((unsigned int)(UINT_PTR)psz & 0xffff);
 
             return;
         }

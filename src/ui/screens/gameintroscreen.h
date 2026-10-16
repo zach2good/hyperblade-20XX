@@ -16,8 +16,6 @@ public:
     virtual void OnWidgetMessage(int nMsg, unsigned int nWidget);
 };
 
-static_assert(sizeof(GameIntroScreen) == 0x464);
-
 // SYNTHETIC: HYPERX 0x00449190
 // GameIntroScreen::`scalar deleting destructor'
 

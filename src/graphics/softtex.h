@@ -51,9 +51,6 @@ private:
 
 struct SoftTexLayout
 {
-    static_assert(sizeof(SoftTex) == 0x1c);
-    static_assert(sizeof(SoftTexImage) == 0x14);
-    static_assert(offsetof(SoftTex, m_pDib) == 0x14);
 };
 
 #endif

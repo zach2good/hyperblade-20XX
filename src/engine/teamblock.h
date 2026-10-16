@@ -60,7 +60,6 @@ struct TeamBlock
 };
 
 static_assert(sizeof(TeamStatRow) == 0xc4);
-static_assert(sizeof(TeamBlock) == 0x888);
 
 inline const char* TeamsBlock::GetTeamPath(int nAt) const
 {

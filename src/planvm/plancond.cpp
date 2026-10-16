@@ -2340,7 +2340,8 @@ void __cdecl PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*
 
     if (pnTargetSlot == 0 || (nSlot = pnTargetSlot->nSlot) >= PLAYER_OBJECT_COUNT)
     {
-        nSlot = (short)pResult;
+        // TODO: The original takes the result pointer itself as the slot; was *pResult meant?
+        nSlot = (short)(INT_PTR)pResult;
     }
 
     EngineObject* const pActor = g_pGameEngine->GetSlot(nSlot);

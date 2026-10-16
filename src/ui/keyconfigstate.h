@@ -8,7 +8,7 @@ struct KeyBitmapEntry
     const char*  pszBitmap;
 };
 
-// The block the sheet hangs off its window at GWL_USERDATA.
+// The block the sheet hangs off its window at GWLP_USERDATA.
 struct KeyConfigState
 {
     struct KeyRow* pSaved;

@@ -90,11 +90,12 @@ float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
 // FUNCTION: HYPERX 0x004013d0
 void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int nWindow)
 {
-    const HWND hWnd = (HWND)nWindow;
+    // A window handle keeps its meaning in 32 bits, so the plan word sign-extends back to one.
+    const HWND hWnd = (HWND)(INT_PTR)nWindow;
 
     GameEngine::TogglePause(hWnd, 0);
 
-    DialogBoxParamA((HINSTANCE)GetWindowLongA(hWnd, GWL_HINSTANCE),
+    DialogBoxParamA((HINSTANCE)GetWindowLongPtrA(hWnd, GWLP_HINSTANCE),
                     MAKEINTRESOURCEA(DIALOG_ANIMATION_PEEK),
                     hWnd,
                     GameApp::AnimationPeekDialogProc,
@@ -129,7 +130,7 @@ void GameApp::Error(const char* pszFormat, ...)
 
 // The Animation Peek dialog's procedure, which GameApp::AnimationPeek opens.
 // FUNCTION: HYPERX 0x004179e0
-BOOL CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
+INT_PTR CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (nMsg)
     {
@@ -215,8 +216,8 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     SetCursor(hCursor);
 
     g_nSplashFrame   = 0;
-    g_nSplashTimerId = timeSetEvent(3000, 500, GameApp::SplashTimerCallback, (DWORD)hWnd, TIME_PERIODIC);
-    GameApp::SplashTimerCallback(g_nSplashTimerId, 0, (DWORD)hWnd, 0, 0);
+    g_nSplashTimerId = timeSetEvent(3000, 500, GameApp::SplashTimerCallback, (DWORD_PTR)hWnd, TIME_PERIODIC);
+    GameApp::SplashTimerCallback(g_nSplashTimerId, 0, (DWORD_PTR)hWnd, 0, 0);
 
     Network::ValidateStaticObjects();
 
@@ -319,7 +320,7 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
 
 // The paint block sets and restores four GDI attributes with nothing drawn between.
 // FUNCTION: HYPERX 0x00419290
-void __stdcall GameApp::SplashTimerCallback(UINT, UINT, DWORD dwUser, DWORD, DWORD)
+void __stdcall GameApp::SplashTimerCallback(UINT, UINT, DWORD_PTR dwUser, DWORD_PTR, DWORD_PTR)
 {
     HPALETTE hPalette;
 
@@ -1213,7 +1214,7 @@ int __cdecl GameApp::ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption
 
 // Returning zero tells the runtime not to retry.
 // FUNCTION: HYPERX 0x0047adf0
-int __cdecl GameApp::OutOfMemoryHandler(unsigned int)
+int __cdecl GameApp::OutOfMemoryHandler(size_t)
 {
     // STRING: HYPERX 0x004c682c
     g_gameApp.Fatal("In C++ \"new\" method: Memory pool empty!");

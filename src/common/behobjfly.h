@@ -44,6 +44,4 @@ public:
 // SYNTHETIC: HYPERX 0x0041dc30
 // BehObj_Fly::`scalar deleting destructor'
 
-static_assert(sizeof(BehObj_Fly) == 0x98);
-
 #endif

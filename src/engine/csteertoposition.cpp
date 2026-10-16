@@ -12,7 +12,6 @@
 #include "math/vector.h"
 #include "app/gameapp.h"
 #include "objectclasses.h"
-#include "common/fieldat.h"
 #include "objectstats.h"
 #include "physics/banking.h"
 #include "planvm/damagegate.h"
@@ -31,8 +30,6 @@
 #define BANK_DEADZONE_LOW -0.001
 
 #define BANK_DEADZONE_HIGH 0.001f
-
-HYPERBLADE_FIELD_AT(CSteerToPosition, m_pOrigin, 0x10);
 
 // FUNCTION: HYPERX 0x0040e780
 void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)

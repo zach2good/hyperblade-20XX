@@ -2,7 +2,6 @@
 #define HYPERBLADE_CTRACKTRAJ_H
 
 #include "common/compat.h"
-#include "common/fieldat.h"
 #include "planvm/baseresetagendaitem.h"
 
 class EngineObject;
@@ -33,7 +32,5 @@ public:
 
 // SYNTHETIC: HYPERX 0x0040a5a0
 // CTrackTraj::`scalar deleting destructor'
-
-HYPERBLADE_FIELD_AT(CTrackTraj, m_pSpline, 0x10);
 
 #endif

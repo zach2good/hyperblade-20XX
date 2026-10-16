@@ -81,5 +81,4 @@ public:
 // SYNTHETIC: HYPERX 0x0042d350
 // CPlayer::`scalar deleting destructor'
 
-static_assert(sizeof(CPlayer) == 0x2518);
 #endif

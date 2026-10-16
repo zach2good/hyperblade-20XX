@@ -21,7 +21,7 @@
 #define SPLASH_FACE_STRING     0x3d
 
 // FUNCTION: HYPERX 0x004070b0
-BOOL CALLBACK SplashDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
+INT_PTR CALLBACK SplashDialog::Proc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (nMsg)
     {
@@ -60,7 +60,7 @@ BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
 
     Win32::CenterWindow(hDlg, GetParent(hDlg));
 
-    GetModuleFileNameA((HMODULE)GetWindowLongA(hDlg, GWL_HINSTANCE), szFileName, sizeof(szFileName));
+    GetModuleFileNameA((HMODULE)GetWindowLongPtrA(hDlg, GWLP_HINSTANCE), szFileName, sizeof(szFileName));
 
     const DWORD dwSize = GetFileVersionInfoSizeA(szFileName, &dwHandle);
 

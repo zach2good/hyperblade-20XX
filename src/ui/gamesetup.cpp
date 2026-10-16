@@ -58,7 +58,7 @@ done:
 extern DPSESSIONDESC* g_pSelectedSession;
 
 // FUNCTION: HYPERX 0x00475510
-BOOL CALLBACK GameSetup::SessionListDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK GameSetup::SessionListDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     int nHandled = 0;
 
@@ -185,7 +185,7 @@ extern int g_bChatEntryActive;
 
 // Template 0x25f. The host button means six things by setup state; the chat box outranks state six.
 // FUNCTION: HYPERX 0x004757f0
-BOOL CALLBACK GameSetup::SessionConnectDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK GameSetup::SessionConnectDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     int nHandled = 0;
 

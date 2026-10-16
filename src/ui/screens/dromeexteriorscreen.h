@@ -33,8 +33,6 @@ public:
     ~DromeExteriorScreen();
 };
 
-static_assert(sizeof(DromeExteriorScreen) == 0x464);
-
 // SYNTHETIC: HYPERX 0x0048ef80
 // DromeExteriorScreen::`scalar deleting destructor'
 

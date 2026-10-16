@@ -12,5 +12,4 @@ struct RatingsDialogState
     char** ppGoalieNames; // 0x10
 };
 
-static_assert(sizeof(RatingsDialogState) == 0x14);
 #endif

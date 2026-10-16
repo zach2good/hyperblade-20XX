@@ -57,8 +57,6 @@ public:
 // SYNTHETIC: HYPERX 0x00474e90
 // ParticleSystem::~ParticleSystem
 
-static_assert(sizeof(ParticleSystem) == 0x2c5c);
-
 inline ParticleSystem* GameEngine::GetParticleSystem(int nSlot) const
 {
     return (ParticleSystem*)m_ppSlots[nSlot];

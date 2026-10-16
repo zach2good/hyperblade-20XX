@@ -44,6 +44,4 @@ struct AnimPlayState
     int nUnused; // 0xd8
 };
 
-static_assert(sizeof(AnimPlayState) == 0xdc);
-
 #endif

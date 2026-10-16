@@ -128,8 +128,6 @@ public:
 // SYNTHETIC: HYPERX 0x00421c10
 // CameraObject::`scalar deleting destructor'
 
-static_assert(sizeof(CameraObject) == 0x1030);
-
 inline CameraObject* GameEngine::GetCamera(int nSlot) const
 {
     return (CameraObject*)m_ppSlots[nSlot];

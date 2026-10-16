@@ -18,7 +18,7 @@ Activision or WizBang! Software Productions.
 
 ## Requirements
 
-- Windows, with Visual Studio 2022 or later and its C++ x86 tools.
+- Windows, with Visual Studio 2022 or later and its C++ x64 tools.
 - CMake 3.21 or later, and Ninja.
 - Python 3.12 or later.
 - clang-format 22 if you contribute: `pip install clang-format==22.1.8`.
@@ -27,16 +27,18 @@ Activision or WizBang! Software Productions.
 ## Build
 
 Copy `hyperx-user.example.yml` to `hyperx-user.yml` and point it at your `HYPERX.EXE`. Then, from
-an x86 Developer Command Prompt:
+an x64 Developer Command Prompt:
 
 ```sh
-cmake --preset msvc-x86 -DHYPERX_GAME_DATA=C:/path/to/your/HyperBlade
+cmake --preset msvc-x64 -DHYPERX_GAME_DATA=C:/path/to/your/HyperBlade
 cmake --build build
 ```
 
 `HYPERX_GAME_DATA` is the folder that holds the disc's `Data` folder. The build links it beside
 `build/out/hyperx.exe`. Without a copy of the game, configure with `-DHYPERX_COMPILE_ONLY=ON`,
-which compiles every source and links nothing.
+which compiles every source and links nothing. x64 is the only supported build.
+
+`ctest --test-dir build` decodes every MDM1-packed file in your data against its recorded size.
 
 ## Pulling from the decomp
 

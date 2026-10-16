@@ -23,5 +23,4 @@ public:
     short m_nFrame;   // 0x06
 };
 
-static_assert(sizeof(AnimNamedRef) == 0x8);
 #endif

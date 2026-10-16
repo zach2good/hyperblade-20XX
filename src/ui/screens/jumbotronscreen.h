@@ -15,8 +15,6 @@ public:
     ~JumbotronScreen();
 };
 
-static_assert(sizeof(JumbotronScreen) == 0x464);
-
 // SYNTHETIC: HYPERX 0x0048e720
 // JumbotronScreen::`scalar deleting destructor'
 

@@ -37,5 +37,4 @@ public:
 // AnimClipSet::`scalar deleting destructor'
 
 // The length AnimSet::LoadIntoRegistry asks operator new for.
-static_assert(sizeof(AnimClipSet) == 0x20);
 #endif

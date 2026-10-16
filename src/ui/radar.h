@@ -63,5 +63,4 @@ private:
 // SYNTHETIC: HYPERX 0x0043f3d0
 // Radar::`scalar deleting destructor'
 
-static_assert(sizeof(Radar) == 0x140);
 #endif

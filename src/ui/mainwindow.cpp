@@ -29,7 +29,7 @@ extern unsigned char g_bEnergyOn;
 
 // Resource 0x13e: OK writes nine live physics constants. "Save As" writes nothing.
 // FUNCTION: HYPERX 0x004197e0
-BOOL CALLBACK MainWindow::PhysicsConfigProc(HWND hDlg, UINT nMsg, UINT wParam, LONG)
+INT_PTR CALLBACK MainWindow::PhysicsConfigProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM)
 {
     switch (nMsg)
     {
@@ -98,7 +98,7 @@ BOOL CALLBACK MainWindow::PhysicsConfigProc(HWND hDlg, UINT nMsg, UINT wParam, L
 // The Ratings dialog, which sets one rating of one player.
 
 // FUNCTION: HYPERX 0x00419a40
-BOOL CALLBACK MainWindow::RatingsDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
+INT_PTR CALLBACK MainWindow::RatingsDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (nMsg)
     {
@@ -116,7 +116,7 @@ BOOL CALLBACK MainWindow::RatingsDialogProc(HWND hDlg, UINT nMsg, UINT wParam, L
 
 // Both buttons answer only the plain click, and both return one.
 // FUNCTION: HYPERX 0x0043ff70
-BOOL CALLBACK MainWindow::DebugParamsDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG)
+INT_PTR CALLBACK MainWindow::DebugParamsDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM)
 {
     switch (nMsg)
     {
@@ -370,7 +370,7 @@ int MainWindow::OpenPlanEditor(HINSTANCE hInstance, HWND hParent)
 }
 
 // FUNCTION: HYPERX 0x0046c2a0
-BOOL CALLBACK MainWindow::KeyboardDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
+INT_PTR CALLBACK MainWindow::KeyboardDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (nMsg)
     {

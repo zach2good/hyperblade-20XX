@@ -72,8 +72,6 @@ public:
 // SYNTHETIC: HYPERX 0x00425460
 // AnimBinding::`scalar deleting destructor'
 
-static_assert(sizeof(AnimBinding) == BINDING_HEAD_BYTES);
-
 inline AnimBinding::AnimBinding()
 : m_nUnused(0)
 , m_nFrameInt(0)

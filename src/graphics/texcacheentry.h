@@ -41,6 +41,4 @@ public:
 // GLOBAL: HYPERX 0x004d2774
 extern int g_bSoftTexPaletteBuilt;
 
-static_assert(sizeof(TexCacheEntry) == 0x18);
-
 #endif

@@ -2403,7 +2403,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     }
     else if (bUseDetail != 0)
     {
-        pNew->m_pAttach = (AttachPak*)EXTRA_USE_DETAIL;
+        pNew->m_pAttach = (AttachPak*)(INT_PTR)EXTRA_USE_DETAIL;
     }
 
     MapModifierToId((short)nModelId, pNew);

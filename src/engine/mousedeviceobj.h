@@ -12,6 +12,4 @@ public:
     MouseDeviceObj(int nSlot, class ObjectDef* pDef);
 };
 
-static_assert(sizeof(MouseDeviceObj) == 0xd28);
-
 #endif

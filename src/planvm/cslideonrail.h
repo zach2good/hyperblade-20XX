@@ -2,7 +2,6 @@
 #define HYPERBLADE_CSLIDEONRAIL_H
 
 #include "common/compat.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 
 class EngineObject;
@@ -40,7 +39,5 @@ public:
 
 // SYNTHETIC: HYPERX 0x0040cf80
 // CSlideOnRail::`scalar deleting destructor'
-
-HYPERBLADE_FIELD_AT(CSlideOnRail, m_pVelocity, 0x10);
 
 #endif

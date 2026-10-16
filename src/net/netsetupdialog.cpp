@@ -176,7 +176,7 @@ BOOL __stdcall NetSetupDialog::AddSessionEntry(LPDPSESSIONDESC pDesc, LPVOID pCo
         return 0;
     }
 
-    memcpy(pEntry, pDesc, sizeof(NetSessionEntry));
+    memcpy(pEntry, pDesc, sizeof(DPSESSIONDESC));
 
     g_nSessionCount++;
 
@@ -1566,10 +1566,11 @@ BOOL __stdcall NetSetupDialog::AddEnumeratedSession(LPDPSESSIONDESC pDesc, LPVOI
         return 0;
     }
 
-    memcpy(pEntry, pDesc, sizeof(NetSessionEntry));
+    memcpy(pEntry, pDesc, sizeof(DPSESSIONDESC));
 
     g_nSessionCount++;
 
+    pEntry->m_bLive = 0;
     pEntry->m_pNext = g_pSessionList;
 
     g_pSessionList = pEntry;

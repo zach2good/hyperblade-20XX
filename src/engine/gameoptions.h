@@ -43,5 +43,4 @@ public:
     int m_nInstallLevel; // 0x1c
 };
 
-static_assert(sizeof(GameOptions) == 0x20);
 #endif

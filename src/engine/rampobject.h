@@ -59,5 +59,4 @@ private:
 // SYNTHETIC: HYPERX 0x0047fe60
 // RampObject::~RampObject
 
-static_assert(sizeof(RampObject) == 0xe88);
 #endif

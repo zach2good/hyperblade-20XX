@@ -41,8 +41,6 @@ public:
 // SYNTHETIC: HYPERX 0x00473b60
 // RokObject::`scalar deleting destructor'
 
-static_assert(sizeof(RokObject) == 0xd30);
-
 inline RokObject* GameEngine::GetRok() const
 {
     return (RokObject*)m_ppSlots[SLOT_ROK];

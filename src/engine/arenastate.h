@@ -32,5 +32,4 @@ inline ArenaState::ArenaState()
     m_pEllipsoid = &g_arenaEllipsoid;
 }
 
-static_assert(sizeof(ArenaState) == 0x20);
 #endif

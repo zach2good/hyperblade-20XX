@@ -9,7 +9,7 @@
 class DSoundMgr
 {
 public:
-    static void __stdcall TimerProc(HWND, UINT, UINT, DWORD);
+    static void __stdcall TimerProc(HWND, UINT, UINT_PTR, DWORD);
 
 public:
     DSoundMgr();

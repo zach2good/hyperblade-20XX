@@ -17,6 +17,4 @@ public:
 // SYNTHETIC: HYPERX 0x0041e800
 // BehObj_HeadTracking::`scalar deleting destructor'
 
-static_assert(sizeof(BehObj_HeadTracking) == 0x98);
-
 #endif

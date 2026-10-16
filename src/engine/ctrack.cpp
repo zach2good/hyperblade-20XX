@@ -10,7 +10,6 @@
 #include "cameraobject.h"
 #include "devicector.h"
 #include "objectclasses.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 #include "engine/ctrack.h"
 #include "physics/collisionellipsoid.h"
@@ -43,8 +42,6 @@ extern unsigned char g_bSmartCamEnabled;
 
 // The swing is cut into at most six steps however long the countdown is.
 #define SWING_STEPS 6
-
-HYPERBLADE_FIELD_AT(CTrack, m_pPos, 0x10);
 
 // FUNCTION: HYPERX 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)

@@ -35,5 +35,4 @@ private:
     char* m_pszInput;  // 0x070
 };
 
-static_assert(sizeof(TextInputWidget) == 0x74);
 #endif

@@ -236,7 +236,7 @@ int Network::ShowWaitingDialog(void)
 
 // The dialog that holds the game between periods; it has no controls the player uses.
 // FUNCTION: HYPERX 0x004783f0
-BOOL CALLBACK Network::PeriodDialogProc(HWND hDlg, UINT nMsg, UINT, LONG)
+INT_PTR CALLBACK Network::PeriodDialogProc(HWND hDlg, UINT nMsg, WPARAM, LPARAM)
 {
     int nPoll;
 

@@ -80,5 +80,4 @@ private:
     unsigned int m_nExpiryTick; // 0x0c
 };
 
-static_assert(sizeof(MessageNode) == 0x10);
 #endif

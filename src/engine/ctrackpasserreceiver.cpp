@@ -5,7 +5,6 @@
 #include "physics/physicsbody.h"
 #include "cameraobject.h"
 #include "objectclasses.h"
-#include "common/fieldat.h"
 #include "planvm/agendaitem.h"
 #include "engine/ctrackpasserreceiver.h"
 #include "devicector.h"
@@ -33,8 +32,6 @@ extern const float g_flCamTrackVelocityGain;
 
 // Four: the square component's factor and the head camera's lift.
 extern const float g_flFourTracking;
-
-HYPERBLADE_FIELD_AT(CTrackPasser_Receiver, m_pReceiverPos, 0x10);
 
 // FUNCTION: HYPERX 0x0040aec0
 void CTrackPasser_Receiver::Bind(EngineObject* pOwner, GameBehaviorObject*)

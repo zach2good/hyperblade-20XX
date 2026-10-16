@@ -67,7 +67,7 @@ LRESULT PlanEditorDialog::GetCondSel(HWND hDlg)
 }
 
 // FUNCTION: HYPERX 0x0047ba70
-BOOL CALLBACK PlanEditorDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
+INT_PTR CALLBACK PlanEditorDialog::Proc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (nMsg)
     {
@@ -88,11 +88,11 @@ int PlanEditorDialog::OnInit(HWND hDlg, HWND, LPARAM lParam)
 {
     Win32::CenterWindow(hDlg, GetParent(hDlg));
 
-    SetWindowLongA(hDlg, GWL_USERDATA, lParam);
+    SetWindowLongPtrA(hDlg, GWLP_USERDATA, lParam);
 
     if (PlanEditorDialog::PopulateCameraList(hDlg) != 0)
     {
-        ((PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA))->LoadSymbolTables();
+        ((PlanVM*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->LoadSymbolTables();
 
         PlanEditorDialog::PopulateBehaviorList(hDlg, g_pGameEngine->m_ppObjects[0]->GetSlot());
 
@@ -194,7 +194,7 @@ int PlanEditorDialog::OnClose(HWND hDlg, int, HWND, int nCode)
 {
     if (nCode == BN_CLICKED)
     {
-        PlanVM* const pVM = (PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA);
+        PlanVM* const pVM = (PlanVM*)GetWindowLongPtrA(hDlg, GWLP_USERDATA);
 
         delete pVM;
 
@@ -352,7 +352,7 @@ int PlanEditorDialog::OnCompileAll(HWND hDlg, int, HWND, int nCode)
 
     for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
     {
-        PlanVM* const pFile = (PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA);
+        PlanVM* const pFile = (PlanVM*)GetWindowLongPtrA(hDlg, GWLP_USERDATA);
 
         for (short j = 0;; j++)
         {
@@ -465,7 +465,7 @@ int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
                     EngineObject* const pObject = g_pGameEngine->m_ppSlots[nCamera];
 
                     pObject->PostSceneEvent(
-                        (int)((PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA))
+                        (int)((PlanVM*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))
                             ->LookupSymbol(pszCond)
                             .nValue,
                         0);
@@ -482,7 +482,7 @@ int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
 // FUNCTION: HYPERX 0x0047c4f0
 PlanVM* __cdecl PlanEditorDialog::LoadPlanText(HWND hDlg, short nBehavior, short nCamera)
 {
-    PlanVM* const pFile = (PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA);
+    PlanVM* const pFile = (PlanVM*)GetWindowLongPtrA(hDlg, GWLP_USERDATA);
 
     pFile->LoadText(nCamera, PlanName(g_pGameEngine->m_ppSlots[nCamera], nBehavior));
 

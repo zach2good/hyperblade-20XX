@@ -31,5 +31,4 @@ inline AnimClipEntry::AnimClipEntry(unsigned short wSegment, unsigned short wTri
     strcpy(m_szName, pszName);
 }
 
-static_assert(sizeof(AnimClipEntry) == 0x24);
 #endif

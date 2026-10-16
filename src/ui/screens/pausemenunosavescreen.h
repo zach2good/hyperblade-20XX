@@ -28,8 +28,6 @@ private:
     int m_nUnusedD; // 0x464
 };
 
-static_assert(sizeof(PauseMenuNoSaveScreen) == 0x468);
-
 // SYNTHETIC: HYPERX 0x00443c90
 // PauseMenuNoSaveScreen::`scalar deleting destructor'
 

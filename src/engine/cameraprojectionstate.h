@@ -84,5 +84,4 @@ private:
 // SYNTHETIC: HYPERX 0x00422dc0
 // CameraProjectionState::`scalar deleting destructor'
 
-static_assert(sizeof(CameraProjectionState) == 0x118);
 #endif

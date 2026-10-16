@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT MSVC)
-    message(FATAL_ERROR "HyperBlade 20XX builds with MSVC. Use a preset from CMakePresets.json.")
+if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message(FATAL_ERROR "HyperBlade 20XX builds with MSVC for x64. Use the preset in CMakePresets.json.")
 endif()
 
 option(HYPERX_COMPILE_ONLY
@@ -106,7 +106,6 @@ set(HYPERX_SOURCES
     src/common/cexplosionanimationpool.cpp
     src/common/cglideonsurfacepool.cpp
     src/common/cheadtrackpool.cpp
-    src/common/classsizes.cpp
     src/common/cmonitorheldkeyspool.cpp
     src/common/cmonitorkeyspool.cpp
     src/common/cpaletteeffectpool.cpp
@@ -413,7 +412,7 @@ set_target_properties(hyperx PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
 target_link_libraries(hyperx PRIVATE
     kernel32 user32 gdi32 winmm version ddraw dxguid dsound)
-target_link_options(hyperx PRIVATE /SAFESEH:NO /LARGEADDRESSAWARE "/MAP:${HYPERX_OUT}/hyperx.map")
+target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperx.map")
 
 # The game data is junctioned in beside the image. mklink /J needs no privilege.
 set(HYPERX_GAME_DATA "" CACHE PATH

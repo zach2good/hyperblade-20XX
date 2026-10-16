@@ -287,7 +287,7 @@ int __cdecl KeyConfigDialog::Init(HWND hDlg)
             new char[strlen("Data\\DftStick.cfg") + 1],
             "Data\\DftStick.cfg");
 
-        SetWindowLongA(hDlg, GWL_USERDATA, (LONG)pState);
+        SetWindowLongPtrA(hDlg, GWLP_USERDATA, (LONG_PTR)pState);
 
         if (g_aKeyRows[0].cFlags == 0)
         {
@@ -375,7 +375,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
             if (nNotify == BN_CLICKED)
             {
                 memcpy(g_aKeyRows,
-                       ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pSaved,
+                       ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pSaved,
                        sizeof(g_aKeyRows));
 
                 KeyConfigDialog::CloseDialog(hDlg, 0);
@@ -443,7 +443,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
                 g_aKeyRows[nRow].nKey   = (unsigned short)aKeys[nKey];
                 g_aKeyRows[nRow].nIndex = (unsigned short)nKey;
 
-                ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->nSource = SOURCE_NONE;
+                ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->nSource = SOURCE_NONE;
 
                 SendMessageA(GetDlgItem(hDlg, IDC_PRIMARY), BM_SETCHECK, 0, 0);
                 SendMessageA(GetDlgItem(hDlg, IDC_ALTERNATE), BM_SETCHECK, 0, 0);
@@ -456,7 +456,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
             {
                 KeyConfigDialog::ClearKeys(hDlg, g_aKeyRows);
 
-                ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->nSource = SOURCE_NONE;
+                ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->nSource = SOURCE_NONE;
 
                 SendMessageA(GetDlgItem(hDlg, IDC_PRIMARY), BM_SETCHECK, 0, 0);
                 SendMessageA(GetDlgItem(hDlg, IDC_ALTERNATE), BM_SETCHECK, 0, 0);
@@ -481,7 +481,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
                     g_aKeyRows[nRow].cFlags ^= FLAG_SHIFT;
                 }
 
-                ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->nSource = SOURCE_NONE;
+                ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->nSource = SOURCE_NONE;
 
                 SendMessageA(GetDlgItem(hDlg, IDC_PRIMARY), BM_SETCHECK, 0, 0);
                 SendMessageA(GetDlgItem(hDlg, IDC_ALTERNATE), BM_SETCHECK, 0, 0);
@@ -503,7 +503,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
                     g_aKeyRows[nRow].cFlags ^= FLAG_CONTROL;
                 }
 
-                ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->nSource = SOURCE_NONE;
+                ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->nSource = SOURCE_NONE;
 
                 SendMessageA(GetDlgItem(hDlg, IDC_PRIMARY), BM_SETCHECK, 0, 0);
                 SendMessageA(GetDlgItem(hDlg, IDC_ALTERNATE), BM_SETCHECK, 0, 0);
@@ -515,16 +515,16 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
             if (nNotify == BN_CLICKED && SendMessageA(hControl, BM_GETCHECK, 0, 0) != 0)
             {
                 Config::ParseFile(hDlg,
-                                  ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pszPrimary,
-                                  ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pszPrimary,
+                                  ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pszPrimary,
+                                  ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pszPrimary,
                                   g_aKeyRows);
 
                 SendMessageA(GetDlgItem(hDlg, IDC_ACTION_COMBO), CB_SETCURSEL, 0, 0);
                 SendMessageA(GetDlgItem(hDlg, IDC_KEY_COMBO), CB_SETCURSEL, g_aKeyRows[0].nIndex, 0);
 
-                ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->nSource = SOURCE_PRIMARY;
+                ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->nSource = SOURCE_PRIMARY;
 
-                pszName = ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pszPrimary;
+                pszName = ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pszPrimary;
                 if (pszName == 0)
                 {
                     nLength = 0;
@@ -545,16 +545,16 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
             if (nNotify == BN_CLICKED && SendMessageA(hControl, BM_GETCHECK, 0, 0) != 0)
             {
                 Config::ParseFile(hDlg,
-                                  ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pszAlternate,
-                                  ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pszPrimary,
+                                  ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pszAlternate,
+                                  ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pszPrimary,
                                   g_aKeyRows);
 
                 SendMessageA(GetDlgItem(hDlg, IDC_ACTION_COMBO), CB_SETCURSEL, 0, 0);
                 SendMessageA(GetDlgItem(hDlg, IDC_KEY_COMBO), CB_SETCURSEL, g_aKeyRows[0].nIndex, 0);
 
-                ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->nSource = SOURCE_ALTERNATE;
+                ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->nSource = SOURCE_ALTERNATE;
 
-                pszName = ((KeyConfigState*)GetWindowLongA(hDlg, GWL_USERDATA))->pszPrimary;
+                pszName = ((KeyConfigState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA))->pszPrimary;
                 if (pszName == 0)
                 {
                     nLength = 0;
@@ -579,7 +579,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
 // FUNCTION: HYPERX 0x0046d320
 void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
 {
-    KeyConfigState* const pState = (KeyConfigState*)GetWindowLongA(hWnd, GWL_USERDATA);
+    KeyConfigState* const pState = (KeyConfigState*)GetWindowLongPtrA(hWnd, GWLP_USERDATA);
 
     if (pState != 0)
     {
@@ -600,7 +600,7 @@ void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
         delete pState;
     }
 
-    SetWindowLongA(hWnd, GWL_USERDATA, 0);
+    SetWindowLongPtrA(hWnd, GWLP_USERDATA, 0);
 
     EndDialog(hWnd, nResult);
 }

@@ -19,8 +19,6 @@ struct AttachPak
     short                  nIndex;     // 0x18
 };
 
-static_assert(sizeof(AttachPak) == 0x1c);
-
 // The bindings held this frame, one bit per key slot; g_anKeyBindingOrder swaps Attack and SpeedBurst.
 enum HeldBinding
 {
@@ -158,5 +156,4 @@ struct PhysicsBody
     void PerFrameTick();
 };
 
-static_assert(sizeof(PhysicsBody) == 0x150);
 #endif

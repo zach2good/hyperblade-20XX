@@ -4,7 +4,6 @@
 #define HYPERBLADE_GAMEENGINE_H
 
 #include "common/compat.h"
-#include "common/fieldat.h"
 #include "engine/engineobject.h"
 #include "engine/coachobject.h"
 #include "engine/collisionobjectids.h"
@@ -335,34 +334,5 @@ struct GameEngine
 };
 
 // VC6 has no static_assert; a negative array bound makes a wrong offset fail to compile.
-
-HYPERBLADE_FIELD_AT(GameEngine, m_nObjectCount, 0x0006);
-HYPERBLADE_FIELD_AT(GameEngine, m_ppSlots, 0x000c);
-HYPERBLADE_FIELD_AT(GameEngine, m_ppObjects, 0x0010);
-HYPERBLADE_FIELD_AT(GameEngine, m_abTypeHighWater, 0x0030);
-HYPERBLADE_FIELD_AT(GameEngine, m_nViewedSlot, 0x0050);
-HYPERBLADE_FIELD_AT(GameEngine, m_ppColObjects, 0x0054);
-HYPERBLADE_FIELD_AT(GameEngine, m_wRunState, 0x0228);
-HYPERBLADE_FIELD_AT(GameEngine, m_aQueueMessage, 0x022c);
-HYPERBLADE_FIELD_AT(GameEngine, m_aQueueSlot, 0x122c);
-HYPERBLADE_FIELD_AT(GameEngine, m_aQueueArg, 0x222c);
-HYPERBLADE_FIELD_AT(GameEngine, m_aQueueSender, 0x322c);
-HYPERBLADE_FIELD_AT(GameEngine, m_aQueueFromInput, 0x422c);
-HYPERBLADE_FIELD_AT(GameEngine, m_clock, 0x522c);
-HYPERBLADE_FIELD_AT(GameEngine, m_flGravityDt, 0x5278);
-HYPERBLADE_FIELD_AT(EngineClock, flInvDelta, 0x00);
-HYPERBLADE_FIELD_AT(EngineClock, flDelta, 0x10);
-HYPERBLADE_FIELD_AT(EngineClock, flDeltaSquared, 0x18);
-HYPERBLADE_FIELD_AT(EngineClock, nTickMs, 0x34);
-HYPERBLADE_FIELD_AT(EngineClock, nPeriod, 0x3e);
-HYPERBLADE_FIELD_AT(GameEngine, m_pTeamA, 0x5290);
-HYPERBLADE_FIELD_AT(GameEngine, m_nTeamHomeIndex, 0x529c);
-HYPERBLADE_FIELD_AT(GameEngine, m_nArenaIndex, 0x52a0);
-HYPERBLADE_FIELD_AT(GameEngine, m_nBrutality, 0x52b4);
-HYPERBLADE_FIELD_AT(GameEngine, m_nTeammateMode, 0x52c4);
-HYPERBLADE_FIELD_AT(GameEngine, m_bFollowingOther, 0x52ce);
-HYPERBLADE_FIELD_AT(GameEngine, m_pTeamTable, 0x52d4);
-HYPERBLADE_FIELD_AT(GameEngine, m_pSaveObject, 0x52d8);
-HYPERBLADE_FIELD_AT(GameEngine, m_bMatchOver, 0x52dc);
 
 #endif

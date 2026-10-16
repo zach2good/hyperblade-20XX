@@ -91,7 +91,7 @@ unsigned int __cdecl RatingsDialog::OnCommand(HWND hDlg, int nCommand, HWND hCon
         case IDC_PLAYER_LIST:
             if (nNotify == CBN_SELCHANGE)
             {
-                pState = (RatingsDialogState*)GetWindowLongA(hDlg, GWL_USERDATA);
+                pState = (RatingsDialogState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA);
 
                 if (pState != 0)
                 {
@@ -128,7 +128,7 @@ unsigned int __cdecl RatingsDialog::OnCommand(HWND hDlg, int nCommand, HWND hCon
         case IDC_CATEGORY_LIST:
             if (nNotify == CBN_SELCHANGE)
             {
-                pState = (RatingsDialogState*)GetWindowLongA(hDlg, GWL_USERDATA);
+                pState = (RatingsDialogState*)GetWindowLongPtrA(hDlg, GWLP_USERDATA);
 
                 if (pState != 0)
                 {
@@ -387,7 +387,7 @@ int __cdecl RatingsDialog::InitControls(HWND hDlg)
 
                 SendMessageA(hCategories, CB_SETCURSEL, 0, 0);
 
-                SetWindowLongA(hDlg, GWL_USERDATA, (LONG)pState);
+                SetWindowLongPtrA(hDlg, GWLP_USERDATA, (LONG_PTR)pState);
 
                 const HWND hPlayers = GetDlgItem(hDlg, IDC_PLAYER_LIST);
 
@@ -416,7 +416,7 @@ int __cdecl RatingsDialog::InitControls(HWND hDlg)
 // FUNCTION: HYPERX 0x0041b7e0
 void __cdecl RatingsDialog::Close(HWND hWnd, INT_PTR nResult)
 {
-    RatingsDialogState* pState = (RatingsDialogState*)GetWindowLongA(hWnd, GWL_USERDATA);
+    RatingsDialogState* pState = (RatingsDialogState*)GetWindowLongPtrA(hWnd, GWLP_USERDATA);
 
     if (pState != 0)
     {
@@ -444,7 +444,7 @@ void __cdecl RatingsDialog::Close(HWND hWnd, INT_PTR nResult)
         delete pState;
     }
 
-    SetWindowLongA(hWnd, GWL_USERDATA, 0);
+    SetWindowLongPtrA(hWnd, GWLP_USERDATA, 0);
 
     EndDialog(hWnd, nResult);
 }
