@@ -14,6 +14,11 @@ constexpr auto TICK_MS = 1000.0f / 30.0f;
 
 void BeginTick();
 
+// For the debug menu: ticks run in the last whole second, and how far the ticks' own time ran
+// ahead of the wall clock over it.
+int   TicksPerSecond();
+float DriftMs();
+
 // Called where ViewIt drew: keeps what it pushed, and the bones and camera as they stand, beside
 // the last tick's.
 void RecordView(CameraObject& camera);

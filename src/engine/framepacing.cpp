@@ -269,11 +269,52 @@ void PlaceCamera(CameraObject& camera, float flAlpha)
 
 } // namespace
 
+static auto s_dNowMs = 0.0;
+
+static auto s_nRateTicks  = 0;
+static auto s_nRate       = 0;
+static auto s_nRateStart  = std::uint64_t{ 0 };
+static auto s_dDriftStart = 0.0;
+static auto s_flDrift     = 0.0f;
+
 void FramePacing::BeginTick()
 {
     s_views.clear();
     s_nTick++;
+
+    s_dNowMs += TICK_MS;
+
+    const auto nNow = SDL_GetTicks();
+
+    if (s_nRateStart == 0 || nNow - s_nRateStart > 5000)
+    {
+        s_nRateStart  = nNow;
+        s_dDriftStart = s_dNowMs;
+        s_nRateTicks  = 0;
+    }
+
+    s_nRateTicks++;
+
+    if (nNow - s_nRateStart >= 1000)
+    {
+        s_flDrift     = (float)((s_dNowMs - s_dDriftStart) - (double)(nNow - s_nRateStart));
+        s_nRate       = s_nRateTicks;
+        s_nRateStart  = nNow;
+        s_dDriftStart = s_dNowMs;
+        s_nRateTicks  = 0;
+    }
 }
+
+int FramePacing::TicksPerSecond()
+{
+    return s_nRate;
+}
+
+float FramePacing::DriftMs()
+{
+    return s_flDrift;
+}
+
 
 void FramePacing::RecordView(CameraObject& camera)
 {

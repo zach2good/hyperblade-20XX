@@ -1,6 +1,7 @@
 #include "common/compat.h"
 #include "ui/debugmenu.h"
 #include "app/window.h"
+#include "engine/framepacing.h"
 #include "graphics/graphicssettings.h"
 #include "graphics/presenter.h"
 #include <SDL3/SDL.h>
@@ -69,6 +70,8 @@ void Build()
     ImGui::SeparatorText("Timing");
 
     Checkbox("Uncapped frame rate", GraphicsSettings::Uncapped(), GraphicsSettings::ToggleUncapped);
+
+    ImGui::Text("%d ticks/s, clock drift %+.0f ms/s", FramePacing::TicksPerSecond(), FramePacing::DriftMs());
 
     ImGui::End();
 }
