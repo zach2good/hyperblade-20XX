@@ -66,7 +66,117 @@ static void ReleaseHeldKeys()
 
 } // namespace WndProc
 
-// Key and button messages go to the input device during a match and to the screen otherwise.
+// The game's input, as the window delivers it. Keys are Win32 virtual-key codes, which the key
+// bindings store; buttons are the MK_ flags of every button and modifier held, and points are client
+// pixels. A match reads a button's flag word as a key, so MK_LBUTTON lands on VK_LBUTTON.
+
+static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
+{
+    const HWND hWnd = g_gameApp.m_hWnd;
+
+    if (g_nSplashFrame != 0)
+    {
+        GameApp::NextSplash(hWnd);
+
+        return;
+    }
+
+    // F2 opens the debug menu anywhere, before a match or a menu sees the key.
+    if (uMsg == WM_KEYDOWN && wParam == VK_F2)
+    {
+        DebugMenu::Toggle();
+
+        return;
+    }
+
+    // A key held when the focus leaves never sees its release here.
+    WndProc::NoteKey(uMsg, wParam);
+
+    if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    {
+        if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+        {
+            // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
+            if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown(wParam) == -1)
+            {
+                GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
+            }
+
+            return;
+        }
+    }
+    else if (g_pActiveScreen != NULL)
+    {
+        if (uMsg == WM_KEYDOWN)
+        {
+            if (wParam == VK_F1)
+            {
+                GameApp::ShowHelp(hWnd);
+                return;
+            }
+
+            g_pActiveScreen->HandleKeyMessage(WM_KEYDOWN, wParam, (unsigned int)lParam);
+        }
+        else
+        {
+            g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
+        }
+
+        return;
+    }
+
+    if (wParam == 'Q' || wParam == VK_ESCAPE || wParam == VK_PAUSE)
+    {
+        GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
+    }
+}
+
+static void Release(UINT uMsg, unsigned int wParam, LPARAM lParam)
+{
+    WndProc::NoteKey(uMsg, wParam);
+
+    if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    {
+        if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
+        {
+            g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(g_gameApp.m_hWnd, lParam));
+        }
+    }
+    else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+    {
+        g_pInputDevice->HandleKeyUp(wParam);
+    }
+}
+
+void WndProc::OnKeyDown(unsigned int nKey)
+{
+    Press(WM_KEYDOWN, nKey, 0);
+}
+
+void WndProc::OnKeyUp(unsigned int nKey)
+{
+    Release(WM_KEYUP, nKey, 0);
+}
+
+void WndProc::OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX, int nY)
+{
+    if (nMessage == WM_LBUTTONDOWN || nMessage == WM_RBUTTONDOWN)
+    {
+        Press(nMessage, nButtons, MAKELPARAM(nX, nY));
+    }
+    else
+    {
+        Release(nMessage, nButtons, MAKELPARAM(nX, nY));
+    }
+}
+
+void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
+{
+    if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    {
+        g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, nButtons, (unsigned int)Window::ToMenuPoint(g_gameApp.m_hWnd, MAKELPARAM(nX, nY)));
+    }
+}
 
 // FUNCTION: HYPERX 0x0044c330
 LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -123,75 +233,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             MainWindow::OnCommand(hWnd, LOWORD(wParam), lParam, HIWORD(wParam));
             return 0;
 
-        case WM_MOUSEMOVE:
-            if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
-            {
-                g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, (unsigned int)wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
-            }
-
-            return 0;
-
-        case WM_KEYDOWN:
-        case WM_LBUTTONDOWN:
-        case WM_RBUTTONDOWN:
-            if (g_nSplashFrame != 0)
-            {
-                GameApp::NextSplash(hWnd);
-
-                return 0;
-            }
-
-            // F2 opens the debug menu anywhere, before a match or a menu sees the key.
-            if (uMsg == WM_KEYDOWN && wParam == VK_F2)
-            {
-                DebugMenu::Toggle();
-
-                return 0;
-            }
-
-            // The WM_KEYUP for a held key can go to another window, so the key is remembered.
-            WndProc::NoteKey(uMsg, wParam);
-
-            if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
-            {
-                if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
-                {
-                    // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
-                    if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown((unsigned int)wParam) == -1)
-                    {
-                        GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
-                    }
-
-                    return 0;
-                }
-            }
-            else if (g_pActiveScreen != NULL)
-            {
-                if (uMsg == WM_KEYDOWN)
-                {
-                    if (wParam == VK_F1)
-                    {
-                        GameApp::ShowHelp(hWnd);
-                        return 0;
-                    }
-
-                    g_pActiveScreen->HandleKeyMessage(WM_KEYDOWN, (unsigned int)wParam, (unsigned int)lParam);
-                }
-                else
-                {
-                    g_pActiveScreen->OnMouseMessage(uMsg, (unsigned int)wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
-                }
-
-                return 0;
-            }
-
-            if (wParam == 'Q' || wParam == VK_ESCAPE || wParam == VK_PAUSE)
-            {
-                GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
-            }
-
-            return 0;
-
         case WM_PALETTECHANGED:
             if (hWnd == (HWND)wParam || hWnd == GetParent((HWND)wParam))
             {
@@ -221,26 +262,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             }
 
             return g_pColorPalette->RealizePalette() & 0xff;
-
-        case WM_KEYUP:
-        case WM_LBUTTONUP:
-        case WM_RBUTTONUP:
-            WndProc::NoteKey(uMsg, wParam);
-
-            if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
-            {
-                if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
-                {
-                    g_pActiveScreen->OnMouseMessage(uMsg, (unsigned int)wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
-                }
-            }
-            else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
-            {
-                g_pInputDevice->HandleKeyUp((unsigned int)wParam);
-                return 0;
-            }
-
-            break;
     }
 
     return DefWindowProcA(hWnd, uMsg, wParam, lParam);

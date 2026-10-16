@@ -112,7 +112,7 @@ void Down(Press& press, int nBinding, unsigned int nMenuKey)
 
     press = Press{ Route::MENU, nMenuKey };
 
-    WndProc::MainWndProc(g_gameApp.m_hWnd, WM_KEYDOWN, nMenuKey, 0);
+    WndProc::OnKeyDown(nMenuKey);
 }
 
 void Up(Press& press)
@@ -123,7 +123,7 @@ void Up(Press& press)
     }
     else if (press.route == Route::MENU)
     {
-        WndProc::MainWndProc(g_gameApp.m_hWnd, WM_KEYUP, press.nKey, 0);
+        WndProc::OnKeyUp(press.nKey);
     }
 
     press = Press{};

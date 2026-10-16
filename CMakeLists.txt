@@ -255,6 +255,7 @@ set(HYPERX_SOURCES
     src/input/cheat.cpp
     src/input/deviceobject.cpp
     src/input/input.cpp
+    src/input/keymap.cpp
     src/input/gamepad.cpp
     src/input/keyboarddeviceobj.cpp
     src/math/math.cpp
@@ -436,12 +437,23 @@ add_custom_command(TARGET hwpipeline_check POST_BUILD
     COMMAND_EXPAND_LISTS
     VERBATIM)
 
+# Maps SDL keys to the virtual-key codes the key bindings store.
+add_executable(keymap_check tests/keymap_check.cpp src/input/keymap.cpp)
+target_include_directories(keymap_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_options(keymap_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_link_libraries(keymap_check PRIVATE SDL3::SDL3)
+add_custom_command(TARGET keymap_check POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:keymap_check> $<TARGET_FILE_DIR:keymap_check>
+    COMMAND_EXPAND_LISTS
+    VERBATIM)
+
 enable_testing()
 
 add_test(NAME ini COMMAND ini_check)
 add_test(NAME strings COMMAND strings_check)
 add_test(NAME hwpipeline COMMAND hwpipeline_check)
 add_test(NAME hwmesh COMMAND hwmesh_check)
+add_test(NAME keymap COMMAND keymap_check)
 
 if(HYPERX_GAME_DATA)
     add_test(NAME mdm1 COMMAND mdm1_check "${HYPERX_GAME_DATA}/Data")

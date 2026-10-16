@@ -13,6 +13,13 @@ int __cdecl          OnActivate(HWND hWnd, unsigned int bActive, LPARAM lParam);
 unsigned int __cdecl HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand);
 LRESULT CALLBACK     MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+// Input from the window. Keys are Win32 virtual-key codes; nMessage is WM_LBUTTONDOWN, WM_LBUTTONUP,
+// WM_RBUTTONDOWN or WM_RBUTTONUP; buttons are MK_ flags; points are client pixels.
+void OnKeyDown(unsigned int nKey);
+void OnKeyUp(unsigned int nKey);
+void OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX, int nY);
+void OnMouseMove(unsigned int nButtons, int nX, int nY);
+
 } // namespace WndProc
 
 #endif

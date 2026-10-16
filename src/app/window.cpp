@@ -14,8 +14,10 @@
 #include "app/appglobals.h"
 #include "ui/screen.h"
 #include "ui/debugmenu.h"
+#include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <array>
+#include <utility>
 #include <variant>
 #include <span>
 #include <algorithm>
@@ -215,42 +217,133 @@ void Window::OnSizeMenus(HWND hWnd, WPARAM nKind)
 static bool s_bQuit         = false;
 static bool s_bInLiveUpdate = false;
 
+// Only the menu bar's commands still come as Win32 messages.
 static void HandleWin32Message(const MSG* pMsg)
 {
-    switch (pMsg->message)
+    if (pMsg->message == WM_COMMAND)
     {
-        // F2 opens and closes the debug menu, so it always gets through.
-        case WM_KEYDOWN:
-            if (DebugMenu::WantsKeyboard() && pMsg->wParam != VK_F2)
-            {
-                break;
-            }
-
-            WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
-            break;
-
-        case WM_LBUTTONDOWN:
-        case WM_RBUTTONDOWN:
-        case WM_MOUSEMOVE:
-            if (DebugMenu::WantsMouse())
-            {
-                break;
-            }
-
-            WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
-            break;
-
-        // Releases always reach the game, so no key or button is left held.
-        case WM_KEYUP:
-        case WM_LBUTTONUP:
-        case WM_RBUTTONUP:
-        case WM_COMMAND:
-            WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
-            break;
-
-        default:
-            break;
+        WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
     }
+}
+
+// The MK_ flags Windows put on a mouse message: the buttons held once it is handled, with Shift
+// and Ctrl.
+static unsigned int MouseFlags(SDL_MouseButtonFlags buttons)
+{
+    constexpr std::pair<SDL_MouseButtonFlags, unsigned int> BUTTONS[] = {
+        { SDL_BUTTON_LMASK, MK_LBUTTON },
+        { SDL_BUTTON_RMASK, MK_RBUTTON },
+        { SDL_BUTTON_MMASK, MK_MBUTTON },
+        { SDL_BUTTON_X1MASK, MK_XBUTTON1 },
+        { SDL_BUTTON_X2MASK, MK_XBUTTON2 },
+    };
+
+    auto nFlags = 0u;
+
+    for (const auto& [mask, nFlag] : BUTTONS)
+    {
+        if ((buttons & mask) != 0)
+        {
+            nFlags |= nFlag;
+        }
+    }
+
+    const auto mod = SDL_GetModState();
+
+    if ((mod & SDL_KMOD_SHIFT) != 0)
+    {
+        nFlags |= MK_SHIFT;
+    }
+
+    if ((mod & SDL_KMOD_CTRL) != 0)
+    {
+        nFlags |= MK_CONTROL;
+    }
+
+    return nFlags;
+}
+
+// SDL's window coordinates as the client pixels Windows sent.
+static std::pair<int, int> ClientPixels(float flX, float flY)
+{
+    const auto flDensity = SDL_GetWindowPixelDensity(s_pWindow);
+
+    return { (int)(flX * flDensity), (int)(flY * flDensity) };
+}
+
+static void HandleKey(const SDL_KeyboardEvent& key)
+{
+    // Windows sent Alt and anything held with it as system keys, which never reached the game.
+    if ((key.mod & SDL_KMOD_ALT) != 0)
+    {
+        return;
+    }
+
+    const auto nKey = KeyMap::ToVirtualKey(key.scancode, key.key);
+
+    if (nKey == 0)
+    {
+        return;
+    }
+
+    // Releases always reach the game, so no key is left held; F2 opens and closes the debug menu.
+    if (!key.down)
+    {
+        WndProc::OnKeyUp(nKey);
+    }
+    else if (!DebugMenu::WantsKeyboard() || nKey == VK_F2)
+    {
+        WndProc::OnKeyDown(nKey);
+    }
+}
+
+static void HandleMouseButton(const SDL_MouseButtonEvent& button)
+{
+    // The game only ever saw the left and right buttons.
+    const auto nMessage = [&]() -> unsigned int
+    {
+        if (button.button == SDL_BUTTON_LEFT)
+        {
+            if (button.down)
+            {
+                return WM_LBUTTONDOWN;
+            }
+
+            return WM_LBUTTONUP;
+        }
+
+        if (button.button == SDL_BUTTON_RIGHT)
+        {
+            if (button.down)
+            {
+                return WM_RBUTTONDOWN;
+            }
+
+            return WM_RBUTTONUP;
+        }
+
+        return 0;
+    }();
+
+    if (nMessage == 0 || (button.down && DebugMenu::WantsMouse()))
+    {
+        return;
+    }
+
+    auto buttons = SDL_GetMouseState(0, 0);
+
+    if (button.down)
+    {
+        buttons |= SDL_BUTTON_MASK(button.button);
+    }
+    else
+    {
+        buttons &= ~SDL_BUTTON_MASK(button.button);
+    }
+
+    const auto [nX, nY] = ClientPixels(button.x, button.y);
+
+    WndProc::OnMouseButton(nMessage, MouseFlags(buttons), nX, nY);
 }
 
 // A watch sees each window event as SDL's window procedure raises it, as the game saw the
@@ -261,6 +354,26 @@ static void HandleWindowEvent(SDL_Event* pEvent)
 
     switch (pEvent->type)
     {
+        case SDL_EVENT_KEY_DOWN:
+        case SDL_EVENT_KEY_UP:
+            HandleKey(pEvent->key);
+            break;
+
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        case SDL_EVENT_MOUSE_BUTTON_UP:
+            HandleMouseButton(pEvent->button);
+            break;
+
+        case SDL_EVENT_MOUSE_MOTION:
+            if (!DebugMenu::WantsMouse())
+            {
+                const auto [nX, nY] = ClientPixels(pEvent->motion.x, pEvent->motion.y);
+
+                WndProc::OnMouseMove(MouseFlags(pEvent->motion.state), nX, nY);
+            }
+
+            break;
+
         case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
             WndProc::MainWndProc(hWnd, WM_SIZE, SIZE_RESTORED, MAKELPARAM(pEvent->window.data1, pEvent->window.data2));
             break;
