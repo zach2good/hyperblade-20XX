@@ -94,6 +94,9 @@ python -m reccmp.tools.asmcmp --target HYPERX --verbose 0xADDRESS --no-color
 function's diff. reccmp's `Dropped duplicate address` errors are expected. Don't run
 `build/out/HYPERX.exe`, which changes the display resolution.
 
+Without a copy of the game, configure with `-DHYPERX_COMPILE_ONLY=ON`. That compiles every source
+but links no image and runs no check.
+
 ## Running the game
 
 The bring-up build adds a windowed mode and other fixes under `#ifdef HYPERX_BRINGUP`, and draws

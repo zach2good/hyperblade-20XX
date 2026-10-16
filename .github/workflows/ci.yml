@@ -1,12 +1,13 @@
 # The build reads resources out of your own copy of the game, which no hosted runner has. So
 # on every push CI proves only what it can without the game: the checks that read this
-# repository, the formatting, and that the toolchain is the right one.
+# repository, the formatting, that the toolchain is the right one, and that every source
+# compiles with it.
 #
 # The build-and-score job needs a self-hosted runner that holds HYPERX.EXE. It's skipped
 # until the repository variable HYPERX_SELF_HOSTED is 'true', and it runs only on a push to
 # main or by hand, never on a pull request, so code from a fork never reaches that runner.
 #
-# Both jobs that compile take the VC6 SP3 tree from zach2good/vc6-sp3-toolchain.
+# Every job that compiles takes the VC6 SP3 tree from zach2good/vc6-sp3-toolchain.
 
 name: ci
 
@@ -79,6 +80,40 @@ jobs:
 
       - name: Compile one file and read @comp.id back out
         run: python vc6/tools/smoke.py
+
+  compile:
+    name: Compile (${{ matrix.name }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: measured
+            bringup: 'OFF'
+          - name: bring-up
+            bringup: 'ON'
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Fetch the VC6 SP3 toolchain
+        uses: actions/checkout@v5
+        with:
+          repository: zach2good/vc6-sp3-toolchain
+          path: vc6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Configure and compile, without the game
+        shell: cmd
+        run: |
+          cmake -S . -B build -DVC6_ROOT=%CD%\vc6 -G "NMake Makefiles" ^
+                -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-vc6sp3.cmake ^
+                -DCMAKE_BUILD_TYPE=Release -DHYPERX_COMPILE_ONLY=ON ^
+                -DHYPERX_BRINGUP=${{ matrix.bringup }} ^
+                -DCMAKE_MAKE_PROGRAM=%CD%\vc6\VC98\BIN\NMAKE.EXE || exit /b 1
+          python tools\cmake_build.py build || exit /b 1
 
   build:
     name: Build and score

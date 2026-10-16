@@ -22,9 +22,14 @@ endforeach()
 option(HYPERX_BRINGUP
     "Build the bring-up images, which run on a modern machine. Never measure this build." OFF)
 
+option(HYPERX_COMPILE_ONLY
+    "Compile every source without your copy of the game. Links no image and runs no check." OFF)
+
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
-include(cmake/resources.cmake)
+if(NOT HYPERX_COMPILE_ONLY)
+    include(cmake/resources.cmake)
+endif()
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
 set(JPEG6A_DIR "${CMAKE_SOURCE_DIR}/third_party/jpeg-6a")
@@ -453,6 +458,12 @@ target_include_directories(jpeg6a_objects PRIVATE "${JPEG6A_DIR}" "${CMAKE_SOURC
 target_compile_options(jpeg6a_objects PRIVATE /O1 /Ob2)
 
 add_library(jpeg6a STATIC $<TARGET_OBJECTS:jpeg6a_objects>)
+
+# Everything below needs the original: its resources, its timestamp, or its bytes to compare.
+if(HYPERX_COMPILE_ONLY)
+    message(STATUS "Compile only: no image is linked")
+    return()
+endif()
 
 # hyperx_image(<target> <output name> [STAMP] [LINK_OPTIONS <options>...])
 # STAMP patches in the original's COFF TimeDateStamp, which LINK.EXE 6.00.8447 cannot set.
