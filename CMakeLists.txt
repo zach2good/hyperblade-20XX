@@ -16,6 +16,7 @@ set(HYPERX_GAME_DATA "" CACHE PATH
     "Directory holding the game's HYPERX.EXE and its Data, DIRECTX, AVI, DOS and ACRODOS folders")
 
 include(cmake/dependencies.cmake)
+include(cmake/shaders.cmake)
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
 set(STB_DIR "${CMAKE_SOURCE_DIR}/third_party/stb")
@@ -218,6 +219,8 @@ set(HYPERX_SOURCES
     src/graphics/infobarradar.cpp
     src/graphics/graphicssettings.cpp
     src/graphics/hudlayer.cpp
+    src/graphics/hwmesh.cpp
+    src/graphics/hwpipeline.cpp
     src/graphics/hwrenderer.cpp
     src/graphics/infobarslot.cpp
     src/graphics/lightattenuation.cpp
@@ -385,6 +388,8 @@ target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_N
     DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
 target_compile_options(hyperx_objects PRIVATE /W3 /permissive /utf-8 /EHsc)
 
+hyperx_add_shaders(hyperx_objects shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl)
+
 # Decodes every MDM1 file in the game data against its recorded size.
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
 target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
@@ -396,6 +401,12 @@ add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp)
 target_include_directories(wave_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(wave_check PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_compile_options(wave_check PRIVATE /W3 /utf-8 /EHsc)
+
+# Builds hardware triangle lists from small hand-made mesh blocks.
+add_executable(hwmesh_check tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
+target_include_directories(hwmesh_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_definitions(hwmesh_check PRIVATE _CRT_SECURE_NO_WARNINGS)
+target_compile_options(hwmesh_check PRIVATE /W3 /permissive /utf-8 /EHsc)
 
 # Round-trips booie.ini reads and writes.
 add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp)
@@ -411,6 +422,7 @@ enable_testing()
 
 add_test(NAME ini COMMAND ini_check)
 add_test(NAME strings COMMAND strings_check)
+add_test(NAME hwmesh COMMAND hwmesh_check)
 
 if(HYPERX_GAME_DATA)
     add_test(NAME mdm1 COMMAND mdm1_check "${HYPERX_GAME_DATA}/Data")
