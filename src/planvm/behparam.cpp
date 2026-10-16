@@ -73,11 +73,11 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
 
     for (; nIndex < TARGET_COUNT; nIndex++)
     {
-        if (pNode->m_pArgs[ARG_FIRST + nIndex].IsSelector())
+        if (pNode->m_pArgs[ARG_FIRST + nIndex].IsPronoun())
         {
-            const unsigned int nSelector = pNode->m_pArgs[ARG_FIRST + nIndex].wSelector;
+            const unsigned int nPronoun = pNode->m_pArgs[ARG_FIRST + nIndex].wPronoun;
 
-            nValue = g_apPlanArgFns[nSelector](&pActor->GetPlanState()->m_pOwner, 0, 0);
+            nValue = g_apPlanArgFns[nPronoun](&pActor->GetPlanState()->m_pOwner, 0, 0);
         }
         else
         {
@@ -295,21 +295,21 @@ void __cdecl BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pR
         pEntry = 0;
     }
 
-    pOut->m_pClipB = pEntry;
-    pOut->m_pClipA = pEntry;
+    pOut->m_pPersistentAnimation = pEntry;
+    pOut->m_pAnimation           = pEntry;
 
     if (pRef->m_nArgCount == 4)
     {
-        pOut->SetClipB(pRef->m_pArgs[2].fl, pRef->m_pArgs[3].n);
-        pOut->SetClipA(pRef->m_pArgs[2].fl, pRef->m_pArgs[3].n);
+        pOut->SetPersistentPlayback(pRef->m_pArgs[2].fl, pRef->m_pArgs[3].n);
+        pOut->SetAnimationPlayback(pRef->m_pArgs[2].fl, pRef->m_pArgs[3].n);
 
         return;
     }
 
-    pOut->m_flRateB     = PAIR_NONE;
-    pOut->m_nClipFlagsB = 1;
-    pOut->m_flRateA     = PAIR_NONE;
-    pOut->m_nClipFlagsA = 1;
+    pOut->m_flPersistentRate = PAIR_NONE;
+    pOut->m_nPersistentFlags = 1;
+    pOut->m_flAnimationRate  = PAIR_NONE;
+    pOut->m_nAnimationFlags  = 1;
 }
 
 // FUNCTION: HYPERX 0x0041cce0
@@ -329,16 +329,16 @@ void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* 
         pClip = 0;
     }
 
-    pBehaviour->m_pClipA = pClip;
+    pBehaviour->m_pAnimation = pClip;
 
     if (pNode->m_nArgCount == 4)
     {
-        pBehaviour->SetClipA(pNode->m_pArgs[2].fl, pNode->m_pArgs[3].n);
+        pBehaviour->SetAnimationPlayback(pNode->m_pArgs[2].fl, pNode->m_pArgs[3].n);
         return;
     }
 
-    pBehaviour->m_flRateA     = -1.0f;
-    pBehaviour->m_nClipFlagsA = -1;
+    pBehaviour->m_flAnimationRate = -1.0f;
+    pBehaviour->m_nAnimationFlags = -1;
 }
 
 // FUNCTION: HYPERX 0x0041cd40

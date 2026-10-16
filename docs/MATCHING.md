@@ -760,9 +760,9 @@ Assign both arms. `nIndex = nSlot; if (c) nIndex += 2;` and
 `if (c) nIndex = nSlot + 2; else nIndex = nSlot;` load the slot into different registers.
 Example: `PlanCond::PassOrRunByRatings`.
 
-A raw word and the value resolved from it are two variables. Where the selector arm's answer and
+A raw word and the value resolved from it are two variables. Where the pronoun arm's answer and
 the raw argument sit in two registers, joined by `jmp` over `mov eax, ecx`, write
-`nRaw = pArgs[1]; if (selector) nTarget = f(...); else nTarget = nRaw;`. One variable reassigned
+`nRaw = pArgs[1]; if (pronoun) nTarget = f(...); else nTarget = nRaw;`. One variable reassigned
 in place loads the word into the answer's register. Example: `PlanAction::SendMsg`.
 
 `cmp ax, K`, then `movsx`, then the branch is a `short` tested and an `int` assigned in both
@@ -778,7 +778,7 @@ the registers reads lower than it is, so re-measure it once that fault is gone.
 Move a read used in both arms into each arm. A read hoisted above the branch keeps its source
 register alive across the test.
 
-A selector arm that extends the word from memory wants the neighbouring reads after the
+A pronoun arm that extends the word from memory wants the neighbouring reads after the
 `if`/`else` (`movsx ecx, [param]` / `je` / `movsx ecx, word ptr [eax+4]`). Read above it, they
 keep the tag in a register, and VC6 extends the low half of that register. Example:
 `PlanAction::ModifyDamage`.
@@ -2049,8 +2049,8 @@ details decide it, each with what the wrong spelling cost:
 - An index getter returns `int`. Returning `unsigned short` let VC6 common the read with the
   fall-through return, 100.00 to 53.85.
 - A half the client loads with a word read (`xor edx, edx` then `mov dx, word ptr [eax+4]`) is a
-  union field, not a getter. An inlined `PlanWord::GetSelector` dropped five exact `PlanAction`
-  rows as far as 41.03; the `wSelector` field keeps all 26 sites exact or level.
+  union field, not a getter. An inlined `PlanWord::GetPronoun` dropped five exact `PlanAction`
+  rows as far as 41.03; the `wPronoun` field keeps all 26 sites exact or level.
 - A word the client reloads for each field is not copied into a record local. Static getters that
   take the word at each call keep `GameEngine::ProcessInputCommandQueue` exact (0x004871c2); a
   `const` record copy cost 3.24.

@@ -144,9 +144,9 @@ void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, sho
         const float flRate = pBlock[ARG_RATE].fl;
         const int   nFlags = pBlock[ARG_FLAGS].n;
 
-        pBehavior->m_pClipA      = pAnim;
-        pBehavior->m_flRateA     = flRate;
-        pBehavior->m_nClipFlagsA = nFlags;
+        pBehavior->m_pAnimation      = pAnim;
+        pBehavior->m_flAnimationRate = flRate;
+        pBehavior->m_nAnimationFlags = nFlags;
 
         pContext->GetActor()->StartClipPlayback(pAnim, flRate, nFlags);
 

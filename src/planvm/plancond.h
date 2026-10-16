@@ -41,7 +41,7 @@ void __cdecl DecideGoalieLaunch(Interactor* pContext, PlanNode* pArgs, short* pR
 void __cdecl Decide_Attachment(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         ForceRearView(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl OkToLaunchRok(Interactor* pContext, PlanNode* pArgs, short* pOutValid, int nArg);
-void         SetAnonLocal(EngineObject* pActor, PlanNode* pNode, class GameBehaviorObject* pBehaviour, Interactor* pInteractor);
+void         SetInteractorName(EngineObject* pActor, PlanNode* pNode, class GameBehaviorObject* pBehaviour, Interactor* pInteractor);
 void __cdecl SetActiveState(EngineObject* pActor, PlanNode* pNode, class GameBehaviorObject* pBehaviour, Interactor* pInteractor);
 void         Decide_Celebration(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl EngageWhichOpponent(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPrevSlot);

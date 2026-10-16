@@ -3,7 +3,7 @@
 # Usage: python tools/check_macro_enum_clash.py
 # Always exits 0; the count is the result.
 #
-# The preprocessor rewrites the enumerator's name, so `PLAN_ARG_SELECTOR = 0xfedc,` becomes
+# The preprocessor rewrites the enumerator's name, so `PLAN_ARG_PRONOUN = 0xfedc,` becomes
 # `0xfedc = 0xfedc,` and the enum stops parsing. That happens only once the file gains an include
 # that reaches the macro, so a clean build does not prove a new header macro is safe. Pairs in
 # the same file are skipped, since they fail the build at once.

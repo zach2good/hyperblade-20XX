@@ -49,7 +49,7 @@ CLEARED = {
     ("g_pfnPlanOpcodeHandlers", 105, "PlanCond::GetTeamParity"):
         "one body registered at two ids, so it can carry neither name. Its other slot is 93, "
         "where id_DCF_HomeOrAwayTeam happens to share a word with it.",
-    ("g_pfnPlanOpcodeHandlers", 0, "PlanCond::SetAnonLocal"):
+    ("g_pfnPlanOpcodeHandlers", 0, "PlanCond::SetInteractorName"):
         "slot nought, which is one of the two the enum has no entry for.",
     ("g_pfnPlanOpcodeHandlers", 1, "PlanCond::SetActiveState"): "as opcode 0.",
     ("g_pfnPlanOpcodeHandlers", 93, "PlanCond::GetTeamParity"): "as opcode 105.",

@@ -1,4 +1,4 @@
-// Plan argument selectors: most resolve an ENUMIDS.H pronoun from the actor's slot.
+// Plan argument resolvers: most resolve an ENUMIDS.H pronoun from the actor's slot.
 
 #include "engine/devicector.h"
 #include "common/compat.h"
@@ -294,7 +294,7 @@ short PlanArg::GetMyDragStartPos(EngineObject** ppActor, const PlanWord*, int* p
     return (short)(*pResult = ((nMe & 1) | POS_HOME_DRAG_START_POS));
 }
 
-// The view and Rok pronouns resolve at run time: each selector keeps the first word of the argument block.
+// The view and Rok pronouns resolve at run time: each resolver keeps the first word of the argument block.
 // FUNCTION: HYPERX 0x0047cb20
 short PlanArg::GetViewOwner(EngineObject**, const PlanWord* pStream, int* pResult)
 {

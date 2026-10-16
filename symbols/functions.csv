@@ -1830,7 +1830,7 @@ address,name,size,convention,signature
 0x0045e1e0,thunk_InitializeGlobal004CFA44,5,__stdcall,undefined __stdcall thunk_InitializeGlobal004CFA44(void)
 0x0045e1f0,InitializeGlobal004CFA44,11,__stdcall,undefined __stdcall InitializeGlobal004CFA44(void)
 0x0045e200,CollisionObj::GetModelId,238,__cdecl,dword __cdecl CollisionObj::GetModelId(dword param_1)
-0x0045e2f0,PlanCond::SetAnonLocal,36,__cdecl,"void __cdecl PlanCond::SetAnonLocal(int * param_1, int param_2, dword param_3, dword param_4)"
+0x0045e2f0,PlanCond::SetInteractorName,36,__cdecl,"void __cdecl PlanCond::SetInteractorName(int * param_1, int param_2, dword param_3, dword param_4)"
 0x0045e320,PlanCond::SetActiveState,105,__cdecl,"void __cdecl PlanCond::SetActiveState(int * param_1, int param_2, dword param_3, int * param_4)"
 0x0045e390,PlanArg::ResolveFloat,83,__cdecl,"float10 __cdecl PlanArg::ResolveFloat(int * param_1, int param_2, short param_3)"
 0x0045e3f0,PlanCond::Decide_Celebration,59,__cdecl,"void __cdecl PlanCond::Decide_Celebration(int * param_1, dword param_2, ushort * param_3)"
@@ -2451,11 +2451,11 @@ address,name,size,convention,signature
 0x0047ecd0,PlanVM::SkipLine,77,__fastcall,uint __fastcall PlanVM::SkipLine(int param_1)
 0x0047ed20,PlanVM::SkipSeparators,40,__fastcall,short __fastcall PlanVM::SkipSeparators(int param_1)
 0x0047ed50,PlanVM::FindLocalRealIndex,219,__thiscall,"uint __thiscall PlanVM::FindLocalRealIndex(void * this, char * param_1)"
-0x0047ee30,PlanVM::FindInteractorParamIndex,220,__thiscall,"uint __thiscall PlanVM::FindInteractorParamIndex(void * this, char * param_1)"
+0x0047ee30,PlanVM::FindInteractorNameIndex,220,__thiscall,"uint __thiscall PlanVM::FindInteractorNameIndex(void * this, char * param_1)"
 0x0047ef10,PlanVM::LookupKeyword,165,__thiscall,"void __thiscall PlanVM::LookupKeyword(void * this, dword * param_1, byte * param_2)"
 0x0047efc0,PlanVM::LookupSymbol,255,__thiscall,"void __thiscall PlanVM::LookupSymbol(void * this, dword * param_1, byte * param_2)"
 0x0047f0c0,PlanVM::FindBehaviorIndexOrThrow,212,__thiscall,"dword __thiscall PlanVM::FindBehaviorIndexOrThrow(void * this, byte * param_1)"
-0x0047f1a0,PlanVM::FindInteractorParamIndexOrThrow,162,__thiscall,"dword __thiscall PlanVM::FindInteractorParamIndexOrThrow(void * this, byte * param_1)"
+0x0047f1a0,PlanVM::FindInteractorNameIndexOrThrow,162,__thiscall,"dword __thiscall PlanVM::FindInteractorNameIndexOrThrow(void * this, byte * param_1)"
 0x0047f250,PlanVM::LoadSymbolTables,1245,__fastcall,void __fastcall PlanVM::LoadSymbolTables(void * pPlanVm)
 0x0047f730,PlanVM::UnquoteString,26,__cdecl,char * __cdecl PlanVM::UnquoteString(char * param_1)
 0x0047f750,thunk_InitializeGlobal004D1A64,5,__stdcall,undefined __stdcall thunk_InitializeGlobal004D1A64(void)

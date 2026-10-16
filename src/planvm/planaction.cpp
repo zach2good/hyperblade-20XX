@@ -135,11 +135,11 @@ void __cdecl PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs
     PlanWord        slot   = pBlock[1];
     const int       nIndex = pBlock[2].n;
 
-    if (slot.IsSelector())
+    if (slot.IsPronoun())
     {
-        PlanStatFn pfnSelector = g_apPlanStatFns[slot.wSelector];
+        PlanStatFn pfnResolver = g_apPlanStatFns[slot.wPronoun];
 
-        slot.n = pfnSelector(pContext->GetActor(), pArgs);
+        slot.n = pfnResolver(pContext->GetActor(), pArgs);
     }
 
     if (slot.n == SLOT_NONE)

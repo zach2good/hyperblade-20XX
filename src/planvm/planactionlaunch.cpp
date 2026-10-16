@@ -716,9 +716,9 @@ void __cdecl PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, sho
         CollisionObj::GetModelId(pContext->GetModelSlot());
     }
 
-    if (param.IsSelector())
+    if (param.IsPronoun())
     {
-        nOperand = g_apPlanStatFns[param.wSelector](pContext->GetActor(), pArgs);
+        nOperand = g_apPlanStatFns[param.wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {

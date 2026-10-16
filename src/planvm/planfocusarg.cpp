@@ -1,4 +1,4 @@
-// The runtime selector bank at 0x004d1798, which answers from the engine's focus slot.
+// The runtime pronoun resolver bank at 0x004d1798, which answers from the engine's focus slot.
 
 #include "engine/gameengine.h"
 #include "common/compat.h"

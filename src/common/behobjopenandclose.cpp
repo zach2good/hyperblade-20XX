@@ -37,11 +37,11 @@ void BehObj_OpenAndClose::SendTimedMessage()
 
     m_wPollCountdown = m_wLatency;
 
-    if (m_pClipA != 0)
+    if (m_pAnimation != 0)
     {
-        m_pOwner->StartClipPlayback(m_pClipA,
-                                    m_flRateA,
-                                    m_nClipFlagsA);
+        m_pOwner->StartClipPlayback(m_pAnimation,
+                                    m_flAnimationRate,
+                                    m_nAnimationFlags);
 
         if (m_nEventTarget != MODEL_ID_NONE && m_nEventKind != MSG_NOMSG)
         {

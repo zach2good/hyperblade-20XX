@@ -291,17 +291,17 @@ void __cdecl PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOu
 }
 
 // FUNCTION: HYPERX 0x0045e2f0
-void PlanCond::SetAnonLocal(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
+void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
 {
     const short nIndex = (short)pNode->m_pArgs[1].n;
 
-    pActor->GetPlanState()->m_apAnonLocals[nIndex] = pInteractor;
+    pActor->GetPlanState()->m_apNamedInteractors[nIndex] = pInteractor;
 }
 
 #define ARG_COUNT_DIRECT  2
 #define ARG_COUNT_INDEXED 3
 
-// A count of three indexes the anonymous locals only under a PLAN_ARG_INTERACTOR_PARAM high half.
+// A count of three indexes the named interactors only under a PLAN_ARG_INTERACTOR_NAME high half.
 // FUNCTION: HYPERX 0x0045e320
 void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehaviorObject*, Interactor* pInteractor)
 {
@@ -315,7 +315,7 @@ void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, Gam
 
     if (nArgCount == ARG_COUNT_INDEXED)
     {
-        if (!pArgs->m_pArgs[1].IsInteractorParam())
+        if (!pArgs->m_pArgs[1].IsInteractorName())
         {
             return;
         }
@@ -324,9 +324,9 @@ void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, Gam
 
         PlanState* const pList = pActor->GetPlanState();
 
-        if (nIndex < pList->m_nAnonLocals)
+        if (nIndex < pList->m_nNamedInteractors)
         {
-            Interactor* const pEntry = pList->m_apAnonLocals[nIndex];
+            Interactor* const pEntry = pList->m_apNamedInteractors[nIndex];
 
             if (pEntry != 0)
             {
@@ -454,9 +454,9 @@ void __cdecl PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, sh
     const PlanWord* pBlock = pArgs->m_pArgs;
     const int       nEvent = pBlock[2].n;
 
-    if (pBlock[1].IsSelector())
+    if (pBlock[1].IsPronoun())
     {
-        nTarget = g_apPlanStatFns[pBlock[1].wSelector](pContext->GetActor(), pArgs);
+        nTarget = g_apPlanStatFns[pBlock[1].wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {
@@ -502,9 +502,9 @@ void __cdecl PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, 
     const PlanWord* pBlock = pArgs->m_pArgs;
     const int       nEvent = pBlock[2].n;
 
-    if (pBlock[1].IsSelector())
+    if (pBlock[1].IsPronoun())
     {
-        nTarget = g_apPlanStatFns[pBlock[1].wSelector](pContext->GetActor(), pArgs);
+        nTarget = g_apPlanStatFns[pBlock[1].wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {
@@ -2828,12 +2828,12 @@ void __cdecl PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, sh
 
     pContext->GetActor();
 
-    if (pArgs->m_pArgs[1].IsSelector())
+    if (pArgs->m_pArgs[1].IsPronoun())
     {
-        pSource = g_pGameEngine->m_ppSlots[g_apPlanStatFns[pArgs->m_pArgs[1].wSelector](
+        pSource = g_pGameEngine->m_ppSlots[g_apPlanStatFns[pArgs->m_pArgs[1].wPronoun](
             pContext->GetActor(), pArgs)];
 
-        pTarget = (PlayerObject*)g_pGameEngine->m_ppSlots[g_apPlanStatFns[pArgs->m_pArgs[1].wSelector](
+        pTarget = (PlayerObject*)g_pGameEngine->m_ppSlots[g_apPlanStatFns[pArgs->m_pArgs[1].wPronoun](
             pContext->GetActor(), pArgs)];
 
         pTarget->m_matchStats.AccumulateStat(pArgs->m_pArgs[2].n,
@@ -2849,9 +2849,9 @@ void __cdecl PlanAction::StartStatTimer(Interactor* pContext, PlanNode* pArgs, s
 {
     PlanWord* const pBlock = pArgs->m_pArgs;
 
-    if (pBlock[1].IsSelector())
+    if (pBlock[1].IsPronoun())
     {
-        const short nSlot = g_apPlanStatFns[pBlock[1].wSelector](
+        const short nSlot = g_apPlanStatFns[pBlock[1].wPronoun](
             pContext->GetActor(), pArgs);
         PlayerObject* const pEntity = g_pGameEngine->GetPlayer(nSlot);
 
@@ -2867,9 +2867,9 @@ void __cdecl PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, sho
 {
     PlanWord* const pBlock = pArgs->m_pArgs;
 
-    if (pBlock[1].IsSelector())
+    if (pBlock[1].IsPronoun())
     {
-        const short nSlot = g_apPlanStatFns[pBlock[1].wSelector](
+        const short nSlot = g_apPlanStatFns[pBlock[1].wPronoun](
             pContext->GetActor(), pArgs);
         PlayerObject* const pEntity = g_pGameEngine->GetPlayer(nSlot);
 
@@ -3789,7 +3789,7 @@ void __cdecl PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short
     }
 
     // The client tests the short at 0x004630fe and indexes the int at 0x00463115.
-    if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_SELECTOR)
+    if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_PRONOUN)
     {
         nSlot = ((PlanStatFnWide*)g_apPlanStatFns)[nSlot & 0xffff](pContext->GetActor(), pArgs);
     }
@@ -4289,9 +4289,9 @@ void __cdecl PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, 
         }
         else
         {
-            if (pBlock[1].IsSelector())
+            if (pBlock[1].IsPronoun())
             {
-                nSlot = g_apPlanStatFns[pBlock[1].wSelector](pContext->GetActor(), pNode);
+                nSlot = g_apPlanStatFns[pBlock[1].wPronoun](pContext->GetActor(), pNode);
             }
             else
             {
@@ -4313,9 +4313,9 @@ void __cdecl PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, 
         }
         else
         {
-            if (pBlock[1].IsSelector())
+            if (pBlock[1].IsPronoun())
             {
-                nSlot = g_apPlanStatFns[pBlock[1].wSelector](pContext->GetActor(), pNode);
+                nSlot = g_apPlanStatFns[pBlock[1].wPronoun](pContext->GetActor(), pNode);
             }
             else
             {
@@ -4374,10 +4374,10 @@ void __cdecl PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, 
 
     PlanWord* pBlock = pArgs->m_pArgs;
 
-    if (pBlock[ARG_OBJECT].IsSelector())
+    if (pBlock[ARG_OBJECT].IsPronoun())
     {
-        nObject = g_apPlanStatFns[pBlock[ARG_OBJECT].wSelector](pContext->GetActor(),
-                                                                pArgs);
+        nObject = g_apPlanStatFns[pBlock[ARG_OBJECT].wPronoun](pContext->GetActor(),
+                                                               pArgs);
     }
     else
     {
@@ -4393,9 +4393,9 @@ void __cdecl PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, 
     {
         pBlock = pArgs->m_pArgs;
 
-        if (pBlock[ARG_TRACKED].IsSelector())
+        if (pBlock[ARG_TRACKED].IsPronoun())
         {
-            nTracked = g_apPlanStatFns[pBlock[ARG_TRACKED].wSelector](
+            nTracked = g_apPlanStatFns[pBlock[ARG_TRACKED].wPronoun](
                 pContext->GetActor(), pArgs);
         }
         else
@@ -4443,11 +4443,11 @@ void PlanAction::ClearBehaviorAnimation(Interactor* pContext, PlanNode*, short*,
 {
     EngineObject* pActor = pContext->GetActor();
 
-    pActor->GetPlanState()->m_pCurrent->m_pClipA = 0;
+    pActor->GetPlanState()->m_pCurrent->m_pAnimation = 0;
 
     pActor = pContext->GetActor();
 
-    pActor->GetPlanState()->m_pCurrent->m_pClipB = 0;
+    pActor->GetPlanState()->m_pCurrent->m_pPersistentAnimation = 0;
 }
 
 // FUNCTION: HYPERX 0x00463d80
@@ -4508,9 +4508,9 @@ void __cdecl PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs
 
     const PlanWord* pBlock = pArgs->m_pArgs;
 
-    if (pBlock[1].IsSelector())
+    if (pBlock[1].IsPronoun())
     {
-        nArg = g_apPlanStatFns[pBlock[1].wSelector](pContext->GetActor(), pArgs);
+        nArg = g_apPlanStatFns[pBlock[1].wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {
@@ -6908,9 +6908,9 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 
     EngineObject* const pActor = pContext->GetActor();
 
-    if (param.IsSelector())
+    if (param.IsPronoun())
     {
-        nOperand = g_apPlanStatFns[param.wSelector](pContext->GetActor(), pArgs);
+        nOperand = g_apPlanStatFns[param.wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {
@@ -8770,9 +8770,9 @@ void __cdecl PlanCond::IsDromerInjured(Interactor* pContext, PlanNode* pArgs, sh
     int            nSlot;
     float          flLimit;
 
-    if (arg.IsSelector())
+    if (arg.IsPronoun())
     {
-        nSlot = g_apPlanStatFns[arg.wSelector](pContext->GetActor(), pArgs);
+        nSlot = g_apPlanStatFns[arg.wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {
@@ -8803,9 +8803,9 @@ void __cdecl PlanCond::CheckRenderFlag(Interactor* pContext, PlanNode* pArgs, sh
     const PlanWord arg = pArgs->m_pArgs[1].pNode->m_pArgs[0];
     int            nSlot;
 
-    if (arg.IsSelector())
+    if (arg.IsPronoun())
     {
-        nSlot = g_apPlanStatFns[arg.wSelector](pContext->GetActor(), pArgs);
+        nSlot = g_apPlanStatFns[arg.wPronoun](pContext->GetActor(), pArgs);
     }
     else
     {

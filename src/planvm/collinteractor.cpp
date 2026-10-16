@@ -34,9 +34,9 @@ void CollInteractor::Discard()
 // FUNCTION: HYPERX 0x0045dc40
 short CollInteractor::GetOtherSlot()
 {
-    if (m_otherSlot.IsSelector())
+    if (m_otherSlot.IsPronoun())
     {
-        return g_apPlanStatFns[m_otherSlot.wSelector](m_pOwner, m_pNode);
+        return g_apPlanStatFns[m_otherSlot.wPronoun](m_pOwner, m_pNode);
     }
 
     return (short)m_otherSlot.n;
@@ -45,9 +45,9 @@ short CollInteractor::GetOtherSlot()
 // FUNCTION: HYPERX 0x0045dc70
 short CollInteractor::GetModelSlot()
 {
-    if (m_ownSlotOrMessage.IsSelector())
+    if (m_ownSlotOrMessage.IsPronoun())
     {
-        return g_apPlanStatFns[m_ownSlotOrMessage.wSelector](m_pOwner, m_pNode);
+        return g_apPlanStatFns[m_ownSlotOrMessage.wPronoun](m_pOwner, m_pNode);
     }
 
     return (short)m_ownSlotOrMessage.n;
@@ -162,7 +162,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
         LeaveCriticalSection(m_pOwner->GetCPlayerStateLock());
     }
 
-    m_pOwner->GetPlanState()->m_nTickBudget = TICK_BUDGET_DISPATCHED;
+    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;
 
     if (m_wSlot >= 0)
     {

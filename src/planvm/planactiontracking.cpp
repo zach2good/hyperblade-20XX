@@ -84,11 +84,11 @@ void __cdecl PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs,
     if (pCamera != 0)
     {
         const PlanWord* pBlock = pArgs->m_pArgs;
-        if (pBlock[1].IsSelector())
+        if (pBlock[1].IsPronoun())
         {
-            PlanStatFn pfnSelector = g_apPlanStatFns[pBlock[1].wSelector];
+            PlanStatFn pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
 
-            nValue = pfnSelector(pContext->GetActor(), pArgs);
+            nValue = pfnResolver(pContext->GetActor(), pArgs);
         }
         else if (pBlock[1].n == PLAN_TOKEN_MESSAGE_DATA)
         {
@@ -369,11 +369,11 @@ void __cdecl PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs,
     }
 
     const PlanWord* pBlock = pArgs->m_pArgs;
-    if (pBlock[1].IsSelector())
+    if (pBlock[1].IsPronoun())
     {
-        PlanStatFn pfnSelector = g_apPlanStatFns[pBlock[1].wSelector];
+        PlanStatFn pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
 
-        nValue = pfnSelector(pContext->GetActor(), pArgs);
+        nValue = pfnResolver(pContext->GetActor(), pArgs);
     }
     else if (pBlock[1].n == PLAN_TOKEN_STRAIGHTAHEAD)
     {

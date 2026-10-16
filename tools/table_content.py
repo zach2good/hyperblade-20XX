@@ -98,7 +98,7 @@ def source_stores(path, arrays):
     out = {}
     for name, base in arrays.items():
         # A slot may be spelled bare, behind a cast, or behind a one-argument macro that casts
-        # for it. The capture takes the whole qualified name, such as PlanCond::SetAnonLocal.
+        # for it. The capture takes the whole qualified name, such as PlanCond::SetInteractorName.
         pattern = (re.escape(name) + r"\[(\d+)\]\s*=\s*"
                    r"(?:\([\w \*:]+\)\s*)*"
                    r"(?:[A-Za-z_][A-Za-z0-9_]*\s*\(\s*)?"

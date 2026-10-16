@@ -33,25 +33,25 @@ GameBehaviorObject::GameBehaviorObject()
 {
     memset(m_apSlots, 0, sizeof(m_apSlots));
 
-    m_pBody            = 0;
-    m_pOwner           = 0;
-    m_pszName          = 0;
-    m_pClipA           = 0;
-    m_pClipB           = 0;
-    m_nEventTarget     = 0;
-    m_nEventParam      = 0;
-    m_bDigressive      = 0;
-    m_pCollInteractors = 0;
-    m_pMsgInteractors  = 0;
+    m_pBody                = 0;
+    m_pOwner               = 0;
+    m_pszName              = 0;
+    m_pAnimation           = 0;
+    m_pPersistentAnimation = 0;
+    m_nEventTarget         = 0;
+    m_nEventParam          = 0;
+    m_bDigressive          = 0;
+    m_pCollInteractors     = 0;
+    m_pMsgInteractors      = 0;
 
-    m_flRateA        = -1.0f;
-    m_nClipFlagsA    = -1;
-    m_flRateB        = -1.0f;
-    m_nClipFlagsB    = -1;
-    m_nEventKind     = MSG_NOMSG;
-    m_wPollCountdown = -1;
-    m_wLatency       = BEHAVIOR_DEFAULT_LATENCY;
-    m_pStandby       = 0;
+    m_flAnimationRate  = -1.0f;
+    m_nAnimationFlags  = -1;
+    m_flPersistentRate = -1.0f;
+    m_nPersistentFlags = -1;
+    m_nEventKind       = MSG_NOMSG;
+    m_wPollCountdown   = -1;
+    m_wLatency         = BEHAVIOR_DEFAULT_LATENCY;
+    m_pStandby         = 0;
 }
 
 // Each table is marked where it is filled, so all three are declared bare here.
@@ -180,39 +180,39 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 // FUNCTION: HYPERX 0x0041c220
 void GameBehaviorObject::UpdateLimpAnim()
 {
-    if (m_pClipB == 0)
+    if (m_pPersistentAnimation == 0)
     {
         return;
     }
 
     if (m_pOwner->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)m_pOwner)->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
     {
-        const unsigned char* const pszFirst = (const unsigned char*)m_pClipB->GetName();
+        const unsigned char* const pszFirst = (const unsigned char*)m_pPersistentAnimation->GetName();
 
         // STRING: HYPERX 0x004bb2a0
         if (_mbscmp(pszFirst, (const unsigned char*)"AA_Skate_Std") == 0)
         {
-            m_pClipB = (g_pAnimRegistry)
-                           // STRING: HYPERX 0x004bb290
-                           ->FindAnimByNamePtr("AA_LimpSkate");
+            m_pPersistentAnimation = (g_pAnimRegistry)
+                                         // STRING: HYPERX 0x004bb290
+                                         ->FindAnimByNamePtr("AA_LimpSkate");
         }
         else
         {
-            const unsigned char* const pszSecond = (const unsigned char*)m_pClipB->GetName();
+            const unsigned char* const pszSecond = (const unsigned char*)m_pPersistentAnimation->GetName();
 
             // STRING: HYPERX 0x004bb280
             if (_mbscmp(pszSecond, (const unsigned char*)"AA_Skatefast") == 0)
             {
-                m_pClipB = (g_pAnimRegistry)
-                               // STRING: HYPERX 0x004bb270
-                               ->FindAnimByNamePtr("AA_LimpSpeed");
+                m_pPersistentAnimation = (g_pAnimRegistry)
+                                             // STRING: HYPERX 0x004bb270
+                                             ->FindAnimByNamePtr("AA_LimpSpeed");
             }
         }
     }
 
-    m_pClipA = m_pClipB;
+    m_pAnimation = m_pPersistentAnimation;
 
-    m_pOwner->StartClipPlayback(m_pClipB, m_flRateB, m_nClipFlagsB);
+    m_pOwner->StartClipPlayback(m_pPersistentAnimation, m_flPersistentRate, m_nPersistentFlags);
 }
 
 // Both heads are read before either walk, so an interactor added during the first is not set.
@@ -253,11 +253,11 @@ void GameBehaviorObject::SendTimedMessage()
 
     m_wPollCountdown = m_wLatency;
 
-    if (m_pClipA != 0)
+    if (m_pAnimation != 0)
     {
-        m_pOwner->StartClipPlayback(m_pClipA,
-                                    m_flRateA,
-                                    m_nClipFlagsA);
+        m_pOwner->StartClipPlayback(m_pAnimation,
+                                    m_flAnimationRate,
+                                    m_nAnimationFlags);
     }
 }
 
@@ -272,7 +272,7 @@ void GameBehaviorObject::UpdateBehaviorPollCountdown()
     }
 }
 
-// The behaviour's per-frame pass: purge, detach, merge the slots, then re-register the message interactors.
+// Run as the behaviour is activated: purge, detach, merge the slots, then re-register the message interactors.
 
 // FUNCTION: HYPERX 0x0041c380
 void GameBehaviorObject::TickAndSortMessages()
@@ -530,22 +530,22 @@ void GameBehaviorObject::Reset()
         nLeft--;
     } while (nLeft != 0);
 
-    m_nClipFlagsA    = -1;
-    m_nClipFlagsB    = -1;
-    m_wPollCountdown = -1;
-    m_pBody          = 0;
-    m_pOwner         = 0;
-    m_pClipA         = 0;
-    m_pStandby       = 0;
-    m_pClipB         = 0;
-    m_flRateA        = -1.0f;
-    m_flRateB        = -1.0f;
-    m_nEventTarget   = 0;
-    m_nEventKind     = MSG_NOMSG;
-    m_nEventParam    = 0;
-    m_nChannelSlot   = 0;
-    m_bDigressive    = 0;
-    m_wLatency       = BEHAVIOR_DEFAULT_LATENCY;
+    m_nAnimationFlags      = -1;
+    m_nPersistentFlags     = -1;
+    m_wPollCountdown       = -1;
+    m_pBody                = 0;
+    m_pOwner               = 0;
+    m_pAnimation           = 0;
+    m_pStandby             = 0;
+    m_pPersistentAnimation = 0;
+    m_flAnimationRate      = -1.0f;
+    m_flPersistentRate     = -1.0f;
+    m_nEventTarget         = 0;
+    m_nEventKind           = MSG_NOMSG;
+    m_nEventParam          = 0;
+    m_nChannelSlot         = 0;
+    m_bDigressive          = 0;
+    m_wLatency             = BEHAVIOR_DEFAULT_LATENCY;
 
     g_apBehaviorRegistry[m_wKind]->Insert(this);
 }

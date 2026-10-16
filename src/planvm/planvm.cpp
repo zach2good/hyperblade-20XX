@@ -109,7 +109,7 @@ void PlanVM::LoadAnimationLists(void)
     g_pMsgInteractorPool  = new MsgInteractorPool();
 
     g_nAnimListNamesLead                                                                      = 0;
-    g_pfnPlanOpcodeHandlers[SET_INTERACTOR_NAME].pfnSetParam                                  = PlanCond::SetAnonLocal;
+    g_pfnPlanOpcodeHandlers[SET_INTERACTOR_NAME].pfnSetParam                                  = PlanCond::SetInteractorName;
     g_pfnPlanOpcodeHandlers[SET_ACTIVE_STATE].pfnSetParam                                     = PlanCond::SetActiveState;
     g_pfnPlanActionHandlers[ACF_SEND_MESSAGE]                                                 = PlanAction::SendMsg;
     g_pfnPlanActionHandlers[ACF_REALLY_SEND_MSG]                                              = PlanAction::ReallySendMsg;
@@ -1272,7 +1272,7 @@ char PlanVM::EmitArgToken()
 
         if (IsPRN(tok.szName))
         {
-            tok.nValue = PlanWord::Pack(PLAN_ARG_SELECTOR, tok.nValue);
+            tok.nValue = PlanWord::Pack(PLAN_ARG_PRONOUN, tok.nValue);
         }
 
         if (g_wArgsSinceDeclareLocalReals == 1 && ParseNumber(szToken, &g_planParsedLocalReal) == 0)
@@ -1310,11 +1310,11 @@ char PlanVM::EmitArgToken()
             return 1;
         }
 
-        nIndex = FindInteractorParamIndex(szToken);
+        nIndex = FindInteractorNameIndex(szToken);
 
         if (nIndex >= 0)
         {
-            m_pStream[m_nPos].n = PlanWord::Pack(PLAN_ARG_INTERACTOR_PARAM, nIndex);
+            m_pStream[m_nPos].n = PlanWord::Pack(PLAN_ARG_INTERACTOR_NAME, nIndex);
             m_nPos++;
 
             return 1;
@@ -1381,7 +1381,7 @@ char PlanVM::EmitArgToken()
         }
         else if (g_wArgsSinceSetInteractorParam == 3)
         {
-            nIndex = FindInteractorParamIndexOrThrow(PlanVM::UnquoteString(szToken));
+            nIndex = FindInteractorNameIndexOrThrow(PlanVM::UnquoteString(szToken));
 
             if (nIndex >= 0)
             {
@@ -1720,7 +1720,7 @@ short PlanVM::FindLocalRealIndex(char* pszName)
 }
 
 // FUNCTION: HYPERX 0x0047ee30
-short PlanVM::FindInteractorParamIndex(char* pszName)
+short PlanVM::FindInteractorNameIndex(char* pszName)
 {
     char szName[0x28];
 
@@ -1825,7 +1825,7 @@ short PlanVM::FindBehaviorIndexOrThrow(char* pszName)
 }
 
 // FUNCTION: HYPERX 0x0047f1a0
-short PlanVM::FindInteractorParamIndexOrThrow(char* pszName)
+short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
 {
     for (short nSlot = 0; nSlot < PLANVM_INTERACTOR_NAME_LIMIT; nSlot++)
     {

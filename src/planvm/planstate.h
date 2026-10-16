@@ -3,8 +3,8 @@
 
 class EngineObject;
 
-// The tick budget an interactor leaves after it runs its script.
-#define TICK_BUDGET_DISPATCHED 0x0c
+// Ticks after any interactor runs before every collision interactor is set active again.
+#define COLLISION_REARM_TICKS_AFTER_RUN 0x0c
 
 class PlanState
 {
@@ -48,15 +48,15 @@ public:
     short                     m_nIndex;         // 0x1c
     short                     m_nPrevious;      // 0x1e
     // The plan's global interactors, chained as GameBehaviorObject chains its own.
-    class CollInteractor* m_pCollInteractors; // 0x20
-    class MsgInteractor*  m_pMsgInteractors;  // 0x24
-    short                 m_nInteractorCount; // 0x28
-    short                 m_nTickBudget;      // 0x2a
-    float*                m_pflLocalReals;    // 0x2c
-    short                 m_nLocalRealCount;  // 0x30
-    // One word per anonymous local; plancond.cpp writes values and reads interactor pointers back.
-    class Interactor** m_apAnonLocals; // 0x34
-    short              m_nAnonLocals;  // 0x38
+    class CollInteractor* m_pCollInteractors;     // 0x20
+    class MsgInteractor*  m_pMsgInteractors;      // 0x24
+    short                 m_nInteractorCount;     // 0x28
+    short                 m_nCollisionRearmTicks; // 0x2a
+    float*                m_pflLocalReals;        // 0x2c
+    short                 m_nLocalRealCount;      // 0x30
+    // One interactor per name that id_SET_InteractorName gives; plancond.cpp reads them back.
+    class Interactor** m_apNamedInteractors; // 0x34
+    short              m_nNamedInteractors;  // 0x38
 };
 
 #endif
