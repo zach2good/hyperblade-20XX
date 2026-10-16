@@ -15,7 +15,7 @@
 // On failure the entry stays in the cache with a null texture.
 
 // FUNCTION: HYPERX 0x00492b90
-TexCacheEntry::TexCacheEntry(const char* pszName, HPALETTE hPalette)
+TexCacheEntry::TexCacheEntry(const char* pszName)
 {
     m_nUnused = 0;
     m_wRefs   = 0;
@@ -27,7 +27,7 @@ TexCacheEntry::TexCacheEntry(const char* pszName, HPALETTE hPalette)
 
     pTexture = new SoftTex;
 
-    if (pTexture != 0 && pTexture->Load(pszName, hPalette) == 0)
+    if (pTexture != 0 && pTexture->Load(pszName) == 0)
     {
         delete pTexture;
         pTexture = 0;

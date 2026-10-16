@@ -111,7 +111,7 @@ void Game::Draw(float flAlpha)
 
 // Builds the game's owners in the original's order, timing each stage.
 // FUNCTION: HYPERX 0x0045c700
-void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC)
+void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HDC hSoftBackDC)
 {
     int nStart = GameApp::GetInstallLevel();
 
@@ -160,8 +160,6 @@ void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, H
     nDelta = GameApp::GetInstallLevel() - nStart;
 
     g_pAnimRegistry->m_nLoadCost += nDelta;
-
-    g_pTexManager->m_hPalette = hPalette;
 
     nStart = GameApp::GetInstallLevel();
 
@@ -307,7 +305,7 @@ unsigned int Game::UpdateState(void)
 
             if (g_nPrevEngineState == ESTATE_MATCH_LIVE)
             {
-                Screen::ClearBlack(g_gameApp.m_hPalette);
+                Screen::ClearBlack();
 
                 if (g_bFullScreen != 0)
                 {

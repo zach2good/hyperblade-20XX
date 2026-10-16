@@ -20,12 +20,6 @@ extern const char* g_pszScanFormat;
 // GLOBAL: HYPERX 0x004b3eec
 extern const char* g_pszCharFormat;
 
-// GLOBAL: HYPERX 0x004c2ddc
-extern int g_nNearestPaletteIndex;
-
-// GLOBAL: HYPERX 0x004c2de0
-extern unsigned int g_clrNearest;
-
 // GLOBAL: HYPERX 0x004cef4a
 extern char g_bShuttingDown;
 

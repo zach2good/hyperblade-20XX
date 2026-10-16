@@ -12,7 +12,7 @@ extern const char* g_pszBitmapExtension;
 class TexCacheEntry
 {
 public:
-    TexCacheEntry(const char* pszName, HPALETTE hPalette);
+    explicit TexCacheEntry(const char* pszName);
 
     // Always answers null, and nothing reads it.
     void* DestroyTexObj();

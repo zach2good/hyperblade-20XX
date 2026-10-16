@@ -5,7 +5,7 @@
 namespace Display
 {
 
-int  Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette);
+int  Initialize(HWND hWnd, HDC hDisplayDC);
 LONG ChangeColorDepth(int nDepth);
 void ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter);
 

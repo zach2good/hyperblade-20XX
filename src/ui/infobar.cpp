@@ -615,21 +615,15 @@ void InfoBar::DrawScene(int bDraw)
             m_nCachedAwayTeam = g_pGameEngine->m_nTeamAwayIndex;
             m_nCachedArena    = g_pGameEngine->m_nArenaIndex;
 
-            // g_hDisplayPalette is a deleted handle here, in the original too, and GDI32 faults on it.
-            if (g_pColorPalette != 0 && g_pColorPalette->m_hPalette != 0)
-            {
-                g_hDisplayPalette = g_pColorPalette->m_hPalette;
-            }
-
-            g_nRadarBlipColourDromer0 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER0);
-            g_nRadarBlipColourDromer2 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER2);
-            g_nRadarBlipColourDromer1 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER1);
-            g_nRadarBlipColourDromer3 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER3);
-            g_nRadarBlipColourRok     = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_ROK);
-            g_nPeriodLightColour      = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_PERIOD_LIGHT);
-            g_nDamageBarColourLit     = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BAR_LIT);
-            g_nDamageBarColourDim     = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BAR_DIM);
-            g_nRadarLineColour        = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_RADAR_LINE);
+            g_nRadarBlipColourDromer0 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER0, HudLayer::KEY_INDEX);
+            g_nRadarBlipColourDromer2 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER2, HudLayer::KEY_INDEX);
+            g_nRadarBlipColourDromer1 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER1, HudLayer::KEY_INDEX);
+            g_nRadarBlipColourDromer3 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER3, HudLayer::KEY_INDEX);
+            g_nRadarBlipColourRok     = g_pColorPalette->NearestIndex(COLOUR_BLIP_ROK, HudLayer::KEY_INDEX);
+            g_nPeriodLightColour      = g_pColorPalette->NearestIndex(COLOUR_PERIOD_LIGHT, HudLayer::KEY_INDEX);
+            g_nDamageBarColourLit     = g_pColorPalette->NearestIndex(COLOUR_BAR_LIT, HudLayer::KEY_INDEX);
+            g_nDamageBarColourDim     = g_pColorPalette->NearestIndex(COLOUR_BAR_DIM, HudLayer::KEY_INDEX);
+            g_nRadarLineColour        = g_pColorPalette->NearestIndex(COLOUR_RADAR_LINE, HudLayer::KEY_INDEX);
         }
 
         DrawPeriodLight();

@@ -5,7 +5,7 @@
 #include "palettefade.h"
 #include "visualeffectfade.h"
 #include "palettescalarfade.h"
-#include <windows.h>
+#include <string.h>
 
 // PC_RESERVED on the first entry means the entries already animate, and the fade goes inactive.
 // FUNCTION: HYPERX 0x0042cd10
@@ -25,7 +25,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_pEntries = pEntries;
 
-    GetPaletteEntries(g_pColorPalette->m_hPalette, m_iStart, m_cEntries, pEntries);
+    memcpy(pEntries, &g_pColorPalette->m_current[m_iStart], m_cEntries * sizeof(PALETTEENTRY));
 
     if (m_pEntries[0].peFlags == PC_RESERVED)
     {
@@ -45,14 +45,6 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
                                 m_cEntries,
                                 m_pEntries);
 
-    ColorPalette* const pPalette = g_pColorPalette;
-
-    HPALETTE hOld = SelectPalette(pPalette->m_hdc, pPalette->m_hPalette, 0);
-
-    pPalette->m_hOldPalette = hOld;
-
-    RealizePalette(pPalette->m_hdc);
-
     m_iWorkStart = pRange->nFirst;
 
     nCount = pRange->nCount;
@@ -63,7 +55,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_pWorkEntries = pEntries;
 
-    GetPaletteEntries(g_pColorPalette->m_hPalette, m_iWorkStart, m_cWorkEntries, pEntries);
+    memcpy(pEntries, &g_pColorPalette->m_current[m_iWorkStart], m_cWorkEntries * sizeof(PALETTEENTRY));
 
     m_nDuration = 1000;
 
@@ -98,12 +90,6 @@ void PaletteFade::RestoreEntries()
     }
 
     g_pColorPalette->SetEntries(m_iStart, m_cEntries, m_pEntries);
-
-    ColorPalette* const pPalette = g_pColorPalette;
-
-    pPalette->m_hOldPalette = SelectPalette(pPalette->m_hdc, pPalette->m_hPalette, 0);
-
-    ::RealizePalette(pPalette->m_hdc);
 
     m_bActive = 0;
 }

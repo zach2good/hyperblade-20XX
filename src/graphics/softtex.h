@@ -32,8 +32,7 @@ public:
 
     void RemoveFromList();
 
-    // The second argument is never read.
-    char Load(const char* pszName, HPALETTE hUnused);
+    char Load(const char* pszName);
 
     // Hands the polygon to the library's textured span routine, the texture in ECX.
     void DrawTexPoly(class TransformObject* pCamera, struct FacePolyBuffer* pPoly, float flLight);

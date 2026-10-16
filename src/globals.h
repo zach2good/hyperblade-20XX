@@ -100,9 +100,6 @@ extern GameApp g_gameApp;
 // SYNTHETIC: HYPERX 0x0044c060
 // $E2
 
-// GLOBAL: HYPERX 0x004ceeb0
-extern HPALETTE g_hDisplayPalette;
-
 // GLOBAL: HYPERX 0x004ceebc
 extern HWND g_hWndGame;
 

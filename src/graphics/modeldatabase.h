@@ -77,8 +77,6 @@ public:
 
     int m_anUnusedC[4]; // 0x1c
 
-    // Nothing dereferences it; SoftTex::Load ignores the parameter it is forwarded to.
-    HPALETTE m_hPalette; // 0x2c
     // How far a level-of-detail threshold has to be crossed before the model swaps.
     float m_flLodHysteresis; // 0x30
 };

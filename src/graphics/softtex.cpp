@@ -173,7 +173,7 @@ void SoftTex::RemoveFromList()
 // The palette is built from the first bitmap loaded, so later textures show through its colours.
 
 // FUNCTION: HYPERX 0x00492920
-char SoftTex::Load(const char* pszName, HPALETTE)
+char SoftTex::Load(const char* pszName)
 {
     char szPath[MAX_PATH];
 

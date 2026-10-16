@@ -8,9 +8,6 @@
 // The HUD was laid out for 480 lines; it keeps about that many however tall the window is.
 constexpr auto HUD_LINES = 480;
 
-// The key's colour in the layer's own table, so GDI text never matches it.
-constexpr auto KEY_COLOUR = RGBQUAD{ 0xfd, 0x00, 0xfe, 0 };
-
 namespace
 {
 
@@ -125,13 +122,6 @@ void HudLayer::Enter()
         return;
     }
 
-    // The palette can change between frames, so the layer takes the back buffer's table each time.
-    RGBQUAD aColours[256];
-
-    const auto nColours = GetDIBColorTable(s_backBuffer.hSoftDC, 0, 256, aColours);
-
-    aColours[KEY_INDEX] = KEY_COLOUR;
-    SetDIBColorTable(s_hLayerDC, 0, (std::max)(nColours, (UINT)KEY_INDEX + 1), aColours);
     Use(s_layer);
 
     s_bEntered = 1;
@@ -190,40 +180,4 @@ ViewExtent HudLayer::ToBackBuffer(ViewExtent extent)
     scaled.y = s_nOriginY + extent.y * s_nScale;
 
     return scaled;
-}
-
-int HudLayer::NearestIndex(HPALETTE hPalette, COLORREF colour)
-{
-    PALETTEENTRY aEntries[256];
-
-    const auto nEntries = (int)GetPaletteEntries(hPalette, 0, 256, aEntries);
-
-    if (nEntries == 0)
-    {
-        return GetNearestPaletteIndex(hPalette, colour);
-    }
-
-    auto nBest     = 0;
-    auto nBestDist = 0x7fffffff;
-
-    for (int i = 0; i < nEntries; i++)
-    {
-        if (i == KEY_INDEX)
-        {
-            continue;
-        }
-
-        const int dr    = (int)aEntries[i].peRed - GetRValue(colour);
-        const int dg    = (int)aEntries[i].peGreen - GetGValue(colour);
-        const int db    = (int)aEntries[i].peBlue - GetBValue(colour);
-        const int nDist = dr * dr + dg * dg + db * db;
-
-        if (nDist < nBestDist)
-        {
-            nBestDist = nDist;
-            nBest     = i;
-        }
-    }
-
-    return nBest;
 }

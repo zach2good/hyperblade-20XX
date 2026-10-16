@@ -80,7 +80,6 @@ struct GameApp
     int           m_nFrameRate;      // 0x28
     HWND          m_hWnd;            // 0x2c
     HINSTANCE     m_hInstance;       // 0x30
-    HPALETTE      m_hPalette;        // 0x34
     HDC           m_hScreenDC;       // 0x38
     HMENU         m_hMenu;           // 0x3c
     unsigned int  m_nEngineState;    // 0x40

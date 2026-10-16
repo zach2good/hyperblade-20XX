@@ -191,9 +191,7 @@ int MainWindow::OnCreate(HWND hWnd, LPARAM)
 {
     g_gameApp.m_hScreenDC = GetDC(hWnd);
 
-    g_pColorPalette->m_hdc = g_gameApp.m_hScreenDC;
-
-    g_gameApp.m_hPalette = g_pColorPalette->ReloadPalette(g_wPaletteMode);
+    g_pColorPalette->ReloadPalette(g_wPaletteMode);
 
     Gamepad::Init();
 

@@ -71,9 +71,6 @@ bool TakeFrame();
 // A layer position as the back buffer's, for what the 3D draws under the HUD.
 ViewExtent ToBackBuffer(ViewExtent extent);
 
-// The display palette's nearest entry that is not the key.
-int NearestIndex(HPALETTE hPalette, COLORREF colour);
-
 } // namespace HudLayer
 
 #endif

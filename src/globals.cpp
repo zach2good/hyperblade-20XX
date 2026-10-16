@@ -123,7 +123,6 @@ char                      g_bSWClipRectDirty;
 int                       g_bCursorHidden = 1;
 int                       g_bShadedDromeModels;
 GameOptions*              g_pGameOptions;
-HPALETTE                  g_hDisplayPalette;
 int                       g_bBackBufferReady;
 long                      g_nDisplayWindowID;
 unsigned char             g_cMdmTexLoaded;

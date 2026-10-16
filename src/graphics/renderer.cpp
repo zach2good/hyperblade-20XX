@@ -2,6 +2,7 @@
 #include "graphics/hwrenderer.h"
 #include "graphics/presenter.h"
 #include "renderer.h"
+#include "colorpalette.h"
 #include "globals.h"
 #include "app/gameapp.h"
 #include "engine/objectclasses.h"
@@ -245,13 +246,7 @@ int Renderer::PresentFrame(void)
         return 1;
     }
 
-    // GDI drew the palette into the DIB's colour table; the GPU applies it.
-    RGBQUAD aColours[256] = {};
-
-    GdiFlush();
-    GetDIBColorTable(g_hSoftBackDC, 0, 256, aColours);
-
-    Presenter::Frame(g_pBackBufferBitsCopy, g_nBackBufferWidth, g_nBackBufferWidth, g_nBackBufferHeight, aColours);
+    Presenter::Frame(g_pBackBufferBitsCopy, g_nBackBufferWidth, g_nBackBufferWidth, g_nBackBufferHeight, g_bmiSoftBackBuffer.bmiColors);
 
     return 1;
 }
@@ -303,13 +298,15 @@ void Renderer::ClearFrame(void)
 {
     if (g_pBackBufferBitsCopy != 0)
     {
-        int nIndex = GetNearestPaletteIndex(g_hDisplayPalette, CLEAR_COLOUR);
-
-        // GetNearestPaletteIndex answers CLR_INVALID once the display palette is gone.
-        if (nIndex == -1 || (unsigned int)nIndex >= 256)
+        const auto nIndex = [&]
         {
-            nIndex = NearestSoftPaletteIndex(CLEAR_COLOUR);
-        }
+            if (g_pColorPalette != 0)
+            {
+                return g_pColorPalette->NearestIndex(CLEAR_COLOUR, -1);
+            }
+
+            return NearestSoftPaletteIndex(CLEAR_COLOUR);
+        }();
 
         memset(g_pBackBufferBitsCopy, nIndex, g_nBackBufferWidth * g_nBackBufferHeight);
     }

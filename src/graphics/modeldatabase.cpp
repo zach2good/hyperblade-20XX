@@ -481,7 +481,7 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
         pEntry = pEntry->m_pNext;
     }
 
-    TexCacheEntry* const pNew = new TexCacheEntry(pszName, m_hPalette);
+    TexCacheEntry* const pNew = new TexCacheEntry(pszName);
 
     if (pPrev != 0)
     {

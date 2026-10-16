@@ -231,36 +231,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_COMMAND:
             MainWindow::OnCommand(hWnd, LOWORD(wParam), lParam, HIWORD(wParam));
             return 0;
-
-        case WM_PALETTECHANGED:
-            if (hWnd == (HWND)wParam || hWnd == GetParent((HWND)wParam))
-            {
-                break;
-            }
-
-            // Falls through
-
-        case WM_QUERYNEWPALETTE:
-            g_clrNearest           = GetNearestColor(g_gameApp.m_hScreenDC, g_clrNearest);
-            g_nNearestPaletteIndex = GetNearestPaletteIndex(g_gameApp.m_hPalette, g_clrNearest);
-
-            if (g_hSplashPalette != NULL)
-            {
-                const HDC  hdc         = GetDC(hWnd);
-                HPALETTE   hOldPalette = SelectPalette(hdc, g_hSplashPalette, uMsg != WM_QUERYNEWPALETTE);
-                const UINT nRealized   = RealizePalette(hdc);
-
-                SelectPalette(hdc, hOldPalette, TRUE);
-                ReleaseDC(hWnd, hdc);
-                return nRealized;
-            }
-
-            if (g_pColorPalette == NULL)
-            {
-                return 0;
-            }
-
-            return g_pColorPalette->RealizePalette() & 0xff;
     }
 
     return DefWindowProcA(hWnd, uMsg, wParam, lParam);
@@ -466,6 +436,3 @@ unsigned int WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nComma
 
     return 0;
 }
-
-int          g_nNearestPaletteIndex = 7;
-unsigned int g_clrNearest           = 0x00808080;

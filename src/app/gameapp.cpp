@@ -171,8 +171,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 
     g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
 
-    HPALETTE hPalette             = g_gameApp.m_hPalette;
-    g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd, g_gameApp.GetScreenDC(), hPalette);
+    g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd, g_gameApp.GetScreenDC());
 
     Window::Show();
     GameApp::SetCursorVisible(1);
@@ -189,8 +188,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
     Config::LoadPreferences(hWnd, "Prefs.txt");
 
     HDC hSoftBackDC = g_hSoftBackDC;
-    hPalette        = g_gameApp.m_hPalette;
-    Game::InitializeEngine(hWnd, hInstance, hPalette, hSoftBackDC);
+    Game::InitializeEngine(hWnd, hInstance, hSoftBackDC);
 
     GameApp::SetupViewports();
 
@@ -449,7 +447,6 @@ GameApp::GameApp(short nStringCount)
 , m_nFrameRate(0)
 , m_hWnd(0)
 , m_hInstance(0)
-, m_hPalette(0)
 , m_hScreenDC(0)
 , m_hMenu(0)
 , m_nEngineState(ESTATE_LOBBY)

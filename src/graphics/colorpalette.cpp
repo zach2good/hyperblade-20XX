@@ -20,21 +20,12 @@ extern const char* const g_pszPaletteExtension;
 // The version a definition file may always claim, whatever the palette's own is.
 #define PALETTE_VERSION_ANY 0x302
 
-// Sized for every entry rather than the count the header declares.
-struct LogPalette256
-{
-    WORD         palVersion;
-    WORD         palNumEntries;
-    PALETTEENTRY palPalEntry[256];
-};
-
 // The name off the first line has no length check of its own.
 #define CUSTOM_NAME_MAX 80
 
 // FUNCTION: HYPERX 0x004255e0
 ColorPalette::ColorPalette()
-: m_hPalette(0)
-, m_hOldPalette(0)
+: m_current()
 , m_rampBounds(0x20, 0xef)
 , m_smallRampBounds(0x80, 0xef)
 , m_largeRampBounds(0x20, 0x7f)
@@ -49,17 +40,6 @@ ColorPalette::ColorPalette()
 , m_remapRange(m_teamARange.nFirst, m_teamARange.nCount + m_teamARange.nFirst - 1)
 {
     m_wVersion = 0x303;
-
-    const HDC hdc = g_gameApp.m_hScreenDC;
-
-    m_hdc = hdc;
-
-    if (hdc != 0)
-    {
-        m_wNumEntries = (unsigned short)GetSystemPaletteEntries(hdc, 0, 0x100, m_entries);
-
-        m_hdc = 0;
-    }
 
     Load();
 }
@@ -199,215 +179,58 @@ PaletteRange ColorPalette::GetFrameRange(int nKind)
     return r;
 }
 
-// A colour matching a static one has its blue nudged until it does not.
+// The original matched the colours against a palettised desktop's static ones; on a true-colour
+// desktop that left them as they were, which is all this keeps.
 // FUNCTION: HYPERX 0x00425a90
-HPALETTE ColorPalette::CreateFromDC(ColorPalette* pPalette, int nCount)
+void ColorPalette::Build()
 {
-    ColorPalette* const pSource = pPalette;
-    LogPalette256       pal;
-    int                 i;
-
-    const int nEntries = 256;
-
-    const HDC hdc = m_hdc;
-
-    pal.palVersion    = 0x300;
-    pal.palNumEntries = (WORD)nEntries;
-
-    memset(pal.palPalEntry, 0, nEntries * sizeof(PALETTEENTRY));
-
-    if (GetSystemPaletteUse(hdc) == SYSPAL_NOSTATIC)
+    for (int i = 0; i < 256; i++)
     {
-        for (i = 0; i < nCount; i++)
+        if (m_entries[i].peFlags != PC_RESERVED)
         {
-            pal.palPalEntry[i].peRed   = pSource->m_entries[i].peRed;
-            pal.palPalEntry[i].peGreen = pSource->m_entries[i].peGreen;
-            pal.palPalEntry[i].peBlue  = pSource->m_entries[i].peBlue;
-
-            if (pSource->m_entries[i].peFlags != PC_RESERVED)
-            {
-                pal.palPalEntry[i].peFlags = PC_NOCOLLAPSE;
-            }
-            else
-            {
-                pal.palPalEntry[i].peFlags = PC_RESERVED;
-            }
+            m_entries[i].peFlags = PC_NOCOLLAPSE;
         }
 
-        for (; i < nEntries; i++)
-        {
-            pal.palPalEntry[i].peFlags = PC_NOCOLLAPSE;
-        }
-
-        pal.palPalEntry[nEntries - 1].peFlags = 0;
-
-        pal.palPalEntry[nEntries - 1].peRed = pal.palPalEntry[nEntries - 1].peGreen = pal.palPalEntry[nEntries - 1].peBlue = 0xff;
-
-        pal.palPalEntry[0].peFlags = 0;
-
-        pal.palPalEntry[0].peRed = pal.palPalEntry[0].peGreen = pal.palPalEntry[0].peBlue = 0;
+        m_current[i] = m_entries[i];
     }
-    else
-    {
-        int nStatic = GetDeviceCaps(hdc, NUMCOLORS);
-
-        GetSystemPaletteEntries(hdc, 0, nEntries, pal.palPalEntry);
-
-        nStatic /= 2;
-
-        for (i = 0; i < nStatic; i++)
-        {
-            pal.palPalEntry[i].peFlags = 0;
-        }
-
-        // Counted and never read.
-        int nMatches = 0;
-
-        for (; i < nCount - nStatic; i++)
-        {
-            int bUp = 1;
-
-            for (int j = nEntries - nStatic; j < nEntries; j++)
-            {
-                if (pSource->m_entries[i].peRed == pal.palPalEntry[j].peRed && pSource->m_entries[i].peGreen == pal.palPalEntry[j].peGreen && pSource->m_entries[i].peBlue == pal.palPalEntry[j].peBlue)
-                {
-                    nMatches++;
-
-                    BYTE cBlue = pSource->m_entries[i].peBlue;
-
-                    if (cBlue == 0xff)
-                    {
-                        bUp = 0;
-                    }
-
-                    if (cBlue == 0)
-                    {
-                        bUp   = 1;
-                        cBlue = 1;
-                    }
-                    else if (bUp)
-                    {
-                        cBlue = (BYTE)(cBlue + 1);
-                    }
-                    else
-                    {
-                        cBlue = (BYTE)(cBlue - 1);
-                    }
-
-                    pSource->m_entries[i].peBlue = cBlue;
-
-                    j = nEntries - nStatic;
-                }
-            }
-
-            pal.palPalEntry[i].peRed   = pSource->m_entries[i].peRed;
-            pal.palPalEntry[i].peGreen = pSource->m_entries[i].peGreen;
-            pal.palPalEntry[i].peBlue  = pSource->m_entries[i].peBlue;
-
-            if (pSource->m_entries[i].peFlags != PC_RESERVED)
-            {
-                pal.palPalEntry[i].peFlags = PC_NOCOLLAPSE;
-            }
-            else
-            {
-                pal.palPalEntry[i].peFlags = PC_RESERVED;
-            }
-        }
-
-        for (; i < nEntries - nStatic; i++)
-        {
-            pal.palPalEntry[i].peRed = pal.palPalEntry[i].peGreen = 1;
-            pal.palPalEntry[i].peBlue                             = (BYTE)i;
-            pal.palPalEntry[i].peFlags                            = PC_NOCOLLAPSE;
-        }
-
-        for (i = nEntries - nStatic; i < nEntries; i++)
-        {
-            pal.palPalEntry[i].peFlags = 0;
-        }
-    }
-
-    m_hPalette = CreatePalette((LOGPALETTE*)&pal);
-
-    GetPaletteEntries(m_hPalette, 0, nEntries, pSource->m_entries);
-
-    return m_hPalette;
 }
 
 // FUNCTION: HYPERX 0x00425d50
-HPALETTE ColorPalette::ReloadPalette(short nMode)
+void ColorPalette::ReloadPalette(short nMode)
 {
-    if (m_hPalette != 0)
-    {
-        DeleteObject(m_hPalette);
-    }
-
-    ResetSystem();
-
     if (nMode == 3)
     {
-        m_hPalette = CreateFromDC(this, 0x100);
+        Build();
     }
 
     SyncDIBColorTable(0, 0x100);
-
-    return m_hPalette;
 }
 
-// FUNCTION: HYPERX 0x00425db0
-void ColorPalette::ResetSystem()
+int ColorPalette::NearestIndex(COLORREF colour, int nSkip) const
 {
-    LogPalette256 logPalette;
+    auto nBest     = 0;
+    auto nBestDist = 0x7fffffff;
 
-    logPalette.palVersion    = 0x300;
-    logPalette.palNumEntries = 0x100;
-
-    memset(logPalette.palPalEntry, 0, sizeof(logPalette.palPalEntry));
-
-    for (int i = 0; i < 0x100; i++)
+    for (int i = 0; i < 256; i++)
     {
-        logPalette.palPalEntry[i].peBlue  = 0;
-        logPalette.palPalEntry[i].peGreen = 0;
-        logPalette.palPalEntry[i].peRed   = 0;
-        logPalette.palPalEntry[i].peFlags = PC_NOCOLLAPSE;
-    }
-
-    const HDC hdc = m_hdc;
-
-    if (hdc != 0)
-    {
-        HPALETTE hPalette = CreatePalette((LOGPALETTE*)&logPalette);
-
-        if (hPalette != 0)
+        if (i == nSkip)
         {
-            HPALETTE hOld = SelectPalette(hdc, hPalette, 0);
+            continue;
+        }
 
-            ::RealizePalette(hdc);
+        const int dr    = (int)m_current[i].peRed - GetRValue(colour);
+        const int dg    = (int)m_current[i].peGreen - GetGValue(colour);
+        const int db    = (int)m_current[i].peBlue - GetBValue(colour);
+        const int nDist = dr * dr + dg * dg + db * db;
 
-            DeleteObject(SelectPalette(hdc, hOld, 0));
+        if (nDist < nBestDist)
+        {
+            nBestDist = nDist;
+            nBest     = i;
         }
     }
-}
 
-// FUNCTION: HYPERX 0x00425e40
-char ColorPalette::RealizePalette()
-{
-    DeleteObject(m_hPalette);
-
-    m_hPalette = CreateFromDC(this, 0x100);
-
-    SyncDIBColorTable(0, 0x100);
-
-    m_hOldPalette = SelectPalette(m_hdc, m_hPalette, 0);
-
-    if (::RealizePalette(m_hdc) != 0)
-    {
-        InvalidateRect(g_gameApp.m_hWnd, 0, 0);
-
-        return 1;
-    }
-
-    return 0;
+    return nBest;
 }
 
 // A version mismatch is fatal and returns 1; any other failure returns nought.
@@ -818,49 +641,42 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
 // FUNCTION: HYPERX 0x00426740
 int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries)
 {
-    const int nAccepted = SetPaletteEntries(m_hPalette, iStart, cEntries, pEntries);
-
-    GetPaletteEntries(m_hPalette, iStart, cEntries, &m_entries[iStart]);
+    memcpy(&m_current[iStart], pEntries, cEntries * sizeof(PALETTEENTRY));
+    memcpy(&m_entries[iStart], pEntries, cEntries * sizeof(PALETTEENTRY));
 
     SyncDIBColorTable(iStart, cEntries);
 
-    return nAccepted;
+    return (int)cEntries;
 }
 
 // FUNCTION: HYPERX 0x004267a0
 void ColorPalette::SyncDIBColorTable(unsigned int iStart, unsigned int cEntries)
 {
-    RGBQUAD* const pColors = &g_bmiSoftBackBuffer.bmiColors[iStart];
-
-    GetPaletteEntries(m_hPalette, iStart, cEntries, (PALETTEENTRY*)pColors);
-
-    RGBQUAD* p = pColors;
-
     for (unsigned int i = iStart; i < iStart + cEntries; i++)
     {
-        const unsigned char cRed = p->rgbBlue;
-
-        p->rgbBlue     = p->rgbRed;
-        p->rgbRed      = cRed;
-        p->rgbReserved = 0;
-
-        p++;
+        g_bmiSoftBackBuffer.bmiColors[i] = RGBQUAD{ m_current[i].peBlue, m_current[i].peGreen, m_current[i].peRed, 0 };
     }
-
-    SetDIBColorTable(g_hSoftBackDC, iStart, cEntries, pColors);
 }
 
 // FUNCTION: HYPERX 0x00426810
 char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries)
 {
-    if (AnimatePalette(m_hPalette, iStart, cEntries, pEntries) != 0)
+    // As AnimatePalette, only the reserved entries take the new colours.
+    for (unsigned int i = 0; i < cEntries; i++)
     {
-        SyncDIBColorTable(iStart, cEntries);
+        auto& current = m_current[iStart + i];
 
-        return 1;
+        if (current.peFlags == PC_RESERVED)
+        {
+            current.peRed   = pEntries[i].peRed;
+            current.peGreen = pEntries[i].peGreen;
+            current.peBlue  = pEntries[i].peBlue;
+        }
     }
 
-    return 0;
+    SyncDIBColorTable(iStart, cEntries);
+
+    return 1;
 }
 
 // Rises geometrically from the floor to the full colour. The object is never touched.
@@ -958,7 +774,5 @@ char ColorPalette::IsEntryUsable(int nIndex)
 // FUNCTION: HYPERX 0x004197c0
 void ColorPalette::Release()
 {
-    DeleteObject(m_hPalette);
-
     m_name.FreeBuffer();
 }

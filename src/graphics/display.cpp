@@ -23,11 +23,10 @@ unsigned int g_dwDisplayHeight = 480;
 
 // The back buffer resize result.
 // FUNCTION: HYPERX 0x0044b500
-int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
+int Display::Initialize(HWND hWnd, HDC hDisplayDC)
 {
-    g_hScreenBltDC    = hDisplayDC;
-    g_hDisplayPalette = hPalette;
-    g_hWndGame        = hWnd;
+    g_hScreenBltDC = hDisplayDC;
+    g_hWndGame     = hWnd;
 
     g_nDisplayWindowID = GetWindowLongA(hWnd, GWL_ID);
 

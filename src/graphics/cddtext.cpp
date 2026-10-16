@@ -3,6 +3,7 @@
 #include "app/gameapp.h"
 #include "cddtext.h"
 #include "graphics/hudlayer.h"
+#include "graphics/colorpalette.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -22,7 +23,7 @@ int CDDText::Draw()
 {
     if (m_pszText != 0 && *m_pszText != 0 && g_pBackBufferBitsCopy != 0)
     {
-        const auto nIndex = (unsigned char)HudLayer::NearestIndex(g_hDisplayPalette, m_color);
+        const auto nIndex = (unsigned char)g_pColorPalette->NearestIndex(m_color, HudLayer::KEY_INDEX);
 
         Text::Draw(m_font, g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_pszText, nIndex);
     }
