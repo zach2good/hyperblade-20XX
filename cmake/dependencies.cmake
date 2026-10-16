@@ -48,3 +48,16 @@ CPMAddPackage(
 add_library(miniaudio STATIC "${miniaudio_SOURCE_DIR}/miniaudio.c")
 target_include_directories(miniaudio SYSTEM PUBLIC "${miniaudio_SOURCE_DIR}")
 target_compile_definitions(miniaudio PUBLIC MA_NO_DEVICE_IO MA_NO_RESOURCE_MANAGER MA_NO_ENCODING MA_NO_GENERATION)
+
+# DXC compiles the HLSL shaders to DXIL and SPIR-V at build time. The release zip is named by
+# date, so the URL is pinned by hand alongside the version.
+set(DXC_VERSION 1.9.2607)
+
+CPMAddPackage(
+    NAME dxc
+    VERSION ${DXC_VERSION}
+    URL "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v${DXC_VERSION}/dxc_2026_07_29.zip"
+    URL_HASH SHA256=a1dfb116ba3eeae6a1582291b53a8e7bf65ad760676bd3194685c8f7367cd241
+    DOWNLOAD_ONLY YES)
+
+find_program(DXC_EXECUTABLE dxc PATHS "${dxc_SOURCE_DIR}/bin/x64" NO_DEFAULT_PATH REQUIRED)
