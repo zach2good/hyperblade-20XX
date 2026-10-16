@@ -114,7 +114,10 @@ jobs:
       - name: Name the pull request
         if: github.event_name == 'pull_request' && matrix.name == 'measured'
         shell: bash
-        run: echo "${{ github.event.number }}" > build/out/pr.txt
+        # github.sha is the merge of the pull request into main, the tree this job built.
+        run: |
+          echo "${{ github.event.number }}" > build/out/pr.txt
+          echo "${{ github.sha }}" > build/out/built.txt
 
       - name: Upload the image for score.yml
         if: github.event_name == 'pull_request' && matrix.name == 'measured'
@@ -125,4 +128,5 @@ jobs:
             build/out/HYPERX_sym.exe
             build/out/HYPERX_sym.pdb
             build/out/pr.txt
+            build/out/built.txt
           retention-days: 7

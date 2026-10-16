@@ -120,15 +120,18 @@ jobs:
           NUMBER=$(tr -dc '0-9' < pr-image/pr.txt)
           [ -n "$NUMBER" ] || { echo "::error::pr.txt holds no number"; exit 1; }
           echo "number=$NUMBER" >> "$GITHUB_OUTPUT"
+          BUILT=$(tr -dc '0-9a-f' < pr-image/built.txt)
+          [ ${#BUILT} = 40 ] || { echo "::error::built.txt holds no commit"; exit 1; }
+          echo "built=$BUILT" >> "$GITHUB_OUTPUT"
 
-      # Text only: reccmp reads the markers in src, and the checks read symbols. Nothing in this
-      # checkout is compiled or run.
+      # The merge commit ci.yml built, not the pull request's head: the PDB's line numbers are
+      # that tree's. Text only: reccmp reads the markers in src, and the checks read symbols.
+      # Nothing in this checkout is compiled or run.
       - name: Fetch the pull request's source as data
         if: github.event.workflow_run.event == 'pull_request'
         uses: actions/checkout@v5
         with:
-          repository: ${{ github.event.workflow_run.head_repository.full_name }}
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ steps.pr.outputs.built }}
           persist-credentials: false
           path: pr
 
