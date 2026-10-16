@@ -271,6 +271,12 @@ void __stdcall Renderer::DestroyBackBuffer(void)
 // FUNCTION: HYPERX 0x0044bc30
 int __stdcall Renderer::PresentFrame(void)
 {
+    // The splash owns the screen, so the start-up timing frames are drawn but not shown.
+    if (g_nSplashFrame != 0)
+    {
+        return 1;
+    }
+
     if (g_cUseSoftRenderer == 0)
     {
         if (g_bCursorHidden == 0)
