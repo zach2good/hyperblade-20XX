@@ -5,6 +5,7 @@
 #include "engine/objectdef.h"
 #include "graphics/cd3dtexturemanager.h"
 #include "graphics/colorpalette.h"
+#include "graphics/graphicssettings.h"
 #include "graphics/lodnode.h"
 #include "graphics/meshbone.h"
 #include "graphics/meshmaterial.h"
@@ -253,7 +254,15 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
     }
 
     const auto nBone = (int)(&bone - object.m_pBones);
-    const auto nLod  = (std::min)((int)object.m_wLodLevel, model.pLod->m_wLodCount - 1);
+    const auto nLod = [&]
+    {
+        if (GraphicsSettings::FullDetail())
+        {
+            return 0;
+        }
+
+        return (std::min)((int)object.m_wLodLevel, model.pLod->m_wLodCount - 1);
+    }();
 
     if (nBone < 0 || nBone >= (int)model.world.size() || nLod < 0)
     {

@@ -63,6 +63,7 @@ void Build()
     ImGui::BeginDisabled(GraphicsSettings::Active() != GraphicsSettings::Renderer::HARDWARE);
     Checkbox("Textures", GraphicsSettings::Textures(), GraphicsSettings::ToggleTextures);
     Checkbox("Linear filtering", GraphicsSettings::LinearFiltering(), GraphicsSettings::ToggleLinearFiltering);
+    Checkbox("Full detail models", GraphicsSettings::FullDetail(), GraphicsSettings::ToggleFullDetail);
     ImGui::EndDisabled();
 
     ImGui::SeparatorText("Timing");

@@ -32,6 +32,10 @@ void ToggleLinearFiltering();
 bool Uncapped();
 void ToggleUncapped();
 
+// The textured models at their most detailed, or stepped down with distance as the engine picks.
+bool FullDetail();
+void ToggleFullDetail();
+
 } // namespace GraphicsSettings
 
 #endif

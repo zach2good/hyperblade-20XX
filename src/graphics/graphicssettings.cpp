@@ -12,12 +12,14 @@ constexpr auto RENDERER_KEY  = "Renderer";
 constexpr auto TEXTURES_KEY  = "Textures";
 constexpr auto FILTERING_KEY = "LinearFiltering";
 constexpr auto UNCAPPED_KEY  = "Uncapped";
+constexpr auto DETAIL_KEY    = "FullDetail";
 
 auto s_bLoaded   = false;
 auto s_renderer  = GraphicsSettings::Renderer::SOFTWARE;
 auto s_bTextures = true;
 auto s_bLinear   = false;
 auto s_bUncapped = true;
+auto s_bDetail   = true;
 
 void Load()
 {
@@ -36,6 +38,7 @@ void Load()
     s_bTextures = g_pGameOptions->ReadInt(SECTION, TEXTURES_KEY, 1) != 0;
     s_bLinear   = g_pGameOptions->ReadInt(SECTION, FILTERING_KEY, 0) != 0;
     s_bUncapped = g_pGameOptions->ReadInt(SECTION, UNCAPPED_KEY, 1) != 0;
+    s_bDetail   = g_pGameOptions->ReadInt(SECTION, DETAIL_KEY, 1) != 0;
 }
 
 } // namespace
@@ -135,4 +138,25 @@ void GraphicsSettings::ToggleUncapped()
     s_bUncapped = !s_bUncapped;
 
     g_pGameOptions->WriteInt(SECTION, UNCAPPED_KEY, (int)s_bUncapped);
+}
+
+bool GraphicsSettings::FullDetail()
+{
+    Load();
+
+    return s_bDetail;
+}
+
+void GraphicsSettings::ToggleFullDetail()
+{
+    Load();
+
+    if (g_pGameOptions == 0)
+    {
+        return;
+    }
+
+    s_bDetail = !s_bDetail;
+
+    g_pGameOptions->WriteInt(SECTION, DETAIL_KEY, (int)s_bDetail);
 }
