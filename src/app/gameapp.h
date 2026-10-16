@@ -121,7 +121,9 @@ struct GameApp
 
     static void SetModelPath(int bTexEnabled);
 
-    static void __stdcall SplashTimerCallback(UINT uTimerID, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
+    // The splashes run in the main loop before the menus, and a key or click skips each one.
+    static void NextSplash(HWND hWnd);
+    static bool UpdateSplash(HWND hWnd);
 };
 
 // SYNTHETIC: HYPERX 0x0044d400

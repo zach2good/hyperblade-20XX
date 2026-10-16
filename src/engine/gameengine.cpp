@@ -3355,7 +3355,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
     const char* pszTeam;
     int         nSlot;
 
-    SetCursor(LoadCursor(0, IDC_WAIT));
+    Window::SetBusyCursor(true);
 
     UpdateTeamSounds(nHome, nAway);
 
@@ -3430,7 +3430,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
 
     m_bMatchOver = 0;
 
-    SetCursor(LoadCursor(0, IDC_ARROW));
+    Window::SetBusyCursor(false);
 
     return 1;
 }

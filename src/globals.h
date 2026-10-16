@@ -92,18 +92,9 @@ class DSoundMgr;
 // GLOBAL: HYPERX 0x004cb4f0
 extern int g_bShadedDromeModels;
 
-// The first splash frame's palette, which the splash's end deletes.
-// GLOBAL: HYPERX 0x004cb4f8
-extern HPALETTE g_hSplashOwnedPalette;
-
-// GLOBAL: HYPERX 0x004cb4fc
-extern MMRESULT g_nSplashTimerId;
-
+// The splash on screen, counting from 1; 0 once the menus have taken over.
 // GLOBAL: HYPERX 0x004cb500
 extern int g_nSplashFrame;
-
-// GLOBAL: HYPERX 0x004cb504
-extern int g_bSplashBusy;
 
 // GLOBAL: HYPERX 0x004cb5e8
 extern class JoystickMgr* g_pJoystickMgr;

@@ -54,6 +54,7 @@ class AwardsUIScreen;
 #include <mbstring.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iterator>
 #include "ui/screens/championshipsetupuiscreen.h"
 #include "graphics/viewextent.h"
 #include "ui/screens/pausemenufullscreen.h"
@@ -203,12 +204,8 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     Window::Show();
     GameApp::SetCursorVisible(1);
 
-    HCURSOR hCursor = LoadCursorA(0, IDC_WAIT);
-    SetCursor(hCursor);
-
-    g_nSplashFrame   = 0;
-    g_nSplashTimerId = timeSetEvent(3000, 500, GameApp::SplashTimerCallback, (DWORD_PTR)hWnd, TIME_PERIODIC);
-    GameApp::SplashTimerCallback(g_nSplashTimerId, 0, (DWORD_PTR)hWnd, 0, 0);
+    g_nSplashFrame = 0;
+    GameApp::NextSplash(hWnd);
 
     Network::ValidateStaticObjects();
 
@@ -225,32 +222,6 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
 
     hSoftBackDC = g_hSoftBackDC;
     g_frameTimer.ProcessInitialFrameUpdate(hWnd, hSoftBackDC);
-
-    if (g_nSplashTimerId != 0)
-    {
-        timeKillEvent(g_nSplashTimerId);
-    }
-
-    g_nSplashTimerId = 0;
-
-    if (g_hSplashOwnedPalette != 0)
-    {
-        Screen::ClearBlack(g_hSplashOwnedPalette);
-    }
-
-    g_hSplashPalette = 0;
-
-    if (g_hSplashOwnedPalette != 0)
-    {
-        DeleteObject((HGDIOBJ)g_hSplashOwnedPalette);
-    }
-
-    g_hSplashOwnedPalette = 0;
-
-    hCursor = LoadCursorA(0, IDC_ARROW);
-    SetCursor(hCursor);
-
-    GameApp::SetCursorVisible(0);
 
     if (g_bNoSoundArg != 0)
     {
@@ -309,88 +280,64 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
     g_gameApp.m_strTexturesPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Textures"));
 }
 
-// The paint block sets and restores four GDI attributes with nothing drawn between.
-// FUNCTION: HYPERX 0x00419290
-void __stdcall GameApp::SplashTimerCallback(UINT, UINT, DWORD_PTR dwUser, DWORD_PTR, DWORD_PTR)
-{
-    HPALETTE hPalette;
+constexpr auto SPLASH_MS = 3000ul;
 
-    if (g_bSplashBusy != 0)
+static DWORD s_dwSplashShown = 0;
+
+// FUNCTION: HYPERX 0x00419290
+void GameApp::NextSplash(HWND hWnd)
+{
+    static const constexpr char* s_apszSplashes[] = {
+        // STRING: HYPERX 0x004bbaf4
+        "SPLASHWZ",
+        // STRING: HYPERX 0x004bbae8
+        "SPLASHAC",
+        // STRING: HYPERX 0x004bbae0
+        "HBLOGO",
+    };
+
+    g_nSplashFrame++;
+
+    if (g_nSplashFrame > (int)std::size(s_apszSplashes))
     {
+        g_nSplashFrame = 0;
+
+        WndProc::HandlePaint(hWnd);
+
         return;
     }
 
-    g_nSplashFrame++;
-    g_bSplashBusy = 1;
+    Screen::ClearBlack();
 
-    if (g_hSplashOwnedPalette != 0)
+    const HPALETTE hPalette = GDI::DrawBitmapToWindow(hWnd, s_apszSplashes[g_nSplashFrame - 1]);
+
+    if (hPalette != 0)
     {
-        Screen::ClearBlack(g_hSplashOwnedPalette);
+        DeleteObject((HGDIOBJ)hPalette);
     }
 
-    if (g_nSplashFrame == 1 && g_nSplashTimerId != 0)
+    s_dwSplashShown = timeGetTime();
+}
+
+bool GameApp::UpdateSplash(HWND hWnd)
+{
+    if (g_nSplashFrame == 0)
     {
-        // STRING: HYPERX 0x004bbaf4
-        hPalette              = GDI::DrawBitmapToWindow((HWND)dwUser, "SPLASHWZ");
-        g_hSplashOwnedPalette = hPalette;
-        g_hSplashPalette      = hPalette;
+        return false;
     }
-    else if (g_nSplashFrame == 2 && g_nSplashTimerId != 0)
+
+    if (timeGetTime() - s_dwSplashShown >= SPLASH_MS)
     {
-        // STRING: HYPERX 0x004bbae8
-        hPalette = GDI::DrawBitmapToWindow((HWND)dwUser, "SPLASHAC");
-
-        if (g_hSplashPalette == 0)
-        {
-            g_hSplashPalette = hPalette;
-        }
-
-        if (g_hSplashOwnedPalette == 0)
-        {
-            g_hSplashOwnedPalette = hPalette;
-        }
+        GameApp::NextSplash(hWnd);
     }
     else
     {
-        // STRING: HYPERX 0x004bbae0
-        hPalette = GDI::DrawBitmapToWindow((HWND)dwUser, "HBLOGO");
-
-        if (g_hSplashPalette == 0)
-        {
-            g_hSplashPalette = hPalette;
-        }
-
-        if (g_hSplashOwnedPalette == 0)
-        {
-            g_hSplashOwnedPalette = hPalette;
-        }
-
-        if (g_nSplashTimerId != 0)
-        {
-            timeKillEvent(g_nSplashTimerId);
-        }
-
-        g_nSplashTimerId = 0;
+        Window::PresentMenu(hWnd);
     }
 
-    const HDC hdc = GetDC((HWND)dwUser);
+    FrameTimer::Pace();
 
-    if (hdc != 0)
-    {
-        HGDIOBJ        hOldObject = SelectObject(hdc, GetStockObject(SYSTEM_FONT));
-        const COLORREF crOldText  = SetTextColor(hdc, RGB(255, 255, 255));
-        const COLORREF crOldBk    = SetBkColor(hdc, 0);
-        const int      nOldBkMode = SetBkMode(hdc, TRANSPARENT);
-
-        SetTextColor(hdc, crOldText);
-        SetBkColor(hdc, crOldBk);
-        SetBkMode(hdc, nOldBkMode);
-        SelectObject(hdc, hOldObject);
-
-        ReleaseDC((HWND)dwUser, hdc);
-    }
-
-    g_bSplashBusy = 0;
+    return true;
 }
 
 // 'x' is a separator as well as a flag. v1.0.0.1 swapped -w and -x from v1.0.0.0.
@@ -534,12 +481,6 @@ void __cdecl GameApp::Shutdown(HWND)
     }
 
     GameApp::ClipCursorToWindow(0);
-
-    int nCursorCount = ShowCursor(TRUE);
-    while (nCursorCount < 0)
-    {
-        nCursorCount = ShowCursor(TRUE);
-    }
 
     PostQuitMessage(0);
 }
@@ -1078,23 +1019,12 @@ void __cdecl GameApp::SetupViewports(void)
 // FUNCTION: HYPERX 0x0044bca0
 int __cdecl GameApp::SetCursorVisible(int bVisible)
 {
-    int nCount;
-
     const int bWasVisible = (g_bCursorHidden == 0);
     g_bCursorHidden       = (bVisible == 0);
 
     if (bVisible != 0)
     {
         GameApp::ClipCursorToWindow(0);
-
-        SetCursor(LoadCursorA(0, IDC_ARROW));
-
-        nCount = ShowCursor(TRUE);
-
-        while (nCount < 0)
-        {
-            nCount = ShowCursor(TRUE);
-        }
 
         SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, TRUE, 0, 0);
 
@@ -1108,13 +1038,6 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
         // A framed window leaves the desktop usable, so the cursor is never clipped to it.
         GameApp::ClipCursorToWindow(0);
 
-        nCount = ShowCursor(FALSE);
-
-        while (nCount >= 0)
-        {
-            nCount = ShowCursor(FALSE);
-        }
-
         SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, FALSE, 0, 0);
     }
 
@@ -1127,6 +1050,11 @@ int GameApp::MainUpdate(HWND hWnd)
     if (g_gameApp.m_bIsActive)
     {
         ValidateRgn(hWnd, 0);
+
+        if (GameApp::UpdateSplash(hWnd))
+        {
+            return 0;
+        }
 
         if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
         {

@@ -27,6 +27,9 @@ NativeWindow Native();
 void         Show();
 void         Destroy();
 
+// SDL draws the cursor over the window from its own state, so the game sets it only here.
+void SetBusyCursor(bool bBusy);
+
 // Handles what has arrived; false once the game has asked to quit.
 bool Pump();
 void WaitWhileInactive();

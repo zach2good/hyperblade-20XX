@@ -134,6 +134,13 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_KEYDOWN:
         case WM_LBUTTONDOWN:
         case WM_RBUTTONDOWN:
+            if (g_nSplashFrame != 0)
+            {
+                GameApp::NextSplash(hWnd);
+
+                return 0;
+            }
+
             // The WM_KEYUP for a held key can go to another window, so the key is remembered.
             WndProc::NoteKey(uMsg, wParam);
 
@@ -275,6 +282,14 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 // FUNCTION: HYPERX 0x0044c910
 int __cdecl WndProc::HandlePaint(HWND hWnd)
 {
+    if (g_nSplashFrame != 0)
+    {
+        ValidateRgn(hWnd, NULL);
+        Window::PresentMenu(hWnd);
+
+        return 1;
+    }
+
     if (g_pActiveScreen == NULL || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
     {
         ValidateRgn(hWnd, NULL);

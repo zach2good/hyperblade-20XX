@@ -350,6 +350,25 @@ void Window::Show()
     SDL_ShowWindow(s_pWindow);
 }
 
+void Window::SetBusyCursor(bool bBusy)
+{
+    static SDL_Cursor* s_pBusy = 0;
+
+    if (bBusy == false)
+    {
+        SDL_SetCursor(SDL_GetDefaultCursor());
+
+        return;
+    }
+
+    if (s_pBusy == 0)
+    {
+        s_pBusy = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT);
+    }
+
+    SDL_SetCursor(s_pBusy);
+}
+
 void Window::Destroy()
 {
     SDL_DestroyWindow(s_pWindow);
