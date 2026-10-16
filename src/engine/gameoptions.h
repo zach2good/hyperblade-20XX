@@ -3,8 +3,6 @@
 #ifndef HYPERBLADE_GAMEOPTIONS_H
 #define HYPERBLADE_GAMEOPTIONS_H
 
-#include "common/staticassert.h"
-
 class GameOptions
 {
 public:
@@ -45,5 +43,5 @@ public:
     int m_nInstallLevel; // 0x1c
 };
 
-STATIC_ASSERT(sizeof(GameOptions) == 0x20);
+static_assert(sizeof(GameOptions) == 0x20);
 #endif

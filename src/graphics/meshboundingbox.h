@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_MESHBOUNDINGBOX_H
 #define HYPERBLADE_MESHBOUNDINGBOX_H
 
-#include "common/staticassert.h"
 #include "math/vec3.h"
 
 struct MeshBoundingBox
@@ -16,6 +15,6 @@ struct MeshBoundingBox
     Vec3* Max();
 };
 
-STATIC_ASSERT(sizeof(MeshBoundingBox) == 0x1c);
+static_assert(sizeof(MeshBoundingBox) == 0x1c);
 
 #endif

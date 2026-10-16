@@ -1,5 +1,5 @@
-# The .rsrc section comes from the user's own copy of the game, extracted to a .res under the
-# build directory. LINK.EXE runs CVTRES.EXE on it, which writes the 000606c7 Rich header stamp.
+# The .rsrc section comes from your own copy of the game, extracted to a .res under the build
+# directory.
 
 if(NOT HYPERX_REFERENCE)
     execute_process(
@@ -20,7 +20,7 @@ endif()
 if(NOT EXISTS "${HYPERX_REFERENCE}")
     message(FATAL_ERROR
         "The original executable is not at '${HYPERX_REFERENCE}'. Name your copy in "
-        "reccmp-user.yml or pass -DHYPERX_REFERENCE=<path>.")
+        "hyperx-user.yml or pass -DHYPERX_REFERENCE=<path>.")
 endif()
 
 set(HYPERX_RES "${CMAKE_BINARY_DIR}/generated/HYPERX.res")

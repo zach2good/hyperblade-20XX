@@ -1,8 +1,6 @@
 #ifndef HYPERBLADE_ANIMNAMEDREF_H
 #define HYPERBLADE_ANIMNAMEDREF_H
 
-#include "staticassert.h"
-
 // The segment carries this bias while the reference still owns its copied name.
 #define ANIMNAMEDREF_BIAS 0x270f
 
@@ -25,5 +23,5 @@ public:
     short m_nFrame;   // 0x06
 };
 
-STATIC_ASSERT(sizeof(AnimNamedRef) == 0x8);
+static_assert(sizeof(AnimNamedRef) == 0x8);
 #endif

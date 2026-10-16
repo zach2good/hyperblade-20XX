@@ -5,7 +5,6 @@
 #include "common/compat.h"
 
 #include "common/pathstring.h"
-#include "common/staticassert.h"
 #include "graphics/paletterange.h"
 #include "graphics/cgpalette.h"
 
@@ -67,5 +66,5 @@ public:
                                                          unsigned char cColour);
 };
 
-STATIC_ASSERT(sizeof(ColorPalette) == 0x474);
+static_assert(sizeof(ColorPalette) == 0x474);
 #endif

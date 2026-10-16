@@ -17,6 +17,6 @@ public:
 // SYNTHETIC: HYPERX 0x0041db50
 // BehObj_RailSlide::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(BehObj_RailSlide) == 0x98);
+static_assert(sizeof(BehObj_RailSlide) == 0x98);
 
 #endif

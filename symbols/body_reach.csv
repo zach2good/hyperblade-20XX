@@ -1,8 +1,0 @@
-# Marked bodies that read at or past the end of the class they are declared on.
-#
-# tools/check_body_reach.py fails on any that is not listed here. A row says the contradiction
-# is real and names what stops it being settled.
-#
-# The file is empty. src/engine/devicector.h declares the trio past the EngineObject class end
-# as ObjectSpawnSlots, and its header carries the reasoning.
-class,method,reason

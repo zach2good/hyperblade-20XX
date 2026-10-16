@@ -12,6 +12,6 @@ public:
     JoystickDeviceObj(int nSlot, class ObjectDef* pDef);
 };
 
-STATIC_ASSERT(sizeof(JoystickDeviceObj) == 0xd28);
+static_assert(sizeof(JoystickDeviceObj) == 0xd28);
 
 #endif

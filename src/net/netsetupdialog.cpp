@@ -31,7 +31,7 @@ union SyncBlockSlot
     SyncCatalogBlock  catalog;
 };
 
-STATIC_ASSERT(sizeof(SyncBlockSlot) == SYNC_BLOCK_BYTES);
+static_assert(sizeof(SyncBlockSlot) == SYNC_BLOCK_BYTES);
 
 #define SYNC_SLOT_COUNT 8
 

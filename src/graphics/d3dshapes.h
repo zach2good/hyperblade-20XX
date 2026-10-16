@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_GRAPHICS_D3DSHAPES_H
 #define HYPERBLADE_GRAPHICS_D3DSHAPES_H
 
-#include "common/staticassert.h"
 #include <d3d.h>
 #include "graphics/clippoly.h"
 #include "graphics/texcoord.h"
@@ -29,6 +28,6 @@ struct D3DBatchVertex
     TexCoord          uv;
 };
 
-STATIC_ASSERT(sizeof(D3DBatchVertex) == 0x20);
+static_assert(sizeof(D3DBatchVertex) == 0x20);
 
 #endif

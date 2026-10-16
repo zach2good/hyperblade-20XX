@@ -6,7 +6,6 @@
 
 #include "globals.h"
 #include <string.h>
-#include "common/staticassert.h"
 
 // The node splices itself onto the tail and takes its own copy of the name.
 struct MessageNode
@@ -81,5 +80,5 @@ private:
     unsigned int m_nExpiryTick; // 0x0c
 };
 
-STATIC_ASSERT(sizeof(MessageNode) == 0x10);
+static_assert(sizeof(MessageNode) == 0x10);
 #endif

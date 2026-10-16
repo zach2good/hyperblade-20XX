@@ -17,6 +17,6 @@ public:
 // SYNTHETIC: HYPERX 0x0041d8b0
 // BehObj_UpdateRelativePos::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(BehObj_UpdateRelativePos) == 0x98);
+static_assert(sizeof(BehObj_UpdateRelativePos) == 0x98);
 
 #endif

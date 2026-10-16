@@ -2,7 +2,6 @@
 #define HYPERBLADE_PAUSEMENUMINIMALSCREEN_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -27,7 +26,7 @@ private:
     int m_nUnusedD; // 0x464
 };
 
-STATIC_ASSERT(sizeof(PauseMenuMinimalScreen) == 0x468);
+static_assert(sizeof(PauseMenuMinimalScreen) == 0x468);
 
 // SYNTHETIC: HYPERX 0x00443960
 // PauseMenuMinimalScreen::`scalar deleting destructor'

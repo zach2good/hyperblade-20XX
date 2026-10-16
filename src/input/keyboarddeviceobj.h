@@ -5,7 +5,6 @@
 
 #include "engine/devicector.h"
 #include "actionbinding.h"
-#include "common/staticassert.h"
 #include "engine/gameengine.h"
 
 // VTABLE: HYPERX 0x004b34e4
@@ -45,7 +44,7 @@ public:
 // SYNTHETIC: HYPERX 0x0045d090
 // KeyboardDeviceObj::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(KeyboardDeviceObj) == 0xe78);
+static_assert(sizeof(KeyboardDeviceObj) == 0xe78);
 
 inline KeyboardDeviceObj* GameEngine::GetInputDevice(int nSlot) const
 {

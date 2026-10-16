@@ -20,6 +20,6 @@ private:
 // SYNTHETIC: HYPERX 0x0041d7d0
 // BehObj_Avoidance::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(BehObj_Avoidance) == 0xa4);
+static_assert(sizeof(BehObj_Avoidance) == 0xa4);
 
 #endif

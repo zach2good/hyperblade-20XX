@@ -5,7 +5,6 @@
 
 #include "teamplayerrow.h"
 #include "objectdef.h"
-#include "common/staticassert.h"
 #include "engine/statids.h"
 #include "engine/teamsblock.h"
 
@@ -60,8 +59,8 @@ struct TeamBlock
     int                 aReserveSince[TEAM_ROW_COUNT]; // 0x878
 };
 
-STATIC_ASSERT(sizeof(TeamStatRow) == 0xc4);
-STATIC_ASSERT(sizeof(TeamBlock) == 0x888);
+static_assert(sizeof(TeamStatRow) == 0xc4);
+static_assert(sizeof(TeamBlock) == 0x888);
 
 inline const char* TeamsBlock::GetTeamPath(int nAt) const
 {

@@ -2,7 +2,6 @@
 #define HYPERBLADE_PAUSEMENUNOSAVESCREEN_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -29,7 +28,7 @@ private:
     int m_nUnusedD; // 0x464
 };
 
-STATIC_ASSERT(sizeof(PauseMenuNoSaveScreen) == 0x468);
+static_assert(sizeof(PauseMenuNoSaveScreen) == 0x468);
 
 // SYNTHETIC: HYPERX 0x00443c90
 // PauseMenuNoSaveScreen::`scalar deleting destructor'

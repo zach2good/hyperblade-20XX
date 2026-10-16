@@ -4,7 +4,6 @@
 #define HYPERBLADE_COLLISIONCAGE_H
 
 #include "math/vector.h"
-#include "common/staticassert.h"
 
 #define CAGE_FACES    12
 #define CAGE_VERTICES 5
@@ -35,5 +34,5 @@ struct CollisionCage
     static void ComputeNormal(CollisionCage* pCage, short nFace);
 };
 
-STATIC_ASSERT(sizeof(CollisionCage) == 0x3f8);
+static_assert(sizeof(CollisionCage) == 0x3f8);
 #endif

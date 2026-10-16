@@ -5,7 +5,6 @@
 #define HYPERBLADE_NETSESSIONENTRY_H
 #include "common/compat.h"
 
-#include "common/staticassert.h"
 #include "netglobals.h"
 #include "net/directplay.h"
 #include <stddef.h>
@@ -29,6 +28,6 @@ struct NetSessionEntry
     DWORD            dwUser4;
 };
 
-STATIC_ASSERT(sizeof(NetSessionEntry) == sizeof(DPSESSIONDESC));
-STATIC_ASSERT(offsetof(NetSessionEntry, m_pNext) == offsetof(DPSESSIONDESC, dwUser1));
+static_assert(sizeof(NetSessionEntry) == sizeof(DPSESSIONDESC));
+static_assert(offsetof(NetSessionEntry, m_pNext) == offsetof(DPSESSIONDESC, dwUser1));
 #endif

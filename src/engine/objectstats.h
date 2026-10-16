@@ -1,8 +1,6 @@
 #ifndef HYPERBLADE_OBJECTSTATS_H
 #define HYPERBLADE_OBJECTSTATS_H
 
-#include "common/staticassert.h"
-
 // A player's ratings block, at 0xd20 on a PlayerObject.
 class ObjectStats
 {
@@ -44,7 +42,7 @@ public:
 };
 
 // playerobject.h puts m_matchStats straight after this block.
-STATIC_ASSERT(sizeof(ObjectStats) == 0x204);
+static_assert(sizeof(ObjectStats) == 0x204);
 
 inline ObjectStats::ObjectStats()
 {

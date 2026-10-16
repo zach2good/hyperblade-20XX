@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_GAMEBEHAVIOROBJECT_H
 #define HYPERBLADE_GAMEBEHAVIOROBJECT_H
 
-#include "common/staticassert.h"
 #include "planvm/agendaitemids.h"
 
 class EngineObject;
@@ -129,6 +128,6 @@ protected:
 // SYNTHETIC: HYPERX 0x0041bfc0
 // GameBehaviorObject::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(GameBehaviorObject) == 0x98);
+static_assert(sizeof(GameBehaviorObject) == 0x98);
 
 #endif

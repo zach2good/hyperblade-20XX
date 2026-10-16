@@ -1,8 +1,6 @@
 #ifndef HYPERBLADE_ANIMPLAYSTATE_H
 #define HYPERBLADE_ANIMPLAYSTATE_H
 
-#include "common/staticassert.h"
-
 // The play states, as DATA/ENUMIDS.H's PlayState numbers them.
 #define AA_DONE       0
 #define AA_PLAY       1
@@ -46,6 +44,6 @@ struct AnimPlayState
     int nUnused; // 0xd8
 };
 
-STATIC_ASSERT(sizeof(AnimPlayState) == 0xdc);
+static_assert(sizeof(AnimPlayState) == 0xdc);
 
 #endif

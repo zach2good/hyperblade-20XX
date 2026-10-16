@@ -5,7 +5,6 @@
 #include "common/compat.h"
 
 #include "globals.h"
-#include "common/staticassert.h"
 #include <stddef.h>
 class CheatState;
 
@@ -78,8 +77,8 @@ struct TeamScaleSlots
     float flShrinkScaleZ;
 };
 
-STATIC_ASSERT(offsetof(TeamScaleSlots, anScaleTargetSlots) == 0x10);
-STATIC_ASSERT(offsetof(TeamScaleSlots, flShrinkScaleX) == 0x20);
+static_assert(offsetof(TeamScaleSlots, anScaleTargetSlots) == 0x10);
+static_assert(offsetof(TeamScaleSlots, flShrinkScaleX) == 0x20);
 
 // GLOBAL: HYPERX 0x004c2948
 extern TeamScaleSlots g_teamScaleSlots;

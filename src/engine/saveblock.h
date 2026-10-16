@@ -4,7 +4,6 @@
 #define HYPERBLADE_SAVEBLOCK_H
 
 #include "teamblock.h"
-#include "common/staticassert.h"
 
 #define SAVE_BLOCK_TAG_VALUE 0x314d444d
 
@@ -16,7 +15,7 @@ struct SaveTeam
     int         aSeat[TEAM_BLOCK_SEATS];   // 0x324
 };
 
-STATIC_ASSERT(sizeof(SaveTeam) == 0x32c);
+static_assert(sizeof(SaveTeam) == 0x32c);
 
 struct SaveBlock
 {
@@ -29,5 +28,5 @@ struct SaveBlock
     char     abAward[6];    // 0x6b4, GameEngine::m_abAward
 };
 
-STATIC_ASSERT(sizeof(SaveBlock) == 0x6bc);
+static_assert(sizeof(SaveBlock) == 0x6bc);
 #endif

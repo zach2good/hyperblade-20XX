@@ -17,6 +17,6 @@ public:
 // SYNTHETIC: HYPERX 0x0041eba0
 // BehObj_CandyTracking::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(BehObj_CandyTracking) == 0x98);
+static_assert(sizeof(BehObj_CandyTracking) == 0x98);
 
 #endif

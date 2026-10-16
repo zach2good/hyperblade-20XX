@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include <stdio.h>
-#include "common/staticassert.h"
 
 // A GIF's logical screen descriptor and global colour table.
 struct GifScreen
@@ -19,7 +18,7 @@ struct GifScreen
     unsigned char aColours[256][3]; // 0x00d, red, green and blue
 };
 
-STATIC_ASSERT(sizeof(GifScreen) == 0x30e);
+static_assert(sizeof(GifScreen) == 0x30e);
 
 namespace CGPalette
 {

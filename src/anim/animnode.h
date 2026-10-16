@@ -2,7 +2,6 @@
 #define HYPERBLADE_ANIMNODE_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 
 class AnimClipSet;
 
@@ -33,6 +32,6 @@ public:
     };
 };
 
-STATIC_ASSERT(sizeof(AnimNode) == 0x34);
+static_assert(sizeof(AnimNode) == 0x34);
 
 #endif

@@ -6,6 +6,45 @@
 
 #define DPLAY_ERROR_COUNT 31
 
+// Null when dplayx.dll is missing, which the callers already treat as no DirectPlay.
+static FARPROC DPlayEntry(const char* pszName)
+{
+    static HMODULE s_hDPlay = LoadLibraryA("dplayx.dll");
+
+    if (s_hDPlay == 0)
+    {
+        return 0;
+    }
+
+    return GetProcAddress(s_hDPlay, pszName);
+}
+
+HRESULT WINAPI DirectPlayEnumerateA(LPDPENUMDPCALLBACKA pCallback, LPVOID pContext)
+{
+    typedef HRESULT(WINAPI * EnumerateFn)(LPDPENUMDPCALLBACKA, LPVOID);
+    const EnumerateFn pfnEnumerate = (EnumerateFn)DPlayEntry("DirectPlayEnumerateA");
+
+    if (pfnEnumerate == 0)
+    {
+        return DPERR_UNAVAILABLE;
+    }
+
+    return pfnEnumerate(pCallback, pContext);
+}
+
+HRESULT WINAPI DirectPlayCreate(LPGUID pGuid, LPDIRECTPLAY* ppDirectPlay, IUnknown* pOuter)
+{
+    typedef HRESULT(WINAPI * CreateFn)(LPGUID, LPDIRECTPLAY*, IUnknown*);
+    const CreateFn pfnCreate = (CreateFn)DPlayEntry("DirectPlayCreate");
+
+    if (pfnCreate == 0)
+    {
+        return DPERR_UNAVAILABLE;
+    }
+
+    return pfnCreate(pGuid, ppDirectPlay, pOuter);
+}
+
 // An unknown code returns a fixed string rather than a null.
 // FUNCTION: HYPERX 0x00442880
 char* __cdecl DirectPlay::GetErrorString(int hr)

@@ -12,6 +12,6 @@ public:
     GamepadDeviceObj(int nSlot, class ObjectDef* pDef);
 };
 
-STATIC_ASSERT(sizeof(GamepadDeviceObj) == 0xd28);
+static_assert(sizeof(GamepadDeviceObj) == 0xd28);
 
 #endif

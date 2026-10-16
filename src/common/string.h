@@ -4,7 +4,6 @@
 #define HYPERBLADE_STRING_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include <stdarg.h>
 
 struct StringHeader
@@ -119,6 +118,6 @@ public:
     static int LoadResourceString(UINT nID, LPSTR pszBuffer, int nMaxLength);
 };
 
-STATIC_ASSERT(sizeof(String) == 0x4);
+static_assert(sizeof(String) == 0x4);
 
 #endif

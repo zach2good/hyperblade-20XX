@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_MOVECODEC_H
 #define HYPERBLADE_MOVECODEC_H
 
-#include "common/staticassert.h"
 #include "math/vector.h"
 #include "net/movepositionword.h"
 #include "net/movevelocityword.h"
@@ -18,7 +17,7 @@ struct PackedMove
 
 #pragma pack(pop)
 
-STATIC_ASSERT(sizeof(PackedMove) == 9);
+static_assert(sizeof(PackedMove) == 9);
 
 #include "common/compat.h"
 

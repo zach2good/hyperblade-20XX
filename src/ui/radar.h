@@ -2,7 +2,6 @@
 #define HYPERBLADE_RADAR_H
 
 #include "graphics/texture.h"
-#include "common/staticassert.h"
 #include "math/vec3.h"
 
 // A RECT with a destructor, for the constructor's trylevel.
@@ -64,5 +63,5 @@ private:
 // SYNTHETIC: HYPERX 0x0043f3d0
 // Radar::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(Radar) == 0x140);
+static_assert(sizeof(Radar) == 0x140);
 #endif

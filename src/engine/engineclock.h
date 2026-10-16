@@ -2,7 +2,6 @@
 #define HYPERBLADE_ENGINECLOCK_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 
 // The frame deltas the clock averages.
 #define CLOCK_RING_LENGTH 5
@@ -43,6 +42,6 @@ struct EngineClock
     int          nPauseMark;                      // 0x48
 };
 
-STATIC_ASSERT(sizeof(EngineClock) == 0x4c);
+static_assert(sizeof(EngineClock) == 0x4c);
 
 #endif

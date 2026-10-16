@@ -2,7 +2,6 @@
 #define HYPERBLADE_INTERACTOR_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "planvm/plannode.h"
 
 class EngineObject;
@@ -127,6 +126,6 @@ public:
 // SYNTHETIC: HYPERX 0x0046bbb0
 // Interactor::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(Interactor) == 0x34);
+static_assert(sizeof(Interactor) == 0x34);
 
 #endif

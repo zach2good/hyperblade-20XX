@@ -2,7 +2,6 @@
 #define HYPERBLADE_GAMEINTROSCREEN_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -17,7 +16,7 @@ public:
     virtual void OnWidgetMessage(int nMsg, unsigned int nWidget);
 };
 
-STATIC_ASSERT(sizeof(GameIntroScreen) == 0x464);
+static_assert(sizeof(GameIntroScreen) == 0x464);
 
 // SYNTHETIC: HYPERX 0x00449190
 // GameIntroScreen::`scalar deleting destructor'

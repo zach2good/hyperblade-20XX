@@ -9,7 +9,6 @@
 #include "meshblock.h"
 #include "meshboundingbox.h"
 #include "math/transformobject.h"
-#include "common/staticassert.h"
 
 class EngineObject;
 struct MeshMaterial;
@@ -53,7 +52,7 @@ struct FaceRecord
     float flZ;
 };
 
-STATIC_ASSERT(sizeof(FaceRecord) == 8);
+static_assert(sizeof(FaceRecord) == 8);
 
 // The bits of MeshBone::m_nFlags.
 #define MESHBONE_UNBOUND         0x02
@@ -174,7 +173,7 @@ public:
     static void __fastcall DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
 };
 
-STATIC_ASSERT(sizeof(MeshBone) == 0x15c);
+static_assert(sizeof(MeshBone) == 0x15c);
 // The atexit thunk for DrawFaces' s_worldView.
 // SYNTHETIC: HYPERX 0x0046f330
 // $E11

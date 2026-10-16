@@ -1,8 +1,6 @@
 #ifndef HYPERBLADE_GRAPHICS_TRANSFORMEDVERTEX_H
 #define HYPERBLADE_GRAPHICS_TRANSFORMEDVERTEX_H
 
-#include "common/staticassert.h"
-
 // Every reader divides by the fourth word, a w.
 struct TransformedVertex
 {
@@ -20,6 +18,6 @@ struct TransformedVertex
     };
 };
 
-STATIC_ASSERT(sizeof(TransformedVertex) == 0x10);
+static_assert(sizeof(TransformedVertex) == 0x10);
 
 #endif

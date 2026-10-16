@@ -3,7 +3,6 @@
 #include "common/compat.h"
 
 #include "graphicsglobals.h"
-#include "common/staticassert.h"
 #include <stddef.h>
 #include "graphics/d3dapi.h"
 #include <d3d.h>
@@ -26,7 +25,7 @@ struct D3DDeviceDesc6 : D3DDEVICEDESC
     WORD     wMaxSimultaneousTextures;
 };
 
-STATIC_ASSERT(sizeof(D3DDeviceDesc6) == 0xfc);
+static_assert(sizeof(D3DDeviceDesc6) == 0xfc);
 
 // The DirectX 5 d3dapp sample's driver record, 0x3b4 bytes.
 struct D3DDriverInfo
@@ -43,11 +42,11 @@ struct D3DDriverInfo
     int            bCanDoWindow;   // 0x3b0, the desktop depth is a render depth
 };
 
-STATIC_ASSERT(sizeof(D3DDriverInfo) == 0x3b4);
-STATIC_ASSERT(offsetof(D3DDriverInfo, deviceDesc) == 0x0a0);
-STATIC_ASSERT(offsetof(D3DDriverInfo, aUnusedDesc) == 0x19c);
-STATIC_ASSERT(offsetof(D3DDriverInfo, guid) == 0x394);
-STATIC_ASSERT(offsetof(D3DDriverInfo, bCanDoWindow) == 0x3b0);
+static_assert(sizeof(D3DDriverInfo) == 0x3b4);
+static_assert(offsetof(D3DDriverInfo, deviceDesc) == 0x0a0);
+static_assert(offsetof(D3DDriverInfo, aUnusedDesc) == 0x19c);
+static_assert(offsetof(D3DDriverInfo, guid) == 0x394);
+static_assert(offsetof(D3DDriverInfo, bCanDoWindow) == 0x3b0);
 
 struct DisplayModeEntry
 {
@@ -70,10 +69,10 @@ struct DisplayStateBlock
     int              anUnusedB[5];
 };
 
-STATIC_ASSERT(offsetof(DisplayStateBlock, nDefaultDisplayModeIndex) == 0x14);
-STATIC_ASSERT(offsetof(DisplayStateBlock, displayMode) == 0x338);
-STATIC_ASSERT(offsetof(DisplayStateBlock, nDisplayModeIndex) == 0x34c);
-STATIC_ASSERT(sizeof(DisplayStateBlock) == 0xd9 * 4);
+static_assert(offsetof(DisplayStateBlock, nDefaultDisplayModeIndex) == 0x14);
+static_assert(offsetof(DisplayStateBlock, displayMode) == 0x338);
+static_assert(offsetof(DisplayStateBlock, nDisplayModeIndex) == 0x34c);
+static_assert(sizeof(DisplayStateBlock) == 0xd9 * 4);
 
 // GLOBAL: HYPERX 0x004cd6a8
 extern DisplayStateBlock g_displayState;

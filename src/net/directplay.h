@@ -3,7 +3,7 @@
 
 #include "common/compat.h"
 #include <windows.h>
-#include <dplay.h>
+#include "net/dplayapi.h"
 
 namespace DirectPlay
 {

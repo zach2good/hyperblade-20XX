@@ -4,7 +4,6 @@
 #define HYPERBLADE_ARENASTATE_H
 
 #include <string.h>
-#include "common/staticassert.h"
 #include "physics/collisionellipsoid.h"
 
 class ObjectDef;
@@ -33,5 +32,5 @@ inline ArenaState::ArenaState()
     m_pEllipsoid = &g_arenaEllipsoid;
 }
 
-STATIC_ASSERT(sizeof(ArenaState) == 0x20);
+static_assert(sizeof(ArenaState) == 0x20);
 #endif

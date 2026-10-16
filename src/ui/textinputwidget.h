@@ -2,7 +2,6 @@
 #define HYPERBLADE_TEXTINPUTWIDGET_H
 
 #include "widget.h"
-#include "common/staticassert.h"
 #include "ui/holdingwidget.h"
 
 // Slot zero of 0x004b2af4; no other table holds 0x0042bda0.
@@ -36,5 +35,5 @@ private:
     char* m_pszInput;  // 0x070
 };
 
-STATIC_ASSERT(sizeof(TextInputWidget) == 0x74);
+static_assert(sizeof(TextInputWidget) == 0x74);
 #endif

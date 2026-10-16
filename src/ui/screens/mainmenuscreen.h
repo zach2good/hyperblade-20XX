@@ -2,7 +2,6 @@
 #define HYPERBLADE_MAINMENUSCREEN_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -59,7 +58,7 @@ public:
     virtual void OnWidgetMessage(int nMsg, unsigned int nId);
 };
 
-STATIC_ASSERT(sizeof(MainMenuScreen) == 0x464);
+static_assert(sizeof(MainMenuScreen) == 0x464);
 
 // SYNTHETIC: HYPERX 0x0048d900
 // MainMenuScreen::`scalar deleting destructor'

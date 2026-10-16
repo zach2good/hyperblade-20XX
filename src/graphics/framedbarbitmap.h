@@ -6,7 +6,6 @@
 #include "common/commonglobals.h"
 #include "graphics/rlespritesurface.h"
 #include "globals.h"
-#include "common/staticassert.h"
 #include "math/point.h"
 
 // A frame bitmap over a bar bitmap drawn clipped to a width, the speed meter.
@@ -116,5 +115,5 @@ public:
 // SYNTHETIC: HYPERX 0x00439160
 // FramedBarBitmap::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(FramedBarBitmap) == 0x110);
+static_assert(sizeof(FramedBarBitmap) == 0x110);
 #endif

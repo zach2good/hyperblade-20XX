@@ -5,7 +5,6 @@
 
 #include "common/animnamedref.h"
 #include <string.h>
-#include "common/staticassert.h"
 
 class AnimClipEntry
 {
@@ -32,5 +31,5 @@ inline AnimClipEntry::AnimClipEntry(unsigned short wSegment, unsigned short wTri
     strcpy(m_szName, pszName);
 }
 
-STATIC_ASSERT(sizeof(AnimClipEntry) == 0x24);
+static_assert(sizeof(AnimClipEntry) == 0x24);
 #endif

@@ -2,7 +2,6 @@
 #define HYPERBLADE_MODELFILE_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 
 class FileObj;
 
@@ -24,7 +23,7 @@ struct FileHeader
     FileVersion version;      // 0x24
 };
 
-STATIC_ASSERT(sizeof(FileHeader) == 0x30);
+static_assert(sizeof(FileHeader) == 0x30);
 
 namespace ModelFile
 {

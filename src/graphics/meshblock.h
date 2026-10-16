@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_MESHBLOCK_H
 #define HYPERBLADE_MESHBLOCK_H
 
-#include "common/staticassert.h"
 #include "graphics/meshface.h"
 #include "graphics/recordoffset.h"
 #include "math/vector.h"
@@ -54,5 +53,5 @@ inline MeshFace* MeshBlock::Face(int nFace) const
     return aFaceOffsets[nFace].In(this);
 }
 
-STATIC_ASSERT(sizeof(MeshBlock) == 0x24);
+static_assert(sizeof(MeshBlock) == 0x24);
 #endif

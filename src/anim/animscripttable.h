@@ -5,7 +5,6 @@
 
 #include "common/compat.h"
 #include "anim/animset.h"
-#include "common/staticassert.h"
 
 class AnimDB;
 class String;
@@ -64,6 +63,6 @@ public:
 // SYNTHETIC: HYPERX 0x00418bf0
 // AnimScriptTable::`scalar deleting destructor'
 
-STATIC_ASSERT((int)(size_t)&((AnimScriptTable*)0)->m_apEntries == 0x008);
+static_assert((int)(size_t)&((AnimScriptTable*)0)->m_apEntries == 0x008);
 
 #endif

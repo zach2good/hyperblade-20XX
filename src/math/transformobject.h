@@ -4,7 +4,6 @@
 struct Vec3;
 
 #include "vector.h"
-#include "common/staticassert.h"
 #include <math.h>
 
 #define SERIAL_LAST 0xffffffff
@@ -182,5 +181,5 @@ inline TransformObject::TransformObject(char bHasRow3)
     Reset(bHasRow3);
 }
 
-STATIC_ASSERT(sizeof(TransformObject) == 0x7c);
+static_assert(sizeof(TransformObject) == 0x7c);
 #endif

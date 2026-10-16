@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_DROMEEXTERIORSCREEN_H
 #define HYPERBLADE_DROMEEXTERIORSCREEN_H
 
-#include "common/staticassert.h"
 #include "ui/pausemenu.h"
 
 // GLOBAL: HYPERX 0x004c1fd0
@@ -34,7 +33,7 @@ public:
     ~DromeExteriorScreen();
 };
 
-STATIC_ASSERT(sizeof(DromeExteriorScreen) == 0x464);
+static_assert(sizeof(DromeExteriorScreen) == 0x464);
 
 // SYNTHETIC: HYPERX 0x0048ef80
 // DromeExteriorScreen::`scalar deleting destructor'

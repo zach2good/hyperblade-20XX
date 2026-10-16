@@ -5,7 +5,6 @@
 #include "math/vector.h"
 #include "net/movecodec.h"
 #include "net/playerslotname.h"
-#include "common/staticassert.h"
 #include "net/netmessage.h"
 
 // The words that fit after an events packet's five header bytes.
@@ -128,6 +127,6 @@ struct NetDataMessage : NetMessage
 
 #pragma pack(pop)
 
-STATIC_ASSERT(sizeof(StationaryEvent) == 9);
+static_assert(sizeof(StationaryEvent) == 9);
 
 #endif

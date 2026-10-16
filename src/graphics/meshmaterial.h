@@ -5,7 +5,6 @@
 
 #include "graphics/materialname.h"
 
-#include "common/staticassert.h"
 #include "anim/animclip.h"
 
 // The stride is twenty two, where natural packing gives twenty four.
@@ -73,7 +72,7 @@ struct MeshMaterial
 
 #pragma pack(pop)
 
-STATIC_ASSERT(sizeof(MeshMaterial) == 0x16);
+static_assert(sizeof(MeshMaterial) == 0x16);
 
 enum FaceShade
 {

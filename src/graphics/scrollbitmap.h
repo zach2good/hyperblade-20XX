@@ -6,7 +6,6 @@
 #include "common/compat.h"
 #include "graphics/cddbitmap.h"
 #include "graphics/rlespritesurface.h"
-#include "common/staticassert.h"
 #include "graphics/surfacepoint.h"
 
 // VTABLE: HYPERX 0x004b2e98
@@ -113,5 +112,5 @@ public:
 // SYNTHETIC: HYPERX 0x00438740
 // ScrollBitmap::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(ScrollBitmap) == 0x10c);
+static_assert(sizeof(ScrollBitmap) == 0x10c);
 #endif

@@ -17,6 +17,6 @@ public:
 // SYNTHETIC: HYPERX 0x0041e9a0
 // BehObj_TrackTrajectory::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(BehObj_TrackTrajectory) == 0x98);
+static_assert(sizeof(BehObj_TrackTrajectory) == 0x98);
 
 #endif

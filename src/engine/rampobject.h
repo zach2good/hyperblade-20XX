@@ -9,7 +9,6 @@ struct Vec3;
 #include "globals.h"
 #include "engineglobals.h"
 #include "devicector.h"
-#include "common/staticassert.h"
 #include "physics/collisionplane.h"
 #include "physics/collisionobj.h"
 #include "engine/engineobject.h"
@@ -60,5 +59,5 @@ private:
 // SYNTHETIC: HYPERX 0x0047fe60
 // RampObject::~RampObject
 
-STATIC_ASSERT(sizeof(RampObject) == 0xe88);
+static_assert(sizeof(RampObject) == 0xe88);
 #endif

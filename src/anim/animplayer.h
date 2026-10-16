@@ -76,7 +76,7 @@ public:
     char OnClipEnd();
 };
 
-STATIC_ASSERT(sizeof(AnimPlayer) == ANIM_DB_BINDING_BYTES);
+static_assert(sizeof(AnimPlayer) == ANIM_DB_BINDING_BYTES);
 
 // SYNTHETIC: HYPERX 0x00425560
 // AnimPlayer::`scalar deleting destructor'

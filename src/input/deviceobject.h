@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include "engine/engineobject.h"
-#include "common/staticassert.h"
 
 class EngineObject;
 
@@ -36,6 +35,6 @@ public:
 // SYNTHETIC: HYPERX 0x0045d710
 // DeviceObject::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(DeviceObject) == 0xd28);
+static_assert(sizeof(DeviceObject) == 0xd28);
 
 #endif

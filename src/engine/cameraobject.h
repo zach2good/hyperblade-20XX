@@ -5,7 +5,6 @@
 
 #include "common/compat.h"
 #include "gameengine.h"
-#include "common/staticassert.h"
 #include "engine/engineobject.h"
 #include "planvm/interactor.h"
 
@@ -129,7 +128,7 @@ public:
 // SYNTHETIC: HYPERX 0x00421c10
 // CameraObject::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(CameraObject) == 0x1030);
+static_assert(sizeof(CameraObject) == 0x1030);
 
 inline CameraObject* GameEngine::GetCamera(int nSlot) const
 {

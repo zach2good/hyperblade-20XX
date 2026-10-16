@@ -1,5 +1,0 @@
-project: .
-targets:
-  HYPERX:
-    path: build/out/HYPERX_sym.exe
-    pdb: build/out/HYPERX_sym.pdb

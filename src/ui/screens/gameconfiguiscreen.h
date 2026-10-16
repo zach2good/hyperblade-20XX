@@ -2,7 +2,6 @@
 #define HYPERBLADE_GAMECONFIGUISCREEN_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "ui/uiscreen.h"
 
 // The options page, appended after the chrome. A row's display index is also its option id.
@@ -58,7 +57,7 @@ public:
     int m_nReturnState; // 0x474, the engine state to return to
 };
 
-STATIC_ASSERT(sizeof(GameConfigUIScreen) == 0x478);
+static_assert(sizeof(GameConfigUIScreen) == 0x478);
 
 // SYNTHETIC: HYPERX 0x00479ae0
 // GameConfigUIScreen::`scalar deleting destructor'

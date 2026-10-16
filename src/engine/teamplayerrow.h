@@ -4,7 +4,6 @@
 #define HYPERBLADE_TEAMPLAYERROW_H
 
 #include "statids.h"
-#include "common/staticassert.h"
 
 // How many rows a team has. src/engine/teamblock.h's aRows places them.
 #define TEAM_ROW_COUNT 4
@@ -16,5 +15,5 @@ struct TeamPlayerRow
     float aStat[TEAM_ROW_STAT_COUNT];
 };
 
-STATIC_ASSERT(sizeof(TeamPlayerRow) == 0xfc);
+static_assert(sizeof(TeamPlayerRow) == 0xfc);
 #endif

@@ -4,7 +4,6 @@
 #define HYPERBLADE_PHYSICSBODY_H
 
 #include "math/vector.h"
-#include "common/staticassert.h"
 
 class CollisionShape;
 class EngineObject;
@@ -20,7 +19,7 @@ struct AttachPak
     short                  nIndex;     // 0x18
 };
 
-STATIC_ASSERT(sizeof(AttachPak) == 0x1c);
+static_assert(sizeof(AttachPak) == 0x1c);
 
 // The bindings held this frame, one bit per key slot; g_anKeyBindingOrder swaps Attack and SpeedBurst.
 enum HeldBinding
@@ -159,5 +158,5 @@ struct PhysicsBody
     void PerFrameTick();
 };
 
-STATIC_ASSERT(sizeof(PhysicsBody) == 0x150);
+static_assert(sizeof(PhysicsBody) == 0x150);
 #endif

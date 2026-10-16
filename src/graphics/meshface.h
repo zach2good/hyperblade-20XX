@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_MESHFACE_H
 #define HYPERBLADE_MESHFACE_H
 
-#include "common/staticassert.h"
 #include "graphics/face.h"
 #include "math/vector.h"
 
@@ -68,5 +67,5 @@ inline void MeshFace::SetScaledWidth(short nWidth)
     }
 }
 
-STATIC_ASSERT(sizeof(ShadowFace) == 0x18);
+static_assert(sizeof(ShadowFace) == 0x18);
 #endif

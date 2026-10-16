@@ -2,7 +2,6 @@
 #define HYPERBLADE_GRAPHICS_TEXCACHEENTRY_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 
 class CD3DTexture;
 class SoftTex;
@@ -42,6 +41,6 @@ public:
 // GLOBAL: HYPERX 0x004d2774
 extern int g_bSoftTexPaletteBuilt;
 
-STATIC_ASSERT(sizeof(TexCacheEntry) == 0x18);
+static_assert(sizeof(TexCacheEntry) == 0x18);
 
 #endif

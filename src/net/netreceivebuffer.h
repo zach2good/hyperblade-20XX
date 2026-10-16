@@ -4,7 +4,6 @@
 #include "net/directplay.h"
 #include "net/netrecords.h"
 #include "net/syncblock.h"
-#include "common/staticassert.h"
 
 // A system message by type when the sender is DPID_SYSMSG, otherwise a game message by kind.
 union NetReceiveBuffer
@@ -21,6 +20,6 @@ union NetReceiveBuffer
     char                 aBytes[0x100];
 };
 
-STATIC_ASSERT(sizeof(NetReceiveBuffer) == 0x100);
+static_assert(sizeof(NetReceiveBuffer) == 0x100);
 
 #endif

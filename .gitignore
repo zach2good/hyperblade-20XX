@@ -7,9 +7,9 @@ CMakeUserPresets.json
 *.pdb
 *.ilk
 
-# Never commit the original or anything built from its bytes. Copy reccmp-user.example.yml
-# to reccmp-user.yml to name your copy.
-reccmp-user.yml
+# Never commit the original or anything built from its bytes. Copy hyperx-user.example.yml
+# to hyperx-user.yml to name your copy.
+hyperx-user.yml
 *.exe
 *.EXE
 *.dll
@@ -61,17 +61,8 @@ __pycache__/
 .claude/
 .remember/
 
-# Derived from the v1.0.0.0 executable, which we don't ship. Regenerate:
-#   python tools/fpo_table.py "<v1.0.0.0 exe>" -o symbols/v1000_fpo.csv
-#   python tools/fpo_anchors.py "<v1.0.0.0 exe>" "<v1.0.0.1 exe>" -o symbols/v1000_anchors.csv
-#   python tools/fpo_propagate.py "<v1.0.0.0 exe>" "<v1.0.0.1 exe>" -o symbols/v1000_propagated.csv
-symbols/v1000_fpo.csv
-symbols/v1000_anchors.csv
-symbols/v1000_propagated.csv
 
-# Baselines that describe your own install and build. Each tool writes its own with --save.
+
+
+# Baselines that describe your own install. bringup_check.py writes its own with --save.
 tools/bringup_baseline.json
-tools/screen_floors.json
-
-# reccmp's HTML report holds the original's disassembly.
-*.html

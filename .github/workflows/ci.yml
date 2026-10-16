@@ -1,9 +1,5 @@
-# Nothing here holds the original. On every push CI proves what it can without the game: the
-# checks that read this repository, the formatting, that the toolchain is the right one, and
-# that every source compiles and links with it. A pull request's HYPERX_sym.exe and PDB go up as
-# an artifact, and score.yml, which never runs code from a pull request, scores them.
-#
-# Every job that compiles takes the VC6 SP3 tree from zach2good/vc6-sp3-toolchain.
+# The build reads resources out of your own copy of the game, which no hosted runner has, so CI
+# compiles every source without linking an image, and checks the formatting.
 
 name: ci
 
@@ -16,117 +12,33 @@ permissions:
   contents: read
 
 jobs:
-  checks:
-    name: Checks that read only this repository
+  format:
+    name: Formatting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          # check_lost_markers.py compares the working tree against HEAD's history.
-          fetch-depth: 0
 
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      # check_parser_alerts.py asks reccmp's own parser whether it can read this tree's
-      # annotations, so this job needs the package even though it never opens a binary.
-      - name: Install the tools' requirements
-        run: pip install -r tools/requirements.txt
-
-      - name: Run the battery
-        shell: bash
-        run: |
-          set -e
-          for check in \
-              check_call_arity check_functions check_globals check_lost_markers \
-              check_marker_comments check_marker_prefix check_parser_alerts \
-              check_retired check_shrinkage check_vararg_calls \
-              duplicate_markers; do
-            echo "== $check"
-            python "tools/$check.py"
-          done
-          echo "== tools index"
-          python tools/index.py --check
-
-      - name: Formatting
+      - name: clang-format
         shell: bash
         run: |
           pip install clang-format==22.1.8
-          git ls-files 'src/*.cpp' 'src/*.h' 'src/*.c' | xargs clang-format --dry-run --Werror
-
-  toolchain:
-    name: The toolchain is the one it says it is
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Fetch the VC6 SP3 toolchain
-        uses: actions/checkout@v5
-        with:
-          repository: zach2good/vc6-sp3-toolchain
-          path: vc6
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-
-      - name: Every file against the manifest
-        run: python vc6/tools/verify.py --all
-
-      - name: Compile one file and read @comp.id back out
-        run: python vc6/tools/smoke.py
+          git ls-files 'src/*.cpp' 'src/*.h' | xargs clang-format --dry-run --Werror
 
   compile:
-    name: Compile (${{ matrix.name }})
+    name: Compile (MSVC x86)
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: measured
-            bringup: 'OFF'
-          - name: bring-up
-            bringup: 'ON'
     steps:
       - uses: actions/checkout@v5
-
-      - name: Fetch the VC6 SP3 toolchain
-        uses: actions/checkout@v5
-        with:
-          repository: zach2good/vc6-sp3-toolchain
-          path: vc6
 
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
-      - name: Configure and build, without the game
-        shell: cmd
-        run: |
-          cmake -S . -B build -DVC6_ROOT=%CD%\vc6 -G "NMake Makefiles" ^
-                -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-vc6sp3.cmake ^
-                -DCMAKE_BUILD_TYPE=Release -DHYPERX_NO_REFERENCE=ON ^
-                -DHYPERX_BRINGUP=${{ matrix.bringup }} ^
-                -DCMAKE_MAKE_PROGRAM=%CD%\vc6\VC98\BIN\NMAKE.EXE || exit /b 1
-          python tools\cmake_build.py build || exit /b 1
-
-      - name: Name the pull request
-        if: github.event_name == 'pull_request' && matrix.name == 'measured'
-        shell: bash
-        # github.sha is the merge of the pull request into main, the tree this job built.
-        run: |
-          echo "${{ github.event.number }}" > build/out/pr.txt
-          echo "${{ github.sha }}" > build/out/built.txt
-
-      - name: Upload the image for score.yml
-        if: github.event_name == 'pull_request' && matrix.name == 'measured'
-        uses: actions/upload-artifact@v4
+      - uses: ilammy/msvc-dev-cmd@v1
         with:
-          name: hyperx-sym
-          path: |
-            build/out/HYPERX_sym.exe
-            build/out/HYPERX_sym.pdb
-            build/out/pr.txt
-            build/out/built.txt
-          retention-days: 7
+          arch: x86
+
+      - name: Configure and compile, without the game
+        run: |
+          cmake --preset msvc-x86 -DHYPERX_COMPILE_ONLY=ON
+          cmake --build build

@@ -13,8 +13,7 @@ To reach a match, use --walk: the state that reads the three drome selections do
 in, so a jump straight to it gets an empty match. --trace-pos dumps every object's position every
 N frames.
 
-The tool builds in build-bringup/, never build/, because the bring-up option changes function
-bytes. It never captures the screen; snapshots come from bitmaps the game built, and each is
+Build needs an x86 developer environment, because it runs `cmake --build build`. It never captures the screen; snapshots come from bitmaps the game built, and each is
 converted to a PNG beside it. HB_QUIT_AFTER makes the game quit after the given frames, and the
 tool kills anything still alive after the timeout.
 """
@@ -32,18 +31,15 @@ import bmp_to_png
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-BUILD = os.path.join(ROOT, "build-bringup")
+BUILD = os.path.join(ROOT, "build")
 STAGE = os.path.join(BUILD, "run")
 
-MEASURED = os.path.join(ROOT, "build", "out")
+OUT = os.path.join(BUILD, "out")
 
-# The measured build's cache supplies VC6_ROOT when the environment does not.
-CACHE = os.path.join(ROOT, "build", "CMakeCache.txt")
-
-LINKED = os.path.join(BUILD, "out", "HYPERX.exe")
+LINKED = os.path.join(OUT, "hyperx.exe")
 RUNNABLE = os.path.join(STAGE, "HYPERX_run.exe")
 
-# Asset directories beside the measured build, junctioned into the run directory, not copied.
+# Asset directories beside the build, junctioned into the run directory, not copied.
 ASSETS = ("Data", "DIRECTX", "AVI", "DOS", "ACRODOS")
 
 
@@ -51,45 +47,9 @@ def run(command, cwd=None, timeout=None):
     return subprocess.run(command, cwd=cwd, timeout=timeout, capture_output=True, text=True)
 
 
-def vc6_root():
-    if os.environ.get("VC6_ROOT"):
-        return os.environ["VC6_ROOT"]
-
-    if not os.path.exists(CACHE):
-        raise SystemExit("VC6_ROOT is not set; set it or configure the measured build first")
-
-    for line in open(CACHE, encoding="utf-8", errors="replace"):
-        if line.startswith("VC6_ROOT:"):
-            return line.split("=", 1)[1].strip()
-
-    raise SystemExit("VC6_ROOT is not set and build/CMakeCache.txt names none")
-
-
-# NMAKE sometimes fails to write its temporary inline file (U1054). The failure is transient and
-# a second build succeeds.
-INLINE_FILE_FAULT = "U1054"
-
-
-def flaked(result):
-    """Whether a failed build failed for the reason a second attempt fixes."""
-    return INLINE_FILE_FAULT in (result.stdout or "") + (result.stderr or "")
-
-
 def build():
-    print("configuring build-bringup ...")
-    result = run(["cmake", "--preset", "bringup", "-DVC6_ROOT=" + vc6_root()], cwd=ROOT)
-
-    if result.returncode != 0:
-        print(result.stdout[-2000:])
-        print(result.stderr[-2000:])
-        raise SystemExit("configure failed")
-
     print("building ...")
     result = run(["cmake", "--build", BUILD])
-
-    if result.returncode != 0 and flaked(result):
-        print("nmake could not write its inline file; building again")
-        result = run(["cmake", "--build", BUILD])
 
     if result.returncode != 0:
         for stream in (result.stdout, result.stderr):
@@ -344,7 +304,7 @@ def stage():
     shutil.copyfile(LINKED, RUNNABLE)
 
     for name in ASSETS:
-        source = os.path.join(MEASURED, name)
+        source = os.path.join(OUT, name)
         target = os.path.join(STAGE, name)
 
         if os.path.isdir(source) and not os.path.exists(target):

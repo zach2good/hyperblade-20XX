@@ -5,7 +5,6 @@
 
 #include "math/transformobject.h"
 #include "graphics/projrender.h"
-#include "common/staticassert.h"
 
 // Allocated with new, so the base's constructor carries an unwind state.
 // VTABLE: HYPERX 0x004b28f4
@@ -85,5 +84,5 @@ private:
 // SYNTHETIC: HYPERX 0x00422dc0
 // CameraProjectionState::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(CameraProjectionState) == 0x118);
+static_assert(sizeof(CameraProjectionState) == 0x118);
 #endif

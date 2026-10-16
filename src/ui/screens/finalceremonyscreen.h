@@ -2,7 +2,6 @@
 #define HYPERBLADE_FINALCEREMONYSCREEN_H
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -24,7 +23,7 @@ public:
     ~FinalCeremonyScreen();
 };
 
-STATIC_ASSERT(sizeof(FinalCeremonyScreen) == 0x464);
+static_assert(sizeof(FinalCeremonyScreen) == 0x464);
 
 // SYNTHETIC: HYPERX 0x00443170
 // FinalCeremonyScreen::`scalar deleting destructor'

@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_LOBBYSCREEN_H
 #define HYPERBLADE_LOBBYSCREEN_H
 
-#include "common/staticassert.h"
 #include "ui/pausemenu.h"
 
 // The play door and the sign above it light together and lead to the main menu.
@@ -26,7 +25,7 @@ public:
     virtual void OnWidgetMessage(int nMsg, unsigned int nId);
 };
 
-STATIC_ASSERT(sizeof(LobbyScreen) == 0x464);
+static_assert(sizeof(LobbyScreen) == 0x464);
 
 // SYNTHETIC: HYPERX 0x0048cee0
 // LobbyScreen::`scalar deleting destructor'

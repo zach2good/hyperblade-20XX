@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_ANIMCLIP_H
 #define HYPERBLADE_ANIMCLIP_H
 
-#include "common/staticassert.h"
 #include "math/vector.h"
 
 // A format of one means the clip contributes no slerp segment.
@@ -36,7 +35,7 @@ public:
 
 #pragma pack(pop)
 
-STATIC_ASSERT(sizeof(AnimHeader) == 0x0e);
+static_assert(sizeof(AnimHeader) == 0x0e);
 
 // One frame of a clip in formats seven and eight; the tick reads only the top-left three by three.
 struct PackedBoneRow
@@ -50,7 +49,7 @@ struct PackedBoneMatrix
     PackedBoneRow aRows[4];
 };
 
-STATIC_ASSERT(sizeof(PackedBoneMatrix) == 0x40);
+static_assert(sizeof(PackedBoneMatrix) == 0x40);
 
 // One frame of a clip in formats five and six, which the loader allocates and never fills.
 struct PackedQuaternion
@@ -58,7 +57,7 @@ struct PackedQuaternion
     short aw[4];
 };
 
-STATIC_ASSERT(sizeof(PackedQuaternion) == 0x08);
+static_assert(sizeof(PackedQuaternion) == 0x08);
 
 // One frame of a clip in formats two to four: a three by three rotation in 16-bit fixed point.
 struct PackedRotation
@@ -66,7 +65,7 @@ struct PackedRotation
     unsigned short aw[3][3];
 };
 
-STATIC_ASSERT(sizeof(PackedRotation) == 0x12);
+static_assert(sizeof(PackedRotation) == 0x12);
 
 #pragma pack(push, 1)
 

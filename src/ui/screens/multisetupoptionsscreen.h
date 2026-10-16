@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include "engine/game.h"
-#include "common/staticassert.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -40,7 +39,7 @@ public:
     }
 };
 
-STATIC_ASSERT(sizeof(MultiSetupOptionsScreen) == 0x464);
+static_assert(sizeof(MultiSetupOptionsScreen) == 0x464);
 
 // SYNTHETIC: HYPERX 0x00479810
 // MultiSetupOptionsScreen::`scalar deleting destructor'

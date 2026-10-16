@@ -5,7 +5,6 @@
 #include "engine/gameengine.h"
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 #include "engine/engineobject.h"
 #include "engine/particle.h"
 #include "math/vector.h"
@@ -58,7 +57,7 @@ public:
 // SYNTHETIC: HYPERX 0x00474e90
 // ParticleSystem::~ParticleSystem
 
-STATIC_ASSERT(sizeof(ParticleSystem) == 0x2c5c);
+static_assert(sizeof(ParticleSystem) == 0x2c5c);
 
 inline ParticleSystem* GameEngine::GetParticleSystem(int nSlot) const
 {

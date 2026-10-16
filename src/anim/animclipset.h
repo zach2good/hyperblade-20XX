@@ -4,7 +4,6 @@
 #define HYPERBLADE_ANIMCLIPSET_H
 
 #include "animclip.h"
-#include "common/staticassert.h"
 
 #include "anim/animobject.h"
 
@@ -38,5 +37,5 @@ public:
 // AnimClipSet::`scalar deleting destructor'
 
 // The length AnimSet::LoadIntoRegistry asks operator new for.
-STATIC_ASSERT(sizeof(AnimClipSet) == 0x20);
+static_assert(sizeof(AnimClipSet) == 0x20);
 #endif

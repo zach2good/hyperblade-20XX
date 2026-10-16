@@ -5,7 +5,6 @@
 #include "net/playerbase.h"
 #include "net/session.h"
 #include "net/directplay.h"
-#include "common/staticassert.h"
 #include "net/netrecords.h"
 
 // VTABLE: HYPERX 0x004b2b80
@@ -82,5 +81,5 @@ public:
 // SYNTHETIC: HYPERX 0x0042d350
 // CPlayer::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(CPlayer) == 0x2518);
+static_assert(sizeof(CPlayer) == 0x2518);
 #endif

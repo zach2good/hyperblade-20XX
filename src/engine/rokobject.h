@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include "engine/devicector.h"
-#include "common/staticassert.h"
 #include "engine/engineobject.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
@@ -42,7 +41,7 @@ public:
 // SYNTHETIC: HYPERX 0x00473b60
 // RokObject::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(RokObject) == 0xd30);
+static_assert(sizeof(RokObject) == 0xd30);
 
 inline RokObject* GameEngine::GetRok() const
 {

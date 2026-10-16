@@ -3,7 +3,6 @@
 #include "cddtext.h"
 #include "globals.h"
 #include "graphics/texture.h"
-#include "common/staticassert.h"
 #include "common/pathstring.h"
 #include <windows.h>
 #include <stddef.h>
@@ -76,7 +75,7 @@ int CDDTextSurface::SetFontScaled(const char* pszName, const char* pszText, int 
     return SetFont(pszName, g_nPrevWidth <= WIDE_SCREEN_WIDTH ? FONT_POINTS_NARROW : FONT_POINTS_WIDE, pszText, bColourKey, bSystemMemory);
 }
 
-STATIC_ASSERT(offsetof(DDBLTFX, dwFillColor) == 0x50);
+static_assert(offsetof(DDBLTFX, dwFillColor) == 0x50);
 
 #define TEXT_PADDING 4
 

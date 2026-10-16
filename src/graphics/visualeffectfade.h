@@ -2,7 +2,6 @@
 #define HYPERBLADE_VISUALEFFECTFADE_H
 
 #include "palettescalarfade.h"
-#include "common/staticassert.h"
 
 // The original inlines the constructor into its one caller.
 // VTABLE: HYPERX 0x004b1b18
@@ -23,7 +22,7 @@ public:
     }
 };
 
-STATIC_ASSERT(sizeof(VisualEffectFade) == 0x30);
+static_assert(sizeof(VisualEffectFade) == 0x30);
 
 // The linker folds PaletteScalarFade's empty destructor and deleter onto these two.
 // SYNTHETIC: HYPERX 0x00410cd0

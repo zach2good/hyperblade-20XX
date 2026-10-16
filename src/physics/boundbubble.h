@@ -7,7 +7,6 @@ struct Vec3;
 
 #include "engine/gameengine.h"
 #include "common/staticinit.h"
-#include "common/staticassert.h"
 
 class EngineObject;
 
@@ -94,6 +93,6 @@ inline void EngineObject::AttachBubble(short nBone, BoundBubble* pBubble)
 }
 
 // The child stride: the original steps its child array by this class's size.
-STATIC_ASSERT(sizeof(BoundBubble) == 0x2c);
+static_assert(sizeof(BoundBubble) == 0x2c);
 
 #endif

@@ -1,4 +1,0 @@
-path,reason
-symbols/v1000_propagated.csv,"built locally by tools/fpo_propagate.py from the v1.0.0.0 and v1.0.0.1 images and never committed"
-symbols/v1000_fpo.csv,"built locally by tools/fpo_table.py from the v1.0.0.0 image and never committed"
-symbols/v1000_anchors.csv,"built locally by tools/fpo_anchors.py from the v1.0.0.0 and v1.0.0.1 images and never committed"

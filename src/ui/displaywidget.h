@@ -13,7 +13,6 @@
 
 #include "common/compat.h"
 #include "ui/buttonwidget.h"
-#include "common/staticassert.h"
 
 class Screen;
 
@@ -48,6 +47,6 @@ public:
 private:
 };
 
-STATIC_ASSERT(sizeof(DisplayWidget) == 0x68);
+static_assert(sizeof(DisplayWidget) == 0x68);
 
 #endif

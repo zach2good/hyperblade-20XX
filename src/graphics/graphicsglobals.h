@@ -7,7 +7,6 @@
 #include "globals.h"
 #include "graphics/surfacepoint.h"
 #include "renderoptions.h"
-#include "common/staticassert.h"
 #include "graphics/ddrawcaps.h"
 #include <stddef.h>
 
@@ -201,8 +200,8 @@ struct SoftBackBitmapInfo
     RGBQUAD          bmiColors[256];
 };
 
-STATIC_ASSERT(offsetof(SoftBackBitmapInfo, bmiColors) == 0x28);
-STATIC_ASSERT(sizeof(SoftBackBitmapInfo) == 0x428);
+static_assert(offsetof(SoftBackBitmapInfo, bmiColors) == 0x28);
+static_assert(sizeof(SoftBackBitmapInfo) == 0x428);
 
 // GLOBAL: HYPERX 0x004bc500
 extern SoftBackBitmapInfo g_bmiSoftBackBuffer;
@@ -287,12 +286,12 @@ struct DDrawDeviceBlock
     int bD3DActive;
 };
 
-STATIC_ASSERT(offsetof(DDrawDeviceBlock, pFpsText) == 0x20);
-STATIC_ASSERT(offsetof(DDrawDeviceBlock, nDisplayWidth) == 0x834);
-STATIC_ASSERT(offsetof(DDrawDeviceBlock, nDDrawDriverSurfaceCaps) == 0x844);
-STATIC_ASSERT(offsetof(DDrawDeviceBlock, ddrawDriverCaps) == 0x85c);
-STATIC_ASSERT(offsetof(DDrawDeviceBlock, bD3DActive) == 0xb54);
-STATIC_ASSERT(sizeof(DDrawDeviceBlock) == 0x2d6 * 4);
+static_assert(offsetof(DDrawDeviceBlock, pFpsText) == 0x20);
+static_assert(offsetof(DDrawDeviceBlock, nDisplayWidth) == 0x834);
+static_assert(offsetof(DDrawDeviceBlock, nDDrawDriverSurfaceCaps) == 0x844);
+static_assert(offsetof(DDrawDeviceBlock, ddrawDriverCaps) == 0x85c);
+static_assert(offsetof(DDrawDeviceBlock, bD3DActive) == 0xb54);
+static_assert(sizeof(DDrawDeviceBlock) == 0x2d6 * 4);
 
 // GLOBAL: HYPERX 0x004cdaa8
 extern DDrawDeviceBlock g_ddrawDevice;

@@ -18,6 +18,6 @@ public:
 // SYNTHETIC: HYPERX 0x0041e0c0
 // BehObj_UpdateWhileAttached::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(BehObj_UpdateWhileAttached) == 0x98);
+static_assert(sizeof(BehObj_UpdateWhileAttached) == 0x98);
 
 #endif

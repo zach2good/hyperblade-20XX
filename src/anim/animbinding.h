@@ -4,7 +4,6 @@
 #define HYPERBLADE_ANIMBINDING_H
 
 #include "anim/animplaystate.h"
-#include "common/staticassert.h"
 #include "math/vector.h"
 
 // The play directions, as DATA/ENUMIDS.H's DirectionFlag numbers them.
@@ -73,7 +72,7 @@ public:
 // SYNTHETIC: HYPERX 0x00425460
 // AnimBinding::`scalar deleting destructor'
 
-STATIC_ASSERT(sizeof(AnimBinding) == BINDING_HEAD_BYTES);
+static_assert(sizeof(AnimBinding) == BINDING_HEAD_BYTES);
 
 inline AnimBinding::AnimBinding()
 : m_nUnused(0)

@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_GRAPHICS_CLIPPOLY_H
 #define HYPERBLADE_GRAPHICS_CLIPPOLY_H
 
-#include "common/staticassert.h"
 #include "graphics/texcoord.h"
 #include "graphics/transformedvertex.h"
 #include "math/vector.h"
@@ -44,9 +43,9 @@ struct ClipStagingBuffer : ClipPolyBuffer
     ClipVertex aMoreVertices[31];
 };
 
-STATIC_ASSERT(sizeof(ClipVertex) == 0x24);
-STATIC_ASSERT(offsetof(ClipPolyBuffer, aVertices) == 0xc);
-STATIC_ASSERT(sizeof(FacePolyBuffer) == 0x36c);
-STATIC_ASSERT(sizeof(ClipStagingBuffer) == 0x48c);
+static_assert(sizeof(ClipVertex) == 0x24);
+static_assert(offsetof(ClipPolyBuffer, aVertices) == 0xc);
+static_assert(sizeof(FacePolyBuffer) == 0x36c);
+static_assert(sizeof(ClipStagingBuffer) == 0x48c);
 
 #endif

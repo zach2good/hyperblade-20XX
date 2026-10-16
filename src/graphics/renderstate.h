@@ -8,7 +8,6 @@
 #include <ddraw.h>
 #include "d3ddeviceinit.h"
 #include "d3dshapes.h"
-#include "common/staticassert.h"
 #include <stddef.h>
 #include "graphics/d3drend.h"
 
@@ -72,21 +71,21 @@ struct D3DStateBlock
     int               nBatchInstructionOffset;
 };
 
-STATIC_ASSERT(offsetof(D3DStateBlock, pDirect3D) == 0x4);
-STATIC_ASSERT(offsetof(D3DStateBlock, nD3DDriverIndex) == 0x10);
-STATIC_ASSERT(offsetof(D3DStateBlock, aD3DDrivers) == 0x110);
-STATIC_ASSERT(offsetof(D3DStateBlock, bD3DTexturesEnabled) == 0x1394);
-STATIC_ASSERT(offsetof(D3DStateBlock, aTextureFormats) == 0x13a0);
-STATIC_ASSERT(offsetof(D3DStateBlock, pDevice) == 0x17d8);
-STATIC_ASSERT(offsetof(D3DStateBlock, aViewportRects) == 0x17e8);
-STATIC_ASSERT(offsetof(D3DStateBlock, execBufferDesc) == 0x180c);
-STATIC_ASSERT(offsetof(D3DStateBlock, d3dExecuteData) == 0x1824);
-STATIC_ASSERT(offsetof(D3DStateBlock, nDesktopWidth) == 0x1854);
-STATIC_ASSERT(offsetof(D3DStateBlock, bOnlyEmulation) == 0x1868);
-STATIC_ASSERT(offsetof(D3DStateBlock, hBackgroundMaterial) == 0x187c);
-STATIC_ASSERT(offsetof(D3DStateBlock, pBatchVertexBase) == 0x189c);
-STATIC_ASSERT(offsetof(D3DStateBlock, nBatchInstructionOffset) == 0x18c0);
-STATIC_ASSERT(sizeof(D3DStateBlock) == 0x631 * 4);
+static_assert(offsetof(D3DStateBlock, pDirect3D) == 0x4);
+static_assert(offsetof(D3DStateBlock, nD3DDriverIndex) == 0x10);
+static_assert(offsetof(D3DStateBlock, aD3DDrivers) == 0x110);
+static_assert(offsetof(D3DStateBlock, bD3DTexturesEnabled) == 0x1394);
+static_assert(offsetof(D3DStateBlock, aTextureFormats) == 0x13a0);
+static_assert(offsetof(D3DStateBlock, pDevice) == 0x17d8);
+static_assert(offsetof(D3DStateBlock, aViewportRects) == 0x17e8);
+static_assert(offsetof(D3DStateBlock, execBufferDesc) == 0x180c);
+static_assert(offsetof(D3DStateBlock, d3dExecuteData) == 0x1824);
+static_assert(offsetof(D3DStateBlock, nDesktopWidth) == 0x1854);
+static_assert(offsetof(D3DStateBlock, bOnlyEmulation) == 0x1868);
+static_assert(offsetof(D3DStateBlock, hBackgroundMaterial) == 0x187c);
+static_assert(offsetof(D3DStateBlock, pBatchVertexBase) == 0x189c);
+static_assert(offsetof(D3DStateBlock, nBatchInstructionOffset) == 0x18c0);
+static_assert(sizeof(D3DStateBlock) == 0x631 * 4);
 
 // GLOBAL: HYPERX 0x004cbbc8
 extern D3DStateBlock g_d3dState;

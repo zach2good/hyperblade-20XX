@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_PATHSTRING_H
 #define HYPERBLADE_PATHSTRING_H
 #include "common/compat.h"
-#include "staticassert.h"
 
 #include "common/string.h"
 

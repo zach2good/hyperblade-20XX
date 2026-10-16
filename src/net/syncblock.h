@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_SYNCBLOCK_H
 #define HYPERBLADE_SYNCBLOCK_H
 
-#include "common/staticassert.h"
 #include "net/netmessage.h"
 
 // Each block has a slot of this many bytes, which bounds its open-ended array.
@@ -57,8 +56,8 @@ struct SyncCatalogBlock : SyncBlockHeader
 
 #pragma pack(pop)
 
-STATIC_ASSERT(sizeof(SyncFileStamp) == 6);
-STATIC_ASSERT(sizeof(SyncBlockHeader) == 2);
-STATIC_ASSERT(sizeof(SyncSettingsBlock) == SYNC_BLOCK_BYTES);
-STATIC_ASSERT(sizeof(SyncCatalogBlock) <= SYNC_BLOCK_BYTES);
+static_assert(sizeof(SyncFileStamp) == 6);
+static_assert(sizeof(SyncBlockHeader) == 2);
+static_assert(sizeof(SyncSettingsBlock) == SYNC_BLOCK_BYTES);
+static_assert(sizeof(SyncCatalogBlock) <= SYNC_BLOCK_BYTES);
 #endif

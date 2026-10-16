@@ -4,7 +4,6 @@
 #include "graphics/materialname.h"
 
 #include "common/compat.h"
-#include "common/staticassert.h"
 
 class FileObj;
 class LODNode;
@@ -84,5 +83,5 @@ public:
     float m_flLodHysteresis; // 0x30
 };
 
-STATIC_ASSERT(sizeof(ModelDatabase) == 0x34);
+static_assert(sizeof(ModelDatabase) == 0x34);
 #endif

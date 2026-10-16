@@ -4,7 +4,6 @@
 #include "common/compat.h"
 #include "globals.h"
 #include "engine/game.h"
-#include "common/staticassert.h"
 #include "ui/uiscreen.h"
 #include "ui/buttonwidget.h"
 
@@ -55,7 +54,7 @@ private:
     int m_anUnused[2];
 };
 
-STATIC_ASSERT(sizeof(TournamentSetupUIScreen) == 0x488);
+static_assert(sizeof(TournamentSetupUIScreen) == 0x488);
 
 // SYNTHETIC: HYPERX 0x00488410
 // TournamentSetupUIScreen::`scalar deleting destructor'
