@@ -416,7 +416,7 @@ if(HYPERX_GAME_DATA)
 endif()
 
 # Named apart from HYPERX.EXE so it can sit beside it in a HyperBlade folder.
-add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects>)
+add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects> res/hyperblade_20XX.rc)
 set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
