@@ -267,7 +267,7 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
     }
 
     const auto nBone = (int)(&bone - object.m_pBones);
-    const auto nLod = [&]
+    const auto nLod  = [&]
     {
         if (GraphicsSettings::On(GraphicsSettings::Switch::FULL_DETAIL))
         {

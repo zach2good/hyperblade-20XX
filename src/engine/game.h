@@ -12,11 +12,11 @@ void __stdcall          RunFrame(void);
 
 // RunFrame in two halves: one simulation tick, and one frame drawn at flAlpha between the last
 // two ticks.
-void Tick();
-void Draw(float flAlpha);
-void                    InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC);
-void __cdecl            ShutdownEngine(void);
-unsigned int __stdcall  UpdateState(void);
+void                   Tick();
+void                   Draw(float flAlpha);
+void                   InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC);
+void __cdecl           ShutdownEngine(void);
+unsigned int __stdcall UpdateState(void);
 
 } // namespace Game
 

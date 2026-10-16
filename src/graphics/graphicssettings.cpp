@@ -33,9 +33,9 @@ constexpr auto SWITCHES = std::array<SwitchInfo, (size_t)GraphicsSettings::Switc
     { "PaintersOrder", true },
 } };
 
-auto s_bLoaded      = false;
-auto s_renderer     = GraphicsSettings::Renderer::SOFTWARE;
-auto s_abOn         = std::array<bool, SWITCHES.size()>{};
+auto s_bLoaded          = false;
+auto s_renderer         = GraphicsSettings::Renderer::SOFTWARE;
+auto s_abOn             = std::array<bool, SWITCHES.size()>{};
 auto s_flRokLightRadius = 200.0f;
 
 void Load()

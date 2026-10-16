@@ -45,7 +45,7 @@ bool FaceInRange(const MeshBlock& block, MeshFace& face, int nMaterialCount)
 // Faces meeting at more than this angle keep a hard edge between them.
 constexpr auto CREASE_COS = 0.5f;
 
-using FacesByVertex = std::vector<std::vector<const MeshFace*>>;
+using FacesByVertex = std::vector<std::vector<const MeshFace*> >;
 
 FacesByVertex BuildFacesByVertex(const MeshBlock& block, int nMaterialCount)
 {

@@ -47,24 +47,24 @@ struct GPUMesh
 
 using MeshKey = std::pair<const MeshBlock*, const MeshMaterial*>;
 
-SDL_GPUDevice*           s_pDevice   = nullptr;
-SDL_GPUGraphicsPipeline* s_pPipeline = nullptr;
-SDL_GPUSampler*          s_pNearest  = nullptr;
-SDL_GPUSampler*          s_pLinear   = nullptr;
-SDL_GPUTexture*          s_pWhite    = nullptr;
-SDL_GPUTexture*          s_pTarget   = nullptr;
-SDL_GPUTexture*          s_pDepth    = nullptr;
-SDL_Texture*             s_pTexture  = nullptr;
+SDL_GPUDevice*           s_pDevice         = nullptr;
+SDL_GPUGraphicsPipeline* s_pPipeline       = nullptr;
+SDL_GPUSampler*          s_pNearest        = nullptr;
+SDL_GPUSampler*          s_pLinear         = nullptr;
+SDL_GPUTexture*          s_pWhite          = nullptr;
+SDL_GPUTexture*          s_pTarget         = nullptr;
+SDL_GPUTexture*          s_pDepth          = nullptr;
+SDL_Texture*             s_pTexture        = nullptr;
 SDL_GPUGraphicsPipeline* s_pShadowPipeline = nullptr;
 SDL_GPUSampler*          s_pShadowSampler  = nullptr;
 SDL_GPUTexture*          s_apShadowMaps[2] = {};
 float                    s_aPointLight[4]  = {};
-int                      s_nWidth    = 0;
-int                      s_nHeight   = 0;
-bool                     s_bTextures = false;
-bool                     s_bSmooth   = false;
-bool                     s_bLinear   = false;
-unsigned int             s_nFrame    = 0;
+int                      s_nWidth          = 0;
+int                      s_nHeight         = 0;
+bool                     s_bTextures       = false;
+bool                     s_bSmooth         = false;
+bool                     s_bLinear         = false;
+unsigned int             s_nFrame          = 0;
 
 std::vector<HwRenderer::Draw> s_draws;
 std::map<MeshKey, GPUMesh>    s_meshes;

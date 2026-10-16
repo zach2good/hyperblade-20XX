@@ -244,7 +244,7 @@ void MeshBone::SubmitToHardware()
     using GraphicsSettings::Switch;
 
     // The original lights each face by its key light alone; with several lights the others fill in.
-    constexpr auto FILL_STRENGTH = 0.4f;
+    constexpr auto FILL_STRENGTH  = 0.4f;
     constexpr auto LIGHT_SWITCHES = std::array<Switch, 3>{ Switch::LIGHT_303, Switch::LIGHT_54, Switch::LIGHT_180 };
 
     auto world = *bone.pWorld;

@@ -38,11 +38,11 @@ struct ObjectPose
 
 struct CameraPose
 {
-    std::array<float, 16> prev     = {};
-    std::array<float, 16> curr     = {};
-    Vec3                  prevEye  = {};
-    Vec3                  currEye  = {};
-    unsigned int          nTick    = 0;
+    std::array<float, 16> prev    = {};
+    std::array<float, 16> curr    = {};
+    Vec3                  prevEye = {};
+    Vec3                  currEye = {};
+    unsigned int          nTick   = 0;
 };
 
 // What ViewIt pushed and found visible, so the frame draws what the tick saw at that moment.
@@ -314,7 +314,6 @@ float FramePacing::DriftMs()
 {
     return s_flDrift;
 }
-
 
 void FramePacing::RecordView(CameraObject& camera)
 {

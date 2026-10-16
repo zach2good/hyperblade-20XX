@@ -243,15 +243,15 @@ HwPipeline::Sampler HwPipeline::CreateSampler(Device device, bool bLinear)
 
 HwPipeline::Sampler HwPipeline::CreateShadowSampler(Device device)
 {
-    auto info              = SDL_GPUSamplerCreateInfo{};
-    info.min_filter        = SDL_GPU_FILTER_LINEAR;
-    info.mag_filter        = SDL_GPU_FILTER_LINEAR;
-    info.mipmap_mode       = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
-    info.address_mode_u    = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-    info.address_mode_v    = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-    info.address_mode_w    = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
-    info.compare_op        = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
-    info.enable_compare    = true;
+    auto info           = SDL_GPUSamplerCreateInfo{};
+    info.min_filter     = SDL_GPU_FILTER_LINEAR;
+    info.mag_filter     = SDL_GPU_FILTER_LINEAR;
+    info.mipmap_mode    = SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+    info.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    info.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    info.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+    info.compare_op     = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
+    info.enable_compare = true;
 
     return Sampler{ SDL_CreateGPUSampler(device.As<SDL_GPUDevice>(), &info) };
 }
