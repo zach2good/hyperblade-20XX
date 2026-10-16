@@ -22,12 +22,12 @@ endforeach()
 option(HYPERX_BRINGUP
     "Build the bring-up images, which run on a modern machine. Never measure this build." OFF)
 
-option(HYPERX_COMPILE_ONLY
-    "Compile every source without your copy of the game. Links no image and runs no check." OFF)
+option(HYPERX_NO_REFERENCE
+    "Build without your copy of the game: HYPERX_sym.exe only, with no resources, stamp or check." OFF)
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
-if(NOT HYPERX_COMPILE_ONLY)
+if(NOT HYPERX_NO_REFERENCE)
     include(cmake/resources.cmake)
 endif()
 
@@ -459,18 +459,12 @@ target_compile_options(jpeg6a_objects PRIVATE /O1 /Ob2)
 
 add_library(jpeg6a STATIC $<TARGET_OBJECTS:jpeg6a_objects>)
 
-# Everything below needs the original: its resources, its timestamp, or its bytes to compare.
-if(HYPERX_COMPILE_ONLY)
-    message(STATUS "Compile only: no image is linked")
-    return()
-endif()
-
 # hyperx_image(<target> <output name> [STAMP] [LINK_OPTIONS <options>...])
 # STAMP patches in the original's COFF TimeDateStamp, which LINK.EXE 6.00.8447 cannot set.
 function(hyperx_image target output)
     cmake_parse_arguments(PARSE_ARGV 2 arg "STAMP" "" "LINK_OPTIONS")
 
-    add_executable(${target} WIN32 $<TARGET_OBJECTS:hyperx_objects> "${HYPERX_RES}")
+    add_executable(${target} WIN32 $<TARGET_OBJECTS:hyperx_objects> ${HYPERX_RES})
     set_target_properties(${target} PROPERTIES
         OUTPUT_NAME "${output}"
         RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
@@ -489,9 +483,17 @@ endfunction()
 # HYPERX.exe links like the original, with no debug directory. The same objects link again into
 # HYPERX_sym.exe with a PDB for reccmp, /OPT:NOREF so uncalled functions keep their rows, and no
 # /OPT:ICF so no function folds away its symbol.
-hyperx_image(hyperx HYPERX STAMP)
 hyperx_image(hyperx_sym HYPERX_sym
     LINK_OPTIONS /DEBUG /OPT:NOREF "/PDB:${HYPERX_OUT}/HYPERX_sym.pdb")
+
+# Everything below needs the original: its resources, its timestamp, or its bytes to compare.
+# HYPERX_sym.exe without resources still scores, since reccmp compares only code and data.
+if(HYPERX_NO_REFERENCE)
+    message(STATUS "No reference: only HYPERX_sym.exe is linked")
+    return()
+endif()
+
+hyperx_image(hyperx HYPERX STAMP)
 
 add_custom_target(verify)
 
