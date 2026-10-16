@@ -33,3 +33,17 @@ CPMAddPackage(
     DOWNLOAD_ONLY YES)
 
 find_package(SDL3 ${SDL3_VERSION} EXACT REQUIRED CONFIG PATHS "${SDL3_SOURCE_DIR}/cmake" NO_DEFAULT_PATH)
+
+# miniaudio mixes the PCM the game loads and SDL plays it, so its device backends are left out.
+set(MINIAUDIO_VERSION 0.11.22)
+
+CPMAddPackage(
+    NAME miniaudio
+    VERSION ${MINIAUDIO_VERSION}
+    URL "https://github.com/mackron/miniaudio/archive/refs/tags/${MINIAUDIO_VERSION}.tar.gz"
+    URL_HASH SHA256=bcb07bfb27e6fa94d34da73ba2d5642d4940b208ec2a660dbf4e52e6b7cd492f
+    DOWNLOAD_ONLY YES)
+
+add_library(miniaudio STATIC "${miniaudio_SOURCE_DIR}/miniaudio.c")
+target_include_directories(miniaudio SYSTEM PUBLIC "${miniaudio_SOURCE_DIR}")
+target_compile_definitions(miniaudio PUBLIC MA_NO_DEVICE_IO MA_NO_DECODING MA_NO_ENCODING MA_NO_GENERATION)

@@ -42,6 +42,7 @@ class AwardsUIScreen;
 #include "ui/screens/finalceremonyscreen.h"
 #include "input/inputglobals.h"
 #include "sound/audiomgr.h"
+#include "sound/soundmixer.h"
 #include "engine/messagequeue.h"
 #include "input/keyboarddeviceobj.h"
 #include "engine/objectclasses.h"
@@ -1047,6 +1048,8 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
 // FUNCTION: HYPERX 0x0044c160
 int GameApp::MainUpdate(HWND hWnd)
 {
+    g_soundMixer.Update();
+
     if (g_gameApp.m_bIsActive)
     {
         ValidateRgn(hWnd, 0);

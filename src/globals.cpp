@@ -9,7 +9,6 @@
 #include "globals.h"
 #include "app/frametimer.h"
 #include "sound/audiomgr.h"
-#include "sound/dsoundmgr.h"
 #include "input/cheatstate.h"
 #include "app/gameapp.h"
 #include "anim/animglobals.h"
@@ -22,7 +21,6 @@
 #include "net/netglobals.h"
 #include "physics/physicsglobals.h"
 #include "planvm/planvmglobals.h"
-#include "sound/soundglobals.h"
 #include "ui/uiglobals.h"
 #include "ui/torchbitmaps.h"
 #include "ui/pausemenu.h"
@@ -813,7 +811,6 @@ extern float g_flArenaEllipsoidElasticity = 0.95f;
 EllipsoidRatios g_ellipsoidRatios;
 
 int  g_nInstallLevel;
-int  g_nSoundTimerDepth;
 char g_bChampFromJumbotron;
 
 float g_flOneSteering = 1.0f;

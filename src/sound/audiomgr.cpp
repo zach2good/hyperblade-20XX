@@ -3,7 +3,7 @@
 #include "app/gameapp.h"
 #include "audiomgr.h"
 #include "mixer.h"
-#include "dsoundmgr.h"
+#include "soundmixer.h"
 #include "soundmanager.h"
 #include "engine/gameoptions.h"
 #include "common/pathstring.h"
@@ -30,13 +30,6 @@ AudioMgr::AudioMgr()
 // FUNCTION: HYPERX 0x00490880
 AudioMgr::~AudioMgr()
 {
-    if (g_mixerWaveOut.m_hMixer != 0)
-    {
-        mixerClose(g_mixerWaveOut.m_hMixer);
-
-        g_mixerWaveOut.m_hMixer = 0;
-    }
-
     if (g_mixerCompactDisc.m_hMixer != 0)
     {
         mixerClose(g_mixerCompactDisc.m_hMixer);
@@ -44,7 +37,7 @@ AudioMgr::~AudioMgr()
         g_mixerCompactDisc.m_hMixer = 0;
     }
 
-    g_dsoundMgr.Shutdown();
+    g_soundMixer.Shutdown();
 
     if (pEntries != 0)
     {
@@ -90,7 +83,7 @@ void AudioMgr::Init(HWND hWindow)
 
     if (wNoSound == 0)
     {
-        if (g_dsoundMgr.Init(hWindow) == 0)
+        if (g_soundMixer.Init() == 0)
         {
             wNoSound = 1;
         }
@@ -109,8 +102,6 @@ void AudioMgr::Init(HWND hWindow)
 
         nIndex++;
     }
-
-    g_mixerWaveOut.Open(MIXERLINE_COMPONENTTYPE_SRC_WAVEOUT);
 
     SfxFadeVolume((int)g_pGameOptions->ReadSfxVolume());
 
@@ -235,7 +226,7 @@ void AudioMgr::PlayGroup(int nGroup)
                 LoadSound(pSound);
             }
 
-            g_dsoundMgr.Play(pSound);
+            g_soundMixer.Play(pSound);
         }
     }
 }
@@ -259,7 +250,7 @@ void AudioMgr::PlaySpecific(int nVoice)
                         LoadSound(pSound);
                     }
 
-                    g_dsoundMgr.Play(pSound);
+                    g_soundMixer.Play(pSound);
                 }
             }
         }
@@ -275,7 +266,7 @@ void AudioMgr::StopEntry(int nSlot)
 
         if (pOwner != 0)
         {
-            g_dsoundMgr.StopEntry(pOwner);
+            g_soundMixer.StopEntry(pOwner);
         }
     }
 }
@@ -304,7 +295,7 @@ void AudioMgr::SfxFadeVolume(int nVolume)
 {
     if (wNoSound == 0)
     {
-        g_dsoundMgr.FadeSfxVolume(nVolume);
+        g_soundMixer.FadeSfxVolume(nVolume);
     }
 }
 
@@ -317,7 +308,7 @@ int AudioMgr::SfxReadVolume()
         return 0;
     }
 
-    return g_dsoundMgr.ReadSfxVolume();
+    return g_soundMixer.ReadSfxVolume();
 }
 
 // Twenty recent tracks, minus one until played; only PlayCDTrack touches it or its cursor.
@@ -656,5 +647,5 @@ void AudioMgr::FreeGroupBuffers(int nGroup)
 // FUNCTION: HYPERX 0x00491320
 void AudioMgr::StopAllSfx()
 {
-    g_dsoundMgr.StopAll();
+    g_soundMixer.StopAll();
 }

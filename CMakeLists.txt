@@ -333,10 +333,9 @@ set(HYPERX_SOURCES
     src/planvm/planvm.cpp
     src/planvm/releasingagendaitem.cpp
     src/sound/audiomgr.cpp
-    src/sound/dsoundmgr.cpp
     src/sound/mixer.cpp
-    src/sound/soundchannel.cpp
     src/sound/soundmanager.cpp
+    src/sound/soundmixer.cpp
     src/sound/wave.cpp
     src/ui/animationpeekdialog.cpp
     src/ui/buttonwidget.cpp
@@ -391,7 +390,7 @@ set(HYPERX_SOURCES
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
 target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
-target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3)
+target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio)
 
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
 target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
@@ -419,8 +418,8 @@ add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects> "${HYPERX_RES}")
 set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperx
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
-target_link_libraries(hyperx PRIVATE SDL3::SDL3
-    kernel32 user32 gdi32 winmm version ddraw dxguid dsound)
+target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio
+    kernel32 user32 gdi32 winmm version ddraw dxguid)
 target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperx.map")
 
 # SDL3.dll goes beside the image.

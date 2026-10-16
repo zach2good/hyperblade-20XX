@@ -86,7 +86,6 @@ extern const char* g_pszDromeTexturedKey;
 extern int g_nSavedCursorVisible;
 
 class Mixer;
-class DSoundMgr;
 
 // Set by -m: the drome loads its shaded models, so the F8 texture toggle is off.
 // GLOBAL: HYPERX 0x004cb4f0
@@ -649,22 +648,6 @@ extern int g_nSWVertexUVMask;
 // GLOBAL: HYPERX 0x004ced38
 extern int g_nSWVertexPosMask;
 class Mixer;
-
-// GLOBAL: HYPERX 0x004d21e0
-extern Mixer g_mixerWaveOut;
-// The atexit registration and destructor thunks for g_mixerWaveOut in soundchannel.cpp.
-// SYNTHETIC: HYPERX 0x0048fde0
-// $E8
-
-// SYNTHETIC: HYPERX 0x0048fdf0
-// $E7
-
-// GLOBAL: HYPERX 0x004d2460
-extern DSoundMgr g_dsoundMgr;
-// SYNTHETIC: HYPERX 0x0048fcf0
-// $E3
-// SYNTHETIC: HYPERX 0x0048fd00
-// $E2
 
 // GLOBAL: HYPERX 0x004d2320
 extern Mixer g_mixerCompactDisc;

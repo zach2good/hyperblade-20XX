@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 
+Mixer g_mixerCompactDisc;
+
 #define MIXER_MESSAGE_MAX 0x104
 
 // Returned when the search ran out of devices, which is not a multimedia result at all.

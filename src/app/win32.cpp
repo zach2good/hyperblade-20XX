@@ -1,6 +1,5 @@
 #include "common/compat.h"
 #include "graphics/renderer.h"
-#include "sound/soundchannel.h"
 #include "anim/animdb.h"
 #include <mmsystem.h>
 #include <stdlib.h>
