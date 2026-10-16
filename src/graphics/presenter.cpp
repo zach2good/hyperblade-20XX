@@ -3,6 +3,8 @@
 #include "graphics/hudlayer.h"
 #include "app/gameapp.h"
 #include "app/window.h"
+#include "graphics/graphicssettings.h"
+#include "graphics/hwrenderer.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 
@@ -79,7 +81,25 @@ void SetColours(SDL_Palette* pPalette, const RGBQUAD* pColours, int nTransparent
     SDL_SetPaletteColors(pPalette, aColours, 0, 256);
 }
 
-// Makes the renderer on first use, on the window SDL already owns.
+// The GPU renderer, taking the shader formats the hardware renderer is built with.
+SDL_Renderer* CreateGPURenderer(SDL_Window* pWindow)
+{
+    const auto props = SDL_CreateProperties();
+
+    SDL_SetStringProperty(props, SDL_PROP_RENDERER_CREATE_NAME_STRING, "gpu");
+    SDL_SetPointerProperty(props, SDL_PROP_RENDERER_CREATE_WINDOW_POINTER, pWindow);
+    SDL_SetBooleanProperty(props, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN, true);
+    SDL_SetBooleanProperty(props, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN, true);
+
+    SDL_Renderer* const pRenderer = SDL_CreateRendererWithProperties(props);
+
+    SDL_DestroyProperties(props);
+
+    return pRenderer;
+}
+
+// Makes the renderer on first use, on the window SDL already owns: on a GPU device where there is
+// one, and on whatever SDL can make otherwise, such as WebGL in a browser.
 bool Ready()
 {
     if (s_pRenderer != 0)
@@ -87,7 +107,14 @@ bool Ready()
         return true;
     }
 
-    s_pRenderer = SDL_CreateRenderer(Window::Native().As<SDL_Window>(), 0);
+    SDL_Window* const pWindow = Window::Native().As<SDL_Window>();
+
+    s_pRenderer = CreateGPURenderer(pWindow);
+
+    if (s_pRenderer == 0)
+    {
+        s_pRenderer = SDL_CreateRenderer(pWindow, 0);
+    }
 
     if (s_pRenderer == 0)
     {
@@ -111,22 +138,38 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
         return;
     }
 
-    s_pFrame = Fit(s_pFrame, SDL_PIXELFORMAT_INDEX8, nWidth, nHeight, SDL_SCALEMODE_LINEAR);
+    // The hardware renderer draws the scene at the back buffer's size, so the HUD lines up the same.
+    SDL_Texture* const pScene = [&]() -> SDL_Texture*
+    {
+        if (GraphicsSettings::Active() == GraphicsSettings::Renderer::HARDWARE)
+        {
+            return HwRenderer::Render(HwRenderer::Renderer{ s_pRenderer }, nWidth, nHeight).As<SDL_Texture>();
+        }
 
-    if (s_pFrame == 0)
+        s_pFrame = Fit(s_pFrame, SDL_PIXELFORMAT_INDEX8, nWidth, nHeight, SDL_SCALEMODE_LINEAR);
+
+        if (s_pFrame == 0)
+        {
+            return 0;
+        }
+
+        SetColours(s_pFramePalette, pColours, -1);
+        SDL_SetTexturePalette(s_pFrame, s_pFramePalette);
+        SDL_UpdateTexture(s_pFrame, 0, pBits, nPitch);
+
+        return s_pFrame;
+    }();
+
+    if (pScene == 0)
     {
         return;
     }
-
-    SetColours(s_pFramePalette, pColours, -1);
-    SDL_SetTexturePalette(s_pFrame, s_pFramePalette);
-    SDL_UpdateTexture(s_pFrame, 0, pBits, nPitch);
 
     const auto rcFrame = FitRect(nWidth, nHeight, false);
 
     SDL_SetRenderDrawColor(s_pRenderer, 0, 0, 0, 0xff);
     SDL_RenderClear(s_pRenderer);
-    SDL_RenderTexture(s_pRenderer, s_pFrame, 0, &rcFrame);
+    SDL_RenderTexture(s_pRenderer, pScene, 0, &rcFrame);
 
     if (HudLayer::TakeFrame())
     {
@@ -179,4 +222,9 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
     SDL_RenderTexture(s_pRenderer, s_pCanvas, 0, &rcCanvas);
 
     SDL_RenderPresent(s_pRenderer);
+}
+
+bool Presenter::HasGPU()
+{
+    return Ready() && SDL_GetGPURendererDevice(s_pRenderer) != 0;
 }

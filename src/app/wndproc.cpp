@@ -21,6 +21,7 @@
 #include "engine/gameengine.h"
 #include "engine/game.h"
 #include "app/window.h"
+#include "graphics/graphicssettings.h"
 
 namespace WndProc
 {
@@ -136,6 +137,14 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             if (g_nSplashFrame != 0)
             {
                 GameApp::NextSplash(hWnd);
+
+                return 0;
+            }
+
+            // F2 swaps the renderer anywhere, before a match or a menu sees the key.
+            if (uMsg == WM_KEYDOWN && wParam == VK_F2)
+            {
+                GraphicsSettings::ToggleRenderer();
 
                 return 0;
             }

@@ -1,4 +1,5 @@
-// Puts finished frames on screen through the GPU renderer, on the game's own window.
+// Puts finished frames on screen, on the game's own window. The renderer runs on a GPU device
+// when one can be made, which the hardware renderer then shares, and on plain SDL otherwise.
 
 #ifndef HYPERBLADE_PRESENTER_H
 #define HYPERBLADE_PRESENTER_H
@@ -13,6 +14,9 @@ void Frame(const unsigned char* pBits, int nPitch, int nWidth, int nHeight, cons
 
 // A 32-bit top-down canvas, fitted to the window keeping its shape.
 void Canvas(const void* pBits, int nPitch, int nWidth, int nHeight);
+
+// Whether the renderer runs on a GPU device, so the hardware renderer can draw.
+bool HasGPU();
 
 } // namespace Presenter
 
