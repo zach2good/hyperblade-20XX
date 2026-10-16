@@ -34,6 +34,8 @@ int main()
     Expect(IniFile::ReadInt(pszPath, "Options", "Missing", 7) == 7, "missing key gives default");
     Expect(IniFile::ReadInt(pszPath, "Nowhere", "Forward", 9) == 9, "missing section gives default");
     Expect(IniFile::ReadInt(pszPath, "Options", "Forward", 9) == 9, "keys stay in their section");
+    Expect(IniFile::ReadString(pszPath, "options", "INSTALLLEVEL", "x") == "2", "string read trimmed");
+    Expect(IniFile::ReadString(pszPath, "Options", "Missing", "x") == "x", "missing string gives default");
 
     Expect(IniFile::WriteString(pszPath, "Keys", "Forward", "87"), "write existing key");
     Expect(IniFile::WriteString(pszPath, "Options", "SfxVolume", "5"), "write new key");

@@ -21,7 +21,7 @@ constexpr auto s_aOverrides = std::array{
     std::pair{ STRING_JOYSTICK_CONTROL_PANEL, "Plug in an Xbox, PlayStation or Switch controller at any time.\n\n"
                                               "Skate with the left stick or d-pad. A attacks, LB is a speed burst, X shoots and Y passes. "
                                               "Start pauses.\n\nIn the menus, A selects and B goes back. " },
-    std::pair{ STRING_GAME_PAD_HELP, "The [Gamepad] section of booie.ini picks the action for each face button." },
+    std::pair{ STRING_GAME_PAD_HELP, "The [Gamepad] section of booie.ini picks the action for each button and trigger." },
 };
 
 std::unordered_map<unsigned int, std::string> s_strings;

@@ -77,6 +77,40 @@ constexpr std::pair<SDL_Scancode, unsigned int> KEYS[] = {
 
 } // namespace
 
+const char* KeyMap::Name(unsigned int nKey)
+{
+    // A match reads a mouse button's flag word as a key.
+    if (nKey == VK_LBUTTON)
+    {
+        return "Left mouse";
+    }
+
+    if (nKey == VK_RBUTTON)
+    {
+        return "Right mouse";
+    }
+
+    if ((nKey >= 'A' && nKey <= 'Z') || (nKey >= '0' && nKey <= '9'))
+    {
+        static char s_szName[2];
+
+        s_szName[0] = (char)nKey;
+        s_szName[1] = 0;
+
+        return s_szName;
+    }
+
+    for (const auto& [scancode, nMapped] : KEYS)
+    {
+        if (nMapped == nKey)
+        {
+            return SDL_GetScancodeName(scancode);
+        }
+    }
+
+    return "?";
+}
+
 unsigned int KeyMap::ToVirtualKey(int nScancode, int nKeycode)
 {
     if (nKeycode >= SDLK_A && nKeycode <= SDLK_Z)

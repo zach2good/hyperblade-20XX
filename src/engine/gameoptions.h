@@ -3,11 +3,14 @@
 #ifndef HYPERBLADE_GAMEOPTIONS_H
 #define HYPERBLADE_GAMEOPTIONS_H
 
+#include <string>
+
 class GameOptions
 {
 public:
     // Never reads the object.
     unsigned int ReadInt(const char* pszSection, const char* pszKey, int nDefault);
+    std::string  ReadString(const char* pszSection, const char* pszKey, const char* pszDefault);
 
     int  WriteString(const char* pszSection, const char* pszKey, const char* pszValue);
     void WriteInt(const char* pszSection, const char* pszKey, int nValue);

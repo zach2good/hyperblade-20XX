@@ -131,22 +131,39 @@ Found Find(const std::vector<std::string>& lines, std::string_view section, std:
     return found;
 }
 
-} // namespace
-
-// FUNCTION: HYPERX 0x00479960
-unsigned int IniFile::ReadInt(const char* pszPath, const char* pszSection, const char* pszKey, int nDefault)
+std::optional<std::string> ReadValue(const char* pszPath, const char* pszSection, const char* pszKey)
 {
     const auto lines = ReadLines(pszPath);
     const auto found = Find(lines, pszSection, pszKey);
 
     if (!found.nKey)
     {
+        return std::nullopt;
+    }
+
+    const auto& line = lines[*found.nKey];
+
+    return std::string(Trim(std::string_view(line).substr(line.find('=') + 1)));
+}
+
+} // namespace
+
+// FUNCTION: HYPERX 0x00479960
+std::string IniFile::ReadString(const char* pszPath, const char* pszSection, const char* pszKey, const char* pszDefault)
+{
+    return ReadValue(pszPath, pszSection, pszKey).value_or(pszDefault);
+}
+
+unsigned int IniFile::ReadInt(const char* pszPath, const char* pszSection, const char* pszKey, int nDefault)
+{
+    const auto value = ReadValue(pszPath, pszSection, pszKey);
+
+    if (!value)
+    {
         return (unsigned int)nDefault;
     }
 
-    const auto& line  = lines[*found.nKey];
-    const auto  value = std::string(Trim(std::string_view(line).substr(line.find('=') + 1)));
-    const auto  nRead = std::strtol(value.c_str(), nullptr, 10);
+    const auto nRead = std::strtol(value->c_str(), nullptr, 10);
 
     if (nRead < 0)
     {

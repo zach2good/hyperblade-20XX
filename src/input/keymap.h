@@ -11,6 +11,9 @@ namespace KeyMap
 // Zero for a key the game never saw, such as Alt and F10, which Windows sent as system keys.
 unsigned int ToVirtualKey(int nScancode, int nKeycode);
 
+// A short name for a virtual key, such as "A", "Space" or "Left mouse".
+const char* Name(unsigned int nKey);
+
 } // namespace KeyMap
 
 #endif

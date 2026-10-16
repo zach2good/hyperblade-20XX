@@ -13,6 +13,7 @@
 #include "app/appglobals.h"
 #include "ui/screen.h"
 #include "ui/debugmenu.h"
+#include "input/inputlog.h"
 #include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <array>
@@ -283,10 +284,16 @@ static void HandleKey(const SDL_KeyboardEvent& key)
     // Releases always reach the game, so no key is left held; F2 opens and closes the debug menu.
     if (!key.down)
     {
+        InputLog::Add("Keyboard", nKey, false, nullptr);
         WndProc::OnKeyUp(nKey);
     }
     else if (!DebugMenu::WantsKeyboard() || nKey == VK_F2)
     {
+        if (!key.repeat)
+        {
+            InputLog::Add("Keyboard", nKey, true, nullptr);
+        }
+
         WndProc::OnKeyDown(nKey);
     }
 }
@@ -337,6 +344,17 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
 
     const auto [nX, nY] = ClientPixels(button.x, button.y);
 
+    const auto nButton = [&]() -> unsigned int
+    {
+        if (button.button == SDL_BUTTON_LEFT)
+        {
+            return VK_LBUTTON;
+        }
+
+        return VK_RBUTTON;
+    }();
+
+    InputLog::Add("Mouse", nButton, button.down, nullptr);
     WndProc::OnMouseButton(nMessage, MouseFlags(buttons), nX, nY);
 }
 

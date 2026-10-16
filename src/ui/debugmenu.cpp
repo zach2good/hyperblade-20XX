@@ -11,6 +11,11 @@
 #include "graphics/meshbone.h"
 #include "graphics/presenter.h"
 #include "graphics/renderer.h"
+#include "input/gamepad.h"
+#include "input/inputglobals.h"
+#include "input/inputlog.h"
+#include "input/keyboarddeviceobj.h"
+#include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <imgui.h>
@@ -250,6 +255,213 @@ void TimingTab()
     ImGui::EndTabItem();
 }
 
+// The key bindings in use: the input device's once a match has one, the saved ones before.
+const unsigned int* KeyBindings()
+{
+    if (g_pInputDevice != nullptr)
+    {
+        return g_pInputDevice->GetDefaultKeyBindings();
+    }
+
+    return g_anKeyBindingDefaults;
+}
+
+void GamepadsSection()
+{
+    ImGui::SeparatorText("Controllers");
+
+    auto nCount = 0;
+
+    SDL_JoystickID* const pIds = SDL_GetGamepads(&nCount);
+
+    if (nCount == 0)
+    {
+        ImGui::TextDisabled("None plugged in.");
+    }
+
+    for (int i = 0; i < nCount; i++)
+    {
+        SDL_Gamepad* const pPad = SDL_GetGamepadFromID(pIds[i]);
+
+        if (pPad == nullptr)
+        {
+            continue;
+        }
+
+        const auto* const pszType = [&]
+        {
+            const auto* const pszName = SDL_GetGamepadStringForType(SDL_GetGamepadType(pPad));
+
+            if (pszName == nullptr)
+            {
+                return "unknown";
+            }
+
+            return pszName;
+        }();
+
+        ImGui::Text("%s (%s)", SDL_GetGamepadName(pPad), pszType);
+
+        if (pIds[i] == Gamepad::LastUsed())
+        {
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "last used");
+        }
+
+        ImGui::Indent();
+
+        ImGui::Text("Left stick %+6d %+6d   Right stick %+6d %+6d", SDL_GetGamepadAxis(pPad, SDL_GAMEPAD_AXIS_LEFTX), SDL_GetGamepadAxis(pPad, SDL_GAMEPAD_AXIS_LEFTY), SDL_GetGamepadAxis(pPad, SDL_GAMEPAD_AXIS_RIGHTX), SDL_GetGamepadAxis(pPad, SDL_GAMEPAD_AXIS_RIGHTY));
+        ImGui::Text("Triggers %5d %5d", SDL_GetGamepadAxis(pPad, SDL_GAMEPAD_AXIS_LEFT_TRIGGER), SDL_GetGamepadAxis(pPad, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER));
+
+        ImGui::Text("Held:");
+
+        for (int nButton = 0; nButton < SDL_GAMEPAD_BUTTON_COUNT; nButton++)
+        {
+            if (SDL_GetGamepadButton(pPad, (SDL_GamepadButton)nButton))
+            {
+                ImGui::SameLine();
+                ImGui::TextUnformatted(SDL_GetGamepadStringForButton((SDL_GamepadButton)nButton));
+            }
+        }
+
+        ImGui::Unindent();
+    }
+
+    SDL_free(pIds);
+}
+
+void InputTab()
+{
+    if (!ImGui::BeginTabItem("Input"))
+    {
+        return;
+    }
+
+    if (InputLog::Count() > 0)
+    {
+        ImGui::Text("Last used: %s", InputLog::Recent(0).pszSource);
+    }
+
+    GamepadsSection();
+
+    ImGui::SeparatorText("Keyboard and mouse");
+
+    float flX = 0.0f;
+    float flY = 0.0f;
+
+    const auto buttons = SDL_GetMouseState(&flX, &flY);
+
+    ImGui::Text("Mouse %.0f, %.0f, buttons 0x%x", flX, flY, (unsigned int)buttons);
+    ImGui::Text("Keys held:");
+
+    for (unsigned int nKey = 0; nKey < 256; nKey++)
+    {
+        if (InputLog::IsHeld(nKey))
+        {
+            ImGui::SameLine();
+            ImGui::TextUnformatted(KeyMap::Name(nKey));
+        }
+    }
+
+    ImGui::SeparatorText("Bindings");
+
+    if (ImGui::BeginTable("bindings", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit))
+    {
+        ImGui::TableSetupColumn("Action");
+        ImGui::TableSetupColumn("Key");
+        ImGui::TableSetupColumn("Controller");
+        ImGui::TableHeadersRow();
+
+        const auto* const pnKeys = KeyBindings();
+
+        for (int i = 0; i < KEY_BINDING_COUNT; i++)
+        {
+            const auto bHeld = InputLog::IsHeld(pnKeys[i]);
+
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+
+            if (bHeld)
+            {
+                ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "%s", g_apszKeyBindingNames[i]);
+            }
+            else
+            {
+                ImGui::TextUnformatted(g_apszKeyBindingNames[i]);
+            }
+
+            ImGui::TableNextColumn();
+            ImGui::TextUnformatted(KeyMap::Name(pnKeys[i]));
+            ImGui::TableNextColumn();
+
+            // The first four are the directions, which the left stick steers.
+            if (i < 4)
+            {
+                ImGui::TextUnformatted("LeftStick");
+            }
+
+            for (int nControl = 0; nControl < Gamepad::BindingCount(); nControl++)
+            {
+                const auto binding = Gamepad::GetBinding(nControl);
+
+                if (SDL_strcasecmp(binding.pszAction, g_apszKeyBindingNames[i]) == 0)
+                {
+                    ImGui::TextUnformatted(binding.pszControl);
+                    ImGui::SameLine();
+                }
+            }
+        }
+
+        ImGui::EndTable();
+    }
+
+    ImGui::SeparatorText("Recent");
+
+    if (ImGui::BeginTable("recent", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY, ImVec2(0.0f, 220.0f)))
+    {
+        ImGui::TableSetupColumn("Ago");
+        ImGui::TableSetupColumn("From");
+        ImGui::TableSetupColumn("Key");
+        ImGui::TableSetupColumn("Action");
+        ImGui::TableSetupScrollFreeze(0, 1);
+        ImGui::TableHeadersRow();
+
+        const auto nNow = SDL_GetTicks();
+
+        for (int i = 0; i < InputLog::Count(); i++)
+        {
+            const auto& entry = InputLog::Recent(i);
+
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("%.1fs", (double)(nNow - entry.nTicksMs) / 1000.0);
+            ImGui::TableNextColumn();
+            ImGui::TextUnformatted(entry.pszSource);
+            ImGui::TableNextColumn();
+
+            if (entry.bDown)
+            {
+                ImGui::Text("%s down", KeyMap::Name(entry.nKey));
+            }
+            else
+            {
+                ImGui::TextDisabled("%s up", KeyMap::Name(entry.nKey));
+            }
+
+            ImGui::TableNextColumn();
+
+            if (entry.pszAction != nullptr)
+            {
+                ImGui::TextUnformatted(entry.pszAction);
+            }
+        }
+
+        ImGui::EndTable();
+    }
+
+    ImGui::EndTabItem();
+}
+
 struct SlotRun
 {
     int         nFirst;
@@ -449,6 +661,7 @@ void Build()
         GraphicsTab();
         LightingTab();
         TimingTab();
+        InputTab();
         ObjectsTab();
 
         ImGui::EndTabBar();

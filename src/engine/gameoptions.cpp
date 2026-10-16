@@ -73,6 +73,11 @@ unsigned int GameOptions::ReadInt(const char* pszSection, const char* pszKey, in
     return IniFile::ReadInt(String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"), pszSection, pszKey, nDefault);
 }
 
+std::string GameOptions::ReadString(const char* pszSection, const char* pszKey, const char* pszDefault)
+{
+    return IniFile::ReadString(String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"), pszSection, pszKey, pszDefault);
+}
+
 // FUNCTION: HYPERX 0x004799a0
 unsigned int GameOptions::ReadDifficulty()
 {
