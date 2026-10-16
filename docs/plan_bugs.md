@@ -66,6 +66,19 @@ to them by number.
    `m_ppColObjects` with them. Dromer `d` owns objects `3d` (`id_COB_Dromer_d`), `3d + 1`
    (`id_COB_BatonEzone_d`) and `3d + 2` (`id_COB_DromerBody_d`).
 
+## A compiler fault
+
+**The compiler's argument counters carry over from one compile to the next.**
+`PlanVM::EmitArgToken` (0x0047e4d0) finds a behaviour name, a plan name or an interactor name by
+counting the tokens since `DECLARE_BEHAVIOR`, `CHANGE_TO_BEHAVIOR`, `CHANGE_OF_PLAN`,
+`SET_INTERACTOR_PARAM` and `DECLARE_LOCAL_REALS`. The five counters are globals (0x004c6ab8 to
+0x004c6ac0) that start at 100 and go back to 0 only at their own keyword; no compile resets them.
+So after a source that ends within three tokens of one of those keywords, the next source compiled
+in the same run reads its first tokens as that keyword's arguments. `PlanEditorDialog::OnCompileAll`
+(0x0047c1a0) is the one path that compiles many sources in a run. The game ships its 32 plans
+compiled, with no `.txt` sources, so the fault cannot fire in a retail install. The nested compile
+for `CHANGE_OF_PLAN` only prescans the target plan, which does not touch the counters.
+
 ## The pattern
 
 **AI carriers pass instead of shooting.** In `CARRYROK.PBN`, the "GoForGoal" behaviour arms its
