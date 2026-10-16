@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <mbstring.h>
+#include <SDL3/SDL.h>
+#include <cstring>
 
 #define STEP(p) ((const char*)_mbsinc((const unsigned char*)(p)))
 
@@ -132,8 +134,8 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
                 break;
 
             case 0x73:
-                // No null check: the original measures whatever the argument list holds.
-                nItemLen = lstrlenA(va_arg(argList, const char*));
+                // lstrlenA read a null argument as empty.
+                nItemLen = SafeStrlen(va_arg(argList, const char*));
 
                 if (nItemLen < 1)
                 {
@@ -152,8 +154,8 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
             case 0x73 | FORCE_ANSI:
             case 0x53 | FORCE_ANSI:
-                // No null check: the original measures whatever the argument list holds.
-                nItemLen = lstrlenA(va_arg(argList, const char*));
+                // lstrlenA read a null argument as empty.
+                nItemLen = SafeStrlen(va_arg(argList, const char*));
 
                 if (nItemLen < 1)
                 {
@@ -291,7 +293,7 @@ String::String(LPCSTR psz)
             return;
         }
 
-        const int nLength = lstrlenA(psz);
+        const int nLength = (int)strlen(psz);
 
         if (nLength != 0)
         {
@@ -343,7 +345,7 @@ String __stdcall String::Concat(const String& source, const char* pszSuffix)
     }
     else
     {
-        nSuffixLength = lstrlenA(pszSuffix);
+        nSuffixLength = (int)strlen(pszSuffix);
     }
 
     temp.ConcatAlloc(source.GetHeader()->nDataLength,
@@ -399,7 +401,7 @@ void String::SetLength(int nLength)
 
     if (nLength == -1)
     {
-        nLength = lstrlenA(m_pchData);
+        nLength = (int)strlen(m_pchData);
     }
 
     GetHeader()->nDataLength = nLength;
@@ -570,26 +572,25 @@ int __cdecl String::ExtractToken(const char* pszSource, LPSTR pszDest, const cha
             {
                 nLength = (int)(pszEnd - pszStart);
 
-                if (nLength != 0 && lstrcpynA(pszDest, pszStart, nLength + 1) != 0)
+                nResult = 0;
+
+                if (nLength != 0)
                 {
+                    SDL_strlcpy(pszDest, pszStart, nLength + 1);
+
                     nResult = nLength;
-                }
-                else
-                {
-                    nResult = 0;
                 }
             }
             else
             {
                 nLength = (int)strlen(pszStart);
+                nResult = 0;
 
-                if (nLength != 0 && lstrcpynA(pszDest, pszStart, nLength + 1) != 0)
+                if (nLength != 0)
                 {
+                    SDL_strlcpy(pszDest, pszStart, nLength + 1);
+
                     nResult = nLength;
-                }
-                else
-                {
-                    nResult = 0;
                 }
             }
         }

@@ -30,7 +30,7 @@ struct SoundEntry
     // DirectSound pan and volume in hundredths of a decibel; AnimEvent sets them and nothing reads them.
     int m_nPan;    // 0x14
     int m_nVolume; // 0x18
-    // When the play started, from timeGetTime.
+    // When the play started, in milliseconds since start up.
     unsigned int m_nStartedMs; // 0x1c
     int          m_nPlayState; // 0x20
     // Load clears it; CPanSound tests it through a sound pointer nothing sets.

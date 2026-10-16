@@ -51,7 +51,7 @@ struct FrameTimer
         dAccGameLogicMs  = 0.0;
         dAccRenderMs     = 0.0;
 
-        return timeGetTime();
+        return Now();
     }
 
     double Calibrate(void);
@@ -63,6 +63,9 @@ struct FrameTimer
 
     // Holds the frame rate at thirty a second.
     static void Pace();
+
+    // The milliseconds since start up.
+    static unsigned int Now();
 };
 
 #endif

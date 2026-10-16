@@ -5,6 +5,7 @@
 
 #include "common/compat.h"
 #include <stdarg.h>
+#include <cstring>
 
 struct StringHeader
 {
@@ -110,7 +111,12 @@ public:
     // MFC's SafeStrlen.
     static int SafeStrlen(const char* psz)
     {
-        return psz == 0 ? 0 : lstrlenA(psz);
+        if (psz == 0)
+        {
+            return 0;
+        }
+
+        return (int)strlen(psz);
     }
 
     static void FormatAlloc(String* pString, const char* pszFormat, va_list argList);

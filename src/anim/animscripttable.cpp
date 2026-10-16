@@ -15,6 +15,7 @@ struct GameApp;
 #include "engine/messageids.h"
 #include "animnode.h"
 #include "app/config.h"
+#include <SDL3/SDL.h>
 
 // Each entry is released through its own scalar deleting destructor.
 
@@ -263,7 +264,7 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
 
             if (String::ExtractToken(*ppszCursor, szToken, ppszCursor) >= 0)
             {
-                lstrcpynA((*ppSegment)->m_pszDescription, szToken, DESCRIPTION_CHARS);
+                SDL_strlcpy((*ppSegment)->m_pszDescription, szToken, DESCRIPTION_CHARS);
 
                 (*ppSegment)->m_pszDescription[DESCRIPTION_CHARS] = 0;
 

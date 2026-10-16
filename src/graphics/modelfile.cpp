@@ -10,6 +10,7 @@
 #include "anim/animfile.h"
 #include "graphics/modelfile.h"
 #include "common/staticinit.h"
+#include <SDL3/SDL.h>
 
 float g_flFifthModelFile             = 0.2f * g_flOneModelFile;
 float g_flDotPitchInchModelFile      = g_flDotsPerInchModelFile * g_flDotPitchModelFile;
@@ -95,7 +96,7 @@ int ModelFile::ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion
     {
         *pnTag = header.nTag;
 
-        lstrcpynA(pszName, header.szName, sizeof(header.szName));
+        SDL_strlcpy(pszName, header.szName, sizeof(header.szName));
 
         *pVersion = header.version;
 

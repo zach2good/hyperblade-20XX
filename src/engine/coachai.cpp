@@ -94,6 +94,7 @@
 #include "app/window.h"
 #include "math/mathglobals.h"
 #include "math/randroll.h"
+#include <SDL3/SDL.h>
 
 float  g_flUnusedDistanceA = g_flZeroDistance;
 float  g_flUnusedDistanceB = g_flZeroDistance;
@@ -730,9 +731,9 @@ void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
 
     char* const pszName = pActor->GetPlanState()->m_pszName;
 
-    if (_strcmpi(pszName,
-                 // STRING: HYPERX 0x004bb340
-                 "Human") == 0)
+    if (SDL_strcasecmp(pszName,
+                       // STRING: HYPERX 0x004bb340
+                       "Human") == 0)
     {
         return;
     }

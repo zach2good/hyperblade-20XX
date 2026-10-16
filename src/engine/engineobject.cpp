@@ -64,6 +64,7 @@
 #include "graphics/modelcomponent.h"
 #include "engine/objectphase.h"
 #include "engine/modelids.h"
+#include <SDL3/SDL.h>
 
 float g_flUnusedEngineObjectA = g_flZeroEngineObject;
 float g_flUnusedEngineObjectB = g_flZeroEngineObject;
@@ -1716,9 +1717,9 @@ void EngineObject::SelectAndActivatePlan()
 
             for (nIndex = 0; nIndex < m_nPlanCount; nIndex++)
             {
-                if (_strcmpi(m_papszPlanNames[nIndex],
-                             // STRING: HYPERX 0x004bb340
-                             "Human") == 0)
+                if (SDL_strcasecmp(m_papszPlanNames[nIndex],
+                                   // STRING: HYPERX 0x004bb340
+                                   "Human") == 0)
                 {
                     InstantiateAIPlan((short)nIndex);
 
@@ -1739,9 +1740,9 @@ void EngineObject::SelectAndActivatePlan()
         {
             for (nIndex = 0; nIndex < m_nPlanCount; nIndex++)
             {
-                if (_strcmpi(m_papszPlanNames[nIndex],
-                             // STRING: HYPERX 0x004bb384
-                             "Defense") == 0)
+                if (SDL_strcasecmp(m_papszPlanNames[nIndex],
+                                   // STRING: HYPERX 0x004bb384
+                                   "Defense") == 0)
                 {
                     InstantiateAIPlan((short)nIndex);
 
@@ -1776,7 +1777,7 @@ void EngineObject::SelectAndActivatePlan()
 
             for (nIndex = 0; nIndex < m_nPlanCount; nIndex++)
             {
-                if (_strcmpi(m_papszPlanNames[nIndex], pszWanted) == 0)
+                if (SDL_strcasecmp(m_papszPlanNames[nIndex], pszWanted) == 0)
                 {
                     InstantiateAIPlan((short)nIndex);
 

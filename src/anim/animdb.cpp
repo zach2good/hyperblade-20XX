@@ -5,6 +5,7 @@
 #include "animnode.h"
 
 #include "engine/messageids.h"
+#include <SDL3/SDL.h>
 
 // FUNCTION: HYPERX 0x00417530
 AnimDB::AnimDB(const char* pszName, const char*)
@@ -69,7 +70,7 @@ void AnimDB::SetName(const char* pszName)
 {
     if (pszName != 0)
     {
-        lstrcpynA(m_szName, pszName, sizeof(m_szName));
+        SDL_strlcpy(m_szName, pszName, sizeof(m_szName));
 
         return;
     }

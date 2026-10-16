@@ -28,6 +28,7 @@
 #include "common/parseutil.h"
 #include "sound/soundids.h"
 #include "engine/objectphase.h"
+#include <SDL3/SDL.h>
 
 #define SCAT_TOKEN_MAX 0x100
 
@@ -154,9 +155,9 @@ int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
 
     for (int i = 0; i < 2 && nResult != 0; i++)
     {
-        const DWORD dwStart = timeGetTime();
+        const DWORD dwStart = (DWORD)SDL_GetTicks();
 
-        while (dwStart + 200 < timeGetTime())
+        while (dwStart + 200 < (DWORD)SDL_GetTicks())
         {
         }
 
@@ -307,7 +308,7 @@ void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
         const char* const pszName = pObject->GetPlanState()->m_pszName;
 
         // STRING: HYPERX 0x004bb340
-        if (_strcmpi(pszName, "Human") == 0)
+        if (SDL_strcasecmp(pszName, "Human") == 0)
         {
             g_pGameEngine->m_ppSlots[(short)g_anNetworkSlotObject[nSlot]]->SelectAndActivatePlan();
         }

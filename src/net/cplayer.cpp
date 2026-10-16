@@ -18,6 +18,7 @@
 #include "net/netsetupstate.h"
 #include "net/netsendflags.h"
 #include "engine/objectphase.h"
+#include <SDL3/SDL.h>
 
 #define PLAYER_BUFFER_BYTES 58
 
@@ -350,11 +351,11 @@ int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDat
 
         if (nResult > 0 && nResult < SEND_QUEUE_LIMIT)
         {
-            const DWORD dwDeadline = timeGetTime() + nResult * SEND_QUEUE_MS_PER_UNIT;
+            const DWORD dwDeadline = (DWORD)SDL_GetTicks() + nResult * SEND_QUEUE_MS_PER_UNIT;
 
             if (nResult > SEND_QUEUE_SPIN_FLOOR)
             {
-                while (dwDeadline > timeGetTime())
+                while (dwDeadline > (DWORD)SDL_GetTicks())
                 {
                 }
             }

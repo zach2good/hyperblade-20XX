@@ -81,6 +81,7 @@
 #include "engine/object.h"
 #include "engine/objectphase.h"
 #include "planvm/decisionlog.h"
+#include <SDL3/SDL.h>
 
 #define ENTITY_SLOT_LIMIT 0x66
 
@@ -270,11 +271,11 @@ void __cdecl PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOu
 
     if (pszName == 0
         // STRING: HYPERX 0x004bb38c
-        || _strcmpi(pszName, "OffWing") == 0
+        || SDL_strcasecmp(pszName, "OffWing") == 0
         // STRING: HYPERX 0x004bb384
-        || _strcmpi(pszName, "Defense") == 0
+        || SDL_strcasecmp(pszName, "Defense") == 0
         // STRING: HYPERX 0x004bb37c
-        || _strcmpi(pszName, "Sideln") == 0)
+        || SDL_strcasecmp(pszName, "Sideln") == 0)
     {
         *pOutValid = 0;
     }

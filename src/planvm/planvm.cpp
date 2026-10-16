@@ -25,6 +25,7 @@ struct GameApp;
 #include "planvm/plancond.h"
 #include "common/util.h"
 #include "planvm/plannode.h"
+#include <SDL3/SDL.h>
 
 // The reaction table at 0x004cf9fc, defined in src/engine/object.cpp.
 extern short g_awReactionByDamageAndSector[35];
@@ -998,7 +999,7 @@ char PlanVM::ParseHeaderDeclarations()
         ReadNextToken(szToken);
 
         // STRING: HYPERX 0x004c6be8
-        if (_strcmpi(szToken, "DECLARE_LOCAL_REALS") == 0)
+        if (SDL_strcasecmp(szToken, "DECLARE_LOCAL_REALS") == 0)
         {
             ReadNextToken(szToken);
 
@@ -1026,7 +1027,7 @@ char PlanVM::ParseHeaderDeclarations()
         }
 
         // STRING: HYPERX 0x004c6bfc
-        if (_strcmpi(szToken, "DECLARE_BEHAVIOR") == 0)
+        if (SDL_strcasecmp(szToken, "DECLARE_BEHAVIOR") == 0)
         {
             nMessages = 0;
 
@@ -1059,7 +1060,7 @@ char PlanVM::ParseHeaderDeclarations()
         }
 
         // STRING: HYPERX 0x004c6cf4
-        if (_strcmpi(szToken, "SET_MESSAGE_INTERACTOR") == 0)
+        if (SDL_strcasecmp(szToken, "SET_MESSAGE_INTERACTOR") == 0)
         {
             ReadNextToken(szToken);
 
@@ -1081,7 +1082,7 @@ char PlanVM::ParseHeaderDeclarations()
         }
 
         // STRING: HYPERX 0x004c6bbc
-        if (_strcmpi(szToken, "SET_INTERACTOR_PARAM") == 0)
+        if (SDL_strcasecmp(szToken, "SET_INTERACTOR_PARAM") == 0)
         {
             ReadNextToken(szToken);
 
@@ -1093,7 +1094,7 @@ char PlanVM::ParseHeaderDeclarations()
             ReadNextToken(szToken);
 
             // STRING: HYPERX 0x004c6f0c
-            if (_strcmpi(szToken, "id_SET_InteractorName") == 0)
+            if (SDL_strcasecmp(szToken, "id_SET_InteractorName") == 0)
             {
                 ReadNextToken(szToken);
 
@@ -1749,7 +1750,7 @@ PlanOpcodeRef PlanVM::LookupSymbol(char* pszName)
 
     while (m_aSymbols[nSymbol].nValue != PLAN_OPCODE_NONE)
     {
-        if (_strcmpi(pszName, m_aSymbols[nSymbol].szName) == 0)
+        if (SDL_strcasecmp(pszName, m_aSymbols[nSymbol].szName) == 0)
         {
             return m_aSymbols[nSymbol];
         }

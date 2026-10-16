@@ -5,6 +5,7 @@
 #include "common/compat.h"
 
 #include "common/string.h"
+#include <cstring>
 
 class PathString
 {
@@ -32,7 +33,7 @@ public:
         }
         else
         {
-            nLength = lstrlenA(psz);
+            nLength = (int)strlen(psz);
         }
 
         m_str.Assign(nLength, psz);

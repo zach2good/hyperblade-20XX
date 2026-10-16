@@ -17,6 +17,7 @@
 #include "net/movecodec.h"
 #include "net/netsequenceword.h"
 #include "net/slotnibbles.h"
+#include <SDL3/SDL.h>
 
 #define PACKET_TYPE 0x13
 
@@ -134,7 +135,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
     if (g_bModemPlay != 0)
     {
-        dwNow = timeGetTime();
+        dwNow = (DWORD)SDL_GetTicks();
 
         if (m_nLastSend + (unsigned int)SEND_INTERVAL_MS > dwNow)
         {
@@ -144,7 +145,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
     EnterCriticalSection(&m_dplayLock);
 
-    dwNow = timeGetTime();
+    dwNow = (DWORD)SDL_GetTicks();
 
     if (m_nLastSend + (unsigned int)FULL_MS < dwNow || (bThrottled == 0 && bHeld == 0 && (memcmp(&m_vPrevVel, &vStep, sizeof(Vec3)) != 0 || memcmp(&m_vPrevPos, &vPos, sizeof(Vec3)) != 0)))
     {
@@ -167,7 +168,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
         BroadcastState(pBufferB, nUsed, nObjectSlot);
 
-        m_nLastSend = timeGetTime();
+        m_nLastSend = (DWORD)SDL_GetTicks();
     }
 
     if (pObject->DequeueEvent(&nPayload, &nSecond) != 0)
@@ -397,7 +398,7 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
     const EventsPacket* const pEvents = &pPacket->events;
 
     record.cKind               = 0;
-    record.dwTime              = timeGetTime();
+    record.dwTime              = (DWORD)SDL_GetTicks();
     record.body.nCommand       = EVENT_NONE;
     record.body.nPayload       = EVENT_NONE;
     record.body.nSecondCommand = EVENT_NONE;

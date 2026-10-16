@@ -47,6 +47,11 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
     return dFrameRate;
 }
 
+unsigned int FrameTimer::Now()
+{
+    return (unsigned int)SDL_GetTicks();
+}
+
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate(void)
 {

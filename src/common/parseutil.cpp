@@ -7,6 +7,7 @@
 #include "common/parseutil.h"
 #include "common/staticinit.h"
 #include "common/commonglobals.h"
+#include <SDL3/SDL.h>
 
 float g_flOneParseUtil               = 1.0f;
 float g_flDotsPerInchParseUtil       = 72.0f;
@@ -92,7 +93,7 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
         return 0;
     }
 
-    lstrcpynA(pszOutToken, pszStart, nLength + 1);
+    SDL_strlcpy(pszOutToken, pszStart, nLength + 1);
 
     pszOutToken[nLength] = '\0';
 
