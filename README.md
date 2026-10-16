@@ -19,26 +19,59 @@ Productions.
   <img src="docs/gameplay_soft.png" alt="A match in the software renderer" width="640">
 </p>
 
+## Features
+
+- Built with a modern 64-bit, C++23 toolchain
+- Window resizing, HUD scaling, and widescreen support
+- Replaced Win32 API calls with SDL3
+- Controller support for Xbox, PlayStation and Switch pads
+- No disc needed: support for playing music tracks from local files
+- Skippable starting splash screens
+- Various crash fixes for modern Windows
+- A drop-in exe from GitHub Releases: no game files are needed to build it
+
+## TODO
+
+- Replace the DirectX hardware renderer with SDL3 renderers.
+- Implement and refine texturing in both the software and hardware renderers.
+- ImGui debug menus.
+- Recreate the RC menus with ImGui.
+- Recreate all the debug and plan menus with ImGui.
+- Fix the existing bugs and balance issues in the PBN files ([docs/plan_bugs.md](docs/plan_bugs.md)).
+- Builds and releases for: Windows, Mac, Linux, and Emscripten.
+- Net and local multiplayer.
+- Bot-only matches.
+- A free-fly spectator mode.
+
+## Install
+
+Download `hyperblade_20XX.zip` from [Releases](https://github.com/zach2good/hyperblade-20XX/releases)
+and unzip it into your HyperBlade folder, beside `HYPERX.EXE`. Then run `hyperblade_20XX.exe`.
+Your install is left as it was.
+
+The first run reads the game's text out of `HYPERX.EXE` into `hyperblade_20XX_strings.txt`, and
+later runs load that file. Edit it to change or translate the text, or delete it to read it again.
+
+The music was the disc's audio tracks. Rip them to `Data/Music/Track02.flac` and so on, as FLAC, MP3
+or WAV. The menu plays track 10.
+
 ## Build
 
-You need Windows, Visual Studio 2022 or later with the C++ x64 tools, CMake 3.21 or later, Ninja,
-Python 3.12 or later, and HyperBlade with `HYPERX.EXE` at v1.0.0.1. The build reads the game's
-resources out of your copy.
-
-Copy `hyperx-user.example.yml` to `hyperx-user.yml` and point it at your `HYPERX.EXE`. Then, from
-an x64 Developer Command Prompt:
+You need Windows, Visual Studio 2022 or later with the C++ x64 tools, CMake 3.21 or later and
+Ninja. The build uses nothing from the game. From an x64 Developer Command Prompt:
 
 ```sh
 cmake --preset msvc-x64 -DHYPERX_GAME_DATA=C:/path/to/your/HyperBlade
 cmake --build build
 ```
 
-`HYPERX_GAME_DATA` is the folder that holds the disc's `Data` folder. The build links it beside
-`build/out/hyperx.exe`, which you can then run. `ctest --test-dir build` decodes every MDM1-packed
-file in your data. Without the game, configure with `-DHYPERX_COMPILE_ONLY=ON` to compile only.
+`HYPERX_GAME_DATA` is optional. Point it at your HyperBlade folder, and the build links its `Data`
+folder and copies its `HYPERX.EXE` beside `build/out/hyperblade_20XX.exe`, which you can then run.
+`ctest --test-dir build` checks the string and INI files, and with the game it also decodes every
+MDM1-packed file and parses every wave.
 
-The music was the disc's audio tracks. Rip them to `Data/Music/Track02.flac` and so on, as FLAC, MP3
-or WAV. The menu plays track 10.
+The tools below need Python 3.12 or later, and some read your `HYPERX.EXE`: copy
+`hyperx-user.example.yml` to `hyperx-user.yml` and point it there.
 
 Format every source file you touch with clang-format 22: `pip install clang-format==22.1.8`.
 
@@ -58,21 +91,6 @@ python tools/plan_dump.py           # the AI plans, printed as pseudo-source
 
 [docs/](docs/README.md) holds what we know about the game: the class hierarchy, the other files on
 the disc, and the bugs in the shipped AI plans.
-
-## TODO
-
-- Replace Win32 calls with SDL3, including SDL_Renderer for the software renderer.
-- Replace the raw DirectX hardware renderer with SDL3 renderers.
-- Implement and refine texturing in both the software and hardware renderers.
-- ImGui debug menus.
-- Recreate the RC menus with ImGui.
-- Recreate all the debug and plan menus with ImGui.
-- Fix the existing bugs and balance issues in the PBN files ([docs/plan_bugs.md](docs/plan_bugs.md)).
-- Controller support through SDL3.
-- An Emscripten build.
-- Test on Mac and Linux.
-- A resource-free executable we can ship, which runs when dropped into a real HyperBlade install
-  with no other steps. CI builds it and publishes it with GitHub releases.
 
 ## Legal
 
