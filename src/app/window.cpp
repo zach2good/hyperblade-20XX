@@ -3,6 +3,7 @@
 #include "graphics/ddrawapi.h"
 #include "gameapp.h"
 #include "app/window.h"
+#include "graphics/presenter.h"
 #include "wndproc.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
@@ -76,17 +77,23 @@ constexpr auto MENU_HEIGHT = 480;
 
 static HDC     s_hMenuDC     = 0;
 static HBITMAP s_hMenuBitmap = 0;
+static void*   s_pMenuBits   = 0;
 
 HDC Window::MenuDC()
 {
     if (s_hMenuDC == 0)
     {
-        const HDC hdcWindow = GetDC(g_gameApp.m_hWnd);
+        BITMAPINFO info = {};
 
-        s_hMenuDC     = CreateCompatibleDC(hdcWindow);
-        s_hMenuBitmap = CreateCompatibleBitmap(hdcWindow, MENU_WIDTH, MENU_HEIGHT);
+        info.bmiHeader.biSize     = sizeof(info.bmiHeader);
+        info.bmiHeader.biWidth    = MENU_WIDTH;
+        info.bmiHeader.biHeight   = -MENU_HEIGHT;
+        info.bmiHeader.biPlanes   = 1;
+        info.bmiHeader.biBitCount = 32;
 
-        ReleaseDC(g_gameApp.m_hWnd, hdcWindow);
+        // A 32-bit DIB, so SDL can upload what GDI drew without a conversion.
+        s_hMenuDC     = CreateCompatibleDC(0);
+        s_hMenuBitmap = CreateDIBSection(s_hMenuDC, &info, DIB_RGB_COLORS, &s_pMenuBits, 0, 0);
 
         SelectObject(s_hMenuDC, s_hMenuBitmap);
         PatBlt(s_hMenuDC, 0, 0, MENU_WIDTH, MENU_HEIGHT, BLACKNESS);
@@ -117,38 +124,14 @@ static RECT MenuRect(HWND hWnd)
     return RECT{ x, y, x + cx, y + cy };
 }
 
-void Window::PresentMenu(HWND hWnd)
+// SDL fits the canvas the same way MenuRect does, so the mouse mapping agrees with the picture.
+void Window::PresentMenu(HWND)
 {
-    const auto rc = MenuRect(hWnd);
+    Window::MenuDC();
 
-    if (rc.right <= rc.left || rc.bottom <= rc.top)
-    {
-        return;
-    }
+    GdiFlush();
 
-    RECT rcClient;
-
-    GetClientRect(hWnd, &rcClient);
-
-    const HDC hdc = GetDC(hWnd);
-
-    SetStretchBltMode(hdc, HALFTONE);
-    SetBrushOrgEx(hdc, 0, 0, 0);
-    StretchBlt(hdc, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, Window::MenuDC(), 0, 0, MENU_WIDTH, MENU_HEIGHT, SRCCOPY);
-
-    const auto hBlack = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    RECT       rcBar;
-
-    SetRect(&rcBar, 0, 0, rc.left, rcClient.bottom);
-    FillRect(hdc, &rcBar, hBlack);
-    SetRect(&rcBar, rc.right, 0, rcClient.right, rcClient.bottom);
-    FillRect(hdc, &rcBar, hBlack);
-    SetRect(&rcBar, rc.left, 0, rc.right, rc.top);
-    FillRect(hdc, &rcBar, hBlack);
-    SetRect(&rcBar, rc.left, rc.bottom, rc.right, rcClient.bottom);
-    FillRect(hdc, &rcBar, hBlack);
-
-    ReleaseDC(hWnd, hdc);
+    Presenter::Canvas(s_pMenuBits, MENU_WIDTH * 4, MENU_WIDTH, MENU_HEIGHT);
 }
 
 LPARAM Window::ToMenuPoint(HWND hWnd, LPARAM lParam)
@@ -355,6 +338,11 @@ HWND Window::Create(const char* pszTitle)
     SDL_AddEventWatch(OnWindowEvent, 0);
 
     return hWnd;
+}
+
+Window::NativeWindow Window::Native()
+{
+    return NativeWindow(s_pWindow);
 }
 
 void Window::Show()

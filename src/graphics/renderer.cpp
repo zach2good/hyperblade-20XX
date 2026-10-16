@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/presenter.h"
 #include "renderer.h"
 #include "globals.h"
 #include "app/gameapp.h"
@@ -280,70 +281,13 @@ int __stdcall Renderer::PresentFrame(void)
         return DDraw::FlipOrBlt();
     }
 
-    const HDC hdcSrc = g_hSoftBackDC;
-    const int cy     = g_nBackBufferHeight;
-    const int cx     = g_nBackBufferWidth;
-    const HDC hdc    = g_hScreenBltDC;
+    // GDI drew the palette into the DIB's colour table; the GPU applies it.
+    RGBQUAD aColours[256] = {};
 
-    // The frame is centred in the client area, and scaled down, keeping its shape, only when larger.
-    RECT rcClient;
+    GdiFlush();
+    GetDIBColorTable(g_hSoftBackDC, 0, 256, aColours);
 
-    GetClientRect(g_gameApp.m_hWnd, &rcClient);
-
-    const auto cxClient = (int)rcClient.right;
-    const auto cyClient = (int)rcClient.bottom;
-
-    if (cxClient <= 0 || cyClient <= 0 || cx <= 0 || cy <= 0)
-    {
-        return 1;
-    }
-
-    if (cxClient == cx && cyClient == cy)
-    {
-        BitBlt(hdc, 0, 0, cx, cy, hdcSrc, 0, 0, SRCCOPY);
-
-        return 1;
-    }
-
-    auto cxDest = cx;
-    auto cyDest = cy;
-
-    if (cxDest > cxClient || cyDest > cyClient)
-    {
-        cxDest = cxClient;
-        cyDest = cxClient * cy / cx;
-
-        if (cyDest > cyClient)
-        {
-            cyDest = cyClient;
-            cxDest = cyClient * cx / cy;
-        }
-    }
-
-    const auto x = (cxClient - cxDest) / 2;
-    const auto y = (cyClient - cyDest) / 2;
-
-    SetStretchBltMode(hdc, COLORONCOLOR);
-    StretchBlt(hdc, x, y, cxDest, cyDest, hdcSrc, 0, 0, cx, cy, SRCCOPY);
-
-    const auto hBlack = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    RECT       rcBar;
-
-    if (x > 0)
-    {
-        SetRect(&rcBar, 0, 0, x, cyClient);
-        FillRect(hdc, &rcBar, hBlack);
-        SetRect(&rcBar, x + cxDest, 0, cxClient, cyClient);
-        FillRect(hdc, &rcBar, hBlack);
-    }
-
-    if (y > 0)
-    {
-        SetRect(&rcBar, 0, 0, cxClient, y);
-        FillRect(hdc, &rcBar, hBlack);
-        SetRect(&rcBar, 0, y + cyDest, cxClient, cyClient);
-        FillRect(hdc, &rcBar, hBlack);
-    }
+    Presenter::Frame(g_pBackBufferBitsCopy, g_nBackBufferWidth, g_nBackBufferWidth, g_nBackBufferHeight, aColours);
 
     return 1;
 }

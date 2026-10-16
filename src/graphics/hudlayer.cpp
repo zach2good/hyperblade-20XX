@@ -34,6 +34,7 @@ int        s_bEntered   = 0;
 int        s_nScale     = 1;
 int        s_nOriginX   = 0;
 int        s_nOriginY   = 0;
+int        s_bFresh     = 0;
 
 // Recreates the layer when the back buffer it covers has changed size.
 void Fit(const DrawTarget& backBuffer)
@@ -165,41 +166,27 @@ void HudLayer::Clear()
     if (s_layer.pBits != 0)
     {
         memset(s_layer.pBits, KEY_INDEX, (size_t)s_layer.nPitch * s_layer.nHeight);
+
+        s_bFresh = 1;
     }
 }
 
-// Each layer pixel that is not the key becomes a block of Scale() by Scale() back-buffer pixels.
-void HudLayer::Composite()
+const HudLayer::Layer& HudLayer::Pixels()
 {
-    if (s_layer.pBits == 0 || g_pBackBufferBitsCopy == 0)
-    {
-        return;
-    }
+    static Layer s_pixels;
 
-    GdiFlush();
+    s_pixels = Layer{ s_layer.pBits, s_layer.nPitch, s_layer.nWidth, s_layer.nHeight, s_nScale, s_nOriginX, s_nOriginY };
 
-    const auto nScale = s_nScale;
+    return s_pixels;
+}
 
-    for (int y = 0; y < s_layer.nHeight; y++)
-    {
-        const unsigned char* const pSource = s_layer.pBits + (size_t)y * s_layer.nPitch;
-        unsigned char* const       pTop    = g_pBackBufferBitsCopy + (size_t)(s_nOriginY + y * nScale) * g_nSurfacePitchCopy + s_nOriginX;
+bool HudLayer::TakeFrame()
+{
+    const auto bFresh = s_bFresh != 0;
 
-        for (int x = 0; x < s_layer.nWidth; x++)
-        {
-            const auto nIndex = pSource[x];
+    s_bFresh = 0;
 
-            if (nIndex == KEY_INDEX)
-            {
-                continue;
-            }
-
-            for (int nRow = 0; nRow < nScale; nRow++)
-            {
-                memset(pTop + (size_t)nRow * g_nSurfacePitchCopy + x * nScale, nIndex, nScale);
-            }
-        }
-    }
+    return bFresh && s_layer.pBits != 0;
 }
 
 ViewExtent HudLayer::ToBackBuffer(ViewExtent extent)

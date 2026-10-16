@@ -100,7 +100,6 @@ void __stdcall Game::RunFrame(void)
             g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt, 0);
 
             HudLayer::Leave();
-            HudLayer::Composite();
         }
     }
 

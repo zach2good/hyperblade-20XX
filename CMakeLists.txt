@@ -235,6 +235,7 @@ set(HYPERX_SOURCES
     src/graphics/palettefade.cpp
     src/graphics/palettescalarfade.cpp
     src/graphics/passbar.cpp
+    src/graphics/presenter.cpp
     src/graphics/renderer.cpp
     src/graphics/renderstatedef.cpp
     src/graphics/rlespritesurface.cpp

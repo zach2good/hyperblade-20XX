@@ -49,8 +49,24 @@ private:
     bool m_bEntered;
 };
 
+// Clears the layer for a new frame's HUD.
 void Clear();
-void Composite();
+
+struct Layer
+{
+    const unsigned char* pBits;
+    int                  nPitch;
+    int                  nWidth;
+    int                  nHeight;
+    int                  nScale;
+    int                  nOriginX;
+    int                  nOriginY;
+};
+
+const Layer& Pixels();
+
+// Whether a HUD was drawn since the last call, so a frame presents it once.
+bool TakeFrame();
 
 // A layer position as the back buffer's, for what the 3D draws under the HUD.
 ViewExtent ToBackBuffer(ViewExtent extent);
