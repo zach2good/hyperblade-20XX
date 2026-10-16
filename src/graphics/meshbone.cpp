@@ -150,7 +150,11 @@ void MeshBone::SubmitToHardware()
 
     auto bone = HwModels::Bone{ m_pMesh, m_pOwner->m_pModelBlock->m_pMaterials, m_pOwner->m_pModelBlock->m_nMatCount, &m_world };
 
-    const auto bTextured = GraphicsSettings::On(GraphicsSettings::Switch::TEXTURES) && HwModels::Find(*this, HwRenderer::Frame(), bone);
+    const auto bArena = m_pOwner == g_pGameEngine->m_ppSlots[SLOT_DROME];
+
+    // The drome is textured only while the original's F8 switch says so.
+    const auto bWantTextures = GraphicsSettings::On(GraphicsSettings::Switch::TEXTURES) && (!bArena || (g_nDromeTextured != 0 && g_bShadedDromeModels == 0));
+    const auto bTextured     = bWantTextures && HwModels::Find(*this, HwRenderer::Frame(), bone);
 
     TransformObject pixelFromModel;
 
@@ -195,7 +199,7 @@ void MeshBone::SubmitToHardware()
         }();
     }
 
-    draw.bArena = m_pOwner == g_pGameEngine->m_ppSlots[SLOT_DROME];
+    draw.bArena = bArena;
 
     // The scene's lights, in the order GraphicsSettings numbers them.
     const auto aWorldLights = std::array<Vec3, 3>{ g_lightDirs[1].dir, g_lightDirs[2].dir, g_vLightDirExtra };

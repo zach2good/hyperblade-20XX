@@ -27,6 +27,7 @@
 #include "app/gameapp.h"
 #include "app/menuids.h"
 #include "app/wndproc.h"
+#include "graphics/hwrenderer.h"
 #include "graphics/renderer.h"
 #include "input/keyboarddeviceobj.h"
 
@@ -314,7 +315,8 @@ int __cdecl GameApp::HandleMatchKeypress(unsigned int nKey)
                     return 1;
 
                 case VK_F8:
-                    if (g_cMdmTexLoaded == 0)
+                    // The hardware renderer textures the drome without the texture DLL.
+                    if (g_cMdmTexLoaded == 0 && !HwRenderer::Capturing())
                     {
                         return 1;
                     }

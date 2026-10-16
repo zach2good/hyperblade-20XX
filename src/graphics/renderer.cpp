@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/hwrenderer.h"
 #include "graphics/presenter.h"
 #include "renderer.h"
 #include "globals.h"
@@ -196,7 +197,7 @@ void __cdecl Renderer::SetLoadingMode(void)
 // FUNCTION: HYPERX 0x00442f50
 int __cdecl Renderer::SetDromeTextured(int nEnable)
 {
-    if (g_cMdmTexLoaded == 0)
+    if (g_cMdmTexLoaded == 0 && !HwRenderer::Capturing())
     {
         return 0;
     }
