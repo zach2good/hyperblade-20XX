@@ -1,11 +1,7 @@
-# The build reads resources out of your own copy of the game, which no hosted runner has. So
-# on every push CI proves only what it can without the game: the checks that read this
-# repository, the formatting, that the toolchain is the right one, and that every source
-# compiles with it.
-#
-# The build-and-score job needs a self-hosted runner that holds HYPERX.EXE. It's skipped
-# until the repository variable HYPERX_SELF_HOSTED is 'true', and it runs only on a push to
-# main or by hand, never on a pull request, so code from a fork never reaches that runner.
+# Nothing here holds the original. On every push CI proves what it can without the game: the
+# checks that read this repository, the formatting, that the toolchain is the right one, and
+# that every source compiles and links with it. A pull request's HYPERX_sym.exe and PDB go up as
+# an artifact, and score.yml, which never runs code from a pull request, scores them.
 #
 # Every job that compiles takes the VC6 SP3 tree from zach2good/vc6-sp3-toolchain.
 
@@ -105,119 +101,28 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Configure and compile, without the game
+      - name: Configure and build, without the game
         shell: cmd
         run: |
           cmake -S . -B build -DVC6_ROOT=%CD%\vc6 -G "NMake Makefiles" ^
                 -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-vc6sp3.cmake ^
-                -DCMAKE_BUILD_TYPE=Release -DHYPERX_COMPILE_ONLY=ON ^
+                -DCMAKE_BUILD_TYPE=Release -DHYPERX_NO_REFERENCE=ON ^
                 -DHYPERX_BRINGUP=${{ matrix.bringup }} ^
                 -DCMAKE_MAKE_PROGRAM=%CD%\vc6\VC98\BIN\NMAKE.EXE || exit /b 1
           python tools\cmake_build.py build || exit /b 1
 
-  build:
-    name: Build and score
-    # A hosted runner has no copy of the game, so configure cannot succeed there.
-    if: >-
-      vars.HYPERX_SELF_HOSTED == 'true' &&
-      ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
-       github.event_name == 'workflow_dispatch')
-    runs-on: [self-hosted, windows]
-    steps:
-      - uses: actions/checkout@v5
+      - name: Name the pull request
+        if: github.event_name == 'pull_request' && matrix.name == 'measured'
+        shell: bash
+        run: echo "${{ github.event.number }}" > build/out/pr.txt
+
+      - name: Upload the image for score.yml
+        if: github.event_name == 'pull_request' && matrix.name == 'measured'
+        uses: actions/upload-artifact@v4
         with:
-          fetch-depth: 0
-
-      - name: Fetch the VC6 SP3 toolchain
-        uses: actions/checkout@v5
-        with:
-          repository: zach2good/vc6-sp3-toolchain
-          path: vc6
-
-      - name: Check the toolchain first
-        run: python vc6/tools/verify.py
-
-      - name: Name the original
-        shell: bash
-        # HYPERX_REFERENCE is a secret because it is a path on the runner, not because a
-        # path is sensitive. The file itself is never uploaded, downloaded or cached.
-        run: |
-          printf 'targets:\n  HYPERX:\n    path: %s\n' "$HYPERX_REFERENCE" > reccmp-user.yml
-          python tools/reference.py
-        env:
-          HYPERX_REFERENCE: ${{ secrets.HYPERX_REFERENCE }}
-
-      - name: Configure and build
-        shell: cmd
-        run: |
-          cmake -S . -B build -DVC6_ROOT=%CD%\vc6 -G "NMake Makefiles" ^
-                -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-vc6sp3.cmake ^
-                -DCMAKE_BUILD_TYPE=Release ^
-                -DCMAKE_MAKE_PROGRAM=%CD%\vc6\VC98\BIN\NMAKE.EXE || exit /b 1
-          python tools\cmake_build.py build || exit /b 1
-
-      # The figures assume tools/reccmp_call_table.patch. Reinstalling the pinned reccmp first
-      # gives the patch a clean copy on a runner that kept last run's patched one.
-      - name: Install reccmp and apply the call-table patch
-        shell: bash
-        run: |
-          set -e
-          pip install -r tools/requirements.txt
-          pip install --force-reinstall --no-deps "$(grep '^reccmp==' tools/requirements.txt)"
-          SITE=$(python -c "import os, reccmp; print(os.path.dirname(os.path.dirname(reccmp.__file__)))")
-          patch -p1 --forward -d "$SITE" < tools/reccmp_call_table.patch
-
-      - name: Verify
-        run: python tools/cmake_build.py build --target verify
-
-      # check_regressions.py compares against build/report_baseline.json, which is never
-      # committed, so the job builds and scores the commit before this push as the reference.
-      - name: Check out the reference commit
-        id: reference
-        shell: bash
-        run: |
-          set -e
-          BASE="${{ github.event.before }}"
-          if [ -z "$BASE" ] || [ "$BASE" = 0000000000000000000000000000000000000000 ]; then
-              BASE=$(git rev-parse --verify --quiet HEAD^1 || true)
-          fi
-          # A root commit has nothing to regress against.
-          if [ -z "$BASE" ]; then
-              echo "::notice::No parent commit, so the regressions check is skipped"
-              echo "found=false" >> "$GITHUB_OUTPUT"
-              exit 0
-          fi
-          git worktree prune
-          git worktree add --detach "$RUNNER_TEMP/reference" "$BASE"
-          cp reccmp-user.yml "$RUNNER_TEMP/reference/"
-          echo "found=true" >> "$GITHUB_OUTPUT"
-
-      - name: Build the reference
-        if: steps.reference.outputs.found == 'true'
-        shell: cmd
-        run: |
-          cmake -S %RUNNER_TEMP%\reference -B %RUNNER_TEMP%\reference\build -DVC6_ROOT=%CD%\vc6 ^
-                -G "NMake Makefiles" -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-vc6sp3.cmake ^
-                -DCMAKE_BUILD_TYPE=Release ^
-                -DCMAKE_MAKE_PROGRAM=%CD%\vc6\VC98\BIN\NMAKE.EXE || exit /b 1
-          python tools\cmake_build.py %RUNNER_TEMP%\reference\build || exit /b 1
-
-      - name: Score the reference
-        if: steps.reference.outputs.found == 'true'
-        shell: bash
-        run: |
-          set -e
-          cd "$RUNNER_TEMP/reference"
-          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
-          cp build/report.json "$GITHUB_WORKSPACE/build/report_baseline.json"
-
-      - name: Score, and refuse a lost exact match or a stale README
-        shell: bash
-        run: |
-          set -e
-          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
-          python tools/progress.py
-          if [ "${{ steps.reference.outputs.found }}" = true ]; then
-              python tools/check_regressions.py
-          fi
-          python tools/check_readme.py --strict
+          name: hyperx-sym
+          path: |
+            build/out/HYPERX_sym.exe
+            build/out/HYPERX_sym.pdb
+            build/out/pr.txt
+          retention-days: 7

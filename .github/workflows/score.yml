@@ -1,0 +1,190 @@
+# Scores against the original, which lives in the private zach2good/hyperblade-reference and is
+# read through the REFERENCE_DEPLOY_KEY secret.
+#
+# workflow_run always runs this file and the tools as main has them, never a pull request's
+# copy. A pull request reaches this job only as data: the HYPERX_sym.exe and PDB that ci.yml
+# built and uploaded, and its src and symbols as text for reccmp's markers. Nothing from it is
+# compiled or run here, so it cannot reach the original.
+#
+# On a pull request: build main, score it as the baseline, score the pull request's image
+# against it, and report the regressions check as a commit status and a comment.
+# On a push to main: build it and run verify.
+
+name: score
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+  statuses: write
+
+jobs:
+  score:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'pull_request' ||
+       (github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      - name: Report pending
+        if: github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          gh api "repos/${{ github.repository }}/statuses/$HEAD_SHA" -f state=pending \
+             -f context=score -f description="Scoring against the original"
+
+      # A push to main scores its own commit, which is already trusted. A pull request is
+      # scored against main's tip.
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.event == 'push' && github.event.workflow_run.head_sha || github.event.repository.default_branch }}
+
+      - name: Fetch the VC6 SP3 toolchain
+        uses: actions/checkout@v5
+        with:
+          repository: zach2good/vc6-sp3-toolchain
+          path: vc6
+
+      - name: Fetch the original
+        uses: actions/checkout@v5
+        with:
+          repository: zach2good/hyperblade-reference
+          ssh-key: ${{ secrets.REFERENCE_DEPLOY_KEY }}
+          persist-credentials: false
+          path: reference
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Name the original
+        shell: bash
+        run: |
+          printf 'targets:\n  HYPERX:\n    path: %s\n' "$PWD/reference/HYPERX.EXE" > reccmp-user.yml
+          python tools/reference.py
+
+      # The figures assume tools/reccmp_call_table.patch.
+      - name: Install reccmp and apply the call-table patch
+        shell: bash
+        run: |
+          set -e
+          pip install -r tools/requirements.txt
+          SITE=$(python -c "import os, reccmp; print(os.path.dirname(os.path.dirname(reccmp.__file__)))")
+          patch -p1 --forward -d "$SITE" < tools/reccmp_call_table.patch
+
+      - name: Build main
+        shell: cmd
+        run: |
+          cmake -S . -B build -DVC6_ROOT=%CD%\vc6 -G "NMake Makefiles" ^
+                -DCMAKE_TOOLCHAIN_FILE=cmake/toolchain-vc6sp3.cmake ^
+                -DCMAKE_BUILD_TYPE=Release ^
+                -DCMAKE_MAKE_PROGRAM=%CD%\vc6\VC98\BIN\NMAKE.EXE || exit /b 1
+          python tools\cmake_build.py build || exit /b 1
+
+      - name: Verify
+        if: github.event.workflow_run.event == 'push'
+        run: python tools/cmake_build.py build --target verify
+
+      - name: Score main as the baseline
+        if: github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          set -e
+          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
+          cp build/report.json build/report_baseline.json
+
+      - name: Download the pull request's image
+        if: github.event.workflow_run.event == 'pull_request'
+        uses: actions/download-artifact@v4
+        with:
+          name: hyperx-sym
+          path: pr-image
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Name the pull request
+        id: pr
+        if: github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          NUMBER=$(tr -dc '0-9' < pr-image/pr.txt)
+          [ -n "$NUMBER" ] || { echo "::error::pr.txt holds no number"; exit 1; }
+          echo "number=$NUMBER" >> "$GITHUB_OUTPUT"
+
+      # Text only: reccmp reads the markers in src, and the checks read symbols. Nothing in this
+      # checkout is compiled or run.
+      - name: Fetch the pull request's source as data
+        if: github.event.workflow_run.event == 'pull_request'
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+          path: pr
+
+      # The image goes in after the source, so the staleness checks see it as the newer.
+      - name: Put the pull request in place
+        if: github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          set -e
+          rm -rf src symbols
+          cp -r pr/src pr/symbols .
+          cp pr-image/HYPERX_sym.exe pr-image/HYPERX_sym.pdb build/out/
+
+      - name: Score the pull request
+        id: score
+        if: github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent || exit 1
+          set +e
+          python tools/check_regressions.py > regressions.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          python tools/progress.py > progress.txt 2>&1
+          cat regressions.txt
+          {
+            echo '### Score against the original'
+            echo
+            echo '```'
+            cat regressions.txt
+            echo
+            cat progress.txt
+            echo '```'
+            echo
+            echo "From [score run ${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) on \`${HEAD_SHA:0:7}\`."
+          } > comment.md
+          cat comment.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report on the pull request
+        if: github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          if [ "${{ steps.score.outputs.status }}" = 0 ]; then
+              STATE=success; TEXT="No row dropped"
+          else
+              STATE=failure; TEXT="A row dropped or went stale; see the comment"
+          fi
+          gh api "repos/${{ github.repository }}/statuses/$HEAD_SHA" -f state=$STATE \
+             -f context=score -f description="$TEXT" \
+             -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh pr comment "${{ steps.pr.outputs.number }}" --repo "${{ github.repository }}" \
+             --body-file comment.md --edit-last --create-if-none
+
+      - name: Report a failure to score
+        if: failure() && github.event.workflow_run.event == 'pull_request'
+        shell: bash
+        run: |
+          gh api "repos/${{ github.repository }}/statuses/$HEAD_SHA" -f state=error \
+             -f context=score -f description="Scoring did not finish" \
+             -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
