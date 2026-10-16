@@ -287,8 +287,8 @@ void MeshBone::SubmitToHardware()
 
     draw.aWorldFromModel[15] = 1.0f;
 
-    // The rok carries its light from its root bone.
-    if (GraphicsSettings::On(Switch::ROK_LIGHT) && m_pOwner == g_pGameEngine->m_ppSlots[SLOT_ROK] && this == m_pOwner->m_pBones)
+    // The rok shows one bone at a time, by its state, and carries its light on whichever it is.
+    if (GraphicsSettings::On(Switch::ROK_LIGHT) && m_pOwner == g_pGameEngine->m_ppSlots[SLOT_ROK])
     {
         HwRenderer::SetPointLight(bone.pWorld->m_a[0][3], bone.pWorld->m_a[1][3], bone.pWorld->m_a[2][3], GraphicsSettings::RokLightRadius());
     }

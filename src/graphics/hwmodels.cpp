@@ -2,6 +2,7 @@
 #include "graphics/hwmodels.h"
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
+#include "engine/objectclasses.h"
 #include "engine/objectdef.h"
 #include "graphics/cd3dtexturemanager.h"
 #include "graphics/colorpalette.h"
@@ -119,6 +120,18 @@ void Pose(const EngineObject& object, TexturedModel& model)
     const auto nBones = (int)object.m_wBoneCount;
 
     model.world.resize((size_t)nBones);
+
+    // RokObject::ApplyRenderSlotPose sets each bone straight in the world, keeping no local
+    // matrices to rebuild the rig from.
+    if (object.m_nSlot == SLOT_ROK)
+    {
+        for (int i = 0; i < nBones; i++)
+        {
+            model.world[(size_t)i] = object.m_pBones[i].m_world;
+        }
+
+        return;
+    }
 
     auto parents = std::vector<int>((size_t)nBones, -1);
 

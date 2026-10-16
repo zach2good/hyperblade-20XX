@@ -51,6 +51,10 @@ enum class Switch
     // The two lights above the arena cast shadow maps, in place of the original's shadow meshes.
     SHADOW_MAPS,
 
+    // Each mesh drawn over the ones sorted behind it, as the original painted them, or every mesh
+    // depth tested against the others.
+    PAINTERS_ORDER,
+
     COUNT
 };
 

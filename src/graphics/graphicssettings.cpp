@@ -29,6 +29,7 @@ constexpr auto SWITCHES = std::array<SwitchInfo, (size_t)GraphicsSettings::Switc
     { "SeveralLights", false },
     { "RokLight", false },
     { "ShadowMaps", false },
+    { "PaintersOrder", true },
 } };
 
 auto s_bLoaded      = false;

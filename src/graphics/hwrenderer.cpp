@@ -763,8 +763,15 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     SDL_GPURenderPass* pPass  = nullptr;
     auto               bArena = false;
 
-    for (const auto& draw : s_draws)
+    // The draws come back to front, as the original painted them. Painted in order, each takes a
+    // depth slice in front of the last, so it covers what came before and still hides its own faces.
+    const auto bPainters = GraphicsSettings::On(Switch::PAINTERS_ORDER);
+    const auto flSlice   = 1.0f / (float)(std::max)(s_draws.size(), (size_t)1);
+
+    for (size_t nDraw = 0; nDraw < s_draws.size(); nDraw++)
     {
+        const auto& draw = s_draws[nDraw];
+
         // A new layer starts a new pass with the depth cleared and the colour kept.
         if (pPass == nullptr || draw.bArena != bArena)
         {
@@ -808,7 +815,14 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
             continue;
         }
 
-        const auto viewport = SDL_GPUViewport{ (float)draw.nViewportX, (float)draw.nViewportY, (float)draw.nViewportWidth, (float)draw.nViewportHeight, 0.0f, 1.0f };
+        auto viewport = SDL_GPUViewport{ (float)draw.nViewportX, (float)draw.nViewportY, (float)draw.nViewportWidth, (float)draw.nViewportHeight, 0.0f, 1.0f };
+
+        if (bPainters)
+        {
+            viewport.max_depth = 1.0f - (float)nDraw * flSlice;
+            viewport.min_depth = viewport.max_depth - flSlice;
+        }
+
         const auto binding  = SDL_GPUBufferBinding{ pMesh->pBuffer, 0 };
         const auto uniforms = ClipUniforms(draw);
 
