@@ -4545,11 +4545,11 @@ void GameEngine::ProcessInputCommandQueue()
 
         if (pLock != 0)
         {
-            LPCRITICAL_SECTION pSection = &pLock->m_lock;
+            std::recursive_mutex* pSection = &pLock->m_lock;
 
-            EnterCriticalSection(pSection);
+            pSection->lock();
             char bQueued = pObject->DequeueInputCommand(&nCommand, &nPayload);
-            LeaveCriticalSection(pSection);
+            pSection->unlock();
 
             while (bQueued != 0)
             {
@@ -4580,10 +4580,10 @@ void GameEngine::ProcessInputCommandQueue()
                     pObject->DispatchSceneMessage(nMessage, nPayload, nValue, nSender, 1);
                 }
 
-                EnterCriticalSection(pSection);
+                pSection->lock();
                 bQueued = pObject->DequeueInputCommand(&nCommand,
                                                        &nPayload);
-                LeaveCriticalSection(pSection);
+                pSection->unlock();
             }
         }
     }

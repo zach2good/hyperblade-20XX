@@ -5,6 +5,7 @@
 #include "engine/objectbase.h"
 #include "engine/syncsendcursor.h"
 #include "math/transformobject.h"
+#include <mutex>
 
 class AnimDB;
 class AnimPlayer;
@@ -74,28 +75,28 @@ public:
     virtual PhysicsBody*     GetPhysicsBody();
     virtual TransformObject* GetLocalTransformPtr();
     // Also the head of the object's agenda item list.
-    virtual class AgendaItem* GetObserver();
-    virtual void              SetObserver(class AgendaItem* pObserver);
-    virtual void              PostSceneMessage(int nMessage, int nArg, int nSender, int bFromInput);
-    virtual void              PostEvent(int nMessage, int nArg, int nSender);
-    virtual void              PostSceneEvent(int nMessage, int nArg);
-    virtual void              DispatchSceneMessage(unsigned int nMessage, int nArg, short nValue, unsigned int nSender, int bFromInput);
-    virtual void              StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags);
-    virtual void              BindAnimEventChannel(int nChannel, int nTarget, int nKind, int nParam);
-    virtual void              ResetSceneMessageHandlers();
-    virtual class PlanState*  GetPlanState();
-    virtual void              RegisterSceneMessageHandler(class Interactor* pHandler);
-    virtual class CPlayer*    GetPhysStateObj();
-    virtual CRITICAL_SECTION* GetCPlayerStateLock();
-    virtual void              InstantiateAIPlan(short nIndex);
-    virtual ObjectPhase       GetPhase();
-    virtual char              EnqueueSceneEvent(int nMessage, int nArg);
-    virtual short             FindPlanByName(const char* pszName);
-    virtual Vec3*             GetWorldPos(Vec3* pOut);
-    virtual struct Vec3*      GetPositionPtr();
-    virtual char              IsVisible();
-    virtual void              SetVisible(char bFlag);
-    virtual void              ApplyRenderSlotPose();
+    virtual class AgendaItem*     GetObserver();
+    virtual void                  SetObserver(class AgendaItem* pObserver);
+    virtual void                  PostSceneMessage(int nMessage, int nArg, int nSender, int bFromInput);
+    virtual void                  PostEvent(int nMessage, int nArg, int nSender);
+    virtual void                  PostSceneEvent(int nMessage, int nArg);
+    virtual void                  DispatchSceneMessage(unsigned int nMessage, int nArg, short nValue, unsigned int nSender, int bFromInput);
+    virtual void                  StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags);
+    virtual void                  BindAnimEventChannel(int nChannel, int nTarget, int nKind, int nParam);
+    virtual void                  ResetSceneMessageHandlers();
+    virtual class PlanState*      GetPlanState();
+    virtual void                  RegisterSceneMessageHandler(class Interactor* pHandler);
+    virtual class CPlayer*        GetPhysStateObj();
+    virtual std::recursive_mutex* GetCPlayerStateLock();
+    virtual void                  InstantiateAIPlan(short nIndex);
+    virtual ObjectPhase           GetPhase();
+    virtual char                  EnqueueSceneEvent(int nMessage, int nArg);
+    virtual short                 FindPlanByName(const char* pszName);
+    virtual Vec3*                 GetWorldPos(Vec3* pOut);
+    virtual struct Vec3*          GetPositionPtr();
+    virtual char                  IsVisible();
+    virtual void                  SetVisible(char bFlag);
+    virtual void                  ApplyRenderSlotPose();
 
     // Slots twenty six to thirty one, which the base's table does not have.
     // The original folds this with every bare `ret` at 0x00416e30, so it carries no marker.

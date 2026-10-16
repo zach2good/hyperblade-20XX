@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "net/netreceivebuffer.h"
 #include "net/netsendbuffer.h"
+#include <mutex>
 
 class EngineObject;
 
@@ -66,8 +67,8 @@ public:
     NetReceiveBuffer m_recvBuf; // 0x03c
     NetSendBuffer    m_sendBuf; // 0x13c
     // m_dplayLock serialises the DirectPlay sends and receives; m_lock guards the applied object state.
-    CRITICAL_SECTION m_dplayLock; // 0x23c
-    CRITICAL_SECTION m_lock;      // 0x254
+    std::recursive_mutex m_dplayLock; // 0x23c
+    std::recursive_mutex m_lock;      // 0x254
 };
 
 // SYNTHETIC: HYPERX 0x0042ccf0

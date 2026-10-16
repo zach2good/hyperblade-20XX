@@ -233,7 +233,7 @@ CPlayer* EngineObject::GetPhysStateObj()
 }
 
 // FUNCTION: HYPERX 0x00422e40
-CRITICAL_SECTION* EngineObject::GetCPlayerStateLock()
+std::recursive_mutex* EngineObject::GetCPlayerStateLock()
 {
     return &m_pBody->pPlayer->m_lock;
 }
@@ -1205,7 +1205,7 @@ char EngineObject::ProcessReceivedPacket()
 
     if (pPlayer != 0)
     {
-        EnterCriticalSection(&pPlayer->m_lock);
+        pPlayer->m_lock.lock();
 
         NetMoveRecord* pRecord = pPlayer->DequeueNetRecord();
 
@@ -1214,7 +1214,7 @@ char EngineObject::ProcessReceivedPacket()
             record = *pRecord;
         }
 
-        LeaveCriticalSection(&m_pBody->pPlayer->m_lock);
+        m_pBody->pPlayer->m_lock.unlock();
 
         if (pRecord != 0)
         {
@@ -1280,7 +1280,7 @@ char EngineObject::ProcessReceivedPacket()
                     }
                 }
 
-                EnterCriticalSection(&pPlayer->m_lock);
+                pPlayer->m_lock.lock();
 
                 pRecord = pPlayer->DequeueNetRecord();
 
@@ -1289,7 +1289,7 @@ char EngineObject::ProcessReceivedPacket()
                     record = *pRecord;
                 }
 
-                LeaveCriticalSection(&m_pBody->pPlayer->m_lock);
+                m_pBody->pPlayer->m_lock.unlock();
             } while (pRecord != 0);
 
             bResult = 1;

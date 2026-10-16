@@ -3,6 +3,7 @@
 
 #include "common/compat.h"
 #include "engine/objectphase.h"
+#include <mutex>
 
 class AnimDB;
 struct PhysicsBody;
@@ -44,19 +45,19 @@ public:
     virtual void              BindAnimEventChannel(int nChannel, int nTarget, int nKind, int nParam)                                    = 0;
     virtual void              ResetSceneMessageHandlers()                                                                               = 0;
     // Callers read the result four ways; the true type is unknown.
-    virtual class PlanState*  GetPlanState()                                          = 0;
-    virtual void              RegisterSceneMessageHandler(class Interactor* pHandler) = 0;
-    virtual class CPlayer*    GetPhysStateObj()                                       = 0;
-    virtual CRITICAL_SECTION* GetCPlayerStateLock()                                   = 0;
-    virtual void              InstantiateAIPlan(short nIndex)                         = 0;
-    virtual ObjectPhase       GetPhase()                                              = 0;
-    virtual char              EnqueueSceneEvent(int nMessage, int nArg)               = 0;
-    virtual short             FindPlanByName(const char* pszName)                     = 0;
-    virtual Vec3*             GetWorldPos(Vec3* pOut)                                 = 0;
-    virtual struct Vec3*      GetPositionPtr()                                        = 0;
-    virtual char              IsVisible()                                             = 0;
-    virtual void              SetVisible(char bFlag)                                  = 0;
-    virtual void              ApplyRenderSlotPose()                                   = 0;
+    virtual class PlanState*      GetPlanState()                                          = 0;
+    virtual void                  RegisterSceneMessageHandler(class Interactor* pHandler) = 0;
+    virtual class CPlayer*        GetPhysStateObj()                                       = 0;
+    virtual std::recursive_mutex* GetCPlayerStateLock()                                   = 0;
+    virtual void                  InstantiateAIPlan(short nIndex)                         = 0;
+    virtual ObjectPhase           GetPhase()                                              = 0;
+    virtual char                  EnqueueSceneEvent(int nMessage, int nArg)               = 0;
+    virtual short                 FindPlanByName(const char* pszName)                     = 0;
+    virtual Vec3*                 GetWorldPos(Vec3* pOut)                                 = 0;
+    virtual struct Vec3*          GetPositionPtr()                                        = 0;
+    virtual char                  IsVisible()                                             = 0;
+    virtual void                  SetVisible(char bFlag)                                  = 0;
+    virtual void                  ApplyRenderSlotPose()                                   = 0;
 
     // What GameApp::GetInstallLevel moved by while GameEngine::CreateObject built this object.
     InstallCost m_installCost; // 0x004, the vtable slot at 0x000 being the compiler's

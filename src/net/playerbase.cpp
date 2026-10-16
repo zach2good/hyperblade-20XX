@@ -143,7 +143,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
         }
     }
 
-    EnterCriticalSection(&m_dplayLock);
+    m_dplayLock.lock();
 
     dwNow = (DWORD)SDL_GetTicks();
 
@@ -212,7 +212,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
         }
     }
 
-    LeaveCriticalSection(&m_dplayLock);
+    m_dplayLock.unlock();
 
     m_vPrevVel       = vStep;
     m_vPrevPos       = vPos;
@@ -233,7 +233,7 @@ void PlayerBase::NetUpdateMultiObject(int)
 
     const unsigned char nObjectSlot = (unsigned char)pObject->GetSlot();
 
-    EnterCriticalSection(&m_dplayLock);
+    m_dplayLock.lock();
 
     nCode = (unsigned char)pObject->PollStationaryEvents(&nPayload, &nSecond);
 
@@ -303,7 +303,7 @@ void PlayerBase::NetUpdateMultiObject(int)
         }
     }
 
-    LeaveCriticalSection(&m_dplayLock);
+    m_dplayLock.unlock();
 }
 
 #define KIND_CODED  0x14
@@ -373,9 +373,9 @@ void PlayerBase::RecvStaticObjectPacket(const NetReceiveBuffer* pPacket, int nLe
 
         pAt += EVENT_SHORT;
 
-        EnterCriticalSection(&m_lock);
+        m_lock.lock();
         pGodPlayer->EnqueueNetRecord(&record);
-        LeaveCriticalSection(&m_lock);
+        m_lock.unlock();
 
         nDone += EVENT_SHORT;
 
@@ -393,7 +393,7 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
 {
     NetMoveRecord             record;
     CPlayer*                  pPlayer;
-    LPCRITICAL_SECTION        pLock;
+    std::recursive_mutex*     pLock;
     const MovePacket* const   pMove   = &pPacket->move;
     const EventsPacket* const pEvents = &pPacket->events;
 
@@ -450,9 +450,9 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
 
         pLock = &m_lock;
 
-        EnterCriticalSection(pLock);
+        pLock->lock();
         pPlayer->EnqueueNetRecord(&record);
-        LeaveCriticalSection(pLock);
+        pLock->unlock();
 
         return;
     }
@@ -480,9 +480,9 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
 
         pLock = &m_lock;
 
-        EnterCriticalSection(pLock);
+        pLock->lock();
         pPlayer->EnqueueNetRecord(&record);
-        LeaveCriticalSection(pLock);
+        pLock->unlock();
 
         return;
     }
@@ -534,9 +534,9 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
             record.body.nPayload = 0;
         }
 
-        EnterCriticalSection(pLock);
+        pLock->lock();
         pPlayer->EnqueueNetRecord(&record);
-        LeaveCriticalSection(pLock);
+        pLock->unlock();
 
         nEvent++;
         pEvent++;

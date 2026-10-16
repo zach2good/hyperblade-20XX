@@ -151,7 +151,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 
     if (nMode == 0 && m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK && m_pOwner->GetPhysStateObj() != 0)
     {
-        EnterCriticalSection(m_pOwner->GetCPlayerStateLock());
+        m_pOwner->GetCPlayerStateLock()->lock();
 
         m_pOwner->EnqueueSceneEvent(MsgEvent::Pack(m_wEventKind,
                                                    (short)m_otherSlot.n,
@@ -159,7 +159,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
                                                    (short)*pOutcome),
                                     nArg);
 
-        LeaveCriticalSection(m_pOwner->GetCPlayerStateLock());
+        m_pOwner->GetCPlayerStateLock()->unlock();
     }
 
     m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;

@@ -69,9 +69,6 @@ CPlayer::CPlayer(GameSession* pSession)
     nRecvFlags  = DPRECEIVE_TOPLAYER;
     nQueueCount = 0;
     nQueueHead  = 0;
-
-    InitializeCriticalSection(&m_lock);
-    InitializeCriticalSection(&m_dplayLock);
 }
 
 // Drains what DirectPlay holds for the player, stops its receive thread and destroys it.
@@ -118,7 +115,7 @@ void CPlayer::ResetState()
 {
     pBufferB->message.nSlot = (unsigned char)pState->nSlotFlags;
 
-    EnterCriticalSection(&m_lock);
+    m_lock.lock();
 
     nQueueCount = 0;
     nQueueHead  = 0;
@@ -139,7 +136,7 @@ void CPlayer::ResetState()
     cLastBehaviour = 0;
     cLastPlan      = 0;
 
-    LeaveCriticalSection(&m_lock);
+    m_lock.unlock();
 }
 
 // The second drain loop runs only for the player that drives God.
@@ -255,7 +252,7 @@ void CPlayer::DetachObject()
     pState->bLocal              = 0;
     pState->nDisconnected       = 0;
 
-    EnterCriticalSection(&m_lock);
+    m_lock.lock();
 
     nQueueCount = 0;
     nQueueHead  = 0;
@@ -276,7 +273,7 @@ void CPlayer::DetachObject()
     cLastBehaviour = 0;
     cLastPlan      = 0;
 
-    LeaveCriticalSection(&m_lock);
+    m_lock.unlock();
 }
 
 #define PACKET_KIND_DATA 0x0c
@@ -489,16 +486,16 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                         this->pState->nSlotFlags);
     }
 
-    CRITICAL_SECTION* const pLock = &m_dplayLock;
+    std::recursive_mutex* const pLock = &m_dplayLock;
 
-    EnterCriticalSection(pLock);
+    pLock->lock();
 
     pDirectPlay                 = this->pDPlay;
     const unsigned int hr       = pDirectPlay->Receive(&idFrom, &idTo, nRecvFlags, pBufferA, &dwSize);
     const unsigned int nMessage = pBufferA->system.dwType;
     nSlot                       = pBufferA->message.nSlot;
 
-    LeaveCriticalSection(pLock);
+    pLock->unlock();
 
     if (hr != DPERR_NOMESSAGES)
     {
@@ -522,16 +519,16 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                 switch (nMessage)
                 {
                     case DPSYS_DELETEPLAYER:
-                        EnterCriticalSection(pLock);
+                        pLock->lock();
                         Network::RemoveDPID(g_pGameSession, pBufferA->deletePlayer.dpId);
-                        LeaveCriticalSection(pLock);
+                        pLock->unlock();
 
                         break;
 
                     case DPSYS_ADDPLAYER:
-                        EnterCriticalSection(pLock);
+                        pLock->lock();
                         Network::AddDPID(g_pGameSession, pBufferA->addPlayer.dpId);
-                        LeaveCriticalSection(pLock);
+                        pLock->unlock();
 
                         break;
 
@@ -571,17 +568,17 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                     case ASSET_TYPE_TEAMS:
                     case ASSET_TYPE_ARENAS:
                     case ASSET_TYPE_PLANS:
-                        EnterCriticalSection(pLock);
+                        pLock->lock();
                         Network::ReceiveAssetPacket(&pBufferA->asset, dwSize, idFrom);
-                        LeaveCriticalSection(pLock);
+                        pLock->unlock();
 
                         break;
 
                     case MSG_CHAT:
-                        EnterCriticalSection(pLock);
+                        pLock->lock();
                         NetSetup::DisplayChatMessage(
                             idFrom, pBufferA->message.szPayload, pBufferA->message.nSlot);
-                        LeaveCriticalSection(pLock);
+                        pLock->unlock();
 
                         break;
 
@@ -601,9 +598,9 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                         break;
 
                     case MSG_ADD_PLAYER:
-                        EnterCriticalSection(pLock);
+                        pLock->lock();
                         NetSetup::ProcessAddPlayerMsg(idFrom, nSlot, &pBufferA->playerName.name);
-                        LeaveCriticalSection(pLock);
+                        pLock->unlock();
 
                         break;
 
@@ -618,9 +615,9 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                         break;
 
                     case MSG_DROP_PLAYER:
-                        EnterCriticalSection(pLock);
+                        pLock->lock();
                         Network::RemoveDPID(g_pGameSession, idFrom);
-                        LeaveCriticalSection(pLock);
+                        pLock->unlock();
 
                         break;
 
@@ -632,10 +629,10 @@ unsigned int __fastcall CPlayer::DispatchPacket()
 
                         if (pMoveTarget != 0)
                         {
-                            EnterCriticalSection(pLock);
+                            pLock->lock();
                             pMoveTarget->RecvMovementPacket(pBufferA,
                                                             dwSize);
-                            LeaveCriticalSection(pLock);
+                            pLock->unlock();
                         }
                         else
                         {
@@ -651,10 +648,10 @@ unsigned int __fastcall CPlayer::DispatchPacket()
 
                         if (pStaticTarget != 0)
                         {
-                            EnterCriticalSection(pLock);
+                            pLock->lock();
                             pStaticTarget->RecvStaticObjectPacket(pBufferA,
                                                                   dwSize);
-                            LeaveCriticalSection(pLock);
+                            pLock->unlock();
                         }
                         else
                         {
