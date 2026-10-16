@@ -28,7 +28,7 @@ struct Input
 struct Output
 {
     nointerpolation float4 Base : TEXCOORD0; // The palette index in x, or the RGB from 0 to 255.
-    nointerpolation float4 Mode : TEXCOORD1; // x: palettised. y: the drome's curve.
+    nointerpolation float4 Mode : TEXCOORD1; // x: palettised. y: the drome's curve. z: the key light.
     float2 UV : TEXCOORD2;
     float3 Terms : TEXCOORD3; // Each scene light's term, before its shadow.
     float2 Material : TEXCOORD4; // Diffuse and ambient.
@@ -36,6 +36,7 @@ struct Output
     float3 WorldNormal : TEXCOORD6;
     float4 ShadowPosition0 : TEXCOORD7;
     float4 ShadowPosition1 : TEXCOORD8;
+    nointerpolation float3 Strengths : TEXCOORD9; // Each scene light's strength.
     float4 Position : SV_Position;
 };
 
@@ -54,7 +55,8 @@ Output main(Input input)
         output.Base = float4((float)input.Colour.x, 0.0, 0.0, 0.0);
     }
 
-    output.Mode = float4(Flags.x, Flags.z, 0.0, 0.0);
+    output.Mode = float4(Flags.x, Flags.z, Flags.y, 0.0);
+    output.Strengths = float3(LightDirs[0].w, LightDirs[1].w, LightDirs[2].w);
 
     // The key light is the one the original lights the face by, signed as it was; the others only
     // add where they face the surface.

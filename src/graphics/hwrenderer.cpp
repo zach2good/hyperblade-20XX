@@ -598,6 +598,16 @@ HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool b
     std::memcpy(uniforms.aPointLight, s_aPointLight, sizeof(uniforms.aPointLight));
 
     uniforms.aShadows[0] = (float)bShadows;
+    uniforms.aShadows[1] = (float)GraphicsSettings::On(GraphicsSettings::Switch::PHONG_SHADING);
+
+    const auto aWorldLights = std::array<Vec3, 3>{ g_lightDirs[1].dir, g_lightDirs[2].dir, g_vLightDirExtra };
+
+    for (size_t i = 0; i < aWorldLights.size(); i++)
+    {
+        uniforms.aWorldLightDirs[i][0] = aWorldLights[i].x;
+        uniforms.aWorldLightDirs[i][1] = aWorldLights[i].y;
+        uniforms.aWorldLightDirs[i][2] = aWorldLights[i].z;
+    }
 
     uniforms.nLargeRampFirst  = g_pColorPalette->m_largeRampBounds.nFirst;
     uniforms.nLargeRampLast   = g_pColorPalette->m_largeRampBounds.nCount;

@@ -63,14 +63,17 @@ struct ColourUniforms
     // The rok's light in the world; w is its reach, zero for none.
     float aPointLight[4];
 
-    // x is one when the shadow maps are drawn and sampled.
+    // x is one when the shadow maps are drawn and sampled; y is one for Phong shading.
     float aShadows[4];
+
+    // The scene's lights in the world, for Phong shading.
+    float aWorldLightDirs[3][4];
 
     // The live palette, RGB from 0 to 1.
     float aPalette[256][4];
 };
 
-static_assert(sizeof(ColourUniforms) == 48 + 256 * 16);
+static_assert(sizeof(ColourUniforms) == 96 + 256 * 16);
 
 // Vertex uniform slot 0 of the shadow pipeline, per draw.
 struct ShadowUniforms

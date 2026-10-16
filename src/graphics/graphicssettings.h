@@ -33,8 +33,10 @@ enum class Switch
     // The textured models at their most detailed, or stepped down with distance as the engine picks.
     FULL_DETAIL,
 
-    // Faces lit flat, as the original did, or smoothly across the edges that do not crease.
+    // Faces lit flat, as the original did, or smoothly across the edges that do not crease:
+    // Gouraud lights each corner and blends, Phong lights each pixel from the blended normal.
     SMOOTH_SHADING,
+    PHONG_SHADING,
 
     // The scene's three lights, at azimuths 303, 54 and 180. The original lights each face by
     // one of them; a light switched off lights nothing.

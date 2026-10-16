@@ -23,6 +23,7 @@ constexpr auto SWITCHES = std::array<SwitchInfo, (size_t)GraphicsSettings::Switc
     { "Uncapped", false },
     { "FullDetail", true },
     { "SmoothShading", false },
+    { "PhongShading", false },
     { "Light303", true },
     { "Light54", true },
     { "Light180", true },

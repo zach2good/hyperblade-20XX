@@ -24,7 +24,8 @@ cbuffer ColourUniforms : register(b1, space3)
     int SmallRampLength;
     int LargeRampLength;
     float4 PointLight; // The rok's light in the world; w is its reach, zero for none.
-    float4 Shadows;    // x is one when the shadow maps are drawn.
+    float4 Shadows;    // x is one when the shadow maps are drawn; y is one for Phong shading.
+    float4 WorldLightDirs[3];
     float4 Palette[256];
 };
 
@@ -39,6 +40,7 @@ struct Input
     float3 WorldNormal : TEXCOORD6;
     float4 ShadowPosition0 : TEXCOORD7;
     float4 ShadowPosition1 : TEXCOORD8;
+    nointerpolation float3 Strengths : TEXCOORD9;
 };
 
 // One where the light reaches the point, zero where something nearer the light hides it; outside
@@ -90,6 +92,29 @@ float3 PaletteColour(int colour, float level, bool curve)
 float4 main(Input input) : SV_Target0
 {
     float3 terms = input.Terms;
+
+    // Phong: each light's term again at the pixel, from the blended normal, in place of the corners'.
+    if (Shadows.y != 0.0)
+    {
+        const float3 normal = normalize(input.WorldNormal);
+        const float3 strengths = input.Strengths;
+
+        float pixelTerms[3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            const float term = dot(WorldLightDirs[i].xyz, normal) * strengths[i];
+
+            pixelTerms[i] = term;
+
+            if ((float)i != input.Mode.z)
+            {
+                pixelTerms[i] = max(term, 0.0);
+            }
+        }
+
+        terms = float3(pixelTerms[0], pixelTerms[1], pixelTerms[2]);
+    }
 
     // A shadow takes away only light that would have reached the face.
     if (Shadows.x != 0.0)
