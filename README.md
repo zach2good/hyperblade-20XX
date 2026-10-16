@@ -57,6 +57,21 @@ python tools/extract_mdm1.py --png  # every MDM1-packed bitmap in Data, as BMP a
 python tools/plan_dump.py           # the AI plans, printed as pseudo-source
 ```
 
+## TODO
+
+- Replace Win32 calls with SDL3, including SDL_Renderer for the software renderer.
+- Replace the raw DirectX hardware renderer with SDL3 renderers.
+- Implement and refine texturing in both the software and hardware renderers.
+- ImGui debug menus.
+- Recreate the RC menus with ImGui.
+- Recreate all the debug and plan menus with ImGui.
+- Fix the existing bugs and balance issues in the PBN files.
+- Controller support through SDL3.
+- An Emscripten build.
+- Test on Mac and Linux.
+- A resource-free executable we can ship, which runs when dropped into a real HyperBlade install
+  with no other steps. CI builds it and publishes it with GitHub releases.
+
 ## Legal
 
 This project is for preservation, research and interoperability. It holds no original binary,
