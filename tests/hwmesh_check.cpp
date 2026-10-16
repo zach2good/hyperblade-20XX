@@ -4,6 +4,7 @@
 #include "graphics/meshblock.h"
 #include "graphics/meshmaterial.h"
 #include "graphics/texcoord.h"
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <vector>
@@ -159,6 +160,74 @@ static MeshMaterial MakeMaterial(int nColour, float flAmbient, float flDiffuse, 
     return material;
 }
 
+static bool IsRange(const HwMesh::Range& range, std::uint32_t nFirst, std::uint32_t nCount, const TexCacheEntry* pTexture)
+{
+    return range.nFirst == nFirst && range.nCount == nCount && range.pTexture == pTexture;
+}
+
+// Never dereferenced: Build only compares them.
+static TexCacheEntry* FakeTexture(std::uintptr_t nAddress)
+{
+    return reinterpret_cast<TexCacheEntry*>(nAddress);
+}
+
+static void CheckRanges(const std::vector<Vec3>& positions, const std::vector<TexCoord>& coords)
+{
+    auto* const pTextureA = FakeTexture(0x1000);
+    auto* const pTextureB = FakeTexture(0x2000);
+
+    const auto vUp = Vec3{ 0.0f, 0.0f, 1.0f };
+
+    const auto faces = std::vector<FaceSpec>{
+        { { 0, 1, 2 }, { 0, 1, 2 }, 0, vUp, false },
+        { { 1, 2, 3 }, { 1, 2, 3 }, 2, vUp, false },
+        { { 2, 3, 4 }, { 2, 3, 4 }, 1, vUp, false },
+        { { 3, 4, 5 }, { 3, 4, 5 }, 0, vUp, false },
+        { { 0, 1, 2 }, {}, 0, vUp, false },
+        { { 3, 4, 5 }, { 3, 4, 5 }, 3, vUp, false },
+    };
+
+    const auto bytes = LayOut(positions, 0, coords, faces);
+
+    MeshMaterial aMaterials[] = {
+        MakeMaterial(0x10, 0.0f, 0.0f, 0.0f, -1),
+        MakeMaterial(0x20, 0.0f, 0.0f, 0.0f, -1),
+        MakeMaterial(0x30, 0.0f, 0.0f, 0.0f, -1),
+        MakeMaterial(0x40, 0.0f, 0.0f, 0.0f, 4),
+        MakeMaterial(0x50, 0.0f, 0.0f, 0.0f, -1),
+    };
+
+    aMaterials[0].pTexture = pTextureA;
+    aMaterials[1].pTexture = pTextureB;
+    aMaterials[3].pTexture = pTextureA;
+    aMaterials[4].pTexture = pTextureB;
+
+    const auto& block = *reinterpret_cast<const MeshBlock*>(bytes.data());
+    const auto  mesh  = HwMesh::Build(block, aMaterials, 5);
+
+    Expect(mesh.vertices.size() == 3 * 7, "ranged triangle count");
+    Expect(mesh.ranges.size() == 3, "range count");
+
+    if (mesh.vertices.size() != 3 * 7 || mesh.ranges.size() != 3)
+    {
+        return;
+    }
+
+    // Groups appear in the order their first face does.
+    Expect(IsRange(mesh.ranges[0], 0, 9, pTextureA), "first texture range");
+    Expect(IsRange(mesh.ranges[1], 9, 6, nullptr), "untextured range");
+    Expect(IsRange(mesh.ranges[2], 15, 6, pTextureB), "second texture range");
+
+    const auto* const pTri = mesh.vertices.data();
+
+    Expect(IsTriangle(pTri, 0, 2, 1) && IsTriangle(pTri + 3, 3, 5, 4) && IsTriangle(pTri + 6, 3, 5, 4), "first texture keeps face order");
+    Expect(pTri[6].nColour == 0x40, "two-sided front in front texture");
+    Expect(IsTriangle(pTri + 9, 1, 3, 2) && pTri[9].nColour == 0x30, "untextured material");
+    Expect(IsTriangle(pTri + 12, 0, 2, 1) && pTri[12].nColour == 0x10, "textured material without UVs untextured");
+    Expect(IsTriangle(pTri + 15, 2, 4, 3) && pTri[15].nColour == 0x20, "second texture face");
+    Expect(IsTriangle(pTri + 18, 3, 4, 5) && pTri[18].nColour == 0x50 && HasNormal(pTri[18], 0.0f, 0.0f, -1.0f), "back copy in back texture");
+}
+
 int main()
 {
     auto positions = std::vector<Vec3>();
@@ -194,7 +263,12 @@ int main()
     };
 
     const auto& block    = *reinterpret_cast<const MeshBlock*>(bytes.data());
-    const auto  vertices = HwMesh::Build(block, aMaterials, 4);
+    const auto  mesh     = HwMesh::Build(block, aMaterials, 4);
+    const auto& vertices = mesh.vertices;
+
+    Expect(mesh.ranges.size() == 1 && IsRange(mesh.ranges[0], 0, static_cast<std::uint32_t>(vertices.size()), nullptr), "untextured block is one range");
+
+    CheckRanges(positions, coords);
 
     // One, two, three, one, two front and one back, then the bad back index face's front alone.
     Expect(vertices.size() == 3 * 10, "triangle count");

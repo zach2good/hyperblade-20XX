@@ -37,6 +37,9 @@ struct Draw
     // only against each other and the arena never hides them.
     bool bArena;
 
+    // The shaded models' colours are palette indices; the textured models' are RGB.
+    bool bPalettised;
+
     // Where SubmitVertices put the draw's own vertices this frame.
     int nDynamicFirst;
     int nDynamicCount;
@@ -51,6 +54,9 @@ void SubmitVertices(const std::vector<HwMesh::Vertex>& vertices, const Draw& dra
 
 // The model database loaded a model, so a freed mesh block's address may now hold another.
 void ForgetMeshes();
+
+// Counts the frames drawn, so per-frame work runs once a frame.
+unsigned int Frame();
 
 // Draws the frame's submissions at the asked size and returns them as a texture of the
 // presenter's renderer, or an empty handle when it could not. The palette is 256 entries of

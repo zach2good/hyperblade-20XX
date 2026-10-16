@@ -149,6 +149,22 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 return 0;
             }
 
+            // F3 turns the hardware renderer's textures on and off.
+            if (uMsg == WM_KEYDOWN && wParam == VK_F3)
+            {
+                GraphicsSettings::ToggleTextures();
+
+                return 0;
+            }
+
+            // F7 swaps nearest and linear texture filtering, as the original's did.
+            if (uMsg == WM_KEYDOWN && wParam == VK_F7)
+            {
+                GraphicsSettings::ToggleLinearFiltering();
+
+                return 0;
+            }
+
             // The WM_KEYUP for a held key can go to another window, so the key is remembered.
             WndProc::NoteKey(uMsg, wParam);
 

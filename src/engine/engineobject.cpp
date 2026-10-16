@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include "graphics/hwrenderer.h"
+#include "graphics/hwmodels.h"
 #include <vector>
 #include "engine/messageids.h"
 #include "engine/planbehaviourword.h"
@@ -576,6 +577,8 @@ void EngineObject::InitFields()
 // FUNCTION: HYPERX 0x004704e0
 EngineObject::~EngineObject()
 {
+    HwModels::Forget(*this);
+
     if (HasNoModel() == 0)
     {
         const char* const pName = m_pLod->m_pRecord->m_szName;
@@ -872,6 +875,8 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
         ComputeBoundingSphere();
 
+        HwModels::Load(*this, *pDef);
+
         return 1;
     }
 
@@ -1090,6 +1095,8 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
         CountVisibleFaces();
         ComputeBoundingSphere();
+
+        HwModels::Load(*this, *pDef);
 
         return 1;
     }
@@ -1541,6 +1548,7 @@ void EngineObject::SubmitShadowToHardware() const
     draw.nViewportY      = g_nViewportOriginY;
     draw.nViewportWidth  = g_nPrevWidth;
     draw.nViewportHeight = g_nPrevHeight;
+    draw.bPalettised     = true;
 
     HwRenderer::SubmitVertices(vertices, draw);
 }

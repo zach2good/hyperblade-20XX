@@ -1,10 +1,12 @@
-// Draws a lit triangle through the mesh pipeline on a real GPU and reads the pixels back.
+// Draws lit triangles, plain and textured, through the mesh pipeline on a real GPU and reads the
+// pixels back.
 
 #include "graphics/hwmesh.h"
 #include "graphics/hwpipeline.h"
 #include <SDL3/SDL.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 #include <cstring>
 
 namespace
@@ -13,6 +15,26 @@ namespace
 constexpr auto SIZE = 32;
 
 constexpr auto CLEAR_COLOUR = SDL_FColor{ 0.0f, 1.0f, 0.0f, 1.0f };
+
+// Two by two RGBA, top row first. The textured triangle samples the top right texel.
+constexpr unsigned char TEXELS[] = {
+    10,
+    20,
+    30,
+    255,
+    200,
+    100,
+    40,
+    255,
+    50,
+    60,
+    70,
+    255,
+    90,
+    80,
+    110,
+    255,
+};
 
 int s_nFailed = 0;
 
@@ -30,11 +52,13 @@ bool Near(const unsigned char* pPixel, int nRed, int nGreen, int nBlue)
     return std::abs(pPixel[0] - nRed) <= 1 && std::abs(pPixel[1] - nGreen) <= 1 && std::abs(pPixel[2] - nBlue) <= 1 && pPixel[3] == 255;
 }
 
-HwMesh::Vertex Corner(float x, float y)
+HwMesh::Vertex Corner(float x, float y, float u, float v)
 {
     auto vertex         = HwMesh::Vertex{};
     vertex.aPosition[0] = x;
     vertex.aPosition[1] = y;
+    vertex.aUV[0]       = u;
+    vertex.aUV[1]       = v;
     vertex.aPosition[2] = 0.5f;
     vertex.aNormal[2]   = 1.0f;
     vertex.nColour      = 0xffc86432;
@@ -52,10 +76,12 @@ struct Scene
     SDL_GPUTexture*          pDepth;
     SDL_GPUBuffer*           pVertices;
     SDL_GPUTransferBuffer*   pDownload;
+    SDL_GPUTexture*          pTexture;
+    SDL_GPUSampler*          pSampler;
 };
 
 // Draws three vertices from nFirst and leaves the colour target's pixels in the download buffer.
-void Draw(const Scene& scene, Uint32 nFirst)
+void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
 {
     SDL_GPUCommandBuffer* const pCommands = SDL_AcquireGPUCommandBuffer(scene.pDevice);
 
@@ -89,12 +115,18 @@ void Draw(const Scene& scene, Uint32 nFirst)
 
     SDL_PushGPUVertexUniformData(pCommands, 1, &colours, sizeof(colours));
 
+    const auto textureUniforms = HwPipeline::TextureUniforms{ (int)bTextured };
+
+    SDL_PushGPUFragmentUniformData(pCommands, 0, &textureUniforms, sizeof(textureUniforms));
+
     SDL_GPURenderPass* const pPass = SDL_BeginGPURenderPass(pCommands, &colour, 1, &depth);
 
     const auto binding = SDL_GPUBufferBinding{ scene.pVertices, 0 };
+    const auto sampled = SDL_GPUTextureSamplerBinding{ scene.pTexture, scene.pSampler };
 
     SDL_BindGPUGraphicsPipeline(pPass, scene.pPipeline);
     SDL_BindGPUVertexBuffers(pPass, 0, &binding, 1);
+    SDL_BindGPUFragmentSamplers(pPass, 0, &sampled, 1);
     SDL_DrawGPUPrimitives(pPass, 3, 1, nFirst, 0);
     SDL_EndGPURenderPass(pPass);
 
@@ -118,16 +150,31 @@ void Draw(const Scene& scene, Uint32 nFirst)
     SDL_ReleaseGPUFence(scene.pDevice, pFence);
 }
 
+// Expects the texel at nTexel scaled by the grey level, within one 255th.
+bool NearModulated(const unsigned char* pPixel, int nTexel, float flGrey)
+{
+    const auto modulated = [&](int nChannel)
+    {
+        return (int)std::lround(TEXELS[nTexel * 4 + nChannel] * flGrey);
+    };
+
+    return Near(pPixel, modulated(0), modulated(1), modulated(2));
+}
+
 void Check(const Scene& scene)
 {
-    // Clockwise from the bottom left, with clip space y up, then the same corners reversed.
+    // Clockwise from the bottom left, with clip space y up, then the same corners reversed, then
+    // textured with UVs that wrap to the top right texel.
     const HwMesh::Vertex aVertices[] = {
-        Corner(-0.75f, -0.75f),
-        Corner(0.0f, 0.75f),
-        Corner(0.75f, -0.75f),
-        Corner(-0.75f, -0.75f),
-        Corner(0.75f, -0.75f),
-        Corner(0.0f, 0.75f),
+        Corner(-0.75f, -0.75f, 0.0f, 0.0f),
+        Corner(0.0f, 0.75f, 0.0f, 0.0f),
+        Corner(0.75f, -0.75f, 0.0f, 0.0f),
+        Corner(-0.75f, -0.75f, 0.0f, 0.0f),
+        Corner(0.75f, -0.75f, 0.0f, 0.0f),
+        Corner(0.0f, 0.75f, 0.0f, 0.0f),
+        Corner(-0.75f, -0.75f, 1.75f, -0.75f),
+        Corner(0.0f, 0.75f, 1.75f, -0.75f),
+        Corner(0.75f, -0.75f, 1.75f, -0.75f),
     };
 
     SDL_GPUTransferBuffer* const pUpload = [&]
@@ -156,7 +203,7 @@ void Check(const Scene& scene)
     const auto nCentre  = (SIZE / 2 * SIZE + SIZE / 2) * 4;
     const auto nOutside = (SIZE + 1) * 4;
 
-    Draw(scene, 0);
+    Draw(scene, 0, false);
 
     {
         const auto* const pPixels = (const unsigned char*)SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false);
@@ -168,7 +215,7 @@ void Check(const Scene& scene)
         SDL_UnmapGPUTransferBuffer(scene.pDevice, scene.pDownload);
     }
 
-    Draw(scene, 3);
+    Draw(scene, 3, false);
 
     {
         const auto* const pPixels = (const unsigned char*)SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false);
@@ -177,6 +224,66 @@ void Check(const Scene& scene)
 
         SDL_UnmapGPUTransferBuffer(scene.pDevice, scene.pDownload);
     }
+
+    Draw(scene, 6, true);
+
+    {
+        const auto* const pPixels = (const unsigned char*)SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false);
+
+        // Lit at 0.75, so grey 191, the material colour ignored.
+        Expect(NearModulated(pPixels + nCentre, 1, 191.0f / 255.0f), "centre textured");
+
+        SDL_UnmapGPUTransferBuffer(scene.pDevice, scene.pDownload);
+    }
+}
+
+SDL_GPUTexture* CreateTexture(SDL_GPUDevice* pDevice)
+{
+    auto info                 = SDL_GPUTextureCreateInfo{};
+    info.type                 = SDL_GPU_TEXTURETYPE_2D;
+    info.format               = SDL_GPU_TEXTUREFORMAT_R8G8B8A8_UNORM;
+    info.usage                = SDL_GPU_TEXTUREUSAGE_SAMPLER;
+    info.width                = 2;
+    info.height               = 2;
+    info.layer_count_or_depth = 1;
+    info.num_levels           = 1;
+
+    SDL_GPUTexture* const pTexture = SDL_CreateGPUTexture(pDevice, &info);
+
+    auto transferInfo  = SDL_GPUTransferBufferCreateInfo{};
+    transferInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+    transferInfo.size  = sizeof(TEXELS);
+
+    SDL_GPUTransferBuffer* const pUpload = SDL_CreateGPUTransferBuffer(pDevice, &transferInfo);
+
+    if (pTexture == nullptr || pUpload == nullptr)
+    {
+        SDL_ReleaseGPUTransferBuffer(pDevice, pUpload);
+
+        return pTexture;
+    }
+
+    std::memcpy(SDL_MapGPUTransferBuffer(pDevice, pUpload, false), TEXELS, sizeof(TEXELS));
+    SDL_UnmapGPUTransferBuffer(pDevice, pUpload);
+
+    auto source            = SDL_GPUTextureTransferInfo{};
+    source.transfer_buffer = pUpload;
+
+    auto destination    = SDL_GPUTextureRegion{};
+    destination.texture = pTexture;
+    destination.w       = 2;
+    destination.h       = 2;
+    destination.d       = 1;
+
+    SDL_GPUCommandBuffer* const pCommands = SDL_AcquireGPUCommandBuffer(pDevice);
+    SDL_GPUCopyPass* const      pCopy     = SDL_BeginGPUCopyPass(pCommands);
+
+    SDL_UploadToGPUTexture(pCopy, &source, &destination, false);
+    SDL_EndGPUCopyPass(pCopy);
+    SDL_SubmitGPUCommandBuffer(pCommands);
+    SDL_ReleaseGPUTransferBuffer(pDevice, pUpload);
+
+    return pTexture;
 }
 
 SDL_GPUTexture* CreateTarget(SDL_GPUDevice* pDevice, unsigned int nFormat, SDL_GPUTextureUsageFlags usage)
@@ -231,7 +338,7 @@ int main()
     {
         auto info  = SDL_GPUBufferCreateInfo{};
         info.usage = SDL_GPU_BUFFERUSAGE_VERTEX;
-        info.size  = sizeof(HwMesh::Vertex) * 6;
+        info.size  = sizeof(HwMesh::Vertex) * 9;
 
         return SDL_CreateGPUBuffer(pDevice, &info);
     }();
@@ -245,7 +352,12 @@ int main()
         return SDL_CreateGPUTransferBuffer(pDevice, &info);
     }();
 
-    Expect(pipeline && scene.pColour != nullptr && scene.pDepth != nullptr && scene.pVertices != nullptr && scene.pDownload != nullptr, "GPU objects created");
+    const auto sampler = HwPipeline::CreateSampler(device, false);
+
+    scene.pTexture = CreateTexture(pDevice);
+    scene.pSampler = sampler.As<SDL_GPUSampler>();
+
+    Expect(pipeline && sampler && scene.pColour != nullptr && scene.pDepth != nullptr && scene.pVertices != nullptr && scene.pDownload != nullptr && scene.pTexture != nullptr, "GPU objects created");
 
     if (s_nFailed == 0)
     {
@@ -256,6 +368,8 @@ int main()
     SDL_ReleaseGPUBuffer(pDevice, scene.pVertices);
     SDL_ReleaseGPUTexture(pDevice, scene.pDepth);
     SDL_ReleaseGPUTexture(pDevice, scene.pColour);
+    SDL_ReleaseGPUTexture(pDevice, scene.pTexture);
+    HwPipeline::Release(device, sampler);
     HwPipeline::Release(device, pipeline);
     SDL_DestroyGPUDevice(pDevice);
     SDL_Quit();

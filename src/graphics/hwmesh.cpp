@@ -3,6 +3,7 @@
 #include "graphics/meshface.h"
 #include "graphics/meshmaterial.h"
 #include "graphics/texcoord.h"
+#include <utility>
 
 namespace
 {
@@ -141,9 +142,34 @@ std::vector<HwMesh::Vertex> HwMesh::BuildShadow(const Vec3* pPoints, int nPointC
     return vertices;
 }
 
-std::vector<HwMesh::Vertex> HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount)
+HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount)
 {
-    auto vertices = std::vector<Vertex>();
+    // A block uses a handful of textures, so a linear search finds each group.
+    auto groups = std::vector<std::pair<const TexCacheEntry*, std::vector<Vertex> > >();
+
+    const auto group = [&](const MeshFace& face, const MeshMaterial& material) -> std::vector<Vertex>&
+    {
+        // D3DRend::DrawFace textures only a face that has UVs.
+        const auto* const pTexture = [&]() -> const TexCacheEntry*
+        {
+            if ((face.cFlags & FACE_FLAG_HAS_UV) == 0)
+            {
+                return nullptr;
+            }
+
+            return material.pTexture;
+        }();
+
+        for (auto& [pGroupTexture, vertices] : groups)
+        {
+            if (pGroupTexture == pTexture)
+            {
+                return vertices;
+            }
+        }
+
+        return groups.emplace_back(pTexture, std::vector<Vertex>()).second;
+    };
 
     for (auto nFace = 0; nFace < block.nFaceCount; nFace++)
     {
@@ -154,12 +180,13 @@ std::vector<HwMesh::Vertex> HwMesh::Build(const MeshBlock& block, const MeshMate
             continue;
         }
 
-        const auto& front = pMaterials[face.cMaterial];
+        const auto& front     = pMaterials[face.cMaterial];
+        auto&       frontList = group(face, front);
 
         // D3DRend::DrawFace fans from corner zero back through the last corner to the first.
         for (auto nCorner = face.nCorners - 1; nCorner >= 2; nCorner--)
         {
-            AppendTriangle(vertices, block, face, front, face.vNormal, 0, nCorner, nCorner - 1);
+            AppendTriangle(frontList, block, face, front, face.vNormal, 0, nCorner, nCorner - 1);
         }
 
         // The original reads past the table for a back index out of range.
@@ -170,12 +197,21 @@ std::vector<HwMesh::Vertex> HwMesh::Build(const MeshBlock& block, const MeshMate
 
         const auto& back     = pMaterials[front.nBackIndex];
         const auto  vFlipped = Vec3{ -face.vNormal.x, -face.vNormal.y, -face.vNormal.z };
+        auto&       backList = group(face, back);
 
         for (auto nCorner = 1; nCorner < face.nCorners - 1; nCorner++)
         {
-            AppendTriangle(vertices, block, face, back, vFlipped, 0, nCorner, nCorner + 1);
+            AppendTriangle(backList, block, face, back, vFlipped, 0, nCorner, nCorner + 1);
         }
     }
 
-    return vertices;
+    auto mesh = Mesh{};
+
+    for (const auto& [pTexture, vertices] : groups)
+    {
+        mesh.ranges.push_back(Range{ static_cast<std::uint32_t>(mesh.vertices.size()), static_cast<std::uint32_t>(vertices.size()), pTexture });
+        mesh.vertices.insert(mesh.vertices.end(), vertices.begin(), vertices.end());
+    }
+
+    return mesh;
 }

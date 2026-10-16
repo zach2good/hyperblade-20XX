@@ -1,20 +1,19 @@
 // Projects each corner with the model's clip matrix and lights its face flat, as D3DRend::DrawFace
-// lit untextured faces.
+// lit its faces.
 
 cbuffer MeshUniforms : register(b0, space1)
 {
     row_major float4x4 ClipFromModel;
     float4 LightDir; // w is one in the drome pass.
+    float4 Flags;    // x is one when the colour is a palette index.
 };
 
 cbuffer ColourUniforms : register(b1, space1)
 {
-    int Palettised;
     int LargeRampFirst;
     int LargeRampLast;
     int SmallRampLength;
     int LargeRampLength;
-    int3 Padding;
     float4 Palette[256];
 };
 
@@ -64,6 +63,7 @@ struct Output
 {
     float4 Colour : TEXCOORD0;
     float2 UV : TEXCOORD1;
+    float Grey : TEXCOORD2; // The textured face's colour, the material ignored.
     float4 Position : SV_Position;
 };
 
@@ -75,7 +75,22 @@ Output main(Input input)
 
     const float level = (LightDir.x * input.Normal.x + (LightDir.y * input.Normal.y + LightDir.z * input.Normal.z)) * input.Diffuse + input.Ambient;
 
-    if (Palettised != 0)
+    // D3DRend::DrawFace's textured grey: black at or below zero, white at or above one, else the
+    // level in 255ths, truncated.
+    float grey = 1.0;
+
+    if (level <= 0.0)
+    {
+        grey = 0.0;
+    }
+    else if (level < 1.0)
+    {
+        grey = floor(255.0 * level) / 255.0;
+    }
+
+    output.Grey = grey;
+
+    if (Flags.x != 0.0)
     {
         output.Colour = float4(PaletteColour((int)input.Colour.x, level), 1.0);
 

@@ -56,7 +56,7 @@ ImGui debug menu will later. The software renderer ignores everything but the re
 | Switch | Values |
 | --- | --- |
 | Renderer | software, hardware (F2) |
-| Textures | off, on |
+| Textures | off, on (F3) |
 | Texture filtering | nearest, linear (F7) |
 | Textured drome | off, on (F8) |
 | Shading | flat, smooth |

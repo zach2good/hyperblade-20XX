@@ -2,6 +2,7 @@
 #include "graphics/graphicssettings.h"
 #include "graphics/hwmesh.h"
 #include "graphics/hwpipeline.h"
+#include "graphics/hwtexture.h"
 #include "graphics/colorpalette.h"
 #include "globals.h"
 #include <SDL3/SDL.h>
@@ -22,21 +23,34 @@ constexpr auto MAX_DRAWS = 16384u;
 // HwMesh::Build winds front faces clockwise as seen on screen, as the original's D3DCULL_CCW drew.
 constexpr auto FRONT_CLOCKWISE = true;
 
+struct GPURange
+{
+    Uint32          nFirst   = 0;
+    Uint32          nCount   = 0;
+    SDL_GPUTexture* pTexture = nullptr; // Null for untextured faces.
+};
+
 struct GPUMesh
 {
-    SDL_GPUBuffer* pBuffer      = nullptr;
-    Uint32         nVertexCount = 0;
+    SDL_GPUBuffer*        pBuffer = nullptr;
+    std::vector<GPURange> ranges;
 };
 
 using MeshKey = std::pair<const MeshBlock*, const MeshMaterial*>;
 
 SDL_GPUDevice*           s_pDevice   = nullptr;
 SDL_GPUGraphicsPipeline* s_pPipeline = nullptr;
+SDL_GPUSampler*          s_pNearest  = nullptr;
+SDL_GPUSampler*          s_pLinear   = nullptr;
+SDL_GPUTexture*          s_pWhite    = nullptr;
 SDL_GPUTexture*          s_pTarget   = nullptr;
 SDL_GPUTexture*          s_pDepth    = nullptr;
 SDL_Texture*             s_pTexture  = nullptr;
 int                      s_nWidth    = 0;
 int                      s_nHeight   = 0;
+bool                     s_bTextures = false;
+bool                     s_bLinear   = false;
+unsigned int             s_nFrame    = 0;
 
 std::vector<HwRenderer::Draw> s_draws;
 std::map<MeshKey, GPUMesh>    s_meshes;
@@ -140,12 +154,30 @@ bool Ready(SDL_Renderer* pRenderer)
         return false;
     }
 
+    const auto device = HwPipeline::Device{ s_pDevice };
+
     if (s_pPipeline == nullptr)
     {
-        s_pPipeline = HwPipeline::CreateMeshPipeline(HwPipeline::Device{ s_pDevice }, FRONT_CLOCKWISE).As<SDL_GPUGraphicsPipeline>();
+        s_pPipeline = HwPipeline::CreateMeshPipeline(device, FRONT_CLOCKWISE).As<SDL_GPUGraphicsPipeline>();
     }
 
-    return s_pPipeline != nullptr;
+    if (s_pNearest == nullptr)
+    {
+        s_pNearest = HwPipeline::CreateSampler(device, false).As<SDL_GPUSampler>();
+    }
+
+    if (s_pLinear == nullptr)
+    {
+        s_pLinear = HwPipeline::CreateSampler(device, true).As<SDL_GPUSampler>();
+    }
+
+    // Untextured faces sample it, as the shader's texture slot is always bound.
+    if (s_pWhite == nullptr)
+    {
+        s_pWhite = HwTexture::Find(device, nullptr).As<SDL_GPUTexture>();
+    }
+
+    return s_pPipeline != nullptr && s_pNearest != nullptr && s_pLinear != nullptr && s_pWhite != nullptr;
 }
 
 void UploadBuffer(SDL_GPUCopyPass* pCopy, SDL_GPUBuffer* pBuffer, const void* pData, Uint32 nBytes)
@@ -229,14 +261,14 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 
         auto& mesh = s_meshes[key];
 
-        const auto vertices = HwMesh::Build(*draw.pBlock, draw.pMaterials, draw.nMaterialCount);
+        const auto built = HwMesh::Build(*draw.pBlock, draw.pMaterials, draw.nMaterialCount);
 
-        if (vertices.empty())
+        if (built.vertices.empty())
         {
             continue;
         }
 
-        const auto nBytes = (Uint32)(vertices.size() * sizeof(HwMesh::Vertex));
+        const auto nBytes = (Uint32)(built.vertices.size() * sizeof(HwMesh::Vertex));
 
         SDL_GPUBuffer* const pBuffer = CreateVertexBuffer(nBytes);
 
@@ -245,9 +277,25 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
             continue;
         }
 
-        UploadBuffer(pCopy, pBuffer, vertices.data(), nBytes);
+        UploadBuffer(pCopy, pBuffer, built.vertices.data(), nBytes);
 
-        mesh = GPUMesh{ pBuffer, (Uint32)vertices.size() };
+        mesh.pBuffer = pBuffer;
+
+        for (const auto& range : built.ranges)
+        {
+            // The entry may be freed with its model, so its texture is found now.
+            SDL_GPUTexture* const pTexture = [&]() -> SDL_GPUTexture*
+            {
+                if (range.pTexture == nullptr)
+                {
+                    return nullptr;
+                }
+
+                return HwTexture::Find(HwPipeline::Device{ s_pDevice }, range.pTexture).As<SDL_GPUTexture>();
+            }();
+
+            mesh.ranges.push_back(GPURange{ range.nFirst, range.nCount, pTexture });
+        }
     }
 
     SDL_EndGPUCopyPass(pCopy);
@@ -297,15 +345,17 @@ HwPipeline::MeshUniforms ClipUniforms(const HwRenderer::Draw& draw)
 
     std::memcpy(uniforms.aLightDir, draw.aLightDir, sizeof(uniforms.aLightDir));
 
+    uniforms.aFlags[0] = (float)draw.bPalettised;
+
     return uniforms;
 }
 
-// The shaded models' colours are palette indices, lit along the live palette's ramps.
+// The shaded models' colours are palette indices, lit along the live palette's ramps; the
+// textured models' are RGB.
 HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette)
 {
     auto uniforms = HwPipeline::ColourUniforms{};
 
-    uniforms.nPalettised      = 1;
     uniforms.nLargeRampFirst  = g_pColorPalette->m_largeRampBounds.nFirst;
     uniforms.nLargeRampLast   = g_pColorPalette->m_largeRampBounds.nCount;
     uniforms.nSmallRampLength = g_pColorPalette->m_rampLength.nFirst;
@@ -364,9 +414,18 @@ void HwRenderer::ForgetMeshes()
     s_meshes.clear();
 }
 
+unsigned int HwRenderer::Frame()
+{
+    return s_nFrame;
+}
+
 HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeight, const unsigned char* pPalette)
 {
     SDL_Renderer* const pRenderer = renderer.As<SDL_Renderer>();
+
+    s_bTextures = GraphicsSettings::Textures();
+    s_bLinear   = GraphicsSettings::LinearFiltering();
+    s_nFrame++;
 
     if (nWidth <= 0 || nHeight <= 0 || !Ready(pRenderer) || !Fit(pRenderer, nWidth, nHeight))
     {
@@ -404,6 +463,19 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
 
     const auto colours = PaletteUniforms(pPalette);
 
+    SDL_GPUSampler* const pSampler = [&]
+    {
+        if (s_bLinear)
+        {
+            return s_pLinear;
+        }
+
+        return s_pNearest;
+    }();
+
+    // The frame's own vertices are untextured, one range a draw.
+    auto dynamicMesh = GPUMesh{ s_pDynamicBuffer, std::vector<GPURange>(1) };
+
     SDL_GPURenderPass* pPass  = nullptr;
     auto               bArena = false;
 
@@ -427,46 +499,60 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
         }
 
         // A block draws from its cached mesh, and the frame's own vertices from the dynamic buffer.
-        const auto source = [&]
+        const auto* const pMesh = [&]() -> const GPUMesh*
         {
             if (draw.pBlock == nullptr)
             {
-                return GPUMesh{ s_pDynamicBuffer, (Uint32)draw.nDynamicCount };
+                dynamicMesh.ranges[0] = GPURange{ (Uint32)draw.nDynamicFirst, (Uint32)draw.nDynamicCount, nullptr };
+
+                return &dynamicMesh;
             }
 
             const auto it = s_meshes.find(MeshKey{ draw.pBlock, draw.pMaterials });
 
             if (it == s_meshes.end())
             {
-                return GPUMesh{};
+                return nullptr;
             }
 
-            return it->second;
+            return &it->second;
         }();
 
-        const auto nFirst = [&]
-        {
-            if (draw.pBlock == nullptr)
-            {
-                return (Uint32)draw.nDynamicFirst;
-            }
-
-            return 0u;
-        }();
-
-        if (source.pBuffer == nullptr || source.nVertexCount == 0 || draw.nViewportWidth <= 0 || draw.nViewportHeight <= 0)
+        if (pMesh == nullptr || pMesh->pBuffer == nullptr || draw.nViewportWidth <= 0 || draw.nViewportHeight <= 0)
         {
             continue;
         }
 
         const auto viewport = SDL_GPUViewport{ (float)draw.nViewportX, (float)draw.nViewportY, (float)draw.nViewportWidth, (float)draw.nViewportHeight, 0.0f, 1.0f };
-        const auto binding  = SDL_GPUBufferBinding{ source.pBuffer, 0 };
+        const auto binding  = SDL_GPUBufferBinding{ pMesh->pBuffer, 0 };
         const auto uniforms = ClipUniforms(draw);
 
         SDL_SetGPUViewport(pPass, &viewport);
         SDL_BindGPUVertexBuffers(pPass, 0, &binding, 1);
         SDL_PushGPUVertexUniformData(pCommands, 0, &uniforms, sizeof(uniforms));
-        SDL_DrawGPUPrimitives(pPass, source.nVertexCount, 1, nFirst, 0);
+
+        for (const auto& range : pMesh->ranges)
+        {
+            // The palette path never textures.
+            const auto bTextured = s_bTextures && range.pTexture != nullptr;
+
+            SDL_GPUTexture* const pTexture = [&]
+            {
+                if (bTextured)
+                {
+                    return range.pTexture;
+                }
+
+                return s_pWhite;
+            }();
+
+            const auto sampled         = SDL_GPUTextureSamplerBinding{ pTexture, pSampler };
+            const auto textureUniforms = HwPipeline::TextureUniforms{ (int)bTextured };
+
+            SDL_BindGPUFragmentSamplers(pPass, 0, &sampled, 1);
+            SDL_PushGPUFragmentUniformData(pCommands, 0, &textureUniforms, sizeof(textureUniforms));
+            SDL_DrawGPUPrimitives(pPass, range.nCount, 1, range.nFirst, 0);
+        }
     }
 
     // A frame with nothing to draw still clears.

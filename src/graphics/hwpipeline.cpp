@@ -10,11 +10,12 @@
 namespace
 {
 
-SDL_GPUShader* CreateShader(SDL_GPUDevice* pDevice, SDL_GPUShaderStage stage, const unsigned char* pDXIL, std::size_t nDXILSize, const unsigned char* pSPIRV, std::size_t nSPIRVSize, Uint32 nUniformBuffers)
+SDL_GPUShader* CreateShader(SDL_GPUDevice* pDevice, SDL_GPUShaderStage stage, const unsigned char* pDXIL, std::size_t nDXILSize, const unsigned char* pSPIRV, std::size_t nSPIRVSize, Uint32 nSamplers, Uint32 nUniformBuffers)
 {
     auto info                = SDL_GPUShaderCreateInfo{};
     info.entrypoint          = "main";
     info.stage               = stage;
+    info.num_samplers        = nSamplers;
     info.num_uniform_buffers = nUniformBuffers;
 
     if ((SDL_GetGPUShaderFormats(pDevice) & SDL_GPU_SHADERFORMAT_DXIL) != 0)
@@ -59,8 +60,8 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
 {
     SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
 
-    SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, mesh_vert_dxil, sizeof(mesh_vert_dxil), mesh_vert_spv, sizeof(mesh_vert_spv), 2);
-    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 0);
+    SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, mesh_vert_dxil, sizeof(mesh_vert_dxil), mesh_vert_spv, sizeof(mesh_vert_spv), 0, 2);
+    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 1, 1);
 
     SDL_GPUGraphicsPipeline* pPipeline = nullptr;
 
@@ -129,5 +130,47 @@ void HwPipeline::Release(Device device, Pipeline pipeline)
     if (pipeline)
     {
         SDL_ReleaseGPUGraphicsPipeline(device.As<SDL_GPUDevice>(), pipeline.As<SDL_GPUGraphicsPipeline>());
+    }
+}
+
+HwPipeline::Sampler HwPipeline::CreateSampler(Device device, bool bLinear)
+{
+    const auto filter = [&]
+    {
+        if (bLinear)
+        {
+            return SDL_GPU_FILTER_LINEAR;
+        }
+
+        return SDL_GPU_FILTER_NEAREST;
+    }();
+
+    const auto mipmapMode = [&]
+    {
+        if (bLinear)
+        {
+            return SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
+        }
+
+        return SDL_GPU_SAMPLERMIPMAPMODE_NEAREST;
+    }();
+
+    auto info           = SDL_GPUSamplerCreateInfo{};
+    info.min_filter     = filter;
+    info.mag_filter     = filter;
+    info.mipmap_mode    = mipmapMode;
+    info.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+    info.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+    info.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_REPEAT;
+    info.max_lod        = 1000.0f;
+
+    return Sampler{ SDL_CreateGPUSampler(device.As<SDL_GPUDevice>(), &info) };
+}
+
+void HwPipeline::Release(Device device, Sampler sampler)
+{
+    if (sampler)
+    {
+        SDL_ReleaseGPUSampler(device.As<SDL_GPUDevice>(), sampler.As<SDL_GPUSampler>());
     }
 }

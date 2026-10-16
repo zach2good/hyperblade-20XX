@@ -29,6 +29,8 @@
 #include "graphics/face.h"
 #include "graphics/swrend.h"
 #include "graphics/hwrenderer.h"
+#include "graphics/hwmodels.h"
+#include "graphics/graphicssettings.h"
 #include "engine/objectclasses.h"
 #include "modelcomponent.h"
 #include "engine/cameraprojectionstate.h"
@@ -144,15 +146,20 @@ void MeshBone::SubmitToHardware()
         return;
     }
 
+    auto bone = HwModels::Bone{ m_pMesh, m_pOwner->m_pModelBlock->m_pMaterials, m_pOwner->m_pModelBlock->m_nMatCount, &m_world };
+
+    const auto bTextured = GraphicsSettings::Textures() && HwModels::Find(*this, HwRenderer::Frame(), bone);
+
     TransformObject pixelFromModel;
 
-    g_pCameraTransform->Multiply(&pixelFromModel, &m_world);
+    g_pCameraTransform->Multiply(&pixelFromModel, bone.pWorld);
 
     auto draw = HwRenderer::Draw{};
 
-    draw.pBlock         = m_pMesh;
-    draw.pMaterials     = m_pOwner->m_pModelBlock->m_pMaterials;
-    draw.nMaterialCount = m_pOwner->m_pModelBlock->m_nMatCount;
+    draw.pBlock         = bone.pBlock;
+    draw.pMaterials     = bone.pMaterials;
+    draw.nMaterialCount = bone.nMaterialCount;
+    draw.bPalettised    = !bTextured;
 
     for (int nRow = 0; nRow < 3; nRow++)
     {
@@ -218,8 +225,9 @@ void MeshBone::SubmitToHardware()
     }();
 
     Vec3 vLight;
+    auto world = *bone.pWorld;
 
-    m_world.TransformDirectionByRows(vWorldLight, &vLight);
+    world.TransformDirectionByRows(vWorldLight, &vLight);
 
     draw.aLightDir[0] = vLight.x;
     draw.aLightDir[1] = vLight.y;

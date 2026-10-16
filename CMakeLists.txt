@@ -220,8 +220,10 @@ set(HYPERX_SOURCES
     src/graphics/graphicssettings.cpp
     src/graphics/hudlayer.cpp
     src/graphics/hwmesh.cpp
+    src/graphics/hwmodels.cpp
     src/graphics/hwpipeline.cpp
     src/graphics/hwrenderer.cpp
+    src/graphics/hwtexture.cpp
     src/graphics/infobarslot.cpp
     src/graphics/lightattenuation.cpp
     src/graphics/lodnode.cpp
