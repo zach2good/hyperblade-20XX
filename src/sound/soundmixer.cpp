@@ -3,6 +3,7 @@
 #include "engine/gameoptions.h"
 #include "globals.h"
 #include "soundmanager.h"
+#include "wave.h"
 #include "app/gameapp.h"
 #include "common/pathstring.h"
 #include "sound/soundids.h"
@@ -59,20 +60,9 @@ bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
 
-    std::FILE* const pFile = std::fopen(strPath.m_str.m_pchData, "rb");
-
-    if (pFile == nullptr)
-    {
-        return false;
-    }
-
     samples.resize(pEntry->m_nDataBytes);
 
-    const auto bRead = std::fseek(pFile, (long)pEntry->m_nDataOffset, SEEK_SET) == 0 && std::fread(samples.data(), 1, samples.size(), pFile) == samples.size();
-
-    std::fclose(pFile);
-
-    return bRead;
+    return Wave::ReadSamples(strPath.m_str.m_pchData, pEntry->m_nDataOffset, pEntry->m_nDataBytes, samples.data());
 }
 
 void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, int)

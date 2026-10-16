@@ -1,242 +1,126 @@
-// The wave file readers, Wave.cpp in the original by its own assertion text.
-
-#include "common/compat.h"
-#include <mmsystem.h>
-#include <stdlib.h>
-#include <string.h>
 #include "wave.h"
-#include "globals.h"
-#include "app/gameapp.h"
+#include <cstdint>
+#include <cstdio>
+#include <cstring>
 
-enum WaveError
+namespace
 {
-    WAVE_ERR_OPEN      = 0xe100,
-    WAVE_ERR_FORMAT    = 0xe101,
-    WAVE_ERR_SHORT     = 0xe102,
-    WAVE_ERR_TRUNCATED = 0xe103,
-    WAVE_ERR_MEMORY    = 0xe000
+
+constexpr auto WAVE_FORMAT_PCM_TAG = 1;
+
+// Far more chunks than any of the game's files has, so a damaged file cannot loop for ever.
+constexpr auto MAX_CHUNKS = 64;
+
+std::uint32_t ReadU32(const unsigned char* p)
+{
+    return p[0] | (p[1] << 8) | (p[2] << 16) | ((std::uint32_t)p[3] << 24);
+}
+
+std::uint16_t ReadU16(const unsigned char* p)
+{
+    return (std::uint16_t)(p[0] | (p[1] << 8));
+}
+
+class File
+{
+public:
+    explicit File(const char* pszPath)
+    : m_pFile(std::fopen(pszPath, "rb"))
+    {
+    }
+
+    ~File()
+    {
+        if (m_pFile != nullptr)
+        {
+            std::fclose(m_pFile);
+        }
+    }
+
+    File(const File&)            = delete;
+    File& operator=(const File&) = delete;
+
+    std::FILE* Get() const
+    {
+        return m_pFile;
+    }
+
+private:
+    std::FILE* m_pFile;
 };
 
+} // namespace
+
 // FUNCTION: HYPERX 0x00493430
-int Wave::Open(const char* pszPath, HMMIO* phmmio, WAVEFORMATEX** ppFormat, MMCKINFO* pParent)
+Wave::Result Wave::ReadInfo(const char* pszPath, Info& info)
 {
-    PCMWAVEFORMAT pcm;
-    MMCKINFO      chunk;
-    WORD          cbExtra;
-    HMMIO         hmmio;
-    int           nResult;
+    const auto file = File(pszPath);
 
-    *ppFormat = 0;
-
-    hmmio = mmioOpenA((LPSTR)pszPath, 0, MMIO_ALLOCBUF);
-
-    if (hmmio == 0)
+    if (file.Get() == nullptr)
     {
-        nResult = WAVE_ERR_OPEN;
-
-        goto error;
+        return Result::NO_FILE;
     }
 
-    nResult = mmioDescend(hmmio, pParent, 0, 0);
+    unsigned char aHeader[12];
 
-    if (nResult != 0)
+    if (std::fread(aHeader, 1, sizeof(aHeader), file.Get()) != sizeof(aHeader) || std::memcmp(aHeader, "RIFF", 4) != 0 || std::memcmp(aHeader + 8, "WAVE", 4) != 0)
     {
-        goto error;
+        return Result::BAD_FORMAT;
     }
 
-    if (pParent->ckid != FOURCC_RIFF || pParent->fccType != mmioFOURCC('W', 'A', 'V', 'E'))
+    auto bFormat = false;
+    auto bData   = false;
+    auto nOffset = std::uint32_t{ sizeof(aHeader) };
+
+    for (int nChunk = 0; nChunk < MAX_CHUNKS && !(bFormat && bData); nChunk++)
     {
-        nResult = WAVE_ERR_FORMAT;
+        unsigned char aChunk[8];
 
-        goto error;
-    }
-
-    chunk.ckid = mmioFOURCC('f', 'm', 't', ' ');
-
-    nResult = mmioDescend(hmmio, &chunk, pParent, MMIO_FINDCHUNK);
-
-    if (nResult != 0)
-    {
-        goto error;
-    }
-
-    if (chunk.cksize < sizeof(PCMWAVEFORMAT))
-    {
-        nResult = WAVE_ERR_FORMAT;
-
-        goto error;
-    }
-
-    if (mmioRead(hmmio, (HPSTR)&pcm, sizeof(PCMWAVEFORMAT)) != sizeof(PCMWAVEFORMAT))
-    {
-        nResult = WAVE_ERR_SHORT;
-
-        goto error;
-    }
-
-    if (pcm.wf.wFormatTag == WAVE_FORMAT_PCM)
-    {
-        cbExtra = 0;
-    }
-    else
-    {
-        if (mmioRead(hmmio, (HPSTR)&cbExtra, sizeof(cbExtra)) != sizeof(cbExtra))
+        if (std::fseek(file.Get(), (long)nOffset, SEEK_SET) != 0 || std::fread(aChunk, 1, sizeof(aChunk), file.Get()) != sizeof(aChunk))
         {
-            nResult = WAVE_ERR_SHORT;
-
-            goto error;
+            return Result::BAD_FORMAT;
         }
-    }
 
-    *ppFormat = (WAVEFORMATEX*)malloc(cbExtra + sizeof(WAVEFORMATEX));
+        const auto nSize = ReadU32(aChunk + 4);
 
-    if (*ppFormat == 0)
-    {
-        nResult = WAVE_ERR_MEMORY;
-
-        goto error;
-    }
-
-    memcpy(*ppFormat, &pcm, sizeof(pcm));
-
-    (*ppFormat)->cbSize = cbExtra;
-
-    if (cbExtra != 0)
-    {
-        if (mmioRead(hmmio, (HPSTR)(*ppFormat + 1), cbExtra) != cbExtra)
+        if (std::memcmp(aChunk, "fmt ", 4) == 0)
         {
-            nResult = WAVE_ERR_FORMAT;
+            unsigned char aFormat[16];
 
-            goto error;
-        }
-    }
-
-    nResult = mmioAscend(hmmio, &chunk, 0);
-
-    if (nResult != 0)
-    {
-        goto error;
-    }
-
-    goto cleanup;
-
-error:
-    if (*ppFormat != 0)
-    {
-        free(*ppFormat);
-
-        *ppFormat = 0;
-    }
-
-    if (hmmio != 0)
-    {
-        mmioClose(hmmio, 0);
-
-        hmmio = 0;
-    }
-
-cleanup:
-    *phmmio = hmmio;
-
-    return nResult;
-}
-
-// Seeks four bytes past the parent chunk's data offset, which skips the form type.
-// FUNCTION: HYPERX 0x004935f0
-int Wave::FindDataChunk(HMMIO* phmmio, MMCKINFO* pChunk, MMCKINFO* pParent)
-{
-    if (mmioSeek(*phmmio, pParent->dwDataOffset + 4, SEEK_SET) == -1)
-    {
-        // STRING: HYPERX 0x004c8c84
-        g_gameApp.Fatal("mmioSeek failure in Wave.cpp line 186");
-    }
-
-    pChunk->ckid = mmioFOURCC('d', 'a', 't', 'a');
-
-    return mmioDescend(*phmmio, pChunk, pParent, MMIO_FINDCHUNK);
-}
-
-// A failing mmioGetInfo returns one, not MMIO's code.
-// FUNCTION: HYPERX 0x00493640
-int Wave::ReadChunk(HMMIO hmmio, int nBytes, char* pBuffer, MMCKINFO* pChunk, int* pnRead)
-{
-    MMIOINFO     info;
-    int          nResult;
-    unsigned int nDone;
-    unsigned int nData;
-
-    nResult = (mmioGetInfo(hmmio, &info, 0) != 0);
-
-    if (nResult != 0)
-    {
-        goto error;
-    }
-
-    nData = nBytes;
-
-    if (nData > pChunk->cksize)
-    {
-        nData = pChunk->cksize;
-    }
-
-    pChunk->cksize -= nData;
-
-    for (nDone = 0; nDone < nData; nDone++)
-    {
-        if (info.pchNext == info.pchEndRead)
-        {
-            nResult = mmioAdvance(hmmio, &info, 0);
-
-            if (nResult != 0)
+            if (nSize < sizeof(aFormat) || std::fread(aFormat, 1, sizeof(aFormat), file.Get()) != sizeof(aFormat) || ReadU16(aFormat) != WAVE_FORMAT_PCM_TAG)
             {
-                goto error;
+                return Result::BAD_FORMAT;
             }
 
-            if (info.pchNext == info.pchEndRead)
-            {
-                nResult = WAVE_ERR_TRUNCATED;
+            info.nChannels      = ReadU16(aFormat + 2);
+            info.nSamplesPerSec = ReadU32(aFormat + 4);
+            info.nBitsPerSample = ReadU16(aFormat + 14);
 
-                goto error;
-            }
+            bFormat = true;
+        }
+        else if (std::memcmp(aChunk, "data", 4) == 0)
+        {
+            info.nDataOffset = nOffset + sizeof(aChunk);
+            info.nDataBytes  = nSize;
+
+            bData = true;
         }
 
-        pBuffer[nDone] = *info.pchNext++;
+        // Chunks start on even offsets.
+        nOffset += sizeof(aChunk) + nSize + (nSize & 1);
     }
 
-    nResult = mmioSetInfo(hmmio, &info, 0);
-
-    if (nResult != 0)
+    if (bFormat && bData)
     {
-        goto error;
+        return Result::OK;
     }
 
-    *pnRead = nData;
-
-    goto done;
-
-error:
-    *pnRead = 0;
-
-done:
-    return nResult;
+    return Result::BAD_FORMAT;
 }
 
-// FUNCTION: HYPERX 0x00493710
-int Wave::Close(HMMIO* phmmio, WAVEFORMATEX** ppFormat)
+bool Wave::ReadSamples(const char* pszPath, unsigned int nOffset, unsigned int nBytes, void* pBuffer)
 {
-    if (*ppFormat != 0)
-    {
-        free(*ppFormat);
+    const auto file = File(pszPath);
 
-        *ppFormat = 0;
-    }
-
-    if (*phmmio != 0)
-    {
-        mmioClose(*phmmio, 0);
-
-        *phmmio = 0;
-    }
-
-    return 0;
+    return file.Get() != nullptr && std::fseek(file.Get(), (long)nOffset, SEEK_SET) == 0 && std::fread(pBuffer, 1, nBytes, file.Get()) == nBytes;
 }

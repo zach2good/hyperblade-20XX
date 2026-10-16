@@ -96,20 +96,10 @@ void AudioMgr::Init(HWND hWindow)
     CDFadeVolume((int)g_pGameOptions->ReadMusicVolume());
 }
 
-#define LOAD_TRACE_TEXT(w, v) ((void)0)
-
 // Only mode one reads the bytes; the others keep the offset for the streamer to come back to.
 // FUNCTION: HYPERX 0x00490aa0
 int AudioMgr::LoadSound(SoundEntry* pEntry)
 {
-    WAVEFORMATEX* pFormat;
-    MMCKINFO      chunk;
-    MMCKINFO      parent;
-    int           nRead;
-    int           nCode;
-
-    int nLoadedBytes = 0;
-
     if (pEntry->m_nLoadState < 0 || pEntry->m_nLoadState > SOUND_LOAD_LAST_TRY)
     {
         return 0;
@@ -127,75 +117,58 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
 
-    HMMIO hmmio = 0;
+    auto info = Wave::Info{};
 
-    if (Wave::Open(strPath.m_str.m_pchData, &hmmio, &pFormat, &parent) != 0)
+    const auto result = Wave::ReadInfo(strPath.m_str.m_pchData, info);
+
+    if (result == Wave::Result::NO_FILE)
     {
-        // The path as well as the fact: only the path tells a missing wave from a wrong directory.
-        LOAD_TRACE_TEXT("loadOpenFailed", strPath.m_str.m_pchData);
-
         (pEntry->m_nLoadState)++;
+
+        return 0;
     }
-    else if (pFormat->wFormatTag != WAVE_FORMAT_PCM)
+
+    if (result != Wave::Result::OK)
     {
         pEntry->m_nLoadState = SOUND_LOAD_FAILED;
+
+        return 0;
     }
-    else if (pFormat->cbSize != 0)
+
+    pEntry->m_nSamplesPerSec = info.nSamplesPerSec;
+    pEntry->m_nChannels      = info.nChannels;
+    pEntry->m_nBitsPerSample = info.nBitsPerSample;
+    pEntry->m_nDataBytes     = info.nDataBytes;
+    pEntry->m_nDataOffset    = info.nDataOffset;
+
+    if (pEntry->m_nLoadMode != SOUND_LOAD_WHOLE)
     {
-        pEntry->m_nLoadState = SOUND_LOAD_FAILED;
+        return 0;
     }
-    else
+
+    pEntry->m_pSamples = (char*)malloc(pEntry->m_nDataBytes);
+
+    if (pEntry->m_pSamples == 0)
     {
-        pEntry->m_nSamplesPerSec = pFormat->nSamplesPerSec;
-        pEntry->m_nChannels      = pFormat->nChannels;
-        pEntry->m_nBitsPerSample = pFormat->wBitsPerSample;
+        pEntry->m_nDataBytes  = 0;
+        pEntry->m_nDataOffset = 0;
 
-        if (Wave::FindDataChunk(&hmmio, &chunk, &parent) != 0)
-        {
-            pEntry->m_nLoadState = SOUND_LOAD_FAILED;
-        }
-        else
-        {
-            pEntry->m_nDataBytes  = chunk.cksize;
-            pEntry->m_nDataOffset = chunk.dwDataOffset;
-
-            if (pEntry->m_nLoadMode == SOUND_LOAD_WHOLE)
-            {
-                pEntry->m_pSamples = (char*)malloc(pEntry->m_nDataBytes);
-
-                if (pEntry->m_pSamples == 0)
-                {
-                    pEntry->m_nDataBytes  = 0;
-                    pEntry->m_nDataOffset = 0;
-                }
-                else
-                {
-                    nCode = Wave::ReadChunk(hmmio, chunk.cksize, pEntry->m_pSamples, &chunk, &nRead);
-
-                    if (nCode != 0)
-                    {
-                        free(pEntry->m_pSamples);
-
-                        pEntry->m_pSamples    = 0;
-                        pEntry->m_nDataBytes  = 0;
-                        pEntry->m_nDataOffset = 0;
-                        pEntry->m_nLoadState  = SOUND_LOAD_FAILED;
-                    }
-                    else
-                    {
-                        nLoadedBytes = pEntry->m_nDataBytes;
-                    }
-                }
-            }
-        }
+        return 0;
     }
 
-    if (hmmio != 0)
+    if (!Wave::ReadSamples(strPath.m_str.m_pchData, pEntry->m_nDataOffset, pEntry->m_nDataBytes, pEntry->m_pSamples))
     {
-        Wave::Close(&hmmio, &pFormat);
+        free(pEntry->m_pSamples);
+
+        pEntry->m_pSamples    = 0;
+        pEntry->m_nDataBytes  = 0;
+        pEntry->m_nDataOffset = 0;
+        pEntry->m_nLoadState  = SOUND_LOAD_FAILED;
+
+        return 0;
     }
 
-    return nLoadedBytes;
+    return pEntry->m_nDataBytes;
 }
 
 // FUNCTION: HYPERX 0x00490c80
@@ -465,8 +438,6 @@ void AudioMgr::CDFadeVolume(int nVolume)
 int AudioMgr::PreloadGroup(int nGroup)
 {
     SoundEntry* pSnd;
-    HANDLE      hFile;
-    DWORD       nRead;
     int         nCount;
     int         nLoaded;
     int         nBytes;
@@ -509,48 +480,22 @@ int AudioMgr::PreloadGroup(int nGroup)
 
         PathString strPath(MAX_PATH);
 
-        strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData,
-                                         pSnd->m_pszName,
-                                         g_pszWaveExtension);
+        strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pSnd->m_pszName, g_pszWaveExtension);
 
-        hFile = CreateFileA(strPath.m_str.m_pchData, GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, 0);
+        pSnd->m_pSamples = (char*)malloc(pSnd->m_nDataBytes);
 
-        if (hFile != 0)
+        if (pSnd->m_pSamples == 0 || !Wave::ReadSamples(strPath.m_str.m_pchData, pSnd->m_nDataOffset, pSnd->m_nDataBytes, pSnd->m_pSamples))
         {
-            if (pSnd->m_nDataOffset != 0 && SetFilePointer(hFile, pSnd->m_nDataOffset, 0, FILE_BEGIN) == 0xffffffff)
-            {
-                CloseHandle(hFile);
-            }
-            else
-            {
-                pSnd->m_pSamples = (char*)malloc(pSnd->m_nDataBytes);
+            free(pSnd->m_pSamples);
 
-                if (pSnd->m_pSamples != 0)
-                {
-                    nRead = 0;
+            pSnd->m_pSamples   = 0;
+            pSnd->m_nDataBytes = 0;
 
-                    if (ReadFile(hFile, pSnd->m_pSamples, pSnd->m_nDataBytes, &nRead, 0) != 0 && (DWORD)pSnd->m_nDataBytes == nRead)
-                    {
-                        nBytes += pSnd->m_nDataBytes;
-                        nLoaded++;
-
-                        CloseHandle(hFile);
-                    }
-                    else
-                    {
-                        pSnd->m_nDataBytes = 0;
-
-                        CloseHandle(hFile);
-                    }
-                }
-                else
-                {
-                    pSnd->m_nDataBytes = 0;
-
-                    CloseHandle(hFile);
-                }
-            }
+            continue;
         }
+
+        nBytes += pSnd->m_nDataBytes;
+        nLoaded++;
     }
 
     return nLoaded;

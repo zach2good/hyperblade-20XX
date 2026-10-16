@@ -4,7 +4,6 @@
 #include <mmsystem.h>
 #include <stdlib.h>
 #include "globals.h"
-#include "sound/wave.h"
 #include "engine/gameengine.h"
 #include "common/pathstring.h"
 #include "planvm/planvm.h"

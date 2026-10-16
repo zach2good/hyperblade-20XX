@@ -401,10 +401,17 @@ target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(mdm1_check PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
 target_compile_options(mdm1_check PRIVATE /W3 /permissive /utf-8 /EHsc)
 
+# Parses every wave in the game data and reads its samples back.
+add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp)
+target_include_directories(wave_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_definitions(wave_check PRIVATE _CRT_SECURE_NO_WARNINGS)
+target_compile_options(wave_check PRIVATE /W3 /utf-8 /EHsc)
+
 enable_testing()
 
 if(HYPERX_GAME_DATA)
     add_test(NAME mdm1 COMMAND mdm1_check "${HYPERX_GAME_DATA}/Data")
+    add_test(NAME wave COMMAND wave_check "${HYPERX_GAME_DATA}/Data")
 endif()
 
 if(HYPERX_COMPILE_ONLY)
