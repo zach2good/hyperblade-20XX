@@ -50,7 +50,7 @@ int Win32::GetWindowTextAlloc(HWND hWnd, char** ppszOut)
 // FUNCTION: HYPERX 0x0048f470
 int Win32::AskYesNo(const char* pszText, const char* pszCaption)
 {
-    return MessageBoxA(g_gameApp.GetMainWindow(), pszText, pszCaption, MB_ICONQUESTION | MB_YESNO);
+    return Window::ShowMessage(pszText, pszCaption, MB_ICONQUESTION | MB_YESNO);
 }
 
 // FUNCTION: HYPERX 0x0048fb50

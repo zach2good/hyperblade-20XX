@@ -12,7 +12,6 @@ struct PlanNode;
 
 struct GameApp
 {
-    static void __cdecl   ClipCursorToWindow(HWND hWnd);
     static int __cdecl    HandleMatchKeypress(unsigned int nKey);
     static void __cdecl   ShowHelp(HWND hWnd);
     static void __cdecl   HandleGlobalKeyEvent(HWND hWnd, int nKey);

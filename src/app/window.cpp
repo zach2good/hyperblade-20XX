@@ -14,6 +14,8 @@
 #include "app/appglobals.h"
 #include "ui/screen.h"
 #include <SDL3/SDL.h>
+#include <array>
+#include <span>
 #include <algorithm>
 
 // The game's one window, which SDL made and owns.
@@ -341,6 +343,54 @@ Window::NativeWindow Window::Native()
 void Window::Show()
 {
     SDL_ShowWindow(s_pWindow);
+}
+
+int Window::ShowMessage(const char* pszText, const char* pszCaption, unsigned int nType)
+{
+    constexpr auto RETURN = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
+    constexpr auto ESCAPE = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
+
+    const auto aOK       = std::array{ SDL_MessageBoxButtonData{ RETURN | ESCAPE, IDOK, "OK" } };
+    const auto aOKCancel = std::array{ SDL_MessageBoxButtonData{ RETURN, IDOK, "OK" }, SDL_MessageBoxButtonData{ ESCAPE, IDCANCEL, "Cancel" } };
+    const auto aYesNo    = std::array{ SDL_MessageBoxButtonData{ RETURN, IDYES, "Yes" }, SDL_MessageBoxButtonData{ ESCAPE, IDNO, "No" } };
+
+    const auto buttons = [&]
+    {
+        if ((nType & MB_TYPEMASK) == MB_OKCANCEL)
+        {
+            return std::span<const SDL_MessageBoxButtonData>(aOKCancel);
+        }
+
+        if ((nType & MB_TYPEMASK) == MB_YESNO)
+        {
+            return std::span<const SDL_MessageBoxButtonData>(aYesNo);
+        }
+
+        return std::span<const SDL_MessageBoxButtonData>(aOK);
+    }();
+
+    const auto flags = [&]
+    {
+        if ((nType & MB_ICONMASK) == MB_ICONHAND)
+        {
+            return SDL_MESSAGEBOX_ERROR;
+        }
+
+        if ((nType & MB_ICONMASK) == MB_ICONEXCLAMATION)
+        {
+            return SDL_MESSAGEBOX_WARNING;
+        }
+
+        return SDL_MESSAGEBOX_INFORMATION;
+    }();
+
+    const auto data = SDL_MessageBoxData{ flags, s_pWindow, pszCaption, pszText, (int)buttons.size(), buttons.data(), nullptr };
+
+    auto nChosen = buttons.back().buttonID;
+
+    SDL_ShowMessageBox(&data, &nChosen);
+
+    return nChosen;
 }
 
 void Window::SetBusyCursor(bool bBusy)

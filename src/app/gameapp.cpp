@@ -14,6 +14,7 @@
 #include "graphics/texture.h"
 #include "graphics/ddrawapi.h"
 #include "app/window.h"
+#include <SDL3/SDL.h>
 #include "graphics/gdi.h"
 #include "common/string.h"
 struct GameApp;
@@ -474,8 +475,6 @@ void __cdecl GameApp::Shutdown(HWND)
         g_pRightStack = 0;
     }
 
-    GameApp::ClipCursorToWindow(0);
-
     PostQuitMessage(0);
 }
 
@@ -838,7 +837,7 @@ HBITMAP GameApp::LoadGDIBitmap(const char* pszName)
 
 #define ERROR_BOX_STYLE (MB_SETFOREGROUND | MB_SYSTEMMODAL | MB_ICONHAND)
 
-#define ERROR_BOX(w, t, c) MessageBoxA(w, t, c, ERROR_BOX_STYLE)
+#define ERROR_BOX(w, t, c) Window::ShowMessage(t, c, ERROR_BOX_STYLE)
 
 // FUNCTION: HYPERX 0x004238b0
 void GameApp::ReportLastError(HWND)
@@ -1018,9 +1017,7 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
 
     if (bVisible != 0)
     {
-        GameApp::ClipCursorToWindow(0);
-
-        SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, TRUE, 0, 0);
+        SDL_EnableScreenSaver();
 
         if (g_cUseSoftRenderer == 0)
         {
@@ -1029,10 +1026,7 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
     }
     else
     {
-        // A framed window leaves the desktop usable, so the cursor is never clipped to it.
-        GameApp::ClipCursorToWindow(0);
-
-        SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, FALSE, 0, 0);
+        SDL_DisableScreenSaver();
     }
 
     return bWasVisible;
@@ -1110,31 +1104,12 @@ int __cdecl GameApp::GetInstallLevel(void)
     return g_nInstallLevel;
 }
 
-// FUNCTION: HYPERX 0x0047aca0
-void __cdecl GameApp::ClipCursorToWindow(HWND hWnd)
-{
-    RECT rect;
-
-    if (hWnd != 0)
-    {
-        GetClientRect(hWnd, &rect);
-
-        MapWindowPoints(hWnd, 0, (LPPOINT)&rect, 2);
-
-        ClipCursor(&rect);
-
-        return;
-    }
-
-    ClipCursor(0);
-}
-
 // FUNCTION: HYPERX 0x0047adb0
 int __cdecl GameApp::ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
 {
     const int bWasVisible = GameApp::SetCursorVisible(1);
 
-    const int nResult = MessageBoxA(hWnd, pszText, pszCaption, nType);
+    const int nResult = Window::ShowMessage(pszText, pszCaption, nType);
 
     GameApp::SetCursorVisible(bWasVisible);
 

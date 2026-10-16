@@ -30,6 +30,9 @@ void         Destroy();
 // SDL draws the cursor over the window from its own state, so the game sets it only here.
 void SetBusyCursor(bool bBusy);
 
+// Takes MB_OK, MB_OKCANCEL or MB_YESNO with an icon flag, and returns IDOK, IDCANCEL, IDYES or IDNO.
+int ShowMessage(const char* pszText, const char* pszCaption, unsigned int nType);
+
 // Handles what has arrived; false once the game has asked to quit.
 bool Pump();
 void WaitWhileInactive();

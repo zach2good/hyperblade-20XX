@@ -114,6 +114,7 @@ struct GameApp;
 #include "common/parseutil.h"
 #include "planvm/planinteractorfactories.h"
 #include "app/window.h"
+#include <SDL3/SDL.h>
 #include "app/stringids.h"
 #include "sound/soundids.h"
 #include "engine/objectphase.h"
@@ -4566,7 +4567,7 @@ void GameEngine::SetRunState(short bRunning, int)
             SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
             SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL);
 
-            SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, FALSE, 0, 0);
+            SDL_DisableScreenSaver();
             break;
 
         case 0:
@@ -4582,7 +4583,7 @@ void GameEngine::SetRunState(short bRunning, int)
                 m_clock.nPauseMark = -1;
             }
 
-            SystemParametersInfoA(SPI_SETSCREENSAVEACTIVE, TRUE, 0, 0);
+            SDL_EnableScreenSaver();
             break;
     }
 }
