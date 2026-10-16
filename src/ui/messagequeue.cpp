@@ -8,7 +8,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include "app/gameapp.h"
 #include "engine/gameengine.h"
 
@@ -226,14 +225,14 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            char* pSpace = (char*)_mbschr((const unsigned char*)pLine, ' ');
+            char* pSpace = (char*)strchr(pLine, ' ');
 
             if (pSpace != 0)
             {
                 pSpace++;
                 nId = atoi(pSpace);
 
-                char* const pText = (char*)_mbschr((const unsigned char*)pSpace, ' ');
+                char* const pText = (char*)strchr(pSpace, ' ');
 
                 if (pText != 0)
                 {

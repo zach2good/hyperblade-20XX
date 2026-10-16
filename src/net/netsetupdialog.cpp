@@ -11,7 +11,6 @@
 #include "graphics/meshbone.h"
 #include "engine/teamsblock.h"
 #include "net/gamesession.h"
-#include <mbstring.h>
 #include <string.h>
 #include <windows.h>
 #include <stdlib.h>
@@ -46,7 +45,7 @@ BOOL __stdcall NetSetupDialog::AddProvider(LPGUID pGuid, LPSTR pszName, DWORD, D
     const HWND hDlg = (HWND)pContext;
 
     // STRING: HYPERX 0x004c5664
-    if (g_bModemPlay == 0 && _mbsstr((const unsigned char*)pszName, (const unsigned char*)"Modem") != 0)
+    if (g_bModemPlay == 0 && strstr(pszName, "Modem") != 0)
     {
         return 1;
     }
@@ -66,7 +65,7 @@ unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
     SetCursor(LoadCursor(0, IDC_WAIT));
 
     // STRING: HYPERX 0x004c5708
-    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Creating DirectPlay and listing service providers", (int)_mbslen((const unsigned char*)"SYSTEM: ...Creating DirectPlay and listing service providers"));
+    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Creating DirectPlay and listing service providers", (int)strlen("SYSTEM: ...Creating DirectPlay and listing service providers"));
 
     if (g_nNetSetupState != NETSETUP_STATE_START)
     {
@@ -137,7 +136,7 @@ unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
         g_nNetSetupState    = NETSETUP_STATE_PROVIDER;
 
         // STRING: HYPERX 0x004c566c
-        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to select a network to use", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for you to select a network to use"));
+        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to select a network to use", (int)strlen("SYSTEM: Waiting for you to select a network to use"));
 
         SetCursor(LoadCursor(0, IDC_ARROW));
 
@@ -204,7 +203,7 @@ unsigned int __cdecl NetSetupDialog::SearchSessions(HWND hDlg, unsigned int, uns
     SetCursor(LoadCursor(0, IDC_WAIT));
 
     // STRING: HYPERX 0x004c57d0
-    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Searching the network for existing games.", (int)_mbslen((const unsigned char*)"SYSTEM: ...Searching the network for existing games."));
+    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Searching the network for existing games.", (int)strlen("SYSTEM: ...Searching the network for existing games."));
 
     if (g_nNetSetupState != NETSETUP_STATE_PROVIDER)
     {
@@ -277,7 +276,7 @@ unsigned int __cdecl NetSetupDialog::SearchSessions(HWND hDlg, unsigned int, uns
     g_nNetSetupState = NETSETUP_STATE_BROWSING;
 
     // STRING: HYPERX 0x004c5764
-    NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to JOIN a game, or to HOST a new one", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for you to JOIN a game, or to HOST a new one"));
+    NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to JOIN a game, or to HOST a new one", (int)strlen("SYSTEM: Waiting for you to JOIN a game, or to HOST a new one"));
 
     SetCursor(LoadCursor(0, IDC_ARROW));
 
@@ -420,7 +419,7 @@ unsigned int __cdecl NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsign
     g_nNetSetupUpdating = 1;
 
     // STRING: HYPERX 0x004c58e0
-    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Searching for players already in this game", (int)_mbslen((const unsigned char*)"SYSTEM: ...Searching for players already in this game"));
+    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Searching for players already in this game", (int)strlen("SYSTEM: ...Searching for players already in this game"));
 
     if (g_pGameSession->OpenSession(DPOPEN_JOIN, g_pSelectedSession) == 0)
     {
@@ -454,10 +453,10 @@ unsigned int __cdecl NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsign
     g_nNetSetupState = NETSETUP_STATE_JOINING;
 
     // STRING: HYPERX 0x004c589c
-    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, getting arena and team information from the HOST", (int)_mbslen((const unsigned char*)"SYSTEM: ...Wait, getting arena and team information from the HOST"));
+    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, getting arena and team information from the HOST", (int)strlen("SYSTEM: ...Wait, getting arena and team information from the HOST"));
 
     // STRING: HYPERX 0x004c5860
-    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, loading models for this arena and teams", (int)_mbslen((const unsigned char*)"SYSTEM: ...Wait, loading models for this arena and teams"));
+    NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, loading models for this arena and teams", (int)strlen("SYSTEM: ...Wait, loading models for this arena and teams"));
 
     g_pGameSession->nAssetsArrived = 0;
 
@@ -515,7 +514,7 @@ unsigned int __cdecl NetSetupDialog::VerifyAssets(HWND hDlg, unsigned int, unsig
                         g_nNetSetupState = NETSETUP_STATE_NAMED;
 
                         // STRING: HYPERX 0x004c59dc
-                        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to name a player (in any available slot)", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for you to name a player (in any available slot)"));
+                        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to name a player (in any available slot)", (int)strlen("SYSTEM: Waiting for you to name a player (in any available slot)"));
 
                         SetCursor(LoadCursor(0, IDC_ARROW));
 
@@ -746,7 +745,7 @@ unsigned int __cdecl NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsign
         g_nNetSetupState = NETSETUP_STATE_POSITION;
 
         // STRING: HYPERX 0x004c59dc
-        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to name a player (in any available slot)", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for you to name a player (in any available slot)"));
+        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for you to name a player (in any available slot)", (int)strlen("SYSTEM: Waiting for you to name a player (in any available slot)"));
 
         SetCursor(LoadCursor(0, IDC_ARROW));
 
@@ -1014,13 +1013,13 @@ unsigned int __cdecl NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned i
             SetCursor(LoadCursor(0, IDC_WAIT));
 
             // STRING: HYPERX 0x004c5860
-            NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, loading models for this arena and teams", (int)_mbslen((const unsigned char*)"SYSTEM: ...Wait, loading models for this arena and teams"));
+            NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, loading models for this arena and teams", (int)strlen("SYSTEM: ...Wait, loading models for this arena and teams"));
 
             g_pGameEngine->SetTeams((short)g_nDromeTeamHome, (short)g_nDromeTeamAway);
             g_pGameEngine->SetArena((short)g_nDromeArena);
 
             // STRING: HYPERX 0x004c5d68
-            NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, building asset list", (int)_mbslen((const unsigned char*)"SYSTEM: ...Wait, building asset list"));
+            NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Wait, building asset list", (int)strlen("SYSTEM: ...Wait, building asset list"));
 
             if (Level::IndexStationaryObjects() == 0)
             {
@@ -1038,10 +1037,10 @@ unsigned int __cdecl NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned i
 
                 msg.dwSize = sizeof(msg);
 
-                _mbsncpy((unsigned char*)msg.szSessionName, (const unsigned char*)entry.szName, NAME_ROOM);
+                strncpy(msg.szSessionName, entry.szName, NAME_ROOM);
 
                 // STRING: HYPERX 0x004c5d60
-                if (_mbslen((const unsigned char*)msg.szSessionName) < NAME_ROOM - strlen("'s Game"))
+                if (strlen(msg.szSessionName) < NAME_ROOM - strlen("'s Game"))
                 {
                     strcat(msg.szSessionName, "'s Game");
                 }
@@ -1075,7 +1074,7 @@ unsigned int __cdecl NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned i
                 g_nNetSetupState  = NETSETUP_STATE_VERIFY;
 
                 // STRING: HYPERX 0x004c5d2c
-                NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for remote players to JOIN the game", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for remote players to JOIN the game"));
+                NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for remote players to JOIN the game", (int)strlen("SYSTEM: Waiting for remote players to JOIN the game"));
 
                 SetFocus(GetDlgItem(hDlg, ID_CHAT_ENTRY));
 
@@ -1106,7 +1105,7 @@ unsigned int __cdecl NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned i
                 g_nNetSetupState = NETSETUP_STATE_ACCEPTING;
 
                 // STRING: HYPERX 0x004c5cec
-                NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Waiting for HOST to ACCEPT or REJECT your position", (int)_mbslen((const unsigned char*)"SYSTEM: ...Waiting for HOST to ACCEPT or REJECT your position"));
+                NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Waiting for HOST to ACCEPT or REJECT your position", (int)strlen("SYSTEM: ...Waiting for HOST to ACCEPT or REJECT your position"));
 
                 SetFocus(GetDlgItem(hDlg, ID_CHAT_ENTRY));
 
@@ -1297,7 +1296,7 @@ unsigned int __cdecl NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned
             }
 
             // STRING: HYPERX 0x004c5e58
-            NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Waiting for remote players", (int)_mbslen((const unsigned char*)"SYSTEM: ...Waiting for remote players"));
+            NetSetup::DisplayChatMessage(-1, "SYSTEM: ...Waiting for remote players", (int)strlen("SYSTEM: ...Waiting for remote players"));
 
             g_nNetSetupState    = NETSETUP_STATE_VERIFY;
             g_nNetSetupUpdating = 0;
@@ -1315,7 +1314,7 @@ unsigned int __cdecl NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned
         }
 
         // STRING: HYPERX 0x004c5e34
-        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for remote players", (int)_mbslen((const unsigned char*)"SYSTEM: Waiting for remote players"));
+        NetSetup::DisplayChatMessage(-1, "SYSTEM: Waiting for remote players", (int)strlen("SYSTEM: Waiting for remote players"));
 
         g_nNetSetupUpdating = 0;
 

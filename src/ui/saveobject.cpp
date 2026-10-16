@@ -9,7 +9,6 @@
 #include "common/pathstring.h"
 #include <string.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include "app/gameapp.h"
 #include "saveobject.h"
 #include "engine/teamsblock.h"
@@ -147,7 +146,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            char* pSpace = (char*)_mbschr((const unsigned char*)pLine, ' ');
+            char* pSpace = (char*)strchr(pLine, ' ');
 
             if (pSpace == 0)
             {
@@ -162,7 +161,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
             {
                 pSpace++;
                 const short nValue        = (short)atoi(pSpace);
-                pSpace                    = (char*)_mbschr((const unsigned char*)pSpace, ' ');
+                pSpace                    = (char*)strchr(pSpace, ' ');
                 m_aBracket[nRound][nSlot] = nValue;
             }
 

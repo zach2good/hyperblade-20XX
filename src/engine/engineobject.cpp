@@ -45,7 +45,6 @@
 #include <math.h>
 #include <string.h>
 #include <new.h>
-#include <mbstring.h>
 #include <windows.h>
 #include <stdio.h>
 #include "physics/collisionplane.h"
@@ -732,7 +731,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
     }
 
     // STRING: HYPERX 0x004c5148
-    if (_mbsicmp((const unsigned char*)pDef->GetModel(), (const unsigned char*)"null") == 0)
+    if (SDL_strcasecmp(pDef->GetModel(), "null") == 0)
     {
         m_nFlags |= ENGINEOBJECT_NO_MODEL | ENGINEOBJECT_HIDDEN;
 
@@ -924,7 +923,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
     }
 
     // STRING: HYPERX 0x004c5148
-    if (_mbsicmp((const unsigned char*)pDef->GetModel(), (const unsigned char*)"null") == 0)
+    if (SDL_strcasecmp(pDef->GetModel(), "null") == 0)
     {
         m_nFlags |= ENGINEOBJECT_NO_MODEL | ENGINEOBJECT_HIDDEN;
 
@@ -1135,7 +1134,7 @@ short EngineObject::GetBehaviorIndex(PlanState* pState, const char* pszName)
 
     while (pNode != 0)
     {
-        if (_mbsicmp((const unsigned char*)pNode->GetName(), (const unsigned char*)pszName) == 0)
+        if (SDL_strcasecmp(pNode->GetName(), pszName) == 0)
         {
             break;
         }
@@ -1165,7 +1164,7 @@ short EngineObject::FindPlanByName(const char* pszName)
 
     for (iPlan = 0; iPlan < m_nPlanCount; iPlan++)
     {
-        if (_mbscmp((const unsigned char*)pszName, (const unsigned char*)GetPlanName(iPlan)) == 0)
+        if (strcmp(pszName, GetPlanName(iPlan)) == 0)
         {
             break;
         }

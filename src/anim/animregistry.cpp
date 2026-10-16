@@ -12,10 +12,10 @@
 #include "app/gameapp.h"
 #include <string.h>
 #include <stdio.h>
-#include <mbstring.h>
 #include "animnode.h"
 #include "anim/animfile.h"
 #include "engine/messageids.h"
+#include <SDL3/SDL.h>
 
 // FUNCTION: HYPERX 0x00416f70
 AnimRegistry::~AnimRegistry()
@@ -63,7 +63,7 @@ AnimDB* AnimRegistry::FindAnimByNamePtr(const char* pszName)
 {
     for (short iAnim = 0; iAnim < m_pScripts->m_nCount; iAnim++)
     {
-        if (_mbsicmp((const unsigned char*)pszName, (const unsigned char*)m_pScripts->GetEntry(iAnim)->GetName()) == 0)
+        if (SDL_strcasecmp(pszName, m_pScripts->GetEntry(iAnim)->GetName()) == 0)
         {
             return m_pScripts->GetEntry(iAnim);
         }
@@ -77,7 +77,7 @@ short AnimRegistry::FindAnimByNameIdx(const char* pszName)
 {
     for (short iAnim = 0; iAnim < m_pScripts->m_nCount; iAnim++)
     {
-        if (_mbsicmp((const unsigned char*)pszName, (const unsigned char*)m_pScripts->GetEntry(iAnim)->GetName()) == 0)
+        if (SDL_strcasecmp(pszName, m_pScripts->GetEntry(iAnim)->GetName()) == 0)
         {
             return iAnim;
         }
@@ -113,9 +113,9 @@ AnimClipSet* AnimRegistry::FindInCache(const char* pszName)
         {
             sscanf(pszName, g_pszAnimNameFormat, szParsed);
 
-            const unsigned char* const pszSlot = (const unsigned char*)m_apSets[i]->m_pszName;
+            const char* const pszSlot = m_apSets[i]->m_pszName;
 
-            if (_mbsnbicmp((const unsigned char*)szParsed, pszSlot, 32) == 0)
+            if (SDL_strncasecmp(szParsed, pszSlot, 32) == 0)
             {
                 pFound = m_apSets[i];
                 break;

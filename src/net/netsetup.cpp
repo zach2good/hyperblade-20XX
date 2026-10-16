@@ -3,7 +3,6 @@
 #include "netglobals.h"
 #include "netsetupstate.h"
 #include "session.h"
-#include <mbstring.h>
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
@@ -56,7 +55,7 @@ void NetSetup::ProcessAddPlayerMsg(int nDpid, int nSlot, PlayerSlotName* pName)
                 PostMessageA(g_hWndNetSetupDlg, WM_COMMAND, ID_HOST, 0);
 
                 // STRING: HYPERX 0x004c6370
-                NetSetup::DisplayChatMessage(-1, "SYSTEM: Sorry, another player has taken this position, try another.", (int)_mbslen((const unsigned char*)"SYSTEM: Sorry, another player has taken this position, try another."));
+                NetSetup::DisplayChatMessage(-1, "SYSTEM: Sorry, another player has taken this position, try another.", (int)strlen("SYSTEM: Sorry, another player has taken this position, try another."));
 
                 return;
             }

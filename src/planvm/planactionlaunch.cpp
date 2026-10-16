@@ -57,7 +57,6 @@
 #include "physics/collisionobj.h"
 #include <math.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include "engine/particlesystem.h"
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
@@ -67,6 +66,7 @@
 #include "planvm/plancond.h"
 #include "engine/objectphase.h"
 #include "planvm/shotword.h"
+#include <cstring>
 
 extern const float g_flZeroPlanLaunch    = 0.0f;
 float              g_flUnusedPlanLaunchA = g_flZeroPlanLaunch;
@@ -88,10 +88,10 @@ void __cdecl PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, shor
 
     if (pTarget->GetPhase() == OBJECT_PHASE_LOCAL)
     {
-        const unsigned char* pszName = (const unsigned char*)pTarget->GetPlanState()->m_pszName;
+        const char* pszName = pTarget->GetPlanState()->m_pszName;
 
         // STRING: HYPERX 0x004bb340
-        if (_mbscmp((const unsigned char*)"Human", pszName) == 0)
+        if (strcmp("Human", pszName) == 0)
         {
             CameraObject* const pHeadCam = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
 

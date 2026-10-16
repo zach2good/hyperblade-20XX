@@ -19,7 +19,6 @@
 #include "collinteractor.h"
 #include "msginteractor.h"
 #include <string.h>
-#include <mbstring.h>
 #include "engine/engineobject.h"
 #include "planvm/planinteractorfactories.h"
 #include "common/pooledownerroot.h"
@@ -187,10 +186,10 @@ void GameBehaviorObject::UpdateLimpAnim()
 
     if (m_pOwner->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)m_pOwner)->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
     {
-        const unsigned char* const pszFirst = (const unsigned char*)m_pPersistentAnimation->GetName();
+        const char* const pszFirst = m_pPersistentAnimation->GetName();
 
         // STRING: HYPERX 0x004bb2a0
-        if (_mbscmp(pszFirst, (const unsigned char*)"AA_Skate_Std") == 0)
+        if (strcmp(pszFirst, "AA_Skate_Std") == 0)
         {
             m_pPersistentAnimation = (g_pAnimRegistry)
                                          // STRING: HYPERX 0x004bb290
@@ -198,10 +197,10 @@ void GameBehaviorObject::UpdateLimpAnim()
         }
         else
         {
-            const unsigned char* const pszSecond = (const unsigned char*)m_pPersistentAnimation->GetName();
+            const char* const pszSecond = m_pPersistentAnimation->GetName();
 
             // STRING: HYPERX 0x004bb280
-            if (_mbscmp(pszSecond, (const unsigned char*)"AA_Skatefast") == 0)
+            if (strcmp(pszSecond, "AA_Skatefast") == 0)
             {
                 m_pPersistentAnimation = (g_pAnimRegistry)
                                              // STRING: HYPERX 0x004bb270

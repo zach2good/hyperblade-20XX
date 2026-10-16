@@ -55,7 +55,6 @@
 #include "physics/collisionobj.h"
 #include <math.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include "engine/particlesystem.h"
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
@@ -63,6 +62,7 @@
 #include "engine/object.h"
 #include "planvm/planaction.h"
 #include "planvm/plancond.h"
+#include <cstring>
 
 #define ARG_COUNT_WITH_RATE 4
 
@@ -114,15 +114,15 @@ void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, sho
         const char* pszName = pAnim->GetName();
 
         // STRING: HYPERX 0x004bb2a0
-        if (_mbscmp((const unsigned char*)pszName, (const unsigned char*)"AA_Skate_Std") == 0)
+        if (strcmp(pszName, "AA_Skate_Std") == 0)
         {
             pAnim = (g_pAnimRegistry)
                         // STRING: HYPERX 0x004bb290
                         ->FindAnimByNamePtr("AA_LimpSkate");
         }
-        else if (_mbscmp((const unsigned char*)pszName,
-                         // STRING: HYPERX 0x004bb280
-                         (const unsigned char*)"AA_Skatefast") == 0)
+        else if (strcmp(pszName,
+                        // STRING: HYPERX 0x004bb280
+                        "AA_Skatefast") == 0)
         {
             pAnim = (g_pAnimRegistry)
                         // STRING: HYPERX 0x004bb270

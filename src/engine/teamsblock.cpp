@@ -6,13 +6,13 @@
 #include "common/fileobj.h"
 #include "globals.h"
 #include "common/pathstring.h"
-#include <mbstring.h>
 #include <new.h>
 #include <stdlib.h>
 #include <string.h>
 #include "gameengine.h"
 #include "app/gameapp.h"
 #include "common/parseutil.h"
+#include <SDL3/SDL.h>
 
 #define COMMENT_CHAR '#'
 
@@ -144,7 +144,7 @@ int TeamsBlock::ComputeTeamNameChecksum()
             pszName = 0;
         }
 
-        pszLower = (char*)_mbslwr((unsigned char*)Str::Duplicate(pszLower, pszName));
+        pszLower = (char*)SDL_strlwr(Str::Duplicate(pszLower, pszName));
 
         m_nChecksum += (char)(pszLower[2] + pszLower[1]) ^ (pszLower[0] << 8);
 

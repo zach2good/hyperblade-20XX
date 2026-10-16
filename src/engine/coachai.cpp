@@ -39,7 +39,6 @@
 #include <math.h>
 #include <string.h>
 #include <new.h>
-#include <mbstring.h>
 #include <windows.h>
 #include <stdio.h>
 #include "physics/collisionplane.h"
@@ -138,13 +137,13 @@ int __cdecl GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 
         if (pObject != 0)
         {
-            const unsigned char* pszName = (const unsigned char*)pObject->GetPlanState()->m_pCurrent->m_pszName;
+            const char* pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
 
             // STRING: HYPERX 0x004bcac8
-            if (_mbscmp(pszName, (const unsigned char*)"Spin") != 0)
+            if (strcmp(pszName, "Spin") != 0)
             {
                 // STRING: HYPERX 0x004bcabc
-                if (_mbscmp(pszName, (const unsigned char*)"ScoreSpin") != 0)
+                if (strcmp(pszName, "ScoreSpin") != 0)
                 {
                     const float flDistance = EngineObject::ComputeDistance(pFrom, pObject);
 

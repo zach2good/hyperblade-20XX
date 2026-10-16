@@ -23,7 +23,6 @@
 #include "syncblock.h"
 #include "netsetupstate.h"
 #include <io.h>
-#include <mbstring.h>
 #include "common/fileobj.h"
 #include "common/parseutil.h"
 #include "sound/soundids.h"
@@ -894,7 +893,7 @@ int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, i
 
             if (nSeen == nWanted)
             {
-                _mbsncpy((unsigned char*)pszName, (const unsigned char*)szToken, SCAT_NAME_MAX);
+                strncpy(pszName, szToken, SCAT_NAME_MAX);
 
                 pszName[SCAT_NAME_MAX] = 0;
 

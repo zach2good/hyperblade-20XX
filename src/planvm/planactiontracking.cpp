@@ -54,7 +54,6 @@
 #include "physics/collisionobj.h"
 #include <math.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include "engine/particlesystem.h"
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"

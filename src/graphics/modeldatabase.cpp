@@ -14,10 +14,10 @@
 #include "math/vector.h"
 #include <new.h>
 #include <string.h>
-#include <mbstring.h>
 #include "app/gameapp.h"
 #include "graphics/modelfile.h"
 #include "graphics/meshbone.h"
+#include <SDL3/SDL.h>
 
 // Frees every node whatever its reference count.
 // FUNCTION: HYPERX 0x00472830
@@ -359,7 +359,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
     {
         while (pLookup != 0)
         {
-            if (_mbsicmp((const unsigned char*)pszName, (const unsigned char*)pLookup->GetName()) == 0)
+            if (SDL_strcasecmp(pszName, pLookup->GetName()) == 0)
             {
                 pLookup->m_nRefs++;
 
@@ -470,7 +470,7 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 
     while (pEntry != 0)
     {
-        if (_mbsicmp((const unsigned char*)pEntry->m_pszName, (const unsigned char*)pszName) == 0)
+        if (SDL_strcasecmp(pEntry->m_pszName, pszName) == 0)
         {
             pEntry->m_wRefs++;
 
@@ -550,7 +550,7 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
 
     while (pNode != 0)
     {
-        if (_mbsicmp((const unsigned char*)pNode->m_pRecord->m_szName, (const unsigned char*)pszName) == 0)
+        if (SDL_strcasecmp(pNode->m_pRecord->m_szName, pszName) == 0)
         {
             return pNode;
         }

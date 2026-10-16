@@ -10,7 +10,6 @@ struct GameApp;
 #include <string.h>
 #include <new.h>
 #include <stdio.h>
-#include <mbstring.h>
 #include "app/gameapp.h"
 #include "engine/messageids.h"
 #include "animnode.h"
@@ -142,7 +141,7 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
 
             if (nSecond != -1)
             {
-                if (_mbsstr((const unsigned char*)szName, (const unsigned char*)(const char*)pState->strPrefix) == (const unsigned char*)szName && (pVm = m_pPlanVm) != 0)
+                if (strstr(szName, (const char*)pState->strPrefix) == szName && (pVm = m_pPlanVm) != 0)
                 {
                     nMessage = (int)pVm->LookupSymbol(szName).nValue;
                 }
@@ -187,7 +186,7 @@ int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, co
 
     if (String::ExtractToken(pszSource, szName, ppszCursor) > 0)
     {
-        if (_mbsstr((const unsigned char*)szName, (const unsigned char*)(const char*)strFilter) != 0)
+        if (strstr(szName, (const char*)strFilter) != 0)
         {
             String::ExtractToken(*ppszCursor, szExtra, ppszCursor);
 
@@ -240,11 +239,11 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
     int  nResult = 0;
     char szToken[SEGMENT_TOKEN_CHARS];
 
-    const char* pszScan = (const char*)_mbspbrk((const unsigned char*)pszLine, (const unsigned char*)g_pszAnimTokenDelimiters);
-    pszScan             = CharNextA(pszScan);
-    pszScan             = (const char*)_mbspbrk((const unsigned char*)pszScan, (const unsigned char*)g_pszAnimTokenDelimiters);
-    pszScan             = CharNextA(pszScan);
-    pszScan             = (const char*)_mbspbrk((const unsigned char*)pszScan, (const unsigned char*)g_pszAnimTokenDelimiters);
+    const char* pszScan = (const char*)strpbrk(pszLine, g_pszAnimTokenDelimiters);
+    pszScan             = pszScan + 1;
+    pszScan             = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
+    pszScan             = pszScan + 1;
+    pszScan             = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
 
     *ppszCursor = pszScan;
 
@@ -356,14 +355,14 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
 
         for (int nIndex = 0; nIndex < TRIGGER_FIELDS; nIndex++)
         {
-            pszScan = (const char*)_mbspbrk((const unsigned char*)pszScan, (const unsigned char*)g_pszAnimTokenDelimiters);
+            pszScan = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
 
             if (pszScan == 0)
             {
                 return 0;
             }
 
-            pszScan = CharNextA(pszScan);
+            pszScan = pszScan + 1;
         }
 
         if (String::ExtractToken(pszScan, szToken, &pszScan) <= 0 || sscanf(szToken, g_pszAnimShortFormat, pnSegment) != 1)

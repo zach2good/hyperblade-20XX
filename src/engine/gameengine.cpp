@@ -93,7 +93,6 @@ struct GameApp;
 #include <mmsystem.h>
 #include <new.h>
 #include <stdio.h>
-#include <mbstring.h>
 #include "playerobject.h"
 #include "sound/audiomgr.h"
 #include "rokobject.h"
@@ -1194,7 +1193,7 @@ enum ConfigKeyword
 char GameEngine::LoadConfigFile(const char* pszFileName)
 {
     // STRING: HYPERX 0x004c41b4
-    if (_mbsicmp((const unsigned char*)pszFileName, (const unsigned char*)"game.cfg") == 0)
+    if (SDL_strcasecmp(pszFileName, "game.cfg") == 0)
     {
         LoadGameConfig(pszFileName);
 
@@ -1913,7 +1912,7 @@ inline int GameEngine::FindTeamDefinition(FileObj* pFile, char** ppLine, char* p
     do
     {
         // STRING: HYPERX 0x004c732c
-        if (ParseUtil::ParseToken(*ppLine, pszToken, 0, " \t", PARSE_TOKEN_MAX, ppLine) != 0 && _mbsicmp((const unsigned char*)pszToken, (const unsigned char*)"DefineTeam") == 0)
+        if (ParseUtil::ParseToken(*ppLine, pszToken, 0, " \t", PARSE_TOKEN_MAX, ppLine) != 0 && SDL_strcasecmp(pszToken, "DefineTeam") == 0)
         {
             return 1;
         }

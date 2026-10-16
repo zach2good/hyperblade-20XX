@@ -11,11 +11,10 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include <SDL3/SDL.h>
 #include <cstring>
 
-#define STEP(p) ((const char*)_mbsinc((const unsigned char*)(p)))
+#define STEP(p) ((const char*)(p) + 1)
 
 #define FORCE_ANSI 0x10000
 
@@ -33,7 +32,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
     {
         if (*lpsz != '%' || *(lpsz = STEP(lpsz)) == '%')
         {
-            nMaxLen += (int)_mbclen((const unsigned char*)lpsz);
+            nMaxLen += 1;
             continue;
         }
 
@@ -64,7 +63,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
         {
             nWidth = atoi(lpsz);
 
-            for (; *lpsz != 0 && _ismbcdigit((unsigned int)*lpsz); lpsz = STEP(lpsz))
+            for (; *lpsz != 0 && SDL_isdigit((unsigned char)*lpsz); lpsz = STEP(lpsz))
             {
                 ;
             }
@@ -85,7 +84,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
             {
                 nPrecision = atoi(lpsz);
 
-                for (; *lpsz != 0 && _ismbcdigit((unsigned int)*lpsz); lpsz = STEP(lpsz))
+                for (; *lpsz != 0 && SDL_isdigit((unsigned char)*lpsz); lpsz = STEP(lpsz))
                 {
                     ;
                 }
@@ -556,15 +555,15 @@ int __cdecl String::ExtractToken(const char* pszSource, LPSTR pszDest, const cha
 
     if (pszSource != 0)
     {
-        pszEnd = (char*)_mbspbrk((const unsigned char*)pszSource,
-                                 (const unsigned char*)g_pszTokenDelimiters);
+        pszEnd = (char*)strpbrk(pszSource,
+                                g_pszTokenDelimiters);
 
         if (pszEnd != 0)
         {
-            const char* pszStart = CharNextA(pszEnd);
+            const char* pszStart = pszEnd + 1;
 
-            pszEnd = (char*)_mbspbrk((const unsigned char*)pszStart,
-                                     (const unsigned char*)g_pszTokenDelimiters);
+            pszEnd = (char*)strpbrk(pszStart,
+                                    g_pszTokenDelimiters);
 
             *ppszNext = pszEnd;
 

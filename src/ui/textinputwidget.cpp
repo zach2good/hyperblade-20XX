@@ -4,9 +4,9 @@
 #include "framepos.h"
 #include "widget.h"
 #include <ctype.h>
-#include <mbstring.h>
 #include "ui/holdingwidget.h"
 #include "engine/object.h"
+#include <SDL3/SDL.h>
 
 #define TEXT_INPUT_CAPACITY 0x50
 
@@ -41,7 +41,7 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
         return 1;
     }
 
-    if (_ismbcprint(nChar) && m_nLength < m_nCapacity)
+    if (SDL_isprint((int)nChar) && m_nLength < m_nCapacity)
     {
         m_pszInput[m_nLength] = (char)nChar;
 

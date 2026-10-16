@@ -9,9 +9,9 @@
 #include <new.h>
 #include <stdio.h>
 #include <string.h>
-#include <mbstring.h>
 #include "common/fileobj.h"
 #include "app/gameapp.h"
+#include <SDL3/SDL.h>
 
 extern Vec3 g_vLightDirModel;
 
@@ -93,12 +93,12 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
             if (sscanf(pszLine, "%s ", szKeyword) == 1)
             {
                 // STRING: HYPERX 0x004be3a0
-                if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"newmtl") == 0)
+                if (SDL_strcasecmp(szKeyword, "newmtl") == 0)
                 {
                     (*pnMatCount)++;
                 }
                 // STRING: HYPERX 0x004be39c
-                else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"tx") == 0)
+                else if (SDL_strcasecmp(szKeyword, "tx") == 0)
                 {
                     (*pnTexCount)++;
                 }
@@ -137,7 +137,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
         }
         else if (sscanf(pszLine, "%s ", szKeyword) == 1)
         {
-            if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"newmtl") == 0)
+            if (SDL_strcasecmp(szKeyword, "newmtl") == 0)
             {
                 // STRING: HYPERX 0x004be394
                 if (sscanf(pszLine, "%s %s", szKeyword, szValue) != 2)
@@ -172,9 +172,9 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
 
                     nMatIndex++;
 
-                    _mbsncpy((unsigned char*)(paMatNames[nMatIndex]),
-                             (unsigned char*)szValue,
-                             nCopy);
+                    strncpy((paMatNames[nMatIndex]),
+                            szValue,
+                            nCopy);
 
                     pMaterials[nMatIndex].nColour       = 0;
                     pMaterials[nMatIndex].flAmbient     = 0.0f;
@@ -185,7 +185,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 }
             }
             // STRING: HYPERX 0x004be340
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"Cr") == 0)
+            else if (SDL_strcasecmp(szKeyword, "Cr") == 0)
             {
                 // STRING: HYPERX 0x004be32c
                 const int nFields = sscanf(pszLine, "%s %hd %hd %hd %s", szKeyword, &nRed, &nGreen, &nBlue, szRamp);
@@ -214,12 +214,12 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                     if (nFields == 5)
                     {
                         // STRING: HYPERX 0x004be2f8
-                        if (_mbsicmp((const unsigned char*)szRamp, (const unsigned char*)"r8") == 0)
+                        if (SDL_strcasecmp(szRamp, "r8") == 0)
                         {
                             pMaterials[nMatIndex].nColour = 0;
                         }
                         // STRING: HYPERX 0x004be2f4
-                        else if (_mbsicmp((const unsigned char*)szRamp, (const unsigned char*)"r16") != 0)
+                        else if (SDL_strcasecmp(szRamp, "r16") != 0)
                         {
                             g_gameApp.Error(
                                 // STRING: HYPERX 0x004be2c4
@@ -241,7 +241,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 }
             }
             // STRING: HYPERX 0x004be2c0
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"Cp") == 0)
+            else if (SDL_strcasecmp(szKeyword, "Cp") == 0)
             {
                 // STRING: HYPERX 0x004be2b8
                 if (sscanf(pszLine, "%s %hd", szKeyword, &nColourIndex) != 2)
@@ -260,7 +260,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 }
             }
             // STRING: HYPERX 0x004be280
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"Ca") == 0)
+            else if (SDL_strcasecmp(szKeyword, "Ca") == 0)
             {
                 // STRING: HYPERX 0x004be278
                 if (sscanf(pszLine, "%s %f", szKeyword, &flValue) != 2)
@@ -279,7 +279,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 }
             }
             // STRING: HYPERX 0x004be23c
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"Cd") == 0)
+            else if (SDL_strcasecmp(szKeyword, "Cd") == 0)
             {
                 if (sscanf(pszLine, "%s %f", szKeyword, &flValue) != 2)
                 {
@@ -297,7 +297,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 }
             }
             // STRING: HYPERX 0x004be200
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"Ce") == 0)
+            else if (SDL_strcasecmp(szKeyword, "Ce") == 0)
             {
                 if (sscanf(pszLine, "%s %f", szKeyword, &flValue) != 2)
                 {
@@ -315,7 +315,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                     pMaterials[nMatIndex].flEmissive = flValue;
                 }
             }
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"tx") == 0)
+            else if (SDL_strcasecmp(szKeyword, "tx") == 0)
             {
                 if (sscanf(pszLine, "%s %s", szKeyword, szValue) != 2)
                 {
@@ -345,7 +345,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
 
                     for (i = 0; i < nKnownTextures; i++)
                     {
-                        if (_mbsicmp((const unsigned char*)paTexNames[i], (const unsigned char*)szValue) == 0)
+                        if (SDL_strcasecmp(paTexNames[i], szValue) == 0)
                         {
                             break;
                         }
@@ -366,7 +366,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 }
             }
             // STRING: HYPERX 0x004be164
-            else if (_mbsicmp((const unsigned char*)szKeyword, (const unsigned char*)"bf") == 0)
+            else if (SDL_strcasecmp(szKeyword, "bf") == 0)
             {
                 if (sscanf(pszLine, "%s %s", szKeyword, szValue) != 2)
                 {
@@ -382,7 +382,7 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                 {
                     for (j = 0; j <= nMatIndex; j++)
                     {
-                        if (_mbsicmp((const unsigned char*)szValue, (const unsigned char*)paMatNames[j]) == 0)
+                        if (SDL_strcasecmp(szValue, paMatNames[j]) == 0)
                         {
                             pMaterials[nMatIndex].nBackIndex = j;
 

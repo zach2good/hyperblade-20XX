@@ -16,7 +16,6 @@ struct GameApp;
 #include "framepos.h"
 
 #include <string.h>
-#include <mbstring.h>
 #include "engine/game.h"
 #include "app/window.h"
 #include "common/stub.h"
@@ -728,8 +727,8 @@ HBITMAP Screen::CacheLookup(const char* pszName, int* pbCached)
     {
         if (g_pBitmapCache[nSlot].pszName != 0)
         {
-            if (_mbscmp((const unsigned char*)g_pBitmapCache[nSlot].pszName,
-                        (const unsigned char*)pszName) == 0)
+            if (strcmp(g_pBitmapCache[nSlot].pszName,
+                       pszName) == 0)
             {
                 *pbCached = 1;
 

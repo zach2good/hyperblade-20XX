@@ -3,7 +3,6 @@
 #include "rlesprite.h"
 #include <stdlib.h>
 #include <string.h>
-#include <mbstring.h>
 #include "common/commonglobals.h"
 #include "graphics/infobarradar.h"
 #include "ui/cddsurfaceowner.h"
@@ -11,6 +10,7 @@
 #include "graphics/softrenderer.h"
 #include "common/util.h"
 #include "common/staticinit.h"
+#include <SDL3/SDL.h>
 
 extern const float g_flZeroSurface2    = 0.0f;
 float              g_flUnusedSurface2A = g_flZeroSurface2;
@@ -48,7 +48,7 @@ int RLESpriteSurface::Draw()
 // FUNCTION: HYPERX 0x0044f3c0
 int RLESpriteSurface::LoadByName(const char* pszName)
 {
-    if (m_pszName == 0 || _mbsicmp((const unsigned char*)pszName, (const unsigned char*)m_pszName) != 0)
+    if (m_pszName == 0 || SDL_strcasecmp(pszName, m_pszName) != 0)
     {
         if (m_pSprite != 0)
         {

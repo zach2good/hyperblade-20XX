@@ -1,11 +1,12 @@
 #include "common/compat.h"
 #include "cddsurfaceowner.h"
 #include <stdlib.h>
-#include <mbstring.h>
 #include "graphics/rlesprite.h"
 #include "graphics/swrend.h"
 #include "graphics/softrenderer.h"
 #include "common/util.h"
+#include <SDL3/SDL.h>
+#include <cstring>
 
 // FUNCTION: HYPERX 0x0044f890
 CDDSurfaceOwner::~CDDSurfaceOwner() throw()
@@ -24,7 +25,7 @@ CDDSurfaceOwner::~CDDSurfaceOwner() throw()
 // FUNCTION: HYPERX 0x0044f8f0
 int CDDSurfaceOwner::LoadByName(const char* pszName)
 {
-    if (m_pszName == 0 || _mbsicmp((const unsigned char*)pszName, (const unsigned char*)m_pszName) != 0)
+    if (m_pszName == 0 || SDL_strcasecmp(pszName, m_pszName) != 0)
     {
         if (m_pSprite != 0)
         {

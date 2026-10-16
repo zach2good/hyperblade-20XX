@@ -3,7 +3,6 @@
 #include "compat.h"
 #include <string.h>
 #include <stdio.h>
-#include <mbstring.h>
 #include "common/parseutil.h"
 #include "common/staticinit.h"
 #include "common/commonglobals.h"
@@ -30,7 +29,7 @@ short __cdecl ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable
         // Inline, VC6 loads the entry into ECX; the client uses EAX (0x00435fac).
         const char* const pszEntry = ppszTable[iEntry];
 
-        if (_mbsicmp((const unsigned char*)pszEntry, (const unsigned char*)pszWord) == 0)
+        if (SDL_strcasecmp(pszEntry, pszWord) == 0)
         {
             return iEntry;
         }
@@ -47,7 +46,18 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
     int   nLength;
 
     // STRING: HYPERX 0x004c732c
-    char* const pszScan = (char*)_mbsspnp((const unsigned char*)pszInput, (const unsigned char*)" 	");
+    // The first character past the blanks, or null when there is none.
+    char* const pszScan = [&]() -> char*
+    {
+        char* const pszFirst = pszInput + strspn(pszInput, " 	");
+
+        if (*pszFirst == 0)
+        {
+            return nullptr;
+        }
+
+        return pszFirst;
+    }();
 
     if (pszScan == 0)
     {
@@ -56,7 +66,7 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
 
     if (pszDelimitersA != 0)
     {
-        pszStart = (char*)_mbspbrk((const unsigned char*)pszScan, (const unsigned char*)pszDelimitersA);
+        pszStart = (char*)strpbrk(pszScan, pszDelimitersA);
 
         if (pszStart == 0)
         {
@@ -68,7 +78,7 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
         pszStart = pszScan;
     }
 
-    char* const pszEnd = (char*)_mbspbrk((const unsigned char*)pszStart, (const unsigned char*)pszDelimitersB);
+    char* const pszEnd = (char*)strpbrk(pszStart, pszDelimitersB);
 
     if (pszEnd == 0)
     {
@@ -162,7 +172,11 @@ int __cdecl ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
             break;
         }
 
-        pszBuffer = CharNextA(pszBuffer);
+        // A nul in the file is overwritten, as CharNextA never stepped past one.
+        if (*pszBuffer != 0)
+        {
+            pszBuffer++;
+        }
 
         *pszBuffer = (char)fgetc(pStream);
     }

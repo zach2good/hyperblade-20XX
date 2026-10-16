@@ -5,7 +5,6 @@
 #include "globals.h"
 #include "common/pathstring.h"
 #include <string.h>
-#include <mbstring.h>
 #include "app/gameapp.h"
 #include "anim/animfile.h"
 #include "graphics/modelfile.h"
@@ -32,7 +31,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
 
     if (g_bShadedDromeModels != 0 && g_cMdmTexLoaded != 0 && strlen(pszModelName) == MODEL_NAME_LENGTH
         // STRING: HYPERX 0x004bdf90
-        && _mbsicmp((const unsigned char*)(pszModelName + 3), (const unsigned char*)"dro") == 0)
+        && SDL_strcasecmp((pszModelName + 3), "dro") == 0)
     {
         strPath.m_str.AssignFromString(String::Concat(
             String::Concat(

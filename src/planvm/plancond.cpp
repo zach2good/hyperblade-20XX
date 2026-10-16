@@ -42,7 +42,6 @@
 #include "physics/collisionobj.h"
 #include <math.h>
 #include <string.h>
-#include <mbstring.h>
 #include <stdlib.h>
 #include "engine/engineobject.h"
 #include "anim/animset.h"
@@ -2106,18 +2105,18 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
 
     float flDamageFar = ((PlayerObject*)pFar)->m_stats.GetScalar(RATING_DAMAGE);
 
-    const unsigned char* pszNear = (const unsigned char*)pNear->GetPlanState()->m_pszName;
+    const char* pszNear = pNear->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004bb37c
-    if (_mbscmp(pszNear, (const unsigned char*)"Sideln") == 0)
+    if (strcmp(pszNear, "Sideln") == 0)
     {
         flDamageNear = 0.0f;
     }
 
-    const unsigned char* pszFar = (const unsigned char*)pFar->GetPlanState()->m_pszName;
+    const char* pszFar = pFar->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004bb37c
-    if (_mbscmp(pszFar, (const unsigned char*)"Sideln") == 0)
+    if (strcmp(pszFar, "Sideln") == 0)
     {
         flDamageFar = 0.0f;
     }
@@ -2543,12 +2542,12 @@ void __cdecl PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, shor
 
         if (pMultiplier != 0)
         {
-            const unsigned char* pszName = (const unsigned char*)pMultiplier->GetPlanState()->m_pCurrent->m_pszName;
+            const char* pszName = pMultiplier->GetPlanState()->m_pCurrent->m_pszName;
 
             // STRING: HYPERX 0x004bcac8
-            if (_mbscmp(pszName, (const unsigned char*)"Spin") != 0
+            if (strcmp(pszName, "Spin") != 0
                 // STRING: HYPERX 0x004bcabc
-                && _mbscmp(pszName, (const unsigned char*)"ScoreSpin") != 0)
+                && strcmp(pszName, "ScoreSpin") != 0)
             {
                 const Vec3* pOther = pMultiplier->GetPositionPtr();
 
@@ -3432,20 +3431,20 @@ void __cdecl PlanCond::TeammateIsViewOwner(Interactor* pContext, PlanNode*, shor
 
     int nTeam = pActor->GetSlot();
 
-    const unsigned char* pszName = (const unsigned char*)pActor->GetPlanState()->m_pszName;
+    const char* pszName = pActor->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004c45f4
-    if (_mbscmp((const unsigned char*)"Input", pszName) == 0)
+    if (strcmp("Input", pszName) == 0)
     {
         nTeam = g_pGameEngine->m_nViewedSlot;
     }
 
     *pResult = (unsigned short)(
         // STRING: HYPERX 0x004bb340
-        _mbscmp((const unsigned char*)"Human",
-                (const unsigned char*)g_pGameEngine->m_ppSlots[TeammateSlot((short)nTeam)]
-                    ->GetPlanState()
-                    ->m_pszName) != 0);
+        strcmp("Human",
+               g_pGameEngine->m_ppSlots[TeammateSlot((short)nTeam)]
+                   ->GetPlanState()
+                   ->m_pszName) != 0);
 }
 
 // Answers one for a bot team mate that is fit and wants no substitute, else nought.
@@ -3458,10 +3457,10 @@ void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*,
 
     int nTeam = pActor->GetSlot();
 
-    const unsigned char* pszName = (const unsigned char*)pActor->GetPlanState()->m_pszName;
+    const char* pszName = pActor->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004c45f4
-    if (_mbscmp((const unsigned char*)"Input", pszName) == 0)
+    if (strcmp("Input", pszName) == 0)
     {
         nTeam = g_pGameEngine->m_nViewedSlot;
     }
@@ -3470,8 +3469,8 @@ void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*,
 
     nIsBot = (short)(
         // STRING: HYPERX 0x004bb340
-        _mbscmp((const unsigned char*)"Human",
-                (const unsigned char*)g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
+        strcmp("Human",
+               g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
 
     *pResult = nIsBot;
 
@@ -3497,8 +3496,8 @@ void __cdecl PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, sho
 
     *pResult = (short)(
         // STRING: HYPERX 0x004bb340
-        _mbscmp((const unsigned char*)"Human",
-                (const unsigned char*)g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
+        strcmp("Human",
+               g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
 
     PlayerObject* const pOther = g_pGameEngine->GetPlayer(nSlot);
 
@@ -4877,7 +4876,7 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
             char* const pszName = pObject->GetPlanState()->m_pszName;
 
             // STRING: HYPERX 0x004bb340
-            if (_mbscmp((const unsigned char*)"Human", (const unsigned char*)pszName) != 0)
+            if (strcmp("Human", pszName) != 0)
             {
                 flScale = SCALE_NETWORK_BOT;
             }
@@ -6963,8 +6962,8 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
     if (g_pGameEngine->m_nTeammateMode == 0)
     {
         // STRING: HYPERX 0x004bb340
-        if (_mbscmp((const unsigned char*)"Human",
-                    (const unsigned char*)pMate->GetPlanState()->m_pszName) == 0)
+        if (strcmp("Human",
+                   pMate->GetPlanState()->m_pszName) == 0)
         {
             *pResult = 0;
         }
@@ -7093,7 +7092,7 @@ void PlanCond::Ducking(Interactor* pContext, PlanNode*, short* pResult, int)
     }
 
     // STRING: HYPERX 0x004c4664
-    *pResult = _mbscmp((const unsigned char*)pszName, (const unsigned char*)"AA_QuikDuck") != 0;
+    *pResult = strcmp(pszName, "AA_QuikDuck") != 0;
 }
 
 // Two is added while the rok sits at its spawn slot.
@@ -7595,8 +7594,8 @@ void __cdecl PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short
     if (g_pGameEngine->m_nTeammateMode == 0)
     {
         // STRING: HYPERX 0x004bb340
-        if (_mbscmp((const unsigned char*)"Human",
-                    (const unsigned char*)pMate->GetPlanState()->m_pszName) == 0)
+        if (strcmp("Human",
+                   pMate->GetPlanState()->m_pszName) == 0)
         {
             *pResult = 0;
         }
@@ -8261,8 +8260,8 @@ void __cdecl PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pR
     if (g_pGameEngine->m_nTeammateMode == 0)
     {
         // STRING: HYPERX 0x004bb340
-        if (_mbscmp((const unsigned char*)"Human",
-                    (const unsigned char*)pMate->GetPlanState()->m_pszName) == 0)
+        if (strcmp("Human",
+                   pMate->GetPlanState()->m_pszName) == 0)
         {
             *pResult = 1;
         }

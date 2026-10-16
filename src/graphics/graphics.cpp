@@ -5,7 +5,6 @@
 #include "graphics/display.h"
 #include <stdlib.h>
 #include <string.h>
-#include <mbstring.h>
 #include "app/gameapp.h"
 #include "engine/objectclasses.h"
 #include "ui/widget.h"
@@ -81,7 +80,7 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
     // STRING: HYPERX 0x004c2da0
-    if (_mbsstr((const unsigned char*)pszCmdLine, (const unsigned char*)"dmandappro!") == 0)
+    if (strstr(pszCmdLine, "dmandappro!") == 0)
     {
         return 0;
     }

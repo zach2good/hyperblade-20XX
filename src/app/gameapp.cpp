@@ -52,7 +52,6 @@ class AwardsUIScreen;
 #include <stdarg.h>
 #include <windows.h>
 #include <string.h>
-#include <mbstring.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iterator>
@@ -323,7 +322,7 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
         lpCmdLine = p + 1;
     }
 
-    p = (char*)_mbschr((const unsigned char*)lpCmdLine, ' ');
+    p = (char*)strchr(lpCmdLine, ' ');
 
     if (p == 0)
     {
@@ -332,7 +331,7 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 
     while (*p == ' ' || *p == '\r' || *p == '\n' || *p == 'x')
     {
-        p = CharNextA(p);
+        p = p + 1;
     }
 
     if (*p != '-')
@@ -342,34 +341,34 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 
     do
     {
-        p = CharNextA(p);
+        p = p + 1;
 
         switch (*p)
         {
             case 'f':
                 g_bFullScreen = 1;
-                p             = CharNextA(p);
+                p             = p + 1;
                 break;
 
             case 'w':
                 g_bFullScreen = 0;
-                p             = CharNextA(p);
+                p             = p + 1;
                 break;
 
             case 's':
                 g_bNoSoundArg = 1;
-                p             = CharNextA(p);
+                p             = p + 1;
                 break;
 
             case 'm':
                 g_bShadedDromeModels = 1;
-                p                    = CharNextA(p);
+                p                    = p + 1;
                 break;
         }
 
         while (*p == ' ' || *p == '\r' || *p == '\n' || *p == 'x')
         {
-            p = CharNextA(p);
+            p = p + 1;
         }
     } while (*p == '-');
 }
@@ -543,7 +542,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
             szVolume[0] = 0;
         }
 
-        if (_mbscmp((const unsigned char*)szVolume, (const unsigned char*)szLabel) == 0)
+        if (strcmp(szVolume, szLabel) == 0)
         {
             return m_nCDRomDrive;
         }
@@ -567,7 +566,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
                     szVolume[0] = 0;
                 }
 
-                if (_mbscmp((const unsigned char*)szVolume, (const unsigned char*)szLabel) == 0)
+                if (strcmp(szVolume, szLabel) == 0)
                 {
                     m_nCDRomDrive = nDrive;
 
@@ -606,7 +605,7 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
     {
         for (p = pszPath; *p != 0; p++)
         {
-            if (_mbctolower(p[0]) == 'd' && _mbctolower(p[1]) == 'a' && _mbctolower(p[2]) == 't' && _mbctolower(p[3]) == 'a')
+            if (SDL_strncasecmp(p, "data", 4) == 0)
             {
                 char* pszDest = pszPath + 3;
 
@@ -866,8 +865,8 @@ int GameApp::MainUpdate(HWND hWnd)
 void __cdecl GameApp::ShowHelp(HWND hWnd)
 {
     String strHelpPath(g_gameApp.m_strExeDir.m_str);
-    char*  pszSlash = (char*)_mbsrchr((unsigned char*)strHelpPath.m_pchData, '\\');
-    if (pszSlash != 0 && (pszSlash = (char*)_mbsrchr((unsigned char*)pszSlash, '\\')) != 0)
+    char*  pszSlash = (char*)strrchr(strHelpPath.m_pchData, '\\');
+    if (pszSlash != 0 && (pszSlash = (char*)strrchr(pszSlash, '\\')) != 0)
     {
         pszSlash[1] = 0;
     }

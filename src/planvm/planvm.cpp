@@ -12,7 +12,6 @@ struct GameApp;
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <mbstring.h>
 #include "planopcodetable.h"
 #include "physics/collinteractorpool.h"
 #include "physics/msginteractorpool.h"
@@ -1433,7 +1432,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
     PlanWord value;
 
     // STRING: HYPERX 0x004c6f94
-    if (_mbsspnp((const unsigned char*)pszText, (const unsigned char*)"xXABCDEFabcdef0123456789.+-_") == 0)
+    if (pszText[strspn(pszText, "xXABCDEFabcdef0123456789.+-_")] == 0)
     {
         const int nLength = (int)strlen(pszText) + 1;
 

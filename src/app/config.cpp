@@ -4,7 +4,6 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include <mbstring.h>
 #include "gameapp.h"
 #include "common/fileobj.h"
 #include "engine/messageids.h"
