@@ -219,6 +219,7 @@ set(HYPERX_SOURCES
     src/graphics/gdi.cpp
     src/graphics/graphics.cpp
     src/graphics/infobarradar.cpp
+    src/graphics/hudlayer.cpp
     src/graphics/infobarslot.cpp
     src/graphics/lightattenuation.cpp
     src/graphics/lodnode.cpp

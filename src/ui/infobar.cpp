@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/hudlayer.h"
 #include "globals.h"
 #include "app/gameapp.h"
 #include "app/frametimer.h"
@@ -627,15 +628,15 @@ void InfoBar::DrawScene(int bDraw)
                 g_hDisplayPalette = g_pColorPalette->m_hPalette;
             }
 
-            g_nRadarBlipColourDromer0 = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER0);
-            g_nRadarBlipColourDromer2 = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER2);
-            g_nRadarBlipColourDromer1 = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER1);
-            g_nRadarBlipColourDromer3 = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER3);
-            g_nRadarBlipColourRok     = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BLIP_ROK);
-            g_nPeriodLightColour      = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_PERIOD_LIGHT);
-            g_nDamageBarColourLit     = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BAR_LIT);
-            g_nDamageBarColourDim     = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_BAR_DIM);
-            g_nRadarLineColour        = GetNearestPaletteIndex(g_hDisplayPalette, COLOUR_RADAR_LINE);
+            g_nRadarBlipColourDromer0 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER0);
+            g_nRadarBlipColourDromer2 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER2);
+            g_nRadarBlipColourDromer1 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER1);
+            g_nRadarBlipColourDromer3 = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_DROMER3);
+            g_nRadarBlipColourRok     = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BLIP_ROK);
+            g_nPeriodLightColour      = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_PERIOD_LIGHT);
+            g_nDamageBarColourLit     = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BAR_LIT);
+            g_nDamageBarColourDim     = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_BAR_DIM);
+            g_nRadarLineColour        = HudLayer::NearestIndex(g_hDisplayPalette, COLOUR_RADAR_LINE);
         }
 
         g_pMessageQueue->Update();
@@ -740,6 +741,9 @@ void InfoBar::LayoutSurfaces()
     {
         return;
     }
+
+    // Every position is in the HUD layer, which is a fraction of the back buffer.
+    const HudLayer::Scope layer;
 
     SurfacePoint ptPos;
     SurfacePoint ptSize;

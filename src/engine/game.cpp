@@ -1,6 +1,7 @@
 // The game at the top level: engine setup and teardown, one frame, and the state machine.
 
 #include "common/compat.h"
+#include "graphics/hudlayer.h"
 #include "globals.h"
 #include <stdlib.h>
 #include "sound/audiomgr.h"
@@ -90,9 +91,16 @@ void __stdcall Game::RunFrame(void)
         }
         else
         {
+            // The HUD draws at a fraction of the window and is scaled up over the 3D.
+            HudLayer::Enter();
+            HudLayer::Clear();
+
             g_pRenderer->DrawScene(g_renderFlags.bDisplayHUDArt);
-            // The original passes no DC; src/ui/infobar.cpp gives the bring-up a usable handle.
+            // The original passes no DC; src/ui/infobar.cpp makes the back buffer the text DC.
             g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt, 0);
+
+            HudLayer::Leave();
+            HudLayer::Composite();
         }
     }
 

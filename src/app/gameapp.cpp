@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/hudlayer.h"
 #include "engine/gameoptions.h"
 #include "globals.h"
 #include "graphics/graphicsglobals.h"
@@ -1066,6 +1067,11 @@ void __cdecl GameApp::SetupViewports(void)
 
         size   = g_pRenderer->GetHeadCamSize();
         offset = g_pRenderer->GetHeadCamOrigin();
+
+        // The inset is placed in the HUD layer, and the 3D under it draws at the back buffer's scale.
+        offset = HudLayer::ToBackBuffer(offset);
+        size.x *= HudLayer::Scale();
+        size.y *= HudLayer::Scale();
 
         pView->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy,
                                                 g_nBackBufferWidth,
