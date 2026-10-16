@@ -590,10 +590,10 @@ unsigned int __stdcall Game::UpdateState(void)
 
             case ESTATE_QUIT:
                 Game::SetEngineState(ESTATE_LOBBY);
-                pszText = g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, rand() % 3 + STRING_REALLY_QUIT);
+                pszText = g_gameApp.m_stringPool.LoadText(rand() % 3 + STRING_REALLY_QUIT);
 
                 if (Win32::AskYesNo(pszText,
-                                    g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, STRING_QUIT)) == IDYES)
+                                    g_gameApp.m_stringPool.LoadText(STRING_QUIT)) == IDYES)
                 {
                     Screen::ClearBlack();
 

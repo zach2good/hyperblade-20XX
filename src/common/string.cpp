@@ -1,6 +1,7 @@
 // The reference-counted string's members.
 
 #include "compat.h"
+#include "stringtable.h"
 #include "globals.h"
 #include "app/gameapp.h"
 #include "commonglobals.h"
@@ -242,20 +243,6 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
     pString->SetLength(-1);
 }
 
-// A failed load leaves an empty string, not the buffer's previous contents.
-// FUNCTION: HYPERX 0x0042f500
-int String::LoadResourceString(UINT nID, LPSTR pszBuffer, int nMaxLength)
-{
-    const int nResult = LoadStringA(g_gameApp.GetInstance(), nID, pszBuffer, nMaxLength);
-
-    if (nResult == 0)
-    {
-        pszBuffer[0] = (char)nResult;
-    }
-
-    return nResult;
-}
-
 // FUNCTION: HYPERX 0x00423860
 String* String::FormatResourcePath(const char* pszDirectory, const char* pszName, const char* pszExtension)
 {
@@ -326,23 +313,14 @@ void String::FreeBuffer(void)
     }
 }
 
-// Grows the buffer 256 bytes at a time until the load stops filling it exactly.
 // FUNCTION: HYPERX 0x0042f4b0
 bool String::AssignResourceId(UINT nID)
 {
-    int nCapacity = -1;
-    int nRead;
+    const char* const pszText = StringTable::Find(nID);
 
-    do
-    {
-        nCapacity += 0x100;
+    Assign((unsigned int)strlen(pszText), pszText);
 
-        nRead = String::LoadResourceString(nID, Reserve(nCapacity), nCapacity + 1);
-    } while (nRead == nCapacity);
-
-    SetLength(-1);
-
-    return nRead > 0;
+    return pszText[0] != 0;
 }
 
 // FUNCTION: HYPERX 0x0042f530

@@ -1921,7 +1921,7 @@ int __cdecl HUD::CreateSurfaces(void)
     if (g_hudSurfaces.pExitMatchText != 0)
     {
         g_hudSurfaces.pExitMatchString = new String(
-            g_gameApp.m_stringPool.LoadText(g_gameApp.GetInstance(), STRING_EXIT_MATCH));
+            g_gameApp.m_stringPool.LoadText(STRING_EXIT_MATCH));
 
         pszSrc = g_hudSurfaces.pExitMatchString->m_pchData;
 
@@ -1947,7 +1947,7 @@ int __cdecl HUD::CreateSurfaces(void)
     if (g_hudSurfaces.pContinueText != 0)
     {
         g_hudSurfaces.pContinueString = new String(
-            g_gameApp.m_stringPool.LoadText(g_gameApp.GetInstance(), STRING_CONTINUE));
+            g_gameApp.m_stringPool.LoadText(STRING_CONTINUE));
 
         pszSrc = g_hudSurfaces.pContinueString->m_pchData;
 

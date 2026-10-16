@@ -146,6 +146,7 @@ set(HYPERX_SOURCES
     src/common/purevirtualcall.cpp
     src/common/staticinitglobals.cpp
     src/common/string.cpp
+    src/common/stringtable.cpp
     src/common/stringpool.cpp
     src/common/stub.cpp
     src/common/surfacebehaviorobject.cpp
@@ -413,9 +414,15 @@ add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp)
 target_include_directories(ini_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(ini_check PRIVATE /W3 /utf-8 /EHsc)
 
+# Reads a strings file back, escapes and all.
+add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp)
+target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_options(strings_check PRIVATE /W3 /utf-8 /EHsc)
+
 enable_testing()
 
 add_test(NAME ini COMMAND ini_check)
+add_test(NAME strings COMMAND strings_check)
 
 if(HYPERX_GAME_DATA)
     add_test(NAME mdm1 COMMAND mdm1_check "${HYPERX_GAME_DATA}/Data")

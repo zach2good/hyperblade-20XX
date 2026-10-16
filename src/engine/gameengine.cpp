@@ -1127,7 +1127,7 @@ void GameEngine::BeginMatchPlay()
         }
 
         g_pMessageQueue->Push(m_pTeamA->GetName(), TEXT_LINE_NAMES, TEXT_DURATION);
-        char* const pszVs = g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, STRING_VS);
+        char* const pszVs = g_gameApp.m_stringPool.LoadText(STRING_VS);
         g_pMessageQueue->Push(pszVs, TEXT_LINE_NAMES, TEXT_DURATION);
         g_pMessageQueue->Push(m_pTeamB->GetName(), TEXT_LINE_NAMES, TEXT_DURATION);
 

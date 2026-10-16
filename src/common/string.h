@@ -114,8 +114,6 @@ public:
     }
 
     static void FormatAlloc(String* pString, const char* pszFormat, va_list argList);
-
-    static int LoadResourceString(UINT nID, LPSTR pszBuffer, int nMaxLength);
 };
 
 #endif

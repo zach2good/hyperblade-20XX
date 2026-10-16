@@ -16,7 +16,7 @@ struct StringPool
     String m_strMessage; // 0x0c
 
     // Not named LoadString: windows.h makes that a macro for LoadStringA.
-    char* LoadText(HINSTANCE hInstance, unsigned int uID);
+    char* LoadText(unsigned int uID);
 };
 
 #endif

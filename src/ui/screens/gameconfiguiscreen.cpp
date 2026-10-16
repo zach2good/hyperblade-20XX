@@ -241,9 +241,9 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 
         case GAME_CONFIG_JOYSTICK_INFO:
             hInstance = g_gameApp.m_hInstance;
-            strcpy(szMessage, g_gameApp.m_stringPool.LoadText(hInstance, STRING_JOYSTICK_CONTROL_PANEL));
+            strcpy(szMessage, g_gameApp.m_stringPool.LoadText(STRING_JOYSTICK_CONTROL_PANEL));
             hInstance = g_gameApp.m_hInstance;
-            strcat(szMessage, g_gameApp.m_stringPool.LoadText(hInstance, STRING_GAME_PAD_HELP));
+            strcat(szMessage, g_gameApp.m_stringPool.LoadText(STRING_GAME_PAD_HELP));
             GameApp::ShowMessageBox(g_gameApp.m_hWnd, szMessage, g_gameApp.m_strCaption.m_pchData, MB_OK);
             return;
 

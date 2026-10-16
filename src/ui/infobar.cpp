@@ -1058,7 +1058,7 @@ InfoBar::InfoBar(HDC hDC)
 
     String strPooled("");
 
-    char* pszPooled = g_gameApp.m_stringPool.LoadText(g_gameApp.GetInstance(), STRING_EXIT_MATCH);
+    char* pszPooled = g_gameApp.m_stringPool.LoadText(STRING_EXIT_MATCH);
 
     strPooled.Assign(String::SafeStrlen(pszPooled), pszPooled);
 
@@ -1067,7 +1067,7 @@ InfoBar::InfoBar(HDC hDC)
     pLabel->CreateFontFace(g_abInfoBarFontName, FONT_BODY);
     pLabel->SetText(strPooled, (COLORREF)COLOUR_YELLOW);
 
-    pszPooled = g_gameApp.m_stringPool.LoadText(g_gameApp.GetInstance(), STRING_CONTINUE);
+    pszPooled = g_gameApp.m_stringPool.LoadText(STRING_CONTINUE);
 
     strPooled.Assign(String::SafeStrlen(pszPooled), pszPooled);
 

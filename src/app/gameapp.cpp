@@ -14,6 +14,7 @@
 #include "graphics/texture.h"
 #include "graphics/ddrawapi.h"
 #include "app/window.h"
+#include "common/stringtable.h"
 #include <SDL3/SDL.h>
 #include "graphics/gdi.h"
 #include "common/string.h"
@@ -175,6 +176,16 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     SetProcessDPIAware();
 
     _set_new_handler(GameApp::OutOfMemoryHandler);
+    // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
+    const char* const pszBase = SDL_GetBasePath();
+
+    if (pszBase == 0 || !StringTable::Load(pszBase))
+    {
+        Window::ShowMessage("HyperBlade 20XX runs from your HyperBlade folder. Put hyperblade_20XX.exe beside HYPERX.EXE and start it from there.", "HyperBlade 20XX", MB_OK | MB_ICONHAND);
+
+        ExitProcess(1);
+    }
+
     GameApp::InitializeResourcePaths(hInstance);
     GameApp::ParseCommandLine(lpCmdLine);
 
@@ -237,7 +248,7 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
 {
     g_gameApp.m_hInstance = hInstance;
 
-    char* const pszClassName = g_gameApp.m_stringPool.LoadText(hInstance, STRING_HYPERBLADE);
+    char* const pszClassName = g_gameApp.m_stringPool.LoadText(STRING_HYPERBLADE);
 
     g_gameApp.m_strCaption.Assign(String::SafeStrlen(pszClassName), pszClassName);
 
@@ -569,19 +580,19 @@ int GameApp::FindCDRomDrive(bool bRequired)
     memcpy(szScanRoot, "A:\\", sizeof("A:\\"));
 
     HINSTANCE hInstance = m_hInstance;
-    strcpy(szLabel, m_stringPool.LoadText(hInstance, STRING_HYPERBLADE_UPPERCASE));
+    strcpy(szLabel, m_stringPool.LoadText(STRING_HYPERBLADE_UPPERCASE));
     hInstance = m_hInstance;
-    strcpy(szCaption, m_stringPool.LoadText(hInstance, STRING_CD_NOT_FOUND));
+    strcpy(szCaption, m_stringPool.LoadText(STRING_CD_NOT_FOUND));
 
     if (bRequired)
     {
         hInstance = m_hInstance;
-        strcpy(szText, m_stringPool.LoadText(hInstance, STRING_INSERT_CD_OR_EXIT));
+        strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_EXIT));
     }
     else
     {
         hInstance = m_hInstance;
-        strcpy(szText, m_stringPool.LoadText(hInstance, STRING_INSERT_CD_OR_RETURN));
+        strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_RETURN));
     }
 
     int nDrive = m_nCDRomDrive;
@@ -754,7 +765,7 @@ void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
     strCaption.AppendData(String::SafeStrlen(g_pszCaptionSeparator),
                           g_pszCaptionSeparator);
 
-    char* const pszDetail = m_stringPool.LoadText(m_hInstance, STRING_ALERT);
+    char* const pszDetail = m_stringPool.LoadText(STRING_ALERT);
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 

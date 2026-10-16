@@ -46,8 +46,7 @@ TexCacheEntry::TexCacheEntry(const char* pszName, HPALETTE hPalette)
 
         if (pTexture == 0)
         {
-            g_gameApp.Fatal(g_gameApp.m_stringPool.LoadText(g_gameApp.GetInstance(),
-                                                            STRING_TEXTURE_LOAD_FAILED));
+            g_gameApp.Fatal(g_gameApp.m_stringPool.LoadText(STRING_TEXTURE_LOAD_FAILED));
         }
 
         m_pD3DTexture = pTexture;

@@ -73,7 +73,7 @@ BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
         {
             GetFileVersionInfoA(szFileName, dwHandle, dwSize, pVersion);
 
-            pszPrefix = g_gameApp.m_stringPool.LoadText(g_gameApp.GetInstance(), SPLASH_SUBBLOCK_STRING);
+            pszPrefix = g_gameApp.m_stringPool.LoadText(SPLASH_SUBBLOCK_STRING);
 
             strcpy(szSubBlock, pszPrefix);
 
@@ -102,7 +102,7 @@ BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
         }
     }
 
-    hFont = CreateFontA(14, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, VARIABLE_PITCH | FF_SWISS, g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, SPLASH_FACE_STRING));
+    hFont = CreateFontA(14, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, PROOF_QUALITY, VARIABLE_PITCH | FF_SWISS, g_gameApp.m_stringPool.LoadText(SPLASH_FACE_STRING));
 
     if (hFont != 0)
     {

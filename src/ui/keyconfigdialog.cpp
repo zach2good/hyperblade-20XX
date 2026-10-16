@@ -30,7 +30,7 @@ int __cdecl KeyConfigDialog::OnInitDialog(HWND hDlg, HWND, LPARAM)
         return 1;
     }
 
-    char* const pszMessage = g_gameApp.m_stringPool.LoadText(g_gameApp.m_hInstance, STRING_OUT_OF_MEMORY);
+    char* const pszMessage = g_gameApp.m_stringPool.LoadText(STRING_OUT_OF_MEMORY);
 
     g_gameApp.Error(pszMessage);
 

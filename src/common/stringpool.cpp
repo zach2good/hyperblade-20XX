@@ -1,4 +1,6 @@
 #include "compat.h"
+#include "stringtable.h"
+#include <stdio.h>
 #include "globals.h"
 #include "stringpool.h"
 
@@ -44,17 +46,17 @@ StringPool::~StringPool()
     }
 }
 
-// Reads a string resource into the next buffer of the ring and answers it.
+// Copies a string into the next buffer of the ring and answers it.
 
 // FUNCTION: HYPERX 0x00480b80
-char* StringPool::LoadText(HINSTANCE hInstance, unsigned int uID)
+char* StringPool::LoadText(unsigned int uID)
 {
     if (wIndex >= wCount)
     {
         wIndex = 0;
     }
 
-    LoadStringA(hInstance, uID, apBuffers[wIndex], STRING_POOL_BUFFER_SIZE);
+    snprintf(apBuffers[wIndex], STRING_POOL_BUFFER_SIZE, "%s", StringTable::Find(uID));
 
     return apBuffers[wIndex++];
 }
