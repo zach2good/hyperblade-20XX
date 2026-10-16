@@ -1036,9 +1036,13 @@ void __cdecl PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams
         const float flNegZ = -(flDot * vDir.z);
         const float flNegX = -(flDot * vDir.x);
 
-        vVel.x = flNegX * flScale + (vVel.x + flNegX) * 0.3f;
-        vVel.y = flNegY * flScale + (vVel.GetY() + flNegY) * 0.3f;
-        vVel.z = (flNegZ * flScale + (vVel.GetZ() + flNegZ) * 0.3f) * 1.2f;
+        const float flInX = vVel.x;
+        const float flInY = vVel.y;
+        const float flInZ = vVel.z;
+
+        vVel.x = flNegX * flScale + (flInX + flNegX) * 0.3f;
+        vVel.y = flNegY * flScale + (flInY + flNegY) * 0.3f;
+        vVel.z = (flNegZ * flScale + (flInZ + flNegZ) * 0.3f) * 1.2f;
 
         if (vVel.z < 0.0f)
         {
