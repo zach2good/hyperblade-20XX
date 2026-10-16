@@ -9,6 +9,7 @@
 #include "math/vector.h"
 #include "math/mathglobals.h"
 #include <math.h>
+#include <algorithm>
 
 // FUNCTION: HYPERX 0x00422d60
 void CameraProjectionState::ResetProjection(LayoutState* pViewport, float flFov)
@@ -180,9 +181,12 @@ void CameraProjectionState::BuildMatrix()
         const float flDepthBias  = -(flReach / flDepth);
         const float flWPerZ      = m_flTanHalfFov / m_flNearClip;
 
+        // The field of view was set for 4:3, so a wider view keeps its height and sees more at the sides.
+        const float flFocalPx = (std::min)(m_flHalfWidthPx, m_flHalfHeightPx * 4.0f / 3.0f);
+
         if (m_bIdentity != 0)
         {
-            m_a[0][0] = m_flHalfWidthPx;
+            m_a[0][0] = flFocalPx;
             m_a[1][1] = m_flHalfHeightPx;
             m_a[0][2] = flWPerZ * m_flOffsetXPx;
             m_a[2][2] = flDepthScale;
@@ -196,7 +200,7 @@ void CameraProjectionState::BuildMatrix()
         {
             TransformObject objProjection(1);
 
-            objProjection.m_a[0][0] = m_flHalfWidthPx;
+            objProjection.m_a[0][0] = flFocalPx;
             objProjection.m_a[1][1] = m_flHalfHeightPx;
             objProjection.m_a[0][2] = flWPerZ * m_flOffsetXPx;
             objProjection.m_a[2][2] = flDepthScale;
@@ -211,7 +215,7 @@ void CameraProjectionState::BuildMatrix()
 
         TransformObject objAspect(0);
 
-        objAspect.m_vScale.y = m_flHalfWidthCm / m_flHalfHeightCm;
+        objAspect.m_vScale.y = flFocalPx / m_flHalfHeightPx;
         objAspect.m_vScale.x = 1.0f;
         objAspect.m_vScale.z = 1.0f;
 
