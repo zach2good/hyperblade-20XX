@@ -73,12 +73,7 @@ CDDTextSurface::~CDDTextSurface()
 // FUNCTION: HYPERX 0x00437a20
 int CDDTextSurface::SetFontScaled(const char* pszName, const char* pszText, int bColourKey, int bSystemMemory)
 {
-    if (g_nPrevWidth <= WIDE_SCREEN_WIDTH)
-    {
-        return SetFont(pszName, FONT_POINTS_NARROW, pszText, bColourKey, bSystemMemory);
-    }
-
-    return SetFont(pszName, FONT_POINTS_WIDE, pszText, bColourKey, bSystemMemory);
+    return SetFont(pszName, g_nPrevWidth <= WIDE_SCREEN_WIDTH ? FONT_POINTS_NARROW : FONT_POINTS_WIDE, pszText, bColourKey, bSystemMemory);
 }
 
 STATIC_ASSERT(offsetof(DDBLTFX, dwFillColor) == 0x50);
