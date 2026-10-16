@@ -9,15 +9,12 @@
 #include "ui/cddsurfaceowner.h"
 
 class InfoBarSlot;
-class Texture;
 
 #include "graphics/rlespritesurface.h"
-#include "graphics/damagebar.h"
 #include "graphics/cddtext.h"
 #include "common/commonglobals.h"
 #include "graphics/infobarradar.h"
 #include "graphics/renderer.h"
-#include "graphics/texture.h"
 #include "graphics/infobarslot.h"
 #include "graphics/viewextent.h"
 
@@ -61,12 +58,12 @@ public:
     virtual void DrawScene(int bDraw);
     virtual void DrawHUD(int bFull, HDC hDC);
 
-    virtual void       SetMessageText(const char* pszText, unsigned long color);
-    virtual void       ShowMessage();
-    virtual void       HideMessage();
-    virtual void       SetHomeLogo(char* pszName);
-    virtual void       SetAwayLogo(char* pszName);
-    virtual Texture*   GetHeadCamSurface();
+    virtual void SetMessageText(const char* pszText, unsigned long color);
+    virtual void ShowMessage();
+    virtual void HideMessage();
+    virtual void SetHomeLogo(char* pszName);
+    virtual void SetAwayLogo(char* pszName);
+
     virtual void       ShowHeadCam();
     virtual void       SetHeadCamText(const char* pszText);
     virtual ViewExtent GetHeadCamSize();

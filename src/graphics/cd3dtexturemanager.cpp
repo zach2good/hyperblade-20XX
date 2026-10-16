@@ -1,11 +1,8 @@
 #include "common/compat.h"
 #include "graphics/face.h"
-#include "texture.h"
 #include "globals.h"
 #include "cd3dtexturemanager.h"
-#include "graphics/texture.h"
 #include "common/pathstring.h"
-#include "graphics/cd3dtexture.h"
 #include "texcacheentry.h"
 #include "lodnode.h"
 #include "modeldatabase.h"
@@ -21,24 +18,6 @@
 #include "engine/object.h"
 #include "graphics/softtex.h"
 #include "modelcomponent.h"
-
-// Returns zero whatever happened.
-// FUNCTION: HYPERX 0x00433780
-unsigned int __cdecl CD3DTextureManager::RestoreAllTextures(void)
-{
-    if (g_pTexManager != 0)
-    {
-        for (TexCacheEntry* pEntry = g_pTexManager->m_pTextureList; pEntry != 0; pEntry = pEntry->m_pNext)
-        {
-            if (pEntry->m_bIsD3D != 0 && pEntry->m_pD3DTexture != 0)
-            {
-                pEntry->m_pD3DTexture->OnSurfaceLost();
-            }
-        }
-    }
-
-    return 0;
-}
 
 // Frees the node only when its m_wRefCount drops to zero.
 // FUNCTION: HYPERX 0x00473020
@@ -316,7 +295,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
     {
         const MeshBlock* pMesh = pLod->m_apLodMeshes[nLevel][nMeshIndex];
 
-        if (g_cD3DActive == 0 && pMesh->nCoordBytes != 0)
+        if (pMesh->nCoordBytes != 0)
         {
             TexCoord* pCoords = pMesh->Coords();
 

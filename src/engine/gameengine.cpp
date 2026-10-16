@@ -61,7 +61,6 @@
 #include "engineglobals.h"
 #include "gameoptions.h"
 #include "net/session.h"
-#include "graphics/texture.h"
 #include "arenastate.h"
 #include "teamplayerrow.h"
 #include "graphics/modeldatabase.h"

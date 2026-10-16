@@ -7,7 +7,6 @@
 #include "ui/widget.h"
 #include "ui/torchbitmaps.h"
 #include "ui/screens/mainmenuscreen.h"
-#include "ui/radar.h"
 #include "ui/saveobject.h"
 #include "ui/flipbookwidget.h"
 #include "ui/loopflipbookwidget.h"

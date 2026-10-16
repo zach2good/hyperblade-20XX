@@ -33,14 +33,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
         bWidthRounded = 1;
     }
 
-    if (g_cUseSoftRenderer == 0 && g_bBackBufferReady != 0)
-    {
-        if (g_pRenderer != 0)
-        {
-            g_pRenderer->LayoutSurfaces();
-        }
-    }
-    else if (g_hSoftBackDC != 0)
+    if (g_hSoftBackDC != 0)
     {
         if (g_hSoftBackBitmap != 0)
         {

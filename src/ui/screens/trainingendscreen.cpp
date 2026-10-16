@@ -8,7 +8,6 @@
 #include "app/gameapp.h"
 #include "net/gamesession.h"
 #include "ui/screens/trainingendscreen.h"
-#include "ui/radar.h"
 #include "graphics/gdi.h"
 #include "engine/game.h"
 

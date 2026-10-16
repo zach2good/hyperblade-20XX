@@ -473,17 +473,6 @@ void __cdecl Object::HandleObjectCollisionBounce(EngineObject* pSelf,
     }
 }
 
-// The release build compiled the body out but kept the int return the trace macro reads.
-#pragma warning(push)
-#pragma warning(disable : 4716)
-
-// FUNCTION: HYPERX 0x00416e30
-int Object::Trace(const char*, ...)
-{
-}
-
-#pragma warning(pop)
-
 // Both scalings are cumulative, so the bone moves as well as grows.
 // FUNCTION: HYPERX 0x004499d0
 void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flScaleY, float flScaleZ)

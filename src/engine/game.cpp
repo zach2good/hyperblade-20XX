@@ -30,7 +30,6 @@
 #include "engine/game.h"
 #include "engine/framepacing.h"
 #include "app/win32.h"
-#include "graphics/ddrawapi.h"
 #include "common/stub.h"
 #include "app/stringids.h"
 #include "sound/soundids.h"
@@ -73,9 +72,7 @@ void Game::Tick()
 
     FramePacing::BeginTick();
 
-    Renderer::BeginScene();
     g_pGameEngine->PerFrameUpdate();
-    Renderer::EndScene();
 
     if (g_frameTimer.bFrameTimesOn != 0)
     {
@@ -90,32 +87,15 @@ void Game::Draw(float flAlpha)
 
     if (g_pRenderer != 0)
     {
-        if (g_cD3DActive == 0 && g_cUseSoftRenderer == 0)
-        {
-            DDraw::LockBackBuffer();
-            g_pRenderer->DrawScene(g_renderFlags.bDisplayHUDArt);
-            DDraw::UnlockBackBuffer();
+        // The HUD draws at a fraction of the window and is scaled up over the 3D.
+        HudLayer::Enter();
+        HudLayer::Clear();
 
-            const HDC hdcBackBuffer = DDraw::GetBackBufferDC();
+        g_pRenderer->DrawScene(g_renderFlags.bDisplayHUDArt);
+        // The original passes no DC; src/ui/infobar.cpp makes the back buffer the text DC.
+        g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt, 0);
 
-            if (hdcBackBuffer != 0)
-            {
-                g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt, hdcBackBuffer);
-                DDraw::ReleaseBackBufferDC(hdcBackBuffer);
-            }
-        }
-        else
-        {
-            // The HUD draws at a fraction of the window and is scaled up over the 3D.
-            HudLayer::Enter();
-            HudLayer::Clear();
-
-            g_pRenderer->DrawScene(g_renderFlags.bDisplayHUDArt);
-            // The original passes no DC; src/ui/infobar.cpp makes the back buffer the text DC.
-            g_pRenderer->DrawHUD(g_renderFlags.bDisplayHUDArt, 0);
-
-            HudLayer::Leave();
-        }
+        HudLayer::Leave();
     }
 
     Renderer::PresentFrame();
@@ -185,18 +165,7 @@ void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPa
 
     nStart = GameApp::GetInstallLevel();
 
-    if (g_cUseSoftRenderer != 0)
-    {
-        g_pRenderer = InfoBarBase::Create(1, hSoftBackDC);
-    }
-    else if (g_cD3DActive == 0)
-    {
-        g_pRenderer = InfoBarBase::Create(1, 0);
-    }
-    else
-    {
-        g_pRenderer = InfoBarBase::Create(0, hSoftBackDC);
-    }
+    g_pRenderer = InfoBarBase::Create(hSoftBackDC);
 
     // STRING: HYPERX 0x004c41b4
     g_pGameEngine->Init("game.cfg");
@@ -340,7 +309,7 @@ unsigned int __stdcall Game::UpdateState(void)
             {
                 Screen::ClearBlack(g_gameApp.m_hPalette);
 
-                if (g_bFullScreen != 0 && g_cUseSoftRenderer != 0)
+                if (g_bFullScreen != 0)
                 {
                     Display::ChangeColorDepth(2);
                 }
@@ -563,7 +532,7 @@ unsigned int __stdcall Game::UpdateState(void)
                 g_pGameEngine->RestartMatch();
                 Screen::ClearBlack();
 
-                if (g_bFullScreen != 0 && g_cUseSoftRenderer != 0)
+                if (g_bFullScreen != 0)
                 {
                     Display::ChangeColorDepth(0);
                 }

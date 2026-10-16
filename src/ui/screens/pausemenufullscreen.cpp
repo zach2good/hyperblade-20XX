@@ -5,7 +5,6 @@
 #include "globals.h"
 #include "app/gameapp.h"
 #include "ui/screens/pausemenufullscreen.h"
-#include "ui/radar.h"
 #include "graphics/gdi.h"
 
 // FUNCTION: HYPERX 0x004433c0

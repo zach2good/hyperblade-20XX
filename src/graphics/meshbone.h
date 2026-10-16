@@ -102,7 +102,7 @@ public:
 
     int  BindToLODMesh(class CD3DTextureManager* pLookup, class LODNode* pNode, class EngineObject* pOwner, short nSlot);
     int  BindToLODMeshShadowless(class CD3DTextureManager* pLookup, class LODNode* pNode, class EngineObject* pUnused, short nSlot);
-    void CalcVertexColors(int nUseMdm);
+    void CalcVertexColors();
     void DrawFaces();
     void SubmitToHardware();
 

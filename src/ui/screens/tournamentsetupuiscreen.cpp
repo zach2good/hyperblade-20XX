@@ -10,7 +10,6 @@
 #include "ui/pausemenu.h"
 #include "ui/screens/leaguesetupuiscreen.h"
 #include "ui/screens/tournamentsetupuiscreen.h"
-#include "ui/radar.h"
 #include "ui/loopflipbookwidget.h"
 #include "ui/displaywidget.h"
 #include "ui/saveobject.h"

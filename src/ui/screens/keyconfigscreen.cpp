@@ -13,7 +13,6 @@ class KeyConfigScreen;
 #include "engine/devicector.h"
 #include <string.h>
 #include "ui/screens/keyconfigscreen.h"
-#include "ui/radar.h"
 #include "sound/audiomgr.h"
 #include "ui/displaywidget.h"
 #include "engine/game.h"

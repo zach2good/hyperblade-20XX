@@ -36,28 +36,19 @@
 #include "net/session.h"
 #include "planvm/agendaitem.h"
 #include "engine/cspeedburst.h"
-#include "graphics/d3ddevice.h"
-#include <ddraw.h>
 #include "ui/hudglobals.h"
-#include "graphics/texture.h"
-#include "graphics/d3ddeviceinit.h"
 #include "planvm/damagegate.h"
 #include "physics/upaxis.h"
 #include "math/vector.h"
-#include "graphics/d3dshapes.h"
 #include "engine/stationaryplanrecord.h"
 #include "engine/objectclasses.h"
 #include "physics/physicsbody.h"
 #include "planvm/planopcodetable.h"
 
-int           g_bHWFlipAvailable;
-char          g_szFpsText[100];
-unsigned char g_bIsWindowCreated;
-int           g_nPrevEngineState;
-RenderFlags   g_renderFlags = { 1, 1 };
-// The software renderer is the default; the Direct3D 5 path is untested on modern Windows.
-int                g_cUseSoftRenderer = 1;
-int                g_cD3DActive;
+char               g_szFpsText[100];
+unsigned char      g_bIsWindowCreated;
+int                g_nPrevEngineState;
+RenderFlags        g_renderFlags = { 1, 1 };
 unsigned int       g_dwFrameGameLogicStart;
 InfoBarBase*       g_pRenderer;
 struct GameEngine* g_pGameEngine;
@@ -72,7 +63,6 @@ GameApp            g_gameApp(2);
 HDC                g_hSoftBackDC;
 HPALETTE           g_hSplashPalette;
 AudioMgr*          g_pAudioMgr;
-int                g_hrRestoreResult;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
 ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } },
@@ -92,87 +82,63 @@ ReserveRows g_aFormationTable[16] = {
     { { 0, 1 } },
     { { -1, -1 } }
 };
-HudSurfaces       g_hudSurfaces;
-DisplayStateBlock g_displayState;
-DDrawDeviceBlock  g_ddrawDevice;
-// STRING: HYPERX 0x004cb4e0
-String               g_strHudDefaultName("");
 int                  g_nAnnouncerLineMs;
 StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS] = { 0 };
 int                  g_aStationarySlots[STATIONARY_SLOTS] = { 0 };
 int                  g_nStationaryCount;
 
 // STRING: HYPERX 0x004c724c
-const char*                g_pszEqualsSign = "=";
-unsigned char              g_bNetworkGame;
-unsigned char              g_bShowLightingInfo;
-HPEN                       g_hRadarPen;
-HBRUSH                     g_hRadarBrush;
-int                        g_anNetworkSlotState[7];
-int                        g_bSkipAssetValidation;
-int                        g_bModemPlay;
-class CD3DTextureManager*  g_pTexManager;
-IDirectDraw*               g_pSurfaceDDraw;
-IDirectDrawSurface*        g_pSurfaceFront;
-int                        g_nCountdownLastSecs;
-int                        g_nSavedCursorVisible;
-const char* const          g_pszPbnExtension    = "pbn";
-const char* const          g_pszTokenDelimiters = "	";
-Point                      g_ptHudFpsAnchor     = { 0, 0 };
-int                        g_nHudRightMargin;
-int                        g_nPlanSequenceStep;
-SavedDisplayMetrics*       g_pSavedDesktopMode  = 0;
-struct IDirectDrawPalette* g_pDevicePalette     = 0;
-const char* const          g_pszPlanVmEmptyName = "";
-char                       g_bShuttingDown;
-int                        g_bHelpOpen;
-class KeyboardDeviceObj*   g_pInputDevice;
-struct IDirectDrawPalette* g_pDDrawPalette;
-unsigned char              g_bRightEdgeUsed;
-unsigned char              g_bLeftEdgeUsed;
-short                      g_wSpanYMax;
-short                      g_wSpanYMin;
-int                        g_nRadarLineColour;
-int                        g_nRadarBlipColourRok;
-int                        g_nRadarBlipColourDromer3;
-int                        g_nRadarBlipColourDromer1;
-int                        g_nRadarBlipColourDromer2;
-int                        g_nRadarBlipColourDromer0;
-unsigned char              g_bEdgeWalked;
-int                        g_nFillColour;
-class Screen*              g_pActiveScreen;
-class MessageQueue*        g_pMessageQueue;
-class CheatState           g_cheatState;
-char                       g_bSWClipRectDirty;
-int                        g_bCursorHidden        = 1;
-int                        g_nSavedSoftRenderer   = -1;
-int                        g_bTripleBufferEnabled = 1;
-int                        g_bShadedDromeModels;
-GameOptions*               g_pGameOptions;
-IDirectDraw*               g_pDDrawDevice;
-int                        g_nSurfaceMemoryUsed;
-int                        g_bBackBufferColourKey;
-HPALETTE                   g_hDisplayPalette;
-int                        g_bBackBufferReady;
-long                       g_nDisplayWindowID;
-unsigned char              g_cMdmTexLoaded;
-int                        g_bForceSoftwareRender = 1;
-int                        g_bEmulationOnly;
-int                        g_hrLastResult;
-int                        g_nSurfacePitchCopy;
-int                        g_nViewportOriginY;
-int                        g_nViewportOriginX;
-unsigned char*             g_pBackBufferBitsCopy;
-HWND                       g_hWndGame;
+const char*               g_pszEqualsSign = "=";
+unsigned char             g_bNetworkGame;
+unsigned char             g_bShowLightingInfo;
+int                       g_anNetworkSlotState[7];
+int                       g_bSkipAssetValidation;
+int                       g_bModemPlay;
+class CD3DTextureManager* g_pTexManager;
+int                       g_nCountdownLastSecs;
+int                       g_nSavedCursorVisible;
+const char* const         g_pszPbnExtension    = "pbn";
+const char* const         g_pszTokenDelimiters = "	";
+int                       g_nPlanSequenceStep;
+const char* const         g_pszPlanVmEmptyName = "";
+char                      g_bShuttingDown;
+int                       g_bHelpOpen;
+class KeyboardDeviceObj*  g_pInputDevice;
+unsigned char             g_bRightEdgeUsed;
+unsigned char             g_bLeftEdgeUsed;
+short                     g_wSpanYMax;
+short                     g_wSpanYMin;
+int                       g_nRadarLineColour;
+int                       g_nRadarBlipColourRok;
+int                       g_nRadarBlipColourDromer3;
+int                       g_nRadarBlipColourDromer1;
+int                       g_nRadarBlipColourDromer2;
+int                       g_nRadarBlipColourDromer0;
+unsigned char             g_bEdgeWalked;
+int                       g_nFillColour;
+class Screen*             g_pActiveScreen;
+class MessageQueue*       g_pMessageQueue;
+class CheatState          g_cheatState;
+char                      g_bSWClipRectDirty;
+int                       g_bCursorHidden = 1;
+int                       g_bShadedDromeModels;
+GameOptions*              g_pGameOptions;
+HPALETTE                  g_hDisplayPalette;
+int                       g_bBackBufferReady;
+long                      g_nDisplayWindowID;
+unsigned char             g_cMdmTexLoaded;
+int                       g_nSurfacePitchCopy;
+int                       g_nViewportOriginY;
+int                       g_nViewportOriginX;
+unsigned char*            g_pBackBufferBitsCopy;
+HWND                      g_hWndGame;
 // Full screen by default; -w turns it off.
 int g_bFullScreen = 1;
-int g_bUseOffscreenSurface;
 HDC g_hScreenBltDC;
 int g_nBackBufferHeight;
 int g_nBackBufferWidth;
 
 CameraObject*    g_pScene;
-int              g_hrD3DResult;
 int              g_bPerspectiveTexturing = 1;
 MdmDrawTexPolyFn g_pfnMdmDrawTexPoly;
 HMODULE          g_hMdmTexDll;
@@ -188,7 +154,6 @@ class GameConfigUIScreen* g_pScreenGameConfig;
 MdmInitDrawPolyFn         g_pfnMdmInitDrawPoly;
 int                       g_bBilinearFilter;
 int                       g_nFpsTextLength;
-extern const float        g_flOneNinetyNinth   = 0.01010101f;
 extern const float        g_flOne              = 1.0f;
 extern const float        g_flDegToRad         = 0.017453292f;
 extern const float        g_flHalfPi           = 1.5707964f;
@@ -204,10 +169,9 @@ LightDir                  g_lightDirs[3]       = {
 };
 Vec3                g_vLightDirExtra;
 RECT                g_rcBltDest;
-const char*         g_pszScanFormat     = "%s";
-extern const double g_dNormalizeEpsilon = 1e-07;
-extern const float  g_flZero            = 0.0f;
-int                 g_bExecuteSuppressed;
+const char*         g_pszScanFormat       = "%s";
+extern const double g_dNormalizeEpsilon   = 1e-07;
+extern const float  g_flZero              = 0.0f;
 extern const float  g_flGravityGameEngine = 32.0f;
 int                 g_bSessionActive;
 GameSession*        g_pGameSession;
@@ -225,9 +189,7 @@ int                 g_nPlayerMode;
 unsigned char       g_bSuppressRokId;
 int                 g_nDPlayLastError = -1;
 // STRING: HYPERX 0x004bc410
-const char* g_pszCaptionSeparator = " ";
-// STRING: HYPERX 0x004c0d70
-const char*        g_pszClockFormat = "%d:%02d";
+const char*        g_pszCaptionSeparator = " ";
 unsigned char      g_bDragOff;
 unsigned short*    g_pRightStack;
 unsigned short*    g_pLeftStack;
@@ -283,24 +245,9 @@ short               g_nDebugLineNext;
 const double        g_dSurfaceTolerance = 0.01f;
 PooledOwnerRoot*    g_pCollInteractorPool;
 class AnimRegistry* g_pAnimRegistry;
-extern const float  g_flZeroProjection = 0.0f;
-const float         g_flTransformZero  = 0.0f;
-const float         g_flTransformOne   = 1.0f;
-int                 g_nRenderStateZEnable;
-int                 g_nRenderStateTexturePerspective;
-int                 g_nRenderStateShadeMode;
-int                 g_nRenderStateTextureFilter;
-int                 g_nRenderStateTextureMapBlend;
-int                 g_nRenderStateFillMode;
-int                 g_nRenderStateCullMode;
-int                 g_nRenderStateDither;
-int                 g_nRenderStateSpecular;
-int                 g_nRenderStateAntiAlias;
-int                 g_nRenderStateFog;
-int                 g_nRenderStateFogColour;
-int                 g_nRenderStateFogTableMode;
-float               g_flRenderStateFogStart;
-float               g_flRenderStateFogEnd;
+extern const float  g_flZeroProjection  = 0.0f;
+const float         g_flTransformZero   = 0.0f;
+const float         g_flTransformOne    = 1.0f;
 float               g_flOnePhysicsReset = 1.0f;
 char                g_szSfxBarName[20];
 char                g_szMusicBarName[20];
@@ -322,7 +269,6 @@ struct MessageNode* g_pMessageTail;
 // STRING: HYPERX 0x004bb818
 const char*        g_pszCharFormat = "%c";
 int                g_nNetSetupControlId;
-const GUID         g_iidTextureSurface      = { 0x2cdcd9e0, 0x25a0, 0x11cf, { 0xa3, 0x1a, 0x00, 0xaa, 0x00, 0xb9, 0x33, 0x56 } };
 extern const float g_flCollisionPartDefault = 0.0f;
 extern const float g_flZeroMeshBone         = 0.0f;
 int                g_nBitmapCacheCount;
@@ -331,7 +277,6 @@ BitmapCacheEntry*  g_pBitmapCache;
 const char*        g_pszAnimNameFormat = "%s";
 extern const float g_flZeroAnimClipSet = 0.0f;
 PooledOwnerRoot*   g_pMsgInteractorPool;
-char               g_szClockText[32];
 extern const float g_flZeroCollisionObj = 0.0f;
 int                g_nMatchSetupFlagA;
 int                g_nMatchSetupFlagB;
@@ -356,17 +301,16 @@ Vec3* g_apPositionMarkers[11] = {
     &g_vMarkerGoalMouthSouth,
     0
 };
-PlanStatFn          g_apPlanStatFns[PRN_COUNT];
-HWND                g_hWndNetSetupDlg;
-int                 g_nDisplayBitsPerPixel = 8;
-int                 g_nDisplayHorzRes;
-int                 g_nDisplayVertRes;
-int                 g_nPaletteAnimated;
-HGDIOBJ             g_hSoftBackOldBitmap;
-HBITMAP             g_hSoftBackBitmap;
-HANDLE              g_hNetworkThread;
-HDC                 g_hTextDC;
-LPDIRECTDRAWSURFACE g_pSurfaceBack;
+PlanStatFn g_apPlanStatFns[PRN_COUNT];
+HWND       g_hWndNetSetupDlg;
+int        g_nDisplayBitsPerPixel = 8;
+int        g_nDisplayHorzRes;
+int        g_nDisplayVertRes;
+int        g_nPaletteAnimated;
+HGDIOBJ    g_hSoftBackOldBitmap;
+HBITMAP    g_hSoftBackBitmap;
+HANDLE     g_hNetworkThread;
+HDC        g_hTextDC;
 #include "graphics/transparentqueue.h"
 TransparentEntry  g_transparentSiftEntry;
 TransparentEntry* g_pTransparentQueue;
@@ -399,9 +343,6 @@ int                g_bSingleStepActive;
 struct TransformedVertex* g_pModelVertexBuf;
 struct FaceRecord**       g_ppFaceList;
 struct FaceRecord*        g_pFaceRecords;
-
-// IID_IDirect3D, read out of the original rather than taken from dxguid.lib.
-extern const GUID g_iidDirect3D = { 0x3bba0080, 0x2421, 0x11cf, { 0xa3, 0x1a, 0x00, 0xaa, 0x00, 0xb9, 0x33, 0x56 } };
 
 int g_bTwoPlayers;
 int g_nPauseRequestStreak;
@@ -481,19 +422,6 @@ extern char* const g_pszEmptyDefaultName = "";
 
 extern const float g_flRatingStart = 0.0f;
 
-// Written beside the HUD's message border and read nowhere.
-char g_szHudSampleText[128];
-
-// Written by the display mode enumeration and read nowhere.
-unsigned int g_nVideoMemoryTotal;
-
-int  g_nLastClockSeconds;
-int  g_nLastOverlayPeriod;
-char g_szRokValueText[0x50];
-
-extern const float g_flPerMinute = 1.0f / 60000.0f;
-extern const float g_flPerSecond = 0.001f;
-
 extern const float g_flOneAnimPlayer = 1.0f;
 
 extern const float g_flQuatOne = 1.0f;
@@ -543,17 +471,11 @@ TransparentEntry g_renderPushEntry;
 
 char               g_szDebugLightLine[0x64];
 extern const float g_flDebugLightDistance = 0.59f;
-CDDTextSurface*    g_pDebugLightRangePanel;
-CDDTextSurface*    g_pDebugLightAnglePanel;
 
 ClipStagingBuffer g_clipPolyStaging;
 
 unsigned int   g_nSWFaceColour;
 FacePolyBuffer g_swFaceBuffer;
-
-DWORD g_dwRadarBlipColour;
-float g_flRadarDialX;
-float g_flRadarDialY;
 
 // The scores start at minus one, which no score can be, so the first pass builds both labels.
 int g_nInfoBarLastSeconds;
@@ -561,8 +483,6 @@ int g_nInfoBarLastSeconds;
 extern const float g_flOriginComponent;
 extern const float g_flFacingStepBase;
 extern const float g_flSteerBoxTopY;
-
-int g_nFlipChainCount;
 
 const char* g_pszBitmapExtension = "bmp";
 
@@ -642,33 +562,9 @@ short        g_nWrongSideFrames;
 
 // Every one ships at minus one, so the first frame after a load rebuilds the row.
 
-FacePolyBuffer g_d3dFaceBuffer;
-unsigned int   g_dwCurrentTexHandle;
-int            g_nMdmTexturesReady = 1;
-
 // Set during the arena surface pass; the palette then raises the ramp base to the light level.
 extern int g_bDromePass;
 int        g_bDromePass;
-
-extern double              g_dRadarHeading;
-double                     g_dRadarHeading;
-extern Vec3                g_vRadarCameraDir;
-Vec3                       g_vRadarCameraDir;
-extern class CameraObject* g_pRadarCameraObject;
-class CameraObject*        g_pRadarCameraObject;
-
-// With it set, a bank-switched card gets a zoom surface of its own.
-extern int g_bDoubleResMode;
-int        g_bDoubleResMode;
-
-DisplayModeSize g_displayMode = { (int)g_dwDisplayWidth, (int)g_dwDisplayHeight };
-
-// Bit twenty six of the driver capability word.
-// GLOBAL: HYPERX 0x004cee80
-int g_bBltColourFill;
-
-// GLOBAL: HYPERX 0x004ce620
-unsigned int g_nVidMemTotal;
 
 extern const float g_flTwoCamera;
 const float        g_flTwoCamera = 2.0f;

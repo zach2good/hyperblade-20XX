@@ -9,9 +9,6 @@
 class CD3DTextureManager : public ModelDatabase
 {
 public:
-    static unsigned int __cdecl RestoreAllTextures(void);
-
-public:
     // The body never reads this.
     int RescaleSoftTexCoords(short nMeshIndex, class LODNode* pLod, struct MaterialListNode* pList);
 

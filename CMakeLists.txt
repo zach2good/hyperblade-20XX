@@ -132,7 +132,6 @@ set(HYPERX_SOURCES
     src/common/flatbehaviorobject.cpp
     src/common/flightbehaviorobject.cpp
     src/common/gametime.cpp
-    src/common/mem.cpp
     src/common/nodeowner.cpp
     src/common/parseutil.cpp
     src/common/poolcountsdef.cpp
@@ -197,24 +196,14 @@ set(HYPERX_SOURCES
     src/engine/trackingellipsoidstatics.cpp
     src/engine/weaponobject.cpp
     src/globals.cpp
-    src/graphics/cd3dtexture.cpp
     src/graphics/cd3dtexturemanager.cpp
-    src/graphics/cddbitmap.cpp
     src/graphics/cddtext.cpp
-    src/graphics/cddtextsurface.cpp
     src/graphics/cgpalette.cpp
     src/graphics/clipsphere.cpp
     src/graphics/collisioncage.cpp
     src/graphics/colorpalette.cpp
-    src/graphics/d3d.cpp
-    src/graphics/d3ddevice.cpp
-    src/graphics/d3drend.cpp
-    src/graphics/d3dviewport.cpp
-    src/graphics/damagebar.cpp
-    src/graphics/ddraw.cpp
     src/graphics/display.cpp
     src/graphics/face.cpp
-    src/graphics/framedbarbitmap.cpp
     src/graphics/gdi.cpp
     src/graphics/graphics.cpp
     src/graphics/infobarradar.cpp
@@ -237,19 +226,14 @@ set(HYPERX_SOURCES
     src/graphics/modelfile.cpp
     src/graphics/palettefade.cpp
     src/graphics/palettescalarfade.cpp
-    src/graphics/passbar.cpp
     src/graphics/presenter.cpp
     src/graphics/renderer.cpp
-    src/graphics/renderstatedef.cpp
     src/graphics/rlespritesurface.cpp
-    src/graphics/scrollbitmap.cpp
     src/graphics/softrenderer.cpp
     src/graphics/softtex.cpp
     src/graphics/stbimpl.cpp
-    src/graphics/steppedscrollbitmap.cpp
     src/graphics/swrend.cpp
     src/graphics/texcacheentry.cpp
-    src/graphics/texture.cpp
     src/graphics/visualeffectfade.cpp
     src/input/actionbindings.cpp
     src/input/cheat.cpp
@@ -345,7 +329,6 @@ set(HYPERX_SOURCES
     src/ui/displaywidget.cpp
     src/ui/flipbookwidget.cpp
     src/ui/holdingwidget.cpp
-    src/ui/hud.cpp
     src/ui/inertwidget.cpp
     src/ui/infobar.cpp
     src/ui/infobarbase.cpp
@@ -354,7 +337,6 @@ set(HYPERX_SOURCES
     src/ui/mainwindow.cpp
     src/ui/messagequeue.cpp
     src/ui/pausemenu.cpp
-    src/ui/radar.cpp
     src/ui/saveobject.cpp
     src/ui/screen.cpp
     src/ui/screens/awardsuiscreen.cpp
@@ -391,8 +373,7 @@ target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio imgui)
 set(HYPERX_WARNINGS /W4 /WX)
 
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
-target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
-    DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
+target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
 target_compile_options(hyperx_objects PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
 
 set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
@@ -466,7 +447,7 @@ set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
 target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui
-    kernel32 user32 gdi32 winmm version ddraw dxguid)
+    kernel32 user32 gdi32 winmm version)
 target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
 
 # SDL3.dll goes beside the image.

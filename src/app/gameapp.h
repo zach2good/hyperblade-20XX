@@ -37,12 +37,11 @@ struct GameApp
     static HWND           CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
     static void __cdecl   Shutdown(HWND hWnd);
 
-    void    ReportLastError(HWND hUnused);
-    void    Error(const char* pszFormat, ...);
-    void    Fatal(const char* pszFormat, ...);
-    void    FatalString(const char* pszFormat, ...);
-    void    FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args);
-    HBITMAP LoadGDIBitmap(const char* pszName);
+    void ReportLastError(HWND hUnused);
+    void Error(const char* pszFormat, ...);
+    void Fatal(const char* pszFormat, ...);
+    void FatalString(const char* pszFormat, ...);
+    void FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args);
 
     int FindCDRomDrive(bool bRequired);
 

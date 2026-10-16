@@ -10,31 +10,6 @@
 #define MS_PER_MINUTE        60000
 #define QUIT_PROMPT_INTERVAL 5000
 
-// GLOBAL: HYPERX 0x004ce684
-extern int g_nLastClockSeconds;
-
-// Nothing in the blit pass writes it.
-// GLOBAL: HYPERX 0x004ce688
-extern int g_nLastOverlayPeriod;
-
-// Index nought is a -1 sentinel the blit pass also compares the followed slot against.
-// GLOBAL: HYPERX 0x004c0d58
-extern int g_anPeriodOverlayX[4];
-
-// Minus one until one is drawn.
-// GLOBAL: HYPERX 0x004c0d68
-extern int g_nLastRokValue;
-
-// GLOBAL: HYPERX 0x004ce634
-extern char g_szRokValueText[0x50];
-
-// A thousandth for the seconds and a sixtieth of a thousandth for the minutes.
-// GLOBAL: HYPERX 0x004b2ffc
-extern const float g_flPerMinute;
-
-// GLOBAL: HYPERX 0x004b3000
-extern const float g_flPerSecond;
-
 // Read only by Quat::ToMatrix, Quat::FromMatrix and SlerpSeg::Init.
 // GLOBAL: HYPERX 0x004b2bb0
 extern const float g_flQuatOne;

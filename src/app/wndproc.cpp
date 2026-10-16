@@ -13,7 +13,6 @@
 #include "sound/audiomgr.h"
 #include "graphics/renderer.h"
 #include "graphics/renderoptions.h"
-#include "graphics/d3drend.h"
 #include "graphics/display.h"
 #include "graphics/gdi.h"
 #include "ui/mainwindow.h"
@@ -417,8 +416,6 @@ unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned shor
 
                 CheckMenuItem(hMenu, ID_RENDER_PERSPECTIVE, uPerspectiveCheck);
 
-                D3DRend::SetQualityIfEnabled(1, g_bPerspectiveTexturing);
-
                 return g_bPerspectiveTexturing;
 
             case ID_RENDER_BILINEAR_FILTER:
@@ -436,8 +433,6 @@ unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned shor
                 }
 
                 CheckMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, uFilterCheck);
-
-                D3DRend::SetQualityIfEnabled(2, g_bBilinearFilter);
 
                 return g_bBilinearFilter;
 

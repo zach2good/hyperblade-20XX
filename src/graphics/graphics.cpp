@@ -79,11 +79,6 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
 {
     LPSTR pszCmdLine = GetCommandLineA();
 
-    if (g_cD3DActive != 0)
-    {
-        return 0;
-    }
-
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
     // STRING: HYPERX 0x004c2da0
     if (_mbsstr((const unsigned char*)pszCmdLine, (const unsigned char*)"dmandappro!") == 0)

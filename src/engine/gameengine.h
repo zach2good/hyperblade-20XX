@@ -27,7 +27,6 @@ struct TeamsBlock;
 #include "teamblock.h"
 #include "devicector.h"
 #include "engine/engineclock.h"
-#include "graphics/texture.h"
 #include "engineglobals.h"
 #include "graphics/graphics.h"
 

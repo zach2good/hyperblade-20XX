@@ -49,8 +49,6 @@ extern float g_flDotsPerInchParseUtil;
 extern float g_flDotPitchParseUtil;
 // GLOBAL: HYPERX 0x004b2d58
 extern float g_flCmPerInchParseUtil;
-// GLOBAL: HYPERX 0x004b30cc
-extern const float g_flZeroRadar;
 // GLOBAL: HYPERX 0x004b3220
 extern const float g_flZeroSWRend;
 // GLOBAL: HYPERX 0x004b36e8
@@ -99,8 +97,6 @@ extern float g_flDotPitchCmWidget;
 extern float g_flDotPitchInchWidget;
 // GLOBAL: HYPERX 0x004cb808
 extern float g_flDotPitchCmProjection;
-// GLOBAL: HYPERX 0x004cb80c
-extern float g_flDotPitchInchProjection;
 // GLOBAL: HYPERX 0x004cd4a4
 extern float g_flFifthParseUtil;
 // GLOBAL: HYPERX 0x004cd4ac
@@ -141,8 +137,6 @@ extern const float g_flZeroPlanTracking;
 extern const float g_flZeroConfigDialog;
 // GLOBAL: HYPERX 0x004b2a00
 extern const float g_flZeroDistance;
-// GLOBAL: HYPERX 0x004b2f78
-extern const float g_flZeroDisplayMode;
 // GLOBAL: HYPERX 0x004b322c
 extern const float g_flZeroDisplay;
 // GLOBAL: HYPERX 0x004b3234
@@ -237,31 +231,7 @@ extern float g_flUnusedDistanceA;
 extern float g_flUnusedDistanceB;
 // GLOBAL: HYPERX 0x004cb700
 extern float g_flUnusedDistanceC;
-// GLOBAL: HYPERX 0x004cd494
-extern float g_flUnusedLightLevelA;
-// GLOBAL: HYPERX 0x004cd490
-extern float g_flUnusedLightLevelB;
-// GLOBAL: HYPERX 0x004cd48c
-extern float g_flUnusedLightLevelC;
-// GLOBAL: HYPERX 0x004cdaa0
-extern float g_flUnusedDisplayModeA;
-// GLOBAL: HYPERX 0x004cda9c
-extern float g_flUnusedDisplayModeB;
-// GLOBAL: HYPERX 0x004cda98
-extern float g_flUnusedDisplayModeC;
-// SYNTHETIC: HYPERX 0x004394c0
-// $E2
-// SYNTHETIC: HYPERX 0x00439500
-// $E8
-// SYNTHETIC: HYPERX 0x00439510
-// $E7
 
-// GLOBAL: HYPERX 0x004ce6d0
-extern float g_flUnusedRadarA;
-// GLOBAL: HYPERX 0x004ce6cc
-extern float g_flUnusedRadarB;
-// GLOBAL: HYPERX 0x004ce6c8
-extern float g_flUnusedRadarC;
 // GLOBAL: HYPERX 0x004ced54
 extern float g_flUnusedSWRendA;
 // GLOBAL: HYPERX 0x004ced50

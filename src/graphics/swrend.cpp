@@ -11,7 +11,6 @@
 #include "engine/engineobject.h"
 #include "ui/hudglobals.h"
 #include "projrender.h"
-#include "d3dshapes.h"
 #include "softtex.h"
 #include "texcacheentry.h"
 #include "colorpalette.h"
@@ -67,18 +66,15 @@ int          g_nSWVertexUVMask  = Face::VertexMask(7, 2);
 float        g_flUnusedDisplayA = g_flZeroDisplay;
 float        g_flUnusedDisplayB = g_flZeroDisplay;
 float        g_flUnusedDisplayC = g_flZeroDisplay;
-SurfacePoint g_ptHudClockAnchor(0, 0);
 SurfacePoint g_ptHudAnchorC(0, 0);
 SurfacePoint g_ptHudAnchorD(0, 0);
 
 extern Vec3 g_vLightDirModel;
 
+extern class TransformObject* g_pCameraTransform;
+
 // The addresses are named in symbols/float_constants.csv.
 #define SW_LIGHT_CEILING 1.0f
-
-#define COLOUR_ALPHA_BITS 0xffffff00
-
-#define COLOUR_OPAQUE 0xff000000
 
 #define SW_ROUND_BIAS 12582912.0f
 
@@ -94,7 +90,6 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     float               flLevel2;
     unsigned char       cShade;
     unsigned char       cColourIndex;
-    int                 nKind;
     short               nStep;
     short               nFirst;
     short               nEnd;
@@ -223,82 +218,52 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         vNormal.y = -pFaceNormal->y;
         vNormal.z = -pFaceNormal->z;
 
-        if (g_cD3DActive == 0)
+        cColourIndex = pMaterial->acChannel[0];
+
+        if (cColourIndex >= g_pColorPalette->m_rampBounds.nFirst && cColourIndex <= g_pColorPalette->m_rampBounds.nCount)
         {
-            cColourIndex = pMaterial->acChannel[0];
+            flLevel             = g_flZeroSWRend;
+            Vec3* const pNormal = &vNormal;
 
-            if (cColourIndex >= g_pColorPalette->m_rampBounds.nFirst && cColourIndex <= g_pColorPalette->m_rampBounds.nCount)
+            if (pNormal == 0)
             {
-                flLevel             = g_flZeroSWRend;
-                Vec3* const pNormal = &vNormal;
-
-                if (pNormal == 0)
-                {
-                    cShade = SHADE_WHITE;
-                }
-                else
-                {
-                    const float flPartial = Vec3::Dot(pNormal, &g_vLightDirModel) * pMaterial->flDiffuse + pMaterial->flAmbient;
-
-                    flLevel = flPartial + pMaterial->flEmissive;
-
-                    if (flLevel > g_flZeroSWRend)
-                    {
-                        if (flLevel < SW_LIGHT_CEILING)
-                        {
-                            cShade = SHADE_SCALED;
-                        }
-                        else
-                        {
-                            cShade = SHADE_WHITE;
-                        }
-                    }
-                    else
-                    {
-                        cShade = SHADE_BLACK;
-                    }
-                }
-
-                g_nSWFaceColour =
-                    (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex)
-                           << 8 |
-                       ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
-                          << 8 |
-                      ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
-                     << 8) |
-                    ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex);
+                cShade = SHADE_WHITE;
             }
             else
             {
-                g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+                const float flPartial = Vec3::Dot(pNormal, &g_vLightDirModel) * pMaterial->flDiffuse + pMaterial->flAmbient;
+
+                flLevel = flPartial + pMaterial->flEmissive;
+
+                if (flLevel > g_flZeroSWRend)
+                {
+                    if (flLevel < SW_LIGHT_CEILING)
+                    {
+                        cShade = SHADE_SCALED;
+                    }
+                    else
+                    {
+                        cShade = SHADE_WHITE;
+                    }
+                }
+                else
+                {
+                    cShade = SHADE_BLACK;
+                }
             }
+
+            g_nSWFaceColour =
+                (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex)
+                       << 8 |
+                   ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
+                      << 8 |
+                  ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
+                 << 8) |
+                ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex);
         }
         else
         {
-            flLevel = g_flZeroSWRend;
-
-            nKind = MeshMaterial::CalcLightIntensity(&flLevel, pMaterial, &vNormal) & 0xff;
-
-            switch (nKind)
-            {
-                case SHADE_WHITE:
-                    g_nSWFaceColour = (unsigned int)pMaterial->nColour;
-                    break;
-
-                case SHADE_SCALED:
-                    g_nSWFaceColour =
-                        ((((unsigned int)(int)(pMaterial->acChannel[2] * flLevel) | COLOUR_ALPHA_BITS)
-                              << 8 |
-                          (unsigned int)(int)(pMaterial->acChannel[1] * flLevel))
-                         << 8) |
-                        (unsigned int)(int)(pMaterial->acChannel[0] * flLevel);
-
-                    break;
-
-                default:
-                    g_nSWFaceColour = COLOUR_OPAQUE;
-                    break;
-            }
+            g_nSWFaceColour = (unsigned int)pMaterial->nColour;
         }
     }
     else
@@ -311,58 +276,28 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         {
             pMaterial = ppMaterials[0];
 
-            if (g_cD3DActive == 0)
-            {
-                cColourIndex = pMaterial->acChannel[0];
+            cColourIndex = pMaterial->acChannel[0];
 
-                if (cColourIndex >= g_pColorPalette->m_rampBounds.nFirst && cColourIndex <= g_pColorPalette->m_rampBounds.nCount)
-                {
-                    flLevel2 = g_flZeroSWRend;
-
-                    cShade = (unsigned char)MeshMaterial::CalcLightIntensity(&flLevel2,
-                                                                             pMaterial,
-                                                                             pFaceNormal);
-
-                    g_nSWFaceColour =
-                        (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex)
-                               << 8 |
-                           ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
-                              << 8 |
-                          ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
-                         << 8) |
-                        ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex);
-                }
-                else
-                {
-                    g_nSWFaceColour = (unsigned int)pMaterial->nColour;
-                }
-            }
-            else
+            if (cColourIndex >= g_pColorPalette->m_rampBounds.nFirst && cColourIndex <= g_pColorPalette->m_rampBounds.nCount)
             {
                 flLevel2 = g_flZeroSWRend;
 
-                nKind = MeshMaterial::CalcLightIntensity(&flLevel2, pMaterial, pFaceNormal) & 0xff;
+                cShade = (unsigned char)MeshMaterial::CalcLightIntensity(&flLevel2,
+                                                                         pMaterial,
+                                                                         pFaceNormal);
 
-                switch (nKind)
-                {
-                    case SHADE_WHITE:
-                        g_nSWFaceColour = (unsigned int)pMaterial->nColour;
-                        break;
-
-                    case SHADE_SCALED:
-                        g_nSWFaceColour =
-                            ((((unsigned int)(int)(pMaterial->acChannel[2] * flLevel2) | COLOUR_ALPHA_BITS)
-                                  << 8 |
-                              (unsigned int)(int)(pMaterial->acChannel[1] * flLevel2))
-                             << 8) |
-                            (unsigned int)(int)(pMaterial->acChannel[0] * flLevel2);
-
-                        break;
-
-                    default:
-                        g_nSWFaceColour = COLOUR_OPAQUE;
-                        break;
-                }
+                g_nSWFaceColour =
+                    (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex)
+                           << 8 |
+                       ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
+                          << 8 |
+                      ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
+                     << 8) |
+                    ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex);
+            }
+            else
+            {
+                g_nSWFaceColour = (unsigned int)pMaterial->nColour;
             }
         }
     }

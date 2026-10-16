@@ -14,10 +14,9 @@ struct GameApp;
 #include "torchbitmaps.h"
 #include "graphics/graphicsglobals.h"
 #include "framepos.h"
-#include <ddraw.h>
+
 #include <string.h>
 #include <mbstring.h>
-#include "graphics/ddrawapi.h"
 #include "engine/game.h"
 #include "app/window.h"
 #include "common/stub.h"
@@ -502,11 +501,9 @@ int Screen::TickAnimations()
 // FUNCTION: HYPERX 0x0048c7c0
 int Screen::PaintToWindow()
 {
-    PAINTSTRUCT  paint;
-    PALETTEENTRY aEntries[256];
-    BITMAP       bitmap;
-    HRESULT      hr;
-    int          nSlot;
+    PAINTSTRUCT paint;
+    BITMAP      bitmap;
+    int         nSlot;
 
     if (g_pActiveScreen == 0)
     {
@@ -530,33 +527,6 @@ int Screen::PaintToWindow()
     {
         GDI::SelectSplashPalette(hdc, m_hPalette, 0);
         GDI::RealizePalette(hdc);
-
-        if (g_pDDrawDevice != 0 && g_cD3DActive == 0)
-        {
-            GetPaletteEntries(m_hPalette, 0, 256, aEntries);
-
-            hr = g_pDDrawDevice->CreatePalette(DDPCAPS_8BIT, aEntries, &g_pDDrawPalette, 0);
-
-            if (hr != 0)
-            {
-                // STRING: HYPERX 0x004c858c
-                g_gameApp.Fatal("PaintScreen: DDCreatePalette failed!\n%s\n",
-                                DDraw::ErrorToString(hr));
-            }
-        }
-    }
-
-    if (g_ddrawDevice.pBackSurface != 0 && m_bRepaintBackground == 1)
-    {
-        hr = g_ddrawDevice.pBackSurface->BltFast(0, 0, g_ddrawDevice.pDDrawPrimary, 0, DDBLTFAST_WAIT);
-
-        if (hr == DDERR_SURFACELOST)
-        {
-            DDraw::RestoreAllSurfaces();
-            g_ddrawDevice.pBackSurface->BltFast(0, 0, g_ddrawDevice.pDDrawPrimary, 0, DDBLTFAST_WAIT);
-        }
-
-        g_ddrawDevice.pDDrawPrimary->Flip(0, DDFLIP_WAIT);
     }
 
     if (m_bRepaintBackground == 1)

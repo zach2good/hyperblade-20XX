@@ -13,13 +13,11 @@
 #include "engine/gameoptions.h"
 #include "engine/devicector.h"
 #include "engine/gameengine.h"
-#include "d3ddevice.h"
 #include "math/transformobject.h"
 #include "projrender.h"
 #include <string.h>
 #include "engine/engineobject.h"
 #include "renderoptions.h"
-#include "graphics/ddrawapi.h"
 #include "ui/debughud.h"
 #include "physics/collisionellipsoid.h"
 
@@ -72,24 +70,7 @@ extern int g_bDromePass;
 // GLOBAL: HYPERX 0x004c1e94
 extern int g_bDromeIniDirty;
 
-// The arena pass substitutes the ini's answer for its duration.
-extern int g_nMdmTexturesReady;
-
 #define DROME_TEXTURED_DEFAULT 1
-
-// Only a null target clears first. The answer is always nought.
-// FUNCTION: HYPERX 0x004337b0
-int __cdecl Renderer::RenderFrame(const Texture* pTarget)
-{
-    if (pTarget == 0)
-    {
-        DDraw::ClearBackBuffer(CLEAR_COLOUR);
-    }
-
-    Renderer::DrawWholeScene();
-
-    return 0;
-}
 
 // A network or loading frame relights the first slots from fixed directions first.
 // FUNCTION: HYPERX 0x00442d20
@@ -110,10 +91,6 @@ void __cdecl Renderer::DrawAllMeshes(void)
         g_bDromeIniDirty = 0;
         g_bLoadingMode   = 1;
     }
-
-    const int nSavedTextured = g_nMdmTexturesReady;
-
-    g_nMdmTexturesReady = g_nDromeTextured;
 
     if (g_bNetworkGame != 0 || g_bLoadingMode != 0)
     {
@@ -136,7 +113,7 @@ void __cdecl Renderer::DrawAllMeshes(void)
 
             if (pBone->IsBound() != 0)
             {
-                pBone->CalcVertexColors(g_nMdmTexturesReady);
+                pBone->CalcVertexColors();
             }
         }
 
@@ -150,7 +127,7 @@ void __cdecl Renderer::DrawAllMeshes(void)
 
         if (pBone->IsBound() != 0)
         {
-            pBone->CalcVertexColors(g_nMdmTexturesReady);
+            pBone->CalcVertexColors();
         }
 
         g_lightDirs[0].dir = g_lightDirs[2].dir;
@@ -159,7 +136,7 @@ void __cdecl Renderer::DrawAllMeshes(void)
 
         if (pBone->IsBound() != 0)
         {
-            pBone->CalcVertexColors(g_nMdmTexturesReady);
+            pBone->CalcVertexColors();
         }
 
         g_lightDirs[0].dir.z = vSavedDir.z;
@@ -182,8 +159,6 @@ void __cdecl Renderer::DrawAllMeshes(void)
 
         nBone++;
     }
-
-    g_nMdmTexturesReady = nSavedTextured;
 
     g_bLoadingMode = 0;
 }
@@ -249,13 +224,6 @@ void __stdcall Renderer::DrawWholeScene(void)
 // FUNCTION: HYPERX 0x0044b7c0
 void __stdcall Renderer::DestroyBackBuffer(void)
 {
-    if (g_cUseSoftRenderer == 0)
-    {
-        DDraw::DestroyAllSurfaces();
-
-        return;
-    }
-
     if (g_hSoftBackDC != 0)
     {
         SelectObject(g_hSoftBackDC, g_hSoftBackOldBitmap);
@@ -268,7 +236,6 @@ void __stdcall Renderer::DestroyBackBuffer(void)
     }
 }
 
-// The flip is skipped while the cursor shows.
 // FUNCTION: HYPERX 0x0044bc30
 int __stdcall Renderer::PresentFrame(void)
 {
@@ -276,16 +243,6 @@ int __stdcall Renderer::PresentFrame(void)
     if (g_nSplashFrame != 0)
     {
         return 1;
-    }
-
-    if (g_cUseSoftRenderer == 0)
-    {
-        if (g_bCursorHidden == 0)
-        {
-            return 1;
-        }
-
-        return DDraw::FlipOrBlt();
     }
 
     // GDI drew the palette into the DIB's colour table; the GPU applies it.
@@ -302,14 +259,7 @@ int __stdcall Renderer::PresentFrame(void)
 // FUNCTION: HYPERX 0x0044bc80
 void __stdcall Renderer::DrawSceneDispatch(void)
 {
-    if (g_cUseSoftRenderer == 0)
-    {
-        DDraw::PaintSurface();
-    }
-    else
-    {
-        Renderer::DrawWholeScene();
-    }
+    Renderer::DrawWholeScene();
 }
 
 // FUNCTION: HYPERX 0x0044be80
@@ -348,50 +298,9 @@ LayoutState g_cameraViewportBlock;
 // GLOBAL: HYPERX 0x004d1a68
 ClipExtents g_projRenderParams;
 
-// The software path has nothing to bracket and reports success.
-// FUNCTION: HYPERX 0x0044bf00
-int __stdcall Renderer::BeginScene(void)
-{
-    int nResult;
-
-    if (g_cUseSoftRenderer == 0)
-    {
-        if (g_ddrawDevice.bD3DActive != 0)
-        {
-            nResult = D3DDevice::BeginScene();
-        }
-        else
-        {
-            nResult = 0;
-        }
-
-        return nResult == 0;
-    }
-
-    return 1;
-}
-
-// FUNCTION: HYPERX 0x0044bf40
-int __stdcall Renderer::EndScene(void)
-{
-    if (g_cUseSoftRenderer == 0)
-    {
-        return D3DDevice::EndScene() == 0;
-    }
-
-    return 1;
-}
-
 // FUNCTION: HYPERX 0x0044bf60
 void __cdecl Renderer::ClearFrame(void)
 {
-    if (g_cUseSoftRenderer == 0)
-    {
-        DDraw::ClearBackBuffer(CLEAR_COLOUR);
-
-        return;
-    }
-
     if (g_pBackBufferBitsCopy != 0)
     {
         int nIndex = GetNearestPaletteIndex(g_hDisplayPalette, CLEAR_COLOUR);
@@ -406,7 +315,6 @@ void __cdecl Renderer::ClearFrame(void)
     }
 }
 
-// Under Direct3D the second and fourth projection floats gain a pixel.
 // FUNCTION: HYPERX 0x0047a980
 void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
 {
@@ -414,12 +322,6 @@ void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
     g_pBackBufferBitsCopy = (unsigned char*)block.pBits;
     g_pCameraTransform    = block.pCamera;
     g_projRenderParams    = block.pCamera->m_clip;
-
-    if (g_ddrawDevice.bD3DActive != 0)
-    {
-        g_projRenderParams.flMaxX += 1.0f;
-        g_projRenderParams.flMaxY += 1.0f;
-    }
 
     g_nPrevWidth            = block.nPrevWidth;
     g_nPrevHeight           = block.nPrevHeight;

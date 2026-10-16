@@ -39,9 +39,6 @@ extern float g_flOneSteering;
 // GLOBAL: HYPERX 0x004cb76c
 extern float g_flScreenDotsPerInchWidget;
 
-// GLOBAL: HYPERX 0x004cb804
-extern float g_flScreenDotsPerInchProjection;
-
 // GLOBAL: HYPERX 0x004cd4a0
 extern float g_flScreenDotsPerInchParseUtil;
 

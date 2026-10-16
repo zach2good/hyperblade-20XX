@@ -10,7 +10,6 @@
 #include <io.h>
 #include "uiscreen.h"
 #include "sound/audiomgr.h"
-#include "radar.h"
 #include "app/gameapp.h"
 #include "loopflipbookwidget.h"
 #include "flipbookwidget.h"

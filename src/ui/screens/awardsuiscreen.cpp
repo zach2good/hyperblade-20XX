@@ -10,7 +10,6 @@ class AwardsUIScreen;
 #include "ui/widget.h"
 #include <stdio.h>
 #include "ui/screens/awardsuiscreen.h"
-#include "ui/radar.h"
 #include "ui/flipbookwidget.h"
 #include "ui/loopflipbookwidget.h"
 #include "ui/displaywidget.h"

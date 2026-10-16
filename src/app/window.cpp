@@ -1,6 +1,5 @@
 #include "common/compat.h"
 #include "globals.h"
-#include "graphics/ddrawapi.h"
 #include "gameapp.h"
 #include "app/window.h"
 #include "graphics/presenter.h"
@@ -56,18 +55,13 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
 
 // The original swaps X and Y too; SWP_NOMOVE ignores both.
 // FUNCTION: HYPERX 0x0044bdb0
-unsigned int Window::OnWindowMove(HWND hWnd, int nFlag)
+unsigned int Window::OnWindowMove(HWND hWnd, int)
 {
     RECT rc;
 
     GetWindowRect(hWnd, &rc);
 
     SetWindowPos(hWnd, 0, rc.top, rc.left, rc.right - rc.left, rc.bottom - rc.top, SWP_MOVE_FLAGS);
-
-    if (g_cUseSoftRenderer == 0)
-    {
-        DDraw::BlitBackToWindow(hWnd, nFlag);
-    }
 
     return 0;
 }

@@ -832,20 +832,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
                 nIndex = (unsigned char)nColour;
             }
 
-            if (g_cD3DActive != 0)
-            {
-                PALETTEENTRY entry;
-                PALETTEENTRY remapped;
-
-                remapped = *g_pColorPalette->GetRemappedEntry(&entry, nIndex);
-
-                nColour = ((((remapped.peRed | 0xffffff00) << 8) | remapped.peGreen) << 8) |
-                          remapped.peBlue;
-            }
-            else
-            {
-                nColour = nIndex;
-            }
+            nColour = nIndex;
 
             m_pModelBlock->m_pMaterials[j].nColour = nColour;
         }
@@ -906,8 +893,6 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
     unsigned int  nColour;
     unsigned char nIndex;
     int           nShifted;
-    PALETTEENTRY  entry;
-    PALETTEENTRY  remapped;
 
     m_nSlot         = nSlot;
     m_bScaledBounds = 0;
@@ -1049,17 +1034,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
                 nIndex = (unsigned char)nColour;
             }
 
-            if (g_cD3DActive != 0)
-            {
-                remapped = *g_pColorPalette->GetRemappedEntry(&entry, nIndex);
-
-                nColour = ((((remapped.peRed | 0xffffff00) << 8) | remapped.peGreen) << 8) |
-                          remapped.peBlue;
-            }
-            else
-            {
-                nColour = nIndex;
-            }
+            nColour = nIndex;
 
             m_pModelBlock->m_pMaterials[j].nColour = nColour;
         }

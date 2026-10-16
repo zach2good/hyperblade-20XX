@@ -78,7 +78,7 @@ With every switch on its original setting, the hardware renderer should match th
 3. Textures, through stb_image into GPU textures owned by `TexCacheEntry`.
 4. Smooth shading and several lights.
 5. Shadow maps from the main light.
-6. Delete the DirectDraw and Direct3D code and the DirectDraw HUD, and unlink `ddraw` and `dxguid`.
+6. Delete the DirectDraw and Direct3D code and the DirectDraw HUD, and unlink `ddraw` and `dxguid`. Done.
 
 Later passes, such as ambient occlusion, reflections and compute-traced shadows, build on the same
 depth buffer and mesh buffers.

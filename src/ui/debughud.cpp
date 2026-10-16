@@ -4,11 +4,9 @@
 #include "hudglobals.h"
 #include "common/staticinit.h"
 #include "common/pathstring.h"
-#include "graphics/texture.h"
 #include "uiglobals.h"
 #include <stdio.h>
 #include <string.h>
-#include "graphics/cddtextsurface.h"
 #include "ui/debughud.h"
 
 // Angles print in degrees modulo a turn; the elevation adds a quarter turn, so down is nought.
@@ -21,12 +19,6 @@ extern char g_szDebugLightLine[0x64];
 // GLOBAL: HYPERX 0x004c67b8
 extern const float g_flDebugLightDistance;
 
-// GLOBAL: HYPERX 0x004d0a70
-extern CDDTextSurface* g_pDebugLightRangePanel;
-
-// GLOBAL: HYPERX 0x004d0a74
-extern CDDTextSurface* g_pDebugLightAnglePanel;
-
 // FUNCTION: HYPERX 0x0047ab90
 void DebugHUD::UpdateLightingInfo(void)
 {
@@ -37,56 +29,10 @@ void DebugHUD::UpdateLightingInfo(void)
 
     DebugHUD::PushLightString(g_szDebugLightLine, (short)nLength);
 
-    CDDTextSurface* pPanel = g_pDebugLightRangePanel;
-
-    if (pPanel != 0)
-    {
-        String* pText;
-        int     nText;
-
-        pText = &pPanel->m_strText;
-
-        if (g_szDebugLightLine == 0)
-        {
-            nText = 0;
-        }
-        else
-        {
-            nText = lstrlenA(g_szDebugLightLine);
-        }
-
-        pText->Assign(nText, g_szDebugLightLine);
-
-        pPanel->RestoreContents();
-    }
-
     // STRING: HYPERX 0x004c67c8
     nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", (int)((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % DEGREES_PER_TURN, (int)(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % DEGREES_PER_TURN);
 
     DebugHUD::PushLightString(g_szDebugLightLine, (short)nLength);
-
-    pPanel = g_pDebugLightAnglePanel;
-
-    if (pPanel != 0)
-    {
-        String* pText;
-        int     nText;
-
-        pText = &pPanel->m_strText;
-
-        if (g_szDebugLightLine == 0)
-        {
-            nText = 0;
-        }
-        else
-        {
-            nText = lstrlenA(g_szDebugLightLine);
-        }
-
-        pText->Assign(nText, g_szDebugLightLine);
-
-        pPanel->RestoreContents();
-    }
 }
 
 // FUNCTION: HYPERX 0x0047ae10

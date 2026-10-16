@@ -5,7 +5,6 @@
 #include "ui/textinputwidget.h"
 #include "ui/widget.h"
 #include "ui/screens/multisetupoptionsscreen.h"
-#include "ui/radar.h"
 #include "ui/loopflipbookwidget.h"
 #include "ui/flipbookwidget.h"
 #include "graphics/gdi.h"

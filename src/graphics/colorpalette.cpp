@@ -349,10 +349,7 @@ HPALETTE ColorPalette::ReloadPalette(short nMode)
         m_hPalette = CreateFromDC(this, 0x100);
     }
 
-    if (g_cUseSoftRenderer != 0)
-    {
-        SyncDIBColorTable(0, 0x100);
-    }
+    SyncDIBColorTable(0, 0x100);
 
     return m_hPalette;
 }
@@ -399,10 +396,7 @@ char ColorPalette::RealizePalette()
 
     m_hPalette = CreateFromDC(this, 0x100);
 
-    if (g_cUseSoftRenderer != 0)
-    {
-        SyncDIBColorTable(0, 0x100);
-    }
+    SyncDIBColorTable(0, 0x100);
 
     m_hOldPalette = SelectPalette(m_hdc, m_hPalette, 0);
 
@@ -828,10 +822,7 @@ int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, PALETTE
 
     GetPaletteEntries(m_hPalette, iStart, cEntries, &m_entries[iStart]);
 
-    if (g_cUseSoftRenderer != 0)
-    {
-        SyncDIBColorTable(iStart, cEntries);
-    }
+    SyncDIBColorTable(iStart, cEntries);
 
     return nAccepted;
 }
@@ -864,10 +855,7 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PA
 {
     if (AnimatePalette(m_hPalette, iStart, cEntries, pEntries) != 0)
     {
-        if (g_cUseSoftRenderer != 0)
-        {
-            SyncDIBColorTable(iStart, cEntries);
-        }
+        SyncDIBColorTable(iStart, cEntries);
 
         return 1;
     }

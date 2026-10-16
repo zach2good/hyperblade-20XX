@@ -12,7 +12,6 @@ class GameConfigUIScreen;
 #include <stdio.h>
 #include "ui/screens/gameconfiguiscreen.h"
 #include "sound/audiomgr.h"
-#include "ui/radar.h"
 #include "common/stringpool.h"
 #include "app/gameapp.h"
 #include "ui/loopflipbookwidget.h"

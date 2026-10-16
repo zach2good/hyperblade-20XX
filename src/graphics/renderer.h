@@ -5,9 +5,6 @@
 
 #include "common/compat.h"
 
-class Texture;
-
-#include "texture.h"
 #include "graphics/viewextent.h"
 #include "graphics/renderoptions.h"
 
@@ -21,15 +18,13 @@ struct LayoutState;
 class __declspec(novtable) Renderer
 {
 public:
-    static void __stdcall        DrawSceneDispatch(void);
-    static int __cdecl           SetDromeTextured(int nEnable);
-    static int __cdecl           ToggleDromeTextured(void);
-    static void                  SetRenderOption(RenderOption nOption, int nValue);
-    static void                  SetLoadingMode(void);
-    static int __stdcall         PresentFrame(void);
-    static int __stdcall         BeginScene(void);
-    static int __stdcall         EndScene(void);
-    static int __cdecl           RenderFrame(const Texture* pTarget);
+    static void __stdcall DrawSceneDispatch(void);
+    static int __cdecl    SetDromeTextured(int nEnable);
+    static int __cdecl    ToggleDromeTextured(void);
+    static void           SetRenderOption(RenderOption nOption, int nValue);
+    static void           SetLoadingMode(void);
+    static int __stdcall  PresentFrame(void);
+
     static void                  ClearFrame(void);
     static void                  DrawAllMeshes(void);
     static void __stdcall        DrawWholeScene(void);
@@ -51,14 +46,12 @@ public:
 
     virtual void HideMessage() = 0;
 
-    virtual void SetHomeLogo(char* pTeamData) = 0;
-    virtual void SetAwayLogo(char* pTeamData) = 0;
-    // Nought when the renderer has no head cam.
-    virtual class Texture* GetHeadCamSurface()                 = 0;
-    virtual void           ShowHeadCam()                       = 0;
-    virtual void           SetHeadCamText(const char* pszText) = 0;
-    virtual ViewExtent     GetHeadCamSize()                    = 0;
-    virtual ViewExtent     GetHeadCamOrigin()                  = 0;
+    virtual void       SetHomeLogo(char* pTeamData)        = 0;
+    virtual void       SetAwayLogo(char* pTeamData)        = 0;
+    virtual void       ShowHeadCam()                       = 0;
+    virtual void       SetHeadCamText(const char* pszText) = 0;
+    virtual ViewExtent GetHeadCamSize()                    = 0;
+    virtual ViewExtent GetHeadCamOrigin()                  = 0;
 
     // A camera going to render mode one hands it zero.
     virtual void SetShotPower(float flPower) = 0;

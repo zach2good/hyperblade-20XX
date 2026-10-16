@@ -10,7 +10,6 @@
 #include "ui/framepos.h"
 #include "ui/pausemenu.h"
 #include "ui/screens/headtoheadsetupuiscreen.h"
-#include "ui/radar.h"
 #include "ui/loopflipbookwidget.h"
 #include "ui/displaywidget.h"
 #include "ui/saveobject.h"

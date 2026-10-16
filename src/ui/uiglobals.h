@@ -6,13 +6,6 @@
 
 #include "globals.h"
 
-// Made on first use and freed by the radar's destructor.
-// GLOBAL: HYPERX 0x004ce6b8
-extern HPEN g_hRadarPen;
-
-// GLOBAL: HYPERX 0x004ce6bc
-extern HBRUSH g_hRadarBrush;
-
 // GLOBAL: HYPERX 0x004c6650
 extern const char* g_apAttackModeBitmapNames[2];
 
@@ -60,9 +53,6 @@ extern int g_nOptionAttackMode;
 // GLOBAL: HYPERX 0x004c1ed8
 extern int g_nCreditPageCount;
 
-// GLOBAL: HYPERX 0x004d21ac
-extern struct IDirectDrawPalette* g_pDDrawPalette;
-
 // GLOBAL: HYPERX 0x004c6854
 extern char g_szAwayScore[32];
 
@@ -103,9 +93,6 @@ extern const char* g_apszAwardStripPrefix[6];
 
 // GLOBAL: HYPERX 0x004bddb0
 extern int g_nMatchInfoBitmapsUnloaded;
-
-// GLOBAL: HYPERX 0x004c2cc4
-extern const char* g_pszClockFormat;
 
 // GLOBAL: HYPERX 0x004c2828
 extern const char* g_pszIntroBackground;

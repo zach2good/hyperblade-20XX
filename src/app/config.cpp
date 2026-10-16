@@ -16,8 +16,6 @@
 #include "engine/cameraobject.h"
 #include "engine/gameengine.h"
 #include "graphics/renderer.h"
-#include "graphics/texture.h"
-#include "graphics/ddrawapi.h"
 #include "app/window.h"
 #include "graphics/gdi.h"
 #include "common/string.h"
@@ -70,7 +68,6 @@
 #include "app/wndproc.h"
 #include "net/network.h"
 #include "engine/game.h"
-#include "graphics/d3dviewport.h"
 
 float g_flUnusedSteeringA  = g_flZeroSteering;
 float g_flUnusedSteeringB  = g_flZeroSteering;

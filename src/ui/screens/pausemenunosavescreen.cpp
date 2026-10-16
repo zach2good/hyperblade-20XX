@@ -2,7 +2,6 @@
 #include "ui/pausemenu.h"
 #include "app/gameapp.h"
 #include "ui/screens/pausemenunosavescreen.h"
-#include "ui/radar.h"
 #include "graphics/gdi.h"
 
 // FUNCTION: HYPERX 0x00443c80

@@ -11,6 +11,9 @@
 #include <math.h>
 #include <algorithm>
 
+float g_flDotPitchCmProjection      = g_flDotsPerInchProjection * g_flDotPitchProjection / g_flCmPerInchProjection;
+float g_flScreenDotsPerCmProjection = g_flDotsPerInchProjection / g_flCmPerInchProjection;
+
 // FUNCTION: HYPERX 0x00422d60
 void CameraProjectionState::ResetProjection(LayoutState* pViewport, float flFov)
 {

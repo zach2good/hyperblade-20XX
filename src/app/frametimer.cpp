@@ -39,16 +39,8 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     memset(g_szFpsText, 0, sizeof(g_szFpsText));
 
-    if (g_bHWFlipAvailable != 0)
-    {
-        // STRING: HYPERX 0x004c1e68
-        sprintf(g_szFpsText, "FPS %02d FLIP", g_gameApp.m_nFrameRate);
-    }
-    else
-    {
-        // STRING: HYPERX 0x004c1e58
-        sprintf(g_szFpsText, "FPS %02d BLIT", g_gameApp.m_nFrameRate);
-    }
+    // STRING: HYPERX 0x004c1e58
+    sprintf(g_szFpsText, "FPS %02d BLIT", g_gameApp.m_nFrameRate);
 
     timer->dwFrameStartTime = timer->Restart();
 

@@ -26,7 +26,6 @@
 #include <new.h>
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
-#include "graphics/d3drend.h"
 #include "graphics/face.h"
 #include "graphics/swrend.h"
 #include "graphics/hwrenderer.h"
@@ -45,27 +44,12 @@ float              g_flUnusedVertexColourC = g_flZeroVertexColour;
 // FUNCTION: HYPERX 0x0044be10
 void __fastcall MeshBone::DrawFaceList(FaceRecord** ppRecords, int nCount)
 {
-    if (g_ddrawDevice.bD3DActive != 0)
-    {
-        D3DRend::DrawFaceList(this, ppRecords, (short)nCount);
-
-        return;
-    }
-
     SWRend::DrawFaceList(this, ppRecords, (short)nCount);
 }
 
-// Both renderers take six stack arguments, as the dispatcher's RET 0x18 shows.
 // FUNCTION: HYPERX 0x0044be40
 void __fastcall MeshBone::DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
-    if (g_ddrawDevice.bD3DActive != 0)
-    {
-        D3DRend::DrawFace(pRend, cFlip, pFaceData, ppMaterials, pVertexColour, pVertexBufBase, pFaceNormal, cClipFlags);
-
-        return;
-    }
-
     SWRend::DrawFace(pRend, cFlip, pFaceData, ppMaterials, pVertexColour, pVertexBufBase, pFaceNormal, cClipFlags);
 }
 
@@ -506,7 +490,7 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
 // The null test on m_world's matrix is dead, as in the original.
 
 // FUNCTION: HYPERX 0x0046f530
-void MeshBone::CalcVertexColors(int nUseMdm)
+void MeshBone::CalcVertexColors()
 {
     if (m_pFaceColours == 0)
     {
@@ -542,71 +526,24 @@ void MeshBone::CalcVertexColors(int nUseMdm)
 
         MeshMaterial* pMaterial = m_pOwner->m_pModelBlock->m_pMaterials + pFace->cMaterial;
 
-        const int bMdm = g_cMdmTexLoaded != 0 && nUseMdm != 0 && pMaterial->pTexture != 0 && (pFace->cFlags & FACE_FLAG_HAS_UV) != 0;
-
         const Vec3* pNormal = &pFace->vNormal;
 
-        if (g_cD3DActive == 0)
+        unsigned char cIndex;
+        char          cShade;
+        float         flIntensity;
+
+        int nRangeFirst;
+
+        cIndex = pMaterial->acChannel[0];
+
+        nRangeFirst = g_pColorPalette->m_rampBounds.nFirst;
+
+        if (cIndex < nRangeFirst || cIndex > g_pColorPalette->m_rampBounds.nCount)
         {
-            unsigned char cIndex;
-            char          cShade;
-            float         flIntensity;
-
-            int nRangeFirst;
-
-            cIndex = pMaterial->acChannel[0];
-
-            nRangeFirst = g_pColorPalette->m_rampBounds.nFirst;
-
-            if (cIndex < nRangeFirst || cIndex > g_pColorPalette->m_rampBounds.nCount)
-            {
-                nColour = pMaterial->nColour;
-            }
-            else
-            {
-                flIntensity = g_flZeroVertexColour;
-
-                if (pNormal == 0)
-                {
-                    cShade = SHADE_WHITE;
-                }
-                else
-                {
-                    flIntensity = (g_vLightDirModel.x * pNormal->x + g_vLightDirModel.y * pNormal->y + g_vLightDirModel.z * pNormal->z) * pMaterial->flDiffuse + pMaterial->flAmbient;
-                    flIntensity += pMaterial->flEmissive;
-
-                    if (flIntensity > g_flZeroVertexColour)
-                    {
-                        if (flIntensity < g_flVertexW)
-                        {
-                            cShade = SHADE_SCALED;
-                        }
-                        else
-                        {
-                            cShade = SHADE_WHITE;
-                        }
-                    }
-                    else
-                    {
-                        cShade = SHADE_BLACK;
-                    }
-                }
-
-                nColour = (((ColorPalette::LookupColorIntensity(
-                                 g_pColorPalette, cShade, flIntensity, cIndex)
-                                 << 8 |
-                             ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
-                                << 8 |
-                            ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
-                           << 8) |
-                          ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex);
-            }
+            nColour = pMaterial->nColour;
         }
         else
         {
-            unsigned char cShade;
-            float         flIntensity;
-
             flIntensity = g_flZeroVertexColour;
 
             if (pNormal == 0)
@@ -635,50 +572,14 @@ void MeshBone::CalcVertexColors(int nUseMdm)
                 }
             }
 
-            switch (cShade)
-            {
-                case SHADE_WHITE:
-                    if (bMdm != 0)
-                    {
-                        nColour = 0xffffffff;
-                    }
-                    else
-                    {
-                        nColour = pMaterial->nColour;
-                    }
-                    break;
-
-                case SHADE_SCALED:
-                    if (bMdm != 0)
-                    {
-                        unsigned char cGrey;
-
-                        cGrey = (unsigned char)(int)(flIntensity * 255.0f);
-
-                        nColour = ((((unsigned int)cGrey << 8 | cGrey) << 8 | cGrey) << 8) | cGrey;
-                    }
-                    else
-                    {
-                        int nChannel;
-
-                        nChannel = pMaterial->acChannel[2];
-
-                        nColour = (unsigned int)(int)(nChannel * flIntensity) | 0xffffff00;
-
-                        nChannel = pMaterial->acChannel[1];
-
-                        nColour = nColour << 8 | (unsigned int)(int)(nChannel * flIntensity);
-
-                        nChannel = pMaterial->acChannel[0];
-
-                        nColour = nColour << 8 | (unsigned int)(int)(nChannel * flIntensity);
-                    }
-                    break;
-
-                default:
-                    nColour = 0xff000000;
-                    break;
-            }
+            nColour = (((ColorPalette::LookupColorIntensity(
+                             g_pColorPalette, cShade, flIntensity, cIndex)
+                             << 8 |
+                         ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
+                            << 8 |
+                        ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
+                       << 8) |
+                      ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex);
         }
 
         m_pFaceColours[i] = nColour;

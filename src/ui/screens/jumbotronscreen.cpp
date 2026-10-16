@@ -12,7 +12,6 @@ class JumbotronScreen;
 #include "ui/torchbitmaps.h"
 #include <stdio.h>
 #include "ui/screens/jumbotronscreen.h"
-#include "ui/radar.h"
 #include "app/gameapp.h"
 #include "net/gamesession.h"
 #include "ui/flipbookwidget.h"

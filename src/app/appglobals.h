@@ -10,9 +10,6 @@
 // GLOBAL: HYPERX 0x004cb4f4
 extern int g_bNoSoundArg;
 
-// GLOBAL: HYPERX 0x004bba78
-extern int g_nSavedSoftRenderer;
-
 // GLOBAL: HYPERX 0x004ceec4
 extern int g_nFpsTextLength;
 

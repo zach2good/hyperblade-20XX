@@ -1,4 +1,4 @@
-// The camera: an engine object with four child interfaces, two smoothing rings and a surface.
+// The camera: an engine object with four child interfaces and two smoothing rings.
 
 #ifndef HYPERBLADE_CAMERAOBJECT_H
 #define HYPERBLADE_CAMERAOBJECT_H
@@ -7,8 +7,6 @@
 #include "gameengine.h"
 #include "engine/engineobject.h"
 #include "planvm/interactor.h"
-
-class Texture;
 
 // The camera's two history windows, each a ring of positions or directions.
 // The reticle states, as DATA/ENUMIDS.H's Reticle_State numbers them.
@@ -51,7 +49,6 @@ public:
     void                SetLastTrackedObject(EngineObject* pObject);
     class EngineObject* GetLastTrackedObject();
     void                UpdateDirSmoothing();
-    void                SetViewTransform(unsigned int nViewport, class Texture* pSource);
 
     // The transparent queue is a global; each camera resizes it and the draw pass sorts it.
     void        ResizeTransparentQueue(short nHighest);
@@ -107,12 +104,8 @@ public:
     // The helmet camera's shot power meter, 100 at construction.
     int m_nShotPowerLevel; // 0x0fc0
     // Whether the meter is shown; id_ACF_SetShotPowerMeter sets it.
-    char m_bShotPowerShown; // 0x0fc4
-    // The surface the camera draws into.
-    Texture* m_pTarget; // 0x0fc8
-    // Handed to D3DViewport::SetForTexture as the viewport this camera draws into.
-    int         nViewportId; // 0x0fcc
-    LayoutState layout;      // 0x0fd0
+    char        m_bShotPowerShown; // 0x0fc4
+    LayoutState layout;            // 0x0fd0
     // Half the field of view in radians: half of 85 degrees at construction.
     float m_flHalfFov; // 0x1010
     // A quarter of a degree in radians, set by the constructor. Nothing reads it.

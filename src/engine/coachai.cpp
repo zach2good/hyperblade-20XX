@@ -61,7 +61,6 @@
 #include "engine/weaponobject.h"
 #include "engineglobals.h"
 #include "gameoptions.h"
-#include "graphics/texture.h"
 #include "arenastate.h"
 #include "teamplayerrow.h"
 #include "ui/uiglobals.h"

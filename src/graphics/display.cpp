@@ -6,8 +6,6 @@
 struct GameApp;
 #include "app/window.h"
 #include "graphics/graphics.h"
-#include "graphics/ddrawapi.h"
-#include "ui/hud.h"
 #include "app/menuids.h"
 #include <stdlib.h>
 #include "app/gameapp.h"
@@ -20,12 +18,13 @@ extern int g_nDisplayVertRes;
 
 extern int g_nDisplayBitsPerPixel;
 
-// The hardware path returns 0 or 1; the software path returns the back buffer resize result.
+unsigned int g_dwDisplayWidth  = 640;
+unsigned int g_dwDisplayHeight = 480;
+
+// The back buffer resize result.
 // FUNCTION: HYPERX 0x0044b500
 int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
 {
-    VideoMemory videoMemory;
-
     g_hScreenBltDC    = hDisplayDC;
     g_hDisplayPalette = hPalette;
     g_hWndGame        = hWnd;
@@ -34,47 +33,7 @@ int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
 
     Window::ApplyFullscreenStyle(g_hWndGame, 0);
 
-    if (g_cUseSoftRenderer == 0)
-    {
-        if (DDraw::InitDeviceAndSurfaces(g_hDisplayPalette) != 0)
-        {
-            g_bBackBufferReady = DDraw::CreatePrimaryAndBackBuffer();
-
-            if (g_bBackBufferReady != 0)
-            {
-                DDraw::GetVideoMemory(&videoMemory, g_pDDrawDevice);
-
-                g_nSurfaceMemoryUsed += HUD::CreateSurfaces();
-
-                DDraw::GetVideoMemory(&videoMemory, g_pDDrawDevice);
-
-                if (g_pRenderer != 0)
-                {
-                    g_pRenderer->LayoutSurfaces();
-                }
-
-                if (g_bBackBufferReady != 0)
-                {
-                    if (g_cMdmTexLoaded == 0)
-                    {
-                        g_cMdmTexLoaded = (char)Graphics::LoadMdmTexDLL();
-
-                        if (g_cMdmTexLoaded != 0)
-                        {
-                            Display::ApplyRenderOptions(g_gameApp.m_hMenu, g_cMdmTexLoaded & 0xff, 0);
-                        }
-                    }
-
-                    return 0;
-                }
-            }
-
-            return 1;
-        }
-    }
-
-    g_cUseSoftRenderer = 1;
-    g_hSoftBackDC      = 0;
+    g_hSoftBackDC = 0;
 
     const HDC hdc = GetDC(0);
 

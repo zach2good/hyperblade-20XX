@@ -16,7 +16,6 @@
 #include "math/mathglobals.h"
 #include "math/transformobject.h"
 #include "clipsphere.h"
-#include "graphics/texture.h"
 #include "graphics/meshbone.h"
 #include <string.h>
 #include <math.h>
@@ -26,7 +25,6 @@
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "math/point.h"
-#include "graphics/d3drend.h"
 #include "engine/framepacing.h"
 
 extern const float g_flZeroCamera    = 0.0f;
@@ -107,9 +105,6 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
     pBody->velDir.x   = vDir.x;
     m_pBody->velDir.y = m_dirOut.y;
     m_pBody->velDir.z = m_dirOut.z;
-
-    m_pTarget   = 0;
-    nViewportId = 0;
 
     memset(&layout, 0, sizeof(layout));
 
@@ -253,8 +248,6 @@ void CameraObject::ViewIt()
 
     if (g_pScene != this)
     {
-        D3DRend::FlushBatch(0);
-
         g_pScene = this;
 
         Renderer::SetCameraTransformAndViewport(layout);
@@ -335,72 +328,67 @@ void CameraObject::ViewIt()
     vPos.y = vPos.y + vCross.y + vDir.y;
     vPos.z = (vPos.z + vNormal.z) + vCross.z + vDir.z;
 
-    if (g_hudSurfaces.bHud320 == 0 || m_nSlot != CAMERA_HEAD_SLOT)
+    m_pView->SetEyePoint(&vPos);
+
+    g_nTransparentCount = 0;
+
+    for (short i = 0; i < nCount; i++)
     {
-        m_pView->SetEyePoint(&vPos);
+        EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
 
-        g_nTransparentCount = 0;
+        pObject->ComputeWorldBoundingCentre(&vCentre);
 
-        for (short i = 0; i < nCount; i++)
+        if (((unsigned char)pObject->m_nFlags & (ENGINEOBJECT_HIDDEN | ENGINEOBJECT_POSED)) == 0)
         {
-            EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
-
-            pObject->ComputeWorldBoundingCentre(&vCentre);
-
-            if (((unsigned char)pObject->m_nFlags & (ENGINEOBJECT_HIDDEN | ENGINEOBJECT_POSED)) == 0)
-            {
-                pObject->ApplyRenderSlotPose();
-            }
-
-            if (pObject->IsHidden() == 0)
-            {
-                if (((unsigned char)pObject->m_nFlags & ENGINEOBJECT_NO_CULL) == 0)
-                {
-                    const TransformObject* pView    = m_pView;
-                    const float            flRadius = pObject->m_flBoundRadius;
-
-                    clip.x = (((vCentre.x * pView->m_a[0][0]) + vCentre.y * pView->m_a[0][1]) + vCentre.z * pView->m_a[0][2]) + pView->m_a[0][3];
-
-                    clip.y = (((vCentre.x * pView->m_a[1][0]) + vCentre.y * pView->m_a[1][1]) + vCentre.z * pView->m_a[1][2]) + pView->m_a[1][3];
-                    clip.z = (((vCentre.x * pView->m_a[2][0]) + vCentre.y * pView->m_a[2][1]) + vCentre.z * pView->m_a[2][2]) + pView->m_a[2][3];
-
-                    if (pView->m_bHasRow3 != 0)
-                    {
-                        clip.w = (((vCentre.x * pView->m_a[3][0]) + vCentre.y * pView->m_a[3][1]) + vCentre.z * pView->m_a[3][2]) + pView->m_a[3][3];
-                    }
-                    else
-                    {
-                        clip.w = g_flOneCamera;
-                    }
-
-                    if (clip.FrustumCull(flRadius) == 0)
-                    {
-                        pObject->SetVisible(0);
-
-                        continue;
-                    }
-                }
-
-                pObject->SetVisible(1);
-                pObject->UpdateLODAndPushComponents(this);
-            }
-            else
-            {
-                pObject->SetVisible(0);
-            }
+            pObject->ApplyRenderSlotPose();
         }
 
-        // The frame draws what this pushed, blended between this tick and the last.
-        FramePacing::RecordView(*this);
+        if (pObject->IsHidden() == 0)
+        {
+            if (((unsigned char)pObject->m_nFlags & ENGINEOBJECT_NO_CULL) == 0)
+            {
+                const TransformObject* pView    = m_pView;
+                const float            flRadius = pObject->m_flBoundRadius;
+
+                clip.x = (((vCentre.x * pView->m_a[0][0]) + vCentre.y * pView->m_a[0][1]) + vCentre.z * pView->m_a[0][2]) + pView->m_a[0][3];
+
+                clip.y = (((vCentre.x * pView->m_a[1][0]) + vCentre.y * pView->m_a[1][1]) + vCentre.z * pView->m_a[1][2]) + pView->m_a[1][3];
+                clip.z = (((vCentre.x * pView->m_a[2][0]) + vCentre.y * pView->m_a[2][1]) + vCentre.z * pView->m_a[2][2]) + pView->m_a[2][3];
+
+                if (pView->m_bHasRow3 != 0)
+                {
+                    clip.w = (((vCentre.x * pView->m_a[3][0]) + vCentre.y * pView->m_a[3][1]) + vCentre.z * pView->m_a[3][2]) + pView->m_a[3][3];
+                }
+                else
+                {
+                    clip.w = g_flOneCamera;
+                }
+
+                if (clip.FrustumCull(flRadius) == 0)
+                {
+                    pObject->SetVisible(0);
+
+                    continue;
+                }
+            }
+
+            pObject->SetVisible(1);
+            pObject->UpdateLODAndPushComponents(this);
+        }
+        else
+        {
+            pObject->SetVisible(0);
+        }
     }
+
+    // The frame draws what this pushed, blended between this tick and the last.
+    FramePacing::RecordView(*this);
 }
 
 void CameraObject::DrawView()
 {
     if (g_pScene != this)
     {
-        D3DRend::FlushBatch(0);
-
         g_pScene = this;
 
         Renderer::SetCameraTransformAndViewport(layout);
@@ -514,28 +502,6 @@ void CameraObject::SetDirHistorySize(short nCount)
     pOut->x          = vSum.x;
     pOut->y          = vSum.y;
     pOut->z          = vSum.z;
-}
-
-// The view is the extent less twice the border, rounded up to a multiple of four in width.
-
-// FUNCTION: HYPERX 0x004226b0
-void CameraObject::SetViewTransform(unsigned int nViewport, Texture* pSource)
-{
-    LayoutState state;
-
-    nViewportId = nViewport;
-    m_pTarget   = pSource;
-
-    Point extent = pSource->GetSize();
-    Point border = m_pTarget->GetInset();
-
-    const int nWidth  = (extent.x - border.x * 2 + 3) & ~3;
-    const int nHeight = extent.y - border.y * 2;
-
-    // The pitch rounds the width again, which does nothing.
-    state = Widget::InitLayoutState(0, nWidth, nHeight, (nWidth + 3) & ~3, nWidth, nHeight, 0, 0);
-
-    layout = state;
 }
 
 // Two, beside the camera's own pi.

@@ -7,7 +7,6 @@
 #include "engine/gameengine.h"
 #include "common/pathstring.h"
 #include "planvm/planvm.h"
-#include "graphics/cddbitmap.h"
 #include "gameapp.h"
 #include "graphics/cgpalette.h"
 #include "graphics/gdi.h"

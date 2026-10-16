@@ -57,7 +57,7 @@ extern int g_nPeriodLightColour;
 
 #define ROK_TEXT_BUFFER 0x50
 
-// The info bar's own cache, separate from the HUD overlay's g_nLastRokValue.
+// The info bar's own cache of the last rok value drawn.
 // GLOBAL: HYPERX 0x004cef54
 extern int g_nInfoBarLastRokValue;
 
@@ -1091,12 +1091,6 @@ InfoBar::InfoBar(HDC hDC)
     InfoBar::LayoutSurfaces();
 
     ForgetPalette();
-}
-
-// FUNCTION: HYPERX 0x00451cb0
-Texture* InfoBar::GetHeadCamSurface()
-{
-    return 0;
 }
 
 // FUNCTION: HYPERX 0x00451ce0

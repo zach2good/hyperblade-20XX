@@ -15,33 +15,21 @@ struct IDirectPlay;
 
 #include "common/pathstring.h"
 #include "anim/animregistry.h"
-#include "ui/radar.h"
-#include "graphics/texture.h"
 #include "graphics/surfacepoint.h"
 #include "planvm/conditiontable.h"
-#include "ui/hudsurfaces.h"
 
 class InfoBarBase;
-class CDDBitMap;
 class GameOptions;
 class CameraObject;
 class ColorPalette;
 struct StringHeader;
 class MessageQueue;
 
-// GLOBAL: HYPERX 0x004ce6c0
-extern SurfacePoint g_ptRadarInset;
-
-// GLOBAL: HYPERX 0x004cd4e4
-extern String g_strHudDefaultName;
 // VC6 numbers globals.cpp's $E functions in definition order, so a dynamic initialiser added there renumbers these.
 // SYNTHETIC: HYPERX 0x00439570
 // $E8
 // SYNTHETIC: HYPERX 0x00439580
 // $E7
-// g_displayMode's initialiser thunk.
-// SYNTHETIC: HYPERX 0x00439520
-// $E12
 // SYNTHETIC: HYPERX 0x00439530
 // $E11
 
@@ -155,9 +143,6 @@ struct RenderFlags
 // GLOBAL: HYPERX 0x004c2de4
 extern RenderFlags g_renderFlags;
 
-// GLOBAL: HYPERX 0x004c2ca0
-extern int g_bTripleBufferEnabled;
-
 // GLOBAL: HYPERX 0x004c2c9c
 extern int g_bFullScreen;
 
@@ -165,15 +150,9 @@ extern int g_bFullScreen;
 // GLOBAL: HYPERX 0x004ceec8
 extern char g_bSWClipRectDirty;
 
-// Set to whether the cursor is hidden; Renderer::PresentFrame flips only when it is set.
+// Set to whether the cursor is hidden.
 // GLOBAL: HYPERX 0x004c2c98
 extern int g_bCursorHidden;
-
-// GLOBAL: HYPERX 0x004cee84
-extern int g_bUseOffscreenSurface;
-
-// GLOBAL: HYPERX 0x004ce610
-extern struct IDirectDraw* g_pDDrawDevice;
 
 // GLOBAL: HYPERX 0x004ce938
 extern FrameTimer g_frameTimer;
@@ -183,9 +162,6 @@ extern FrameTimer g_frameTimer;
 // g_frameTimer's destructor thunk, empty since the destructor is.
 // SYNTHETIC: HYPERX 0x00442930
 // $E2
-
-// GLOBAL: HYPERX 0x004ce630
-extern int g_bHWFlipAvailable;
 
 // GLOBAL: HYPERX 0x004ced64
 extern char g_szFpsText[100];
@@ -198,19 +174,6 @@ extern HPALETTE g_hSplashPalette;
 
 // GLOBAL: HYPERX 0x004cf060
 extern AudioMgr* g_pAudioMgr;
-
-// GLOBAL: HYPERX 0x004cee70
-extern int g_cUseSoftRenderer;
-
-// GLOBAL: HYPERX 0x004cee74
-extern int g_bForceSoftwareRender;
-
-// Set by -d: DirectDraw takes the emulation caps and Direct3D skips every hardware device.
-// GLOBAL: HYPERX 0x004cee78
-extern int g_bEmulationOnly;
-
-// GLOBAL: HYPERX 0x004cee7c
-extern int g_cD3DActive;
 
 // GLOBAL: HYPERX 0x004cef49
 extern unsigned char g_bIsWindowCreated;
@@ -229,10 +192,6 @@ extern PALETTEENTRY g_aSoftTexPalette[256];
 
 // GLOBAL: HYPERX 0x004cb5dc
 extern CameraObject* g_pScene;
-
-// Written by forty functions and read by five.
-// GLOBAL: HYPERX 0x004cd4e0
-extern int g_hrD3DResult;
 
 // GLOBAL: HYPERX 0x004c8cd4
 extern int g_bPerspectiveTexturing;
@@ -472,20 +431,6 @@ extern class AnimRegistry* g_pAnimRegistry;
 
 // GLOBAL: HYPERX 0x004cb800
 extern float g_flScreenDotsPerCmProjection;
-// The Projection unit's marked thunks in ddraw.cpp.
-// SYNTHETIC: HYPERX 0x00430d30
-// $E2
-// SYNTHETIC: HYPERX 0x00430d80
-// $E8
-// SYNTHETIC: HYPERX 0x00430d90
-// $E7
-// SYNTHETIC: HYPERX 0x00430db0
-// $E11
-// SYNTHETIC: HYPERX 0x00430de0
-// $E14
-
-// GLOBAL: HYPERX 0x004cbb8c
-extern int g_nRenderStateTexturePerspective;
 
 // GLOBAL: HYPERX 0x004b15ec
 extern float g_flOnePhysicsReset;
@@ -498,9 +443,6 @@ extern int g_nSetupBitmapsUnloaded;
 
 // GLOBAL: HYPERX 0x004cf4ec
 extern class PooledOwnerRoot* g_pMsgInteractorPool;
-
-// GLOBAL: HYPERX 0x004cede8
-extern char g_szClockText[32];
 
 // GLOBAL: HYPERX 0x004b2bd0
 extern const float g_flZeroCollisionObj;
@@ -621,12 +563,6 @@ extern struct TransformedVertex* g_pModelVertexBuf;
 #define ESTATE_GAME_INTRO          27
 #define ESTATE_TRAINING_END        28
 
-class CDDBitMap;
-
-// GLOBAL: HYPERX 0x004cbb7c
-extern int g_nD3DVertexUVMask;
-// GLOBAL: HYPERX 0x004cbb80
-extern int g_nD3DVertexPosMask;
 // GLOBAL: HYPERX 0x004cefec
 extern char g_bChampFromJumbotron;
 // Bit i clips float i of the nine-float vertex; UV is added only on the textured path.

@@ -8,7 +8,6 @@
 #include "engine/teamsblock.h"
 #include <stdio.h>
 #include "ui/screens/finalceremonyscreen.h"
-#include "ui/radar.h"
 #include "app/gameapp.h"
 #include "net/gamesession.h"
 #include "ui/displaywidget.h"

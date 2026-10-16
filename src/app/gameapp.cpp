@@ -11,8 +11,6 @@
 #include "engine/cameraobject.h"
 #include "engine/gameengine.h"
 #include "graphics/renderer.h"
-#include "graphics/texture.h"
-#include "graphics/ddrawapi.h"
 #include "app/window.h"
 #include "common/stringtable.h"
 #include <SDL3/SDL.h>
@@ -83,7 +81,6 @@ class AwardsUIScreen;
 #include "engine/game.h"
 #include "engine/framepacing.h"
 #include "graphics/graphicssettings.h"
-#include "graphics/d3dviewport.h"
 #include "app/stringids.h"
 #include "common/staticinit.h"
 
@@ -198,7 +195,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 
     GameApp::SetupViewports();
 
-    Graphics::Initialize(g_cD3DActive == 0);
+    Graphics::Initialize(1);
 
     Window::ApplyCurrentSize();
 
@@ -241,7 +238,7 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
     // STRING: HYPERX 0x004bbac4
     g_gameApp.m_strAnimDataPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "AnimData"));
 
-    GameApp::SetModelPath(g_cD3DActive);
+    GameApp::SetModelPath(0);
 
     // STRING: HYPERX 0x004bbabc
     g_gameApp.m_strPlansPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Plans"));
@@ -313,12 +310,10 @@ bool GameApp::UpdateSplash(HWND hWnd)
     return true;
 }
 
-// 'x' is a separator as well as a flag. v1.0.0.1 swapped -w and -x from v1.0.0.0.
+// 'x' is skipped like a space.
 // FUNCTION: HYPERX 0x00419420
 void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 {
-    int nSaved;
-
     // STRING: HYPERX 0x004bbb00
     char* p = strpbrk(lpCmdLine, "\"");
 
@@ -351,30 +346,6 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 
         switch (*p)
         {
-            case 'd':
-                g_bEmulationOnly = 1;
-                p                = CharNextA(p);
-                break;
-
-            case 'e':
-                nSaved = g_nSavedSoftRenderer;
-
-                if (nSaved == -1)
-                {
-                    nSaved               = g_cUseSoftRenderer;
-                    g_nSavedSoftRenderer = nSaved;
-                }
-
-                g_cUseSoftRenderer = (nSaved == 0);
-
-                if (g_cUseSoftRenderer != 0)
-                {
-                    g_bFullScreen = 1;
-                }
-
-                p = CharNextA(p);
-                break;
-
             case 'f':
                 g_bFullScreen = 1;
                 p             = CharNextA(p);
@@ -385,12 +356,6 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
                 p             = CharNextA(p);
                 break;
 
-            case 'x':
-                g_bForceSoftwareRender = 1;
-                g_cUseSoftRenderer     = 1;
-                p                      = CharNextA(p);
-                break;
-
             case 's':
                 g_bNoSoundArg = 1;
                 p             = CharNextA(p);
@@ -399,11 +364,6 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
             case 'm':
                 g_bShadedDromeModels = 1;
                 p                    = CharNextA(p);
-                break;
-
-            case 't':
-                g_bTripleBufferEnabled = 0;
-                p                      = CharNextA(p);
                 break;
         }
 
@@ -667,45 +627,6 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
     return pszPath;
 }
 
-// FUNCTION: HYPERX 0x00423730
-HBITMAP GameApp::LoadGDIBitmap(const char* pszName)
-{
-    PathString strPath(MAX_PATH);
-    HBITMAP    hbm;
-
-    // STRING: HYPERX 0x004bc45c
-    strPath.m_str.FormatResourcePath(m_strAssetsPath.m_str, pszName, "bmp");
-
-    BITMAPINFOHEADER* pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
-
-    if (pDib != 0)
-    {
-        DWORD cColors = pDib->biClrUsed;
-
-        if (cColors == 0 && pDib->biBitCount <= 8)
-        {
-            cColors = 1 << pDib->biBitCount;
-        }
-
-        hbm = CreateDIBitmap(GetScreenDC(), pDib, CBM_INIT, GDI::ColorTable(pDib) + cColors, (BITMAPINFO*)pDib, DIB_RGB_COLORS);
-
-        free(pDib);
-
-        if (hbm == 0)
-        {
-            // STRING: HYPERX 0x004bc42c
-            g_gameApp.Error("Problem Creating DIBitmap %s, check palette!", pszName);
-        }
-
-        return hbm;
-    }
-
-    // STRING: HYPERX 0x004bc41c
-    g_gameApp.Error("Cannot open %s!", pszName);
-
-    return 0;
-}
-
 #define ERROR_BOX_STYLE (MB_SETFOREGROUND | MB_SYSTEMMODAL | MB_ICONHAND)
 
 #define ERROR_BOX(w, t, c) Window::ShowMessage(t, c, ERROR_BOX_STYLE)
@@ -839,39 +760,25 @@ void __cdecl GameApp::SetupViewports(void)
         return;
     }
 
-    Texture* pSource = g_pRenderer->GetHeadCamSurface();
+    ViewExtent size;
+    ViewExtent offset;
 
-    if (g_cUseSoftRenderer == 0 && g_cD3DActive == 1 && pSource != 0)
-    {
-        pView->SetViewTransform(1, pSource);
+    size   = g_pRenderer->GetHeadCamSize();
+    offset = g_pRenderer->GetHeadCamOrigin();
 
-        if (g_ddrawDevice.bD3DActive != 0)
-        {
-            D3DViewport::SetForTexture(pView->nViewportId, pSource);
-        }
-    }
-    else
-    {
-        ViewExtent size;
-        ViewExtent offset;
+    // The inset is placed in the HUD layer, and the 3D under it draws at the back buffer's scale.
+    offset = HudLayer::ToBackBuffer(offset);
+    size.x *= HudLayer::Scale();
+    size.y *= HudLayer::Scale();
 
-        size   = g_pRenderer->GetHeadCamSize();
-        offset = g_pRenderer->GetHeadCamOrigin();
-
-        // The inset is placed in the HUD layer, and the 3D under it draws at the back buffer's scale.
-        offset = HudLayer::ToBackBuffer(offset);
-        size.x *= HudLayer::Scale();
-        size.y *= HudLayer::Scale();
-
-        pView->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy,
-                                                g_nBackBufferWidth,
-                                                g_nBackBufferHeight,
-                                                g_nBackBufferWidth,
-                                                size.x,
-                                                size.y,
-                                                offset.x,
-                                                offset.y);
-    }
+    pView->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy,
+                                            g_nBackBufferWidth,
+                                            g_nBackBufferHeight,
+                                            g_nBackBufferWidth,
+                                            size.x,
+                                            size.y,
+                                            offset.x,
+                                            offset.y);
 
     pView->m_flHalfFov = flScale * 0.16666667f;
 
@@ -889,11 +796,6 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
     if (bVisible != 0)
     {
         SDL_EnableScreenSaver();
-
-        if (g_cUseSoftRenderer == 0)
-        {
-            DDraw::FlipToGDISurface(bVisible);
-        }
     }
     else
     {
