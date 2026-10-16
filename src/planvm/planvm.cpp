@@ -1272,7 +1272,7 @@ char PlanVM::EmitArgToken()
 
         if (IsPRN(tok.szName))
         {
-            tok.nValue = PlanWord::Pack(PLAN_ARG_SELECTOR, tok.nValue);
+            tok.nValue = PlanWord::Pack(PLAN_ARG_PRONOUN, tok.nValue);
         }
 
         if (g_wArgsSinceDeclareLocalReals == 1 && ParseNumber(szToken, &g_planParsedLocalReal) == 0)

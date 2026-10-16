@@ -73,11 +73,11 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
 
     for (; nIndex < TARGET_COUNT; nIndex++)
     {
-        if (pNode->m_pArgs[ARG_FIRST + nIndex].IsSelector())
+        if (pNode->m_pArgs[ARG_FIRST + nIndex].IsPronoun())
         {
-            const unsigned int nSelector = pNode->m_pArgs[ARG_FIRST + nIndex].wSelector;
+            const unsigned int nPronoun = pNode->m_pArgs[ARG_FIRST + nIndex].wPronoun;
 
-            nValue = g_apPlanArgFns[nSelector](&pActor->GetPlanState()->m_pOwner, 0, 0);
+            nValue = g_apPlanArgFns[nPronoun](&pActor->GetPlanState()->m_pOwner, 0, 0);
         }
         else
         {

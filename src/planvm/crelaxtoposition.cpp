@@ -75,11 +75,11 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 
         pArgs = pNode->m_pArgs;
 
-        if (pArgs[ARG_MARKER_SLOT].IsSelector())
+        if (pArgs[ARG_MARKER_SLOT].IsPronoun())
         {
             m_pTarget =
                 g_pGameEngine->m_ppSlots
-                    [g_apPlanStatFns[pArgs[ARG_MARKER_SLOT].wSelector](pObject, pNode)];
+                    [g_apPlanStatFns[pArgs[ARG_MARKER_SLOT].wPronoun](pObject, pNode)];
 
             return;
         }
@@ -99,11 +99,11 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 
         pArgs = pNode->m_pArgs;
 
-        if (pArgs[ARG_POINT_SLOT].IsSelector())
+        if (pArgs[ARG_POINT_SLOT].IsPronoun())
         {
             m_pTarget =
                 g_pGameEngine->m_ppSlots
-                    [g_apPlanStatFns[pArgs[ARG_POINT_SLOT].wSelector](pObject, pNode)];
+                    [g_apPlanStatFns[pArgs[ARG_POINT_SLOT].wPronoun](pObject, pNode)];
 
             return;
         }

@@ -38,7 +38,7 @@ import sys
 
 import plan_graph
 
-SELECTOR = 0xFEDC
+PRONOUN = 0xFEDC
 LOCAL_REAL = 0xEDCB
 INTERACTOR_PARAM = 0xDCBA
 
@@ -114,7 +114,7 @@ class Dumper:
         high = value >> 16
         low = value & 0xffff
 
-        if high == SELECTOR:
+        if high == PRONOUN:
             return self.enum('Pronouns', low)
 
         if high == LOCAL_REAL:

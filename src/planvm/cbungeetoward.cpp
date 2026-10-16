@@ -79,9 +79,9 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        if (pArgs[ARG_SLOT].IsSelector())
+        if (pArgs[ARG_SLOT].IsPronoun())
         {
-            nSlot = g_apPlanStatFns[pArgs[ARG_SLOT].wSelector](pObject, pNode);
+            nSlot = g_apPlanStatFns[pArgs[ARG_SLOT].wPronoun](pObject, pNode);
         }
         else
         {

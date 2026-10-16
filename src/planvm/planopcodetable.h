@@ -1,4 +1,4 @@
-// The compile-time selector bank, right after the runtime bank g_apPlanStatFns.
+// The compile-time pronoun resolver bank, right after the runtime bank g_apPlanStatFns.
 
 #ifndef HYPERBLADE_PLANOPCODETABLE_H
 #define HYPERBLADE_PLANOPCODETABLE_H

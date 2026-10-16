@@ -493,9 +493,9 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 
     const PlanWord leaf = *pCursor;
 
-    if (leaf.IsSelector())
+    if (leaf.IsPronoun())
     {
-        g_apPlanArgFns[leaf.wSelector](&m_pOwner, pCursor, &pOut->n);
+        g_apPlanArgFns[leaf.wPronoun](&m_pOwner, pCursor, &pOut->n);
 
         return 0;
     }

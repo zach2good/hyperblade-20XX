@@ -115,7 +115,7 @@ public:
     short m_wSlot;        // 0x020
     short m_wBehaviour;   // 0x022
     char  m_bEnabled;     // 0x024
-    // Each a plan word, which a collision interactor resolves when it is a selector.
+    // Each a plan word, which a collision interactor resolves when it is a pronoun.
     // A collision interactor's other and own col-object slots; a message interactor's sender and message.
     PlanWord m_otherSlot;        // 0x028
     PlanWord m_ownSlotOrMessage; // 0x02c

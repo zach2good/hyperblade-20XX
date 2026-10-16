@@ -298,7 +298,7 @@ void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, s
         pSelf = g_pGameEngine->m_ppSlots[nSlot];
 
         // Dead for a short; the client tests the short at 0x004051aa and indexes it at 0x004051c2.
-        if ((unsigned short)((unsigned int)nOther >> 16) == PLAN_ARG_SELECTOR)
+        if ((unsigned short)((unsigned int)nOther >> 16) == PLAN_ARG_PRONOUN)
         {
             nResolved = g_apPlanStatFns[nOther & 0xffff](pContext->GetActor(), pNode);
         }
@@ -533,7 +533,7 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
     else
     {
         // Dead for a short; the client tests the short at 0x004059b6 and indexes the int at 0x004059d0.
-        if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_SELECTOR)
+        if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_PRONOUN)
         {
             nSlot = ((PlanStatFnWide*)g_apPlanStatFns)[nSlot & 0xffff](pContext->GetActor(), pNode);
         }

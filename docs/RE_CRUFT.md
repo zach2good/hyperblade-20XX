@@ -309,7 +309,7 @@ Numbers that carry meaning:
 - Left: `SyncFileStamp`'s time halves, where a setter or getter costs 12 to 35 points; the WM_SIZE pair, which the client adds unmasked; and colours, palette versions and pixel offsets, which no SDK or table names.
 - `CD3DTexture::GetLog2Size`'s 1012: the original's literal where 1024 belongs (0x00435644).
 - 0x20000000 stays inside `ACTION_BINDING_HELD`: no reader tests it alone, and the one row that sets it also sets the quick flag.
-- Three selector tests stay by hand: the client tests a short and indexes another value (0x00405195, 0x004059b6, 0x004630fe).
+- Three pronoun tests stay by hand: the client tests a short and indexes another value (0x00405195, 0x004059b6, 0x004630fe).
 
 Found-flags:
 

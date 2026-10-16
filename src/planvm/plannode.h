@@ -3,8 +3,8 @@
 
 #include "common/compat.h"
 
-// An argument whose high half is this is a selector: the low half indexes g_apPlanStatFns.
-#define PLAN_ARG_SELECTOR 0xfedc
+// An argument whose high half is this is a pronoun: the low half indexes g_apPlanStatFns.
+#define PLAN_ARG_PRONOUN 0xfedc
 
 // The high halves the compiler gives a quoted local real and an interactor parameter.
 #define PLAN_ARG_LOCAL_REAL       0xedcb
@@ -32,16 +32,16 @@ union PlanWord
     struct PlanNode* pNode;
     char*            psz;
     // The low half under a tag; a field, as the client loads it with a word read.
-    unsigned short wSelector;
+    unsigned short wPronoun;
 
     unsigned int GetTag() const
     {
         return (unsigned short)((unsigned int)n >> 16);
     }
 
-    bool IsSelector() const
+    bool IsPronoun() const
     {
-        return GetTag() == PLAN_ARG_SELECTOR;
+        return GetTag() == PLAN_ARG_PRONOUN;
     }
 
     bool IsLocalReal() const

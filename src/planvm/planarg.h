@@ -1,4 +1,4 @@
-// The plan argument selectors that resolve a pronoun from the actor's slot.
+// The plan argument resolvers that resolve a pronoun from the actor's slot.
 
 #ifndef HYPERBLADE_PLANARG_H
 #define HYPERBLADE_PLANARG_H

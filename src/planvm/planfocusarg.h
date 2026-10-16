@@ -1,4 +1,4 @@
-// The runtime bank of plan argument selectors, which answer from the engine's focus slot.
+// The runtime bank of plan argument resolvers, which answer from the engine's focus slot.
 
 #ifndef HYPERBLADE_PLANFOCUSARG_H
 #define HYPERBLADE_PLANFOCUSARG_H
