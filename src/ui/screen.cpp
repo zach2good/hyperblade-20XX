@@ -513,7 +513,9 @@ int Screen::PaintToWindow()
         return 0;
     }
 
-    const HDC hdc = GDI::BeginPaint(&paint);
+    GDI::BeginPaint(&paint);
+
+    const HDC hdc = Window::MenuDC();
 
     GDI::GetBitmapDimensions(m_hBackground, &bitmap);
 
@@ -592,6 +594,7 @@ int Screen::PaintToWindow()
     BringUp::SaveWindowDC("menu", hdc, 640, 480);
 #endif
 
+    Window::PresentMenu(g_gameApp.GetMainWindow());
     GDI::EndPaint(&paint);
 
     return 1;
@@ -825,9 +828,8 @@ void Screen::ShowMatchInfo()
 // FUNCTION: HYPERX 0x0048ef30
 void __cdecl Screen::ClearBlack(...)
 {
-    const HDC hdc = GetDC(g_gameApp.GetMainWindow());
-    PatBlt(hdc, 0, 0, 640, 480, BLACKNESS);
-    ReleaseDC(g_gameApp.GetMainWindow(), hdc);
+    PatBlt(Window::MenuDC(), 0, 0, 640, 480, BLACKNESS);
+    Window::PresentMenu(g_gameApp.GetMainWindow());
 }
 
 unsigned int g_nPostMatchEscState = ESTATE_LOBBY;

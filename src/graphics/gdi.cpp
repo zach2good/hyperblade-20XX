@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "app/bringup.h"
 #include "graphics/gdi.h"
+#include "app/window.h"
 #include "app/gameapp.h"
 #include "globals.h"
 #include "common/pathstring.h"
@@ -35,53 +36,31 @@ HPALETTE GDI::DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName)
     {
         if (GetObjectA(hbm, sizeof(bm), &bm) != 0)
         {
-            const HDC hdc = GetDC(hWnd);
+            const HDC hdc = Window::MenuDC();
 
-            if (hdc != 0)
-            {
 #ifdef HYPERX_BRINGUP
-                BringUp::SaveBitmap("splash", hbm);
+            BringUp::SaveBitmap("splash", hbm);
 #endif
 
+            hdcMem = CreateCompatibleDC(hdc);
+
+            if (hdcMem != 0)
+            {
                 if (bm.bmBitsPixel == 8)
                 {
-                    SelectPalette(hdc, hPalette, 0);
-                    ::RealizePalette(hdc);
-
-                    hdcMem = CreateCompatibleDC(hdc);
-
-                    if (hdcMem != 0)
-                    {
-                        SelectPalette(hdcMem, hPalette, 0);
-                        ::RealizePalette(hdcMem);
-
-                        hOld = SelectObject(hdcMem, hbm);
-
-                        BitBlt(hdc, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
-
-                        SelectObject(hdcMem, hOld);
-                        DeleteDC(hdcMem);
-                    }
-
-                    ReleaseDC(hWnd, hdc);
+                    SelectPalette(hdcMem, hPalette, 0);
+                    ::RealizePalette(hdcMem);
                 }
-                else
-                {
-                    hdcMem = CreateCompatibleDC(hdc);
 
-                    if (hdcMem != 0)
-                    {
-                        hOld = SelectObject(hdcMem, hbm);
+                hOld = SelectObject(hdcMem, hbm);
 
-                        BitBlt(hdc, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
+                BitBlt(hdc, 0, 0, bm.bmWidth, bm.bmHeight, hdcMem, 0, 0, SRCCOPY);
 
-                        SelectObject(hdcMem, hOld);
-                        DeleteDC(hdcMem);
-                    }
-
-                    ReleaseDC(hWnd, hdc);
-                }
+                SelectObject(hdcMem, hOld);
+                DeleteDC(hdcMem);
             }
+
+            Window::PresentMenu(hWnd);
         }
 
         ::DeleteObject(hbm);

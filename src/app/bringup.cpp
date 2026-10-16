@@ -1827,12 +1827,13 @@ void RaiseWindow(void)
     Trace("windowRaised", (int)g_gameApp.m_hWnd);
 }
 
-// HB_WINDOW_STRESS=1 moves, resizes, minimises and unfocuses the window every forty frames.
+// HB_WINDOW_STRESS=N moves, resizes, minimises and unfocuses the window every forty frames from frame N.
 void StressWindow(void)
 {
     static int s_bOn    = -1;
     static int s_nStep  = 0;
     static int s_nFrame = 0;
+    static int s_nFrom  = 0;
 
     HWND hWnd;
 
@@ -1844,7 +1845,8 @@ void StressWindow(void)
 
         if (pszOn != 0 && atoi(pszOn) != 0)
         {
-            s_bOn = 1;
+            s_bOn   = 1;
+            s_nFrom = atoi(pszOn);
         }
     }
 
@@ -1857,7 +1859,7 @@ void StressWindow(void)
 
     s_nFrame++;
 
-    if ((s_nFrame % 40) != 0 || s_nStep > 7)
+    if (s_nFrame < s_nFrom || (s_nFrame % 40) != 0 || s_nStep > 7)
     {
         return;
     }

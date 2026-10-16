@@ -93,6 +93,8 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 
         case WM_SIZE:
             SWRend::RefreshBltDestRect(hWnd, wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
+            Window::OnSize(wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
+            Window::OnSizeMenus(hWnd, wParam);
             return 0;
 
         case WM_CREATE:
@@ -146,7 +148,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_MOUSEMOVE:
             if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
             {
-                g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, wParam, lParam);
+                g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, wParam, Window::ToMenuPoint(hWnd, lParam));
             }
 
             return 0;
@@ -184,7 +186,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
                 }
                 else
                 {
-                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, lParam);
+                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, Window::ToMenuPoint(hWnd, lParam));
                 }
 
                 return 0;
@@ -277,7 +279,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             {
                 if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
                 {
-                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, lParam);
+                    g_pActiveScreen->OnMouseMessage(uMsg, wParam, Window::ToMenuPoint(hWnd, lParam));
                 }
             }
             else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
@@ -312,9 +314,6 @@ int __cdecl WndProc::HandlePaint(HWND hWnd)
     else
     {
         g_pActiveScreen->PaintToWindow();
-
-        // The window is resizable, and the menus paint only their 640x480.
-        Window::ClearSurround(hWnd, 640, 480);
     }
 
     if (g_bIsWindowCreated && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)

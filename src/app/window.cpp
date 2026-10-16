@@ -4,6 +4,13 @@
 #include "gameapp.h"
 #include "app/window.h"
 #include "wndproc.h"
+#include "app/bringup.h"
+#include "engine/gameengine.h"
+#include "engine/objectclasses.h"
+#include "engine/gameoptions.h"
+#include "graphics/graphicsglobals.h"
+#include "graphics/softrenderer.h"
+#include <algorithm>
 
 #define SWP_MOVE_FLAGS (SWP_SHOWWINDOW | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE)
 
@@ -16,8 +23,14 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
         SetMenu(hWnd, 0);
     }
 
+    // Every pause toggle comes here, and a framed window keeps the size the player gave it.
+    if ((GetWindowLongA(hWnd, GWL_STYLE) & WS_OVERLAPPEDWINDOW) == WS_OVERLAPPEDWINDOW)
+    {
+        return;
+    }
+
     // A full-screen popup never becomes visible on a modern desktop, so the game runs framed.
-    RECT rcFrame = { 0, 0, 640, 480 };
+    RECT rcFrame = { 0, 0, (LONG)g_dwDisplayWidth, (LONG)g_dwDisplayHeight };
 
     SetWindowLongA(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
     SetWindowLongA(hWnd, GWL_ID, 0);
@@ -95,40 +108,103 @@ int Window::EnsureClassRegistered(HINSTANCE hInstance)
     return 0;
 }
 
-// Menus paint and hit-test at the origin unscaled, so only the surround is cleared.
-void Window::ClearSurround(HWND hWnd, int cx, int cy)
+// The menus and splashes paint at 640x480. They draw into this canvas, which is scaled to the
+// window keeping its shape, and the mouse is mapped back into it.
+constexpr auto MENU_WIDTH  = 640;
+constexpr auto MENU_HEIGHT = 480;
+
+static HDC     s_hMenuDC     = 0;
+static HBITMAP s_hMenuBitmap = 0;
+
+HDC Window::MenuDC()
+{
+    if (s_hMenuDC == 0)
+    {
+        const HDC hdcWindow = GetDC(g_gameApp.m_hWnd);
+
+        s_hMenuDC     = CreateCompatibleDC(hdcWindow);
+        s_hMenuBitmap = CreateCompatibleBitmap(hdcWindow, MENU_WIDTH, MENU_HEIGHT);
+
+        ReleaseDC(g_gameApp.m_hWnd, hdcWindow);
+
+        SelectObject(s_hMenuDC, s_hMenuBitmap);
+        PatBlt(s_hMenuDC, 0, 0, MENU_WIDTH, MENU_HEIGHT, BLACKNESS);
+    }
+
+    return s_hMenuDC;
+}
+
+// The canvas's place in the client area: as large as fits, centred.
+static RECT MenuRect(HWND hWnd)
 {
     RECT rcClient;
 
     GetClientRect(hWnd, &rcClient);
 
-    if (rcClient.right <= cx && rcClient.bottom <= cy)
+    auto cx = (int)rcClient.right;
+    auto cy = cx * MENU_HEIGHT / MENU_WIDTH;
+
+    if (cy > rcClient.bottom)
+    {
+        cy = rcClient.bottom;
+        cx = cy * MENU_WIDTH / MENU_HEIGHT;
+    }
+
+    const auto x = (rcClient.right - cx) / 2;
+    const auto y = (rcClient.bottom - cy) / 2;
+
+    return RECT{ x, y, x + cx, y + cy };
+}
+
+void Window::PresentMenu(HWND hWnd)
+{
+    const auto rc = MenuRect(hWnd);
+
+    if (rc.right <= rc.left || rc.bottom <= rc.top)
     {
         return;
     }
+
+    RECT rcClient;
+
+    GetClientRect(hWnd, &rcClient);
 
     const HDC hdc = GetDC(hWnd);
 
-    if (hdc == 0)
-    {
-        return;
-    }
+    SetStretchBltMode(hdc, HALFTONE);
+    SetBrushOrgEx(hdc, 0, 0, 0);
+    StretchBlt(hdc, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, Window::MenuDC(), 0, 0, MENU_WIDTH, MENU_HEIGHT, SRCCOPY);
 
-    RECT rcBar;
+    const auto hBlack = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    RECT       rcBar;
 
-    if (rcClient.right > cx)
-    {
-        SetRect(&rcBar, cx, 0, rcClient.right, rcClient.bottom);
-        FillRect(hdc, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-    }
-
-    if (rcClient.bottom > cy)
-    {
-        SetRect(&rcBar, 0, cy, rcClient.right, rcClient.bottom);
-        FillRect(hdc, &rcBar, (HBRUSH)GetStockObject(BLACK_BRUSH));
-    }
+    SetRect(&rcBar, 0, 0, rc.left, rcClient.bottom);
+    FillRect(hdc, &rcBar, hBlack);
+    SetRect(&rcBar, rc.right, 0, rcClient.right, rcClient.bottom);
+    FillRect(hdc, &rcBar, hBlack);
+    SetRect(&rcBar, rc.left, 0, rc.right, rc.top);
+    FillRect(hdc, &rcBar, hBlack);
+    SetRect(&rcBar, rc.left, rc.bottom, rc.right, rcClient.bottom);
+    FillRect(hdc, &rcBar, hBlack);
 
     ReleaseDC(hWnd, hdc);
+}
+
+LPARAM Window::ToMenuPoint(HWND hWnd, LPARAM lParam)
+{
+    const auto rc = MenuRect(hWnd);
+    const auto cx = rc.right - rc.left;
+    const auto cy = rc.bottom - rc.top;
+
+    if (cx <= 0 || cy <= 0)
+    {
+        return lParam;
+    }
+
+    const auto x = ((short)LOWORD(lParam) - rc.left) * MENU_WIDTH / cx;
+    const auto y = ((short)HIWORD(lParam) - rc.top) * MENU_HEIGHT / cy;
+
+    return MAKELPARAM(x, y);
 }
 
 // A drag runs a modal loop inside DispatchMessageA, and this timer keeps the frames coming.
@@ -172,4 +248,63 @@ int Window::OnTimer(HWND hWnd, UINT_PTR nTimerId)
 int Window::InSizeMove()
 {
     return s_bInSizeMove;
+}
+
+// The 3D renders at the client size, so it is never stretched. The width stays a multiple of four,
+// which the back buffer needs, and PresentFrame centres what that leaves.
+void Window::OnSize(WPARAM nKind, int cx, int cy)
+{
+#ifdef HYPERX_BRINGUP
+    BringUp::Trace("sizeKind", (int)nKind);
+    BringUp::Trace("sizeWidth", cx);
+    BringUp::Trace("sizeHeight", cy);
+#endif
+
+    if (nKind == SIZE_MINIMIZED || g_hSoftBackBitmap == 0)
+    {
+        return;
+    }
+
+    auto nWidth  = std::clamp(cx, 320, 4096) & ~3;
+    auto nHeight = std::clamp(cy, 200, 2160);
+
+    if (nWidth == g_nBackBufferWidth && nHeight == g_nBackBufferHeight)
+    {
+        return;
+    }
+
+    // The resize lays out the main camera, which an engine still loading has not made yet.
+    if (g_pGameEngine != 0 && (g_pGameEngine->m_ppSlots == 0 || g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT) == 0))
+    {
+        return;
+    }
+
+    g_dwDisplayWidth  = (unsigned int)nWidth;
+    g_dwDisplayHeight = (unsigned int)nHeight;
+
+    // ResizeBackBuffer compares against the camera's viewport, which can be smaller than the buffer.
+    g_nPrevWidth  = 0;
+    g_nPrevHeight = 0;
+
+    SoftRenderer::ResizeBackBuffer(&nWidth, &nHeight);
+
+    if (g_pGameEngine == 0)
+    {
+        return;
+    }
+
+    GameApp::SetupViewports();
+
+    // SetScreenSize skips an unchanged step, and SetupViewports has just undone its margins.
+    g_pGameEngine->m_nScreenSize = -1;
+    g_pGameEngine->SetScreenSize(g_pGameOptions->ReadScreenSize());
+}
+
+// Menus redraw from the canvas at the new size; a match redraws itself next frame.
+void Window::OnSizeMenus(HWND hWnd, WPARAM nKind)
+{
+    if (nKind != SIZE_MINIMIZED && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    {
+        Window::PresentMenu(hWnd);
+    }
 }

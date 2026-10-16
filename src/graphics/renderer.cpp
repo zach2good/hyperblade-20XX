@@ -286,7 +286,7 @@ int __stdcall Renderer::PresentFrame(void)
     const int cx     = g_nBackBufferWidth;
     const HDC hdc    = g_hScreenBltDC;
 
-    // The window is resizable, so the frame is stretched to the client area and letterboxed.
+    // The frame is centred in the client area, and scaled down, keeping its shape, only when larger.
     RECT rcClient;
 
     GetClientRect(g_gameApp.m_hWnd, &rcClient);
@@ -306,13 +306,19 @@ int __stdcall Renderer::PresentFrame(void)
         return 1;
     }
 
-    auto cxDest = cxClient;
-    auto cyDest = cxClient * cy / cx;
+    auto cxDest = cx;
+    auto cyDest = cy;
 
-    if (cyDest > cyClient)
+    if (cxDest > cxClient || cyDest > cyClient)
     {
-        cyDest = cyClient;
-        cxDest = cyClient * cx / cy;
+        cxDest = cxClient;
+        cyDest = cxClient * cy / cx;
+
+        if (cyDest > cyClient)
+        {
+            cyDest = cyClient;
+            cxDest = cyClient * cx / cy;
+        }
     }
 
     const auto x = (cxClient - cxDest) / 2;
