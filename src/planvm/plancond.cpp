@@ -4443,11 +4443,11 @@ void PlanAction::ClearBehaviorAnimation(Interactor* pContext, PlanNode*, short*,
 {
     EngineObject* pActor = pContext->GetActor();
 
-    pActor->GetPlanState()->m_pCurrent->m_pClipA = 0;
+    pActor->GetPlanState()->m_pCurrent->m_pAnimation = 0;
 
     pActor = pContext->GetActor();
 
-    pActor->GetPlanState()->m_pCurrent->m_pClipB = 0;
+    pActor->GetPlanState()->m_pCurrent->m_pPersistentAnimation = 0;
 }
 
 // FUNCTION: HYPERX 0x00463d80

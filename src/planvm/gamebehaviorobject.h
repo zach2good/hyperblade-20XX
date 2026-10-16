@@ -34,16 +34,16 @@ public:
         m_abAgendaPurged[nAt] = cValue;
     }
 
-    void SetClipA(float flRate, int nFlags)
+    void SetAnimationPlayback(float flRate, int nFlags)
     {
-        m_flRateA     = flRate;
-        m_nClipFlagsA = nFlags;
+        m_flAnimationRate = flRate;
+        m_nAnimationFlags = nFlags;
     }
 
-    void SetClipB(float flRate, int nFlags)
+    void SetPersistentPlayback(float flRate, int nFlags)
     {
-        m_flRateB     = flRate;
-        m_nClipFlagsB = nFlags;
+        m_flPersistentRate = flRate;
+        m_nPersistentFlags = nFlags;
     }
 
     const char* GetName() const
@@ -98,13 +98,14 @@ public:
     class AgendaItem*   m_apSlots[BEHAVIOR_SLOT_COUNT]; // 0x08
     struct PhysicsBody* m_pBody;                        // 0x30
     class EngineObject* m_pOwner;                       // 0x34
-    // Two interleaved triples of anim, rate and flags.
-    class AnimDB* m_pClipA;      // 0x38
-    class AnimDB* m_pClipB;      // 0x3c
-    float         m_flRateA;     // 0x40
-    float         m_flRateB;     // 0x44
-    int           m_nClipFlagsA; // 0x48
-    int           m_nClipFlagsB; // 0x4c
+    // The animation the behaviour plays, and the persistent one RestorePersistentAnimation returns
+    // to, each with its rate and flags.
+    class AnimDB* m_pAnimation;           // 0x38
+    class AnimDB* m_pPersistentAnimation; // 0x3c
+    float         m_flAnimationRate;      // 0x40
+    float         m_flPersistentRate;     // 0x44
+    int           m_nAnimationFlags;      // 0x48
+    int           m_nPersistentFlags;     // 0x4c
     // BindAnimEventChannel's channel, target, kind and parameter; the channel is never read.
     int m_nChannelSlot; // 0x50
     int m_nEventKind;   // 0x54
