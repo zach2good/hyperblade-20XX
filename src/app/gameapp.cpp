@@ -75,7 +75,6 @@ class AwardsUIScreen;
 #include "graphics/display.h"
 #include "ui/infobarbase.h"
 #include "graphics/cgpalette.h"
-#include "ui/animationpeekdialog.h"
 #include "input/input.h"
 #include "app/win32.h"
 #include "app/wndproc.h"
@@ -83,7 +82,6 @@ class AwardsUIScreen;
 #include "net/network.h"
 #include "engine/game.h"
 #include "graphics/d3dviewport.h"
-#include "app/dialogresources.h"
 #include "app/stringids.h"
 #include "common/staticinit.h"
 
@@ -91,22 +89,10 @@ float g_flUnusedConfigDialogA = g_flZeroConfigDialog;
 float g_flUnusedConfigDialogB = g_flZeroConfigDialog;
 float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
 
-// id_ACF_AnimationPeek in DATA/ENUMIDS.H: the plan action table registers this body at 16.
+// id_ACF_AnimationPeek in DATA/ENUMIDS.H. It opened a debug dialog, which went with the resources.
 // FUNCTION: HYPERX 0x004013d0
-void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int nWindow)
+void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int)
 {
-    // A window handle keeps its meaning in 32 bits, so the plan word sign-extends back to one.
-    const HWND hWnd = (HWND)(INT_PTR)nWindow;
-
-    GameEngine::TogglePause(hWnd, 0);
-
-    DialogBoxParamA((HINSTANCE)GetWindowLongPtrA(hWnd, GWLP_HINSTANCE),
-                    MAKEINTRESOURCEA(DIALOG_ANIMATION_PEEK),
-                    hWnd,
-                    GameApp::AnimationPeekDialogProc,
-                    0);
-
-    GameEngine::TogglePause(hWnd, 0);
 }
 
 // FUNCTION: HYPERX 0x004017a0
@@ -131,24 +117,6 @@ void GameApp::Error(const char* pszFormat, ...)
     ErrorFmt(m_hWnd, pszFormat, argList);
 
     va_end(argList);
-}
-
-// The Animation Peek dialog's procedure, which GameApp::AnimationPeek opens.
-// FUNCTION: HYPERX 0x004179e0
-INT_PTR CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch (nMsg)
-    {
-        case WM_INITDIALOG:
-            return AnimationPeekDialog::OnInit(hDlg, wParam, lParam);
-
-        case WM_COMMAND:
-            AnimationPeekDialog::OnCommand(hDlg, LOWORD(wParam), (HWND)lParam, HIWORD(wParam));
-
-            return 0;
-    }
-
-    return 0;
 }
 
 // FUNCTION: HYPERX 0x00418c10

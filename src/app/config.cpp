@@ -7,7 +7,6 @@
 #include <mbstring.h>
 #include "gameapp.h"
 #include "common/fileobj.h"
-#include "ui/keyconfigdialog.h"
 #include "engine/messageids.h"
 #include "graphics/graphicsglobals.h"
 #include "engine/engineglobals.h"
@@ -66,7 +65,6 @@
 #include "graphics/display.h"
 #include "ui/infobarbase.h"
 #include "graphics/cgpalette.h"
-#include "ui/animationpeekdialog.h"
 #include "input/input.h"
 #include "app/win32.h"
 #include "app/wndproc.h"
@@ -89,12 +87,6 @@ Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteeri
 // The separator is doubled: VC6 turns the unrecognised escape into a bare D.
 // STRING: HYPERX 0x004c4750
 String g_strPrefs("Data\\DftKeybd.cfg");
-
-// FUNCTION: HYPERX 0x0046d700
-int __cdecl KeyConfigDialog::ClearKeys(HWND, KeyRow*)
-{
-    return 1;
-}
 
 // FUNCTION: HYPERX 0x0046d710
 void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "app/gameapp.h"
 #include "globals.h"
 #include "ui/screen.h"
 #include "ui/buttonwidget.h"
@@ -13,7 +14,6 @@
 #include "graphics/gdi.h"
 #include "engine/game.h"
 #include "engine/gameengine.h"
-#include "ui/gamesetup.h"
 #include "common/stub.h"
 #include "sound/soundids.h"
 
@@ -220,12 +220,8 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                         break;
                     }
 
-                    g_nSetupReturnState = ESTATE_MAIN_MENU;
-
-                    if (GameSetup::ShowPreMatchDialogs() != 0)
-                    {
-                        Game::SetEngineState(ESTATE_MATCH_START);
-                    }
+                    // The DirectPlay set-up dialogs went with the resources; see the README's TODO.
+                    GameApp::ShowMessageBox(g_gameApp.m_hWnd, "Network play is not available in this build yet.", g_gameApp.m_strCaption.m_pchData, MB_OK);
 
                     InitFrame();
                     break;

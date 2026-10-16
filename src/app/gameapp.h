@@ -27,16 +27,15 @@ struct GameApp
         return m_bCursorWasVisible;
     }
 
-    static INT_PTR CALLBACK AnimationPeekDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam);
-    static void             SetupViewports(void);
-    static void __stdcall   InstantiateState(void);
-    static void             ResetToSinglePlayer(void);
-    static int __cdecl      OutOfMemoryHandler(size_t nSize);
-    static void __cdecl     AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
-    static int              ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
-    static LRESULT          ClearSplashPalette(void);
-    static HWND             CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
-    static void __cdecl     Shutdown(HWND hWnd);
+    static void           SetupViewports(void);
+    static void __stdcall InstantiateState(void);
+    static void           ResetToSinglePlayer(void);
+    static int __cdecl    OutOfMemoryHandler(size_t nSize);
+    static void __cdecl   AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
+    static int            ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
+    static LRESULT        ClearSplashPalette(void);
+    static HWND           CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
+    static void __cdecl   Shutdown(HWND hWnd);
 
     void    ReportLastError(HWND hUnused);
     void    Error(const char* pszFormat, ...);
@@ -98,7 +97,6 @@ struct GameApp
     StringPool m_stringPool;              // 0x54
     void(__stdcall* m_pfnShutdown)(void); // 0x64
     int m_nCDRomDrive;                    // 0x68
-
 
     void __fastcall OnShutdown();
 

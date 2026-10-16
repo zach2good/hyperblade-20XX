@@ -13,7 +13,6 @@
 #include "graphics/gdi.h"
 #include "net/netsetupdialog.h"
 #include "net/network.h"
-#include "planvm/planeditordialog.h"
 #include "graphics/swrend.h"
 #include "app/win32.h"
 #include "app/window.h"

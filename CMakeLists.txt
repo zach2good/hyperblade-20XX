@@ -324,8 +324,6 @@ set(HYPERX_SOURCES
     src/planvm/planactiontracking.cpp
     src/planvm/planarg.cpp
     src/planvm/plancond.cpp
-    src/planvm/planeditor.cpp
-    src/planvm/planeditordialog.cpp
     src/planvm/planfile.cpp
     src/planvm/planfocusarg.cpp
     src/planvm/planinteractorfactories.cpp
@@ -337,27 +335,23 @@ set(HYPERX_SOURCES
     src/sound/soundmanager.cpp
     src/sound/soundmixer.cpp
     src/sound/wave.cpp
-    src/ui/animationpeekdialog.cpp
     src/ui/buttonwidget.cpp
     src/ui/cddsurfaceowner.cpp
     src/ui/debughud.cpp
     src/ui/dialog.cpp
     src/ui/displaywidget.cpp
     src/ui/flipbookwidget.cpp
-    src/ui/gamesetup.cpp
     src/ui/holdingwidget.cpp
     src/ui/hud.cpp
     src/ui/inertwidget.cpp
     src/ui/infobar.cpp
     src/ui/infobarbase.cpp
     src/ui/jumbotextlist.cpp
-    src/ui/keyconfigdialog.cpp
     src/ui/loopflipbookwidget.cpp
     src/ui/mainwindow.cpp
     src/ui/messagequeue.cpp
     src/ui/pausemenu.cpp
     src/ui/radar.cpp
-    src/ui/ratingsdialog.cpp
     src/ui/saveobject.cpp
     src/ui/screen.cpp
     src/ui/screens/awardsuiscreen.cpp
@@ -382,7 +376,6 @@ set(HYPERX_SOURCES
     src/ui/screens/tournamentsetupuiscreen.cpp
     src/ui/screens/trainingendscreen.cpp
     src/ui/signflipbookwidget.cpp
-    src/ui/splashdialog.cpp
     src/ui/textinputwidget.cpp
     src/ui/uiscreen.cpp
     src/ui/widget.cpp)

@@ -17,7 +17,6 @@
 #include "net/netsetupdialog.h"
 #include "net/network.h"
 #include "app/win32.h"
-#include "app/dialogresources.h"
 
 #define PLAYER_SLOTS 16
 
@@ -226,93 +225,7 @@ unsigned int Network::SetupPlayerSlot(unsigned int nDpid, int nSlot)
 // FUNCTION: HYPERX 0x004783c0
 int Network::ShowWaitingDialog(void)
 {
-    if (g_bSessionActive == 0)
-    {
-        return 1;
-    }
-
-    return DialogBoxParamA(g_gameApp.m_hInstance, MAKEINTRESOURCEA(DIALOG_WAITING_FOR_PLAYERS), g_gameApp.m_hWnd, Network::PeriodDialogProc, 0);
-}
-
-// The dialog that holds the game between periods; it has no controls the player uses.
-// FUNCTION: HYPERX 0x004783f0
-INT_PTR CALLBACK Network::PeriodDialogProc(HWND hDlg, UINT nMsg, WPARAM, LPARAM)
-{
-    int nPoll;
-
-    if (nMsg == WM_INITDIALOG)
-    {
-        g_hWndNetSetupDlg = hDlg;
-
-        Win32::CenterWindow(hDlg, GetParent(hDlg));
-
-        if (g_pGameSession == 0 || g_pGameSession->apPlayers[0] == 0 || g_pGameSession->pLeadPlayer == 0)
-        {
-            // STRING: HYPERX 0x004c5ff0
-            g_gameApp.Error("End-of-period dialog box called without network object\n");
-
-            EndDialog(hDlg, 1);
-
-            return 1;
-        }
-
-        for (int nSlot = 0; nSlot < PLAYER_SLOTS; nSlot++)
-        {
-            g_pGameSession->apPlayers[nSlot]->pState->nReady = 0;
-        }
-
-        g_nNetSetupState = NETSETUP_STATE_PLAYING;
-
-        if (g_pGameSession->bHosting != 0)
-        {
-            if (g_pGameSession->nRemoteCount == 0)
-            {
-                NetSetupDialog::FinalizeAndStartGame();
-
-                return 1;
-            }
-        }
-        else
-        {
-            for (nPoll = 0; nPoll < g_pGameSession->nRemoteCount; nPoll++)
-            {
-                g_pGameSession->pLeadPlayer->SendPlayerReady(g_pGameSession->aRemoteIds[nPoll]);
-            }
-        }
-
-        g_pGameSession->pLeadPlayer->pState->nReady = 1;
-
-        g_nNetSetupTimerId = SetTimer(hDlg, 0, PERIOD_TIMER_MS, 0);
-
-        if (g_nNetSetupTimerId == 0)
-        {
-            // STRING: HYPERX 0x004c6028
-            g_gameApp.Fatal("NETPERIOD timer failed");
-
-            g_hWndNetSetupDlg = 0;
-
-            EndDialog(hDlg, 1);
-        }
-    }
-    else if (nMsg == WM_TIMER)
-    {
-        if (g_pGameSession->nRemoteCount == 0)
-        {
-            NetSetupDialog::FinalizeAndStartGame();
-
-            return 1;
-        }
-
-        for (nPoll = 0; nPoll < g_pGameSession->nRemoteCount; nPoll++)
-        {
-            g_pGameSession->pLeadPlayer->SendPlayerReady(g_pGameSession->aRemoteIds[nPoll]);
-        }
-    }
-    else
-    {
-        return 0;
-    }
-
+    // No session can start without the set-up dialogs, so there is never anyone to wait for.
     return 1;
 }
 

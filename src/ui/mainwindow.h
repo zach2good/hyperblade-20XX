@@ -6,13 +6,8 @@
 namespace MainWindow
 {
 
-int              OnCreate(HWND hWnd, LPARAM lParam);
-LRESULT __cdecl  OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify);
-int              OpenPlanEditor(HINSTANCE hInstance, HWND hParent);
-INT_PTR CALLBACK RatingsDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK DebugParamsDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK KeyboardDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK PhysicsConfigProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam);
+int             OnCreate(HWND hWnd, LPARAM lParam);
+LRESULT __cdecl OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify);
 
 } // namespace MainWindow
 
