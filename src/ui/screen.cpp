@@ -4,6 +4,7 @@
 #include "common/gametime.h"
 #include "sound/audiomgr.h"
 #include "input/inputglobals.h"
+#include "input/input.h"
 #include "graphics/gdi.h"
 struct GameApp;
 #include "uiglobals.h"
@@ -238,9 +239,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
     switch (wParam)
     {
         case VK_TAB:
-            GetKeyState(VK_SHIFT);
-
-            if (GetKeyState(VK_SHIFT) < 0)
+            if (Input::IsShiftKeyDown())
             {
                 MoveFocusPrev();
                 InitFrame();
