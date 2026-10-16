@@ -418,10 +418,22 @@ add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp)
 target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(strings_check PRIVATE /W3 /utf-8 /EHsc)
 
+# Draws a lit triangle through the mesh pipeline and reads it back, skipped without a GPU.
+add_executable(hwpipeline_check tests/hwpipeline_check.cpp src/graphics/hwpipeline.cpp)
+target_include_directories(hwpipeline_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_options(hwpipeline_check PRIVATE /W3 /utf-8 /EHsc)
+target_link_libraries(hwpipeline_check PRIVATE SDL3::SDL3)
+hyperx_add_shaders(hwpipeline_check shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl)
+add_custom_command(TARGET hwpipeline_check POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:hwpipeline_check> $<TARGET_FILE_DIR:hwpipeline_check>
+    COMMAND_EXPAND_LISTS
+    VERBATIM)
+
 enable_testing()
 
 add_test(NAME ini COMMAND ini_check)
 add_test(NAME strings COMMAND strings_check)
+add_test(NAME hwpipeline COMMAND hwpipeline_check)
 add_test(NAME hwmesh COMMAND hwmesh_check)
 
 if(HYPERX_GAME_DATA)

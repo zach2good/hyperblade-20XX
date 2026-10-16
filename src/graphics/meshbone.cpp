@@ -28,6 +28,8 @@
 #include "graphics/d3drend.h"
 #include "graphics/face.h"
 #include "graphics/swrend.h"
+#include "graphics/hwrenderer.h"
+#include "engine/objectclasses.h"
 #include "modelcomponent.h"
 #include "engine/cameraprojectionstate.h"
 
@@ -131,6 +133,106 @@ extern const float g_flVertexW;
 extern Vec3 g_vLightDirModel;
 
 extern class TransformObject* g_pCameraTransform;
+extern int                    g_bDromePass;
+
+// The block goes to the GPU whole: the bone's place in the camera's pixels, its light and its
+// viewport, with nothing transformed or rasterised here.
+void MeshBone::SubmitToHardware()
+{
+    if (m_pMesh == 0 || m_pMesh->nFaceCount <= 0 || m_pMesh->vertexOffset.nBytes == 0)
+    {
+        return;
+    }
+
+    TransformObject pixelFromModel;
+
+    g_pCameraTransform->Multiply(&pixelFromModel, &m_world);
+
+    auto draw = HwRenderer::Draw{};
+
+    draw.pBlock         = m_pMesh;
+    draw.pMaterials     = m_pOwner->m_pModelBlock->m_pMaterials;
+    draw.nMaterialCount = m_pOwner->m_pModelBlock->m_nMatCount;
+
+    for (int nRow = 0; nRow < 3; nRow++)
+    {
+        for (int nColumn = 0; nColumn < 4; nColumn++)
+        {
+            draw.aPixelFromModel[nRow * 4 + nColumn] = pixelFromModel.m_a[nRow][nColumn];
+        }
+    }
+
+    // Without a fourth row the engine divides by one, as DrawFaces does.
+    for (int nColumn = 0; nColumn < 4; nColumn++)
+    {
+        const auto flIdentity = [&]
+        {
+            if (nColumn == 3)
+            {
+                return 1.0f;
+            }
+
+            return 0.0f;
+        }();
+
+        draw.aPixelFromModel[12 + nColumn] = [&]
+        {
+            if (pixelFromModel.m_bHasRow3 != 0)
+            {
+                return pixelFromModel.m_a[3][nColumn];
+            }
+
+            return flIdentity;
+        }();
+    }
+
+    draw.bArena = m_pOwner == g_pGameEngine->m_ppSlots[SLOT_DROME];
+
+    // The arena is lit as Renderer::DrawAllMeshes bakes it: each bone by its own light, along the
+    // drome pass's curve. With more than two bones the first takes the extra light.
+    const auto vWorldLight = [&]
+    {
+        if (!draw.bArena)
+        {
+            return g_lightDirs[0].dir;
+        }
+
+        auto nBone = (int)(this - m_pOwner->m_pBones);
+
+        if (m_pOwner->GetBoneCount() > 2)
+        {
+            if (nBone == 0)
+            {
+                return g_vLightDirExtra;
+            }
+
+            nBone--;
+        }
+
+        if (nBone == 0)
+        {
+            return g_lightDirs[1].dir;
+        }
+
+        return g_lightDirs[2].dir;
+    }();
+
+    Vec3 vLight;
+
+    m_world.TransformDirectionByRows(vWorldLight, &vLight);
+
+    draw.aLightDir[0] = vLight.x;
+    draw.aLightDir[1] = vLight.y;
+    draw.aLightDir[2] = vLight.z;
+    draw.aLightDir[3] = (float)draw.bArena;
+
+    draw.nViewportX      = g_nViewportOriginX;
+    draw.nViewportY      = g_nViewportOriginY;
+    draw.nViewportWidth  = g_nPrevWidth;
+    draw.nViewportHeight = g_nPrevHeight;
+
+    HwRenderer::Submit(draw);
+}
 
 // The drawer walks the face list backwards from one past the last entry.
 // FUNCTION: HYPERX 0x0046f060
@@ -143,6 +245,13 @@ void MeshBone::DrawFaces()
 
     MeshBlock* pBlob = m_pOwner->m_pLod->m_apLodMeshes[m_pOwner->m_wLodLevel][m_wMeshSlot];
     m_pMesh          = pBlob;
+
+    if (HwRenderer::Capturing())
+    {
+        SubmitToHardware();
+
+        return;
+    }
 
     if (pBlob == 0 || pBlob->vertexOffset.nBytes == 0)
     {

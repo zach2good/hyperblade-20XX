@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/hwrenderer.h"
 #include "modeldatabase.h"
 #include "globals.h"
 #include "graphicsglobals.h"
@@ -87,6 +88,8 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
     {
         return pNode;
     }
+
+    HwRenderer::ForgetMeshes();
 
     OwnedFile file;
 

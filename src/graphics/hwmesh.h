@@ -28,6 +28,7 @@ static_assert(sizeof(Vertex) == 44);
 
 // Every face of the block as a triangle list. A face whose material has a back material is also
 // emitted reversed, with the back material and the normal negated.
+// Front triangles run clockwise in pixels with y down: the file's corners, which run anticlockwise.
 std::vector<Vertex> Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount);
 
 } // namespace HwMesh

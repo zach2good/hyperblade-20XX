@@ -104,6 +104,7 @@ public:
     int  BindToLODMeshShadowless(class CD3DTextureManager* pLookup, class LODNode* pNode, class EngineObject* pUnused, short nSlot);
     void CalcVertexColors(int nUseMdm);
     void DrawFaces();
+    void SubmitToHardware();
 
     MeshBoundingBox* GetBoundingBox(MeshBoundingBox* pOut);
     void             ComputeBoundingSphere();

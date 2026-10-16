@@ -143,7 +143,7 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
     {
         if (GraphicsSettings::Active() == GraphicsSettings::Renderer::HARDWARE)
         {
-            return HwRenderer::Render(HwRenderer::Renderer{ s_pRenderer }, nWidth, nHeight).As<SDL_Texture>();
+            return HwRenderer::Render(HwRenderer::Renderer{ s_pRenderer }, nWidth, nHeight, (const unsigned char*)pColours).As<SDL_Texture>();
         }
 
         s_pFrame = Fit(s_pFrame, SDL_PIXELFORMAT_INDEX8, nWidth, nHeight, SDL_SCALEMODE_LINEAR);
