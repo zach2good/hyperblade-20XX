@@ -10,19 +10,12 @@ if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
     message(FATAL_ERROR "HyperBlade 20XX builds with MSVC for x64. Use the preset in CMakePresets.json.")
 endif()
 
-option(HYPERX_COMPILE_ONLY
-    "Compile every source without your copy of the game. Links no image." OFF)
-
-# The game data is junctioned in beside the image, and the MDM1 test reads it.
+# For running from the build: the game's folders are junctioned in beside the exe and HYPERX.EXE
+# copied there, and the data tests read it. Nothing from it goes into the exe.
 set(HYPERX_GAME_DATA "" CACHE PATH
-    "Directory holding the game's Data, DIRECTX, AVI, DOS and ACRODOS folders")
+    "Directory holding the game's HYPERX.EXE and its Data, DIRECTX, AVI, DOS and ACRODOS folders")
 
 include(cmake/dependencies.cmake)
-
-if(NOT HYPERX_COMPILE_ONLY)
-    find_package(Python3 REQUIRED COMPONENTS Interpreter)
-    include(cmake/resources.cmake)
-endif()
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
 set(STB_DIR "${CMAKE_SOURCE_DIR}/third_party/stb")
@@ -422,18 +415,14 @@ if(HYPERX_GAME_DATA)
     add_test(NAME wave COMMAND wave_check "${HYPERX_GAME_DATA}/Data")
 endif()
 
-if(HYPERX_COMPILE_ONLY)
-    message(STATUS "Compile only: no image is linked")
-    return()
-endif()
-
-add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects> "${HYPERX_RES}")
+# Named apart from HYPERX.EXE so it can sit beside it in a HyperBlade folder.
+add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects>)
 set_target_properties(hyperx PROPERTIES
-    OUTPUT_NAME hyperx
+    OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
 target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio
     kernel32 user32 gdi32 winmm version ddraw dxguid)
-target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperx.map")
+target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
 
 # SDL3.dll goes beside the image.
 add_custom_command(TARGET hyperx POST_BUILD
@@ -449,6 +438,11 @@ if(HYPERX_GAME_DATA)
         list(APPEND asset_commands COMMAND cmd /c
             "if not exist \"${HYPERX_OUT}/${asset}\"              if exist \"${HYPERX_GAME_DATA}/${asset}\"              mklink /J \"${HYPERX_OUT}/${asset}\" \"${HYPERX_GAME_DATA}/${asset}\" > nul")
     endforeach()
+
+    if(EXISTS "${HYPERX_GAME_DATA}/HYPERX.EXE")
+        list(APPEND asset_commands COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "${HYPERX_GAME_DATA}/HYPERX.EXE" "${HYPERX_OUT}/HYPERX.EXE")
+    endif()
 
     add_custom_target(game-assets ${asset_commands}
         COMMENT "Linking the game data beside the image")
