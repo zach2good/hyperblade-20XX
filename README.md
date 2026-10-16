@@ -8,23 +8,22 @@
   <a href="https://github.com/zach2good/hyperblade-20XX/actions/workflows/ci.yml"><img src="https://github.com/zach2good/hyperblade-20XX/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
-A modernised, portable HyperBlade, the 1996 game, forked from
-[hyperblade-decomp](https://github.com/zach2good/hyperblade-decomp). The decomp rebuilds
-`HYPERX.EXE` byte for byte with Visual C++ 6.0. This fork drops the byte match and builds with a
-current compiler, so we can fix and change the game.
+HyperBlade, the 1996 game, built with a current compiler so we can fix and change it. This is a
+fork of [hyperblade-decomp](https://github.com/zach2good/hyperblade-decomp), which rebuilds
+`HYPERX.EXE` byte for byte with Visual C++ 6.0.
 
-You need your own copy of the game. The logo is shown for identification. Not affiliated with
-Activision or WizBang! Software Productions.
+You need your own copy of the game. Not affiliated with Activision or WizBang! Software
+Productions.
 
-## Requirements
-
-- Windows, with Visual Studio 2022 or later and its C++ x64 tools.
-- CMake 3.21 or later, and Ninja.
-- Python 3.12 or later.
-- clang-format 22 if you contribute: `pip install clang-format==22.1.8`.
-- Your own copy of HyperBlade, with `HYPERX.EXE` at v1.0.0.1. The build reads its resources.
+<p align="center">
+  <img src="docs/gameplay_soft.png" alt="A match in the software renderer" width="640">
+</p>
 
 ## Build
+
+You need Windows, Visual Studio 2022 or later with the C++ x64 tools, CMake 3.21 or later, Ninja,
+Python 3.12 or later, and HyperBlade with `HYPERX.EXE` at v1.0.0.1. The build reads the game's
+resources out of your copy.
 
 Copy `hyperx-user.example.yml` to `hyperx-user.yml` and point it at your `HYPERX.EXE`. Then, from
 an x64 Developer Command Prompt:
@@ -35,27 +34,27 @@ cmake --build build
 ```
 
 `HYPERX_GAME_DATA` is the folder that holds the disc's `Data` folder. The build links it beside
-`build/out/hyperx.exe`. Without a copy of the game, configure with `-DHYPERX_COMPILE_ONLY=ON`,
-which compiles every source and links nothing. x64 is the only supported build.
+`build/out/hyperx.exe`, which you can then run. `ctest --test-dir build` decodes every MDM1-packed
+file in your data. Without the game, configure with `-DHYPERX_COMPILE_ONLY=ON` to compile only.
 
-`ctest --test-dir build` decodes every MDM1-packed file in your data against its recorded size.
+Format every source file you touch with clang-format 22: `pip install clang-format==22.1.8`.
 
 ## Pulling from the decomp
 
-The decomp is the `upstream` remote. Its source changes merge into this fork:
+The decomp is the `upstream` remote. Rebase onto it with `git fetch upstream` and
+`git rebase upstream/main`. Its matching tools, records and CI are deleted here, so resolve a
+conflict on any of them by deleting the file again.
 
-```sh
-git fetch upstream
-git merge upstream/main
-```
-
-## Extracting the game's data
+## Tools
 
 ```sh
 python tools/extract_rc.py          # menu, dialogs, strings, version and icon, as an .rc script
 python tools/extract_mdm1.py --png  # every MDM1-packed bitmap in Data, as BMP and PNG
 python tools/plan_dump.py           # the AI plans, printed as pseudo-source
 ```
+
+[docs/](docs/README.md) holds what we know about the game: the class hierarchy, the other files on
+the disc, and the bugs in the shipped AI plans.
 
 ## TODO
 
@@ -65,7 +64,7 @@ python tools/plan_dump.py           # the AI plans, printed as pseudo-source
 - ImGui debug menus.
 - Recreate the RC menus with ImGui.
 - Recreate all the debug and plan menus with ImGui.
-- Fix the existing bugs and balance issues in the PBN files.
+- Fix the existing bugs and balance issues in the PBN files ([docs/plan_bugs.md](docs/plan_bugs.md)).
 - Controller support through SDL3.
 - An Emscripten build.
 - Test on Mac and Linux.
@@ -77,8 +76,6 @@ python tools/plan_dump.py           # the AI plans, printed as pseudo-source
 This project is for preservation, research and interoperability. It holds no original binary,
 game data or disassembly. Don't attach any of these to an issue or a pull request, and don't ask
 for a copy of the game.
-
-## Licence
 
 LGPL-3.0-only for this project's own work. [NOTICE](NOTICE) says what the licence covers.
 HyperBlade belongs to its rights holders.

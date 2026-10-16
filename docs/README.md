@@ -4,7 +4,6 @@ Findings about the game and its code, carried over from the decomp.
 
 | Document | Read it for |
 | --- | --- |
-| [re_corrections.md](re_corrections.md) | Ghidra readings that are wrong, with the evidence |
 | [class_hierarchy.md](class_hierarchy.md) | Vtable layouts and the class hierarchy |
 | [OTHER_MODULES.md](OTHER_MODULES.md) | The other executables and DLLs on the disc |
 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
@@ -17,7 +16,7 @@ Findings about the game and its code, carried over from the decomp.
 
 | Term | Meaning |
 | --- | --- |
-| the original, the client | The retail `HYPERX.EXE` v1.0.0.1. "The client" is the original's side of a diff. |
+| the original | The retail `HYPERX.EXE` v1.0.0.1. |
 | HyperBlade | The game: a team sport on skates, two teams of two dromers and a goalie each. |
 | dromer | A skater. Each team has two dromers on the floor, slots 0 to 3. |
 | Rok | The ball. The skater holding it is the Rok carrier. |
@@ -33,7 +32,7 @@ Findings about the game and its code, carried over from the decomp.
 | interactor name | A name `id_SET_InteractorName` gives an interactor, so a later word tagged `0xdcba` can refer to it. |
 | MDM1 | The LZSS packing on most of the game's bitmaps. `tools/extract_mdm1.py` unpacks it. |
 | ENUMIDS.H | The developers' header, shipped in the game's `DATA` directory, that names the plan VM's ids: messages (`id_MSG_`), pronouns (`id_PRN_`), ratings (`id_RAT_`) and the rest. |
-| slot | An index into a table: an object slot, a vtable slot, or a frame slot on the stack. |
+| slot | An index into a table: an object slot or a vtable slot. |
 
 ## Sources
 

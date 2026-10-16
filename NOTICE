@@ -16,18 +16,16 @@ WHAT IT DOES NOT COVER
 
 HyperBlade and HYPERX.EXE are the property of their respective rights holders.
 
-The source here is a reconstruction of HYPERX.EXE. To compile to the same bytes it has to
-reproduce the original's string literals, constants and data tables, and its few
-hand-written assembly routines. Those are in the source.
+The source here is a reconstruction of HYPERX.EXE, from hyperblade-decomp. It reproduces
+the original's string literals, constants and data tables. Those are in the source.
 
 No original binary or game data is in this repository, and neither is a disassembly
 listing or a Ghidra database. docs/logo.png and docs/gameplay_soft.png show the game's
 art, for identification only. You supply your own copy of HyperBlade, and every
 build reads what it needs from that copy.
 
-Addresses, sizes, function names and the measurements under progress/ and symbols/ are
-facts about the program, recorded so the reconstruction can be checked. They are not the
-program.
+Addresses, sizes and function names in the source are facts about the program. They are
+not the program.
 
 Nothing in this licence grants any right to HyperBlade itself. You need your own copy,
 and what you may do with it is between you and its rights holders.

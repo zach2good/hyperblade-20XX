@@ -4,25 +4,10 @@ The stripped image has no type information, so its vtables are the only evidence
 VC6 lays out a derived class's table as a copy of the base's table with the overridden slots
 replaced. Two tables that agree on a prefix of slots share a base, and the length of the prefix
 is the base's virtual count. Slot 0 is always the class's own deleting destructor, so it never
-agrees and the tools skip it.
+agrees.
 
 A table's length is the distance to the next table. A reader that uses a fixed slot count walks
 into the next table and makes every class appear to override every slot.
-
-## Tools
-
-| Tool | What it does |
-|---|---|
-| `tools/vtable_forest.py` | Reads all 214 tables from `HYPERX.EXE` and groups them into families. `--slots` resolves every slot, `--base 0x...` compares one table with its family. Needs the original binary. |
-| `tools/view_classes.py` | Finds classes that are one class declared twice, by slot index, arity and return width. |
-| `tools/show_class.py` | Prints every declaration of a class side by side. |
-| `tools/slot_owners.py` | Says which slots a class overrides and which class owns each body. |
-| `tools/vtable_slots.py` | Lists slot bodies filed under a class that cannot reach them. |
-| `tools/check_slot_arity.py` | Checks each class against the slot arities in its table (each slot's `ret N`). |
-| `tools/check_vtable_arity_declared.py` | Compares each class's declared virtual count with its table's length. |
-| `tools/check_virtual_bodies.py` | Fails when a class declares a virtual it never defines. |
-| `tools/check_vtbl_stores.py` | Fails when a member stores a vtable that is not its own class's. |
-| `tools/check_self_casts.py`, `tools/this_casts.py` | Find members that cast `this` to their own class or to an unrelated one. |
 
 Each class in `src/` that owns a table carries a `// VTABLE: HYPERX 0x...` marker. To list them,
 run `grep -rn "VTABLE: HYPERX" src`.
@@ -114,8 +99,7 @@ one name for different slots, so matching by name would have merged the wrong sl
 
 ## Abstract bases
 
-`python tools/vtable_forest.py --slots` shows which tables VC6 filled with
-`HandlePureVirtualCall`. Those are the classes the original declared with pure virtuals. The
+VC6 filled some tables with `HandlePureVirtualCall`. Those are the classes the original declared with pure virtuals. The
 counts below leave out slot 0, the destructor.
 
 | Table | Class | Pure slots |
@@ -144,8 +128,6 @@ the original left that slot to a derived class.
 The linker folded identical bodies onto one address, so some slot bodies appear in many
 unrelated tables and cannot be one class's member. `Object::Trace` is in seventeen tables,
 `DispatchSceneMessage` in twelve, `CreateSurface` in seven and `KeyConfigDialog::SaveKeysAs` in five.
-`symbols/free_slots.csv` lists the slot bodies that the tree writes as free functions, with the
-reason for each.
 
 ## COM interfaces
 

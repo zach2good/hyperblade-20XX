@@ -1,24 +1,31 @@
 cff-version: 1.2.0
 message: "If you use or refer to this software, please cite it as below."
 type: software
-title: "hyperblade-decomp: A Byte-Matching Decompilation of HyperBlade"
+title: "hyperblade-20XX: A Modern Port of HyperBlade"
 abstract: >-
-  A byte-matching decompilation of HYPERX.EXE v1.0.0.1, from the 1996 game HyperBlade by WizBang!
-  Software Productions for Activision, rebuilt with Visual C++ 6.0 SP3 and scored per function by
-  reccmp. It contains no code or data from the original game; you supply your own copy.
+  A modernised build of HYPERX.EXE v1.0.0.1, from the 1996 game HyperBlade by WizBang! Software
+  Productions for Activision, ported from the hyperblade-decomp decompilation to MSVC x64 and
+  C++23. It contains no code or data from the original game; you supply your own copy.
 authors:
   - given-names: Zach
     family-names: Toogood
-  - name: "The hyperblade-decomp contributors"
+  - name: "The hyperblade-decomp and hyperblade-20XX contributors"
 license: LGPL-3.0-only
-repository-code: "https://github.com/zach2good/hyperblade-decomp"
+repository-code: "https://github.com/zach2good/hyperblade-20XX"
 keywords:
-  - decompilation
   - HyperBlade
   - ADLIB
   - software preservation
-  - reverse engineering
+  - source port
 references:
+  - type: software
+    title: "hyperblade-decomp: A Byte-Matching Decompilation of HyperBlade"
+    authors:
+      - given-names: Zach
+        family-names: Toogood
+      - name: "The hyperblade-decomp contributors"
+    license: LGPL-3.0-only
+    repository-code: "https://github.com/zach2good/hyperblade-decomp"
   - type: software
     title: "libadlib: An Independent Reconstruction of the ADLIB Behavior Runtime"
     authors:
