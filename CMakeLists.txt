@@ -387,10 +387,12 @@ target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
 target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio imgui)
 
+set(HYPERX_WARNINGS /W4 /WX)
+
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
 target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
     DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
-target_compile_options(hyperx_objects PRIVATE /W3 /permissive /utf-8 /EHsc)
+target_compile_options(hyperx_objects PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
 
 set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
 hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
@@ -399,34 +401,34 @@ hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
 target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(mdm1_check PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
-target_compile_options(mdm1_check PRIVATE /W3 /permissive /utf-8 /EHsc)
+target_compile_options(mdm1_check PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
 
 # Parses every wave in the game data and reads its samples back.
 add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp)
 target_include_directories(wave_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(wave_check PRIVATE _CRT_SECURE_NO_WARNINGS)
-target_compile_options(wave_check PRIVATE /W3 /utf-8 /EHsc)
+target_compile_options(wave_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 
 # Builds hardware triangle lists from small hand-made mesh blocks.
 add_executable(hwmesh_check tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
 target_include_directories(hwmesh_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(hwmesh_check PRIVATE _CRT_SECURE_NO_WARNINGS)
-target_compile_options(hwmesh_check PRIVATE /W3 /permissive /utf-8 /EHsc)
+target_compile_options(hwmesh_check PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
 
 # Round-trips booie.ini reads and writes.
 add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp)
 target_include_directories(ini_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(ini_check PRIVATE /W3 /utf-8 /EHsc)
+target_compile_options(ini_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 
 # Reads a strings file back, escapes and all.
 add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp)
 target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(strings_check PRIVATE /W3 /utf-8 /EHsc)
+target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 
 # Draws a lit triangle through the mesh pipeline and reads it back, skipped without a GPU.
 add_executable(hwpipeline_check tests/hwpipeline_check.cpp src/graphics/hwpipeline.cpp)
 target_include_directories(hwpipeline_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(hwpipeline_check PRIVATE /W3 /utf-8 /EHsc)
+target_compile_options(hwpipeline_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 target_link_libraries(hwpipeline_check PRIVATE SDL3::SDL3)
 hyperx_add_shaders(hwpipeline_check ${HYPERX_SHADERS})
 add_custom_command(TARGET hwpipeline_check POST_BUILD
