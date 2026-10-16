@@ -2,16 +2,9 @@
 # stores LF and a checkout gets the platform's own, so Windows and Linux never fight over them.
 * text=auto
 
-# A patch keeps LF on every platform, like the files it applies to.
-*.patch eol=lf
-
-
-# Vendored third party. Never line-ending converted, never diffed, and not counted as this
-# project's own code in the language statistics. See third_party/README.md for why it is here.
+# Vendored third party: never line-ending converted, and not counted as this project's own code
+# in the language statistics. See third_party/README.md.
 third_party/** -text linguist-vendored
-*.tar.gz binary
-*.gif    binary
-*.jpg    binary
-*.png    binary
-*.bmp    binary
-*.ppm    binary
+*.jpg binary
+*.png binary
+*.bmp binary

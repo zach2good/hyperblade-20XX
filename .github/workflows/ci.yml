@@ -22,17 +22,13 @@ jobs:
         shell: bash
         run: |
           pip install clang-format==22.1.8
-          git ls-files 'src/*.cpp' 'src/*.h' | xargs clang-format --dry-run --Werror
+          git ls-files 'src/*.cpp' 'src/*.h' 'tests/*.cpp' | xargs clang-format --dry-run --Werror
 
   compile:
     name: Compile (MSVC x64)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
 
       - uses: ilammy/msvc-dev-cmd@v1
         with:

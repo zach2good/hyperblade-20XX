@@ -35,8 +35,7 @@ ENUMIDS.H
 *.lock
 *.lock~
 
-# Scratch work goes in scratch/. Loose text and JSON at the root is scratch too: sweep output
-# lands there, and some of it holds the original's disassembly.
+# Scratch work goes in scratch/. Loose text and JSON at the root is scratch too.
 scratch/
 *.tmp
 /*.txt
@@ -48,18 +47,10 @@ scratch/
 # A raw disassembly listing is the original's bytes. Never commit one.
 disasm*.txt
 
-# A snapshot is drawn from your copy's assets.
-snap_*.bmp
-snap_*.png
-
-# Python bytecode caches rewrite themselves whenever a checker runs.
+# Python bytecode caches.
 __pycache__/
 *.pyc
 
 # Local tool state.
 .claude/
 .remember/
-
-
-
-

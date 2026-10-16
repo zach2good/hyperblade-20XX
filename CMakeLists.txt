@@ -13,9 +13,12 @@ endif()
 option(HYPERX_COMPILE_ONLY
     "Compile every source without your copy of the game. Links no image." OFF)
 
-find_package(Python3 REQUIRED COMPONENTS Interpreter)
+# The game data is junctioned in beside the image, and the MDM1 test reads it.
+set(HYPERX_GAME_DATA "" CACHE PATH
+    "Directory holding the game's Data, DIRECTX, AVI, DOS and ACRODOS folders")
 
 if(NOT HYPERX_COMPILE_ONLY)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
     include(cmake/resources.cmake)
 endif()
 
@@ -394,6 +397,7 @@ target_compile_options(hyperx_objects PRIVATE /W3 /permissive /utf-8 /EHsc)
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
 target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(mdm1_check PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
+target_compile_options(mdm1_check PRIVATE /W3 /permissive /utf-8 /EHsc)
 
 enable_testing()
 
@@ -414,10 +418,7 @@ target_link_libraries(hyperx PRIVATE
     kernel32 user32 gdi32 winmm version ddraw dxguid dsound)
 target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperx.map")
 
-# The game data is junctioned in beside the image. mklink /J needs no privilege.
-set(HYPERX_GAME_DATA "" CACHE PATH
-    "Directory holding the game's Data, DIRECTX, AVI, DOS and ACRODOS folders")
-
+# mklink /J needs no privilege.
 if(HYPERX_GAME_DATA)
     # No VERBATIM: cmd /c must receive the inner quotes unescaped.
     set(asset_commands)
