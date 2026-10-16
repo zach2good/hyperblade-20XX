@@ -10,7 +10,7 @@ class PlayerObject;
 class CameraObject;
 struct PlanNode;
 
-// The base of the collision and message interactors; the tick budget walk calls only slot 10.
+// The base of the collision and message interactors; the re-arm walk calls only slot 10.
 // VTABLE: HYPERX 0x004b37e8
 class Interactor
 {

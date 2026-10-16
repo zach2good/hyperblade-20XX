@@ -272,7 +272,7 @@ void GameBehaviorObject::UpdateBehaviorPollCountdown()
     }
 }
 
-// The behaviour's per-frame pass: purge, detach, merge the slots, then re-register the message interactors.
+// Run as the behaviour is activated: purge, detach, merge the slots, then re-register the message interactors.
 
 // FUNCTION: HYPERX 0x0041c380
 void GameBehaviorObject::TickAndSortMessages()

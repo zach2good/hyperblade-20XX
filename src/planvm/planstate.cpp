@@ -306,7 +306,7 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
 // FUNCTION: HYPERX 0x0047b290
 void PlanState::PostUpdateCleanup()
 {
-    if (m_nTickBudget-- == 0)
+    if (m_nCollisionRearmTicks-- == 0)
     {
         Interactor* pNode = m_pCollInteractors;
 
@@ -508,8 +508,8 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 // Argument one is the behaviour's name.
 #define ARG_NAME 1
 
-// What the state hands out is the tick budget the plan machine spends per activation.
-#define TICK_BUDGET 10
+// Ticks after instantiation before every collision interactor is set active again.
+#define COLLISION_REARM_TICKS 10
 
 // FUNCTION: HYPERX 0x0047b680
 PlanState* PlanState::Instantiate()
@@ -647,7 +647,7 @@ PlanState* PlanState::Instantiate()
 
                 m_nInteractorCount = (short)nConditions;
 
-                m_nTickBudget = TICK_BUDGET;
+                m_nCollisionRearmTicks = COLLISION_REARM_TICKS;
 
                 return this;
             }

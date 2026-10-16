@@ -162,7 +162,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
         LeaveCriticalSection(m_pOwner->GetCPlayerStateLock());
     }
 
-    m_pOwner->GetPlanState()->m_nTickBudget = TICK_BUDGET_DISPATCHED;
+    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;
 
     if (m_wSlot >= 0)
     {

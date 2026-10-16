@@ -123,7 +123,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
         m_pOwner->GetPlanState()->ActivateBehavior((unsigned int)m_nBehaviour);
     }
 
-    m_pOwner->GetPlanState()->m_nTickBudget = TICK_BUDGET_DISPATCHED;
+    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;
 
     if (m_wSlot >= 0)
     {
