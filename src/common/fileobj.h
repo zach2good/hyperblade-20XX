@@ -24,7 +24,7 @@ class FileObj
 public:
     void Close();
 
-    // Answers whether the descriptor closed cleanly; unlike Close it does not guard a zero one.
+    // Answers whether the descriptor closed cleanly.
     int  CloseAndTest();
     char Open(const char* pszName, int nMode);
     int  Read(void* pBuffer, int nCount);

@@ -10,13 +10,14 @@
 
 #define TEXT_MAX 0x100
 
-// Close tests the descriptor against zero, not -1, so a failed open is closed anyway.
+// The original closed a failed open's -1, and callers close twice; the modern CRT aborts on both.
 // FUNCTION: HYPERX 0x00440460
 void FileObj::Close()
 {
-    if (m_fd != 0)
+    if (m_fd > 0)
     {
         _close(m_fd);
+        m_fd = -1;
     }
 }
 
@@ -71,12 +72,6 @@ char FileObj::Open(const char* pszPath, int nMode)
         {
             return 0;
         }
-    }
-
-    if (nMode == 3)
-    {
-        // 3 is no SEEK_ constant, so _lseek rejects it and append mode never seeks.
-        _lseek(m_fd, 0, 3);
     }
 
     return 1;
@@ -162,7 +157,15 @@ int FileObj::Read(void* pBuffer, int nCount)
 // FUNCTION: HYPERX 0x00440690
 int FileObj::CloseAndTest()
 {
-    return _close(m_fd) == 0;
+    if (m_fd <= 0)
+    {
+        return 0;
+    }
+
+    const int nResult = _close(m_fd);
+    m_fd              = -1;
+
+    return nResult == 0;
 }
 
 // FUNCTION: HYPERX 0x004406b0

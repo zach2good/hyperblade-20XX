@@ -6,5 +6,7 @@
 // FUNCTION: HYPERX 0x0048fc40
 void GameTime::Now(SystemTimePair* pTime)
 {
-    _ftime((struct _timeb*)pTime);
+    static_assert(sizeof(__timeb32) == sizeof(SystemTimePair));
+
+    _ftime32((__timeb32*)pTime);
 }

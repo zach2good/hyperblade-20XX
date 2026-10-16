@@ -13,6 +13,27 @@ inline RGBQUAD* ColorTable(const BITMAPINFOHEADER* pHeader)
     return (RGBQUAD*)((const char*)pHeader + pHeader->biSize);
 }
 
+// A zero biClrUsed means the full table for the bit depth.
+inline char* PixelBits(const BITMAPINFOHEADER* pHeader)
+{
+    const auto nColours = [&]
+    {
+        if (pHeader->biClrUsed != 0)
+        {
+            return (int)pHeader->biClrUsed;
+        }
+
+        if (pHeader->biBitCount <= 8)
+        {
+            return 1 << pHeader->biBitCount;
+        }
+
+        return 0;
+    }();
+
+    return (char*)(ColorTable(pHeader) + nColours);
+}
+
 HBITMAP                   LoadBitmapHandle(const char* pszName);
 HBITMAP                   LoadBitmapAsBackground(const char* pszName, HPALETTE* phPalette);
 HBITMAP                   LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette);
@@ -20,6 +41,7 @@ void                      SafeDeleteBitmap(HBITMAP hBitmap);
 void                      GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap);
 BITMAPINFOHEADER* __cdecl ReadBitmapFile(const char* pszName);
 BITMAPINFOHEADER*         ReadDIB(FileObj* pFile);
+BITMAPINFOHEADER*         ExpandRLE(BITMAPINFOHEADER* pDib);
 HPALETTE                  CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors);
 HPALETTE                  SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackground);
 UINT                      RealizePalette(HDC hdc);

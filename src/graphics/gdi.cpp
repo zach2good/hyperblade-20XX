@@ -115,7 +115,7 @@ BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
         file.CloseAndTest();
         file.Close();
 
-        return pDib;
+        return GDI::ExpandRLE(pDib);
     }
 
     file.SeekRelative(0, FILE_SEEK_START);
@@ -170,7 +170,144 @@ BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
     file.CloseAndTest();
     file.Close();
 
-    return pDib;
+    return GDI::ExpandRLE(pDib);
+}
+
+// Every caller reads raw rows, so an RLE8 or RLE4 DIB is expanded to 8-bit BI_RGB in a new block.
+BITMAPINFOHEADER* GDI::ExpandRLE(BITMAPINFOHEADER* pDib)
+{
+    if (pDib == 0 || (pDib->biCompression != BI_RLE8 && pDib->biCompression != BI_RLE4))
+    {
+        return pDib;
+    }
+
+    const auto bFour   = pDib->biCompression == BI_RLE4;
+    const auto nWidth  = (int)pDib->biWidth;
+    const auto nHeight = (int)pDib->biHeight;
+    const auto nStride = (nWidth + 3) & ~3;
+
+    const auto nTableBytes = (int)(GDI::PixelBits(pDib) - (char*)pDib);
+    const auto pIn         = (const unsigned char*)GDI::PixelBits(pDib);
+    const auto nInBytes    = (int)pDib->biSizeImage;
+
+    auto* const pOut = (BITMAPINFOHEADER*)calloc(1, nTableBytes + nStride * nHeight);
+
+    if (pOut == 0 || nWidth <= 0 || nHeight <= 0)
+    {
+        free(pOut);
+        free(pDib);
+
+        return 0;
+    }
+
+    memcpy(pOut, pDib, nTableBytes);
+
+    auto* const pRows = (unsigned char*)GDI::PixelBits(pOut);
+
+    const auto put = [&](int x, int y, int nPixel)
+    {
+        if (x < nWidth && y < nHeight)
+        {
+            pRows[y * nStride + x] = (unsigned char)nPixel;
+        }
+    };
+
+    const auto nibble = [&](int nByte, int i)
+    {
+        if (bFour == 0)
+        {
+            return nByte;
+        }
+
+        if ((i & 1) == 0)
+        {
+            return nByte >> 4;
+        }
+
+        return nByte & 0xf;
+    };
+
+    auto x  = 0;
+    auto y  = 0;
+    auto at = 0;
+
+    while (at + 1 < nInBytes && y < nHeight)
+    {
+        const int nCount = pIn[at];
+        const int nValue = pIn[at + 1];
+        at += 2;
+
+        if (nCount != 0)
+        {
+            for (int i = 0; i < nCount; i++)
+            {
+                put(x++, y, nibble(nValue, i));
+            }
+        }
+        else if (nValue == 0)
+        {
+            x = 0;
+            y++;
+        }
+        else if (nValue == 1)
+        {
+            break;
+        }
+        else if (nValue == 2)
+        {
+            if (at + 1 >= nInBytes)
+            {
+                break;
+            }
+
+            x += pIn[at];
+            y += pIn[at + 1];
+            at += 2;
+        }
+        else
+        {
+            const auto nRunBytes = [&]
+            {
+                if (bFour != 0)
+                {
+                    return (nValue + 1) / 2;
+                }
+
+                return nValue;
+            }();
+
+            if (at + nRunBytes > nInBytes)
+            {
+                break;
+            }
+
+            for (int i = 0; i < nValue; i++)
+            {
+                const auto nByte = [&]
+                {
+                    if (bFour != 0)
+                    {
+                        return (int)pIn[at + i / 2];
+                    }
+
+                    return (int)pIn[at + i];
+                }();
+
+                put(x++, y, nibble(nByte, i));
+            }
+
+            at += nRunBytes + (nRunBytes & 1);
+        }
+    }
+
+    pOut->biBitCount    = 8;
+    pOut->biCompression = BI_RGB;
+    pOut->biSizeImage   = nStride * nHeight;
+    pOut->biClrUsed     = (nTableBytes - pDib->biSize) / sizeof(RGBQUAD);
+
+    free(pDib);
+
+    return pOut;
 }
 
 // A file's type word, "BM".

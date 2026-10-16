@@ -4,14 +4,12 @@
 #include "graphicsglobals.h"
 #include <stdlib.h>
 #include <string.h>
+#include <algorithm>
 #include "globals.h"
 #include "texcacheentry.h"
 #include "app/gameapp.h"
 #include "graphics/gdi.h"
 #include "ui/hudglobals.h"
-
-// The pixels follow the BITMAPINFOHEADER and a 256-entry colour table.
-#define PALETTE_ENTRIES 256
 
 #define RLE_MAX_RUN 0x7f
 #define RLE_LITERAL 0x80
@@ -27,7 +25,7 @@ RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
     const unsigned int cx = pDib->biWidth;
     const unsigned int cy = pDib->biHeight;
 
-    const char* pPixels = (const char*)((const RGBQUAD*)(pDib + 1) + PALETTE_ENTRIES);
+    const char* pPixels = GDI::PixelBits(pDib);
 
     const unsigned int nStride = (cx + 3) & 0xfffffffc;
 
@@ -187,7 +185,7 @@ char SoftTex::Load(const char* pszName, HPALETTE)
                 m_image.nHeight = pHeader->biHeight;
                 m_image.nStride = (m_image.nWidth + 3) & ~3;
                 m_image.nBpp    = 8;
-                m_image.pPixels = (char*)((RGBQUAD*)(m_pDib + 1) + PALETTE_ENTRIES);
+                m_image.pPixels = GDI::PixelBits(m_pDib);
 
                 if (g_bSoftTexPaletteBuilt == 0)
                 {
@@ -196,9 +194,12 @@ char SoftTex::Load(const char* pszName, HPALETTE)
 
                     g_bSoftTexPaletteBuilt = 1;
 
-                    pColours = (RGBQUAD*)(m_pDib + 1);
+                    pColours = GDI::ColorTable(m_pDib);
 
-                    for (i = 0; i < PALETTE_ENTRIES; i++)
+                    // A short table leaves the entries past it black.
+                    const auto nEntries = (std::min)((int)((RGBQUAD*)GDI::PixelBits(m_pDib) - pColours), 256);
+
+                    for (i = 0; i < nEntries; i++)
                     {
                         g_aSoftTexPalette[i].peRed   = pColours[i].rgbRed;
                         g_aSoftTexPalette[i].peGreen = pColours[i].rgbGreen;
