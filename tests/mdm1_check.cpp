@@ -7,13 +7,12 @@
 #include "graphics/mdm1.h"
 #include <filesystem>
 #include <fstream>
+#include <SDL3/SDL.h>
 #include <stdio.h>
-#include <io.h>
-#include <fcntl.h>
 
 int FileObj::Read(void* pBuffer, int nCount)
 {
-    return _read(m_fd, pBuffer, nCount);
+    return (int)SDL_ReadIO(m_stream.As<SDL_IOStream>(), pBuffer, (size_t)nCount);
 }
 
 int main(int argc, char** argv)
@@ -35,11 +34,11 @@ int main(int argc, char** argv)
         }
 
         FileObj file;
-        file.m_fd = _open(entry.path().string().c_str(), _O_BINARY | _O_RDONLY);
+        file.m_stream = FileObj::Stream{ SDL_IOFromFile(entry.path().string().c_str(), "rb") };
 
         unsigned int nMagic = 0;
 
-        if (file.m_fd < 0)
+        if (!file.m_stream)
         {
             continue;
         }
@@ -57,7 +56,7 @@ int main(int argc, char** argv)
             }
             else if (argc > 2)
             {
-                _lseek(file.m_fd, 4, SEEK_SET);
+                SDL_SeekIO(file.m_stream.As<SDL_IOStream>(), 4, SDL_IO_SEEK_SET);
 
                 int nSize = 0;
                 file.Read(&nSize, sizeof(nSize));
@@ -69,7 +68,7 @@ int main(int argc, char** argv)
             free(pOut);
         }
 
-        _close(file.m_fd);
+        SDL_CloseIO(file.m_stream.As<SDL_IOStream>());
     }
 
     printf("%d MDM1 file(s), %d failed\n", nChecked, nFailed);

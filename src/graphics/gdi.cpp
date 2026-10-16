@@ -72,8 +72,6 @@ BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
     unsigned int      nMagic;
     BITMAPINFOHEADER* pDib;
 
-    file.m_fd = 0;
-
     if (file.Open(pszName, FILE_MODE_READ) == 0)
     {
         file.Close();

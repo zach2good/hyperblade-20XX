@@ -8,11 +8,6 @@
 // FileObj has no destructor, because GDI::ReadBitmapFile closes its own file on every path.
 struct OwnedFile
 {
-    OwnedFile()
-    {
-        m_file.m_fd = 0;
-    }
-
     ~OwnedFile()
     {
         m_file.Close();

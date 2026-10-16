@@ -1,56 +1,68 @@
 #include "compat.h"
 #include "fileobj.h"
-#include <io.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <string.h>
 #include "app/gameapp.h"
+#include <SDL3/SDL.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 #define TEXT_MAX 0x100
 
-// The original closed a failed open's -1, and callers close twice; the modern CRT aborts on both.
-// FUNCTION: HYPERX 0x00440460
-void FileObj::Close()
+namespace
 {
-    if (m_fd > 0)
+
+SDL_IOStream* IO(const FileObj& file)
+{
+    return file.m_stream.As<SDL_IOStream>();
+}
+
+// The original opened with _open's flags, so writing without truncating creates the file when it
+// is missing and keeps it when it is there. A mode outside the three left the flags uninitialised.
+SDL_IOStream* OpenStream(const char* pszPath, int nMode)
+{
+    switch (nMode)
     {
-        _close(m_fd);
-        m_fd = -1;
+        case FILE_MODE_WRITE_NO_TRUNCATE:
+        {
+            SDL_IOStream* const pExisting = SDL_IOFromFile(pszPath, "r+b");
+
+            if (pExisting != nullptr)
+            {
+                return pExisting;
+            }
+
+            return SDL_IOFromFile(pszPath, "w+b");
+        }
+
+        case FILE_MODE_WRITE:
+            return SDL_IOFromFile(pszPath, "w+b");
+
+        default:
+            return SDL_IOFromFile(pszPath, "rb");
     }
 }
 
-// In the original, a mode outside the three leaves the flags uninitialised.
+} // namespace
+
+// Callers close twice, and close a failed open.
+// FUNCTION: HYPERX 0x00440460
+void FileObj::Close()
+{
+    if (m_stream)
+    {
+        SDL_CloseIO(IO(*this));
+        m_stream = Stream{};
+    }
+}
 
 // FUNCTION: HYPERX 0x00440470
 char FileObj::Open(const char* pszPath, int nMode)
 {
     char szResolved[MAX_PATH];
-    int  nOflag = 0;
-    int  nPmode = 0;
 
-    switch (nMode)
-    {
-        case FILE_MODE_WRITE_NO_TRUNCATE:
-            nOflag = _O_BINARY | _O_CREAT | _O_WRONLY;
-            nPmode = _S_IWRITE;
-            break;
+    m_stream = Stream{ OpenStream(pszPath, nMode) };
 
-        case FILE_MODE_WRITE:
-            nOflag = _O_BINARY | _O_TRUNC | _O_CREAT | _O_RDWR;
-            nPmode = _S_IWRITE;
-            break;
-
-        case FILE_MODE_READ:
-            nOflag = _O_BINARY | _O_RDONLY;
-            nPmode = _S_IREAD;
-            break;
-    }
-
-    m_fd = _open(pszPath, nOflag, nPmode);
-
-    if (m_fd == -1)
+    if (!m_stream)
     {
         const char* pszSource;
 
@@ -66,9 +78,9 @@ char FileObj::Open(const char* pszPath, int nMode)
 
         GameApp::ResolveCDRomPath(szResolved);
 
-        m_fd = _open(szResolved, nOflag, nPmode);
+        m_stream = Stream{ OpenStream(szResolved, nMode) };
 
-        if (m_fd == -1)
+        if (!m_stream)
         {
             return 0;
         }
@@ -77,32 +89,35 @@ char FileObj::Open(const char* pszPath, int nMode)
     return 1;
 }
 
-// The loader's origins are one to three where the C library wants zero to two.
+// The loader's origins are one to three where SDL, as the C library, wants zero to two.
 // FUNCTION: HYPERX 0x00440550
 int FileObj::SeekRelative(long nOffset, int nOrigin)
 {
-    switch (nOrigin)
+    const auto whence = [&]
     {
-        case FILE_SEEK_START:
-            nOrigin = SEEK_SET;
-            break;
+        switch (nOrigin)
+        {
+            case FILE_SEEK_START:
+                return SDL_IO_SEEK_SET;
 
-        case FILE_SEEK_CURRENT:
-            nOrigin = SEEK_CUR;
-            break;
+            case FILE_SEEK_CURRENT:
+                return SDL_IO_SEEK_CUR;
 
-        case FILE_SEEK_END:
-            nOrigin = SEEK_END;
-            break;
-    }
+            case FILE_SEEK_END:
+                return SDL_IO_SEEK_END;
 
-    return _lseek(m_fd, nOffset, nOrigin);
+            default:
+                return (SDL_IOWhence)nOrigin;
+        }
+    }();
+
+    return (int)SDL_SeekIO(IO(*this), nOffset, whence);
 }
 
 // FUNCTION: HYPERX 0x004405b0
 int FileObj::Write(const void* pBuf, unsigned int nCount)
 {
-    return _write(m_fd, pBuf, nCount);
+    return (int)SDL_WriteIO(IO(*this), pBuf, nCount);
 }
 
 // Each line feed gains a carriage return, so a line of line feeds overruns the second buffer.
@@ -145,27 +160,28 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
 
     *pDst = 0;
 
-    return _write(m_fd, szOut, (unsigned int)strlen(szOut));
+    return Write(szOut, (unsigned int)strlen(szOut));
 }
 
 // FUNCTION: HYPERX 0x00440670
 int FileObj::Read(void* pBuffer, int nCount)
 {
-    return _read(m_fd, pBuffer, nCount);
+    return (int)SDL_ReadIO(IO(*this), pBuffer, (size_t)nCount);
 }
 
 // FUNCTION: HYPERX 0x00440690
 int FileObj::CloseAndTest()
 {
-    if (m_fd <= 0)
+    if (!m_stream)
     {
         return 0;
     }
 
-    const int nResult = _close(m_fd);
-    m_fd              = -1;
+    const auto bClosed = SDL_CloseIO(IO(*this));
 
-    return nResult == 0;
+    m_stream = Stream{};
+
+    return (int)bClosed;
 }
 
 // FUNCTION: HYPERX 0x004406b0

@@ -7,7 +7,8 @@
 #include "engine/teamsblock.h"
 #include "common/pathstring.h"
 #include "engine/gameengine.h"
-#include <io.h>
+#include <filesystem>
+#include <system_error>
 #include "uiscreen.h"
 #include "sound/audiomgr.h"
 #include "app/gameapp.h"
@@ -268,6 +269,14 @@ void UIScreen::InitWidgets()
     pWidget->InitAfterLoad();
 }
 
+// An unreadable folder counts as missing, as _access answered.
+static bool IsMissing(const char* pszPath)
+{
+    std::error_code error;
+
+    return !std::filesystem::exists(pszPath, error);
+}
+
 // A team is locked when its panel bitmap is missing. Probes run by team code, not id.
 // FUNCTION: HYPERX 0x0044e5d0
 void UIScreen::BuildLockedFlagsArray()
@@ -290,59 +299,59 @@ void UIScreen::BuildLockedFlagsArray()
 
     // STRING: HYPERX 0x004c2f28
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Chiplcd", "bmp");
-    m_pLockedFlags[0] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[0] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2f20
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Houplcd", "bmp");
-    m_pLockedFlags[1] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[1] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2f18
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Jamplcd", "bmp");
-    m_pLockedFlags[2] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[2] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2f10
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Lndplcd", "bmp");
-    m_pLockedFlags[4] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[4] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2f08
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Losplcd", "bmp");
-    m_pLockedFlags[5] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[5] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2f00
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Mosplcd", "bmp");
-    m_pLockedFlags[6] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[6] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ef8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Munplcd", "bmp");
-    m_pLockedFlags[7] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[7] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ef0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Nemplcd", "bmp");
-    m_pLockedFlags[8] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[8] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ee8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Newplcd", "bmp");
-    m_pLockedFlags[9] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[9] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ee0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Seaplcd", "bmp");
-    m_pLockedFlags[10] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[10] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ed8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Tokplcd", "bmp");
-    m_pLockedFlags[11] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[11] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ed0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Torplcd", "bmp");
-    m_pLockedFlags[12] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[12] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ec8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Vegplcd", "bmp");
-    m_pLockedFlags[3] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[3] = IsMissing(strPath.m_str.m_pchData);
 
     // STRING: HYPERX 0x004c2ec0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Warplcd", "bmp");
-    m_pLockedFlags[13] = (_access(strPath.m_str.m_pchData, 0) == -1);
+    m_pLockedFlags[13] = IsMissing(strPath.m_str.m_pchData);
 
     for (nTeam = 0; nTeam < g_pGameEngine->m_pTeamTable->GetTeamCount(); nTeam++)
     {

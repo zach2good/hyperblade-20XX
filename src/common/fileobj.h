@@ -1,7 +1,9 @@
-// The model loader's file handle.
+// The model loader's file handle, over an SDL stream.
 
 #ifndef HYPERBLADE_FILEOBJ_H
 #define HYPERBLADE_FILEOBJ_H
+
+#include "common/handle.h"
 
 // FileObj::Open's modes. Every mode opens in binary.
 enum FileMode
@@ -11,7 +13,7 @@ enum FileMode
     FILE_MODE_WRITE_NO_TRUNCATE = 3
 };
 
-// FileObj::SeekRelative's origins. Any other value goes to _lseek as it is.
+// FileObj::SeekRelative's origins. Any other value is taken as SEEK_SET, SEEK_CUR or SEEK_END.
 enum FileSeekOrigin
 {
     FILE_SEEK_START   = 1,
@@ -24,7 +26,7 @@ class FileObj
 public:
     void Close();
 
-    // Answers whether the descriptor closed cleanly.
+    // Answers whether the file closed cleanly.
     int  CloseAndTest();
     char Open(const char* pszName, int nMode);
     int  Read(void* pBuffer, int nCount);
@@ -35,8 +37,10 @@ public:
 
     int PrintFormatted(const char* pszFormat, ...);
 
-    int  m_fd;          // 0x000
-    char m_szLine[256]; // 0x004
+    using Stream = Handle<struct FileObjStreamTag>;
+
+    Stream m_stream;
+    char   m_szLine[256];
 };
 
 #include "common/ownedfile.h"

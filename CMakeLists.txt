@@ -407,6 +407,11 @@ target_compile_options(ini_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp)
 target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_link_libraries(mdm1_check PRIVATE SDL3::SDL3)
+add_custom_command(TARGET mdm1_check POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:mdm1_check> $<TARGET_FILE_DIR:mdm1_check>
+    COMMAND_EXPAND_LISTS
+    VERBATIM)
 
 # Draws a lit triangle through the mesh pipeline and reads it back, skipped without a GPU.
 add_executable(hwpipeline_check tests/hwpipeline_check.cpp src/graphics/hwpipeline.cpp)

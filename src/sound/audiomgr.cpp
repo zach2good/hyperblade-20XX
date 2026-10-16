@@ -15,6 +15,8 @@
 #include <windows.h>
 #include "sound/wave.h"
 #include "sound/soundids.h"
+#include <filesystem>
+#include <system_error>
 
 // FUNCTION: HYPERX 0x00490830
 AudioMgr::AudioMgr()
@@ -312,7 +314,9 @@ static bool MusicPath(int nTrack, char* pszPath, size_t nSize)
     {
         snprintf(pszPath, nSize, "%sMusic\\Track%02d.%s", g_gameApp.m_strExeDir.m_str.m_pchData, nTrack, pszFormat);
 
-        if (GetFileAttributesA(pszPath) != INVALID_FILE_ATTRIBUTES)
+        std::error_code error;
+
+        if (std::filesystem::exists(pszPath, error))
         {
             return true;
         }
