@@ -9,7 +9,7 @@ struct Vec3;
 namespace Object
 {
 
-void          Trace(const char* pszFormat, ...);
+int           Trace(const char* pszFormat, ...);
 void __cdecl  CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bBoost);
 void __cdecl  SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char bMirrored);
 Vec3* __cdecl ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos);
@@ -18,5 +18,8 @@ void          ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float fl
 Vec3* __cdecl ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos);
 
 } // namespace Object
+
+// MFC's release TRACE: the call stays in the source but never runs.
+#define TRACE 1 ? 0 : Object::Trace
 
 #endif
