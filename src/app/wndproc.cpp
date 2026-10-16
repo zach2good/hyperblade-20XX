@@ -222,23 +222,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             g_pJoystickMgr->HandleJoyAxis(g_nJoystickId2, wParam, LOWORD(lParam), HIWORD(lParam));
             return 0;
 
-        case MM_MCINOTIFY:
-            if (wParam == MCI_NOTIFY_SUCCESSFUL && g_pAudioMgr != NULL)
-            {
-                if (g_pGameEngine == NULL || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || (short)g_pGameEngine->m_wRunState != ENGINE_RUN_PLAYING)
-                {
-                    if (g_pGameOptions != NULL && g_pGameOptions->m_nInstallLevel != 0)
-                    {
-                        g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
-                    }
-                }
-                else
-                {
-                    g_pAudioMgr->PlayCDTrack(CD_TRACK_RANDOM);
-                }
-            }
-            break;
-
         case MM_JOY1BUTTONDOWN:
             g_pJoystickMgr->HandleButtonPress(g_nJoystickId1, wParam, lParam, HIWORD(lParam));
             return 0;

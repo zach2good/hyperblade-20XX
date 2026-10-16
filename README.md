@@ -37,6 +37,9 @@ cmake --build build
 `build/out/hyperx.exe`, which you can then run. `ctest --test-dir build` decodes every MDM1-packed
 file in your data. Without the game, configure with `-DHYPERX_COMPILE_ONLY=ON` to compile only.
 
+The music was the disc's audio tracks. Rip them to `Data/Music/Track02.flac` and so on, as FLAC, MP3
+or WAV. The menu plays track 10.
+
 Format every source file you touch with clang-format 22: `pip install clang-format==22.1.8`.
 
 ## Pulling from the decomp

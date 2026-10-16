@@ -33,7 +33,7 @@ struct AudioMgr : public AudioMgrBase
     virtual void PlaySpecific(int nVoice);
     int          LoadSound(struct SoundEntry* pSound);
 
-    // Loads the sound list and opens the DirectSound device and the two mixer lines.
+    // Loads the sound list and opens the sound device.
     virtual void Init(HWND hWindow);
 
     virtual void PlayCDTrack(int nTrack);
@@ -43,12 +43,10 @@ struct AudioMgr : public AudioMgrBase
     class SoundManager* pEntries; // 0x008
     // Set when DirectSound fails to start.
     short wNoSound; // 0x00c
-    // Set when the CD device fails to open.
+    // Set when there are no music tracks to play.
     short wNoCD;   // 0x00e
     HWND  hWnd;    // 0x010
     int   nUnused; // 0x014
-    // The MCI device StopCD sends its stop command to, and zero when no disc is open.
-    unsigned short wMciDevice; // 0x018
 };
 
 // SYNTHETIC: HYPERX 0x00490860

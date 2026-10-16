@@ -1048,7 +1048,21 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
 // FUNCTION: HYPERX 0x0044c160
 int GameApp::MainUpdate(HWND hWnd)
 {
-    g_soundMixer.Update();
+    // A finished track is followed by the menu track, or a random one during play.
+    if (g_soundMixer.Update() && g_pAudioMgr != 0)
+    {
+        if (g_pGameEngine == 0 || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || (short)g_pGameEngine->m_wRunState != ENGINE_RUN_PLAYING)
+        {
+            if (g_pGameOptions != 0 && g_pGameOptions->m_nInstallLevel != 0)
+            {
+                g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
+            }
+        }
+        else
+        {
+            g_pAudioMgr->PlayCDTrack(CD_TRACK_RANDOM);
+        }
+    }
 
     if (g_gameApp.m_bIsActive)
     {

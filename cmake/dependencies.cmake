@@ -34,7 +34,8 @@ CPMAddPackage(
 
 find_package(SDL3 ${SDL3_VERSION} EXACT REQUIRED CONFIG PATHS "${SDL3_SOURCE_DIR}/cmake" NO_DEFAULT_PATH)
 
-# miniaudio mixes the PCM the game loads and SDL plays it, so its device backends are left out.
+# miniaudio mixes the game's sounds and decodes its music, and SDL plays the result, so its
+# device backends are left out.
 set(MINIAUDIO_VERSION 0.11.22)
 
 CPMAddPackage(
@@ -46,4 +47,4 @@ CPMAddPackage(
 
 add_library(miniaudio STATIC "${miniaudio_SOURCE_DIR}/miniaudio.c")
 target_include_directories(miniaudio SYSTEM PUBLIC "${miniaudio_SOURCE_DIR}")
-target_compile_definitions(miniaudio PUBLIC MA_NO_DEVICE_IO MA_NO_DECODING MA_NO_ENCODING MA_NO_GENERATION)
+target_compile_definitions(miniaudio PUBLIC MA_NO_DEVICE_IO MA_NO_RESOURCE_MANAGER MA_NO_ENCODING MA_NO_GENERATION)

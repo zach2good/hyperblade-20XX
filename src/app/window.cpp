@@ -238,7 +238,6 @@ static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
         case MM_JOY1BUTTONUP:
         case MM_JOY2BUTTONDOWN:
         case MM_JOY2BUTTONUP:
-        case MM_MCINOTIFY:
             WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
             break;
 

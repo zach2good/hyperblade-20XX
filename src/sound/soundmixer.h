@@ -8,6 +8,9 @@
 
 #define SOUND_CHANNEL_COUNT 8
 
+// The volume options run 0 to 7.
+#define MIXER_VOLUME_LEVELS 8
+
 class SoundMixer
 {
 public:
@@ -31,14 +34,21 @@ public:
     int ReadSfxVolume() const;
     int FadeSfxVolume(int nStep);
 
-    // Marks the sounds that have played to their end as stopped.
-    void Update();
+    // One music track streams from a file at a time.
+    bool PlayMusic(const char* pszPath);
+    void StopMusic();
+    int  ReadMusicVolume() const;
+    void FadeMusicVolume(int nStep);
+
+    // Marks the sounds that have played to their end as stopped; true when the music track has.
+    bool Update();
 
 private:
     struct Impl;
 
     std::unique_ptr<Impl> m_pImpl;
     int                   m_nVolumeStep = 0;
+    int                   m_nMusicStep  = 0;
 };
 
 extern SoundMixer g_soundMixer;

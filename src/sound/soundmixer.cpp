@@ -2,7 +2,6 @@
 #include "soundmixer.h"
 #include "engine/gameoptions.h"
 #include "globals.h"
-#include "mixer.h"
 #include "soundmanager.h"
 #include "app/gameapp.h"
 #include "common/pathstring.h"
@@ -102,8 +101,13 @@ void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, 
 struct SoundMixer::Impl
 {
     ma_engine                              engine{};
+    ma_sound_group                         sfx{};
+    ma_sound_group                         music{};
     SDL_AudioStream*                       pStream = nullptr;
     std::array<Voice, SOUND_CHANNEL_COUNT> aVoices;
+    ma_decoder                             decoder{};
+    ma_sound                               track{};
+    bool                                   bTrack = false;
 
     void Stop(Voice& voice)
     {
@@ -120,7 +124,25 @@ struct SoundMixer::Impl
 
         voice.samples.clear();
     }
+
+    void StopTrack()
+    {
+        if (!bTrack)
+        {
+            return;
+        }
+
+        ma_sound_uninit(&track);
+        ma_decoder_uninit(&decoder);
+
+        bTrack = false;
+    }
 };
+
+float VolumeOf(int nStep)
+{
+    return (float)nStep / (MIXER_VOLUME_LEVELS - 1);
+}
 
 class StreamLock
 {
@@ -175,6 +197,9 @@ int SoundMixer::Init()
         return 0;
     }
 
+    ma_sound_group_init(&pImpl->engine, 0, nullptr, &pImpl->sfx);
+    ma_sound_group_init(&pImpl->engine, 0, nullptr, &pImpl->music);
+
     const auto spec = SDL_AudioSpec{ SDL_AUDIO_F32, MIX_CHANNELS, MIX_RATE };
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO))
@@ -184,6 +209,8 @@ int SoundMixer::Init()
 
     if (pImpl->pStream == nullptr)
     {
+        ma_sound_group_uninit(&pImpl->music);
+        ma_sound_group_uninit(&pImpl->sfx);
         ma_engine_uninit(&pImpl->engine);
 
         // STRING: HYPERX 0x004c8a58
@@ -194,7 +221,8 @@ int SoundMixer::Init()
 
     m_pImpl = std::move(pImpl);
 
-    ma_engine_set_volume(&m_pImpl->engine, (float)m_nVolumeStep / (MIXER_VOLUME_LEVELS - 1));
+    ma_sound_group_set_volume(&m_pImpl->sfx, VolumeOf(m_nVolumeStep));
+    ma_sound_group_set_volume(&m_pImpl->music, VolumeOf(m_nMusicStep));
 
     SDL_ResumeAudioStreamDevice(m_pImpl->pStream);
 
@@ -216,6 +244,10 @@ void SoundMixer::Shutdown()
         m_pImpl->Stop(voice);
     }
 
+    m_pImpl->StopTrack();
+
+    ma_sound_group_uninit(&m_pImpl->music);
+    ma_sound_group_uninit(&m_pImpl->sfx);
     ma_engine_uninit(&m_pImpl->engine);
 
     m_pImpl.reset();
@@ -268,24 +300,23 @@ void SoundMixer::Play(SoundEntry* pSound)
 
     auto& voice = *it;
 
-    const auto* pData = static_cast<const void*>(pSound->m_pSamples);
-
-    if (pData == nullptr)
+    // The voice keeps its own copy, as a DirectSound buffer did: the game frees a group's samples
+    // while its sounds may still be playing.
+    if (pSound->m_pSamples != 0)
     {
-        if (!ReadData(pSound, voice.samples))
-        {
-            voice.samples.clear();
+        voice.samples.assign(pSound->m_pSamples, pSound->m_pSamples + pSound->m_nDataBytes);
+    }
+    else if (!ReadData(pSound, voice.samples))
+    {
+        voice.samples.clear();
 
-            return;
-        }
-
-        pData = voice.samples.data();
+        return;
     }
 
-    ma_audio_buffer_ref_init(format, pSound->m_nChannels, pData, pSound->m_nDataBytes / nFrameBytes, &voice.buffer);
+    ma_audio_buffer_ref_init(format, pSound->m_nChannels, voice.samples.data(), pSound->m_nDataBytes / nFrameBytes, &voice.buffer);
     voice.buffer.sampleRate = pSound->m_nSamplesPerSec;
 
-    if (ma_sound_init_from_data_source(&m_pImpl->engine, &voice.buffer, MA_SOUND_FLAG_NO_SPATIALIZATION | MA_SOUND_FLAG_NO_PITCH, nullptr, &voice.sound) != MA_SUCCESS)
+    if (ma_sound_init_from_data_source(&m_pImpl->engine, &voice.buffer, MA_SOUND_FLAG_NO_SPATIALIZATION | MA_SOUND_FLAG_NO_PITCH, &m_pImpl->sfx, &voice.sound) != MA_SUCCESS)
     {
         ma_audio_buffer_ref_uninit(&voice.buffer);
         voice.samples.clear();
@@ -339,11 +370,11 @@ void SoundMixer::StopAll()
 }
 
 // FUNCTION: HYPERX 0x00490490
-void SoundMixer::Update()
+bool SoundMixer::Update()
 {
     if (!m_pImpl)
     {
-        return;
+        return false;
     }
 
     const auto lock = StreamLock(m_pImpl->pStream);
@@ -355,6 +386,15 @@ void SoundMixer::Update()
             m_pImpl->Stop(voice);
         }
     }
+
+    if (m_pImpl->bTrack && ma_sound_at_end(&m_pImpl->track))
+    {
+        m_pImpl->StopTrack();
+
+        return true;
+    }
+
+    return false;
 }
 
 // FUNCTION: HYPERX 0x004904c0
@@ -370,10 +410,71 @@ int SoundMixer::FadeSfxVolume(int nStep)
 
     if (m_pImpl)
     {
-        ma_engine_set_volume(&m_pImpl->engine, (float)m_nVolumeStep / (MIXER_VOLUME_LEVELS - 1));
+        ma_sound_group_set_volume(&m_pImpl->sfx, VolumeOf(m_nVolumeStep));
     }
 
     g_pGameOptions->WriteSfxVolume(m_nVolumeStep);
 
     return 1;
+}
+
+bool SoundMixer::PlayMusic(const char* pszPath)
+{
+    if (!m_pImpl)
+    {
+        return false;
+    }
+
+    const auto lock = StreamLock(m_pImpl->pStream);
+
+    m_pImpl->StopTrack();
+
+    const auto config = ma_decoder_config_init(ma_format_f32, MIX_CHANNELS, MIX_RATE);
+
+    if (ma_decoder_init_file(pszPath, &config, &m_pImpl->decoder) != MA_SUCCESS)
+    {
+        return false;
+    }
+
+    if (ma_sound_init_from_data_source(&m_pImpl->engine, &m_pImpl->decoder, MA_SOUND_FLAG_NO_SPATIALIZATION | MA_SOUND_FLAG_NO_PITCH, &m_pImpl->music, &m_pImpl->track) != MA_SUCCESS)
+    {
+        ma_decoder_uninit(&m_pImpl->decoder);
+
+        return false;
+    }
+
+    ma_sound_start(&m_pImpl->track);
+
+    m_pImpl->bTrack = true;
+
+    return true;
+}
+
+void SoundMixer::StopMusic()
+{
+    if (!m_pImpl)
+    {
+        return;
+    }
+
+    const auto lock = StreamLock(m_pImpl->pStream);
+
+    m_pImpl->StopTrack();
+}
+
+int SoundMixer::ReadMusicVolume() const
+{
+    return m_nMusicStep;
+}
+
+void SoundMixer::FadeMusicVolume(int nStep)
+{
+    m_nMusicStep = std::clamp(nStep, 0, MIXER_VOLUME_LEVELS - 1);
+
+    if (m_pImpl)
+    {
+        ma_sound_group_set_volume(&m_pImpl->music, VolumeOf(m_nMusicStep));
+    }
+
+    g_pGameOptions->WriteMusicVolume(m_nMusicStep);
 }

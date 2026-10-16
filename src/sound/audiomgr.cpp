@@ -2,13 +2,14 @@
 #include "globals.h"
 #include "app/gameapp.h"
 #include "audiomgr.h"
-#include "mixer.h"
 #include "soundmixer.h"
 #include "soundmanager.h"
 #include "engine/gameoptions.h"
 #include "common/pathstring.h"
 #include <mmsystem.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <vector>
 #include <new.h>
 #include <windows.h>
 #include "sound/wave.h"
@@ -22,7 +23,6 @@ AudioMgr::AudioMgr()
 , wNoCD(0)
 , hWnd(0)
 , nUnused(0)
-, wMciDevice(0)
 {
 }
 
@@ -30,13 +30,6 @@ AudioMgr::AudioMgr()
 // FUNCTION: HYPERX 0x00490880
 AudioMgr::~AudioMgr()
 {
-    if (g_mixerCompactDisc.m_hMixer != 0)
-    {
-        mixerClose(g_mixerCompactDisc.m_hMixer);
-
-        g_mixerCompactDisc.m_hMixer = 0;
-    }
-
     g_soundMixer.Shutdown();
 
     if (pEntries != 0)
@@ -57,12 +50,6 @@ AudioMgr::~AudioMgr()
         {
             delete[] pEntries;
         }
-    }
-
-    if (wMciDevice != 0)
-    {
-        mciSendCommandA(wMciDevice, MCI_STOP, 0, 0);
-        mciSendCommandA(wMciDevice, MCI_CLOSE, 0, 0);
     }
 }
 
@@ -104,8 +91,6 @@ void AudioMgr::Init(HWND hWindow)
     }
 
     SfxFadeVolume((int)g_pGameOptions->ReadSfxVolume());
-
-    g_mixerCompactDisc.Open(MIXERLINE_COMPONENTTYPE_SRC_COMPACTDISC);
 
     CDFadeVolume((int)g_pGameOptions->ReadMusicVolume());
 }
@@ -342,187 +327,135 @@ int g_nCDRecentTracks = 20;
 // GLOBAL: HYPERX 0x004d21d8
 int g_nCDRecentCursor;
 
-// Opens "cdaudio" lazily; a random track is one not in the recent-tracks ring.
+// The CD's audio tracks, ripped to Data/Music/TrackNN.flac, .mp3 or .wav.
+constexpr auto MUSIC_TRACK_MAX = 99;
+
+static const char* const s_apszMusicFormats[] = { "flac", "mp3", "wav" };
+
+static bool MusicPath(int nTrack, char* pszPath, size_t nSize)
+{
+    for (const char* const pszFormat : s_apszMusicFormats)
+    {
+        snprintf(pszPath, nSize, "%sMusic\\Track%02d.%s", g_gameApp.m_strExeDir.m_str.m_pchData, nTrack, pszFormat);
+
+        if (GetFileAttributesA(pszPath) != INVALID_FILE_ATTRIBUTES)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static const std::vector<int>& MusicTracks()
+{
+    static const auto s_anTracks = []
+    {
+        std::vector<int> anTracks;
+        char             szPath[MAX_PATH];
+
+        for (int nTrack = 1; nTrack <= MUSIC_TRACK_MAX; nTrack++)
+        {
+            if (MusicPath(nTrack, szPath, sizeof(szPath)))
+            {
+                anTracks.push_back(nTrack);
+            }
+        }
+
+        return anTracks;
+    }();
+
+    return s_anTracks;
+}
+
+// A random track is one not in the recent-tracks ring; with no tracks the music stays off.
 // FUNCTION: HYPERX 0x00490de0
 void AudioMgr::PlayCDTrack(int nTrack)
-{
-    MCI_PLAY_PARMS      mciPlay;
-    MCI_STATUS_PARMS    mciStatus;
-    MCI_SET_PARMS       mciSet;
-    MCI_WAVE_OPEN_PARMS mciOpen;
-    char                szError[MAX_PATH];
-    MCIERROR            err;
-
-    if (wNoCD == 0)
-    {
-        StopCD();
-
-        if (wMciDevice == 0)
-        {
-            // STRING: HYPERX 0x004c8aa0
-            mciOpen.lpstrDeviceType = "cdaudio";
-
-            err = mciSendCommandA(0, MCI_OPEN, MCI_OPEN_TYPE, (DWORD_PTR)&mciOpen);
-
-            if (err != 0)
-            {
-                mciGetErrorStringA(err, szError, sizeof(szError));
-                wNoCD = 1;
-                return;
-            }
-
-            wMciDevice = (unsigned short)mciOpen.wDeviceID;
-
-            mciSet.dwTimeFormat = MCI_FORMAT_TMSF;
-
-            err = mciSendCommandA(wMciDevice, MCI_SET, MCI_SET_TIME_FORMAT, (DWORD_PTR)&mciSet);
-
-            if (err != 0)
-            {
-                mciGetErrorStringA(err, szError, sizeof(szError));
-                mciSendCommandA(wMciDevice, MCI_CLOSE, 0, 0);
-                wMciDevice = 0;
-                wNoCD      = 1;
-                return;
-            }
-        }
-
-        mciStatus.dwItem = MCI_STATUS_NUMBER_OF_TRACKS;
-
-        err = mciSendCommandA(wMciDevice, MCI_STATUS, MCI_STATUS_ITEM, (DWORD_PTR)&mciStatus);
-
-        if (err != 0)
-        {
-            mciGetErrorStringA(err, szError, sizeof(szError));
-            mciSendCommandA(wMciDevice, MCI_CLOSE, 0, 0);
-            wMciDevice = 0;
-            return;
-        }
-
-        const int nTracks = (int)mciStatus.dwReturn;
-
-        if (nTrack == CD_TRACK_RANDOM)
-        {
-            if (nTracks <= 1)
-            {
-                nTrack = 1;
-            }
-            else
-            {
-                int nScan = g_nCDRecentCursor;
-
-                if (nTracks > 0)
-                {
-                    for (int i = 0; i < nTracks; i++)
-                    {
-                        const DWORD dwSeed = timeGetTime();
-                        srand(dwSeed);
-
-                        const int nPick = rand() * nTracks / (RAND_MAX + 1);
-
-                        if (g_anCDRecentTracks[nScan] != nPick)
-                        {
-                            nTrack = nPick;
-                            break;
-                        }
-
-                        nScan++;
-
-                        if (nScan >= g_nCDRecentTracks)
-                        {
-                            nScan = 0;
-                        }
-                    }
-                }
-
-                if (nTrack == CD_TRACK_RANDOM)
-                {
-                    nTrack = rand() * nTracks / (RAND_MAX + 1);
-                }
-
-                g_anCDRecentTracks[g_nCDRecentCursor] = nTrack;
-                g_nCDRecentCursor++;
-
-                if (g_nCDRecentCursor >= g_nCDRecentTracks)
-                {
-                    g_nCDRecentCursor = 0;
-                }
-            }
-
-            nTrack++;
-        }
-
-        if (wMciDevice != 0)
-        {
-            unsigned int nFlags = MCI_NOTIFY | MCI_FROM;
-
-            if (nTrack != nTracks)
-            {
-                nFlags       = MCI_NOTIFY | MCI_FROM | MCI_TO;
-                mciPlay.dwTo = MCI_MAKE_TMSF(nTrack + 1, 0, 0, 0);
-            }
-            else
-            {
-                mciPlay.dwTo = 0;
-            }
-
-            mciPlay.dwFrom     = MCI_MAKE_TMSF(nTrack, 0, 0, 0);
-            mciPlay.dwCallback = (DWORD_PTR)g_gameApp.m_hWnd;
-
-            err = mciSendCommandA(wMciDevice, MCI_PLAY, nFlags, (DWORD_PTR)&mciPlay);
-
-            if (err != 0)
-            {
-                mciGetErrorStringA(err, szError, sizeof(szError));
-                mciSendCommandA(wMciDevice, MCI_CLOSE, 0, 0);
-                wMciDevice = 0;
-            }
-        }
-    }
-}
-
-// FUNCTION: HYPERX 0x00491070
-void AudioMgr::StopCD()
-{
-    if (wMciDevice != 0)
-    {
-        mciSendCommandA(wMciDevice, MCI_STOP, 0, 0);
-    }
-}
-
-// FUNCTION: HYPERX 0x00491090
-int AudioMgr::CDReadVolume()
-{
-    return g_mixerCompactDisc.ReadVolume();
-}
-
-// FUNCTION: HYPERX 0x004910a0
-void AudioMgr::CDFadeVolume(int nVolume)
 {
     if (wNoCD != 0)
     {
         return;
     }
 
-    int nStep = nVolume;
+    StopCD();
 
-    if (nVolume < 0)
-    {
-        nStep = 0;
-    }
-    else if (nVolume >= MIXER_VOLUME_LEVELS)
-    {
-        nStep = MIXER_VOLUME_LEVELS - 1;
-    }
+    const auto& anTracks = MusicTracks();
+    const int   nTracks  = (int)anTracks.size();
 
-    if (wMciDevice == 0)
+    if (nTracks == 0)
     {
+        wNoCD = 1;
+
         return;
     }
 
-    if (g_mixerCompactDisc.FadeVolume(nStep) != 0)
+    if (nTrack == CD_TRACK_RANDOM)
     {
-        g_pGameOptions->WriteMusicVolume(nStep);
+        srand(timeGetTime());
+
+        int nPicked = CD_TRACK_RANDOM;
+        int nScan   = g_nCDRecentCursor;
+
+        for (int i = 0; i < nTracks; i++)
+        {
+            const int nPick = rand() * nTracks / (RAND_MAX + 1);
+
+            if (g_anCDRecentTracks[nScan] != nPick)
+            {
+                nPicked = nPick;
+                break;
+            }
+
+            nScan++;
+
+            if (nScan >= g_nCDRecentTracks)
+            {
+                nScan = 0;
+            }
+        }
+
+        if (nPicked == CD_TRACK_RANDOM)
+        {
+            nPicked = rand() * nTracks / (RAND_MAX + 1);
+        }
+
+        g_anCDRecentTracks[g_nCDRecentCursor] = nPicked;
+        g_nCDRecentCursor++;
+
+        if (g_nCDRecentCursor >= g_nCDRecentTracks)
+        {
+            g_nCDRecentCursor = 0;
+        }
+
+        nTrack = anTracks[nPicked];
+    }
+
+    char szPath[MAX_PATH];
+
+    if (MusicPath(nTrack, szPath, sizeof(szPath)))
+    {
+        g_soundMixer.PlayMusic(szPath);
+    }
+}
+
+// FUNCTION: HYPERX 0x00491070
+void AudioMgr::StopCD()
+{
+    g_soundMixer.StopMusic();
+}
+
+// FUNCTION: HYPERX 0x00491090
+int AudioMgr::CDReadVolume()
+{
+    return g_soundMixer.ReadMusicVolume();
+}
+
+// FUNCTION: HYPERX 0x004910a0
+void AudioMgr::CDFadeVolume(int nVolume)
+{
+    if (wNoCD == 0)
+    {
+        g_soundMixer.FadeMusicVolume(nVolume);
     }
 }
 

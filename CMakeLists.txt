@@ -333,7 +333,6 @@ set(HYPERX_SOURCES
     src/planvm/planvm.cpp
     src/planvm/releasingagendaitem.cpp
     src/sound/audiomgr.cpp
-    src/sound/mixer.cpp
     src/sound/soundmanager.cpp
     src/sound/soundmixer.cpp
     src/sound/wave.cpp

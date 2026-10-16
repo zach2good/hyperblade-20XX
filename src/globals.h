@@ -85,8 +85,6 @@ extern const char* g_pszDromeTexturedKey;
 // GLOBAL: HYPERX 0x004d21a8
 extern int g_nSavedCursorVisible;
 
-class Mixer;
-
 // Set by -m: the drome loads its shaded models, so the F8 texture toggle is off.
 // GLOBAL: HYPERX 0x004cb4f0
 extern int g_bShadedDromeModels;
@@ -647,15 +645,6 @@ extern char g_bChampFromJumbotron;
 extern int g_nSWVertexUVMask;
 // GLOBAL: HYPERX 0x004ced38
 extern int g_nSWVertexPosMask;
-class Mixer;
-
-// GLOBAL: HYPERX 0x004d2320
-extern Mixer g_mixerCompactDisc;
-// SYNTHETIC: HYPERX 0x0048fd90
-// $E3
-// SYNTHETIC: HYPERX 0x0048fda0
-// $E2
-
 // Seeded at start-up; the spawn and marker tables list it after the six offsets.
 // GLOBAL: HYPERX 0x004d1a48
 extern Vec3 g_vZeroMarker;

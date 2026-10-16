@@ -383,7 +383,6 @@ char              g_szNetSetupStatus[256];
 #include "net/gamesession.h"
 #include "common/pooledownerroot.h"
 #include "anim/animregistry.h"
-#include "sound/mixer.h"
 #include "engine/playerobject.h"
 #include "input/joystickmgr.h"
 #include "math/point.h"
