@@ -14,7 +14,7 @@ HyperBlade (1996), rebuilt and improved for modern systems. Built on top of
 You need your own copy of the game. Not affiliated with Activision or WizBang! Software Productions.
 
 <p align="center">
-  <img src="docs/gameplay_soft.png" alt="A match in the software renderer" width="640">
+  <img src="docs/gameplay_1080p.png" alt="A match in the software renderer" width="640">
 </p>
 
 ## Features
