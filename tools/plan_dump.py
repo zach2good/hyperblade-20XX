@@ -40,7 +40,7 @@ import plan_graph
 
 PRONOUN = 0xFEDC
 LOCAL_REAL = 0xEDCB
-INTERACTOR_PARAM = 0xDCBA
+INTERACTOR_NAME = 0xDCBA
 
 GLOBALS = 0x001B0000
 DECLARE = 0x00070000
@@ -120,7 +120,7 @@ class Dumper:
         if high == LOCAL_REAL:
             return 'local[%d]' % low
 
-        if high == INTERACTOR_PARAM:
+        if high == INTERACTOR_NAME:
             return 'param[%d]' % low
 
         if table:

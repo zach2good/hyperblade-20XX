@@ -291,17 +291,17 @@ void __cdecl PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOu
 }
 
 // FUNCTION: HYPERX 0x0045e2f0
-void PlanCond::SetAnonLocal(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
+void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
 {
     const short nIndex = (short)pNode->m_pArgs[1].n;
 
-    pActor->GetPlanState()->m_apAnonLocals[nIndex] = pInteractor;
+    pActor->GetPlanState()->m_apNamedInteractors[nIndex] = pInteractor;
 }
 
 #define ARG_COUNT_DIRECT  2
 #define ARG_COUNT_INDEXED 3
 
-// A count of three indexes the anonymous locals only under a PLAN_ARG_INTERACTOR_PARAM high half.
+// A count of three indexes the named interactors only under a PLAN_ARG_INTERACTOR_NAME high half.
 // FUNCTION: HYPERX 0x0045e320
 void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehaviorObject*, Interactor* pInteractor)
 {
@@ -315,7 +315,7 @@ void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, Gam
 
     if (nArgCount == ARG_COUNT_INDEXED)
     {
-        if (!pArgs->m_pArgs[1].IsInteractorParam())
+        if (!pArgs->m_pArgs[1].IsInteractorName())
         {
             return;
         }
@@ -324,9 +324,9 @@ void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, Gam
 
         PlanState* const pList = pActor->GetPlanState();
 
-        if (nIndex < pList->m_nAnonLocals)
+        if (nIndex < pList->m_nNamedInteractors)
         {
-            Interactor* const pEntry = pList->m_apAnonLocals[nIndex];
+            Interactor* const pEntry = pList->m_apNamedInteractors[nIndex];
 
             if (pEntry != 0)
             {

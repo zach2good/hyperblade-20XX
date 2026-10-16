@@ -26,21 +26,21 @@ extern PlanWord g_aReinitPlanImage[9];
 // FUNCTION: HYPERX 0x0047aef0
 PlanState::PlanState()
 {
-    m_pOwner           = 0;
-    m_nBehaviorCount   = 0;
-    m_ppBehaviors      = 0;
-    m_ppCursor         = 0;
-    m_pHead            = 0;
-    m_pCurrent         = 0;
-    m_nIndex           = 0;
-    m_nPrevious        = 0;
-    m_pCollInteractors = 0;
-    m_pMsgInteractors  = 0;
-    m_nInteractorCount = 0;
-    m_pflLocalReals    = 0;
-    m_nLocalRealCount  = 0;
-    m_apAnonLocals     = 0;
-    m_nAnonLocals      = 0;
+    m_pOwner             = 0;
+    m_nBehaviorCount     = 0;
+    m_ppBehaviors        = 0;
+    m_ppCursor           = 0;
+    m_pHead              = 0;
+    m_pCurrent           = 0;
+    m_nIndex             = 0;
+    m_nPrevious          = 0;
+    m_pCollInteractors   = 0;
+    m_pMsgInteractors    = 0;
+    m_nInteractorCount   = 0;
+    m_pflLocalReals      = 0;
+    m_nLocalRealCount    = 0;
+    m_apNamedInteractors = 0;
+    m_nNamedInteractors  = 0;
 }
 
 // FUNCTION: HYPERX 0x0047af30
@@ -50,11 +50,11 @@ PlanState::~PlanState()
 
     FreeCompiledBehaviors(m_nBehaviorCount);
 
-    if (m_apAnonLocals != 0)
+    if (m_apNamedInteractors != 0)
     {
-        delete[] m_apAnonLocals;
+        delete[] m_apNamedInteractors;
 
-        m_apAnonLocals = 0;
+        m_apNamedInteractors = 0;
     }
 }
 
@@ -331,14 +331,14 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
     PlanWord* aWords    = new PlanWord[nCapacity];
     memset(aWords, 0, nCapacity * sizeof(PlanWord));
 
-    m_nBehaviorCount = 0;
-    m_nAnonLocals    = 0;
+    m_nBehaviorCount    = 0;
+    m_nNamedInteractors = 0;
 
-    if (m_apAnonLocals != 0)
+    if (m_apNamedInteractors != 0)
     {
-        delete[] m_apAnonLocals;
+        delete[] m_apNamedInteractors;
 
-        m_apAnonLocals = 0;
+        m_apNamedInteractors = 0;
     }
 
     PlanWord* pWord = aWords;
@@ -375,9 +375,9 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
 
             delete[] aWords;
 
-            if (m_nAnonLocals != 0)
+            if (m_nNamedInteractors != 0)
             {
-                m_apAnonLocals = new Interactor*[m_nAnonLocals];
+                m_apNamedInteractors = new Interactor*[m_nNamedInteractors];
             }
 
             return apResult;
@@ -440,7 +440,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
                 }
                 else if ((nOpcode & OP_CATEGORY) == CATEGORY_ACTION && (nOpcode & OP_MEMBER) == MEMBER_SET_INTERACTOR_PARAM && pNode->m_pArgs->n == 0)
                 {
-                    m_nAnonLocals++;
+                    m_nNamedInteractors++;
                 }
 
                 ParseNodeStream(nDepth + 1, &pCursor, pChild++, pcPlanRef);

@@ -7,8 +7,8 @@
 #define PLAN_ARG_PRONOUN 0xfedc
 
 // The high halves the compiler gives a quoted local real and an interactor parameter.
-#define PLAN_ARG_LOCAL_REAL       0xedcb
-#define PLAN_ARG_INTERACTOR_PARAM 0xdcba
+#define PLAN_ARG_LOCAL_REAL      0xedcb
+#define PLAN_ARG_INTERACTOR_NAME 0xdcba
 
 // The values of the authored tokens the plan compiler seeds, each named for its token.
 #define PLAN_TOKEN_BROADCAST     0x0000ffff
@@ -49,9 +49,9 @@ union PlanWord
         return GetTag() == PLAN_ARG_LOCAL_REAL;
     }
 
-    bool IsInteractorParam() const
+    bool IsInteractorName() const
     {
-        return GetTag() == PLAN_ARG_INTERACTOR_PARAM;
+        return GetTag() == PLAN_ARG_INTERACTOR_NAME;
     }
 
     static int Pack(unsigned int nTag, int nIndex)

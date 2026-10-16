@@ -19,7 +19,7 @@ struct PlanNode;
 
 HYPERBLADE_FIELD_AT(PlanState, m_ppBehaviors, 0x0c);
 HYPERBLADE_FIELD_AT(PlanState, m_pCurrent, 0x18);
-HYPERBLADE_FIELD_AT(PlanState, m_apAnonLocals, 0x34);
+HYPERBLADE_FIELD_AT(PlanState, m_apNamedInteractors, 0x34);
 STATIC_ASSERT(sizeof(PlanState) == 0x3c);
 
 // A keyword table entry: the name, a sentinel word, and the value the name stands for.
@@ -43,11 +43,11 @@ public:
     short         SkipLine();
     PlanOpcodeRef LookupSymbol(char* pszName);
     short         FindLocalRealIndex(char* pszName);
-    short         FindInteractorParamIndex(char* pszName);
+    short         FindInteractorNameIndex(char* pszName);
     PlanOpcodeRef LookupKeyword(char* pszName);
 
     short FindBehaviorIndexOrThrow(char* pszName);
-    short FindInteractorParamIndexOrThrow(char* pszName);
+    short FindInteractorNameIndexOrThrow(char* pszName);
 
     int           IsSeparatorChar();
     int           IsCommentOrGroup();

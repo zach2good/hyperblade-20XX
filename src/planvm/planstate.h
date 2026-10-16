@@ -54,9 +54,9 @@ public:
     short                 m_nTickBudget;      // 0x2a
     float*                m_pflLocalReals;    // 0x2c
     short                 m_nLocalRealCount;  // 0x30
-    // One word per anonymous local; plancond.cpp writes values and reads interactor pointers back.
-    class Interactor** m_apAnonLocals; // 0x34
-    short              m_nAnonLocals;  // 0x38
+    // One interactor per name that id_SET_InteractorName gives; plancond.cpp reads them back.
+    class Interactor** m_apNamedInteractors; // 0x34
+    short              m_nNamedInteractors;  // 0x38
 };
 
 #endif
