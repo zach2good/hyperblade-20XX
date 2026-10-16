@@ -36,7 +36,6 @@ struct GameApp
     static void __cdecl     AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
     static int              ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
     static LRESULT          ClearSplashPalette(void);
-    static unsigned int     RegisterWindowClass(HINSTANCE hInstance, LPCSTR pszClassName);
     static HWND             CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
     static void __cdecl     Shutdown(HWND hWnd);
 

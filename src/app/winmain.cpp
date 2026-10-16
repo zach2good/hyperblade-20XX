@@ -12,15 +12,6 @@ float g_flUnusedWinMainC = g_flZeroWinMain;
 // FUNCTION: HYPERX 0x0044c070
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nShowCmd)
 {
-    MSG msg;
-
-    msg.wParam = 0;
-
-    if (Window::EnsureClassRegistered(hInstance))
-    {
-        return 0;
-    }
-
     LPSTR      lpCmdLineArgs = GetCommandLineA();
     const HWND hWnd          = GameApp::Initialize(hInstance, hPrevInstance, nShowCmd, lpCmdLineArgs);
 
@@ -34,32 +25,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nSho
             g_frameTimer.dwFrameStartTime = timeGetTime();
         }
 
-        for (;;)
+        while (Window::Pump())
         {
-            if (PeekMessageA(&msg, 0, 0, 0, PM_REMOVE))
+            if (GameApp::MainUpdate(g_gameApp.GetMainWindow()))
             {
-                if (msg.message == WM_QUIT)
-                {
-                    break;
-                }
-
-                TranslateMessage(&msg);
-                DispatchMessageA(&msg);
-            }
-            else
-            {
-                if (GameApp::MainUpdate(g_gameApp.GetMainWindow()))
-                {
-                    WaitMessage();
-                }
+                Window::WaitWhileInactive();
             }
         }
     }
 
-    if (Window::EnsureClassRegistered(hInstance))
-    {
-        return 0;
-    }
-
-    return msg.wParam;
+    return 0;
 }

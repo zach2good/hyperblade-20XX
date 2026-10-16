@@ -119,23 +119,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             WndProc::OnActivate(hWnd, wParam, lParam);
             return 0;
 
-        // A drag runs a modal loop, and a timer keeps the frames coming through it.
-        case WM_ENTERSIZEMOVE:
-            Window::OnEnterSizeMove(hWnd);
-            break;
-
-        case WM_EXITSIZEMOVE:
-            Window::OnExitSizeMove(hWnd);
-            break;
-
-        case WM_TIMER:
-            if (Window::OnTimer(hWnd, wParam) != 0)
-            {
-                return 0;
-            }
-
-            break;
-
         case WM_COMMAND:
             MainWindow::OnCommand(hWnd, LOWORD(wParam), lParam, HIWORD(wParam));
             return 0;

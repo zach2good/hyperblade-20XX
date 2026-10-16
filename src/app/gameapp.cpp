@@ -178,16 +178,6 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     // A modern desktop keeps its own mode, so the game runs windowed.
     g_bFullScreen = 0;
 
-    if (hPrevInstance == 0)
-    {
-        pszAppClassName = g_gameApp.m_strCaption.m_pchData;
-
-        if (GameApp::RegisterWindowClass(hInstance, pszAppClassName) == 0)
-        {
-            return 0;
-        }
-    }
-
     g_pColorPalette = new ColorPalette;
 
     pszAppClassName = g_gameApp.m_strCaption.m_pchData;
@@ -210,7 +200,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     HPALETTE hPalette             = g_gameApp.m_hPalette;
     g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd, g_gameApp.GetScreenDC(), hPalette);
 
-    ShowWindow(hWnd, nShowCmd);
+    Window::Show();
     GameApp::SetCursorVisible(1);
 
     HCURSOR hCursor = LoadCursorA(0, IDC_WAIT);
@@ -599,12 +589,7 @@ void __stdcall GameApp::OnExit(void)
         }
     }
 
-    Window::EnsureClassRegistered(0);
-
-    if (g_gameApp.m_hWnd != 0 && DestroyWindow(g_gameApp.m_hWnd) == 0)
-    {
-        exit(GetLastError());
-    }
+    Window::Destroy();
 
     ExitProcess(0);
 }
@@ -1428,54 +1413,16 @@ void __stdcall GameApp::InstantiateState(void)
     }
 }
 
-// Zero only when the class neither existed nor registered.
-// FUNCTION: HYPERX 0x004937f0
-unsigned int __cdecl GameApp::RegisterWindowClass(HINSTANCE hInstance, LPCSTR pszClassName)
-{
-    WNDCLASSA wc;
-
-    const unsigned int nExisting = GetClassInfoA(hInstance, pszClassName, &wc);
-
-    if (nExisting != 0)
-    {
-        return nExisting;
-    }
-
-    wc.style       = CS_BYTEALIGNWINDOW | CS_BYTEALIGNCLIENT | CS_OWNDC;
-    wc.lpfnWndProc = WndProc::MainWndProc;
-    wc.cbWndExtra  = 0;
-    wc.cbClsExtra  = 0;
-    wc.hInstance   = hInstance;
-    // STRING: HYPERX 0x004c8ccc
-    wc.hIcon         = LoadIconA(hInstance, "APPICON");
-    wc.hCursor       = 0;
-    wc.hbrBackground = 0;
-    // STRING: HYPERX 0x004c8cc4
-    wc.lpszMenuName  = "AppMenu";
-    wc.lpszClassName = pszClassName;
-
-    return RegisterClassA(&wc) != 0;
-}
-
 // FUNCTION: HYPERX 0x00493870
-HWND __cdecl GameApp::CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam)
+HWND __cdecl GameApp::CreateMainWindow(HINSTANCE, LPCSTR pszTitle, LPVOID)
 {
-    RECT rc;
+    const HWND hWnd = Window::Create(pszTitle);
 
-    GetWindowRect(GetDesktopWindow(), &rc);
-
-    if (g_bFullScreen == 0)
+    // What WM_CREATE did before SDL made the window.
+    if (hWnd == 0 || MainWindow::OnCreate(hWnd, 0) == 0)
     {
-        if (rc.right > 640)
-        {
-            rc.right = 640;
-        }
-
-        if (rc.bottom > 480)
-        {
-            rc.bottom = 480;
-        }
+        return 0;
     }
 
-    return CreateWindowExA(0, pszClassName, pszClassName, WS_BORDER, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 0, 0, hInstance, pParam);
+    return hWnd;
 }

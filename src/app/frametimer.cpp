@@ -182,13 +182,6 @@ void FrameTimer::Pace()
         s_dwDeadline = dwNow;
     }
 
-    if (Window::InSizeMove() != 0)
-    {
-        s_dwDeadline = dwNow;
-
-        return;
-    }
-
     s_nCarry += FRAME_MICROS;
 
     const auto dwStep = s_nCarry / 1000;

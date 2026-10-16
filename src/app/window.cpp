@@ -9,7 +9,14 @@
 #include "engine/gameoptions.h"
 #include "graphics/graphicsglobals.h"
 #include "graphics/softrenderer.h"
+#include "ui/mainwindow.h"
+#include "app/appglobals.h"
+#include "ui/screen.h"
+#include <SDL3/SDL.h>
 #include <algorithm>
+
+// The game's one window, which SDL made and owns.
+static SDL_Window* s_pWindow = 0;
 
 #define SWP_MOVE_FLAGS (SWP_SHOWWINDOW | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE)
 
@@ -22,21 +29,18 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
         SetMenu(hWnd, 0);
     }
 
-    // Every pause toggle comes here, and a framed window keeps the size the player gave it.
-    if ((GetWindowLongA(hWnd, GWL_STYLE) & WS_OVERLAPPEDWINDOW) == WS_OVERLAPPEDWINDOW)
+    // SDL made the window framed and resizable. Every pause toggle comes here, and only the first
+    // sets the size, so the window keeps the one the player gave it.
+    static auto s_bSized = false;
+
+    if (s_bSized)
     {
         return;
     }
 
-    // A full-screen popup never becomes visible on a modern desktop, so the game runs framed.
-    RECT rcFrame = { 0, 0, (LONG)g_dwDisplayWidth, (LONG)g_dwDisplayHeight };
+    s_bSized = true;
 
-    SetWindowLongA(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
-    SetWindowLongA(hWnd, GWL_ID, 0);
-    AdjustWindowRect(&rcFrame, WS_OVERLAPPEDWINDOW, FALSE);
-    SetWindowPos(hWnd, 0, 0, 0, rcFrame.right - rcFrame.left, rcFrame.bottom - rcFrame.top, SWP_NOZORDER | SWP_NOMOVE | SWP_FRAMECHANGED);
-
-    PostMessageA(hWnd, WM_NCPAINT, 0, 0);
+    SDL_SetWindowSize(s_pWindow, (int)g_dwDisplayWidth, (int)g_dwDisplayHeight);
 }
 
 // The original swaps X and Y too; SWP_NOMOVE ignores both.
@@ -57,54 +61,12 @@ unsigned int Window::OnWindowMove(HWND hWnd, int nFlag)
     return 0;
 }
 
-// GLOBAL: HYPERX 0x004d2b88
-WNDCLASSA g_wndClass;
-
-// GLOBAL: HYPERX 0x004d2bb0
-WNDCLASSA* g_pWndClass;
-
 // FUNCTION: HYPERX 0x0048f450
 void Window::InvalidateAndUpdate(void)
 {
     InvalidateRgn(g_gameApp.m_hWnd, 0, 0);
 
     UpdateWindow(g_gameApp.m_hWnd);
-}
-
-// Non-zero when the class already existed. The class name's typo is shipped.
-// FUNCTION: HYPERX 0x00493750
-int Window::EnsureClassRegistered(HINSTANCE hInstance)
-{
-    // STRING: HYPERX 0x004c8cac
-    const BOOL bClassExists = GetClassInfoA(hInstance, "HyberBlade Atom String", &g_wndClass);
-
-    if (g_pWndClass != 0)
-    {
-        return 1;
-    }
-
-    g_pWndClass = &g_wndClass;
-
-    if (bClassExists != 0)
-    {
-        return 1;
-    }
-
-    g_wndClass.style       = CS_BYTEALIGNWINDOW | CS_BYTEALIGNCLIENT | CS_OWNDC;
-    g_wndClass.lpfnWndProc = WndProc::MainWndProc;
-    g_wndClass.cbWndExtra  = 0;
-    g_wndClass.cbClsExtra  = 0;
-    g_wndClass.hInstance   = hInstance;
-    g_wndClass.hIcon       = 0;
-    g_wndClass.hCursor     = 0;
-    // The game paints on demand, so the class's erase would flash.
-    g_wndClass.hbrBackground = 0;
-    g_wndClass.lpszMenuName  = 0;
-    g_wndClass.lpszClassName = "HyberBlade Atom String";
-
-    RegisterClassA(&g_wndClass);
-
-    return 0;
 }
 
 // The menus and splashes paint at 640x480. They draw into this canvas, which is scaled to the
@@ -206,49 +168,6 @@ LPARAM Window::ToMenuPoint(HWND hWnd, LPARAM lParam)
     return MAKELPARAM(x, y);
 }
 
-// A drag runs a modal loop inside DispatchMessageA, and this timer keeps the frames coming.
-constexpr auto SIZEMOVE_TIMER_ID = 0x4252u;
-constexpr auto SIZEMOVE_TIMER_MS = 33u;
-
-static int s_bInSizeMove    = 0;
-static int s_bInTimerUpdate = 0;
-
-void Window::OnEnterSizeMove(HWND hWnd)
-{
-    s_bInSizeMove = 1;
-
-    SetTimer(hWnd, SIZEMOVE_TIMER_ID, SIZEMOVE_TIMER_MS, 0);
-}
-
-void Window::OnExitSizeMove(HWND hWnd)
-{
-    KillTimer(hWnd, SIZEMOVE_TIMER_ID);
-
-    s_bInSizeMove = 0;
-}
-
-int Window::OnTimer(HWND hWnd, UINT_PTR nTimerId)
-{
-    if (nTimerId != SIZEMOVE_TIMER_ID)
-    {
-        return 0;
-    }
-
-    if (s_bInTimerUpdate == 0 && s_bInSizeMove != 0)
-    {
-        s_bInTimerUpdate = 1;
-        GameApp::MainUpdate(hWnd);
-        s_bInTimerUpdate = 0;
-    }
-
-    return 1;
-}
-
-int Window::InSizeMove()
-{
-    return s_bInSizeMove;
-}
-
 // The 3D renders at the client size, so it is never stretched. The width stays a multiple of four,
 // which the back buffer needs, and PresentFrame centres what that leaves.
 void Window::OnSize(WPARAM nKind, int cx, int cy)
@@ -300,4 +219,169 @@ void Window::OnSizeMenus(HWND hWnd, WPARAM nKind)
     {
         Window::PresentMenu(hWnd);
     }
+}
+
+static bool s_bQuit         = false;
+static bool s_bInLiveUpdate = false;
+
+// The input the game reads raw keeps its Win32 form: key codes, button flags and client points.
+static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
+{
+    if (pMsg->message == WM_QUIT)
+    {
+        s_bQuit = true;
+
+        return true;
+    }
+
+    if (pMsg->hwnd == 0 || pMsg->hwnd != g_gameApp.m_hWnd)
+    {
+        return true;
+    }
+
+    switch (pMsg->message)
+    {
+        case WM_KEYDOWN:
+        case WM_KEYUP:
+        case WM_LBUTTONDOWN:
+        case WM_LBUTTONUP:
+        case WM_RBUTTONDOWN:
+        case WM_RBUTTONUP:
+        case WM_MOUSEMOVE:
+        case WM_COMMAND:
+        case MM_JOY1MOVE:
+        case MM_JOY2MOVE:
+        case MM_JOY1BUTTONDOWN:
+        case MM_JOY1BUTTONUP:
+        case MM_JOY2BUTTONDOWN:
+        case MM_JOY2BUTTONUP:
+        case MM_MCINOTIFY:
+            WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
+            break;
+
+        default:
+            break;
+    }
+
+    return true;
+}
+
+// A watch sees each window event as SDL's window procedure raises it, as the game saw the
+// message, and keeps running through the modal loop of a drag.
+static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
+{
+    const HWND hWnd = g_gameApp.m_hWnd;
+
+    if (hWnd == 0)
+    {
+        return true;
+    }
+
+    switch (pEvent->type)
+    {
+        case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+            WndProc::MainWndProc(hWnd, WM_SIZE, SIZE_RESTORED, MAKELPARAM(pEvent->window.data1, pEvent->window.data2));
+            break;
+
+        case SDL_EVENT_WINDOW_MINIMIZED:
+            WndProc::MainWndProc(hWnd, WM_SIZE, SIZE_MINIMIZED, 0);
+            break;
+
+        case SDL_EVENT_WINDOW_FOCUS_GAINED:
+            if (g_pActiveScreen != 0)
+            {
+                g_pActiveScreen->SetRepaintBackground(1);
+            }
+
+            WndProc::OnActivate(hWnd, 1, 0);
+            break;
+
+        case SDL_EVENT_WINDOW_FOCUS_LOST:
+            WndProc::OnActivate(hWnd, 0, 0);
+            break;
+
+        case SDL_EVENT_WINDOW_EXPOSED:
+            WndProc::HandlePaint(hWnd);
+
+            // A live resize exposes the window from inside the drag, so the game draws a frame.
+            if (pEvent->window.data1 != 0 && s_bInLiveUpdate == false)
+            {
+                s_bInLiveUpdate = true;
+                GameApp::MainUpdate(hWnd);
+                s_bInLiveUpdate = false;
+            }
+
+            break;
+
+        case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+            if (g_bShuttingDown == 0)
+            {
+                WndProc::MainWndProc(hWnd, WM_DESTROY, 0, 0);
+            }
+
+            s_bQuit = true;
+            break;
+
+        default:
+            break;
+    }
+
+    return true;
+}
+
+HWND Window::Create(const char* pszTitle)
+{
+    if (SDL_Init(SDL_INIT_VIDEO) == false)
+    {
+        return 0;
+    }
+
+    s_pWindow = SDL_CreateWindow(pszTitle, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
+
+    if (s_pWindow == 0)
+    {
+        return 0;
+    }
+
+    const auto hWnd = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(s_pWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, 0);
+
+    // STRING: HYPERX 0x004c8ccc
+    const auto hIcon = LoadIconA(GetModuleHandleA(0), "APPICON");
+
+    SendMessageA(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
+    SendMessageA(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+
+    SDL_SetWindowsMessageHook(OnWin32Message, 0);
+    SDL_AddEventWatch(OnWindowEvent, 0);
+
+    return hWnd;
+}
+
+void Window::Show()
+{
+    SDL_ShowWindow(s_pWindow);
+}
+
+void Window::Destroy()
+{
+    SDL_DestroyWindow(s_pWindow);
+    SDL_Quit();
+
+    s_pWindow = 0;
+}
+
+bool Window::Pump()
+{
+    SDL_PumpEvents();
+
+    // Everything the game needs was handled as it arrived.
+    SDL_FlushEvents(SDL_EVENT_FIRST, SDL_EVENT_LAST);
+
+    return s_bQuit == false;
+}
+
+void Window::WaitWhileInactive()
+{
+    // A tenth of a second, so a message that raises no SDL event cannot leave the loop asleep.
+    SDL_WaitEventTimeout(0, 100);
 }
