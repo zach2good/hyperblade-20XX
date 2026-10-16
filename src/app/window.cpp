@@ -232,12 +232,6 @@ static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
         case WM_RBUTTONUP:
         case WM_MOUSEMOVE:
         case WM_COMMAND:
-        case MM_JOY1MOVE:
-        case MM_JOY2MOVE:
-        case MM_JOY1BUTTONDOWN:
-        case MM_JOY1BUTTONUP:
-        case MM_JOY2BUTTONDOWN:
-        case MM_JOY2BUTTONUP:
             WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
             break;
 

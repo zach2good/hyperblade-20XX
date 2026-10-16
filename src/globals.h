@@ -21,8 +21,6 @@ struct IDirectPlay;
 #include "planvm/conditiontable.h"
 #include "ui/hudsurfaces.h"
 
-class JoystickMgr;
-
 class InfoBarBase;
 class CDDBitMap;
 class GameOptions;
@@ -92,9 +90,6 @@ extern int g_bShadedDromeModels;
 // The splash on screen, counting from 1; 0 once the menus have taken over.
 // GLOBAL: HYPERX 0x004cb500
 extern int g_nSplashFrame;
-
-// GLOBAL: HYPERX 0x004cb5e8
-extern class JoystickMgr* g_pJoystickMgr;
 
 // GLOBAL: HYPERX 0x004cb6f0
 extern ColorPalette* g_pColorPalette;
@@ -318,12 +313,6 @@ struct GameSession;
 
 // GLOBAL: HYPERX 0x004ce930
 extern GameSession* g_pGameSession;
-
-// GLOBAL: HYPERX 0x004bc474
-extern int g_nJoystickId1;
-
-// GLOBAL: HYPERX 0x004bc478
-extern int g_nJoystickId2;
 
 // Always nought and one; plan actions index GameEngine::m_apTracked with them.
 // GLOBAL: HYPERX 0x004bc47c

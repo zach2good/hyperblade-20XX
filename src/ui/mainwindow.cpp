@@ -8,7 +8,7 @@
 #include "graphics/colorpalette.h"
 #include "uiglobals.h"
 #include "engine/engineobject.h"
-#include "input/joystickmgr.h"
+#include "input/gamepad.h"
 #include "engine/objectclasses.h"
 #include "anim/animset.h"
 #include "planvm/planvm.h"
@@ -348,16 +348,7 @@ int MainWindow::OnCreate(HWND hWnd, LPARAM)
 
     g_gameApp.m_hPalette = g_pColorPalette->ReloadPalette(g_wPaletteMode);
 
-    JoystickMgr* pManager = new JoystickMgr(hWnd, 1);
-
-    g_pJoystickMgr = pManager;
-
-    if (pManager != 0 && pManager->m_nDeviceCount == 0)
-    {
-        delete pManager;
-
-        g_pJoystickMgr = 0;
-    }
+    Gamepad::Init();
 
     return 1;
 }

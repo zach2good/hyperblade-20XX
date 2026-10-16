@@ -6,7 +6,6 @@
 #include <string.h>
 #include <mbstring.h>
 #include "gameapp.h"
-#include "input/joystickmgr.h"
 #include "common/fileobj.h"
 #include "ui/keyconfigdialog.h"
 #include "engine/messageids.h"
@@ -139,8 +138,6 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
 
     if (pFile != 0)
     {
-        JoystickMgr::StartCapture(_mbsicmp((const unsigned char*)pszData, (const unsigned char*)pszFallbackPath));
-
         for (int nRow = 0; nRow < 40; nRow++)
         {
             int nFlags;

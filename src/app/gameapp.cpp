@@ -65,7 +65,7 @@ class AwardsUIScreen;
 #include "ui/screens/gameintroscreen.h"
 #include "ui/screens/trainingendscreen.h"
 #include "engine/engineobject.h"
-#include "input/joystickmgr.h"
+#include "input/gamepad.h"
 #include "graphics/colorpalette.h"
 #include "config.h"
 #include "frametimer.h"
@@ -187,12 +187,6 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
 
     g_gameApp.m_hMenu = GetMenu(hWnd);
     CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_LARGE, MF_CHECKED);
-
-    if (g_pJoystickMgr == 0)
-    {
-        hAppMenu = g_gameApp.m_hMenu;
-        EnableMenuItem(hAppMenu, ID_MENU_TWO_PLAYER, MF_GRAYED);
-    }
 
     hAppMenu = g_gameApp.m_hMenu;
     EnableMenuItem(hAppMenu, ID_MENU_MIDI_OFF, MF_DISABLED | MF_GRAYED);
@@ -448,11 +442,7 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 // FUNCTION: HYPERX 0x00419580
 void __cdecl GameApp::Shutdown(HWND)
 {
-    if (g_pJoystickMgr != 0)
-    {
-        delete g_pJoystickMgr;
-        g_pJoystickMgr = 0;
-    }
+    Gamepad::Shutdown();
 
     if (g_bSessionActive != 0)
     {

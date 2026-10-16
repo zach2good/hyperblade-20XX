@@ -252,8 +252,7 @@ set(HYPERX_SOURCES
     src/input/cheat.cpp
     src/input/deviceobject.cpp
     src/input/input.cpp
-    src/input/joystickdevice.cpp
-    src/input/joystickmgr.cpp
+    src/input/gamepad.cpp
     src/input/keyboarddeviceobj.cpp
     src/math/math.cpp
     src/math/point.cpp

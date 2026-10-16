@@ -11,7 +11,6 @@
 #include "app/menuids.h"
 #include "gameapp.h"
 #include "sound/audiomgr.h"
-#include "input/joystickmgr.h"
 #include "graphics/renderer.h"
 #include "graphics/renderoptions.h"
 #include "graphics/d3drend.h"
@@ -213,30 +212,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             }
 
             return g_pColorPalette->RealizePalette() & 0xff;
-
-        case MM_JOY1MOVE:
-            g_pJoystickMgr->HandleJoyAxis(g_nJoystickId1, wParam, LOWORD(lParam), HIWORD(lParam));
-            return 0;
-
-        case MM_JOY2MOVE:
-            g_pJoystickMgr->HandleJoyAxis(g_nJoystickId2, wParam, LOWORD(lParam), HIWORD(lParam));
-            return 0;
-
-        case MM_JOY1BUTTONDOWN:
-            g_pJoystickMgr->HandleButtonPress(g_nJoystickId1, wParam, lParam, HIWORD(lParam));
-            return 0;
-
-        case MM_JOY1BUTTONUP:
-            g_pJoystickMgr->HandleButtonRelease(g_nJoystickId1, wParam, lParam, HIWORD(lParam));
-            return 0;
-
-        case MM_JOY2BUTTONDOWN:
-            g_pJoystickMgr->HandleButtonPress(g_nJoystickId2, wParam, lParam, HIWORD(lParam));
-            return 0;
-
-        case MM_JOY2BUTTONUP:
-            g_pJoystickMgr->HandleButtonRelease(g_nJoystickId2, wParam, lParam, HIWORD(lParam));
-            return 0;
 
         case WM_KEYUP:
         case WM_LBUTTONUP:

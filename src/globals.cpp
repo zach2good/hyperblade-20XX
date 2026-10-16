@@ -63,7 +63,6 @@ InfoBarBase*       g_pRenderer;
 struct GameEngine* g_pGameEngine;
 int                g_bNoSoundArg;
 int                g_nSplashFrame;
-class JoystickMgr* g_pJoystickMgr;
 ColorPalette*      g_pColorPalette;
 const char* const  g_pszModelExtension       = "wbm";
 const char* const  g_pszWaveExtension        = "wav";
@@ -125,7 +124,6 @@ int                        g_nPlanSequenceStep;
 SavedDisplayMetrics*       g_pSavedDesktopMode  = 0;
 struct IDirectDrawPalette* g_pDevicePalette     = 0;
 const char* const          g_pszPlanVmEmptyName = "";
-int                        g_bJoystickShared;
 char                       g_bShuttingDown;
 int                        g_bHelpOpen;
 class KeyboardDeviceObj*   g_pInputDevice;
@@ -384,16 +382,14 @@ char              g_szNetSetupStatus[256];
 #include "common/pooledownerroot.h"
 #include "anim/animregistry.h"
 #include "engine/playerobject.h"
-#include "input/joystickmgr.h"
 #include "math/point.h"
 #include "engine/object.h"
 #include "input/cheat.h"
 #include "planvm/plannode.h"
 extern const GUID g_guidNetApplication = { 0xe759bc83, 0x184d, 0x11cf, { 0xa4, 0x7c, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 } };
 char              g_bLoadingMode       = 1;
-int               g_bGamepadConfigLoaded;
-unsigned int      g_dwPrevJoyXVKey;
-unsigned int      g_dwPrevJoyYVKey;
+int               g_nJoystickSlotA     = 0;
+int               g_nJoystickSlotB     = 1;
 
 int                g_nBackBufferPixelCount;
 unsigned char      g_bBottomUpDIB;

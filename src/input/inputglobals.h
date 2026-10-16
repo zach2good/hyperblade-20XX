@@ -39,33 +39,8 @@ extern short g_nTabCycle;
 // GLOBAL: HYPERX 0x004ce998
 extern CheatState g_cheatState;
 
-// Set when two players are asked for and only one stick is present. Nothing reads it.
-// GLOBAL: HYPERX 0x004cb5e0
-extern int g_bJoystickShared;
-
 // GLOBAL: HYPERX 0x004c8584
 extern unsigned int g_nLastEscState;
-
-// The four gamepad buttons, their ini key names and the joystick button each is bound to.
-// GLOBAL: HYPERX 0x004bc484
-extern int g_anGamepadButton[4];
-
-// GLOBAL: HYPERX 0x004bc4c4
-extern const char* g_apszGamepadButtonKey[4];
-
-// The default keys a joystick stands in for when there is no input device; the axes read the first four.
-// GLOBAL: HYPERX 0x004bc494
-extern unsigned int g_anJoystickDefaultKeys[12];
-
-// GLOBAL: HYPERX 0x004cb5ec
-extern int g_bGamepadConfigLoaded;
-
-// The vkey each axis last sent a key-down for, so the next poll knows what to lift.
-// GLOBAL: HYPERX 0x004cb5f8
-extern unsigned int g_dwPrevJoyXVKey;
-
-// GLOBAL: HYPERX 0x004cb5fc
-extern unsigned int g_dwPrevJoyYVKey;
 
 // One record: the restore cheat and Object::ScaleBones bound their walks on the next field.
 struct TeamScaleSlots
