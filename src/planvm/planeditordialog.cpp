@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "planvmglobals.h"
 #include "engine/gameengine.h"
-#include "sound/adliberror.h"
+#include "planvm/adliberror.h"
 #include "common/pathstring.h"
 #include <mbstring.h>
 #include "app/gameapp.h"
