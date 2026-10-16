@@ -94,30 +94,8 @@ double FrameTimer::BenchmarkResolution(void)
     return dResult;
 }
 
-// FUNCTION: HYPERX 0x00442be0
-double FrameTimer::BenchmarkTextSpeed(HDC hDC)
-{
-    // STRING: HYPERX 0x004c1e78
-    g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", (int)floor(30.5));
-
-    const unsigned int dwStart = (unsigned int)SDL_GetTicks();
-
-    for (int nLoop = 0; nLoop < 100; nLoop++)
-    {
-        ExtTextOutA(hDC, 10, 0, 0, 0, g_szFpsText, g_nFpsTextLength, 0);
-    }
-
-    const unsigned int dwEnd = (unsigned int)SDL_GetTicks();
-
-    const double dResult = ((double)dwEnd - (double)dwStart) * 0.001;
-
-    Restart();
-
-    return dResult;
-}
-
 // FUNCTION: HYPERX 0x00442ca0
-void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
+void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC)
 {
     if (bFrameTimesOn == 0)
     {
@@ -126,7 +104,11 @@ void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
 
     dClockReadCost = Calibrate();
     dSampleCost    = BenchmarkResolution();
-    dFpsTextCost   = BenchmarkTextSpeed(hDC);
+
+    // The original timed a hundred GDI draws of the label here; the label no longer goes through GDI.
+    // STRING: HYPERX 0x004c1e78
+    g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", (int)floor(30.5));
+    dFpsTextCost     = 0.0;
 
     nClockReads++;
 

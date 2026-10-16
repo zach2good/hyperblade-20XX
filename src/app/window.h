@@ -3,6 +3,7 @@
 
 #include "common/compat.h"
 #include "common/handle.h"
+#include <cstdint>
 
 namespace Window
 {
@@ -11,10 +12,20 @@ void         InvalidateAndUpdate(void);
 void         ApplyFullscreenStyle(HWND hWnd, int nFlag);
 unsigned int OnWindowMove(HWND hWnd, int nFlag);
 HDC          MenuDC();
-void         PresentMenu(HWND hWnd);
-LPARAM       ToMenuPoint(HWND hWnd, LPARAM lParam);
-void         OnSizeMenus(HWND hWnd, WPARAM nKind);
-void         OnSize(WPARAM nKind, int cx, int cy);
+
+// The menu canvas's pixels, 0x00RRGGBB, top row first; GDI's drawing is flushed into them first.
+struct MenuCanvas
+{
+    std::uint32_t* pBits;
+    int            nWidth;
+    int            nHeight;
+};
+
+MenuCanvas MenuPixels();
+void       PresentMenu(HWND hWnd);
+LPARAM     ToMenuPoint(HWND hWnd, LPARAM lParam);
+void       OnSizeMenus(HWND hWnd, WPARAM nKind);
+void       OnSize(WPARAM nKind, int cx, int cy);
 
 // SDL owns the window and its event loop. Window events reach the game as they happen, and
 // the input messages it reads raw go to WndProc::MainWndProc unchanged.

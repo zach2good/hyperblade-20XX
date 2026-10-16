@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "stb_image.h"
+#include "graphics/text.h"
 
 // GLOBAL: HYPERX 0x004c2ca4
 extern int g_nDisplayBitsPerPixel;
@@ -467,14 +468,17 @@ UINT GDI::RealizePalette(HDC hdc)
     return ::RealizePalette(hdc);
 }
 
+// Every caller draws onto the menu canvas, in the System font's sixteen-pixel cell, which the
+// original never replaced with a font of its own.
 // FUNCTION: HYPERX 0x0048f3b0
-void GDI::DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char* pszText, int cchText, int)
+void GDI::DrawTransparentText(HDC, COLORREF color, int x, int y, const char* pszText, int, int)
 {
-    SetTextAlign(hdc, 0);
-    SetBkMode(hdc, TRANSPARENT);
-    SetTextColor(hdc, color);
+    constexpr auto SYSTEM_FONT_HEIGHT = 16;
 
-    TextOutA(hdc, x, y, pszText, cchText);
+    const auto canvas = Window::MenuPixels();
+    const auto nRGB   = (std::uint32_t)(GetRValue(color) << 16 | GetGValue(color) << 8 | GetBValue(color));
+
+    Text::Draw(Text::Find(SYSTEM_FONT_HEIGHT), canvas.pBits, canvas.nWidth * 4, canvas.nWidth, canvas.nHeight, x, y, pszText, nRGB);
 }
 
 // FUNCTION: HYPERX 0x0048f3f0

@@ -75,10 +75,6 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
         g_hSoftBackOldBitmap = SelectObject(g_hSoftBackDC, g_hSoftBackBitmap);
 
         Graphics::Initialize(1);
-
-        SetBkMode(g_hSoftBackDC, TRANSPARENT);
-        SetTextColor(g_hSoftBackDC, GetNearestColor(g_hSoftBackDC, RGB(0, 255, 0)));
-
         if (g_pRenderer != 0)
         {
             g_pRenderer->LayoutSurfaces();

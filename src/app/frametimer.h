@@ -56,7 +56,6 @@ struct FrameTimer
 
     double Calibrate(void);
     double BenchmarkResolution(void);
-    double BenchmarkTextSpeed(HDC hDC);
     void   ProcessInitialFrameUpdate(HWND hWnd, HDC hDC);
 
     static double EndFrameUpdate(FrameTimer* timer);

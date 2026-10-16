@@ -78,7 +78,6 @@ void Fit(const DrawTarget& backBuffer)
     s_hLayerBitmap = CreateDIBSection(s_hLayerDC, (BITMAPINFO*)&info, DIB_RGB_COLORS, &pBits, 0, 0);
 
     SelectObject(s_hLayerDC, s_hLayerBitmap);
-    SetBkMode(s_hLayerDC, TRANSPARENT);
 
     s_layer.pBits   = (unsigned char*)pBits;
     s_layer.nPitch  = nWidth;
@@ -133,12 +132,6 @@ void HudLayer::Enter()
 
     aColours[KEY_INDEX] = KEY_COLOUR;
     SetDIBColorTable(s_hLayerDC, 0, (std::max)(nColours, (UINT)KEY_INDEX + 1), aColours);
-
-    if (s_backBuffer.hTextDC != 0)
-    {
-        SetTextColor(s_hLayerDC, GetTextColor(s_backBuffer.hTextDC));
-    }
-
     Use(s_layer);
 
     s_bEntered = 1;

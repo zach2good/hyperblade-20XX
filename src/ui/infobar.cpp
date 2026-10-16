@@ -493,8 +493,6 @@ void InfoBar::DrawHUD(int bFull, HDC hDC)
 
     if (g_hTextDC != 0)
     {
-        const int nOldBkMode = SetBkMode(g_hTextDC, TRANSPARENT);
-
         const int nElapsed = g_pGameEngine->m_nPeriodLengthMs - g_pGameEngine->m_clock.nPauseStartMs + g_pGameEngine->m_clock.nPeriodStartMs;
 
         const int nSeconds = (int)((nElapsed % MS_PER_MINUTE) * 0.001f);
@@ -526,8 +524,6 @@ void InfoBar::DrawHUD(int bFull, HDC hDC)
 
         if (bFull == 0)
         {
-            SetBkMode(g_hTextDC, nOldBkMode);
-
             g_hTextDC = hSaved;
             return;
         }
@@ -591,9 +587,6 @@ void InfoBar::DrawHUD(int bFull, HDC hDC)
 
         UpdateOwnTeamDisplay();
         UpdateFoeTeamDisplay();
-
-        SetBkMode(g_hTextDC, nOldBkMode);
-
         g_hTextDC = hSaved;
     }
 }

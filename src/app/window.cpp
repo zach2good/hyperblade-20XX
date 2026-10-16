@@ -107,6 +107,14 @@ HDC Window::MenuDC()
     return s_hMenuDC;
 }
 
+Window::MenuCanvas Window::MenuPixels()
+{
+    MenuDC();
+    GdiFlush();
+
+    return MenuCanvas{ (std::uint32_t*)s_pMenuBits, MENU_WIDTH, MENU_HEIGHT };
+}
+
 // The canvas's place in the client area: as large as fits, centred.
 static RECT MenuRect(HWND hWnd)
 {
