@@ -1,5 +1,7 @@
 #include "math/floatbits.h"
 #include "common/compat.h"
+#include <string.h>
+#include <stdlib.h>
 #include "globals.h"
 #include "graphicsglobals.h"
 #include "engine/devicector.h"
@@ -508,381 +510,210 @@ void __fastcall SWRend::SortFaces(short nCount)
     }
 }
 
-// Hand-written assembly in the original: each arm saves EBP by hand and walks the right edge
-// stack in it as a data register; the unrolled fill makes two dead loads, of the dwords at 0 and
-// 0x20 into EBX and EDX, before it overwrites them; and it clears registers with MOV reg, 0,
-// which VC6 never emits at /O2.
-// What it does: fills the spans between the two edge stacks, one row at a time, from
-// g_wSpanYMin to g_wSpanYMax. A span of more than eight bytes is filled with bytes up to a dword
-// boundary, then dwords, then bytes. Without the hardware flip the dwords go sixty four bytes at
-// a time, and the colour goes through g_nFillColour because that arm needs every register.
-// Why assembly: C cannot take EBP as a data register inside a framed function, and has no dead
-// load.
+// Fills the spans between the two edge stacks, one row at a time, from g_wSpanYMin to
+// g_wSpanYMax. A row whose right edge is left of its left edge is skipped.
 // FUNCTION: HYPERX 0x0044ab40
 void __cdecl SWRend::FillSpans(int nColour)
 {
-    if (g_bHWFlipAvailable == 0)
+    const auto nTop    = (int)(unsigned short)g_wSpanYMin;
+    const auto nBottom = (int)(unsigned short)g_wSpanYMax;
+
+    unsigned char* pRow = g_pBackBufferBitsCopy + nTop * g_nSurfacePitchCopy;
+
+    for (int y = nTop; y <= nBottom; y++)
     {
-        __asm
+        const int nLeft  = g_pLeftStack[y];
+        const int nCount = (int)g_pRightStack[y] - nLeft;
+
+        if (nCount >= 0)
         {
-            push ebp
-            mov ebx, 0
-            mov ecx, 0
-            mov eax, dword ptr g_nSurfacePitchCopy
-            mov edx, nColour
-            mov cx, word ptr g_wSpanYMin
-            mov bx, word ptr g_wSpanYMax
-            mov dword ptr g_nFillColour, edx
-            mov esi, dword ptr g_pLeftStack
-            mov edi, dword ptr g_pRightStack
-            sub ebx, ecx
-            mul ecx
-            lea esi, [esi+ecx*2]
-            lea edi, [edi+ecx*2]
-            mov ecx, 0
-            mov edx, ebx
-            mov ebx, 0
-            mov ebp, edi
-            mov edi, dword ptr g_pBackBufferBitsCopy
-            mov bx, word ptr [esi]
-            mov cx, word ptr [ebp]
-            add edi, eax
-            mov eax, dword ptr g_nFillColour
-            push edi
-            add edi, ebx
-            inc edx
-            sub ecx, ebx
-        checkSpan:
-            js nextRow
-            inc ecx
-            cmp ecx, 8
-            jle fillBytes
-            mov ebx, ecx
-            mov ecx, edi
-            neg ecx
-            and ecx, 3
-            sub ebx, ecx
-            rep stosb
-            mov ecx, ebx
-            cmp ecx, 40h
-            jl fillDwords
-            shr ecx, 6
-            push edx
-        fillBlock64:
-            push ebx
-            mov ebx, dword ptr [edi]
-            mov edx, dword ptr [edi+20h]
-            mov dword ptr [edi+1ch], eax
-            mov dword ptr [edi+3ch], eax
-            mov dword ptr [edi+18h], eax
-            mov dword ptr [edi+38h], eax
-            mov dword ptr [edi+14h], eax
-            mov dword ptr [edi+34h], eax
-            mov dword ptr [edi+10h], eax
-            mov dword ptr [edi+30h], eax
-            mov dword ptr [edi+0ch], eax
-            mov dword ptr [edi+2ch], eax
-            mov dword ptr [edi+8], eax
-            mov dword ptr [edi+28h], eax
-            mov dword ptr [edi+4], eax
-            mov dword ptr [edi+24h], eax
-            mov dword ptr [edi], eax
-            mov dword ptr [edi+20h], eax
-            pop ebx
-            sub ebx, 40h
-            add edi, 40h
-            dec ecx
-            jnz fillBlock64
-            pop edx
-            mov ecx, ebx
-        fillDwords:
-            and ebx, 3
-            shr ecx, 2
-            rep stosd
-            mov ecx, ebx
-        fillBytes:
-            rep stosb
-        nextRow:
-            pop edi
-            mov ecx, dword ptr g_nSurfacePitchCopy
-            lea ebp, [ebp+2]
-            lea esi, [esi+2]
-            add edi, ecx
-            mov ebx, 0
-            mov cx, word ptr [ebp]
-            dec edx
-            mov bx, word ptr [esi]
-            jz rowsDone
-            push edi
-            add edi, ebx
-            sub ecx, ebx
-            jmp checkSpan
-        rowsDone:
-            pop ebp
+            memset(pRow + nLeft, nColour & 0xff, nCount + 1);
+        }
+
+        pRow += g_nSurfacePitchCopy;
+    }
+}
+
+// Walks one polygon edge from its top row to its bottom with Bresenham's method, writing the x of
+// each row into the left stack for a falling edge and the right stack for a rising one, and
+// widens the span's rows. A flat edge walks nothing. The rising arm widens both bounds by its top
+// row only, as the original does.
+// FUNCTION: HYPERX 0x0044ad00
+unsigned char __cdecl SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2)
+{
+    if (nY1 == nY2)
+    {
+        g_bEdgeWalked = 0;
+
+        return g_bEdgeWalked;
+    }
+
+    const auto bFalling = nY2 > nY1;
+
+    const auto nTop = [&]
+    {
+        if (bFalling)
+        {
+            return (int)nY1;
+        }
+
+        return (int)nY2;
+    }();
+
+    const auto nDY = std::abs((int)nY2 - (int)nY1);
+
+    auto nX = [&]
+    {
+        if (bFalling)
+        {
+            return (int)nX1;
+        }
+
+        return (int)nX2;
+    }();
+
+    const auto nSignedDX = [&]
+    {
+        if (bFalling)
+        {
+            return (int)nX2 - (int)nX1;
+        }
+
+        return (int)nX1 - (int)nX2;
+    }();
+
+    const auto nDX   = std::abs(nSignedDX);
+    const auto nStep = [&]
+    {
+        if (nSignedDX < 0)
+        {
+            return -1;
+        }
+
+        return 1;
+    }();
+
+    unsigned short* pOut = [&]
+    {
+        if (bFalling)
+        {
+            g_bLeftEdgeUsed = 1;
+
+            return g_pLeftStack + nTop;
+        }
+
+        g_bRightEdgeUsed = 1;
+
+        return g_pRightStack + nTop;
+    }();
+
+    if ((short)nY2 > g_wSpanYMax)
+    {
+        g_wSpanYMax = (short)nY2;
+    }
+
+    if (g_wSpanYMin > (short)nTop)
+    {
+        g_wSpanYMin = (short)nTop;
+    }
+
+    *pOut = (unsigned short)nX;
+
+    if (nDX > nDY)
+    {
+        const auto nDiagonal = 2 * nDY - 2 * nDX;
+        const auto nStraight = 2 * nDY;
+
+        auto nError = 2 * nDY - nDX;
+        auto nLeft  = nDX;
+
+        if (nStep > 0)
+        {
+            while (true)
+            {
+                if (nError > 0)
+                {
+                    nError += nDiagonal;
+                    nX++;
+                    pOut++;
+                    *pOut = (unsigned short)nX;
+
+                    if (--nLeft <= 0)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    nError += nStraight;
+                    nX++;
+
+                    if (--nLeft <= 0)
+                    {
+                        *pOut = (unsigned short)nX;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            while (true)
+            {
+                if (nError > 0)
+                {
+                    *pOut = (unsigned short)nX;
+                    nError += nDiagonal;
+                    nX--;
+                    pOut++;
+                }
+                else
+                {
+                    nError += nStraight;
+                    nX--;
+                }
+
+                if (--nLeft <= 0)
+                {
+                    *pOut = (unsigned short)nX;
+                    break;
+                }
+            }
         }
     }
     else
     {
-        __asm
+        const auto nDiagonal = 2 * nDX - 2 * nDY;
+        const auto nStraight = 2 * nDX;
+
+        auto nError = 2 * nDX - nDY;
+        auto nLeft  = nDY;
+
+        while (true)
         {
-            push ebp
-            xor ecx, ecx
-            mov cx, word ptr g_wSpanYMin
-            xor ebx, ebx
-            mov bx, word ptr g_wSpanYMax
-            sub ebx, ecx
-            inc ebx
-            mov esi, dword ptr g_pLeftStack
-            mov edi, dword ptr g_pRightStack
-            lea esi, [esi+ecx*2]
-            lea edi, [edi+ecx*2]
-            mov eax, dword ptr g_nSurfacePitchCopy
-            mul ecx
-            mov edx, ebx
-            add eax, dword ptr g_pBackBufferBitsCopy
-            mov ebx, eax
-            mov eax, nColour
-            mov ebp, edi
-            mov edi, ebx
-            xor ebx, ebx
-        flipRow:
-            push edi
-            xor ebx, ebx
-            xor ecx, ecx
-            mov bx, word ptr [esi]
-            mov cx, word ptr [ebp]
-            sub ecx, ebx
-            js flipNextRow
-            inc ecx
-            add edi, ebx
-            cmp ecx, 8
-            jle flipBytes
-            test edi, 3
-            jz flipDwords
-            mov byte ptr [edi], al
-            inc edi
-            dec ecx
-            test edi, 3
-            jz flipDwords
-            mov byte ptr [edi], al
-            inc edi
-            dec ecx
-            test edi, 3
-            jz flipDwords
-            mov byte ptr [edi], al
-            inc edi
-            dec ecx
-        flipDwords:
-            push ecx
-            shr ecx, 2
-            rep stosd
-            pop ecx
-            and ecx, 3
-        flipBytes:
-            rep stosb
-        flipNextRow:
-            pop edi
-            add edi, dword ptr g_nSurfacePitchCopy
-            dec edx
-            jz flipDone
-            lea esi, [esi+2]
-            lea ebp, [ebp+2]
-            jmp flipRow
-        flipDone:
-            pop ebp
+            if (nError > 0)
+            {
+                nError += nDiagonal;
+                nX += nStep;
+            }
+            else
+            {
+                nError += nStraight;
+            }
+
+            pOut++;
+            *pOut = (unsigned short)nX;
+
+            if (--nLeft <= 0)
+            {
+                break;
+            }
         }
     }
-}
 
-// Hand-written assembly in the original: it saves ESP, EBP and the flags by hand with PUSH ESP,
-// PUSH EBP and PUSHF; it takes EBP as the step counter; it keeps the leftward flag in BH; and
-// it passes values between its arms through PUSH and POP.
-// What it does: walks one edge of a polygon down the scanline stacks with Bresenham's method,
-// storing one column for each row. An edge that runs down the screen goes into the left stack,
-// one that runs up goes into the right. A rising edge widens the span range with its top row
-// only. It returns whether it walked the edge, which a flat edge does not.
-// Why assembly: C cannot save and restore ESP and the flags, or use EBP as a data register
-// inside a framed function.
-// FUNCTION: HYPERX 0x0044ad00
-unsigned char __cdecl SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2)
-{
-    __asm
-    {
-        push esp
-        push ebp
-        pushf
-        xor ebx, ebx
-        xor edx, edx
-        mov dx, nY1
-        xor eax, eax
-        mov ax, nY2
-        mov esi, eax
-        sub eax, edx
-        jg fallingEdge
-        jz flatEdge
-        neg eax
-        sub dx, ax
-        mov edi, dword ptr g_pRightStack
-        lea edi, [edi+edx*2]
-        mov byte ptr g_bRightEdgeUsed, 1
-        cmp dx, word ptr g_wSpanYMax
-        jle risingBelowMax
-        mov word ptr g_wSpanYMax, dx
-    risingBelowMax:
-        cmp word ptr g_wSpanYMin, si
-        jle risingAboveMin
-        mov word ptr g_wSpanYMin, si
-    risingAboveMin:
-        xor ecx, ecx
-        mov cx, nX2
-        push edx
-        mov dx, nX1
-        pop ebp
-        sub edx, ecx
-        jge risingRightward
-        neg edx
-        or bh, 1
-    risingRightward:
-        cmp edx, eax
-        jg xMajor
-        jmp yMajor
+    g_bEdgeWalked = 1;
 
-    fallingEdge:
-        mov byte ptr g_bLeftEdgeUsed, 1
-        mov edi, dword ptr g_pLeftStack
-        lea edi, [edi+edx*2]
-        cmp si, word ptr g_wSpanYMax
-        jle fallingBelowMax
-        mov word ptr g_wSpanYMax, si
-    fallingBelowMax:
-        cmp word ptr g_wSpanYMin, dx
-        jle fallingAboveMin
-        mov word ptr g_wSpanYMin, dx
-    fallingAboveMin:
-        xor ecx, ecx
-        mov cx, nX1
-        push edx
-        mov dx, nX2
-        pop ebp
-        sub edx, ecx
-        jge fallingRightward
-        neg edx
-        or bh, 1
-    fallingRightward:
-        cmp edx, eax
-        jg xMajor
-        jmp yMajor
-
-    xMajor:
-        push edx
-        lea eax, [eax*2+0]
-        lea edx, [edx*2+0]
-        mov esi, eax
-        sub eax, edx
-        mov edx, esi
-        pop ebp
-        sub edx, ebp
-        mov word ptr [edi], cx
-        test bh, 1
-        jnz xMajorLeft
-    xMajorRight:
-        cmp edx, 0
-        jle xMajorRightSameRow
-        add edx, eax
-        inc ecx
-        lea edi, [edi+2]
-        mov word ptr [edi], cx
-        dec ebp
-        jg xMajorRight
-        jmp walked
-    xMajorRightSameRow:
-        add edx, esi
-        inc ecx
-        dec ebp
-        jg xMajorRight
-        mov word ptr [edi], cx
-        jmp walked
-    xMajorLeft:
-        cmp edx, 0
-        jle xMajorLeftSameRow
-        mov word ptr [edi], cx
-        add edx, eax
-        dec ecx
-        lea edi, [edi+2]
-        dec ebp
-        jg xMajorLeft
-        mov word ptr [edi], cx
-        jmp walked
-    xMajorLeftSameRow:
-        add edx, esi
-        dec ecx
-        dec ebp
-        jg xMajorLeft
-        mov word ptr [edi], cx
-        jmp walked
-
-    yMajor:
-        mov ebp, eax
-        lea eax, [eax*2+0]
-        lea edx, [edx*2+0]
-        mov esi, edx
-        sub edx, eax
-        mov eax, esi
-        sub eax, ebp
-        mov word ptr [edi], cx
-        test bh, 1
-        jz yMajorRight
-    yMajorLeft:
-        cmp eax, 0
-        jle yMajorLeftSameColumn
-        add eax, edx
-        dec ecx
-        lea edi, [edi+2]
-        mov word ptr [edi], cx
-        dec ebp
-        jg yMajorLeft
-        jmp walked
-    yMajorLeftSameColumn:
-        add eax, esi
-        lea edi, [edi+2]
-        mov word ptr [edi], cx
-        dec ebp
-        jg yMajorLeft
-        jmp walked
-
-    flatEdge:
-        mov byte ptr g_bEdgeWalked, 0
-        jmp restore
-
-    yMajorRight:
-        cmp eax, 0
-        jle yMajorRightSameColumn
-        add eax, edx
-        inc ecx
-        lea edi, [edi+2]
-        mov word ptr [edi], cx
-        dec ebp
-        jg yMajorRight
-        jmp walked
-    yMajorRightSameColumn:
-        add eax, esi
-        lea edi, [edi+2]
-        mov word ptr [edi], cx
-        dec ebp
-        jg yMajorRight
-        jmp walked
-
-    walked:
-        mov byte ptr g_bEdgeWalked, 1
-    restore:
-        popf
-        pop ebp
-        pop esp
-    }
-
-    const bool bWalked = g_bEdgeWalked != 0;
-
-    return bWalked;
+    return g_bEdgeWalked;
 }
 
 // FUNCTION: HYPERX 0x0044aeb0
@@ -909,125 +740,91 @@ void __cdecl SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int
     g_wSpanYMax = 0;
 }
 
-// Hand-written assembly in the original: it saves EBP by hand and takes it as the step counter;
-// it keeps the colour in BL and two direction flags in BH; it passes values between its arms
-// through PUSH and POP; and it clears EBX with MOV EBX, 0, which VC6 never emits at /O2.
-// What it does: draws a line into the locked back buffer, one byte per pixel, with Bresenham's
-// method. BH bit 0 means leftward and bit 1 upward. A line whose height is at least its width
-// and at most one row draws only its first pixel.
-// Why assembly: C cannot use EBP as a data register inside a framed function, or hand a value
-// from one arm to the next on the stack.
+// Draws a line into the locked back buffer, one byte per pixel, with Bresenham's method. A line
+// whose height is at least its width and at most one row draws only its first pixel.
 // FUNCTION: HYPERX 0x0044af70
 void __cdecl SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
 {
-    __asm
+    const auto nPitch = g_nSurfacePitchCopy;
+    const auto cPixel = (unsigned char)nColour;
+
+    const auto nDX = std::abs(nX2 - nX1);
+    const auto nDY = std::abs(nY2 - nY1);
+
+    const auto nAcross = [&]
     {
-        push ebp
-        mov eax, nY1
-        mul dword ptr g_nSurfacePitchCopy
-        add eax, dword ptr g_pBackBufferBitsCopy
-        add eax, nX1
-        mov edi, eax
-        push edi
-        mov ebx, 0
-        mov bl, byte ptr nColour
-        mov edi, nY1
-        mov eax, nY2
-        mov ecx, nX1
-        mov edx, nX2
-        mov ebp, eax
-        sub eax, edi
-        jge downward
-        neg eax
-        or bh, 2
-    downward:
-        pop edi
-        sub edx, ecx
-        jge rightward
-        neg edx
-        or bh, 1
-    rightward:
-        cmp edx, eax
-        jg xMajor
-        jmp yMajor
+        if (nX2 < nX1)
+        {
+            return -1;
+        }
 
-    xMajor:
-        push edx
-        shl eax, 1
-        shl edx, 1
-        mov esi, eax
-        sub eax, edx
-        mov edx, esi
-        pop ebp
-        sub edx, ebp
-        mov byte ptr [edi], bl
-    xMajorStep:
-        cmp edx, 0
-        jle xMajorSameRow
-        add edx, eax
-        test bh, 2
-        jz xMajorDown
-        sub edi, dword ptr g_nSurfacePitchCopy
-        jmp xMajorAcross
-    xMajorDown:
-        add edi, dword ptr g_nSurfacePitchCopy
-    xMajorAcross:
-        test bh, 1
-        jz xMajorRight
-        dec edi
-        jmp xMajorPlot
-    xMajorRight:
-        inc edi
-    xMajorPlot:
-        mov byte ptr [edi], bl
-        dec ebp
-        jle done
-        jmp xMajorStep
-    xMajorSameRow:
-        add edx, esi
-        jmp xMajorAcross
+        return 1;
+    }();
 
-    yMajor:
-        push eax
-        shl eax, 1
-        shl edx, 1
-        mov esi, edx
-        sub edx, eax
-        mov eax, esi
-        pop ebp
-        sub eax, ebp
-        mov byte ptr [edi], bl
-        cmp ebp, 1
-        jle done
-    yMajorStep:
-        cmp eax, 0
-        jle yMajorSameColumn
-        add eax, edx
-        test bh, 1
-        jz yMajorRight
-        dec edi
-        jmp yMajorAlong
-    yMajorRight:
-        inc edi
-    yMajorAlong:
-        test bh, 2
-        jz yMajorDown
-        sub edi, dword ptr g_nSurfacePitchCopy
-        jmp yMajorPlot
-    yMajorDown:
-        add edi, dword ptr g_nSurfacePitchCopy
-    yMajorPlot:
-        mov byte ptr [edi], bl
-        dec ebp
-        jle done
-        mov byte ptr [edi], bl
-        jmp yMajorStep
-    yMajorSameColumn:
-        add eax, esi
-        jmp yMajorAlong
+    const auto nAlong = [&]
+    {
+        if (nY2 < nY1)
+        {
+            return -nPitch;
+        }
 
-    done:
-        pop ebp
+        return nPitch;
+    }();
+
+    unsigned char* p = g_pBackBufferBitsCopy + nY1 * nPitch + nX1;
+
+    *p = cPixel;
+
+    if (nDX > nDY)
+    {
+        const auto nDiagonal = 2 * nDY - 2 * nDX;
+        const auto nStraight = 2 * nDY;
+
+        auto nError = 2 * nDY - nDX;
+
+        for (int nLeft = nDX; nLeft > 0; nLeft--)
+        {
+            if (nError > 0)
+            {
+                nError += nDiagonal;
+                p += nAlong;
+            }
+            else
+            {
+                nError += nStraight;
+            }
+
+            p += nAcross;
+            *p = cPixel;
+        }
+
+        return;
+    }
+
+    if (nDY <= 1)
+    {
+        return;
+    }
+
+    const auto nDiagonal = 2 * nDX - 2 * nDY;
+    const auto nStraight = 2 * nDX;
+
+    auto nError = 2 * nDX - nDY;
+
+    for (int nLeft = nDY; nLeft > 0; nLeft--)
+    {
+        if (nError > 0)
+        {
+            nError += nDiagonal;
+            p += nAcross;
+        }
+        else
+        {
+            nError += nStraight;
+        }
+
+        p += nAlong;
+        *p = cPixel;
     }
 }
 
@@ -1156,24 +953,7 @@ void __cdecl SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLES
                     nCount = nWidth - nColumn;
                 }
 
-                __asm
-                    {
-                    mov ecx, nCount
-                    mov esi, pData
-                    mov ebx, nCount
-                    mov edi, pRow
-                    and ecx, 1
-                    sub ebx, ecx
-                    rep movsb
-                    mov ecx, ebx
-                    and ecx, 2
-                    sub ebx, ecx
-                    shr ecx, 1
-                    rep movsw
-                    mov ecx, ebx
-                    shr ecx, 2
-                    rep movsd
-                    }
+                memcpy(pRow, pData, nCount);
 
                 pData += nCount;
             }

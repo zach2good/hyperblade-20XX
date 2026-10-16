@@ -16,8 +16,7 @@ namespace MDM1
 
 int   ReadCallback(char* pBuffer, int nCount, FileObj* pFile);
 void* Decompress(FileObj* pFile);
-int   LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut, unsigned char* pWindow, int nWindowSize);
-void  RefillInputWindow();
+int   LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut, int nOutCapacity, unsigned char* pWindow, int nWindowSize);
 
 } // namespace MDM1
 

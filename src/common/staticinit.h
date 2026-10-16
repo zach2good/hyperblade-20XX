@@ -348,12 +348,6 @@ extern float g_flUnusedGameEngineA;
 extern float g_flUnusedGameEngineB;
 // GLOBAL: HYPERX 0x004d218c
 extern float g_flUnusedGameEngineC;
-// GLOBAL: HYPERX 0x004d2be8
-extern float g_flUnusedMDM1A;
-// GLOBAL: HYPERX 0x004d2be4
-extern float g_flUnusedMDM1B;
-// GLOBAL: HYPERX 0x004d2be0
-extern float g_flUnusedMDM1C;
 // GLOBAL: HYPERX 0x004ceff0
 extern float g_flUnusedGame;
 

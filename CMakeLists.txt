@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
-    message(FATAL_ERROR "HyperBlade 20XX builds with MSVC for 32-bit x86. Use a preset from CMakePresets.json.")
+if(NOT MSVC)
+    message(FATAL_ERROR "HyperBlade 20XX builds with MSVC. Use a preset from CMakePresets.json.")
 endif()
 
 option(HYPERX_BRINGUP "Build the bring-up test harness: tracing, snapshots and the HB_ switches." OFF)
@@ -397,6 +397,17 @@ endif()
 target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
     DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
 target_compile_options(hyperx_objects PRIVATE /W3 /permissive /utf-8 /EHsc)
+
+# Decodes every MDM1 file in the game data against its recorded size.
+add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
+target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_definitions(mdm1_check PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
+
+enable_testing()
+
+if(HYPERX_GAME_DATA)
+    add_test(NAME mdm1 COMMAND mdm1_check "${HYPERX_GAME_DATA}/Data")
+endif()
 
 if(HYPERX_COMPILE_ONLY)
     message(STATUS "Compile only: no image is linked")
