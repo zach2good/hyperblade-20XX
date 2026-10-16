@@ -476,10 +476,11 @@ int __cdecl GameEngine::CheckCarrierBreakaway(void)
         nSlot            = pSlot->nSlot;
         const int nIndex = (short)nSlot;
 
+        EngineObject* pCarrier   = g_pGameEngine->GetSlot(nIndex);
         EngineObject* pOpponentA = g_pGameEngine->GetSlot(nIndex ^ 1);
         EngineObject* pOpponentB = g_pGameEngine->GetSlot(nIndex ^ 3);
 
-        const Vec3* pCarrierPos = &g_pGameEngine->GetSlot(nIndex)->GetPhysicsBody()->pos;
+        const Vec3* pCarrierPos = &pCarrier->GetPhysicsBody()->pos;
         const Vec3* pPosA       = &pOpponentA->GetPhysicsBody()->pos;
         const Vec3* pPosB       = &pOpponentB->GetPhysicsBody()->pos;
 
