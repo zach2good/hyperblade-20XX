@@ -1,5 +1,6 @@
 #include "graphics/hwmesh.h"
 #include "graphics/meshblock.h"
+#include "graphics/meshface.h"
 #include "graphics/meshmaterial.h"
 #include "graphics/texcoord.h"
 
@@ -66,7 +67,79 @@ void AppendTriangle(std::vector<HwMesh::Vertex>& vertices, const MeshBlock& bloc
     }
 }
 
+void AppendShadowTriangle(std::vector<HwMesh::Vertex>& vertices, const Vec3* pPoints, const MeshFace& face, const MeshMaterial& material, const Vec3& vNormal, int nA, int nB, int nC)
+{
+    for (const auto nCorner : { nA, nB, nC })
+    {
+        const auto& vPosition = pPoints[face.aCorners[nCorner]];
+
+        vertices.push_back(HwMesh::Vertex{
+            { vPosition.x, vPosition.y, vPosition.z },
+            { vNormal.x, vNormal.y, vNormal.z },
+            { 0.0f, 0.0f },
+            static_cast<std::uint32_t>(material.nColour),
+            material.flDiffuse,
+            material.flAmbient + material.flEmissive,
+        });
+    }
+}
+
 } // namespace
+
+std::vector<HwMesh::Vertex> HwMesh::BuildShadow(const Vec3* pPoints, int nPointCount, const ShadowFace* pFaces, int nFaceCount, const MeshMaterial* pMaterials, int nMaterialCount, const Vec3& vNormal)
+{
+    auto vertices = std::vector<Vertex>();
+
+    for (auto nFace = 0; nFace < nFaceCount; nFace++)
+    {
+        const auto& face = pFaces[nFace].face;
+
+        // A shadow face runs its corners on to four.
+        if (face.nCorners < 3 || face.nCorners > 4 || face.cMaterial < 0 || face.cMaterial >= nMaterialCount)
+        {
+            continue;
+        }
+
+        auto bInRange = true;
+
+        for (auto nCorner = 0; nCorner < face.nCorners; nCorner++)
+        {
+            bInRange = bInRange && face.aCorners[nCorner] >= 0 && face.aCorners[nCorner] < nPointCount;
+        }
+
+        if (!bInRange)
+        {
+            continue;
+        }
+
+        const auto& front = pMaterials[face.cMaterial];
+
+        for (auto nCorner = face.nCorners - 1; nCorner >= 2; nCorner--)
+        {
+            AppendShadowTriangle(vertices, pPoints, face, front, vNormal, 0, nCorner, nCorner - 1);
+        }
+
+        // The original reads before the table when there is no back material; the front stands in.
+        const auto& back = [&]() -> const MeshMaterial&
+        {
+            if (front.nBackIndex < 0 || front.nBackIndex >= nMaterialCount)
+            {
+                return front;
+            }
+
+            return pMaterials[front.nBackIndex];
+        }();
+
+        const auto vFlipped = Vec3{ -vNormal.x, -vNormal.y, -vNormal.z };
+
+        for (auto nCorner = 1; nCorner < face.nCorners - 1; nCorner++)
+        {
+            AppendShadowTriangle(vertices, pPoints, face, back, vFlipped, 0, nCorner, nCorner + 1);
+        }
+    }
+
+    return vertices;
+}
 
 std::vector<HwMesh::Vertex> HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount)
 {

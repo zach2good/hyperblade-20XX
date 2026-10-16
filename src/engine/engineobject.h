@@ -105,6 +105,7 @@ public:
 
     virtual void  SetEntitySlot(int nEntitySlot);
     virtual void  DrawTransformedMesh(class CollisionShape* pSurface);
+    void          SubmitShadowToHardware() const;
     virtual short GetShadowCount();
     virtual short GetComponentCount();
     virtual void  UpdateRenderSlotTransform(short nSlotIdx);

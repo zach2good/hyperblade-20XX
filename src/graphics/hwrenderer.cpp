@@ -41,6 +41,11 @@ int                      s_nHeight   = 0;
 std::vector<HwRenderer::Draw> s_draws;
 std::map<MeshKey, GPUMesh>    s_meshes;
 
+// Vertices made fresh each frame, uploaded together into one buffer that grows as it needs to.
+std::vector<HwMesh::Vertex> s_dynamic;
+SDL_GPUBuffer*              s_pDynamicBuffer   = nullptr;
+Uint32                      s_nDynamicCapacity = 0;
+
 void ReleaseTargets()
 {
     if (s_pTexture != nullptr)
@@ -143,13 +148,78 @@ bool Ready(SDL_Renderer* pRenderer)
     return s_pPipeline != nullptr;
 }
 
-// Builds and uploads every mesh the frame draws that is not on the GPU yet, in one copy pass.
+void UploadBuffer(SDL_GPUCopyPass* pCopy, SDL_GPUBuffer* pBuffer, const void* pData, Uint32 nBytes)
+{
+    auto transferInfo  = SDL_GPUTransferBufferCreateInfo{};
+    transferInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
+    transferInfo.size  = nBytes;
+
+    SDL_GPUTransferBuffer* const pTransfer = SDL_CreateGPUTransferBuffer(s_pDevice, &transferInfo);
+
+    if (pTransfer == nullptr)
+    {
+        return;
+    }
+
+    std::memcpy(SDL_MapGPUTransferBuffer(s_pDevice, pTransfer, false), pData, nBytes);
+    SDL_UnmapGPUTransferBuffer(s_pDevice, pTransfer);
+
+    const auto source      = SDL_GPUTransferBufferLocation{ pTransfer, 0 };
+    const auto destination = SDL_GPUBufferRegion{ pBuffer, 0, nBytes };
+
+    SDL_UploadToGPUBuffer(pCopy, &source, &destination, false);
+
+    // Released now, freed by SDL once the upload has run.
+    SDL_ReleaseGPUTransferBuffer(s_pDevice, pTransfer);
+}
+
+SDL_GPUBuffer* CreateVertexBuffer(Uint32 nBytes)
+{
+    auto info  = SDL_GPUBufferCreateInfo{};
+    info.usage = SDL_GPU_BUFFERUSAGE_VERTEX;
+    info.size  = nBytes;
+
+    return SDL_CreateGPUBuffer(s_pDevice, &info);
+}
+
+void UploadDynamic(SDL_GPUCopyPass* pCopy)
+{
+    const auto nBytes = (Uint32)(s_dynamic.size() * sizeof(HwMesh::Vertex));
+
+    if (nBytes == 0)
+    {
+        return;
+    }
+
+    if (nBytes > s_nDynamicCapacity)
+    {
+        SDL_ReleaseGPUBuffer(s_pDevice, s_pDynamicBuffer);
+
+        s_nDynamicCapacity = nBytes * 2;
+        s_pDynamicBuffer   = CreateVertexBuffer(s_nDynamicCapacity);
+    }
+
+    if (s_pDynamicBuffer != nullptr)
+    {
+        UploadBuffer(pCopy, s_pDynamicBuffer, s_dynamic.data(), nBytes);
+    }
+}
+
+// Builds and uploads every mesh the frame draws that is not on the GPU yet, and the frame's own
+// vertices, in one copy pass.
 void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 {
-    SDL_GPUCopyPass* pCopy = nullptr;
+    SDL_GPUCopyPass* const pCopy = SDL_BeginGPUCopyPass(pCommands);
+
+    UploadDynamic(pCopy);
 
     for (const auto& draw : s_draws)
     {
+        if (draw.pBlock == nullptr)
+        {
+            continue;
+        }
+
         const auto key = MeshKey{ draw.pBlock, draw.pMaterials };
 
         if (s_meshes.contains(key))
@@ -168,48 +238,19 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 
         const auto nBytes = (Uint32)(vertices.size() * sizeof(HwMesh::Vertex));
 
-        auto bufferInfo  = SDL_GPUBufferCreateInfo{};
-        bufferInfo.usage = SDL_GPU_BUFFERUSAGE_VERTEX;
-        bufferInfo.size  = nBytes;
+        SDL_GPUBuffer* const pBuffer = CreateVertexBuffer(nBytes);
 
-        auto transferInfo  = SDL_GPUTransferBufferCreateInfo{};
-        transferInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
-        transferInfo.size  = nBytes;
-
-        SDL_GPUBuffer* const         pBuffer   = SDL_CreateGPUBuffer(s_pDevice, &bufferInfo);
-        SDL_GPUTransferBuffer* const pTransfer = SDL_CreateGPUTransferBuffer(s_pDevice, &transferInfo);
-
-        if (pBuffer == nullptr || pTransfer == nullptr)
+        if (pBuffer == nullptr)
         {
-            SDL_ReleaseGPUBuffer(s_pDevice, pBuffer);
-            SDL_ReleaseGPUTransferBuffer(s_pDevice, pTransfer);
-
             continue;
         }
 
-        std::memcpy(SDL_MapGPUTransferBuffer(s_pDevice, pTransfer, false), vertices.data(), nBytes);
-        SDL_UnmapGPUTransferBuffer(s_pDevice, pTransfer);
-
-        if (pCopy == nullptr)
-        {
-            pCopy = SDL_BeginGPUCopyPass(pCommands);
-        }
-
-        const auto source      = SDL_GPUTransferBufferLocation{ pTransfer, 0 };
-        const auto destination = SDL_GPUBufferRegion{ pBuffer, 0, nBytes };
-
-        SDL_UploadToGPUBuffer(pCopy, &source, &destination, false);
-
-        // Released now, freed by SDL once the upload has run.
-        SDL_ReleaseGPUTransferBuffer(s_pDevice, pTransfer);
+        UploadBuffer(pCopy, pBuffer, vertices.data(), nBytes);
 
         mesh = GPUMesh{ pBuffer, (Uint32)vertices.size() };
     }
 
-    if (pCopy != nullptr)
-    {
-        SDL_EndGPUCopyPass(pCopy);
-    }
+    SDL_EndGPUCopyPass(pCopy);
 }
 
 // Viewport pixels, y down, into clip space, keeping the engine's 0 to 1 depth.
@@ -296,6 +337,23 @@ void HwRenderer::Submit(const Draw& draw)
     }
 }
 
+void HwRenderer::SubmitVertices(const std::vector<HwMesh::Vertex>& vertices, const Draw& draw)
+{
+    if (vertices.empty() || s_draws.size() >= MAX_DRAWS)
+    {
+        return;
+    }
+
+    auto dynamic = draw;
+
+    dynamic.pBlock        = nullptr;
+    dynamic.nDynamicFirst = (int)s_dynamic.size();
+    dynamic.nDynamicCount = (int)vertices.size();
+
+    s_dynamic.insert(s_dynamic.end(), vertices.begin(), vertices.end());
+    s_draws.push_back(dynamic);
+}
+
 void HwRenderer::ForgetMeshes()
 {
     for (const auto& [key, mesh] : s_meshes)
@@ -313,6 +371,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     if (nWidth <= 0 || nHeight <= 0 || !Ready(pRenderer) || !Fit(pRenderer, nWidth, nHeight))
     {
         s_draws.clear();
+        s_dynamic.clear();
 
         return Texture{};
     }
@@ -322,6 +381,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     if (pCommands == nullptr)
     {
         s_draws.clear();
+        s_dynamic.clear();
 
         return Texture{};
     }
@@ -366,21 +426,47 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
             SDL_PushGPUVertexUniformData(pCommands, 1, &colours, sizeof(colours));
         }
 
-        const auto it = s_meshes.find(MeshKey{ draw.pBlock, draw.pMaterials });
+        // A block draws from its cached mesh, and the frame's own vertices from the dynamic buffer.
+        const auto source = [&]
+        {
+            if (draw.pBlock == nullptr)
+            {
+                return GPUMesh{ s_pDynamicBuffer, (Uint32)draw.nDynamicCount };
+            }
 
-        if (it == s_meshes.end() || it->second.pBuffer == nullptr || draw.nViewportWidth <= 0 || draw.nViewportHeight <= 0)
+            const auto it = s_meshes.find(MeshKey{ draw.pBlock, draw.pMaterials });
+
+            if (it == s_meshes.end())
+            {
+                return GPUMesh{};
+            }
+
+            return it->second;
+        }();
+
+        const auto nFirst = [&]
+        {
+            if (draw.pBlock == nullptr)
+            {
+                return (Uint32)draw.nDynamicFirst;
+            }
+
+            return 0u;
+        }();
+
+        if (source.pBuffer == nullptr || source.nVertexCount == 0 || draw.nViewportWidth <= 0 || draw.nViewportHeight <= 0)
         {
             continue;
         }
 
         const auto viewport = SDL_GPUViewport{ (float)draw.nViewportX, (float)draw.nViewportY, (float)draw.nViewportWidth, (float)draw.nViewportHeight, 0.0f, 1.0f };
-        const auto binding  = SDL_GPUBufferBinding{ it->second.pBuffer, 0 };
+        const auto binding  = SDL_GPUBufferBinding{ source.pBuffer, 0 };
         const auto uniforms = ClipUniforms(draw);
 
         SDL_SetGPUViewport(pPass, &viewport);
         SDL_BindGPUVertexBuffers(pPass, 0, &binding, 1);
         SDL_PushGPUVertexUniformData(pCommands, 0, &uniforms, sizeof(uniforms));
-        SDL_DrawGPUPrimitives(pPass, it->second.nVertexCount, 1, 0, 0);
+        SDL_DrawGPUPrimitives(pPass, source.nVertexCount, 1, nFirst, 0);
     }
 
     // A frame with nothing to draw still clears.
@@ -393,6 +479,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     SDL_SubmitGPUCommandBuffer(pCommands);
 
     s_draws.clear();
+    s_dynamic.clear();
 
     return Texture{ s_pTexture };
 }

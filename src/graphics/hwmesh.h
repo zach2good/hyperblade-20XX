@@ -10,6 +10,8 @@
 
 struct MeshBlock;
 struct MeshMaterial;
+struct ShadowFace;
+struct Vec3;
 
 namespace HwMesh
 {
@@ -30,6 +32,11 @@ static_assert(sizeof(Vertex) == 44);
 // emitted reversed, with the back material and the normal negated.
 // Front triangles run clockwise in pixels with y down: the file's corners, which run anticlockwise.
 std::vector<Vertex> Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount);
+
+// A shadow, from points the engine has already posed and laid on the arena. EngineObject's
+// DrawTransformedMesh draws each face whichever way it faces, with the back material and the
+// normal negated when flipped, so both windings are emitted.
+std::vector<Vertex> BuildShadow(const Vec3* pPoints, int nPointCount, const ShadowFace* pFaces, int nFaceCount, const MeshMaterial* pMaterials, int nMaterialCount, const Vec3& vNormal);
 
 } // namespace HwMesh
 

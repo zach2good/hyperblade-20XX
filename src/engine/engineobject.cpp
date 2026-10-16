@@ -1,4 +1,6 @@
 #include "common/compat.h"
+#include "graphics/hwrenderer.h"
+#include <vector>
 #include "engine/messageids.h"
 #include "engine/planbehaviourword.h"
 #include "planvm/gamebehaviorobject.h"
@@ -1498,6 +1500,51 @@ void EngineObject::ApplyRenderSlotPose()
     UpdateRenderSlotTransform(m_wRenderSlot);
 }
 
+// The posed shadow, laid on the arena in world space, goes to the GPU with the camera alone.
+void EngineObject::SubmitShadowToHardware() const
+{
+    const TransformedVertex* const pPosed = &g_pModelVertexBuf[m_wShadowCount];
+
+    auto points = std::vector<Vec3>((size_t)m_wShadowCount);
+
+    for (int i = 0; i < m_wShadowCount; i++)
+    {
+        points[i] = Vec3{ pPosed[i].x, pPosed[i].y, pPosed[i].z };
+    }
+
+    const auto vertices = HwMesh::BuildShadow(points.data(), m_wShadowCount, m_pShadowFaceList, m_wShadowFaceCount, m_pModelBlock->m_pMaterials, m_pModelBlock->m_nMatCount, g_vDispatchFaceNormal);
+
+    auto draw = HwRenderer::Draw{};
+
+    for (int nRow = 0; nRow < 4; nRow++)
+    {
+        for (int nColumn = 0; nColumn < 4; nColumn++)
+        {
+            draw.aPixelFromModel[nRow * 4 + nColumn] = g_pCameraTransform->m_a[nRow][nColumn];
+        }
+    }
+
+    // Without a fourth row the engine divides by one.
+    if (g_pCameraTransform->m_bHasRow3 == 0)
+    {
+        draw.aPixelFromModel[12] = 0.0f;
+        draw.aPixelFromModel[13] = 0.0f;
+        draw.aPixelFromModel[14] = 0.0f;
+        draw.aPixelFromModel[15] = 1.0f;
+    }
+
+    draw.aLightDir[0] = g_lightDirs[0].dir.x;
+    draw.aLightDir[1] = g_lightDirs[0].dir.y;
+    draw.aLightDir[2] = g_lightDirs[0].dir.z;
+
+    draw.nViewportX      = g_nViewportOriginX;
+    draw.nViewportY      = g_nViewportOriginY;
+    draw.nViewportWidth  = g_nPrevWidth;
+    draw.nViewportHeight = g_nPrevHeight;
+
+    HwRenderer::SubmitVertices(vertices, draw);
+}
+
 // Transformed vertices land in the upper half of the model vertex buffer, projected in the lower.
 
 // FUNCTION: HYPERX 0x00471810
@@ -1544,6 +1591,13 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
         pVert++;
         pOut++;
+    }
+
+    if (HwRenderer::Capturing())
+    {
+        SubmitShadowToHardware();
+
+        return;
     }
 
     const TransformedVertex* pIn = &g_pModelVertexBuf[m_wShadowCount];
