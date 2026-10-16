@@ -69,7 +69,7 @@ void Build()
 
     ImGui::SeparatorText("Timing");
 
-    Checkbox("Uncapped frame rate", GraphicsSettings::Uncapped(), GraphicsSettings::ToggleUncapped);
+    Checkbox("Uncapped frame rate (experimental)", GraphicsSettings::Uncapped(), GraphicsSettings::ToggleUncapped);
 
     ImGui::Text("%d ticks/s, clock drift %+.0f ms/s", FramePacing::TicksPerSecond(), FramePacing::DriftMs());
 

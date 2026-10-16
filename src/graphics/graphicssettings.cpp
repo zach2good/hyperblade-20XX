@@ -18,7 +18,7 @@ auto s_bLoaded   = false;
 auto s_renderer  = GraphicsSettings::Renderer::SOFTWARE;
 auto s_bTextures = true;
 auto s_bLinear   = false;
-auto s_bUncapped = true;
+auto s_bUncapped = false;
 auto s_bDetail   = true;
 
 void Load()
@@ -37,7 +37,7 @@ void Load()
 
     s_bTextures = g_pGameOptions->ReadInt(SECTION, TEXTURES_KEY, 1) != 0;
     s_bLinear   = g_pGameOptions->ReadInt(SECTION, FILTERING_KEY, 0) != 0;
-    s_bUncapped = g_pGameOptions->ReadInt(SECTION, UNCAPPED_KEY, 1) != 0;
+    s_bUncapped = g_pGameOptions->ReadInt(SECTION, UNCAPPED_KEY, 0) != 0;
     s_bDetail   = g_pGameOptions->ReadInt(SECTION, DETAIL_KEY, 1) != 0;
 }
 
