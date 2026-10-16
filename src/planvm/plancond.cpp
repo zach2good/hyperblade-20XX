@@ -6666,9 +6666,11 @@ void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pR
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
+    const int nStat = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
+
     const short nRange = (short)(pArgs->m_nArgCount - 2);
 
-    *pResult = (short)(int)(pActor->m_stats.GetScalar(pArgs->m_pArgs[1].pNode->m_pArgs[0].n) * (nRange * g_flPlanStatScale));
+    *pResult = (short)(int)(pActor->m_stats.GetScalar(nStat) * (nRange * g_flPlanStatScale));
 
     if (*pResult > nRange)
     {
