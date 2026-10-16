@@ -277,7 +277,7 @@ int Radar::DrawObject(int nWhich)
     PhysicsBody*        pRok;
     AttachPak*          pnCarrier;
     POINT               apt[ARROW_POINTS];
-    short               nCarrier;
+    short               nCarrier = 0;
     int                 nHalfWidth;
     int                 nHalfHeight;
     const RECT* const   prc = &m_rcOuter;

@@ -142,7 +142,7 @@ void CTrackPasser_Receiver::Process(int nArg)
     }
     else
     {
-        short      wCarrierSlot;
+        short      wCarrierSlot = 0;
         char       bCarried;
         AttachPak* pHolder;
         bool       bCarrierElsewhere;

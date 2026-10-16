@@ -1214,7 +1214,7 @@ short EngineObject::FindPlanByName(const char* pszName)
 // FUNCTION: HYPERX 0x004711c0
 char EngineObject::ProcessReceivedPacket()
 {
-    NetMoveRecord record;
+    NetMoveRecord record = {};
     NetMoveBody   body;
     CPlayer*      pPlayer;
     BoundBubble*  pColObj;
@@ -1499,7 +1499,7 @@ extern Vec3 g_vLightDirModel;
 
 extern class TransformObject* g_pCameraTransform;
 
-#define CLIP_OFFSCREEN 0xff
+#define CLIP_OFFSCREEN ((char)-1)
 #define CLIP_ANY_PLANE 1
 
 // FUNCTION: HYPERX 0x00471800
@@ -1654,7 +1654,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
         const char cClip = Face::ClipCodeAndCullCheck(pFace, g_pModelVertexBuf);
 
-        if (cClip == (char)CLIP_OFFSCREEN)
+        if (cClip == CLIP_OFFSCREEN)
         {
             continue;
         }
@@ -1702,11 +1702,11 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
     }
 }
 
-// A named slot runs Human, an unnamed one Defense; a slot below 0 searches with an unset name.
+// A named slot runs Human, an unnamed one Defense; a slot below 0 searches with a null name, unset in the original.
 // FUNCTION: HYPERX 0x00471b60
 void EngineObject::SelectAndActivatePlan()
 {
-    const char* pszWanted;
+    const char* pszWanted = 0;
     CPlayer*    pPlayer;
     int         nSlot;
     int         nIndex;
@@ -1745,7 +1745,7 @@ void EngineObject::SelectAndActivatePlan()
                              // STRING: HYPERX 0x004bb340
                              "Human") == 0)
                 {
-                    InstantiateAIPlan(nIndex);
+                    InstantiateAIPlan((short)nIndex);
 
                     m_pPlanState->ActivateBehavior(0);
 
@@ -1768,7 +1768,7 @@ void EngineObject::SelectAndActivatePlan()
                              // STRING: HYPERX 0x004bb384
                              "Defense") == 0)
                 {
-                    InstantiateAIPlan(nIndex);
+                    InstantiateAIPlan((short)nIndex);
 
                     m_pPlanState->ActivateBehavior(0);
 
@@ -1803,7 +1803,7 @@ void EngineObject::SelectAndActivatePlan()
             {
                 if (_strcmpi(m_papszPlanNames[nIndex], pszWanted) == 0)
                 {
-                    InstantiateAIPlan(nIndex);
+                    InstantiateAIPlan((short)nIndex);
 
                     break;
                 }

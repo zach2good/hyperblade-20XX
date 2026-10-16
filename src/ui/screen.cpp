@@ -82,6 +82,8 @@ Screen::~Screen()
 {
     for (int nSlot = 0; nSlot <= m_nLastWidget; nSlot++)
     {
+        // Every widget's destructor is empty, so the base's non-virtual one destroys it fully.
+#pragma warning(suppress : 5205)
         delete m_apWidgets[nSlot];
 
         m_apWidgets[nSlot] = 0;

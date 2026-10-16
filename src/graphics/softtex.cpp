@@ -19,8 +19,8 @@
 RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
 {
     char aRun[128];
-    char cPixel;
-    char bOpaque;
+    char cPixel  = 0;
+    char bOpaque = 0;
 
     const unsigned int cx = pDib->biWidth;
     const unsigned int cy = pDib->biHeight;

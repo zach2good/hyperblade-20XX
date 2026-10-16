@@ -113,7 +113,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
 // FUNCTION: HYPERX 0x0045ddf0
 void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 {
-    PlanWord* pCursor;
+    PlanWord* pCursor = 0;
     short     nCount;
 
     m_nActiveState = 0;
@@ -136,7 +136,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
     }
     else
     {
-        // The cursor stays unset; with a count of nought nothing reads it.
+        // With a count of nought nothing reads the cursor.
         nCount = 0;
     }
 

@@ -555,63 +555,63 @@ PlanVM::PlanVM()
     // STRING: HYPERX 0x004c6d0c
     strcpy(pEntry->szName, "SET_COLLISION_INTERACTOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_COLLISION_INTERACTOR | MEMBER_SET_COLLISION_INTERACTOR;
+    pEntry->nValue = (int)CATEGORY_COLLISION_INTERACTOR | MEMBER_SET_COLLISION_INTERACTOR;
 
     pEntry = &m_aOpcodes[1];
 
     // STRING: HYPERX 0x004c6cf4
     strcpy(pEntry->szName, "SET_MESSAGE_INTERACTOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_MESSAGE_INTERACTOR;
+    pEntry->nValue = (int)CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[2];
 
     // STRING: HYPERX 0x004c6cd4
     strcpy(pEntry->szName, "SET_LOC_COLLISION_INTERACTOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_COLLISION_INTERACTOR | MEMBER_SET_LOC_COLLISION_INTERACTOR;
+    pEntry->nValue = (int)CATEGORY_COLLISION_INTERACTOR | MEMBER_SET_LOC_COLLISION_INTERACTOR;
 
     pEntry = &m_aOpcodes[3];
 
     // STRING: HYPERX 0x004c6cb4
     strcpy(pEntry->szName, "SET_NET_COLLISION_INTERACTOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_NET_MESSAGE_INTERACTOR;
+    pEntry->nValue = (int)CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_NET_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[4];
 
     // STRING: HYPERX 0x004c6c98
     strcpy(pEntry->szName, "SET_LOC_MESSAGE_INTERACTOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_LOC_MESSAGE_INTERACTOR;
+    pEntry->nValue = (int)CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_LOC_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[5];
 
     // STRING: HYPERX 0x004c6c7c
     strcpy(pEntry->szName, "SET_NET_MESSAGE_INTERACTOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_NET_MESSAGE_INTERACTOR;
+    pEntry->nValue = (int)CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_NET_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[6];
 
     // STRING: HYPERX 0x004c6c6c
     strcpy(pEntry->szName, "ADD_AGENDA_ITEM");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM;
+    pEntry->nValue = (int)CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM;
 
     pEntry = &m_aOpcodes[7];
 
     // STRING: HYPERX 0x004c6c58
     strcpy(pEntry->szName, "REMOVE_AGENDA_ITEM");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM;
+    pEntry->nValue = (int)CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM;
 
     pEntry = &m_aOpcodes[8];
 
     // STRING: HYPERX 0x004c6c48
     strcpy(pEntry->szName, "SET_TIMEOUTMSG");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_AGENDA | MEMBER_SET_TIMEOUTMSG;
+    pEntry->nValue = (int)CATEGORY_AGENDA | MEMBER_SET_TIMEOUTMSG;
 
     pEntry = &m_aOpcodes[9];
 
@@ -625,98 +625,98 @@ PlanVM::PlanVM()
     // STRING: HYPERX 0x004c6c24
     strcpy(pEntry->szName, "CHANGE_OF_PLAN");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_PLAN_CHANGE | MEMBER_CHANGE_OF_PLAN;
+    pEntry->nValue = (int)CATEGORY_PLAN_CHANGE | MEMBER_CHANGE_OF_PLAN;
 
     pEntry = &m_aOpcodes[11];
 
     // STRING: HYPERX 0x004c6c10
     strcpy(pEntry->szName, "CHANGE_TO_BEHAVIOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_BEHAVIOUR | MEMBER_CHANGE_TO_BEHAVIOR;
+    pEntry->nValue = (int)CATEGORY_BEHAVIOUR | MEMBER_CHANGE_TO_BEHAVIOR;
 
     pEntry = &m_aOpcodes[12];
 
     // STRING: HYPERX 0x004c6bfc
     strcpy(pEntry->szName, "DECLARE_BEHAVIOR");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR;
+    pEntry->nValue = (int)CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR;
 
     pEntry = &m_aOpcodes[13];
 
     // STRING: HYPERX 0x004c6be8
     strcpy(pEntry->szName, "DECLARE_LOCAL_REALS");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_PLAN_CHANGE | MEMBER_DECLARE_LOCAL_REALS;
+    pEntry->nValue = (int)CATEGORY_PLAN_CHANGE | MEMBER_DECLARE_LOCAL_REALS;
 
     pEntry = &m_aOpcodes[14];
 
     // STRING: HYPERX 0x004c6bd4
     strcpy(pEntry->szName, "SET_BEHAVIOR_PARAM");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_BEHAVIOUR | MEMBER_SET_BEHAVIOR_PARAM;
+    pEntry->nValue = (int)CATEGORY_BEHAVIOUR | MEMBER_SET_BEHAVIOR_PARAM;
 
     pEntry = &m_aOpcodes[15];
 
     // STRING: HYPERX 0x004c6bbc
     strcpy(pEntry->szName, "SET_INTERACTOR_PARAM");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_ACTION | MEMBER_SET_INTERACTOR_PARAM;
+    pEntry->nValue = (int)CATEGORY_ACTION | MEMBER_SET_INTERACTOR_PARAM;
 
     pEntry = &m_aOpcodes[16];
 
     // STRING: HYPERX 0x004c6bb0
     strcpy(pEntry->szName, "DO_ACTION");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_ACTION | MEMBER_DO_ACTION;
+    pEntry->nValue = (int)CATEGORY_ACTION | MEMBER_DO_ACTION;
 
     pEntry = &m_aOpcodes[17];
 
     // STRING: HYPERX 0x004c6ba0
     strcpy(pEntry->szName, "DO_LOCAL_ACTION");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_ACTION | MEMBER_DO_LOCAL_ACTION;
+    pEntry->nValue = (int)CATEGORY_ACTION | MEMBER_DO_LOCAL_ACTION;
 
     pEntry = &m_aOpcodes[18];
 
     // STRING: HYPERX 0x004c6b90
     strcpy(pEntry->szName, "DO_NET_ACTION");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_ACTION | MEMBER_DO_NET_ACTION;
+    pEntry->nValue = (int)CATEGORY_ACTION | MEMBER_DO_NET_ACTION;
 
     pEntry = &m_aOpcodes[19];
 
     // STRING: HYPERX 0x004c6b80
     strcpy(pEntry->szName, "DECIDE_BY_AMONG");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_DECIDE | MEMBER_DECIDE_BY_AMONG;
+    pEntry->nValue = (int)CATEGORY_DECIDE | MEMBER_DECIDE_BY_AMONG;
 
     pEntry = &m_aOpcodes[20];
 
     // STRING: HYPERX 0x004c6b68
     strcpy(pEntry->szName, "DECIDE_BY_WITH_AMONG");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_DECIDE | MEMBER_DECIDE_BY_WITH_AMONG;
+    pEntry->nValue = (int)CATEGORY_DECIDE | MEMBER_DECIDE_BY_WITH_AMONG;
 
     pEntry = &m_aOpcodes[21];
 
     // STRING: HYPERX 0x004c6b5c
     strcpy(pEntry->szName, "SET_DEBUG");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_DEBUG | MEMBER_SET_DEBUG;
+    pEntry->nValue = (int)CATEGORY_DEBUG | MEMBER_SET_DEBUG;
 
     pEntry = &m_aOpcodes[22];
 
     // STRING: HYPERX 0x004c6b50
     strcpy(pEntry->szName, "SET_TRACE");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_DEBUG | MEMBER_SET_TRACE;
+    pEntry->nValue = (int)CATEGORY_DEBUG | MEMBER_SET_TRACE;
 
     pEntry = &m_aOpcodes[23];
 
     // STRING: HYPERX 0x004c6b48
     strcpy(pEntry->szName, "Enable");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_ENABLE;
+    pEntry->nValue = (unsigned int)CATEGORY_ENABLE;
 
     pEntry = &m_aOpcodes[24];
 
@@ -737,7 +737,7 @@ PlanVM::PlanVM()
     // STRING: HYPERX 0x004c6b28
     strcpy(pEntry->szName, "END_PLAN");
     pEntry->nMagic = PLAN_MARKER_NODE;
-    pEntry->nValue = CATEGORY_END_PLAN;
+    pEntry->nValue = (unsigned int)CATEGORY_END_PLAN;
 
     pEntry = &m_aOpcodes[27];
 
@@ -755,25 +755,25 @@ PlanVM::PlanVM()
 
     // STRING: HYPERX 0x004c6b0c
     strcpy(pEntry->szName, "_STRAIGHTAHEAD_");
-    pEntry->nValue = PLAN_TOKEN_STRAIGHTAHEAD;
+    pEntry->nValue = (unsigned int)PLAN_TOKEN_STRAIGHTAHEAD;
 
     pEntry = &m_aTokenRefs[2];
 
     // STRING: HYPERX 0x004c6afc
     strcpy(pEntry->szName, "_TEMPORARILY_");
-    pEntry->nValue = PLAN_TOKEN_TEMPORARILY;
+    pEntry->nValue = (unsigned int)PLAN_TOKEN_TEMPORARILY;
 
     pEntry = &m_aTokenRefs[3];
 
     // STRING: HYPERX 0x004c6aec
     strcpy(pEntry->szName, "_MESSAGE_DATA_");
-    pEntry->nValue = PLAN_TOKEN_MESSAGE_DATA;
+    pEntry->nValue = (unsigned int)PLAN_TOKEN_MESSAGE_DATA;
 
     pEntry = &m_aTokenRefs[4];
 
     // STRING: HYPERX 0x004c6adc
     strcpy(pEntry->szName, "_NO_BEH_CHANGE_");
-    pEntry->nValue = PLAN_TOKEN_NO_BEH_CHANGE;
+    pEntry->nValue = (unsigned int)PLAN_TOKEN_NO_BEH_CHANGE;
 
     short nSlot = PLAN_NAMED_TOKENS;
 
@@ -781,7 +781,7 @@ PlanVM::PlanVM()
 
     // STRING: HYPERX 0x004c6acc
     strcpy(pEntry->szName, "_PREVIOUS_BEH_");
-    pEntry->nValue = PLAN_TOKEN_PREVIOUS_BEH;
+    pEntry->nValue = (unsigned int)PLAN_TOKEN_PREVIOUS_BEH;
 
     int nIndex = 0;
 
@@ -801,7 +801,7 @@ PlanVM::PlanVM()
     pEntry = &m_aTokenRefs[nSlot];
 
     strcpy(pEntry->szName, g_pszPlanVmEmptyName);
-    pEntry->nValue = -1;
+    pEntry->nValue = (unsigned int)-1;
 
     m_pszText = new char[PLAN_SOURCE_CHARS];
 
@@ -1380,23 +1380,23 @@ char PlanVM::EmitArgToken()
 
     switch (tok.nValue)
     {
-        case CATEGORY_PLAN_CHANGE | MEMBER_CHANGE_OF_PLAN:
+        case (int)CATEGORY_PLAN_CHANGE | MEMBER_CHANGE_OF_PLAN:
             g_wArgsSinceChangeOfPlan = 0;
             break;
 
-        case CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR:
+        case (int)CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR:
             g_wArgsSinceDeclareBehavior = 0;
             break;
 
-        case CATEGORY_BEHAVIOUR | MEMBER_CHANGE_TO_BEHAVIOR:
+        case (int)CATEGORY_BEHAVIOUR | MEMBER_CHANGE_TO_BEHAVIOR:
             g_wArgsSinceChangeToBehavior = 0;
             break;
 
-        case CATEGORY_PLAN_CHANGE | MEMBER_DECLARE_LOCAL_REALS:
+        case (int)CATEGORY_PLAN_CHANGE | MEMBER_DECLARE_LOCAL_REALS:
             g_wArgsSinceDeclareLocalReals = 0;
             break;
 
-        case CATEGORY_ACTION | MEMBER_SET_INTERACTOR_PARAM:
+        case (int)CATEGORY_ACTION | MEMBER_SET_INTERACTOR_PARAM:
             g_wArgsSinceSetInteractorParam = 0;
             break;
     }
@@ -2000,7 +2000,7 @@ void PlanVM::LoadSymbolTables()
 
     strcpy(pTable[nSlot].szName, g_pszPlanVmEmptyName);
 
-    pTable[nSlot].nValue = -1;
+    pTable[nSlot].nValue = (unsigned int)-1;
 }
 
 // Takes the quotes off a token in place, without a copy.

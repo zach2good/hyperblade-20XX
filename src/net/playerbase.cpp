@@ -234,7 +234,7 @@ void PlayerBase::NetUpdateMultiObject(int)
 
     EnterCriticalSection(&m_dplayLock);
 
-    nCode = pObject->PollStationaryEvents(&nPayload, &nSecond);
+    nCode = (unsigned char)pObject->PollStationaryEvents(&nPayload, &nSecond);
 
     if (nCode != 0)
     {
@@ -293,7 +293,7 @@ void PlayerBase::NetUpdateMultiObject(int)
                 pAt = pHeader->abSlotNibbles + (g_nStationaryCount + 1) / 2;
             }
 
-            nCode = pObject->PollStationaryEvents(&nPayload, &nSecond);
+            nCode = (unsigned char)pObject->PollStationaryEvents(&nPayload, &nSecond);
         } while (nCode != 0);
 
         if (nUsed != 0)
@@ -436,7 +436,13 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
         record.body.nPlan      = NO_SEQUENCE;
         record.body.nBehaviour = NO_SEQUENCE;
 
-        MoveCodec::Decode(&pMove->packed, &record.body.vPosition, &record.body.vVelocity);
+        Vec3 vPosition;
+        Vec3 vVelocity;
+
+        MoveCodec::Decode(&pMove->packed, &vPosition, &vVelocity);
+
+        record.body.vPosition = vPosition;
+        record.body.vVelocity = vVelocity;
 
         pPlayer->vLastPosition = record.body.vPosition;
         pPlayer->vLastVelocity = record.body.vVelocity;

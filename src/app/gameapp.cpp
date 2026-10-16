@@ -137,7 +137,7 @@ void GameApp::SetModelPath(int bTexEnabled)
 }
 
 // FUNCTION: HYPERX 0x00418e10
-HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShowCmd, LPSTR lpCmdLine)
+HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 {
     LPCSTR pszAppClassName;
     HMENU  hAppMenu;
@@ -576,7 +576,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
 
         // STRING: HYPERX 0x004bc418
         memcpy(szRoot, "A:\\", sizeof("A:\\"));
-        szRoot[0] += nDrive;
+        szRoot[0] = (char)(szRoot[0] + nDrive);
 
         if (GetVolumeInformationA(szRoot, szVolume, MAX_PATH, &dwOut, &dwOut, &dwOut, szFileSystem, MAX_PATH) == 0)
         {
@@ -600,7 +600,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
             {
                 // STRING: HYPERX 0x004bc418
                 memcpy(szRoot, "A:\\", sizeof("A:\\"));
-                szRoot[0] += nDrive;
+                szRoot[0] = (char)(szRoot[0] + nDrive);
 
                 if (GetVolumeInformationA(szRoot, szVolume, MAX_PATH, &dwOut, &dwOut, &dwOut, szFileSystem, MAX_PATH) == 0)
                 {
@@ -986,7 +986,7 @@ int __cdecl GameApp::GetInstallLevel(void)
 }
 
 // FUNCTION: HYPERX 0x0047adb0
-int __cdecl GameApp::ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
+int __cdecl GameApp::ShowMessageBox(HWND, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
 {
     const int bWasVisible = GameApp::SetCursorVisible(1);
 

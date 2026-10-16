@@ -124,7 +124,7 @@ void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
 
 // A missing file still returns true.
 // FUNCTION: HYPERX 0x0046d8b0
-int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRows)
+int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR, KeyRow* pRows)
 {
     FILE* const pFile = fopen(pszData, "r");
 

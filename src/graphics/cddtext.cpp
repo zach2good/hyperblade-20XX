@@ -22,7 +22,7 @@ CDDText::~CDDText() throw()
 // FUNCTION: HYPERX 0x0044fa40
 int CDDText::Draw()
 {
-    HGDIOBJ hOldFont;
+    HGDIOBJ hOldFont = 0;
 
     if (m_pszText != 0 && *m_pszText != 0)
     {
@@ -50,7 +50,7 @@ int CDDText::Draw()
 // FUNCTION: HYPERX 0x0044faf0
 int CDDText::SetText(const char* pszText, COLORREF color)
 {
-    HGDIOBJ hOldFont;
+    HGDIOBJ hOldFont = 0;
     SIZE    size;
 
     if (m_pszText != 0)

@@ -36,7 +36,7 @@ int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const Transformed
 
     *pcClipOut = cClip;
 
-    if (cClip == (char)CLIP_ALL)
+    if ((unsigned char)cClip == CLIP_ALL)
     {
         return 0;
     }

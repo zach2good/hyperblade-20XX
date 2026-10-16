@@ -150,8 +150,8 @@ void CAvoidObjects::Process(int nArg)
         bPush = 0;
     }
 
-    // Left uninitialised where the first block bails; the wrong-side test reads it either way.
-    float flDeltaY;
+    // Zero where the first block bails; the original read stack garbage in the wrong-side test.
+    float flDeltaY = 0.0f;
     float flDeltaX;
 
     if (m_pOwner->GetDistIfFacing(m_pSwerveTarget, g_flZeroAgendaItem) != 0.0f)

@@ -325,8 +325,8 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
     int                 nI;
     DDSURFACEDESC       sd;
     LPDIRECTDRAWSURFACE pSurfacePtr;
-    int                 nMaxColours;
-    int                 nPaletteCaps;
+    int                 nMaxColours  = 0;
+    int                 nPaletteCaps = 0;
     const RGBTRIPLE*    pPalSource;
     unsigned char*      pBytes;
     int                 nBitShift;
@@ -716,7 +716,7 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
 
     if (bHasPalette != 0)
     {
-        const int nGotEntries = GetPaletteEntries(m_hPalette, 0, 256, aEntries);
+        GetPaletteEntries(m_hPalette, 0, 256, aEntries);
 
         m_hr =
             g_ddrawDevice.pDDrawObject->CreatePalette(VIDTEXTURE_PALETTE_CAPS, aEntries, &pPalIface, 0);
@@ -869,11 +869,6 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
                             pszName);
 
             return 0;
-
-            // Two unknown unreachable statements the original leaves behind this return.
-            TRACE("Texture Map is a 8 bit/pixel bit map!\n");
-
-            m_pBitmapRecord = 0;
         }
 
         if (m_pBitmapRecord->biBitCount == 24)

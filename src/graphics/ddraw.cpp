@@ -1379,7 +1379,7 @@ void DDraw::ClearDeviceState(void)
 extern int g_bDoubleResMode;
 
 // FUNCTION: HYPERX 0x0043ae20
-int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
+int __cdecl DDraw::SetFullscreenMode(HWND, int)
 {
     // Modern Windows offers no 8-bit mode, and callers already handle E_FAIL.
     return E_FAIL;
@@ -2238,7 +2238,7 @@ void __stdcall DDraw::DestroyAllSurfaces(void)
 
 // A windowed run never changes the mode and answers success.
 // FUNCTION: HYPERX 0x0043c310
-int __cdecl DDraw::ChangeDisplayMode(int nMode)
+int __cdecl DDraw::ChangeDisplayMode(int)
 {
     return 0;
 }
@@ -2944,11 +2944,11 @@ void __stdcall DDraw::UnlockBackBuffer(void)
     }
 }
 
-// Returns an uninitialised value when there is no surface, as the original does.
+// The original returns an uninitialised value when there is no surface.
 // FUNCTION: HYPERX 0x0043d3a0
 HDC __stdcall DDraw::GetBackBufferDC(void)
 {
-    HDC                 hdc;
+    HDC                 hdc = 0;
     LPDIRECTDRAWSURFACE pSurface;
 
     if (g_bUseOffscreenSurface)

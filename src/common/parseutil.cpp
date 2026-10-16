@@ -18,7 +18,7 @@ float g_flScreenDotsPerInchParseUtil = g_flDotsPerInchParseUtil;
 float g_flDotPitchCmParseUtil        = g_flDotPitchInchParseUtil / g_flCmPerInchParseUtil;
 float g_flScreenDotsPerCmParseUtil   = g_flScreenDotsPerInchParseUtil / g_flCmPerInchParseUtil;
 
-#define STREAM_EOF ((char)0xff)
+#define STREAM_EOF ((char)-1)
 
 // The original calls the multibyte _mbsicmp at 0x0049f2d2, not _stricmp.
 // FUNCTION: HYPERX 0x00435f90

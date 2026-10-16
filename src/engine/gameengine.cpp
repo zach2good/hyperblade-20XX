@@ -3094,7 +3094,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
                 }
             }
 
-            RemoveFromSortedList(nType);
+            RemoveFromSortedList((short)nType);
 
             UnregisterObject(nType);
 
@@ -3294,7 +3294,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
             else if (nSlot == TEAM_SLOT_ROK)
             {
                 g_bSuppressRokId = 1;
-                nObjectId        = MODEL_ID_UNASSIGNED;
+                nObjectId        = (unsigned int)MODEL_ID_UNASSIGNED;
             }
             else if (nSlot >= TEAM_SLOT_BODY_PART_FIRST && nSlot <= TEAM_SLOT_BODY_PART_LAST)
             {
@@ -4467,8 +4467,8 @@ void GameEngine::RestartMatch()
     {
         Reset();
 
-        // A short, so this is minus one: no active score line.
-        g_wActiveScoreLine = (short)0xffff;
+        // No active score line.
+        g_wActiveScoreLine = -1;
 
         if (IsTournamentMode() != 0)
         {
@@ -4821,7 +4821,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
     return 0;
 }
 
-#define ARENA_NONE ((short)0xffff)
+#define ARENA_NONE ((unsigned short)0xffff)
 
 // A team's first seat is its slot; every other seat shares the slot two above it.
 inline int GameEngine::SubstituteSlot(int nTeam, int nSeat)

@@ -87,7 +87,7 @@ extern Vec3 g_vLightDirModel;
 void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
     const TexCoord*     pUVTable;
-    TexCacheEntry*      pMatTexture;
+    TexCacheEntry*      pMatTexture = 0;
     const MeshMaterial* pMaterial;
     ClipVertex*         pVert;
     float               flLevel;
@@ -372,14 +372,14 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
     if ((g_bBottomUpDIB != 0) == (cBackFace != 0))
     {
-        nFirst = nIndex;
+        nFirst = (short)nIndex;
         nStep  = 1;
-        nEnd   = g_swFaceBuffer.nCount;
+        nEnd   = (short)g_swFaceBuffer.nCount;
     }
     else
     {
         nStep  = -1;
-        nFirst = g_swFaceBuffer.nCount - 1;
+        nFirst = (short)(g_swFaceBuffer.nCount - 1);
         nEnd   = -1;
     }
 

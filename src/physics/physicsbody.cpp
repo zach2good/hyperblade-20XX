@@ -111,9 +111,9 @@ extern const float g_flGravity;
 
 // Speed and acceleration are premultiplied by the frame delta here; the heading is in degrees.
 // FUNCTION: HYPERX 0x00407780
-void PhysicsBody::BindToObject(EngineObject* pOwner, ObjectDef* pDefRec)
+void PhysicsBody::BindToObject(EngineObject* pOwnerObject, ObjectDef* pDefRec)
 {
-    this->pOwner = pOwner;
+    pOwner = pOwnerObject;
 
     prevPos = pDefRec->m_vPos;
     pos     = pDefRec->m_vPos;

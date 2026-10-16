@@ -43,11 +43,11 @@ int SteppedScrollBitmap::InitAndLoad(const char* pszName, int nCount, int bColou
     return LoadFromFile(pszName, bColourKey, bSystemMemory);
 }
 
-// With m_bHorizontal clear the end is read unwritten, as in the original.
+// With m_bHorizontal clear the original reads the end unwritten.
 // FUNCTION: HYPERX 0x00438dc0
 int SteppedScrollBitmap::DrawScrolled()
 {
-    int  nEnd;
+    int  nEnd = 0;
     RECT rcScreen;
 
     if (m_bHorizontal != 0)

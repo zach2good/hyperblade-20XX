@@ -134,9 +134,9 @@ extern short g_nCheckImpulseFacing;
 EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 {
     EngineObject* pTarget;
-    float         flDxA;
-    float         flDyB;
-    float         flDxB;
+    float         flDxA = 0.0f;
+    float         flDyB = 0.0f;
+    float         flDxB = 0.0f;
     float         flCross;
     float         flDet;
     short         nFacing;

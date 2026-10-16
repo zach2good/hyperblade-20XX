@@ -1216,7 +1216,7 @@ inline short TackleCountdown(bool bLoose)
 void __cdecl PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
 {
     AttachPak*            pnCarrier;
-    short                 nCarrier;
+    short                 nCarrier = 0;
     bool                  bCarrier;
     float                 flDotGate;
     Vec3                  vOffset;
@@ -2148,8 +2148,6 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
 // FUNCTION: HYPERX 0x00460c80
 void __cdecl PlanCond::WhichOppnToAttack(Interactor* pContext, PlanNode*, short* pResult, int)
 {
-    EngineObject* const pOwner = pContext->GetActor();
-
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
     const float flDamageA = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
@@ -3949,7 +3947,7 @@ extern int g_aaColorSaved[2][20];
 void __cdecl PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* pObject;
-    int           nValue;
+    int           nValue = 0;
     PaletteRange  aRange;
 
     const short nEnable = (short)pArgs->m_pArgs[1].n;
@@ -3965,7 +3963,7 @@ void __cdecl PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pAr
         pObject = pContext->GetActor();
     }
 
-    // The original leaves the index unset for any other kind.
+    // The original leaves the index unset for any other kind; zero picks the first row.
     if (pObject->m_nKind == KIND_GREEN_RANDOMIZER)
     {
         nValue = 1;
@@ -5359,12 +5357,12 @@ void __cdecl PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, shor
     pWinner->PostEvent(MSG_YER_ATTACKED, LAUNCH_MESSAGE_ARG, pContext->GetActor()->GetSlot());
 }
 
-// The holder slot is compared even on the path that never wrote it, an uninitialised read.
+// The original compares the holder slot even on the path that never wrote it.
 
 // FUNCTION: HYPERX 0x00464f40
 void PlanCond::AttachedToSender(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    short nHolderSlot;
+    short nHolderSlot = -1;
 
     AttachPak* pState = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
@@ -5382,13 +5380,13 @@ void PlanCond::AttachedToSender(Interactor* pContext, PlanNode*, short* pResult,
 // Four; its marker is in src/globals.cpp.
 extern const float g_flFourPlan;
 
-// Without a carrier nCarrier is unset; VC6 homes it on pResult's slot, as the original does.
+// Without a carrier the original compares nCarrier unset.
 // FUNCTION: HYPERX 0x00464f80
 void __cdecl PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const short nOwnerSlot = (short)nArg;
 
-    short nCarrier;
+    short nCarrier = -1;
     Vec3  vKick;
     Vec3  vVelocity;
     Vec3  vJitter;
@@ -5454,7 +5452,7 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
     {
         nClamped = min(-1, nRokValue);
 
-        nRokValue = -nClamped;
+        nRokValue = (short)-nClamped;
     }
     else
     {
@@ -6482,7 +6480,7 @@ void __cdecl PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*,
 
     const int nSlotC = pContext->GetActor()->GetSlot();
 
-    const int nOppC = TeammateSlot(nSlotC);
+    const int nOppC = TeammateSlot((short)nSlotC);
 
     pnBoundSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
@@ -7145,8 +7143,7 @@ void __cdecl PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, 
 
     EngineObject* pObject = g_pGameEngine->m_ppSlots[nSlot];
 
-    const Vec3* pVelocity  = &pObject->GetPhysicsBody()->vel;
-    const Vec3* pDirection = &pObject->GetPhysicsBody()->velDir;
+    const Vec3* pVelocity = &pObject->GetPhysicsBody()->vel;
 
     vDiff.x = pObject->GetPositionPtr()->x - pContext->GetActor()->GetPositionPtr()->x;
     vDiff.y = pObject->GetPositionPtr()->y - pContext->GetActor()->GetPositionPtr()->y;

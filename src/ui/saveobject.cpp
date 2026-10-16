@@ -54,7 +54,7 @@ short SaveObject::WrapToNextValidTeam(short nTeam, int nDirection)
 
             if (nTeam < 0)
             {
-                nTeam = nTeamCount - 1;
+                nTeam = (short)(nTeamCount - 1);
             }
         }
     }

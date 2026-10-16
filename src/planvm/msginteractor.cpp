@@ -95,7 +95,7 @@ void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
 // FUNCTION: HYPERX 0x0045e0d0
 void MsgInteractor::Dispatch(int nArg, short* pState)
 {
-    PlanWord* pCursor;
+    PlanWord* pCursor = 0;
     short     nCount;
 
     m_wSlot      = -1;
@@ -110,7 +110,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
     }
     else
     {
-        // The cursor stays unset; with a count of nought nothing reads it.
+        // With a count of nought nothing reads the cursor.
         nCount = 0;
     }
 

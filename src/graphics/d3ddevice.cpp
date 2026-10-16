@@ -263,11 +263,6 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
 
         return 1;
     }
-
-    *pnDriver = nDriver;
-    *pnMode   = nMode;
-
-    return 1;
 }
 
 // FUNCTION: HYPERX 0x00432810

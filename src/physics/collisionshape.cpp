@@ -10,6 +10,8 @@
 // FUNCTION: HYPERX 0x00405800
 int CollisionShape::Destroy()
 {
+    // The real type is always a plane or an ellipsoid, neither of which has a destructor of its own.
+#pragma warning(suppress : 5205)
     delete this;
 
     return 0;

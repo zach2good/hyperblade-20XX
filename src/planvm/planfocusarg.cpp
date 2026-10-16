@@ -67,7 +67,7 @@ short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
         nSlot = 0;
     }
 
-    return nSlot;
+    return (short)nSlot;
 }
 
 // The first thing the camera follows, answered the same way.
@@ -82,7 +82,7 @@ short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
         nSlot = 0;
     }
 
-    return nSlot;
+    return (short)nSlot;
 }
 
 // FUNCTION: HYPERX 0x0047cbe0

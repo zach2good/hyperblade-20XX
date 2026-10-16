@@ -314,14 +314,14 @@ void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
     }
 }
 
-// The second slot chain has no final arm; its fall-through reads an unassigned local.
+// The second slot chain has no final arm; in the original its fall-through reads an unassigned local.
 
 // FUNCTION: HYPERX 0x00441000
 void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
 {
     char szMessage[0x100];
     int  nOther;
-    int  nSwap;
+    int  nSwap = 0;
     int  i;
 
     const int nHost  = g_pGameSession->pLeadPlayer->pState->nSlotFlags;

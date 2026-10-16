@@ -84,7 +84,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 
     m_pBody = pOwner->GetPhysicsBody();
 
-    if (pBlock->m_nOpcode == (CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR))
+    if (pBlock->m_nOpcode == ((int)CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR))
     {
         pCursor = pBlock->m_pArgs + HEADER_ITEMS;
 
@@ -123,7 +123,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
             case CATEGORY_AGENDA:
                 switch (pItem->m_nOpcode)
                 {
-                    case CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
+                    case (int)CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
                         pBubble = (AgendaItem*)g_apAgendaItemPools[(short)pItem->m_pArgs[0].n]->Alloc();
 
                         pBubble->Bind(m_pOwner, this);
@@ -131,7 +131,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
                         pBubble->Activate();
                         break;
 
-                    case CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM:
+                    case (int)CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM:
                         RemoveAgendaItem(pItem->m_pArgs[0].n);
                         break;
                 }

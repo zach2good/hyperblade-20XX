@@ -87,15 +87,15 @@ void PlanState::DestroyNode(PlanNode* pNode)
     {
         switch ((unsigned int)pNode->m_nOpcode)
         {
-            case CATEGORY_DEBUG | MEMBER_SET_TRACE:
+            case (int)CATEGORY_DEBUG | MEMBER_SET_TRACE:
                 delete[] pNode->m_pArgs[0].psz;
                 break;
 
-            case CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR:
+            case (int)CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR:
                 delete[] pNode->m_pArgs[1].psz;
                 // Falls through: a declaration's children start where a collision interactor's do.
 
-            case CATEGORY_COLLISION_INTERACTOR | MEMBER_SET_COLLISION_INTERACTOR:
+            case (int)CATEGORY_COLLISION_INTERACTOR | MEMBER_SET_COLLISION_INTERACTOR:
                 nCount    = pNode->m_nArgCount;
                 pOperands = pNode->m_pArgs;
                 pCursor   = &pOperands[nCount - 1];
@@ -108,9 +108,9 @@ void PlanState::DestroyNode(PlanNode* pNode)
 
                 break;
 
-            case CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_MESSAGE_INTERACTOR:
-            case CATEGORY_DECIDE | MEMBER_DECIDE_BY_AMONG:
-            case CATEGORY_DECIDE | MEMBER_DECIDE_BY_WITH_AMONG:
+            case (int)CATEGORY_MESSAGE_INTERACTOR | MEMBER_SET_MESSAGE_INTERACTOR:
+            case (int)CATEGORY_DECIDE | MEMBER_DECIDE_BY_AMONG:
+            case (int)CATEGORY_DECIDE | MEMBER_DECIDE_BY_WITH_AMONG:
                 nCount    = pNode->m_nArgCount;
                 pOperands = pNode->m_pArgs;
                 pCursor   = &pOperands[nCount - 1];
@@ -123,7 +123,7 @@ void PlanState::DestroyNode(PlanNode* pNode)
 
                 break;
 
-            case CATEGORY_ACTION | MEMBER_DO_ACTION:
+            case (int)CATEGORY_ACTION | MEMBER_DO_ACTION:
                 // The one action whose second operand is a string the node owns.
                 if (pNode->m_pArgs[0].n == ACF_SET_HEAD_CAM_TEXT)
                 {
@@ -737,5 +737,5 @@ void PlanState::Reinitialize()
 
 // One DECLARE_BEHAVIOR node, a leaf child of six and the string "x", then END_PLAN.
 PlanWord g_aReinitPlanImage[9] = {
-    { (int)PLAN_MARKER_NODE }, { CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR }, { 2 }, { 6 }, { (int)PLAN_MARKER_STRING }, { 'x' }, { 0 }, { (int)PLAN_MARKER_NODE }, { (int)CATEGORY_END_PLAN }
+    { (int)PLAN_MARKER_NODE }, { (int)CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR }, { 2 }, { 6 }, { (int)PLAN_MARKER_STRING }, { 'x' }, { 0 }, { (int)PLAN_MARKER_NODE }, { (int)CATEGORY_END_PLAN }
 };

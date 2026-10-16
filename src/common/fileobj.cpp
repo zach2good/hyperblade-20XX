@@ -21,14 +21,14 @@ void FileObj::Close()
     }
 }
 
-// A mode outside the three leaves the flags uninitialised, as in the original.
+// In the original, a mode outside the three leaves the flags uninitialised.
 
 // FUNCTION: HYPERX 0x00440470
 char FileObj::Open(const char* pszPath, int nMode)
 {
     char szResolved[MAX_PATH];
-    int  nOflag;
-    int  nPmode;
+    int  nOflag = 0;
+    int  nPmode = 0;
 
     switch (nMode)
     {

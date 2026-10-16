@@ -545,6 +545,8 @@ unsigned char* Texture::LockAndGetPitch(int* pnPitch)
 {
     DDSURFACEDESC desc;
 
+    memset(&desc, 0, sizeof(desc));
+
     desc.dwSize = sizeof(desc);
 
     if (m_pSurface != 0)

@@ -321,7 +321,7 @@ NetMoveRecord* CPlayer::DequeueNetRecord()
 // FUNCTION: HYPERX 0x0042d8f0
 int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDataSize)
 {
-    IDirectPlay* pDPlay;
+    IDirectPlay* pDirectPlay;
 
     int                nResult = E_FAIL;
     const unsigned int nType   = pMessage->nKind;
@@ -345,8 +345,8 @@ int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDat
             }
         }
 
-        pDPlay  = this->pDPlay;
-        nResult = pDPlay->Send(pLocal->pState->nPlayerId, idTo, nFlags, pMessage, dwDataSize);
+        pDirectPlay = this->pDPlay;
+        nResult     = pDirectPlay->Send(pLocal->pState->nPlayerId, idTo, nFlags, pMessage, dwDataSize);
 
         if (nResult > 0 && nResult < SEND_QUEUE_LIMIT)
         {
@@ -471,8 +471,8 @@ unsigned int CPlayer::NetworkReceiveLoop()
 // FUNCTION: HYPERX 0x0042db10
 unsigned int __fastcall CPlayer::DispatchPacket()
 {
-    IDirectPlay* pDPlay;
-    PlayerState* pState;
+    IDirectPlay* pDirectPlay;
+    PlayerState* pPlayerState;
     PlayerBase*  pMoveTarget;
     PlayerBase*  pStaticTarget;
     unsigned int nSlot;
@@ -492,8 +492,8 @@ unsigned int __fastcall CPlayer::DispatchPacket()
 
     EnterCriticalSection(pLock);
 
-    pDPlay                      = this->pDPlay;
-    const unsigned int hr       = pDPlay->Receive(&idFrom, &idTo, nRecvFlags, pBufferA, &dwSize);
+    pDirectPlay                 = this->pDPlay;
+    const unsigned int hr       = pDirectPlay->Receive(&idFrom, &idTo, nRecvFlags, pBufferA, &dwSize);
     const unsigned int nMessage = pBufferA->system.dwType;
     nSlot                       = pBufferA->message.nSlot;
 
@@ -509,9 +509,9 @@ unsigned int __fastcall CPlayer::DispatchPacket()
         }
         else
         {
-            pState = this->pState;
+            pPlayerState = this->pState;
 
-            if (idFrom == pState->nPlayerId)
+            if (idFrom == pPlayerState->nPlayerId)
             {
                 return 0;
             }
@@ -666,7 +666,7 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                     default:
                         // STRING: HYPERX 0x004bce00
                         g_gameApp.Error("CPlayer %s received Unknown Message Type%X!\n",
-                                        pState->slotName.GetWireName(),
+                                        pPlayerState->slotName.GetWireName(),
                                         nMessage & 0xff);
                         break;
                 }

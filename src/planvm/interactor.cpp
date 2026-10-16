@@ -121,7 +121,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
             case CATEGORY_AGENDA:
                 switch (dwOpcode)
                 {
-                    case CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
+                    case (int)CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
                         pBubble = (AgendaItem*)g_apAgendaItemPools[(short)pNode->m_pArgs[0].n]->Alloc();
 
                         if (pNode->m_nArgCount == 1)
@@ -136,7 +136,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                         pBubble->Activate();
                         break;
 
-                    case CATEGORY_AGENDA | MEMBER_SET_TIMEOUTMSG:
+                    case (int)CATEGORY_AGENDA | MEMBER_SET_TIMEOUTMSG:
                         pBubble = AllocAgendaItem(Agenda_CTimerActivity);
 
                         pBubble->BindWithNode(m_pOwner, pOwner, pNode, nArg);
@@ -144,7 +144,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                         pBubble->Activate();
                         break;
 
-                    case CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM:
+                    case (int)CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM:
                         pOwner->RemoveAgendaItem(pNode->m_pArgs[0].n);
                         break;
                 }

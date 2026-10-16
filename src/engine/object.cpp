@@ -242,11 +242,11 @@ static inline Vec3 ToObjectFrame(EngineObject* pObject, const Vec3* pQueryPos)
 
 } // namespace Object
 
-// A slot no range claims returns whatever the frame held, as in the original.
+// In the original, a slot no range claims returns whatever the frame held.
 // FUNCTION: HYPERX 0x00404910
 Vec3* __cdecl Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos)
 {
-    Vec3 vResult;
+    Vec3 vResult = {};
     Vec3 vPoint;
 
     vPoint = Object::ToObjectFrame(pObject, pQueryPos);
