@@ -271,7 +271,6 @@ struct GameEngine
     char SetTeams(short nHome, short nAway);
 
     // Always answers one, and its caller discards it.
-    char UpdateTeamSounds(short nHome, short nAway);
     char SetArena(short nArena);
 
     unsigned char IsTournamentMode();

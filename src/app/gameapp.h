@@ -99,7 +99,6 @@ struct GameApp
     void(__stdcall* m_pfnShutdown)(void); // 0x64
     int m_nCDRomDrive;                    // 0x68
 
-    void CopyCDFile(const char* pszName);
 
     void __fastcall OnShutdown();
 

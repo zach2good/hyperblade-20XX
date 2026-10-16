@@ -491,38 +491,10 @@ void __stdcall GameApp::OnStartup(void)
     g_gameApp.Fatal("InitApp - Null window handle.");
 }
 
-// Never returns. The pattern String is never released.
+// Never returns.
 // FUNCTION: HYPERX 0x00419670
 void __stdcall GameApp::OnExit(void)
 {
-    WIN32_FIND_DATAA findData;
-    char             szPath[MAX_PATH];
-
-    if (g_pGameOptions != 0 && g_pGameOptions->m_nInstallLevel < 2)
-    {
-        String* const pPattern = new String;
-
-        pPattern->Resize(MAX_PATH);
-
-        // STRING: HYPERX 0x004bbb2c
-        sprintf(pPattern->m_pchData, "%s\\satun*.wav", g_gameApp.m_strSoundsPath.m_str.m_pchData);
-
-        const HANDLE hFind = FindFirstFileA(*pPattern, &findData);
-
-        if (hFind != INVALID_HANDLE_VALUE)
-        {
-            do
-            {
-                // STRING: HYPERX 0x004bbb24
-                sprintf(szPath, "%s\\%s", g_gameApp.m_strSoundsPath.m_str.m_pchData, findData.cFileName);
-
-                DeleteFileA(szPath);
-            } while (FindNextFileA(hFind, &findData) != 0);
-
-            FindClose(hFind);
-        }
-    }
-
     Window::Destroy();
 
     ExitProcess(0);
@@ -690,11 +662,6 @@ done:
     return m_nCDRomDrive;
 }
 
-#define CD_COPY_BLOCK 0x8000
-
-#define CD_OPEN_READ  1
-#define CD_OPEN_WRITE 2
-
 // The scan carries on over the string it has just rewritten.
 // FUNCTION: HYPERX 0x004233d0
 char* GameApp::ResolveCDRomPath(char* pszPath)
@@ -724,76 +691,6 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
     }
 
     return pszPath;
-}
-
-// A short write reports and carries on, so a full disc gives one message box per block.
-// FUNCTION: HYPERX 0x00423480
-void GameApp::CopyCDFile(const char* pszName)
-{
-    char         szTarget[MAX_PATH];
-    char         szSource[MAX_PATH];
-    char         szMessage[MAX_PATH];
-    char         szCaption[MAX_PATH];
-    unsigned int nRead;
-
-    strcpy(szTarget, pszName);
-    strcpy(szSource, szTarget);
-
-    GameApp::ResolveCDRomPath(szSource);
-
-    if (_mbscmp((const unsigned char*)szTarget, (const unsigned char*)szSource) == 0)
-    {
-        return;
-    }
-
-    char* const pBuffer = (char*)malloc(CD_COPY_BLOCK);
-
-    if (pBuffer == 0)
-    {
-        return;
-    }
-
-    OwnedFile fileSource;
-
-    const int bSourceOpen = fileSource.m_file.Open(szSource, CD_OPEN_READ) & 0xff;
-
-    OwnedFile fileTarget;
-
-    int bTargetOpen = fileTarget.m_file.Open(szTarget, CD_OPEN_WRITE) & 0xff;
-
-    if (bSourceOpen != 0 && bTargetOpen != 0)
-    {
-        do
-        {
-            nRead = (unsigned int)fileSource.m_file.Read(pBuffer, CD_COPY_BLOCK);
-
-            if (nRead > 0)
-            {
-                if (nRead != (unsigned int)fileTarget.m_file.Write(pBuffer, (int)nRead))
-                {
-                    strcpy(szCaption,
-                           m_stringPool.LoadText(m_hInstance, STRING_ERROR_DISK_FULL));
-                    strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_DISK_FULL));
-
-                    GameApp::ShowMessageBox(GetActiveWindow(), szMessage, szCaption, MB_OK);
-
-                    OnShutdown();
-                }
-            }
-        } while (nRead > 0);
-    }
-    else
-    {
-        // The title and the text go in swapped, so the box reads "Error" under a long title.
-        strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_ERROR));
-
-        const char* const pszCaption =
-            m_stringPool.LoadText(m_hInstance, STRING_CD_FILE_OPEN_FAILED + (bSourceOpen != 0));
-
-        GameApp::ShowMessageBox(GetActiveWindow(), szMessage, pszCaption, MB_OK);
-    }
-
-    free(pBuffer);
 }
 
 // FUNCTION: HYPERX 0x00423730
