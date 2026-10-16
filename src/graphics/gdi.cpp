@@ -8,9 +8,8 @@
 #include <io.h>
 #include "common/fileobj.h"
 #include <string.h>
-#include <ctype.h>
 #include <stdio.h>
-#include "engine/bmpwriter.h"
+#include "stb_image.h"
 
 // GLOBAL: HYPERX 0x004c2ca4
 extern int g_nDisplayBitsPerPixel;
@@ -678,204 +677,53 @@ HPALETTE GDI::CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors)
     return hPalette;
 }
 
-// The error manager's table of application message codes: one null entry.
-// GLOBAL: HYPERX 0x004b407c
-extern const char* const cdjpeg_message_table[1];
-
-const char* const cdjpeg_message_table[1] = { 0 };
-
-namespace GDI
-{
-
-static int __cdecl     jpeg_getc(j_decompress_ptr cinfo);
-static boolean __cdecl COM_handler(j_decompress_ptr cinfo);
-
-} // namespace GDI
-
+// A 24-bit bottom-up DIB section; stb returns top-down RGB, so rows are flipped and swapped to BGR.
 // FUNCTION: HYPERX 0x0048f7d0
 HBITMAP GDI::LoadJPEGImage(const char* pszPath)
 {
-    struct jpeg_decompress_struct cinfo;
-    struct jpeg_error_mgr         jerr;
-    BITMAPINFO                    bmi;
-    JSAMPARRAY                    ppRows;
-    JDIMENSION                    nRow;
-    JDIMENSION                    nLeft;
+    int nWidth    = 0;
+    int nHeight   = 0;
+    int nChannels = 0;
 
-    cinfo.err = jpeg_std_error(&jerr);
+    stbi_uc* const pPixels = stbi_load(pszPath, &nWidth, &nHeight, &nChannels, 3);
 
-    jpeg_CreateDecompress(&cinfo, JPEG_LIB_VERSION, sizeof(struct jpeg_decompress_struct));
-
-    jerr.addon_message_table = cdjpeg_message_table;
-    jerr.first_addon_message = JMSG_FIRSTADDONCODE;
-    jerr.last_addon_message  = JMSG_LASTADDONCODE;
-
-    jpeg_set_marker_processor(&cinfo, JPEG_COM, COM_handler);
-    enable_signal_catcher((j_common_ptr)&cinfo);
-
-    // STRING: HYPERX 0x004bc938
-    FILE* const pFile = fopen(pszPath, "rb");
-
-    if (pFile == 0)
-    {
-        fprintf(stderr,
-                // STRING: HYPERX 0x004c8964
-                "%s: can't open %s\n",
-                // STRING: HYPERX 0x004c8978
-                "LoadJPEGImage",
-                pszPath);
-        exit(EXIT_FAILURE);
-    }
-
-    jpeg_stdio_src(&cinfo, pFile);
-    jpeg_read_header(&cinfo, TRUE);
-
-    djpeg_dest_ptr dest = BmpWriter::Create(&cinfo, FALSE);
-    dest->output_file   = 0;
-
-    jpeg_start_decompress(&cinfo);
-
-    (*dest->start_output)(&cinfo, dest);
-
-    while (cinfo.output_scanline < cinfo.output_height)
-    {
-        JDIMENSION nScanlines = jpeg_read_scanlines(&cinfo, dest->buffer, dest->buffer_height);
-
-        (*dest->put_pixel_rows)(&cinfo, dest, nScanlines);
-    }
-
-    (*dest->finish_output)(&cinfo, dest);
-
-    bmi.bmiHeader.biSize          = sizeof(bmi.bmiHeader);
-    bmi.bmiHeader.biWidth         = cinfo.image_width;
-    bmi.bmiHeader.biHeight        = cinfo.image_height;
-    bmi.bmiHeader.biPlanes        = 1;
-    bmi.bmiHeader.biBitCount      = 24;
-    bmi.bmiHeader.biCompression   = BI_RGB;
-    bmi.bmiHeader.biSizeImage     = 0;
-    bmi.bmiHeader.biXPelsPerMeter = 100;
-    bmi.bmiHeader.biYPelsPerMeter = 100;
-    bmi.bmiHeader.biClrUsed       = 0;
-    bmi.bmiHeader.biClrImportant  = 0;
-
-    const HDC hdc = GetDC(0);
-
-    void* pBits = 0;
-
-    const HBITMAP hBitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, &pBits, 0, 0);
-
-    unsigned char* pDest = (unsigned char*)pBits;
-
-    if (hBitmap == 0)
+    if (pPixels == 0)
     {
         return 0;
     }
 
-    for (nRow = cinfo.output_height; nRow > 0; nRow--)
-    {
-        ppRows        = (*cinfo.mem->access_virt_sarray)((j_common_ptr)&cinfo,
-                                                         ((bmp_dest_ptr)dest)->whole_image,
-                                                         nRow - 1,
-                                                         1,
-                                                         FALSE);
-        JSAMPROW pRow = ppRows[0];
+    BITMAPINFO bmi              = {};
+    bmi.bmiHeader.biSize        = sizeof(bmi.bmiHeader);
+    bmi.bmiHeader.biWidth       = nWidth;
+    bmi.bmiHeader.biHeight      = nHeight;
+    bmi.bmiHeader.biPlanes      = 1;
+    bmi.bmiHeader.biBitCount    = 24;
+    bmi.bmiHeader.biCompression = BI_RGB;
 
-        for (nLeft = ((bmp_dest_ptr)dest)->row_width; nLeft > 0; nLeft--)
+    void*         pBits   = 0;
+    const HBITMAP hBitmap = CreateDIBSection(0, &bmi, DIB_RGB_COLORS, &pBits, 0, 0);
+
+    if (hBitmap != 0)
+    {
+        const auto nStride = (nWidth * 3 + 3) & ~3;
+
+        for (int y = 0; y < nHeight; y++)
         {
-            *pDest = *pRow;
-            pRow++;
-            pDest++;
+            const stbi_uc* pSrc  = pPixels + (size_t)(nHeight - 1 - y) * nWidth * 3;
+            unsigned char* pDest = (unsigned char*)pBits + (size_t)y * nStride;
+
+            for (int x = 0; x < nWidth; x++)
+            {
+                pDest[0] = pSrc[2];
+                pDest[1] = pSrc[1];
+                pDest[2] = pSrc[0];
+                pDest += 3;
+                pSrc += 3;
+            }
         }
     }
 
-    jpeg_finish_decompress(&cinfo);
-    jpeg_destroy_decompress(&cinfo);
-
-    if (pFile != stdin)
-    {
-        fclose(pFile);
-    }
+    stbi_image_free(pPixels);
 
     return hBitmap;
-}
-
-// djpeg's comment-marker handler: skips the marker, printing its text to stderr when tracing.
-
-// FUNCTION: HYPERX 0x0048fa00
-boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
-{
-    boolean      traceit = (cinfo->err->trace_level >= 1);
-    unsigned int lastch  = 0;
-
-    INT32 length = jpeg_getc(cinfo) << 8;
-    length += jpeg_getc(cinfo);
-    length -= 2;
-
-    if (traceit)
-    {
-        // STRING: HYPERX 0x004c8994
-        fprintf(stderr, "Comment, length %ld:\n", length);
-    }
-
-    while (--length >= 0)
-    {
-        const unsigned int ch = jpeg_getc(cinfo);
-
-        if (traceit)
-        {
-            if (ch == '\r')
-            {
-                // STRING: HYPERX 0x004bc414
-                fprintf(stderr, "\n");
-            }
-            else if (ch == '\n')
-            {
-                if (lastch != '\r')
-                {
-                    fprintf(stderr, "\n");
-                }
-            }
-            else if (ch == '\\')
-            {
-                // STRING: HYPERX 0x004c8990
-                fprintf(stderr, "\\\\");
-            }
-            else if (isprint(ch))
-            {
-                putc(ch, stderr);
-            }
-            else
-            {
-                // STRING: HYPERX 0x004c8988
-                fprintf(stderr, "\\%03o", ch);
-            }
-
-            lastch = ch;
-        }
-    }
-
-    if (traceit)
-    {
-        fprintf(stderr, "\n");
-    }
-
-    return TRUE;
-}
-
-// FUNCTION: HYPERX 0x0048fb00
-int __cdecl GDI::jpeg_getc(j_decompress_ptr cinfo)
-{
-    struct jpeg_source_mgr* datasrc = cinfo->src;
-
-    if (datasrc->bytes_in_buffer == 0)
-    {
-        if (!(*datasrc->fill_input_buffer)(cinfo))
-        {
-            ERREXIT(cinfo, JERR_CANT_SUSPEND);
-        }
-    }
-
-    datasrc->bytes_in_buffer--;
-
-    return *datasrc->next_input_byte++;
 }

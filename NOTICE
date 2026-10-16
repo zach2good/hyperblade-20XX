@@ -35,22 +35,5 @@ and what you may do with it is between you and its rights holders.
 
 THIRD-PARTY CODE IN THIS REPOSITORY
 
-third_party/jpeg-6a is release 6a of the Independent JPEG Group's library, unchanged except
-for jconfig.h. It is under the IJG licence in third_party/jpeg-6a/README, not the LGPL. This
-software is based in part on the work of the Independent JPEG Group.
-
-src/engine/bmpwriter.cpp derives from wrbmp.c in IJG release 6a and is under the same IJG
-licence, not the LGPL. Its header says what was changed.
-
-tools/reccmp_call_table.patch is a change to reccmp's source and falls under reccmp's licence,
-AGPL-3.0.
-
-
-EXTERNAL DEPENDENCIES, NOT VENDORED HERE
-
-reccmp (https://github.com/isledecomp/reccmp) is AGPL-3.0. It is the scorer and the
-Ghidra publisher, and it is installed with pip. Apart from the patch above, none of its
-source is in this repository. Its licence covers reccmp; it does not reach this project's
-source.
-
-Microsoft Visual C++ 6.0 SP3 is Microsoft's. The build needs it and does not ship it.
+third_party/stb holds stb_image and stb_image_write by Sean Barrett, under the public domain
+or MIT terms in third_party/stb/LICENSE, not the LGPL.

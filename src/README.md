@@ -11,7 +11,6 @@ and name each function's address in the original.
 | `engine/` | The game engine, its objects, teams and arenas |
 | `graphics/` | DirectDraw, Direct3D and the software renderer |
 | `input/` | Keyboard, joystick and cheat input |
-| `jpeg/` | Markers for the IJG JPEG routines the original links |
 | `math/` | Vectors, matrices and the float helpers |
 | `net/` | DirectPlay sessions and network records |
 | `physics/` | Collision shapes and responses |
@@ -19,5 +18,4 @@ and name each function's address in the original.
 | `sound/` | DirectSound and the audio manager |
 | `ui/` | Menu screens, widgets and the HUD |
 
-`globals.cpp` and `globals.h` hold the globals no single class owns. The JPEG library itself is
-under `third_party/`.
+`globals.cpp` and `globals.h` hold the globals no single class owns.

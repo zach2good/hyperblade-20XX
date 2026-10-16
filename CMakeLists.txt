@@ -22,7 +22,7 @@ if(NOT HYPERX_COMPILE_ONLY)
 endif()
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
-set(JPEG6A_DIR "${CMAKE_SOURCE_DIR}/third_party/jpeg-6a")
+set(STB_DIR "${CMAKE_SOURCE_DIR}/third_party/stb")
 
 set(HYPERX_SOURCES
     src/anim/anim.cpp
@@ -239,6 +239,7 @@ set(HYPERX_SOURCES
     src/graphics/scrollbitmap.cpp
     src/graphics/softrenderer.cpp
     src/graphics/softtex.cpp
+    src/graphics/stbimpl.cpp
     src/graphics/steppedscrollbitmap.cpp
     src/graphics/swrend.cpp
     src/graphics/texcacheentry.cpp
@@ -384,52 +385,18 @@ set(HYPERX_SOURCES
     src/ui/uiscreen.cpp
     src/ui/widget.cpp)
 
-set(JPEG6A_SOURCES
-    jdapimin.c
-    jdapistd.c
-    jdatasrc.c
-    cdjpeg.c
-    jerror.c
-    jdinput.c
-    jdmarker.c
-    jmemmgr.c
-    jcomapi.c
-    jdmaster.c
-    jutils.c
-    jmemansi.c
-    jdmainct.c
-    jdcoefct.c
-    jdhuff.c
-    jdphuff.c
-    jddctmgr.c
-    jdpostct.c
-    jdsample.c
-    jdcolor.c
-    jdmerge.c
-    jquant2.c
-    jquant1.c
-    jidctred.c
-    jidctint.c
-    jidctfst.c
-    jidctflt.c)
-list(TRANSFORM JPEG6A_SOURCES PREPEND "${JPEG6A_DIR}/")
-
-add_library(jpeg6a STATIC ${JPEG6A_SOURCES} src/engine/bmpwriter.cpp)
-target_include_directories(jpeg6a PRIVATE "${JPEG6A_DIR}" "${CMAKE_SOURCE_DIR}/src")
-
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
-target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src" "${JPEG6A_DIR}")
+target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
 
 if(HYPERX_BRINGUP)
     target_compile_definitions(hyperx_objects PRIVATE HYPERX_BRINGUP)
 endif()
 
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
-foreach(target hyperx_objects jpeg6a)
-    target_compile_definitions(${target} PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
-        DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
-    target_compile_options(${target} PRIVATE /W3 /permissive /utf-8 /EHsc)
-endforeach()
+target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS
+    DIRECTDRAW_VERSION=0x0500 DIRECT3D_VERSION=0x0500 DIRECTSOUND_VERSION=0x0500)
+target_compile_options(hyperx_objects PRIVATE /W3 /permissive /utf-8 /EHsc)
 
 if(HYPERX_COMPILE_ONLY)
     message(STATUS "Compile only: no image is linked")
@@ -440,7 +407,7 @@ add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects> "${HYPERX_RES}")
 set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperx
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
-target_link_libraries(hyperx PRIVATE jpeg6a
+target_link_libraries(hyperx PRIVATE
     kernel32 user32 gdi32 winmm version ddraw dxguid dsound)
 target_link_options(hyperx PRIVATE /SAFESEH:NO /LARGEADDRESSAWARE)
 

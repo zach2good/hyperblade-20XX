@@ -30,6 +30,7 @@
 #include "ui/hudglobals.h"
 #include "math/floatbits.h"
 #include "planvm/decisionlog.h"
+#include "stb_image_write.h"
 
 namespace BringUp
 {
@@ -375,13 +376,10 @@ void SaveBitmap(const char* pszWhat, void* hBitmap)
     const HBITMAP    hbm = (HBITMAP)hBitmap;
     BITMAP           bm;
     BITMAPINFOHEADER info;
-    BITMAPFILEHEADER header;
     unsigned char*   pPixels;
-    long             nStride;
     long             nBytes;
     char             szName[64];
     HDC              hdc;
-    FILE*            pFile;
 
     if (s_nLimit < 0)
     {
@@ -423,8 +421,7 @@ void SaveBitmap(const char* pszWhat, void* hBitmap)
         return;
     }
 
-    nStride = ((bm.bmWidth * 3 + 3) / 4) * 4;
-    nBytes  = nStride * bm.bmHeight;
+    nBytes = bm.bmWidth * bm.bmHeight * 4;
 
     pPixels = (unsigned char*)malloc(nBytes);
 
@@ -438,9 +435,9 @@ void SaveBitmap(const char* pszWhat, void* hBitmap)
     memset(&info, 0, sizeof(info));
     info.biSize        = sizeof(info);
     info.biWidth       = bm.bmWidth;
-    info.biHeight      = bm.bmHeight;
+    info.biHeight      = -bm.bmHeight;
     info.biPlanes      = 1;
-    info.biBitCount    = 24;
+    info.biBitCount    = 32;
     info.biCompression = BI_RGB;
 
     hdc = GetDC(0);
@@ -490,28 +487,26 @@ void SaveBitmap(const char* pszWhat, void* hBitmap)
     sprintf(szName, "snap_%02d_%s.bmp", s_nNext, pszWhat);
     s_nNext++;
 
-    pFile = fopen(szName, "wb");
+    // GDI's top-down BGRX rows, packed in place to the RGB stb writes.
+    for (nIndex = 0; nIndex < bm.bmWidth * bm.bmHeight; nIndex++)
+    {
+        const unsigned char nBlue = pPixels[nIndex * 4];
 
-    if (pFile == 0)
+        pPixels[nIndex * 3]     = pPixels[nIndex * 4 + 2];
+        pPixels[nIndex * 3 + 1] = pPixels[nIndex * 4 + 1];
+        pPixels[nIndex * 3 + 2] = nBlue;
+    }
+
+    const int bWrote = stbi_write_bmp(szName, bm.bmWidth, bm.bmHeight, 3, pPixels);
+
+    free(pPixels);
+
+    if (bWrote == 0)
     {
         Trace("snapNoFile", 0);
 
-        free(pPixels);
-
         return;
     }
-
-    memset(&header, 0, sizeof(header));
-    header.bfType    = 0x4d42;
-    header.bfOffBits = sizeof(header) + sizeof(info);
-    header.bfSize    = header.bfOffBits + nBytes;
-
-    fwrite(&header, sizeof(header), 1, pFile);
-    fwrite(&info, sizeof(info), 1, pFile);
-    fwrite(pPixels, nBytes, 1, pFile);
-    fclose(pFile);
-
-    free(pPixels);
 
     TraceText("snapWrote", szName);
 }
