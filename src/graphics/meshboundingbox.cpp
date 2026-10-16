@@ -19,6 +19,10 @@ inline Vec3* MeshBoundingBox::Max()
     return &vMax;
 }
 
+// A span bound compares the pair as doubles and narrows the winner back to a float.
+#define SPAN_MIN(a, b) ((double)(a) < (double)(b) ? (float)(double)(a) : (float)(double)(b))
+#define SPAN_MAX(a, b) ((double)(a) > (double)(b) ? (float)(double)(a) : (float)(double)(b))
+
 // FUNCTION: HYPERX 0x00429740
 int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOwn, const MeshBoundingBox* pBox)
 {
@@ -60,7 +64,7 @@ int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOw
 
     for (i = 0; i < nStepsUsed; i++)
     {
-        bIntersect = min(bodyOther.vMax.x, bodyMine.vMax.x) >= max(bodyOther.vMin.x, bodyMine.vMin.x) && min(bodyOther.vMax.y, bodyMine.vMax.y) >= max(bodyOther.vMin.y, bodyMine.vMin.y) && min(bodyOther.vMax.z, bodyMine.vMax.z) >= max(bodyOther.vMin.z, bodyMine.vMin.z);
+        bIntersect = SPAN_MIN(bodyOther.vMax.x, bodyMine.vMax.x) >= SPAN_MAX(bodyOther.vMin.x, bodyMine.vMin.x) && SPAN_MIN(bodyOther.vMax.y, bodyMine.vMax.y) >= SPAN_MAX(bodyOther.vMin.y, bodyMine.vMin.y) && SPAN_MIN(bodyOther.vMax.z, bodyMine.vMax.z) >= SPAN_MAX(bodyOther.vMin.z, bodyMine.vMin.z);
 
         if (bIntersect != 0)
         {
