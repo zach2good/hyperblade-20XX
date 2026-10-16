@@ -34,6 +34,12 @@ jobs:
         with:
           arch: x64
 
+      # CPM downloads once per dependency version; the key changes when cmake/dependencies.cmake does.
+      - uses: actions/cache@v4
+        with:
+          path: .cpm-cache
+          key: cpm-${{ runner.os }}-${{ hashFiles('cmake/dependencies.cmake') }}
+
       - name: Configure and compile, without the game
         run: |
           cmake --preset msvc-x64 -DHYPERX_COMPILE_ONLY=ON
