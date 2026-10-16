@@ -203,7 +203,7 @@ static void CheckRanges(const std::vector<Vec3>& positions, const std::vector<Te
     aMaterials[4].pTexture = pTextureB;
 
     const auto& block = *reinterpret_cast<const MeshBlock*>(bytes.data());
-    const auto  mesh  = HwMesh::Build(block, aMaterials, 5);
+    const auto  mesh  = HwMesh::Build(block, aMaterials, 5, false);
 
     Expect(mesh.vertices.size() == 3 * 7, "ranged triangle count");
     Expect(mesh.ranges.size() == 3, "range count");
@@ -226,6 +226,53 @@ static void CheckRanges(const std::vector<Vec3>& positions, const std::vector<Te
     Expect(IsTriangle(pTri + 12, 0, 2, 1) && pTri[12].nColour == 0x10, "textured material without UVs untextured");
     Expect(IsTriangle(pTri + 15, 2, 4, 3) && pTri[15].nColour == 0x20, "second texture face");
     Expect(IsTriangle(pTri + 18, 3, 4, 5) && pTri[18].nColour == 0x50 && HasNormal(pTri[18], 0.0f, 0.0f, -1.0f), "back copy in back texture");
+}
+
+static bool NearNormal(const HwMesh::Vertex& vertex, float flX, float flY, float flZ)
+{
+    const auto flDX = vertex.aNormal[0] - flX;
+    const auto flDY = vertex.aNormal[1] - flY;
+    const auto flDZ = vertex.aNormal[2] - flZ;
+
+    return flDX * flDX + flDY * flDY + flDZ * flDZ < 1e-6f;
+}
+
+// Two faces at a shallow angle share their edge's normals, and a third at a right angle keeps its own.
+static void CheckSmooth()
+{
+    const auto positions = std::vector<Vec3>{
+        { 0.0f, 0.0f, 0.0f },
+        { 1.0f, 0.0f, 0.0f },
+        { 0.0f, 1.0f, 0.0f },
+        { 1.0f, 1.0f, 0.5f },
+        { 0.0f, 0.0f, 1.0f },
+    };
+
+    const auto faces = std::vector<FaceSpec>{
+        { { 0, 1, 2 }, {}, 0, Vec3{ 0.0f, 0.0f, 1.0f }, false },
+        { { 1, 3, 2 }, {}, 0, Vec3{ 0.0f, 0.6f, 0.8f }, false },
+        { { 0, 4, 1 }, {}, 0, Vec3{ 1.0f, 0.0f, 0.0f }, false },
+    };
+
+    const auto bytes = LayOut(positions, 0, {}, faces);
+
+    const MeshMaterial aMaterials[] = { MakeMaterial(0x10, 0.0f, 0.0f, 0.0f, -1) };
+
+    const auto& block = *reinterpret_cast<const MeshBlock*>(bytes.data());
+    const auto  flat  = HwMesh::Build(block, aMaterials, 1, false);
+    const auto  mesh  = HwMesh::Build(block, aMaterials, 1, true);
+
+    Expect(mesh.vertices.size() == 9 && flat.vertices.size() == 9, "smooth triangle count");
+
+    if (mesh.vertices.size() != 9 || flat.vertices.size() != 9)
+    {
+        return;
+    }
+
+    Expect(HasNormal(flat.vertices[1], 0.0f, 0.0f, 1.0f), "flat keeps the face normal");
+    Expect(NearNormal(mesh.vertices[0], 0.0f, 0.0f, 1.0f), "a crease is not smoothed across");
+    Expect(NearNormal(mesh.vertices[1], 0.0f, 0.31622777f, 0.9486833f), "a shallow edge is smoothed");
+    Expect(NearNormal(mesh.vertices[6], 1.0f, 0.0f, 0.0f), "the creased face keeps its own");
 }
 
 int main()
@@ -263,7 +310,7 @@ int main()
     };
 
     const auto& block    = *reinterpret_cast<const MeshBlock*>(bytes.data());
-    const auto  mesh     = HwMesh::Build(block, aMaterials, 4);
+    const auto  mesh     = HwMesh::Build(block, aMaterials, 4, false);
     const auto& vertices = mesh.vertices;
 
     Expect(mesh.ranges.size() == 1 && IsRange(mesh.ranges[0], 0, static_cast<std::uint32_t>(vertices.size()), nullptr), "untextured block is one range");
@@ -315,6 +362,8 @@ int main()
     pTri += 3;
 
     Expect(IsTriangle(pTri, 0, 2, 1) && pTri[0].nColour == 0x7fa0b0c0, "back index out of range keeps the front");
+
+    CheckSmooth();
 
     std::printf("%d failed\n", s_nFailed);
 

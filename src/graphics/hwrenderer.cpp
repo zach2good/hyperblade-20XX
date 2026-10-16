@@ -49,6 +49,7 @@ SDL_Texture*             s_pTexture  = nullptr;
 int                      s_nWidth    = 0;
 int                      s_nHeight   = 0;
 bool                     s_bTextures = false;
+bool                     s_bSmooth   = false;
 bool                     s_bLinear   = false;
 unsigned int             s_nFrame    = 0;
 
@@ -261,7 +262,7 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 
         auto& mesh = s_meshes[key];
 
-        const auto built = HwMesh::Build(*draw.pBlock, draw.pMaterials, draw.nMaterialCount);
+        const auto built = HwMesh::Build(*draw.pBlock, draw.pMaterials, draw.nMaterialCount, s_bSmooth);
 
         if (built.vertices.empty())
         {
@@ -426,6 +427,14 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     s_bTextures = GraphicsSettings::Textures();
     s_bLinear   = GraphicsSettings::LinearFiltering();
     s_nFrame++;
+
+    // The cached meshes carry their normals, so a change of shading builds them again.
+    if (GraphicsSettings::SmoothShading() != s_bSmooth)
+    {
+        s_bSmooth = GraphicsSettings::SmoothShading();
+
+        ForgetMeshes();
+    }
 
     if (nWidth <= 0 || nHeight <= 0 || !Ready(pRenderer) || !Fit(pRenderer, nWidth, nHeight))
     {

@@ -3,6 +3,7 @@
 #include "graphics/meshface.h"
 #include "graphics/meshmaterial.h"
 #include "graphics/texcoord.h"
+#include <cmath>
 #include <utility>
 
 namespace
@@ -41,11 +42,63 @@ bool FaceInRange(const MeshBlock& block, MeshFace& face, int nMaterialCount)
     return true;
 }
 
-void AppendTriangle(std::vector<HwMesh::Vertex>& vertices, const MeshBlock& block, MeshFace& face, const MeshMaterial& material, const Vec3& vNormal, int nA, int nB, int nC)
+// Faces meeting at more than this angle keep a hard edge between them.
+constexpr auto CREASE_COS = 0.5f;
+
+using FacesByVertex = std::vector<std::vector<const MeshFace*>>;
+
+FacesByVertex BuildFacesByVertex(const MeshBlock& block, int nMaterialCount)
+{
+    auto faces = FacesByVertex((size_t)block.nVertexCount);
+
+    for (auto nFace = 0; nFace < block.nFaceCount; nFace++)
+    {
+        auto& face = *block.Face(nFace);
+
+        if (!FaceInRange(block, face, nMaterialCount))
+        {
+            continue;
+        }
+
+        for (auto nCorner = 0; nCorner < face.nCorners; nCorner++)
+        {
+            faces[(size_t)face.aCorners[nCorner]].push_back(&face);
+        }
+    }
+
+    return faces;
+}
+
+Vec3 CornerNormal(const FacesByVertex& faces, const MeshFace& face, int nCorner)
+{
+    auto vSum = Vec3{ 0.0f, 0.0f, 0.0f };
+
+    for (const MeshFace* const pOther : faces[(size_t)face.aCorners[nCorner]])
+    {
+        const auto& vOther = pOther->vNormal;
+
+        if (vOther.x * face.vNormal.x + vOther.y * face.vNormal.y + vOther.z * face.vNormal.z >= CREASE_COS)
+        {
+            vSum = Vec3{ vSum.x + vOther.x, vSum.y + vOther.y, vSum.z + vOther.z };
+        }
+    }
+
+    const auto flLength = std::sqrt(vSum.x * vSum.x + vSum.y * vSum.y + vSum.z * vSum.z);
+
+    if (flLength <= 0.0f)
+    {
+        return face.vNormal;
+    }
+
+    return Vec3{ vSum.x / flLength, vSum.y / flLength, vSum.z / flLength };
+}
+
+void AppendTriangle(std::vector<HwMesh::Vertex>& vertices, const MeshBlock& block, MeshFace& face, const MeshMaterial& material, const std::vector<Vec3>& normals, int nA, int nB, int nC)
 {
     for (const auto nCorner : { nA, nB, nC })
     {
         const auto& vPosition = block.Vertices()[face.aCorners[nCorner]];
+        const auto& vNormal   = normals[(size_t)nCorner];
 
         const auto uv = [&]
         {
@@ -142,8 +195,17 @@ std::vector<HwMesh::Vertex> HwMesh::BuildShadow(const Vec3* pPoints, int nPointC
     return vertices;
 }
 
-HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount)
+HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterials, int nMaterialCount, bool bSmooth)
 {
+    auto faces = FacesByVertex();
+
+    if (bSmooth)
+    {
+        faces = BuildFacesByVertex(block, nMaterialCount);
+    }
+
+    auto normals = std::vector<Vec3>();
+
     // A block uses a handful of textures, so a linear search finds each group.
     auto groups = std::vector<std::pair<const TexCacheEntry*, std::vector<Vertex> > >();
 
@@ -183,10 +245,20 @@ HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterial
         const auto& front     = pMaterials[face.cMaterial];
         auto&       frontList = group(face, front);
 
+        normals.assign((size_t)face.nCorners, face.vNormal);
+
+        if (bSmooth)
+        {
+            for (auto nCorner = 0; nCorner < face.nCorners; nCorner++)
+            {
+                normals[(size_t)nCorner] = CornerNormal(faces, face, nCorner);
+            }
+        }
+
         // D3DRend::DrawFace fans from corner zero back through the last corner to the first.
         for (auto nCorner = face.nCorners - 1; nCorner >= 2; nCorner--)
         {
-            AppendTriangle(frontList, block, face, front, face.vNormal, 0, nCorner, nCorner - 1);
+            AppendTriangle(frontList, block, face, front, normals, 0, nCorner, nCorner - 1);
         }
 
         // The original reads past the table for a back index out of range.
@@ -196,12 +268,16 @@ HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterial
         }
 
         const auto& back     = pMaterials[front.nBackIndex];
-        const auto  vFlipped = Vec3{ -face.vNormal.x, -face.vNormal.y, -face.vNormal.z };
         auto&       backList = group(face, back);
+
+        for (auto& vNormal : normals)
+        {
+            vNormal = Vec3{ -vNormal.x, -vNormal.y, -vNormal.z };
+        }
 
         for (auto nCorner = 1; nCorner < face.nCorners - 1; nCorner++)
         {
-            AppendTriangle(backList, block, face, back, vFlipped, 0, nCorner, nCorner + 1);
+            AppendTriangle(backList, block, face, back, normals, 0, nCorner, nCorner + 1);
         }
     }
 

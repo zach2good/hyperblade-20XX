@@ -65,6 +65,7 @@ void Build()
     Checkbox("Textures", GraphicsSettings::Textures(), GraphicsSettings::ToggleTextures);
     Checkbox("Linear filtering", GraphicsSettings::LinearFiltering(), GraphicsSettings::ToggleLinearFiltering);
     Checkbox("Full detail models", GraphicsSettings::FullDetail(), GraphicsSettings::ToggleFullDetail);
+    Checkbox("Smooth shading", GraphicsSettings::SmoothShading(), GraphicsSettings::ToggleSmoothShading);
     ImGui::EndDisabled();
 
     ImGui::SeparatorText("Timing");

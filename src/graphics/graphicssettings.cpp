@@ -13,6 +13,7 @@ constexpr auto TEXTURES_KEY  = "Textures";
 constexpr auto FILTERING_KEY = "LinearFiltering";
 constexpr auto UNCAPPED_KEY  = "Uncapped";
 constexpr auto DETAIL_KEY    = "FullDetail";
+constexpr auto SMOOTH_KEY    = "SmoothShading";
 
 auto s_bLoaded   = false;
 auto s_renderer  = GraphicsSettings::Renderer::SOFTWARE;
@@ -20,6 +21,7 @@ auto s_bTextures = true;
 auto s_bLinear   = false;
 auto s_bUncapped = false;
 auto s_bDetail   = true;
+auto s_bSmooth   = false;
 
 void Load()
 {
@@ -39,6 +41,7 @@ void Load()
     s_bLinear   = g_pGameOptions->ReadInt(SECTION, FILTERING_KEY, 0) != 0;
     s_bUncapped = g_pGameOptions->ReadInt(SECTION, UNCAPPED_KEY, 0) != 0;
     s_bDetail   = g_pGameOptions->ReadInt(SECTION, DETAIL_KEY, 1) != 0;
+    s_bSmooth   = g_pGameOptions->ReadInt(SECTION, SMOOTH_KEY, 0) != 0;
 }
 
 } // namespace
@@ -159,4 +162,25 @@ void GraphicsSettings::ToggleFullDetail()
     s_bDetail = !s_bDetail;
 
     g_pGameOptions->WriteInt(SECTION, DETAIL_KEY, (int)s_bDetail);
+}
+
+bool GraphicsSettings::SmoothShading()
+{
+    Load();
+
+    return s_bSmooth;
+}
+
+void GraphicsSettings::ToggleSmoothShading()
+{
+    Load();
+
+    if (g_pGameOptions == 0)
+    {
+        return;
+    }
+
+    s_bSmooth = !s_bSmooth;
+
+    g_pGameOptions->WriteInt(SECTION, SMOOTH_KEY, (int)s_bSmooth);
 }

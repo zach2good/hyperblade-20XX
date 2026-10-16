@@ -36,6 +36,10 @@ void ToggleUncapped();
 bool FullDetail();
 void ToggleFullDetail();
 
+// Faces lit flat, as the original did, or smoothly across the edges that do not crease.
+bool SmoothShading();
+void ToggleSmoothShading();
+
 } // namespace GraphicsSettings
 
 #endif
