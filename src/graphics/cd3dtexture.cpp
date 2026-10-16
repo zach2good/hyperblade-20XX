@@ -82,11 +82,8 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (g_d3dState.nTextureFormat < 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bd928
-            Object::Trace("CD3DTexture::Create - No texture formats available!\n Create Failed!\n");
-        }
+        // STRING: HYPERX 0x004bd928
+        TRACE("CD3DTexture::Create - No texture formats available!\n Create Failed!\n");
 
         return 0;
     }
@@ -122,13 +119,10 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bd8bc
-            Object::Trace("CD3DTexture::Create - Could not create texture %s.\n%s\n",
-                          pszName,
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bd8bc
+        TRACE("CD3DTexture::Create - Could not create texture %s.\n%s\n",
+              pszName,
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -151,12 +145,9 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bd890
-            Object::Trace("Could not get from dest texture handle.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bd890
+        TRACE("Could not get from dest texture handle.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -165,12 +156,9 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bd864
-            Object::Trace("Could not load src texture into dest.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bd864
+        TRACE("Could not load src texture into dest.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -212,11 +200,8 @@ int CD3DTexture::Restore(const char* pName)
     }
     else
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bda94
-            Object::Trace("CD3DTexture::RestoreContents FAILED! No BitMap loaded!\n");
-        }
+        // STRING: HYPERX 0x004bda94
+        TRACE("CD3DTexture::RestoreContents FAILED! No BitMap loaded!\n");
 
         return 0;
     }
@@ -227,11 +212,8 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_pSurface == 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bda50
-            Object::Trace("CD3DTexture::RestoreContents FAILED! No source surface created!\n");
-        }
+        // STRING: HYPERX 0x004bda50
+        TRACE("CD3DTexture::RestoreContents FAILED! No source surface created!\n");
 
         return 0;
     }
@@ -240,13 +222,10 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bda10
-            Object::Trace("CD3DTexture::RestoreContents - QueryInterface failed!\n%s\n%s\n",
-                          pName,
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bda10
+        TRACE("CD3DTexture::RestoreContents - QueryInterface failed!\n%s\n%s\n",
+              pName,
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -255,12 +234,9 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bd9bc
-            Object::Trace("CD3DTexture::RestoreContents - Could not restore destination texture surface.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bd9bc
+        TRACE("CD3DTexture::RestoreContents - Could not restore destination texture surface.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         if (m_pTextureSurface != 0)
         {
@@ -281,12 +257,9 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bd970
-            Object::Trace("CD3DTexture::RestoreContents - Could not load src texture into dest.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bd970
+        TRACE("CD3DTexture::RestoreContents - Could not load src texture into dest.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         if (m_pTextureSurface != 0)
         {
@@ -427,12 +400,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
     {
         pSurfacePtr->Release();
 
-        if (0)
-        {
-            // STRING: HYPERX 0x004bdb98
-            Object::Trace("Lock failed while loading texture surface.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bdb98
+        TRACE("Lock failed while loading texture surface.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -538,12 +508,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
 
                 m_pBitmapRecord = 0;
 
-                if (0)
-                {
-                    // STRING: HYPERX 0x004bdb68
-                    Object::Trace("Unknown pixel format while loading texture. %d\n",
-                                  sd.ddpfPixelFormat.dwRGBBitCount);
-                }
+                // STRING: HYPERX 0x004bdb68
+                TRACE("Unknown pixel format while loading texture. %d\n",
+                      sd.ddpfPixelFormat.dwRGBBitCount);
 
                 return 0;
         }
@@ -635,11 +602,8 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
             pSurfacePtr->Unlock(0);
             pSurfacePtr->Release();
 
-            if (0)
-            {
-                // STRING: HYPERX 0x004bdb40
-                Object::Trace("Palette burst while loading texture!\n");
-            }
+            // STRING: HYPERX 0x004bdb40
+            TRACE("Palette burst while loading texture!\n");
 
             return 0;
         }
@@ -664,12 +628,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
         {
             pSurfacePtr->Release();
 
-            if (0)
-            {
-                // STRING: HYPERX 0x004bdb04
-                Object::Trace("Create palette failed while loading texture surface.\n%s\n",
-                              DDraw::ErrorToString(m_hr));
-            }
+            // STRING: HYPERX 0x004bdb04
+            TRACE("Create palette failed while loading texture surface.\n%s\n",
+                  DDraw::ErrorToString(m_hr));
 
             return 0;
         }
@@ -681,12 +642,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
             pSurfacePtr->Release();
             pPalette->Release();
 
-            if (0)
-            {
-                // STRING: HYPERX 0x004bdacc
-                Object::Trace("SetPalette failed while loading texture surface.\n%s\n",
-                              DDraw::ErrorToString(m_hr));
-            }
+            // STRING: HYPERX 0x004bdacc
+            TRACE("SetPalette failed while loading texture surface.\n%s\n",
+                  DDraw::ErrorToString(m_hr));
 
             return 0;
         }
@@ -744,12 +702,9 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
 
     if (m_hr != 0)
     {
-        if (0)
-        {
-            // STRING: HYPERX 0x004bdc7c
-            Object::Trace("Create surface in CreateVidTexture failed.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bdc7c
+        TRACE("Create surface in CreateVidTexture failed.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -775,12 +730,9 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
                 *ppSurface = 0;
             }
 
-            if (0)
-            {
-                // STRING: HYPERX 0x004bdc4c
-                Object::Trace("CreatePalette in CreateVidTexture failed.\n%s\n",
-                              DDraw::ErrorToString(m_hr));
-            }
+            // STRING: HYPERX 0x004bdc4c
+            TRACE("CreatePalette in CreateVidTexture failed.\n%s\n",
+                  DDraw::ErrorToString(m_hr));
 
             return 0;
         }
@@ -803,12 +755,9 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
                 pPalIface = 0;
             }
 
-            if (0)
-            {
-                // STRING: HYPERX 0x004bdc20
-                Object::Trace("SetPalette in CreateVidTexture failed.\n%s\n",
-                              DDraw::ErrorToString(m_hr));
-            }
+            // STRING: HYPERX 0x004bdc20
+            TRACE("SetPalette in CreateVidTexture failed.\n%s\n",
+                  DDraw::ErrorToString(m_hr));
 
             return 0;
         }
@@ -832,12 +781,9 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
             pPalIface = 0;
         }
 
-        if (0)
-        {
-            // STRING: HYPERX 0x004bdbf0
-            Object::Trace("QueryInterface in CreateVidTexture failed.\n%s\n",
-                          DDraw::ErrorToString(m_hr));
-        }
+        // STRING: HYPERX 0x004bdbf0
+        TRACE("QueryInterface in CreateVidTexture failed.\n%s\n",
+              DDraw::ErrorToString(m_hr));
 
         return 0;
     }
@@ -925,21 +871,15 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
             return 0;
 
             // Two unknown unreachable statements the original leaves behind this return.
-            if (0)
-            {
-                Object::Trace("Texture Map is a 8 bit/pixel bit map!\n");
-            }
+            TRACE("Texture Map is a 8 bit/pixel bit map!\n");
 
             m_pBitmapRecord = 0;
         }
 
         if (m_pBitmapRecord->biBitCount == 24)
         {
-            if (0)
-            {
-                // STRING: HYPERX 0x004bdcd0
-                Object::Trace("Texture Map is 24 bit.\n");
-            }
+            // STRING: HYPERX 0x004bdcd0
+            TRACE("Texture Map is 24 bit.\n");
         }
     }
     else
