@@ -9,11 +9,11 @@
 // FUNCTION: HYPERX 0x0042cf20
 int VisualEffectFade::Tick()
 {
-    if ((DWORD)SDL_GetTicks() - m_dwStepped > m_nDuration)
+    if ((unsigned int)SDL_GetTicks() - m_dwStepped > m_nDuration)
     {
         m_bPhase = ApplyPhase(m_bPhase);
 
-        m_dwStepped = (DWORD)SDL_GetTicks();
+        m_dwStepped = (unsigned int)SDL_GetTicks();
 
         return 1;
     }

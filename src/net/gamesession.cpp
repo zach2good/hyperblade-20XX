@@ -155,9 +155,9 @@ int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
 
     for (int i = 0; i < 2 && nResult != 0; i++)
     {
-        const DWORD dwStart = (DWORD)SDL_GetTicks();
+        const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
-        while (dwStart + 200 < (DWORD)SDL_GetTicks())
+        while (dwStart + 200 < (unsigned int)SDL_GetTicks())
         {
         }
 

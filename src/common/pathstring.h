@@ -21,7 +21,7 @@ public:
         m_str.FormatResourcePath(pszDirectory, pszName, pszExtension);
     }
 
-    PathString(LPCSTR psz, int nReserve)
+    PathString(const char* psz, int nReserve)
     {
         int nLength;
 

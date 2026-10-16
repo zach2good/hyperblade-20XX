@@ -348,11 +348,11 @@ int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDat
 
         if (nResult > 0 && nResult < SEND_QUEUE_LIMIT)
         {
-            const DWORD dwDeadline = (DWORD)SDL_GetTicks() + nResult * SEND_QUEUE_MS_PER_UNIT;
+            const unsigned int dwDeadline = (unsigned int)SDL_GetTicks() + nResult * SEND_QUEUE_MS_PER_UNIT;
 
             if (nResult > SEND_QUEUE_SPIN_FLOOR)
             {
-                while (dwDeadline > (DWORD)SDL_GetTicks())
+                while (dwDeadline > (unsigned int)SDL_GetTicks())
                 {
                 }
             }

@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nSho
         if (g_frameTimer.bFrameTimesOn)
         {
             g_frameTimer.nClockReads++;
-            g_frameTimer.dwFrameStartTime = (DWORD)SDL_GetTicks();
+            g_frameTimer.dwFrameStartTime = (unsigned int)SDL_GetTicks();
         }
 
         while (Window::Pump())

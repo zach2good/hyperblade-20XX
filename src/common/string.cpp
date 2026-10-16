@@ -279,7 +279,7 @@ String::String(const String& src)
 }
 
 // FUNCTION: HYPERX 0x0042f420
-String::String(LPCSTR psz)
+String::String(const char* psz)
 {
     m_pchData = *GetGlobalStringPtr();
 
@@ -315,7 +315,7 @@ void String::FreeBuffer(void)
 }
 
 // FUNCTION: HYPERX 0x0042f4b0
-bool String::AssignResourceId(UINT nID)
+bool String::AssignResourceId(unsigned int nID)
 {
     const char* const pszText = StringTable::Find(nID);
 
@@ -545,7 +545,7 @@ void String::MakeUnique(void)
 }
 
 // FUNCTION: HYPERX 0x00480bd0
-int __cdecl String::ExtractToken(const char* pszSource, LPSTR pszDest, const char** ppszNext)
+int __cdecl String::ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext)
 {
     const char* pszEnd;
     int         nLength;

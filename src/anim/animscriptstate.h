@@ -11,7 +11,7 @@ class AnimNode;
 // The set filter and the clip name prefix are string resources 32 and 66.
 struct AnimScriptState
 {
-    AnimScriptState(LPCSTR pszFilter, LPCSTR pszPrefix)
+    AnimScriptState(const char* pszFilter, const char* pszPrefix)
     : bStarted(0)
     , pDb(0)
     , pSegment(0)

@@ -321,7 +321,7 @@ void SoundMixer::Play(SoundEntry* pSound)
     voice.pSource = pSound;
 
     pSound->m_nPlayState = SOUND_STATE_PLAYING;
-    pSound->m_nStartedMs = (DWORD)SDL_GetTicks();
+    pSound->m_nStartedMs = (unsigned int)SDL_GetTicks();
 }
 
 // FUNCTION: HYPERX 0x004907d0

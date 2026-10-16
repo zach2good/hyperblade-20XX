@@ -369,7 +369,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
     if (nTrack == CD_TRACK_RANDOM)
     {
-        srand((DWORD)SDL_GetTicks());
+        srand((unsigned int)SDL_GetTicks());
 
         int nPicked = CD_TRACK_RANDOM;
         int nScan   = g_nCDRecentCursor;

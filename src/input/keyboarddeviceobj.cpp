@@ -102,7 +102,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 
     for (int nInputSlot = 0; nInputSlot < INPUT_SLOT_COUNT; nInputSlot++)
     {
-        const DWORD dwNow = (DWORD)SDL_GetTicks();
+        const unsigned int dwNow = (unsigned int)SDL_GetTicks();
 
         m_aPressTime[(short)nInputSlot]   = dwNow;
         m_aReleaseTime[(short)nInputSlot] = dwNow + REPEAT_STEP_MS;
@@ -461,7 +461,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
             if ((unsigned int)m_aReleaseTime[nIndex] >= (unsigned int)m_aPressTime[nIndex])
             {
                 m_aPrevPressTime[(short)nIndex] = m_aPressTime[(short)nIndex];
-                dwNow                           = (DWORD)SDL_GetTicks();
+                dwNow                           = (unsigned int)SDL_GetTicks();
                 m_aPressTime[(short)nIndex]     = dwNow;
 
                 if (dwNow - (unsigned int)m_aReleaseTime[(short)nIndex] < m_nDoubleTapMs && (unsigned int)(m_aReleaseTime[(short)nIndex] - m_aPrevPressTime[(short)nIndex]) < m_nDoubleTapMs)
@@ -550,7 +550,7 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 
             nResult                           = 0;
             m_aPrevReleaseTime[(short)nIndex] = m_aReleaseTime[(short)nIndex];
-            dwNow                             = (DWORD)SDL_GetTicks();
+            dwNow                             = (unsigned int)SDL_GetTicks();
             m_aReleaseTime[(short)nIndex]     = dwNow;
             nElapsed                          = dwNow - (unsigned int)m_aPressTime[(short)nIndex];
 

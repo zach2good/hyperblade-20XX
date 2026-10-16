@@ -21,7 +21,7 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     timer->nPerfSampleCount++;
 
-    const unsigned int dwNow     = (DWORD)SDL_GetTicks();
+    const unsigned int dwNow     = (unsigned int)SDL_GetTicks();
     const unsigned int dwElapsed = dwNow - dwStart;
 
     if (timer->bFrameTimesOn == 0 || dwElapsed < 5000)
@@ -57,16 +57,16 @@ double FrameTimer::Calibrate(void)
 {
     unsigned int nTotal = 0;
 
-    const unsigned int dwStart = (DWORD)SDL_GetTicks();
+    const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nClockReads++;
 
-        nTotal += (DWORD)SDL_GetTicks();
+        nTotal += (unsigned int)SDL_GetTicks();
     }
 
-    const double dResult = ((double)(DWORD)SDL_GetTicks() - dwStart) / nClockReads;
+    const double dResult = ((double)(unsigned int)SDL_GetTicks() - dwStart) / nClockReads;
 
     Restart();
 
@@ -78,16 +78,16 @@ double FrameTimer::BenchmarkResolution(void)
 {
     unsigned int nTotal = 0;
 
-    const unsigned int dwStart = (DWORD)SDL_GetTicks();
+    const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nPerfSampleCount++;
 
-        nTotal += ((DWORD)SDL_GetTicks() - dwStart);
+        nTotal += ((unsigned int)SDL_GetTicks() - dwStart);
     }
 
-    const double dResult = ((double)(DWORD)SDL_GetTicks() - dwStart) / nPerfSampleCount;
+    const double dResult = ((double)(unsigned int)SDL_GetTicks() - dwStart) / nPerfSampleCount;
 
     Restart();
 
@@ -100,14 +100,14 @@ double FrameTimer::BenchmarkTextSpeed(HDC hDC)
     // STRING: HYPERX 0x004c1e78
     g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", (int)floor(30.5));
 
-    const unsigned int dwStart = (DWORD)SDL_GetTicks();
+    const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 100; nLoop++)
     {
         ExtTextOutA(hDC, 10, 0, 0, 0, g_szFpsText, g_nFpsTextLength, 0);
     }
 
-    const unsigned int dwEnd = (DWORD)SDL_GetTicks();
+    const unsigned int dwEnd = (unsigned int)SDL_GetTicks();
 
     const double dResult = ((double)dwEnd - (double)dwStart) * 0.001;
 
@@ -130,7 +130,7 @@ void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
 
     nClockReads++;
 
-    dwFrameStartTime = (DWORD)SDL_GetTicks();
+    dwFrameStartTime = (unsigned int)SDL_GetTicks();
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {

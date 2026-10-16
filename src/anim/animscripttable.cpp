@@ -54,7 +54,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 
         m_nCount = 0;
 
-        AnimScriptState state((LPCSTR)SET_FILTER_RESOURCE, (LPCSTR)CLIP_PREFIX_RESOURCE);
+        AnimScriptState state((const char*)SET_FILTER_RESOURCE, (const char*)CLIP_PREFIX_RESOURCE);
         char*           pLine;
 
         while (file.m_file.GetNextLine(&pLine) > 0 && ParseScriptLine(pLine, &state) != 0)

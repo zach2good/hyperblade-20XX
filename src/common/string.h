@@ -35,7 +35,7 @@ class String
 {
 public:
     // Free functions in the original, made static members named by the class.
-    static int __cdecl      ExtractToken(const char* pszSource, LPSTR pszDest, const char** ppszNext);
+    static int __cdecl      ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext);
     static String __stdcall Concat(const String& source, const char* pszSuffix);
     static void __stdcall   FreeHeader(StringHeader* pHeader);
     static void __cdecl     Format(String* pString, const char* pszFormat, ...);
@@ -57,7 +57,7 @@ public:
     String(const String& src);
 
     // 0x0042f420; not explicit, because callers convert from a C string.
-    String(LPCSTR psz);
+    String(const char* psz);
 
     // FUNCTION: HYPERX 0x004197b0
     ~String(void)
@@ -100,7 +100,7 @@ public:
     char* Reserve(int nLength);
     void  Empty(void);
     void  ConcatAlloc(int nLength1, const char* pchData1, int nLength2, const char* pchData2);
-    bool  AssignResourceId(UINT nID);
+    bool  AssignResourceId(unsigned int nID);
     void  AppendData(int nLength, const char* pchData);
 
     // Answers the string it was called on.

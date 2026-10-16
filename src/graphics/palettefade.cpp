@@ -67,7 +67,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_nDuration = 1000;
 
-    m_dwStepped = (DWORD)SDL_GetTicks();
+    m_dwStepped = (unsigned int)SDL_GetTicks();
 
     m_bPhase = 1;
 }
