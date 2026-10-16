@@ -10,6 +10,7 @@
 #include "graphics/meshblock.h"
 #include "graphics/meshbone.h"
 #include "graphics/presenter.h"
+#include "graphics/renderer.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <imgui.h>
@@ -99,14 +100,14 @@ void GraphicsTab()
 
     ImGui::BeginDisabled(!Presenter::HasGPU());
 
-    if (ImGui::RadioButton("Software (original)", !Hardware()) && Hardware())
+    if (ImGui::RadioButton("Original software renderer", !Hardware()) && Hardware())
     {
         GraphicsSettings::ToggleRenderer();
     }
 
     ImGui::SameLine();
 
-    if (ImGui::RadioButton("Hardware", Hardware()) && !Hardware())
+    if (ImGui::RadioButton("New hardware renderer", Hardware()) && !Hardware())
     {
         GraphicsSettings::ToggleRenderer();
     }
@@ -124,9 +125,67 @@ void GraphicsTab()
     Checkbox("Textured models", Switch::TEXTURES, "The textured model set, as the original's Direct3D mode drew it. Off draws the shaded models in palette colours.");
     Checkbox("Full detail at any distance", Switch::FULL_DETAIL, "Always the most detailed textured model. Off steps down with distance, as the engine picks.");
 
+    auto bDrome = g_nDromeTextured != 0;
+
+    ImGui::BeginDisabled(g_bShadedDromeModels != 0);
+
+    if (ImGui::Checkbox("Textured drome (F8)", &bDrome))
+    {
+        Renderer::ToggleDromeTextured();
+    }
+
+    ImGui::SetItemTooltip("The original's F8: the drome with its textures, or shaded. The -m switch keeps it shaded.");
+    ImGui::EndDisabled();
+
     ImGui::SeparatorText("Surfaces");
     Checkbox("Smooth texture filtering", Switch::LINEAR_FILTERING, "Linear filtering, as the original's F7 toggled. Off is nearest.");
-    Checkbox("Smooth shading", Switch::SMOOTH_SHADING, "Light blends across edges that don't crease. Off lights each face flat, as the original did.");
+
+    ImGui::SeparatorText("Shading");
+
+    const auto bSmooth = GraphicsSettings::On(Switch::SMOOTH_SHADING);
+    const auto bPhong  = GraphicsSettings::On(Switch::PHONG_SHADING);
+
+    if (ImGui::RadioButton("Flat (original)", !bSmooth))
+    {
+        if (bSmooth)
+        {
+            GraphicsSettings::Toggle(Switch::SMOOTH_SHADING);
+        }
+    }
+
+    ImGui::SetItemTooltip("Each face lit as one, as the original did.");
+    ImGui::SameLine();
+
+    if (ImGui::RadioButton("Gouraud shading", bSmooth && !bPhong))
+    {
+        if (!bSmooth)
+        {
+            GraphicsSettings::Toggle(Switch::SMOOTH_SHADING);
+        }
+
+        if (bPhong)
+        {
+            GraphicsSettings::Toggle(Switch::PHONG_SHADING);
+        }
+    }
+
+    ImGui::SetItemTooltip("Light worked out at each corner and blended across the face, smooth across edges that don't crease.");
+    ImGui::SameLine();
+
+    if (ImGui::RadioButton("Phong shading", bSmooth && bPhong))
+    {
+        if (!bSmooth)
+        {
+            GraphicsSettings::Toggle(Switch::SMOOTH_SHADING);
+        }
+
+        if (!bPhong)
+        {
+            GraphicsSettings::Toggle(Switch::PHONG_SHADING);
+        }
+    }
+
+    ImGui::SetItemTooltip("Light worked out at each pixel from the blended normal, for the smoothest highlights.");
 
     ImGui::SeparatorText("Draw order");
     Checkbox("Paint in original order", Switch::PAINTERS_ORDER, "Each mesh covers the ones sorted behind it, as the original painted them. Off depth tests every mesh against the others.");
@@ -151,7 +210,7 @@ void LightingTab()
     Checkbox("Fill from every light", Switch::SEVERAL_LIGHTS, "The original lights each face by one light. On, the other lights fill in where they face it.");
 
     ImGui::SeparatorText("Rok");
-    Checkbox("Rok glow", Switch::ROK_LIGHT, "A point light carried by the rok, added over the scene lights.");
+    Checkbox("Rok emits light", Switch::ROK_LIGHT, "A point light carried by the rok, added over the scene lights.");
 
     ImGui::BeginDisabled(!GraphicsSettings::On(Switch::ROK_LIGHT));
 
@@ -166,7 +225,7 @@ void LightingTab()
     ImGui::EndDisabled();
 
     ImGui::SeparatorText("Shadows");
-    Checkbox("Shadow maps", Switch::SHADOW_MAPS, "Objects cast shadows from both lights above the arena, in place of the original's shadow shapes.");
+    Checkbox("Realtime shadows", Switch::SHADOW_MAPS, "Objects cast shadow maps from both lights above the arena, in place of the original's shadow shapes.");
 
     ImGui::EndDisabled();
     ImGui::EndTabItem();
