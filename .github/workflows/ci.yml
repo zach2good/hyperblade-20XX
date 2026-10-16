@@ -1,12 +1,13 @@
 # The exe needs nothing from the game to build, so CI links it, runs the tests that need no game
-# data, and uploads the drop-in zip. A pushed v* tag publishes that zip as a GitHub release.
+# data, and uploads the drop-in zip. A pushed version tag, such as 0.1.0, publishes that zip as a
+# GitHub release whose notes give the SHA256 of the exe and the zip.
 
 name: ci
 
 on:
   push:
     branches: ["**"]
-    tags: ["v*"]
+    tags: ["[0-9]+.[0-9]+.[0-9]+"]
   pull_request:
   workflow_dispatch:
 
@@ -57,14 +58,31 @@ jobs:
           Copy-Item build/out/hyperblade_20XX.exe, build/out/SDL3.dll package/
           Compress-Archive -Path package/* -DestinationPath hyperblade_20XX.zip -Force
 
+          $exe = (Get-FileHash -Algorithm SHA256 package/hyperblade_20XX.exe).Hash.ToLower()
+          $zip = (Get-FileHash -Algorithm SHA256 hyperblade_20XX.zip).Hash.ToLower()
+          @(
+              "Unzip into your HyperBlade folder, beside ``HYPERX.EXE``, and run ``hyperblade_20XX.exe``."
+              ""
+              "| File | SHA256 |"
+              "| --- | --- |"
+              "| ``hyperblade_20XX.exe`` | ``$exe`` |"
+              "| ``hyperblade_20XX.zip`` | ``$zip`` |"
+              ""
+              "Built from ${{ github.sha }}."
+          ) | Set-Content -Encoding utf8 release-notes.md
+
+          Get-Content release-notes.md
+
       - uses: actions/upload-artifact@v4
         with:
           name: hyperblade_20XX
-          path: hyperblade_20XX.zip
+          path: |
+            hyperblade_20XX.zip
+            release-notes.md
 
   release:
     name: Release
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/')
     needs: [format, build]
     runs-on: ubuntu-latest
     permissions:
@@ -77,4 +95,5 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           files: hyperblade_20XX.zip
+          body_path: release-notes.md
           generate_release_notes: true
