@@ -20,7 +20,7 @@ The source here is a reconstruction of HYPERX.EXE, from hyperblade-decomp. It re
 the original's string literals, constants and data tables. Those are in the source.
 
 No original binary or game data is in this repository, and neither is a disassembly
-listing or a Ghidra database. docs/logo.png and docs/gameplay_soft.png show the game's
+listing or a Ghidra database. docs/logo.png, docs/hb_20XX_logo.png and docs/gameplay_soft.png show the game's
 art, for identification only. You supply your own copy of HyperBlade, and every
 build reads what it needs from that copy.
 

@@ -1,7 +1,7 @@
 # hyperblade-20XX
 
 <p align="center">
-  <img src="docs/logo.png" alt="HyperBlade" width="320">
+  <img src="docs/hb_20XX_logo.png" alt="HyperBlade 20XX" width="320">
 </p>
 
 <p align="center">
