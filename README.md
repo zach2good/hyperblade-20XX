@@ -47,6 +47,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Free-fly spectator mode
 - AI plan bug and balance fixes ([docs/plan_bugs.md](docs/plan_bugs.md))
 - The original RC, debug and plan menus in the debug menu
+- Ship our own assets (fonts, prompt icons) in `20XX_data.pak`, a renamed zip, read with a header-only
+  zip library
 
 ## Install
 
