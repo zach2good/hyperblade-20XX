@@ -22,17 +22,27 @@ endif()
 
 include("${CPM_DOWNLOAD_LOCATION}")
 
-# SDL3's own MSVC build, with its import library, DLL and CMake package files.
 set(SDL3_VERSION 3.4.18)
 
-CPMAddPackage(
-    NAME SDL3
-    VERSION ${SDL3_VERSION}
-    URL "https://github.com/libsdl-org/SDL/releases/download/release-${SDL3_VERSION}/SDL3-devel-${SDL3_VERSION}-VC.zip"
-    URL_HASH SHA256=78d84602ae616cfe26b33a73b7d3b9b6b56e8a6650e53d92c9c6ca938f747acd
-    DOWNLOAD_ONLY YES)
+if(WIN32)
+    # SDL3's own MSVC build, with its import library, DLL and CMake package files.
+    CPMAddPackage(
+        NAME SDL3
+        VERSION ${SDL3_VERSION}
+        URL "https://github.com/libsdl-org/SDL/releases/download/release-${SDL3_VERSION}/SDL3-devel-${SDL3_VERSION}-VC.zip"
+        URL_HASH SHA256=78d84602ae616cfe26b33a73b7d3b9b6b56e8a6650e53d92c9c6ca938f747acd
+        DOWNLOAD_ONLY YES)
 
-find_package(SDL3 ${SDL3_VERSION} EXACT REQUIRED CONFIG PATHS "${SDL3_SOURCE_DIR}/cmake" NO_DEFAULT_PATH)
+    find_package(SDL3 ${SDL3_VERSION} EXACT REQUIRED CONFIG PATHS "${SDL3_SOURCE_DIR}/cmake" NO_DEFAULT_PATH)
+else()
+    # SDL3 built from source as a shared library.
+    CPMAddPackage(
+        NAME SDL3
+        VERSION ${SDL3_VERSION}
+        URL "https://github.com/libsdl-org/SDL/releases/download/release-${SDL3_VERSION}/SDL3-${SDL3_VERSION}.tar.gz"
+        URL_HASH SHA256=9c75cf16330322c217dedd2e0609f1124f1b54b8633e763467b4684d0f4334a3
+        OPTIONS "SDL_SHARED ON" "SDL_STATIC OFF" "SDL_TEST_LIBRARY OFF" "SDL_EXAMPLES OFF")
+endif()
 
 # miniaudio mixes the game's sounds and decodes its music, and SDL plays the result, so its
 # device backends are left out.
@@ -53,14 +63,24 @@ target_compile_definitions(miniaudio PUBLIC MA_NO_DEVICE_IO MA_NO_RESOURCE_MANAG
 # date, so the URL is pinned by hand alongside the version.
 set(DXC_VERSION 1.9.2607)
 
+if(WIN32)
+    set(DXC_ARCHIVE dxc_2026_07_29.zip)
+    set(DXC_HASH a1dfb116ba3eeae6a1582291b53a8e7bf65ad760676bd3194685c8f7367cd241)
+    set(DXC_BIN bin/x64)
+else()
+    set(DXC_ARCHIVE linux_dxc_2026_07_29.x86_x64.tar.gz)
+    set(DXC_HASH 55665c87824051ed4774ff3280a79ccbbb7d39243b9736ca5e98222134112d54)
+    set(DXC_BIN bin)
+endif()
+
 CPMAddPackage(
     NAME dxc
     VERSION ${DXC_VERSION}
-    URL "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v${DXC_VERSION}/dxc_2026_07_29.zip"
-    URL_HASH SHA256=a1dfb116ba3eeae6a1582291b53a8e7bf65ad760676bd3194685c8f7367cd241
+    URL "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v${DXC_VERSION}/${DXC_ARCHIVE}"
+    URL_HASH SHA256=${DXC_HASH}
     DOWNLOAD_ONLY YES)
 
-find_program(DXC_EXECUTABLE dxc PATHS "${dxc_SOURCE_DIR}/bin/x64" NO_DEFAULT_PATH REQUIRED)
+find_program(DXC_EXECUTABLE dxc PATHS "${dxc_SOURCE_DIR}/${DXC_BIN}" NO_DEFAULT_PATH REQUIRED)
 
 # Dear ImGui draws the debug menu, through SDL's renderer.
 set(IMGUI_VERSION 1.92.9b)

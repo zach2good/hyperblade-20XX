@@ -6,9 +6,33 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
-    message(FATAL_ERROR "HyperBlade 20XX builds with MSVC for x64. Use the preset in CMakePresets.json.")
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message(FATAL_ERROR "HyperBlade 20XX builds for 64-bit targets only.")
 endif()
+
+if(MSVC)
+    # The decompiled unions name their members through anonymous structs, as windows.h let them,
+    # and its classes delete through base pointers whose derived destructors are empty.
+    set(HYPERX_WARNINGS /W4 /WX /wd4201 /wd5205)
+    set(HYPERX_FLAGS /utf-8 /EHsc)
+    # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
+    set(HYPERX_PERMISSIVE /permissive)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
+else()
+    set(HYPERX_WARNINGS -Wall -Wextra -Wno-delete-non-virtual-dtor)
+    set(HYPERX_FLAGS -finput-charset=UTF-8)
+    set(HYPERX_PERMISSIVE -fpermissive)
+endif()
+
+# SDL3.dll goes beside each Windows image. Elsewhere the build tree's rpath finds the library.
+function(hyperx_copy_runtime_dlls target destination)
+    if(WIN32)
+        add_custom_command(TARGET ${target} POST_BUILD
+            COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:${target}> "${destination}"
+            COMMAND_EXPAND_LISTS
+            VERBATIM)
+    endif()
+endfunction()
 
 # For running from the build: the game's folders are junctioned in beside the exe and HYPERX.EXE
 # copied there, and the data tests read it. Nothing from it goes into the exe.
@@ -137,7 +161,6 @@ set(HYPERX_SOURCES
     src/common/path.cpp
     src/common/poolcountsdef.cpp
     src/common/pooledownerroot.cpp
-    src/common/purevirtualcall.cpp
     src/common/staticinitglobals.cpp
     src/common/string.cpp
     src/common/stringtable.cpp
@@ -369,12 +392,7 @@ target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
 target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio imgui)
 
-# The decompiled unions name their members through anonymous structs, as windows.h let them.
-set(HYPERX_WARNINGS /W4 /WX /wd4201)
-
-# The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
-target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
-target_compile_options(hyperx_objects PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
+target_compile_options(hyperx_objects PRIVATE ${HYPERX_WARNINGS} ${HYPERX_PERMISSIVE} ${HYPERX_FLAGS})
 
 set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
 hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
@@ -383,61 +401,49 @@ hyperx_embed(hyperx_objects res/fonts/PixelOperator.ttf res/fonts/PixelOperator8
 # Decodes every MDM1 file in the game data against its recorded size.
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
 target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_definitions(mdm1_check PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
-target_compile_options(mdm1_check PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
+target_compile_options(mdm1_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_PERMISSIVE} ${HYPERX_FLAGS})
 
 # Parses every wave in the game data and reads its samples back.
 add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp src/common/path.cpp)
 target_include_directories(wave_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_definitions(wave_check PRIVATE _CRT_SECURE_NO_WARNINGS)
-target_compile_options(wave_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_compile_options(wave_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 
 # Builds hardware triangle lists from small hand-made mesh blocks.
 add_executable(hwmesh_check tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
 target_include_directories(hwmesh_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_definitions(hwmesh_check PRIVATE _CRT_SECURE_NO_WARNINGS)
-target_compile_options(hwmesh_check PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
+target_compile_options(hwmesh_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_PERMISSIVE} ${HYPERX_FLAGS})
 
 # Round-trips booie.ini reads and writes.
 add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp src/common/path.cpp)
 target_include_directories(ini_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(ini_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_compile_options(ini_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 
 # Reads a strings file back, escapes and all.
 add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp src/common/path.cpp)
 target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 target_link_libraries(mdm1_check PRIVATE SDL3::SDL3)
-add_custom_command(TARGET mdm1_check POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:mdm1_check> $<TARGET_FILE_DIR:mdm1_check>
-    COMMAND_EXPAND_LISTS
-    VERBATIM)
+hyperx_copy_runtime_dlls(mdm1_check $<TARGET_FILE_DIR:mdm1_check>)
 
 # Resolves Windows-style game paths against names that differ in case.
 add_executable(path_check tests/path_check.cpp src/common/path.cpp)
 target_include_directories(path_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(path_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_compile_options(path_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 
 # Draws a lit triangle through the mesh pipeline and reads it back, skipped without a GPU.
 add_executable(hwpipeline_check tests/hwpipeline_check.cpp src/graphics/hwpipeline.cpp)
 target_include_directories(hwpipeline_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(hwpipeline_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_compile_options(hwpipeline_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 target_link_libraries(hwpipeline_check PRIVATE SDL3::SDL3)
 hyperx_add_shaders(hwpipeline_check ${HYPERX_SHADERS})
-add_custom_command(TARGET hwpipeline_check POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:hwpipeline_check> $<TARGET_FILE_DIR:hwpipeline_check>
-    COMMAND_EXPAND_LISTS
-    VERBATIM)
+hyperx_copy_runtime_dlls(hwpipeline_check $<TARGET_FILE_DIR:hwpipeline_check>)
 
 # Maps SDL keys to the virtual-key codes the key bindings store.
 add_executable(keymap_check tests/keymap_check.cpp src/input/keymap.cpp)
 target_include_directories(keymap_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
-target_compile_options(keymap_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
+target_compile_options(keymap_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 target_link_libraries(keymap_check PRIVATE SDL3::SDL3)
-add_custom_command(TARGET keymap_check POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:keymap_check> $<TARGET_FILE_DIR:keymap_check>
-    COMMAND_EXPAND_LISTS
-    VERBATIM)
+hyperx_copy_runtime_dlls(keymap_check $<TARGET_FILE_DIR:keymap_check>)
 
 enable_testing()
 
@@ -454,27 +460,32 @@ if(HYPERX_GAME_DATA)
 endif()
 
 # Named apart from HYPERX.EXE so it can sit beside it in a HyperBlade folder.
-add_executable(hyperx WIN32 $<TARGET_OBJECTS:hyperx_objects> res/hyperblade_20XX.rc)
+add_executable(hyperx $<TARGET_OBJECTS:hyperx_objects>)
 set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
-target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui
-    kernel32 user32 winmm version)
-target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
+target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui)
+hyperx_copy_runtime_dlls(hyperx "${HYPERX_OUT}")
 
-# SDL3.dll goes beside the image.
-add_custom_command(TARGET hyperx POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:hyperx> "${HYPERX_OUT}"
-    COMMAND_EXPAND_LISTS
-    VERBATIM)
+if(WIN32)
+    set_target_properties(hyperx PROPERTIES WIN32_EXECUTABLE ON)
+    target_sources(hyperx PRIVATE res/hyperblade_20XX.rc)
+endif()
 
-# mklink /J needs no privilege.
+if(MSVC)
+    target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
+endif()
+
 if(HYPERX_GAME_DATA)
-    # No VERBATIM: cmd /c must receive the inner quotes unescaped.
     set(asset_commands)
     foreach(asset Data DIRECTX AVI DOS ACRODOS)
-        list(APPEND asset_commands COMMAND cmd /c
-            "if not exist \"${HYPERX_OUT}/${asset}\"              if exist \"${HYPERX_GAME_DATA}/${asset}\"              mklink /J \"${HYPERX_OUT}/${asset}\" \"${HYPERX_GAME_DATA}/${asset}\" > nul")
+        if(WIN32)
+            # mklink /J needs no privilege. No VERBATIM: cmd /c must receive the inner quotes unescaped.
+            list(APPEND asset_commands COMMAND cmd /c
+                "if not exist \"${HYPERX_OUT}/${asset}\"              if exist \"${HYPERX_GAME_DATA}/${asset}\"              mklink /J \"${HYPERX_OUT}/${asset}\" \"${HYPERX_GAME_DATA}/${asset}\" > nul")
+        elseif(EXISTS "${HYPERX_GAME_DATA}/${asset}")
+            list(APPEND asset_commands COMMAND ln -sfn "${HYPERX_GAME_DATA}/${asset}" "${HYPERX_OUT}/${asset}")
+        endif()
     endforeach()
 
     if(EXISTS "${HYPERX_GAME_DATA}/HYPERX.EXE")
