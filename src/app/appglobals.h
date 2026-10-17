@@ -23,9 +23,6 @@ extern const char* g_pszCharFormat;
 // GLOBAL: HYPERX 0x004cef4a
 extern char g_bShuttingDown;
 
-// GLOBAL: HYPERX 0x004cef4c
-extern int g_bHelpOpen;
-
 // GLOBAL: HYPERX 0x004d0508
 extern int g_nInstallLevel;
 

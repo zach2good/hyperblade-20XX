@@ -13,7 +13,6 @@ struct PlanNode;
 struct GameApp
 {
     static int  HandleMatchKeypress(unsigned int nKey);
-    static void ShowHelp(HWND hWnd);
     static void HandleGlobalKeyEvent(HWND hWnd, int nKey);
     static void OnStartup(void);
     static void OnExit(void);

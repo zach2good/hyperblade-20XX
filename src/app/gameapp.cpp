@@ -640,8 +640,6 @@ void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 
-    MessageBeep(MB_ICONHAND);
-
     if (hWnd != 0)
     {
         hWndOwner = hWnd;
@@ -840,25 +838,6 @@ int GameApp::MainUpdate(HWND hWnd)
     }
 
     return g_gameApp.m_bIsActive == 0;
-}
-
-// FUNCTION: HYPERX 0x0044ca00
-void GameApp::ShowHelp(HWND hWnd)
-{
-    String strHelpPath(g_gameApp.m_strExeDir.m_str);
-    char*  pszSlash = (char*)strrchr(strHelpPath.m_pchData, '\\');
-    if (pszSlash != 0 && (pszSlash = (char*)strrchr(pszSlash, '\\')) != 0)
-    {
-        pszSlash[1] = 0;
-    }
-
-    // STRING: HYPERX 0x004c2de8
-    strHelpPath.AppendData(String::SafeStrlen("HELP.HLP"), "HELP.HLP");
-
-    if (WinHelpA(hWnd, strHelpPath.m_pchData, HELP_FORCEFILE, 0) != 0)
-    {
-        g_bHelpOpen = 1;
-    }
 }
 
 // FUNCTION: HYPERX 0x0046eea0

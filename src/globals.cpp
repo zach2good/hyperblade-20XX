@@ -100,7 +100,6 @@ const char* const         g_pszTokenDelimiters = "	";
 int                       g_nPlanSequenceStep;
 const char* const         g_pszPlanVmEmptyName = "";
 char                      g_bShuttingDown;
-int                       g_bHelpOpen;
 class KeyboardDeviceObj*  g_pInputDevice;
 unsigned char             g_bRightEdgeUsed;
 unsigned char             g_bLeftEdgeUsed;

@@ -109,9 +109,9 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
     {
         if (uMsg == WM_KEYDOWN)
         {
+            // F1 opened HELP.HLP, which Windows no longer reads.
             if (wParam == VK_F1)
             {
-                GameApp::ShowHelp(hWnd);
                 return;
             }
 
@@ -214,12 +214,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             return -1;
 
         case WM_DESTROY:
-
-            if (g_bHelpOpen != 0)
-            {
-                WinHelpA(hWnd, NULL, HELP_QUIT, 0);
-            }
-
             GameApp::Shutdown(hWnd);
             g_bShuttingDown = 1;
             return 0;
