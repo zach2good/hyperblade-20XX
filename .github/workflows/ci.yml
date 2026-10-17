@@ -1,6 +1,6 @@
-# The exe needs nothing from the game to build, so CI links it, runs the tests that need no game
-# data, and uploads the drop-in zip. A pushed version tag, such as 0.1.0, publishes that zip as a
-# GitHub release whose notes give the SHA256 of the exe and the zip.
+# The game needs nothing from the original to build, so CI links it on Windows and Linux, runs the
+# tests that need no game data, and uploads each drop-in archive. A pushed version tag, such as
+# 0.1.0, publishes both as a GitHub release whose notes give their SHA256.
 
 name: ci
 
@@ -54,46 +54,69 @@ jobs:
       - name: Package
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force package | Out-Null
-          Copy-Item build/out/hyperblade_20XX.exe, build/out/SDL3.dll package/
+          cmake --install build --prefix package
           Compress-Archive -Path package/* -DestinationPath hyperblade_20XX.zip -Force
-
-          $exe = (Get-FileHash -Algorithm SHA256 package/hyperblade_20XX.exe).Hash.ToLower()
-          $zip = (Get-FileHash -Algorithm SHA256 hyperblade_20XX.zip).Hash.ToLower()
-          @(
-              "Unzip into your HyperBlade folder, beside ``HYPERX.EXE``, and run ``hyperblade_20XX.exe``."
-              ""
-              "| File | SHA256 |"
-              "| --- | --- |"
-              "| ``hyperblade_20XX.exe`` | ``$exe`` |"
-              "| ``hyperblade_20XX.zip`` | ``$zip`` |"
-              ""
-              "Built from ${{ github.sha }}."
-          ) | Set-Content -Encoding utf8 release-notes.md
-
-          Get-Content release-notes.md
 
       - uses: actions/upload-artifact@v4
         with:
           name: hyperblade_20XX
-          path: |
-            hyperblade_20XX.zip
-            release-notes.md
+          path: hyperblade_20XX.zip
+
+  build-linux:
+    name: Build (GCC Linux)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/cache@v4
+        with:
+          path: .cpm-cache-linux
+          key: cpm-linux-${{ hashFiles('cmake/dependencies.cmake') }}
+
+      - name: Build, test and install in the Linux image
+        run: |
+          docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
+          docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
+
+      - name: Package
+        run: tar -czf hyperblade_20XX-linux.tar.gz -C build-linux/package .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hyperblade_20XX-linux
+          path: hyperblade_20XX-linux.tar.gz
 
   release:
     name: Release
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [format, build]
+    needs: [format, build, build-linux]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: hyperblade_20XX
+          merge-multiple: true
+
+      - name: Release notes
+        run: |
+          {
+            echo 'Unpack `hyperblade_20XX.zip` on Windows, or `hyperblade_20XX-linux.tar.gz` on Linux, into your HyperBlade folder beside `HYPERX.EXE`, and run `hyperblade_20XX`.'
+            echo
+            echo '| File | SHA256 |'
+            echo '| --- | --- |'
+            for file in hyperblade_20XX.zip hyperblade_20XX-linux.tar.gz; do
+              echo "| \`$file\` | \`$(sha256sum "$file" | cut -d' ' -f1)\` |"
+            done
+            echo
+            echo "Built from ${{ github.sha }}."
+          } > release-notes.md
+          cat release-notes.md
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: hyperblade_20XX.zip
+          files: |
+            hyperblade_20XX.zip
+            hyperblade_20XX-linux.tar.gz
           body_path: release-notes.md
           generate_release_notes: true

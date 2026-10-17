@@ -1,5 +1,7 @@
 build/
 .cpm-cache/
+build-linux/
+.cpm-cache-linux/
 out/
 CMakeUserPresets.json
 *.obj

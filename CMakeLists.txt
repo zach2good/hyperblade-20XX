@@ -502,6 +502,17 @@ set(HYPERX_PAK_FILES
 hyperx_add_pak(hyperx "${HYPERX_OUT}/${HYPERX_PAK_NAME}" ${HYPERX_PAK_FILES})
 add_test(NAME pak COMMAND pak_check "${HYPERX_OUT}/${HYPERX_PAK_NAME}" "${CMAKE_SOURCE_DIR}/res" ${HYPERX_PAK_FILES})
 
+# cmake --install lays out the drop-in folder: the image, its pak and SDL3 side by side.
+install(TARGETS hyperx RUNTIME DESTINATION .)
+install(FILES "${HYPERX_OUT}/${HYPERX_PAK_NAME}" DESTINATION .)
+
+if(WIN32)
+    install(FILES $<TARGET_RUNTIME_DLLS:hyperx> DESTINATION .)
+else()
+    set_target_properties(hyperx PROPERTIES INSTALL_RPATH "$ORIGIN")
+    install(FILES $<TARGET_FILE:SDL3::SDL3> $<TARGET_SONAME_FILE:SDL3::SDL3> DESTINATION .)
+endif()
+
 if(WIN32)
     set_target_properties(hyperx PROPERTIES WIN32_EXECUTABLE ON)
     target_sources(hyperx PRIVATE res/hyperblade_20XX.rc)

@@ -41,7 +41,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 ## TODO
 
 - Update menus to support controller button re-binding
-- Mac, Linux and browser builds via Emscripten
+- Play-test the Linux build, which builds and passes its tests but has not been run on a desktop
+- Mac and browser builds via Emscripten
 - Net and local multiplayer
 - Bot-only matches
 - Free-fly spectator mode
@@ -50,8 +51,10 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 
 ## Install
 
-Download `hyperblade_20XX.zip` from [Releases](https://github.com/zach2good/hyperblade-20XX/releases)
-and unzip it into your HyperBlade folder, beside `HYPERX.EXE`. Then run `hyperblade_20XX.exe`.
+Download `hyperblade_20XX.zip` for Windows, or `hyperblade_20XX-linux.tar.gz` for Linux, from
+[Releases](https://github.com/zach2good/hyperblade-20XX/releases) and unpack it into your HyperBlade
+folder, beside `HYPERX.EXE`. Then run `hyperblade_20XX`. Keep `20XX_data.pak` beside it: it holds
+our fonts and controller icons.
 
 The first run reads the game's text out of `HYPERX.EXE` into `hyperblade_20XX_strings.txt`, and
 later runs load that file.
@@ -61,18 +64,25 @@ To play the music without the CD, rip the audio tracks to `Data/Music/Track02.fl
 
 ## Build
 
-### Requirements
+### Windows
 
-- Windows
-- Visual Studio 2022 or later, with the C++ x64 tools
-- CMake 3.21 or later
-- Ninja
-
-From an x64 Developer Command Prompt:
+You need Visual Studio 2022 or later with the C++ x64 tools, CMake 3.21 or later, and Ninja. From
+an x64 Developer Command Prompt:
 
 ```sh
 cmake --preset msvc-x64
 cmake --build build
+cmake --install build --prefix package
+```
+
+### Linux
+
+[docker/linux.Dockerfile](docker/linux.Dockerfile) holds the toolchain and SDL's build dependencies.
+It builds, tests and installs into `build-linux/package`:
+
+```sh
+docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
+docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
 ```
 
 The build needs nothing from the game.
