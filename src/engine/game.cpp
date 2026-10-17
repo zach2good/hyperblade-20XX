@@ -544,7 +544,7 @@ unsigned int Game::UpdateState(void)
                     Screen::ClearBlack();
                 }
 
-                if (g_hMdmTexDll != 0 && g_pColorPalette != 0)
+                if (g_hMdmTexDll && g_pColorPalette != 0)
                 {
                     g_pColorPalette->SetEntries(0, 0x100, g_aSoftTexPalette);
                 }

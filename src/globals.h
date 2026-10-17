@@ -5,6 +5,7 @@
 #ifndef HYPERBLADE_GLOBALS_H
 #define HYPERBLADE_GLOBALS_H
 #include "common/compat.h"
+#include "common/handle.h"
 #include "graphics/bitmapformat.h"
 
 struct FrameTimer;
@@ -181,8 +182,9 @@ extern CameraObject* g_pScene;
 // GLOBAL: HYPERX 0x004c8cd4
 extern int g_bPerspectiveTexturing;
 
+// The developer texture library; mdmtex.dll is 32-bit, so a 64-bit build never loads it.
 // GLOBAL: HYPERX 0x004ced5c
-extern HMODULE g_hMdmTexDll;
+extern Handle<struct MdmTexLibraryTag> g_hMdmTexDll;
 
 // GLOBAL: HYPERX 0x004d2bb4
 extern int g_bBilinearFilter;

@@ -131,10 +131,10 @@ int g_bFullScreen = 1;
 int g_nBackBufferHeight;
 int g_nBackBufferWidth;
 
-CameraObject*    g_pScene;
-int              g_bPerspectiveTexturing = 1;
-MdmDrawTexPolyFn g_pfnMdmDrawTexPoly;
-HMODULE          g_hMdmTexDll;
+CameraObject*                   g_pScene;
+int                             g_bPerspectiveTexturing = 1;
+MdmDrawTexPolyFn                g_pfnMdmDrawTexPoly;
+Handle<struct MdmTexLibraryTag> g_hMdmTexDll;
 // Initialised to keep source order: SoftTex::Load's palette loop bounds one past the array.
 PaletteEntry              g_aSoftTexPalette[256] = { 0 };
 class SoftTex*            g_pSoftTexHead         = 0;

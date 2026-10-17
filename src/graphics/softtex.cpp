@@ -178,7 +178,7 @@ char SoftTex::Load(const char* pszName)
 {
     char szPath[MAX_PATH];
 
-    if (g_hMdmTexDll != 0)
+    if (g_hMdmTexDll)
     {
         strcpy(szPath, g_gameApp.m_strTexturesPath.m_str.m_pchData);
         szPath[strlen(szPath) - 1] = '8';
