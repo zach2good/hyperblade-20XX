@@ -538,7 +538,7 @@ void GDI::Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX
 // FUNCTION: HYPERX 0x0048f540
 GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted)
 {
-    PathString strPath(MAX_PATH);
+    PathString strPath(MAX_PATH_LENGTH);
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "bmp");
 

@@ -1,6 +1,7 @@
 // The swept AABB test, marched in steps under a quarter unit; compiled at /Od.
 
 #include "common/compat.h"
+#include <algorithm>
 
 #include <math.h>
 
@@ -55,7 +56,7 @@ int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOw
         flDistB /= 2.0f;
     }
 
-    nStepsUsed = max(nStepsSelf, nStepsOther);
+    nStepsUsed = (std::max)(nStepsSelf, nStepsOther);
     vDeltaA    = pDirOther->Scaled((float)(1.0 / nStepsUsed));
     vDeltaB    = pDirOwn->Scaled((float)(1.0 / nStepsUsed));
     bodyMine   = *this;

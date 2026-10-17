@@ -1,6 +1,7 @@
 // Two upright cylinders tested per substep; the caller inverts the answer. Compiled at /Od.
 
 #include "common/compat.h"
+#include <algorithm>
 #include "math/vector.h"
 #include "capsule.h"
 
@@ -35,7 +36,7 @@ inline int Capsule::Overlaps(const Capsule* pMine, const Capsule* pOther)
     vDelta  = pOther->Centre()->Minus(pMine->Centre()).Copy();
     flRadii = pOther->flRadius + pMine->flRadius;
 
-    return min(pOther->vCentre.y + pOther->flHeight, pMine->vCentre.y + pMine->flHeight) >= max(pOther->Base(), pMine->Base()) && flRadii * flRadii >= vDelta.x * vDelta.x + vDelta.z * vDelta.z;
+    return (std::min)(pOther->vCentre.y + pOther->flHeight, pMine->vCentre.y + pMine->flHeight) >= (std::max)(pOther->Base(), pMine->Base()) && flRadii * flRadii >= vDelta.x * vDelta.x + vDelta.z * vDelta.z;
 }
 
 #pragma optimize("", off)
@@ -72,7 +73,7 @@ int Capsule::CheckCollision(const Vec3* pDirSelf, const Vec3* pDirOther, const C
         flDistB /= 2.0f;
     }
 
-    nStepsUsed = max(nStepsSelf, nStepsOther);
+    nStepsUsed = (std::max)(nStepsSelf, nStepsOther);
     vDeltaA    = pDirSelf->Scaled((float)(1.0 / nStepsUsed));
     vDeltaB    = pDirOther->Scaled((float)(1.0 / nStepsUsed));
     bodyMine   = *this;

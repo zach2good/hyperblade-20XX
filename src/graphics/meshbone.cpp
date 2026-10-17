@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "planvm/planvm.h"
 #include "math/mathglobals.h"
 #include "math/transformobject.h"
@@ -469,12 +470,12 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
         {
             const Vec3* const pVert = &pVerts[nIndex];
 
-            m_block.vMin.x = min(m_block.vMin.x, pVert->x);
-            m_block.vMin.y = min(m_block.vMin.y, pVert->y);
-            m_block.vMin.z = min(m_block.vMin.z, pVert->z);
-            m_block.vMax.x = max(m_block.vMax.x, pVert->x);
-            m_block.vMax.y = max(m_block.vMax.y, pVert->y);
-            m_block.vMax.z = max(m_block.vMax.z, pVert->z);
+            m_block.vMin.x = (std::min)(m_block.vMin.x, pVert->x);
+            m_block.vMin.y = (std::min)(m_block.vMin.y, pVert->y);
+            m_block.vMin.z = (std::min)(m_block.vMin.z, pVert->z);
+            m_block.vMax.x = (std::max)(m_block.vMax.x, pVert->x);
+            m_block.vMax.y = (std::max)(m_block.vMax.y, pVert->y);
+            m_block.vMax.z = (std::max)(m_block.vMax.z, pVert->z);
 
             nIndex++;
         }

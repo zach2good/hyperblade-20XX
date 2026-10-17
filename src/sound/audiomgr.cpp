@@ -7,12 +7,10 @@
 #include "soundmanager.h"
 #include "engine/gameoptions.h"
 #include "common/pathstring.h"
-#include <mmsystem.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <new.h>
-#include <windows.h>
 #include "sound/wave.h"
 #include "sound/soundids.h"
 #include <filesystem>
@@ -112,7 +110,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     pEntry->m_pSamples       = 0;
     pEntry->m_nUnusedB       = 0;
 
-    PathString strPath(MAX_PATH);
+    PathString strPath(MAX_PATH_LENGTH);
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
 
@@ -334,7 +332,7 @@ static const std::vector<int>& MusicTracks()
     static const auto s_anTracks = []
     {
         std::vector<int> anTracks;
-        char             szPath[MAX_PATH];
+        char             szPath[MAX_PATH_LENGTH];
 
         for (int nTrack = 1; nTrack <= MUSIC_TRACK_MAX; nTrack++)
         {
@@ -412,7 +410,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
         nTrack = anTracks[nPicked];
     }
 
-    char szPath[MAX_PATH];
+    char szPath[MAX_PATH_LENGTH];
 
     if (MusicPath(nTrack, szPath, sizeof(szPath)))
     {
@@ -486,7 +484,7 @@ int AudioMgr::PreloadGroup(int nGroup)
             continue;
         }
 
-        PathString strPath(MAX_PATH);
+        PathString strPath(MAX_PATH_LENGTH);
 
         strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pSnd->m_pszName, g_pszWaveExtension);
 

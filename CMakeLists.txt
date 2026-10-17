@@ -367,7 +367,8 @@ target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_include_directories(hyperx_objects SYSTEM PRIVATE "${STB_DIR}")
 target_link_libraries(hyperx_objects PRIVATE SDL3::SDL3 miniaudio imgui)
 
-set(HYPERX_WARNINGS /W4 /WX)
+# The decompiled unions name their members through anonymous structs, as windows.h let them.
+set(HYPERX_WARNINGS /W4 /WX /wd4201)
 
 # The decompiled source is C++98 written against VC6, so the modern checks are relaxed for now.
 target_compile_definitions(hyperx_objects PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)

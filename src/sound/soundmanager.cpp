@@ -63,7 +63,7 @@ unsigned short SoundManager::Load(const char* pszListName)
     int        nLongest = 0;
     int        nLines   = 0;
     OwnedFile  file;
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszListName).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszListName).m_pchData, MAX_PATH_LENGTH);
     char       szName[SOUND_NAME_MAX];
     char       szMessage[SOUND_MESSAGE_MAX];
     char*      pLine;

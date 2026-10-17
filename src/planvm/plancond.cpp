@@ -1,4 +1,6 @@
 #include "common/compat.h"
+#include <cstdint>
+#include <algorithm>
 #include "math/mathops.h"
 #include "anim/animdb.h"
 #include "planvm/behaviorids.h"
@@ -2339,7 +2341,7 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
     if (pnTargetSlot == 0 || (nSlot = pnTargetSlot->nSlot) >= PLAYER_OBJECT_COUNT)
     {
         // TODO: The original takes the result pointer itself as the slot; was *pResult meant?
-        nSlot = (short)(INT_PTR)pResult;
+        nSlot = (short)(std::intptr_t)pResult;
     }
 
     EngineObject* const pActor = g_pGameEngine->GetSlot(nSlot);
@@ -4165,8 +4167,8 @@ void PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
 
     const int nJudge = (int)g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x;
 
-    nReds = max(JUDGE_STATE_LOW,
-                min(JUDGE_STATE_HIGH, (int)(short)nJudge + (int)(short)pArgs->m_pArgs[1].n));
+    nReds = (std::max)(JUDGE_STATE_LOW,
+                (std::min)(JUDGE_STATE_HIGH, (int)(short)nJudge + (int)(short)pArgs->m_pArgs[1].n));
 
     g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x = (float)nReds;
 }
@@ -5450,7 +5452,7 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
     }
     else if (nSlot == SLOT_NGOAL)
     {
-        nClamped = min(-1, nRokValue);
+        nClamped = std::min<int>(-1, nRokValue);
 
         nRokValue = (short)-nClamped;
     }

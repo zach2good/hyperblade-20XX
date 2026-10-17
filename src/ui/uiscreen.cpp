@@ -296,7 +296,7 @@ void UIScreen::BuildLockedFlagsArray()
 
     m_nLockedCount = 0;
 
-    PathString strPath(MAX_PATH);
+    PathString strPath(MAX_PATH_LENGTH);
 
     // STRING: HYPERX 0x004c2f28
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Chiplcd", "bmp");

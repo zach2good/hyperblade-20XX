@@ -1,10 +1,10 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "graphics/bitmapformat.h"
 #include "palettefade.h"
 #include "engine/gameengine.h"
 #include "globals.h"
 #include "colorpalette.h"
-#include <windows.h>
 #include "palettescalarfade.h"
 
 // The duration is five hundred milliseconds.
@@ -108,7 +108,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
             nValue = pEntries[nAt].peGreen;
             nValue -= m_cStep;
 
-            nValue = max(0, nValue);
+            nValue = (std::max)(0, nValue);
 
             pEntries[nAt].peGreen = (unsigned char)nValue;
 

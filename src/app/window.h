@@ -28,7 +28,7 @@ void  OnSizeMenus();
 void  OnSize(int cx, int cy);
 
 // SDL owns the window and its event loop. Window events reach the game as they happen.
-HWND Create(const char* pszTitle);
+bool Create(const char* pszTitle);
 
 // The window as the library that owns it sees it, for the renderer.
 using NativeWindow = Handle<struct NativeWindowTag>;

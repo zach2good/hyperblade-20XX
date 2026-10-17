@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <cstdint>
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/decisionlog.h"
 #include "gameengine.h"
@@ -88,8 +89,6 @@ struct GameApp;
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include <windows.h>
-#include <mmsystem.h>
 #include <new.h>
 #include <stdio.h>
 #include "playerobject.h"
@@ -1209,7 +1208,7 @@ char GameEngine::LoadConfigFile(const char* pszFileName)
 char GameEngine::LoadGameConfig(const char* pszFileName)
 {
     OwnedFile  file;
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH_LENGTH);
     char       szToken[PARSE_TOKEN_MAX];
     char*      pLine;
     short      nKeyword;
@@ -2394,7 +2393,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     }
     else if (bUseDetail != 0)
     {
-        pNew->m_pAttach = (AttachPak*)(INT_PTR)EXTRA_USE_DETAIL;
+        pNew->m_pAttach = (AttachPak*)(std::intptr_t)EXTRA_USE_DETAIL;
     }
 
     MapModifierToId((short)nModelId, pNew);
@@ -2919,7 +2918,7 @@ void GameEngine::UnloadArena()
 char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
 {
     OwnedFile  file;
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH_LENGTH);
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
     {
@@ -2962,7 +2961,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
 
     m_pArena = 0;
 
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszArenaPath).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszArenaPath).m_pchData, MAX_PATH_LENGTH);
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
     {
@@ -3251,7 +3250,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
     int        nRow;
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszTeamPath).m_pchData,
-                       MAX_PATH);
+                       MAX_PATH_LENGTH);
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
     {
@@ -4681,7 +4680,7 @@ void GameEngine::ResetPeriodToFirst()
 // FUNCTION: HYPERX 0x00487590
 char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 {
-    char                 szName[MAX_PATH];
+    char                 szName[MAX_PATH_LENGTH];
     SaveBlock            block;
     TeamBlock*           pTeam;
     SaveTeam*            pDest;
@@ -4703,7 +4702,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
     // STRING: HYPERX 0x004c84f4
     sprintf(szName, "SAVE%02d.BIN", nSlot);
 
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, MAX_PATH_LENGTH);
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_WRITE) == 0)
     {
@@ -4823,7 +4822,7 @@ inline int GameEngine::SubstituteSlot(int nTeam, int nSeat)
 char GameEngine::ReadSaveFile(int nSlot)
 {
     SaveBlock      block;
-    char           szName[MAX_PATH];
+    char           szName[MAX_PATH_LENGTH];
     TeamBlock*     pTeam;
     SaveTeam*      pRecord;
     int            nSeat;
@@ -4840,7 +4839,7 @@ char GameEngine::ReadSaveFile(int nSlot)
     // STRING: HYPERX 0x004c84f4
     sprintf(szName, "SAVE%02d.BIN", nSlot);
 
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, MAX_PATH_LENGTH);
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
     {
@@ -4965,7 +4964,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 // FUNCTION: HYPERX 0x00487cb0
 char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 {
-    char      szName[MAX_PATH];
+    char      szName[MAX_PATH_LENGTH];
     SaveBlock block;
     int       nCopied;
 
@@ -4977,7 +4976,7 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
     sprintf(szName, "SAVE%02d.BIN", nSlot);
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData,
-                       MAX_PATH);
+                       MAX_PATH_LENGTH);
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0 && file.m_file.Read(&block, sizeof(block)) == sizeof(block) && block.nTag == SAVE_BLOCK_TAG_VALUE)
     {

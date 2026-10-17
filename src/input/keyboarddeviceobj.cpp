@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "input/keycodes.h"
 #include <SDL3/SDL.h>
 #include "engine/devicector.h"
@@ -374,7 +375,7 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
 
     while (pRecord < pEnd)
     {
-        nLimit = min(KEY_BINDING_COUNT, nCount);
+        nLimit = (std::min)(KEY_BINDING_COUNT, nCount);
 
         for (nIndex = 0; nIndex < nLimit; nIndex++)
         {
@@ -391,7 +392,7 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
 
     m_nHeldMask = 0;
 
-    nWrite = min(KEY_BINDING_COUNT, nCount);
+    nWrite = (std::min)(KEY_BINDING_COUNT, nCount);
 
     for (nIndex = 0; nIndex < nWrite; nIndex++)
     {

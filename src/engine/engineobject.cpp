@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <cstdint>
 #include "graphics/hwrenderer.h"
 #include "graphics/graphicssettings.h"
 #include "graphics/hwmodels.h"
@@ -45,7 +46,6 @@
 #include <math.h>
 #include <string.h>
 #include <new.h>
-#include <windows.h>
 #include <stdio.h>
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
@@ -1883,9 +1883,9 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
             m_pBubble = pBubble;
 
             // The whole word is tested, since a real AttachPak's low half can carry the tag's bits.
-            if (((UINT_PTR)pBubble->m_pAttach & ~(UINT_PTR)0xffff) == EXTRA_USE_DETAIL)
+            if (((std::uintptr_t)pBubble->m_pAttach & ~(std::uintptr_t)0xffff) == EXTRA_USE_DETAIL)
             {
-                nTag = (int)(INT_PTR)pBubble->m_pAttach;
+                nTag = (int)(std::intptr_t)pBubble->m_pAttach;
 
                 m_pBubble->m_pCage = new CollisionCage(this, nTag & 0xffff);
             }

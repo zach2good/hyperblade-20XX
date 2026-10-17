@@ -53,7 +53,6 @@ class AwardsUIScreen;
 #include "engine/devicector.h"
 #include "net/gamesession.h"
 #include <stdarg.h>
-#include <windows.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -143,7 +142,7 @@ const char* GameApp::Arguments()
 }
 
 // FUNCTION: HYPERX 0x00418e10
-HWND GameApp::Initialize(const char* pszArguments)
+bool GameApp::Initialize(const char* pszArguments)
 {
     s_arguments = pszArguments;
 
@@ -168,10 +167,10 @@ HWND GameApp::Initialize(const char* pszArguments)
 
     g_pColorPalette = new ColorPalette;
 
-    pszAppClassName = g_gameApp.m_strCaption.m_pchData;
-    const HWND hWnd = GameApp::CreateMainWindow(pszAppClassName);
+    pszAppClassName    = g_gameApp.m_strCaption.m_pchData;
+    const auto bWindow = GameApp::CreateMainWindow(pszAppClassName);
 
-    g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
+    g_gameApp.SetWindowAndCallbacks(bWindow, GameApp::OnStartup, GameApp::OnExit);
 
     g_gameApp.m_bCursorWasVisible = Display::Initialize();
 
@@ -202,7 +201,7 @@ HWND GameApp::Initialize(const char* pszArguments)
         g_pAudioMgr->wNoSound = 1;
     }
 
-    return hWnd;
+    return bWindow;
 }
 
 // FUNCTION: HYPERX 0x00419070
@@ -212,7 +211,7 @@ void GameApp::InitializeResourcePaths()
 
     g_gameApp.m_strCaption.Assign(String::SafeStrlen(pszClassName), pszClassName);
 
-    PathString strDirectory(MAX_PATH);
+    PathString strDirectory(MAX_PATH_LENGTH);
 
     // SDL's base path ends in a separator.
     const char* const pszBase = SDL_GetBasePath();
@@ -394,7 +393,7 @@ void GameApp::Shutdown()
 // FUNCTION: HYPERX 0x00419640
 void GameApp::OnStartup(void)
 {
-    if (g_gameApp.m_hWnd != 0)
+    if (g_gameApp.m_bHasWindow)
     {
         Renderer::InitializeLightDirections();
         return;
@@ -419,15 +418,15 @@ void GameApp::OnExit(void)
 // Runs before WinMain.
 // FUNCTION: HYPERX 0x00422f90
 GameApp::GameApp(short nStringCount)
-: m_strExeDir(MAX_PATH)
-, m_strAssetsPath(MAX_PATH)
-, m_strAnimDataPath(MAX_PATH)
-, m_strModelPath(MAX_PATH)
-, m_strPlansPath(MAX_PATH)
-, m_strSoundsPath(MAX_PATH)
-, m_strTexturesPath(MAX_PATH)
+: m_strExeDir(MAX_PATH_LENGTH)
+, m_strAssetsPath(MAX_PATH_LENGTH)
+, m_strAnimDataPath(MAX_PATH_LENGTH)
+, m_strModelPath(MAX_PATH_LENGTH)
+, m_strPlansPath(MAX_PATH_LENGTH)
+, m_strSoundsPath(MAX_PATH_LENGTH)
+, m_strTexturesPath(MAX_PATH_LENGTH)
 , m_nFrameRate(0)
-, m_hWnd(0)
+, m_bHasWindow(false)
 , m_nEngineState(ESTATE_LOBBY)
 , m_bIsActive(0)
 , m_wRunStateOnDeactivate(ENGINE_RUN_PLAYING)
@@ -443,9 +442,9 @@ GameApp::GameApp(short nStringCount)
 #define CDROM_DRIVE_COUNT ('Z' - 'A' + 1)
 
 // FUNCTION: HYPERX 0x00423140
-void GameApp::SetWindowAndCallbacks(HWND hWnd, void (*pfnStartup)(void), void (*pfnShutdown)(void))
+void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(void), void (*pfnShutdown)(void))
 {
-    m_hWnd        = hWnd;
+    m_bHasWindow  = bHasWindow;
     m_pfnShutdown = pfnShutdown;
 
     if (pfnStartup != 0)
@@ -471,9 +470,9 @@ void GameApp::OnShutdown()
 // FUNCTION: HYPERX 0x00423180
 int GameApp::FindCDRomDrive(bool bRequired)
 {
-    char szCaption[MAX_PATH];
-    char szLabel[MAX_PATH];
-    char szText[MAX_PATH];
+    char szCaption[MAX_PATH_LENGTH];
+    char szLabel[MAX_PATH_LENGTH];
+    char szText[MAX_PATH_LENGTH];
 
     strcpy(szLabel, m_stringPool.LoadText(STRING_HYPERBLADE_UPPERCASE));
     strcpy(szCaption, m_stringPool.LoadText(STRING_CD_NOT_FOUND));
@@ -1006,15 +1005,8 @@ void GameApp::InstantiateState(void)
 }
 
 // FUNCTION: HYPERX 0x00493870
-HWND GameApp::CreateMainWindow(const char* pszTitle)
+bool GameApp::CreateMainWindow(const char* pszTitle)
 {
-    const HWND hWnd = Window::Create(pszTitle);
-
     // What WM_CREATE did before SDL made the window.
-    if (hWnd == 0 || MainWindow::OnCreate() == 0)
-    {
-        return 0;
-    }
-
-    return hWnd;
+    return Window::Create(pszTitle) && MainWindow::OnCreate() != 0;
 }

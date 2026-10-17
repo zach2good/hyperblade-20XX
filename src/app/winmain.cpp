@@ -28,9 +28,7 @@ int main(int argc, char* argv[])
         arguments += argv[i];
     }
 
-    const HWND hWnd = GameApp::Initialize(arguments.c_str());
-
-    g_bIsWindowCreated = (hWnd != 0);
+    g_bIsWindowCreated = GameApp::Initialize(arguments.c_str());
 
     if (g_bIsWindowCreated)
     {

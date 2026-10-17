@@ -128,7 +128,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
 {
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData,
-                       MAX_PATH);
+                       MAX_PATH_LENGTH);
     char*      pLine;
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)

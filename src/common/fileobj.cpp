@@ -58,7 +58,7 @@ void FileObj::Close()
 // FUNCTION: HYPERX 0x00440470
 char FileObj::Open(const char* pszPath, int nMode)
 {
-    char szResolved[MAX_PATH];
+    char szResolved[MAX_PATH_LENGTH];
 
     m_stream = Stream{ OpenStream(pszPath, nMode) };
 

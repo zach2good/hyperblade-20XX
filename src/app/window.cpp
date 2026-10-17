@@ -4,6 +4,12 @@
 #include "globals.h"
 #include "gameapp.h"
 #include "app/window.h"
+
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 #include <vector>
 #include "graphics/presenter.h"
 #include "wndproc.h"
@@ -400,7 +406,7 @@ static void ReplayDeferred()
 
 static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
 {
-    if (g_gameApp.m_hWnd == 0)
+    if (!g_gameApp.m_bHasWindow)
     {
         return true;
     }
@@ -421,20 +427,22 @@ static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
     return true;
 }
 
-HWND Window::Create(const char* pszTitle)
+bool Window::Create(const char* pszTitle)
 {
     if (SDL_Init(SDL_INIT_VIDEO) == false)
     {
-        return 0;
+        return false;
     }
 
     s_pWindow = SDL_CreateWindow(pszTitle, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
 
     if (s_pWindow == 0)
     {
-        return 0;
+        return false;
     }
 
+#ifdef _WIN32
+    // The resource's own icon, at the size the desktop asks for; SDL's class icon is the small one.
     const auto hWnd = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(s_pWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, 0);
 
     // STRING: HYPERX 0x004c8ccc
@@ -442,10 +450,11 @@ HWND Window::Create(const char* pszTitle)
 
     SendMessageA(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
     SendMessageA(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+#endif
 
     SDL_AddEventWatch(OnWindowEvent, 0);
 
-    return hWnd;
+    return true;
 }
 
 Window::NativeWindow Window::Native()

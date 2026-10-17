@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "engine/teamsblock.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
@@ -2210,7 +2211,7 @@ void ChampionshipSetupUIScreen::LoadBracketTorches()
     m_apWidgets[CHAMP_WIDGET_ROUND_TORCH]->SetHidden(0);
     m_apWidgets[CHAMP_WIDGET_ROUND_TORCH]->SetDirtyFlag(1);
 
-    for (i = 0; i < min(nCount, CHAMP_BRACKET_COUNT); i++)
+    for (i = 0; i < (std::min)(nCount, CHAMP_BRACKET_COUNT); i++)
     {
         nEntry = g_pGameEngine->m_pSaveObject->BracketIterPeek();
 

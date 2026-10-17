@@ -56,7 +56,7 @@ bool Streams(const SoundEntry* pEntry)
 
 bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)
 {
-    PathString strPath(MAX_PATH);
+    PathString strPath(MAX_PATH_LENGTH);
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
 

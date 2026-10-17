@@ -1,6 +1,7 @@
 // The chase camera: settling countdown, aim point, spring, plain or smart camera, look direction.
 
 #include "common/compat.h"
+#include <algorithm>
 #include "math/mathops.h"
 #include "planvm/behaviorids.h"
 #include "planvm/agendaitemids.h"
@@ -556,7 +557,7 @@ void CTrack::Process(int nArg)
 
         flAngle = (float)Math::Acos(vWish.x * vGap.x + ((vWish.GetY() * vGap.y) + vWish.GetZ() * vGap.z));
 
-        nSteps = min(SWING_STEPS, m_wCountdown);
+        nSteps = std::min<int>(SWING_STEPS, m_wCountdown);
 
         flCount = (float)nSteps;
 

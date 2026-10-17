@@ -39,7 +39,6 @@
 #include <math.h>
 #include <string.h>
 #include <new.h>
-#include <windows.h>
 #include <stdio.h>
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
@@ -78,7 +77,6 @@
 #include "rampobject.h"
 #include "planvm/planopcodetable.h"
 #include "saveblock.h"
-#include <mmsystem.h>
 #include "sound/audiomgr.h"
 #include "common/stringpool.h"
 #include "net/gamesession.h"

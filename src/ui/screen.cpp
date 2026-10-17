@@ -692,7 +692,7 @@ int Screen::RemoveBitmap(const char* pszName)
                 g_pBitmapCache[127].pszName = 0;
                 g_pBitmapCache[127].hBitmap = 0;
 
-                g_nBitmapCacheCount = max(0, g_nBitmapCacheCount);
+                g_nBitmapCacheCount = (std::max)(0, g_nBitmapCacheCount);
 
                 return 1;
             }

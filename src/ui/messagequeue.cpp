@@ -127,7 +127,7 @@ void MessageQueue::PushFromTable(int nIndex, int nLine, int nDurationMs)
 // FUNCTION: HYPERX 0x00452930
 void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLine, int nDurationMs)
 {
-    char szName[MAX_PATH];
+    char szName[MAX_PATH_LENGTH];
 
     strcpy(szName, pszPrefix);
 
@@ -190,7 +190,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
 {
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData,
-                       MAX_PATH);
+                       MAX_PATH_LENGTH);
     char*      pLine;
     char*      pszText;
     int        nId;

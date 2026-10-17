@@ -46,7 +46,6 @@
 #include "engine/devicector.h"
 #include "net/gamesession.h"
 #include <stdarg.h>
-#include <windows.h>
 #include <stdlib.h>
 #include "ui/screens/championshipsetupuiscreen.h"
 #include "graphics/viewextent.h"
@@ -87,7 +86,7 @@ String g_strPrefs("Data\\DftKeybd.cfg");
 // FUNCTION: HYPERX 0x0046d710
 void Config::LoadPreferences(const char* pszFileName)
 {
-    char  szBuffer[MAX_PATH];
+    char  szBuffer[MAX_PATH_LENGTH];
     FILE* pFile;
 
     // STRING: HYPERX 0x004bc990

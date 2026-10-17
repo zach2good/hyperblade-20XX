@@ -25,7 +25,7 @@ float g_flScreenDotsPerCmModelFile   = g_flScreenDotsPerInchModelFile / g_flCmPe
 char ModelFile::Open(FileObj* pFile, const char* pszModelName)
 {
     char        bSuccess = 1;
-    PathString  strPath(MAX_PATH, g_gameApp.m_strModelPath.m_str.m_pchData, pszModelName, g_pszModelExtension);
+    PathString  strPath(MAX_PATH_LENGTH, g_gameApp.m_strModelPath.m_str.m_pchData, pszModelName, g_pszModelExtension);
     char        szInternalName[MODEL_INTERNAL_NAME_MAX];
     FileVersion version;
 

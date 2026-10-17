@@ -538,7 +538,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
 {
     int          nFileVersion = 0;
     int          nCount       = 0;
-    PathString   strPath(MAX_PATH, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, g_pszPaletteExtension);
+    PathString   strPath(MAX_PATH_LENGTH, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, g_pszPaletteExtension);
     unsigned int nRed;
     unsigned int nGreen;
     unsigned int nBlue;

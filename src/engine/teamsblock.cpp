@@ -31,7 +31,7 @@ TeamsBlock::TeamsBlock()
     char*      pLine;
     short      nTeams = 0;
     // STRING: HYPERX 0x004c8378
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, MAX_PATH_LENGTH);
 
     if (catFile.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
     {

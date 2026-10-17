@@ -60,7 +60,7 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
 unsigned int JumboTextList::Load(const char* pszFileName)
 {
     OwnedFile  file;
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH_LENGTH);
     char*      pLine;
     char*      pszText;
     char       szNoString[JUMBO_MESSAGE_MAX];

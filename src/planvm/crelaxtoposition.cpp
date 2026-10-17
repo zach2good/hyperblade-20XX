@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "planvm/behaviorids.h"
 #include "planvm/agendaitemids.h"
 #include "common/behobjglidetoposition.h"
@@ -160,7 +161,7 @@ void CRelaxToPosition::Process(int nArg)
 
     const short nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
 
-    nClamped = min(FRAME_RATE_LIMIT, nBucket);
+    nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
 
     nClamped >>= 2;
 
@@ -242,7 +243,7 @@ void CRelaxToPosition::Release(int nArg)
 
     const short nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
 
-    nClamped = min(FRAME_RATE_LIMIT, nBucket);
+    nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
 
     nClamped >>= 2;
 

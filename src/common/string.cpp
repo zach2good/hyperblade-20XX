@@ -1,6 +1,7 @@
 // The reference-counted string's members.
 
 #include "compat.h"
+#include <cstdint>
 #include "stringtable.h"
 #include "globals.h"
 #include "app/gameapp.h"
@@ -285,9 +286,9 @@ String::String(const char* psz)
 
     if (psz != 0)
     {
-        if (IS_INTRESOURCE(psz))
+        if ((((std::uintptr_t)(psz) >> 16) == 0))
         {
-            AssignResourceId((unsigned int)(UINT_PTR)psz & 0xffff);
+            AssignResourceId((unsigned int)(std::uintptr_t)psz & 0xffff);
 
             return;
         }

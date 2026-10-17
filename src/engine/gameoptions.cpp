@@ -58,7 +58,7 @@ int GameOptions::WriteString(const char* pszSection, const char* pszKey, const c
 // FUNCTION: HYPERX 0x00479910
 void GameOptions::WriteInt(const char* pszSection, const char* pszKey, int nValue)
 {
-    char szValue[MAX_PATH];
+    char szValue[MAX_PATH_LENGTH];
 
     // STRING: HYPERX 0x004c6508
     sprintf(szValue, "%ld", nValue);

@@ -33,7 +33,7 @@ struct GameApp
     static int                   OutOfMemoryHandler(size_t nSize);
     static void                  AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
     static Window::MessageAnswer ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons);
-    static HWND                  CreateMainWindow(const char* pszTitle);
+    static bool                  CreateMainWindow(const char* pszTitle);
     static void                  Shutdown();
 
     void ReportLastError();
@@ -43,11 +43,6 @@ struct GameApp
     void FatalErrorFmtString(const char* pszFormat, va_list args);
 
     int FindCDRomDrive(bool bRequired);
-
-    HWND GetMainWindow() const
-    {
-        return m_hWnd;
-    }
 
     explicit GameApp(short nStringCount);
 
@@ -62,7 +57,7 @@ struct GameApp
     // The rest of the program reaches these fields at their absolute addresses.
     Vec3          m_vLightSpherical; // 0x1c
     int           m_nFrameRate;      // 0x28
-    HWND          m_hWnd;            // 0x2c
+    bool          m_bHasWindow;      // 0x2c
     unsigned int  m_nEngineState;    // 0x40
     unsigned char m_bIsActive;       // 0x44
     char          m_cUnused;         // 0x45
@@ -78,7 +73,7 @@ struct GameApp
 
     void OnShutdown();
 
-    void SetWindowAndCallbacks(HWND hWnd, void (*pfnStartup)(void), void (*pfnShutdown)(void));
+    void SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(void), void (*pfnShutdown)(void));
 
     void FatalErrorFmt(const char* pszFormat, va_list args);
 
@@ -88,7 +83,7 @@ struct GameApp
 
     static int MainUpdate();
 
-    static HWND Initialize(const char* pszArguments);
+    static bool Initialize(const char* pszArguments);
 
     // The command line after the program's name.
     static const char* Arguments();

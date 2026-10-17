@@ -107,7 +107,7 @@ SDL_GPUTexture* Solid(SDL_GPUDevice* pDevice, SDL_GPUTexture*& pTexture, unsigne
 
 SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
 {
-    const auto path = PathString(MAX_PATH, g_gameApp.m_strTexturesPath.m_str.m_pchData, pszName, g_pszBitmapExtension);
+    const auto path = PathString(MAX_PATH_LENGTH, g_gameApp.m_strTexturesPath.m_str.m_pchData, pszName, g_pszBitmapExtension);
 
     auto nWidth    = 0;
     auto nHeight   = 0;

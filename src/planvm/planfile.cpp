@@ -42,7 +42,7 @@ PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
 // FUNCTION: HYPERX 0x00436270
 PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
 {
-    PathString   strPath(MAX_PATH, g_gameApp.m_strPlansPath.m_str.m_pchData, pszName, g_pszPbnExtension);
+    PathString   strPath(MAX_PATH_LENGTH, g_gameApp.m_strPlansPath.m_str.m_pchData, pszName, g_pszPbnExtension);
     unsigned int nCount;
 
     // STRING: HYPERX 0x004bc938

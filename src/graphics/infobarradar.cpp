@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "math/point.h"
 #include "engine/objectclasses.h"
 #include "infobarradar.h"
@@ -57,7 +58,7 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
     const int nHalfHeight = (nHeight - 4) / 2;
     m_ptDrawOffset.y      = nHalfHeight;
 
-    flDivisor = max(vLimits.x, vLimits.y);
+    flDivisor = (std::max)(vLimits.x, vLimits.y);
 
     m_flScaleX = (float)nHalfWidth / flDivisor;
     m_flScaleY = (float)nHalfHeight / flDivisor;

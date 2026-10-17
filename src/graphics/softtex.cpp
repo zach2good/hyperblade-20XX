@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <cstdint>
 #include "graphics/bitmapformat.h"
 #include "rlesprite.h"
 #include "softtex.h"
@@ -103,7 +104,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     }
 
     // The shrink can move the block, and the row pointers point into it.
-    const auto       nOld    = (UINT_PTR)pSprite;
+    const auto       nOld    = (std::uintptr_t)pSprite;
     RLESprite* const pShrunk = (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
 
     if (pShrunk == 0)
@@ -111,11 +112,11 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
         return pSprite;
     }
 
-    if ((UINT_PTR)pShrunk != nOld)
+    if ((std::uintptr_t)pShrunk != nOld)
     {
         for (unsigned int nRow = 0; nRow < cy; nRow++)
         {
-            pShrunk->apRows[nRow] = (char*)pShrunk + ((UINT_PTR)pShrunk->apRows[nRow] - nOld);
+            pShrunk->apRows[nRow] = (char*)pShrunk + ((std::uintptr_t)pShrunk->apRows[nRow] - nOld);
         }
     }
 
@@ -176,7 +177,7 @@ void SoftTex::RemoveFromList()
 // FUNCTION: HYPERX 0x00492920
 char SoftTex::Load(const char* pszName)
 {
-    char szPath[MAX_PATH];
+    char szPath[MAX_PATH_LENGTH];
 
     if (g_hMdmTexDll)
     {
