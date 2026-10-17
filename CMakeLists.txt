@@ -17,6 +17,7 @@ set(HYPERX_GAME_DATA "" CACHE PATH
 
 include(cmake/dependencies.cmake)
 include(cmake/shaders.cmake)
+include(cmake/embed.cmake)
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
 set(STB_DIR "${CMAKE_SOURCE_DIR}/third_party/stb")
@@ -376,6 +377,7 @@ target_compile_options(hyperx_objects PRIVATE ${HYPERX_WARNINGS} /permissive /ut
 
 set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
 hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
+hyperx_embed(hyperx_objects res/fonts/PixelOperator.ttf res/fonts/PixelOperator8.ttf)
 
 # Decodes every MDM1 file in the game data against its recorded size.
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)

@@ -1,6 +1,6 @@
-// Text drawn straight into pixels, in place of GDI's TextOutA. Microsoft Sans Serif, the TrueType
-// face of the MS Sans Serif the game asked GDI for, rasterised without antialiasing as the
-// original's NONANTIALIASED_QUALITY drew it.
+// Text drawn straight into pixels, in place of GDI's TextOutA, without antialiasing as the
+// original's NONANTIALIASED_QUALITY drew it. The menus use Microsoft Sans Serif where Windows has
+// it; the HUD and everywhere else use the bundled Pixel Operator.
 
 #ifndef HYPERBLADE_TEXT_H
 #define HYPERBLADE_TEXT_H
@@ -13,12 +13,11 @@ namespace Text
 
 using Font = Handle<struct TextFontTag>;
 
-// The face at a cell height in pixels, as CreateFont took a positive height; null when the font
-// file is missing.
+// The menus' face at a cell height in pixels, as CreateFont took a positive height.
 Font Find(int nHeight);
 
-// MS Sans Serif as the game asked GDI for it: the Windows bitmap font, whose smallest size is 13
-// pixels, and the TrueType face where that file is missing.
+// The HUD's stand-in for the bitmap MS Sans Serif the game asked GDI for: a pixel font, drawn only
+// at sizes that land on whole pixels, so a request picks the nearest of those.
 Font FindSansSerif(int nHeight);
 
 struct Size
