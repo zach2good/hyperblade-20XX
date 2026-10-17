@@ -477,17 +477,9 @@ void GameApp::OnShutdown()
 // FUNCTION: HYPERX 0x00423180
 int GameApp::FindCDRomDrive(bool bRequired)
 {
-    char  szCaption[MAX_PATH];
-    char  szFileSystem[MAX_PATH];
-    char  szLabel[MAX_PATH];
-    char  szText[MAX_PATH];
-    char  szVolume[MAX_PATH];
-    char  szScanRoot[4];
-    DWORD dwOut;
-    char  szRoot[4];
-
-    // STRING: HYPERX 0x004bc418
-    memcpy(szScanRoot, "A:\\", sizeof("A:\\"));
+    char szCaption[MAX_PATH];
+    char szLabel[MAX_PATH];
+    char szText[MAX_PATH];
 
     strcpy(szLabel, m_stringPool.LoadText(STRING_HYPERBLADE_UPPERCASE));
     strcpy(szCaption, m_stringPool.LoadText(STRING_CD_NOT_FOUND));
@@ -510,16 +502,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
             goto done;
         }
 
-        // STRING: HYPERX 0x004bc418
-        memcpy(szRoot, "A:\\", sizeof("A:\\"));
-        szRoot[0] = (char)(szRoot[0] + nDrive);
-
-        if (GetVolumeInformationA(szRoot, szVolume, MAX_PATH, &dwOut, &dwOut, &dwOut, szFileSystem, MAX_PATH) == 0)
-        {
-            szVolume[0] = 0;
-        }
-
-        if (strcmp(szVolume, szLabel) == 0)
+        if (Win32::VolumeLabel(nDrive) == szLabel)
         {
             return m_nCDRomDrive;
         }
@@ -527,31 +510,17 @@ int GameApp::FindCDRomDrive(bool bRequired)
 
     for (;;)
     {
-        nDrive        = 0;
-        szScanRoot[0] = 'A';
+        nDrive = 0;
 
         do
         {
-            if (Win32::IsCDRomDrive(szScanRoot) != 0)
+            if (Win32::IsCDRomDrive(nDrive) && Win32::VolumeLabel(nDrive) == szLabel)
             {
-                // STRING: HYPERX 0x004bc418
-                memcpy(szRoot, "A:\\", sizeof("A:\\"));
-                szRoot[0] = (char)(szRoot[0] + nDrive);
+                m_nCDRomDrive = nDrive;
 
-                if (GetVolumeInformationA(szRoot, szVolume, MAX_PATH, &dwOut, &dwOut, &dwOut, szFileSystem, MAX_PATH) == 0)
-                {
-                    szVolume[0] = 0;
-                }
-
-                if (strcmp(szVolume, szLabel) == 0)
-                {
-                    m_nCDRomDrive = nDrive;
-
-                    goto done;
-                }
+                goto done;
             }
 
-            szScanRoot[0]++;
             nDrive++;
         } while (nDrive < CDROM_DRIVE_COUNT);
 
