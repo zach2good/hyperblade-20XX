@@ -3,6 +3,7 @@
 
 #include "common/compat.h"
 #include "common/handle.h"
+#include "math/point.h"
 #include <cstdint>
 
 namespace Window
@@ -21,9 +22,10 @@ struct MenuCanvas
 
 MenuCanvas MenuPixels();
 void       PresentMenu();
-LPARAM     ToMenuPoint(LPARAM lParam);
-void       OnSizeMenus();
-void       OnSize(int cx, int cy);
+// A client point on the 640x480 menu canvas.
+Point ToMenuPoint(int nX, int nY);
+void  OnSizeMenus();
+void  OnSize(int cx, int cy);
 
 // SDL owns the window and its event loop. Window events reach the game as they happen.
 HWND Create(const char* pszTitle);

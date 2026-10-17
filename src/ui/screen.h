@@ -38,7 +38,7 @@ public:
     int     HasPalette() const;
 
     void ShowMatchInfo();
-    int  OnMouseMessage(unsigned int nMsg, unsigned int wParam, unsigned int lParam);
+    int  OnMouseMessage(unsigned int nMsg, unsigned int nButtons, int nX, int nY);
     int  PaintToWindow();
     int  TickAnimations();
 

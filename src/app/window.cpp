@@ -92,19 +92,16 @@ void Window::PresentMenu()
     Presenter::Canvas(s_menuPixels.data(), MENU_WIDTH * 4, MENU_WIDTH, MENU_HEIGHT);
 }
 
-LPARAM Window::ToMenuPoint(LPARAM lParam)
+Point Window::ToMenuPoint(int nX, int nY)
 {
     const auto rc = MenuRect();
 
     if (rc.w <= 0 || rc.h <= 0)
     {
-        return lParam;
+        return Point{ nX, nY };
     }
 
-    const auto x = ((short)LOWORD(lParam) - rc.x) * MENU_WIDTH / rc.w;
-    const auto y = ((short)HIWORD(lParam) - rc.y) * MENU_HEIGHT / rc.h;
-
-    return MAKELPARAM(x, y);
+    return Point{ (nX - rc.x) * MENU_WIDTH / rc.w, (nY - rc.y) * MENU_HEIGHT / rc.h };
 }
 
 // The 3D renders at the client size, so it is never stretched. The width stays a multiple of four,

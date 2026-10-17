@@ -103,11 +103,8 @@ void Screen::InitFrame()
 }
 
 // FUNCTION: HYPERX 0x0048c070
-int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, unsigned int lParam)
+int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
 {
-    const int nX = LOWORD(lParam);
-    const int nY = HIWORD(lParam);
-
     if (nMsg == INPUT_LEFT_UP)
     {
         if (m_nCaptured != -1 && IsButtonWidget(m_nCaptured) && m_apWidgets[m_nCaptured]->HitTest(nX, nY) == 0)
