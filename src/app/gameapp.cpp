@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include <cstdlib>
+#include <string>
 #include "graphics/hudlayer.h"
 #include "graphics/softrenderer.h"
 #include "engine/gameoptions.h"
@@ -134,12 +135,21 @@ void GameApp::SetModelPath(int bTexEnabled)
     }
 }
 
-// FUNCTION: HYPERX 0x00418e10
-HWND GameApp::Initialize(char* pszCommandLine)
+static std::string s_arguments;
+
+const char* GameApp::Arguments()
 {
+    return s_arguments.c_str();
+}
+
+// FUNCTION: HYPERX 0x00418e10
+HWND GameApp::Initialize(const char* pszArguments)
+{
+    s_arguments = pszArguments;
+
     const char* pszAppClassName;
 
-    // An unaware process is DPI-virtualised, and GDI would read and draw stretched pixels.
+    // An unaware process is DPI-virtualised, and the window would be drawn stretched.
     SetProcessDPIAware();
 
     _set_new_handler(GameApp::OutOfMemoryHandler);
@@ -154,7 +164,7 @@ HWND GameApp::Initialize(char* pszCommandLine)
     }
 
     GameApp::InitializeResourcePaths();
-    GameApp::ParseCommandLine(pszCommandLine);
+    GameApp::ParseCommandLine(pszArguments);
 
     // A modern desktop keeps its own mode, so the game runs windowed.
     g_bFullScreen = 0;
@@ -295,23 +305,10 @@ bool GameApp::UpdateSplash()
 
 // 'x' is skipped like a space.
 // FUNCTION: HYPERX 0x00419420
-void GameApp::ParseCommandLine(char* pszCommandLine)
+// The original skipped the program's name first; the arguments come without it.
+void GameApp::ParseCommandLine(const char* pszArguments)
 {
-    // STRING: HYPERX 0x004bbb00
-    char* p = strpbrk(pszCommandLine, "\"");
-
-    if (p != 0)
-    {
-        p              = strpbrk(p + 1, "\"");
-        pszCommandLine = p + 1;
-    }
-
-    p = (char*)strchr(pszCommandLine, ' ');
-
-    if (p == 0)
-    {
-        return;
-    }
+    const char* p = pszArguments;
 
     while (*p == ' ' || *p == '\r' || *p == '\n' || *p == 'x')
     {

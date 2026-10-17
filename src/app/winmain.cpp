@@ -1,5 +1,7 @@
 #include "common/compat.h"
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+#include <string>
 #include "globals.h"
 #include "app/frametimer.h"
 #include "gameapp.h"
@@ -10,10 +12,23 @@ float g_flUnusedWinMainA = g_flZeroWinMain;
 float g_flUnusedWinMainB = g_flZeroWinMain;
 float g_flUnusedWinMainC = g_flZeroWinMain;
 
+// SDL_main supplies the platform's entry point and splits the command line.
 // FUNCTION: HYPERX 0x0044c070
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+int main(int argc, char* argv[])
 {
-    const HWND hWnd = GameApp::Initialize(GetCommandLineA());
+    auto arguments = std::string();
+
+    for (int i = 1; i < argc; i++)
+    {
+        if (i > 1)
+        {
+            arguments += ' ';
+        }
+
+        arguments += argv[i];
+    }
+
+    const HWND hWnd = GameApp::Initialize(arguments.c_str());
 
     g_bIsWindowCreated = (hWnd != 0);
 

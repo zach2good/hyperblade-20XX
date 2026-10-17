@@ -89,10 +89,13 @@ struct GameApp
 
     static int MainUpdate();
 
-    static HWND  Initialize(char* pszCommandLine);
-    static void  InitializeResourcePaths();
-    static void  ParseCommandLine(char* pszCommandLine);
-    static char* ResolveCDRomPath(char* pszPath);
+    static HWND Initialize(const char* pszArguments);
+
+    // The command line after the program's name.
+    static const char* Arguments();
+    static void        InitializeResourcePaths();
+    static void        ParseCommandLine(const char* pszArguments);
+    static char*       ResolveCDRomPath(char* pszPath);
 
     static void SetModelPath(int bTexEnabled);
 

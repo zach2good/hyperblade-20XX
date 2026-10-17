@@ -76,7 +76,7 @@ void Graphics::Initialize(int bResize)
 // FUNCTION: HYPERX 0x0044b6f0
 unsigned int Graphics::LoadMdmTexDLL(void)
 {
-    const char* const pszCmdLine = GetCommandLineA();
+    const char* const pszCmdLine = GameApp::Arguments();
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
     // STRING: HYPERX 0x004c2da0
