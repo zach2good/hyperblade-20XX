@@ -10,6 +10,13 @@ if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
     message(FATAL_ERROR "HyperBlade 20XX builds for 64-bit targets only.")
 endif()
 
+# Floats round alike in every build and on every compiler: no fast maths, no fused multiply-adds.
+if(MSVC)
+    add_compile_options(/fp:precise)
+else()
+    add_compile_options(-fno-fast-math -ffp-contract=off)
+endif()
+
 if(MSVC)
     # The decompiled unions name their members through anonymous structs, as windows.h let them,
     # and its classes delete through base pointers whose derived destructors are empty.
@@ -21,7 +28,6 @@ if(MSVC)
 else()
     set(HYPERX_WARNINGS -Wall -Werror -Wno-delete-non-virtual-dtor)
     set(HYPERX_FLAGS -finput-charset=UTF-8)
-    set(HYPERX_PERMISSIVE -fpermissive)
 endif()
 
 # SDL3.dll goes beside each Windows image. Elsewhere the build tree's rpath finds the library.
