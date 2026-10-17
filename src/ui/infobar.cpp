@@ -724,7 +724,8 @@ void InfoBar::LayoutSurfaces()
     ptPos.y = 2;
     m_sPeriodFrame.SetPosition(ptPos);
 
-    ptPos.x += 0x19;
+    // Centred on a sample time, since every time is as wide in the clock's monospaced face.
+    ptPos.x += (ptSize.x - Text::Measure(m_tClock.m_font, "0:00").nWidth) / 2;
     ptPos.y = 9;
     m_tClock.SetPosition(ptPos);
 
