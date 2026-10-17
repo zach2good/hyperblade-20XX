@@ -149,9 +149,6 @@ HWND GameApp::Initialize(const char* pszArguments)
 
     const char* pszAppClassName;
 
-    // An unaware process is DPI-virtualised, and the window would be drawn stretched.
-    SetProcessDPIAware();
-
     _set_new_handler(GameApp::OutOfMemoryHandler);
     // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
     const char* const pszBase = SDL_GetBasePath();
