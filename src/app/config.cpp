@@ -126,6 +126,8 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 
     if (pFile != 0)
     {
+        // The shipped files hold fewer than 40 rows. The first short row eats the first force's whole
+        // part, as in the original, which then stored garbage in the rows left.
         for (int nRow = 0; nRow < 40; nRow++)
         {
             int nFlags;
@@ -133,7 +135,10 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
             int nIndex;
 
             // STRING: HYPERX 0x004c4e60
-            fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex);
+            if (fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex) != 3)
+            {
+                break;
+            }
 
             pRows[nRow].cFlags = (unsigned char)nFlags;
             pRows[nRow].nKey   = (unsigned short)nKey;
@@ -141,23 +146,23 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
         }
 
         // STRING: HYPERX 0x004c4e50
-        fscanf(pFile, " %f %f %f %f", &g_flForceIncrement, &g_flMaxAcceleration, &g_flMaxSpeed, &g_flForceRelaxation);
+        auto bRead = fscanf(pFile, " %f %f %f %f", &g_flForceIncrement, &g_flMaxAcceleration, &g_flMaxSpeed, &g_flForceRelaxation) == 4;
 
-        int nVictimCam;
+        auto nVictimCam = 0;
 
         // STRING: HYPERX 0x004c4e34
-        fscanf(pFile, "  @v02 %d %f %f %f %f %f :", &nVictimCam, &g_flBandwidth, &g_flNetTracking, &g_flStopForceFactor, &g_flSpeedBurstFactor, &g_vViewSteepness.z);
+        bRead = bRead && fscanf(pFile, "  @v02 %d %f %f %f %f %f :", &nVictimCam, &g_flBandwidth, &g_flNetTracking, &g_flStopForceFactor, &g_flSpeedBurstFactor, &g_vViewSteepness.z) == 6;
 
-        g_bVictimCam = (unsigned char)nVictimCam;
+        if (bRead)
+        {
+            g_bVictimCam = (unsigned char)nVictimCam;
+        }
 
         // STRING: HYPERX 0x004c4d9c
-        fscanf(pFile, " %f %f %f :", &g_vBirdsEyeTrackOffset.x, &g_vBirdsEyeTrackOffset.y, &g_vBirdsEyeTrackOffset.z);
-
-        fscanf(pFile, " %f %f %f :", &g_vFirstPersonTrackOffset.x, &g_vFirstPersonTrackOffset.y, &g_vFirstPersonTrackOffset.z);
-
-        fscanf(pFile, " %f %f %f :", &g_vOverShoulderTrackOffset.x, &g_vOverShoulderTrackOffset.y, &g_vOverShoulderTrackOffset.z);
-
-        fscanf(pFile, " %f %f %f :", &g_vOverShoulderRokTrackOffset.x, &g_vOverShoulderRokTrackOffset.y, &g_vOverShoulderRokTrackOffset.z);
+        bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vBirdsEyeTrackOffset.x, &g_vBirdsEyeTrackOffset.y, &g_vBirdsEyeTrackOffset.z) == 3;
+        bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vFirstPersonTrackOffset.x, &g_vFirstPersonTrackOffset.y, &g_vFirstPersonTrackOffset.z) == 3;
+        bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vOverShoulderTrackOffset.x, &g_vOverShoulderTrackOffset.y, &g_vOverShoulderTrackOffset.z) == 3;
+        bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vOverShoulderRokTrackOffset.x, &g_vOverShoulderRokTrackOffset.y, &g_vOverShoulderRokTrackOffset.z) == 3;
 
         fclose(pFile);
 

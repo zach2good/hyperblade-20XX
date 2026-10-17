@@ -1181,7 +1181,7 @@ short EngineObject::FindPlanByName(const char* pszName)
     return -1;
 }
 
-#define COMMAND_NONE -1
+#define COMMAND_NONE 0xffffffffu
 
 #define RECORD_MARK 0xff
 
@@ -1670,7 +1670,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
         MeshMaterial* apMaterials[2];
 
-        apMaterials[0] = &m_pModelBlock->m_pMaterials[pFace->cMaterial];
+        apMaterials[0] = &m_pModelBlock->m_pMaterials[(int)pFace->cMaterial];
         apMaterials[1] = &m_pModelBlock->m_pMaterials[apMaterials[0]->nBackIndex];
 
         MeshBone::DispatchFace(m_pBones, cFacing, pFace, apMaterials, 0, g_pModelVertexBuf, &g_vDispatchFaceNormal, cClip);
@@ -1952,8 +1952,7 @@ void EngineObject::PackAndEnqueue(unsigned int nMessage, unsigned int nSender, s
 void EngineObject::ResetSceneMessageHandlers()
 {
     memset(m_aSceneHandlerSlot, 0, sizeof(m_aSceneHandlerSlot));
-    // Fifty bytes, not fifty slots, as in the original.
-    memset(m_apSceneHandler, 0, SCENE_HANDLER_SLOTS);
+    memset(m_apSceneHandler, 0, sizeof(m_apSceneHandler));
 
     m_nSceneHandlerCount = 1;
 }

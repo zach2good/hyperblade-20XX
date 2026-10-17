@@ -868,7 +868,6 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
                     if (nSlot <= 3)
                     {
                         float         flDamage;
-                        int           anCandidates[2];
                         PlayerObject* pOther;
 
                         pOther = g_pGameEngine->GetPlayer((short)nOpposite);
@@ -877,7 +876,6 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
                         if (flDamage <= DamageGate())
                         {
-                            anCandidates[nCount] = nOpposite;
                             nCount++;
                         }
 

@@ -204,7 +204,7 @@ extern const float g_flDegToRad;
 extern const float g_flHalfPi;
 
 // GLOBAL: HYPERX 0x004b36e4
-extern char* const g_pszEmptyName;
+extern const char* const g_pszEmptyName;
 
 // GLOBAL: HYPERX 0x004c6774
 extern LightDir g_lightDirs[3];

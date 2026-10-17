@@ -146,9 +146,6 @@ void CTrackTraj::Process(int nArg)
     Vec3* const pCamVel = GetCamera()->m_pSettings;
     Vec3* const pCamDir = &m_pOwner->GetPhysicsBody()->velDir;
 
-    // Written and never read anywhere in the image.
-    static float s_flTrackZero = g_flZeroTracking;
-
     CameraObject* const pCamera = (CameraObject*)m_pOwner;
 
     if (pCamera->GetTrackedObject() == 0)

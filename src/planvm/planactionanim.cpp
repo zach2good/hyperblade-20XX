@@ -85,7 +85,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     const unsigned int nBehavior = pContext->m_nBehaviour;
 
-    if (nBehavior == PLAN_TOKEN_NO_BEH_CHANGE)
+    if ((int)nBehavior == PLAN_TOKEN_NO_BEH_CHANGE)
     {
         pActor = pContext->GetActor();
 
@@ -155,7 +155,7 @@ void PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, sho
     const unsigned int  nBehavior = pContext->m_nBehaviour;
     GameBehaviorObject* pBehaviour;
 
-    if (nBehavior == PLAN_TOKEN_NO_BEH_CHANGE)
+    if ((int)nBehavior == PLAN_TOKEN_NO_BEH_CHANGE)
     {
         pBehaviour = pContext->GetActor()->GetPlanState()->m_pCurrent;
     }
@@ -185,7 +185,7 @@ void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*
 
     const unsigned int nBehavior = pContext->m_nBehaviour;
 
-    if (nBehavior != PLAN_TOKEN_NO_BEH_CHANGE)
+    if ((int)nBehavior != PLAN_TOKEN_NO_BEH_CHANGE)
     {
         pActor = pContext->GetActor();
 

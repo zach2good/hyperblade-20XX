@@ -149,8 +149,8 @@ extern const float        g_flHalfPi           = 1.5707964f;
 extern const float        g_flLightAzimuth180  = 180.0f;
 extern const float        g_flLightAzimuth54   = 54.0f;
 extern const float        g_flLightAzimuth303  = 303.0f;
-extern char* const        g_pszEmptyName       = "";
-extern char* const        g_pszDefaultPlanName = "";
+extern const char* const  g_pszEmptyName       = "";
+extern const char* const  g_pszDefaultPlanName = "";
 LightDir                  g_lightDirs[3]       = {
     { 0.0f, { 0.0f, 0.0f, 1.0f } },
     { 0.0f, { 0.0f, 0.0f, 1.0f } },
@@ -377,7 +377,7 @@ int g_nDamageBarColourDim;
 int g_nDamageBarColourLit;
 int g_nPeriodLightColour;
 
-extern char* const g_pszEmptyDefaultName = "";
+extern const char* const g_pszEmptyDefaultName = "";
 
 extern const float g_flRatingStart = 0.0f;
 
@@ -540,7 +540,7 @@ const char* const        g_pszAnimFloatFormat = "%f";
 extern const char* const g_pszAnimTokenDelimiters;
 const char* const        g_pszAnimTokenDelimiters = "	";
 
-char* g_pszKeyConfigDefaultName = "";
+const char* g_pszKeyConfigDefaultName = "";
 
 // GLOBAL: HYPERX 0x004b36f4
 extern const float g_flThreePlan;
@@ -644,8 +644,8 @@ short g_wMsgInteractorPoolSize = 350;
 extern const Vec3 g_vecZeroVelocity = { 0.0f, 0.0f, 0.0f };
 extern const Vec3 g_vecZeroPosition = { 0.0f, 0.0f, 0.0f };
 
-extern float g_flArenaEllipsoidFriction   = 0.01f;
-extern float g_flArenaEllipsoidElasticity = 0.95f;
+float g_flArenaEllipsoidFriction   = 0.01f;
+float g_flArenaEllipsoidElasticity = 0.95f;
 
 EllipsoidRatios g_ellipsoidRatios;
 

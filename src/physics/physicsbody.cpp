@@ -349,9 +349,6 @@ void PhysicsBody::UpdateMovementAxes()
 
     flCap = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 0.06f + 0.2f) * flAccelDt * g_flMaxAcceleration;
 
-    // Written on the first frame and never read.
-    static unsigned int s_nStartTick = g_pGameEngine->m_clock.nTickMs;
-
     if ((nHeldBindings & HELD_SHOOT) != 0)
     {
         axis.x               = flPush + axis.x;

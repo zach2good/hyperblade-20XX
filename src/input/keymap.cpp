@@ -114,7 +114,7 @@ const char* KeyMap::Name(unsigned int nKey)
 
 unsigned int KeyMap::ToVirtualKey(int nScancode, int nKeycode)
 {
-    if (nKeycode >= SDLK_A && nKeycode <= SDLK_Z)
+    if (nKeycode >= (int)SDLK_A && nKeycode <= (int)SDLK_Z)
     {
         return 'A' + (unsigned int)(nKeycode - SDLK_A);
     }

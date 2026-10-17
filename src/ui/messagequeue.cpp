@@ -164,7 +164,7 @@ MessageQueue* MessageQueue::FreeAll()
 
         if (*ppName != 0)
         {
-            delete[] (void*)*ppName;
+            delete[] *ppName;
 
             *ppName = 0;
         }

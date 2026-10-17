@@ -109,7 +109,7 @@ extern SoftBackBitmapInfo g_bmiSoftBackBuffer;
 extern char g_szTopDownDibName[12];
 
 // GLOBAL: HYPERX 0x004c2cc0
-extern char* g_pszDibOrientationName;
+extern const char* g_pszDibOrientationName;
 
 struct LayoutState;
 extern LayoutState g_cameraViewportBlock;

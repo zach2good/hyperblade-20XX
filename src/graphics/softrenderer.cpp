@@ -94,7 +94,7 @@ RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
 char g_szTopDownDibName[12] = "TopDownDIB ";
 
 // STRING: HYPERX 0x004c2ca8
-char* g_pszDibOrientationName = "BottomUpDIB";
+const char* g_pszDibOrientationName = "BottomUpDIB";
 
 // 50x50, 8 bits: the back buffer the original builds before it knows the display mode.
 SoftBackBitmapInfo g_bmiSoftBackBuffer = { { 40, 50, 50, 1, 8 } };

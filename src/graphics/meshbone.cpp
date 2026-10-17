@@ -362,7 +362,7 @@ void MeshBone::DrawFaces()
     for (short nFace = 0; nFace < GetFaceCount(); nFace++)
     {
         MeshFace* const     pFace = GetFace(nFace);
-        MeshMaterial* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[pFace->cMaterial];
+        MeshMaterial* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[(int)pFace->cMaterial];
 
         nResult = Face::BackfaceCullAndClipCheck(pFace, g_pModelVertexBuf, (char)(pMat->nBackIndex >= 0), &cClip);
 
@@ -636,7 +636,7 @@ MeshBone::MeshBone()
 , m_bHasScale(0)
 , m_flRadius(0)
 {
-    memset(&m_block, 0, sizeof(m_block));
+    memset((void*)&m_block, 0, sizeof(m_block));
 
     m_vCentre.x = m_vCentre.y = m_vCentre.z = 0;
 }

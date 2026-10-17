@@ -202,7 +202,7 @@ GameBehaviorObject* PlanState::GetBehaviorByIndex(unsigned int nIndex)
 
     GameBehaviorObject* pAt = m_pHead;
 
-    if (nIndex == PLAN_TOKEN_PREVIOUS_BEH)
+    if ((int)nIndex == PLAN_TOKEN_PREVIOUS_BEH)
     {
         nLeft = m_nPrevious;
     }
@@ -255,7 +255,7 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
 {
     short nSlot = (short)nIndex;
 
-    if (nIndex == PLAN_TOKEN_PREVIOUS_BEH)
+    if ((int)nIndex == PLAN_TOKEN_PREVIOUS_BEH)
     {
         nSlot = m_nPrevious;
     }
@@ -364,7 +364,7 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
             aWords = aGrown;
         }
 
-        if (pWord[-1].pNode->m_nOpcode == CATEGORY_END_PLAN)
+        if (pWord[-1].pNode->m_nOpcode == (int)CATEGORY_END_PLAN)
         {
             PlanNode** const apResult = new PlanNode*[m_nBehaviorCount];
 
@@ -396,7 +396,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 
     const PlanWord* pCursor = *ppStream;
 
-    if (pCursor->n == PLAN_MARKER_NODE)
+    if ((unsigned int)pCursor->n == PLAN_MARKER_NODE)
     {
         pCursor++;
 
@@ -408,7 +408,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         pNode->m_nArgCount = 0;
         pNode->m_pArgs     = 0;
 
-        if (pNode->m_nOpcode == CATEGORY_END_PLAN)
+        if (pNode->m_nOpcode == (int)CATEGORY_END_PLAN)
         {
             pNode->m_pArgs = 0;
 
@@ -458,7 +458,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         return 1;
     }
 
-    if (pCursor->n == PLAN_MARKER_STRING)
+    if ((unsigned int)pCursor->n == PLAN_MARKER_STRING)
     {
         pCursor++;
 

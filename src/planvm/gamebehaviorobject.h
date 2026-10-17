@@ -111,7 +111,7 @@ public:
     int m_nEventTarget; // 0x58
     int m_nEventParam;  // 0x5c
     // The name the plan machinery looks a behaviour up by.
-    char*                 m_pszName;          // 0x60
+    const char*           m_pszName;          // 0x60
     class CollInteractor* m_pCollInteractors; // 0x64
     class MsgInteractor*  m_pMsgInteractors;  // 0x68
     // The next behaviour in the chain a plan state activates through.

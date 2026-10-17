@@ -119,19 +119,19 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
             case 0x63:
             case 0x43:
                 nItemLen = 2;
-                va_arg(argList, char);
+                va_arg(argList, int);
                 break;
 
             case 0x63 | FORCE_ANSI:
             case 0x43 | FORCE_ANSI:
                 nItemLen = 2;
-                va_arg(argList, char);
+                va_arg(argList, int);
                 break;
 
             case 0x63 | FORCE_UNICODE:
             case 0x43 | FORCE_UNICODE:
                 nItemLen = 2;
-                va_arg(argList, unsigned short);
+                va_arg(argList, int);
                 break;
 
             case 0x73:

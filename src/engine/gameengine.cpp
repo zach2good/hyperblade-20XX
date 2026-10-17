@@ -1558,7 +1558,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 
     char* pRest = pszLine;
 
-    memset(pDef, 0, sizeof(ObjectDef));
+    memset((void*)pDef, 0, sizeof(ObjectDef));
 
     while (pRest != 0)
     {
@@ -1962,7 +1962,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
         return 0;
     }
 
-    memset(pTeam, 0, sizeof(TeamBlock));
+    memset((void*)pTeam, 0, sizeof(TeamBlock));
 
     while (pLine != 0)
     {
@@ -2373,7 +2373,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     *ppSlot = pNew;
 
-    memset(pNew, 0, sizeof(BubbleCmd));
+    memset((void*)pNew, 0, sizeof(BubbleCmd));
 
     pNew->m_wShape    = (short)anBubbleShapes[nBubbleType];
     pNew->m_nSlot     = nBubbleType;
@@ -3630,7 +3630,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     pPlayer->ApplyRenderSlotPose();
 
     memmove(&pPlayer->m_stats.m_aStats[1], &pTeam->aRows[nWith], sizeof(TeamPlayerRow));
-    memmove(&pPlayer->m_matchStats, &pTeam->aStatRows[nWith], sizeof(TeamStatRow));
+    memmove((void*)&pPlayer->m_matchStats, &pTeam->aStatRows[nWith], sizeof(TeamStatRow));
 
     nOnIceSlot = pPlayer->GetSlot();
 
@@ -4928,7 +4928,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 
             for (nSeat = 0; nSeat < TEAM_BLOCK_SEATS; nSeat++)
             {
-                memmove(&((PlayerObject*)pTeam->apOnIce[nSeat])->m_matchStats,
+                memmove((void*)&((PlayerObject*)pTeam->apOnIce[nSeat])->m_matchStats,
                         &pTeam->aStatRows[pTeam->aSeat[nSeat]],
                         sizeof(TeamStatRow));
             }

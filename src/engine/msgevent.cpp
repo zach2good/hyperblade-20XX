@@ -14,7 +14,7 @@ int MsgEvent::Pack(short nKind, short nHigh, short nMiddle, short nLow)
 // FUNCTION: HYPERX 0x0045d760
 unsigned int MsgEvent::PackScene(unsigned int nMessage, unsigned int nSender, short nValue)
 {
-    return ((nMessage & 0x3ff) << 8 | nSender & 0xff) * 0x4000 | nValue & 0x3fff;
+    return ((((nMessage & 0x3ff) << 8) | (nSender & 0xff)) * 0x4000) | (nValue & 0x3fff);
 }
 
 // Splits a PackScene word into its three fields; each lands in a short.

@@ -11,16 +11,16 @@ int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
 {
     unsigned short nCount = 0;
 
-    fread(pScreen->aSignature, 3, 1, pFile);
-    fread(pScreen->aVersion, 3, 1, pFile);
+    short nWidth  = 0;
+    short nHeight = 0;
 
-    short nWord = 0;
-    fread(&nWord, sizeof(nWord), 1, pFile);
-    pScreen->nWidth = nWord;
+    if (fread(pScreen->aSignature, 3, 1, pFile) != 1 || fread(pScreen->aVersion, 3, 1, pFile) != 1 || fread(&nWidth, sizeof(nWidth), 1, pFile) != 1 || fread(&nHeight, sizeof(nHeight), 1, pFile) != 1)
+    {
+        return -1;
+    }
 
-    nWord = 0;
-    fread(&nWord, sizeof(nWord), 1, pFile);
-    pScreen->nHeight = nWord;
+    pScreen->nWidth  = nWidth;
+    pScreen->nHeight = nHeight;
 
     pScreen->cFlags      = (unsigned char)fgetc(pFile);
     pScreen->cBackground = (unsigned char)fgetc(pFile);

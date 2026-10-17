@@ -89,10 +89,7 @@ inline AnimBinding::AnimBinding()
 // Slot one of this table and AnimPlayer's is PooledOwnerRoot::Destroy's folded body, which holds the marker.
 inline AnimBinding* AnimBinding::DestroyViaVtable()
 {
-    if (this != 0)
-    {
-        delete this;
-    }
+    delete this;
 
     return 0;
 }

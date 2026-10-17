@@ -853,7 +853,7 @@ char PlanVM::SaveBinary(char* pszName)
             nWord = m_pStream[nIndex++].n;
 
             file.m_file.Write((const void*)&nWord, 4);
-        } while (nWord != CATEGORY_END_PLAN);
+        } while (nWord != (int)CATEGORY_END_PLAN);
 
         file.m_file.CloseAndTest();
 
@@ -1676,7 +1676,7 @@ short PlanVM::FindLocalRealIndex(char* pszName)
     strcpy(szName, pszName);
     strcpy(szName, PlanVM::UnquoteString(szName));
 
-    while (&m_aLocalRealNames[nSlot] != 0 && nSlot < PLANVM_BEHAVIOR_LIMIT)
+    while (nSlot < PLANVM_BEHAVIOR_LIMIT)
     {
         if (strcmp(szName, m_aLocalRealNames[nSlot]) == 0)
         {
@@ -1699,7 +1699,7 @@ short PlanVM::FindInteractorNameIndex(char* pszName)
     strcpy(szName, pszName);
     strcpy(szName, PlanVM::UnquoteString(szName));
 
-    while (&m_aInteractorNames[nSlot] != 0 && nSlot < PLANVM_INTERACTOR_NAME_LIMIT)
+    while (nSlot < PLANVM_INTERACTOR_NAME_LIMIT)
     {
         if (strcmp(szName, m_aInteractorNames[nSlot]) == 0)
         {
@@ -1799,12 +1799,9 @@ short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
 {
     for (short nSlot = 0; nSlot < PLANVM_INTERACTOR_NAME_LIMIT; nSlot++)
     {
-        if (&m_aInteractorNames[nSlot] != 0)
+        if (strcmp(m_aInteractorNames[nSlot], pszName) == 0)
         {
-            if (strcmp(m_aInteractorNames[nSlot], pszName) == 0)
-            {
-                return nSlot;
-            }
+            return nSlot;
         }
     }
 

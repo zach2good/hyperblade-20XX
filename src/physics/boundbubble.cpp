@@ -179,9 +179,14 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
         pOther->GetWorldPosition(&g_vBubbleOtherCentre);
     }
 
-    flLenSq = (g_vBubbleSeparation.x = g_vBubbleOwnCentre.x - g_vBubbleOtherCentre.x) * g_vBubbleSeparation.x + (g_vBubbleSeparation.y = g_vBubbleOwnCentre.y - g_vBubbleOtherCentre.y) * g_vBubbleSeparation.y + (g_vBubbleSeparation.z = g_vBubbleOwnCentre.z - g_vBubbleOtherCentre.z) * g_vBubbleSeparation.z;
+    g_vBubbleSeparation.x = g_vBubbleOwnCentre.x - g_vBubbleOtherCentre.x;
+    g_vBubbleSeparation.y = g_vBubbleOwnCentre.y - g_vBubbleOtherCentre.y;
+    g_vBubbleSeparation.z = g_vBubbleOwnCentre.z - g_vBubbleOtherCentre.z;
 
-    if ((flRadiusSum = m_flRadius + pOther->m_flRadius) * flRadiusSum > flLenSq)
+    flLenSq     = g_vBubbleSeparation.x * g_vBubbleSeparation.x + g_vBubbleSeparation.y * g_vBubbleSeparation.y + g_vBubbleSeparation.z * g_vBubbleSeparation.z;
+    flRadiusSum = m_flRadius + pOther->m_flRadius;
+
+    if (flRadiusSum * flRadiusSum > flLenSq)
     {
         if (GetOwner()->GetPhase() == OBJECT_PHASE_LOCAL || pOther->GetOwner()->GetPhase() == OBJECT_PHASE_LOCAL)
         {

@@ -22,7 +22,7 @@ extern const char* const g_pszPlanVmEmptyName;
 extern int g_nPlanSequenceStep;
 
 // GLOBAL: HYPERX 0x004b3e30
-extern char* const g_pszDefaultPlanName;
+extern const char* const g_pszDefaultPlanName;
 
 // Where each of the two secondary camera cycles has got to.
 // GLOBAL: HYPERX 0x004bb2d4

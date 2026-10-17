@@ -551,11 +551,6 @@ void ChampionshipSetupUIScreen::RefreshSelection()
 // FUNCTION: HYPERX 0x00458770
 void ChampionshipSetupUIScreen::LoadTeamBitmaps(int nShow)
 {
-    if (m_apWidgets == 0)
-    {
-        return;
-    }
-
     if (nShow != 0 && m_nTeamSlot % 4 == 0)
     {
         m_apWidgets[TEAMSETUP_WIDGET_TEAM_TITLE]->ClearFrames();
@@ -784,598 +779,595 @@ void ChampionshipSetupUIScreen::LoadTeamBitmaps(int nShow)
 // FUNCTION: HYPERX 0x00459170
 void ChampionshipSetupUIScreen::LoadObstacleFrames(int nBuild)
 {
-    if (m_apWidgets != 0)
+    if (nBuild == 0)
     {
-        if (nBuild == 0)
-        {
-            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHidden(1);
-            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetHidden(1);
-            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetHidden(1);
+        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHidden(1);
+        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetHidden(1);
+        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetHidden(1);
 
-            return;
-        }
-
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->ClearFrames();
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->ClearFrames();
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->ClearFrames();
-
-        switch (m_nObstacleSet)
-        {
-            case 0:
-                // STRING: HYPERX 0x004c3a80
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdsta"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3a78
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objstar"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3a70
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn01"));
-                // STRING: HYPERX 0x004c3a68
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn02"));
-                // STRING: HYPERX 0x004c3a60
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn03"));
-                // STRING: HYPERX 0x004c3a58
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn04"));
-                // STRING: HYPERX 0x004c3a50
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn05"));
-                // STRING: HYPERX 0x004c3a48
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn06"));
-                // STRING: HYPERX 0x004c3a40
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn07"));
-                // STRING: HYPERX 0x004c3a38
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn08"));
-                // STRING: HYPERX 0x004c3a30
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn09"));
-                // STRING: HYPERX 0x004c3a28
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn10"));
-                // STRING: HYPERX 0x004c3a20
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn11"));
-                // STRING: HYPERX 0x004c3a18
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn12"));
-                // STRING: HYPERX 0x004c3a10
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn13"));
-                // STRING: HYPERX 0x004c3a08
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn14"));
-                // STRING: HYPERX 0x004c3a00
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 1:
-                // STRING: HYPERX 0x004c39f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdrok"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c39f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objrok"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c39e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok01"));
-                // STRING: HYPERX 0x004c39e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok02"));
-                // STRING: HYPERX 0x004c39d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok03"));
-                // STRING: HYPERX 0x004c39d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok04"));
-                // STRING: HYPERX 0x004c39c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok05"));
-                // STRING: HYPERX 0x004c39c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok06"));
-                // STRING: HYPERX 0x004c39b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok07"));
-                // STRING: HYPERX 0x004c39b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok08"));
-                // STRING: HYPERX 0x004c39a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok09"));
-                // STRING: HYPERX 0x004c39a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok10"));
-                // STRING: HYPERX 0x004c3998
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok11"));
-                // STRING: HYPERX 0x004c3990
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok12"));
-                // STRING: HYPERX 0x004c3988
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok13"));
-                // STRING: HYPERX 0x004c3980
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok14"));
-                // STRING: HYPERX 0x004c3978
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 2:
-                // STRING: HYPERX 0x004c3970
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdhur"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3968
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objhurd"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3960
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl01"));
-                // STRING: HYPERX 0x004c3958
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl02"));
-                // STRING: HYPERX 0x004c3950
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl03"));
-                // STRING: HYPERX 0x004c3948
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl04"));
-                // STRING: HYPERX 0x004c3940
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl05"));
-                // STRING: HYPERX 0x004c3938
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl06"));
-                // STRING: HYPERX 0x004c3930
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl07"));
-                // STRING: HYPERX 0x004c3928
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl08"));
-                // STRING: HYPERX 0x004c3920
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl09"));
-                // STRING: HYPERX 0x004c3918
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl10"));
-                // STRING: HYPERX 0x004c3910
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl11"));
-                // STRING: HYPERX 0x004c3908
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl12"));
-                // STRING: HYPERX 0x004c3900
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl13"));
-                // STRING: HYPERX 0x004c38f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl14"));
-                // STRING: HYPERX 0x004c38f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 3:
-                // STRING: HYPERX 0x004c38e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdram"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c38e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objramp"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c38d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp01"));
-                // STRING: HYPERX 0x004c38d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp02"));
-                // STRING: HYPERX 0x004c38c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp03"));
-                // STRING: HYPERX 0x004c38c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp04"));
-                // STRING: HYPERX 0x004c38b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp05"));
-                // STRING: HYPERX 0x004c38b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp06"));
-                // STRING: HYPERX 0x004c38a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp07"));
-                // STRING: HYPERX 0x004c38a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp08"));
-                // STRING: HYPERX 0x004c3898
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp09"));
-                // STRING: HYPERX 0x004c3890
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp10"));
-                // STRING: HYPERX 0x004c3888
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp11"));
-                // STRING: HYPERX 0x004c3880
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp12"));
-                // STRING: HYPERX 0x004c3878
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp13"));
-                // STRING: HYPERX 0x004c3870
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp14"));
-                // STRING: HYPERX 0x004c3868
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 4:
-                // STRING: HYPERX 0x004c3860
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdtur"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3858
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objturn"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3850
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns01"));
-                // STRING: HYPERX 0x004c3848
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns02"));
-                // STRING: HYPERX 0x004c3840
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns03"));
-                // STRING: HYPERX 0x004c3838
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns04"));
-                // STRING: HYPERX 0x004c3830
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns05"));
-                // STRING: HYPERX 0x004c3828
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns06"));
-                // STRING: HYPERX 0x004c3820
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns07"));
-                // STRING: HYPERX 0x004c3818
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns08"));
-                // STRING: HYPERX 0x004c3810
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns09"));
-                // STRING: HYPERX 0x004c3808
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns10"));
-                // STRING: HYPERX 0x004c3800
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns11"));
-                // STRING: HYPERX 0x004c37f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns12"));
-                // STRING: HYPERX 0x004c37f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns13"));
-                // STRING: HYPERX 0x004c37e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns14"));
-                // STRING: HYPERX 0x004c37e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 5:
-                // STRING: HYPERX 0x004c37d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdarm"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c37d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objarm"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c31f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor01"));
-                // STRING: HYPERX 0x004c37c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor02"));
-                // STRING: HYPERX 0x004c37c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor03"));
-                // STRING: HYPERX 0x004c37b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor04"));
-                // STRING: HYPERX 0x004c37b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor05"));
-                // STRING: HYPERX 0x004c37a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor06"));
-                // STRING: HYPERX 0x004c37a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor07"));
-                // STRING: HYPERX 0x004c3798
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor08"));
-                // STRING: HYPERX 0x004c3790
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor09"));
-                // STRING: HYPERX 0x004c3788
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor10"));
-                // STRING: HYPERX 0x004c3780
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor11"));
-                // STRING: HYPERX 0x004c3778
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor12"));
-                // STRING: HYPERX 0x004c3770
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor13"));
-                // STRING: HYPERX 0x004c3768
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor14"));
-                // STRING: HYPERX 0x004c3760
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 6:
-                // STRING: HYPERX 0x004c3758
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdmin"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3750
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objmine"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3748
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine01"));
-                // STRING: HYPERX 0x004c3740
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine02"));
-                // STRING: HYPERX 0x004c3738
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine03"));
-                // STRING: HYPERX 0x004c3730
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine04"));
-                // STRING: HYPERX 0x004c3728
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine05"));
-                // STRING: HYPERX 0x004c3720
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine06"));
-                // STRING: HYPERX 0x004c3718
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine07"));
-                // STRING: HYPERX 0x004c3710
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine08"));
-                // STRING: HYPERX 0x004c3708
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine09"));
-                // STRING: HYPERX 0x004c3700
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine10"));
-                // STRING: HYPERX 0x004c36f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine11"));
-                // STRING: HYPERX 0x004c36f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine12"));
-                // STRING: HYPERX 0x004c36e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine13"));
-                // STRING: HYPERX 0x004c36e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine14"));
-                // STRING: HYPERX 0x004c36d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 7:
-                // STRING: HYPERX 0x004c36d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdswr"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c36c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objswar"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c36c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf01"));
-                // STRING: HYPERX 0x004c36b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf02"));
-                // STRING: HYPERX 0x004c36b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf03"));
-                // STRING: HYPERX 0x004c36a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf04"));
-                // STRING: HYPERX 0x004c36a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf05"));
-                // STRING: HYPERX 0x004c3698
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf06"));
-                // STRING: HYPERX 0x004c3690
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf07"));
-                // STRING: HYPERX 0x004c3688
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf08"));
-                // STRING: HYPERX 0x004c3680
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf09"));
-                // STRING: HYPERX 0x004c3678
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf10"));
-                // STRING: HYPERX 0x004c3670
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf11"));
-                // STRING: HYPERX 0x004c3668
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf12"));
-                // STRING: HYPERX 0x004c3660
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf13"));
-                // STRING: HYPERX 0x004c3658
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf14"));
-                // STRING: HYPERX 0x004c3650
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 8:
-                // STRING: HYPERX 0x004c3648
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdgre"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3640
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objgrnd"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3638
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd01"));
-                // STRING: HYPERX 0x004c3630
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd02"));
-                // STRING: HYPERX 0x004c3628
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd03"));
-                // STRING: HYPERX 0x004c3620
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd04"));
-                // STRING: HYPERX 0x004c3618
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd05"));
-                // STRING: HYPERX 0x004c3610
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd06"));
-                // STRING: HYPERX 0x004c3608
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd07"));
-                // STRING: HYPERX 0x004c3600
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd08"));
-                // STRING: HYPERX 0x004c35f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd09"));
-                // STRING: HYPERX 0x004c35f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd10"));
-                // STRING: HYPERX 0x004c35e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd11"));
-                // STRING: HYPERX 0x004c35e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd12"));
-                // STRING: HYPERX 0x004c35d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd13"));
-                // STRING: HYPERX 0x004c35d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd14"));
-                // STRING: HYPERX 0x004c35c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 9:
-                // STRING: HYPERX 0x004c35c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdred"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c35b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objrrnd"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c35b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd01"));
-                // STRING: HYPERX 0x004c35a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd02"));
-                // STRING: HYPERX 0x004c35a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd03"));
-                // STRING: HYPERX 0x004c3598
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd04"));
-                // STRING: HYPERX 0x004c3590
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd05"));
-                // STRING: HYPERX 0x004c3588
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd06"));
-                // STRING: HYPERX 0x004c3580
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd07"));
-                // STRING: HYPERX 0x004c3578
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd08"));
-                // STRING: HYPERX 0x004c3570
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd09"));
-                // STRING: HYPERX 0x004c3568
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd10"));
-                // STRING: HYPERX 0x004c3560
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd11"));
-                // STRING: HYPERX 0x004c3558
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd12"));
-                // STRING: HYPERX 0x004c3550
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd13"));
-                // STRING: HYPERX 0x004c3548
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd14"));
-                // STRING: HYPERX 0x004c3540
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 10:
-                // STRING: HYPERX 0x004c3538
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdkbr"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3530
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objkbr"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3528
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk01"));
-                // STRING: HYPERX 0x004c3520
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk02"));
-                // STRING: HYPERX 0x004c3518
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk03"));
-                // STRING: HYPERX 0x004c3510
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk04"));
-                // STRING: HYPERX 0x004c3508
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk05"));
-                // STRING: HYPERX 0x004c3500
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk06"));
-                // STRING: HYPERX 0x004c34f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk07"));
-                // STRING: HYPERX 0x004c34f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk08"));
-                // STRING: HYPERX 0x004c34e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk09"));
-                // STRING: HYPERX 0x004c34e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk10"));
-                // STRING: HYPERX 0x004c34d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk11"));
-                // STRING: HYPERX 0x004c34d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk12"));
-                // STRING: HYPERX 0x004c34c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk13"));
-                // STRING: HYPERX 0x004c34c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk14"));
-                // STRING: HYPERX 0x004c34b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 11:
-                // STRING: HYPERX 0x004c34b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdkil"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c34a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objkbc"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c34a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba01"));
-                // STRING: HYPERX 0x004c3498
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba02"));
-                // STRING: HYPERX 0x004c3490
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba03"));
-                // STRING: HYPERX 0x004c3488
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba04"));
-                // STRING: HYPERX 0x004c3480
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba05"));
-                // STRING: HYPERX 0x004c3478
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba06"));
-                // STRING: HYPERX 0x004c3470
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba07"));
-                // STRING: HYPERX 0x004c3468
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba08"));
-                // STRING: HYPERX 0x004c3460
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba09"));
-                // STRING: HYPERX 0x004c3458
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba10"));
-                // STRING: HYPERX 0x004c3450
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba11"));
-                // STRING: HYPERX 0x004c3448
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba12"));
-                // STRING: HYPERX 0x004c3440
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba13"));
-                // STRING: HYPERX 0x004c3438
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba14"));
-                // STRING: HYPERX 0x004c3430
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 12:
-                // STRING: HYPERX 0x004c3428
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdmul"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3420
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objmult"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3418
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi01"));
-                // STRING: HYPERX 0x004c3410
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi02"));
-                // STRING: HYPERX 0x004c3408
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi03"));
-                // STRING: HYPERX 0x004c3400
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi04"));
-                // STRING: HYPERX 0x004c33f8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi05"));
-                // STRING: HYPERX 0x004c33f0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi06"));
-                // STRING: HYPERX 0x004c33e8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi07"));
-                // STRING: HYPERX 0x004c33e0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi08"));
-                // STRING: HYPERX 0x004c33d8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi09"));
-                // STRING: HYPERX 0x004c33d0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi10"));
-                // STRING: HYPERX 0x004c33c8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi11"));
-                // STRING: HYPERX 0x004c33c0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi12"));
-                // STRING: HYPERX 0x004c33b8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi13"));
-                // STRING: HYPERX 0x004c33b0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi14"));
-                // STRING: HYPERX 0x004c33a8
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            case 13:
-                // STRING: HYPERX 0x004c33a0
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdlas"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3398
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objlas"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
-                // STRING: HYPERX 0x004c3390
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur01"));
-                // STRING: HYPERX 0x004c3388
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur02"));
-                // STRING: HYPERX 0x004c3380
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur03"));
-                // STRING: HYPERX 0x004c3378
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur04"));
-                // STRING: HYPERX 0x004c3370
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur05"));
-                // STRING: HYPERX 0x004c3368
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur06"));
-                // STRING: HYPERX 0x004c3360
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur07"));
-                // STRING: HYPERX 0x004c3358
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur08"));
-                // STRING: HYPERX 0x004c3350
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur09"));
-                // STRING: HYPERX 0x004c3348
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur10"));
-                // STRING: HYPERX 0x004c3340
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur11"));
-                // STRING: HYPERX 0x004c3338
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur12"));
-                // STRING: HYPERX 0x004c3330
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur13"));
-                // STRING: HYPERX 0x004c3328
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur14"));
-                // STRING: HYPERX 0x004c3320
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur15"));
-                m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
-                break;
-
-            default:
-                RELEASE_ASSERT(0);
-                break;
-        }
-
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetDirtyFlag(1);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetCurrentFrame(0);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHighlighted(1);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetDepressed(1);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHidden(0);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetDirtyFlag(1);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetHidden(0);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetDirtyFlag(1);
-        m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetHidden(0);
+        return;
     }
+
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->ClearFrames();
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->ClearFrames();
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->ClearFrames();
+
+    switch (m_nObstacleSet)
+    {
+        case 0:
+            // STRING: HYPERX 0x004c3a80
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdsta"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3a78
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objstar"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3a70
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn01"));
+            // STRING: HYPERX 0x004c3a68
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn02"));
+            // STRING: HYPERX 0x004c3a60
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn03"));
+            // STRING: HYPERX 0x004c3a58
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn04"));
+            // STRING: HYPERX 0x004c3a50
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn05"));
+            // STRING: HYPERX 0x004c3a48
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn06"));
+            // STRING: HYPERX 0x004c3a40
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn07"));
+            // STRING: HYPERX 0x004c3a38
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn08"));
+            // STRING: HYPERX 0x004c3a30
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn09"));
+            // STRING: HYPERX 0x004c3a28
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn10"));
+            // STRING: HYPERX 0x004c3a20
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn11"));
+            // STRING: HYPERX 0x004c3a18
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn12"));
+            // STRING: HYPERX 0x004c3a10
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn13"));
+            // STRING: HYPERX 0x004c3a08
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn14"));
+            // STRING: HYPERX 0x004c3a00
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("strgn15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 1:
+            // STRING: HYPERX 0x004c39f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdrok"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c39f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objrok"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c39e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok01"));
+            // STRING: HYPERX 0x004c39e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok02"));
+            // STRING: HYPERX 0x004c39d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok03"));
+            // STRING: HYPERX 0x004c39d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok04"));
+            // STRING: HYPERX 0x004c39c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok05"));
+            // STRING: HYPERX 0x004c39c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok06"));
+            // STRING: HYPERX 0x004c39b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok07"));
+            // STRING: HYPERX 0x004c39b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok08"));
+            // STRING: HYPERX 0x004c39a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok09"));
+            // STRING: HYPERX 0x004c39a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok10"));
+            // STRING: HYPERX 0x004c3998
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok11"));
+            // STRING: HYPERX 0x004c3990
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok12"));
+            // STRING: HYPERX 0x004c3988
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok13"));
+            // STRING: HYPERX 0x004c3980
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok14"));
+            // STRING: HYPERX 0x004c3978
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("rok15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 2:
+            // STRING: HYPERX 0x004c3970
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdhur"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3968
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objhurd"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3960
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl01"));
+            // STRING: HYPERX 0x004c3958
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl02"));
+            // STRING: HYPERX 0x004c3950
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl03"));
+            // STRING: HYPERX 0x004c3948
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl04"));
+            // STRING: HYPERX 0x004c3940
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl05"));
+            // STRING: HYPERX 0x004c3938
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl06"));
+            // STRING: HYPERX 0x004c3930
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl07"));
+            // STRING: HYPERX 0x004c3928
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl08"));
+            // STRING: HYPERX 0x004c3920
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl09"));
+            // STRING: HYPERX 0x004c3918
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl10"));
+            // STRING: HYPERX 0x004c3910
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl11"));
+            // STRING: HYPERX 0x004c3908
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl12"));
+            // STRING: HYPERX 0x004c3900
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl13"));
+            // STRING: HYPERX 0x004c38f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl14"));
+            // STRING: HYPERX 0x004c38f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("hurdl15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 3:
+            // STRING: HYPERX 0x004c38e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdram"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c38e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objramp"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c38d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp01"));
+            // STRING: HYPERX 0x004c38d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp02"));
+            // STRING: HYPERX 0x004c38c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp03"));
+            // STRING: HYPERX 0x004c38c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp04"));
+            // STRING: HYPERX 0x004c38b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp05"));
+            // STRING: HYPERX 0x004c38b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp06"));
+            // STRING: HYPERX 0x004c38a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp07"));
+            // STRING: HYPERX 0x004c38a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp08"));
+            // STRING: HYPERX 0x004c3898
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp09"));
+            // STRING: HYPERX 0x004c3890
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp10"));
+            // STRING: HYPERX 0x004c3888
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp11"));
+            // STRING: HYPERX 0x004c3880
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp12"));
+            // STRING: HYPERX 0x004c3878
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp13"));
+            // STRING: HYPERX 0x004c3870
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp14"));
+            // STRING: HYPERX 0x004c3868
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("ramp15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 4:
+            // STRING: HYPERX 0x004c3860
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdtur"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3858
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objturn"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3850
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns01"));
+            // STRING: HYPERX 0x004c3848
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns02"));
+            // STRING: HYPERX 0x004c3840
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns03"));
+            // STRING: HYPERX 0x004c3838
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns04"));
+            // STRING: HYPERX 0x004c3830
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns05"));
+            // STRING: HYPERX 0x004c3828
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns06"));
+            // STRING: HYPERX 0x004c3820
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns07"));
+            // STRING: HYPERX 0x004c3818
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns08"));
+            // STRING: HYPERX 0x004c3810
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns09"));
+            // STRING: HYPERX 0x004c3808
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns10"));
+            // STRING: HYPERX 0x004c3800
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns11"));
+            // STRING: HYPERX 0x004c37f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns12"));
+            // STRING: HYPERX 0x004c37f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns13"));
+            // STRING: HYPERX 0x004c37e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns14"));
+            // STRING: HYPERX 0x004c37e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("turns15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 5:
+            // STRING: HYPERX 0x004c37d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdarm"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c37d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objarm"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c31f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor01"));
+            // STRING: HYPERX 0x004c37c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor02"));
+            // STRING: HYPERX 0x004c37c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor03"));
+            // STRING: HYPERX 0x004c37b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor04"));
+            // STRING: HYPERX 0x004c37b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor05"));
+            // STRING: HYPERX 0x004c37a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor06"));
+            // STRING: HYPERX 0x004c37a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor07"));
+            // STRING: HYPERX 0x004c3798
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor08"));
+            // STRING: HYPERX 0x004c3790
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor09"));
+            // STRING: HYPERX 0x004c3788
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor10"));
+            // STRING: HYPERX 0x004c3780
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor11"));
+            // STRING: HYPERX 0x004c3778
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor12"));
+            // STRING: HYPERX 0x004c3770
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor13"));
+            // STRING: HYPERX 0x004c3768
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor14"));
+            // STRING: HYPERX 0x004c3760
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("armor15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 6:
+            // STRING: HYPERX 0x004c3758
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdmin"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3750
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objmine"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3748
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine01"));
+            // STRING: HYPERX 0x004c3740
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine02"));
+            // STRING: HYPERX 0x004c3738
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine03"));
+            // STRING: HYPERX 0x004c3730
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine04"));
+            // STRING: HYPERX 0x004c3728
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine05"));
+            // STRING: HYPERX 0x004c3720
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine06"));
+            // STRING: HYPERX 0x004c3718
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine07"));
+            // STRING: HYPERX 0x004c3710
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine08"));
+            // STRING: HYPERX 0x004c3708
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine09"));
+            // STRING: HYPERX 0x004c3700
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine10"));
+            // STRING: HYPERX 0x004c36f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine11"));
+            // STRING: HYPERX 0x004c36f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine12"));
+            // STRING: HYPERX 0x004c36e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine13"));
+            // STRING: HYPERX 0x004c36e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine14"));
+            // STRING: HYPERX 0x004c36d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("mine15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 7:
+            // STRING: HYPERX 0x004c36d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdswr"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c36c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objswar"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c36c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf01"));
+            // STRING: HYPERX 0x004c36b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf02"));
+            // STRING: HYPERX 0x004c36b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf03"));
+            // STRING: HYPERX 0x004c36a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf04"));
+            // STRING: HYPERX 0x004c36a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf05"));
+            // STRING: HYPERX 0x004c3698
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf06"));
+            // STRING: HYPERX 0x004c3690
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf07"));
+            // STRING: HYPERX 0x004c3688
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf08"));
+            // STRING: HYPERX 0x004c3680
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf09"));
+            // STRING: HYPERX 0x004c3678
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf10"));
+            // STRING: HYPERX 0x004c3670
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf11"));
+            // STRING: HYPERX 0x004c3668
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf12"));
+            // STRING: HYPERX 0x004c3660
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf13"));
+            // STRING: HYPERX 0x004c3658
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf14"));
+            // STRING: HYPERX 0x004c3650
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("swarf15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 8:
+            // STRING: HYPERX 0x004c3648
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdgre"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3640
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objgrnd"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3638
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd01"));
+            // STRING: HYPERX 0x004c3630
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd02"));
+            // STRING: HYPERX 0x004c3628
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd03"));
+            // STRING: HYPERX 0x004c3620
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd04"));
+            // STRING: HYPERX 0x004c3618
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd05"));
+            // STRING: HYPERX 0x004c3610
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd06"));
+            // STRING: HYPERX 0x004c3608
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd07"));
+            // STRING: HYPERX 0x004c3600
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd08"));
+            // STRING: HYPERX 0x004c35f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd09"));
+            // STRING: HYPERX 0x004c35f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd10"));
+            // STRING: HYPERX 0x004c35e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd11"));
+            // STRING: HYPERX 0x004c35e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd12"));
+            // STRING: HYPERX 0x004c35d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd13"));
+            // STRING: HYPERX 0x004c35d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd14"));
+            // STRING: HYPERX 0x004c35c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("grnrd15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 9:
+            // STRING: HYPERX 0x004c35c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdred"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c35b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objrrnd"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c35b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd01"));
+            // STRING: HYPERX 0x004c35a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd02"));
+            // STRING: HYPERX 0x004c35a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd03"));
+            // STRING: HYPERX 0x004c3598
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd04"));
+            // STRING: HYPERX 0x004c3590
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd05"));
+            // STRING: HYPERX 0x004c3588
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd06"));
+            // STRING: HYPERX 0x004c3580
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd07"));
+            // STRING: HYPERX 0x004c3578
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd08"));
+            // STRING: HYPERX 0x004c3570
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd09"));
+            // STRING: HYPERX 0x004c3568
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd10"));
+            // STRING: HYPERX 0x004c3560
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd11"));
+            // STRING: HYPERX 0x004c3558
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd12"));
+            // STRING: HYPERX 0x004c3550
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd13"));
+            // STRING: HYPERX 0x004c3548
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd14"));
+            // STRING: HYPERX 0x004c3540
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("redrd15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 10:
+            // STRING: HYPERX 0x004c3538
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdkbr"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3530
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objkbr"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3528
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk01"));
+            // STRING: HYPERX 0x004c3520
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk02"));
+            // STRING: HYPERX 0x004c3518
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk03"));
+            // STRING: HYPERX 0x004c3510
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk04"));
+            // STRING: HYPERX 0x004c3508
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk05"));
+            // STRING: HYPERX 0x004c3500
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk06"));
+            // STRING: HYPERX 0x004c34f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk07"));
+            // STRING: HYPERX 0x004c34f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk08"));
+            // STRING: HYPERX 0x004c34e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk09"));
+            // STRING: HYPERX 0x004c34e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk10"));
+            // STRING: HYPERX 0x004c34d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk11"));
+            // STRING: HYPERX 0x004c34d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk12"));
+            // STRING: HYPERX 0x004c34c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk13"));
+            // STRING: HYPERX 0x004c34c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk14"));
+            // STRING: HYPERX 0x004c34b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilrk15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 11:
+            // STRING: HYPERX 0x004c34b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdkil"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c34a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objkbc"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c34a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba01"));
+            // STRING: HYPERX 0x004c3498
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba02"));
+            // STRING: HYPERX 0x004c3490
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba03"));
+            // STRING: HYPERX 0x004c3488
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba04"));
+            // STRING: HYPERX 0x004c3480
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba05"));
+            // STRING: HYPERX 0x004c3478
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba06"));
+            // STRING: HYPERX 0x004c3470
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba07"));
+            // STRING: HYPERX 0x004c3468
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba08"));
+            // STRING: HYPERX 0x004c3460
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba09"));
+            // STRING: HYPERX 0x004c3458
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba10"));
+            // STRING: HYPERX 0x004c3450
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba11"));
+            // STRING: HYPERX 0x004c3448
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba12"));
+            // STRING: HYPERX 0x004c3440
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba13"));
+            // STRING: HYPERX 0x004c3438
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba14"));
+            // STRING: HYPERX 0x004c3430
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("kilba15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 12:
+            // STRING: HYPERX 0x004c3428
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdmul"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3420
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objmult"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3418
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi01"));
+            // STRING: HYPERX 0x004c3410
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi02"));
+            // STRING: HYPERX 0x004c3408
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi03"));
+            // STRING: HYPERX 0x004c3400
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi04"));
+            // STRING: HYPERX 0x004c33f8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi05"));
+            // STRING: HYPERX 0x004c33f0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi06"));
+            // STRING: HYPERX 0x004c33e8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi07"));
+            // STRING: HYPERX 0x004c33e0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi08"));
+            // STRING: HYPERX 0x004c33d8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi09"));
+            // STRING: HYPERX 0x004c33d0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi10"));
+            // STRING: HYPERX 0x004c33c8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi11"));
+            // STRING: HYPERX 0x004c33c0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi12"));
+            // STRING: HYPERX 0x004c33b8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi13"));
+            // STRING: HYPERX 0x004c33b0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi14"));
+            // STRING: HYPERX 0x004c33a8
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("multi15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        case 13:
+            // STRING: HYPERX 0x004c33a0
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(GDI::LoadBitmapHandle("objdlas"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3398
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(GDI::LoadBitmapHandle("Objlas"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->InitAfterLoad();
+            // STRING: HYPERX 0x004c3390
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur01"));
+            // STRING: HYPERX 0x004c3388
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur02"));
+            // STRING: HYPERX 0x004c3380
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur03"));
+            // STRING: HYPERX 0x004c3378
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur04"));
+            // STRING: HYPERX 0x004c3370
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur05"));
+            // STRING: HYPERX 0x004c3368
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur06"));
+            // STRING: HYPERX 0x004c3360
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur07"));
+            // STRING: HYPERX 0x004c3358
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur08"));
+            // STRING: HYPERX 0x004c3350
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur09"));
+            // STRING: HYPERX 0x004c3348
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur10"));
+            // STRING: HYPERX 0x004c3340
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur11"));
+            // STRING: HYPERX 0x004c3338
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur12"));
+            // STRING: HYPERX 0x004c3330
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur13"));
+            // STRING: HYPERX 0x004c3328
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur14"));
+            // STRING: HYPERX 0x004c3320
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle("lzhur15"));
+            m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->InitAfterLoad();
+            break;
+
+        default:
+            RELEASE_ASSERT(0);
+            break;
+    }
+
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetDirtyFlag(1);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetCurrentFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHighlighted(1);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetDepressed(1);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHidden(0);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetDirtyFlag(1);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetHidden(0);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetDirtyFlag(1);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetHidden(0);
 }
 
 // Mode eight's index / 4 picks a team and % 4 a picture.

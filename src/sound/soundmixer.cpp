@@ -52,7 +52,7 @@ bool Streams(const SoundEntry* pEntry)
         return false;
     }
 
-    return pEntry->m_nDataBytes > STREAM_THRESHOLD;
+    return (unsigned int)pEntry->m_nDataBytes > STREAM_THRESHOLD;
 }
 
 bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)

@@ -116,7 +116,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 
     ExecuteScript(pCursor, nCount, nArg, pState);
 
-    if ((unsigned int)m_nBehaviour < PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
+    if ((unsigned int)m_nBehaviour < (unsigned int)PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
     {
         m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
 

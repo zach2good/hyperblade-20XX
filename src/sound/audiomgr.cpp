@@ -379,7 +379,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
         for (int i = 0; i < nTracks; i++)
         {
-            const int nPick = rand() * nTracks / (RAND_MAX + 1);
+            const int nPick = (int)((long long)rand() * nTracks / ((long long)RAND_MAX + 1));
 
             if (g_anCDRecentTracks[nScan] != nPick)
             {
@@ -397,7 +397,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
         if (nPicked == CD_TRACK_RANDOM)
         {
-            nPicked = rand() * nTracks / (RAND_MAX + 1);
+            nPicked = (int)((long long)rand() * nTracks / ((long long)RAND_MAX + 1));
         }
 
         g_anCDRecentTracks[g_nCDRecentCursor] = nPicked;

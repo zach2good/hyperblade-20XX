@@ -940,7 +940,7 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 
         EngineObject* pRendOwner = pThis->m_pOwner;
 
-        apMaterials[0] = &pRendOwner->m_pModelBlock->m_pMaterials[pEntry->cMaterial];
+        apMaterials[0] = &pRendOwner->m_pModelBlock->m_pMaterials[(int)pEntry->cMaterial];
 
         const short nSecond = apMaterials[0]->nBackIndex;
 

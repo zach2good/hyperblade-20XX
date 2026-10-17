@@ -465,12 +465,12 @@ void PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, in
         nTarget = pBlock[1].n;
     }
 
-    if (nTarget == PLAN_TOKEN_MESSAGE_DATA)
+    if ((int)nTarget == PLAN_TOKEN_MESSAGE_DATA)
     {
         nTarget = nArg;
     }
 
-    if (pArgs->m_nArgCount == 4 && (unsigned int)pArgs->m_pArgs[3].n != PLAN_TOKEN_MESSAGE_DATA)
+    if (pArgs->m_nArgCount == 4 && pArgs->m_pArgs[3].n != PLAN_TOKEN_MESSAGE_DATA)
     {
         nArg = pArgs->m_pArgs[3].n;
     }
@@ -508,12 +508,12 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
         nTarget = pBlock[1].n;
     }
 
-    if (nTarget == PLAN_TOKEN_MESSAGE_DATA)
+    if ((int)nTarget == PLAN_TOKEN_MESSAGE_DATA)
     {
         nTarget = nParam;
     }
 
-    if (pArgs->m_nArgCount == 4 && (unsigned int)pArgs->m_pArgs[3].n != PLAN_TOKEN_MESSAGE_DATA)
+    if (pArgs->m_nArgCount == 4 && pArgs->m_pArgs[3].n != PLAN_TOKEN_MESSAGE_DATA)
     {
         nParam = pArgs->m_pArgs[3].n;
     }
@@ -1460,7 +1460,7 @@ void PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
         return;
     }
 
-    *pnOut = (short)(rand() * (pArgs->m_nArgCount - 2) / (RAND_MAX + 1));
+    *pnOut = (short)((long long)rand() * (pArgs->m_nArgCount - 2) / ((long long)RAND_MAX + 1));
 
     g_nAnnouncerLineMs = nNow;
 }
@@ -3132,7 +3132,7 @@ void PlanCond::PickACell(Interactor* pContext, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x004623c0
 void PlanCond::Random(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
-    *pResult = (short)(rand() * (pArgs->m_nArgCount - 1) / (RAND_MAX + 1));
+    *pResult = (short)((long long)rand() * (pArgs->m_nArgCount - 1) / ((long long)RAND_MAX + 1));
 }
 
 // Turns the head camera's shot power into a child index, inverted and clamped.
@@ -4168,7 +4168,7 @@ void PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
     const int nJudge = (int)g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x;
 
     nReds = (std::max)(JUDGE_STATE_LOW,
-                (std::min)(JUDGE_STATE_HIGH, (int)(short)nJudge + (int)(short)pArgs->m_pArgs[1].n));
+                       (std::min)(JUDGE_STATE_HIGH, (int)(short)nJudge + (int)(short)pArgs->m_pArgs[1].n));
 
     g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x = (float)nReds;
 }
@@ -4504,7 +4504,7 @@ void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short*
         nArg = pBlock[1].n;
     }
 
-    if (nArg == PLAN_TOKEN_MESSAGE_DATA)
+    if ((int)nArg == PLAN_TOKEN_MESSAGE_DATA)
     {
         nArg = nSlot;
     }
@@ -4997,7 +4997,7 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
 
         flSpeed = (float)nHundredths * HUNDREDTHS + SPEED_BIAS;
 
-        if ((unsigned int)pArgs[ARG_SLOT].n == PLAN_TOKEN_MESSAGE_DATA)
+        if (pArgs[ARG_SLOT].n == PLAN_TOKEN_MESSAGE_DATA)
         {
             nTarget = nSlot;
         }
@@ -5115,7 +5115,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
 
         flSpeed = (float)nHundredths * HUNDREDTHS;
 
-        if ((unsigned int)pArgs[ARG_SLOT].n == PLAN_TOKEN_MESSAGE_DATA)
+        if (pArgs[ARG_SLOT].n == PLAN_TOKEN_MESSAGE_DATA)
         {
             nTarget = nSlot;
         }
