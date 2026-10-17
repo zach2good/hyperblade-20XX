@@ -21,7 +21,7 @@ LobbyScreen::LobbyScreen()
 {
     Widget* pWidget;
     // STRING: HYPERX 0x004c87f4
-    m_hBackground = GDI::LoadBitmapAsBackground("Lobby", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("Lobby", &m_bPaletted);
     m_nLastWidget = LOBBY_PLAY_SIGN;
 
     // STRING: HYPERX 0x004c87ec

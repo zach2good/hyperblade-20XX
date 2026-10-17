@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <algorithm>
 #include "globals.h"
 #include "ui/screen.h"
 #include "common/gametime.h"
@@ -38,7 +39,7 @@ Screen::Screen()
     }
 
     m_hBackground = 0;
-    m_hPalette    = 0;
+    m_bPaletted   = 0;
     m_pszCaption  = 0;
     m_nCaptionX   = 0;
     m_nCaptionY   = 0;
@@ -49,22 +50,17 @@ Screen::Screen()
         m_apWidgets[nSlot] = 0;
     }
 
-    m_nUnusedC            = 0;
-    m_bRepaintBackground  = 1;
-    m_bPointerOnWidget    = 1;
-    m_nWidgetCount        = 0;
-    m_bitmap.bmType       = 0;
-    m_bitmap.bmWidth      = 0;
-    m_bitmap.bmHeight     = 0;
-    m_bitmap.bmWidthBytes = 0;
-    m_bitmap.bmPlanes     = 0;
-    m_bitmap.bmBitsPixel  = 0;
-    m_bitmap.bmBits       = 0;
-    m_hBitmap             = 0;
-    m_nUnusedA            = 0;
-    m_nUnusedB            = 0;
-    m_nCaptured           = -1;
-    m_bFramePaintPending  = 0;
+    m_nUnusedC           = 0;
+    m_bRepaintBackground = 1;
+    m_bPointerOnWidget   = 1;
+    m_nWidgetCount       = 0;
+    m_bitmap.bmWidth     = 0;
+    m_bitmap.bmHeight    = 0;
+    m_hBitmap            = 0;
+    m_nUnusedA           = 0;
+    m_nUnusedB           = 0;
+    m_nCaptured          = -1;
+    m_bFramePaintPending = 0;
 
     GameTime::Now(&m_lastTick);
 }
@@ -93,8 +89,7 @@ Screen::~Screen()
     GDI::SafeDeleteBitmap(m_hBackground);
     m_hBackground = 0;
 
-    GDI::DeleteObject(m_hPalette);
-    m_hPalette = 0;
+    m_bPaletted = 0;
 }
 
 // FUNCTION: HYPERX 0x0048c060
@@ -500,9 +495,9 @@ int Screen::TickAnimations()
 // FUNCTION: HYPERX 0x0048c7c0
 int Screen::PaintToWindow()
 {
-    PAINTSTRUCT paint;
-    BITMAP      bitmap;
-    int         nSlot;
+    PAINTSTRUCT     paint;
+    GDI::BitmapSize bitmap;
+    int             nSlot;
 
     if (g_pActiveScreen == 0)
     {
@@ -510,8 +505,6 @@ int Screen::PaintToWindow()
     }
 
     GDI::BeginPaint(&paint);
-
-    const HDC hdc = Window::MenuDC();
 
     GDI::GetBitmapDimensions(m_hBackground, &bitmap);
 
@@ -524,17 +517,11 @@ int Screen::PaintToWindow()
 
     if (m_bRepaintBackground == 1)
     {
-        GDI::SelectSplashPalette(hdc, m_hPalette, 0);
-        GDI::RealizePalette(hdc);
-    }
-
-    if (m_bRepaintBackground == 1)
-    {
         GameApp::SetCursorVisible(0);
 
         if (m_hBackground != 0)
         {
-            GDI::BlitBitmapToDC(hdc, 0, 0, bitmap.bmWidth, bitmap.bmHeight, m_hBackground, m_hPalette, 0, 0, SRCCOPY);
+            GDI::Blit(0, 0, bitmap.bmWidth, bitmap.bmHeight, m_hBackground, 0, 0);
         }
 
         const char* pszCaption = m_pszCaption;
@@ -542,7 +529,7 @@ int Screen::PaintToWindow()
 
         if (pszCaption != 0)
         {
-            GDI::DrawTransparentText(hdc, 0xffff, m_nCaptionX, m_nCaptionY, pszCaption, (int)strlen(pszCaption), 0);
+            GDI::DrawTransparentText(0xffff, m_nCaptionX, m_nCaptionY, pszCaption, (int)strlen(pszCaption), 0);
         }
 
         for (nSlot = 0; nSlot <= m_nLastWidget; nSlot++)
@@ -555,7 +542,7 @@ int Screen::PaintToWindow()
 
     for (nSlot = 0; nSlot <= m_nLastWidget; nSlot++)
     {
-        m_apWidgets[nSlot]->Draw(hdc, m_hPalette, nSlot);
+        m_apWidgets[nSlot]->Draw(nSlot);
     }
 
     Window::PresentMenu(g_gameApp.GetMainWindow());
@@ -634,9 +621,9 @@ Widget* Screen::AppendWidget(Widget* pWidget)
 }
 
 // The original's linker folded this onto Widget::GetPositionX, so it has no address of its own.
-HPALETTE Screen::GetPalette() const
+int Screen::HasPalette() const
 {
-    return m_hPalette;
+    return m_bPaletted;
 }
 
 // The consistency check is handed to a stub that discards it.
@@ -721,7 +708,7 @@ int Screen::RemoveBitmap(const char* pszName)
 }
 
 // FUNCTION: HYPERX 0x0048cd80
-HBITMAP Screen::CacheLookup(const char* pszName, int* pbCached)
+GDI::Bitmap* Screen::CacheLookup(const char* pszName, int* pbCached)
 {
     for (int nSlot = 0; nSlot < BITMAP_CACHE_SLOTS; nSlot++)
     {
@@ -792,7 +779,9 @@ void Screen::ShowMatchInfo()
 // FUNCTION: HYPERX 0x0048ef30
 void Screen::ClearBlack(...)
 {
-    PatBlt(Window::MenuDC(), 0, 0, 640, 480, BLACKNESS);
+    const auto canvas = Window::MenuPixels();
+
+    std::fill(canvas.pBits, canvas.pBits + canvas.nWidth * canvas.nHeight, 0u);
     Window::PresentMenu(g_gameApp.GetMainWindow());
 }
 

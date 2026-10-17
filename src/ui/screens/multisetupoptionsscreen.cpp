@@ -13,9 +13,9 @@
 // FUNCTION: HYPERX 0x004793f0
 MultiSetupOptionsScreen::MultiSetupOptionsScreen()
 {
-    BITMAP bm;
-    int    nFlag;
-    m_hBackground = GDI::LoadBitmapAsBackground(g_pszMultiSetupBackground, &m_hPalette);
+    GDI::BitmapSize bm;
+    int             nFlag;
+    m_hBackground = GDI::LoadBitmapAsBackground(g_pszMultiSetupBackground, &m_bPaletted);
     m_nLastWidget = MULTI_SETUP_TEXT_INPUT;
 
     // STRING: HYPERX 0x004c2e58

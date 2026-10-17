@@ -275,12 +275,7 @@ void GameApp::NextSplash(HWND hWnd)
 
     Screen::ClearBlack();
 
-    const HPALETTE hPalette = GDI::DrawBitmapToWindow(hWnd, s_apszSplashes[g_nSplashFrame - 1]);
-
-    if (hPalette != 0)
-    {
-        DeleteObject((HGDIOBJ)hPalette);
-    }
+    GDI::DrawBitmapToWindow(hWnd, s_apszSplashes[g_nSplashFrame - 1]);
 
     s_dwSplashShown = (unsigned int)SDL_GetTicks();
 }
@@ -905,14 +900,6 @@ void GameApp::ResetToSinglePlayer(void)
     g_nMainMenuMatchChoice = 0;
     g_nPlayerMode          = PLAYER_MODE_EXHIBITION;
     g_nMainMenuPage        = 0;
-}
-
-// FUNCTION: HYPERX 0x0048f490
-LRESULT GameApp::ClearSplashPalette(void)
-{
-    g_hSplashPalette = 0;
-
-    return SendMessageA(g_gameApp.m_hWnd, WM_QUERYNEWPALETTE, 0, 0);
 }
 
 // A failed allocation is stored through unchecked, as the original does.

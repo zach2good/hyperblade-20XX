@@ -163,9 +163,6 @@ extern char g_szFpsText[100];
 // GLOBAL: HYPERX 0x004cf068
 extern GameOptions* g_pGameOptions;
 
-// GLOBAL: HYPERX 0x004d21d0
-extern HPALETTE g_hSplashPalette;
-
 // GLOBAL: HYPERX 0x004cf060
 extern AudioMgr* g_pAudioMgr;
 

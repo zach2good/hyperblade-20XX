@@ -44,7 +44,7 @@ MatchInfoUIScreen::MatchInfoUIScreen()
 
     m_apWidgets[MATCHINFO_WIDGET_INFO]->ClearFrames();
 
-    HBITMAP pBitmap = CacheLookup("info", &nFound);
+    GDI::Bitmap* pBitmap = CacheLookup("info", &nFound);
     m_apWidgets[MATCHINFO_WIDGET_INFO]->AddFrameBitmap(pBitmap, nFound);
 
     pBitmap = CacheLookup("infor", &nFound);

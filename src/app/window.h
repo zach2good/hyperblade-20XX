@@ -11,9 +11,8 @@ namespace Window
 void         InvalidateAndUpdate(void);
 void         ApplyFullscreenStyle(HWND hWnd, int nFlag);
 unsigned int OnWindowMove(HWND hWnd, int nFlag);
-HDC          MenuDC();
 
-// The menu canvas's pixels, 0x00RRGGBB, top row first; GDI's drawing is flushed into them first.
+// The menu canvas's pixels, 0x00RRGGBB, top row first.
 struct MenuCanvas
 {
     std::uint32_t* pBits;

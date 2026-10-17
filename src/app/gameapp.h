@@ -27,15 +27,14 @@ struct GameApp
         return m_bCursorWasVisible;
     }
 
-    static void    SetupViewports(void);
-    static void    InstantiateState(void);
-    static void    ResetToSinglePlayer(void);
-    static int     OutOfMemoryHandler(size_t nSize);
-    static void    AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
-    static int     ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
-    static LRESULT ClearSplashPalette(void);
-    static HWND    CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
-    static void    Shutdown(HWND hWnd);
+    static void SetupViewports(void);
+    static void InstantiateState(void);
+    static void ResetToSinglePlayer(void);
+    static int  OutOfMemoryHandler(size_t nSize);
+    static void AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
+    static int  ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
+    static HWND CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
+    static void Shutdown(HWND hWnd);
 
     void ReportLastError(HWND hUnused);
     void Error(const char* pszFormat, ...);

@@ -7,13 +7,14 @@
 #include "globals.h"
 #include "graphics/surfacepoint.h"
 #include "renderoptions.h"
+#include "graphics/gdi.h"
 #include <stddef.h>
 
 // A lookup matches on the resource name.
 struct BitmapCacheEntry
 {
-    HBITMAP     hBitmap;
-    const char* pszName;
+    GDI::Bitmap* hBitmap;
+    const char*  pszName;
 };
 
 // Gates the lighting info display together with g_bNetworkGame. Nothing else reads it.

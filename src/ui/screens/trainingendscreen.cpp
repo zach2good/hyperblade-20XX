@@ -20,7 +20,7 @@ TrainingEndScreen::TrainingEndScreen()
 
     m_hBackground = GDI::LoadBitmapAsBackground(
         g_apszTrainingBackgrounds[g_pGameEngine->GetDifficultyLevel()],
-        &m_hPalette);
+        &m_bPaletted);
 }
 
 // FUNCTION: HYPERX 0x004432b0
@@ -58,13 +58,11 @@ void TrainingEndScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 
             m_hBackground = 0;
 
-            GDI::DeleteObject(m_hPalette);
-
-            m_hPalette = 0;
+            m_bPaletted = 0;
 
             m_hBackground = GDI::LoadBitmapAsBackground(
                 g_apszTrainingBackgrounds[TRAINING_CREDIT_FIRST + m_nSelectionMode],
-                &m_hPalette);
+                &m_bPaletted);
 
             SetRepaintBackground(1);
 

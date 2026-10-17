@@ -32,7 +32,7 @@ TournamentSetupUIScreen::TournamentSetupUIScreen()
     m_nLastWidget = TOURNAMENT_SETUP_TEAM_EMBLEM;
 
     // STRING: HYPERX 0x004c21d0
-    m_hBackground = GDI::LoadBitmapAsBackground("Hviewp", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("Hviewp", &m_bPaletted);
 
     m_apWidgets[UI_WIDGET_TAB_PLATE]->SetHidden(1);
     m_apWidgets[UI_WIDGET_PAGE_TAB_PLATE]->SetHidden(1);
@@ -353,7 +353,7 @@ void TournamentSetupUIScreen::RefreshSelection()
 // FUNCTION: HYPERX 0x00488e50
 void TournamentSetupUIScreen::LoadTeamPlayerBitmaps(int nTeam)
 {
-    HBITMAP hBitmap;
+    GDI::Bitmap* hBitmap;
 
     if (m_apWidgets != 0)
     {

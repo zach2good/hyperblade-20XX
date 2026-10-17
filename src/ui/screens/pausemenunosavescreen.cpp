@@ -20,13 +20,13 @@ PauseMenuNoSaveScreen::PauseMenuNoSaveScreen()
 // FUNCTION: HYPERX 0x00443d10
 void PauseMenuNoSaveScreen::Init()
 {
-    BITMAP bm;
+    GDI::BitmapSize bm;
 
     // STRING: HYPERX 0x004c1fc8
-    m_hBackground = GDI::LoadBitmapAsBackground("escape3", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("escape3", &m_bPaletted);
 
     // STRING: HYPERX 0x004c1f98
-    HBITMAP hBitmap = GDI::LoadBitmapHandle("Esops");
+    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Esops");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 94, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);

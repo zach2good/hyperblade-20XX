@@ -73,7 +73,7 @@ HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
     m_nSelectionLimit = 14;
 
     // STRING: HYPERX 0x004c21d0
-    m_hBackground = GDI::LoadBitmapAsBackground("Hviewp", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("Hviewp", &m_bPaletted);
 
     m_apWidgets[UI_WIDGET_LEFT_ARROW]->SetHidden(0);
     m_apWidgets[UI_WIDGET_RIGHT_ARROW]->SetHidden(0);
@@ -894,7 +894,7 @@ void HeadToHeadSetupUIScreen::RefreshSelection()
 // FUNCTION: HYPERX 0x00445620
 void HeadToHeadSetupUIScreen::LoadTeamPlayerBitmaps(int nTeam)
 {
-    HBITMAP hBitmap;
+    GDI::Bitmap* hBitmap;
 
     if (m_apWidgets != 0)
     {

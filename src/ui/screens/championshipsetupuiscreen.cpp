@@ -57,7 +57,7 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->ClearFrames();
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->SetHidden(0);
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->SetDirtyFlag(1);
-    HBITMAP pBitmap = CacheLookup("roster", &nFlag);
+    GDI::Bitmap* pBitmap = CacheLookup("roster", &nFlag);
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->AddFrameBitmap(pBitmap, nFlag);
     pBitmap = CacheLookup("rosterr", &nFlag);
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->AddFrameBitmap(pBitmap, nFlag);
@@ -150,7 +150,7 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
     m_apWidgets[UI_WIDGET_PAGE]->SetHidden(0);
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 
-    const HBITMAP hBitmap = GDI::LoadBitmapHandle("armor01");
+    GDI::Bitmap* const hBitmap = GDI::LoadBitmapHandle("armor01");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
 

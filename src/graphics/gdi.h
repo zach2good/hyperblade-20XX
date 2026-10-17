@@ -1,6 +1,8 @@
 #ifndef HYPERBLADE_GDI_H
 #define HYPERBLADE_GDI_H
 #include "common/compat.h"
+#include <cstdint>
+#include <vector>
 
 class FileObj;
 
@@ -34,25 +36,36 @@ inline char* PixelBits(const BITMAPINFOHEADER* pHeader)
     return (char*)(ColorTable(pHeader) + nColours);
 }
 
-HBITMAP           LoadBitmapHandle(const char* pszName);
-HBITMAP           LoadBitmapAsBackground(const char* pszName, HPALETTE* phPalette);
-HBITMAP           LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette);
-void              SafeDeleteBitmap(HBITMAP hBitmap);
-void              GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap);
+// A picture for the menu canvas, 0x00RRGGBB, top row first.
+struct Bitmap
+{
+    int                        nWidth;
+    int                        nHeight;
+    std::vector<std::uint32_t> pixels;
+};
+
+// What the screens read of GetObject's BITMAP.
+struct BitmapSize
+{
+    int bmWidth;
+    int bmHeight;
+};
+
+Bitmap*           LoadBitmapHandle(const char* pszName);
+Bitmap*           LoadBitmapAsBackground(const char* pszName, int* pbPaletted);
+Bitmap*           LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted);
+void              SafeDeleteBitmap(Bitmap* pBitmap);
+void              GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize);
 BITMAPINFOHEADER* ReadBitmapFile(const char* pszName);
 BITMAPINFOHEADER* ReadDIB(FileObj* pFile);
 BITMAPINFOHEADER* ExpandRLE(BITMAPINFOHEADER* pDib);
-HPALETTE          CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors);
-HPALETTE          SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackground);
-UINT              RealizePalette(HDC hdc);
-HBITMAP           LoadJPEGImage(const char* pszPath);
+Bitmap*           LoadJPEGImage(const char* pszPath);
 void              QueryDisplayCaps(void);
 BOOL              EndPaint(const PAINTSTRUCT* pPaint);
-BOOL              DeleteObject(HGDIOBJ hObject);
-int               BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, HPALETTE hPalette, int x1, int y1, DWORD rop);
-void              DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
+void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
+void              DrawTransparentText(COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
 HDC               BeginPaint(LPPAINTSTRUCT pPaint);
-HPALETTE          DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName);
+void              DrawBitmapToWindow(HWND hWnd, const char* pszResourceName);
 
 } // namespace GDI
 

@@ -40,7 +40,7 @@ public:
     }
 
     // Slot six, in no other table.
-    virtual void Draw(HDC hdc, HPALETTE hPalette, int nSlot);
+    void Draw(int nSlot) override;
 
 private:
     int m_nLoopFlag; // 0x068, zero when the run stops at its last frame

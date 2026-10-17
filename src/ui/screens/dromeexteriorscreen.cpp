@@ -43,7 +43,7 @@ DromeExteriorScreen::DromeExteriorScreen()
         pszName = "Dromext";
     }
 
-    m_hBackground = GDI::LoadBitmapAsBackground(pszName, &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground(pszName, &m_bPaletted);
     m_nLastWidget = 2;
 
     if (g_nDromeTeamAway == g_nDromeArena)

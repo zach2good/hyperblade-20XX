@@ -11,7 +11,7 @@ LoopFlipbookWidget::LoopFlipbookWidget(int nX, int nY, int nWidth, int nHeight, 
 }
 
 // FUNCTION: HYPERX 0x0042bb20
-void LoopFlipbookWidget::Draw(HDC hdc, HPALETTE hPalette, int nSlot)
+void LoopFlipbookWidget::Draw(int nSlot)
 {
     if (m_bHidden == 1)
     {
@@ -23,7 +23,7 @@ void LoopFlipbookWidget::Draw(HDC hdc, HPALETTE hPalette, int nSlot)
         return;
     }
 
-    Widget::Draw(hdc, hPalette, nSlot);
+    Widget::Draw(nSlot);
 
     if (m_nFrame != m_nTargetFrame)
     {

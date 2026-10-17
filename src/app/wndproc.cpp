@@ -297,7 +297,6 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
                 else
                 {
                     Display::ChangeColorDepth(0);
-                    GameApp::ClearSplashPalette();
                 }
             }
 

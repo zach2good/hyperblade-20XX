@@ -54,10 +54,10 @@ UIScreen::UIScreen()
 // FUNCTION: HYPERX 0x0044d5d0
 void UIScreen::InitWidgets()
 {
-    BITMAP bm;
-    int    nFlag;
+    GDI::BitmapSize bm;
+    int             nFlag;
     // STRING: HYPERX 0x004c2eb8
-    m_hBackground = GDI::LoadBitmapAsBackground("Hviewl", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("Hviewl", &m_bPaletted);
 
     // STRING: HYPERX 0x004c2eb0
     m_hBitmap = CacheLookup("1data3", &nFlag);

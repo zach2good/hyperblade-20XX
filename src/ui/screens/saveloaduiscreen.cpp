@@ -62,7 +62,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     m_apWidgets[UI_WIDGET_PAGE]->SetHidden(1);
 
     m_apWidgets[UI_WIDGET_OKAY]->ClearFrames();
-    HBITMAP pBitmap = CacheLookup("Okay", &nFlag);
+    GDI::Bitmap* pBitmap = CacheLookup("Okay", &nFlag);
     m_apWidgets[UI_WIDGET_OKAY]->AddFrameBitmap(pBitmap, nFlag);
     pBitmap = CacheLookup("Okayr", &nFlag);
     m_apWidgets[UI_WIDGET_OKAY]->AddFrameBitmap(pBitmap, nFlag);
@@ -96,14 +96,14 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     m_nLastWidget = SAVELOAD_LAST_WIDGET;
 
     // STRING: HYPERX 0x004c4f98
-    const HBITMAP hHeader = GDI::LoadBitmapHandle("savload");
+    GDI::Bitmap* const hHeader = GDI::LoadBitmapHandle("savload");
     GDI::GetBitmapDimensions(hHeader, &m_bitmap);
     const int nHeaderWidth = m_bitmap.bmWidth;
     Widget*   pWidget      = AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
     pWidget->AppendFrame(hHeader);
 
     // STRING: HYPERX 0x004c4f90
-    HBITMAP hBitmap = GDI::LoadBitmapHandle("savwht1");
+    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("savwht1");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x58, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);

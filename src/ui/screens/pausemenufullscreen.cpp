@@ -23,13 +23,13 @@ PauseMenuFullScreen::PauseMenuFullScreen()
 // FUNCTION: HYPERX 0x00443450
 void PauseMenuFullScreen::Init()
 {
-    BITMAP bm;
+    GDI::BitmapSize bm;
 
     // STRING: HYPERX 0x004c1fb8
-    m_hBackground = GDI::LoadBitmapAsBackground("escape1", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("escape1", &m_bPaletted);
 
     // STRING: HYPERX 0x004c1fb0
-    HBITMAP hBitmap = GDI::LoadBitmapHandle("Essave");
+    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Essave");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 35, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);

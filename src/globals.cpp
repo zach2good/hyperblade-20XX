@@ -60,7 +60,6 @@ const char* const  g_pszWaveExtension        = "wav";
 const float        g_flCamWatchMidpointScale = 0.5f;
 FileVersion        g_modelVersion            = { 1, 7, 0, 0, 0 };
 GameApp            g_gameApp(2);
-HPALETTE           g_hSplashPalette;
 AudioMgr*          g_pAudioMgr;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
 ReserveRows g_aFormationTable[16] = {

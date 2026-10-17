@@ -30,14 +30,14 @@ class AwardsUIScreen;
 // FUNCTION: HYPERX 0x0041b870
 AwardsUIScreen::AwardsUIScreen()
 {
-    Widget* pWidget;
-    BITMAP  bm;
-    HBITMAP hBitmap;
-    int     i;
+    Widget*         pWidget;
+    GDI::BitmapSize bm;
+    GDI::Bitmap*    hBitmap;
+    int             i;
 
     m_nAward = -1;
 
-    m_hBackground = GDI::LoadBitmapAsBackground(g_pszAwardsBackdrop, &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground(g_pszAwardsBackdrop, &m_bPaletted);
     m_nLastWidget = AWARDS_LAST_WIDGET;
 
     m_apWidgets[MATCHINFO_WIDGET_AWARDS]->SetDepressed(1);

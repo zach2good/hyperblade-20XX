@@ -20,13 +20,13 @@ PauseMenuMinimalScreen::PauseMenuMinimalScreen()
 // FUNCTION: HYPERX 0x004439e0
 void PauseMenuMinimalScreen::Init()
 {
-    BITMAP bm;
+    GDI::BitmapSize bm;
 
     // STRING: HYPERX 0x004c1fc0
-    m_hBackground = GDI::LoadBitmapAsBackground("escape2", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("escape2", &m_bPaletted);
 
     // STRING: HYPERX 0x004c1f68
-    HBITMAP hBitmap = GDI::LoadBitmapHandle("Esretur");
+    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Esretur");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 210, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);

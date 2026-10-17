@@ -541,7 +541,7 @@ unsigned int Game::UpdateState(void)
                 GameApp::SetCursorVisible(g_nSavedCursorVisible);
                 g_pGameEngine->m_wRunState = ENGINE_RUN_PLAYING;
 
-                if (g_pActiveScreen != 0 && g_pActiveScreen->GetPalette() != 0)
+                if (g_pActiveScreen != 0 && g_pActiveScreen->HasPalette() != 0)
                 {
                     Screen::ClearBlack();
                 }
@@ -551,7 +551,6 @@ unsigned int Game::UpdateState(void)
                     g_pColorPalette->SetEntries(0, 0x100, g_aSoftTexPalette);
                 }
 
-                GameApp::ClearSplashPalette();
                 Renderer::ClearFrame();
                 Renderer::PresentFrame();
 

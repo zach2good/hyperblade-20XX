@@ -29,7 +29,7 @@ Widget::~Widget()
 
     if (m_pFrames != 0)
     {
-        HBITMAP hBackground = 0;
+        GDI::Bitmap* hBackground = 0;
 
         if (m_pOwner != 0)
         {
@@ -38,7 +38,7 @@ Widget::~Widget()
 
         for (i = 0; i <= m_nFrameCount; i++)
         {
-            const HBITMAP hFrame = m_pFrames[i].hBitmap;
+            GDI::Bitmap* const hFrame = m_pFrames[i].hBitmap;
 
             if (hFrame != 0)
             {
@@ -227,7 +227,7 @@ int Widget::AdvanceFrame()
 // Drawing clears the dirty flag whether or not there was a frame.
 
 // FUNCTION: HYPERX 0x0042b450
-void Widget::Draw(HDC hdc, HPALETTE hPalette, int)
+void Widget::Draw(int)
 {
     if (m_bHidden == 1)
     {
@@ -245,7 +245,7 @@ void Widget::Draw(HDC hdc, HPALETTE hPalette, int)
     {
         pFrame += m_nFrame;
 
-        GDI::BlitBitmapToDC(hdc, pFrame->nOffsetX + m_nX, pFrame->nOffsetY + m_nY, pFrame->nWidth, pFrame->nHeight, pFrame->hBitmap, hPalette, pFrame->nSourceX, pFrame->nSourceY, SRCCOPY);
+        GDI::Blit(pFrame->nOffsetX + m_nX, pFrame->nOffsetY + m_nY, pFrame->nWidth, pFrame->nHeight, pFrame->hBitmap, pFrame->nSourceX, pFrame->nSourceY);
     }
 
     m_bDirty = 0;
@@ -269,7 +269,7 @@ void Widget::Draw(HDC hdc, HPALETTE hPalette, int)
 
     if (m_pszText != 0)
     {
-        GDI::DrawTransparentText(hdc, color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, (int)strlen(m_pszText), m_nTextFlag);
+        GDI::DrawTransparentText(color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, (int)strlen(m_pszText), m_nTextFlag);
     }
 }
 
@@ -328,23 +328,23 @@ int Widget::GetHidden() const
 }
 
 // FUNCTION: HYPERX 0x0042b5c0
-FramePos Widget::AppendFrameWithPos(HBITMAP hBitmap, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY)
+FramePos Widget::AppendFrameWithPos(GDI::Bitmap* hBitmap, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY)
 {
     return AddFrameWithPos(hBitmap, 0, nWidth, nHeight, nOffsetX, nOffsetY, nSourceX, nSourceY);
 }
 
 // A null bitmap gives a zero-sized frame rather than being refused.
 // FUNCTION: HYPERX 0x0042b610
-FramePos Widget::AppendFrame(HBITMAP hBitmap)
+FramePos Widget::AppendFrame(GDI::Bitmap* hBitmap)
 {
     return AddFrameBitmap(hBitmap, 0);
 }
 
 // FUNCTION: HYPERX 0x0042b640
-FramePos Widget::AddFrameBitmap(HBITMAP hBitmap, int bCached)
+FramePos Widget::AddFrameBitmap(GDI::Bitmap* hBitmap, int bCached)
 {
-    FramePos pos;
-    BITMAP   bm;
+    FramePos        pos;
+    GDI::BitmapSize bm;
 
     if (m_pFrames == 0)
     {
@@ -383,7 +383,7 @@ FramePos Widget::AddFrameBitmap(HBITMAP hBitmap, int bCached)
 
 // The capacity check goes to a stub, so too many frames write past the end.
 // FUNCTION: HYPERX 0x0042b750
-FramePos Widget::AddFrameWithPos(HBITMAP hBitmap, int bCached, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY)
+FramePos Widget::AddFrameWithPos(GDI::Bitmap* hBitmap, int bCached, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY)
 {
     FramePos pos;
 
@@ -425,7 +425,7 @@ FramePos Widget::GetSize()
 // FUNCTION: HYPERX 0x0042b850
 void Widget::ClearFrames()
 {
-    HBITMAP hOwned = 0;
+    GDI::Bitmap* hOwned = 0;
 
     if (m_pOwner != 0)
     {
@@ -434,7 +434,7 @@ void Widget::ClearFrames()
 
     for (int nIndex = 0; nIndex <= m_nFrameCount; nIndex++)
     {
-        const HBITMAP hBitmap = m_pFrames[nIndex].hBitmap;
+        GDI::Bitmap* const hBitmap = m_pFrames[nIndex].hBitmap;
 
         if (hBitmap != 0)
         {
@@ -447,7 +447,7 @@ void Widget::ClearFrames()
                 // A later frame sharing this bitmap or the screen's background must not delete it again.
                 for (int nScan = nIndex + 1; nScan <= m_nFrameCount; nScan++)
                 {
-                    const HBITMAP hLater = m_pFrames[nScan].hBitmap;
+                    GDI::Bitmap* const hLater = m_pFrames[nScan].hBitmap;
 
                     if (hLater == hBitmap || hLater == hOwned)
                     {
@@ -460,7 +460,7 @@ void Widget::ClearFrames()
 
     for (int nDrop = 0; nDrop <= m_nFrameCount; nDrop++)
     {
-        const HBITMAP hBitmap = m_pFrames[nDrop].hBitmap;
+        GDI::Bitmap* const hBitmap = m_pFrames[nDrop].hBitmap;
 
         if (hBitmap != 0)
         {

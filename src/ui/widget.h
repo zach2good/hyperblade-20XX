@@ -2,6 +2,7 @@
 #define HYPERBLADE_WIDGET_H
 
 #include "common/compat.h"
+#include "graphics/gdi.h"
 #include "globals.h"
 
 class Screen;
@@ -63,14 +64,14 @@ inline void SafeDelete(T*& pBlock)
 // One entry of a widget's frame table. Thirty two bytes, indexed by the frame counter.
 struct WidgetDrawFrame
 {
-    HBITMAP hBitmap;  // 0x00
-    int     nOffsetX; // 0x04
-    int     nOffsetY; // 0x08
-    int     nSourceX; // 0x0c
-    int     nSourceY; // 0x10
-    int     nWidth;   // 0x14
-    int     nHeight;  // 0x18
-    int     bCached;  // 0x1c, the bitmap cache owns hBitmap
+    GDI::Bitmap* hBitmap;  // 0x00
+    int          nOffsetX; // 0x04
+    int          nOffsetY; // 0x08
+    int          nSourceX; // 0x0c
+    int          nSourceY; // 0x10
+    int          nWidth;   // 0x14
+    int          nHeight;  // 0x18
+    int          bCached;  // 0x1c, the bitmap cache owns hBitmap
 };
 
 // All four are guarded against minus one before use.
@@ -104,10 +105,10 @@ public:
     void SetCurrentFrame(int nValue);
 
     void     ClearFrames();
-    FramePos AppendFrame(HBITMAP hBitmap);
-    FramePos AddFrameBitmap(HBITMAP hBitmap, int bCached);
-    FramePos AddFrameWithPos(HBITMAP hBitmap, int bCached, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY);
-    FramePos AppendFrameWithPos(HBITMAP hBitmap, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY);
+    FramePos AppendFrame(GDI::Bitmap* hBitmap);
+    FramePos AddFrameBitmap(GDI::Bitmap* hBitmap, int bCached);
+    FramePos AddFrameWithPos(GDI::Bitmap* hBitmap, int bCached, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY);
+    FramePos AppendFrameWithPos(GDI::Bitmap* hBitmap, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY);
     void     InitAfterLoad();
 
     FramePos GetSize();
@@ -126,7 +127,7 @@ public:
     // Unused names for HoldingWidget::OnMouseDown and FlipbookWidget::OnMouseUp.
     int          BeginWithoutHold();
     int          BeginWithHold();
-    virtual void Draw(HDC hdc, HPALETTE hPalette, int nSlot);
+    virtual void Draw(int nSlot);
     void         SetText(const char* pszText);
     void         SetTargetFrame(int nValue);
     void         SetTextFlag(int nFlag);

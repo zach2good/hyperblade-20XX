@@ -26,7 +26,7 @@ MainMenuScreen::MainMenuScreen()
 {
     Widget* pWidget;
     // STRING: HYPERX 0x004c888c
-    m_hBackground = GDI::LoadBitmapAsBackground("Lounge", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("Lounge", &m_bPaletted);
     m_nLastWidget = MAIN_MENU_TO_LOBBY;
 
     // STRING: HYPERX 0x004c8884

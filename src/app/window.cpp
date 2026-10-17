@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "gameapp.h"
 #include "app/window.h"
+#include <vector>
 #include "graphics/presenter.h"
 #include "wndproc.h"
 #include "engine/gameengine.h"
@@ -80,39 +81,11 @@ void Window::InvalidateAndUpdate(void)
 constexpr auto MENU_WIDTH  = 640;
 constexpr auto MENU_HEIGHT = 480;
 
-static HDC     s_hMenuDC     = 0;
-static HBITMAP s_hMenuBitmap = 0;
-static void*   s_pMenuBits   = 0;
-
-HDC Window::MenuDC()
-{
-    if (s_hMenuDC == 0)
-    {
-        BITMAPINFO info = {};
-
-        info.bmiHeader.biSize     = sizeof(info.bmiHeader);
-        info.bmiHeader.biWidth    = MENU_WIDTH;
-        info.bmiHeader.biHeight   = -MENU_HEIGHT;
-        info.bmiHeader.biPlanes   = 1;
-        info.bmiHeader.biBitCount = 32;
-
-        // A 32-bit DIB, so SDL can upload what GDI drew without a conversion.
-        s_hMenuDC     = CreateCompatibleDC(0);
-        s_hMenuBitmap = CreateDIBSection(s_hMenuDC, &info, DIB_RGB_COLORS, &s_pMenuBits, 0, 0);
-
-        SelectObject(s_hMenuDC, s_hMenuBitmap);
-        PatBlt(s_hMenuDC, 0, 0, MENU_WIDTH, MENU_HEIGHT, BLACKNESS);
-    }
-
-    return s_hMenuDC;
-}
+static std::vector<std::uint32_t> s_menuPixels((size_t)(MENU_WIDTH * MENU_HEIGHT));
 
 Window::MenuCanvas Window::MenuPixels()
 {
-    MenuDC();
-    GdiFlush();
-
-    return MenuCanvas{ (std::uint32_t*)s_pMenuBits, MENU_WIDTH, MENU_HEIGHT };
+    return MenuCanvas{ s_menuPixels.data(), MENU_WIDTH, MENU_HEIGHT };
 }
 
 // The canvas's place in the client area: as large as fits, centred.
@@ -140,11 +113,7 @@ static RECT MenuRect(HWND hWnd)
 // SDL fits the canvas the same way MenuRect does, so the mouse mapping agrees with the picture.
 void Window::PresentMenu(HWND)
 {
-    Window::MenuDC();
-
-    GdiFlush();
-
-    Presenter::Canvas(s_pMenuBits, MENU_WIDTH * 4, MENU_WIDTH, MENU_HEIGHT);
+    Presenter::Canvas(s_menuPixels.data(), MENU_WIDTH * 4, MENU_WIDTH, MENU_HEIGHT);
 }
 
 LPARAM Window::ToMenuPoint(HWND hWnd, LPARAM lParam)

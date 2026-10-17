@@ -48,7 +48,7 @@ KeyConfigScreen::KeyConfigScreen()
 
     m_nActiveRemap = -1;
 
-    m_hBackground = GDI::LoadBitmapAsBackground(g_pszKeyConfigBackground, &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground(g_pszKeyConfigBackground, &m_bPaletted);
     m_nLastWidget = KEY_LAST_WIDGET;
 
     for (i = 0; i < KEY_ACTION_COUNT; i++)

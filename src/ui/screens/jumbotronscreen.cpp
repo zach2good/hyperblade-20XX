@@ -41,7 +41,7 @@ JumbotronScreen::JumbotronScreen()
     list.Load("jumbo.txt");
 
     // STRING: HYPERX 0x004c8944
-    m_hBackground = GDI::LoadBitmapAsBackground("Jumbo", &m_hPalette);
+    m_hBackground = GDI::LoadBitmapAsBackground("Jumbo", &m_bPaletted);
     m_nLastWidget = 10;
 
     // STRING: HYPERX 0x004c893c
