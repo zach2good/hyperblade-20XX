@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "app/gameapp.h"
 #include "globals.h"
 #include "ui/screen.h"
@@ -123,7 +124,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case MAIN_MENU_ARENA_DOOR:
-            if (nMsg != WM_LBUTTONUP)
+            if (nMsg != INPUT_LEFT_UP)
             {
                 break;
             }
@@ -170,7 +171,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg != WM_LBUTTONUP)
+                    if (nMsg != INPUT_LEFT_UP)
                     {
                         break;
                     }
@@ -192,7 +193,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                     break;
 
                 case MAIN_MENU_PAGE_SINGLE:
-                    if (nMsg != WM_LBUTTONUP)
+                    if (nMsg != INPUT_LEFT_UP)
                     {
                         break;
                     }
@@ -214,7 +215,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg != WM_LBUTTONUP)
+                    if (nMsg != INPUT_LEFT_UP)
                     {
                         break;
                     }
@@ -226,7 +227,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                     break;
 
                 case MAIN_MENU_PAGE_SINGLE:
-                    if (nMsg != WM_LBUTTONUP)
+                    if (nMsg != INPUT_LEFT_UP)
                     {
                         break;
                     }
@@ -248,7 +249,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg == WM_LBUTTONUP)
+                    if (nMsg == INPUT_LEFT_UP)
                     {
                         Game::SetEngineState(ESTATE_SAVE_LOAD);
                     }
@@ -267,14 +268,14 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg == WM_LBUTTONUP)
+                    if (nMsg == INPUT_LEFT_UP)
                     {
                         Game::SetEngineState(ESTATE_LOBBY);
                     }
                     break;
 
                 case MAIN_MENU_PAGE_SINGLE:
-                    if (nMsg != WM_LBUTTONUP)
+                    if (nMsg != INPUT_LEFT_UP)
                     {
                         break;
                     }

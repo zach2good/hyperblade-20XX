@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "ui/uiglobals.h"
 #include "ui/widget.h"
@@ -34,7 +35,7 @@ void TrainingEndScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     if (nId >= WIDGET_ID_MOUSE && nId <= WIDGET_ID_RETURN)
     {
-        if (nMsg == WM_KEYUP || nMsg == WM_KEYDOWN || (m_bPointerOnWidget == 0 && nMsg == WM_LBUTTONUP))
+        if (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP))
         {
             if (m_nSelectionMode == g_nCreditPageCount)
             {

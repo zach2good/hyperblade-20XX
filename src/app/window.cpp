@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "gameapp.h"
 #include "app/window.h"
@@ -161,16 +162,15 @@ void Window::OnSizeMenus(WPARAM nKind)
 static bool s_bQuit         = false;
 static bool s_bInLiveUpdate = false;
 
-// The MK_ flags Windows put on a mouse message: the buttons held once it is handled, with Shift
-// and Ctrl.
+// The MOUSE_ flags of a mouse event: the buttons held once it is handled, with Shift and Ctrl.
 static unsigned int MouseFlags(SDL_MouseButtonFlags buttons)
 {
     constexpr std::pair<SDL_MouseButtonFlags, unsigned int> BUTTONS[] = {
-        { SDL_BUTTON_LMASK, MK_LBUTTON },
-        { SDL_BUTTON_RMASK, MK_RBUTTON },
-        { SDL_BUTTON_MMASK, MK_MBUTTON },
-        { SDL_BUTTON_X1MASK, MK_XBUTTON1 },
-        { SDL_BUTTON_X2MASK, MK_XBUTTON2 },
+        { SDL_BUTTON_LMASK, MOUSE_LEFT },
+        { SDL_BUTTON_RMASK, MOUSE_RIGHT },
+        { SDL_BUTTON_MMASK, MOUSE_MIDDLE },
+        { SDL_BUTTON_X1MASK, MOUSE_X1 },
+        { SDL_BUTTON_X2MASK, MOUSE_X2 },
     };
 
     auto nFlags = 0u;
@@ -187,12 +187,12 @@ static unsigned int MouseFlags(SDL_MouseButtonFlags buttons)
 
     if ((mod & SDL_KMOD_SHIFT) != 0)
     {
-        nFlags |= MK_SHIFT;
+        nFlags |= MOUSE_SHIFT;
     }
 
     if ((mod & SDL_KMOD_CTRL) != 0)
     {
-        nFlags |= MK_CONTROL;
+        nFlags |= MOUSE_CONTROL;
     }
 
     return nFlags;
@@ -247,20 +247,20 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
         {
             if (button.down)
             {
-                return WM_LBUTTONDOWN;
+                return INPUT_LEFT_DOWN;
             }
 
-            return WM_LBUTTONUP;
+            return INPUT_LEFT_UP;
         }
 
         if (button.button == SDL_BUTTON_RIGHT)
         {
             if (button.down)
             {
-                return WM_RBUTTONDOWN;
+                return INPUT_RIGHT_DOWN;
             }
 
-            return WM_RBUTTONUP;
+            return INPUT_RIGHT_UP;
         }
 
         return 0;

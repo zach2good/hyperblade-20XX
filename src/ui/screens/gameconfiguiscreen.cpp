@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "engine/gameengine.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
@@ -226,7 +227,7 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     char szMessage[OPTIONS_MESSAGE_MAX];
     int  nValue;
 
-    if (nMsg != WM_LBUTTONUP)
+    if (nMsg != INPUT_LEFT_UP)
     {
         return;
     }

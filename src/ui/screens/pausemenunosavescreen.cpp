@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "ui/pausemenu.h"
 #include "app/gameapp.h"
 #include "ui/screens/pausemenunosavescreen.h"
@@ -76,28 +77,28 @@ void PauseMenuNoSaveScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case PAUSE_NO_SAVE_OPTIONS:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionOptions();
             }
             break;
 
         case PAUSE_NO_SAVE_EXIT:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionExitToMenu();
             }
             break;
 
         case PAUSE_NO_SAVE_RETURN:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionReturnNoSave();
             }
             break;
 
         case PAUSE_NO_SAVE_QUIT:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionQuit();
             }

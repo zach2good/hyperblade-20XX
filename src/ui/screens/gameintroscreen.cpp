@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
@@ -18,7 +19,7 @@ void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
     if (nWidget >= WIDGET_ID_MOUSE && nWidget <= WIDGET_ID_RETURN)
     {
-        if (nMsg == WM_KEYUP || nMsg == WM_KEYDOWN || (m_bPointerOnWidget == 0 && nMsg == WM_LBUTTONUP))
+        if (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP))
         {
             Game::SetEngineState(ESTATE_DROME_EXTERIOR);
         }

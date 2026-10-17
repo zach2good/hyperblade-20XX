@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "engine/teamblock.h"
 #include "globals.h"
 #include "ui/widget.h"
@@ -68,7 +69,7 @@ FinalCeremonyScreen::~FinalCeremonyScreen()
 // FUNCTION: HYPERX 0x004431a0
 void FinalCeremonyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
-    if (nId >= WIDGET_ID_MOUSE && nId <= WIDGET_ID_RETURN && (nMsg == WM_KEYUP || nMsg == WM_KEYDOWN || (m_bPointerOnWidget == 0 && nMsg == WM_LBUTTONUP)))
+    if (nId >= WIDGET_ID_MOUSE && nId <= WIDGET_ID_RETURN && (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP)))
     {
         g_pGameEngine->m_bMatchOver = 1;
 

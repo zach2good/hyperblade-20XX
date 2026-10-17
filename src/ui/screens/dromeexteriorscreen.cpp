@@ -1,6 +1,7 @@
 // An empty team background falls back to a fixed name; a negative round flag selects entry zero.
 
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "engine/teamblock.h"
 #include "globals.h"
 #include "ui/widget.h"
@@ -125,7 +126,7 @@ void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     {
         if (nId > WIDGET_ID_MOUSE - 1 && nId <= WIDGET_ID_RETURN)
         {
-            if (nMsg == WM_KEYUP || nMsg == WM_KEYDOWN || (m_bPointerOnWidget == 0 && nMsg == WM_LBUTTONUP))
+            if (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP))
             {
                 Game::SetEngineState(ESTATE_MATCH_START);
 
@@ -136,7 +137,7 @@ void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         return;
     }
 
-    if (nMsg == WM_LBUTTONUP)
+    if (nMsg == INPUT_LEFT_UP)
     {
         ShowMatchInfo();
     }

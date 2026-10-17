@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
 #include "ui/screen.h"
@@ -116,7 +117,7 @@ void AwardsUIScreen::OnExitTabClick()
 // FUNCTION: HYPERX 0x0041bbf0
 void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
-    if (nMsg != WM_LBUTTONUP)
+    if (nMsg != INPUT_LEFT_UP)
     {
         return;
     }

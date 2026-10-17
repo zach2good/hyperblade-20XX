@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include <SDL3/SDL.h>
 #include "graphics/colorpalette.h"
 #include "globals.h"
@@ -26,7 +27,7 @@
 namespace WndProc
 {
 
-// A key down when the focus leaves never sends WM_KEYUP here.
+// A key down when the focus leaves never sends INPUT_KEY_UP here.
 static unsigned char s_abKeyHeld[256];
 
 static void NoteKey(UINT nMessage, WPARAM nKey)
@@ -36,11 +37,11 @@ static void NoteKey(UINT nMessage, WPARAM nKey)
         return;
     }
 
-    if (nMessage == WM_KEYDOWN)
+    if (nMessage == INPUT_KEY_DOWN)
     {
         s_abKeyHeld[nKey] = 1;
     }
-    else if (nMessage == WM_KEYUP)
+    else if (nMessage == INPUT_KEY_UP)
     {
         s_abKeyHeld[nKey] = 0;
     }
@@ -67,8 +68,8 @@ static void ReleaseHeldKeys()
 } // namespace WndProc
 
 // The game's input, as the window delivers it. Keys are Win32 virtual-key codes, which the key
-// bindings store; buttons are the MK_ flags of every button and modifier held, and points are client
-// pixels. A match reads a button's flag word as a key, so MK_LBUTTON lands on VK_LBUTTON.
+// bindings store; buttons are the MOUSE_ flags of every button and modifier held, and points are
+// client pixels. A match reads a button's flag word as a key, so MOUSE_LEFT lands on VK_LBUTTON.
 
 static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
 {
@@ -80,7 +81,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
     }
 
     // F2 opens the debug menu anywhere, before a match or a menu sees the key.
-    if (uMsg == WM_KEYDOWN && wParam == VK_F2)
+    if (uMsg == INPUT_KEY_DOWN && wParam == VK_F2)
     {
         DebugMenu::Toggle();
 
@@ -105,7 +106,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
     }
     else if (g_pActiveScreen != NULL)
     {
-        if (uMsg == WM_KEYDOWN)
+        if (uMsg == INPUT_KEY_DOWN)
         {
             // F1 opened HELP.HLP, which Windows no longer reads.
             if (wParam == VK_F1)
@@ -113,7 +114,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
                 return;
             }
 
-            g_pActiveScreen->HandleKeyMessage(WM_KEYDOWN, wParam, (unsigned int)lParam);
+            g_pActiveScreen->HandleKeyMessage(INPUT_KEY_DOWN, wParam, (unsigned int)lParam);
         }
         else
         {
@@ -135,7 +136,7 @@ static void Release(UINT uMsg, unsigned int wParam, LPARAM lParam)
 
     if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
-        if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
+        if (uMsg != INPUT_KEY_UP && g_pActiveScreen != NULL)
         {
             g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(lParam));
         }
@@ -148,17 +149,17 @@ static void Release(UINT uMsg, unsigned int wParam, LPARAM lParam)
 
 void WndProc::OnKeyDown(unsigned int nKey)
 {
-    Press(WM_KEYDOWN, nKey, 0);
+    Press(INPUT_KEY_DOWN, nKey, 0);
 }
 
 void WndProc::OnKeyUp(unsigned int nKey)
 {
-    Release(WM_KEYUP, nKey, 0);
+    Release(INPUT_KEY_UP, nKey, 0);
 }
 
 void WndProc::OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX, int nY)
 {
-    if (nMessage == WM_LBUTTONDOWN || nMessage == WM_RBUTTONDOWN)
+    if (nMessage == INPUT_LEFT_DOWN || nMessage == INPUT_RIGHT_DOWN)
     {
         Press(nMessage, nButtons, MAKELPARAM(nX, nY));
     }
@@ -172,7 +173,7 @@ void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
 {
     if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
-        g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, nButtons, (unsigned int)Window::ToMenuPoint(MAKELPARAM(nX, nY)));
+        g_pActiveScreen->OnMouseMessage(INPUT_MOUSE_MOVE, nButtons, (unsigned int)Window::ToMenuPoint(MAKELPARAM(nX, nY)));
     }
 }
 
@@ -318,7 +319,7 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
         }
         else
         {
-            // The WM_KEYUP for a key held across the focus change goes to another window.
+            // The INPUT_KEY_UP for a key held across the focus change goes to another window.
             WndProc::ReleaseHeldKeys();
 
             SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_LOW);

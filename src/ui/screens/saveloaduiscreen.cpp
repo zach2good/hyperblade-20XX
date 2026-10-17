@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "ui/screen.h"
 #include "ui/saveload.h"
@@ -281,7 +282,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
     switch (nWidget)
     {
         case SAVELOAD_SLOT_FIRST:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 0;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST;
@@ -292,7 +293,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 1:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 1;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 1;
@@ -303,7 +304,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 2:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 2;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 2;
@@ -314,7 +315,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 3:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 3;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 3;
@@ -325,7 +326,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 4:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 4;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 4;
@@ -336,7 +337,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 5:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 5;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 5;
@@ -347,7 +348,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 6:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 6;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 6;
@@ -358,7 +359,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 7:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 7;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 7;
@@ -369,7 +370,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 8:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 8;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 8;
@@ -380,7 +381,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 9:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 m_nSlot                = 9;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 9;
@@ -391,7 +392,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SAVE:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 SaveGame();
 
@@ -401,7 +402,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_LOAD:
-            if (nMessage == WM_LBUTTONUP)
+            if (nMessage == INPUT_LEFT_UP)
             {
                 LoadGame();
 

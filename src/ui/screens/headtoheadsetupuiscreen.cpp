@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "engine/teamsblock.h"
 #include "globals.h"
 #include "ui/screen.h"
@@ -784,14 +785,14 @@ void HeadToHeadSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
             break;
 
         case H2H_STARTERS_TAB:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 ShowStartersCard();
             }
             break;
 
         case H2H_SCRUBS_TAB:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 ShowScrubsCard();
             }

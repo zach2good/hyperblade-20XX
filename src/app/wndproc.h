@@ -2,6 +2,7 @@
 #define WNDPROC_H
 
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "ui/mainwindow.h"
 #include "graphics/swrend.h"
 
@@ -13,8 +14,8 @@ int              OnActivate(HWND hWnd, unsigned int bActive, LPARAM lParam);
 unsigned int     HandleRenderMenuCommand(unsigned short nCommand);
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-// Input from the window. Keys are Win32 virtual-key codes; nMessage is WM_LBUTTONDOWN, WM_LBUTTONUP,
-// WM_RBUTTONDOWN or WM_RBUTTONUP; buttons are MK_ flags; points are client pixels.
+// Input from the window. Keys are Win32 virtual-key codes; nMessage is INPUT_LEFT_DOWN, INPUT_LEFT_UP,
+// INPUT_RIGHT_DOWN or INPUT_RIGHT_UP; buttons are MOUSE_ flags; points are client pixels.
 void OnKeyDown(unsigned int nKey);
 void OnKeyUp(unsigned int nKey);
 void OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX, int nY);

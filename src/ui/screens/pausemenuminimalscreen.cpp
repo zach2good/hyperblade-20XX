@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "ui/pausemenu.h"
 #include "app/gameapp.h"
 #include "ui/screens/pausemenuminimalscreen.h"
@@ -54,14 +55,14 @@ void PauseMenuMinimalScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case PAUSE_MINIMAL_RETURN:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionReturnTraining();
             }
             break;
 
         case PAUSE_MINIMAL_QUIT:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionQuit();
             }

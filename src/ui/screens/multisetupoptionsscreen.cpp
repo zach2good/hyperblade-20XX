@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "ui/screen.h"
 #include "ui/pausemenu.h"
@@ -84,7 +85,7 @@ MultiSetupOptionsScreen::~MultiSetupOptionsScreen()
 // FUNCTION: HYPERX 0x00479850
 void MultiSetupOptionsScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
-    if (nMsg == WM_LBUTTONUP)
+    if (nMsg == INPUT_LEFT_UP)
     {
         switch (nWidget)
         {

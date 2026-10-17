@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "ui/keyconfigstate.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
@@ -126,7 +127,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
     {
         case WIDGET_ACCEPT:
         case WIDGET_CANCEL:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 if (nWidget == WIDGET_ACCEPT)
                 {
@@ -160,7 +161,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
         case 7:
         case 8:
         case 9:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 const int nActive = m_nActiveRemap;
 

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "globals.h"
 #include "ui/screen.h"
 #include "ui/screens/lobbyscreen.h"
@@ -125,18 +126,18 @@ void LobbyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         case LOBBY_DATA_DOOR:
             g_nSetupReturnState = ESTATE_LOBBY;
 
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 Game::SetEngineState(ESTATE_MATCH_INFO);
             }
             break;
 
         case LOBBY_PLAY_DOOR:
-            if (nMsg == WM_MOUSEMOVE)
+            if (nMsg == INPUT_MOUSE_MOVE)
             {
                 m_apWidgets[LOBBY_PLAY_SIGN]->SetHighlighted(1);
             }
-            else if (nMsg == WM_LBUTTONUP)
+            else if (nMsg == INPUT_LEFT_UP)
             {
                 Game::SetEngineState(ESTATE_MAIN_MENU);
             }
@@ -145,7 +146,7 @@ void LobbyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         case LOBBY_OPTIONS_DOOR:
             g_nSetupReturnState = ESTATE_LOBBY;
 
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 Game::SetEngineState(ESTATE_GAME_CONFIG);
             }
@@ -156,11 +157,11 @@ void LobbyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case LOBBY_PLAY_SIGN:
-            if (nMsg == WM_MOUSEMOVE)
+            if (nMsg == INPUT_MOUSE_MOVE)
             {
                 m_apWidgets[LOBBY_PLAY_DOOR]->SetHighlighted(1);
             }
-            else if (nMsg == WM_LBUTTONUP)
+            else if (nMsg == INPUT_LEFT_UP)
             {
                 Game::SetEngineState(ESTATE_MAIN_MENU);
             }

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "engine/gameengine.h"
 #include "engine/teamblock.h"
 #include "globals.h"
@@ -170,14 +171,14 @@ void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             return;
         }
 
-        if (nMsg != WM_KEYUP && nMsg != WM_KEYDOWN)
+        if (nMsg != INPUT_KEY_UP && nMsg != INPUT_KEY_DOWN)
         {
             if (m_bPointerOnWidget != 0)
             {
                 return;
             }
 
-            if (nMsg != WM_LBUTTONUP)
+            if (nMsg != INPUT_LEFT_UP)
             {
                 return;
             }
@@ -218,7 +219,7 @@ void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         return;
     }
 
-    if (nMsg != WM_LBUTTONUP)
+    if (nMsg != INPUT_LEFT_UP)
     {
         return;
     }

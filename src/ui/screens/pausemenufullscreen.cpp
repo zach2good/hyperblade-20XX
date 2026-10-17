@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "ui/widget.h"
 #include "ui/screen.h"
 #include "ui/pausemenu.h"
@@ -91,35 +92,35 @@ void PauseMenuFullScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case PAUSE_FULL_OPTIONS:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionOptions();
             }
             break;
 
         case PAUSE_FULL_SAVE:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionSave();
             }
             break;
 
         case PAUSE_FULL_EXIT:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionExitToMenu();
             }
             break;
 
         case PAUSE_FULL_RETURN:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionReturn();
             }
             break;
 
         case PAUSE_FULL_QUIT:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 PauseMenu::ActionQuit();
             }

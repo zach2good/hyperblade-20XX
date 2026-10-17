@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include <algorithm>
 #include "globals.h"
 #include "ui/screen.h"
@@ -106,7 +107,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, unsigned int lParam)
     const int nX = LOWORD(lParam);
     const int nY = HIWORD(lParam);
 
-    if (nMsg == WM_LBUTTONUP)
+    if (nMsg == INPUT_LEFT_UP)
     {
         if (m_nCaptured != -1 && IsButtonWidget(m_nCaptured) && m_apWidgets[m_nCaptured]->HitTest(nX, nY) == 0)
         {
@@ -126,7 +127,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, unsigned int lParam)
 
             switch (nMsg)
             {
-                case WM_MOUSEMOVE:
+                case INPUT_MOUSE_MOVE:
                     if (m_nCaptured != -1 && IsButtonWidget(i))
                     {
                         if (m_nCaptured == i)
@@ -142,10 +143,10 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, unsigned int lParam)
                         InitFrame();
                     }
 
-                    OnWidgetMessage(WM_MOUSEMOVE, i);
+                    OnWidgetMessage(INPUT_MOUSE_MOVE, i);
                     break;
 
-                case WM_LBUTTONDOWN:
+                case INPUT_LEFT_DOWN:
                     m_nCaptured = i;
 
                     if (m_apWidgets[i]->OnMouseDown() != 0)
@@ -161,13 +162,13 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, unsigned int lParam)
                     }
                     break;
 
-                case WM_LBUTTONUP:
+                case INPUT_LEFT_UP:
                     if (m_apWidgets[i]->OnMouseUp() != 0)
                     {
                         InitFrame();
                     }
 
-                    OnWidgetMessage(WM_LBUTTONUP, i);
+                    OnWidgetMessage(INPUT_LEFT_UP, i);
                     break;
             }
         }
@@ -193,7 +194,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, unsigned int lParam)
 
     m_bPointerOnWidget = bHandled;
 
-    if (nMsg != WM_MOUSEMOVE)
+    if (nMsg != INPUT_MOUSE_MOVE)
     {
         OnWidgetMessage(nMsg, WIDGET_ID_MOUSE);
     }
@@ -206,7 +207,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 {
     int i;
 
-    if (nMsg != WM_KEYDOWN)
+    if (nMsg != INPUT_KEY_DOWN)
     {
         return 1;
     }
@@ -290,12 +291,12 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
                         InitFrame();
                     }
 
-                    OnWidgetMessage(WM_LBUTTONUP, i);
+                    OnWidgetMessage(INPUT_LEFT_UP, i);
                 }
             }
 
             InitFrame();
-            OnWidgetMessage(WM_KEYDOWN, WIDGET_ID_RETURN);
+            OnWidgetMessage(INPUT_KEY_DOWN, WIDGET_ID_RETURN);
             return 1;
 
         default:
@@ -352,7 +353,7 @@ void Screen::MoveFocusPrev()
                 InitFrame();
             }
 
-            OnWidgetMessage(WM_MOUSEMOVE, i);
+            OnWidgetMessage(INPUT_MOUSE_MOVE, i);
 
             return;
         }
@@ -383,7 +384,7 @@ void Screen::MoveFocusPrev()
         InitFrame();
     }
 
-    OnWidgetMessage(WM_MOUSEMOVE, i);
+    OnWidgetMessage(INPUT_MOUSE_MOVE, i);
 }
 
 inline int Screen::FindHighlightedWidget(int* pnIndex)
@@ -420,7 +421,7 @@ void Screen::MoveFocusNext()
                     InitFrame();
                 }
 
-                OnWidgetMessage(WM_MOUSEMOVE, i);
+                OnWidgetMessage(INPUT_MOUSE_MOVE, i);
 
                 return;
             }
@@ -453,7 +454,7 @@ void Screen::MoveFocusNext()
         InitFrame();
     }
 
-    OnWidgetMessage(WM_MOUSEMOVE, i);
+    OnWidgetMessage(INPUT_MOUSE_MOVE, i);
 }
 
 // Twenty frames a second: below fifty milliseconds nothing moves.

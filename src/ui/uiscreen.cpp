@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/inputevent.h"
 #include "framepos.h"
 #include "widget.h"
 #include "ui/screen.h"
@@ -454,7 +455,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_TAB_FIRST:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
 
@@ -463,7 +464,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_TAB_FIRST + 1:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
 
@@ -472,7 +473,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_TAB_FIRST + 2:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
 
@@ -481,7 +482,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_TAB_FIRST + 3:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
 
@@ -490,7 +491,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
 
@@ -499,7 +500,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 1:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
 
@@ -508,7 +509,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 2:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
 
@@ -517,7 +518,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 3:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
 
@@ -526,7 +527,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 4:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
 
@@ -535,7 +536,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 5:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
 
@@ -544,7 +545,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_OKAY:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
 
@@ -553,7 +554,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_CANCEL:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
 
@@ -562,7 +563,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_LEFT_ARROW:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT3);
 
@@ -571,7 +572,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_RIGHT_ARROW:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 g_pAudioMgr->PlaySpecific(SOUND_SXBUTT3);
 
@@ -580,28 +581,28 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case UI_WIDGET_STAT_FIRST:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 OnFirstStatClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST + 1:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 OnSecondStatClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST + 2:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 OnThirdStatClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST + 3:
-            if (nMsg == WM_LBUTTONUP)
+            if (nMsg == INPUT_LEFT_UP)
             {
                 OnFourthStatClick();
             }
