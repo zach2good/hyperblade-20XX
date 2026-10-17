@@ -1,6 +1,7 @@
 // The cheat handlers and their acknowledgement sound. RESTORE undoes the bone scale cheats below.
 
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "engine/objectclasses.h"
 #include "math/transformobject.h"
 #include "globals.h"
@@ -244,12 +245,6 @@ int CheatState::ProcessKeypress(char cKey)
     return 0;
 }
 
-// The main keyboard's plus and minus, which VC6's winuser.h predates.
-#ifndef VK_OEM_PLUS
-#define VK_OEM_PLUS  0xbb
-#define VK_OEM_MINUS 0xbd
-#endif
-
 // Message table entries the match keys show, and how long they stay up.
 #define MSG_FILTER_ON          0x54
 #define MSG_FILTER_OFF         0x55
@@ -278,8 +273,8 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
 
             switch (nKey)
             {
-                case VK_SUBTRACT:
-                case VK_OEM_MINUS:
+                case Key::SUBTRACT:
+                case Key::OEM_MINUS:
                     if (Input::IsShiftKeyDown())
                     {
                         g_pAudioMgr->SfxFadeVolume(g_pAudioMgr->SfxReadVolume() - 1);
@@ -296,8 +291,8 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     pEngine->SetScreenSize(pEngine->m_nScreenSize - 1);
                     return 1;
 
-                case VK_ADD:
-                case VK_OEM_PLUS:
+                case Key::ADD:
+                case Key::OEM_PLUS:
                     if (Input::IsShiftKeyDown())
                     {
                         g_pAudioMgr->SfxFadeVolume(g_pAudioMgr->SfxReadVolume() + 1);
@@ -314,7 +309,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     pEngine->SetScreenSize(pEngine->m_nScreenSize + 1);
                     return 1;
 
-                case VK_F8:
+                case Key::F8:
                     // The hardware renderer textures the drome without the texture DLL.
                     if (g_cMdmTexLoaded == 0 && !HwRenderer::Capturing())
                     {
@@ -340,7 +335,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
 
                     return 1;
 
-                case VK_F7:
+                case Key::F7:
                     if (g_cMdmTexLoaded != 0)
                     {
                         nToggled = WndProc::HandleRenderMenuCommand(ID_RENDER_BILINEAR_FILTER);

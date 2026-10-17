@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "input/inputevent.h"
 #include "globals.h"
 #include "gameapp.h"
@@ -227,7 +228,7 @@ static void HandleKey(const SDL_KeyboardEvent& key)
         InputLog::Add("Keyboard", nKey, false, nullptr);
         WndProc::OnKeyUp(nKey);
     }
-    else if (!DebugMenu::WantsKeyboard() || nKey == VK_F2)
+    else if (!DebugMenu::WantsKeyboard() || nKey == Key::F2)
     {
         if (!key.repeat)
         {
@@ -288,10 +289,10 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
     {
         if (button.button == SDL_BUTTON_LEFT)
         {
-            return VK_LBUTTON;
+            return Key::LBUTTON;
         }
 
-        return VK_RBUTTON;
+        return Key::RBUTTON;
     }();
 
     InputLog::Add("Mouse", nButton, button.down, nullptr);

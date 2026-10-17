@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "gamepad.h"
 #include "globals.h"
 #include "app/gameapp.h"
@@ -50,9 +51,9 @@ constexpr Action ACTIONS[] = {
     { "Jump", 9, 0 },
     { "Substitute1", -1, '1' },
     { "Substitute2", -1, '2' },
-    { "Camera", -1, VK_TAB },
+    { "Camera", -1, Key::TAB },
     // Escape pauses a match.
-    { "Pause", -1, VK_ESCAPE },
+    { "Pause", -1, Key::ESCAPE },
 };
 
 // The controls booie.ini [Gamepad] can bind, with their defaults and what each presses in the
@@ -84,20 +85,20 @@ enum ControlId
 };
 
 constexpr std::array<Control, CONTROL_COUNT> CONTROLS = { {
-    { "A", "Attack", VK_RETURN },
-    { "B", "Jump", VK_ESCAPE },
+    { "A", "Attack", Key::RETURN },
+    { "B", "Jump", Key::ESCAPE },
     { "X", "SpeedBurst", 0 },
     { "Y", "Pass", 0 },
     { "LeftShoulder", "None", 0 },
     { "RightShoulder", "QuickShot", 0 },
     { "LeftTrigger", "None", 0 },
     { "RightTrigger", "Shoot", 0 },
-    { "DPadUp", "None", VK_LEFT },
-    { "DPadDown", "None", VK_RIGHT },
-    { "DPadLeft", "Substitute1", VK_LEFT },
-    { "DPadRight", "Substitute2", VK_RIGHT },
+    { "DPadUp", "None", Key::LEFT },
+    { "DPadDown", "None", Key::RIGHT },
+    { "DPadLeft", "Substitute1", Key::LEFT },
+    { "DPadRight", "Substitute2", Key::RIGHT },
     { "Back", "Camera", 0 },
-    { "Start", "Pause", VK_ESCAPE },
+    { "Start", "Pause", Key::ESCAPE },
 } };
 
 // A held control's key, so its release reaches the same key, and what pressed it, for the log.
@@ -188,7 +189,7 @@ void Up(Press& press)
 // The left stick steers in a match and moves through the menus.
 void UpdateDirections()
 {
-    constexpr std::array<unsigned int, DIRECTION_COUNT> MENU_KEYS        = { VK_LEFT, VK_RIGHT, VK_LEFT, VK_RIGHT };
+    constexpr std::array<unsigned int, DIRECTION_COUNT> MENU_KEYS        = { Key::LEFT, Key::RIGHT, Key::LEFT, Key::RIGHT };
     constexpr std::array<const char*, DIRECTION_COUNT> NAMES             = { "Stick up", "Stick down", "Stick left", "Stick right" };
     constexpr std::array<const char*, DIRECTION_COUNT> DIRECTION_ACTIONS = { "Forward", "Stop", "RotateLeft", "RotateRight" };
 

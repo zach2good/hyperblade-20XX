@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "buttonwidget.h"
 #include "textinputwidget.h"
 #include "framepos.h"
@@ -30,7 +31,7 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
 {
     const int nChar = nKey;
 
-    if (nChar == VK_BACK)
+    if (nChar == Key::BACK)
     {
         m_nLength--;
 

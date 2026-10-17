@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include <SDL3/SDL.h>
 #include "engine/devicector.h"
 #include "globals.h"
@@ -613,11 +614,11 @@ const char* g_apszKeyBindingNames[KEY_BINDING_COUNT] = {
 };
 
 unsigned int g_anKeyBindingDefaults[KEY_BINDING_COUNT] = {
-    VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 'S', 'D', VK_SPACE, 'C', 'F', 'E'
+    Key::UP, Key::DOWN, Key::LEFT, Key::RIGHT, 'S', 'D', Key::SPACE, 'C', 'F', 'E'
 };
 
 int g_anKeyBindingOrder[KEY_BINDING_COUNT] = { 0, 1, 2, 3, 5, 4, 6, 7, 8, 9 };
 
 unsigned int g_anKeyBindings[KEY_BINDING_COUNT] = {
-    VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 'S', 'D', VK_SPACE, 'C', 'F', 'E'
+    Key::UP, Key::DOWN, Key::LEFT, Key::RIGHT, 'S', 'D', Key::SPACE, 'C', 'F', 'E'
 };

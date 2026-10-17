@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "globals.h"
 #include "appglobals.h"
 #include "config.h"
@@ -181,7 +182,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
     {
         switch (nKey)
         {
-            case VK_RETURN:
+            case Key::RETURN:
                 g_gameApp.m_nEngineState = ESTATE_LOBBY;
 
                 g_pGameEngine->m_bMatchOver = 1;
@@ -196,7 +197,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
                 GameApp::ResetToSinglePlayer();
 
                 // Falls into the escape case: both keys end in the same call.
-            case VK_ESCAPE:
+            case Key::ESCAPE:
                 g_pRenderer->HideQuitPrompt();
                 break;
         }
@@ -206,7 +207,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
 
     switch (nKey)
     {
-        case VK_PAUSE:
+        case Key::PAUSE:
             if (g_bSessionActive == 0 && g_pGameEngine != 0 && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pRenderer != 0 && g_pRenderer->m_bQuitPromptVisible == 0)
             {
                 if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
@@ -234,13 +235,13 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             }
             break;
 
-        case VK_TAB:
+        case Key::TAB:
             g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT]->PostSceneEvent(MSG_MOVE_EYE_TRACK, 5);
 
             g_nTabCycle = (short)((g_nTabCycle + 1) % 2);
             break;
 
-        case VK_ESCAPE:
+        case Key::ESCAPE:
             if (g_pRenderer != 0 && g_pGameEngine != 0 && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && (short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
             {
                 g_pRenderer->ShowQuitPrompt();
@@ -248,14 +249,14 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             }
             break;
 
-        case VK_F9:
+        case Key::F9:
         {
             const short nGoalieSlot = (g_pGameEngine->m_nViewedSlot & 1) + GOALIE_SLOT_A;
             g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(MSG_ATTACK, 0);
         }
         break;
 
-        case VK_F10:
+        case Key::F10:
         {
             const short nGoalieSlot = (g_pGameEngine->m_nViewedSlot & 1) + GOALIE_SLOT_A;
             g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(MSG_GOAL_SCORED, 0);

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "input/inputevent.h"
 #include <SDL3/SDL.h>
 #include "graphics/colorpalette.h"
@@ -69,7 +70,7 @@ static void ReleaseHeldKeys()
 
 // The game's input, as the window delivers it. Keys are Win32 virtual-key codes, which the key
 // bindings store; buttons are the MOUSE_ flags of every button and modifier held, and points are
-// client pixels. A match reads a button's flag word as a key, so MOUSE_LEFT lands on VK_LBUTTON.
+// client pixels. A match reads a button's flag word as a key, so MOUSE_LEFT lands on Key::LBUTTON.
 
 static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
 {
@@ -81,7 +82,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
     }
 
     // F2 opens the debug menu anywhere, before a match or a menu sees the key.
-    if (uMsg == INPUT_KEY_DOWN && wParam == VK_F2)
+    if (uMsg == INPUT_KEY_DOWN && wParam == Key::F2)
     {
         DebugMenu::Toggle();
 
@@ -95,7 +96,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
     {
         if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
         {
-            // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
+            // The key goes through a char, so Key::OEM_PLUS and Key::OEM_MINUS never reach their cases.
             if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown(wParam) == -1)
             {
                 GameApp::HandleGlobalKeyEvent((int)wParam);
@@ -109,7 +110,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
         if (uMsg == INPUT_KEY_DOWN)
         {
             // F1 opened HELP.HLP, which Windows no longer reads.
-            if (wParam == VK_F1)
+            if (wParam == Key::F1)
             {
                 return;
             }
@@ -124,7 +125,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
         return;
     }
 
-    if (wParam == 'Q' || wParam == VK_ESCAPE || wParam == VK_PAUSE)
+    if (wParam == 'Q' || wParam == Key::ESCAPE || wParam == Key::PAUSE)
     {
         GameApp::HandleGlobalKeyEvent((int)wParam);
     }

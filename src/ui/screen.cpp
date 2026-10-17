@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "input/inputevent.h"
 #include <algorithm>
 #include "globals.h"
@@ -234,7 +235,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 
     switch (wParam)
     {
-        case VK_TAB:
+        case Key::TAB:
             if (Input::IsShiftKeyDown())
             {
                 MoveFocusPrev();
@@ -246,15 +247,15 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
             InitFrame();
             return 1;
 
-        case VK_LEFT:
+        case Key::LEFT:
             MoveFocusPrev();
             InitFrame();
             return 1;
 
-        case VK_RIGHT:
+        case Key::RIGHT:
             break;
 
-        case VK_ESCAPE:
+        case Key::ESCAPE:
             Screen::ClearBlack();
 
             if (g_gameApp.m_nEngineState == ESTATE_PAUSE_FULL || g_gameApp.m_nEngineState == ESTATE_PAUSE_MINIMAL || g_gameApp.m_nEngineState == ESTATE_PAUSE_NO_SAVE)
@@ -281,7 +282,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
             g_nLastEscState    = g_nDefaultEscState;
             return 1;
 
-        case VK_RETURN:
+        case Key::RETURN:
             for (i = 0; i <= m_nLastWidget; i++)
             {
                 if (m_apWidgets[i]->GetHighlighted() && m_apWidgets[i]->IsDisplayOnly() == 0 && m_apWidgets[i]->GetHidden() == 0)

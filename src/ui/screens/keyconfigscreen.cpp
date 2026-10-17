@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/keycodes.h"
 #include "input/inputevent.h"
 #include "ui/keyconfigstate.h"
 #include "globals.h"
@@ -241,7 +242,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
         return 0;
     }
 
-    if (nKeyCode == VK_TAB || nKeyCode == VK_ESCAPE)
+    if (nKeyCode == Key::TAB || nKeyCode == Key::ESCAPE)
     {
         nKeyCode = g_anKeyConfigKeys[nRow];
     }
