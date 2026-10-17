@@ -1,4 +1,4 @@
-# The game needs nothing from the original to build, so CI links it on Windows and Linux, runs the
+# The game needs nothing from the original to build, so CI links it with MSVC, GCC and Clang, runs the
 # tests that need no game data, and uploads each drop-in archive. A pushed version tag, such as
 # 0.1.0, publishes both as a GitHub release whose notes give their SHA256.
 
@@ -63,8 +63,14 @@ jobs:
           path: hyperblade_20XX.zip
 
   build-linux:
-    name: Build (GCC Linux)
+    name: Build (${{ matrix.compiler.name }} Linux)
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - { name: GCC, cc: gcc-14, cxx: g++-14, package: true }
+          - { name: Clang, cc: clang-20, cxx: clang++-20, package: false }
     steps:
       - uses: actions/checkout@v5
 
@@ -76,12 +82,14 @@ jobs:
       - name: Build, test and install in the Linux image
         run: |
           docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
-          docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
+          docker run --rm -e CC=${{ matrix.compiler.cc }} -e CXX=${{ matrix.compiler.cxx }}             -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
 
       - name: Package
+        if: matrix.compiler.package
         run: tar -czf hyperblade_20XX-linux.tar.gz -C build-linux/package .
 
       - uses: actions/upload-artifact@v4
+        if: matrix.compiler.package
         with:
           name: hyperblade_20XX-linux
           path: hyperblade_20XX-linux.tar.gz

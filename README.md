@@ -85,6 +85,9 @@ docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
 docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
 ```
 
+That builds with GCC. For Clang, add `-e CC=clang-20 -e CXX=clang++-20` and give it a build folder
+of its own. Both build with `-Wall -Werror`, and MSVC with `/W4 /WX`.
+
 The build needs nothing from the game.
 
 ## Tools
