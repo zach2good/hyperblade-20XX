@@ -360,7 +360,7 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
         return 0;
     }
 
-    const DWORD dwHeaderSize = header.info.biSize;
+    const auto dwHeaderSize = (unsigned int)header.info.biSize;
 
     if (dwHeaderSize == sizeof(BITMAPCOREHEADER))
     {
@@ -392,7 +392,7 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
 
     if (header.info.biSizeImage == 0)
     {
-        header.info.biSizeImage = ((((DWORD)(header.info.biBitCount * header.info.biWidth) + 31) >> 3) & ~3) * header.info.biHeight;
+        header.info.biSizeImage = ((((unsigned int)(header.info.biBitCount * header.info.biWidth) + 31) >> 3) & ~3) * header.info.biHeight;
     }
 
     if (header.info.biClrUsed == 0 && header.info.biBitCount <= 8)

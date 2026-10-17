@@ -111,7 +111,7 @@ void Game::Draw(float flAlpha)
 
 // Builds the game's owners in the original's order, timing each stage.
 // FUNCTION: HYPERX 0x0045c700
-void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance)
+void Game::InitializeEngine(HWND hWnd)
 {
     int nStart = GameApp::GetInstallLevel();
 
@@ -127,8 +127,6 @@ void Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance)
     nStart = GameApp::GetInstallLevel();
 
     g_pGameEngine = new GameEngine;
-
-    g_pGameEngine->SetInstance(hInstance, 0);
 
     nDelta = GameApp::GetInstallLevel() - nStart;
 

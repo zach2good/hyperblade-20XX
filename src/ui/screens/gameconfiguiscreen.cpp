@@ -223,9 +223,8 @@ void GameConfigUIScreen::SetupWidgets()
 // FUNCTION: HYPERX 0x0047a160
 void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
-    char      szMessage[OPTIONS_MESSAGE_MAX];
-    int       nValue;
-    HINSTANCE hInstance;
+    char szMessage[OPTIONS_MESSAGE_MAX];
+    int  nValue;
 
     if (nMsg != WM_LBUTTONUP)
     {
@@ -239,11 +238,9 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
             return;
 
         case GAME_CONFIG_JOYSTICK_INFO:
-            hInstance = g_gameApp.m_hInstance;
             strcpy(szMessage, g_gameApp.m_stringPool.LoadText(STRING_JOYSTICK_CONTROL_PANEL));
-            hInstance = g_gameApp.m_hInstance;
             strcat(szMessage, g_gameApp.m_stringPool.LoadText(STRING_GAME_PAD_HELP));
-            GameApp::ShowMessageBox(g_gameApp.m_hWnd, szMessage, g_gameApp.m_strCaption.m_pchData, MB_OK);
+            GameApp::ShowMessageBox(szMessage, g_gameApp.m_strCaption.m_pchData, MB_OK);
             return;
 
         case GAME_CONFIG_ATTACK_MODE_LEFT:

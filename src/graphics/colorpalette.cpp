@@ -589,9 +589,9 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
                     return 0;
                 }
 
-                entry.peRed   = (BYTE)nRed;
-                entry.peGreen = (BYTE)nGreen;
-                entry.peBlue  = (BYTE)nBlue;
+                entry.peRed   = (unsigned char)nRed;
+                entry.peGreen = (unsigned char)nGreen;
+                entry.peBlue  = (unsigned char)nBlue;
                 entry.peFlags = PC_NOCOLLAPSE;
 
                 c = (char)getc(pFile);

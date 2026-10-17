@@ -5356,11 +5356,6 @@ ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
     return &g_aFormationTable[pTeam->aSeat[1] + pTeam->aSeat[0] * 4];
 }
 
-// Empty; folded with every empty two-argument body, so its call names Screen::OnWidgetMessage.
-void GameEngine::SetInstance(HINSTANCE, int)
-{
-}
-
 unsigned char g_abObjectTypeBaseline[32] = {
     102, 0, 6, 10, 12, 7, 8, 9, 25, 26, 33, 27, 46, 72, 80, 23, 24, 40, 66, 56, 60, 52, 86, 87, 89, 91, 58, 54, 55, 92, 94, 102
 };

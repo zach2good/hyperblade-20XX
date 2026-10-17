@@ -76,7 +76,7 @@ void Graphics::Initialize(int bResize)
 // FUNCTION: HYPERX 0x0044b6f0
 unsigned int Graphics::LoadMdmTexDLL(void)
 {
-    LPSTR pszCmdLine = GetCommandLineA();
+    const char* const pszCmdLine = GetCommandLineA();
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
     // STRING: HYPERX 0x004c2da0
@@ -85,7 +85,7 @@ unsigned int Graphics::LoadMdmTexDLL(void)
         return 0;
     }
 
-    const UINT uOldErrorMode = SetErrorMode(SEM_NOOPENFILEERRORBOX);
+    const auto uOldErrorMode = SetErrorMode(SEM_NOOPENFILEERRORBOX);
 
     // STRING: HYPERX 0x004c2d94
     g_hMdmTexDll = LoadLibraryA("mdmtex.dll");

@@ -32,7 +32,7 @@ protected:
     unsigned int  m_cWorkEntries; // 0x018
     PALETTEENTRY* m_pWorkEntries; // 0x01c
     unsigned int  m_nDuration;    // 0x020
-    DWORD         m_dwStepped;    // 0x024
+    unsigned int  m_dwStepped;    // 0x024
     int           m_bPhase;       // 0x028
     int           m_bActive;      // 0x02c
 };

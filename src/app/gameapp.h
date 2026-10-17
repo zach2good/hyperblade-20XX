@@ -31,8 +31,8 @@ struct GameApp
     static void ResetToSinglePlayer(void);
     static int  OutOfMemoryHandler(size_t nSize);
     static void AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
-    static int  ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType);
-    static HWND CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam);
+    static int  ShowMessageBox(const char* pszText, const char* pszCaption, unsigned int nType);
+    static HWND CreateMainWindow(const char* pszTitle);
     static void Shutdown(HWND hWnd);
 
     void ReportLastError(HWND hUnused);
@@ -46,11 +46,6 @@ struct GameApp
     HWND GetMainWindow() const
     {
         return m_hWnd;
-    }
-
-    HINSTANCE GetInstance() const
-    {
-        return m_hInstance;
     }
 
     explicit GameApp(short nStringCount);
@@ -67,7 +62,6 @@ struct GameApp
     Vec3          m_vLightSpherical; // 0x1c
     int           m_nFrameRate;      // 0x28
     HWND          m_hWnd;            // 0x2c
-    HINSTANCE     m_hInstance;       // 0x30
     unsigned int  m_nEngineState;    // 0x40
     unsigned char m_bIsActive;       // 0x44
     char          m_cUnused;         // 0x45
@@ -94,9 +88,9 @@ struct GameApp
 
     static int MainUpdate(HWND hWnd);
 
-    static HWND  Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShowCmd, LPSTR lpCmdLine);
-    static void  InitializeResourcePaths(HINSTANCE hInstance);
-    static void  ParseCommandLine(LPSTR lpCmdLine);
+    static HWND  Initialize(char* pszCommandLine);
+    static void  InitializeResourcePaths();
+    static void  ParseCommandLine(char* pszCommandLine);
     static char* ResolveCDRomPath(char* pszPath);
 
     static void SetModelPath(int bTexEnabled);

@@ -106,7 +106,6 @@ struct GameEngine
 
     void Init(const char* pszConfig);
     void StartMatch();
-    void SetInstance(HINSTANCE hInstance, int nUnused);
 
     char ReadSlotLabel(int nSlot, char* pszLabel, int nMax);
     char PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender, int bFromInput);

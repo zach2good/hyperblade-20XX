@@ -220,7 +220,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                     }
 
                     // The DirectPlay set-up dialogs went with the resources; see the README's TODO.
-                    GameApp::ShowMessageBox(g_gameApp.m_hWnd, "Network play is not available in this build yet.", g_gameApp.m_strCaption.m_pchData, MB_OK);
+                    GameApp::ShowMessageBox("Network play is not available in this build yet.", g_gameApp.m_strCaption.m_pchData, MB_OK);
 
                     InitFrame();
                     break;

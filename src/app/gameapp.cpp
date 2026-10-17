@@ -135,9 +135,9 @@ void GameApp::SetModelPath(int bTexEnabled)
 }
 
 // FUNCTION: HYPERX 0x00418e10
-HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
+HWND GameApp::Initialize(char* pszCommandLine)
 {
-    LPCSTR pszAppClassName;
+    const char* pszAppClassName;
 
     // An unaware process is DPI-virtualised, and GDI would read and draw stretched pixels.
     SetProcessDPIAware();
@@ -153,8 +153,8 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
         std::_Exit(1);
     }
 
-    GameApp::InitializeResourcePaths(hInstance);
-    GameApp::ParseCommandLine(lpCmdLine);
+    GameApp::InitializeResourcePaths();
+    GameApp::ParseCommandLine(pszCommandLine);
 
     // A modern desktop keeps its own mode, so the game runs windowed.
     g_bFullScreen = 0;
@@ -162,7 +162,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
     g_pColorPalette = new ColorPalette;
 
     pszAppClassName = g_gameApp.m_strCaption.m_pchData;
-    const HWND hWnd = GameApp::CreateMainWindow(hInstance, pszAppClassName, 0);
+    const HWND hWnd = GameApp::CreateMainWindow(pszAppClassName);
 
     g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
 
@@ -180,9 +180,9 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
     Network::ValidateStaticObjects();
 
     // STRING: HYPERX 0x004bba9c
-    Config::LoadPreferences(hWnd, "Prefs.txt");
+    Config::LoadPreferences("Prefs.txt");
 
-    Game::InitializeEngine(hWnd, hInstance);
+    Game::InitializeEngine(hWnd);
 
     GameApp::SetupViewports();
 
@@ -201,10 +201,8 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 }
 
 // FUNCTION: HYPERX 0x00419070
-void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
+void GameApp::InitializeResourcePaths()
 {
-    g_gameApp.m_hInstance = hInstance;
-
     char* const pszClassName = g_gameApp.m_stringPool.LoadText(STRING_HYPERBLADE);
 
     g_gameApp.m_strCaption.Assign(String::SafeStrlen(pszClassName), pszClassName);
@@ -242,7 +240,7 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
 
 constexpr auto SPLASH_MS = 3000ul;
 
-static DWORD s_dwSplashShown = 0;
+static unsigned int s_dwSplashShown = 0;
 
 // FUNCTION: HYPERX 0x00419290
 void GameApp::NextSplash(HWND hWnd)
@@ -297,18 +295,18 @@ bool GameApp::UpdateSplash(HWND hWnd)
 
 // 'x' is skipped like a space.
 // FUNCTION: HYPERX 0x00419420
-void GameApp::ParseCommandLine(LPSTR lpCmdLine)
+void GameApp::ParseCommandLine(char* pszCommandLine)
 {
     // STRING: HYPERX 0x004bbb00
-    char* p = strpbrk(lpCmdLine, "\"");
+    char* p = strpbrk(pszCommandLine, "\"");
 
     if (p != 0)
     {
-        p         = strpbrk(p + 1, "\"");
-        lpCmdLine = p + 1;
+        p              = strpbrk(p + 1, "\"");
+        pszCommandLine = p + 1;
     }
 
-    p = (char*)strchr(lpCmdLine, ' ');
+    p = (char*)strchr(pszCommandLine, ' ');
 
     if (p == 0)
     {
@@ -438,7 +436,6 @@ GameApp::GameApp(short nStringCount)
 , m_strTexturesPath(MAX_PATH)
 , m_nFrameRate(0)
 , m_hWnd(0)
-, m_hInstance(0)
 , m_nEngineState(ESTATE_LOBBY)
 , m_bIsActive(0)
 , m_wRunStateOnDeactivate(ENGINE_RUN_PLAYING)
@@ -495,19 +492,15 @@ int GameApp::FindCDRomDrive(bool bRequired)
     // STRING: HYPERX 0x004bc418
     memcpy(szScanRoot, "A:\\", sizeof("A:\\"));
 
-    HINSTANCE hInstance = m_hInstance;
     strcpy(szLabel, m_stringPool.LoadText(STRING_HYPERBLADE_UPPERCASE));
-    hInstance = m_hInstance;
     strcpy(szCaption, m_stringPool.LoadText(STRING_CD_NOT_FOUND));
 
     if (bRequired)
     {
-        hInstance = m_hInstance;
         strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_EXIT));
     }
     else
     {
-        hInstance = m_hInstance;
         strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_RETURN));
     }
 
@@ -567,7 +560,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
 
         m_nCDRomDrive = CDROM_NOT_FOUND;
 
-        if (GameApp::ShowMessageBox(GetActiveWindow(), szText, szCaption, MB_OKCANCEL) == IDCANCEL)
+        if (GameApp::ShowMessageBox(szText, szCaption, MB_OKCANCEL) == IDCANCEL)
         {
             if (!bRequired)
             {
@@ -847,7 +840,7 @@ int GameApp::GetInstallLevel(void)
 }
 
 // FUNCTION: HYPERX 0x0047adb0
-int GameApp::ShowMessageBox(HWND, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
+int GameApp::ShowMessageBox(const char* pszText, const char* pszCaption, unsigned int nType)
 {
     const int bWasVisible = GameApp::SetCursorVisible(1);
 
@@ -1061,7 +1054,7 @@ void GameApp::InstantiateState(void)
 }
 
 // FUNCTION: HYPERX 0x00493870
-HWND GameApp::CreateMainWindow(HINSTANCE, LPCSTR pszTitle, LPVOID)
+HWND GameApp::CreateMainWindow(const char* pszTitle)
 {
     const HWND hWnd = Window::Create(pszTitle);
 

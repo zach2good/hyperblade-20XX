@@ -11,10 +11,9 @@ float g_flUnusedWinMainB = g_flZeroWinMain;
 float g_flUnusedWinMainC = g_flZeroWinMain;
 
 // FUNCTION: HYPERX 0x0044c070
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nShowCmd)
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-    LPSTR      lpCmdLineArgs = GetCommandLineA();
-    const HWND hWnd          = GameApp::Initialize(hInstance, hPrevInstance, nShowCmd, lpCmdLineArgs);
+    const HWND hWnd = GameApp::Initialize(GetCommandLineA());
 
     g_bIsWindowCreated = (hWnd != 0);
 

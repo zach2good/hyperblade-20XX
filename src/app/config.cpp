@@ -85,7 +85,7 @@ Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteeri
 String g_strPrefs("Data\\DftKeybd.cfg");
 
 // FUNCTION: HYPERX 0x0046d710
-void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
+void Config::LoadPreferences(const char* pszFileName)
 {
     char  szBuffer[MAX_PATH];
     FILE* pFile;
@@ -115,12 +115,12 @@ void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
                           "Data\\DftKeybd.cfg");
     }
 
-    Config::ParseFile(hWnd, g_strPrefs.m_pchData, "Data\\DftKeybd.cfg", g_aKeyRows);
+    Config::ParseFile(g_strPrefs.m_pchData, "Data\\DftKeybd.cfg", g_aKeyRows);
 }
 
 // A missing file still returns true.
 // FUNCTION: HYPERX 0x0046d8b0
-int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR, KeyRow* pRows)
+int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 {
     FILE* const pFile = fopen(pszData, "r");
 

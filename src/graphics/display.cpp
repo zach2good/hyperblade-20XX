@@ -47,7 +47,7 @@ int Display::Initialize(HWND hWnd)
 }
 
 // FUNCTION: HYPERX 0x0044b850
-LONG Display::ChangeColorDepth(int)
+int Display::ChangeColorDepth(int)
 {
     // The game runs framed on the desktop and never changes the display mode.
     return 0;
