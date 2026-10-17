@@ -569,7 +569,7 @@ unsigned int Game::UpdateState(void)
                 pszText = g_gameApp.m_stringPool.LoadText(rand() % 3 + STRING_REALLY_QUIT);
 
                 if (Win32::AskYesNo(pszText,
-                                    g_gameApp.m_stringPool.LoadText(STRING_QUIT)) == IDYES)
+                                    g_gameApp.m_stringPool.LoadText(STRING_QUIT)))
                 {
                     Screen::ClearBlack();
 

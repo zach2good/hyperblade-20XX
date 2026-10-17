@@ -116,7 +116,6 @@ void FrameTimer::ProcessInitialFrameUpdate()
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {
-        ValidateRgn(g_gameApp.m_hWnd, 0);
         Game::RunFrame();
     }
 

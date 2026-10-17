@@ -241,7 +241,7 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
         case GAME_CONFIG_JOYSTICK_INFO:
             strcpy(szMessage, g_gameApp.m_stringPool.LoadText(STRING_JOYSTICK_CONTROL_PANEL));
             strcat(szMessage, g_gameApp.m_stringPool.LoadText(STRING_GAME_PAD_HELP));
-            GameApp::ShowMessageBox(szMessage, g_gameApp.m_strCaption.m_pchData, MB_OK);
+            GameApp::ShowMessageBox(szMessage, g_gameApp.m_strCaption.m_pchData, Window::MessageButtons::OK);
             return;
 
         case GAME_CONFIG_ATTACK_MODE_LEFT:

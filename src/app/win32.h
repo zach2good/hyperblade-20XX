@@ -6,7 +6,7 @@
 namespace Win32
 {
 
-int  AskYesNo(const char* pszText, const char* pszCaption);
+bool AskYesNo(const char* pszText, const char* pszCaption);
 int  IsCDRomDrive(const char* pszRoot);
 int  GetWindowTextAlloc(HWND hWnd, char** ppszOut);
 void CenterWindow(HWND hWnd, HWND hParent);

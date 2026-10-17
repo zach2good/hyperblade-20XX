@@ -204,7 +204,6 @@ int WndProc::HandlePaint()
 {
     if (g_nSplashFrame != 0)
     {
-        ValidateRgn(g_gameApp.m_hWnd, NULL);
         Window::PresentMenu();
 
         return 1;
@@ -212,8 +211,6 @@ int WndProc::HandlePaint()
 
     if (g_pActiveScreen == NULL || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
     {
-        ValidateRgn(g_gameApp.m_hWnd, NULL);
-
         if (!g_bIsWindowCreated)
         {
             return 1;

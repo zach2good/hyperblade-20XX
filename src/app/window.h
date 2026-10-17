@@ -43,8 +43,30 @@ void SetBusyCursor(bool bBusy);
 // The engine ignores the window's size while it loads, so it is handed over once loading is done.
 void ApplyCurrentSize();
 
-// Takes MB_OK, MB_OKCANCEL or MB_YESNO with an icon flag, and returns IDOK, IDCANCEL, IDYES or IDNO.
-int ShowMessage(const char* pszText, const char* pszCaption, unsigned int nType);
+enum class MessageButtons
+{
+    OK,
+    OK_CANCEL,
+    YES_NO,
+};
+
+enum class MessageIcon
+{
+    INFO,
+    WARNING,
+    STOP,
+};
+
+enum class MessageAnswer
+{
+    OK,
+    CANCEL,
+    YES,
+    NO,
+};
+
+// Escape picks the last button.
+MessageAnswer ShowMessage(const char* pszText, const char* pszCaption, MessageButtons buttons, MessageIcon icon);
 
 // Handles what has arrived; false once the game has asked to quit.
 bool Pump();

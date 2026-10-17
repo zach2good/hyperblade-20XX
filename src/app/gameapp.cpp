@@ -148,7 +148,7 @@ HWND GameApp::Initialize(char* pszCommandLine)
 
     if (pszBase == 0 || !StringTable::Load(pszBase))
     {
-        Window::ShowMessage("HyperBlade 20XX runs from your HyperBlade folder. Put hyperblade_20XX.exe beside HYPERX.EXE and start it from there.", "HyperBlade 20XX", MB_OK | MB_ICONHAND);
+        Window::ShowMessage("HyperBlade 20XX runs from your HyperBlade folder. Put hyperblade_20XX.exe beside HYPERX.EXE and start it from there.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
 
         std::_Exit(1);
     }
@@ -560,7 +560,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
 
         m_nCDRomDrive = CDROM_NOT_FOUND;
 
-        if (GameApp::ShowMessageBox(szText, szCaption, MB_OKCANCEL) == IDCANCEL)
+        if (GameApp::ShowMessageBox(szText, szCaption, Window::MessageButtons::OK_CANCEL) == Window::MessageAnswer::CANCEL)
         {
             if (!bRequired)
             {
@@ -606,9 +606,7 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
     return pszPath;
 }
 
-#define ERROR_BOX_STYLE (MB_SETFOREGROUND | MB_SYSTEMMODAL | MB_ICONHAND)
-
-#define ERROR_BOX(t, c) Window::ShowMessage(t, c, ERROR_BOX_STYLE)
+#define ERROR_BOX(t, c) Window::ShowMessage(t, c, Window::MessageButtons::OK, Window::MessageIcon::STOP)
 
 // Files open through SDL, so SDL holds the reason the last one failed.
 // FUNCTION: HYPERX 0x004238b0
@@ -786,8 +784,6 @@ int GameApp::MainUpdate()
 
     if (g_gameApp.m_bIsActive)
     {
-        ValidateRgn(g_gameApp.m_hWnd, 0);
-
         if (GameApp::UpdateSplash())
         {
             return 0;
@@ -829,11 +825,11 @@ int GameApp::GetInstallLevel(void)
 }
 
 // FUNCTION: HYPERX 0x0047adb0
-int GameApp::ShowMessageBox(const char* pszText, const char* pszCaption, unsigned int nType)
+Window::MessageAnswer GameApp::ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons)
 {
     const int bWasVisible = GameApp::SetCursorVisible(1);
 
-    const int nResult = Window::ShowMessage(pszText, pszCaption, nType);
+    const auto nResult = Window::ShowMessage(pszText, pszCaption, buttons, Window::MessageIcon::INFO);
 
     GameApp::SetCursorVisible(bWasVisible);
 

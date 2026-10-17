@@ -2,6 +2,7 @@
 #define HYPERBLADE_GAMEAPP_H
 
 #include "common/compat.h"
+#include "app/window.h"
 #include "globals.h"
 #include "common/pathstring.h"
 #include "common/stringpool.h"
@@ -26,14 +27,14 @@ struct GameApp
         return m_bCursorWasVisible;
     }
 
-    static void SetupViewports(void);
-    static void InstantiateState(void);
-    static void ResetToSinglePlayer(void);
-    static int  OutOfMemoryHandler(size_t nSize);
-    static void AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
-    static int  ShowMessageBox(const char* pszText, const char* pszCaption, unsigned int nType);
-    static HWND CreateMainWindow(const char* pszTitle);
-    static void Shutdown();
+    static void                  SetupViewports(void);
+    static void                  InstantiateState(void);
+    static void                  ResetToSinglePlayer(void);
+    static int                   OutOfMemoryHandler(size_t nSize);
+    static void                  AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
+    static Window::MessageAnswer ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons);
+    static HWND                  CreateMainWindow(const char* pszTitle);
+    static void                  Shutdown();
 
     void ReportLastError();
     void Error(const char* pszFormat, ...);
