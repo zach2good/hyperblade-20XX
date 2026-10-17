@@ -18,6 +18,7 @@ constexpr auto LOCAL_SIZE        = 30u;
 constexpr auto MAX_COMMENT       = 0xffffu;
 constexpr auto METHOD_STORED     = 0;
 constexpr auto METHOD_DEFLATED   = 8;
+constexpr auto MAX_DEFLATE_RATIO = 1032u;
 
 struct Entry
 {
@@ -163,7 +164,8 @@ std::vector<unsigned char> Pak::Read(std::string_view name)
         return std::vector<unsigned char>(pPacked, pPacked + entry.nPacked);
     }
 
-    if (entry.nMethod != METHOD_DEFLATED)
+    // Deflate packs at most 1032 to one, so a bigger size is a damaged pak.
+    if (entry.nMethod != METHOD_DEFLATED || entry.nSize / MAX_DEFLATE_RATIO > entry.nPacked)
     {
         return {};
     }

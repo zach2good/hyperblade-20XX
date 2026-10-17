@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <string_view>
 
+#ifndef _WIN32
 namespace
 {
 
@@ -23,11 +24,11 @@ std::filesystem::path MatchEntry(const std::filesystem::path& directory, const s
 {
     auto error = std::error_code();
 
-    for (const auto& entry : std::filesystem::directory_iterator(directory, error))
+    for (auto it = std::filesystem::directory_iterator(directory, error); !error && it != std::filesystem::directory_iterator(); it.increment(error))
     {
-        const auto candidate = entry.path().filename();
+        const auto candidate = it->path().filename();
 
-        if (SameName(candidate.string(), name.string()))
+        if (SameName(candidate.native(), name.native()))
         {
             return candidate;
         }
@@ -37,6 +38,7 @@ std::filesystem::path MatchEntry(const std::filesystem::path& directory, const s
 }
 
 } // namespace
+#endif
 
 std::string Path::Native(const char* pszPath)
 {
@@ -44,6 +46,10 @@ std::string Path::Native(const char* pszPath)
 
     std::ranges::replace(text, '\\', '/');
 
+#ifdef _WIN32
+    // Windows already matches names without regard to case.
+    return text;
+#else
     const auto path = std::filesystem::path(text);
 
     if (auto error = std::error_code(); std::filesystem::exists(path, error))
@@ -69,4 +75,5 @@ std::string Path::Native(const char* pszPath)
     }
 
     return resolved.generic_string();
+#endif
 }
