@@ -6,16 +6,9 @@
 #include "engine/devicector.h"
 #include "net/playerslotname.h"
 
-// One row of the DirectPlay result-code table.
-struct DPlayError
-{
-    int   nCode;
-    char* pszText;
-};
-
 struct PlayerState
 {
-    DWORD nPlayerId; // 0x00, DPID_UNKNOWN until the player is registered
+    unsigned int nPlayerId; // 0x00, unknown until the player is registered
     // Set once DirectPlay registers the player.
     int nConnected; // 0x04
     // The name byte's human bit.

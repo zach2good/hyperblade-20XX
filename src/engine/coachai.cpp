@@ -76,7 +76,6 @@
 #include "teamblock.h"
 #include "input/keyboarddeviceobj.h"
 #include "rampobject.h"
-#include "net/netglobals.h"
 #include "planvm/planopcodetable.h"
 #include "saveblock.h"
 #include <mmsystem.h>

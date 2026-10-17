@@ -11,7 +11,6 @@
 struct FrameTimer;
 struct AudioMgr;
 struct GameApp;
-struct IDirectPlay;
 
 #include "math/vector.h"
 
@@ -192,15 +191,8 @@ extern int g_bBilinearFilter;
 // GLOBAL: HYPERX 0x004b2bc8
 extern const double g_dNormalizeEpsilon;
 
-// Below three the dialog shows a status line; above it, a scrolling list.
-// GLOBAL: HYPERX 0x004d0774
-extern int g_nNetSetupState;
-
 struct ClipExtents;
 extern ClipExtents g_projRenderParams;
-
-// GLOBAL: HYPERX 0x004cb788
-extern HANDLE g_hNetworkThread;
 
 // GLOBAL: HYPERX 0x004b3e14
 extern const float g_flOne;
@@ -502,12 +494,6 @@ extern unsigned char g_bDragOff;
 
 // GLOBAL: HYPERX 0x004d1794
 extern short g_wActiveScoreLine;
-
-// GLOBAL: HYPERX 0x004ce928
-extern int g_nSessionState;
-
-// GLOBAL: HYPERX 0x004d0784
-extern IDirectPlay* g_pDPlayLobby;
 
 // GLOBAL: HYPERX 0x004d064c
 extern struct TransformedVertex* g_pModelVertexBuf;

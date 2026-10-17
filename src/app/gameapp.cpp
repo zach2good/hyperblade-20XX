@@ -184,8 +184,6 @@ HWND GameApp::Initialize(const char* pszArguments)
     // Windows shows its start-up busy cursor until a new program first takes its messages.
     Window::Pump();
 
-    Network::ValidateStaticObjects();
-
     // STRING: HYPERX 0x004bba9c
     Config::LoadPreferences("Prefs.txt");
 
@@ -434,7 +432,6 @@ GameApp::GameApp(short nStringCount)
 , m_bIsActive(0)
 , m_wRunStateOnDeactivate(ENGINE_RUN_PLAYING)
 , m_bCursorWasVisible(1)
-, m_hWndActiveDialog(0)
 , m_stringPool(nStringCount)
 {
     m_pfnShutdown = 0;

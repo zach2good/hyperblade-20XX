@@ -177,7 +177,6 @@ set(HYPERX_SOURCES
     src/engine/inplacebehaviorobject.cpp
     src/engine/inputdeviceobj.cpp
     src/engine/joystickdeviceobj.cpp
-    src/engine/level.cpp
     src/engine/matchstats.cpp
     src/engine/mousedeviceobj.cpp
     src/engine/msgevent.cpp
@@ -253,16 +252,8 @@ set(HYPERX_SOURCES
     src/math/transformobject.cpp
     src/math/vec3.cpp
     src/math/viewextent.cpp
-    src/net/cplayer.cpp
-    src/net/directplay.cpp
-    src/net/gamesession.cpp
-    src/net/godsinventory.cpp
     src/net/movecodec.cpp
-    src/net/netsetup.cpp
-    src/net/netsetupdialog.cpp
-    src/net/network.cpp
-    src/net/networkslot.cpp
-    src/net/playerbase.cpp
+    src/net/netstub.cpp
     src/physics/boundbubble.cpp
     src/physics/bubblecmd.cpp
     src/physics/capsule.cpp
@@ -327,7 +318,6 @@ set(HYPERX_SOURCES
     src/ui/cddsurfaceowner.cpp
     src/ui/debughud.cpp
     src/ui/debugmenu.cpp
-    src/ui/dialog.cpp
     src/ui/displaywidget.cpp
     src/ui/flipbookwidget.cpp
     src/ui/holdingwidget.cpp

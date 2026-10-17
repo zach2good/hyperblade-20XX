@@ -12,8 +12,6 @@
 #include "engine/objectclasses.h"
 #include "anim/animset.h"
 #include "planvm/planvm.h"
-#include "ui/dialogids.h"
-#include "ui/dialog.h"
 #include "ui/mainwindow.h"
 #include "engine/object.h"
 #include "app/win32.h"

@@ -83,7 +83,6 @@ struct GameApp;
 #include "teamblock.h"
 #include "input/keyboarddeviceobj.h"
 #include "rampobject.h"
-#include "net/netglobals.h"
 #include "planvm/planopcodetable.h"
 #include "saveblock.h"
 #include <string.h>
@@ -3932,9 +3931,7 @@ void GameEngine::Init(const char* pszConfig)
 
     InitPlanSystems();
 
-    // The DirectPlay layer's last-error word; the original's session set-up writes it.
-    g_nDPlayLastError = -1;
-    m_nPending        = -1;
+    m_nPending = -1;
 
     EngineObject** const ppSlots = new EngineObject*[ENGINE_SLOT_COUNT];
 
@@ -3960,17 +3957,6 @@ void GameEngine::Init(const char* pszConfig)
 
     m_apTracked[0] = m_ppSlots[0];
     m_apTracked[1] = m_ppSlots[0];
-
-    if (g_bNetworkGame != 0)
-    {
-        g_anNetworkSlotState[2] = 0;
-        g_anNetworkSlotState[1] = 0;
-        g_anNetworkSlotState[0] = 0;
-        g_anNetworkSlotState[6] = 0;
-        g_anNetworkSlotState[5] = 0;
-        g_anNetworkSlotState[4] = 0;
-        g_anNetworkSlotState[3] = 0;
-    }
 }
 
 // FUNCTION: HYPERX 0x004867b0

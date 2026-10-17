@@ -4,7 +4,6 @@
 #include "graphics/bitmapformat.h"
 #include "planvm/planaction.h"
 #include "graphics/modelfile.h"
-#include "net/netsessionentry.h"
 #include "engine/gameengine.h"
 #include "engine/cameraobject.h"
 #include "globals.h"
@@ -19,7 +18,6 @@
 #include "graphics/graphicsglobals.h"
 #include "input/inputglobals.h"
 #include "math/mathglobals.h"
-#include "net/netglobals.h"
 #include "physics/physicsglobals.h"
 #include "planvm/planvmglobals.h"
 #include "ui/uiglobals.h"
@@ -28,7 +26,6 @@
 #include "ui/screens/tournamentsetupuiscreen.h"
 #include "ui/saveload.h"
 #include "ui/screens/saveloaduiscreen.h"
-#include "net/netsetupdialog.h"
 #include "planvm/planvm.h"
 #include "graphics/renderer.h"
 #include "ui/infobarbase.h"
@@ -90,7 +87,6 @@ int                  g_nStationaryCount;
 const char*               g_pszEqualsSign = "=";
 unsigned char             g_bNetworkGame;
 unsigned char             g_bShowLightingInfo;
-int                       g_anNetworkSlotState[7];
 int                       g_bSkipAssetValidation;
 int                       g_bModemPlay;
 class CD3DTextureManager* g_pTexManager;
@@ -168,18 +164,11 @@ extern const float  g_flGravityGameEngine = 32.0f;
 int                 g_bSessionActive;
 GameSession*        g_pGameSession;
 RenderOptions       g_renderOptions;
-int                 g_nSessionState;
-IDirectPlay*        g_pDPlayLobby;
-UINT_PTR            g_nNetSetupTimerId;
-int                 g_nNetSetupPendingSlot;
-SyncBlocks          g_syncSend;
-SyncBlocks          g_syncRecv;
 short               g_nMaxPendingSeen;
 int                 g_nSavedCursorState;
 short               g_wActiveScoreLine;
 int                 g_nPlayerMode;
 unsigned char       g_bSuppressRokId;
-int                 g_nDPlayLastError = -1;
 // STRING: HYPERX 0x004bc410
 const char*        g_pszCaptionSeparator = " ";
 unsigned char      g_bDragOff;
@@ -259,8 +248,7 @@ int                 g_nOptionAttackMode;
 struct MessageNode* g_pMessageHead;
 struct MessageNode* g_pMessageTail;
 // STRING: HYPERX 0x004bb818
-const char*        g_pszCharFormat = "%c";
-int                g_nNetSetupControlId;
+const char*        g_pszCharFormat          = "%c";
 extern const float g_flCollisionPartDefault = 0.0f;
 extern const float g_flZeroMeshBone         = 0.0f;
 int                g_nBitmapCacheCount;
@@ -294,20 +282,12 @@ Vec3* g_apPositionMarkers[11] = {
     0
 };
 PlanStatFn g_apPlanStatFns[PRN_COUNT];
-HWND       g_hWndNetSetupDlg;
 int        g_nPaletteAnimated;
-HANDLE     g_hNetworkThread;
 #include "graphics/transparentqueue.h"
 TransparentEntry  g_transparentSiftEntry;
 TransparentEntry* g_pTransparentQueue;
 short             g_nTransparentCapacity;
 short             g_nTransparentCount;
-NetSessionEntry*  g_pSessionList;
-int               g_nSessionCount;
-int               g_nNetSetupState;
-int               g_nNetSetupUpdating;
-int               g_bNetSetupStatusDirty;
-char              g_szNetSetupStatus[256];
 #include "net/gamesession.h"
 #include "common/pooledownerroot.h"
 #include "anim/animregistry.h"
@@ -316,10 +296,9 @@ char              g_szNetSetupStatus[256];
 #include "engine/object.h"
 #include "input/cheat.h"
 #include "planvm/plannode.h"
-extern const GUID g_guidNetApplication = { 0xe759bc83, 0x184d, 0x11cf, { 0xa4, 0x7c, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 } };
-char              g_bLoadingMode       = 1;
-int               g_nJoystickSlotA     = 0;
-int               g_nJoystickSlotB     = 1;
+char g_bLoadingMode   = 1;
+int  g_nJoystickSlotA = 0;
+int  g_nJoystickSlotB = 1;
 
 int                g_nBackBufferPixelCount;
 unsigned char      g_bBottomUpDIB;
@@ -383,12 +362,6 @@ unsigned int g_nRokCameraStateTick;
 
 extern const float g_flAnimBlendZero;
 const float        g_flAnimBlendZero = 0.0f;
-
-// The value a dialog float field reads as when its edit control is empty.
-extern const float g_flDialogFloatDefault;
-const float        g_flDialogFloatDefault = 0.0f;
-
-extern const char* const g_pszDialogFloatFormat = "%f";
 
 // Contiguous in the image: the key-config constructor bounds its loops on the object that follows.
 Vec3         g_vPlaneSegmentDir                       = { 0 };
@@ -568,17 +541,6 @@ extern const char* const g_pszAnimTokenDelimiters;
 const char* const        g_pszAnimTokenDelimiters = "	";
 
 char* g_pszKeyConfigDefaultName = "";
-
-// Zero until the packet carrier registers, and zero again if registration fails.
-HANDLE g_hPacketCarrierEvent;
-
-DPSESSIONDESC* g_pSelectedSession;
-
-// Modem providers are dropped unless modem play is on, so this is not the system's count.
-int g_nNetProviderCount;
-
-// Tells the dialog whether Return belongs to the chat box or the default button.
-int g_bChatEntryActive;
 
 // GLOBAL: HYPERX 0x004b36f4
 extern const float g_flThreePlan;

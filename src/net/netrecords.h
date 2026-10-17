@@ -1,7 +1,6 @@
 #ifndef HYPERBLADE_NETRECORDS_H
 #define HYPERBLADE_NETRECORDS_H
 
-#include <windows.h>
 #include "math/vector.h"
 #include "net/movecodec.h"
 #include "net/playerslotname.h"
@@ -64,7 +63,7 @@ struct NetMoveRecord
 {
     unsigned char cKind;  // 0x00
     unsigned char nSlot;  // 0x01
-    DWORD         dwTime; // 0x02
+    unsigned int  dwTime; // 0x02
     NetMoveBody   body;   // 0x06
 };
 

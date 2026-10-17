@@ -69,7 +69,6 @@ struct GameApp
     // The engine's run state when the window lost focus, restored when it comes back.
     unsigned short m_wRunStateOnDeactivate; // 0x46
     int            m_bCursorWasVisible;     // 0x48
-    HWND           m_hWndActiveDialog;      // 0x4c
     // The window class name, which the resource path initialiser loads from the string table.
     String m_strCaption; // 0x50
     // Sixteen bytes, and its string at 0x60 is the one the error reporters format into.

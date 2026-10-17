@@ -257,12 +257,6 @@ int WndProc::OnActivate(unsigned int bActive)
                 }
             }
 
-            if (g_gameApp.m_hWndActiveDialog != 0)
-            {
-                SendMessageA(g_gameApp.m_hWndActiveDialog, WM_ERASEBKGND, 0, 0);
-                return 0;
-            }
-
             if (g_bSingleStepActive != 0)
             {
                 g_gameApp.m_bCursorWasVisible = GameApp::SetCursorVisible(0);

@@ -1,7 +1,6 @@
 // Empty bodies the linker shares between vtable slots and release-build assertions.
 
 #include "common/compat.h"
-#include "ui/dialog.h"
 #include "engine/object.h"
 #include "common/stub.h"
 
