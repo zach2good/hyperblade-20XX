@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include "ui/debugmenu.h"
+#include "app/gameapp.h"
 #include "app/window.h"
 #include "engine/engineobject.h"
 #include "engine/framepacing.h"
@@ -11,6 +12,8 @@
 #include "graphics/meshbone.h"
 #include "graphics/presenter.h"
 #include "graphics/renderer.h"
+#include "input/cheat.h"
+#include "input/cheattable.h"
 #include "input/gamepad.h"
 #include "input/inputglobals.h"
 #include "input/inputlog.h"
@@ -18,6 +21,7 @@
 #include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
+#include <string>
 #include <imgui.h>
 #include <imgui_impl_sdl3.h>
 #include <imgui_impl_sdlrenderer3.h>
@@ -648,6 +652,115 @@ void ObjectsTab()
     ImGui::EndTabItem();
 }
 
+// The original's typed cheats, as buttons. The tooltip decodes the code a player types for each.
+struct CheatButton
+{
+    void (*pfnActivate)(void);
+    const char* pszLabel;
+    bool        bInMatch;
+};
+
+constexpr CheatButton CHEATS[] = {
+    { Cheat::EnableHiddenTeams, "Unlock all teams", false },
+    { Cheat::EnableAllAwards, "Unlock all trophies", false },
+    { Cheat::MaxViewedPlayerRatings, "Max the viewed player's ratings", true },
+    { Cheat::BroadcastFreakout, "Freakout", true },
+    { Cheat::GrowPlayers, "Grow players", true },
+    { Cheat::ShrinkPlayers, "Shrink players", true },
+    { Cheat::StretchPlayers, "Stretch players", true },
+    { Cheat::BulkUpPlayers, "Bulk up players", true },
+    { Cheat::SquashPlayers, "Squash players", true },
+    { Cheat::MirrorPlayers, "Mirror players", true },
+    { Cheat::FlipPlayers, "Turn players upside down", true },
+    { Cheat::FlipPlayerLegs, "Flip players' legs", true },
+    { Cheat::RestoreAllPlayers, "Restore players' shapes", true },
+    { Cheat::PlayActivateSound, "Play the cheat sound", false },
+    { Cheat::GeorgeActivate, "George", false },
+};
+
+// The code the table stores for a cheat, each character exclusive-ored with its key.
+std::string CheatCode(void (*pfnActivate)(void))
+{
+    for (const auto& entry : g_aCheatCodes)
+    {
+        if (entry.pfnActivate != pfnActivate)
+        {
+            continue;
+        }
+
+        const auto nLast = (unsigned char)entry.pszCode[0];
+        const auto nKey  = (unsigned char)entry.pszCode[1];
+
+        auto code = std::string();
+
+        for (unsigned int i = 0; i <= nLast; i++)
+        {
+            code += (char)((unsigned char)entry.pszCode[2 + i] ^ nKey);
+        }
+
+        return code;
+    }
+
+    return std::string();
+}
+
+void CheatsTab()
+{
+    if (!ImGui::BeginTabItem("Cheats"))
+    {
+        return;
+    }
+
+    const auto bInMatch = g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE;
+
+    ImGui::SeparatorText("Unlocks");
+
+    for (const auto& cheat : CHEATS)
+    {
+        if (cheat.bInMatch)
+        {
+            continue;
+        }
+
+        ImGui::BeginDisabled(g_pGameEngine == nullptr);
+
+        if (ImGui::Button(cheat.pszLabel))
+        {
+            cheat.pfnActivate();
+        }
+
+        ImGui::EndDisabled();
+        ImGui::SetItemTooltip("Typed in a match as %s", CheatCode(cheat.pfnActivate).c_str());
+    }
+
+    ImGui::SeparatorText("In a match");
+
+    if (!bInMatch)
+    {
+        ImGui::TextDisabled("Start a match to use these.");
+    }
+
+    for (const auto& cheat : CHEATS)
+    {
+        if (!cheat.bInMatch)
+        {
+            continue;
+        }
+
+        ImGui::BeginDisabled(!bInMatch);
+
+        if (ImGui::Button(cheat.pszLabel))
+        {
+            cheat.pfnActivate();
+        }
+
+        ImGui::EndDisabled();
+        ImGui::SetItemTooltip("Typed in a match as %s", CheatCode(cheat.pfnActivate).c_str());
+    }
+
+    ImGui::EndTabItem();
+}
+
 void Build()
 {
     ImGui::SetNextWindowPos(ImVec2(16, 16), ImGuiCond_FirstUseEver);
@@ -663,6 +776,7 @@ void Build()
         TimingTab();
         InputTab();
         ObjectsTab();
+        CheatsTab();
 
         ImGui::EndTabBar();
     }
