@@ -28,9 +28,6 @@ extern int g_bBackBufferReady;
 // GLOBAL: HYPERX 0x004ceec0
 extern long g_nDisplayWindowID;
 
-// GLOBAL: HYPERX 0x004ceea0
-extern HDC g_hScreenBltDC;
-
 // GLOBAL: HYPERX 0x004be6b0
 extern unsigned int g_dwDisplayWidth;
 

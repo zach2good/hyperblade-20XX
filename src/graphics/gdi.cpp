@@ -13,15 +13,6 @@
 #include "stb_image.h"
 #include "graphics/text.h"
 
-// GLOBAL: HYPERX 0x004c2ca4
-extern int g_nDisplayBitsPerPixel;
-
-// GLOBAL: HYPERX 0x004cee88
-extern int g_nDisplayHorzRes;
-
-// GLOBAL: HYPERX 0x004cee8c
-extern int g_nDisplayVertRes;
-
 namespace
 {
 
@@ -466,16 +457,6 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
     return pDib;
 }
 
-// FUNCTION: HYPERX 0x0044b810
-void GDI::QueryDisplayCaps(void)
-{
-    const HDC hdc = GetWindowDC(g_hWndGame);
-
-    g_nDisplayBitsPerPixel = GetDeviceCaps(hdc, BITSPIXEL);
-    g_nDisplayHorzRes      = GetDeviceCaps(hdc, HORZRES);
-    g_nDisplayVertRes      = GetDeviceCaps(hdc, VERTRES);
-}
-
 // FUNCTION: HYPERX 0x0048f330
 GDI::Bitmap* GDI::LoadBitmapHandle(const char* pszName)
 {
@@ -486,12 +467,6 @@ GDI::Bitmap* GDI::LoadBitmapHandle(const char* pszName)
 GDI::Bitmap* GDI::LoadBitmapAsBackground(const char* pszName, int* pbPaletted)
 {
     return GDI::LoadBitmapWithPalette(pszName, pbPaletted);
-}
-
-// FUNCTION: HYPERX 0x0048f360
-HDC GDI::BeginPaint(LPPAINTSTRUCT pPaint)
-{
-    return ::BeginPaint(g_gameApp.GetMainWindow(), pPaint);
 }
 
 // Every caller draws onto the menu canvas, in the System font's sixteen-pixel cell, which the
@@ -505,12 +480,6 @@ void GDI::DrawTransparentText(COLORREF color, int x, int y, const char* pszText,
     const auto nRGB   = (std::uint32_t)(GetRValue(color) << 16 | GetGValue(color) << 8 | GetBValue(color));
 
     Text::Draw(Text::Find(SYSTEM_FONT_HEIGHT), canvas.pBits, canvas.nWidth * 4, canvas.nWidth, canvas.nHeight, x, y, pszText, nRGB);
-}
-
-// FUNCTION: HYPERX 0x0048f3f0
-BOOL GDI::EndPaint(const PAINTSTRUCT* pPaint)
-{
-    return ::EndPaint(g_gameApp.m_hWnd, pPaint);
 }
 
 // FUNCTION: HYPERX 0x0048f410

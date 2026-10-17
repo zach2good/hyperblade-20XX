@@ -60,11 +60,8 @@ BITMAPINFOHEADER* ReadBitmapFile(const char* pszName);
 BITMAPINFOHEADER* ReadDIB(FileObj* pFile);
 BITMAPINFOHEADER* ExpandRLE(BITMAPINFOHEADER* pDib);
 Bitmap*           LoadJPEGImage(const char* pszPath);
-void              QueryDisplayCaps(void);
-BOOL              EndPaint(const PAINTSTRUCT* pPaint);
 void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
 void              DrawTransparentText(COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
-HDC               BeginPaint(LPPAINTSTRUCT pPaint);
 void              DrawBitmapToWindow(HWND hWnd, const char* pszResourceName);
 
 } // namespace GDI

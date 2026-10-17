@@ -54,11 +54,6 @@ struct GameApp
         return m_hInstance;
     }
 
-    HDC GetScreenDC() const
-    {
-        return m_hScreenDC;
-    }
-
     HMENU GetMainMenu() const
     {
         return m_hMenu;
@@ -79,7 +74,6 @@ struct GameApp
     int           m_nFrameRate;      // 0x28
     HWND          m_hWnd;            // 0x2c
     HINSTANCE     m_hInstance;       // 0x30
-    HDC           m_hScreenDC;       // 0x38
     HMENU         m_hMenu;           // 0x3c
     unsigned int  m_nEngineState;    // 0x40
     unsigned char m_bIsActive;       // 0x44

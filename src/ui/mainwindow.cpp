@@ -187,10 +187,8 @@ LRESULT MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, i
 }
 
 // FUNCTION: HYPERX 0x0044d0d0
-int MainWindow::OnCreate(HWND hWnd, LPARAM)
+int MainWindow::OnCreate()
 {
-    g_gameApp.m_hScreenDC = GetDC(hWnd);
-
     g_pColorPalette->ReloadPalette(g_wPaletteMode);
 
     Gamepad::Init();

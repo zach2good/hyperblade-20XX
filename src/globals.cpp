@@ -131,7 +131,6 @@ unsigned char*            g_pBackBufferBitsCopy;
 HWND                      g_hWndGame;
 // Full screen by default; -w turns it off.
 int g_bFullScreen = 1;
-HDC g_hScreenBltDC;
 int g_nBackBufferHeight;
 int g_nBackBufferWidth;
 
@@ -300,9 +299,6 @@ Vec3* g_apPositionMarkers[11] = {
 };
 PlanStatFn g_apPlanStatFns[PRN_COUNT];
 HWND       g_hWndNetSetupDlg;
-int        g_nDisplayBitsPerPixel = 8;
-int        g_nDisplayHorzRes;
-int        g_nDisplayVertRes;
 int        g_nPaletteAnimated;
 HANDLE     g_hNetworkThread;
 #include "graphics/transparentqueue.h"

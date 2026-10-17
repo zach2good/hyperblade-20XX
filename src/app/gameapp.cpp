@@ -172,7 +172,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 
     g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
 
-    g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd, g_gameApp.GetScreenDC());
+    g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd);
 
     Window::Show();
     GameApp::SetCursorVisible(1);
@@ -441,7 +441,6 @@ GameApp::GameApp(short nStringCount)
 , m_nFrameRate(0)
 , m_hWnd(0)
 , m_hInstance(0)
-, m_hScreenDC(0)
 , m_hMenu(0)
 , m_nEngineState(ESTATE_LOBBY)
 , m_bIsActive(0)
@@ -1091,7 +1090,7 @@ HWND GameApp::CreateMainWindow(HINSTANCE, LPCSTR pszTitle, LPVOID)
     const HWND hWnd = Window::Create(pszTitle);
 
     // What WM_CREATE did before SDL made the window.
-    if (hWnd == 0 || MainWindow::OnCreate(hWnd, 0) == 0)
+    if (hWnd == 0 || MainWindow::OnCreate() == 0)
     {
         return 0;
     }

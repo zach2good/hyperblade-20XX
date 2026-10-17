@@ -66,12 +66,8 @@ void Win32::CenterWindow(HWND hWnd, HWND hParent)
     const int cxParent = rcParent.right - rcParent.left;
     const int cyParent = rcParent.bottom - rcParent.top;
 
-    const HDC hdc = GetDC(hWnd);
-
-    const int cxScreen = GetDeviceCaps(hdc, HORZRES);
-    const int cyScreen = GetDeviceCaps(hdc, VERTRES);
-
-    ReleaseDC(hWnd, hdc);
+    const int cxScreen = GetSystemMetrics(SM_CXSCREEN);
+    const int cyScreen = GetSystemMetrics(SM_CYSCREEN);
 
     int x = rcParent.left + (cxParent - cxWindow) / 2;
 

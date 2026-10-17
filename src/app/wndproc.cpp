@@ -206,7 +206,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             return 0;
 
         case WM_CREATE:
-            if (MainWindow::OnCreate(hWnd, lParam) != 0)
+            if (MainWindow::OnCreate() != 0)
             {
                 return 0;
             }
@@ -288,8 +288,6 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 
             if (g_bFullScreen != 0)
             {
-                GDI::QueryDisplayCaps();
-
                 if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
                 {
                     Display::ChangeColorDepth(2);

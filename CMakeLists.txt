@@ -454,7 +454,7 @@ set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
 target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui
-    kernel32 user32 gdi32 winmm version)
+    kernel32 user32 winmm version)
 target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
 
 # SDL3.dll goes beside the image.

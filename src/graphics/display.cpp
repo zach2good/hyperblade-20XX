@@ -12,21 +12,14 @@ struct GameApp;
 #include "graphics/display.h"
 #include "softrenderer.h"
 
-extern int g_nDisplayHorzRes;
-
-extern int g_nDisplayVertRes;
-
-extern int g_nDisplayBitsPerPixel;
-
 unsigned int g_dwDisplayWidth  = 640;
 unsigned int g_dwDisplayHeight = 480;
 
 // The back buffer resize result.
 // FUNCTION: HYPERX 0x0044b500
-int Display::Initialize(HWND hWnd, HDC hDisplayDC)
+int Display::Initialize(HWND hWnd)
 {
-    g_hScreenBltDC = hDisplayDC;
-    g_hWndGame     = hWnd;
+    g_hWndGame = hWnd;
 
     g_nDisplayWindowID = GetWindowLongA(hWnd, GWL_ID);
 

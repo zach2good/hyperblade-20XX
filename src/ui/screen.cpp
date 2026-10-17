@@ -495,7 +495,6 @@ int Screen::TickAnimations()
 // FUNCTION: HYPERX 0x0048c7c0
 int Screen::PaintToWindow()
 {
-    PAINTSTRUCT     paint;
     GDI::BitmapSize bitmap;
     int             nSlot;
 
@@ -503,8 +502,6 @@ int Screen::PaintToWindow()
     {
         return 0;
     }
-
-    GDI::BeginPaint(&paint);
 
     GDI::GetBitmapDimensions(m_hBackground, &bitmap);
 
@@ -546,7 +543,6 @@ int Screen::PaintToWindow()
     }
 
     Window::PresentMenu(g_gameApp.GetMainWindow());
-    GDI::EndPaint(&paint);
 
     return 1;
 }
