@@ -126,19 +126,16 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 
     if (pFile != 0)
     {
-        // The shipped files hold fewer than 40 rows. The first short row eats the first force's whole
-        // part, as in the original, which then stored garbage in the rows left.
+        // The shipped files hold fewer than 40 rows. The first short row reads the first force's whole
+        // part as its flags, and every short row keeps the key and index the last full row left.
+        auto nFlags = 0;
+        auto nKey   = 0;
+        auto nIndex = 0;
+
         for (int nRow = 0; nRow < 40; nRow++)
         {
-            int nFlags;
-            int nKey;
-            int nIndex;
-
             // STRING: HYPERX 0x004c4e60
-            if (fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex) != 3)
-            {
-                break;
-            }
+            [[maybe_unused]] const auto nFields = fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex);
 
             pRows[nRow].cFlags = (unsigned char)nFlags;
             pRows[nRow].nKey   = (unsigned short)nKey;
