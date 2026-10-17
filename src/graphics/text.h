@@ -17,6 +17,10 @@ using Font = Handle<struct TextFontTag>;
 // file is missing.
 Font Find(int nHeight);
 
+// MS Sans Serif as the game asked GDI for it: the Windows bitmap font, whose smallest size is 13
+// pixels, and the TrueType face where that file is missing.
+Font FindSansSerif(int nHeight);
+
 struct Size
 {
     int nWidth;

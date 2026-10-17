@@ -72,7 +72,7 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
     return m_pszText != 0;
 }
 
-// A null face name drops the font and answers success. Every face draws as Microsoft Sans Serif.
+// A null face name drops the font and answers success. Every face draws as MS Sans Serif.
 // FUNCTION: HYPERX 0x0044fc10
 int CDDText::CreateFontFace(const char* pszFaceName, int nHeight)
 {
@@ -83,7 +83,7 @@ int CDDText::CreateFontFace(const char* pszFaceName, int nHeight)
         return 1;
     }
 
-    m_font = Text::Find(nHeight);
+    m_font = Text::FindSansSerif(nHeight);
 
     return (bool)m_font;
 }
