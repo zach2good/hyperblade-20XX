@@ -19,6 +19,11 @@ class KeyConfigScreen;
 #include "ui/displaywidget.h"
 #include "engine/game.h"
 #include "sound/soundids.h"
+#include "graphics/presenter.h"
+#include "input/gamepad.h"
+#include <SDL3/SDL.h>
+#include <array>
+#include <vector>
 
 // A row bound to a key the bitmap table lacks falls back to "key-".
 
@@ -40,6 +45,55 @@ extern unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT];
 // Written and never read.
 // GLOBAL: HYPERX 0x004cb7b0
 extern unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT];
+
+// The pad control bound to an action, or null when none is.
+static const char* PadControl(const char* pszAction)
+{
+    for (int i = 0; i < Gamepad::BindingCount(); i++)
+    {
+        const auto binding = Gamepad::GetBinding(i);
+
+        if (SDL_strcasecmp(binding.pszAction, pszAction) == 0)
+        {
+            return binding.pszControl;
+        }
+    }
+
+    return nullptr;
+}
+
+// Each row's pad control, drawn small over the top right corner of its key picture.
+static void ShowPadIcons(int nKeyWidth, int nKeyHeight)
+{
+    constexpr std::array<const char*, 4> STICK = { "StickUp", "StickDown", "StickLeft", "StickRight" };
+
+    const auto nSize = nKeyHeight / 2;
+
+    auto icons = std::vector<Presenter::CanvasIcon>();
+
+    for (int i = 0; i < KEY_BINDING_COUNT; i++)
+    {
+        const int nSlot = g_anKeyConfigDefaultSlots[i];
+
+        // The left stick steers, so the four directions show it.
+        const auto* const pszControl = [&]
+        {
+            if (nSlot < (int)STICK.size())
+            {
+                return STICK[(size_t)nSlot];
+            }
+
+            return PadControl(g_apszKeyBindingNames[nSlot]);
+        }();
+
+        if (pszControl != nullptr)
+        {
+            icons.push_back(Presenter::CanvasIcon{ pszControl, g_aKeyDisplayPos[i].nX + nKeyWidth - nSize * 3 / 4, g_aKeyDisplayPos[i].nY - nSize / 4, nSize });
+        }
+    }
+
+    Presenter::SetCanvasIcons(std::move(icons));
+}
 
 // FUNCTION: HYPERX 0x0042f9d0
 KeyConfigScreen::KeyConfigScreen()
@@ -101,6 +155,8 @@ KeyConfigScreen::KeyConfigScreen()
     }
 
     InitAllWidgets();
+
+    ShowPadIcons(m_bitmap.bmWidth, m_bitmap.bmHeight);
 }
 
 #define WIDGET_ACCEPT 10
@@ -116,6 +172,7 @@ extern const int g_anKeyConfigActionSlots[KEY_BINDING_COUNT];
 // FUNCTION: HYPERX 0x0042fc30
 KeyConfigScreen::~KeyConfigScreen()
 {
+    Presenter::SetCanvasIcons({});
 }
 
 // FUNCTION: HYPERX 0x0042fc40

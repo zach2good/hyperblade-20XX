@@ -120,6 +120,9 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
 
     stbi_uc* const pPixels = stbi_load(Path::Native(path.m_str.m_pchData).c_str(), &nWidth, &nHeight, &nChannels, 4);
 
+    // The flip stays set for the thread, and every other load reads top down.
+    stbi_set_flip_vertically_on_load_thread(0);
+
     if (pPixels == nullptr)
     {
         SDL_Log("Texture %s did not load: %s", path.m_str.m_pchData, stbi_failure_reason());

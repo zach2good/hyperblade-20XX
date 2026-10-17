@@ -4,4 +4,5 @@
 #define STBI_ONLY_JPEG
 #define STBI_ONLY_BMP
 #define STBI_SUPPORT_ZLIB
+#define STBI_ONLY_PNG
 #include "stb_image.h"

@@ -7,7 +7,11 @@
 #include "graphics/graphicssettings.h"
 #include "graphics/hwrenderer.h"
 #include "ui/debugmenu.h"
+#include "graphics/prompticons.h"
 #include <SDL3/SDL.h>
+#include "stb_image.h"
+#include <map>
+#include <string>
 #include <algorithm>
 
 namespace
@@ -23,6 +27,58 @@ SDL_Palette* s_pFramePalette = 0;
 SDL_Palette* s_pHudPalette   = 0;
 
 bool s_bBusy = false;
+
+std::vector<Presenter::CanvasIcon>  s_canvasIcons;
+std::map<std::string, SDL_Texture*> s_iconTextures;
+
+// Each picture is decoded once, at its full size, so it stays sharp however large the canvas is drawn.
+SDL_Texture* IconTexture(const char* pszName)
+{
+    const auto it = s_iconTextures.find(pszName);
+
+    if (it != s_iconTextures.end())
+    {
+        return it->second;
+    }
+
+    SDL_Texture* pTexture = nullptr;
+
+    const auto png = PromptIcons::Find(pszName);
+
+    auto nWidth    = 0;
+    auto nHeight   = 0;
+    auto nChannels = 0;
+
+    stbi_uc* const pPixels = [&]() -> stbi_uc*
+    {
+        if (png.empty())
+        {
+            return nullptr;
+        }
+
+        stbi_set_flip_vertically_on_load_thread(0);
+
+        return stbi_load_from_memory(png.data(), (int)png.size(), &nWidth, &nHeight, &nChannels, 4);
+    }();
+
+    if (pPixels != nullptr)
+    {
+        pTexture = SDL_CreateTexture(s_pRenderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STATIC, nWidth, nHeight);
+
+        if (pTexture != nullptr)
+        {
+            SDL_UpdateTexture(pTexture, 0, pPixels, nWidth * 4);
+            SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND);
+            SDL_SetTextureScaleMode(pTexture, SDL_SCALEMODE_LINEAR);
+        }
+
+        stbi_image_free(pPixels);
+    }
+
+    s_iconTextures[pszName] = pTexture;
+
+    return pTexture;
+}
 
 class BusyScope
 {
@@ -248,6 +304,22 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
     SDL_RenderClear(s_pRenderer);
     SDL_RenderTexture(s_pRenderer, s_pCanvas, 0, &rcCanvas);
 
+    const auto flScale = rcCanvas.w / nWidth;
+
+    for (const auto& icon : s_canvasIcons)
+    {
+        SDL_Texture* const pIcon = IconTexture(icon.pszName);
+
+        if (pIcon == nullptr)
+        {
+            continue;
+        }
+
+        const auto rcIcon = SDL_FRect{ rcCanvas.x + icon.nX * flScale, rcCanvas.y + icon.nY * flScale, icon.nSize * flScale, icon.nSize * flScale };
+
+        SDL_RenderTexture(s_pRenderer, pIcon, 0, &rcIcon);
+    }
+
     DebugMenu::Draw(DebugMenu::Renderer{ s_pRenderer });
 
     SDL_RenderPresent(s_pRenderer);
@@ -261,4 +333,9 @@ bool Presenter::HasGPU()
 bool Presenter::Busy()
 {
     return s_bBusy;
+}
+
+void Presenter::SetCanvasIcons(std::vector<CanvasIcon> icons)
+{
+    s_canvasIcons = std::move(icons);
 }

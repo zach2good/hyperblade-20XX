@@ -6,6 +6,7 @@
 
 #include "common/compat.h"
 #include "graphics/bitmapformat.h"
+#include <vector>
 
 namespace Presenter
 {
@@ -15,6 +16,18 @@ void Frame(const unsigned char* pBits, int nPitch, int nWidth, int nHeight, cons
 
 // A 32-bit top-down canvas, fitted to the window keeping its shape.
 void Canvas(const void* pBits, int nPitch, int nWidth, int nHeight);
+
+// Pictures drawn over the menu canvas, placed and sized in its pixels, until replaced. Each
+// names a PromptIcons picture.
+struct CanvasIcon
+{
+    const char* pszName;
+    int         nX;
+    int         nY;
+    int         nSize;
+};
+
+void SetCanvasIcons(std::vector<CanvasIcon> icons);
 
 // Whether the renderer runs on a GPU device, so the hardware renderer can draw.
 bool HasGPU();

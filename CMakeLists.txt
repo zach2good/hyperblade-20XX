@@ -41,7 +41,6 @@ set(HYPERX_GAME_DATA "" CACHE PATH
 
 include(cmake/dependencies.cmake)
 include(cmake/shaders.cmake)
-include(cmake/embed.cmake)
 include(cmake/pak.cmake)
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
@@ -252,6 +251,7 @@ set(HYPERX_SOURCES
     src/graphics/modelfile.cpp
     src/graphics/palettefade.cpp
     src/graphics/palettescalarfade.cpp
+    src/graphics/prompticons.cpp
     src/graphics/presenter.cpp
     src/graphics/renderer.cpp
     src/graphics/rlespritesurface.cpp
@@ -259,9 +259,9 @@ set(HYPERX_SOURCES
     src/graphics/softtex.cpp
     src/graphics/stbimpl.cpp
     src/graphics/swrend.cpp
+    src/graphics/text.cpp
     src/graphics/texcacheentry.cpp
     src/graphics/visualeffectfade.cpp
-    src/graphics/text.cpp
     src/input/actionbindings.cpp
     src/input/cheat.cpp
     src/input/deviceobject.cpp
@@ -404,6 +404,8 @@ hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
 target_include_directories(mdm1_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(mdm1_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_PERMISSIVE} ${HYPERX_FLAGS})
+target_link_libraries(mdm1_check PRIVATE SDL3::SDL3)
+hyperx_copy_runtime_dlls(mdm1_check $<TARGET_FILE_DIR:mdm1_check>)
 
 # Parses every wave in the game data and reads its samples back.
 add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp src/common/path.cpp)
@@ -424,8 +426,6 @@ target_compile_options(ini_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp src/common/path.cpp)
 target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
-target_link_libraries(mdm1_check PRIVATE SDL3::SDL3)
-hyperx_copy_runtime_dlls(mdm1_check $<TARGET_FILE_DIR:mdm1_check>)
 
 # Reads the built pak back against the files it was packed from.
 add_executable(pak_check tests/pak_check.cpp src/common/pak.cpp src/graphics/stbimpl.cpp)
@@ -475,7 +475,30 @@ set_target_properties(hyperx PROPERTIES
 target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui)
 hyperx_copy_runtime_dlls(hyperx "${HYPERX_OUT}")
 
-set(HYPERX_PAK_FILES fonts/PixelOperator.ttf fonts/PixelOperator8.ttf fonts/PixelOperator-LICENSE.txt)
+set(HYPERX_PAK_FILES
+    fonts/PixelOperator.ttf
+    fonts/PixelOperator8.ttf
+    fonts/PixelOperator-LICENSE.txt
+    prompts/License.txt
+    prompts/xbox_button_back.png
+    prompts/xbox_button_color_a.png
+    prompts/xbox_button_color_b.png
+    prompts/xbox_button_color_x.png
+    prompts/xbox_button_color_y.png
+    prompts/xbox_button_start.png
+    prompts/xbox_dpad_down.png
+    prompts/xbox_dpad_left.png
+    prompts/xbox_dpad_right.png
+    prompts/xbox_dpad_up.png
+    prompts/xbox_lb.png
+    prompts/xbox_lt.png
+    prompts/xbox_rb.png
+    prompts/xbox_rt.png
+    prompts/xbox_stick_l_down.png
+    prompts/xbox_stick_l_left.png
+    prompts/xbox_stick_l_right.png
+    prompts/xbox_stick_l_up.png
+)
 hyperx_add_pak(hyperx "${HYPERX_OUT}/${HYPERX_PAK_NAME}" ${HYPERX_PAK_FILES})
 add_test(NAME pak COMMAND pak_check "${HYPERX_OUT}/${HYPERX_PAK_NAME}" "${CMAKE_SOURCE_DIR}/res" ${HYPERX_PAK_FILES})
 
