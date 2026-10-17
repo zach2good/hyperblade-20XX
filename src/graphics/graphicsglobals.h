@@ -24,10 +24,6 @@ extern unsigned char g_bShowLightingInfo;
 // GLOBAL: HYPERX 0x004ceeb8
 extern int g_bBackBufferReady;
 
-// The game window's GWL_ID word, which nothing reads.
-// GLOBAL: HYPERX 0x004ceec0
-extern long g_nDisplayWindowID;
-
 // GLOBAL: HYPERX 0x004be6b0
 extern unsigned int g_dwDisplayWidth;
 

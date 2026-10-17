@@ -18,8 +18,6 @@ unsigned char ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX
 void          FillSpans(int nColour);
 void          FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour);
 void          FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour);
-int           RefreshBltDestRect(HWND hWnd, WPARAM wParam, int nWidth, int nHeight);
-BOOL          SetBltDestRect(int nLeft, int nTop, int nRight, int nBottom);
 void          SortFaces(short nCount);
 void          ClipPolyAgainstPlane(struct ClipPolyBuffer* pIn, struct ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale);
 void          DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour);

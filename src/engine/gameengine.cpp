@@ -4355,8 +4355,7 @@ void GameEngine::SetRunState(short bRunning, int)
 
             m_wRunState = ENGINE_RUN_PLAYING;
 
-            SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
-            SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL);
+            SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_HIGH);
 
             SDL_DisableScreenSaver();
             break;
@@ -4366,8 +4365,7 @@ void GameEngine::SetRunState(short bRunning, int)
 
             m_wRunState = ENGINE_RUN_PAUSED;
 
-            SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
-            SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
+            SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_NORMAL);
 
             if (m_clock.nPauseMark == 1)
             {

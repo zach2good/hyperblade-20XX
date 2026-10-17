@@ -8,9 +8,8 @@
 namespace Window
 {
 
-void         InvalidateAndUpdate(void);
-void         ApplyFullscreenStyle();
-unsigned int OnWindowMove(HWND hWnd, int nFlag);
+void InvalidateAndUpdate(void);
+void ApplyFullscreenStyle();
 
 // The menu canvas's pixels, 0x00RRGGBB, top row first.
 struct MenuCanvas

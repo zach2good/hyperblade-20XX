@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <cstdlib>
 #include "graphics/hudlayer.h"
 #include "graphics/softrenderer.h"
 #include "engine/gameoptions.h"
@@ -149,7 +150,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
     {
         Window::ShowMessage("HyperBlade 20XX runs from your HyperBlade folder. Put hyperblade_20XX.exe beside HYPERX.EXE and start it from there.", "HyperBlade 20XX", MB_OK | MB_ICONHAND);
 
-        ExitProcess(1);
+        std::_Exit(1);
     }
 
     GameApp::InitializeResourcePaths(hInstance);
@@ -419,7 +420,7 @@ void GameApp::OnExit(void)
 {
     Window::Destroy();
 
-    ExitProcess(0);
+    std::_Exit(0);
 }
 
 #define CDROM_NOT_FOUND  (-1)

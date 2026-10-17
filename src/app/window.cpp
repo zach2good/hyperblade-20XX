@@ -25,8 +25,6 @@
 // The game's one window, which SDL made and owns.
 static SDL_Window* s_pWindow = 0;
 
-#define SWP_MOVE_FLAGS (SWP_SHOWWINDOW | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE)
-
 // FUNCTION: HYPERX 0x0044bd60
 void Window::ApplyFullscreenStyle()
 {
@@ -48,25 +46,10 @@ void Window::ApplyFullscreenStyle()
     SDL_SetWindowPosition(s_pWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
-// The original swaps X and Y too; SWP_NOMOVE ignores both.
-// FUNCTION: HYPERX 0x0044bdb0
-unsigned int Window::OnWindowMove(HWND hWnd, int)
-{
-    RECT rc;
-
-    GetWindowRect(hWnd, &rc);
-
-    SetWindowPos(hWnd, 0, rc.top, rc.left, rc.right - rc.left, rc.bottom - rc.top, SWP_MOVE_FLAGS);
-
-    return 0;
-}
-
 // FUNCTION: HYPERX 0x0048f450
 void Window::InvalidateAndUpdate(void)
 {
-    InvalidateRgn(g_gameApp.m_hWnd, 0, 0);
-
-    UpdateWindow(g_gameApp.m_hWnd);
+    WndProc::HandlePaint(g_gameApp.m_hWnd);
 }
 
 // The menus and splashes paint at 640x480. They draw into this canvas, which is scaled to the
@@ -82,11 +65,11 @@ Window::MenuCanvas Window::MenuPixels()
 }
 
 // The canvas's place in the client area: as large as fits, centred.
-static RECT MenuRect(HWND hWnd)
+static RECT MenuRect(HWND)
 {
-    RECT rcClient;
+    auto rcClient = RECT{};
 
-    GetClientRect(hWnd, &rcClient);
+    SDL_GetWindowSizeInPixels(s_pWindow, (int*)&rcClient.right, (int*)&rcClient.bottom);
 
     auto cx = (int)rcClient.right;
     auto cy = cx * MENU_HEIGHT / MENU_WIDTH;

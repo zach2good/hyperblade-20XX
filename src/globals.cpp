@@ -117,12 +117,10 @@ int                       g_nFillColour;
 class Screen*             g_pActiveScreen;
 class MessageQueue*       g_pMessageQueue;
 class CheatState          g_cheatState;
-char                      g_bSWClipRectDirty;
 int                       g_bCursorHidden = 1;
 int                       g_bShadedDromeModels;
 GameOptions*              g_pGameOptions;
 int                       g_bBackBufferReady;
-long                      g_nDisplayWindowID;
 unsigned char             g_cMdmTexLoaded;
 int                       g_nSurfacePitchCopy;
 int                       g_nViewportOriginY;
@@ -164,7 +162,6 @@ LightDir                  g_lightDirs[3]       = {
     { 0.0f, { 0.0f, 0.0f, 1.0f } }
 };
 Vec3                g_vLightDirExtra;
-RECT                g_rcBltDest;
 const char*         g_pszScanFormat       = "%s";
 extern const double g_dNormalizeEpsilon   = 1e-07;
 extern const float  g_flZero              = 0.0f;

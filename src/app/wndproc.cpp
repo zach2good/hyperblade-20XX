@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include <SDL3/SDL.h>
 #include "graphics/colorpalette.h"
 #include "globals.h"
 #include "engine/gameoptions.h"
@@ -200,7 +201,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             break;
 
         case WM_SIZE:
-            SWRend::RefreshBltDestRect(hWnd, wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
             Window::OnSize(wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
             Window::OnSizeMenus(hWnd, wParam);
             return 0;
@@ -279,8 +279,7 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 
         if ((unsigned char)bActive != 0)
         {
-            SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
-            SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL);
+            SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_HIGH);
 
             if (g_bFullScreen != 0)
             {
@@ -322,7 +321,7 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
             }
 
             GameEngine::TogglePause(0);
-            SendMessageA(hWnd, WM_PAINT, 0, 0);
+            WndProc::HandlePaint(hWnd);
             GameEngine::TogglePause(0);
         }
         else
@@ -330,7 +329,7 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
             // The WM_KEYUP for a key held across the focus change goes to another window.
             WndProc::ReleaseHeldKeys();
 
-            SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
+            SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_LOW);
 
             if (g_bSingleStepActive == 0 && g_pGameEngine != 0)
             {

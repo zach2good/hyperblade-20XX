@@ -762,35 +762,6 @@ void SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
     }
 }
 
-// FUNCTION: HYPERX 0x0044b150
-BOOL SWRend::SetBltDestRect(int nLeft, int nTop, int nRight, int nBottom)
-{
-    return SetRect(&g_rcBltDest, nLeft, nTop, nRight, nBottom);
-}
-
-// FUNCTION: HYPERX 0x0044c980
-int SWRend::RefreshBltDestRect(HWND hWnd, WPARAM, int, int)
-{
-    POINT ptOrigin;
-    RECT  rcClient;
-
-    if (g_bFullScreen != 0)
-    {
-        SWRend::SetBltDestRect(0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
-    }
-    else
-    {
-        ptOrigin.x = 0;
-        ptOrigin.y = 0;
-        GetClientRect(hWnd, &rcClient);
-        ClientToScreen(hWnd, &ptOrigin);
-        SWRend::SetBltDestRect(ptOrigin.x, ptOrigin.y, rcClient.right + ptOrigin.x, rcClient.bottom + ptOrigin.y);
-    }
-
-    g_bSWClipRectDirty = 0;
-    return 0;
-}
-
 // Hand-written assembly in the original: the run copy only. It copies an odd byte with REP MOVSB,
 // then a word with REP MOVSW, then dwords with REP MOVSD. VC6 never emits REP MOVSW, and its
 // memcpy copies dwords first. The block also gives the function its frame pointer.

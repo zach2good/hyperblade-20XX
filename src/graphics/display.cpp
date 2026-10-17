@@ -5,6 +5,7 @@
 #include "ui/infobarbase.h"
 struct GameApp;
 #include "app/window.h"
+#include "app/wndproc.h"
 #include "graphics/graphics.h"
 #include "app/menuids.h"
 #include <stdlib.h>
@@ -21,8 +22,6 @@ int Display::Initialize(HWND hWnd)
 {
     g_hWndGame = hWnd;
 
-    g_nDisplayWindowID = GetWindowLongA(hWnd, GWL_ID);
-
     Window::ApplyFullscreenStyle();
 
     g_cMdmTexLoaded = (char)Graphics::LoadMdmTexDLL();
@@ -36,7 +35,7 @@ int Display::Initialize(HWND hWnd)
     if (g_bFullScreen == 0)
     {
         // Not MAKELPARAM: the client adds the unmasked halves at 0x0044b6bb.
-        SendMessageA(hWnd, WM_SIZE, 0, (g_dwDisplayHeight << 16) + g_dwDisplayWidth);
+        WndProc::MainWndProc(hWnd, WM_SIZE, 0, (g_dwDisplayHeight << 16) + g_dwDisplayWidth);
     }
 
     if (g_bBackBufferReady != 0 && g_pRenderer != 0)

@@ -140,10 +140,6 @@ extern RenderFlags g_renderFlags;
 // GLOBAL: HYPERX 0x004c2c9c
 extern int g_bFullScreen;
 
-// Set on a display change and cleared once the software renderer resets its blit rectangle.
-// GLOBAL: HYPERX 0x004ceec8
-extern char g_bSWClipRectDirty;
-
 // Set to whether the cursor is hidden.
 // GLOBAL: HYPERX 0x004c2c98
 extern int g_bCursorHidden;
@@ -512,9 +508,6 @@ extern int g_nSessionState;
 
 // GLOBAL: HYPERX 0x004d0784
 extern IDirectPlay* g_pDPlayLobby;
-
-// GLOBAL: HYPERX 0x004cee90
-extern RECT g_rcBltDest;
 
 // GLOBAL: HYPERX 0x004d064c
 extern struct TransformedVertex* g_pModelVertexBuf;
