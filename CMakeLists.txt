@@ -42,8 +42,10 @@ set(HYPERX_GAME_DATA "" CACHE PATH
 include(cmake/dependencies.cmake)
 include(cmake/shaders.cmake)
 include(cmake/embed.cmake)
+include(cmake/pak.cmake)
 
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
+set(HYPERX_PAK_NAME 20XX_data.pak)
 set(STB_DIR "${CMAKE_SOURCE_DIR}/third_party/stb")
 
 set(HYPERX_SOURCES
@@ -158,6 +160,7 @@ set(HYPERX_SOURCES
     src/common/gametime.cpp
     src/common/nodeowner.cpp
     src/common/parseutil.cpp
+    src/common/pak.cpp
     src/common/path.cpp
     src/common/poolcountsdef.cpp
     src/common/pooledownerroot.cpp
@@ -396,7 +399,6 @@ target_compile_options(hyperx_objects PRIVATE ${HYPERX_WARNINGS} ${HYPERX_PERMIS
 
 set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
 hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
-hyperx_embed(hyperx_objects res/fonts/PixelOperator.ttf res/fonts/PixelOperator8.ttf)
 
 # Decodes every MDM1 file in the game data against its recorded size.
 add_executable(mdm1_check tests/mdm1_check.cpp src/graphics/mdm1.cpp)
@@ -424,6 +426,12 @@ target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 target_link_libraries(mdm1_check PRIVATE SDL3::SDL3)
 hyperx_copy_runtime_dlls(mdm1_check $<TARGET_FILE_DIR:mdm1_check>)
+
+# Reads the built pak back against the files it was packed from.
+add_executable(pak_check tests/pak_check.cpp src/common/pak.cpp src/graphics/stbimpl.cpp)
+target_include_directories(pak_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_include_directories(pak_check SYSTEM PRIVATE "${STB_DIR}")
+target_compile_options(pak_check PRIVATE ${HYPERX_WARNINGS} ${HYPERX_FLAGS})
 
 # Resolves Windows-style game paths against names that differ in case.
 add_executable(path_check tests/path_check.cpp src/common/path.cpp)
@@ -466,6 +474,10 @@ set_target_properties(hyperx PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
 target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui)
 hyperx_copy_runtime_dlls(hyperx "${HYPERX_OUT}")
+
+set(HYPERX_PAK_FILES fonts/PixelOperator.ttf fonts/PixelOperator8.ttf fonts/PixelOperator-LICENSE.txt)
+hyperx_add_pak(hyperx "${HYPERX_OUT}/${HYPERX_PAK_NAME}" ${HYPERX_PAK_FILES})
+add_test(NAME pak COMMAND pak_check "${HYPERX_OUT}/${HYPERX_PAK_NAME}" "${CMAKE_SOURCE_DIR}/res" ${HYPERX_PAK_FILES})
 
 if(WIN32)
     set_target_properties(hyperx PROPERTIES WIN32_EXECUTABLE ON)

@@ -15,6 +15,7 @@
 #include "engine/gameengine.h"
 #include "graphics/renderer.h"
 #include "app/window.h"
+#include "common/pak.h"
 #include "common/stringtable.h"
 #include <SDL3/SDL.h>
 #include "graphics/gdi.h"
@@ -155,6 +156,13 @@ bool GameApp::Initialize(const char* pszArguments)
     if (pszBase == 0 || !StringTable::Load(pszBase))
     {
         Window::ShowMessage("HyperBlade 20XX runs from your HyperBlade folder. Put hyperblade_20XX.exe beside HYPERX.EXE and start it from there.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
+
+        std::_Exit(1);
+    }
+
+    if (!Pak::Open((std::string(pszBase) + Pak::FILE_NAME).c_str()))
+    {
+        Window::ShowMessage("HyperBlade 20XX is missing 20XX_data.pak. Keep it beside hyperblade_20XX.exe.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
 
         std::_Exit(1);
     }

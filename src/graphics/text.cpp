@@ -1,10 +1,8 @@
 #include "graphics/text.h"
-#include "PixelOperator.ttf.h"
-#include "PixelOperator8.ttf.h"
+#include "common/pak.h"
 #include <SDL3/SDL.h>
 #include <array>
 #include <cmath>
-#include <iterator>
 #include <map>
 #include <memory>
 #include <string>
@@ -85,17 +83,17 @@ std::vector<unsigned char> LoadWindowsFont(const char* pszName)
     return file;
 }
 
-// Pixel Operator, CC0, built into the game. Each draws crisply at a multiple of its design size.
+// Pixel Operator, CC0, from the pak. Each draws crisply at a multiple of its design size.
 const Face& PixelOperator()
 {
-    static const auto s_face = MakeFace(std::vector<unsigned char>(std::begin(PixelOperator_ttf), std::end(PixelOperator_ttf)));
+    static const auto s_face = MakeFace(Pak::Read("fonts/PixelOperator.ttf"));
 
     return s_face;
 }
 
 const Face& PixelOperator8()
 {
-    static const auto s_face = MakeFace(std::vector<unsigned char>(std::begin(PixelOperator8_ttf), std::end(PixelOperator8_ttf)));
+    static const auto s_face = MakeFace(Pak::Read("fonts/PixelOperator8.ttf"));
 
     return s_face;
 }
