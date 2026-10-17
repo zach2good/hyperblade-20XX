@@ -21,8 +21,8 @@ class LobbyScreen : public Screen
 {
 public:
     LobbyScreen();
-    ~LobbyScreen();
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    ~LobbyScreen() override;
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
 };
 
 // SYNTHETIC: HYPERX 0x0048cee0

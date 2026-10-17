@@ -37,10 +37,10 @@ public:
         return *m_pSpeed;
     }
 
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     Vec3*           m_pVelocity; // 0x10
     Vec3*           m_pVelDir;   // 0x14, the address of the body's velDir

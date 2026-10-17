@@ -22,21 +22,21 @@ class SaveLoadUIScreen : public UIScreen
 {
 public:
     // FUNCTION: HYPERX 0x0046eb40
-    virtual void OnOkayClick()
+    void OnOkayClick() override
     {
         Game::SetEngineState((unsigned int)m_nReturnState);
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
-    virtual void OnCancelClick()
+    void OnCancelClick() override
     {
         Game::SetEngineState((unsigned int)m_nReturnState);
     }
 
-    virtual void RefreshFrames();
-    virtual void OnOtherButton(int nMsg, unsigned int nId);
+    void RefreshFrames() override;
+    void OnOtherButton(int nMsg, unsigned int nId) override;
     SaveLoadUIScreen();
-    ~SaveLoadUIScreen();
+    ~SaveLoadUIScreen() override;
 
     void RefreshSlotLabels();
 

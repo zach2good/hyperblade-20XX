@@ -12,10 +12,10 @@ public:
         m_pHead = 0;
     }
 
-    virtual void  Init();
-    virtual void* Alloc();
+    void  Init() override;
+    void* Alloc() override;
 
-    ~CPanSoundPool();
+    ~CPanSoundPool() override;
 };
 
 // SYNTHETIC: HYPERX 0x00415da0

@@ -20,9 +20,9 @@ public:
         m_nMode = MON_DRIVE_YER_GUY;
     }
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     // The owner body's two input words. Bind takes their addresses.
     short* m_pInput;     // 0x10, INTERACTOR_INPUT

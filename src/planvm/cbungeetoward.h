@@ -13,13 +13,13 @@ class CBungeeToward : public ReleasingAgendaItem
     // m_bReady is this kind's released flag.
 
 public:
-    virtual void Process(int nArg);
-    virtual void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     // Slot seven answers one where the base answers nought; the original folds it onto one shared body.
-    virtual unsigned char GetReadyFlag()
+    unsigned char GetReadyFlag() override
     {
         return 1;
     }

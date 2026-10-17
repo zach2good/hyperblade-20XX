@@ -15,10 +15,10 @@ class RokObject : public EngineObject
 {
 public:
     RokObject(int nSlot, class ObjectDef* pDef);
-    ~RokObject();
+    ~RokObject() override;
 
-    virtual void ApplyRenderSlotPose();
-    virtual void Postpass();
+    void ApplyRenderSlotPose() override;
+    void Postpass() override;
 
     void SetRenderSlotFlags();
     void ActivateAtSpawnSlot(unsigned int nSlot);

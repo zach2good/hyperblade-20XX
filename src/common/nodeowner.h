@@ -12,10 +12,10 @@ public:
     {
     }
 
-    virtual char Insert(void* pNode);
+    char Insert(void* pNode) override;
 
     // FUNCTION: HYPERX 0x0046be80
-    ~NodeOwner()
+    ~NodeOwner() override
     {
     }
 

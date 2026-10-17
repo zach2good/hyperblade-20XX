@@ -14,11 +14,11 @@ public:
     }
 
     // The four slots this class's table differs from its base's on.
-    virtual ~CollInteractor();
+    ~CollInteractor() override;
     // The discard src/planvm/planstate.cpp walks both interactor lists with.
-    virtual void  Discard();
-    virtual short GetOtherSlot();
-    virtual short GetModelSlot();
+    void  Discard() override;
+    short GetOtherSlot() override;
+    short GetModelSlot() override;
 
     CollInteractor* Setup(class EngineObject* pObject, struct PlanNode* pInstr);
     void            Process(int nArg, short* pOutcome, int nMode);

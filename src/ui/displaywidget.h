@@ -22,17 +22,17 @@ class DisplayWidget : public InertWidget
 {
 public:
     // Stand-ins for shared stubs whose addresses several tables hold, so none carries a marker.
-    virtual int OnMouseDown()
+    int OnMouseDown() override
     {
         return 0;
     }
 
-    virtual int OnMouseUp()
+    int OnMouseUp() override
     {
         return 0;
     }
 
-    virtual int IsDisplayOnly()
+    int IsDisplayOnly() override
     {
         return 1;
     }

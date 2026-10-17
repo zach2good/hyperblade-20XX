@@ -3901,18 +3901,13 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
     pRok->SetRenderSlotFlags();
 }
 
+// The original narrows the argument to a short before testing it for the message-data token, so the
+// test never matches and the event's own value is never taken.
 // FUNCTION: HYPERX 0x004633c0
-void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int nArg)
+void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 {
-    const short nDefault = (short)nArg;
-
-    short            nValue = (short)pArgs->m_pArgs[1].n;
+    const short      nValue = (short)pArgs->m_pArgs[1].n;
     RokObject* const pRok   = g_pGameEngine->GetRok();
-
-    if (nValue == PLAN_TOKEN_MESSAGE_DATA)
-    {
-        nValue = nDefault;
-    }
 
     if (nValue == -1)
     {
@@ -5414,9 +5409,9 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
         vJitter.Set(0.0f, 0.0f, 0.0f);
         vVelocity.Add(vKick);
 
-        vJitter.x += ((float)rand() * (1.0f / RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
-        vJitter.y += ((float)rand() * (1.0f / RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
-        vJitter.z += (float)rand() * (1.0f / RAND_MAX) * g_flOnePlan + g_flOnePlan;
+        vJitter.x += ((float)rand() * (1.0f / (float)RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
+        vJitter.y += ((float)rand() * (1.0f / (float)RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
+        vJitter.z += (float)rand() * (1.0f / (float)RAND_MAX) * g_flOnePlan + g_flOnePlan;
 
         Vec3::ScaleTo(&vJitter, g_pGameEngine->m_clock.flDelta * JITTER_RATE, &vJitter);
 
@@ -8234,7 +8229,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
         {
             flRange *= 0.5f;
 
-            const float flRoll = ((float)rand() * (1.0f / RAND_MAX)) * flRange;
+            const float flRoll = ((float)rand() * (1.0f / (float)RAND_MAX)) * flRange;
 
             if (flRoll + flRange > flDistance)
             {

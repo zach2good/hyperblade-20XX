@@ -9,9 +9,9 @@ class EngineObject;
 class BehObj_OpenAndClose : public InPlaceBehaviorObject
 {
 public:
-    virtual ~BehObj_OpenAndClose();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
-    virtual void SendTimedMessage();
+    ~BehObj_OpenAndClose() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
+    void SendTimedMessage() override;
     BehObj_OpenAndClose();
 };
 

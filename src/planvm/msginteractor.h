@@ -14,16 +14,16 @@ public:
     {
     }
 
-    virtual void Discard();
+    void Discard() override;
 
     // Slot six: the message tag Setup stores in m_ownSlotOrMessage.
-    virtual short GetNamedSlot()
+    short GetNamedSlot() override
     {
         return (short)m_ownSlotOrMessage.n;
     }
 
     // Where the base answers minus one, this reads m_otherSlot.
-    virtual short GetTargetSlot();
+    short GetTargetSlot() override;
 
     MsgInteractor* Setup(class EngineObject* pObject, struct PlanNode* pInstr);
     void           SetSenderAndDispatch(int nArg, short* pState, int nSender);

@@ -9,11 +9,11 @@
 class VisualEffectFade : public PaletteFade
 {
 public:
-    virtual int Start(const PaletteEntry* pStartColour);
+    int Start(const PaletteEntry* pStartColour) override;
 
     // Slots two and four.
-    virtual int Tick();
-    virtual int ApplyPhase(int bPhase);
+    int Tick() override;
+    int ApplyPhase(int bPhase) override;
 
     explicit VisualEffectFade(const PaletteRange* pRange)
     : PaletteFade(pRange)

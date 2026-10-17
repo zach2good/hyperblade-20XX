@@ -60,8 +60,6 @@ void AudioMgr::Init()
 {
     SoundManager* const pSounds = new SoundManager;
 
-    int nCost = 0;
-
     pEntries = pSounds;
 
     // STRING: HYPERX 0x004c8a90
@@ -84,7 +82,7 @@ void AudioMgr::Init()
 
         pSound->m_nLoadState = 0;
 
-        nCost += LoadSound(pSound);
+        LoadSound(pSound);
 
         nIndex++;
     }
@@ -447,11 +445,9 @@ int AudioMgr::PreloadGroup(int nGroup)
     SoundEntry* pSnd;
     int         nCount;
     int         nLoaded;
-    int         nBytes;
 
     nCount  = pEntries->m_nSoundCount;
     nLoaded = 0;
-    nBytes  = 0;
 
     for (int nIndex = 0; nIndex < nCount; nIndex++)
     {
@@ -479,7 +475,6 @@ int AudioMgr::PreloadGroup(int nGroup)
 
         if (pSnd->m_pSamples != 0)
         {
-            nBytes += pSnd->m_nDataBytes;
             nLoaded++;
 
             continue;
@@ -501,7 +496,6 @@ int AudioMgr::PreloadGroup(int nGroup)
             continue;
         }
 
-        nBytes += pSnd->m_nDataBytes;
         nLoaded++;
     }
 

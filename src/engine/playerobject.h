@@ -16,12 +16,12 @@ class PlayerObject : public EngineObject
 public:
     PlayerObject(int nSlot, class ObjectDef* pDef);
 
-    ~PlayerObject();
+    ~PlayerObject() override;
 
     // The three slots 0x004b3af4 overrides from 0x004b38f0. The bot shares two of them.
-    virtual void ApplyRenderSlotPose();
-    virtual void Postpass();
-    virtual void UpdateRenderSlotTransform(short nSlotIdx);
+    void ApplyRenderSlotPose() override;
+    void Postpass() override;
+    void UpdateRenderSlotTransform(short nSlotIdx) override;
 
     // The goal this player shoots at, SLOT_NGOAL or SLOT_SGOAL; three below it is that goal's keeper.
     short m_wTargetGoalSlot; // 0xd14

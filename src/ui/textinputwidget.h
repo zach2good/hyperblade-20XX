@@ -10,12 +10,12 @@ class TextInputWidget : public HoldingWidget
 {
 public:
     // Slots four and five hold KeyConfigDialog::SaveKeysAs, so both keep a stand-in.
-    virtual int OnMouseUp()
+    int OnMouseUp() override
     {
         return 0;
     }
 
-    virtual int IsDisplayOnly()
+    int IsDisplayOnly() override
     {
         return 0;
     }
@@ -27,7 +27,7 @@ public:
     {
     }
 
-    virtual int OnKeyPress(unsigned int nKey);
+    int OnKeyPress(unsigned int nKey) override;
 
 private:
     int   m_nLength;   // 0x068

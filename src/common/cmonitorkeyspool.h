@@ -12,10 +12,10 @@ public:
         m_pHead = 0;
     }
 
-    virtual void  Init();
-    virtual void* Alloc();
+    void  Init() override;
+    void* Alloc() override;
 
-    ~CMonitorKeysPool();
+    ~CMonitorKeysPool() override;
 };
 
 // SYNTHETIC: HYPERX 0x00415760

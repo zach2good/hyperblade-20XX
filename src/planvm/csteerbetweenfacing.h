@@ -18,9 +18,9 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     class BehObj_GlideBetweenFacing* m_pPath;    // 0x10
     Vec3*                            m_pOrigin;  // 0x14

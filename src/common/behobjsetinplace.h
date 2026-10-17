@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_SetInPlace : public InPlaceBehaviorObject
 {
 public:
-    virtual ~BehObj_SetInPlace();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_SetInPlace() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_SetInPlace();
 };
 

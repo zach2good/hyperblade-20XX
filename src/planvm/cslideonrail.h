@@ -13,12 +13,12 @@ class CSlideOnRail : public AgendaItem
 public:
     CSlideOnRail();
 
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
-    ~CSlideOnRail();
+    ~CSlideOnRail() override;
     Vec3*   m_pVelocity;   // 0x10, the address of the body's vel
     Vec3*   m_pPosition;   // 0x14, the address of the body's pos
     Vec3*   m_pPrevPos;    // 0x18, the address of the body's prevPos

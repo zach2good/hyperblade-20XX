@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_FlyToward : public FlightBehaviorObject
 {
 public:
-    virtual ~BehObj_FlyToward();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_FlyToward() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_FlyToward();
 };
 

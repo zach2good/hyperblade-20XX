@@ -9,7 +9,7 @@ namespace Math
 // A uniform roll in [-1, 1], rounded to a float before it is doubled.
 inline float RandSigned()
 {
-    const float flUnit = (float)rand() * (1.0f / RAND_MAX);
+    const float flUnit = (float)rand() * (1.0f / (float)RAND_MAX);
 
     return flUnit * 2.0f - 1.0f;
 }

@@ -10,10 +10,10 @@ class GoalObject : public EngineObject
 {
 public:
     GoalObject(int nSlot, class ObjectDef* pDef);
-    ~GoalObject();
+    ~GoalObject() override;
 
 private:
-    int m_nUnusedE; // 0xd14
+    [[maybe_unused]] int m_nUnusedE; // 0xd14
 };
 
 // SYNTHETIC: HYPERX 0x00474540

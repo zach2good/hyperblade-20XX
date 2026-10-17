@@ -13,12 +13,12 @@ public:
     }
 
     // Both slots hold Widget::RefuseInput, which carries the marker.
-    virtual int HitTest(int, int)
+    int HitTest(int, int) override
     {
         return 0;
     }
 
-    virtual int TryActivate(int, int)
+    int TryActivate(int, int) override
     {
         return 0;
     }

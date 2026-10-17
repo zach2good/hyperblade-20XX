@@ -24,21 +24,21 @@ enum SingleMatchSetupWidget
 class TournamentSetupUIScreen : public UIScreen
 {
 public:
-    virtual void OnOkayClick();
+    void OnOkayClick() override;
 
     // The linker folded this body onto HeadToHeadSetupUIScreen::OnOkayClick, which carries the marker.
-    virtual void OnCancelClick()
+    void OnCancelClick() override
     {
         Game::SetEngineState(g_nSetupReturnState);
     }
 
-    virtual void OnLeftArrowClick();
-    virtual void OnRightArrowClick();
-    virtual void RefreshSelection();
-    virtual void RefreshFrames();
-    virtual void OnOtherButton(int nMsg, unsigned int nId);
+    void OnLeftArrowClick() override;
+    void OnRightArrowClick() override;
+    void RefreshSelection() override;
+    void RefreshFrames() override;
+    void OnOtherButton(int nMsg, unsigned int nId) override;
     TournamentSetupUIScreen();
-    ~TournamentSetupUIScreen();
+    ~TournamentSetupUIScreen() override;
 
     void LoadTeamPlayerBitmaps(int nTeam);
     void LoadTeamInfoPanel(int nTeam);
@@ -51,7 +51,7 @@ private:
     int m_nSelectionLimit; // 0x47c
 
 private:
-    int m_anUnused[2];
+    [[maybe_unused]] int m_anUnused[2];
 };
 
 // SYNTHETIC: HYPERX 0x00488410

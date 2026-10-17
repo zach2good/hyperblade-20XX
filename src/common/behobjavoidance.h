@@ -9,12 +9,12 @@ class EngineObject;
 class BehObj_Avoidance : public SurfaceBehaviorObject
 {
 public:
-    virtual ~BehObj_Avoidance();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_Avoidance() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_Avoidance();
 
 private:
-    int m_anUnused[3]; // 0x98
+    [[maybe_unused]] int m_anUnused[3]; // 0x98
 };
 
 // SYNTHETIC: HYPERX 0x0041d7d0

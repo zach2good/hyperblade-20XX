@@ -10,9 +10,9 @@
 class JumbotronScreen : public Screen
 {
 public:
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
     JumbotronScreen();
-    ~JumbotronScreen();
+    ~JumbotronScreen() override;
 };
 
 // SYNTHETIC: HYPERX 0x0048e720

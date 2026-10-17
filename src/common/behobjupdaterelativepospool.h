@@ -12,10 +12,10 @@ public:
         m_pHead = 0;
     }
 
-    virtual void  Init();
-    virtual void* Alloc();
+    void  Init() override;
+    void* Alloc() override;
 
-    ~BehObjUpdateRelativePosPool();
+    ~BehObjUpdateRelativePosPool() override;
 };
 
 // SYNTHETIC: HYPERX 0x00420c00

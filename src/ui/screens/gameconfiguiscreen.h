@@ -42,11 +42,11 @@ enum GameConfigWidget
 class GameConfigUIScreen : public UIScreen
 {
 public:
-    virtual void OnOkayClick();
-    virtual void OnCancelClick();
-    virtual void OnOtherButton(int nMsg, unsigned int nId);
+    void OnOkayClick() override;
+    void OnCancelClick() override;
+    void OnOtherButton(int nMsg, unsigned int nId) override;
     GameConfigUIScreen();
-    ~GameConfigUIScreen();
+    ~GameConfigUIScreen() override;
 
     void SetupWidgets();
 

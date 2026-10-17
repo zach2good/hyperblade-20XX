@@ -11,18 +11,18 @@ struct PlanNode;
 class CAvoidObjects : public ReleasingAgendaItem
 {
 public:
-    virtual void Process(int nArg);
-    virtual void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    void Process(int nArg) override;
+    void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 
     // Five tables share this body at slot seven or eight; the original's link folded the copies.
     // FUNCTION: HYPERX 0x00413ef0
-    virtual char IsReplaceable()
+    char IsReplaceable() override
     {
         return 1;
     }
 
-    virtual void OnListChanged();
+    void         OnListChanged() override;
     void         AddAvoidanceTarget(short nIndex);
     static short SignTowardGoal(short nGoalSlot);
 

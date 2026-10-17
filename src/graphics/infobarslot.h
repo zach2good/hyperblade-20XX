@@ -23,11 +23,11 @@ public:
 
     // Inline because the original inlines it into CDDSurfaceOwner's and InfoBar's destructors.
     // FUNCTION: HYPERX 0x0044f1b0
-    virtual ~InfoBarSlot() throw()
+    ~InfoBarSlot() throw() override
     {
     }
 
-    virtual int Draw();
+    int Draw() override;
 
     void SetStrip(int nFrameCount, int nUnitWidth, int nMinHeight, int nMaxHeight)
     {

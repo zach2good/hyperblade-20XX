@@ -39,7 +39,7 @@ public:
 
     BoundBubble();
 
-    virtual ~BoundBubble();
+    ~BoundBubble() override;
 
     BoundBubble(EngineObject* pOwner, BubbleCmd* pShape)
     : m_pShapeNode(0)
@@ -52,8 +52,8 @@ public:
 
     void FindAttachComponent(AttachPak* pRequest);
 
-    virtual void          GetWorldPosition(Vec3* pOut);
-    virtual unsigned char DoesIntersect(BoundBubble* pOther);
+    void          GetWorldPosition(Vec3* pOut) override;
+    unsigned char DoesIntersect(BoundBubble* pOther) override;
 
     unsigned char SphereSphereOverlap(BoundBubble* pOther);
 

@@ -10,7 +10,7 @@ class CoachObject : public EngineObject
 {
 public:
     CoachObject(int nSlot, class ObjectDef* pDef);
-    ~CoachObject();
+    ~CoachObject() override;
 };
 
 // SYNTHETIC: HYPERX 0x00475470

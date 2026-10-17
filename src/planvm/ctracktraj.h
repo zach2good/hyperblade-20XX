@@ -13,10 +13,10 @@ class CTrackTraj : public BaseResetAgendaItem
 public:
     CTrackTraj();
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 
-    ~CTrackTraj();
+    ~CTrackTraj() override;
 
     void InitRange();
     void SetDirectedRange(float flLow, float flHigh);

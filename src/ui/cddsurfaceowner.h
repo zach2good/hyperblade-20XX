@@ -17,8 +17,8 @@ public:
     {
     }
 
-    virtual ~CDDSurfaceOwner();
-    virtual int Draw();
+    ~CDDSurfaceOwner() override;
+    int Draw() override;
 
     // The same body RLESpriteSurface has, over this class's pair.
     int LoadByName(const char* pszName);

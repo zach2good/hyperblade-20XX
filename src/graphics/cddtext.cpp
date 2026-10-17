@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 // FUNCTION: HYPERX 0x0044f9f0
-CDDText::~CDDText() throw()
+CDDText::~CDDText()
 {
     if (m_pszText != 0)
     {

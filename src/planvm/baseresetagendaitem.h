@@ -7,7 +7,7 @@
 class BaseResetAgendaItem : public ReleasingAgendaItem
 {
 public:
-    virtual void OnListChanged();
+    void OnListChanged() override;
 };
 
 #endif

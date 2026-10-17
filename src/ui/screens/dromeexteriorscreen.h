@@ -28,9 +28,9 @@ extern const char* g_apszMatchBanner[13];
 class DromeExteriorScreen : public Screen
 {
 public:
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
     DromeExteriorScreen();
-    ~DromeExteriorScreen();
+    ~DromeExteriorScreen() override;
 };
 
 // SYNTHETIC: HYPERX 0x0048ef80

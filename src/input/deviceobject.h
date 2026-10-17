@@ -14,7 +14,7 @@ public:
     DeviceObject(int nSlot, class ObjectDef* pDef);
 
     // FUNCTION: HYPERX 0x0045d700
-    ~DeviceObject()
+    ~DeviceObject() override
     {
     }
 

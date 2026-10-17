@@ -19,12 +19,12 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
-    void         SetPositionWithTerrainHeight(Vec3* pMarker);
-    void         SetSourceObjectByIndex(short nIndex);
+    void Process(int nArg) override;
+    void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
+    void SetPositionWithTerrainHeight(Vec3* pMarker);
+    void SetSourceObjectByIndex(short nIndex);
 
     void SetOffset(Vec3 offset);
 

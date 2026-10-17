@@ -20,15 +20,15 @@ enum MatchInfoWidget
 class MatchInfoUIScreen : public UIScreen
 {
 public:
-    virtual void OnFirstTabClick();
-    virtual void OnSecondTabClick();
-    virtual void OnThirdTabClick();
-    virtual void OnExitTabClick();
+    void OnFirstTabClick() override;
+    void OnSecondTabClick() override;
+    void OnThirdTabClick() override;
+    void OnExitTabClick() override;
     MatchInfoUIScreen();
 
     // Inline, so the derived screens that declare none share this body.
     // FUNCTION: HYPERX 0x004581c0
-    ~MatchInfoUIScreen()
+    ~MatchInfoUIScreen() override
     {
     }
 

@@ -19,10 +19,10 @@ public:
     void UpdateTerrainPhysics(int nArg);
 
     // Slot zero is KindAgendaItem's; only AgendaItem's own table holds 0x0040b950.
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     // Each field is an address inside the owner's physics body, taken in Bind.
     float* m_pflFriction; // 0x10, body + 0x124

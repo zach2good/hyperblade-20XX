@@ -12,11 +12,11 @@ class EngineObject;
 class BehObj_FlyLCL : public FlightBehaviorObject
 {
 public:
-    virtual ~BehObj_FlyLCL();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_FlyLCL() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
 
     // Folded onto BehObj_Fly::SendTimedMessage in the original, so it carries no marker.
-    virtual void SendTimedMessage()
+    void SendTimedMessage() override
     {
         m_pOwner->PostEvent(MSG_INITIATE, 0, m_pOwner->GetSlot());
 

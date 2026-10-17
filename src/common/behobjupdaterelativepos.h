@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_UpdateRelativePos : public SurfaceBehaviorObject
 {
 public:
-    virtual ~BehObj_UpdateRelativePos();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_UpdateRelativePos() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_UpdateRelativePos();
 };
 

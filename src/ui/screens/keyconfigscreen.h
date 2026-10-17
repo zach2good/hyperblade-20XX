@@ -11,11 +11,11 @@ class KeyConfigScreen : public Screen
 {
 public:
     // Slot zero here, not the base's shared stub: the answer is the row it bound.
-    virtual int  OnKeyMessage(unsigned int nKeyCode, unsigned int nUnused);
-    virtual void OnWidgetMessage(int nMsg, unsigned int nWidget);
+    int  OnKeyMessage(unsigned int nKeyCode, unsigned int nUnused) override;
+    void OnWidgetMessage(int nMsg, unsigned int nWidget) override;
 
     KeyConfigScreen();
-    ~KeyConfigScreen();
+    ~KeyConfigScreen() override;
 
     // Inlined in the original; only its -1 survives as a comparison.
     int FindActiveRow();

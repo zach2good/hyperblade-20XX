@@ -88,7 +88,7 @@ public:
     char m_aInteractorNames[PLANVM_INTERACTOR_NAME_LIMIT][0x20]; // 0x00f18
 
 private:
-    int m_nUnused; // 0x021d8
+    [[maybe_unused]] int m_nUnused; // 0x021d8
 
 public:
     // The instruction keywords, ending in the empty-name entry; the constructor fills 28.

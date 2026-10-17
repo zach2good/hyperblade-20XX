@@ -9,7 +9,7 @@
 #include <cstring>
 
 // FUNCTION: HYPERX 0x0044f890
-CDDSurfaceOwner::~CDDSurfaceOwner() throw()
+CDDSurfaceOwner::~CDDSurfaceOwner()
 {
     if (m_pSprite != 0)
     {

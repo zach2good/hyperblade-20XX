@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_DoNothing : public InPlaceBehaviorObject
 {
 public:
-    virtual ~BehObj_DoNothing();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_DoNothing() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_DoNothing();
 };
 

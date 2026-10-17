@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_CoachTeam : public InPlaceBehaviorObject
 {
 public:
-    virtual ~BehObj_CoachTeam();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_CoachTeam() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_CoachTeam();
 };
 

@@ -13,7 +13,7 @@ class KeyboardDeviceObj : public DeviceObject
 public:
     KeyboardDeviceObj(int nSlot, class ObjectDef* pDef);
 
-    ~KeyboardDeviceObj();
+    ~KeyboardDeviceObj() override;
 
     static int  GetActionBitIndex(unsigned int nMask);
     static char BuildActionBindingTable(struct ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice);

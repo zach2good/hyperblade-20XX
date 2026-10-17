@@ -18,7 +18,7 @@ public:
     }
 
     // Slot five holds KeyConfigDialog::ClearKeys, one address several tables share.
-    virtual int IsDisplayOnly()
+    int IsDisplayOnly() override
     {
         return 1;
     }

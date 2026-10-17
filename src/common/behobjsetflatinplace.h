@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_SetFlatInPlace : public FlatBehaviorObject
 {
 public:
-    virtual ~BehObj_SetFlatInPlace();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_SetFlatInPlace() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_SetFlatInPlace();
 };
 

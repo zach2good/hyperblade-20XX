@@ -16,10 +16,10 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
-    void         SetTargetObjectByIndex(short nIndex);
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
+    void SetTargetObjectByIndex(short nIndex);
 
     Vec3*         m_pAxis;    // 0x10
     EngineObject* m_pTarget;  // 0x14

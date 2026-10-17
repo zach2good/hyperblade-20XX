@@ -11,7 +11,7 @@ class DromeObject : public EngineObject
 {
 public:
     DromeObject(int nSlot, class ObjectDef* pDef);
-    ~DromeObject();
+    ~DromeObject() override;
 };
 
 // SYNTHETIC: HYPERX 0x004748b0

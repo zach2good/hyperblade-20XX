@@ -15,7 +15,7 @@ public:
     {
     }
 
-    virtual int OnMouseDown();
+    int OnMouseDown() override;
 };
 
 #endif

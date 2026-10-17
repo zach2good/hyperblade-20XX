@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_GlideBetweenFacing : public SurfaceBehaviorObject
 {
 public:
-    virtual ~BehObj_GlideBetweenFacing();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_GlideBetweenFacing() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_GlideBetweenFacing();
 
     float GetBlendStep() const

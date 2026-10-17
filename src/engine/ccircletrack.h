@@ -12,14 +12,14 @@ class CCircleTrack : public CameraLiteAgendaItem
     // m_pOwner is a camera for this kind.
 
 public:
-    virtual void Process(int nArg);
+    void Process(int nArg) override;
 
     // The original's linker folded this onto EngineObject::CheckObjectAI, which carries the marker.
-    virtual void Release(int)
+    void Release(int) override
     {
     }
 
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 
     // Bind stores the engine clock; nothing reads it, as the circle's angle is a constant zero.
     int m_nUnused; // 0x18

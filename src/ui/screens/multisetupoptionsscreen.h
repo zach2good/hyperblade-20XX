@@ -21,9 +21,9 @@ class MultiSetupOptionsScreen : public Screen
 {
 public:
     MultiSetupOptionsScreen();
-    ~MultiSetupOptionsScreen();
+    ~MultiSetupOptionsScreen() override;
 
-    virtual void OnWidgetMessage(int nMsg, unsigned int nWidget);
+    void OnWidgetMessage(int nMsg, unsigned int nWidget) override;
 
     // Both go to the main menu.
     // FUNCTION: HYPERX 0x00479840

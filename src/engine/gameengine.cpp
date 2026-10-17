@@ -989,7 +989,6 @@ void GameEngine::BeginMatchPlay()
     short            nTeam;
     short            nRow;
     int              nSlot;
-    int              nOffset;
 
     m_bEndPeriodRequested    = 0;
     m_bPeriodEnded           = 0;
@@ -1041,9 +1040,6 @@ void GameEngine::BeginMatchPlay()
         }
     }
 
-    // Nothing reads nOffset.
-    nOffset = 0;
-
     for (nRow = 0; nRow < TEAM_ROW_COUNT; nRow++)
     {
         if (m_pTeamA->aRows[nRow].aStat[RATING_DAMAGE] > g_flZeroGameEngine)
@@ -1055,8 +1051,6 @@ void GameEngine::BeginMatchPlay()
         {
             m_pTeamB->aRows[nRow].aStat[RATING_DAMAGE] = FULL_WEIGHT;
         }
-
-        nOffset += sizeof(TeamPlayerRow);
 
         m_pTeamA->aReserveSince[nRow] = 0;
         m_pTeamB->aReserveSince[nRow] = 0;

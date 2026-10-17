@@ -32,47 +32,47 @@ public:
     static void IncrementScore(int nWhich);
 
 public:
-    virtual ViewExtent GetPassBarSize();
+    ViewExtent GetPassBarSize() override;
 
     // Twenty one and twenty two are EngineObject::CheckObjectAI and Stub::Assert, shared bare rets.
-    virtual void SetPassBarMarker(int)
+    void SetPassBarMarker(int) override
     {
     }
 
-    virtual void ShowPassBar()
+    void ShowPassBar() override
     {
     }
 
-    virtual void ShowQuitPrompt();
-    virtual void HideQuitPrompt();
-    void         BeginTick() override;
+    void ShowQuitPrompt() override;
+    void HideQuitPrompt() override;
+    void BeginTick() override;
 
     InfoBar();
-    ~InfoBar();
+    ~InfoBar() override;
 
     // Nothrow, which gives the destructor the original's unwind.
     void Cleanup() throw();
 
-    virtual void LayoutSurfaces();
+    void LayoutSurfaces() override;
 
-    virtual void DrawScene(int bDraw);
-    void         DrawHUD(int bFull) override;
+    void DrawScene(int bDraw) override;
+    void DrawHUD(int bFull) override;
 
-    virtual void SetMessageText(const char* pszText, unsigned long color);
-    virtual void ShowMessage();
-    virtual void HideMessage();
-    virtual void SetHomeLogo(char* pszName);
-    virtual void SetAwayLogo(char* pszName);
+    void SetMessageText(const char* pszText, unsigned long color) override;
+    void ShowMessage() override;
+    void HideMessage() override;
+    void SetHomeLogo(char* pszName) override;
+    void SetAwayLogo(char* pszName) override;
 
-    virtual void       ShowHeadCam();
-    virtual void       SetHeadCamText(const char* pszText);
-    virtual ViewExtent GetHeadCamSize();
-    virtual ViewExtent GetHeadCamOrigin();
-    virtual void       SetShotPower(float flPercent);
-    virtual void       ShowShotPower();
-    virtual void       SetReticlePos(int nX, int nY);
-    virtual ViewExtent GetReticleSize();
-    virtual void       SetReticleState(int nMode);
+    void       ShowHeadCam() override;
+    void       SetHeadCamText(const char* pszText) override;
+    ViewExtent GetHeadCamSize() override;
+    ViewExtent GetHeadCamOrigin() override;
+    void       SetShotPower(float flPercent) override;
+    void       ShowShotPower() override;
+    void       SetReticlePos(int nX, int nY) override;
+    ViewExtent GetReticleSize() override;
+    void       SetReticleState(int nMode) override;
 
     void DrawPeriodLight();
 

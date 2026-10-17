@@ -14,8 +14,8 @@ public:
     {
     }
 
-    virtual ~RLESpriteSurface();
-    virtual int Draw();
+    ~RLESpriteSurface() override;
+    int Draw() override;
 
     int LoadByName(const char* pszName);
 

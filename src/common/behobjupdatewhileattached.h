@@ -9,9 +9,9 @@ class EngineObject;
 class BehObj_UpdateWhileAttached : public FlightBehaviorObject
 {
 public:
-    virtual ~BehObj_UpdateWhileAttached();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
-    virtual void SetInteractorsActive(int nArg);
+    ~BehObj_UpdateWhileAttached() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
+    void SetInteractorsActive(int nArg) override;
     BehObj_UpdateWhileAttached();
 };
 

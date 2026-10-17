@@ -158,9 +158,9 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     flMag = (float)sqrt(Vec3::DotInline(&vImpulse, &vImpulse)) * 0.125f;
 
-    vImpulse.x = ((float)rand() * (1.0f / RAND_MAX) - 0.5f) * flMag + vImpulse.x;
-    vImpulse.y = ((float)rand() * (1.0f / RAND_MAX) - 0.5f) * flMag + vImpulse.y;
-    vImpulse.z = ((float)rand() * (1.0f / RAND_MAX) - 0.5f) * flMag + vImpulse.z;
+    vImpulse.x = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.x;
+    vImpulse.y = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.y;
+    vImpulse.z = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.z;
 
     pSelf->SetVelocity(vImpulse);
 

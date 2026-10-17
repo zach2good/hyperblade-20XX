@@ -19,10 +19,10 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     void        IntegrateSpringAndGravity();
     static void AddStep(Vec3* pTarget, const Vec3* pStep);

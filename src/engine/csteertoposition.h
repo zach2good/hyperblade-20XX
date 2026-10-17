@@ -19,12 +19,12 @@ public:
     {
     }
 
-    virtual void         Process(int nArg);
-    virtual void         Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void         OnListChanged();
-    virtual void         Tick(const Vec3* pTargetPos);
-    virtual struct Vec3* GetVector();
-    virtual void         OnKind(short nSlot);
+    void         Process(int nArg) override;
+    void         Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void         OnListChanged() override;
+    void         Tick(const Vec3* pTargetPos) override;
+    struct Vec3* GetVector() override;
+    void         OnKind(short nSlot) override;
 
     Vec3* m_pOrigin; // 0x10
     Vec3* m_pAxis;   // 0x14

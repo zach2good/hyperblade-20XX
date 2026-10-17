@@ -11,7 +11,7 @@ class InfoBarBase : public Renderer
 {
 public:
     // Slot one is Object::Trace in the original, a shared free function.
-    virtual void Unused()
+    void Unused() override
     {
     }
 
@@ -20,7 +20,7 @@ public:
     {
     }
 
-    ~InfoBarBase()
+    ~InfoBarBase() override
     {
     }
 

@@ -13,8 +13,8 @@ public:
     explicit PaletteScalarFade(const PaletteRange* pRange);
 
     // Slots one and two of 0x004b2b6c.
-    virtual int Start(const PaletteEntry* pStartColour);
-    virtual int Tick();
+    int Start(const PaletteEntry* pStartColour) override;
+    int Tick() override;
 
 protected:
     int           m_nUnused;    // 0x030
@@ -24,7 +24,7 @@ protected:
     unsigned char m_cStep; // 0x035
 
 public:
-    virtual int ApplyPhase(int bPhase);
+    int ApplyPhase(int bPhase) override;
 };
 
 #endif

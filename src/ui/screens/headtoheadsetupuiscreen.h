@@ -30,29 +30,29 @@ enum HeadToHeadSetupWidgetId
 class HeadToHeadSetupUIScreen : public UIScreen
 {
 public:
-    virtual void OnFirstPageTabClick();
-    virtual void OnSecondPageTabClick();
-    virtual void OnThirdPageTabClick();
+    void OnFirstPageTabClick() override;
+    void OnSecondPageTabClick() override;
+    void OnThirdPageTabClick() override;
 
     // FUNCTION: HYPERX 0x00444b30
-    virtual void OnOkayClick()
+    void OnOkayClick() override
     {
         Game::SetEngineState(g_nSetupReturnState);
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
-    virtual void OnCancelClick()
+    void OnCancelClick() override
     {
         Game::SetEngineState(g_nSetupReturnState);
     }
 
-    virtual void OnLeftArrowClick();
-    virtual void OnRightArrowClick();
-    virtual void RefreshSelection();
-    virtual void RefreshFrames();
-    virtual void OnOtherButton(int nMsg, unsigned int nId);
+    void OnLeftArrowClick() override;
+    void OnRightArrowClick() override;
+    void RefreshSelection() override;
+    void RefreshFrames() override;
+    void OnOtherButton(int nMsg, unsigned int nId) override;
     HeadToHeadSetupUIScreen();
-    ~HeadToHeadSetupUIScreen();
+    ~HeadToHeadSetupUIScreen() override;
 
     void LoadTeamPlayerBitmaps(int nTeam);
     void LoadTeamInfoPanel(int nTeam);

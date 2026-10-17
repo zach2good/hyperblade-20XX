@@ -12,8 +12,8 @@ class GameIntroScreen : public Screen
 {
 public:
     GameIntroScreen();
-    ~GameIntroScreen();
-    virtual void OnWidgetMessage(int nMsg, unsigned int nWidget);
+    ~GameIntroScreen() override;
+    void OnWidgetMessage(int nMsg, unsigned int nWidget) override;
 };
 
 // SYNTHETIC: HYPERX 0x00449190

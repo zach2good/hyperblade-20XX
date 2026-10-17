@@ -17,21 +17,21 @@ public:
     ~CollisionEllipsoid();
 
     // Call sites on an ellipsoid are qualified; the original calls the arena's slot one directly.
-    virtual float GetZ(float flX, float flY);
+    float GetZ(float flX, float flY) override;
 
-    int         IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNearOut, Vec3* pFarOut);
-    virtual int SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut);
-    int         IntersectSegment(Vec3* pFirst, Vec3* pSecond, Vec3* pNearOut, Vec3* pFarOut);
+    int IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNearOut, Vec3* pFarOut);
+    int SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut) override;
+    int IntersectSegment(Vec3* pFirst, Vec3* pSecond, Vec3* pNearOut, Vec3* pFarOut);
     // Must override the slot: left pure, the arena ellipsoid takes every terrain ray into R6025.
-    virtual int RayIntersection(Vec3* pDirection, Vec3* pOrigin, Vec3* pPointOut);
+    int RayIntersection(Vec3* pDirection, Vec3* pOrigin, Vec3* pPointOut) override;
 
-    virtual Vec3* NormalAtPoint(const Vec3* pPoint);
+    Vec3* NormalAtPoint(const Vec3* pPoint) override;
 
     // Only the semi-axes and their reciprocals above are read by any of the four.
-    virtual float         RadiusForDirection(const Vec3* pVDir, int nUnused);
-    void                  ComputeRadialBoundaryXY(Vec3* pIn, Vec3* pOut);
-    virtual unsigned char PointInside(const Vec3* pPoint);
-    virtual int           PointNearSurface(const Vec3* pPoint);
+    float         RadiusForDirection(const Vec3* pVDir, int nUnused) override;
+    void          ComputeRadialBoundaryXY(Vec3* pIn, Vec3* pOut);
+    unsigned char PointInside(const Vec3* pPoint) override;
+    int           PointNearSurface(const Vec3* pPoint) override;
 
     float GetRadiusX() const
     {

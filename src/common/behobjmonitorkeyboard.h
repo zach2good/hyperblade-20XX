@@ -9,9 +9,9 @@ class EngineObject;
 class BehObj_MonitorKeyboard : public SurfaceBehaviorObject
 {
 public:
-    virtual ~BehObj_MonitorKeyboard();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
-    virtual void SendTimedMessage();
+    ~BehObj_MonitorKeyboard() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
+    void SendTimedMessage() override;
     BehObj_MonitorKeyboard();
 };
 

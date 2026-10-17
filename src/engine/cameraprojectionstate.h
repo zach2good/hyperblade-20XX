@@ -66,7 +66,7 @@ public:
     float m_flTanYSquared; // 0xf4
 
 private:
-    char m_cUnusedA; // 0xf8
+    [[maybe_unused]] char m_cUnusedA; // 0xf8
     // CreateProjectionState clears it and nothing reads it back.
     char m_cUnusedB; // 0xf9
 

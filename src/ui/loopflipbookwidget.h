@@ -17,17 +17,17 @@ class LoopFlipbookWidget : public InertWidget
 {
 public:
     // Three shared addresses in slots three to five, three stand-ins.
-    virtual int OnMouseDown()
+    int OnMouseDown() override
     {
         return 0;
     }
 
-    virtual int OnMouseUp()
+    int OnMouseUp() override
     {
         return 0;
     }
 
-    virtual int IsDisplayOnly()
+    int IsDisplayOnly() override
     {
         return 1;
     }

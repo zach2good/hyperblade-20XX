@@ -18,11 +18,11 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
-    virtual void Tick(const Vec3* pTargetPos)
+    void Tick(const Vec3* pTargetPos) override
     {
         m_pTargetPos = pTargetPos;
     }

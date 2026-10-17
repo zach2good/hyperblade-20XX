@@ -10,9 +10,9 @@ class EngineObject;
 class CUpdateShotPower : public ReleasingAgendaItem
 {
 public:
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     // The engine tick at bind, which Process measures against.
     unsigned int m_nStarted; // 0x10

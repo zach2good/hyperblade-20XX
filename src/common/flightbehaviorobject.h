@@ -6,7 +6,7 @@
 class FlightBehaviorObject : public GameBehaviorObject
 {
 public:
-    virtual void StartMotion();
+    void StartMotion() override;
 };
 
 #endif

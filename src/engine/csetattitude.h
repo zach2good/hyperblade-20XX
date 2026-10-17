@@ -15,11 +15,11 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
-    virtual void OnKind(short nSlot);
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
+    void OnKind(short nSlot) override;
 
     // Bind stores the address of a physics body member into each of these three.
     Vec3*  m_pVelDir;     // 0x10, the address of the body's velDir

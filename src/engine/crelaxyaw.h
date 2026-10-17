@@ -11,11 +11,11 @@ struct PlanNode;
 class CRelaxYaw : public KindAgendaItem
 {
 public:
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     void SetAngle(float flAngle)
     {

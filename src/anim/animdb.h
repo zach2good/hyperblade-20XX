@@ -15,7 +15,7 @@ class AnimDB : public AnimObject
 {
 public:
     AnimDB(const char* pszName, const char* pszExtra);
-    virtual ~AnimDB();
+    ~AnimDB() override;
 
     void SetName(const char* pszName);
 

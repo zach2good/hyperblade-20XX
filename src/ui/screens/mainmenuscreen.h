@@ -53,9 +53,9 @@ class MainMenuScreen : public Screen
 {
 public:
     MainMenuScreen();
-    ~MainMenuScreen();
-    void         LoadButtonBitmaps();
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    ~MainMenuScreen() override;
+    void LoadButtonBitmaps();
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
 };
 
 // SYNTHETIC: HYPERX 0x0048d900

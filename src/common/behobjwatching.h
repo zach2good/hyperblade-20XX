@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_Watching : public FlightBehaviorObject
 {
 public:
-    virtual ~BehObj_Watching();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_Watching() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_Watching();
 };
 

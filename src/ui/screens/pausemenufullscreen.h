@@ -20,13 +20,13 @@ enum PauseFullWidget
 class PauseMenuFullScreen : public Screen
 {
 public:
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
     PauseMenuFullScreen();
-    ~PauseMenuFullScreen();
+    ~PauseMenuFullScreen() override;
     void Init();
 
 private:
-    int m_nUnusedD; // 0x464
+    [[maybe_unused]] int m_nUnusedD; // 0x464
 };
 
 // SYNTHETIC: HYPERX 0x004433d0

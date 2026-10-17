@@ -27,7 +27,7 @@ public:
 
     CameraObject(int nSlot, class ObjectDef* pDef);
     void InitViewTransforms();
-    ~CameraObject();
+    ~CameraObject() override;
 
     void ViewIt();
 

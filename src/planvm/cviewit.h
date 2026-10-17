@@ -10,8 +10,8 @@ class EngineObject;
 class CViewIt : public BaseResetAgendaItem
 {
 public:
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 };
 
 #endif

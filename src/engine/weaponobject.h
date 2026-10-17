@@ -10,7 +10,7 @@ class WeaponObject : public EngineObject
 {
 public:
     WeaponObject(int nSlot, class ObjectDef* pDef);
-    ~WeaponObject();
+    ~WeaponObject() override;
 
     // Slot 54 is "Boom" and 55 is "Swarf"; the Rok keeps the same pair at the same offsets.
     int m_nAttachedSlot;     // 0xd14

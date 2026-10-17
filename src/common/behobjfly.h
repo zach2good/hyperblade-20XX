@@ -12,11 +12,11 @@ class EngineObject;
 class BehObj_Fly : public FlightBehaviorObject
 {
 public:
-    virtual ~BehObj_Fly();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_Fly() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
 
     // FUNCTION: HYPERX 0x0041dce0
-    virtual void SendTimedMessage()
+    void SendTimedMessage() override
     {
         m_pOwner->PostEvent(MSG_INITIATE, 0, m_pOwner->GetSlot());
 

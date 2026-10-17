@@ -14,15 +14,15 @@ public:
     // No destructor: 0x00405850 stores CollisionObj's table and jumps to ~CollisionShape.
 
     // The seven slots the base leaves pure, plus a fourteenth of this class's own.
-    virtual float GetZ(float x, float y); // 0x0042e930
+    float GetZ(float x, float y) override; // 0x0042e930
     // The two plan collision responses read this slot as a constrain; the reading is unsettled.
-    virtual int           RayIntersection(Vec3* pDir, Vec3* pOrigin, Vec3* pHitOut);                           // 0x0042e810
-    virtual int           SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut);                             // 0x0042e7d0
-    virtual unsigned char PointInside(const Vec3* pPoint);                                                     // 0x004058c0
-    virtual int           PointNearSurface(const Vec3* pPoint);                                                // 0x004058d0
-    virtual Vec3*         NormalAtPoint(const Vec3* pPoint);                                                   // 0x00405860
-    virtual float         RadiusForDirection(const Vec3* pVDir, int nUnused);                                  // 0x00405910
-    virtual void          ForwardTransformRequest(int nA, int nB, float flC, float flD, float flE, float flF); // 0x00405880
+    int           RayIntersection(Vec3* pDir, Vec3* pOrigin, Vec3* pHitOut) override;                  // 0x0042e810
+    int           SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut) override;                    // 0x0042e7d0
+    unsigned char PointInside(const Vec3* pPoint) override;                                            // 0x004058c0
+    int           PointNearSurface(const Vec3* pPoint) override;                                       // 0x004058d0
+    Vec3*         NormalAtPoint(const Vec3* pPoint) override;                                          // 0x00405860
+    float         RadiusForDirection(const Vec3* pVDir, int nUnused) override;                         // 0x00405910
+    virtual void  ForwardTransformRequest(int nA, int nB, float flC, float flD, float flE, float flF); // 0x00405880
 
     // The point on the plane; the normal is the base's m_vNormal.
     Vec3 m_vPoint; // 0x038

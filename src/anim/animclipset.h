@@ -11,7 +11,7 @@
 class AnimClipSet : public AnimObject
 {
 public:
-    virtual ~AnimClipSet();
+    ~AnimClipSet() override;
 
     // AnimSet::LoadIntoRegistry files it in the registry's set table.
     AnimClipSet(FileObj* pFile, const char* pszName)

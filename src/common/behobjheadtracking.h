@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_HeadTracking : public FlightBehaviorObject
 {
 public:
-    virtual ~BehObj_HeadTracking();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_HeadTracking() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_HeadTracking();
 };
 

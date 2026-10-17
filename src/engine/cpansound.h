@@ -10,9 +10,9 @@ class EngineObject;
 class CPanSound : public ReleasingAgendaItem
 {
 public:
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     // Nothing stores one; a SoundEntry is inferred from the pan it steps.
     struct SoundEntry* m_pSound; // 0x10

@@ -18,9 +18,9 @@ enum FinalCeremonyWidget
 class FinalCeremonyScreen : public Screen
 {
 public:
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
     FinalCeremonyScreen();
-    ~FinalCeremonyScreen();
+    ~FinalCeremonyScreen() override;
 };
 
 // SYNTHETIC: HYPERX 0x00443170

@@ -17,8 +17,8 @@ public:
     {
     }
 
-    virtual ~CDDText();
-    virtual int Draw();
+    ~CDDText() override;
+    int Draw() override;
 
     // Not CreateFont: windows.h defines that as a macro for CreateFontA.
     int CreateFontFace(const char* pszFaceName, int nHeight);

@@ -14,9 +14,9 @@ struct AudioMgr : public AudioMgrBase
 
     AudioMgr();
 
-    virtual ~AudioMgr();
+    ~AudioMgr() override;
 
-    virtual void StopCD();
+    void StopCD() override;
 
     // Whether any of the CD's tracks are ripped to Data/Music.
     static bool HasRippedMusic();
@@ -32,14 +32,14 @@ struct AudioMgr : public AudioMgrBase
     int  IsPlaying(int nVoice);
 
     // Silent while wNoSound is set.
-    virtual void PlayGroup(int nGroup);
-    virtual void PlaySpecific(int nVoice);
-    int          LoadSound(struct SoundEntry* pSound);
+    void PlayGroup(int nGroup) override;
+    void PlaySpecific(int nVoice) override;
+    int  LoadSound(struct SoundEntry* pSound);
 
     // Loads the sound list and opens the sound device.
     void Init() override;
 
-    virtual void PlayCDTrack(int nTrack);
+    void PlayCDTrack(int nTrack) override;
 
     int nInitTimeMs; // 0x004, how long Init took
     // The sound manager, built with `new SoundManager`.

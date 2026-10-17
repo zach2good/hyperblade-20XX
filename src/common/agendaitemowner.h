@@ -13,10 +13,10 @@ public:
     {
     }
 
-    virtual char Insert(void* pNode);
+    char Insert(void* pNode) override;
 
     // FUNCTION: HYPERX 0x00414e70
-    ~AgendaItemOwner()
+    ~AgendaItemOwner() override
     {
     }
 

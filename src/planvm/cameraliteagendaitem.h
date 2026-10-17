@@ -17,7 +17,7 @@ public:
     {
     }
 
-    virtual void OnListChanged();
+    void OnListChanged() override;
 
     Vec3* m_pWatchPos; // 0x10
     Vec3* m_pWatchDir; // 0x14

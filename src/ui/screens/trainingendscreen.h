@@ -10,9 +10,9 @@
 class TrainingEndScreen : public Screen
 {
 public:
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
     TrainingEndScreen();
-    ~TrainingEndScreen();
+    ~TrainingEndScreen() override;
 
 private:
     int m_nSelectionMode; // 0x464

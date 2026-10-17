@@ -12,8 +12,8 @@ public:
 
     void OnEnter();
     // Slot five: the case UIScreen::OnWidgetMessage's jump table does not answer by identifier.
-    virtual void OnOtherButton(int nMsg, unsigned int nId);
-    virtual void OnExitTabClick();
+    void OnOtherButton(int nMsg, unsigned int nId) override;
+    void OnExitTabClick() override;
 
 private:
     int m_nAward;      // 0x478, which award is showing, minus one for none

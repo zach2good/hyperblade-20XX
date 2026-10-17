@@ -41,7 +41,7 @@ public:
     // Four screens call this, only one a TournamentSetupUIScreen; it rewinds only the first own widget.
     void ResetFrameOnLoopDone(int nMsg);
 
-    virtual void OnWidgetMessage(int nMsg, unsigned int nId);
+    void OnWidgetMessage(int nMsg, unsigned int nId) override;
 
     // Slots three, four and ten to twenty seven of 0x004b323c all hold Object::Trace, so each is
     // empty here.
@@ -134,7 +134,7 @@ public:
     }
 
     UIScreen();
-    ~UIScreen();
+    ~UIScreen() override;
 
     void BuildLockedFlagsArray();
     void PreloadBitmaps();

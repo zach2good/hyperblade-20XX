@@ -21,23 +21,23 @@ public:
 
     void RefreshObjectBitmaps(int nBuild);
 
-    virtual void RefreshSelection();
-    virtual void RefreshFrames();
+    void RefreshSelection() override;
+    void RefreshFrames() override;
     // Everything UIScreen::OnWidgetMessage's jump table does not answer by identifier.
-    virtual void OnOtherButton(int nMsg, unsigned int nId);
+    void OnOtherButton(int nMsg, unsigned int nId) override;
 
     // The linker folded this empty body onto Stub::Assert, which carries the marker.
-    virtual void OnFirstTabClick()
+    void OnFirstTabClick() override
     {
     }
 
-    virtual void OnExitTabClick();
-    virtual void OnFirstPageTabClick();
-    virtual void OnSecondPageTabClick();
-    virtual void OnThirdPageTabClick();
-    virtual void OnFourthPageTabClick();
-    virtual void OnLeftArrowClick();
-    virtual void OnRightArrowClick();
+    void OnExitTabClick() override;
+    void OnFirstPageTabClick() override;
+    void OnSecondPageTabClick() override;
+    void OnThirdPageTabClick() override;
+    void OnFourthPageTabClick() override;
+    void OnLeftArrowClick() override;
+    void OnRightArrowClick() override;
 
     void HideStatsPanel();
 

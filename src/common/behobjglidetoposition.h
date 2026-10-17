@@ -10,8 +10,8 @@ class EngineObject;
 class BehObj_GlideToPosition : public SurfaceBehaviorObject
 {
 public:
-    virtual ~BehObj_GlideToPosition();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_GlideToPosition() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_GlideToPosition();
 
     // The spot BehParam writes when a plan names a point on the rink.

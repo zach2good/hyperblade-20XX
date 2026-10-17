@@ -18,10 +18,10 @@ class ButtonWidget : public HoldingWidget
 {
 public:
     // Reached only through this table.
-    virtual int OnMouseUp();
+    int OnMouseUp() override;
 
     // Slot five is KeyConfigDialog::SaveKeysAs, shared by many tables, so this is a stand-in.
-    virtual int IsDisplayOnly()
+    int IsDisplayOnly() override
     {
         return 0;
     }

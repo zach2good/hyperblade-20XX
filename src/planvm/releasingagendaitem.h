@@ -7,7 +7,7 @@
 class ReleasingAgendaItem : public KindAgendaItem
 {
 public:
-    virtual void Release(int nArg);
+    void Release(int nArg) override;
 };
 
 #endif

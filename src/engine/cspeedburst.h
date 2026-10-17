@@ -14,9 +14,9 @@ class CSpeedBurst : public ReleasingAgendaItem
 public:
     CSpeedBurst() throw();
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     float GetBoost() const
     {

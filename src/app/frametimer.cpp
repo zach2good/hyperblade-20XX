@@ -55,15 +55,13 @@ unsigned int FrameTimer::Now()
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate(void)
 {
-    unsigned int nTotal = 0;
-
     const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nClockReads++;
 
-        nTotal += (unsigned int)SDL_GetTicks();
+        SDL_GetTicks();
     }
 
     const double dResult = ((double)(unsigned int)SDL_GetTicks() - dwStart) / nClockReads;
@@ -76,15 +74,13 @@ double FrameTimer::Calibrate(void)
 // FUNCTION: HYPERX 0x00442b50
 double FrameTimer::BenchmarkResolution(void)
 {
-    unsigned int nTotal = 0;
-
     const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nPerfSampleCount++;
 
-        nTotal += ((unsigned int)SDL_GetTicks() - dwStart);
+        SDL_GetTicks();
     }
 
     const double dResult = ((double)(unsigned int)SDL_GetTicks() - dwStart) / nPerfSampleCount;

@@ -10,9 +10,9 @@ class EngineObject;
 class CStepAnimation : public BaseResetAgendaItem
 {
 public:
-    virtual void Process(int nArg);
-    virtual void Release(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    void Process(int nArg) override;
+    void Release(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 };
 
 #endif

@@ -24,35 +24,35 @@ public:
 
     char SetClip(short nClipIndex, float flBlend, short nLoopStart);
 
-    virtual ~AnimPlayer();
+    ~AnimPlayer() override;
 
-    virtual AnimBinding* DestroyViaVtable()
+    AnimBinding* DestroyViaVtable() override
     {
         delete this;
 
         return 0;
     }
 
-    virtual char UpdateTick(void);
-    virtual char ClearAnimationSet();
-    virtual char StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate);
+    char UpdateTick(void) override;
+    char ClearAnimationSet() override;
+    char StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate) override;
 
     // Slot five is EngineObject::PostEvent's folded body.
-    virtual char StartClipPlayback(AnimDB* pClip, float flRate, int nFlags)
+    char StartClipPlayback(AnimDB* pClip, float flRate, int nFlags) override
     {
         return SelectAnimationSet(pClip, flRate, nFlags, 0);
     }
 
-    virtual char  SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition);
-    virtual char  StartAnimSetDefaultRate(class AnimDB* pAnimSet);
-    virtual char  AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam);
-    virtual int   SetPlayDirection(int nDirection);
-    virtual char  SetPlayState(int nState);
-    virtual float GetPlaybackRate();
-    virtual void  SetPlaybackRate(float flRate);
-    virtual int   GetPlayState();
-    virtual void  SetClipDuration(short nIndex, float flDuration);
-    virtual void  UpdateFrame(char bAdvance);
+    char  SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition) override;
+    char  StartAnimSetDefaultRate(class AnimDB* pAnimSet) override;
+    char  AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam) override;
+    int   SetPlayDirection(int nDirection) override;
+    char  SetPlayState(int nState) override;
+    float GetPlaybackRate() override;
+    void  SetPlaybackRate(float flRate) override;
+    int   GetPlayState() override;
+    void  SetClipDuration(short nIndex, float flDuration) override;
+    void  UpdateFrame(char bAdvance) override;
 
     AnimPlayer();
 

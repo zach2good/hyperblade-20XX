@@ -9,8 +9,8 @@ class EngineObject;
 class BehObj_Glide : public SurfaceBehaviorObject
 {
 public:
-    virtual ~BehObj_Glide();
-    virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
+    ~BehObj_Glide() override;
+    void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
     BehObj_Glide();
 };
 

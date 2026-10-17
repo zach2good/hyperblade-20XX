@@ -1779,12 +1779,9 @@ void LeagueSetupUIScreen::UpdateStatText()
     const TeamBlock* pTeam;
     int              nPlayer;
 
-    int nCount = 0;
-
     for (int nStat = MATCH_STAT_TOTAL_POINTS; nStat < MATCH_STAT_COUNT; nStat++)
     {
-        int   nTotal = 0;
-        float flSum  = 0.0f;
+        int nTotal = 0;
 
         if (m_bShowHomeTeam != 0)
         {
@@ -1818,8 +1815,6 @@ void LeagueSetupUIScreen::UpdateStatText()
 
                 if (pStats[MATCH_STAT_SHOTS_ON_GOAL] > 0.0f)
                 {
-                    flSum += pStats[nStat];
-                    nCount++;
                 }
             }
             else

@@ -19,15 +19,15 @@ public:
     {
     }
 
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 
-    virtual char IsReplaceable()
+    char IsReplaceable() override
     {
         return 1;
     }
 
-    virtual void OnListChanged();
+    void OnListChanged() override;
 
     // Its one call site allocates from g_apAgendaItemPools[Agenda_CPaletteEffect].
     int CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration);

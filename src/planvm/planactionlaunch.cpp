@@ -214,7 +214,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flPower = pStats->GetScalar(RATING_SHOT_POWER) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY);
 
-            flGain = ((float)rand() * flPower * (1.0f / RAND_MAX) + 10.0f) * flDelta;
+            flGain = ((float)rand() * flPower * (1.0f / (float)RAND_MAX) + 10.0f) * flDelta;
 
             *pflSpeedScale = flGain * *pflSpeedScale;
 
@@ -338,15 +338,15 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
-            *pflSpeedScale = (((float)rand() * (0.5f / RAND_MAX) + 0.5f) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY) * 10.0f + 75.0f) * flDelta;
+            *pflSpeedScale = (((float)rand() * (0.5f / (float)RAND_MAX) + 0.5f) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY) * 10.0f + 75.0f) * flDelta;
 
             if (g_bSessionActive != 0)
             {
                 *pflSpeedScale = *pflSpeedScale * 1.5f;
             }
 
-            flJitterX = (float)rand() * (1.0f / RAND_MAX) - 0.5f;
-            flJitterZ = (float)rand() * (1.0f / RAND_MAX) - 0.5f;
+            flJitterX = (float)rand() * (1.0f / (float)RAND_MAX) - 0.5f;
+            flJitterZ = (float)rand() * (1.0f / (float)RAND_MAX) - 0.5f;
 
             pVel->x = flJitterX * 10.0f - pRok->GetPositionPtr()->x;
 

@@ -12,9 +12,9 @@ class CTrack : public ReleasingAgendaItem
     // m_pOwner is a camera for this kind.
 
 public:
-    virtual void Process(int nArg);
-    virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
-    virtual void OnListChanged();
+    void Process(int nArg) override;
+    void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     Vec3* m_pPos;        // 0x10
     Vec3* m_pDir;        // 0x14

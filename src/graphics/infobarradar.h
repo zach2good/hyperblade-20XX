@@ -11,9 +11,9 @@ class InfoBarRadar : public CDDDrawable
 {
 public:
     InfoBarRadar();
-    ~InfoBarRadar() throw();
+    ~InfoBarRadar() throw() override;
 
-    virtual int Draw();
+    int Draw() override;
 
     int  TrackSlot(int nSlot);
     void DrawMarker(int nUnused);

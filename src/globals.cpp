@@ -79,7 +79,7 @@ ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } }
 };
 int                  g_nAnnouncerLineMs;
-StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS] = { 0 };
+StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS] = {};
 int                  g_aStationarySlots[STATIONARY_SLOTS] = { 0 };
 int                  g_nStationaryCount;
 
@@ -132,7 +132,7 @@ int                             g_bPerspectiveTexturing = 1;
 MdmDrawTexPolyFn                g_pfnMdmDrawTexPoly;
 Handle<struct MdmTexLibraryTag> g_hMdmTexDll;
 // Initialised to keep source order: SoftTex::Load's palette loop bounds one past the array.
-PaletteEntry              g_aSoftTexPalette[256] = { 0 };
+PaletteEntry              g_aSoftTexPalette[256] = {};
 class SoftTex*            g_pSoftTexHead         = 0;
 int                       g_nGameConfigReturnState;
 int                       g_nSaveLoadReturnState;
