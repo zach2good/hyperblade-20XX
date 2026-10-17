@@ -17,7 +17,7 @@ CDDText::~CDDText() throw()
 }
 
 // Draws into whatever the back-buffer globals point at, the HUD layer during a match, in the palette
-// entry nearest the colour, as GDI matched a COLORREF against the DIB's table.
+// entry nearest the colour, as GDI matched a colour against the DIB's table.
 // FUNCTION: HYPERX 0x0044fa40
 int CDDText::Draw()
 {
@@ -33,7 +33,7 @@ int CDDText::Draw()
 
 // A colour of -1 leaves the colour alone.
 // FUNCTION: HYPERX 0x0044faf0
-int CDDText::SetText(const char* pszText, COLORREF color)
+int CDDText::SetText(const char* pszText, std::uint32_t color)
 {
     if (m_pszText != 0)
     {
@@ -42,7 +42,7 @@ int CDDText::SetText(const char* pszText, COLORREF color)
         m_pszText = 0;
     }
 
-    if (color != (COLORREF)-1)
+    if (color != (std::uint32_t)-1)
     {
         m_color = color;
     }

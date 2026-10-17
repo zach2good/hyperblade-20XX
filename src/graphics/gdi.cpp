@@ -472,12 +472,12 @@ GDI::Bitmap* GDI::LoadBitmapAsBackground(const char* pszName, int* pbPaletted)
 // Every caller draws onto the menu canvas, in the System font's sixteen-pixel cell, which the
 // original never replaced with a font of its own.
 // FUNCTION: HYPERX 0x0048f3b0
-void GDI::DrawTransparentText(COLORREF color, int x, int y, const char* pszText, int, int)
+void GDI::DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int, int)
 {
     constexpr auto SYSTEM_FONT_HEIGHT = 16;
 
     const auto canvas = Window::MenuPixels();
-    const auto nRGB   = (std::uint32_t)(GetRValue(color) << 16 | GetGValue(color) << 8 | GetBValue(color));
+    const auto nRGB   = (color & 0xff) << 16 | (color & 0xff00) | (color >> 16 & 0xff);
 
     Text::Draw(Text::Find(SYSTEM_FONT_HEIGHT), canvas.pBits, canvas.nWidth * 4, canvas.nWidth, canvas.nHeight, x, y, pszText, nRGB);
 }

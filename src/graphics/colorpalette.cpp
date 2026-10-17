@@ -206,7 +206,7 @@ void ColorPalette::ReloadPalette(short nMode)
     SyncDIBColorTable(0, 0x100);
 }
 
-int ColorPalette::NearestIndex(COLORREF colour, int nSkip) const
+int ColorPalette::NearestIndex(std::uint32_t colour, int nSkip) const
 {
     auto nBest     = 0;
     auto nBestDist = 0x7fffffff;
@@ -218,9 +218,9 @@ int ColorPalette::NearestIndex(COLORREF colour, int nSkip) const
             continue;
         }
 
-        const int dr    = (int)m_current[i].peRed - GetRValue(colour);
-        const int dg    = (int)m_current[i].peGreen - GetGValue(colour);
-        const int db    = (int)m_current[i].peBlue - GetBValue(colour);
+        const int dr    = (int)m_current[i].peRed - (int)(colour & 0xff);
+        const int dg    = (int)m_current[i].peGreen - (int)(colour >> 8 & 0xff);
+        const int db    = (int)m_current[i].peBlue - (int)(colour >> 16 & 0xff);
         const int nDist = dr * dr + dg * dg + db * db;
 
         if (nDist < nBestDist)

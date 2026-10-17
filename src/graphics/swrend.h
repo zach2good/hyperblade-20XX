@@ -2,6 +2,7 @@
 #define HYPERBLADE_SWREND_H
 
 #include "common/compat.h"
+#include "math/point.h"
 
 struct FaceRecord;
 class MeshBone;
@@ -16,7 +17,7 @@ namespace SWRend
 void          BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite);
 unsigned char ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2);
 void          FillSpans(int nColour);
-void          FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour);
+void          FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour);
 void          FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour);
 void          SortFaces(short nCount);
 void          ClipPolyAgainstPlane(struct ClipPolyBuffer* pIn, struct ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale);

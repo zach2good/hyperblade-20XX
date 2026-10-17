@@ -40,8 +40,7 @@ class SaveObject;
 // What the layout builder returns: 64 bytes shared by a widget's layout and a camera's viewport.
 struct LayoutState
 {
-    RECT  rcPrev; // 0x00
-    void* pBits;  // 0x10
+    void* pBits; // 0x10
     // Nought in a widget's, the camera's own transform in the camera's.
     class CameraProjectionState* pCamera;      // 0x14
     int                          nPrevWidth;   // 0x18

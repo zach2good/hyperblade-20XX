@@ -255,7 +255,7 @@ void Widget::Draw(int)
         return;
     }
 
-    COLORREF color = 0xffff;
+    auto color = (std::uint32_t)0xffff;
 
     if (m_bHighlighted != 0)
     {
@@ -550,8 +550,6 @@ LayoutState Widget::InitLayoutState(void* pBits, int nWidth, int nHeight, int nP
     LayoutState state;
 
     memset(&state, 0, sizeof(state));
-
-    SetRect(&state.rcPrev, 0, 0, nPrevWidth, nPrevHeight);
 
     state.pCamera      = 0;
     state.pBits        = pBits;

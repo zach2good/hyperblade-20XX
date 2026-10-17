@@ -651,7 +651,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
 }
 
 // FUNCTION: HYPERX 0x0044aeb0
-void SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour)
+void SWRend::FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour)
 {
     g_wSpanYMin = (short)(g_nBackBufferHeight - 1);
     g_wSpanYMax = 0;

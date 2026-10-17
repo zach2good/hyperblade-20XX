@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "math/point.h"
 #include "engine/objectclasses.h"
 #include "infobarradar.h"
 #include "graphics/cdddrawable.h"
@@ -170,7 +171,7 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 // FUNCTION: HYPERX 0x00450000
 void InfoBarRadar::DrawMarker(int)
 {
-    POINT apt[ARROW_POINTS];
+    Point apt[ARROW_POINTS];
 
     apt[0].x = 0;
 

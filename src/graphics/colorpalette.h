@@ -3,6 +3,7 @@
 #ifndef HYPERBLADE_COLORPALETTE_H
 #define HYPERBLADE_COLORPALETTE_H
 #include "common/compat.h"
+#include <cstdint>
 
 #include "common/pathstring.h"
 #include "graphics/paletterange.h"
@@ -29,8 +30,8 @@ public:
 
     void Build();
 
-    // The entry nearest a colour, skipping one index, or none for -1.
-    int NearestIndex(COLORREF colour, int nSkip) const;
+    // The entry nearest a 0x00BBGGRR colour, skipping one index, or none for -1.
+    int NearestIndex(std::uint32_t colour, int nSkip) const;
 
     // The colour-cycle range a fade kind occupies.
     PaletteRange GetFrameRange(int nKind);

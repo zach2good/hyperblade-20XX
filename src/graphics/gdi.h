@@ -61,8 +61,9 @@ BITMAPINFOHEADER* ReadDIB(FileObj* pFile);
 BITMAPINFOHEADER* ExpandRLE(BITMAPINFOHEADER* pDib);
 Bitmap*           LoadJPEGImage(const char* pszPath);
 void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
-void              DrawTransparentText(COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
-void              DrawBitmapToWindow(const char* pszResourceName);
+// The colour is 0x00BBGGRR.
+void DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int cchText, int nUnused);
+void DrawBitmapToWindow(const char* pszResourceName);
 
 } // namespace GDI
 

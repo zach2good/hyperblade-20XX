@@ -65,25 +65,23 @@ Window::MenuCanvas Window::MenuPixels()
 }
 
 // The canvas's place in the client area: as large as fits, centred.
-static RECT MenuRect()
+static SDL_Rect MenuRect()
 {
-    auto rcClient = RECT{};
+    auto nClientWidth  = 0;
+    auto nClientHeight = 0;
 
-    SDL_GetWindowSizeInPixels(s_pWindow, (int*)&rcClient.right, (int*)&rcClient.bottom);
+    SDL_GetWindowSizeInPixels(s_pWindow, &nClientWidth, &nClientHeight);
 
-    auto cx = (int)rcClient.right;
+    auto cx = nClientWidth;
     auto cy = cx * MENU_HEIGHT / MENU_WIDTH;
 
-    if (cy > rcClient.bottom)
+    if (cy > nClientHeight)
     {
-        cy = rcClient.bottom;
+        cy = nClientHeight;
         cx = cy * MENU_WIDTH / MENU_HEIGHT;
     }
 
-    const auto x = (rcClient.right - cx) / 2;
-    const auto y = (rcClient.bottom - cy) / 2;
-
-    return RECT{ x, y, x + cx, y + cy };
+    return SDL_Rect{ (nClientWidth - cx) / 2, (nClientHeight - cy) / 2, cx, cy };
 }
 
 // SDL fits the canvas the same way MenuRect does, so the mouse mapping agrees with the picture.
@@ -95,16 +93,14 @@ void Window::PresentMenu()
 LPARAM Window::ToMenuPoint(LPARAM lParam)
 {
     const auto rc = MenuRect();
-    const auto cx = rc.right - rc.left;
-    const auto cy = rc.bottom - rc.top;
 
-    if (cx <= 0 || cy <= 0)
+    if (rc.w <= 0 || rc.h <= 0)
     {
         return lParam;
     }
 
-    const auto x = ((short)LOWORD(lParam) - rc.left) * MENU_WIDTH / cx;
-    const auto y = ((short)HIWORD(lParam) - rc.top) * MENU_HEIGHT / cy;
+    const auto x = ((short)LOWORD(lParam) - rc.x) * MENU_WIDTH / rc.w;
+    const auto y = ((short)HIWORD(lParam) - rc.y) * MENU_HEIGHT / rc.h;
 
     return MAKELPARAM(x, y);
 }
