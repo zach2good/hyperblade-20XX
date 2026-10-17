@@ -24,7 +24,6 @@ AudioMgr::AudioMgr()
 , pEntries(0)
 , wNoSound(0)
 , wNoCD(0)
-, hWnd(0)
 , nUnused(0)
 {
 }
@@ -58,10 +57,8 @@ AudioMgr::~AudioMgr()
 
 // A device that will not open mutes the manager; the mixer lines are set up either way.
 // FUNCTION: HYPERX 0x00490990
-void AudioMgr::Init(HWND hWindow)
+void AudioMgr::Init()
 {
-    hWnd = hWindow;
-
     SoundManager* const pSounds = new SoundManager;
 
     int nCost = 0;

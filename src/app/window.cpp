@@ -65,7 +65,7 @@ Window::MenuCanvas Window::MenuPixels()
 }
 
 // The canvas's place in the client area: as large as fits, centred.
-static RECT MenuRect(HWND)
+static RECT MenuRect()
 {
     auto rcClient = RECT{};
 
@@ -87,14 +87,14 @@ static RECT MenuRect(HWND)
 }
 
 // SDL fits the canvas the same way MenuRect does, so the mouse mapping agrees with the picture.
-void Window::PresentMenu(HWND)
+void Window::PresentMenu()
 {
     Presenter::Canvas(s_menuPixels.data(), MENU_WIDTH * 4, MENU_WIDTH, MENU_HEIGHT);
 }
 
-LPARAM Window::ToMenuPoint(HWND hWnd, LPARAM lParam)
+LPARAM Window::ToMenuPoint(LPARAM lParam)
 {
-    const auto rc = MenuRect(hWnd);
+    const auto rc = MenuRect();
     const auto cx = rc.right - rc.left;
     const auto cy = rc.bottom - rc.top;
 
@@ -154,11 +154,11 @@ void Window::OnSize(WPARAM nKind, int cx, int cy)
 }
 
 // Menus redraw from the canvas at the new size; a match redraws itself next frame.
-void Window::OnSizeMenus(HWND hWnd, WPARAM nKind)
+void Window::OnSizeMenus(WPARAM nKind)
 {
     if (nKind != SIZE_MINIMIZED && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
-        Window::PresentMenu(hWnd);
+        Window::PresentMenu();
     }
 }
 
@@ -358,7 +358,7 @@ static void HandleWindowEvent(SDL_Event* pEvent)
             if (pEvent->window.data1 != 0 && s_bInLiveUpdate == false)
             {
                 s_bInLiveUpdate = true;
-                GameApp::MainUpdate(hWnd);
+                GameApp::MainUpdate();
                 s_bInLiveUpdate = false;
             }
 

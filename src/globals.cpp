@@ -125,7 +125,6 @@ int                       g_nSurfacePitchCopy;
 int                       g_nViewportOriginY;
 int                       g_nViewportOriginX;
 unsigned char*            g_pBackBufferBitsCopy;
-HWND                      g_hWndGame;
 // Full screen by default; -w turns it off.
 int g_bFullScreen = 1;
 int g_nBackBufferHeight;

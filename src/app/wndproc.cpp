@@ -72,11 +72,9 @@ static void ReleaseHeldKeys()
 
 static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
 {
-    const HWND hWnd = g_gameApp.m_hWnd;
-
     if (g_nSplashFrame != 0)
     {
-        GameApp::NextSplash(hWnd);
+        GameApp::NextSplash();
 
         return;
     }
@@ -99,7 +97,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
             // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
             if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown(wParam) == -1)
             {
-                GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
+                GameApp::HandleGlobalKeyEvent((int)wParam);
             }
 
             return;
@@ -119,7 +117,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
         }
         else
         {
-            g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(hWnd, lParam));
+            g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(lParam));
         }
 
         return;
@@ -127,7 +125,7 @@ static void Press(UINT uMsg, unsigned int wParam, LPARAM lParam)
 
     if (wParam == 'Q' || wParam == VK_ESCAPE || wParam == VK_PAUSE)
     {
-        GameApp::HandleGlobalKeyEvent(hWnd, (int)wParam);
+        GameApp::HandleGlobalKeyEvent((int)wParam);
     }
 }
 
@@ -139,7 +137,7 @@ static void Release(UINT uMsg, unsigned int wParam, LPARAM lParam)
     {
         if (uMsg != WM_KEYUP && g_pActiveScreen != NULL)
         {
-            g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(g_gameApp.m_hWnd, lParam));
+            g_pActiveScreen->OnMouseMessage(uMsg, wParam, (unsigned int)Window::ToMenuPoint(lParam));
         }
     }
     else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
@@ -174,7 +172,7 @@ void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
 {
     if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
-        g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, nButtons, (unsigned int)Window::ToMenuPoint(g_gameApp.m_hWnd, MAKELPARAM(nX, nY)));
+        g_pActiveScreen->OnMouseMessage(WM_MOUSEMOVE, nButtons, (unsigned int)Window::ToMenuPoint(MAKELPARAM(nX, nY)));
     }
 }
 
@@ -202,7 +200,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 
         case WM_SIZE:
             Window::OnSize(wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
-            Window::OnSizeMenus(hWnd, wParam);
+            Window::OnSizeMenus(wParam);
             return 0;
 
         case WM_CREATE:
@@ -214,7 +212,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             return -1;
 
         case WM_DESTROY:
-            GameApp::Shutdown(hWnd);
+            GameApp::Shutdown();
             g_bShuttingDown = 1;
             return 0;
 
@@ -232,7 +230,7 @@ int WndProc::HandlePaint(HWND hWnd)
     if (g_nSplashFrame != 0)
     {
         ValidateRgn(hWnd, NULL);
-        Window::PresentMenu(hWnd);
+        Window::PresentMenu();
 
         return 1;
     }

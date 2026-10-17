@@ -542,7 +542,7 @@ int Screen::PaintToWindow()
         m_apWidgets[nSlot]->Draw(nSlot);
     }
 
-    Window::PresentMenu(g_gameApp.GetMainWindow());
+    Window::PresentMenu();
 
     return 1;
 }
@@ -778,7 +778,7 @@ void Screen::ClearBlack(...)
     const auto canvas = Window::MenuPixels();
 
     std::fill(canvas.pBits, canvas.pBits + canvas.nWidth * canvas.nHeight, 0u);
-    Window::PresentMenu(g_gameApp.GetMainWindow());
+    Window::PresentMenu();
 }
 
 unsigned int g_nPostMatchEscState = ESTATE_LOBBY;

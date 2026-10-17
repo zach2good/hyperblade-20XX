@@ -13,7 +13,7 @@ struct PlanNode;
 struct GameApp
 {
     static int  HandleMatchKeypress(unsigned int nKey);
-    static void HandleGlobalKeyEvent(HWND hWnd, int nKey);
+    static void HandleGlobalKeyEvent(int nKey);
     static void OnStartup(void);
     static void OnExit(void);
 
@@ -33,13 +33,13 @@ struct GameApp
     static void AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
     static int  ShowMessageBox(const char* pszText, const char* pszCaption, unsigned int nType);
     static HWND CreateMainWindow(const char* pszTitle);
-    static void Shutdown(HWND hWnd);
+    static void Shutdown();
 
-    void ReportLastError(HWND hUnused);
+    void ReportLastError();
     void Error(const char* pszFormat, ...);
     void Fatal(const char* pszFormat, ...);
     void FatalString(const char* pszFormat, ...);
-    void FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args);
+    void FatalErrorFmtString(const char* pszFormat, va_list args);
 
     int FindCDRomDrive(bool bRequired);
 
@@ -80,13 +80,13 @@ struct GameApp
 
     void SetWindowAndCallbacks(HWND hWnd, void (*pfnStartup)(void), void (*pfnShutdown)(void));
 
-    void FatalErrorFmt(HWND hWnd, const char* pszFormat, va_list args);
+    void FatalErrorFmt(const char* pszFormat, va_list args);
 
-    void FatalError(HWND hWnd, String strMessage);
-    void ShowErrorBox(HWND hWnd, String strMessage);
-    void ErrorFmt(HWND hWnd, const char* pszFormat, va_list args);
+    void FatalError(String strMessage);
+    void ShowErrorBox(String strMessage);
+    void ErrorFmt(const char* pszFormat, va_list args);
 
-    static int MainUpdate(HWND hWnd);
+    static int MainUpdate();
 
     static HWND  Initialize(char* pszCommandLine);
     static void  InitializeResourcePaths();
@@ -96,8 +96,8 @@ struct GameApp
     static void SetModelPath(int bTexEnabled);
 
     // The splashes run in the main loop before the menus, and a key or click skips each one.
-    static void NextSplash(HWND hWnd);
-    static bool UpdateSplash(HWND hWnd);
+    static void NextSplash();
+    static bool UpdateSplash();
 };
 
 // SYNTHETIC: HYPERX 0x0044d400

@@ -14,7 +14,7 @@ void                    RunFrame(void);
 // two ticks.
 void         Tick();
 void         Draw(float flAlpha);
-void         InitializeEngine(HWND hWnd);
+void         InitializeEngine();
 void         ShutdownEngine(void);
 unsigned int UpdateState(void);
 

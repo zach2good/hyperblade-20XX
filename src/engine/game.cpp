@@ -111,7 +111,7 @@ void Game::Draw(float flAlpha)
 
 // Builds the game's owners in the original's order, timing each stage.
 // FUNCTION: HYPERX 0x0045c700
-void Game::InitializeEngine(HWND hWnd)
+void Game::InitializeEngine()
 {
     int nStart = GameApp::GetInstallLevel();
 
@@ -136,7 +136,7 @@ void Game::InitializeEngine(HWND hWnd)
 
     g_pAudioMgr = new AudioMgr;
 
-    g_pAudioMgr->Init(hWnd);
+    g_pAudioMgr->Init();
 
     nDelta = GameApp::GetInstallLevel() - nStart;
 

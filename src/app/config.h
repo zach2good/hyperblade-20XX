@@ -10,7 +10,6 @@ namespace Config
 
 void LoadPreferences(const char* pszFileName);
 int  ParseFile(const char* pszData, const char* pszFallbackPath, KeyRow* pRows);
-int  SavePreferences(HWND hWnd, const char* pszText);
 int  IsCommentLine(const char* pszLine);
 
 } // namespace Config

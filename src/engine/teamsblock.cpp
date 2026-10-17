@@ -119,7 +119,7 @@ TeamsBlock::TeamsBlock()
     }
     else
     {
-        g_gameApp.ReportLastError(0);
+        g_gameApp.ReportLastError();
 
         g_gameApp.OnShutdown();
     }

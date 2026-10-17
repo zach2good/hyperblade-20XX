@@ -100,9 +100,6 @@ extern GameApp g_gameApp;
 // SYNTHETIC: HYPERX 0x0044c060
 // $E2
 
-// GLOBAL: HYPERX 0x004ceebc
-extern HWND g_hWndGame;
-
 // GLOBAL: HYPERX 0x004d094c
 extern unsigned char g_cMdmTexLoaded;
 

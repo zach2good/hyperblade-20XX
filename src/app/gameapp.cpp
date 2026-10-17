@@ -102,7 +102,7 @@ void GameApp::Fatal(const char* pszFormat, ...)
 
     va_start(argList, pszFormat);
 
-    FatalErrorFmt(m_hWnd, pszFormat, argList);
+    FatalErrorFmt(pszFormat, argList);
 
     va_end(argList);
 }
@@ -114,7 +114,7 @@ void GameApp::Error(const char* pszFormat, ...)
 
     va_start(argList, pszFormat);
 
-    ErrorFmt(m_hWnd, pszFormat, argList);
+    ErrorFmt(pszFormat, argList);
 
     va_end(argList);
 }
@@ -172,7 +172,7 @@ HWND GameApp::Initialize(char* pszCommandLine)
     GameApp::SetCursorVisible(1);
 
     g_nSplashFrame = 0;
-    GameApp::NextSplash(hWnd);
+    GameApp::NextSplash();
 
     // Windows shows its start-up busy cursor until a new program first takes its messages.
     Window::Pump();
@@ -182,7 +182,7 @@ HWND GameApp::Initialize(char* pszCommandLine)
     // STRING: HYPERX 0x004bba9c
     Config::LoadPreferences("Prefs.txt");
 
-    Game::InitializeEngine(hWnd);
+    Game::InitializeEngine();
 
     GameApp::SetupViewports();
 
@@ -190,7 +190,7 @@ HWND GameApp::Initialize(char* pszCommandLine)
 
     Window::ApplyCurrentSize();
 
-    g_frameTimer.ProcessInitialFrameUpdate(hWnd);
+    g_frameTimer.ProcessInitialFrameUpdate();
 
     if (g_bNoSoundArg != 0)
     {
@@ -243,7 +243,7 @@ constexpr auto SPLASH_MS = 3000ul;
 static unsigned int s_dwSplashShown = 0;
 
 // FUNCTION: HYPERX 0x00419290
-void GameApp::NextSplash(HWND hWnd)
+void GameApp::NextSplash()
 {
     static const constexpr char* s_apszSplashes[] = {
         // STRING: HYPERX 0x004bbaf4
@@ -260,19 +260,19 @@ void GameApp::NextSplash(HWND hWnd)
     {
         g_nSplashFrame = 0;
 
-        WndProc::HandlePaint(hWnd);
+        WndProc::HandlePaint(g_gameApp.m_hWnd);
 
         return;
     }
 
     Screen::ClearBlack();
 
-    GDI::DrawBitmapToWindow(hWnd, s_apszSplashes[g_nSplashFrame - 1]);
+    GDI::DrawBitmapToWindow(s_apszSplashes[g_nSplashFrame - 1]);
 
     s_dwSplashShown = (unsigned int)SDL_GetTicks();
 }
 
-bool GameApp::UpdateSplash(HWND hWnd)
+bool GameApp::UpdateSplash()
 {
     if (g_nSplashFrame == 0)
     {
@@ -281,11 +281,11 @@ bool GameApp::UpdateSplash(HWND hWnd)
 
     if ((unsigned int)SDL_GetTicks() - s_dwSplashShown >= SPLASH_MS)
     {
-        GameApp::NextSplash(hWnd);
+        GameApp::NextSplash();
     }
     else
     {
-        Window::PresentMenu(hWnd);
+        Window::PresentMenu();
     }
 
     FrameTimer::Pace();
@@ -358,7 +358,7 @@ void GameApp::ParseCommandLine(char* pszCommandLine)
 }
 
 // FUNCTION: HYPERX 0x00419580
-void GameApp::Shutdown(HWND)
+void GameApp::Shutdown()
 {
     Gamepad::Shutdown();
 
@@ -608,20 +608,18 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
 
 #define ERROR_BOX_STYLE (MB_SETFOREGROUND | MB_SYSTEMMODAL | MB_ICONHAND)
 
-#define ERROR_BOX(w, t, c) Window::ShowMessage(t, c, ERROR_BOX_STYLE)
+#define ERROR_BOX(t, c) Window::ShowMessage(t, c, ERROR_BOX_STYLE)
 
 // Files open through SDL, so SDL holds the reason the last one failed.
 // FUNCTION: HYPERX 0x004238b0
-void GameApp::ReportLastError(HWND)
+void GameApp::ReportLastError()
 {
     Error("%s", SDL_GetError());
 }
 
 // FUNCTION: HYPERX 0x00423900
-void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
+void GameApp::ShowErrorBox(String strMessage)
 {
-    HWND hWndOwner;
-
     const int nCursor = GameApp::SetCursorVisible(1);
 
     String strCaption = m_strCaption.m_pchData;
@@ -633,54 +631,45 @@ void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 
-    if (hWnd != 0)
-    {
-        hWndOwner = hWnd;
-    }
-    else
-    {
-        hWndOwner = m_hWnd;
-    }
-
-    ERROR_BOX(hWndOwner, strMessage.m_pchData, strCaption.m_pchData);
+    ERROR_BOX(strMessage.m_pchData, strCaption.m_pchData);
 
     GameApp::SetCursorVisible(nCursor);
 }
 
 // FUNCTION: HYPERX 0x00423a00
-void GameApp::FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args)
+void GameApp::FatalErrorFmtString(const char* pszFormat, va_list args)
 {
     String strFormat(pszFormat);
 
-    FatalErrorFmt(hWnd, strFormat.m_pchData, args);
+    FatalErrorFmt(strFormat.m_pchData, args);
 }
 
 #define SHUT_DOWN(pApp) pApp->OnShutdown()
 
 // FUNCTION: HYPERX 0x00423a70
-void GameApp::ErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
+void GameApp::ErrorFmt(const char* pszFormat, va_list args)
 {
     String::FormatAlloc(&m_stringPool.m_strMessage, pszFormat, args);
 
-    ShowErrorBox(hWnd, m_stringPool.m_strMessage);
+    ShowErrorBox(m_stringPool.m_strMessage);
 
     m_stringPool.m_strMessage.Empty();
 }
 
 // FUNCTION: HYPERX 0x00423ab0
-void GameApp::FatalErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
+void GameApp::FatalErrorFmt(const char* pszFormat, va_list args)
 {
     String::FormatAlloc(&m_stringPool.m_strMessage, pszFormat, args);
 
-    FatalError(hWnd, m_stringPool.m_strMessage);
+    FatalError(m_stringPool.m_strMessage);
 
     m_stringPool.m_strMessage.Empty();
 }
 
 // FUNCTION: HYPERX 0x00423af0
-void GameApp::FatalError(HWND hWnd, String strMessage)
+void GameApp::FatalError(String strMessage)
 {
-    ShowErrorBox(hWnd, strMessage);
+    ShowErrorBox(strMessage);
 
     SHUT_DOWN(this);
 }
@@ -692,7 +681,7 @@ void GameApp::FatalString(const char* pszFormat, ...)
 
     va_start(argList, pszFormat);
 
-    FatalErrorFmtString(m_hWnd, pszFormat, argList);
+    FatalErrorFmtString(pszFormat, argList);
 
     va_end(argList);
 }
@@ -777,7 +766,7 @@ int GameApp::SetCursorVisible(int bVisible)
 }
 
 // FUNCTION: HYPERX 0x0044c160
-int GameApp::MainUpdate(HWND hWnd)
+int GameApp::MainUpdate()
 {
     // A finished track is followed by the menu track, or a random one during play.
     if (g_soundMixer.Update() && g_pAudioMgr != 0)
@@ -797,9 +786,9 @@ int GameApp::MainUpdate(HWND hWnd)
 
     if (g_gameApp.m_bIsActive)
     {
-        ValidateRgn(hWnd, 0);
+        ValidateRgn(g_gameApp.m_hWnd, 0);
 
-        if (GameApp::UpdateSplash(hWnd))
+        if (GameApp::UpdateSplash())
         {
             return 0;
         }

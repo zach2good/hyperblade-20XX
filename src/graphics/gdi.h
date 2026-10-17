@@ -62,7 +62,7 @@ BITMAPINFOHEADER* ExpandRLE(BITMAPINFOHEADER* pDib);
 Bitmap*           LoadJPEGImage(const char* pszPath);
 void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
 void              DrawTransparentText(COLORREF color, int x, int y, const char* pszText, int cchText, int nUnused);
-void              DrawBitmapToWindow(HWND hWnd, const char* pszResourceName);
+void              DrawBitmapToWindow(const char* pszResourceName);
 
 } // namespace GDI
 

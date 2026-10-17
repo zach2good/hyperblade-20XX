@@ -20,9 +20,9 @@ struct MenuCanvas
 };
 
 MenuCanvas MenuPixels();
-void       PresentMenu(HWND hWnd);
-LPARAM     ToMenuPoint(HWND hWnd, LPARAM lParam);
-void       OnSizeMenus(HWND hWnd, WPARAM nKind);
+void       PresentMenu();
+LPARAM     ToMenuPoint(LPARAM lParam);
+void       OnSizeMenus(WPARAM nKind);
 void       OnSize(WPARAM nKind, int cx, int cy);
 
 // SDL owns the window and its event loop. Window events reach the game as they happen, and

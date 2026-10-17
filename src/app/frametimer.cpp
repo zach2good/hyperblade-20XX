@@ -95,7 +95,7 @@ double FrameTimer::BenchmarkResolution(void)
 }
 
 // FUNCTION: HYPERX 0x00442ca0
-void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd)
+void FrameTimer::ProcessInitialFrameUpdate()
 {
     if (bFrameTimesOn == 0)
     {
@@ -116,7 +116,7 @@ void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd)
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {
-        ValidateRgn(hWnd, 0);
+        ValidateRgn(g_gameApp.m_hWnd, 0);
         Game::RunFrame();
     }
 

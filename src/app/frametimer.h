@@ -56,7 +56,7 @@ struct FrameTimer
 
     double Calibrate(void);
     double BenchmarkResolution(void);
-    void   ProcessInitialFrameUpdate(HWND hWnd);
+    void   ProcessInitialFrameUpdate();
 
     static double EndFrameUpdate(FrameTimer* timer);
 

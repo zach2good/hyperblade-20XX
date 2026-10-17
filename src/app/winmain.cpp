@@ -27,7 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
         while (Window::Pump())
         {
-            if (GameApp::MainUpdate(g_gameApp.GetMainWindow()))
+            if (GameApp::MainUpdate())
             {
                 Window::WaitWhileInactive();
             }

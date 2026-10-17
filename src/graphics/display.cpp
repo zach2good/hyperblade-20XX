@@ -20,8 +20,6 @@ unsigned int g_dwDisplayHeight = 480;
 // FUNCTION: HYPERX 0x0044b500
 int Display::Initialize(HWND hWnd)
 {
-    g_hWndGame = hWnd;
-
     Window::ApplyFullscreenStyle();
 
     g_cMdmTexLoaded = (char)Graphics::LoadMdmTexDLL();

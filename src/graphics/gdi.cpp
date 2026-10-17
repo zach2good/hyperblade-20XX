@@ -82,7 +82,7 @@ GDI::Bitmap* FromDIB(const BITMAPINFOHEADER* pDib)
 } // namespace
 
 // FUNCTION: HYPERX 0x00418cc0
-void GDI::DrawBitmapToWindow(HWND hWnd, const char* pszResourceName)
+void GDI::DrawBitmapToWindow(const char* pszResourceName)
 {
     Bitmap* const pBitmap = GDI::LoadBitmapWithPalette(pszResourceName, nullptr);
 
@@ -90,7 +90,7 @@ void GDI::DrawBitmapToWindow(HWND hWnd, const char* pszResourceName)
     {
         GDI::Blit(0, 0, pBitmap->nWidth, pBitmap->nHeight, pBitmap, 0, 0);
 
-        Window::PresentMenu(hWnd);
+        Window::PresentMenu();
 
         delete pBitmap;
     }

@@ -12,7 +12,7 @@ public:
     {
     }
 
-    virtual void Init(HWND hWindow)       = 0;
+    virtual void Init()                   = 0;
     virtual void PlayGroup(int nGroup)    = 0;
     virtual void PlaySpecific(int nVoice) = 0;
     virtual void PlayCDTrack(int nTrack)  = 0;

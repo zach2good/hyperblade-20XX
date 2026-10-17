@@ -1286,7 +1286,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
         return 1;
     }
 
-    g_gameApp.ReportLastError(0);
+    g_gameApp.ReportLastError();
     g_gameApp.OnShutdown();
 
     return 0;
@@ -2941,7 +2941,7 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
         return 1;
     }
 
-    g_gameApp.ReportLastError(0);
+    g_gameApp.ReportLastError();
     g_gameApp.OnShutdown();
 
     return 0;
@@ -3009,7 +3009,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
         return 1;
     }
 
-    g_gameApp.ReportLastError(0);
+    g_gameApp.ReportLastError();
 
     return 0;
 }

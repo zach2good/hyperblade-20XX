@@ -34,7 +34,7 @@ struct AudioMgr : public AudioMgrBase
     int          LoadSound(struct SoundEntry* pSound);
 
     // Loads the sound list and opens the sound device.
-    virtual void Init(HWND hWindow);
+    void Init() override;
 
     virtual void PlayCDTrack(int nTrack);
 
@@ -45,7 +45,6 @@ struct AudioMgr : public AudioMgrBase
     short wNoSound; // 0x00c
     // Set when there are no music tracks to play.
     short wNoCD;   // 0x00e
-    HWND  hWnd;    // 0x010
     int   nUnused; // 0x014
 };
 

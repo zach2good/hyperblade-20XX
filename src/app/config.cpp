@@ -175,7 +175,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 #define MSG_TOGGLE_MS 0x5dc
 
 // FUNCTION: HYPERX 0x0046d9f0
-void GameApp::HandleGlobalKeyEvent(HWND, int nKey)
+void GameApp::HandleGlobalKeyEvent(int nKey)
 {
     if (g_pRenderer != 0 && g_pRenderer->m_bQuitPromptVisible != 0)
     {
