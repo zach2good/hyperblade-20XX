@@ -10,7 +10,7 @@ namespace WndProc
 
 int              HandlePaint(HWND hWnd);
 int              OnActivate(HWND hWnd, unsigned int bActive, LPARAM lParam);
-unsigned int     HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand);
+unsigned int     HandleRenderMenuCommand(unsigned short nCommand);
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 // Input from the window. Keys are Win32 virtual-key codes; nMessage is WM_LBUTTONDOWN, WM_LBUTTONUP,

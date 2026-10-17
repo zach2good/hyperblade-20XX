@@ -54,11 +54,6 @@ struct GameApp
         return m_hInstance;
     }
 
-    HMENU GetMainMenu() const
-    {
-        return m_hMenu;
-    }
-
     explicit GameApp(short nStringCount);
 
     // All built from the exe directory; Display::ApplyRenderOptions rebuilds m_strModelPath.
@@ -74,7 +69,6 @@ struct GameApp
     int           m_nFrameRate;      // 0x28
     HWND          m_hWnd;            // 0x2c
     HINSTANCE     m_hInstance;       // 0x30
-    HMENU         m_hMenu;           // 0x3c
     unsigned int  m_nEngineState;    // 0x40
     unsigned char m_bIsActive;       // 0x44
     char          m_cUnused;         // 0x45

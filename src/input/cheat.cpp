@@ -343,7 +343,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                 case VK_F7:
                     if (g_cMdmTexLoaded != 0)
                     {
-                        nToggled = WndProc::HandleRenderMenuCommand(g_gameApp.GetMainMenu(), ID_RENDER_BILINEAR_FILTER);
+                        nToggled = WndProc::HandleRenderMenuCommand(ID_RENDER_BILINEAR_FILTER);
                         g_pMessageQueue->ProcessAndClear();
 
                         if (nToggled != 0)

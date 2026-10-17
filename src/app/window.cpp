@@ -19,7 +19,6 @@
 #include <SDL3/SDL.h>
 #include <array>
 #include <utility>
-#include <variant>
 #include <span>
 #include <algorithm>
 
@@ -28,15 +27,9 @@ static SDL_Window* s_pWindow = 0;
 
 #define SWP_MOVE_FLAGS (SWP_SHOWWINDOW | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE)
 
-// The second argument is unread.
 // FUNCTION: HYPERX 0x0044bd60
-void Window::ApplyFullscreenStyle(HWND hWnd, int)
+void Window::ApplyFullscreenStyle()
 {
-    if (g_gameApp.m_hMenu != 0)
-    {
-        SetMenu(hWnd, 0);
-    }
-
     // SDL made the window framed and resizable. Every pause toggle comes here, and only the first
     // sets the size, so the window keeps the one the player gave it.
     static auto s_bSized = false;
@@ -188,15 +181,6 @@ void Window::OnSizeMenus(HWND hWnd, WPARAM nKind)
 
 static bool s_bQuit         = false;
 static bool s_bInLiveUpdate = false;
-
-// Only the menu bar's commands still come as Win32 messages.
-static void HandleWin32Message(const MSG* pMsg)
-{
-    if (pMsg->message == WM_COMMAND)
-    {
-        WndProc::MainWndProc(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
-    }
-}
 
 // The MK_ flags Windows put on a mouse message: the buttons held once it is handled, with Shift
 // and Ctrl.
@@ -406,6 +390,10 @@ static void HandleWindowEvent(SDL_Event* pEvent)
             s_bQuit = true;
             break;
 
+        case SDL_EVENT_QUIT:
+            s_bQuit = true;
+            break;
+
         default:
             break;
     }
@@ -413,13 +401,11 @@ static void HandleWindowEvent(SDL_Event* pEvent)
 
 // SDL's renderer can deliver window messages from inside its own waits, and the game must not
 // draw again from there, so they wait here until the frame is out.
-using Deferred = std::variant<MSG, SDL_Event>;
-
 // ponytail: a frame defers a handful at most; past this many the rest are dropped.
-static std::array<Deferred, 64> s_aDeferred;
-static size_t                   s_nDeferred = 0;
+static std::array<SDL_Event, 64> s_aDeferred;
+static size_t                    s_nDeferred = 0;
 
-static void Defer(const Deferred& deferred)
+static void Defer(const SDL_Event& deferred)
 {
     if (s_nDeferred < s_aDeferred.size())
     {
@@ -437,43 +423,8 @@ static void ReplayDeferred()
 
     for (size_t i = 0; i < nPending; i++)
     {
-        if (auto* const pMsg = std::get_if<MSG>(&aPending[i]))
-        {
-            HandleWin32Message(pMsg);
-        }
-        else
-        {
-            HandleWindowEvent(&std::get<SDL_Event>(aPending[i]));
-        }
+        HandleWindowEvent(&aPending[i]);
     }
-}
-
-// The input the game reads raw keeps its Win32 form: key codes, button flags and client points.
-static bool SDLCALL OnWin32Message(void*, MSG* pMsg)
-{
-    if (pMsg->message == WM_QUIT)
-    {
-        s_bQuit = true;
-
-        return true;
-    }
-
-    if (pMsg->hwnd == 0 || pMsg->hwnd != g_gameApp.m_hWnd)
-    {
-        return true;
-    }
-
-    if (Presenter::Busy())
-    {
-        Defer(*pMsg);
-
-        return true;
-    }
-
-    ReplayDeferred();
-    HandleWin32Message(pMsg);
-
-    return true;
 }
 
 static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
@@ -521,7 +472,6 @@ HWND Window::Create(const char* pszTitle)
     SendMessageA(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
     SendMessageA(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
-    SDL_SetWindowsMessageHook(OnWin32Message, 0);
     SDL_AddEventWatch(OnWindowEvent, 0);
 
     return hWnd;

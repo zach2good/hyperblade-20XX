@@ -95,7 +95,7 @@ struct GameEngine
     static int            CheckHandicapCondition(void);
     static void           InitAgendaItemPools(void);
     static int            CheckAnyPlayerNeedsSub(void);
-    static unsigned short TogglePause(HWND hWnd, int bRestyle);
+    static unsigned short TogglePause(int bRestyle);
     static int            SelectSubstitute(EngineObject* pActor);
     static int            IsTeamWinning(unsigned char nTeam);
 

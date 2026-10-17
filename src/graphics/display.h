@@ -7,7 +7,7 @@ namespace Display
 
 int  Initialize(HWND hWnd);
 LONG ChangeColorDepth(int nDepth);
-void ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter);
+void ApplyRenderOptions(int bTexEnabled, int bBilinearFilter);
 
 } // namespace Display
 

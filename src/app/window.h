@@ -9,7 +9,7 @@ namespace Window
 {
 
 void         InvalidateAndUpdate(void);
-void         ApplyFullscreenStyle(HWND hWnd, int nFlag);
+void         ApplyFullscreenStyle();
 unsigned int OnWindowMove(HWND hWnd, int nFlag);
 
 // The menu canvas's pixels, 0x00RRGGBB, top row first.

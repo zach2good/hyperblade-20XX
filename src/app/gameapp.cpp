@@ -137,7 +137,6 @@ void GameApp::SetModelPath(int bTexEnabled)
 HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 {
     LPCSTR pszAppClassName;
-    HMENU  hAppMenu;
 
     // An unaware process is DPI-virtualised, and GDI would read and draw stretched pixels.
     SetProcessDPIAware();
@@ -163,12 +162,6 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE, int, LPSTR lpCmdLine)
 
     pszAppClassName = g_gameApp.m_strCaption.m_pchData;
     const HWND hWnd = GameApp::CreateMainWindow(hInstance, pszAppClassName, 0);
-
-    g_gameApp.m_hMenu = GetMenu(hWnd);
-    CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_LARGE, MF_CHECKED);
-
-    hAppMenu = g_gameApp.m_hMenu;
-    EnableMenuItem(hAppMenu, ID_MENU_MIDI_OFF, MF_DISABLED | MF_GRAYED);
 
     g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
 
@@ -400,7 +393,11 @@ void GameApp::Shutdown(HWND)
         g_pRightStack = 0;
     }
 
-    PostQuitMessage(0);
+    auto quit = SDL_Event{};
+
+    quit.type = SDL_EVENT_QUIT;
+
+    SDL_PushEvent(&quit);
 }
 
 // FUNCTION: HYPERX 0x00419640
@@ -441,7 +438,6 @@ GameApp::GameApp(short nStringCount)
 , m_nFrameRate(0)
 , m_hWnd(0)
 , m_hInstance(0)
-, m_hMenu(0)
 , m_nEngineState(ESTATE_LOBBY)
 , m_bIsActive(0)
 , m_wRunStateOnDeactivate(ENGINE_RUN_PLAYING)

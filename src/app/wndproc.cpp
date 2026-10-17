@@ -227,10 +227,6 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
         case WM_ACTIVATEAPP:
             WndProc::OnActivate(hWnd, (unsigned int)wParam, lParam);
             return 0;
-
-        case WM_COMMAND:
-            MainWindow::OnCommand(hWnd, LOWORD(wParam), lParam, HIWORD(wParam));
-            return 0;
     }
 
     return DefWindowProcA(hWnd, uMsg, wParam, lParam);
@@ -325,9 +321,9 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
                 }
             }
 
-            GameEngine::TogglePause(hWnd, 0);
+            GameEngine::TogglePause(0);
             SendMessageA(hWnd, WM_PAINT, 0, 0);
-            GameEngine::TogglePause(hWnd, 0);
+            GameEngine::TogglePause(0);
         }
         else
         {
@@ -359,7 +355,7 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 }
 
 // FUNCTION: HYPERX 0x004939b0
-unsigned int WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand)
+unsigned int WndProc::HandleRenderMenuCommand(unsigned short nCommand)
 {
     RenderOptions opt = Renderer::GetRenderOptions();
 
@@ -370,62 +366,16 @@ unsigned int WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nComma
             case ID_RENDER_PERSPECTIVE:
                 g_bPerspectiveTexturing = (g_bPerspectiveTexturing == 0);
 
-                unsigned int uPerspectiveCheck;
-
-                if (g_bPerspectiveTexturing)
-                {
-                    uPerspectiveCheck = MF_CHECKED;
-                }
-                else
-                {
-                    uPerspectiveCheck = MF_UNCHECKED;
-                }
-
-                CheckMenuItem(hMenu, ID_RENDER_PERSPECTIVE, uPerspectiveCheck);
-
                 return g_bPerspectiveTexturing;
 
             case ID_RENDER_BILINEAR_FILTER:
                 g_bBilinearFilter = (g_bBilinearFilter == 0);
-
-                unsigned int uFilterCheck;
-
-                if (g_bBilinearFilter)
-                {
-                    uFilterCheck = MF_CHECKED;
-                }
-                else
-                {
-                    uFilterCheck = MF_UNCHECKED;
-                }
-
-                CheckMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, uFilterCheck);
 
                 return g_bBilinearFilter;
 
             case ID_RENDER_MDM_TEXTURES:
                 g_cMdmTexLoaded = (g_cMdmTexLoaded == 0);
                 g_bLoadingMode  = 1;
-
-                unsigned int uMdmCheck;
-
-                if (g_cMdmTexLoaded)
-                {
-                    uMdmCheck = MF_CHECKED;
-                }
-                else
-                {
-                    uMdmCheck = MF_UNCHECKED;
-                }
-
-                CheckMenuItem(hMenu, ID_RENDER_MDM_TEXTURES, uMdmCheck);
-
-                EnableMenuItem(hMenu, ID_RENDER_PERSPECTIVE, !g_cMdmTexLoaded);
-
-                if (opt.bFiltered != 0)
-                {
-                    EnableMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, !g_cMdmTexLoaded);
-                }
 
                 return g_cMdmTexLoaded;
         }

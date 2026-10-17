@@ -336,7 +336,7 @@ int GameEngine::IsTeamWinning(unsigned char nTeam)
 }
 
 // FUNCTION: HYPERX 0x0047acf0
-unsigned short GameEngine::TogglePause(HWND hWnd, int bRestyle)
+unsigned short GameEngine::TogglePause(int bRestyle)
 {
     if (g_pGameEngine == 0)
     {
@@ -351,7 +351,7 @@ unsigned short GameEngine::TogglePause(HWND hWnd, int bRestyle)
 
         if (bRestyle != 0)
         {
-            Window::ApplyFullscreenStyle(hWnd, 1);
+            Window::ApplyFullscreenStyle();
         }
     }
     else
@@ -362,7 +362,7 @@ unsigned short GameEngine::TogglePause(HWND hWnd, int bRestyle)
 
         if (bRestyle != 0)
         {
-            Window::ApplyFullscreenStyle(hWnd, 0);
+            Window::ApplyFullscreenStyle();
         }
     }
 
@@ -742,7 +742,7 @@ void GameEngine::TickClock()
 
         g_gameApp.m_nEngineState = ESTATE_JUMBOTRON;
         g_nPrevEngineState       = ESTATE_MATCH_LIVE;
-        GameEngine::TogglePause(g_hWndGame, 0);
+        GameEngine::TogglePause(0);
     }
 }
 
@@ -4180,7 +4180,7 @@ void GameEngine::PerFrameUpdate()
         case ENGINE_RUN_RESTART:
             GameEngine::RestartMatch();
 
-            GameEngine::TogglePause(g_gameApp.m_hWnd, 1);
+            GameEngine::TogglePause(1);
 
             return;
 

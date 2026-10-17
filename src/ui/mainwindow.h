@@ -6,8 +6,7 @@
 namespace MainWindow
 {
 
-int     OnCreate();
-LRESULT OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify);
+int OnCreate();
 
 } // namespace MainWindow
 

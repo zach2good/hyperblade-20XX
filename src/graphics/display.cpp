@@ -23,10 +23,10 @@ int Display::Initialize(HWND hWnd)
 
     g_nDisplayWindowID = GetWindowLongA(hWnd, GWL_ID);
 
-    Window::ApplyFullscreenStyle(g_hWndGame, 0);
+    Window::ApplyFullscreenStyle();
 
     g_cMdmTexLoaded = (char)Graphics::LoadMdmTexDLL();
-    Display::ApplyRenderOptions(g_gameApp.m_hMenu, g_cMdmTexLoaded & 0xff, 0);
+    Display::ApplyRenderOptions(g_cMdmTexLoaded & 0xff, 0);
 
     int nWidth  = g_dwDisplayWidth;
     int nHeight = g_dwDisplayHeight;
@@ -55,44 +55,13 @@ LONG Display::ChangeColorDepth(int)
 }
 
 // FUNCTION: HYPERX 0x00493900
-void Display::ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter)
+void Display::ApplyRenderOptions(int bTexEnabled, int bBilinearFilter)
 {
     GameApp::SetModelPath(bTexEnabled);
 
     Renderer::SetRenderOption(RENDER_OPTION_TEXTURED, bTexEnabled);
     Renderer::SetRenderOption(RENDER_OPTION_PERSPECTIVE, bTexEnabled);
     Renderer::SetRenderOption(RENDER_OPTION_FILTERED, bBilinearFilter);
-
-    EnableMenuItem(hMenu, ID_RENDER_MDM_TEXTURES, bTexEnabled == 0);
-    EnableMenuItem(hMenu, ID_RENDER_PERSPECTIVE, bTexEnabled == 0);
-    EnableMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, bBilinearFilter == 0);
-
-    UINT uTexCheck;
-
-    if (bTexEnabled)
-    {
-        uTexCheck = MF_CHECKED;
-    }
-    else
-    {
-        uTexCheck = MF_UNCHECKED;
-    }
-
-    CheckMenuItem(hMenu, ID_RENDER_MDM_TEXTURES, uTexCheck);
-    CheckMenuItem(hMenu, ID_RENDER_PERSPECTIVE, uTexCheck);
-
-    UINT uFilterCheck;
-
-    if (bBilinearFilter)
-    {
-        uFilterCheck = MF_CHECKED;
-    }
-    else
-    {
-        uFilterCheck = MF_UNCHECKED;
-    }
-
-    CheckMenuItem(hMenu, ID_RENDER_BILINEAR_FILTER, uFilterCheck);
 
     g_bPerspectiveTexturing = bTexEnabled;
     g_bBilinearFilter       = bBilinearFilter;
