@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include <SDL3/SDL.h>
 #include "globals.h"
 #include "app/gameapp.h"
@@ -311,7 +312,7 @@ static bool MusicPath(int nTrack, char* pszPath, size_t nSize)
 
         std::error_code error;
 
-        if (std::filesystem::exists(pszPath, error))
+        if (std::filesystem::exists(Path::Native(pszPath), error))
         {
             return true;
         }

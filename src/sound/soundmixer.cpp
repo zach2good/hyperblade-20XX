@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include "soundmixer.h"
 #include "engine/gameoptions.h"
 #include "globals.h"
@@ -421,7 +422,7 @@ bool SoundMixer::PlayMusic(const char* pszPath)
 
     const auto config = ma_decoder_config_init(ma_format_f32, MIX_CHANNELS, MIX_RATE);
 
-    if (ma_decoder_init_file(pszPath, &config, &m_pImpl->decoder) != MA_SUCCESS)
+    if (ma_decoder_init_file(Path::Native(pszPath).c_str(), &config, &m_pImpl->decoder) != MA_SUCCESS)
     {
         return false;
     }

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include "input/inputevent.h"
 #include "framepos.h"
 #include "widget.h"
@@ -275,7 +276,7 @@ static bool IsMissing(const char* pszPath)
 {
     std::error_code error;
 
-    return !std::filesystem::exists(pszPath, error);
+    return !std::filesystem::exists(Path::Native(pszPath), error);
 }
 
 // A team is locked when its panel bitmap is missing. Probes run by team code, not id.

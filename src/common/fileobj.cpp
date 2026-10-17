@@ -1,4 +1,5 @@
 #include "compat.h"
+#include "common/path.h"
 #include "fileobj.h"
 #include "app/gameapp.h"
 #include <SDL3/SDL.h>
@@ -20,25 +21,27 @@ SDL_IOStream* IO(const FileObj& file)
 // is missing and keeps it when it is there. A mode outside the three left the flags uninitialised.
 SDL_IOStream* OpenStream(const char* pszPath, int nMode)
 {
+    const auto path = Path::Native(pszPath);
+
     switch (nMode)
     {
         case FILE_MODE_WRITE_NO_TRUNCATE:
         {
-            SDL_IOStream* const pExisting = SDL_IOFromFile(pszPath, "r+b");
+            SDL_IOStream* const pExisting = SDL_IOFromFile(path.c_str(), "r+b");
 
             if (pExisting != nullptr)
             {
                 return pExisting;
             }
 
-            return SDL_IOFromFile(pszPath, "w+b");
+            return SDL_IOFromFile(path.c_str(), "w+b");
         }
 
         case FILE_MODE_WRITE:
-            return SDL_IOFromFile(pszPath, "w+b");
+            return SDL_IOFromFile(path.c_str(), "w+b");
 
         default:
-            return SDL_IOFromFile(pszPath, "rb");
+            return SDL_IOFromFile(path.c_str(), "rb");
     }
 }
 

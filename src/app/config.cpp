@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include "input/keycodes.h"
 #include "globals.h"
 #include "appglobals.h"
@@ -90,7 +91,7 @@ void Config::LoadPreferences(const char* pszFileName)
     FILE* pFile;
 
     // STRING: HYPERX 0x004bc990
-    if ((pFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName), "r")) != 0)
+    if ((pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName)).c_str(), "r")) != 0)
     {
         if (fscanf(pFile, g_pszScanFormat, szBuffer) == 0)
         {
@@ -121,7 +122,7 @@ void Config::LoadPreferences(const char* pszFileName)
 // FUNCTION: HYPERX 0x0046d8b0
 int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 {
-    FILE* const pFile = fopen(pszData, "r");
+    FILE* const pFile = fopen(Path::Native(pszData).c_str(), "r");
 
     if (pFile != 0)
     {

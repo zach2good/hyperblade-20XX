@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include "planvm/planfunctionids.h"
 #include "globals.h"
 #include "planvmglobals.h"
@@ -388,13 +389,13 @@ void PlanVM::LoadAnimationLists(void)
 
     // Marked in src/graphics/colorpalette.cpp: without /GF each object keeps its own copy.
     // STRING: HYPERX 0x004c4704
-    FILE* const pHitFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, "HitAnims.lst"), "r");
+    FILE* const pHitFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "HitAnims.lst")).c_str(), "r");
     // STRING: HYPERX 0x004c46f4
-    FILE* const pChkFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, "ChkAnims.lst"), "r");
+    FILE* const pChkFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ChkAnims.lst")).c_str(), "r");
     // STRING: HYPERX 0x004c46e4
-    FILE* const pJmpFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, "JmpAnims.lst"), "r");
+    FILE* const pJmpFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "JmpAnims.lst")).c_str(), "r");
     // STRING: HYPERX 0x004c46d4
-    FILE* const pThrFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, "ThrAnims.lst"), "r");
+    FILE* const pThrFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ThrAnims.lst")).c_str(), "r");
 
     if (pHitFile == 0 || pChkFile == 0 || pJmpFile == 0 || pThrFile == 0)
     {

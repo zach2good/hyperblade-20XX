@@ -1,4 +1,5 @@
 #include "wave.h"
+#include "common/path.h"
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -25,7 +26,7 @@ class File
 {
 public:
     explicit File(const char* pszPath)
-    : m_pFile(std::fopen(pszPath, "rb"))
+    : m_pFile(std::fopen(Path::Native(pszPath).c_str(), "rb"))
     {
     }
 

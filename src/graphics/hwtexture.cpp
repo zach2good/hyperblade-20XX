@@ -1,4 +1,5 @@
 #include "graphics/hwtexture.h"
+#include "common/path.h"
 #include "graphics/texcacheentry.h"
 #include "app/gameapp.h"
 #include "common/pathstring.h"
@@ -117,7 +118,7 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
     // count from there.
     stbi_set_flip_vertically_on_load_thread(1);
 
-    stbi_uc* const pPixels = stbi_load(path.m_str.m_pchData, &nWidth, &nHeight, &nChannels, 4);
+    stbi_uc* const pPixels = stbi_load(Path::Native(path.m_str.m_pchData).c_str(), &nWidth, &nHeight, &nChannels, 4);
 
     if (pPixels == nullptr)
     {

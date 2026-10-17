@@ -134,6 +134,7 @@ set(HYPERX_SOURCES
     src/common/gametime.cpp
     src/common/nodeowner.cpp
     src/common/parseutil.cpp
+    src/common/path.cpp
     src/common/poolcountsdef.cpp
     src/common/pooledownerroot.cpp
     src/common/purevirtualcall.cpp
@@ -386,7 +387,7 @@ target_compile_definitions(mdm1_check PRIVATE _CRT_SECURE_NO_WARNINGS _CRT_NONST
 target_compile_options(mdm1_check PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
 
 # Parses every wave in the game data and reads its samples back.
-add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp)
+add_executable(wave_check tests/wave_check.cpp src/sound/wave.cpp src/common/path.cpp)
 target_include_directories(wave_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions(wave_check PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_compile_options(wave_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
@@ -398,12 +399,12 @@ target_compile_definitions(hwmesh_check PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_compile_options(hwmesh_check PRIVATE ${HYPERX_WARNINGS} /permissive /utf-8 /EHsc)
 
 # Round-trips booie.ini reads and writes.
-add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp)
+add_executable(ini_check tests/ini_check.cpp src/common/inifile.cpp src/common/path.cpp)
 target_include_directories(ini_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(ini_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 
 # Reads a strings file back, escapes and all.
-add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp)
+add_executable(strings_check tests/strings_check.cpp src/common/stringtable.cpp src/common/path.cpp)
 target_include_directories(strings_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_compile_options(strings_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 target_link_libraries(mdm1_check PRIVATE SDL3::SDL3)
@@ -411,6 +412,11 @@ add_custom_command(TARGET mdm1_check POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy_if_different $<TARGET_RUNTIME_DLLS:mdm1_check> $<TARGET_FILE_DIR:mdm1_check>
     COMMAND_EXPAND_LISTS
     VERBATIM)
+
+# Resolves Windows-style game paths against names that differ in case.
+add_executable(path_check tests/path_check.cpp src/common/path.cpp)
+target_include_directories(path_check PRIVATE "${CMAKE_SOURCE_DIR}/src")
+target_compile_options(path_check PRIVATE ${HYPERX_WARNINGS} /utf-8 /EHsc)
 
 # Draws a lit triangle through the mesh pipeline and reads it back, skipped without a GPU.
 add_executable(hwpipeline_check tests/hwpipeline_check.cpp src/graphics/hwpipeline.cpp)
@@ -437,6 +443,7 @@ enable_testing()
 
 add_test(NAME ini COMMAND ini_check)
 add_test(NAME strings COMMAND strings_check)
+add_test(NAME path COMMAND path_check)
 add_test(NAME hwpipeline COMMAND hwpipeline_check)
 add_test(NAME hwmesh COMMAND hwmesh_check)
 add_test(NAME keymap COMMAND keymap_check)

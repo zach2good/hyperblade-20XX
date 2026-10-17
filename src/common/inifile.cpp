@@ -1,4 +1,5 @@
 #include "inifile.h"
+#include "common/path.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
@@ -61,7 +62,7 @@ std::optional<std::string_view> KeyName(std::string_view line)
 std::vector<std::string> ReadLines(const char* pszPath)
 {
     auto lines = std::vector<std::string>();
-    auto file  = std::ifstream(pszPath);
+    auto file  = std::ifstream(Path::Native(pszPath));
     auto line  = std::string();
 
     while (std::getline(file, line))
@@ -199,7 +200,7 @@ bool IniFile::WriteString(const char* pszPath, const char* pszSection, const cha
         lines.push_back(entry);
     }
 
-    auto file = std::ofstream(pszPath, std::ios::binary | std::ios::trunc);
+    auto file = std::ofstream(Path::Native(pszPath), std::ios::binary | std::ios::trunc);
 
     for (const auto& line : lines)
     {

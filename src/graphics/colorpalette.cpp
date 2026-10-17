@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include "graphics/bitmapformat.h"
 #include "globals.h"
 #include "colorpalette.h"
@@ -244,7 +245,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
     char      c;
 
     // STRING: HYPERX 0x004bc92c
-    FILE* pFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, "Custom.pal"), "r");
+    FILE* pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "Custom.pal")).c_str(), "r");
 
     if (pFile == 0)
     {
@@ -433,7 +434,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
     fclose(pFile);
 
     // STRING: HYPERX 0x004bc938
-    pFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, pName->m_pchData), "rb");
+    pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, pName->m_pchData)).c_str(), "rb");
 
     if (pFile != 0)
     {
@@ -544,7 +545,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
     unsigned int nBlue;
 
     // STRING: HYPERX 0x004bc990
-    FILE* const pFile = fopen(strPath.m_str.m_pchData, "r");
+    FILE* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "r");
 
     if (pFile != 0)
     {

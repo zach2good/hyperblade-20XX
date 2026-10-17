@@ -1,6 +1,7 @@
 // Opening a compiled plan and reading it in; both failures report and neither throws.
 
 #include "common/compat.h"
+#include "common/path.h"
 #include "globals.h"
 #include "planvmglobals.h"
 #include "planfile.h"
@@ -46,7 +47,7 @@ PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
     unsigned int nCount;
 
     // STRING: HYPERX 0x004bc938
-    FILE* const pFile = fopen(strPath.m_str.m_pchData, "rb");
+    FILE* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "rb");
 
     if (pFile != 0)
     {

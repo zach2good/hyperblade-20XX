@@ -1,4 +1,5 @@
 #include "stringtable.h"
+#include "common/path.h"
 #include "app/stringids.h"
 #include <cstdio>
 #include <array>
@@ -391,13 +392,13 @@ bool WriteFromGame(const std::string& strExe, const std::string& strFile)
 bool StringTable::Load(const char* pszDirectory)
 {
     const auto strDirectory = std::string(pszDirectory);
-    const auto strFile      = strDirectory + FILE_NAME;
+    const auto strFile      = Path::Native((strDirectory + FILE_NAME).c_str());
 
     auto file = std::ifstream(strFile, std::ios::binary);
 
     if (!file)
     {
-        if (!WriteFromGame(strDirectory + "HYPERX.EXE", strFile))
+        if (!WriteFromGame(Path::Native((strDirectory + "HYPERX.EXE").c_str()), strFile))
         {
             return false;
         }

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/path.h"
 #include "graphics/bitmapformat.h"
 #include <stdlib.h>
 #include "graphics/gdi.h"
@@ -543,12 +544,12 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "bmp");
 
-    if (std::error_code error; !std::filesystem::exists(strPath.m_str.m_pchData, error))
+    if (std::error_code error; !std::filesystem::exists(Path::Native(strPath.m_str.m_pchData), error))
     {
         // STRING: HYPERX 0x004c8960
         strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "jpg");
 
-        if (std::error_code jpgError; !std::filesystem::exists(strPath.m_str.m_pchData, jpgError))
+        if (std::error_code jpgError; !std::filesystem::exists(Path::Native(strPath.m_str.m_pchData), jpgError))
         {
             return nullptr;
         }
@@ -590,7 +591,7 @@ GDI::Bitmap* GDI::LoadJPEGImage(const char* pszPath)
 
     stbi_set_flip_vertically_on_load_thread(0);
 
-    stbi_uc* const pPixels = stbi_load(pszPath, &nWidth, &nHeight, &nChannels, 3);
+    stbi_uc* const pPixels = stbi_load(Path::Native(pszPath).c_str(), &nWidth, &nHeight, &nChannels, 3);
 
     if (pPixels == nullptr)
     {
