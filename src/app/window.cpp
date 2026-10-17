@@ -51,7 +51,7 @@ void Window::ApplyFullscreenStyle()
 // FUNCTION: HYPERX 0x0048f450
 void Window::InvalidateAndUpdate(void)
 {
-    WndProc::HandlePaint(g_gameApp.m_hWnd);
+    WndProc::HandlePaint();
 }
 
 // The menus and splashes paint at 640x480. They draw into this canvas, which is scaled to the
@@ -109,9 +109,9 @@ LPARAM Window::ToMenuPoint(LPARAM lParam)
 
 // The 3D renders at the client size, so it is never stretched. The width stays a multiple of four,
 // which the back buffer needs, and PresentFrame centres what that leaves.
-void Window::OnSize(WPARAM nKind, int cx, int cy)
+void Window::OnSize(int cx, int cy)
 {
-    if (nKind == SIZE_MINIMIZED || g_pBackBufferBitsCopy == 0)
+    if (g_pBackBufferBitsCopy == 0)
     {
         return;
     }
@@ -152,9 +152,9 @@ void Window::OnSize(WPARAM nKind, int cx, int cy)
 }
 
 // Menus redraw from the canvas at the new size; a match redraws itself next frame.
-void Window::OnSizeMenus(WPARAM nKind)
+void Window::OnSizeMenus()
 {
-    if (nKind != SIZE_MINIMIZED && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
         Window::PresentMenu();
     }
@@ -303,8 +303,6 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
 // message, and keeps running through the modal loop of a drag.
 static void HandleWindowEvent(SDL_Event* pEvent)
 {
-    const HWND hWnd = g_gameApp.m_hWnd;
-
     switch (pEvent->type)
     {
         case SDL_EVENT_KEY_DOWN:
@@ -328,11 +326,7 @@ static void HandleWindowEvent(SDL_Event* pEvent)
             break;
 
         case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
-            WndProc::MainWndProc(hWnd, WM_SIZE, SIZE_RESTORED, MAKELPARAM(pEvent->window.data1, pEvent->window.data2));
-            break;
-
-        case SDL_EVENT_WINDOW_MINIMIZED:
-            WndProc::MainWndProc(hWnd, WM_SIZE, SIZE_MINIMIZED, 0);
+            WndProc::OnResize(pEvent->window.data1, pEvent->window.data2);
             break;
 
         case SDL_EVENT_WINDOW_FOCUS_GAINED:
@@ -341,15 +335,15 @@ static void HandleWindowEvent(SDL_Event* pEvent)
                 g_pActiveScreen->SetRepaintBackground(1);
             }
 
-            WndProc::OnActivate(hWnd, 1, 0);
+            WndProc::OnActivate(1);
             break;
 
         case SDL_EVENT_WINDOW_FOCUS_LOST:
-            WndProc::OnActivate(hWnd, 0, 0);
+            WndProc::OnActivate(0);
             break;
 
         case SDL_EVENT_WINDOW_EXPOSED:
-            WndProc::HandlePaint(hWnd);
+            WndProc::HandlePaint();
 
             // A live resize exposes the window from inside the drag, so the game draws a frame.
             if (pEvent->window.data1 != 0 && s_bInLiveUpdate == false)
@@ -364,7 +358,7 @@ static void HandleWindowEvent(SDL_Event* pEvent)
         case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
             if (g_bShuttingDown == 0)
             {
-                WndProc::MainWndProc(hWnd, WM_DESTROY, 0, 0);
+                WndProc::OnDestroy();
             }
 
             s_bQuit = true;
@@ -474,7 +468,7 @@ void Window::ApplyCurrentSize()
 
     SDL_GetWindowSizeInPixels(s_pWindow, &nWidth, &nHeight);
 
-    WndProc::MainWndProc(g_gameApp.m_hWnd, WM_SIZE, SIZE_RESTORED, MAKELPARAM(nWidth, nHeight));
+    WndProc::OnResize(nWidth, nHeight);
 }
 
 int Window::ShowMessage(const char* pszText, const char* pszCaption, unsigned int nType)

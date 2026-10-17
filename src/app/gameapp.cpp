@@ -166,7 +166,7 @@ HWND GameApp::Initialize(char* pszCommandLine)
 
     g_gameApp.SetWindowAndCallbacks(hWnd, GameApp::OnStartup, GameApp::OnExit);
 
-    g_gameApp.m_bCursorWasVisible = Display::Initialize(hWnd);
+    g_gameApp.m_bCursorWasVisible = Display::Initialize();
 
     Window::Show();
     GameApp::SetCursorVisible(1);
@@ -260,7 +260,7 @@ void GameApp::NextSplash()
     {
         g_nSplashFrame = 0;
 
-        WndProc::HandlePaint(g_gameApp.m_hWnd);
+        WndProc::HandlePaint();
 
         return;
     }

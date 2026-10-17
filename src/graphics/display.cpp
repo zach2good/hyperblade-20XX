@@ -18,7 +18,7 @@ unsigned int g_dwDisplayHeight = 480;
 
 // The back buffer resize result.
 // FUNCTION: HYPERX 0x0044b500
-int Display::Initialize(HWND hWnd)
+int Display::Initialize()
 {
     Window::ApplyFullscreenStyle();
 
@@ -32,8 +32,7 @@ int Display::Initialize(HWND hWnd)
 
     if (g_bFullScreen == 0)
     {
-        // Not MAKELPARAM: the client adds the unmasked halves at 0x0044b6bb.
-        WndProc::MainWndProc(hWnd, WM_SIZE, 0, (g_dwDisplayHeight << 16) + g_dwDisplayWidth);
+        WndProc::OnResize((int)g_dwDisplayWidth, (int)g_dwDisplayHeight);
     }
 
     if (g_bBackBufferReady != 0 && g_pRenderer != 0)

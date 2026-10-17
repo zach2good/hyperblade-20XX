@@ -178,60 +178,27 @@ void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
     }
 }
 
+// The window procedure's WM_SIZE.
 // FUNCTION: HYPERX 0x0044c330
-LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+void WndProc::OnResize(int cx, int cy)
 {
-    switch (uMsg)
-    {
-        case WM_PAINT:
-            WndProc::HandlePaint(hWnd);
-            return 0;
+    Window::OnSize(cx, cy);
+    Window::OnSizeMenus();
+}
 
-        case WM_ERASEBKGND:
-            return 1;
-
-        case WM_ACTIVATE:
-            if (g_pActiveScreen != NULL)
-            {
-                g_pActiveScreen->SetRepaintBackground(1);
-            }
-            // Falls through
-
-        default:
-            break;
-
-        case WM_SIZE:
-            Window::OnSize(wParam, (short)LOWORD(lParam), (short)HIWORD(lParam));
-            Window::OnSizeMenus(wParam);
-            return 0;
-
-        case WM_CREATE:
-            if (MainWindow::OnCreate() != 0)
-            {
-                return 0;
-            }
-
-            return -1;
-
-        case WM_DESTROY:
-            GameApp::Shutdown();
-            g_bShuttingDown = 1;
-            return 0;
-
-        case WM_ACTIVATEAPP:
-            WndProc::OnActivate(hWnd, (unsigned int)wParam, lParam);
-            return 0;
-    }
-
-    return DefWindowProcA(hWnd, uMsg, wParam, lParam);
+// The window procedure's WM_DESTROY.
+void WndProc::OnDestroy()
+{
+    GameApp::Shutdown();
+    g_bShuttingDown = 1;
 }
 
 // FUNCTION: HYPERX 0x0044c910
-int WndProc::HandlePaint(HWND hWnd)
+int WndProc::HandlePaint()
 {
     if (g_nSplashFrame != 0)
     {
-        ValidateRgn(hWnd, NULL);
+        ValidateRgn(g_gameApp.m_hWnd, NULL);
         Window::PresentMenu();
 
         return 1;
@@ -239,7 +206,7 @@ int WndProc::HandlePaint(HWND hWnd)
 
     if (g_pActiveScreen == NULL || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
     {
-        ValidateRgn(hWnd, NULL);
+        ValidateRgn(g_gameApp.m_hWnd, NULL);
 
         if (!g_bIsWindowCreated)
         {
@@ -265,7 +232,7 @@ int WndProc::HandlePaint(HWND hWnd)
 }
 
 // FUNCTION: HYPERX 0x0044d190
-int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
+int WndProc::OnActivate(unsigned int bActive)
 {
     if (g_bShuttingDown == 0 && bActive != g_gameApp.m_bIsActive)
     {
@@ -315,7 +282,7 @@ int WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
             }
 
             GameEngine::TogglePause(0);
-            WndProc::HandlePaint(hWnd);
+            WndProc::HandlePaint();
             GameEngine::TogglePause(0);
         }
         else

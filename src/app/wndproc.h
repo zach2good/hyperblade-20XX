@@ -9,10 +9,13 @@
 namespace WndProc
 {
 
-int              HandlePaint(HWND hWnd);
-int              OnActivate(HWND hWnd, unsigned int bActive, LPARAM lParam);
-unsigned int     HandleRenderMenuCommand(unsigned short nCommand);
-LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+int          HandlePaint();
+int          OnActivate(unsigned int bActive);
+unsigned int HandleRenderMenuCommand(unsigned short nCommand);
+
+// The client area's new size in pixels; a minimised window sends none.
+void OnResize(int cx, int cy);
+void OnDestroy();
 
 // Input from the window. Keys are Win32 virtual-key codes; nMessage is INPUT_LEFT_DOWN, INPUT_LEFT_UP,
 // INPUT_RIGHT_DOWN or INPUT_RIGHT_UP; buttons are MOUSE_ flags; points are client pixels.
