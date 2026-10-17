@@ -322,6 +322,13 @@ static bool MusicPath(int nTrack, char* pszPath, size_t nSize)
     return false;
 }
 
+static const std::vector<int>& MusicTracks();
+
+bool AudioMgr::HasRippedMusic()
+{
+    return !MusicTracks().empty();
+}
+
 static const std::vector<int>& MusicTracks()
 {
     static const auto s_anTracks = []

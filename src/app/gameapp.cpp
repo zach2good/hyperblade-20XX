@@ -76,7 +76,7 @@ class AwardsUIScreen;
 #include "ui/infobarbase.h"
 #include "graphics/cgpalette.h"
 #include "input/input.h"
-#include "app/win32.h"
+#include "app/cddrive.h"
 #include "app/wndproc.h"
 #include "app/menuids.h"
 #include "net/network.h"
@@ -487,6 +487,13 @@ int GameApp::FindCDRomDrive(bool bRequired)
         strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_RETURN));
     }
 
+    // Ripped music plays in place of the disc's tracks, so the disc is only looked for without it,
+    // and only where the platform can look.
+    if (m_nCDRomDrive == CDROM_NOT_FOUND && (AudioMgr::HasRippedMusic() || !CdDrive::Supported()))
+    {
+        m_nCDRomDrive = CDROM_NOT_WANTED;
+    }
+
     int nDrive = m_nCDRomDrive;
 
     if (nDrive != CDROM_NOT_FOUND)
@@ -496,7 +503,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
             goto done;
         }
 
-        if (Win32::VolumeLabel(nDrive) == szLabel)
+        if (CdDrive::VolumeLabel(nDrive) == szLabel)
         {
             return m_nCDRomDrive;
         }
@@ -508,7 +515,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
 
         do
         {
-            if (Win32::IsCDRomDrive(nDrive) && Win32::VolumeLabel(nDrive) == szLabel)
+            if (CdDrive::IsCDRom(nDrive) && CdDrive::VolumeLabel(nDrive) == szLabel)
             {
                 m_nCDRomDrive = nDrive;
 

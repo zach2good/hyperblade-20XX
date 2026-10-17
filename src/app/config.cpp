@@ -64,7 +64,6 @@
 #include "ui/infobarbase.h"
 #include "graphics/cgpalette.h"
 #include "input/input.h"
-#include "app/win32.h"
 #include "app/wndproc.h"
 #include "net/network.h"
 #include "engine/game.h"

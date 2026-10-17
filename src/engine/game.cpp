@@ -29,7 +29,7 @@
 #include "graphics/display.h"
 #include "engine/game.h"
 #include "engine/framepacing.h"
-#include "app/win32.h"
+#include "app/window.h"
 #include "common/stub.h"
 #include "app/stringids.h"
 #include "sound/soundids.h"
@@ -568,8 +568,8 @@ unsigned int Game::UpdateState(void)
                 Game::SetEngineState(ESTATE_LOBBY);
                 pszText = g_gameApp.m_stringPool.LoadText(rand() % 3 + STRING_REALLY_QUIT);
 
-                if (Win32::AskYesNo(pszText,
-                                    g_gameApp.m_stringPool.LoadText(STRING_QUIT)))
+                if (Window::AskYesNo(pszText,
+                                     g_gameApp.m_stringPool.LoadText(STRING_QUIT)))
                 {
                     Screen::ClearBlack();
 

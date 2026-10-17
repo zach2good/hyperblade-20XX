@@ -468,6 +468,12 @@ void Window::ApplyCurrentSize()
     WndProc::OnResize(nWidth, nHeight);
 }
 
+// FUNCTION: HYPERX 0x0048f470
+bool Window::AskYesNo(const char* pszText, const char* pszCaption)
+{
+    return ShowMessage(pszText, pszCaption, MessageButtons::YES_NO, MessageIcon::INFO) == MessageAnswer::YES;
+}
+
 Window::MessageAnswer Window::ShowMessage(const char* pszText, const char* pszCaption, MessageButtons buttons, MessageIcon icon)
 {
     constexpr auto RETURN = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;

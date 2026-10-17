@@ -18,6 +18,9 @@ struct AudioMgr : public AudioMgrBase
 
     virtual void StopCD();
 
+    // Whether any of the CD's tracks are ripped to Data/Music.
+    static bool HasRippedMusic();
+
     int  SfxReadVolume();
     void SfxFadeVolume(int nVolume);
     int  CDReadVolume();

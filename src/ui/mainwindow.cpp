@@ -14,7 +14,6 @@
 #include "planvm/planvm.h"
 #include "ui/mainwindow.h"
 #include "engine/object.h"
-#include "app/win32.h"
 #include "app/wndproc.h"
 #include "app/menuids.h"
 

@@ -68,6 +68,8 @@ enum class MessageAnswer
 // Escape picks the last button.
 MessageAnswer ShowMessage(const char* pszText, const char* pszCaption, MessageButtons buttons, MessageIcon icon);
 
+bool AskYesNo(const char* pszText, const char* pszCaption);
+
 // Handles what has arrived; false once the game has asked to quit.
 bool Pump();
 void WaitWhileInactive();

@@ -38,7 +38,6 @@ set(HYPERX_SOURCES
     src/app/config.cpp
     src/app/frametimer.cpp
     src/app/gameapp.cpp
-    src/app/win32.cpp
     src/app/window.cpp
     src/app/winmain.cpp
     src/app/wndproc.cpp
@@ -356,6 +355,12 @@ set(HYPERX_SOURCES
     src/ui/textinputwidget.cpp
     src/ui/uiscreen.cpp
     src/ui/widget.cpp)
+
+if(WIN32)
+    list(APPEND HYPERX_SOURCES src/app/cddrive_win32.cpp)
+else()
+    list(APPEND HYPERX_SOURCES src/app/cddrive_stub.cpp)
+endif()
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
 target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src")
