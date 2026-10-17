@@ -9,7 +9,7 @@ class GameBehaviorObject;
 class BehaviorOwner : public PooledOwnerRoot
 {
 public:
-    __forceinline BehaviorOwner()
+    BehaviorOwner()
     {
     }
 

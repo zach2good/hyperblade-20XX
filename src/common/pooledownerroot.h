@@ -2,7 +2,7 @@
 #define HYPERBLADE_POOLEDOWNERROOT_H
 
 // The pool owner whose five slots the agenda item, behaviour and interactor pools share.
-class __declspec(novtable) PooledOwnerRoot
+class PooledOwnerRoot
 {
 public:
     virtual ~PooledOwnerRoot()

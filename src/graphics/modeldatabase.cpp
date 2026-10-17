@@ -12,7 +12,7 @@
 #include "graphics/transformedvertex.h"
 #include "common/pathstring.h"
 #include "math/vector.h"
-#include <new.h>
+#include <new>
 #include <string.h>
 #include "app/gameapp.h"
 #include "graphics/modelfile.h"

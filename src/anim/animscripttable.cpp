@@ -8,7 +8,7 @@ struct GameApp;
 #include "planvm/planvm.h"
 #include "common/pathstring.h"
 #include <string.h>
-#include <new.h>
+#include <new>
 #include <stdio.h>
 #include "app/gameapp.h"
 #include "engine/messageids.h"

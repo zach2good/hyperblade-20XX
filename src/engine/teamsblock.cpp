@@ -6,7 +6,7 @@
 #include "common/fileobj.h"
 #include "globals.h"
 #include "common/pathstring.h"
-#include <new.h>
+#include <new>
 #include <stdlib.h>
 #include <string.h>
 #include "gameengine.h"

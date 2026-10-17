@@ -10,7 +10,7 @@
 #include "engine/cspeedburst.h"
 #include "engine/objectstats.h"
 #include "globals.h"
-#include <new.h>
+#include <new>
 #include "playerobject.h"
 #include "engine/engineobject.h"
 #include "common/pooledownerroot.h"

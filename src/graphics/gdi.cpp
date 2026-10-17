@@ -6,7 +6,8 @@
 #include "app/gameapp.h"
 #include "globals.h"
 #include "common/pathstring.h"
-#include <io.h>
+#include <filesystem>
+#include <system_error>
 #include "common/fileobj.h"
 #include <string.h>
 #include <stdio.h>
@@ -99,7 +100,7 @@ void GDI::DrawBitmapToWindow(const char* pszResourceName)
 
 // A file starting with MDM1 goes to the decompressor.
 // FUNCTION: HYPERX 0x0043fff0
-BitmapInfoHeader* __cdecl GDI::ReadBitmapFile(const char* pszName)
+BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 {
     FileObj           file;
     unsigned int      nMagic;
@@ -542,12 +543,12 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "bmp");
 
-    if (_access(strPath.m_str.m_pchData, 0) == -1)
+    if (std::error_code error; !std::filesystem::exists(strPath.m_str.m_pchData, error))
     {
         // STRING: HYPERX 0x004c8960
         strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "jpg");
 
-        if (_access(strPath.m_str.m_pchData, 0) == -1)
+        if (std::error_code jpgError; !std::filesystem::exists(strPath.m_str.m_pchData, jpgError))
         {
             return nullptr;
         }

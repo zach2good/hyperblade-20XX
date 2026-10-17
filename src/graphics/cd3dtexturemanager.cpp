@@ -12,7 +12,7 @@
 #include "graphics/texcoord.h"
 #include "ui/widget.h"
 #include "app/gameapp.h"
-#include <new.h>
+#include <new>
 #include <stdlib.h>
 #include <string.h>
 #include "engine/object.h"

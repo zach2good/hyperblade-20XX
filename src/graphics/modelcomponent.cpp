@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "common/fileobj.h"
-#include <new.h>
+#include <new>
 #include "globals.h"
 #include "app/gameapp.h"
 #include "modelcomponent.h"

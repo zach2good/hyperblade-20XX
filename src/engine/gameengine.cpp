@@ -89,7 +89,7 @@ struct GameApp;
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include <new.h>
+#include <new>
 #include <stdio.h>
 #include "playerobject.h"
 #include "sound/audiomgr.h"

@@ -8,7 +8,7 @@
 #include "engine/devicector.h"
 #include "engine/objectstats.h"
 #include "math/vector.h"
-#include <new.h>
+#include <new>
 #include "planvm/cslideonrail.h"
 #include "math/spline.h"
 #include "physics/collisionellipsoid.h"

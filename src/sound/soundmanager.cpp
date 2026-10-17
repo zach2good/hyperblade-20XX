@@ -3,7 +3,7 @@
 #include "common/fileobj.h"
 #include "globals.h"
 #include "common/pathstring.h"
-#include <new.h>
+#include <new>
 #include <stdio.h>
 #include <string.h>
 #include "app/gameapp.h"

@@ -2,7 +2,7 @@
 #include "spline.h"
 #include "ui/hudglobals.h"
 #include "globals.h"
-#include <new.h>
+#include <new>
 #include <math.h>
 #include "math/splinecurve.h"
 #include "physics/collisionellipsoid.h"

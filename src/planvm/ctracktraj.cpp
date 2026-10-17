@@ -16,7 +16,7 @@
 #include "math/spline.h"
 #include "planvm/planvmglobals.h"
 #include "app/gameapp.h"
-#include <new.h>
+#include <new>
 #include <math.h>
 #include "engine/engineobject.h"
 #include "planvm/ctracktraj.h"

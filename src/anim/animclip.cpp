@@ -5,7 +5,7 @@
 #include "math/transformobject.h"
 #include "math/vector.h"
 #include "ui/hudglobals.h"
-#include <new.h>
+#include <new>
 #include <string.h>
 #include "app/gameapp.h"
 #include "anim/anim.h"

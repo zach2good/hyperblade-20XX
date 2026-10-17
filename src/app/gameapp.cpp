@@ -70,7 +70,7 @@ class AwardsUIScreen;
 #include "graphics/colorpalette.h"
 #include "config.h"
 #include "frametimer.h"
-#include <new.h>
+#include <new>
 #include "graphics/display.h"
 #include "ui/infobarbase.h"
 #include "graphics/cgpalette.h"
@@ -148,7 +148,7 @@ bool GameApp::Initialize(const char* pszArguments)
 
     const char* pszAppClassName;
 
-    _set_new_handler(GameApp::OutOfMemoryHandler);
+    std::set_new_handler(GameApp::OutOfMemoryHandler);
     // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
     const char* const pszBase = SDL_GetBasePath();
 
@@ -804,12 +804,13 @@ Window::MessageAnswer GameApp::ShowMessageBox(const char* pszText, const char* p
 
 // Returning zero tells the runtime not to retry.
 // FUNCTION: HYPERX 0x0047adf0
-int GameApp::OutOfMemoryHandler(size_t)
+void GameApp::OutOfMemoryHandler()
 {
     // STRING: HYPERX 0x004c682c
     g_gameApp.Fatal("In C++ \"new\" method: Memory pool empty!");
 
-    return 0;
+    // The original's handler answered nought, failing the allocation.
+    throw std::bad_alloc();
 }
 
 // FUNCTION: HYPERX 0x0048ceb0

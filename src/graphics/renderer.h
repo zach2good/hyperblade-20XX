@@ -15,7 +15,7 @@ struct ViewExtent;
 
 struct LayoutState;
 
-class __declspec(novtable) Renderer
+class Renderer
 {
 public:
     static void DrawSceneDispatch(void);

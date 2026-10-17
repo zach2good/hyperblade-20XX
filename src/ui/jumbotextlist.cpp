@@ -5,7 +5,7 @@
 #include "jumbotextlist.h"
 #include <stdio.h>
 #include <string.h>
-#include <new.h>
+#include <new>
 #include <stdlib.h>
 #include <time.h>
 #include "app/gameapp.h"

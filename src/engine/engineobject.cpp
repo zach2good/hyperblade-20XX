@@ -45,7 +45,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <new.h>
+#include <new>
 #include <stdio.h>
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"

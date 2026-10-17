@@ -6,7 +6,7 @@
 #include "globals.h"
 #include "common/staticinit.h"
 #include "math/vector.h"
-#include <new.h>
+#include <new>
 #include <stdio.h>
 #include <string.h>
 #include "common/fileobj.h"

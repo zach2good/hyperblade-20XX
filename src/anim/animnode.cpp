@@ -1,5 +1,5 @@
 #include "common/compat.h"
-#include <new.h>
+#include <new>
 #include "animdb.h"
 #include "animnode.h"
 

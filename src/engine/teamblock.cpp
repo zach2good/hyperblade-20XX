@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "teamblock.h"
-#include <new.h>
+#include <new>
 #include <string.h>
 #include "objectdef.h"
 

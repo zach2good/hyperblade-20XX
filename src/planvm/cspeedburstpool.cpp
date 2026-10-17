@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "planvm/cspeedburstpool.h"
-#include <new.h>
+#include <new>
 #include "planvm/agendaitem.h"
 #include "engine/cspeedburst.h"
 #include "common/poolcounts.h"

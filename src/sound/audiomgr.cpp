@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
-#include <new.h>
+#include <new>
 #include "sound/wave.h"
 #include "sound/soundids.h"
 #include <filesystem>

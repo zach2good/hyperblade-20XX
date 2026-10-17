@@ -4,7 +4,7 @@
 #include "animglobals.h"
 #include "animclip.h"
 #include "common/fileobj.h"
-#include <new.h>
+#include <new>
 #include <string.h>
 #include "app/gameapp.h"
 

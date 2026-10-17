@@ -9,7 +9,7 @@ class AgendaItem;
 class AgendaItemOwner : public PooledOwnerRoot
 {
 public:
-    __forceinline AgendaItemOwner()
+    AgendaItemOwner()
     {
     }
 

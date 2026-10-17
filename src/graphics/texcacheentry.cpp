@@ -6,7 +6,7 @@
 #include "texcacheentry.h"
 #include "engine/gameengine.h"
 #include "planvm/planvm.h"
-#include <new.h>
+#include <new>
 #include <string.h>
 #include "app/gameapp.h"
 #include "common/stringpool.h"

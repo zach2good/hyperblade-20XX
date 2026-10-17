@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <new.h>
+#include <new>
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "graphics/face.h"

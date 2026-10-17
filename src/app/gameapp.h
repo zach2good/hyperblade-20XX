@@ -30,7 +30,7 @@ struct GameApp
     static void                  SetupViewports(void);
     static void                  InstantiateState(void);
     static void                  ResetToSinglePlayer(void);
-    static int                   OutOfMemoryHandler(size_t nSize);
+    static void                  OutOfMemoryHandler();
     static void                  AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
     static Window::MessageAnswer ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons);
     static bool                  CreateMainWindow(const char* pszTitle);

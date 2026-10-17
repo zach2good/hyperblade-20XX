@@ -3,7 +3,7 @@
 #include "animdb.h"
 #include "common/animnamedref.h"
 #include "globals.h"
-#include <new.h>
+#include <new>
 #include "app/gameapp.h"
 #include "animnode.h"
 
