@@ -5,6 +5,7 @@
 #ifndef HYPERBLADE_GLOBALS_H
 #define HYPERBLADE_GLOBALS_H
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 
 struct FrameTimer;
 struct AudioMgr;
@@ -172,7 +173,7 @@ extern struct GameEngine* g_pGameEngine;
 extern int g_nPrevEngineState;
 
 // GLOBAL: HYPERX 0x004d2778
-extern PALETTEENTRY g_aSoftTexPalette[256];
+extern PaletteEntry g_aSoftTexPalette[256];
 
 // GLOBAL: HYPERX 0x004cb5dc
 extern CameraObject* g_pScene;

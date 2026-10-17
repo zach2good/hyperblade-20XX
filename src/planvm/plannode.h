@@ -2,6 +2,7 @@
 #define HYPERBLADE_PLANNODE_H
 
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 
 // An argument whose high half is this is a pronoun: the low half indexes g_apPlanStatFns.
 #define PLAN_ARG_PRONOUN 0xfedc
@@ -28,7 +29,7 @@ union PlanWord
 {
     int              n;
     float            fl;
-    PALETTEENTRY     pe;
+    PaletteEntry     pe;
     struct PlanNode* pNode;
     char*            psz;
     // The low half under a tag; a field, as the client loads it with a word read.

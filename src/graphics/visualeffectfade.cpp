@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include <SDL3/SDL.h>
 #include "visualeffectfade.h"
 #include "globals.h"
@@ -39,7 +40,7 @@ int VisualEffectFade::ApplyPhase(int bPhase)
 }
 
 // Folded with PaletteScalarFade::Start onto one address, so it carries no marker.
-int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
+int VisualEffectFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
     {

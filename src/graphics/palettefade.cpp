@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include <SDL3/SDL.h>
 #include "colorpalette.h"
 #include "globals.h"
@@ -7,7 +8,7 @@
 #include "palettescalarfade.h"
 #include <string.h>
 
-// PC_RESERVED on the first entry means the entries already animate, and the fade goes inactive.
+// PALETTE_RESERVED on the first entry means the entries already animate, and the fade goes inactive.
 // FUNCTION: HYPERX 0x0042cd10
 PaletteFade::PaletteFade(const PaletteRange* pRange)
 : m_nKind(0)
@@ -21,13 +22,13 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_cEntries = nCount;
 
-    PALETTEENTRY* pEntries = new PALETTEENTRY[nCount];
+    PaletteEntry* pEntries = new PaletteEntry[nCount];
 
     m_pEntries = pEntries;
 
-    memcpy(pEntries, &g_pColorPalette->m_current[m_iStart], m_cEntries * sizeof(PALETTEENTRY));
+    memcpy(pEntries, &g_pColorPalette->m_current[m_iStart], m_cEntries * sizeof(PaletteEntry));
 
-    if (m_pEntries[0].peFlags == PC_RESERVED)
+    if (m_pEntries[0].peFlags == PALETTE_RESERVED)
     {
         m_bActive = 0;
 
@@ -38,7 +39,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     for (unsigned int nEntry = 0; nEntry < m_cEntries; nEntry++)
     {
-        m_pEntries[nEntry].peFlags = PC_RESERVED;
+        m_pEntries[nEntry].peFlags = PALETTE_RESERVED;
     }
 
     g_pColorPalette->SetEntries(m_iStart,
@@ -51,11 +52,11 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_cWorkEntries = nCount;
 
-    pEntries = new PALETTEENTRY[nCount];
+    pEntries = new PaletteEntry[nCount];
 
     m_pWorkEntries = pEntries;
 
-    memcpy(pEntries, &g_pColorPalette->m_current[m_iWorkStart], m_cWorkEntries * sizeof(PALETTEENTRY));
+    memcpy(pEntries, &g_pColorPalette->m_current[m_iWorkStart], m_cWorkEntries * sizeof(PaletteEntry));
 
     m_nDuration = 1000;
 
@@ -86,7 +87,7 @@ void PaletteFade::RestoreEntries()
 
     for (unsigned int i = 0; i < m_cEntries; i++)
     {
-        m_pEntries[i].peFlags = PC_NOCOLLAPSE;
+        m_pEntries[i].peFlags = PALETTE_NOCOLLAPSE;
     }
 
     g_pColorPalette->SetEntries(m_iStart, m_cEntries, m_pEntries);

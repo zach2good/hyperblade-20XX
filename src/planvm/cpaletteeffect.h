@@ -2,6 +2,7 @@
 #define HYPERBLADE_CPALETTEEFFECT_H
 
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "planvm/releasingagendaitem.h"
 
 class EngineObject;
@@ -29,7 +30,7 @@ public:
     virtual void OnListChanged();
 
     // Its one call site allocates from g_apAgendaItemPools[Agenda_CPaletteEffect].
-    int CreateVisualEffect(int nKind, int nAnim, PALETTEENTRY peStart, int nDuration);
+    int CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration);
 
     // The fade the tick drives and the engine clock reading it retires itself at.
     class PaletteFade* m_pEffect; // 0x10

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "rlesprite.h"
 #include "softtex.h"
 #include "graphicsglobals.h"
@@ -16,7 +17,7 @@
 
 // Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent. The block leaks.
 // FUNCTION: HYPERX 0x0044f550
-RLESprite* SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
+RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
 {
     char aRun[128];
     char cPixel  = 0;
@@ -195,7 +196,7 @@ char SoftTex::Load(const char* pszName)
 
         if (m_pDib != 0)
         {
-            const BITMAPINFOHEADER* pHeader = m_pDib;
+            const BitmapInfoHeader* pHeader = m_pDib;
 
             if (pHeader->biBitCount == 8)
             {
@@ -207,7 +208,7 @@ char SoftTex::Load(const char* pszName)
 
                 if (g_bSoftTexPaletteBuilt == 0)
                 {
-                    RGBQUAD* pColours;
+                    RgbQuad* pColours;
                     int      i;
 
                     g_bSoftTexPaletteBuilt = 1;
@@ -215,14 +216,14 @@ char SoftTex::Load(const char* pszName)
                     pColours = GDI::ColorTable(m_pDib);
 
                     // A short table leaves the entries past it black.
-                    const auto nEntries = (std::min)((int)((RGBQUAD*)GDI::PixelBits(m_pDib) - pColours), 256);
+                    const auto nEntries = (std::min)((int)((RgbQuad*)GDI::PixelBits(m_pDib) - pColours), 256);
 
                     for (i = 0; i < nEntries; i++)
                     {
                         g_aSoftTexPalette[i].peRed   = pColours[i].rgbRed;
                         g_aSoftTexPalette[i].peGreen = pColours[i].rgbGreen;
                         g_aSoftTexPalette[i].peBlue  = pColours[i].rgbBlue;
-                        g_aSoftTexPalette[i].peFlags = PC_NOCOLLAPSE;
+                        g_aSoftTexPalette[i].peFlags = PALETTE_NOCOLLAPSE;
                     }
                 }
 

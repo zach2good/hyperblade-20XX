@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "planvm/agendaitemids.h"
 #include "planvm/cpaletteeffect.h"
 #include "globals.h"
@@ -56,7 +57,7 @@ void CPaletteEffect::OnListChanged()
 
 // Kind two's fade runs five hundred where the constructor sets a thousand.
 // FUNCTION: HYPERX 0x00410b70
-int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PALETTEENTRY peStart, int nDuration)
+int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration)
 {
     PaletteRange anRange = g_pColorPalette->GetFrameRange(nAnim);
 

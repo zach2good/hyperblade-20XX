@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "globals.h"
 #include "graphicsglobals.h"
 #include "graphics/gdi.h"
@@ -76,7 +77,7 @@ RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
     // STRING: HYPERX 0x004bc45c
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszName, "bmp");
 
-    BITMAPINFOHEADER* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
+    BitmapInfoHeader* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
 
     if (pDib == 0)
     {

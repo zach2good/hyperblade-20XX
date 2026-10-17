@@ -3,6 +3,7 @@
 #ifndef HYPERBLADE_GRAPHICSGLOBALS_H
 #define HYPERBLADE_GRAPHICSGLOBALS_H
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 
 #include "globals.h"
 #include "graphics/surfacepoint.h"
@@ -93,8 +94,8 @@ extern short g_wSpanYMin;
 
 struct SoftBackBitmapInfo
 {
-    BITMAPINFOHEADER bmiHeader;
-    RGBQUAD          bmiColors[256];
+    BitmapInfoHeader bmiHeader;
+    RgbQuad          bmiColors[256];
 };
 
 static_assert(offsetof(SoftBackBitmapInfo, bmiColors) == 0x28);

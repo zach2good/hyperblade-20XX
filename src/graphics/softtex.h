@@ -2,6 +2,7 @@
 #define HYPERBLADE_SOFTTEX_H
 
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include <stddef.h>
 
 struct RLESprite;
@@ -20,7 +21,7 @@ class SoftTex
 {
 public:
     // Handed a loaded DIB, not a SoftTex.
-    static RLESprite* CompressToRLE(const BITMAPINFOHEADER* pDib);
+    static RLESprite* CompressToRLE(const BitmapInfoHeader* pDib);
 
 public:
     SoftTex();
@@ -42,7 +43,7 @@ public:
 
 private:
     SoftTexImage      m_image; // 0x00
-    BITMAPINFOHEADER* m_pDib;  // 0x14
+    BitmapInfoHeader* m_pDib;  // 0x14
     class SoftTex*    m_pNext; // 0x18
 
     friend struct SoftTexLayout;

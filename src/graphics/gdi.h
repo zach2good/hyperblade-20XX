@@ -1,6 +1,7 @@
 #ifndef HYPERBLADE_GDI_H
 #define HYPERBLADE_GDI_H
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include <cstdint>
 #include <vector>
 
@@ -10,13 +11,13 @@ namespace GDI
 {
 
 // The colour table follows the header, which records its own size.
-inline RGBQUAD* ColorTable(const BITMAPINFOHEADER* pHeader)
+inline RgbQuad* ColorTable(const BitmapInfoHeader* pHeader)
 {
-    return (RGBQUAD*)((const char*)pHeader + pHeader->biSize);
+    return (RgbQuad*)((const char*)pHeader + pHeader->biSize);
 }
 
 // A zero biClrUsed means the full table for the bit depth.
-inline char* PixelBits(const BITMAPINFOHEADER* pHeader)
+inline char* PixelBits(const BitmapInfoHeader* pHeader)
 {
     const auto nColours = [&]
     {
@@ -56,9 +57,9 @@ Bitmap*           LoadBitmapAsBackground(const char* pszName, int* pbPaletted);
 Bitmap*           LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted);
 void              SafeDeleteBitmap(Bitmap* pBitmap);
 void              GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize);
-BITMAPINFOHEADER* ReadBitmapFile(const char* pszName);
-BITMAPINFOHEADER* ReadDIB(FileObj* pFile);
-BITMAPINFOHEADER* ExpandRLE(BITMAPINFOHEADER* pDib);
+BitmapInfoHeader* ReadBitmapFile(const char* pszName);
+BitmapInfoHeader* ReadDIB(FileObj* pFile);
+BitmapInfoHeader* ExpandRLE(BitmapInfoHeader* pDib);
 Bitmap*           LoadJPEGImage(const char* pszPath);
 void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
 // The colour is 0x00BBGGRR.

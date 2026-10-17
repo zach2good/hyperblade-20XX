@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include <stdlib.h>
 #include "graphics/gdi.h"
 #include "app/window.h"
@@ -18,19 +19,19 @@ namespace
 
 // The DIB's pixels through its colour table, as CreateDIBitmap made a device bitmap of them for a
 // true-colour display. Null for a depth the menus never use.
-GDI::Bitmap* FromDIB(const BITMAPINFOHEADER* pDib)
+GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
 {
     const auto nWidth  = (int)pDib->biWidth;
     const auto nHeight = std::abs((int)pDib->biHeight);
     const auto nBits   = (int)pDib->biBitCount;
 
-    if (nWidth <= 0 || nHeight <= 0 || pDib->biCompression != BI_RGB || (nBits != 1 && nBits != 4 && nBits != 8 && nBits != 24 && nBits != 32))
+    if (nWidth <= 0 || nHeight <= 0 || pDib->biCompression != BITMAP_RGB || (nBits != 1 && nBits != 4 && nBits != 8 && nBits != 24 && nBits != 32))
     {
         return nullptr;
     }
 
-    const RGBQUAD* const       pColours = GDI::ColorTable(pDib);
-    const auto                 nColours = (int)((const RGBQUAD*)GDI::PixelBits(pDib) - pColours);
+    const RgbQuad* const       pColours = GDI::ColorTable(pDib);
+    const auto                 nColours = (int)((const RgbQuad*)GDI::PixelBits(pDib) - pColours);
     const unsigned char* const pRows    = (const unsigned char*)GDI::PixelBits(pDib);
     const auto                 nStride  = (nWidth * nBits + 31) / 32 * 4;
 
@@ -98,11 +99,11 @@ void GDI::DrawBitmapToWindow(const char* pszResourceName)
 
 // A file starting with MDM1 goes to the decompressor.
 // FUNCTION: HYPERX 0x0043fff0
-BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
+BitmapInfoHeader* __cdecl GDI::ReadBitmapFile(const char* pszName)
 {
     FileObj           file;
     unsigned int      nMagic;
-    BITMAPINFOHEADER* pDib;
+    BitmapInfoHeader* pDib;
 
     if (file.Open(pszName, FILE_MODE_READ) == 0)
     {
@@ -113,7 +114,7 @@ BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
 
     if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == MDM1_MAGIC)
     {
-        pDib = (BITMAPINFOHEADER*)MDM1::Decompress(&file);
+        pDib = (BitmapInfoHeader*)MDM1::Decompress(&file);
 
         file.CloseAndTest();
         file.Close();
@@ -140,9 +141,9 @@ BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
         nColors = 1 << pDib->biBitCount;
     }
 
-    const int nTotalBytes = pDib->biSize + nColors * sizeof(RGBQUAD) + nImageBytes;
+    const int nTotalBytes = pDib->biSize + nColors * sizeof(RgbQuad) + nImageBytes;
 
-    BITMAPINFOHEADER* pShrunk = (BITMAPINFOHEADER*)realloc(pDib, nTotalBytes);
+    BitmapInfoHeader* pShrunk = (BitmapInfoHeader*)realloc(pDib, nTotalBytes);
 
     if (pShrunk == 0)
     {
@@ -176,15 +177,15 @@ BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
     return GDI::ExpandRLE(pDib);
 }
 
-// Every caller reads raw rows, so an RLE8 or RLE4 DIB is expanded to 8-bit BI_RGB in a new block.
-BITMAPINFOHEADER* GDI::ExpandRLE(BITMAPINFOHEADER* pDib)
+// Every caller reads raw rows, so an RLE8 or RLE4 DIB is expanded to 8-bit BITMAP_RGB in a new block.
+BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 {
-    if (pDib == 0 || (pDib->biCompression != BI_RLE8 && pDib->biCompression != BI_RLE4))
+    if (pDib == 0 || (pDib->biCompression != BITMAP_RLE8 && pDib->biCompression != BITMAP_RLE4))
     {
         return pDib;
     }
 
-    const auto bFour   = pDib->biCompression == BI_RLE4;
+    const auto bFour   = pDib->biCompression == BITMAP_RLE4;
     const auto nWidth  = (int)pDib->biWidth;
     const auto nHeight = (int)pDib->biHeight;
     const auto nStride = (nWidth + 3) & ~3;
@@ -193,7 +194,7 @@ BITMAPINFOHEADER* GDI::ExpandRLE(BITMAPINFOHEADER* pDib)
     const auto pIn         = (const unsigned char*)GDI::PixelBits(pDib);
     const auto nInBytes    = (int)pDib->biSizeImage;
 
-    auto* const pOut = (BITMAPINFOHEADER*)calloc(1, nTableBytes + nStride * nHeight);
+    auto* const pOut = (BitmapInfoHeader*)calloc(1, nTableBytes + nStride * nHeight);
 
     if (pOut == 0 || nWidth <= 0 || nHeight <= 0)
     {
@@ -304,9 +305,9 @@ BITMAPINFOHEADER* GDI::ExpandRLE(BITMAPINFOHEADER* pDib)
     }
 
     pOut->biBitCount    = 8;
-    pOut->biCompression = BI_RGB;
+    pOut->biCompression = BITMAP_RGB;
     pOut->biSizeImage   = nStride * nHeight;
-    pOut->biClrUsed     = (nTableBytes - pDib->biSize) / sizeof(RGBQUAD);
+    pOut->biClrUsed     = (nTableBytes - pDib->biSize) / sizeof(RgbQuad);
 
     free(pDib);
 
@@ -319,17 +320,17 @@ BITMAPINFOHEADER* GDI::ExpandRLE(BITMAPINFOHEADER* pDib)
 // A DIB's header, which its leading size word says is a Windows or an OS/2 one.
 union DibHeader
 {
-    BITMAPINFOHEADER info;
-    BITMAPCOREHEADER core;
+    BitmapInfoHeader info;
+    BitmapCoreHeader core;
 };
 
 // The file header is optional, and an OS/2 core header is widened in place.
 // FUNCTION: HYPERX 0x00440200
-BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
+BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 {
-    BITMAPFILEHEADER bmfh;
+    BitmapFileHeader bmfh;
     DibHeader        header;
-    RGBQUAD          quad;
+    RgbQuad          quad;
     int              nColors;
 
     if (pFile == 0)
@@ -362,23 +363,23 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
 
     const auto dwHeaderSize = (unsigned int)header.info.biSize;
 
-    if (dwHeaderSize == sizeof(BITMAPCOREHEADER))
+    if (dwHeaderSize == sizeof(BitmapCoreHeader))
     {
-        const BITMAPCOREHEADER bmc = header.core;
+        const BitmapCoreHeader bmc = header.core;
 
-        header.info.biSize          = sizeof(BITMAPINFOHEADER);
+        header.info.biSize          = sizeof(BitmapInfoHeader);
         header.info.biWidth         = bmc.bcWidth;
         header.info.biHeight        = bmc.bcHeight;
         header.info.biPlanes        = bmc.bcPlanes;
         header.info.biBitCount      = bmc.bcBitCount;
-        header.info.biCompression   = BI_RGB;
+        header.info.biCompression   = BITMAP_RGB;
         header.info.biSizeImage     = 0;
         header.info.biXPelsPerMeter = 0;
         header.info.biYPelsPerMeter = 0;
         header.info.biClrUsed       = 0;
         header.info.biClrImportant  = 0;
 
-        pFile->SeekRelative((long)sizeof(BITMAPCOREHEADER) - (long)sizeof(BITMAPINFOHEADER), FILE_SEEK_CURRENT);
+        pFile->SeekRelative((long)sizeof(BitmapCoreHeader) - (long)sizeof(BitmapInfoHeader), FILE_SEEK_CURRENT);
     }
 
     if (header.info.biClrUsed == 0 && header.info.biBitCount <= 8)
@@ -400,7 +401,7 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
         header.info.biClrUsed = 1 << header.info.biBitCount;
     }
 
-    BITMAPINFOHEADER* const pDib = (BITMAPINFOHEADER*)malloc(header.info.biSize + nColors * sizeof(RGBQUAD));
+    BitmapInfoHeader* const pDib = (BitmapInfoHeader*)malloc(header.info.biSize + nColors * sizeof(RgbQuad));
 
     if (pDib == 0)
     {
@@ -409,13 +410,13 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
 
     *pDib = header.info;
 
-    RGBQUAD* const pColors = GDI::ColorTable(pDib);
+    RgbQuad* const pColors = GDI::ColorTable(pDib);
 
     if (nColors != 0)
     {
-        if (dwHeaderSize == sizeof(BITMAPCOREHEADER))
+        if (dwHeaderSize == sizeof(BitmapCoreHeader))
         {
-            const int nTableBytes = nColors * sizeof(RGBTRIPLE);
+            const int nTableBytes = nColors * sizeof(RgbTriple);
 
             if (pFile->Read(pColors, nTableBytes) != nTableBytes)
             {
@@ -424,7 +425,7 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
                 return 0;
             }
 
-            RGBTRIPLE* const pTriples = (RGBTRIPLE*)pColors;
+            RgbTriple* const pTriples = (RgbTriple*)pColors;
 
             for (int i = nColors - 1; i >= 0; i--)
             {
@@ -438,7 +439,7 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
         }
         else
         {
-            const int nTableBytes = nColors * sizeof(RGBQUAD);
+            const int nTableBytes = nColors * sizeof(RgbQuad);
 
             if (pFile->Read(pColors, nTableBytes) != nTableBytes)
             {
@@ -554,7 +555,7 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
         return GDI::LoadJPEGImage(strPath.m_str.m_pchData);
     }
 
-    BITMAPINFOHEADER* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
+    BitmapInfoHeader* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
 
     if (pDib == nullptr)
     {

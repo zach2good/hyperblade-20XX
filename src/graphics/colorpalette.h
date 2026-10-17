@@ -3,6 +3,7 @@
 #ifndef HYPERBLADE_COLORPALETTE_H
 #define HYPERBLADE_COLORPALETTE_H
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include <cstdint>
 
 #include "common/pathstring.h"
@@ -23,10 +24,10 @@ public:
 
     void ReloadPalette(short nMode);
 
-    int  SetEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries);
+    int  SetEntries(unsigned int iStart, unsigned int cEntries, PaletteEntry* pEntries);
     void SyncDIBColorTable(unsigned int iStart, unsigned int cEntries);
-    char AnimateEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries);
-    void BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEENTRY peColour, float flFloor);
+    char AnimateEntries(unsigned int iStart, unsigned int cEntries, PaletteEntry* pEntries);
+    void BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteEntry peColour, float flFloor);
 
     void Build();
 
@@ -36,14 +37,14 @@ public:
     // The colour-cycle range a fade kind occupies.
     PaletteRange GetFrameRange(int nKind);
 
-    PALETTEENTRY* GetRemappedEntry(PALETTEENTRY* pOut, int nIndex);
+    PaletteEntry* GetRemappedEntry(PaletteEntry* pOut, int nIndex);
     char          IsEntryUsable(int nIndex);
 
     unsigned short m_wVersion;     // 0x000
     unsigned short m_wNumEntries;  // 0x002
-    PALETTEENTRY   m_entries[256]; // 0x004
+    PaletteEntry   m_entries[256]; // 0x004
     // What the screen shows: the entries, with the animated ones as the fades last left them.
-    PALETTEENTRY m_current[256];
+    PaletteEntry m_current[256];
     String       m_name; // 0x40c
     // CUSTOM.PAL's rows in file order. The bounds hold a lower and an upper index, and the
     // ramp length the small and the large ramp's length less one.

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "palettefade.h"
 #include "engine/gameengine.h"
 #include "globals.h"
@@ -16,7 +17,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 : PaletteFade(pRange)
 {
     unsigned int  cLeft  = m_cEntries;
-    PALETTEENTRY* pEntry = m_pEntries;
+    PaletteEntry* pEntry = m_pEntries;
 
     m_nKind = SCALAR_KIND;
 
@@ -43,7 +44,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 #define MS_TO_SECONDS 0.001
 
 // FUNCTION: HYPERX 0x0042d040
-int PaletteScalarFade::Start(const PALETTEENTRY* pStartColour)
+int PaletteScalarFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
     {
@@ -93,7 +94,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
     int nAnswer;
 
     unsigned int        nAt      = 0;
-    PALETTEENTRY* const pEntries = m_pWorkEntries;
+    PaletteEntry* const pEntries = m_pWorkEntries;
 
     if (bPhase != 0)
     {
@@ -124,7 +125,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
         int           nMask;
         int           nValue;
         int           nLimit;
-        PALETTEENTRY* pSource;
+        PaletteEntry* pSource;
 
         nMask   = 0;
         pSource = m_pEntries;

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "globals.h"
 #include "colorpalette.h"
 #include "graphicsglobals.h"
@@ -186,9 +187,9 @@ void ColorPalette::Build()
 {
     for (int i = 0; i < 256; i++)
     {
-        if (m_entries[i].peFlags != PC_RESERVED)
+        if (m_entries[i].peFlags != PALETTE_RESERVED)
         {
-            m_entries[i].peFlags = PC_NOCOLLAPSE;
+            m_entries[i].peFlags = PALETTE_NOCOLLAPSE;
         }
 
         m_current[i] = m_entries[i];
@@ -442,7 +443,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
 
         if (nCount > 0)
         {
-            PALETTEENTRY* pEntry = m_entries;
+            PaletteEntry* pEntry = m_entries;
 
             for (short i = 0; i < nCount; i++)
             {
@@ -579,7 +580,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
             for (int i = 0; i < nCount; i++)
             {
                 unsigned int nIndex;
-                PALETTEENTRY entry;
+                PaletteEntry entry;
 
                 // STRING: HYPERX 0x004bca1c
                 if (fscanf(pFile, "%u %u %u %u", &nIndex, &nRed, &nGreen, &nBlue) == -1)
@@ -592,7 +593,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
                 entry.peRed   = (unsigned char)nRed;
                 entry.peGreen = (unsigned char)nGreen;
                 entry.peBlue  = (unsigned char)nBlue;
-                entry.peFlags = PC_NOCOLLAPSE;
+                entry.peFlags = PALETTE_NOCOLLAPSE;
 
                 c = (char)getc(pFile);
 
@@ -639,10 +640,10 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
 }
 
 // FUNCTION: HYPERX 0x00426740
-int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries)
+int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, PaletteEntry* pEntries)
 {
-    memcpy(&m_current[iStart], pEntries, cEntries * sizeof(PALETTEENTRY));
-    memcpy(&m_entries[iStart], pEntries, cEntries * sizeof(PALETTEENTRY));
+    memcpy(&m_current[iStart], pEntries, cEntries * sizeof(PaletteEntry));
+    memcpy(&m_entries[iStart], pEntries, cEntries * sizeof(PaletteEntry));
 
     SyncDIBColorTable(iStart, cEntries);
 
@@ -654,19 +655,19 @@ void ColorPalette::SyncDIBColorTable(unsigned int iStart, unsigned int cEntries)
 {
     for (unsigned int i = iStart; i < iStart + cEntries; i++)
     {
-        g_bmiSoftBackBuffer.bmiColors[i] = RGBQUAD{ m_current[i].peBlue, m_current[i].peGreen, m_current[i].peRed, 0 };
+        g_bmiSoftBackBuffer.bmiColors[i] = RgbQuad{ m_current[i].peBlue, m_current[i].peGreen, m_current[i].peRed, 0 };
     }
 }
 
 // FUNCTION: HYPERX 0x00426810
-char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries)
+char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PaletteEntry* pEntries)
 {
     // As AnimatePalette, only the reserved entries take the new colours.
     for (unsigned int i = 0; i < cEntries; i++)
     {
         auto& current = m_current[iStart + i];
 
-        if (current.peFlags == PC_RESERVED)
+        if (current.peFlags == PALETTE_RESERVED)
         {
             current.peRed   = pEntries[i].peRed;
             current.peGreen = pEntries[i].peGreen;
@@ -681,7 +682,7 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PA
 
 // Rises geometrically from the floor to the full colour. The object is never touched.
 // FUNCTION: HYPERX 0x00426860
-void ColorPalette::BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEENTRY peColour, float flFloor)
+void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteEntry peColour, float flFloor)
 {
     float* pflScale = new float[nCount];
     *pflScale       = flFloor;
@@ -689,7 +690,7 @@ void ColorPalette::BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEE
 
     const float flRatio = (float)pow(1.0f / flFloor, 1.0f / nLast);
 
-    PALETTEENTRY* pOut  = pEntries;
+    PaletteEntry* pOut  = pEntries;
     const float   flRed = peColour.peRed;
     pOut->peRed         = (unsigned char)(int)(flRed * flFloor);
     const float flGreen = peColour.peGreen;
@@ -715,7 +716,7 @@ void ColorPalette::BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEE
 }
 
 // FUNCTION: HYPERX 0x00426980
-PALETTEENTRY* ColorPalette::GetRemappedEntry(PALETTEENTRY* pOut, int nIndex)
+PaletteEntry* ColorPalette::GetRemappedEntry(PaletteEntry* pOut, int nIndex)
 {
     // The same palette at every call site, but read separately.
     if (nIndex >= g_pColorPalette->m_rampBounds.nFirst && nIndex <= g_pColorPalette->m_rampBounds.nCount)

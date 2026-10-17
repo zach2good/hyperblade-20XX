@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "graphics/hwmodels.h"
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
@@ -105,7 +106,7 @@ void ConvertColours(MaterialListNode& materials, const EngineObject& object, con
             return nColour;
         }();
 
-        PALETTEENTRY entry;
+        PaletteEntry entry;
 
         const auto& remapped = *g_pColorPalette->GetRemappedEntry(&entry, (unsigned char)nIndex);
 

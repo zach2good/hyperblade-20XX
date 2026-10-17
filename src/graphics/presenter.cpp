@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "graphics/presenter.h"
 #include "graphics/hudlayer.h"
 #include "app/gameapp.h"
@@ -84,7 +85,7 @@ SDL_FRect FitRect(int nWidth, int nHeight, bool bUpscale)
     return SDL_FRect{ (nOutWidth - flWidth) / 2, (nOutHeight - flHeight) / 2, flWidth, flHeight };
 }
 
-void SetColours(SDL_Palette* pPalette, const RGBQUAD* pColours, int nTransparent)
+void SetColours(SDL_Palette* pPalette, const RgbQuad* pColours, int nTransparent)
 {
     SDL_Color aColours[256];
 
@@ -151,7 +152,7 @@ bool Ready()
 
 } // namespace
 
-void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nHeight, const RGBQUAD* pColours)
+void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nHeight, const RgbQuad* pColours)
 {
     const auto busy = BusyScope();
 

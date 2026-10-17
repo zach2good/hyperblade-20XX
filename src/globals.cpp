@@ -1,6 +1,7 @@
 // Definitions for the globals declared in globals.h, in the original's .data order.
 
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 #include "planvm/planaction.h"
 #include "graphics/modelfile.h"
 #include "net/netsessionentry.h"
@@ -135,7 +136,7 @@ int              g_bPerspectiveTexturing = 1;
 MdmDrawTexPolyFn g_pfnMdmDrawTexPoly;
 HMODULE          g_hMdmTexDll;
 // Initialised to keep source order: SoftTex::Load's palette loop bounds one past the array.
-PALETTEENTRY              g_aSoftTexPalette[256] = { 0 };
+PaletteEntry              g_aSoftTexPalette[256] = { 0 };
 class SoftTex*            g_pSoftTexHead         = 0;
 int                       g_nGameConfigReturnState;
 int                       g_nSaveLoadReturnState;

@@ -1,5 +1,6 @@
 #ifndef HYPERBLADE_VISUALEFFECTFADE_H
 #define HYPERBLADE_VISUALEFFECTFADE_H
+#include "graphics/bitmapformat.h"
 
 #include "palettescalarfade.h"
 
@@ -8,7 +9,7 @@
 class VisualEffectFade : public PaletteFade
 {
 public:
-    virtual int Start(const PALETTEENTRY* pStartColour);
+    virtual int Start(const PaletteEntry* pStartColour);
 
     // Slots two and four.
     virtual int Tick();

@@ -4,6 +4,7 @@
 #include "palettefade.h"
 
 #include "common/compat.h"
+#include "graphics/bitmapformat.h"
 
 // VTABLE: HYPERX 0x004b2b6c
 class PaletteScalarFade : public PaletteFade
@@ -12,7 +13,7 @@ public:
     explicit PaletteScalarFade(const PaletteRange* pRange);
 
     // Slots one and two of 0x004b2b6c.
-    virtual int Start(const PALETTEENTRY* pStartColour);
+    virtual int Start(const PaletteEntry* pStartColour);
     virtual int Tick();
 
 protected:
