@@ -1,6 +1,7 @@
 #include "common/compat.h"
 #include "lodnode.h"
 #include "graphics/modelcomponent.h"
+#include <cstring>
 
 // FUNCTION: HYPERX 0x00472740
 LODNode* LODNode::Init(short nLodCount)

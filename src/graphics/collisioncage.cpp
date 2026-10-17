@@ -7,8 +7,6 @@
 #include "math/vector.h"
 #include "engine/devicector.h"
 
-#pragma optimize("", off)
-
 namespace Component
 {
 
@@ -139,5 +137,3 @@ void CollisionCage::ComputeFaceNormals()
         ComputeNormal(this, nMeshFace);
     }
 }
-
-#pragma optimize("", on)

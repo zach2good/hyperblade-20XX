@@ -3,7 +3,7 @@
 #ifndef HYPERBLADE_GAMETIME_H
 #define HYPERBLADE_GAMETIME_H
 
-// What GameTime::Now fills: three words, the layout of the runtime's 32-bit __timeb32.
+// What GameTime::Now fills: three words, the layout of the runtime's 32-bit __timeb32, with no zone.
 struct SystemTimePair
 {
     int nSeconds;

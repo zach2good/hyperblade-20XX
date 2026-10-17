@@ -1,12 +1,14 @@
 #include "common/compat.h"
 #include "common/gametime.h"
 
-#include <sys/timeb.h>
+#include <chrono>
 
 // FUNCTION: HYPERX 0x0048fc40
 void GameTime::Now(SystemTimePair* pTime)
 {
-    static_assert(sizeof(__timeb32) == sizeof(SystemTimePair));
+    const auto nMillis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
-    _ftime32((__timeb32*)pTime);
+    pTime->nSeconds         = (int)(nMillis / 1000);
+    pTime->nMillis          = (int)(nMillis % 1000);
+    pTime->nZoneAndDaylight = 0;
 }

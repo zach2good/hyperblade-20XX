@@ -14,6 +14,7 @@
 #include "graphics/gdi.h"
 #include "common/stub.h"
 #include "common/staticinit.h"
+#include <cstdlib>
 
 float g_flFifthWidget             = 0.2f * g_flOneWidget;
 float g_flDotPitchInchWidget      = g_flDotsPerInchWidget * g_flDotPitchWidget;
@@ -84,8 +85,6 @@ Widget::~Widget()
         m_pszText = 0;
     }
 }
-
-extern "C" int _purecall(void);
 
 // The seventh argument is the row count; one extra row is allocated, even for a negative count.
 // FUNCTION: HYPERX 0x0042b220
@@ -528,20 +527,17 @@ int Widget::OnKeyPress(unsigned int)
 
 int Widget::OnMouseDown()
 {
-    _purecall();
-    return 0;
+    std::abort();
 }
 
 int Widget::OnMouseUp()
 {
-    _purecall();
-    return 0;
+    std::abort();
 }
 
 int Widget::IsDisplayOnly()
 {
-    _purecall();
-    return 0;
+    std::abort();
 }
 
 // FUNCTION: HYPERX 0x0047a8d0

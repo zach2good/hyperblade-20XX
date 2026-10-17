@@ -21,8 +21,6 @@ extern Vec3 g_vBubbleOtherCentre;
 // GLOBAL: HYPERX 0x004cb740
 extern Vec3 g_vBubbleSeparation;
 
-#pragma optimize("", off)
-
 // FUNCTION: HYPERX 0x0042a8f0
 BoundBubble::~BoundBubble()
 {
@@ -136,11 +134,7 @@ void BoundBubble::GetWorldPosition(Vec3* pOut)
     pOut->z = local.x * pTransform->m_a[2][0] + local.y * pTransform->m_a[2][1] + local.z * pTransform->m_a[2][2] + pTransform->m_a[2][3];
 }
 
-#pragma optimize("", on)
-
 // Only a sphere is handled; the fatal message misspells the function it names.
-#pragma optimize("", off)
-
 // FUNCTION: HYPERX 0x0042ade0
 unsigned char BoundBubble::DoesIntersect(BoundBubble* pOther)
 {
@@ -197,8 +191,6 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 
     return 0;
 }
-
-#pragma optimize("", on)
 
 // The array element's default constructor, which new BoundBubble[n] names.
 // FUNCTION: HYPERX 0x0042b000

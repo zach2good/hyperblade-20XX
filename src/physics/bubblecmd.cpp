@@ -3,10 +3,7 @@
 #include "physics/physicsbody.h"
 #include "engine/collisionobjectids.h"
 
-// The command record a bubble starts from: kind COB_NONE and everything else cleared. Both bodies are
-// built without optimisation, as in the original.
-#pragma optimize("", off)
-
+// The command record a bubble starts from: kind COB_NONE and everything else cleared.
 // FUNCTION: HYPERX 0x0042a050
 BubbleCmd::BubbleCmd()
 {
@@ -36,5 +33,3 @@ BubbleCmd::~BubbleCmd()
         delete m_pChildren;
     }
 }
-
-#pragma optimize("", on)

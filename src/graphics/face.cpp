@@ -160,8 +160,6 @@ char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* 
 
 // One Sutherland-Hodgman pass per plane in the clip code, alternating with a scratch array.
 
-#pragma intrinsic(memcpy)
-
 #define AXIS_X 0
 #define AXIS_Y 1
 #define AXIS_Z 2

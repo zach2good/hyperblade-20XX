@@ -13,6 +13,7 @@
 #include <vector>
 #include "graphics/presenter.h"
 #include "wndproc.h"
+#include "engine/cameraobject.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
 #include "engine/gameoptions.h"

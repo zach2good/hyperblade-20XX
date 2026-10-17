@@ -1,13 +1,14 @@
 #ifndef HYPERBLADE_PLANFILE_H
 #define HYPERBLADE_PLANFILE_H
 
-struct _iobuf;
+#include <cstdio>
+
 union PlanWord;
 
 namespace PlanFile
 {
 
-PlanWord* ReadBinary(struct _iobuf* pFile, unsigned int* pnCount);
+PlanWord* ReadBinary(FILE* pFile, unsigned int* pnCount);
 PlanWord* OpenBinary(const char* pszName, void** ppUnused);
 
 } // namespace PlanFile

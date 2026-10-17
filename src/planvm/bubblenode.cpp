@@ -7,8 +7,6 @@
 #include "physics/collisioncage.h"
 #include "physics/physicsbody.h"
 
-#pragma optimize("", off)
-
 // FUNCTION: HYPERX 0x0042a150
 BubbleNode::BubbleNode()
 {
@@ -37,5 +35,3 @@ BubbleNode::~BubbleNode()
         m_pCage = 0;
     }
 }
-
-#pragma optimize("", on)

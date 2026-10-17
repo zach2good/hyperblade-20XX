@@ -25,7 +25,8 @@
 // FUNCTION: HYPERX 0x00448980
 void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList)
 {
-    va_list argListSave = argList;
+    va_list argListSave;
+    va_copy(argListSave, argList);
 
     int nMaxLen = 0;
 
@@ -241,6 +242,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
     }
 
     vsprintf(pString->Reserve(nMaxLen), pszFormat, argListSave);
+    va_end(argListSave);
 
     pString->SetLength(-1);
 }

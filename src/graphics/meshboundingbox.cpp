@@ -8,8 +8,6 @@
 #include "graphics/meshboundingbox.h"
 #include "physics/sweptvec.h"
 
-#pragma optimize("", off)
-
 inline Vec3* MeshBoundingBox::Min()
 {
     return &vMin;
@@ -80,5 +78,3 @@ int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOw
 
     return bIntersect;
 }
-
-#pragma optimize("", on)
