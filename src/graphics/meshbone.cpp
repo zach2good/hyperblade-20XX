@@ -530,7 +530,7 @@ void MeshBone::CalcVertexColors()
         const Vec3* const pNormal = &pFace->vNormal;
 
         unsigned char cIndex;
-        char          cShade;
+        FaceShade     cShade;
         float         flIntensity;
 
         int nRangeFirst;
@@ -549,7 +549,7 @@ void MeshBone::CalcVertexColors()
 
             if (pNormal == nullptr)
             {
-                cShade = SHADE_WHITE;
+                cShade = FaceShade::kWhite;
             }
             else
             {
@@ -560,16 +560,16 @@ void MeshBone::CalcVertexColors()
                 {
                     if (flIntensity < g_flVertexW)
                     {
-                        cShade = SHADE_SCALED;
+                        cShade = FaceShade::kScaled;
                     }
                     else
                     {
-                        cShade = SHADE_WHITE;
+                        cShade = FaceShade::kWhite;
                     }
                 }
                 else
                 {
-                    cShade = SHADE_BLACK;
+                    cShade = FaceShade::kBlack;
                 }
             }
 

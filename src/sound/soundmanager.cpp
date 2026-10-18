@@ -95,7 +95,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     memset(m_apSounds, 0, m_nSoundCount * sizeof(SoundEntry*));
 
-    file.m_file.SeekRelative(0, SEEK_SET);
+    file.m_file.SeekRelative(0, FileSeekOrigin::kStart);
 
     short nGroupFirst = 0;
     short nIndex      = 0;

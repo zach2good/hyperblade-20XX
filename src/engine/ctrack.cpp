@@ -152,7 +152,7 @@ void CTrack::Process(int nArg)
 
         aTarget.Set(pWorld->m_a[0][3], pWorld->m_a[1][3], pWorld->m_a[2][3]);
 
-        if ((static_cast<unsigned char>(pBody->nHeldBindings) & HELD_SHOOT) != 0)
+        if ((static_cast<unsigned char>(pBody->nHeldBindings) & kHeldShoot) != 0)
         {
             auto* const pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 

@@ -13,12 +13,12 @@ enum class FileMode
     kWriteNoTruncate = 3
 };
 
-// FileObj::SeekRelative's origins. Any other value is taken as SEEK_SET, SEEK_CUR or SEEK_END.
-enum FileSeekOrigin
+// FileObj::SeekRelative's origins, one to three where SDL counts from zero.
+enum class FileSeekOrigin
 {
-    FILE_SEEK_START   = 1,
-    FILE_SEEK_CURRENT = 2,
-    FILE_SEEK_END     = 3
+    kStart   = 1,
+    kCurrent = 2,
+    kEnd     = 3
 };
 
 class FileObj
@@ -30,7 +30,7 @@ public:
     int  CloseAndTest();
     char Open(const char* pszName, FileMode mode);
     int  Read(void* pBuffer, int nCount);
-    int  SeekRelative(long nOffset, int nOrigin);
+    int  SeekRelative(long nOffset, FileSeekOrigin origin);
     int  GetNextLine(char** ppLine);
 
     int Write(const void* pBuf, unsigned int nCount);

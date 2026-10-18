@@ -88,7 +88,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
     ClipVertex*         pVert;
     float               flLevel;
     float               flLevel2;
-    unsigned char       cShade;
+    FaceShade           cShade;
     unsigned char       cColourIndex;
     short               nStep;
     short               nFirst;
@@ -227,7 +227,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 
             if (pNormal == nullptr)
             {
-                cShade = SHADE_WHITE;
+                cShade = FaceShade::kWhite;
             }
             else
             {
@@ -239,16 +239,16 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
                 {
                     if (flLevel < SW_LIGHT_CEILING)
                     {
-                        cShade = SHADE_SCALED;
+                        cShade = FaceShade::kScaled;
                     }
                     else
                     {
-                        cShade = SHADE_WHITE;
+                        cShade = FaceShade::kWhite;
                     }
                 }
                 else
                 {
-                    cShade = SHADE_BLACK;
+                    cShade = FaceShade::kBlack;
                 }
             }
 
@@ -282,9 +282,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             {
                 flLevel2 = g_flZeroSWRend;
 
-                cShade = static_cast<unsigned char>(MeshMaterial::CalcLightIntensity(&flLevel2,
-                                                                                     pMaterial,
-                                                                                     pFaceNormal));
+                cShade = MeshMaterial::CalcLightIntensity(&flLevel2, pMaterial, pFaceNormal);
 
                 g_nSWFaceColour =
                     (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex)

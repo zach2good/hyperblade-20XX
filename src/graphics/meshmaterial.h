@@ -10,6 +10,8 @@
 // The stride is twenty two, where natural packing gives twenty four.
 #pragma pack(push, 2)
 
+enum class FaceShade : unsigned char;
+
 class FileObj;
 
 struct MeshMaterial
@@ -65,7 +67,7 @@ struct MeshMaterial
 
     short nBackIndex; // 0x14
 
-    static char CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const struct Vec3* pNormal);
+    static FaceShade CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const struct Vec3* pNormal);
 
     static char ParseFile(FileObj* pFile, const char* pszModelName, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
 };
@@ -85,11 +87,11 @@ struct MeshMaterialRecord
 
 static_assert(sizeof(MeshMaterialRecord) == 0x16);
 
-enum FaceShade
+enum class FaceShade : unsigned char
 {
-    SHADE_BLACK  = 0,
-    SHADE_WHITE  = 1,
-    SHADE_SCALED = 2
+    kBlack  = 0,
+    kWhite  = 1,
+    kScaled = 2
 };
 
 #endif

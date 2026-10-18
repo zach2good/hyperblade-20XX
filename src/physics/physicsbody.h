@@ -20,22 +20,19 @@ struct AttachPak
 };
 
 // The bindings held this frame, one bit per key slot; g_anKeyBindingOrder swaps Attack and SpeedBurst.
-enum HeldBinding
-{
-    HELD_FORWARD      = 0x001,
-    HELD_STOP         = 0x002,
-    HELD_ROTATE_LEFT  = 0x004,
-    HELD_ROTATE_RIGHT = 0x008,
-    HELD_SPEED_BURST  = 0x010,
-    HELD_ATTACK       = 0x020,
-    HELD_SHOOT        = 0x040,
-    HELD_PASS         = 0x080,
-    HELD_QUICK_SHOT   = 0x100,
-    HELD_JUMP         = 0x200,
-    HELD_THROTTLE     = HELD_FORWARD | HELD_STOP,
-    HELD_ROTATE       = HELD_ROTATE_LEFT | HELD_ROTATE_RIGHT,
-    HELD_MOVEMENT     = HELD_THROTTLE | HELD_ROTATE
-};
+constexpr auto kHeldForward     = 0x001;
+constexpr auto kHeldStop        = 0x002;
+constexpr auto kHeldRotateLeft  = 0x004;
+constexpr auto kHeldRotateRight = 0x008;
+constexpr auto kHeldSpeedBurst  = 0x010;
+constexpr auto kHeldAttack      = 0x020;
+constexpr auto kHeldShoot       = 0x040;
+constexpr auto kHeldPass        = 0x080;
+constexpr auto kHeldQuickShot   = 0x100;
+constexpr auto kHeldJump        = 0x200;
+constexpr auto kHeldThrottle    = kHeldForward | kHeldStop;
+constexpr auto kHeldRotate      = kHeldRotateLeft | kHeldRotateRight;
+constexpr auto kHeldMovement    = kHeldThrottle | kHeldRotate;
 
 // The step PreUpdateTick takes toward a target; CGlideOnSurface keeps a pointer to the pair.
 struct BodyMove

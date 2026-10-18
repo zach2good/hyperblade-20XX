@@ -124,7 +124,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
         return GDI::ExpandRLE(pDib);
     }
 
-    file.SeekRelative(0, FILE_SEEK_START);
+    file.SeekRelative(0, FileSeekOrigin::kStart);
 
     pDib = GDI::ReadDIB(&file);
 
@@ -340,7 +340,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         return nullptr;
     }
 
-    const long lStart = pFile->SeekRelative(0, FILE_SEEK_CURRENT);
+    const long lStart = pFile->SeekRelative(0, FileSeekOrigin::kCurrent);
 
     if (pFile->Read(&bmfh, sizeof(bmfh)) != sizeof(bmfh))
     {
@@ -353,7 +353,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
     {
         bmfh.bfOffBits = 0;
 
-        pFile->SeekRelative(lStart, FILE_SEEK_START);
+        pFile->SeekRelative(lStart, FileSeekOrigin::kStart);
     }
 
     if (pFile->Read(&header.info, sizeof(header.info)) != sizeof(header.info))
@@ -381,7 +381,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         header.info.biClrUsed       = 0;
         header.info.biClrImportant  = 0;
 
-        pFile->SeekRelative(static_cast<long>(sizeof(BitmapCoreHeader)) - static_cast<long>(sizeof(BitmapInfoHeader)), FILE_SEEK_CURRENT);
+        pFile->SeekRelative(static_cast<long>(sizeof(BitmapCoreHeader)) - static_cast<long>(sizeof(BitmapInfoHeader)), FileSeekOrigin::kCurrent);
     }
 
     if (header.info.biClrUsed == 0 && header.info.biBitCount <= 8)
@@ -454,7 +454,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 
     if (bmfh.bfOffBits != 0)
     {
-        pFile->SeekRelative(lStart + bmfh.bfOffBits, FILE_SEEK_START);
+        pFile->SeekRelative(lStart + bmfh.bfOffBits, FileSeekOrigin::kStart);
     }
 
     return pDib;

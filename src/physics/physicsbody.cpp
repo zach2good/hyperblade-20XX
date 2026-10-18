@@ -349,7 +349,7 @@ void PhysicsBody::UpdateMovementAxes()
 
     flCap = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.06f + 0.2f) * flAccelDt * g_flMaxAcceleration;
 
-    if ((nHeldBindings & HELD_SHOOT) != 0)
+    if ((nHeldBindings & kHeldShoot) != 0)
     {
         axis.x               = flPush + axis.x;
         g_bMoveAxesShootHeld = 1;
@@ -404,7 +404,7 @@ void PhysicsBody::UpdateMovementAxes()
         return;
     }
 
-    if ((nHeld & (HELD_THROTTLE | HELD_SHOOT)) == 0)
+    if ((nHeld & (kHeldThrottle | kHeldShoot)) == 0)
     {
         if (fabs(static_cast<double>(axis.x)) > 0.01)
         {
@@ -416,7 +416,7 @@ void PhysicsBody::UpdateMovementAxes()
         }
     }
 
-    if ((nHeld & HELD_ROTATE) == 0)
+    if ((nHeld & kHeldRotate) == 0)
     {
         if (fabs(static_cast<double>(axis.y)) > 0.01)
         {
@@ -428,11 +428,11 @@ void PhysicsBody::UpdateMovementAxes()
         }
     }
 
-    const auto nAxis = static_cast<short>(nHeld & HELD_MOVEMENT);
+    const auto nAxis = static_cast<short>(nHeld & kHeldMovement);
 
     if (nAxis != 0)
     {
-        if ((static_cast<unsigned char>(nAxis) & HELD_MOVEMENT) == HELD_FORWARD)
+        if ((static_cast<unsigned char>(nAxis) & kHeldMovement) == kHeldForward)
         {
             const Vec3* const pRowA = &velDir;
             const Vec3* const pRowB = &velDirLatched;
@@ -449,7 +449,7 @@ void PhysicsBody::UpdateMovementAxes()
             }
         }
 
-        if ((nAxis & HELD_FORWARD) != 0)
+        if ((nAxis & kHeldForward) != 0)
         {
             axis.x = flPush + axis.x;
         }
@@ -458,7 +458,7 @@ void PhysicsBody::UpdateMovementAxes()
 
         const auto flTurn = g_flNetTracking * flSpeed * TURN_SCALE;
 
-        if ((nAxis & HELD_ROTATE_LEFT) != 0)
+        if ((nAxis & kHeldRotateLeft) != 0)
         {
             if (g_bMoveAxesStopHeld != 0)
             {
@@ -480,7 +480,7 @@ void PhysicsBody::UpdateMovementAxes()
             }
         }
 
-        if ((nAxis & HELD_ROTATE_RIGHT) != 0)
+        if ((nAxis & kHeldRotateRight) != 0)
         {
             if (g_bMoveAxesStopHeld != 0)
             {
@@ -875,9 +875,9 @@ void PhysicsBody::UpdateBanking()
 
     const unsigned short nFlags = nHeldBindings;
 
-    if ((nFlags & HELD_ROTATE) != 0)
+    if ((nFlags & kHeldRotate) != 0)
     {
-        if ((nFlags & HELD_ROTATE_LEFT) != 0)
+        if ((nFlags & kHeldRotateLeft) != 0)
         {
             flCos   = static_cast<float>(cos(static_cast<double>(g_flBankingAngleRad)));
             flSin   = static_cast<float>(sin(static_cast<double>(g_flBankingAngleRad)));

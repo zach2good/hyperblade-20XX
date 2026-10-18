@@ -94,24 +94,23 @@ char FileObj::Open(const char* pszPath, FileMode mode)
 
 // The loader's origins are one to three where SDL, as the C library, wants zero to two.
 // FUNCTION: HYPERX 0x00440550
-int FileObj::SeekRelative(long nOffset, int nOrigin)
+int FileObj::SeekRelative(long nOffset, FileSeekOrigin origin)
 {
     const auto whence = [&]
     {
-        switch (nOrigin)
+        switch (origin)
         {
-            case FILE_SEEK_START:
-                return SDL_IO_SEEK_SET;
-
-            case FILE_SEEK_CURRENT:
+            case FileSeekOrigin::kCurrent:
                 return SDL_IO_SEEK_CUR;
 
-            case FILE_SEEK_END:
+            case FileSeekOrigin::kEnd:
                 return SDL_IO_SEEK_END;
 
-            default:
-                return static_cast<SDL_IOWhence>(nOrigin);
+            case FileSeekOrigin::kStart:
+                break;
         }
+
+        return SDL_IO_SEEK_SET;
     }();
 
     return static_cast<int>(SDL_SeekIO(IO(*this), nOffset, whence));
@@ -216,7 +215,7 @@ int FileObj::GetNextLine(char** ppLine)
 
                 if (nRead != 0)
                 {
-                    SeekRelative(-1, FILE_SEEK_CURRENT);
+                    SeekRelative(-1, FileSeekOrigin::kCurrent);
                 }
 
                 break;

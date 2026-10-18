@@ -492,14 +492,14 @@ unsigned int ColorPalette::Load()
 
 // The drome pass raises the ramp base to the light level and takes one off.
 // FUNCTION: HYPERX 0x004263a0
-unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigned char cShade, float flIntensity, unsigned char cColour)
+unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, FaceShade shade, float flIntensity, unsigned char cColour)
 {
-    switch (cShade)
+    switch (shade)
     {
-        case SHADE_BLACK:
+        case FaceShade::kBlack:
             return cColour;
 
-        case SHADE_WHITE:
+        case FaceShade::kWhite:
             if (cColour >= pPalette->m_largeRampBounds.nFirst && cColour <= pPalette->m_largeRampBounds.nCount)
             {
                 return static_cast<unsigned char>(pPalette->m_rampLength.nCount + cColour);
@@ -507,7 +507,7 @@ unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigne
 
             return static_cast<unsigned char>(pPalette->m_rampLength.nFirst + cColour);
 
-        case SHADE_SCALED:
+        case FaceShade::kScaled:
             if (g_bDromePass != 0)
             {
                 if (cColour < pPalette->m_largeRampBounds.nFirst || cColour > pPalette->m_largeRampBounds.nCount)

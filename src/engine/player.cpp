@@ -32,21 +32,21 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 
     pPlayer->GetPhysicsBody()->UpdateMovementAxes();
 
-    if ((*pnInput & HELD_FORWARD) == 0)
+    if ((*pnInput & kHeldForward) == 0)
     {
-        if (((*pnInput & HELD_MOVEMENT) != 0) || (g_nTrickSeqStep != 0) || (pPlayer->GetPhysicsBody()->flSteerScale > 1.0001))
+        if (((*pnInput & kHeldMovement) != 0) || (g_nTrickSeqStep != 0) || (pPlayer->GetPhysicsBody()->flSteerScale > 1.0001))
         {
             const auto           nStep  = g_nTrickSeqStep;
             const unsigned short nInput = *pnInput;
 
-            if (((nInput & HELD_STOP) == 0) && ((nInput & HELD_ROTATE) != 0))
+            if (((nInput & kHeldStop) == 0) && ((nInput & kHeldRotate) != 0))
             {
                 if (nStep == 0)
                 {
                     g_nTrickSeqStep  = 1;
                     g_nBoostGrabStep = 0;
 
-                    if ((*pnInput & HELD_ROTATE_LEFT) != 0)
+                    if ((*pnInput & kHeldRotateLeft) != 0)
                     {
                         pPlayer->PostSceneEvent(kMsgNoInputForSec, 1);
 
@@ -58,12 +58,12 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
                     return;
                 }
             }
-            else if ((nStep == 0) && ((nInput & HELD_ROTATE) != 0))
+            else if ((nStep == 0) && ((nInput & kHeldRotate) != 0))
             {
                 g_nTrickSeqStep  = 1;
                 g_nBoostGrabStep = 0;
 
-                if ((*pnInput & HELD_ROTATE_LEFT) != 0)
+                if ((*pnInput & kHeldRotateLeft) != 0)
                 {
                     pPlayer->PostSceneEvent(kMsgNoInputForSec, 3);
 

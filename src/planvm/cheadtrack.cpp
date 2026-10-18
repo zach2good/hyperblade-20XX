@@ -202,11 +202,11 @@ void CHeadTrack::Process(int nArg)
 
         nHeld = static_cast<unsigned short>((g_pGameEngine->m_ppSlots[static_cast<short>(nFollow)])->GetPhysicsBody()->nHeldBindings);
 
-        if ((nHeld & HELD_ROTATE) != 0)
+        if ((nHeld & kHeldRotate) != 0)
         {
             const auto flFrac = pCam->m_flViewFracX;
 
-            if ((nHeld & HELD_ROTATE_RIGHT) != 0)
+            if ((nHeld & kHeldRotateRight) != 0)
             {
                 pCam->SetViewFracX(flFrac + flStep);
             }
@@ -225,11 +225,11 @@ void CHeadTrack::Process(int nArg)
                 pCam->SetViewFracX(g_flZeroTracking);
             }
         }
-        else if ((nHeld & HELD_THROTTLE) != 0)
+        else if ((nHeld & kHeldThrottle) != 0)
         {
             const auto flFrac = pCam->m_flViewFracY;
 
-            if ((nHeld & HELD_FORWARD) != 0)
+            if ((nHeld & kHeldForward) != 0)
             {
                 pCam->SetViewFracY(flFrac - flStep);
             }

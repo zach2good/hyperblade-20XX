@@ -10,6 +10,8 @@
 #include "graphics/paletterange.h"
 #include "graphics/cgpalette.h"
 
+enum class FaceShade : unsigned char;
+
 class ColorPalette
 {
 public:
@@ -63,7 +65,7 @@ public:
     PaletteRange m_remapRange; // 0x468
 
     static unsigned char LookupColorIntensity(ColorPalette* pPalette,
-                                              unsigned char cShade,
+                                              FaceShade     shade,
                                               float         flIntensityVal,
                                               unsigned char cColour);
 };

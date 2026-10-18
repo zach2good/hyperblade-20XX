@@ -139,7 +139,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
         return 0;
     }
 
-    file.m_file.SeekRelative(0, SEEK_SET);
+    file.m_file.SeekRelative(0, FileSeekOrigin::kStart);
     auto nRound = 0;
 
     while (file.m_file.GetNextLine(&pLine) > 0)

@@ -215,7 +215,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
 
     memset(m_ppNames, 0, m_wCount * sizeof(const char*));
 
-    file.m_file.SeekRelative(0, SEEK_SET);
+    file.m_file.SeekRelative(0, FileSeekOrigin::kStart);
     m_wCount = 0;
 
     while (file.m_file.GetNextLine(&pLine) > 0)

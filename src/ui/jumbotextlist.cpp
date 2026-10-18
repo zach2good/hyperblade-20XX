@@ -85,7 +85,7 @@ unsigned int JumboTextList::Load(const char* pszFileName)
 
     memset(m_ppszText, 0, m_nCount * sizeof(char*));
 
-    file.m_file.SeekRelative(0, SEEK_SET);
+    file.m_file.SeekRelative(0, FileSeekOrigin::kStart);
     m_nCount = 0;
 
     while (file.m_file.GetNextLine(&pLine) > 0)

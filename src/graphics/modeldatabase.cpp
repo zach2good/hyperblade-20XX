@@ -241,7 +241,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
     {
         if (pFile->Read(szMatFile, sizeof(szMatFile)) != 0)
         {
-            if (pFile->SeekRelative(nMatCount * sizeof(MaterialName), FILE_SEEK_CURRENT) != 0)
+            if (pFile->SeekRelative(nMatCount * sizeof(MaterialName), FileSeekOrigin::kCurrent) != 0)
             {
                 auto* const pMaterials = new MeshMaterial[nMatCount];
 

@@ -17,13 +17,13 @@ extern Vec3 g_vLightDirModel;
 
 // Answers the face's FaceShade and level; a face with no normal is lit white.
 // FUNCTION: HYPERX 0x00433820
-char MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const Vec3* pNormal)
+FaceShade MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const Vec3* pNormal)
 {
     float flLevel;
 
     if (pNormal == nullptr)
     {
-        return SHADE_WHITE;
+        return FaceShade::kWhite;
     }
 
     flLevel = (g_vLightDirModel.x * pNormal->x + (g_vLightDirModel.y * pNormal->y + g_vLightDirModel.z * pNormal->z)) * pMaterial->flDiffuse;
@@ -36,13 +36,13 @@ char MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMateri
     {
         if (flLevel < 1.0f)
         {
-            return SHADE_SCALED;
+            return FaceShade::kScaled;
         }
 
-        return SHADE_WHITE;
+        return FaceShade::kWhite;
     }
 
-    return SHADE_BLACK;
+    return FaceShade::kBlack;
 }
 
 constexpr auto kLineMax     = 120;
@@ -125,7 +125,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
 
     memset(paMatNames, 0, *pnMatCount * sizeof(MaterialName));
 
-    pFile->SeekRelative(0, FILE_SEEK_START);
+    pFile->SeekRelative(0, FileSeekOrigin::kStart);
 
     while ((nLength = pFile->GetNextLine(&pszLine)) > 0)
     {

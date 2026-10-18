@@ -3415,7 +3415,7 @@ void PlanCond::SideKeysAreDown(Interactor*, PlanNode*, short* pResult, int)
     pObject            = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
     auto* const pState = pObject->GetPhysicsBody();
 
-    *pResult = (static_cast<char>(pState->nHeldBindings) & HELD_ROTATE) == 0;
+    *pResult = (static_cast<char>(pState->nHeldBindings) & kHeldRotate) == 0;
 }
 
 // FUNCTION: HYPERX 0x00462910
