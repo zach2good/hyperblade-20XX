@@ -14,7 +14,7 @@
 #include "common/pooledclasses.h"
 
 // How many particles a spawn fills.
-#define SPAWN_COUNT 100
+constexpr auto SPAWN_COUNT = 100;
 
 // The ceiling on both launch parameters.
 #define SPAWN_LIMIT 150.0f

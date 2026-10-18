@@ -147,8 +147,8 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
     }
 }
 
-#define BOT_SEND_INTERVAL 0x1f4
-#define BOT_SLOT_LIMIT    7
+constexpr auto BOT_SEND_INTERVAL = 0x1f4;
+constexpr auto BOT_SLOT_LIMIT    = 7;
 
 // Sent at most every 500 ms; the phase compare reads two bytes that were never written.
 // FUNCTION: HYPERX 0x00473cc0

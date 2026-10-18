@@ -10,7 +10,7 @@
 #include "app/gameapp.h"
 #include "engine/objectphase.h"
 
-#define SHAPE_WORLD_SPACE (-2)
+constexpr auto SHAPE_WORLD_SPACE = (-2);
 
 // GLOBAL: HYPERX 0x004cb760
 extern Vec3 g_vBubbleOwnCentre;

@@ -27,7 +27,7 @@
 
 #define BLEND_NEXT (-1.0f)
 
-#define CLIP_NEXT (-1)
+constexpr auto CLIP_NEXT = (-1);
 
 // GLOBAL: HYPERX 0x004bc4fc
 extern float g_flBlendDurationCap;
@@ -276,7 +276,7 @@ void AnimPlayer::SetPlaybackRate(float flRate)
     }
 }
 
-#define SLOT_FLAG_MOVED 4
+constexpr auto SLOT_FLAG_MOVED = 4;
 
 // MSG_NOMSG marks an event consumed; a zero argument still poses the skeleton.
 // FUNCTION: HYPERX 0x00424880
@@ -742,7 +742,7 @@ void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
     }
 }
 
-#define CLIP_DURATION_TIMED (-2)
+constexpr auto CLIP_DURATION_TIMED = (-2);
 
 // A clip whose last frame precedes its first plays backwards with a negated step.
 // FUNCTION: HYPERX 0x00425220

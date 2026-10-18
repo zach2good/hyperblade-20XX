@@ -25,24 +25,24 @@ class TransformObject;
 struct Vec3;
 
 // The scene-message registry: one byte per message id, one handler per slot.
-#define SCENE_MESSAGE_COUNT 0x8e
-#define SCENE_HANDLER_SLOTS 50
+constexpr auto SCENE_MESSAGE_COUNT = 0x8e;
+constexpr auto SCENE_HANDLER_SLOTS = 50;
 
 // The length of the scene event ring and of the input command ring.
-#define OBJECT_RING_LENGTH 0x96
+constexpr auto OBJECT_RING_LENGTH = 0x96;
 
 // The bits of EngineObject::m_nFlags. An unculled object skips the camera's frustum test, one with
 // no model has nothing to release, a hidden one is neither drawn nor body checked, and the posed bit
 // says the render slots were transformed this frame and is cleared before the next.
-#define ENGINEOBJECT_NO_CULL  0x01
-#define ENGINEOBJECT_NO_MODEL 0x04
-#define ENGINEOBJECT_HIDDEN   0x10
-#define ENGINEOBJECT_POSED    0x20
+constexpr auto ENGINEOBJECT_NO_CULL  = 0x01;
+constexpr auto ENGINEOBJECT_NO_MODEL = 0x04;
+constexpr auto ENGINEOBJECT_HIDDEN   = 0x10;
+constexpr auto ENGINEOBJECT_POSED    = 0x20;
 
 // Input commands that are not a scene message: the plan in the high word and the
 // behaviour in the low, or the behaviour alone.
-#define COMMAND_SET_PLAN_AND_BEHAVIOR (-2)
-#define COMMAND_SET_BEHAVIOR          (-3)
+constexpr auto COMMAND_SET_PLAN_AND_BEHAVIOR = (-2);
+constexpr auto COMMAND_SET_BEHAVIOR          = (-3);
 
 // 0xd14 bytes, where every derived class puts its first field; offsets past it are per class.
 // VTABLE: HYPERX 0x004b38f0

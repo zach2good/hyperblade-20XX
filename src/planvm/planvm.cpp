@@ -34,14 +34,14 @@ extern short g_awReactionByDamageAndSector[35];
 // GLOBAL: HYPERX 0x004cf4f4
 extern char g_aAnimListNames[35][32];
 
-#define ANIM_LIST_LINES 5
+constexpr auto ANIM_LIST_LINES = 5;
 
 // Seven names to a line, five lines to a file.
-#define ANIM_NAMES_PER_LINE 7
+constexpr auto ANIM_NAMES_PER_LINE = 7;
 
-#define ANIM_NAME_MAX 32
+constexpr auto ANIM_NAME_MAX = 32;
 
-#define ANIM_LINE_MAX 100
+constexpr auto ANIM_LINE_MAX = 100;
 
 // GLOBAL: HYPERX 0x004cf4f0
 extern int g_nAnimListNamesLead;
@@ -53,10 +53,10 @@ extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 // GLOBAL: HYPERX 0x004cf2b8
 extern PlanHandlerFn g_pfnPlanActionHandlers[140];
 
-#define TOKEN_BUFFER 0x28
+constexpr auto TOKEN_BUFFER = 0x28;
 
-#define PLAN_SOURCE_CHARS 80000
-#define PLAN_STREAM_WORDS 30000
+constexpr auto PLAN_SOURCE_CHARS = 80000;
+constexpr auto PLAN_STREAM_WORDS = 30000;
 
 // The five counters and a number token's scratch; marked in src/globals.cpp.
 extern short g_wArgsSinceDeclareBehavior;
@@ -69,14 +69,14 @@ extern short g_wArgsSinceSetInteractorParam;
 
 extern short g_wArgsSinceDeclareLocalReals;
 
-#define PLAN_OPCODE_NONE 0xffffffff
+constexpr auto PLAN_OPCODE_NONE = 0xffffffff;
 
 // How far into the token and into each message the appended text is cut off.
-#define TOKEN_MESSAGE_LENGTH 20
+constexpr auto TOKEN_MESSAGE_LENGTH = 20;
 
 extern char g_szBadPlanIdValue[20];
 
-#define BAD_PLAN_ID_MESSAGE_LENGTH 19
+constexpr auto BAD_PLAN_ID_MESSAGE_LENGTH = 19;
 
 extern PlanWord g_planParsedLocalReal;
 
@@ -84,14 +84,14 @@ extern char g_szExpectedArgEnumeration[40];
 
 extern char g_szBadNumberInPlan[24];
 
-#define BAD_NUMBER_MESSAGE_LENGTH 20
+constexpr auto BAD_NUMBER_MESSAGE_LENGTH = 20;
 
 // The four messages, three of which the offending token is appended to.
 extern char g_szInabilityToReadString[28];
 
-#define UNREADABLE_STRING_MESSAGE_LENGTH 26
+constexpr auto UNREADABLE_STRING_MESSAGE_LENGTH = 26;
 
-#define PLAN_STRING_LIMIT 0x28
+constexpr auto PLAN_STRING_LIMIT = 0x28;
 
 // Five action slots are never written, and only the hit list's names are kept.
 // FUNCTION: HYPERX 0x0046ac10
@@ -539,8 +539,8 @@ void PlanVM::InitRuntimeOpcodeTable()
 }
 
 // The tokens the compiler seeds by name before the numbered _0_ to _50_.
-#define PLAN_NAMED_TOKENS        6
-#define PLAN_LAST_NUMBERED_TOKEN 50
+constexpr auto PLAN_NAMED_TOKENS        = 6;
+constexpr auto PLAN_LAST_NUMBERED_TOKEN = 50;
 
 // Builds the two keyword tables; each ends in an empty-name entry valued minus one.
 // FUNCTION: HYPERX 0x0047d340
@@ -756,25 +756,25 @@ PlanVM::PlanVM()
 
     // STRING: HYPERX 0x004c6b0c
     strcpy(pEntry->szName, "_STRAIGHTAHEAD_");
-    pEntry->nValue = static_cast<unsigned int> PLAN_TOKEN_STRAIGHTAHEAD;
+    pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_STRAIGHTAHEAD);
 
     pEntry = &m_aTokenRefs[2];
 
     // STRING: HYPERX 0x004c6afc
     strcpy(pEntry->szName, "_TEMPORARILY_");
-    pEntry->nValue = static_cast<unsigned int> PLAN_TOKEN_TEMPORARILY;
+    pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_TEMPORARILY);
 
     pEntry = &m_aTokenRefs[3];
 
     // STRING: HYPERX 0x004c6aec
     strcpy(pEntry->szName, "_MESSAGE_DATA_");
-    pEntry->nValue = static_cast<unsigned int> PLAN_TOKEN_MESSAGE_DATA;
+    pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_MESSAGE_DATA);
 
     pEntry = &m_aTokenRefs[4];
 
     // STRING: HYPERX 0x004c6adc
     strcpy(pEntry->szName, "_NO_BEH_CHANGE_");
-    pEntry->nValue = static_cast<unsigned int> PLAN_TOKEN_NO_BEH_CHANGE;
+    pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_NO_BEH_CHANGE);
 
     short nSlot = PLAN_NAMED_TOKENS;
 
@@ -782,7 +782,7 @@ PlanVM::PlanVM()
 
     // STRING: HYPERX 0x004c6acc
     strcpy(pEntry->szName, "_PREVIOUS_BEH_");
-    pEntry->nValue = static_cast<unsigned int> PLAN_TOKEN_PREVIOUS_BEH;
+    pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_PREVIOUS_BEH);
 
     int nIndex = 0;
 
@@ -830,7 +830,7 @@ PlanVM::~PlanVM()
     }
 }
 
-#define PATH_CHARS 0x100
+constexpr auto PATH_CHARS = 0x100;
 
 // The sentinel goes out too, and the descriptor is closed twice on the success path.
 // FUNCTION: HYPERX 0x0047daf0
@@ -865,7 +865,7 @@ char PlanVM::SaveBinary(char* pszName)
 }
 
 // One short of the buffer, so the terminator fits.
-#define PLAN_TEXT_LIMIT 0x1387f
+constexpr auto PLAN_TEXT_LIMIT = 0x1387f;
 
 // Only the first byte of each of the four tables is cleared: a leading zero marks an empty slot.
 // FUNCTION: HYPERX 0x0047dca0
@@ -918,7 +918,7 @@ char PlanVM::ReadAll(FileObj* pFile)
     return 1;
 }
 
-#define PLAN_PATH_CHARS 0x100
+constexpr auto PLAN_PATH_CHARS = 0x100;
 
 // The path is built beside the executable; a file that will not open throws.
 // FUNCTION: HYPERX 0x0047dd80
@@ -1761,8 +1761,8 @@ PlanOpcodeRef PlanVM::LookupSymbol(char* pszName)
 // A refusal appends the name to a global message and throws it as a char pointer.
 
 // Each base message's own length, which is where the appended name starts.
-#define BEHAVIOR_MESSAGE_LENGTH   31
-#define INTERACTOR_MESSAGE_LENGTH 33
+constexpr auto BEHAVIOR_MESSAGE_LENGTH   = 31;
+constexpr auto INTERACTOR_MESSAGE_LENGTH = 33;
 
 // The messages the refusals build; marked in src/globals.cpp.
 extern char g_szCouldNotFindBehaviorNamed[32];
@@ -1808,7 +1808,7 @@ short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
     throw (char*)g_szCouldNotFindInteractorNamed;
 }
 
-#define SYMBOL_NAME_MAX 40
+constexpr auto SYMBOL_NAME_MAX = 40;
 
 #define TOKEN_OPEN  '{'
 #define TOKEN_CLOSE '}'

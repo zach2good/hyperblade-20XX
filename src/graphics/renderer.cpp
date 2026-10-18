@@ -64,14 +64,14 @@ struct DrawPolySurface
     void* pBits;   // 0x10
 };
 
-#define DRAW_POLY_DEPTH 8
+constexpr auto DRAW_POLY_DEPTH = 8;
 
 extern int g_bDromePass;
 
 // GLOBAL: HYPERX 0x004c1e94
 extern int g_bDromeIniDirty;
 
-#define DROME_TEXTURED_DEFAULT 1
+constexpr auto DROME_TEXTURED_DEFAULT = 1;
 
 // A network or loading frame relights the first slots from fixed directions first.
 // FUNCTION: HYPERX 0x00442d20

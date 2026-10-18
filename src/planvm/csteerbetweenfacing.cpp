@@ -21,7 +21,7 @@
 #include "common/pooledownerroot.h"
 #include "engine/statids.h"
 
-#define MSG_SPEED_BURST_ARG 0x96
+constexpr auto MSG_SPEED_BURST_ARG = 0x96;
 
 #define BANK_DEADZONE_LOW  -0.001
 #define BANK_DEADZONE_HIGH 0.001f

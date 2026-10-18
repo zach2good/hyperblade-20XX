@@ -64,10 +64,10 @@
 #include "planvm/plancond.h"
 #include <cstring>
 
-#define ARG_COUNT_WITH_RATE 4
+constexpr auto ARG_COUNT_WITH_RATE = 4;
 
-#define ARG_ANIM  1
-#define ARG_RATE  2
+#define ARG_ANIM 1
+constexpr auto ARG_RATE = 2;
 #define ARG_FLAGS 3
 
 // Minus one as a float, pushed when the block carries no rate.
@@ -167,11 +167,11 @@ void PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, sho
     pBehaviour->UpdateLimpAnim();
 }
 
-#define ARG_EVENT_CHANNEL    1
-#define ARG_EVENT_TARGET     2
-#define ARG_EVENT_KIND       3
-#define ARG_EVENT_PARAM      4
-#define ARG_COUNT_WITH_PARAM 5
+constexpr auto ARG_EVENT_CHANNEL    = 1;
+constexpr auto ARG_EVENT_TARGET     = 2;
+constexpr auto ARG_EVENT_KIND       = 3;
+constexpr auto ARG_EVENT_PARAM      = 4;
+constexpr auto ARG_COUNT_WITH_PARAM = 5;
 
 // Without a behaviour the four values go to the actor's own event channel.
 // FUNCTION: HYPERX 0x00401190

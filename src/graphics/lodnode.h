@@ -2,7 +2,7 @@
 #define HYPERBLADE_LODNODE_H
 
 // The detail levels a model can carry.
-#define LOD_LEVEL_COUNT 5
+constexpr auto LOD_LEVEL_COUNT = 5;
 
 class LODNode
 {

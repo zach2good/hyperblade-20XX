@@ -11,7 +11,7 @@
 #include "app/gameapp.h"
 #include "engine/gameengine.h"
 
-#define INFOBAR_MESSAGE_MAX 128
+constexpr auto INFOBAR_MESSAGE_MAX = 128;
 
 // src/engine/game.cpp allocates this as a sixteen-byte block.
 // FUNCTION: HYPERX 0x00452710
@@ -23,9 +23,9 @@ MessageQueue::MessageQueue()
     m_ppNames     = nullptr;
 }
 
-#define MESSAGE_COLOUR_GREEN  0xff00
-#define MESSAGE_COLOUR_YELLOW 0xffff00
-#define MESSAGE_COLOUR_RED    0xff
+constexpr auto MESSAGE_COLOUR_GREEN  = 0xff00;
+constexpr auto MESSAGE_COLOUR_YELLOW = 0xffff00;
+constexpr auto MESSAGE_COLOUR_RED    = 0xff;
 
 // Zero expiry means idle. Releasing the text can run arbitrary code, so the head is re-read.
 // FUNCTION: HYPERX 0x00452730

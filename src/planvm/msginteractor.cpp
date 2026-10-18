@@ -10,8 +10,8 @@
 #include "engine/engineobject.h"
 #include "planvm/decisionlog.h"
 
-#define ARG_KEY           0
-#define ARG_MESSAGE_FIRST 1
+#define ARG_KEY 0
+constexpr auto ARG_MESSAGE_FIRST = 1;
 
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
@@ -116,7 +116,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 
     ExecuteScript(pCursor, nCount, nArg, pState);
 
-    if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int> PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
+    if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int>(PLAN_TOKEN_NO_BEH_CHANGE) && m_bEnabled != 0)
     {
         m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
 

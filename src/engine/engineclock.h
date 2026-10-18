@@ -4,7 +4,7 @@
 #include "common/compat.h"
 
 // The frame deltas the clock averages.
-#define CLOCK_RING_LENGTH 5
+constexpr auto CLOCK_RING_LENGTH = 5;
 
 // The engine clock: smoothed frame time, its ring, the tick, and the period and pause clocks.
 struct EngineClock

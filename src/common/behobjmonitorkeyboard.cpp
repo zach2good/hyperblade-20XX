@@ -11,7 +11,7 @@
 #include "engine/objectphase.h"
 
 // The button the rok throw comes in on.
-#define BUTTON_ROK 4
+constexpr auto BUTTON_ROK = 4;
 
 // Never written in this image; its three readers treat it as a two-player flag.
 // GLOBAL: HYPERX 0x004cb5e4

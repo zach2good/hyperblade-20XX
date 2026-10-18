@@ -6,7 +6,7 @@
 #include "math/vector.h"
 
 // A format of one means the clip contributes no slerp segment.
-#define ANIM_BONE_MODE_SKIP 1
+constexpr auto ANIM_BONE_MODE_SKIP = 1;
 
 class FileObj;
 union MatrixRow;

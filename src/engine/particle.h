@@ -6,8 +6,8 @@ struct Vec3;
 #include "devicector.h"
 
 // The shard matrices are five sets of twenty rows; a particle steps through one set.
-#define PARTICLE_ROW_SETS     5
-#define PARTICLE_ROWS_PER_SET 20
+constexpr auto PARTICLE_ROW_SETS     = 5;
+constexpr auto PARTICLE_ROWS_PER_SET = 20;
 
 // One 44-byte particle record, initialised at random by one of two spreads.
 class Particle

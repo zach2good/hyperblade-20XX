@@ -2,13 +2,13 @@
 #define HYPERBLADE_DECISIONLOG_H
 
 // A local object records the branches its decisions take; its network copy replays them oldest first.
-#define DECISION_LOG_RECORDING 0x8000
+constexpr auto DECISION_LOG_RECORDING = 0x8000;
 // How many branches the word holds; each count packs them at its own widths.
-#define DECISION_LOG_COUNT 0x3000
-#define DECISION_LOG_ONE   0x1000
-#define DECISION_LOG_TWO   0x2000
+constexpr auto DECISION_LOG_COUNT = 0x3000;
+constexpr auto DECISION_LOG_ONE   = 0x1000;
+constexpr auto DECISION_LOG_TWO   = 0x2000;
 // What a recording caller starts from.
-#define DECISION_LOG_FRESH -1
+constexpr auto DECISION_LOG_FRESH = -1;
 
 // One branch in bits 0-11; two in 0-6 and 7-12; three in 0-4, 5-8 and 9-11.
 struct DecisionLog

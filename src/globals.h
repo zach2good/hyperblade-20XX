@@ -34,7 +34,7 @@ class MessageQueue;
 // SYNTHETIC: HYPERX 0x00439530
 // $E11
 
-#define STATIONARY_SLOTS 0x30
+constexpr auto STATIONARY_SLOTS = 0x30;
 
 // Each entry's low word indexes the engine's object array.
 // GLOBAL: HYPERX 0x004ce864
@@ -303,8 +303,8 @@ extern class Screen* g_pActiveScreen;
 // GLOBAL: HYPERX 0x004d21bc
 extern int g_nPlayerMode;
 
-#define PLAYER_MODE_EXHIBITION 0
-#define PLAYER_MODE_TOURNAMENT 1
+constexpr auto PLAYER_MODE_EXHIBITION = 0;
+constexpr auto PLAYER_MODE_TOURNAMENT = 1;
 
 // Where Escape paused from: post-match, jumbotron, elsewhere, and the last of the three.
 // GLOBAL: HYPERX 0x004c8578
@@ -385,7 +385,7 @@ extern Vec3* g_apPositionMarkers[11];
 
 // id_POS_NGoalCenter and id_POS_SGoalCenter, the markers a plan names.
 #define POS_N_GOAL_CENTER 8
-#define POS_S_GOAL_CENTER 9
+constexpr auto POS_S_GOAL_CENTER = 9;
 
 // GLOBAL: HYPERX 0x004b17ac
 extern float g_flOneAgendaItem;
@@ -498,31 +498,31 @@ extern short g_wActiveScoreLine;
 // GLOBAL: HYPERX 0x004d064c
 extern struct TransformedVertex* g_pModelVertexBuf;
 
-#define ESTATE_INIT                0
-#define ESTATE_LOBBY               3
-#define ESTATE_MAIN_MENU           4
-#define ESTATE_TOURNAMENT_SETUP    5
-#define ESTATE_HEAD_TO_HEAD_SETUP  6
-#define ESTATE_MATCH_INFO          7
-#define ESTATE_LEAGUE_SETUP        8
-#define ESTATE_CHAMPIONSHIP_SETUP  9
-#define ESTATE_GAME_CLIPS_VIEWER   10
-#define ESTATE_AWARDS              11
-#define ESTATE_GAME_CONFIG         12
-#define ESTATE_SAVE_LOAD           13
-#define ESTATE_MATCH_START         14
-#define ESTATE_MATCH_LIVE          15
-#define ESTATE_DROME_EXTERIOR      16
-#define ESTATE_JUMBOTRON           17
-#define ESTATE_PAUSE_FULL          18
-#define ESTATE_PAUSE_MINIMAL       19
-#define ESTATE_PAUSE_NO_SAVE       20
-#define ESTATE_QUIT                22
-#define ESTATE_MULTI_SETUP_OPTIONS 23
-#define ESTATE_KEY_CONFIG          25
-#define ESTATE_FINAL_CEREMONY      26
-#define ESTATE_GAME_INTRO          27
-#define ESTATE_TRAINING_END        28
+constexpr auto ESTATE_INIT                = 0;
+constexpr auto ESTATE_LOBBY               = 3;
+constexpr auto ESTATE_MAIN_MENU           = 4;
+constexpr auto ESTATE_TOURNAMENT_SETUP    = 5;
+constexpr auto ESTATE_HEAD_TO_HEAD_SETUP  = 6;
+constexpr auto ESTATE_MATCH_INFO          = 7;
+constexpr auto ESTATE_LEAGUE_SETUP        = 8;
+constexpr auto ESTATE_CHAMPIONSHIP_SETUP  = 9;
+constexpr auto ESTATE_GAME_CLIPS_VIEWER   = 10;
+constexpr auto ESTATE_AWARDS              = 11;
+constexpr auto ESTATE_GAME_CONFIG         = 12;
+constexpr auto ESTATE_SAVE_LOAD           = 13;
+constexpr auto ESTATE_MATCH_START         = 14;
+constexpr auto ESTATE_MATCH_LIVE          = 15;
+constexpr auto ESTATE_DROME_EXTERIOR      = 16;
+constexpr auto ESTATE_JUMBOTRON           = 17;
+constexpr auto ESTATE_PAUSE_FULL          = 18;
+constexpr auto ESTATE_PAUSE_MINIMAL       = 19;
+constexpr auto ESTATE_PAUSE_NO_SAVE       = 20;
+constexpr auto ESTATE_QUIT                = 22;
+constexpr auto ESTATE_MULTI_SETUP_OPTIONS = 23;
+constexpr auto ESTATE_KEY_CONFIG          = 25;
+constexpr auto ESTATE_FINAL_CEREMONY      = 26;
+constexpr auto ESTATE_GAME_INTRO          = 27;
+constexpr auto ESTATE_TRAINING_END        = 28;
 
 // GLOBAL: HYPERX 0x004cefec
 extern char g_bChampFromJumbotron;

@@ -67,11 +67,11 @@
 // The impulse is the struck object's velocity scaled, plus independent scatter on each axis.
 
 // The guards are arity: a count equal to N means argument N is absent.
-#define ARG_FIRST  1
-#define ARG_SECOND 2
+#define ARG_FIRST 1
+constexpr auto ARG_SECOND = 2;
 
 // A context from a collision pair names no slot.
-#define SLOT_EXPLICIT_PAIR (-1)
+constexpr auto SLOT_EXPLICIT_PAIR = (-1);
 
 // Three, the facing step before the cross product decides whether to mirror it.
 // GLOBAL: HYPERX 0x004b1528

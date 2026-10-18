@@ -25,13 +25,13 @@ struct PlayerState
 };
 
 // The local player: the teardown destroys it by name, and the command pump skips it.
-#define SESSION_LOCAL_PLAYER 15
+constexpr auto SESSION_LOCAL_PLAYER = 15;
 
-#define SESSION_PLAYER_SLOTS 16
-#define SESSION_REMOTE_IDS   8
+constexpr auto SESSION_PLAYER_SLOTS = 16;
+constexpr auto SESSION_REMOTE_IDS   = 8;
 
 // The network slots that drive the Rok and the referee, God.
-#define NET_SLOT_ROK 7
-#define NET_SLOT_GOD 8
+constexpr auto NET_SLOT_ROK = 7;
+constexpr auto NET_SLOT_GOD = 8;
 
 #endif

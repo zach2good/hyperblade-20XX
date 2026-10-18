@@ -5,7 +5,7 @@
 
 #include "teamblock.h"
 
-#define SAVE_BLOCK_TAG_VALUE 0x314d444d
+constexpr auto SAVE_BLOCK_TAG_VALUE = 0x314d444d;
 
 struct SaveTeam
 {

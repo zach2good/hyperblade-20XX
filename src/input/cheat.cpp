@@ -32,7 +32,7 @@
 #include "graphics/renderer.h"
 #include "input/keyboarddeviceobj.h"
 
-#define CHEAT_MESSAGE_MS 1500
+constexpr auto CHEAT_MESSAGE_MS = 1500;
 
 // FUNCTION: HYPERX 0x004497f0
 void Cheat::BroadcastFreakout()
@@ -246,11 +246,11 @@ int CheatState::ProcessKeypress(char cKey)
 }
 
 // Message table entries the match keys show, and how long they stay up.
-#define MSG_FILTER_ON          0x54
-#define MSG_FILTER_OFF         0x55
-#define MSG_DROME_TEXTURED_ON  0x56
-#define MSG_DROME_TEXTURED_OFF 0x57
-#define MSG_TOGGLE_MS          0x5dc
+constexpr auto MSG_FILTER_ON          = 0x54;
+constexpr auto MSG_FILTER_OFF         = 0x55;
+constexpr auto MSG_DROME_TEXTURED_ON  = 0x56;
+constexpr auto MSG_DROME_TEXTURED_OFF = 0x57;
+#define MSG_TOGGLE_MS 0x5dc
 
 // FUNCTION: HYPERX 0x00449e20
 int GameApp::HandleMatchKeypress(unsigned int nKey)

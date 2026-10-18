@@ -3,22 +3,22 @@
 #ifndef HYPERBLADE_SOUNDMANAGER_H
 #define HYPERBLADE_SOUNDMANAGER_H
 
-#define SOUNDMGR_SLOTS 15
+constexpr auto SOUNDMGR_SLOTS = 15;
 
 // The manager's own "no sound", which the clip index compares against.
-#define SOUNDMGR_NO_SOUND (-9999)
+constexpr auto SOUNDMGR_NO_SOUND = (-9999);
 
 // SoundEntry::m_nPlayState.
-#define SOUND_STATE_STOPPED 1
-#define SOUND_STATE_IDLE    2
-#define SOUND_STATE_PLAYING 4
+constexpr auto SOUND_STATE_STOPPED = 1;
+constexpr auto SOUND_STATE_IDLE    = 2;
+constexpr auto SOUND_STATE_PLAYING = 4;
 
 // SoundEntry::m_nLoadState counts failed opens up to the last try; a bad file fails for good.
-#define SOUND_LOAD_LAST_TRY 1
-#define SOUND_LOAD_FAILED   (-1)
+constexpr auto SOUND_LOAD_LAST_TRY = 1;
+constexpr auto SOUND_LOAD_FAILED   = (-1);
 
 // SoundEntry::m_nLoadMode.
-#define SOUND_LOAD_WHOLE 1
+constexpr auto SOUND_LOAD_WHOLE = 1;
 
 struct SoundEntry
 {

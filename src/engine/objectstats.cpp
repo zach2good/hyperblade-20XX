@@ -17,9 +17,9 @@ extern unsigned char g_bEnergyOn;
 // GLOBAL: HYPERX 0x004c55d8
 extern unsigned char g_bEnergyDraining;
 
-#define STATS_COUNT 0x3f
+constexpr auto STATS_COUNT = 0x3f;
 
-#define SCALE_ONE_BITS 0x3f800000
+constexpr auto SCALE_ONE_BITS = 0x3f800000;
 
 // Everything is five except the first and seventeenth, a hundred, and the sixth, seven.
 

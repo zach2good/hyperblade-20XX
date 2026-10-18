@@ -151,8 +151,8 @@ JumbotronScreen::JumbotronScreen()
 
 // A key-down acts at once; a mouse-up waits for the screen's own guard.
 
-#define WIDGET_BACK          9
-#define MATCH_STATE_FINISHED 4
+constexpr auto WIDGET_BACK          = 9;
+constexpr auto MATCH_STATE_FINISHED = 4;
 
 // FUNCTION: HYPERX 0x0048ee40
 void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)

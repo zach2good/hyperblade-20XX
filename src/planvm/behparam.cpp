@@ -47,8 +47,8 @@
 
 // Slot zero of the behaviour-parameter table: three targets and a period, stored as its reciprocal.
 
-#define ARG_COUNT    5
-#define TARGET_COUNT 3
+constexpr auto ARG_COUNT    = 5;
+constexpr auto TARGET_COUNT = 3;
 
 #define ARG_FIRST  1
 #define ARG_PERIOD 4

@@ -22,7 +22,7 @@
 // Arriving on slots zero to five is a pass to that player; anywhere else is a goal.
 
 // The bone whose world transform the homing aim tracks.
-#define TARGET_BONE 15
+constexpr auto TARGET_BONE = 15;
 
 // FUNCTION: HYPERX 0x0040f180
 void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)

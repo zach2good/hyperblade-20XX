@@ -7,16 +7,16 @@
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
 
-#define ENGINE_SIDE_SWAPPED 1
+constexpr auto ENGINE_SIDE_SWAPPED = 1;
 
-#define TEAM_LABEL_BUFFER 0x50
+constexpr auto TEAM_LABEL_BUFFER = 0x50;
 
-#define TEAM_LABEL_COUNT    4
-#define TEAM_LABEL_ON_DROME 2
+constexpr auto TEAM_LABEL_COUNT    = 4;
+constexpr auto TEAM_LABEL_ON_DROME = 2;
 
-#define TEAM_COLOUR_FOLLOWED 0xffff
-#define TEAM_COLOUR_RESERVE  0xff00
-#define TEAM_COLOUR_ON_DROME 0x100ff
-#define TEAM_COLOUR_ABSENT   0
+constexpr auto TEAM_COLOUR_FOLLOWED = 0xffff;
+constexpr auto TEAM_COLOUR_RESERVE  = 0xff00;
+constexpr auto TEAM_COLOUR_ON_DROME = 0x100ff;
+constexpr auto TEAM_COLOUR_ABSENT   = 0;
 
 #endif

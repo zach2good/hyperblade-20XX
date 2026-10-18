@@ -215,9 +215,9 @@ void GameConfigUIScreen::SetupWidgets()
     }
 }
 
-#define OPTIONS_MESSAGE_MAX 852
+constexpr auto OPTIONS_MESSAGE_MAX = 852;
 
-#define VOLUME_MAX 7
+constexpr auto VOLUME_MAX = 7;
 
 // FUNCTION: HYPERX 0x0047a160
 void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)

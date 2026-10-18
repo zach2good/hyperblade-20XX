@@ -2,7 +2,7 @@
 #define HYPERBLADE_ANIMNAMEDREF_H
 
 // The segment carries this bias while the reference still owns its copied name.
-#define ANIMNAMEDREF_BIAS 0x270f
+constexpr auto ANIMNAMEDREF_BIAS = 0x270f;
 
 class AnimNamedRef
 {

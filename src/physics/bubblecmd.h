@@ -15,7 +15,7 @@ enum BubbleShape
 };
 
 // The attach word of a caged bubble with no attach point; the low half is the cage's slot.
-#define EXTRA_USE_DETAIL 0xabcd0000
+constexpr auto EXTRA_USE_DETAIL = 0xabcd0000;
 
 // One per bubble on an object definition; the parser makes each new bubble the last one's child.
 class BubbleCmd

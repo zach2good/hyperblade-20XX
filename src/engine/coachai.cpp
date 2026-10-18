@@ -166,11 +166,11 @@ extern CoachConditionFn g_apfnCoachConditions[13];
 // The first of the thirteen answers, and the base the rest are reached from.
 extern int g_anCoachConditions[13];
 
-#define COACH_CONDITIONS 13
-#define COACH_SLOT_LAST  5
+constexpr auto COACH_CONDITIONS = 13;
+constexpr auto COACH_SLOT_LAST  = 5;
 
-#define TEAM_HOME 0
-#define TEAM_AWAY 1
+constexpr auto TEAM_HOME = 0;
+constexpr auto TEAM_AWAY = 1;
 
 // FUNCTION: HYPERX 0x00428190
 int EngineObject::IsRokCarrier(EngineObject* pActor)
@@ -338,7 +338,7 @@ int GameEngine::IsAnyPlayerInjured()
 }
 
 // id_GRT_Intelligence, used as the goalie's reach whatever the developers' name says.
-#define GOALIE_RATING_INTELLIGENCE 6
+constexpr auto GOALIE_RATING_INTELLIGENCE = 6;
 
 // The swarf and rok carriers must be on opposite sides; both are measured to the rok side's goal.
 // FUNCTION: HYPERX 0x00428550
@@ -528,7 +528,7 @@ int GameEngine::CheckAnyPlayerNeedsSub()
     return 0;
 }
 
-#define RESERVE_COUNT 2
+constexpr auto RESERVE_COUNT = 2;
 
 // A harder game recovers faster: elapsed ms / 13500 over the difficulty gate.
 // FUNCTION: HYPERX 0x00428920

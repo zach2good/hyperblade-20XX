@@ -3,8 +3,8 @@
 #include "graphics/cgpalette.h"
 #include "common/pathstring.h"
 
-#define FLAG_HAS_TABLE 0x80
-#define FLAG_SIZE_MASK 0x07
+constexpr auto FLAG_HAS_TABLE = 0x80;
+constexpr auto FLAG_SIZE_MASK = 0x07;
 
 // FUNCTION: HYPERX 0x004496e0
 int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)

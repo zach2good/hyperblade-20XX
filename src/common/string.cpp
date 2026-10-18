@@ -17,9 +17,9 @@
 
 #define STEP(p) ((const char*)(p) + 1)
 
-#define FORCE_ANSI 0x10000
+constexpr auto FORCE_ANSI = 0x10000;
 
-#define FORCE_UNICODE 0x20000
+constexpr auto FORCE_UNICODE = 0x20000;
 
 // MFC's CString::FormatV with the names changed.
 // FUNCTION: HYPERX 0x00448980

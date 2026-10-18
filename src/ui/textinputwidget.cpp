@@ -9,7 +9,7 @@
 #include "engine/object.h"
 #include <SDL3/SDL.h>
 
-#define TEXT_INPUT_CAPACITY 0x50
+constexpr auto TEXT_INPUT_CAPACITY = 0x50;
 
 // The length is read back as the index, so the terminator lands at offset zero.
 // FUNCTION: HYPERX 0x0042bce0

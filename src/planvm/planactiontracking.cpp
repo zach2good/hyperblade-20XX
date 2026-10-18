@@ -349,7 +349,7 @@ void PlanAction::SetOffsetValues(Interactor*, PlanNode* pArgs, short*, int)
     pPos->z = static_cast<float>(pArgs->m_pArgs[4].n * 0.1);
 }
 
-#define TRACKED_SLOT_LIMIT 8
+constexpr auto TRACKED_SLOT_LIMIT = 8;
 
 // Every rejection writes -1, so an invalid request clears the tracked object.
 // FUNCTION: HYPERX 0x00401d70
@@ -489,11 +489,11 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
     pEngine->GetCamera(CAMERA_MAIN_SLOT)->SetDirHistorySize(nDir);
 }
 
-#define ARG_COUNT_OWN_CAMERA    1
-#define ARG_COUNT_SLOT_AND_MODE 3
+constexpr auto ARG_COUNT_OWN_CAMERA    = 1;
+constexpr auto ARG_COUNT_SLOT_AND_MODE = 3;
 
 #define ARG_SLOT 1
-#define ARG_MODE 2
+constexpr auto ARG_MODE = 2;
 
 // A half; its marker is in src/globals.cpp.
 extern const float g_flViewFracHalf;
@@ -628,8 +628,8 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     pVelocity->ScaleInPlace(flDelta);
 }
 
-#define ARG_SPREAD 1
-#define ARG_SPEED  2
+constexpr auto ARG_SPREAD = 1;
+constexpr auto ARG_SPEED  = 2;
 
 // The defaults, taken whenever the block does not carry the number.
 #define DEFAULT_SPREAD 20.0f
@@ -1025,9 +1025,9 @@ void PlanAction::RegainHead(Interactor* pContext, PlanNode*, short*, int)
 // The guards read the node's own arity.
 #define ARG_OBJECT 1
 
-#define BONE_SPLIT 7
-#define BONE_COUNT 15
-#define HIDE_LAST  15
+constexpr auto BONE_SPLIT = 7;
+constexpr auto BONE_COUNT = 15;
+constexpr auto HIDE_LAST  = 15;
 
 short g_nSecondaryCamCursorA = -1;
 short g_nSecondaryCamCursorB = -1;

@@ -7,15 +7,15 @@
 #include "math/vector.h"
 
 // The play directions, as DATA/ENUMIDS.H's DirectionFlag numbers them.
-#define A_FORWARD 1
-#define A_REVERSE 2
+constexpr auto A_FORWARD = 1;
+constexpr auto A_REVERSE = 2;
 
 class EngineObject;
 class AnimNode;
 
-#define ANIM_DB_BINDING_BYTES 0x78c
-#define BINDING_SLOTS         20
-#define BINDING_HEAD_BYTES    0x208
+constexpr auto ANIM_DB_BINDING_BYTES = 0x78c;
+constexpr auto BINDING_SLOTS         = 20;
+constexpr auto BINDING_HEAD_BYTES    = 0x208;
 
 // This table fills two slots and leaves fourteen __purecall; 0x004b2974 fills all sixteen.
 // VTABLE: HYPERX 0x004b29b4

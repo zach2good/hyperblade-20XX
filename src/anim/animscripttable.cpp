@@ -7,6 +7,7 @@ struct GameApp;
 #include "globals.h"
 #include "planvm/planvm.h"
 #include "common/pathstring.h"
+#include <cstdint>
 #include <cstring>
 #include <new>
 #include <cstdio>
@@ -30,8 +31,8 @@ AnimScriptTable::~AnimScriptTable()
 }
 
 // A set is taken when its name holds the first; a clip starting with the second gets a kind.
-#define SET_FILTER_RESOURCE  0x20
-#define CLIP_PREFIX_RESOURCE 0x42
+constexpr std::uintptr_t SET_FILTER_RESOURCE  = 0x20;
+constexpr std::uintptr_t CLIP_PREFIX_RESOURCE = 0x42;
 
 // The parse stops at the first line the line parser refuses, so a bad line truncates the file.
 // FUNCTION: HYPERX 0x00418210
@@ -54,7 +55,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 
         m_nCount = 0;
 
-        AnimScriptState state((const char*)SET_FILTER_RESOURCE, (const char*)CLIP_PREFIX_RESOURCE);
+        AnimScriptState state(reinterpret_cast<const char*>(SET_FILTER_RESOURCE), reinterpret_cast<const char*>(CLIP_PREFIX_RESOURCE));
         char*           pLine;
 
         while (file.m_file.GetNextLine(&pLine) > 0 && ParseScriptLine(pLine, &state) != 0)
@@ -88,8 +89,8 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
     }
 }
 
-#define REF_CHARS  0x14
-#define NAME_CHARS 0x18
+constexpr auto REF_CHARS  = 0x14;
+constexpr auto NAME_CHARS = 0x18;
 
 // Blank lines and comments are skipped; a clip's message defaults to MSG_NOMSG.
 // FUNCTION: HYPERX 0x004183e0
@@ -169,10 +170,10 @@ extern const char* const g_pszAnimShortFormat;
 // GLOBAL: HYPERX 0x004b22c8
 extern const char* const g_pszAnimFloatFormat;
 
-#define SEGMENT_TOKEN_CHARS 256
-#define TRIGGER_TOKEN_CHARS 0x50
+constexpr auto SEGMENT_TOKEN_CHARS = 256;
+constexpr auto TRIGGER_TOKEN_CHARS = 0x50;
 
-#define TRIGGER_FIELDS 3
+constexpr auto TRIGGER_FIELDS = 3;
 
 // FUNCTION: HYPERX 0x00418540
 int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, const char** ppszCursor, const String& strFilter)

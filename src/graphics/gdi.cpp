@@ -317,7 +317,7 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 }
 
 // A file's type word, "BM".
-#define BFT_BITMAP 0x4d42
+constexpr auto BFT_BITMAP = 0x4d42;
 
 // A DIB's header, which its leading size word says is a Windows or an OS/2 one.
 union DibHeader

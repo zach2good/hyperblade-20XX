@@ -4,7 +4,7 @@
 #include "common/compat.h"
 #include <stdio.h>
 
-#define PARSE_TOKEN_MAX 0x78
+constexpr auto PARSE_TOKEN_MAX = 0x78;
 
 namespace ParseUtil
 {

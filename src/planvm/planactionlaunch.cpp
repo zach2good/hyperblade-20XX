@@ -73,10 +73,10 @@ float              g_flUnusedPlanLaunchA = g_flZeroPlanLaunch;
 float              g_flUnusedPlanLaunchB = g_flZeroPlanLaunch;
 float              g_flUnusedPlanLaunchC = g_flZeroPlanLaunch;
 
-#define SHOT_POWER_RESET 0x32
+constexpr auto SHOT_POWER_RESET = 0x32;
 
 // Range byte -1: Launch takes its unaimed branch.
-#define SHOT_UNAIMED 0xffff0000
+constexpr auto SHOT_UNAIMED = 0xffff0000;
 
 // The human packs the head camera's aim and shot power into the shot; any other plan sends it unaimed.
 // FUNCTION: HYPERX 0x004031e0
@@ -489,11 +489,11 @@ void PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 
 // The goalies lead the target by the Rok's flight time to their goal, and add scatter.
 
-#define DICE_WIDE   7
-#define DICE_NARROW 6
+constexpr auto DICE_WIDE   = 7;
+constexpr auto DICE_NARROW = 6;
 // The span the bias below centres, twenty one wide.
-#define JITTER_SPAN 21
-#define JITTER_BIAS 10
+constexpr auto JITTER_SPAN = 21;
+constexpr auto JITTER_BIAS = 10;
 
 // FUNCTION: HYPERX 0x00403d70
 void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
@@ -692,8 +692,8 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
 // The sibling of Throw with different constants; a speed at or below nought is forced to ten.
 
-#define ARG_COUNT_WITHOUT_OPERAND 1
-#define ARG_OPERAND               1
+constexpr auto ARG_COUNT_WITHOUT_OPERAND = 1;
+constexpr auto ARG_OPERAND               = 1;
 
 #define SPEED_FLOOR 10.0f
 

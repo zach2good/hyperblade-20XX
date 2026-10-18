@@ -165,7 +165,7 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
     }
 }
 
-#define ARROW_POINTS 3
+constexpr auto ARROW_POINTS = 3;
 
 // FUNCTION: HYPERX 0x00450000
 void InfoBarRadar::DrawMarker(int)

@@ -6,13 +6,13 @@
 #include <cstring>
 #include <algorithm>
 
-#define MATCH_LENGTH_BIAS 3
-#define MATCH_LENGTH_LONG 0x12
-#define MATCH_LENGTH_END  0x10
+constexpr auto MATCH_LENGTH_BIAS = 3;
+constexpr auto MATCH_LENGTH_LONG = 0x12;
+constexpr auto MATCH_LENGTH_END  = 0x10;
 
-#define WINDOW_MARGIN 0x80
+constexpr auto WINDOW_MARGIN = 0x80;
 
-#define WINDOW_BYTES 0x1000
+constexpr auto WINDOW_BYTES = 0x1000;
 
 // The window is freed before the size check that can discard the output.
 // FUNCTION: HYPERX 0x00440140

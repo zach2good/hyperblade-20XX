@@ -26,8 +26,8 @@ SoundManager::SoundManager()
     }
 }
 
-#define SOUND_MESSAGE_MAX 0x50
-#define SOUND_NAME_MAX    0x20
+constexpr auto SOUND_MESSAGE_MAX = 0x50;
+constexpr auto SOUND_NAME_MAX    = 0x20;
 
 #define COMMENT_CHAR '#'
 
@@ -35,7 +35,7 @@ SoundManager::SoundManager()
 #define SAMPLES_PER_MS 44.1
 
 // No group read yet.
-#define GROUP_NONE (-1)
+constexpr auto GROUP_NONE = (-1);
 
 // FUNCTION: HYPERX 0x00449210
 void SoundManager::FreeEntries()

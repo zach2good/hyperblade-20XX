@@ -23,19 +23,19 @@
 extern float g_flTwoAgendaItem;
 
 // An arity ladder: `> N` gates reading argument N.
-#define ARG_SLOT     1
-#define ARG_X        2
-#define ARG_Y        3
-#define ARG_SCALAR_A 2
-#define ARG_SCALAR_B 3
-#define ARG_SCALAR_C 4
-#define ARG_FLAG     5
+#define ARG_SLOT 1
+#define ARG_X    2
+#define ARG_Y    3
+constexpr auto ARG_SCALAR_A = 2;
+constexpr auto ARG_SCALAR_B = 3;
+constexpr auto ARG_SCALAR_C = 4;
+constexpr auto ARG_FLAG     = 5;
 
-#define COUNTDOWN_POINT  0x4b
-#define COUNTDOWN_OBJECT 0x19
+constexpr auto COUNTDOWN_POINT  = 0x4b;
+constexpr auto COUNTDOWN_OBJECT = 0x19;
 
 // A slot of minus one means a fixed point, written into marker table entry six, shared storage.
-#define POINT_MARKER 6
+constexpr auto POINT_MARKER = 6;
 
 #define LIMIT_DEFAULT 1000.0f
 

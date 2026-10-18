@@ -7,9 +7,9 @@
 #include "net/netmessage.h"
 
 // The words that fit after an events packet's five header bytes.
-#define EVENT_WORDS_MAX 0x3e
+constexpr auto EVENT_WORDS_MAX = 0x3e;
 
-#define NET_DATA_MAX 0x80
+constexpr auto NET_DATA_MAX = 0x80;
 
 // Laid out on wire boundaries; the packing is part of the type.
 #pragma pack(push, 1)

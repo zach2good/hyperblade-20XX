@@ -10,11 +10,11 @@
 
 // The camera's two history windows, each a ring of positions or directions.
 // The reticle states, as DATA/ENUMIDS.H's Reticle_State numbers them.
-#define RETICLE_OFF    0
-#define RETICLE_AIM    1
-#define RETICLE_COMMIT 2
+constexpr auto RETICLE_OFF    = 0;
+constexpr auto RETICLE_AIM    = 1;
+constexpr auto RETICLE_COMMIT = 2;
 
-#define CAMERA_HISTORY_CAPACITY 25
+constexpr auto CAMERA_HISTORY_CAPACITY = 25;
 
 // VTABLE: HYPERX 0x004b286c
 class CameraObject : public EngineObject

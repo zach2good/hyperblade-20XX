@@ -10,7 +10,7 @@
 #include "common/commonglobals.h"
 
 // The length of each of the scene message queue's five arrays.
-#define PENDING_QUEUE_LENGTH 0x400
+constexpr auto PENDING_QUEUE_LENGTH = 0x400;
 
 struct ArenaState;
 class EngineObject;
@@ -56,17 +56,17 @@ struct LayoutState
 };
 
 // The six end-of-match awards.
-#define AWARD_COUNT 6
+constexpr auto AWARD_COUNT = 6;
 
 // GameEngine::m_wRunState: no match, playing, paused, or a restart the next frame runs.
-#define ENGINE_RUN_STOPPED 0
-#define ENGINE_RUN_PLAYING 1
-#define ENGINE_RUN_PAUSED  2
-#define ENGINE_RUN_RESTART 3
+constexpr auto ENGINE_RUN_STOPPED = 0;
+constexpr auto ENGINE_RUN_PLAYING = 1;
+constexpr auto ENGINE_RUN_PAUSED  = 2;
+constexpr auto ENGINE_RUN_RESTART = 3;
 
 // The cameras and input devices the factory builds at most.
-#define CAMERA_LIMIT 4
-#define DEVICE_LIMIT 2
+constexpr auto CAMERA_LIMIT = 4;
+constexpr auto DEVICE_LIMIT = 2;
 
 struct GameEngine
 {

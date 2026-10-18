@@ -6,7 +6,7 @@
 #include "anim/animscripttable.h"
 
 // The registry holds at most this many sets.
-#define ANIM_REGISTRY_SET_LIMIT 250
+constexpr auto ANIM_REGISTRY_SET_LIMIT = 250;
 
 // The registry itself, 0x10 bytes; Game::InitializeEngine builds the one there is.
 class AnimRegistry

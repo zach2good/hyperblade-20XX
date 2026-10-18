@@ -10,7 +10,7 @@
 #include <ctime>
 #include "app/gameapp.h"
 
-#define JUMBO_MESSAGE_MAX 128
+constexpr auto JUMBO_MESSAGE_MAX = 128;
 
 // FUNCTION: HYPERX 0x0046bf50
 JumboTextList* JumboTextList::Init()

@@ -9,8 +9,8 @@
 class Widget;
 
 // Not widget slots: Screen sends these ids after every mouse button message and after Return.
-#define WIDGET_ID_MOUSE  100
-#define WIDGET_ID_RETURN 101
+constexpr auto WIDGET_ID_MOUSE  = 100;
+constexpr auto WIDGET_ID_RETURN = 101;
 
 // The three virtuals are the whole of 0x004b4040; two are folded across a dozen tables.
 // VTABLE: HYPERX 0x004b4040

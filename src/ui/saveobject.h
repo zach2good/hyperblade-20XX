@@ -2,8 +2,8 @@
 #define HYPERBLADE_SAVEOBJECT_H
 
 // Twenty rounds of the gauntlet bracket, twenty team slots each.
-#define GAUNTLET_ROUNDS      0x14
-#define GAUNTLET_ROUND_SLOTS 0x14
+constexpr auto GAUNTLET_ROUNDS      = 0x14;
+constexpr auto GAUNTLET_ROUND_SLOTS = 0x14;
 
 // The object the engine keeps in m_pSaveObject.
 class SaveObject

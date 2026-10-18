@@ -36,7 +36,7 @@ void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOrigin = pShooter->GetPositionPtr();
 }
 
-#define SHOT_POWER_MAX 100
+constexpr auto SHOT_POWER_MAX = 100;
 
 // FUNCTION: HYPERX 0x00412470
 void CUpdateShotPower::OnListChanged()

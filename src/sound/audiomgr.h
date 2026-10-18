@@ -4,8 +4,8 @@
 #include "sound/audiomgrbase.h"
 
 // PlayCDTrack's tracks.
-#define CD_TRACK_RANDOM (-1)
-#define CD_TRACK_MENU   10
+constexpr auto CD_TRACK_RANDOM = (-1);
+constexpr auto CD_TRACK_MENU   = 10;
 
 // VTABLE: HYPERX 0x004b4080
 struct AudioMgr : public AudioMgrBase

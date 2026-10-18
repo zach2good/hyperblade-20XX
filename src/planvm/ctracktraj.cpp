@@ -38,8 +38,8 @@ extern char g_bCamTrackLookEnabled;
 // Four, the clearance the camera keeps above the arena floor; marked in cheadtrack.cpp.
 extern const float g_flFourTracking;
 
-#define TRAJECTORY_MODE_SPRING 0
-#define TRAJECTORY_MODE_BLEND  1
+constexpr auto TRAJECTORY_MODE_SPRING = 0;
+constexpr auto TRAJECTORY_MODE_BLEND  = 1;
 
 // FUNCTION: HYPERX 0x0040a5c0
 CTrackTraj::~CTrackTraj()
@@ -89,8 +89,8 @@ void CTrackTraj::InitRange()
     m_flBlend = g_flZeroTracking;
 }
 
-#define RANGE_KIND_CLAMPED   0
-#define RANGE_KIND_SYMMETRIC 2
+constexpr auto RANGE_KIND_CLAMPED   = 0;
+constexpr auto RANGE_KIND_SYMMETRIC = 2;
 
 // A low bound at or below the unset marker builds a symmetric range of kind two instead.
 // FUNCTION: HYPERX 0x0040a6c0

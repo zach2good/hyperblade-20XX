@@ -84,15 +84,15 @@
 #include "planvm/decisionlog.h"
 #include <SDL3/SDL.h>
 
-#define ENTITY_SLOT_LIMIT 0x66
+constexpr auto ENTITY_SLOT_LIMIT = 0x66;
 
-#define JUDGE_STATE_LOW 0
+constexpr auto JUDGE_STATE_LOW = 0;
 
-#define JUDGE_STATE_HIGH 8
+constexpr auto JUDGE_STATE_HIGH = 8;
 
-#define ARG_COUNT_WITH_XY 3
+constexpr auto ARG_COUNT_WITH_XY = 3;
 
-#define ARG_COUNT_WITH_Z 4
+constexpr auto ARG_COUNT_WITH_Z = 4;
 
 #define ARG_OBJECT 1
 #define ARG_FIRST  1
@@ -102,7 +102,7 @@
 extern const float g_flOnePlan;
 
 // The velocity is fifty plus a roll of fifty, scaled by the frame delta, at a fixed climb.
-#define SCATTER_ROLL  50
+constexpr auto SCATTER_ROLL = 50;
 #define SCATTER_FLOOR 50.0f
 #define SCATTER_CLIMB 0.75f
 
@@ -300,8 +300,8 @@ void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBeha
     pActor->GetPlanState()->m_apNamedInteractors[nIndex] = pInteractor;
 }
 
-#define ARG_COUNT_DIRECT  2
-#define ARG_COUNT_INDEXED 3
+constexpr auto ARG_COUNT_DIRECT  = 2;
+constexpr auto ARG_COUNT_INDEXED = 3;
 
 // A count of three indexes the named interactors only under a PLAN_ARG_INTERACTOR_NAME high half.
 // FUNCTION: HYPERX 0x0045e320
@@ -387,9 +387,9 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
 // A failed build returns the agenda item to its pool, so it leaves nothing behind.
 
-#define ARG_KIND     1
-#define ARG_ANIM     2
-#define ARG_START    3
+constexpr auto ARG_KIND = 1;
+#define ARG_ANIM 2
+constexpr auto ARG_START = 3;
 #define ARG_DURATION 4
 
 // FUNCTION: HYPERX 0x0045e4d0
@@ -595,12 +595,12 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 // GLOBAL: HYPERX 0x004cfa50
 extern int g_nPauseRequestStreak;
 
-#define PAUSE_MARK_NONE (-1)
+constexpr auto PAUSE_MARK_NONE = (-1);
 
-#define PAUSE_STREAK_NEEDED 3
+constexpr auto PAUSE_STREAK_NEEDED = 3;
 
 // The host packs the period's elapsed time in tenths of a second.
-#define SYNC_ELAPSED_UNIT_MS 100
+constexpr auto SYNC_ELAPSED_UNIT_MS = 100;
 
 // Matches the host's clock by replaying the goal plans' broadcasts: a shot starts it, a goal stops it.
 // FUNCTION: HYPERX 0x0045e890
@@ -671,7 +671,7 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
     g_pGameEngine->SetAwayScore(packed.GetAwayScore());
 }
 
-#define ARG_COUNT_WITH_SLOT 2
+constexpr auto ARG_COUNT_WITH_SLOT = 2;
 
 // FUNCTION: HYPERX 0x0045e980
 void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
@@ -728,7 +728,7 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     }
 }
 
-#define ARG_COUNT_WITH_VALUE 3
+constexpr auto ARG_COUNT_WITH_VALUE = 3;
 
 // In a network session the actor must be the viewed slot or driven by this machine.
 // FUNCTION: HYPERX 0x0045ea90
@@ -841,11 +841,11 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
     }
 }
 
-#define ARG_COL_OBJECT 1
-#define ARG_STAT       2
+constexpr auto ARG_COL_OBJECT = 1;
+#define ARG_STAT 2
 
-#define ARG_COUNT_ACTOR 2
-#define ARG_COUNT_SLOT  3
+constexpr auto ARG_COUNT_ACTOR = 2;
+constexpr auto ARG_COUNT_SLOT  = 3;
 
 // Tells whichever of the mine, the swarf and the Rok the actor carries to deploy.
 // FUNCTION: HYPERX 0x0045ecc0
@@ -1109,7 +1109,7 @@ void PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, short*, int 
 // The copy through the owner's position accessor writes the position onto itself.
 
 // A node of four arguments carries three literal integers.
-#define ARG_COUNT_WITH_LITERALS 4
+constexpr auto ARG_COUNT_WITH_LITERALS = 4;
 
 // Below this length the heading is left alone.
 #define MIN_VELOCITY_LENGTH 0.001f
@@ -1176,7 +1176,7 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 #define TACKLE_RANGE   25.0
 #define TACKLE_MIN_DOT 0.2f
 
-#define TACKLE_MESSAGE_ARG 2
+constexpr auto TACKLE_MESSAGE_ARG = 2;
 
 // Three; its marker is in src/globals.cpp.
 extern const float g_flThreePlan;
@@ -1445,7 +1445,7 @@ void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, i
     *pResult = 1;
 }
 
-#define ANNOUNCER_GAG_MS 0x3a98
+constexpr auto ANNOUNCER_GAG_MS = 0x3a98;
 
 // Inside the gag window it answers one past the highest draw.
 // FUNCTION: HYPERX 0x0045fac0
@@ -1523,10 +1523,10 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
 }
 
 // The selector that arms the throttle instead of answering a state.
-#define SELECTOR_ARM 0x18
+constexpr auto SELECTOR_ARM = 0x18;
 
-#define ARM_WINDOW_MS   300
-#define STATE_WINDOW_MS 800
+constexpr auto ARM_WINDOW_MS   = 300;
+constexpr auto STATE_WINDOW_MS = 800;
 
 // The tick the arming selector last ran at.
 // GLOBAL: HYPERX 0x004cf9f8
@@ -1738,7 +1738,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
     }
 }
 
-#define RELATIONSHIP_KIND_DIRECTION 0x16
+constexpr auto RELATIONSHIP_KIND_DIRECTION = 0x16;
 
 // Kind 0x16 normalises a direction nothing reads, in the original too.
 // FUNCTION: HYPERX 0x00460140
@@ -2010,7 +2010,7 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
 }
 
 // Both team mates hurt; the goalie's plan passes to the opponents' goal instead.
-#define NO_PASS_TARGET 4
+constexpr auto NO_PASS_TARGET = 4;
 
 // FUNCTION: HYPERX 0x004608a0
 void PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -2750,9 +2750,9 @@ void PlanCond::IsDoubleScore(Interactor* pContext, PlanNode*, short* pResult, in
 }
 
 // The low nibble of the flag launches the pass; clear, it only announces it.
-#define LAUNCH_MASK 0x0f
+constexpr auto LAUNCH_MASK = 0x0f;
 
-#define LATE_PASS_STEP 4
+constexpr auto LATE_PASS_STEP = 4;
 
 #define BUNGEE_GAIN     1.85f
 #define BUNGEE_DOT_GATE 0.7f
@@ -3152,14 +3152,14 @@ void PlanCond::ShotPower(Interactor*, PlanNode* pArgs, short* pResult, int)
     }
 }
 
-#define SPAWN_GRID_HALF  28
-#define SPAWN_GRID_PITCH 56
+constexpr auto SPAWN_GRID_HALF  = 28;
+constexpr auto SPAWN_GRID_PITCH = 56;
 
-#define SPAWN_SLOT_LIMIT 3
-#define SPAWN_AXES       4
+constexpr auto SPAWN_SLOT_LIMIT = 3;
+constexpr auto SPAWN_AXES       = 4;
 
-#define SPAWN_RESULT_OUT         1
-#define SPAWN_RESULT_TEAM_MOVING 2
+constexpr auto SPAWN_RESULT_OUT         = 1;
+constexpr auto SPAWN_RESULT_TEAM_MOVING = 2;
 
 // The third axis difference is always zero: both operands are the same shared zero.
 // FUNCTION: HYPERX 0x00462450
@@ -3226,8 +3226,8 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
     }
 }
 
-#define ARENA_TRACK_UP   7
-#define ARENA_TRACK_DOWN 8
+constexpr auto ARENA_TRACK_UP   = 7;
+constexpr auto ARENA_TRACK_DOWN = 8;
 
 // FUNCTION: HYPERX 0x00462620
 void PlanAction::EndPeriodNow(Interactor*, PlanNode*, short*, int)
@@ -3542,17 +3542,17 @@ void PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short* pResul
 // Five below the damage gate and four for the actor's m_wClockStoppedSemaphore, before the rok is asked.
 
 // The slot two along, wrapped: zero pairs with two and one with three.
-#define SLOT_OPPOSITE_STEP  2
-#define SLOT_OPPOSITE_WRAP  3
-#define SLOT_OPPOSITE_BELOW 4
+constexpr auto SLOT_OPPOSITE_STEP  = 2;
+constexpr auto SLOT_OPPOSITE_WRAP  = 3;
+constexpr auto SLOT_OPPOSITE_BELOW = 4;
 
 // The half of the four the tail answers with.
 #define SLOT_FAR_HALF 2
 
-#define ROK_TARGETED 2
+constexpr auto ROK_TARGETED = 2;
 
-#define STATE_HELD  4
-#define STATE_GATED 5
+constexpr auto STATE_HELD  = 4;
+constexpr auto STATE_GATED = 5;
 
 // FUNCTION: HYPERX 0x00462d20
 void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -3661,8 +3661,8 @@ void PlanCond::OwnerIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 1;
 }
 
-#define SLOT_WRAP   0x03
-#define SLOT_PAIRED 0x04
+constexpr auto SLOT_WRAP   = 0x03;
+constexpr auto SLOT_PAIRED = 0x04;
 
 // FUNCTION: HYPERX 0x00462f20
 void PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, int)
@@ -3932,7 +3932,7 @@ void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 // Any kind but the randomizers indexes by the low word of the argument block's own address.
 
 // The frame the first saved row is pinned to.
-#define COLOR_PINNED_FRAME 0x78
+constexpr auto COLOR_PINNED_FRAME = 0x78;
 
 // One word a colour row, set to one so the first save wins; marked in src/globals.cpp.
 extern short g_awColorLatched[2];
@@ -4007,11 +4007,11 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
 }
 
 // Argument one guards the body and two to four are the position.
-#define ARG_GUARD               1
-#define ARG_X                   2
-#define ARG_Y                   3
-#define ARG_Z                   4
-#define ARG_COUNT_WITH_POSITION 5
+constexpr auto ARG_GUARD = 1;
+#define ARG_X 2
+#define ARG_Y 3
+constexpr auto ARG_Z                   = 4;
+constexpr auto ARG_COUNT_WITH_POSITION = 5;
 
 // FUNCTION: HYPERX 0x004635e0
 void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int)
@@ -4059,9 +4059,9 @@ void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 }
 
 // Argument one is a mode that doubles as the range's low end; two is its high end.
-#define ARG_RIM_MODE         1
-#define ARG_HIGH             2
-#define ARG_COUNT_WITH_RANGE 3
+constexpr auto ARG_RIM_MODE         = 1;
+constexpr auto ARG_HIGH             = 2;
+constexpr auto ARG_COUNT_WITH_RANGE = 3;
 
 // With both arguments a mode of nought picks the directed range and any other the complex one.
 // FUNCTION: HYPERX 0x004636e0
@@ -4099,9 +4099,9 @@ void PlanAction::SetOnRim(Interactor*, PlanNode* pNode, short*, int)
     static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->InitRange();
 }
 
-#define ARG_VALUE 1
+constexpr auto ARG_VALUE = 1;
 
-#define STEER_SCALE_THRESHOLD 0x19
+constexpr auto STEER_SCALE_THRESHOLD = 0x19;
 
 // The camera's plan sets the blend fraction; any other object takes a hundredth as its friction.
 // FUNCTION: HYPERX 0x00463790
@@ -4133,12 +4133,12 @@ void PlanAction::SetFriction(Interactor* pContext, PlanNode* pNode, short*, int)
     }
 }
 
-#define ARG_COUNT_WITHOUT_SLOT 3
+constexpr auto ARG_COUNT_WITHOUT_SLOT = 3;
 
 // The argument block's own fields: which rating, how much, and which slot.
 #undef ARG_STAT
-#define ARG_STAT   1
-#define ARG_AMOUNT 2
+#define ARG_STAT 1
+constexpr auto ARG_AMOUNT = 2;
 #undef ARG_SLOT
 #define ARG_SLOT 3
 
@@ -4343,9 +4343,9 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
     pNamed->m_nFlags |= ENGINEOBJECT_HIDDEN;
 }
 
-#define ARG_TRACKED 2
+constexpr auto ARG_TRACKED = 2;
 
-#define ARG_COUNT_WITH_TRACKED 3
+constexpr auto ARG_COUNT_WITH_TRACKED = 3;
 
 // A positive damage rating clears the killer slot to minus one.
 // FUNCTION: HYPERX 0x00463c20
@@ -4407,10 +4407,10 @@ void PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, short*, 
     pObject->m_wKilledBySlot = -1;
 }
 
-#define ARG_COUNT_WRITE 2
+constexpr auto ARG_COUNT_WRITE = 2;
 
 // What a read answers when m_wDesiredSubstitute is minus one, no substitute: one past the skaters.
-#define SUBSTITUTE_NONE_ANSWER 4
+constexpr auto SUBSTITUTE_NONE_ANSWER = 4;
 
 // FUNCTION: HYPERX 0x00463d20
 void PlanAction::ResetCameraTrack(Interactor* pContext, PlanNode*, short*, int)
@@ -4532,7 +4532,7 @@ void PlanCond::SubstitutionSemaphore(Interactor* pContext, PlanNode*, short* pRe
 // Of the first and last fit substitutes the healthier wins, with the near half favoured.
 
 // Answered when no substitute is fit.
-#define SLOT_ANSWER_NONE 4
+constexpr auto SLOT_ANSWER_NONE = 4;
 
 // FUNCTION: HYPERX 0x00463ef0
 void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -4765,7 +4765,7 @@ void PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int
     ACCUMULATE_HIT(MATCH_STAT_FATALITIES)
 }
 
-#define ARG_COUNT_COL_SLOT 2
+constexpr auto ARG_COUNT_COL_SLOT = 2;
 
 #define DAMAGE_CEILING 100.0f
 
@@ -4915,10 +4915,10 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
     }
 }
 
-#define ARG_GATE       1
-#define ARG_HUNDREDTHS 2
+constexpr auto ARG_GATE       = 1;
+constexpr auto ARG_HUNDREDTHS = 2;
 
-#define SPEED_CACHE_COUNT 4
+constexpr auto SPEED_CACHE_COUNT = 4;
 
 // The clamp, as two doubles.
 #define SPEED_RATING_MIN 0.99
@@ -4929,7 +4929,7 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 #define SPEED_BIAS 0.00999f
 
 // Minus one as its bits; the cache entry is tested as a dword.
-#define SPEED_UNSET_BITS 0xbf800000
+constexpr auto SPEED_UNSET_BITS = 0xbf800000;
 
 // The cache of the four skaters' speeds and its dirty word, which ships set.
 // GLOBAL: HYPERX 0x004c4540
@@ -5174,24 +5174,24 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
     }
 }
 
-#define ARG_RANGE       1
-#define ARG_FACING_GATE 2
-#define ARG_DOT_GATE    3
+constexpr auto ARG_RANGE       = 1;
+constexpr auto ARG_FACING_GATE = 2;
+constexpr auto ARG_DOT_GATE    = 3;
 #undef ARG_SLOT
 #define ARG_SLOT 4
 #undef ARG_DURATION
 #define ARG_DURATION 5
-#define ARG_LEAD     6
+constexpr auto ARG_LEAD = 6;
 
 #define DEFAULT_RANGE       100.0f
 #define DEFAULT_FACING_GATE 0.1f
 #define DEFAULT_DOT_GATE    0.2f
-#define DEFAULT_DURATION    20
+constexpr auto DEFAULT_DURATION = 20;
 
 // A fiftieth, as a double.
 #define GATE_SCALE 0.02
 
-#define LAUNCH_MESSAGE_ARG 2
+constexpr auto LAUNCH_MESSAGE_ARG = 2;
 
 // FUNCTION: HYPERX 0x00464b10
 void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
@@ -5526,7 +5526,7 @@ void PlanCond::Jumping(Interactor* pContext, PlanNode*, short* pResult, int)
 
 // Within ten of an object without the 0x10 bit answers two; both or neither answers three or a coin.
 
-#define STATE_AVAILABLE 0x10
+constexpr auto STATE_AVAILABLE = 0x10;
 
 // Inside this the actor counts as standing at the object.
 #define AT_OBJECT_RANGE 10.0f
@@ -5756,7 +5756,7 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
 #define RANGE_BASE 150.0f
 
 // The largest damage the condition will answer.
-#define HIT_DAMAGE_CEILING 0x14
+constexpr auto HIT_DAMAGE_CEILING = 0x14;
 
 // An object that hits carries its own slot as the attack; the engine's own hit is the far goalie's.
 // FUNCTION: HYPERX 0x004657b0
@@ -6972,7 +6972,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
     }
 }
 
-#define MIDDLE_SLOT_BIAS 4
+constexpr auto MIDDLE_SLOT_BIAS = 4;
 
 // Squared distances, so the limits of ten and just under eight read as a hundred and sixty.
 // FUNCTION: HYPERX 0x00466e20
@@ -7224,7 +7224,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 // Unwinds the last pitch through the staged sine, then applies the node's angle.
 
 // The angle, in whole degrees.
-#define ARG_DEGREES 1
+constexpr auto ARG_DEGREES = 1;
 
 #define DEG_TO_RAD 0.017453292f
 
@@ -7265,14 +7265,14 @@ void PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
 
 // The two bungees differ only in range: fifty five for the first slot, forty five for the second.
 
-#define ARG_FIRST_SLOT  1
-#define ARG_SECOND_SLOT 2
+constexpr auto ARG_FIRST_SLOT  = 1;
+constexpr auto ARG_SECOND_SLOT = 2;
 
 #define DRAG_BUNGEE_GAIN         0.15f
 #define DRAG_BUNGEE_REST_LENGTH  10.0f
 #define DRAG_BUNGEE_FIRST_RANGE  55.0f
 #define DRAG_BUNGEE_SECOND_RANGE 45.0f
-#define DRAG_BUNGEE_DURATION     150
+constexpr auto DRAG_BUNGEE_DURATION = 150;
 
 // FUNCTION: HYPERX 0x004674e0
 void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*, int)
@@ -7321,7 +7321,7 @@ void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*
     pSecondBungee->Activate();
 }
 
-#define ARG_KIND_MASK 2
+constexpr auto ARG_KIND_MASK = 2;
 
 // No plan calls this; the field is the one every CTrackTraj range setup clears.
 // FUNCTION: HYPERX 0x004675d0
@@ -7374,7 +7374,7 @@ void PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short
 
 // Set, the rate runs from 1.05 to 1.45 across the damage range; clear, from one to six.
 
-#define ARG_CURVE 1
+constexpr auto ARG_CURVE = 1;
 
 // FUNCTION: HYPERX 0x004676e0
 void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, short*, int)
@@ -7403,7 +7403,7 @@ void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, sho
 
 // The winning and losing sides read different entries of the speedburst rating pair.
 
-#define ARG_RATING_BASE 1
+constexpr auto ARG_RATING_BASE = 1;
 #undef ARG_PERIOD
 #define ARG_PERIOD 2
 
@@ -7482,7 +7482,7 @@ extern const float g_flRangeLimit;
 
 #define RATINGS_RANGE 800.0f
 
-#define ONE_IN_CHANCE 8
+constexpr auto ONE_IN_CHANCE = 8;
 
 // One roll in eight inverts the answer, and a local match never attacks around a human team mate.
 // FUNCTION: HYPERX 0x00467930
@@ -7601,7 +7601,7 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
 
 // Anything outside zero to three becomes zero, the widest a four-child DECIDE can be.
 
-#define BRANCH_MAX 3
+constexpr auto BRANCH_MAX = 3;
 
 // FUNCTION: HYPERX 0x00467c30
 void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -7688,7 +7688,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
 }
 
 #define PERCENT_SCALE 10.0f
-#define PERCENT_RANGE 100
+constexpr auto PERCENT_RANGE = 100;
 
 // The figure is halved before the roll, so a perfect actor is capped at half the die.
 // FUNCTION: HYPERX 0x00467e80
@@ -7719,11 +7719,11 @@ void PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pnResult, 
 extern int g_anCoachConditions[13];
 
 // The delta the guard rejects, and the threshold the coach flag forces.
-#define TRACK_DELTA_LIMIT 4
+constexpr auto TRACK_DELTA_LIMIT = 4;
 
 // The Multiplier rating for the team ahead or behind; a value past four either way is two.
-#define TRACK_RATING_LIMIT   4
-#define TRACK_RATING_DEFAULT 2
+constexpr auto TRACK_RATING_LIMIT   = 4;
+constexpr auto TRACK_RATING_DEFAULT = 2;
 
 // FUNCTION: HYPERX 0x00467f10
 void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -7796,9 +7796,9 @@ void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResul
     *pResult = 1;
 }
 
-#define ROLL_STEPS 5
+constexpr auto ROLL_STEPS = 5;
 
-#define OPTION_ATTACK_MODE_ON 1
+constexpr auto OPTION_ATTACK_MODE_ON = 1;
 
 // The answer is one past an ID_ATK attack; nought deploys the Rok, mine or swarf the actor carries.
 // FUNCTION: HYPERX 0x00468000
@@ -7977,7 +7977,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
 // Both opponents hurt turn an index of one into two; zero and two stand.
 
-#define OFF_WING_JOB_MAX 2
+constexpr auto OFF_WING_JOB_MAX = 2;
 
 // FUNCTION: HYPERX 0x004682d0
 void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -8171,9 +8171,9 @@ void PlanCond::DecideNever(Interactor*, PlanNode*, short* pResult, int)
 }
 
 // The window an authored range has to fall in, and what replaces it when it does not.
-#define RANGE_MIN     10
-#define RANGE_MAX     350
-#define RANGE_DEFAULT 150
+constexpr auto RANGE_MIN     = 10;
+constexpr auto RANGE_MAX     = 350;
+constexpr auto RANGE_DEFAULT = 150;
 
 // An authored range outside ten to 350 becomes 150; a local match never shoots past a human mate.
 // FUNCTION: HYPERX 0x00468650
@@ -8304,7 +8304,7 @@ void PlanCond::RegroupSituation(Interactor* pContext, PlanNode*, short* pResult,
     *pResult = 0;
 }
 
-#define AGGRESSION_RADIUS_MAX 400
+constexpr auto AGGRESSION_RADIUS_MAX = 400;
 
 // The radius is compared against a squared distance without being squared itself.
 // FUNCTION: HYPERX 0x004688d0
@@ -8579,7 +8579,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
     *pResult = 2;
 }
 
-#define GATED_SLOTS 4
+constexpr auto GATED_SLOTS = 4;
 
 #define RANGE_START 600.0f
 

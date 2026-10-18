@@ -9,8 +9,8 @@
 
 // The duration is five hundred milliseconds.
 
-#define SCALAR_KIND     3
-#define SCALAR_DURATION 500
+constexpr auto SCALAR_KIND     = 3;
+constexpr auto SCALAR_DURATION = 500;
 
 // FUNCTION: HYPERX 0x0042cfc0
 PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
@@ -83,7 +83,7 @@ int PaletteScalarFade::Tick()
 }
 
 // Every entry arrived.
-#define FADE_ALL_ARRIVED 0xff
+constexpr auto FADE_ALL_ARRIVED = 0xff;
 
 extern int g_nPaletteAnimateResult;
 

@@ -6,9 +6,9 @@
 class EngineObject;
 
 // DATA/ENUMIDS.H's KeyMonitorModes. Nothing sets one but the first: id_SET_KeyMonitorMode is empty.
-#define MON_DRIVE_YER_GUY 0
-#define MON_GOALIE_CTRL   1
-#define MON_ARCADE_STYLE  2
+constexpr auto MON_DRIVE_YER_GUY = 0;
+constexpr auto MON_GOALIE_CTRL   = 1;
+constexpr auto MON_ARCADE_STYLE  = 2;
 
 // Slots 0 and 2 are bodies many tables share, declared where they are defined.
 // VTABLE: HYPERX 0x004b1e70

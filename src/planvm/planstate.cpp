@@ -300,8 +300,8 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
     }
 }
 
-#define PLAN_NODES_FIRST 500
-#define PLAN_NODES_GROW  250
+constexpr auto PLAN_NODES_FIRST = 500;
+constexpr auto PLAN_NODES_GROW  = 250;
 
 // FUNCTION: HYPERX 0x0047b290
 void PlanState::PostUpdateCleanup()
@@ -507,10 +507,10 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 }
 
 // Argument one is the behaviour's name.
-#define ARG_NAME 1
+constexpr auto ARG_NAME = 1;
 
 // Ticks after instantiation before every collision interactor is set active again.
-#define COLLISION_REARM_TICKS 10
+constexpr auto COLLISION_REARM_TICKS = 10;
 
 // FUNCTION: HYPERX 0x0047b680
 PlanState* PlanState::Instantiate()

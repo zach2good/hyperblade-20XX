@@ -420,8 +420,8 @@ void GameApp::OnExit()
     std::_Exit(0);
 }
 
-#define CDROM_NOT_FOUND  (-1)
-#define CDROM_NOT_WANTED (-2)
+constexpr auto CDROM_NOT_FOUND  = (-1);
+constexpr auto CDROM_NOT_WANTED = (-2);
 
 // Runs before WinMain.
 // FUNCTION: HYPERX 0x00422f90

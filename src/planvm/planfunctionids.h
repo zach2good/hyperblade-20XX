@@ -6,284 +6,284 @@
 
 // The opcode table's first two slots are SET_INTERACTOR_PARAM's, DATA/ENUMIDS.H's
 // InteractorSetParamFnIDs; the decisions start after them.
-#define SET_INTERACTOR_NAME 0
-#define SET_ACTIVE_STATE    1
-#define PLAN_DECISION_BASE  2
+constexpr auto SET_INTERACTOR_NAME = 0;
+constexpr auto SET_ACTIVE_STATE    = 1;
+constexpr auto PLAN_DECISION_BASE  = 2;
 
-#define ACF_SET_ATTACH_PAK               0
-#define ACF_UNSET_ATTACH_PAK             1
-#define ACF_LAUNCH                       3
-#define ACF_LAUNCH_TOWARD                4
-#define ACF_SEND_MESSAGE                 5
-#define ACF_SET_SPEED_BURST              6
-#define ACF_PLAY_SOUND                   7
-#define ACF_NOTE_STATS4_POSSESSORS       8
-#define ACF_INCREMENT_STAT               9
-#define ACF_START_STAT_TIMER             10
-#define ACF_END_STAT_TIMER               11
-#define ACF_PLAY_SND_TYPE                12
-#define ACF_PAN_SND_TYPE                 13
-#define ACF_ANIMATION_PEEK               16
-#define ACF_ENGAGE_OPPONENT              17
-#define ACF_SET_LOCATION                 18
-#define ACF_SET_VELOCITY                 19
-#define ACF_SET_OBJECT_TO_TRACK          20
-#define ACF_SET_TRACK_TO_VIEW_OWNER      21
-#define ACF_SET_TRACKING_OFFSET          22
-#define ACF_INCREMENT_TRACKING_OFFSET    23
-#define ACF_INCREMENT_OBJECT_TO_TRACK    24
-#define ACF_SET_OBJECT_TO_WATCH          25
-#define ACF_INCREMENT_OBJECT_TO_WATCH    26
-#define ACF_SET_IN_DRAG                  27
-#define ACF_SET_ON_RIM                   28
-#define ACF_SET_FRICTION                 29
-#define ACF_SET_ANIMATION                30
-#define ACF_RESTORE_PERSISTENT_ANIMATION 31
-#define ACF_SET_ANIMATION_EVENT          32
-#define ACF_SET_ANIMATION_STATE          33
-#define ACF_HOOK_DRAG_BUNGEES_ON         34
-#define ACF_RESET_ACC_TRANSIENT          35
-#define ACF_SET_ANIMATION_DONE_MESSAGE   36
-#define ACF_LAUNCH_AT                    37
-#define ACF_THROW                        38
-#define ACF_SET_ANIMATION_SPEED          39
-#define ACF_INCR_ANIMATION_SPEED         40
-#define ACF_RESET_CAMERA_BUFFER_SIZE     41
-#define ACF_THROW_BUNGEE                 42
-#define ACF_RESET_KEYSTATE_FLAGS         43
-#define ACF_SET_CAM_OFFSET_TO_LOCATION   45
-#define ACF_LAUNCH_GUN_DIRECTION         46
-#define ACF_RELAX_YAW_TO_FACE            47
-#define ACF_RESET_RETICLE                48
-#define ACF_SET_HEAD_CAM_TEXT            49
-#define ACF_INIT_REAR_VIEW_POS           50
-#define ACF_DOPPLER_SOUND                51
-#define ACF_INCREMENT_BUNGEE_LENGTH      52
-#define ACF_SET_OFFSET_VALUES            53
-#define ACF_SET_BUNGEE_LENGTH            54
-#define ACF_PLACE_SOUND                  55
-#define ACF_INCREMENT_CAMERA_DIR         56
-#define ACF_SET_TRACK_HEIGHT             57
-#define ACF_SET_MIN_HEIGHT               58
-#define ACF_SET_LOOK_HEIGHT              59
-#define ACF_SET_CAM_BUFFER_FACTOR        60
-#define ACF_SET_SCAN_MODES               61
-#define ACF_SET_SOLAR_WIND_FACTOR        62
-#define ACF_SET_PALETTE_EFFECT           63
-#define ACF_SIGNAL_KEYSTATE              64
-#define ACF_SET_MY_GRAVITY               65
-#define ACF_RECOIL_OFF_WALL              66
-#define ACF_CLOTHES_LINE_RECOIL          67
-#define ACF_MAN_ON_MAN_RECOIL            68
-#define ACF_GET_KEYSTATE_FLAGS           69
-#define ACF_SET_LOCAL_REAL               70
-#define ACF_SCALE_BUB_TO_RATING          71
-#define ACF_SET_RENDER_FLAG              72
-#define ACF_INC_ROK_VALUE                73
-#define ACF_SET_ROK_KILL_STATE           74
-#define ACF_MODIFY_DAMAGE                75
-#define ACF_REFLECT_OFF_WALL             76
-#define ACF_MODIFY_PITCH                 77
-#define ACF_REFLECT_OFF_MODEL            78
-#define ACF_SET_TARGET_WITH_DATA         79
-#define ACF_BUNGEE_TOWARD_TARGET         80
-#define ACF_GLIDE_ON_RAMP                81
-#define ACF_GRAYSCALE_RANDOMIZER         82
-#define ACF_SET_IMMUNITY                 83
-#define ACF_SPEED_BURST_SITUATION        84
-#define ACF_INCR_ANIM_SPEED_W_RATING     85
-#define ACF_MODIFY_OPPOS_TEAM_FRICTION   86
-#define ACF_SET_DEVICE_OWNER             87
-#define ACF_SET_INPUT_MODE               88
-#define ACF_INCREMENT_SCORE              89
-#define ACF_SWAP_RANDOMIZERS             90
-#define ACF_MODIFY_RATING                91
-#define ACF_MODIFY_AVAILABLE_REDS        92
-#define ACF_REALLY_SEND_MSG              93
-#define ACF_EXPLODE_FLAT                 94
-#define ACF_SET_SHOT_POWER_METER         95
-#define ACF_HOVER_ABOVE_ARMORY           96
-#define ACF_DEPLOY_WEAPON                97
-#define ACF_SET_ATTACKEE                 98
-#define ACF_MODIFY_SPEED_RATING          99
-#define ACF_EXPLODE_AGAINST_VELOCITY     100
-#define ACF_EXPLODE_WITH_VELOCITY        101
-#define ACF_EXPLODE_UNIFORM              102
-#define ACF_SET_KNOCKED_DOWN_STATE       103
-#define ACF_SPIN_TURNSTILE               104
-#define ACF_LOSE_HEAD                    105
-#define ACF_TRACE                        106
-#define ACF_REGAIN_HEAD                  107
-#define ACF_SET_KILLED_DROMER            108
-#define ACF_ANIMATION_SEMAPHORE          109
-#define ACF_RESET_CAMERA_TRACK           110
-#define ACF_CLOCK_STOPPED_SEMAPHORE      111
-#define ACF_SET_INFO_BAR_TEXT            112
-#define ACF_BOUNCE_OFF_DROMER            113
-#define ACF_BODY_SPLIT                   114
-#define ACF_CREDIT_DAMAGE                115
-#define ACF_TRACK_TURNSTILE              116
-#define ACF_DESIRED_SUBSTITUTE           117
-#define ACF_SUBSTITUTE_DROMER            118
-#define ACF_SET_INFO_TEXT_DROMER         119
-#define ACF_SET_LASER_HURDLE_CHARGE      120
-#define ACF_SET_INFO_TEXT_TEAM           122
-#define ACF_CLEAR_BEHAVIOR_ANIMATION     123
-#define ACF_SEND_MESSAGE_TO_MY_CAMERA    124
-#define ACF_IF_NOT_ROK_TRACK_ME          125
-#define ACF_TRANSFER_VIEW_OWNERSHIP      126
-#define ACF_SMALL_BLOOD_SPURT            127
-#define ACF_LARGE_BLOOD_SPURT            128
-#define ACF_SET_MAX_SPEED                129
-#define ACF_END_PERIOD_NOW               130
-#define ACF_KILL_BALL_STAGING            131
-#define ACF_KILL_BALL_EXECUTE            132
-#define ACF_KICK_OFF_RIM                 133
-#define ACF_FLYING_SEMAPHORE             134
-#define ACF_KICK_DOWN_TO_SURFACE         135
-#define ACF_SYNC_POSSESSION              136
-#define ACF_SYNC_SYSTEM                  137
-#define ACF_SYNC_DAMAGE                  138
-#define ACF_SEND_LAUNCH_MESSAGE          139
+constexpr auto ACF_SET_ATTACH_PAK               = 0;
+constexpr auto ACF_UNSET_ATTACH_PAK             = 1;
+constexpr auto ACF_LAUNCH                       = 3;
+constexpr auto ACF_LAUNCH_TOWARD                = 4;
+constexpr auto ACF_SEND_MESSAGE                 = 5;
+constexpr auto ACF_SET_SPEED_BURST              = 6;
+constexpr auto ACF_PLAY_SOUND                   = 7;
+constexpr auto ACF_NOTE_STATS4_POSSESSORS       = 8;
+constexpr auto ACF_INCREMENT_STAT               = 9;
+constexpr auto ACF_START_STAT_TIMER             = 10;
+constexpr auto ACF_END_STAT_TIMER               = 11;
+constexpr auto ACF_PLAY_SND_TYPE                = 12;
+constexpr auto ACF_PAN_SND_TYPE                 = 13;
+constexpr auto ACF_ANIMATION_PEEK               = 16;
+constexpr auto ACF_ENGAGE_OPPONENT              = 17;
+constexpr auto ACF_SET_LOCATION                 = 18;
+constexpr auto ACF_SET_VELOCITY                 = 19;
+constexpr auto ACF_SET_OBJECT_TO_TRACK          = 20;
+constexpr auto ACF_SET_TRACK_TO_VIEW_OWNER      = 21;
+constexpr auto ACF_SET_TRACKING_OFFSET          = 22;
+constexpr auto ACF_INCREMENT_TRACKING_OFFSET    = 23;
+constexpr auto ACF_INCREMENT_OBJECT_TO_TRACK    = 24;
+constexpr auto ACF_SET_OBJECT_TO_WATCH          = 25;
+constexpr auto ACF_INCREMENT_OBJECT_TO_WATCH    = 26;
+constexpr auto ACF_SET_IN_DRAG                  = 27;
+constexpr auto ACF_SET_ON_RIM                   = 28;
+constexpr auto ACF_SET_FRICTION                 = 29;
+constexpr auto ACF_SET_ANIMATION                = 30;
+constexpr auto ACF_RESTORE_PERSISTENT_ANIMATION = 31;
+constexpr auto ACF_SET_ANIMATION_EVENT          = 32;
+constexpr auto ACF_SET_ANIMATION_STATE          = 33;
+constexpr auto ACF_HOOK_DRAG_BUNGEES_ON         = 34;
+constexpr auto ACF_RESET_ACC_TRANSIENT          = 35;
+constexpr auto ACF_SET_ANIMATION_DONE_MESSAGE   = 36;
+constexpr auto ACF_LAUNCH_AT                    = 37;
+constexpr auto ACF_THROW                        = 38;
+constexpr auto ACF_SET_ANIMATION_SPEED          = 39;
+constexpr auto ACF_INCR_ANIMATION_SPEED         = 40;
+constexpr auto ACF_RESET_CAMERA_BUFFER_SIZE     = 41;
+constexpr auto ACF_THROW_BUNGEE                 = 42;
+constexpr auto ACF_RESET_KEYSTATE_FLAGS         = 43;
+constexpr auto ACF_SET_CAM_OFFSET_TO_LOCATION   = 45;
+constexpr auto ACF_LAUNCH_GUN_DIRECTION         = 46;
+constexpr auto ACF_RELAX_YAW_TO_FACE            = 47;
+constexpr auto ACF_RESET_RETICLE                = 48;
+constexpr auto ACF_SET_HEAD_CAM_TEXT            = 49;
+constexpr auto ACF_INIT_REAR_VIEW_POS           = 50;
+constexpr auto ACF_DOPPLER_SOUND                = 51;
+constexpr auto ACF_INCREMENT_BUNGEE_LENGTH      = 52;
+constexpr auto ACF_SET_OFFSET_VALUES            = 53;
+constexpr auto ACF_SET_BUNGEE_LENGTH            = 54;
+constexpr auto ACF_PLACE_SOUND                  = 55;
+constexpr auto ACF_INCREMENT_CAMERA_DIR         = 56;
+constexpr auto ACF_SET_TRACK_HEIGHT             = 57;
+constexpr auto ACF_SET_MIN_HEIGHT               = 58;
+constexpr auto ACF_SET_LOOK_HEIGHT              = 59;
+constexpr auto ACF_SET_CAM_BUFFER_FACTOR        = 60;
+constexpr auto ACF_SET_SCAN_MODES               = 61;
+constexpr auto ACF_SET_SOLAR_WIND_FACTOR        = 62;
+constexpr auto ACF_SET_PALETTE_EFFECT           = 63;
+constexpr auto ACF_SIGNAL_KEYSTATE              = 64;
+constexpr auto ACF_SET_MY_GRAVITY               = 65;
+constexpr auto ACF_RECOIL_OFF_WALL              = 66;
+constexpr auto ACF_CLOTHES_LINE_RECOIL          = 67;
+constexpr auto ACF_MAN_ON_MAN_RECOIL            = 68;
+constexpr auto ACF_GET_KEYSTATE_FLAGS           = 69;
+constexpr auto ACF_SET_LOCAL_REAL               = 70;
+constexpr auto ACF_SCALE_BUB_TO_RATING          = 71;
+constexpr auto ACF_SET_RENDER_FLAG              = 72;
+constexpr auto ACF_INC_ROK_VALUE                = 73;
+constexpr auto ACF_SET_ROK_KILL_STATE           = 74;
+constexpr auto ACF_MODIFY_DAMAGE                = 75;
+constexpr auto ACF_REFLECT_OFF_WALL             = 76;
+constexpr auto ACF_MODIFY_PITCH                 = 77;
+constexpr auto ACF_REFLECT_OFF_MODEL            = 78;
+constexpr auto ACF_SET_TARGET_WITH_DATA         = 79;
+constexpr auto ACF_BUNGEE_TOWARD_TARGET         = 80;
+constexpr auto ACF_GLIDE_ON_RAMP                = 81;
+constexpr auto ACF_GRAYSCALE_RANDOMIZER         = 82;
+constexpr auto ACF_SET_IMMUNITY                 = 83;
+constexpr auto ACF_SPEED_BURST_SITUATION        = 84;
+constexpr auto ACF_INCR_ANIM_SPEED_W_RATING     = 85;
+constexpr auto ACF_MODIFY_OPPOS_TEAM_FRICTION   = 86;
+constexpr auto ACF_SET_DEVICE_OWNER             = 87;
+constexpr auto ACF_SET_INPUT_MODE               = 88;
+constexpr auto ACF_INCREMENT_SCORE              = 89;
+constexpr auto ACF_SWAP_RANDOMIZERS             = 90;
+constexpr auto ACF_MODIFY_RATING                = 91;
+constexpr auto ACF_MODIFY_AVAILABLE_REDS        = 92;
+constexpr auto ACF_REALLY_SEND_MSG              = 93;
+constexpr auto ACF_EXPLODE_FLAT                 = 94;
+constexpr auto ACF_SET_SHOT_POWER_METER         = 95;
+constexpr auto ACF_HOVER_ABOVE_ARMORY           = 96;
+constexpr auto ACF_DEPLOY_WEAPON                = 97;
+constexpr auto ACF_SET_ATTACKEE                 = 98;
+constexpr auto ACF_MODIFY_SPEED_RATING          = 99;
+constexpr auto ACF_EXPLODE_AGAINST_VELOCITY     = 100;
+constexpr auto ACF_EXPLODE_WITH_VELOCITY        = 101;
+constexpr auto ACF_EXPLODE_UNIFORM              = 102;
+constexpr auto ACF_SET_KNOCKED_DOWN_STATE       = 103;
+constexpr auto ACF_SPIN_TURNSTILE               = 104;
+constexpr auto ACF_LOSE_HEAD                    = 105;
+constexpr auto ACF_TRACE                        = 106;
+constexpr auto ACF_REGAIN_HEAD                  = 107;
+constexpr auto ACF_SET_KILLED_DROMER            = 108;
+constexpr auto ACF_ANIMATION_SEMAPHORE          = 109;
+constexpr auto ACF_RESET_CAMERA_TRACK           = 110;
+constexpr auto ACF_CLOCK_STOPPED_SEMAPHORE      = 111;
+constexpr auto ACF_SET_INFO_BAR_TEXT            = 112;
+constexpr auto ACF_BOUNCE_OFF_DROMER            = 113;
+constexpr auto ACF_BODY_SPLIT                   = 114;
+constexpr auto ACF_CREDIT_DAMAGE                = 115;
+constexpr auto ACF_TRACK_TURNSTILE              = 116;
+constexpr auto ACF_DESIRED_SUBSTITUTE           = 117;
+constexpr auto ACF_SUBSTITUTE_DROMER            = 118;
+constexpr auto ACF_SET_INFO_TEXT_DROMER         = 119;
+constexpr auto ACF_SET_LASER_HURDLE_CHARGE      = 120;
+constexpr auto ACF_SET_INFO_TEXT_TEAM           = 122;
+constexpr auto ACF_CLEAR_BEHAVIOR_ANIMATION     = 123;
+constexpr auto ACF_SEND_MESSAGE_TO_MY_CAMERA    = 124;
+constexpr auto ACF_IF_NOT_ROK_TRACK_ME          = 125;
+constexpr auto ACF_TRANSFER_VIEW_OWNERSHIP      = 126;
+constexpr auto ACF_SMALL_BLOOD_SPURT            = 127;
+constexpr auto ACF_LARGE_BLOOD_SPURT            = 128;
+constexpr auto ACF_SET_MAX_SPEED                = 129;
+constexpr auto ACF_END_PERIOD_NOW               = 130;
+constexpr auto ACF_KILL_BALL_STAGING            = 131;
+constexpr auto ACF_KILL_BALL_EXECUTE            = 132;
+constexpr auto ACF_KICK_OFF_RIM                 = 133;
+constexpr auto ACF_FLYING_SEMAPHORE             = 134;
+constexpr auto ACF_KICK_DOWN_TO_SURFACE         = 135;
+constexpr auto ACF_SYNC_POSSESSION              = 136;
+constexpr auto ACF_SYNC_SYSTEM                  = 137;
+constexpr auto ACF_SYNC_DAMAGE                  = 138;
+constexpr auto ACF_SEND_LAUNCH_MESSAGE          = 139;
 
-#define DCF_DECIDE_ATTACHMENT             0
-#define DCF_DECIDE_CELEBRATION            1
-#define DCF_DECIDE_PASS_OR_RUN            2
-#define DCF_DECIDE_HP_SPIN_RAIL_OR_NOT    3
-#define DCF_PICK_A_CELL                   4
-#define DCF_RANDOM                        5
-#define DCF_IS_SENDER_TEAMMATE            6
-#define DCF_AM_MAIN_DROMER                7
-#define DCF_RUN_TIME_DATA                 8
-#define DCF_IS_ROK_IN_MY_ZONE             9
-#define DCF_AM_VIEW_OWNER                 10
-#define DCF_TEAMMATE_IS_VIEW_OWNER        11
-#define DCF_OWNER_IS_VIEW_OWNER           12
-#define DCF_VIEW_OWNERS_MATE_IN_FRONT     13
-#define DCF_I_HAVE_ROK                    14
-#define DCF_DECIDE_POSITION               15
-#define DCF_COLLISION_DETAIL              16
-#define DCF_ENGAGE_WHICH_OPPONENT         17
-#define DCF_TEAMMATE_HAS_ROK              18
-#define DCF_GAG_THE_ANNOUNCER             19
-#define DCF_VICTIM_CAM_IS_ON              20
-#define DCF_DECIDE_BLOCK_OR_GO_OUT        21
-#define DCF_WHICH_OPPN_IS_CLOSEST_TO_ROK  22
-#define DCF_CLOSEST_UNCOVERED_OPPN        23
-#define DCF_ANALYZE_PAD_A                 24
-#define DCF_ANALYZE_PAD_B                 25
-#define DCF_ANALYZE_PAD_C                 26
-#define DCF_ATTACKER_IS_IN_REAR           27
-#define DCF_SPEED_BURST_IS_RELAXED        28
-#define DCF_OFFENSE_OR_W_ROK              29
-#define DCF_HOST_IS_VIEW_OWNER            30
-#define DCF_ROK_IN_WHICH_TEAMS_POSS       31
-#define DCF_IS_DOUBLE_SCORE               32
-#define DCF_MY_ID                         33
-#define DCF_MESSAGE_DATA                  34
-#define DCF_BUNGEE_VICTIM_LOR_R           35
-#define DCF_IF_IN_FACE_OFF                36
-#define DCF_SHOT_POWER                    37
-#define DCF_IS_SCANNING_MODE_ON           38
-#define DCF_MESSAGE_DATA_NIBL0            39
-#define DCF_MESSAGE_DATA_NIBL1            40
-#define DCF_MESSAGE_DATA_NIBL4            41
-#define DCF_MSG_DATA4_NIBL1_X2_NIBL0      42
-#define DCF_SIDE_KEYS_ARE_DOWN            43
-#define DCF_SPIN_UP                       44
-#define DCF_AM_I_KNOCKED_LOOSE            45
-#define DCF_CATCH_BLOCK_OR_MISS           46
-#define DCF_ROK_SCORE_VALUE               47
-#define DCF_JUMPING                       48
-#define DCF_CHOOSE_PASSING_PLAY           49
-#define DCF_RECVR_IN_RANGE_N_VIEW         50
-#define DCF_WHICH_OPPN_IS_CLOSEST_TO_ME   51
-#define DCF_TAKE_DAMAGE                   52
-#define DCF_DUCKING                       53
-#define DCF_ROK_IS_CHARGED                54
-#define DCF_ROK_IS_CHARGED_AGAINST        55
-#define DCF_CLOSEST_TARGET_TO_PROJECTILE  56
-#define DCF_ME_OR_TEAMMATE_CLOSEST_TO_ROK 57
-#define DCF_IS_AMBIENT                    58
-#define DCF_DROMER_HURDLE_COLLISION       59
-#define DCF_DROMER_HAS_ROK                60
-#define DCF_ROK_HURDLE_COLLISION          61
-#define DCF_DROMER_MULTIPLIER_COLLISION   62
-#define DCF_DROMER_LIMBO_COLLISION        63
-#define DCF_DROMER_RANDOMIZER_COLLISION   64
-#define DCF_ROK_VALUE_IN_MY_FAVOR         65
-#define DCF_DROMER_RAMP_COLLISION         66
-#define DCF_PASS_OR_RUN_BY_RATINGS        67
-#define DCF_LOOSE_ROK_WHAT_TO_DO          68
-#define DCF_GO_THROUGH_MULIPLIER          69
-#define DCF_PICK_ATTACK_MOVE              70
-#define DCF_OFF_WING_JOB                  71
-#define DCF_PICK_FLYING_MOVE              72
-#define DCF_PICK_HALFPIPE_MOVE            73
-#define DCF_AVOID_SPINNING_TURNSTILE      74
-#define DCF_TARGET_TURNSTILE              75
-#define DCF_USE_KILLBALL                  76
-#define DCF_USE_RANDOMIZER                77
-#define DCF_SHOOT_SITUATION               78
-#define DCF_REGROUP_SITUATION             79
-#define DCF_AGGRESSION_ON_OTHERS          80
-#define DCF_RED_IS_AVAILABLE              81
-#define DCF_TEN_OR_MORE_PT_SPREAD         82
-#define DCF_RATING_MAXED_OUT              83
-#define DCF_MY_TEAM_LOSING_BY_AT_LEAST    84
-#define DCF_CHOOSE_TEAM_TUNE              85
-#define DCF_DROMER_NEAR_MINE              86
-#define DCF_ATTACK_OR_DEPLOY_WEAPON       87
-#define DCF_DECIDE_WITH_RATING            88
-#define DCF_NEAR_OBJECT_BY                89
-#define DCF_SOUND_BANK                    90
-#define DCF_HOME_OR_AWAY_TEAM             91
-#define DCF_WINNING_OR_LOSING             92
-#define DCF_IS_DROMER_KNOCKED_DOWN        93
-#define DCF_RANDOM_EMPTY_ARMORY           94
-#define DCF_RANDOM_INACTIVE_WEAPON        95
-#define DCF_WHO_KILLED_ME                 96
-#define DCF_ANIMATION_SEMAPHORE           97
-#define DCF_CLOCK_STOPPED_SEMAPHORE       98
-#define DCF_ATTACHED_TO_SENDER            99
-#define DCF_ATTACKED_ANIM                 100
-#define DCF_CLOSEST_DROMER_TO_ROK         101
-#define DCF_OK_TO_GET_ROK                 102
-#define DCF_BODY_PART_ANIMATION           103
-#define DCF_ROK_IN_RANGE                  104
-#define DCF_IS_DROMER_INJURED             105
-#define DCF_TEAMMATE_IS_HUMAN_OR_INJURED  106
-#define DCF_DESIRED_SUBSTITUTE            107
-#define DCF_SUBSTITUTION_SEMAPHORE        108
-#define DCF_OK_TO_SWITCH_TO_TEAMMATE      109
-#define DCF_OK_TO_SUBSTITUTE_DROMER       110
-#define DCF_OK_TO_PASS_TO_TEAMMATE        111
-#define DCF_OK_TO_SUBSTITUTE_TEAMMATE     112
-#define DCF_PICK_VALID_SUBSTITUTE         113
-#define DCF_GET_LASER_HURDLE_CHARGE       114
-#define DCF_DROMER_LASER_HURDLE_COLLISION 115
-#define DCF_OK_TO_LAUNCH_ROK              116
-#define DCF_GET_IMMUNITY                  117
-#define DCF_INTERCEPTION                  118
-#define DCF_SPECIAL_ATTACKS               119
-#define DCF_IN_RANGE_TO_ATTACK            120
-#define DCF_JOSTLED_DROP_ROK              121
-#define DCF_BOUNCED_IN_GOAL               122
-#define DCF_CHECK_PASSING_DISTANCE        123
-#define DCF_WHICH_OPPN_TO_ATTACK          124
-#define DCF_CHECK_RENDER_FLAG             125
-#define DCF_TEAM_IS_DEAD                  126
-#define DCF_TEAM_IS_INJURED               127
-#define DCF_MY_TEAM_IS_INJURED            128
-#define DCF_WHO_WON_THE_GAME              129
-#define DCF_WHO_HAS_ROK                   130
-#define DCF_TRY_FOR_KILLBALL              131
-#define DCF_TARGET_ACQUIRED               132
-#define DCF_DECIDE_GOALIE_LAUNCH          133
-#define DCF_NEAREST_SUSPENSE_MULT         134
-#define DCF_BALL_GOT_BEHIND_ME            135
-#define DCF_GOALIE_PASSING_TARGET         136
-#define DCF_FORCE_REAR_VIEW               137
-#define DCF_CHECK_SCORE_ON_OWN_GOAL       138
+constexpr auto DCF_DECIDE_ATTACHMENT             = 0;
+constexpr auto DCF_DECIDE_CELEBRATION            = 1;
+constexpr auto DCF_DECIDE_PASS_OR_RUN            = 2;
+constexpr auto DCF_DECIDE_HP_SPIN_RAIL_OR_NOT    = 3;
+constexpr auto DCF_PICK_A_CELL                   = 4;
+constexpr auto DCF_RANDOM                        = 5;
+constexpr auto DCF_IS_SENDER_TEAMMATE            = 6;
+constexpr auto DCF_AM_MAIN_DROMER                = 7;
+constexpr auto DCF_RUN_TIME_DATA                 = 8;
+constexpr auto DCF_IS_ROK_IN_MY_ZONE             = 9;
+constexpr auto DCF_AM_VIEW_OWNER                 = 10;
+constexpr auto DCF_TEAMMATE_IS_VIEW_OWNER        = 11;
+constexpr auto DCF_OWNER_IS_VIEW_OWNER           = 12;
+constexpr auto DCF_VIEW_OWNERS_MATE_IN_FRONT     = 13;
+constexpr auto DCF_I_HAVE_ROK                    = 14;
+constexpr auto DCF_DECIDE_POSITION               = 15;
+constexpr auto DCF_COLLISION_DETAIL              = 16;
+constexpr auto DCF_ENGAGE_WHICH_OPPONENT         = 17;
+constexpr auto DCF_TEAMMATE_HAS_ROK              = 18;
+constexpr auto DCF_GAG_THE_ANNOUNCER             = 19;
+constexpr auto DCF_VICTIM_CAM_IS_ON              = 20;
+constexpr auto DCF_DECIDE_BLOCK_OR_GO_OUT        = 21;
+constexpr auto DCF_WHICH_OPPN_IS_CLOSEST_TO_ROK  = 22;
+constexpr auto DCF_CLOSEST_UNCOVERED_OPPN        = 23;
+constexpr auto DCF_ANALYZE_PAD_A                 = 24;
+constexpr auto DCF_ANALYZE_PAD_B                 = 25;
+constexpr auto DCF_ANALYZE_PAD_C                 = 26;
+constexpr auto DCF_ATTACKER_IS_IN_REAR           = 27;
+constexpr auto DCF_SPEED_BURST_IS_RELAXED        = 28;
+constexpr auto DCF_OFFENSE_OR_W_ROK              = 29;
+constexpr auto DCF_HOST_IS_VIEW_OWNER            = 30;
+constexpr auto DCF_ROK_IN_WHICH_TEAMS_POSS       = 31;
+constexpr auto DCF_IS_DOUBLE_SCORE               = 32;
+constexpr auto DCF_MY_ID                         = 33;
+constexpr auto DCF_MESSAGE_DATA                  = 34;
+constexpr auto DCF_BUNGEE_VICTIM_LOR_R           = 35;
+constexpr auto DCF_IF_IN_FACE_OFF                = 36;
+constexpr auto DCF_SHOT_POWER                    = 37;
+constexpr auto DCF_IS_SCANNING_MODE_ON           = 38;
+constexpr auto DCF_MESSAGE_DATA_NIBL0            = 39;
+constexpr auto DCF_MESSAGE_DATA_NIBL1            = 40;
+constexpr auto DCF_MESSAGE_DATA_NIBL4            = 41;
+constexpr auto DCF_MSG_DATA4_NIBL1_X2_NIBL0      = 42;
+constexpr auto DCF_SIDE_KEYS_ARE_DOWN            = 43;
+constexpr auto DCF_SPIN_UP                       = 44;
+constexpr auto DCF_AM_I_KNOCKED_LOOSE            = 45;
+constexpr auto DCF_CATCH_BLOCK_OR_MISS           = 46;
+constexpr auto DCF_ROK_SCORE_VALUE               = 47;
+constexpr auto DCF_JUMPING                       = 48;
+constexpr auto DCF_CHOOSE_PASSING_PLAY           = 49;
+constexpr auto DCF_RECVR_IN_RANGE_N_VIEW         = 50;
+constexpr auto DCF_WHICH_OPPN_IS_CLOSEST_TO_ME   = 51;
+constexpr auto DCF_TAKE_DAMAGE                   = 52;
+constexpr auto DCF_DUCKING                       = 53;
+constexpr auto DCF_ROK_IS_CHARGED                = 54;
+constexpr auto DCF_ROK_IS_CHARGED_AGAINST        = 55;
+constexpr auto DCF_CLOSEST_TARGET_TO_PROJECTILE  = 56;
+constexpr auto DCF_ME_OR_TEAMMATE_CLOSEST_TO_ROK = 57;
+constexpr auto DCF_IS_AMBIENT                    = 58;
+constexpr auto DCF_DROMER_HURDLE_COLLISION       = 59;
+constexpr auto DCF_DROMER_HAS_ROK                = 60;
+constexpr auto DCF_ROK_HURDLE_COLLISION          = 61;
+constexpr auto DCF_DROMER_MULTIPLIER_COLLISION   = 62;
+constexpr auto DCF_DROMER_LIMBO_COLLISION        = 63;
+constexpr auto DCF_DROMER_RANDOMIZER_COLLISION   = 64;
+constexpr auto DCF_ROK_VALUE_IN_MY_FAVOR         = 65;
+constexpr auto DCF_DROMER_RAMP_COLLISION         = 66;
+constexpr auto DCF_PASS_OR_RUN_BY_RATINGS        = 67;
+constexpr auto DCF_LOOSE_ROK_WHAT_TO_DO          = 68;
+constexpr auto DCF_GO_THROUGH_MULIPLIER          = 69;
+constexpr auto DCF_PICK_ATTACK_MOVE              = 70;
+constexpr auto DCF_OFF_WING_JOB                  = 71;
+constexpr auto DCF_PICK_FLYING_MOVE              = 72;
+constexpr auto DCF_PICK_HALFPIPE_MOVE            = 73;
+constexpr auto DCF_AVOID_SPINNING_TURNSTILE      = 74;
+constexpr auto DCF_TARGET_TURNSTILE              = 75;
+constexpr auto DCF_USE_KILLBALL                  = 76;
+constexpr auto DCF_USE_RANDOMIZER                = 77;
+constexpr auto DCF_SHOOT_SITUATION               = 78;
+constexpr auto DCF_REGROUP_SITUATION             = 79;
+constexpr auto DCF_AGGRESSION_ON_OTHERS          = 80;
+constexpr auto DCF_RED_IS_AVAILABLE              = 81;
+constexpr auto DCF_TEN_OR_MORE_PT_SPREAD         = 82;
+constexpr auto DCF_RATING_MAXED_OUT              = 83;
+constexpr auto DCF_MY_TEAM_LOSING_BY_AT_LEAST    = 84;
+constexpr auto DCF_CHOOSE_TEAM_TUNE              = 85;
+constexpr auto DCF_DROMER_NEAR_MINE              = 86;
+constexpr auto DCF_ATTACK_OR_DEPLOY_WEAPON       = 87;
+constexpr auto DCF_DECIDE_WITH_RATING            = 88;
+constexpr auto DCF_NEAR_OBJECT_BY                = 89;
+constexpr auto DCF_SOUND_BANK                    = 90;
+constexpr auto DCF_HOME_OR_AWAY_TEAM             = 91;
+constexpr auto DCF_WINNING_OR_LOSING             = 92;
+constexpr auto DCF_IS_DROMER_KNOCKED_DOWN        = 93;
+constexpr auto DCF_RANDOM_EMPTY_ARMORY           = 94;
+constexpr auto DCF_RANDOM_INACTIVE_WEAPON        = 95;
+constexpr auto DCF_WHO_KILLED_ME                 = 96;
+constexpr auto DCF_ANIMATION_SEMAPHORE           = 97;
+constexpr auto DCF_CLOCK_STOPPED_SEMAPHORE       = 98;
+constexpr auto DCF_ATTACHED_TO_SENDER            = 99;
+constexpr auto DCF_ATTACKED_ANIM                 = 100;
+constexpr auto DCF_CLOSEST_DROMER_TO_ROK         = 101;
+constexpr auto DCF_OK_TO_GET_ROK                 = 102;
+constexpr auto DCF_BODY_PART_ANIMATION           = 103;
+constexpr auto DCF_ROK_IN_RANGE                  = 104;
+constexpr auto DCF_IS_DROMER_INJURED             = 105;
+constexpr auto DCF_TEAMMATE_IS_HUMAN_OR_INJURED  = 106;
+constexpr auto DCF_DESIRED_SUBSTITUTE            = 107;
+constexpr auto DCF_SUBSTITUTION_SEMAPHORE        = 108;
+constexpr auto DCF_OK_TO_SWITCH_TO_TEAMMATE      = 109;
+constexpr auto DCF_OK_TO_SUBSTITUTE_DROMER       = 110;
+constexpr auto DCF_OK_TO_PASS_TO_TEAMMATE        = 111;
+constexpr auto DCF_OK_TO_SUBSTITUTE_TEAMMATE     = 112;
+constexpr auto DCF_PICK_VALID_SUBSTITUTE         = 113;
+constexpr auto DCF_GET_LASER_HURDLE_CHARGE       = 114;
+constexpr auto DCF_DROMER_LASER_HURDLE_COLLISION = 115;
+constexpr auto DCF_OK_TO_LAUNCH_ROK              = 116;
+constexpr auto DCF_GET_IMMUNITY                  = 117;
+constexpr auto DCF_INTERCEPTION                  = 118;
+constexpr auto DCF_SPECIAL_ATTACKS               = 119;
+constexpr auto DCF_IN_RANGE_TO_ATTACK            = 120;
+constexpr auto DCF_JOSTLED_DROP_ROK              = 121;
+constexpr auto DCF_BOUNCED_IN_GOAL               = 122;
+constexpr auto DCF_CHECK_PASSING_DISTANCE        = 123;
+constexpr auto DCF_WHICH_OPPN_TO_ATTACK          = 124;
+constexpr auto DCF_CHECK_RENDER_FLAG             = 125;
+constexpr auto DCF_TEAM_IS_DEAD                  = 126;
+constexpr auto DCF_TEAM_IS_INJURED               = 127;
+constexpr auto DCF_MY_TEAM_IS_INJURED            = 128;
+constexpr auto DCF_WHO_WON_THE_GAME              = 129;
+constexpr auto DCF_WHO_HAS_ROK                   = 130;
+constexpr auto DCF_TRY_FOR_KILLBALL              = 131;
+constexpr auto DCF_TARGET_ACQUIRED               = 132;
+constexpr auto DCF_DECIDE_GOALIE_LAUNCH          = 133;
+constexpr auto DCF_NEAREST_SUSPENSE_MULT         = 134;
+constexpr auto DCF_BALL_GOT_BEHIND_ME            = 135;
+constexpr auto DCF_GOALIE_PASSING_TARGET         = 136;
+constexpr auto DCF_FORCE_REAR_VIEW               = 137;
+constexpr auto DCF_CHECK_SCORE_ON_OWN_GOAL       = 138;
 
 #endif

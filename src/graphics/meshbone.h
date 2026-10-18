@@ -55,10 +55,10 @@ struct FaceRecord
 static_assert(sizeof(FaceRecord) == 8);
 
 // The bits of MeshBone::m_nFlags.
-#define MESHBONE_UNBOUND         0x02
-#define MESHBONE_ANIMATION_DIRTY 0x04
-#define MESHBONE_COLOURS_PRESENT 0x08
-#define MESHBONE_HIDDEN          0x10
+constexpr auto MESHBONE_UNBOUND         = 0x02;
+constexpr auto MESHBONE_ANIMATION_DIRTY = 0x04;
+constexpr auto MESHBONE_COLOURS_PRESENT = 0x08;
+constexpr auto MESHBONE_HIDDEN          = 0x10;
 
 class MeshBone
 {

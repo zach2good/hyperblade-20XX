@@ -17,16 +17,16 @@ class AwardsUIScreen;
 #include "engine/game.h"
 #include "sound/soundids.h"
 
-#define AWARDS_STRIP        36
-#define AWARDS_LAST_WIDGET  AWARDS_STRIP
-#define AWARDS_ICON_FIRST   23
-#define AWARDS_BUTTON_FIRST 29
-#define AWARDS_TROPHY       35
-#define AWARDS_ROW_COUNT    6
-#define AWARDS_STRIP_FRAMES 0x1f
+constexpr auto AWARDS_STRIP = 36;
+#define AWARDS_LAST_WIDGET AWARDS_STRIP
+constexpr auto AWARDS_ICON_FIRST   = 23;
+constexpr auto AWARDS_BUTTON_FIRST = 29;
+constexpr auto AWARDS_TROPHY       = 35;
+constexpr auto AWARDS_ROW_COUNT    = 6;
+constexpr auto AWARDS_STRIP_FRAMES = 0x1f;
 
-#define AWARDS_STRIP_X 0xf6
-#define AWARDS_STRIP_Y 0x29
+constexpr auto AWARDS_STRIP_X = 0xf6;
+constexpr auto AWARDS_STRIP_Y = 0x29;
 
 // FUNCTION: HYPERX 0x0041b870
 AwardsUIScreen::AwardsUIScreen()
@@ -112,7 +112,7 @@ void AwardsUIScreen::OnExitTabClick()
 
 // Every arm ends by re-entering the screen, including the one that matched no button.
 
-#define AWARDS_NO_SOUND (-1)
+constexpr auto AWARDS_NO_SOUND = (-1);
 
 // FUNCTION: HYPERX 0x0041bbf0
 void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)

@@ -10,8 +10,8 @@
 
 class EngineObject;
 
-#define TEAM_BLOCK_SLOTS 10
-#define TEAM_BLOCK_SEATS 2
+constexpr auto TEAM_BLOCK_SLOTS = 10;
+constexpr auto TEAM_BLOCK_SEATS = 2;
 
 // One player's 49 match stats as the bench holds them.
 struct TeamStatRow

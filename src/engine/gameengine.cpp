@@ -126,7 +126,7 @@ SurfacePoint g_ptPlanEditorOrigin(0x1c, 0x1c);
 
 #define STAT_MINIMUM 100.0f
 
-#define TEAM_KEYWORD_COUNT 9
+constexpr auto TEAM_KEYWORD_COUNT = 9;
 
 // FUNCTION: HYPERX 0x0040b970
 void GameEngine::InitAgendaItemPools()
@@ -315,12 +315,12 @@ int GameEngine::CountEntitiesInRange(short nWhich)
 }
 
 // The resting byte of four of the five queue tables, repeated over each table.
-#define QUEUE_TARGET_BYTE 0x8e
-#define QUEUE_IDLE_BYTE   0x66
-#define QUEUE_FLAG_BYTE   0x02
+constexpr auto QUEUE_TARGET_BYTE = 0x8e;
+constexpr auto QUEUE_IDLE_BYTE   = 0x66;
+constexpr auto QUEUE_FLAG_BYTE   = 0x02;
 
-#define HIDDEN_TEAM_A 8
-#define HIDDEN_TEAM_B 2
+constexpr auto HIDDEN_TEAM_A = 8;
+constexpr auto HIDDEN_TEAM_B = 2;
 
 // FUNCTION: HYPERX 0x00469380
 int GameEngine::IsTeamWinning(unsigned char nTeam)
@@ -454,20 +454,20 @@ GameEngine::GameEngine()
     m_bEndPeriodRequested = 0;
 }
 
-#define AWARD_AGGREGATE 0
-#define AWARD_ANVIL     1
-#define AWARD_CRUSH     2
-#define AWARD_ARCHER    3
-#define AWARD_SUPER     4
-#define AWARD_RAZOR     5
+constexpr auto AWARD_AGGREGATE = 0;
+constexpr auto AWARD_ANVIL     = 1;
+constexpr auto AWARD_CRUSH     = 2;
+constexpr auto AWARD_ARCHER    = 3;
+constexpr auto AWARD_SUPER     = 4;
+constexpr auto AWARD_RAZOR     = 5;
 
-#define AWARD_JUDGED_FIRST 1
-#define AWARD_JUDGED       4
+constexpr auto AWARD_JUDGED_FIRST = 1;
+constexpr auto AWARD_JUDGED       = 4;
 
 // The home score that wins the Super award.
-#define SUPER_AWARD_SCORE 0x1e
+constexpr auto SUPER_AWARD_SCORE = 0x1e;
 
-#define BRACKET_END (-1)
+constexpr auto BRACKET_END = (-1);
 
 // A drawn score with any away row still damaged restarts the bracket; awards nought and five
 // are written and never read.
@@ -570,14 +570,14 @@ void GameEngine::AdvanceTournamentBracket()
 #define MAX_FRAME_TIME_MS 200.0f
 #define MS_TO_SEC         0.001f
 
-#define COUNTDOWN_START_MS 10000
-#define COUNTDOWN_SECS     9
+constexpr auto COUNTDOWN_START_MS = 10000;
+constexpr auto COUNTDOWN_SECS     = 9;
 
-#define FINAL_PERIOD_INDEX 3
-#define PERIOD_COUNT       4
+constexpr auto FINAL_PERIOD_INDEX = 3;
+constexpr auto PERIOD_COUNT       = 4;
 
-#define OVERTIME_EARLY_MS 10000
-#define OVERTIME_FINAL_MS 30000
+constexpr auto OVERTIME_EARLY_MS = 10000;
+constexpr auto OVERTIME_FINAL_MS = 30000;
 
 // The frame delta, in milliseconds before the scaling and in seconds after it.
 extern float g_flFrameDelta;
@@ -919,19 +919,19 @@ extern unsigned char g_bPeriodCountdownActive;
 
 #define FULL_WEIGHT 100.0f
 
-#define BEHAVIOR_IDLE 0
+constexpr auto BEHAVIOR_IDLE = 0;
 // The Rok value that leaves the multiplier its rest colours.
-#define ROK_VALUE_PLAIN 0
+constexpr auto ROK_VALUE_PLAIN = 0;
 
-#define FIRST_PERIOD 1
+constexpr auto FIRST_PERIOD = 1;
 
 // Rows of the message queue's text table, the lines they go on, and how long they stay.
-#define TEXT_EXHIBITION_MODE 0x58
-#define TEXT_GAUNTLET_MODE   0x59
-#define TEXT_DIFFICULTY_BASE 0x5a
-#define TEXT_LINE_MAIN       1
-#define TEXT_LINE_NAMES      2
-#define TEXT_DURATION        0x640
+constexpr auto TEXT_EXHIBITION_MODE = 0x58;
+constexpr auto TEXT_GAUNTLET_MODE   = 0x59;
+constexpr auto TEXT_DIFFICULTY_BASE = 0x5a;
+constexpr auto TEXT_LINE_MAIN       = 1;
+constexpr auto TEXT_LINE_NAMES      = 2;
+constexpr auto TEXT_DURATION        = 0x640;
 
 // FUNCTION: HYPERX 0x004819a0
 unsigned char GameEngine::IsAwayTeamDead()
@@ -1172,7 +1172,7 @@ const char* g_pszTeammateModeKey        = "TeammateMode";
 // GLOBAL: HYPERX 0x004c706c
 static const char* s_apszKeywords[] = { "Environment", "HomeTeam", "AwayTeam" };
 
-#define CONFIG_KEYWORD_COUNT 3
+constexpr auto CONFIG_KEYWORD_COUNT = 3;
 
 enum ConfigKeyword
 {
@@ -1291,7 +1291,7 @@ static const char* s_apszCommands[] = {
     "SetPlans"
 };
 
-#define COMMAND_COUNT 14
+constexpr auto COMMAND_COUNT = 14;
 
 // The fourteen commands an object definition file is written in.
 enum ObjectDefCommand
@@ -1430,8 +1430,8 @@ extern const char* g_pszPercentD;
 // GLOBAL: HYPERX 0x004b3f04
 extern const char* const g_pszPercentHd;
 
-#define ATTRIBUTE_COUNT 6
-#define TYPE_COUNT      32
+constexpr auto ATTRIBUTE_COUNT = 6;
+constexpr auto TYPE_COUNT      = 32;
 
 enum ObjectAttribute
 {
@@ -1711,7 +1711,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
     return pDef;
 }
 
-#define MOTION_KEYWORD_COUNT 9
+constexpr auto MOTION_KEYWORD_COUNT = 9;
 
 // The seven motion keys a definition's parameter block names.
 enum ObjectDefKey
@@ -1854,8 +1854,8 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
     return 1;
 }
 
-#define ATTR_COUNT   6
-#define BUBBLE_COUNT 0x1b
+constexpr auto ATTR_COUNT   = 6;
+constexpr auto BUBBLE_COUNT = 0x1b;
 
 enum ComponentAttribute
 {
@@ -1868,33 +1868,33 @@ enum ComponentAttribute
 };
 
 // The collision bubble kinds, in the order of their keywords.
-#define BUBBLE_DROMER_AWARENESS 0x00
-#define BUBBLE_DROMER_MODEL     0x01
-#define BUBBLE_DROMER_BODY      0x02
-#define BUBBLE_DROMER_SCOOP     0x03
-#define BUBBLE_RAMP             0x04
-#define BUBBLE_ROK              0x05
-#define BUBBLE_GOAL_SIDE        0x06
-#define BUBBLE_GOAL_ZONE        0x07
-#define BUBBLE_GOAL_CASE        0x08
-#define BUBBLE_GOAL_PORT        0x09
-#define BUBBLE_CAMERA           0x0a
-#define BUBBLE_HEAD_CAM         0x0b
-#define BUBBLE_MULTIPLIER       0x0c
-#define BUBBLE_TURNSTILE        0x0d
-#define BUBBLE_STARTGUN         0x0e
-#define BUBBLE_LASER_HURDLE     0x0f
-#define BUBBLE_ARMORY           0x10
-#define BUBBLE_LIMBO_POLE       0x11
-#define BUBBLE_FAST_LANE        0x12
-#define BUBBLE_EXPLOSION        0x13
-#define BUBBLE_HURDLE           0x14
-#define BUBBLE_RANDOMIZER       0x15
-#define BUBBLE_KLUDGE           0x16
-#define BUBBLE_SLOW_LANE        0x17
-#define BUBBLE_MINE             0x18
-#define BUBBLE_SWARF            0x19
-#define BUBBLE_BODY_PART        0x1a
+constexpr auto BUBBLE_DROMER_AWARENESS = 0x00;
+constexpr auto BUBBLE_DROMER_MODEL     = 0x01;
+constexpr auto BUBBLE_DROMER_BODY      = 0x02;
+constexpr auto BUBBLE_DROMER_SCOOP     = 0x03;
+constexpr auto BUBBLE_RAMP             = 0x04;
+constexpr auto BUBBLE_ROK              = 0x05;
+constexpr auto BUBBLE_GOAL_SIDE        = 0x06;
+constexpr auto BUBBLE_GOAL_ZONE        = 0x07;
+constexpr auto BUBBLE_GOAL_CASE        = 0x08;
+constexpr auto BUBBLE_GOAL_PORT        = 0x09;
+constexpr auto BUBBLE_CAMERA           = 0x0a;
+constexpr auto BUBBLE_HEAD_CAM         = 0x0b;
+constexpr auto BUBBLE_MULTIPLIER       = 0x0c;
+constexpr auto BUBBLE_TURNSTILE        = 0x0d;
+constexpr auto BUBBLE_STARTGUN         = 0x0e;
+constexpr auto BUBBLE_LASER_HURDLE     = 0x0f;
+constexpr auto BUBBLE_ARMORY           = 0x10;
+constexpr auto BUBBLE_LIMBO_POLE       = 0x11;
+constexpr auto BUBBLE_FAST_LANE        = 0x12;
+constexpr auto BUBBLE_EXPLOSION        = 0x13;
+constexpr auto BUBBLE_HURDLE           = 0x14;
+constexpr auto BUBBLE_RANDOMIZER       = 0x15;
+constexpr auto BUBBLE_KLUDGE           = 0x16;
+constexpr auto BUBBLE_SLOW_LANE        = 0x17;
+constexpr auto BUBBLE_MINE             = 0x18;
+constexpr auto BUBBLE_SWARF            = 0x19;
+constexpr auto BUBBLE_BODY_PART        = 0x1a;
 
 #define COLLISION_MISSING   -9999999.0f
 #define COLLISION_NO_RADIUS -1.0f
@@ -2405,8 +2405,8 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     return 1;
 }
 
-#define RATINGS_PLAYER_COUNT 0x40
-#define RATINGS_GOALIE_COUNT 0x11
+constexpr auto RATINGS_PLAYER_COUNT = 0x40;
+constexpr auto RATINGS_GOALIE_COUNT = 0x11;
 
 #define GOALIE_RATING_DEFAULT 5.0f
 
@@ -2794,8 +2794,8 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
 }
 
 // This parser's own token bound. src/common/parseutil.h has 0x78 and planscat.cpp uses 0x100.
-#define PLAN_TOKEN_MAX 0x50
-#define TOKENS_MAX     30
+constexpr auto PLAN_TOKEN_MAX = 0x50;
+constexpr auto TOKENS_MAX     = 30;
 
 // A token longer than the buffer overruns it; nothing bounds the token count.
 // FUNCTION: HYPERX 0x00484460
@@ -2931,7 +2931,7 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
     return 0;
 }
 
-#define ARENA_OBJECT_MAX 100
+constexpr auto ARENA_OBJECT_MAX = 100;
 
 // Fatal returns, so an object past the hundredth is still built and overruns anModelIds.
 // FUNCTION: HYPERX 0x00484e80
@@ -3121,9 +3121,9 @@ char GameEngine::UnloadAwayTeam()
     return 0;
 }
 
-#define SECOND_RUN_FIRST 5
-#define SECOND_RUN_LAST  8
-#define FIRST_RUN_LAST   2
+constexpr auto SECOND_RUN_FIRST = 5;
+constexpr auto SECOND_RUN_LAST  = 8;
+constexpr auto FIRST_RUN_LAST   = 2;
 
 // A rematch reloads the same teams; a failed load names the home team whichever half failed.
 // FUNCTION: HYPERX 0x004856f0
@@ -3215,17 +3215,17 @@ char GameEngine::SetTeams(short nHome, short nAway)
 // GLOBAL: HYPERX 0x004c70f0
 extern int g_anBodyPartModelIds[8];
 
-#define MODEL_ID_UNASSIGNED (-1)
+constexpr auto MODEL_ID_UNASSIGNED = (-1);
 
-#define TEAM_SIDE_AWAY 1
+constexpr auto TEAM_SIDE_AWAY = 1;
 
 // The ten slots, and which of them are the body parts.
-#define TEAM_SLOT_BODY_PART_FIRST 5
-#define TEAM_SLOT_BODY_PART_LAST  8
-#define TEAM_SLOT_ROK             9
+constexpr auto TEAM_SLOT_BODY_PART_FIRST = 5;
+constexpr auto TEAM_SLOT_BODY_PART_LAST  = 8;
+constexpr auto TEAM_SLOT_ROK             = 9;
 
 // Three players carry the running id; the fourth and fifth do not.
-#define TEAM_PLAYERS_ON_DROME 3
+constexpr auto TEAM_PLAYERS_ON_DROME = 3;
 
 // Ten slots: five players, four body parts and the team's Rok; only four players get ratings.
 // FUNCTION: HYPERX 0x004858b0
@@ -3276,7 +3276,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
             else if (nSlot == TEAM_SLOT_ROK)
             {
                 g_bSuppressRokId = 1;
-                nObjectId        = static_cast<unsigned int> MODEL_ID_UNASSIGNED;
+                nObjectId        = static_cast<unsigned int>(MODEL_ID_UNASSIGNED);
             }
             else if (nSlot >= TEAM_SLOT_BODY_PART_FIRST && nSlot <= TEAM_SLOT_BODY_PART_LAST)
             {
@@ -3629,10 +3629,10 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     return 1;
 }
 
-#define SLOT_TEAM_ONE_FIRST  0
-#define SLOT_TEAM_TWO_FIRST  1
-#define SLOT_TEAM_ONE_SECOND 2
-#define SLOT_TEAM_TWO_SECOND 3
+constexpr auto SLOT_TEAM_ONE_FIRST  = 0;
+constexpr auto SLOT_TEAM_TWO_FIRST  = 1;
+constexpr auto SLOT_TEAM_ONE_SECOND = 2;
+constexpr auto SLOT_TEAM_TWO_SECOND = 3;
 
 // DamageGate's third arm asks the difficulty and discards the answer.
 // FUNCTION: HYPERX 0x00486030
@@ -3891,7 +3891,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 }
 
 // The length of both slot tables, m_ppSlots and m_ppObjects.
-#define ENGINE_SLOT_COUNT 0x66
+constexpr auto ENGINE_SLOT_COUNT = 0x66;
 
 // The first slot array is the camera holder; stubbing it faults the graphics set-up.
 // FUNCTION: HYPERX 0x00486680
@@ -4652,7 +4652,7 @@ void GameEngine::ResetPeriodToFirst()
     m_clock.nPeriod = 1;
 }
 
-#define TEAM_COUNT 2
+constexpr auto TEAM_COUNT = 2;
 
 // Writes only in tournament player mode.
 // FUNCTION: HYPERX 0x00487590
@@ -4980,7 +4980,7 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
     return 0;
 }
 
-#define SLOT_ORDER_COUNT 4
+constexpr auto SLOT_ORDER_COUNT = 4;
 
 // FUNCTION: HYPERX 0x00487e50
 int GameEngine::GetDifficultyLevel() const
@@ -5104,8 +5104,8 @@ unsigned char GameEngine::IsExhibitionMode()
 }
 
 // The smallest drawn area is half the buffer, and each step adds a twelfth.
-#define SCREEN_SIZE_MAX     6
-#define SCREEN_TWELFTHS_MIN 6
+constexpr auto SCREEN_SIZE_MAX     = 6;
+constexpr auto SCREEN_TWELFTHS_MIN = 6;
 
 // The drawn area is (step + 6) twelfths of the buffer, centred.
 // FUNCTION: HYPERX 0x00488030

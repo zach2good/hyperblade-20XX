@@ -352,9 +352,9 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 }
 
 // Seven approach sectors, and seven meaning none.
-#define SECTOR_NONE          7
-#define SECTOR_COUNT         7
-#define REACTION_SET_STOPPED 4
+constexpr auto SECTOR_NONE          = 7;
+constexpr auto SECTOR_COUNT         = 7;
+constexpr auto REACTION_SET_STOPPED = 4;
 
 // HITANIMS.LST's five rows of seven sectors: 0 to 3 by damage, and 4 for the stopped case.
 // GLOBAL: HYPERX 0x004cf9fc

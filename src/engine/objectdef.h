@@ -4,11 +4,11 @@
 #include "math/vector.h"
 
 // What m_nRatingsMode records: a skater's sixty three ratings or a goalie's sixteen.
-#define RATINGS_FIELD  1
-#define RATINGS_GOALIE 2
+constexpr auto RATINGS_FIELD  = 1;
+constexpr auto RATINGS_GOALIE = 2;
 
 // The fourth ratings table is the goalie set SetSpecialGoalieRatings writes.
-#define RATINGS_SPECIAL_GOALIE 3
+constexpr auto RATINGS_SPECIAL_GOALIE = 3;
 
 // The azimuth is in degrees.
 class ObjectDef

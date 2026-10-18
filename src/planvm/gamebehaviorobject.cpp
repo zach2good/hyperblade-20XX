@@ -58,7 +58,7 @@ extern BehParamHandlerFn g_apfnBehaviorParamHandlers[17];
 extern PlanOpcodeSlot    g_pfnPlanOpcodeHandlers[141];
 extern PlanHandlerFn     g_pfnPlanActionHandlers[140];
 
-#define HEADER_ITEMS 2
+constexpr auto HEADER_ITEMS = 2;
 
 // Out of line: the original calls this destructor from every derived one.
 // FUNCTION: HYPERX 0x0041bfe0

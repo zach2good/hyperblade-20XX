@@ -38,7 +38,7 @@ extern const Vec3 g_vecZeroVelocity;
 // GLOBAL: HYPERX 0x004b1620
 extern const Vec3 g_vecZeroPosition;
 
-#define BODY_RING_LENGTH 4
+constexpr auto BODY_RING_LENGTH = 4;
 
 // EngineObject::EngineObject allocates 0x150 bytes and calls this; nothing else zeroes it.
 // FUNCTION: HYPERX 0x00407520
@@ -235,7 +235,7 @@ void PhysicsBody::PerFrameTick()
     }
 }
 
-#define SHOOT_DRIVE_TAIL_MS 1000
+constexpr auto SHOOT_DRIVE_TAIL_MS = 1000;
 
 #define AXIS_FLOOR_IDLE 0.005
 
@@ -863,7 +863,7 @@ void PhysicsBody::ApplyBankForce(unsigned char cDir, float flForce)
 extern float g_flBankingAngleRad;
 
 // The bone whose world position the camera follows.
-#define CAMERA_BONE 9
+constexpr auto CAMERA_BONE = 9;
 
 // Bits 2 and 3 enable the bank and bit 2 alone picks its sign; the angle is a tenth of a radian.
 // FUNCTION: HYPERX 0x00408940

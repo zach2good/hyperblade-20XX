@@ -23,7 +23,7 @@ struct GameApp;
 #include "app/window.h"
 #include "common/stub.h"
 
-#define TICK_INTERVAL_MS 50
+constexpr auto TICK_INTERVAL_MS = 50;
 
 // Slot zero is the shared answer-nothing at 0x0041bf40; slot two is the pure-virtual trap.
 // FUNCTION: HYPERX 0x0041bf40
@@ -632,7 +632,7 @@ void Screen::InitAllWidgets()
     }
 }
 
-#define BITMAP_CACHE_SLOTS 128
+constexpr auto BITMAP_CACHE_SLOTS = 128;
 
 // FUNCTION: HYPERX 0x0048cc10
 void Screen::InitBitmapCache()

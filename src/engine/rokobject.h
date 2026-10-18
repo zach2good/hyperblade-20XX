@@ -8,7 +8,7 @@
 #include "engine/objectclasses.h"
 
 // All ones takes the Rok off its spawn slot.
-#define SPAWN_SLOT_ANY 0xffffffff
+constexpr auto SPAWN_SLOT_ANY = 0xffffffff;
 
 // VTABLE: HYPERX 0x004b39f4
 class RokObject : public EngineObject

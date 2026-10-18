@@ -13,8 +13,8 @@
 #include "graphics/gdi.h"
 #include "ui/hudglobals.h"
 
-#define RLE_MAX_RUN 0x7f
-#define RLE_LITERAL 0x80
+constexpr auto RLE_MAX_RUN = 0x7f;
+constexpr auto RLE_LITERAL = 0x80;
 
 // Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent. The block leaks.
 // FUNCTION: HYPERX 0x0044f550
@@ -244,7 +244,7 @@ char SoftTex::Load(const char* pszName)
     return 0;
 }
 
-#define TEXPOLY_EDGE_COUNT 0x1f
+constexpr auto TEXPOLY_EDGE_COUNT = 0x1f;
 
 // The entry point is loaded at run time; a null one drops the polygon.
 // FUNCTION: HYPERX 0x00492b60

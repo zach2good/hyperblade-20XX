@@ -8,19 +8,19 @@
 #include <stddef.h>
 class CheatState;
 
-#define KEY_BINDING_COUNT 10
+constexpr auto KEY_BINDING_COUNT = 10;
 
 // The ten key bindings: ini name, default, and what was read.
 // GLOBAL: HYPERX 0x004c41e0
 extern const char* g_apszKeyBindingNames[KEY_BINDING_COUNT];
 
 // The bound keys' slots in g_anKeyBindingDefaults that the readers name.
-#define BINDING_DOWN   1
-#define BINDING_LEFT   2
-#define BINDING_RIGHT  3
-#define BINDING_ATTACK 4
-#define BINDING_THROW  8
-#define BINDING_JUMP   9
+constexpr auto BINDING_DOWN   = 1;
+constexpr auto BINDING_LEFT   = 2;
+constexpr auto BINDING_RIGHT  = 3;
+constexpr auto BINDING_ATTACK = 4;
+constexpr auto BINDING_THROW  = 8;
+constexpr auto BINDING_JUMP   = 9;
 
 // GLOBAL: HYPERX 0x004c4398
 extern unsigned int g_anKeyBindingDefaults[KEY_BINDING_COUNT];

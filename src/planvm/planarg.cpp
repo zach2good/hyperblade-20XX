@@ -15,9 +15,9 @@ float g_flUnusedPlanArgB = g_flZeroPlanArg;
 float g_flUnusedPlanArgC = g_flZeroPlanArg;
 
 // ENUMIDS.H id_POS_ positions whose north and south pair a team parity selects.
-#define POS_N_GOAL_DEFENDER     0x02
-#define POS_HOME_DRAG_START_POS 0x04
-#define POS_N_GOAL_CENTER       0x08
+constexpr auto POS_N_GOAL_DEFENDER     = 0x02;
+constexpr auto POS_HOME_DRAG_START_POS = 0x04;
+#define POS_N_GOAL_CENTER 0x08
 
 // Each skater owns three collision objects: its bubble, its baton zone and its body.
 #define COB_PER_DROMER (COB_DROMER_1 - COB_DROMER_0)

@@ -6,7 +6,7 @@ struct Vec3;
 #include "vector.h"
 #include <math.h>
 
-#define SERIAL_LAST 0xffffffff
+constexpr auto SERIAL_LAST = 0xffffffff;
 
 // One axis's staged rotation, copied as a pair.
 struct SinCos

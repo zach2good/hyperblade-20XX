@@ -68,8 +68,8 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
     }
 }
 
-#define DOUBLE_TAP_MS  0xfa
-#define REPEAT_STEP_MS 0x32
+constexpr auto DOUBLE_TAP_MS  = 0xfa;
+constexpr auto REPEAT_STEP_MS = 0x32;
 
 // Each release time starts fifty milliseconds past its press, so a first press is never a double tap.
 // FUNCTION: HYPERX 0x0045cc10
@@ -111,7 +111,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
     }
 }
 
-#define TABLE_KEY_COUNT 8
+constexpr auto TABLE_KEY_COUNT = 8;
 
 // An up entry whose action folds to slot zero is reported and the build keeps going.
 // FUNCTION: HYPERX 0x0045cd20

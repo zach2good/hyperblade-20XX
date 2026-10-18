@@ -17,10 +17,10 @@
 #define COMMENT_CHAR '#'
 
 // The catalogue holds thirty and the thirty-first is refused.
-#define TEAM_MAX 30
+constexpr auto TEAM_MAX = 30;
 
 // A record starts with its 32-byte filename, followed by the name the checksum reads.
-#define TEAM_FILENAME_MAX 32
+constexpr auto TEAM_FILENAME_MAX = 32;
 
 // FUNCTION: HYPERX 0x004847d0
 TeamsBlock::TeamsBlock()

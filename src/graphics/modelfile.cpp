@@ -17,9 +17,9 @@ float g_flScreenDotsPerInchModelFile = g_flDotsPerInchModelFile;
 float g_flDotPitchCmModelFile        = g_flDotPitchInchModelFile / g_flCmPerInchModelFile;
 float g_flScreenDotsPerCmModelFile   = g_flScreenDotsPerInchModelFile / g_flCmPerInchModelFile;
 
-#define MODEL_NAME_LENGTH       6
-#define MODEL_TAG_DIRECTORY     1
-#define MODEL_INTERNAL_NAME_MAX 32
+constexpr auto MODEL_NAME_LENGTH       = 6;
+constexpr auto MODEL_TAG_DIRECTORY     = 1;
+constexpr auto MODEL_INTERNAL_NAME_MAX = 32;
 
 // FUNCTION: HYPERX 0x00435fe0
 char ModelFile::Open(FileObj* pFile, const char* pszModelName)

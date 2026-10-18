@@ -22,7 +22,7 @@
 #include "app/gameapp.h"
 
 // How many frames on the wrong side the counter tolerates before the message goes out.
-#define WRONG_SIDE_LIMIT 0x14
+constexpr auto WRONG_SIDE_LIMIT = 0x14;
 
 // Two; src/globals.cpp defines it.
 extern float g_flTwoAgendaItem;

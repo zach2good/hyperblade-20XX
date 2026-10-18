@@ -25,7 +25,7 @@
 
 // The broadcast camera: the helmet view a spectator watches the match through.
 
-#define HISTORY_WINDOW_OFF 1
+constexpr auto HISTORY_WINDOW_OFF = 1;
 
 // FUNCTION: HYPERX 0x00409fc0
 void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)

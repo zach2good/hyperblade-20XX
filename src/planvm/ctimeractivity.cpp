@@ -12,7 +12,7 @@
 #include "engine/messageids.h"
 
 // One past the last engine slot: no target.
-#define TIMER_TARGET_NONE 0x66
+constexpr auto TIMER_TARGET_NONE = 0x66;
 
 // FUNCTION: HYPERX 0x00411a10
 void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)

@@ -11,7 +11,7 @@
 
 // Angles print in degrees modulo a turn; the elevation adds a quarter turn, so down is nought.
 
-#define DEGREES_PER_TURN 360
+constexpr auto DEGREES_PER_TURN = 360;
 
 // GLOBAL: HYPERX 0x004d0990
 extern char g_szDebugLightLine[0x64];

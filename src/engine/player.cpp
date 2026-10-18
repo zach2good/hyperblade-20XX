@@ -11,7 +11,7 @@
 #include "engine/player.h"
 #include "engine/messageids.h"
 
-#define TRICK_HOLD_MS 100
+constexpr auto TRICK_HOLD_MS = 100;
 
 // The trick and boost-grab steps, and the tick the hold started at; minus one means untimed.
 // GLOBAL: HYPERX 0x004cb4da

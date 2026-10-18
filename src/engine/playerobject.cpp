@@ -98,7 +98,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
     m_wFlyingSemaphore       = 0;
 }
 
-#define DAMAGE_UPDATE_INTERVAL 2000
+constexpr auto DAMAGE_UPDATE_INTERVAL = 2000;
 
 // FUNCTION: HYPERX 0x004742f0
 inline void PlayerObject::ApplyRenderSlotPose()

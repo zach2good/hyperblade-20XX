@@ -27,14 +27,14 @@ class KeyConfigScreen;
 
 // A row bound to a key the bitmap table lacks falls back to "key-".
 
-#define KEY_ACTION_COUNT 12
-#define KEY_BITMAP_COUNT 50
+constexpr auto KEY_ACTION_COUNT = 12;
+constexpr auto KEY_BITMAP_COUNT = 50;
 
 // The twelve action buttons plus the ten key pictures, so the last slot in use is 21.
-#define KEY_LAST_WIDGET 0x15
+constexpr auto KEY_LAST_WIDGET = 0x15;
 
 // Twelve entries in, which is what the original's base address says and nothing else explains.
-#define KEY_START_FRAME 12
+constexpr auto KEY_START_FRAME = 12;
 
 // GLOBAL: HYPERX 0x004bd090
 extern KeyBitmapEntry g_aKeyBitmaps[KEY_BITMAP_COUNT];
@@ -159,11 +159,11 @@ KeyConfigScreen::KeyConfigScreen()
     ShowPadIcons(m_bitmap.nWidth, m_bitmap.nHeight);
 }
 
-#define WIDGET_ACCEPT 10
-#define WIDGET_CANCEL 11
+constexpr auto WIDGET_ACCEPT = 10;
+constexpr auto WIDGET_CANCEL = 11;
 
 // The pictures start at this widget; the rows start at widget nought.
-#define KEY_BITMAP_SLOT 12
+constexpr auto KEY_BITMAP_SLOT = 12;
 
 // Screen row to device action slot: 0 1 2 3 5 6 8 7 9 4.
 // GLOBAL: HYPERX 0x004b2c38

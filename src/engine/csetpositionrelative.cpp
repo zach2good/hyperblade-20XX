@@ -17,13 +17,13 @@
 #include "planvm/plannode.h"
 #include "common/pooledownerroot.h"
 
-#define MODE_TO_CENTRE 0
-#define MODE_ON_OBJECT 1
+constexpr auto MODE_TO_CENTRE = 0;
+constexpr auto MODE_ON_OBJECT = 1;
 
 #define STEP_LENGTH 5.0f
 #define DRIFT_LIMIT 25.0
 
-#define MESSAGE_DRIFTED_PARAM 0x96
+constexpr auto MESSAGE_DRIFTED_PARAM = 0x96;
 
 // FUNCTION: HYPERX 0x0040e490
 void CSetPositionRelative::Bind(EngineObject* pSubject, GameBehaviorObject*)

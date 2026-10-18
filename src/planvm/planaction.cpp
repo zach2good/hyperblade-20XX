@@ -60,9 +60,9 @@
 #include "planvm/planaction.h"
 #include "planvm/plancond.h"
 
-#define ARG_MESSAGE 1
+constexpr auto ARG_MESSAGE = 1;
 
-#define ARG_COUNT_WITH_MESSAGE 2
+constexpr auto ARG_COUNT_WITH_MESSAGE = 2;
 
 // The second object's state block is fetched and never used, in the original too.
 
@@ -92,10 +92,10 @@ void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
     pState->surfNormal = *pPart->GetNormal();
 }
 
-#define INFO_BAR_HOLD_MS 0x5dc
+constexpr auto INFO_BAR_HOLD_MS = 0x5dc;
 
-#define MESSAGE_KIND_EVEN 1
-#define MESSAGE_KIND_ODD  2
+constexpr auto MESSAGE_KIND_EVEN = 1;
+constexpr auto MESSAGE_KIND_ODD  = 2;
 
 // FUNCTION: HYPERX 0x0046aa90
 void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)

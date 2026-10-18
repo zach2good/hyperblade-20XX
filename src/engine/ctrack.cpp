@@ -42,7 +42,7 @@ extern const float g_flPi;
 extern unsigned char g_bSmartCamEnabled;
 
 // The swing is cut into at most six steps however long the countdown is.
-#define SWING_STEPS 6
+constexpr auto SWING_STEPS = 6;
 
 // FUNCTION: HYPERX 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)

@@ -173,7 +173,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 }
 
 // Message table entries the pause key shows, and how long they stay up.
-#define MSG_PAUSED    0x4f
+constexpr auto MSG_PAUSED = 0x4f;
 #define MSG_TOGGLE_MS 0x5dc
 
 // FUNCTION: HYPERX 0x0046d9f0

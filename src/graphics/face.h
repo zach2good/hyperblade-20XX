@@ -4,14 +4,14 @@
 #include "common/compat.h"
 
 // Face flags both rasterisers test, and the clip code bits, one per frustum plane.
-#define FACE_FLAG_HAS_UV  0x20
-#define FACE_FLAG_UV_SKIP 0x10
-#define CLIP_LEFT         0x01
-#define CLIP_RIGHT        0x02
-#define CLIP_TOP          0x04
-#define CLIP_BOTTOM       0x08
-#define CLIP_NEAR         0x10
-#define CLIP_FAR          0x20
+constexpr auto FACE_FLAG_HAS_UV  = 0x20;
+constexpr auto FACE_FLAG_UV_SKIP = 0x10;
+constexpr auto CLIP_LEFT         = 0x01;
+constexpr auto CLIP_RIGHT        = 0x02;
+constexpr auto CLIP_TOP          = 0x04;
+constexpr auto CLIP_BOTTOM       = 0x08;
+constexpr auto CLIP_NEAR         = 0x10;
+constexpr auto CLIP_FAR          = 0x20;
 
 struct ClipPolyBuffer;
 struct MeshFace;

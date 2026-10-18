@@ -488,7 +488,7 @@ void EngineObject::ComputeBoundingSphere()
     m_flBoundRadius *= RADIUS_PADDING;
 }
 
-#define OBJ_TABLE_EMPTY (-1)
+constexpr auto OBJ_TABLE_EMPTY = (-1);
 
 // The binding is the only allocation; the virtual call reaches the class being built.
 // FUNCTION: HYPERX 0x004702f0
@@ -688,7 +688,7 @@ EngineObject::~EngineObject()
 
 // The slot's low bit is its team, so the palette follows team colours.
 
-#define MATERIAL_SHARED 2
+constexpr auto MATERIAL_SHARED = 2;
 
 // The only writer of m_ppPlanBlobs, m_papszPlanNames and m_nPlanCount; a model named "null" is a success.
 // FUNCTION: HYPERX 0x00470790
@@ -1163,9 +1163,9 @@ short EngineObject::FindPlanByName(const char* pszName)
     return -1;
 }
 
-#define COMMAND_NONE 0xffffffffu
+constexpr auto COMMAND_NONE = 0xffffffffu;
 
-#define RECORD_MARK 0xff
+constexpr auto RECORD_MARK = 0xff;
 
 // The lock is released before each record is used, because the work can call back into the queue.
 // FUNCTION: HYPERX 0x004711c0
@@ -1280,7 +1280,7 @@ char EngineObject::ProcessReceivedPacket()
     return bResult;
 }
 
-#define STATE_NONE 0xff
+constexpr auto STATE_NONE = 0xff;
 
 // The referee applies a signed nibble to every stationary object; 0xff is reserved.
 // FUNCTION: HYPERX 0x00471460
@@ -1457,7 +1457,7 @@ extern Vec3 g_vLightDirModel;
 extern class TransformObject* g_pCameraTransform;
 
 #define CLIP_OFFSCREEN ((char)-1)
-#define CLIP_ANY_PLANE 1
+constexpr auto CLIP_ANY_PLANE = 1;
 
 // FUNCTION: HYPERX 0x00471800
 void EngineObject::ApplyRenderSlotPose()

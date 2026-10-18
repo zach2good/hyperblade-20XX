@@ -11,9 +11,9 @@ class PlanState;
 
 struct PlanNode;
 
-#define PLANVM_BEHAVIOR_LIMIT        60
-#define PLANVM_INTERACTOR_NAME_LIMIT 150
-#define PLANVM_MESSAGES_PER_BEHAVIOR 20
+constexpr auto PLANVM_BEHAVIOR_LIMIT        = 60;
+constexpr auto PLANVM_INTERACTOR_NAME_LIMIT = 150;
+constexpr auto PLANVM_MESSAGES_PER_BEHAVIOR = 20;
 
 // A keyword table entry: the name, a sentinel word, and the value the name stands for.
 struct PlanOpcodeRef

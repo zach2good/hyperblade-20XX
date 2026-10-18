@@ -19,8 +19,8 @@ extern const char* const g_apFileTypeNames[9];
 // GLOBAL: HYPERX 0x004bb8a8
 extern FileVersion g_animVersion;
 
-#define ANIM_FILE_TYPE         4
-#define ANIM_INTERNAL_NAME_MAX 32
+constexpr auto ANIM_FILE_TYPE         = 4;
+constexpr auto ANIM_INTERNAL_NAME_MAX = 32;
 
 // Minus one when any component of the right is smaller, one when any is larger, else nought.
 // FUNCTION: HYPERX 0x00493c40

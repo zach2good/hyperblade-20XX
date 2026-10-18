@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "stringpool.h"
 
-#define STRING_POOL_BUFFER_SIZE 0x100
+constexpr auto STRING_POOL_BUFFER_SIZE = 0x100;
 
 // The count is clamped up to two and every slot gets a fixed 256-byte buffer.
 

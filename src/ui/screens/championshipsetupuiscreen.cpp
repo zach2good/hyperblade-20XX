@@ -25,9 +25,9 @@
 
 #define CHAMP_INITIAL_LAST_WIDGET CHAMP_WIDGET_ROUND_TORCH
 #define CHAMP_GRID_LAST           (CHAMP_WIDGET_STAT_GRID + CHAMP_GRID_ROWS * CHAMP_GRID_COLUMNS - 1)
-#define CHAMP_BRACKET_COUNT       12
-#define CHAMP_GRID_ROWS           10
-#define CHAMP_GRID_COLUMNS        5
+constexpr auto CHAMP_BRACKET_COUNT = 12;
+constexpr auto CHAMP_GRID_ROWS     = 10;
+constexpr auto CHAMP_GRID_COLUMNS  = 5;
 
 // FUNCTION: HYPERX 0x00457710
 ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()

@@ -16,7 +16,7 @@ float g_flUnusedFaceC = g_flZeroFace;
 
 // A double-sided face that faces away answers minus one so the caller swaps materials.
 
-#define CLIP_ALL 0xff
+constexpr auto CLIP_ALL = 0xff;
 
 namespace Face
 {
@@ -160,9 +160,9 @@ char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* 
 
 // One Sutherland-Hodgman pass per plane in the clip code, alternating with a scratch array.
 
-#define AXIS_X 0
-#define AXIS_Y 1
-#define AXIS_Z 2
+constexpr auto AXIS_X = 0;
+constexpr auto AXIS_Y = 1;
+constexpr auto AXIS_Z = 2;
 
 // FUNCTION: HYPERX 0x0047f8f0
 unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)

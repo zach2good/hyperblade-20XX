@@ -6,10 +6,10 @@
 class EngineObject;
 
 // The ten agenda item slots a behaviour carries.
-#define BEHAVIOR_SLOT_COUNT 10
+constexpr auto BEHAVIOR_SLOT_COUNT = 10;
 
 // m_wLatency until id_SET_InteractorLatency sets it.
-#define BEHAVIOR_DEFAULT_LATENCY 0x0a
+constexpr auto BEHAVIOR_DEFAULT_LATENCY = 0x0a;
 
 // VTABLE: HYPERX 0x004b23c8
 class GameBehaviorObject

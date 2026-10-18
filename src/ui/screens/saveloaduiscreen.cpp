@@ -21,15 +21,15 @@
 #include "common/stub.h"
 #include "planvm/damagegate.h"
 
-#define SLOT_LABEL_BYTES 0x100
+constexpr auto SLOT_LABEL_BYTES = 0x100;
 
-#define DESCRIPTION_MAX 0x100
+constexpr auto DESCRIPTION_MAX = 0x100;
 
 // Kiosk mode past the career limit gets a frameless flipbook, keeping the numbering.
 
 // One slot row: a fixed column, a fixed width and the row's own height.
-#define SLOT_ROW_X     0x69
-#define SLOT_ROW_WIDTH 0x1ab
+constexpr auto SLOT_ROW_X     = 0x69;
+constexpr auto SLOT_ROW_WIDTH = 0x1ab;
 
 // FUNCTION: HYPERX 0x0046dc50
 SaveLoadUIScreen::SaveLoadUIScreen()
@@ -416,7 +416,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 
 // "Match <n> <home> VS. <away>". Each copy bound is the larger of two lengths.
 
-#define PART_MAX 0x100
+constexpr auto PART_MAX = 0x100;
 
 // FUNCTION: HYPERX 0x0046eb50
 void SaveLoadUIScreen::SaveGame()

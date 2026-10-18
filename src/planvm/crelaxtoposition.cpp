@@ -26,12 +26,12 @@
 // Four arguments copy a marker; five put an x and y on the floor; any other count zeroes it.
 
 // The marker node names a marker and a slot; the point node names x, y and a slot.
-#define ARG_FLAGS       1
-#define ARG_MARKER      2
-#define ARG_MARKER_SLOT 3
-#define ARG_X           2
-#define ARG_Y           3
-#define ARG_POINT_SLOT  4
+#define ARG_FLAGS  1
+#define ARG_MARKER 2
+constexpr auto ARG_MARKER_SLOT = 3;
+#define ARG_X 2
+#define ARG_Y 3
+constexpr auto ARG_POINT_SLOT = 4;
 
 #define ARG_COUNT_MARKER 4
 #define ARG_COUNT_POINT  5
@@ -121,7 +121,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 // Eases toward the destination at a rate that does not depend on the frame rate.
 
 // Fifty two is the last frame rate that reads a slower rate than the one before it.
-#define FRAME_RATE_LIMIT 0x34
+constexpr auto FRAME_RATE_LIMIT = 0x34;
 
 // Sixteen either way.
 #define BIAS_SCALE 16.0f

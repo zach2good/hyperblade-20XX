@@ -2,10 +2,10 @@
 #define HYPERBLADE_ANIMPLAYSTATE_H
 
 // The play states, as DATA/ENUMIDS.H's PlayState numbers them.
-#define AA_DONE       0
-#define AA_PLAY       1
-#define AA_PAUSE      2
-#define AA_SINGLESTEP 3
+constexpr auto AA_DONE       = 0;
+constexpr auto AA_PLAY       = 1;
+constexpr auto AA_PAUSE      = 2;
+constexpr auto AA_SINGLESTEP = 3;
 
 // The play state AnimPlayer keeps twice: live, and the copy SetClip saves before it switches.
 struct AnimPlayState

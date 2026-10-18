@@ -20,10 +20,10 @@ extern int g_bDromePass;
 extern const char* const g_pszPaletteExtension;
 
 // The version a definition file may always claim, whatever the palette's own is.
-#define PALETTE_VERSION_ANY 0x302
+constexpr auto PALETTE_VERSION_ANY = 0x302;
 
 // The name off the first line has no length check of its own.
-#define CUSTOM_NAME_MAX 80
+constexpr auto CUSTOM_NAME_MAX = 80;
 
 // FUNCTION: HYPERX 0x004255e0
 ColorPalette::ColorPalette()

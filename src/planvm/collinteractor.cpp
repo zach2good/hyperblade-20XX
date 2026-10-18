@@ -13,9 +13,9 @@
 #include "engine/engineobject.h"
 #include "planvm/decisionlog.h"
 
-#define ARG_KEY             0
-#define ARG_TAG             1
-#define ARG_CONDITION_FIRST 2
+#define ARG_KEY 0
+constexpr auto ARG_TAG             = 1;
+constexpr auto ARG_CONDITION_FIRST = 2;
 
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
@@ -142,7 +142,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 
     ExecuteScript(pCursor, nCount, nArg, pOutcome);
 
-    if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int> PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
+    if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int>(PLAN_TOKEN_NO_BEH_CHANGE) && m_bEnabled != 0)
     {
         m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
 

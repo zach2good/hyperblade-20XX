@@ -9,7 +9,7 @@
 #include "graphics/renderoptions.h"
 
 // The grey a frame with nothing behind it is cleared to.
-#define CLEAR_COLOUR 0x505050
+constexpr auto CLEAR_COLOUR = 0x505050;
 
 struct ViewExtent;
 

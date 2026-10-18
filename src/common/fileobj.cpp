@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <cstring>
 
-#define TEXT_MAX 0x100
+constexpr auto TEXT_MAX = 0x100;
 
 namespace
 {

@@ -35,27 +35,27 @@
 #include "engine/statids.h"
 #include "app/stringids.h"
 
-#define PERIOD_LAMP_COUNT 3
+constexpr auto PERIOD_LAMP_COUNT = 3;
 
 // Where each of the three lamps sits, as an offset from the bar's own left edge.
 // GLOBAL: HYPERX 0x004c2f60
 extern int g_anPeriodLightOffset[3];
 
-#define PERIOD_LAMP_TOP 0x28
+constexpr auto PERIOD_LAMP_TOP = 0x28;
 
-#define PERIOD_LAMP_SIDE 9
+constexpr auto PERIOD_LAMP_SIDE = 9;
 
 // GLOBAL: HYPERX 0x004cef64
 extern int g_nPeriodLightColour;
 
-#define METRIC_ROW_GAP 0x19
+constexpr auto METRIC_ROW_GAP = 0x19;
 
 // The count prints unsigned; its sign only picks the vertical offset. A zero count stops drawing.
 
-#define ROK_LABEL_POSITIVE 0x20
-#define ROK_LABEL_NEGATIVE 0x2f
+constexpr auto ROK_LABEL_POSITIVE = 0x20;
+constexpr auto ROK_LABEL_NEGATIVE = 0x2f;
 
-#define ROK_TEXT_BUFFER 0x50
+constexpr auto ROK_TEXT_BUFFER = 0x50;
 
 // The info bar's own cache of the last rok value drawn.
 // GLOBAL: HYPERX 0x004cef54
@@ -467,7 +467,7 @@ void InfoBar::UpdateFoeTeamDisplay()
     }
 }
 
-#define TEXT_COLOUR 0xffff
+constexpr auto TEXT_COLOUR = 0xffff;
 
 // GLOBAL: HYPERX 0x004cefe0
 extern int g_nInfoBarLastSeconds;
@@ -579,17 +579,17 @@ void InfoBar::DrawHUD(int bFull)
     UpdateFoeTeamDisplay();
 }
 
-#define ENGINE_FOLLOW_LIMIT 6
+constexpr auto ENGINE_FOLLOW_LIMIT = 6;
 
-#define COLOUR_BLIP_DROMER0 0xc8c800
-#define COLOUR_BLIP_DROMER2 0xffff00
-#define COLOUR_BLIP_DROMER1 0xc8
-#define COLOUR_BLIP_DROMER3 0xff
-#define COLOUR_BLIP_ROK     0xffff
-#define COLOUR_PERIOD_LIGHT 0xff
-#define COLOUR_BAR_LIT      0xffff
-#define COLOUR_BAR_DIM      0xc8
-#define COLOUR_RADAR_LINE   0xe0ffff
+constexpr auto COLOUR_BLIP_DROMER0 = 0xc8c800;
+constexpr auto COLOUR_BLIP_DROMER2 = 0xffff00;
+constexpr auto COLOUR_BLIP_DROMER1 = 0xc8;
+constexpr auto COLOUR_BLIP_DROMER3 = 0xff;
+constexpr auto COLOUR_BLIP_ROK     = 0xffff;
+constexpr auto COLOUR_PERIOD_LIGHT = 0xff;
+constexpr auto COLOUR_BAR_LIT      = 0xffff;
+constexpr auto COLOUR_BAR_DIM      = 0xc8;
+constexpr auto COLOUR_RADAR_LINE   = 0xe0ffff;
 
 // A null engine triggers the re-resolve, which then dereferences it, as in the original.
 // FUNCTION: HYPERX 0x00450b80
@@ -910,22 +910,22 @@ void InfoBar::LayoutSurfaces()
 // GLOBAL: HYPERX 0x004cef7c
 extern char g_abInfoBarFontName[0x50];
 
-#define INFOBAR_NAME_BUFFER 0x50
+constexpr auto INFOBAR_NAME_BUFFER = 0x50;
 
-#define FONT_TIMER 9
-#define FONT_LABEL 10
-#define FONT_PAIR  11
-#define FONT_BODY  15
-#define FONT_LARGE 20
+constexpr auto FONT_TIMER = 9;
+constexpr auto FONT_LABEL = 10;
+constexpr auto FONT_PAIR  = 11;
+constexpr auto FONT_BODY  = 15;
+constexpr auto FONT_LARGE = 20;
 
-#define COLOUR_YELLOW 0xffff
-#define COLOUR_UNSET  (-1)
+constexpr auto COLOUR_YELLOW = 0xffff;
+constexpr auto COLOUR_UNSET  = (-1);
 
 // The damage bar strip: twelve frames, the ninth showing, drawn two by eight.
-#define BAR_FRAME_COUNT 0x0c
-#define BAR_UNIT_WIDTH  9
-#define BAR_MIN_HEIGHT  2
-#define BAR_MAX_HEIGHT  8
+constexpr auto BAR_FRAME_COUNT = 0x0c;
+constexpr auto BAR_UNIT_WIDTH  = 9;
+constexpr auto BAR_MIN_HEIGHT  = 2;
+constexpr auto BAR_MAX_HEIGHT  = 8;
 
 // FUNCTION: HYPERX 0x00451280
 InfoBar::InfoBar()
@@ -1041,19 +1041,19 @@ InfoBar::InfoBar()
     m_atTeamNames[0].CreateFontFace(g_abInfoBarFontName, FONT_PAIR);
     m_atTeamNames[1].CreateFontFace(g_abInfoBarFontName, FONT_PAIR);
 
-    m_atTeamNames[0].SetText("X", static_cast<std::uint32_t> COLOUR_UNSET);
-    m_atTeamNames[1].SetText("X", static_cast<std::uint32_t> COLOUR_UNSET);
+    m_atTeamNames[0].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
+    m_atTeamNames[1].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
 
     for (i = 0; i < 4; i++)
     {
         m_atOwnRoster[i].CreateFontFace(g_abInfoBarFontName, FONT_TIMER);
-        m_atOwnRoster[i].SetText("X", static_cast<std::uint32_t> COLOUR_UNSET);
+        m_atOwnRoster[i].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
     }
 
     for (i = 0; i < 4; i++)
     {
         m_atFoeRoster[i].CreateFontFace(g_abInfoBarFontName, FONT_TIMER);
-        m_atFoeRoster[i].SetText("X", static_cast<std::uint32_t> COLOUR_UNSET);
+        m_atFoeRoster[i].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
     }
 
     InfoBar::LayoutSurfaces();

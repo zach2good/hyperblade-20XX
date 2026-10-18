@@ -5,8 +5,8 @@
 
 #include "math/vector.h"
 
-#define CAGE_FACES    12
-#define CAGE_VERTICES 5
+constexpr auto CAGE_FACES    = 12;
+constexpr auto CAGE_VERTICES = 5;
 
 class EngineObject;
 

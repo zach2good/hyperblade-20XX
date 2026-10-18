@@ -45,10 +45,10 @@ char MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMateri
     return SHADE_BLACK;
 }
 
-#define LINE_MAX      120
-#define NAME_COPY_MAX 0x14
-#define CHANNEL_MAX   0xff
-#define MATERIAL_MAX  0xff
+constexpr auto LINE_MAX      = 120;
+constexpr auto NAME_COPY_MAX = 0x14;
+constexpr auto CHANNEL_MAX   = 0xff;
+constexpr auto MATERIAL_MAX  = 0xff;
 
 // A complaint before the first newmtl names index minus one. r8 and r16 both store nought.
 // FUNCTION: HYPERX 0x004364e0

@@ -2,7 +2,7 @@
 #define HYPERBLADE_POSSESSIONSYNCWORD_H
 
 // A dromer carries the Rok.
-#define POSSESSION_SYNC_DROMER_CARRIER 0x80000000
+constexpr auto POSSESSION_SYNC_DROMER_CARRIER = 0x80000000;
 
 // MSG_SYNC_POSSESSION's argument: one team row's possession time in hundreds and shots on goal,
 // the row, and the team.

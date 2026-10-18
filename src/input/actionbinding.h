@@ -4,19 +4,19 @@
 #define HYPERBLADE_ACTIONBINDING_H
 
 // The device's sixteen action slots.
-#define INPUT_SLOT_COUNT 0x10
+constexpr auto INPUT_SLOT_COUNT = 0x10;
 
-#define ACTION_BINDING_COUNT 0x19
+constexpr auto ACTION_BINDING_COUNT = 0x19;
 
 // A binding's trigger: the key bits, each key's double-tap copy sixteen bits up, and three flags.
-#define ACTION_BINDING_UP         0x80000000
-#define ACTION_BINDING_MASK       0x7fff
-#define ACTION_BINDING_DOUBLE_TAP 0x10001
-#define ACTION_BINDING_HIGH_HALF  0xffff0000
+constexpr auto ACTION_BINDING_UP         = 0x80000000;
+constexpr auto ACTION_BINDING_MASK       = 0x7fff;
+constexpr auto ACTION_BINDING_DOUBLE_TAP = 0x10001;
+constexpr auto ACTION_BINDING_HIGH_HALF  = 0xffff0000;
 
 // The press and release came inside the double-tap window. A press binding with this flag fires
 // only once the key is held past the window.
-#define ACTION_BINDING_QUICK 0x40000000
+constexpr auto ACTION_BINDING_QUICK = 0x40000000;
 
 // The press test reads 0x20000000 only beside ACTION_BINDING_QUICK, and the one row that sets
 // it sets both, so it has no meaning of its own to name.

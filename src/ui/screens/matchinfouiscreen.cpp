@@ -8,8 +8,8 @@ class MatchInfoUIScreen;
 #include "ui/screens/matchinfouiscreen.h"
 #include "engine/game.h"
 
-#define MATCHINFO_LAST_WIDGET  UI_WIDGET_PAGE
-#define MATCHINFO_FIRST_PERIOD 1
+#define MATCHINFO_LAST_WIDGET UI_WIDGET_PAGE
+constexpr auto MATCHINFO_FIRST_PERIOD = 1;
 
 // RegisterBitmaps claims every bitmap name's STRING marker.
 // FUNCTION: HYPERX 0x00435790
