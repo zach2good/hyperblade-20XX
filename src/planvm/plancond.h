@@ -11,14 +11,14 @@ struct PlanNode;
 // DATA/ENUMIDS.H's ID_ATK: the attack a YerAttacked message carries.
 enum AttackType
 {
-    ATTACK_PUNCH,
-    ATTACK_HIP_CHECK,
-    ATTACK_CLOTHES_LINE_L,
-    ATTACK_CLOTHES_LINE_R,
-    ATTACK_SHOULDER_CHECK_L,
-    ATTACK_SHOULDER_CHECK_R,
-    ATTACK_LEG_SWEEP_L,
-    ATTACK_LEG_SWEEP_R
+    kAttackPunch,
+    kAttackHipCheck,
+    kAttackClothesLineL,
+    kAttackClothesLineR,
+    kAttackShoulderCheckL,
+    kAttackShoulderCheckR,
+    kAttackLegSweepL,
+    kAttackLegSweepR
 };
 
 namespace PlanCond

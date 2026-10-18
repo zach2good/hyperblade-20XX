@@ -63,7 +63,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
     m_pAttach         = pShape->m_pAttach;
     pShape->m_pAttach = nullptr;
 
-    if (pShape->m_wShape == BUBBLE_SHAPE_ATTACHED)
+    if (pShape->m_wShape == BubbleShape::kAttached)
     {
         FindAttachComponent(m_pAttach);
     }
@@ -80,9 +80,9 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 
             switch (pChildRec->m_wShape)
             {
-                case BUBBLE_SHAPE_SPHERE:
-                case BUBBLE_SHAPE_ATTACHED:
-                case BUBBLE_SHAPE_CAGED:
+                case BubbleShape::kSphere:
+                case BubbleShape::kAttached:
+                case BubbleShape::kCaged:
                     m_pChildren[i].Init(pOwner, pChildRec);
                     break;
 
@@ -135,7 +135,7 @@ void BoundBubble::GetWorldPosition(Vec3* pOut)
 // FUNCTION: HYPERX 0x0042ade0
 unsigned char BoundBubble::DoesIntersect(BoundBubble* pOther)
 {
-    if (pOther->m_nShape == BUBBLE_SHAPE_SPHERE)
+    if (pOther->m_nShape == BubbleShape::kSphere)
     {
         return SphereSphereOverlap(pOther);
     }

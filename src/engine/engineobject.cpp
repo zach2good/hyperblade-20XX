@@ -1850,17 +1850,17 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
 
     switch (pShape->m_wShape)
     {
-        case BUBBLE_SHAPE_SPHERE:
+        case BubbleShape::kSphere:
             pBubble   = new BoundBubble(this, pShape);
             m_pBubble = pBubble;
             break;
 
-        case BUBBLE_SHAPE_ATTACHED:
+        case BubbleShape::kAttached:
             pBubble   = new BoundBubble(this, pShape);
             m_pBubble = pBubble;
             break;
 
-        case BUBBLE_SHAPE_CAGED:
+        case BubbleShape::kCaged:
             pBubble   = new BoundBubble(this, pShape);
             m_pBubble = pBubble;
 

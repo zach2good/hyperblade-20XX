@@ -5869,7 +5869,7 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
         flRange = 0.0f;
     }
 
-    if (Vec3::DotInline(&vOffset, &vOffset) <= flRange + RANGE_BASE && (pStats->GetScalar(kRatingImmunity) == 0.0f || nAttack == ATTACK_LEG_SWEEP_L || nAttack == ATTACK_LEG_SWEEP_R))
+    if (Vec3::DotInline(&vOffset, &vOffset) <= flRange + RANGE_BASE && (pStats->GetScalar(kRatingImmunity) == 0.0f || nAttack == kAttackLegSweepL || nAttack == kAttackLegSweepR))
     {
         pStats->GetScalar(kRatingDamage);
 
@@ -5880,7 +5880,7 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
         switch (nAttack)
         {
-            case ATTACK_HIP_CHECK:
+            case kAttackHipCheck:
                 flStrength = flOtherDamage * flOtherChecking;
 
                 flStrength = flStrength * 0.01f + flOtherChecking;
@@ -5893,7 +5893,7 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
                 break;
 
-            case ATTACK_PUNCH:
+            case kAttackPunch:
             {
                 vSelfDir  = pActor->GetPhysicsBody()->velDir;
                 vOtherDir = pOther->GetPhysicsBody()->velDir;
@@ -5927,10 +5927,10 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
             break;
 
-            case ATTACK_CLOTHES_LINE_L:
-            case ATTACK_CLOTHES_LINE_R:
-            case ATTACK_SHOULDER_CHECK_L:
-            case ATTACK_SHOULDER_CHECK_R:
+            case kAttackClothesLineL:
+            case kAttackClothesLineR:
+            case kAttackShoulderCheckL:
+            case kAttackShoulderCheckR:
             {
                 vSelfDir  = pActor->GetPhysicsBody()->velDir;
                 vOtherDir = pOther->GetPhysicsBody()->velDir;
@@ -6034,7 +6034,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
         switch (nAttack)
         {
-            case ATTACK_HIP_CHECK:
+            case kAttackHipCheck:
                 pActor->m_wKilledBySlot = kSlotTurnstile;
                 break;
         }
@@ -6042,7 +6042,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
         return;
     }
 
-    if (nAttack == ATTACK_PUNCH)
+    if (nAttack == kAttackPunch)
     {
         *pResult = pArgs->m_nArgCount - 2;
 
@@ -6093,13 +6093,13 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     const auto flDot = vOffset.z * pDir->z + vOffset.y * pDir->y + vOffset.x * pDir->x;
 
-    if (Vec3::DotInline(&vOffset, &vOffset) <= ATTACKED_RANGE_SQ && (pStats->GetScalar(kRatingImmunity) == 0.0f || nAttack == ATTACK_LEG_SWEEP_L || nAttack == ATTACK_LEG_SWEEP_R))
+    if (Vec3::DotInline(&vOffset, &vOffset) <= ATTACKED_RANGE_SQ && (pStats->GetScalar(kRatingImmunity) == 0.0f || nAttack == kAttackLegSweepL || nAttack == kAttackLegSweepR))
     {
         if (g_flTwoPlan + flOther > flSelf)
         {
             switch (nAttack)
             {
-                case ATTACK_PUNCH:
+                case kAttackPunch:
                     if (flDot > 0.0f)
                     {
                         nReaction = 0;
@@ -6113,7 +6113,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_HIP_CHECK:
+                case kAttackHipCheck:
                     if (flDot > DOT_FRONT)
                     {
                         nReaction = 4;
@@ -6138,8 +6138,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_CLOTHES_LINE_L:
-                case ATTACK_CLOTHES_LINE_R:
+                case kAttackClothesLineL:
+                case kAttackClothesLineR:
                     if (flDot > 0.0f)
                     {
                         nReaction = 6;
@@ -6153,8 +6153,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_SHOULDER_CHECK_L:
-                case ATTACK_SHOULDER_CHECK_R:
+                case kAttackShoulderCheckL:
+                case kAttackShoulderCheckR:
                     if (flDot > DOT_BEHIND)
                     {
                         nReaction = 8;
@@ -6168,8 +6168,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_LEG_SWEEP_L:
-                case ATTACK_LEG_SWEEP_R:
+                case kAttackLegSweepL:
+                case kAttackLegSweepR:
                     if (flDot > 0.0f)
                     {
                         nReaction = 10;
@@ -6193,7 +6193,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
         {
             switch (nAttack)
             {
-                case ATTACK_PUNCH:
+                case kAttackPunch:
                     if (flDot > 0.0f)
                     {
                         nReaction = 0;
@@ -6207,7 +6207,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_HIP_CHECK:
+                case kAttackHipCheck:
                     if (flDot > 0.0f)
                     {
                         if (vCross.z > 0.0f)
@@ -6228,8 +6228,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_CLOTHES_LINE_L:
-                case ATTACK_CLOTHES_LINE_R:
+                case kAttackClothesLineL:
+                case kAttackClothesLineR:
                     if (flDot > 0.0f)
                     {
                         nReaction = 15;
@@ -6250,8 +6250,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_SHOULDER_CHECK_L:
-                case ATTACK_SHOULDER_CHECK_R:
+                case kAttackShoulderCheckL:
+                case kAttackShoulderCheckR:
                     if (flDot > DOT_FRONT)
                     {
                         nReaction = 20;
@@ -6276,8 +6276,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
                     return;
 
-                case ATTACK_LEG_SWEEP_L:
-                case ATTACK_LEG_SWEEP_R:
+                case kAttackLegSweepL:
+                case kAttackLegSweepR:
                     if (flDot > 0.0f)
                     {
                         nReaction = 10;
@@ -7828,13 +7828,13 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
         if (g_pGameEngine->m_nAttackMode == kOptionAttackModeOn)
         {
-            *pResult = ATTACK_PUNCH + 1;
+            *pResult = kAttackPunch + 1;
 
             return;
         }
     }
 
-    *pResult = ATTACK_PUNCH + 1;
+    *pResult = kAttackPunch + 1;
 
     auto* pWeapon = g_pGameEngine->m_ppSlots[kSlotRok];
 
@@ -7893,7 +7893,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
             if (nMove > kRollSteps - 1)
             {
-                *pResult = ATTACK_PUNCH + 1;
+                *pResult = kAttackPunch + 1;
 
                 return;
             }
@@ -7946,33 +7946,33 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     if (nMove == 0)
     {
-        *pResult = ATTACK_PUNCH + 1;
+        *pResult = kAttackPunch + 1;
 
         return;
     }
 
     if (nMove == 1)
     {
-        *pResult = ATTACK_HIP_CHECK + 1;
+        *pResult = kAttackHipCheck + 1;
 
         return;
     }
 
     if (nMove == 2)
     {
-        *pResult = static_cast<short>(nSide + ATTACK_CLOTHES_LINE_L + 1);
+        *pResult = static_cast<short>(nSide + kAttackClothesLineL + 1);
 
         return;
     }
 
     if (nMove == 3)
     {
-        *pResult = static_cast<short>(nSide + ATTACK_SHOULDER_CHECK_L + 1);
+        *pResult = static_cast<short>(nSide + kAttackShoulderCheckL + 1);
 
         return;
     }
 
-    *pResult = static_cast<short>(nSide + ATTACK_LEG_SWEEP_L + 1);
+    *pResult = static_cast<short>(nSide + kAttackLegSweepL + 1);
 }
 
 // Both opponents hurt turn an index of one into two; zero and two stand.

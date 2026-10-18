@@ -10,7 +10,7 @@
 // FUNCTION: HYPERX 0x0042a150
 BubbleNode::BubbleNode()
 {
-    m_nShape      = BUBBLE_SHAPE_SPHERE;
+    m_nShape      = BubbleShape::kSphere;
     m_pOwner      = nullptr;
     m_nSlot       = -1;
     m_pTarget     = nullptr;
@@ -23,7 +23,7 @@ BubbleNode::BubbleNode()
 // FUNCTION: HYPERX 0x0042a1f0
 BubbleNode::~BubbleNode()
 {
-    if (m_nShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != nullptr)
+    if (m_nShape == BubbleShape::kAttached && m_pAttach != nullptr)
     {
         delete m_pAttach;
     }

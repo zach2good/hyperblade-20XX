@@ -2209,8 +2209,8 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
         "BodyPartBubble"
     };
 
-    int anBubbleShapes[kBubbleCount] = {
-        BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_ATTACHED, BUBBLE_SHAPE_CAGED, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE, BUBBLE_SHAPE_SPHERE
+    BubbleShape anBubbleShapes[kBubbleCount] = {
+        BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kAttached, BubbleShape::kCaged, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere, BubbleShape::kSphere
     };
 
     char szToken[kParseTokenMax];
@@ -2369,7 +2369,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     memset((void*)pNew, 0, sizeof(BubbleCmd));
 
-    pNew->m_wShape    = static_cast<short>(anBubbleShapes[nBubbleType]);
+    pNew->m_wShape    = anBubbleShapes[nBubbleType];
     pNew->m_nSlot     = nBubbleType;
     pNew->m_pChildren = nullptr;
 
@@ -2713,7 +2713,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
             return;
         case kBubbleDromerScoop:
             pCmd->m_nSlot = aRow[3][nModelId];
-            if (pCmd->m_wShape == BUBBLE_SHAPE_ATTACHED)
+            if (pCmd->m_wShape == BubbleShape::kAttached)
             {
                 pCmd->m_pAttach->nSlot = nModelId;
             }

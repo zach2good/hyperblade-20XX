@@ -8,7 +8,7 @@
 BubbleCmd::BubbleCmd()
 {
     m_nSlot       = kCOBNone;
-    m_wShape      = 0;
+    m_wShape      = BubbleShape::kNone;
     m_nChildCount = 0;
     m_pChildren   = nullptr;
     m_pAttach     = nullptr;
@@ -20,7 +20,7 @@ BubbleCmd::~BubbleCmd()
 {
     delete m_pPos;
 
-    if (m_wShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != nullptr)
+    if (m_wShape == BubbleShape::kAttached && m_pAttach != nullptr)
     {
         delete m_pAttach;
     }

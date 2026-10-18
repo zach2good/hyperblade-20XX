@@ -5,6 +5,7 @@ struct Vec3;
 
 class EngineObject;
 class BoundBubble;
+enum class BubbleShape : short;
 
 // VTABLE: HYPERX 0x004b2a2c
 class BubbleNode
@@ -16,7 +17,7 @@ public:
     virtual void          GetWorldPosition(Vec3* pOut)       = 0;
     virtual unsigned char DoesIntersect(BoundBubble* pOther) = 0;
 
-    short                  m_nShape;      // 0x004
+    BubbleShape            m_nShape;      // 0x004
     class EngineObject*    m_pOwner;      // 0x008
     short                  m_nSlot;       // 0x00c
     class TransformObject* m_pTarget;     // 0x010
