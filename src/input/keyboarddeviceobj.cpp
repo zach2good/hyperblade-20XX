@@ -141,7 +141,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
 
     for (int nGroup = 0; nGroup < *pnGroupsOut; nGroup++, pGroup++)
     {
-        auto* pWork = new ActionBinding[pGroup->m_nCount];
+        auto* const pWork = new ActionBinding[pGroup->m_nCount];
 
         for (nEntry = 0; nEntry < pGroup->m_nCount; nEntry++)
         {

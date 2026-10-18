@@ -100,8 +100,8 @@ double g_dMsPerMinute      = 60.0 * g_dMsPerSecond;
 // FUNCTION: HYPERX 0x00428010
 float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 {
-    auto posFirst  = pFirst->GetPhysicsBody()->pos;
-    auto posSecond = pSecond->GetPhysicsBody()->pos;
+    const auto posFirst  = pFirst->GetPhysicsBody()->pos;
+    const auto posSecond = pSecond->GetPhysicsBody()->pos;
 
     const auto flDz = posFirst.z - posSecond.z;
     const auto flDy = posFirst.y - posSecond.y;
@@ -113,8 +113,8 @@ float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 // FUNCTION: HYPERX 0x00428090
 float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 {
-    auto a = *pA;
-    auto b = *pB;
+    const auto a = *pA;
+    const auto b = *pB;
 
     return static_cast<float>(sqrt(static_cast<double>((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z))));
 }
@@ -134,7 +134,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 
         if (pObject != nullptr)
         {
-            const auto* pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
+            const auto* const pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
 
             // STRING: HYPERX 0x004bcac8
             if (strcmp(pszName, "Spin") != 0)
@@ -181,7 +181,7 @@ int EngineObject::IsRokCarrier(EngineObject* pActor)
 
     if (pTracked != nullptr)
     {
-        auto nTracked = pTracked->nSlot;
+        const auto nTracked = pTracked->nSlot;
 
         if (nTracked < 6 && nTracked == pActor->GetSlot())
         {
@@ -362,8 +362,8 @@ int GameEngine::CheckOpposedCarriersRace()
 
             if (pSlotB != nullptr && (nSlotB = pSlotB->nSlot) < kPlayerObjectCount && ((nSlotA ^ nSlotB) & 1) != 0)
             {
-                const Vec3* pPosB = &g_pGameEngine->m_ppSlots[nSlotB]->GetPhysicsBody()->pos;
-                const Vec3* pPosA = &g_pGameEngine->m_ppSlots[nSlotA]->GetPhysicsBody()->pos;
+                const Vec3* const pPosB = &g_pGameEngine->m_ppSlots[nSlotB]->GetPhysicsBody()->pos;
+                const Vec3* const pPosA = &g_pGameEngine->m_ppSlots[nSlotA]->GetPhysicsBody()->pos;
 
                 if ((nSlotB & 1) != 0)
                 {
@@ -436,8 +436,8 @@ int GameEngine::CheckGoalieOutOfPosition()
     auto* const pGoalieA = (PlayerObject*)pSlots[kGoalieSlotA];
     auto* const pGoalieB = (PlayerObject*)pSlots[kGoalieSlotB];
 
-    auto* pPosA = pGoalieA->GetPhysicsBody();
-    auto* pPosB = pGoalieB->GetPhysicsBody();
+    auto* const pPosA = pGoalieA->GetPhysicsBody();
+    auto* const pPosB = pGoalieB->GetPhysicsBody();
 
     pNetA = g_pGameEngine->m_ppSlots[kSlotNgoal]->GetPhysicsBody();
     pNetB = g_pGameEngine->m_ppSlots[kSlotSgoal]->GetPhysicsBody();
@@ -472,13 +472,13 @@ int GameEngine::CheckCarrierBreakaway()
         nSlot            = pSlot->nSlot;
         const int nIndex = static_cast<short>(nSlot);
 
-        auto* pCarrier   = g_pGameEngine->GetSlot(nIndex);
-        auto* pOpponentA = g_pGameEngine->GetSlot(nIndex ^ 1);
-        auto* pOpponentB = g_pGameEngine->GetSlot(nIndex ^ 3);
+        auto* const pCarrier   = g_pGameEngine->GetSlot(nIndex);
+        auto* const pOpponentA = g_pGameEngine->GetSlot(nIndex ^ 1);
+        auto* const pOpponentB = g_pGameEngine->GetSlot(nIndex ^ 3);
 
-        const Vec3* pCarrierPos = &pCarrier->GetPhysicsBody()->pos;
-        const Vec3* pPosA       = &pOpponentA->GetPhysicsBody()->pos;
-        const Vec3* pPosB       = &pOpponentB->GetPhysicsBody()->pos;
+        const Vec3*       pCarrierPos = &pCarrier->GetPhysicsBody()->pos;
+        const Vec3* const pPosA       = &pOpponentA->GetPhysicsBody()->pos;
+        const Vec3* const pPosB       = &pOpponentB->GetPhysicsBody()->pos;
 
         if ((nSlot & 1) != 0)
         {
@@ -757,7 +757,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
     nSlot                  = pActor->GetSlot();
     const int  nHeldSlot   = nHeld;
-    auto       nSelfParity = nSlot & 1;
+    const auto nSelfParity = nSlot & 1;
     const auto nHeldParity = nHeldSlot & 1;
     const auto nOpposite   = nSelfParity ^ 1;
 

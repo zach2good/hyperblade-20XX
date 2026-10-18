@@ -276,7 +276,7 @@ String::String(const String& src)
 {
     m_pchData = *GetGlobalStringPtr();
 
-    const char* pchSource = src.m_pchData;
+    const char* const pchSource = src.m_pchData;
 
     Assign(SafeStrlen(pchSource), pchSource);
 }
@@ -563,7 +563,7 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
 
         if (pszEnd != nullptr)
         {
-            const auto* pszStart = pszEnd + 1;
+            const auto* const pszStart = pszEnd + 1;
 
             pszEnd = const_cast<char*>(strpbrk(pszStart,
                                                g_pszTokenDelimiters));

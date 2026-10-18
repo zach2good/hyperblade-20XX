@@ -35,9 +35,9 @@ void Quat::FromMatrix(TransformObject* pSource)
         return;
     }
 
-    auto* pflX = &x;
-    auto* pflY = &y;
-    auto* pflZ = &z;
+    auto* const pflX = &x;
+    auto* const pflY = &y;
+    auto* const pflZ = &z;
 
     *pflX                  = (g_flQuatOne + pRows[0].af[0]) * 0.5f;
     *pflY                  = (g_flQuatOne + pRows[1].af[1]) * 0.5f;

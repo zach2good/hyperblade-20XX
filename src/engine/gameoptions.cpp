@@ -34,10 +34,10 @@ GameOptions::GameOptions()
     m_pszPeriodLength = "PeriodLength";
 
     // STRING: HYPERX 0x004c1ea8
-    const char* pszSection = "Misc";
+    const char* const pszSection = "Misc";
 
     // STRING: HYPERX 0x004c64ec
-    const char* pszKey = "InstallLevel";
+    const char* const pszKey = "InstallLevel";
 
     m_nInstallLevel = ReadInt(pszSection, pszKey, 0);
 }

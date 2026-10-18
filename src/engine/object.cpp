@@ -49,7 +49,7 @@ void Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bB
 
     if (bBoost != 0)
     {
-        auto* pSrcBody = pSrc->GetPhysicsBody();
+        auto* const pSrcBody = pSrc->GetPhysicsBody();
 
         Vec3::ScaleTo(&pSrcBody->vel, 1.2f, &vVel);
     }
@@ -99,13 +99,13 @@ void Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char 
     }
 
     auto* const pBody    = pSrc->GetPhysicsBody();
-    auto        vBase    = pBody->pos;
-    auto*       pDestPos = &pDest->m_pBody->pos;
+    const auto  vBase    = pBody->pos;
+    auto* const pDestPos = &pDest->m_pBody->pos;
 
-    const Vec3* pOffset = &vOffset;
-    vScaled.x           = vOffset.x * 6.0f;
-    vScaled.y           = pOffset->y * 6.0f;
-    vScaled.z           = pOffset->z * 6.0f;
+    const Vec3* const pOffset = &vOffset;
+    vScaled.x                 = vOffset.x * 6.0f;
+    vScaled.y                 = pOffset->y * 6.0f;
+    vScaled.z                 = pOffset->z * 6.0f;
 
     vOffset.x = vBase.x + vScaled.x;
     vOffset.y = vBase.y + vScaled.y;
@@ -208,7 +208,7 @@ Vec3* Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
         box.vMax.z = flPost;
     }
 
-    auto vResult = *CollisionCheck::ComputeNearestNormal(&vNormal, &box, pQueryPos);
+    const auto vResult = *CollisionCheck::ComputeNearestNormal(&vNormal, &box, pQueryPos);
 
     *pDirOut = vResult;
 
@@ -502,7 +502,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
         {
             if (*pIndex < nBones)
             {
-                auto* pNode = pObject->m_pBones + static_cast<short>(*pIndex);
+                auto* const pNode = pObject->m_pBones + static_cast<short>(*pIndex);
 
                 if (pNode != nullptr)
                 {

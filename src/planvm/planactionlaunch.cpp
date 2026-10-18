@@ -88,7 +88,7 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 
     if (pTarget->GetPhase() == OBJECT_PHASE_LOCAL)
     {
-        const char* pszName = pTarget->GetPlanState()->m_pszName;
+        const char* const pszName = pTarget->GetPlanState()->m_pszName;
 
         // STRING: HYPERX 0x004bb340
         if (strcmp("Human", pszName) == 0)
@@ -132,7 +132,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
     }
 
     auto* const pVel          = &pRok->GetPhysicsBody()->velDir;
-    auto*       pflSpeedScale = &pRok->GetPhysicsBody()->flSpeed;
+    auto* const pflSpeedScale = &pRok->GetPhysicsBody()->flSpeed;
     const auto  flMaxSpeed    = pRok->GetPhysicsBody()->flForwardSpeedDt;
 
     if (pRok->GetSlot() >= kSlotRok)
@@ -419,8 +419,8 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 // FUNCTION: HYPERX 0x00403a30
 void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 {
-    auto* pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
-    auto* pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
+    auto* const pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
+    auto* const pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
 
     if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
     {
@@ -465,7 +465,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 void PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 {
     auto* const pActor = pContext->GetActor();
-    auto*       pBlock = pActor->GetPhysicsBody();
+    auto* const pBlock = pActor->GetPhysicsBody();
 
     auto* const pVelocity = &pBlock->vel;
 
@@ -506,7 +506,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
     float flFlight;
     float flScratchB;
 
-    auto* pActor = pContext->GetActor();
+    auto* const pActor = pContext->GetActor();
 
     const auto nIndex = pArgs->m_pArgs[1].n;
 
@@ -543,7 +543,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
     vDiff.y = pGoal->y - pRokPos->y;
     vDiff.z = pGoal->z - pRokPos->z;
 
-    auto vRokVel = pRok->GetPhysicsBody()->vel;
+    const auto vRokVel = pRok->GetPhysicsBody()->vel;
 
     if (nSlot == kGoalieSlotA || nSlot == kGoalieSlotB)
     {
@@ -706,7 +706,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
     unsigned int  nOperand;
 
     auto* const pAxis  = &pContext->GetActor()->GetPhysicsBody()->velDir;
-    auto*       pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
+    auto* const pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
 
     if (pContext->GetNamedSlot() >= 0)
     {
@@ -743,7 +743,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
     {
-        auto nSlot = pContext->GetTargetSlot();
+        const auto nSlot = pContext->GetTargetSlot();
 
         auto* const pTracked = pContext->GetActor()->GetPhysicsBody()->pAttach;
 

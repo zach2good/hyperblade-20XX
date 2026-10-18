@@ -40,9 +40,9 @@ void CCircleTrack::Process(int nArg)
     Vec3 vFarRay;
     Vec3 vNearRay;
 
-    auto* const pTracked  = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
-    auto* const pCamera   = (CameraObject*)m_pOwner;
-    const Vec3* pSettings = pCamera->m_pSettings;
+    auto* const       pTracked  = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
+    auto* const       pCamera   = (CameraObject*)m_pOwner;
+    const Vec3* const pSettings = pCamera->m_pSettings;
 
     if (pTracked == nullptr)
     {
@@ -61,14 +61,14 @@ void CCircleTrack::Process(int nArg)
         pCamera->SetTrackedObject(pTracked);
     }
 
-    auto* pBody = pTracked->GetPhysicsBody();
+    auto* const pBody = pTracked->GetPhysicsBody();
 
     const double dRadius  = pSettings->x;
     const double dForward = pSettings->y + 12.0f;
     const auto   dCos     = cos(0.0);
     const auto   dSin     = sin(0.0);
 
-    const Vec3* pTrackedPos = &pBody->pos;
+    const Vec3* const pTrackedPos = &pBody->pos;
 
     vTracked = *pTrackedPos;
 

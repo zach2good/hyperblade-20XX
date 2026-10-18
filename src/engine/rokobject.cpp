@@ -235,7 +235,7 @@ void RokObject::Postpass()
 
         if (nRow == pTeam->aSeat[0])
         {
-            auto* pOwner = (PlayerObject*)g_pGameEngine->m_ppSlots[static_cast<short>(nTeam)];
+            auto* const pOwner = (PlayerObject*)g_pGameEngine->m_ppSlots[static_cast<short>(nTeam)];
 
             flFirst  = pOwner->m_matchStats.GetAt(kMatchStatTimeOfPoss);
             flSecond = pOwner->m_matchStats.GetAt(kMatchStatShotsOnGoal);

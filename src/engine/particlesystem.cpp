@@ -123,13 +123,13 @@ void ParticleSystem::Update(float flDt)
 {
     Vec3 vScaled;
 
-    const float* pAxis = m_transformC.m_a[2];
+    const float* const pAxis = m_transformC.m_a[2];
 
     vScaled.x = pAxis[0] * GRAVITY;
     vScaled.y = pAxis[1] * GRAVITY;
     vScaled.z = pAxis[2] * GRAVITY;
 
-    auto vAccel = vScaled;
+    const auto vAccel = vScaled;
 
     m_bAnyAlive = 0;
 
@@ -154,7 +154,7 @@ void ParticleSystem::ApplyToMesh()
     Vec3  vOut;
     int   nCorner;
 
-    const MeshBone* pMesh = m_pBones;
+    const MeshBone* const pMesh = m_pBones;
 
     Particle* pEmitter = m_aParticles;
 
@@ -162,13 +162,13 @@ void ParticleSystem::ApplyToMesh()
     {
         if (pEmitter->m_flLife > 0.0f)
         {
-            auto vBase = pEmitter->m_vPosition;
+            const auto vBase = pEmitter->m_vPosition;
 
             const auto flRatio = pEmitter->m_flLife / pEmitter->m_flSpan;
 
-            const MeshFace* pPart = pMesh->GetFace(static_cast<short>(nIndex));
+            const MeshFace* const pPart = pMesh->GetFace(static_cast<short>(nIndex));
 
-            const Vec3* pRow = m_aRows[static_cast<int>(pEmitter->m_flRow) + pEmitter->m_nSet * kParticleRowsPerSet].aCorners;
+            const Vec3* const pRow = m_aRows[static_cast<int>(pEmitter->m_flRow) + pEmitter->m_nSet * kParticleRowsPerSet].aCorners;
 
             for (nCorner = 0; nCorner < 3; nCorner++)
             {

@@ -135,7 +135,7 @@ short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 {
     auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-    auto* pTracked = pBlock->pAttach;
+    auto* const pTracked = pBlock->pAttach;
 
     if (pTracked != nullptr && pTracked->nSlot < kPlayerObjectCount)
     {

@@ -61,12 +61,12 @@ int CollisionPlane::SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut)
 // FUNCTION: HYPERX 0x0042e810
 int CollisionPlane::RayIntersection(Vec3* pVDir, Vec3* pVOrigin, Vec3* pVHitOut)
 {
-    Vec3        vScaled;
-    Vec3        vHit;
-    const Vec3* pNormal = &m_vNormal;
-    Vec3        vDelta;
-    float       flDenominator;
-    float       flDistance;
+    Vec3              vScaled;
+    Vec3              vHit;
+    const Vec3* const pNormal = &m_vNormal;
+    Vec3              vDelta;
+    float             flDenominator;
+    float             flDistance;
 
     if (pVDir->x < g_dNormalizeEpsilon && pVDir->x > -1e-07 && pVDir->y < g_dNormalizeEpsilon && pVDir->y > -1e-07 && pVDir->z < g_dNormalizeEpsilon && pVDir->z > -1e-07)
     {
@@ -114,8 +114,8 @@ float CollisionPlane::GetZ(float x, float y)
 
             m_flSlopeY = -(m_vNormal.y / m_vNormal.z);
 
-            const Vec3* pPoint  = &m_vPoint;
-            const Vec3* pNormal = &m_vNormal;
+            const Vec3* const pPoint  = &m_vPoint;
+            const Vec3* const pNormal = &m_vNormal;
 
             m_flOffset =
                 (pNormal->x * pPoint->x + pNormal->y * pPoint->y + pNormal->z * pPoint->z) / m_vNormal.z;

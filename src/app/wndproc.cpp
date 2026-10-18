@@ -314,7 +314,7 @@ int WndProc::OnActivate(unsigned int bActive)
 // FUNCTION: HYPERX 0x004939b0
 unsigned int WndProc::HandleRenderMenuCommand(unsigned short nCommand)
 {
-    auto opt = Renderer::GetRenderOptions();
+    const auto opt = Renderer::GetRenderOptions();
 
     if (opt.bTextured != 0)
     {

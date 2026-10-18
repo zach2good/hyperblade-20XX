@@ -47,11 +47,11 @@ int Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVe
         Vec3 v1;
         Vec3 v2;
 
-        const short* pIndices = pFace->aCorners;
+        const short* const pIndices = pFace->aCorners;
 
-        const auto* p2 = &pVertexBuf[pIndices[2]];
-        const auto* p1 = &pVertexBuf[pIndices[1]];
-        const auto* p0 = &pVertexBuf[pIndices[0]];
+        const auto* const p2 = &pVertexBuf[pIndices[2]];
+        const auto* const p1 = &pVertexBuf[pIndices[1]];
+        const auto* const p0 = &pVertexBuf[pIndices[0]];
 
         v0.x = (1.0f / p0->w) * p0->x;
         v0.y = (1.0f / p0->w) * p0->y;
@@ -101,7 +101,7 @@ char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* 
 
     for (int i = nCount; i > 0; i--)
     {
-        const auto* p = &pVertices[*pIndices];
+        const auto* const p = &pVertices[*pIndices];
 
         const auto   flW     = p->w;
         const float* pflAxis = p->af;

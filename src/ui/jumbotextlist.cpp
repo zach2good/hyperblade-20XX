@@ -44,7 +44,7 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    const char* pszRow = m_ppszText[rand() % m_nCount];
+    const char* const pszRow = m_ppszText[rand() % m_nCount];
 
     if (static_cast<int>(strlen(pszRow)) < nMax)
     {

@@ -432,7 +432,7 @@ char AnimPlayer::ComputeScale(float flScale)
 
             while (iBone-- > 0)
             {
-                auto*       pSlot = &m_pObject->m_pBones[iBone];
+                auto* const pSlot = &m_pObject->m_pBones[iBone];
                 auto* const pBone = &m_pBoneSet->m_pClips[iBone];
 
                 if (pBone->m_nFormat != kAnimBoneModeSkip)
@@ -458,7 +458,7 @@ char AnimPlayer::ComputeScale(float flScale)
             m_flAccum    = 0.0f;
             m_flDuration = flSum / static_cast<float>(nSegments) * flApplied;
 
-            auto* pRoot = m_pObject->m_pBones;
+            auto* const pRoot = m_pObject->m_pBones;
 
             if (pRoot->IsAnimationDirty() != 0)
             {
@@ -481,10 +481,10 @@ char AnimPlayer::ComputeScale(float flScale)
 
             const Vec3* const pRow = m_pBoneSet->m_pClips[0].m_pTranslation;
 
-            const auto* pScale = &pRoot->m_pDesc->m_vScale;
-            vProd.x            = pScale->x * pRow->x;
-            vProd.y            = pScale->y * pRow->y;
-            vProd.z            = pScale->z * pRow->z;
+            const auto* const pScale = &pRoot->m_pDesc->m_vScale;
+            vProd.x                  = pScale->x * pRow->x;
+            vProd.y                  = pScale->y * pRow->y;
+            vProd.z                  = pScale->z * pRow->z;
 
             // A second name keeps the delta's stores where the client has them; without it 82.41.
             auto* const pDelta = &m_vDelta;

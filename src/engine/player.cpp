@@ -229,11 +229,11 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     const auto flTargetY  = pTarget->GetPositionPtr()->y;
     flCross               = ((flTargetY - flTargetGrad * pTarget->GetPositionPtr()->x) - flSelfBase) / (flSelfGrad - flTargetGrad) * flSelfGrad + flSelfBase;
 
-    const PhysicsBody* pSelfBodyA   = pActor->GetPhysicsBody();
-    const PhysicsBody* pTargetBodyA = pTarget->GetPhysicsBody();
-    const PhysicsBody* pSelfBodyB   = pActor->GetPhysicsBody();
-    const PhysicsBody* pTargetBodyB = pTarget->GetPhysicsBody();
-    flDet                           = pTargetBodyA->velDir.y * pSelfBodyA->velDir.x - pTargetBodyB->velDir.x * pSelfBodyB->velDir.y;
+    const PhysicsBody* const pSelfBodyA   = pActor->GetPhysicsBody();
+    const PhysicsBody* const pTargetBodyA = pTarget->GetPhysicsBody();
+    const PhysicsBody* const pSelfBodyB   = pActor->GetPhysicsBody();
+    const PhysicsBody* const pTargetBodyB = pTarget->GetPhysicsBody();
+    flDet                                 = pTargetBodyA->velDir.y * pSelfBodyA->velDir.x - pTargetBodyB->velDir.x * pSelfBodyB->velDir.y;
 
     const auto flLead  = (flCross - pTarget->GetPositionPtr()->y) / pTarget->m_pBody->GetVel().y;
     const auto dAbsDet = fabs(static_cast<double>(flDet));

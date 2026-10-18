@@ -121,7 +121,7 @@ char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
         {
             while (nLeft != 0)
             {
-                auto cAt = *pszText;
+                const auto cAt = *pszText;
 
                 if (cAt == *pszStop)
                 {

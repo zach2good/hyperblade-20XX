@@ -83,7 +83,7 @@ int InfoBarRadar::TrackSlot(int nSlot)
         return 0;
     }
 
-    auto vDirection = pHeading->m_dirOut;
+    const auto vDirection = pHeading->m_dirOut;
 
     const auto dAngle = atan2(static_cast<double>(vDirection.x), static_cast<double>(vDirection.y));
 
@@ -218,7 +218,7 @@ int InfoBarRadar::Draw()
     {
         pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-        auto* pTracked = pBlock->pAttach;
+        auto* const pTracked = pBlock->pAttach;
 
         if (pTracked != nullptr && pTracked->nSlot < kPlayerObjectCount && pTracked->nSlot == nSlot)
         {

@@ -152,8 +152,8 @@ void CameraProjectionState::BuildMatrix()
         m_flTanX = 1.0f / flScaleX;
         m_flTanY = 1.0f / flScaleY;
 
-        const float* pTanX = &m_flTanX;
-        const float* pTanY = &m_flTanY;
+        const float* const pTanX = &m_flTanX;
+        const float* const pTanY = &m_flTanY;
 
         m_flTanXSquared = *pTanX * *pTanX;
         m_flTanYSquared = *pTanY * *pTanY;

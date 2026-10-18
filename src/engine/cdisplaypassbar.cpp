@@ -36,13 +36,13 @@ void CDisplayPassBar::Process(int nArg)
 
     if (pCarrier != nullptr)
     {
-        auto nSlot = pCarrier->nSlot;
+        const auto nSlot = pCarrier->nSlot;
 
         if (nSlot < kPlayerObjectCount && nSlot == g_pGameEngine->m_nViewedSlot && g_pRenderer != nullptr && m_pOwner->GetSlot() == kCameraMainSlot)
         {
-            const int nSelf = nSlot;
-            auto*     pSelf = g_pGameEngine->m_ppSlots[nSelf];
-            Vec3      vSelf;
+            const int   nSelf = nSlot;
+            auto* const pSelf = g_pGameEngine->m_ppSlots[nSelf];
+            Vec3        vSelf;
             vSelf = *pSelf->GetPositionPtr();
 
             auto* const pMatePos = g_pGameEngine->m_ppSlots[TeammateSlot(nSlot)]->GetPositionPtr();
@@ -60,11 +60,11 @@ void CDisplayPassBar::Process(int nArg)
 
             Math::Vec3Normalize(&vDir);
 
-            const Vec3* pHeading = &pSelf->GetPhysicsBody()->velDir;
+            const Vec3* const pHeading = &pSelf->GetPhysicsBody()->velDir;
 
             const auto flDot = vDir.x * pHeading->x + vDir.y * pHeading->y + vDir.z * pHeading->z;
 
-            const Vec3* pSide = &pSelf->GetPhysicsBody()->velDir;
+            const Vec3* const pSide = &pSelf->GetPhysicsBody()->velDir;
 
             float flOffset;
             int   nPos;

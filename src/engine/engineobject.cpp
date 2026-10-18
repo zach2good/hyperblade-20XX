@@ -93,7 +93,7 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
     if (bSameSide)
     {
         const auto nGenderA = static_cast<int>(((PlayerObject*)pA)->m_stats.GetScalar(kRatingGender));
-        auto       nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender));
+        const auto nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender));
 
         if ((nGenderA & nGenderB) != 0)
         {
@@ -248,7 +248,7 @@ Vec3* EngineObject::GetWorldPos(Vec3* pOut)
 {
     Vec3 vPos;
 
-    const TransformObject* pWorld = &m_pBones->m_world;
+    const TransformObject* const pWorld = &m_pBones->m_world;
 
     StoreVector(&vPos, pWorld->m_a[0][3], pWorld->m_a[1][3], pWorld->m_a[2][3]);
 
@@ -383,7 +383,7 @@ void EngineObject::ComputeBoundingSphere()
     Vec3             vP;
 
     auto* const pSaved = &m_pBody->pos;
-    auto        vSaved = *pSaved;
+    const auto  vSaved = *pSaved;
 
     m_pBody->pos.x = m_pBody->pos.y = m_pBody->pos.z = g_flZeroEngineObject;
 
@@ -424,7 +424,7 @@ void EngineObject::ComputeBoundingSphere()
 
                 pCur = &pVert[iVert];
 
-                auto vV = *pCur;
+                const auto vV = *pCur;
 
                 vP.x = vV.x * pBone->m_world.m_a[0][0] + vV.y * pBone->m_world.m_a[0][1] + vV.z * pBone->m_world.m_a[0][2] + pBone->m_world.GetElement(0, 3);
                 vP.y = vV.x * pBone->m_world.m_a[1][0] + vV.y * pBone->m_world.m_a[1][1] + vV.z * pBone->m_world.m_a[1][2] + pBone->m_world.m_a[1][3];
@@ -465,7 +465,7 @@ void EngineObject::ComputeBoundingSphere()
             {
                 pCur = &pVert[iVert];
 
-                auto vQ = *pCur;
+                const auto vQ = *pCur;
 
                 vP.x = vQ.x * pBone->m_world.m_a[0][0] + vQ.y * pBone->m_world.m_a[0][1] + vQ.z * pBone->m_world.m_a[0][2] + pBone->m_world.m_a[0][3];
                 vP.y = vQ.x * pBone->m_world.m_a[1][0] + (vQ.y * pBone->m_world.m_a[1][1] + vQ.z * pBone->m_world.m_a[1][2]) + pBone->m_world.m_a[1][3];
@@ -1345,7 +1345,7 @@ void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
 
     MeshBone** ppChild = pSlot->m_apChildren;
 
-    const auto* pDescriptor = pSlot->m_pDesc;
+    const auto* const pDescriptor = pSlot->m_pDesc;
 
     for (nChild = 0; nChild < pSlot->m_pDesc->m_nChildCount; nChild++)
     {
@@ -1404,7 +1404,7 @@ void EngineObject::UpdateLODAndPushComponents(CameraObject* pCamera)
     auto* const pViewpoint = pCamera->layout.pCamera;
     auto*       pComponent = m_pBones;
 
-    const Vec3* pPos = GetPositionPtr();
+    const Vec3* const pPos = GetPositionPtr();
 
     const auto flDx = pViewpoint->m_vEye.x - pPos->x;
     const auto flDy = pViewpoint->m_vEye.y - pPos->y;
@@ -1413,7 +1413,7 @@ void EngineObject::UpdateLODAndPushComponents(CameraObject* pCamera)
     auto* const pTable  = m_pLod;
     const auto  nLevels = pTable->m_wLodCount;
 
-    auto flDistSq = (flDz * flDz + flDx * flDx) + flDy * flDy;
+    const auto flDistSq = (flDz * flDz + flDx * flDx) + flDy * flDy;
 
     if (nLevels > 1)
     {
@@ -1550,7 +1550,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
     for (short nVert = 0; nVert < m_wShadowCount; nVert++)
     {
-        const auto* pXf = *ppXf;
+        const auto* const pXf = *ppXf;
         ppXf++;
 
         pOut->x = ((pXf->m_a[0][2] * pVert->z) + pXf->m_a[0][1] * pVert->y) + pXf->m_a[0][0] * pVert->x + pXf->m_a[0][3];
@@ -1584,7 +1584,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
     for (short nCamera = 0; nCamera < m_wShadowCount; nCamera++)
     {
-        const TransformObject* pCam = g_pCameraTransform;
+        const TransformObject* const pCam = g_pCameraTransform;
 
         pOut->x = (pCam->m_a[0][2] * pIn->z + (pCam->m_a[0][1] * pIn->y)) + pCam->m_a[0][0] * pIn->x + pCam->m_a[0][3];
         pOut->y = (pCam->m_a[1][2] * pIn->z + (pCam->m_a[1][1] * pIn->y)) + pCam->m_a[1][0] * pIn->x + pCam->m_a[1][3];
@@ -1618,9 +1618,9 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
         if ((cClip & kClipAnyPlane) == 0)
         {
-            const TransformedVertex* pCorner2 = &g_pModelVertexBuf[pFace->aCorners[2]];
-            const TransformedVertex* pCorner1 = &g_pModelVertexBuf[pFace->aCorners[1]];
-            const TransformedVertex* pCorner0 = &g_pModelVertexBuf[pFace->aCorners[0]];
+            const TransformedVertex* const pCorner2 = &g_pModelVertexBuf[pFace->aCorners[2]];
+            const TransformedVertex* const pCorner1 = &g_pModelVertexBuf[pFace->aCorners[1]];
+            const TransformedVertex* const pCorner0 = &g_pModelVertexBuf[pFace->aCorners[0]];
 
             const auto flW0 = 1.0f / pCorner0->w;
             vA.x            = flW0 * pCorner0->x;
@@ -2185,7 +2185,7 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
 {
     Vec3 vDiff;
 
-    auto vPos = pOther->GetPhysicsBody()->pos;
+    const auto vPos = pOther->GetPhysicsBody()->pos;
 
     auto* const pBody = m_pBody;
 

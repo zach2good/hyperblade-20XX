@@ -239,7 +239,7 @@ void CSteerToward::Release(int nArg)
     pTo->y = pFrom->y;
     pTo->z = pFrom->z;
 
-    auto* pFlag = m_pNetTargetPending;
+    auto* const pFlag = m_pNetTargetPending;
 
     if (*pFlag != 0)
     {
@@ -270,9 +270,9 @@ void CSteerToward::Release(int nArg)
 
     IntegrateSpringAndGravity();
 
-    auto vPoint = *m_pOwner->GetWorldPos(&vScratch);
+    const auto vPoint = *m_pOwner->GetWorldPos(&vScratch);
 
-    const Vec3* pNormal = g_arenaEllipsoid.NormalAtPoint(&vPoint);
+    const Vec3* const pNormal = g_arenaEllipsoid.NormalAtPoint(&vPoint);
 
     if (pNormal != nullptr)
     {

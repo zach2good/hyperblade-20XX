@@ -1437,7 +1437,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
     {
         const auto nLength = static_cast<int>(strlen(pszText)) + 1;
 
-        char* pszCopy = new char[nLength];
+        char* const pszCopy = new char[nLength];
 
         // STRING: HYPERX 0x004bb810
         sscanf(pszText, "%s", pszCopy);

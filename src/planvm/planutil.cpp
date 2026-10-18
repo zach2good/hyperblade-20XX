@@ -31,8 +31,8 @@ float PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
     auto* const pObjectA = apObjects[nSlotA];
     auto* const pObjectB = apObjects[nSlotB];
 
-    const Vec3* pPosA = pObjectA->GetPositionPtr();
-    const Vec3* pPosB = pObjectB->GetPositionPtr();
+    const Vec3* const pPosA = pObjectA->GetPositionPtr();
+    const Vec3* const pPosB = pObjectB->GetPositionPtr();
 
     const auto flDeltaX = pPosB->x - pPosA->x;
     const auto flDeltaY = pPosB->y - pPosA->y;

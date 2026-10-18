@@ -277,11 +277,11 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
     while (nLevel < pLod->m_wLodCount)
     {
-        const MeshBlock* pMesh = pLod->m_apLodMeshes[nLevel][nMeshIndex];
+        const MeshBlock* const pMesh = pLod->m_apLodMeshes[nLevel][nMeshIndex];
 
         if (pMesh->nCoordBytes != 0)
         {
-            auto* pCoords = pMesh->Coords();
+            auto* const pCoords = pMesh->Coords();
 
             char* const pScratch = new char[pMesh->nCoordBytes];
 
@@ -340,7 +340,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
                                     {
                                         pCoords[nCoord].tu = flScale * pCoords[nCoord].tu;
 
-                                        auto* pflV = &pCoords[nCoord].tv;
+                                        auto* const pflV = &pCoords[nCoord].tv;
 
                                         *pflV = flScale * *pflV;
 

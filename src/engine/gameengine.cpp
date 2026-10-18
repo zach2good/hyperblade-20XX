@@ -2863,7 +2863,7 @@ void GameEngine::UnloadArena()
     // Objects are removed last first; the count ends one below zero.
     while (m_pArena->m_wCount-- != 0)
     {
-        auto nId = m_pArena->m_pnSlotIds[m_pArena->m_wCount];
+        const auto nId = m_pArena->m_pnSlotIds[m_pArena->m_wCount];
 
         auto* const pObject = m_ppSlots[static_cast<short>(nId)];
 
@@ -3061,7 +3061,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
 
         if (pEntity != nullptr)
         {
-            int nType = pEntity->GetSlot();
+            const int nType = pEntity->GetSlot();
 
             for (iRange = 0; iRange < id_GOB_NUM_OF_TYPES; iRange++)
             {
@@ -3242,7 +3242,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
     {
         auto nSlot = 0;
 
-        auto* pTeamDef = ParseTeamHTMFile(&file.m_file);
+        auto* const pTeamDef = ParseTeamHTMFile(&file.m_file);
 
         if (pTeamDef == nullptr)
         {
@@ -3739,8 +3739,8 @@ void GameEngine::SyncPlayerDataToTeam()
         {
             for (nSeat = 0; nSeat < kTeamBlockSeats; nSeat++)
             {
-                const auto nSlot   = pTeam->aSeat[nSeat];
-                auto*      pPlayer = (PlayerObject*)pTeam->apOnIce[nSeat];
+                const auto  nSlot   = pTeam->aSeat[nSeat];
+                auto* const pPlayer = (PlayerObject*)pTeam->apOnIce[nSeat];
 
                 if (pPlayer != nullptr)
                 {
@@ -4040,7 +4040,7 @@ void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
         if (pNode->GetActiveState() == 1 && pNode->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
         {
             const auto nOtherSlot = pNode->GetOtherSlot();
-            auto       nModelSlot = pNode->GetModelSlot();
+            const auto nModelSlot = pNode->GetModelSlot();
 
             if (nOtherSlot >= 0 && nModelSlot >= 0)
             {
@@ -4501,11 +4501,11 @@ void GameEngine::ProcessInputCommandQueue()
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
         auto* const pObject = m_ppObjects[nIndex];
-        auto*       pLock   = pObject->GetPhysicsBody()->pPlayer;
+        auto* const pLock   = pObject->GetPhysicsBody()->pPlayer;
 
         if (pLock != nullptr)
         {
-            auto* pSection = &pLock->m_lock;
+            auto* const pSection = &pLock->m_lock;
 
             pSection->lock();
             char bQueued = pObject->DequeueInputCommand(&nCommand, &nPayload);
@@ -4526,7 +4526,7 @@ void GameEngine::ProcessInputCommandQueue()
                 {
                     MsgEvent::Unpack(nCommand, &nKind, &nWantedOther, &nWantedOwn, &nLow);
 
-                    auto* pNode = pObject->GetPlanState()->WalkLinkedList(nKind);
+                    auto* const pNode = pObject->GetPlanState()->WalkLinkedList(nKind);
 
                     if (pNode != nullptr && pNode->GetOtherSlot() == nWantedOther && pNode->GetModelSlot() == nWantedOwn)
                     {
@@ -5265,7 +5265,7 @@ ParticleSystem* GameEngine::FindFreeParticleSystem()
 
     for (iSlot = 1; iSlot < nCount; iSlot++)
     {
-        auto* pEntity = GetParticleSystem(kSlotExplosion + iSlot);
+        auto* const pEntity = GetParticleSystem(kSlotExplosion + iSlot);
 
         if (pEntity != nullptr && pEntity->m_bAnyAlive == 0)
         {

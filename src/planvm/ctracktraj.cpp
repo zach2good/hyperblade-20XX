@@ -173,7 +173,7 @@ void CTrackTraj::Process(int nArg)
         g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for model to watch\n");
     }
 
-    auto vWatch = *pWatched->GetPositionPtr();
+    const auto vWatch = *pWatched->GetPositionPtr();
 
     switch (m_nMode)
     {

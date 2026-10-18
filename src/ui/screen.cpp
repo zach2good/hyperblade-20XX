@@ -519,8 +519,8 @@ int Screen::PaintToWindow()
             GDI::Blit(0, 0, bitmap.nWidth, bitmap.nHeight, m_hBackground, 0, 0);
         }
 
-        const char* pszCaption = m_pszCaption;
-        m_bRepaintBackground   = 0;
+        const char* const pszCaption = m_pszCaption;
+        m_bRepaintBackground         = 0;
 
         if (pszCaption != nullptr)
         {

@@ -505,7 +505,7 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
         Vec3 v1;
         Vec3 v2;
 
-        auto*       pFace   = pBlob->Face(nFace);
+        auto* const pFace   = pBlob->Face(nFace);
         auto* const pNormal = &pFace->vNormal;
 
         v2 = pVerts[pFace->aCorners[2]];

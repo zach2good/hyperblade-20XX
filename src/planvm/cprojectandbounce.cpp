@@ -131,7 +131,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
             {
                 pClosest = Vec3::FindClosest(m_pSource, &vNear, &vFar);
             }
-            auto* pPosB = m_pSource;
+            auto* const pPosB = m_pSource;
 
             if (pClosest->z - pPosB->z > g_flZeroAgendaItem)
             {
@@ -153,7 +153,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             m_pOwner->GetPhysicsBody()->UpdateVelocityDirection();
 
-            auto*       pPosC = m_pSource;
+            auto* const pPosC = m_pSource;
             auto* const pPrev = m_pDest;
 
             if ((flSpan = pPosC->x - pPrev->x) != g_flZeroAgendaItem)
@@ -391,7 +391,7 @@ void CProjectAndBounce::Release(int nMessage)
 
     IntegrateSpringAndGravity();
 
-    auto point = *m_pOwner->GetWorldPos(&scratch);
+    const auto point = *m_pOwner->GetWorldPos(&scratch);
 
     auto* const pNormal = g_arenaEllipsoid.NormalAtPoint(&point);
 

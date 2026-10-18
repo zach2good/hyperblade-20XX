@@ -95,7 +95,7 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOther     = pColOther->m_pOwner;
     auto* const pOtherBody = pOther->GetPhysicsBody();
 
     auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
@@ -140,7 +140,7 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
 
     vDirOther = vScratch;
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vTrans);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vTrans);
 
     const auto flTransX = pOther->m_transformC.m_a[0][3];
 
@@ -242,7 +242,7 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
         return;
     }
 
-    auto       nTick      = g_pGameEngine->m_clock.nTickMs;
+    const auto nTick      = g_pGameEngine->m_clock.nTickMs;
     const auto nLastScore = pOwn->m_nLastGoalTickMs;
 
     if (nLastScore != 0 && nTick - nLastScore < g_nGoalScoreDebounceMs)
@@ -273,15 +273,15 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOther     = pColOther->m_pOwner;
     auto* const pOtherBody = pOther->GetPhysicsBody();
 
     auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    auto*       pOwn     = pColOwn->m_pOwner;
+    auto* const pOwn     = pColOwn->m_pOwner;
     auto* const pOwnBody = pOwn->GetPhysicsBody();
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vScratch);
 
     vCentre.x = pCentre->x;
     vCentre.y = pCentre->y;
@@ -346,7 +346,7 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 
     if (nHit != 0 && pPlan->m_pCurrent->m_wKind != kBehFly)
     {
-        const Vec3* pVelocity = &pOwn->m_pBody->vel;
+        const Vec3* const pVelocity = &pOwn->m_pBody->vel;
 
         vLocal = *pVelocity;
 
@@ -409,7 +409,7 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
     auto* const pOtherBody = pOther->GetPhysicsBody();
     auto* const pOwnBody   = pOwn->GetPhysicsBody();
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vScratch);
 
     vCentre.x = pCentre->x;
     vCentre.y = pCentre->y;
@@ -494,7 +494,7 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOther     = pColOther->m_pOwner;
     auto* const pOtherBody = pOther->GetPhysicsBody();
 
     auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
@@ -502,7 +502,7 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     auto* const pOwn     = pColOwn->m_pOwner;
     auto* const pOwnBody = pOwn->GetPhysicsBody();
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vScratch);
 
     vCentre.x = pCentre->x;
     vCentre.y = pCentre->y;
@@ -701,7 +701,7 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
     auto* const pOtherBody = pOther->GetPhysicsBody();
     auto* const pOwnBody   = pOwn->GetPhysicsBody();
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vScratch);
 
     vCentre.x = pCentre->x;
     vCentre.y = pCentre->y;
@@ -779,7 +779,7 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOther     = pColOther->m_pOwner;
     auto* const pOtherBody = pOther->GetPhysicsBody();
 
     const auto  nOwnSlot = pContext->GetModelSlot();
@@ -788,7 +788,7 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
     auto* const pOwn     = pColOwn->m_pOwner;
     auto* const pOwnBody = pOwn->GetPhysicsBody();
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vScratch);
 
     vCentre.x = pCentre->x;
     vCentre.y = pCentre->y;
@@ -897,7 +897,7 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOther     = pColOther->m_pOwner;
     auto* const pOtherBody = pOther->GetPhysicsBody();
 
     auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
@@ -905,7 +905,7 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
     auto* const pOwn     = pColOwn->m_pOwner;
     auto* const pOwnBody = pOwn->GetPhysicsBody();
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vTrans);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vTrans);
 
     vCentre.x = pCentre->x;
     vCentre.y = pCentre->y;

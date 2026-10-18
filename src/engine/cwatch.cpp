@@ -28,8 +28,8 @@ void CWatch::Process(int nArg)
 {
     Vec3 vDir;
 
-    auto* pWatched = GetCamera()->GetSecondaryTrackedObject();
-    auto* pTracked = GetCamera()->GetTrackedObject();
+    auto* const pWatched = GetCamera()->GetSecondaryTrackedObject();
+    auto* const pTracked = GetCamera()->GetTrackedObject();
 
     if (pWatched == nullptr)
     {

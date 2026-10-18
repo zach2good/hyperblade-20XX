@@ -110,7 +110,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 
     if (pUVIndex != nullptr)
     {
-        const MeshBlock* pBlob = pRend->m_pMesh;
+        const MeshBlock* const pBlob = pRend->m_pMesh;
 
         if (pBlob->nCoordBytes != 0)
         {
@@ -930,15 +930,15 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
     MeshMaterial* apMaterials[2];
     int*          pColours;
 
-    int nShadeMode = pThis->HasColours() | 0xfffffffe;
+    const int nShadeMode = pThis->HasColours() | 0xfffffffe;
 
     while (nCount-- > 0)
     {
         auto* const pFace = *ppFaces;
 
-        auto* pEntry = pThis->m_pMesh->Face(pFace->nFace);
+        auto* const pEntry = pThis->m_pMesh->Face(pFace->nFace);
 
-        auto* pRendOwner = pThis->m_pOwner;
+        auto* const pRendOwner = pThis->m_pOwner;
 
         apMaterials[0] = &pRendOwner->m_pModelBlock->m_pMaterials[static_cast<int>(pEntry->cMaterial)];
 

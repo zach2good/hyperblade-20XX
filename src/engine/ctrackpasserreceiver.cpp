@@ -80,7 +80,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     static Vec3 s_vLastVel = { g_flZeroTracking, g_flZeroTracking, g_flZeroTracking };
 
-    auto* pTracked = GetCamera()->GetTrackedObject();
+    auto* const pTracked = GetCamera()->GetTrackedObject();
 
     if (pTracked == nullptr)
     {
@@ -115,7 +115,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     g_vCamPasserAim.z = (g_flCamTrackVelocityGain * s_vLastVel.z + g_vCamPasserAim.z);
 
-    const Vec3* pDir = &pTracked->GetPhysicsBody()->velDir;
+    const Vec3* const pDir = &pTracked->GetPhysicsBody()->velDir;
 
     const auto flCrossX = vAxis.y * pDir->z - vAxis.z * pDir->y;
     const auto flCrossY = vAxis.z * pDir->x - vAxis.x * pDir->z;
@@ -129,7 +129,7 @@ void CTrackPasser_Receiver::Process(int nArg)
     g_vCamPasserAim.y = g_flFourTracking * vAxis.y + g_vCamPasserAim.y;
     g_vCamPasserAim.z = g_flFourTracking * vAxis.z + g_vCamPasserAim.z;
 
-    auto* pReceiver = GetCamera()->GetSecondaryTrackedObject();
+    auto* const pReceiver = GetCamera()->GetSecondaryTrackedObject();
 
     if (pReceiver == nullptr || pReceiver == pTracked)
     {
@@ -219,7 +219,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         if (m_pOwner->GetSlot() == kCameraHeadSlot)
         {
-            const Vec3* pSum = &GetCamera()->m_posOut;
+            const Vec3* const pSum = &GetCamera()->m_posOut;
 
             m_pCamDir->x = m_pReceiverPos->x - pSum->x;
             m_pCamDir->z = (m_pReceiverPos->z - pSum->z) + g_flFourTracking;
@@ -238,7 +238,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         vSecondRow = pTracked->GetPhysicsBody()->surfNormal;
 
-        const Vec3* pVel = GetCamera()->m_pSettings;
+        const Vec3* const pVel = GetCamera()->m_pSettings;
 
         vTorque.x = vSecondRow.z * vCamDir.y - vCamDir.z * vSecondRow.y;
         vTorque.y = vSecondRow.x * vCamDir.GetZ() - vSecondRow.z * vCamDir.x;
@@ -278,7 +278,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         if (m_pOwner->GetSlot() == kCameraHeadSlot)
         {
-            const Vec3* pSum = &GetCamera()->m_posOut;
+            const Vec3* const pSum = &GetCamera()->m_posOut;
 
             m_pCamDir->x = m_pReceiverPos->x - pSum->x;
             m_pCamDir->z = (m_pReceiverPos->z - pSum->z) + g_flFourTracking;
@@ -286,7 +286,7 @@ void CTrackPasser_Receiver::Process(int nArg)
         }
         else
         {
-            const Vec3* pSum = &GetCamera()->m_posOut;
+            const Vec3* const pSum = &GetCamera()->m_posOut;
 
             m_pCamDir->x = g_vCamPasserAim.x - pSum->x;
             m_pCamDir->z = g_vCamPasserAim.z - pSum->z;

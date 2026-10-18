@@ -136,7 +136,7 @@ void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLi
         return;
     }
 
-    const auto* pszEntry = m_ppNames[nIndex];
+    const auto* const pszEntry = m_ppNames[nIndex];
 
     if (pszEntry == nullptr)
     {

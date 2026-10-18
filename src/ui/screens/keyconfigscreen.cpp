@@ -117,7 +117,7 @@ KeyConfigScreen::KeyConfigScreen()
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszDepressed));
     }
 
-    const unsigned int* pnDefaults = g_pInputDevice->GetDefaultKeyBindings();
+    const unsigned int* const pnDefaults = g_pInputDevice->GetDefaultKeyBindings();
 
     for (i = 0; i < kKeyBindingCount; i++)
     {

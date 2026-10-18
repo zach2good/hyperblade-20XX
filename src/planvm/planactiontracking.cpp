@@ -82,10 +82,10 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
 
     if (pCamera != nullptr)
     {
-        const PlanWord* pBlock = pArgs->m_pArgs;
+        const PlanWord* const pBlock = pArgs->m_pArgs;
         if (pBlock[1].IsPronoun())
         {
-            auto pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
+            const auto pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
 
             nValue = pfnResolver(pContext->GetActor(), pArgs);
         }
@@ -273,7 +273,7 @@ void PlanAction::IncrementCameraDir(Interactor* pContext, PlanNode* pArgs, short
         pContext->GetActor()->GetPhysicsBody()->velDir.z += static_cast<float>(pArgs->m_pArgs[3].n * 0.01);
     }
 
-    auto* pBody = pContext->GetActor()->GetPhysicsBody();
+    auto* const pBody = pContext->GetActor()->GetPhysicsBody();
 
     Math::Vec3Normalize(&pBody->velDir);
 }
@@ -367,10 +367,10 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
         pTarget = g_pGameEngine->GetCamera(kCameraMainSlot);
     }
 
-    const PlanWord* pBlock = pArgs->m_pArgs;
+    const PlanWord* const pBlock = pArgs->m_pArgs;
     if (pBlock[1].IsPronoun())
     {
-        auto pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
+        const auto pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
 
         nValue = pfnResolver(pContext->GetActor(), pArgs);
     }
@@ -609,10 +609,10 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     pActor              = pContext->GetActor();
     auto* const pFacing = pActor->GetPhysicsBody();
 
-    pActor       = pContext->GetActor();
-    auto* pBlock = pActor->GetPhysicsBody();
+    pActor             = pContext->GetActor();
+    auto* const pBlock = pActor->GetPhysicsBody();
 
-    auto* pVelocity = &pBlock->vel;
+    auto* const pVelocity = &pBlock->vel;
 
     vAim.x = pTargetPos->x - pSelfPos->x;
     vAim.y = pTargetPos->y - pSelfPos->y;
@@ -663,7 +663,7 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
         flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
     }
 
-    auto* pObject = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
+    auto* const pObject = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
 
     pEntity->GetPhysicsBody()->SetFlatOnTerrain(&pObject->m_pBody->prevPos);
 
@@ -712,7 +712,7 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
 
-    const Vec3* pBody = &pTarget->m_pBody->vel;
+    const Vec3* const pBody = &pTarget->m_pBody->vel;
 
     auto vDirection = *pBody;
 
@@ -765,9 +765,9 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
 
-    const Vec3* pBody = &pTarget->m_pBody->vel;
+    const Vec3* const pBody = &pTarget->m_pBody->vel;
 
-    auto vDirection = *pBody;
+    const auto vDirection = *pBody;
 
     pEntity->SetOrientation(pTarget->GetPositionPtr(), &vDirection);
     pEntity->SpawnParticles(flSpread, flSpeed);
@@ -845,7 +845,7 @@ void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
         {
             vStart = *pActor->GetPositionPtr();
 
-            auto vDirection = pActor->m_pBody->vel;
+            const auto vDirection = pActor->m_pBody->vel;
 
             if (pActor->GetSlot() <= kGoalieSlotB)
             {
@@ -880,7 +880,7 @@ void PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
         {
             vStart = *pActor->GetPositionPtr();
 
-            auto vDirection = pActor->m_pBody->vel;
+            const auto vDirection = pActor->m_pBody->vel;
 
             vStart.z = vStart.GetZ() + 3.0f;
 
@@ -1147,9 +1147,9 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
     {
         auto vPosition = *pSubject->GetPositionPtr();
 
-        auto vDir = pSubject->GetPhysicsBody()->velDir;
+        const auto vDir = pSubject->GetPhysicsBody()->velDir;
 
-        const Vec3* pDir = &vDir;
+        const Vec3* const pDir = &vDir;
 
         for (nIndex = 0; nIndex < 3; nIndex++)
         {

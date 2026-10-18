@@ -218,8 +218,8 @@ void CAvoidObjects::Process(int nArg)
         }
     }
 
-    char  cWrongSide = 1;
-    float flSign     = nSign;
+    char        cWrongSide = 1;
+    const float flSign     = nSign;
 
     if (flSign * flDeltaY >= g_flZeroAgendaItem)
     {

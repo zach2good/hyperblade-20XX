@@ -77,9 +77,9 @@ void CSteerBetweenFacing::Process(int nArg)
     vDelta.y = g_flZeroAgendaItem;
     vDelta.z = g_flZeroAgendaItem;
 
-    auto vA = *m_pPath->m_pObjectA->GetPositionPtr();
-    auto vB = *m_pPath->m_pObjectB->GetPositionPtr();
-    auto vC = *m_pPath->m_pAimObject->GetPositionPtr();
+    auto       vA = *m_pPath->m_pObjectA->GetPositionPtr();
+    auto       vB = *m_pPath->m_pObjectB->GetPositionPtr();
+    const auto vC = *m_pPath->m_pAimObject->GetPositionPtr();
 
     vAim.x = g_flZeroAgendaItem;
     vAim.y = g_flZeroAgendaItem;

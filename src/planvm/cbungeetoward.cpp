@@ -226,7 +226,7 @@ void CBungeeToward::Process(int nArg)
         vGap.z = pVel->z * LEAD_SCALE + vGap.z;
     }
 
-    auto flLength = vGap.Magnitude();
+    const auto flLength = vGap.Magnitude();
 
     Math::Vec3Normalize(&vGap);
 

@@ -140,7 +140,7 @@ void CSlideOnRail::Release(int nArg)
 
         flDelta = g_pGameEngine->m_clock.flDelta;
 
-        auto* pTracked = m_pOwner->GetPhysicsBody();
+        auto* const pTracked = m_pOwner->GetPhysicsBody();
 
         Vec3::ScaleTo(&pTracked->step, flDelta, &vScaled);
 

@@ -129,9 +129,9 @@ void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*
     const char* pszName;
     int         nKind;
 
-    const PlanWord* pBlock = pArgs->m_pArgs;
-    auto            slot   = pBlock[1];
-    const auto      nIndex = pBlock[2].n;
+    const PlanWord* const pBlock = pArgs->m_pArgs;
+    auto                  slot   = pBlock[1];
+    const auto            nIndex = pBlock[2].n;
 
     if (slot.IsPronoun())
     {

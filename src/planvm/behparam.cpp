@@ -284,7 +284,7 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
         }
     }
 
-    const AnimScriptTable* pTable = g_pAnimRegistry->m_pScripts;
+    const AnimScriptTable* const pTable = g_pAnimRegistry->m_pScripts;
 
     pEntry = pTable->Find(nAnim);
 
@@ -310,8 +310,8 @@ void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* 
 {
     AnimDB* pClip;
 
-    const auto             nClip     = static_cast<short>(pNode->m_pArgs[1].n);
-    const AnimScriptTable* pRegistry = g_pAnimRegistry->m_pScripts;
+    const auto                   nClip     = static_cast<short>(pNode->m_pArgs[1].n);
+    const AnimScriptTable* const pRegistry = g_pAnimRegistry->m_pScripts;
 
     pClip = pRegistry->Find(nClip);
 

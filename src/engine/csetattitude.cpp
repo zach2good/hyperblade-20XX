@@ -34,7 +34,7 @@ void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00410460
 void CSetAttitude::OnKind(short nSlot)
 {
-    auto*       pAnchorBlock = m_pOwner->GetPhysicsBody();
+    auto* const pAnchorBlock = m_pOwner->GetPhysicsBody();
     auto* const pAnchor      = &pAnchorBlock->pos;
 
     auto* const pTargetPos = g_pGameEngine->m_ppSlots[nSlot]->GetPositionPtr();

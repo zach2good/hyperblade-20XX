@@ -37,7 +37,7 @@ AudioMgr::~AudioMgr()
     {
         for (int nIndex = 0; nIndex < pEntries->m_nSoundCount; nIndex++)
         {
-            auto* pEntry = pEntries->m_apSounds[nIndex];
+            auto* const pEntry = pEntries->m_apSounds[nIndex];
 
             if (pEntry != nullptr && pEntry->m_pSamples != nullptr)
             {
@@ -191,7 +191,7 @@ void AudioMgr::PlaySpecific(int nVoice)
     {
         if (nVoice < pEntries->m_nSoundCount)
         {
-            auto* pSound = pEntries->m_apSounds[nVoice];
+            auto* const pSound = pEntries->m_apSounds[nVoice];
 
             if (pSound != nullptr)
             {

@@ -27,12 +27,12 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     const unsigned int cx = pDib->biWidth;
     const unsigned int cy = pDib->biHeight;
 
-    const char* pPixels = GDI::PixelBits(pDib);
+    const char* const pPixels = GDI::PixelBits(pDib);
 
     const auto nStride = (cx + 3) & 0xfffffffc;
 
     // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
-    auto* pSprite = static_cast<RLESprite*>(malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2));
+    auto* const pSprite = static_cast<RLESprite*>(malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2));
 
     if (pSprite == nullptr)
     {
@@ -197,7 +197,7 @@ char SoftTex::Load(const char* pszName)
 
         if (m_pDib != nullptr)
         {
-            const BitmapInfoHeader* pHeader = m_pDib;
+            const BitmapInfoHeader* const pHeader = m_pDib;
 
             if (pHeader->biBitCount == 8)
             {

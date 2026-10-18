@@ -110,7 +110,7 @@ void CTrack::Process(int nArg)
 
     auto* const pOffsetScales = GetCamera()->m_pSettings;
 
-    auto* pTracked = (PlayerObject*)GetCamera()->GetTrackedObject();
+    auto* const pTracked = (PlayerObject*)GetCamera()->GetTrackedObject();
 
     if (pTracked == nullptr)
     {
@@ -119,7 +119,7 @@ void CTrack::Process(int nArg)
     }
 
     auto* const pLastTracked = GetCamera()->GetLastTrackedObject();
-    auto*       pBody        = pTracked->GetPhysicsBody();
+    auto* const pBody        = pTracked->GetPhysicsBody();
 
     if (pLastTracked == nullptr || pLastTracked != pTracked)
     {
@@ -154,17 +154,17 @@ void CTrack::Process(int nArg)
 
         if ((static_cast<unsigned char>(pBody->nHeldBindings) & HELD_SHOOT) != 0)
         {
-            auto* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
+            auto* const pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
             if (pHolder != nullptr)
             {
-                auto wCarrier = pHolder->nSlot;
+                const auto wCarrier = pHolder->nSlot;
 
                 if (wCarrier < kPlayerObjectCount && wCarrier == pTracked->GetSlot())
                 {
-                    auto* const pGoal   = g_pGameEngine->m_ppSlots[pTracked->m_wTargetGoalSlot];
-                    const Vec3* pMine   = pTracked->GetPositionPtr();
-                    const Vec3* pTheirs = pGoal->GetPositionPtr();
+                    auto* const       pGoal   = g_pGameEngine->m_ppSlots[pTracked->m_wTargetGoalSlot];
+                    const Vec3* const pMine   = pTracked->GetPositionPtr();
+                    const Vec3* const pTheirs = pGoal->GetPositionPtr();
 
                     // Worked out and then never read.
                     vScaled.x = pTheirs->x - pMine->x;
@@ -178,8 +178,8 @@ void CTrack::Process(int nArg)
     }
     else
     {
-        const auto wViewer = g_pGameEngine->m_nViewedSlot;
-        auto*      pHolder = pBody->pAttach;
+        const auto  wViewer = g_pGameEngine->m_nViewedSlot;
+        auto* const pHolder = pBody->pAttach;
 
         if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
         {
@@ -218,7 +218,7 @@ void CTrack::Process(int nArg)
 
     Vec3::ScaleTo(&vTrack, flPull, m_pDesiredVel);
 
-    const Vec3* pFacing = &pBody->velDir;
+    const Vec3* const pFacing = &pBody->velDir;
 
     vFacing = *pFacing;
 
@@ -244,7 +244,7 @@ void CTrack::Process(int nArg)
         m_pVel->y = (m_pDesiredVel->y - m_pVel->y * 0.6f) + m_pVel->y;
         m_pVel->z = (m_pDesiredVel->z - m_pVel->z * 0.6f) + m_pVel->z;
 
-        const Vec3* pVel = m_pVel;
+        const Vec3* const pVel = m_pVel;
 
         if ((flSpeed = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)))) > flStep)
         {
@@ -344,7 +344,7 @@ void CTrack::Process(int nArg)
             m_pVel->y = vPull.y * g_flSolarWindFactor + (m_pDesiredVel->y - m_pVel->y * 0.6f) + m_pVel->y;
             m_pVel->z = vPull.z * g_flSolarWindFactor + (m_pDesiredVel->z - m_pVel->z * 0.6f) + m_pVel->z;
 
-            const Vec3* pVel = m_pVel;
+            const Vec3* const pVel = m_pVel;
 
             if ((flSpeed = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)))) > flStep)
             {

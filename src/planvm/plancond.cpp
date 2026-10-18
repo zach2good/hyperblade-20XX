@@ -138,8 +138,8 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
 
         if (*pResult < 0)
         {
-            const Vec3* pForwardOther = &pOther->GetPhysicsBody()->velDir;
-            const Vec3* pForwardRange = &pRange->GetPhysicsBody()->velDir;
+            const Vec3* const pForwardOther = &pOther->GetPhysicsBody()->velDir;
+            const Vec3* const pForwardRange = &pRange->GetPhysicsBody()->velDir;
 
             // Not GetColObjPtr: the client stores the dot between the load and its test (0x0040168a to 0x0040169c).
             auto* const pColObj = g_pGameEngine->m_ppColObjects[nSlot];
@@ -218,8 +218,8 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
         pGoalCentre = g_apPositionMarkers[kPosSGoalCenter];
     }
 
-    auto        vTriple  = pActor->GetPhysicsBody()->vel;
-    const Vec3* pGoalPos = pRok->GetPositionPtr();
+    auto              vTriple  = pActor->GetPhysicsBody()->vel;
+    const Vec3* const pGoalPos = pRok->GetPositionPtr();
 
     const auto flDx = pGoalCentre->x - pGoalPos->x;
     const auto flDy = pGoalCentre->y - pGoalPos->y;
@@ -266,7 +266,7 @@ void PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOutValid, 
         CollisionObj::GetModelId(pContext->GetModelSlot());
     }
 
-    auto nTarget = pContext->GetTargetSlot();
+    const auto nTarget = pContext->GetTargetSlot();
 
     auto* const pszName = g_pGameEngine->m_ppSlots[nTarget]->GetPlanState()->m_pszName;
 
@@ -380,7 +380,7 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
     const auto flSpeed = (static_cast<float>(rand() % kScatterRoll) + SCATTER_FLOOR) * flDelta;
 
-    auto* pBody = pContext->GetActor()->GetPhysicsBody();
+    auto* const pBody = pContext->GetActor()->GetPhysicsBody();
 
     Vec3::ScaleTo(pForward, flSpeed, &pBody->vel);
 }
@@ -441,7 +441,7 @@ void PlanAction::SetDeviceOwner(Interactor* pContext, PlanNode* pArgs, short*, i
 // FUNCTION: HYPERX 0x0045e5a0
 void PlanAction::SignalKeystate(Interactor*, PlanNode* pArgs, short*, int)
 {
-    const PlanWord* pBlock = pArgs->m_pArgs;
+    const PlanWord* const pBlock = pArgs->m_pArgs;
 
     g_pGameEngine->GetInputDevice(static_cast<short>(pBlock[1].n))->OnButtonDown(static_cast<short>(pBlock[2].n));
 }
@@ -453,8 +453,8 @@ void PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, in
     unsigned int  nTarget;
     EngineObject* pActor;
 
-    const PlanWord* pBlock = pArgs->m_pArgs;
-    const auto      nEvent = pBlock[2].n;
+    const PlanWord* const pBlock = pArgs->m_pArgs;
+    const auto            nEvent = pBlock[2].n;
 
     if (pBlock[1].IsPronoun())
     {
@@ -496,8 +496,8 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
     unsigned int  nTarget;
     EngineObject* pActor;
 
-    const PlanWord* pBlock = pArgs->m_pArgs;
-    const auto      nEvent = pBlock[2].n;
+    const PlanWord* const pBlock = pArgs->m_pArgs;
+    const auto            nEvent = pBlock[2].n;
 
     if (pBlock[1].IsPronoun())
     {
@@ -1166,7 +1166,7 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 
     if (static_cast<float>(sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z))) > MIN_VELOCITY_LENGTH)
     {
-        auto* pBody = pContext->GetActor()->GetPhysicsBody();
+        auto* const pBody = pContext->GetActor()->GetPhysicsBody();
 
         Vec3::ScaleTo(&vVelocity, g_flOnePlan / static_cast<float>(sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z))), &pBody->velDir);
     }
@@ -1489,12 +1489,12 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
     pFirst = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(
         static_cast<int>(pContext->GetModelSlot())))];
 
-    auto vFirst = *pFirst->GetPositionPtr();
+    const auto vFirst = *pFirst->GetPositionPtr();
 
     pSecond = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(
         static_cast<int>(pContext->GetOtherSlot())))];
 
-    auto vSecond = *pSecond->GetPositionPtr();
+    const auto vSecond = *pSecond->GetPositionPtr();
 
     vGap.x = vFirst.x - vSecond.x;
     vGap.y = vFirst.y - vSecond.y;
@@ -1504,12 +1504,12 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
 
     Math::Vec3Normalize(&vOffset);
 
-    const Vec3* pDirB = &pSecond->GetPhysicsBody()->velDir;
+    const Vec3* const pDirB = &pSecond->GetPhysicsBody()->velDir;
 
     if (vOffset.x * pDirB->x + vOffset.y * pDirB->y + vOffset.z * pDirB->z < -0.1f)
     {
-        auto* pBlockA = pFirst->GetPhysicsBody();
-        auto* pBlockB = pSecond->GetPhysicsBody();
+        auto* const pBlockA = pFirst->GetPhysicsBody();
+        auto* const pBlockB = pSecond->GetPhysicsBody();
 
         if (Vec3::DotInline(&pBlockB->velDir, &pBlockA->velDir) > 0.25 && static_cast<float>(sqrt(static_cast<double>(vGap.x * vGap.x + vGap.y * vGap.y + vGap.z * vGap.z))) < 150.0f)
         {
@@ -1805,13 +1805,13 @@ void PlanCond::InRangeToAttack(Interactor* pContext, PlanNode*, short* pResult, 
 
     auto bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
-    const Vec3* pNearAt = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
+    const Vec3* const pNearAt = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
     bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
-    const Vec3* pFarAt = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
+    const Vec3* const pFarAt = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
 
-    const Vec3* pSelfAt = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pSelfAt = pContext->GetActor()->GetPositionPtr();
 
     vNear.x = pNearAt->x - pSelfAt->x;
     vNear.y = pNearAt->y - pSelfAt->y;
@@ -1864,7 +1864,7 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
 
     pObject = g_pGameEngine->m_ppSlots[TeammateSlot(nSlot)]->GetPositionPtr();
 
-    const Vec3* pSelf = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pSelf = pContext->GetActor()->GetPositionPtr();
 
     vFirst.x = pFirst->x - pObject->x;
     vFirst.y = pFirst->y - pObject->y;
@@ -1947,13 +1947,13 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
 
     auto* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
-    const Vec3* pNearAt = pOpponent->GetPositionPtr();
+    const Vec3* const pNearAt = pOpponent->GetPositionPtr();
 
     bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(bySlot));
 
-    const Vec3* pFarAt = pOpponent->GetPositionPtr();
+    const Vec3* const pFarAt = pOpponent->GetPositionPtr();
 
     const auto flNearX = pRokAt->x - pNearAt->x;
     const auto flNearY = pRokAt->y - pNearAt->y;
@@ -2081,11 +2081,11 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
 
     auto* const pFar = apObjects[static_cast<short>(nOther)];
 
-    auto vOwn = *pOwner->GetPositionPtr();
+    const auto vOwn = *pOwner->GetPositionPtr();
 
-    auto vNear = *pNear->GetPositionPtr();
+    const auto vNear = *pNear->GetPositionPtr();
 
-    auto vFar = *pFar->GetPositionPtr();
+    const auto vFar = *pFar->GetPositionPtr();
 
     Vec3 vToNear;
 
@@ -2107,7 +2107,7 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
 
     auto flDamageFar = ((PlayerObject*)pFar)->m_stats.GetScalar(kRatingDamage);
 
-    const char* pszNear = pNear->GetPlanState()->m_pszName;
+    const char* const pszNear = pNear->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004bb37c
     if (strcmp(pszNear, "Sideln") == 0)
@@ -2115,7 +2115,7 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
         flDamageNear = 0.0f;
     }
 
-    const char* pszFar = pFar->GetPlanState()->m_pszName;
+    const char* const pszFar = pFar->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004bb37c
     if (strcmp(pszFar, "Sideln") == 0)
@@ -2253,13 +2253,13 @@ void PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pR
 
         pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
-        const Vec3* pPosA = pOpponent->GetPositionPtr();
+        const Vec3* const pPosA = pOpponent->GetPositionPtr();
 
         bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
         pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(bySlot));
 
-        const Vec3* pPosB = pOpponent->GetPositionPtr();
+        const Vec3* const pPosB = pOpponent->GetPositionPtr();
 
         const Vec3* pPosOwner = pOwner->GetPositionPtr();
 
@@ -2351,7 +2351,7 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     if (flSpeed > MIN_SPEED_FOR_FACING)
     {
-        auto* pBlock = pContext->GetActor()->GetPhysicsBody();
+        auto* const pBlock = pContext->GetActor()->GetPhysicsBody();
 
         Vec3::ScaleTo(pVelocity, g_flOnePlan / flSpeed, &pBlock->velDir);
     }
@@ -2434,7 +2434,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    auto flDamageFar = pOpponent->m_stats.GetScalar(kRatingDamage);
+    const auto flDamageFar = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     if (flDamageNear <= DamageGate() && flDamageFar <= DamageGate())
     {
@@ -2475,15 +2475,15 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
 
                 pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
-                const Vec3* pNearAt = pOpponent->GetPositionPtr();
+                const Vec3* const pNearAt = pOpponent->GetPositionPtr();
 
                 bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
                 pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(bySlot));
 
-                const Vec3* pFarAt = pOpponent->GetPositionPtr();
+                const Vec3* const pFarAt = pOpponent->GetPositionPtr();
 
-                const Vec3* pOwnAt = pContext->GetActor()->GetPositionPtr();
+                const Vec3* const pOwnAt = pContext->GetActor()->GetPositionPtr();
 
                 const auto flNearX = pNearAt->x - pOwnAt->x;
                 const auto flNearY = pNearAt->y - pOwnAt->y;
@@ -2532,8 +2532,8 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
 // FUNCTION: HYPERX 0x00461960
 void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResult, int)
 {
-    auto* const pActor    = pContext->GetActor();
-    const Vec3* pPosition = pActor->GetPositionPtr();
+    auto* const       pActor    = pContext->GetActor();
+    const Vec3* const pPosition = pActor->GetPositionPtr();
 
     auto flBest = 200000000.0f;
     auto nBest  = kModelIDNone;
@@ -2544,14 +2544,14 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
 
         if (pMultiplier != nullptr)
         {
-            const auto* pszName = pMultiplier->GetPlanState()->m_pCurrent->m_pszName;
+            const auto* const pszName = pMultiplier->GetPlanState()->m_pCurrent->m_pszName;
 
             // STRING: HYPERX 0x004bcac8
             if (strcmp(pszName, "Spin") != 0
                 // STRING: HYPERX 0x004bcabc
                 && strcmp(pszName, "ScoreSpin") != 0)
             {
-                const Vec3* pOther = pMultiplier->GetPositionPtr();
+                const Vec3* const pOther = pMultiplier->GetPositionPtr();
 
                 const auto flDx = pOther->x - pPosition->x;
                 const auto flDy = pOther->y - pPosition->y;
@@ -2914,7 +2914,7 @@ void PlanAction::SetTargetWithData(Interactor* pContext, PlanNode*, short*, int 
         vToCandidate.y = pSelfPos->y - pCandidatePos->y;
         vToCandidate.z = pSelfPos->z - pCandidatePos->z;
 
-        auto nTracked = pTracked->GetSlot();
+        const auto nTracked = pTracked->GetSlot();
 
         if (Vec3::DotInline(&vToTracked, &vToTracked) > Vec3::DotInline(&vToCandidate, &vToCandidate) && nTracked != nIndex)
         {
@@ -3027,7 +3027,7 @@ void PlanCond::Decide_HPSpin_Rail_orNot(Interactor* pContext, PlanNode*, short* 
     AttachPak* pnTracked;
     short      nTracked;
 
-    auto* pBlock = pContext->GetActor()->GetPhysicsBody();
+    auto* const pBlock = pContext->GetActor()->GetPhysicsBody();
 
     if (-g_flTwoPlan < pBlock->pos.z)
     {
@@ -3079,7 +3079,7 @@ void PlanAction::KickOffRim(Interactor* pContext, PlanNode*, short*, int)
 
     auto* const pActor    = pContext->GetActor();
     auto* const pBody     = pActor->GetPhysicsBody();
-    auto        vPosition = *pActor->GetPositionPtr();
+    const auto  vPosition = *pActor->GetPositionPtr();
 
     vDirection.x = -vPosition.x;
     vDirection.y = -vPosition.y;
@@ -3179,7 +3179,7 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
         vSquare.y = static_cast<float>(kSpawnGridHalf - static_cast<short>(nSlot) % 2 * kSpawnGridPitch);
         vSquare.z = g_flZeroPlan;
 
-        auto vPosition = *pObject->GetPositionPtr();
+        const auto vPosition = *pObject->GetPositionPtr();
 
         const auto flDx = vPosition.x - vSquare.x;
         const auto flDy = vPosition.y - vSquare.y;
@@ -3241,7 +3241,7 @@ void PlanAction::EndPeriodNow(Interactor*, PlanNode*, short*, int)
 void PlanCond::TeamIsDead(Interactor*, PlanNode*, short* pResult, int)
 {
     const auto bHome = g_pGameEngine->IsHomeTeamDead();
-    auto       bAway = g_pGameEngine->IsAwayTeamDead();
+    const auto bAway = g_pGameEngine->IsAwayTeamDead();
 
     if (bHome != 0 && bAway != 0)
     {
@@ -3271,7 +3271,7 @@ void PlanCond::TeamIsDead(Interactor*, PlanNode*, short* pResult, int)
 void PlanCond::TeamIsInjured(Interactor*, PlanNode*, short* pResult, int)
 {
     const auto bHome = g_pGameEngine->IsHomeTeamInjured();
-    auto       bAway = g_pGameEngine->IsAwayTeamInjured();
+    const auto bAway = g_pGameEngine->IsAwayTeamInjured();
 
     if (bHome != 0 && bAway != 0)
     {
@@ -3433,7 +3433,7 @@ void PlanCond::TeammateIsViewOwner(Interactor* pContext, PlanNode*, short* pResu
 
     int nTeam = pActor->GetSlot();
 
-    const char* pszName = pActor->GetPlanState()->m_pszName;
+    const char* const pszName = pActor->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004c45f4
     if (strcmp("Input", pszName) == 0)
@@ -3459,7 +3459,7 @@ void PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*, short* 
 
     int nTeam = pActor->GetSlot();
 
-    const char* pszName = pActor->GetPlanState()->m_pszName;
+    const char* const pszName = pActor->GetPlanState()->m_pszName;
 
     // STRING: HYPERX 0x004c45f4
     if (strcmp("Input", pszName) == 0)
@@ -3672,7 +3672,7 @@ void PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, 
     int   nIndex;
     Vec3  vToThere;
 
-    auto* pTracked = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
+    auto* const pTracked = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
     auto* const pHere = pTracked->GetPositionPtr();
 
@@ -3695,7 +3695,7 @@ void PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, 
     vToThere.y = pThere->y - pHere->y;
     vToThere.z = pThere->z - pHere->z;
 
-    const Vec3* pForward = &pTracked->GetPhysicsBody()->velDir;
+    const Vec3* const pForward = &pTracked->GetPhysicsBody()->velDir;
 
     if (vToThere.z * pForward->z + vToThere.y * pForward->y + vToThere.x * pForward->x > 0.0f)
     {
@@ -3781,7 +3781,7 @@ void PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResul
         nSlot = (reinterpret_cast<PlanStatFnWide*>(g_apPlanStatFns))[nSlot & 0xffff](pContext->GetActor(), pArgs);
     }
 
-    auto* pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
+    auto* const pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pCarrier != nullptr && pCarrier->nSlot < kPlayerObjectCount && pCarrier->nSlot == static_cast<short>(nSlot))
     {
@@ -4016,9 +4016,9 @@ constexpr auto kArgCountWithPosition = 5;
 // FUNCTION: HYPERX 0x004635e0
 void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    const PlanWord* pBlock  = pArgs->m_pArgs;
-    const auto      flValue = pBlock[2].fl;
-    const auto      nIndex  = static_cast<short>(pBlock[1].n);
+    const PlanWord* const pBlock  = pArgs->m_pArgs;
+    const auto            flValue = pBlock[2].fl;
+    const auto            nIndex  = static_cast<short>(pBlock[1].n);
 
     auto* const pActor  = pContext->GetActor();
     auto* const pLocals = pActor->GetPlanState();
@@ -4251,7 +4251,7 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
     EngineObject* pNamed;
     short         nSlot;
 
-    auto vRandomizerAt = *g_pGameEngine->m_ppSlots[kSlotRedRandomizer]->GetPositionPtr();
+    const auto vRandomizerAt = *g_pGameEngine->m_ppSlots[kSlotRedRandomizer]->GetPositionPtr();
 
     auto* const pRandomizer = g_pGameEngine->m_ppSlots[kSlotRedRandomizer];
 
@@ -4488,7 +4488,7 @@ void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short*
 
     auto* const pActor = pContext->GetPlayerActor();
 
-    const PlanWord* pBlock = pArgs->m_pArgs;
+    const PlanWord* const pBlock = pArgs->m_pArgs;
 
     if (pBlock[1].IsPronoun())
     {
@@ -5397,12 +5397,12 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
 
     if (nOwnerSlot == nCarrier)
     {
-        auto* pCarrierBlock = g_pGameEngine->m_ppSlots[nCarrier]->GetPhysicsBody();
+        auto* const pCarrierBlock = g_pGameEngine->m_ppSlots[nCarrier]->GetPhysicsBody();
 
         Vec3::ScaleTo(&pCarrierBlock->vel, g_flFourPlan, &vKick);
 
         auto* const pBody  = pContext->GetActor()->m_pBody;
-        auto        vOwner = pBody->vel;
+        const auto  vOwner = pBody->vel;
 
         Vec3::ScaleTo(&vOwner, OWNER_SCALE, &vVelocity);
 
@@ -5552,8 +5552,8 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     auto* const          pFirst  = apSlots[kSlotMine];
     auto* const          pSecond = apSlots[kSlotSwarf];
 
-    auto vFirst  = *pFirst->GetPositionPtr();
-    auto vSecond = *pSecond->GetPositionPtr();
+    const auto vFirst  = *pFirst->GetPositionPtr();
+    auto       vSecond = *pSecond->GetPositionPtr();
 
     auto vSelf = *pActor->GetPositionPtr();
 
@@ -5770,7 +5770,7 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
     float flStrength;
     Vec3  vOffset;
 
-    auto* pActor = pContext->GetPlayerActor();
+    auto* const pActor = pContext->GetPlayerActor();
 
     auto nAttacker = pContext->GetTargetSlot();
 
@@ -5832,8 +5832,8 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     auto* const pOther = g_pGameEngine->m_ppSlots[nAttacker];
 
-    const Vec3* pPosSelf  = pActor->GetPositionPtr();
-    const Vec3* pPosOther = pOther->GetPositionPtr();
+    const Vec3* const pPosSelf  = pActor->GetPositionPtr();
+    const Vec3* const pPosOther = pOther->GetPositionPtr();
 
     vOffset.x = pPosOther->x - pPosSelf->x;
     vOffset.y = pPosOther->y - pPosSelf->y;
@@ -6051,8 +6051,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     auto* const pOther = g_pGameEngine->m_ppSlots[nSlot];
 
-    const Vec3* pPosSelf  = pActor->GetPositionPtr();
-    const Vec3* pPosOther = pOther->GetPositionPtr();
+    const Vec3* const pPosSelf  = pActor->GetPositionPtr();
+    const Vec3* const pPosOther = pOther->GetPositionPtr();
 
     vOffset.x = pPosOther->x - pPosSelf->x;
     vOffset.y = pPosOther->y - pPosSelf->y;
@@ -6438,7 +6438,7 @@ void PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* 
 
     pRokAt = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 
-    const Vec3* pOwnerAt = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pOwnerAt = pContext->GetActor()->GetPositionPtr();
 
     const auto nSlotA = pContext->GetActor()->GetSlot();
 
@@ -6791,7 +6791,7 @@ void PlanCond::RokValueInMyFavor(Interactor*, PlanNode*, short* pResult, int)
 
     auto nDirection = pCarrier->m_wRokValue;
 
-    auto* pState = pCarrier->GetPhysicsBody()->pAttach;
+    auto* const pState = pCarrier->GetPhysicsBody()->pAttach;
 
     if (pState != nullptr && pState->nSlot < 6)
     {
@@ -6845,7 +6845,7 @@ void PlanCond::CheckPassingDistance(Interactor* pContext, PlanNode*, short* pRes
 
     const int nSlot = pActor->GetSlot();
 
-    auto* pMate = g_pGameEngine->GetPlayer(TeammateSlot(static_cast<short>(nSlot)));
+    auto* const pMate = g_pGameEngine->GetPlayer(TeammateSlot(static_cast<short>(nSlot)));
 
     auto* const pSelfPos = pContext->GetActor()->GetPositionPtr();
 
@@ -6909,8 +6909,8 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
 
     const auto flDamage = pTarget->m_stats.GetScalar(kRatingDamage);
 
-    const Vec3* pActorPos  = pContext->GetActor()->GetPositionPtr();
-    const Vec3* pTargetPos = pTarget->GetPositionPtr();
+    const Vec3* const pActorPos  = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pTargetPos = pTarget->GetPositionPtr();
 
     vDelta.x = pTargetPos->x - pActorPos->x;
     vDelta.y = pTargetPos->y - pActorPos->y;
@@ -7014,15 +7014,15 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
         flSign = -g_flOnePlan;
     }
 
-    const Vec3* pSelfNear = pActor->GetPositionPtr();
-    const Vec3* pNearAt   = pNear->GetPositionPtr();
+    const Vec3* const pSelfNear = pActor->GetPositionPtr();
+    const Vec3* const pNearAt   = pNear->GetPositionPtr();
 
     vNear.x = pNearAt->x - pSelfNear->x;
     vNear.y = pNearAt->y - pSelfNear->y;
     vNear.z = pNearAt->z - pSelfNear->z;
 
-    const Vec3* pSelfFar = pActor->GetPositionPtr();
-    const Vec3* pFarAt   = pFar->GetPositionPtr();
+    const Vec3* const pSelfFar = pActor->GetPositionPtr();
+    const Vec3* const pFarAt   = pFar->GetPositionPtr();
 
     vFar.x = pFarAt->x - pSelfFar->x;
     vFar.y = pFarAt->y - pSelfFar->y;
@@ -7032,17 +7032,17 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
 
     if (flLimit < flSign * pMiddle->GetPositionPtr()->y || vNear.z * vNear.z + vNear.y * vNear.y + vNear.x * vNear.x < 100.0 || vFar.z * vFar.z + vFar.y * vFar.y + vFar.x * vFar.x < 100.0)
     {
-        const Vec3* pMidSpan = pMiddle->GetPositionPtr();
-        const Vec3* pSpanAt  = pNear->GetPositionPtr();
+        const Vec3* const pMidSpan = pMiddle->GetPositionPtr();
+        const Vec3* const pSpanAt  = pNear->GetPositionPtr();
 
         vSpan.x = pSpanAt->x - pMidSpan->x;
         vSpan.y = pSpanAt->y - pMidSpan->y;
         vSpan.z = pSpanAt->z - pMidSpan->z;
 
-        const Vec3* pMidWide = pMiddle->GetPositionPtr();
-        const Vec3* pWideAt  = pFar->GetPositionPtr();
+        const Vec3* const pMidWide = pMiddle->GetPositionPtr();
+        const Vec3* const pWideAt  = pFar->GetPositionPtr();
 
-        auto       flWideX = pWideAt->x - pMidWide->x;
+        const auto flWideX = pWideAt->x - pMidWide->x;
         const auto flWideY = pWideAt->y - pMidWide->y;
         const auto flWideZ = pWideAt->z - pMidWide->z;
 
@@ -7077,7 +7077,7 @@ void PlanCond::Ducking(Interactor* pContext, PlanNode*, short* pResult, int)
 
     auto* const pColObj = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    const AnimDB* pSet = pColObj->GetOwner()->m_pAnimPlayer->m_pSet;
+    const AnimDB* const pSet = pColObj->GetOwner()->m_pAnimPlayer->m_pSet;
 
     if (pSet != nullptr)
     {
@@ -7140,7 +7140,7 @@ void PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, int nArg
 
     auto* pObject = g_pGameEngine->m_ppSlots[nSlot];
 
-    const Vec3* pVelocity = &pObject->GetPhysicsBody()->vel;
+    const Vec3* const pVelocity = &pObject->GetPhysicsBody()->vel;
 
     vDiff.x = pObject->GetPositionPtr()->x - pContext->GetActor()->GetPositionPtr()->x;
     vDiff.y = pObject->GetPositionPtr()->y - pContext->GetActor()->GetPositionPtr()->y;
@@ -7181,7 +7181,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
     Vec3  vUnit;
     float flLength;
 
-    auto* pTarget = g_pGameEngine->m_ppSlots[nSlot];
+    auto* const pTarget = g_pGameEngine->m_ppSlots[nSlot];
 
     // The original has no guard here, and a run can reach it with an empty slot.
     if (pTarget == nullptr)
@@ -7191,7 +7191,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
     }
 
     pTarget->GetPhysicsBody();
-    const Vec3* pForward = &pTarget->GetPhysicsBody()->velDir;
+    const Vec3* const pForward = &pTarget->GetPhysicsBody()->velDir;
 
     auto* pActor = pContext->GetActor();
     vDelta.x     = pTarget->GetPositionPtr()->x - pActor->GetPositionPtr()->x;
@@ -7614,7 +7614,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
 
     pRokAt = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 
-    const Vec3* pOwnerAt = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pOwnerAt = pContext->GetActor()->GetPositionPtr();
 
     const auto nSlot = pContext->GetActor()->GetSlot();
 
@@ -7900,15 +7900,15 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
         }
     }
 
-    const Vec3* pSelf = pActor->GetPositionPtr();
+    const Vec3* const pSelf = pActor->GetPositionPtr();
 
     auto bySlot = static_cast<unsigned char>(pActor->GetSlot());
 
-    const Vec3* pFar = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
+    const Vec3* const pFar = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
     bySlot = static_cast<unsigned char>(pActor->GetSlot());
 
-    const Vec3* pNear = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
+    const Vec3* const pNear = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
 
     const auto flFarX = pSelf->x - pFar->x;
     const auto flFarY = pSelf->y - pFar->y;
@@ -7933,7 +7933,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
         vOffset.y = pNear->y - pSelf->y;
     }
 
-    const Vec3* pVel = &pActor->GetPhysicsBody()->velDir;
+    const Vec3* const pVel = &pActor->GetPhysicsBody()->velDir;
 
     if (vOffset.y * pVel->x - vOffset.x * pVel->y > 0.0f)
     {
@@ -8030,7 +8030,7 @@ void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00468440
 void PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pResult, int)
 {
-    auto vVelocity = pContext->GetActor()->m_pBody->vel;
+    const auto vVelocity = pContext->GetActor()->m_pBody->vel;
 
     const auto nRange = pArgs->m_nArgCount - 1;
 
@@ -8054,7 +8054,7 @@ void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult,
 
     auto* const pObject = pContext->GetPlayerActor();
 
-    auto nMask = static_cast<int>(pObject->m_stats.GetScalar(kRatingHalfPipeRepertoire));
+    const auto nMask = static_cast<int>(pObject->m_stats.GetScalar(kRatingHalfPipeRepertoire));
 
     if (nMask < 1 || nMask > 0x7f)
     {
@@ -8182,7 +8182,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
     EngineObject* pGoal;
     Vec3          vDiff;
     int           nRange;
-    auto*         pBody = pContext->GetPlayerActor();
+    auto* const   pBody = pContext->GetPlayerActor();
 
     nRange = static_cast<int>((&pBody->m_stats)->GetScalar(kRatingCarryRokThrowDist));
 
@@ -8191,7 +8191,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
         nRange = kRangeDefault;
     }
 
-    const Vec3* pSelfAt = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pSelfAt = pContext->GetActor()->GetPositionPtr();
 
     const auto nOwnSlot = pContext->GetActor()->GetSlot();
 
@@ -8206,7 +8206,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
         pGoal = apObjects[kSlotSgoal];
     }
 
-    const Vec3* pGoalAt = pGoal->GetPositionPtr();
+    const Vec3* const pGoalAt = pGoal->GetPositionPtr();
 
     vDiff.x = pGoalAt->x - pSelfAt->x;
     vDiff.y = pGoalAt->y - pSelfAt->y;
@@ -8453,7 +8453,7 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
 
     auto* const pRok = (RokObject*)ppObjects[kSlotRok];
 
-    auto nTracked = pRok->m_nCarrierSlot;
+    const auto nTracked = pRok->m_nCarrierSlot;
 
     if (nTracked >= 0 && nTracked <= 3)
     {
@@ -8496,7 +8496,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     auto flRange = static_cast<float>(nRange);
 
-    const Vec3* pSelf = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pSelf = pContext->GetActor()->GetPositionPtr();
 
     pRok = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 

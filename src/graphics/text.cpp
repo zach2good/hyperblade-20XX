@@ -76,7 +76,7 @@ std::vector<unsigned char> LoadWindowsFont(const char* pszName)
         return {};
     }
 
-    auto file = std::vector<unsigned char>(static_cast<const unsigned char*>(pData), static_cast<const unsigned char*>(pData) + nSize);
+    const auto file = std::vector<unsigned char>(static_cast<const unsigned char*>(pData), static_cast<const unsigned char*>(pData) + nSize);
 
     SDL_free(pData);
 

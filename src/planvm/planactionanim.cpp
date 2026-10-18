@@ -105,13 +105,13 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
         nIndex = nParam;
     }
 
-    const AnimScriptTable* pDb = g_pAnimRegistry->m_pScripts;
+    const AnimScriptTable* const pDb = g_pAnimRegistry->m_pScripts;
 
     pAnim = pDb->Find(static_cast<short>(nIndex));
 
     if (pAnim != nullptr && pContext->GetActor()->GetSlot() <= kPlayerSlotCount - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(kRatingDamage) < 30.0f)
     {
-        const auto* pszName = pAnim->GetName();
+        const auto* const pszName = pAnim->GetName();
 
         // STRING: HYPERX 0x004bb2a0
         if (strcmp(pszName, "AA_Skate_Std") == 0)

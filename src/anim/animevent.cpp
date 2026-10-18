@@ -109,8 +109,8 @@ void AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, shor
 
     auto* const pListener = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
-    const Vec3* pListenerPos = pListener->GetPositionPtr();
-    const Vec3* pEmitterPos  = pContext->GetActor()->GetPositionPtr();
+    const Vec3* const pListenerPos = pListener->GetPositionPtr();
+    const Vec3* const pEmitterPos  = pContext->GetActor()->GetPositionPtr();
 
     vDelta.x = pEmitterPos->x - pListenerPos->x;
     vDelta.y = pEmitterPos->y - pListenerPos->y;

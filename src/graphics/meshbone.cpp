@@ -60,7 +60,7 @@ void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, Tra
 {
     if ((m_nFlags & kMeshboneAnimationDirty) != 0)
     {
-        const auto* pDesc = m_pDesc;
+        const auto* const pDesc = m_pDesc;
 
         m_local.SetTranslation(m_local.m_a[0][3] * pDesc->m_vScale.x,
                                m_local.m_a[1][3] * pDesc->m_vScale.y,
@@ -97,7 +97,7 @@ void MeshBone::UpdateLeafTransform(unsigned int, TransformObject* pParent)
 {
     if ((m_nFlags & kMeshboneAnimationDirty) != 0)
     {
-        const auto* pDesc = m_pDesc;
+        const auto* const pDesc = m_pDesc;
 
         m_local.SetTranslation(m_local.m_a[0][3] * pDesc->m_vScale.x,
                                m_local.m_a[1][3] * pDesc->m_vScale.y,
@@ -385,7 +385,7 @@ void MeshBone::DrawFaces()
 
         ppSlot++;
 
-        const TransformedVertex* pVertexBuf = g_pModelVertexBuf;
+        const TransformedVertex* const pVertexBuf = g_pModelVertexBuf;
 
         pEntry->flZ   = (pVertexBuf[pFace->aCorners[2]].w + pVertexBuf[pFace->aCorners[1]].w + pVertexBuf[pFace->aCorners[0]].w) * 0.33333334f;
         pEntry->cClip = cClip;
@@ -417,9 +417,9 @@ void MeshBone::PushToRenderStack(CameraObject* pCamera)
     float flWorldZ;
     float flSortZ;
 
-    const CameraProjectionState* pView = pCamera->m_pView;
-    pRows                              = m_world.m_a;
-    const Vec3* pOrigin                = &m_pMesh->vOrigin;
+    const CameraProjectionState* const pView = pCamera->m_pView;
+    pRows                                    = m_world.m_a;
+    const Vec3* const pOrigin                = &m_pMesh->vOrigin;
 
     flWorldX = m_world.m_a[0][0] * pOrigin->x + (pRows[0][1] * pOrigin->y + pRows[0][2] * pOrigin->z) + pRows[0][3];
     flWorldY = pRows[1][0] * pOrigin->x + (pRows[1][1] * pOrigin->y + pRows[1][2] * pOrigin->z) + pRows[1][3];
@@ -503,12 +503,12 @@ void MeshBone::CalcVertexColors()
         m_nFlags = static_cast<unsigned short>(m_nFlags | kMeshboneColoursPresent);
     }
 
-    const TransformObject* pXf = &m_world;
+    const TransformObject* const pXf = &m_world;
 
     // Never false.
     if (pXf != nullptr)
     {
-        auto vLight = g_lightDirs[0].dir;
+        const auto vLight = g_lightDirs[0].dir;
 
         g_vLightDirModel.x = vLight.x * pXf->m_a[0][0] + vLight.y * pXf->m_a[1][0] + vLight.z * pXf->m_a[2][0];
         g_vLightDirModel.y = vLight.x * pXf->m_a[0][1] + vLight.y * pXf->m_a[1][1] + vLight.z * pXf->m_a[2][1];
@@ -523,11 +523,11 @@ void MeshBone::CalcVertexColors()
     {
         unsigned int nColour;
 
-        auto* pFace = GetFace(i);
+        auto* const pFace = GetFace(i);
 
-        auto* pMaterial = m_pOwner->m_pModelBlock->m_pMaterials + pFace->cMaterial;
+        auto* const pMaterial = m_pOwner->m_pModelBlock->m_pMaterials + pFace->cMaterial;
 
-        const Vec3* pNormal = &pFace->vNormal;
+        const Vec3* const pNormal = &pFace->vNormal;
 
         unsigned char cIndex;
         char          cShade;

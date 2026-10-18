@@ -150,7 +150,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
         }
     }
 
-    auto* pBody = pSelf->GetPhysicsBody();
+    auto* const pBody = pSelf->GetPhysicsBody();
 
     const auto flRatio = pBody->flSpeed / pBody->GetForwardSpeedDt() * 4.0f;
 
@@ -177,17 +177,17 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
         Vec3 aScratch[2];
 
-        const Vec3* pOtherX = pOther->GetWorldPos(&aScratch[0]);
-        const Vec3* pSelfX  = pSelf->GetWorldPos(&aScratch[1]);
-        vDiff.x             = pOtherX->x - pSelfX->x;
+        const Vec3* const pOtherX = pOther->GetWorldPos(&aScratch[0]);
+        const Vec3* const pSelfX  = pSelf->GetWorldPos(&aScratch[1]);
+        vDiff.x                   = pOtherX->x - pSelfX->x;
 
-        const Vec3* pOtherY = pOther->GetWorldPos(&aScratch[1]);
-        const Vec3* pSelfY  = pSelf->GetWorldPos(&aScratch[0]);
-        vDiff.y             = pOtherY->y - pSelfY->y;
+        const Vec3* const pOtherY = pOther->GetWorldPos(&aScratch[1]);
+        const Vec3* const pSelfY  = pSelf->GetWorldPos(&aScratch[0]);
+        vDiff.y                   = pOtherY->y - pSelfY->y;
 
-        const Vec3* pOtherZ = pOther->GetWorldPos(&aScratch[1]);
-        const Vec3* pSelfZ  = pSelf->GetWorldPos(&aScratch[0]);
-        vDiff.z             = pOtherZ->z - pSelfZ->z;
+        const Vec3* const pOtherZ = pOther->GetWorldPos(&aScratch[1]);
+        const Vec3* const pSelfZ  = pSelf->GetWorldPos(&aScratch[0]);
+        vDiff.z                   = pOtherZ->z - pSelfZ->z;
 
         Math::Vec3Normalize(&vDiff);
 
@@ -345,7 +345,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
         *CollisionCheck::ComputeNearestNormal(&vDelta, &box, &vPoint),
         &vLocal);
 
-    auto vNormal = vLocal;
+    const auto vNormal = vLocal;
 
     flSpeed = g_pGameEngine->m_clock.flInvDelta * pSelfBody->flSpeed;
 
@@ -542,7 +542,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
         pSelf = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
     }
 
-    auto*       pSelfBody  = pSelf->GetPhysicsBody();
+    auto* const pSelfBody  = pSelf->GetPhysicsBody();
     auto* const pOtherBody = pOther->GetPhysicsBody();
 
     const Vec3* pSelfCentre = pSelf->GetWorldPos(&vSteer);
@@ -553,7 +553,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
     vDir    = *Object::ComputeSteeringDirection(&vSteer, pOther, &vSelfPos);
     vNormal = vDir;
 
-    auto vEntryVel = pSelf->m_pBody->vel;
+    const auto vEntryVel = pSelf->m_pBody->vel;
 
     flSpeed = static_cast<float>(sqrt(static_cast<double>(vEntryVel.x * vEntryVel.x + (vEntryVel.y * vEntryVel.y + vEntryVel.z * vEntryVel.z))) * g_pGameEngine->m_clock.flInvDelta);
 
@@ -768,13 +768,13 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    auto* pSelf = pColSelf->GetOwner();
+    auto* const pSelf = pColSelf->GetOwner();
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
     auto* const pOther = pColOther->GetOwner();
 
-    auto* pBody = pSelf->GetPhysicsBody();
+    auto* const pBody = pSelf->GetPhysicsBody();
 
     Vec3::ScaleTo(&pBody->vel, 0.3f, &vTemp);
 
@@ -788,17 +788,17 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
         Vec3 vSelfScratch;
         Vec3 vOtherScratch;
 
-        const Vec3* pOtherX = pOther->GetWorldPos(&vOtherScratch);
-        const Vec3* pSelfX  = pSelf->GetWorldPos(&vSelfScratch);
-        vDiff.x             = pOtherX->x - pSelfX->x;
+        const Vec3* const pOtherX = pOther->GetWorldPos(&vOtherScratch);
+        const Vec3* const pSelfX  = pSelf->GetWorldPos(&vSelfScratch);
+        vDiff.x                   = pOtherX->x - pSelfX->x;
 
-        const Vec3* pOtherY = pOther->GetWorldPos(&vOtherScratch);
-        const Vec3* pSelfY  = pSelf->GetWorldPos(&vSelfScratch);
-        vDiff.y             = pOtherY->y - pSelfY->y;
+        const Vec3* const pOtherY = pOther->GetWorldPos(&vOtherScratch);
+        const Vec3* const pSelfY  = pSelf->GetWorldPos(&vSelfScratch);
+        vDiff.y                   = pOtherY->y - pSelfY->y;
 
-        const Vec3* pOtherZ = pOther->GetWorldPos(&vOtherScratch);
-        const Vec3* pSelfZ  = pSelf->GetWorldPos(&vSelfScratch);
-        vDiff.z             = pOtherZ->z - pSelfZ->z;
+        const Vec3* const pOtherZ = pOther->GetWorldPos(&vOtherScratch);
+        const Vec3* const pSelfZ  = pSelf->GetWorldPos(&vSelfScratch);
+        vDiff.z                   = pOtherZ->z - pSelfZ->z;
     }
 
     Math::Vec3Normalize(&vDiff);
@@ -847,7 +847,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
         g_nCheckImpulseOtherSlot = pOther->GetSlot();
     }
 
-    int nOtherSlot = pOther->GetSlot();
+    const int nOtherSlot = pOther->GetSlot();
 
     if (g_pGameEngine->m_nBrutality != 0)
     {
@@ -896,18 +896,18 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    auto* pSelf = pColSelf->GetOwner();
+    auto* const pSelf = pColSelf->GetOwner();
 
     auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    auto* pOther = pColOther->GetOwner();
+    auto* const pOther = pColOther->GetOwner();
 
     if ((static_cast<unsigned char>(pSelf->m_nFlags) & kEngineObjectHidden) == 0 && (static_cast<unsigned char>(pOther->m_nFlags) & kEngineObjectHidden) == 0)
     {
-        const Vec3* pOtherVel = &pOther->GetPhysicsBody()->vel;
-        const Vec3* pSelfVel  = &pSelf->GetPhysicsBody()->vel;
-        const Vec3* pSelfDir  = &pSelf->GetPhysicsBody()->velDir;
-        const Vec3* pOtherDir = &pOther->GetPhysicsBody()->velDir;
+        const Vec3* const pOtherVel = &pOther->GetPhysicsBody()->vel;
+        const Vec3*       pSelfVel  = &pSelf->GetPhysicsBody()->vel;
+        const Vec3* const pSelfDir  = &pSelf->GetPhysicsBody()->velDir;
+        const Vec3* const pOtherDir = &pOther->GetPhysicsBody()->velDir;
 
         auto flRoot = pOtherVel->Magnitude();
 

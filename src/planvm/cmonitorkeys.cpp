@@ -29,14 +29,14 @@ void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bReady = 0;
     m_pOwner = pOwner;
 
-    auto* pFirst = &pOwner->GetPhysicsBody()->nHeldBindings;
-    m_pInput     = pFirst;
-    *pFirst      = static_cast<short>(g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask);
+    auto* const pFirst = &pOwner->GetPhysicsBody()->nHeldBindings;
+    m_pInput           = pFirst;
+    *pFirst            = static_cast<short>(g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask);
 
-    auto* pSecond = &pOwner->GetPhysicsBody()->nPrevHeldBindings;
-    m_pPrevInput  = pSecond;
-    *pSecond      = 0;
-    m_nMode       = kMonDriveYerGuy;
+    auto* const pSecond = &pOwner->GetPhysicsBody()->nPrevHeldBindings;
+    m_pPrevInput        = pSecond;
+    *pSecond            = 0;
+    m_nMode             = kMonDriveYerGuy;
 }
 
 // FUNCTION: HYPERX 0x00410e60

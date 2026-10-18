@@ -185,7 +185,7 @@ void CameraObject::UpdateSmoothing()
 {
     auto* const pSource = m_pBody;
 
-    auto vPosition = pSource->pos;
+    const auto vPosition = pSource->pos;
 
     const int iPosition = m_wPosIndex;
 
@@ -344,8 +344,8 @@ void CameraObject::ViewIt()
         {
             if ((static_cast<unsigned char>(pObject->m_nFlags) & kEngineObjectNoCull) == 0)
             {
-                const TransformObject* pView    = m_pView;
-                const auto             flRadius = pObject->m_flBoundRadius;
+                const TransformObject* const pView    = m_pView;
+                const auto                   flRadius = pObject->m_flBoundRadius;
 
                 clip.x = (((vCentre.x * pView->m_a[0][0]) + vCentre.y * pView->m_a[0][1]) + vCentre.z * pView->m_a[0][2]) + pView->m_a[0][3];
 
@@ -640,7 +640,7 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
 
     for (nIndex = 0; nIndex < g_pGameEngine->m_nObjectCount; nIndex++)
     {
-        auto* pObject = g_pGameEngine->m_ppObjects[nIndex];
+        auto* const pObject = g_pGameEngine->m_ppObjects[nIndex];
 
         if (pObject->GetShadowCount() != 0 && pObject->IsVisible() != 0 && pObject->GetSlot() != kGoalieSlotA && pObject->GetSlot() != kGoalieSlotB)
         {

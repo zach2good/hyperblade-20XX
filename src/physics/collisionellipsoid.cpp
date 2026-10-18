@@ -111,7 +111,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
     const double dOriginZ = pOrigin->z;
 
     const double dDirX = pDirection->x;
-    double       dDirY = pDirection->y;
+    const double dDirY = pDirection->y;
     const double dDirZ = pDirection->z;
 
     if (dDirX > AXIS_EPS_UPPER || dDirX < AXIS_EPS_LOWER)

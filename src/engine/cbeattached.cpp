@@ -73,9 +73,9 @@ void CBeAttached::Process(int nArg)
             pEntity->ApplyRenderSlotPose();
         }
 
-        pBone        = m_pAttach;
-        pOut         = m_pPos;
-        auto flLocal = pBone->vOffset;
+        pBone              = m_pAttach;
+        pOut               = m_pPos;
+        const auto flLocal = pBone->vOffset;
 
         pTransform = pBone->pTransform;
 
@@ -139,9 +139,9 @@ void CBeAttached::Release(int nArg)
             pEntity->ApplyRenderSlotPose();
         }
 
-        pBone        = m_pAttach;
-        pOut         = m_pPos;
-        auto flLocal = pBone->vOffset;
+        pBone              = m_pAttach;
+        pOut               = m_pPos;
+        const auto flLocal = pBone->vOffset;
 
         pTransform = pBone->pTransform;
 

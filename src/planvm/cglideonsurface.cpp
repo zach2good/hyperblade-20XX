@@ -265,7 +265,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         flDouble = g_pGameEngine->m_clock.GetDelta() * *m_pBankScale * vNormal.z * flDouble * 12.0f;
 
-        int nSlot = m_pOwner->GetSlot();
+        const int nSlot = m_pOwner->GetSlot();
 
         if (g_pGameEngine->m_clock.GetInvDelta() * *m_pSpeed < g_flBankFreeSpeed && (nSlot <= kGoalieSlotB || (nSlot >= kSlotBodyPart && nSlot <= kSlotBodyPartLast)))
         {
@@ -556,7 +556,7 @@ void CGlideOnSurface::Release(int nTick)
 
             pDir = m_pVelDir;
 
-            auto flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
+            const auto flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
 
             vProj.x = flDot;
             vProj.x *= vNormal.x;

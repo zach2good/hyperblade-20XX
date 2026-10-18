@@ -68,7 +68,7 @@ void Cheat::GeorgeActivate()
 // FUNCTION: HYPERX 0x00449890
 void Cheat::MaxViewedPlayerRatings()
 {
-    auto* pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
+    auto* const pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
     // Only the six player slots carry stats.
     if (pObject != nullptr && pObject->GetSlot() < kPlayerObjectCount)
@@ -98,13 +98,13 @@ void Cheat::RestoreAllPlayers()
 {
     for (int nTeam = 0; nTeam < 4; nTeam++)
     {
-        auto* pTeam = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anTeamOrder[nTeam])];
+        auto* const pTeam = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anTeamOrder[nTeam])];
 
         if (pTeam != nullptr)
         {
             for (int nBone = 1; nBone < 15; nBone++)
             {
-                auto* pBone = &pTeam->m_pBones[static_cast<short>(nBone)];
+                auto* const pBone = &pTeam->m_pBones[static_cast<short>(nBone)];
 
                 if (pBone != nullptr && pBone->IsBound() != 0)
                 {

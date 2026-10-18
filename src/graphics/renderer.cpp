@@ -79,7 +79,7 @@ void Renderer::DrawAllMeshes()
 {
     MeshBone* pBone;
 
-    auto* pDrome = g_pGameEngine->m_ppSlots[kSlotDrome];
+    auto* const pDrome = g_pGameEngine->m_ppSlots[kSlotDrome];
 
     auto nBone = 0;
 

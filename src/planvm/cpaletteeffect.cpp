@@ -59,7 +59,7 @@ void CPaletteEffect::OnListChanged()
 // FUNCTION: HYPERX 0x00410b70
 int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration)
 {
-    auto anRange = g_pColorPalette->GetFrameRange(nAnim);
+    const auto anRange = g_pColorPalette->GetFrameRange(nAnim);
 
     if (anRange.nFirst != 0 || anRange.nCount != 0)
     {

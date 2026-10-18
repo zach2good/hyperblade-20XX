@@ -434,8 +434,8 @@ void PhysicsBody::UpdateMovementAxes()
     {
         if ((static_cast<unsigned char>(nAxis) & HELD_MOVEMENT) == HELD_FORWARD)
         {
-            const Vec3* pRowA = &velDir;
-            const Vec3* pRowB = &velDirLatched;
+            const Vec3* const pRowA = &velDir;
+            const Vec3* const pRowB = &velDirLatched;
 
             flDot = g_flOnePhysicsReset - (pRowB->x * GetVelDirX() + (pRowB->y * pRowA->y + pRowB->z * pRowA->z));
 
@@ -527,8 +527,8 @@ void PhysicsBody::ApplySteeringForce()
 {
     Vec3 vLateral;
 
-    const Vec3* pNormal = &surfNormal;
-    const Vec3* pDir    = &velDir;
+    const Vec3* const pNormal = &surfNormal;
+    const Vec3* const pDir    = &velDir;
 
     vLateral.x = pNormal->z * pDir->y - pNormal->y * pDir->z;
     vLateral.y = pDir->z * pNormal->x - pNormal->z * pDir->x;
@@ -835,8 +835,8 @@ char PhysicsBody::UpdateVelocityDirection()
 // FUNCTION: HYPERX 0x00408880
 void PhysicsBody::ApplyBankForce(unsigned char cDir, float flForce)
 {
-    const Vec3* pNormal = &surfNormal;
-    const Vec3* pDir    = &velDir;
+    const Vec3* const pNormal = &surfNormal;
+    const Vec3* const pDir    = &velDir;
 
     g_vBankRight.x = pNormal->z * pDir->y - pNormal->y * pDir->z;
     g_vBankRight.y = pNormal->x * pDir->z - pNormal->z * pDir->x;
@@ -902,7 +902,7 @@ void PhysicsBody::UpdateBanking()
         velDir.x = flDirX * flCos - flSin * velDir.y;
         velDir.y = (flDirX * flSin) + flCos * velDir.y;
 
-        auto* pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
+        auto* const pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
         if (pCamera->GetPlanState()->m_pCurrent->m_wKind != kBehTrackTrajectory)
         {
@@ -942,7 +942,7 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 
     pTargetPos->z = pShell->GetZ(pTargetPos->x, pTargetPos->y);
 
-    auto* pPosition = pOwner->GetPositionPtr();
+    auto* const pPosition = pOwner->GetPositionPtr();
 
     *pPosition = *pTargetPos;
 
@@ -952,7 +952,7 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 
     pOwner->ApplyRenderSlotPose();
 
-    const Vec3* pNormal = pShell->NormalAtPoint(pTargetPos);
+    const Vec3* const pNormal = pShell->NormalAtPoint(pTargetPos);
 
     if (pNormal == nullptr)
     {
@@ -1023,12 +1023,12 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 // FUNCTION: HYPERX 0x00408cc0
 void PhysicsBody::ApplyAnimDrivenForce()
 {
-    auto*       pMesh      = pOwner->m_pBones;
+    auto* const pMesh      = pOwner->m_pBones;
     auto* const pTransform = &pMesh->m_local;
 
     if (pMesh->IsAnimationDirty() != 0)
     {
-        const auto* pBone = pMesh->m_pDesc;
+        const auto* const pBone = pMesh->m_pDesc;
 
         pTransform->SetTranslation(
             pTransform->GetElement(0, 3) * pBone->m_vScale.x,
