@@ -7,6 +7,8 @@
 
 #include "anim/animclip.h"
 
+#include <memory>
+
 // The stride is twenty two, where natural packing gives twenty four.
 #pragma pack(push, 2)
 
@@ -69,7 +71,7 @@ struct MeshMaterial
 
     static FaceShade CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const struct Vec3* pNormal);
 
-    static char ParseFile(FileObj* pFile, const char* pszModelName, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
+    static char ParseFile(FileObj* pFile, const char* pszModelName, std::unique_ptr<MeshMaterial[]>* ppMaterials, std::unique_ptr<MaterialName[]>* ppMatNames, std::unique_ptr<MaterialName[]>* ppTexNames, unsigned char* pnMatCount, short* pnTexCount);
 };
 
 // A material as a model file stores it, twenty two bytes with a one-based texture index.

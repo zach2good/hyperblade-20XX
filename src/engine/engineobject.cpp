@@ -832,7 +832,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
         }
     }
 
-    auto* const pBlob = m_pLod->m_pRecord;
+    auto* const pBlob = m_pLod->m_pRecord.get();
 
     m_pMeshBlob = pBlob;
 
@@ -1028,7 +1028,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         }
     }
 
-    auto* const pBlob = m_pLod->m_pRecord;
+    auto* const pBlob = m_pLod->m_pRecord.get();
 
     m_pMeshBlob = pBlob;
 
@@ -1346,9 +1346,9 @@ void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
         return;
     }
 
-    pSlot->m_apChildren = new MeshBone*[pSlot->m_pDesc->m_nChildCount];
+    pSlot->m_apChildren = std::make_unique<MeshBone*[]>(pSlot->m_pDesc->m_nChildCount);
 
-    MeshBone** ppChild = pSlot->m_apChildren;
+    MeshBone** ppChild = pSlot->m_apChildren.get();
 
     const auto* const pDescriptor = pSlot->m_pDesc;
 
@@ -1488,7 +1488,7 @@ void EngineObject::SubmitShadowToHardware() const
         points[i] = Vec3{ pPosed[i].x, pPosed[i].y, pPosed[i].z };
     }
 
-    const auto vertices = HwMesh::BuildShadow(points.data(), m_wShadowCount, m_pShadowFaceList, m_wShadowFaceCount, m_pModelBlock->m_pMaterials, m_pModelBlock->m_nMatCount, g_vDispatchFaceNormal);
+    const auto vertices = HwMesh::BuildShadow(points.data(), m_wShadowCount, m_pShadowFaceList, m_wShadowFaceCount, m_pModelBlock->m_pMaterials.get(), m_pModelBlock->m_nMatCount, g_vDispatchFaceNormal);
 
     auto draw = HwRenderer::Draw{};
 

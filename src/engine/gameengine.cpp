@@ -220,7 +220,7 @@ void GameEngine::ShowRokValue(short nRokValue)
         return;
     }
 
-    auto* const pMaterials = pObject->m_pModelBlock->m_pMaterials;
+    auto* const pMaterials = pObject->m_pModelBlock->m_pMaterials.get();
 
     if (g_bMultiplierColoursUnsaved != 0)
     {

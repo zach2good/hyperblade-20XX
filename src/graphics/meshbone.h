@@ -9,6 +9,7 @@
 #include "meshblock.h"
 #include "meshboundingbox.h"
 #include "math/transformobject.h"
+#include <memory>
 
 class EngineObject;
 struct MeshMaterial;
@@ -67,6 +68,10 @@ public:
 
     MeshBone();
     ~MeshBone();
+    MeshBone(const MeshBone&)            = delete;
+    MeshBone& operator=(const MeshBone&) = delete;
+    MeshBone(MeshBone&&)                 = delete;
+    MeshBone& operator=(MeshBone&&)      = delete;
 
     void PropagateTransforms(short nSlotIdx, TransformObject* pParent, TransformObject* pRoot, TransformObject* pParentLocal);
     void UpdateLeafTransform(unsigned int nUnused, TransformObject* pParent);
@@ -153,10 +158,10 @@ public:
     MeshBlock*          m_pMesh; // 0x00c
     const MeshBoneDesc* m_pDesc; // 0x10
     // Write-only: the descriptor's child ids.
-    const short* m_pChildIds;  // 0x14
-    MeshBone**   m_apChildren; // 0x18
-    // SetFlags(8) replaces it with a zeroed buffer; the destructor deletes it.
-    int* m_pFaceColours; // 0x1c
+    const short*                 m_pChildIds;  // 0x14
+    std::unique_ptr<MeshBone*[]> m_apChildren; // 0x18
+    // SetFlags(8) replaces it with a zeroed buffer.
+    std::unique_ptr<int[]> m_pFaceColours; // 0x1c
     // The bubble bound to this bone. BoundBubble::Init is the only writer and nothing reads it.
     class BoundBubble* m_pBubble;   // 0x20
     MeshBoneBlock      m_block;     // 0x24

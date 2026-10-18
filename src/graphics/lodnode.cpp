@@ -1,6 +1,5 @@
 #include "common/compat.h"
 #include "lodnode.h"
-#include "graphics/modelcomponent.h"
 #include <cstring>
 
 // FUNCTION: HYPERX 0x00472740
@@ -12,33 +11,27 @@ LODNode* LODNode::Init(short nLodCount)
     m_wRefCount  = 0;
     m_pNext      = nullptr;
 
-    memset(m_apLodMeshes, 0, sizeof(m_apLodMeshes));
+    for (auto& pSlots : m_apLodMeshes)
+    {
+        pSlots = nullptr;
+    }
+
     memset(m_aflFarther, 0, sizeof(m_aflFarther));
     memset(m_aflNearer, 0, sizeof(m_aflNearer));
 
     return this;
 }
 
-// Leaves the level count at minus one.
+LODNode::LODNode() = default;
 
+// Unlinks the rest of the list one node at a time, so a long list cannot exhaust the stack.
 // FUNCTION: HYPERX 0x004727a0
 LODNode::~LODNode()
 {
-    for (short nLevel = 0; nLevel < m_wLodCount; nLevel++)
-    {
-        for (short nComp = 0; nComp < m_pRecord->m_nSubComponents; nComp++)
-        {
-            if (m_apLodMeshes[nLevel][nComp] != nullptr)
-            {
-                delete[] reinterpret_cast<char*>(m_apLodMeshes[nLevel][nComp]);
-            }
-        }
-    }
+    auto pNext = std::move(m_pNext);
 
-    while (m_wLodCount-- != 0)
+    while (pNext != nullptr)
     {
-        delete[] m_apLodMeshes[m_wLodCount];
+        pNext = std::move(pNext->m_pNext);
     }
-
-    delete[] reinterpret_cast<char*>(m_pRecord);
 }

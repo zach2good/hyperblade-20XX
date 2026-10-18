@@ -12,58 +12,53 @@
 #include "graphics/transformedvertex.h"
 #include "common/pathstring.h"
 #include "math/vector.h"
-#include <new>
+#include <memory>
 #include <cstring>
 #include "app/gameapp.h"
 #include "graphics/modelfile.h"
 #include "graphics/meshbone.h"
 #include <SDL3/SDL.h>
 
+namespace
+{
+
+// The buffers every model shares, which the globals of the same names view.
+auto s_pModelVertices = std::unique_ptr<TransformedVertex[]>();
+auto s_pFaceList      = std::unique_ptr<FaceRecord*[]>();
+auto s_pFaceRecords   = std::unique_ptr<FaceRecord[]>();
+
+} // namespace
+
+ModelDatabase::ModelDatabase()
+: m_nInstallLevel(0)
+, m_pListTail(nullptr)
+, m_nNodeCount(0)
+, m_nFaceMax(0)
+, m_nVertexMax(0)
+, m_nNextIndex(0)
+, m_wUnusedA(0)
+, m_wUnusedB(0)
+, m_flLodHysteresis(5.0f)
+{
+}
+
 // Frees every node whatever its reference count.
 // FUNCTION: HYPERX 0x00472830
 ModelDatabase::~ModelDatabase()
 {
-    while (m_pListHead != nullptr)
-    {
-        auto* const pNext = m_pListHead->m_pNext;
-        auto* const pNode = m_pListHead;
-
-        delete pNode;
-
-        m_pListHead = pNext;
-    }
-
+    m_pListHead.reset();
     m_pListTail = nullptr;
-    m_pListHead = nullptr;
 
-    if (g_pModelVertexBuf != nullptr)
-    {
-        delete[] g_pModelVertexBuf;
-        g_pModelVertexBuf = nullptr;
-    }
+    s_pModelVertices.reset();
+    g_pModelVertexBuf = nullptr;
 
-    if (g_ppFaceList != nullptr)
-    {
-        delete[] g_ppFaceList;
-        g_ppFaceList = nullptr;
-    }
+    s_pFaceList.reset();
+    g_ppFaceList = nullptr;
 
-    if (g_pFaceRecords != nullptr)
-    {
-        delete[] g_pFaceRecords;
-        g_pFaceRecords = nullptr;
-    }
+    s_pFaceRecords.reset();
+    g_pFaceRecords = nullptr;
 
-    auto* pEntry = m_pTextureList;
-
-    while (pEntry != nullptr)
-    {
-        m_pTextureList = pEntry->m_pNext;
-
-        delete pEntry;
-
-        pEntry = m_pTextureList;
-    }
+    m_pTextureList.reset();
 }
 
 // Later levels store the squared threshold bands, so the runtime never takes a square root.
@@ -103,7 +98,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             return nullptr;
         }
 
-        auto* pBlob = ModelComponent::ReadFirst(&file.m_file);
+        auto pBlob = ModelComponent::ReadFirst(&file.m_file);
 
         if (pBlob != nullptr)
         {
@@ -113,16 +108,9 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             pBlob->m_vAngle.y = g_flDegreesToRadians * pBlob->m_vAngle.y;
             pBlob->m_vAngle.z = g_flDegreesToRadians * pBlob->m_vAngle.z;
 
-            auto* const pRaw = new LODNode;
+            auto pOwned = std::make_unique<LODNode>();
 
-            if (pRaw != nullptr)
-            {
-                pNode = pRaw->Init(nLodCount);
-            }
-            else
-            {
-                pNode = nullptr;
-            }
+            pNode = pOwned->Init(nLodCount);
 
             pResult = pNode;
 
@@ -137,7 +125,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
                 pNode->m_aflNearer[i - 1] = flEdge * flEdge;
             }
 
-            pNode->m_pRecord = pBlob;
+            pNode->m_pRecord = std::move(pBlob);
 
             ReadMaterials(&file.m_file, pNode);
             LinkComponents(&file.m_file, pNode);
@@ -146,25 +134,25 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             if (m_pListHead == nullptr)
             {
-                m_pListTail = pNode;
-                m_pListHead = pNode;
+                m_pListHead = std::move(pOwned);
             }
             else
             {
-                m_pListTail->m_pNext = pNode;
-                m_pListTail          = pNode;
+                m_pListTail->m_pNext = std::move(pOwned);
             }
+
+            m_pListTail = pNode;
 
             m_nNextIndex++;
             m_nNodeCount++;
 
-            pBlob           = pNode->m_pRecord;
-            auto nFaceMax   = m_nFaceMax;
-            auto nVertexMax = m_nVertexMax;
+            const auto* const pRecord    = pNode->m_pRecord.get();
+            auto              nFaceMax   = m_nFaceMax;
+            auto              nVertexMax = m_nVertexMax;
 
-            for (i = 0; i < pBlob->m_nSubComponents; i++)
+            for (i = 0; i < pRecord->m_nSubComponents; i++)
             {
-                const MeshBlock* pSubBlob = pNode->m_apLodMeshes[0][i];
+                const MeshBlock* pSubBlob = pNode->m_apLodMeshes[0][i].get();
 
                 if (pSubBlob != nullptr)
                 {
@@ -182,30 +170,22 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             if (nVertexMax > m_nVertexMax)
             {
-                delete[] g_pModelVertexBuf;
-
                 m_nVertexMax = nVertexMax;
 
-                g_pModelVertexBuf = new TransformedVertex[nVertexMax];
-
-                memset(g_pModelVertexBuf, 0, m_nVertexMax * sizeof(TransformedVertex));
+                s_pModelVertices  = std::make_unique<TransformedVertex[]>(nVertexMax);
+                g_pModelVertexBuf = s_pModelVertices.get();
             }
 
             if (nFaceMax > m_nFaceMax)
             {
-                delete[] g_ppFaceList;
-                delete[] g_pFaceRecords;
-
                 m_nFaceMax = nFaceMax;
 
                 // The face list is one based.
-                g_ppFaceList = new FaceRecord*[nFaceMax + 1];
+                s_pFaceList  = std::make_unique<FaceRecord*[]>(nFaceMax + 1);
+                g_ppFaceList = s_pFaceList.get();
 
-                memset(g_ppFaceList, 0, m_nFaceMax * sizeof(FaceRecord*));
-
-                g_pFaceRecords = new FaceRecord[m_nFaceMax];
-
-                memset(g_pFaceRecords, 0, m_nFaceMax * sizeof(FaceRecord));
+                s_pFaceRecords = std::make_unique<FaceRecord[]>(m_nFaceMax);
+                g_pFaceRecords = s_pFaceRecords.get();
             }
         }
         else
@@ -233,9 +213,8 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 // FUNCTION: HYPERX 0x00472c00
 void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 {
-    unsigned char     nMatCount;
-    char              szMatFile[16];
-    MaterialListNode* pLookup;
+    unsigned char nMatCount;
+    char          szMatFile[16];
 
     if (pFile->Read(&nMatCount, sizeof(nMatCount)) != 0)
     {
@@ -243,9 +222,9 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
         {
             if (pFile->SeekRelative(nMatCount * sizeof(MaterialName), FileSeekOrigin::kCurrent) != 0)
             {
-                auto* const pMaterials = new MeshMaterial[nMatCount];
+                auto pMaterials = std::make_unique<MeshMaterial[]>(nMatCount);
 
-                MaterialName* paTexNames = nullptr;
+                auto paTexNames = std::unique_ptr<MaterialName[]>();
 
                 // The texture field holds a pointer once loaded, so records are read in their file layout.
                 MeshMaterialRecord aRecords[256] = {};
@@ -274,7 +253,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 
                             nTexBytes = nTexCount * sizeof(MaterialName);
 
-                            paTexNames = new MaterialName[nTexCount];
+                            paTexNames = std::make_unique<MaterialName[]>(nTexCount);
 
                             if (pFile->Read(paTexNames[0], nTexBytes) == 0)
                             {
@@ -285,11 +264,9 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
                             }
                         }
 
-                        pLookup = CreateMaterialList(pMaterials, nMatCount, paTexNames, nTexCount);
+                        pLodNode->m_pMaterials = CreateMaterialList(std::move(pMaterials), nMatCount, std::move(paTexNames));
 
-                        pLodNode->m_pMaterials = pLookup;
-
-                        pLookup->m_pszName = strcpy(new char[strlen(szMatFile) + 1], szMatFile);
+                        pLodNode->m_pMaterials->m_strName = szMatFile;
                     }
                     else
                     {
@@ -339,7 +316,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 // FUNCTION: HYPERX 0x00472e10
 MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* pszName)
 {
-    auto* pLookup = pLod->m_pMaterials;
+    auto* pLookup = pLod->m_pMaterials.get();
     auto* pPrev   = pLookup;
 
     if (pszName != nullptr)
@@ -354,13 +331,13 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
             }
 
             pPrev   = pLookup;
-            pLookup = pLookup->m_pNext;
+            pLookup = pLookup->m_pNext.get();
         }
 
         // Not in the list, so it is loaded and appended.
-        MeshMaterial* pMaterials = nullptr;
-        MaterialName* paMatNames = nullptr;
-        MaterialName* paTexNames = nullptr;
+        auto          pMaterials = std::unique_ptr<MeshMaterial[]>();
+        auto          paMatNames = std::unique_ptr<MaterialName[]>();
+        auto          paTexNames = std::unique_ptr<MaterialName[]>();
         short         nTexCount  = 0;
         unsigned char nMatCount  = 0;
 
@@ -372,17 +349,12 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
         {
             if (MeshMaterial::ParseFile(&file.m_file, pszName, &pMaterials, &paMatNames, &paTexNames, &nMatCount, &nTexCount) != 0)
             {
-                char* pszCopy;
-
                 file.m_file.CloseAndTest();
 
-                pLookup = pPrev->m_pNext =
-                    CreateMaterialList(pMaterials, nMatCount, paTexNames, nTexCount);
+                pPrev->m_pNext = CreateMaterialList(std::move(pMaterials), nMatCount, std::move(paTexNames));
+                pLookup        = pPrev->m_pNext.get();
 
-                pszCopy            = new char[strlen(pszName) + 1];
-                pLookup->m_pszName = strcpy(pszCopy, pszName);
-
-                delete[] paMatNames;
+                pLookup->m_strName = pszName;
             }
             else
             {
@@ -417,7 +389,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 {
     unsigned short nCount = 0;
 
-    auto* const pBase = pLodNode->m_pRecord;
+    const auto* const pBase = pLodNode->m_pRecord.get();
 
     if (pBase->m_nSubComponents != 0)
     {
@@ -425,36 +397,32 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 
         for (int nLod = 0; nLod < pLodNode->m_wLodCount; nLod++)
         {
-            // A failed header read leaves both untouched.
-            MeshBlock** pBlobs = nullptr;
-            nCount             = 0;
+            // A failed header read leaves the list empty.
+            auto blobs = std::vector<Record<MeshBlock> >();
 
-            abWhole[nLod] = ModelComponent::ReadAll(pFile, &pBlobs, &nCount);
+            abWhole[nLod] = ModelComponent::ReadAll(pFile, &blobs);
+            nCount        = static_cast<unsigned short>(blobs.size());
 
-            auto** const pSlots = new MeshBlock*[pBase->m_nSubComponents];
+            pLodNode->m_apLodMeshes[nLod] = std::make_unique<Record<MeshBlock>[]>(pBase->m_nSubComponents);
 
-            pLodNode->m_apLodMeshes[nLod] = pSlots;
+            auto* const pSlots = pLodNode->m_apLodMeshes[nLod].get();
 
-            memset(pSlots, 0, pBase->m_nSubComponents * sizeof(MeshBlock*));
-
-            for (short iBlob = 0; iBlob < static_cast<short>(nCount); iBlob++)
+            // A block whose slot is out of range or taken is dropped with the list.
+            for (auto& pBlob : blobs)
             {
-                auto* const pBlob = pBlobs[iBlob];
-
                 if (pBlob->nSlot < 0 || pBlob->nSlot >= pBase->m_nSubComponents || pSlots[pBlob->nSlot] != nullptr)
                 {
-                    delete[] reinterpret_cast<char*>(pBlob);
                     abWhole[nLod] = false;
 
                     continue;
                 }
 
-                ComputeNormals(pBlob, pLodNode);
+                ComputeNormals(pBlob.get(), pLodNode);
 
-                pSlots[pBlob->nSlot] = pBlob;
+                const auto nSlot = pBlob->nSlot;
+
+                pSlots[nSlot] = std::move(pBlob);
             }
-
-            delete[] pBlobs;
         }
 
         // A damaged level borrows each piece it lost from the nearest level that has it.
@@ -478,22 +446,22 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
                 {
                     if (nLod + nStep < pLodNode->m_wLodCount)
                     {
-                        pDonor = pLodNode->m_apLodMeshes[nLod + nStep][iSlot];
+                        pDonor = pLodNode->m_apLodMeshes[nLod + nStep][iSlot].get();
                     }
 
                     if (pDonor == nullptr && nLod >= nStep)
                     {
-                        pDonor = pLodNode->m_apLodMeshes[nLod - nStep][iSlot];
+                        pDonor = pLodNode->m_apLodMeshes[nLod - nStep][iSlot].get();
                     }
                 }
 
                 if (pDonor != nullptr)
                 {
-                    auto* const pCopy = new char[pDonor->nSize];
+                    auto pCopy = MakeRecord<MeshBlock>(pDonor->nSize);
 
-                    memcpy(pCopy, pDonor, pDonor->nSize);
+                    memcpy(pCopy.get(), pDonor, pDonor->nSize);
 
-                    pLodNode->m_apLodMeshes[nLod][iSlot] = reinterpret_cast<MeshBlock*>(pCopy);
+                    pLodNode->m_apLodMeshes[nLod][iSlot] = std::move(pCopy);
                 }
             }
         }
@@ -506,12 +474,12 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 // FUNCTION: HYPERX 0x00473330
 TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 {
-    auto*          pEntry = m_pTextureList;
+    auto*          pEntry = m_pTextureList.get();
     TexCacheEntry* pPrev  = nullptr;
 
     while (pEntry != nullptr)
     {
-        if (SDL_strcasecmp(pEntry->m_pszName, pszName) == 0)
+        if (SDL_strcasecmp(pEntry->m_strName.c_str(), pszName) == 0)
         {
             pEntry->m_wRefs++;
 
@@ -519,18 +487,19 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
         }
 
         pPrev  = pEntry;
-        pEntry = pEntry->m_pNext;
+        pEntry = pEntry->m_pNext.get();
     }
 
-    auto* const pNew = new TexCacheEntry(pszName);
+    auto        pOwned = std::make_unique<TexCacheEntry>(pszName);
+    auto* const pNew   = pOwned.get();
 
     if (pPrev != nullptr)
     {
-        pPrev->m_pNext = pNew;
+        pPrev->m_pNext = std::move(pOwned);
     }
     else
     {
-        m_pTextureList = pNew;
+        m_pTextureList = std::move(pOwned);
     }
 
     pNew->m_wRefs++;
@@ -587,7 +556,7 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
 // FUNCTION: HYPERX 0x004735c0
 LODNode* ModelDatabase::FindLOD(const char* pszName)
 {
-    auto* pNode = m_pListHead;
+    auto* pNode = m_pListHead.get();
 
     while (pNode != nullptr)
     {
@@ -596,18 +565,18 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
             return pNode;
         }
 
-        pNode = pNode->m_pNext;
+        pNode = pNode->m_pNext.get();
     }
 
     return nullptr;
 }
 
 // FUNCTION: HYPERX 0x00473660
-MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, unsigned char nMatCount, MaterialName* paTexNames, short nTexCount)
+std::unique_ptr<MaterialListNode> ModelDatabase::CreateMaterialList(std::unique_ptr<MeshMaterial[]> pMaterials, unsigned char nMatCount, std::unique_ptr<MaterialName[]> paTexNames)
 {
-    auto* const pLookup = new MaterialListNode(nMatCount);
+    auto pLookup = std::make_unique<MaterialListNode>(nMatCount);
 
-    pLookup->m_pMaterials = pMaterials;
+    pLookup->m_pMaterials = std::move(pMaterials);
 
     for (short i = 0; i < nMatCount; i++)
     {
@@ -629,10 +598,22 @@ MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, un
         }
     }
 
-    if (nTexCount != 0)
-    {
-        delete[] paTexNames;
-    }
-
     return pLookup;
+}
+
+MaterialListNode::MaterialListNode(unsigned char nMatCount)
+: m_nMatCount(nMatCount)
+, m_nRefs(0)
+{
+}
+
+// Unlinks the rest of the list one node at a time, so a long list cannot exhaust the stack.
+MaterialListNode::~MaterialListNode()
+{
+    auto pNext = std::move(m_pNext);
+
+    while (pNext != nullptr)
+    {
+        pNext = std::move(pNext->m_pNext);
+    }
 }

@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
-#include <new>
+#include <memory>
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "graphics/face.h"
@@ -133,7 +133,7 @@ void MeshBone::SubmitToHardware()
         return;
     }
 
-    auto bone = HwModels::Bone{ m_pMesh, m_pOwner->m_pModelBlock->m_pMaterials, m_pOwner->m_pModelBlock->m_nMatCount, &m_world };
+    auto bone = HwModels::Bone{ m_pMesh, m_pOwner->m_pModelBlock->m_pMaterials.get(), m_pOwner->m_pModelBlock->m_nMatCount, &m_world };
 
     const auto bArena = m_pOwner == g_pGameEngine->m_ppSlots[kSlotDrome];
 
@@ -299,7 +299,7 @@ void MeshBone::DrawFaces()
     char                   cClip;
     static TransformObject s_worldView;
 
-    auto* pBlob = m_pOwner->m_pLod->m_apLodMeshes[m_pOwner->m_wLodLevel][m_wMeshSlot];
+    auto* pBlob = m_pOwner->m_pLod->m_apLodMeshes[m_pOwner->m_wLodLevel][m_wMeshSlot].get();
     m_pMesh     = pBlob;
 
     if (HwRenderer::Capturing())
@@ -525,7 +525,7 @@ void MeshBone::CalcVertexColors()
 
         auto* const pFace = GetFace(i);
 
-        auto* const pMaterial = m_pOwner->m_pModelBlock->m_pMaterials + pFace->cMaterial;
+        auto* const pMaterial = m_pOwner->m_pModelBlock->m_pMaterials.get() + pFace->cMaterial;
 
         const Vec3* const pNormal = &pFace->vNormal;
 
@@ -594,13 +594,7 @@ void MeshBone::SetFlags(unsigned short nFlags)
 {
     if (nFlags == kMeshboneColoursPresent)
     {
-        delete[] m_pFaceColours;
-
-        const auto nFaceCount = GetFaceCount();
-
-        m_pFaceColours = new int[nFaceCount];
-
-        memset(m_pFaceColours, 0, nFaceCount * sizeof(int));
+        m_pFaceColours = std::make_unique<int[]>(GetFaceCount());
     }
 
     m_nFlags |= nFlags;
@@ -612,10 +606,8 @@ void MeshBone::ClearFlags(unsigned short nFlags)
 {
     m_nFlags &= ~nFlags;
 
-    if (nFlags == kMeshboneColoursPresent && m_pFaceColours != nullptr)
+    if (nFlags == kMeshboneColoursPresent)
     {
-        delete[] m_pFaceColours;
-
         m_pFaceColours = nullptr;
     }
 }
@@ -627,8 +619,6 @@ MeshBone::MeshBone()
 , m_pOwner(nullptr)
 , m_pDesc(nullptr)
 , m_pChildIds(nullptr)
-, m_apChildren(nullptr)
-, m_pFaceColours(nullptr)
 , m_pBubble(nullptr)
 , m_bHasScale(0)
 , m_flRadius(0)
@@ -639,22 +629,7 @@ MeshBone::MeshBone()
 }
 
 // FUNCTION: HYPERX 0x0046fb10
-MeshBone::~MeshBone()
-{
-    if (m_apChildren != nullptr)
-    {
-        delete[] m_apChildren;
-
-        m_apChildren = nullptr;
-    }
-
-    if (m_pFaceColours != nullptr)
-    {
-        delete[] m_pFaceColours;
-
-        m_pFaceColours = nullptr;
-    }
-}
+MeshBone::~MeshBone() = default;
 
 inline void MeshBone::StoreShadow(TransformObject* pTarget, float flX, float flY, float flZ)
 {
@@ -746,12 +721,7 @@ int MeshBone::BindToLODMeshShadowless(CD3DTextureManager* pLookup, LODNode* pNod
                                pEntry->m_vRest.y,
                                pEntry->m_vRest.z);
 
-        if (m_apChildren != nullptr)
-        {
-            delete[] m_apChildren;
-
-            m_apChildren = nullptr;
-        }
+        m_apChildren = nullptr;
     }
 
     return nResult != -1;
