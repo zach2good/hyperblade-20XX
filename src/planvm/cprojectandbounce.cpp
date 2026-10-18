@@ -102,7 +102,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
     m_pOwner->GetPhysicsBody()->IntegrateGravity();
 
-    if (m_pShape->GetShapeKind() != SHAPE_KIND_ELLIPSOID)
+    if (m_pShape->GetShapeKind() != ShapeKind::kEllipsoid)
     {
         m_pOwner->GetPhysicsBody()->pShell = &g_arenaEllipsoid;
         m_pShape                           = &g_arenaEllipsoid;

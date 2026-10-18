@@ -23,7 +23,7 @@ public:
         m_vPoint.z     = g_flCollisionPartDefault;
         m_vPoint.y     = g_flCollisionPartDefault;
         m_vPoint.x     = g_flCollisionPartDefault;
-        m_nShapeKind   = SHAPE_KIND_PLANE;
+        m_nShapeKind   = ShapeKind::kPlane;
         m_flFriction   = g_flCollisionPartDefault;
         m_flElasticity = g_flCollisionPartDefault;
     }

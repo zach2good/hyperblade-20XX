@@ -50,7 +50,7 @@ CollisionShape::CollisionShape()
 , m_pUnusedB(nullptr)
 , m_pTransform(nullptr)
 , m_pPooled(nullptr)
-, m_nShapeKind(SHAPE_KIND_PLANE)
+, m_nShapeKind(ShapeKind::kPlane)
 {
     m_vNormal.x = m_vNormal.y = m_vNormal.z = g_flZeroCollisionObj;
 }

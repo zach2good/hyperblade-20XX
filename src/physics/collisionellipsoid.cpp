@@ -47,7 +47,7 @@ CollisionEllipsoid::CollisionEllipsoid(float flX, float flY, float flZ, float fl
 {
     m_flFriction   = flFriction;
     m_flElasticity = flElasticity;
-    m_nShapeKind   = SHAPE_KIND_ELLIPSOID;
+    m_nShapeKind   = ShapeKind::kEllipsoid;
 }
 
 // The ray's origin is the second point, not the first; the plane's version uses the first.

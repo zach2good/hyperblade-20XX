@@ -28,7 +28,7 @@ CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFri
 
     m_vPoint = *pOrigin;
 
-    m_nShapeKind   = SHAPE_KIND_PLANE;
+    m_nShapeKind   = ShapeKind::kPlane;
     m_flFriction   = flFriction;
     m_flElasticity = flElasticity;
     m_bCached      = 0;
@@ -60,7 +60,7 @@ void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Ve
 
     m_vPoint = *pOrigin;
 
-    m_nShapeKind   = SHAPE_KIND_PLANE;
+    m_nShapeKind   = ShapeKind::kPlane;
     m_flFriction   = flFriction;
     m_flElasticity = flElasticity;
 }

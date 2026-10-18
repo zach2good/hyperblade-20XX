@@ -10,11 +10,11 @@ struct RenderOptions
 };
 
 // Renderer::SetRenderOption's index; setting perspective also sets filtering.
-enum RenderOption
+enum class RenderOption
 {
-    RENDER_OPTION_TEXTURED,
-    RENDER_OPTION_PERSPECTIVE,
-    RENDER_OPTION_FILTERED
+    kTextured,
+    kPerspective,
+    kFiltered
 };
 
 #endif

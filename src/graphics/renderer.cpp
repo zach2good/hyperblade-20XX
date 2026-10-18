@@ -253,16 +253,16 @@ void Renderer::SetRenderOption(RenderOption nOption, int nValue)
 {
     switch (nOption)
     {
-        case RENDER_OPTION_PERSPECTIVE:
+        case RenderOption::kPerspective:
             g_renderOptions.bPerspective = nValue;
 
             // Falls through
 
-        case RENDER_OPTION_FILTERED:
+        case RenderOption::kFiltered:
             g_renderOptions.bFiltered = nValue;
             break;
 
-        case RENDER_OPTION_TEXTURED:
+        case RenderOption::kTextured:
             g_renderOptions.bTextured = nValue;
             break;
     }

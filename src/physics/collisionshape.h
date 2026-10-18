@@ -8,10 +8,10 @@ class TransformObject;
 struct Vec3;
 
 // The kind a shape stores; only src/planvm/cprojectandbounce.cpp reads it.
-enum ShapeKind
+enum class ShapeKind
 {
-    SHAPE_KIND_PLANE     = 0,
-    SHAPE_KIND_ELLIPSOID = 2
+    kPlane     = 0,
+    kEllipsoid = 2
 };
 
 // VTABLE: HYPERX 0x004b2be0

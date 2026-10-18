@@ -55,9 +55,9 @@ void Display::ApplyRenderOptions(int bTexEnabled, int bBilinearFilter)
 {
     GameApp::SetModelPath(bTexEnabled);
 
-    Renderer::SetRenderOption(RENDER_OPTION_TEXTURED, bTexEnabled);
-    Renderer::SetRenderOption(RENDER_OPTION_PERSPECTIVE, bTexEnabled);
-    Renderer::SetRenderOption(RENDER_OPTION_FILTERED, bBilinearFilter);
+    Renderer::SetRenderOption(RenderOption::kTextured, bTexEnabled);
+    Renderer::SetRenderOption(RenderOption::kPerspective, bTexEnabled);
+    Renderer::SetRenderOption(RenderOption::kFiltered, bBilinearFilter);
 
     g_bPerspectiveTexturing = bTexEnabled;
     g_bBilinearFilter       = bBilinearFilter;
