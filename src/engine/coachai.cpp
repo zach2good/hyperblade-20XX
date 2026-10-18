@@ -1,6 +1,7 @@
 // The coach: thirteen match conditions, the per-player orders they drive, and the pass hints.
 
 #include "common/compat.h"
+#include "engine/spectator.h"
 #include "engine/messageids.h"
 #include "planvm/gamebehaviorobject.h"
 #include "objectclasses.h"
@@ -211,6 +212,11 @@ int GameEngine::IsComputerTeam(int nSlot)
     if (strcmp(pObject->GetPlanState()->GetName(), "Human") == 0)
     {
         return 0;
+    }
+
+    if (Spectator::Autopilot())
+    {
+        return 1;
     }
 
     const auto nLocal = g_pGameEngine->m_nViewedSlot;

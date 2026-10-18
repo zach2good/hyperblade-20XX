@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/spectator.h"
 #include "input/keycodes.h"
 #include "input/inputevent.h"
 #include <SDL3/SDL.h>
@@ -48,7 +49,7 @@ static void NoteKey(unsigned int nMessage, unsigned int nKey)
     }
 }
 
-static void ReleaseHeldKeys()
+void ReleaseHeldKeys()
 {
     for (unsigned int nKey = 0; nKey < 256; nKey++)
     {
@@ -89,6 +90,14 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
         return;
     }
 
+    // kF3 flies the camera free in a match.
+    if (nMessage == kInputKeyDown && nCode == Key::kF3 && g_gameApp.m_nEngineState == kEstateMatchLive)
+    {
+        Spectator::SetFreeCamera(!Spectator::FreeCamera());
+
+        return;
+    }
+
     // A key held when the focus leaves never sees its release here.
     WndProc::NoteKey(nMessage, nCode);
 
@@ -97,7 +106,7 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
         if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
         {
             // The key goes through a char, so Key::kOEMPlus and Key::kOEMMinus never reach their cases.
-            if (GameApp::HandleMatchKeypress(static_cast<int>(static_cast<char>(nCode))) == 0 && g_pInputDevice->HandleKeyDown(nCode) == -1)
+            if (GameApp::HandleMatchKeypress(static_cast<int>(static_cast<char>(nCode))) == 0 && (Spectator::HoldsInput() || g_pInputDevice->HandleKeyDown(nCode) == -1))
             {
                 GameApp::HandleGlobalKeyEvent(static_cast<int>(nCode));
             }
@@ -146,7 +155,7 @@ static void Release(unsigned int nMessage, unsigned int nCode, int nX, int nY)
             g_pActiveScreen->OnMouseMessage(nMessage, nCode, pt.x, pt.y);
         }
     }
-    else if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
+    else if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying && !Spectator::HoldsInput())
     {
         g_pInputDevice->HandleKeyUp(nCode);
     }

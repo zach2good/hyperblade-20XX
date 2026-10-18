@@ -201,6 +201,7 @@ set(HYPERX_SOURCES
     src/engine/playerobject.cpp
     src/engine/rampobject.cpp
     src/engine/rokobject.cpp
+    src/engine/spectator.cpp
     src/engine/teamblock.cpp
     src/engine/teamsblock.cpp
     src/engine/trackingellipsoidstatics.cpp

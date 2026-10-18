@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/spectator.h"
 #include "common/clock.h"
 #include <cstdlib>
 #include <string>
@@ -347,6 +348,12 @@ void GameApp::ParseCommandLine(const char* pszArguments)
             case 'm':
                 g_bShadedDromeModels = 1;
                 p                    = p + 1;
+                break;
+
+            // Bots play every dromer, the player's included.
+            case 'b':
+                Spectator::SetAutopilot(true);
+                p = p + 1;
                 break;
         }
 

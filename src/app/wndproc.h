@@ -24,6 +24,9 @@ void OnKeyUp(unsigned int nKey);
 void OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX, int nY);
 void OnMouseMove(unsigned int nButtons, int nX, int nY);
 
+// Lets go of every key the player holds, as if each were released.
+void ReleaseHeldKeys();
+
 } // namespace WndProc
 
 #endif

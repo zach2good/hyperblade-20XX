@@ -1,4 +1,6 @@
 #include "common/compat.h"
+#include "engine/spectator.h"
+#include <optional>
 #include "cameraobject.h"
 #include "anim/animbinding.h"
 #include "devicector.h"
@@ -263,22 +265,61 @@ void CameraObject::ViewIt()
         g_gameApp.Fatal("Camera::ViewIt(): Null pointer for ModelToTrack\n");
     }
 
+    // The free camera flies in the main camera's place, seeded from last tick's eye, unshaken.
+    const auto freeView = [&]() -> std::optional<Spectator::View>
+    {
+        if (m_nSlot != kCameraMainSlot)
+        {
+            return std::nullopt;
+        }
+
+        return Spectator::FreeView(m_pView->m_vEye, m_dirOut);
+    }();
+
+    const auto dirOut = [&]
+    {
+        if (freeView)
+        {
+            return freeView->dir;
+        }
+
+        return m_dirOut;
+    }();
+
     const auto nIndex = m_wPosIndex;
 
-    const auto flShakeX = m_aPosRing[nIndex].x * -0.01f;
-    const auto flShakeY = m_aPosRing[nIndex].y * -0.001f;
+    const auto flShakeX = [&]
+    {
+        if (freeView)
+        {
+            return 0.0f;
+        }
+
+        return m_aPosRing[nIndex].x * -0.01f;
+    }();
+
+    const auto flShakeY = [&]
+    {
+        if (freeView)
+        {
+            return 0.0f;
+        }
+
+        return m_aPosRing[nIndex].y * -0.001f;
+    }();
+
     const auto flShakeZ = g_flCameraShakeZ;
 
     const auto nCount = g_pGameEngine->m_nObjectCount;
 
-    m_pRotB->m_a[0][1] = m_dirOut.x;
-    m_pRotB->m_a[1][1] = m_dirOut.y;
-    m_pRotB->m_a[2][1] = m_dirOut.z;
+    m_pRotB->m_a[0][1] = dirOut.x;
+    m_pRotB->m_a[1][1] = dirOut.y;
+    m_pRotB->m_a[2][1] = dirOut.z;
     m_pRotB->m_a[3][1] = g_flZeroCamera;
 
-    vRight.x = flShakeZ * m_dirOut.y - flShakeY * m_dirOut.z;
-    vRight.y = flShakeX * m_dirOut.z - flShakeZ * m_dirOut.x;
-    vRight.z = flShakeY * m_dirOut.x - flShakeX * m_dirOut.y;
+    vRight.x = flShakeZ * dirOut.y - flShakeY * dirOut.z;
+    vRight.y = flShakeX * dirOut.z - flShakeZ * dirOut.x;
+    vRight.z = flShakeY * dirOut.x - flShakeX * dirOut.y;
 
     Math::Vec3Normalize(&vRight);
 
@@ -287,9 +328,9 @@ void CameraObject::ViewIt()
     m_pRotB->m_a[2][0] = vRight.z;
     m_pRotB->m_a[3][0] = g_flZeroCamera;
 
-    vUp.x = vRight.y * m_dirOut.z - vRight.z * m_dirOut.y;
-    vUp.y = vRight.z * m_dirOut.x - vRight.x * m_dirOut.z;
-    vUp.z = vRight.x * m_dirOut.y - vRight.y * m_dirOut.x;
+    vUp.x = vRight.y * dirOut.z - vRight.z * dirOut.y;
+    vUp.y = vRight.z * dirOut.x - vRight.x * dirOut.z;
+    vUp.z = vRight.x * dirOut.y - vRight.y * dirOut.x;
 
     Math::Vec3Normalize(&vUp);
 
@@ -307,7 +348,7 @@ void CameraObject::ViewIt()
     m_pProjection->Multiply(m_pView,
                             m_pRotB);
 
-    auto vDir = m_dirOut;
+    auto vDir = dirOut;
 
     auto vNormal = pTracked->GetPhysicsBody()->surfNormal;
 
@@ -324,6 +365,11 @@ void CameraObject::ViewIt()
     vPos.x = (vPos.x + vCross.x) + vDir.x;
     vPos.y = vPos.y + vCross.y + vDir.y;
     vPos.z = (vPos.z + vNormal.z) + vCross.z + vDir.z;
+
+    if (freeView)
+    {
+        vPos = freeView->eye;
+    }
 
     m_pView->SetEyePoint(&vPos);
 

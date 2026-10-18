@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/spectator.h"
 #include "common/clock.h"
 #include "ui/debugmenu.h"
 #include "app/gameapp.h"
@@ -762,6 +763,43 @@ void CheatsTab()
     ImGui::EndTabItem();
 }
 
+void SpectateTab()
+{
+    if (!ImGui::BeginTabItem("Spectate"))
+    {
+        return;
+    }
+
+    ImGui::BeginDisabled(g_bSessionActive != 0);
+
+    auto bAutopilot = Spectator::Autopilot();
+
+    if (ImGui::Checkbox("Autopilot", &bAutopilot))
+    {
+        Spectator::SetAutopilot(bAutopilot);
+    }
+
+    ImGui::SetItemTooltip("Your dromer plays on the AI plans, as the others do. Start with -b to have it from the off.");
+    ImGui::EndDisabled();
+
+    auto bFreeCamera = Spectator::FreeCamera();
+
+    if (ImGui::Checkbox("Free camera (F3)", &bFreeCamera))
+    {
+        Spectator::SetFreeCamera(bFreeCamera);
+    }
+
+    ImGui::TextDisabled("WASD moves, Q and E sink and rise, Shift hurries.");
+    ImGui::TextDisabled("Hold the right mouse button to look. A pad's sticks and triggers fly it too.");
+
+    if (Spectator::HoldsInput())
+    {
+        ImGui::TextDisabled("Your keys reach only the match keys while either is on.");
+    }
+
+    ImGui::EndTabItem();
+}
+
 void Build()
 {
     ImGui::SetNextWindowPos(ImVec2(16, 16), ImGuiCond_FirstUseEver);
@@ -778,6 +816,7 @@ void Build()
         InputTab();
         ObjectsTab();
         CheatsTab();
+        SpectateTab();
 
         ImGui::EndTabBar();
     }

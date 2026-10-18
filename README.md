@@ -44,8 +44,6 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Play-test the Linux build, which builds and passes its tests but has not been run on a desktop
 - Mac and browser builds via Emscripten
 - Net and local multiplayer
-- Bot-only matches
-- Free-fly spectator mode
 - AI plan bug and balance fixes ([docs/plan_bugs.md](docs/plan_bugs.md))
 - The original RC, debug and plan menus in the debug menu
 
@@ -58,6 +56,10 @@ our fonts and controller icons.
 
 The first run reads the game's text out of `HYPERX.EXE` into `hyperblade_20XX_strings.txt`, and
 later runs load that file.
+
+To watch the bots play, start with `-b` or tick Autopilot in the debug menu's Spectate tab (F2),
+and press F3 to fly the camera: WASD moves, Q and E sink and rise, Shift hurries, and the right
+mouse button looks.
 
 To play the music without the CD, rip the audio tracks to `Data/Music/Track02.flac`,
 `Track03.flac` etc. FLAC, MP3 and WAV are all supported.

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/spectator.h"
 #include "engine/objectkind.h"
 #include <cstdint>
 #include "graphics/hwrenderer.h"
@@ -1750,7 +1751,15 @@ void EngineObject::SelectAndActivatePlan()
         {
             if (nSlot == 0)
             {
-                pszWanted = "Human";
+                pszWanted = [&]
+                {
+                    if (Spectator::Autopilot())
+                    {
+                        return "Defense";
+                    }
+
+                    return "Human";
+                }();
             }
             else if (nSlot == 1)
             {
