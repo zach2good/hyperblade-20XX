@@ -12,7 +12,7 @@ void CStepAnimationPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCStepAnimation;
+    auto nRemaining = (short)g_nPoolCountCStepAnimation;
 
     while (nRemaining-- > 0)
     {

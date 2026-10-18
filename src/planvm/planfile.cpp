@@ -21,8 +21,8 @@ PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
     }
 
     // The file holds 4-byte words; a PlanWord is pointer-sized, so each is widened as it is read.
-    PlanWord* const pInstructions = new PlanWord[*pnCount]();
-    auto* const     pWords        = new int[*pnCount]();
+    auto* const pInstructions = new PlanWord[*pnCount]();
+    auto* const pWords        = new int[*pnCount]();
 
     if (fread(pWords, sizeof(int), *pnCount, pFile) != *pnCount)
     {

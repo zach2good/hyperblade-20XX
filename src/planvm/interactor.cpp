@@ -36,7 +36,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
     {
         pNode = pCursor->pNode;
 
-        const unsigned int nOpcode = (unsigned int)pNode->m_nOpcode;
+        const auto nOpcode = (unsigned int)pNode->m_nOpcode;
 
         switch (nOpcode & OP_CATEGORY)
         {

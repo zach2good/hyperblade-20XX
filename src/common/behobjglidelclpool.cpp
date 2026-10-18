@@ -11,7 +11,7 @@ void BehObjGlideLCLPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjGlideLCL;
+    auto nRemaining = (short)g_nPoolCountBehObjGlideLCL;
 
     while (nRemaining-- > 0)
     {

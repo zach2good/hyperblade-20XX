@@ -12,7 +12,7 @@ void CAdjustAccelerationPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCAdjustAcceleration;
+    auto nRemaining = (short)g_nPoolCountCAdjustAcceleration;
 
     while (nRemaining-- > 0)
     {

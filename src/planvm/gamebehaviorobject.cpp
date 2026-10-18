@@ -432,7 +432,7 @@ void GameBehaviorObject::AssignPriorities(int nStart)
 
     while (pAt != nullptr)
     {
-        const short nValue = (short)nPriority;
+        const auto nValue = (short)nPriority;
 
         nPriority++;
 

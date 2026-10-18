@@ -37,7 +37,7 @@ void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
     m_pWatchPos = &pCamera->GetPhysicsBody()->pos;
     m_pWatchDir = &pCamera->GetPhysicsBody()->velDir;
 
-    CameraObject* const pCam = (CameraObject*)m_pOwner;
+    auto* const pCam = (CameraObject*)m_pOwner;
 
     pCam->SetViewFracX(g_flCamWatchMidpointScale);
 
@@ -89,7 +89,7 @@ void CHeadTrack::Process(int nArg)
 {
     AgendaItem* pNext;
 
-    CameraObject* const pCam = (CameraObject*)m_pOwner;
+    auto* const pCam = (CameraObject*)m_pOwner;
 
     EngineObject* const pPrimary = pCam->GetTrackedObject();
 

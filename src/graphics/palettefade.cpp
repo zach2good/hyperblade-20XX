@@ -22,7 +22,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_cEntries = nCount;
 
-    PaletteEntry* pEntries = new PaletteEntry[nCount];
+    auto* pEntries = new PaletteEntry[nCount];
 
     m_pEntries = pEntries;
 

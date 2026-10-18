@@ -106,7 +106,7 @@ char AgendaItem::Activate()
 
         m_pOwner->GetObserver();
 
-        CAvoidObjects* const pSwerve = static_cast<CAvoidObjects*>(this);
+        auto* const pSwerve = static_cast<CAvoidObjects*>(this);
 
         if (FindByRef(pSwerve->m_pSwerveTarget) == 0)
         {
@@ -183,7 +183,7 @@ void AgendaItem::BindWithNode(EngineObject*, GameBehaviorObject*, PlanNode*, int
 // FUNCTION: HYPERX 0x0040fea0
 char AgendaItem::FindByRef(EngineObject* pObject)
 {
-    CAvoidObjects* pNode = (CAvoidObjects*)m_pOwner->GetObserver();
+    auto* pNode = (CAvoidObjects*)m_pOwner->GetObserver();
 
     while (pNode != nullptr)
     {

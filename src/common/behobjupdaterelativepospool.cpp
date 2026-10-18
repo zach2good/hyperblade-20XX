@@ -11,7 +11,7 @@ void BehObjUpdateRelativePosPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjUpdateRelativePos;
+    auto nRemaining = (short)g_nPoolCountBehObjUpdateRelativePos;
 
     while (nRemaining-- > 0)
     {

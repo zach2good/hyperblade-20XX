@@ -11,7 +11,7 @@
 // FUNCTION: HYPERX 0x0046bc40
 void MsgInteractorPool::Init()
 {
-    MsgInteractor* pNode = new MsgInteractor;
+    auto* pNode = new MsgInteractor;
 
     m_pHead              = pNode;
     MsgInteractor* pTail = pNode;

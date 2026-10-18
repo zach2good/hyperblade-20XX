@@ -95,7 +95,7 @@ Vec3 Math::SphericalToCartesian(const Vec3* pIn)
 
     vDir.x = (float)((cos(pIn->x) * sin(pIn->z)) * pIn->y);
 
-    const float flSinZ = (float)sin(pIn->z);
+    const auto flSinZ = (float)sin(pIn->z);
 
     vDir.y = (float)((sin(pIn->x) * flSinZ) * pIn->y);
 

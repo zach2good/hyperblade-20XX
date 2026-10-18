@@ -16,7 +16,7 @@ void CRelaxToPositionPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCRelaxToPosition;
+    auto nRemaining = (short)g_nPoolCountCRelaxToPosition;
 
     while (nRemaining-- > 0)
     {

@@ -685,11 +685,11 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, Pa
 // FUNCTION: HYPERX 0x00426860
 void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteEntry peColour, float flFloor)
 {
-    float* pflScale = new float[nCount];
+    auto* pflScale  = new float[nCount];
     *pflScale       = flFloor;
     const int nLast = nCount - 1;
 
-    const float flRatio = (float)pow(1.0f / flFloor, 1.0f / nLast);
+    const auto flRatio = (float)pow(1.0f / flFloor, 1.0f / nLast);
 
     PaletteEntry* pOut  = pEntries;
     const float   flRed = peColour.peRed;

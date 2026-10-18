@@ -29,9 +29,9 @@ void BehObj_FlyLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     m_wKind = BEH_FLY_LCL;
 
-    CProjectAndBounce* const pFirst = (CProjectAndBounce*)AllocAgendaItem(Agenda_CProjectAndBounce);
-    m_apSlots[0]                    = (AgendaItem*)pFirst;
-    pFirst->m_nMode                 = 1;
+    auto* const pFirst = (CProjectAndBounce*)AllocAgendaItem(Agenda_CProjectAndBounce);
+    m_apSlots[0]       = (AgendaItem*)pFirst;
+    pFirst->m_nMode    = 1;
 
     m_apSlots[1] = AllocAgendaItem(Agenda_CStepAnimation);
     m_apSlots[2] = nullptr;

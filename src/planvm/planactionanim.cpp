@@ -252,7 +252,7 @@ void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*
 {
     EngineObject* const pActor = pContext->GetActor();
 
-    const float flSpeed = (float)((unsigned int)pNode->m_pArgs[1].n * 0.01);
+    const auto flSpeed = (float)((unsigned int)pNode->m_pArgs[1].n * 0.01);
 
     pActor->m_pAnimPlayer->SetPlaybackRate(flSpeed);
 }
@@ -380,7 +380,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
     {
         g_pGameEngine->m_ppSlots[pAttach->nSlot]->PostSceneEvent(MSG_GOT_IT, 0);
 
-        RokObject* const pRok = (RokObject*)pActor;
+        auto* const pRok = (RokObject*)pActor;
 
         nOld = pRok->m_nCarrierSlot;
 
@@ -406,7 +406,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
     // The mine is a WeaponObject; it keeps the Rok's two words but not its parity pair.
     if (pActor->GetSlot() == SLOT_MINE)
     {
-        WeaponObject* const pWeapon = (WeaponObject*)pActor;
+        auto* const pWeapon = (WeaponObject*)pActor;
 
         nOld = pWeapon->m_nAttachedSlot;
 

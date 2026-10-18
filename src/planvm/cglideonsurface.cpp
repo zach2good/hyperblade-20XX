@@ -206,7 +206,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
         {
             pVelDir = m_pVelDir;
 
-            float flLen = (float)sqrt(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z);
+            auto flLen = (float)sqrt(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z);
 
             if (flLen == 0.0f)
             {
@@ -284,7 +284,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
                 }
                 else if (nSlot < SLOT_BODY_PART || nSlot > SLOT_BODY_PART_LAST)
                 {
-                    CRelaxYaw* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
+                    auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
                     PlanState* const pPlan = m_pOwner->GetPlanState();
                     pRelax->Bind(m_pOwner, pPlan->m_pCurrent);
@@ -499,7 +499,7 @@ void CGlideOnSurface::Release(int nTick)
         pBody = m_pOwner->GetPhysicsBody();
         vStep = pBody->step;
 
-        const unsigned int nElapsed =
+        const auto nElapsed =
             (unsigned int)(long)(g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
         const unsigned int nTickBase = g_pGameEngine->m_clock.nPrevTickMs;
         const float        flDelta   = g_pGameEngine->m_clock.flDelta;

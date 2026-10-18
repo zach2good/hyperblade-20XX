@@ -184,7 +184,7 @@ bool Ready()
         return true;
     }
 
-    SDL_Window* const pWindow = Window::Native().As<SDL_Window>();
+    auto* const pWindow = Window::Native().As<SDL_Window>();
 
     s_pRenderer = CreateGPURenderer(pWindow);
 

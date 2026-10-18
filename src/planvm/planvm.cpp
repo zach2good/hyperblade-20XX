@@ -1317,7 +1317,7 @@ char PlanVM::EmitArgToken()
         }
         else if (g_wArgsSinceChangeOfPlan == 3)
         {
-            PlanVM* const pSub = new PlanVM;
+            auto* const pSub = new PlanVM;
 
             if (pSub != nullptr)
             {

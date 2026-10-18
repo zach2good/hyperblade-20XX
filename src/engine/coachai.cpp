@@ -295,7 +295,7 @@ int GameEngine::CheckHandicapCondition()
 
     pSlot = g_pGameEngine->GetPlayer((short)nCarrier);
 
-    const short nSpread = (short)pSlot->m_stats.GetScalar(RATING_MULTI_POINT_SPREAD);
+    const auto nSpread = (short)pSlot->m_stats.GetScalar(RATING_MULTI_POINT_SPREAD);
 
     if ((nCarrier & 1) != 0)
     {
@@ -433,8 +433,8 @@ int GameEngine::CheckGoalieOutOfPosition()
 
     EngineObject** const pSlots = g_pGameEngine->m_ppSlots;
 
-    PlayerObject* const pGoalieA = (PlayerObject*)pSlots[GOALIE_SLOT_A];
-    PlayerObject* const pGoalieB = (PlayerObject*)pSlots[GOALIE_SLOT_B];
+    auto* const pGoalieA = (PlayerObject*)pSlots[GOALIE_SLOT_A];
+    auto* const pGoalieB = (PlayerObject*)pSlots[GOALIE_SLOT_B];
 
     PhysicsBody* pPosA = pGoalieA->GetPhysicsBody();
     PhysicsBody* pPosB = pGoalieB->GetPhysicsBody();
@@ -612,7 +612,7 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
 
     const int nFirst = sCandidate;
 
-    const short sCount = (short)pTeam->aSeat[(nSlot >> 1) & 1];
+    const auto sCount = (short)pTeam->aSeat[(nSlot >> 1) & 1];
 
     const int nSecond = sChallenger;
 
@@ -950,8 +950,8 @@ void EngineObject::UpdateCoachAI()
 
         if (GameEngine::IsComputerTeam(nSlot) != 0)
         {
-            PlayerObject* const pObject = (PlayerObject*)pActor;
-            float               flLimit;
+            auto* const pObject = (PlayerObject*)pActor;
+            float       flLimit;
 
             flLimit = pObject->m_stats.GetScalar(RATING_SUB_OUT_DAMAGE);
 

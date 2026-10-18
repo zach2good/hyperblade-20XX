@@ -148,7 +148,7 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
 
 HwTexture::Texture HwTexture::Find(HwPipeline::Device device, const TexCacheEntry* pEntry)
 {
-    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+    auto* const pDevice = device.As<SDL_GPUDevice>();
 
     if (pEntry == nullptr || pEntry->m_pszName == nullptr)
     {

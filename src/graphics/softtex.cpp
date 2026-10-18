@@ -32,7 +32,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     const unsigned int nStride = (cx + 3) & 0xfffffffc;
 
     // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
-    RLESprite* pSprite = (RLESprite*)malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2);
+    auto* pSprite = (RLESprite*)malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2);
 
     if (pSprite == nullptr)
     {
@@ -104,8 +104,8 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     }
 
     // The shrink can move the block, and the row pointers point into it.
-    const auto       nOld    = (std::uintptr_t)pSprite;
-    RLESprite* const pShrunk = (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
+    const auto  nOld    = (std::uintptr_t)pSprite;
+    auto* const pShrunk = (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
 
     if (pShrunk == nullptr)
     {

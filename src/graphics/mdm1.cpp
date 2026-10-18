@@ -20,7 +20,7 @@ void* MDM1::Decompress(FileObj* pFile)
 {
     int nSize;
 
-    unsigned char* const pWindow = (unsigned char*)malloc(WINDOW_BYTES);
+    auto* const pWindow = (unsigned char*)malloc(WINDOW_BYTES);
 
     if (pWindow == nullptr)
     {
@@ -32,7 +32,7 @@ void* MDM1::Decompress(FileObj* pFile)
         return nullptr;
     }
 
-    unsigned char* const pOut = (unsigned char*)malloc(nSize);
+    auto* const pOut = (unsigned char*)malloc(nSize);
 
     if (pOut == nullptr)
     {

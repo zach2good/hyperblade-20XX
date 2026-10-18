@@ -146,7 +146,7 @@ void CTrackTraj::Process(int nArg)
     Vec3* const pCamVel = GetCamera()->m_pSettings;
     Vec3* const pCamDir = &m_pOwner->GetPhysicsBody()->velDir;
 
-    CameraObject* const pCamera = (CameraObject*)m_pOwner;
+    auto* const pCamera = (CameraObject*)m_pOwner;
 
     if (pCamera->GetTrackedObject() == nullptr)
     {

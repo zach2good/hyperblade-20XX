@@ -37,12 +37,12 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     m_otherSlot.n      = pObject->GetSlot();
 
     PlanWord* pEntry = pPlanArg->m_pArgs + ARG_MESSAGE_FIRST;
-    short     nCount = (short)(pPlanArg->m_nArgCount - ARG_MESSAGE_FIRST);
+    auto      nCount = (short)(pPlanArg->m_nArgCount - ARG_MESSAGE_FIRST);
 
     while (nCount-- != 0)
     {
         PlanNode* const    pInstr  = pEntry->pNode;
-        const unsigned int nOpcode = (unsigned int)pInstr->m_nOpcode;
+        const auto         nOpcode = (unsigned int)pInstr->m_nOpcode;
         const unsigned int nClass  = nOpcode & OP_CATEGORY;
 
         switch (nClass)

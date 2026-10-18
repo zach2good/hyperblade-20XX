@@ -5,7 +5,7 @@
 // FUNCTION: HYPERX 0x0041ed00
 char BehaviorOwner::Insert(void* pObject)
 {
-    GameBehaviorObject* const pItem = (GameBehaviorObject*)pObject;
+    auto* const pItem = (GameBehaviorObject*)pObject;
 
     pItem->m_pStandby = m_pHead;
     m_pHead           = pItem;

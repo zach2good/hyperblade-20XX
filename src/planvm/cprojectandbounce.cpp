@@ -108,8 +108,8 @@ void CProjectAndBounce::ProjectAndBounce(int)
         m_pShape                           = &g_arenaEllipsoid;
     }
 
-    Vec3* const               pPos   = m_pSource;
-    CollisionEllipsoid* const pShape = (CollisionEllipsoid*)m_pShape;
+    Vec3* const pPos   = m_pSource;
+    auto* const pShape = (CollisionEllipsoid*)m_pShape;
 
     if (pPos->z < g_flZeroAgendaItem)
     {

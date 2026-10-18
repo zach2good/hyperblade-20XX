@@ -31,7 +31,7 @@ float PlanArg::ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex)
 
     if (pSlot->IsLocalReal())
     {
-        const short nSlot = (short)pSlot->n;
+        const auto nSlot = (short)pSlot->n;
 
         PlanState* const pStats = pContext->GetActor()->GetPlanState();
 

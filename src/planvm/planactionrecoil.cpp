@@ -166,7 +166,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     if (pSelf->GetSlot() < PLAYER_OBJECT_COUNT)
     {
-        CRelaxYaw* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
+        auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
         GameBehaviorObject* const pBindNode = pSelf->GetPlanState()->m_pCurrent;
         pRelax->Bind(pSelf, pBindNode);
@@ -247,7 +247,7 @@ extern const float g_flWallBoxTopY;
 // FUNCTION: HYPERX 0x004050d0
 void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     BoundBubble*    pColOther;
     Vec3*           pNormalField;
@@ -292,7 +292,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
             return;
         }
 
-        const short nOther = (short)pArgs[ARG_FIRST].n;
+        const auto nOther = (short)pArgs[ARG_FIRST].n;
 
         pSelf = g_pGameEngine->m_ppSlots[nSlot];
 
@@ -386,7 +386,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
             flRatio = pSelfBody->flSpeed / flLimit * 4.0f;
 
-            CRelaxYaw* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
+            auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
             pBindNode = pSelf->GetPlanState()->m_pCurrent;
             pRelax->Bind(pSelf, pBindNode);
@@ -620,7 +620,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
             flRatio = pSelfBody->flSpeed / flLimit * 4.0f;
 
-            CRelaxYaw* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
+            auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
             pBindNode = pSelf->GetPlanState()->m_pCurrent;
             pRelax->Bind(pSelf, pBindNode);

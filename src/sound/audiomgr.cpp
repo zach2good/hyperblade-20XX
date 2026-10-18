@@ -55,7 +55,7 @@ AudioMgr::~AudioMgr()
 // FUNCTION: HYPERX 0x00490990
 void AudioMgr::Init()
 {
-    SoundManager* const pSounds = new SoundManager;
+    auto* const pSounds = new SoundManager;
 
     pEntries = pSounds;
 

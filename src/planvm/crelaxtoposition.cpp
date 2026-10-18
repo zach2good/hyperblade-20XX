@@ -159,7 +159,7 @@ void CRelaxToPosition::Process(int nArg)
 
     Vec3 vTarget = m_vDest;
 
-    const short nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
+    const auto nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
 
     nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
 
@@ -241,7 +241,7 @@ void CRelaxToPosition::Release(int nArg)
 
     Vec3 vTarget = m_vDest;
 
-    const short nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
+    const auto nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
 
     nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
 

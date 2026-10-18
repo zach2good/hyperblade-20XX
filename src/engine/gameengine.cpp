@@ -417,11 +417,11 @@ GameEngine::GameEngine()
 
     m_nPending = 0;
 
-    TeamsBlock* const pTeams = new TeamsBlock;
+    auto* const pTeams = new TeamsBlock;
 
     m_pTeamTable = pTeams;
 
-    SaveObject* const pSave = new SaveObject(HIDDEN_TEAM_A, HIDDEN_TEAM_B);
+    auto* const pSave = new SaveObject(HIDDEN_TEAM_A, HIDDEN_TEAM_B);
 
     m_pSaveObject = pSave;
 
@@ -598,8 +598,8 @@ void GameEngine::TickClock()
     m_clock.flPrevInvDeltaSquared = m_clock.flInvDeltaSquared;
     m_clock.nPrevTickMs           = m_clock.nTickMs;
 
-    const unsigned int nNow = (unsigned int)SDL_GetTicks();
-    m_clock.nTickMs         = nNow;
+    const auto nNow = (unsigned int)SDL_GetTicks();
+    m_clock.nTickMs = nNow;
 
     // The simulation steps a fixed tick, however long the frame took to draw.
     g_flFrameDelta = FramePacing::TICK_MS;
@@ -995,7 +995,7 @@ void GameEngine::BeginMatchPlay()
     m_bFollowingOther        = 0;
     g_bPeriodCountdownActive = 0;
 
-    RokObject* const pRok = (RokObject*)m_ppSlots[SLOT_ROK];
+    auto* const pRok = (RokObject*)m_ppSlots[SLOT_ROK];
 
     if (pRok != nullptr)
     {
@@ -1154,7 +1154,7 @@ void GameEngine::InitMatchTimers()
     m_clock.nRingIndex = 0;
     m_clock.nPeriod    = 1;
 
-    const unsigned int nNow = (unsigned int)SDL_GetTicks();
+    const auto nNow = (unsigned int)SDL_GetTicks();
 
     m_clock.nPeriodStartMs = nNow;
     m_clock.nPauseStartMs  = nNow;
@@ -1475,7 +1475,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
     char  szToken[PARSE_TOKEN_MAX];
     short nType;
 
-    ObjectDef* const pDef = new ObjectDef(nullptr);
+    auto* const pDef = new ObjectDef(nullptr);
 
     int nSeen = 0;
 
@@ -2363,7 +2363,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
         pTail->m_nChildCount++;
     }
 
-    BubbleCmd* const pNew = new BubbleCmd;
+    auto* const pNew = new BubbleCmd;
 
     *ppSlot = pNew;
 
@@ -2375,7 +2375,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     if (vAttach.x != COLLISION_MISSING)
     {
-        AttachPak* const pExtra = new AttachPak;
+        auto* const pExtra = new AttachPak;
 
         memset(pExtra, 0, sizeof(AttachPak));
 
@@ -2392,7 +2392,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     MapModifierToId((short)nModelId, pNew);
 
-    BubbleShapeNode* const pPos = new BubbleShapeNode;
+    auto* const pPos = new BubbleShapeNode;
 
     pNew->m_pPos = pPos;
 
@@ -3570,9 +3570,9 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
             return 0;
     }
 
-    PlayerObject* const pPlayer    = (PlayerObject*)pTeam->apOnIce[nSide];
-    int                 nOnIceSlot = pPlayer->GetSlot();
-    ObjectStats* const  pBody      = &pPlayer->m_stats;
+    auto* const        pPlayer    = (PlayerObject*)pTeam->apOnIce[nSide];
+    int                nOnIceSlot = pPlayer->GetSlot();
+    ObjectStats* const pBody      = &pPlayer->m_stats;
 
     pBody->CopyBaseStats();
 
@@ -3592,7 +3592,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
 
         flGate = DamageGate();
 
-        const float  flRested  = (float)(unsigned int)nElapsed;
+        const auto   flRested  = (float)(unsigned int)nElapsed;
         float* const pflDamage = &pTeam->aRows[nWith].aStat[RATING_DAMAGE];
         float        flDamage;
 
@@ -3700,7 +3700,7 @@ unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
         return 0;
     }
 
-    PlayerObject* const pEntity = (PlayerObject*)pTeam->apOnIce[nOther];
+    auto* const pEntity = (PlayerObject*)pTeam->apOnIce[nOther];
 
     if (nWhich == pEntity->m_wDesiredSubstitute)
     {
@@ -3739,8 +3739,8 @@ void GameEngine::SyncPlayerDataToTeam()
         {
             for (nSeat = 0; nSeat < TEAM_BLOCK_SEATS; nSeat++)
             {
-                const int     nSlot   = pTeam->aSeat[nSeat];
-                PlayerObject* pPlayer = (PlayerObject*)pTeam->apOnIce[nSeat];
+                const int nSlot   = pTeam->aSeat[nSeat];
+                auto*     pPlayer = (PlayerObject*)pTeam->apOnIce[nSeat];
 
                 if (pPlayer != nullptr)
                 {
@@ -3790,7 +3790,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
                 g_gameApp.Fatal("Too many cameras!");
             }
 
-            CameraObject* const pCamera = new CameraObject(nEntry, pDef);
+            auto* const pCamera = new CameraObject(nEntry, pDef);
 
             m_apCameras[m_wCameraCount] = pCamera;
 
@@ -3899,7 +3899,7 @@ void GameEngine::Init(const char* pszConfig)
 {
     int nIndex;
 
-    ArenaState* const pState = new ArenaState;
+    auto* const pState = new ArenaState;
 
     m_pArena = pState;
 
@@ -3918,13 +3918,13 @@ void GameEngine::Init(const char* pszConfig)
 
     m_nPending = -1;
 
-    EngineObject** const ppSlots = new EngineObject*[ENGINE_SLOT_COUNT];
+    auto** const ppSlots = new EngineObject*[ENGINE_SLOT_COUNT];
 
     m_ppSlots = ppSlots;
 
     memset(ppSlots, 0, ENGINE_SLOT_COUNT * sizeof(EngineObject*));
 
-    EngineObject** const ppObjects = new EngineObject*[ENGINE_SLOT_COUNT];
+    auto** const ppObjects = new EngineObject*[ENGINE_SLOT_COUNT];
 
     m_ppObjects = ppObjects;
 
@@ -4085,8 +4085,8 @@ void GameEngine::BroadcastCollisionEvents()
 // FUNCTION: HYPERX 0x00486a10
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
-    short               nIndex;
-    static unsigned int s_dwEventBase = (unsigned int)SDL_GetTicks();
+    short       nIndex;
+    static auto s_dwEventBase = (unsigned int)SDL_GetTicks();
 
     if (g_bDragOff == 0 || nEvent != MSG_START_DRAG)
     {
@@ -4310,7 +4310,7 @@ char GameEngine::RemoveFromSortedList(short nId)
 // FUNCTION: HYPERX 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
-    static unsigned int s_dwPauseBase = (unsigned int)SDL_GetTicks();
+    static auto s_dwPauseBase = (unsigned int)SDL_GetTicks();
 
     switch (bRunning)
     {

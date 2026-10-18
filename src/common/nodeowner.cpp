@@ -5,7 +5,7 @@
 // FUNCTION: HYPERX 0x0046bd50
 char NodeOwner::Insert(void* pNode)
 {
-    Interactor* const pItem = (Interactor*)pNode;
+    auto* const pItem = (Interactor*)pNode;
 
     pItem->pNext = m_pHead;
     m_pHead      = pItem;

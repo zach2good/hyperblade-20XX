@@ -106,11 +106,11 @@ void CTrack::Process(int nArg)
     Vec3  vFarRay;
     Vec3  vNearRay;
 
-    const float flStep = (float)(g_pGameEngine->m_clock.GetDelta() * 50.0f);
+    const auto flStep = (float)(g_pGameEngine->m_clock.GetDelta() * 50.0f);
 
     Vec3* const pOffsetScales = GetCamera()->m_pSettings;
 
-    PlayerObject* pTracked = (PlayerObject*)GetCamera()->GetTrackedObject();
+    auto* pTracked = (PlayerObject*)GetCamera()->GetTrackedObject();
 
     if (pTracked == nullptr)
     {
@@ -224,8 +224,8 @@ void CTrack::Process(int nArg)
 
     if (fabs(pBody->flFacing) > 0.1)
     {
-        const float flCos = (float)cos(pBody->flFacing);
-        const float flSin = (float)sin(pBody->flFacing);
+        const auto flCos = (float)cos(pBody->flFacing);
+        const auto flSin = (float)sin(pBody->flFacing);
 
         vRaw.x             = vFacing.z * g_flZeroTracking - vFacing.y * g_flCamFracFull;
         const float flRawY = vFacing.x * g_flCamFracFull - vFacing.z * g_flZeroTracking;

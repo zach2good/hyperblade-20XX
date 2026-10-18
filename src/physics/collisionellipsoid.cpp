@@ -449,8 +449,8 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 // FUNCTION: HYPERX 0x0042f350
 float CollisionEllipsoid::RadiusForDirection(const Vec3* pVDir, int)
 {
-    const float flHorizontal = (float)((fabs(pVDir->x) + fabs(pVDir->z)) / g_flTwoEllipsoid);
-    const float flAbsY       = (float)fabs(pVDir->y);
+    const auto  flHorizontal = (float)((fabs(pVDir->x) + fabs(pVDir->z)) / g_flTwoEllipsoid);
+    const auto  flAbsY       = (float)fabs(pVDir->y);
     const float flTotal      = flAbsY + flHorizontal;
 
     if (flTotal < DIRECTION_EPS)

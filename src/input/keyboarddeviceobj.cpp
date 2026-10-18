@@ -29,7 +29,7 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
 {
     unsigned int nBit    = 1;
     unsigned int nSticky = m_nStickyMask;
-    short        nCount  = (short)m_pBindingTable->m_nKeyCount;
+    auto         nCount  = (short)m_pBindingTable->m_nKeyCount;
     short        nKey    = 0;
 
     if (nSticky != 0)
@@ -104,7 +104,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 
     for (int nInputSlot = 0; nInputSlot < INPUT_SLOT_COUNT; nInputSlot++)
     {
-        const unsigned int nNow = (unsigned int)SDL_GetTicks();
+        const auto nNow = (unsigned int)SDL_GetTicks();
 
         m_aPressTime[(short)nInputSlot]   = nNow;
         m_aReleaseTime[(short)nInputSlot] = nNow + REPEAT_STEP_MS;
@@ -123,7 +123,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
     int nSlot;
     int nIndex;
 
-    ActionBindingGroup* const pTable = new ActionBindingGroup;
+    auto* const pTable = new ActionBindingGroup;
 
     *ppTableOut         = pTable;
     pTable->m_nKeyCount = TABLE_KEY_COUNT;
@@ -141,7 +141,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
 
     for (int nGroup = 0; nGroup < *pnGroupsOut; nGroup++, pGroup++)
     {
-        ActionBinding* pWork = new ActionBinding[pGroup->m_nCount];
+        auto* pWork = new ActionBinding[pGroup->m_nCount];
 
         for (nEntry = 0; nEntry < pGroup->m_nCount; nEntry++)
         {
@@ -438,10 +438,10 @@ int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 // FUNCTION: HYPERX 0x0045d320
 int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 {
-    int nIndex          = 0;
-    m_nPrevHeldMask     = m_nHeldMask;
-    const short nCount  = (short)m_pBindingTable->m_nKeyCount;
-    int         nResult = -1;
+    int nIndex         = 0;
+    m_nPrevHeldMask    = m_nHeldMask;
+    const auto nCount  = (short)m_pBindingTable->m_nKeyCount;
+    int        nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
     {
@@ -530,9 +530,9 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 {
     int nIndex = 0;
 
-    m_nPrevHeldMask     = m_nHeldMask;
-    const short nCount  = (short)m_pBindingTable->m_nKeyCount;
-    int         nResult = -1;
+    m_nPrevHeldMask    = m_nHeldMask;
+    const auto nCount  = (short)m_pBindingTable->m_nKeyCount;
+    int        nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
     {

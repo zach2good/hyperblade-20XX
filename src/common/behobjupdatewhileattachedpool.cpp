@@ -11,7 +11,7 @@ void BehObjUpdateWhileAttachedPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjUpdateWhileAttached;
+    auto nRemaining = (short)g_nPoolCountBehObjUpdateWhileAttached;
 
     while (nRemaining-- > 0)
     {

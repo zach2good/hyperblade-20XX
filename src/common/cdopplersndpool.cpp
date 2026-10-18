@@ -12,7 +12,7 @@ void CDopplerSndPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCDopplerSnd;
+    auto nRemaining = (short)g_nPoolCountCDopplerSnd;
 
     while (nRemaining-- > 0)
     {

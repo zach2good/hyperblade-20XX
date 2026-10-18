@@ -28,9 +28,9 @@ void BehObj_GlideLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     m_wKind = BEH_GLIDE_LCL;
 
-    CGlideOnSurface* const pFirst = (CGlideOnSurface*)AllocAgendaItem(Agenda_CGlideOnSurface);
-    m_apSlots[0]                  = (AgendaItem*)pFirst;
-    pFirst->m_nOnSurface          = 1;
+    auto* const pFirst   = (CGlideOnSurface*)AllocAgendaItem(Agenda_CGlideOnSurface);
+    m_apSlots[0]         = (AgendaItem*)pFirst;
+    pFirst->m_nOnSurface = 1;
 
     m_apSlots[1] = AllocAgendaItem(Agenda_CStepAnimation);
     m_apSlots[2] = AllocAgendaItem(Agenda_CSetAttitude);

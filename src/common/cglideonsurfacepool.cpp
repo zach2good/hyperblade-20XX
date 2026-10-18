@@ -12,7 +12,7 @@ void CGlideOnSurfacePool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCGlideOnSurface;
+    auto nRemaining = (short)g_nPoolCountCGlideOnSurface;
 
     while (nRemaining-- > 0)
     {

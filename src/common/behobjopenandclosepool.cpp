@@ -11,7 +11,7 @@ void BehObjOpenAndClosePool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjOpenAndClose;
+    auto nRemaining = (short)g_nPoolCountBehObjOpenAndClose;
 
     while (nRemaining-- > 0)
     {

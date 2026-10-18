@@ -64,7 +64,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
         return;
     }
 
-    const float flSin = (float)sin(dTheta);
+    const auto flSin = (float)sin(dTheta);
 
     if (flSin == 0.0f)
     {
@@ -96,8 +96,8 @@ bool SlerpSeg::Eval(float flAt)
         return false;
     }
 
-    const float flWeightTo = (float)sin(flAt * m_flTheta);
-    flWeightFrom           = (float)sin(m_flTheta - flAt * m_flTheta);
+    const auto flWeightTo = (float)sin(flAt * m_flTheta);
+    flWeightFrom          = (float)sin(m_flTheta - flAt * m_flTheta);
 
     m_q0.w = flWeightTo * m_q1Div.w + flWeightFrom * m_q0Div.w;
     m_q0.x = flWeightTo * m_q1Div.x + flWeightFrom * m_q0Div.x;

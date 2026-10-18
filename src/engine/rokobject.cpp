@@ -237,15 +237,15 @@ void RokObject::Postpass()
 
         if (nRow == pTeam->aSeat[0])
         {
-            PlayerObject* pOwner = (PlayerObject*)g_pGameEngine->m_ppSlots[(short)nTeam];
+            auto* pOwner = (PlayerObject*)g_pGameEngine->m_ppSlots[(short)nTeam];
 
             flFirst  = pOwner->m_matchStats.GetAt(MATCH_STAT_TIME_OF_POSS);
             flSecond = pOwner->m_matchStats.GetAt(MATCH_STAT_SHOTS_ON_GOAL);
         }
         else if (nRow == pTeam->aSeat[1])
         {
-            PlayerObject* const pOwner = (PlayerObject*)
-                                             g_pGameEngine->m_ppSlots[(short)(nTeam + 2)];
+            auto* const pOwner = (PlayerObject*)
+                                     g_pGameEngine->m_ppSlots[(short)(nTeam + 2)];
 
             flFirst  = pOwner->m_matchStats.GetAt(MATCH_STAT_TIME_OF_POSS);
             flSecond = pOwner->m_matchStats.GetAt(MATCH_STAT_SHOTS_ON_GOAL);

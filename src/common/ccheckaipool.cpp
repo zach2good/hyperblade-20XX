@@ -12,7 +12,7 @@ void CCheckAIPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCCheckAI;
+    auto nRemaining = (short)g_nPoolCountCCheckAI;
 
     while (nRemaining-- > 0)
     {

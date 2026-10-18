@@ -22,15 +22,15 @@ void Quat::FromMatrix(TransformObject* pSource)
         flTrace = 0.0f;
     }
 
-    const float flW = (float)(sqrt(flTrace) * 0.5);
-    w               = flW;
+    const auto flW = (float)(sqrt(flTrace) * 0.5);
+    w              = flW;
 
     if (flW > 0.0f)
     {
-        const float flScale = (float)(0.25 / flW);
-        x                   = (pRows[1].af[2] - pRows[2].af[1]) * flScale;
-        y                   = (pRows[2].af[0] - pRows[0].af[2]) * flScale;
-        z                   = (pRows[0].af[1] - pRows[1].af[0]) * flScale;
+        const auto flScale = (float)(0.25 / flW);
+        x                  = (pRows[1].af[2] - pRows[2].af[1]) * flScale;
+        y                  = (pRows[2].af[0] - pRows[0].af[2]) * flScale;
+        z                  = (pRows[0].af[1] - pRows[1].af[0]) * flScale;
         Quat::Normalize(&w, &x, &y, &z);
         return;
     }
@@ -102,7 +102,7 @@ void Quat::ToMatrix(TransformObject* pTarget)
 // FUNCTION: HYPERX 0x00430260
 bool Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
 {
-    const float flLength = (float)sqrt(*pW * *pW + *pX * *pX + *pY * *pY + *pZ * *pZ);
+    const auto flLength = (float)sqrt(*pW * *pW + *pX * *pX + *pY * *pY + *pZ * *pZ);
 
     if (flLength > g_dNormalizeEpsilon)
     {

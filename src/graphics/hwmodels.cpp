@@ -36,7 +36,7 @@ std::set<const MaterialListNode*>            s_converted;
 // Made once and kept for the life of the process, so nothing it owns is torn down at exit.
 CD3DTextureManager& Database()
 {
-    static CD3DTextureManager* const s_pDatabase = new CD3DTextureManager;
+    static auto* const s_pDatabase = new CD3DTextureManager;
 
     return *s_pDatabase;
 }

@@ -142,12 +142,12 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     short         nFacing;
     short         nStep;
 
-    short               nSlot  = (short)((pActor->GetSlot() + 1) % 4);
+    auto                nSlot  = (short)((pActor->GetSlot() + 1) % 4);
     EngineObject* const pCandA = g_pGameEngine->m_ppSlots[nSlot];
     nSlot                      = (short)((pActor->GetSlot() + 3) % 4);
     EngineObject* const pCandB = g_pGameEngine->m_ppSlots[nSlot];
 
-    const float flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+    const auto flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
 
     if (flDyA > 30.0f)
     {

@@ -801,7 +801,7 @@ void MeshBone::ComputeBoundingSphere()
         const float flDy = pVerts[i].y - m_vCentre.y;
         const float flDz = pVerts[i].z - m_vCentre.z;
 
-        const float flDistance = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
+        const auto flDistance = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
 
         if (m_flRadius < flDistance)
         {

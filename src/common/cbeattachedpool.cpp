@@ -12,7 +12,7 @@ void CBeAttachedPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCBeAttached;
+    auto nRemaining = (short)g_nPoolCountCBeAttached;
 
     while (nRemaining-- > 0)
     {

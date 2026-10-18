@@ -82,7 +82,7 @@ void AnimDB::SetName(const char* pszName)
 // FUNCTION: HYPERX 0x004176d0
 void AnimDB::AddClipEntry(unsigned short wSegment, unsigned short wTriggerFrame, const char* pszName, int nMessage, const char* pszRef, short nSyncSegment, short nSyncFrame)
 {
-    AnimClipEntry* const pEntry = new AnimClipEntry(wSegment, wTriggerFrame, pszName, nMessage);
+    auto* const pEntry = new AnimClipEntry(wSegment, wTriggerFrame, pszName, nMessage);
 
     m_apEntries[m_nEntryCount] = pEntry;
 

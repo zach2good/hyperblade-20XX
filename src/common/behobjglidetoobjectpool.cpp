@@ -11,7 +11,7 @@ void BehObjGlideToObjectPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjGlideToObject;
+    auto nRemaining = (short)g_nPoolCountBehObjGlideToObject;
 
     while (nRemaining-- > 0)
     {

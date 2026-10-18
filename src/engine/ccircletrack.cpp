@@ -41,7 +41,7 @@ void CCircleTrack::Process(int nArg)
     Vec3 vNearRay;
 
     EngineObject* const pTracked  = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
-    CameraObject* const pCamera   = (CameraObject*)m_pOwner;
+    auto* const         pCamera   = (CameraObject*)m_pOwner;
     const Vec3*         pSettings = pCamera->m_pSettings;
 
     if (pTracked == nullptr)

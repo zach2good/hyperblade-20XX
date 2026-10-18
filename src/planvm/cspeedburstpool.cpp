@@ -13,7 +13,7 @@ void CSpeedBurstPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCSpeedBurst;
+    auto nRemaining = (short)g_nPoolCountCSpeedBurst;
 
     while (nRemaining-- > 0)
     {

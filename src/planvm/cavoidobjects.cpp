@@ -59,7 +59,7 @@ void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x0040f890
 void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
-    const short nFallbackIndex = (short)nArg;
+    const auto nFallbackIndex = (short)nArg;
 
     m_pNext  = nullptr;
     m_wKind  = Agenda_CAvoidObjects;

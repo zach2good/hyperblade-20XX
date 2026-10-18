@@ -464,7 +464,7 @@ void String::AllocBuffer(int nLength)
         return;
     }
 
-    StringHeader* const pHeader = (StringHeader*)operator new(sizeof(StringHeader) + nLength + 1);
+    auto* const pHeader = (StringHeader*)operator new(sizeof(StringHeader) + nLength + 1);
 
     pHeader->nRefs           = 1;
     pHeader->Data()[nLength] = 0;

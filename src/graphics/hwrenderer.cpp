@@ -682,7 +682,7 @@ unsigned int HwRenderer::Frame()
 
 HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeight, const unsigned char* pPalette)
 {
-    SDL_Renderer* const pRenderer = renderer.As<SDL_Renderer>();
+    auto* const pRenderer = renderer.As<SDL_Renderer>();
 
     using GraphicsSettings::Switch;
 

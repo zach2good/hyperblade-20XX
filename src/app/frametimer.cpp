@@ -21,7 +21,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     timer->nPerfSampleCount++;
 
-    const unsigned int nNow     = (unsigned int)SDL_GetTicks();
+    const auto         nNow     = (unsigned int)SDL_GetTicks();
     const unsigned int nElapsed = nNow - nStart;
 
     if (timer->bFrameTimesOn == 0 || nElapsed < 5000)
@@ -55,7 +55,7 @@ unsigned int FrameTimer::Now()
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate()
 {
-    const unsigned int nStart = (unsigned int)SDL_GetTicks();
+    const auto nStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
@@ -74,7 +74,7 @@ double FrameTimer::Calibrate()
 // FUNCTION: HYPERX 0x00442b50
 double FrameTimer::BenchmarkResolution()
 {
-    const unsigned int nStart = (unsigned int)SDL_GetTicks();
+    const auto nStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {

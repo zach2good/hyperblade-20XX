@@ -106,11 +106,11 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
         }
     }
 
-    MeshMaterial* const pMaterials = new MeshMaterial[*pnMatCount];
+    auto* const pMaterials = new MeshMaterial[*pnMatCount];
 
     *ppMaterials = pMaterials;
 
-    MaterialName* const paMatNames = new MaterialName[*pnMatCount];
+    auto* const paMatNames = new MaterialName[*pnMatCount];
 
     *ppMatNames = paMatNames;
 

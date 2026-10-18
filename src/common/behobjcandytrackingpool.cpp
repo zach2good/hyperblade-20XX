@@ -11,7 +11,7 @@ void BehObjCandyTrackingPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjCandyTracking;
+    auto nRemaining = (short)g_nPoolCountBehObjCandyTracking;
 
     while (nRemaining-- > 0)
     {

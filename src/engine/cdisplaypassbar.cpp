@@ -51,7 +51,7 @@ void CDisplayPassBar::Process(int nArg)
 
             pos = g_pRenderer->GetPassBarSize();
 
-            const float flHalf = (float)(pos.y >> 1);
+            const auto flHalf = (float)(pos.y >> 1);
 
             Vec3 vDir;
             vDir.x = pMatePos->x - vSelf.x;

@@ -62,13 +62,13 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
     m_ownSlotOrMessage = pPlan->m_pArgs[ARG_TAG];
     m_nBehaviour       = PLAN_TOKEN_NO_BEH_CHANGE;
 
-    short     nCount = (short)(pPlan->m_nArgCount - ARG_CONDITION_FIRST);
+    auto      nCount = (short)(pPlan->m_nArgCount - ARG_CONDITION_FIRST);
     PlanWord* pEntry = pPlan->m_pArgs + ARG_CONDITION_FIRST;
 
     while (nCount-- != 0)
     {
         PlanNode* const    pInstr  = pEntry->pNode;
-        const unsigned int nOpcode = (unsigned int)pInstr->m_nOpcode;
+        const auto         nOpcode = (unsigned int)pInstr->m_nOpcode;
         const unsigned int nClass  = nOpcode & OP_CATEGORY;
 
         switch (nClass)

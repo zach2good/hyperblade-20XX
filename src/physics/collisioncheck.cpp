@@ -377,7 +377,7 @@ extern float g_flZoneHeight;
 // FUNCTION: HYPERX 0x004697b0
 void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     EngineObject* pOther;
     EngineObject* pOwn;
@@ -669,7 +669,7 @@ extern float g_flColBoxSizeY;
 // FUNCTION: HYPERX 0x00469f90
 void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     EngineObject* pOther;
     EngineObject* pOwn;

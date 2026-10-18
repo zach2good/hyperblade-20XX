@@ -83,7 +83,7 @@ float MatchStats::AccumulateStat(int nStatId, int)
         case MATCH_STAT_POSS_STOP:
             if (g_bStatIntervalOpen != 0)
             {
-                const float flNow = (float)g_pGameEngine->m_clock.nTickMs;
+                const auto flNow = (float)g_pGameEngine->m_clock.nTickMs;
 
                 m_aStat[MATCH_STAT_POSS_STOP] = flNow;
                 m_aStat[MATCH_STAT_TIME_OF_POSS] =
@@ -195,7 +195,7 @@ float MatchStats::StartTimer(int nIndex)
 // FUNCTION: HYPERX 0x00491cd0
 float MatchStats::StopTimer(int nIndex)
 {
-    const float flNow = (float)g_pGameEngine->m_clock.nTickMs;
+    const auto flNow = (float)g_pGameEngine->m_clock.nTickMs;
 
     m_aStat[nIndex] = flNow;
 

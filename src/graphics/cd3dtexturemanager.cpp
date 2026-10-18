@@ -326,7 +326,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                                 nScaledWidth = pFace->GetScaledWidth();
 
-                                const float flWide = (float)nWideLess;
+                                const auto flWide = (float)nWideLess;
 
                                 const float flScale = flWide / (float)nScaledWidth;
 
@@ -353,7 +353,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
                                             pCoords[nCoord].tu = flWide;
                                         }
 
-                                        const float flHigh = (float)nHighLess;
+                                        const auto flHigh = (float)nHighLess;
 
                                         if (*pflV < 0.0f)
                                         {

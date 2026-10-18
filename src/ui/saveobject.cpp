@@ -160,7 +160,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
             for (int nSlot = 0; nSlot < GAUNTLET_ROUND_SLOTS && pSpace != nullptr; nSlot++)
             {
                 pSpace++;
-                const short nValue        = (short)atoi(pSpace);
+                const auto nValue         = (short)atoi(pSpace);
                 pSpace                    = (char*)strchr(pSpace, ' ');
                 m_aBracket[nRound][nSlot] = nValue;
             }

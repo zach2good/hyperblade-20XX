@@ -148,7 +148,7 @@ void Game::InitializeEngine()
 
     nStart = GameApp::GetInstallLevel();
 
-    AnimRegistry* const pAnimDb = new AnimRegistry;
+    auto* const pAnimDb = new AnimRegistry;
 
     g_pAnimRegistry = pAnimDb;
 

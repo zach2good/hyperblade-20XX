@@ -811,7 +811,7 @@ bool DebugMenu::WantsKeyboard()
 
 void DebugMenu::Draw(Renderer renderer)
 {
-    SDL_Renderer* const pRenderer = renderer.As<SDL_Renderer>();
+    auto* const pRenderer = renderer.As<SDL_Renderer>();
 
     Ready(pRenderer);
 

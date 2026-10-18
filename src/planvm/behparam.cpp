@@ -56,9 +56,9 @@
 // FUNCTION: HYPERX 0x0041c780
 void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
-    BehObj_GlideBetweenFacing* const pTarget = static_cast<BehObj_GlideBetweenFacing*>(pBehaviour);
-    short                            aSlot[TARGET_COUNT];
-    short                            nValue;
+    auto* const pTarget = static_cast<BehObj_GlideBetweenFacing*>(pBehaviour);
+    short       aSlot[TARGET_COUNT];
+    short       nValue;
 
     short nIndex = 0;
     aSlot[0]     = 0;
@@ -248,7 +248,7 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
 {
     AnimDB* pEntry;
 
-    short nAnim = (short)pRef->m_pArgs[1].n;
+    auto nAnim = (short)pRef->m_pArgs[1].n;
 
     char bLimped = 0;
 
@@ -310,7 +310,7 @@ void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* 
 {
     AnimDB* pClip;
 
-    const short            nClip     = (short)pNode->m_pArgs[1].n;
+    const auto             nClip     = (short)pNode->m_pArgs[1].n;
     const AnimScriptTable* pRegistry = g_pAnimRegistry->m_pScripts;
 
     pClip = pRegistry->Find(nClip);

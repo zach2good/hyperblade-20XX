@@ -235,8 +235,8 @@ void CameraProjectionState::BuildMatrix()
 // FUNCTION: HYPERX 0x00430960
 void CameraProjectionState::RotateY(float flAngle)
 {
-    const float flCos = (float)cos(flAngle);
-    m_rotY.flCos      = flCos;
+    const auto flCos = (float)cos(flAngle);
+    m_rotY.flCos     = flCos;
 
     flAngle      = (float)sin(flAngle);
     m_rotY.flSin = flAngle;
@@ -273,8 +273,8 @@ void CameraProjectionState::RotateY(float flAngle)
 // FUNCTION: HYPERX 0x00430a80
 void CameraProjectionState::RotateX(float flAngle)
 {
-    const float flCos = (float)cos(flAngle);
-    m_rotX.flCos      = flCos;
+    const auto flCos = (float)cos(flAngle);
+    m_rotX.flCos     = flCos;
 
     flAngle      = (float)sin(flAngle);
     m_rotX.flSin = flAngle;
@@ -311,8 +311,8 @@ void CameraProjectionState::RotateX(float flAngle)
 // FUNCTION: HYPERX 0x00430ba0
 void CameraProjectionState::RotateZ(float flAngle)
 {
-    const float flCos = (float)cos(flAngle);
-    m_rotZ.flCos      = flCos;
+    const auto flCos = (float)cos(flAngle);
+    m_rotZ.flCos     = flCos;
 
     flAngle      = (float)sin(flAngle);
     m_rotZ.flSin = flAngle;

@@ -227,7 +227,7 @@ void PhysicsBody::PerFrameTick()
 
     pOwner->GetPlanState()->PostUpdateCleanup();
 
-    PlayerObject* const pObject = (PlayerObject*)pOwner;
+    auto* const pObject = (PlayerObject*)pOwner;
 
     if (pObject->m_nKind == KIND_DROMER)
     {
@@ -428,7 +428,7 @@ void PhysicsBody::UpdateMovementAxes()
         }
     }
 
-    const short nAxis = (short)(nHeld & HELD_MOVEMENT);
+    const auto nAxis = (short)(nHeld & HELD_MOVEMENT);
 
     if (nAxis != 0)
     {
@@ -590,7 +590,7 @@ void PhysicsBody::InitOnSurface(int)
     const float flVelZ   = vel.z;
     const float flVelY   = vel.y;
     const float flVelX   = vel.x;
-    const float flLength = (float)sqrt(flVelX * flVelX + flVelY * flVelY + flVelZ * flVelZ);
+    const auto  flLength = (float)sqrt(flVelX * flVelX + flVelY * flVelY + flVelZ * flVelZ);
     flSpeed              = flLength;
 
     if (flLength > g_flMinVelDirSpeed)
@@ -630,10 +630,10 @@ void PhysicsBody::IntegrateMotion()
     move.dir.y  = move.target.y - pos.y;
     move.dir.z  = move.target.z - pos.z;
 
-    float       flZ    = pMoveDir->z;
-    float       flY    = pMoveDir->y;
-    float       flX    = pMoveDir->x;
-    const float flRoot = (float)sqrt(flX * flX + flY * flY + flZ * flZ);
+    float      flZ    = pMoveDir->z;
+    float      flY    = pMoveDir->y;
+    float      flX    = pMoveDir->x;
+    const auto flRoot = (float)sqrt(flX * flX + flY * flY + flZ * flZ);
 
     Math::Vec3Normalize(pMoveDir);
 
@@ -810,8 +810,8 @@ char PhysicsBody::UpdateVelocityDirection()
     const float flNewZ = (flProjZ + vel.z) * flBlend + flProjZ * flWeight;
     vel.z              = flNewZ;
 
-    const float flLength = (float)sqrt(vel.LengthSquared());
-    flSpeed              = flLength;
+    const auto flLength = (float)sqrt(vel.LengthSquared());
+    flSpeed             = flLength;
 
     if (flLength > g_flMinVelDirSpeed)
     {

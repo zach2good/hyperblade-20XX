@@ -44,7 +44,7 @@ int AnimSet::GetFieldOffset(short nKind)
 // FUNCTION: HYPERX 0x00417220
 AnimClipSet* AnimSet::LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int, const char* pszName)
 {
-    AnimClipSet* const pSet = new AnimClipSet(pFile, pszName);
+    auto* const pSet = new AnimClipSet(pFile, pszName);
 
     pRegistry->m_apSets[pRegistry->m_nSetCount] = pSet;
 

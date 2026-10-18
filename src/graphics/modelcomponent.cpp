@@ -15,8 +15,8 @@ struct ComponentFileHeader
 // FUNCTION: HYPERX 0x004361e0
 ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
 {
-    int                   nSize;
-    ModelComponent* const pBlob = (ModelComponent*)ModelComponent::Read(pFile, &nSize);
+    int         nSize;
+    auto* const pBlob = (ModelComponent*)ModelComponent::Read(pFile, &nSize);
 
     if (pBlob != nullptr)
     {
@@ -39,14 +39,14 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
         unsigned short iEntry  = 0;
         short          nLastId = 0;
 
-        MeshBlock** const papBlocks = new MeshBlock*[header.cRecords];
+        auto** const papBlocks = new MeshBlock*[header.cRecords];
 
         *pppBlocks = papBlocks;
         *pnCount   = (unsigned short)header.cRecords;
 
         while (iEntry != header.cRecords)
         {
-            MeshBlock* const pBlock = (MeshBlock*)ModelComponent::Read(pFile, &nSize);
+            auto* const pBlock = (MeshBlock*)ModelComponent::Read(pFile, &nSize);
 
             if (pBlock == nullptr)
             {

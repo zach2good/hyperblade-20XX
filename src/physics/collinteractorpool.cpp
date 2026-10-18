@@ -11,7 +11,7 @@
 // FUNCTION: HYPERX 0x0046ba80
 void CollInteractorPool::Init()
 {
-    CollInteractor* pNode = new CollInteractor;
+    auto* pNode = new CollInteractor;
 
     m_pHead               = pNode;
     CollInteractor* pTail = pNode;

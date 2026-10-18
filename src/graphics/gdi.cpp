@@ -32,10 +32,10 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
         return nullptr;
     }
 
-    const RgbQuad* const       pColours = GDI::ColorTable(pDib);
-    const auto                 nColours = (int)((const RgbQuad*)GDI::PixelBits(pDib) - pColours);
-    const unsigned char* const pRows    = (const unsigned char*)GDI::PixelBits(pDib);
-    const auto                 nStride  = (nWidth * nBits + 31) / 32 * 4;
+    const RgbQuad* const pColours = GDI::ColorTable(pDib);
+    const auto           nColours = (int)((const RgbQuad*)GDI::PixelBits(pDib) - pColours);
+    const auto* const    pRows    = (const unsigned char*)GDI::PixelBits(pDib);
+    const auto           nStride  = (nWidth * nBits + 31) / 32 * 4;
 
     auto* const pBitmap = new GDI::Bitmap{ nWidth, nHeight, std::vector<std::uint32_t>((size_t)nWidth * nHeight) };
 
@@ -145,7 +145,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 
     const int nTotalBytes = pDib->biSize + nColors * sizeof(RgbQuad) + nImageBytes;
 
-    BitmapInfoHeader* pShrunk = (BitmapInfoHeader*)realloc(pDib, nTotalBytes);
+    auto* pShrunk = (BitmapInfoHeader*)realloc(pDib, nTotalBytes);
 
     if (pShrunk == nullptr)
     {
@@ -403,7 +403,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         header.info.biClrUsed = 1 << header.info.biBitCount;
     }
 
-    BitmapInfoHeader* const pDib = (BitmapInfoHeader*)malloc(header.info.biSize + nColors * sizeof(RgbQuad));
+    auto* const pDib = (BitmapInfoHeader*)malloc(header.info.biSize + nColors * sizeof(RgbQuad));
 
     if (pDib == nullptr)
     {
@@ -427,7 +427,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
                 return nullptr;
             }
 
-            RgbTriple* const pTriples = (RgbTriple*)pColors;
+            auto* const pTriples = (RgbTriple*)pColors;
 
             for (int i = nColors - 1; i >= 0; i--)
             {

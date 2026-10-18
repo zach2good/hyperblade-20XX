@@ -113,7 +113,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             pBlob->m_vAngle.y = g_flDegreesToRadians * pBlob->m_vAngle.y;
             pBlob->m_vAngle.z = g_flDegreesToRadians * pBlob->m_vAngle.z;
 
-            LODNode* const pRaw = new LODNode;
+            auto* const pRaw = new LODNode;
 
             if (pRaw != nullptr)
             {
@@ -243,7 +243,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
         {
             if (pFile->SeekRelative(nMatCount * sizeof(MaterialName), FILE_SEEK_CURRENT) != 0)
             {
-                MeshMaterial* const pMaterials = new MeshMaterial[nMatCount];
+                auto* const pMaterials = new MeshMaterial[nMatCount];
 
                 MaterialName* paTexNames = nullptr;
 
@@ -426,7 +426,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
         {
             ModelComponent::ReadAll(pFile, &pBlobs, &nCount);
 
-            MeshBlock** const pSlots = new MeshBlock*[pBase->m_nSubComponents];
+            auto** const pSlots = new MeshBlock*[pBase->m_nSubComponents];
 
             pLodNode->m_apLodMeshes[nLod] = pSlots;
 
@@ -468,7 +468,7 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
         pEntry = pEntry->m_pNext;
     }
 
-    TexCacheEntry* const pNew = new TexCacheEntry(pszName);
+    auto* const pNew = new TexCacheEntry(pszName);
 
     if (pPrev != nullptr)
     {
@@ -551,13 +551,13 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
 // FUNCTION: HYPERX 0x00473660
 MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, unsigned char nMatCount, MaterialName* paTexNames, short nTexCount)
 {
-    MaterialListNode* const pLookup = new MaterialListNode(nMatCount);
+    auto* const pLookup = new MaterialListNode(nMatCount);
 
     pLookup->m_pMaterials = pMaterials;
 
     for (short i = 0; i < nMatCount; i++)
     {
-        const short nTexIndex = (short)pLookup->m_pMaterials[i].nTextureIndex;
+        const auto nTexIndex = (short)pLookup->m_pMaterials[i].nTextureIndex;
 
         if (nTexIndex > 0)
         {

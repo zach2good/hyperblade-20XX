@@ -12,7 +12,7 @@ void CPanSoundPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCPanSound;
+    auto nRemaining = (short)g_nPoolCountCPanSound;
 
     while (nRemaining-- > 0)
     {

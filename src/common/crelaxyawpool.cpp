@@ -12,7 +12,7 @@ void CRelaxYawPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCRelaxYaw;
+    auto nRemaining = (short)g_nPoolCountCRelaxYaw;
 
     while (nRemaining-- > 0)
     {

@@ -295,7 +295,7 @@ void PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOutValid, 
 // FUNCTION: HYPERX 0x0045e2f0
 void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
 {
-    const short nIndex = (short)pNode->m_pArgs[1].n;
+    const auto nIndex = (short)pNode->m_pArgs[1].n;
 
     pActor->GetPlanState()->m_apNamedInteractors[nIndex] = pInteractor;
 }
@@ -322,7 +322,7 @@ void PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehavio
             return;
         }
 
-        const short nIndex = (short)pArgs->m_pArgs[1].n;
+        const auto nIndex = (short)pArgs->m_pArgs[1].n;
 
         PlanState* const pList = pActor->GetPlanState();
 
@@ -582,7 +582,7 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
     }
     else
     {
-        const float flValue = (float)nPossessionTime;
+        const auto flValue = (float)nPossessionTime;
 
         pTeam->aStatRows[nRecord].aStat[MATCH_STAT_TIME_OF_POSS]  = flValue * POSSESSION_TIME_SCALE;
         pTeam->aStatRows[nRecord].aStat[MATCH_STAT_SHOTS_ON_GOAL] = (float)nShotsOnGoal;
@@ -787,7 +787,7 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
 
     if (pNode->m_pArgs[ARG_PERIOD].n != 0)
     {
-        CSpeedBurst* const pBurst = (CSpeedBurst*)AllocAgendaItem(Agenda_CSpeedBurst);
+        auto* const pBurst = (CSpeedBurst*)AllocAgendaItem(Agenda_CSpeedBurst);
 
         if (pContext->GetPlayerActor()->m_stats.m_flSpeedRatio > 0.3)
         {
@@ -823,7 +823,7 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
 
         Vec3* const pVel = &pFirst->vel;
 
-        const float flLen = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+        const auto flLen = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
 
         if (flLen < 0.1)
         {
@@ -922,7 +922,7 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x0045edd0
 void PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    short nSlot = (short)pArgs->m_pArgs[1].n;
+    auto nSlot = (short)pArgs->m_pArgs[1].n;
 
     if (nSlot < 0 || nSlot > GOALIE_SLOT_B)
     {
@@ -942,7 +942,7 @@ void PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x0045ee20
 void PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
@@ -1224,11 +1224,11 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
     Vec3                  vOffset;
     CSetPositionRelative* pSetPosition;
 
-    const short nFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto nFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
 
     EngineObject* const pFirst = g_pGameEngine->GetSlot(nFirst);
 
-    const short nSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto nSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
 
     EngineObject* pSecond = g_pGameEngine->GetSlot(nSecond);
 
@@ -1288,7 +1288,7 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
 
     pSetPosition->Activate();
 
-    CBungeeToward* const pBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
+    auto* const pBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
 
     pBindNode = pContext->GetActor()->GetPlanState()->m_pCurrent;
 
@@ -1356,11 +1356,11 @@ void PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResu
     PlayerObject* pTarget;
     Vec3          vOffset;
 
-    const short sFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto sFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
 
     PlayerObject* const pFirst = g_pGameEngine->GetPlayer(sFirst);
 
-    const short sSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto sSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
 
     PlayerObject* const pSecond = g_pGameEngine->GetPlayer(sSecond);
 
@@ -1384,7 +1384,7 @@ void PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResu
 
     if (pTarget != nullptr)
     {
-        CSetPositionRelative* const pSetPosition = (CSetPositionRelative*)AllocAgendaItem(Agenda_CSetPositionRelative);
+        auto* const pSetPosition = (CSetPositionRelative*)AllocAgendaItem(Agenda_CSetPositionRelative);
 
         GameBehaviorObject* const pCurrent = pContext->GetActor()->GetPlanState()->m_pCurrent;
 
@@ -1601,7 +1601,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                     }
                     else
                     {
-                        const float flFacing = (float)cos(PlanUtil::ComputeConeHalfAngle(
+                        const auto flFacing = (float)cos(PlanUtil::ComputeConeHalfAngle(
                             nSlot, (short)TeammateSlot(nSlot)));
 
                         if (g_pGameEngine->GetSlot(g_pGameEngine->m_nViewedSlot)->GetDistIfFacing(g_pGameEngine->GetSlot(TeammateSlot(nSlot)), flFacing) != 0.0f)
@@ -1632,7 +1632,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                 {
                     if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick > ARM_WINDOW_MS)
                     {
-                        const float flFacing = (float)cos(PlanUtil::ComputeConeHalfAngle(
+                        const auto flFacing = (float)cos(PlanUtil::ComputeConeHalfAngle(
                             nSlot, g_pGameEngine->m_nViewedSlot));
 
                         if (g_pGameEngine->GetSlot(nSlot)->GetDistIfFacing(
@@ -1803,7 +1803,7 @@ void PlanCond::InRangeToAttack(Interactor* pContext, PlanNode*, short* pResult, 
     Vec3 vNear;
     Vec3 vFar;
 
-    unsigned char bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+    auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
 
     const Vec3* pNearAt = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
@@ -1851,7 +1851,7 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
     float       flToObject;
 
     EngineObject* pActor = pContext->GetActor();
-    unsigned char bySlot = (unsigned char)pActor->GetSlot();
+    auto          bySlot = (unsigned char)pActor->GetSlot();
     pFirst               = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
     pActor  = pContext->GetActor();
@@ -1886,8 +1886,8 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
     vObjectSelf.y = pObject->y - pSelf->y;
     vObjectSelf.z = pObject->z - pSelf->z;
 
-    const float flHypotFirst = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
-    flToSecond               = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
+    const auto flHypotFirst = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
+    flToSecond              = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
 
     const bool bFirstCloser = flHypotFirst < flToSecond;
 
@@ -1943,7 +1943,7 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
 
     pRokAt = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr();
 
-    unsigned char bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+    auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
@@ -2099,9 +2099,9 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
     vToFar.y = vFar.y - vOwn.y;
     vToFar.z = vFar.z - vOwn.z;
 
-    const float flDistNear = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
+    const auto flDistNear = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
 
-    const float flDistFar = (float)sqrt((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x);
+    const auto flDistFar = (float)sqrt((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x);
 
     float flDamageNear = ((PlayerObject*)pNear)->m_stats.GetScalar(RATING_DAMAGE);
 
@@ -2249,7 +2249,7 @@ void PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pR
 
     if (flDistanceA == g_flZeroPlan && flDistanceB == g_flZeroPlan)
     {
-        unsigned char bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+        auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
 
         pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
@@ -2346,8 +2346,8 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     EngineObject* const pActor = g_pGameEngine->GetSlot(nSlot);
 
-    const short nNear = (short)(~nSlot & 1);
-    const short nFar  = (short)((~nSlot & 1) | 2);
+    const auto nNear = (short)(~nSlot & 1);
+    const auto nFar  = (short)((~nSlot & 1) | 2);
 
     if (flSpeed > MIN_SPEED_FOR_FACING)
     {
@@ -2458,7 +2458,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
             {
                 const short sOther = pOther->GetSlot();
 
-                const short sMasked = (short)TeammateSlot(sOther);
+                const auto sMasked = (short)TeammateSlot(sOther);
 
                 if (sMasked >= pOther->GetSlot())
                 {
@@ -2471,7 +2471,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
             }
             else
             {
-                unsigned char bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+                auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
 
                 pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
@@ -2493,8 +2493,8 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
                 vFar.y = pFarAt->y - pOwnAt->y;
                 vFar.z = pFarAt->z - pOwnAt->z;
 
-                flDistNear            = (float)sqrt((flNearZ * flNearZ + flNearY * flNearY) + flNearX * flNearX);
-                const float flDistFar = (float)sqrt((vFar.z * vFar.z + vFar.y * vFar.y) + vFar.x * vFar.x);
+                flDistNear           = (float)sqrt((flNearZ * flNearZ + flNearY * flNearY) + flNearX * flNearX);
+                const auto flDistFar = (float)sqrt((vFar.z * vFar.z + vFar.y * vFar.y) + vFar.x * vFar.x);
 
                 if (flDistNear < flDistFar)
                 {
@@ -2557,7 +2557,7 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
                 const float flDy = pOther->y - pPosition->y;
                 const float flDz = pOther->z - pPosition->z;
 
-                const float flRange = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
+                const auto flRange = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
 
                 if (flRange < flBest)
                 {
@@ -2688,7 +2688,7 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
         if (nSlot < PLAYER_OBJECT_COUNT)
         {
             const int nTeamWide = pActor->GetSlot();
-            short     nTeam     = (short)nTeamWide;
+            auto      nTeam     = (short)nTeamWide;
             int       nOther    = nTeam;
 
             if (nTeam < 4)
@@ -2886,14 +2886,14 @@ void PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode, short*,
 // FUNCTION: HYPERX 0x00461f30
 void PlanAction::SetTargetWithData(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const short nIndex = (short)nArg;
+    const auto nIndex = (short)nArg;
 
     Vec3 vToTracked;
     Vec3 vToCandidate;
 
     EngineObject*       pActor     = pContext->GetActor();
     PlanState*          pPlanState = pActor->GetPlanState();
-    CSteerToTarget*     pSteer     = (CSteerToTarget*)pPlanState->m_pCurrent->m_apSlots[0];
+    auto*               pSteer     = (CSteerToTarget*)pPlanState->m_pCurrent->m_apSlots[0];
     EngineObject* const pTracked   = pSteer->m_pTarget;
 
     EngineObject* const pCandidate = g_pGameEngine->m_ppSlots[nIndex];
@@ -2937,7 +2937,7 @@ void PlanAction::BungeeTowardTarget(Interactor* pContext, PlanNode*, short*, int
 
     if (pTracked != nullptr)
     {
-        CBungeeToward* const pTrack = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
+        auto* const pTrack = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
 
         GameBehaviorObject* const pBindNode = pContext->GetActor()->GetPlanState()->m_pCurrent;
 
@@ -2965,11 +2965,11 @@ void PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult,
 
     const short nSlot = pContext->GetActor()->GetSlot();
 
-    const short nMate = (short)TeammateSlot(nSlot);
+    const auto nMate = (short)TeammateSlot(nSlot);
 
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
-    PlayerObject* const pActor = (PlayerObject*)apObjects[nSlot];
+    auto* const pActor = (PlayerObject*)apObjects[nSlot];
 
     if (pActor->m_wTargetGoalSlot == SLOT_NGOAL)
     {
@@ -3467,7 +3467,7 @@ void PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*, short* 
         nTeam = g_pGameEngine->m_nViewedSlot;
     }
 
-    const short nSlot = (short)TeammateSlot((short)nTeam);
+    const auto nSlot = (short)TeammateSlot((short)nTeam);
 
     nIsBot = (short)(
         // STRING: HYPERX 0x004bb340
@@ -3494,7 +3494,7 @@ void PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, short* pRes
 {
     const short nTeam = pContext->GetActor()->GetSlot();
 
-    const short nSlot = (short)TeammateSlot(nTeam);
+    const auto nSlot = (short)TeammateSlot(nTeam);
 
     *pResult = (short)(
         // STRING: HYPERX 0x004bb340
@@ -3521,7 +3521,7 @@ void PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short* pResul
 {
     const short nTeam = pContext->GetActor()->GetSlot();
 
-    const short nSlot = (short)TeammateSlot(nTeam);
+    const auto nSlot = (short)TeammateSlot(nTeam);
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
@@ -3839,12 +3839,12 @@ void PlanAction::SetRenderFlag(Interactor* pContext, PlanNode* pArgs, short*, in
 // FUNCTION: HYPERX 0x00463300
 void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 {
-    const unsigned char nFlag = (unsigned char)nArg;
+    const auto nFlag = (unsigned char)nArg;
 
     short nRequest;
 
     EngineObject** const pSlots = g_pGameEngine->m_ppSlots;
-    RokObject* const     pRok   = (RokObject*)pSlots[SLOT_ROK];
+    auto* const          pRok   = (RokObject*)pSlots[SLOT_ROK];
     short                nMode  = pRok->m_wRokValue;
 
     if (nMode == 1)
@@ -3906,7 +3906,7 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 // FUNCTION: HYPERX 0x004633c0
 void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 {
-    const short      nValue = (short)pArgs->m_pArgs[1].n;
+    const auto       nValue = (short)pArgs->m_pArgs[1].n;
     RokObject* const pRok   = g_pGameEngine->GetRok();
 
     if (nValue == -1)
@@ -3947,7 +3947,7 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
     int           nValue = 0;
     PaletteRange  aRange;
 
-    const short nEnable = (short)pArgs->m_pArgs[1].n;
+    const auto nEnable = (short)pArgs->m_pArgs[1].n;
 
     if (pContext->GetNamedSlot() == -1)
     {
@@ -3971,7 +3971,7 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
         nValue = 0;
     }
 
-    const short nIndex = (short)nValue;
+    const auto nIndex = (short)nValue;
 
     if (g_awColorLatched[nIndex] != 0)
     {
@@ -4018,7 +4018,7 @@ void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int
 {
     const PlanWord* pBlock  = pArgs->m_pArgs;
     const float     flValue = pBlock[2].fl;
-    const short     nIndex  = (short)pBlock[1].n;
+    const auto      nIndex  = (short)pBlock[1].n;
 
     EngineObject* const pActor  = pContext->GetActor();
     PlanState* const    pLocals = pActor->GetPlanState();
@@ -4150,7 +4150,7 @@ void PlanAction::SetMyGravity(Interactor* pContext, PlanNode* pArgs, short*, int
 {
     EngineObject* const pActor = pContext->GetActor();
 
-    const float flValue = (float)(unsigned int)pArgs->m_pArgs[1].n;
+    const auto flValue = (float)(unsigned int)pArgs->m_pArgs[1].n;
 
     pActor->GetPhysicsBody()->flGravAccel = flValue;
 }
@@ -4173,7 +4173,7 @@ void PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00463900
 void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     PlayerObject* pObject;
     int           nIndex;
@@ -4207,7 +4207,7 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
         pObject = g_pGameEngine->GetPlayer(nIndex);
     }
 
-    const short nAmount = (short)pArgs->m_pArgs[ARG_AMOUNT].n;
+    const auto nAmount = (short)pArgs->m_pArgs[ARG_AMOUNT].n;
 
     const float flScalar = pObject->m_stats.GetScalar(nStat);
 
@@ -4245,7 +4245,7 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
 // FUNCTION: HYPERX 0x00463a30
 void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, int nPassed)
 {
-    const short nDefaultSlot = (short)nPassed;
+    const auto nDefaultSlot = (short)nPassed;
 
     EngineObject* pActor;
     EngineObject* pNamed;
@@ -4482,7 +4482,7 @@ void PlanAction::ClockStoppedSemaphore(Interactor* pContext, PlanNode* pArgs, sh
 // FUNCTION: HYPERX 0x00463e40
 void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPassed)
 {
-    const unsigned int nSlot = (unsigned int)nPassed;
+    const auto nSlot = (unsigned int)nPassed;
 
     unsigned int nArg;
 
@@ -4715,7 +4715,7 @@ void PlanCond::OkToSubstituteTeammate(Interactor* pContext, PlanNode*, short* pR
 
     EngineObject* const pActor = pContext->GetActor();
 
-    const unsigned int nSlot = (unsigned int)pActor->GetSlot();
+    const auto nSlot = (unsigned int)pActor->GetSlot();
 
     *pResult = (unsigned short)(g_pGameEngine->IsFitSubstitute(TeammateSlot((short)nSlot), nParam) != 0);
 }
@@ -4955,7 +4955,7 @@ void PlanAction::IncrementScore(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00464750
 void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     PlanWord*     pArgs;
     PlayerObject* pObject;
@@ -5073,7 +5073,7 @@ extern short g_nSpeedCacheStale;
 // FUNCTION: HYPERX 0x00464940
 void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     PlanWord*     pArgs;
     PlayerObject* pObject;
@@ -5148,7 +5148,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
         dReading = SPEED_RATING_MIN;
     }
 
-    const float flReading = (float)dReading;
+    const auto flReading = (float)dReading;
 
     if (nGate != 0)
     {
@@ -5196,7 +5196,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
 // FUNCTION: HYPERX 0x00464b10
 void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     PlanWord* pBlock;
     int       nIndex;
@@ -5261,11 +5261,11 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pWinner;
 
-    const short nFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto nFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
 
     EngineObject* const pFirst = g_pGameEngine->m_ppSlots[nFirst];
 
-    const short nSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto nSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
 
     float flRange = DEFAULT_RANGE;
 
@@ -5324,7 +5324,7 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
         return;
     }
 
-    CBungeeToward* const pBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
+    auto* const pBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
 
     GameBehaviorObject* const pBindNode = pContext->GetActor()->GetPlanState()->m_pCurrent;
 
@@ -5381,7 +5381,7 @@ extern const float g_flFourPlan;
 // FUNCTION: HYPERX 0x00464f80
 void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const short nOwnerSlot = (short)nArg;
+    const auto nOwnerSlot = (short)nArg;
 
     short nCarrier = -1;
     Vec3  vKick;
@@ -6540,7 +6540,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00466680
 void PlanCond::RatingMaxedOut(Interactor* pContext, PlanNode* pNode, short* pnResult, int nArg)
 {
-    const short nDefaultSlot = (short)nArg;
+    const auto nDefaultSlot = (short)nArg;
 
     PlayerObject* pObject;
 
@@ -6650,7 +6650,7 @@ void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pR
 
     const int nStat = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
 
-    const short nRange = (short)(pArgs->m_nArgCount - 2);
+    const auto nRange = (short)(pArgs->m_nArgCount - 2);
 
     *pResult = (short)(int)(pActor->m_stats.GetScalar(nStat) * (nRange * g_flPlanStatScale));
 
@@ -6670,7 +6670,7 @@ void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pR
 // FUNCTION: HYPERX 0x00466870
 void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const short nBase = (short)nArg;
+    const auto nBase = (short)nArg;
 
     EngineObject* pActor;
     AttachPak*    pSlot;
@@ -6754,10 +6754,10 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
 // FUNCTION: HYPERX 0x00466960
 void PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     EngineObject* const pTarget = g_pGameEngine->m_ppSlots[nSlot];
-    const short         nLimit  = (short)pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
+    const auto          nLimit  = (short)pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
     EngineObject* const pTeam   = g_pGameEngine->m_ppSlots[SLOT_MINE];
 
     // A missing reference object leaves the answer alone rather than writing one.
@@ -6945,7 +6945,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
 
     const float flFalloff = (SCORE_RANGE - flLength) * flScale * SCORE_FALLOFF;
 
-    const float flCos = (float)cos(flFalloff + flScale);
+    const auto flCos = (float)cos(flFalloff + flScale);
 
     if (pActor->GetDistIfFacing(pTarget, flCos) == 0.0f)
     {
@@ -7132,7 +7132,7 @@ void PlanCond::RokIsChargedAgainst(Interactor* pContext, PlanNode*, short* pResu
 // FUNCTION: HYPERX 0x004671c0
 void PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     Vec3  vDiff;
     Vec3  vImpulse;
@@ -7146,7 +7146,7 @@ void PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, int nArg
     vDiff.y = pObject->GetPositionPtr()->y - pContext->GetActor()->GetPositionPtr()->y;
     vDiff.z = pObject->GetPositionPtr()->z - pContext->GetActor()->GetPositionPtr()->z;
 
-    CRelaxYaw* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
+    auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
     vImpulse.z = vDiff.y * pVelocity->x - vDiff.x * pVelocity->y;
 
@@ -7175,7 +7175,7 @@ extern float g_flInterceptCorridorSq;
 // FUNCTION: HYPERX 0x004672d0
 void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     Vec3  vDelta;
     Vec3  vUnit;
@@ -7285,8 +7285,8 @@ void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*
     EngineObject* const pFirst  = apObjects[(short)pArgs[ARG_FIRST_SLOT].n];
     EngineObject* const pSecond = apObjects[(short)pArgs[ARG_SECOND_SLOT].n];
 
-    CBungeeToward* const pFirstBungee  = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
-    CBungeeToward* const pSecondBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
+    auto* const pFirstBungee  = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
+    auto* const pSecondBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
 
     PlanState* pBlock = pFirst->GetPlanState();
     pFirstBungee->Bind(pFirst, pBlock->m_pCurrent);
@@ -7427,7 +7427,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
 
         if ((int)pContext->GetPlayerActor()->m_stats.GetScalar(nRating + RATING_SPEEDBURST0A) != 0)
         {
-            CSpeedBurst* const pBurst = (CSpeedBurst*)AllocAgendaItem(Agenda_CSpeedBurst);
+            auto* const pBurst = (CSpeedBurst*)AllocAgendaItem(Agenda_CSpeedBurst);
 
             if (pContext->GetPlayerActor()->m_stats.m_flSpeedRatio > 0.3)
             {
@@ -7463,7 +7463,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
 
             Vec3* const pVel = &pFirst->vel;
 
-            const float flLen = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+            const auto flLen = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
 
             if (flLen < 0.1)
             {
@@ -7902,7 +7902,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     const Vec3* pSelf = pActor->GetPositionPtr();
 
-    unsigned char bySlot = (unsigned char)pActor->GetSlot();
+    auto bySlot = (unsigned char)pActor->GetSlot();
 
     const Vec3* pFar = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
@@ -8216,7 +8216,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
 
     Vec3 vAxis = pContext->GetActor()->GetPhysicsBody()->velDir;
 
-    float flRange = (float)nRange;
+    auto flRange = (float)nRange;
 
     Vec3 vDir = vDiff;
 
@@ -8337,9 +8337,9 @@ void PlanCond::AggressionOnOthers(Interactor* pContext, PlanNode*, short* pResul
 
     Vec3* const pSelf = pContext->GetActor()->GetPositionPtr();
 
-    pActor               = pContext->GetActor();
-    unsigned char byTeam = (unsigned char)pActor->GetSlot();
-    Vec3* const   pFirst = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(byTeam)]->GetPositionPtr();
+    pActor             = pContext->GetActor();
+    auto        byTeam = (unsigned char)pActor->GetSlot();
+    Vec3* const pFirst = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(byTeam)]->GetPositionPtr();
 
     pActor  = pContext->GetActor();
     byTeam  = (unsigned char)pActor->GetSlot();
@@ -8396,7 +8396,7 @@ void PlanAction::SetShotPowerMeter(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00468aa0
 void PlanCond::NearObjectBy(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg)
 {
-    const short nSlot = (short)nArg;
+    const auto nSlot = (short)nArg;
 
     const int nDistance = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
 
@@ -8451,7 +8451,7 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
 
     EngineObject** const ppObjects = g_pGameEngine->m_ppSlots;
 
-    RokObject* const pRok = (RokObject*)ppObjects[SLOT_ROK];
+    auto* const pRok = (RokObject*)ppObjects[SLOT_ROK];
 
     int nTracked = pRok->m_nCarrierSlot;
 
@@ -8494,7 +8494,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     const int nFlag = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
 
-    float flRange = (float)nRange;
+    auto flRange = (float)nRange;
 
     const Vec3* pSelf = pContext->GetActor()->GetPositionPtr();
 

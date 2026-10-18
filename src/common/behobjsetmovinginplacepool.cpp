@@ -11,7 +11,7 @@ void BehObjSetMovingInPlacePool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountBehObjSetMovingInPlace;
+    auto nRemaining = (short)g_nPoolCountBehObjSetMovingInPlace;
 
     while (nRemaining-- > 0)
     {

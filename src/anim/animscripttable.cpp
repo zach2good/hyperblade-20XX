@@ -39,7 +39,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 {
     OwnedFile file;
 
-    PlanVM* const pVm = new PlanVM;
+    auto* const pVm = new PlanVM;
 
     m_pPlanVm = pVm;
 
@@ -202,7 +202,7 @@ int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const cha
 {
     const int nBefore = GameApp::GetInstallLevel();
 
-    AnimDB* const pDb = new AnimDB(pszName, pszExtra);
+    auto* const pDb = new AnimDB(pszName, pszExtra);
 
     m_apEntries[m_nCount] = pDb;
 
@@ -253,7 +253,7 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
     }
     else
     {
-        AnimNode* const pNode = new AnimNode(1);
+        auto* const pNode = new AnimNode(1);
 
         *ppSegment = pNode;
 

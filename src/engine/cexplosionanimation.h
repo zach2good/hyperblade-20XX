@@ -15,7 +15,7 @@ public:
     // FUNCTION: HYPERX 0x004127a0
     void Process(int nArg) override
     {
-        ParticleSystem* const pSystem = (ParticleSystem*)m_pOwner;
+        auto* const pSystem = (ParticleSystem*)m_pOwner;
 
         pSystem->Update(g_pGameEngine->m_clock.GetDelta());
 
@@ -37,7 +37,7 @@ public:
     // The original's linker folded this body onto Process, which carries the marker.
     void Release(int nArg) override
     {
-        ParticleSystem* const pSystem = (ParticleSystem*)m_pOwner;
+        auto* const pSystem = (ParticleSystem*)m_pOwner;
 
         pSystem->Update(g_pGameEngine->m_clock.GetDelta());
 

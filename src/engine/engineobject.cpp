@@ -437,7 +437,7 @@ void EngineObject::ComputeBoundingSphere()
         }
     }
 
-    const float flCount = (float)(short)nTotal;
+    const auto flCount = (float)(short)nTotal;
 
     m_flBoundRadius = 0.0f;
     m_vCentre.x     = vSum.x / flCount;
@@ -475,7 +475,7 @@ void EngineObject::ComputeBoundingSphere()
                 const float flDy = vP.y - m_vCentre.y;
                 const float flDz = vP.z - m_vCentre.z;
 
-                const float flDist = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
+                const auto flDist = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
 
                 if (flDist > m_flBoundRadius)
                 {
@@ -839,7 +839,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     m_wBoneCount = nBones;
 
-    MeshBone* const pBones = new MeshBone[nBones];
+    auto* const pBones = new MeshBone[nBones];
 
     m_pBones = pBones;
 
@@ -1317,7 +1317,7 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 
         const short nCurrent = pObject->GetPlanState()->m_pCurrent->m_wSyncValue;
 
-        const short nValue = (short)SlotNibbles::Get(pBody->abNibbles, nIndex);
+        const auto nValue = (short)SlotNibbles::Get(pBody->abNibbles, nIndex);
 
         *pOutBehaviour = nValue;
 
@@ -1909,7 +1909,7 @@ void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short n
         if (bFromInput != 0 || m_nPhase != OBJECT_PHASE_NETWORK)
         {
             // RegisterSceneMessageHandler adds only message interactors.
-            MsgInteractor* const pInteractor = (MsgInteractor*)m_apSceneHandler[m_aSceneHandlerSlot[nMessage]];
+            auto* const pInteractor = (MsgInteractor*)m_apSceneHandler[m_aSceneHandlerSlot[nMessage]];
 
             if (pInteractor->GetActiveState() != -1)
             {
@@ -2193,7 +2193,7 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
     vDiff.y = vPos.y - pBody->pos.y;
     vDiff.z = vPos.z - pBody->pos.z;
 
-    const float flDistance = (float)sqrt(vDiff.z * vDiff.z + vDiff.y * vDiff.y + vDiff.x * vDiff.x);
+    const auto flDistance = (float)sqrt(vDiff.z * vDiff.z + vDiff.y * vDiff.y + vDiff.x * vDiff.x);
 
     Math::Vec3Normalize(&vDiff);
 

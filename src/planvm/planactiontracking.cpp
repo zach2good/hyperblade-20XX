@@ -295,7 +295,7 @@ void PlanAction::IncrementBungeeLength(Interactor* pContext, PlanNode* pArgs, sh
 // FUNCTION: HYPERX 0x00401c40
 void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    const float flValue = (float)(pArgs->m_pArgs[1].n * 0.1);
+    const auto flValue = (float)(pArgs->m_pArgs[1].n * 0.1);
 
     CameraObject* const pActor = pContext->GetCameraActor();
 
@@ -457,7 +457,7 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
     float flRate   = pEngine->m_clock.flInvDelta;
     float flFactor = g_flSteadyCamBuffer;
 
-    short nPos = (short)(flRate * flFactor * POS_WINDOW_SECONDS);
+    auto nPos = (short)(flRate * flFactor * POS_WINDOW_SECONDS);
 
     if (nPos > CAMERA_HISTORY_CAPACITY)
     {
@@ -475,7 +475,7 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
     flRate   = pEngine->m_clock.flInvDelta;
     flFactor = g_flSteadyCamBuffer;
 
-    short nDir = (short)(flRate * flFactor * DIR_WINDOW_SECONDS);
+    auto nDir = (short)(flRate * flFactor * DIR_WINDOW_SECONDS);
 
     if (nDir > CAMERA_HISTORY_CAPACITY)
     {
@@ -908,7 +908,7 @@ extern const float g_flOriginComponent;
 // FUNCTION: HYPERX 0x004027a0
 void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const unsigned int nSlot = (unsigned int)nArg;
+    const auto nSlot = (unsigned int)nArg;
 
     EngineObject* pActor;
     EngineObject* pSpawn;

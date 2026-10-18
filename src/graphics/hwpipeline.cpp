@@ -47,7 +47,7 @@ unsigned int HwPipeline::ColourFormat()
 
 unsigned int HwPipeline::ShadowFormat(Device device)
 {
-    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+    auto* const pDevice = device.As<SDL_GPUDevice>();
 
     constexpr auto USAGE = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
 
@@ -64,7 +64,7 @@ unsigned int HwPipeline::ShadowFormat(Device device)
 
 unsigned int HwPipeline::DepthFormat(Device device)
 {
-    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+    auto* const pDevice = device.As<SDL_GPUDevice>();
 
     for (const auto format : { SDL_GPU_TEXTUREFORMAT_D32_FLOAT, SDL_GPU_TEXTUREFORMAT_D24_UNORM })
     {
@@ -79,7 +79,7 @@ unsigned int HwPipeline::DepthFormat(Device device)
 
 HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontClockwise)
 {
-    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+    auto* const pDevice = device.As<SDL_GPUDevice>();
 
     SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, mesh_vert_dxil, sizeof(mesh_vert_dxil), mesh_vert_spv, sizeof(mesh_vert_spv), 0, 2);
     SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 3, 2);
@@ -148,7 +148,7 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
 
 HwPipeline::Pipeline HwPipeline::CreateShadowPipeline(Device device)
 {
-    SDL_GPUDevice* const pDevice = device.As<SDL_GPUDevice>();
+    auto* const pDevice = device.As<SDL_GPUDevice>();
 
     SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, shadow_vert_dxil, sizeof(shadow_vert_dxil), shadow_vert_spv, sizeof(shadow_vert_spv), 0, 1);
     SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, shadow_frag_dxil, sizeof(shadow_frag_dxil), shadow_frag_spv, sizeof(shadow_frag_spv), 0, 0);

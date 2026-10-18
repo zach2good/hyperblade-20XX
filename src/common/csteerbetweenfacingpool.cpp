@@ -12,7 +12,7 @@ void CSteerBetweenFacingPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    short nRemaining = (short)g_nPoolCountCSteerBetweenFacing;
+    auto nRemaining = (short)g_nPoolCountCSteerBetweenFacing;
 
     while (nRemaining-- > 0)
     {
