@@ -17,8 +17,8 @@
 #include "math/transformobject.h"
 #include "clipsphere.h"
 #include "graphics/meshbone.h"
-#include <string.h>
-#include <math.h>
+#include <cstring>
+#include <cmath>
 #include "anim/animplayer.h"
 #include "app/gameapp.h"
 #include "ui/widget.h"

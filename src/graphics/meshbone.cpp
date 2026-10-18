@@ -21,9 +21,9 @@
 #include "colorpalette.h"
 #include "common/staticinit.h"
 #include "cd3dtexturemanager.h"
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
+#include <cstdlib>
+#include <cmath>
+#include <cstring>
 #include <new>
 #include "app/gameapp.h"
 #include "engine/engineobject.h"

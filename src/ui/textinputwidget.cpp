@@ -4,7 +4,7 @@
 #include "textinputwidget.h"
 #include "framepos.h"
 #include "widget.h"
-#include <ctype.h>
+#include <cctype>
 #include "ui/holdingwidget.h"
 #include "engine/object.h"
 #include <SDL3/SDL.h>

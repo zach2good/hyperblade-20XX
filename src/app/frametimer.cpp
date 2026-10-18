@@ -5,8 +5,8 @@
 #include "app/gameapp.h"
 #include "appglobals.h"
 #include "frametimer.h"
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include "engine/game.h"
 #include "app/window.h"
 

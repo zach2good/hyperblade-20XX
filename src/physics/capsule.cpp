@@ -5,7 +5,7 @@
 #include "math/vector.h"
 #include "capsule.h"
 
-#include <math.h>
+#include <cmath>
 
 #include "sweptvec.h"
 

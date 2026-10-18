@@ -8,8 +8,8 @@
 #include "soundmanager.h"
 #include "engine/gameoptions.h"
 #include "common/pathstring.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <vector>
 #include <new>
 #include "sound/wave.h"

@@ -13,7 +13,7 @@ class KeyConfigScreen;
 #include "ui/screen.h"
 #include "ui/widget.h"
 #include "engine/devicector.h"
-#include <string.h>
+#include <cstring>
 #include "ui/screens/keyconfigscreen.h"
 #include "sound/audiomgr.h"
 #include "ui/displaywidget.h"

@@ -3,7 +3,7 @@
 #include "common/compat.h"
 #include "common/staticinit.h"
 #include "objectdef.h"
-#include <string.h>
+#include <cstring>
 #include "gameengine.h"
 #include "physics/bubblecmd.h"
 

@@ -11,7 +11,7 @@
 #include "engine/gameengine.h"
 #include "physics/physicsbody.h"
 #include "engine/modelids.h"
-#include <math.h>
+#include <cmath>
 #include "meshbone.h"
 #include "rlespritesurface.h"
 #include "graphics/swrend.h"

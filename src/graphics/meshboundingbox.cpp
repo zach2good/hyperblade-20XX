@@ -3,7 +3,7 @@
 #include "common/compat.h"
 #include <algorithm>
 
-#include <math.h>
+#include <cmath>
 
 #include "graphics/meshboundingbox.h"
 #include "physics/sweptvec.h"

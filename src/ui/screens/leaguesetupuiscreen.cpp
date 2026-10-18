@@ -13,7 +13,7 @@
 #include "ui/displaywidget.h"
 #include "ui/saveobject.h"
 #include "ui/loopflipbookwidget.h"
-#include <stdio.h>
+#include <cstdio>
 #include "ui/statcolumns.h"
 #include "engine/game.h"
 #include "common/stub.h"

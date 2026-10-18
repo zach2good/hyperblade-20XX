@@ -12,8 +12,8 @@
 #include "math/vector.h"
 #include "physics/banking.h"
 #include "damagegate.h"
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "engine/playerobject.h"
 #include "common/pooledownerroot.h"
 #include "engine/statids.h"

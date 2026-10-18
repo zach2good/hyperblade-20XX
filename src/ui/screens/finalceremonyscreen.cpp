@@ -7,7 +7,7 @@
 #include "ui/pausemenu.h"
 #include "engine/gameengine.h"
 #include "engine/teamsblock.h"
-#include <stdio.h>
+#include <cstdio>
 #include "ui/screens/finalceremonyscreen.h"
 #include "app/gameapp.h"
 #include "net/gamesession.h"

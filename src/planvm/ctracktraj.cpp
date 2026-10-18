@@ -17,7 +17,7 @@
 #include "planvm/planvmglobals.h"
 #include "app/gameapp.h"
 #include <new>
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "planvm/ctracktraj.h"
 

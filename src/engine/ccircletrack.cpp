@@ -13,7 +13,7 @@
 #include "common/staticinit.h"
 #include "math/vector.h"
 
-#include <math.h>
+#include <cmath>
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "engine/objectkind.h"

@@ -16,7 +16,7 @@
 #include "engine/gameengine.h"
 #include "math/transformobject.h"
 #include "projrender.h"
-#include <string.h>
+#include <cstring>
 #include "engine/engineobject.h"
 #include "renderoptions.h"
 #include "ui/debughud.h"

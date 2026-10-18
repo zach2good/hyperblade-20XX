@@ -6,7 +6,7 @@
 #include "devicector.h"
 #include "math/vector.h"
 #include "planvm/damagegate.h"
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "engine/player.h"
 #include "engine/messageids.h"

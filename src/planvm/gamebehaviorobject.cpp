@@ -18,7 +18,7 @@
 #include "engine/playerobject.h"
 #include "collinteractor.h"
 #include "msginteractor.h"
-#include <string.h>
+#include <cstring>
 #include "engine/engineobject.h"
 #include "planvm/planinteractorfactories.h"
 #include "common/pooledownerroot.h"

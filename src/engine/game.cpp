@@ -4,7 +4,7 @@
 #include <SDL3/SDL.h>
 #include "graphics/hudlayer.h"
 #include "globals.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "sound/audiomgr.h"
 #include "gameoptions.h"
 #include "ui/screen.h"

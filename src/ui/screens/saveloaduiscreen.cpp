@@ -10,8 +10,8 @@
 #include "ui/screens/dromeexteriorscreen.h"
 #include "ui/widget.h"
 #include "engine/teamblock.h"
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "ui/displaywidget.h"
 #include "ui/saveobject.h"
 #include "ui/flipbookwidget.h"

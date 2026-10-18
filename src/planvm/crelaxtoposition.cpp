@@ -16,7 +16,7 @@
 #include "math/vector.h"
 #include "common/stub.h"
 #include "engine/devicector.h"
-#include <math.h>
+#include <cmath>
 #include "engine/playerobject.h"
 #include "engine/engineobject.h"
 #include "engine/cameraobject.h"

@@ -22,9 +22,9 @@
 #include "engine/playerobject.h"
 #include "common/stringpool.h"
 #include "uiglobals.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include "graphics/viewextent.h"
 #include "graphics/infobarslot.h"
 #include "ui/cddsurfaceowner.h"

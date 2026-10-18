@@ -13,7 +13,7 @@
 #include "engine/objectclasses.h"
 #include "math/vector.h"
 #include "physics/banking.h"
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "engine/arenastate.h"
 #include "physics/collisionellipsoid.h"

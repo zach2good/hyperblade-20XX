@@ -5,9 +5,9 @@
 #include "colorpalette.h"
 #include "graphicsglobals.h"
 #include "common/pathstring.h"
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
+#include <cstring>
+#include <cstdio>
+#include <cmath>
 #include "app/gameapp.h"
 #include "graphics/cgpalette.h"
 #include "graphics/meshmaterial.h"

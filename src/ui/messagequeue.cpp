@@ -5,9 +5,9 @@
 #include "ui/infobarbase.h"
 #include "common/fileobj.h"
 #include "common/pathstring.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
 #include "app/gameapp.h"
 #include "engine/gameengine.h"
 

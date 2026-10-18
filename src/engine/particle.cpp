@@ -1,8 +1,8 @@
 #include "common/compat.h"
 #include "particle.h"
 #include "globals.h"
-#include <stdlib.h>
-#include <math.h>
+#include <cstdlib>
+#include <cmath>
 #include "math/mathops.h"
 #include "math/randroll.h"
 

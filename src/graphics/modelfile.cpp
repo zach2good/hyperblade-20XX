@@ -1,10 +1,10 @@
 #include "common/compat.h"
 #include "common/fileobj.h"
 #include "math/vector.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "globals.h"
 #include "common/pathstring.h"
-#include <string.h>
+#include <cstring>
 #include "app/gameapp.h"
 #include "anim/animfile.h"
 #include "graphics/modelfile.h"

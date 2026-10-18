@@ -6,7 +6,7 @@
 #include "math/vector.h"
 #include "ui/hudglobals.h"
 #include <new>
-#include <string.h>
+#include <cstring>
 #include "app/gameapp.h"
 #include "anim/anim.h"
 

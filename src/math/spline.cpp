@@ -3,7 +3,7 @@
 #include "ui/hudglobals.h"
 #include "globals.h"
 #include <new>
-#include <math.h>
+#include <cmath>
 #include "math/splinecurve.h"
 #include "physics/collisionellipsoid.h"
 

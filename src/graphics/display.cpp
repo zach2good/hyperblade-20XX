@@ -8,7 +8,7 @@ struct GameApp;
 #include "app/wndproc.h"
 #include "graphics/graphics.h"
 #include "app/menuids.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "app/gameapp.h"
 #include "graphics/display.h"
 #include "softrenderer.h"

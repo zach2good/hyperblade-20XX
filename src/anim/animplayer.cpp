@@ -14,15 +14,15 @@
 #include "math/transformobject.h"
 #include "physics/physicsbody.h"
 #include "ui/hudglobals.h"
-#include <string.h>
+#include <cstring>
 #include "animplayer.h"
 #include "engine/playerobject.h"
 #include "animnode.h"
 #include "engine/engineobject.h"
 #include "math/slerpseg.h"
-#include <math.h>
+#include <cmath>
 #include "anim/animglobals.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "engine/messageids.h"
 
 #define BLEND_NEXT (-1.0f)

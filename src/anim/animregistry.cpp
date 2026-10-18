@@ -10,8 +10,8 @@
 #include "animclipentry.h"
 #include "common/animnamedref.h"
 #include "app/gameapp.h"
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdio>
 #include "animnode.h"
 #include "anim/animfile.h"
 #include "engine/messageids.h"

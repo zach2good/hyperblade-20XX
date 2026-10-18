@@ -7,8 +7,8 @@
 #include "ui/screens/dromeexteriorscreen.h"
 #include "common/fileobj.h"
 #include "common/pathstring.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "app/gameapp.h"
 #include "saveobject.h"
 #include "engine/teamsblock.h"

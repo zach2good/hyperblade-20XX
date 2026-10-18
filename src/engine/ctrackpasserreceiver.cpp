@@ -15,7 +15,7 @@
 #include "math/vector.h"
 #include "planvm/damagegate.h"
 
-#include <math.h>
+#include <cmath>
 #include "physics/collisionellipsoid.h"
 #include "app/gameapp.h"
 #include "engine/engineobject.h"

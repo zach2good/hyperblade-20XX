@@ -6,7 +6,7 @@
 #include "math/transformobject.h"
 #include "globals.h"
 #include "common/stub.h"
-#include <math.h>
+#include <cmath>
 #include "devicector.h"
 #include "planvm/agendaitem.h"
 #include "engine/crelaxyaw.h"

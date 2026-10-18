@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "math/vector.h"
 #include "graphics/meshbone.h"
-#include <math.h>
+#include <cmath>
 #include "physics/physicsbody.h"
 #include "common/staticinit.h"
 #include "particlesystem.h"

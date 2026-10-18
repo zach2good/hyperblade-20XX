@@ -18,7 +18,7 @@ struct GameApp;
 #include "graphics/graphicsglobals.h"
 #include "framepos.h"
 
-#include <string.h>
+#include <cstring>
 #include "engine/game.h"
 #include "app/window.h"
 #include "common/stub.h"

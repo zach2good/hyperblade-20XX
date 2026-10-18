@@ -2,8 +2,8 @@
 
 #include "common/compat.h"
 #include "common/fileobj.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <algorithm>
 
 #define MATCH_LENGTH_BIAS 3

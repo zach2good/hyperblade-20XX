@@ -7,11 +7,11 @@
 #include "app/gameapp.h"
 #include "commonglobals.h"
 #include "pathstring.h"
-#include <string.h>
+#include <cstring>
 #include "common/string.h"
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
 #include <SDL3/SDL.h>
 #include <cstring>
 

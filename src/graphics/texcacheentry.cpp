@@ -7,7 +7,7 @@
 #include "engine/gameengine.h"
 #include "planvm/planvm.h"
 #include <new>
-#include <string.h>
+#include <cstring>
 #include "app/gameapp.h"
 #include "common/stringpool.h"
 #include "app/stringids.h"

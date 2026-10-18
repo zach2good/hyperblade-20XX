@@ -1,5 +1,5 @@
 #include "common/compat.h"
-#include <stdio.h>
+#include <cstdio>
 #include "graphics/cgpalette.h"
 #include "common/pathstring.h"
 

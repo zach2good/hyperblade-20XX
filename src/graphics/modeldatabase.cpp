@@ -13,7 +13,7 @@
 #include "common/pathstring.h"
 #include "math/vector.h"
 #include <new>
-#include <string.h>
+#include <cstring>
 #include "app/gameapp.h"
 #include "graphics/modelfile.h"
 #include "graphics/meshbone.h"

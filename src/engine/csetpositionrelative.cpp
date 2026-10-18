@@ -11,7 +11,7 @@
 #include "engine/csetpositionrelative.h"
 #include "globals.h"
 #include "math/vector.h"
-#include <math.h>
+#include <cmath>
 #include "playerobject.h"
 #include "physics/collisionplane.h"
 #include "planvm/plannode.h"

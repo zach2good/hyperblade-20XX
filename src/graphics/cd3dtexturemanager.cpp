@@ -13,8 +13,8 @@
 #include "ui/widget.h"
 #include "app/gameapp.h"
 #include <new>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include "engine/object.h"
 #include "graphics/softtex.h"
 #include "modelcomponent.h"

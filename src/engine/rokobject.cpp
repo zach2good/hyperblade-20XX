@@ -12,8 +12,8 @@
 #include "objectclasses.h"
 #include "graphics/meshbone.h"
 #include "math/transformobject.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "rokobject.h"
 #include "net/cplayer.h"
 #include "app/gameapp.h"

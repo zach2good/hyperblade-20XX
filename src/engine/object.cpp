@@ -13,7 +13,7 @@
 #include "graphics/graphicsglobals.h"
 #include "input/inputglobals.h"
 #include "math/mathglobals.h"
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"

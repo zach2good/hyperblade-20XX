@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "cddsurfaceowner.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "graphics/rlesprite.h"
 #include "graphics/swrend.h"
 #include "graphics/softrenderer.h"

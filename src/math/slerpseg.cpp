@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "ui/hudglobals.h"
 #include "transformobject.h"
-#include <math.h>
+#include <cmath>
 #include "app/gameapp.h"
 #include "slerpseg.h"
 

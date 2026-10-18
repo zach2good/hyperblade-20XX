@@ -1,7 +1,7 @@
 // The animation data's packed rotation format: packing Euler triples into it, and unpacking it.
 
 #include "common/compat.h"
-#include <math.h>
+#include <cmath>
 #include <bit>
 #include "engine/cameraprojectionstate.h"
 #include "anim/anim.h"

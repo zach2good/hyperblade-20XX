@@ -7,7 +7,7 @@
 #include "planfile.h"
 #include "plannode.h"
 #include "common/pathstring.h"
-#include <stdio.h>
+#include <cstdio>
 #include "app/gameapp.h"
 
 // A truncated file yields a short plan rather than a refusal.

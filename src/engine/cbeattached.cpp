@@ -14,7 +14,7 @@
 #include "math/vector.h"
 #include "gameengine.h"
 
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "common/pooledownerroot.h"
 

@@ -1,7 +1,7 @@
 #include "math/floatbits.h"
 #include "common/compat.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include "globals.h"
 #include "graphicsglobals.h"
 #include "engine/devicector.h"

@@ -9,7 +9,7 @@
 #include "engine/csetattitude.h"
 #include "math/vector.h"
 
-#include <math.h>
+#include <cmath>
 #include "physics/physicsbody.h"
 #include "app/gameapp.h"
 #include "physics/collisionplane.h"

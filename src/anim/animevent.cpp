@@ -9,7 +9,7 @@
 #include "math/vector.h"
 #include "planvm/damagegate.h"
 #include "sound/audiomgr.h"
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "anim/animevent.h"
 #include "sound/soundids.h"

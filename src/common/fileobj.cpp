@@ -3,9 +3,9 @@
 #include "fileobj.h"
 #include "app/gameapp.h"
 #include <SDL3/SDL.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
 
 #define TEXT_MAX 0x100
 

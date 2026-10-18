@@ -5,8 +5,8 @@
 #include "common/staticinit.h"
 #include "common/pathstring.h"
 #include "uiglobals.h"
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "ui/debughud.h"
 
 // Angles print in degrees modulo a turn; the elevation adds a quarter turn, so down is nought.

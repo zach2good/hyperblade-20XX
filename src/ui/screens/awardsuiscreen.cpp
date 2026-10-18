@@ -9,7 +9,7 @@ class AwardsUIScreen;
 #include "engine/gameengine.h"
 #include "ui/uiglobals.h"
 #include "ui/widget.h"
-#include <stdio.h>
+#include <cstdio>
 #include "ui/screens/awardsuiscreen.h"
 #include "ui/flipbookwidget.h"
 #include "ui/loopflipbookwidget.h"

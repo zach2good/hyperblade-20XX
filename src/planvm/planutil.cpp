@@ -7,7 +7,7 @@
 #include "common/pooledclasses.h"
 #include "planvmglobals.h"
 #include "collinteractor.h"
-#include <math.h>
+#include <cmath>
 #include "engine/engineobject.h"
 #include "planvm/planutil.h"
 

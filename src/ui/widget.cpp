@@ -10,7 +10,7 @@
 #include "torchbitmaps.h"
 #include "saveload.h"
 #include "planvm/planvm.h"
-#include <string.h>
+#include <cstring>
 #include "graphics/gdi.h"
 #include "common/stub.h"
 #include "common/staticinit.h"

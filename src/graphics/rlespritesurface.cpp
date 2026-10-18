@@ -1,8 +1,8 @@
 #include "common/compat.h"
 #include "rlespritesurface.h"
 #include "rlesprite.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include "common/commonglobals.h"
 #include "graphics/infobarradar.h"
 #include "ui/cddsurfaceowner.h"

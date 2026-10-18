@@ -4,7 +4,7 @@
 #include "common/staticinit.h"
 #include "collisionplane.h"
 #include "collisionshape.h"
-#include <math.h>
+#include <cmath>
 #include "physicsglobals.h"
 
 // FUNCTION: HYPERX 0x00405860

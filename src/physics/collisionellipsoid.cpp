@@ -5,7 +5,7 @@
 #include "math/vector.h"
 #include "common/stub.h"
 #include "ui/hudglobals.h"
-#include <math.h>
+#include <cmath>
 
 // FUNCTION: HYPERX 0x00408e90
 CollisionEllipsoid::~CollisionEllipsoid()

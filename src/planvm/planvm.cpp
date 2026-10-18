@@ -10,9 +10,9 @@ struct GameApp;
 #include "ui/screen.h"
 #include "ui/widget.h"
 #include "common/fileobj.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 #include "planopcodetable.h"
 #include "physics/collinteractorpool.h"
 #include "physics/msginteractorpool.h"

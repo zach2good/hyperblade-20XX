@@ -1,7 +1,7 @@
 // Small helpers with no subsystem of their own.
 
 #include "compat.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "common/util.h"
 
 // Guards the free, so callers can hand it null.

@@ -12,7 +12,7 @@
 #include "engine/devicector.h"
 #include "planvm/plannode.h"
 #include "boundbubble.h"
-#include <math.h>
+#include <cmath>
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "capsule.h"

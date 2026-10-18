@@ -1,8 +1,8 @@
 // The line and token readers, keyword lookup and character skips the configuration parsers share.
 
 #include "compat.h"
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdio>
 #include "common/parseutil.h"
 #include "common/staticinit.h"
 #include "common/commonglobals.h"

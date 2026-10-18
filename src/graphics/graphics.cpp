@@ -4,8 +4,8 @@
 #include "globals.h"
 #include "graphicsglobals.h"
 #include "graphics/display.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include "app/gameapp.h"
 #include "engine/objectclasses.h"
 #include "ui/widget.h"

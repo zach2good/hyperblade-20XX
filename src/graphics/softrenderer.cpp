@@ -7,7 +7,7 @@
 #include "ui/infobarbase.h"
 #include "rlesprite.h"
 #include "common/pathstring.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "app/gameapp.h"
 #include "softtex.h"
 #include "graphics/graphics.h"

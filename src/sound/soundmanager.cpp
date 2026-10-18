@@ -4,8 +4,8 @@
 #include "globals.h"
 #include "common/pathstring.h"
 #include <new>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "app/gameapp.h"
 
 // FUNCTION: HYPERX 0x004491c0

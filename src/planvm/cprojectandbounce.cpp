@@ -10,7 +10,7 @@
 #include "engine/devicector.h"
 #include "engine/gameengine.h"
 #include "common/stub.h"
-#include <math.h>
+#include <cmath>
 #include "app/gameapp.h"
 #include "physics/collisionshape.h"
 #include "physics/collisionplane.h"

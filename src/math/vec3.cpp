@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "vector.h"
-#include <math.h>
+#include <cmath>
 #include "globals.h"
 #include "mathglobals.h"
 

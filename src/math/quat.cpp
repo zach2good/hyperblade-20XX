@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "ui/hudglobals.h"
 #include "transformobject.h"
-#include <math.h>
+#include <cmath>
 #include "mathglobals.h"
 
 // Returns the conjugate of the textbook result; the fallback path leaves w near zero, not unit.

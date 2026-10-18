@@ -53,8 +53,8 @@
 #include "engine/rokobject.h"
 #include "ui/infobar.h"
 #include "physics/collisionobj.h"
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "engine/particlesystem.h"
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"

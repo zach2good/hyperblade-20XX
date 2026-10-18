@@ -4,8 +4,8 @@
 #include "rlesprite.h"
 #include "softtex.h"
 #include "graphicsglobals.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <algorithm>
 #include "globals.h"
 #include "texcacheentry.h"

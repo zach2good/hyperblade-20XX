@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "graphics/viewextent.h"
 #include <algorithm>
-#include <string.h>
+#include <cstring>
 #include <vector>
 
 // The HUD was laid out for 480 lines; it keeps about that many however tall the window is.

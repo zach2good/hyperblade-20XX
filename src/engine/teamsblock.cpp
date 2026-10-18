@@ -7,8 +7,8 @@
 #include "globals.h"
 #include "common/pathstring.h"
 #include <new>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include "gameengine.h"
 #include "app/gameapp.h"
 #include "common/parseutil.h"

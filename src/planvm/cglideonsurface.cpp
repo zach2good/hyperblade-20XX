@@ -15,7 +15,7 @@
 #include "physics/banking.h"
 #include "common/stub.h"
 #include "net/session.h"
-#include <math.h>
+#include <cmath>
 #include "app/gameapp.h"
 #include "engine/playerobject.h"
 #include "net/gamesession.h"

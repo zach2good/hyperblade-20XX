@@ -5,7 +5,7 @@
 #include "common/pathstring.h"
 #include "gameengine.h"
 #include "app/gameapp.h"
-#include <stdio.h>
+#include <cstdio>
 
 // The ini section name, seven setting key names, and the install level.
 

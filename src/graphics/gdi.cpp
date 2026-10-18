@@ -1,7 +1,7 @@
 #include "common/compat.h"
 #include "common/path.h"
 #include "graphics/bitmapformat.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "graphics/gdi.h"
 #include "app/window.h"
 #include "app/gameapp.h"
@@ -10,8 +10,8 @@
 #include <filesystem>
 #include <system_error>
 #include "common/fileobj.h"
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdio>
 #include <cstdlib>
 #include "stb_image.h"
 #include "graphics/text.h"

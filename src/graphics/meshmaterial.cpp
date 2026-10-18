@@ -7,8 +7,8 @@
 #include "common/staticinit.h"
 #include "math/vector.h"
 #include <new>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "common/fileobj.h"
 #include "app/gameapp.h"
 #include <SDL3/SDL.h>

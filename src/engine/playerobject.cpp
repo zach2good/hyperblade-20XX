@@ -12,8 +12,8 @@
 #include "physics/physicsbody.h"
 #include "math/vector.h"
 #include "graphics/meshbone.h"
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "playerobject.h"
 #include "common/pooledclasses.h"
 #include "engine/engineobject.h"

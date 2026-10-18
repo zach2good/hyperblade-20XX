@@ -7,7 +7,7 @@
 #include "engineglobals.h"
 #include "gameengine.h"
 #include "engine/statids.h"
-#include <string.h>
+#include <cstring>
 
 // FUNCTION: HYPERX 0x00491880
 MatchStats* MatchStats::ZeroInit()

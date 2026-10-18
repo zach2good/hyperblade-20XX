@@ -15,7 +15,7 @@
 #include "engine/objectstats.h"
 #include "math/vector.h"
 #include "physics/banking.h"
-#include <math.h>
+#include <cmath>
 #include "engine/playerobject.h"
 #include "engine/engineobject.h"
 #include "common/pooledownerroot.h"

@@ -53,10 +53,10 @@ class AwardsUIScreen;
 #include "engine/teamblock.h"
 #include "engine/devicector.h"
 #include "net/gamesession.h"
-#include <stdarg.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdarg>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include <iterator>
 #include "ui/screens/championshipsetupuiscreen.h"
 #include "graphics/viewextent.h"

@@ -4,8 +4,8 @@
 #include "globals.h"
 #include "appglobals.h"
 #include "config.h"
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "gameapp.h"
 #include "common/fileobj.h"
 #include "engine/messageids.h"
@@ -46,8 +46,8 @@
 #include "engine/teamblock.h"
 #include "engine/devicector.h"
 #include "net/gamesession.h"
-#include <stdarg.h>
-#include <stdlib.h>
+#include <cstdarg>
+#include <cstdlib>
 #include "ui/screens/championshipsetupuiscreen.h"
 #include "graphics/viewextent.h"
 #include "ui/screens/pausemenufullscreen.h"

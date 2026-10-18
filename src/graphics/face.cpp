@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "projrender.h"
 #include "ui/hudglobals.h"
-#include <string.h>
+#include <cstring>
 #include "graphics/face.h"
 #include "graphics/swrend.h"
 #include "common/staticinit.h"

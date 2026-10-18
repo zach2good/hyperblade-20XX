@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "mathglobals.h"
 #include "math/vector.h"
-#include <math.h>
+#include <cmath>
 #include "math/mathops.h"
 #include "math/randroll.h"
 

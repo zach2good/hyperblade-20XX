@@ -42,9 +42,9 @@
 #include "anim/animplayer.h"
 #include "net/cplayer.h"
 #include "physics/collisionobj.h"
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstring>
+#include <cstdlib>
 #include "engine/engineobject.h"
 #include "anim/animset.h"
 #include "planvm/planaction.h"

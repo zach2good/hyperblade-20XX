@@ -3,7 +3,7 @@
 #include "common/compat.h"
 #include "planvm/agendaitemids.h"
 #include "engine/cpansound.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include "globals.h"
 #include "common/pooledownerroot.h"
 #include "sound/soundmanager.h"

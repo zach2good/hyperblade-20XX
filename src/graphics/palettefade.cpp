@@ -6,7 +6,7 @@
 #include "palettefade.h"
 #include "visualeffectfade.h"
 #include "palettescalarfade.h"
-#include <string.h>
+#include <cstring>
 
 // PALETTE_RESERVED on the first entry means the entries already animate, and the fade goes inactive.
 // FUNCTION: HYPERX 0x0042cd10

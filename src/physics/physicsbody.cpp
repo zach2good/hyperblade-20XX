@@ -16,7 +16,7 @@ class CollisionPlane;
 #include "math/transformobject.h"
 #include "common/pooledclasses.h"
 #include "graphics/meshbone.h"
-#include <math.h>
+#include <cmath>
 #include "engine/playerobject.h"
 #include "app/gameapp.h"
 #include "collisionplane.h"

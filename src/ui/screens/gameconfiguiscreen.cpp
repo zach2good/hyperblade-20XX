@@ -9,8 +9,8 @@ class GameConfigUIScreen;
 #include "ui/widget.h"
 #include "ui/screen.h"
 #include "ui/uiglobals.h"
-#include <string.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdio>
 #include "ui/screens/gameconfiguiscreen.h"
 #include "sound/audiomgr.h"
 #include "common/stringpool.h"

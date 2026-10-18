@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "math/vector.h"
 #include "common/stub.h"
-#include <math.h>
+#include <cmath>
 #include "engine/arenastate.h"
 #include "physics/collisionellipsoid.h"
 #include "common/pooledownerroot.h"

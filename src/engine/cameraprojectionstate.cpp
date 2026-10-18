@@ -8,7 +8,7 @@
 #include "gameengine.h"
 #include "math/vector.h"
 #include "math/mathglobals.h"
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 float g_flDotPitchCmProjection      = g_flDotsPerInchProjection * g_flDotPitchProjection / g_flCmPerInchProjection;

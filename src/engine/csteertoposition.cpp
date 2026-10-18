@@ -17,8 +17,8 @@
 #include "planvm/damagegate.h"
 #include "common/stub.h"
 #include "playerobject.h"
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "physics/collisionplane.h"
 #include "arenastate.h"
 #include "physics/collisionellipsoid.h"

@@ -16,7 +16,7 @@
 #include "ui/loopflipbookwidget.h"
 #include "ui/displaywidget.h"
 #include "ui/saveobject.h"
-#include <stdio.h>
+#include <cstdio>
 #include "ui/statcolumns.h"
 #include "engine/game.h"
 #include "common/stub.h"

@@ -4,8 +4,8 @@
 #include "cddtext.h"
 #include "graphics/hudlayer.h"
 #include "graphics/colorpalette.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 
 // FUNCTION: HYPERX 0x0044f9f0
 CDDText::~CDDText()

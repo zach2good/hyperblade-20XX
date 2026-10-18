@@ -5,7 +5,7 @@
 #include "animclip.h"
 #include "common/fileobj.h"
 #include <new>
-#include <string.h>
+#include <cstring>
 #include "app/gameapp.h"
 
 // FUNCTION: HYPERX 0x004172a0

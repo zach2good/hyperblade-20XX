@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <fstream>
 #include <SDL3/SDL.h>
-#include <stdio.h>
+#include <cstdio>
 
 int FileObj::Read(void* pBuffer, int nCount)
 {

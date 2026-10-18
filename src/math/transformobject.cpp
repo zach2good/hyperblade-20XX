@@ -3,7 +3,7 @@
 #include "vector.h"
 #include "mathglobals.h"
 #include "engine/cameraprojectionstate.h"
-#include <string.h>
+#include <cstring>
 #include "math/mathops.h"
 
 // FUNCTION: HYPERX 0x00403110

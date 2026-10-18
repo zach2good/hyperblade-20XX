@@ -3,11 +3,11 @@
 #include "globals.h"
 #include "common/pathstring.h"
 #include "jumbotextlist.h"
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <new>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 #include "app/gameapp.h"
 
 #define JUMBO_MESSAGE_MAX 128

@@ -1,6 +1,6 @@
 #include "compat.h"
 #include "stringtable.h"
-#include <stdio.h>
+#include <cstdio>
 #include "globals.h"
 #include "stringpool.h"
 

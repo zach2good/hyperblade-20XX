@@ -11,7 +11,7 @@ class JumbotronScreen;
 #include "ui/widget.h"
 #include "engine/teamsblock.h"
 #include "ui/torchbitmaps.h"
-#include <stdio.h>
+#include <cstdio>
 #include "ui/screens/jumbotronscreen.h"
 #include "app/gameapp.h"
 #include "net/gamesession.h"

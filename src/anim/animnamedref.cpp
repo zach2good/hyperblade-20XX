@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "common/animnamedref.h"
-#include <string.h>
+#include <cstring>
 #include <new>
 
 // FUNCTION: HYPERX 0x00417880

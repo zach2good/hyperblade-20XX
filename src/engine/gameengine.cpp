@@ -86,11 +86,11 @@ struct GameApp;
 #include "rampobject.h"
 #include "planvm/planopcodetable.h"
 #include "saveblock.h"
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
 #include <new>
-#include <stdio.h>
+#include <cstdio>
 #include "playerobject.h"
 #include "sound/audiomgr.h"
 #include "rokobject.h"

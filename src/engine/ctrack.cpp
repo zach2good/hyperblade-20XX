@@ -6,7 +6,7 @@
 #include "planvm/behaviorids.h"
 #include "planvm/agendaitemids.h"
 #include "planvm/gamebehaviorobject.h"
-#include <stddef.h>
+#include <cstddef>
 #include "physics/physicsbody.h"
 #include "cameraobject.h"
 #include "devicector.h"
@@ -22,7 +22,7 @@
 #include "math/vector.h"
 #include "planvm/damagegate.h"
 
-#include <math.h>
+#include <cmath>
 #include "app/gameapp.h"
 #include "playerobject.h"
 #include "engine/engineobject.h"

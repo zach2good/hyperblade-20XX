@@ -11,8 +11,8 @@
 #include "planvmglobals.h"
 #include "math/vector.h"
 #include "physics/banking.h"
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include "engine/playerobject.h"
 #include "engine/engineobject.h"
 #include "plannode.h"

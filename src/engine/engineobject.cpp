@@ -42,11 +42,11 @@
 #include "net/cplayer.h"
 #include "planvm/msginteractor.h"
 #include "rokobject.h"
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
+#include <cstdlib>
+#include <cmath>
+#include <cstring>
 #include <new>
-#include <stdio.h>
+#include <cstdio>
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "net/netrecords.h"

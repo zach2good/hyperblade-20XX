@@ -10,7 +10,7 @@
 #include "planvmglobals.h"
 #include "ui/hudglobals.h"
 #include "planvm/agendaitem.h"
-#include <string.h>
+#include <cstring>
 #include "collinteractor.h"
 #include "msginteractor.h"
 #include "engine/engineobject.h"
