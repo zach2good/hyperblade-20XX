@@ -6,6 +6,7 @@
 #define HYPERBLADE_FRAMEPACING_H
 
 class CameraObject;
+class MeshBone;
 
 namespace FramePacing
 {
@@ -29,6 +30,12 @@ float RunTicks();
 
 // Draws the queued views at flAlpha between the last two ticks, then puts the last tick back.
 void DrawViews(float flAlpha);
+
+// Forgets the recorded views' pointers into bones about to be freed, as a model swap mid-tick frees them.
+void DropBones(const MeshBone* pBones, int nCount);
+
+// Forgets every recorded view and pose, for when the objects they point at go away.
+void Reset();
 
 } // namespace FramePacing
 

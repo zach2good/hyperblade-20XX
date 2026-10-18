@@ -15,6 +15,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <functional>
 #include <unordered_map>
 #include <vector>
 
@@ -58,6 +59,7 @@ std::unordered_map<const EngineObject*, ObjectPose> s_objects;
 std::unordered_map<CameraObject*, CameraPose>       s_cameras;
 std::vector<View>                                   s_views;
 unsigned int                                        s_nTick = 0;
+auto                                                s_last  = std::chrono::steady_clock::time_point{};
 
 Rows Read(const TransformObject& transform)
 {
@@ -362,7 +364,6 @@ float FramePacing::RunTicks()
 {
     constexpr auto kTick = std::chrono::nanoseconds{ std::chrono::seconds{ 1 } } / 30;
 
-    static auto s_last = std::chrono::steady_clock::time_point{};
     static auto s_owed = std::chrono::nanoseconds{};
 
     const auto now = std::chrono::steady_clock::now();
@@ -433,4 +434,25 @@ void FramePacing::DrawViews(float flAlpha)
     }
 
     RestoreLive(s_live);
+}
+
+void FramePacing::DropBones(const MeshBone* pBones, int nCount)
+{
+    for (View& view : s_views)
+    {
+        std::erase_if(
+            view.components,
+            [&](const MeshBone* pBone)
+            {
+                return !std::less<>{}(pBone, pBones) && std::less<>{}(pBone, pBones + nCount);
+            });
+    }
+}
+
+void FramePacing::Reset()
+{
+    s_views.clear();
+    s_objects.clear();
+    s_cameras.clear();
+    s_last = {};
 }

@@ -775,6 +775,7 @@ int GameApp::MainUpdate()
 
         if (g_gameApp.m_nEngineState != kEstateMatchLive)
         {
+            FramePacing::Reset();
             Game::UpdateState();
         }
         else if (bUncapped)

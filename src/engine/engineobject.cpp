@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/framepacing.h"
 #include "engine/spectator.h"
 #include "engine/objectkind.h"
 #include <cstdint>
@@ -1043,6 +1044,8 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
     {
         m_transformC.ResetToIdentity();
         m_transformB.ResetToIdentity();
+
+        FramePacing::DropBones(m_pBones, nOldBones);
 
         delete[] m_pBones;
 
