@@ -40,8 +40,5 @@ LODNode::~LODNode()
         delete[] m_apLodMeshes[m_wLodCount];
     }
 
-    if (m_pRecord != nullptr)
-    {
-        delete m_pRecord;
-    }
+    delete m_pRecord;
 }

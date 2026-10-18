@@ -28,10 +28,7 @@ ModelDatabase::~ModelDatabase()
         LODNode* const pNext = m_pListHead->m_pNext;
         LODNode* const pNode = m_pListHead;
 
-        if (pNode != nullptr)
-        {
-            delete pNode;
-        }
+        delete pNode;
 
         m_pListHead = pNext;
     }
@@ -185,10 +182,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             if (nVertexMax > m_nVertexMax)
             {
-                if (g_pModelVertexBuf != nullptr)
-                {
-                    delete[] g_pModelVertexBuf;
-                }
+                delete[] g_pModelVertexBuf;
 
                 m_nVertexMax = nVertexMax;
 
@@ -199,15 +193,8 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             if (nFaceMax > m_nFaceMax)
             {
-                if (g_ppFaceList != nullptr)
-                {
-                    delete[] g_ppFaceList;
-                }
-
-                if (g_pFaceRecords != nullptr)
-                {
-                    delete[] g_pFaceRecords;
-                }
+                delete[] g_ppFaceList;
+                delete[] g_pFaceRecords;
 
                 m_nFaceMax = nFaceMax;
 

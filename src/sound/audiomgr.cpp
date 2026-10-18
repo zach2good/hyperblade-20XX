@@ -47,10 +47,7 @@ AudioMgr::~AudioMgr()
 
         pEntries->FreeEntries();
 
-        if (pEntries != nullptr)
-        {
-            delete[] pEntries;
-        }
+        delete[] pEntries;
     }
 }
 

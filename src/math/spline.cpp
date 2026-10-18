@@ -53,10 +53,7 @@ Spline::~Spline()
         m_pSecond = nullptr;
     }
 
-    if (m_pCurve != nullptr)
-    {
-        delete m_pCurve;
-    }
+    delete m_pCurve;
 
     m_pCurve = nullptr;
 }

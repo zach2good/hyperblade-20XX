@@ -170,10 +170,7 @@ MessageQueue* MessageQueue::FreeAll()
         }
     }
 
-    if (m_pnIds != nullptr)
-    {
-        delete[] m_pnIds;
-    }
+    delete[] m_pnIds;
 
     return this;
 }

@@ -1460,10 +1460,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
             }
         }
 
-        if (pszCopy != nullptr)
-        {
-            delete[] pszCopy;
-        }
+        delete[] pszCopy;
 
         *pOut = value;
 

@@ -149,10 +149,8 @@ int TeamsBlock::ComputeTeamNameChecksum()
         m_nChecksum += (char)(pszLower[2] + pszLower[1]) ^ (pszLower[0] << 8);
 
         // The original tests before it frees.
-        if (pszLower != nullptr)
-        {
-            delete pszLower;
-        }
+
+        delete pszLower;
     }
 
     m_abChecksum[0] = 0;

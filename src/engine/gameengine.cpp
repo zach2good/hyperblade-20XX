@@ -2884,23 +2884,15 @@ void GameEngine::UnloadArena()
             }
         }
 
-        if (pObject != nullptr)
-        {
-            delete pObject;
-        }
+        delete pObject;
     }
 
     ArenaState* const pArena = m_pArena;
 
     if (pArena != nullptr)
     {
-        if (pArena->m_pnSlotIds != nullptr)
-        {
-            delete[] pArena->m_pnSlotIds;
-        }
-
+        delete[] pArena->m_pnSlotIds;
         delete pArena->m_pRokDef;
-
         delete pArena;
     }
 
@@ -4387,13 +4379,8 @@ GameEngine::~GameEngine()
 
     if (pArena != nullptr)
     {
-        if (pArena->m_pnSlotIds != nullptr)
-        {
-            delete[] pArena->m_pnSlotIds;
-        }
-
+        delete[] pArena->m_pnSlotIds;
         delete pArena->m_pRokDef;
-
         delete pArena;
     }
 
@@ -4403,10 +4390,7 @@ GameEngine::~GameEngine()
 
     SaveObject* const pSave = m_pSaveObject;
 
-    if (pSave != nullptr)
-    {
-        delete pSave;
-    }
+    delete pSave;
 }
 
 // FUNCTION: HYPERX 0x00486fb0

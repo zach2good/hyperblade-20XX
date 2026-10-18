@@ -591,17 +591,11 @@ EngineObject::~EngineObject()
             // STRING: HYPERX 0x004c4fd4
             g_gameApp.Fatal("Error deactivating model %s. Check model directory.", pCopy);
 
-            if (pCopy != nullptr)
-            {
-                delete[] pCopy;
-            }
+            delete[] pCopy;
         }
         else
         {
-            if (pCopy != nullptr)
-            {
-                delete[] pCopy;
-            }
+            delete[] pCopy;
         }
     }
 
@@ -628,10 +622,7 @@ EngineObject::~EngineObject()
             m_pBubble->m_pCage = nullptr;
         }
 
-        if (m_pBubble != nullptr)
-        {
-            delete m_pBubble;
-        }
+        delete m_pBubble;
 
         m_pBubble = nullptr;
     }
@@ -909,18 +900,12 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         // STRING: HYPERX 0x004c4fd4
         g_gameApp.Fatal("Error deactivating model %s. Check model directory.", pszOldName);
 
-        if (pszOldName != nullptr)
-        {
-            delete[] pszOldName;
-        }
+        delete[] pszOldName;
 
         return 0;
     }
 
-    if (pszOldName != nullptr)
-    {
-        delete[] pszOldName;
-    }
+    delete[] pszOldName;
 
     // STRING: HYPERX 0x004c5148
     if (SDL_strcasecmp(pDef->GetModel(), "null") == 0)
@@ -1057,10 +1042,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         m_transformC.ResetToIdentity();
         m_transformB.ResetToIdentity();
 
-        if (m_pBones != nullptr)
-        {
-            delete[] m_pBones;
-        }
+        delete[] m_pBones;
 
         m_pBones = new MeshBone[m_wBoneCount];
     }

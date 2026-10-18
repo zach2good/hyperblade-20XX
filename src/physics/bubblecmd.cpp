@@ -18,18 +18,12 @@ BubbleCmd::BubbleCmd()
 // FUNCTION: HYPERX 0x0042a0a0
 BubbleCmd::~BubbleCmd()
 {
-    if (m_pPos != nullptr)
-    {
-        delete m_pPos;
-    }
+    delete m_pPos;
 
     if (m_wShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != nullptr)
     {
         delete m_pAttach;
     }
 
-    if (m_pChildren != nullptr)
-    {
-        delete m_pChildren;
-    }
+    delete m_pChildren;
 }

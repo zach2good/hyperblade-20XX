@@ -113,16 +113,8 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
         {
             MeshMaterial* const pArray = pList->m_pMaterials;
 
-            if (pArray != nullptr)
-            {
-                delete[] pArray;
-            }
-
-            if (pList->m_pszName != nullptr)
-            {
-                delete[] pList->m_pszName;
-            }
-
+            delete[] pArray;
+            delete[] pList->m_pszName;
             delete pList;
         }
     }
@@ -164,16 +156,8 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
                 {
                     MeshMaterial* const pArray = pBlock->m_pMaterials;
 
-                    if (pArray != nullptr)
-                    {
-                        delete[] pArray;
-                    }
-
-                    if (pBlock->m_pszName != nullptr)
-                    {
-                        delete[] pBlock->m_pszName;
-                    }
-
+                    delete[] pArray;
+                    delete[] pBlock->m_pszName;
                     delete pBlock;
                 }
             }

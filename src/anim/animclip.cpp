@@ -18,89 +18,44 @@ AnimClip::~AnimClip()
     switch (m_nFormat)
     {
         case 1:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
+            delete[] m_pTranslation;
 
             break;
 
         case 2:
         case 4:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
-
-            if (m_pRotations != nullptr)
-            {
-                delete[] m_pRotations;
-            }
+            delete[] m_pTranslation;
+            delete[] m_pRotations;
 
             break;
 
         case 3:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
-
-            if (m_pRotations != nullptr)
-            {
-                delete[] m_pRotations;
-            }
+            delete[] m_pTranslation;
+            delete[] m_pRotations;
 
             break;
 
         case 5:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
-
-            if (m_pQuaternions != nullptr)
-            {
-                delete[] m_pQuaternions;
-            }
+            delete[] m_pTranslation;
+            delete[] m_pQuaternions;
 
             break;
 
         case 6:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
-
-            if (m_pQuaternions != nullptr)
-            {
-                delete[] m_pQuaternions;
-            }
+            delete[] m_pTranslation;
+            delete[] m_pQuaternions;
 
             break;
 
         case 7:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
-
-            if (m_pMatrices != nullptr)
-            {
-                delete[] m_pMatrices;
-            }
+            delete[] m_pTranslation;
+            delete[] m_pMatrices;
 
             break;
 
         case 8:
-            if (m_pTranslation != nullptr)
-            {
-                delete[] m_pTranslation;
-            }
-
-            if (m_pMatrices != nullptr)
-            {
-                delete[] m_pMatrices;
-            }
+            delete[] m_pTranslation;
+            delete[] m_pMatrices;
 
             break;
 

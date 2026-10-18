@@ -24,10 +24,7 @@ extern Vec3 g_vBubbleSeparation;
 // FUNCTION: HYPERX 0x0042a8f0
 BoundBubble::~BoundBubble()
 {
-    if (m_pShapeNode != nullptr)
-    {
-        delete m_pShapeNode;
-    }
+    delete m_pShapeNode;
 
     if (m_pChildren != nullptr)
     {

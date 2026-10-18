@@ -594,10 +594,7 @@ void MeshBone::SetFlags(unsigned short nFlags)
 {
     if (nFlags == MESHBONE_COLOURS_PRESENT)
     {
-        if (m_pFaceColours != nullptr)
-        {
-            delete[] m_pFaceColours;
-        }
+        delete[] m_pFaceColours;
 
         const short nFaceCount = GetFaceCount();
 

@@ -130,10 +130,7 @@ void CameraObject::ResizeTransparentQueue(short nHighest)
 {
     if (g_nTransparentCapacity != nHighest + 1)
     {
-        if (g_pTransparentQueue != nullptr)
-        {
-            delete[] g_pTransparentQueue;
-        }
+        delete[] g_pTransparentQueue;
 
         g_nTransparentCapacity = (short)(nHighest + 1);
 
