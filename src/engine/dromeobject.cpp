@@ -10,6 +10,4 @@ DromeObject::DromeObject(int nSlot, class ObjectDef* pDef)
 }
 
 // FUNCTION: HYPERX 0x004748d0
-DromeObject::~DromeObject()
-{
-}
+DromeObject::~DromeObject() = default;

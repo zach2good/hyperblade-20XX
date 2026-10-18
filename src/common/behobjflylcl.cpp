@@ -8,14 +8,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041dd40
-BehObj_FlyLCL::BehObj_FlyLCL()
-{
-}
+BehObj_FlyLCL::BehObj_FlyLCL() = default;
 
 // FUNCTION: HYPERX 0x0041dd80
-BehObj_FlyLCL::~BehObj_FlyLCL()
-{
-}
+BehObj_FlyLCL::~BehObj_FlyLCL() = default;
 
 // FUNCTION: HYPERX 0x0041dd90
 void BehObj_FlyLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

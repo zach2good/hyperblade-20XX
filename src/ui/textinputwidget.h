@@ -23,9 +23,7 @@ public:
 public:
     TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark);
 
-    ~TextInputWidget()
-    {
-    }
+    ~TextInputWidget() = default;
 
     int OnKeyPress(unsigned int nKey) override;
 

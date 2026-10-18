@@ -7,14 +7,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041e980
-BehObj_TrackTrajectory::BehObj_TrackTrajectory()
-{
-}
+BehObj_TrackTrajectory::BehObj_TrackTrajectory() = default;
 
 // FUNCTION: HYPERX 0x0041e9c0
-BehObj_TrackTrajectory::~BehObj_TrackTrajectory()
-{
-}
+BehObj_TrackTrajectory::~BehObj_TrackTrajectory() = default;
 
 // FUNCTION: HYPERX 0x0041e9d0
 void BehObj_TrackTrajectory::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

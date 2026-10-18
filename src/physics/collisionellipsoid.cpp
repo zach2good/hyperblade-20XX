@@ -8,9 +8,7 @@
 #include <cmath>
 
 // FUNCTION: HYPERX 0x00408e90
-CollisionEllipsoid::~CollisionEllipsoid()
-{
-}
+CollisionEllipsoid::~CollisionEllipsoid() = default;
 
 // FUNCTION: HYPERX 0x00408ea0
 unsigned char CollisionEllipsoid::PointInside(const Vec3* pPoint)

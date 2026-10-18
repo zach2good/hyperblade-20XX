@@ -12,9 +12,7 @@ class EngineObject;
 
 struct CollisionCage
 {
-    ~CollisionCage()
-    {
-    }
+    ~CollisionCage() = default;
 
     void ComputeFaceNormals();
 

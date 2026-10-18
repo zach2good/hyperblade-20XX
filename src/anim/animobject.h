@@ -9,9 +9,7 @@ class AnimObject
 {
 public:
     // FUNCTION: HYPERX 0x00417930
-    virtual ~AnimObject()
-    {
-    }
+    virtual ~AnimObject() = default;
 
     AnimObject()
     : m_nInstallLevel(0)

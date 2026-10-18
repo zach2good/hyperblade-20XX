@@ -8,6 +8,4 @@ CoachObject::CoachObject(int nSlot, class ObjectDef* pDef)
 }
 
 // FUNCTION: HYPERX 0x00475490
-CoachObject::~CoachObject()
-{
-}
+CoachObject::~CoachObject() = default;

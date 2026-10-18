@@ -8,14 +8,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041e0a0
-BehObj_UpdateWhileAttached::BehObj_UpdateWhileAttached()
-{
-}
+BehObj_UpdateWhileAttached::BehObj_UpdateWhileAttached() = default;
 
 // FUNCTION: HYPERX 0x0041e0e0
-BehObj_UpdateWhileAttached::~BehObj_UpdateWhileAttached()
-{
-}
+BehObj_UpdateWhileAttached::~BehObj_UpdateWhileAttached() = default;
 
 // Unlike the base, it sets the collision interactor aimed at the attached object back to zero.
 // FUNCTION: HYPERX 0x0041e0f0

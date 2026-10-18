@@ -31,9 +31,7 @@ public:
     static RenderOptions GetRenderOptions();
     static void          SetCameraTransformAndViewport(LayoutState block);
 
-    virtual ~Renderer()
-    {
-    }
+    virtual ~Renderer() = default;
 
     // Filled with the shared empty body at 0x0043e130; nothing calls it.
     virtual void Unused()                                                 = 0;

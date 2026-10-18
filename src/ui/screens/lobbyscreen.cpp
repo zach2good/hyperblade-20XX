@@ -12,9 +12,7 @@
 #include "sound/soundids.h"
 
 // FUNCTION: HYPERX 0x0048ced0
-LobbyScreen::~LobbyScreen()
-{
-}
+LobbyScreen::~LobbyScreen() = default;
 
 // Six widgets and twenty-six bitmaps; only the bitmap that sizes a widget is kept.
 // FUNCTION: HYPERX 0x0048cf00

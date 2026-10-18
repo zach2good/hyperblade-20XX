@@ -61,9 +61,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
 }
 
 // FUNCTION: HYPERX 0x00443190
-FinalCeremonyScreen::~FinalCeremonyScreen()
-{
-}
+FinalCeremonyScreen::~FinalCeremonyScreen() = default;
 
 // The id is compared unsigned.
 // FUNCTION: HYPERX 0x004431a0

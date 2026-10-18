@@ -25,9 +25,7 @@ TrainingEndScreen::TrainingEndScreen()
 }
 
 // FUNCTION: HYPERX 0x004432b0
-TrainingEndScreen::~TrainingEndScreen()
-{
-}
+TrainingEndScreen::~TrainingEndScreen() = default;
 
 // Past the last credit page the engine goes back to single player and the lobby.
 // FUNCTION: HYPERX 0x004432c0

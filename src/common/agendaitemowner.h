@@ -9,16 +9,12 @@ class AgendaItem;
 class AgendaItemOwner : public PooledOwnerRoot
 {
 public:
-    AgendaItemOwner()
-    {
-    }
+    AgendaItemOwner() = default;
 
     char Insert(void* pNode) override;
 
     // FUNCTION: HYPERX 0x00414e70
-    ~AgendaItemOwner() override
-    {
-    }
+    ~AgendaItemOwner() override = default;
 
     AgendaItem* m_pHead;
 };

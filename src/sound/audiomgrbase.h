@@ -8,9 +8,7 @@ class AudioMgrBase
 {
 public:
     // FUNCTION: HYPERX 0x00491850
-    virtual ~AudioMgrBase()
-    {
-    }
+    virtual ~AudioMgrBase() = default;
 
     virtual void Init()                   = 0;
     virtual void PlayGroup(int nGroup)    = 0;

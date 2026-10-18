@@ -17,9 +17,7 @@
 #include "engine/game.h"
 
 // FUNCTION: HYPERX 0x0048ef70
-DromeExteriorScreen::~DromeExteriorScreen()
-{
-}
+DromeExteriorScreen::~DromeExteriorScreen() = default;
 
 // FUNCTION: HYPERX 0x0048efa0
 DromeExteriorScreen::DromeExteriorScreen()

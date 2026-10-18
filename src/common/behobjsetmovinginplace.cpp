@@ -9,14 +9,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041e450
-BehObj_SetMovingInPlace::BehObj_SetMovingInPlace()
-{
-}
+BehObj_SetMovingInPlace::BehObj_SetMovingInPlace() = default;
 
 // FUNCTION: HYPERX 0x0041e4a0
-BehObj_SetMovingInPlace::~BehObj_SetMovingInPlace()
-{
-}
+BehObj_SetMovingInPlace::~BehObj_SetMovingInPlace() = default;
 
 // FUNCTION: HYPERX 0x0041e4b0
 void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

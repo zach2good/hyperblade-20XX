@@ -28,9 +28,7 @@ public:
 
     ButtonWidget(int nFlags, int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark);
 
-    ~ButtonWidget()
-    {
-    }
+    ~ButtonWidget() = default;
 
 private:
 };

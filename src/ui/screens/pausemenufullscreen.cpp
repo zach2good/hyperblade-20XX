@@ -9,9 +9,7 @@
 #include "graphics/gdi.h"
 
 // FUNCTION: HYPERX 0x004433c0
-PauseMenuFullScreen::~PauseMenuFullScreen()
-{
-}
+PauseMenuFullScreen::~PauseMenuFullScreen() = default;
 
 // FUNCTION: HYPERX 0x004433f0
 PauseMenuFullScreen::PauseMenuFullScreen()

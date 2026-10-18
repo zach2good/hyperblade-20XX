@@ -42,9 +42,7 @@ GameOptions::GameOptions()
     m_nInstallLevel = ReadInt(pszSection, pszKey, 0);
 }
 
-GameOptions::~GameOptions()
-{
-}
+GameOptions::~GameOptions() = default;
 
 // FUNCTION: HYPERX 0x004798d0
 int GameOptions::WriteString(const char* pszSection, const char* pszKey, const char* pszValue)

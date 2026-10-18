@@ -18,9 +18,7 @@
 #include "sound/soundids.h"
 
 // FUNCTION: HYPERX 0x0048d8f0
-MainMenuScreen::~MainMenuScreen()
-{
-}
+MainMenuScreen::~MainMenuScreen() = default;
 
 // FUNCTION: HYPERX 0x0048d920
 MainMenuScreen::MainMenuScreen()

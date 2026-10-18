@@ -31,14 +31,10 @@
 #include "common/pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d460
-BehObj_GlideToObject::BehObj_GlideToObject()
-{
-}
+BehObj_GlideToObject::BehObj_GlideToObject() = default;
 
 // FUNCTION: HYPERX 0x0041d4a0
-BehObj_GlideToObject::~BehObj_GlideToObject()
-{
-}
+BehObj_GlideToObject::~BehObj_GlideToObject() = default;
 
 // FUNCTION: HYPERX 0x0041d4b0
 void BehObj_GlideToObject::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

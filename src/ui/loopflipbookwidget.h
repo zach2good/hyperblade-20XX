@@ -35,9 +35,7 @@ public:
 public:
     LoopFlipbookWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nLoopFlag, int nSoundAtMark);
 
-    ~LoopFlipbookWidget()
-    {
-    }
+    ~LoopFlipbookWidget() = default;
 
     // Slot six, in no other table.
     void Draw(int nSlot) override;

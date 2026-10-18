@@ -6,14 +6,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041de20
-BehObj_FlyToward::BehObj_FlyToward()
-{
-}
+BehObj_FlyToward::BehObj_FlyToward() = default;
 
 // FUNCTION: HYPERX 0x0041de60
-BehObj_FlyToward::~BehObj_FlyToward()
-{
-}
+BehObj_FlyToward::~BehObj_FlyToward() = default;
 
 // FUNCTION: HYPERX 0x0041de70
 void BehObj_FlyToward::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

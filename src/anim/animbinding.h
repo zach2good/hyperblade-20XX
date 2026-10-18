@@ -23,9 +23,7 @@ class AnimBinding
 {
 public:
     // FUNCTION: HYPERX 0x00425450
-    virtual ~AnimBinding()
-    {
-    }
+    virtual ~AnimBinding() = default;
 
     virtual AnimBinding* DestroyViaVtable();
     virtual char         UpdateTick()                                                                                             = 0;

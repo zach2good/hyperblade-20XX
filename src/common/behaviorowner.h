@@ -9,16 +9,12 @@ class GameBehaviorObject;
 class BehaviorOwner : public PooledOwnerRoot
 {
 public:
-    BehaviorOwner()
-    {
-    }
+    BehaviorOwner() = default;
 
     char Insert(void* pNode) override;
 
     // FUNCTION: HYPERX 0x004209f0
-    ~BehaviorOwner() override
-    {
-    }
+    ~BehaviorOwner() override = default;
 
     GameBehaviorObject* m_pHead;
 };

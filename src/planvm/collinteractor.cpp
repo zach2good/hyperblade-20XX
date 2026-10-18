@@ -175,6 +175,4 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 }
 
 // FUNCTION: HYPERX 0x0046bb90
-CollInteractor::~CollInteractor()
-{
-}
+CollInteractor::~CollInteractor() = default;

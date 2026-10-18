@@ -16,9 +16,7 @@ class AgendaItem
 public:
     // The whole body is the vptr store; the deleting destructors call it out of line.
     // FUNCTION: HYPERX 0x00412f90
-    virtual ~AgendaItem()
-    {
-    }
+    virtual ~AgendaItem() = default;
 
     // Slot one, folded onto slot ten's body; nothing in the image reads the argument.
     virtual void Process(int)

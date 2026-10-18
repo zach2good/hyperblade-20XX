@@ -22,9 +22,7 @@ struct FrameTimer
     {
     }
 
-    ~FrameTimer()
-    {
-    }
+    ~FrameTimer() = default;
 
     unsigned int nFrames;          // 0x00
     unsigned int nClockReads;      // 0x04

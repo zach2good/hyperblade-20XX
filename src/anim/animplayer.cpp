@@ -894,9 +894,7 @@ float AnimPlayer::GetPlaybackRate()
 
 // The blend slots' element destructor is Object::Trace in the original, folded by its linker.
 // FUNCTION: HYPERX 0x00425580
-AnimPlayer::~AnimPlayer()
-{
-}
+AnimPlayer::~AnimPlayer() = default;
 
 // 0.35, the cap on a blend's duration.
 float g_flBlendDurationCap = 0.35f;

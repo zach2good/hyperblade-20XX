@@ -24,6 +24,4 @@ GoalObject::GoalObject(int nSlot, class ObjectDef* pDef)
 }
 
 // FUNCTION: HYPERX 0x00474560
-GoalObject::~GoalObject()
-{
-}
+GoalObject::~GoalObject() = default;

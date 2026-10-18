@@ -5,9 +5,7 @@
 class ObjectStats
 {
 public:
-    ~ObjectStats()
-    {
-    }
+    ~ObjectStats() = default;
 
     // The stat at the index, scaled by the object's own weight.
     float GetWeightedStat(int nIndex);

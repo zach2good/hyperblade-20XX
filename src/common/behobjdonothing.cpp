@@ -3,14 +3,10 @@
 #include "common/pooledclasses.h"
 
 // FUNCTION: HYPERX 0x0041e560
-BehObj_DoNothing::BehObj_DoNothing()
-{
-}
+BehObj_DoNothing::BehObj_DoNothing() = default;
 
 // FUNCTION: HYPERX 0x0041e5a0
-BehObj_DoNothing::~BehObj_DoNothing()
-{
-}
+BehObj_DoNothing::~BehObj_DoNothing() = default;
 
 // FUNCTION: HYPERX 0x0041e5b0
 void BehObj_DoNothing::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

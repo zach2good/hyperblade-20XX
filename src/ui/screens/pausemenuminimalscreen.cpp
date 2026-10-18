@@ -6,9 +6,7 @@
 #include "graphics/gdi.h"
 
 // FUNCTION: HYPERX 0x00443950
-PauseMenuMinimalScreen::~PauseMenuMinimalScreen()
-{
-}
+PauseMenuMinimalScreen::~PauseMenuMinimalScreen() = default;
 
 // FUNCTION: HYPERX 0x00443980
 PauseMenuMinimalScreen::PauseMenuMinimalScreen()

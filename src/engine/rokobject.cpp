@@ -62,9 +62,7 @@ extern float g_flRokBoneShiftY;
 extern float g_flRokBoneShiftZ;
 
 // FUNCTION: HYPERX 0x00473b80
-RokObject::~RokObject()
-{
-}
+RokObject::~RokObject() = default;
 
 // Every slot is hidden, then one is shown; an uncovered multiplier leaves everything hidden.
 // FUNCTION: HYPERX 0x00473b90

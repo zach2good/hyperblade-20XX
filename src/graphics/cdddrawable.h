@@ -8,9 +8,7 @@
 class CDDDrawable
 {
 public:
-    virtual ~CDDDrawable()
-    {
-    }
+    virtual ~CDDDrawable() = default;
 
     virtual int Draw() = 0;
 

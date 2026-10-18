@@ -78,9 +78,7 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
 }
 
 // FUNCTION: HYPERX 0x00479830
-MultiSetupOptionsScreen::~MultiSetupOptionsScreen()
-{
-}
+MultiSetupOptionsScreen::~MultiSetupOptionsScreen() = default;
 
 // FUNCTION: HYPERX 0x00479850
 void MultiSetupOptionsScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)

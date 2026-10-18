@@ -28,9 +28,7 @@ public:
 
     // Inline, so the derived screens that declare none share this body.
     // FUNCTION: HYPERX 0x004581c0
-    ~MatchInfoUIScreen() override
-    {
-    }
+    ~MatchInfoUIScreen() override = default;
 
     void RegisterBitmaps();
     void UnloadBitmaps();

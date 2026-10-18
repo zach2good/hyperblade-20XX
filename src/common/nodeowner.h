@@ -8,16 +8,12 @@
 class NodeOwner : public PooledOwnerRoot
 {
 public:
-    inline NodeOwner()
-    {
-    }
+    inline NodeOwner() = default;
 
     char Insert(void* pNode) override;
 
     // FUNCTION: HYPERX 0x0046be80
-    ~NodeOwner() override
-    {
-    }
+    ~NodeOwner() override = default;
 
     class Interactor* m_pHead;
 };

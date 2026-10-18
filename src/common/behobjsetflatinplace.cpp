@@ -3,14 +3,10 @@
 #include "common/pooledclasses.h"
 
 // FUNCTION: HYPERX 0x0041e380
-BehObj_SetFlatInPlace::BehObj_SetFlatInPlace()
-{
-}
+BehObj_SetFlatInPlace::BehObj_SetFlatInPlace() = default;
 
 // FUNCTION: HYPERX 0x0041e3c0
-BehObj_SetFlatInPlace::~BehObj_SetFlatInPlace()
-{
-}
+BehObj_SetFlatInPlace::~BehObj_SetFlatInPlace() = default;
 
 // FUNCTION: HYPERX 0x0041e3d0
 void BehObj_SetFlatInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

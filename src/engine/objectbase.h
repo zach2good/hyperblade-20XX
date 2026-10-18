@@ -28,9 +28,7 @@ class ObjectBase
 {
 public:
     // FUNCTION: HYPERX 0x004726f0
-    virtual ~ObjectBase()
-    {
-    }
+    virtual ~ObjectBase() = default;
 
     virtual short             GetSlot()                                                                                                 = 0;
     virtual PhysicsBody*      GetPhysicsBody()                                                                                          = 0;

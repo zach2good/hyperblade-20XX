@@ -48,9 +48,7 @@ TeamRatingCards g_aTeamRatingCards[14] = {
 };
 
 // FUNCTION: HYPERX 0x00444190
-HeadToHeadSetupUIScreen::~HeadToHeadSetupUIScreen()
-{
-}
+HeadToHeadSetupUIScreen::~HeadToHeadSetupUIScreen() = default;
 
 // FUNCTION: HYPERX 0x004441c0
 HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()

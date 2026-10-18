@@ -22,9 +22,7 @@
 float g_flFifthGameEngine = 0.2f * g_flOneGameEngine;
 
 // FUNCTION: HYPERX 0x00488400
-TournamentSetupUIScreen::~TournamentSetupUIScreen()
-{
-}
+TournamentSetupUIScreen::~TournamentSetupUIScreen() = default;
 
 // FUNCTION: HYPERX 0x00488430
 TournamentSetupUIScreen::TournamentSetupUIScreen()

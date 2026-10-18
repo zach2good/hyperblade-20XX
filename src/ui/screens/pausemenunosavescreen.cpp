@@ -6,9 +6,7 @@
 #include "graphics/gdi.h"
 
 // FUNCTION: HYPERX 0x00443c80
-PauseMenuNoSaveScreen::~PauseMenuNoSaveScreen()
-{
-}
+PauseMenuNoSaveScreen::~PauseMenuNoSaveScreen() = default;
 
 // FUNCTION: HYPERX 0x00443cb0
 PauseMenuNoSaveScreen::PauseMenuNoSaveScreen()

@@ -40,9 +40,7 @@ InfoBarRadar::InfoBarRadar()
 }
 
 // FUNCTION: HYPERX 0x0044fd60
-InfoBarRadar::~InfoBarRadar() noexcept
-{
-}
+InfoBarRadar::~InfoBarRadar() noexcept = default;
 
 // The limits and a third, unread value arrive as one twelve-byte block.
 // FUNCTION: HYPERX 0x0044fd70

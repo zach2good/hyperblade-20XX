@@ -50,9 +50,7 @@ public:
         }
     }
 
-    virtual ~Interactor()
-    {
-    }
+    virtual ~Interactor() = default;
 
     // Object::Trace, which eleven tables share; CollInteractor overrides it.
     virtual void Discard()

@@ -107,9 +107,7 @@ inline void PlayerObject::ApplyRenderSlotPose()
 }
 
 // FUNCTION: HYPERX 0x00474320
-PlayerObject::~PlayerObject()
-{
-}
+PlayerObject::~PlayerObject() = default;
 
 // At most every two seconds; the damage is truncated to a byte, so 256 or more wraps.
 // FUNCTION: HYPERX 0x00474330

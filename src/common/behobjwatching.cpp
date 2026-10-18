@@ -6,14 +6,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041e8b0
-BehObj_Watching::BehObj_Watching()
-{
-}
+BehObj_Watching::BehObj_Watching() = default;
 
 // FUNCTION: HYPERX 0x0041e8f0
-BehObj_Watching::~BehObj_Watching()
-{
-}
+BehObj_Watching::~BehObj_Watching() = default;
 
 // FUNCTION: HYPERX 0x0041e900
 void BehObj_Watching::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

@@ -15,6 +15,4 @@ WeaponObject::WeaponObject(int nSlot, class ObjectDef* pDef)
 }
 
 // FUNCTION: HYPERX 0x00473f30
-WeaponObject::~WeaponObject()
-{
-}
+WeaponObject::~WeaponObject() = default;

@@ -12,9 +12,7 @@ BehObj_OpenAndClose::BehObj_OpenAndClose()
 }
 
 // FUNCTION: HYPERX 0x0041e650
-BehObj_OpenAndClose::~BehObj_OpenAndClose()
-{
-}
+BehObj_OpenAndClose::~BehObj_OpenAndClose() = default;
 
 // FUNCTION: HYPERX 0x0041e660
 void BehObj_OpenAndClose::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

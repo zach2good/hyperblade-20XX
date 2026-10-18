@@ -6,14 +6,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041ea60
-BehObj_TrackPassPrep::BehObj_TrackPassPrep()
-{
-}
+BehObj_TrackPassPrep::BehObj_TrackPassPrep() = default;
 
 // FUNCTION: HYPERX 0x0041eaa0
-BehObj_TrackPassPrep::~BehObj_TrackPassPrep()
-{
-}
+BehObj_TrackPassPrep::~BehObj_TrackPassPrep() = default;
 
 // FUNCTION: HYPERX 0x0041eab0
 void BehObj_TrackPassPrep::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

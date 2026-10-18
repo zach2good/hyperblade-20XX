@@ -6,14 +6,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041e7e0
-BehObj_HeadTracking::BehObj_HeadTracking()
-{
-}
+BehObj_HeadTracking::BehObj_HeadTracking() = default;
 
 // FUNCTION: HYPERX 0x0041e820
-BehObj_HeadTracking::~BehObj_HeadTracking()
-{
-}
+BehObj_HeadTracking::~BehObj_HeadTracking() = default;
 
 // FUNCTION: HYPERX 0x0041e830
 void BehObj_HeadTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

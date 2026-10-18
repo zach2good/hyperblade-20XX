@@ -9,9 +9,7 @@ class MatchStats
 public:
     MatchStats();
 
-    ~MatchStats()
-    {
-    }
+    ~MatchStats() = default;
 
     // Zeroes all forty nine and answers with itself.
     MatchStats* ZeroInit();

@@ -14,9 +14,7 @@ public:
     DeviceObject(int nSlot, class ObjectDef* pDef);
 
     // FUNCTION: HYPERX 0x0045d700
-    ~DeviceObject() override
-    {
-    }
+    ~DeviceObject() override = default;
 
     // Public: KeyboardDeviceObj's constructor writes four of these, and the bring-up key replay reads them.
 public:

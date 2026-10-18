@@ -3,14 +3,10 @@
 #include "common/pooledclasses.h"
 
 // FUNCTION: HYPERX 0x0041e2b0
-BehObj_CoachTeam::BehObj_CoachTeam()
-{
-}
+BehObj_CoachTeam::BehObj_CoachTeam() = default;
 
 // FUNCTION: HYPERX 0x0041e2f0
-BehObj_CoachTeam::~BehObj_CoachTeam()
-{
-}
+BehObj_CoachTeam::~BehObj_CoachTeam() = default;
 
 // FUNCTION: HYPERX 0x0041e300
 void BehObj_CoachTeam::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

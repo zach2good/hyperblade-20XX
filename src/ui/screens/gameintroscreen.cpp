@@ -27,9 +27,7 @@ void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 }
 
 // FUNCTION: HYPERX 0x004491b0
-GameIntroScreen::~GameIntroScreen()
-{
-}
+GameIntroScreen::~GameIntroScreen() = default;
 
 // STRING: HYPERX 0x004c282c
 const char* g_pszIntroBackground = "gintro";

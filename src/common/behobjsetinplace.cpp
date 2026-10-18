@@ -3,14 +3,10 @@
 #include "common/pooledclasses.h"
 
 // FUNCTION: HYPERX 0x0041e1e0
-BehObj_SetInPlace::BehObj_SetInPlace()
-{
-}
+BehObj_SetInPlace::BehObj_SetInPlace() = default;
 
 // FUNCTION: HYPERX 0x0041e220
-BehObj_SetInPlace::~BehObj_SetInPlace()
-{
-}
+BehObj_SetInPlace::~BehObj_SetInPlace() = default;
 
 // The first slot is nulled and then read back, so the walk never runs.
 // FUNCTION: HYPERX 0x0041e230

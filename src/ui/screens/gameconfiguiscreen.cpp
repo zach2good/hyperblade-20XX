@@ -35,9 +35,7 @@ enum PeriodLength
 };
 
 // FUNCTION: HYPERX 0x00479ad0
-GameConfigUIScreen::~GameConfigUIScreen()
-{
-}
+GameConfigUIScreen::~GameConfigUIScreen() = default;
 
 // FUNCTION: HYPERX 0x00479b00
 GameConfigUIScreen::GameConfigUIScreen()

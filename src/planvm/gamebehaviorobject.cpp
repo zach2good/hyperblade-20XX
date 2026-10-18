@@ -62,9 +62,7 @@ extern PlanHandlerFn     g_pfnPlanActionHandlers[140];
 
 // Out of line: the original calls this destructor from every derived one.
 // FUNCTION: HYPERX 0x0041bfe0
-GameBehaviorObject::~GameBehaviorObject()
-{
-}
+GameBehaviorObject::~GameBehaviorObject() = default;
 
 // The behaviour's setup pass over a compiled plan block; every BehObj_*::Init ends by calling it.
 // FUNCTION: HYPERX 0x0041bff0

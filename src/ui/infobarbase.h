@@ -20,9 +20,7 @@ public:
     {
     }
 
-    ~InfoBarBase() override
-    {
-    }
+    ~InfoBarBase() override = default;
 
     // src/app/gameapp.cpp reads the flag to route Enter and Esc.
     int          m_bQuitPromptVisible; // 0x004

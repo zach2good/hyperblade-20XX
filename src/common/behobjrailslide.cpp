@@ -6,14 +6,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041db30
-BehObj_RailSlide::BehObj_RailSlide()
-{
-}
+BehObj_RailSlide::BehObj_RailSlide() = default;
 
 // FUNCTION: HYPERX 0x0041db70
-BehObj_RailSlide::~BehObj_RailSlide()
-{
-}
+BehObj_RailSlide::~BehObj_RailSlide() = default;
 
 // FUNCTION: HYPERX 0x0041db80
 void BehObj_RailSlide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

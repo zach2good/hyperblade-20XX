@@ -272,9 +272,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
 }
 
 // FUNCTION: HYPERX 0x0046e950
-SaveLoadUIScreen::~SaveLoadUIScreen()
-{
-}
+SaveLoadUIScreen::~SaveLoadUIScreen() = default;
 
 // FUNCTION: HYPERX 0x0046e960
 void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)

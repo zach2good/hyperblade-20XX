@@ -17,9 +17,7 @@ union MatrixRow;
 class AnimHeader
 {
 public:
-    ~AnimHeader()
-    {
-    }
+    ~AnimHeader() = default;
 
     short m_nClipCount;  // 0x00
     short m_nFrameCount; // 0x02
@@ -80,9 +78,7 @@ struct AnimClipHeader
     char acUnused[5];    // 0x09
     int  nFormat;        // 0x0e
 
-    ~AnimClipHeader()
-    {
-    }
+    ~AnimClipHeader() = default;
 };
 
 #pragma pack(pop)

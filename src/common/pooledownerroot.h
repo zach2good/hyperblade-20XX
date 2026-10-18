@@ -5,9 +5,7 @@
 class PooledOwnerRoot
 {
 public:
-    virtual ~PooledOwnerRoot()
-    {
-    }
+    virtual ~PooledOwnerRoot() = default;
 
     // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
     virtual PooledOwnerRoot* Destroy();

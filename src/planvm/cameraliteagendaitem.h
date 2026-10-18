@@ -7,9 +7,7 @@
 class CameraLiteAgendaItem : public ReleasingAgendaItem
 {
 public:
-    CameraLiteAgendaItem()
-    {
-    }
+    CameraLiteAgendaItem() = default;
 
     CameraLiteAgendaItem(Vec3* pPos, Vec3* pDir)
     : m_pWatchPos(pPos)

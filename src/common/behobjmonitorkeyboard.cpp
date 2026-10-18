@@ -18,14 +18,10 @@
 extern int g_bTwoPlayers;
 
 // FUNCTION: HYPERX 0x0041def0
-BehObj_MonitorKeyboard::BehObj_MonitorKeyboard()
-{
-}
+BehObj_MonitorKeyboard::BehObj_MonitorKeyboard() = default;
 
 // FUNCTION: HYPERX 0x0041df40
-BehObj_MonitorKeyboard::~BehObj_MonitorKeyboard()
-{
-}
+BehObj_MonitorKeyboard::~BehObj_MonitorKeyboard() = default;
 
 // FUNCTION: HYPERX 0x0041df50
 void BehObj_MonitorKeyboard::SendTimedMessage()

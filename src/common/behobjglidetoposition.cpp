@@ -7,14 +7,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d590
-BehObj_GlideToPosition::BehObj_GlideToPosition()
-{
-}
+BehObj_GlideToPosition::BehObj_GlideToPosition() = default;
 
 // FUNCTION: HYPERX 0x0041d5d0
-BehObj_GlideToPosition::~BehObj_GlideToPosition()
-{
-}
+BehObj_GlideToPosition::~BehObj_GlideToPosition() = default;
 
 // FUNCTION: HYPERX 0x0041d5e0
 void BehObj_GlideToPosition::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

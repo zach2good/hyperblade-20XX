@@ -6,14 +6,10 @@
 #include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d890
-BehObj_UpdateRelativePos::BehObj_UpdateRelativePos()
-{
-}
+BehObj_UpdateRelativePos::BehObj_UpdateRelativePos() = default;
 
 // FUNCTION: HYPERX 0x0041d8d0
-BehObj_UpdateRelativePos::~BehObj_UpdateRelativePos()
-{
-}
+BehObj_UpdateRelativePos::~BehObj_UpdateRelativePos() = default;
 
 // FUNCTION: HYPERX 0x0041d8e0
 void BehObj_UpdateRelativePos::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)

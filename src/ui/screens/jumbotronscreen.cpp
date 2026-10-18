@@ -22,9 +22,7 @@ class JumbotronScreen;
 #include "net/network.h"
 
 // FUNCTION: HYPERX 0x0048e710
-JumbotronScreen::~JumbotronScreen()
-{
-}
+JumbotronScreen::~JumbotronScreen() = default;
 
 // The advert comes from jumbo.txt. Separators two and three show only for three or four periods.
 // FUNCTION: HYPERX 0x0048e740

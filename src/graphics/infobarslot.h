@@ -23,9 +23,7 @@ public:
 
     // Inline because the original inlines it into CDDSurfaceOwner's and InfoBar's destructors.
     // FUNCTION: HYPERX 0x0044f1b0
-    ~InfoBarSlot() noexcept override
-    {
-    }
+    ~InfoBarSlot() noexcept override = default;
 
     int Draw() override;
 

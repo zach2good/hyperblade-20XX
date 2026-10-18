@@ -7,9 +7,7 @@
 struct ViewExtent : public Point
 {
     // Non-POD, so it is returned through a hidden pointer as in the original.
-    ViewExtent()
-    {
-    }
+    ViewExtent() = default;
 
     ViewExtent(const ViewExtent& other)
     {
