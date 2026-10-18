@@ -1,31 +1,67 @@
 {
-  "version": 3,
+  "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
-    "minor": 21,
+    "minor": 25,
     "patch": 0
   },
   "configurePresets": [
     {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
       "name": "msvc-x64",
       "displayName": "MSVC x64",
-      "generator": "Ninja",
+      "inherits": "base",
       "binaryDir": "${sourceDir}/build",
       "architecture": {
         "value": "x64",
         "strategy": "external"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_C_COMPILER": "cl",
         "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "linux-gcc",
+      "displayName": "Linux GCC 14",
+      "inherits": "base",
+      "binaryDir": "${sourceDir}/build-linux-gcc",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc-14",
+        "CMAKE_CXX_COMPILER": "g++-14"
+      }
+    },
+    {
+      "name": "linux-clang",
+      "displayName": "Linux Clang 20",
+      "inherits": "base",
+      "binaryDir": "${sourceDir}/build-linux-clang",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-20",
+        "CMAKE_CXX_COMPILER": "clang++-20"
       }
     }
   ],
   "buildPresets": [
+    { "name": "msvc-x64", "configurePreset": "msvc-x64" },
+    { "name": "linux-gcc", "configurePreset": "linux-gcc" },
+    { "name": "linux-clang", "configurePreset": "linux-clang" }
+  ],
+  "testPresets": [
     {
-      "name": "msvc-x64",
-      "configurePreset": "msvc-x64"
-    }
+      "name": "base",
+      "hidden": true,
+      "output": { "outputOnFailure": true }
+    },
+    { "name": "msvc-x64", "inherits": "base", "configurePreset": "msvc-x64" },
+    { "name": "linux-gcc", "inherits": "base", "configurePreset": "linux-gcc" },
+    { "name": "linux-clang", "inherits": "base", "configurePreset": "linux-clang" }
   ]
 }

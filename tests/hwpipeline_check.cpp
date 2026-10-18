@@ -308,6 +308,9 @@ SDL_GPUTexture* CreateTarget(SDL_GPUDevice* pDevice, unsigned int nFormat, SDL_G
     return SDL_CreateGPUTexture(pDevice, &info);
 }
 
+// CTest reports this exit code as a skip.
+constexpr auto kSkipped = 77;
+
 } // namespace
 
 int main()
@@ -328,7 +331,7 @@ int main()
         std::printf("no GPU device, skipped (%s)\n", SDL_GetError());
         SDL_Quit();
 
-        return 0;
+        return kSkipped;
     }
 
     std::printf("driver %s\n", SDL_GetGPUDeviceDriver(pDevice));

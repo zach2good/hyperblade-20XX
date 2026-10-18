@@ -64,31 +64,45 @@ To play the music without the CD, rip the audio tracks to `Data/Music/Track02.fl
 
 ## Build
 
+The build needs nothing from the game. Each preset in [CMakePresets.json](CMakePresets.json)
+configures, builds and tests, and the `package` target writes the drop-in archive to
+`packages/` in its build folder.
+
 ### Windows
 
-You need Visual Studio 2022 or later with the C++ x64 tools, CMake 3.21 or later, and Ninja. From
+You need Visual Studio 2022 or later with the C++ x64 tools, CMake 3.25 or later, and Ninja. From
 an x64 Developer Command Prompt:
 
 ```sh
 cmake --preset msvc-x64
-cmake --build build
-cmake --install build --prefix package
+cmake --build --preset msvc-x64
+ctest --preset msvc-x64
+cmake --build --preset msvc-x64 --target package
 ```
 
 ### Linux
 
-[docker/linux.Dockerfile](docker/linux.Dockerfile) holds the toolchain and SDL's build dependencies.
-It builds, tests and installs into `build-linux/package`:
+[docker/linux.Dockerfile](docker/linux.Dockerfile) holds GCC 14, Clang 20 and SDL's build
+dependencies. It builds, tests and packages with the preset `PRESET` names, `linux-gcc` by default:
 
 ```sh
 docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
-docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
+docker run --rm -e PRESET=linux-gcc -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
 ```
 
-That builds with GCC. For Clang, add `-e CC=clang-20 -e CXX=clang++-20` and give it a build folder
-of its own. Both build with `-Wall -Werror`, and MSVC with `/W4 /WX`.
+On a Linux machine with those tools, the `linux-gcc` and `linux-clang` presets work as the Windows
+one does. GCC and Clang build with `-Wall -Werror`, and MSVC with `/W4 /WX`.
 
-The build needs nothing from the game.
+### Tests
+
+The `unit` checks need nothing. `gpu` draws through SDL's GPU API and reports itself skipped with
+no device. The `data` checks read the game's own files and run only when `HYPERX_GAME_DATA` names
+your HyperBlade folder, which also links its folders in beside the built image:
+
+```sh
+cmake --preset msvc-x64 -DHYPERX_GAME_DATA=C:/Games/HyperBlade
+ctest --preset msvc-x64 -L data
+```
 
 ## Tools
 

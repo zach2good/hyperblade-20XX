@@ -14,7 +14,7 @@ set(HYPERX_PAK_SCRIPT "${CMAKE_CURRENT_LIST_FILE}")
 function(hyperx_add_pak target output)
     set(sources)
     foreach(file IN LISTS ARGN)
-        list(APPEND sources "${CMAKE_SOURCE_DIR}/res/${file}")
+        list(APPEND sources "${PROJECT_SOURCE_DIR}/res/${file}")
     endforeach()
 
     list(JOIN ARGN "," files)
@@ -22,7 +22,7 @@ function(hyperx_add_pak target output)
     add_custom_command(
         OUTPUT "${output}"
         COMMAND "${CMAKE_COMMAND}" -DOUTPUT=${output} -DFILES=${files} -P "${HYPERX_PAK_SCRIPT}"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/res"
+        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/res"
         DEPENDS ${sources} "${HYPERX_PAK_SCRIPT}"
         COMMENT "Packing ${output}"
         VERBATIM)

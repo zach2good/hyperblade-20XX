@@ -43,24 +43,19 @@ jobs:
           path: .cpm-cache
           key: cpm-${{ runner.os }}-${{ hashFiles('cmake/dependencies.cmake') }}
 
-      - name: Configure and build
+      - name: Configure, build and test
         run: |
           cmake --preset msvc-x64
-          cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
+          cmake --build --preset msvc-x64
+          ctest --preset msvc-x64
 
       - name: Package
-        shell: pwsh
-        run: |
-          cmake --install build --prefix package
-          Compress-Archive -Path package/* -DestinationPath hyperblade_20XX.zip -Force
+        run: cmake --build --preset msvc-x64 --target package
 
       - uses: actions/upload-artifact@v4
         with:
           name: hyperblade_20XX
-          path: hyperblade_20XX.zip
+          path: build/packages/hyperblade_20XX.zip
 
   build-linux:
     name: Build (${{ matrix.compiler.name }} Linux)
@@ -69,8 +64,8 @@ jobs:
       fail-fast: false
       matrix:
         compiler:
-          - { name: GCC, cc: gcc-14, cxx: g++-14, package: true }
-          - { name: Clang, cc: clang-20, cxx: clang++-20, package: false }
+          - { name: GCC, preset: linux-gcc, package: true }
+          - { name: Clang, preset: linux-clang, package: false }
     steps:
       - uses: actions/checkout@v5
 
@@ -79,20 +74,17 @@ jobs:
           path: .cpm-cache-linux
           key: cpm-linux-${{ hashFiles('cmake/dependencies.cmake') }}
 
-      - name: Build, test and install in the Linux image
+      - name: Build, test and package in the Linux image
         run: |
           docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
-          docker run --rm -e CC=${{ matrix.compiler.cc }} -e CXX=${{ matrix.compiler.cxx }}             -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
-
-      - name: Package
-        if: matrix.compiler.package
-        run: tar -czf hyperblade_20XX-linux.tar.gz -C build-linux/package .
+          docker run --rm -e PRESET=${{ matrix.compiler.preset }} \
+            -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
 
       - uses: actions/upload-artifact@v4
         if: matrix.compiler.package
         with:
           name: hyperblade_20XX-linux
-          path: hyperblade_20XX-linux.tar.gz
+          path: build-linux/packages/hyperblade_20XX-linux.tar.gz
 
   release:
     name: Release

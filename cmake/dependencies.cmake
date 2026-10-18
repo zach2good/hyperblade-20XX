@@ -7,7 +7,7 @@ set(CPM_HASH 49a3bef91ceb65bb66d57255e12d1ffd22abc2f6408fa9fe4534c544a2f232aa)
 if(DEFINED ENV{CPM_SOURCE_CACHE})
     set(CPM_SOURCE_CACHE "$ENV{CPM_SOURCE_CACHE}" CACHE PATH "Where CPM keeps its downloads")
 else()
-    set(CPM_SOURCE_CACHE "${CMAKE_SOURCE_DIR}/.cpm-cache" CACHE PATH "Where CPM keeps its downloads")
+    set(CPM_SOURCE_CACHE "${PROJECT_SOURCE_DIR}/.cpm-cache" CACHE PATH "Where CPM keeps its downloads")
 endif()
 
 set(CPM_DOWNLOAD_LOCATION "${CPM_SOURCE_CACHE}/cpm/CPM_${CPM_VERSION}.cmake")
@@ -102,3 +102,7 @@ add_library(imgui STATIC
 target_include_directories(imgui SYSTEM PUBLIC "${imgui_SOURCE_DIR}" "${imgui_SOURCE_DIR}/backends")
 target_link_libraries(imgui PUBLIC SDL3::SDL3)
 target_compile_definitions(imgui PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
+
+# stb ships in third_party/, header only.
+add_library(stb INTERFACE)
+target_include_directories(stb SYSTEM INTERFACE "${PROJECT_SOURCE_DIR}/third_party/stb")

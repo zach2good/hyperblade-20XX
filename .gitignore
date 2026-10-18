@@ -1,6 +1,8 @@
 build/
 .cpm-cache/
 build-linux/
+build-linux-gcc/
+build-linux-clang/
 .cpm-cache-linux/
 out/
 CMakeUserPresets.json
