@@ -218,16 +218,16 @@ void CTrackTraj::Process(int nArg)
             vScratch.y = flWatchX * pCamDir->z - flWatchZ * pCamDir->x;
             vScratch.z = flWatchY * pCamDir->x - flWatchX * pCamDir->y;
 
-            flRadius = (float)sqrt(vScratch.x * vScratch.x + (vScratch.y * vScratch.y + vScratch.z * vScratch.z)) * 1.2f;
+            flRadius = (float)sqrt(static_cast<double>(vScratch.x * vScratch.x + (vScratch.y * vScratch.y + vScratch.z * vScratch.z))) * 1.2f;
 
             if (flRadius > 190.0)
             {
                 flRadius = 190.0f;
             }
 
-            flMidLength = (float)sqrt(vMidOffset.x * vMidOffset.x + (vMidOffset.y * vMidOffset.y + vMidOffset.z * vMidOffset.z));
+            flMidLength = (float)sqrt(static_cast<double>(vMidOffset.x * vMidOffset.x + (vMidOffset.y * vMidOffset.y + vMidOffset.z * vMidOffset.z)));
 
-            flTrajLength = (float)sqrt(vTrajOffset.x * vTrajOffset.x + (vTrajOffset.y * vTrajOffset.y + vTrajOffset.z * vTrajOffset.z));
+            flTrajLength = (float)sqrt(static_cast<double>(vTrajOffset.x * vTrajOffset.x + (vTrajOffset.y * vTrajOffset.y + vTrajOffset.z * vTrajOffset.z)));
 
             Math::Vec3Normalize(&vMidOffset);
             Math::Vec3Normalize(&vTrajOffset);

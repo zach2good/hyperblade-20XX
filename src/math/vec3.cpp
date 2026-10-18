@@ -21,7 +21,7 @@ Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
 // FUNCTION: HYPERX 0x00430180
 bool Vec3::NormalizeTo(Vec3* pOut) const
 {
-    const double dLength = sqrt(x * x + y * y + z * z);
+    const double dLength = sqrt(static_cast<double>(x * x + y * y + z * z));
 
     if (dLength > g_dNormalizeEpsilon)
     {
@@ -42,7 +42,7 @@ bool Vec3::NormalizeTo(Vec3* pOut) const
 // FUNCTION: HYPERX 0x004301f0
 bool Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 {
-    const double dLength = sqrt(*pX * *pX + *pZ * *pZ + *pY * *pY);
+    const double dLength = sqrt(static_cast<double>(*pX * *pX + *pZ * *pZ + *pY * *pY));
 
     if (dLength > g_dNormalizeEpsilon)
     {

@@ -287,7 +287,7 @@ int GameEngine::CountEntitiesInRange(short nWhich)
         flDy = pOtherPos->y - pSelfPos->y;
         flDz = pOtherPos->z - pSelfPos->z;
 
-        if ((float)sqrt(flDz * flDz + flDy * flDy + flDx * flDx) <= 10.0f)
+        if ((float)sqrt(static_cast<double>(flDz * flDz + flDy * flDy + flDx * flDx)) <= 10.0f)
         {
             nInRange++;
         }
@@ -305,7 +305,7 @@ int GameEngine::CountEntitiesInRange(short nWhich)
         flDy = pOtherPos->y - pSelfPos->y;
         flDz = pOtherPos->z - pSelfPos->z;
 
-        if ((float)sqrt(flDz * flDz + flDy * flDy + flDx * flDx) <= 10.0f)
+        if ((float)sqrt(static_cast<double>(flDz * flDz + flDy * flDy + flDx * flDx)) <= 10.0f)
         {
             nInRange++;
         }

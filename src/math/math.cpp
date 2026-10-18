@@ -60,7 +60,7 @@ void Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
 // FUNCTION: HYPERX 0x00430110
 bool Math::Vec3Normalize(Vec3* pVec)
 {
-    const double dLength = sqrt(Vec3::DotInline(pVec, pVec));
+    const double dLength = sqrt(static_cast<double>(Vec3::DotInline(pVec, pVec)));
 
     if (dLength > g_dNormalizeEpsilon)
     {
@@ -93,13 +93,13 @@ Vec3 Math::SphericalToCartesian(const Vec3* pIn)
 {
     Vec3 vDir;
 
-    vDir.x = (float)((cos(pIn->x) * sin(pIn->z)) * pIn->y);
+    vDir.x = (float)((cos(static_cast<double>(pIn->x)) * sin(static_cast<double>(pIn->z))) * pIn->y);
 
-    const auto flSinZ = (float)sin(pIn->z);
+    const auto flSinZ = (float)sin(static_cast<double>(pIn->z));
 
-    vDir.y = (float)((sin(pIn->x) * flSinZ) * pIn->y);
+    vDir.y = (float)((sin(static_cast<double>(pIn->x)) * flSinZ) * pIn->y);
 
-    vDir.z = (float)(cos(pIn->z) * pIn->y);
+    vDir.z = (float)(cos(static_cast<double>(pIn->z)) * pIn->y);
 
     Math::Vec3Normalize(&vDir);
 

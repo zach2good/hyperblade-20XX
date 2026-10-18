@@ -35,7 +35,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     dFrameRate = 1.0 / ((((nElapsed - timer->nClockReads * timer->dClockReadCost) - timer->nPerfSampleCount * timer->dSampleCost) - dFrames * timer->dFpsTextCost) / dFrames * 0.001);
 
-    g_gameApp.m_nFrameRate = (int)floor(dFrameRate + 0.5);
+    g_gameApp.m_nFrameRate = (int)floor(static_cast<double>(dFrameRate + 0.5));
 
     memset(g_szFpsText, 0, sizeof(g_szFpsText));
 

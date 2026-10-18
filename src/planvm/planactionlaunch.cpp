@@ -191,7 +191,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
         pDiff = &vDiff;
 
-        flDistance = (float)sqrt(pDiff->y * pDiff->y + (pDiff->GetX() * pDiff->x + pDiff->z * pDiff->z));
+        flDistance = (float)sqrt(static_cast<double>(pDiff->y * pDiff->y + (pDiff->GetX() * pDiff->x + pDiff->z * pDiff->z)));
 
         Math::Vec3Normalize(&vDiff);
 
@@ -208,7 +208,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pCarrierVel = &pCarrier->GetPhysicsBody()->velDir;
 
-            pCarrierVel->z = (float)fabs(pCarrierVel->z) * 0.5f + pCarrierVel->z;
+            pCarrierVel->z = (float)fabs(static_cast<double>(pCarrierVel->z)) * 0.5f + pCarrierVel->z;
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
@@ -276,7 +276,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flHalf = (flRange + 175.0f) * 0.5f;
 
-            flRoot = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+            flRoot = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
 
             flLength = flRoot;
 
@@ -363,7 +363,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pVel->z = flJitterZ * 10.0f - pRok->GetPositionPtr()->z - 20.0f;
 
-            flRoot = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+            flRoot = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
 
             flFlight = flRoot / *pflSpeedScale;
 
@@ -397,7 +397,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
         pRokVel = &pRok->GetPhysicsBody()->vel;
 
-        flSpeed = (float)sqrt(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z);
+        flSpeed = (float)sqrt(static_cast<double>(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z));
 
         flBump = g_pGameEngine->m_clock.flDelta * 10.0f;
 
@@ -547,9 +547,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     if (nSlot == GOALIE_SLOT_A || nSlot == GOALIE_SLOT_B)
     {
-        flScratchA = (float)sqrt(Vec3::DotInline(&vDiff, &vDiff));
+        flScratchA = (float)sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff)));
 
-        flFlight = (flScratchA / (float)sqrt(Vec3::DotInline(&vRokVel, &vRokVel))) * g_pGameEngine->m_clock.flDelta;
+        flFlight = (flScratchA / (float)sqrt(static_cast<double>(Vec3::DotInline(&vRokVel, &vRokVel)))) * g_pGameEngine->m_clock.flDelta;
 
         if (nIndex == SLOT_ROK)
         {
@@ -606,7 +606,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
         pOwner     = pContext->GetPlayerActor();
         flHandling = pOwner->m_stats.GetScalar(RATING_ROK_HANDLING);
 
-        flReach = (float)sqrt(Vec3::DotInline(&vDiff, &vDiff)) * 0.01f;
+        flReach = (float)sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff))) * 0.01f;
 
         if (2.0f <= flReach || 1.0f <= flReach)
         {
@@ -673,7 +673,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     // Without the scatter the jitter is read unset, as the original does.
     vJitter.ScaleInPlace(
-        (float)sqrt((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z) * 0.6000000238418579f);
+        (float)sqrt(static_cast<double>((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z)) * 0.6000000238418579f);
 
     pOut->x = vJitter.x + pOut->x;
     pOut->y = vJitter.y + pOut->y;
@@ -683,7 +683,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     flScratchB = pActor->GetPhysicsBody()->flForwardSpeedDt;
 
-    if ((float)sqrt((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z) > flScratchB)
+    if ((float)sqrt(static_cast<double>((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z)) > flScratchB)
     {
         Math::Vec3Normalize(pOut);
         pOut->ScaleInPlace(flScratchB);

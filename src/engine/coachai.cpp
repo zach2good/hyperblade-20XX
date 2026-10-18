@@ -107,7 +107,7 @@ float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
     const float flDy = posFirst.y - posSecond.y;
     const float flDx = posFirst.x - posSecond.x;
 
-    return (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
+    return (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
 }
 
 // FUNCTION: HYPERX 0x00428090
@@ -116,7 +116,7 @@ float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
     Vec3 a = *pA;
     Vec3 b = *pB;
 
-    return (float)sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+    return (float)sqrt(static_cast<double>((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z)));
 }
 
 // Spent markers read "Spin" or "ScoreSpin"; with none left the answer is 102, id_MOD_NOMODEL.

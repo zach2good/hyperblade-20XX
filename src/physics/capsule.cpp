@@ -54,8 +54,8 @@ int Capsule::CheckCollision(const Vec3* pDirSelf, const Vec3* pDirOther, const C
     Vec3    vDeltaB;
     int     nStepsUsed;
 
-    flDistA     = (float)sqrt(pDirSelf->z * pDirSelf->z + (pDirSelf->y * pDirSelf->y + pDirSelf->x * pDirSelf->x));
-    flDistB     = (float)sqrt(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x));
+    flDistA     = (float)sqrt(static_cast<double>(pDirSelf->z * pDirSelf->z + (pDirSelf->y * pDirSelf->y + pDirSelf->x * pDirSelf->x)));
+    flDistB     = (float)sqrt(static_cast<double>(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x)));
     nStepsSelf  = 1;
     nStepsOther = 1;
 

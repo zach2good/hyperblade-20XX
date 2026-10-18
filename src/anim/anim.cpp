@@ -39,8 +39,8 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
                 case 'x':
                     flAngle *= 0.017453292f;
 
-                    pTempXform->m_rotX.flCos = (float)cos(flAngle);
-                    pTempXform->m_rotX.flSin = (float)sin(flAngle);
+                    pTempXform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
+                    pTempXform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
 
                     pTempXform->RotateXStaged();
                     break;
@@ -48,8 +48,8 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
                 case 'y':
                     flAngle *= 0.017453292f;
 
-                    pTempXform->m_rotY.flCos = (float)cos(flAngle);
-                    pTempXform->m_rotY.flSin = (float)sin(flAngle);
+                    pTempXform->m_rotY.flCos = (float)cos(static_cast<double>(flAngle));
+                    pTempXform->m_rotY.flSin = (float)sin(static_cast<double>(flAngle));
 
                     pTempXform->RotateAroundY();
                     break;
@@ -57,8 +57,8 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
                 case 'z':
                     flAngle *= 0.017453292f;
 
-                    pTempXform->m_rotZ.flCos = (float)cos(flAngle);
-                    pTempXform->m_rotZ.flSin = (float)sin(flAngle);
+                    pTempXform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
+                    pTempXform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
 
                     pTempXform->ApplyRotationZ();
                     break;
@@ -79,7 +79,7 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
 
                 cell.fl = flCell;
 
-                if (fabs(flCell) < 5e-05)
+                if (fabs(static_cast<double>(flCell)) < 5e-05)
                 {
                     cell.fl = 0.0f;
                 }

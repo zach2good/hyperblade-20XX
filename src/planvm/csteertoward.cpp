@@ -98,7 +98,7 @@ void CSteerToward::Process(int nArg)
     vOffset.y = (vLead.y - vSelf.y) + vOffset.y;
     vOffset.z = (vLead.z - vSelf.z) + vOffset.z;
 
-    if (sqrt(vOffset.x * vOffset.x + vOffset.y * vOffset.y + vOffset.z * vOffset.z) < g_dHomingSix)
+    if (sqrt(static_cast<double>(vOffset.x * vOffset.x + vOffset.y * vOffset.y + vOffset.z * vOffset.z)) < g_dHomingSix)
     {
         const short nKind = m_pTarget->GetSlot();
 
@@ -209,7 +209,7 @@ void CSteerToward::IntegrateSpringAndGravity()
     const float flY = pVel->y;
     const float flX = pVel->x;
 
-    *m_pflSpeed = (float)sqrt(flX * flX + flY * flY + flZ * flZ);
+    *m_pflSpeed = (float)sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ));
 
     if (*m_pflSpeed > SPEED_EPSILON)
     {

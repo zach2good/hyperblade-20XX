@@ -78,15 +78,15 @@ void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float
     m_flHalfFov = flHalfFov;
     m_flFarClip = flFarClip;
 
-    const double dTan = tan(flHalfFov);
+    const double dTan = tan(static_cast<double>(flHalfFov));
 
     m_dTanHalfFov = dTan;
 
-    const double dSin = sin(flHalfFov);
+    const double dSin = sin(static_cast<double>(flHalfFov));
 
     m_dSinHalfFov = dSin;
 
-    const double dCos = cos(flHalfFov);
+    const double dCos = cos(static_cast<double>(flHalfFov));
 
     m_dCosHalfFov = dCos;
 
@@ -235,10 +235,10 @@ void CameraProjectionState::BuildMatrix()
 // FUNCTION: HYPERX 0x00430960
 void CameraProjectionState::RotateY(float flAngle)
 {
-    const auto flCos = (float)cos(flAngle);
+    const auto flCos = (float)cos(static_cast<double>(flAngle));
     m_rotY.flCos     = flCos;
 
-    flAngle      = (float)sin(flAngle);
+    flAngle      = (float)sin(static_cast<double>(flAngle));
     m_rotY.flSin = flAngle;
 
     if (m_bIdentity != 0)
@@ -273,10 +273,10 @@ void CameraProjectionState::RotateY(float flAngle)
 // FUNCTION: HYPERX 0x00430a80
 void CameraProjectionState::RotateX(float flAngle)
 {
-    const auto flCos = (float)cos(flAngle);
+    const auto flCos = (float)cos(static_cast<double>(flAngle));
     m_rotX.flCos     = flCos;
 
-    flAngle      = (float)sin(flAngle);
+    flAngle      = (float)sin(static_cast<double>(flAngle));
     m_rotX.flSin = flAngle;
 
     if (m_bIdentity != 0)
@@ -311,10 +311,10 @@ void CameraProjectionState::RotateX(float flAngle)
 // FUNCTION: HYPERX 0x00430ba0
 void CameraProjectionState::RotateZ(float flAngle)
 {
-    const auto flCos = (float)cos(flAngle);
+    const auto flCos = (float)cos(static_cast<double>(flAngle));
     m_rotZ.flCos     = flCos;
 
-    flAngle      = (float)sin(flAngle);
+    flAngle      = (float)sin(static_cast<double>(flAngle));
     m_rotZ.flSin = flAngle;
 
     if (m_bIdentity != 0)

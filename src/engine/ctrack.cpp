@@ -207,7 +207,7 @@ void CTrack::Process(int nArg)
 
     Math::Vec3Normalize(&vLook);
 
-    flPull = ((float)sqrt(vTrack.x * vTrack.x + (vTrack.y * vTrack.y + vTrack.z * vTrack.z)) - GetCamera()->GetBungeeLength()) * 1.5f;
+    flPull = ((float)sqrt(static_cast<double>(vTrack.x * vTrack.x + (vTrack.y * vTrack.y + vTrack.z * vTrack.z))) - GetCamera()->GetBungeeLength()) * 1.5f;
 
     if (flPull <= g_flZeroTracking)
     {
@@ -222,10 +222,10 @@ void CTrack::Process(int nArg)
 
     vFacing = *pFacing;
 
-    if (fabs(pBody->flFacing) > 0.1)
+    if (fabs(static_cast<double>(pBody->flFacing)) > 0.1)
     {
-        const auto flCos = (float)cos(pBody->flFacing);
-        const auto flSin = (float)sin(pBody->flFacing);
+        const auto flCos = (float)cos(static_cast<double>(pBody->flFacing));
+        const auto flSin = (float)sin(static_cast<double>(pBody->flFacing));
 
         vRaw.x             = vFacing.z * g_flZeroTracking - vFacing.y * g_flCamFracFull;
         const float flRawY = vFacing.x * g_flCamFracFull - vFacing.z * g_flZeroTracking;
@@ -246,7 +246,7 @@ void CTrack::Process(int nArg)
 
         const Vec3* pVel = m_pVel;
 
-        if ((flSpeed = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)) > flStep)
+        if ((flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z))) > flStep)
         {
             m_pVel->ScaleInPlace(flStep / flSpeed);
         }
@@ -318,7 +318,7 @@ void CTrack::Process(int nArg)
 
             const Vec3* pVel = m_pVel;
 
-            if ((flSpeed = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)) > flStep)
+            if ((flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z))) > flStep)
             {
                 m_pVel->ScaleInPlace(flStep / flSpeed);
             }
@@ -329,7 +329,7 @@ void CTrack::Process(int nArg)
 
             pVel = m_pVel;
 
-            flSpeed = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+            flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
 
             if (flSpeed > flStep * 2.5f)
             {
@@ -346,7 +346,7 @@ void CTrack::Process(int nArg)
 
             const Vec3* pVel = m_pVel;
 
-            if ((flSpeed = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)) > flStep)
+            if ((flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z))) > flStep)
             {
                 m_pVel->ScaleInPlace(flStep / flSpeed);
             }
@@ -374,18 +374,18 @@ void CTrack::Process(int nArg)
             pPos = &m_pPos->x;
 
             flDeltaY = vWish.y - aTarget.y;
-            flAbsY   = (float)fabs(flDeltaY);
+            flAbsY   = (float)fabs(static_cast<double>(flDeltaY));
 
             vPull = aTarget;
 
             flDeltaX = vWish.x - aTarget.x;
-            flAbsX   = (float)fabs(flDeltaX);
+            flAbsX   = (float)fabs(static_cast<double>(flDeltaX));
 
-            flHypot = (float)sqrt(flAbsX * flAbsX + flAbsY * flAbsY);
+            flHypot = (float)sqrt(static_cast<double>(flAbsX * flAbsX + flAbsY * flAbsY));
 
             if (flAbsX < 1e-06)
             {
-                flOffset = (float)fabs(pPos[0] - vWish.x);
+                flOffset = (float)fabs(static_cast<double>(pPos[0] - vWish.x));
             }
             else
             {
@@ -396,7 +396,7 @@ void CTrack::Process(int nArg)
 
                 flOnLine = (aTarget.y - flSlope * aTarget.x) + flSlope * pPos[0];
 
-                flOffset = (float)(fabs(flOnLine - pPos[1]) * cos(Math::Asin(flAbsY / flHypot)));
+                flOffset = (float)(fabs(static_cast<double>(flOnLine - pPos[1])) * cos(static_cast<double>(Math::Asin(flAbsY / flHypot))));
             }
 
             if (flOffset > 2.0f)
@@ -603,8 +603,8 @@ void CTrack::Process(int nArg)
             flAngle = flDirAngle + flStepAngle;
         }
 
-        vFinal.x = (float)cos(flAngle);
-        vFinal.y = (float)sin(flAngle);
+        vFinal.x = (float)cos(static_cast<double>(flAngle));
+        vFinal.y = (float)sin(static_cast<double>(flAngle));
         vFinal.z = g_flZeroTracking;
 
         Math::Vec3Normalize(&vFinal);

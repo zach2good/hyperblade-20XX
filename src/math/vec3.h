@@ -29,7 +29,7 @@ struct Vec3
 
     float Magnitude() const
     {
-        return (float)sqrt(DotInline(this, this));
+        return (float)sqrt(static_cast<double>(DotInline(this, this)));
     }
 
     void Set(float flX, float flY, float flZ)

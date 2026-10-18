@@ -186,7 +186,7 @@ void CTrackPasser_Receiver::Process(int nArg)
         vToAim.y = g_vCamPasserAim.y - m_pCamPos->y;
         vToAim.z = g_vCamPasserAim.z - m_pCamPos->z;
 
-        flLength = (float)sqrt(vToReceiver.x * vToReceiver.x + (vToReceiver.y * vToReceiver.y + vToReceiver.z * vToReceiver.z));
+        flLength = (float)sqrt(static_cast<double>(vToReceiver.x * vToReceiver.x + (vToReceiver.y * vToReceiver.y + vToReceiver.z * vToReceiver.z)));
 
         Math::Vec3Normalize(&vToReceiver);
 
@@ -203,7 +203,7 @@ void CTrackPasser_Receiver::Process(int nArg)
             m_pOwner->PostSceneEvent(MSG_HEAD_CAM_OFF, 0);
         }
 
-        flLead = (float)sqrt(vLead.x * vLead.x + (vLead.y * vLead.y + vLead.z * vLead.z));
+        flLead = (float)sqrt(static_cast<double>(vLead.x * vLead.x + (vLead.y * vLead.y + vLead.z * vLead.z)));
 
         Math::Vec3Normalize(&vLead);
 
@@ -263,7 +263,7 @@ void CTrackPasser_Receiver::Process(int nArg)
             vBack.y = g_vCamPasserAim.y - m_pCamPos->y;
             vBack.z = g_vCamPasserAim.z - m_pCamPos->z;
 
-            flGap = (float)sqrt(vBack.x * vBack.x + (vBack.y * vBack.y + vBack.z * vBack.z));
+            flGap = (float)sqrt(static_cast<double>(vBack.x * vBack.x + (vBack.y * vBack.y + vBack.z * vBack.z)));
 
             Math::Vec3Normalize(&vBack);
 

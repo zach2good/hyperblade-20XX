@@ -116,7 +116,7 @@ void AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, shor
     vDelta.y = pEmitterPos->y - pListenerPos->y;
     vDelta.z = pEmitterPos->z - pListenerPos->z;
 
-    flScaled = (float)sqrt(Vec3::DotInline(&vDelta, &vDelta)) * -30.0f;
+    flScaled = (float)sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta))) * -30.0f;
 
     if (flScaled > -8000.0f)
     {

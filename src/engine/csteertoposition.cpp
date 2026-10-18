@@ -204,7 +204,7 @@ void CSteerToPosition::Process(int nArg)
     }
     else if (m_pOwner->GetSlot() > SLOT_DROMER3 || ((PlayerObject*)m_pOwner)->m_wClockStoppedSemaphore != 0)
     {
-        if ((float)sqrt(Vec3::DotInline(&vDelta, &vDelta)) * g_pGameEngine->m_clock.flDelta < flSpeed + flSpeed)
+        if ((float)sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta))) * g_pGameEngine->m_clock.flDelta < flSpeed + flSpeed)
         {
             const float flPush = g_pGameEngine->m_clock.GetDeltaSquared() * (flSpeed * 6.0f) * -1.0f;
 
@@ -214,7 +214,7 @@ void CSteerToPosition::Process(int nArg)
         }
     }
 
-    if ((float)sqrt(Vec3::DotInline(&vDelta, &vDelta)) < 15.0)
+    if ((float)sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta))) < 15.0)
     {
         const float flStop = g_pGameEngine->m_clock.flDeltaSquared * -15.0f;
 
@@ -243,11 +243,11 @@ void CSteerToPosition::Process(int nArg)
 
     if ((flCross = vDelta.y * pAxis->x - vDelta.x * pAxis->y) < BANK_DEADZONE_LOW)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(flLean) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(static_cast<double>(flLean)) * flForce);
     }
     else if (flCross > BANK_DEADZONE_HIGH)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(flLean) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(static_cast<double>(flLean)) * flForce);
     }
 
     if (m_pNext != nullptr)

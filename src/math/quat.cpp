@@ -22,7 +22,7 @@ void Quat::FromMatrix(TransformObject* pSource)
         flTrace = 0.0f;
     }
 
-    const auto flW = (float)(sqrt(flTrace) * 0.5);
+    const auto flW = (float)(sqrt(static_cast<double>(flTrace)) * 0.5);
     w              = flW;
 
     if (flW > 0.0f)
@@ -102,7 +102,7 @@ void Quat::ToMatrix(TransformObject* pTarget)
 // FUNCTION: HYPERX 0x00430260
 bool Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
 {
-    const auto flLength = (float)sqrt(*pW * *pW + *pX * *pX + *pY * *pY + *pZ * *pZ);
+    const auto flLength = (float)sqrt(static_cast<double>(*pW * *pW + *pX * *pX + *pY * *pY + *pZ * *pZ));
 
     if (flLength > g_dNormalizeEpsilon)
     {

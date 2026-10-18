@@ -156,7 +156,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     Vec3::ScaleTo(&pBody->vel, flFactor, &vImpulse);
 
-    flMag = (float)sqrt(Vec3::DotInline(&vImpulse, &vImpulse)) * 0.125f;
+    flMag = (float)sqrt(static_cast<double>(Vec3::DotInline(&vImpulse, &vImpulse))) * 0.125f;
 
     vImpulse.x = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.x;
     vImpulse.y = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.y;
@@ -555,7 +555,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
     Vec3 vEntryVel = pSelf->m_pBody->vel;
 
-    flSpeed = (float)(sqrt(vEntryVel.x * vEntryVel.x + (vEntryVel.y * vEntryVel.y + vEntryVel.z * vEntryVel.z)) * g_pGameEngine->m_clock.flInvDelta);
+    flSpeed = (float)(sqrt(static_cast<double>(vEntryVel.x * vEntryVel.x + (vEntryVel.y * vEntryVel.y + vEntryVel.z * vEntryVel.z))) * g_pGameEngine->m_clock.flInvDelta);
 
     if (flSpeed > 20.0f)
     {
@@ -931,7 +931,7 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
             nOtherStopped = 0;
         }
 
-        if (fabs(pOtherVel->x - pSelfVel->x + pOtherVel->y - pSelfVel->y + pOtherVel->z - pSelfVel->z) < g_pGameEngine->m_clock.flDelta)
+        if (fabs(static_cast<double>(pOtherVel->x - pSelfVel->x + pOtherVel->y - pSelfVel->y + pOtherVel->z - pSelfVel->z)) < g_pGameEngine->m_clock.flDelta)
         {
             pSelf->GetSlot();
             pOther->GetSlot();

@@ -514,13 +514,13 @@ unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigne
                 {
                     const int nRampOut = pPalette->m_rampLength.nFirst + 1;
 
-                    return (unsigned char)((int)pow((double)nRampOut, flIntensity) + cColour - 1);
+                    return (unsigned char)((int)pow((double)nRampOut, static_cast<double>(flIntensity)) + cColour - 1);
                 }
                 else
                 {
                     const int nRampIn = pPalette->m_rampLength.nCount + 1;
 
-                    return (unsigned char)((int)pow((double)nRampIn, flIntensity) + cColour - 1);
+                    return (unsigned char)((int)pow((double)nRampIn, static_cast<double>(flIntensity)) + cColour - 1);
                 }
             }
             if (cColour >= pPalette->m_largeRampBounds.nFirst && cColour <= pPalette->m_largeRampBounds.nCount)
@@ -689,7 +689,7 @@ void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteE
     *pflScale       = flFloor;
     const int nLast = nCount - 1;
 
-    const auto flRatio = (float)pow(1.0f / flFloor, 1.0f / nLast);
+    const auto flRatio = (float)pow(static_cast<double>(1.0f / flFloor), static_cast<double>(1.0f / nLast));
 
     PaletteEntry* pOut  = pEntries;
     const float   flRed = peColour.peRed;

@@ -32,7 +32,7 @@ int CollisionPlane::PointNearSurface(const Vec3* pPoint)
 {
     const float flHeight = GetZ(pPoint->x, pPoint->y);
 
-    if (fabs(flHeight - pPoint->z) < g_dSurfaceTolerance)
+    if (fabs(static_cast<double>(flHeight - pPoint->z)) < g_dSurfaceTolerance)
     {
         return 1;
     }

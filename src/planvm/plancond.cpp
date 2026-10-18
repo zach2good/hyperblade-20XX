@@ -158,7 +158,7 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
             vDelta.y = pActor->GetPositionPtr()->y - vPoint.y;
             vDelta.z = pActor->GetPositionPtr()->z - vPoint.z;
 
-            if ((float)sqrt(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z) < INTERACT_RANGE)
+            if ((float)sqrt(static_cast<double>(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z)) < INTERACT_RANGE)
             {
                 if (((pRange->GetSlot() ^ pOther->GetSlot()) & 1) != 0)
                 {
@@ -225,7 +225,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
     const float flDy = pGoalCentre->y - pGoalPos->y;
     const float flDz = pGoalCentre->z - pGoalPos->z;
 
-    flTime = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz) / (float)sqrt(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z) * g_pGameEngine->m_clock.flDelta;
+    flTime = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) / (float)sqrt(static_cast<double>(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z)) * g_pGameEngine->m_clock.flDelta;
 
     vTriple.x = pGoalCentre->x - pPosition->x;
     vTriple.y = pGoalCentre->y - pPosition->y;
@@ -241,7 +241,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
         return;
     }
 
-    if ((float)sqrt(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z) > APPROACH_RANGE_GATE)
+    if ((float)sqrt(static_cast<double>(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z)) > APPROACH_RANGE_GATE)
     {
         *pResult = 1;
         return;
@@ -823,7 +823,7 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
 
         Vec3* const pVel = &pFirst->vel;
 
-        const auto flLen = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+        const auto flLen = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
 
         if (flLen < 0.1)
         {
@@ -1164,11 +1164,11 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 
     pContext->GetActor()->GetPhysicsBody()->smoothVel.z = vVelocity.z;
 
-    if ((float)sqrt(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z) > MIN_VELOCITY_LENGTH)
+    if ((float)sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z)) > MIN_VELOCITY_LENGTH)
     {
         PhysicsBody* pBody = pContext->GetActor()->GetPhysicsBody();
 
-        Vec3::ScaleTo(&vVelocity, g_flOnePlan / (float)sqrt(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z), &pBody->velDir);
+        Vec3::ScaleTo(&vVelocity, g_flOnePlan / (float)sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z)), &pBody->velDir);
     }
 }
 
@@ -1511,7 +1511,7 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
         PhysicsBody* pBlockA = pFirst->GetPhysicsBody();
         PhysicsBody* pBlockB = pSecond->GetPhysicsBody();
 
-        if (Vec3::DotInline(&pBlockB->velDir, &pBlockA->velDir) > 0.25 && (float)sqrt(vGap.x * vGap.x + vGap.y * vGap.y + vGap.z * vGap.z) < 150.0f)
+        if (Vec3::DotInline(&pBlockB->velDir, &pBlockA->velDir) > 0.25 && (float)sqrt(static_cast<double>(vGap.x * vGap.x + vGap.y * vGap.y + vGap.z * vGap.z)) < 150.0f)
         {
             *pResult = 0;
 
@@ -1601,8 +1601,8 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                     }
                     else
                     {
-                        const auto flFacing = (float)cos(PlanUtil::ComputeConeHalfAngle(
-                            nSlot, (short)TeammateSlot(nSlot)));
+                        const auto flFacing = (float)cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
+                            nSlot, (short)TeammateSlot(nSlot))));
 
                         if (g_pGameEngine->GetSlot(g_pGameEngine->m_nViewedSlot)->GetDistIfFacing(g_pGameEngine->GetSlot(TeammateSlot(nSlot)), flFacing) != 0.0f)
                         {
@@ -1632,8 +1632,8 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                 {
                     if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick > ARM_WINDOW_MS)
                     {
-                        const auto flFacing = (float)cos(PlanUtil::ComputeConeHalfAngle(
-                            nSlot, g_pGameEngine->m_nViewedSlot));
+                        const auto flFacing = (float)cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
+                            nSlot, g_pGameEngine->m_nViewedSlot)));
 
                         if (g_pGameEngine->GetSlot(nSlot)->GetDistIfFacing(
                                 g_pGameEngine->GetSlot(g_pGameEngine->m_nViewedSlot), flFacing) != 0.0f)
@@ -1886,16 +1886,16 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
     vObjectSelf.y = pObject->y - pSelf->y;
     vObjectSelf.z = pObject->z - pSelf->z;
 
-    const auto flHypotFirst = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
-    flToSecond              = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
+    const auto flHypotFirst = (float)sqrt(static_cast<double>(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z));
+    flToSecond              = (float)sqrt(static_cast<double>(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z));
 
     const bool bFirstCloser = flHypotFirst < flToSecond;
 
-    flToObject = (float)sqrt(vObjectSelf.x * vObjectSelf.x + vObjectSelf.y * vObjectSelf.y + vObjectSelf.z * vObjectSelf.z);
+    flToObject = (float)sqrt(static_cast<double>(vObjectSelf.x * vObjectSelf.x + vObjectSelf.y * vObjectSelf.y + vObjectSelf.z * vObjectSelf.z));
 
     if (bFirstCloser)
     {
-        if (flHypotFirst <= 100.0 && (float)sqrt(vFirstSelf.x * vFirstSelf.x + vFirstSelf.y * vFirstSelf.y + vFirstSelf.z * vFirstSelf.z) + flToObject <= flHypotFirst * PATH_SLACK)
+        if (flHypotFirst <= 100.0 && (float)sqrt(static_cast<double>(vFirstSelf.x * vFirstSelf.x + vFirstSelf.y * vFirstSelf.y + vFirstSelf.z * vFirstSelf.z)) + flToObject <= flHypotFirst * PATH_SLACK)
         {
             *pResult = 0;
 
@@ -1907,7 +1907,7 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
         return;
     }
 
-    if (flToSecond <= 100.0 && (float)sqrt(vSecondSelf.x * vSecondSelf.x + vSecondSelf.y * vSecondSelf.y + vSecondSelf.z * vSecondSelf.z) + flToObject <= flToSecond * PATH_SLACK)
+    if (flToSecond <= 100.0 && (float)sqrt(static_cast<double>(vSecondSelf.x * vSecondSelf.x + vSecondSelf.y * vSecondSelf.y + vSecondSelf.z * vSecondSelf.z)) + flToObject <= flToSecond * PATH_SLACK)
     {
         *pResult = 0;
 
@@ -2055,7 +2055,7 @@ void PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, 
     vToSpawn.y = vSpawn.y - vActor.y;
     vToSpawn.z = vSpawn.z - vActor.z;
 
-    if ((float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz) > (float)sqrt(vToSpawn.x * vToSpawn.x + vToSpawn.y * vToSpawn.y + vToSpawn.z * vToSpawn.z))
+    if ((float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) > (float)sqrt(static_cast<double>(vToSpawn.x * vToSpawn.x + vToSpawn.y * vToSpawn.y + vToSpawn.z * vToSpawn.z)))
     {
         *pResult = 0;
 
@@ -2099,9 +2099,9 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
     vToFar.y = vFar.y - vOwn.y;
     vToFar.z = vFar.z - vOwn.z;
 
-    const auto flDistNear = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
+    const auto flDistNear = (float)sqrt(static_cast<double>((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x));
 
-    const auto flDistFar = (float)sqrt((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x);
+    const auto flDistFar = (float)sqrt(static_cast<double>((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x));
 
     float flDamageNear = ((PlayerObject*)pNear)->m_stats.GetScalar(RATING_DAMAGE);
 
@@ -2275,12 +2275,12 @@ void PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pR
 
         if (flDamageA > DamageGate())
         {
-            flDistanceA = (float)sqrt(vOffsetA.z * vOffsetA.z + vOffsetA.y * vOffsetA.y + vOffsetA.x * vOffsetA.x);
+            flDistanceA = (float)sqrt(static_cast<double>(vOffsetA.z * vOffsetA.z + vOffsetA.y * vOffsetA.y + vOffsetA.x * vOffsetA.x));
         }
 
         if (flDamageB > DamageGate())
         {
-            flDistanceB = (float)sqrt(vOffsetB.z * vOffsetB.z + vOffsetB.y * vOffsetB.y + vOffsetB.x * vOffsetB.x);
+            flDistanceB = (float)sqrt(static_cast<double>(vOffsetB.z * vOffsetB.z + vOffsetB.y * vOffsetB.y + vOffsetB.x * vOffsetB.x));
         }
     }
 
@@ -2493,8 +2493,8 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
                 vFar.y = pFarAt->y - pOwnAt->y;
                 vFar.z = pFarAt->z - pOwnAt->z;
 
-                flDistNear           = (float)sqrt((flNearZ * flNearZ + flNearY * flNearY) + flNearX * flNearX);
-                const auto flDistFar = (float)sqrt((vFar.z * vFar.z + vFar.y * vFar.y) + vFar.x * vFar.x);
+                flDistNear           = (float)sqrt(static_cast<double>((flNearZ * flNearZ + flNearY * flNearY) + flNearX * flNearX));
+                const auto flDistFar = (float)sqrt(static_cast<double>((vFar.z * vFar.z + vFar.y * vFar.y) + vFar.x * vFar.x));
 
                 if (flDistNear < flDistFar)
                 {
@@ -2557,7 +2557,7 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
                 const float flDy = pOther->y - pPosition->y;
                 const float flDz = pOther->z - pPosition->z;
 
-                const auto flRange = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
+                const auto flRange = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
 
                 if (flRange < flBest)
                 {
@@ -5561,7 +5561,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     float flDy = vSelf.y - vFirst.y;
     float flDz = vSelf.z - vFirst.z;
 
-    if ((float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz) < AT_OBJECT_RANGE)
+    if ((float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) < AT_OBJECT_RANGE)
     {
         if (((unsigned char)pFirst->m_nFlags & STATE_AVAILABLE) != 0)
         {
@@ -5578,7 +5578,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     flDy = vSelf.y - vSecond.y;
     flDz = vSelf.z - vSecond.z;
 
-    if ((float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz) < AT_OBJECT_RANGE)
+    if ((float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) < AT_OBJECT_RANGE)
     {
         if (((unsigned char)pSecond->m_nFlags & STATE_AVAILABLE) != 0)
         {
@@ -6771,7 +6771,7 @@ void PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int 
         const float dz = pTo->z - pFrom->z;
 
         // This one takes the root, unlike its neighbour: the limit here is a plain distance.
-        if ((float)sqrt(dx * dx + dy * dy + dz * dz) <= nLimit)
+        if ((float)sqrt(static_cast<double>(dx * dx + dy * dy + dz * dz)) <= nLimit)
         {
             *pResult = 1;
 
@@ -6945,7 +6945,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
 
     const float flFalloff = (SCORE_RANGE - flLength) * flScale * SCORE_FALLOFF;
 
-    const auto flCos = (float)cos(flFalloff + flScale);
+    const auto flCos = (float)cos(static_cast<double>(flFalloff + flScale));
 
     if (pActor->GetDistIfFacing(pTarget, flCos) == 0.0f)
     {
@@ -7202,7 +7202,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
     pActor   = pContext->GetActor();
     vDelta.z = pTarget->GetPositionPtr()->z - pActor->GetPositionPtr()->z;
 
-    flLength = (float)sqrt(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z);
+    flLength = (float)sqrt(static_cast<double>(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z));
 
     const float flScale = 1.0f / flLength;
 
@@ -7248,8 +7248,8 @@ void PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
 
     TransformObject* pTransform = pObject->GetLocalTransformPtr();
 
-    pTransform->m_rotX.flCos = (float)cos(flAngle);
-    pTransform->m_rotX.flSin = (float)sin(flAngle);
+    pTransform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
+    pTransform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
 
     pTransform->RotateXStaged();
 
@@ -7257,8 +7257,8 @@ void PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
 
     pTransform = pObject->GetLocalTransformPtr();
 
-    pTransform->m_rotX.flCos = (float)cos(flAngle);
-    pTransform->m_rotX.flSin = (float)sin(flAngle);
+    pTransform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
+    pTransform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
 
     pTransform->RotateXStaged();
 }
@@ -7463,7 +7463,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
 
             Vec3* const pVel = &pFirst->vel;
 
-            const auto flLen = (float)sqrt(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z);
+            const auto flLen = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
 
             if (flLen < 0.1)
             {
@@ -8034,7 +8034,7 @@ void PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pRes
 
     const int nRange = pArgs->m_nArgCount - 1;
 
-    if ((float)(sqrt(Vec3::DotInline(&vVelocity, &vVelocity)) * g_pGameEngine->m_clock.flInvDelta) < 50.0f)
+    if ((float)(sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity))) * g_pGameEngine->m_clock.flInvDelta) < 50.0f)
     {
         *pResult = (unsigned short)(rand() % (nRange / 2));
     }
@@ -8506,7 +8506,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     if (nFlag != 0)
     {
-        const float flSide = (float)sqrt(flRange) + g_flOnePlan;
+        const float flSide = (float)sqrt(static_cast<double>(flRange)) + g_flOnePlan;
 
         flRange = flSide * flSide;
     }

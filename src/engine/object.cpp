@@ -396,7 +396,7 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
     vVelocity.y = (flDot * vNormal.y + pVelocity->y) * flSpeed;
     vVelocity.z = (flDot * vNormal.z + pVelocity->z) * flSpeed;
 
-    if (pSelf->GetSlot() != g_pGameEngine->GetViewedSlot() || flSpeed >= 0.05f || (float)sqrt(Vec3::DotInline(&vVelocity, &vVelocity)) >= 0.15f)
+    if (pSelf->GetSlot() != g_pGameEngine->GetViewedSlot() || flSpeed >= 0.05f || (float)sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity))) >= 0.15f)
     {
         pSelf->SetVelocity(vVelocity);
     }

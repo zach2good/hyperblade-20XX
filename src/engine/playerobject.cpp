@@ -32,15 +32,15 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 
     const float flAngleX = g_flDegToRadPlayer * pDef->m_flElevation;
 
-    pLocal->m_rotX.flCos = (float)cos(flAngleX);
-    pLocal->m_rotX.flSin = (float)sin(flAngleX);
+    pLocal->m_rotX.flCos = (float)cos(static_cast<double>(flAngleX));
+    pLocal->m_rotX.flSin = (float)sin(static_cast<double>(flAngleX));
 
     pLocal->RotateXStaged();
 
     const float flAngleZ = g_flDegToRadPlayer * pDef->m_flAzimuth;
 
-    pLocal->m_rotZ.flCos = (float)cos(flAngleZ);
-    pLocal->m_rotZ.flSin = (float)sin(flAngleZ);
+    pLocal->m_rotZ.flCos = (float)cos(static_cast<double>(flAngleZ));
+    pLocal->m_rotZ.flSin = (float)sin(static_cast<double>(flAngleZ));
 
     pLocal->ApplyRotationZ();
 

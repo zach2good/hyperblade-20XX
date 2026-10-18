@@ -156,8 +156,8 @@ void CSetAttitude::Process(int nArg)
 
         pTransform = m_pTransform;
 
-        pTransform->m_rotZ.flCos = (float)cos(flAngle);
-        pTransform->m_rotZ.flSin = (float)sin(flAngle);
+        pTransform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
+        pTransform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
 
         pTransform->ApplyRotationZ();
     }
@@ -239,8 +239,8 @@ void CSetAttitude::Release(int nArg)
 
         pTransform = m_pTransform;
 
-        pTransform->m_rotZ.flCos = (float)cos(flAngle);
-        pTransform->m_rotZ.flSin = (float)sin(flAngle);
+        pTransform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
+        pTransform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
 
         pTransform->ApplyRotationZ();
     }

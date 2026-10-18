@@ -147,18 +147,18 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     nSlot                      = (short)((pActor->GetSlot() + 3) % 4);
     EngineObject* const pCandB = g_pGameEngine->m_ppSlots[nSlot];
 
-    const auto flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+    const auto flDyA = (float)fabs(static_cast<double>(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y));
 
     if (flDyA > 30.0f)
     {
-        flDyB = (float)fabs(pCandB->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+        flDyB = (float)fabs(static_cast<double>(pCandB->GetPositionPtr()->y - pActor->GetPositionPtr()->y));
 
         if (flDyB > 30.0f)
         {
             return nullptr;
         }
 
-        flDxB = (float)fabs(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
+        flDxB = (float)fabs(static_cast<double>(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x));
 
         if (flDxB + flDyB > 30.0f)
         {
@@ -174,18 +174,18 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     }
     else
     {
-        flDxA = (float)fabs(pCandA->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
+        flDxA = (float)fabs(static_cast<double>(pCandA->GetPositionPtr()->x - pActor->GetPositionPtr()->x));
 
         if (flDxA + flDyA > 30.0f)
         {
-            flDyB = (float)fabs(pCandB->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+            flDyB = (float)fabs(static_cast<double>(pCandB->GetPositionPtr()->y - pActor->GetPositionPtr()->y));
 
             if (flDyB > 30.0f)
             {
                 return nullptr;
             }
 
-            flDxB = (float)fabs(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
+            flDxB = (float)fabs(static_cast<double>(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x));
 
             if (flDxB + flDyB > 30.0f)
             {
@@ -236,7 +236,7 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     flDet                           = pTargetBodyA->velDir.y * pSelfBodyA->velDir.x - pTargetBodyB->velDir.x * pSelfBodyB->velDir.y;
 
     const float  flLead  = (flCross - pTarget->GetPositionPtr()->y) / pTarget->m_pBody->GetVel().y;
-    const double dAbsDet = fabs(flDet);
+    const double dAbsDet = fabs(static_cast<double>(flDet));
 
     if (flLead * dAbsDet < -4.0)
     {
@@ -245,7 +245,7 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 
     const float flDiff = (float)(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
 
-    if (fabs(flDiff) > 18.0)
+    if (fabs(static_cast<double>(flDiff)) > 18.0)
     {
         return nullptr;
     }
@@ -294,12 +294,12 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 
     if (pTarget == pCandA)
     {
-        *pflOut = (float)sqrt(flDxA * flDxA + flDyA * flDyA);
+        *pflOut = (float)sqrt(static_cast<double>(flDxA * flDxA + flDyA * flDyA));
 
         return pTarget;
     }
 
-    *pflOut = (float)sqrt(flDxB * flDxB + flDyB * flDyB);
+    *pflOut = (float)sqrt(static_cast<double>(flDxB * flDxB + flDyB * flDyB));
 
     return pTarget;
 }

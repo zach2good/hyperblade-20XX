@@ -40,7 +40,7 @@ float PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 
     const float flScale = g_flPiPlan / g_flThreePlan;
 
-    flFalloff = (SCORE_RANGE - (float)sqrt(flDeltaZ * flDeltaZ + flDeltaY * flDeltaY + flDeltaX * flDeltaX)) * flScale * SCORE_FALLOFF;
+    flFalloff = (SCORE_RANGE - (float)sqrt(static_cast<double>(flDeltaZ * flDeltaZ + flDeltaY * flDeltaY + flDeltaX * flDeltaX))) * flScale * SCORE_FALLOFF;
 
     return flFalloff + flScale;
 }

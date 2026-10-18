@@ -475,7 +475,7 @@ void EngineObject::ComputeBoundingSphere()
                 const float flDy = vP.y - m_vCentre.y;
                 const float flDz = vP.z - m_vCentre.z;
 
-                const auto flDist = (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
+                const auto flDist = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
 
                 if (flDist > m_flBoundRadius)
                 {
@@ -1974,7 +1974,7 @@ void EngineObject::SetVelocity(Vec3 vel)
     m_pBody->prevPos.y = m_pBody->pos.y - vel.y;
     m_pBody->prevPos.z = m_pBody->pos.z - vel.z;
 
-    m_pBody->flSpeed = (float)sqrt(Vec3::DotInline(&vel, &vel));
+    m_pBody->flSpeed = (float)sqrt(static_cast<double>(Vec3::DotInline(&vel, &vel)));
 
     PhysicsBody* const pBody = m_pBody;
 
@@ -2142,8 +2142,8 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 
         pTransform = &m_transformA;
 
-        pTransform->m_rotZ.flCos = (float)cos(flAngle);
-        pTransform->m_rotZ.flSin = (float)sin(flAngle);
+        pTransform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
+        pTransform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
 
         pTransform->ApplyRotationZ();
     }
@@ -2154,8 +2154,8 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 
         pTransform = &m_transformA;
 
-        pTransform->m_rotX.flCos = (float)cos(flAngle);
-        pTransform->m_rotX.flSin = (float)sin(flAngle);
+        pTransform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
+        pTransform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
 
         pTransform->RotateXStaged();
     }
@@ -2166,8 +2166,8 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 
         pTransform = &m_transformA;
 
-        pTransform->m_rotY.flCos = (float)cos(flAngle);
-        pTransform->m_rotY.flSin = (float)sin(flAngle);
+        pTransform->m_rotY.flCos = (float)cos(static_cast<double>(flAngle));
+        pTransform->m_rotY.flSin = (float)sin(static_cast<double>(flAngle));
 
         pTransform->RotateAroundY();
     }
@@ -2193,7 +2193,7 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
     vDiff.y = vPos.y - pBody->pos.y;
     vDiff.z = vPos.z - pBody->pos.z;
 
-    const auto flDistance = (float)sqrt(vDiff.z * vDiff.z + vDiff.y * vDiff.y + vDiff.x * vDiff.x);
+    const auto flDistance = (float)sqrt(static_cast<double>(vDiff.z * vDiff.z + vDiff.y * vDiff.y + vDiff.x * vDiff.x));
 
     Math::Vec3Normalize(&vDiff);
 

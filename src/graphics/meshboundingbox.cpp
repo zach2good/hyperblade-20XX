@@ -37,8 +37,8 @@ int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOw
     Vec3            vDeltaB;
     int             nStepsUsed;
 
-    flDistA     = (float)sqrt(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x));
-    flDistB     = (float)sqrt(pDirOwn->z * pDirOwn->z + (pDirOwn->y * pDirOwn->y + pDirOwn->x * pDirOwn->x));
+    flDistA     = (float)sqrt(static_cast<double>(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x)));
+    flDistB     = (float)sqrt(static_cast<double>(pDirOwn->z * pDirOwn->z + (pDirOwn->y * pDirOwn->y + pDirOwn->x * pDirOwn->x)));
     nStepsSelf  = 1;
     nStepsOther = 1;
 

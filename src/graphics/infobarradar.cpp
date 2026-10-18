@@ -85,10 +85,10 @@ int InfoBarRadar::TrackSlot(int nSlot)
 
     Vec3 vDirection = pHeading->m_dirOut;
 
-    const double dAngle = atan2(vDirection.x, vDirection.y);
+    const double dAngle = atan2(static_cast<double>(vDirection.x), static_cast<double>(vDirection.y));
 
-    m_flSin = (float)sin(dAngle);
-    m_flCos = (float)cos(dAngle);
+    m_flSin = (float)sin(static_cast<double>(dAngle));
+    m_flCos = (float)cos(static_cast<double>(dAngle));
 
     return 1;
 }

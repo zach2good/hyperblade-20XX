@@ -167,11 +167,11 @@ void CSteerBetweenFacing::Process(int nArg)
 
     if ((flCross = vDelta.y * pLeanAxis->x - vDelta.x * pLeanAxis->y) < BANK_DEADZONE_LOW)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(flLean) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(static_cast<double>(flLean)) * flForce);
     }
     else if (flCross > BANK_DEADZONE_HIGH)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(flLean) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(static_cast<double>(flLean)) * flForce);
     }
 
     if (m_pNext != nullptr)

@@ -135,7 +135,7 @@ void CSetPositionRelative::Process(int nArg)
 
             m_pMarker->z = m_pOwner->GetPhysicsBody()->pShell->GetZ(m_pMarker->x, m_pMarker->y);
 
-            if (fabs(m_pMarker->y - m_pOwner->GetPositionPtr()->y) > DRIFT_LIMIT)
+            if (fabs(static_cast<double>(m_pMarker->y - m_pOwner->GetPositionPtr()->y)) > DRIFT_LIMIT)
             {
                 m_pOwner->PostSceneEvent(MSG_SPEED_BURST, MESSAGE_DRIFTED_PARAM);
             }

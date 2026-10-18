@@ -171,7 +171,7 @@ void CAvoidObjects::Process(int nArg)
             vGap.y = flDeltaY;
             vGap.z = pTargetPos->z - pOwnPos->z;
 
-            flRoot = (float)sqrt(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX);
+            flRoot = (float)sqrt(static_cast<double>(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX));
 
             flLength = flRoot;
 
@@ -243,7 +243,7 @@ void CAvoidObjects::Process(int nArg)
             vGap.y = flDeltaY;
             vGap.z = pTargetPos->z - pOwnPos->z;
 
-            flRoot = (float)sqrt(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX);
+            flRoot = (float)sqrt(static_cast<double>(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX));
 
             flLength = flRoot;
 

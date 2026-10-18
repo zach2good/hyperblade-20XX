@@ -492,16 +492,16 @@ char AnimPlayer::ComputeScale(float flScale)
             pDelta->y          = vProd.y - pPos->y;
             pDelta->z          = vProd.z - pPos->z;
 
-            double flMax = fabs(m_vDelta.x);
+            double flMax = fabs(static_cast<double>(m_vDelta.x));
 
-            if (flMax < fabs(m_vDelta.y))
+            if (flMax < fabs(static_cast<double>(m_vDelta.y)))
             {
-                flMax = fabs(m_vDelta.y);
+                flMax = fabs(static_cast<double>(m_vDelta.y));
             }
 
-            if (fabs(flMax) < fabs(m_vDelta.z))
+            if (fabs(static_cast<double>(flMax)) < fabs(static_cast<double>(m_vDelta.z)))
             {
-                flMax = fabs(m_vDelta.z);
+                flMax = fabs(static_cast<double>(m_vDelta.z));
             }
 
             double dNeed;

@@ -185,7 +185,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         Vec3 vOut = vStep;
 
-        *m_pSpeed = (float)sqrt(flSz * flSz + flSy * flSy + flSx * flSx);
+        *m_pSpeed = (float)sqrt(static_cast<double>(flSz * flSz + flSy * flSy + flSx * flSx));
 
         float* pSpeed = m_pSpeed;
 
@@ -206,13 +206,13 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
         {
             pVelDir = m_pVelDir;
 
-            auto flLen = (float)sqrt(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z);
+            auto flLen = (float)sqrt(static_cast<double>(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z));
 
             if (flLen == 0.0f)
             {
                 pVelDirPrev = m_pVelDirPrev;
 
-                flLen = (float)sqrt(pVelDirPrev->x * pVelDirPrev->x + pVelDirPrev->y * pVelDirPrev->y + pVelDirPrev->z * pVelDirPrev->z);
+                flLen = (float)sqrt(static_cast<double>(pVelDirPrev->x * pVelDirPrev->x + pVelDirPrev->y * pVelDirPrev->y + pVelDirPrev->z * pVelDirPrev->z));
 
                 if (flLen != 0.0f)
                 {

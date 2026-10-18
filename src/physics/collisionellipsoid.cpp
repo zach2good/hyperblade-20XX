@@ -128,7 +128,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
 
         if (g_flZeroCollisionObj <= (dRoot = dHalfB * dHalfB - ((m_flInvZZ * dArmB * dArmB + m_flInvYY * dArmA * dArmA) - g_flCollisionOne) / dQuad))
         {
-            dRoot = sqrt(dRoot);
+            dRoot = sqrt(static_cast<double>(dRoot));
         }
         else if (dRoot > AXIS_EPS_LOWER)
         {
@@ -145,7 +145,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
         dOffsetLo = dRootLo - dOriginX;
         dOffsetHi = dRootHi - dOriginX;
 
-        if (fabs(dOffsetLo) <= fabs(dOffsetHi))
+        if (fabs(static_cast<double>(dOffsetLo)) <= fabs(static_cast<double>(dOffsetHi)))
         {
             pNearOut->x = (float)dRootLo;
             pNearOut->y = (float)(dOffsetLo * dSlopeA + dOriginY);
@@ -188,7 +188,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
 
         if (g_flZeroCollisionObj <= (dRoot = dHalfB * dHalfB - ((m_flInvXX * dArmB * dArmB + (m_flInvYY * dArmA * dArmA)) - g_flCollisionOne) / dQuad))
         {
-            dRoot = sqrt(dRoot);
+            dRoot = sqrt(static_cast<double>(dRoot));
         }
         else if (dRoot > AXIS_EPS_LOWER)
         {
@@ -205,7 +205,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
         dOffsetLo = dRootLo - dOriginZ;
         dOffsetHi = dRootHi - dOriginZ;
 
-        if (fabs(dOffsetLo) <= fabs(dOffsetHi))
+        if (fabs(static_cast<double>(dOffsetLo)) <= fabs(static_cast<double>(dOffsetHi)))
         {
             pNearOut->z = (float)dRootLo;
             pNearOut->y = (float)(dOffsetLo * dSlopeA + dOriginY);
@@ -248,7 +248,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
 
         if (g_flZeroCollisionObj <= (dRoot = dHalfB * dHalfB - ((m_flInvZZ * dArmA * dArmA + m_flInvXX * dArmB * dArmB) - g_flCollisionOne) / dQuad))
         {
-            dRoot = sqrt(dRoot);
+            dRoot = sqrt(static_cast<double>(dRoot));
         }
         else if (dRoot > AXIS_EPS_LOWER)
         {
@@ -265,7 +265,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
         dOffsetLo = dRootLo - dOriginY;
         dOffsetHi = dRootHi - dOriginY;
 
-        if (fabs(dOffsetLo) <= fabs(dOffsetHi))
+        if (fabs(static_cast<double>(dOffsetLo)) <= fabs(static_cast<double>(dOffsetHi)))
         {
             pNearOut->y = (float)dRootLo;
             pNearOut->x = (float)(dSlopeB * dOffsetLo + dOriginX);
@@ -308,7 +308,7 @@ void CollisionEllipsoid::ComputeRadialBoundaryXY(Vec3* pIn, Vec3* pOut)
     float flSquare;
     float flRadius;
 
-    if (fabs(pIn->x) > AXIS_EPS)
+    if (fabs(static_cast<double>(pIn->x)) > AXIS_EPS)
     {
         flSquare = pIn->x * pIn->x;
     }
@@ -318,7 +318,7 @@ void CollisionEllipsoid::ComputeRadialBoundaryXY(Vec3* pIn, Vec3* pOut)
         bOffAxis = 0;
     }
 
-    flRadius = (float)sqrt(flSquare / (flSquare * m_flInvXX + m_flInvYY * pIn->y * pIn->y));
+    flRadius = (float)sqrt(static_cast<double>(flSquare / (flSquare * m_flInvXX + m_flInvYY * pIn->y * pIn->y)));
 
     if (pIn->x <= 0.0)
     {
@@ -350,7 +350,7 @@ float CollisionEllipsoid::GetZ(float flX, float flY)
         return g_flCollisionOne;
     }
 
-    return -((float)sqrt(flRemainder) * m_flRadiusZ);
+    return -((float)sqrt(static_cast<double>(flRemainder)) * m_flRadiusZ);
 }
 
 #define AXIS_BAND 0.0001
@@ -379,11 +379,11 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 
             if (pPoint->y > g_flZeroCollisionObj)
             {
-                m_vNormal.y = -(g_flCollisionOne / (float)sqrt((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flX * g_ellipsoidRatios.flX + g_flCollisionOne));
+                m_vNormal.y = -(g_flCollisionOne / (float)sqrt(static_cast<double>((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flX * g_ellipsoidRatios.flX + g_flCollisionOne)));
             }
             else
             {
-                m_vNormal.y = g_flCollisionOne / (float)sqrt((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flX * g_ellipsoidRatios.flX + g_flCollisionOne);
+                m_vNormal.y = g_flCollisionOne / (float)sqrt(static_cast<double>((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flX * g_ellipsoidRatios.flX + g_flCollisionOne));
             }
 
             pNormalOut = &m_vNormal;
@@ -403,12 +403,12 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
         if (pPoint->x > g_flZeroCollisionObj)
         {
             pNormalOut    = &m_vNormal;
-            pNormalOut->x = -(g_flCollisionOne / (float)sqrt((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne));
+            pNormalOut->x = -(g_flCollisionOne / (float)sqrt(static_cast<double>((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne)));
         }
         else
         {
             pNormalOut    = &m_vNormal;
-            pNormalOut->x = g_flCollisionOne / (float)sqrt((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne);
+            pNormalOut->x = g_flCollisionOne / (float)sqrt(static_cast<double>((g_ellipsoidRatios.flZ * g_ellipsoidRatios.flZ) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne));
         }
 
         m_vNormal.z = g_ellipsoidRatios.flZ * pNormalOut->x;
@@ -425,11 +425,11 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 
     if (pPoint->z > g_flZeroCollisionObj)
     {
-        m_vNormal.z = -(g_flCollisionOne / (float)sqrt((g_ellipsoidRatios.flX * g_ellipsoidRatios.flX) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne));
+        m_vNormal.z = -(g_flCollisionOne / (float)sqrt(static_cast<double>((g_ellipsoidRatios.flX * g_ellipsoidRatios.flX) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne)));
     }
     else
     {
-        m_vNormal.z = g_flCollisionOne / (float)sqrt((g_ellipsoidRatios.flX * g_ellipsoidRatios.flX) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne);
+        m_vNormal.z = g_flCollisionOne / (float)sqrt(static_cast<double>((g_ellipsoidRatios.flX * g_ellipsoidRatios.flX) + g_ellipsoidRatios.flY * g_ellipsoidRatios.flY + g_flCollisionOne));
     }
 
     pNormalOut = &m_vNormal;
@@ -447,8 +447,8 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 // FUNCTION: HYPERX 0x0042f350
 float CollisionEllipsoid::RadiusForDirection(const Vec3* pVDir, int)
 {
-    const auto  flHorizontal = (float)((fabs(pVDir->x) + fabs(pVDir->z)) / g_flTwoEllipsoid);
-    const auto  flAbsY       = (float)fabs(pVDir->y);
+    const auto  flHorizontal = (float)((fabs(static_cast<double>(pVDir->x)) + fabs(static_cast<double>(pVDir->z))) / g_flTwoEllipsoid);
+    const auto  flAbsY       = (float)fabs(static_cast<double>(pVDir->y));
     const float flTotal      = flAbsY + flHorizontal;
 
     if (flTotal < DIRECTION_EPS)

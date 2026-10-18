@@ -210,7 +210,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
 
     float flAxis = 0.0f;
 
-    if (fabs(1.0f - vDirection.x) < 0.001f && fabs(-vDirection.y) < 0.001f && fabs(-vDirection.z) < 0.001f)
+    if (fabs(static_cast<double>(1.0f - vDirection.x)) < 0.001f && fabs(static_cast<double>(-vDirection.y)) < 0.001f && fabs(static_cast<double>(-vDirection.z)) < 0.001f)
     {
         flAxis = 1.0f;
     }
