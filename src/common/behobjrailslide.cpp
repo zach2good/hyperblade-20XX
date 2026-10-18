@@ -21,7 +21,7 @@ void BehObj_RailSlide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_RAIL_SLIDE;
+    m_wKind = kBehRailSlide;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CSlideOnRail);
 

@@ -4,7 +4,7 @@
 #include "common/compat.h"
 
 // Pack sets the top bit of a collision event; a scene event's message field leaves it clear.
-constexpr auto MSG_EVENT_COLLISION_MARK = 0x80000000;
+constexpr auto kMsgEventCollisionMark = 0x80000000;
 
 namespace MsgEvent
 {

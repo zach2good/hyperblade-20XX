@@ -10,11 +10,11 @@
 
 // The camera's two history windows, each a ring of positions or directions.
 // The reticle states, as DATA/ENUMIDS.H's Reticle_State numbers them.
-constexpr auto RETICLE_OFF    = 0;
-constexpr auto RETICLE_AIM    = 1;
-constexpr auto RETICLE_COMMIT = 2;
+constexpr auto kReticleOff    = 0;
+constexpr auto kReticleAim    = 1;
+constexpr auto kReticleCommit = 2;
 
-constexpr auto CAMERA_HISTORY_CAPACITY = 25;
+constexpr auto kCameraHistoryCapacity = 25;
 
 // VTABLE: HYPERX 0x004b286c
 class CameraObject : public EngineObject
@@ -65,14 +65,14 @@ public:
     // The bungee rest length, 12 at construction; ctrack.cpp pulls with (distance - this) * 1.5.
     float m_flBungeeLength; // 0x0d30
     // Callers clamp the window to [1, 25]; more overruns the other ring, and zero divides by zero.
-    Vec3  m_aPosRing[CAMERA_HISTORY_CAPACITY]; // 0x0d34
-    Vec3  m_aDirRing[CAMERA_HISTORY_CAPACITY]; // 0x0e60
-    Vec3  m_posOut;                            // 0x0f8c
-    Vec3  m_dirOut;                            // 0x0f98
-    short m_wPosCount;                         // 0x0fa4
-    short m_wPosIndex;                         // 0x0fa6
-    short m_wDirCount;                         // 0x0fa8
-    short m_wDirIndex;                         // 0x0faa
+    Vec3  m_aPosRing[kCameraHistoryCapacity]; // 0x0d34
+    Vec3  m_aDirRing[kCameraHistoryCapacity]; // 0x0e60
+    Vec3  m_posOut;                           // 0x0f8c
+    Vec3  m_dirOut;                           // 0x0f98
+    short m_wPosCount;                        // 0x0fa4
+    short m_wPosIndex;                        // 0x0fa6
+    short m_wDirCount;                        // 0x0fa8
+    short m_wDirIndex;                        // 0x0faa
     // One over the sample count, so the ring's sum becomes its mean.
     float m_flPosWeight; // 0x0fac
     float m_flDirWeight; // 0x0fb0

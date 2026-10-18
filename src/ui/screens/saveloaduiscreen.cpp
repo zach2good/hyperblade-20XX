@@ -21,15 +21,15 @@
 #include "common/stub.h"
 #include "planvm/damagegate.h"
 
-constexpr auto SLOT_LABEL_BYTES = 0x100;
+constexpr auto kSlotLabelBytes = 0x100;
 
-constexpr auto DESCRIPTION_MAX = 0x100;
+constexpr auto kDescriptionMax = 0x100;
 
 // Kiosk mode past the career limit gets a frameless flipbook, keeping the numbering.
 
 // One slot row: a fixed column, a fixed width and the row's own height.
-constexpr auto SLOT_ROW_X     = 0x69;
-constexpr auto SLOT_ROW_WIDTH = 0x1ab;
+constexpr auto kSlotRowX     = 0x69;
+constexpr auto kSlotRowWidth = 0x1ab;
 
 // FUNCTION: HYPERX 0x0046dc50
 SaveLoadUIScreen::SaveLoadUIScreen()
@@ -106,7 +106,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f90
     GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("savwht1");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x58, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x58, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savwht1"));
     // STRING: HYPERX 0x004c4f88
@@ -116,7 +116,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f80
     hBitmap = GDI::LoadBitmapHandle("savwht2");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x6f, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x6f, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f78
@@ -126,7 +126,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f70
     hBitmap = GDI::LoadBitmapHandle("savwht3");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x86, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x86, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f68
@@ -136,7 +136,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f60
     hBitmap = GDI::LoadBitmapHandle("savwht4");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x9d, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x9d, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f58
@@ -146,7 +146,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f50
     hBitmap = GDI::LoadBitmapHandle("savwht5");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xb4, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xb4, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f48
@@ -156,7 +156,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f40
     hBitmap = GDI::LoadBitmapHandle("savwht6");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xcb, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xcb, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f38
@@ -166,7 +166,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f30
     hBitmap = GDI::LoadBitmapHandle("savwht7");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xe2, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xe2, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f28
@@ -176,7 +176,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f20
     hBitmap = GDI::LoadBitmapHandle("savwht8");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xf9, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xf9, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f18
@@ -186,7 +186,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f10
     hBitmap = GDI::LoadBitmapHandle("savwht9");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x110, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x110, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f08
@@ -196,7 +196,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f00
     hBitmap = GDI::LoadBitmapHandle("savwht0");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x127, SLOT_ROW_WIDTH, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x127, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4ef8
@@ -262,7 +262,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     }
 
     // From the main menu the screen only loads.
-    if (g_nPrevEngineState == ESTATE_MAIN_MENU)
+    if (g_nPrevEngineState == kEstateMainMenu)
     {
         m_apWidgets[SAVELOAD_SAVE]->SetHidden(1);
         m_apWidgets[SAVELOAD_SAVE]->SetDirtyFlag(0);
@@ -280,7 +280,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
     switch (nWidget)
     {
         case SAVELOAD_SLOT_FIRST:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 0;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST;
@@ -291,7 +291,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 1:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 1;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 1;
@@ -302,7 +302,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 2:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 2;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 2;
@@ -313,7 +313,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 3:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 3;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 3;
@@ -324,7 +324,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 4:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 4;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 4;
@@ -335,7 +335,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 5:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 5;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 5;
@@ -346,7 +346,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 6:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 6;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 6;
@@ -357,7 +357,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 7:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 7;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 7;
@@ -368,7 +368,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 8:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 8;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 8;
@@ -379,7 +379,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SLOT_FIRST + 9:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 m_nSlot                = 9;
                 m_nSelectedLabelWidget = SAVELOAD_LABEL_FIRST + 9;
@@ -390,7 +390,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_SAVE:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 SaveGame();
 
@@ -400,7 +400,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
             break;
 
         case SAVELOAD_LOAD:
-            if (nMessage == INPUT_LEFT_UP)
+            if (nMessage == kInputLeftUp)
             {
                 LoadGame();
 
@@ -416,14 +416,14 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 
 // "Match <n> <home> VS. <away>". Each copy bound is the larger of two lengths.
 
-constexpr auto PART_MAX = 0x100;
+constexpr auto kPartMax = 0x100;
 
 // FUNCTION: HYPERX 0x0046eb50
 void SaveLoadUIScreen::SaveGame()
 {
-    char szDescription[DESCRIPTION_MAX];
+    char szDescription[kDescriptionMax];
 
-    if (g_nPlayerMode != PLAYER_MODE_TOURNAMENT || m_nSlot == SLOT_NONE)
+    if (g_nPlayerMode != kPlayerModeTournament || m_nSlot == kSlotNone)
     {
         return;
     }
@@ -432,7 +432,7 @@ void SaveLoadUIScreen::SaveGame()
 
     g_pGameEngine->SetArena(static_cast<short>(g_nDromeArena));
 
-    FormatSaveDescription(szDescription, DESCRIPTION_MAX);
+    FormatSaveDescription(szDescription, kDescriptionMax);
 
     g_pGameEngine->WriteSaveFile(m_nSlot, szDescription);
 
@@ -446,14 +446,14 @@ void SaveLoadUIScreen::SaveGame()
 // FUNCTION: HYPERX 0x0046ebf0
 void SaveLoadUIScreen::LoadGame()
 {
-    if (m_nSlot == SLOT_NONE)
+    if (m_nSlot == kSlotNone)
     {
         return;
     }
 
     g_pGameEngine->ReadSaveFile(m_nSlot);
 
-    g_nPlayerMode = PLAYER_MODE_TOURNAMENT;
+    g_nPlayerMode = kPlayerModeTournament;
 }
 
 // FUNCTION: HYPERX 0x0046ec20
@@ -467,13 +467,13 @@ void SaveLoadUIScreen::RefreshFrames()
 // FUNCTION: HYPERX 0x0046ec40
 void SaveLoadUIScreen::RefreshSlotLabels()
 {
-    char szLabel[SLOT_LABEL_BYTES];
+    char szLabel[kSlotLabelBytes];
 
     for (int nRow = 0; nRow < g_nSlotRowCount; nRow++)
     {
         Widget* const pWidget = m_apWidgets[SAVELOAD_LABEL_FIRST + nRow];
 
-        g_pGameEngine->ReadSlotLabel(nRow, szLabel, SLOT_LABEL_BYTES);
+        g_pGameEngine->ReadSlotLabel(nRow, szLabel, kSlotLabelBytes);
 
         pWidget->SetText(szLabel);
         pWidget->SetDirtyFlag(1);
@@ -483,7 +483,7 @@ void SaveLoadUIScreen::RefreshSlotLabels()
 // FUNCTION: HYPERX 0x0046eca0
 void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 {
-    char szPart[PART_MAX];
+    char szPart[kPartMax];
 
     const int nRound = g_pGameEngine->m_pSaveObject->GetBracketPos();
 
@@ -493,7 +493,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
     int nOut = 0;
     int nAt  = 0;
 
-    while (nOut < nMax || nAt < PART_MAX)
+    while (nOut < nMax || nAt < kPartMax)
     {
         pszOut[nOut] = szPart[nAt];
 
@@ -511,7 +511,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 
     nAt = 0;
 
-    while (nOut < nMax || nAt < PART_MAX)
+    while (nOut < nMax || nAt < kPartMax)
     {
         pszOut[nOut] = szPart[nAt];
 
@@ -529,7 +529,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 
     nAt = 0;
 
-    while (nOut < nMax || nAt < PART_MAX)
+    while (nOut < nMax || nAt < kPartMax)
     {
         pszOut[nOut] = szPart[nAt];
 
@@ -546,7 +546,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 
     nAt = 0;
 
-    while (nOut < nMax || nAt < PART_MAX)
+    while (nOut < nMax || nAt < kPartMax)
     {
         pszOut[nOut] = szPart[nAt];
 
@@ -564,7 +564,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 
     nAt = 0;
 
-    while (nOut < nMax || nAt < PART_MAX)
+    while (nOut < nMax || nAt < kPartMax)
     {
         pszOut[nOut] = szPart[nAt];
 
@@ -581,7 +581,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 
     nAt = 0;
 
-    while (nOut < nMax || nAt < PART_MAX)
+    while (nOut < nMax || nAt < kPartMax)
     {
         pszOut[nOut] = szPart[nAt];
 

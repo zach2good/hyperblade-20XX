@@ -88,7 +88,7 @@ void AnimDB::AddClipEntry(unsigned short wSegment, unsigned short wTriggerFrame,
 
     if (pEntry != nullptr)
     {
-        if (nMessage == MSG_SYNC_FRAME)
+        if (nMessage == kMsgSyncFrame)
         {
             m_apEntries[m_nEntryCount]->m_pRef = new AnimNamedRef(pszRef, nSyncSegment, nSyncFrame);
         }

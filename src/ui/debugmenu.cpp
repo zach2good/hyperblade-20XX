@@ -378,7 +378,7 @@ void InputTab()
 
         const auto* const pnKeys = KeyBindings();
 
-        for (int i = 0; i < KEY_BINDING_COUNT; i++)
+        for (int i = 0; i < kKeyBindingCount; i++)
         {
             const auto bHeld = InputLog::IsHeld(pnKeys[i]);
 
@@ -475,37 +475,37 @@ struct SlotRun
 
 // The slots objectclasses.h names; a run of more than one numbers its members from zero.
 constexpr SlotRun SLOT_RUNS[] = {
-    { SLOT_DROMER0, SLOT_DROMER3, "Dromer" },
-    { GOALIE_SLOT_A, GOALIE_SLOT_A, "Goalie A" },
-    { GOALIE_SLOT_B, GOALIE_SLOT_B, "Goalie B" },
-    { SLOT_ROK, SLOT_ROK, "Rok" },
-    { SLOT_NGOAL, SLOT_NGOAL, "North goal" },
-    { SLOT_SGOAL, SLOT_SGOAL, "South goal" },
-    { CAMERA_MAIN_SLOT, CAMERA_MAIN_SLOT, "Main camera" },
-    { SLOT_DROME, SLOT_DROME, "Drome" },
-    { SLOT_RAMP, SLOT_RAMP, "Ramp" },
-    { SLOT_GOD, SLOT_GOD, "God" },
-    { SLOT_SOUND_MAN, SLOT_SOUND_MAN, "Sound man" },
-    { CAMERA_HEAD_SLOT, CAMERA_HEAD_SLOT, "Head cam" },
+    { kSlotDromer0, kSlotDromer3, "Dromer" },
+    { kGoalieSlotA, kGoalieSlotA, "Goalie A" },
+    { kGoalieSlotB, kGoalieSlotB, "Goalie B" },
+    { kSlotRok, kSlotRok, "Rok" },
+    { kSlotNgoal, kSlotNgoal, "North goal" },
+    { kSlotSgoal, kSlotSgoal, "South goal" },
+    { kCameraMainSlot, kCameraMainSlot, "Main camera" },
+    { kSlotDrome, kSlotDrome, "Drome" },
+    { kSlotRamp, kSlotRamp, "Ramp" },
+    { kSlotGod, kSlotGod, "God" },
+    { kSlotSoundMan, kSlotSoundMan, "Sound man" },
+    { kCameraHeadSlot, kCameraHeadSlot, "Head cam" },
     { 26, 26, "Start gun" }, // TODO: Name in objectclasses.h; the STARTGUN plan times itself out to 26.
-    { SLOT_MULTIPLIER, SLOT_MULTIPLIER_LAST, "Multiplier" },
-    { SLOT_TURNSTILE, SLOT_TURNSTILE_LAST, "Turnstile" },
-    { SLOT_LIMBO_POLE, SLOT_LIMBO_POLE_LAST, "Limbo pole" },
-    { SLOT_LASER_HURDLE, SLOT_LASER_HURDLE_LAST, "Laser hurdle" },
-    { SLOT_ARMORY, SLOT_ARMORY_LAST, "Armory" },
-    { SLOT_MINE, SLOT_MINE, "Mine" },
-    { SLOT_SWARF, SLOT_SWARF, "Swarf" },
-    { SLOT_FAST_LANE, SLOT_FAST_LANE, "Fast lane" },
-    { SLOT_SLOW_LANE, SLOT_SLOW_LANE, "Slow lane" },
-    { SLOT_EXPLOSION, SLOT_EXPLOSION, "Explosion" },
-    { SLOT_HURDLE, SLOT_HURDLE_LAST, "Hurdle" },
-    { SLOT_GREEN_RANDOMIZER, SLOT_RED_RANDOMIZER - 1, "Green randomizer" },
-    { SLOT_RED_RANDOMIZER, SLOT_RED_RANDOMIZER_LAST, "Red randomizer" },
-    { SLOT_KEYBOARD, SLOT_KEYBOARD, "Keyboard" },
-    { SLOT_GAMEPAD0, SLOT_GAMEPAD0, "Gamepad 0" },
-    { SLOT_COACH0, SLOT_COACH0, "Coach 0" },
-    { SLOT_COACH1, SLOT_COACH1, "Coach 1" },
-    { SLOT_BODY_PART, SLOT_BODY_PART_LAST, "Body part" },
+    { kSlotMultiplier, kSlotMultiplierLast, "Multiplier" },
+    { kSlotTurnstile, kSlotTurnstileLast, "Turnstile" },
+    { kSlotLimboPole, kSlotLimboPoleLast, "Limbo pole" },
+    { kSlotLaserHurdle, kSlotLaserHurdleLast, "Laser hurdle" },
+    { kSlotArmory, kSlotArmoryLast, "Armory" },
+    { kSlotMine, kSlotMine, "Mine" },
+    { kSlotSwarf, kSlotSwarf, "Swarf" },
+    { kSlotFastLane, kSlotFastLane, "Fast lane" },
+    { kSlotSlowLane, kSlotSlowLane, "Slow lane" },
+    { kSlotExplosion, kSlotExplosion, "Explosion" },
+    { kSlotHurdle, kSlotHurdleLast, "Hurdle" },
+    { kSlotGreenRandomizer, kSlotRedRandomizer - 1, "Green randomizer" },
+    { kSlotRedRandomizer, kSlotRedRandomizerLast, "Red randomizer" },
+    { kSlotKeyboard, kSlotKeyboard, "Keyboard" },
+    { kSlotGamepad0, kSlotGamepad0, "Gamepad 0" },
+    { kSlotCoach0, kSlotCoach0, "Coach 0" },
+    { kSlotCoach1, kSlotCoach1, "Coach 1" },
+    { kSlotBodyPart, kSlotBodyPartLast, "Body part" },
 };
 
 void SlotText(int nSlot)
@@ -567,9 +567,9 @@ void ObjectsTab()
 
     ImGui::Checkbox("Show hidden objects", &s_bShowHidden);
 
-    constexpr auto FLAGS = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY;
+    constexpr auto kFlags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY;
 
-    if (!ImGui::BeginTable("objects", 7, FLAGS, ImVec2(0.0f, 360.0f)))
+    if (!ImGui::BeginTable("objects", 7, kFlags, ImVec2(0.0f, 360.0f)))
     {
         ImGui::EndTabItem();
 
@@ -624,7 +624,7 @@ void ObjectsTab()
         ImGui::TextUnformatted(StateText(*pObject));
         ImGui::TableNextColumn();
 
-        if ((pObject->m_nFlags & ENGINEOBJECT_POSED) != 0)
+        if ((pObject->m_nFlags & kEngineObjectPosed) != 0)
         {
             ImGui::TextUnformatted("Yes");
         }
@@ -711,7 +711,7 @@ void CheatsTab()
         return;
     }
 
-    const auto bInMatch = g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE;
+    const auto bInMatch = g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive;
 
     ImGui::SeparatorText("Unlocks");
 

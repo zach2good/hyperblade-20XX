@@ -101,7 +101,7 @@ extern const char* g_pszIntroBackground;
 // GLOBAL: HYPERX 0x004c1eb8
 extern const char* g_apszTrainingBackgrounds[8];
 
-constexpr auto TRAINING_CREDIT_FIRST = 3;
+constexpr auto kTrainingCreditFirst = 3;
 
 // Nothing reads it.
 // GLOBAL: HYPERX 0x004c67a4

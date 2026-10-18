@@ -286,12 +286,12 @@ Text::Font Text::Find(int nHeight)
 // the clock, Pixel Operator 8 doubled.
 Text::Font Text::FindSansSerif(int nHeight)
 {
-    constexpr auto LARGE_HEIGHT = 20;
-    constexpr auto DESIGN_EM    = 16;
+    constexpr auto kLargeHeight = 20;
+    constexpr auto kDesignEm    = 16;
 
     const auto& face = [&]() -> const Face&
     {
-        if (nHeight >= LARGE_HEIGHT)
+        if (nHeight >= kLargeHeight)
         {
             return PixelOperator8();
         }
@@ -304,7 +304,7 @@ Text::Font Text::FindSansSerif(int nHeight)
         return Font{};
     }
 
-    return Font{ SizeFor(face, DESIGN_EM, true) };
+    return Font{ SizeFor(face, kDesignEm, true) };
 }
 
 Text::Size Text::Measure(Font font, const char* pszText)

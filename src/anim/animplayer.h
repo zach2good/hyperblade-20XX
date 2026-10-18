@@ -65,7 +65,7 @@ public:
     static short TransitionLoopStart(const class AnimNamedRef* pTransition);
 
     // The original's element destructor is Object::Trace, onto which its linker folded it.
-    SlerpSeg m_aSlots[BINDING_SLOTS];
+    SlerpSeg m_aSlots[kBindingSlots];
 
     // SelectAnimationSet parks the set and the rate here and raises m_bPending.
     AnimPendingRequest m_pending;  // 0x758

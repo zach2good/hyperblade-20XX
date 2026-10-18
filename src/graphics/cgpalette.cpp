@@ -3,8 +3,8 @@
 #include "graphics/cgpalette.h"
 #include "common/pathstring.h"
 
-constexpr auto FLAG_HAS_TABLE = 0x80;
-constexpr auto FLAG_SIZE_MASK = 0x07;
+constexpr auto kFlagHasTable = 0x80;
+constexpr auto kFlagSizeMask = 0x07;
 
 // FUNCTION: HYPERX 0x004496e0
 int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
@@ -26,9 +26,9 @@ int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
     pScreen->cBackground = static_cast<unsigned char>(fgetc(pFile));
     pScreen->cAspect     = static_cast<unsigned char>(fgetc(pFile));
 
-    if ((pScreen->cFlags & FLAG_HAS_TABLE) != 0)
+    if ((pScreen->cFlags & kFlagHasTable) != 0)
     {
-        nCount = static_cast<unsigned short>(1 << ((pScreen->cFlags & FLAG_SIZE_MASK) + 1));
+        nCount = static_cast<unsigned short>(1 << ((pScreen->cFlags & kFlagSizeMask) + 1));
 
         for (unsigned short nLeft = 0; nLeft < nCount; nLeft++)
         {

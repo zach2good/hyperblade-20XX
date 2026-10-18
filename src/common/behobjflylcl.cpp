@@ -23,7 +23,7 @@ void BehObj_FlyLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_FLY_LCL;
+    m_wKind = kBehFlyLcl;
 
     auto* const pFirst = (CProjectAndBounce*)AllocAgendaItem(Agenda_CProjectAndBounce);
     m_apSlots[0]       = (AgendaItem*)pFirst;

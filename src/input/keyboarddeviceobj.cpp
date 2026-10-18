@@ -47,7 +47,7 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
                         if (pBinding != nullptr)
                         {
                             m_pEntity->DispatchSceneMessage(
-                                MSG_NEW_INPUT, pBinding->m_nKey, DECISION_LOG_FRESH, m_pEntity->GetSlotWord(), 0);
+                                kMsgNewInput, pBinding->m_nKey, kDecisionLogFresh, m_pEntity->GetSlotWord(), 0);
                         }
 
                         m_nStickyMask ^= nBit;
@@ -68,8 +68,8 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
     }
 }
 
-constexpr auto DOUBLE_TAP_MS  = 0xfa;
-constexpr auto REPEAT_STEP_MS = 0x32;
+constexpr auto kDoubleTapMs  = 0xfa;
+constexpr auto kRepeatStepMs = 0x32;
 
 // Each release time starts fifty milliseconds past its press, so a first press is never a double tap.
 // FUNCTION: HYPERX 0x0045cc10
@@ -100,25 +100,25 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
         m_pBindingTable = m_pSlots;
     }
 
-    m_nDoubleTapMs = DOUBLE_TAP_MS;
+    m_nDoubleTapMs = kDoubleTapMs;
 
-    for (int nInputSlot = 0; nInputSlot < INPUT_SLOT_COUNT; nInputSlot++)
+    for (int nInputSlot = 0; nInputSlot < kInputSlotCount; nInputSlot++)
     {
         const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
 
         m_aPressTime[static_cast<short>(nInputSlot)]   = nNow;
-        m_aReleaseTime[static_cast<short>(nInputSlot)] = nNow + REPEAT_STEP_MS;
+        m_aReleaseTime[static_cast<short>(nInputSlot)] = nNow + kRepeatStepMs;
     }
 }
 
-constexpr auto TABLE_KEY_COUNT = 8;
+constexpr auto kTableKeyCount = 8;
 
 // An up entry whose action folds to slot zero is reported and the build keeps going.
 // FUNCTION: HYPERX 0x0045cd20
 char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
 {
-    int anUp[INPUT_SLOT_COUNT];
-    int anDown[INPUT_SLOT_COUNT];
+    int anUp[kInputSlotCount];
+    int anDown[kInputSlotCount];
     int nEntry;
     int nSlot;
     int nIndex;
@@ -126,8 +126,8 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
     auto* const pTable = new ActionBindingGroup;
 
     *ppTableOut         = pTable;
-    pTable->m_nKeyCount = TABLE_KEY_COUNT;
-    pTable->m_nCount    = ACTION_BINDING_COUNT;
+    pTable->m_nKeyCount = kTableKeyCount;
+    pTable->m_nCount    = kActionBindingCount;
 
     const ActionBinding* apSource[1];
 
@@ -135,7 +135,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
 
     *pnGroupsOut = 1;
 
-    pDevice->CommitKeyBindings(KeyboardDeviceObj::LoadBindingsFromIni(), KEY_BINDING_COUNT);
+    pDevice->CommitKeyBindings(KeyboardDeviceObj::LoadBindingsFromIni(), kKeyBindingCount);
 
     ActionBindingGroup* pGroup = pTable;
 
@@ -148,21 +148,21 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
             pWork[nEntry] = *apSource[nGroup]++;
         }
 
-        for (nSlot = 0; nSlot < INPUT_SLOT_COUNT; nSlot++)
+        for (nSlot = 0; nSlot < kInputSlotCount; nSlot++)
         {
             anUp[nSlot] = 0;
         }
 
-        for (nSlot = 0; nSlot < INPUT_SLOT_COUNT; nSlot++)
+        for (nSlot = 0; nSlot < kInputSlotCount; nSlot++)
         {
             anDown[nSlot] = 0;
         }
 
         for (nEntry = 0; nEntry < pGroup->m_nCount; nEntry++)
         {
-            if ((pWork[nEntry].m_nAction & ACTION_BINDING_UP) != 0)
+            if ((pWork[nEntry].m_nAction & kActionBindingUp) != 0)
             {
-                nIndex = KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & ACTION_BINDING_MASK);
+                nIndex = KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & kActionBindingMask);
 
                 if (nIndex != 0)
                 {
@@ -176,16 +176,16 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
             }
             else
             {
-                pWork[nEntry].m_nCombine |= pWork[nEntry].m_nAction & ACTION_BINDING_MASK;
+                pWork[nEntry].m_nCombine |= pWork[nEntry].m_nAction & kActionBindingMask;
 
-                anDown[KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & ACTION_BINDING_MASK)]++;
+                anDown[KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & kActionBindingMask)]++;
             }
         }
 
         memset(pGroup->m_apUp, 0, sizeof(pGroup->m_apUp));
         memset(pGroup->m_apDown, 0, sizeof(pGroup->m_apDown));
 
-        for (nSlot = 0; nSlot < INPUT_SLOT_COUNT; nSlot++)
+        for (nSlot = 0; nSlot < kInputSlotCount; nSlot++)
         {
             pGroup->m_anUp[nSlot] = anUp[nSlot];
 
@@ -202,12 +202,12 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
             }
         }
 
-        for (nSlot = 0; nSlot < INPUT_SLOT_COUNT; nSlot++)
+        for (nSlot = 0; nSlot < kInputSlotCount; nSlot++)
         {
             anUp[nSlot] = 0;
         }
 
-        for (nSlot = 0; nSlot < INPUT_SLOT_COUNT; nSlot++)
+        for (nSlot = 0; nSlot < kInputSlotCount; nSlot++)
         {
             anDown[nSlot] = 0;
         }
@@ -215,11 +215,11 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
         for (nEntry = 0; nEntry < pGroup->m_nCount; nEntry++)
         {
             pWork[nEntry].m_nClear =
-                ~(~(pWork[nEntry].m_nCombine & ~ACTION_BINDING_HIGH_HALF) & pWork[nEntry].m_nClear);
+                ~(~(pWork[nEntry].m_nCombine & ~kActionBindingHighHalf) & pWork[nEntry].m_nClear);
 
-            if ((pWork[nEntry].m_nAction & ACTION_BINDING_UP) != 0)
+            if ((pWork[nEntry].m_nAction & kActionBindingUp) != 0)
             {
-                nIndex = KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & ACTION_BINDING_MASK);
+                nIndex = KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & kActionBindingMask);
 
                 if (nIndex != 0)
                 {
@@ -232,7 +232,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
             }
             else
             {
-                nIndex = KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & ACTION_BINDING_MASK);
+                nIndex = KeyboardDeviceObj::GetActionBitIndex(pWork[nEntry].m_nAction & kActionBindingMask);
 
                 pGroup->m_apDown[nIndex][anDown[nIndex]++] = pWork[nEntry];
             }
@@ -345,7 +345,7 @@ KeyboardDeviceObj::~KeyboardDeviceObj()
 
     while (m_nSlots-- != 0)
     {
-        for (int nKey = 0; nKey < INPUT_SLOT_COUNT; nKey++)
+        for (int nKey = 0; nKey < kInputSlotCount; nKey++)
         {
             if (pSlots[m_nSlots].m_apUp[nKey] != nullptr)
             {
@@ -375,7 +375,7 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
 
     while (pRecord < pEnd)
     {
-        nLimit = (std::min)(KEY_BINDING_COUNT, nCount);
+        nLimit = (std::min)(kKeyBindingCount, nCount);
 
         for (nIndex = 0; nIndex < nLimit; nIndex++)
         {
@@ -392,7 +392,7 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
 
     m_nHeldMask = 0;
 
-    nWrite = (std::min)(KEY_BINDING_COUNT, nCount);
+    nWrite = (std::min)(kKeyBindingCount, nCount);
 
     for (nIndex = 0; nIndex < nWrite; nIndex++)
     {
@@ -410,7 +410,7 @@ unsigned int* KeyboardDeviceObj::GetDefaultKeyBindings() const
 // FUNCTION: HYPERX 0x0045d280
 unsigned int* KeyboardDeviceObj::LoadBindingsFromIni()
 {
-    for (int nKey = 0; nKey < KEY_BINDING_COUNT; nKey++)
+    for (int nKey = 0; nKey < kKeyBindingCount; nKey++)
     {
         g_anKeyBindings[nKey] = g_pGameOptions
                                     // STRING: HYPERX 0x004c41d8
@@ -468,10 +468,10 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 
                 if (nNow - static_cast<unsigned int>(m_aReleaseTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs && static_cast<unsigned int>(m_aReleaseTime[static_cast<short>(nIndex)] - m_aPrevPressTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs)
                 {
-                    nBit = ACTION_BINDING_DOUBLE_TAP << nIndex;
+                    nBit = kActionBindingDoubleTap << nIndex;
                 }
 
-                nMask = nBit & ACTION_BINDING_MASK;
+                nMask = nBit & kActionBindingMask;
                 m_nHeldMask |= nMask;
 
                 nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nMask);
@@ -479,7 +479,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 
                 if (pBinding != nullptr)
                 {
-                    nBudget       = ((nBit & ACTION_BINDING_HIGH_HALF) != 0) + 1;
+                    nBudget       = ((nBit & kActionBindingHighHalf) != 0) + 1;
                     nBindingCount = m_pBindingTable->m_anDown[nActionIndex];
 
                     for (i = 0; i < nBindingCount; i++, pBinding++)
@@ -500,10 +500,10 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
                             }
                             else
                             {
-                                if ((pBinding->m_nAction & ACTION_BINDING_HIGH_HALF) == 0 || (nBit & ACTION_BINDING_HIGH_HALF) != 0)
+                                if ((pBinding->m_nAction & kActionBindingHighHalf) == 0 || (nBit & kActionBindingHighHalf) != 0)
                                 {
                                     m_pEntity->DispatchSceneMessage(
-                                        MSG_NEW_INPUT, pBinding->m_nKey, DECISION_LOG_FRESH, m_pEntity->GetSlotWord(), 0);
+                                        kMsgNewInput, pBinding->m_nKey, kDecisionLogFresh, m_pEntity->GetSlotWord(), 0);
                                     nResult = 1;
                                     nBudget--;
 
@@ -558,28 +558,28 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 
             if (nElapsed < m_nDoubleTapMs && static_cast<unsigned int>(m_aPressTime[static_cast<short>(nIndex)] - m_aPrevReleaseTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs)
             {
-                nBit = (ACTION_BINDING_DOUBLE_TAP << nIndex) | ACTION_BINDING_UP | ACTION_BINDING_QUICK;
+                nBit = (kActionBindingDoubleTap << nIndex) | kActionBindingUp | kActionBindingQuick;
             }
             else
             {
                 // Not a double tap; QUICK is still set when the release came inside the window.
-                nBit = (1 << nIndex) | ACTION_BINDING_UP;
+                nBit = (1 << nIndex) | kActionBindingUp;
 
                 if (nElapsed < m_nDoubleTapMs)
                 {
-                    nBit |= ACTION_BINDING_UP | ACTION_BINDING_QUICK;
+                    nBit |= kActionBindingUp | kActionBindingQuick;
                 }
             }
 
             nHeld                     = m_nHeldMask;
-            nClearMask                = ~(nBit & ACTION_BINDING_MASK);
+            nClearMask                = ~(nBit & kActionBindingMask);
             nSticky                   = m_nStickyMask;
             m_nHeldMask               = nHeld & nClearMask;
             m_nStickyMask             = nSticky & nClearMask;
             m_apStickyBinding[nIndex] = nullptr;
 
-            nBudget      = ((nBit & ACTION_BINDING_HIGH_HALF) != 0) + 1;
-            nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nBit & ACTION_BINDING_MASK);
+            nBudget      = ((nBit & kActionBindingHighHalf) != 0) + 1;
+            nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nBit & kActionBindingMask);
             pBinding     = m_pBindingTable->m_apUp[nActionIndex];
 
             if (pBinding != nullptr)
@@ -588,10 +588,10 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 
                 for (i = 0; i < nBindingCount; i++, pBinding++)
                 {
-                    if ((pBinding->m_nAction == static_cast<unsigned int>(nActionIndex) || pBinding->m_nAction == (nBit & (ACTION_BINDING_UP | ACTION_BINDING_QUICK | ACTION_BINDING_MASK)) || pBinding->m_nAction == nBit) && pBinding->m_nCombine == (pBinding->m_nClear & m_nHeldMask))
+                    if ((pBinding->m_nAction == static_cast<unsigned int>(nActionIndex) || pBinding->m_nAction == (nBit & (kActionBindingUp | kActionBindingQuick | kActionBindingMask)) || pBinding->m_nAction == nBit) && pBinding->m_nCombine == (pBinding->m_nClear & m_nHeldMask))
                     {
                         m_pEntity->DispatchSceneMessage(
-                            MSG_NEW_INPUT, pBinding->m_nKey, DECISION_LOG_FRESH, m_pEntity->GetSlotWord(), 0);
+                            kMsgNewInput, pBinding->m_nKey, kDecisionLogFresh, m_pEntity->GetSlotWord(), 0);
                         nResult = 1;
                         nBudget--;
 
@@ -610,16 +610,16 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
     return nResult;
 }
 
-const char* g_apszKeyBindingNames[KEY_BINDING_COUNT] = {
+const char* g_apszKeyBindingNames[kKeyBindingCount] = {
     "Forward", "Stop", "RotateLeft", "RotateRight", "Attack", "SpeedBurst", "Shoot", "Pass", "QuickShot", "Jump"
 };
 
-unsigned int g_anKeyBindingDefaults[KEY_BINDING_COUNT] = {
-    Key::UP, Key::DOWN, Key::LEFT, Key::RIGHT, 'S', 'D', Key::SPACE, 'C', 'F', 'E'
+unsigned int g_anKeyBindingDefaults[kKeyBindingCount] = {
+    Key::kUp, Key::kDown, Key::kLeft, Key::kRight, 'S', 'D', Key::kSpace, 'C', 'F', 'E'
 };
 
-int g_anKeyBindingOrder[KEY_BINDING_COUNT] = { 0, 1, 2, 3, 5, 4, 6, 7, 8, 9 };
+int g_anKeyBindingOrder[kKeyBindingCount] = { 0, 1, 2, 3, 5, 4, 6, 7, 8, 9 };
 
-unsigned int g_anKeyBindings[KEY_BINDING_COUNT] = {
-    Key::UP, Key::DOWN, Key::LEFT, Key::RIGHT, 'S', 'D', Key::SPACE, 'C', 'F', 'E'
+unsigned int g_anKeyBindings[kKeyBindingCount] = {
+    Key::kUp, Key::kDown, Key::kLeft, Key::kRight, 'S', 'D', Key::kSpace, 'C', 'F', 'E'
 };

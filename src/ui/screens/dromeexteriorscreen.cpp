@@ -99,7 +99,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     pWidget->AppendFrame(GDI::LoadBitmapHandle(g_pszKioskGreen));
     pWidget->InitAfterLoad();
 
-    if (g_nPlayerMode == PLAYER_MODE_TOURNAMENT)
+    if (g_nPlayerMode == kPlayerModeTournament)
     {
         m_nLastWidget = 3;
 
@@ -122,11 +122,11 @@ void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     if (nId != 2)
     {
-        if (nId > WIDGET_ID_MOUSE - 1 && nId <= WIDGET_ID_RETURN)
+        if (nId > kWidgetIDMouse - 1 && nId <= kWidgetIDReturn)
         {
-            if (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP))
+            if (nMsg == kInputKeyUp || nMsg == kInputKeyDown || (m_bPointerOnWidget == 0 && nMsg == kInputLeftUp))
             {
-                Game::SetEngineState(ESTATE_MATCH_START);
+                Game::SetEngineState(kEstateMatchStart);
 
                 InitFrame();
             }
@@ -135,13 +135,13 @@ void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         return;
     }
 
-    if (nMsg == INPUT_LEFT_UP)
+    if (nMsg == kInputLeftUp)
     {
         ShowMatchInfo();
     }
 }
 
-int g_nSetupReturnState = ESTATE_LOBBY;
+int g_nSetupReturnState = kEstateLobby;
 
 // STRING: HYPERX 0x004c871c
 const char* g_pszKioskWhite = "kioswht";

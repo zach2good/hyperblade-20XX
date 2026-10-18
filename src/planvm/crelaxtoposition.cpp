@@ -28,10 +28,10 @@
 // The marker node names a marker and a slot; the point node names x, y and a slot.
 #define ARG_FLAGS  1
 #define ARG_MARKER 2
-constexpr auto ARG_MARKER_SLOT = 3;
+constexpr auto kArgMarkerSlot = 3;
 #define ARG_X 2
 #define ARG_Y 3
-constexpr auto ARG_POINT_SLOT = 4;
+constexpr auto kArgPointSlot = 4;
 
 #define ARG_COUNT_MARKER 4
 #define ARG_COUNT_POINT  5
@@ -46,7 +46,7 @@ void CRelaxToPosition::Bind(EngineObject* pSubject, GameBehaviorObject* pNode)
     m_bCameraBias = 0;
     m_pTarget     = nullptr;
 
-    if (pNode->m_wKind == BEH_GLIDE_TO_POSITION)
+    if (pNode->m_wKind == kBehGlideToPosition)
     {
         m_vDest = ((BehObj_GlideToPosition*)pNode)->m_vTarget;
         return;
@@ -76,16 +76,16 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 
         pArgs = pNode->m_pArgs;
 
-        if (pArgs[ARG_MARKER_SLOT].IsPronoun())
+        if (pArgs[kArgMarkerSlot].IsPronoun())
         {
             m_pTarget =
                 g_pGameEngine->m_ppSlots
-                    [g_apPlanStatFns[pArgs[ARG_MARKER_SLOT].wPronoun](pObject, pNode)];
+                    [g_apPlanStatFns[pArgs[kArgMarkerSlot].wPronoun](pObject, pNode)];
 
             return;
         }
 
-        m_pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[ARG_MARKER_SLOT].n)];
+        m_pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[kArgMarkerSlot].n)];
 
         return;
     }
@@ -100,16 +100,16 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 
         pArgs = pNode->m_pArgs;
 
-        if (pArgs[ARG_POINT_SLOT].IsPronoun())
+        if (pArgs[kArgPointSlot].IsPronoun())
         {
             m_pTarget =
                 g_pGameEngine->m_ppSlots
-                    [g_apPlanStatFns[pArgs[ARG_POINT_SLOT].wPronoun](pObject, pNode)];
+                    [g_apPlanStatFns[pArgs[kArgPointSlot].wPronoun](pObject, pNode)];
 
             return;
         }
 
-        m_pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[ARG_POINT_SLOT].n)];
+        m_pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[kArgPointSlot].n)];
 
         return;
     }
@@ -121,7 +121,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 // Eases toward the destination at a rate that does not depend on the frame rate.
 
 // Fifty two is the last frame rate that reads a slower rate than the one before it.
-constexpr auto FRAME_RATE_LIMIT = 0x34;
+constexpr auto kFrameRateLimit = 0x34;
 
 // Sixteen either way.
 #define BIAS_SCALE 16.0f
@@ -161,7 +161,7 @@ void CRelaxToPosition::Process(int nArg)
 
     const auto nBucket = static_cast<short>(g_pGameEngine->m_clock.flInvDelta);
 
-    nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
+    nClamped = std::min<int>(kFrameRateLimit, nBucket);
 
     nClamped >>= 2;
 
@@ -178,9 +178,9 @@ void CRelaxToPosition::Process(int nArg)
             flSign = BIAS_SCALE;
         }
 
-        vTarget.x = (g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_flViewFracX - g_flHalfAgendaItem) * flSign + vTarget.x;
+        vTarget.x = (g_pGameEngine->GetCamera(kCameraHeadSlot)->m_flViewFracX - g_flHalfAgendaItem) * flSign + vTarget.x;
 
-        flRate = ((PlayerObject*)m_pOwner)->m_stats.GetScalar(RATING_CHECKING) * flRate * RATE_TRIM;
+        flRate = ((PlayerObject*)m_pOwner)->m_stats.GetScalar(kRatingChecking) * flRate * RATE_TRIM;
     }
 
     vGap.x = vTarget.x - pPoint->x;
@@ -243,7 +243,7 @@ void CRelaxToPosition::Release(int nArg)
 
     const auto nBucket = static_cast<short>(g_pGameEngine->m_clock.flInvDelta);
 
-    nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
+    nClamped = std::min<int>(kFrameRateLimit, nBucket);
 
     nClamped >>= 2;
 
@@ -260,9 +260,9 @@ void CRelaxToPosition::Release(int nArg)
             flSign = BIAS_SCALE;
         }
 
-        vTarget.x = (g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_flViewFracX - g_flHalfAgendaItem) * flSign + vTarget.x;
+        vTarget.x = (g_pGameEngine->GetCamera(kCameraHeadSlot)->m_flViewFracX - g_flHalfAgendaItem) * flSign + vTarget.x;
 
-        flRate = ((PlayerObject*)m_pOwner)->m_stats.GetScalar(RATING_CHECKING) * flRate * RATE_TRIM;
+        flRate = ((PlayerObject*)m_pOwner)->m_stats.GetScalar(kRatingChecking) * flRate * RATE_TRIM;
     }
 
     vGap.x = vTarget.x - pPoint->x;

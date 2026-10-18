@@ -11,7 +11,7 @@
 #include "planvm/decisionlog.h"
 
 #define ARG_KEY 0
-constexpr auto ARG_MESSAGE_FIRST = 1;
+constexpr auto kArgMessageFirst = 1;
 
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
@@ -36,14 +36,14 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     m_nBehaviour       = PLAN_TOKEN_NO_BEH_CHANGE;
     m_otherSlot.n      = pObject->GetSlot();
 
-    PlanWord* pEntry = pPlanArg->m_pArgs + ARG_MESSAGE_FIRST;
-    auto      nCount = static_cast<short>(pPlanArg->m_nArgCount - ARG_MESSAGE_FIRST);
+    PlanWord* pEntry = pPlanArg->m_pArgs + kArgMessageFirst;
+    auto      nCount = static_cast<short>(pPlanArg->m_nArgCount - kArgMessageFirst);
 
     while (nCount-- != 0)
     {
         PlanNode* const    pInstr  = pEntry->pNode;
         const auto         nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
-        const unsigned int nClass  = nOpcode & OP_CATEGORY;
+        const unsigned int nClass  = nOpcode & kOpCategory;
 
         switch (nClass)
         {
@@ -51,7 +51,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
                 break;
 
             case CATEGORY_BEHAVIOUR:
-                switch (nOpcode & OP_MEMBER)
+                switch (nOpcode & kOpMember)
                 {
                     case MEMBER_CHANGE_TO_BEHAVIOR:
                         m_nBehaviour = pInstr->m_pArgs[0].n;
@@ -60,7 +60,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
                 break;
 
             case CATEGORY_ACTION:
-                if ((nOpcode & OP_MEMBER) == MEMBER_SET_INTERACTOR_PARAM)
+                if ((nOpcode & kOpMember) == MEMBER_SET_INTERACTOR_PARAM)
                 {
                     PlanState* const pState = m_pOwner->GetPlanState();
 
@@ -118,16 +118,16 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 
     if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int>(PLAN_TOKEN_NO_BEH_CHANGE) && m_bEnabled != 0)
     {
-        m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
+        m_pOwner->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, m_pOwner->GetSlot(), 0);
 
         m_pOwner->GetPlanState()->ActivateBehavior(static_cast<unsigned int>(m_nBehaviour));
     }
 
-    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;
+    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = kCollisionRearmTicksAfterRun;
 
     if (m_wSlot >= 0)
     {
-        m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
+        m_pOwner->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, m_pOwner->GetSlot(), 0);
 
         m_pOwner->InstantiateAIPlan(m_wSlot);
 

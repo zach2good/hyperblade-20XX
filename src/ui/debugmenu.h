@@ -1,4 +1,4 @@
-// The debug menu, an ImGui window over the game that holds the runtime switches. F2 opens and
+// The debug menu, an ImGui window over the game that holds the runtime switches. kF2 opens and
 // closes it.
 
 #ifndef HYPERBLADE_DEBUGMENU_H

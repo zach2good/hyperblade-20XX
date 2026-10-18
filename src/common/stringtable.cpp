@@ -18,14 +18,14 @@ namespace
 {
 
 // The game's ids stop well short of this.
-constexpr auto MAX_STRING_ID = 0x1000u;
+constexpr auto kMaxStringID = 0x1000u;
 
 // The original pointed players at a joystick control panel and a DOS set-up tool.
 constexpr auto s_aOverrides = std::array{
-    std::pair{ STRING_JOYSTICK_CONTROL_PANEL, "Plug in an Xbox, PlayStation or Switch controller at any time.\n\n"
-                                              "Skate with the left stick or d-pad. A attacks, LB is a speed burst, X shoots and Y passes. "
-                                              "Start pauses.\n\nIn the menus, A selects and B goes back. " },
-    std::pair{ STRING_GAME_PAD_HELP, "The [Gamepad] section of booie.ini picks the action for each button and trigger." },
+    std::pair{ kStringJoystickControlPanel, "Plug in an Xbox, PlayStation or Switch controller at any time.\n\n"
+                                            "Skate with the left stick or d-pad. A attacks, LB is a speed burst, X shoots and Y passes. "
+                                            "Start pauses.\n\nIn the menus, A selects and B goes back. " },
+    std::pair{ kStringGamePadHelp, "The [Gamepad] section of booie.ini picks the action for each button and trigger." },
 };
 
 std::unordered_map<unsigned int, std::string> s_strings;
@@ -208,9 +208,9 @@ struct Image
     }
 };
 
-constexpr auto RT_STRING_ID     = 6u;
-constexpr auto SUBDIRECTORY     = 0x80000000u;
-constexpr auto MAX_RESOURCE_DIR = 4096u;
+constexpr auto kRtStringID     = 6u;
+constexpr auto kSubdirectory   = 0x80000000u;
+constexpr auto kMaxResourceDir = 4096u;
 
 // The program's string resources, read from its file without loading it. Under RT_STRING, block n
 // holds ids (n - 1) * 16 onward as sixteen counted UTF-16 strings. The first language is taken.
@@ -275,7 +275,7 @@ std::optional<std::map<unsigned int, std::string> > ReadStringResources(const st
     {
         auto found = std::vector<std::pair<unsigned int, unsigned int> >();
 
-        const auto nCount = (std::min)(image.U16(nDirectory + 12) + image.U16(nDirectory + 14), MAX_RESOURCE_DIR);
+        const auto nCount = (std::min)(image.U16(nDirectory + 12) + image.U16(nDirectory + 14), kMaxResourceDir);
 
         for (unsigned int n = 0; n < nCount && image.bValid; n++)
         {
@@ -289,21 +289,21 @@ std::optional<std::map<unsigned int, std::string> > ReadStringResources(const st
 
     for (const auto& [nType, nTypeAt] : entries(nRoot))
     {
-        if (nType != RT_STRING_ID || (nTypeAt & SUBDIRECTORY) == 0)
+        if (nType != kRtStringID || (nTypeAt & kSubdirectory) == 0)
         {
             continue;
         }
 
-        for (const auto& [nBlock, nBlockAt] : entries(nRoot + (nTypeAt & ~SUBDIRECTORY)))
+        for (const auto& [nBlock, nBlockAt] : entries(nRoot + (nTypeAt & ~kSubdirectory)))
         {
-            if ((nBlockAt & SUBDIRECTORY) == 0)
+            if ((nBlockAt & kSubdirectory) == 0)
             {
                 continue;
             }
 
-            const auto languages = entries(nRoot + (nBlockAt & ~SUBDIRECTORY));
+            const auto languages = entries(nRoot + (nBlockAt & ~kSubdirectory));
 
-            if (languages.empty() || (languages[0].second & SUBDIRECTORY) != 0)
+            if (languages.empty() || (languages[0].second & kSubdirectory) != 0)
             {
                 continue;
             }
@@ -337,7 +337,7 @@ std::optional<std::map<unsigned int, std::string> > ReadStringResources(const st
 
                 const auto nID = (nBlock - 1) * 16 + nString;
 
-                if (nLength > 0 && nID < MAX_STRING_ID)
+                if (nLength > 0 && nID < kMaxStringID)
                 {
                     strings[nID] = text;
                 }
@@ -392,7 +392,7 @@ bool WriteFromGame(const std::string& strExe, const std::string& strFile)
 bool StringTable::Load(const char* pszDirectory)
 {
     const auto strDirectory = std::string(pszDirectory);
-    const auto strFile      = Path::Native((strDirectory + FILE_NAME).c_str());
+    const auto strFile      = Path::Native((strDirectory + kFileName).c_str());
 
     auto file = std::ifstream(strFile, std::ios::binary);
 

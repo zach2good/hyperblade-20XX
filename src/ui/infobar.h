@@ -21,8 +21,8 @@ class InfoBarSlot;
 class InfoBarBase;
 
 // The two score lines IncrementScore takes.
-constexpr auto SCORE_LINE_TEAM2 = 4;
-constexpr auto SCORE_LINE_TEAM1 = 5;
+constexpr auto kScoreLineTeam2 = 4;
+constexpr auto kScoreLineTeam1 = 5;
 
 // VTABLE: HYPERX 0x004b32ec
 class InfoBar : public InfoBarBase

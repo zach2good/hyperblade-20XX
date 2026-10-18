@@ -8,29 +8,29 @@
 #include <stddef.h>
 class CheatState;
 
-constexpr auto KEY_BINDING_COUNT = 10;
+constexpr auto kKeyBindingCount = 10;
 
 // The ten key bindings: ini name, default, and what was read.
 // GLOBAL: HYPERX 0x004c41e0
-extern const char* g_apszKeyBindingNames[KEY_BINDING_COUNT];
+extern const char* g_apszKeyBindingNames[kKeyBindingCount];
 
 // The bound keys' slots in g_anKeyBindingDefaults that the readers name.
-constexpr auto BINDING_DOWN   = 1;
-constexpr auto BINDING_LEFT   = 2;
-constexpr auto BINDING_RIGHT  = 3;
-constexpr auto BINDING_ATTACK = 4;
-constexpr auto BINDING_THROW  = 8;
-constexpr auto BINDING_JUMP   = 9;
+constexpr auto kBindingDown   = 1;
+constexpr auto kBindingLeft   = 2;
+constexpr auto kBindingRight  = 3;
+constexpr auto kBindingAttack = 4;
+constexpr auto kBindingThrow  = 8;
+constexpr auto kBindingJump   = 9;
 
 // GLOBAL: HYPERX 0x004c4398
-extern unsigned int g_anKeyBindingDefaults[KEY_BINDING_COUNT];
+extern unsigned int g_anKeyBindingDefaults[kKeyBindingCount];
 
 // The identity with four and five exchanged; only the binding commit reads it.
 // GLOBAL: HYPERX 0x004c43c0
-extern int g_anKeyBindingOrder[KEY_BINDING_COUNT];
+extern int g_anKeyBindingOrder[kKeyBindingCount];
 
 // GLOBAL: HYPERX 0x004c43e8
-extern unsigned int g_anKeyBindings[KEY_BINDING_COUNT];
+extern unsigned int g_anKeyBindings[kKeyBindingCount];
 
 // Which of the two cameras the tab key last cycled to.
 // GLOBAL: HYPERX 0x004c4d98

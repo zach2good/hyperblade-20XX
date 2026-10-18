@@ -25,7 +25,7 @@ int main()
     std::filesystem::create_directories(directory);
 
     {
-        auto file = std::ofstream(directory / StringTable::FILE_NAME, std::ios::binary | std::ios::trunc);
+        auto file = std::ofstream(directory / StringTable::kFileName, std::ios::binary | std::ios::trunc);
         file << "# A comment\r\n0x0043=HyperBlade\r\n0x00a6=Line one\\nLine two\\tTabbed\r\n0x0007=Back\\\\slash\r\n\r\nnot a string\r\n";
     }
 
@@ -99,7 +99,7 @@ int main()
     Expect(StringTable::Load(strDirectory.c_str()), "strings read from the program");
     Expect(std::strcmp(StringTable::Find(0x43), "Hi") == 0, "string from its block");
     Expect(std::strcmp(StringTable::Find(0x44), "\xe9") == 0, "accent comes back as Latin-1");
-    Expect(std::filesystem::exists(directory / StringTable::FILE_NAME), "strings file written");
+    Expect(std::filesystem::exists(directory / StringTable::kFileName), "strings file written");
 
     std::filesystem::remove_all(directory);
 

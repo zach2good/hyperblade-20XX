@@ -31,8 +31,8 @@ AnimScriptTable::~AnimScriptTable()
 }
 
 // A set is taken when its name holds the first; a clip starting with the second gets a kind.
-constexpr std::uintptr_t SET_FILTER_RESOURCE  = 0x20;
-constexpr std::uintptr_t CLIP_PREFIX_RESOURCE = 0x42;
+constexpr std::uintptr_t kSetFilterResource  = 0x20;
+constexpr std::uintptr_t kClipPrefixResource = 0x42;
 
 // The parse stops at the first line the line parser refuses, so a bad line truncates the file.
 // FUNCTION: HYPERX 0x00418210
@@ -55,7 +55,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 
         m_nCount = 0;
 
-        AnimScriptState state(reinterpret_cast<const char*>(SET_FILTER_RESOURCE), reinterpret_cast<const char*>(CLIP_PREFIX_RESOURCE));
+        AnimScriptState state(reinterpret_cast<const char*>(kSetFilterResource), reinterpret_cast<const char*>(kClipPrefixResource));
         char*           pLine;
 
         while (file.m_file.GetNextLine(&pLine) > 0 && ParseScriptLine(pLine, &state) != 0)
@@ -89,16 +89,16 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
     }
 }
 
-constexpr auto REF_CHARS  = 0x14;
-constexpr auto NAME_CHARS = 0x18;
+constexpr auto kRefChars  = 0x14;
+constexpr auto kNameChars = 0x18;
 
-// Blank lines and comments are skipped; a clip's message defaults to MSG_NOMSG.
+// Blank lines and comments are skipped; a clip's message defaults to kMsgNomsg.
 // FUNCTION: HYPERX 0x004183e0
 unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptState* pState)
 {
     short   nSecond;
-    char    szRef[REF_CHARS];
-    char    szName[NAME_CHARS];
+    char    szRef[kRefChars];
+    char    szName[kNameChars];
     PlanVM* pVm;
     int     nMessage;
 
@@ -148,7 +148,7 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
                 }
                 else
                 {
-                    nMessage = MSG_NOMSG;
+                    nMessage = kMsgNomsg;
                 }
 
                 pState->pDb->AddClipEntry(static_cast<unsigned short>(nFirst), static_cast<unsigned short>(nSecond), szName, nMessage, szRef, nSyncSegment, nSyncFrame);
@@ -170,10 +170,10 @@ extern const char* const g_pszAnimShortFormat;
 // GLOBAL: HYPERX 0x004b22c8
 extern const char* const g_pszAnimFloatFormat;
 
-constexpr auto SEGMENT_TOKEN_CHARS = 256;
-constexpr auto TRIGGER_TOKEN_CHARS = 0x50;
+constexpr auto kSegmentTokenChars = 256;
+constexpr auto kTriggerTokenChars = 0x50;
 
-constexpr auto TRIGGER_FIELDS = 3;
+constexpr auto kTriggerFields = 3;
 
 // FUNCTION: HYPERX 0x00418540
 int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, const char** ppszCursor, const String& strFilter)
@@ -238,7 +238,7 @@ inline int AnimScriptTable::ScanFloat(const char** ppszCursor, char* pszToken, f
 int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, const char** ppszCursor)
 {
     int  nResult = 0;
-    char szToken[SEGMENT_TOKEN_CHARS];
+    char szToken[kSegmentTokenChars];
 
     const char* pszScan = strpbrk(pszLine, g_pszAnimTokenDelimiters);
     pszScan             = pszScan + 1;
@@ -264,9 +264,9 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
 
             if (String::ExtractToken(*ppszCursor, szToken, ppszCursor) >= 0)
             {
-                SDL_strlcpy((*ppSegment)->m_pszDescription, szToken, DESCRIPTION_CHARS);
+                SDL_strlcpy((*ppSegment)->m_pszDescription, szToken, kDescriptionChars);
 
-                (*ppSegment)->m_pszDescription[DESCRIPTION_CHARS] = 0;
+                (*ppSegment)->m_pszDescription[kDescriptionChars] = 0;
 
                 if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wStartFrame))
                 {
@@ -344,7 +344,7 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
 // FUNCTION: HYPERX 0x004189c0
 int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* pnTriggerFrame, char* pszName, char* pszRef, short* pnSyncSegment, short* pnSyncFrame)
 {
-    char szToken[TRIGGER_TOKEN_CHARS];
+    char szToken[kTriggerTokenChars];
     int  nResult = 1;
 
     *pnSegment      = 0;
@@ -354,7 +354,7 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
     {
         const char* pszScan = pszLine;
 
-        for (int nIndex = 0; nIndex < TRIGGER_FIELDS; nIndex++)
+        for (int nIndex = 0; nIndex < kTriggerFields; nIndex++)
         {
             pszScan = strpbrk(pszScan, g_pszAnimTokenDelimiters);
 

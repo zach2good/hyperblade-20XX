@@ -13,7 +13,7 @@ class Screen;
 struct FramePos;
 
 // A flipbook widget sends this to its owner when its frames run out; the rest are INPUT_ events.
-constexpr auto WIDGET_MSG_LOOP_DONE = 0x66;
+constexpr auto kWidgetMsgLoopDone = 0x66;
 
 // What Widget::m_nType holds; the four button kinds follow ButtonWidget's constructor argument.
 enum WidgetKind

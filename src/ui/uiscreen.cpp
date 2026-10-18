@@ -35,7 +35,7 @@ UIScreen::~UIScreen()
 // FUNCTION: HYPERX 0x0044d540
 UIScreen::UIScreen()
 {
-    g_pAudioMgr->PlaySpecific(SOUND_SCREENON);
+    g_pAudioMgr->PlaySpecific(kSoundScreenon);
 
     m_nLastWidget = UI_WIDGET_PAGE;
 
@@ -297,7 +297,7 @@ void UIScreen::BuildLockedFlagsArray()
 
     m_nLockedCount = 0;
 
-    PathString strPath(MAX_PATH_LENGTH);
+    PathString strPath(kMaxPathLength);
 
     // STRING: HYPERX 0x004c2f28
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Chiplcd", "bmp");
@@ -428,190 +428,190 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case UI_WIDGET_TAB_PLATE:
-            if (nMsg == WIDGET_MSG_LOOP_DONE)
+            if (nMsg == kWidgetMsgLoopDone)
             {
                 RefreshTabs();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_PLATE:
-            if (nMsg == WIDGET_MSG_LOOP_DONE)
+            if (nMsg == kWidgetMsgLoopDone)
             {
                 RefreshPageTabs();
             }
             break;
 
         case UI_WIDGET_CONFIRM_PLATE:
-            if (nMsg == WIDGET_MSG_LOOP_DONE)
+            if (nMsg == kWidgetMsgLoopDone)
             {
                 RefreshConfirmButtons();
             }
             break;
 
         case UI_WIDGET_STAT_PLATE:
-            if (nMsg == WIDGET_MSG_LOOP_DONE)
+            if (nMsg == kWidgetMsgLoopDone)
             {
                 RefreshStatRow();
             }
             break;
 
         case UI_WIDGET_TAB_FIRST:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt1);
 
                 OnFirstTabClick();
             }
             break;
 
         case UI_WIDGET_TAB_FIRST + 1:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt1);
 
                 OnSecondTabClick();
             }
             break;
 
         case UI_WIDGET_TAB_FIRST + 2:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt1);
 
                 OnThirdTabClick();
             }
             break;
 
         case UI_WIDGET_TAB_FIRST + 3:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt1);
 
                 OnExitTabClick();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt2);
 
                 OnFirstPageTabClick();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 1:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt2);
 
                 OnSecondPageTabClick();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 2:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt2);
 
                 OnThirdPageTabClick();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 3:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt2);
 
                 OnFourthPageTabClick();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 4:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt2);
 
                 OnFifthPageTabClick();
             }
             break;
 
         case UI_WIDGET_PAGE_TAB_FIRST + 5:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT2);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt2);
 
                 OnSixthPageTabClick();
             }
             break;
 
         case UI_WIDGET_OKAY:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt1);
 
                 OnOkayClick();
             }
             break;
 
         case UI_WIDGET_CANCEL:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT1);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt1);
 
                 OnCancelClick();
             }
             break;
 
         case UI_WIDGET_LEFT_ARROW:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT3);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt3);
 
                 OnLeftArrowClick();
             }
             break;
 
         case UI_WIDGET_RIGHT_ARROW:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_SXBUTT3);
+                g_pAudioMgr->PlaySpecific(kSoundSxbutt3);
 
                 OnRightArrowClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 OnFirstStatClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST + 1:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 OnSecondStatClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST + 2:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 OnThirdStatClick();
             }
             break;
 
         case UI_WIDGET_STAT_FIRST + 3:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 OnFourthStatClick();
             }
             break;
 
         case UI_WIDGET_PAGE:
-        case WIDGET_ID_MOUSE:
-        case WIDGET_ID_RETURN:
+        case kWidgetIDMouse:
+        case kWidgetIDReturn:
             break;
 
         default:
@@ -711,7 +711,7 @@ void UIScreen::PreloadBitmaps()
 // FUNCTION: HYPERX 0x00488bd0
 void UIScreen::ResetFrameOnLoopDone(int nMsg)
 {
-    if (nMsg == WIDGET_MSG_LOOP_DONE)
+    if (nMsg == kWidgetMsgLoopDone)
     {
         m_apWidgets[UI_WIDGET_OWN_FIRST]->SetCurrentFrame(0);
     }

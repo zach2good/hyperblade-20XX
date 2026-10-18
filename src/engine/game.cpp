@@ -281,27 +281,27 @@ unsigned int Game::UpdateState()
 
     if (g_gameApp.m_nEngineState != static_cast<unsigned int>(g_nPrevEngineState))
     {
-        if (g_gameApp.m_nEngineState != ESTATE_MATCH_START)
+        if (g_gameApp.m_nEngineState != kEstateMatchStart)
         {
-            g_pAudioMgr->PreloadGroup(SOUND_GROUP_PRELOAD);
+            g_pAudioMgr->PreloadGroup(kSoundGroupPreload);
         }
 
-        if (g_nPrevEngineState == ESTATE_INIT || g_nPrevEngineState == ESTATE_MATCH_LIVE)
+        if (g_nPrevEngineState == kEstateInit || g_nPrevEngineState == kEstateMatchLive)
         {
             // Reached with the manager in ECX, which the function ignores.
             g_pAudioMgr->StopAllSfx();
-            g_pAudioMgr->PlaySpecific(SOUND_SXXAMBA2);
+            g_pAudioMgr->PlaySpecific(kSoundSxxamba2);
 
             if (g_pGameOptions != nullptr && g_pGameOptions->m_nInstallLevel != 0)
             {
-                g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
+                g_pAudioMgr->PlayCDTrack(kCDTrackMenu);
             }
             else
             {
                 g_pAudioMgr->StopCD();
             }
 
-            if (g_nPrevEngineState == ESTATE_MATCH_LIVE)
+            if (g_nPrevEngineState == kEstateMatchLive)
             {
                 Screen::ClearBlack();
 
@@ -314,8 +314,8 @@ unsigned int Game::UpdateState()
 
         switch (g_gameApp.m_nEngineState)
         {
-            case ESTATE_GAME_CONFIG:
-                if (g_nPrevEngineState != ESTATE_KEY_CONFIG)
+            case kEstateGameConfig:
+                if (g_nPrevEngineState != kEstateKeyConfig)
                 {
                     Screen::ClearBlack();
                 }
@@ -336,55 +336,55 @@ unsigned int Game::UpdateState()
 
                 break;
 
-            case ESTATE_TOURNAMENT_SETUP:
+            case kEstateTournamentSetup:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_HEAD_TO_HEAD_SETUP:
+            case kEstateHeadToHeadSetup:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_MATCH_INFO:
+            case kEstateMatchInfo:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_LEAGUE_SETUP:
+            case kEstateLeagueSetup:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_CHAMPIONSHIP_SETUP:
+            case kEstateChampionshipSetup:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_SAVE_LOAD:
+            case kEstateSaveLoad:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_PAUSE_FULL:
+            case kEstatePauseFull:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_PAUSE_MINIMAL:
+            case kEstatePauseMinimal:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_PAUSE_NO_SAVE:
+            case kEstatePauseNoSave:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
@@ -396,70 +396,70 @@ unsigned int Game::UpdateState()
 
                 break;
 
-            case ESTATE_MULTI_SETUP_OPTIONS:
+            case kEstateMultiSetupOptions:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_FINAL_CEREMONY:
+            case kEstateFinalCeremony:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_GAME_INTRO:
+            case kEstateGameIntro:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_TRAINING_END:
+            case kEstateTrainingEnd:
                 Screen::ClearBlack();
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_GAME_CLIPS_VIEWER:
+            case kEstateGameClipsViewer:
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_AWARDS:
+            case kEstateAwards:
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_KEY_CONFIG:
+            case kEstateKeyConfig:
                 GameApp::InstantiateState();
 
                 break;
 
-            case ESTATE_DROME_EXTERIOR:
+            case kEstateDromeExterior:
                 switch (g_nPrevEngineState)
                 {
-                    case ESTATE_CHAMPIONSHIP_SETUP:
-                    case ESTATE_AWARDS:
+                    case kEstateChampionshipSetup:
+                    case kEstateAwards:
                     {
                         const int nDifficulty = g_pGameEngine->GetDifficultyLevel();
 
                         switch (g_nPlayerMode)
                         {
-                            case PLAYER_MODE_EXHIBITION:
+                            case kPlayerModeExhibition:
                                 RELEASE_ASSERT(0);
                                 break;
 
-                            case PLAYER_MODE_TOURNAMENT:
+                            case kPlayerModeTournament:
                                 // Beating drome two on easy or drome eight on medium graduates the player.
                                 if ((g_nDromeArena == 2 && nDifficulty == 0) || (g_nDromeArena == 8 && nDifficulty == 1))
                                 {
-                                    g_gameApp.m_nEngineState = ESTATE_TRAINING_END;
+                                    g_gameApp.m_nEngineState = kEstateTrainingEnd;
                                 }
 
                                 if (g_nDromeArena == -1)
                                 {
                                     g_pGameEngine->m_pSaveObject->SetAllTeamsAvailable(1);
-                                    g_gameApp.m_nEngineState = ESTATE_FINAL_CEREMONY;
+                                    g_gameApp.m_nEngineState = kEstateFinalCeremony;
                                 }
 
                                 break;
@@ -474,7 +474,7 @@ unsigned int Game::UpdateState()
                     default:
                         if (g_bSessionActive == 0 && g_gameApp.FindCDRomDrive(0) == -1)
                         {
-                            g_gameApp.m_nEngineState = ESTATE_MAIN_MENU;
+                            g_gameApp.m_nEngineState = kEstateMainMenu;
                         }
                         else
                         {
@@ -487,14 +487,14 @@ unsigned int Game::UpdateState()
 
                 break;
 
-            case ESTATE_LOBBY:
+            case kEstateLobby:
                 g_nDromeTeamHome = g_pGameEngine->m_nTeamHomeIndex;
                 g_nDromeTeamAway = g_pGameEngine->m_nTeamAwayIndex;
                 g_nDromeArena    = g_pGameEngine->m_nArenaIndex;
                 // Falls through
 
-            case ESTATE_JUMBOTRON:
-                if (g_nPrevEngineState == ESTATE_INIT)
+            case kEstateJumbotron:
+                if (g_nPrevEngineState == kEstateInit)
                 {
                     GameApp::InstantiateState();
 
@@ -503,8 +503,8 @@ unsigned int Game::UpdateState()
 
                 // Falls through
 
-            case ESTATE_MAIN_MENU:
-                if (g_nPrevEngineState != ESTATE_MATCH_LIVE)
+            case kEstateMainMenu:
+                if (g_nPrevEngineState != kEstateMatchLive)
                 {
                     Screen::ClearBlack();
                 }
@@ -513,15 +513,15 @@ unsigned int Game::UpdateState()
 
                 break;
 
-            case ESTATE_MATCH_LIVE:
+            case kEstateMatchLive:
             case 24:
                 RELEASE_ASSERT(0);
 
                 break;
 
-            case ESTATE_MATCH_START:
-                g_pAudioMgr->FreeGroupBuffers(SOUND_GROUP_PRELOAD);
-                g_pAudioMgr->StopEntry(SOUND_SXXAMBA2);
+            case kEstateMatchStart:
+                g_pAudioMgr->FreeGroupBuffers(kSoundGroupPreload);
+                g_pAudioMgr->StopEntry(kSoundSxxamba2);
 
                 g_pGameEngine->SetTeams(static_cast<short>(g_nDromeTeamHome), static_cast<short>(g_nDromeTeamAway));
                 g_pGameEngine->SetArena(static_cast<short>(g_nDromeArena));
@@ -537,7 +537,7 @@ unsigned int Game::UpdateState()
 
                 g_pActiveScreen = nullptr;
                 GameApp::SetCursorVisible(g_nSavedCursorVisible);
-                g_pGameEngine->m_wRunState = ENGINE_RUN_PLAYING;
+                g_pGameEngine->m_wRunState = kEngineRunPlaying;
 
                 if (g_pActiveScreen != nullptr && g_pActiveScreen->HasPalette() != 0)
                 {
@@ -552,24 +552,24 @@ unsigned int Game::UpdateState()
                 Renderer::ClearFrame();
                 Renderer::PresentFrame();
 
-                if (Game::SetEngineState(ESTATE_MATCH_LIVE) != ESTATE_MATCH_LIVE)
+                if (Game::SetEngineState(kEstateMatchLive) != kEstateMatchLive)
                 {
-                    Game::SetEngineState(ESTATE_MATCH_LIVE);
+                    Game::SetEngineState(kEstateMatchLive);
                     g_pGameEngine->BeginMatchPlay();
-                    g_pGameEngine->BroadcastEvent(MSG_START_DRAG, 0, SLOT_GOD);
+                    g_pGameEngine->BroadcastEvent(kMsgStartDrag, 0, kSlotGod);
                 }
 
-                g_pAudioMgr->PlayCDTrack(CD_TRACK_RANDOM);
-                g_pAudioMgr->PlaySpecific(SOUND_SXXAMBB2);
+                g_pAudioMgr->PlayCDTrack(kCDTrackRandom);
+                g_pAudioMgr->PlaySpecific(kSoundSxxambb2);
 
                 break;
 
-            case ESTATE_QUIT:
-                Game::SetEngineState(ESTATE_LOBBY);
-                pszText = g_gameApp.m_stringPool.LoadText(rand() % 3 + STRING_REALLY_QUIT);
+            case kEstateQuit:
+                Game::SetEngineState(kEstateLobby);
+                pszText = g_gameApp.m_stringPool.LoadText(rand() % 3 + kStringReallyQuit);
 
                 if (Window::AskYesNo(pszText,
-                                     g_gameApp.m_stringPool.LoadText(STRING_QUIT)))
+                                     g_gameApp.m_stringPool.LoadText(kStringQuit)))
                 {
                     Screen::ClearBlack();
 

@@ -6,10 +6,10 @@
 class EngineObject;
 
 // The ten agenda item slots a behaviour carries.
-constexpr auto BEHAVIOR_SLOT_COUNT = 10;
+constexpr auto kBehaviorSlotCount = 10;
 
 // m_wLatency until id_SET_InteractorLatency sets it.
-constexpr auto BEHAVIOR_DEFAULT_LATENCY = 0x0a;
+constexpr auto kBehaviorDefaultLatency = 0x0a;
 
 // VTABLE: HYPERX 0x004b23c8
 class GameBehaviorObject
@@ -94,9 +94,9 @@ public:
     short m_wSyncValue; // 0x06
 
     // The ten agenda item slots each BehObj_ initialiser binds.
-    class AgendaItem*   m_apSlots[BEHAVIOR_SLOT_COUNT]; // 0x08
-    struct PhysicsBody* m_pBody;                        // 0x30
-    class EngineObject* m_pOwner;                       // 0x34
+    class AgendaItem*   m_apSlots[kBehaviorSlotCount]; // 0x08
+    struct PhysicsBody* m_pBody;                       // 0x30
+    class EngineObject* m_pOwner;                      // 0x34
     // The animation the behaviour plays, and the persistent one RestorePersistentAnimation returns
     // to, each with its rate and flags.
     class AnimDB* m_pAnimation;           // 0x38

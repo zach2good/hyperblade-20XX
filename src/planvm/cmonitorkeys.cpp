@@ -31,12 +31,12 @@ void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     short* pFirst = &pOwner->GetPhysicsBody()->nHeldBindings;
     m_pInput      = pFirst;
-    *pFirst       = static_cast<short>(g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask);
+    *pFirst       = static_cast<short>(g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask);
 
     short* pSecond = &pOwner->GetPhysicsBody()->nPrevHeldBindings;
     m_pPrevInput   = pSecond;
     *pSecond       = 0;
-    m_nMode        = MON_DRIVE_YER_GUY;
+    m_nMode        = kMonDriveYerGuy;
 }
 
 // FUNCTION: HYPERX 0x00410e60
@@ -48,7 +48,7 @@ void CMonitorKeys::OnListChanged()
         m_pOwner     = nullptr;
         m_pInput     = nullptr;
         m_pPrevInput = nullptr;
-        m_nMode      = MON_DRIVE_YER_GUY;
+        m_nMode      = kMonDriveYerGuy;
         m_bReady     = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -61,13 +61,13 @@ void CMonitorKeys::Process(int nArg)
     float        flEdge;
     PhysicsBody* pBlock;
 
-    *m_pInput = static_cast<short>(g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask);
+    *m_pInput = static_cast<short>(g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask);
 
     Player::ProcessTrickInput(m_pOwner, m_pInput);
 
     switch (m_nMode)
     {
-        case MON_GOALIE_CTRL:
+        case kMonGoalieCtrl:
             pBlock = m_pOwner->GetPhysicsBody();
 
             m_pOwner->GetPhysicsBody()->velDirLatched = pBlock->velDir;
@@ -101,15 +101,15 @@ void CMonitorKeys::Process(int nArg)
             m_pOwner->GetPositionPtr()->y = m_pOwner->GetPhysicsBody()->pos.y -= m_pOwner->GetPhysicsBody()->axis.x * CLAMP_RATE;
             break;
 
-        case MON_DRIVE_YER_GUY:
-        case MON_ARCADE_STYLE:
+        case kMonDriveYerGuy:
+        case kMonArcadeStyle:
             m_pOwner->GetPhysicsBody()->ApplySteeringForce();
             break;
     }
 
     *m_pPrevInput = *m_pInput;
 
-    g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask = static_cast<unsigned short>(*m_pPrevInput);
+    g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask = static_cast<unsigned short>(*m_pPrevInput);
 
     AgendaItem* const pNext = m_pNext;
 

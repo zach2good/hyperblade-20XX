@@ -291,7 +291,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
             {
                 MeshFace* const pFace = pMesh->Face(nFace);
 
-                if ((pFace->cFlags & FACE_FLAG_HAS_UV) != 0)
+                if ((pFace->cFlags & kFaceFlagHasUV) != 0)
                 {
                     pnCoord = pFace->UVIndices();
                 }

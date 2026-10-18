@@ -20,7 +20,7 @@ void BehObj_GlideToPosition::Init(EngineObject* pOwner, PlanNode* pBlock, int nF
     // STRING: HYPERX 0x004bc298
     m_pszName = "GlideToPosition";
 
-    m_wKind = BEH_GLIDE_TO_POSITION;
+    m_wKind = kBehGlideToPosition;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CAdjustAcceleration);
 

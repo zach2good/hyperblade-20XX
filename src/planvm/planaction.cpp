@@ -60,9 +60,9 @@
 #include "planvm/planaction.h"
 #include "planvm/plancond.h"
 
-constexpr auto ARG_MESSAGE = 1;
+constexpr auto kArgMessage = 1;
 
-constexpr auto ARG_COUNT_WITH_MESSAGE = 2;
+constexpr auto kArgCountWithMessage = 2;
 
 // The second object's state block is fetched and never used, in the original too.
 
@@ -92,10 +92,10 @@ void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
     pState->surfNormal = *pPart->GetNormal();
 }
 
-constexpr auto INFO_BAR_HOLD_MS = 0x5dc;
+constexpr auto kInfoBarHoldMs = 0x5dc;
 
-constexpr auto MESSAGE_KIND_EVEN = 1;
-constexpr auto MESSAGE_KIND_ODD  = 2;
+constexpr auto kMessageKindEven = 1;
+constexpr auto kMessageKindOdd  = 2;
 
 // FUNCTION: HYPERX 0x0046aa90
 void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
@@ -112,12 +112,12 @@ void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x0046aad0
 void PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
 {
-    if (pNode->m_nArgCount == ARG_COUNT_WITH_MESSAGE)
+    if (pNode->m_nArgCount == kArgCountWithMessage)
     {
-        const int nIndex = pNode->m_pArgs[ARG_MESSAGE].n;
+        const int nIndex = pNode->m_pArgs[kArgMessage].n;
         const int nFirst = g_pMessageQueue->GetAt(nIndex);
 
-        g_pMessageQueue->PushFromTable(nIndex, nFirst, INFO_BAR_HOLD_MS);
+        g_pMessageQueue->PushFromTable(nIndex, nFirst, kInfoBarHoldMs);
     }
 }
 
@@ -140,7 +140,7 @@ void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*
         slot.n = pfnResolver(pContext->GetActor(), pArgs);
     }
 
-    if (slot.n == SLOT_NONE)
+    if (slot.n == kSlotNone)
     {
         return;
     }
@@ -148,15 +148,15 @@ void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*
     if ((slot.n & 1) != 0)
     {
         pszName = g_pGameEngine->m_ppSlots[static_cast<short>(slot.n)]->m_pszName;
-        nKind   = MESSAGE_KIND_ODD;
+        nKind   = kMessageKindOdd;
     }
     else
     {
         pszName = g_pGameEngine->m_ppSlots[static_cast<short>(slot.n)]->m_pszName;
-        nKind   = MESSAGE_KIND_EVEN;
+        nKind   = kMessageKindEven;
     }
 
-    g_pMessageQueue->PushNamedFromTable(pszName, nIndex, nKind, INFO_BAR_HOLD_MS);
+    g_pMessageQueue->PushNamedFromTable(pszName, nIndex, nKind, kInfoBarHoldMs);
 }
 
 // A slot of minus one means the actor has no team and nothing is pushed.
@@ -173,20 +173,20 @@ void PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, 
     {
         nSlot = pContext->GetActor()->GetSlot();
 
-        if (nSlot != SLOT_NONE)
+        if (nSlot != kSlotNone)
         {
             if ((nSlot & 1) != 0)
             {
-                nKind = MESSAGE_KIND_ODD;
+                nKind = kMessageKindOdd;
                 pTeam = g_pGameEngine->m_pTeamB->GetName();
             }
             else
             {
                 pTeam = g_pGameEngine->m_pTeamA->GetName();
-                nKind = MESSAGE_KIND_EVEN;
+                nKind = kMessageKindEven;
             }
 
-            g_pMessageQueue->PushNamedFromTable(pTeam, nIndex, nKind, INFO_BAR_HOLD_MS);
+            g_pMessageQueue->PushNamedFromTable(pTeam, nIndex, nKind, kInfoBarHoldMs);
         }
     }
 }

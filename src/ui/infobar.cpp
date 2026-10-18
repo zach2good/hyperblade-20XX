@@ -35,27 +35,27 @@
 #include "engine/statids.h"
 #include "app/stringids.h"
 
-constexpr auto PERIOD_LAMP_COUNT = 3;
+constexpr auto kPeriodLampCount = 3;
 
 // Where each of the three lamps sits, as an offset from the bar's own left edge.
 // GLOBAL: HYPERX 0x004c2f60
 extern int g_anPeriodLightOffset[3];
 
-constexpr auto PERIOD_LAMP_TOP = 0x28;
+constexpr auto kPeriodLampTop = 0x28;
 
-constexpr auto PERIOD_LAMP_SIDE = 9;
+constexpr auto kPeriodLampSide = 9;
 
 // GLOBAL: HYPERX 0x004cef64
 extern int g_nPeriodLightColour;
 
-constexpr auto METRIC_ROW_GAP = 0x19;
+constexpr auto kMetricRowGap = 0x19;
 
 // The count prints unsigned; its sign only picks the vertical offset. A zero count stops drawing.
 
-constexpr auto ROK_LABEL_POSITIVE = 0x20;
-constexpr auto ROK_LABEL_NEGATIVE = 0x2f;
+constexpr auto kRokLabelPositive = 0x20;
+constexpr auto kRokLabelNegative = 0x2f;
 
-constexpr auto ROK_TEXT_BUFFER = 0x50;
+constexpr auto kRokTextBuffer = 0x50;
 
 // The info bar's own cache of the last rok value drawn.
 // GLOBAL: HYPERX 0x004cef54
@@ -75,22 +75,22 @@ void InfoBar::DrawPeriodLight()
     {
         nLamp = 0;
     }
-    else if (nLamp >= PERIOD_LAMP_COUNT)
+    else if (nLamp >= kPeriodLampCount)
     {
-        nLamp = PERIOD_LAMP_COUNT - 1;
+        nLamp = kPeriodLampCount - 1;
     }
 
     nX += g_anPeriodLightOffset[nLamp];
 
     nLamp = g_nPeriodLightColour;
 
-    SWRend::FillRect(nX, nY + PERIOD_LAMP_TOP, PERIOD_LAMP_SIDE, PERIOD_LAMP_SIDE, nLamp);
+    SWRend::FillRect(nX, nY + kPeriodLampTop, kPeriodLampSide, kPeriodLampSide, nLamp);
 }
 
 // FUNCTION: HYPERX 0x00450160
 void InfoBar::UpdateRokValue()
 {
-    char szText[ROK_TEXT_BUFFER];
+    char szText[kRokTextBuffer];
 
     RokObject* const pRok = g_pGameEngine->GetRok();
 
@@ -113,11 +113,11 @@ void InfoBar::UpdateRokValue()
 
                 if (nRokValue > 0)
                 {
-                    pLabel->m_ptDrawOffset.y = ROK_LABEL_POSITIVE;
+                    pLabel->m_ptDrawOffset.y = kRokLabelPositive;
                 }
                 else
                 {
-                    pLabel->m_ptDrawOffset.y = ROK_LABEL_NEGATIVE;
+                    pLabel->m_ptDrawOffset.y = kRokLabelNegative;
                 }
 
                 pLabel->SetText(szText, static_cast<std::uint32_t>(0xffff));
@@ -151,7 +151,7 @@ void InfoBar::UpdateDamageBar(InfoBarSlot* pBar, int nSlot)
             pBar->m_nColour = g_nDamageBarColourDim;
         }
 
-        const double dScaled = pObject->m_stats.GetScalar(RATING_DAMAGE) * 0.01f;
+        const double dScaled = pObject->m_stats.GetScalar(kRatingDamage) * 0.01f;
 
         const int nFrameCount = pBar->m_nFrameCount;
 
@@ -201,11 +201,11 @@ extern int g_anOwnFormationSlotMap[4];
 // FUNCTION: HYPERX 0x00450270
 void InfoBar::UpdateOwnTeamDisplay()
 {
-    char             szText[TEAM_LABEL_BUFFER];
+    char             szText[kTeamLabelBuffer];
     const TeamBlock* pTeam;
     const TeamBlock* pOther;
     int              aFormation[2];
-    int              aDamage[TEAM_LABEL_COUNT];
+    int              aDamage[kTeamLabelCount];
     int              nColour;
     int              i;
 
@@ -219,7 +219,7 @@ void InfoBar::UpdateOwnTeamDisplay()
     int       bDirty      = 0;
     const int nViewedSlot = g_pGameEngine->m_nViewedSlot;
 
-    if ((nViewedSlot & ENGINE_SIDE_SWAPPED) != 0)
+    if ((nViewedSlot & kEngineSideSwapped) != 0)
     {
         pOther = g_pGameEngine->m_pTeamA;
         pTeam  = g_pGameEngine->m_pTeamB;
@@ -261,18 +261,18 @@ void InfoBar::UpdateOwnTeamDisplay()
 
     PlayerObject* pObject = g_pGameEngine->GetPlayer(nSlot);
 
-    aDamage[0] = static_cast<int>(pObject->m_stats.GetScalar(RATING_DAMAGE));
+    aDamage[0] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
     nSlot += 2;
 
     pObject = g_pGameEngine->GetPlayer(nSlot);
 
-    aDamage[1] = static_cast<int>(pObject->m_stats.GetScalar(RATING_DAMAGE));
+    aDamage[1] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
     ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
 
-    aDamage[2] = static_cast<int>(pTeam->aRows[pReserves->anRow[0]].aStat[RATING_DAMAGE]);
-    aDamage[3] = static_cast<int>(pTeam->aRows[pReserves->anRow[1]].aStat[RATING_DAMAGE]);
+    aDamage[2] = static_cast<int>(pTeam->aRows[pReserves->anRow[0]].aStat[kRatingDamage]);
+    aDamage[3] = static_cast<int>(pTeam->aRows[pReserves->anRow[1]].aStat[kRatingDamage]);
 
     if (aDamage[0] != g_anInfoBarOwnDamage[0] || aDamage[1] != g_anInfoBarOwnDamage[1] || aDamage[2] != g_anInfoBarOwnDamage[2] || aDamage[3] != g_anInfoBarOwnDamage[3])
     {
@@ -287,28 +287,28 @@ void InfoBar::UpdateOwnTeamDisplay()
     {
         const int nFollowed = (static_cast<unsigned int>(nViewedSlot) >> 1) & 1;
 
-        for (i = 0; i < TEAM_LABEL_COUNT; i++)
+        for (i = 0; i < kTeamLabelCount; i++)
         {
             if (static_cast<float>(aDamage[i]) <= DamageGate())
             {
-                nColour = TEAM_COLOUR_ABSENT;
+                nColour = kTeamColourAbsent;
             }
             else if (nFollowed == i)
             {
-                nColour = TEAM_COLOUR_FOLLOWED;
+                nColour = kTeamColourFollowed;
             }
-            else if (i < TEAM_LABEL_ON_DROME)
+            else if (i < kTeamLabelOnDrome)
             {
-                nColour = TEAM_COLOUR_ON_DROME;
+                nColour = kTeamColourOnDrome;
             }
             else
             {
-                nColour = TEAM_COLOUR_RESERVE;
+                nColour = kTeamColourReserve;
             }
 
-            if (i >= TEAM_LABEL_ON_DROME)
+            if (i >= kTeamLabelOnDrome)
             {
-                sprintf(szText, "%c. %s", i - TEAM_LABEL_ON_DROME + '1', pTeam->GetRosterName(g_anOwnFormationSlotMap[pReserves->anRow[i - TEAM_LABEL_ON_DROME]]));
+                sprintf(szText, "%c. %s", i - kTeamLabelOnDrome + '1', pTeam->GetRosterName(g_anOwnFormationSlotMap[pReserves->anRow[i - kTeamLabelOnDrome]]));
             }
             else
             {
@@ -319,11 +319,11 @@ void InfoBar::UpdateOwnTeamDisplay()
             m_atOwnRoster[i].SetText(szText, static_cast<std::uint32_t>(nColour));
         }
 
-        m_atTeamNames[0].SetText(pTeam->GetName(), static_cast<std::uint32_t>(TEAM_COLOUR_RESERVE));
-        m_atTeamNames[1].SetText(pOther->GetName(), static_cast<std::uint32_t>(TEAM_COLOUR_RESERVE));
+        m_atTeamNames[0].SetText(pTeam->GetName(), static_cast<std::uint32_t>(kTeamColourReserve));
+        m_atTeamNames[1].SetText(pOther->GetName(), static_cast<std::uint32_t>(kTeamColourReserve));
     }
 
-    for (i = 0; i < TEAM_LABEL_COUNT; i++)
+    for (i = 0; i < kTeamLabelCount; i++)
     {
         if (aDamage[i] > 0)
         {
@@ -354,10 +354,10 @@ extern int g_anFoeFormationSlotMap[4];
 // FUNCTION: HYPERX 0x00450600
 void InfoBar::UpdateFoeTeamDisplay()
 {
-    char             szText[TEAM_LABEL_BUFFER];
+    char             szText[kTeamLabelBuffer];
     const TeamBlock* pTeam;
     int              aFormation[2];
-    int              aDamage[TEAM_LABEL_COUNT];
+    int              aDamage[kTeamLabelCount];
     int              nColour;
     int              i;
 
@@ -370,7 +370,7 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     int bDirty = 0;
 
-    if ((g_pGameEngine->m_nViewedSlot & ENGINE_SIDE_SWAPPED) != 0)
+    if ((g_pGameEngine->m_nViewedSlot & kEngineSideSwapped) != 0)
     {
         pTeam = g_pGameEngine->m_pTeamA;
 
@@ -404,18 +404,18 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     PlayerObject* pObject = g_pGameEngine->GetPlayer(nSlot);
 
-    aDamage[0] = static_cast<int>(pObject->m_stats.GetScalar(RATING_DAMAGE));
+    aDamage[0] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
     nSlot += 2;
 
     pObject = g_pGameEngine->GetPlayer(nSlot);
 
-    aDamage[1] = static_cast<int>(pObject->m_stats.GetScalar(RATING_DAMAGE));
+    aDamage[1] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
     ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
 
-    aDamage[2] = static_cast<int>(pTeam->aRows[pReserves->anRow[0]].aStat[RATING_DAMAGE]);
-    aDamage[3] = static_cast<int>(pTeam->aRows[pReserves->anRow[1]].aStat[RATING_DAMAGE]);
+    aDamage[2] = static_cast<int>(pTeam->aRows[pReserves->anRow[0]].aStat[kRatingDamage]);
+    aDamage[3] = static_cast<int>(pTeam->aRows[pReserves->anRow[1]].aStat[kRatingDamage]);
 
     if (aDamage[0] != g_anInfoBarFoeDamage[0] || aDamage[1] != g_anInfoBarFoeDamage[1] || aDamage[2] != g_anInfoBarFoeDamage[2] || aDamage[3] != g_anInfoBarFoeDamage[3])
     {
@@ -428,25 +428,25 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     if (bDirty != 0)
     {
-        for (i = 0; i < TEAM_LABEL_COUNT; i++)
+        for (i = 0; i < kTeamLabelCount; i++)
         {
             if (static_cast<float>(aDamage[i]) <= DamageGate())
             {
-                nColour = TEAM_COLOUR_ABSENT;
+                nColour = kTeamColourAbsent;
             }
-            else if (i < TEAM_LABEL_ON_DROME)
+            else if (i < kTeamLabelOnDrome)
             {
-                nColour = TEAM_COLOUR_ON_DROME;
+                nColour = kTeamColourOnDrome;
             }
             else
             {
-                nColour = TEAM_COLOUR_RESERVE;
+                nColour = kTeamColourReserve;
             }
 
-            if (i >= TEAM_LABEL_ON_DROME)
+            if (i >= kTeamLabelOnDrome)
             {
                 strcpy(szText,
-                       pTeam->GetRosterName(g_anFoeFormationSlotMap[pReserves->anRow[i - TEAM_LABEL_ON_DROME]]));
+                       pTeam->GetRosterName(g_anFoeFormationSlotMap[pReserves->anRow[i - kTeamLabelOnDrome]]));
             }
             else
             {
@@ -458,7 +458,7 @@ void InfoBar::UpdateFoeTeamDisplay()
         }
     }
 
-    for (i = 0; i < TEAM_LABEL_COUNT; i++)
+    for (i = 0; i < kTeamLabelCount; i++)
     {
         if (aDamage[i] > 0)
         {
@@ -467,7 +467,7 @@ void InfoBar::UpdateFoeTeamDisplay()
     }
 }
 
-constexpr auto TEXT_COLOUR = 0xffff;
+constexpr auto kTextColour = 0xffff;
 
 // GLOBAL: HYPERX 0x004cefe0
 extern int g_nInfoBarLastSeconds;
@@ -482,11 +482,11 @@ extern int g_nInfoBarLastAwayScore;
 // FUNCTION: HYPERX 0x004508f0
 void InfoBar::DrawHUD(int bFull)
 {
-    char szText[CLOCK_BUFFER];
+    char szText[kClockBuffer];
 
     const int nElapsed = g_pGameEngine->m_nPeriodLengthMs - g_pGameEngine->m_clock.nPauseStartMs + g_pGameEngine->m_clock.nPeriodStartMs;
 
-    const int nSeconds = static_cast<int>((nElapsed % MS_PER_MINUTE) * 0.001f);
+    const int nSeconds = static_cast<int>((nElapsed % kMsPerMinute) * 0.001f);
     const int nMinutes = static_cast<int>(nElapsed * 1.6666667e-005f);
 
     const int nActive = g_frameTimer.bFrameTimesOn;
@@ -498,11 +498,11 @@ void InfoBar::DrawHUD(int bFull)
         // STRING: HYPERX 0x004c0d70
         sprintf(szText, "%d:%02d", nMinutes, nSeconds);
 
-        m_tClock.SetText(szText, static_cast<std::uint32_t>(TEXT_COLOUR));
+        m_tClock.SetText(szText, static_cast<std::uint32_t>(kTextColour));
 
         if (nActive != 0)
         {
-            m_tFrameRate.SetText(g_szFpsText, static_cast<std::uint32_t>(TEXT_COLOUR));
+            m_tFrameRate.SetText(g_szFpsText, static_cast<std::uint32_t>(kTextColour));
         }
     }
 
@@ -525,7 +525,7 @@ void InfoBar::DrawHUD(int bFull)
         // STRING: HYPERX 0x004bb814
         sprintf(szText, "%d", nScore);
 
-        m_tHomeScore.SetText(szText, static_cast<std::uint32_t>(TEXT_COLOUR));
+        m_tHomeScore.SetText(szText, static_cast<std::uint32_t>(kTextColour));
 
         g_nInfoBarLastHomeScore = nScore;
     }
@@ -539,7 +539,7 @@ void InfoBar::DrawHUD(int bFull)
         // STRING: HYPERX 0x004bb814
         sprintf(szText, "%d", nScore);
 
-        m_tAwayScore.SetText(szText, static_cast<std::uint32_t>(TEXT_COLOUR));
+        m_tAwayScore.SetText(szText, static_cast<std::uint32_t>(kTextColour));
 
         g_nInfoBarLastAwayScore = nScore;
     }
@@ -555,7 +555,7 @@ void InfoBar::DrawHUD(int bFull)
 
     if (m_bQuitPromptVisible != 0)
     {
-        if (g_pGameEngine->m_clock.nTickMs - m_nQuitPromptTick >= QUIT_PROMPT_INTERVAL)
+        if (g_pGameEngine->m_clock.nTickMs - m_nQuitPromptTick >= kQuitPromptInterval)
         {
             HideQuitPrompt();
         }
@@ -579,17 +579,17 @@ void InfoBar::DrawHUD(int bFull)
     UpdateFoeTeamDisplay();
 }
 
-constexpr auto ENGINE_FOLLOW_LIMIT = 6;
+constexpr auto kEngineFollowLimit = 6;
 
-constexpr auto COLOUR_BLIP_DROMER0 = 0xc8c800;
-constexpr auto COLOUR_BLIP_DROMER2 = 0xffff00;
-constexpr auto COLOUR_BLIP_DROMER1 = 0xc8;
-constexpr auto COLOUR_BLIP_DROMER3 = 0xff;
-constexpr auto COLOUR_BLIP_ROK     = 0xffff;
-constexpr auto COLOUR_PERIOD_LIGHT = 0xff;
-constexpr auto COLOUR_BAR_LIT      = 0xffff;
-constexpr auto COLOUR_BAR_DIM      = 0xc8;
-constexpr auto COLOUR_RADAR_LINE   = 0xe0ffff;
+constexpr auto kColourBlipDromer0 = 0xc8c800;
+constexpr auto kColourBlipDromer2 = 0xffff00;
+constexpr auto kColourBlipDromer1 = 0xc8;
+constexpr auto kColourBlipDromer3 = 0xff;
+constexpr auto kColourBlipRok     = 0xffff;
+constexpr auto kColourPeriodLight = 0xff;
+constexpr auto kColourBarLit      = 0xffff;
+constexpr auto kColourBarDim      = 0xc8;
+constexpr auto kColourRadarLine   = 0xe0ffff;
 
 // A null engine triggers the re-resolve, which then dereferences it, as in the original.
 // FUNCTION: HYPERX 0x00450b80
@@ -603,15 +603,15 @@ void InfoBar::DrawScene(int bDraw)
             m_nCachedAwayTeam = g_pGameEngine->m_nTeamAwayIndex;
             m_nCachedArena    = g_pGameEngine->m_nArenaIndex;
 
-            g_nRadarBlipColourDromer0 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER0, HudLayer::KEY_INDEX);
-            g_nRadarBlipColourDromer2 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER2, HudLayer::KEY_INDEX);
-            g_nRadarBlipColourDromer1 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER1, HudLayer::KEY_INDEX);
-            g_nRadarBlipColourDromer3 = g_pColorPalette->NearestIndex(COLOUR_BLIP_DROMER3, HudLayer::KEY_INDEX);
-            g_nRadarBlipColourRok     = g_pColorPalette->NearestIndex(COLOUR_BLIP_ROK, HudLayer::KEY_INDEX);
-            g_nPeriodLightColour      = g_pColorPalette->NearestIndex(COLOUR_PERIOD_LIGHT, HudLayer::KEY_INDEX);
-            g_nDamageBarColourLit     = g_pColorPalette->NearestIndex(COLOUR_BAR_LIT, HudLayer::KEY_INDEX);
-            g_nDamageBarColourDim     = g_pColorPalette->NearestIndex(COLOUR_BAR_DIM, HudLayer::KEY_INDEX);
-            g_nRadarLineColour        = g_pColorPalette->NearestIndex(COLOUR_RADAR_LINE, HudLayer::KEY_INDEX);
+            g_nRadarBlipColourDromer0 = g_pColorPalette->NearestIndex(kColourBlipDromer0, HudLayer::kKeyIndex);
+            g_nRadarBlipColourDromer2 = g_pColorPalette->NearestIndex(kColourBlipDromer2, HudLayer::kKeyIndex);
+            g_nRadarBlipColourDromer1 = g_pColorPalette->NearestIndex(kColourBlipDromer1, HudLayer::kKeyIndex);
+            g_nRadarBlipColourDromer3 = g_pColorPalette->NearestIndex(kColourBlipDromer3, HudLayer::kKeyIndex);
+            g_nRadarBlipColourRok     = g_pColorPalette->NearestIndex(kColourBlipRok, HudLayer::kKeyIndex);
+            g_nPeriodLightColour      = g_pColorPalette->NearestIndex(kColourPeriodLight, HudLayer::kKeyIndex);
+            g_nDamageBarColourLit     = g_pColorPalette->NearestIndex(kColourBarLit, HudLayer::kKeyIndex);
+            g_nDamageBarColourDim     = g_pColorPalette->NearestIndex(kColourBarDim, HudLayer::kKeyIndex);
+            g_nRadarLineColour        = g_pColorPalette->NearestIndex(kColourRadarLine, HudLayer::kKeyIndex);
         }
 
         DrawPeriodLight();
@@ -620,7 +620,7 @@ void InfoBar::DrawScene(int bDraw)
         {
             const int nFollowed = g_pGameEngine->m_nViewedSlot;
 
-            if (nFollowed < ENGINE_FOLLOW_LIMIT)
+            if (nFollowed < kEngineFollowLimit)
             {
                 PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFollowed));
 
@@ -910,27 +910,27 @@ void InfoBar::LayoutSurfaces()
 // GLOBAL: HYPERX 0x004cef7c
 extern char g_abInfoBarFontName[0x50];
 
-constexpr auto INFOBAR_NAME_BUFFER = 0x50;
+constexpr auto kInfobarNameBuffer = 0x50;
 
-constexpr auto FONT_TIMER = 9;
-constexpr auto FONT_LABEL = 10;
-constexpr auto FONT_PAIR  = 11;
-constexpr auto FONT_BODY  = 15;
-constexpr auto FONT_LARGE = 20;
+constexpr auto kFontTimer = 9;
+constexpr auto kFontLabel = 10;
+constexpr auto kFontPair  = 11;
+constexpr auto kFontBody  = 15;
+constexpr auto kFontLarge = 20;
 
-constexpr auto COLOUR_YELLOW = 0xffff;
-constexpr auto COLOUR_UNSET  = (-1);
+constexpr auto kColourYellow = 0xffff;
+constexpr auto kColourUnset  = (-1);
 
 // The damage bar strip: twelve frames, the ninth showing, drawn two by eight.
-constexpr auto BAR_FRAME_COUNT = 0x0c;
-constexpr auto BAR_UNIT_WIDTH  = 9;
-constexpr auto BAR_MIN_HEIGHT  = 2;
-constexpr auto BAR_MAX_HEIGHT  = 8;
+constexpr auto kBarFrameCount = 0x0c;
+constexpr auto kBarUnitWidth  = 9;
+constexpr auto kBarMinHeight  = 2;
+constexpr auto kBarMaxHeight  = 8;
 
 // FUNCTION: HYPERX 0x00451280
 InfoBar::InfoBar()
 {
-    char szName[INFOBAR_NAME_BUFFER];
+    char szName[kInfobarNameBuffer];
     Vec3 vLimits;
     int  i;
 
@@ -938,8 +938,8 @@ InfoBar::InfoBar()
 
     m_sPeriodFrame.LoadByName("frper");
 
-    m_tClock.CreateFontFace(g_abInfoBarFontName, FONT_LARGE);
-    m_tFrameRate.CreateFontFace(g_abInfoBarFontName, FONT_BODY);
+    m_tClock.CreateFontFace(g_abInfoBarFontName, kFontLarge);
+    m_tFrameRate.CreateFontFace(g_abInfoBarFontName, kFontBody);
 
     sprintf(szName, "fr%s", "speed");
 
@@ -955,27 +955,27 @@ InfoBar::InfoBar()
 
     m_oSpeedMeter.SetStrip(ptSpeedSize.x, 1, 0, 0);
 
-    m_tHomeScore.CreateFontFace(g_abInfoBarFontName, FONT_BODY);
+    m_tHomeScore.CreateFontFace(g_abInfoBarFontName, kFontBody);
 
     m_sTeamAFrame.LoadByName("frdamgA");
 
-    m_kTeamADamage1.SetStrip(BAR_FRAME_COUNT, BAR_UNIT_WIDTH, BAR_MIN_HEIGHT, BAR_MAX_HEIGHT);
-    m_kTeamADamage2.SetStrip(BAR_FRAME_COUNT, BAR_UNIT_WIDTH, BAR_MIN_HEIGHT, BAR_MAX_HEIGHT);
+    m_kTeamADamage1.SetStrip(kBarFrameCount, kBarUnitWidth, kBarMinHeight, kBarMaxHeight);
+    m_kTeamADamage2.SetStrip(kBarFrameCount, kBarUnitWidth, kBarMinHeight, kBarMaxHeight);
 
-    m_tAwayScore.CreateFontFace(g_abInfoBarFontName, FONT_BODY);
+    m_tAwayScore.CreateFontFace(g_abInfoBarFontName, kFontBody);
 
     m_sTeamBFrame.LoadByName("frdamgB");
 
-    m_kTeamBDamage1.SetStrip(BAR_FRAME_COUNT, BAR_UNIT_WIDTH, BAR_MIN_HEIGHT, BAR_MAX_HEIGHT);
-    m_kTeamBDamage2.SetStrip(BAR_FRAME_COUNT, BAR_UNIT_WIDTH, BAR_MIN_HEIGHT, BAR_MAX_HEIGHT);
+    m_kTeamBDamage1.SetStrip(kBarFrameCount, kBarUnitWidth, kBarMinHeight, kBarMaxHeight);
+    m_kTeamBDamage2.SetStrip(kBarFrameCount, kBarUnitWidth, kBarMinHeight, kBarMaxHeight);
 
-    m_tRokValue.CreateFontFace(g_abInfoBarFontName, FONT_TIMER);
+    m_tRokValue.CreateFontFace(g_abInfoBarFontName, kFontTimer);
 
     HideMessage();
 
     m_sMessageFrame.LoadByName("frmsg");
 
-    m_tMessage.CreateFontFace(g_abInfoBarFontName, FONT_BODY);
+    m_tMessage.CreateFontFace(g_abInfoBarFontName, kFontBody);
 
     m_sRadarFrame.LoadByName("frradar");
 
@@ -995,15 +995,15 @@ InfoBar::InfoBar()
 
     m_sHeadCamFrame.LoadByName("frshot");
 
-    m_tHeadCamText.CreateFontFace(g_abInfoBarFontName, FONT_LABEL);
+    m_tHeadCamText.CreateFontFace(g_abInfoBarFontName, kFontLabel);
 
-    m_tHeadCamText.SetColour(COLOUR_YELLOW);
+    m_tHeadCamText.SetColour(kColourYellow);
 
     CDDText* pLabel = &m_tShotCameraLabel;
 
-    pLabel->CreateFontFace(g_abInfoBarFontName, FONT_LABEL);
+    pLabel->CreateFontFace(g_abInfoBarFontName, kFontLabel);
 
-    pLabel->SetText("Shot Camera", static_cast<std::uint32_t>(COLOUR_YELLOW));
+    pLabel->SetText("Shot Camera", static_cast<std::uint32_t>(kColourYellow));
 
     m_bShotPowerWanted = 0;
     SetReticleState(0);
@@ -1020,40 +1020,40 @@ InfoBar::InfoBar()
 
     String strPooled("");
 
-    char* pszPooled = g_gameApp.m_stringPool.LoadText(STRING_EXIT_MATCH);
+    char* pszPooled = g_gameApp.m_stringPool.LoadText(kStringExitMatch);
 
     strPooled.Assign(String::SafeStrlen(pszPooled), pszPooled);
 
     pLabel = &m_tExitMatchPrompt;
 
-    pLabel->CreateFontFace(g_abInfoBarFontName, FONT_BODY);
-    pLabel->SetText(strPooled, static_cast<std::uint32_t>(COLOUR_YELLOW));
+    pLabel->CreateFontFace(g_abInfoBarFontName, kFontBody);
+    pLabel->SetText(strPooled, static_cast<std::uint32_t>(kColourYellow));
 
-    pszPooled = g_gameApp.m_stringPool.LoadText(STRING_CONTINUE);
+    pszPooled = g_gameApp.m_stringPool.LoadText(kStringContinue);
 
     strPooled.Assign(String::SafeStrlen(pszPooled), pszPooled);
 
     pLabel = &m_tContinuePrompt;
 
-    pLabel->CreateFontFace(g_abInfoBarFontName, FONT_BODY);
-    pLabel->SetText(strPooled, static_cast<std::uint32_t>(COLOUR_YELLOW));
+    pLabel->CreateFontFace(g_abInfoBarFontName, kFontBody);
+    pLabel->SetText(strPooled, static_cast<std::uint32_t>(kColourYellow));
 
-    m_atTeamNames[0].CreateFontFace(g_abInfoBarFontName, FONT_PAIR);
-    m_atTeamNames[1].CreateFontFace(g_abInfoBarFontName, FONT_PAIR);
+    m_atTeamNames[0].CreateFontFace(g_abInfoBarFontName, kFontPair);
+    m_atTeamNames[1].CreateFontFace(g_abInfoBarFontName, kFontPair);
 
-    m_atTeamNames[0].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
-    m_atTeamNames[1].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
+    m_atTeamNames[0].SetText("X", static_cast<std::uint32_t>(kColourUnset));
+    m_atTeamNames[1].SetText("X", static_cast<std::uint32_t>(kColourUnset));
 
     for (i = 0; i < 4; i++)
     {
-        m_atOwnRoster[i].CreateFontFace(g_abInfoBarFontName, FONT_TIMER);
-        m_atOwnRoster[i].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
+        m_atOwnRoster[i].CreateFontFace(g_abInfoBarFontName, kFontTimer);
+        m_atOwnRoster[i].SetText("X", static_cast<std::uint32_t>(kColourUnset));
     }
 
     for (i = 0; i < 4; i++)
     {
-        m_atFoeRoster[i].CreateFontFace(g_abInfoBarFontName, FONT_TIMER);
-        m_atFoeRoster[i].SetText("X", static_cast<std::uint32_t>(COLOUR_UNSET));
+        m_atFoeRoster[i].CreateFontFace(g_abInfoBarFontName, kFontTimer);
+        m_atFoeRoster[i].SetText("X", static_cast<std::uint32_t>(kColourUnset));
     }
 
     InfoBar::LayoutSurfaces();
@@ -1141,8 +1141,8 @@ ViewExtent InfoBar::GetHeadCamOrigin()
 
     ViewExtent offset;
 
-    offset.x = ptOffset.x + ptOrigin.x + METRIC_ROW_GAP;
-    offset.y = ptOffset.y + ptOrigin.y + METRIC_ROW_GAP;
+    offset.x = ptOffset.x + ptOrigin.x + kMetricRowGap;
+    offset.y = ptOffset.y + ptOrigin.y + kMetricRowGap;
 
     return offset;
 }
@@ -1256,7 +1256,7 @@ void InfoBar::IncrementScore(int nWhich)
 {
     switch (nWhich)
     {
-        case SCORE_LINE_TEAM1:
+        case kScoreLineTeam1:
             // STRING: HYPERX 0x004bb814
             g_nHomeScoreLength = sprintf(g_szHomeScore, "%d", g_pGameEngine->IncrementHomeScore());
 
@@ -1265,7 +1265,7 @@ void InfoBar::IncrementScore(int nWhich)
             g_wActiveScoreLine = 0;
             break;
 
-        case SCORE_LINE_TEAM2:
+        case kScoreLineTeam2:
             g_nAwayScoreLength = sprintf(g_szAwayScore, "%d", g_pGameEngine->IncrementAwayScore());
 
             g_bAwayScoreDirty = 1;

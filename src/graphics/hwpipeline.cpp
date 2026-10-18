@@ -49,11 +49,11 @@ unsigned int HwPipeline::ShadowFormat(Device device)
 {
     auto* const pDevice = device.As<SDL_GPUDevice>();
 
-    constexpr auto USAGE = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
+    constexpr auto kUsage = SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER;
 
     for (const auto format : { SDL_GPU_TEXTUREFORMAT_D32_FLOAT, SDL_GPU_TEXTUREFORMAT_D24_UNORM })
     {
-        if (SDL_GPUTextureSupportsFormat(pDevice, format, SDL_GPU_TEXTURETYPE_2D, USAGE))
+        if (SDL_GPUTextureSupportsFormat(pDevice, format, SDL_GPU_TEXTURETYPE_2D, kUsage))
         {
             return format;
         }

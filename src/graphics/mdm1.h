@@ -6,7 +6,7 @@
 class FileObj;
 
 // The tag an MDM1-packed file opens with, "MDM1" read as a little-endian dword.
-constexpr auto MDM1_MAGIC = 0x314d444d;
+constexpr auto kMdm1Magic = 0x314d444d;
 
 using MDM1ReadFn = int (*)(char* pBuffer, int nCount, FileObj* pFile);
 

@@ -1,7 +1,7 @@
 #ifndef HYPERBLADE_SHOTWORD_H
 #define HYPERBLADE_SHOTWORD_H
 
-// MSG_SHOOT's argument: the shot power above the head camera's aim across and up, each a signed
+// kMsgShoot's argument: the shot power above the head camera's aim across and up, each a signed
 // byte.
 struct ShotWord
 {

@@ -88,7 +88,7 @@ void CTrackPasser_Receiver::Process(int nArg)
         g_gameApp.Fatal("CTrackPasser_Receiver::Process(): Null pointer for model to track\n");
     }
 
-    if (pTracked->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pTracked->GetSlot() < kPlayerObjectCount)
     {
         const TransformObject* const pWorld = &pTracked->m_pBones->m_world;
 
@@ -133,7 +133,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     if (pReceiver == nullptr || pReceiver == pTracked)
     {
-        m_pOwner->PostSceneEvent(MSG_END_PASS_MODE, 0);
+        m_pOwner->PostSceneEvent(kMsgEndPassMode, 0);
 
         if (m_pNext != nullptr)
         {
@@ -157,9 +157,9 @@ void CTrackPasser_Receiver::Process(int nArg)
         Vec3       vSecondRow;
         Vec3       vTorque;
 
-        pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
         {
             wCarrierSlot = pHolder->nSlot;
             bCarried     = 1;
@@ -173,9 +173,9 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         m_pReceiverPos = &pReceiver->GetPhysicsBody()->pos;
 
-        if (bCarried != 0 && !bCarrierElsewhere && pReceiver->GetSlot() == SLOT_ROK)
+        if (bCarried != 0 && !bCarrierElsewhere && pReceiver->GetSlot() == kSlotRok)
         {
-            m_pOwner->PostSceneEvent(MSG_END_PASS_MODE, 0);
+            m_pOwner->PostSceneEvent(kMsgEndPassMode, 0);
         }
 
         vToReceiver.x = m_pReceiverPos->x - g_vCamPasserAim.x;
@@ -200,7 +200,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         if (flLength > 50.0 || vToAim.x * vToReceiver.x + (vToAim.y * vToReceiver.y + vToAim.z * vToReceiver.z) < 0.3f)
         {
-            m_pOwner->PostSceneEvent(MSG_HEAD_CAM_OFF, 0);
+            m_pOwner->PostSceneEvent(kMsgHeadCamOff, 0);
         }
 
         flLead = static_cast<float>(sqrt(static_cast<double>(vLead.x * vLead.x + (vLead.y * vLead.y + vLead.z * vLead.z))));
@@ -217,7 +217,7 @@ void CTrackPasser_Receiver::Process(int nArg)
         m_pCamPos->y = m_pCamVel->y + m_pCamPos->y;
         m_pCamPos->z = m_pCamVel->z + m_pCamPos->z;
 
-        if (m_pOwner->GetSlot() == CAMERA_HEAD_SLOT)
+        if (m_pOwner->GetSlot() == kCameraHeadSlot)
         {
             const Vec3* pSum = &GetCamera()->m_posOut;
 
@@ -276,7 +276,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         GetCamera()->UpdateSmoothing();
 
-        if (m_pOwner->GetSlot() == CAMERA_HEAD_SLOT)
+        if (m_pOwner->GetSlot() == kCameraHeadSlot)
         {
             const Vec3* pSum = &GetCamera()->m_posOut;
 

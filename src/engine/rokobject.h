@@ -8,7 +8,7 @@
 #include "engine/objectclasses.h"
 
 // All ones takes the Rok off its spawn slot.
-constexpr auto SPAWN_SLOT_ANY = 0xffffffff;
+constexpr auto kSpawnSlotAny = 0xffffffff;
 
 // VTABLE: HYPERX 0x004b39f4
 class RokObject : public EngineObject
@@ -43,7 +43,7 @@ public:
 
 inline RokObject* GameEngine::GetRok() const
 {
-    return (RokObject*)m_ppSlots[SLOT_ROK];
+    return (RokObject*)m_ppSlots[kSlotRok];
 }
 
 // The atexit thunk for ApplyRenderSlotPose's scratch transform.

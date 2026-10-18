@@ -31,14 +31,14 @@ void CDisplayPassBar::Bind(EngineObject* pSubject, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00412550
 void CDisplayPassBar::Process(int nArg)
 {
-    PhysicsBody* const pRokBody = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
+    PhysicsBody* const pRokBody = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
     AttachPak* const   pCarrier = pRokBody->pAttach;
 
     if (pCarrier != nullptr)
     {
         short nSlot = pCarrier->nSlot;
 
-        if (nSlot < PLAYER_OBJECT_COUNT && nSlot == g_pGameEngine->m_nViewedSlot && g_pRenderer != nullptr && m_pOwner->GetSlot() == CAMERA_MAIN_SLOT)
+        if (nSlot < kPlayerObjectCount && nSlot == g_pGameEngine->m_nViewedSlot && g_pRenderer != nullptr && m_pOwner->GetSlot() == kCameraMainSlot)
         {
             const int     nSelf = nSlot;
             EngineObject* pSelf = g_pGameEngine->m_ppSlots[nSelf];

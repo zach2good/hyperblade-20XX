@@ -31,9 +31,9 @@ void Particle::InitRandom(float flSpread, float flRise)
     const int nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
     m_flRowRate        = static_cast<float>(nRowRate);
 
-    m_nSet = Math::RandInt(0, PARTICLE_ROW_SETS - 1);
+    m_nSet = Math::RandInt(0, kParticleRowSets - 1);
 
-    const int nRow = Math::RandInt(0, PARTICLE_ROWS_PER_SET - 1);
+    const int nRow = Math::RandInt(0, kParticleRowsPerSet - 1);
     m_flRow        = static_cast<float>(nRow);
 }
 
@@ -66,9 +66,9 @@ void Particle::InitRandomUniform(float flSpread, float flRise)
     const int nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
     m_flRowRate        = static_cast<float>(nRowRate);
 
-    m_nSet = Math::RandInt(0, PARTICLE_ROW_SETS - 1);
+    m_nSet = Math::RandInt(0, kParticleRowSets - 1);
 
-    const int nRow = Math::RandInt(0, PARTICLE_ROWS_PER_SET - 1);
+    const int nRow = Math::RandInt(0, kParticleRowsPerSet - 1);
     m_flRow        = static_cast<float>(nRow);
 }
 
@@ -108,8 +108,8 @@ void Particle::AdvanceRow(float flDelta)
 {
     m_flRow += flDelta;
 
-    while (m_flRow >= PARTICLE_ROWS_PER_SET)
+    while (m_flRow >= kParticleRowsPerSet)
     {
-        m_flRow -= PARTICLE_ROWS_PER_SET;
+        m_flRow -= kParticleRowsPerSet;
     }
 }

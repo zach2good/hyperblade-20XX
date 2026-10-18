@@ -18,7 +18,7 @@ public:
     // FUNCTION: HYPERX 0x0041dce0
     void SendTimedMessage() override
     {
-        m_pOwner->PostEvent(MSG_INITIATE, 0, m_pOwner->GetSlot());
+        m_pOwner->PostEvent(kMsgInitiate, 0, m_pOwner->GetSlot());
 
         m_wPollCountdown = m_wLatency;
 
@@ -29,7 +29,7 @@ public:
                                         m_nAnimationFlags);
         }
 
-        if (m_nEventTarget != MODEL_ID_NONE && m_nEventKind != MSG_NOMSG)
+        if (m_nEventTarget != kModelIDNone && m_nEventKind != kMsgNomsg)
         {
             m_pOwner->BindAnimEventChannel(0,
                                            m_nEventTarget,

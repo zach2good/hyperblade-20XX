@@ -22,7 +22,7 @@ void BehObj_Fly::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_FLY;
+    m_wKind = kBehFly;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CProjectAndBounce);
 

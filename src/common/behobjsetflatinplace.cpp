@@ -18,7 +18,7 @@ void BehObj_SetFlatInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFl
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_SET_FLAT_IN_PLACE;
+    m_wKind = kBehSetFlatInPlace;
 
     m_apSlots[0] = nullptr;
     short nSlot  = 0;

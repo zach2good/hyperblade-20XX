@@ -43,7 +43,7 @@ int main(int argc, char** argv)
             continue;
         }
 
-        if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == MDM1_MAGIC)
+        if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == kMdm1Magic)
         {
             nChecked++;
 

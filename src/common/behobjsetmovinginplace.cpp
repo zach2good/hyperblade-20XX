@@ -22,7 +22,7 @@ void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int n
     // STRING: HYPERX 0x004bc360
     m_pszName = "SetMovingInPlace";
 
-    m_wKind = BEH_SET_MOVING_IN_PLACE;
+    m_wKind = kBehSetMovingInPlace;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CStepAnimation);
 
@@ -43,7 +43,7 @@ void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int n
         pNode->m_bPersistent = 1;
     }
 
-    if (m_pOwner->GetSlot() == GOALIE_SLOT_A || m_pOwner->GetSlot() == GOALIE_SLOT_B)
+    if (m_pOwner->GetSlot() == kGoalieSlotA || m_pOwner->GetSlot() == kGoalieSlotB)
     {
         ((CSetAttitude*)m_apSlots[1])->m_bLimitPitch = 1;
     }

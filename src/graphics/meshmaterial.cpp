@@ -45,10 +45,10 @@ char MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMateri
     return SHADE_BLACK;
 }
 
-constexpr auto LINE_MAX      = 120;
-constexpr auto NAME_COPY_MAX = 0x14;
-constexpr auto CHANNEL_MAX   = 0xff;
-constexpr auto MATERIAL_MAX  = 0xff;
+constexpr auto kLineMax     = 120;
+constexpr auto kNameCopyMax = 0x14;
+constexpr auto kChannelMax  = 0xff;
+constexpr auto kMaterialMax = 0xff;
 
 // A complaint before the first newmtl names index minus one. r8 and r16 both store nought.
 // FUNCTION: HYPERX 0x004364e0
@@ -59,10 +59,10 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
     short nBlue;
     short nGreen;
     short nRed;
-    char  szKeyword[LINE_MAX];
-    char  szValue[LINE_MAX];
+    char  szKeyword[kLineMax];
+    char  szValue[kLineMax];
     char  szRamp[80];
-    char  szLine[LINE_MAX];
+    char  szLine[kLineMax];
 
     int   nLength;
     int   i;
@@ -79,7 +79,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
 
     while ((nLength = pFile->GetNextLine(&pszLine)) > 0)
     {
-        if (nLength > LINE_MAX)
+        if (nLength > kLineMax)
         {
             g_gameApp.Error(
                 // STRING: HYPERX 0x004be3ac
@@ -129,7 +129,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
 
     while ((nLength = pFile->GetNextLine(&pszLine)) > 0)
     {
-        if (nLength > LINE_MAX)
+        if (nLength > kLineMax)
         {
             g_gameApp.Error("Read error: Material file line > 120 characters!");
 
@@ -151,7 +151,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                 }
                 else
                 {
-                    int nCopy = NAME_COPY_MAX;
+                    int nCopy = kNameCopyMax;
                     nLength   = static_cast<int>(strlen(szValue));
 
                     if (nLength < nCopy)
@@ -159,13 +159,13 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                         nCopy = nLength;
                     }
 
-                    if (strlen(szValue) >= MATERIAL_NAME_BYTES)
+                    if (strlen(szValue) >= kMaterialNameBytes)
                     {
                         g_gameApp.Error(
                             // STRING: HYPERX 0x004be344
                             "material name %s > %d too long!",
                             szValue,
-                            MATERIAL_NAME_BYTES);
+                            kMaterialNameBytes);
 
                         bResult = 0;
                     }
@@ -202,7 +202,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                 }
                 else
                 {
-                    if (nRed > CHANNEL_MAX || nRed < 0 || nBlue > CHANNEL_MAX || nBlue < 0 || nGreen > CHANNEL_MAX || nGreen < 0)
+                    if (nRed > kChannelMax || nRed < 0 || nBlue > kChannelMax || nBlue < 0 || nGreen > kChannelMax || nGreen < 0)
                     {
                         g_gameApp.Error("Material File Error reading color for: %s %s!",
                                         paMatNames[nMatIndex],
@@ -329,13 +329,13 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                 }
                 else
                 {
-                    if (strlen(szValue) >= MATERIAL_NAME_BYTES)
+                    if (strlen(szValue) >= kMaterialNameBytes)
                     {
                         g_gameApp.Error(
                             // STRING: HYPERX 0x004be168
                             "texture name %s > %d too long for: %s!",
                             szValue,
-                            MATERIAL_NAME_BYTES,
+                            kMaterialNameBytes,
                             paMatNames[nMatIndex]);
 
                         bResult = 0;
@@ -407,7 +407,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
 
     nMatIndex++;
 
-    if (nMatIndex > MATERIAL_MAX)
+    if (nMatIndex > kMaterialMax)
     {
         g_gameApp.Error(
             // STRING: HYPERX 0x004be0b4

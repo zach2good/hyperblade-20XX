@@ -21,7 +21,7 @@ void BehObj_TrackPassPrep::Init(EngineObject* pOwner, PlanNode* pBlock, int nFla
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_TRACK_PASS_PREP;
+    m_wKind = kBehTrackPassPrep;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CTrackPasser_Receiver);
 

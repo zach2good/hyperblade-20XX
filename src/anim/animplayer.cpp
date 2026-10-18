@@ -27,7 +27,7 @@
 
 #define BLEND_NEXT (-1.0f)
 
-constexpr auto CLIP_NEXT = (-1);
+constexpr auto kClipNext = (-1);
 
 // GLOBAL: HYPERX 0x004bc4fc
 extern float g_flBlendDurationCap;
@@ -80,8 +80,8 @@ char AnimPlayer::UpdateTick()
     {
         switch (m_state.nPlayState)
         {
-            case AA_PLAY:
-            case AA_SINGLESTEP:
+            case kAaPlay:
+            case kAaSingleStep:
                 if (m_state.nHold == -1)
                 {
                     flDelta = g_pGameEngine->m_clock.flDelta;
@@ -91,9 +91,9 @@ char AnimPlayer::UpdateTick()
                         m_state.nHold = m_pClip->m_nLoopCount;
                     }
 
-                    if (m_state.nPlayState == AA_SINGLESTEP)
+                    if (m_state.nPlayState == kAaSingleStep)
                     {
-                        m_state.nPlayState = AA_PAUSE;
+                        m_state.nPlayState = kAaPause;
 
                         return 1;
                     }
@@ -150,7 +150,7 @@ char AnimPlayer::UpdateTick()
                             }
                         }
 
-                        if (pClip->m_wLoopCount == 0 && m_pObject->GetSlot() < PLAYER_OBJECT_COUNT && ((PlayerObject*)m_pObject)->m_wAnimationSemaphore != 0)
+                        if (pClip->m_wLoopCount == 0 && m_pObject->GetSlot() < kPlayerObjectCount && ((PlayerObject*)m_pObject)->m_wAnimationSemaphore != 0)
                         {
                             g_pGameEngine->m_ppSlots[static_cast<short>(m_state.nSlot)]
                                 ->PostSceneEvent(m_state.nArgA, m_state.nArgB);
@@ -201,7 +201,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
 
     switch (m_state.nDirection)
     {
-        case A_REVERSE:
+        case kAReverse:
             nEnd     = m_state.nEndFrame;
             nCurrent = m_state.nFrame;
 
@@ -216,7 +216,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
 
             return bReached;
 
-        case A_FORWARD:
+        case kAForward:
             if (m_state.bChannelPending != 0)
             {
                 const int nLoop = m_state.wEventTrigger;
@@ -259,26 +259,26 @@ unsigned char AnimPlayer::CheckLoopPoint()
 // FUNCTION: HYPERX 0x00424810
 void AnimPlayer::SetPlaybackRate(float flRate)
 {
-    if (m_pSet != nullptr && m_state.nPlayState != AA_DONE && m_pClip != nullptr)
+    if (m_pSet != nullptr && m_state.nPlayState != kAaDone && m_pClip != nullptr)
     {
         m_state.flPlaybackRate = flRate;
 
         const float flPerSecond = flRate * m_pClip->m_flStandardFps;
 
-        if (m_state.nDirection == A_FORWARD)
+        if (m_state.nDirection == kAForward)
         {
             m_state.flStep = flPerSecond * g_pGameEngine->m_clock.GetDelta();
         }
-        else if (m_state.nDirection == A_REVERSE)
+        else if (m_state.nDirection == kAReverse)
         {
             m_state.flStep = -(flPerSecond * g_pGameEngine->m_clock.GetDelta());
         }
     }
 }
 
-constexpr auto SLOT_FLAG_MOVED = 4;
+constexpr auto kSlotFlagMoved = 4;
 
-// MSG_NOMSG marks an event consumed; a zero argument still poses the skeleton.
+// kMsgNomsg marks an event consumed; a zero argument still poses the skeleton.
 // FUNCTION: HYPERX 0x00424880
 void AnimPlayer::UpdateFrame(char bAdvance)
 {
@@ -302,7 +302,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
                     pSlot->m_local.GetMatrixPtr(),
                     static_cast<short>(m_state.nFrame)) != 0)
             {
-                pSlot->SetFlags(SLOT_FLAG_MOVED);
+                pSlot->SetFlags(kSlotFlagMoved);
             }
         }
 
@@ -317,7 +317,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 
             if (pClip->GetBoneTransform(pSlot->m_local.GetMatrixPtr(), static_cast<short>(m_state.nFrame)) != 0)
             {
-                pSlot->SetFlags(SLOT_FLAG_MOVED);
+                pSlot->SetFlags(kSlotFlagMoved);
             }
         }
     }
@@ -331,7 +331,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
         int       nMessage = m_state.anEventMessage[nCursor];
         const int nParam   = m_state.anEventParam[nCursor];
 
-        if (nMessage == MSG_SYNC_FRAME)
+        if (nMessage == kMsgSyncFrame)
         {
             if (m_bPending != 0)
             {
@@ -344,7 +344,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
                 }
             }
 
-            nMessage = MSG_NOMSG;
+            nMessage = kMsgNomsg;
         }
 
         const short nNext    = nCursor + 1;
@@ -373,7 +373,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
             m_state.bChannelPending = 0;
         }
 
-        if (nMessage != MSG_NOMSG && m_pClip->m_wLoopCount != 0)
+        if (nMessage != kMsgNomsg && m_pClip->m_wLoopCount != 0)
         {
             pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
@@ -383,7 +383,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 
     if (bAdvance != 0)
     {
-        if (m_state.nPlayState != AA_SINGLESTEP)
+        if (m_state.nPlayState != kAaSingleStep)
         {
             m_state.flPosition = m_state.flStep + m_state.flPosition;
         }
@@ -391,9 +391,9 @@ void AnimPlayer::UpdateFrame(char bAdvance)
         {
             nDirection = m_state.nDirection;
 
-            m_state.nPlayState = AA_PAUSE;
+            m_state.nPlayState = kAaPause;
 
-            if (nDirection == A_FORWARD)
+            if (nDirection == kAForward)
             {
                 m_state.flPosition = g_flOneAnimPlayer + m_state.flPosition;
             }
@@ -435,7 +435,7 @@ char AnimPlayer::ComputeScale(float flScale)
                 MeshBone*       pSlot = &m_pObject->m_pBones[iBone];
                 AnimClip* const pBone = &m_pBoneSet->m_pClips[iBone];
 
-                if (pBone->m_nFormat != ANIM_BONE_MODE_SKIP)
+                if (pBone->m_nFormat != kAnimBoneModeSkip)
                 {
                     pBone->GetBoneTransformFull(s_blendTransform.m_aMatrixRows, static_cast<short>(m_state.nFrame));
 
@@ -468,7 +468,7 @@ char AnimPlayer::ComputeScale(float flScale)
                                         pMatrix->GetElement(1, 3) * pRoot->m_pDesc->m_vScale.y,
                                         pMatrix->GetElement(2, 3) * pRoot->m_pDesc->m_vScale.z);
 
-                pRoot->ClearFlags(MESHBONE_ANIMATION_DIRTY);
+                pRoot->ClearFlags(kMeshboneAnimationDirty);
             }
 
             vPos.x = pRoot->m_local.m_a[0][3];
@@ -547,7 +547,7 @@ char AnimPlayer::Advance(float flDelta)
 
     for (short iBone = 0; iBone < m_pBoneSet->m_nClipCount; iBone++)
     {
-        if (m_pBoneSet->m_pClips[iBone].m_nFormat != ANIM_BONE_MODE_SKIP)
+        if (m_pBoneSet->m_pClips[iBone].m_nFormat != kAnimBoneModeSkip)
         {
             SlerpSeg* const pSeg = &m_aSlots[iBone];
 
@@ -580,7 +580,7 @@ char AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, in
 // FUNCTION: HYPERX 0x00424fa0
 char AnimPlayer::SetPlayState(int nState)
 {
-    if (m_state.nPlayState == AA_DONE)
+    if (m_state.nPlayState == kAaDone)
     {
         const char bOk = StartAnimSetDefaultRate(m_pSet);
 
@@ -601,7 +601,7 @@ char AnimPlayer::ClearAnimationSet()
 {
     if (m_pSet != nullptr)
     {
-        m_state.nPlayState = AA_DONE;
+        m_state.nPlayState = kAaDone;
         m_pSet             = nullptr;
     }
 
@@ -676,7 +676,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
         m_pending.pSet   = pAnimSet;
         m_pending.flRate = flRate;
 
-        if (m_state.nPlayState != AA_PLAY)
+        if (m_state.nPlayState != kAaPlay)
         {
             return ConditionalDispatch(nullptr);
         }
@@ -691,12 +691,12 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
 
         if (pAnimSet != nullptr)
         {
-            if (m_state.nPlayState == AA_PLAY && pAnimSet != m_pSet)
+            if (m_state.nPlayState == kAaPlay && pAnimSet != m_pSet)
             {
                 m_pObject->GetPhysicsBody()->ApplyAnimDrivenForce();
             }
 
-            if (pAnimSet != m_pSet || m_state.nPlayState == AA_DONE)
+            if (pAnimSet != m_pSet || m_state.nPlayState == kAaDone)
             {
                 m_pPrevSet             = m_pSet;
                 m_pSet                 = pAnimSet;
@@ -717,8 +717,8 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
                 SetClip(TransitionClip(pTransition), flRate, TransitionLoopStart(pTransition));
             }
 
-            m_state.nPlayState = AA_PLAY;
-            SetCallbackTarget(m_pObject->GetSlot(), MSG_CELL_ANIMATION_DONE, 0);
+            m_state.nPlayState = kAaPlay;
+            SetCallbackTarget(m_pObject->GetSlot(), kMsgCellAnimationDone, 0);
         }
 
         return pAnimSet != nullptr;
@@ -742,7 +742,7 @@ void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
     }
 }
 
-constexpr auto CLIP_DURATION_TIMED = (-2);
+constexpr auto kClipDurationTimed = (-2);
 
 // A clip whose last frame precedes its first plays backwards with a negated step.
 // FUNCTION: HYPERX 0x00425220
@@ -765,7 +765,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
             m_state.bFullDecode = 1;
             m_pBoneSet          = m_pClip->m_pSet;
 
-            if (m_pClip->m_nLoopCount != CLIP_DURATION_TIMED)
+            if (m_pClip->m_nLoopCount != kClipDurationTimed)
             {
                 m_state.flStep = g_pGameEngine->m_clock.flDelta * m_pClip->m_flStandardFps * m_state.flPlaybackRate;
             }
@@ -779,16 +779,16 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 
             if (m_pClip->m_wEndFrame - m_pClip->m_wStartFrame < 0)
             {
-                nDirection = A_REVERSE;
+                nDirection = kAReverse;
             }
             else
             {
-                nDirection = A_FORWARD;
+                nDirection = kAForward;
             }
 
             m_state.nDirection = nDirection;
 
-            if (nDirection == A_REVERSE)
+            if (nDirection == kAReverse)
             {
                 m_state.flStep = -m_state.flStep;
             }
@@ -866,13 +866,13 @@ char AnimPlayer::OnClipEnd()
 
     m_state.wClipIndex++;
 
-    if (SetClip(m_state.wClipIndex, BLEND_NEXT, CLIP_NEXT) != 0)
+    if (SetClip(m_state.wClipIndex, BLEND_NEXT, kClipNext) != 0)
     {
         cResult = 1;
     }
     else
     {
-        m_state.nPlayState = AA_DONE;
+        m_state.nPlayState = kAaDone;
 
         g_pGameEngine->m_ppSlots[static_cast<short>(m_state.nSlot)]->PostSceneEvent(m_state.nArgA, m_state.nArgB);
     }

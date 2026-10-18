@@ -37,7 +37,7 @@ inline short* MeshFace::UVIndices()
 {
     int nSkip;
 
-    if ((cFlags & FACE_FLAG_UV_SKIP) != 0)
+    if ((cFlags & kFaceFlagUVSkip) != 0)
     {
         nSkip = nCorners;
     }
@@ -51,7 +51,7 @@ inline short* MeshFace::UVIndices()
 
 inline short MeshFace::GetScaledWidth()
 {
-    if ((cFlags & FACE_FLAG_HAS_UV) != 0)
+    if ((cFlags & kFaceFlagHasUV) != 0)
     {
         return UVIndices()[nCorners];
     }
@@ -61,7 +61,7 @@ inline short MeshFace::GetScaledWidth()
 
 inline void MeshFace::SetScaledWidth(short nWidth)
 {
-    if ((cFlags & FACE_FLAG_HAS_UV) != 0)
+    if ((cFlags & kFaceFlagHasUV) != 0)
     {
         UVIndices()[nCorners] = nWidth;
     }

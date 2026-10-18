@@ -1,7 +1,7 @@
 #ifndef HYPERBLADE_PLANBEHAVIOURWORD_H
 #define HYPERBLADE_PLANBEHAVIOURWORD_H
 
-// COMMAND_SET_PLAN_AND_BEHAVIOR's payload: the plan in the high half and the behaviour in the low.
+// kCommandSetPlanAndBehavior's payload: the plan in the high half and the behaviour in the low.
 struct PlanBehaviourWord
 {
     static short GetPlan(unsigned int nWord)

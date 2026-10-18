@@ -19,7 +19,7 @@ void BehObj_UpdateRelativePos::Init(EngineObject* pOwner, PlanNode* pBlock, int 
     // STRING: HYPERX 0x004bc2c8
     m_pszName = "UpdateRelativePos";
 
-    m_wKind = BEH_UPDATE_RELATIVE_POS;
+    m_wKind = kBehUpdateRelativePos;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CSetPositionRelative);
     m_apSlots[1] = nullptr;

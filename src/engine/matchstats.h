@@ -14,7 +14,7 @@ public:
     // Zeroes all forty nine and answers with itself.
     MatchStats* ZeroInit();
 
-    float m_aStat[MATCH_STAT_COUNT]; // 0x000
+    float m_aStat[kMatchStatCount]; // 0x000
 
     float GetAt(int nIndex) const;
     float SetAt(int nIndex, float flValue);

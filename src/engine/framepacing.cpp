@@ -22,10 +22,10 @@ namespace
 
 // ponytail: a jump this far between ticks is a teleport or a camera cut, so it is not blended.
 // Tune it against the arena's scale if a fast skater ever snaps.
-constexpr auto SNAP_DISTANCE_SQ = 64.0f * 64.0f;
+constexpr auto kSnapDistanceSq = 64.0f * 64.0f;
 
 // A slow frame owes this many ticks at most; the rest of the time is dropped.
-constexpr auto MAX_CATCH_UP = 4;
+constexpr auto kMaxCatchUp = 4;
 
 using Rows = std::array<float, 12>;
 
@@ -146,7 +146,7 @@ void SnapshotObjects()
             const auto& a = pose.prev[0];
             const auto& b = pose.curr[0];
 
-            return DistanceSq(b[3] - a[3], b[7] - a[7], b[11] - a[11]) > SNAP_DISTANCE_SQ;
+            return DistanceSq(b[3] - a[3], b[7] - a[7], b[11] - a[11]) > kSnapDistanceSq;
         }();
 
         if (bJumped)
@@ -183,7 +183,7 @@ void SnapshotCamera(CameraObject& camera)
 
     pose.currEye = view.m_vEye;
 
-    const auto bCut = DistanceSq(pose.currEye.x - pose.prevEye.x, pose.currEye.y - pose.prevEye.y, pose.currEye.z - pose.prevEye.z) > SNAP_DISTANCE_SQ;
+    const auto bCut = DistanceSq(pose.currEye.x - pose.prevEye.x, pose.currEye.y - pose.prevEye.y, pose.currEye.z - pose.prevEye.z) > kSnapDistanceSq;
 
     if (bFresh || bCut)
     {
@@ -282,7 +282,7 @@ void FramePacing::BeginTick()
     s_views.clear();
     s_nTick++;
 
-    s_dNowMs += TICK_MS;
+    s_dNowMs += kTickMs;
 
     const auto nNow = SDL_GetTicks();
 
@@ -359,7 +359,7 @@ void FramePacing::RecordView(CameraObject& camera)
 
 float FramePacing::RunTicks()
 {
-    constexpr auto TICK_NS = static_cast<std::uint64_t>(TICK_MS * 1000000.0f);
+    constexpr auto kTickNs = static_cast<std::uint64_t>(kTickMs * 1000000.0f);
 
     static auto s_nLastNS = std::uint64_t{ 0 };
     static auto s_nOwedNS = std::uint64_t{ 0 };
@@ -367,9 +367,9 @@ float FramePacing::RunTicks()
     const auto nNowNS = SDL_GetTicksNS();
 
     // After a gap, such as the menus or the capped loop, the next frame starts on a fresh tick.
-    if (s_nLastNS == 0 || nNowNS - s_nLastNS > TICK_NS * MAX_CATCH_UP)
+    if (s_nLastNS == 0 || nNowNS - s_nLastNS > kTickNs * kMaxCatchUp)
     {
-        s_nOwedNS = TICK_NS;
+        s_nOwedNS = kTickNs;
     }
     else
     {
@@ -378,16 +378,16 @@ float FramePacing::RunTicks()
 
     s_nLastNS = nNowNS;
 
-    for (int nTick = 0; nTick < MAX_CATCH_UP && s_nOwedNS >= TICK_NS; nTick++)
+    for (int nTick = 0; nTick < kMaxCatchUp && s_nOwedNS >= kTickNs; nTick++)
     {
         Game::Tick();
 
-        s_nOwedNS -= TICK_NS;
+        s_nOwedNS -= kTickNs;
     }
 
-    s_nOwedNS = (std::min)(s_nOwedNS, TICK_NS);
+    s_nOwedNS = (std::min)(s_nOwedNS, kTickNs);
 
-    return static_cast<float>(s_nOwedNS) / static_cast<float>(TICK_NS);
+    return static_cast<float>(s_nOwedNS) / static_cast<float>(kTickNs);
 }
 
 void FramePacing::DrawViews(float flAlpha)

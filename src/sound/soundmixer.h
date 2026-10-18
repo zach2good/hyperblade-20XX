@@ -6,10 +6,10 @@
 
 #include <memory>
 
-constexpr auto SOUND_CHANNEL_COUNT = 8;
+constexpr auto kSoundChannelCount = 8;
 
 // The volume options run 0 to 7.
-constexpr auto MIXER_VOLUME_LEVELS = 8;
+constexpr auto kMixerVolumeLevels = 8;
 
 class SoundMixer
 {

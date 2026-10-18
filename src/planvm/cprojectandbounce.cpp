@@ -185,7 +185,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             if (m_pShape->PointInside(m_pSource) != 0 || m_pSource->z >= g_flZeroAgendaItem)
             {
-                m_pOwner->PostSceneEvent(MSG_BOUNCE, 0);
+                m_pOwner->PostSceneEvent(kMsgBounce, 0);
             }
             else
             {
@@ -193,7 +193,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
                 m_pOwner->GetPhysicsBody()->smoothVel.y = g_flZeroAgendaItem;
                 m_pOwner->GetPhysicsBody()->smoothVel.x = g_flZeroAgendaItem;
 
-                m_pOwner->PostSceneEvent(MSG_LANDED, 0);
+                m_pOwner->PostSceneEvent(kMsgLanded, 0);
             }
         }
     }

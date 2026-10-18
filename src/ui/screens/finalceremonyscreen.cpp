@@ -67,7 +67,7 @@ FinalCeremonyScreen::~FinalCeremonyScreen() = default;
 // FUNCTION: HYPERX 0x004431a0
 void FinalCeremonyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
-    if (nId >= WIDGET_ID_MOUSE && nId <= WIDGET_ID_RETURN && (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP)))
+    if (nId >= kWidgetIDMouse && nId <= kWidgetIDReturn && (nMsg == kInputKeyUp || nMsg == kInputKeyDown || (m_bPointerOnWidget == 0 && nMsg == kInputLeftUp)))
     {
         g_pGameEngine->m_bMatchOver = 1;
 
@@ -79,7 +79,7 @@ void FinalCeremonyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         }
 
         GameApp::ResetToSinglePlayer();
-        Game::SetEngineState(ESTATE_TRAINING_END);
+        Game::SetEngineState(kEstateTrainingEnd);
     }
 }
 

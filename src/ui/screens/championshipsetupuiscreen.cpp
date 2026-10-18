@@ -24,10 +24,10 @@
 // Only the stats and tree tab names carry STRING markers here; the rest are claimed elsewhere.
 
 #define CHAMP_INITIAL_LAST_WIDGET CHAMP_WIDGET_ROUND_TORCH
-#define CHAMP_GRID_LAST           (CHAMP_WIDGET_STAT_GRID + CHAMP_GRID_ROWS * CHAMP_GRID_COLUMNS - 1)
-constexpr auto CHAMP_BRACKET_COUNT = 12;
-constexpr auto CHAMP_GRID_ROWS     = 10;
-constexpr auto CHAMP_GRID_COLUMNS  = 5;
+#define CHAMP_GRID_LAST           (CHAMP_WIDGET_STAT_GRID + kChampGridRows * kChampGridColumns - 1)
+constexpr auto kChampBracketCount = 12;
+constexpr auto kChampGridRows     = 10;
+constexpr auto kChampGridColumns  = 5;
 
 // FUNCTION: HYPERX 0x00457710
 ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
@@ -214,12 +214,12 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
     m_nLastGridWidget = CHAMP_GRID_LAST;
     m_nLastWidget     = CHAMP_GRID_LAST;
 
-    for (i = 0; i < CHAMP_GRID_ROWS; i++)
+    for (i = 0; i < kChampGridRows; i++)
     {
-        for (int j = 0; j < CHAMP_GRID_COLUMNS; j++)
+        for (int j = 0; j < kChampGridColumns; j++)
         {
-            pWidget = AppendWidget(new DisplayWidget(g_aChampGridCells[i * CHAMP_GRID_COLUMNS + j].nX,
-                                                     g_aChampGridCells[i * CHAMP_GRID_COLUMNS + j].nY,
+            pWidget = AppendWidget(new DisplayWidget(g_aChampGridCells[i * kChampGridColumns + j].nX,
+                                                     g_aChampGridCells[i * kChampGridColumns + j].nY,
                                                      0,
                                                      0,
                                                      this,
@@ -228,9 +228,9 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
         }
     }
 
-    m_nLastWidget += CHAMP_BRACKET_COUNT;
+    m_nLastWidget += kChampBracketCount;
 
-    for (i = 0; i < CHAMP_BRACKET_COUNT; i++)
+    for (i = 0; i < kChampBracketCount; i++)
     {
         pWidget = AppendWidget(new DisplayWidget(g_aChampBracketCells[i].nX,
                                                  g_aChampBracketCells[i].nY,
@@ -241,7 +241,7 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
         pWidget->SetDirtyFlag(1);
     }
 
-    if (m_nPrevState == ESTATE_JUMBOTRON)
+    if (m_nPrevState == kEstateJumbotron)
     {
         OnFifthPageTabClick();
         m_apWidgets[CHAMP_WIDGET_TREE]->SetDepressed(1);
@@ -277,7 +277,7 @@ void ChampionshipSetupUIScreen::OnExitTabClick()
     {
         g_bChampFromJumbotron = 0;
 
-        Game::SetEngineState(ESTATE_DROME_EXTERIOR);
+        Game::SetEngineState(kEstateDromeExterior);
         return;
     }
 
@@ -1935,7 +1935,7 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
     const TeamBlock* pTeam;
     int              nPlayer;
 
-    for (int nStat = MATCH_STAT_TOTAL_POINTS; nStat < MATCH_STAT_COUNT; nStat++)
+    for (int nStat = kMatchStatTotalPoints; nStat < kMatchStatCount; nStat++)
     {
         int nTotal = 0;
 
@@ -1948,15 +1948,15 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const int      nRow = (nStat - MATCH_STAT_TOTAL_POINTS) * CHAMP_GRID_COLUMNS;
+        const int      nRow = (nStat - kMatchStatTotalPoints) * kChampGridColumns;
         Widget** const pRow = &m_apWidgets[nRow];
 
-        for (nPlayer = 0; nPlayer < TEAM_ROW_COUNT; nPlayer++)
+        for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
         {
             const float*  pStats  = pTeam->aStatRows[nPlayer].aStat;
             Widget* const pWidget = pRow[CHAMP_WIDGET_STAT_GRID + nPlayer];
 
-            if (nStat == MATCH_STAT_TIME_OF_POSS)
+            if (nStat == kMatchStatTimeOfPoss)
             {
                 const int nTime = static_cast<int>(pStats[nStat] * 0.001f);
 
@@ -1964,12 +1964,12 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
 
                 nTotal += nTime;
             }
-            else if (nStat == MATCH_STAT_SHOOTING_PCT)
+            else if (nStat == kMatchStatShootingPct)
             {
                 // STRING: HYPERX 0x004c3c70
                 sprintf(szText, "%.2f%%", pStats[nStat]);
 
-                if (pStats[MATCH_STAT_SHOTS_ON_GOAL] > 0.0f)
+                if (pStats[kMatchStatShotsOnGoal] > 0.0f)
                 {
                 }
             }
@@ -1984,15 +1984,15 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
             pWidget->SetText(szText);
         }
 
-        if (nStat == MATCH_STAT_SHOOTING_PCT)
+        if (nStat == kMatchStatShootingPct)
         {
             int nAttempts = 0;
             int nMade     = 0;
 
-            for (nPlayer = 0; nPlayer < TEAM_ROW_COUNT; nPlayer++)
+            for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
             {
-                nAttempts += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_SHOTS_ON_GOAL]);
-                nMade += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_TOTAL_GOALS]);
+                nAttempts += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[kMatchStatShotsOnGoal]);
+                nMade += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[kMatchStatTotalGoals]);
             }
 
             if (nAttempts > 0)
@@ -2005,7 +2005,7 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
                 sprintf(szText, "0.00%%");
             }
         }
-        else if (nStat == MATCH_STAT_TIME_OF_POSS)
+        else if (nStat == kMatchStatTimeOfPoss)
         {
             StatColumns::FormatClock(szText, static_cast<short>(nTotal));
         }
@@ -2014,7 +2014,7 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
             sprintf(szText, "%2hd", static_cast<short>(nTotal));
         }
 
-        pRow[CHAMP_WIDGET_STAT_GRID + TEAM_ROW_COUNT]->SetText(szText);
+        pRow[CHAMP_WIDGET_STAT_GRID + kTeamRowCount]->SetText(szText);
     }
 }
 
@@ -2026,11 +2026,11 @@ void ChampionshipSetupUIScreen::HideStatsPanel()
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetHidden(1);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetDirtyFlag(0);
 
-    for (int nRow = 0; nRow < CHAMP_GRID_ROWS; nRow++)
+    for (int nRow = 0; nRow < kChampGridRows; nRow++)
     {
-        for (int nColumn = 0; nColumn < CHAMP_GRID_COLUMNS; nColumn++)
+        for (int nColumn = 0; nColumn < kChampGridColumns; nColumn++)
         {
-            Widget* const pCell = m_apWidgets[CHAMP_WIDGET_STAT_GRID + nRow * CHAMP_GRID_COLUMNS + nColumn];
+            Widget* const pCell = m_apWidgets[CHAMP_WIDGET_STAT_GRID + nRow * kChampGridColumns + nColumn];
 
             pCell->SetHidden(1);
             pCell->SetDirtyFlag(0);
@@ -2165,11 +2165,11 @@ void ChampionshipSetupUIScreen::RefreshStatsDisplay()
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->InitAfterLoad();
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->InitAfterLoad();
 
-    for (int nRow = 0; nRow < CHAMP_GRID_ROWS; nRow++)
+    for (int nRow = 0; nRow < kChampGridRows; nRow++)
     {
-        for (int nColumn = 0; nColumn < CHAMP_GRID_COLUMNS; nColumn++)
+        for (int nColumn = 0; nColumn < kChampGridColumns; nColumn++)
         {
-            Widget* const pWidget = m_apWidgets[CHAMP_WIDGET_STAT_GRID + nRow * CHAMP_GRID_COLUMNS + nColumn];
+            Widget* const pWidget = m_apWidgets[CHAMP_WIDGET_STAT_GRID + nRow * kChampGridColumns + nColumn];
 
             pWidget->SetHidden(0);
             pWidget->SetDirtyFlag(1);
@@ -2198,7 +2198,7 @@ void ChampionshipSetupUIScreen::LoadBracketTorches()
     m_apWidgets[CHAMP_WIDGET_ROUND_TORCH]->SetHidden(0);
     m_apWidgets[CHAMP_WIDGET_ROUND_TORCH]->SetDirtyFlag(1);
 
-    for (i = 0; i < (std::min)(nCount, CHAMP_BRACKET_COUNT); i++)
+    for (i = 0; i < (std::min)(nCount, kChampBracketCount); i++)
     {
         nEntry = g_pGameEngine->m_pSaveObject->BracketIterPeek();
 
@@ -2212,7 +2212,7 @@ void ChampionshipSetupUIScreen::LoadBracketTorches()
         pTorch->SetDirtyFlag(1);
     }
 
-    for (i = nCount; i < CHAMP_BRACKET_COUNT; i++)
+    for (i = nCount; i < kChampBracketCount; i++)
     {
         nEntry = g_pGameEngine->m_pSaveObject->BracketIterPeek();
 
@@ -2241,7 +2241,7 @@ void ChampionshipSetupUIScreen::HideBracketTorches()
     m_apWidgets[CHAMP_WIDGET_ROUND_TORCH]->SetHidden(1);
     m_apWidgets[CHAMP_WIDGET_ROUND_TORCH]->SetDirtyFlag(0);
 
-    for (int nCell = 0; nCell < CHAMP_BRACKET_COUNT; nCell++)
+    for (int nCell = 0; nCell < kChampBracketCount; nCell++)
     {
         Widget* const pCell = m_apWidgets[nCell + m_nLastGridWidget + 1];
 

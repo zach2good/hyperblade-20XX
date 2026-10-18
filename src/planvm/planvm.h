@@ -11,9 +11,9 @@ class PlanState;
 
 struct PlanNode;
 
-constexpr auto PLANVM_BEHAVIOR_LIMIT        = 60;
-constexpr auto PLANVM_INTERACTOR_NAME_LIMIT = 150;
-constexpr auto PLANVM_MESSAGES_PER_BEHAVIOR = 20;
+constexpr auto kPlanVMBehaviorLimit       = 60;
+constexpr auto kPlanVMInteractorNameLimit = 150;
+constexpr auto kPlanVMMessagesPerBehavior = 20;
 
 // A keyword table entry: the name, a sentinel word, and the value the name stands for.
 struct PlanOpcodeRef
@@ -83,9 +83,9 @@ public:
     union PlanWord* m_pStream; // 0x14
 
     // The plan's declared names: behaviours, local reals and interactors; messages are below.
-    char m_aBehaviorNames[PLANVM_BEHAVIOR_LIMIT][0x20];          // 0x00018
-    char m_aLocalRealNames[PLANVM_BEHAVIOR_LIMIT][0x20];         // 0x00798
-    char m_aInteractorNames[PLANVM_INTERACTOR_NAME_LIMIT][0x20]; // 0x00f18
+    char m_aBehaviorNames[kPlanVMBehaviorLimit][0x20];         // 0x00018
+    char m_aLocalRealNames[kPlanVMBehaviorLimit][0x20];        // 0x00798
+    char m_aInteractorNames[kPlanVMInteractorNameLimit][0x20]; // 0x00f18
 
 private:
     [[maybe_unused]] int m_nUnused; // 0x021d8
@@ -102,8 +102,8 @@ private:
     PlanOpcodeRef m_aSymbols[2100]; // 0x04a7c
 
 public:
-    // Each behaviour's SET_MESSAGE_INTERACTOR ids, PLANVM_MESSAGES_PER_BEHAVIOR to a row.
-    char m_aMessageNames[PLANVM_BEHAVIOR_LIMIT * PLANVM_MESSAGES_PER_BEHAVIOR][0x20]; // 0x1929c
+    // Each behaviour's SET_MESSAGE_INTERACTOR ids, kPlanVMMessagesPerBehavior to a row.
+    char m_aMessageNames[kPlanVMBehaviorLimit * kPlanVMMessagesPerBehavior][0x20]; // 0x1929c
 
     ~PlanVM();
 

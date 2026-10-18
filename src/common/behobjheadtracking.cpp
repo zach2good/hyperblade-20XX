@@ -21,7 +21,7 @@ void BehObj_HeadTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlag
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_HEAD_TRACKING;
+    m_wKind = kBehHeadTracking;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CHeadTrack);
 

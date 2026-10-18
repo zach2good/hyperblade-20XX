@@ -38,8 +38,8 @@ protected:
     int           m_bActive;      // 0x02c
 };
 
-constexpr auto PLAIN_FADE_KIND     = 2;
-constexpr auto PLAIN_FADE_DURATION = 500;
+constexpr auto kPlainFadeKind     = 2;
+constexpr auto kPlainFadeDuration = 500;
 
 // SYNTHETIC: HYPERX 0x0042ce40
 // PaletteFade::`scalar deleting destructor'

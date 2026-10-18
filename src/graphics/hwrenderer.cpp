@@ -19,16 +19,16 @@ namespace
 {
 
 // The colour the scene clears to behind the arena.
-constexpr auto CLEAR_COLOUR = SDL_FColor{ 0.0f, 0.0f, 0.0f, 1.0f };
+constexpr auto kClearColour = SDL_FColor{ 0.0f, 0.0f, 0.0f, 1.0f };
 
 // A frame draws a few thousand blocks; more than this means the list is not being consumed.
-constexpr auto MAX_DRAWS = 16384u;
+constexpr auto kMaxDraws = 16384u;
 
 // HwMesh::Build winds front faces clockwise as seen on screen, as the original's D3DCULL_CCW drew.
-constexpr auto FRONT_CLOCKWISE = true;
+constexpr auto kFrontClockwise = true;
 
 // ponytail: one map a light covers the whole arena; cascades if close shadows look soft.
-constexpr auto SHADOW_SIZE = 4096;
+constexpr auto kShadowSize = 4096;
 
 struct GPURange
 {
@@ -172,7 +172,7 @@ bool Ready(SDL_Renderer* pRenderer)
 
     if (s_pPipeline == nullptr)
     {
-        s_pPipeline = HwPipeline::CreateMeshPipeline(device, FRONT_CLOCKWISE).As<SDL_GPUGraphicsPipeline>();
+        s_pPipeline = HwPipeline::CreateMeshPipeline(device, kFrontClockwise).As<SDL_GPUGraphicsPipeline>();
     }
 
     if (s_pNearest == nullptr)
@@ -206,7 +206,7 @@ bool Ready(SDL_Renderer* pRenderer)
     {
         if (pMap == nullptr)
         {
-            pMap = CreateTarget(static_cast<SDL_GPUTextureFormat>(HwPipeline::ShadowFormat(device)), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, SHADOW_SIZE, SHADOW_SIZE);
+            pMap = CreateTarget(static_cast<SDL_GPUTextureFormat>(HwPipeline::ShadowFormat(device)), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, kShadowSize, kShadowSize);
         }
     }
 
@@ -634,7 +634,7 @@ bool HwRenderer::Capturing()
 
 void HwRenderer::Submit(const Draw& draw)
 {
-    if (s_draws.size() < MAX_DRAWS)
+    if (s_draws.size() < kMaxDraws)
     {
         s_draws.push_back(draw);
     }
@@ -642,7 +642,7 @@ void HwRenderer::Submit(const Draw& draw)
 
 void HwRenderer::SubmitVertices(const std::vector<HwMesh::Vertex>& vertices, const Draw& draw)
 {
-    if (vertices.empty() || s_draws.size() >= MAX_DRAWS)
+    if (vertices.empty() || s_draws.size() >= kMaxDraws)
     {
         return;
     }
@@ -743,7 +743,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
 
     auto target        = SDL_GPUColorTargetInfo{};
     target.texture     = s_pTarget;
-    target.clear_color = CLEAR_COLOUR;
+    target.clear_color = kClearColour;
     target.load_op     = SDL_GPU_LOADOP_CLEAR;
     target.store_op    = SDL_GPU_STOREOP_STORE;
 

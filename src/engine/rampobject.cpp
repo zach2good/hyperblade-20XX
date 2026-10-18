@@ -19,7 +19,7 @@
 RampObject::RampObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
-    m_nFlags |= ENGINEOBJECT_NO_CULL;
+    m_nFlags |= kEngineObjectNoCull;
 
     m_bPlanesReady = 0;
 }

@@ -17,11 +17,11 @@ GameIntroScreen::GameIntroScreen()
 // FUNCTION: HYPERX 0x00449150
 void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
-    if (nWidget >= WIDGET_ID_MOUSE && nWidget <= WIDGET_ID_RETURN)
+    if (nWidget >= kWidgetIDMouse && nWidget <= kWidgetIDReturn)
     {
-        if (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP))
+        if (nMsg == kInputKeyUp || nMsg == kInputKeyDown || (m_bPointerOnWidget == 0 && nMsg == kInputLeftUp))
         {
-            Game::SetEngineState(ESTATE_DROME_EXTERIOR);
+            Game::SetEngineState(kEstateDromeExterior);
         }
     }
 }

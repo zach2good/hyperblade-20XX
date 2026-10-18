@@ -17,19 +17,19 @@ float g_flScreenDotsPerInchModelFile = g_flDotsPerInchModelFile;
 float g_flDotPitchCmModelFile        = g_flDotPitchInchModelFile / g_flCmPerInchModelFile;
 float g_flScreenDotsPerCmModelFile   = g_flScreenDotsPerInchModelFile / g_flCmPerInchModelFile;
 
-constexpr auto MODEL_NAME_LENGTH       = 6;
-constexpr auto MODEL_TAG_DIRECTORY     = 1;
-constexpr auto MODEL_INTERNAL_NAME_MAX = 32;
+constexpr auto kModelNameLength      = 6;
+constexpr auto kModelTagDirectory    = 1;
+constexpr auto kModelInternalNameMax = 32;
 
 // FUNCTION: HYPERX 0x00435fe0
 char ModelFile::Open(FileObj* pFile, const char* pszModelName)
 {
     char        bSuccess = 1;
-    PathString  strPath(MAX_PATH_LENGTH, g_gameApp.m_strModelPath.m_str.m_pchData, pszModelName, g_pszModelExtension);
-    char        szInternalName[MODEL_INTERNAL_NAME_MAX];
+    PathString  strPath(kMaxPathLength, g_gameApp.m_strModelPath.m_str.m_pchData, pszModelName, g_pszModelExtension);
+    char        szInternalName[kModelInternalNameMax];
     FileVersion version;
 
-    if (g_bShadedDromeModels != 0 && g_cMdmTexLoaded != 0 && strlen(pszModelName) == MODEL_NAME_LENGTH
+    if (g_bShadedDromeModels != 0 && g_cMdmTexLoaded != 0 && strlen(pszModelName) == kModelNameLength
         // STRING: HYPERX 0x004bdf90
         && SDL_strcasecmp((pszModelName + 3), "dro") == 0)
     {
@@ -48,7 +48,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
     {
         int nTag;
 
-        if (ModelFile::ReadHeader(pFile, &nTag, szInternalName, &version) != 0 && nTag != MODEL_TAG_DIRECTORY)
+        if (ModelFile::ReadHeader(pFile, &nTag, szInternalName, &version) != 0 && nTag != kModelTagDirectory)
         {
             if (AnimFile::VersionCompare(&g_modelVersion, &version) == 0)
             {

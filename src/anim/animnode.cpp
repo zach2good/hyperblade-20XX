@@ -10,7 +10,7 @@ AnimNode::AnimNode(char bHasDescription)
 
     if (bHasDescription != 0)
     {
-        m_pszDescription = new char[DESCRIPTION_CHARS + 1];
+        m_pszDescription = new char[kDescriptionChars + 1];
     }
     else
     {

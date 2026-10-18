@@ -8,8 +8,8 @@
 namespace
 {
 
-constexpr auto SECTION      = "Graphics";
-constexpr auto RENDERER_KEY = "Renderer";
+constexpr auto kSection     = "Graphics";
+constexpr auto kRendererKey = "Renderer";
 
 struct SwitchInfo
 {
@@ -17,7 +17,7 @@ struct SwitchInfo
     bool        bDefault;
 };
 
-constexpr auto SWITCHES = std::array<SwitchInfo, static_cast<size_t>(GraphicsSettings::Switch::COUNT)>{ {
+constexpr auto kSwitches = std::array<SwitchInfo, static_cast<size_t>(GraphicsSettings::Switch::COUNT)>{ {
     { "Textures", true },
     { "LinearFiltering", false },
     { "Uncapped", false },
@@ -35,7 +35,7 @@ constexpr auto SWITCHES = std::array<SwitchInfo, static_cast<size_t>(GraphicsSet
 
 auto s_bLoaded          = false;
 auto s_renderer         = GraphicsSettings::Renderer::SOFTWARE;
-auto s_abOn             = std::array<bool, SWITCHES.size()>{};
+auto s_abOn             = std::array<bool, kSwitches.size()>{};
 auto s_flRokLightRadius = 200.0f;
 
 void Load()
@@ -47,14 +47,14 @@ void Load()
 
     s_bLoaded = true;
 
-    if (g_pGameOptions->ReadInt(SECTION, RENDERER_KEY, 0) == 1)
+    if (g_pGameOptions->ReadInt(kSection, kRendererKey, 0) == 1)
     {
         s_renderer = GraphicsSettings::Renderer::HARDWARE;
     }
 
-    for (size_t i = 0; i < SWITCHES.size(); i++)
+    for (size_t i = 0; i < kSwitches.size(); i++)
     {
-        s_abOn[i] = g_pGameOptions->ReadInt(SECTION, SWITCHES[i].pszKey, static_cast<int>(SWITCHES[i].bDefault)) != 0;
+        s_abOn[i] = g_pGameOptions->ReadInt(kSection, kSwitches[i].pszKey, static_cast<int>(kSwitches[i].bDefault)) != 0;
     }
 }
 
@@ -91,7 +91,7 @@ void GraphicsSettings::ToggleRenderer()
         return Renderer::SOFTWARE;
     }();
 
-    g_pGameOptions->WriteInt(SECTION, RENDERER_KEY, static_cast<int>(s_renderer));
+    g_pGameOptions->WriteInt(kSection, kRendererKey, static_cast<int>(s_renderer));
 }
 
 bool GraphicsSettings::On(Switch which)
@@ -101,7 +101,7 @@ bool GraphicsSettings::On(Switch which)
     // Before the options load, every switch reads as its default.
     if (!s_bLoaded)
     {
-        return SWITCHES[static_cast<size_t>(which)].bDefault;
+        return kSwitches[static_cast<size_t>(which)].bDefault;
     }
 
     return s_abOn[static_cast<size_t>(which)];
@@ -120,7 +120,7 @@ void GraphicsSettings::Toggle(Switch which)
 
     bOn = !bOn;
 
-    g_pGameOptions->WriteInt(SECTION, SWITCHES[static_cast<size_t>(which)].pszKey, static_cast<int>(bOn));
+    g_pGameOptions->WriteInt(kSection, kSwitches[static_cast<size_t>(which)].pszKey, static_cast<int>(bOn));
 }
 
 float GraphicsSettings::RokLightRadius()

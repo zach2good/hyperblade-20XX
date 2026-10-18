@@ -160,7 +160,7 @@ bool GameApp::Initialize(const char* pszArguments)
         std::_Exit(1);
     }
 
-    if (!Pak::Open((std::string(pszBase) + Pak::FILE_NAME).c_str()))
+    if (!Pak::Open((std::string(pszBase) + Pak::kFileName).c_str()))
     {
         Window::ShowMessage("HyperBlade 20XX is missing 20XX_data.pak. Keep it beside hyperblade_20XX.exe.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
 
@@ -215,11 +215,11 @@ bool GameApp::Initialize(const char* pszArguments)
 // FUNCTION: HYPERX 0x00419070
 void GameApp::InitializeResourcePaths()
 {
-    char* const pszClassName = g_gameApp.m_stringPool.LoadText(STRING_HYPERBLADE);
+    char* const pszClassName = g_gameApp.m_stringPool.LoadText(kStringHyperBlade);
 
     g_gameApp.m_strCaption.Assign(String::SafeStrlen(pszClassName), pszClassName);
 
-    PathString strDirectory(MAX_PATH_LENGTH);
+    PathString strDirectory(kMaxPathLength);
 
     // SDL's base path ends in a separator.
     const char* const pszBase = SDL_GetBasePath();
@@ -250,7 +250,7 @@ void GameApp::InitializeResourcePaths()
     g_gameApp.m_strTexturesPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Textures"));
 }
 
-constexpr auto SPLASH_MS = 3000ul;
+constexpr auto kSplashMs = 3000ul;
 
 static unsigned int s_dwSplashShown = 0;
 
@@ -291,7 +291,7 @@ bool GameApp::UpdateSplash()
         return false;
     }
 
-    if (static_cast<unsigned int>(SDL_GetTicks()) - s_dwSplashShown >= SPLASH_MS)
+    if (static_cast<unsigned int>(SDL_GetTicks()) - s_dwSplashShown >= kSplashMs)
     {
         GameApp::NextSplash();
     }
@@ -420,29 +420,29 @@ void GameApp::OnExit()
     std::_Exit(0);
 }
 
-constexpr auto CDROM_NOT_FOUND  = (-1);
-constexpr auto CDROM_NOT_WANTED = (-2);
+constexpr auto kCdromNotFound  = (-1);
+constexpr auto kCdromNotWanted = (-2);
 
 // Runs before WinMain.
 // FUNCTION: HYPERX 0x00422f90
 GameApp::GameApp(short nStringCount)
-: m_strExeDir(MAX_PATH_LENGTH)
-, m_strAssetsPath(MAX_PATH_LENGTH)
-, m_strAnimDataPath(MAX_PATH_LENGTH)
-, m_strModelPath(MAX_PATH_LENGTH)
-, m_strPlansPath(MAX_PATH_LENGTH)
-, m_strSoundsPath(MAX_PATH_LENGTH)
-, m_strTexturesPath(MAX_PATH_LENGTH)
+: m_strExeDir(kMaxPathLength)
+, m_strAssetsPath(kMaxPathLength)
+, m_strAnimDataPath(kMaxPathLength)
+, m_strModelPath(kMaxPathLength)
+, m_strPlansPath(kMaxPathLength)
+, m_strSoundsPath(kMaxPathLength)
+, m_strTexturesPath(kMaxPathLength)
 , m_nFrameRate(0)
 , m_bHasWindow(false)
-, m_nEngineState(ESTATE_LOBBY)
+, m_nEngineState(kEstateLobby)
 , m_bIsActive(0)
-, m_wRunStateOnDeactivate(ENGINE_RUN_PLAYING)
+, m_wRunStateOnDeactivate(kEngineRunPlaying)
 , m_bCursorWasVisible(1)
 , m_stringPool(nStringCount)
 {
     m_pfnShutdown = nullptr;
-    m_nCDRomDrive = CDROM_NOT_FOUND;
+    m_nCDRomDrive = kCdromNotFound;
 
     m_vLightSpherical.x = m_vLightSpherical.y = m_vLightSpherical.z = g_flAppInitZero;
 }
@@ -478,34 +478,34 @@ void GameApp::OnShutdown()
 // FUNCTION: HYPERX 0x00423180
 int GameApp::FindCDRomDrive(bool bRequired)
 {
-    char szCaption[MAX_PATH_LENGTH];
-    char szLabel[MAX_PATH_LENGTH];
-    char szText[MAX_PATH_LENGTH];
+    char szCaption[kMaxPathLength];
+    char szLabel[kMaxPathLength];
+    char szText[kMaxPathLength];
 
-    strcpy(szLabel, m_stringPool.LoadText(STRING_HYPERBLADE_UPPERCASE));
-    strcpy(szCaption, m_stringPool.LoadText(STRING_CD_NOT_FOUND));
+    strcpy(szLabel, m_stringPool.LoadText(kStringHyperBladeUppercase));
+    strcpy(szCaption, m_stringPool.LoadText(kStringCDNotFound));
 
     if (bRequired)
     {
-        strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_EXIT));
+        strcpy(szText, m_stringPool.LoadText(kStringInsertCDOrExit));
     }
     else
     {
-        strcpy(szText, m_stringPool.LoadText(STRING_INSERT_CD_OR_RETURN));
+        strcpy(szText, m_stringPool.LoadText(kStringInsertCDOrReturn));
     }
 
     // Ripped music plays in place of the disc's tracks, so the disc is only looked for without it,
     // and only where the platform can look.
-    if (m_nCDRomDrive == CDROM_NOT_FOUND && (AudioMgr::HasRippedMusic() || !CdDrive::Supported()))
+    if (m_nCDRomDrive == kCdromNotFound && (AudioMgr::HasRippedMusic() || !CdDrive::Supported()))
     {
-        m_nCDRomDrive = CDROM_NOT_WANTED;
+        m_nCDRomDrive = kCdromNotWanted;
     }
 
     int nDrive = m_nCDRomDrive;
 
-    if (nDrive != CDROM_NOT_FOUND)
+    if (nDrive != kCdromNotFound)
     {
-        if (nDrive == CDROM_NOT_WANTED)
+        if (nDrive == kCdromNotWanted)
         {
             goto done;
         }
@@ -532,7 +532,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
             nDrive++;
         } while (nDrive < CDROM_DRIVE_COUNT);
 
-        m_nCDRomDrive = CDROM_NOT_FOUND;
+        m_nCDRomDrive = kCdromNotFound;
 
         if (GameApp::ShowMessageBox(szText, szCaption, Window::MessageButtons::OK_CANCEL) == Window::MessageAnswer::CANCEL)
         {
@@ -599,7 +599,7 @@ void GameApp::ShowErrorBox(String strMessage)
     strCaption.AppendData(String::SafeStrlen(g_pszCaptionSeparator),
                           g_pszCaptionSeparator);
 
-    char* const pszDetail = m_stringPool.LoadText(STRING_ALERT);
+    char* const pszDetail = m_stringPool.LoadText(kStringAlert);
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 
@@ -663,7 +663,7 @@ void GameApp::SetupViewports()
 {
     int nPrevHeight;
 
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     int nPrevWidth = g_nPrevWidth;
 
@@ -685,7 +685,7 @@ void GameApp::SetupViewports()
 
     const float flScale = pCamera->m_flHalfFov;
 
-    CameraObject* const pView = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
+    CameraObject* const pView = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
     if (g_pRenderer == nullptr || pView == nullptr)
     {
@@ -743,16 +743,16 @@ int GameApp::MainUpdate()
     // A finished track is followed by the menu track, or a random one during play.
     if (g_soundMixer.Update() && g_pAudioMgr != nullptr)
     {
-        if (g_pGameEngine == nullptr || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || static_cast<short>(g_pGameEngine->m_wRunState) != ENGINE_RUN_PLAYING)
+        if (g_pGameEngine == nullptr || g_gameApp.m_nEngineState != kEstateMatchLive || static_cast<short>(g_pGameEngine->m_wRunState) != kEngineRunPlaying)
         {
             if (g_pGameOptions != nullptr && g_pGameOptions->m_nInstallLevel != 0)
             {
-                g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
+                g_pAudioMgr->PlayCDTrack(kCDTrackMenu);
             }
         }
         else
         {
-            g_pAudioMgr->PlayCDTrack(CD_TRACK_RANDOM);
+            g_pAudioMgr->PlayCDTrack(kCDTrackRandom);
         }
     }
 
@@ -763,21 +763,21 @@ int GameApp::MainUpdate()
             return 0;
         }
 
-        const auto bUncapped = g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && GraphicsSettings::On(GraphicsSettings::Switch::UNCAPPED);
+        const auto bUncapped = g_gameApp.m_nEngineState == kEstateMatchLive && GraphicsSettings::On(GraphicsSettings::Switch::UNCAPPED);
 
-        if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+        if (g_gameApp.m_nEngineState != kEstateMatchLive)
         {
             Game::UpdateState();
         }
         else if (bUncapped)
         {
             Game::Draw(FramePacing::RunTicks());
-            g_nPrevEngineState = ESTATE_MATCH_LIVE;
+            g_nPrevEngineState = kEstateMatchLive;
         }
         else
         {
             Game::RunFrame();
-            g_nPrevEngineState = ESTATE_MATCH_LIVE;
+            g_nPrevEngineState = kEstateMatchLive;
         }
 
         FrameTimer::EndFrameUpdate(&g_frameTimer);
@@ -826,7 +826,7 @@ void GameApp::ResetToSinglePlayer()
 {
     g_nMainMenuTopChoice   = 1;
     g_nMainMenuMatchChoice = 0;
-    g_nPlayerMode          = PLAYER_MODE_EXHIBITION;
+    g_nPlayerMode          = kPlayerModeExhibition;
     g_nMainMenuPage        = 0;
 }
 
@@ -876,18 +876,18 @@ void GameApp::InstantiateState()
 
     switch (g_gameApp.m_nEngineState)
     {
-        case ESTATE_LOBBY:
+        case kEstateLobby:
             g_pActiveScreen = new LobbyScreen;
             break;
 
-        case ESTATE_MAIN_MENU:
+        case kEstateMainMenu:
             g_pActiveScreen = new MainMenuScreen;
             break;
 
-        case ESTATE_SAVE_LOAD:
+        case kEstateSaveLoad:
             g_pScreenSaveLoad = new SaveLoadUIScreen;
 
-            if (g_nPrevEngineState != ESTATE_PAUSE_MINIMAL)
+            if (g_nPrevEngineState != kEstatePauseMinimal)
             {
                 g_pScreenSaveLoad->m_nReturnState = g_nPrevEngineState;
                 g_pActiveScreen                   = g_pScreenSaveLoad;
@@ -899,19 +899,19 @@ void GameApp::InstantiateState()
             g_pActiveScreen                   = g_pScreenSaveLoad;
             break;
 
-        case ESTATE_TOURNAMENT_SETUP:
+        case kEstateTournamentSetup:
             g_pActiveScreen = new TournamentSetupUIScreen;
             break;
 
-        case ESTATE_HEAD_TO_HEAD_SETUP:
+        case kEstateHeadToHeadSetup:
             g_pActiveScreen = new HeadToHeadSetupUIScreen;
             break;
 
-        case ESTATE_MATCH_INFO:
+        case kEstateMatchInfo:
             g_pScreenMatchInfo = new MatchInfoUIScreen;
             nReturnState       = g_nPrevEngineState;
 
-            if (g_nPrevEngineState == ESTATE_PAUSE_MINIMAL || g_nPrevEngineState == ESTATE_SAVE_LOAD)
+            if (g_nPrevEngineState == kEstatePauseMinimal || g_nPrevEngineState == kEstateSaveLoad)
             {
                 nReturnState = g_nMatchInfoReturnState;
             }
@@ -920,34 +920,34 @@ void GameApp::InstantiateState()
             g_pActiveScreen                  = g_pScreenMatchInfo;
             break;
 
-        case ESTATE_CHAMPIONSHIP_SETUP:
+        case kEstateChampionshipSetup:
             pScreen               = new ChampionshipSetupUIScreen;
             pScreen->m_nNextState = g_nMatchInfoReturnState;
             g_pActiveScreen       = pScreen;
             break;
 
-        case ESTATE_LEAGUE_SETUP:
+        case kEstateLeagueSetup:
             pScreen               = new LeagueSetupUIScreen;
             pScreen->m_nNextState = g_nMatchInfoReturnState;
             g_pActiveScreen       = pScreen;
             break;
 
-        case ESTATE_GAME_CLIPS_VIEWER:
+        case kEstateGameClipsViewer:
             // STRING: HYPERX 0x004c8c2c
             g_gameApp.Fatal("Invalid state detected: GameClipsViewer\n");
             break;
 
-        case ESTATE_AWARDS:
+        case kEstateAwards:
             pScreen               = new AwardsUIScreen;
             pScreen->m_nNextState = g_nMatchInfoReturnState;
             g_pActiveScreen       = pScreen;
             break;
 
-        case ESTATE_GAME_CONFIG:
+        case kEstateGameConfig:
             g_pScreenGameConfig = new GameConfigUIScreen;
             nReturnState        = g_nPrevEngineState;
 
-            if (g_nPrevEngineState == ESTATE_PAUSE_MINIMAL || g_nPrevEngineState == ESTATE_KEY_CONFIG)
+            if (g_nPrevEngineState == kEstatePauseMinimal || g_nPrevEngineState == kEstateKeyConfig)
             {
                 nReturnState = g_nGameConfigReturnState;
             }
@@ -956,50 +956,50 @@ void GameApp::InstantiateState()
             g_pActiveScreen                     = g_pScreenGameConfig;
             break;
 
-        case ESTATE_KEY_CONFIG:
+        case kEstateKeyConfig:
             g_pActiveScreen = new KeyConfigScreen;
             break;
 
-        case ESTATE_DROME_EXTERIOR:
+        case kEstateDromeExterior:
             g_pActiveScreen = new DromeExteriorScreen;
             break;
 
-        case ESTATE_JUMBOTRON:
+        case kEstateJumbotron:
             g_pActiveScreen = new JumbotronScreen;
             break;
 
-        case ESTATE_PAUSE_FULL:
+        case kEstatePauseFull:
             g_pActiveScreen = new PauseMenuFullScreen;
             break;
 
-        case ESTATE_PAUSE_MINIMAL:
+        case kEstatePauseMinimal:
             g_pActiveScreen = new PauseMenuMinimalScreen;
             break;
 
-        case ESTATE_PAUSE_NO_SAVE:
+        case kEstatePauseNoSave:
             g_pActiveScreen = new PauseMenuNoSaveScreen;
             break;
 
         case 1:
         case 2:
-        case ESTATE_MATCH_LIVE:
+        case kEstateMatchLive:
             g_pActiveScreen = nullptr;
 
             return;
 
-        case ESTATE_MULTI_SETUP_OPTIONS:
+        case kEstateMultiSetupOptions:
             g_pActiveScreen = new MultiSetupOptionsScreen;
             break;
 
-        case ESTATE_FINAL_CEREMONY:
+        case kEstateFinalCeremony:
             g_pActiveScreen = new FinalCeremonyScreen;
             break;
 
-        case ESTATE_GAME_INTRO:
+        case kEstateGameIntro:
             g_pActiveScreen = new GameIntroScreen;
             break;
 
-        case ESTATE_TRAINING_END:
+        case kEstateTrainingEnd:
             g_pActiveScreen = new TrainingEndScreen;
             break;
 

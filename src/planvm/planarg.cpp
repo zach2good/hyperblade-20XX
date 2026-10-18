@@ -15,14 +15,14 @@ float g_flUnusedPlanArgB = g_flZeroPlanArg;
 float g_flUnusedPlanArgC = g_flZeroPlanArg;
 
 // ENUMIDS.H id_POS_ positions whose north and south pair a team parity selects.
-constexpr auto POS_N_GOAL_DEFENDER     = 0x02;
-constexpr auto POS_HOME_DRAG_START_POS = 0x04;
+constexpr auto kPosNGoalDefender    = 0x02;
+constexpr auto kPosHomeDragStartPos = 0x04;
 #define POS_N_GOAL_CENTER 0x08
 
 // Each skater owns three collision objects: its bubble, its baton zone and its body.
-#define COB_PER_DROMER (COB_DROMER_1 - COB_DROMER_0)
+#define COB_PER_DROMER (kCOBDromer1 - kCOBDromer0)
 
-// Under a PLAN_ARG_LOCAL_REAL high half the low half indexes the actor's local reals; any other word is its own value.
+// Under a kPlanArgLocalReal high half the low half indexes the actor's local reals; any other word is its own value.
 
 // FUNCTION: HYPERX 0x0045e390
 float PlanArg::ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex)
@@ -95,11 +95,11 @@ short PlanArg::GetMyGoal(EngineObject** ppActor, const PlanWord*, int* pResult)
 
     if ((nMe & 1) != 0)
     {
-        *pResult = SLOT_SGOAL;
+        *pResult = kSlotSgoal;
     }
     else
     {
-        *pResult = SLOT_NGOAL;
+        *pResult = kSlotNgoal;
     }
 
     return static_cast<short>(*pResult);
@@ -120,11 +120,11 @@ short PlanArg::GetMyGoalSide(EngineObject** ppActor, const PlanWord*, int* pResu
 
     if ((nMe & 1) != 0)
     {
-        *pResult = COB_SGOAL_SIDE;
+        *pResult = kCOBSgoalSide;
     }
     else
     {
-        *pResult = COB_NGOAL_SIDE;
+        *pResult = kCOBNgoalSide;
     }
 
     return static_cast<short>(*pResult);
@@ -135,7 +135,7 @@ short PlanArg::GetMyGoalZone(EngineObject** ppActor, const PlanWord*, int* pResu
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (((nMe & 1) << 2) | COB_NGOAL_ZONE));
+    return static_cast<short>(*pResult = (((nMe & 1) << 2) | kCOBNgoalZone));
 }
 
 // FUNCTION: HYPERX 0x0047c8c0
@@ -145,11 +145,11 @@ short PlanArg::GetOpponentsGoal(EngineObject** ppActor, const PlanWord*, int* pR
 
     if ((nMe & 1) != 0)
     {
-        *pResult = SLOT_NGOAL;
+        *pResult = kSlotNgoal;
     }
     else
     {
-        *pResult = SLOT_SGOAL;
+        *pResult = kSlotSgoal;
     }
 
     return static_cast<short>(*pResult);
@@ -162,11 +162,11 @@ short PlanArg::GetOppnGoalSide(EngineObject** ppActor, const PlanWord*, int* pRe
 
     if ((nMe & 1) != 0)
     {
-        *pResult = COB_NGOAL_SIDE;
+        *pResult = kCOBNgoalSide;
     }
     else
     {
-        *pResult = COB_SGOAL_SIDE;
+        *pResult = kCOBSgoalSide;
     }
 
     return static_cast<short>(*pResult);
@@ -177,7 +177,7 @@ short PlanArg::GetOppnGoalZone(EngineObject** ppActor, const PlanWord*, int* pRe
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (((static_cast<short>(~nMe) & 1) << 2) | COB_NGOAL_ZONE));
+    return static_cast<short>(*pResult = (((static_cast<short>(~nMe) & 1) << 2) | kCOBNgoalZone));
 }
 
 // FUNCTION: HYPERX 0x0047c950
@@ -203,7 +203,7 @@ short PlanArg::GetMyAwarenessBub(EngineObject** ppActor, const PlanWord*, int* p
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + COB_DR0_AWARENESS));
+    return static_cast<short>(*pResult = (nMe + kCOBDr0Awareness));
 }
 
 // FUNCTION: HYPERX 0x0047c9c0
@@ -227,7 +227,7 @@ short PlanArg::GetMyBodyBubble(EngineObject** ppActor, const PlanWord*, int* pRe
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe * COB_PER_DROMER + COB_DROMER_BODY_0));
+    return static_cast<short>(*pResult = (nMe * COB_PER_DROMER + kCOBDromerBody0));
 }
 
 // FUNCTION: HYPERX 0x0047ca20
@@ -235,7 +235,7 @@ short PlanArg::GetLeadOppnBodyBub(EngineObject** ppActor, const PlanWord*, int* 
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = ((static_cast<short>(~nMe) & 1) * COB_PER_DROMER + COB_DROMER_BODY_0));
+    return static_cast<short>(*pResult = ((static_cast<short>(~nMe) & 1) * COB_PER_DROMER + kCOBDromerBody0));
 }
 
 // FUNCTION: HYPERX 0x0047ca40
@@ -243,7 +243,7 @@ short PlanArg::GetOtherOppnBodyBub(EngineObject** ppActor, const PlanWord*, int*
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = ((((static_cast<short>(~nMe) & 1) | 2) * COB_PER_DROMER) + COB_DROMER_BODY_0));
+    return static_cast<short>(*pResult = ((((static_cast<short>(~nMe) & 1) | 2) * COB_PER_DROMER) + kCOBDromerBody0));
 }
 
 // FUNCTION: HYPERX 0x0047ca60
@@ -251,7 +251,7 @@ short PlanArg::GetRampCollisionObject(EngineObject** ppActor, const PlanWord*, i
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_RAMP - SLOT_RAMP)));
+    return static_cast<short>(*pResult = (nMe + (kCOBRamp - kSlotRamp)));
 }
 
 // FUNCTION: HYPERX 0x0047ca80
@@ -259,7 +259,7 @@ short PlanArg::GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWo
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_MULTIPLIER - SLOT_MULTIPLIER)));
+    return static_cast<short>(*pResult = (nMe + (kCOBMultiplier - kSlotMultiplier)));
 }
 
 // FUNCTION: HYPERX 0x0047caa0
@@ -267,7 +267,7 @@ short PlanArg::GetRedRandomizerCollisionObject(EngineObject** ppActor, const Pla
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_RED_RANDOMIZER - SLOT_RED_RANDOMIZER)));
+    return static_cast<short>(*pResult = (nMe + (kCOBRedRandomizer - kSlotRedRandomizer)));
 }
 
 // FUNCTION: HYPERX 0x0047cac0
@@ -275,7 +275,7 @@ short PlanArg::GetMyBackDefWgPos(EngineObject** ppActor, const PlanWord*, int* p
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = ((nMe & 1) | POS_N_GOAL_DEFENDER));
+    return static_cast<short>(*pResult = ((nMe & 1) | kPosNGoalDefender));
 }
 
 // FUNCTION: HYPERX 0x0047cae0
@@ -291,7 +291,7 @@ short PlanArg::GetMyDragStartPos(EngineObject** ppActor, const PlanWord*, int* p
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = ((nMe & 1) | POS_HOME_DRAG_START_POS));
+    return static_cast<short>(*pResult = ((nMe & 1) | kPosHomeDragStartPos));
 }
 
 // The view and Rok pronouns resolve at run time: each resolver keeps the first word of the argument block.
@@ -306,5 +306,5 @@ short PlanArg::GetBodyPartCollisionObject(EngineObject** ppActor, const PlanWord
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_BODY_PART0 - SLOT_BODY_PART)));
+    return static_cast<short>(*pResult = (nMe + (kCOBBodyPart0 - kSlotBodyPart)));
 }

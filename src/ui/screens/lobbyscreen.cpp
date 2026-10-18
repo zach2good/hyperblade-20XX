@@ -26,7 +26,7 @@ LobbyScreen::LobbyScreen()
     // STRING: HYPERX 0x004c87ec
     m_hBitmap = GDI::LoadBitmapHandle("Dadoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(483, 209, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 5, 0, 5, 5, this, SOUND_DOOROPN1, SOUND_DOORCLS1, -1));
+    pWidget = AppendWidget(new FlipbookWidget(483, 209, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 5, 0, 5, 5, this, kSoundDooropn1, kSoundDoorcls1, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c87e4
@@ -41,7 +41,7 @@ LobbyScreen::LobbyScreen()
     m_hBitmap = GDI::LoadBitmapHandle("Pldoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget =
-        AppendWidget(new FlipbookWidget(290, 255, m_bitmap.nWidth + 40, m_bitmap.nHeight + 40, 1, 0, 5, 0, 5, 5, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
+        AppendWidget(new FlipbookWidget(290, 255, m_bitmap.nWidth + 40, m_bitmap.nHeight + 40, 1, 0, 5, 0, 5, 5, this, kSoundDooropn2, kSoundDoorcls2, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, pWidget->GetPositionX() + 20, pWidget->GetPositionY() + 20);
     pWidget->AppendFrameWithPos(m_hBitmap, m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, 0, 0);
     // STRING: HYPERX 0x004c87bc
@@ -55,7 +55,7 @@ LobbyScreen::LobbyScreen()
     // STRING: HYPERX 0x004c879c
     m_hBitmap = GDI::LoadBitmapHandle("Opdoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0, 209, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 5, 0, 5, 5, this, SOUND_DOOROPN1, SOUND_DOORCLS1, -1));
+    pWidget = AppendWidget(new FlipbookWidget(0, 209, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 5, 0, 5, 5, this, kSoundDooropn1, kSoundDoorcls1, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c8794
@@ -122,31 +122,31 @@ void LobbyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case LOBBY_DATA_DOOR:
-            g_nSetupReturnState = ESTATE_LOBBY;
+            g_nSetupReturnState = kEstateLobby;
 
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                Game::SetEngineState(ESTATE_MATCH_INFO);
+                Game::SetEngineState(kEstateMatchInfo);
             }
             break;
 
         case LOBBY_PLAY_DOOR:
-            if (nMsg == INPUT_MOUSE_MOVE)
+            if (nMsg == kInputMouseMove)
             {
                 m_apWidgets[LOBBY_PLAY_SIGN]->SetHighlighted(1);
             }
-            else if (nMsg == INPUT_LEFT_UP)
+            else if (nMsg == kInputLeftUp)
             {
-                Game::SetEngineState(ESTATE_MAIN_MENU);
+                Game::SetEngineState(kEstateMainMenu);
             }
             break;
 
         case LOBBY_OPTIONS_DOOR:
-            g_nSetupReturnState = ESTATE_LOBBY;
+            g_nSetupReturnState = kEstateLobby;
 
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
-                Game::SetEngineState(ESTATE_GAME_CONFIG);
+                Game::SetEngineState(kEstateGameConfig);
             }
             break;
 
@@ -155,13 +155,13 @@ void LobbyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case LOBBY_PLAY_SIGN:
-            if (nMsg == INPUT_MOUSE_MOVE)
+            if (nMsg == kInputMouseMove)
             {
                 m_apWidgets[LOBBY_PLAY_DOOR]->SetHighlighted(1);
             }
-            else if (nMsg == INPUT_LEFT_UP)
+            else if (nMsg == kInputLeftUp)
             {
-                Game::SetEngineState(ESTATE_MAIN_MENU);
+                Game::SetEngineState(kEstateMainMenu);
             }
             break;
     }

@@ -64,10 +64,10 @@
 #include "planvm/plancond.h"
 #include <cstring>
 
-constexpr auto ARG_COUNT_WITH_RATE = 4;
+constexpr auto kArgCountWithRate = 4;
 
 #define ARG_ANIM 1
-constexpr auto ARG_RATE = 2;
+constexpr auto kArgRate = 2;
 #define ARG_FLAGS 3
 
 // Minus one as a float, pushed when the block carries no rate.
@@ -109,7 +109,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     pAnim = pDb->Find(static_cast<short>(nIndex));
 
-    if (pAnim != nullptr && pContext->GetActor()->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
+    if (pAnim != nullptr && pContext->GetActor()->GetSlot() <= kPlayerSlotCount - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(kRatingDamage) < 30.0f)
     {
         const char* pszName = pAnim->GetName();
 
@@ -130,11 +130,11 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
         }
     }
 
-    if (pArgs->m_nArgCount == ARG_COUNT_WITH_RATE)
+    if (pArgs->m_nArgCount == kArgCountWithRate)
     {
         PlanWord* const pBlock = pArgs->m_pArgs;
 
-        const float flRate = pBlock[ARG_RATE].fl;
+        const float flRate = pBlock[kArgRate].fl;
         const int   nFlags = pBlock[ARG_FLAGS].n;
 
         pBehavior->m_pAnimation      = pAnim;
@@ -167,11 +167,11 @@ void PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, sho
     pBehaviour->UpdateLimpAnim();
 }
 
-constexpr auto ARG_EVENT_CHANNEL    = 1;
-constexpr auto ARG_EVENT_TARGET     = 2;
-constexpr auto ARG_EVENT_KIND       = 3;
-constexpr auto ARG_EVENT_PARAM      = 4;
-constexpr auto ARG_COUNT_WITH_PARAM = 5;
+constexpr auto kArgEventChannel   = 1;
+constexpr auto kArgEventTarget    = 2;
+constexpr auto kArgEventKind      = 3;
+constexpr auto kArgEventParam     = 4;
+constexpr auto kArgCountWithParam = 5;
 
 // Without a behaviour the four values go to the actor's own event channel.
 // FUNCTION: HYPERX 0x00401190
@@ -191,50 +191,50 @@ void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*
 
         pBehavior = pActor->GetPlanState()->GetBehaviorByIndex(nBehavior);
 
-        if (pArgs->m_nArgCount != ARG_COUNT_WITH_PARAM || pArgs->m_pArgs[ARG_EVENT_PARAM].n == PLAN_TOKEN_MESSAGE_DATA)
+        if (pArgs->m_nArgCount != kArgCountWithParam || pArgs->m_pArgs[kArgEventParam].n == PLAN_TOKEN_MESSAGE_DATA)
         {
             nEventParam = nParam;
         }
         else
         {
-            nEventParam = pArgs->m_pArgs[ARG_EVENT_PARAM].n;
+            nEventParam = pArgs->m_pArgs[kArgEventParam].n;
         }
 
         pBlock = pArgs->m_pArgs;
 
         nEventTarget = nParam;
 
-        if (pBlock[ARG_EVENT_TARGET].n != PLAN_TOKEN_MESSAGE_DATA)
+        if (pBlock[kArgEventTarget].n != PLAN_TOKEN_MESSAGE_DATA)
         {
-            nEventTarget = pBlock[ARG_EVENT_TARGET].n;
+            nEventTarget = pBlock[kArgEventTarget].n;
         }
 
-        const int nEventKind = pBlock[ARG_EVENT_KIND].n;
+        const int nEventKind = pBlock[kArgEventKind].n;
 
         pBehavior->m_nEventParam  = nEventParam;
         pBehavior->m_nEventTarget = nEventTarget;
-        pBehavior->m_nChannelSlot = pBlock[ARG_EVENT_CHANNEL].n;
+        pBehavior->m_nChannelSlot = pBlock[kArgEventChannel].n;
         pBehavior->m_nEventKind   = nEventKind;
         return;
     }
 
-    if (pArgs->m_nArgCount != ARG_COUNT_WITH_PARAM || (nEventParam = pArgs->m_pArgs[ARG_EVENT_PARAM].n) == PLAN_TOKEN_MESSAGE_DATA)
+    if (pArgs->m_nArgCount != kArgCountWithParam || (nEventParam = pArgs->m_pArgs[kArgEventParam].n) == PLAN_TOKEN_MESSAGE_DATA)
     {
         nEventParam = nParam;
     }
 
     nEventTarget = nParam;
 
-    if (pArgs->m_pArgs[ARG_EVENT_TARGET].n != PLAN_TOKEN_MESSAGE_DATA)
+    if (pArgs->m_pArgs[kArgEventTarget].n != PLAN_TOKEN_MESSAGE_DATA)
     {
-        nEventTarget = pArgs->m_pArgs[ARG_EVENT_TARGET].n;
+        nEventTarget = pArgs->m_pArgs[kArgEventTarget].n;
     }
 
     pActor = pContext->GetActor();
 
     pBlock = pArgs->m_pArgs;
 
-    pActor->BindAnimEventChannel(pBlock[ARG_EVENT_CHANNEL].n, nEventTarget, pBlock[ARG_EVENT_KIND].n, nEventParam);
+    pActor->BindAnimEventChannel(pBlock[kArgEventChannel].n, nEventTarget, pBlock[kArgEventKind].n, nEventParam);
 }
 
 // FUNCTION: HYPERX 0x00401250
@@ -335,7 +335,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
     int nOld;
     int nNew;
 
-    if (nSlot == SLOT_WILDCARD)
+    if (nSlot == kSlotWildcard)
     {
         nSlot = g_pGameEngine->m_nViewedSlot;
     }
@@ -353,7 +353,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
         nIndex = static_cast<short>(AnimSet::GetFieldOffset(static_cast<short>(nSlot)));
     }
 
-    if (pActor->GetSlot() == SLOT_ROK)
+    if (pActor->GetSlot() == kSlotRok)
     {
         PhysicsBody* pBody;
         AttachPak*   pTracked;
@@ -364,7 +364,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
 
         if (pTracked != nullptr)
         {
-            g_pGameEngine->m_ppSlots[pTracked->nSlot]->PostSceneEvent(MSG_LOST_IT, 0);
+            g_pGameEngine->m_ppSlots[pTracked->nSlot]->PostSceneEvent(kMsgLostIt, 0);
         }
     }
 
@@ -376,9 +376,9 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
 
     pActor->GetPhysicsBody()->pAttach = pAttach;
 
-    if (pActor->GetSlot() == SLOT_ROK)
+    if (pActor->GetSlot() == kSlotRok)
     {
-        g_pGameEngine->m_ppSlots[pAttach->nSlot]->PostSceneEvent(MSG_GOT_IT, 0);
+        g_pGameEngine->m_ppSlots[pAttach->nSlot]->PostSceneEvent(kMsgGotIt, 0);
 
         auto* const pRok = (RokObject*)pActor;
 
@@ -400,11 +400,11 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
             pRok->m_nOddCarrierSlot = nNew;
         }
 
-        g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_ATTACH, 0);
+        g_pGameEngine->m_ppSlots[kSlotSoundMan]->PostSceneEvent(kMsgAttach, 0);
     }
 
     // The mine is a WeaponObject; it keeps the Rok's two words but not its parity pair.
-    if (pActor->GetSlot() == SLOT_MINE)
+    if (pActor->GetSlot() == kSlotMine)
     {
         auto* const pWeapon = (WeaponObject*)pActor;
 

@@ -10,13 +10,13 @@
 
 class EngineObject;
 
-constexpr auto TEAM_BLOCK_SLOTS = 10;
-constexpr auto TEAM_BLOCK_SEATS = 2;
+constexpr auto kTeamBlockSlots = 10;
+constexpr auto kTeamBlockSeats = 2;
 
 // One player's 49 match stats as the bench holds them.
 struct TeamStatRow
 {
-    float aStat[MATCH_STAT_COUNT];
+    float aStat[kMatchStatCount];
 };
 
 struct TeamBlock
@@ -38,7 +38,7 @@ struct TeamBlock
 
     float GetDamageRating(int nRow) const
     {
-        return aRows[nRow].aStat[RATING_DAMAGE];
+        return aRows[nRow].aStat[kRatingDamage];
     }
 
     char szPath[0x20];        // 0x000
@@ -51,12 +51,12 @@ struct TeamBlock
     char szTsTitle[0x20];     // 0x0e0
     char szTsAnim[0x20];      // 0x100
     // The roster's definitions. src/engine/objectdef.h declares their fields.
-    class ObjectDef*    apDefs[TEAM_BLOCK_SLOTS];      // 0x120
-    class EngineObject* apOnIce[TEAM_BLOCK_SLOTS];     // 0x148
-    TeamStatRow         aStatRows[TEAM_ROW_COUNT];     // 0x170
-    TeamPlayerRow       aRows[TEAM_ROW_COUNT];         // 0x480
-    int                 aSeat[TEAM_BLOCK_SEATS];       // 0x870
-    int                 aReserveSince[TEAM_ROW_COUNT]; // 0x878
+    class ObjectDef*    apDefs[kTeamBlockSlots];      // 0x120
+    class EngineObject* apOnIce[kTeamBlockSlots];     // 0x148
+    TeamStatRow         aStatRows[kTeamRowCount];     // 0x170
+    TeamPlayerRow       aRows[kTeamRowCount];         // 0x480
+    int                 aSeat[kTeamBlockSeats];       // 0x870
+    int                 aReserveSince[kTeamRowCount]; // 0x878
 };
 
 static_assert(sizeof(TeamStatRow) == 0xc4);

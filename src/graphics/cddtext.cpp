@@ -23,7 +23,7 @@ int CDDText::Draw()
 {
     if (m_pszText != nullptr && *m_pszText != 0 && g_pBackBufferBitsCopy != nullptr)
     {
-        const auto nIndex = static_cast<unsigned char>(g_pColorPalette->NearestIndex(m_color, HudLayer::KEY_INDEX));
+        const auto nIndex = static_cast<unsigned char>(g_pColorPalette->NearestIndex(m_color, HudLayer::kKeyIndex));
 
         Text::Draw(m_font, g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_pszText, nIndex);
     }

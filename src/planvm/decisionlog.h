@@ -2,43 +2,43 @@
 #define HYPERBLADE_DECISIONLOG_H
 
 // A local object records the branches its decisions take; its network copy replays them oldest first.
-constexpr auto DECISION_LOG_RECORDING = 0x8000;
+constexpr auto kDecisionLogRecording = 0x8000;
 // How many branches the word holds; each count packs them at its own widths.
-constexpr auto DECISION_LOG_COUNT = 0x3000;
-constexpr auto DECISION_LOG_ONE   = 0x1000;
-constexpr auto DECISION_LOG_TWO   = 0x2000;
+constexpr auto kDecisionLogCount = 0x3000;
+constexpr auto kDecisionLogOne   = 0x1000;
+constexpr auto kDecisionLogTwo   = 0x2000;
 // What a recording caller starts from.
-constexpr auto DECISION_LOG_FRESH = -1;
+constexpr auto kDecisionLogFresh = -1;
 
 // One branch in bits 0-11; two in 0-6 and 7-12; three in 0-4, 5-8 and 9-11.
 struct DecisionLog
 {
     static int IsRecording(short nWord)
     {
-        return nWord & DECISION_LOG_RECORDING;
+        return nWord & kDecisionLogRecording;
     }
 
     static void Push(short* pWord, short nBranch)
     {
-        if (*pWord == DECISION_LOG_FRESH)
+        if (*pWord == kDecisionLogFresh)
         {
             *pWord = 0;
         }
 
         const short nWord = *pWord;
 
-        if ((nWord & DECISION_LOG_COUNT) == 0)
+        if ((nWord & kDecisionLogCount) == 0)
         {
-            *pWord = static_cast<short>((nWord & 0xfff) | nBranch | DECISION_LOG_RECORDING | DECISION_LOG_ONE);
+            *pWord = static_cast<short>((nWord & 0xfff) | nBranch | kDecisionLogRecording | kDecisionLogOne);
         }
-        else if ((nWord & DECISION_LOG_COUNT) == DECISION_LOG_ONE)
+        else if ((nWord & kDecisionLogCount) == kDecisionLogOne)
         {
-            *pWord = static_cast<short>((static_cast<unsigned int>(nBranch) << 7) | (nWord & 0x7f) | DECISION_LOG_RECORDING | DECISION_LOG_TWO);
+            *pWord = static_cast<short>((static_cast<unsigned int>(nBranch) << 7) | (nWord & 0x7f) | kDecisionLogRecording | kDecisionLogTwo);
         }
         else
         {
             // The third branch is masked where it should be shifted, so its replay takes bits 9-11 (0x0045d963).
-            *pWord = static_cast<short>(((nWord >> 2) & 0x1e0) | (nWord & 0x1f) | (nBranch & 0xe00) | DECISION_LOG_RECORDING | DECISION_LOG_COUNT);
+            *pWord = static_cast<short>(((nWord >> 2) & 0x1e0) | (nWord & 0x1f) | (nBranch & 0xe00) | kDecisionLogRecording | kDecisionLogCount);
         }
     }
 
@@ -47,23 +47,23 @@ struct DecisionLog
     {
         const short nWord = *pWord;
 
-        if ((nWord & DECISION_LOG_COUNT) == DECISION_LOG_ONE)
+        if ((nWord & kDecisionLogCount) == kDecisionLogOne)
         {
             *pBranch = static_cast<short>(nWord & 0xfff);
 
             *pWord = 0;
         }
-        else if ((nWord & DECISION_LOG_COUNT) == DECISION_LOG_TWO)
+        else if ((nWord & kDecisionLogCount) == kDecisionLogTwo)
         {
             *pBranch = static_cast<short>(nWord & 0x7f);
 
-            *pWord = static_cast<short>(((nWord >> 7) & ~0x1e0) | DECISION_LOG_ONE);
+            *pWord = static_cast<short>(((nWord >> 7) & ~0x1e0) | kDecisionLogOne);
         }
         else
         {
             *pBranch = static_cast<short>(nWord & 0x1f);
 
-            *pWord = static_cast<short>((static_cast<short>(((nWord >> 3) & 0x3c) | (nWord & 0xe00)) >> 2) | DECISION_LOG_TWO);
+            *pWord = static_cast<short>((static_cast<short>(((nWord >> 3) & 0x3c) | (nWord & 0xe00)) >> 2) | kDecisionLogTwo);
         }
     }
 };

@@ -12,9 +12,9 @@
 namespace
 {
 
-constexpr auto SIZE = 32;
+constexpr auto kSize = 32;
 
-constexpr auto CLEAR_COLOUR = SDL_FColor{ 0.0f, 1.0f, 0.0f, 1.0f };
+constexpr auto kClearColour = SDL_FColor{ 0.0f, 1.0f, 0.0f, 1.0f };
 
 // Two by two RGBA, top row first. The textured triangle samples the top right texel.
 constexpr unsigned char TEXELS[] = {
@@ -87,7 +87,7 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
 
     auto colour        = SDL_GPUColorTargetInfo{};
     colour.texture     = scene.pColour;
-    colour.clear_color = CLEAR_COLOUR;
+    colour.clear_color = kClearColour;
     colour.load_op     = SDL_GPU_LOADOP_CLEAR;
     colour.store_op    = SDL_GPU_STOREOP_STORE;
 
@@ -142,8 +142,8 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
 
     auto region    = SDL_GPUTextureRegion{};
     region.texture = scene.pColour;
-    region.w       = SIZE;
-    region.h       = SIZE;
+    region.w       = kSize;
+    region.h       = kSize;
     region.d       = 1;
 
     auto transfer            = SDL_GPUTextureTransferInfo{};
@@ -208,8 +208,8 @@ void Check(const Scene& scene)
     SDL_SubmitGPUCommandBuffer(pCommands);
     SDL_ReleaseGPUTransferBuffer(scene.pDevice, pUpload);
 
-    const auto nCentre  = (SIZE / 2 * SIZE + SIZE / 2) * 4;
-    const auto nOutside = (SIZE + 1) * 4;
+    const auto nCentre  = (kSize / 2 * kSize + kSize / 2) * 4;
+    const auto nOutside = (kSize + 1) * 4;
 
     Draw(scene, 0, false);
 
@@ -300,8 +300,8 @@ SDL_GPUTexture* CreateTarget(SDL_GPUDevice* pDevice, unsigned int nFormat, SDL_G
     info.type                 = SDL_GPU_TEXTURETYPE_2D;
     info.format               = static_cast<SDL_GPUTextureFormat>(nFormat);
     info.usage                = usage;
-    info.width                = SIZE;
-    info.height               = SIZE;
+    info.width                = kSize;
+    info.height               = kSize;
     info.layer_count_or_depth = 1;
     info.num_levels           = 1;
 
@@ -355,7 +355,7 @@ int main()
     {
         auto info  = SDL_GPUTransferBufferCreateInfo{};
         info.usage = SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD;
-        info.size  = SIZE * SIZE * 4;
+        info.size  = kSize * kSize * 4;
 
         return SDL_CreateGPUTransferBuffer(pDevice, &info);
     }();

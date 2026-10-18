@@ -18,7 +18,7 @@ void BehObj_CoachTeam::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_COACH_TEAM;
+    m_wKind = kBehCoachTeam;
 
     m_apSlots[0] = nullptr;
     short nSlot  = 0;

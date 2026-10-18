@@ -17,7 +17,7 @@ bool FaceInRange(const MeshBlock& block, MeshFace& face, int nMaterialCount)
         return false;
     }
 
-    const auto bHasUV = (face.cFlags & FACE_FLAG_HAS_UV) != 0;
+    const auto bHasUV = (face.cFlags & kFaceFlagHasUV) != 0;
 
     for (auto nCorner = 0; nCorner < face.nCorners; nCorner++)
     {
@@ -43,7 +43,7 @@ bool FaceInRange(const MeshBlock& block, MeshFace& face, int nMaterialCount)
 }
 
 // Faces meeting at more than this angle keep a hard edge between them.
-constexpr auto CREASE_COS = 0.5f;
+constexpr auto kCreaseCos = 0.5f;
 
 using FacesByVertex = std::vector<std::vector<const MeshFace*> >;
 
@@ -77,7 +77,7 @@ Vec3 CornerNormal(const FacesByVertex& faces, const MeshFace& face, int nCorner)
     {
         const auto& vOther = pOther->vNormal;
 
-        if (vOther.x * face.vNormal.x + vOther.y * face.vNormal.y + vOther.z * face.vNormal.z >= CREASE_COS)
+        if (vOther.x * face.vNormal.x + vOther.y * face.vNormal.y + vOther.z * face.vNormal.z >= kCreaseCos)
         {
             vSum = Vec3{ vSum.x + vOther.x, vSum.y + vOther.y, vSum.z + vOther.z };
         }
@@ -102,7 +102,7 @@ void AppendTriangle(std::vector<HwMesh::Vertex>& vertices, const MeshBlock& bloc
 
         const auto uv = [&]
         {
-            if ((face.cFlags & FACE_FLAG_HAS_UV) != 0)
+            if ((face.cFlags & kFaceFlagHasUV) != 0)
             {
                 return block.Coords()[face.UVIndices()[nCorner]];
             }
@@ -214,7 +214,7 @@ HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterial
         // D3DRend::DrawFace textures only a face that has UVs.
         const auto* const pTexture = [&]() -> const TexCacheEntry*
         {
-            if ((face.cFlags & FACE_FLAG_HAS_UV) == 0)
+            if ((face.cFlags & kFaceFlagHasUV) == 0)
             {
                 return nullptr;
             }

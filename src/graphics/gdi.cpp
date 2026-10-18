@@ -27,7 +27,7 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
     const auto nHeight = std::abs(static_cast<int>(pDib->biHeight));
     const auto nBits   = static_cast<int>(pDib->biBitCount);
 
-    if (nWidth <= 0 || nHeight <= 0 || pDib->biCompression != BITMAP_RGB || (nBits != 1 && nBits != 4 && nBits != 8 && nBits != 24 && nBits != 32))
+    if (nWidth <= 0 || nHeight <= 0 || pDib->biCompression != kBitmapRGB || (nBits != 1 && nBits != 4 && nBits != 8 && nBits != 24 && nBits != 32))
     {
         return nullptr;
     }
@@ -114,7 +114,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
         return nullptr;
     }
 
-    if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == MDM1_MAGIC)
+    if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == kMdm1Magic)
     {
         pDib = static_cast<BitmapInfoHeader*>(MDM1::Decompress(&file));
 
@@ -179,15 +179,15 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
     return GDI::ExpandRLE(pDib);
 }
 
-// Every caller reads raw rows, so an RLE8 or RLE4 DIB is expanded to 8-bit BITMAP_RGB in a new block.
+// Every caller reads raw rows, so an RLE8 or RLE4 DIB is expanded to 8-bit kBitmapRGB in a new block.
 BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 {
-    if (pDib == nullptr || (pDib->biCompression != BITMAP_RLE8 && pDib->biCompression != BITMAP_RLE4))
+    if (pDib == nullptr || (pDib->biCompression != kBitmapRle8 && pDib->biCompression != kBitmapRle4))
     {
         return pDib;
     }
 
-    const auto bFour   = pDib->biCompression == BITMAP_RLE4;
+    const auto bFour   = pDib->biCompression == kBitmapRle4;
     const auto nWidth  = static_cast<int>(pDib->biWidth);
     const auto nHeight = static_cast<int>(pDib->biHeight);
     const auto nStride = (nWidth + 3) & ~3;
@@ -307,7 +307,7 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
     }
 
     pOut->biBitCount    = 8;
-    pOut->biCompression = BITMAP_RGB;
+    pOut->biCompression = kBitmapRGB;
     pOut->biSizeImage   = nStride * nHeight;
     pOut->biClrUsed     = (nTableBytes - pDib->biSize) / sizeof(RgbQuad);
 
@@ -317,7 +317,7 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 }
 
 // A file's type word, "BM".
-constexpr auto BFT_BITMAP = 0x4d42;
+constexpr auto kBftBitmap = 0x4d42;
 
 // A DIB's header, which its leading size word says is a Windows or an OS/2 one.
 union DibHeader
@@ -349,7 +349,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         return nullptr;
     }
 
-    if (bmfh.bfType != BFT_BITMAP)
+    if (bmfh.bfType != kBftBitmap)
     {
         bmfh.bfOffBits = 0;
 
@@ -374,7 +374,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         header.info.biHeight        = bmc.bcHeight;
         header.info.biPlanes        = bmc.bcPlanes;
         header.info.biBitCount      = bmc.bcBitCount;
-        header.info.biCompression   = BITMAP_RGB;
+        header.info.biCompression   = kBitmapRGB;
         header.info.biSizeImage     = 0;
         header.info.biXPelsPerMeter = 0;
         header.info.biYPelsPerMeter = 0;
@@ -477,12 +477,12 @@ GDI::Bitmap* GDI::LoadBitmapAsBackground(const char* pszName, int* pbPaletted)
 // FUNCTION: HYPERX 0x0048f3b0
 void GDI::DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int, int)
 {
-    constexpr auto SYSTEM_FONT_HEIGHT = 16;
+    constexpr auto kSystemFontHeight = 16;
 
     const auto canvas = Window::MenuPixels();
     const auto nRGB   = (color & 0xff) << 16 | (color & 0xff00) | (color >> 16 & 0xff);
 
-    Text::Draw(Text::Find(SYSTEM_FONT_HEIGHT), canvas.pBits, canvas.nWidth * 4, canvas.nWidth, canvas.nHeight, x, y, pszText, nRGB);
+    Text::Draw(Text::Find(kSystemFontHeight), canvas.pBits, canvas.nWidth * 4, canvas.nWidth, canvas.nHeight, x, y, pszText, nRGB);
 }
 
 // FUNCTION: HYPERX 0x0048f410
@@ -540,7 +540,7 @@ void GDI::Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX
 // FUNCTION: HYPERX 0x0048f540
 GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted)
 {
-    PathString strPath(MAX_PATH_LENGTH);
+    PathString strPath(kMaxPathLength);
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "bmp");
 

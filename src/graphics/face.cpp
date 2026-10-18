@@ -16,7 +16,7 @@ float g_flUnusedFaceC = g_flZeroFace;
 
 // A double-sided face that faces away answers minus one so the caller swaps materials.
 
-constexpr auto CLIP_ALL = 0xff;
+constexpr auto kClipAll = 0xff;
 
 namespace Face
 {
@@ -36,12 +36,12 @@ int Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVe
 
     *pcClipOut = cClip;
 
-    if (static_cast<unsigned char>(cClip) == CLIP_ALL)
+    if (static_cast<unsigned char>(cClip) == kClipAll)
     {
         return 0;
     }
 
-    if ((cClip & CLIP_NEAR) == 0)
+    if ((cClip & kClipNear) == 0)
     {
         Vec3 v0;
         Vec3 v1;
@@ -109,37 +109,37 @@ char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* 
         if (*pflAxis < 0.0)
         {
             cLeft++;
-            cCode |= CLIP_LEFT;
+            cCode |= kClipLeft;
         }
 
         if (flW * flXScale < *pflAxis)
         {
             cRight++;
-            cCode |= CLIP_RIGHT;
+            cCode |= kClipRight;
         }
 
         if (*++pflAxis < 0.0)
         {
             cTop++;
-            cCode |= CLIP_TOP;
+            cCode |= kClipTop;
         }
 
         if (flW * flYScale < *pflAxis)
         {
             cBottom++;
-            cCode |= CLIP_BOTTOM;
+            cCode |= kClipBottom;
         }
 
         if (*++pflAxis < 0.0)
         {
             cNear++;
-            cCode |= CLIP_NEAR;
+            cCode |= kClipNear;
         }
 
         if (flW <= *pflAxis)
         {
             cFar++;
-            cCode |= CLIP_FAR;
+            cCode |= kClipFar;
         }
 
         pIndices++;
@@ -160,9 +160,9 @@ char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* 
 
 // One Sutherland-Hodgman pass per plane in the clip code, alternating with a scratch array.
 
-constexpr auto AXIS_X = 0;
-constexpr auto AXIS_Y = 1;
-constexpr auto AXIS_Z = 2;
+constexpr auto kAxisX = 0;
+constexpr auto kAxisY = 1;
+constexpr auto kAxisZ = 2;
 
 // FUNCTION: HYPERX 0x0047f8f0
 unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
@@ -172,9 +172,9 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
     ClipPolyBuffer* pSrc = pPoly;
     ClipPolyBuffer* pDst = &g_clipPolyStaging;
 
-    if ((cClipFlags & CLIP_LEFT) != 0)
+    if ((cClipFlags & kClipLeft) != 0)
     {
-        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_X, -1.0f, g_projRenderParams.flMinX * -1.0f);
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, kAxisX, -1.0f, g_projRenderParams.flMinX * -1.0f);
 
         if (pDst->nCount == 0)
         {
@@ -188,9 +188,9 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
         pDst  = pSwap;
     }
 
-    if ((cClipFlags & CLIP_RIGHT) != 0)
+    if ((cClipFlags & kClipRight) != 0)
     {
-        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_X, 1.0f, g_projRenderParams.flMaxX);
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, kAxisX, 1.0f, g_projRenderParams.flMaxX);
 
         if (pDst->nCount == 0)
         {
@@ -204,9 +204,9 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
         pDst  = pSwap;
     }
 
-    if ((cClipFlags & CLIP_TOP) != 0)
+    if ((cClipFlags & kClipTop) != 0)
     {
-        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Y, -1.0f, g_projRenderParams.flMinY * -1.0f);
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, kAxisY, -1.0f, g_projRenderParams.flMinY * -1.0f);
 
         if (pDst->nCount == 0)
         {
@@ -220,9 +220,9 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
         pDst  = pSwap;
     }
 
-    if ((cClipFlags & CLIP_BOTTOM) != 0)
+    if ((cClipFlags & kClipBottom) != 0)
     {
-        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Y, 1.0f, g_projRenderParams.flMaxY);
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, kAxisY, 1.0f, g_projRenderParams.flMaxY);
 
         if (pDst->nCount == 0)
         {
@@ -236,9 +236,9 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
         pDst  = pSwap;
     }
 
-    if ((cClipFlags & CLIP_NEAR) != 0)
+    if ((cClipFlags & kClipNear) != 0)
     {
-        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Z, -1.0f, g_projRenderParams.flMinZ * -1.0f);
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, kAxisZ, -1.0f, g_projRenderParams.flMinZ * -1.0f);
 
         if (pDst->nCount == 0)
         {
@@ -252,9 +252,9 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
         pDst  = pSwap;
     }
 
-    if ((cClipFlags & CLIP_FAR) != 0)
+    if ((cClipFlags & kClipFar) != 0)
     {
-        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Z, 0.0f, 0.0f);
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, kAxisZ, 0.0f, 0.0f);
 
         if (pDst->nCount == 0)
         {

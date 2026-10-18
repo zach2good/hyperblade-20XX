@@ -20,7 +20,7 @@ void BehObj_GlideBetweenFacing::Init(EngineObject* pOwner, PlanNode* pBlock, int
     // STRING: HYPERX 0x004bc2a8
     m_pszName = "GlideBetweenFacing";
 
-    m_wKind = BEH_GLIDE_BETWEEN_FACING;
+    m_wKind = kBehGlideBetweenFacing;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CAdjustAcceleration);
 

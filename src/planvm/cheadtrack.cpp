@@ -25,7 +25,7 @@
 
 // The broadcast camera: the helmet view a spectator watches the match through.
 
-constexpr auto HISTORY_WINDOW_OFF = 1;
+constexpr auto kHistoryWindowOff = 1;
 
 // FUNCTION: HYPERX 0x00409fc0
 void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
@@ -69,8 +69,8 @@ void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 
     pCam->SetTrackedObject(g_pGameEngine->m_ppSlots[0]);
 
-    pCam->SetPosHistorySize(HISTORY_WINDOW_OFF);
-    pCam->SetDirHistorySize(HISTORY_WINDOW_OFF);
+    pCam->SetPosHistorySize(kHistoryWindowOff);
+    pCam->SetDirHistorySize(kHistoryWindowOff);
 }
 
 // One, which the broadcast camera clamps its fractions to and starts its shot power scale from.
@@ -128,7 +128,7 @@ void CHeadTrack::Process(int nArg)
 
         nSlot = pSecondary->GetSlot();
 
-        if (nSlot > PLAYER_OBJECT_COUNT)
+        if (nSlot > kPlayerObjectCount)
         {
             m_pWatchPos->z = -10.0f;
 
@@ -176,22 +176,22 @@ void CHeadTrack::Process(int nArg)
 
     pCam->UpdateSmoothing();
 
-    if (pCam->m_nReticleState != RETICLE_OFF)
+    if (pCam->m_nReticleState != kReticleOff)
     {
         float          flStep;
         AttachPak*     pHolder;
         unsigned short nHeld;
         int            nFollow;
 
-        pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
         {
             flStep = g_pGameEngine->m_clock.flDelta;
 
             PlayerObject* const pCarrier = g_pGameEngine->GetPlayer(pHolder->nSlot);
 
-            flStep = ((pCarrier->m_stats.GetScalar(RATING_SHOT_POWER) - 6.0f) * 0.1f + g_flCamFracFull) * flStep;
+            flStep = ((pCarrier->m_stats.GetScalar(kRatingShotPower) - 6.0f) * 0.1f + g_flCamFracFull) * flStep;
         }
         else
         {

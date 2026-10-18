@@ -36,7 +36,7 @@ InfoBarRadar::InfoBarRadar()
     m_flCos = 0.0f;
     m_flSin = 0.0f;
 
-    m_nSlot = MODEL_ID_NONE;
+    m_nSlot = kModelIDNone;
 }
 
 // FUNCTION: HYPERX 0x0044fd60
@@ -76,7 +76,7 @@ int InfoBarRadar::TrackSlot(int nSlot)
 
     m_vPosition = *pObject->GetPositionPtr();
 
-    CameraObject* const pHeading = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+    CameraObject* const pHeading = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     if (pHeading == nullptr)
     {
@@ -107,23 +107,23 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 
     switch (nSlot)
     {
-        case SLOT_DROMER0:
+        case kSlotDromer0:
             nColour = g_nRadarBlipColourDromer0;
             break;
 
-        case SLOT_DROMER2:
+        case kSlotDromer2:
             nColour = g_nRadarBlipColourDromer2;
             break;
 
-        case SLOT_DROMER1:
+        case kSlotDromer1:
             nColour = g_nRadarBlipColourDromer1;
             break;
 
-        case SLOT_DROMER3:
+        case kSlotDromer3:
             nColour = g_nRadarBlipColourDromer3;
             break;
 
-        case SLOT_ROK:
+        case kSlotRok:
             nColour = g_nRadarBlipColourRok;
             break;
 
@@ -165,12 +165,12 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
     }
 }
 
-constexpr auto ARROW_POINTS = 3;
+constexpr auto kArrowPoints = 3;
 
 // FUNCTION: HYPERX 0x00450000
 void InfoBarRadar::DrawMarker(int)
 {
-    Point apt[ARROW_POINTS];
+    Point apt[kArrowPoints];
 
     apt[0].x = 0;
 
@@ -194,7 +194,7 @@ void InfoBarRadar::DrawMarker(int)
         apt[2].y = -0x8c;
     }
 
-    for (int i = 0; i < ARROW_POINTS; i++)
+    for (int i = 0; i < kArrowPoints; i++)
     {
         const float flX = static_cast<float>(apt[i].x) * m_flScaleX;
         const float flY = static_cast<float>(apt[i].y) * m_flScaleY;
@@ -203,7 +203,7 @@ void InfoBarRadar::DrawMarker(int)
         apt[i].y = nOriginY - static_cast<int>(flX * m_flSin + flY * m_flCos);
     }
 
-    SWRend::FillPolygon(apt, ARROW_POINTS, 0xe6);
+    SWRend::FillPolygon(apt, kArrowPoints, 0xe6);
 }
 
 // The marker is drawn only when slot six tracks the engine's slot; the four low slots draw no line.
@@ -216,11 +216,11 @@ int InfoBarRadar::Draw()
 
     if (TrackSlot(nSlot) != 0)
     {
-        pBlock = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
+        pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
         AttachPak* pTracked = pBlock->pAttach;
 
-        if (pTracked != nullptr && pTracked->nSlot < PLAYER_OBJECT_COUNT && pTracked->nSlot == nSlot)
+        if (pTracked != nullptr && pTracked->nSlot < kPlayerObjectCount && pTracked->nSlot == nSlot)
         {
             // The odd team's marker is frame seven, the even team's eight.
             int nFrame;
@@ -238,10 +238,10 @@ int InfoBarRadar::Draw()
         }
         else
         {
-            DrawBlip(SLOT_ROK, 1);
+            DrawBlip(kSlotRok, 1);
         }
 
-        for (int nOther = SLOT_DROMER0; nOther <= SLOT_DROMER3; nOther++)
+        for (int nOther = kSlotDromer0; nOther <= kSlotDromer3; nOther++)
         {
             DrawBlip(nOther, 0);
         }

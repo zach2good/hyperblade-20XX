@@ -38,7 +38,7 @@ extern const Vec3 g_vecZeroVelocity;
 // GLOBAL: HYPERX 0x004b1620
 extern const Vec3 g_vecZeroPosition;
 
-constexpr auto BODY_RING_LENGTH = 4;
+constexpr auto kBodyRingLength = 4;
 
 // EngineObject::EngineObject allocates 0x150 bytes and calls this; nothing else zeroes it.
 // FUNCTION: HYPERX 0x00407520
@@ -75,7 +75,7 @@ PhysicsBody::PhysicsBody()
 
     axis = g_vecZeroVelocity;
 
-    for (int nIndex = 0; nIndex < BODY_RING_LENGTH; nIndex++)
+    for (int nIndex = 0; nIndex < kBodyRingLength; nIndex++)
     {
         aRingVelHistory[nIndex] = g_vecZeroVelocity;
         aRingVelSmooth[nIndex]  = g_vecZeroVelocity;
@@ -152,7 +152,7 @@ void PhysicsBody::ResetSpeeds()
 {
     ResetDynamics();
 
-    if (pOwner->GetSlot() != CAMERA_MAIN_SLOT)
+    if (pOwner->GetSlot() != kCameraMainSlot)
     {
         velDir.x = g_flZeroPhysicsBody;
         velDir.y = g_flOnePhysicsReset;
@@ -235,7 +235,7 @@ void PhysicsBody::PerFrameTick()
     }
 }
 
-constexpr auto SHOOT_DRIVE_TAIL_MS = 1000;
+constexpr auto kShootDriveTailMs = 1000;
 
 #define AXIS_FLOOR_IDLE 0.005
 
@@ -341,13 +341,13 @@ void PhysicsBody::UpdateMovementAxes()
     float flLimit;
     short nHeld;
 
-    flPush = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 0.14f + 0.5f) * flAccelDt * g_flForceIncrement;
+    flPush = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.14f + 0.5f) * flAccelDt * g_flForceIncrement;
 
     const float flClock = g_pGameEngine->m_clock.flDeltaSquared;
 
-    flPull = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 0.12f + 0.4f) * flSpeed * flClock;
+    flPull = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.12f + 0.4f) * flSpeed * flClock;
 
-    flCap = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 0.06f + 0.2f) * flAccelDt * g_flMaxAcceleration;
+    flCap = (((PlayerObject*)pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.06f + 0.2f) * flAccelDt * g_flMaxAcceleration;
 
     if ((nHeldBindings & HELD_SHOOT) != 0)
     {
@@ -364,7 +364,7 @@ void PhysicsBody::UpdateMovementAxes()
     {
         axis.x = flPush + axis.x;
 
-        if (g_pGameEngine->m_clock.nTickMs - g_nMoveAxesShootReleaseTick > SHOOT_DRIVE_TAIL_MS)
+        if (g_pGameEngine->m_clock.nTickMs - g_nMoveAxesShootReleaseTick > kShootDriveTailMs)
         {
             g_nMoveAxesShootReleaseTick = 0;
         }
@@ -519,7 +519,7 @@ void PhysicsBody::UpdateMovementAxes()
 extern int g_bTwoPlayers;
 
 // The threshold on the steering scale, a double.
-#define STEER_SCALE_THRESHOLD 1.000001
+constexpr auto kSteerScaleThreshold = 1.000001;
 
 // The cross product and normalise run even when a second player skips the force.
 // FUNCTION: HYPERX 0x00408080
@@ -538,7 +538,7 @@ void PhysicsBody::ApplySteeringForce()
 
     if (g_bTwoPlayers == 0)
     {
-        if (flSteerScale > STEER_SCALE_THRESHOLD)
+        if (flSteerScale > kSteerScaleThreshold)
         {
             smoothVel.x = (vLateral.x * axis.y + velDir.x) * flSteerScale + smoothVel.x;
             smoothVel.y = (vLateral.y * axis.y + velDir.y) * flSteerScale + smoothVel.y;
@@ -650,7 +650,7 @@ void PhysicsBody::IntegrateMotion()
     aRingVelSmooth[nRingIndex].y = flStep * move.dir.y;
     aRingVelSmooth[nRingIndex].z = flStep * move.dir.z;
 
-    for (i = 0; i < BODY_RING_LENGTH; i++)
+    for (i = 0; i < kBodyRingLength; i++)
     {
         vSmooth.x += aRingVelSmooth[i].x;
         vSmooth.y += aRingVelSmooth[i].y;
@@ -677,7 +677,7 @@ void PhysicsBody::IntegrateMotion()
         aRingVelHistory[nRingIndex].z = vel.z;
     }
 
-    for (i = 0; i < BODY_RING_LENGTH; i++)
+    for (i = 0; i < kBodyRingLength; i++)
     {
         vDir.x += aRingVelHistory[i].x;
         vDir.y += aRingVelHistory[i].y;
@@ -688,7 +688,7 @@ void PhysicsBody::IntegrateMotion()
 
     Math::Vec3Normalize(&velDir);
 
-    nRingIndex = (nRingIndex + 1) % BODY_RING_LENGTH;
+    nRingIndex = (nRingIndex + 1) % kBodyRingLength;
 }
 
 // Pins the direction to the forty-five degree diagonal in x and z.
@@ -863,7 +863,7 @@ void PhysicsBody::ApplyBankForce(unsigned char cDir, float flForce)
 extern float g_flBankingAngleRad;
 
 // The bone whose world position the camera follows.
-constexpr auto CAMERA_BONE = 9;
+constexpr auto kCameraBone = 9;
 
 // Bits 2 and 3 enable the bank and bit 2 alone picks its sign; the angle is a tenth of a radian.
 // FUNCTION: HYPERX 0x00408940
@@ -902,17 +902,17 @@ void PhysicsBody::UpdateBanking()
         velDir.x = flDirX * flCos - flSin * velDir.y;
         velDir.y = (flDirX * flSin) + flCos * velDir.y;
 
-        EngineObject* pCamera = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+        EngineObject* pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
-        if (pCamera->GetPlanState()->m_pCurrent->m_wKind != BEH_TRACK_TRAJECTORY)
+        if (pCamera->GetPlanState()->m_pCurrent->m_wKind != kBehTrackTrajectory)
         {
-            const float flBungee = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT)->GetBungeeLength();
+            const float flBungee = g_pGameEngine->GetCamera(kCameraMainSlot)->GetBungeeLength();
 
             Vec3* const pCamPos = &pCamera->GetPhysicsBody()->pos;
 
             EngineObject* pObject = pOwner;
 
-            const TransformObject* pRow = &pObject->m_pBones[CAMERA_BONE].m_world;
+            const TransformObject* pRow = &pObject->m_pBones[kCameraBone].m_world;
 
             float flRow = pRow->m_a[0][3];
 
@@ -1035,7 +1035,7 @@ void PhysicsBody::ApplyAnimDrivenForce()
             pTransform->GetElement(1, 3) * pBone->m_vScale.y,
             pTransform->m_a[2][3] * pBone->m_vScale.z);
 
-        pOwner->m_pBones->ClearFlags(MESHBONE_ANIMATION_DIRTY);
+        pOwner->m_pBones->ClearFlags(kMeshboneAnimationDirty);
     }
 
     const double dTransX = pTransform->m_a[0][3];
@@ -1047,7 +1047,7 @@ void PhysicsBody::ApplyAnimDrivenForce()
 
     pos.z = static_cast<float>(pMesh->m_world.m_a[2][0] * dTransX + pMesh->m_world.m_a[2][2] * dTransZ + pos.z);
 
-    if (pOwner->GetSlot() < PLAYER_OBJECT_COUNT && ((PlayerObject*)pOwner)->m_wFlyingSemaphore != 0)
+    if (pOwner->GetSlot() < kPlayerObjectCount && ((PlayerObject*)pOwner)->m_wFlyingSemaphore != 0)
     {
         pOwner->GetSlot();
     }

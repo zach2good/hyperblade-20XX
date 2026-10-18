@@ -10,7 +10,7 @@ class CameraObject;
 namespace FramePacing
 {
 
-constexpr auto TICK_MS = 1000.0f / 30.0f;
+constexpr auto kTickMs = 1000.0f / 30.0f;
 
 void BeginTick();
 

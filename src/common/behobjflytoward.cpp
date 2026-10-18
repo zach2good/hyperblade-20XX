@@ -21,7 +21,7 @@ void BehObj_FlyToward::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_FLY_TOWARD;
+    m_wKind = kBehFlyToward;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CSteerToward);
 

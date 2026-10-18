@@ -5,8 +5,8 @@
 
 #include "math/vector.h"
 
-constexpr auto CAGE_FACES    = 12;
-constexpr auto CAGE_VERTICES = 5;
+constexpr auto kCageFaces    = 12;
+constexpr auto kCageVertices = 5;
 
 class EngineObject;
 
@@ -22,9 +22,9 @@ struct CollisionCage
         nRegistrationId = nId;
     }
 
-    Vec3                aFace[CAGE_FACES][CAGE_VERTICES]; // 0x000
-    Vec3                aNormal[CAGE_FACES];              // 0x2d0
-    Vec3                aBound[CAGE_FACES];               // 0x360, four written
+    Vec3                aFace[kCageFaces][kCageVertices]; // 0x000
+    Vec3                aNormal[kCageFaces];              // 0x2d0
+    Vec3                aBound[kCageFaces];               // 0x360, four written
     int                 nRegistrationId;                  // 0x3f0
     class EngineObject* pOwner;                           // 0x3f4
 

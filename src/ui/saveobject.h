@@ -2,8 +2,8 @@
 #define HYPERBLADE_SAVEOBJECT_H
 
 // Twenty rounds of the gauntlet bracket, twenty team slots each.
-constexpr auto GAUNTLET_ROUNDS      = 0x14;
-constexpr auto GAUNTLET_ROUND_SLOTS = 0x14;
+constexpr auto kGauntletRounds     = 0x14;
+constexpr auto kGauntletRoundSlots = 0x14;
 
 // The object the engine keeps in m_pSaveObject.
 class SaveObject
@@ -15,7 +15,7 @@ public:
     void         SetAllTeamsAvailable(int nAvailable);
 
     // The team in each round's slot, minus one where the config leaves it empty.
-    short m_aBracket[GAUNTLET_ROUNDS][GAUNTLET_ROUND_SLOTS]; // 0x000
+    short m_aBracket[kGauntletRounds][kGauntletRoundSlots]; // 0x000
 
     short m_wBracketPos; // 0x320
     // One means every team is available.

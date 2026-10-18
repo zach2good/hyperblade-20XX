@@ -239,7 +239,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         if (m_pPos->z > g_flZeroAgendaItem)
         {
-            m_pOwner->PostSceneEvent(MSG_FLY, 0);
+            m_pOwner->PostSceneEvent(kMsgFly, 0);
         }
 
         float* const pBankScale = m_pBankScale;
@@ -248,7 +248,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
         vBank.y                 = vNormal.y * *pBankScale;
         vBank.y *= vNormal.z;
 
-        if (m_pOwner->GetSlot() < PLAYER_OBJECT_COUNT)
+        if (m_pOwner->GetSlot() < kPlayerObjectCount)
         {
             pVelDir = m_pVelDir;
             flAlt   = vBank.y * pVelDir->y + vBank.z * pVelDir->z + vBank.x * pVelDir->x;
@@ -267,7 +267,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         int nSlot = m_pOwner->GetSlot();
 
-        if (g_pGameEngine->m_clock.GetInvDelta() * *m_pSpeed < g_flBankFreeSpeed && (nSlot <= GOALIE_SLOT_B || (nSlot >= SLOT_BODY_PART && nSlot <= SLOT_BODY_PART_LAST)))
+        if (g_pGameEngine->m_clock.GetInvDelta() * *m_pSpeed < g_flBankFreeSpeed && (nSlot <= kGoalieSlotB || (nSlot >= kSlotBodyPart && nSlot <= kSlotBodyPartLast)))
         {
             pBody = m_pOwner->GetPhysicsBody();
 
@@ -280,9 +280,9 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
                 if (flTarget > g_flZeroAgendaItem)
                 {
-                    m_pOwner->PostSceneEvent(MSG_GLIDE_TO_STOP, 0);
+                    m_pOwner->PostSceneEvent(kMsgGlideToStop, 0);
                 }
-                else if (nSlot < SLOT_BODY_PART || nSlot > SLOT_BODY_PART_LAST)
+                else if (nSlot < kSlotBodyPart || nSlot > kSlotBodyPartLast)
                 {
                     auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
@@ -329,11 +329,11 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
         pTerm    = m_pBankForce;
         pTerm->x = g_flZeroAgendaItem;
 
-        pBody = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
+        pBody = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
         AttachPak* const pRokAttach = pBody->pAttach;
 
-        bCarryingRok = static_cast<char>(pRokAttach != nullptr && (nCarrierSlot = pRokAttach->nSlot) < PLAYER_OBJECT_COUNT && nCarrierSlot == m_pOwner->GetSlot());
+        bCarryingRok = static_cast<char>(pRokAttach != nullptr && (nCarrierSlot = pRokAttach->nSlot) < kPlayerObjectCount && nCarrierSlot == m_pOwner->GetSlot());
 
         if (m_pPos->z > g_flZeroAgendaItem)
         {
@@ -357,7 +357,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         if (pStats != nullptr)
         {
-            flSum = pStats->GetWeightedStat(RATING_SPEED) * 0.05f + 0.65f;
+            flSum = pStats->GetWeightedStat(kRatingSpeed) * 0.05f + 0.65f;
         }
         else
         {
@@ -388,13 +388,13 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
             if (vNext.z * pVel->z + vNext.y * pVel->y + vNext.x * pVel->x < g_flZeroAgendaItem)
             {
-                if (m_pOwner->GetSlot() <= GOALIE_SLOT_B)
+                if (m_pOwner->GetSlot() <= kGoalieSlotB)
                 {
                     pBody = m_pOwner->GetPhysicsBody();
 
                     if (pBody->nHeldBindings == 0)
                     {
-                        m_pOwner->PostSceneEvent(MSG_GLIDE_TO_STOP, 0);
+                        m_pOwner->PostSceneEvent(kMsgGlideToStop, 0);
 
                         vOut.y = 0.0f;
                         vOut.x = 0.0f;

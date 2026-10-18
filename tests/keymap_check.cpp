@@ -28,10 +28,10 @@ int main(int, char**)
     Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_1, SDLK_AMPERSAND), '1', "digit follows the position");
     Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_0, SDLK_0), '0', "zero");
 
-    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_F2, SDLK_F2), Key::F2, "function key");
-    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_KP_ENTER, SDLK_KP_ENTER), Key::RETURN, "keypad enter is return");
-    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_RSHIFT, SDLK_RSHIFT), Key::SHIFT, "either shift is shift");
-    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_EQUALS, SDLK_EQUALS), Key::OEM_PLUS, "equals is OEM plus");
+    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_F2, SDLK_F2), Key::kF2, "function key");
+    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_KP_ENTER, SDLK_KP_ENTER), Key::kReturn, "keypad enter is return");
+    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_RSHIFT, SDLK_RSHIFT), Key::kShift, "either shift is shift");
+    Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_EQUALS, SDLK_EQUALS), Key::kOEMPlus, "equals is OEM plus");
 
     // Windows sent these as system keys, which the game never saw.
     Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_LALT, SDLK_LALT), 0, "alt");

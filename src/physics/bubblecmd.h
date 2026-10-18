@@ -15,7 +15,7 @@ enum BubbleShape
 };
 
 // The attach word of a caged bubble with no attach point; the low half is the cage's slot.
-constexpr auto EXTRA_USE_DETAIL = 0xabcd0000;
+constexpr auto kExtraUseDetail = 0xabcd0000;
 
 // One per bubble on an object definition; the parser makes each new bubble the last one's child.
 class BubbleCmd
@@ -28,7 +28,7 @@ public:
     short      m_wShape;      // 0x02
     short      m_nChildCount; // 0x04
     BubbleCmd* m_pChildren;   // 0x08
-    // An AttachPak the bubble takes over, or EXTRA_USE_DETAIL (0xabcd0000) when there is none.
+    // An AttachPak the bubble takes over, or kExtraUseDetail (0xabcd0000) when there is none.
     AttachPak*       m_pAttach; // 0x0c
     BubbleShapeNode* m_pPos;    // 0x10
 };

@@ -23,9 +23,9 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 
     short nNode = pRef->m_nSegment;
 
-    if (nNode >= ANIMNAMEDREF_BIAS)
+    if (nNode >= kAnimNamedRefBias)
     {
-        nNode -= ANIMNAMEDREF_BIAS;
+        nNode -= kAnimNamedRefBias;
 
         pRef->m_nSegment = nNode;
     }

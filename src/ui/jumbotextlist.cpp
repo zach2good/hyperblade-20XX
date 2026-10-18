@@ -10,7 +10,7 @@
 #include <ctime>
 #include "app/gameapp.h"
 
-constexpr auto JUMBO_MESSAGE_MAX = 128;
+constexpr auto kJumboMessageMax = 128;
 
 // FUNCTION: HYPERX 0x0046bf50
 JumboTextList* JumboTextList::Init()
@@ -60,10 +60,10 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
 unsigned int JumboTextList::Load(const char* pszFileName)
 {
     OwnedFile  file;
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH_LENGTH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, kMaxPathLength);
     char*      pLine;
     char*      pszText;
-    char       szNoString[JUMBO_MESSAGE_MAX];
+    char       szNoString[kJumboMessageMax];
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
     {

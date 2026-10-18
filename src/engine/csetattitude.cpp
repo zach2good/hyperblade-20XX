@@ -98,7 +98,7 @@ void CSetAttitude::Process(int nArg)
 
     const int nSlot = m_pOwner->GetSlot();
 
-    if (nSlot < SLOT_BODY_PART || SLOT_BODY_PART_LAST < nSlot)
+    if (nSlot < kSlotBodyPart || kSlotBodyPartLast < nSlot)
     {
         vForward = *m_pVelDir;
 
@@ -181,7 +181,7 @@ void CSetAttitude::Release(int nArg)
 
     const int nSlot = m_pOwner->GetSlot();
 
-    if (nSlot < SLOT_BODY_PART || SLOT_BODY_PART_LAST < nSlot)
+    if (nSlot < kSlotBodyPart || kSlotBodyPartLast < nSlot)
     {
         vForward = *m_pVelDir;
 

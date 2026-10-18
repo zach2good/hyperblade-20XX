@@ -84,15 +84,15 @@
 #include "planvm/decisionlog.h"
 #include <SDL3/SDL.h>
 
-constexpr auto ENTITY_SLOT_LIMIT = 0x66;
+constexpr auto kEntitySlotLimit = 0x66;
 
-constexpr auto JUDGE_STATE_LOW = 0;
+constexpr auto kJudgeStateLow = 0;
 
-constexpr auto JUDGE_STATE_HIGH = 8;
+constexpr auto kJudgeStateHigh = 8;
 
-constexpr auto ARG_COUNT_WITH_XY = 3;
+constexpr auto kArgCountWithXY = 3;
 
-constexpr auto ARG_COUNT_WITH_Z = 4;
+constexpr auto kArgCountWithZ = 4;
 
 #define ARG_OBJECT 1
 #define ARG_FIRST  1
@@ -102,7 +102,7 @@ constexpr auto ARG_COUNT_WITH_Z = 4;
 extern const float g_flOnePlan;
 
 // The velocity is fifty plus a roll of fifty, scaled by the frame delta, at a fixed climb.
-constexpr auto SCATTER_ROLL = 50;
+constexpr auto kScatterRoll = 50;
 #define SCATTER_FLOOR 50.0f
 #define SCATTER_CLIMB 0.75f
 
@@ -186,7 +186,7 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
 // FUNCTION: HYPERX 0x00402130
 void PlanCond::ForceRearView(Interactor*, PlanNode*, short* pResult, int)
 {
-    CameraObject* const pSub = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
+    CameraObject* const pSub = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
     if (pSub != nullptr)
     {
@@ -203,7 +203,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
 
     EngineObject* const pActor = pContext->GetActor();
 
-    EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    EngineObject* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
 
     pActor->GetSlot();
     const Vec3* pPosition = pActor->GetPositionPtr();
@@ -215,7 +215,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
     }
     else
     {
-        pGoalCentre = g_apPositionMarkers[POS_S_GOAL_CENTER];
+        pGoalCentre = g_apPositionMarkers[kPosSGoalCenter];
     }
 
     Vec3        vTriple  = pActor->GetPhysicsBody()->vel;
@@ -233,7 +233,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
 
     PlayerObject* const pOwner = pContext->GetPlayerActor();
 
-    const float flAccuracy = pOwner->m_stats.GetScalar(RATING_SHOT_ACCURACY);
+    const float flAccuracy = pOwner->m_stats.GetScalar(kRatingShotAccuracy);
 
     if (flAccuracy * APPROACH_ACCURACY_WEIGHT + flTime > APPROACH_TIME_GATE)
     {
@@ -300,22 +300,22 @@ void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBeha
     pActor->GetPlanState()->m_apNamedInteractors[nIndex] = pInteractor;
 }
 
-constexpr auto ARG_COUNT_DIRECT  = 2;
-constexpr auto ARG_COUNT_INDEXED = 3;
+constexpr auto kArgCountDirect  = 2;
+constexpr auto kArgCountIndexed = 3;
 
-// A count of three indexes the named interactors only under a PLAN_ARG_INTERACTOR_NAME high half.
+// A count of three indexes the named interactors only under a kPlanArgInteractorName high half.
 // FUNCTION: HYPERX 0x0045e320
 void PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehaviorObject*, Interactor* pInteractor)
 {
     const short nArgCount = pArgs->m_nArgCount;
 
-    if (nArgCount == ARG_COUNT_DIRECT)
+    if (nArgCount == kArgCountDirect)
     {
         pInteractor->SetActiveState(pArgs->m_pArgs[1].n);
         return;
     }
 
-    if (nArgCount == ARG_COUNT_INDEXED)
+    if (nArgCount == kArgCountIndexed)
     {
         if (!pArgs->m_pArgs[1].IsInteractorName())
         {
@@ -378,7 +378,7 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
     flDelta = g_pGameEngine->m_clock.flDelta;
 
-    const float flSpeed = (static_cast<float>(rand() % SCATTER_ROLL) + SCATTER_FLOOR) * flDelta;
+    const float flSpeed = (static_cast<float>(rand() % kScatterRoll) + SCATTER_FLOOR) * flDelta;
 
     PhysicsBody* pBody = pContext->GetActor()->GetPhysicsBody();
 
@@ -387,9 +387,9 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
 // A failed build returns the agenda item to its pool, so it leaves nothing behind.
 
-constexpr auto ARG_KIND = 1;
+constexpr auto kArgKind = 1;
 #define ARG_ANIM 2
-constexpr auto ARG_START = 3;
+constexpr auto kArgStart = 3;
 #define ARG_DURATION 4
 
 // FUNCTION: HYPERX 0x0045e4d0
@@ -402,7 +402,7 @@ void PlanAction::SetPaletteEffect(Interactor* pContext, PlanNode* pNode, short*,
     PlanWord* const pArgs = pNode->m_pArgs;
 
     if (((CPaletteEffect*)pAgendaItem)
-            ->CreateVisualEffect(pArgs[ARG_KIND].n, pArgs[ARG_ANIM].n, pArgs[ARG_START].pe, pArgs[ARG_DURATION].n) != 0)
+            ->CreateVisualEffect(pArgs[kArgKind].n, pArgs[ARG_ANIM].n, pArgs[kArgStart].pe, pArgs[ARG_DURATION].n) != 0)
     {
         pAgendaItem->Activate();
 
@@ -475,7 +475,7 @@ void PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, in
         nArg = pArgs->m_pArgs[3].n;
     }
 
-    if (nTarget == PLAN_TOKEN_BROADCAST)
+    if (nTarget == kPlanTokenBroadcast)
     {
         pActor = pContext->GetActor();
 
@@ -487,7 +487,7 @@ void PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, in
     EngineObject* const pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nTarget)];
     pActor                      = pContext->GetActor();
 
-    pTarget->DispatchSceneMessage(nEvent, nArg, DECISION_LOG_FRESH, pActor->GetSlot(), 0);
+    pTarget->DispatchSceneMessage(nEvent, nArg, kDecisionLogFresh, pActor->GetSlot(), 0);
 }
 
 // FUNCTION: HYPERX 0x0045e6a0
@@ -518,7 +518,7 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
         nParam = pArgs->m_pArgs[3].n;
     }
 
-    if (nTarget == PLAN_TOKEN_BROADCAST)
+    if (nTarget == kPlanTokenBroadcast)
     {
         pActor = pContext->GetActor();
 
@@ -570,22 +570,22 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
     {
         pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSide));
 
-        pObject->m_matchStats.SetAt(MATCH_STAT_TIME_OF_POSS, static_cast<float>(nPossessionTime) * POSSESSION_TIME_SCALE);
-        pObject->m_matchStats.SetAt(MATCH_STAT_SHOTS_ON_GOAL, static_cast<float>(nShotsOnGoal));
+        pObject->m_matchStats.SetAt(kMatchStatTimeOfPoss, static_cast<float>(nPossessionTime) * POSSESSION_TIME_SCALE);
+        pObject->m_matchStats.SetAt(kMatchStatShotsOnGoal, static_cast<float>(nShotsOnGoal));
     }
     else if (nRecord == pTeam->aSeat[1])
     {
         pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSide + 2));
 
-        pObject->m_matchStats.SetAt(MATCH_STAT_TIME_OF_POSS, static_cast<float>(nPossessionTime) * POSSESSION_TIME_SCALE);
-        pObject->m_matchStats.SetAt(MATCH_STAT_SHOTS_ON_GOAL, static_cast<float>(nShotsOnGoal));
+        pObject->m_matchStats.SetAt(kMatchStatTimeOfPoss, static_cast<float>(nPossessionTime) * POSSESSION_TIME_SCALE);
+        pObject->m_matchStats.SetAt(kMatchStatShotsOnGoal, static_cast<float>(nShotsOnGoal));
     }
     else
     {
         const auto flValue = static_cast<float>(nPossessionTime);
 
-        pTeam->aStatRows[nRecord].aStat[MATCH_STAT_TIME_OF_POSS]  = flValue * POSSESSION_TIME_SCALE;
-        pTeam->aStatRows[nRecord].aStat[MATCH_STAT_SHOTS_ON_GOAL] = static_cast<float>(nShotsOnGoal);
+        pTeam->aStatRows[nRecord].aStat[kMatchStatTimeOfPoss]  = flValue * POSSESSION_TIME_SCALE;
+        pTeam->aStatRows[nRecord].aStat[kMatchStatShotsOnGoal] = static_cast<float>(nShotsOnGoal);
     }
 }
 
@@ -595,12 +595,12 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 // GLOBAL: HYPERX 0x004cfa50
 extern int g_nPauseRequestStreak;
 
-constexpr auto PAUSE_MARK_NONE = (-1);
+constexpr auto kPauseMarkNone = (-1);
 
-constexpr auto PAUSE_STREAK_NEEDED = 3;
+constexpr auto kPauseStreakNeeded = 3;
 
 // The host packs the period's elapsed time in tenths of a second.
-constexpr auto SYNC_ELAPSED_UNIT_MS = 100;
+constexpr auto kSyncElapsedUnitMs = 100;
 
 // Matches the host's clock by replaying the goal plans' broadcasts: a shot starts it, a goal stops it.
 // FUNCTION: HYPERX 0x0045e890
@@ -620,7 +620,7 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
     EngineClock* const pClock = &g_pGameEngine->m_clock;
     const int          nMark  = pClock->nPauseMark;
 
-    if (nMark != PAUSE_MARK_NONE)
+    if (nMark != kPauseMarkNone)
     {
         if (packed.GetPauseMark() != 0)
         {
@@ -628,11 +628,11 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
             {
                 ++g_nPauseRequestStreak;
 
-                if (g_nPauseRequestStreak >= PAUSE_STREAK_NEEDED)
+                if (g_nPauseRequestStreak >= kPauseStreakNeeded)
                 {
                     pClock->nPauseMark = 1;
 
-                    g_pGameEngine->BroadcastEvent(MSG_SHOOT, 0, pActor->GetSlot());
+                    g_pGameEngine->BroadcastEvent(kMsgShoot, 0, pActor->GetSlot());
 
                     g_nPauseRequestStreak = 0;
                 }
@@ -648,11 +648,11 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
             {
                 ++g_nPauseRequestStreak;
 
-                if (g_nPauseRequestStreak >= PAUSE_STREAK_NEEDED)
+                if (g_nPauseRequestStreak >= kPauseStreakNeeded)
                 {
                     pClock->nPauseMark = 0;
 
-                    g_pGameEngine->BroadcastEvent(MSG_GOAL_SCORED, 0, pActor->GetSlot());
+                    g_pGameEngine->BroadcastEvent(kMsgGoalScored, 0, pActor->GetSlot());
 
                     g_nPauseRequestStreak = 0;
                 }
@@ -664,14 +664,14 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
         }
     }
 
-    nTotal                 = pClock->nPauseStartMs - packed.GetElapsed() * SYNC_ELAPSED_UNIT_MS;
+    nTotal                 = pClock->nPauseStartMs - packed.GetElapsed() * kSyncElapsedUnitMs;
     pClock->nPeriodStartMs = nTotal;
 
     g_pGameEngine->SetHomeScore(packed.GetHomeScore());
     g_pGameEngine->SetAwayScore(packed.GetAwayScore());
 }
 
-constexpr auto ARG_COUNT_WITH_SLOT = 2;
+constexpr auto kArgCountWithSlot = 2;
 
 // FUNCTION: HYPERX 0x0045e980
 void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
@@ -680,7 +680,7 @@ void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
 
     if (pActor->GetPhase() != OBJECT_PHASE_LOCAL)
     {
-        pActor->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)] = static_cast<float>(nValue & 0xff);
+        pActor->m_stats.m_aStats[RATING_SLOT(kRatingDamage)] = static_cast<float>(nValue & 0xff);
     }
 }
 
@@ -693,7 +693,7 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     EngineObject* pActor   = pContext->GetActor();
     const int     nOwnSlot = pActor->GetSlot();
 
-    if (pArgs->m_nArgCount == ARG_COUNT_WITH_SLOT)
+    if (pArgs->m_nArgCount == kArgCountWithSlot)
     {
         nIndex = pArgs->m_pArgs[1].n;
 
@@ -728,7 +728,7 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     }
 }
 
-constexpr auto ARG_COUNT_WITH_VALUE = 3;
+constexpr auto kArgCountWithValue = 3;
 
 // In a network session the actor must be the viewed slot or driven by this machine.
 // FUNCTION: HYPERX 0x0045ea90
@@ -739,7 +739,7 @@ void PlanAction::SendMessageToMyCamera(Interactor* pContext, PlanNode* pArgs, sh
 
     const int nEvent = pArgs->m_pArgs[1].n;
 
-    if (pArgs->m_nArgCount == ARG_COUNT_WITH_VALUE && pArgs->m_pArgs[2].n != PLAN_TOKEN_MESSAGE_DATA)
+    if (pArgs->m_nArgCount == kArgCountWithValue && pArgs->m_pArgs[2].n != PLAN_TOKEN_MESSAGE_DATA)
     {
         nValue = pArgs->m_pArgs[2].n;
     }
@@ -748,7 +748,7 @@ void PlanAction::SendMessageToMyCamera(Interactor* pContext, PlanNode* pArgs, sh
         nValue = nParam;
     }
 
-    EngineObject* const pCamera = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+    EngineObject* const pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
     if (pCamera == nullptr)
     {
@@ -841,11 +841,11 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
     }
 }
 
-constexpr auto ARG_COL_OBJECT = 1;
+constexpr auto kArgColObject = 1;
 #define ARG_STAT 2
 
-constexpr auto ARG_COUNT_ACTOR = 2;
-constexpr auto ARG_COUNT_SLOT  = 3;
+constexpr auto kArgCountActor = 2;
+constexpr auto kArgCountSlot  = 3;
 
 // Tells whichever of the mine, the swarf and the Rok the actor carries to deploy.
 // FUNCTION: HYPERX 0x0045ecc0
@@ -866,7 +866,7 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
         pActor = pContext->GetActor();
     }
 
-    EngineObject* pTracked = g_pGameEngine->m_ppSlots[SLOT_MINE];
+    EngineObject* pTracked = g_pGameEngine->m_ppSlots[kSlotMine];
 
     if (pTracked != nullptr)
     {
@@ -876,14 +876,14 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
         {
             nSlot = pSlot->nSlot;
 
-            if (nSlot < PLAYER_OBJECT_COUNT && nSlot == pActor->GetSlot())
+            if (nSlot < kPlayerObjectCount && nSlot == pActor->GetSlot())
             {
-                pTracked->PostSceneEvent(MSG_DEPLOY_WEAPON, 0);
+                pTracked->PostSceneEvent(kMsgDeployWeapon, 0);
             }
         }
     }
 
-    pTracked = g_pGameEngine->m_ppSlots[SLOT_SWARF];
+    pTracked = g_pGameEngine->m_ppSlots[kSlotSwarf];
 
     if (pTracked != nullptr)
     {
@@ -893,14 +893,14 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
         {
             nSlot = pSlot->nSlot;
 
-            if (nSlot < PLAYER_OBJECT_COUNT && nSlot == pActor->GetSlot())
+            if (nSlot < kPlayerObjectCount && nSlot == pActor->GetSlot())
             {
-                pTracked->PostSceneEvent(MSG_DEPLOY_WEAPON, 0);
+                pTracked->PostSceneEvent(kMsgDeployWeapon, 0);
             }
         }
     }
 
-    pTracked = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    pTracked = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (pTracked != nullptr)
     {
@@ -910,9 +910,9 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
         {
             nSlot = pSlot->nSlot;
 
-            if (nSlot < PLAYER_OBJECT_COUNT && nSlot == pActor->GetSlot())
+            if (nSlot < kPlayerObjectCount && nSlot == pActor->GetSlot())
             {
-                pTracked->PostSceneEvent(MSG_DEPLOY_WEAPON, 0);
+                pTracked->PostSceneEvent(kMsgDeployWeapon, 0);
             }
         }
     }
@@ -924,16 +924,16 @@ void PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     auto nSlot = static_cast<short>(pArgs->m_pArgs[1].n);
 
-    if (nSlot < 0 || nSlot > GOALIE_SLOT_B)
+    if (nSlot < 0 || nSlot > kGoalieSlotB)
     {
-        nSlot = SLOT_NONE;
+        nSlot = kSlotNone;
     }
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
     if (pActor->GetSlot() == nSlot)
     {
-        nSlot = SLOT_NONE;
+        nSlot = kSlotNone;
     }
 
     pActor->m_wAttackeeSlot = nSlot;
@@ -946,7 +946,7 @@ void PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, shor
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    if (pArgs->m_nArgCount == ARG_COUNT_SLOT)
+    if (pArgs->m_nArgCount == kArgCountSlot)
     {
         int nIndex = nSlot;
 
@@ -964,7 +964,7 @@ void PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, shor
             return;
         }
     }
-    else if (pArgs->m_nArgCount == ARG_COUNT_ACTOR)
+    else if (pArgs->m_nArgCount == kArgCountActor)
     {
         pActor->m_nKnockedDownState = pArgs->m_pArgs[1].n;
     }
@@ -977,7 +977,7 @@ void PlanAction::HoverAboveArmory(Interactor* pContext, PlanNode* pNode, short*,
     EngineObject* pSource;
     PlanWord*     pArgs;
 
-    short nSlot = SLOT_ARMORY;
+    short nSlot = kSlotArmory;
 
     short nDistance = pContext->GetNamedSlot();
 
@@ -1050,13 +1050,13 @@ void PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, short*, int 
         pWrite  = &pContext->GetActor()->GetPhysicsBody()->pos;
         *pWrite = *pPrev;
     }
-    else if (pNode->m_nArgCount >= ARG_COUNT_WITH_XY)
+    else if (pNode->m_nArgCount >= kArgCountWithXY)
     {
         pContext->GetActor()->GetPhysicsBody()->pos.x = pContext->GetActor()->GetPhysicsBody()->prevPos.x = pContext->GetActor()->GetPositionPtr()->x = PlanArg::ResolveFloat(pContext, pNode, 1);
 
         pContext->GetActor()->GetPhysicsBody()->pos.y = pContext->GetActor()->GetPhysicsBody()->prevPos.y = pContext->GetActor()->GetPositionPtr()->y = PlanArg::ResolveFloat(pContext, pNode, 2);
 
-        if (pNode->m_nArgCount == ARG_COUNT_WITH_Z)
+        if (pNode->m_nArgCount == kArgCountWithZ)
         {
             pContext->GetActor()->GetPhysicsBody()->pos.z = pContext->GetActor()->GetPhysicsBody()->prevPos.z = pContext->GetActor()->GetPositionPtr()->z = PlanArg::ResolveFloat(pContext, pNode, 3);
         }
@@ -1097,7 +1097,7 @@ void PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, short*, int 
     pContext->GetActor()->GetPhysicsBody()->vel.y = g_flZeroPlan;
     pContext->GetActor()->GetPhysicsBody()->vel.x = g_flZeroPlan;
 
-    if (pContext->GetActor()->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pContext->GetActor()->GetSlot() < kPlayerObjectCount)
     {
         cSavedVisible = pContext->GetActor()->IsVisible();
         pContext->GetActor()->SetVisible(1);
@@ -1109,7 +1109,7 @@ void PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, short*, int 
 // The copy through the owner's position accessor writes the position onto itself.
 
 // A node of four arguments carries three literal integers.
-constexpr auto ARG_COUNT_WITH_LITERALS = 4;
+constexpr auto kArgCountWithLiterals = 4;
 
 // Below this length the heading is left alone.
 #define MIN_VELOCITY_LENGTH 0.001f
@@ -1121,7 +1121,7 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
     Vec3*     pOwnPosition;
     Vec3      vVelocity;
 
-    if (pNode->m_nArgCount == ARG_COUNT_WITH_LITERALS)
+    if (pNode->m_nArgCount == kArgCountWithLiterals)
     {
         pnArgs = pNode->m_pArgs;
 
@@ -1176,7 +1176,7 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 #define TACKLE_RANGE   25.0
 #define TACKLE_MIN_DOT 0.2f
 
-constexpr auto TACKLE_MESSAGE_ARG = 2;
+constexpr auto kTackleMessageArg = 2;
 
 // Three; its marker is in src/globals.cpp.
 extern const float g_flThreePlan;
@@ -1224,17 +1224,17 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
     Vec3                  vOffset;
     CSetPositionRelative* pSetPosition;
 
-    const auto nFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto nFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % kPlayerSlotCount);
 
     EngineObject* const pFirst = g_pGameEngine->GetSlot(nFirst);
 
-    const auto nSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto nSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % kPlayerSlotCount);
 
     EngineObject* pSecond = g_pGameEngine->GetSlot(nSecond);
 
-    pnCarrier = g_pGameEngine->GetSlot(SLOT_ROK)->GetPhysicsBody()->pAttach;
+    pnCarrier = g_pGameEngine->GetSlot(kSlotRok)->GetPhysicsBody()->pAttach;
 
-    if (pnCarrier != nullptr && pnCarrier->nSlot < PLAYER_OBJECT_COUNT)
+    if (pnCarrier != nullptr && pnCarrier->nSlot < kPlayerObjectCount)
     {
         nCarrier = pnCarrier->nSlot;
         bCarrier = true;
@@ -1320,7 +1320,7 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
 
     pBungee->Activate();
 
-    pSecond->PostEvent(MSG_YER_ATTACKED, TACKLE_MESSAGE_ARG, pContext->GetActor()->GetSlot());
+    pSecond->PostEvent(kMsgYerAttacked, kTackleMessageArg, pContext->GetActor()->GetSlot());
 }
 
 // Healthy enough, facing within range, and heading the same way.
@@ -1356,16 +1356,16 @@ void PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResu
     PlayerObject* pTarget;
     Vec3          vOffset;
 
-    const auto sFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto sFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % kPlayerSlotCount);
 
     PlayerObject* const pFirst = g_pGameEngine->GetPlayer(sFirst);
 
-    const auto sSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto sSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % kPlayerSlotCount);
 
     PlayerObject* const pSecond = g_pGameEngine->GetPlayer(sSecond);
 
-    const float flDamageA = pFirst->m_stats.GetScalar(RATING_DAMAGE);
-    const float flDamageB = pSecond->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageA = pFirst->m_stats.GetScalar(kRatingDamage);
+    const float flDamageB = pSecond->m_stats.GetScalar(kRatingDamage);
 
     if (CanEngage(pContext, pFirst, flDamageA))
     {
@@ -1423,13 +1423,13 @@ void PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResu
 // FUNCTION: HYPERX 0x0045fa70
 void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
 {
-    AttachPak* const pState = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* const pState = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pState != nullptr)
     {
         const short nHolderSlot = pState->nSlot;
 
-        if (nHolderSlot < PLAYER_OBJECT_COUNT)
+        if (nHolderSlot < kPlayerObjectCount)
         {
             EngineObject* const pActor = pContext->GetActor();
 
@@ -1445,7 +1445,7 @@ void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, i
     *pResult = 1;
 }
 
-constexpr auto ANNOUNCER_GAG_MS = 0x3a98;
+constexpr auto kAnnouncerGagMs = 0x3a98;
 
 // Inside the gag window it answers one past the highest draw.
 // FUNCTION: HYPERX 0x0045fac0
@@ -1453,7 +1453,7 @@ void PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
 {
     const int nNow = g_pGameEngine->m_clock.nTickMs;
 
-    if (static_cast<unsigned int>(nNow - g_nAnnouncerLineMs) < ANNOUNCER_GAG_MS)
+    if (static_cast<unsigned int>(nNow - g_nAnnouncerLineMs) < kAnnouncerGagMs)
     {
         *pnOut = static_cast<short>(pArgs->m_nArgCount - 2);
 
@@ -1523,10 +1523,10 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
 }
 
 // The selector that arms the throttle instead of answering a state.
-constexpr auto SELECTOR_ARM = 0x18;
+constexpr auto kSelectorArm = 0x18;
 
-constexpr auto ARM_WINDOW_MS   = 300;
-constexpr auto STATE_WINDOW_MS = 800;
+constexpr auto kArmWindowMs   = 300;
+constexpr auto kStateWindowMs = 800;
 
 // The tick the arming selector last ran at.
 // GLOBAL: HYPERX 0x004cf9f8
@@ -1546,13 +1546,13 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
     int        nOther;
     float      flLimit;
 
-    if (nSelector == SELECTOR_ARM)
+    if (nSelector == kSelectorArm)
     {
         g_nRokCameraArmedTick = g_pGameEngine->m_clock.nTickMs;
 
-        pTarget = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pTarget = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        if (pTarget != nullptr && (nSlot = pTarget->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pTarget != nullptr && (nSlot = pTarget->nSlot) < kPlayerObjectCount)
         {
             if (nSlot == g_pGameEngine->m_nViewedSlot)
             {
@@ -1579,9 +1579,9 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
     }
     else
     {
-        pTarget = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pTarget = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        if (pTarget != nullptr && (nSlot = pTarget->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pTarget != nullptr && (nSlot = pTarget->nSlot) < kPlayerObjectCount)
         {
             if (nSlot == g_pGameEngine->m_nViewedSlot)
             {
@@ -1595,7 +1595,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
                     PlayerObject* const pCandidate = g_pGameEngine->GetPlayer(TeammateSlot(nSlot));
 
-                    if (pCandidate->m_stats.GetScalar(RATING_DAMAGE) <= flLimit)
+                    if (pCandidate->m_stats.GetScalar(kRatingDamage) <= flLimit)
                     {
                         *pResult = 4;
                     }
@@ -1630,7 +1630,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
                 if (nSlot == static_cast<short>(nOther & 3))
                 {
-                    if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick > ARM_WINDOW_MS)
+                    if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick > kArmWindowMs)
                     {
                         const auto flFacing = static_cast<float>(cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
                             nSlot, g_pGameEngine->m_nViewedSlot))));
@@ -1645,7 +1645,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                             *pResult = 4;
                         }
                     }
-                    else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > STATE_WINDOW_MS)
+                    else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > kStateWindowMs)
                     {
                         *pResult = static_cast<short>((g_pGameEngine->m_bFollowingOther != 0) + 6);
                     }
@@ -1654,7 +1654,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                         *pResult = 7;
                     }
                 }
-                else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick < ARM_WINDOW_MS && g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > STATE_WINDOW_MS)
+                else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick < kArmWindowMs && g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > kStateWindowMs)
                 {
                     if (g_pGameEngine->m_bFollowingOther != 0)
                     {
@@ -1671,7 +1671,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                 }
             }
         }
-        else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick < ARM_WINDOW_MS)
+        else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick < kArmWindowMs)
         {
             if (g_pGameEngine->m_bFollowingOther != 0)
             {
@@ -1738,7 +1738,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
     }
 }
 
-constexpr auto RELATIONSHIP_KIND_DIRECTION = 0x16;
+constexpr auto kRelationshipKindDirection = 0x16;
 
 // Kind 0x16 normalises a direction nothing reads, in the original too.
 // FUNCTION: HYPERX 0x00460140
@@ -1749,12 +1749,12 @@ void PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int nKind)
     short         nSlot;
     Vec3          vDirection;
 
-    if (nKind == RELATIONSHIP_KIND_DIRECTION)
+    if (nKind == kRelationshipKindDirection)
     {
-        EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
+        EngineObject* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
         pSlot                    = pRok->GetPhysicsBody()->pAttach;
 
-        if (pSlot != nullptr && (nSlot = pSlot->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pSlot != nullptr && (nSlot = pSlot->nSlot) < kPlayerObjectCount)
         {
             PlayerObject* const pFollowed = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
@@ -1782,9 +1782,9 @@ void PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int nKind)
         return;
     }
 
-    pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    pSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != nullptr && (nSlot = pSlot->nSlot) < PLAYER_OBJECT_COUNT && nSlot == g_pGameEngine->m_nViewedSlot)
+    if (pSlot != nullptr && (nSlot = pSlot->nSlot) < kPlayerObjectCount && nSlot == g_pGameEngine->m_nViewedSlot)
     {
         *pResult = 2;
 
@@ -1941,7 +1941,7 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
     Vec3        vFar;
     float       flDamageNear;
 
-    pRokAt = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr();
+    pRokAt = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 
     auto bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
@@ -1974,11 +1974,11 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
-    flDamageNear = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    flDamageNear = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    const float flDamageFar = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageFar = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     if (flDamageNear <= DamageGate())
     {
@@ -2010,7 +2010,7 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
 }
 
 // Both team mates hurt; the goalie's plan passes to the opponents' goal instead.
-constexpr auto NO_PASS_TARGET = 4;
+constexpr auto kNoPassTarget = 4;
 
 // FUNCTION: HYPERX 0x004608a0
 void PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -2024,7 +2024,7 @@ void PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, 
 
     pActor->GetSlot();
 
-    EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    EngineObject* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
 
     const short nTeam = pActor->GetSlot();
 
@@ -2034,7 +2034,7 @@ void PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, 
     }
     else
     {
-        pGoalCentre = g_apPositionMarkers[POS_S_GOAL_CENTER];
+        pGoalCentre = g_apPositionMarkers[kPosSGoalCenter];
     }
 
     vSpawn.x = pGoalCentre->x;
@@ -2103,9 +2103,9 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
 
     const auto flDistFar = static_cast<float>(sqrt(static_cast<double>((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x)));
 
-    float flDamageNear = ((PlayerObject*)pNear)->m_stats.GetScalar(RATING_DAMAGE);
+    float flDamageNear = ((PlayerObject*)pNear)->m_stats.GetScalar(kRatingDamage);
 
-    float flDamageFar = ((PlayerObject*)pFar)->m_stats.GetScalar(RATING_DAMAGE);
+    float flDamageFar = ((PlayerObject*)pFar)->m_stats.GetScalar(kRatingDamage);
 
     const char* pszNear = pNear->GetPlanState()->m_pszName;
 
@@ -2127,7 +2127,7 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
     {
         if (flDamageFar <= DamageGate())
         {
-            *pResult = NO_PASS_TARGET;
+            *pResult = kNoPassTarget;
 
             return;
         }
@@ -2152,11 +2152,11 @@ void PlanCond::WhichOppnToAttack(Interactor* pContext, PlanNode*, short* pResult
 {
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
-    const float flDamageA = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageA = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    const float flDamageB = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageB = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
@@ -2223,11 +2223,11 @@ void PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pR
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
-    const float flDamageA = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageA = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    const float flDamageB = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageB = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
@@ -2338,7 +2338,7 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     pnTargetSlot = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-    if (pnTargetSlot == nullptr || (nSlot = pnTargetSlot->nSlot) >= PLAYER_OBJECT_COUNT)
+    if (pnTargetSlot == nullptr || (nSlot = pnTargetSlot->nSlot) >= kPlayerObjectCount)
     {
         // TODO: The original takes the result pointer itself as the slot; was *pResult meant?
         nSlot = static_cast<short>((std::intptr_t)pResult);
@@ -2368,7 +2368,7 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     PlayerObject* pCandidate = g_pGameEngine->GetPlayer(nNear);
 
-    if (pCandidate->m_stats.GetScalar(RATING_DAMAGE) <= flLimit)
+    if (pCandidate->m_stats.GetScalar(kRatingDamage) <= flLimit)
     {
         flNear = g_flZeroPlan;
     }
@@ -2377,14 +2377,14 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     pCandidate = g_pGameEngine->GetPlayer(nFar);
 
-    if (pCandidate->m_stats.GetScalar(RATING_DAMAGE) <= flLimit)
+    if (pCandidate->m_stats.GetScalar(kRatingDamage) <= flLimit)
     {
         flFar = g_flZeroPlan;
     }
 
     if (flNear == 0.0f && flFar == 0.0f)
     {
-        *pResult = GOALIE_SLOT_A;
+        *pResult = kGoalieSlotA;
 
         return;
     }
@@ -2430,11 +2430,11 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
-    const float flDamageNear = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageNear = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    float flDamageFar = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    float flDamageFar = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     if (flDamageNear <= DamageGate() && flDamageFar <= DamageGate())
     {
@@ -2442,9 +2442,9 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
     }
     else
     {
-        pCarrierSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pCarrierSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        const int bNoCarrier = pCarrierSlot == nullptr || pCarrierSlot->nSlot >= PLAYER_OBJECT_COUNT;
+        const int bNoCarrier = pCarrierSlot == nullptr || pCarrierSlot->nSlot >= kPlayerObjectCount;
 
         if (bNoCarrier != 0)
         {
@@ -2454,7 +2454,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
         {
             GameBehaviorObject* const pBehaviour = pTarget->GetPlanState()->m_pCurrent;
 
-            if (pBehaviour->m_wKind == BEH_GLIDE_BETWEEN_FACING && ((pOther = ((BehObj_GlideBetweenFacing*)pBehaviour)->m_pAimObject) == nullptr || pOther->GetSlot() <= PLAYER_SLOT_COUNT - 1))
+            if (pBehaviour->m_wKind == kBehGlideBetweenFacing && ((pOther = ((BehObj_GlideBetweenFacing*)pBehaviour)->m_pAimObject) == nullptr || pOther->GetSlot() <= kPlayerSlotCount - 1))
             {
                 const short sOther = pOther->GetSlot();
 
@@ -2536,9 +2536,9 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
     const Vec3*         pPosition = pActor->GetPositionPtr();
 
     float flBest = 200000000.0f;
-    int   nBest  = MODEL_ID_NONE;
+    int   nBest  = kModelIDNone;
 
-    for (int nSlot = SLOT_MULTIPLIER; nSlot <= SLOT_MULTIPLIER_LAST; nSlot++)
+    for (int nSlot = kSlotMultiplier; nSlot <= kSlotMultiplierLast; nSlot++)
     {
         EngineObject* const pMultiplier = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
@@ -2568,9 +2568,9 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
         }
     }
 
-    if (nBest != MODEL_ID_NONE)
+    if (nBest != kModelIDNone)
     {
-        *pResult = static_cast<short>(nBest - (SLOT_MULTIPLIER - 1));
+        *pResult = static_cast<short>(nBest - (kSlotMultiplier - 1));
     }
     else
     {
@@ -2584,9 +2584,9 @@ void PlanCond::OffenseOrWRok(Interactor* pContext, PlanNode*, short* pResult, in
     short nSlot;
     int   nWide;
 
-    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-    const bool bNoCarrier = pSlot == nullptr || pSlot->nSlot >= PLAYER_OBJECT_COUNT;
+    const bool bNoCarrier = pSlot == nullptr || pSlot->nSlot >= kPlayerObjectCount;
 
     if (bNoCarrier)
     {
@@ -2634,7 +2634,7 @@ void PlanCond::OffenseOrWRok(Interactor* pContext, PlanNode*, short* pResult, in
 // FUNCTION: HYPERX 0x00461ae0
 void PlanCond::HostIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 {
-    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pSlot != nullptr)
     {
@@ -2654,7 +2654,7 @@ void PlanCond::HostIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00461b20
 void PlanCond::RokInWhichTeamsPoss(Interactor*, PlanNode*, short* pResult, int)
 {
-    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pSlot != nullptr)
     {
@@ -2679,13 +2679,13 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
     short nSlot;
 
     EngineObject* const pActor = pContext->GetActor();
-    AttachPak* const    pSlot  = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* const    pSlot  = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pSlot != nullptr)
     {
         nSlot = pSlot->nSlot;
 
-        if (nSlot < PLAYER_OBJECT_COUNT)
+        if (nSlot < kPlayerObjectCount)
         {
             const int nTeamWide = pActor->GetSlot();
             auto      nTeam     = static_cast<short>(nTeamWide);
@@ -2736,7 +2736,7 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00461c00
 void PlanCond::IsDoubleScore(Interactor* pContext, PlanNode*, short* pResult, int)
 {
-    if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != nullptr)
+    if (g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach != nullptr)
     {
         *pResult = 2;
 
@@ -2750,9 +2750,9 @@ void PlanCond::IsDoubleScore(Interactor* pContext, PlanNode*, short* pResult, in
 }
 
 // The low nibble of the flag launches the pass; clear, it only announces it.
-constexpr auto LAUNCH_MASK = 0x0f;
+constexpr auto kLaunchMask = 0x0f;
 
-constexpr auto LATE_PASS_STEP = 4;
+constexpr auto kLatePassStep = 4;
 
 #define BUNGEE_GAIN     1.85f
 #define BUNGEE_DOT_GATE 0.7f
@@ -2767,7 +2767,7 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
     CBungeeToward* pBungee;
     float          flScore;
 
-    if ((nFlags & LAUNCH_MASK) != 0)
+    if ((nFlags & kLaunchMask) != 0)
     {
         pTarget = Player::FindBungeeVictim(pContext->GetActor(), &flScore);
 
@@ -2794,11 +2794,11 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
     {
         pTarget = Player::FindBungeeVictim(pContext->GetActor(), &flScore);
 
-        const int nLate = (g_nCheckImpulseFacing >= LATE_PASS_STEP);
+        const int nLate = (g_nCheckImpulseFacing >= kLatePassStep);
 
         if (pTarget != nullptr)
         {
-            g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_YER_ATTACKED, 0);
+            g_pGameEngine->m_ppSlots[kSlotSoundMan]->PostSceneEvent(kMsgYerAttacked, 0);
         }
 
         *pResult = static_cast<short>(nLate + 1);
@@ -2842,7 +2842,7 @@ void PlanAction::StartStatTimer(Interactor* pContext, PlanNode* pArgs, short*, i
             pContext->GetActor(), pArgs);
         PlayerObject* const pEntity = g_pGameEngine->GetPlayer(nSlot);
 
-        if (nSlot >= 0 && nSlot < ENTITY_SLOT_LIMIT && pEntity != nullptr)
+        if (nSlot >= 0 && nSlot < kEntitySlotLimit && pEntity != nullptr)
         {
             pEntity->m_matchStats.StartTimer(pArgs->m_pArgs[2].n);
         }
@@ -2860,7 +2860,7 @@ void PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, short*, int
             pContext->GetActor(), pArgs);
         PlayerObject* const pEntity = g_pGameEngine->GetPlayer(nSlot);
 
-        if (nSlot >= 0 && nSlot < ENTITY_SLOT_LIMIT && pEntity != nullptr)
+        if (nSlot >= 0 && nSlot < kEntitySlotLimit && pEntity != nullptr)
         {
             pEntity->m_matchStats.StopTimer(pArgs->m_pArgs[2].n);
         }
@@ -2870,7 +2870,7 @@ void PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, short*, int
 // FUNCTION: HYPERX 0x00461ea0
 void PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode, short*, int)
 {
-    BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr(static_cast<short>(pNode->m_pArgs[ARG_COL_OBJECT].n));
+    BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr(static_cast<short>(pNode->m_pArgs[kArgColObject].n));
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
@@ -2971,7 +2971,7 @@ void PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult,
 
     auto* const pActor = (PlayerObject*)apObjects[nSlot];
 
-    if (pActor->m_wTargetGoalSlot == SLOT_NGOAL)
+    if (pActor->m_wTargetGoalSlot == kSlotNgoal)
     {
         flSign = g_flOnePlan;
     }
@@ -2980,11 +2980,11 @@ void PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult,
         flSign = -g_flOnePlan;
     }
 
-    PhysicsBody* const pBlock = apObjects[SLOT_ROK]->GetPhysicsBody();
+    PhysicsBody* const pBlock = apObjects[kSlotRok]->GetPhysicsBody();
 
     AttachPak* const pnTracked = pBlock->pAttach;
 
-    if (pnTracked != nullptr && (nTracked = pnTracked->nSlot) < PLAYER_OBJECT_COUNT && nTracked == nSlot)
+    if (pnTracked != nullptr && (nTracked = pnTracked->nSlot) < kPlayerObjectCount && nTracked == nSlot)
     {
         EngineObject* const pMate = g_pGameEngine->m_ppSlots[nMate];
 
@@ -3045,9 +3045,9 @@ void PlanCond::Decide_HPSpin_Rail_orNot(Interactor* pContext, PlanNode*, short* 
         *pResult = 2;
     }
 
-    pnTracked = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    pnTracked = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-    if (pnTracked != nullptr && (nTracked = pnTracked->nSlot) < PLAYER_OBJECT_COUNT && nTracked == pContext->GetActor()->GetSlot())
+    if (pnTracked != nullptr && (nTracked = pnTracked->nSlot) < kPlayerObjectCount && nTracked == pContext->GetActor()->GetSlot())
     {
         const float flEnergy = pContext->GetPlayerActor()->m_stats.m_aStats[0];
 
@@ -3140,7 +3140,7 @@ void PlanCond::Random(Interactor*, PlanNode* pArgs, short* pResult, int)
 // FUNCTION: HYPERX 0x004623f0
 void PlanCond::ShotPower(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
-    const int nScaled = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_nShotPowerLevel * (pArgs->m_nArgCount - 1);
+    const int nScaled = g_pGameEngine->GetCamera(kCameraHeadSlot)->m_nShotPowerLevel * (pArgs->m_nArgCount - 1);
 
     const int nPosition = static_cast<int>(static_cast<double>(nScaled) * g_dPeriodScale);
 
@@ -3152,14 +3152,14 @@ void PlanCond::ShotPower(Interactor*, PlanNode* pArgs, short* pResult, int)
     }
 }
 
-constexpr auto SPAWN_GRID_HALF  = 28;
-constexpr auto SPAWN_GRID_PITCH = 56;
+constexpr auto kSpawnGridHalf  = 28;
+constexpr auto kSpawnGridPitch = 56;
 
-constexpr auto SPAWN_SLOT_LIMIT = 3;
-constexpr auto SPAWN_AXES       = 4;
+constexpr auto kSpawnSlotLimit = 3;
+constexpr auto kSpawnAxes      = 4;
 
-constexpr auto SPAWN_RESULT_OUT         = 1;
-constexpr auto SPAWN_RESULT_TEAM_MOVING = 2;
+constexpr auto kSpawnResultOut        = 1;
+constexpr auto kSpawnResultTeamMoving = 2;
 
 // The third axis difference is always zero: both operands are the same shared zero.
 // FUNCTION: HYPERX 0x00462450
@@ -3171,12 +3171,12 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 
     *pResult = 0;
 
-    for (nSlot = 0; static_cast<short>(nSlot) <= SPAWN_SLOT_LIMIT; nSlot++)
+    for (nSlot = 0; static_cast<short>(nSlot) <= kSpawnSlotLimit; nSlot++)
     {
         PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
 
-        vSquare.x = static_cast<float>(SPAWN_GRID_HALF - static_cast<short>(nSlot) / 2 * SPAWN_GRID_PITCH);
-        vSquare.y = static_cast<float>(SPAWN_GRID_HALF - static_cast<short>(nSlot) % 2 * SPAWN_GRID_PITCH);
+        vSquare.x = static_cast<float>(kSpawnGridHalf - static_cast<short>(nSlot) / 2 * kSpawnGridPitch);
+        vSquare.y = static_cast<float>(kSpawnGridHalf - static_cast<short>(nSlot) % 2 * kSpawnGridPitch);
         vSquare.z = g_flZeroPlan;
 
         Vec3 vPosition = *pObject->GetPositionPtr();
@@ -3191,15 +3191,15 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
         {
             flLimit = DamageGate();
 
-            if (pObject->m_stats.GetScalar(RATING_DAMAGE) > flLimit)
+            if (pObject->m_stats.GetScalar(kRatingDamage) > flLimit)
             {
-                *pResult = SPAWN_RESULT_OUT;
+                *pResult = kSpawnResultOut;
                 return;
             }
 
             int nMoving = 0;
             int nAxis   = 0;
-            int nLeft   = SPAWN_AXES;
+            int nLeft   = kSpawnAxes;
 
             do
             {
@@ -3214,7 +3214,7 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 
             if (nMoving != 0)
             {
-                *pResult = SPAWN_RESULT_OUT;
+                *pResult = kSpawnResultOut;
                 return;
             }
         }
@@ -3222,12 +3222,12 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 
     if (g_pGameEngine->IsHomeTeamInjured() != 0 || g_pGameEngine->IsAwayTeamInjured() != 0)
     {
-        *pResult = SPAWN_RESULT_TEAM_MOVING;
+        *pResult = kSpawnResultTeamMoving;
     }
 }
 
-constexpr auto ARENA_TRACK_UP   = 7;
-constexpr auto ARENA_TRACK_DOWN = 8;
+constexpr auto kArenaTrackUp   = 7;
+constexpr auto kArenaTrackDown = 8;
 
 // FUNCTION: HYPERX 0x00462620
 void PlanAction::EndPeriodNow(Interactor*, PlanNode*, short*, int)
@@ -3341,12 +3341,12 @@ void PlanCond::IsSenderTeammate(Interactor* pContext, PlanNode*, short* pResult,
 
     int nSlot = nOwnSlot;
 
-    if (nOwnSlot < PLAYER_SLOT_COUNT)
+    if (nOwnSlot < kPlayerSlotCount)
     {
         nSlot += 2;
     }
 
-    nSlot &= PLAYER_SLOT_MASK;
+    nSlot &= kPlayerSlotMask;
 
     *pResult = pContext->GetTargetSlot() != static_cast<short>(nSlot);
 
@@ -3371,7 +3371,7 @@ void PlanCond::MyID(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* pActor = pContext->GetActor();
 
-    if (pActor->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pActor->GetSlot() < kPlayerObjectCount)
     {
         pActor = pContext->GetActor();
 
@@ -3480,7 +3480,7 @@ void PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*, short* 
     {
         PlayerObject* const pBody = g_pGameEngine->GetPlayer(nSlot);
 
-        const float flDamage = pBody->m_stats.GetScalar(RATING_DAMAGE);
+        const float flDamage = pBody->m_stats.GetScalar(kRatingDamage);
 
         if (flDamage <= DamageGate() || g_pGameEngine->GetPlayer(nSlot)->m_wDesiredSubstitute != -1)
         {
@@ -3507,7 +3507,7 @@ void PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, short* pRes
 
     if (*pResult == 1)
     {
-        const float flDamage = pOther->m_stats.GetScalar(RATING_DAMAGE);
+        const float flDamage = pOther->m_stats.GetScalar(kRatingDamage);
 
         if (flDamage <= DamageGate() || pActor->m_wClockStoppedSemaphore != 0 || pOther->m_wClockStoppedSemaphore != 0 || pOther->m_wDesiredSubstitute != -1)
         {
@@ -3531,7 +3531,7 @@ void PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short* pResul
 
     PlayerObject* const pBody = g_pGameEngine->GetPlayer(nSlot);
 
-    const float flDamage = pBody->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = pBody->m_stats.GetScalar(kRatingDamage);
 
     if (flDamage <= DamageGate() || pActor->m_wClockStoppedSemaphore != 0 || pOther->m_wClockStoppedSemaphore != 0 || pOther->m_wDesiredSubstitute != -1)
     {
@@ -3542,17 +3542,17 @@ void PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short* pResul
 // Five below the damage gate and four for the actor's m_wClockStoppedSemaphore, before the rok is asked.
 
 // The slot two along, wrapped: zero pairs with two and one with three.
-constexpr auto SLOT_OPPOSITE_STEP  = 2;
-constexpr auto SLOT_OPPOSITE_WRAP  = 3;
-constexpr auto SLOT_OPPOSITE_BELOW = 4;
+constexpr auto kSlotOppositeStep  = 2;
+constexpr auto kSlotOppositeWrap  = 3;
+constexpr auto kSlotOppositeBelow = 4;
 
 // The half of the four the tail answers with.
 #define SLOT_FAR_HALF 2
 
-constexpr auto ROK_TARGETED = 2;
+constexpr auto kRokTargeted = 2;
 
-constexpr auto STATE_HELD  = 4;
-constexpr auto STATE_GATED = 5;
+constexpr auto kStateHeld  = 4;
+constexpr auto kStateGated = 5;
 
 // FUNCTION: HYPERX 0x00462d20
 void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -3563,31 +3563,31 @@ void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, i
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    const float flDamage = pActor->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = pActor->m_stats.GetScalar(kRatingDamage);
 
     flLimit = DamageGate();
 
     if (flDamage <= flLimit)
     {
-        *pResult = STATE_GATED;
+        *pResult = kStateGated;
 
         return;
     }
 
     if (pActor->m_wClockStoppedSemaphore != 0)
     {
-        *pResult = STATE_HELD;
+        *pResult = kStateHeld;
 
         return;
     }
 
-    pnTargetSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    pnTargetSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pnTargetSlot != nullptr)
     {
         const short nTarget = pnTargetSlot->nSlot;
 
-        if (nTarget < PLAYER_OBJECT_COUNT)
+        if (nTarget < kPlayerObjectCount)
         {
             const short nOwn = pContext->GetActor()->GetSlot();
 
@@ -3595,16 +3595,16 @@ void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, i
             {
                 const short nOther = pContext->GetActor()->GetSlot();
 
-                if (nOther < SLOT_OPPOSITE_BELOW)
+                if (nOther < kSlotOppositeBelow)
                 {
-                    nOpposite = nOther + SLOT_OPPOSITE_STEP;
+                    nOpposite = nOther + kSlotOppositeStep;
                 }
                 else
                 {
                     nOpposite = nOther;
                 }
 
-                if (nTarget != static_cast<short>(nOpposite & SLOT_OPPOSITE_WRAP))
+                if (nTarget != static_cast<short>(nOpposite & kSlotOppositeWrap))
                 {
                     *pResult = static_cast<unsigned short>(pContext->GetActor()->GetSlot() >= SLOT_FAR_HALF);
 
@@ -3612,7 +3612,7 @@ void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, i
                 }
             }
 
-            *pResult = static_cast<unsigned short>((nTarget != pContext->GetActor()->GetSlot()) + ROK_TARGETED);
+            *pResult = static_cast<unsigned short>((nTarget != pContext->GetActor()->GetSlot()) + kRokTargeted);
 
             return;
         }
@@ -3644,7 +3644,7 @@ void PlanCond::CollisionDetail(Interactor* pContext, PlanNode*, short* pResult, 
 // FUNCTION: HYPERX 0x00462ee0
 void PlanCond::OwnerIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 {
-    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* const pSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
     if (pSlot != nullptr)
     {
@@ -3661,8 +3661,8 @@ void PlanCond::OwnerIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 1;
 }
 
-constexpr auto SLOT_WRAP   = 0x03;
-constexpr auto SLOT_PAIRED = 0x04;
+constexpr auto kSlotWrap   = 0x03;
+constexpr auto kSlotPaired = 0x04;
 
 // FUNCTION: HYPERX 0x00462f20
 void PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, int)
@@ -3678,7 +3678,7 @@ void PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, 
 
     const short nSlot = g_pGameEngine->m_nViewedSlot;
 
-    if (nSlot < SLOT_PAIRED)
+    if (nSlot < kSlotPaired)
     {
         nIndex = nSlot + 2;
     }
@@ -3687,7 +3687,7 @@ void PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, 
         nIndex = nSlot;
     }
 
-    nIndex &= SLOT_WRAP;
+    nIndex &= kSlotWrap;
 
     pThere = g_pGameEngine->m_ppSlots[nIndex]->GetPositionPtr();
 
@@ -3720,9 +3720,9 @@ void PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFl
         // The flagged query answers two and three where the plain one answers nought and one.
         if (nFlag != 0)
         {
-            pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+            pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-            if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == pContext->GetActor()->GetSlot())
+            if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < kPlayerObjectCount && nCarrier == pContext->GetActor()->GetSlot())
             {
                 *pResult = 2;
 
@@ -3734,9 +3734,9 @@ void PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFl
             return;
         }
 
-        pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == pContext->GetActor()->GetSlot())
+        if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < kPlayerObjectCount && nCarrier == pContext->GetActor()->GetSlot())
         {
             *pResult = 0;
 
@@ -3748,9 +3748,9 @@ void PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFl
         return;
     }
 
-    pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == CollisionObj::GetModelId(pContext->GetModelSlot()))
+    if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < kPlayerObjectCount && nCarrier == CollisionObj::GetModelId(pContext->GetModelSlot()))
     {
         *pResult = 0;
 
@@ -3776,14 +3776,14 @@ void PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResul
     }
 
     // The client tests the short at 0x004630fe and indexes the int at 0x00463115.
-    if (static_cast<unsigned short>(static_cast<unsigned int>(static_cast<short>(nSlot)) >> 16) == PLAN_ARG_PRONOUN)
+    if (static_cast<unsigned short>(static_cast<unsigned int>(static_cast<short>(nSlot)) >> 16) == kPlanArgPronoun)
     {
         nSlot = (reinterpret_cast<PlanStatFnWide*>(g_apPlanStatFns))[nSlot & 0xffff](pContext->GetActor(), pArgs);
     }
 
-    AttachPak* pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    AttachPak* pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT && pCarrier->nSlot == static_cast<short>(nSlot))
+    if (pCarrier != nullptr && pCarrier->nSlot < kPlayerObjectCount && pCarrier->nSlot == static_cast<short>(nSlot))
     {
         *pResult = 0;
         return;
@@ -3805,11 +3805,11 @@ void PlanCond::IsRokInMyZone(Interactor* pContext, PlanNode*, short* pResult, in
 
     if ((pContext->GetActor()->GetSlot() & 1) != 0)
     {
-        nAnswer = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr()->y > g_flZeroPlan;
+        nAnswer = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr()->y > g_flZeroPlan;
     }
     else
     {
-        nAnswer = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr()->y < g_flZeroPlan;
+        nAnswer = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr()->y < g_flZeroPlan;
     }
 
     *pResult = static_cast<short>(nAnswer);
@@ -3824,13 +3824,13 @@ void PlanAction::SetRenderFlag(Interactor* pContext, PlanNode* pArgs, short*, in
     {
         pActor = pContext->GetActor();
 
-        pActor->m_nFlags &= ~ENGINEOBJECT_HIDDEN;
+        pActor->m_nFlags &= ~kEngineObjectHidden;
     }
     else
     {
         pActor = pContext->GetActor();
 
-        pActor->m_nFlags |= ENGINEOBJECT_HIDDEN;
+        pActor->m_nFlags |= kEngineObjectHidden;
     }
 }
 
@@ -3844,7 +3844,7 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
     short nRequest;
 
     EngineObject** const pSlots = g_pGameEngine->m_ppSlots;
-    auto* const          pRok   = (RokObject*)pSlots[SLOT_ROK];
+    auto* const          pRok   = (RokObject*)pSlots[kSlotRok];
     short                nMode  = pRok->m_wRokValue;
 
     if (nMode == 1)
@@ -3861,13 +3861,13 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
         nRequest = static_cast<short>(pArgs->m_pArgs[1].n);
     }
 
-    if (nRequest == ARENA_TRACK_UP)
+    if (nRequest == kArenaTrackUp)
     {
         nMode += 2;
 
         if (nMode <= 4)
         {
-            pSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_DOUBLE_SCORE, 0);
+            pSlots[kSlotSoundMan]->PostSceneEvent(kMsgDoubleScore, 0);
         }
 
         if (nMode >= 4)
@@ -3875,13 +3875,13 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
             nMode = 4;
         }
     }
-    else if (nRequest == ARENA_TRACK_DOWN)
+    else if (nRequest == kArenaTrackDown)
     {
         nMode -= 2;
 
         if (nMode >= -4)
         {
-            pSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_DOUBLE_SCORE, 1);
+            pSlots[kSlotSoundMan]->PostSceneEvent(kMsgDoubleScore, 1);
         }
 
         if (nMode <= -4)
@@ -3915,7 +3915,7 @@ void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 
         pRok->SetRenderSlotFlags();
 
-        g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_KILL_BALL_CHANGE, 0);
+        g_pGameEngine->m_ppSlots[kSlotSoundMan]->PostSceneEvent(kMsgKillBallChange, 0);
 
         return;
     }
@@ -3924,7 +3924,7 @@ void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 
     pRok->SetRenderSlotFlags();
 
-    g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_KILL_BALL_CHANGE, 1);
+    g_pGameEngine->m_ppSlots[kSlotSoundMan]->PostSceneEvent(kMsgKillBallChange, 1);
 
     pRok->SetEntitySlot(pRok->m_nCarrierSlot);
 }
@@ -3932,7 +3932,7 @@ void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 // Any kind but the randomizers indexes by the low word of the argument block's own address.
 
 // The frame the first saved row is pinned to.
-constexpr auto COLOR_PINNED_FRAME = 0x78;
+constexpr auto kColorPinnedFrame = 0x78;
 
 // One word a colour row, set to one so the first save wins; marked in src/globals.cpp.
 extern short g_awColorLatched[2];
@@ -3981,7 +3981,7 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
 
             if (nIndex == 0)
             {
-                g_aaColorSaved[0][1] = COLOR_PINNED_FRAME;
+                g_aaColorSaved[0][1] = kColorPinnedFrame;
             }
 
             g_awColorLatched[nIndex] = 0;
@@ -4007,11 +4007,11 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
 }
 
 // Argument one guards the body and two to four are the position.
-constexpr auto ARG_GUARD = 1;
+constexpr auto kArgGuard = 1;
 #define ARG_X 2
 #define ARG_Y 3
-constexpr auto ARG_Z                   = 4;
-constexpr auto ARG_COUNT_WITH_POSITION = 5;
+constexpr auto kArgZ                 = 4;
+constexpr auto kArgCountWithPosition = 5;
 
 // FUNCTION: HYPERX 0x004635e0
 void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int)
@@ -4031,7 +4031,7 @@ void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int
 // FUNCTION: HYPERX 0x00463620
 void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 {
-    if (pNode->m_pArgs[ARG_GUARD].n != 0)
+    if (pNode->m_pArgs[kArgGuard].n != 0)
     {
         EngineObject* const pActor = pContext->GetActor();
 
@@ -4039,13 +4039,13 @@ void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 
         static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->InitComplexRange();
 
-        if (pNode->m_nArgCount == ARG_COUNT_WITH_POSITION)
+        if (pNode->m_nArgCount == kArgCountWithPosition)
         {
-            EngineObject* pCamera = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+            EngineObject* pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
             Vec3* const pPos = pCamera->GetPositionPtr();
 
-            pCamera = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+            pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
             Vec3* const pBody = &pCamera->GetPhysicsBody()->pos;
 
@@ -4053,15 +4053,15 @@ void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 
             pPos->y = pBody->y = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_Y].n));
 
-            pPos->z = pBody->z = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_Z].n));
+            pPos->z = pBody->z = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgZ].n));
         }
     }
 }
 
 // Argument one is a mode that doubles as the range's low end; two is its high end.
-constexpr auto ARG_RIM_MODE         = 1;
-constexpr auto ARG_HIGH             = 2;
-constexpr auto ARG_COUNT_WITH_RANGE = 3;
+constexpr auto kArgRimMode        = 1;
+constexpr auto kArgHigh           = 2;
+constexpr auto kArgCountWithRange = 3;
 
 // With both arguments a mode of nought picks the directed range and any other the complex one.
 // FUNCTION: HYPERX 0x004636e0
@@ -4070,20 +4070,20 @@ void PlanAction::SetOnRim(Interactor*, PlanNode* pNode, short*, int)
     EngineObject* pActor;
     PlanState*    pPlanState;
 
-    if (pNode->m_nArgCount == ARG_COUNT_WITH_RANGE)
+    if (pNode->m_nArgCount == kArgCountWithRange)
     {
-        if (pNode->m_pArgs[ARG_RIM_MODE].n == 0)
+        if (pNode->m_pArgs[kArgRimMode].n == 0)
         {
-            pActor = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+            pActor = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
             pPlanState = pActor->GetPlanState();
 
-            static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->SetDirectedRange(static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_RIM_MODE].n)), static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_HIGH].n)));
+            static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->SetDirectedRange(static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgRimMode].n)), static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgHigh].n)));
 
             return;
         }
 
-        pActor = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+        pActor = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
         pPlanState = pActor->GetPlanState();
 
@@ -4092,16 +4092,16 @@ void PlanAction::SetOnRim(Interactor*, PlanNode* pNode, short*, int)
         return;
     }
 
-    pActor = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
+    pActor = g_pGameEngine->m_ppSlots[kCameraMainSlot];
 
     pPlanState = pActor->GetPlanState();
 
     static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->InitRange();
 }
 
-constexpr auto ARG_VALUE = 1;
+constexpr auto kArgValue = 1;
 
-constexpr auto STEER_SCALE_THRESHOLD = 0x19;
+constexpr auto kSteerScaleThreshold = 0x19;
 
 // The camera's plan sets the blend fraction; any other object takes a hundredth as its friction.
 // FUNCTION: HYPERX 0x00463790
@@ -4109,15 +4109,15 @@ void PlanAction::SetFriction(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pActor = pContext->GetActor();
 
-    if (pActor->GetSlot() != CAMERA_MAIN_SLOT)
+    if (pActor->GetSlot() != kCameraMainSlot)
     {
         pActor = pContext->GetActor();
 
-        const float flParam = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_VALUE].n)) * 0.01f;
+        const float flParam = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgValue].n)) * 0.01f;
 
         pActor->GetPhysicsBody()->flFriction = flParam;
 
-        if (static_cast<unsigned int>(pNode->m_pArgs[ARG_VALUE].n) > STEER_SCALE_THRESHOLD)
+        if (static_cast<unsigned int>(pNode->m_pArgs[kArgValue].n) > kSteerScaleThreshold)
         {
             pActor = pContext->GetActor();
 
@@ -4126,19 +4126,19 @@ void PlanAction::SetFriction(Interactor* pContext, PlanNode* pNode, short*, int)
     }
     else
     {
-        PlanState* const pPlanState = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT]->GetPlanState();
+        PlanState* const pPlanState = g_pGameEngine->m_ppSlots[kCameraMainSlot]->GetPlanState();
 
         static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])
-            ->SetBlendT(pNode->m_pArgs[ARG_VALUE].n);
+            ->SetBlendT(pNode->m_pArgs[kArgValue].n);
     }
 }
 
-constexpr auto ARG_COUNT_WITHOUT_SLOT = 3;
+constexpr auto kArgCountWithoutSlot = 3;
 
 // The argument block's own fields: which rating, how much, and which slot.
 #undef ARG_STAT
 #define ARG_STAT 1
-constexpr auto ARG_AMOUNT = 2;
+constexpr auto kArgAmount = 2;
 #undef ARG_SLOT
 #define ARG_SLOT 3
 
@@ -4160,12 +4160,12 @@ void PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
 {
     int nReds;
 
-    const int nJudge = static_cast<int>(g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x);
+    const int nJudge = static_cast<int>(g_pGameEngine->m_ppSlots[kSlotRedRandomizer]->GetPhysicsBody()->axis.x);
 
-    nReds = (std::max)(JUDGE_STATE_LOW,
-                       (std::min)(JUDGE_STATE_HIGH, static_cast<int>(static_cast<short>(nJudge)) + static_cast<int>(static_cast<short>(pArgs->m_pArgs[1].n))));
+    nReds = (std::max)(kJudgeStateLow,
+                       (std::min)(kJudgeStateHigh, static_cast<int>(static_cast<short>(nJudge)) + static_cast<int>(static_cast<short>(pArgs->m_pArgs[1].n))));
 
-    g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x = static_cast<float>(nReds);
+    g_pGameEngine->m_ppSlots[kSlotRedRandomizer]->GetPhysicsBody()->axis.x = static_cast<float>(nReds);
 }
 
 // The two enable ratings are flags; every other rating is added and clamped to nought and ten.
@@ -4182,7 +4182,7 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (pContext->GetNamedSlot() == -1)
     {
-        if (pArgs->m_nArgCount == ARG_COUNT_WITHOUT_SLOT)
+        if (pArgs->m_nArgCount == kArgCountWithoutSlot)
         {
             BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -4207,14 +4207,14 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
         pObject = g_pGameEngine->GetPlayer(nIndex);
     }
 
-    const auto nAmount = static_cast<short>(pArgs->m_pArgs[ARG_AMOUNT].n);
+    const auto nAmount = static_cast<short>(pArgs->m_pArgs[kArgAmount].n);
 
     const float flScalar = pObject->m_stats.GetScalar(nStat);
 
     switch (nStat)
     {
-        case RATING_LONG_SHOT_ENABLE:
-        case RATING_LONG_PASS_ENABLE:
+        case kRatingLongShotEnable:
+        case kRatingLongPassEnable:
             if (nAmount <= 0)
             {
                 pObject->m_stats.m_aStats[RATING_SLOT(nStat)] = 0.0f;
@@ -4251,9 +4251,9 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
     EngineObject* pNamed;
     short         nSlot;
 
-    Vec3 vRandomizerAt = *g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPositionPtr();
+    Vec3 vRandomizerAt = *g_pGameEngine->m_ppSlots[kSlotRedRandomizer]->GetPositionPtr();
 
-    EngineObject* const pRandomizer = g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER];
+    EngineObject* const pRandomizer = g_pGameEngine->m_ppSlots[kSlotRedRandomizer];
 
     if (pContext->GetNamedSlot() == -1)
     {
@@ -4326,7 +4326,7 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
 
     pRandomizer->GetPhysicsBody()->SetFlatOnTerrain(pFrom);
 
-    pRandomizer->m_nFlags &= ~ENGINEOBJECT_HIDDEN;
+    pRandomizer->m_nFlags &= ~kEngineObjectHidden;
 
     pAt = pNamed->GetPositionPtr();
 
@@ -4336,16 +4336,16 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
 
     pActor->GetPhysicsBody()->SetFlatOnTerrain(pFrom);
 
-    pActor->m_nFlags &= ~ENGINEOBJECT_HIDDEN;
+    pActor->m_nFlags &= ~kEngineObjectHidden;
 
     pNamed->m_pBody->pos = vRandomizerAt;
 
-    pNamed->m_nFlags |= ENGINEOBJECT_HIDDEN;
+    pNamed->m_nFlags |= kEngineObjectHidden;
 }
 
-constexpr auto ARG_TRACKED = 2;
+constexpr auto kArgTracked = 2;
 
-constexpr auto ARG_COUNT_WITH_TRACKED = 3;
+constexpr auto kArgCountWithTracked = 3;
 
 // A positive damage rating clears the killer slot to minus one.
 // FUNCTION: HYPERX 0x00463c20
@@ -4371,18 +4371,18 @@ void PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, short*, 
         nObject = nMessageData;
     }
 
-    if (pArgs->m_nArgCount == ARG_COUNT_WITH_TRACKED)
+    if (pArgs->m_nArgCount == kArgCountWithTracked)
     {
         pBlock = pArgs->m_pArgs;
 
-        if (pBlock[ARG_TRACKED].IsPronoun())
+        if (pBlock[kArgTracked].IsPronoun())
         {
-            nTracked = g_apPlanStatFns[pBlock[ARG_TRACKED].wPronoun](
+            nTracked = g_apPlanStatFns[pBlock[kArgTracked].wPronoun](
                 pContext->GetActor(), pArgs);
         }
         else
         {
-            nTracked = pBlock[ARG_TRACKED].n;
+            nTracked = pBlock[kArgTracked].n;
         }
 
         if (nTracked == PLAN_TOKEN_MESSAGE_DATA)
@@ -4397,7 +4397,7 @@ void PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, short*, 
 
     PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nObject));
 
-    if (pObject->m_stats.GetScalar(RATING_DAMAGE) <= 0.0f)
+    if (pObject->m_stats.GetScalar(kRatingDamage) <= 0.0f)
     {
         pObject->m_wKilledBySlot = static_cast<short>(nTracked);
 
@@ -4407,10 +4407,10 @@ void PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, short*, 
     pObject->m_wKilledBySlot = -1;
 }
 
-constexpr auto ARG_COUNT_WRITE = 2;
+constexpr auto kArgCountWrite = 2;
 
 // What a read answers when m_wDesiredSubstitute is minus one, no substitute: one past the skaters.
-constexpr auto SUBSTITUTE_NONE_ANSWER = 4;
+constexpr auto kSubstituteNoneAnswer = 4;
 
 // FUNCTION: HYPERX 0x00463d20
 void PlanAction::ResetCameraTrack(Interactor* pContext, PlanNode*, short*, int)
@@ -4504,7 +4504,7 @@ void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short*
         nArg = nSlot;
     }
 
-    if (pArgs->m_nArgCount == ARG_COUNT_WRITE)
+    if (pArgs->m_nArgCount == kArgCountWrite)
     {
         pActor->m_wDesiredSubstitute = static_cast<short>(nArg);
 
@@ -4517,7 +4517,7 @@ void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short*
 
     if (nValue == -1)
     {
-        *pResult = SUBSTITUTE_NONE_ANSWER;
+        *pResult = kSubstituteNoneAnswer;
     }
 }
 
@@ -4532,7 +4532,7 @@ void PlanCond::SubstitutionSemaphore(Interactor* pContext, PlanNode*, short* pRe
 // Of the first and last fit substitutes the healthier wins, with the near half favoured.
 
 // Answered when no substitute is fit.
-constexpr auto SLOT_ANSWER_NONE = 4;
+constexpr auto kSlotAnswerNone = 4;
 
 // FUNCTION: HYPERX 0x00463ef0
 void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -4546,14 +4546,14 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
 
     const int nSlot = pContext->GetActor()->GetSlot();
 
-    short sCandidate  = SLOT_NONE;
-    short sChallenger = SLOT_NONE;
+    short sCandidate  = kSlotNone;
+    short sChallenger = kSlotNone;
 
-    for (sIndex = 0, nWhich = 0; sIndex < PLAYER_SLOT_COUNT; sIndex++, nWhich++)
+    for (sIndex = 0, nWhich = 0; sIndex < kPlayerSlotCount; sIndex++, nWhich++)
     {
         if (g_pGameEngine->IsFitSubstitute(nSlot, nWhich) != 0)
         {
-            if (sCandidate == SLOT_NONE)
+            if (sCandidate == kSlotNone)
             {
                 sCandidate = sIndex;
             }
@@ -4564,13 +4564,13 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
         }
     }
 
-    if (sCandidate == SLOT_NONE)
+    if (sCandidate == kSlotNone)
     {
-        *pResult = SLOT_ANSWER_NONE;
+        *pResult = kSlotAnswerNone;
         return;
     }
 
-    if (sChallenger == SLOT_NONE)
+    if (sChallenger == kSlotNone)
     {
         *pResult = sCandidate;
         return;
@@ -4588,8 +4588,8 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
     const int nFirst  = sCandidate;
     const int nSecond = sChallenger;
 
-    float flFirst  = pTeam->aRows[nFirst].aStat[RATING_DAMAGE];
-    float flSecond = pTeam->aRows[nSecond].aStat[RATING_DAMAGE];
+    float flFirst  = pTeam->aRows[nFirst].aStat[kRatingDamage];
+    float flSecond = pTeam->aRows[nSecond].aStat[kRatingDamage];
 
     if (pTeam->aReserveSince[nFirst] != 0)
     {
@@ -4630,34 +4630,34 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
     *pResult = sChallenger;
 }
 
-#define CREDIT_OTHER()                                                                                 \
-    if (nTeam % 2 == nOther % 2)                                                                       \
-    {                                                                                                  \
-        return;                                                                                        \
-    }                                                                                                  \
-                                                                                                       \
-    g_pGameEngine->GetPlayer((short)nOther)->m_matchStats.AccumulateStat(MATCH_STAT_INJURIES, nOther); \
+#define CREDIT_OTHER()                                                                                \
+    if (nTeam % 2 == nOther % 2)                                                                      \
+    {                                                                                                 \
+        return;                                                                                       \
+    }                                                                                                 \
+                                                                                                      \
+    g_pGameEngine->GetPlayer((short)nOther)->m_matchStats.AccumulateStat(kMatchStatInjuries, nOther); \
     return;
 
 #define ACCUMULATE_HIT(nLowStat)                                                       \
-    if (nSlot == SLOT_MINE)                                                            \
+    if (nSlot == kSlotMine)                                                            \
     {                                                                                  \
-        nOther = g_pGameEngine->m_ppSlots[SLOT_MINE]->m_nEntitySlot;                   \
+        nOther = g_pGameEngine->m_ppSlots[kSlotMine]->m_nEntitySlot;                   \
         CREDIT_OTHER()                                                                 \
     }                                                                                  \
-    else if (nSlot == SLOT_ROK)                                                        \
+    else if (nSlot == kSlotRok)                                                        \
     {                                                                                  \
-        nOther = g_pGameEngine->m_ppSlots[SLOT_ROK]->m_nEntitySlot;                    \
+        nOther = g_pGameEngine->m_ppSlots[kSlotRok]->m_nEntitySlot;                    \
         CREDIT_OTHER()                                                                 \
     }                                                                                  \
-    else if (nSlot >= SLOT_TURNSTILE && nSlot <= SLOT_TURNSTILE_LAST)                  \
+    else if (nSlot >= kSlotTurnstile && nSlot <= kSlotTurnstileLast)                   \
     {                                                                                  \
         nOther = g_pGameEngine->m_ppSlots[nSlot]->m_nEntitySlot;                       \
         CREDIT_OTHER()                                                                 \
     }                                                                                  \
     else                                                                               \
     {                                                                                  \
-        if (nSlot >= SLOT_LASER_HURDLE && nSlot <= SLOT_LASER_HURDLE_LAST)             \
+        if (nSlot >= kSlotLaserHurdle && nSlot <= kSlotLaserHurdleLast)                \
         {                                                                              \
             return;                                                                    \
         }                                                                              \
@@ -4667,7 +4667,7 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
             return;                                                                    \
         }                                                                              \
                                                                                        \
-        if (nSlot > SLOT_DROMER3)                                                      \
+        if (nSlot > kSlotDromer3)                                                      \
         {                                                                              \
             return;                                                                    \
         }                                                                              \
@@ -4746,7 +4746,7 @@ void PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 
     const short nTeam = pObject->GetSlot();
 
-    const float flDamage = pObject->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = pObject->m_stats.GetScalar(kRatingDamage);
 
     const short nSlot = pContext->GetTargetSlot();
 
@@ -4754,7 +4754,7 @@ void PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int
     {
         if (flDamage > 0.0f)
         {
-            ACCUMULATE_HIT(MATCH_STAT_INJURIES)
+            ACCUMULATE_HIT(kMatchStatInjuries)
         }
     }
     else if (flDamage > 0.0f)
@@ -4762,10 +4762,10 @@ void PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int
         return;
     }
 
-    ACCUMULATE_HIT(MATCH_STAT_FATALITIES)
+    ACCUMULATE_HIT(kMatchStatFatalities)
 }
 
-constexpr auto ARG_COUNT_COL_SLOT = 2;
+constexpr auto kArgCountColSlot = 2;
 
 #define DAMAGE_CEILING 100.0f
 
@@ -4799,9 +4799,9 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
     float           flScale;
     float           flClamped;
 
-    if (pContext->GetNamedSlot() == SLOT_NONE)
+    if (pContext->GetNamedSlot() == kSlotNone)
     {
-        if (pArgs->m_nArgCount == ARG_COUNT_COL_SLOT)
+        if (pArgs->m_nArgCount == kArgCountColSlot)
         {
             pCollision = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -4837,7 +4837,7 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 
     ObjectStats* const pStats = &pObject->m_stats;
 
-    const float flDamage = pStats->GetScalar(RATING_DAMAGE);
+    const float flDamage = pStats->GetScalar(kRatingDamage);
 
     if (nValue == PLAN_TOKEN_MESSAGE_DATA)
     {
@@ -4902,7 +4902,7 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
             flClamped = 0.0f;
         }
 
-        pStats->m_aStats[RATING_SLOT(RATING_DAMAGE)] = flClamped;
+        pStats->m_aStats[RATING_SLOT(kRatingDamage)] = flClamped;
 
         if (flTotal <= 0.0f)
         {
@@ -4910,15 +4910,15 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
         }
         else
         {
-            pObject->m_wKilledBySlot = SLOT_NONE;
+            pObject->m_wKilledBySlot = kSlotNone;
         }
     }
 }
 
-constexpr auto ARG_GATE       = 1;
-constexpr auto ARG_HUNDREDTHS = 2;
+constexpr auto kArgGate       = 1;
+constexpr auto kArgHundredths = 2;
 
-constexpr auto SPEED_CACHE_COUNT = 4;
+constexpr auto kSpeedCacheCount = 4;
 
 // The clamp, as two doubles.
 #define SPEED_RATING_MIN 0.99
@@ -4929,11 +4929,11 @@ constexpr auto SPEED_CACHE_COUNT = 4;
 #define SPEED_BIAS 0.00999f
 
 // Minus one as its bits; the cache entry is tested as a dword.
-constexpr auto SPEED_UNSET_BITS = 0xbf800000;
+constexpr auto kSpeedUnsetBits = 0xbf800000;
 
 // The cache of the four skaters' speeds and its dirty word, which ships set.
 // GLOBAL: HYPERX 0x004c4540
-extern float g_aOpposSpeedCache[SPEED_CACHE_COUNT];
+extern float g_aOpposSpeedCache[kSpeedCacheCount];
 // GLOBAL: HYPERX 0x004c4550
 extern short g_nOpposSpeedCacheStale;
 
@@ -4942,11 +4942,11 @@ void PlanAction::IncrementScore(Interactor*, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_pArgs[1].n != 0)
     {
-        InfoBar::IncrementScore(SCORE_LINE_TEAM1);
+        InfoBar::IncrementScore(kScoreLineTeam1);
     }
     else
     {
-        InfoBar::IncrementScore(SCORE_LINE_TEAM2);
+        InfoBar::IncrementScore(kScoreLineTeam2);
     }
 }
 
@@ -4968,12 +4968,12 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     if (pContext->GetNamedSlot() == -1)
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
-        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
+        nGate       = static_cast<short>(pArgs[kArgGate].n);
+        nHundredths = static_cast<short>(pArgs[kArgHundredths].n);
 
         flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS + SPEED_BIAS;
 
-        if (pNode->m_nArgCount == ARG_COUNT_WITHOUT_SLOT)
+        if (pNode->m_nArgCount == kArgCountWithoutSlot)
         {
             BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -4987,8 +4987,8 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     else
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
-        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
+        nGate       = static_cast<short>(pArgs[kArgGate].n);
+        nHundredths = static_cast<short>(pArgs[kArgHundredths].n);
 
         flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS + SPEED_BIAS;
 
@@ -5004,11 +5004,11 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
 
     if (g_nOpposSpeedCacheStale != 0)
     {
-        for (int i = 0; i < SPEED_CACHE_COUNT; i++)
+        for (int i = 0; i < kSpeedCacheCount; i++)
         {
             pObject = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
-            g_aOpposSpeedCache[i] = pObject->m_stats.GetScalar(RATING_SPEED);
+            g_aOpposSpeedCache[i] = pObject->m_stats.GetScalar(kRatingSpeed);
         }
 
         g_nOpposSpeedCacheStale = 0;
@@ -5034,17 +5034,17 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
 
     if (nGate != 0)
     {
-        if (FloatBits(g_aOpposSpeedCache[static_cast<short>(nFlip)]) != SPEED_UNSET_BITS)
+        if (FloatBits(g_aOpposSpeedCache[static_cast<short>(nFlip)]) != kSpeedUnsetBits)
         {
             pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
-            pObject->m_stats.SetStat(RATING_SLOT(RATING_SPEED), g_aOpposSpeedCache[nTarget]);
+            pObject->m_stats.SetStat(RATING_SLOT(kRatingSpeed), g_aOpposSpeedCache[nTarget]);
 
             nFlip += 2;
 
             pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
-            pObject->m_stats.SetStat(RATING_SLOT(RATING_SPEED), g_aOpposSpeedCache[nTarget]);
+            pObject->m_stats.SetStat(RATING_SLOT(kRatingSpeed), g_aOpposSpeedCache[nTarget]);
         }
 
         g_nOpposSpeedCacheStale = 1;
@@ -5053,19 +5053,19 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     {
         pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_SPEED)] = static_cast<float>(dReading);
+        pObject->m_stats.m_aStats[RATING_SLOT(kRatingSpeed)] = static_cast<float>(dReading);
 
         nFlip += 2;
 
         pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_SPEED)] = static_cast<float>(dReading);
+        pObject->m_stats.m_aStats[RATING_SLOT(kRatingSpeed)] = static_cast<float>(dReading);
     }
 }
 
 // The cache of the four skaters' speeds and its dirty word, which ships set.
 // GLOBAL: HYPERX 0x004c4554
-extern float g_aSpeedCache[SPEED_CACHE_COUNT];
+extern float g_aSpeedCache[kSpeedCacheCount];
 // GLOBAL: HYPERX 0x004c4564
 extern short g_nSpeedCacheStale;
 
@@ -5086,12 +5086,12 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
     if (pContext->GetNamedSlot() == -1)
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
-        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
+        nGate       = static_cast<short>(pArgs[kArgGate].n);
+        nHundredths = static_cast<short>(pArgs[kArgHundredths].n);
 
         flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS;
 
-        if (pNode->m_nArgCount == ARG_COUNT_WITHOUT_SLOT)
+        if (pNode->m_nArgCount == kArgCountWithoutSlot)
         {
             BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -5105,8 +5105,8 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
     else
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
-        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
+        nGate       = static_cast<short>(pArgs[kArgGate].n);
+        nHundredths = static_cast<short>(pArgs[kArgHundredths].n);
 
         flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS;
 
@@ -5122,11 +5122,11 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
 
     if (g_nSpeedCacheStale != 0)
     {
-        for (int i = 0; i < SPEED_CACHE_COUNT; i++)
+        for (int i = 0; i < kSpeedCacheCount; i++)
         {
             pObject = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
-            g_aSpeedCache[i] = pObject->m_stats.GetScalar(RATING_SPEED);
+            g_aSpeedCache[i] = pObject->m_stats.GetScalar(kRatingSpeed);
         }
 
         g_nSpeedCacheStale = 0;
@@ -5156,11 +5156,11 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
         {
             pObject = g_pGameEngine->GetPlayer(nTarget);
 
-            if (pObject->m_stats.GetScalar(RATING_SPEED) == flReading)
+            if (pObject->m_stats.GetScalar(kRatingSpeed) == flReading)
             {
                 pObject = g_pGameEngine->GetPlayer(nTarget);
 
-                pObject->m_stats.SetStat(RATING_SLOT(RATING_SPEED), g_aSpeedCache[nTarget]);
+                pObject->m_stats.SetStat(RATING_SLOT(kRatingSpeed), g_aSpeedCache[nTarget]);
             }
 
             g_nSpeedCacheStale = 1;
@@ -5170,28 +5170,28 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
     {
         pObject = g_pGameEngine->GetPlayer(nTarget);
 
-        pObject->m_stats.SetStat(RATING_SLOT(RATING_SPEED), flReading);
+        pObject->m_stats.SetStat(RATING_SLOT(kRatingSpeed), flReading);
     }
 }
 
-constexpr auto ARG_RANGE       = 1;
-constexpr auto ARG_FACING_GATE = 2;
-constexpr auto ARG_DOT_GATE    = 3;
+constexpr auto kArgRange      = 1;
+constexpr auto kArgFacingGate = 2;
+constexpr auto kArgDotGate    = 3;
 #undef ARG_SLOT
 #define ARG_SLOT 4
 #undef ARG_DURATION
 #define ARG_DURATION 5
-constexpr auto ARG_LEAD = 6;
+constexpr auto kArgLead = 6;
 
 #define DEFAULT_RANGE       100.0f
 #define DEFAULT_FACING_GATE 0.1f
 #define DEFAULT_DOT_GATE    0.2f
-constexpr auto DEFAULT_DURATION = 20;
+constexpr auto kDefaultDuration = 20;
 
 // A fiftieth, as a double.
 #define GATE_SCALE 0.02
 
-constexpr auto LAUNCH_MESSAGE_ARG = 2;
+constexpr auto kLaunchMessageArg = 2;
 
 // FUNCTION: HYPERX 0x00464b10
 void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
@@ -5210,7 +5210,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
 
             pBlock = pArgs->m_pArgs;
 
-            ((PlayerObject*)pCollision->GetOwner())->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] =
+            ((PlayerObject*)pCollision->GetOwner())->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)] =
                 static_cast<float>(static_cast<unsigned int>(pBlock[1].n));
 
             return;
@@ -5220,7 +5220,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
         nIndex  = static_cast<short>(pBlock[1].n);
         flValue = static_cast<float>(static_cast<unsigned int>(pBlock[2].n));
 
-        g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] = flValue;
+        g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)] = flValue;
 
         return;
     }
@@ -5237,7 +5237,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
         nIndex = static_cast<short>(pBlock[1].n);
     }
 
-    g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] = flValue;
+    g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)] = flValue;
 }
 
 // FUNCTION: HYPERX 0x00464c00
@@ -5245,7 +5245,7 @@ void PlanCond::GetImmunity(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    if (pActor->m_stats.GetScalar(RATING_IMMUNITY) == g_flZeroPlan)
+    if (pActor->m_stats.GetScalar(kRatingImmunity) == g_flZeroPlan)
     {
         *pResult = 0;
     }
@@ -5261,11 +5261,11 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pWinner;
 
-    const auto nFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto nFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % kPlayerSlotCount);
 
     EngineObject* const pFirst = g_pGameEngine->m_ppSlots[nFirst];
 
-    const auto nSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto nSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % kPlayerSlotCount);
 
     float flRange = DEFAULT_RANGE;
 
@@ -5274,17 +5274,17 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
     float flLead       = g_flZeroPlan;
     float flFacingGate = DEFAULT_FACING_GATE;
     float flDotGate    = DEFAULT_DOT_GATE;
-    short nDuration    = DEFAULT_DURATION;
+    short nDuration    = kDefaultDuration;
 
     const short nArgCount = pNode->m_nArgCount;
 
     if (nArgCount > 3)
     {
-        flRange = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_RANGE].n));
+        flRange = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgRange].n));
 
-        flFacingGate = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_FACING_GATE].n) * GATE_SCALE - g_flOnePlan);
+        flFacingGate = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgFacingGate].n) * GATE_SCALE - g_flOnePlan);
 
-        flDotGate = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_DOT_GATE].n) * GATE_SCALE - g_flOnePlan);
+        flDotGate = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgDotGate].n) * GATE_SCALE - g_flOnePlan);
     }
 
     if (nArgCount >= 5)
@@ -5299,7 +5299,7 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 
             if (nArgCount >= 7)
             {
-                flLead = static_cast<float>(static_cast<unsigned int>(pArgs[ARG_LEAD].n));
+                flLead = static_cast<float>(static_cast<unsigned int>(pArgs[kArgLead].n));
             }
         }
     }
@@ -5351,7 +5351,7 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 
     pBungee->Activate();
 
-    pWinner->PostEvent(MSG_YER_ATTACKED, LAUNCH_MESSAGE_ARG, pContext->GetActor()->GetSlot());
+    pWinner->PostEvent(kMsgYerAttacked, kLaunchMessageArg, pContext->GetActor()->GetSlot());
 }
 
 // The original compares the holder slot even on the path that never wrote it.
@@ -5390,7 +5390,7 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
 
     AttachPak* pCarrier = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
+    if (pCarrier != nullptr && pCarrier->nSlot < kPlayerObjectCount)
     {
         nCarrier = pCarrier->nSlot;
     }
@@ -5438,14 +5438,14 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
 
     const short nSlot = pContext->GetActor()->GetSlot();
 
-    if (nSlot == SLOT_SGOAL)
+    if (nSlot == kSlotSgoal)
     {
         if (nRokValue < 1)
         {
             nRokValue = 1;
         }
     }
-    else if (nSlot == SLOT_NGOAL)
+    else if (nSlot == kSlotNgoal)
     {
         nClamped = std::min<int>(-1, nRokValue);
 
@@ -5456,7 +5456,7 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
         nRokValue = 0;
     }
 
-    if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != nullptr)
+    if (g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach != nullptr)
     {
         *pResult = 4;
     }
@@ -5509,7 +5509,7 @@ void PlanCond::Jumping(Interactor* pContext, PlanNode*, short* pResult, int)
 
     EngineObject* const pActor = pCollision->GetOwner();
 
-    if (pActor->GetPlanState()->m_pCurrent->m_wKind != BEH_FLY)
+    if (pActor->GetPlanState()->m_pCurrent->m_wKind != kBehFly)
     {
         const float flInvDelta = g_pGameEngine->m_clock.flInvDelta;
 
@@ -5526,7 +5526,7 @@ void PlanCond::Jumping(Interactor* pContext, PlanNode*, short* pResult, int)
 
 // Within ten of an object without the 0x10 bit answers two; both or neither answers three or a coin.
 
-constexpr auto STATE_AVAILABLE = 0x10;
+constexpr auto kStateAvailable = 0x10;
 
 // Inside this the actor counts as standing at the object.
 #define AT_OBJECT_RANGE 10.0f
@@ -5549,8 +5549,8 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     EngineObject* const pActor = pContext->GetActor();
 
     EngineObject** const apSlots = g_pGameEngine->m_ppSlots;
-    EngineObject* const  pFirst  = apSlots[SLOT_MINE];
-    EngineObject* const  pSecond = apSlots[SLOT_SWARF];
+    EngineObject* const  pFirst  = apSlots[kSlotMine];
+    EngineObject* const  pSecond = apSlots[kSlotSwarf];
 
     Vec3 vFirst  = *pFirst->GetPositionPtr();
     Vec3 vSecond = *pSecond->GetPositionPtr();
@@ -5563,7 +5563,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
 
     if (static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz))) < AT_OBJECT_RANGE)
     {
-        if ((static_cast<unsigned char>(pFirst->m_nFlags) & STATE_AVAILABLE) != 0)
+        if ((static_cast<unsigned char>(pFirst->m_nFlags) & kStateAvailable) != 0)
         {
             nAtFirst = 1;
         }
@@ -5580,7 +5580,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
 
     if (static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz))) < AT_OBJECT_RANGE)
     {
-        if ((static_cast<unsigned char>(pSecond->m_nFlags) & STATE_AVAILABLE) != 0)
+        if ((static_cast<unsigned char>(pSecond->m_nFlags) & kStateAvailable) != 0)
         {
             nAtSecond = 1;
         }
@@ -5628,7 +5628,7 @@ void PlanCond::RandomEmptyArmory(Interactor*, PlanNode*, short* pResult, int)
     for (int iSlot = 0; iSlot < nSlots; iSlot++)
     {
         const int nArmory = iSlot + 1;
-        const int nCount  = GameEngine::CountEntitiesInRange(static_cast<short>(nArmory + SLOT_ARMORY - 1));
+        const int nCount  = GameEngine::CountEntitiesInRange(static_cast<short>(nArmory + kSlotArmory - 1));
 
         if (nBest > nCount)
         {
@@ -5656,7 +5656,7 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
 
     PlayerObject* const pObject = pContext->GetPlayerActor();
 
-    const float flDamage = pObject->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = pObject->m_stats.GetScalar(kRatingDamage);
 
     if (g_pGameEngine->m_nBrutality == 0)
     {
@@ -5665,13 +5665,13 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
 
     switch (pObject->m_wKilledBySlot)
     {
-        case SLOT_TURNSTILE:
-        case SLOT_TURNSTILE + 1:
-        case SLOT_TURNSTILE + 2:
-        case SLOT_TURNSTILE + 3:
-        case SLOT_TURNSTILE + 4:
-        case SLOT_TURNSTILE + 5:
-        case SLOT_TURNSTILE_LAST:
+        case kSlotTurnstile:
+        case kSlotTurnstile + 1:
+        case kSlotTurnstile + 2:
+        case kSlotTurnstile + 3:
+        case kSlotTurnstile + 4:
+        case kSlotTurnstile + 5:
+        case kSlotTurnstileLast:
             if (flDamage <= g_flZeroPlan)
             {
                 if (bBrutalityOff)
@@ -5688,12 +5688,12 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
             *pResult = 5;
             return;
 
-        case SLOT_LASER_HURDLE:
-        case SLOT_LASER_HURDLE + 1:
-        case SLOT_LASER_HURDLE + 2:
-        case SLOT_LASER_HURDLE + 3:
-        case SLOT_LASER_HURDLE + 4:
-        case SLOT_LASER_HURDLE_LAST:
+        case kSlotLaserHurdle:
+        case kSlotLaserHurdle + 1:
+        case kSlotLaserHurdle + 2:
+        case kSlotLaserHurdle + 3:
+        case kSlotLaserHurdle + 4:
+        case kSlotLaserHurdleLast:
             if (flDamage <= g_flZeroPlan)
             {
                 if (bBrutalityOff)
@@ -5710,7 +5710,7 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
             *pResult = 6;
             return;
 
-        case SLOT_MINE:
+        case kSlotMine:
             if (flDamage <= g_flZeroPlan)
             {
                 *pResult = 2;
@@ -5720,7 +5720,7 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
             *pResult = 7;
             return;
 
-        case SLOT_ROK:
+        case kSlotRok:
             break;
 
         default:
@@ -5756,7 +5756,7 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
 #define RANGE_BASE 150.0f
 
 // The largest damage the condition will answer.
-constexpr auto HIT_DAMAGE_CEILING = 0x14;
+constexpr auto kHitDamageCeiling = 0x14;
 
 // An object that hits carries its own slot as the attack; the engine's own hit is the far goalie's.
 // FUNCTION: HYPERX 0x004657b0
@@ -5774,15 +5774,15 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     short nAttacker = pContext->GetTargetSlot();
 
-    if (nAttacker == SLOT_GOD)
+    if (nAttacker == kSlotGod)
     {
         if (pActor->GetSlot() % 2 != 0)
         {
-            nAttacker = GOALIE_SLOT_A;
+            nAttacker = kGoalieSlotA;
         }
         else
         {
-            nAttacker = GOALIE_SLOT_B;
+            nAttacker = kGoalieSlotB;
         }
     }
 
@@ -5790,16 +5790,16 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     *pResult = 0;
 
-    if (nAttacker == SLOT_ROK)
+    if (nAttacker == kSlotRok)
     {
-        if (nAttack == SLOT_ROK)
+        if (nAttack == kSlotRok)
         {
             *pResult = pArgs->m_nArgCount - 3;
 
             return;
         }
     }
-    else if (nAttacker == SLOT_MINE && nAttack == SLOT_MINE)
+    else if (nAttacker == kSlotMine && nAttack == kSlotMine)
     {
         *pResult = pArgs->m_nArgCount - 3;
 
@@ -5808,14 +5808,14 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     if (nAttacker == static_cast<short>(nAttack))
     {
-        if (nAttacker >= SLOT_TURNSTILE && nAttacker <= SLOT_TURNSTILE_LAST)
+        if (nAttacker >= kSlotTurnstile && nAttacker <= kSlotTurnstileLast)
         {
             *pResult = pArgs->m_nArgCount - 3;
 
             return;
         }
 
-        if (nAttacker >= SLOT_LASER_HURDLE && nAttacker <= SLOT_LASER_HURDLE_LAST)
+        if (nAttacker >= kSlotLaserHurdle && nAttacker <= kSlotLaserHurdleLast)
         {
             *pResult = pArgs->m_nArgCount - 3;
 
@@ -5839,13 +5839,13 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
     vOffset.y = pPosOther->y - pPosSelf->y;
     vOffset.z = pPosOther->z - pPosSelf->z;
 
-    if (nAttacker <= SLOT_DROMER3)
+    if (nAttacker <= kSlotDromer3)
     {
         ObjectStats* const pOtherStats = &((PlayerObject*)pOther)->m_stats;
 
-        flOtherChecking = pOtherStats->GetWeightedStat(RATING_CHECKING);
-        flOtherWeight   = pOtherStats->GetWeightedStat(RATING_WEIGHT_CLASS);
-        flOtherDamage   = pOtherStats->GetWeightedStat(RATING_DAMAGE);
+        flOtherChecking = pOtherStats->GetWeightedStat(kRatingChecking);
+        flOtherWeight   = pOtherStats->GetWeightedStat(kRatingWeightClass);
+        flOtherDamage   = pOtherStats->GetWeightedStat(kRatingDamage);
     }
     else
     {
@@ -5856,9 +5856,9 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     ObjectStats* const pStats = &pActor->m_stats;
 
-    pStats->GetScalar(RATING_DAMAGE);
+    pStats->GetScalar(kRatingDamage);
 
-    const float flOwnWeight = pStats->GetWeightedStat(RATING_WEIGHT_CLASS);
+    const float flOwnWeight = pStats->GetWeightedStat(kRatingWeightClass);
 
     if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_EASY)
     {
@@ -5869,9 +5869,9 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
         flRange = 0.0f;
     }
 
-    if (Vec3::DotInline(&vOffset, &vOffset) <= flRange + RANGE_BASE && (pStats->GetScalar(RATING_IMMUNITY) == 0.0f || nAttack == ATTACK_LEG_SWEEP_L || nAttack == ATTACK_LEG_SWEEP_R))
+    if (Vec3::DotInline(&vOffset, &vOffset) <= flRange + RANGE_BASE && (pStats->GetScalar(kRatingImmunity) == 0.0f || nAttack == ATTACK_LEG_SWEEP_L || nAttack == ATTACK_LEG_SWEEP_R))
     {
-        pStats->GetScalar(RATING_DAMAGE);
+        pStats->GetScalar(kRatingDamage);
 
         Vec3         vSelfDir;
         Vec3         vOtherDir;
@@ -5977,9 +5977,9 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
         int nMagnitude = abs(static_cast<short>(flDamage));
 
-        if (nMagnitude > HIT_DAMAGE_CEILING)
+        if (nMagnitude > kHitDamageCeiling)
         {
-            nMagnitude = HIT_DAMAGE_CEILING;
+            nMagnitude = kHitDamageCeiling;
         }
 
         *pResult = static_cast<short>(nMagnitude);
@@ -6026,7 +6026,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     ObjectStats* const pStats = &pActor->m_stats;
 
-    float flDamage = pStats->GetScalar(RATING_DAMAGE);
+    float flDamage = pStats->GetScalar(kRatingDamage);
 
     if (flDamage <= DamageGate())
     {
@@ -6035,7 +6035,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
         switch (nAttack)
         {
             case ATTACK_HIP_CHECK:
-                pActor->m_wKilledBySlot = SLOT_TURNSTILE;
+                pActor->m_wKilledBySlot = kSlotTurnstile;
                 break;
         }
 
@@ -6058,12 +6058,12 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
     vOffset.y = pPosOther->y - pPosSelf->y;
     vOffset.z = pPosOther->z - pPosSelf->z;
 
-    if (nSlot <= SLOT_DROMER3)
+    if (nSlot <= kSlotDromer3)
     {
         ObjectStats* const pOtherStats = &((PlayerObject*)pOther)->m_stats;
 
-        flOther  = pOtherStats->GetWeightedStat(RATING_CHECKING);
-        flWeight = pOtherStats->GetWeightedStat(RATING_WEIGHT_CLASS);
+        flOther  = pOtherStats->GetWeightedStat(kRatingChecking);
+        flWeight = pOtherStats->GetWeightedStat(kRatingWeightClass);
     }
     else
     {
@@ -6073,9 +6073,9 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     flOther += flWeight;
 
-    flDamage = pStats->GetScalar(RATING_DAMAGE);
+    flDamage = pStats->GetScalar(kRatingDamage);
 
-    const float flOwnWeight = pStats->GetWeightedStat(RATING_WEIGHT_CLASS);
+    const float flOwnWeight = pStats->GetWeightedStat(kRatingWeightClass);
 
     float flScaled = flOwnWeight;
 
@@ -6093,7 +6093,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     const float flDot = vOffset.z * pDir->z + vOffset.y * pDir->y + vOffset.x * pDir->x;
 
-    if (Vec3::DotInline(&vOffset, &vOffset) <= ATTACKED_RANGE_SQ && (pStats->GetScalar(RATING_IMMUNITY) == 0.0f || nAttack == ATTACK_LEG_SWEEP_L || nAttack == ATTACK_LEG_SWEEP_R))
+    if (Vec3::DotInline(&vOffset, &vOffset) <= ATTACKED_RANGE_SQ && (pStats->GetScalar(kRatingImmunity) == 0.0f || nAttack == ATTACK_LEG_SWEEP_L || nAttack == ATTACK_LEG_SWEEP_R))
     {
         if (g_flTwoPlan + flOther > flSelf)
         {
@@ -6436,7 +6436,7 @@ void PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* 
     short       nBound;
     Vec3        vOpp;
 
-    pRokAt = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr();
+    pRokAt = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 
     const Vec3* pOwnerAt = pContext->GetActor()->GetPositionPtr();
 
@@ -6465,7 +6465,7 @@ void PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* 
 
     PlayerObject* const pOppObj = g_pGameEngine->GetPlayer(TeammateSlot(nSlotB));
 
-    const float flDamage = pOppObj->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = pOppObj->m_stats.GetScalar(kRatingDamage);
 
     if (*pResult == 1)
     {
@@ -6479,9 +6479,9 @@ void PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* 
 
     const int nOppC = TeammateSlot(static_cast<short>(nSlotC));
 
-    pnBoundSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+    pnBoundSlot = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-    if (pnBoundSlot != nullptr && (nBound = pnBoundSlot->nSlot) < PLAYER_OBJECT_COUNT && (nBound == nSlotC || nBound == nOppC))
+    if (pnBoundSlot != nullptr && (nBound = pnBoundSlot->nSlot) < kPlayerObjectCount && (nBound == nSlotC || nBound == nOppC))
     {
         *pResult = 1;
     }
@@ -6499,7 +6499,7 @@ void PlanCond::TenOrMorePtSpread(Interactor*, PlanNode*, short* pResult, int)
     *pResult = abs(nDiff) < 10;
 }
 
-#define GREEN_RANDOMIZER_COUNT (SLOT_RED_RANDOMIZER - SLOT_GREEN_RANDOMIZER)
+#define GREEN_RANDOMIZER_COUNT (kSlotRedRandomizer - kSlotGreenRandomizer)
 
 // The answer is one past the chosen slot, so zero means none.
 // FUNCTION: HYPERX 0x004665f0
@@ -6507,7 +6507,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 {
     int aFound[GREEN_RANDOMIZER_COUNT];
 
-    if (g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x > g_flZeroPlan)
+    if (g_pGameEngine->m_ppSlots[kSlotRedRandomizer]->GetPhysicsBody()->axis.x > g_flZeroPlan)
     {
         int  nSlot  = 0;
         int  nCount = 0;
@@ -6515,7 +6515,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 
         for (; nSlot < GREEN_RANDOMIZER_COUNT; nSlot++)
         {
-            if (g_pGameEngine->m_ppSlots[static_cast<short>(nSlot + SLOT_GREEN_RANDOMIZER)] != nullptr)
+            if (g_pGameEngine->m_ppSlots[static_cast<short>(nSlot + kSlotGreenRandomizer)] != nullptr)
             {
                 *pFound = nSlot;
                 nCount++;
@@ -6676,7 +6676,7 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
     AttachPak*    pSlot;
     short         nSlot;
 
-    EngineObject* pTracked = g_pGameEngine->m_ppSlots[SLOT_SWARF];
+    EngineObject* pTracked = g_pGameEngine->m_ppSlots[kSlotSwarf];
 
     if (pTracked != nullptr)
     {
@@ -6686,7 +6686,7 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
         {
             nSlot = pSlot->nSlot;
 
-            if (nSlot < PLAYER_OBJECT_COUNT)
+            if (nSlot < kPlayerObjectCount)
             {
                 pActor = pContext->GetActor();
 
@@ -6700,7 +6700,7 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
         }
     }
 
-    pTracked = g_pGameEngine->m_ppSlots[SLOT_MINE];
+    pTracked = g_pGameEngine->m_ppSlots[kSlotMine];
 
     if (pTracked != nullptr)
     {
@@ -6710,7 +6710,7 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
         {
             nSlot = pSlot->nSlot;
 
-            if (nSlot < PLAYER_OBJECT_COUNT)
+            if (nSlot < kPlayerObjectCount)
             {
                 pActor = pContext->GetActor();
 
@@ -6724,7 +6724,7 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
         }
     }
 
-    pTracked = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    pTracked = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (pTracked != nullptr && ((RokObject*)pTracked)->m_nKillState > -1)
     {
@@ -6734,7 +6734,7 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
         {
             nSlot = pSlot->nSlot;
 
-            if (nSlot < PLAYER_OBJECT_COUNT)
+            if (nSlot < kPlayerObjectCount)
             {
                 pActor = pContext->GetActor();
 
@@ -6758,7 +6758,7 @@ void PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int 
 
     EngineObject* const pTarget = g_pGameEngine->m_ppSlots[nSlot];
     const auto          nLimit  = static_cast<short>(pArgs->m_pArgs[1].pNode->m_pArgs[0].n);
-    EngineObject* const pTeam   = g_pGameEngine->m_ppSlots[SLOT_MINE];
+    EngineObject* const pTeam   = g_pGameEngine->m_ppSlots[kSlotMine];
 
     // A missing reference object leaves the answer alone rather than writing one.
     if (pTeam != nullptr)
@@ -6855,7 +6855,7 @@ void PlanCond::CheckPassingDistance(Interactor* pContext, PlanNode*, short* pRes
     vDiff.y = pMatePos->y - pSelfPos->y;
     vDiff.z = pMatePos->z - pSelfPos->z;
 
-    if (pMate->m_stats.GetScalar(RATING_LONG_PASS_ENABLE) != 0.0f)
+    if (pMate->m_stats.GetScalar(kRatingLongPassEnable) != 0.0f)
     {
         *pResult = 0;
         return;
@@ -6901,13 +6901,13 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
 
     PlayerObject* const pTarget = g_pGameEngine->GetPlayer(static_cast<short>(nOperand));
 
-    if ((nOperand & 0xffff) > SLOT_DROMER3)
+    if ((nOperand & 0xffff) > kSlotDromer3)
     {
         // STRING: HYPERX 0x004bb348
         g_gameApp.Fatal("Fatal failure to initialize the receiver of a pass!");
     }
 
-    const float flDamage = pTarget->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = pTarget->m_stats.GetScalar(kRatingDamage);
 
     const Vec3* pActorPos  = pContext->GetActor()->GetPositionPtr();
     const Vec3* pTargetPos = pTarget->GetPositionPtr();
@@ -6916,7 +6916,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
     vDelta.y = pTargetPos->y - pActorPos->y;
     vDelta.z = pTargetPos->z - pActorPos->z;
 
-    const float flEnable = pTarget->m_stats.GetScalar(RATING_LONG_PASS_ENABLE);
+    const float flEnable = pTarget->m_stats.GetScalar(kRatingLongPassEnable);
 
     if (flEnable != 0.0f)
     {
@@ -6972,7 +6972,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
     }
 }
 
-constexpr auto MIDDLE_SLOT_BIAS = 4;
+constexpr auto kMiddleSlotBias = 4;
 
 // Squared distances, so the limits of ten and just under eight read as a hundred and sixty.
 // FUNCTION: HYPERX 0x00466e20
@@ -6989,7 +6989,7 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
 
     int nMiddle = nSlot;
 
-    if (nSlot < MIDDLE_SLOT_BIAS)
+    if (nSlot < kMiddleSlotBias)
     {
         nMiddle += 2;
     }
@@ -7005,7 +7005,7 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
     EngineObject* const pMiddle = pEngine->m_ppSlots[nMiddle & 3];
     EngineObject* const pFar    = pEngine->m_ppSlots[nFarSlot];
 
-    if (pActor->m_wTargetGoalSlot == SLOT_NGOAL)
+    if (pActor->m_wTargetGoalSlot == kSlotNgoal)
     {
         flSign = g_flOnePlan;
     }
@@ -7060,7 +7060,7 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
         *pResult = 1;
     }
 
-    const float flDamage = ((PlayerObject*)pMiddle)->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = ((PlayerObject*)pMiddle)->m_stats.GetScalar(kRatingDamage);
 
     if (flDamage <= DamageGate())
     {
@@ -7224,7 +7224,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 // Unwinds the last pitch through the staged sine, then applies the node's angle.
 
 // The angle, in whole degrees.
-constexpr auto ARG_DEGREES = 1;
+constexpr auto kArgDegrees = 1;
 
 #define DEG_TO_RAD 0.017453292f
 
@@ -7253,7 +7253,7 @@ void PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
 
     pTransform->RotateXStaged();
 
-    flAngle = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_DEGREES].n)) * DEG_TO_RAD;
+    flAngle = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[kArgDegrees].n)) * DEG_TO_RAD;
 
     pTransform = pObject->GetLocalTransformPtr();
 
@@ -7265,14 +7265,14 @@ void PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
 
 // The two bungees differ only in range: fifty five for the first slot, forty five for the second.
 
-constexpr auto ARG_FIRST_SLOT  = 1;
-constexpr auto ARG_SECOND_SLOT = 2;
+constexpr auto kArgFirstSlot  = 1;
+constexpr auto kArgSecondSlot = 2;
 
 #define DRAG_BUNGEE_GAIN         0.15f
 #define DRAG_BUNGEE_REST_LENGTH  10.0f
 #define DRAG_BUNGEE_FIRST_RANGE  55.0f
 #define DRAG_BUNGEE_SECOND_RANGE 45.0f
-constexpr auto DRAG_BUNGEE_DURATION = 150;
+constexpr auto kDragBungeeDuration = 150;
 
 // FUNCTION: HYPERX 0x004674e0
 void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*, int)
@@ -7282,8 +7282,8 @@ void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*
     PlanWord* const      pArgs     = pNode->m_pArgs;
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
-    EngineObject* const pFirst  = apObjects[static_cast<short>(pArgs[ARG_FIRST_SLOT].n)];
-    EngineObject* const pSecond = apObjects[static_cast<short>(pArgs[ARG_SECOND_SLOT].n)];
+    EngineObject* const pFirst  = apObjects[static_cast<short>(pArgs[kArgFirstSlot].n)];
+    EngineObject* const pSecond = apObjects[static_cast<short>(pArgs[kArgSecondSlot].n)];
 
     auto* const pFirstBungee  = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
     auto* const pSecondBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
@@ -7314,14 +7314,14 @@ void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*
 
     pSecondBungee->SetDotGate(g_flZeroPlan);
 
-    pFirstBungee->m_nCountdown  = DRAG_BUNGEE_DURATION;
-    pSecondBungee->m_nCountdown = DRAG_BUNGEE_DURATION;
+    pFirstBungee->m_nCountdown  = kDragBungeeDuration;
+    pSecondBungee->m_nCountdown = kDragBungeeDuration;
 
     pFirstBungee->Activate();
     pSecondBungee->Activate();
 }
 
-constexpr auto ARG_KIND_MASK = 2;
+constexpr auto kArgKindMask = 2;
 
 // No plan calls this; the field is the one every CTrackTraj range setup clears.
 // FUNCTION: HYPERX 0x004675d0
@@ -7342,7 +7342,7 @@ void PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short
 
     if (pOwner->m_nKind == KIND_KEYBOARD || pOwner->m_nKind == KIND_GAMEPAD || pOwner->m_nKind == KIND_JOYSTICK || pOwner->m_nKind == KIND_MOUSE)
     {
-        if (pNode->m_nArgCount == ARG_KIND_MASK)
+        if (pNode->m_nArgCount == kArgKindMask)
         {
             EngineObject* pTarget;
             unsigned int  nMask;
@@ -7374,7 +7374,7 @@ void PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short
 
 // Set, the rate runs from 1.05 to 1.45 across the damage range; clear, from one to six.
 
-constexpr auto ARG_CURVE = 1;
+constexpr auto kArgCurve = 1;
 
 // FUNCTION: HYPERX 0x004676e0
 void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, short*, int)
@@ -7382,11 +7382,11 @@ void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, sho
     float flDamage;
     float flScale;
 
-    const int nCurve = pNode->m_pArgs[ARG_CURVE].n;
+    const int nCurve = pNode->m_pArgs[kArgCurve].n;
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    flDamage = pActor->m_stats.GetScalar(RATING_DAMAGE) * 0.01f;
+    flDamage = pActor->m_stats.GetScalar(kRatingDamage) * 0.01f;
 
     if (nCurve != 0)
     {
@@ -7403,7 +7403,7 @@ void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, sho
 
 // The winning and losing sides read different entries of the speedburst rating pair.
 
-constexpr auto ARG_RATING_BASE = 1;
+constexpr auto kArgRatingBase = 1;
 #undef ARG_PERIOD
 #define ARG_PERIOD 2
 
@@ -7414,7 +7414,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
 
     if (pContext->GetPlayerActor()->m_stats.m_flSpeedRatio >= 0.25f)
     {
-        int nRating = pNode->m_pArgs[ARG_RATING_BASE].n;
+        int nRating = pNode->m_pArgs[kArgRatingBase].n;
 
         if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pContext->GetActor()->GetSlot())) != 0)
         {
@@ -7425,7 +7425,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
             nRating = nRating * 2 + 1;
         }
 
-        if (static_cast<int>(pContext->GetPlayerActor()->m_stats.GetScalar(nRating + RATING_SPEEDBURST0A)) != 0)
+        if (static_cast<int>(pContext->GetPlayerActor()->m_stats.GetScalar(nRating + kRatingSpeedBurst0a)) != 0)
         {
             auto* const pBurst = (CSpeedBurst*)AllocAgendaItem(Agenda_CSpeedBurst);
 
@@ -7482,7 +7482,7 @@ extern const float g_flRangeLimit;
 
 #define RATINGS_RANGE 800.0f
 
-constexpr auto ONE_IN_CHANCE = 8;
+constexpr auto kOneInChance = 8;
 
 // One roll in eight inverts the answer, and a local match never attacks around a human team mate.
 // FUNCTION: HYPERX 0x00467930
@@ -7508,7 +7508,7 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
 
     EngineObject* const pFar = apObjects[OPPOSING_SECOND(nSlot)];
 
-    if (pOwner->m_wTargetGoalSlot == SLOT_NGOAL)
+    if (pOwner->m_wTargetGoalSlot == kSlotNgoal)
     {
         flSign = g_flOnePlan;
     }
@@ -7547,15 +7547,15 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
 
     PlayerObject* pBody = pContext->GetPlayerActor();
 
-    float flLead = pBody->m_stats.GetScalar(RATING_PASS0);
+    float flLead = pBody->m_stats.GetScalar(kRatingPass0);
 
     pBody = pContext->GetPlayerActor();
 
-    float flOutside = pBody->m_stats.GetScalar(RATING_PASS1);
+    float flOutside = pBody->m_stats.GetScalar(kRatingPass1);
 
     pBody = pContext->GetPlayerActor();
 
-    float flInside = pBody->m_stats.GetScalar(RATING_PASS2);
+    float flInside = pBody->m_stats.GetScalar(kRatingPass2);
 
     if (flLead < 0.0f)
     {
@@ -7583,7 +7583,7 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
         *pResult = 0;
     }
 
-    if (rand() % ONE_IN_CHANCE == 0)
+    if (rand() % kOneInChance == 0)
     {
         *pResult = !*pResult;
     }
@@ -7601,7 +7601,7 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
 
 // Anything outside zero to three becomes zero, the widest a four-child DECIDE can be.
 
-constexpr auto BRANCH_MAX = 3;
+constexpr auto kBranchMax = 3;
 
 // FUNCTION: HYPERX 0x00467c30
 void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -7612,7 +7612,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
     Vec3          vOpp;
     float         flStat;
 
-    pRokAt = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr();
+    pRokAt = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 
     const Vec3* pOwnerAt = pContext->GetActor()->GetPositionPtr();
 
@@ -7634,13 +7634,13 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
         {
             pOwner = pContext->GetPlayerActor();
 
-            flStat = pOwner->m_stats.GetScalar(RATING_WIN_CLOSE_FREE_ROK);
+            flStat = pOwner->m_stats.GetScalar(kRatingWinCloseFreeRok);
         }
         else
         {
             pOwner = pContext->GetPlayerActor();
 
-            flStat = pOwner->m_stats.GetScalar(RATING_LOSE_CLOSE_FREE_ROK);
+            flStat = pOwner->m_stats.GetScalar(kRatingLoseCloseFreeRok);
         }
     }
     else
@@ -7649,19 +7649,19 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
         {
             pOwner = pContext->GetPlayerActor();
 
-            flStat = pOwner->m_stats.GetScalar(RATING_WIN_FAR_FREE_ROK);
+            flStat = pOwner->m_stats.GetScalar(kRatingWinFarFreeRok);
         }
         else
         {
             pOwner = pContext->GetPlayerActor();
 
-            flStat = pOwner->m_stats.GetScalar(RATING_LOSE_FAR_FREE_ROK);
+            flStat = pOwner->m_stats.GetScalar(kRatingLoseFarFreeRok);
         }
     }
 
     const int nStat = static_cast<int>(flStat);
 
-    if (nStat < 0 || nStat > BRANCH_MAX)
+    if (nStat < 0 || nStat > kBranchMax)
     {
         *pResult = 0;
     }
@@ -7672,11 +7672,11 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
-    const float flDamageA = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageA = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    const float flDamageB = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageB = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     if (flDamageA <= DamageGate())
     {
@@ -7688,7 +7688,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
 }
 
 #define PERCENT_SCALE 10.0f
-constexpr auto PERCENT_RANGE = 100;
+constexpr auto kPercentRange = 100;
 
 // The figure is halved before the roll, so a perfect actor is capped at half the die.
 // FUNCTION: HYPERX 0x00467e80
@@ -7696,10 +7696,10 @@ void PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pnResult, 
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    const float flBase   = pActor->m_stats.GetWeightedStat(RATING_ROK_HANDLING) * PERCENT_SCALE;
-    const float flDamage = pActor->m_stats.GetScalar(RATING_DAMAGE);
+    const float flBase   = pActor->m_stats.GetWeightedStat(kRatingRokHandling) * PERCENT_SCALE;
+    const float flDamage = pActor->m_stats.GetScalar(kRatingDamage);
 
-    const unsigned int nRoll = rand() % PERCENT_RANGE;
+    const unsigned int nRoll = rand() % kPercentRange;
 
     const float flOdds = (flDamage * flBase) * 0.01f;
 
@@ -7719,11 +7719,11 @@ void PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pnResult, 
 extern int g_anCoachConditions[13];
 
 // The delta the guard rejects, and the threshold the coach flag forces.
-constexpr auto TRACK_DELTA_LIMIT = 4;
+constexpr auto kTrackDeltaLimit = 4;
 
 // The Multiplier rating for the team ahead or behind; a value past four either way is two.
-constexpr auto TRACK_RATING_LIMIT   = 4;
-constexpr auto TRACK_RATING_DEFAULT = 2;
+constexpr auto kTrackRatingLimit   = 4;
+constexpr auto kTrackRatingDefault = 2;
 
 // FUNCTION: HYPERX 0x00467f10
 void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -7749,14 +7749,14 @@ void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResul
     {
         nSlot = pCarrier->nSlot;
 
-        if (nSlot < PLAYER_OBJECT_COUNT)
+        if (nSlot < kPlayerObjectCount)
         {
             if ((nSlot & 1) != 0)
             {
                 nDelta = -nDelta;
             }
 
-            if (nDelta >= TRACK_DELTA_LIMIT)
+            if (nDelta >= kTrackDeltaLimit)
             {
                 *pResult = 1;
 
@@ -7769,22 +7769,22 @@ void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResul
             {
                 pOwner = pContext->GetPlayerActor();
 
-                nThreshold = static_cast<short>((&pOwner->m_stats)->GetScalar(RATING_MULTIPLIER0));
+                nThreshold = static_cast<short>((&pOwner->m_stats)->GetScalar(kRatingMultiplier0));
             }
             else
             {
                 pOwner = pContext->GetPlayerActor();
 
-                nThreshold = static_cast<short>((&pOwner->m_stats)->GetScalar(RATING_MULTIPLIER1));
+                nThreshold = static_cast<short>((&pOwner->m_stats)->GetScalar(kRatingMultiplier1));
             }
 
             if (g_anCoachConditions[0] != 0)
             {
-                nThreshold = TRACK_DELTA_LIMIT;
+                nThreshold = kTrackDeltaLimit;
             }
-            else if (nThreshold < -TRACK_RATING_LIMIT || nThreshold > TRACK_RATING_LIMIT)
+            else if (nThreshold < -kTrackRatingLimit || nThreshold > kTrackRatingLimit)
             {
-                nThreshold = TRACK_RATING_DEFAULT;
+                nThreshold = kTrackRatingDefault;
             }
 
             *pResult = nDelta >= nThreshold;
@@ -7796,9 +7796,9 @@ void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResul
     *pResult = 1;
 }
 
-constexpr auto ROLL_STEPS = 5;
+constexpr auto kRollSteps = 5;
 
-constexpr auto OPTION_ATTACK_MODE_ON = 1;
+constexpr auto kOptionAttackModeOn = 1;
 
 // The answer is one past an ID_ATK attack; nought deploys the Rok, mine or swarf the actor carries.
 // FUNCTION: HYPERX 0x00468000
@@ -7812,13 +7812,13 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     int nMove = 0;
 
-    int nRoll = rand() % PERCENT_RANGE;
+    int nRoll = rand() % kPercentRange;
 
     PlayerObject* pActor = pContext->GetPlayerActor();
 
     int nAttackerSlot = pActor->GetSlot();
 
-    if (nAttackerSlot > SLOT_DROMER3)
+    if (nAttackerSlot > kSlotDromer3)
     {
         nAttackerSlot = g_pGameEngine->m_nViewedSlot;
 
@@ -7826,7 +7826,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
         pActor = g_pGameEngine->GetPlayer(nSlot);
 
-        if (g_pGameEngine->m_nAttackMode == OPTION_ATTACK_MODE_ON)
+        if (g_pGameEngine->m_nAttackMode == kOptionAttackModeOn)
         {
             *pResult = ATTACK_PUNCH + 1;
 
@@ -7836,13 +7836,13 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     *pResult = ATTACK_PUNCH + 1;
 
-    EngineObject* pWeapon = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    EngineObject* pWeapon = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (pWeapon != nullptr && ((RokObject*)pWeapon)->m_nKillState > -1)
     {
         pWeaponBody = pWeapon->GetPhysicsBody();
 
-        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
+        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < kPlayerObjectCount && pWeaponBody->pAttach->nSlot == nAttackerSlot)
         {
             *pResult = 0;
 
@@ -7850,13 +7850,13 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
         }
     }
 
-    pWeapon = g_pGameEngine->m_ppSlots[SLOT_MINE];
+    pWeapon = g_pGameEngine->m_ppSlots[kSlotMine];
 
     if (pWeapon != nullptr)
     {
         pWeaponBody = pWeapon->GetPhysicsBody();
 
-        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
+        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < kPlayerObjectCount && pWeaponBody->pAttach->nSlot == nAttackerSlot)
         {
             *pResult = 0;
 
@@ -7864,13 +7864,13 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
         }
     }
 
-    pWeapon = g_pGameEngine->m_ppSlots[SLOT_SWARF];
+    pWeapon = g_pGameEngine->m_ppSlots[kSlotSwarf];
 
     if (pWeapon != nullptr)
     {
         pWeaponBody = pWeapon->GetPhysicsBody();
 
-        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
+        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < kPlayerObjectCount && pWeaponBody->pAttach->nSlot == nAttackerSlot)
         {
             *pResult = 0;
 
@@ -7880,7 +7880,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     ObjectStats* const pStats = &pActor->m_stats;
 
-    int nWeight = static_cast<int>(pStats->GetScalar(RATING_FIGHTING0));
+    int nWeight = static_cast<int>(pStats->GetScalar(kRatingFighting0));
 
     if (nRoll > nWeight)
     {
@@ -7889,9 +7889,9 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
             nMove++;
             nRoll -= nWeight;
 
-            nWeight = static_cast<int>(pStats->GetScalar(nMove + RATING_FIGHTING0));
+            nWeight = static_cast<int>(pStats->GetScalar(nMove + kRatingFighting0));
 
-            if (nMove > ROLL_STEPS - 1)
+            if (nMove > kRollSteps - 1)
             {
                 *pResult = ATTACK_PUNCH + 1;
 
@@ -7977,7 +7977,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
 // Both opponents hurt turn an index of one into two; zero and two stand.
 
-constexpr auto OFF_WING_JOB_MAX = 2;
+constexpr auto kOffWingJobMax = 2;
 
 // FUNCTION: HYPERX 0x004682d0
 void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -7989,16 +7989,16 @@ void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
     {
         pOwner = pContext->GetPlayerActor();
 
-        nState = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_WIN_OFF_WING_JOB));
+        nState = static_cast<int>((&pOwner->m_stats)->GetScalar(kRatingWinOffWingJob));
     }
     else
     {
         pOwner = pContext->GetPlayerActor();
 
-        nState = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_LOSE_OFF_WING_JOB));
+        nState = static_cast<int>((&pOwner->m_stats)->GetScalar(kRatingLoseOffWingJob));
     }
 
-    if (nState < 0 || nState > OFF_WING_JOB_MAX)
+    if (nState < 0 || nState > kOffWingJobMax)
     {
         nState = 0;
     }
@@ -8007,11 +8007,11 @@ void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
-    const float flDamageA = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageA = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(pContext->GetActor()->GetSlot()));
 
-    const float flDamageB = pOpponent->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamageB = pOpponent->m_stats.GetScalar(kRatingDamage);
 
     if (*pResult == 1)
     {
@@ -8044,7 +8044,7 @@ void PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pRes
     }
 }
 
-// Picks one of the set bits of the seven-bit RATING_HALFPIPE_REPERTOIRE mask, with equal weight.
+// Picks one of the set bits of the seven-bit kRatingHalfPipeRepertoire mask, with equal weight.
 
 // FUNCTION: HYPERX 0x004684e0
 void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult, int)
@@ -8054,7 +8054,7 @@ void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult,
 
     PlayerObject* const pObject = pContext->GetPlayerActor();
 
-    int nMask = static_cast<int>(pObject->m_stats.GetScalar(RATING_HALFPIPE_REPERTOIRE));
+    int nMask = static_cast<int>(pObject->m_stats.GetScalar(kRatingHalfPipeRepertoire));
 
     if (nMask < 1 || nMask > 0x7f)
     {
@@ -8161,7 +8161,7 @@ void PlanCond::AvoidSpinningTurnstile(Interactor* pContext, PlanNode*, short* pR
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    *pResult = static_cast<int>(pActor->m_stats.GetScalar(RATING_TURNSTILE0)) == 0;
+    *pResult = static_cast<int>(pActor->m_stats.GetScalar(kRatingTurnstile0)) == 0;
 }
 
 // FUNCTION: HYPERX 0x00468640
@@ -8171,9 +8171,9 @@ void PlanCond::DecideNever(Interactor*, PlanNode*, short* pResult, int)
 }
 
 // The window an authored range has to fall in, and what replaces it when it does not.
-constexpr auto RANGE_MIN     = 10;
-constexpr auto RANGE_MAX     = 350;
-constexpr auto RANGE_DEFAULT = 150;
+constexpr auto kRangeMin     = 10;
+constexpr auto kRangeMax     = 350;
+constexpr auto kRangeDefault = 150;
 
 // An authored range outside ten to 350 becomes 150; a local match never shoots past a human mate.
 // FUNCTION: HYPERX 0x00468650
@@ -8184,11 +8184,11 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
     int           nRange;
     PlayerObject* pBody = pContext->GetPlayerActor();
 
-    nRange = static_cast<int>((&pBody->m_stats)->GetScalar(RATING_CARRY_ROK_THROW_DIST));
+    nRange = static_cast<int>((&pBody->m_stats)->GetScalar(kRatingCarryRokThrowDist));
 
-    if (nRange < RANGE_MIN || nRange > RANGE_MAX)
+    if (nRange < kRangeMin || nRange > kRangeMax)
     {
-        nRange = RANGE_DEFAULT;
+        nRange = kRangeDefault;
     }
 
     const Vec3* pSelfAt = pContext->GetActor()->GetPositionPtr();
@@ -8199,11 +8199,11 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
 
     if ((nOwnSlot & 1) != 0)
     {
-        pGoal = apObjects[SLOT_NGOAL];
+        pGoal = apObjects[kSlotNgoal];
     }
     else
     {
-        pGoal = apObjects[SLOT_SGOAL];
+        pGoal = apObjects[kSlotSgoal];
     }
 
     const Vec3* pGoalAt = pGoal->GetPositionPtr();
@@ -8277,13 +8277,13 @@ void PlanCond::RegroupSituation(Interactor* pContext, PlanNode*, short* pResult,
     {
         pOwner = pContext->GetPlayerActor();
 
-        pOwner->m_stats.GetScalar(RATING_WIN_CARRY_ROK_REGROUP_DIST);
+        pOwner->m_stats.GetScalar(kRatingWinCarryRokRegroupDist);
     }
     else
     {
         pOwner = pContext->GetPlayerActor();
 
-        pOwner->m_stats.GetScalar(RATING_LOSE_CARRY_ROK_REGROUP_DIST);
+        pOwner->m_stats.GetScalar(kRatingLoseCarryRokRegroupDist);
     }
 
     pContext->GetActor()->GetPositionPtr();
@@ -8292,19 +8292,19 @@ void PlanCond::RegroupSituation(Interactor* pContext, PlanNode*, short* pResult,
 
     if ((pActor->GetSlot() & 1) != 0)
     {
-        g_pGameEngine->m_ppSlots[SLOT_SGOAL]->GetPositionPtr();
+        g_pGameEngine->m_ppSlots[kSlotSgoal]->GetPositionPtr();
 
         *pResult = 0;
 
         return;
     }
 
-    g_pGameEngine->m_ppSlots[SLOT_NGOAL]->GetPositionPtr();
+    g_pGameEngine->m_ppSlots[kSlotNgoal]->GetPositionPtr();
 
     *pResult = 0;
 }
 
-constexpr auto AGGRESSION_RADIUS_MAX = 400;
+constexpr auto kAggressionRadiusMax = 400;
 
 // The radius is compared against a squared distance without being squared itself.
 // FUNCTION: HYPERX 0x004688d0
@@ -8321,18 +8321,18 @@ void PlanCond::AggressionOnOthers(Interactor* pContext, PlanNode*, short* pResul
     {
         pOwner = pContext->GetPlayerActor();
 
-        nLimit = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_WIN_AGGRESSION));
+        nLimit = static_cast<int>((&pOwner->m_stats)->GetScalar(kRatingWinAggression));
     }
     else
     {
         pOwner = pContext->GetPlayerActor();
 
-        nLimit = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_LOSE_AGGRESSION));
+        nLimit = static_cast<int>((&pOwner->m_stats)->GetScalar(kRatingLoseAggression));
     }
 
-    if (nLimit < 0 || nLimit > AGGRESSION_RADIUS_MAX)
+    if (nLimit < 0 || nLimit > kAggressionRadiusMax)
     {
-        nLimit = AGGRESSION_RADIUS_MAX;
+        nLimit = kAggressionRadiusMax;
     }
 
     Vec3* const pSelf = pContext->GetActor()->GetPositionPtr();
@@ -8385,11 +8385,11 @@ void PlanAction::SetShotPowerMeter(Interactor*, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_nArgCount > 1 && pArgs->m_pArgs[1].n == 1)
     {
-        g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_bShotPowerShown = 1;
+        g_pGameEngine->GetCamera(kCameraHeadSlot)->m_bShotPowerShown = 1;
     }
     else
     {
-        g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_bShotPowerShown = 0;
+        g_pGameEngine->GetCamera(kCameraHeadSlot)->m_bShotPowerShown = 0;
     }
 }
 
@@ -8423,14 +8423,14 @@ void PlanCond::OkToGetRok(Interactor* pContext, PlanNode*, short* pResult, int n
 {
     pContext->GetTargetSlot();
 
-    if (nParam == SLOT_WILDCARD)
+    if (nParam == kSlotWildcard)
     {
         *pResult = 1;
 
         return;
     }
 
-    EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    EngineObject* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (static_cast<short>(((RokObject*)pRok)->m_nCarrierSlot) != static_cast<short>(nParam))
     {
@@ -8451,7 +8451,7 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
 
     EngineObject** const ppObjects = g_pGameEngine->m_ppSlots;
 
-    auto* const pRok = (RokObject*)ppObjects[SLOT_ROK];
+    auto* const pRok = (RokObject*)ppObjects[kSlotRok];
 
     int nTracked = pRok->m_nCarrierSlot;
 
@@ -8498,7 +8498,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     const Vec3* pSelf = pContext->GetActor()->GetPositionPtr();
 
-    pRok = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr();
+    pRok = g_pGameEngine->m_ppSlots[kSlotRok]->GetPositionPtr();
 
     vOffset.x = pSelf->x - pRok->x;
     vOffset.y = pSelf->y - pRok->y;
@@ -8515,13 +8515,13 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     const short nSlot = pActor->GetSlot();
 
-    if (nSlot < PLAYER_SLOT_COUNT)
+    if (nSlot < kPlayerSlotCount)
     {
         PlayerObject* const pOwner = pContext->GetPlayerActor();
 
-        const float flHandling = pOwner->m_stats.GetScalar(RATING_ROK_HANDLING);
+        const float flHandling = pOwner->m_stats.GetScalar(kRatingRokHandling);
 
-        flValue = pOwner->m_stats.GetScalar(RATING_DAMAGE);
+        flValue = pOwner->m_stats.GetScalar(kRatingDamage);
 
         flValue *= flHandling;
 
@@ -8579,7 +8579,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
     *pResult = 2;
 }
 
-constexpr auto GATED_SLOTS = 4;
+constexpr auto kGatedSlots = 4;
 
 #define RANGE_START 600.0f
 
@@ -8587,13 +8587,13 @@ constexpr auto GATED_SLOTS = 4;
 // FUNCTION: HYPERX 0x00468e50
 void PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
 {
-    EngineObject* apActor[PLAYER_OBJECT_COUNT];
-    Vec3          aOffset[PLAYER_OBJECT_COUNT];
+    EngineObject* apActor[kPlayerObjectCount];
+    Vec3          aOffset[kPlayerObjectCount];
     Vec3          vTo;
     float         flLimit;
     int           nSlot;
 
-    *pResult = GATED_SLOTS;
+    *pResult = kGatedSlots;
 
     float flBest = RANGE_START;
 
@@ -8606,7 +8606,7 @@ void PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
     apActor[4] = ppObjects[4];
     apActor[5] = ppObjects[5];
 
-    EngineObject* const pRok = ppObjects[SLOT_ROK];
+    EngineObject* const pRok = ppObjects[kSlotRok];
 
     const Vec3* pSelf  = apActor[0]->GetPositionPtr();
     const Vec3* pRokAt = pRok->GetPositionPtr();
@@ -8662,13 +8662,13 @@ void PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
 
     aOffset[5] = vTo;
 
-    for (nSlot = 0; nSlot < PLAYER_OBJECT_COUNT; nSlot++)
+    for (nSlot = 0; nSlot < kPlayerObjectCount; nSlot++)
     {
-        if (nSlot < GATED_SLOTS)
+        if (nSlot < kGatedSlots)
         {
             flLimit = DamageGate();
 
-            if (flLimit >= ((PlayerObject*)apActor[nSlot])->m_stats.GetScalar(RATING_DAMAGE))
+            if (flLimit >= ((PlayerObject*)apActor[nSlot])->m_stats.GetScalar(kRatingDamage))
             {
                 continue;
             }
@@ -8727,7 +8727,7 @@ void PlanCond::IsDromerKnockedDown(Interactor*, PlanNode* pArgs, short* pResult,
     PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
 
     // m_stats at 0xd20 assumes a PlayerObject; RokObject puts its own field at the same offset.
-    if (pObject->m_nKnockedDownState == 0 && DamageGate() < pObject->m_stats.GetScalar(RATING_DAMAGE))
+    if (pObject->m_nKnockedDownState == 0 && DamageGate() < pObject->m_stats.GetScalar(kRatingDamage))
     {
         *pResult = 2;
     }
@@ -8767,7 +8767,7 @@ void PlanCond::IsDromerInjured(Interactor* pContext, PlanNode* pArgs, short* pRe
 
     flLimit = DamageGate();
 
-    if (pObject->m_stats.GetScalar(RATING_DAMAGE) <= flLimit)
+    if (pObject->m_stats.GetScalar(kRatingDamage) <= flLimit)
     {
         *pResult = 1;
         return;
@@ -8796,7 +8796,7 @@ void PlanCond::CheckRenderFlag(Interactor* pContext, PlanNode* pArgs, short* pRe
         nSlot = nPrevSlot;
     }
 
-    if ((g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)]->m_nFlags & ENGINEOBJECT_HIDDEN) != 0)
+    if ((g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)]->m_nFlags & kEngineObjectHidden) != 0)
     {
         *pResult = 1;
     }

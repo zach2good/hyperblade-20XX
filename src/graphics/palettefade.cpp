@@ -8,7 +8,7 @@
 #include "palettescalarfade.h"
 #include <cstring>
 
-// PALETTE_RESERVED on the first entry means the entries already animate, and the fade goes inactive.
+// kPaletteReserved on the first entry means the entries already animate, and the fade goes inactive.
 // FUNCTION: HYPERX 0x0042cd10
 PaletteFade::PaletteFade(const PaletteRange* pRange)
 : m_nKind(0)
@@ -28,7 +28,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     memcpy(pEntries, &g_pColorPalette->m_current[m_iStart], m_cEntries * sizeof(PaletteEntry));
 
-    if (m_pEntries[0].peFlags == PALETTE_RESERVED)
+    if (m_pEntries[0].peFlags == kPaletteReserved)
     {
         m_bActive = 0;
 
@@ -39,7 +39,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     for (unsigned int nEntry = 0; nEntry < m_cEntries; nEntry++)
     {
-        m_pEntries[nEntry].peFlags = PALETTE_RESERVED;
+        m_pEntries[nEntry].peFlags = kPaletteReserved;
     }
 
     g_pColorPalette->SetEntries(m_iStart,
@@ -87,7 +87,7 @@ void PaletteFade::RestoreEntries()
 
     for (unsigned int i = 0; i < m_cEntries; i++)
     {
-        m_pEntries[i].peFlags = PALETTE_NOCOLLAPSE;
+        m_pEntries[i].peFlags = kPaletteNoCollapse;
     }
 
     g_pColorPalette->SetEntries(m_iStart, m_cEntries, m_pEntries);

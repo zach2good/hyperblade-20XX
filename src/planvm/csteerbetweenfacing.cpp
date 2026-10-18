@@ -21,7 +21,7 @@
 #include "common/pooledownerroot.h"
 #include "engine/statids.h"
 
-constexpr auto MSG_SPEED_BURST_ARG = 0x96;
+constexpr auto kMsgSpeedBurstArg = 0x96;
 
 #define BANK_DEADZONE_LOW  -0.001
 #define BANK_DEADZONE_HIGH 0.001f
@@ -68,7 +68,7 @@ void CSteerBetweenFacing::OnListChanged()
 // FUNCTION: HYPERX 0x0040ee50
 void CSteerBetweenFacing::Process(int nArg)
 {
-    const float flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 0.12f + 0.2f;
+    const float flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.12f + 0.2f;
 
     Vec3 vDelta;
     Vec3 vAim;
@@ -143,7 +143,7 @@ void CSteerBetweenFacing::Process(int nArg)
 
         if (m_cArrived == 0)
         {
-            m_pOwner->PostSceneEvent(MSG_GOT_THERE, 0);
+            m_pOwner->PostSceneEvent(kMsgGotThere, 0);
             m_cArrived = 1;
         }
     }
@@ -154,7 +154,7 @@ void CSteerBetweenFacing::Process(int nArg)
 
     if (flRange > 40.0)
     {
-        m_pOwner->PostSceneEvent(MSG_SPEED_BURST, MSG_SPEED_BURST_ARG);
+        m_pOwner->PostSceneEvent(kMsgSpeedBurst, kMsgSpeedBurstArg);
     }
 
     Math::Vec3Normalize(&vDelta);

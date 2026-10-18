@@ -17,13 +17,13 @@
 #include "planvm/plannode.h"
 #include "common/pooledownerroot.h"
 
-constexpr auto MODE_TO_CENTRE = 0;
-constexpr auto MODE_ON_OBJECT = 1;
+constexpr auto kModeToCentre = 0;
+constexpr auto kModeOnObject = 1;
 
 #define STEP_LENGTH 5.0f
 #define DRIFT_LIMIT 25.0
 
-constexpr auto MESSAGE_DRIFTED_PARAM = 0x96;
+constexpr auto kMessageDriftedParam = 0x96;
 
 // FUNCTION: HYPERX 0x0040e490
 void CSetPositionRelative::Bind(EngineObject* pSubject, GameBehaviorObject*)
@@ -115,7 +115,7 @@ void CSetPositionRelative::Process(int nArg)
 
     switch (m_wMode)
     {
-        case MODE_TO_CENTRE:
+        case kModeToCentre:
             pTracked = m_pTracked->GetPositionPtr();
 
             pOther = g_pGameEngine->m_ppSlots[((PlayerObject*)m_pOwner)->m_wTargetGoalSlot]
@@ -137,12 +137,12 @@ void CSetPositionRelative::Process(int nArg)
 
             if (fabs(static_cast<double>(m_pMarker->y - m_pOwner->GetPositionPtr()->y)) > DRIFT_LIMIT)
             {
-                m_pOwner->PostSceneEvent(MSG_SPEED_BURST, MESSAGE_DRIFTED_PARAM);
+                m_pOwner->PostSceneEvent(kMsgSpeedBurst, kMessageDriftedParam);
             }
 
             break;
 
-        case MODE_ON_OBJECT:
+        case kModeOnObject:
             flZ        = m_vOffset.z;
             flY        = m_vOffset.y;
             pTransform = &m_pTracked->m_transformC;

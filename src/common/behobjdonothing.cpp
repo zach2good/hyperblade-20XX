@@ -18,6 +18,6 @@ void BehObj_DoNothing::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind      = BEH_DO_NOTHING;
+    m_wKind      = kBehDoNothing;
     m_apSlots[0] = nullptr;
 }

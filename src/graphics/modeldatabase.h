@@ -31,7 +31,7 @@ struct MaterialListNode
     char*                m_pszName;    // 0x004, strcmp'd against the model name when the list is looked up
     unsigned char        m_nMatCount;  // 0x008, the bound of the material loop in engineobject.cpp
     MaterialListNode*    m_pNext;      // 0x00c
-    short                m_nRefs;      // 0x010, incremented when a model takes the list and compared to MATERIAL_SHARED
+    short                m_nRefs;      // 0x010, incremented when a model takes the list and compared to kMaterialShared
 };
 
 class ModelDatabase

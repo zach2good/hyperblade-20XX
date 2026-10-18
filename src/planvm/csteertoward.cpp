@@ -22,7 +22,7 @@
 // Arriving on slots zero to five is a pass to that player; anywhere else is a goal.
 
 // The bone whose world transform the homing aim tracks.
-constexpr auto TARGET_BONE = 15;
+constexpr auto kTargetBone = 15;
 
 // FUNCTION: HYPERX 0x0040f180
 void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
@@ -102,11 +102,11 @@ void CSteerToward::Process(int nArg)
     {
         const short nKind = m_pTarget->GetSlot();
 
-        if (nKind < PLAYER_OBJECT_COUNT)
+        if (nKind < kPlayerObjectCount)
         {
             Vec3* const pPos = &m_pOwner->GetPhysicsBody()->pos;
 
-            TransformObject* const pMatrix = &m_pTarget->m_pBones[TARGET_BONE].m_world;
+            TransformObject* const pMatrix = &m_pTarget->m_pBones[kTargetBone].m_world;
 
             flPartial = vSide.z * pMatrix->m_a[0][2] + vSide.x * pMatrix->m_a[0][0];
 
@@ -132,11 +132,11 @@ void CSteerToward::Process(int nArg)
 
             *m_pflSpeed = pBody->flSpeed;
 
-            m_pOwner->PostSceneEvent(MSG_PASS_RECEIVED, m_pTarget->GetSlot());
+            m_pOwner->PostSceneEvent(kMsgPassReceived, m_pTarget->GetSlot());
         }
         else
         {
-            m_pOwner->PostSceneEvent(MSG_GOAL_RECEIVED, 0);
+            m_pOwner->PostSceneEvent(kMsgGoalReceived, 0);
         }
 
         if (m_pNext != nullptr)

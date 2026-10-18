@@ -3,22 +3,22 @@
 #ifndef HYPERBLADE_SOUNDMANAGER_H
 #define HYPERBLADE_SOUNDMANAGER_H
 
-constexpr auto SOUNDMGR_SLOTS = 15;
+constexpr auto kSoundmgrSlots = 15;
 
 // The manager's own "no sound", which the clip index compares against.
-constexpr auto SOUNDMGR_NO_SOUND = (-9999);
+constexpr auto kSoundmgrNoSound = (-9999);
 
 // SoundEntry::m_nPlayState.
-constexpr auto SOUND_STATE_STOPPED = 1;
-constexpr auto SOUND_STATE_IDLE    = 2;
-constexpr auto SOUND_STATE_PLAYING = 4;
+constexpr auto kSoundStateStopped = 1;
+constexpr auto kSoundStateIdle    = 2;
+constexpr auto kSoundStatePlaying = 4;
 
 // SoundEntry::m_nLoadState counts failed opens up to the last try; a bad file fails for good.
-constexpr auto SOUND_LOAD_LAST_TRY = 1;
-constexpr auto SOUND_LOAD_FAILED   = (-1);
+constexpr auto kSoundLoadLastTry = 1;
+constexpr auto kSoundLoadFailed  = (-1);
 
 // SoundEntry::m_nLoadMode.
-constexpr auto SOUND_LOAD_WHOLE = 1;
+constexpr auto kSoundLoadWhole = 1;
 
 struct SoundEntry
 {
@@ -63,10 +63,10 @@ public:
     int   m_nUnusedA; // 0x00
     short m_wUnusedA; // 0x04
     // One row per group: first sound, count, and longest length in samples at 44100 Hz.
-    short        m_awGroupFirst[SOUNDMGR_SLOTS];   // 0x06
-    short        m_awGroupCount[SOUNDMGR_SLOTS];   // 0x24
+    short        m_awGroupFirst[kSoundmgrSlots];   // 0x06
+    short        m_awGroupCount[kSoundmgrSlots];   // 0x24
     short        m_wUnusedB;                       // 0x42
-    int          m_anGroupSamples[SOUNDMGR_SLOTS]; // 0x44
+    int          m_anGroupSamples[kSoundmgrSlots]; // 0x44
     short        m_nSoundCount;                    // 0x80
     short        m_wUnusedC;                       // 0x82
     SoundEntry** m_apSounds;                       // 0x84

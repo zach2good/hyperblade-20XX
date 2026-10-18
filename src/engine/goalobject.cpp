@@ -11,7 +11,7 @@
 GoalObject::GoalObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
-    m_nFlags |= ENGINEOBJECT_HIDDEN;
+    m_nFlags |= kEngineObjectHidden;
 
     for (int nIndex = 0; nIndex < m_wBoneCount; nIndex++)
     {

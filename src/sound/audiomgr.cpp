@@ -93,7 +93,7 @@ void AudioMgr::Init()
 // FUNCTION: HYPERX 0x00490aa0
 int AudioMgr::LoadSound(SoundEntry* pEntry)
 {
-    if (pEntry->m_nLoadState < 0 || pEntry->m_nLoadState > SOUND_LOAD_LAST_TRY)
+    if (pEntry->m_nLoadState < 0 || pEntry->m_nLoadState > kSoundLoadLastTry)
     {
         return 0;
     }
@@ -106,7 +106,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     pEntry->m_pSamples       = nullptr;
     pEntry->m_nUnusedB       = 0;
 
-    PathString strPath(MAX_PATH_LENGTH);
+    PathString strPath(kMaxPathLength);
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
 
@@ -123,7 +123,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
 
     if (result != Wave::Result::OK)
     {
-        pEntry->m_nLoadState = SOUND_LOAD_FAILED;
+        pEntry->m_nLoadState = kSoundLoadFailed;
 
         return 0;
     }
@@ -134,7 +134,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     pEntry->m_nDataBytes     = info.nDataBytes;
     pEntry->m_nDataOffset    = info.nDataOffset;
 
-    if (pEntry->m_nLoadMode != SOUND_LOAD_WHOLE)
+    if (pEntry->m_nLoadMode != kSoundLoadWhole)
     {
         return 0;
     }
@@ -156,7 +156,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
         pEntry->m_pSamples    = nullptr;
         pEntry->m_nDataBytes  = 0;
         pEntry->m_nDataOffset = 0;
-        pEntry->m_nLoadState  = SOUND_LOAD_FAILED;
+        pEntry->m_nLoadState  = kSoundLoadFailed;
 
         return 0;
     }
@@ -195,7 +195,7 @@ void AudioMgr::PlaySpecific(int nVoice)
 
             if (pSound != nullptr)
             {
-                if (IsPlaying(nVoice) == 0 || (pSound->m_nGroup != SOUND_GROUP_LOOPING && pSound->m_pSamples != nullptr))
+                if (IsPlaying(nVoice) == 0 || (pSound->m_nGroup != kSoundGroupLooping && pSound->m_pSamples != nullptr))
                 {
                     if (pSound->m_nDataBytes == 0)
                     {
@@ -232,7 +232,7 @@ int AudioMgr::IsPlaying(int nVoice)
 
         if (pVoice != nullptr)
         {
-            if (pVoice->m_nPlayState == SOUND_STATE_PLAYING)
+            if (pVoice->m_nPlayState == kSoundStatePlaying)
             {
                 return 1;
             }
@@ -295,7 +295,7 @@ int g_nCDRecentTracks = 20;
 int g_nCDRecentCursor;
 
 // The CD's audio tracks, ripped to Data/Music/TrackNN.flac, .mp3 or .wav.
-constexpr auto MUSIC_TRACK_MAX = 99;
+constexpr auto kMusicTrackMax = 99;
 
 static const char* const s_apszMusicFormats[] = { "flac", "mp3", "wav" };
 
@@ -328,9 +328,9 @@ static const std::vector<int>& MusicTracks()
     static const auto s_anTracks = []
     {
         std::vector<int> anTracks;
-        char             szPath[MAX_PATH_LENGTH];
+        char             szPath[kMaxPathLength];
 
-        for (int nTrack = 1; nTrack <= MUSIC_TRACK_MAX; nTrack++)
+        for (int nTrack = 1; nTrack <= kMusicTrackMax; nTrack++)
         {
             if (MusicPath(nTrack, szPath, sizeof(szPath)))
             {
@@ -365,11 +365,11 @@ void AudioMgr::PlayCDTrack(int nTrack)
         return;
     }
 
-    if (nTrack == CD_TRACK_RANDOM)
+    if (nTrack == kCDTrackRandom)
     {
         srand(static_cast<unsigned int>(SDL_GetTicks()));
 
-        int nPicked = CD_TRACK_RANDOM;
+        int nPicked = kCDTrackRandom;
         int nScan   = g_nCDRecentCursor;
 
         for (int i = 0; i < nTracks; i++)
@@ -390,7 +390,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
             }
         }
 
-        if (nPicked == CD_TRACK_RANDOM)
+        if (nPicked == kCDTrackRandom)
         {
             nPicked = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
         }
@@ -406,7 +406,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
         nTrack = anTracks[nPicked];
     }
 
-    char szPath[MAX_PATH_LENGTH];
+    char szPath[kMaxPathLength];
 
     if (MusicPath(nTrack, szPath, sizeof(szPath)))
     {
@@ -457,7 +457,7 @@ int AudioMgr::PreloadGroup(int nGroup)
 
         if (pSnd->m_nDataBytes == 0)
         {
-            if (pSnd->m_nLoadState < 0 || pSnd->m_nLoadState > SOUND_LOAD_LAST_TRY)
+            if (pSnd->m_nLoadState < 0 || pSnd->m_nLoadState > kSoundLoadLastTry)
             {
                 continue;
             }
@@ -477,7 +477,7 @@ int AudioMgr::PreloadGroup(int nGroup)
             continue;
         }
 
-        PathString strPath(MAX_PATH_LENGTH);
+        PathString strPath(kMaxPathLength);
 
         strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pSnd->m_pszName, g_pszWaveExtension);
 

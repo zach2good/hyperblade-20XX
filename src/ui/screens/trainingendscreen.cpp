@@ -31,9 +31,9 @@ TrainingEndScreen::~TrainingEndScreen() = default;
 // FUNCTION: HYPERX 0x004432c0
 void TrainingEndScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
-    if (nId >= WIDGET_ID_MOUSE && nId <= WIDGET_ID_RETURN)
+    if (nId >= kWidgetIDMouse && nId <= kWidgetIDReturn)
     {
-        if (nMsg == INPUT_KEY_UP || nMsg == INPUT_KEY_DOWN || (m_bPointerOnWidget == 0 && nMsg == INPUT_LEFT_UP))
+        if (nMsg == kInputKeyUp || nMsg == kInputKeyDown || (m_bPointerOnWidget == 0 && nMsg == kInputLeftUp))
         {
             if (m_nSelectionMode == g_nCreditPageCount)
             {
@@ -47,7 +47,7 @@ void TrainingEndScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                 }
 
                 GameApp::ResetToSinglePlayer();
-                Game::SetEngineState(ESTATE_LOBBY);
+                Game::SetEngineState(kEstateLobby);
                 return;
             }
 
@@ -60,7 +60,7 @@ void TrainingEndScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             m_bPaletted = 0;
 
             m_hBackground = GDI::LoadBitmapAsBackground(
-                g_apszTrainingBackgrounds[TRAINING_CREDIT_FIRST + m_nSelectionMode],
+                g_apszTrainingBackgrounds[kTrainingCreditFirst + m_nSelectionMode],
                 &m_bPaletted);
 
             SetRepaintBackground(1);

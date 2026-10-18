@@ -288,14 +288,14 @@ void TournamentSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
             break;
 
         case TOURNAMENT_SETUP_STARTERS:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 ShowStartersCard();
             }
             break;
 
         case TOURNAMENT_SETUP_SCRUBS:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 ShowScrubsCard();
             }

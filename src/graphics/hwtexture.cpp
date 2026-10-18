@@ -16,8 +16,8 @@
 namespace
 {
 
-constexpr auto WHITE   = 0xffffffffu;
-constexpr auto MAGENTA = 0xffff00ffu;
+constexpr auto kWhite   = 0xffffffffu;
+constexpr auto kMagenta = 0xffff00ffu;
 
 SDL_GPUTexture* s_pWhite   = nullptr;
 SDL_GPUTexture* s_pMagenta = nullptr;
@@ -108,7 +108,7 @@ SDL_GPUTexture* Solid(SDL_GPUDevice* pDevice, SDL_GPUTexture*& pTexture, unsigne
 
 SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
 {
-    const auto path = PathString(MAX_PATH_LENGTH, g_gameApp.m_strTexturesPath.m_str.m_pchData, pszName, g_pszBitmapExtension);
+    const auto path = PathString(kMaxPathLength, g_gameApp.m_strTexturesPath.m_str.m_pchData, pszName, g_pszBitmapExtension);
 
     auto nWidth    = 0;
     auto nHeight   = 0;
@@ -127,7 +127,7 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
     {
         SDL_Log("Texture %s did not load: %s", path.m_str.m_pchData, stbi_failure_reason());
 
-        return Solid(pDevice, s_pMagenta, MAGENTA);
+        return Solid(pDevice, s_pMagenta, kMagenta);
     }
 
     SDL_GPUTexture* const pTexture = Upload(pDevice, pPixels, nWidth, nHeight);
@@ -138,7 +138,7 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
     {
         SDL_Log("Texture %s did not upload: %s", path.m_str.m_pchData, SDL_GetError());
 
-        return Solid(pDevice, s_pMagenta, MAGENTA);
+        return Solid(pDevice, s_pMagenta, kMagenta);
     }
 
     return pTexture;
@@ -152,7 +152,7 @@ HwTexture::Texture HwTexture::Find(HwPipeline::Device device, const TexCacheEntr
 
     if (pEntry == nullptr || pEntry->m_pszName == nullptr)
     {
-        return Texture{ Solid(pDevice, s_pWhite, WHITE) };
+        return Texture{ Solid(pDevice, s_pWhite, kWhite) };
     }
 
     auto key = std::string(pEntry->m_pszName);

@@ -13,7 +13,7 @@ struct PlayerState
     int nConnected; // 0x04
     // The name byte's human bit.
     int nHuman; // 0x08
-    // The engine slot the player drives, MODEL_ID_NONE for none.
+    // The engine slot the player drives, kModelIDNone for none.
     int            nObjectSlot;   // 0x0c
     PlayerSlotName slotName;      // 0x10
     int            nSlotFlags;    // 0x50
@@ -25,13 +25,13 @@ struct PlayerState
 };
 
 // The local player: the teardown destroys it by name, and the command pump skips it.
-constexpr auto SESSION_LOCAL_PLAYER = 15;
+constexpr auto kSessionLocalPlayer = 15;
 
-constexpr auto SESSION_PLAYER_SLOTS = 16;
-constexpr auto SESSION_REMOTE_IDS   = 8;
+constexpr auto kSessionPlayerSlots = 16;
+constexpr auto kSessionRemoteIDS   = 8;
 
 // The network slots that drive the Rok and the referee, God.
-constexpr auto NET_SLOT_ROK = 7;
-constexpr auto NET_SLOT_GOD = 8;
+constexpr auto kNetSlotRok = 7;
+constexpr auto kNetSlotGod = 8;
 
 #endif

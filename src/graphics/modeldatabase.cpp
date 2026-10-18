@@ -77,7 +77,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
     LODNode* pResult;
     short    nLodCount;
     short    i;
-    float    afThresholds[LOD_LEVEL_COUNT];
+    float    afThresholds[kLODLevelCount];
 
     LODNode* pNode = FindLOD(pszModelName);
 
@@ -365,7 +365,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
         unsigned char nMatCount  = 0;
 
         // STRING: HYPERX 0x004c5538
-        PathString path(MAX_PATH_LENGTH, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, "mat");
+        PathString path(kMaxPathLength, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, "mat");
         OwnedFile  file;
 
         if (file.m_file.Open(path.m_str.m_pchData, FILE_MODE_READ) != 0)

@@ -83,12 +83,12 @@ void CollisionCage::ComputeFaceNormals()
     short           iClearVertex;
     short           iClearFace;
 
-    for (iClearFace = 0; iClearFace < CAGE_FACES; iClearFace++)
+    for (iClearFace = 0; iClearFace < kCageFaces; iClearFace++)
     {
         aNormal[iClearFace].x = aNormal[iClearFace].y = aNormal[iClearFace].z = g_flZeroFaceNormal;
         aBound[iClearFace].x = aBound[iClearFace].y = aBound[iClearFace].z = g_flZeroFaceNormal;
 
-        for (iClearVertex = 0; iClearVertex < CAGE_VERTICES; iClearVertex++)
+        for (iClearVertex = 0; iClearVertex < kCageVertices; iClearVertex++)
         {
             aFace[iClearFace][iClearVertex].x = aFace[iClearFace][iClearVertex].y = aFace[iClearFace][iClearVertex].z = g_flZeroFaceNormal;
         }
@@ -105,13 +105,13 @@ void CollisionCage::ComputeFaceNormals()
 
     pComponent = Component::Get(pOwner, 0);
 
-    nFacesToDo = pComponent->GetFaceCount() <= CAGE_FACES ? pComponent->GetFaceCount() : static_cast<short>(CAGE_FACES);
+    nFacesToDo = pComponent->GetFaceCount() <= kCageFaces ? pComponent->GetFaceCount() : static_cast<short>(kCageFaces);
 
     for (nMeshFace = 0; nMeshFace < nFacesToDo; nMeshFace++)
     {
         pFace = pComponent->GetFace(nMeshFace);
 
-        nVertices = pFace->nCorners <= CAGE_VERTICES ? pFace->nCorners : static_cast<short>(CAGE_VERTICES);
+        nVertices = pFace->nCorners <= kCageVertices ? pFace->nCorners : static_cast<short>(kCageVertices);
 
         for (nVertex = 0; nVertex < nVertices; nVertex++)
         {

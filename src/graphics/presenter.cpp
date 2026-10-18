@@ -258,7 +258,7 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 
         if (s_pHud != nullptr)
         {
-            SetColours(s_pHudPalette, pColours, HudLayer::KEY_INDEX);
+            SetColours(s_pHudPalette, pColours, HudLayer::kKeyIndex);
             SDL_SetTexturePalette(s_pHud, s_pHudPalette);
             SDL_SetTextureBlendMode(s_pHud, SDL_BLENDMODE_BLEND);
             SDL_UpdateTexture(s_pHud, nullptr, layer.pBits, layer.nPitch);

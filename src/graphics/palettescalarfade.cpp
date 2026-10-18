@@ -9,8 +9,8 @@
 
 // The duration is five hundred milliseconds.
 
-constexpr auto SCALAR_KIND     = 3;
-constexpr auto SCALAR_DURATION = 500;
+constexpr auto kScalarKind     = 3;
+constexpr auto kScalarDuration = 500;
 
 // FUNCTION: HYPERX 0x0042cfc0
 PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
@@ -19,7 +19,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
     unsigned int  cLeft  = m_cEntries;
     PaletteEntry* pEntry = m_pEntries;
 
-    m_nKind = SCALAR_KIND;
+    m_nKind = kScalarKind;
 
     m_cBrightest = 0;
 
@@ -37,7 +37,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
         m_cBrightest = cGreen;
     }
 
-    m_nDuration = SCALAR_DURATION;
+    m_nDuration = kScalarDuration;
 }
 
 // The double constant at 0x004b1ac0.
@@ -83,7 +83,7 @@ int PaletteScalarFade::Tick()
 }
 
 // Every entry arrived.
-constexpr auto FADE_ALL_ARRIVED = 0xff;
+constexpr auto kFadeAllArrived = 0xff;
 
 extern int g_nPaletteAnimateResult;
 
@@ -118,7 +118,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
             }
         }
 
-        nAnswer = (nMask != FADE_ALL_ARRIVED);
+        nAnswer = (nMask != kFadeAllArrived);
     }
     else
     {
@@ -149,7 +149,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
             }
         }
 
-        nAnswer = (nMask == FADE_ALL_ARRIVED);
+        nAnswer = (nMask == kFadeAllArrived);
     }
 
     g_nPaletteAnimateResult =

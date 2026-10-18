@@ -7,10 +7,10 @@
 namespace
 {
 
-constexpr auto WAVE_FORMAT_PCM_TAG = 1;
+constexpr auto kWaveFormatPCMTag = 1;
 
 // Far more chunks than any of the game's files has, so a damaged file cannot loop for ever.
-constexpr auto MAX_CHUNKS = 64;
+constexpr auto kMaxChunks = 64;
 
 std::uint32_t ReadU32(const unsigned char* p)
 {
@@ -73,7 +73,7 @@ Wave::Result Wave::ReadInfo(const char* pszPath, Info& info)
     auto bData   = false;
     auto nOffset = std::uint32_t{ sizeof(aHeader) };
 
-    for (int nChunk = 0; nChunk < MAX_CHUNKS && !(bFormat && bData); nChunk++)
+    for (int nChunk = 0; nChunk < kMaxChunks && !(bFormat && bData); nChunk++)
     {
         unsigned char aChunk[8];
 
@@ -88,7 +88,7 @@ Wave::Result Wave::ReadInfo(const char* pszPath, Info& info)
         {
             unsigned char aFormat[16];
 
-            if (nSize < sizeof(aFormat) || std::fread(aFormat, 1, sizeof(aFormat), file.Get()) != sizeof(aFormat) || ReadU16(aFormat) != WAVE_FORMAT_PCM_TAG)
+            if (nSize < sizeof(aFormat) || std::fread(aFormat, 1, sizeof(aFormat), file.Get()) != sizeof(aFormat) || ReadU16(aFormat) != kWaveFormatPCMTag)
             {
                 return Result::BAD_FORMAT;
             }

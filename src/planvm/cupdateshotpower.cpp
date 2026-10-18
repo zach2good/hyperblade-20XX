@@ -25,18 +25,18 @@ void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 
     m_nStarted = g_pGameEngine->m_clock.nTickMs;
 
-    g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_nShotPowerLevel = 1;
+    g_pGameEngine->GetCamera(kCameraHeadSlot)->m_nShotPowerLevel = 1;
 
     EngineObject* pShooter = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
-    m_flPower = ((PlayerObject*)pShooter)->m_stats.GetScalar(RATING_SHOT_POWER);
+    m_flPower = ((PlayerObject*)pShooter)->m_stats.GetScalar(kRatingShotPower);
 
     pShooter = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
     m_pOrigin = pShooter->GetPositionPtr();
 }
 
-constexpr auto SHOT_POWER_MAX = 100;
+constexpr auto kShotPowerMax = 100;
 
 // FUNCTION: HYPERX 0x00412470
 void CUpdateShotPower::OnListChanged()
@@ -60,20 +60,20 @@ void CUpdateShotPower::Process(int nArg)
 {
     int nAmount;
 
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
+    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
     if (pCamera->m_bShotPowerShown != 0)
     {
         nAmount = static_cast<int>(static_cast<float>(g_pGameEngine->m_clock.nTickMs - m_nStarted) * (m_flPower + 12.0f) * 0.004f);
 
-        if (nAmount > SHOT_POWER_MAX)
+        if (nAmount > kShotPowerMax)
         {
-            nAmount = SHOT_POWER_MAX;
+            nAmount = kShotPowerMax;
         }
 
         pCamera->m_nShotPowerLevel = nAmount;
 
-        pCamera->SetReticleState(RETICLE_COMMIT);
+        pCamera->SetReticleState(kReticleCommit);
     }
 
     AgendaItem* const pNext = m_pNext;

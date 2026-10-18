@@ -28,7 +28,7 @@
 namespace WndProc
 {
 
-// A key down when the focus leaves never sends INPUT_KEY_UP here.
+// A key down when the focus leaves never sends kInputKeyUp here.
 static unsigned char s_abKeyHeld[256];
 
 static void NoteKey(unsigned int nMessage, unsigned int nKey)
@@ -38,11 +38,11 @@ static void NoteKey(unsigned int nMessage, unsigned int nKey)
         return;
     }
 
-    if (nMessage == INPUT_KEY_DOWN)
+    if (nMessage == kInputKeyDown)
     {
         s_abKeyHeld[nKey] = 1;
     }
-    else if (nMessage == INPUT_KEY_UP)
+    else if (nMessage == kInputKeyUp)
     {
         s_abKeyHeld[nKey] = 0;
     }
@@ -70,7 +70,7 @@ static void ReleaseHeldKeys()
 
 // The game's input, as the window delivers it. Keys are Win32 virtual-key codes, which the key
 // bindings store; buttons are the MOUSE_ flags of every button and modifier held, and points are
-// client pixels. A match reads a button's flag word as a key, so MOUSE_LEFT lands on Key::LBUTTON.
+// client pixels. A match reads a button's flag word as a key, so kMouseLeft lands on Key::kLbutton.
 
 static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 {
@@ -81,8 +81,8 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
         return;
     }
 
-    // F2 opens the debug menu anywhere, before a match or a menu sees the key.
-    if (nMessage == INPUT_KEY_DOWN && nCode == Key::F2)
+    // kF2 opens the debug menu anywhere, before a match or a menu sees the key.
+    if (nMessage == kInputKeyDown && nCode == Key::kF2)
     {
         DebugMenu::Toggle();
 
@@ -92,11 +92,11 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
     // A key held when the focus leaves never sees its release here.
     WndProc::NoteKey(nMessage, nCode);
 
-    if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    if (g_gameApp.m_nEngineState == kEstateMatchLive)
     {
-        if (static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
+        if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
         {
-            // The key goes through a char, so Key::OEM_PLUS and Key::OEM_MINUS never reach their cases.
+            // The key goes through a char, so Key::kOEMPlus and Key::kOEMMinus never reach their cases.
             if (GameApp::HandleMatchKeypress(static_cast<int>(static_cast<char>(nCode))) == 0 && g_pInputDevice->HandleKeyDown(nCode) == -1)
             {
                 GameApp::HandleGlobalKeyEvent(static_cast<int>(nCode));
@@ -107,15 +107,15 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
     }
     else if (g_pActiveScreen != nullptr)
     {
-        if (nMessage == INPUT_KEY_DOWN)
+        if (nMessage == kInputKeyDown)
         {
-            // F1 opened HELP.HLP, which Windows no longer reads.
-            if (nCode == Key::F1)
+            // kF1 opened HELP.HLP, which Windows no longer reads.
+            if (nCode == Key::kF1)
             {
                 return;
             }
 
-            g_pActiveScreen->HandleKeyMessage(INPUT_KEY_DOWN, nCode, 0);
+            g_pActiveScreen->HandleKeyMessage(kInputKeyDown, nCode, 0);
         }
         else
         {
@@ -127,7 +127,7 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
         return;
     }
 
-    if (nCode == 'Q' || nCode == Key::ESCAPE || nCode == Key::PAUSE)
+    if (nCode == 'Q' || nCode == Key::kEscape || nCode == Key::kPause)
     {
         GameApp::HandleGlobalKeyEvent(static_cast<int>(nCode));
     }
@@ -137,16 +137,16 @@ static void Release(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 {
     WndProc::NoteKey(nMessage, nCode);
 
-    if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    if (g_gameApp.m_nEngineState != kEstateMatchLive)
     {
-        if (nMessage != INPUT_KEY_UP && g_pActiveScreen != nullptr)
+        if (nMessage != kInputKeyUp && g_pActiveScreen != nullptr)
         {
             const auto pt = Window::ToMenuPoint(nX, nY);
 
             g_pActiveScreen->OnMouseMessage(nMessage, nCode, pt.x, pt.y);
         }
     }
-    else if (static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
+    else if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
     {
         g_pInputDevice->HandleKeyUp(nCode);
     }
@@ -154,17 +154,17 @@ static void Release(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 
 void WndProc::OnKeyDown(unsigned int nKey)
 {
-    Press(INPUT_KEY_DOWN, nKey, 0, 0);
+    Press(kInputKeyDown, nKey, 0, 0);
 }
 
 void WndProc::OnKeyUp(unsigned int nKey)
 {
-    Release(INPUT_KEY_UP, nKey, 0, 0);
+    Release(kInputKeyUp, nKey, 0, 0);
 }
 
 void WndProc::OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX, int nY)
 {
-    if (nMessage == INPUT_LEFT_DOWN || nMessage == INPUT_RIGHT_DOWN)
+    if (nMessage == kInputLeftDown || nMessage == kInputRightDown)
     {
         Press(nMessage, nButtons, nX, nY);
     }
@@ -176,11 +176,11 @@ void WndProc::OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX
 
 void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
 {
-    if (g_pActiveScreen != nullptr && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    if (g_pActiveScreen != nullptr && g_gameApp.m_nEngineState != kEstateMatchLive)
     {
         const auto pt = Window::ToMenuPoint(nX, nY);
 
-        g_pActiveScreen->OnMouseMessage(INPUT_MOUSE_MOVE, nButtons, pt.x, pt.y);
+        g_pActiveScreen->OnMouseMessage(kInputMouseMove, nButtons, pt.x, pt.y);
     }
 }
 
@@ -209,14 +209,14 @@ int WndProc::HandlePaint()
         return 1;
     }
 
-    if (g_pActiveScreen == nullptr || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    if (g_pActiveScreen == nullptr || g_gameApp.m_nEngineState == kEstateMatchLive)
     {
         if (!g_bIsWindowCreated)
         {
             return 1;
         }
 
-        if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_bCursorHidden != 0)
+        if (g_gameApp.m_nEngineState == kEstateMatchLive && g_bCursorHidden != 0)
         {
             Game::RunFrame();
         }
@@ -226,7 +226,7 @@ int WndProc::HandlePaint()
         g_pActiveScreen->PaintToWindow();
     }
 
-    if (g_bIsWindowCreated && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    if (g_bIsWindowCreated && g_gameApp.m_nEngineState == kEstateMatchLive)
     {
         return 0;
     }
@@ -247,7 +247,7 @@ int WndProc::OnActivate(unsigned int bActive)
 
             if (g_bFullScreen != 0)
             {
-                if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+                if (g_gameApp.m_nEngineState != kEstateMatchLive)
                 {
                     Display::ChangeColorDepth(2);
                 }
@@ -266,12 +266,12 @@ int WndProc::OnActivate(unsigned int bActive)
 
             if (g_pGameEngine != nullptr)
             {
-                if (g_gameApp.m_wRunStateOnDeactivate == ENGINE_RUN_PLAYING)
+                if (g_gameApp.m_wRunStateOnDeactivate == kEngineRunPlaying)
                 {
                     g_pGameEngine->SetRunState(1, 0);
                 }
 
-                if (g_pGameEngine != nullptr && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+                if (g_pGameEngine != nullptr && g_pGameEngine->m_wRunState == kEngineRunPlaying)
                 {
                     g_gameApp.m_bCursorWasVisible = GameApp::SetCursorVisible(g_gameApp.WasCursorVisible());
                     return 0;
@@ -284,7 +284,7 @@ int WndProc::OnActivate(unsigned int bActive)
         }
         else
         {
-            // The INPUT_KEY_UP for a key held across the focus change goes to another window.
+            // The kInputKeyUp for a key held across the focus change goes to another window.
             WndProc::ReleaseHeldKeys();
 
             SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_LOW);
@@ -293,7 +293,7 @@ int WndProc::OnActivate(unsigned int bActive)
             {
                 g_gameApp.m_wRunStateOnDeactivate = g_pGameEngine->m_wRunState;
 
-                if (g_gameApp.m_wRunStateOnDeactivate == ENGINE_RUN_PLAYING)
+                if (g_gameApp.m_wRunStateOnDeactivate == kEngineRunPlaying)
                 {
                     g_pGameEngine->SetRunState(0, 0);
                 }
@@ -320,17 +320,17 @@ unsigned int WndProc::HandleRenderMenuCommand(unsigned short nCommand)
     {
         switch (nCommand)
         {
-            case ID_RENDER_PERSPECTIVE:
+            case kIDRenderPerspective:
                 g_bPerspectiveTexturing = (g_bPerspectiveTexturing == 0);
 
                 return g_bPerspectiveTexturing;
 
-            case ID_RENDER_BILINEAR_FILTER:
+            case kIDRenderBilinearFilter:
                 g_bBilinearFilter = (g_bBilinearFilter == 0);
 
                 return g_bBilinearFilter;
 
-            case ID_RENDER_MDM_TEXTURES:
+            case kIDRenderMDMTextures:
                 g_cMdmTexLoaded = (g_cMdmTexLoaded == 0);
                 g_bLoadingMode  = 1;
 

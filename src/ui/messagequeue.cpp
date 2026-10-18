@@ -11,7 +11,7 @@
 #include "app/gameapp.h"
 #include "engine/gameengine.h"
 
-constexpr auto INFOBAR_MESSAGE_MAX = 128;
+constexpr auto kInfobarMessageMax = 128;
 
 // src/engine/game.cpp allocates this as a sixteen-byte block.
 // FUNCTION: HYPERX 0x00452710
@@ -23,9 +23,9 @@ MessageQueue::MessageQueue()
     m_ppNames     = nullptr;
 }
 
-constexpr auto MESSAGE_COLOUR_GREEN  = 0xff00;
-constexpr auto MESSAGE_COLOUR_YELLOW = 0xffff00;
-constexpr auto MESSAGE_COLOUR_RED    = 0xff;
+constexpr auto kMessageColourGreen  = 0xff00;
+constexpr auto kMessageColourYellow = 0xffff00;
+constexpr auto kMessageColourRed    = 0xff;
 
 // Zero expiry means idle. Releasing the text can run arbitrary code, so the head is re-read.
 // FUNCTION: HYPERX 0x00452730
@@ -47,15 +47,15 @@ void MessageQueue::Update()
         switch (g_pMessageHead->m_nLine)
         {
             case 0:
-                nColour = MESSAGE_COLOUR_GREEN;
+                nColour = kMessageColourGreen;
                 break;
 
             case 1:
-                nColour = MESSAGE_COLOUR_YELLOW;
+                nColour = kMessageColourYellow;
                 break;
 
             default:
-                nColour = MESSAGE_COLOUR_RED;
+                nColour = kMessageColourRed;
                 break;
         }
 
@@ -127,7 +127,7 @@ void MessageQueue::PushFromTable(int nIndex, int nLine, int nDurationMs)
 // FUNCTION: HYPERX 0x00452930
 void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLine, int nDurationMs)
 {
-    char szName[MAX_PATH_LENGTH];
+    char szName[kMaxPathLength];
 
     strcpy(szName, pszPrefix);
 
@@ -187,12 +187,12 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
 {
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData,
-                       MAX_PATH_LENGTH);
+                       kMaxPathLength);
     char*      pLine;
     char*      pszText;
     int        nId;
-    char       szNoString[INFOBAR_MESSAGE_MAX];
-    char       szNoDescription[INFOBAR_MESSAGE_MAX];
+    char       szNoString[kInfobarMessageMax];
+    char       szNoDescription[kInfobarMessageMax];
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
     {

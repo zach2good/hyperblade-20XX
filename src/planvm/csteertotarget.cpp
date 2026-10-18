@@ -75,17 +75,17 @@ void CSteerToTarget::Process(int nArg)
     float flForce;
     Vec3  vDelta;
 
-    if (m_pOwner->GetSlot() <= SLOT_DROMER3)
+    if (m_pOwner->GetSlot() <= kSlotDromer3)
     {
-        flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(RATING_BALANCE);
+        flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance);
     }
-    else if (m_pOwner->GetSlot() <= GOALIE_SLOT_B)
+    else if (m_pOwner->GetSlot() <= kGoalieSlotB)
     {
-        flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 10.0f;
+        flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 10.0f;
     }
     else
     {
-        if (m_pOwner->GetSlot() != SLOT_ROK)
+        if (m_pOwner->GetSlot() != kSlotRok)
         {
             m_pOwner->GetSlot();
         }
@@ -165,7 +165,7 @@ void CSteerToTarget::Process(int nArg)
     }
     else
     {
-        if (m_pTarget->GetSlot() == SLOT_ROK)
+        if (m_pTarget->GetSlot() == kSlotRok)
         {
             flGate = RANGE_GATE_NEAR;
         }
@@ -185,7 +185,7 @@ void CSteerToTarget::Process(int nArg)
 
         if (m_cArrived == 0)
         {
-            m_pOwner->PostSceneEvent(MSG_GOT_THERE, 0);
+            m_pOwner->PostSceneEvent(kMsgGotThere, 0);
             m_cArrived = 1;
         }
     }

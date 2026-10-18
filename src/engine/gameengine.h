@@ -10,7 +10,7 @@
 #include "common/commonglobals.h"
 
 // The length of each of the scene message queue's five arrays.
-constexpr auto PENDING_QUEUE_LENGTH = 0x400;
+constexpr auto kPendingQueueLength = 0x400;
 
 struct ArenaState;
 class EngineObject;
@@ -56,17 +56,17 @@ struct LayoutState
 };
 
 // The six end-of-match awards.
-constexpr auto AWARD_COUNT = 6;
+constexpr auto kAwardCount = 6;
 
 // GameEngine::m_wRunState: no match, playing, paused, or a restart the next frame runs.
-constexpr auto ENGINE_RUN_STOPPED = 0;
-constexpr auto ENGINE_RUN_PLAYING = 1;
-constexpr auto ENGINE_RUN_PAUSED  = 2;
-constexpr auto ENGINE_RUN_RESTART = 3;
+constexpr auto kEngineRunStopped = 0;
+constexpr auto kEngineRunPlaying = 1;
+constexpr auto kEngineRunPaused  = 2;
+constexpr auto kEngineRunRestart = 3;
 
 // The cameras and input devices the factory builds at most.
-constexpr auto CAMERA_LIMIT = 4;
-constexpr auto DEVICE_LIMIT = 2;
+constexpr auto kCameraLimit = 4;
+constexpr auto kDeviceLimit = 2;
 
 struct GameEngine
 {
@@ -173,9 +173,9 @@ struct GameEngine
     class BoundBubble* GetColObjPtr(short nSlot) const;
 
     // The cameras the factory builds, counted by m_wCameraCount.
-    CameraObject* m_apCameras[CAMERA_LIMIT]; // 0x0014
+    CameraObject* m_apCameras[kCameraLimit]; // 0x0014
     // The devices the factory builds, counted by m_wDeviceCount.
-    EngineObject* m_apDevices[DEVICE_LIMIT]; // 0x0024
+    EngineObject* m_apDevices[kDeviceLimit]; // 0x0024
     short         m_wDeviceCount;            // 0x002c
     short         m_wCameraCount;            // 0x002e
     // One per type range, holding the highest id handed out in it.
@@ -185,16 +185,16 @@ struct GameEngine
     short m_nViewedSlot; // 0x0050
     short m_wUnusedA;    // 0x0052
     // One bubble per CollisionObjectID before id_COB_NOCOB.
-    class BoundBubble* m_ppColObjects[COB_NONE]; // 0x0054
+    class BoundBubble* m_ppColObjects[kCOBNone]; // 0x0054
     // Read as one dword and as a word pair.
     unsigned short m_wRunState;     // 0x0228
     short          m_nPendingCount; // 0x022a
-    // Five parallel queues of PENDING_QUEUE_LENGTH words; MSG_NOMSG terminates the first.
-    int m_aQueueMessage[PENDING_QUEUE_LENGTH];   // 0x022c
-    int m_aQueueSlot[PENDING_QUEUE_LENGTH];      // 0x122c
-    int m_aQueueArg[PENDING_QUEUE_LENGTH];       // 0x222c
-    int m_aQueueSender[PENDING_QUEUE_LENGTH];    // 0x322c
-    int m_aQueueFromInput[PENDING_QUEUE_LENGTH]; // 0x422c
+    // Five parallel queues of kPendingQueueLength words; kMsgNomsg terminates the first.
+    int m_aQueueMessage[kPendingQueueLength];   // 0x022c
+    int m_aQueueSlot[kPendingQueueLength];      // 0x122c
+    int m_aQueueArg[kPendingQueueLength];       // 0x222c
+    int m_aQueueSender[kPendingQueueLength];    // 0x322c
+    int m_aQueueFromInput[kPendingQueueLength]; // 0x422c
 
     // The clock block; every m_flPrev* is written from the field above it.
     EngineClock m_clock;       // 0x522c
@@ -227,7 +227,7 @@ struct GameEngine
     // The teammate mode, read from the options under g_pszTeammateModeKey.
     int m_nTeammateMode; // 0x52c4
     // One flag per award, which the awards screen shows.
-    char m_abAward[AWARD_COUNT]; // 0x52c8
+    char m_abAward[kAwardCount]; // 0x52c8
     char m_bFollowingOther;      // 0x52ce
     char m_bEndPeriodRequested;  // 0x52cf
     // Tested before ending a period and set when one ends.

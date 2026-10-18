@@ -50,7 +50,7 @@ void Graphics::Initialize(int bResize)
 
     if (g_pGameEngine != nullptr)
     {
-        CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+        CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
         int nPrevWidth = g_nPrevWidth;
 

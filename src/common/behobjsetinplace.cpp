@@ -19,7 +19,7 @@ void BehObj_SetInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_SET_IN_PLACE;
+    m_wKind = kBehSetInPlace;
 
     m_apSlots[0] = nullptr;
     short nSlot  = 0;

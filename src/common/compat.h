@@ -4,6 +4,6 @@
 #define HYPERBLADE_COMPAT_H
 
 // The longest path the game's fixed buffers hold, as Windows' MAX_PATH.
-constexpr auto MAX_PATH_LENGTH = 260;
+constexpr auto kMaxPathLength = 260;
 
 #endif

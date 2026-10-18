@@ -16,13 +16,13 @@ namespace
 {
 
 // A stick past half its travel presses that way, as the original's joystick did.
-constexpr auto STICK_THRESHOLD = 16384;
+constexpr auto kStickThreshold = 16384;
 
 // A trigger presses past half its travel and lets go below a quarter, so a light hold never chatters.
-constexpr auto TRIGGER_PRESS   = 16384;
-constexpr auto TRIGGER_RELEASE = 8192;
+constexpr auto kTriggerPress   = 16384;
+constexpr auto kTriggerRelease = 8192;
 
-// In the order of BINDING_UP to BINDING_RIGHT.
+// In the order of BINDING_UP to kBindingRight.
 enum Direction
 {
     DIRECTION_UP,
@@ -51,9 +51,9 @@ constexpr Action ACTIONS[] = {
     { "Jump", 9, 0 },
     { "Substitute1", -1, '1' },
     { "Substitute2", -1, '2' },
-    { "Camera", -1, Key::TAB },
+    { "Camera", -1, Key::kTab },
     // Escape pauses a match.
-    { "Pause", -1, Key::ESCAPE },
+    { "Pause", -1, Key::kEscape },
 };
 
 // The controls booie.ini [Gamepad] can bind, with their defaults and what each presses in the
@@ -84,21 +84,21 @@ enum ControlId
     CONTROL_COUNT
 };
 
-constexpr std::array<Control, CONTROL_COUNT> CONTROLS = { {
-    { "A", "Attack", Key::RETURN },
-    { "B", "Jump", Key::ESCAPE },
+constexpr std::array<Control, CONTROL_COUNT> kControls = { {
+    { "A", "Attack", Key::kReturn },
+    { "B", "Jump", Key::kEscape },
     { "X", "SpeedBurst", 0 },
     { "Y", "Pass", 0 },
     { "LeftShoulder", "None", 0 },
     { "RightShoulder", "QuickShot", 0 },
     { "LeftTrigger", "None", 0 },
     { "RightTrigger", "Shoot", 0 },
-    { "DPadUp", "None", Key::LEFT },
-    { "DPadDown", "None", Key::RIGHT },
-    { "DPadLeft", "Substitute1", Key::LEFT },
-    { "DPadRight", "Substitute2", Key::RIGHT },
+    { "DPadUp", "None", Key::kLeft },
+    { "DPadDown", "None", Key::kRight },
+    { "DPadLeft", "Substitute1", Key::kLeft },
+    { "DPadRight", "Substitute2", Key::kRight },
     { "Back", "Camera", 0 },
-    { "Start", "Pause", Key::ESCAPE },
+    { "Start", "Pause", Key::kEscape },
 } };
 
 // A held control's key, so its release reaches the same key, and what pressed it, for the log.
@@ -120,7 +120,7 @@ SDL_JoystickID                           s_nLastPad        = 0;
 
 bool InMatch()
 {
-    return g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pGameEngine != nullptr && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING && g_pInputDevice != nullptr;
+    return g_gameApp.m_nEngineState == kEstateMatchLive && g_pGameEngine != nullptr && g_pGameEngine->m_wRunState == kEngineRunPlaying && g_pInputDevice != nullptr;
 }
 
 const Action& FindAction(const std::string& name)
@@ -145,9 +145,9 @@ void LoadBindings()
 
     s_bBindingsLoaded = true;
 
-    for (size_t i = 0; i < CONTROLS.size(); i++)
+    for (size_t i = 0; i < kControls.size(); i++)
     {
-        s_apBindings[i] = &FindAction(g_pGameOptions->ReadString("Gamepad", CONTROLS[i].pszKey, CONTROLS[i].pszDefault));
+        s_apBindings[i] = &FindAction(g_pGameOptions->ReadString("Gamepad", kControls[i].pszKey, kControls[i].pszDefault));
     }
 }
 
@@ -189,9 +189,9 @@ void Up(Press& press)
 // The left stick steers in a match and moves through the menus.
 void UpdateDirections()
 {
-    constexpr std::array<unsigned int, DIRECTION_COUNT> MENU_KEYS        = { Key::LEFT, Key::RIGHT, Key::LEFT, Key::RIGHT };
-    constexpr std::array<const char*, DIRECTION_COUNT> NAMES             = { "Stick up", "Stick down", "Stick left", "Stick right" };
-    constexpr std::array<const char*, DIRECTION_COUNT> DIRECTION_ACTIONS = { "Forward", "Stop", "RotateLeft", "RotateRight" };
+    constexpr std::array<unsigned int, DIRECTION_COUNT> kMenuKeys        = { Key::kLeft, Key::kRight, Key::kLeft, Key::kRight };
+    constexpr std::array<const char*, DIRECTION_COUNT> kNames            = { "Stick up", "Stick down", "Stick left", "Stick right" };
+    constexpr std::array<const char*, DIRECTION_COUNT> kDirectionActions = { "Forward", "Stop", "RotateLeft", "RotateRight" };
 
     for (int nDirection = 0; nDirection < DIRECTION_COUNT; nDirection++)
     {
@@ -209,20 +209,20 @@ void UpdateDirections()
                 return g_pInputDevice->GetDefaultKeyBindings()[nDirection];
             }
 
-            return MENU_KEYS[nDirection];
+            return kMenuKeys[nDirection];
         }();
 
         const auto* const pszAction = [&]() -> const char*
         {
             if (InMatch())
             {
-                return DIRECTION_ACTIONS[nDirection];
+                return kDirectionActions[nDirection];
             }
 
             return nullptr;
         }();
 
-        Down(s_aDirections[nDirection], nKey, NAMES[nDirection], pszAction);
+        Down(s_aDirections[nDirection], nKey, kNames[nDirection], pszAction);
     }
 }
 
@@ -248,7 +248,7 @@ void OnControl(ControlId control, bool bDown)
             return ActionKey(*s_apBindings[control]);
         }
 
-        return CONTROLS[control].nMenuKey;
+        return kControls[control].nMenuKey;
     }();
 
     const auto* const pszAction = [&]() -> const char*
@@ -261,7 +261,7 @@ void OnControl(ControlId control, bool bDown)
         return nullptr;
     }();
 
-    Down(press, nKey, CONTROLS[control].pszKey, pszAction);
+    Down(press, nKey, kControls[control].pszKey, pszAction);
 }
 
 void OnButton(SDL_GamepadButton button, bool bDown)
@@ -300,10 +300,10 @@ void OnTrigger(int nTrigger, ControlId control, int nValue)
     {
         if (bHeld)
         {
-            return nValue > TRIGGER_RELEASE;
+            return nValue > kTriggerRelease;
         }
 
-        return nValue > TRIGGER_PRESS;
+        return nValue > kTriggerPress;
     }();
 
     if (bNowHeld != bHeld)
@@ -319,14 +319,14 @@ void OnAxis(SDL_GamepadAxis axis, int nValue)
     switch (axis)
     {
         case SDL_GAMEPAD_AXIS_LEFTX:
-            s_abStick[DIRECTION_LEFT]  = nValue < -STICK_THRESHOLD;
-            s_abStick[DIRECTION_RIGHT] = nValue > STICK_THRESHOLD;
+            s_abStick[DIRECTION_LEFT]  = nValue < -kStickThreshold;
+            s_abStick[DIRECTION_RIGHT] = nValue > kStickThreshold;
             UpdateDirections();
             break;
 
         case SDL_GAMEPAD_AXIS_LEFTY:
-            s_abStick[DIRECTION_UP]   = nValue < -STICK_THRESHOLD;
-            s_abStick[DIRECTION_DOWN] = nValue > STICK_THRESHOLD;
+            s_abStick[DIRECTION_UP]   = nValue < -kStickThreshold;
+            s_abStick[DIRECTION_DOWN] = nValue > kStickThreshold;
             UpdateDirections();
             break;
 
@@ -377,7 +377,7 @@ bool SDLCALL OnEvent(void*, SDL_Event* pEvent)
 
         case SDL_EVENT_GAMEPAD_AXIS_MOTION:
             // A resting stick drifts, so only a real push counts as using the pad.
-            if (pEvent->gaxis.value > TRIGGER_RELEASE || pEvent->gaxis.value < -TRIGGER_RELEASE)
+            if (pEvent->gaxis.value > kTriggerRelease || pEvent->gaxis.value < -kTriggerRelease)
             {
                 s_nLastPad = pEvent->gaxis.which;
             }
@@ -407,7 +407,7 @@ void Gamepad::Init()
 
 int Gamepad::BindingCount()
 {
-    return static_cast<int>(CONTROLS.size());
+    return static_cast<int>(kControls.size());
 }
 
 Gamepad::Binding Gamepad::GetBinding(int nIndex)
@@ -421,10 +421,10 @@ Gamepad::Binding Gamepad::GetBinding(int nIndex)
             return s_apBindings[static_cast<size_t>(nIndex)]->pszName;
         }
 
-        return CONTROLS[static_cast<size_t>(nIndex)].pszDefault;
+        return kControls[static_cast<size_t>(nIndex)].pszDefault;
     }();
 
-    return Binding{ CONTROLS[static_cast<size_t>(nIndex)].pszKey, pszAction };
+    return Binding{ kControls[static_cast<size_t>(nIndex)].pszKey, pszAction };
 }
 
 unsigned int Gamepad::LastUsed()

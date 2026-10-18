@@ -90,9 +90,9 @@ void CSpeedBurst::Process(int nArg)
         float flStamina = ((PlayerObject*)m_pOwner)->m_stats.m_flSpeedRatio;
         flDelta         = g_pGameEngine->m_clock.flDelta;
 
-        pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-        if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == m_pOwner->GetSlot())
+        if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < kPlayerObjectCount && nCarrier == m_pOwner->GetSlot())
         {
             flRate = flDelta * CARRIER_RATE;
         }

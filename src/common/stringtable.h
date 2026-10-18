@@ -8,7 +8,7 @@ namespace StringTable
 {
 
 // The name of the strings file, in the game's own folder.
-constexpr auto FILE_NAME = "hyperblade_20XX_strings.txt";
+constexpr auto kFileName = "hyperblade_20XX_strings.txt";
 
 // Loads the strings file in pszDirectory, writing it from the HYPERX.EXE there first when there
 // is none. False when there is neither.

@@ -38,8 +38,8 @@ extern char g_bCamTrackLookEnabled;
 // Four, the clearance the camera keeps above the arena floor; marked in cheadtrack.cpp.
 extern const float g_flFourTracking;
 
-constexpr auto TRAJECTORY_MODE_SPRING = 0;
-constexpr auto TRAJECTORY_MODE_BLEND  = 1;
+constexpr auto kTrajectoryModeSpring = 0;
+constexpr auto kTrajectoryModeBlend  = 1;
 
 // FUNCTION: HYPERX 0x0040a5c0
 CTrackTraj::~CTrackTraj()
@@ -70,7 +70,7 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     if (pTracked != nullptr)
     {
-        pTracked->m_nFlags |= ENGINEOBJECT_NO_CULL;
+        pTracked->m_nFlags |= kEngineObjectNoCull;
     }
 }
 
@@ -89,8 +89,8 @@ void CTrackTraj::InitRange()
     m_flBlend = g_flZeroTracking;
 }
 
-constexpr auto RANGE_KIND_CLAMPED   = 0;
-constexpr auto RANGE_KIND_SYMMETRIC = 2;
+constexpr auto kRangeKindClamped   = 0;
+constexpr auto kRangeKindSymmetric = 2;
 
 // A low bound at or below the unset marker builds a symmetric range of kind two instead.
 // FUNCTION: HYPERX 0x0040a6c0
@@ -100,7 +100,7 @@ void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
     {
         m_pSpline->InitClamped(flLow, flHigh);
 
-        m_nMode   = RANGE_KIND_CLAMPED;
+        m_nMode   = kRangeKindClamped;
         m_flBlend = g_flZeroTracking;
 
         return;
@@ -109,7 +109,7 @@ void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
     m_pSpline->InitSymmetric(g_arenaEllipsoid.GetRadiusX() - flHigh,
                              g_arenaEllipsoid.GetRadiusY() - flHigh);
 
-    m_nMode = RANGE_KIND_SYMMETRIC;
+    m_nMode = kRangeKindSymmetric;
 }
 
 // GLOBAL: HYPERX 0x004b16ac
@@ -177,7 +177,7 @@ void CTrackTraj::Process(int nArg)
 
     switch (m_nMode)
     {
-        case TRAJECTORY_MODE_SPRING:
+        case kTrajectoryModeSpring:
         {
             Vec3* pAccel;
             float flWatchX;
@@ -260,7 +260,7 @@ void CTrackTraj::Process(int nArg)
 
         break;
 
-        case TRAJECTORY_MODE_BLEND:
+        case kTrajectoryModeBlend:
             if (m_flBlend < 9000.0)
             {
                 Vec3* pAccel;

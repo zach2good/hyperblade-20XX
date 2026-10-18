@@ -42,7 +42,7 @@ extern const float g_flPi;
 extern unsigned char g_bSmartCamEnabled;
 
 // The swing is cut into at most six steps however long the countdown is.
-constexpr auto SWING_STEPS = 6;
+constexpr auto kSwingSteps = 6;
 
 // FUNCTION: HYPERX 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
@@ -62,7 +62,7 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     if (pTracked != nullptr)
     {
-        pTracked->m_nFlags |= ENGINEOBJECT_NO_CULL;
+        pTracked->m_nFlags |= kEngineObjectNoCull;
     }
 
     m_bUnused = 0;
@@ -146,7 +146,7 @@ void CTrack::Process(int nArg)
 
     GetCamera()->SetLastTrackedObject(pTracked);
 
-    if (pTracked->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pTracked->GetSlot() < kPlayerObjectCount)
     {
         const TransformObject* const pWorld = &pTracked->m_pBones->m_world;
 
@@ -154,13 +154,13 @@ void CTrack::Process(int nArg)
 
         if ((static_cast<unsigned char>(pBody->nHeldBindings) & HELD_SHOOT) != 0)
         {
-            AttachPak* pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+            AttachPak* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
             if (pHolder != nullptr)
             {
                 short wCarrier = pHolder->nSlot;
 
-                if (wCarrier < PLAYER_OBJECT_COUNT && wCarrier == pTracked->GetSlot())
+                if (wCarrier < kPlayerObjectCount && wCarrier == pTracked->GetSlot())
                 {
                     EngineObject* const pGoal   = g_pGameEngine->m_ppSlots[pTracked->m_wTargetGoalSlot];
                     const Vec3*         pMine   = pTracked->GetPositionPtr();
@@ -181,13 +181,13 @@ void CTrack::Process(int nArg)
         const short wViewer = g_pGameEngine->m_nViewedSlot;
         AttachPak*  pHolder = pBody->pAttach;
 
-        if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
         {
             GetCamera()->m_nPrimaryTracked = wViewer;
 
             GetCamera()->SetSecondaryTrackedObject(nullptr);
         }
-        else if (pTracked->GetPlanState()->m_pCurrent->m_wKind != BEH_FLY_TOWARD)
+        else if (pTracked->GetPlanState()->m_pCurrent->m_wKind != kBehFlyToward)
         {
             GetCamera()->m_nPrimaryTracked = wViewer;
 
@@ -236,7 +236,7 @@ void CTrack::Process(int nArg)
 
     const short wState = pTracked->GetPlanState()->m_pCurrent->m_wKind;
 
-    if (wState == BEH_FLY || wState == BEH_RAIL_SLIDE || m_wCountdown != 0)
+    if (wState == kBehFly || wState == kBehRailSlide || m_wCountdown != 0)
     {
         float flSpeed;
 
@@ -356,7 +356,7 @@ void CTrack::Process(int nArg)
         m_pPos->y = m_pVel->y + m_pPos->y;
         m_pPos->z = m_pVel->z + m_pPos->z;
 
-        if (pTracked->GetSlot() < PLAYER_OBJECT_COUNT)
+        if (pTracked->GetSlot() < kPlayerObjectCount)
         {
             float  flDeltaX;
             float  flDeltaY;
@@ -503,11 +503,11 @@ void CTrack::Process(int nArg)
     {
         const Vec3* pSecondaryPos;
 
-        if (pSecondary->GetSlot() == SLOT_ROK)
+        if (pSecondary->GetSlot() == kSlotRok)
         {
-            AttachPak* pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+            AttachPak* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
-            if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+            if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
             {
                 pSecondary = g_pGameEngine->m_ppSlots[pHolder->nSlot];
             }
@@ -557,7 +557,7 @@ void CTrack::Process(int nArg)
 
         flAngle = static_cast<float>(Math::Acos(vWish.x * vGap.x + ((vWish.GetY() * vGap.y) + vWish.GetZ() * vGap.z)));
 
-        nSteps = std::min<int>(SWING_STEPS, m_wCountdown);
+        nSteps = std::min<int>(kSwingSteps, m_wCountdown);
 
         flCount = static_cast<float>(nSteps);
 

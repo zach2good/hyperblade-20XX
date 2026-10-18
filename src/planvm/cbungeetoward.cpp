@@ -26,16 +26,16 @@ extern float g_flTwoAgendaItem;
 #define ARG_SLOT 1
 #define ARG_X    2
 #define ARG_Y    3
-constexpr auto ARG_SCALAR_A = 2;
-constexpr auto ARG_SCALAR_B = 3;
-constexpr auto ARG_SCALAR_C = 4;
-constexpr auto ARG_FLAG     = 5;
+constexpr auto kArgScalarA = 2;
+constexpr auto kArgScalarB = 3;
+constexpr auto kArgScalarC = 4;
+constexpr auto kArgFlag    = 5;
 
-constexpr auto COUNTDOWN_POINT  = 0x4b;
-constexpr auto COUNTDOWN_OBJECT = 0x19;
+constexpr auto kCountdownPoint  = 0x4b;
+constexpr auto kCountdownObject = 0x19;
 
 // A slot of minus one means a fixed point, written into marker table entry six, shared storage.
-constexpr auto POINT_MARKER = 6;
+constexpr auto kPointMarker = 6;
 
 #define LIMIT_DEFAULT 1000.0f
 
@@ -57,7 +57,7 @@ void CBungeeToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flFarRange   = LIMIT_DEFAULT;
     m_flNearRange  = g_flZeroAgendaItem;
     m_flDotGate    = g_flHalfAgendaItem;
-    m_nCountdown   = COUNTDOWN_OBJECT;
+    m_nCountdown   = kCountdownObject;
     m_cAttached    = 0;
     m_cLeadTarget  = 0;
 }
@@ -87,9 +87,9 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
             nSlot = static_cast<short>(pArgs[ARG_SLOT].n);
         }
 
-        if (nSlot == SLOT_NONE)
+        if (nSlot == kSlotNone)
         {
-            Vec3* pPoint = g_apPositionMarkers[POINT_MARKER];
+            Vec3* pPoint = g_apPositionMarkers[kPointMarker];
 
             m_pAnchor = pPoint;
 
@@ -104,7 +104,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
             m_flGain       = g_flTwoAgendaItem;
             m_flDotGate    = -g_flOneAgendaItem;
             m_flNearRange  = g_flZeroAgendaItem;
-            m_nCountdown   = COUNTDOWN_POINT;
+            m_nCountdown   = kCountdownPoint;
             m_flRestLength = g_flZeroAgendaItem;
             m_flFarRange   = LIMIT_DEFAULT;
             m_cAttached    = 0;
@@ -123,7 +123,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
     if (pNode->m_nArgCount > 2)
     {
-        m_flGain = pNode->m_pArgs[ARG_SCALAR_A].fl;
+        m_flGain = pNode->m_pArgs[kArgScalarA].fl;
     }
     else
     {
@@ -132,7 +132,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
     if (pNode->m_nArgCount > 3)
     {
-        m_flDotGate = pNode->m_pArgs[ARG_SCALAR_B].fl;
+        m_flDotGate = pNode->m_pArgs[kArgScalarB].fl;
     }
     else
     {
@@ -141,16 +141,16 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
     if (pNode->m_nArgCount > 4)
     {
-        m_flNearRange = pNode->m_pArgs[ARG_SCALAR_C].fl;
+        m_flNearRange = pNode->m_pArgs[kArgScalarC].fl;
     }
     else
     {
         m_flNearRange = g_flZeroAgendaItem;
     }
 
-    m_nCountdown = COUNTDOWN_OBJECT;
+    m_nCountdown = kCountdownObject;
 
-    if (pNode->m_nArgCount > 5 && static_cast<short>(pNode->m_pArgs[ARG_FLAG].n) == 1)
+    if (pNode->m_nArgCount > 5 && static_cast<short>(pNode->m_pArgs[kArgFlag].n) == 1)
     {
         m_cLeadTarget = 1;
     }
@@ -249,7 +249,7 @@ void CBungeeToward::Process(int nArg)
         PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
 
         pBody->vel.ScaleInPlace(flRatio);
-        m_pOwner->PostSceneEvent(MSG_GOT_THERE, 0);
+        m_pOwner->PostSceneEvent(kMsgGotThere, 0);
     }
 
     if (m_bReady == 0 && flLength >= m_flNearRange && flLength <= m_flFarRange && m_nCountdown-- >= 0)
@@ -258,10 +258,10 @@ void CBungeeToward::Process(int nArg)
 
         if (vGap.z * pHeading->z + vGap.y * pHeading->y + vGap.x * pHeading->x >= m_flDotGate)
         {
-            AttachPak* const pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+            AttachPak* const pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
             short            nCarrier;
 
-            if (pCarrier == nullptr || (nCarrier = pCarrier->nSlot) >= PLAYER_OBJECT_COUNT || nCarrier != m_pOwner->GetSlot())
+            if (pCarrier == nullptr || (nCarrier = pCarrier->nSlot) >= kPlayerObjectCount || nCarrier != m_pOwner->GetSlot())
             {
                 bHold = m_pTarget == nullptr || m_pTarget->GetPhysicsBody()->flFriction <= g_flHalfAgendaItem;
             }
@@ -272,7 +272,7 @@ void CBungeeToward::Process(int nArg)
     {
         if (m_pTarget != nullptr)
         {
-            m_pTarget->PostSceneEvent(MSG_YER_RELEASED, 0);
+            m_pTarget->PostSceneEvent(kMsgYerReleased, 0);
         }
 
         if (m_pNext != nullptr)

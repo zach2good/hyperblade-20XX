@@ -782,14 +782,14 @@ void HeadToHeadSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
             break;
 
         case H2H_STARTERS_TAB:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 ShowStartersCard();
             }
             break;
 
         case H2H_SCRUBS_TAB:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 ShowScrubsCard();
             }

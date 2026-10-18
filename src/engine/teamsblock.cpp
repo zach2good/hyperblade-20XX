@@ -17,21 +17,21 @@
 #define COMMENT_CHAR '#'
 
 // The catalogue holds thirty and the thirty-first is refused.
-constexpr auto TEAM_MAX = 30;
+constexpr auto kTeamMax = 30;
 
 // A record starts with its 32-byte filename, followed by the name the checksum reads.
-constexpr auto TEAM_FILENAME_MAX = 32;
+constexpr auto kTeamFilenameMax = 32;
 
 // FUNCTION: HYPERX 0x004847d0
 TeamsBlock::TeamsBlock()
 {
-    TeamBlock* apTeams[TEAM_MAX];
+    TeamBlock* apTeams[kTeamMax];
     OwnedFile  catFile;
-    char       szTeamFilename[PARSE_TOKEN_MAX];
+    char       szTeamFilename[kParseTokenMax];
     char*      pLine;
     short      nTeams = 0;
     // STRING: HYPERX 0x004c8378
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, MAX_PATH_LENGTH);
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, kMaxPathLength);
 
     if (catFile.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
     {
@@ -41,19 +41,19 @@ TeamsBlock::TeamsBlock()
                 // STRING: HYPERX 0x004c7324
                 && ParseUtil::ParseToken(pLine, szTeamFilename, nullptr, " \t\n\r", static_cast<short>(strlen(pLine)), &pLine) != 0 && szTeamFilename[0] != COMMENT_CHAR)
             {
-                if (nTeams == TEAM_MAX)
+                if (nTeams == kTeamMax)
                 {
                     g_gameApp.Error(
                         // STRING: HYPERX 0x004c82c4
                         "More than max allowed teams ( %d ) in catalog!",
-                        TEAM_MAX);
+                        kTeamMax);
 
                     break;
                 }
 
                 OwnedFile htmFile;
 
-                if (strlen(szTeamFilename) >= TEAM_FILENAME_MAX)
+                if (strlen(szTeamFilename) >= kTeamFilenameMax)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c835c

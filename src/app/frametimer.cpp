@@ -122,8 +122,8 @@ void FrameTimer::ProcessInitialFrameUpdate()
 }
 
 // Nanoseconds per frame, and how far behind the deadline may slip before it is reset.
-constexpr auto FRAME_NS  = std::uint64_t{ 1000000000 / 30 };
-constexpr auto RESYNC_NS = std::uint64_t{ 1000000000 };
+constexpr auto kFrameNs  = std::uint64_t{ 1000000000 / 30 };
+constexpr auto kResyncNs = std::uint64_t{ 1000000000 };
 
 void FrameTimer::Pace()
 {
@@ -136,9 +136,9 @@ void FrameTimer::Pace()
         s_nDeadlineNS = nNowNS;
     }
 
-    s_nDeadlineNS += FRAME_NS;
+    s_nDeadlineNS += kFrameNs;
 
-    if (nNowNS > s_nDeadlineNS + RESYNC_NS)
+    if (nNowNS > s_nDeadlineNS + kResyncNs)
     {
         s_nDeadlineNS = nNowNS;
 

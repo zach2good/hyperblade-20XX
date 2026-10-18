@@ -29,13 +29,13 @@ public:
     // FUNCTION: HYPERX 0x00479840
     virtual void OnOkay()
     {
-        Game::SetEngineState(ESTATE_MAIN_MENU);
+        Game::SetEngineState(kEstateMainMenu);
     }
 
     // The original folded this body onto OnOkay's, which carries the marker.
     virtual void OnCancel()
     {
-        Game::SetEngineState(ESTATE_MAIN_MENU);
+        Game::SetEngineState(kEstateMainMenu);
     }
 };
 

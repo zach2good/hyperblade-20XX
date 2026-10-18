@@ -42,7 +42,7 @@ GameConfigUIScreen::GameConfigUIScreen()
 {
     m_nLastWidget = GAME_CONFIG_DIFFICULTY_RIGHT;
 
-    if (g_nPrevEngineState == ESTATE_LOBBY || g_nPrevEngineState == ESTATE_PAUSE_FULL || g_nPrevEngineState == ESTATE_PAUSE_NO_SAVE)
+    if (g_nPrevEngineState == kEstateLobby || g_nPrevEngineState == kEstatePauseFull || g_nPrevEngineState == kEstatePauseNoSave)
     {
         g_nOptionAttackMode = g_nOptionsSavedAttackMode = g_pGameEngine->m_nAttackMode;
         g_nOptionTeammateMode = g_nOptionsSavedTeammateMode = g_pGameEngine->m_nTeammateMode;
@@ -191,7 +191,7 @@ void GameConfigUIScreen::SetupWidgets()
                                                   this,
                                                   -1,
                                                   -1,
-                                                  SOUND_SXBUTT1));
+                                                  kSoundSxbutt1));
         pWidget->AppendFrame(hBitmap);
 
         if (nSide != 0)
@@ -208,24 +208,24 @@ void GameConfigUIScreen::SetupWidgets()
 
     InitAllWidgets();
 
-    if (g_nPrevEngineState != ESTATE_LOBBY && m_nReturnState != ESTATE_LOBBY && g_pGameEngine->m_pSaveObject->GetBracketPos() != 0)
+    if (g_nPrevEngineState != kEstateLobby && m_nReturnState != kEstateLobby && g_pGameEngine->m_pSaveObject->GetBracketPos() != 0)
     {
         m_apWidgets[GAME_CONFIG_DIFFICULTY_LEFT]->SetHidden(1);
         m_apWidgets[GAME_CONFIG_DIFFICULTY_RIGHT]->SetHidden(1);
     }
 }
 
-constexpr auto OPTIONS_MESSAGE_MAX = 852;
+constexpr auto kOptionsMessageMax = 852;
 
-constexpr auto VOLUME_MAX = 7;
+constexpr auto kVolumeMax = 7;
 
 // FUNCTION: HYPERX 0x0047a160
 void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
-    char szMessage[OPTIONS_MESSAGE_MAX];
+    char szMessage[kOptionsMessageMax];
     int  nValue;
 
-    if (nMsg != INPUT_LEFT_UP)
+    if (nMsg != kInputLeftUp)
     {
         return;
     }
@@ -233,12 +233,12 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     switch (nId)
     {
         case GAME_CONFIG_CUSTOMIZE_KEYS:
-            Game::SetEngineState(ESTATE_KEY_CONFIG);
+            Game::SetEngineState(kEstateKeyConfig);
             return;
 
         case GAME_CONFIG_JOYSTICK_INFO:
-            strcpy(szMessage, g_gameApp.m_stringPool.LoadText(STRING_JOYSTICK_CONTROL_PANEL));
-            strcat(szMessage, g_gameApp.m_stringPool.LoadText(STRING_GAME_PAD_HELP));
+            strcpy(szMessage, g_gameApp.m_stringPool.LoadText(kStringJoystickControlPanel));
+            strcat(szMessage, g_gameApp.m_stringPool.LoadText(kStringGamePadHelp));
             GameApp::ShowMessageBox(szMessage, g_gameApp.m_strCaption.m_pchData, Window::MessageButtons::OK);
             return;
 
@@ -347,9 +347,9 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
         case GAME_CONFIG_MUSIC_VOLUME_RIGHT:
             g_nOptionMusicVolume++;
 
-            if (g_nOptionMusicVolume >= VOLUME_MAX + 1)
+            if (g_nOptionMusicVolume >= kVolumeMax + 1)
             {
-                g_nOptionMusicVolume = VOLUME_MAX;
+                g_nOptionMusicVolume = kVolumeMax;
             }
 
             g_pAudioMgr->CDFadeVolume(g_nOptionMusicVolume);
@@ -375,9 +375,9 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
         case GAME_CONFIG_SFX_VOLUME_RIGHT:
             g_nOptionSfxVolume++;
 
-            if (g_nOptionSfxVolume >= VOLUME_MAX + 1)
+            if (g_nOptionSfxVolume >= kVolumeMax + 1)
             {
-                g_nOptionSfxVolume = VOLUME_MAX;
+                g_nOptionSfxVolume = kVolumeMax;
             }
 
             g_pAudioMgr->SfxFadeVolume(g_nOptionSfxVolume);
@@ -434,8 +434,8 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 
             return;
 
-        case WIDGET_ID_MOUSE:
-        case WIDGET_ID_RETURN:
+        case kWidgetIDMouse:
+        case kWidgetIDReturn:
             return;
 
         default:

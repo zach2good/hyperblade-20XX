@@ -64,7 +64,7 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
 
     m_flViewFracX     = g_flHalfCamera;
     m_flViewFracY     = g_flHalfCamera;
-    m_nReticleState   = RETICLE_OFF;
+    m_nReticleState   = kReticleOff;
     m_bShotPowerShown = 0;
     m_nShotPowerLevel = 100;
     m_wPosCount       = 6;
@@ -83,7 +83,7 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
 
     Math::Vec3Normalize(&vDir);
 
-    for (int i = 0; i < CAMERA_HISTORY_CAPACITY; i++)
+    for (int i = 0; i < kCameraHistoryCapacity; i++)
     {
         m_aPosRing[i].x = m_pBody->pos.x;
         m_aPosRing[i].y = m_pBody->pos.y;
@@ -250,7 +250,7 @@ void CameraObject::ViewIt()
         Renderer::SetCameraTransformAndViewport(layout);
     }
 
-    if (g_pRenderer != nullptr && m_nSlot == CAMERA_HEAD_SLOT)
+    if (g_pRenderer != nullptr && m_nSlot == kCameraHeadSlot)
     {
         g_pRenderer->ShowHeadCam();
     }
@@ -335,14 +335,14 @@ void CameraObject::ViewIt()
 
         pObject->ComputeWorldBoundingCentre(&vCentre);
 
-        if ((static_cast<unsigned char>(pObject->m_nFlags) & (ENGINEOBJECT_HIDDEN | ENGINEOBJECT_POSED)) == 0)
+        if ((static_cast<unsigned char>(pObject->m_nFlags) & (kEngineObjectHidden | kEngineObjectPosed)) == 0)
         {
             pObject->ApplyRenderSlotPose();
         }
 
         if (pObject->IsHidden() == 0)
         {
-            if ((static_cast<unsigned char>(pObject->m_nFlags) & ENGINEOBJECT_NO_CULL) == 0)
+            if ((static_cast<unsigned char>(pObject->m_nFlags) & kEngineObjectNoCull) == 0)
             {
                 const TransformObject* pView    = m_pView;
                 const float            flRadius = pObject->m_flBoundRadius;
@@ -403,7 +403,7 @@ void CameraObject::SetReticleState(int nState)
 {
     m_nReticleState = nState;
 
-    if (nState == RETICLE_AIM)
+    if (nState == kReticleAim)
     {
         m_nShotPowerLevel = 0;
     }
@@ -412,7 +412,7 @@ void CameraObject::SetReticleState(int nState)
     {
         g_pRenderer->SetReticleState(nState);
 
-        if (nState == RETICLE_AIM)
+        if (nState == kReticleAim)
         {
             g_pRenderer->SetShotPower(0);
         }
@@ -642,7 +642,7 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
     {
         EngineObject* pObject = g_pGameEngine->m_ppObjects[nIndex];
 
-        if (pObject->GetShadowCount() != 0 && pObject->IsVisible() != 0 && pObject->GetSlot() != GOALIE_SLOT_A && pObject->GetSlot() != GOALIE_SLOT_B)
+        if (pObject->GetShadowCount() != 0 && pObject->IsVisible() != 0 && pObject->GetSlot() != kGoalieSlotA && pObject->GetSlot() != kGoalieSlotB)
         {
             pObject->DrawTransformedMesh(pSurface);
         }

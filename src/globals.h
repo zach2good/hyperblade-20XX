@@ -34,11 +34,11 @@ class MessageQueue;
 // SYNTHETIC: HYPERX 0x00439530
 // $E11
 
-constexpr auto STATIONARY_SLOTS = 0x30;
+constexpr auto kStationarySlots = 0x30;
 
 // Each entry's low word indexes the engine's object array.
 // GLOBAL: HYPERX 0x004ce864
-extern int g_aStationarySlots[STATIONARY_SLOTS];
+extern int g_aStationarySlots[kStationarySlots];
 
 // GLOBAL: HYPERX 0x004ce934
 extern int g_nStationaryCount;
@@ -72,7 +72,7 @@ extern const char* g_pszDromeTexturedKey;
 // GLOBAL: HYPERX 0x004d21a8
 extern int g_nSavedCursorVisible;
 
-// Set by -m: the drome loads its shaded models, so the F8 texture toggle is off.
+// Set by -m: the drome loads its shaded models, so the kF8 texture toggle is off.
 // GLOBAL: HYPERX 0x004cb4f0
 extern int g_bShadedDromeModels;
 
@@ -303,8 +303,8 @@ extern class Screen* g_pActiveScreen;
 // GLOBAL: HYPERX 0x004d21bc
 extern int g_nPlayerMode;
 
-constexpr auto PLAYER_MODE_EXHIBITION = 0;
-constexpr auto PLAYER_MODE_TOURNAMENT = 1;
+constexpr auto kPlayerModeExhibition = 0;
+constexpr auto kPlayerModeTournament = 1;
 
 // Where Escape paused from: post-match, jumbotron, elsewhere, and the last of the three.
 // GLOBAL: HYPERX 0x004c8578
@@ -385,7 +385,7 @@ extern Vec3* g_apPositionMarkers[11];
 
 // id_POS_NGoalCenter and id_POS_SGoalCenter, the markers a plan names.
 #define POS_N_GOAL_CENTER 8
-constexpr auto POS_S_GOAL_CENTER = 9;
+constexpr auto kPosSGoalCenter = 9;
 
 // GLOBAL: HYPERX 0x004b17ac
 extern float g_flOneAgendaItem;
@@ -498,31 +498,31 @@ extern short g_wActiveScoreLine;
 // GLOBAL: HYPERX 0x004d064c
 extern struct TransformedVertex* g_pModelVertexBuf;
 
-constexpr auto ESTATE_INIT                = 0;
-constexpr auto ESTATE_LOBBY               = 3;
-constexpr auto ESTATE_MAIN_MENU           = 4;
-constexpr auto ESTATE_TOURNAMENT_SETUP    = 5;
-constexpr auto ESTATE_HEAD_TO_HEAD_SETUP  = 6;
-constexpr auto ESTATE_MATCH_INFO          = 7;
-constexpr auto ESTATE_LEAGUE_SETUP        = 8;
-constexpr auto ESTATE_CHAMPIONSHIP_SETUP  = 9;
-constexpr auto ESTATE_GAME_CLIPS_VIEWER   = 10;
-constexpr auto ESTATE_AWARDS              = 11;
-constexpr auto ESTATE_GAME_CONFIG         = 12;
-constexpr auto ESTATE_SAVE_LOAD           = 13;
-constexpr auto ESTATE_MATCH_START         = 14;
-constexpr auto ESTATE_MATCH_LIVE          = 15;
-constexpr auto ESTATE_DROME_EXTERIOR      = 16;
-constexpr auto ESTATE_JUMBOTRON           = 17;
-constexpr auto ESTATE_PAUSE_FULL          = 18;
-constexpr auto ESTATE_PAUSE_MINIMAL       = 19;
-constexpr auto ESTATE_PAUSE_NO_SAVE       = 20;
-constexpr auto ESTATE_QUIT                = 22;
-constexpr auto ESTATE_MULTI_SETUP_OPTIONS = 23;
-constexpr auto ESTATE_KEY_CONFIG          = 25;
-constexpr auto ESTATE_FINAL_CEREMONY      = 26;
-constexpr auto ESTATE_GAME_INTRO          = 27;
-constexpr auto ESTATE_TRAINING_END        = 28;
+constexpr auto kEstateInit              = 0;
+constexpr auto kEstateLobby             = 3;
+constexpr auto kEstateMainMenu          = 4;
+constexpr auto kEstateTournamentSetup   = 5;
+constexpr auto kEstateHeadToHeadSetup   = 6;
+constexpr auto kEstateMatchInfo         = 7;
+constexpr auto kEstateLeagueSetup       = 8;
+constexpr auto kEstateChampionshipSetup = 9;
+constexpr auto kEstateGameClipsViewer   = 10;
+constexpr auto kEstateAwards            = 11;
+constexpr auto kEstateGameConfig        = 12;
+constexpr auto kEstateSaveLoad          = 13;
+constexpr auto kEstateMatchStart        = 14;
+constexpr auto kEstateMatchLive         = 15;
+constexpr auto kEstateDromeExterior     = 16;
+constexpr auto kEstateJumbotron         = 17;
+constexpr auto kEstatePauseFull         = 18;
+constexpr auto kEstatePauseMinimal      = 19;
+constexpr auto kEstatePauseNoSave       = 20;
+constexpr auto kEstateQuit              = 22;
+constexpr auto kEstateMultiSetupOptions = 23;
+constexpr auto kEstateKeyConfig         = 25;
+constexpr auto kEstateFinalCeremony     = 26;
+constexpr auto kEstateGameIntro         = 27;
+constexpr auto kEstateTrainingEnd       = 28;
 
 // GLOBAL: HYPERX 0x004cefec
 extern char g_bChampFromJumbotron;

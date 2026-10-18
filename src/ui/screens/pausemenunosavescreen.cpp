@@ -75,35 +75,35 @@ void PauseMenuNoSaveScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case PAUSE_NO_SAVE_OPTIONS:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 PauseMenu::ActionOptions();
             }
             break;
 
         case PAUSE_NO_SAVE_EXIT:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 PauseMenu::ActionExitToMenu();
             }
             break;
 
         case PAUSE_NO_SAVE_RETURN:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 PauseMenu::ActionReturnNoSave();
             }
             break;
 
         case PAUSE_NO_SAVE_QUIT:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 PauseMenu::ActionQuit();
             }
             break;
 
-        case WIDGET_ID_MOUSE:
-        case WIDGET_ID_RETURN:
+        case kWidgetIDMouse:
+        case kWidgetIDReturn:
             break;
 
         default:

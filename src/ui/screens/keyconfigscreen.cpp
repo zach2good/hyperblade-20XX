@@ -27,24 +27,24 @@ class KeyConfigScreen;
 
 // A row bound to a key the bitmap table lacks falls back to "key-".
 
-constexpr auto KEY_ACTION_COUNT = 12;
-constexpr auto KEY_BITMAP_COUNT = 50;
+constexpr auto kKeyActionCount = 12;
+constexpr auto kKeyBitmapCount = 50;
 
 // The twelve action buttons plus the ten key pictures, so the last slot in use is 21.
-constexpr auto KEY_LAST_WIDGET = 0x15;
+constexpr auto kKeyLastWidget = 0x15;
 
 // Twelve entries in, which is what the original's base address says and nothing else explains.
-constexpr auto KEY_START_FRAME = 12;
+constexpr auto kKeyStartFrame = 12;
 
 // GLOBAL: HYPERX 0x004bd090
-extern KeyBitmapEntry g_aKeyBitmaps[KEY_BITMAP_COUNT];
+extern KeyBitmapEntry g_aKeyBitmaps[kKeyBitmapCount];
 
 // GLOBAL: HYPERX 0x004cb7d8
-extern unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT];
+extern unsigned int g_anKeyConfigKeys[kKeyBindingCount];
 
 // Written and never read.
 // GLOBAL: HYPERX 0x004cb7b0
-extern unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT];
+extern unsigned int g_anKeyConfigAccepted[kKeyBindingCount];
 
 // The pad control bound to an action, or null when none is.
 static const char* PadControl(const char* pszAction)
@@ -65,22 +65,22 @@ static const char* PadControl(const char* pszAction)
 // Each row's pad control, drawn small over the top right corner of its key picture.
 static void ShowPadIcons(int nKeyWidth, int nKeyHeight)
 {
-    constexpr std::array<const char*, 4> STICK = { "StickUp", "StickDown", "StickLeft", "StickRight" };
+    constexpr std::array<const char*, 4> kStick = { "StickUp", "StickDown", "StickLeft", "StickRight" };
 
     const auto nSize = nKeyHeight / 2;
 
     auto icons = std::vector<Presenter::CanvasIcon>();
 
-    for (int i = 0; i < KEY_BINDING_COUNT; i++)
+    for (int i = 0; i < kKeyBindingCount; i++)
     {
         const int nSlot = g_anKeyConfigDefaultSlots[i];
 
         // The left stick steers, so the four directions show it.
         const auto* const pszControl = [&]
         {
-            if (nSlot < static_cast<int>(STICK.size()))
+            if (nSlot < static_cast<int>(kStick.size()))
             {
-                return STICK[static_cast<size_t>(nSlot)];
+                return kStick[static_cast<size_t>(nSlot)];
             }
 
             return PadControl(g_apszKeyBindingNames[nSlot]);
@@ -105,9 +105,9 @@ KeyConfigScreen::KeyConfigScreen()
     m_nActiveRemap = -1;
 
     m_hBackground = GDI::LoadBitmapAsBackground(g_pszKeyConfigBackground, &m_bPaletted);
-    m_nLastWidget = KEY_LAST_WIDGET;
+    m_nLastWidget = kKeyLastWidget;
 
-    for (i = 0; i < KEY_ACTION_COUNT; i++)
+    for (i = 0; i < kKeyActionCount; i++)
     {
         m_hBitmap = GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszNormal);
         GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
@@ -119,14 +119,14 @@ KeyConfigScreen::KeyConfigScreen()
 
     const unsigned int* pnDefaults = g_pInputDevice->GetDefaultKeyBindings();
 
-    for (i = 0; i < KEY_BINDING_COUNT; i++)
+    for (i = 0; i < kKeyBindingCount; i++)
     {
         g_anKeyConfigAccepted[i] = g_anKeyConfigKeys[i] = pnDefaults[g_anKeyConfigDefaultSlots[i]];
     }
 
-    for (i = 0; i < KEY_BINDING_COUNT; i++)
+    for (i = 0; i < kKeyBindingCount; i++)
     {
-        m_hBitmap = GDI::LoadBitmapHandle(g_aKeyBitmaps[i + KEY_START_FRAME].pszBitmap);
+        m_hBitmap = GDI::LoadBitmapHandle(g_aKeyBitmaps[i + kKeyStartFrame].pszBitmap);
         GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
         pWidget = AppendWidget(new DisplayWidget(g_aKeyDisplayPos[i].nX,
                                                  g_aKeyDisplayPos[i].nY,
@@ -135,7 +135,7 @@ KeyConfigScreen::KeyConfigScreen()
                                                  this,
                                                  -1));
 
-        for (nIndex = 0; nIndex < KEY_BITMAP_COUNT; nIndex++)
+        for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
         {
             if (g_anKeyConfigKeys[i] == g_aKeyBitmaps[nIndex].nKey)
             {
@@ -143,7 +143,7 @@ KeyConfigScreen::KeyConfigScreen()
             }
         }
 
-        if (nIndex >= KEY_BITMAP_COUNT)
+        if (nIndex >= kKeyBitmapCount)
         {
             // STRING: HYPERX 0x004bd4e8
             pWidget->AppendFrame(GDI::LoadBitmapHandle("key-"));
@@ -159,15 +159,15 @@ KeyConfigScreen::KeyConfigScreen()
     ShowPadIcons(m_bitmap.nWidth, m_bitmap.nHeight);
 }
 
-constexpr auto WIDGET_ACCEPT = 10;
-constexpr auto WIDGET_CANCEL = 11;
+constexpr auto kWidgetAccept = 10;
+constexpr auto kWidgetCancel = 11;
 
 // The pictures start at this widget; the rows start at widget nought.
-constexpr auto KEY_BITMAP_SLOT = 12;
+constexpr auto kKeyBitmapSlot = 12;
 
 // Screen row to device action slot: 0 1 2 3 5 6 8 7 9 4.
 // GLOBAL: HYPERX 0x004b2c38
-extern const int g_anKeyConfigActionSlots[KEY_BINDING_COUNT];
+extern const int g_anKeyConfigActionSlots[kKeyBindingCount];
 
 // FUNCTION: HYPERX 0x0042fc30
 KeyConfigScreen::~KeyConfigScreen()
@@ -183,28 +183,28 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 
     switch (nWidget)
     {
-        case WIDGET_ACCEPT:
-        case WIDGET_CANCEL:
-            if (nMsg == INPUT_LEFT_UP)
+        case kWidgetAccept:
+        case kWidgetCancel:
+            if (nMsg == kInputLeftUp)
             {
-                if (nWidget == WIDGET_ACCEPT)
+                if (nWidget == kWidgetAccept)
                 {
                     memcpy(g_anKeyConfigAccepted, g_anKeyConfigKeys, sizeof(g_anKeyConfigKeys));
 
                     if (g_pInputDevice != nullptr)
                     {
-                        unsigned int anOrdered[KEY_BINDING_COUNT];
+                        unsigned int anOrdered[kKeyBindingCount];
 
-                        for (int i = 0; i < KEY_BINDING_COUNT; i++)
+                        for (int i = 0; i < kKeyBindingCount; i++)
                         {
                             anOrdered[i] = g_anKeyConfigKeys[g_anKeyConfigActionSlots[i]];
                         }
 
-                        g_pInputDevice->CommitKeyBindings(anOrdered, KEY_BINDING_COUNT);
+                        g_pInputDevice->CommitKeyBindings(anOrdered, kKeyBindingCount);
                     }
                 }
 
-                Game::SetEngineState(ESTATE_GAME_CONFIG);
+                Game::SetEngineState(kEstateGameConfig);
             }
 
             break;
@@ -219,7 +219,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
         case 7:
         case 8:
         case 9:
-            if (nMsg == INPUT_LEFT_UP)
+            if (nMsg == kInputLeftUp)
             {
                 const int nActive = m_nActiveRemap;
 
@@ -229,9 +229,9 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 
                     pOld->ClearFrames();
 
-                    const unsigned int nKey = g_anKeyConfigKeys[nActive - KEY_BITMAP_SLOT];
+                    const unsigned int nKey = g_anKeyConfigKeys[nActive - kKeyBitmapSlot];
 
-                    for (nIndex = 0; nIndex < KEY_BITMAP_COUNT; nIndex++)
+                    for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
                     {
                         if (nKey == g_aKeyBitmaps[nIndex].nKey)
                         {
@@ -239,7 +239,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
                         }
                     }
 
-                    if (nIndex >= KEY_BITMAP_COUNT)
+                    if (nIndex >= kKeyBitmapCount)
                     {
                         // STRING: HYPERX 0x004bd4e8
                         pOld->AppendFrame(GDI::LoadBitmapHandle("key-"));
@@ -254,8 +254,8 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
                     m_nActiveRemap = -1;
                 }
 
-                const int     nSlot = nWidget + KEY_BITMAP_SLOT;
-                Widget* const pNew  = m_apWidgets[nWidget + KEY_BITMAP_SLOT];
+                const int     nSlot = nWidget + kKeyBitmapSlot;
+                Widget* const pNew  = m_apWidgets[nWidget + kKeyBitmapSlot];
 
                 pNew->ClearFrames();
 
@@ -294,22 +294,22 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 
     const int nRow = FindActiveRow();
 
-    if (nRow == -1 || nRow > KEY_BINDING_COUNT - 1)
+    if (nRow == -1 || nRow > kKeyBindingCount - 1)
     {
         return 0;
     }
 
-    if (nKeyCode == Key::TAB || nKeyCode == Key::ESCAPE)
+    if (nKeyCode == Key::kTab || nKeyCode == Key::kEscape)
     {
         nKeyCode = g_anKeyConfigKeys[nRow];
     }
     else
     {
-        for (int j = 0; j < KEY_BINDING_COUNT; j++)
+        for (int j = 0; j < kKeyBindingCount; j++)
         {
             if (j != nRow && g_anKeyConfigKeys[j] == nKeyCode)
             {
-                g_pAudioMgr->PlaySpecific(SOUND_ENDSIR);
+                g_pAudioMgr->PlaySpecific(kSoundEndsir);
 
                 return 1;
             }
@@ -317,7 +317,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 
         const KeyBitmapEntry* pEntry;
 
-        for (pEntry = g_aKeyBitmaps; pEntry < g_aKeyBitmaps + KEY_BITMAP_COUNT; pEntry++)
+        for (pEntry = g_aKeyBitmaps; pEntry < g_aKeyBitmaps + kKeyBitmapCount; pEntry++)
         {
             if (nKeyCode == pEntry->nKey)
             {
@@ -326,9 +326,9 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
         }
 
         // A key with no bitmap cannot be shown, so it is refused.
-        if (pEntry >= g_aKeyBitmaps + KEY_BITMAP_COUNT)
+        if (pEntry >= g_aKeyBitmaps + kKeyBitmapCount)
         {
-            g_pAudioMgr->PlaySpecific(SOUND_ENDSIR);
+            g_pAudioMgr->PlaySpecific(kSoundEndsir);
 
             return 1;
         }
@@ -336,9 +336,9 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
         g_anKeyConfigKeys[nRow] = nKeyCode;
     }
 
-    Widget* const pBitmap = m_apWidgets[nRow + KEY_BITMAP_SLOT];
+    Widget* const pBitmap = m_apWidgets[nRow + kKeyBitmapSlot];
 
-    for (nIndex = 0; nIndex < KEY_BITMAP_COUNT; nIndex++)
+    for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
     {
         if (nKeyCode == g_aKeyBitmaps[nIndex].nKey)
         {
@@ -348,7 +348,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 
     pBitmap->ClearFrames();
 
-    if (nIndex >= KEY_BITMAP_COUNT)
+    if (nIndex >= kKeyBitmapCount)
     {
         // STRING: HYPERX 0x004bd4e8
         pBitmap->AppendFrame(GDI::LoadBitmapHandle("key-"));
@@ -371,9 +371,9 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 }
 
 // Key-config screen row to input action slot.
-const int g_anKeyConfigActionSlots[KEY_BINDING_COUNT] = { 0, 1, 2, 3, 5, 6, 8, 7, 9, 4 };
+const int g_anKeyConfigActionSlots[kKeyBindingCount] = { 0, 1, 2, 3, 5, 6, 8, 7, 9, 4 };
 
-const int g_anKeyConfigDefaultSlots[KEY_BINDING_COUNT] = { 0, 1, 2, 3, 9, 4, 5, 7, 6, 8 };
+const int g_anKeyConfigDefaultSlots[kKeyBindingCount] = { 0, 1, 2, 3, 9, 4, 5, 7, 6, 8 };
 
 // Adjacent on purpose: the button loop's end bound lies inside the display positions.
 // STRING: HYPERX 0x004bd4e0

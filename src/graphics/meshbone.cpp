@@ -58,7 +58,7 @@ void MeshBone::DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, Me
 // FUNCTION: HYPERX 0x0046ef10
 void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, TransformObject* pRoot, TransformObject*)
 {
-    if ((m_nFlags & MESHBONE_ANIMATION_DIRTY) != 0)
+    if ((m_nFlags & kMeshboneAnimationDirty) != 0)
     {
         const MeshBoneDesc* pDesc = m_pDesc;
 
@@ -66,7 +66,7 @@ void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, Tra
                                m_local.m_a[1][3] * pDesc->m_vScale.y,
                                m_local.m_a[2][3] * pDesc->m_vScale.z);
 
-        ClearFlags(MESHBONE_ANIMATION_DIRTY);
+        ClearFlags(kMeshboneAnimationDirty);
     }
 
     pParent->Multiply(&m_world, &m_local);
@@ -95,7 +95,7 @@ void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, Tra
 // FUNCTION: HYPERX 0x0046efe0
 void MeshBone::UpdateLeafTransform(unsigned int, TransformObject* pParent)
 {
-    if ((m_nFlags & MESHBONE_ANIMATION_DIRTY) != 0)
+    if ((m_nFlags & kMeshboneAnimationDirty) != 0)
     {
         const MeshBoneDesc* pDesc = m_pDesc;
 
@@ -103,7 +103,7 @@ void MeshBone::UpdateLeafTransform(unsigned int, TransformObject* pParent)
                                m_local.m_a[1][3] * pDesc->m_vScale.y,
                                m_local.m_a[2][3] * pDesc->m_vScale.z);
 
-        ClearFlags(MESHBONE_ANIMATION_DIRTY);
+        ClearFlags(kMeshboneAnimationDirty);
     }
 
     pParent->Multiply(&m_world, &m_local);
@@ -135,9 +135,9 @@ void MeshBone::SubmitToHardware()
 
     auto bone = HwModels::Bone{ m_pMesh, m_pOwner->m_pModelBlock->m_pMaterials, m_pOwner->m_pModelBlock->m_nMatCount, &m_world };
 
-    const auto bArena = m_pOwner == g_pGameEngine->m_ppSlots[SLOT_DROME];
+    const auto bArena = m_pOwner == g_pGameEngine->m_ppSlots[kSlotDrome];
 
-    // The drome is textured only while the original's F8 switch says so.
+    // The drome is textured only while the original's kF8 switch says so.
     const auto bWantTextures = GraphicsSettings::On(GraphicsSettings::Switch::TEXTURES) && (!bArena || (g_nDromeTextured != 0 && g_bShadedDromeModels == 0));
     const auto bTextured     = bWantTextures && HwModels::Find(*this, HwRenderer::Frame(), bone);
 
@@ -229,8 +229,8 @@ void MeshBone::SubmitToHardware()
     using GraphicsSettings::Switch;
 
     // The original lights each face by its key light alone; with several lights the others fill in.
-    constexpr auto FILL_STRENGTH  = 0.4f;
-    constexpr auto LIGHT_SWITCHES = std::array<Switch, 3>{ Switch::LIGHT_303, Switch::LIGHT_54, Switch::LIGHT_180 };
+    constexpr auto kFillStrength  = 0.4f;
+    constexpr auto kLightSwitches = std::array<Switch, 3>{ Switch::LIGHT_303, Switch::LIGHT_54, Switch::LIGHT_180 };
 
     auto world = *bone.pWorld;
 
@@ -242,7 +242,7 @@ void MeshBone::SubmitToHardware()
 
         const auto flStrength = [&]
         {
-            if (!GraphicsSettings::On(LIGHT_SWITCHES[static_cast<size_t>(i)]))
+            if (!GraphicsSettings::On(kLightSwitches[static_cast<size_t>(i)]))
             {
                 return 0.0f;
             }
@@ -254,7 +254,7 @@ void MeshBone::SubmitToHardware()
 
             if (GraphicsSettings::On(Switch::SEVERAL_LIGHTS))
             {
-                return FILL_STRENGTH;
+                return kFillStrength;
             }
 
             return 0.0f;
@@ -277,7 +277,7 @@ void MeshBone::SubmitToHardware()
     draw.aWorldFromModel[15] = 1.0f;
 
     // The rok shows one bone at a time, by its state, and carries its light on whichever it is.
-    if (GraphicsSettings::On(Switch::ROK_LIGHT) && m_pOwner == g_pGameEngine->m_ppSlots[SLOT_ROK])
+    if (GraphicsSettings::On(Switch::ROK_LIGHT) && m_pOwner == g_pGameEngine->m_ppSlots[kSlotRok])
     {
         HwRenderer::SetPointLight(bone.pWorld->m_a[0][3], bone.pWorld->m_a[1][3], bone.pWorld->m_a[2][3], GraphicsSettings::RokLightRadius());
     }
@@ -495,12 +495,12 @@ void MeshBone::CalcVertexColors()
 {
     if (m_pFaceColours == nullptr)
     {
-        SetFlags(MESHBONE_COLOURS_PRESENT);
+        SetFlags(kMeshboneColoursPresent);
     }
 
     if (HasColours() == 0)
     {
-        m_nFlags = static_cast<unsigned short>(m_nFlags | MESHBONE_COLOURS_PRESENT);
+        m_nFlags = static_cast<unsigned short>(m_nFlags | kMeshboneColoursPresent);
     }
 
     const TransformObject* pXf = &m_world;
@@ -592,7 +592,7 @@ void MeshBone::CalcVertexColors()
 // FUNCTION: HYPERX 0x0046f8c0
 void MeshBone::SetFlags(unsigned short nFlags)
 {
-    if (nFlags == MESHBONE_COLOURS_PRESENT)
+    if (nFlags == kMeshboneColoursPresent)
     {
         delete[] m_pFaceColours;
 
@@ -612,7 +612,7 @@ void MeshBone::ClearFlags(unsigned short nFlags)
 {
     m_nFlags &= ~nFlags;
 
-    if (nFlags == MESHBONE_COLOURS_PRESENT && m_pFaceColours != nullptr)
+    if (nFlags == kMeshboneColoursPresent && m_pFaceColours != nullptr)
     {
         delete[] m_pFaceColours;
 
@@ -684,7 +684,7 @@ int MeshBone::BindToLODMesh(CD3DTextureManager* pLookup, LODNode* pNode, EngineO
         }
         else
         {
-            SetFlags(MESHBONE_UNBOUND);
+            SetFlags(kMeshboneUnbound);
         }
 
         if (pNode->m_pRecord != nullptr)
@@ -726,7 +726,7 @@ int MeshBone::BindToLODMeshShadowless(CD3DTextureManager* pLookup, LODNode* pNod
     {
         if (nResult == 0)
         {
-            SetFlags(MESHBONE_UNBOUND);
+            SetFlags(kMeshboneUnbound);
         }
 
         if (pNode->m_pRecord != nullptr)

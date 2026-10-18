@@ -20,7 +20,7 @@ void BehObj_TrackTrajectory::Init(EngineObject* pOwner, PlanNode* pBlock, int nF
     // STRING: HYPERX 0x004bc3a4
     m_pszName = "TrackTrajectory";
 
-    m_wKind = BEH_TRACK_TRAJECTORY;
+    m_wKind = kBehTrackTrajectory;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CTrackTraj);
 

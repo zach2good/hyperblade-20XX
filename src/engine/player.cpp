@@ -11,7 +11,7 @@
 #include "engine/player.h"
 #include "engine/messageids.h"
 
-constexpr auto TRICK_HOLD_MS = 100;
+constexpr auto kTrickHoldMs = 100;
 
 // The trick and boost-grab steps, and the tick the hold started at; minus one means untimed.
 // GLOBAL: HYPERX 0x004cb4da
@@ -48,12 +48,12 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 
                     if ((*pnInput & HELD_ROTATE_LEFT) != 0)
                     {
-                        pPlayer->PostSceneEvent(MSG_NO_INPUT_FOR_SEC, 1);
+                        pPlayer->PostSceneEvent(kMsgNoInputForSec, 1);
 
                         return;
                     }
 
-                    pPlayer->PostSceneEvent(MSG_NO_INPUT_FOR_SEC, 2);
+                    pPlayer->PostSceneEvent(kMsgNoInputForSec, 2);
 
                     return;
                 }
@@ -65,12 +65,12 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 
                 if ((*pnInput & HELD_ROTATE_LEFT) != 0)
                 {
-                    pPlayer->PostSceneEvent(MSG_NO_INPUT_FOR_SEC, 3);
+                    pPlayer->PostSceneEvent(kMsgNoInputForSec, 3);
 
                     return;
                 }
 
-                pPlayer->PostSceneEvent(MSG_NO_INPUT_FOR_SEC, 4);
+                pPlayer->PostSceneEvent(kMsgNoInputForSec, 4);
 
                 return;
             }
@@ -88,13 +88,13 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
             return;
         }
 
-        if (g_pGameEngine->m_clock.nTickMs - static_cast<unsigned int>(g_nTrickHoldStamp) > TRICK_HOLD_MS)
+        if (g_pGameEngine->m_clock.nTickMs - static_cast<unsigned int>(g_nTrickHoldStamp) > kTrickHoldMs)
         {
             g_nTrickSeqStep   = 1;
             g_nTrickHoldStamp = -1;
             g_nBoostGrabStep  = 0;
 
-            pPlayer->PostSceneEvent(MSG_NO_INPUT_FOR_SEC, 0);
+            pPlayer->PostSceneEvent(kMsgNoInputForSec, 0);
 
             return;
         }
@@ -105,11 +105,11 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 
         if (nGrab == 0)
         {
-            pPlayer->PostSceneEvent(MSG_NEW_INPUT, 0);
+            pPlayer->PostSceneEvent(kMsgNewInput, 0);
 
             g_nBoostGrabStep = 1;
 
-            g_pGameEngine->m_ppSlots[SLOT_KEYBOARD]->PostSceneEvent(MSG_DRAG_OVER, 0);
+            g_pGameEngine->m_ppSlots[kSlotKeyboard]->PostSceneEvent(kMsgDragOver, 0);
 
             return;
         }

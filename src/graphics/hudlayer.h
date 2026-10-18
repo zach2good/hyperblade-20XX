@@ -11,7 +11,7 @@ namespace HudLayer
 {
 
 // The index the layer is cleared to; an RLE sprite never draws it.
-constexpr auto KEY_INDEX = 255;
+constexpr auto kKeyIndex = 255;
 
 // How many back-buffer pixels one layer pixel covers on each axis.
 int Scale();

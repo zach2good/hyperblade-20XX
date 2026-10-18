@@ -6,7 +6,7 @@
 DromeObject::DromeObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
-    m_nFlags |= ENGINEOBJECT_NO_CULL;
+    m_nFlags |= kEngineObjectNoCull;
 }
 
 // FUNCTION: HYPERX 0x004748d0

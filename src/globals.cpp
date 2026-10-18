@@ -79,8 +79,8 @@ ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } }
 };
 int                  g_nAnnouncerLineMs;
-StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS] = {};
-int                  g_aStationarySlots[STATIONARY_SLOTS] = { 0 };
+StationaryPlanRecord g_aStationaryPlans[kStationarySlots] = {};
+int                  g_aStationarySlots[kStationarySlots] = { 0 };
 int                  g_nStationaryCount;
 
 // STRING: HYPERX 0x004c724c
@@ -364,10 +364,10 @@ extern const float g_flAnimBlendZero;
 const float        g_flAnimBlendZero = 0.0f;
 
 // Contiguous in the image: the key-config constructor bounds its loops on the object that follows.
-Vec3         g_vPlaneSegmentDir                       = { 0 };
-char         g_szEmptyString[1]                       = { 0 };
-unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT] = { 0 };
-unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT]     = { 0 };
+Vec3         g_vPlaneSegmentDir                      = { 0 };
+char         g_szEmptyString[1]                      = { 0 };
+unsigned int g_anKeyConfigAccepted[kKeyBindingCount] = { 0 };
+unsigned int g_anKeyConfigKeys[kKeyBindingCount]     = { 0 };
 
 // The animation peek sheet's "Enable Smart Cam" box.
 unsigned char g_bSmartCamEnabled = 0;
@@ -607,7 +607,7 @@ float        g_flFrameDelta;
 extern unsigned char g_bPeriodCountdownActive;
 unsigned char        g_bPeriodCountdownActive;
 
-// Open from MATCH_STAT_POSS_START to MATCH_STAT_POSS_STOP.
+// Open from kMatchStatPossStart to kMatchStatPossStop.
 // GLOBAL: HYPERX 0x004d2754
 extern char g_bStatIntervalOpen;
 char        g_bStatIntervalOpen;

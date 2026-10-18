@@ -13,8 +13,8 @@
 #include "graphics/gdi.h"
 #include "ui/hudglobals.h"
 
-constexpr auto RLE_MAX_RUN = 0x7f;
-constexpr auto RLE_LITERAL = 0x80;
+constexpr auto kRLEMaxRun  = 0x7f;
+constexpr auto kRLELiteral = 0x80;
 
 // Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent. The block leaks.
 // FUNCTION: HYPERX 0x0044f550
@@ -63,7 +63,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
                 bOpaque = cPixel != -1;
             }
 
-            if (bOpaque != bPrev || nCount == RLE_MAX_RUN || nColumn >= cx)
+            if (bOpaque != bPrev || nCount == kRLEMaxRun || nColumn >= cx)
             {
                 if (nCount != 0)
                 {
@@ -74,7 +74,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
                     }
                     else
                     {
-                        *pOut = static_cast<char>(nCount | RLE_LITERAL);
+                        *pOut = static_cast<char>(nCount | kRLELiteral);
                         pOut++;
 
                         memcpy(pOut, aRun, nCount);
@@ -177,7 +177,7 @@ void SoftTex::RemoveFromList()
 // FUNCTION: HYPERX 0x00492920
 char SoftTex::Load(const char* pszName)
 {
-    char szPath[MAX_PATH_LENGTH];
+    char szPath[kMaxPathLength];
 
     if (g_hMdmTexDll)
     {
@@ -224,7 +224,7 @@ char SoftTex::Load(const char* pszName)
                         g_aSoftTexPalette[i].peRed   = pColours[i].rgbRed;
                         g_aSoftTexPalette[i].peGreen = pColours[i].rgbGreen;
                         g_aSoftTexPalette[i].peBlue  = pColours[i].rgbBlue;
-                        g_aSoftTexPalette[i].peFlags = PALETTE_NOCOLLAPSE;
+                        g_aSoftTexPalette[i].peFlags = kPaletteNoCollapse;
                     }
                 }
 
@@ -244,7 +244,7 @@ char SoftTex::Load(const char* pszName)
     return 0;
 }
 
-constexpr auto TEXPOLY_EDGE_COUNT = 0x1f;
+constexpr auto kTexpolyEdgeCount = 0x1f;
 
 // The entry point is loaded at run time; a null one drops the polygon.
 // FUNCTION: HYPERX 0x00492b60
@@ -252,7 +252,7 @@ void SoftTex::DrawTexPoly(TransformObject*, FacePolyBuffer* pPoly, float)
 {
     if (g_pfnMdmDrawTexPoly != nullptr)
     {
-        g_pfnMdmDrawTexPoly(&m_image, pPoly->aVertices, pPoly->nCount, TEXPOLY_EDGE_COUNT);
+        g_pfnMdmDrawTexPoly(&m_image, pPoly->aVertices, pPoly->nCount, kTexpolyEdgeCount);
     }
 }
 

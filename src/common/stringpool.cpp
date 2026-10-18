@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "stringpool.h"
 
-constexpr auto STRING_POOL_BUFFER_SIZE = 0x100;
+constexpr auto kStringPoolBufferSize = 0x100;
 
 // The count is clamped up to two and every slot gets a fixed 256-byte buffer.
 
@@ -25,7 +25,7 @@ StringPool::StringPool(short nCount)
     {
         for (short i = 0; i < wCount; i++)
         {
-            apBuffers[i] = new char[STRING_POOL_BUFFER_SIZE];
+            apBuffers[i] = new char[kStringPoolBufferSize];
         }
     }
 }
@@ -56,7 +56,7 @@ char* StringPool::LoadText(unsigned int uID)
         wIndex = 0;
     }
 
-    snprintf(apBuffers[wIndex], STRING_POOL_BUFFER_SIZE, "%s", StringTable::Find(uID));
+    snprintf(apBuffers[wIndex], kStringPoolBufferSize, "%s", StringTable::Find(uID));
 
     return apBuffers[wIndex++];
 }

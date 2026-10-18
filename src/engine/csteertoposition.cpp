@@ -126,7 +126,7 @@ void CSteerToPosition::OnListChanged()
 // FUNCTION: HYPERX 0x0040e9b0
 void CSteerToPosition::Process(int nArg)
 {
-    float flForce = (((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(RATING_BALANCE) * 0.1f + 1.5f) * g_pGameEngine->m_clock.GetDeltaSquared() * 40.0f;
+    float flForce = (((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.1f + 1.5f) * g_pGameEngine->m_clock.GetDeltaSquared() * 40.0f;
 
     const int nJitter = rand() % JITTER_MODULUS;
 
@@ -202,7 +202,7 @@ void CSteerToPosition::Process(int nArg)
         pBody->smoothVel.y = flBrake * pBody->vel.y;
         pBody->smoothVel.z = flBrake * pBody->vel.z;
     }
-    else if (m_pOwner->GetSlot() > SLOT_DROMER3 || ((PlayerObject*)m_pOwner)->m_wClockStoppedSemaphore != 0)
+    else if (m_pOwner->GetSlot() > kSlotDromer3 || ((PlayerObject*)m_pOwner)->m_wClockStoppedSemaphore != 0)
     {
         if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta)))) * g_pGameEngine->m_clock.flDelta < flSpeed + flSpeed)
         {
@@ -224,7 +224,7 @@ void CSteerToPosition::Process(int nArg)
 
         if (m_cArrived == 0)
         {
-            m_pOwner->PostSceneEvent(MSG_GOT_THERE, 0);
+            m_pOwner->PostSceneEvent(kMsgGotThere, 0);
             m_cArrived = 1;
         }
     }

@@ -68,10 +68,10 @@
 
 // The guards are arity: a count equal to N means argument N is absent.
 #define ARG_FIRST 1
-constexpr auto ARG_SECOND = 2;
+constexpr auto kArgSecond = 2;
 
 // A context from a collision pair names no slot.
-constexpr auto SLOT_EXPLICIT_PAIR = (-1);
+constexpr auto kSlotExplicitPair = (-1);
 
 // Three, the facing step before the cross product decides whether to mirror it.
 // GLOBAL: HYPERX 0x004b1528
@@ -103,7 +103,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
     float         flFactor;
     float         flMag;
 
-    if (pContext->GetNamedSlot() == SLOT_EXPLICIT_PAIR)
+    if (pContext->GetNamedSlot() == kSlotExplicitPair)
     {
         BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -146,7 +146,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
         }
         else
         {
-            flFactor = static_cast<float>(pArgs[ARG_SECOND].n) * 0.01f;
+            flFactor = static_cast<float>(pArgs[kArgSecond].n) * 0.01f;
         }
     }
 
@@ -164,7 +164,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     pSelf->SetVelocity(vImpulse);
 
-    if (pSelf->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pSelf->GetSlot() < kPlayerObjectCount)
     {
         auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
@@ -220,17 +220,17 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
         g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
-        pSelf->PostSceneEvent(MSG_SET_ANIMATION,
+        pSelf->PostSceneEvent(kMsgSetAnimation,
                               g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
-        pSelf->PostSceneEvent(MSG_YER_HIT, 0);
+        pSelf->PostSceneEvent(kMsgYerHit, 0);
 
         const short nViewed = g_pGameEngine->m_nViewedSlot;
 
         if (pSelf->GetSlot() == nViewed)
         {
-            pAnnounce = g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN];
+            pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
-            pAnnounce->PostSceneEvent(MSG_HIT, pSelf->GetSlot());
+            pAnnounce->PostSceneEvent(kMsgHit, pSelf->GetSlot());
 
             g_nCheckImpulseSelfSlot  = pSelf->GetSlot();
             g_nCheckImpulseOtherSlot = pOther->GetSlot();
@@ -287,7 +287,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        if (pArgs[ARG_SECOND].n != PLAN_TOKEN_MESSAGE_DATA)
+        if (pArgs[kArgSecond].n != PLAN_TOKEN_MESSAGE_DATA)
         {
             return;
         }
@@ -297,7 +297,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
         pSelf = g_pGameEngine->m_ppSlots[nSlot];
 
         // Dead for a short; the client tests the short at 0x004051aa and indexes it at 0x004051c2.
-        if (static_cast<unsigned short>(static_cast<unsigned int>(nOther) >> 16) == PLAN_ARG_PRONOUN)
+        if (static_cast<unsigned short>(static_cast<unsigned int>(nOther) >> 16) == kPlanArgPronoun)
         {
             nResolved = g_apPlanStatFns[nOther & 0xffff](pContext->GetActor(), pNode);
         }
@@ -375,7 +375,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
         *pNormalField = vLocal;
 
-        if (pSelf->GetSlot() < PLAYER_OBJECT_COUNT)
+        if (pSelf->GetSlot() < kPlayerObjectCount)
         {
             GameBehaviorObject* pBindNode;
             float               flRatio;
@@ -440,17 +440,17 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
             g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
             pSelf->PostSceneEvent(
-                MSG_SET_ANIMATION,
+                kMsgSetAnimation,
                 g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
-            pSelf->PostSceneEvent(MSG_YER_HIT, 0);
+            pSelf->PostSceneEvent(kMsgYerHit, 0);
 
             const short nViewed = g_pGameEngine->m_nViewedSlot;
 
             if (pSelf->GetSlot() == nViewed)
             {
-                EngineObject* const pAnnounce = g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN];
+                EngineObject* const pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
-                pAnnounce->PostSceneEvent(MSG_HIT, pSelf->GetSlot());
+                pAnnounce->PostSceneEvent(kMsgHit, pSelf->GetSlot());
 
                 g_nCheckImpulseSelfSlot  = pSelf->GetSlot();
                 g_nCheckImpulseOtherSlot = pOther->GetSlot();
@@ -519,7 +519,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
     Vec3          vSelfPos;
     float         flSpeed;
 
-    if (pContext->GetNamedSlot() == SLOT_EXPLICIT_PAIR)
+    if (pContext->GetNamedSlot() == kSlotExplicitPair)
     {
         BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -532,7 +532,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
     else
     {
         // Dead for a short; the client tests the short at 0x004059b6 and indexes the int at 0x004059d0.
-        if (static_cast<unsigned short>(static_cast<unsigned int>(static_cast<short>(nSlot)) >> 16) == PLAN_ARG_PRONOUN)
+        if (static_cast<unsigned short>(static_cast<unsigned int>(static_cast<short>(nSlot)) >> 16) == kPlanArgPronoun)
         {
             nSlot = (reinterpret_cast<PlanStatFnWide*>(g_apPlanStatFns))[nSlot & 0xffff](pContext->GetActor(), pNode);
         }
@@ -606,7 +606,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
         pSelf->SetVelocity(vSlideVel);
 
-        if (pSelf->GetSlot() < PLAYER_OBJECT_COUNT)
+        if (pSelf->GetSlot() < kPlayerObjectCount)
         {
             Vec3                vDiff;
             Vec3                vTemp;
@@ -686,17 +686,17 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
             g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
             pSelf->PostSceneEvent(
-                MSG_SET_ANIMATION,
+                kMsgSetAnimation,
                 g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
-            pSelf->PostSceneEvent(MSG_YER_HIT, 0);
+            pSelf->PostSceneEvent(kMsgYerHit, 0);
 
             const short nViewed = g_pGameEngine->m_nViewedSlot;
 
             if (pSelf->GetSlot() == nViewed)
             {
-                EngineObject* const pAnnounce = g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN];
+                EngineObject* const pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
-                pAnnounce->PostSceneEvent(MSG_HIT, pSelf->GetSlot());
+                pAnnounce->PostSceneEvent(kMsgHit, pSelf->GetSlot());
 
                 g_nCheckImpulseSelfSlot  = pSelf->GetSlot();
                 g_nCheckImpulseOtherSlot = pOther->GetSlot();
@@ -832,16 +832,16 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
-    pSelf->PostSceneEvent(MSG_REALLY_SET_ANIMATION, g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
-    pSelf->PostSceneEvent(MSG_YER_HIT, 0);
+    pSelf->PostSceneEvent(kMsgReallySetAnimation, g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
+    pSelf->PostSceneEvent(kMsgYerHit, 0);
 
     const short nViewed = g_pGameEngine->m_nViewedSlot;
 
     if (pSelf->GetSlot() == nViewed)
     {
-        pAnnounce = g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN];
+        pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
-        pAnnounce->PostSceneEvent(MSG_HIT, pSelf->GetSlot());
+        pAnnounce->PostSceneEvent(kMsgHit, pSelf->GetSlot());
 
         g_nCheckImpulseSelfSlot  = pSelf->GetSlot();
         g_nCheckImpulseOtherSlot = pOther->GetSlot();
@@ -851,7 +851,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     if (g_pGameEngine->m_nBrutality != 0)
     {
-        if (nOtherSlot >= SLOT_TURNSTILE && nOtherSlot <= SLOT_TURNSTILE_LAST)
+        if (nOtherSlot >= kSlotTurnstile && nOtherSlot <= kSlotTurnstileLast)
         {
             ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
@@ -902,7 +902,7 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     EngineObject* pOther = pColOther->GetOwner();
 
-    if ((static_cast<unsigned char>(pSelf->m_nFlags) & ENGINEOBJECT_HIDDEN) == 0 && (static_cast<unsigned char>(pOther->m_nFlags) & ENGINEOBJECT_HIDDEN) == 0)
+    if ((static_cast<unsigned char>(pSelf->m_nFlags) & kEngineObjectHidden) == 0 && (static_cast<unsigned char>(pOther->m_nFlags) & kEngineObjectHidden) == 0)
     {
         const Vec3* pOtherVel = &pOther->GetPhysicsBody()->vel;
         const Vec3* pSelfVel  = &pSelf->GetPhysicsBody()->vel;
@@ -938,8 +938,8 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
             return;
         }
 
-        flOtherWeight = ((PlayerObject*)pOther)->m_stats.GetWeightedStat(RATING_WEIGHT_CLASS) + flOtherSpeed * SPEED_IN_WEIGHT + WEIGHT_FLOOR;
-        flSelfWeight  = flRoot * SPEED_IN_WEIGHT + ((PlayerObject*)pSelf)->m_stats.GetWeightedStat(RATING_WEIGHT_CLASS) + WEIGHT_FLOOR;
+        flOtherWeight = ((PlayerObject*)pOther)->m_stats.GetWeightedStat(kRatingWeightClass) + flOtherSpeed * SPEED_IN_WEIGHT + WEIGHT_FLOOR;
+        flSelfWeight  = flRoot * SPEED_IN_WEIGHT + ((PlayerObject*)pSelf)->m_stats.GetWeightedStat(kRatingWeightClass) + WEIGHT_FLOOR;
 
         const int nOtherParity = pOther->GetSlot() % 2;
 
@@ -975,9 +975,9 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
             }
         }
 
-        EngineObject* const pSoundMan = g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN];
+        EngineObject* const pSoundMan = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
-        pSoundMan->PostSceneEvent(MSG_HIT, pSelf->GetSlot());
+        pSoundMan->PostSceneEvent(kMsgHit, pSelf->GetSlot());
     }
 }
 

@@ -32,12 +32,12 @@
 #include "graphics/renderer.h"
 #include "input/keyboarddeviceobj.h"
 
-constexpr auto CHEAT_MESSAGE_MS = 1500;
+constexpr auto kCheatMessageMs = 1500;
 
 // FUNCTION: HYPERX 0x004497f0
 void Cheat::BroadcastFreakout()
 {
-    g_pGameEngine->BroadcastEvent(MSG_PLAY_CD, 0, 0);
+    g_pGameEngine->BroadcastEvent(kMsgPlayCD, 0, 0);
 }
 
 // FUNCTION: HYPERX 0x00449810
@@ -46,23 +46,23 @@ void Cheat::EnableHiddenTeams()
     g_pGameEngine->m_pSaveObject->SetAllTeamsAvailable(1);
 
     // STRING: HYPERX 0x004c2c5c
-    g_pMessageQueue->Push("Hidden teams enabled", 0, CHEAT_MESSAGE_MS);
+    g_pMessageQueue->Push("Hidden teams enabled", 0, kCheatMessageMs);
 }
 
 // FUNCTION: HYPERX 0x00449840
 void Cheat::PlayActivateSound()
 {
-    g_pAudioMgr->PlaySpecific(SOUND_SXSTMO1);
+    g_pAudioMgr->PlaySpecific(kSoundSxstmo1);
 }
 
 // Changes nothing in the game; the queued row appears whenever something next drains the queue.
 // FUNCTION: HYPERX 0x00449860
 void Cheat::GeorgeActivate()
 {
-    g_pAudioMgr->PlaySpecific(SOUND_SASRLES2);
+    g_pAudioMgr->PlaySpecific(kSoundSasrles2);
 
     // STRING: HYPERX 0x004c2c74
-    g_pMessageQueue->Push("George, it's good to see you", 0, CHEAT_MESSAGE_MS);
+    g_pMessageQueue->Push("George, it's good to see you", 0, kCheatMessageMs);
 }
 
 // FUNCTION: HYPERX 0x00449890
@@ -71,12 +71,12 @@ void Cheat::MaxViewedPlayerRatings()
     PlayerObject* pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
     // Only the six player slots carry stats.
-    if (pObject != nullptr && pObject->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pObject != nullptr && pObject->GetSlot() < kPlayerObjectCount)
     {
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)]       = 100.0f;
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)]     = 100.0f;
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_CHECKING)]     = 100.0f;
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_WEIGHT_CLASS)] = 100.0f;
+        pObject->m_stats.m_aStats[RATING_SLOT(kRatingDamage)]      = 100.0f;
+        pObject->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)]    = 100.0f;
+        pObject->m_stats.m_aStats[RATING_SLOT(kRatingChecking)]    = 100.0f;
+        pObject->m_stats.m_aStats[RATING_SLOT(kRatingWeightClass)] = 100.0f;
     }
 }
 
@@ -246,10 +246,10 @@ int CheatState::ProcessKeypress(char cKey)
 }
 
 // Message table entries the match keys show, and how long they stay up.
-constexpr auto MSG_FILTER_ON          = 0x54;
-constexpr auto MSG_FILTER_OFF         = 0x55;
-constexpr auto MSG_DROME_TEXTURED_ON  = 0x56;
-constexpr auto MSG_DROME_TEXTURED_OFF = 0x57;
+constexpr auto kMsgFilterOn         = 0x54;
+constexpr auto kMsgFilterOff        = 0x55;
+constexpr auto kMsgDromeTexturedOn  = 0x56;
+constexpr auto kMsgDromeTexturedOff = 0x57;
 #define MSG_TOGGLE_MS 0x5dc
 
 // FUNCTION: HYPERX 0x00449e20
@@ -262,9 +262,9 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
     unsigned int* pBindings;
     unsigned int  nToggled;
 
-    if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    if (g_gameApp.m_nEngineState == kEstateMatchLive)
     {
-        if (g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+        if (g_pGameEngine->m_wRunState == kEngineRunPlaying)
         {
             if (g_cheatState.ProcessKeypress(static_cast<char>(nKey)))
             {
@@ -273,8 +273,8 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
 
             switch (nKey)
             {
-                case Key::SUBTRACT:
-                case Key::OEM_MINUS:
+                case Key::kSubtract:
+                case Key::kOEMMinus:
                     if (Input::IsShiftKeyDown())
                     {
                         g_pAudioMgr->SfxFadeVolume(g_pAudioMgr->SfxReadVolume() - 1);
@@ -291,8 +291,8 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     pEngine->SetScreenSize(pEngine->m_nScreenSize - 1);
                     return 1;
 
-                case Key::ADD:
-                case Key::OEM_PLUS:
+                case Key::kAdd:
+                case Key::kOEMPlus:
                     if (Input::IsShiftKeyDown())
                     {
                         g_pAudioMgr->SfxFadeVolume(g_pAudioMgr->SfxReadVolume() + 1);
@@ -309,7 +309,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     pEngine->SetScreenSize(pEngine->m_nScreenSize + 1);
                     return 1;
 
-                case Key::F8:
+                case Key::kF8:
                     // The hardware renderer textures the drome without the texture DLL.
                     if (g_cMdmTexLoaded == 0 && !HwRenderer::Capturing())
                     {
@@ -326,28 +326,28 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
 
                     if (nToggled != 0)
                     {
-                        g_pMessageQueue->PushFromTable(MSG_DROME_TEXTURED_ON, 0, MSG_TOGGLE_MS);
+                        g_pMessageQueue->PushFromTable(kMsgDromeTexturedOn, 0, MSG_TOGGLE_MS);
                     }
                     else
                     {
-                        g_pMessageQueue->PushFromTable(MSG_DROME_TEXTURED_OFF, 0, MSG_TOGGLE_MS);
+                        g_pMessageQueue->PushFromTable(kMsgDromeTexturedOff, 0, MSG_TOGGLE_MS);
                     }
 
                     return 1;
 
-                case Key::F7:
+                case Key::kF7:
                     if (g_cMdmTexLoaded != 0)
                     {
-                        nToggled = WndProc::HandleRenderMenuCommand(ID_RENDER_BILINEAR_FILTER);
+                        nToggled = WndProc::HandleRenderMenuCommand(kIDRenderBilinearFilter);
                         g_pMessageQueue->ProcessAndClear();
 
                         if (nToggled != 0)
                         {
-                            g_pMessageQueue->PushFromTable(MSG_FILTER_ON, 0, MSG_TOGGLE_MS);
+                            g_pMessageQueue->PushFromTable(kMsgFilterOn, 0, MSG_TOGGLE_MS);
                         }
                         else
                         {
-                            g_pMessageQueue->PushFromTable(MSG_FILTER_OFF, 0, MSG_TOGGLE_MS);
+                            g_pMessageQueue->PushFromTable(kMsgFilterOff, 0, MSG_TOGGLE_MS);
                         }
                     }
 
@@ -371,7 +371,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                         }
 
                         ReserveRows* const pReserves = pEngine->GetReserveRows(pTeamDef);
-                        pEntity->PostSceneEvent(MSG_SUBSTITUTE_DROMER, pReserves->anRow[nKey - '1']);
+                        pEntity->PostSceneEvent(kMsgSubstituteDromer, pReserves->anRow[nKey - '1']);
                     }
 
                     return 1;
@@ -379,22 +379,22 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                 default:
                     pBindings = g_pInputDevice->GetDefaultKeyBindings();
 
-                    if (nKey == pBindings[BINDING_JUMP])
+                    if (nKey == pBindings[kBindingJump])
                     {
                         pEngine = g_pGameEngine;
                         nSlot   = pEngine->m_nViewedSlot;
-                        pEngine->m_ppSlots[nSlot]->PostSceneEvent(MSG_JUMP, 0);
+                        pEngine->m_ppSlots[nSlot]->PostSceneEvent(kMsgJump, 0);
                         return 1;
                     }
 
-                    if (nKey != pBindings[BINDING_THROW])
+                    if (nKey != pBindings[kBindingThrow])
                     {
                         return 0;
                     }
 
                     pEngine = g_pGameEngine;
                     nSlot   = pEngine->m_nViewedSlot;
-                    pEngine->m_ppSlots[nSlot]->PostSceneEvent(MSG_THROW_WIND_UP, 0);
+                    pEngine->m_ppSlots[nSlot]->PostSceneEvent(kMsgThrowWindUp, 0);
                     return 1;
             }
         }

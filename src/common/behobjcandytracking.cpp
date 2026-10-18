@@ -21,7 +21,7 @@ void BehObj_CandyTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFla
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_CANDY_TRACKING;
+    m_wKind = kBehCandyTracking;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CCircleTrack);
 

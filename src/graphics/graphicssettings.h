@@ -24,7 +24,7 @@ enum class Switch
     // The textured models with their textures, or the shaded models in their palette colours.
     TEXTURES,
 
-    // Nearest or linear texture filtering, as the original's F7 toggled.
+    // Nearest or linear texture filtering, as the original's kF7 toggled.
     LINEAR_FILTERING,
 
     // Draws a match as often as the loop runs, blending between the 30 Hz ticks, or once a tick.

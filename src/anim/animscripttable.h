@@ -65,7 +65,7 @@ public:
     }
 
     AnimScriptHead m_headWord;                   // 0x004
-    AnimDB*        m_apEntries[ANIMSET_ENTRIES]; // 0x008  three hundred script databases, 0x68 each
+    AnimDB*        m_apEntries[kAnimsetEntries]; // 0x008  three hundred script databases, 0x68 each
     short          m_nCount;                     // 0x4b8  how many are filled
     // The plan VM the parser builds the script into.
     class PlanVM* m_pPlanVm; // 0x4bc

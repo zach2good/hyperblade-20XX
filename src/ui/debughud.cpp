@@ -11,7 +11,7 @@
 
 // Angles print in degrees modulo a turn; the elevation adds a quarter turn, so down is nought.
 
-constexpr auto DEGREES_PER_TURN = 360;
+constexpr auto kDegreesPerTurn = 360;
 
 // GLOBAL: HYPERX 0x004d0990
 extern char g_szDebugLightLine[0x64];
@@ -30,7 +30,7 @@ void DebugHUD::UpdateLightingInfo()
     DebugHUD::PushLightString(g_szDebugLightLine, static_cast<short>(nLength));
 
     // STRING: HYPERX 0x004c67c8
-    nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", static_cast<int>((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % DEGREES_PER_TURN, static_cast<int>(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % DEGREES_PER_TURN);
+    nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", static_cast<int>((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % kDegreesPerTurn, static_cast<int>(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % kDegreesPerTurn);
 
     DebugHUD::PushLightString(g_szDebugLightLine, static_cast<short>(nLength));
 }

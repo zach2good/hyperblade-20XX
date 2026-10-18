@@ -78,7 +78,7 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
     short nValue;
     int   nJoystick;
 
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     if (pCamera != nullptr)
     {
@@ -120,7 +120,7 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
             return;
         }
 
-        if (nValue < PLAYER_OBJECT_COUNT)
+        if (nValue < kPlayerObjectCount)
         {
             g_pGameEngine->m_nViewedSlot = nValue;
 
@@ -146,12 +146,12 @@ void PlanAction::IfNotRokTrackMe(Interactor* pContext, PlanNode*, short*, int)
     }
     else
     {
-        pObject = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+        pObject = g_pGameEngine->GetCamera(kCameraMainSlot);
     }
 
-    if (pObject->m_nPrimaryTracked == SLOT_ROK)
+    if (pObject->m_nPrimaryTracked == kSlotRok)
     {
-        pTracked = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
+        pTracked = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
         if (pTracked == nullptr)
         {
@@ -178,7 +178,7 @@ void PlanAction::SetTrackToViewOwner(Interactor* pContext, PlanNode*, short*, in
     }
     else
     {
-        pObject = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+        pObject = g_pGameEngine->GetCamera(kCameraMainSlot);
     }
 
     // The actor's class here is not established; the other arm takes slot nine, a camera.
@@ -349,7 +349,7 @@ void PlanAction::SetOffsetValues(Interactor*, PlanNode* pArgs, short*, int)
     pPos->z = static_cast<float>(pArgs->m_pArgs[4].n * 0.1);
 }
 
-constexpr auto TRACKED_SLOT_LIMIT = 8;
+constexpr auto kTrackedSlotLimit = 8;
 
 // Every rejection writes -1, so an invalid request clears the tracked object.
 // FUNCTION: HYPERX 0x00401d70
@@ -364,7 +364,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
     }
     else
     {
-        pTarget = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+        pTarget = g_pGameEngine->GetCamera(kCameraMainSlot);
     }
 
     const PlanWord* pBlock = pArgs->m_pArgs;
@@ -394,7 +394,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
         return;
     }
 
-    if (static_cast<unsigned int>(nValue) > TRACKED_SLOT_LIMIT)
+    if (static_cast<unsigned int>(nValue) > kTrackedSlotLimit)
     {
         pTarget->m_nSecondaryTracked = -1;
 
@@ -429,7 +429,7 @@ void PlanAction::IncrementObjectToWatch(Interactor*, PlanNode*, short*, int)
         g_nSecondaryCamCursorA = 0;
     }
 
-    g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT)->SetSecondaryTrackedObject(g_pGameEngine->m_ppObjects[g_nSecondaryCamCursorA]);
+    g_pGameEngine->GetCamera(kCameraMainSlot)->SetSecondaryTrackedObject(g_pGameEngine->m_ppObjects[g_nSecondaryCamCursorA]);
 }
 
 // FUNCTION: HYPERX 0x00401e90
@@ -442,7 +442,7 @@ void PlanAction::IncrementObjectToTrack(Interactor*, PlanNode*, short*, int)
         g_nSecondaryCamCursorB = 0;
     }
 
-    g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT)->SetSecondaryTrackedObject(g_pGameEngine->m_ppObjects[g_nSecondaryCamCursorB]);
+    g_pGameEngine->GetCamera(kCameraMainSlot)->SetSecondaryTrackedObject(g_pGameEngine->m_ppObjects[g_nSecondaryCamCursorB]);
 }
 
 #define POS_WINDOW_SECONDS 0.5
@@ -459,16 +459,16 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
 
     auto nPos = static_cast<short>(flRate * flFactor * POS_WINDOW_SECONDS);
 
-    if (nPos > CAMERA_HISTORY_CAPACITY)
+    if (nPos > kCameraHistoryCapacity)
     {
-        nPos = CAMERA_HISTORY_CAPACITY;
+        nPos = kCameraHistoryCapacity;
     }
     else if (nPos < 1)
     {
         nPos = 1;
     }
 
-    pEngine->GetCamera(CAMERA_MAIN_SLOT)->SetPosHistorySize(nPos);
+    pEngine->GetCamera(kCameraMainSlot)->SetPosHistorySize(nPos);
 
     pEngine = g_pGameEngine;
 
@@ -477,23 +477,23 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
 
     auto nDir = static_cast<short>(flRate * flFactor * DIR_WINDOW_SECONDS);
 
-    if (nDir > CAMERA_HISTORY_CAPACITY)
+    if (nDir > kCameraHistoryCapacity)
     {
-        nDir = CAMERA_HISTORY_CAPACITY;
+        nDir = kCameraHistoryCapacity;
     }
     else if (nDir < 1)
     {
         nDir = 1;
     }
 
-    pEngine->GetCamera(CAMERA_MAIN_SLOT)->SetDirHistorySize(nDir);
+    pEngine->GetCamera(kCameraMainSlot)->SetDirHistorySize(nDir);
 }
 
-constexpr auto ARG_COUNT_OWN_CAMERA    = 1;
-constexpr auto ARG_COUNT_SLOT_AND_MODE = 3;
+constexpr auto kArgCountOwnCamera   = 1;
+constexpr auto kArgCountSlotAndMode = 3;
 
 #define ARG_SLOT 1
-constexpr auto ARG_MODE = 2;
+constexpr auto kArgMode = 2;
 
 // A half; its marker is in src/globals.cpp.
 extern const float g_flViewFracHalf;
@@ -507,7 +507,7 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
 
     const short nArgCount = pArgs->m_nArgCount;
 
-    if (nArgCount == ARG_COUNT_OWN_CAMERA)
+    if (nArgCount == kArgCountOwnCamera)
     {
         flFracX = g_flViewFracHalf;
         pCamera = (CameraObject*)pContext->GetActor();
@@ -517,17 +517,17 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
         pCamera = (CameraObject*)pContext->GetActor();
         pCamera->SetViewFracY(flFracY);
 
-        ((CameraObject*)pContext->GetActor())->SetReticleState(RETICLE_AIM);
+        ((CameraObject*)pContext->GetActor())->SetReticleState(kReticleAim);
         return;
     }
 
-    if (nArgCount == ARG_COUNT_SLOT_AND_MODE)
+    if (nArgCount == kArgCountSlotAndMode)
     {
         PlanWord* const pBlock = pArgs->m_pArgs;
 
-        g_pGameEngine->GetCamera(static_cast<short>(pBlock[ARG_SLOT].n))->SetReticleState(pBlock[ARG_MODE].n);
+        g_pGameEngine->GetCamera(static_cast<short>(pBlock[ARG_SLOT].n))->SetReticleState(pBlock[kArgMode].n);
 
-        if (pArgs->m_pArgs[ARG_MODE].n == RETICLE_OFF)
+        if (pArgs->m_pArgs[kArgMode].n == kReticleOff)
         {
             flFracX = g_flViewFracHalf;
             pCamera = (CameraObject*)pContext->GetActor();
@@ -550,7 +550,7 @@ void PlanAction::SetHeadCamText(Interactor* pContext, PlanNode* pArgs, short*, i
         g_pRenderer->SetHeadCamText(pArgs->m_pArgs[1].psz);
     }
 
-    ((CameraObject*)pContext->GetActor())->SetReticleState(RETICLE_OFF);
+    ((CameraObject*)pContext->GetActor())->SetReticleState(kReticleOff);
 }
 
 // Leads the tracked object by three frames of its velocity.
@@ -581,7 +581,7 @@ void PlanAction::InitRearViewPos(Interactor* pContext, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x00402100
 void PlanAction::SetCamOffsetToLocation(Interactor*, PlanNode*, short*, int)
 {
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
+    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     const Vec3* const pPos      = &pCamera->GetPhysicsBody()->pos;
     Vec3* const       pSettings = pCamera->m_pSettings;
@@ -628,8 +628,8 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     pVelocity->ScaleInPlace(flDelta);
 }
 
-constexpr auto ARG_SPREAD = 1;
-constexpr auto ARG_SPEED  = 2;
+constexpr auto kArgSpread = 1;
+constexpr auto kArgSpeed  = 2;
 
 // The defaults, taken whenever the block does not carry the number.
 #define DEFAULT_SPREAD 20.0f
@@ -641,7 +641,7 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
     float flSpread;
     float flSpeed;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(SLOT_EXPLOSION);
+    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
     const short nArgCount = pNode->m_nArgCount;
 
@@ -652,15 +652,15 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
     }
     else if (nArgCount < 3)
     {
-        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
+        flSpread = static_cast<float>(pNode->m_pArgs[kArgSpread].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
-        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
+        flSpread = static_cast<float>(pArgs[kArgSpread].n);
+        flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
     }
 
     EngineObject* pObject = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -688,7 +688,7 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     float flSpeed;
     Vec3  vAgainst;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(SLOT_EXPLOSION);
+    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
     const short nArgCount = pNode->m_nArgCount;
 
@@ -699,15 +699,15 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     }
     else if (nArgCount < 3)
     {
-        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
+        flSpread = static_cast<float>(pNode->m_pArgs[kArgSpread].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
-        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
+        flSpread = static_cast<float>(pArgs[kArgSpread].n);
+        flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
     }
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -741,7 +741,7 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
     float flSpread;
     float flSpeed;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(SLOT_EXPLOSION);
+    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
     const short nArgCount = pNode->m_nArgCount;
 
@@ -752,15 +752,15 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
     }
     else if (nArgCount < 3)
     {
-        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
+        flSpread = static_cast<float>(pNode->m_pArgs[kArgSpread].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
-        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
+        flSpread = static_cast<float>(pArgs[kArgSpread].n);
+        flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
     }
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -789,7 +789,7 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
     float flSpeed;
     Vec3  vDirection;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(SLOT_EXPLOSION);
+    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
     const short nArgCount = pNode->m_nArgCount;
 
@@ -800,15 +800,15 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
     }
     else if (nArgCount < 3)
     {
-        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
+        flSpread = static_cast<float>(pNode->m_pArgs[kArgSpread].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
-        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
+        flSpread = static_cast<float>(pArgs[kArgSpread].n);
+        flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
     }
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -847,7 +847,7 @@ void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 
             Vec3 vDirection = pActor->m_pBody->vel;
 
-            if (pActor->GetSlot() <= GOALIE_SLOT_B)
+            if (pActor->GetSlot() <= kGoalieSlotB)
             {
                 vStart.z = vStart.GetZ() + 3.0f;
             }
@@ -926,13 +926,13 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 
     pActor = pContext->GetActor();
 
-    if (pActor->GetSlot() == SLOT_ROK)
+    if (pActor->GetSlot() == kSlotRok)
     {
         pSpawn = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
         if (pSpawn != nullptr)
         {
-            if (pSpawn->GetSlot() < PLAYER_OBJECT_COUNT)
+            if (pSpawn->GetSlot() < kPlayerObjectCount)
             {
                 ((RokObject*)pActor)->ActivateAtSpawnSlot(nSlot);
 
@@ -952,7 +952,7 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 
                 pActor->m_pBody->pos = vHead;
 
-                pBone->SetFlags(MESHBONE_HIDDEN);
+                pBone->SetFlags(kMeshboneHidden);
 
                 pSource   = pSpawn->GetPhysicsBody();
                 vVelocity = pSource->velDir;
@@ -1007,27 +1007,27 @@ void PlanAction::RegainHead(Interactor* pContext, PlanNode*, short*, int)
 
     RokObject* const pRok = g_pGameEngine->GetRok();
 
-    if (nSlot < SLOT_ROK)
+    if (nSlot < kSlotRok)
     {
-        pActor->m_nFlags &= ~ENGINEOBJECT_HIDDEN;
+        pActor->m_nFlags &= ~kEngineObjectHidden;
 
-        pActor->m_pBones[HEAD_BONE].ClearFlags(MESHBONE_HIDDEN);
+        pActor->m_pBones[HEAD_BONE].ClearFlags(kMeshboneHidden);
 
         return;
     }
 
-    if (nSlot == SLOT_ROK)
+    if (nSlot == kSlotRok)
     {
-        pRok->ActivateAtSpawnSlot(SPAWN_SLOT_ANY);
+        pRok->ActivateAtSpawnSlot(kSpawnSlotAny);
     }
 }
 
 // The guards read the node's own arity.
 #define ARG_OBJECT 1
 
-constexpr auto BONE_SPLIT = 7;
-constexpr auto BONE_COUNT = 15;
-constexpr auto HIDE_LAST  = 15;
+constexpr auto kBoneSplit = 7;
+constexpr auto kBoneCount = 15;
+constexpr auto kHideLast  = 15;
 
 short g_nSecondaryCamCursorA = -1;
 short g_nSecondaryCamCursorB = -1;
@@ -1081,7 +1081,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     const int nSlot = pSubject->GetSlot();
 
-    if (nSlot >= PLAYER_OBJECT_COUNT)
+    if (nSlot >= kPlayerObjectCount)
     {
         return;
     }
@@ -1091,16 +1091,16 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
     pFirst  = g_pGameEngine->m_ppSlots[static_cast<short>(g_anSubstitutePairs[nPair])];
     pSecond = g_pGameEngine->m_ppSlots[static_cast<short>(g_anSubstitutePairs[nPair + 1])];
 
-    for (nIndex = 0; nIndex <= HIDE_LAST; nIndex++)
+    for (nIndex = 0; nIndex <= kHideLast; nIndex++)
     {
         if (pFirst != nullptr)
         {
-            pFirst->m_pBones[static_cast<short>(nIndex)].ClearFlags(MESHBONE_HIDDEN);
+            pFirst->m_pBones[static_cast<short>(nIndex)].ClearFlags(kMeshboneHidden);
         }
 
         if (pSecond != nullptr)
         {
-            pSecond->m_pBones[static_cast<short>(nIndex)].ClearFlags(MESHBONE_HIDDEN);
+            pSecond->m_pBones[static_cast<short>(nIndex)].ClearFlags(kMeshboneHidden);
         }
     }
 
@@ -1109,13 +1109,13 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         if (pFirst != nullptr)
         {
             Object::SpawnAtObjectRotated(pSubject, pFirst, 1);
-            pFirst->PostSceneEvent(MSG_DEKE, 0);
+            pFirst->PostSceneEvent(kMsgDeke, 0);
         }
 
         if (pSecond != nullptr)
         {
             Object::SpawnAtObjectRotated(pSubject, pSecond, 0);
-            pSecond->PostSceneEvent(MSG_DEKE, 0);
+            pSecond->PostSceneEvent(kMsgDeke, 0);
         }
 
         return;
@@ -1123,9 +1123,9 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     if (pFirst != nullptr)
     {
-        for (pBone = g_anSubstituteBones; pBone < g_anSubstituteBones + BONE_SPLIT; pBone++)
+        for (pBone = g_anSubstituteBones; pBone < g_anSubstituteBones + kBoneSplit; pBone++)
         {
-            pFirst->m_pBones[static_cast<short>(*pBone)].SetFlags(MESHBONE_HIDDEN);
+            pFirst->m_pBones[static_cast<short>(*pBone)].SetFlags(kMeshboneHidden);
         }
 
         Object::CopyPhysicsStateTo(pSubject, pFirst, 1);
@@ -1133,11 +1133,11 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     if (pSecond != nullptr)
     {
-        for (pBone = g_anSubstituteBones + BONE_SPLIT;
-             pBone < g_anSubstituteBones + BONE_COUNT;
+        for (pBone = g_anSubstituteBones + kBoneSplit;
+             pBone < g_anSubstituteBones + kBoneCount;
              pBone++)
         {
-            pSecond->m_pBones[static_cast<short>(*pBone)].SetFlags(MESHBONE_HIDDEN);
+            pSecond->m_pBones[static_cast<short>(*pBone)].SetFlags(kMeshboneHidden);
         }
 
         Object::CopyPhysicsStateTo(pSubject, pSecond, 0);
@@ -1195,5 +1195,5 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         }
     }
 
-    pSubject->m_nFlags |= ENGINEOBJECT_HIDDEN;
+    pSubject->m_nFlags |= kEngineObjectHidden;
 }

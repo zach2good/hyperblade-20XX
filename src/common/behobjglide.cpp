@@ -21,7 +21,7 @@ void BehObj_Glide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_GLIDE;
+    m_wKind = kBehGlide;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CGlideOnSurface);
 

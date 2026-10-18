@@ -31,7 +31,7 @@ float MatchStats::SetAt(int nIndex, float flValue)
     return flValue;
 }
 
-// Open from MATCH_STAT_POSS_START to MATCH_STAT_POSS_STOP; src/globals.cpp defines it.
+// Open from kMatchStatPossStart to kMatchStatPossStop; src/globals.cpp defines it.
 extern char g_bStatIntervalOpen;
 
 // FUNCTION: HYPERX 0x004918d0
@@ -39,55 +39,55 @@ float MatchStats::AccumulateStat(int nStatId, int)
 {
     switch (nStatId)
     {
-        case MATCH_STAT_1X_GOAL:
-            m_aStat[MATCH_STAT_1X_GOAL]++;
-            m_aStat[MATCH_STAT_TOTAL_GOALS]++;
-            m_aStat[MATCH_STAT_TOTAL_POINTS]++;
-            m_aStat[MATCH_STAT_SHOOTING_PCT] =
-                (m_aStat[MATCH_STAT_TOTAL_GOALS] / m_aStat[MATCH_STAT_SHOTS_ON_GOAL]) * 100.0f;
+        case kMatchStat1xGoal:
+            m_aStat[kMatchStat1xGoal]++;
+            m_aStat[kMatchStatTotalGoals]++;
+            m_aStat[kMatchStatTotalPoints]++;
+            m_aStat[kMatchStatShootingPct] =
+                (m_aStat[kMatchStatTotalGoals] / m_aStat[kMatchStatShotsOnGoal]) * 100.0f;
 
             break;
 
-        case MATCH_STAT_2X_GOAL:
-            m_aStat[MATCH_STAT_2X_GOAL]++;
-            m_aStat[MATCH_STAT_TOTAL_GOALS]++;
-            m_aStat[MATCH_STAT_TOTAL_POINTS] += 2.0f;
-            m_aStat[MATCH_STAT_SHOOTING_PCT] =
-                (m_aStat[MATCH_STAT_TOTAL_GOALS] / m_aStat[MATCH_STAT_SHOTS_ON_GOAL]) * 100.0f;
+        case kMatchStat2xGoal:
+            m_aStat[kMatchStat2xGoal]++;
+            m_aStat[kMatchStatTotalGoals]++;
+            m_aStat[kMatchStatTotalPoints] += 2.0f;
+            m_aStat[kMatchStatShootingPct] =
+                (m_aStat[kMatchStatTotalGoals] / m_aStat[kMatchStatShotsOnGoal]) * 100.0f;
 
             break;
 
-        case MATCH_STAT_4X_GOAL:
-            m_aStat[MATCH_STAT_4X_GOAL]++;
-            m_aStat[MATCH_STAT_TOTAL_GOALS]++;
-            m_aStat[MATCH_STAT_TOTAL_POINTS] += 4.0f;
-            m_aStat[MATCH_STAT_SHOOTING_PCT] =
-                (m_aStat[MATCH_STAT_TOTAL_GOALS] / m_aStat[MATCH_STAT_SHOTS_ON_GOAL]) * 100.0f;
+        case kMatchStat4xGoal:
+            m_aStat[kMatchStat4xGoal]++;
+            m_aStat[kMatchStatTotalGoals]++;
+            m_aStat[kMatchStatTotalPoints] += 4.0f;
+            m_aStat[kMatchStatShootingPct] =
+                (m_aStat[kMatchStatTotalGoals] / m_aStat[kMatchStatShotsOnGoal]) * 100.0f;
 
             break;
 
-        case MATCH_STAT_SHOTS_ON_GOAL:
-            m_aStat[MATCH_STAT_SHOTS_ON_GOAL]++;
-            m_aStat[MATCH_STAT_SHOOTING_PCT] =
-                (m_aStat[MATCH_STAT_TOTAL_GOALS] / m_aStat[MATCH_STAT_SHOTS_ON_GOAL]) * 100.0f;
+        case kMatchStatShotsOnGoal:
+            m_aStat[kMatchStatShotsOnGoal]++;
+            m_aStat[kMatchStatShootingPct] =
+                (m_aStat[kMatchStatTotalGoals] / m_aStat[kMatchStatShotsOnGoal]) * 100.0f;
 
             break;
 
-        case MATCH_STAT_POSS_START:
-            m_aStat[MATCH_STAT_POSS_START] = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
+        case kMatchStatPossStart:
+            m_aStat[kMatchStatPossStart] = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
 
             g_bStatIntervalOpen = 1;
 
             break;
 
-        case MATCH_STAT_POSS_STOP:
+        case kMatchStatPossStop:
             if (g_bStatIntervalOpen != 0)
             {
                 const auto flNow = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
 
-                m_aStat[MATCH_STAT_POSS_STOP] = flNow;
-                m_aStat[MATCH_STAT_TIME_OF_POSS] =
-                    (flNow - m_aStat[MATCH_STAT_POSS_START]) + m_aStat[MATCH_STAT_TIME_OF_POSS];
+                m_aStat[kMatchStatPossStop] = flNow;
+                m_aStat[kMatchStatTimeOfPoss] =
+                    (flNow - m_aStat[kMatchStatPossStart]) + m_aStat[kMatchStatTimeOfPoss];
 
                 g_bStatIntervalOpen = 0;
 
@@ -96,77 +96,77 @@ float MatchStats::AccumulateStat(int nStatId, int)
 
             break;
 
-        case MATCH_STAT_RANDOMIZERS:
-            m_aStat[MATCH_STAT_RANDOMIZERS]++;
+        case kMatchStatRandomizers:
+            m_aStat[kMatchStatRandomizers]++;
 
             break;
 
-        case MATCH_STAT_KILLBALLS:
-            m_aStat[MATCH_STAT_KILLBALLS]++;
+        case kMatchStatKillballs:
+            m_aStat[kMatchStatKillballs]++;
 
             break;
 
-        case MATCH_STAT_INJURIES:
-            m_aStat[MATCH_STAT_INJURIES]++;
+        case kMatchStatInjuries:
+            m_aStat[kMatchStatInjuries]++;
 
             break;
 
-        case MATCH_STAT_FATALITIES:
-            m_aStat[MATCH_STAT_FATALITIES]++;
+        case kMatchStatFatalities:
+            m_aStat[kMatchStatFatalities]++;
 
             break;
 
-        case MATCH_STAT_ASSISTS:
-            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 15000.0f < m_aStat[MATCH_STAT_TOP_STAMP_END])
+        case kMatchStatAssists:
+            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 15000.0f < m_aStat[kMatchStatTopStampEnd])
             {
-                m_aStat[MATCH_STAT_ASSISTS]++;
+                m_aStat[kMatchStatAssists]++;
             }
 
-            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 1000.0f < m_aStat[MATCH_STAT_TOP_STAMP_END])
+            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 1000.0f < m_aStat[kMatchStatTopStampEnd])
             {
-                m_aStat[MATCH_STAT_ONE_TIMERS]++;
+                m_aStat[kMatchStatOneTimers]++;
 
                 break;
             }
 
             break;
 
-        case MATCH_STAT_GOALS:
-            m_aStat[MATCH_STAT_GOALS]++;
+        case kMatchStatGoals:
+            m_aStat[kMatchStatGoals]++;
 
-            m_aStat[MATCH_STAT_SHOOTING] = Percent(MATCH_STAT_GOALS, MATCH_STAT_SHOTS);
-
-            break;
-
-        case MATCH_STAT_PASSES_COMPLETED:
-            m_aStat[MATCH_STAT_PASSES_COMPLETED]++;
-
-            m_aStat[MATCH_STAT_PASSING] =
-                Percent(MATCH_STAT_PASSES_COMPLETED, MATCH_STAT_PASSES_ATTEMPTED);
+            m_aStat[kMatchStatShooting] = Percent(kMatchStatGoals, kMatchStatShots);
 
             break;
 
-        case MATCH_STAT_2_POINT_COMPLETED:
-            m_aStat[MATCH_STAT_2_POINT_COMPLETED]++;
+        case kMatchStatPassesCompleted:
+            m_aStat[kMatchStatPassesCompleted]++;
 
-            m_aStat[MATCH_STAT_2_POINT_SCORES] =
-                Percent(MATCH_STAT_PASSES_COMPLETED, MATCH_STAT_PASSES_ATTEMPTED);
-
-            break;
-
-        case MATCH_STAT_SHORT_HANDED_COMPLETED:
-            m_aStat[MATCH_STAT_SHORT_HANDED_COMPLETED]++;
-
-            m_aStat[MATCH_STAT_2_POINT_SCORES] =
-                Percent(MATCH_STAT_SHORT_HANDED_COMPLETED, MATCH_STAT_SHORT_HANDED_ATTEMPTS);
+            m_aStat[kMatchStatPassing] =
+                Percent(kMatchStatPassesCompleted, kMatchStatPassesAttempted);
 
             break;
 
-        case MATCH_STAT_POWER_PLAY_COMPLETED:
-            m_aStat[MATCH_STAT_POWER_PLAY_COMPLETED]++;
+        case kMatchStat2PointCompleted:
+            m_aStat[kMatchStat2PointCompleted]++;
 
-            m_aStat[MATCH_STAT_2_POINT_SCORES] =
-                Percent(MATCH_STAT_POWER_PLAY_COMPLETED, MATCH_STAT_POWER_PLAY_ATTEMPTS);
+            m_aStat[kMatchStat2PointScores] =
+                Percent(kMatchStatPassesCompleted, kMatchStatPassesAttempted);
+
+            break;
+
+        case kMatchStatShortHandedCompleted:
+            m_aStat[kMatchStatShortHandedCompleted]++;
+
+            m_aStat[kMatchStat2PointScores] =
+                Percent(kMatchStatShortHandedCompleted, kMatchStatShortHandedAttempts);
+
+            break;
+
+        case kMatchStatPowerPlayCompleted:
+            m_aStat[kMatchStatPowerPlayCompleted]++;
+
+            m_aStat[kMatchStat2PointScores] =
+                Percent(kMatchStatPowerPlayCompleted, kMatchStatPowerPlayAttempts);
 
             break;
 
@@ -201,28 +201,28 @@ float MatchStats::StopTimer(int nIndex)
 
     switch (nIndex)
     {
-        case MATCH_STAT_TOP_STAMP_END:
-            m_aStat[MATCH_STAT_TIME_OF_POSSESSION] =
-                m_aStat[MATCH_STAT_TOP_STAMP_END] - m_aStat[MATCH_STAT_TOP_STAMP_START] + m_aStat[MATCH_STAT_TIME_OF_POSSESSION];
-            m_aStat[MATCH_STAT_TOP_STAMP_START] = 0.0f;
+        case kMatchStatTopStampEnd:
+            m_aStat[kMatchStatTimeOfPossession] =
+                m_aStat[kMatchStatTopStampEnd] - m_aStat[kMatchStatTopStampStart] + m_aStat[kMatchStatTimeOfPossession];
+            m_aStat[kMatchStatTopStampStart] = 0.0f;
             return m_aStat[nIndex];
 
-        case MATCH_STAT_TOR_STAMP_END:
-            m_aStat[MATCH_STAT_TIME_ON_RAIL] =
-                m_aStat[MATCH_STAT_TOR_STAMP_END] - m_aStat[MATCH_STAT_TOR_STAMP_START] + m_aStat[MATCH_STAT_TIME_ON_RAIL];
-            m_aStat[MATCH_STAT_TOR_STAMP_START] = 0.0f;
+        case kMatchStatTorStampEnd:
+            m_aStat[kMatchStatTimeOnRail] =
+                m_aStat[kMatchStatTorStampEnd] - m_aStat[kMatchStatTorStampStart] + m_aStat[kMatchStatTimeOnRail];
+            m_aStat[kMatchStatTorStampStart] = 0.0f;
             return m_aStat[nIndex];
 
-        case MATCH_STAT_HT_STAMP_END:
-            m_aStat[MATCH_STAT_HANG_TIME] =
-                m_aStat[MATCH_STAT_HT_STAMP_END] - m_aStat[MATCH_STAT_HT_STAMP_START] + m_aStat[MATCH_STAT_HANG_TIME];
-            m_aStat[MATCH_STAT_HT_STAMP_START] = 0.0f;
+        case kMatchStatHtStampEnd:
+            m_aStat[kMatchStatHangTime] =
+                m_aStat[kMatchStatHtStampEnd] - m_aStat[kMatchStatHtStampStart] + m_aStat[kMatchStatHangTime];
+            m_aStat[kMatchStatHtStampStart] = 0.0f;
             return m_aStat[nIndex];
 
-        case MATCH_STAT_PPT_STAMP_END:
-            m_aStat[MATCH_STAT_POWER_PLAY_TIME] =
-                m_aStat[MATCH_STAT_PPT_STAMP_END] - m_aStat[MATCH_STAT_PPT_STAMP_START] + m_aStat[MATCH_STAT_POWER_PLAY_TIME];
-            m_aStat[MATCH_STAT_PPT_STAMP_START] = 0.0f;
+        case kMatchStatPptStampEnd:
+            m_aStat[kMatchStatPowerPlayTime] =
+                m_aStat[kMatchStatPptStampEnd] - m_aStat[kMatchStatPptStampStart] + m_aStat[kMatchStatPowerPlayTime];
+            m_aStat[kMatchStatPptStampStart] = 0.0f;
             return m_aStat[nIndex];
 
         default:

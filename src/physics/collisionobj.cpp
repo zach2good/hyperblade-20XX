@@ -23,7 +23,7 @@ CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFri
 
     if (m_vNormal.x == g_flZeroCollisionObj && m_vNormal.y == g_flZeroCollisionObj && m_vNormal.z == g_flZeroCollisionObj)
     {
-        g_gameApp.FatalString((const char*)static_cast<std::uintptr_t>(static_cast<unsigned short>(STRING_ZERO_NORMAL_IN_PLANE)));
+        g_gameApp.FatalString((const char*)static_cast<std::uintptr_t>(static_cast<unsigned short>(kStringZeroNormalInPlane)));
     }
 
     m_vPoint = *pOrigin;
@@ -55,7 +55,7 @@ void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Ve
 
     if (!Math::Vec3Normalize(pNormal))
     {
-        g_gameApp.FatalString((const char*)static_cast<std::uintptr_t>(static_cast<unsigned short>(STRING_ZERO_NORMAL_IN_PLANE)));
+        g_gameApp.FatalString((const char*)static_cast<std::uintptr_t>(static_cast<unsigned short>(kStringZeroNormalInPlane)));
     }
 
     m_vPoint = *pOrigin;
@@ -71,68 +71,68 @@ int CollisionObj::GetModelId(int nIndex)
 {
     switch (nIndex)
     {
-        case COB_DROMER_0:
-        case COB_BATON_EZONE_0:
-        case COB_DROMER_BODY_0:
-        case COB_DR0_AWARENESS:
-            return SLOT_DROMER0;
+        case kCOBDromer0:
+        case kCOBBatonEzone0:
+        case kCOBDromerBody0:
+        case kCOBDr0Awareness:
+            return kSlotDromer0;
 
-        case COB_DROMER_1:
-        case COB_BATON_EZONE_1:
-        case COB_DROMER_BODY_1:
-        case COB_DR1_AWARENESS:
-            return SLOT_DROMER1;
+        case kCOBDromer1:
+        case kCOBBatonEzone1:
+        case kCOBDromerBody1:
+        case kCOBDr1Awareness:
+            return kSlotDromer1;
 
-        case COB_DROMER_2:
-        case COB_BATON_EZONE_2:
-        case COB_DROMER_BODY_2:
-        case COB_DR2_AWARENESS:
-            return SLOT_DROMER2;
+        case kCOBDromer2:
+        case kCOBBatonEzone2:
+        case kCOBDromerBody2:
+        case kCOBDr2Awareness:
+            return kSlotDromer2;
 
-        case COB_DROMER_3:
-        case COB_BATON_EZONE_3:
-        case COB_DROMER_BODY_3:
-        case COB_DR3_AWARENESS:
-            return SLOT_DROMER3;
+        case kCOBDromer3:
+        case kCOBBatonEzone3:
+        case kCOBDromerBody3:
+        case kCOBDr3Awareness:
+            return kSlotDromer3;
 
-        case COB_DROMER_4:
-        case COB_BATON_EZONE_4:
-        case COB_DROMER_BODY_4:
-        case COB_DR4_AWARENESS:
-            return GOALIE_SLOT_A;
+        case kCOBDromer4:
+        case kCOBBatonEzone4:
+        case kCOBDromerBody4:
+        case kCOBDr4Awareness:
+            return kGoalieSlotA;
 
-        case COB_DROMER_5:
-        case COB_BATON_EZONE_5:
-        case COB_DROMER_BODY_5:
-        case COB_DR5_AWARENESS:
-            return GOALIE_SLOT_B;
+        case kCOBDromer5:
+        case kCOBBatonEzone5:
+        case kCOBDromerBody5:
+        case kCOBDr5Awareness:
+            return kGoalieSlotB;
 
-        case COB_NGOAL_ZONE:
-        case COB_NGOAL_CASE:
-        case COB_NGOAL_PORT:
-        case COB_NGOAL_SIDE:
-            return SLOT_NGOAL;
+        case kCOBNgoalZone:
+        case kCOBNgoalCase:
+        case kCOBNgoalPort:
+        case kCOBNgoalSide:
+            return kSlotNgoal;
 
-        case COB_SGOAL_ZONE:
-        case COB_SGOAL_CASE:
-        case COB_SGOAL_PORT:
-        case COB_SGOAL_SIDE:
-            return SLOT_SGOAL;
+        case kCOBSgoalZone:
+        case kCOBSgoalCase:
+        case kCOBSgoalPort:
+        case kCOBSgoalSide:
+            return kSlotSgoal;
 
-        case COB_MULTIPLIER:
-            return SLOT_MULTIPLIER;
+        case kCOBMultiplier:
+            return kSlotMultiplier;
 
-        case COB_MINE:
-            return SLOT_MINE;
+        case kCOBMine:
+            return kSlotMine;
 
-        case COB_SWARF:
-            return SLOT_SWARF;
+        case kCOBSwarf:
+            return kSlotSwarf;
 
         default:
             // STRING: HYPERX 0x004c45cc
             g_gameApp.Fatal("ColObj to Model map unaccounted for.\n");
 
-            return MODEL_ID_NONE;
+            return kModelIDNone;
     }
 }
 

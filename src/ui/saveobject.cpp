@@ -128,7 +128,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
 {
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData,
-                       MAX_PATH_LENGTH);
+                       kMaxPathLength);
     char*      pLine;
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
@@ -157,7 +157,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
                 return 0;
             }
 
-            for (int nSlot = 0; nSlot < GAUNTLET_ROUND_SLOTS && pSpace != nullptr; nSlot++)
+            for (int nSlot = 0; nSlot < kGauntletRoundSlots && pSpace != nullptr; nSlot++)
             {
                 pSpace++;
                 const auto nValue         = static_cast<short>(atoi(pSpace));

@@ -10,7 +10,7 @@ class MsgInteractor : public Interactor
 {
 public:
     MsgInteractor()
-    : Interactor(0, MSG_NOMSG, -1, 1)
+    : Interactor(0, kMsgNomsg, -1, 1)
     {
     }
 

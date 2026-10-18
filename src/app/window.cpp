@@ -48,10 +48,10 @@ void Window::ApplyFullscreenStyle()
 
     s_bSized = true;
 
-    constexpr auto START_WIDTH  = 1920;
-    constexpr auto START_HEIGHT = 1080;
+    constexpr auto kStartWidth  = 1920;
+    constexpr auto kStartHeight = 1080;
 
-    SDL_SetWindowSize(s_pWindow, START_WIDTH, START_HEIGHT);
+    SDL_SetWindowSize(s_pWindow, kStartWidth, kStartHeight);
     SDL_SetWindowPosition(s_pWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
@@ -63,14 +63,14 @@ void Window::InvalidateAndUpdate()
 
 // The menus and splashes paint at 640x480. They draw into this canvas, which is scaled to the
 // window keeping its shape, and the mouse is mapped back into it.
-constexpr auto MENU_WIDTH  = 640;
-constexpr auto MENU_HEIGHT = 480;
+constexpr auto kMenuWidth  = 640;
+constexpr auto kMenuHeight = 480;
 
-static std::vector<std::uint32_t> s_menuPixels(static_cast<size_t>(MENU_WIDTH* MENU_HEIGHT));
+static std::vector<std::uint32_t> s_menuPixels(static_cast<size_t>(kMenuWidth* kMenuHeight));
 
 Window::MenuCanvas Window::MenuPixels()
 {
-    return MenuCanvas{ s_menuPixels.data(), MENU_WIDTH, MENU_HEIGHT };
+    return MenuCanvas{ s_menuPixels.data(), kMenuWidth, kMenuHeight };
 }
 
 // The canvas's place in the client area: as large as fits, centred.
@@ -82,12 +82,12 @@ static SDL_Rect MenuRect()
     SDL_GetWindowSizeInPixels(s_pWindow, &nClientWidth, &nClientHeight);
 
     auto cx = nClientWidth;
-    auto cy = cx * MENU_HEIGHT / MENU_WIDTH;
+    auto cy = cx * kMenuHeight / kMenuWidth;
 
     if (cy > nClientHeight)
     {
         cy = nClientHeight;
-        cx = cy * MENU_WIDTH / MENU_HEIGHT;
+        cx = cy * kMenuWidth / kMenuHeight;
     }
 
     return SDL_Rect{ (nClientWidth - cx) / 2, (nClientHeight - cy) / 2, cx, cy };
@@ -96,7 +96,7 @@ static SDL_Rect MenuRect()
 // SDL fits the canvas the same way MenuRect does, so the mouse mapping agrees with the picture.
 void Window::PresentMenu()
 {
-    Presenter::Canvas(s_menuPixels.data(), MENU_WIDTH * 4, MENU_WIDTH, MENU_HEIGHT);
+    Presenter::Canvas(s_menuPixels.data(), kMenuWidth * 4, kMenuWidth, kMenuHeight);
 }
 
 Point Window::ToMenuPoint(int nX, int nY)
@@ -108,7 +108,7 @@ Point Window::ToMenuPoint(int nX, int nY)
         return Point{ nX, nY };
     }
 
-    return Point{ (nX - rc.x) * MENU_WIDTH / rc.w, (nY - rc.y) * MENU_HEIGHT / rc.h };
+    return Point{ (nX - rc.x) * kMenuWidth / rc.w, (nY - rc.y) * kMenuHeight / rc.h };
 }
 
 // The 3D renders at the client size, so it is never stretched. The width stays a multiple of four,
@@ -129,7 +129,7 @@ void Window::OnSize(int cx, int cy)
     }
 
     // The resize lays out the main camera, which an engine still loading has not made yet.
-    if (g_pGameEngine != nullptr && (g_pGameEngine->m_ppSlots == nullptr || g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT) == nullptr))
+    if (g_pGameEngine != nullptr && (g_pGameEngine->m_ppSlots == nullptr || g_pGameEngine->GetCamera(kCameraMainSlot) == nullptr))
     {
         return;
     }
@@ -158,7 +158,7 @@ void Window::OnSize(int cx, int cy)
 // Menus redraw from the canvas at the new size; a match redraws itself next frame.
 void Window::OnSizeMenus()
 {
-    if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    if (g_gameApp.m_nEngineState != kEstateMatchLive)
     {
         Window::PresentMenu();
     }
@@ -171,11 +171,11 @@ static bool s_bInLiveUpdate = false;
 static unsigned int MouseFlags(SDL_MouseButtonFlags buttons)
 {
     constexpr std::pair<SDL_MouseButtonFlags, unsigned int> BUTTONS[] = {
-        { SDL_BUTTON_LMASK, MOUSE_LEFT },
-        { SDL_BUTTON_RMASK, MOUSE_RIGHT },
-        { SDL_BUTTON_MMASK, MOUSE_MIDDLE },
-        { SDL_BUTTON_X1MASK, MOUSE_X1 },
-        { SDL_BUTTON_X2MASK, MOUSE_X2 },
+        { SDL_BUTTON_LMASK, kMouseLeft },
+        { SDL_BUTTON_RMASK, kMouseRight },
+        { SDL_BUTTON_MMASK, kMouseMiddle },
+        { SDL_BUTTON_X1MASK, kMouseX1 },
+        { SDL_BUTTON_X2MASK, kMouseX2 },
     };
 
     auto nFlags = 0u;
@@ -192,12 +192,12 @@ static unsigned int MouseFlags(SDL_MouseButtonFlags buttons)
 
     if ((mod & SDL_KMOD_SHIFT) != 0)
     {
-        nFlags |= MOUSE_SHIFT;
+        nFlags |= kMouseShift;
     }
 
     if ((mod & SDL_KMOD_CTRL) != 0)
     {
-        nFlags |= MOUSE_CONTROL;
+        nFlags |= kMouseControl;
     }
 
     return nFlags;
@@ -226,13 +226,13 @@ static void HandleKey(const SDL_KeyboardEvent& key)
         return;
     }
 
-    // Releases always reach the game, so no key is left held; F2 opens and closes the debug menu.
+    // Releases always reach the game, so no key is left held; kF2 opens and closes the debug menu.
     if (!key.down)
     {
         InputLog::Add("Keyboard", nKey, false, nullptr);
         WndProc::OnKeyUp(nKey);
     }
-    else if (!DebugMenu::WantsKeyboard() || nKey == Key::F2)
+    else if (!DebugMenu::WantsKeyboard() || nKey == Key::kF2)
     {
         if (!key.repeat)
         {
@@ -252,20 +252,20 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
         {
             if (button.down)
             {
-                return INPUT_LEFT_DOWN;
+                return kInputLeftDown;
             }
 
-            return INPUT_LEFT_UP;
+            return kInputLeftUp;
         }
 
         if (button.button == SDL_BUTTON_RIGHT)
         {
             if (button.down)
             {
-                return INPUT_RIGHT_DOWN;
+                return kInputRightDown;
             }
 
-            return INPUT_RIGHT_UP;
+            return kInputRightUp;
         }
 
         return 0;
@@ -293,10 +293,10 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
     {
         if (button.button == SDL_BUTTON_LEFT)
         {
-            return Key::LBUTTON;
+            return Key::kLbutton;
         }
 
-        return Key::RBUTTON;
+        return Key::kRbutton;
     }();
 
     InputLog::Add("Mouse", nButton, button.down, nullptr);
@@ -486,12 +486,12 @@ bool Window::AskYesNo(const char* pszText, const char* pszCaption)
 
 Window::MessageAnswer Window::ShowMessage(const char* pszText, const char* pszCaption, MessageButtons buttons, MessageIcon icon)
 {
-    constexpr auto RETURN = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
-    constexpr auto ESCAPE = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
+    constexpr auto kReturn = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
+    constexpr auto kEscape = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
 
-    const auto aOK       = std::array{ SDL_MessageBoxButtonData{ RETURN | ESCAPE, static_cast<int>(MessageAnswer::OK), "OK" } };
-    const auto aOKCancel = std::array{ SDL_MessageBoxButtonData{ RETURN, static_cast<int>(MessageAnswer::OK), "OK" }, SDL_MessageBoxButtonData{ ESCAPE, static_cast<int>(MessageAnswer::CANCEL), "Cancel" } };
-    const auto aYesNo    = std::array{ SDL_MessageBoxButtonData{ RETURN, static_cast<int>(MessageAnswer::YES), "Yes" }, SDL_MessageBoxButtonData{ ESCAPE, static_cast<int>(MessageAnswer::NO), "No" } };
+    const auto aOK       = std::array{ SDL_MessageBoxButtonData{ kReturn | kEscape, static_cast<int>(MessageAnswer::OK), "OK" } };
+    const auto aOKCancel = std::array{ SDL_MessageBoxButtonData{ kReturn, static_cast<int>(MessageAnswer::OK), "OK" }, SDL_MessageBoxButtonData{ kEscape, static_cast<int>(MessageAnswer::CANCEL), "Cancel" } };
+    const auto aYesNo    = std::array{ SDL_MessageBoxButtonData{ kReturn, static_cast<int>(MessageAnswer::YES), "Yes" }, SDL_MessageBoxButtonData{ kEscape, static_cast<int>(MessageAnswer::NO), "No" } };
 
     const auto choices = [&]
     {

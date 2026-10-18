@@ -21,7 +21,7 @@ void BehObj_Tracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_TRACKING;
+    m_wKind = kBehTracking;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CTrack);
 

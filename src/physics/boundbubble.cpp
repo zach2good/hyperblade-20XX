@@ -10,7 +10,7 @@
 #include "app/gameapp.h"
 #include "engine/objectphase.h"
 
-constexpr auto SHAPE_WORLD_SPACE = (-2);
+constexpr auto kShapeWorldSpace = (-2);
 
 // GLOBAL: HYPERX 0x004cb760
 extern Vec3 g_vBubbleOwnCentre;
@@ -152,7 +152,7 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
     float flRadiusSum;
     float flLenSq;
 
-    if (m_pShapeNode->m_nComponent == SHAPE_WORLD_SPACE)
+    if (m_pShapeNode->m_nComponent == kShapeWorldSpace)
     {
         g_vBubbleOwnCentre = m_pShapeNode->m_vCentre;
     }
@@ -167,7 +167,7 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 
     BubbleShapeNode* const pShapeRec = pOther->m_pShapeNode;
 
-    if (pShapeRec->m_nComponent == SHAPE_WORLD_SPACE)
+    if (pShapeRec->m_nComponent == kShapeWorldSpace)
     {
         g_vBubbleOtherCentre = pShapeRec->m_vCentre;
     }

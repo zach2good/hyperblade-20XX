@@ -8,7 +8,7 @@ namespace KeyMap
 
 // Letters follow the keyboard layout, as virtual keys do; digits and every other key go by
 // position.
-// Zero for a key the game never saw, such as Alt and F10, which Windows sent as system keys.
+// Zero for a key the game never saw, such as Alt and kF10, which Windows sent as system keys.
 unsigned int ToVirtualKey(int nScancode, int nKeycode);
 
 // A short name for a virtual key, such as "A", "Space" or "Left mouse".

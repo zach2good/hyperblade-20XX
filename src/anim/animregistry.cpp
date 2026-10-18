@@ -160,7 +160,7 @@ AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
     {
         AnimClipEntry* const pEntry = pDb->GetEntry(i);
 
-        if (pEntry->m_nMessage == MSG_SYNC_FRAME)
+        if (pEntry->m_nMessage == kMsgSyncFrame)
         {
             AnimDB* const pFound = FindAnimByNamePtr(pEntry->m_pRef->m_pszName);
 

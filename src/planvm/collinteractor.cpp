@@ -14,8 +14,8 @@
 #include "planvm/decisionlog.h"
 
 #define ARG_KEY 0
-constexpr auto ARG_TAG             = 1;
-constexpr auto ARG_CONDITION_FIRST = 2;
+constexpr auto kArgTag            = 1;
+constexpr auto kArgConditionFirst = 2;
 
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
@@ -59,17 +59,17 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
     m_pOwner           = pObject;
     m_nActiveState     = 0;
     m_otherSlot        = pPlan->m_pArgs[ARG_KEY];
-    m_ownSlotOrMessage = pPlan->m_pArgs[ARG_TAG];
+    m_ownSlotOrMessage = pPlan->m_pArgs[kArgTag];
     m_nBehaviour       = PLAN_TOKEN_NO_BEH_CHANGE;
 
-    auto      nCount = static_cast<short>(pPlan->m_nArgCount - ARG_CONDITION_FIRST);
-    PlanWord* pEntry = pPlan->m_pArgs + ARG_CONDITION_FIRST;
+    auto      nCount = static_cast<short>(pPlan->m_nArgCount - kArgConditionFirst);
+    PlanWord* pEntry = pPlan->m_pArgs + kArgConditionFirst;
 
     while (nCount-- != 0)
     {
         PlanNode* const    pInstr  = pEntry->pNode;
         const auto         nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
-        const unsigned int nClass  = nOpcode & OP_CATEGORY;
+        const unsigned int nClass  = nOpcode & kOpCategory;
 
         switch (nClass)
         {
@@ -77,7 +77,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
                 break;
 
             case CATEGORY_BEHAVIOUR:
-                switch (nOpcode & OP_MEMBER)
+                switch (nOpcode & kOpMember)
                 {
                     case MEMBER_CHANGE_TO_BEHAVIOR:
                         m_nBehaviour = pInstr->m_pArgs[0].n;
@@ -86,7 +86,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
                 break;
 
             case CATEGORY_ACTION:
-                if ((nOpcode & OP_MEMBER) == MEMBER_SET_INTERACTOR_PARAM)
+                if ((nOpcode & kOpMember) == MEMBER_SET_INTERACTOR_PARAM)
                 {
                     PlanState* const pState = m_pOwner->GetPlanState();
 
@@ -144,7 +144,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 
     if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int>(PLAN_TOKEN_NO_BEH_CHANGE) && m_bEnabled != 0)
     {
-        m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
+        m_pOwner->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, m_pOwner->GetSlot(), 0);
 
         m_pOwner->GetPlanState()->ActivateBehavior(static_cast<unsigned int>(m_nBehaviour));
     }
@@ -162,11 +162,11 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
         m_pOwner->GetCPlayerStateLock()->unlock();
     }
 
-    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;
+    m_pOwner->GetPlanState()->m_nCollisionRearmTicks = kCollisionRearmTicksAfterRun;
 
     if (m_wSlot >= 0)
     {
-        m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
+        m_pOwner->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, m_pOwner->GetSlot(), 0);
 
         m_pOwner->InstantiateAIPlan(m_wSlot);
 

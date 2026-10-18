@@ -23,7 +23,7 @@ struct GameApp;
 #include "app/window.h"
 #include "common/stub.h"
 
-constexpr auto TICK_INTERVAL_MS = 50;
+constexpr auto kTickIntervalMs = 50;
 
 // Slot zero is the shared answer-nothing at 0x0041bf40; slot two is the pure-virtual trap.
 // FUNCTION: HYPERX 0x0041bf40
@@ -104,7 +104,7 @@ void Screen::InitFrame()
 // FUNCTION: HYPERX 0x0048c070
 int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
 {
-    if (nMsg == INPUT_LEFT_UP)
+    if (nMsg == kInputLeftUp)
     {
         if (m_nCaptured != -1 && IsButtonWidget(m_nCaptured) && m_apWidgets[m_nCaptured]->HitTest(nX, nY) == 0)
         {
@@ -124,7 +124,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
 
             switch (nMsg)
             {
-                case INPUT_MOUSE_MOVE:
+                case kInputMouseMove:
                     if (m_nCaptured != -1 && IsButtonWidget(i))
                     {
                         if (m_nCaptured == i)
@@ -140,10 +140,10 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
                         InitFrame();
                     }
 
-                    OnWidgetMessage(INPUT_MOUSE_MOVE, i);
+                    OnWidgetMessage(kInputMouseMove, i);
                     break;
 
-                case INPUT_LEFT_DOWN:
+                case kInputLeftDown:
                     m_nCaptured = i;
 
                     if (m_apWidgets[i]->OnMouseDown() != 0)
@@ -159,13 +159,13 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
                     }
                     break;
 
-                case INPUT_LEFT_UP:
+                case kInputLeftUp:
                     if (m_apWidgets[i]->OnMouseUp() != 0)
                     {
                         InitFrame();
                     }
 
-                    OnWidgetMessage(INPUT_LEFT_UP, i);
+                    OnWidgetMessage(kInputLeftUp, i);
                     break;
             }
         }
@@ -191,9 +191,9 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
 
     m_bPointerOnWidget = bHandled;
 
-    if (nMsg != INPUT_MOUSE_MOVE)
+    if (nMsg != kInputMouseMove)
     {
-        OnWidgetMessage(nMsg, WIDGET_ID_MOUSE);
+        OnWidgetMessage(nMsg, kWidgetIDMouse);
     }
 
     return 1;
@@ -204,7 +204,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 {
     int i;
 
-    if (nMsg != INPUT_KEY_DOWN)
+    if (nMsg != kInputKeyDown)
     {
         return 1;
     }
@@ -231,7 +231,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 
     switch (wParam)
     {
-        case Key::TAB:
+        case Key::kTab:
             if (Input::IsShiftKeyDown())
             {
                 MoveFocusPrev();
@@ -243,42 +243,42 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
             InitFrame();
             return 1;
 
-        case Key::LEFT:
+        case Key::kLeft:
             MoveFocusPrev();
             InitFrame();
             return 1;
 
-        case Key::RIGHT:
+        case Key::kRight:
             break;
 
-        case Key::ESCAPE:
+        case Key::kEscape:
             Screen::ClearBlack();
 
-            if (g_gameApp.m_nEngineState == ESTATE_PAUSE_FULL || g_gameApp.m_nEngineState == ESTATE_PAUSE_MINIMAL || g_gameApp.m_nEngineState == ESTATE_PAUSE_NO_SAVE)
+            if (g_gameApp.m_nEngineState == kEstatePauseFull || g_gameApp.m_nEngineState == kEstatePauseMinimal || g_gameApp.m_nEngineState == kEstatePauseNoSave)
             {
                 Game::SetEngineState(g_nLastEscState);
                 return 1;
             }
 
-            if ((g_gameApp.m_nEngineState == ESTATE_JUMBOTRON && g_bSessionActive == 0) || (g_gameApp.m_nEngineState == ESTATE_DROME_EXTERIOR && g_nPlayerMode == PLAYER_MODE_EXHIBITION))
+            if ((g_gameApp.m_nEngineState == kEstateJumbotron && g_bSessionActive == 0) || (g_gameApp.m_nEngineState == kEstateDromeExterior && g_nPlayerMode == kPlayerModeExhibition))
             {
-                g_nJumbotronEscState = Game::SetEngineState(ESTATE_PAUSE_NO_SAVE);
+                g_nJumbotronEscState = Game::SetEngineState(kEstatePauseNoSave);
                 g_nLastEscState      = g_nJumbotronEscState;
                 return 1;
             }
 
-            if (g_gameApp.m_nEngineState == ESTATE_DROME_EXTERIOR)
+            if (g_gameApp.m_nEngineState == kEstateDromeExterior)
             {
-                g_nPostMatchEscState = Game::SetEngineState(ESTATE_PAUSE_FULL);
+                g_nPostMatchEscState = Game::SetEngineState(kEstatePauseFull);
                 g_nLastEscState      = g_nPostMatchEscState;
                 return 1;
             }
 
-            g_nDefaultEscState = Game::SetEngineState(ESTATE_PAUSE_MINIMAL);
+            g_nDefaultEscState = Game::SetEngineState(kEstatePauseMinimal);
             g_nLastEscState    = g_nDefaultEscState;
             return 1;
 
-        case Key::RETURN:
+        case Key::kReturn:
             for (i = 0; i <= m_nLastWidget; i++)
             {
                 if (m_apWidgets[i]->GetHighlighted() && m_apWidgets[i]->IsDisplayOnly() == 0 && m_apWidgets[i]->GetHidden() == 0)
@@ -288,12 +288,12 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
                         InitFrame();
                     }
 
-                    OnWidgetMessage(INPUT_LEFT_UP, i);
+                    OnWidgetMessage(kInputLeftUp, i);
                 }
             }
 
             InitFrame();
-            OnWidgetMessage(INPUT_KEY_DOWN, WIDGET_ID_RETURN);
+            OnWidgetMessage(kInputKeyDown, kWidgetIDReturn);
             return 1;
 
         default:
@@ -350,7 +350,7 @@ void Screen::MoveFocusPrev()
                 InitFrame();
             }
 
-            OnWidgetMessage(INPUT_MOUSE_MOVE, i);
+            OnWidgetMessage(kInputMouseMove, i);
 
             return;
         }
@@ -381,7 +381,7 @@ void Screen::MoveFocusPrev()
         InitFrame();
     }
 
-    OnWidgetMessage(INPUT_MOUSE_MOVE, i);
+    OnWidgetMessage(kInputMouseMove, i);
 }
 
 inline int Screen::FindHighlightedWidget(int* pnIndex)
@@ -418,7 +418,7 @@ void Screen::MoveFocusNext()
                     InitFrame();
                 }
 
-                OnWidgetMessage(INPUT_MOUSE_MOVE, i);
+                OnWidgetMessage(kInputMouseMove, i);
 
                 return;
             }
@@ -451,7 +451,7 @@ void Screen::MoveFocusNext()
         InitFrame();
     }
 
-    OnWidgetMessage(INPUT_MOUSE_MOVE, i);
+    OnWidgetMessage(kInputMouseMove, i);
 }
 
 // Twenty frames a second: below fifty milliseconds nothing moves.
@@ -466,7 +466,7 @@ int Screen::TickAnimations()
 
     SystemTimePair* const pTick = &m_lastTick;
 
-    if ((now.nSeconds - pTick->nSeconds) * 1000 - static_cast<unsigned short>(m_lastTick.nMillis) + (now.nMillis & 0xffff) < TICK_INTERVAL_MS)
+    if ((now.nSeconds - pTick->nSeconds) * 1000 - static_cast<unsigned short>(m_lastTick.nMillis) + (now.nMillis & 0xffff) < kTickIntervalMs)
     {
         return 1;
     }
@@ -632,18 +632,18 @@ void Screen::InitAllWidgets()
     }
 }
 
-constexpr auto BITMAP_CACHE_SLOTS = 128;
+constexpr auto kBitmapCacheSlots = 128;
 
 // FUNCTION: HYPERX 0x0048cc10
 void Screen::InitBitmapCache()
 {
     FlushBitmapCache();
 
-    g_pBitmapCache = new BitmapCacheEntry[BITMAP_CACHE_SLOTS];
+    g_pBitmapCache = new BitmapCacheEntry[kBitmapCacheSlots];
 
     if (g_pBitmapCache != nullptr)
     {
-        for (int i = 0; i < BITMAP_CACHE_SLOTS; i++)
+        for (int i = 0; i < kBitmapCacheSlots; i++)
         {
             g_pBitmapCache[i].hBitmap = nullptr;
             g_pBitmapCache[i].pszName = nullptr;
@@ -658,7 +658,7 @@ int Screen::AddBitmap(const char* pszName)
 {
     g_nBitmapCacheCount++;
 
-    if (g_nBitmapCacheCount < BITMAP_CACHE_SLOTS)
+    if (g_nBitmapCacheCount < kBitmapCacheSlots)
     {
         g_pBitmapCache[g_nBitmapCacheCount].hBitmap = GDI::LoadBitmapWithPalette(pszName, nullptr);
         g_pBitmapCache[g_nBitmapCacheCount].pszName = pszName;
@@ -676,7 +676,7 @@ int Screen::RemoveBitmap(const char* pszName)
 {
     if (g_nBitmapCacheCount != 0)
     {
-        for (int i = 0; i < BITMAP_CACHE_SLOTS; i++)
+        for (int i = 0; i < kBitmapCacheSlots; i++)
         {
             if (g_pBitmapCache[i].pszName == pszName && g_pBitmapCache[i].hBitmap != nullptr)
             {
@@ -704,7 +704,7 @@ int Screen::RemoveBitmap(const char* pszName)
 // FUNCTION: HYPERX 0x0048cd80
 GDI::Bitmap* Screen::CacheLookup(const char* pszName, int* pbCached)
 {
-    for (int nSlot = 0; nSlot < BITMAP_CACHE_SLOTS; nSlot++)
+    for (int nSlot = 0; nSlot < kBitmapCacheSlots; nSlot++)
     {
         if (g_pBitmapCache[nSlot].pszName != nullptr)
         {
@@ -728,7 +728,7 @@ void Screen::FlushBitmapCache()
 {
     if (g_pBitmapCache != nullptr)
     {
-        for (int i = 0; i < BITMAP_CACHE_SLOTS; i++)
+        for (int i = 0; i < kBitmapCacheSlots; i++)
         {
             if (g_pBitmapCache[i].hBitmap != nullptr)
             {
@@ -767,7 +767,7 @@ int Screen::FindFocusedWidget()
 // FUNCTION: HYPERX 0x0048ef20
 void Screen::ShowMatchInfo()
 {
-    Game::SetEngineState(ESTATE_MATCH_INFO);
+    Game::SetEngineState(kEstateMatchInfo);
 }
 
 // FUNCTION: HYPERX 0x0048ef30
@@ -779,8 +779,8 @@ void Screen::ClearBlack(...)
     Window::PresentMenu();
 }
 
-unsigned int g_nPostMatchEscState = ESTATE_LOBBY;
-unsigned int g_nDefaultEscState   = ESTATE_LOBBY;
-unsigned int g_nJumbotronEscState = ESTATE_LOBBY;
-unsigned int g_nLastEscState      = ESTATE_LOBBY;
+unsigned int g_nPostMatchEscState = kEstateLobby;
+unsigned int g_nDefaultEscState   = kEstateLobby;
+unsigned int g_nJumbotronEscState = kEstateLobby;
+unsigned int g_nLastEscState      = kEstateLobby;
 int          g_nBitmapCacheReady  = 1;

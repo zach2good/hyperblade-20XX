@@ -13,8 +13,8 @@ struct PaletteEntry
     std::uint8_t peFlags;
 };
 
-constexpr std::uint8_t PALETTE_RESERVED   = 0x01;
-constexpr std::uint8_t PALETTE_NOCOLLAPSE = 0x04;
+constexpr std::uint8_t kPaletteReserved   = 0x01;
+constexpr std::uint8_t kPaletteNoCollapse = 0x04;
 
 struct RgbQuad
 {
@@ -69,9 +69,9 @@ struct BitmapCoreHeader
     std::uint16_t bcBitCount;
 };
 
-constexpr std::uint32_t BITMAP_RGB  = 0;
-constexpr std::uint32_t BITMAP_RLE8 = 1;
-constexpr std::uint32_t BITMAP_RLE4 = 2;
+constexpr std::uint32_t kBitmapRGB  = 0;
+constexpr std::uint32_t kBitmapRle8 = 1;
+constexpr std::uint32_t kBitmapRle4 = 2;
 
 static_assert(sizeof(PaletteEntry) == 4);
 static_assert(sizeof(RgbQuad) == 4);

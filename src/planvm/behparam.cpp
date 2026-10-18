@@ -47,8 +47,8 @@
 
 // Slot zero of the behaviour-parameter table: three targets and a period, stored as its reciprocal.
 
-constexpr auto ARG_COUNT    = 5;
-constexpr auto TARGET_COUNT = 3;
+constexpr auto kArgCount    = 5;
+constexpr auto kTargetCount = 3;
 
 #define ARG_FIRST  1
 #define ARG_PERIOD 4
@@ -57,7 +57,7 @@ constexpr auto TARGET_COUNT = 3;
 void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     auto* const pTarget = static_cast<BehObj_GlideBetweenFacing*>(pBehaviour);
-    short       aSlot[TARGET_COUNT];
+    short       aSlot[kTargetCount];
     short       nValue;
 
     short nIndex = 0;
@@ -65,13 +65,13 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
     aSlot[1]     = 0;
     aSlot[2]     = 0;
 
-    if (pNode->m_nArgCount != ARG_COUNT)
+    if (pNode->m_nArgCount != kArgCount)
     {
         // STRING: HYPERX 0x004bc234
         g_gameApp.Fatal("Unexpected number of args in Behavior parameterization functions.");
     }
 
-    for (; nIndex < TARGET_COUNT; nIndex++)
+    for (; nIndex < kTargetCount; nIndex++)
     {
         if (pNode->m_pArgs[ARG_FIRST + nIndex].IsPronoun())
         {
@@ -186,7 +186,7 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
         }
     }
 
-    if (pReceiver->m_wKind == BEH_GLIDE_TO_POSITION)
+    if (pReceiver->m_wKind == kBehGlideToPosition)
     {
         pVec = &((BehObj_GlideToPosition*)pReceiver)->m_vTarget;
 
@@ -220,11 +220,11 @@ void BehParam::SetObjectToAvoid(EngineObject*, PlanNode* pNode, GameBehaviorObje
     static_cast<CAvoidObjects*>(pBehaviour->m_apSlots[0])->AddAvoidanceTarget(static_cast<short>(pNode->m_pArgs[1].n));
 }
 
-// MODEL_ID_NONE means nothing: the first two followers are told zero and the third not at all.
+// kModelIDNone means nothing: the first two followers are told zero and the third not at all.
 // FUNCTION: HYPERX 0x0041cac0
 void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorObject* pTrajectory)
 {
-    if (pNotify->m_pArgs[1].n != MODEL_ID_NONE)
+    if (pNotify->m_pArgs[1].n != kModelIDNone)
     {
         pTrajectory->m_apSlots[0]->OnKind(static_cast<short>(pNotify->m_pArgs[1].n));
 
@@ -253,11 +253,11 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
     char bLimped = 0;
 
     // A hurt player swaps the standard and fast skates for their limping versions.
-    if (pActor->GetSlot() < PLAYER_SLOT_COUNT)
+    if (pActor->GetSlot() < kPlayerSlotCount)
     {
         const float flGate = DamageGate();
 
-        if (((PlayerObject*)pActor)->m_stats.GetScalar(RATING_DAMAGE) < flGate * GATE_SCALE)
+        if (((PlayerObject*)pActor)->m_stats.GetScalar(kRatingDamage) < flGate * GATE_SCALE)
         {
             // STRING: HYPERX 0x004bb2a0
             if (nAnim == g_pAnimRegistry->FindAnimByNameIdx("AA_Skate_Std"))
@@ -269,11 +269,11 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
         }
     }
 
-    if (bLimped == 0 && pActor->GetSlot() < PLAYER_SLOT_COUNT)
+    if (bLimped == 0 && pActor->GetSlot() < kPlayerSlotCount)
     {
         const float flGate = DamageGate();
 
-        if (((PlayerObject*)pActor)->m_stats.GetScalar(RATING_DAMAGE) < flGate * GATE_SCALE)
+        if (((PlayerObject*)pActor)->m_stats.GetScalar(kRatingDamage) < flGate * GATE_SCALE)
         {
             // STRING: HYPERX 0x004bc278
             if (nAnim == g_pAnimRegistry->FindAnimByNameIdx("AA_Skate_Fast"))

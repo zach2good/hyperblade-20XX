@@ -38,10 +38,10 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
 
         const auto nOpcode = static_cast<unsigned int>(pNode->m_nOpcode);
 
-        switch (nOpcode & OP_CATEGORY)
+        switch (nOpcode & kOpCategory)
         {
             case CATEGORY_ACTION:
-                switch (nOpcode & OP_MEMBER)
+                switch (nOpcode & kOpMember)
                 {
                     case MEMBER_DO_NET_ACTION:
                         if (m_pOwner->GetPhase() == OBJECT_PHASE_LOCAL)
@@ -74,7 +74,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 break;
 
             case CATEGORY_BEHAVIOUR:
-                switch (nOpcode & OP_MEMBER)
+                switch (nOpcode & kOpMember)
                 {
                     case MEMBER_CHANGE_TO_BEHAVIOR:
                         m_nBehaviour = pNode->m_pArgs[0].n;
@@ -92,7 +92,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 break;
 
             case CATEGORY_PLAN_CHANGE:
-                if ((nOpcode & OP_MEMBER) == MEMBER_CHANGE_OF_PLAN)
+                if ((nOpcode & kOpMember) == MEMBER_CHANGE_OF_PLAN)
                 {
                     m_wSlot      = static_cast<short>(pNode->m_pArgs[0].n);
                     m_wBehaviour = static_cast<short>(pNode->m_pArgs[1].n);
@@ -102,7 +102,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
             case CATEGORY_DECIDE:
                 if (DecisionLog::IsRecording(*pState) != 0)
                 {
-                    g_pfnPlanOpcodeHandlers[static_cast<short>(pNode->m_pArgs[0].n) + PLAN_DECISION_BASE].pfnDecide(
+                    g_pfnPlanOpcodeHandlers[static_cast<short>(pNode->m_pArgs[0].n) + kPlanDecisionBase].pfnDecide(
                         this, pNode, &nField, nArg);
 
                     DecisionLog::Push(pState, nField);

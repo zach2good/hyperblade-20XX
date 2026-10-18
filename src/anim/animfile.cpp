@@ -19,8 +19,8 @@ extern const char* const g_apFileTypeNames[9];
 // GLOBAL: HYPERX 0x004bb8a8
 extern FileVersion g_animVersion;
 
-constexpr auto ANIM_FILE_TYPE         = 4;
-constexpr auto ANIM_INTERNAL_NAME_MAX = 32;
+constexpr auto kAnimFileType        = 4;
+constexpr auto kAnimInternalNameMax = 32;
 
 // Minus one when any component of the right is smaller, one when any is larger, else nought.
 // FUNCTION: HYPERX 0x00493c40
@@ -43,18 +43,18 @@ short AnimFile::VersionCompare(const FileVersion* pLeft, const FileVersion* pRig
 AnimClipSet* AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nFlags, AnimLoadFn pfnLoad)
 {
     AnimClipSet* pResult = nullptr;
-    PathString   strPath(MAX_PATH_LENGTH, g_gameApp.m_strAnimDataPath.m_str.m_pchData, pszName, g_pszAnimExtension);
+    PathString   strPath(kMaxPathLength, g_gameApp.m_strAnimDataPath.m_str.m_pchData, pszName, g_pszAnimExtension);
     OwnedFile    file;
     int          nType;
     FileVersion  version;
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
     {
-        char szInternalName[ANIM_INTERNAL_NAME_MAX] = { 0 };
+        char szInternalName[kAnimInternalNameMax] = { 0 };
 
         if (ModelFile::ReadHeader(&file.m_file, &nType, szInternalName, &version) != 0)
         {
-            if (nType == ANIM_FILE_TYPE)
+            if (nType == kAnimFileType)
             {
                 if (AnimFile::CheckVersion(szInternalName, &g_animVersion, &version) != 0)
                 {
@@ -69,7 +69,7 @@ AnimClipSet* AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nF
             {
                 // STRING: HYPERX 0x004c8dc8
                 g_gameApp.Error("Error: %s expected - %s encountered!",
-                                g_apFileTypeNames[ANIM_FILE_TYPE],
+                                g_apFileTypeNames[kAnimFileType],
                                 g_apFileTypeNames[nType]);
 
                 file.m_file.CloseAndTest();

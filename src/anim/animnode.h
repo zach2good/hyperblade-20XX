@@ -5,7 +5,7 @@
 
 class AnimClipSet;
 
-constexpr auto DESCRIPTION_CHARS = 0x1f;
+constexpr auto kDescriptionChars = 0x1f;
 
 // One entry of a script database's clip table: name, frame span and three rates.
 class AnimNode

@@ -151,58 +151,58 @@ JumbotronScreen::JumbotronScreen()
 
 // A key-down acts at once; a mouse-up waits for the screen's own guard.
 
-constexpr auto WIDGET_BACK          = 9;
-constexpr auto MATCH_STATE_FINISHED = 4;
+constexpr auto kWidgetBack         = 9;
+constexpr auto kMatchStateFinished = 4;
 
 // FUNCTION: HYPERX 0x0048ee40
 void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
-    if (nId != WIDGET_BACK)
+    if (nId != kWidgetBack)
     {
-        if (nId <= WIDGET_ID_MOUSE - 1)
+        if (nId <= kWidgetIDMouse - 1)
         {
             return;
         }
 
-        if (nId > WIDGET_ID_RETURN)
+        if (nId > kWidgetIDReturn)
         {
             return;
         }
 
-        if (nMsg != INPUT_KEY_UP && nMsg != INPUT_KEY_DOWN)
+        if (nMsg != kInputKeyUp && nMsg != kInputKeyDown)
         {
             if (m_bPointerOnWidget != 0)
             {
                 return;
             }
 
-            if (nMsg != INPUT_LEFT_UP)
+            if (nMsg != kInputLeftUp)
             {
                 return;
             }
         }
 
-        if (g_pGameEngine->m_clock.nPeriod == MATCH_STATE_FINISHED)
+        if (g_pGameEngine->m_clock.nPeriod == kMatchStateFinished)
         {
             if (g_bSessionActive != 0)
             {
                 GameSession::Disconnect();
             }
 
-            if (g_nPlayerMode == PLAYER_MODE_EXHIBITION)
+            if (g_nPlayerMode == kPlayerModeExhibition)
             {
-                Game::SetEngineState(ESTATE_LOBBY);
+                Game::SetEngineState(kEstateLobby);
             }
-            else if (g_nPlayerMode == PLAYER_MODE_TOURNAMENT)
+            else if (g_nPlayerMode == kPlayerModeTournament)
             {
-                Game::SetEngineState(ESTATE_CHAMPIONSHIP_SETUP);
+                Game::SetEngineState(kEstateChampionshipSetup);
             }
 
             g_pGameEngine->ResetPeriodToFirst();
         }
         else
         {
-            Game::SetEngineState(ESTATE_MATCH_START);
+            Game::SetEngineState(kEstateMatchStart);
         }
 
         Screen::ClearBlack();
@@ -217,7 +217,7 @@ void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)
         return;
     }
 
-    if (nMsg != INPUT_LEFT_UP)
+    if (nMsg != kInputLeftUp)
     {
         return;
     }

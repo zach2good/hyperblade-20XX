@@ -64,14 +64,14 @@ struct DrawPolySurface
     void* pBits;   // 0x10
 };
 
-constexpr auto DRAW_POLY_DEPTH = 8;
+constexpr auto kDrawPolyDepth = 8;
 
 extern int g_bDromePass;
 
 // GLOBAL: HYPERX 0x004c1e94
 extern int g_bDromeIniDirty;
 
-constexpr auto DROME_TEXTURED_DEFAULT = 1;
+constexpr auto kDromeTexturedDefault = 1;
 
 // A network or loading frame relights the first slots from fixed directions first.
 // FUNCTION: HYPERX 0x00442d20
@@ -79,7 +79,7 @@ void Renderer::DrawAllMeshes()
 {
     MeshBone* pBone;
 
-    EngineObject* pDrome = g_pGameEngine->m_ppSlots[SLOT_DROME];
+    EngineObject* pDrome = g_pGameEngine->m_ppSlots[kSlotDrome];
 
     int nBone = 0;
 
@@ -87,7 +87,7 @@ void Renderer::DrawAllMeshes()
     {
         g_nDromeTextured = g_pGameOptions->ReadInt(g_pszDromeSection,
                                                    g_pszDromeTexturedKey,
-                                                   DROME_TEXTURED_DEFAULT);
+                                                   kDromeTexturedDefault);
 
         g_bDromeIniDirty = 0;
         g_bLoadingMode   = 1;
@@ -207,7 +207,7 @@ void Renderer::DrawWholeScene()
         surface.nHeight = g_nBackBufferHeight;
         surface.nPitch  = g_nSurfacePitchCopy;
         surface.pBits   = g_pBackBufferBitsCopy;
-        surface.nDepth  = DRAW_POLY_DEPTH;
+        surface.nDepth  = kDrawPolyDepth;
 
         g_pfnMdmInitDrawPoly(&surface, g_nViewportOriginX, g_nViewportOriginY);
     }
@@ -287,10 +287,10 @@ void Renderer::ClearFrame()
         {
             if (g_pColorPalette != nullptr)
             {
-                return g_pColorPalette->NearestIndex(CLEAR_COLOUR, -1);
+                return g_pColorPalette->NearestIndex(kClearColour, -1);
             }
 
-            return NearestSoftPaletteIndex(CLEAR_COLOUR);
+            return NearestSoftPaletteIndex(kClearColour);
         }();
 
         memset(g_pBackBufferBitsCopy, nIndex, g_nBackBufferWidth * g_nBackBufferHeight);

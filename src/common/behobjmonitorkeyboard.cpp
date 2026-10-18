@@ -11,7 +11,7 @@
 #include "engine/objectphase.h"
 
 // The button the rok throw comes in on.
-constexpr auto BUTTON_ROK = 4;
+constexpr auto kButtonRok = 4;
 
 // Never written in this image; its three readers treat it as a two-player flag.
 // GLOBAL: HYPERX 0x004cb5e4
@@ -34,7 +34,7 @@ void BehObj_MonitorKeyboard::SendTimedMessage()
     {
         const short nOwnerSlot = m_pOwner->GetSlot();
 
-        g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->OnButtonDown(BUTTON_ROK);
+        g_pGameEngine->GetInputDevice(kSlotKeyboard)->OnButtonDown(kButtonRok);
 
         if (g_bTwoPlayers != 0)
         {
@@ -71,7 +71,7 @@ void BehObj_MonitorKeyboard::Init(EngineObject* pOwner, PlanNode* pBlock, int nF
     // STRING: HYPERX 0x004bc314
     m_pszName = "MonitorKeyboard";
 
-    m_wKind = BEH_MONITOR_KEYBOARD;
+    m_wKind = kBehMonitorKeyboard;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CMonitorKeys);
 

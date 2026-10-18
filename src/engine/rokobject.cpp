@@ -43,11 +43,11 @@ RokObject::RokObject(int nSlot, class ObjectDef* pDef)
     m_nOddCarrierSlot     = 1;
     m_nOddPrevCarrierSlot = 1;
 
-    m_nFlags |= ENGINEOBJECT_NO_CULL;
+    m_nFlags |= kEngineObjectNoCull;
 
     for (int nBone = 1; nBone < m_wBoneCount; nBone++)
     {
-        m_pBones[nBone].SetFlags(MESHBONE_HIDDEN);
+        m_pBones[nBone].SetFlags(kMeshboneHidden);
     }
 
     m_bAtSpawnSlot = 0;
@@ -74,7 +74,7 @@ void RokObject::SetRenderSlotFlags()
 
     for (nSlot = 0; nSlot < nCount; nSlot++)
     {
-        m_pBones[static_cast<short>(nSlot)].SetFlags(MESHBONE_HIDDEN);
+        m_pBones[static_cast<short>(nSlot)].SetFlags(kMeshboneHidden);
     }
 
     if (m_bAtSpawnSlot != 0)
@@ -109,7 +109,7 @@ void RokObject::SetRenderSlotFlags()
 
     if (nSlot < nCount)
     {
-        m_pBones[static_cast<short>(nSlot)].ClearFlags(MESHBONE_HIDDEN);
+        m_pBones[static_cast<short>(nSlot)].ClearFlags(kMeshboneHidden);
     }
 }
 
@@ -118,7 +118,7 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
 {
     ObjectDef* pDef;
 
-    if (nSlot == SPAWN_SLOT_ANY)
+    if (nSlot == kSpawnSlotAny)
     {
         pDef = g_pGameEngine->GetArenaRokDef();
     }
@@ -129,11 +129,11 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
 
     if (pDef != nullptr)
     {
-        g_pGameEngine->ReplaceEntity(SLOT_ROK, pDef);
+        g_pGameEngine->ReplaceEntity(kSlotRok, pDef);
 
         ApplyRenderSlotPose();
 
-        if (nSlot == SPAWN_SLOT_ANY)
+        if (nSlot == kSpawnSlotAny)
         {
             m_bAtSpawnSlot = 0;
 
@@ -147,8 +147,8 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
     }
 }
 
-constexpr auto BOT_SEND_INTERVAL = 0x1f4;
-constexpr auto BOT_SLOT_LIMIT    = 7;
+constexpr auto kBotSendInterval = 0x1f4;
+constexpr auto kBotSlotLimit    = 7;
 
 // Sent at most every 500 ms; the phase compare reads two bytes that were never written.
 // FUNCTION: HYPERX 0x00473cc0
@@ -175,7 +175,7 @@ void RokObject::Postpass()
         return;
     }
 
-    if (static_cast<unsigned int>(m_nLastSendMs + BOT_SEND_INTERVAL) >= g_pGameEngine->m_clock.nTickMs)
+    if (static_cast<unsigned int>(m_nLastSendMs + kBotSendInterval) >= g_pGameEngine->m_clock.nTickMs)
     {
         return;
     }
@@ -184,11 +184,11 @@ void RokObject::Postpass()
 
     if (m_sendCursor.GetPossessionTurn() == 0)
     {
-        nMessage = MSG_SYNC_SYSTEM;
+        nMessage = kMsgSyncSystem;
 
         if (g_pGameEngine->m_clock.nPauseMark == 1)
         {
-            nPayload = SYSTEM_SYNC_PAUSED;
+            nPayload = kSystemSyncPaused;
         }
 
         nIndex = static_cast<int>((g_pGameEngine->m_clock.nPauseStartMs - g_pGameEngine->m_clock.nPeriodStartMs) / 100) & 0x7fff;
@@ -199,26 +199,26 @@ void RokObject::Postpass()
     }
     else
     {
-        nMessage = MSG_SYNC_POSSESSION;
+        nMessage = kMsgSyncPossession;
 
         AttachPak* const pCarrier = GetPhysicsBody()->pAttach;
 
-        if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
+        if (pCarrier != nullptr && pCarrier->nSlot < kPlayerObjectCount)
         {
-            if (pCarrier->nSlot <= SLOT_DROMER3)
+            if (pCarrier->nSlot <= kSlotDromer3)
             {
-                nPayload = POSSESSION_SYNC_DROMER_CARRIER;
+                nPayload = kPossessionSyncDromerCarrier;
             }
         }
 
         nIndex = m_sendCursor.GetRow();
 
-        if (nIndex > BOT_SLOT_LIMIT)
+        if (nIndex > kBotSlotLimit)
         {
             nIndex = 0;
         }
 
-        const int nTeam = nIndex / TEAM_ROW_COUNT;
+        const int nTeam = nIndex / kTeamRowCount;
 
         if (nTeam == 0)
         {
@@ -229,7 +229,7 @@ void RokObject::Postpass()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const int nRow = nIndex % TEAM_ROW_COUNT;
+        const int nRow = nIndex % kTeamRowCount;
 
         nPayload |= PossessionSyncWord::PackTeam(nTeam);
 
@@ -237,21 +237,21 @@ void RokObject::Postpass()
         {
             auto* pOwner = (PlayerObject*)g_pGameEngine->m_ppSlots[static_cast<short>(nTeam)];
 
-            flFirst  = pOwner->m_matchStats.GetAt(MATCH_STAT_TIME_OF_POSS);
-            flSecond = pOwner->m_matchStats.GetAt(MATCH_STAT_SHOTS_ON_GOAL);
+            flFirst  = pOwner->m_matchStats.GetAt(kMatchStatTimeOfPoss);
+            flSecond = pOwner->m_matchStats.GetAt(kMatchStatShotsOnGoal);
         }
         else if (nRow == pTeam->aSeat[1])
         {
             auto* const pOwner = (PlayerObject*)
                                      g_pGameEngine->m_ppSlots[static_cast<short>(nTeam + 2)];
 
-            flFirst  = pOwner->m_matchStats.GetAt(MATCH_STAT_TIME_OF_POSS);
-            flSecond = pOwner->m_matchStats.GetAt(MATCH_STAT_SHOTS_ON_GOAL);
+            flFirst  = pOwner->m_matchStats.GetAt(kMatchStatTimeOfPoss);
+            flSecond = pOwner->m_matchStats.GetAt(kMatchStatShotsOnGoal);
         }
         else
         {
-            flFirst  = pTeam->aStatRows[nRow].aStat[MATCH_STAT_TIME_OF_POSS];
-            flSecond = pTeam->aStatRows[nRow].aStat[MATCH_STAT_SHOTS_ON_GOAL];
+            flFirst  = pTeam->aStatRows[nRow].aStat[kMatchStatTimeOfPoss];
+            flSecond = pTeam->aStatRows[nRow].aStat[kMatchStatShotsOnGoal];
         }
 
         nPayload |= PossessionSyncWord::Pack(nRow, static_cast<int>(flSecond), static_cast<unsigned int>(static_cast<int>(flFirst)) / 100);
@@ -270,7 +270,7 @@ void RokObject::ApplyRenderSlotPose()
 {
     static TransformObject s_scratch;
 
-    m_nFlags |= ENGINEOBJECT_POSED;
+    m_nFlags |= kEngineObjectPosed;
 
     if (m_bScaledBounds != 0)
     {

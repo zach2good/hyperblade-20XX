@@ -83,7 +83,7 @@ MultiSetupOptionsScreen::~MultiSetupOptionsScreen() = default;
 // FUNCTION: HYPERX 0x00479850
 void MultiSetupOptionsScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
-    if (nMsg == INPUT_LEFT_UP)
+    if (nMsg == kInputLeftUp)
     {
         switch (nWidget)
         {

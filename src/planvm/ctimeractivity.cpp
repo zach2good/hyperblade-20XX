@@ -12,7 +12,7 @@
 #include "engine/messageids.h"
 
 // One past the last engine slot: no target.
-constexpr auto TIMER_TARGET_NONE = 0x66;
+constexpr auto kTimerTargetNone = 0x66;
 
 // FUNCTION: HYPERX 0x00411a10
 void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
@@ -22,8 +22,8 @@ void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_bReady      = 0;
     m_pOwner      = pSubject;
     m_nFireTickMs = 0;
-    m_nEvent      = MSG_NOMSG;
-    m_nTargetSlot = TIMER_TARGET_NONE;
+    m_nEvent      = kMsgNomsg;
+    m_nTargetSlot = kTimerTargetNone;
     m_nEventParam = 0;
 }
 
@@ -64,8 +64,8 @@ void CTimerActivity::OnListChanged()
         m_nFireTickMs = 0;
         m_nEventParam = 0;
         m_pNext       = nullptr;
-        m_nEvent      = MSG_NOMSG;
-        m_nTargetSlot = TIMER_TARGET_NONE;
+        m_nEvent      = kMsgNomsg;
+        m_nTargetSlot = kTimerTargetNone;
         m_bReady      = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -84,7 +84,7 @@ void CTimerActivity::Process(int nArg)
 
     if (g_pGameEngine->m_clock.nTickMs > static_cast<unsigned int>(m_nFireTickMs))
     {
-        if (m_nTargetSlot == PLAN_TOKEN_BROADCAST)
+        if (m_nTargetSlot == kPlanTokenBroadcast)
         {
             g_pGameEngine->BroadcastEvent(m_nEvent, m_nEventParam, m_pOwner->GetSlot());
         }
@@ -128,7 +128,7 @@ void CTimerActivity::Release(int nArg)
 {
     if (g_pGameEngine->m_clock.nTickMs > static_cast<unsigned int>(m_nFireTickMs))
     {
-        if (m_nTargetSlot == PLAN_TOKEN_BROADCAST)
+        if (m_nTargetSlot == kPlanTokenBroadcast)
         {
             g_pGameEngine->BroadcastEvent(m_nEvent, m_nEventParam, m_pOwner->GetSlot());
         }

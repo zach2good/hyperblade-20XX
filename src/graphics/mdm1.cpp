@@ -6,13 +6,13 @@
 #include <cstring>
 #include <algorithm>
 
-constexpr auto MATCH_LENGTH_BIAS = 3;
-constexpr auto MATCH_LENGTH_LONG = 0x12;
-constexpr auto MATCH_LENGTH_END  = 0x10;
+constexpr auto kMatchLengthBias = 3;
+constexpr auto kMatchLengthLong = 0x12;
+constexpr auto kMatchLengthEnd  = 0x10;
 
-constexpr auto WINDOW_MARGIN = 0x80;
+constexpr auto kWindowMargin = 0x80;
 
-constexpr auto WINDOW_BYTES = 0x1000;
+constexpr auto kWindowBytes = 0x1000;
 
 // The window is freed before the size check that can discard the output.
 // FUNCTION: HYPERX 0x00440140
@@ -20,7 +20,7 @@ void* MDM1::Decompress(FileObj* pFile)
 {
     int nSize;
 
-    auto* const pWindow = static_cast<unsigned char*>(malloc(WINDOW_BYTES));
+    auto* const pWindow = static_cast<unsigned char*>(malloc(kWindowBytes));
 
     if (pWindow == nullptr)
     {
@@ -41,7 +41,7 @@ void* MDM1::Decompress(FileObj* pFile)
         return nullptr;
     }
 
-    const int nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, pOut, nSize, pWindow, WINDOW_BYTES);
+    const int nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, pOut, nSize, pWindow, kWindowBytes);
 
     free(pWindow);
 
@@ -96,7 +96,7 @@ int MDM1::LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut
     while (true)
     {
         // One flag word and its sixteen items never take more than the margin.
-        if (nAt >= nWindowSize - WINDOW_MARGIN && refill() == false)
+        if (nAt >= nWindowSize - kWindowMargin && refill() == false)
         {
             return -1;
         }
@@ -132,9 +132,9 @@ int MDM1::LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut
             nAt += 2;
 
             const auto nFrom   = nOut - static_cast<int>(nWord >> 4);
-            auto       nLength = static_cast<int>(nWord & 0xf) + MATCH_LENGTH_BIAS;
+            auto       nLength = static_cast<int>(nWord & 0xf) + kMatchLengthBias;
 
-            if (nLength == MATCH_LENGTH_LONG)
+            if (nLength == kMatchLengthLong)
             {
                 if (nAt >= nEnd)
                 {
@@ -145,7 +145,7 @@ int MDM1::LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut
 
                 if (nLength > 0xff)
                 {
-                    if ((nLength & 0xff) == MATCH_LENGTH_END)
+                    if ((nLength & 0xff) == kMatchLengthEnd)
                     {
                         continue;
                     }

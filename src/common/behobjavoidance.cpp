@@ -19,7 +19,7 @@ void BehObj_Avoidance::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
     // STRING: HYPERX 0x004bc2bc
     m_pszName = "Avoidance";
 
-    m_wKind = BEH_AVOIDANCE;
+    m_wKind = kBehAvoidance;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CAvoidObjects);
 

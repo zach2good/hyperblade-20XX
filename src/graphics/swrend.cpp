@@ -103,7 +103,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
     short* pUVIndex = nullptr;
 
     // Only an MDM-textured face that carries UV indices takes texture coordinates.
-    if (g_cMdmTexLoaded != 0 && (pMatTexture = ppMaterials[0]->pTexture) != nullptr && (pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0)
+    if (g_cMdmTexLoaded != 0 && (pMatTexture = ppMaterials[0]->pTexture) != nullptr && (pFaceData->cFlags & kFaceFlagHasUV) != 0)
     {
         pUVIndex = pFaceData->UVIndices();
     }
@@ -170,7 +170,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 
     char cBackFace = cFlip;
 
-    if ((cClipFlags & CLIP_NEAR) != 0)
+    if ((cClipFlags & kClipNear) != 0)
     {
         Vec3 vCorner0;
         Vec3 vCorner1;

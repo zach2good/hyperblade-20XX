@@ -5,14 +5,14 @@
 #include "graphics/bitmapformat.h"
 
 // An argument whose high half is this is a pronoun: the low half indexes g_apPlanStatFns.
-constexpr auto PLAN_ARG_PRONOUN = 0xfedc;
+constexpr auto kPlanArgPronoun = 0xfedc;
 
 // The high halves the compiler gives a quoted local real and an interactor parameter.
-constexpr auto PLAN_ARG_LOCAL_REAL      = 0xedcb;
-constexpr auto PLAN_ARG_INTERACTOR_NAME = 0xdcba;
+constexpr auto kPlanArgLocalReal      = 0xedcb;
+constexpr auto kPlanArgInteractorName = 0xdcba;
 
 // The values of the authored tokens the plan compiler seeds, each named for its token.
-constexpr auto PLAN_TOKEN_BROADCAST = 0x0000ffff;
+constexpr auto kPlanTokenBroadcast = 0x0000ffff;
 #define PLAN_TOKEN_STRAIGHTAHEAD ((int)0xabcdabcd)
 #define PLAN_TOKEN_TEMPORARILY   ((int)0xabcdabcc)
 #define PLAN_TOKEN_MESSAGE_DATA  ((int)0xabcdabce)
@@ -20,8 +20,8 @@ constexpr auto PLAN_TOKEN_BROADCAST = 0x0000ffff;
 #define PLAN_TOKEN_PREVIOUS_BEH  ((int)0xabcdabca)
 
 // The stream words that open a compound node and a string literal.
-constexpr auto PLAN_MARKER_NODE   = 0xabcdefff;
-constexpr auto PLAN_MARKER_STRING = 0xabcdeffe;
+constexpr auto kPlanMarkerNode   = 0xabcdefff;
+constexpr auto kPlanMarkerString = 0xabcdeffe;
 
 // One argument word: most are integers; some carry a float's bits, a colour, a child node or a
 // name.
@@ -42,17 +42,17 @@ union PlanWord
 
     bool IsPronoun() const
     {
-        return GetTag() == PLAN_ARG_PRONOUN;
+        return GetTag() == kPlanArgPronoun;
     }
 
     bool IsLocalReal() const
     {
-        return GetTag() == PLAN_ARG_LOCAL_REAL;
+        return GetTag() == kPlanArgLocalReal;
     }
 
     bool IsInteractorName() const
     {
-        return GetTag() == PLAN_ARG_INTERACTOR_NAME;
+        return GetTag() == kPlanArgInteractorName;
     }
 
     static int Pack(unsigned int nTag, int nIndex)
@@ -139,8 +139,8 @@ enum Pronoun
     PRN_COUNT
 };
 
-constexpr auto OP_CATEGORY = 0xffff0000;
-constexpr auto OP_MEMBER   = 0xffff;
+constexpr auto kOpCategory = 0xffff0000;
+constexpr auto kOpMember   = 0xffff;
 
 // An opcode's category, each named for the authored keywords it holds.
 enum OpcodeCategory

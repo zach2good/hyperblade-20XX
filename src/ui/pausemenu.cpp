@@ -11,7 +11,7 @@
 // FUNCTION: HYPERX 0x00443930
 void PauseMenu::ActionSave()
 {
-    g_nSetupReturnState = Game::SetEngineState(ESTATE_SAVE_LOAD);
+    g_nSetupReturnState = Game::SetEngineState(kEstateSaveLoad);
 }
 
 // The state comes from a global, so the return state is configurable at run time.
@@ -30,7 +30,7 @@ void PauseMenu::ActionReturnTraining()
 // FUNCTION: HYPERX 0x00444120
 void PauseMenu::ActionOptions()
 {
-    Game::SetEngineState(ESTATE_GAME_CONFIG);
+    Game::SetEngineState(kEstateGameConfig);
 }
 
 // The post-match flag goes up first, so the match reads as finished rather than abandoned.
@@ -48,7 +48,7 @@ void PauseMenu::ActionExitToMenu()
 
     GameApp::ResetToSinglePlayer();
 
-    Game::SetEngineState(ESTATE_MAIN_MENU);
+    Game::SetEngineState(kEstateMainMenu);
 }
 
 // FUNCTION: HYPERX 0x00444170
@@ -60,5 +60,5 @@ void PauseMenu::ActionReturnNoSave()
 // FUNCTION: HYPERX 0x00444180
 void PauseMenu::ActionQuit()
 {
-    Game::SetEngineState(ESTATE_QUIT);
+    Game::SetEngineState(kEstateQuit);
 }

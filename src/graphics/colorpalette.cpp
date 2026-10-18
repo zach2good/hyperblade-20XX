@@ -20,10 +20,10 @@ extern int g_bDromePass;
 extern const char* const g_pszPaletteExtension;
 
 // The version a definition file may always claim, whatever the palette's own is.
-constexpr auto PALETTE_VERSION_ANY = 0x302;
+constexpr auto kPaletteVersionAny = 0x302;
 
 // The name off the first line has no length check of its own.
-constexpr auto CUSTOM_NAME_MAX = 80;
+constexpr auto kCustomNameMax = 80;
 
 // FUNCTION: HYPERX 0x004255e0
 ColorPalette::ColorPalette()
@@ -188,9 +188,9 @@ void ColorPalette::Build()
 {
     for (int i = 0; i < 256; i++)
     {
-        if (m_entries[i].peFlags != PALETTE_RESERVED)
+        if (m_entries[i].peFlags != kPaletteReserved)
         {
-            m_entries[i].peFlags = PALETTE_NOCOLLAPSE;
+            m_entries[i].peFlags = kPaletteNoCollapse;
         }
 
         m_current[i] = m_entries[i];
@@ -239,7 +239,7 @@ int ColorPalette::NearestIndex(std::uint32_t colour, int nSkip) const
 // FUNCTION: HYPERX 0x00425ec0
 unsigned int ColorPalette::LoadCustomPalette()
 {
-    char      szName[CUSTOM_NAME_MAX];
+    char      szName[kCustomNameMax];
     GifScreen screen;
     int       nCount;
     char      c;
@@ -539,7 +539,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
 {
     int          nFileVersion = 0;
     int          nCount       = 0;
-    PathString   strPath(MAX_PATH_LENGTH, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, g_pszPaletteExtension);
+    PathString   strPath(kMaxPathLength, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, g_pszPaletteExtension);
     unsigned int nRed;
     unsigned int nGreen;
     unsigned int nBlue;
@@ -557,7 +557,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
             return 0;
         }
 
-        if (m_wVersion != nFileVersion && nFileVersion != PALETTE_VERSION_ANY)
+        if (m_wVersion != nFileVersion && nFileVersion != kPaletteVersionAny)
         {
             // STRING: HYPERX 0x004bca28
             g_gameApp.Error("Palette definition file %s contains wrong version %3x.\nExpecting %3x. Changes will be ignored.", strPath.m_str.m_pchData, nFileVersion, m_wVersion);
@@ -594,7 +594,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
                 entry.peRed   = static_cast<unsigned char>(nRed);
                 entry.peGreen = static_cast<unsigned char>(nGreen);
                 entry.peBlue  = static_cast<unsigned char>(nBlue);
-                entry.peFlags = PALETTE_NOCOLLAPSE;
+                entry.peFlags = kPaletteNoCollapse;
 
                 c = static_cast<char>(getc(pFile));
 
@@ -668,7 +668,7 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, Pa
     {
         auto& current = m_current[iStart + i];
 
-        if (current.peFlags == PALETTE_RESERVED)
+        if (current.peFlags == kPaletteReserved)
         {
             current.peRed   = pEntries[i].peRed;
             current.peGreen = pEntries[i].peGreen;

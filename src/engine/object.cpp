@@ -69,11 +69,11 @@ void Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bB
 
     if (bBoost != 0)
     {
-        pDest->PostSceneEvent(MSG_JUMP, 0);
+        pDest->PostSceneEvent(kMsgJump, 0);
         return;
     }
 
-    pDest->PostSceneEvent(MSG_LOST_IT, 0);
+    pDest->PostSceneEvent(kMsgLostIt, 0);
 }
 
 // Puts one object six units to one side of another.
@@ -127,7 +127,7 @@ void Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char 
 
     pDest->GetPhysicsBody()->flFacing = 0.0f;
 
-    pDest->PostSceneEvent(MSG_DEKE, 0);
+    pDest->PostSceneEvent(kMsgDeke, 0);
 }
 
 // Eight and two, the box's extents in x and z. Their markers are in src/ui/hudglobals.h.
@@ -255,7 +255,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
     const int nSlot = pObject->GetSlot();
 
-    if (nSlot >= SLOT_MULTIPLIER && nSlot <= SLOT_MULTIPLIER_LAST)
+    if (nSlot >= kSlotMultiplier && nSlot <= kSlotMultiplierLast)
     {
         Vec3 vPos;
 
@@ -264,7 +264,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         Math::Vec3Normalize(&vResult);
     }
-    else if (nSlot >= SLOT_HURDLE && nSlot <= SLOT_HURDLE_LAST)
+    else if (nSlot >= kSlotHurdle && nSlot <= kSlotHurdleLast)
     {
         Vec3 vMin;
         Vec3 vMax;
@@ -290,7 +290,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         vResult = vDir;
     }
-    else if ((nSlot >= SLOT_LIMBO_POLE && nSlot <= SLOT_LIMBO_POLE_LAST) || (nSlot >= SLOT_LASER_HURDLE && nSlot <= SLOT_LASER_HURDLE_LAST))
+    else if ((nSlot >= kSlotLimboPole && nSlot <= kSlotLimboPoleLast) || (nSlot >= kSlotLaserHurdle && nSlot <= kSlotLaserHurdleLast))
     {
         Vec3 vNormal;
         Vec3 vDir;
@@ -300,7 +300,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         vResult = vDir;
     }
-    else if (nSlot >= SLOT_TURNSTILE && nSlot <= SLOT_TURNSTILE_LAST)
+    else if (nSlot >= kSlotTurnstile && nSlot <= kSlotTurnstileLast)
     {
         Vec3 vPos;
 
@@ -309,7 +309,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         Math::Vec3Normalize(&vResult);
     }
-    else if (nSlot >= SLOT_GREEN_RANDOMIZER && nSlot <= SLOT_RED_RANDOMIZER_LAST)
+    else if (nSlot >= kSlotGreenRandomizer && nSlot <= kSlotRedRandomizerLast)
     {
         Vec3 vPos;
 
@@ -318,7 +318,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         Math::Vec3Normalize(&vResult);
     }
-    else if (nSlot >= SLOT_ARMORY && nSlot <= SLOT_ARMORY_LAST)
+    else if (nSlot >= kSlotArmory && nSlot <= kSlotArmoryLast)
     {
         Vec3 vPos;
 
@@ -327,7 +327,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         Math::Vec3Normalize(&vResult);
     }
-    else if (nSlot == SLOT_MINE)
+    else if (nSlot == kSlotMine)
     {
         Vec3 vPos;
 
@@ -336,7 +336,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
         Math::Vec3Normalize(&vResult);
     }
-    else if (nSlot == SLOT_SWARF)
+    else if (nSlot == kSlotSwarf)
     {
         Vec3 vPos;
 
@@ -352,16 +352,16 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 }
 
 // Seven approach sectors, and seven meaning none.
-constexpr auto SECTOR_NONE          = 7;
-constexpr auto SECTOR_COUNT         = 7;
-constexpr auto REACTION_SET_STOPPED = 4;
+constexpr auto kSectorNone         = 7;
+constexpr auto kSectorCount        = 7;
+constexpr auto kReactionSetStopped = 4;
 
 // HITANIMS.LST's five rows of seven sectors: 0 to 3 by damage, and 4 for the stopped case.
 // GLOBAL: HYPERX 0x004cf9fc
 extern short g_awReactionByDamageAndSector[35];
 
 // Contact with no energy does not nudge the local player; the reaction is sent as
-// MSG_SET_ANIMATION and then MSG_YER_HIT.
+// kMsgSetAnimation and then kMsgYerHit.
 // FUNCTION: HYPERX 0x00406350
 void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
                                          EngineObject* pOther,
@@ -401,12 +401,12 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
         pSelf->SetVelocity(vVelocity);
     }
 
-    if (nSelfSector == SECTOR_NONE)
+    if (nSelfSector == kSectorNone)
     {
         nSelfSector = 0;
     }
 
-    if (nOtherSector == SECTOR_NONE)
+    if (nOtherSector == kSectorNone)
     {
         nOtherSector = 0;
     }
@@ -421,8 +421,8 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
 
         if (flSelfWeight > 0.7f)
         {
-            pSelf->PostSceneEvent(MSG_YER_HIT, 0);
-            pOther->PostSceneEvent(MSG_YER_HIT, 0);
+            pSelf->PostSceneEvent(kMsgYerHit, 0);
+            pOther->PostSceneEvent(kMsgYerHit, 0);
         }
     }
     else
@@ -434,8 +434,8 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
 
         if (flSpeed > 0.7f)
         {
-            pSelf->PostSceneEvent(MSG_YER_HIT, 0);
-            pOther->PostSceneEvent(MSG_YER_HIT, 0);
+            pSelf->PostSceneEvent(kMsgYerHit, 0);
+            pOther->PostSceneEvent(kMsgYerHit, 0);
         }
     }
 
@@ -450,10 +450,10 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
     {
         if (nSelfStopped != 0 && nOtherStopped == 0)
         {
-            pSelf->PostSceneEvent(MSG_SET_ANIMATION,
-                                  g_awReactionByDamageAndSector[REACTION_SET_STOPPED * SECTOR_COUNT + nSelfSector]);
-            pSelf->PostSceneEvent(MSG_YER_HIT,
-                                  g_awReactionByDamageAndSector[REACTION_SET_STOPPED * SECTOR_COUNT + nOtherSector]);
+            pSelf->PostSceneEvent(kMsgSetAnimation,
+                                  g_awReactionByDamageAndSector[kReactionSetStopped * kSectorCount + nSelfSector]);
+            pSelf->PostSceneEvent(kMsgYerHit,
+                                  g_awReactionByDamageAndSector[kReactionSetStopped * kSectorCount + nOtherSector]);
         }
         else
         {
@@ -462,11 +462,11 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
                 return;
             }
 
-            const int    nIndex = static_cast<short>(flSpeed) * SECTOR_COUNT + nSelfSector;
+            const int    nIndex = static_cast<short>(flSpeed) * kSectorCount + nSelfSector;
             short* const pEntry = &g_awReactionByDamageAndSector[nIndex];
 
-            pSelf->PostSceneEvent(MSG_SET_ANIMATION, *pEntry);
-            pSelf->PostSceneEvent(MSG_YER_HIT, *pEntry);
+            pSelf->PostSceneEvent(kMsgSetAnimation, *pEntry);
+            pSelf->PostSceneEvent(kMsgYerHit, *pEntry);
         }
 
         EngineObject::PostCollisionCommentary(pSelf, pOther);

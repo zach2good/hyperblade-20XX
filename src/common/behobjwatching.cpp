@@ -21,7 +21,7 @@ void BehObj_Watching::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_WATCHING;
+    m_wKind = kBehWatching;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CWatch);
 

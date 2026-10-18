@@ -73,10 +73,10 @@ float              g_flUnusedPlanLaunchA = g_flZeroPlanLaunch;
 float              g_flUnusedPlanLaunchB = g_flZeroPlanLaunch;
 float              g_flUnusedPlanLaunchC = g_flZeroPlanLaunch;
 
-constexpr auto SHOT_POWER_RESET = 0x32;
+constexpr auto kShotPowerReset = 0x32;
 
 // Range byte -1: Launch takes its unaimed branch.
-constexpr auto SHOT_UNAIMED = 0xffff0000;
+constexpr auto kShotUnaimed = 0xffff0000;
 
 // The human packs the head camera's aim and shot power into the shot; any other plan sends it unaimed.
 // FUNCTION: HYPERX 0x004031e0
@@ -93,20 +93,20 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
         // STRING: HYPERX 0x004bb340
         if (strcmp("Human", pszName) == 0)
         {
-            CameraObject* const pHeadCam = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
+            CameraObject* const pHeadCam = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
             nPacked = ShotWord::Pack(static_cast<char>(static_cast<int>(pHeadCam->GetViewFracX() * 100.0f)),
                                      static_cast<char>(pHeadCam->m_nShotPowerLevel),
                                      static_cast<char>(static_cast<int>(pHeadCam->GetViewFracY() * 100.0f)));
 
-            pHeadCam->m_nShotPowerLevel = SHOT_POWER_RESET;
+            pHeadCam->m_nShotPowerLevel = kShotPowerReset;
         }
         else
         {
-            nPacked = SHOT_UNAIMED;
+            nPacked = kShotUnaimed;
         }
 
-        pTarget->PostSceneMessage(MSG_SHOOT, nPacked, pTarget->GetSlot(), 0);
+        pTarget->PostSceneMessage(kMsgShoot, nPacked, pTarget->GetSlot(), 0);
     }
 }
 
@@ -135,7 +135,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
     float*      pflSpeedScale = &pRok->GetPhysicsBody()->flSpeed;
     const float flMaxSpeed    = pRok->GetPhysicsBody()->flForwardSpeedDt;
 
-    if (pRok->GetSlot() >= SLOT_ROK)
+    if (pRok->GetSlot() >= kSlotRok)
     {
         PlayerObject* pCarrier;
         ObjectStats*  pStats;
@@ -212,7 +212,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
-            flPower = pStats->GetScalar(RATING_SHOT_POWER) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY);
+            flPower = pStats->GetScalar(kRatingShotPower) * pStats->GetScalar(kRatingOffensiveAbility);
 
             flGain = (static_cast<float>(rand()) * flPower * (1.0f / static_cast<float>(RAND_MAX)) + 10.0f) * flDelta;
 
@@ -250,7 +250,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pVel->z = flDrop - pRok->GetPositionPtr()->z - 10.0f;
 
-            if (pCarrier->m_wTargetGoalSlot == SLOT_SGOAL)
+            if (pCarrier->m_wTargetGoalSlot == kSlotSgoal)
             {
                 flSide  = -g_arenaEllipsoid.GetRadiusY();
                 pVel->y = flSide - pRok->GetPositionPtr()->y;
@@ -280,7 +280,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flLength = flRoot;
 
-            if (pStats->GetScalar(RATING_LONG_SHOT_ENABLE) != 0.0f)
+            if (pStats->GetScalar(kRatingLongShotEnable) != 0.0f)
             {
                 flCap       = g_arenaEllipsoid.GetRadiusY() + g_arenaEllipsoid.GetRadiusY();
                 flReference = flMaxSpeed * 5.0f;
@@ -313,16 +313,16 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
             pRokVel  = &pRok->GetPhysicsBody()->vel;
             *pRokVel = *pVel;
 
-            if (pRok->GetSlot() != SLOT_ROK)
+            if (pRok->GetSlot() != kSlotRok)
             {
                 return;
             }
 
             g_pGameEngine->m_ppSlots[pCarrier->m_wTargetGoalSlot]
-                ->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
+                ->PostSceneEvent(kMsgShotOnGoal, 0);
 
             g_pGameEngine->m_ppSlots[static_cast<short>(pCarrier->m_wTargetGoalSlot - 3)]
-                ->PostSceneEvent(MSG_SHOT_ON_GOAL, static_cast<int>(flInvScale));
+                ->PostSceneEvent(kMsgShotOnGoal, static_cast<int>(flInvScale));
             return;
         }
         else
@@ -338,7 +338,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
-            *pflSpeedScale = ((static_cast<float>(rand()) * (0.5f / static_cast<float>(RAND_MAX)) + 0.5f) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY) * 10.0f + 75.0f) * flDelta;
+            *pflSpeedScale = ((static_cast<float>(rand()) * (0.5f / static_cast<float>(RAND_MAX)) + 0.5f) * pStats->GetScalar(kRatingOffensiveAbility) * 10.0f + 75.0f) * flDelta;
 
             if (g_bSessionActive != 0)
             {
@@ -350,7 +350,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pVel->x = flJitterX * 10.0f - pRok->GetPositionPtr()->x;
 
-            if (pCarrier->m_wTargetGoalSlot == SLOT_SGOAL)
+            if (pCarrier->m_wTargetGoalSlot == kSlotSgoal)
             {
                 flSide  = -g_arenaEllipsoid.GetRadiusY();
                 pVel->y = flSide - pRok->GetPositionPtr()->y;
@@ -376,15 +376,15 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
             pRokBlock = pRok->GetPhysicsBody();
             Vec3::ScaleTo(pVel, *pflSpeedScale, &pRokBlock->vel);
 
-            if (pRok->GetSlot() != SLOT_ROK)
+            if (pRok->GetSlot() != kSlotRok)
             {
                 return;
             }
 
             g_pGameEngine->m_ppSlots[pCarrier->m_wTargetGoalSlot]
-                ->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
+                ->PostSceneEvent(kMsgShotOnGoal, 0);
 
-            g_pGameEngine->m_ppSlots[static_cast<short>(pCarrier->m_wTargetGoalSlot - 3)]->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
+            g_pGameEngine->m_ppSlots[static_cast<short>(pCarrier->m_wTargetGoalSlot - 3)]->PostSceneEvent(kMsgShotOnGoal, 0);
             return;
         }
     }
@@ -408,7 +408,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
         pRokVel->z = flBump + pRokVel->z;
 
-        pRok->PostSceneEvent(MSG_FLY, 0);
+        pRok->PostSceneEvent(kMsgFly, 0);
 
         pRokBody = pRok->GetPhysicsBody();
         Vec3::ScaleTo(pRokVel, pArgs->m_pArgs[1].fl, &pRokBody->vel);
@@ -422,7 +422,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
     Vec3*  pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
     float* pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
 
-    if (pContext->GetActor()->GetSlot() == SLOT_ROK && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
     {
         PhysicsBody*     pBlock   = pContext->GetActor()->GetPhysicsBody();
         AttachPak* const pTracked = pBlock->pAttach;
@@ -440,7 +440,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 
                 const float flDt = g_pGameEngine->m_clock.flDelta;
 
-                *pSpeed = ((pTarget->m_stats.GetWeightedStat(RATING_SHOT_POWER) * 0.04f + 0.8f) * 110.0f) * flDt;
+                *pSpeed = ((pTarget->m_stats.GetWeightedStat(kRatingShotPower) * 0.04f + 0.8f) * 110.0f) * flDt;
 
                 pVel->z += 0.5f;
 
@@ -489,11 +489,11 @@ void PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 
 // The goalies lead the target by the Rok's flight time to their goal, and add scatter.
 
-constexpr auto DICE_WIDE   = 7;
-constexpr auto DICE_NARROW = 6;
+constexpr auto kDiceWide   = 7;
+constexpr auto kDiceNarrow = 6;
 // The span the bias below centres, twenty one wide.
-constexpr auto JITTER_SPAN = 21;
-constexpr auto JITTER_BIAS = 10;
+constexpr auto kJitterSpan = 21;
+constexpr auto kJitterBias = 10;
 
 // FUNCTION: HYPERX 0x00403d70
 void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
@@ -526,7 +526,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     int nSlot = pActor->GetSlot();
 
-    EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
+    EngineObject* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (pActor->GetSlot() % 2 == 0)
     {
@@ -534,7 +534,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
     }
     else
     {
-        pGoal = g_apPositionMarkers[POS_S_GOAL_CENTER];
+        pGoal = g_apPositionMarkers[kPosSGoalCenter];
     }
 
     Vec3* const pRokPos = pRok->GetPositionPtr();
@@ -545,13 +545,13 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     Vec3 vRokVel = pRok->GetPhysicsBody()->vel;
 
-    if (nSlot == GOALIE_SLOT_A || nSlot == GOALIE_SLOT_B)
+    if (nSlot == kGoalieSlotA || nSlot == kGoalieSlotB)
     {
         flScratchA = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff))));
 
         flFlight = (flScratchA / static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vRokVel, &vRokVel))))) * g_pGameEngine->m_clock.flDelta;
 
-        if (nIndex == SLOT_ROK)
+        if (nIndex == kSlotRok)
         {
             float flSteps;
 
@@ -592,7 +592,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
         vTargetPos.z = vTargetPos.z + vTargetVel.z;
     }
 
-    if (nSlot == GOALIE_SLOT_A || nSlot == GOALIE_SLOT_B)
+    if (nSlot == kGoalieSlotA || nSlot == kGoalieSlotB)
     {
         PlayerObject* pOwner;
         float         flHandling;
@@ -604,7 +604,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
         float         flScatter;
 
         pOwner     = pContext->GetPlayerActor();
-        flHandling = pOwner->m_stats.GetScalar(RATING_ROK_HANDLING);
+        flHandling = pOwner->m_stats.GetScalar(kRatingRokHandling);
 
         flReach = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff)))) * 0.01f;
 
@@ -625,12 +625,12 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
         nSlot = nSlot % 2;
 
         pOwner    = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
-        flDamageA = pOwner->m_stats.GetScalar(RATING_DAMAGE);
+        flDamageA = pOwner->m_stats.GetScalar(kRatingDamage);
 
         nSlot += 2;
 
         pOwner    = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
-        flDamageB = pOwner->m_stats.GetScalar(RATING_DAMAGE);
+        flDamageB = pOwner->m_stats.GetScalar(kRatingDamage);
 
         flGate = DamageGate();
 
@@ -642,9 +642,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
             }
         }
 
-        flDice = static_cast<float>(rand() % DICE_WIDE);
-        flDice = static_cast<float>(rand() % DICE_WIDE) + flDice;
-        flDice = static_cast<float>(rand() % DICE_NARROW) + flDice - flScratchB;
+        flDice = static_cast<float>(rand() % kDiceWide);
+        flDice = static_cast<float>(rand() % kDiceWide) + flDice;
+        flDice = static_cast<float>(rand() % kDiceNarrow) + flDice - flScratchB;
 
         if (1.0f > flDice)
         {
@@ -653,9 +653,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
         flScatter = flDice * 0.10000000149011612f;
 
-        vJitter.x = static_cast<float>(rand() % JITTER_SPAN - JITTER_BIAS);
-        vJitter.y = static_cast<float>(rand() % JITTER_SPAN - JITTER_BIAS);
-        vJitter.z = static_cast<float>(rand() % JITTER_SPAN - JITTER_BIAS);
+        vJitter.x = static_cast<float>(rand() % kJitterSpan - kJitterBias);
+        vJitter.y = static_cast<float>(rand() % kJitterSpan - kJitterBias);
+        vJitter.z = static_cast<float>(rand() % kJitterSpan - kJitterBias);
 
         Math::Vec3Normalize(&vJitter);
 
@@ -692,8 +692,8 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
 // The sibling of Throw with different constants; a speed at or below nought is forced to ten.
 
-constexpr auto ARG_COUNT_WITHOUT_OPERAND = 1;
-constexpr auto ARG_OPERAND               = 1;
+constexpr auto kArgCountWithoutOperand = 1;
+constexpr auto kArgOperand             = 1;
 
 #define SPEED_FLOOR 10.0f
 
@@ -726,22 +726,22 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
         nOperand = param.n;
     }
 
-    if (pArgs->m_nArgCount == ARG_COUNT_WITHOUT_OPERAND)
+    if (pArgs->m_nArgCount == kArgCountWithoutOperand)
     {
         pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nOperand)];
     }
     else
     {
-        pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs->m_pArgs[ARG_OPERAND].n)];
+        pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs->m_pArgs[kArgOperand].n)];
     }
 
-    if ((nOperand & 0xffff) > SLOT_DROMER3)
+    if ((nOperand & 0xffff) > kSlotDromer3)
     {
         // STRING: HYPERX 0x004bb348
         g_gameApp.Fatal("Fatal failure to initialize the receiver of a pass!");
     }
 
-    if (pContext->GetActor()->GetSlot() == SLOT_ROK && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
     {
         short nSlot = pContext->GetTargetSlot();
 
@@ -764,7 +764,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
             const float flDt = g_pGameEngine->m_clock.flDelta;
 
-            *pSpeed = ((pOwner->m_stats.GetWeightedStat(RATING_SHOT_POWER) * 0.02f + 0.9f) * 100.0f) * flDt;
+            *pSpeed = ((pOwner->m_stats.GetWeightedStat(kRatingShotPower) * 0.02f + 0.9f) * 100.0f) * flDt;
 
             EngineObject* const pActor = pContext->GetActor();
 

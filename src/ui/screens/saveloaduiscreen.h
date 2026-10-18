@@ -47,7 +47,7 @@ public:
 
 private:
 public:
-    // Nought to nine, or SLOT_NONE.
+    // Nought to nine, or kSlotNone.
     int m_nSlot;        // 0x474
     int m_nReturnState; // 0x478
     // Minus one until a slot is clicked.

@@ -2,6 +2,6 @@
 #define HYPERBLADE_MODELIDS_H
 
 // No model: id_MOD_NOMODEL in DATA/ENUMIDS.H, the last entry of the model id enum.
-constexpr auto MODEL_ID_NONE = 0x66;
+constexpr auto kModelIDNone = 0x66;
 
 #endif

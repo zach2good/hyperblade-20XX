@@ -125,7 +125,7 @@ void PlanState::DestroyNode(PlanNode* pNode)
 
             case static_cast<int>(CATEGORY_ACTION) | MEMBER_DO_ACTION:
                 // The one action whose second operand is a string the node owns.
-                if (pNode->m_pArgs[0].n == ACF_SET_HEAD_CAM_TEXT)
+                if (pNode->m_pArgs[0].n == kACFSetHeadCamText)
                 {
                     delete[] pNode->m_pArgs[1].psz;
                 }
@@ -300,8 +300,8 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
     }
 }
 
-constexpr auto PLAN_NODES_FIRST = 500;
-constexpr auto PLAN_NODES_GROW  = 250;
+constexpr auto kPlanNodesFirst = 500;
+constexpr auto kPlanNodesGrow  = 250;
 
 // FUNCTION: HYPERX 0x0047b290
 void PlanState::PostUpdateCleanup()
@@ -327,7 +327,7 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
 {
     int nIndex;
 
-    short nCapacity = PLAN_NODES_FIRST;
+    short nCapacity = kPlanNodesFirst;
     auto* aWords    = new PlanWord[nCapacity]();
     memset(aWords, 0, nCapacity * sizeof(PlanWord));
 
@@ -351,7 +351,7 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
 
         if (m_nBehaviorCount == nCapacity)
         {
-            nCapacity += PLAN_NODES_GROW;
+            nCapacity += kPlanNodesGrow;
             auto* const aGrown = new PlanWord[nCapacity]();
 
             for (nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
@@ -396,7 +396,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 
     const PlanWord* pCursor = *ppStream;
 
-    if (static_cast<unsigned int>(pCursor->n) == PLAN_MARKER_NODE)
+    if (static_cast<unsigned int>(pCursor->n) == kPlanMarkerNode)
     {
         pCursor++;
 
@@ -432,14 +432,14 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
             {
                 const unsigned int nOpcode = pNode->m_nOpcode;
 
-                if ((nOpcode & OP_CATEGORY) == CATEGORY_PLAN_CHANGE)
+                if ((nOpcode & kOpCategory) == CATEGORY_PLAN_CHANGE)
                 {
-                    if ((nOpcode & OP_MEMBER) == MEMBER_CHANGE_OF_PLAN)
+                    if ((nOpcode & kOpMember) == MEMBER_CHANGE_OF_PLAN)
                     {
                         *pcPlanRef = 1;
                     }
                 }
-                else if ((nOpcode & OP_CATEGORY) == CATEGORY_ACTION && (nOpcode & OP_MEMBER) == MEMBER_SET_INTERACTOR_PARAM && pNode->m_pArgs->n == 0)
+                else if ((nOpcode & kOpCategory) == CATEGORY_ACTION && (nOpcode & kOpMember) == MEMBER_SET_INTERACTOR_PARAM && pNode->m_pArgs->n == 0)
                 {
                     m_nNamedInteractors++;
                 }
@@ -458,7 +458,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         return 1;
     }
 
-    if (static_cast<unsigned int>(pCursor->n) == PLAN_MARKER_STRING)
+    if (static_cast<unsigned int>(pCursor->n) == kPlanMarkerString)
     {
         pCursor++;
 
@@ -507,10 +507,10 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 }
 
 // Argument one is the behaviour's name.
-constexpr auto ARG_NAME = 1;
+constexpr auto kArgName = 1;
 
 // Ticks after instantiation before every collision interactor is set active again.
-constexpr auto COLLISION_REARM_TICKS = 10;
+constexpr auto kCollisionRearmTicks = 10;
 
 // FUNCTION: HYPERX 0x0047b680
 PlanState* PlanState::Instantiate()
@@ -534,7 +534,7 @@ PlanState* PlanState::Instantiate()
 
             GameBehaviorObject* const pPrevious = pBehaviour;
 
-            switch (static_cast<unsigned int>(pNode->m_nOpcode) & OP_CATEGORY)
+            switch (static_cast<unsigned int>(pNode->m_nOpcode) & kOpCategory)
             {
                 case CATEGORY_PLAN_CHANGE:
                     nRemaining = pNode->m_nArgCount;
@@ -551,7 +551,7 @@ PlanState* PlanState::Instantiate()
                     break;
 
                 case CATEGORY_BEHAVIOUR:
-                    if ((static_cast<unsigned int>(pNode->m_nOpcode) & OP_MEMBER) != MEMBER_DECLARE_BEHAVIOR)
+                    if ((static_cast<unsigned int>(pNode->m_nOpcode) & kOpMember) != MEMBER_DECLARE_BEHAVIOR)
                     {
                         // STRING: HYPERX 0x004c6960
                         throw (char*)"Expected a Behavior Declaration\n";
@@ -568,7 +568,7 @@ PlanState* PlanState::Instantiate()
 
                     pBehaviour->SetInteractorsActive(0);
 
-                    pBehaviour->m_pszName = pNode->m_pArgs[ARG_NAME].psz;
+                    pBehaviour->m_pszName = pNode->m_pArgs[kArgName].psz;
 
                     nOrder = static_cast<short>(nBehaviours);
 
@@ -595,7 +595,7 @@ PlanState* PlanState::Instantiate()
                     {
                         PlanNode* const pChild = pChildWord->pNode;
 
-                        switch (static_cast<unsigned int>(pChild->m_nOpcode) & OP_CATEGORY)
+                        switch (static_cast<unsigned int>(pChild->m_nOpcode) & kOpCategory)
                         {
                             case CATEGORY_COLLISION_INTERACTOR:
                                 pCondition = PlanInteractorFactories::CreateCollInteractor(m_pOwner, pChild, nullptr, pCondition);
@@ -606,14 +606,14 @@ PlanState* PlanState::Instantiate()
 
                                 pCondition->m_wEventKind = nOrder;
 
-                                pCondition->SetMember(static_cast<unsigned int>(pChild->m_nOpcode) & OP_MEMBER);
+                                pCondition->SetMember(static_cast<unsigned int>(pChild->m_nOpcode) & kOpMember);
 
                                 break;
 
                             case CATEGORY_MESSAGE_INTERACTOR:
                                 pMessage = PlanInteractorFactories::CreateMsgInteractor(m_pOwner, pChild, nullptr, pMessage);
 
-                                pMessage->SetMember(static_cast<unsigned int>(pChild->m_nOpcode) & OP_MEMBER);
+                                pMessage->SetMember(static_cast<unsigned int>(pChild->m_nOpcode) & kOpMember);
 
                                 break;
 
@@ -637,7 +637,7 @@ PlanState* PlanState::Instantiate()
 
             m_ppCursor++;
 
-            if ((static_cast<unsigned int>(pNode->m_nOpcode) & OP_CATEGORY) == CATEGORY_END_PLAN)
+            if ((static_cast<unsigned int>(pNode->m_nOpcode) & kOpCategory) == CATEGORY_END_PLAN)
             {
                 pBehaviour->m_pStandby = nullptr;
 
@@ -648,7 +648,7 @@ PlanState* PlanState::Instantiate()
 
                 m_nInteractorCount = static_cast<short>(nConditions);
 
-                m_nCollisionRearmTicks = COLLISION_REARM_TICKS;
+                m_nCollisionRearmTicks = kCollisionRearmTicks;
 
                 return this;
             }
@@ -737,5 +737,5 @@ void PlanState::Reinitialize()
 
 // One DECLARE_BEHAVIOR node, a leaf child of six and the string "x", then END_PLAN.
 PlanWord g_aReinitPlanImage[9] = {
-    { static_cast<int>(PLAN_MARKER_NODE) }, { static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_DECLARE_BEHAVIOR }, { 2 }, { 6 }, { static_cast<int>(PLAN_MARKER_STRING) }, { 'x' }, { 0 }, { static_cast<int>(PLAN_MARKER_NODE) }, { static_cast<int>(CATEGORY_END_PLAN) }
+    { static_cast<int>(kPlanMarkerNode) }, { static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_DECLARE_BEHAVIOR }, { 2 }, { 6 }, { static_cast<int>(kPlanMarkerString) }, { 'x' }, { 0 }, { static_cast<int>(kPlanMarkerNode) }, { static_cast<int>(CATEGORY_END_PLAN) }
 };

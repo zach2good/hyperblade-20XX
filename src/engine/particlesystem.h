@@ -44,7 +44,7 @@ public:
     // Update is its only caller.
     void ApplyToMesh();
 
-    ParticleRow m_aRows[PARTICLE_ROW_SETS * PARTICLE_ROWS_PER_SET]; // 0x00d14
+    ParticleRow m_aRows[kParticleRowSets * kParticleRowsPerSet]; // 0x00d14
 
     Particle m_aParticles[100]; // 0x01b24
     int      m_nParticleCount;  // 0x02c54

@@ -81,12 +81,12 @@ static std::vector<unsigned char> LayOut(const std::vector<Vec3>& positions, sho
 
             if (!face.uvs.empty())
             {
-                cBits |= FACE_FLAG_HAS_UV;
+                cBits |= kFaceFlagHasUV;
             }
 
             if (face.bUVSkip)
             {
-                cBits |= FACE_FLAG_UV_SKIP;
+                cBits |= kFaceFlagUVSkip;
             }
 
             return static_cast<unsigned char>(cBits);

@@ -31,7 +31,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8884
     m_hBitmap = GDI::LoadBitmapHandle("Ardoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(370, 214, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 4, 0, 4, 4, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
+    pWidget = AppendWidget(new FlipbookWidget(370, 214, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 4, 0, 4, 4, this, kSoundDooropn2, kSoundDoorcls2, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c887c
@@ -68,7 +68,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8814
     m_hBitmap = GDI::LoadBitmapHandle("Singl");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -78,7 +78,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c880c
     m_hBitmap = GDI::LoadBitmapHandle("Multi");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -88,14 +88,14 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8804
     m_hBitmap = GDI::LoadBitmapHandle("Loadgm");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
-    pWidget = AppendWidget(new FlipbookWidget(96, 289, 0, 0, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5, -1, -1));
+    pWidget = AppendWidget(new FlipbookWidget(96, 289, 0, 0, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -104,7 +104,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c87fc
     m_hBitmap = GDI::LoadBitmapHandle("tolobb");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -122,34 +122,34 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case MAIN_MENU_ARENA_DOOR:
-            if (nMsg != INPUT_LEFT_UP)
+            if (nMsg != kInputLeftUp)
             {
                 break;
             }
 
             if (g_nMainMenuMatchChoice == MAIN_MENU_MATCH_TOURNAMENT)
             {
-                g_nPlayerMode = PLAYER_MODE_TOURNAMENT;
+                g_nPlayerMode = kPlayerModeTournament;
             }
             else if (g_nMainMenuMatchChoice == MAIN_MENU_MATCH_EXHIBITION)
             {
-                g_nPlayerMode = PLAYER_MODE_EXHIBITION;
+                g_nPlayerMode = kPlayerModeExhibition;
             }
 
-            if (g_nPlayerMode == PLAYER_MODE_TOURNAMENT && g_pGameEngine->m_pSaveObject->GetBracketPos() == 0)
+            if (g_nPlayerMode == kPlayerModeTournament && g_pGameEngine->m_pSaveObject->GetBracketPos() == 0)
             {
-                Game::SetEngineState(ESTATE_GAME_INTRO);
+                Game::SetEngineState(kEstateGameIntro);
             }
             else
             {
-                Game::SetEngineState(ESTATE_DROME_EXTERIOR);
+                Game::SetEngineState(kEstateDromeExterior);
             }
 
             FlushBitmapCache();
             break;
 
         case MAIN_MENU_SIGN:
-            if (nMsg == WIDGET_MSG_LOOP_DONE)
+            if (nMsg == kWidgetMsgLoopDone)
             {
                 m_apWidgets[MAIN_MENU_BUTTON_FIRST]->SetDirtyFlag(1);
                 m_apWidgets[MAIN_MENU_BUTTON_FIRST + 1]->SetDirtyFlag(1);
@@ -169,7 +169,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg != INPUT_LEFT_UP)
+                    if (nMsg != kInputLeftUp)
                     {
                         break;
                     }
@@ -191,16 +191,16 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                     break;
 
                 case MAIN_MENU_PAGE_SINGLE:
-                    if (nMsg != INPUT_LEFT_UP)
+                    if (nMsg != kInputLeftUp)
                     {
                         break;
                     }
 
                     g_nMainMenuMatchChoice = MAIN_MENU_MATCH_EXHIBITION;
-                    g_nPlayerMode          = PLAYER_MODE_EXHIBITION;
-                    g_nSetupReturnState    = ESTATE_MAIN_MENU;
+                    g_nPlayerMode          = kPlayerModeExhibition;
+                    g_nSetupReturnState    = kEstateMainMenu;
 
-                    Game::SetEngineState(ESTATE_HEAD_TO_HEAD_SETUP);
+                    Game::SetEngineState(kEstateHeadToHeadSetup);
                     break;
 
                 default:
@@ -213,7 +213,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg != INPUT_LEFT_UP)
+                    if (nMsg != kInputLeftUp)
                     {
                         break;
                     }
@@ -225,16 +225,16 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
                     break;
 
                 case MAIN_MENU_PAGE_SINGLE:
-                    if (nMsg != INPUT_LEFT_UP)
+                    if (nMsg != kInputLeftUp)
                     {
                         break;
                     }
 
                     g_nMainMenuMatchChoice = MAIN_MENU_MATCH_TOURNAMENT;
-                    g_nPlayerMode          = PLAYER_MODE_TOURNAMENT;
-                    g_nSetupReturnState    = ESTATE_MAIN_MENU;
+                    g_nPlayerMode          = kPlayerModeTournament;
+                    g_nSetupReturnState    = kEstateMainMenu;
 
-                    Game::SetEngineState(ESTATE_TOURNAMENT_SETUP);
+                    Game::SetEngineState(kEstateTournamentSetup);
                     break;
 
                 default:
@@ -247,9 +247,9 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg == INPUT_LEFT_UP)
+                    if (nMsg == kInputLeftUp)
                     {
-                        Game::SetEngineState(ESTATE_SAVE_LOAD);
+                        Game::SetEngineState(kEstateSaveLoad);
                     }
                     break;
 
@@ -266,14 +266,14 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             switch (g_nMainMenuPage)
             {
                 case MAIN_MENU_PAGE_TOP:
-                    if (nMsg == INPUT_LEFT_UP)
+                    if (nMsg == kInputLeftUp)
                     {
-                        Game::SetEngineState(ESTATE_LOBBY);
+                        Game::SetEngineState(kEstateLobby);
                     }
                     break;
 
                 case MAIN_MENU_PAGE_SINGLE:
-                    if (nMsg != INPUT_LEFT_UP)
+                    if (nMsg != kInputLeftUp)
                     {
                         break;
                     }
@@ -300,8 +300,8 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
             break;
 
         case MAIN_MENU_GAP:
-        case WIDGET_ID_MOUSE:
-        case WIDGET_ID_RETURN:
+        case kWidgetIDMouse:
+        case kWidgetIDReturn:
             break;
 
         default:

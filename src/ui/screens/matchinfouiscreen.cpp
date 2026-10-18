@@ -9,7 +9,7 @@ class MatchInfoUIScreen;
 #include "engine/game.h"
 
 #define MATCHINFO_LAST_WIDGET UI_WIDGET_PAGE
-constexpr auto MATCHINFO_FIRST_PERIOD = 1;
+constexpr auto kMatchinfoFirstPeriod = 1;
 
 // RegisterBitmaps claims every bitmap name's STRING marker.
 // FUNCTION: HYPERX 0x00435790
@@ -64,7 +64,7 @@ MatchInfoUIScreen::MatchInfoUIScreen()
     pBitmap = CacheLookup("awardd", &nFound);
     m_apWidgets[MATCHINFO_WIDGET_AWARDS]->AddFrameBitmap(pBitmap, nFound);
 
-    if ((g_pGameEngine->IsTournamentMode() != 0 && g_pGameEngine->m_clock.nPeriod == MATCHINFO_FIRST_PERIOD) || (g_pGameEngine->IsTournamentMode() != 0 && g_nPrevEngineState == ESTATE_DROME_EXTERIOR))
+    if ((g_pGameEngine->IsTournamentMode() != 0 && g_pGameEngine->m_clock.nPeriod == kMatchinfoFirstPeriod) || (g_pGameEngine->IsTournamentMode() != 0 && g_nPrevEngineState == kEstateDromeExterior))
     {
         m_apWidgets[MATCHINFO_WIDGET_SAVE_LOAD]->ClearFrames();
 
@@ -111,16 +111,16 @@ MatchInfoUIScreen::MatchInfoUIScreen()
 // FUNCTION: HYPERX 0x00435b20
 void MatchInfoUIScreen::OnFirstTabClick()
 {
-    g_nSetupReturnState = ESTATE_MATCH_INFO;
+    g_nSetupReturnState = kEstateMatchInfo;
 
     switch (g_nPlayerMode)
     {
-        case PLAYER_MODE_EXHIBITION:
-            Game::SetEngineState(ESTATE_LEAGUE_SETUP);
+        case kPlayerModeExhibition:
+            Game::SetEngineState(kEstateLeagueSetup);
             break;
 
-        case PLAYER_MODE_TOURNAMENT:
-            Game::SetEngineState(ESTATE_CHAMPIONSHIP_SETUP);
+        case kPlayerModeTournament:
+            Game::SetEngineState(kEstateChampionshipSetup);
             break;
     }
 }
@@ -128,19 +128,19 @@ void MatchInfoUIScreen::OnFirstTabClick()
 // FUNCTION: HYPERX 0x00435b50
 void MatchInfoUIScreen::OnSecondTabClick()
 {
-    g_nSetupReturnState = ESTATE_MATCH_INFO;
+    g_nSetupReturnState = kEstateMatchInfo;
 
-    Game::SetEngineState(ESTATE_AWARDS);
+    Game::SetEngineState(kEstateAwards);
 }
 
 // FUNCTION: HYPERX 0x00435b70
 void MatchInfoUIScreen::OnThirdTabClick()
 {
-    if ((g_pGameEngine->IsTournamentMode() != 0 && g_pGameEngine->m_clock.nPeriod == MATCHINFO_FIRST_PERIOD) || (g_pGameEngine->IsTournamentMode() != 0 && g_nPrevEngineState == ESTATE_DROME_EXTERIOR))
+    if ((g_pGameEngine->IsTournamentMode() != 0 && g_pGameEngine->m_clock.nPeriod == kMatchinfoFirstPeriod) || (g_pGameEngine->IsTournamentMode() != 0 && g_nPrevEngineState == kEstateDromeExterior))
     {
         UnloadBitmaps();
 
-        Game::SetEngineState(ESTATE_SAVE_LOAD);
+        Game::SetEngineState(kEstateSaveLoad);
 
         return;
     }

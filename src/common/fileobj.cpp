@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <cstring>
 
-constexpr auto TEXT_MAX = 0x100;
+constexpr auto kTextMax = 0x100;
 
 namespace
 {
@@ -61,7 +61,7 @@ void FileObj::Close()
 // FUNCTION: HYPERX 0x00440470
 char FileObj::Open(const char* pszPath, int nMode)
 {
-    char szResolved[MAX_PATH_LENGTH];
+    char szResolved[kMaxPathLength];
 
     m_stream = Stream{ OpenStream(pszPath, nMode) };
 
@@ -127,8 +127,8 @@ int FileObj::Write(const void* pBuf, unsigned int nCount)
 // FUNCTION: HYPERX 0x004405d0
 int FileObj::PrintFormatted(const char* pszFormat, ...)
 {
-    char    szText[TEXT_MAX];
-    char    szOut[TEXT_MAX];
+    char    szText[kTextMax];
+    char    szOut[kTextMax];
     va_list argList;
 
     va_start(argList, pszFormat);
@@ -140,7 +140,7 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
     char  ch    = szText[0];
     char* pSrc  = szText;
     char* pDst  = szOut;
-    int   nLeft = TEXT_MAX;
+    int   nLeft = kTextMax;
 
     while (ch != 0 && nLeft != 0)
     {

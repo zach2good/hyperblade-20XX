@@ -17,12 +17,12 @@
 
 SoundMixer g_soundMixer;
 
-constexpr auto MIX_CHANNELS = 2;
-constexpr auto MIX_RATE     = 44100;
-constexpr auto MIX_FRAMES   = 1024;
+constexpr auto kMixChannels = 2;
+constexpr auto kMixRate     = 44100;
+constexpr auto kMixFrames   = 1024;
 
 // The original streamed anything this large, and only a streamed sound ever looped.
-constexpr auto STREAM_THRESHOLD = 0x8800u;
+constexpr auto kStreamThreshold = 0x8800u;
 
 namespace
 {
@@ -42,22 +42,22 @@ int IsResidentGroup(const SoundEntry* pEntry, int nGroup)
 
 bool Streams(const SoundEntry* pEntry)
 {
-    if (IsResidentGroup(pEntry, SOUND_GROUP_PRELOAD))
+    if (IsResidentGroup(pEntry, kSoundGroupPreload))
     {
         return false;
     }
 
-    if (IsResidentGroup(pEntry, SOUND_GROUP_LOOPING) && pEntry->m_nIndex == SOUND_SXXAMBA2)
+    if (IsResidentGroup(pEntry, kSoundGroupLooping) && pEntry->m_nIndex == kSoundSxxamba2)
     {
         return false;
     }
 
-    return static_cast<unsigned int>(pEntry->m_nDataBytes) > STREAM_THRESHOLD;
+    return static_cast<unsigned int>(pEntry->m_nDataBytes) > kStreamThreshold;
 }
 
 bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)
 {
-    PathString strPath(MAX_PATH_LENGTH);
+    PathString strPath(kMaxPathLength);
 
     strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
 
@@ -70,13 +70,13 @@ void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, 
 {
     auto* const pEngine = static_cast<ma_engine*>(pUser);
 
-    float afFrames[MIX_FRAMES * MIX_CHANNELS];
+    float afFrames[kMixFrames * kMixChannels];
 
-    constexpr auto nFrameBytes = static_cast<int>(sizeof(float)) * MIX_CHANNELS;
+    constexpr auto nFrameBytes = static_cast<int>(sizeof(float)) * kMixChannels;
 
     while (nAdditional > 0)
     {
-        const auto nFrames = std::clamp(nAdditional / nFrameBytes, 1, MIX_FRAMES);
+        const auto nFrames = std::clamp(nAdditional / nFrameBytes, 1, kMixFrames);
 
         ma_engine_read_pcm_frames(pEngine, afFrames, static_cast<ma_uint64>(nFrames), nullptr);
 
@@ -91,14 +91,14 @@ void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, 
 // SDL calls FeedStream with the stream locked, so holding the lock keeps the voices still.
 struct SoundMixer::Impl
 {
-    ma_engine                              engine{};
-    ma_sound_group                         sfx{};
-    ma_sound_group                         music{};
-    SDL_AudioStream*                       pStream = nullptr;
-    std::array<Voice, SOUND_CHANNEL_COUNT> aVoices;
-    ma_decoder                             decoder{};
-    ma_sound                               track{};
-    bool                                   bTrack = false;
+    ma_engine                             engine{};
+    ma_sound_group                        sfx{};
+    ma_sound_group                        music{};
+    SDL_AudioStream*                      pStream = nullptr;
+    std::array<Voice, kSoundChannelCount> aVoices;
+    ma_decoder                            decoder{};
+    ma_sound                              track{};
+    bool                                  bTrack = false;
 
     void Stop(Voice& voice)
     {
@@ -110,7 +110,7 @@ struct SoundMixer::Impl
         ma_sound_uninit(&voice.sound);
         ma_audio_buffer_ref_uninit(&voice.buffer);
 
-        voice.pSource->m_nPlayState = SOUND_STATE_STOPPED;
+        voice.pSource->m_nPlayState = kSoundStateStopped;
         voice.pSource               = nullptr;
 
         voice.samples.clear();
@@ -132,7 +132,7 @@ struct SoundMixer::Impl
 
 float VolumeOf(int nStep)
 {
-    return static_cast<float>(nStep) / (MIXER_VOLUME_LEVELS - 1);
+    return static_cast<float>(nStep) / (kMixerVolumeLevels - 1);
 }
 
 class StreamLock
@@ -177,8 +177,8 @@ int SoundMixer::Init()
 
     auto config       = ma_engine_config_init();
     config.noDevice   = MA_TRUE;
-    config.channels   = MIX_CHANNELS;
-    config.sampleRate = MIX_RATE;
+    config.channels   = kMixChannels;
+    config.sampleRate = kMixRate;
 
     if (ma_engine_init(&config, &pImpl->engine) != MA_SUCCESS)
     {
@@ -191,7 +191,7 @@ int SoundMixer::Init()
     ma_sound_group_init(&pImpl->engine, 0, nullptr, &pImpl->sfx);
     ma_sound_group_init(&pImpl->engine, 0, nullptr, &pImpl->music);
 
-    const auto spec = SDL_AudioSpec{ SDL_AUDIO_F32, MIX_CHANNELS, MIX_RATE };
+    const auto spec = SDL_AudioSpec{ SDL_AUDIO_F32, kMixChannels, kMixRate };
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO))
     {
@@ -316,12 +316,12 @@ void SoundMixer::Play(SoundEntry* pSound)
     }
 
     // A looping sound held whole played once in the original, so only a streamed one loops.
-    ma_sound_set_looping(&voice.sound, pSound->m_nGroup == SOUND_GROUP_LOOPING && Streams(pSound));
+    ma_sound_set_looping(&voice.sound, pSound->m_nGroup == kSoundGroupLooping && Streams(pSound));
     ma_sound_start(&voice.sound);
 
     voice.pSource = pSound;
 
-    pSound->m_nPlayState = SOUND_STATE_PLAYING;
+    pSound->m_nPlayState = kSoundStatePlaying;
     pSound->m_nStartedMs = static_cast<unsigned int>(SDL_GetTicks());
 }
 
@@ -397,7 +397,7 @@ int SoundMixer::ReadSfxVolume() const
 // FUNCTION: HYPERX 0x004904d0
 int SoundMixer::FadeSfxVolume(int nStep)
 {
-    m_nVolumeStep = std::clamp(nStep, 0, MIXER_VOLUME_LEVELS - 1);
+    m_nVolumeStep = std::clamp(nStep, 0, kMixerVolumeLevels - 1);
 
     if (m_pImpl)
     {
@@ -420,7 +420,7 @@ bool SoundMixer::PlayMusic(const char* pszPath)
 
     m_pImpl->StopTrack();
 
-    const auto config = ma_decoder_config_init(ma_format_f32, MIX_CHANNELS, MIX_RATE);
+    const auto config = ma_decoder_config_init(ma_format_f32, kMixChannels, kMixRate);
 
     if (ma_decoder_init_file(Path::Native(pszPath).c_str(), &config, &m_pImpl->decoder) != MA_SUCCESS)
     {
@@ -460,7 +460,7 @@ int SoundMixer::ReadMusicVolume() const
 
 void SoundMixer::FadeMusicVolume(int nStep)
 {
-    m_nMusicStep = std::clamp(nStep, 0, MIXER_VOLUME_LEVELS - 1);
+    m_nMusicStep = std::clamp(nStep, 0, kMixerVolumeLevels - 1);
 
     if (m_pImpl)
     {

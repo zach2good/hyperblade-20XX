@@ -47,9 +47,9 @@ GameBehaviorObject::GameBehaviorObject()
     m_nAnimationFlags  = -1;
     m_flPersistentRate = -1.0f;
     m_nPersistentFlags = -1;
-    m_nEventKind       = MSG_NOMSG;
+    m_nEventKind       = kMsgNomsg;
     m_wPollCountdown   = -1;
-    m_wLatency         = BEHAVIOR_DEFAULT_LATENCY;
+    m_wLatency         = kBehaviorDefaultLatency;
     m_pStandby         = nullptr;
 }
 
@@ -58,7 +58,7 @@ extern BehParamHandlerFn g_apfnBehaviorParamHandlers[17];
 extern PlanOpcodeSlot    g_pfnPlanOpcodeHandlers[141];
 extern PlanHandlerFn     g_pfnPlanActionHandlers[140];
 
-constexpr auto HEADER_ITEMS = 2;
+constexpr auto kHeaderItems = 2;
 
 // Out of line: the original calls this destructor from every derived one.
 // FUNCTION: HYPERX 0x0041bfe0
@@ -83,9 +83,9 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 
     if (pBlock->m_nOpcode == (static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_DECLARE_BEHAVIOR))
     {
-        pCursor = pBlock->m_pArgs + HEADER_ITEMS;
+        pCursor = pBlock->m_pArgs + kHeaderItems;
 
-        nCount -= HEADER_ITEMS;
+        nCount -= kHeaderItems;
     }
     else
     {
@@ -96,22 +96,22 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
     {
         PlanNode* const pItem = pCursor->pNode;
 
-        switch (pItem->m_nOpcode & OP_CATEGORY)
+        switch (pItem->m_nOpcode & kOpCategory)
         {
             case CATEGORY_MESSAGE_INTERACTOR:
                 pMessage = PlanInteractorFactories::CreateMsgInteractor(m_pOwner, pItem, this, pMessage);
 
-                pMessage->SetMember(pItem->m_nOpcode & OP_MEMBER);
+                pMessage->SetMember(pItem->m_nOpcode & kOpMember);
                 break;
 
             case CATEGORY_COLLISION_INTERACTOR:
                 pCondition = PlanInteractorFactories::CreateCollInteractor(m_pOwner, pItem, this, pCondition);
 
-                pCondition->SetMember(pItem->m_nOpcode & OP_MEMBER);
+                pCondition->SetMember(pItem->m_nOpcode & kOpMember);
                 break;
 
             case CATEGORY_BEHAVIOUR:
-                if ((pItem->m_nOpcode & OP_MEMBER) == MEMBER_SET_BEHAVIOR_PARAM)
+                if ((pItem->m_nOpcode & kOpMember) == MEMBER_SET_BEHAVIOR_PARAM)
                 {
                     g_apfnBehaviorParamHandlers[static_cast<short>(pItem->m_pArgs[0].n)](m_pOwner, pItem, this);
                 }
@@ -135,7 +135,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
                 break;
 
             case CATEGORY_ACTION:
-                switch (pItem->m_nOpcode & OP_MEMBER)
+                switch (pItem->m_nOpcode & kOpMember)
                 {
                     case MEMBER_DO_NET_ACTION:
                         if (m_pOwner->GetPhase() != OBJECT_PHASE_LOCAL)
@@ -182,7 +182,7 @@ void GameBehaviorObject::UpdateLimpAnim()
         return;
     }
 
-    if (m_pOwner->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)m_pOwner)->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
+    if (m_pOwner->GetSlot() <= kPlayerSlotCount - 1 && ((PlayerObject*)m_pOwner)->m_stats.GetScalar(kRatingDamage) < 30.0f)
     {
         const char* const pszFirst = m_pPersistentAnimation->GetName();
 
@@ -241,12 +241,12 @@ void GameBehaviorObject::SetInteractorsActive(int nArg)
     }
 }
 
-// Sends the node's timed message as MSG_INITIATE and starts its next wait.
+// Sends the node's timed message as kMsgInitiate and starts its next wait.
 
 // FUNCTION: HYPERX 0x0041c320
 void GameBehaviorObject::SendTimedMessage()
 {
-    m_pOwner->PostEvent(MSG_INITIATE, 0, m_pOwner->GetSlot());
+    m_pOwner->PostEvent(kMsgInitiate, 0, m_pOwner->GetSlot());
 
     m_wPollCountdown = m_wLatency;
 
@@ -512,7 +512,7 @@ void GameBehaviorObject::Reset()
     m_pMsgInteractors = nullptr;
 
     AgendaItem** ppSlot = &m_apSlots[0];
-    int          nLeft  = BEHAVIOR_SLOT_COUNT;
+    int          nLeft  = kBehaviorSlotCount;
 
     do
     {
@@ -538,11 +538,11 @@ void GameBehaviorObject::Reset()
     m_flAnimationRate      = -1.0f;
     m_flPersistentRate     = -1.0f;
     m_nEventTarget         = 0;
-    m_nEventKind           = MSG_NOMSG;
+    m_nEventKind           = kMsgNomsg;
     m_nEventParam          = 0;
     m_nChannelSlot         = 0;
     m_bDigressive          = 0;
-    m_wLatency             = BEHAVIOR_DEFAULT_LATENCY;
+    m_wLatency             = kBehaviorDefaultLatency;
 
     g_apBehaviorRegistry[m_wKind]->Insert(this);
 }

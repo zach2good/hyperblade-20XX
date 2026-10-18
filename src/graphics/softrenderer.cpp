@@ -72,7 +72,7 @@ void SoftRenderer::FreeBackBuffer()
 // FUNCTION: HYPERX 0x0044f480
 RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
 {
-    PathString strPath(MAX_PATH_LENGTH);
+    PathString strPath(kMaxPathLength);
 
     // STRING: HYPERX 0x004bc45c
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszName, "bmp");

@@ -9,7 +9,7 @@
 #include "engine/object.h"
 #include <SDL3/SDL.h>
 
-constexpr auto TEXT_INPUT_CAPACITY = 0x50;
+constexpr auto kTextInputCapacity = 0x50;
 
 // The length is read back as the index, so the terminator lands at offset zero.
 // FUNCTION: HYPERX 0x0042bce0
@@ -17,10 +17,10 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
 : HoldingWidget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
     m_nLength   = 0;
-    m_nCapacity = TEXT_INPUT_CAPACITY;
+    m_nCapacity = kTextInputCapacity;
     m_nType     = WIDGET_TEXT_INPUT;
 
-    m_pszInput = new char[TEXT_INPUT_CAPACITY];
+    m_pszInput = new char[kTextInputCapacity];
 
     m_pszInput[m_nLength] = 0;
 }
@@ -31,7 +31,7 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
 {
     const int nChar = nKey;
 
-    if (nChar == Key::BACK)
+    if (nChar == Key::kBack)
     {
         m_nLength--;
 

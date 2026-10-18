@@ -95,7 +95,7 @@ void CRelaxYaw::Process(int nArg)
     {
         m_flAngle = g_flZeroAgendaItem;
 
-        m_pOwner->PostSceneEvent(MSG_SPUN_DOWN, 0);
+        m_pOwner->PostSceneEvent(kMsgSpunDown, 0);
 
         Detach();
     }
@@ -129,7 +129,7 @@ void CRelaxYaw::Release(int nArg)
     {
         m_flAngle = g_flZeroAgendaItem;
 
-        m_pOwner->PostSceneEvent(MSG_SPUN_DOWN, 0);
+        m_pOwner->PostSceneEvent(kMsgSpunDown, 0);
 
         Detach();
     }

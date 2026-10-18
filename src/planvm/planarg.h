@@ -52,70 +52,70 @@ inline short GetTurnstileCollisionObject(EngineObject** ppActor, const PlanWord*
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_TURNSTILE - SLOT_TURNSTILE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBTurnstile - kSlotTurnstile)));
 }
 
 inline short GetLimboPoleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_LIMBO_POLE - SLOT_LIMBO_POLE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBLimboPole - kSlotLimboPole)));
 }
 
 inline short GetLaserHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_LASER_HURDLE - SLOT_LASER_HURDLE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBLaserHurdle - kSlotLaserHurdle)));
 }
 
 inline short GetFastLaneCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_FAST_LANE - SLOT_FAST_LANE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBFastLane - kSlotFastLane)));
 }
 
 inline short GetSlowLaneCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_SLOW_LANE - SLOT_SLOW_LANE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBSlowLane - kSlotSlowLane)));
 }
 
 inline short GetMineCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_MINE - SLOT_MINE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBMine - kSlotMine)));
 }
 
 inline short GetSwarfCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_SWARF - SLOT_SWARF)));
+    return static_cast<short>(*pResult = (nMe + (kCOBSwarf - kSlotSwarf)));
 }
 
 inline short GetExplosionCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_EXPLOSION - SLOT_EXPLOSION)));
+    return static_cast<short>(*pResult = (nMe + (kCOBExplosion - kSlotExplosion)));
 }
 
 inline short GetArmoryCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_ARMORY - SLOT_ARMORY)));
+    return static_cast<short>(*pResult = (nMe + (kCOBArmory - kSlotArmory)));
 }
 
 inline short GetHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_HURDLE - SLOT_HURDLE)));
+    return static_cast<short>(*pResult = (nMe + (kCOBHurdle - kSlotHurdle)));
 }
 
 // The linker folded this body onto GetRedRandomizerCollisionObject, which carries the marker.
@@ -123,7 +123,7 @@ inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const Pla
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = (nMe + (COB_GREEN_RANDOMIZER - SLOT_GREEN_RANDOMIZER)));
+    return static_cast<short>(*pResult = (nMe + (kCOBGreenRandomizer - kSlotGreenRandomizer)));
 }
 
 // The linker folded this body onto GetMyDragStartPos, which carries the marker.
@@ -131,7 +131,7 @@ inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return static_cast<short>(*pResult = ((nMe & 1) | GOALIE_SLOT_A));
+    return static_cast<short>(*pResult = ((nMe & 1) | kGoalieSlotA));
 }
 
 // The linker folded these bodies onto GetViewOwner, which carries the marker.

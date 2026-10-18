@@ -5,14 +5,14 @@
 
 #include "teamblock.h"
 
-constexpr auto SAVE_BLOCK_TAG_VALUE = 0x314d444d;
+constexpr auto kSaveBlockTagValue = 0x314d444d;
 
 struct SaveTeam
 {
-    int         nTeamIndex;                // 0x000
-    TeamStatRow aStatRows[TEAM_ROW_COUNT]; // 0x004
-    float       aDamage[TEAM_ROW_COUNT];   // 0x314, one per row, moved as an int
-    int         aSeat[TEAM_BLOCK_SEATS];   // 0x324
+    int         nTeamIndex;               // 0x000
+    TeamStatRow aStatRows[kTeamRowCount]; // 0x004
+    float       aDamage[kTeamRowCount];   // 0x314, one per row, moved as an int
+    int         aSeat[kTeamBlockSeats];   // 0x324
 };
 
 static_assert(sizeof(SaveTeam) == 0x32c);

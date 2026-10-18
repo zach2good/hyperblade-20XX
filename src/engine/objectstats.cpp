@@ -17,9 +17,9 @@ extern unsigned char g_bEnergyOn;
 // GLOBAL: HYPERX 0x004c55d8
 extern unsigned char g_bEnergyDraining;
 
-constexpr auto STATS_COUNT = 0x3f;
+constexpr auto kStatsCount = 0x3f;
 
-constexpr auto SCALE_ONE_BITS = 0x3f800000;
+constexpr auto kScaleOneBits = 0x3f800000;
 
 // Everything is five except the first and seventeenth, a hundred, and the sixth, seven.
 
@@ -35,8 +35,8 @@ ObjectStats* ObjectStats::InitDefaults()
         m_aStats[i] = 5.0f;
     }
 
-    m_aStats[RATING_SLOT(RATING_SPEED)]  = 7.0f;
-    m_aStats[RATING_SLOT(RATING_DAMAGE)] = 100.0f;
+    m_aStats[RATING_SLOT(kRatingSpeed)]  = 7.0f;
+    m_aStats[RATING_SLOT(kRatingDamage)] = 100.0f;
 
     m_flScale      = g_flBaseStatsSentinel;
     m_flSpeedRatio = g_flBaseStatsSentinel;
@@ -71,12 +71,12 @@ void ObjectStats::ScaleTo(int nSlot)
     float  flValue;
     int    nIndex;
 
-    if (nSlot > SLOT_DROMER3)
+    if (nSlot > kSlotDromer3)
     {
         return;
     }
 
-    if ((g_bSessionActive == 0) || ((nSlot & 1) == 0) || (FloatBits(m_flScale) != SCALE_ONE_BITS))
+    if ((g_bSessionActive == 0) || ((nSlot & 1) == 0) || (FloatBits(m_flScale) != kScaleOneBits))
     {
         if (g_pGameEngine->IsTournamentMode() != 0)
         {
@@ -94,16 +94,16 @@ void ObjectStats::ScaleTo(int nSlot)
         return;
     }
 
-    // pStat[STATS_COUNT] is the stat's copy in m_aBackup.
-    for (nIndex = 0, pStat = &m_aStats[1]; nIndex < STATS_COUNT; nIndex++, pStat++)
+    // pStat[kStatsCount] is the stat's copy in m_aBackup.
+    for (nIndex = 0, pStat = &m_aStats[1]; nIndex < kStatsCount; nIndex++, pStat++)
     {
         switch (nIndex)
         {
-            case RATING_WEIGHT_CLASS:
-            case RATING_STAMINA:
-            case RATING_BALANCE:
-            case RATING_ROK_HANDLING:
-                pStat[STATS_COUNT] = *pStat;
+            case kRatingWeightClass:
+            case kRatingStamina:
+            case kRatingBalance:
+            case kRatingRokHandling:
+                pStat[kStatsCount] = *pStat;
 
                 flValue = *pStat * m_flScale;
 
@@ -122,11 +122,11 @@ void ObjectStats::ScaleTo(int nSlot)
                 *pStat = flValue;
                 break;
 
-            case RATING_CHECKING:
-            case RATING_SPEED:
-            case RATING_SHOT_POWER:
-            case RATING_OFFENSIVE_ABILITY:
-                pStat[STATS_COUNT] = *pStat;
+            case kRatingChecking:
+            case kRatingSpeed:
+            case kRatingShotPower:
+            case kRatingOffensiveAbility:
+                pStat[kStatsCount] = *pStat;
 
                 flValue = *pStat * m_flScale;
 
@@ -157,18 +157,18 @@ void ObjectStats::CopyBaseStats()
 
     if (m_flScale != g_flBaseStatsSentinel)
     {
-        for (i = 0; i < STATS_COUNT; i++)
+        for (i = 0; i < kStatsCount; i++)
         {
             switch (i)
             {
-                case RATING_WEIGHT_CLASS:
-                case RATING_STAMINA:
-                case RATING_CHECKING:
-                case RATING_BALANCE:
-                case RATING_SPEED:
-                case RATING_SHOT_POWER:
-                case RATING_OFFENSIVE_ABILITY:
-                case RATING_ROK_HANDLING:
+                case kRatingWeightClass:
+                case kRatingStamina:
+                case kRatingChecking:
+                case kRatingBalance:
+                case kRatingSpeed:
+                case kRatingShotPower:
+                case kRatingOffensiveAbility:
+                case kRatingRokHandling:
                     m_aStats[i + 1] = m_aBackup[i];
                     break;
 
@@ -187,7 +187,7 @@ void ObjectStats::UpdateMomentumAndEnergy()
     float flMomentum;
     float flNew;
 
-    if ((flMomentum = (((GetScalar(RATING_STAMINA) - 4.0f) * 0.15f + g_flHalfRokObject) * g_pGameEngine->m_clock.GetDelta() + g_flBaseStatsSentinel) * m_flSpeedRatio) > g_flBaseStatsSentinel)
+    if ((flMomentum = (((GetScalar(kRatingStamina) - 4.0f) * 0.15f + g_flHalfRokObject) * g_pGameEngine->m_clock.GetDelta() + g_flBaseStatsSentinel) * m_flSpeedRatio) > g_flBaseStatsSentinel)
     {
         flMomentum = g_flBaseStatsSentinel;
     }
@@ -213,7 +213,7 @@ void ObjectStats::UpdateMomentumAndEnergy()
 
     if (g_bEnergyDraining != 0)
     {
-        flNew = m_aStats[0] - (g_flSpeedRateBase - GetScalar(RATING_STAMINA) * 0.15f) * g_pGameEngine->m_clock.GetDelta();
+        flNew = m_aStats[0] - (g_flSpeedRateBase - GetScalar(kRatingStamina) * 0.15f) * g_pGameEngine->m_clock.GetDelta();
 
         if (flNew > 100.0)
         {
@@ -230,7 +230,7 @@ void ObjectStats::UpdateMomentumAndEnergy()
     }
 
     const float flAccel = g_flSpeedRateBase + g_flHalfRokObject;
-    flNew               = (flAccel - GetScalar(RATING_STAMINA) * 0.15f) * g_pGameEngine->m_clock.GetDelta() + m_aStats[0];
+    flNew               = (flAccel - GetScalar(kRatingStamina) * 0.15f) * g_pGameEngine->m_clock.GetDelta() + m_aStats[0];
 
     if (flNew > 100.0)
     {

@@ -22,7 +22,7 @@
 #include "app/gameapp.h"
 
 // How many frames on the wrong side the counter tolerates before the message goes out.
-constexpr auto WRONG_SIDE_LIMIT = 0x14;
+constexpr auto kWrongSideLimit = 0x14;
 
 // Two; src/globals.cpp defines it.
 extern float g_flTwoAgendaItem;
@@ -117,7 +117,7 @@ void CAvoidObjects::OnListChanged()
 
 inline short CAvoidObjects::SignTowardGoal(short nGoalSlot)
 {
-    if (nGoalSlot != SLOT_NGOAL)
+    if (nGoalSlot != kSlotNgoal)
     {
         return -1;
     }
@@ -271,9 +271,9 @@ void CAvoidObjects::Process(int nArg)
 
     if (cWrongSide && flSign * flDeltaY < g_flZeroAgendaItem)
     {
-        if (g_nWrongSideFrames++ > WRONG_SIDE_LIMIT)
+        if (g_nWrongSideFrames++ > kWrongSideLimit)
         {
-            m_pOwner->PostSceneEvent(MSG_BREAKAWAY, 0);
+            m_pOwner->PostSceneEvent(kMsgBreakaway, 0);
             g_nWrongSideFrames = 0;
         }
     }
@@ -283,7 +283,7 @@ void CAvoidObjects::Process(int nArg)
 
     if (pAccum->z * pLine->z + pAccum->y * pLine->y + pAccum->GetX() * pLine->x < 0.3f)
     {
-        m_pOwner->PostSceneEvent(MSG_BLOCKED, 0);
+        m_pOwner->PostSceneEvent(kMsgBlocked, 0);
     }
 
     if (m_pNext != nullptr)

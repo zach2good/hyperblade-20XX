@@ -14,7 +14,7 @@
 #include "common/pooledclasses.h"
 
 // How many particles a spawn fills.
-constexpr auto SPAWN_COUNT = 100;
+constexpr auto kSpawnCount = 100;
 
 // The ceiling on both launch parameters.
 #define SPAWN_LIMIT 150.0f
@@ -28,11 +28,11 @@ ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
 
     m_bAnyAlive = 0;
 
-    for (int nGroup = 0; nGroup < PARTICLE_ROW_SETS; nGroup++)
+    for (int nGroup = 0; nGroup < kParticleRowSets; nGroup++)
     {
-        for (int nFace = 0; nFace < PARTICLE_ROWS_PER_SET; nFace++)
+        for (int nFace = 0; nFace < kParticleRowsPerSet; nFace++)
         {
-            const MeshFace* const pRec = pBones->m_pMesh->Face(static_cast<short>(nGroup * PARTICLE_ROWS_PER_SET + nFace));
+            const MeshFace* const pRec = pBones->m_pMesh->Face(static_cast<short>(nGroup * kParticleRowsPerSet + nFace));
 
             for (int nCorner = 0; nCorner < 3; nCorner++)
             {
@@ -48,7 +48,7 @@ ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
                     pVerts = pCorner->Vertices();
                 }
 
-                m_aRows[nGroup * PARTICLE_ROWS_PER_SET + nFace].aCorners[nCorner] =
+                m_aRows[nGroup * kParticleRowsPerSet + nFace].aCorners[nCorner] =
                     pVerts[pRec->aCorners[static_cast<short>(nCorner)]];
             }
         }
@@ -73,7 +73,7 @@ void ParticleSystem::SpawnParticles(float flSpread, float flRise)
         flRise = SPAWN_LIMIT;
     }
 
-    m_nParticleCount = SPAWN_COUNT;
+    m_nParticleCount = kSpawnCount;
 
     for (nIndex = 0, pEmitter = m_aParticles; nIndex < m_nParticleCount; pEmitter++)
     {
@@ -81,7 +81,7 @@ void ParticleSystem::SpawnParticles(float flSpread, float flRise)
         nIndex++;
     }
 
-    m_nFlags &= ~ENGINEOBJECT_HIDDEN;
+    m_nFlags &= ~kEngineObjectHidden;
 
     m_bAnyAlive = 1;
 }
@@ -102,7 +102,7 @@ void ParticleSystem::SpawnParticlesUniform(float flSpread, float flRise)
         flRise = SPAWN_LIMIT;
     }
 
-    m_nParticleCount = SPAWN_COUNT;
+    m_nParticleCount = kSpawnCount;
 
     for (nIndex = 0, pEmitter = m_aParticles; nIndex < m_nParticleCount; pEmitter++)
     {
@@ -110,7 +110,7 @@ void ParticleSystem::SpawnParticlesUniform(float flSpread, float flRise)
         nIndex++;
     }
 
-    m_nFlags &= ~ENGINEOBJECT_HIDDEN;
+    m_nFlags &= ~kEngineObjectHidden;
 
     m_bAnyAlive = 1;
 }
@@ -168,7 +168,7 @@ void ParticleSystem::ApplyToMesh()
 
             const MeshFace* pPart = pMesh->GetFace(static_cast<short>(nIndex));
 
-            const Vec3* pRow = m_aRows[static_cast<int>(pEmitter->m_flRow) + pEmitter->m_nSet * PARTICLE_ROWS_PER_SET].aCorners;
+            const Vec3* pRow = m_aRows[static_cast<int>(pEmitter->m_flRow) + pEmitter->m_nSet * kParticleRowsPerSet].aCorners;
 
             for (nCorner = 0; nCorner < 3; nCorner++)
             {
@@ -259,5 +259,5 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
 void ParticleSystem::Deactivate()
 {
     m_bAnyAlive = 0;
-    m_nFlags |= ENGINEOBJECT_HIDDEN;
+    m_nFlags |= kEngineObjectHidden;
 }

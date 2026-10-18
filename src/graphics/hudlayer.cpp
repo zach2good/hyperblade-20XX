@@ -7,7 +7,7 @@
 #include <vector>
 
 // The HUD was laid out for 480 lines; it keeps about that many however tall the window is.
-constexpr auto HUD_LINES = 480;
+constexpr auto kHUDLines = 480;
 
 namespace
 {
@@ -34,7 +34,7 @@ int        s_bFresh     = 0;
 // Recreates the layer when the back buffer it covers has changed size.
 void Fit(const DrawTarget& backBuffer)
 {
-    s_nScale = (std::max)(1, backBuffer.nHeight / HUD_LINES);
+    s_nScale = (std::max)(1, backBuffer.nHeight / kHUDLines);
 
     const auto nWidth  = (backBuffer.nWidth / s_nScale) & ~3;
     const auto nHeight = backBuffer.nHeight / s_nScale;
@@ -117,7 +117,7 @@ void HudLayer::Clear()
 {
     if (s_layer.pBits != nullptr)
     {
-        memset(s_layer.pBits, KEY_INDEX, static_cast<size_t>(s_layer.nPitch) * s_layer.nHeight);
+        memset(s_layer.pBits, kKeyIndex, static_cast<size_t>(s_layer.nPitch) * s_layer.nHeight);
 
         s_bFresh = 1;
     }

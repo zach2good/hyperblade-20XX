@@ -25,24 +25,24 @@ class TransformObject;
 struct Vec3;
 
 // The scene-message registry: one byte per message id, one handler per slot.
-constexpr auto SCENE_MESSAGE_COUNT = 0x8e;
-constexpr auto SCENE_HANDLER_SLOTS = 50;
+constexpr auto kSceneMessageCount = 0x8e;
+constexpr auto kSceneHandlerSlots = 50;
 
 // The length of the scene event ring and of the input command ring.
-constexpr auto OBJECT_RING_LENGTH = 0x96;
+constexpr auto kObjectRingLength = 0x96;
 
 // The bits of EngineObject::m_nFlags. An unculled object skips the camera's frustum test, one with
 // no model has nothing to release, a hidden one is neither drawn nor body checked, and the posed bit
 // says the render slots were transformed this frame and is cleared before the next.
-constexpr auto ENGINEOBJECT_NO_CULL  = 0x01;
-constexpr auto ENGINEOBJECT_NO_MODEL = 0x04;
-constexpr auto ENGINEOBJECT_HIDDEN   = 0x10;
-constexpr auto ENGINEOBJECT_POSED    = 0x20;
+constexpr auto kEngineObjectNoCull  = 0x01;
+constexpr auto kEngineObjectNoModel = 0x04;
+constexpr auto kEngineObjectHidden  = 0x10;
+constexpr auto kEngineObjectPosed   = 0x20;
 
 // Input commands that are not a scene message: the plan in the high word and the
 // behaviour in the low, or the behaviour alone.
-constexpr auto COMMAND_SET_PLAN_AND_BEHAVIOR = (-2);
-constexpr auto COMMAND_SET_BEHAVIOR          = (-3);
+constexpr auto kCommandSetPlanAndBehavior = (-2);
+constexpr auto kCommandSetBehavior        = (-3);
 
 // 0xd14 bytes, where every derived class puts its first field; offsets past it are per class.
 // VTABLE: HYPERX 0x004b38f0
@@ -255,9 +255,9 @@ public:
 
     short m_nPlanCount; // 0x238, ObjectDef::m_nPlanCount copied
     // The scene-message registry: a byte table by message id, a pointer table by slot, and a count.
-    unsigned char m_aSceneHandlerSlot[SCENE_MESSAGE_COUNT]; // 0x23a
+    unsigned char m_aSceneHandlerSlot[kSceneMessageCount]; // 0x23a
 protected:
-    class Interactor* m_apSceneHandler[SCENE_HANDLER_SLOTS]; // 0x2c8
+    class Interactor* m_apSceneHandler[kSceneHandlerSlots]; // 0x2c8
 
     short m_nSceneHandlerCount; // 0x390
     int   m_nTypeId;            // 0x394
@@ -269,22 +269,22 @@ public:
     short m_wSyncedPlan;      // 0x39c
     short m_wSyncedBehaviour; // 0x39e
 
-    // Two rings of OBJECT_RING_LENGTH entries: the scene events and the input commands.
-    short m_nSceneCount;                        // 0x3a0
-    short m_nSceneHead;                         // 0x3a2
-    int   m_anSceneMessage[OBJECT_RING_LENGTH]; // 0x3a4
-    int   m_anSceneArg[OBJECT_RING_LENGTH];     // 0x5fc
-    short m_nCommandCount;                      // 0x854
-    short m_nCommandHead;                       // 0x856
-    int   m_anCommand[OBJECT_RING_LENGTH];      // 0x858
-    int   m_anCommandArg[OBJECT_RING_LENGTH];   // 0xab0
+    // Two rings of kObjectRingLength entries: the scene events and the input commands.
+    short m_nSceneCount;                       // 0x3a0
+    short m_nSceneHead;                        // 0x3a2
+    int   m_anSceneMessage[kObjectRingLength]; // 0x3a4
+    int   m_anSceneArg[kObjectRingLength];     // 0x5fc
+    short m_nCommandCount;                     // 0x854
+    short m_nCommandHead;                      // 0x856
+    int   m_anCommand[kObjectRingLength];      // 0x858
+    int   m_anCommandArg[kObjectRingLength];   // 0xab0
 
     // What CountVisibleFaces accumulates: the faces of every bone it does not hide.
     short m_wVisibleFaceTotal; // 0xd08
 protected:
     // The tick the last periodic message went out; RokObject and PlayerObject share it.
     int m_nLastSendMs; // 0xd0c
-    // The stat row wraps past BOT_SLOT_LIMIT.
+    // The stat row wraps past kBotSlotLimit.
     SyncSendCursor m_sendCursor; // 0xd10
 
 public:

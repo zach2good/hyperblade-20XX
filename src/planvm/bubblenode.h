@@ -22,7 +22,7 @@ public:
     class TransformObject* m_pTarget;     // 0x010
     BoundBubble*           m_pChildren;   // 0x014
     short                  m_nChildCount; // 0x018
-    // An AttachPak for an attached bubble, else the parser's EXTRA_USE_DETAIL sentinel.
+    // An AttachPak for an attached bubble, else the parser's kExtraUseDetail sentinel.
     struct AttachPak*     m_pAttach; // 0x01c
     struct CollisionCage* m_pCage;   // 0x020
 };

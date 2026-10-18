@@ -3,11 +3,11 @@
 #include "physics/physicsbody.h"
 #include "engine/collisionobjectids.h"
 
-// The command record a bubble starts from: kind COB_NONE and everything else cleared.
+// The command record a bubble starts from: kind kCOBNone and everything else cleared.
 // FUNCTION: HYPERX 0x0042a050
 BubbleCmd::BubbleCmd()
 {
-    m_nSlot       = COB_NONE;
+    m_nSlot       = kCOBNone;
     m_wShape      = 0;
     m_nChildCount = 0;
     m_pChildren   = nullptr;

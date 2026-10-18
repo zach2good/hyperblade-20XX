@@ -22,7 +22,7 @@ void BehObj_GlideLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_GLIDE_LCL;
+    m_wKind = kBehGlideLcl;
 
     auto* const pFirst   = (CGlideOnSurface*)AllocAgendaItem(Agenda_CGlideOnSurface);
     m_apSlots[0]         = (AgendaItem*)pFirst;

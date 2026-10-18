@@ -17,9 +17,9 @@
 
 #define STEP(p) ((const char*)(p) + 1)
 
-constexpr auto FORCE_ANSI = 0x10000;
+constexpr auto kForceANSI = 0x10000;
 
-constexpr auto FORCE_UNICODE = 0x20000;
+constexpr auto kForceUnicode = 0x20000;
 
 // MFC's CString::FormatV with the names changed.
 // FUNCTION: HYPERX 0x00448980
@@ -98,12 +98,12 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
         switch (*pszCursor)
         {
             case 0x68:
-                nModifier = FORCE_ANSI;
+                nModifier = kForceANSI;
                 pszCursor = STEP(pszCursor);
                 break;
 
             case 0x6c:
-                nModifier = FORCE_UNICODE;
+                nModifier = kForceUnicode;
                 pszCursor = STEP(pszCursor);
                 break;
 
@@ -122,14 +122,14 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
                 va_arg(argList, int);
                 break;
 
-            case 0x63 | FORCE_ANSI:
-            case 0x43 | FORCE_ANSI:
+            case 0x63 | kForceANSI:
+            case 0x43 | kForceANSI:
                 nItemLen = 2;
                 va_arg(argList, int);
                 break;
 
-            case 0x63 | FORCE_UNICODE:
-            case 0x43 | FORCE_UNICODE:
+            case 0x63 | kForceUnicode:
+            case 0x43 | kForceUnicode:
                 nItemLen = 2;
                 va_arg(argList, int);
                 break;
@@ -153,8 +153,8 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
                 }
                 break;
 
-            case 0x73 | FORCE_ANSI:
-            case 0x53 | FORCE_ANSI:
+            case 0x73 | kForceANSI:
+            case 0x53 | kForceANSI:
                 // lstrlenA read a null argument as empty.
                 nItemLen = SafeStrlen(va_arg(argList, const char*));
 
@@ -164,8 +164,8 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
                 }
                 break;
 
-            case 0x73 | FORCE_UNICODE:
-            case 0x53 | FORCE_UNICODE:
+            case 0x73 | kForceUnicode:
+            case 0x53 | kForceUnicode:
                 nItemLen = static_cast<int>(wcslen(reinterpret_cast<const wchar_t*>(va_arg(argList, const unsigned short*))));
 
                 if (nItemLen < 1)

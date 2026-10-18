@@ -10,7 +10,7 @@ AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 
     m_pszName = strcpy(new char[strlen(pszName) + 1], pszName);
 
-    const int nAdjusted = nSegment + ANIMNAMEDREF_BIAS;
+    const int nAdjusted = nSegment + kAnimNamedRefBias;
 
     m_nSegment = static_cast<short>(nAdjusted);
 }
@@ -20,7 +20,7 @@ AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 // FUNCTION: HYPERX 0x004178e0
 AnimNamedRef::~AnimNamedRef()
 {
-    if (m_nSegment >= ANIMNAMEDREF_BIAS)
+    if (m_nSegment >= kAnimNamedRefBias)
     {
         if (m_pszName != nullptr)
         {

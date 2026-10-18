@@ -22,7 +22,7 @@ void CDisplayShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_bReady = 0;
     m_pOwner = pSubject;
 
-    g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_nShotPowerLevel = 1;
+    g_pGameEngine->GetCamera(kCameraHeadSlot)->m_nShotPowerLevel = 1;
 }
 
 // FUNCTION: HYPERX 0x00412390
@@ -30,7 +30,7 @@ void CDisplayShotPower::Process(int nArg)
 {
     if (g_pRenderer != nullptr)
     {
-        CameraObject* const pSource = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
+        CameraObject* const pSource = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
         if (pSource != nullptr)
         {

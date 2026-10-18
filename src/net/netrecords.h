@@ -7,9 +7,9 @@
 #include "net/netmessage.h"
 
 // The words that fit after an events packet's five header bytes.
-constexpr auto EVENT_WORDS_MAX = 0x3e;
+constexpr auto kEventWordsMax = 0x3e;
 
-constexpr auto NET_DATA_MAX = 0x80;
+constexpr auto kNetDataMax = 0x80;
 
 // Laid out on wire boundaries; the packing is part of the type.
 #pragma pack(push, 1)
@@ -91,7 +91,7 @@ struct EventsPacket : NetMessage
     unsigned char nPlan;
     unsigned char nBehaviour;
     unsigned char nCount;
-    unsigned int  anWords[EVENT_WORDS_MAX];
+    unsigned int  anWords[kEventWordsMax];
 };
 
 // The stationary objects' packet: its kind, how many event bytes follow the bitmap, and a nibble
@@ -121,7 +121,7 @@ struct StationaryEvent
 struct NetDataMessage : NetMessage
 {
     unsigned char nLength;
-    char          abData[NET_DATA_MAX + 1];
+    char          abData[kNetDataMax + 1];
 };
 
 #pragma pack(pop)

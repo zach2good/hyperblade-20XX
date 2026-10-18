@@ -63,7 +63,7 @@ void BehObj_UpdateWhileAttached::Init(EngineObject* pOwner, PlanNode* pBlock, in
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
-    m_wKind = BEH_UPDATE_WHILE_ATTACHED;
+    m_wKind = kBehUpdateWhileAttached;
 
     AgendaItem* pNode = m_apSlots[0] = AllocAgendaItem(Agenda_CBeAttached);
 

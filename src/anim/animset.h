@@ -7,7 +7,7 @@
 
 #include "anim/animscriptstate.h"
 
-constexpr auto ANIMSET_ENTRIES = 300;
+constexpr auto kAnimsetEntries = 300;
 
 #include "anim/animscripttable.h"
 

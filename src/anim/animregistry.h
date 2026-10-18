@@ -6,7 +6,7 @@
 #include "anim/animscripttable.h"
 
 // The registry holds at most this many sets.
-constexpr auto ANIM_REGISTRY_SET_LIMIT = 250;
+constexpr auto kAnimRegistrySetLimit = 250;
 
 // The registry itself, 0x10 bytes; Game::InitializeEngine builds the one there is.
 class AnimRegistry
@@ -16,7 +16,7 @@ public:
     {
         m_nLoadCost = 0;
         m_nSetCount = 0;
-        m_apSets    = new class AnimClipSet*[ANIM_REGISTRY_SET_LIMIT];
+        m_apSets    = new class AnimClipSet*[kAnimRegistrySetLimit];
 
         m_pScripts = new AnimScriptTable;
     }

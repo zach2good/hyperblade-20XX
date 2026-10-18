@@ -26,9 +26,9 @@ void CCheckAI::Process(int nArg)
 
     EngineObject* const pOwner = m_pOwner;
 
-    EngineObject* const pCoach = ppObjects[SLOT_COACH0];
+    EngineObject* const pCoach = ppObjects[kSlotCoach0];
 
-    if (pOwner == ppObjects[SLOT_COACH1])
+    if (pOwner == ppObjects[kSlotCoach1])
     {
         return;
     }

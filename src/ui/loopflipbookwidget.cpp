@@ -34,12 +34,12 @@ void LoopFlipbookWidget::Draw(int nSlot)
     {
         m_bDirty = 0;
 
-        m_pOwner->OnWidgetMessage(WIDGET_MSG_LOOP_DONE, nSlot);
+        m_pOwner->OnWidgetMessage(kWidgetMsgLoopDone, nSlot);
 
         return;
     }
 
     m_nFrame = m_nFrameIdle;
 
-    m_pOwner->OnWidgetMessage(WIDGET_MSG_LOOP_DONE, nSlot);
+    m_pOwner->OnWidgetMessage(kWidgetMsgLoopDone, nSlot);
 }

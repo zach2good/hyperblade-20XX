@@ -23,9 +23,9 @@
 // The championship setup screen without the bracket.
 
 #define LEAGUE_INITIAL_LAST_WIDGET TEAMSETUP_WIDGET_STATS_TEAM_TITLE
-#define LEAGUE_GRID_LAST           (LEAGUE_WIDGET_STAT_GRID + LEAGUE_GRID_ROWS * LEAGUE_GRID_COLUMNS - 1)
-constexpr auto LEAGUE_GRID_ROWS    = 10;
-constexpr auto LEAGUE_GRID_COLUMNS = 5;
+#define LEAGUE_GRID_LAST           (LEAGUE_WIDGET_STAT_GRID + kLeagueGridRows * kLeagueGridColumns - 1)
+constexpr auto kLeagueGridRows    = 10;
+constexpr auto kLeagueGridColumns = 5;
 
 // FUNCTION: HYPERX 0x00452f80
 LeagueSetupUIScreen::LeagueSetupUIScreen()
@@ -191,12 +191,12 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
 
     m_nLastWidget = LEAGUE_GRID_LAST;
 
-    for (int i = 0; i < LEAGUE_GRID_ROWS; i++)
+    for (int i = 0; i < kLeagueGridRows; i++)
     {
-        for (int j = 0; j < LEAGUE_GRID_COLUMNS; j++)
+        for (int j = 0; j < kLeagueGridColumns; j++)
         {
-            pWidget = AppendWidget(new DisplayWidget(g_aLeagueGridCells[i * LEAGUE_GRID_COLUMNS + j].nX,
-                                                     g_aLeagueGridCells[i * LEAGUE_GRID_COLUMNS + j].nY,
+            pWidget = AppendWidget(new DisplayWidget(g_aLeagueGridCells[i * kLeagueGridColumns + j].nX,
+                                                     g_aLeagueGridCells[i * kLeagueGridColumns + j].nY,
                                                      0,
                                                      0,
                                                      this,
@@ -1779,7 +1779,7 @@ void LeagueSetupUIScreen::UpdateStatText()
     const TeamBlock* pTeam;
     int              nPlayer;
 
-    for (int nStat = MATCH_STAT_TOTAL_POINTS; nStat < MATCH_STAT_COUNT; nStat++)
+    for (int nStat = kMatchStatTotalPoints; nStat < kMatchStatCount; nStat++)
     {
         int nTotal = 0;
 
@@ -1792,15 +1792,15 @@ void LeagueSetupUIScreen::UpdateStatText()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const int      nRow = (nStat - MATCH_STAT_TOTAL_POINTS) * LEAGUE_GRID_COLUMNS;
+        const int      nRow = (nStat - kMatchStatTotalPoints) * kLeagueGridColumns;
         Widget** const pRow = &m_apWidgets[nRow];
 
-        for (nPlayer = 0; nPlayer < TEAM_ROW_COUNT; nPlayer++)
+        for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
         {
             const float*  pStats  = pTeam->aStatRows[nPlayer].aStat;
             Widget* const pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer];
 
-            if (nStat == MATCH_STAT_TIME_OF_POSS)
+            if (nStat == kMatchStatTimeOfPoss)
             {
                 const int nTime = static_cast<int>(pStats[nStat] * 0.001f);
 
@@ -1808,12 +1808,12 @@ void LeagueSetupUIScreen::UpdateStatText()
 
                 nTotal += nTime;
             }
-            else if (nStat == MATCH_STAT_SHOOTING_PCT)
+            else if (nStat == kMatchStatShootingPct)
             {
                 // STRING: HYPERX 0x004c3c70
                 sprintf(szText, "%.2f%%", pStats[nStat]);
 
-                if (pStats[MATCH_STAT_SHOTS_ON_GOAL] > 0.0f)
+                if (pStats[kMatchStatShotsOnGoal] > 0.0f)
                 {
                 }
             }
@@ -1828,15 +1828,15 @@ void LeagueSetupUIScreen::UpdateStatText()
             pWidget->SetText(szText);
         }
 
-        if (nStat == MATCH_STAT_SHOOTING_PCT)
+        if (nStat == kMatchStatShootingPct)
         {
             int nAttempts = 0;
             int nMade     = 0;
 
-            for (nPlayer = 0; nPlayer < TEAM_ROW_COUNT; nPlayer++)
+            for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
             {
-                nAttempts += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_SHOTS_ON_GOAL]);
-                nMade += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_TOTAL_GOALS]);
+                nAttempts += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[kMatchStatShotsOnGoal]);
+                nMade += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[kMatchStatTotalGoals]);
             }
 
             if (nAttempts > 0)
@@ -1849,7 +1849,7 @@ void LeagueSetupUIScreen::UpdateStatText()
                 sprintf(szText, "0.00%%");
             }
         }
-        else if (nStat == MATCH_STAT_TIME_OF_POSS)
+        else if (nStat == kMatchStatTimeOfPoss)
         {
             StatColumns::FormatClock(szText, static_cast<short>(nTotal));
         }
@@ -1858,7 +1858,7 @@ void LeagueSetupUIScreen::UpdateStatText()
             sprintf(szText, "%2hd", static_cast<short>(nTotal));
         }
 
-        pRow[LEAGUE_WIDGET_STAT_GRID + TEAM_ROW_COUNT]->SetText(szText);
+        pRow[LEAGUE_WIDGET_STAT_GRID + kTeamRowCount]->SetText(szText);
     }
 }
 
@@ -1870,11 +1870,11 @@ void LeagueSetupUIScreen::HideStatsPanel()
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetHidden(1);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetDirtyFlag(0);
 
-    for (int nRow = 0; nRow < LEAGUE_GRID_ROWS; nRow++)
+    for (int nRow = 0; nRow < kLeagueGridRows; nRow++)
     {
-        for (int nColumn = 0; nColumn < LEAGUE_GRID_COLUMNS; nColumn++)
+        for (int nColumn = 0; nColumn < kLeagueGridColumns; nColumn++)
         {
-            Widget* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * LEAGUE_GRID_COLUMNS + nColumn];
+            Widget* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
 
             pWidget->SetHidden(1);
             pWidget->SetDirtyFlag(0);
@@ -2009,11 +2009,11 @@ void LeagueSetupUIScreen::RefreshTeamDisplay()
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->InitAfterLoad();
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->InitAfterLoad();
 
-    for (int nRow = 0; nRow < LEAGUE_GRID_ROWS; nRow++)
+    for (int nRow = 0; nRow < kLeagueGridRows; nRow++)
     {
-        for (int nColumn = 0; nColumn < LEAGUE_GRID_COLUMNS; nColumn++)
+        for (int nColumn = 0; nColumn < kLeagueGridColumns; nColumn++)
         {
-            Widget* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * LEAGUE_GRID_COLUMNS + nColumn];
+            Widget* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
 
             pWidget->SetHidden(0);
             pWidget->SetDirtyFlag(1);

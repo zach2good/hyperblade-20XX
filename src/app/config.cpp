@@ -87,7 +87,7 @@ String g_strPrefs("Data\\DftKeybd.cfg");
 // FUNCTION: HYPERX 0x0046d710
 void Config::LoadPreferences(const char* pszFileName)
 {
-    char  szBuffer[MAX_PATH_LENGTH];
+    char  szBuffer[kMaxPathLength];
     FILE* pFile;
 
     // STRING: HYPERX 0x004bc990
@@ -173,7 +173,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 }
 
 // Message table entries the pause key shows, and how long they stay up.
-constexpr auto MSG_PAUSED = 0x4f;
+constexpr auto kMsgPaused = 0x4f;
 #define MSG_TOGGLE_MS 0x5dc
 
 // FUNCTION: HYPERX 0x0046d9f0
@@ -183,8 +183,8 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
     {
         switch (nKey)
         {
-            case Key::RETURN:
-                g_gameApp.m_nEngineState = ESTATE_LOBBY;
+            case Key::kReturn:
+                g_gameApp.m_nEngineState = kEstateLobby;
 
                 g_pGameEngine->m_bMatchOver = 1;
 
@@ -198,7 +198,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
                 GameApp::ResetToSinglePlayer();
 
                 // Falls into the escape case: both keys end in the same call.
-            case Key::ESCAPE:
+            case Key::kEscape:
                 g_pRenderer->HideQuitPrompt();
                 break;
         }
@@ -208,13 +208,13 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
 
     switch (nKey)
     {
-        case Key::PAUSE:
-            if (g_bSessionActive == 0 && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0)
+        case Key::kPause:
+            if (g_bSessionActive == 0 && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0)
             {
-                if (static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
+                if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
                 {
                     g_pMessageQueue->ProcessAndClear();
-                    g_pMessageQueue->PushFromTable(MSG_PAUSED, 0, MSG_TOGGLE_MS);
+                    g_pMessageQueue->PushFromTable(kMsgPaused, 0, MSG_TOGGLE_MS);
 
                     Game::RunFrame();
 
@@ -236,31 +236,31 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             }
             break;
 
-        case Key::TAB:
-            g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT]->PostSceneEvent(MSG_MOVE_EYE_TRACK, 5);
+        case Key::kTab:
+            g_pGameEngine->m_ppSlots[kCameraMainSlot]->PostSceneEvent(kMsgMoveEyeTrack, 5);
 
             g_nTabCycle = static_cast<short>((g_nTabCycle + 1) % 2);
             break;
 
-        case Key::ESCAPE:
-            if (g_pRenderer != nullptr && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
+        case Key::kEscape:
+            if (g_pRenderer != nullptr && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive && static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
             {
                 g_pRenderer->ShowQuitPrompt();
                 return;
             }
             break;
 
-        case Key::F9:
+        case Key::kF9:
         {
-            const short nGoalieSlot = (g_pGameEngine->m_nViewedSlot & 1) + GOALIE_SLOT_A;
-            g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(MSG_ATTACK, 0);
+            const short nGoalieSlot = (g_pGameEngine->m_nViewedSlot & 1) + kGoalieSlotA;
+            g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(kMsgAttack, 0);
         }
         break;
 
-        case Key::F10:
+        case Key::kF10:
         {
-            const short nGoalieSlot = (g_pGameEngine->m_nViewedSlot & 1) + GOALIE_SLOT_A;
-            g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(MSG_GOAL_SCORED, 0);
+            const short nGoalieSlot = (g_pGameEngine->m_nViewedSlot & 1) + kGoalieSlotA;
+            g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(kMsgGoalScored, 0);
         }
         break;
     }

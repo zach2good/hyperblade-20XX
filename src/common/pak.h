@@ -9,7 +9,7 @@
 namespace Pak
 {
 
-constexpr auto FILE_NAME = "20XX_data.pak";
+constexpr auto kFileName = "20XX_data.pak";
 
 // Reads the pak into memory. False when it is missing or not a zip.
 bool Open(const char* pszPath);

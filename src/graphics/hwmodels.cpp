@@ -124,7 +124,7 @@ void Pose(const EngineObject& object, TexturedModel& model)
 
     // RokObject::ApplyRenderSlotPose sets each bone straight in the world, keeping no local
     // matrices to rebuild the rig from.
-    if (object.m_nSlot == SLOT_ROK)
+    if (object.m_nSlot == kSlotRok)
     {
         for (int i = 0; i < nBones; i++)
         {

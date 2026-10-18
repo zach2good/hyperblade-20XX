@@ -4,11 +4,11 @@
 #include "math/vector.h"
 
 // What m_nRatingsMode records: a skater's sixty three ratings or a goalie's sixteen.
-constexpr auto RATINGS_FIELD  = 1;
-constexpr auto RATINGS_GOALIE = 2;
+constexpr auto kRatingsField  = 1;
+constexpr auto kRatingsGoalie = 2;
 
 // The fourth ratings table is the goalie set SetSpecialGoalieRatings writes.
-constexpr auto RATINGS_SPECIAL_GOALIE = 3;
+constexpr auto kRatingsSpecialGoalie = 3;
 
 // The azimuth is in degrees.
 class ObjectDef
@@ -39,7 +39,7 @@ public:
     float            m_flElasticity;   // 0x48
     // Forces the palette remap on where the object's own entry bit would leave it off.
     int m_bForceRemap; // 0x4c
-    // One ratings table per difficulty level, then the special goalie set at RATINGS_SPECIAL_GOALIE.
+    // One ratings table per difficulty level, then the special goalie set at kRatingsSpecialGoalie.
     float* m_apRatings[4]; // 0x50
 
     char* GetModel() const

@@ -28,7 +28,7 @@ TeamBlock::TeamBlock()
 // FUNCTION: HYPERX 0x004847a0
 TeamBlock::~TeamBlock()
 {
-    for (int nIndex = 0; nIndex < TEAM_BLOCK_SLOTS; nIndex++)
+    for (int nIndex = 0; nIndex < kTeamBlockSlots; nIndex++)
     {
         delete apDefs[nIndex];
     }

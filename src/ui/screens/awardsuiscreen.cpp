@@ -17,16 +17,16 @@ class AwardsUIScreen;
 #include "engine/game.h"
 #include "sound/soundids.h"
 
-constexpr auto AWARDS_STRIP = 36;
-#define AWARDS_LAST_WIDGET AWARDS_STRIP
-constexpr auto AWARDS_ICON_FIRST   = 23;
-constexpr auto AWARDS_BUTTON_FIRST = 29;
-constexpr auto AWARDS_TROPHY       = 35;
-constexpr auto AWARDS_ROW_COUNT    = 6;
-constexpr auto AWARDS_STRIP_FRAMES = 0x1f;
+constexpr auto kAwardsStrip = 36;
+#define AWARDS_LAST_WIDGET kAwardsStrip
+constexpr auto kAwardsIconFirst   = 23;
+constexpr auto kAwardsButtonFirst = 29;
+constexpr auto kAwardsTrophy      = 35;
+constexpr auto kAwardsRowCount    = 6;
+constexpr auto kAwardsStripFrames = 0x1f;
 
-constexpr auto AWARDS_STRIP_X = 0xf6;
-constexpr auto AWARDS_STRIP_Y = 0x29;
+constexpr auto kAwardsStripX = 0xf6;
+constexpr auto kAwardsStripY = 0x29;
 
 // FUNCTION: HYPERX 0x0041b870
 AwardsUIScreen::AwardsUIScreen()
@@ -43,16 +43,16 @@ AwardsUIScreen::AwardsUIScreen()
 
     m_apWidgets[MATCHINFO_WIDGET_AWARDS]->SetDepressed(1);
 
-    for (i = 0; i < AWARDS_ROW_COUNT; i++)
+    for (i = 0; i < kAwardsRowCount; i++)
     {
         hBitmap = GDI::LoadBitmapHandle(g_aAwardIcons[i].pszName);
         GDI::GetBitmapDimensions(hBitmap, &bm);
         pWidget = AppendWidget(new DisplayWidget(g_aAwardIcons[i].nX, g_aAwardIcons[i].nY, 0, 0, this, -1));
         pWidget->AppendFrame(hBitmap);
-        m_apWidgets[AWARDS_ICON_FIRST + i]->SetHidden(g_pGameEngine->HasAward(i) == 0);
+        m_apWidgets[kAwardsIconFirst + i]->SetHidden(g_pGameEngine->HasAward(i) == 0);
     }
 
-    for (i = 0; i < AWARDS_ROW_COUNT; i++)
+    for (i = 0; i < kAwardsRowCount; i++)
     {
         hBitmap = GDI::LoadBitmapHandle(g_aAwardButtons[i].pszNormal);
         GDI::GetBitmapDimensions(hBitmap, &bm);
@@ -73,20 +73,20 @@ AwardsUIScreen::AwardsUIScreen()
         pWidget->AppendFrame(hBitmap);
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aAwardButtons[i].pszRollover));
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aAwardButtons[i].pszDepressed));
-        m_apWidgets[AWARDS_BUTTON_FIRST + i]->SetHidden(g_pGameEngine->HasAward(i) == 0);
+        m_apWidgets[kAwardsButtonFirst + i]->SetHidden(g_pGameEngine->HasAward(i) == 0);
     }
 
     hBitmap = GDI::LoadBitmapHandle(g_apszAwardTrophy[0]);
     GDI::GetBitmapDimensions(hBitmap, &bm);
     AppendWidget(new FlipbookWidget(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
 
-    m_apWidgets[AWARDS_TROPHY]->SetHidden(1);
+    m_apWidgets[kAwardsTrophy]->SetHidden(1);
 
     hBitmap = GDI::LoadBitmapHandle(g_apszAwardStripPrefix[0]);
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(AWARDS_STRIP_X, AWARDS_STRIP_Y, bm.nWidth, bm.nHeight, 0, 1, 0x1e, 0, 0x1e, 0x1e, this, 1, -1));
+    pWidget = AppendWidget(new LoopFlipbookWidget(kAwardsStripX, kAwardsStripY, bm.nWidth, bm.nHeight, 0, 1, 0x1e, 0, 0x1e, 0x1e, this, 1, -1));
 
-    for (i = 0; i < AWARDS_STRIP_FRAMES; i++)
+    for (i = 0; i < kAwardsStripFrames; i++)
     {
         pWidget->AppendFrame(nullptr);
     }
@@ -101,7 +101,7 @@ void AwardsUIScreen::OnExitTabClick()
     {
         g_bChampFromJumbotron = 0;
 
-        Game::SetEngineState(ESTATE_DROME_EXTERIOR);
+        Game::SetEngineState(kEstateDromeExterior);
         return;
     }
 
@@ -112,57 +112,57 @@ void AwardsUIScreen::OnExitTabClick()
 
 // Every arm ends by re-entering the screen, including the one that matched no button.
 
-constexpr auto AWARDS_NO_SOUND = (-1);
+constexpr auto kAwardsNoSound = (-1);
 
 // FUNCTION: HYPERX 0x0041bbf0
 void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
-    if (nMsg != INPUT_LEFT_UP)
+    if (nMsg != kInputLeftUp)
     {
         return;
     }
 
     switch (nId)
     {
-        case AWARDS_BUTTON_FIRST:
+        case kAwardsButtonFirst:
             m_nAward                                             = 0;
             m_nAwardsView                                        = 0;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nSoundAtMark = AWARDS_NO_SOUND;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nSoundAtMark = kAwardsNoSound;
             break;
 
-        case AWARDS_BUTTON_FIRST + 1:
+        case kAwardsButtonFirst + 1:
             m_nAward                                             = 1;
             m_nAwardsView                                        = 0;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nMarkFrame   = 0xe;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nSoundAtMark = SOUND_SXVGRMA3;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nMarkFrame   = 0xe;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nSoundAtMark = kSoundSxvgrma3;
             break;
 
-        case AWARDS_BUTTON_FIRST + 2:
+        case kAwardsButtonFirst + 2:
             m_nAward                                             = 2;
             m_nAwardsView                                        = 0;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nMarkFrame   = 8;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nSoundAtMark = SOUND_SXHHITE2;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nMarkFrame   = 8;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nSoundAtMark = kSoundSxhhite2;
             break;
 
-        case AWARDS_BUTTON_FIRST + 3:
+        case kAwardsButtonFirst + 3:
             m_nAward                                             = 3;
             m_nAwardsView                                        = 0;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nSoundAtMark = AWARDS_NO_SOUND;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nSoundAtMark = kAwardsNoSound;
             break;
 
-        case AWARDS_BUTTON_FIRST + 4:
+        case kAwardsButtonFirst + 4:
             m_nAward                                             = 4;
             m_nAwardsView                                        = 0;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nSoundAtMark = AWARDS_NO_SOUND;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nSoundAtMark = kAwardsNoSound;
             break;
 
-        case AWARDS_BUTTON_FIRST + 5:
+        case kAwardsButtonFirst + 5:
             m_nAward                                             = 5;
             m_nAwardsView                                        = 0;
-            m_apWidgets[AWARDS_STRIP]->m_flipbook.m_nSoundAtMark = AWARDS_NO_SOUND;
+            m_apWidgets[kAwardsStrip]->m_flipbook.m_nSoundAtMark = kAwardsNoSound;
             break;
 
-        case AWARDS_TROPHY:
+        case kAwardsTrophy:
             m_nAwardsView = 1;
             break;
     }
@@ -178,20 +178,20 @@ void AwardsUIScreen::OnEnter()
 
     if (m_nAwardsView != 0)
     {
-        m_apWidgets[AWARDS_TROPHY]->SetHidden(1);
-        m_apWidgets[AWARDS_TROPHY]->SetDirtyFlag(0);
-        m_apWidgets[AWARDS_STRIP]->SetHidden(1);
-        m_apWidgets[AWARDS_STRIP]->SetDirtyFlag(0);
+        m_apWidgets[kAwardsTrophy]->SetHidden(1);
+        m_apWidgets[kAwardsTrophy]->SetDirtyFlag(0);
+        m_apWidgets[kAwardsStrip]->SetHidden(1);
+        m_apWidgets[kAwardsStrip]->SetDirtyFlag(0);
 
-        for (nSlot = 0; nSlot < AWARDS_ROW_COUNT; nSlot++)
+        for (nSlot = 0; nSlot < kAwardsRowCount; nSlot++)
         {
-            m_apWidgets[AWARDS_ICON_FIRST + nSlot]->SetHidden(
+            m_apWidgets[kAwardsIconFirst + nSlot]->SetHidden(
                 g_pGameEngine->HasAward(nSlot) == 0);
-            m_apWidgets[AWARDS_ICON_FIRST + nSlot]->SetDirtyFlag(
+            m_apWidgets[kAwardsIconFirst + nSlot]->SetDirtyFlag(
                 static_cast<unsigned char>(g_pGameEngine->HasAward(nSlot)));
-            m_apWidgets[AWARDS_BUTTON_FIRST + nSlot]->SetHidden(
+            m_apWidgets[kAwardsButtonFirst + nSlot]->SetHidden(
                 g_pGameEngine->HasAward(nSlot) == 0);
-            m_apWidgets[AWARDS_BUTTON_FIRST + nSlot]->SetDirtyFlag(
+            m_apWidgets[kAwardsButtonFirst + nSlot]->SetDirtyFlag(
                 static_cast<unsigned char>(g_pGameEngine->HasAward(nSlot)));
         }
 
@@ -206,32 +206,32 @@ void AwardsUIScreen::OnEnter()
         return;
     }
 
-    for (nSlot = 0; nSlot < AWARDS_ROW_COUNT; nSlot++)
+    for (nSlot = 0; nSlot < kAwardsRowCount; nSlot++)
     {
-        m_apWidgets[AWARDS_BUTTON_FIRST + nSlot]->SetHidden(1);
-        m_apWidgets[AWARDS_ICON_FIRST + nSlot]->SetHidden(1);
+        m_apWidgets[kAwardsButtonFirst + nSlot]->SetHidden(1);
+        m_apWidgets[kAwardsIconFirst + nSlot]->SetHidden(1);
     }
 
-    m_apWidgets[AWARDS_STRIP]->ClearFrames();
+    m_apWidgets[kAwardsStrip]->ClearFrames();
 
-    for (nSlot = 0; nSlot < AWARDS_STRIP_FRAMES; nSlot++)
+    for (nSlot = 0; nSlot < kAwardsStripFrames; nSlot++)
     {
         // STRING: HYPERX 0x004bc1a4
         sprintf(szName, "%s%02d", g_apszAwardStripPrefix[m_nAward], nSlot);
 
-        m_apWidgets[AWARDS_STRIP]->AppendFrame(GDI::LoadBitmapHandle(szName));
+        m_apWidgets[kAwardsStrip]->AppendFrame(GDI::LoadBitmapHandle(szName));
     }
 
-    m_apWidgets[AWARDS_STRIP]->SetDirtyFlag(1);
-    m_apWidgets[AWARDS_STRIP]->SetHidden(0);
-    m_apWidgets[AWARDS_STRIP]->SetDepressed(1);
+    m_apWidgets[kAwardsStrip]->SetDirtyFlag(1);
+    m_apWidgets[kAwardsStrip]->SetHidden(0);
+    m_apWidgets[kAwardsStrip]->SetDepressed(1);
 
-    m_apWidgets[AWARDS_TROPHY]->SetHidden(0);
-    m_apWidgets[AWARDS_TROPHY]->ClearFrames();
+    m_apWidgets[kAwardsTrophy]->SetHidden(0);
+    m_apWidgets[kAwardsTrophy]->ClearFrames();
 
-    m_apWidgets[AWARDS_TROPHY]->AppendFrame(GDI::LoadBitmapHandle(g_apszAwardTrophy[m_nAward]));
+    m_apWidgets[kAwardsTrophy]->AppendFrame(GDI::LoadBitmapHandle(g_apszAwardTrophy[m_nAward]));
 
-    m_apWidgets[AWARDS_TROPHY]->SetDirtyFlag(1);
+    m_apWidgets[kAwardsTrophy]->SetDirtyFlag(1);
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 
     InitFrame();

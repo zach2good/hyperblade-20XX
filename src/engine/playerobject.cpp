@@ -47,10 +47,10 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
     const int nLevel = g_pGameEngine->GetDifficultyLevel();
     int       i;
 
-    if (pDef->m_nRatingsMode == RATINGS_FIELD)
+    if (pDef->m_nRatingsMode == kRatingsField)
     {
         const float* pSource = pDef->m_apRatings[nLevel];
-        for (i = 0; i < RATING_COUNT; i++)
+        for (i = 0; i < kRatingCount; i++)
         {
             m_stats.SetStat(i + 1, *pSource);
             pSource++;
@@ -58,12 +58,12 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 
         m_stats.ScaleTo(nSlot);
     }
-    else if (pDef->m_nRatingsMode == RATINGS_GOALIE)
+    else if (pDef->m_nRatingsMode == kRatingsGoalie)
     {
         const float* pSpecial;
         const float* pSource;
 
-        if ((nSlot != GOALIE_SLOT_A) || (nLevel != 0) || ((pSpecial = pDef->m_apRatings[RATINGS_SPECIAL_GOALIE]) == nullptr) || (g_bSessionActive != 0))
+        if ((nSlot != kGoalieSlotA) || (nLevel != 0) || ((pSpecial = pDef->m_apRatings[kRatingsSpecialGoalie]) == nullptr) || (g_bSessionActive != 0))
         {
             pSource = pDef->m_apRatings[nLevel];
         }
@@ -72,7 +72,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
             pSource = pSpecial;
         }
 
-        for (i = 0; i < GOALIE_RATING_COUNT; i++)
+        for (i = 0; i < kGoalieRatingCount; i++)
         {
             m_stats.SetStat(i + 1, *pSource);
             pSource++;
@@ -82,13 +82,13 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
     m_wAttackeeSlot     = -1;
     m_nKnockedDownState = 0;
 
-    if ((m_nSlot == SLOT_DROMER0) || (m_nSlot == SLOT_DROMER2) || (m_nSlot == GOALIE_SLOT_A))
+    if ((m_nSlot == kSlotDromer0) || (m_nSlot == kSlotDromer2) || (m_nSlot == kGoalieSlotA))
     {
-        m_nTypeId = SLOT_KEYBOARD;
+        m_nTypeId = kSlotKeyboard;
     }
     else
     {
-        m_nTypeId = SLOT_GAMEPAD0;
+        m_nTypeId = kSlotGamepad0;
     }
 
     m_wKilledBySlot          = -1;
@@ -98,7 +98,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
     m_wFlyingSemaphore       = 0;
 }
 
-constexpr auto DAMAGE_UPDATE_INTERVAL = 2000;
+constexpr auto kDamageUpdateInterval = 2000;
 
 // FUNCTION: HYPERX 0x004742f0
 inline void PlayerObject::ApplyRenderSlotPose()
@@ -117,12 +117,12 @@ void PlayerObject::Postpass()
     {
         if (GetPhase() == OBJECT_PHASE_LOCAL)
         {
-            if (GetSlot() <= SLOT_DROMER3 && static_cast<unsigned int>(m_nLastSendMs + DAMAGE_UPDATE_INTERVAL) < g_pGameEngine->m_clock.nTickMs)
+            if (GetSlot() <= kSlotDromer3 && static_cast<unsigned int>(m_nLastSendMs + kDamageUpdateInterval) < g_pGameEngine->m_clock.nTickMs)
             {
-                int nDamage = static_cast<int>(m_stats.GetScalar(RATING_DAMAGE));
+                int nDamage = static_cast<int>(m_stats.GetScalar(kRatingDamage));
                 nDamage &= 0xff;
 
-                PostSceneMessage(MSG_SYNC_DAMAGE, nDamage, GetSlot(), 0);
+                PostSceneMessage(kMsgSyncDamage, nDamage, GetSlot(), 0);
 
                 m_nLastSendMs = g_pGameEngine->m_clock.nTickMs;
             }
@@ -137,7 +137,7 @@ void PlayerObject::UpdateRenderSlotTransform(short nSlotIdx)
     // The original's object at 0x004d0658 takes no marker; symbols/static_guards.csv names its guard.
     static TransformObject BoneTransform;
 
-    m_nFlags |= ENGINEOBJECT_POSED;
+    m_nFlags |= kEngineObjectPosed;
     MeshBone* const pSlot = &m_pBones[nSlotIdx];
 
     m_transformB.Multiply(&m_transformC, &m_transformA);

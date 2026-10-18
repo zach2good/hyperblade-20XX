@@ -68,7 +68,7 @@ void CBeAttached::Process(int nArg)
     {
         EngineObject* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
 
-        if ((pEntity->m_nFlags & ENGINEOBJECT_POSED) == 0)
+        if ((pEntity->m_nFlags & kEngineObjectPosed) == 0)
         {
             pEntity->ApplyRenderSlotPose();
         }
@@ -134,7 +134,7 @@ void CBeAttached::Release(int nArg)
     {
         EngineObject* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
 
-        if ((pEntity->m_nFlags & ENGINEOBJECT_POSED) == 0)
+        if ((pEntity->m_nFlags & kEngineObjectPosed) == 0)
         {
             pEntity->ApplyRenderSlotPose();
         }

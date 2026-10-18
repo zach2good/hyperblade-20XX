@@ -92,8 +92,8 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 
     if (bSameSide)
     {
-        const int nGenderA = static_cast<int>(((PlayerObject*)pA)->m_stats.GetScalar(RATING_GENDER));
-        int       nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER));
+        const int nGenderA = static_cast<int>(((PlayerObject*)pA)->m_stats.GetScalar(kRatingGender));
+        int       nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender));
 
         if ((nGenderA & nGenderB) != 0)
         {
@@ -105,7 +105,7 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
             pB = pA;
         }
 
-        if (static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER)) >= 1)
+        if (static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender)) >= 1)
         {
             return;
         }
@@ -119,7 +119,7 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
             nTeam = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
         }
 
-        g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_TEAMMATE_COLLISION, nTeam);
+        g_pGameEngine->m_ppSlots[kSlotSoundMan]->PostSceneEvent(kMsgTeammateCollision, nTeam);
 
         return;
     }
@@ -138,12 +138,12 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
         nTeam = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
     }
 
-    if (static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER)) >= 1)
+    if (static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender)) >= 1)
     {
         nTeam += g_pGameEngine->m_pTeamTable->GetTeamCount();
     }
 
-    g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_OPPONENT_COLLISION, nTeam);
+    g_pGameEngine->m_ppSlots[kSlotSoundMan]->PostSceneEvent(kMsgOpponentCollision, nTeam);
 }
 
 // Two of the three band boundaries, as doubles; the third and the side test's zero are literals.
@@ -303,7 +303,7 @@ PlanState* EngineObject::GetPlanState()
 // FUNCTION: HYPERX 0x00422f50
 void EngineObject::PostSceneEvent(int nMessage, int nArg)
 {
-    PostSceneMessage(nMessage, nArg, MODEL_ID_NONE, 0);
+    PostSceneMessage(nMessage, nArg, kModelIDNone, 0);
 }
 
 // FUNCTION: HYPERX 0x00422f70
@@ -488,7 +488,7 @@ void EngineObject::ComputeBoundingSphere()
     m_flBoundRadius *= RADIUS_PADDING;
 }
 
-constexpr auto OBJ_TABLE_EMPTY = (-1);
+constexpr auto kObjTableEmpty = (-1);
 
 // The binding is the only allocation; the virtual call reaches the class being built.
 // FUNCTION: HYPERX 0x004702f0
@@ -545,7 +545,7 @@ void EngineObject::InitFields()
 
     m_pszName = nullptr;
 
-    m_nTypeId          = MODEL_ID_NONE;
+    m_nTypeId          = kModelIDNone;
     m_nEntitySlot      = 0;
     m_wSyncedPlan      = 0;
     m_wSyncedBehaviour = 0;
@@ -555,19 +555,19 @@ void EngineObject::InitFields()
     m_nSceneCount = 0;
     m_nSceneHead  = 0;
 
-    for (nEntry = 0; nEntry < OBJECT_RING_LENGTH; nEntry++)
+    for (nEntry = 0; nEntry < kObjectRingLength; nEntry++)
     {
-        m_anSceneMessage[nEntry] = OBJ_TABLE_EMPTY;
-        m_anSceneArg[nEntry]     = OBJ_TABLE_EMPTY;
+        m_anSceneMessage[nEntry] = kObjTableEmpty;
+        m_anSceneArg[nEntry]     = kObjTableEmpty;
     }
 
     m_nCommandCount = 0;
     m_nCommandHead  = 0;
 
-    for (nEntry = 0; nEntry < OBJECT_RING_LENGTH; nEntry++)
+    for (nEntry = 0; nEntry < kObjectRingLength; nEntry++)
     {
-        m_anCommand[nEntry]    = OBJ_TABLE_EMPTY;
-        m_anCommandArg[nEntry] = OBJ_TABLE_EMPTY;
+        m_anCommand[nEntry]    = kObjTableEmpty;
+        m_anCommandArg[nEntry] = kObjTableEmpty;
     }
 
     m_nLastSendMs      = 0;
@@ -688,7 +688,7 @@ EngineObject::~EngineObject()
 
 // The slot's low bit is its team, so the palette follows team colours.
 
-constexpr auto MATERIAL_SHARED = 2;
+constexpr auto kMaterialShared = 2;
 
 // The only writer of m_ppPlanBlobs, m_papszPlanNames and m_nPlanCount; a model named "null" is a success.
 // FUNCTION: HYPERX 0x00470790
@@ -724,7 +724,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
     // STRING: HYPERX 0x004c5148
     if (SDL_strcasecmp(pDef->GetModel(), "null") == 0)
     {
-        m_nFlags |= ENGINEOBJECT_NO_MODEL | ENGINEOBJECT_HIDDEN;
+        m_nFlags |= kEngineObjectNoModel | kEngineObjectHidden;
 
         return 1;
     }
@@ -781,7 +781,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
     }
 
     // The remap runs once per list; a shared list was remapped by whichever object loaded it first.
-    if (m_pModelBlock->m_nRefs < MATERIAL_SHARED)
+    if (m_pModelBlock->m_nRefs < kMaterialShared)
     {
         bRemap = static_cast<char>(m_nSlot) & 1;
 
@@ -910,7 +910,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
     // STRING: HYPERX 0x004c5148
     if (SDL_strcasecmp(pDef->GetModel(), "null") == 0)
     {
-        m_nFlags |= ENGINEOBJECT_NO_MODEL | ENGINEOBJECT_HIDDEN;
+        m_nFlags |= kEngineObjectNoModel | kEngineObjectHidden;
 
         return 1;
     }
@@ -977,7 +977,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
     }
 
     // The remap runs once per list; a shared list was remapped by whichever object loaded it first.
-    if (m_pModelBlock->m_nRefs < MATERIAL_SHARED)
+    if (m_pModelBlock->m_nRefs < kMaterialShared)
     {
         bRemap = static_cast<char>(m_nSlot) & 1;
 
@@ -1163,9 +1163,9 @@ short EngineObject::FindPlanByName(const char* pszName)
     return -1;
 }
 
-constexpr auto COMMAND_NONE = 0xffffffffu;
+constexpr auto kCommandNone = 0xffffffffu;
 
-constexpr auto RECORD_MARK = 0xff;
+constexpr auto kRecordMark = 0xff;
 
 // The lock is released before each record is used, because the work can call back into the queue.
 // FUNCTION: HYPERX 0x004711c0
@@ -1203,7 +1203,7 @@ char EngineObject::ProcessReceivedPacket()
             {
                 body = record.body;
 
-                if (record.body.nPlan == RECORD_MARK && record.body.nBehaviour == RECORD_MARK)
+                if (record.body.nPlan == kRecordMark && record.body.nBehaviour == kRecordMark)
                 {
                     m_pBody->step = record.body.vVelocity;
 
@@ -1216,9 +1216,9 @@ char EngineObject::ProcessReceivedPacket()
 
                 ApplySyncedBehaviour(pPlayer, &body, &nPlan, &nBehaviour);
 
-                if (body.nCommand != COMMAND_NONE)
+                if (body.nCommand != kCommandNone)
                 {
-                    if (pPlayer->pState->nObjectSlot != SLOT_GOD)
+                    if (pPlayer->pState->nObjectSlot != kSlotGod)
                     {
                         EnqueueInputCommand(body.nCommand, body.nPayload);
                     }
@@ -1228,9 +1228,9 @@ char EngineObject::ProcessReceivedPacket()
                             ->EnqueueInputCommand(body.nCommand, body.nPayload);
                     }
 
-                    if (body.nSecondCommand != COMMAND_NONE)
+                    if (body.nSecondCommand != kCommandNone)
                     {
-                        if (pPlayer->pState->nObjectSlot != SLOT_GOD)
+                        if (pPlayer->pState->nObjectSlot != kSlotGod)
                         {
                             EnqueueInputCommand(body.nSecondCommand, body.nSecondPayload);
                         }
@@ -1242,7 +1242,7 @@ char EngineObject::ProcessReceivedPacket()
                     }
                 }
 
-                if (pPlayer->pState->nObjectSlot == SLOT_ROK && m_nPhase == OBJECT_PHASE_NETWORK)
+                if (pPlayer->pState->nObjectSlot == kSlotRok && m_nPhase == OBJECT_PHASE_NETWORK)
                 {
                     const unsigned int nCamera = NetSequenceWord::GetCarrier(body.nSequence);
 
@@ -1253,11 +1253,11 @@ char EngineObject::ProcessReceivedPacket()
 
                         pAttach = pColObj->m_pAttach;
 
-                        g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach = pAttach;
+                        g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach = pAttach;
                     }
                     else
                     {
-                        g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach = nullptr;
+                        g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach = nullptr;
                     }
                 }
 
@@ -1280,7 +1280,7 @@ char EngineObject::ProcessReceivedPacket()
     return bResult;
 }
 
-constexpr auto STATE_NONE = 0xff;
+constexpr auto kStateNone = 0xff;
 
 // The referee applies a signed nibble to every stationary object; 0xff is reserved.
 // FUNCTION: HYPERX 0x00471460
@@ -1288,7 +1288,7 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 {
     const int nPlan = pBody->nPlan;
 
-    if (nPlan == STATE_NONE)
+    if (nPlan == kStateNone)
     {
         return;
     }
@@ -1298,11 +1298,11 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
         return;
     }
 
-    if (pOwner->pState->nObjectSlot != SLOT_GOD)
+    if (pOwner->pState->nObjectSlot != kSlotGod)
     {
         if (*pOutPlan != static_cast<short>(pBody->nPlan) || *pOutBehaviour != static_cast<short>(pBody->nBehaviour))
         {
-            EnqueueInputCommand(COMMAND_SET_PLAN_AND_BEHAVIOR, PlanBehaviourWord::Pack(nPlan, pBody->nBehaviour));
+            EnqueueInputCommand(kCommandSetPlanAndBehavior, PlanBehaviourWord::Pack(nPlan, pBody->nBehaviour));
 
             *pOutPlan      = static_cast<short>(pBody->nPlan);
             *pOutBehaviour = static_cast<short>(pBody->nBehaviour);
@@ -1323,7 +1323,7 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 
         if (nCurrent != nValue)
         {
-            pObject->EnqueueInputCommand(COMMAND_SET_BEHAVIOR, nValue);
+            pObject->EnqueueInputCommand(kCommandSetBehavior, nValue);
         }
     }
 }
@@ -1383,7 +1383,7 @@ void EngineObject::UpdateRenderSlotTransform(short nSlotIdx)
     // The original's object at 0x004d05c0 takes no marker; symbols/static_guards.csv names its guard.
     static TransformObject SlotTransform;
 
-    m_nFlags |= ENGINEOBJECT_POSED;
+    m_nFlags |= kEngineObjectPosed;
     MeshBone* const        pSlot  = &m_pBones[nSlotIdx];
     TransformObject* const pWorld = &m_transformC;
 
@@ -1457,7 +1457,7 @@ extern Vec3 g_vLightDirModel;
 extern class TransformObject* g_pCameraTransform;
 
 #define CLIP_OFFSCREEN ((char)-1)
-constexpr auto CLIP_ANY_PLANE = 1;
+constexpr auto kClipAnyPlane = 1;
 
 // FUNCTION: HYPERX 0x00471800
 void EngineObject::ApplyRenderSlotPose()
@@ -1616,7 +1616,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
             continue;
         }
 
-        if ((cClip & CLIP_ANY_PLANE) == 0)
+        if ((cClip & kClipAnyPlane) == 0)
         {
             const TransformedVertex* pCorner2 = &g_pModelVertexBuf[pFace->aCorners[2]];
             const TransformedVertex* pCorner1 = &g_pModelVertexBuf[pFace->aCorners[1]];
@@ -1682,7 +1682,7 @@ void EngineObject::SelectAndActivatePlan()
 
         nSlot = m_nSlot;
 
-        if (nSlot != SLOT_DROMER0 && nSlot != SLOT_DROMER1 && nSlot != SLOT_DROMER2 && nSlot != SLOT_DROMER3)
+        if (nSlot != kSlotDromer0 && nSlot != kSlotDromer1 && nSlot != kSlotDromer2 && nSlot != kSlotDromer3)
         {
             InstantiateAIPlan(0);
 
@@ -1865,7 +1865,7 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
             m_pBubble = pBubble;
 
             // The whole word is tested, since a real AttachPak's low half can carry the tag's bits.
-            if (((std::uintptr_t)pBubble->m_pAttach & ~static_cast<std::uintptr_t>(0xffff)) == EXTRA_USE_DETAIL)
+            if (((std::uintptr_t)pBubble->m_pAttach & ~static_cast<std::uintptr_t>(0xffff)) == kExtraUseDetail)
             {
                 nTag = static_cast<int>((std::intptr_t)pBubble->m_pAttach);
 
@@ -2068,7 +2068,7 @@ void EngineObject::CountVisibleFaces()
 
         if (pBone->IsUnbound() != 0)
         {
-            pBone->SetFlags(MESHBONE_HIDDEN);
+            pBone->SetFlags(kMeshboneHidden);
         }
         else
         {
@@ -2210,13 +2210,13 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
 // FUNCTION: HYPERX 0x00474650
 char EngineObject::EnqueueSceneEvent(int nMessage, int nArg)
 {
-    if (m_nSceneCount + 1 > OBJECT_RING_LENGTH)
+    if (m_nSceneCount + 1 > kObjectRingLength)
     {
         return 0;
     }
 
-    m_anSceneMessage[(m_nSceneHead + m_nSceneCount) % OBJECT_RING_LENGTH] = nMessage;
-    m_anSceneArg[(m_nSceneHead + m_nSceneCount) % OBJECT_RING_LENGTH]     = nArg;
+    m_anSceneMessage[(m_nSceneHead + m_nSceneCount) % kObjectRingLength] = nMessage;
+    m_anSceneArg[(m_nSceneHead + m_nSceneCount) % kObjectRingLength]     = nArg;
 
     m_nSceneCount++;
 
@@ -2237,7 +2237,7 @@ char EngineObject::DequeueEvent(int* pMessage, int* pArg)
     *pMessage = m_anSceneMessage[m_nSceneHead];
     *pArg     = m_anSceneArg[m_nSceneHead];
 
-    m_nSceneHead = static_cast<short>((m_nSceneHead + 1) % OBJECT_RING_LENGTH);
+    m_nSceneHead = static_cast<short>((m_nSceneHead + 1) % kObjectRingLength);
     m_nSceneCount--;
 
     return 1;
@@ -2261,14 +2261,14 @@ int EngineObject::PollStationaryEvents(int* pMessage, int* pArg)
 // FUNCTION: HYPERX 0x00474780
 char EngineObject::EnqueueInputCommand(int nCommand, int nArg)
 {
-    while (m_nCommandCount + 1 > OBJECT_RING_LENGTH)
+    while (m_nCommandCount + 1 > kObjectRingLength)
     {
         m_nCommandCount--;
-        m_nCommandHead = static_cast<short>((m_nCommandHead + 1) % OBJECT_RING_LENGTH);
+        m_nCommandHead = static_cast<short>((m_nCommandHead + 1) % kObjectRingLength);
     }
 
-    m_anCommand[(m_nCommandHead + m_nCommandCount) % OBJECT_RING_LENGTH]    = nCommand;
-    m_anCommandArg[(m_nCommandHead + m_nCommandCount) % OBJECT_RING_LENGTH] = nArg;
+    m_anCommand[(m_nCommandHead + m_nCommandCount) % kObjectRingLength]    = nCommand;
+    m_anCommandArg[(m_nCommandHead + m_nCommandCount) % kObjectRingLength] = nArg;
 
     m_nCommandCount++;
 
@@ -2289,7 +2289,7 @@ char EngineObject::DequeueInputCommand(int* pCommand, int* pArg)
     *pCommand = m_anCommand[m_nCommandHead];
     *pArg     = m_anCommandArg[m_nCommandHead];
 
-    m_nCommandHead = static_cast<short>((m_nCommandHead + 1) % OBJECT_RING_LENGTH);
+    m_nCommandHead = static_cast<short>((m_nCommandHead + 1) % kObjectRingLength);
     m_nCommandCount--;
 
     return 1;

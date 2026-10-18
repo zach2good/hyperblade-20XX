@@ -144,9 +144,9 @@ void AnimEvent::IsAmbient(Interactor*, PlanNode*, short* pResult, int nEntry)
     }
 
     // Unguarded: a failed lookup is read through, as in the original.
-    *pResult = pEntry->m_nGroup != SOUND_GROUP_LOOPING;
+    *pResult = pEntry->m_nGroup != kSoundGroupLooping;
 
-    if (g_pAudioMgr->IsPlaying(SOUND_SXXAMBB2) == 0)
+    if (g_pAudioMgr->IsPlaying(kSoundSxxambb2) == 0)
     {
         *pResult = 2;
     }

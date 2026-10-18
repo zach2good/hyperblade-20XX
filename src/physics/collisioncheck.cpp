@@ -105,7 +105,7 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
 
     flGate = DamageGate();
 
-    const float flDamage = ((PlayerObject*)pOwn)->m_stats.GetScalar(RATING_DAMAGE);
+    const float flDamage = ((PlayerObject*)pOwn)->m_stats.GetScalar(kRatingDamage);
 
     if (flDamage <= flGate)
     {
@@ -344,7 +344,7 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 
     PlanState* const pPlan = pOwn->GetPlanState();
 
-    if (nHit != 0 && pPlan->m_pCurrent->m_wKind != BEH_FLY)
+    if (nHit != 0 && pPlan->m_pCurrent->m_wKind != kBehFly)
     {
         const Vec3* pVelocity = &pOwn->m_pBody->vel;
 
@@ -634,11 +634,11 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 // FUNCTION: HYPERX 0x00469ef0
 void CollisionCheck::BouncedInGoal(Interactor*, PlanNode*, short* pResult, int)
 {
-    BoundBubble* const pRok = g_pGameEngine->GetColObjPtr(COB_ROK);
+    BoundBubble* const pRok = g_pGameEngine->GetColObjPtr(kCOBRok);
 
-    BoundBubble* const pNorthPort = g_pGameEngine->GetColObjPtr(COB_NGOAL_PORT);
+    BoundBubble* const pNorthPort = g_pGameEngine->GetColObjPtr(kCOBNgoalPort);
 
-    BoundBubble* const pSouthPort = g_pGameEngine->GetColObjPtr(COB_SGOAL_PORT);
+    BoundBubble* const pSouthPort = g_pGameEngine->GetColObjPtr(kCOBSgoalPort);
 
     if (pRok->DoesIntersect(pNorthPort) != 0)
     {

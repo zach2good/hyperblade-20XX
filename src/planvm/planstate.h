@@ -4,7 +4,7 @@
 class EngineObject;
 
 // Ticks after any interactor runs before every collision interactor is set active again.
-constexpr auto COLLISION_REARM_TICKS_AFTER_RUN = 0x0c;
+constexpr auto kCollisionRearmTicksAfterRun = 0x0c;
 
 class PlanState
 {

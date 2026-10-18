@@ -18,16 +18,16 @@ SoundManager::SoundManager()
     m_apSounds    = nullptr;
     m_nUnusedB    = 0;
 
-    for (int iSlot = 0; iSlot < SOUNDMGR_SLOTS; iSlot++)
+    for (int iSlot = 0; iSlot < kSoundmgrSlots; iSlot++)
     {
-        m_awGroupFirst[iSlot]   = SOUNDMGR_NO_SOUND;
+        m_awGroupFirst[iSlot]   = kSoundmgrNoSound;
         m_awGroupCount[iSlot]   = 0;
         m_anGroupSamples[iSlot] = 0;
     }
 }
 
-constexpr auto SOUND_MESSAGE_MAX = 0x50;
-constexpr auto SOUND_NAME_MAX    = 0x20;
+constexpr auto kSoundMessageMax = 0x50;
+constexpr auto kSoundNameMax    = 0x20;
 
 #define COMMENT_CHAR '#'
 
@@ -35,7 +35,7 @@ constexpr auto SOUND_NAME_MAX    = 0x20;
 #define SAMPLES_PER_MS 44.1
 
 // No group read yet.
-constexpr auto GROUP_NONE = (-1);
+constexpr auto kGroupNone = (-1);
 
 // FUNCTION: HYPERX 0x00449210
 void SoundManager::FreeEntries()
@@ -63,9 +63,9 @@ unsigned short SoundManager::Load(const char* pszListName)
     int        nLongest = 0;
     int        nLines   = 0;
     OwnedFile  file;
-    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszListName).m_pchData, MAX_PATH_LENGTH);
-    char       szName[SOUND_NAME_MAX];
-    char       szMessage[SOUND_MESSAGE_MAX];
+    PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszListName).m_pchData, kMaxPathLength);
+    char       szName[kSoundNameMax];
+    char       szMessage[kSoundMessageMax];
     char*      pLine;
     int        nGroup;
     // Also the header's sample rate, which nothing reads.
@@ -99,7 +99,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     short nGroupFirst = 0;
     short nIndex      = 0;
-    int   nGroupPrev  = GROUP_NONE;
+    int   nGroupPrev  = kGroupNone;
 
     file.m_file.GetNextLine(&pLine);
 
@@ -136,7 +136,7 @@ unsigned short SoundManager::Load(const char* pszListName)
         m_apSounds[nIndex]->m_nVolume     = 0;
         m_apSounds[nIndex]->m_nGroup      = nGroup;
         m_apSounds[nIndex]->m_nStartedMs  = 0;
-        m_apSounds[nIndex]->m_nPlayState  = SOUND_STATE_IDLE;
+        m_apSounds[nIndex]->m_nPlayState  = kSoundStateIdle;
         m_apSounds[nIndex]->m_nDurationMs = nDuration;
 
         if (nScanned >= 4)
@@ -148,7 +148,7 @@ unsigned short SoundManager::Load(const char* pszListName)
             m_apSounds[nIndex]->m_nLoadMode = 0;
         }
 
-        if (nGroup < SOUNDMGR_SLOTS && nGroupPrev != nGroup)
+        if (nGroup < kSoundmgrSlots && nGroupPrev != nGroup)
         {
             m_awGroupFirst[nGroup] = nIndex;
 

@@ -2,10 +2,10 @@
 #define HYPERBLADE_ANIMPLAYSTATE_H
 
 // The play states, as DATA/ENUMIDS.H's PlayState numbers them.
-constexpr auto AA_DONE       = 0;
-constexpr auto AA_PLAY       = 1;
-constexpr auto AA_PAUSE      = 2;
-constexpr auto AA_SINGLESTEP = 3;
+constexpr auto kAaDone       = 0;
+constexpr auto kAaPlay       = 1;
+constexpr auto kAaPause      = 2;
+constexpr auto kAaSingleStep = 3;
 
 // The play state AnimPlayer keeps twice: live, and the copy SetClip saves before it switches.
 struct AnimPlayState
@@ -20,7 +20,7 @@ struct AnimPlayState
     class AnimClipEntry* pEventRecord;       // 0x80
     char                 bChannelPending;    // 0x84
     int                  nHold;              // 0x88
-    // A_FORWARD or A_REVERSE.
+    // kAForward or kAReverse.
     int nDirection; // 0x8c
     int nPlayState; // 0x90
     // Cleared and copied with the record, and never read or written by name.

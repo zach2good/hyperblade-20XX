@@ -6,13 +6,13 @@
 #include "statids.h"
 
 // How many rows a team has. src/engine/teamblock.h's aRows places them.
-constexpr auto TEAM_ROW_COUNT = 4;
+constexpr auto kTeamRowCount = 4;
 
-constexpr auto TEAM_ROW_STAT_COUNT = 0x3f;
+constexpr auto kTeamRowStatCount = 0x3f;
 
 struct TeamPlayerRow
 {
-    float aStat[TEAM_ROW_STAT_COUNT];
+    float aStat[kTeamRowStatCount];
 };
 
 static_assert(sizeof(TeamPlayerRow) == 0xfc);

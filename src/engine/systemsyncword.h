@@ -2,9 +2,9 @@
 #define HYPERBLADE_SYSTEMSYNCWORD_H
 
 // The host's clock is paused.
-constexpr auto SYSTEM_SYNC_PAUSED = 0x80000000;
+constexpr auto kSystemSyncPaused = 0x80000000;
 
-// MSG_SYNC_SYSTEM's argument: the home and away scores, the period's elapsed time in tenths of a
+// kMsgSyncSystem's argument: the home and away scores, the period's elapsed time in tenths of a
 // second, and the pause mark.
 struct SystemSyncWord
 {
@@ -12,7 +12,7 @@ struct SystemSyncWord
 
     unsigned int GetPauseMark() const
     {
-        return nWord & SYSTEM_SYNC_PAUSED;
+        return nWord & kSystemSyncPaused;
     }
 
     int GetElapsed() const
