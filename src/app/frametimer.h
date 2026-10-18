@@ -10,8 +10,8 @@ struct FrameTimer
     : nFrames(0)
     , nClockReads(0)
     , nPerfSampleCount(0)
-    , dwFrameStartTime(0)
-    , dwFrameStartTicks(0)
+    , nFrameStartTime(0)
+    , nFrameStartTicks(0)
     , dClockReadCost(0.0)
     , dSampleCost(0.0)
     , dFpsTextCost(0.0)
@@ -26,12 +26,12 @@ struct FrameTimer
     {
     }
 
-    unsigned int nFrames;           // 0x00
-    unsigned int nClockReads;       // 0x04
-    unsigned int nPerfSampleCount;  // 0x08
-    unsigned int dwFrameStartTime;  // 0x0c
-    unsigned int dwFrameStartTicks; // 0x10
-    unsigned int nUnused;           // 0x14
+    unsigned int nFrames;          // 0x00
+    unsigned int nClockReads;      // 0x04
+    unsigned int nPerfSampleCount; // 0x08
+    unsigned int nFrameStartTime;  // 0x0c
+    unsigned int nFrameStartTicks; // 0x10
+    unsigned int nUnused;          // 0x14
     // What a clock read, a sample and the FPS text cost; the frame rate takes them out.
     double        dClockReadCost;  // 0x18
     double        dSampleCost;     // 0x20
@@ -47,7 +47,7 @@ struct FrameTimer
         nPerfSampleCount = 0;
         nClockReads      = 0;
         nFrames          = 0;
-        dwFrameStartTime = 0;
+        nFrameStartTime  = 0;
         dAccGameLogicMs  = 0.0;
         dAccRenderMs     = 0.0;
 

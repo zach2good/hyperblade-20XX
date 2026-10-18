@@ -69,7 +69,7 @@ public:
     ~MeshBone();
 
     void PropagateTransforms(short nSlotIdx, TransformObject* pParent, TransformObject* pRoot, TransformObject* pParentLocal);
-    void UpdateLeafTransform(unsigned int dwUnused, TransformObject* pParent);
+    void UpdateLeafTransform(unsigned int nUnused, TransformObject* pParent);
     void SetFlags(unsigned short nFlags);
 
     // Clear once the LOD mesh has bound.

@@ -57,8 +57,8 @@ void Game::Tick()
     if (g_frameTimer.bFrameTimesOn)
     {
         g_frameTimer.nClockReads++;
-        g_dwFrameGameLogicStart        = (unsigned int)SDL_GetTicks();
-        g_frameTimer.dwFrameStartTicks = g_dwFrameGameLogicStart;
+        g_dwFrameGameLogicStart       = (unsigned int)SDL_GetTicks();
+        g_frameTimer.nFrameStartTicks = g_dwFrameGameLogicStart;
     }
     else
     {
@@ -77,7 +77,7 @@ void Game::Tick()
     if (g_frameTimer.bFrameTimesOn != 0)
     {
         g_frameTimer.nPerfSampleCount++;
-        g_frameTimer.dAccGameLogicMs += (double)((unsigned int)SDL_GetTicks() - g_frameTimer.dwFrameStartTicks);
+        g_frameTimer.dAccGameLogicMs += (double)((unsigned int)SDL_GetTicks() - g_frameTimer.nFrameStartTicks);
     }
 }
 
@@ -103,7 +103,7 @@ void Game::Draw(float flAlpha)
     if (g_frameTimer.bFrameTimesOn != 0)
     {
         g_frameTimer.nPerfSampleCount++;
-        g_frameTimer.dAccRenderMs += (double)((unsigned int)SDL_GetTicks() - g_frameTimer.dwFrameStartTicks);
+        g_frameTimer.dAccRenderMs += (double)((unsigned int)SDL_GetTicks() - g_frameTimer.nFrameStartTicks);
     }
 
     g_frameTimer.nFrames++;

@@ -49,12 +49,12 @@ JumbotronScreen::JumbotronScreen()
     m_hBitmap = GDI::LoadBitmapHandle("Perlite");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0xa0, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0xa0, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0xe1, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0xe1, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
 
     if (g_pGameEngine->m_clock.nPeriod == 3 || g_pGameEngine->m_clock.nPeriod == 4)
     {
@@ -65,8 +65,8 @@ JumbotronScreen::JumbotronScreen()
         pWidget->AppendFrame(nullptr);
     }
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0x122, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0x122, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
 
     if (g_pGameEngine->m_clock.nPeriod == 4)
     {
@@ -133,7 +133,7 @@ JumbotronScreen::JumbotronScreen()
     // STRING: HYPERX 0x004c8934
     m_hBitmap = GDI::LoadBitmapHandle("jumdata");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0x177, 0x16e, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(new FlipbookWidget(0x177, 0x16e, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c8928
     pWidget->AppendFrame(GDI::LoadBitmapHandle("jumdatar"));

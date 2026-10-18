@@ -363,9 +363,9 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         return nullptr;
     }
 
-    const auto dwHeaderSize = (unsigned int)header.info.biSize;
+    const auto nHeaderSize = (unsigned int)header.info.biSize;
 
-    if (dwHeaderSize == sizeof(BitmapCoreHeader))
+    if (nHeaderSize == sizeof(BitmapCoreHeader))
     {
         const BitmapCoreHeader bmc = header.core;
 
@@ -416,7 +416,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 
     if (nColors != 0)
     {
-        if (dwHeaderSize == sizeof(BitmapCoreHeader))
+        if (nHeaderSize == sizeof(BitmapCoreHeader))
         {
             const int nTableBytes = nColors * sizeof(RgbTriple);
 
@@ -497,8 +497,8 @@ void GDI::GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize)
 {
     if (pBitmap != nullptr)
     {
-        pSize->bmWidth  = pBitmap->nWidth;
-        pSize->bmHeight = pBitmap->nHeight;
+        pSize->nWidth  = pBitmap->nWidth;
+        pSize->nHeight = pBitmap->nHeight;
     }
 }
 

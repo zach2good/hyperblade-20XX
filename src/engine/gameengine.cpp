@@ -598,8 +598,8 @@ void GameEngine::TickClock()
     m_clock.flPrevInvDeltaSquared = m_clock.flInvDeltaSquared;
     m_clock.nPrevTickMs           = m_clock.nTickMs;
 
-    const unsigned int dwNow = (unsigned int)SDL_GetTicks();
-    m_clock.nTickMs          = dwNow;
+    const unsigned int nNow = (unsigned int)SDL_GetTicks();
+    m_clock.nTickMs         = nNow;
 
     // The simulation steps a fixed tick, however long the frame took to draw.
     g_flFrameDelta = FramePacing::TICK_MS;
@@ -1154,10 +1154,10 @@ void GameEngine::InitMatchTimers()
     m_clock.nRingIndex = 0;
     m_clock.nPeriod    = 1;
 
-    const unsigned int dwNow = (unsigned int)SDL_GetTicks();
+    const unsigned int nNow = (unsigned int)SDL_GetTicks();
 
-    m_clock.nPeriodStartMs = dwNow;
-    m_clock.nPauseStartMs  = dwNow;
+    m_clock.nPeriodStartMs = nNow;
+    m_clock.nPauseStartMs  = nNow;
     m_clock.nPauseMark     = -1;
 }
 

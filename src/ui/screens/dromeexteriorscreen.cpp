@@ -95,7 +95,7 @@ DromeExteriorScreen::DromeExteriorScreen()
 
     m_hBitmap = GDI::LoadBitmapHandle(g_pszKioskWhite);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0, 0x161, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(new FlipbookWidget(0, 0x161, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(m_hBitmap);
     pWidget->AppendFrame(GDI::LoadBitmapHandle(g_pszKioskBlue));
     pWidget->AppendFrame(GDI::LoadBitmapHandle(g_pszKioskGreen));

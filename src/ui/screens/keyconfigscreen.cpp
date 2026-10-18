@@ -111,7 +111,7 @@ KeyConfigScreen::KeyConfigScreen()
     {
         m_hBitmap = GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszNormal);
         GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-        pWidget = AppendWidget(new ButtonWidget(2, g_aKeyActionButtons[i].nX, g_aKeyActionButtons[i].nY, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
+        pWidget = AppendWidget(new ButtonWidget(2, g_aKeyActionButtons[i].nX, g_aKeyActionButtons[i].nY, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
         pWidget->AppendFrame(m_hBitmap);
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszRollover));
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszDepressed));
@@ -156,7 +156,7 @@ KeyConfigScreen::KeyConfigScreen()
 
     InitAllWidgets();
 
-    ShowPadIcons(m_bitmap.bmWidth, m_bitmap.bmHeight);
+    ShowPadIcons(m_bitmap.nWidth, m_bitmap.nHeight);
 }
 
 #define WIDGET_ACCEPT 10

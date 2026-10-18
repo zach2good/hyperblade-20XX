@@ -358,8 +358,8 @@ FramePos Widget::AddFrameBitmap(GDI::Bitmap* hBitmap, int bCached)
     if (hBitmap != nullptr)
     {
         GDI::GetBitmapDimensions(hBitmap, &bm);
-        m_pFrames[m_nFrameIndex].nWidth  = bm.bmWidth;
-        m_pFrames[m_nFrameIndex].nHeight = bm.bmHeight;
+        m_pFrames[m_nFrameIndex].nWidth  = bm.nWidth;
+        m_pFrames[m_nFrameIndex].nHeight = bm.nHeight;
     }
     else
     {

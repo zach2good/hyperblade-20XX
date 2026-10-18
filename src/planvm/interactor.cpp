@@ -36,12 +36,12 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
     {
         pNode = pCursor->pNode;
 
-        const unsigned int dwOpcode = (unsigned int)pNode->m_nOpcode;
+        const unsigned int nOpcode = (unsigned int)pNode->m_nOpcode;
 
-        switch (dwOpcode & OP_CATEGORY)
+        switch (nOpcode & OP_CATEGORY)
         {
             case CATEGORY_ACTION:
-                switch (dwOpcode & OP_MEMBER)
+                switch (nOpcode & OP_MEMBER)
                 {
                     case MEMBER_DO_NET_ACTION:
                         if (m_pOwner->GetPhase() == OBJECT_PHASE_LOCAL)
@@ -74,7 +74,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 break;
 
             case CATEGORY_BEHAVIOUR:
-                switch (dwOpcode & OP_MEMBER)
+                switch (nOpcode & OP_MEMBER)
                 {
                     case MEMBER_CHANGE_TO_BEHAVIOR:
                         m_nBehaviour = pNode->m_pArgs[0].n;
@@ -92,7 +92,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 break;
 
             case CATEGORY_PLAN_CHANGE:
-                if ((dwOpcode & OP_MEMBER) == MEMBER_CHANGE_OF_PLAN)
+                if ((nOpcode & OP_MEMBER) == MEMBER_CHANGE_OF_PLAN)
                 {
                     m_wSlot      = (short)pNode->m_pArgs[0].n;
                     m_wBehaviour = (short)pNode->m_pArgs[1].n;
@@ -119,7 +119,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 break;
 
             case CATEGORY_AGENDA:
-                switch (dwOpcode)
+                switch (nOpcode)
                 {
                     case (int)CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
                         pBubble = (AgendaItem*)g_apAgendaItemPools[(short)pNode->m_pArgs[0].n]->Alloc();

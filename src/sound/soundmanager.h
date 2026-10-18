@@ -39,7 +39,7 @@ struct SoundEntry
     int   m_nBitsPerSample; // 0x2c, WAVEFORMATEX::wBitsPerSample
     int   m_nChannels;      // 0x30, WAVEFORMATEX::nChannels
     int   m_nDataBytes;     // 0x34, the data chunk's cksize
-    int   m_nDataOffset;    // 0x38, the data chunk's dwDataOffset
+    int   m_nDataOffset;    // 0x38, the data chunk's nDataOffset
     char* m_pSamples;       // 0x3c, the malloc sized by cksize the samples are read into
     int   m_nLoadMode;      // 0x40
     int   m_nUnusedB;       // 0x44

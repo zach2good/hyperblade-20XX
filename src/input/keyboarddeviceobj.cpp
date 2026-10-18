@@ -104,10 +104,10 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 
     for (int nInputSlot = 0; nInputSlot < INPUT_SLOT_COUNT; nInputSlot++)
     {
-        const unsigned int dwNow = (unsigned int)SDL_GetTicks();
+        const unsigned int nNow = (unsigned int)SDL_GetTicks();
 
-        m_aPressTime[(short)nInputSlot]   = dwNow;
-        m_aReleaseTime[(short)nInputSlot] = dwNow + REPEAT_STEP_MS;
+        m_aPressTime[(short)nInputSlot]   = nNow;
+        m_aReleaseTime[(short)nInputSlot] = nNow + REPEAT_STEP_MS;
     }
 }
 
@@ -454,7 +454,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
             int            nBindingCount;
             int            nBudget;
             int            i;
-            unsigned int   dwNow;
+            unsigned int   nNow;
             int            nActionIndex;
 
             nBit    = 1 << nIndex;
@@ -463,10 +463,10 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
             if ((unsigned int)m_aReleaseTime[nIndex] >= (unsigned int)m_aPressTime[nIndex])
             {
                 m_aPrevPressTime[(short)nIndex] = m_aPressTime[(short)nIndex];
-                dwNow                           = (unsigned int)SDL_GetTicks();
-                m_aPressTime[(short)nIndex]     = dwNow;
+                nNow                            = (unsigned int)SDL_GetTicks();
+                m_aPressTime[(short)nIndex]     = nNow;
 
-                if (dwNow - (unsigned int)m_aReleaseTime[(short)nIndex] < m_nDoubleTapMs && (unsigned int)(m_aReleaseTime[(short)nIndex] - m_aPrevPressTime[(short)nIndex]) < m_nDoubleTapMs)
+                if (nNow - (unsigned int)m_aReleaseTime[(short)nIndex] < m_nDoubleTapMs && (unsigned int)(m_aReleaseTime[(short)nIndex] - m_aPrevPressTime[(short)nIndex]) < m_nDoubleTapMs)
                 {
                     nBit = ACTION_BINDING_DOUBLE_TAP << nIndex;
                 }
@@ -546,15 +546,15 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
             int            nBindingCount;
             int            nBudget;
             int            i;
-            unsigned int   dwNow;
+            unsigned int   nNow;
             unsigned int   nElapsed;
             int            nActionIndex;
 
             nResult                           = 0;
             m_aPrevReleaseTime[(short)nIndex] = m_aReleaseTime[(short)nIndex];
-            dwNow                             = (unsigned int)SDL_GetTicks();
-            m_aReleaseTime[(short)nIndex]     = dwNow;
-            nElapsed                          = dwNow - (unsigned int)m_aPressTime[(short)nIndex];
+            nNow                              = (unsigned int)SDL_GetTicks();
+            m_aReleaseTime[(short)nIndex]     = nNow;
+            nElapsed                          = nNow - (unsigned int)m_aPressTime[(short)nIndex];
 
             if (nElapsed < m_nDoubleTapMs && (unsigned int)(m_aPressTime[(short)nIndex] - m_aPrevReleaseTime[(short)nIndex]) < m_nDoubleTapMs)
             {

@@ -61,10 +61,10 @@ struct NetMoveBody
 
 struct NetMoveRecord
 {
-    unsigned char cKind;  // 0x00
-    unsigned char nSlot;  // 0x01
-    unsigned int  dwTime; // 0x02
-    NetMoveBody   body;   // 0x06
+    unsigned char cKind; // 0x00
+    unsigned char nSlot; // 0x01
+    unsigned int  nTime; // 0x02
+    NetMoveBody   body;  // 0x06
 };
 
 // A move: the kind byte says whether a packed move or the raw position and step follow.

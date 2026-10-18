@@ -156,7 +156,7 @@ HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
     m_hBitmap = GDI::LoadBitmapHandle("Chipl01");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(m_hBitmap);
-    AppendWidget(new LoopFlipbookWidget(206, 63, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 19, 0, 19, 19, this, 1, -1));
+    AppendWidget(new LoopFlipbookWidget(206, 63, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 19, 0, 19, 19, this, 1, -1));
     for (int i = 0; i < 20; i++)
     {
         m_apWidgets[H2H_PLAYER_PORTRAITS]->AppendFrame(nullptr);
@@ -171,7 +171,7 @@ HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
     // STRING: HYPERX 0x004c2130
     m_hBitmap = GDI::LoadBitmapHandle("startr1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    AppendWidget(new ButtonWidget(0, 7, 67, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    AppendWidget(new ButtonWidget(0, 7, 67, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     m_apWidgets[H2H_STARTERS_TAB]->AppendFrame(nullptr);
     m_apWidgets[H2H_STARTERS_TAB]->AppendFrame(nullptr);
     m_apWidgets[H2H_STARTERS_TAB]->AppendFrame(nullptr);
@@ -179,7 +179,7 @@ HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
     m_apWidgets[H2H_STARTERS_TAB]->SetDepressed(1);
     m_hBitmap = GDI::LoadBitmapHandle("startr1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    AppendWidget(new ButtonWidget(0, 107, 67, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    AppendWidget(new ButtonWidget(0, 107, 67, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     m_apWidgets[H2H_SCRUBS_TAB]->AppendFrame(nullptr);
     m_apWidgets[H2H_SCRUBS_TAB]->AppendFrame(nullptr);
     m_apWidgets[H2H_SCRUBS_TAB]->AppendFrame(nullptr);

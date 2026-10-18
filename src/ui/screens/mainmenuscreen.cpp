@@ -33,8 +33,8 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8884
     m_hBitmap = GDI::LoadBitmapHandle("Ardoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(370, 214, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 4, 0, 4, 4, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new FlipbookWidget(370, 214, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 4, 0, 4, 4, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c887c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Ardoor2"));
@@ -45,8 +45,8 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8864
     m_hBitmap = GDI::LoadBitmapHandle("gs01");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new LoopFlipbookWidget(45, 177, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 1, 11, 0, 11, 11, this, 0, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(45, 177, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 11, 0, 11, 11, this, 0, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c885c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs02"));
@@ -66,11 +66,11 @@ MainMenuScreen::MainMenuScreen()
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs09"));
     // STRING: HYPERX 0x004c881c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs10"));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     // STRING: HYPERX 0x004c8814
     m_hBitmap = GDI::LoadBitmapHandle("Singl");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -80,7 +80,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c880c
     m_hBitmap = GDI::LoadBitmapHandle("Multi");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -90,7 +90,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8804
     m_hBitmap = GDI::LoadBitmapHandle("Loadgm");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -106,7 +106,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c87fc
     m_hBitmap = GDI::LoadBitmapHandle("tolobb");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, SOUND_SXBUTT5));
+    pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);

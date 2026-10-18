@@ -29,7 +29,7 @@ void PauseMenuMinimalScreen::Init()
     // STRING: HYPERX 0x004c1f68
     GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Esretur");
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 210, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 210, bm.nWidth, bm.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     // STRING: HYPERX 0x004c1f5c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esreturr"));
@@ -40,7 +40,7 @@ void PauseMenuMinimalScreen::Init()
     // STRING: HYPERX 0x004c1f48
     hBitmap = GDI::LoadBitmapHandle("Esquit");
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    pWidget = AppendWidget(new ButtonWidget(0, 163, 267, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(new ButtonWidget(0, 163, 267, bm.nWidth, bm.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     // STRING: HYPERX 0x004c1f40
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esquitr"));

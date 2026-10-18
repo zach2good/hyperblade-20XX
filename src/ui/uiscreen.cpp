@@ -64,7 +64,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2eb0
     m_hBitmap = CacheLookup("1data3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(0, 362, bm.bmWidth, bm.bmHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(0, 362, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2ea8
     m_hBitmap = CacheLookup("1data4", &nFlag);
@@ -88,7 +88,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2e80
     m_hBitmap = CacheLookup("2five3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(104, 428, bm.bmWidth, bm.bmHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget = AppendWidget(new LoopFlipbookWidget(104, 428, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e78
     m_hBitmap = CacheLookup("2five4", &nFlag);
@@ -112,8 +112,8 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2e58
     m_hBitmap = CacheLookup("3gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(540, 390, bm.bmWidth, bm.bmHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
-    pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.bmWidth, bm.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.nWidth, bm.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e50
     m_hBitmap = CacheLookup("3gray4", &nFlag);
@@ -135,7 +135,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2e28
     m_hBitmap = CacheLookup("4gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(106, 389, bm.bmWidth, bm.bmHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget = AppendWidget(new LoopFlipbookWidget(106, 389, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e20
     m_hBitmap = CacheLookup("4gray4", &nFlag);

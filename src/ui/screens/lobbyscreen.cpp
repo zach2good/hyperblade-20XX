@@ -28,8 +28,8 @@ LobbyScreen::LobbyScreen()
     // STRING: HYPERX 0x004c87ec
     m_hBitmap = GDI::LoadBitmapHandle("Dadoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(483, 209, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 5, 0, 5, 5, this, SOUND_DOOROPN1, SOUND_DOORCLS1, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new FlipbookWidget(483, 209, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 5, 0, 5, 5, this, SOUND_DOOROPN1, SOUND_DOORCLS1, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c87e4
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Dadoor2"));
@@ -43,22 +43,22 @@ LobbyScreen::LobbyScreen()
     m_hBitmap = GDI::LoadBitmapHandle("Pldoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget =
-        AppendWidget(new FlipbookWidget(290, 255, m_bitmap.bmWidth + 40, m_bitmap.bmHeight + 40, 1, 0, 5, 0, 5, 5, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 20, 20, pWidget->GetPositionX() + 20, pWidget->GetPositionY() + 20);
-    pWidget->AppendFrameWithPos(m_hBitmap, m_bitmap.bmWidth, m_bitmap.bmHeight, 20, 20, 0, 0);
+        AppendWidget(new FlipbookWidget(290, 255, m_bitmap.nWidth + 40, m_bitmap.nHeight + 40, 1, 0, 5, 0, 5, 5, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, pWidget->GetPositionX() + 20, pWidget->GetPositionY() + 20);
+    pWidget->AppendFrameWithPos(m_hBitmap, m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, 0, 0);
     // STRING: HYPERX 0x004c87bc
-    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor2"), m_bitmap.bmWidth, m_bitmap.bmHeight, 20, 20, 0, 0);
+    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor2"), m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, 0, 0);
     // STRING: HYPERX 0x004c87b4
-    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor3"), m_bitmap.bmWidth, m_bitmap.bmHeight, 20, 20, 0, 0);
+    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor3"), m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, 0, 0);
     // STRING: HYPERX 0x004c87ac
-    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor4"), m_bitmap.bmWidth, m_bitmap.bmHeight, 20, 20, 0, 0);
+    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor4"), m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, 0, 0);
     // STRING: HYPERX 0x004c87a4
-    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor5"), m_bitmap.bmWidth, m_bitmap.bmHeight, 20, 20, 0, 0);
+    pWidget->AppendFrameWithPos(GDI::LoadBitmapHandle("Pldoor5"), m_bitmap.nWidth, m_bitmap.nHeight, 20, 20, 0, 0);
     // STRING: HYPERX 0x004c879c
     m_hBitmap = GDI::LoadBitmapHandle("Opdoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0, 209, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 5, 0, 5, 5, this, SOUND_DOOROPN1, SOUND_DOORCLS1, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new FlipbookWidget(0, 209, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 5, 0, 5, 5, this, SOUND_DOOROPN1, SOUND_DOORCLS1, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c8794
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Opdoor2"));
@@ -71,8 +71,8 @@ LobbyScreen::LobbyScreen()
     // STRING: HYPERX 0x004c8774
     m_hBitmap = GDI::LoadBitmapHandle("ltlite1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new LoopFlipbookWidget(254, 302, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 10, 0, 10, 10, this, 1, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(254, 302, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 10, 0, 10, 10, this, 1, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c876c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("ltlite2"));
@@ -82,16 +82,16 @@ LobbyScreen::LobbyScreen()
     pWidget->AppendFrame(GDI::LoadBitmapHandle("ltlite4"));
     // STRING: HYPERX 0x004c8754
     pWidget->AppendFrame(GDI::LoadBitmapHandle("ltlite5"));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     // STRING: HYPERX 0x004c874c
     m_hBitmap = GDI::LoadBitmapHandle("rtlite1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new LoopFlipbookWidget(358, 302, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 10, 0, 10, 10, this, 1, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget = AppendWidget(new LoopFlipbookWidget(358, 302, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 10, 0, 10, 10, this, 1, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c8744
     pWidget->AppendFrame(GDI::LoadBitmapHandle("rtlite2"));
@@ -101,18 +101,18 @@ LobbyScreen::LobbyScreen()
     pWidget->AppendFrame(GDI::LoadBitmapHandle("rtlite4"));
     // STRING: HYPERX 0x004c872c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("rtlite5"));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     // STRING: HYPERX 0x004c8724
     m_hBitmap = GDI::LoadBitmapHandle("Plsign");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new SignFlipbookWidget(
-        251, 170, m_bitmap.bmWidth, m_bitmap.bmHeight + 80, 1, 0, 1, 0, 1, 1, this, -1));
-    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    pWidget->AppendFrameWithPos(m_hBitmap, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 0, 0);
+        251, 170, m_bitmap.nWidth, m_bitmap.nHeight + 80, 1, 0, 1, 0, 1, 1, this, -1));
+    pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    pWidget->AppendFrameWithPos(m_hBitmap, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 0, 0);
 
     InitAllWidgets();
 }

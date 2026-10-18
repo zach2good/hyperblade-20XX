@@ -136,8 +136,8 @@ void GameConfigUIScreen::SetupWidgets()
         GDI::GetBitmapDimensions(hBitmap, &bm);
         pWidget = AppendWidget(new FlipbookWidget(g_aConfigButtonPos[nOption].nX,
                                                   g_aConfigButtonPos[nOption].nY,
-                                                  bm.bmWidth,
-                                                  bm.bmHeight,
+                                                  bm.nWidth,
+                                                  bm.nHeight,
                                                   0,
                                                   0,
                                                   2,
@@ -182,8 +182,8 @@ void GameConfigUIScreen::SetupWidgets()
         GDI::GetBitmapDimensions(hBitmap, &bm);
         pWidget = AppendWidget(new FlipbookWidget(g_aConfigArrowPos[nOption].nX,
                                                   g_aConfigArrowPos[nOption].nY,
-                                                  bm.bmWidth,
-                                                  bm.bmHeight,
+                                                  bm.nWidth,
+                                                  bm.nHeight,
                                                   0,
                                                   0,
                                                   2,

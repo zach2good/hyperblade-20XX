@@ -58,8 +58,8 @@ AwardsUIScreen::AwardsUIScreen()
         GDI::GetBitmapDimensions(hBitmap, &bm);
         pWidget = AppendWidget(new FlipbookWidget(g_aAwardButtons[i].nX,
                                                   g_aAwardButtons[i].nY,
-                                                  bm.bmWidth,
-                                                  bm.bmHeight,
+                                                  bm.nWidth,
+                                                  bm.nHeight,
                                                   0,
                                                   0,
                                                   2,
@@ -78,13 +78,13 @@ AwardsUIScreen::AwardsUIScreen()
 
     hBitmap = GDI::LoadBitmapHandle(g_apszAwardTrophy[0]);
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    AppendWidget(new FlipbookWidget(0, 0, bm.bmWidth, bm.bmHeight, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
+    AppendWidget(new FlipbookWidget(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
 
     m_apWidgets[AWARDS_TROPHY]->SetHidden(1);
 
     hBitmap = GDI::LoadBitmapHandle(g_apszAwardStripPrefix[0]);
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(AWARDS_STRIP_X, AWARDS_STRIP_Y, bm.bmWidth, bm.bmHeight, 0, 1, 0x1e, 0, 0x1e, 0x1e, this, 1, -1));
+    pWidget = AppendWidget(new LoopFlipbookWidget(AWARDS_STRIP_X, AWARDS_STRIP_Y, bm.nWidth, bm.nHeight, 0, 1, 0x1e, 0, 0x1e, 0x1e, this, 1, -1));
 
     for (i = 0; i < AWARDS_STRIP_FRAMES; i++)
     {

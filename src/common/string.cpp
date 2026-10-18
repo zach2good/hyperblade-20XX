@@ -30,9 +30,9 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
     int nMaxLen = 0;
 
-    for (const char* lpsz = pszFormat; *lpsz != 0; lpsz = STEP(lpsz))
+    for (const char* pszCursor = pszFormat; *pszCursor != 0; pszCursor = STEP(pszCursor))
     {
-        if (*lpsz != '%' || *(lpsz = STEP(lpsz)) == '%')
+        if (*pszCursor != '%' || *(pszCursor = STEP(pszCursor)) == '%')
         {
             nMaxLen += 1;
             continue;
@@ -41,17 +41,17 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
         int nItemLen = 0;
         int nWidth   = 0;
 
-        for (; *lpsz != 0; lpsz = STEP(lpsz))
+        for (; *pszCursor != 0; pszCursor = STEP(pszCursor))
         {
-            if (*lpsz == '#')
+            if (*pszCursor == '#')
             {
                 nMaxLen += 2;
             }
-            else if (*lpsz == '*')
+            else if (*pszCursor == '*')
             {
                 nWidth = va_arg(argList, int);
             }
-            else if (*lpsz == '-' || *lpsz == '+' || *lpsz == '0' || *lpsz == ' ')
+            else if (*pszCursor == '-' || *pszCursor == '+' || *pszCursor == '0' || *pszCursor == ' ')
             {
                 ;
             }
@@ -63,9 +63,9 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
         if (nWidth == 0)
         {
-            nWidth = atoi(lpsz);
+            nWidth = atoi(pszCursor);
 
-            for (; *lpsz != 0 && SDL_isdigit((unsigned char)*lpsz); lpsz = STEP(lpsz))
+            for (; *pszCursor != 0 && SDL_isdigit((unsigned char)*pszCursor); pszCursor = STEP(pszCursor))
             {
                 ;
             }
@@ -73,20 +73,20 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
         int nPrecision = 0;
 
-        if (*lpsz == '.')
+        if (*pszCursor == '.')
         {
-            lpsz = STEP(lpsz);
+            pszCursor = STEP(pszCursor);
 
-            if (*lpsz == '*')
+            if (*pszCursor == '*')
             {
                 nPrecision = va_arg(argList, int);
-                lpsz       = STEP(lpsz);
+                pszCursor  = STEP(pszCursor);
             }
             else
             {
-                nPrecision = atoi(lpsz);
+                nPrecision = atoi(pszCursor);
 
-                for (; *lpsz != 0 && SDL_isdigit((unsigned char)*lpsz); lpsz = STEP(lpsz))
+                for (; *pszCursor != 0 && SDL_isdigit((unsigned char)*pszCursor); pszCursor = STEP(pszCursor))
                 {
                     ;
                 }
@@ -95,26 +95,26 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
         int nModifier = 0;
 
-        switch (*lpsz)
+        switch (*pszCursor)
         {
             case 0x68:
                 nModifier = FORCE_ANSI;
-                lpsz      = STEP(lpsz);
+                pszCursor = STEP(pszCursor);
                 break;
 
             case 0x6c:
                 nModifier = FORCE_UNICODE;
-                lpsz      = STEP(lpsz);
+                pszCursor = STEP(pszCursor);
                 break;
 
             case 0x46:
             case 0x4e:
             case 0x4c:
-                lpsz = STEP(lpsz);
+                pszCursor = STEP(pszCursor);
                 break;
         }
 
-        switch (*lpsz | nModifier)
+        switch (*pszCursor | nModifier)
         {
             case 0x63:
             case 0x43:
@@ -192,7 +192,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
         }
         else
         {
-            switch (*lpsz)
+            switch (*pszCursor)
             {
                 case 0x64:
                 case 0x69:

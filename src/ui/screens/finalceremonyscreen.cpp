@@ -48,7 +48,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
     hBitmap = GDI::LoadBitmapHandle("finan01");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
-    AppendWidget(new LoopFlipbookWidget(0x12c, 0, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 0x3b, 0, 0x3b, 0x3b, this, 1, -1));
+    AppendWidget(new LoopFlipbookWidget(0x12c, 0, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 0x3b, 0, 0x3b, 0x3b, this, 1, -1));
 
     for (int i = 0; i < 60; i++)
     {

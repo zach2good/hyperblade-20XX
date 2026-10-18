@@ -22,8 +22,8 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
     // STRING: HYPERX 0x004c2e58
     m_hBitmap = CacheLookup("3gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(540, 390, bm.bmWidth, bm.bmHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
-    pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.bmWidth, bm.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
+    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.nWidth, bm.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e50
     m_hBitmap = CacheLookup("3gray4", &nFlag);
@@ -57,7 +57,7 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
     // STRING: HYPERX 0x004c6490
     m_hBitmap = GDI::LoadBitmapHandle("opbar0");
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new TextInputWidget(0, 0, bm.bmWidth, bm.bmHeight, 0, 0, 0, 0, 0, 0, this, -1));
+    pWidget = AppendWidget(new TextInputWidget(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     m_apWidgets[MULTI_SETUP_OKAY]->ClearFrames();

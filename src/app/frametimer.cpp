@@ -16,15 +16,15 @@ FrameTimer g_frameTimer;
 // FUNCTION: HYPERX 0x00442940
 double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 {
-    const unsigned int dwStart = timer->dwFrameStartTime;
+    const unsigned int nStart = timer->nFrameStartTime;
     double             dFrameRate;
 
     timer->nPerfSampleCount++;
 
-    const unsigned int dwNow     = (unsigned int)SDL_GetTicks();
-    const unsigned int dwElapsed = dwNow - dwStart;
+    const unsigned int nNow     = (unsigned int)SDL_GetTicks();
+    const unsigned int nElapsed = nNow - nStart;
 
-    if (timer->bFrameTimesOn == 0 || dwElapsed < 5000)
+    if (timer->bFrameTimesOn == 0 || nElapsed < 5000)
     {
         return 0.0;
     }
@@ -33,7 +33,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     const double dFrames = timer->nFrames;
 
-    dFrameRate = 1.0 / ((((dwElapsed - timer->nClockReads * timer->dClockReadCost) - timer->nPerfSampleCount * timer->dSampleCost) - dFrames * timer->dFpsTextCost) / dFrames * 0.001);
+    dFrameRate = 1.0 / ((((nElapsed - timer->nClockReads * timer->dClockReadCost) - timer->nPerfSampleCount * timer->dSampleCost) - dFrames * timer->dFpsTextCost) / dFrames * 0.001);
 
     g_gameApp.m_nFrameRate = (int)floor(dFrameRate + 0.5);
 
@@ -42,7 +42,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
     // STRING: HYPERX 0x004c1e58
     sprintf(g_szFpsText, "FPS %02d BLIT", g_gameApp.m_nFrameRate);
 
-    timer->dwFrameStartTime = timer->Restart();
+    timer->nFrameStartTime = timer->Restart();
 
     return dFrameRate;
 }
@@ -55,7 +55,7 @@ unsigned int FrameTimer::Now()
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate()
 {
-    const unsigned int dwStart = (unsigned int)SDL_GetTicks();
+    const unsigned int nStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
@@ -64,7 +64,7 @@ double FrameTimer::Calibrate()
         SDL_GetTicks();
     }
 
-    const double dResult = ((double)(unsigned int)SDL_GetTicks() - dwStart) / nClockReads;
+    const double dResult = ((double)(unsigned int)SDL_GetTicks() - nStart) / nClockReads;
 
     Restart();
 
@@ -74,7 +74,7 @@ double FrameTimer::Calibrate()
 // FUNCTION: HYPERX 0x00442b50
 double FrameTimer::BenchmarkResolution()
 {
-    const unsigned int dwStart = (unsigned int)SDL_GetTicks();
+    const unsigned int nStart = (unsigned int)SDL_GetTicks();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
@@ -83,7 +83,7 @@ double FrameTimer::BenchmarkResolution()
         SDL_GetTicks();
     }
 
-    const double dResult = ((double)(unsigned int)SDL_GetTicks() - dwStart) / nPerfSampleCount;
+    const double dResult = ((double)(unsigned int)SDL_GetTicks() - nStart) / nPerfSampleCount;
 
     Restart();
 
@@ -108,7 +108,7 @@ void FrameTimer::ProcessInitialFrameUpdate()
 
     nClockReads++;
 
-    dwFrameStartTime = (unsigned int)SDL_GetTicks();
+    nFrameStartTime = (unsigned int)SDL_GetTicks();
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {

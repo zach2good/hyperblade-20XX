@@ -155,7 +155,7 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
 
-    AppendWidget(new LoopFlipbookWidget(0x114, 0x60, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 0xe, 0, 0xe, 0xe, this, 1, -1));
+    AppendWidget(new LoopFlipbookWidget(0x114, 0x60, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 0xe, 0, 0xe, 0xe, this, 1, -1));
 
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);

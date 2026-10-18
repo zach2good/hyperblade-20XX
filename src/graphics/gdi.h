@@ -45,11 +45,11 @@ struct Bitmap
     std::vector<std::uint32_t> pixels;
 };
 
-// What the screens read of GetObject's BITMAP.
+// A bitmap's size, as the screens read it.
 struct BitmapSize
 {
-    int bmWidth;
-    int bmHeight;
+    int nWidth;
+    int nHeight;
 };
 
 Bitmap*           LoadBitmapHandle(const char* pszName);
@@ -63,7 +63,7 @@ BitmapInfoHeader* ExpandRLE(BitmapInfoHeader* pDib);
 Bitmap*           LoadJPEGImage(const char* pszPath);
 void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
 // The colour is 0x00BBGGRR.
-void DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int cchText, int nUnused);
+void DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int nTextLength, int nUnused);
 void DrawBitmapToWindow(const char* pszResourceName);
 
 } // namespace GDI

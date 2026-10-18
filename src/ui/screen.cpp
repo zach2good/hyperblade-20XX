@@ -56,8 +56,8 @@ Screen::Screen()
     m_bRepaintBackground = 1;
     m_bPointerOnWidget   = 1;
     m_nWidgetCount       = 0;
-    m_bitmap.bmWidth     = 0;
-    m_bitmap.bmHeight    = 0;
+    m_bitmap.nWidth      = 0;
+    m_bitmap.nHeight     = 0;
     m_hBitmap            = nullptr;
     m_nUnusedA           = 0;
     m_nUnusedB           = 0;
@@ -516,7 +516,7 @@ int Screen::PaintToWindow()
 
         if (m_hBackground != nullptr)
         {
-            GDI::Blit(0, 0, bitmap.bmWidth, bitmap.bmHeight, m_hBackground, 0, 0);
+            GDI::Blit(0, 0, bitmap.nWidth, bitmap.nHeight, m_hBackground, 0, 0);
         }
 
         const char* pszCaption = m_pszCaption;

@@ -1212,7 +1212,7 @@ char EngineObject::ProcessReceivedPacket()
 
                 m_pBody->bNetTargetPending = 1;
 
-                m_pBody->nPrevTick = record.dwTime;
+                m_pBody->nPrevTick = record.nTime;
 
                 ApplySyncedBehaviour(pPlayer, &body, &nPlan, &nBehaviour);
 
