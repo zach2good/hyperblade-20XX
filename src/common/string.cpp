@@ -14,6 +14,8 @@
 #include <cstdlib>
 #include <SDL3/SDL.h>
 #include <cstring>
+#include <memory>
+#include <utility>
 
 #define STEP(p) ((const char*)(p) + 1)
 
@@ -281,6 +283,33 @@ String::String(const String& src)
     Assign(SafeStrlen(pchSource), pchSource);
 }
 
+String::String(String&& src) noexcept
+: m_pchData(std::exchange(src.m_pchData, *GetGlobalStringPtr())),
+  m_pBlock(std::move(src.m_pBlock))
+{
+}
+
+String& String::operator=(const String& src)
+{
+    if (this != &src)
+    {
+        AssignFromString(src);
+    }
+
+    return *this;
+}
+
+String& String::operator=(String&& src) noexcept
+{
+    if (this != &src)
+    {
+        m_pBlock  = std::move(src.m_pBlock);
+        m_pchData = std::exchange(src.m_pchData, *GetGlobalStringPtr());
+    }
+
+    return *this;
+}
+
 // FUNCTION: HYPERX 0x0042f420
 String::String(const char* psz)
 {
@@ -309,12 +338,8 @@ String::String(const char* psz)
 // FUNCTION: HYPERX 0x0042f490
 void String::FreeBuffer()
 {
-    auto* const pHeader = GetHeader();
-
-    if (pHeader != g_pEmptyStringHeader)
-    {
-        operator delete(GetHeader());
-    }
+    m_pBlock.reset();
+    m_pchData = *GetGlobalStringPtr();
 }
 
 // FUNCTION: HYPERX 0x0042f4b0
@@ -384,13 +409,13 @@ char* String::Reserve(int nLength)
             nLength = nOldLength;
         }
 
+        const auto pOldBlock = std::move(m_pBlock);
+
         AllocBuffer(nLength);
 
         memcpy(m_pchData, pOldHeader->Data(), nOldLength + 1);
 
         GetHeader()->nDataLength = nOldLength;
-
-        String::FreeHeader(pOldHeader);
     }
 
     return m_pchData;
@@ -424,21 +449,8 @@ char* String::Resize(int nLength)
 // FUNCTION: HYPERX 0x0042f6d0
 void String::ClearAndFree()
 {
-    if (GetHeader() != g_pEmptyStringHeader)
-    {
-        operator delete(GetHeader());
-
-        m_pchData = *GetGlobalStringPtr();
-    }
-}
-
-// FUNCTION: HYPERX 0x0042f700
-void String::FreeHeader(StringHeader* pHeader)
-{
-    if (pHeader != g_pEmptyStringHeader)
-    {
-        operator delete(pHeader);
-    }
+    m_pBlock.reset();
+    m_pchData = *GetGlobalStringPtr();
 }
 
 // MFC's CString::Empty; the null test on the fixed buffer never fires, as in the original.
@@ -460,16 +472,16 @@ void String::AllocBuffer(int nLength)
 {
     if (nLength == 0)
     {
+        m_pBlock.reset();
         m_pchData = *GetGlobalStringPtr();
         return;
     }
 
-    auto* const pHeader = static_cast<StringHeader*>(operator new(sizeof(StringHeader) + nLength + 1));
+    m_pBlock = std::make_unique_for_overwrite<char[]>(sizeof(StringHeader) + nLength + 1);
 
-    pHeader->nRefs           = 1;
+    auto* const pHeader = std::construct_at(reinterpret_cast<StringHeader*>(m_pBlock.get()), StringHeader{ 1, nLength, nLength });
+
     pHeader->Data()[nLength] = 0;
-    pHeader->nAllocLength    = nLength;
-    pHeader->nDataLength     = nLength;
 
     m_pchData = pHeader->Data();
 }
@@ -527,9 +539,9 @@ void String::AppendData(int nLength, const char* pchData)
         return;
     }
 
-    ConcatAlloc(HeaderOf(pchOld)->nDataLength, pchOld, nLength, pchData);
+    const auto pOldBlock = std::move(m_pBlock);
 
-    String::FreeHeader(HeaderOf(pchOld));
+    ConcatAlloc(HeaderOf(pchOld)->nDataLength, pchOld, nLength, pchData);
 }
 
 // FUNCTION: HYPERX 0x0042f910
@@ -539,7 +551,7 @@ void String::MakeUnique()
 
     if (HeaderOf(pchOld)->nRefs > 1)
     {
-        ClearAndFree();
+        const auto pOldBlock = std::move(m_pBlock);
 
         AllocBuffer(HeaderOf(pchOld)->nDataLength);
 
