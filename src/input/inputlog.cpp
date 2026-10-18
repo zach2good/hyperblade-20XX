@@ -1,4 +1,5 @@
 #include "input/inputlog.h"
+#include "common/clock.h"
 #include <SDL3/SDL.h>
 #include <array>
 
@@ -16,7 +17,7 @@ int                                   s_nCount   = 0;
 
 void InputLog::Add(const char* pszSource, unsigned int nKey, bool bDown, const char* pszAction)
 {
-    s_aEntries[static_cast<size_t>(s_nNext)] = Entry{ SDL_GetTicks(), pszSource, pszAction, nKey, bDown };
+    s_aEntries[static_cast<size_t>(s_nNext)] = Entry{ Clock::Now(), pszSource, pszAction, nKey, bDown };
 
     s_nNext  = (s_nNext + 1) % kLogSize;
     s_nCount = (std::min)(s_nCount + 1, kLogSize);

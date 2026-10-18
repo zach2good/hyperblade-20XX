@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include <SDL3/SDL.h>
-#include <cstdint>
+#include <chrono>
 #include "globals.h"
 #include "app/gameapp.h"
 #include "appglobals.h"
@@ -16,18 +16,18 @@ FrameTimer g_frameTimer;
 // FUNCTION: HYPERX 0x00442940
 double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 {
-    const auto nStart = timer->nFrameStartTime;
-    double     dFrameRate;
+    double dFrameRate;
 
     timer->nPerfSampleCount++;
 
-    const auto nNow     = static_cast<unsigned int>(SDL_GetTicks());
-    const auto nElapsed = nNow - nStart;
+    const auto elapsed = Clock::Now() - timer->frameStart;
 
-    if (timer->bFrameTimesOn == 0 || nElapsed < 5000)
+    if (timer->bFrameTimesOn == 0 || elapsed < std::chrono::seconds{ 5 })
     {
         return 0.0;
     }
+
+    const auto nElapsed = Clock::FractionalMilliseconds(elapsed).count();
 
     timer->nFrames--;
 
@@ -42,29 +42,24 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
     // STRING: HYPERX 0x004c1e58
     sprintf(g_szFpsText, "FPS %02d BLIT", g_gameApp.m_nFrameRate);
 
-    timer->nFrameStartTime = timer->Restart();
+    timer->frameStart = timer->Restart();
 
     return dFrameRate;
-}
-
-unsigned int FrameTimer::Now()
-{
-    return static_cast<unsigned int>(SDL_GetTicks());
 }
 
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate()
 {
-    const auto nStart = static_cast<unsigned int>(SDL_GetTicks());
+    const auto start = Clock::Now();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nClockReads++;
 
-        SDL_GetTicks();
+        Clock::Now();
     }
 
-    const auto dResult = (static_cast<double>(static_cast<unsigned int>(SDL_GetTicks())) - nStart) / nClockReads;
+    const auto dResult = Clock::FractionalMilliseconds(Clock::Now() - start).count() / nClockReads;
 
     Restart();
 
@@ -74,16 +69,16 @@ double FrameTimer::Calibrate()
 // FUNCTION: HYPERX 0x00442b50
 double FrameTimer::BenchmarkResolution()
 {
-    const auto nStart = static_cast<unsigned int>(SDL_GetTicks());
+    const auto start = Clock::Now();
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
         nPerfSampleCount++;
 
-        SDL_GetTicks();
+        Clock::Now();
     }
 
-    const auto dResult = (static_cast<double>(static_cast<unsigned int>(SDL_GetTicks())) - nStart) / nPerfSampleCount;
+    const auto dResult = Clock::FractionalMilliseconds(Clock::Now() - start).count() / nPerfSampleCount;
 
     Restart();
 
@@ -108,7 +103,7 @@ void FrameTimer::ProcessInitialFrameUpdate()
 
     nClockReads++;
 
-    nFrameStartTime = static_cast<unsigned int>(SDL_GetTicks());
+    frameStart = Clock::Now();
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {
@@ -121,32 +116,33 @@ void FrameTimer::ProcessInitialFrameUpdate()
     bFrameTimesOn = 0;
 }
 
-// Nanoseconds per frame, and how far behind the deadline may slip before it is reset.
-constexpr auto kFrameNs  = std::uint64_t{ 1000000000 / 30 };
-constexpr auto kResyncNs = std::uint64_t{ 1000000000 };
+// One frame, and how far behind the deadline may slip before it is reset.
+constexpr auto kFrame  = std::chrono::nanoseconds{ std::chrono::seconds{ 1 } } / 30;
+constexpr auto kResync = std::chrono::seconds{ 1 };
 
 void FrameTimer::Pace()
 {
-    static auto s_nDeadlineNS = std::uint64_t{ 0 };
+    static auto s_deadline = std::chrono::steady_clock::time_point{};
 
-    const auto nNowNS = SDL_GetTicksNS();
+    const auto now = std::chrono::steady_clock::now();
 
-    if (s_nDeadlineNS == 0)
+    if (s_deadline == std::chrono::steady_clock::time_point{})
     {
-        s_nDeadlineNS = nNowNS;
+        s_deadline = now;
     }
 
-    s_nDeadlineNS += kFrameNs;
+    s_deadline += kFrame;
 
-    if (nNowNS > s_nDeadlineNS + kResyncNs)
+    if (now > s_deadline + kResync)
     {
-        s_nDeadlineNS = nNowNS;
+        s_deadline = now;
 
         return;
     }
 
-    if (s_nDeadlineNS > nNowNS)
+    // SDL's precise delay spins out the last of the wait, which a plain sleep cannot do on Windows.
+    if (s_deadline > now)
     {
-        SDL_DelayPrecise(s_nDeadlineNS - nNowNS);
+        SDL_DelayPrecise(static_cast<Uint64>(std::chrono::duration_cast<std::chrono::nanoseconds>(s_deadline - now).count()));
     }
 }

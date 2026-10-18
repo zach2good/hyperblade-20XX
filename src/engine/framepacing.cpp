@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "engine/framepacing.h"
 #include "engine/cameraobject.h"
 #include "engine/cameraprojectionstate.h"
@@ -273,7 +274,7 @@ static auto s_dNowMs = 0.0;
 
 static auto s_nRateTicks  = 0;
 static auto s_nRate       = 0;
-static auto s_nRateStart  = std::uint64_t{ 0 };
+static auto s_rateStart   = std::chrono::steady_clock::time_point{};
 static auto s_dDriftStart = 0.0;
 static auto s_flDrift     = 0.0f;
 
@@ -284,22 +285,22 @@ void FramePacing::BeginTick()
 
     s_dNowMs += kTickMs;
 
-    const auto nNow = SDL_GetTicks();
+    const auto now = std::chrono::steady_clock::now();
 
-    if (s_nRateStart == 0 || nNow - s_nRateStart > 5000)
+    if (s_rateStart == std::chrono::steady_clock::time_point{} || now - s_rateStart > std::chrono::seconds{ 5 })
     {
-        s_nRateStart  = nNow;
+        s_rateStart   = now;
         s_dDriftStart = s_dNowMs;
         s_nRateTicks  = 0;
     }
 
     s_nRateTicks++;
 
-    if (nNow - s_nRateStart >= 1000)
+    if (now - s_rateStart >= std::chrono::seconds{ 1 })
     {
-        s_flDrift     = static_cast<float>((s_dNowMs - s_dDriftStart) - static_cast<double>(nNow - s_nRateStart));
+        s_flDrift     = static_cast<float>((s_dNowMs - s_dDriftStart) - Clock::FractionalMilliseconds(now - s_rateStart).count());
         s_nRate       = s_nRateTicks;
-        s_nRateStart  = nNow;
+        s_rateStart   = now;
         s_dDriftStart = s_dNowMs;
         s_nRateTicks  = 0;
     }
@@ -359,35 +360,35 @@ void FramePacing::RecordView(CameraObject& camera)
 
 float FramePacing::RunTicks()
 {
-    constexpr auto kTickNs = static_cast<std::uint64_t>(kTickMs * 1000000.0f);
+    constexpr auto kTick = std::chrono::nanoseconds{ std::chrono::seconds{ 1 } } / 30;
 
-    static auto s_nLastNS = std::uint64_t{ 0 };
-    static auto s_nOwedNS = std::uint64_t{ 0 };
+    static auto s_last = std::chrono::steady_clock::time_point{};
+    static auto s_owed = std::chrono::nanoseconds{};
 
-    const auto nNowNS = SDL_GetTicksNS();
+    const auto now = std::chrono::steady_clock::now();
 
     // After a gap, such as the menus or the capped loop, the next frame starts on a fresh tick.
-    if (s_nLastNS == 0 || nNowNS - s_nLastNS > kTickNs * kMaxCatchUp)
+    if (s_last == std::chrono::steady_clock::time_point{} || now - s_last > kTick * kMaxCatchUp)
     {
-        s_nOwedNS = kTickNs;
+        s_owed = kTick;
     }
     else
     {
-        s_nOwedNS += nNowNS - s_nLastNS;
+        s_owed += now - s_last;
     }
 
-    s_nLastNS = nNowNS;
+    s_last = now;
 
-    for (int nTick = 0; nTick < kMaxCatchUp && s_nOwedNS >= kTickNs; nTick++)
+    for (int nTick = 0; nTick < kMaxCatchUp && s_owed >= kTick; nTick++)
     {
         Game::Tick();
 
-        s_nOwedNS -= kTickNs;
+        s_owed -= kTick;
     }
 
-    s_nOwedNS = (std::min)(s_nOwedNS, kTickNs);
+    s_owed = (std::min)(s_owed, kTick);
 
-    return static_cast<float>(s_nOwedNS) / static_cast<float>(kTickNs);
+    return std::chrono::duration<float>(s_owed) / std::chrono::duration<float>(kTick);
 }
 
 void FramePacing::DrawViews(float flAlpha)

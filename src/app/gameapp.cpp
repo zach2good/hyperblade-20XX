@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include <cstdlib>
 #include <string>
 #include "graphics/hudlayer.h"
@@ -250,9 +251,9 @@ void GameApp::InitializeResourcePaths()
     g_gameApp.m_strTexturesPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Textures"));
 }
 
-constexpr auto kSplashMs = 3000ul;
+constexpr auto kSplashTime = std::chrono::seconds{ 3 };
 
-static unsigned int s_dwSplashShown = 0;
+static Clock::Milliseconds s_splashShown{};
 
 // FUNCTION: HYPERX 0x00419290
 void GameApp::NextSplash()
@@ -281,7 +282,7 @@ void GameApp::NextSplash()
 
     GDI::DrawBitmapToWindow(s_apszSplashes[g_nSplashFrame - 1]);
 
-    s_dwSplashShown = static_cast<unsigned int>(SDL_GetTicks());
+    s_splashShown = Clock::Now();
 }
 
 bool GameApp::UpdateSplash()
@@ -291,7 +292,7 @@ bool GameApp::UpdateSplash()
         return false;
     }
 
-    if (static_cast<unsigned int>(SDL_GetTicks()) - s_dwSplashShown >= kSplashMs)
+    if (Clock::Now() - s_splashShown >= kSplashTime)
     {
         GameApp::NextSplash();
     }

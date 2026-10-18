@@ -5,17 +5,18 @@
 #define HYPERBLADE_INPUTLOG_H
 
 #include <cstdint>
+#include "common/clock.h"
 
 namespace InputLog
 {
 
 struct Entry
 {
-    std::uint64_t nTicksMs;
-    const char*   pszSource; // "Keyboard", "Mouse", or the pad control's name.
-    const char*   pszAction; // The pad's action, or null.
-    unsigned int  nKey;
-    bool          bDown;
+    Clock::Milliseconds stamp;
+    const char*         pszSource; // "Keyboard", "Mouse", or the pad control's name.
+    const char*         pszAction; // The pad's action, or null.
+    unsigned int        nKey;
+    bool                bDown;
 };
 
 // pszSource and pszAction must live for the whole run, as string literals do.

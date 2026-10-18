@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <string>
@@ -35,7 +36,7 @@ int main(int argc, char* argv[])
         if (g_frameTimer.bFrameTimesOn)
         {
             g_frameTimer.nClockReads++;
-            g_frameTimer.nFrameStartTime = static_cast<unsigned int>(SDL_GetTicks());
+            g_frameTimer.frameStart = Clock::Now();
         }
 
         while (Window::Pump())

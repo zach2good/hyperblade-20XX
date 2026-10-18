@@ -3,6 +3,7 @@
 #ifndef HYPERBLADE_GRAPHICSGLOBALS_H
 #define HYPERBLADE_GRAPHICSGLOBALS_H
 #include "common/compat.h"
+#include "common/clock.h"
 #include "graphics/bitmapformat.h"
 
 #include "globals.h"
@@ -32,7 +33,7 @@ extern unsigned int g_dwDisplayWidth;
 extern unsigned int g_dwDisplayHeight;
 
 // GLOBAL: HYPERX 0x004cef50
-extern unsigned int g_dwFrameGameLogicStart;
+extern Clock::Milliseconds g_frameGameLogicStart;
 
 struct SoftTexImage;
 struct ClipVertex;

@@ -1,6 +1,7 @@
 // Definitions for the globals declared in globals.h, in the original's .data order.
 
 #include "common/compat.h"
+#include "common/clock.h"
 #include "graphics/bitmapformat.h"
 #include "planvm/planaction.h"
 #include "graphics/modelfile.h"
@@ -43,22 +44,22 @@
 #include "physics/physicsbody.h"
 #include "planvm/planopcodetable.h"
 
-char               g_szFpsText[100];
-unsigned char      g_bIsWindowCreated;
-int                g_nPrevEngineState;
-RenderFlags        g_renderFlags = { 1, 1 };
-unsigned int       g_dwFrameGameLogicStart;
-InfoBarBase*       g_pRenderer;
-struct GameEngine* g_pGameEngine;
-int                g_bNoSoundArg;
-int                g_nSplashFrame;
-ColorPalette*      g_pColorPalette;
-const char* const  g_pszModelExtension       = "wbm";
-const char* const  g_pszWaveExtension        = "wav";
-const float        g_flCamWatchMidpointScale = 0.5f;
-FileVersion        g_modelVersion            = { 1, 7, 0, 0, 0 };
-GameApp            g_gameApp(2);
-AudioMgr*          g_pAudioMgr;
+char                g_szFpsText[100];
+unsigned char       g_bIsWindowCreated;
+int                 g_nPrevEngineState;
+RenderFlags         g_renderFlags = { 1, 1 };
+Clock::Milliseconds g_frameGameLogicStart;
+InfoBarBase*        g_pRenderer;
+struct GameEngine*  g_pGameEngine;
+int                 g_bNoSoundArg;
+int                 g_nSplashFrame;
+ColorPalette*       g_pColorPalette;
+const char* const   g_pszModelExtension       = "wbm";
+const char* const   g_pszWaveExtension        = "wav";
+const float         g_flCamWatchMidpointScale = 0.5f;
+FileVersion         g_modelVersion            = { 1, 7, 0, 0, 0 };
+GameApp             g_gameApp(2);
+AudioMgr*           g_pAudioMgr;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
 ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } },

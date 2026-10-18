@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "ui/debugmenu.h"
 #include "app/gameapp.h"
 #include "app/window.h"
@@ -430,7 +431,7 @@ void InputTab()
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableHeadersRow();
 
-        const auto nNow = SDL_GetTicks();
+        const auto now = Clock::Now();
 
         for (int i = 0; i < InputLog::Count(); i++)
         {
@@ -438,7 +439,7 @@ void InputTab()
 
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
-            ImGui::Text("%.1fs", static_cast<double>(nNow - entry.nTicksMs) / 1000.0);
+            ImGui::Text("%.1fs", std::chrono::duration<double>(now - entry.stamp).count());
             ImGui::TableNextColumn();
             ImGui::TextUnformatted(entry.pszSource);
             ImGui::TableNextColumn();

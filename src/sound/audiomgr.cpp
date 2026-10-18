@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "common/path.h"
 #include <SDL3/SDL.h>
 #include "globals.h"
@@ -367,7 +368,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
     if (nTrack == kCDTrackRandom)
     {
-        srand(static_cast<unsigned int>(SDL_GetTicks()));
+        srand(Clock::Now().count());
 
         auto nPicked = kCDTrackRandom;
         auto nScan   = g_nCDRecentCursor;

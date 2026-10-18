@@ -1,6 +1,7 @@
 // The game at the top level: engine setup and teardown, one frame, and the state machine.
 
 #include "common/compat.h"
+#include "common/clock.h"
 #include <SDL3/SDL.h>
 #include "graphics/hudlayer.h"
 #include "globals.h"
@@ -58,12 +59,12 @@ void Game::Tick()
     if (g_frameTimer.bFrameTimesOn)
     {
         g_frameTimer.nClockReads++;
-        g_dwFrameGameLogicStart       = static_cast<unsigned int>(SDL_GetTicks());
-        g_frameTimer.nFrameStartTicks = g_dwFrameGameLogicStart;
+        g_frameGameLogicStart        = Clock::Now();
+        g_frameTimer.frameStartTicks = g_frameGameLogicStart;
     }
     else
     {
-        g_dwFrameGameLogicStart = static_cast<unsigned int>(SDL_GetTicks());
+        g_frameGameLogicStart = Clock::Now();
     }
 
     if (g_pRenderer != nullptr)
@@ -78,7 +79,7 @@ void Game::Tick()
     if (g_frameTimer.bFrameTimesOn != 0)
     {
         g_frameTimer.nPerfSampleCount++;
-        g_frameTimer.dAccGameLogicMs += static_cast<double>(static_cast<unsigned int>(SDL_GetTicks()) - g_frameTimer.nFrameStartTicks);
+        g_frameTimer.accGameLogic += Clock::Now() - g_frameTimer.frameStartTicks;
     }
 }
 
@@ -104,7 +105,7 @@ void Game::Draw(float flAlpha)
     if (g_frameTimer.bFrameTimesOn != 0)
     {
         g_frameTimer.nPerfSampleCount++;
-        g_frameTimer.dAccRenderMs += static_cast<double>(static_cast<unsigned int>(SDL_GetTicks()) - g_frameTimer.nFrameStartTicks);
+        g_frameTimer.accRender += Clock::Now() - g_frameTimer.frameStartTicks;
     }
 
     g_frameTimer.nFrames++;
