@@ -52,91 +52,30 @@ set(HYPERX_SOURCES
     src/app/window.cpp
     src/app/winmain.cpp
     src/app/wndproc.cpp
-    src/common/agendaitemowner.cpp
-    src/common/behaviorowner.cpp
     src/common/behobjavoidance.cpp
-    src/common/behobjavoidancepool.cpp
     src/common/behobjcandytracking.cpp
-    src/common/behobjcandytrackingpool.cpp
     src/common/behobjcoachteam.cpp
-    src/common/behobjcoachteampool.cpp
     src/common/behobjdonothing.cpp
-    src/common/behobjdonothingpool.cpp
     src/common/behobjfly.cpp
     src/common/behobjflylcl.cpp
-    src/common/behobjflylclpool.cpp
-    src/common/behobjflypool.cpp
     src/common/behobjflytoward.cpp
-    src/common/behobjflytowardpool.cpp
     src/common/behobjglide.cpp
     src/common/behobjglidebetweenfacing.cpp
-    src/common/behobjglidebetweenfacingpool.cpp
     src/common/behobjglidelcl.cpp
-    src/common/behobjglidelclpool.cpp
-    src/common/behobjglidepool.cpp
-    src/common/behobjglidetoobjectpool.cpp
     src/common/behobjglidetoposition.cpp
-    src/common/behobjglidetopositionpool.cpp
     src/common/behobjheadtracking.cpp
-    src/common/behobjheadtrackingpool.cpp
     src/common/behobjmonitorkeyboard.cpp
-    src/common/behobjmonitorkeyboardpool.cpp
     src/common/behobjopenandclose.cpp
-    src/common/behobjopenandclosepool.cpp
     src/common/behobjrailslide.cpp
-    src/common/behobjrailslidepool.cpp
     src/common/behobjsetflatinplace.cpp
-    src/common/behobjsetflatinplacepool.cpp
     src/common/behobjsetinplace.cpp
-    src/common/behobjsetinplacepool.cpp
     src/common/behobjsetmovinginplace.cpp
-    src/common/behobjsetmovinginplacepool.cpp
     src/common/behobjtracking.cpp
-    src/common/behobjtrackingpool.cpp
     src/common/behobjtrackpassprep.cpp
-    src/common/behobjtrackpasspreppool.cpp
     src/common/behobjtracktrajectory.cpp
-    src/common/behobjtracktrajectorypool.cpp
     src/common/behobjupdaterelativepos.cpp
-    src/common/behobjupdaterelativepospool.cpp
     src/common/behobjupdatewhileattached.cpp
-    src/common/behobjupdatewhileattachedpool.cpp
     src/common/behobjwatching.cpp
-    src/common/behobjwatchingpool.cpp
-    src/common/cadjustaccelerationpool.cpp
-    src/common/cavoidobjectspool.cpp
-    src/common/cbeattachedpool.cpp
-    src/common/cbungeetowardpool.cpp
-    src/common/ccheckaipool.cpp
-    src/common/ccircletrackpool.cpp
-    src/common/cdisplaypassbarpool.cpp
-    src/common/cdisplayshotpowerpool.cpp
-    src/common/cdopplersndpool.cpp
-    src/common/cexplosionanimationpool.cpp
-    src/common/cglideonsurfacepool.cpp
-    src/common/cheadtrackpool.cpp
-    src/common/cmonitorheldkeyspool.cpp
-    src/common/cmonitorkeyspool.cpp
-    src/common/cpaletteeffectpool.cpp
-    src/common/cpansoundpool.cpp
-    src/common/cprojectandbouncepool.cpp
-    src/common/crelaxtopositionpool.cpp
-    src/common/crelaxyawpool.cpp
-    src/common/csetattitudepool.cpp
-    src/common/csetpositionrelativepool.cpp
-    src/common/cslideonrailpool.cpp
-    src/common/csteerbetweenfacingpool.cpp
-    src/common/csteertopositionpool.cpp
-    src/common/csteertotargetpool.cpp
-    src/common/csteertowardpool.cpp
-    src/common/cstepanimationpool.cpp
-    src/common/ctimeractivitypool.cpp
-    src/common/ctrackpasserreceiverpool.cpp
-    src/common/ctrackpool.cpp
-    src/common/ctracktrajpool.cpp
-    src/common/cupdateshotpowerpool.cpp
-    src/common/cviewitpool.cpp
-    src/common/cwatchpool.cpp
     src/common/fileobj.cpp
     src/common/inifile.cpp
     src/common/flatbehaviorobject.cpp
@@ -148,7 +87,6 @@ set(HYPERX_SOURCES
     src/common/path.cpp
     src/common/sdlmemory.cpp
     src/common/poolcountsdef.cpp
-    src/common/pooledownerroot.cpp
     src/common/staticinitglobals.cpp
     src/common/string.cpp
     src/common/stringtable.cpp
@@ -297,7 +235,6 @@ set(HYPERX_SOURCES
     src/planvm/cprojectandbounce.cpp
     src/planvm/crelaxtoposition.cpp
     src/planvm/cslideonrail.cpp
-    src/planvm/cspeedburstpool.cpp
     src/planvm/csteerbetweenfacing.cpp
     src/planvm/csteertotarget.cpp
     src/planvm/csteertoward.cpp

@@ -1,14 +1,16 @@
 #ifndef HYPERBLADE_POOLEDOWNERROOT_H
 #define HYPERBLADE_POOLEDOWNERROOT_H
 
-// The pool owner whose five slots the agenda item, behaviour and interactor pools share.
+// The pool owner whose slots the agenda item, behaviour and interactor pools share.
 class PooledOwnerRoot
 {
 public:
-    virtual ~PooledOwnerRoot() = default;
-
-    // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
-    virtual PooledOwnerRoot* Destroy();
+    PooledOwnerRoot()                                  = default;
+    PooledOwnerRoot(const PooledOwnerRoot&)            = delete;
+    PooledOwnerRoot(PooledOwnerRoot&&)                 = delete;
+    PooledOwnerRoot& operator=(const PooledOwnerRoot&) = delete;
+    PooledOwnerRoot& operator=(PooledOwnerRoot&&)      = delete;
+    virtual ~PooledOwnerRoot()                         = default;
 
     virtual void Init() = 0;
 

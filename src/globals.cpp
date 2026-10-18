@@ -192,13 +192,15 @@ float              g_flCameraTrackingHeight = 0.5f;
 float              g_flCameraMinHeight      = 1.0f;
 unsigned char      g_bScanningModesEnabled;
 extern const float g_flZeroAgendaItem = 0.0f;
-PooledOwnerRoot*   g_apAgendaItemPools[Agenda_Count + 1];
-PooledOwnerRoot*   g_apBehaviorRegistry[27];
-int                g_nSortedListTotal;
-short              g_wMultiplierRestColour1;
-short              g_wMultiplierRestColour2;
-const float        g_flBaseStatsSentinel = 1.0f;
-const float        g_flSpeedRateBase     = 2.0f;
+
+std::unique_ptr<PooledOwnerRoot> g_apAgendaItemPools[Agenda_Count + 1];
+std::unique_ptr<PooledOwnerRoot> g_apBehaviorRegistry[27];
+
+int         g_nSortedListTotal;
+short       g_wMultiplierRestColour1;
+short       g_wMultiplierRestColour2;
+const float g_flBaseStatsSentinel = 1.0f;
+const float g_flSpeedRateBase     = 2.0f;
 // The eight match-start markers Game::InitMatchMarkers derives, sixteen bytes apart.
 // GLOBAL: HYPERX 0x004d1960
 Vec3 g_vMarkerGoalMouthSouth;
@@ -217,15 +219,17 @@ Vec3 g_vMarkerGoalNorth;
 // GLOBAL: HYPERX 0x004d19d0
 Vec3 g_vMarkerRimEast;
 
-float               g_flOneAgendaItem      = 1.0f;
-float               g_flHalfAgendaItem     = 0.5f;
-const float         g_flFrameRateReference = 80.0f;
-const double        g_dPeriodScale         = -0.00999;
-int                 g_anDebugLineLength[10];
-char                g_aDebugLineText[10][150];
-short               g_nDebugLineNext;
-const double        g_dSurfaceTolerance = 0.01f;
-PooledOwnerRoot*    g_pCollInteractorPool;
+float        g_flOneAgendaItem      = 1.0f;
+float        g_flHalfAgendaItem     = 0.5f;
+const float  g_flFrameRateReference = 80.0f;
+const double g_dPeriodScale         = -0.00999;
+int          g_anDebugLineLength[10];
+char         g_aDebugLineText[10][150];
+short        g_nDebugLineNext;
+const double g_dSurfaceTolerance = 0.01f;
+
+std::unique_ptr<PooledOwnerRoot> g_pCollInteractorPool;
+
 class AnimRegistry* g_pAnimRegistry;
 extern const float  g_flZeroProjection  = 0.0f;
 const float         g_flTransformZero   = 0.0f;
@@ -257,7 +261,9 @@ BitmapCacheEntry*  g_pBitmapCache;
 // STRING: HYPERX 0x004bb810
 const char*        g_pszAnimNameFormat = "%s";
 extern const float g_flZeroAnimClipSet = 0.0f;
-PooledOwnerRoot*   g_pMsgInteractorPool;
+
+std::unique_ptr<PooledOwnerRoot> g_pMsgInteractorPool;
+
 extern const float g_flZeroCollisionObj = 0.0f;
 int                g_nMatchSetupFlagA;
 int                g_nMatchSetupFlagB;

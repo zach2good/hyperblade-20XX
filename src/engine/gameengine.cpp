@@ -8,41 +8,7 @@
 #include "globals.h"
 #include "planvm/planvmglobals.h"
 #include "common/pooledownerroot.h"
-#include "common/cglideonsurfacepool.h"
-#include "common/cslideonrailpool.h"
-#include "common/cprojectandbouncepool.h"
-#include "common/cbeattachedpool.h"
-#include "common/csteertotargetpool.h"
-#include "common/csetpositionrelativepool.h"
-#include "common/csteertopositionpool.h"
-#include "common/csteerbetweenfacingpool.h"
-#include "common/csteertowardpool.h"
-#include "common/cadjustaccelerationpool.h"
-#include "common/cavoidobjectspool.h"
-#include "common/cbungeetowardpool.h"
-#include "common/csetattitudepool.h"
-#include "common/crelaxyawpool.h"
-#include "common/cstepanimationpool.h"
-#include "common/cmonitorkeyspool.h"
-#include "common/cmonitorheldkeyspool.h"
-#include "planvm/cspeedburstpool.h"
-#include "common/crelaxtopositionpool.h"
-#include "common/ctimeractivitypool.h"
-#include "common/ctrackpool.h"
-#include "common/ctracktrajpool.h"
-#include "common/cwatchpool.h"
-#include "common/ctrackpasserreceiverpool.h"
-#include "common/cviewitpool.h"
-#include "common/cpansoundpool.h"
-#include "common/cdopplersndpool.h"
-#include "common/cheadtrackpool.h"
-#include "common/cpaletteeffectpool.h"
-#include "common/cdisplayshotpowerpool.h"
-#include "common/cupdateshotpowerpool.h"
-#include "common/cdisplaypassbarpool.h"
-#include "common/cexplosionanimationpool.h"
-#include "common/ccheckaipool.h"
-#include "common/ccircletrackpool.h"
+#include "common/agendaitempools.h"
 #include "objectdef.h"
 #include "devicector.h"
 #include "planvm/planvm.h"
@@ -134,7 +100,7 @@ void GameEngine::InitAgendaItemPools()
 {
     int nSlot;
 
-    PooledOwnerRoot** ppEntry = g_apAgendaItemPools;
+    auto* ppEntry = g_apAgendaItemPools;
 
     for (nSlot = 0; nSlot < Agenda_Count; nSlot++)
     {
@@ -151,60 +117,56 @@ void GameEngine::InitAgendaItemPools()
 // FUNCTION: HYPERX 0x0040bbf0
 void GameEngine::CreateAgendaItemPools()
 {
-    g_apAgendaItemPools[Agenda_CGlideOnSurface]       = new CGlideOnSurfacePool;
-    g_apAgendaItemPools[Agenda_CSlideOnRail]          = new CSlideOnRailPool;
-    g_apAgendaItemPools[Agenda_CProjectAndBounce]     = new CProjectAndBouncePool;
-    g_apAgendaItemPools[Agenda_CBeAttached]           = new CBeAttachedPool;
-    g_apAgendaItemPools[Agenda_CSteerToTarget]        = new CSteerToTargetPool;
-    g_apAgendaItemPools[Agenda_CSetPositionRelative]  = new CSetPositionRelativePool;
-    g_apAgendaItemPools[Agenda_CSteerToPosition]      = new CSteerToPositionPool;
-    g_apAgendaItemPools[Agenda_CSteerBetweenFacing]   = new CSteerBetweenFacingPool;
-    g_apAgendaItemPools[Agenda_CSteerToward]          = new CSteerTowardPool;
-    g_apAgendaItemPools[Agenda_CAdjustAcceleration]   = new CAdjustAccelerationPool;
-    g_apAgendaItemPools[Agenda_CAvoidObjects]         = new CAvoidObjectsPool;
-    g_apAgendaItemPools[Agenda_CBungeeToward]         = new CBungeeTowardPool;
-    g_apAgendaItemPools[Agenda_CSetAttitude]          = new CSetAttitudePool;
-    g_apAgendaItemPools[Agenda_CRelaxYaw]             = new CRelaxYawPool;
-    g_apAgendaItemPools[Agenda_CStepAnimation]        = new CStepAnimationPool;
-    g_apAgendaItemPools[Agenda_CMonitorKeys]          = new CMonitorKeysPool;
-    g_apAgendaItemPools[Agenda_CMonitorHeldKeys]      = new CMonitorHeldKeysPool;
-    g_apAgendaItemPools[Agenda_CSpeedBurst]           = new CSpeedBurstPool;
-    g_apAgendaItemPools[Agenda_CRelaxToPosition]      = new CRelaxToPositionPool;
-    g_apAgendaItemPools[Agenda_CTimerActivity]        = new CTimerActivityPool;
-    g_apAgendaItemPools[Agenda_CTrack]                = new CTrackPool;
-    g_apAgendaItemPools[Agenda_CTrackTraj]            = new CTrackTrajPool;
-    g_apAgendaItemPools[Agenda_CWatch]                = new CWatchPool;
-    g_apAgendaItemPools[Agenda_CTrackPasser_Receiver] = new CTrackPasser_ReceiverPool;
-    g_apAgendaItemPools[Agenda_CViewIt]               = new CViewItPool;
-    g_apAgendaItemPools[Agenda_CPanSound]             = new CPanSoundPool;
-    g_apAgendaItemPools[Agenda_CDopplerSnd]           = new CDopplerSndPool;
-    g_apAgendaItemPools[Agenda_CHeadTrack]            = new CHeadTrackPool;
-    g_apAgendaItemPools[Agenda_CPaletteEffect]        = new CPaletteEffectPool;
-    g_apAgendaItemPools[Agenda_CDisplayShotPower]     = new CDisplayShotPowerPool;
-    g_apAgendaItemPools[Agenda_CUpdateShotPower]      = new CUpdateShotPowerPool;
-    g_apAgendaItemPools[Agenda_CDisplayPassBar]       = new CDisplayPassBarPool;
-    g_apAgendaItemPools[Agenda_CExplosionAnimation]   = new CExplosionAnimationPool;
-    g_apAgendaItemPools[Agenda_CCheckAI]              = new CCheckAIPool;
-    g_apAgendaItemPools[Agenda_CCircleTrack]          = new CCircleTrackPool;
+    g_apAgendaItemPools[Agenda_CGlideOnSurface]       = std::make_unique<CGlideOnSurfacePool>();
+    g_apAgendaItemPools[Agenda_CSlideOnRail]          = std::make_unique<CSlideOnRailPool>();
+    g_apAgendaItemPools[Agenda_CProjectAndBounce]     = std::make_unique<CProjectAndBouncePool>();
+    g_apAgendaItemPools[Agenda_CBeAttached]           = std::make_unique<CBeAttachedPool>();
+    g_apAgendaItemPools[Agenda_CSteerToTarget]        = std::make_unique<CSteerToTargetPool>();
+    g_apAgendaItemPools[Agenda_CSetPositionRelative]  = std::make_unique<CSetPositionRelativePool>();
+    g_apAgendaItemPools[Agenda_CSteerToPosition]      = std::make_unique<CSteerToPositionPool>();
+    g_apAgendaItemPools[Agenda_CSteerBetweenFacing]   = std::make_unique<CSteerBetweenFacingPool>();
+    g_apAgendaItemPools[Agenda_CSteerToward]          = std::make_unique<CSteerTowardPool>();
+    g_apAgendaItemPools[Agenda_CAdjustAcceleration]   = std::make_unique<CAdjustAccelerationPool>();
+    g_apAgendaItemPools[Agenda_CAvoidObjects]         = std::make_unique<CAvoidObjectsPool>();
+    g_apAgendaItemPools[Agenda_CBungeeToward]         = std::make_unique<CBungeeTowardPool>();
+    g_apAgendaItemPools[Agenda_CSetAttitude]          = std::make_unique<CSetAttitudePool>();
+    g_apAgendaItemPools[Agenda_CRelaxYaw]             = std::make_unique<CRelaxYawPool>();
+    g_apAgendaItemPools[Agenda_CStepAnimation]        = std::make_unique<CStepAnimationPool>();
+    g_apAgendaItemPools[Agenda_CMonitorKeys]          = std::make_unique<CMonitorKeysPool>();
+    g_apAgendaItemPools[Agenda_CMonitorHeldKeys]      = std::make_unique<CMonitorHeldKeysPool>();
+    g_apAgendaItemPools[Agenda_CSpeedBurst]           = std::make_unique<CSpeedBurstPool>();
+    g_apAgendaItemPools[Agenda_CRelaxToPosition]      = std::make_unique<CRelaxToPositionPool>();
+    g_apAgendaItemPools[Agenda_CTimerActivity]        = std::make_unique<CTimerActivityPool>();
+    g_apAgendaItemPools[Agenda_CTrack]                = std::make_unique<CTrackPool>();
+    g_apAgendaItemPools[Agenda_CTrackTraj]            = std::make_unique<CTrackTrajPool>();
+    g_apAgendaItemPools[Agenda_CWatch]                = std::make_unique<CWatchPool>();
+    g_apAgendaItemPools[Agenda_CTrackPasser_Receiver] = std::make_unique<CTrackPasser_ReceiverPool>();
+    g_apAgendaItemPools[Agenda_CViewIt]               = std::make_unique<CViewItPool>();
+    g_apAgendaItemPools[Agenda_CPanSound]             = std::make_unique<CPanSoundPool>();
+    g_apAgendaItemPools[Agenda_CDopplerSnd]           = std::make_unique<CDopplerSndPool>();
+    g_apAgendaItemPools[Agenda_CHeadTrack]            = std::make_unique<CHeadTrackPool>();
+    g_apAgendaItemPools[Agenda_CPaletteEffect]        = std::make_unique<CPaletteEffectPool>();
+    g_apAgendaItemPools[Agenda_CDisplayShotPower]     = std::make_unique<CDisplayShotPowerPool>();
+    g_apAgendaItemPools[Agenda_CUpdateShotPower]      = std::make_unique<CUpdateShotPowerPool>();
+    g_apAgendaItemPools[Agenda_CDisplayPassBar]       = std::make_unique<CDisplayPassBarPool>();
+    g_apAgendaItemPools[Agenda_CExplosionAnimation]   = std::make_unique<CExplosionAnimationPool>();
+    g_apAgendaItemPools[Agenda_CCheckAI]              = std::make_unique<CCheckAIPool>();
+    g_apAgendaItemPools[Agenda_CCircleTrack]          = std::make_unique<CCircleTrackPool>();
     g_apAgendaItemPools[Agenda_Count]                 = nullptr;
 }
 
-// Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
+// Destroys each pool, stopping at the first null.
 
 // FUNCTION: HYPERX 0x0040c070
 void GameEngine::DestroyAgendaItemPools()
 {
     short iSlot = 0;
 
-    auto* pNode = g_apAgendaItemPools[0];
-
-    while (pNode != nullptr)
+    while (g_apAgendaItemPools[iSlot] != nullptr)
     {
-        g_apAgendaItemPools[iSlot] = pNode->Destroy();
+        g_apAgendaItemPools[iSlot].reset();
 
         iSlot++;
-
-        pNode = g_apAgendaItemPools[iSlot];
     }
 }
 

@@ -106,8 +106,8 @@ void PlanVM::LoadAnimationLists()
     char szJmpLine[kAnimLineMax];
     char szChkLine[kAnimLineMax];
 
-    g_pCollInteractorPool = new CollInteractorPool();
-    g_pMsgInteractorPool  = new MsgInteractorPool();
+    g_pCollInteractorPool = std::make_unique<CollInteractorPool>();
+    g_pMsgInteractorPool  = std::make_unique<MsgInteractorPool>();
 
     g_nAnimListNamesLead                                                                  = 0;
     g_pfnPlanOpcodeHandlers[kSetInteractorName].pfnSetParam                               = PlanCond::SetInteractorName;

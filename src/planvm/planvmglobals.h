@@ -41,6 +41,6 @@ extern const double g_dPeriodScale;
 
 // The registered behaviours, walked until the first null; a scratch entry follows at 0x004cb5b8.
 // GLOBAL: HYPERX 0x004cb54c
-extern class PooledOwnerRoot* g_apBehaviorRegistry[27];
+extern std::unique_ptr<class PooledOwnerRoot> g_apBehaviorRegistry[27];
 
 #endif
