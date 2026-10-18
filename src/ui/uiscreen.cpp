@@ -64,7 +64,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2eb0
     m_hBitmap = CacheLookup("1data3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(0, 362, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    Widget* pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0, 362, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2ea8
     m_hBitmap = CacheLookup("1data4", &nFlag);
@@ -88,7 +88,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2e80
     m_hBitmap = CacheLookup("2five3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(104, 428, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(104, 428, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e78
     m_hBitmap = CacheLookup("2five4", &nFlag);
@@ -112,7 +112,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2e58
     m_hBitmap = CacheLookup("3gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.nWidth, bm.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e50
@@ -135,7 +135,7 @@ void UIScreen::InitWidgets()
     // STRING: HYPERX 0x004c2e28
     m_hBitmap = CacheLookup("4gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(106, 389, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(106, 389, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e20
     m_hBitmap = CacheLookup("4gray4", &nFlag);
@@ -157,116 +157,116 @@ void UIScreen::InitWidgets()
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(0, 2, 362, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 2, 362, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(0, 2, 391, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 2, 391, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(0, 2, 420, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 2, 420, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(0, 2, 449, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 2, 449, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(1, 114, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(1, 114, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(1, 197, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(1, 197, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(1, 280, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(1, 280, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(1, 363, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(1, 363, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(1, 446, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(1, 446, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(1, 529, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(1, 529, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget->SetHidden(1);
-    pWidget = AppendWidget(new FlipbookWidget(540, 390, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(540, 390, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new FlipbookWidget(540, 419, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(540, 419, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new FlipbookWidget(218, 391, 27, 31, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(218, 391, 27, 31, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new FlipbookWidget(395, 391, 27, 31, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(395, 391, 27, 31, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(2, 115, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(2, 115, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(2, 218, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(2, 218, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(2, 321, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(2, 321, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new ButtonWidget(2, 424, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(2, 424, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0, 0, 640, 353, 0, 0, 0, 0, 0, 0, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0, 0, 640, 353, 0, 0, 0, 0, 0, 0, this, 0, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 }

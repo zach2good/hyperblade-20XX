@@ -13,7 +13,7 @@ class SignFlipbookWidget : public FlipbookWidget
 public:
     SignFlipbookWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark);
 
-    ~SignFlipbookWidget() = default;
+    ~SignFlipbookWidget() override = default;
 
     // Slot five holds KeyConfigDialog::ClearKeys, one address several tables share.
     int IsDisplayOnly() override

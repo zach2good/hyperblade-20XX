@@ -9,6 +9,7 @@
 #include <new>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 #include "gameengine.h"
 #include "app/gameapp.h"
 #include "common/parseutil.h"
@@ -131,7 +132,6 @@ TeamsBlock::TeamsBlock()
 int TeamsBlock::ComputeTeamNameChecksum()
 {
     char* pszName;
-    char* pszLower;
 
     for (short i = 0; i < m_wTeamCount; i++)
     {
@@ -144,13 +144,11 @@ int TeamsBlock::ComputeTeamNameChecksum()
             pszName = nullptr;
         }
 
-        pszLower = SDL_strlwr(Str::Duplicate(pszLower, pszName));
+        auto strLower = std::string(pszName);
+
+        const auto* const pszLower = SDL_strlwr(strLower.data());
 
         m_nChecksum += static_cast<char>(pszLower[2] + pszLower[1]) ^ (pszLower[0] << 8);
-
-        // The original tests before it frees.
-
-        delete pszLower;
     }
 
     m_abChecksum[0] = 0;

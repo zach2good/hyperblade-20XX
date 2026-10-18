@@ -5,6 +5,7 @@
 #include "graphics/gdi.h"
 #include "globals.h"
 #include "common/gametime.h"
+#include <memory>
 
 class Widget;
 enum class WidgetKind;
@@ -35,7 +36,7 @@ public:
 
     Screen();
 
-    Widget* AppendWidget(Widget* pWidget);
+    Widget* AppendWidget(std::unique_ptr<Widget> pWidget);
     int     HasPalette() const;
 
     void ShowMatchInfo();
@@ -63,17 +64,17 @@ protected:
     // A frame the screen owns is compared against m_hBackground so it is not deleted twice.
     friend class Widget;
 
-    GDI::Bitmap* m_hBackground; // 0x004
-    int          m_bPaletted;   // 0x008
-    char*        m_pszCaption;  // 0x00c
-    int          m_nCaptionX;   // 0x010
-    int          m_nCaptionY;   // 0x014
+    GDI::Bitmap*            m_hBackground; // 0x004
+    int                     m_bPaletted;   // 0x008
+    std::unique_ptr<char[]> m_pszCaption;  // 0x00c
+    int                     m_nCaptionX;   // 0x010
+    int                     m_nCaptionY;   // 0x014
     // In the order AppendWidget added them.
-    Widget* m_apWidgets[256];     // 0x018
-    int     m_nLastWidget;        // 0x418, the highest slot in use, not a count
-    int     m_bRepaintBackground; // 0x41c, set to one by whatever last refreshed the screen
-    int     m_bFramePaintPending; // 0x420, a request to repaint, cleared on the way through
-    int     m_nCaptured;          // 0x424, the slot the mouse went down on, or -1
+    std::unique_ptr<Widget> m_apWidgets[256];     // 0x018
+    int                     m_nLastWidget;        // 0x418, the highest slot in use, not a count
+    int                     m_bRepaintBackground; // 0x41c, set to one by whatever last refreshed the screen
+    int                     m_bFramePaintPending; // 0x420, a request to repaint, cleared on the way through
+    int                     m_nCaptured;          // 0x424, the slot the mouse went down on, or -1
     // Seeded to one, so the first release after a screen opens belongs to no one.
     int             m_bPointerOnWidget; // 0x428
     GDI::BitmapSize m_bitmap;           // 0x42c

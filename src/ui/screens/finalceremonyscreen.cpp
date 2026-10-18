@@ -41,14 +41,14 @@ FinalCeremonyScreen::FinalCeremonyScreen()
 
     auto* hBitmap = GDI::LoadBitmapHandle(pszName);
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    Widget* const pWidget = AppendWidget(new DisplayWidget(0x2d, 0x4f, 0, 0, this, -1));
+    Widget* const pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x2d, 0x4f, 0, 0, this, -1));
     pWidget->AppendFrame(hBitmap);
 
     // STRING: HYPERX 0x004c1f30
     hBitmap = GDI::LoadBitmapHandle("finan01");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
-    AppendWidget(new LoopFlipbookWidget(0x12c, 0, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 0x3b, 0, 0x3b, 0x3b, this, 1, -1));
+    AppendWidget(std::make_unique<LoopFlipbookWidget>(0x12c, 0, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 0x3b, 0, 0x3b, 0x3b, this, 1, -1));
 
     for (int i = 0; i < 60; i++)
     {

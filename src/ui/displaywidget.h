@@ -40,7 +40,7 @@ public:
 public:
     DisplayWidget(int nX, int nY, int nHighlighted, int nDepressed, Screen* pOwner, int nSoundAtMark);
 
-    ~DisplayWidget() = default;
+    ~DisplayWidget() override = default;
 
 private:
 };

@@ -47,11 +47,11 @@ JumbotronScreen::JumbotronScreen()
     m_hBitmap = GDI::LoadBitmapHandle("Perlite");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0xa0, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0x14a, 0xa0, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0xe1, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0x14a, 0xe1, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
 
     if (g_pGameEngine->m_clock.nPeriod == 3 || g_pGameEngine->m_clock.nPeriod == 4)
@@ -63,7 +63,7 @@ JumbotronScreen::JumbotronScreen()
         pWidget->AppendFrame(nullptr);
     }
 
-    pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0x122, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0x14a, 0x122, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
 
     if (g_pGameEngine->m_clock.nPeriod == 4)
@@ -89,7 +89,7 @@ JumbotronScreen::JumbotronScreen()
 
     m_hBitmap = GDI::LoadBitmapHandle(pszName);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new DisplayWidget(0x82, 0x14, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x82, 0x14, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     nRound = static_cast<short>(g_pGameEngine->m_nTeamAwayIndex);
@@ -106,24 +106,24 @@ JumbotronScreen::JumbotronScreen()
 
     m_hBitmap = GDI::LoadBitmapHandle(pszName);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new DisplayWidget(0x81, 0xf4, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x81, 0xf4, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     m_hBitmap = GDI::LoadBitmapHandle("Perlite");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    AppendWidget(new DisplayWidget(0x82, 0x7d, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0x82, 0x7d, 0, 0, this, -1));
 
     m_hBitmap = GDI::LoadBitmapHandle("Perlite");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    AppendWidget(new DisplayWidget(0x81, 0x160, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0x81, 0x160, 0, 0, this, -1));
 
-    pWidget = AppendWidget(new DisplayWidget(0xe1, 0x9b, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<DisplayWidget>(0xe1, 0x9b, 0, 0, this, -1));
     // STRING: HYPERX 0x004bb814
     sprintf(szHomeScore, "%d", g_pGameEngine->GetHomeScore());
     pWidget->SetTextFlag(1);
     pWidget->SetText(szHomeScore);
 
-    pWidget = AppendWidget(new DisplayWidget(0xe1, 0x181, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<DisplayWidget>(0xe1, 0x181, 0, 0, this, -1));
     sprintf(szAwayScore, "%d", g_pGameEngine->GetAwayScore());
     pWidget->SetTextFlag(1);
     pWidget->SetText(szAwayScore);
@@ -131,7 +131,7 @@ JumbotronScreen::JumbotronScreen()
     // STRING: HYPERX 0x004c8934
     m_hBitmap = GDI::LoadBitmapHandle("jumdata");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0x177, 0x16e, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(0x177, 0x16e, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c8928
     pWidget->AppendFrame(GDI::LoadBitmapHandle("jumdatar"));
@@ -143,7 +143,7 @@ JumbotronScreen::JumbotronScreen()
 
     m_hBitmap = GDI::LoadBitmapHandle(szAdvert);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new DisplayWidget(0x179, 0x42, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x179, 0x42, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     InitAllWidgets();
