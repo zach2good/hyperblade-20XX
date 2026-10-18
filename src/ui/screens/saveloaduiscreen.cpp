@@ -100,13 +100,13 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     auto* const hHeader = GDI::LoadBitmapHandle("savload");
     GDI::GetBitmapDimensions(hHeader, &m_bitmap);
     const auto nHeaderWidth = m_bitmap.nWidth;
-    Widget*    pWidget      = AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
+    Widget*    pWidget      = AppendWidget(std::make_unique<DisplayWidget>(0, 0, 0, 0, this, -1));
     pWidget->AppendFrame(hHeader);
 
     // STRING: HYPERX 0x004c4f90
     auto* hBitmap = GDI::LoadBitmapHandle("savwht1");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x58, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0x58, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savwht1"));
     // STRING: HYPERX 0x004c4f88
@@ -116,7 +116,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f80
     hBitmap = GDI::LoadBitmapHandle("savwht2");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x6f, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0x6f, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f78
@@ -126,7 +126,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f70
     hBitmap = GDI::LoadBitmapHandle("savwht3");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x86, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0x86, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f68
@@ -136,7 +136,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f60
     hBitmap = GDI::LoadBitmapHandle("savwht4");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x9d, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0x9d, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f58
@@ -146,7 +146,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f50
     hBitmap = GDI::LoadBitmapHandle("savwht5");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xb4, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0xb4, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f48
@@ -156,7 +156,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f40
     hBitmap = GDI::LoadBitmapHandle("savwht6");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xcb, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0xcb, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f38
@@ -166,7 +166,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f30
     hBitmap = GDI::LoadBitmapHandle("savwht7");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xe2, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0xe2, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f28
@@ -176,7 +176,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f20
     hBitmap = GDI::LoadBitmapHandle("savwht8");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0xf9, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0xf9, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f18
@@ -186,7 +186,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f10
     hBitmap = GDI::LoadBitmapHandle("savwht9");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x110, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0x110, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f08
@@ -196,7 +196,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     // STRING: HYPERX 0x004c4f00
     hBitmap = GDI::LoadBitmapHandle("savwht0");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x127, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, kSlotRowX, 0x127, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4ef8
@@ -225,7 +225,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
         // STRING: HYPERX 0x004c4ef0
         hBitmap = GDI::LoadBitmapHandle("save");
         GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-        pWidget = AppendWidget(new FlipbookWidget(0x32, 400, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+        pWidget = AppendWidget(std::make_unique<FlipbookWidget>(0x32, 400, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
         pWidget->AppendFrame(hBitmap);
         // STRING: HYPERX 0x004c4ee8
         pWidget->AppendFrame(GDI::LoadBitmapHandle("saver"));
@@ -235,13 +235,13 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     }
     else
     {
-        AppendWidget(new FlipbookWidget(0x32, 400, 0, 0, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
+        AppendWidget(std::make_unique<FlipbookWidget>(0x32, 400, 0, 0, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
     }
 
     // STRING: HYPERX 0x004c4ed8
     hBitmap = GDI::LoadBitmapHandle("load");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0x140, 400, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(0x140, 400, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(hBitmap);
     // STRING: HYPERX 0x004c4ed0
     pWidget->AppendFrame(GDI::LoadBitmapHandle("loadr"));
@@ -255,7 +255,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     {
         nX      = g_aSlotRows[nRow].nX;
         nY      = g_aSlotRows[nRow].nY;
-        pWidget = AppendWidget(new DisplayWidget(nX, nY, 0, 0, this, -1));
+        pWidget = AppendWidget(std::make_unique<DisplayWidget>(nX, nY, 0, 0, this, -1));
         pWidget->AppendFrameWithPos(hHeader, nHeaderWidth - nX, nPitch, 0, 0, nX, nY);
         pWidget->InitAfterLoad();
         pWidget->SetDirtyFlag(1);
@@ -471,7 +471,7 @@ void SaveLoadUIScreen::RefreshSlotLabels()
 
     for (int nRow = 0; nRow < g_nSlotRowCount; nRow++)
     {
-        auto* const pWidget = m_apWidgets[SAVELOAD_LABEL_FIRST + nRow];
+        auto* const pWidget = m_apWidgets[SAVELOAD_LABEL_FIRST + nRow].get();
 
         g_pGameEngine->ReadSlotLabel(nRow, szLabel, kSlotLabelBytes);
 

@@ -163,7 +163,7 @@ void Game::InitializeEngine()
 
     nStart = GameApp::GetInstallLevel();
 
-    g_pRenderer = InfoBarBase::Create();
+    g_pRenderer = InfoBarBase::Create().release();
 
     // STRING: HYPERX 0x004c41b4
     g_pGameEngine->Init("game.cfg");

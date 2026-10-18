@@ -72,17 +72,6 @@ Widget::~Widget()
                 m_pFrames[i].hBitmap = nullptr;
             }
         }
-
-        delete[] m_pFrames;
-
-        m_pFrames = nullptr;
-    }
-
-    if (m_pszText != nullptr)
-    {
-        Mem::SafeDelete(m_pszText);
-
-        m_pszText = nullptr;
     }
 }
 
@@ -99,14 +88,13 @@ Widget::Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nD
     m_nFrameCount       = nRows;
     m_nFrameIdle        = nFrameIdle;
     m_nType             = WidgetKind::kFlipbook;
-    m_pszText           = nullptr;
     m_nTextX            = 0;
     m_nTextY            = 0;
     m_nFrame            = 0;
     m_nFrameHighlighted = nFrameHighlighted;
     m_nTargetFrame      = nTargetFrame;
 
-    m_pFrames = new WidgetDrawFrame[nRows + 1];
+    m_pFrames = std::make_unique<WidgetDrawFrame[]>(nRows + 1);
     m_bHidden = 0;
 
     for (int i = 0; i <= m_nFrameCount; i++)
@@ -238,7 +226,7 @@ void Widget::Draw(int)
         return;
     }
 
-    auto* pFrame = m_pFrames;
+    auto* pFrame = m_pFrames.get();
 
     if (pFrame != nullptr)
     {
@@ -268,7 +256,7 @@ void Widget::Draw(int)
 
     if (m_pszText != nullptr)
     {
-        GDI::DrawTransparentText(color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, static_cast<int>(strlen(m_pszText)), m_nTextFlag);
+        GDI::DrawTransparentText(color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText.get(), static_cast<int>(strlen(m_pszText.get())), m_nTextFlag);
     }
 }
 
@@ -347,7 +335,7 @@ FramePos Widget::AddFrameBitmap(GDI::Bitmap* hBitmap, int bCached)
 
     if (m_pFrames == nullptr)
     {
-        m_pFrames = new WidgetDrawFrame[m_nFrameCount + 1];
+        m_pFrames = std::make_unique<WidgetDrawFrame[]>(m_nFrameCount + 1);
     }
 
     m_pFrames[m_nFrameIndex].hBitmap = hBitmap;
@@ -390,7 +378,7 @@ FramePos Widget::AddFrameWithPos(GDI::Bitmap* hBitmap, int bCached, int nWidth, 
 
     if (m_pFrames == nullptr)
     {
-        m_pFrames = new WidgetDrawFrame[m_nFrameCount];
+        m_pFrames = std::make_unique<WidgetDrawFrame[]>(m_nFrameCount);
     }
 
     m_pFrames[m_nFrameIndex].hBitmap  = hBitmap;
@@ -488,7 +476,9 @@ void Widget::SetCurrentFrame(int nFrame)
 // FUNCTION: HYPERX 0x0042b950
 void Widget::SetText(const char* pszText)
 {
-    m_pszText = Str::Copy(m_pszText, pszText);
+    m_pszText = std::make_unique<char[]>(strlen(pszText) + 1);
+
+    strcpy(m_pszText.get(), pszText);
 }
 
 // Both checks go to a stub that discards them.

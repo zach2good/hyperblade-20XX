@@ -111,7 +111,7 @@ KeyConfigScreen::KeyConfigScreen()
     {
         m_hBitmap = GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszNormal);
         GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-        pWidget = AppendWidget(new ButtonWidget(2, g_aKeyActionButtons[i].nX, g_aKeyActionButtons[i].nY, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
+        pWidget = AppendWidget(std::make_unique<ButtonWidget>(2, g_aKeyActionButtons[i].nX, g_aKeyActionButtons[i].nY, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
         pWidget->AppendFrame(m_hBitmap);
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszRollover));
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aKeyActionButtons[i].pszDepressed));
@@ -128,12 +128,12 @@ KeyConfigScreen::KeyConfigScreen()
     {
         m_hBitmap = GDI::LoadBitmapHandle(g_aKeyBitmaps[i + kKeyStartFrame].pszBitmap);
         GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-        pWidget = AppendWidget(new DisplayWidget(g_aKeyDisplayPos[i].nX,
-                                                 g_aKeyDisplayPos[i].nY,
-                                                 0,
-                                                 0,
-                                                 this,
-                                                 -1));
+        pWidget = AppendWidget(std::make_unique<DisplayWidget>(g_aKeyDisplayPos[i].nX,
+                                                               g_aKeyDisplayPos[i].nY,
+                                                               0,
+                                                               0,
+                                                               this,
+                                                               -1));
 
         for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
         {
@@ -225,7 +225,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 
                 if (nActive != -1)
                 {
-                    auto* const pOld = m_apWidgets[nActive];
+                    auto* const pOld = m_apWidgets[nActive].get();
 
                     pOld->ClearFrames();
 
@@ -255,7 +255,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
                 }
 
                 const int   nSlot = nWidget + kKeyBitmapSlot;
-                auto* const pNew  = m_apWidgets[nWidget + kKeyBitmapSlot];
+                auto* const pNew  = m_apWidgets[nWidget + kKeyBitmapSlot].get();
 
                 pNew->ClearFrames();
 
@@ -336,7 +336,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
         g_anKeyConfigKeys[nRow] = nKeyCode;
     }
 
-    auto* const pBitmap = m_apWidgets[nRow + kKeyBitmapSlot];
+    auto* const pBitmap = m_apWidgets[nRow + kKeyBitmapSlot].get();
 
     for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
     {
@@ -360,7 +360,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 
     pBitmap->SetDirtyFlag(1);
 
-    auto* const pRow = m_apWidgets[nRow];
+    auto* const pRow = m_apWidgets[nRow].get();
 
     pRow->SetDepressed(0);
     pRow->SetDirtyFlag(1);

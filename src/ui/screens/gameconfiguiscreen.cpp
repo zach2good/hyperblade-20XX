@@ -121,7 +121,7 @@ void GameConfigUIScreen::SetupWidgets()
     // STRING: HYPERX 0x004c6718
     auto* hBitmap = GDI::LoadBitmapHandle("Optbkgd");
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(0, 0, 0, 0, 0, 1, 0, 0, 0, 0, this, 0, -1));
+    Widget* pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0, 0, 0, 0, 0, 1, 0, 0, 0, 0, this, 0, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->InitAfterLoad();
 
@@ -129,20 +129,20 @@ void GameConfigUIScreen::SetupWidgets()
     {
         hBitmap = GDI::LoadBitmapHandle(g_aConfigButtonArt[nOption][0]);
         GDI::GetBitmapDimensions(hBitmap, &bm);
-        pWidget = AppendWidget(new FlipbookWidget(g_aConfigButtonPos[nOption].nX,
-                                                  g_aConfigButtonPos[nOption].nY,
-                                                  bm.nWidth,
-                                                  bm.nHeight,
-                                                  0,
-                                                  0,
-                                                  2,
-                                                  0,
-                                                  1,
-                                                  2,
-                                                  this,
-                                                  -1,
-                                                  -1,
-                                                  -1));
+        pWidget = AppendWidget(std::make_unique<FlipbookWidget>(g_aConfigButtonPos[nOption].nX,
+                                                                g_aConfigButtonPos[nOption].nY,
+                                                                bm.nWidth,
+                                                                bm.nHeight,
+                                                                0,
+                                                                0,
+                                                                2,
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                this,
+                                                                -1,
+                                                                -1,
+                                                                -1));
         pWidget->AppendFrame(hBitmap);
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aConfigButtonArt[nOption][1]));
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aConfigButtonArt[nOption][2]));
@@ -152,12 +152,12 @@ void GameConfigUIScreen::SetupWidgets()
     {
         hBitmap = GDI::LoadBitmapHandle(GetOptionBitmapName(nOption + GAME_CONFIG_ATTACK_MODE));
         GDI::GetBitmapDimensions(hBitmap, &bm);
-        pWidget = AppendWidget(new DisplayWidget(g_aConfigDisplayPos[nOption].nX,
-                                                 g_aConfigDisplayPos[nOption].nY,
-                                                 0,
-                                                 0,
-                                                 this,
-                                                 -1));
+        pWidget = AppendWidget(std::make_unique<DisplayWidget>(g_aConfigDisplayPos[nOption].nX,
+                                                               g_aConfigDisplayPos[nOption].nY,
+                                                               0,
+                                                               0,
+                                                               this,
+                                                               -1));
         pWidget->AppendFrame(hBitmap);
     }
 
@@ -175,20 +175,20 @@ void GameConfigUIScreen::SetupWidgets()
         }
 
         GDI::GetBitmapDimensions(hBitmap, &bm);
-        pWidget = AppendWidget(new FlipbookWidget(g_aConfigArrowPos[nOption].nX,
-                                                  g_aConfigArrowPos[nOption].nY,
-                                                  bm.nWidth,
-                                                  bm.nHeight,
-                                                  0,
-                                                  0,
-                                                  2,
-                                                  0,
-                                                  1,
-                                                  2,
-                                                  this,
-                                                  -1,
-                                                  -1,
-                                                  kSoundSxbutt1));
+        pWidget = AppendWidget(std::make_unique<FlipbookWidget>(g_aConfigArrowPos[nOption].nX,
+                                                                g_aConfigArrowPos[nOption].nY,
+                                                                bm.nWidth,
+                                                                bm.nHeight,
+                                                                0,
+                                                                0,
+                                                                2,
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                this,
+                                                                -1,
+                                                                -1,
+                                                                kSoundSxbutt1));
         pWidget->AppendFrame(hBitmap);
 
         if (nSide != 0)

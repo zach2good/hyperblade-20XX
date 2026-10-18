@@ -47,7 +47,7 @@ AwardsUIScreen::AwardsUIScreen()
     {
         hBitmap = GDI::LoadBitmapHandle(g_aAwardIcons[i].pszName);
         GDI::GetBitmapDimensions(hBitmap, &bm);
-        pWidget = AppendWidget(new DisplayWidget(g_aAwardIcons[i].nX, g_aAwardIcons[i].nY, 0, 0, this, -1));
+        pWidget = AppendWidget(std::make_unique<DisplayWidget>(g_aAwardIcons[i].nX, g_aAwardIcons[i].nY, 0, 0, this, -1));
         pWidget->AppendFrame(hBitmap);
         m_apWidgets[kAwardsIconFirst + i]->SetHidden(g_pGameEngine->HasAward(i) == 0);
     }
@@ -56,20 +56,20 @@ AwardsUIScreen::AwardsUIScreen()
     {
         hBitmap = GDI::LoadBitmapHandle(g_aAwardButtons[i].pszNormal);
         GDI::GetBitmapDimensions(hBitmap, &bm);
-        pWidget = AppendWidget(new FlipbookWidget(g_aAwardButtons[i].nX,
-                                                  g_aAwardButtons[i].nY,
-                                                  bm.nWidth,
-                                                  bm.nHeight,
-                                                  0,
-                                                  0,
-                                                  2,
-                                                  0,
-                                                  1,
-                                                  2,
-                                                  this,
-                                                  -1,
-                                                  -1,
-                                                  -1));
+        pWidget = AppendWidget(std::make_unique<FlipbookWidget>(g_aAwardButtons[i].nX,
+                                                                g_aAwardButtons[i].nY,
+                                                                bm.nWidth,
+                                                                bm.nHeight,
+                                                                0,
+                                                                0,
+                                                                2,
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                this,
+                                                                -1,
+                                                                -1,
+                                                                -1));
         pWidget->AppendFrame(hBitmap);
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aAwardButtons[i].pszRollover));
         pWidget->AppendFrame(GDI::LoadBitmapHandle(g_aAwardButtons[i].pszDepressed));
@@ -78,13 +78,13 @@ AwardsUIScreen::AwardsUIScreen()
 
     hBitmap = GDI::LoadBitmapHandle(g_apszAwardTrophy[0]);
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    AppendWidget(new FlipbookWidget(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
+    AppendWidget(std::make_unique<FlipbookWidget>(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
 
     m_apWidgets[kAwardsTrophy]->SetHidden(1);
 
     hBitmap = GDI::LoadBitmapHandle(g_apszAwardStripPrefix[0]);
     GDI::GetBitmapDimensions(hBitmap, &bm);
-    pWidget = AppendWidget(new LoopFlipbookWidget(kAwardsStripX, kAwardsStripY, bm.nWidth, bm.nHeight, 0, 1, 0x1e, 0, 0x1e, 0x1e, this, 1, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(kAwardsStripX, kAwardsStripY, bm.nWidth, bm.nHeight, 0, 1, 0x1e, 0, 0x1e, 0x1e, this, 1, -1));
 
     for (i = 0; i < kAwardsStripFrames; i++)
     {

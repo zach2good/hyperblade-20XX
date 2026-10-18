@@ -246,14 +246,12 @@ int                 g_nOptionPeriodLength;
 int                 g_nPeriodLengthMs;
 int                 g_nOptionTeammateMode;
 int                 g_nOptionAttackMode;
-struct MessageNode* g_pMessageHead;
-struct MessageNode* g_pMessageTail;
 // STRING: HYPERX 0x004bb818
-const char*        g_pszCharFormat          = "%c";
-extern const float g_flCollisionPartDefault = 0.0f;
-extern const float g_flZeroMeshBone         = 0.0f;
-int                g_nBitmapCacheCount;
-BitmapCacheEntry*  g_pBitmapCache;
+const char*                         g_pszCharFormat          = "%c";
+extern const float                  g_flCollisionPartDefault = 0.0f;
+extern const float                  g_flZeroMeshBone         = 0.0f;
+int                                 g_nBitmapCacheCount;
+std::unique_ptr<BitmapCacheEntry[]> g_pBitmapCache;
 // STRING: HYPERX 0x004bb810
 const char*        g_pszAnimNameFormat = "%s";
 extern const float g_flZeroAnimClipSet = 0.0f;

@@ -138,7 +138,7 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
 
-    AppendWidget(new LoopFlipbookWidget(0x114, 0x60, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 0xe, 0, 0xe, 0xe, this, 1, -1));
+    AppendWidget(std::make_unique<LoopFlipbookWidget>(0x114, 0x60, m_bitmap.nWidth, m_bitmap.nHeight, 1, 1, 0xe, 0, 0xe, 0xe, this, 1, -1));
 
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
@@ -157,33 +157,33 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHidden(1);
 
-    AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0, 0, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetHidden(1);
 
-    AppendWidget(new DisplayWidget(0x14, 0x46, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0x14, 0x46, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetHidden(1);
 
-    AppendWidget(new DisplayWidget(0x2a, 6, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0x2a, 6, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_TEAM_TITLE]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_TEAM_TITLE]->SetHidden(1);
 
-    AppendWidget(new DisplayWidget(0x16f, 0x41, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0x16f, 0x41, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_DEFENDER_CHART]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_DEFENDER_CHART]->SetHidden(1);
 
-    AppendWidget(new DisplayWidget(0x5f, 0x41, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(0x5f, 0x41, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_STRIKER_CHART]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_STRIKER_CHART]->SetHidden(1);
 
     m_apWidgets[MATCHINFO_WIDGET_INFO]->SetDepressed(1);
 
-    AppendWidget(new DisplayWidget(g_aLeagueHeaderCells[0].nX, g_aLeagueHeaderCells[0].nY, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(g_aLeagueHeaderCells[0].nX, g_aLeagueHeaderCells[0].nY, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->SetHidden(1);
 
-    AppendWidget(new DisplayWidget(g_aLeagueHeaderCells[1].nX, g_aLeagueHeaderCells[1].nY, 0, 0, this, -1));
+    AppendWidget(std::make_unique<DisplayWidget>(g_aLeagueHeaderCells[1].nX, g_aLeagueHeaderCells[1].nY, 0, 0, this, -1));
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetHidden(1);
 
@@ -195,12 +195,12 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
     {
         for (int j = 0; j < kLeagueGridColumns; j++)
         {
-            pWidget = AppendWidget(new DisplayWidget(g_aLeagueGridCells[i * kLeagueGridColumns + j].nX,
-                                                     g_aLeagueGridCells[i * kLeagueGridColumns + j].nY,
-                                                     0,
-                                                     0,
-                                                     this,
-                                                     -1));
+            pWidget = AppendWidget(std::make_unique<DisplayWidget>(g_aLeagueGridCells[i * kLeagueGridColumns + j].nX,
+                                                                   g_aLeagueGridCells[i * kLeagueGridColumns + j].nY,
+                                                                   0,
+                                                                   0,
+                                                                   this,
+                                                                   -1));
             pWidget->SetDirtyFlag(1);
         }
     }
@@ -1792,13 +1792,13 @@ void LeagueSetupUIScreen::UpdateStatText()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const auto     nRow = (nStat - kMatchStatTotalPoints) * kLeagueGridColumns;
-        Widget** const pRow = &m_apWidgets[nRow];
+        const auto        nRow = (nStat - kMatchStatTotalPoints) * kLeagueGridColumns;
+        const auto* const pRow = &m_apWidgets[nRow];
 
         for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
         {
             const float* pStats  = pTeam->aStatRows[nPlayer].aStat;
-            auto* const  pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer];
+            auto* const  pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer].get();
 
             if (nStat == kMatchStatTimeOfPoss)
             {
@@ -1874,7 +1874,7 @@ void LeagueSetupUIScreen::HideStatsPanel()
     {
         for (int nColumn = 0; nColumn < kLeagueGridColumns; nColumn++)
         {
-            auto* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
+            auto* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn].get();
 
             pWidget->SetHidden(1);
             pWidget->SetDirtyFlag(0);
@@ -2013,7 +2013,7 @@ void LeagueSetupUIScreen::RefreshTeamDisplay()
     {
         for (int nColumn = 0; nColumn < kLeagueGridColumns; nColumn++)
         {
-            auto* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
+            auto* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn].get();
 
             pWidget->SetHidden(0);
             pWidget->SetDirtyFlag(1);

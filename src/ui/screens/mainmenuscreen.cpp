@@ -31,7 +31,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8884
     m_hBitmap = GDI::LoadBitmapHandle("Ardoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(370, 214, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 4, 0, 4, 4, this, kSoundDooropn2, kSoundDoorcls2, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(370, 214, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 4, 0, 4, 4, this, kSoundDooropn2, kSoundDoorcls2, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c887c
@@ -43,7 +43,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8864
     m_hBitmap = GDI::LoadBitmapHandle("gs01");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new LoopFlipbookWidget(45, 177, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 11, 0, 11, 11, this, 0, -1));
+    pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(45, 177, m_bitmap.nWidth, m_bitmap.nHeight, 0, 1, 11, 0, 11, 11, this, 0, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
     // STRING: HYPERX 0x004c885c
@@ -68,7 +68,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8814
     m_hBitmap = GDI::LoadBitmapHandle("Singl");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 96, 208, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -78,7 +78,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c880c
     m_hBitmap = GDI::LoadBitmapHandle("Multi");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 96, 235, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -88,14 +88,14 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c8804
     m_hBitmap = GDI::LoadBitmapHandle("Loadgm");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
+    pWidget = AppendWidget(std::make_unique<ButtonWidget>(0, 96, 262, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
-    pWidget = AppendWidget(new FlipbookWidget(96, 289, 0, 0, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(96, 289, 0, 0, 0, 0, 2, 0, 1, 2, this, kSoundSxbutt5, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -104,7 +104,7 @@ MainMenuScreen::MainMenuScreen()
     // STRING: HYPERX 0x004c87fc
     m_hBitmap = GDI::LoadBitmapHandle("tolobb");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, kSoundSxbutt5));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(96, 315, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, kSoundSxbutt5));
     GDI::SafeDeleteBitmap(m_hBitmap);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);

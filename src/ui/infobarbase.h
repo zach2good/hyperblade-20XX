@@ -4,6 +4,7 @@
 #include "common/compat.h"
 #include "common/clock.h"
 #include "graphics/renderer.h"
+#include <memory>
 
 // The renderer interface: a destructor, one no-op and twenty three pure slots.
 // SLOT TABLE 0x004b3068
@@ -27,7 +28,7 @@ public:
     int                 m_bQuitPromptVisible; // 0x004
     Clock::Milliseconds m_quitPromptTick;     // 0x008
 
-    static InfoBarBase* Create();
+    static std::unique_ptr<InfoBarBase> Create();
 };
 
 // SYNTHETIC: HYPERX 0x0043e0d0

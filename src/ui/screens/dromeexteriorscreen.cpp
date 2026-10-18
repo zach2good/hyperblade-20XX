@@ -74,7 +74,7 @@ DromeExteriorScreen::DromeExteriorScreen()
 
     m_hBitmap = GDI::LoadBitmapHandle(pszName);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    Widget* pWidget = AppendWidget(new DisplayWidget(0x2d, 0x4f, 0, 0, this, -1));
+    Widget* pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x2d, 0x4f, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     if (g_nDromeTeamAway == g_nDromeArena)
@@ -88,12 +88,12 @@ DromeExteriorScreen::DromeExteriorScreen()
 
     m_hBitmap = GDI::LoadBitmapHandle(g_apszVersusBanner[nRound]);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new DisplayWidget(0x2f, 0x11c, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x2f, 0x11c, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     m_hBitmap = GDI::LoadBitmapHandle(g_pszKioskWhite);
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-    pWidget = AppendWidget(new FlipbookWidget(0, 0x161, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(0, 0x161, m_bitmap.nWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(m_hBitmap);
     pWidget->AppendFrame(GDI::LoadBitmapHandle(g_pszKioskBlue));
     pWidget->AppendFrame(GDI::LoadBitmapHandle(g_pszKioskGreen));
@@ -112,7 +112,7 @@ DromeExteriorScreen::DromeExteriorScreen()
 
         m_hBitmap = GDI::LoadBitmapHandle(g_apszMatchBanner[nRound]);
         GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
-        pWidget = AppendWidget(new DisplayWidget(0x2c, 0xd, 0, 0, this, -1));
+        pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x2c, 0xd, 0, 0, this, -1));
         pWidget->AppendFrame(m_hBitmap);
     }
 }

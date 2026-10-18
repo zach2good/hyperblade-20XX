@@ -22,7 +22,7 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
     // STRING: HYPERX 0x004c2e58
     m_hBitmap = CacheLookup("3gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    Widget* pWidget = AppendWidget(new LoopFlipbookWidget(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
+    Widget* pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.nWidth, bm.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     // STRING: HYPERX 0x004c2e50
@@ -42,13 +42,13 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new FlipbookWidget(540, 390, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(540, 390, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
-    pWidget = AppendWidget(new FlipbookWidget(540, 419, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
+    pWidget = AppendWidget(std::make_unique<FlipbookWidget>(540, 419, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
     pWidget->AppendFrame(nullptr);
@@ -57,7 +57,7 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
     // STRING: HYPERX 0x004c6490
     m_hBitmap = GDI::LoadBitmapHandle("opbar0");
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
-    pWidget = AppendWidget(new TextInputWidget(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1));
+    pWidget = AppendWidget(std::make_unique<TextInputWidget>(0, 0, bm.nWidth, bm.nHeight, 0, 0, 0, 0, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
     m_apWidgets[MULTI_SETUP_OKAY]->ClearFrames();

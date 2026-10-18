@@ -20,7 +20,7 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
     m_nCapacity = kTextInputCapacity;
     m_nType     = WidgetKind::kTextInput;
 
-    m_pszInput = new char[kTextInputCapacity];
+    m_pszInput = std::make_unique<char[]>(kTextInputCapacity);
 
     m_pszInput[m_nLength] = 0;
 }
@@ -37,7 +37,7 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
 
         m_pszInput[m_nLength] = 0;
 
-        SetText(m_pszInput);
+        SetText(m_pszInput.get());
 
         return 1;
     }
@@ -50,7 +50,7 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
 
         m_pszInput[m_nLength] = 0;
 
-        SetText(m_pszInput);
+        SetText(m_pszInput.get());
 
         return 1;
     }

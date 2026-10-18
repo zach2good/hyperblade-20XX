@@ -8,7 +8,7 @@
 class Screen;
 
 #include "framepos.h"
-#include <string.h>
+#include <memory>
 
 struct FramePos;
 
@@ -27,39 +27,6 @@ enum class WidgetKind
     kLoopFlipbook,
     kDisplay
 };
-
-namespace Str
-{
-
-inline char* Copy(char*& pText, const char* pszSource)
-{
-    return pText = strcpy(static_cast<char*>(operator new(strlen(pszSource) + 1)), pszSource);
-}
-
-inline char* Duplicate(char*& pText, const char* pszSource)
-{
-    pText = static_cast<char*>(operator new(strlen(pszSource) + 1));
-
-    return strcpy(pText, pszSource);
-}
-
-} // namespace Str
-
-namespace Mem
-{
-
-template <class T>
-inline void SafeDelete(T*& pBlock)
-{
-    if (pBlock != nullptr)
-    {
-        operator delete(pBlock);
-
-        pBlock = nullptr;
-    }
-}
-
-} // namespace Mem
 
 // One entry of a widget's frame table. Thirty two bytes, indexed by the frame counter.
 struct WidgetDrawFrame
@@ -133,26 +100,26 @@ public:
     void         SetTextFlag(int nFlag);
 
     Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark);
-    ~Widget();
+    virtual ~Widget();
 
 public:
     // The constructor fills all 0x68 bytes.
-    WidgetKind m_nType;       // 0x004
-    int        m_nX;          // 0x008
-    int        m_nY;          // 0x00c
-    char*      m_pszText;     // 0x010
-    int        m_nTextX;      // 0x014
-    int        m_nTextY;      // 0x018
-    int        m_nWidth;      // 0x01c
-    int        m_nHeight;     // 0x020
-    int        m_nFrameCount; // 0x024
-    int        m_bHidden;     // 0x028
+    WidgetKind              m_nType;       // 0x004
+    int                     m_nX;          // 0x008
+    int                     m_nY;          // 0x00c
+    std::unique_ptr<char[]> m_pszText;     // 0x010
+    int                     m_nTextX;      // 0x014
+    int                     m_nTextY;      // 0x018
+    int                     m_nWidth;      // 0x01c
+    int                     m_nHeight;     // 0x020
+    int                     m_nFrameCount; // 0x024
+    int                     m_bHidden;     // 0x028
     // Marks the one widget the screen has highlighted.
     int m_bHighlighted; // 0x02c
     // Overrides the highlight.
-    int              m_bDepressed; // 0x030
-    WidgetDrawFrame* m_pFrames;    // 0x034
-    int              m_nFrame;     // 0x038
+    int                                m_bDepressed; // 0x030
+    std::unique_ptr<WidgetDrawFrame[]> m_pFrames;    // 0x034
+    int                                m_nFrame;     // 0x038
     // Idle, highlighted and depressed each walk toward their own frame.
     int m_nFrameIdle;        // 0x03c
     int m_nFrameHighlighted; // 0x040

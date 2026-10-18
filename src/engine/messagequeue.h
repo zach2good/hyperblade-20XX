@@ -6,44 +6,16 @@
 #include "common/clock.h"
 
 #include "globals.h"
-#include <string.h>
+#include <deque>
+#include <string>
+#include <vector>
 
-// The node splices itself onto the tail and takes its own copy of the name.
 struct MessageNode
 {
-    MessageNode(const char* pszText, int nLine, int nDurationMs);
-
-    char*        m_pszText;     // 0x00
-    int          m_nLine;       // 0x04
-    int          m_nDurationMs; // 0x08
-    MessageNode* m_pNext;       // 0x0c
+    std::string m_text;
+    int         m_nLine;
+    int         m_nDurationMs;
 };
-
-inline MessageNode::MessageNode(const char* pszText, int nLine, int nDurationMs)
-{
-    char* pCopy;
-
-    m_pNext = nullptr;
-
-    if (g_pMessageHead != nullptr)
-    {
-        g_pMessageTail->m_pNext = this;
-    }
-    else
-    {
-        g_pMessageHead = this;
-    }
-
-    g_pMessageTail = this;
-
-    m_pNext = nullptr;
-
-    pCopy = static_cast<char*>(operator new(strlen(pszText) + 1));
-
-    m_pszText     = strcpy(pCopy, pszText);
-    m_nLine       = nLine;
-    m_nDurationMs = nDurationMs;
-}
 
 class MessageQueue
 {
@@ -67,18 +39,19 @@ public:
     // Takes down the message on show once it expires, or shows the next one.
     void Update();
 
-    // Frees every name and the block they came from, and returns the queue.
+    // Frees every name and id, and returns the queue.
     MessageQueue* FreeAll();
 
     // One line per message, an id and then the text.
     unsigned int LoadList(const char* pszFileName);
 
 private:
-    const char** m_ppNames; // 0x00
-    int*         m_pnIds;   // 0x04
-    short        m_wCount;  // 0x08
+    std::vector<std::string> m_names;
+    std::vector<int>         m_ids;
     // When the message on show comes down; zero when none is.
-    Clock::Milliseconds m_expiryTick; // 0x0c
+    Clock::Milliseconds m_expiryTick;
+    // Oldest first.
+    std::deque<MessageNode> m_pending;
 };
 
 #endif

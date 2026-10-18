@@ -1,6 +1,7 @@
 #include "common/compat.h"
 #include "engine/spectator.h"
 #include "common/clock.h"
+#include "common/sdlmemory.h"
 #include "ui/debugmenu.h"
 #include "app/gameapp.h"
 #include "app/window.h"
@@ -278,7 +279,7 @@ void GamepadsSection()
 
     auto nCount = 0;
 
-    auto* const pIds = SDL_GetGamepads(&nCount);
+    const auto pIds = SDLPtr<SDL_JoystickID[]>(SDL_GetGamepads(&nCount));
 
     if (nCount == 0)
     {
@@ -332,8 +333,6 @@ void GamepadsSection()
 
         ImGui::Unindent();
     }
-
-    SDL_free(pIds);
 }
 
 void InputTab()

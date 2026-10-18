@@ -42,15 +42,9 @@ Screen::Screen()
 
     m_hBackground = nullptr;
     m_bPaletted   = 0;
-    m_pszCaption  = nullptr;
     m_nCaptionX   = 0;
     m_nCaptionY   = 0;
     m_nLastWidget = -1;
-
-    for (int nSlot = 0; nSlot < 0x100; nSlot++)
-    {
-        m_apWidgets[nSlot] = nullptr;
-    }
 
     m_nUnusedC           = 0;
     m_bRepaintBackground = 1;
@@ -76,16 +70,13 @@ void Screen::OnWidgetMessage(int, unsigned int)
 // FUNCTION: HYPERX 0x0048bfe0
 Screen::~Screen()
 {
-    for (int nSlot = 0; nSlot <= m_nLastWidget; nSlot++)
+    // A widget's destructor compares its frames against m_hBackground, so it must still be set.
+    for (auto& pWidget : m_apWidgets)
     {
-        // Every widget's destructor is empty, so the base's non-virtual one destroys it fully.
-        delete m_apWidgets[nSlot];
-
-        m_apWidgets[nSlot] = nullptr;
+        pWidget.reset();
     }
 
-    delete[] m_pszCaption;
-    m_pszCaption = nullptr;
+    m_pszCaption.reset();
 
     GDI::SafeDeleteBitmap(m_hBackground);
     m_hBackground = nullptr;
@@ -218,7 +209,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 
     if (nFocused != -1)
     {
-        auto* const pWidget = m_apWidgets[nFocused];
+        auto* const pWidget = m_apWidgets[nFocused].get();
 
         if (pWidget->OnKeyPress(wParam))
         {
@@ -519,7 +510,7 @@ int Screen::PaintToWindow()
             GDI::Blit(0, 0, bitmap.nWidth, bitmap.nHeight, m_hBackground, 0, 0);
         }
 
-        const char* const pszCaption = m_pszCaption;
+        const char* const pszCaption = m_pszCaption.get();
         m_bRepaintBackground         = 0;
 
         if (pszCaption != nullptr)
@@ -603,15 +594,17 @@ void Screen::SetRepaintBackground(int nValue)
 
 // Nothing stops the array being overrun: the bounds check goes to a stub that discards it.
 // FUNCTION: HYPERX 0x0048cb70
-Widget* Screen::AppendWidget(Widget* pWidget)
+Widget* Screen::AppendWidget(std::unique_ptr<Widget> pWidget)
 {
     RELEASE_ASSERT(m_nWidgetCount <= m_nLastWidget);
 
-    m_apWidgets[m_nWidgetCount] = pWidget;
+    auto* const pAppended = pWidget.get();
+
+    m_apWidgets[m_nWidgetCount] = std::move(pWidget);
 
     m_nWidgetCount++;
 
-    return pWidget;
+    return pAppended;
 }
 
 // The original's linker folded this onto Widget::GetPositionX, so it has no address of its own.
@@ -639,7 +632,7 @@ void Screen::InitBitmapCache()
 {
     FlushBitmapCache();
 
-    g_pBitmapCache = new BitmapCacheEntry[kBitmapCacheSlots];
+    g_pBitmapCache = std::make_unique<BitmapCacheEntry[]>(kBitmapCacheSlots);
 
     if (g_pBitmapCache != nullptr)
     {
@@ -739,9 +732,7 @@ void Screen::FlushBitmapCache()
             }
         }
 
-        delete[] g_pBitmapCache;
-
-        g_pBitmapCache = nullptr;
+        g_pBitmapCache.reset();
     }
 
     g_nBitmapCacheReady = 1;
