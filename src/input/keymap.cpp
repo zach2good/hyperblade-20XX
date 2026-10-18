@@ -50,7 +50,7 @@ constexpr std::pair<SDL_Scancode, unsigned int> KEYS[] = {
     { SDL_SCANCODE_LEFT, Key::kLeft },
     { SDL_SCANCODE_DOWN, Key::kDown },
     { SDL_SCANCODE_UP, Key::kUp },
-    { SDL_SCANCODE_NUMLOCKCLEAR, Key::kNumlock },
+    { SDL_SCANCODE_NUMLOCKCLEAR, Key::kNumLock },
     { SDL_SCANCODE_KP_DIVIDE, Key::kDivide },
     { SDL_SCANCODE_KP_MULTIPLY, Key::kMultiply },
     { SDL_SCANCODE_KP_MINUS, Key::kSubtract },
@@ -72,8 +72,8 @@ constexpr std::pair<SDL_Scancode, unsigned int> KEYS[] = {
     { SDL_SCANCODE_RCTRL, Key::kControl },
     { SDL_SCANCODE_LSHIFT, Key::kShift },
     { SDL_SCANCODE_RSHIFT, Key::kShift },
-    { SDL_SCANCODE_LGUI, Key::kLwin },
-    { SDL_SCANCODE_RGUI, Key::kRwin },
+    { SDL_SCANCODE_LGUI, Key::kLWin },
+    { SDL_SCANCODE_RGUI, Key::kRWin },
 };
 
 } // namespace
@@ -81,12 +81,12 @@ constexpr std::pair<SDL_Scancode, unsigned int> KEYS[] = {
 const char* KeyMap::Name(unsigned int nKey)
 {
     // A match reads a mouse button's flag word as a key.
-    if (nKey == Key::kLbutton)
+    if (nKey == Key::kLButton)
     {
         return "Left mouse";
     }
 
-    if (nKey == Key::kRbutton)
+    if (nKey == Key::kRButton)
     {
         return "Right mouse";
     }

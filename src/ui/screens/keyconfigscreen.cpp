@@ -65,7 +65,7 @@ static const char* PadControl(const char* pszAction)
 // Each row's pad control, drawn small over the top right corner of its key picture.
 static void ShowPadIcons(int nKeyWidth, int nKeyHeight)
 {
-    constexpr std::array<const char*, 4> kStick = { "StickUp", "StickDown", "StickLeft", "StickRight" };
+    constexpr auto kStick = std::array<const char*, 4>{ "StickUp", "StickDown", "StickLeft", "StickRight" };
 
     const auto nSize = nKeyHeight / 2;
 

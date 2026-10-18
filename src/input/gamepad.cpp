@@ -84,7 +84,7 @@ enum ControlId
     CONTROL_COUNT
 };
 
-constexpr std::array<Control, CONTROL_COUNT> kControls = { {
+constexpr auto kControls = std::array<Control, CONTROL_COUNT>{ {
     { "A", "Attack", Key::kReturn },
     { "B", "Jump", Key::kEscape },
     { "X", "SpeedBurst", 0 },
@@ -189,9 +189,9 @@ void Up(Press& press)
 // The left stick steers in a match and moves through the menus.
 void UpdateDirections()
 {
-    constexpr std::array<unsigned int, DIRECTION_COUNT> kMenuKeys        = { Key::kLeft, Key::kRight, Key::kLeft, Key::kRight };
-    constexpr std::array<const char*, DIRECTION_COUNT> kNames            = { "Stick up", "Stick down", "Stick left", "Stick right" };
-    constexpr std::array<const char*, DIRECTION_COUNT> kDirectionActions = { "Forward", "Stop", "RotateLeft", "RotateRight" };
+    constexpr auto kMenuKeys         = std::array<unsigned int, DIRECTION_COUNT>{ Key::kLeft, Key::kRight, Key::kLeft, Key::kRight };
+    constexpr auto kNames            = std::array<const char*, DIRECTION_COUNT>{ "Stick up", "Stick down", "Stick left", "Stick right" };
+    constexpr auto kDirectionActions = std::array<const char*, DIRECTION_COUNT>{ "Forward", "Stop", "RotateLeft", "RotateRight" };
 
     for (int nDirection = 0; nDirection < DIRECTION_COUNT; nDirection++)
     {

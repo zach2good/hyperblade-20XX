@@ -293,10 +293,10 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
     {
         if (button.button == SDL_BUTTON_LEFT)
         {
-            return Key::kLbutton;
+            return Key::kLButton;
         }
 
-        return Key::kRbutton;
+        return Key::kRButton;
     }();
 
     InputLog::Add("Mouse", nButton, button.down, nullptr);

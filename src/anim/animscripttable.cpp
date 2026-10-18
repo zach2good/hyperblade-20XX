@@ -31,8 +31,8 @@ AnimScriptTable::~AnimScriptTable()
 }
 
 // A set is taken when its name holds the first; a clip starting with the second gets a kind.
-constexpr std::uintptr_t kSetFilterResource  = 0x20;
-constexpr std::uintptr_t kClipPrefixResource = 0x42;
+constexpr auto kSetFilterResource  = std::uintptr_t{ 0x20 };
+constexpr auto kClipPrefixResource = std::uintptr_t{ 0x42 };
 
 // The parse stops at the first line the line parser refuses, so a bad line truncates the file.
 // FUNCTION: HYPERX 0x00418210

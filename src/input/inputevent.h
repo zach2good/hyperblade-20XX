@@ -4,22 +4,22 @@
 #ifndef HYPERBLADE_INPUTEVENT_H
 #define HYPERBLADE_INPUTEVENT_H
 
-constexpr unsigned int kInputKeyDown   = 0x100;
-constexpr unsigned int kInputKeyUp     = 0x101;
-constexpr unsigned int kInputMouseMove = 0x200;
-constexpr unsigned int kInputLeftDown  = 0x201;
-constexpr unsigned int kInputLeftUp    = 0x202;
-constexpr unsigned int kInputRightDown = 0x204;
-constexpr unsigned int kInputRightUp   = 0x205;
+constexpr auto kInputKeyDown   = 0x100u;
+constexpr auto kInputKeyUp     = 0x101u;
+constexpr auto kInputMouseMove = 0x200u;
+constexpr auto kInputLeftDown  = 0x201u;
+constexpr auto kInputLeftUp    = 0x202u;
+constexpr auto kInputRightDown = 0x204u;
+constexpr auto kInputRightUp   = 0x205u;
 
 // The buttons and modifiers held during a mouse event. A match reads the word as a key code, so
 // kMouseLeft lands on the left button's.
-constexpr unsigned int kMouseLeft    = 0x01;
-constexpr unsigned int kMouseRight   = 0x02;
-constexpr unsigned int kMouseShift   = 0x04;
-constexpr unsigned int kMouseControl = 0x08;
-constexpr unsigned int kMouseMiddle  = 0x10;
-constexpr unsigned int kMouseX1      = 0x20;
-constexpr unsigned int kMouseX2      = 0x40;
+constexpr auto kMouseLeft    = 0x01u;
+constexpr auto kMouseRight   = 0x02u;
+constexpr auto kMouseShift   = 0x04u;
+constexpr auto kMouseControl = 0x08u;
+constexpr auto kMouseMiddle  = 0x10u;
+constexpr auto kMouseX1      = 0x20u;
+constexpr auto kMouseX2      = 0x40u;
 
 #endif

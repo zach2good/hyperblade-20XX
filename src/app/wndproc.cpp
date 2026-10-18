@@ -70,7 +70,7 @@ static void ReleaseHeldKeys()
 
 // The game's input, as the window delivers it. Keys are Win32 virtual-key codes, which the key
 // bindings store; buttons are the MOUSE_ flags of every button and modifier held, and points are
-// client pixels. A match reads a button's flag word as a key, so kMouseLeft lands on Key::kLbutton.
+// client pixels. A match reads a button's flag word as a key, so kMouseLeft lands on Key::kLButton.
 
 static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 {
