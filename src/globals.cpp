@@ -246,8 +246,6 @@ int                 g_nOptionPeriodLength;
 int                 g_nPeriodLengthMs;
 int                 g_nOptionTeammateMode;
 int                 g_nOptionAttackMode;
-struct MessageNode* g_pMessageHead;
-struct MessageNode* g_pMessageTail;
 // STRING: HYPERX 0x004bb818
 const char*                         g_pszCharFormat          = "%c";
 extern const float                  g_flCollisionPartDefault = 0.0f;

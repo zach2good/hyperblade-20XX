@@ -223,12 +223,6 @@ struct KeyRow
 // GLOBAL: HYPERX 0x004d020a
 extern KeyRow g_aKeyRows[40];
 
-// GLOBAL: HYPERX 0x004cefe4
-extern struct MessageNode* g_pMessageHead;
-
-// GLOBAL: HYPERX 0x004cefe8
-extern struct MessageNode* g_pMessageTail;
-
 // GLOBAL: HYPERX 0x004cf064
 extern MessageQueue* g_pMessageQueue;
 

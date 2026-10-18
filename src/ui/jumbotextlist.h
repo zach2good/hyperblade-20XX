@@ -1,6 +1,9 @@
 #ifndef HYPERBLADE_JUMBOTEXTLIST_H
 #define HYPERBLADE_JUMBOTEXTLIST_H
 
+#include <string>
+#include <vector>
+
 class JumboTextList
 {
 public:
@@ -20,8 +23,7 @@ public:
     unsigned int Load(const char* pszFileName);
     int          GetRandom(char* pszOut, int nMax);
 
-    char** m_ppszText; // 0x00
-    short  m_nCount;   // 0x04
+    std::vector<std::string> m_rows;
 };
 
 #endif

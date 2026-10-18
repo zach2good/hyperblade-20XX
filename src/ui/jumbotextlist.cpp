@@ -5,7 +5,6 @@
 #include "jumbotextlist.h"
 #include <cstdio>
 #include <cstring>
-#include <new>
 #include <cstdlib>
 #include <ctime>
 #include "app/gameapp.h"
@@ -15,27 +14,15 @@ constexpr auto kJumboMessageMax = 128;
 // FUNCTION: HYPERX 0x0046bf50
 JumboTextList* JumboTextList::Init()
 {
-    m_nCount   = 0;
-    m_ppszText = nullptr;
+    m_rows.clear();
 
     return this;
 }
 
-// A null row is skipped.
 // FUNCTION: HYPERX 0x0046bf60
 void JumboTextList::FreeAll()
 {
-    for (int iRow = 0; iRow < m_nCount; iRow++)
-    {
-        char** ppRow = &m_ppszText[iRow];
-
-        if (*ppRow != nullptr)
-        {
-            delete[] *ppRow;
-
-            *ppRow = nullptr;
-        }
-    }
+    m_rows.clear();
 }
 
 // Reseeds from the clock every call, so calls within a second draw the same row.
@@ -44,7 +31,7 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    const char* const pszRow = m_ppszText[rand() % m_nCount];
+    const char* const pszRow = m_rows[rand() % static_cast<int>(m_rows.size())].c_str();
 
     if (static_cast<int>(strlen(pszRow)) < nMax)
     {
@@ -62,7 +49,6 @@ unsigned int JumboTextList::Load(const char* pszFileName)
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, kMaxPathLength);
     char*      pLine;
-    char*      pszText;
     char       szNoString[kJumboMessageMax];
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
@@ -77,37 +63,19 @@ unsigned int JumboTextList::Load(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            m_nCount++;
-        }
-    }
-
-    m_ppszText = new char*[m_nCount];
-
-    memset(m_ppszText, 0, m_nCount * sizeof(char*));
-
-    file.m_file.SeekRelative(0, FileSeekOrigin::kStart);
-    m_nCount = 0;
-
-    while (file.m_file.GetNextLine(&pLine) > 0)
-    {
-        if (*pLine != '#')
-        {
             auto* const pszSource = pLine;
 
             if (pLine != nullptr)
             {
-                pszText = strcpy(new char[strlen(pszSource) + 1], pszSource);
+                m_rows.emplace_back(pszSource);
             }
             else
             {
                 // The format string's marker is in messagequeue.cpp.
-                sprintf(szNoString, "!EEK no string on line: %d\n", m_nCount);
+                sprintf(szNoString, "!EEK no string on line: %d\n", static_cast<int>(m_rows.size()));
 
-                pszText = strcpy(new char[strlen(szNoString) + 1], szNoString);
+                m_rows.emplace_back(szNoString);
             }
-
-            m_ppszText[m_nCount] = pszText;
-            m_nCount++;
         }
     }
 
