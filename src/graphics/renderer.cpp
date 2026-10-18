@@ -75,7 +75,7 @@ extern int g_bDromeIniDirty;
 
 // A network or loading frame relights the first slots from fixed directions first.
 // FUNCTION: HYPERX 0x00442d20
-void Renderer::DrawAllMeshes(void)
+void Renderer::DrawAllMeshes()
 {
     MeshBone* pBone;
 
@@ -165,7 +165,7 @@ void Renderer::DrawAllMeshes(void)
 }
 
 // FUNCTION: HYPERX 0x00442f40
-void Renderer::SetLoadingMode(void)
+void Renderer::SetLoadingMode()
 {
     g_bLoadingMode = 1;
 }
@@ -191,13 +191,13 @@ int Renderer::SetDromeTextured(int nEnable)
 }
 
 // FUNCTION: HYPERX 0x00442fa0
-int Renderer::ToggleDromeTextured(void)
+int Renderer::ToggleDromeTextured()
 {
     return Renderer::SetDromeTextured(g_nDromeTextured == 0);
 }
 
 // FUNCTION: HYPERX 0x0044b2c0
-void Renderer::DrawWholeScene(void)
+void Renderer::DrawWholeScene()
 {
     DrawPolySurface surface;
 
@@ -223,7 +223,7 @@ void Renderer::DrawWholeScene(void)
 }
 
 // FUNCTION: HYPERX 0x0044bc30
-int Renderer::PresentFrame(void)
+int Renderer::PresentFrame()
 {
     // The splash owns the screen, so the start-up timing frames are drawn but not shown.
     if (g_nSplashFrame != 0)
@@ -237,7 +237,7 @@ int Renderer::PresentFrame(void)
 }
 
 // FUNCTION: HYPERX 0x0044bc80
-void Renderer::DrawSceneDispatch(void)
+void Renderer::DrawSceneDispatch()
 {
     Renderer::DrawWholeScene();
 }
@@ -279,7 +279,7 @@ LayoutState g_cameraViewportBlock;
 ClipExtents g_projRenderParams;
 
 // FUNCTION: HYPERX 0x0044bf60
-void Renderer::ClearFrame(void)
+void Renderer::ClearFrame()
 {
     if (g_pBackBufferBitsCopy != nullptr)
     {
@@ -315,7 +315,7 @@ void Renderer::SetCameraTransformAndViewport(LayoutState block)
 
 // Azimuths 303, 54 and 180 degrees; the first fills two table entries.
 // FUNCTION: HYPERX 0x0047aa20
-void Renderer::InitializeLightDirections(void)
+void Renderer::InitializeLightDirections()
 {
     Vec3 vSpherical2;
     Vec3 vSpherical3;

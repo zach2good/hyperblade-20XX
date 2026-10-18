@@ -56,7 +56,7 @@ void Window::ApplyFullscreenStyle()
 }
 
 // FUNCTION: HYPERX 0x0048f450
-void Window::InvalidateAndUpdate(void)
+void Window::InvalidateAndUpdate()
 {
     WndProc::HandlePaint();
 }

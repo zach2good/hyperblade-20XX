@@ -5,7 +5,7 @@
 struct CheatEntry
 {
     const char* pszCode;
-    void (*pfnActivate)(void);
+    void (*pfnActivate)();
 };
 
 // The code table ends where the team order table begins.

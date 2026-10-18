@@ -157,7 +157,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
     return nNearest;
 }
 
-typedef int (*CoachConditionFn)(void);
+typedef int (*CoachConditionFn)();
 
 // The thirteen conditions the coach evaluates, in the image's order.
 // GLOBAL: HYPERX 0x004bca88
@@ -234,7 +234,7 @@ extern const short g_nFinalPeriod;
 
 // The trailing team earns the handicap on a late lead, a weak opponent, or a wide multi spread.
 // FUNCTION: HYPERX 0x004282c0
-int GameEngine::CheckHandicapCondition(void)
+int GameEngine::CheckHandicapCondition()
 {
     PhysicsBody*  pBlock;
     PlayerObject* pSlot;
@@ -318,7 +318,7 @@ int GameEngine::CheckHandicapCondition(void)
 // DamageGate's third arm asks the difficulty and discards the answer.
 
 // FUNCTION: HYPERX 0x004284c0
-int GameEngine::IsAnyPlayerInjured(void)
+int GameEngine::IsAnyPlayerInjured()
 {
     int i;
 
@@ -342,7 +342,7 @@ int GameEngine::IsAnyPlayerInjured(void)
 
 // The swarf and rok carriers must be on opposite sides; both are measured to the rok side's goal.
 // FUNCTION: HYPERX 0x00428550
-int GameEngine::CheckOpposedCarriersRace(void)
+int GameEngine::CheckOpposedCarriersRace()
 {
     short       nSlotA;
     short       nSlotB;
@@ -390,7 +390,7 @@ int GameEngine::CheckOpposedCarriersRace(void)
 // Yes only when slot 55's name is "DisplayOverArmory" and a player carries the rok.
 
 // FUNCTION: HYPERX 0x00428650
-int GameEngine::CheckWeaponOutWhileRokCarried(void)
+int GameEngine::CheckWeaponOutWhileRokCarried()
 {
     short nSlot;
 
@@ -420,13 +420,13 @@ int GameEngine::CheckWeaponOutWhileRokCarried(void)
 // The coach condition that never fires; six of the thirteen entries point here.
 
 // FUNCTION: HYPERX 0x004286e0
-int GameEngine::CoachConditionNever(void)
+int GameEngine::CoachConditionNever()
 {
     return 0;
 }
 
 // FUNCTION: HYPERX 0x004286f0
-int GameEngine::CheckGoalieOutOfPosition(void)
+int GameEngine::CheckGoalieOutOfPosition()
 {
     PhysicsBody* pNetA;
     PhysicsBody* pNetB;
@@ -459,7 +459,7 @@ int GameEngine::CheckGoalieOutOfPosition(void)
 }
 
 // FUNCTION: HYPERX 0x004287d0
-int GameEngine::CheckCarrierBreakaway(void)
+int GameEngine::CheckCarrierBreakaway()
 {
     AttachPak*  pSlot;
     int         nSlot;
@@ -509,7 +509,7 @@ int GameEngine::CheckCarrierBreakaway(void)
 // Nothing checks there are four players, so fewer reads whatever is in the table.
 
 // FUNCTION: HYPERX 0x004288c0
-int GameEngine::CheckAnyPlayerNeedsSub(void)
+int GameEngine::CheckAnyPlayerNeedsSub()
 {
     short iPlayer;
 

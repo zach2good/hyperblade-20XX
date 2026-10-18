@@ -38,7 +38,7 @@ public:
     // The sticky binding recorded per key, or null.
     struct ActionBinding* m_apStickyBinding[INPUT_SLOT_COUNT]; // 0xe38
 
-    static unsigned int* LoadBindingsFromIni(void);
+    static unsigned int* LoadBindingsFromIni();
 };
 
 // SYNTHETIC: HYPERX 0x0045d090

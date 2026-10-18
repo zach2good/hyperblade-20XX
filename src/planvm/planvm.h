@@ -28,8 +28,8 @@ class PlanVM
 {
 public:
     // Free functions in the original, made static members named by the class.
-    static void InitRuntimeOpcodeTable(void);
-    static void LoadAnimationLists(void);
+    static void InitRuntimeOpcodeTable();
+    static void LoadAnimationLists();
 
 public:
     PlanVM();

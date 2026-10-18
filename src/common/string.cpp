@@ -266,7 +266,7 @@ String* String::FormatResourcePath(const char* pszDirectory, const char* pszName
 
 // A default-constructed string points at the one shared empty buffer.
 // FUNCTION: HYPERX 0x0042f3d0
-char** String::GetGlobalStringPtr(void)
+char** String::GetGlobalStringPtr()
 {
     return &g_pEmptyStringData;
 }
@@ -307,7 +307,7 @@ String::String(const char* psz)
 }
 
 // FUNCTION: HYPERX 0x0042f490
-void String::FreeBuffer(void)
+void String::FreeBuffer()
 {
     StringHeader* const pHeader = GetHeader();
 
@@ -422,7 +422,7 @@ char* String::Resize(int nLength)
 }
 
 // FUNCTION: HYPERX 0x0042f6d0
-void String::ClearAndFree(void)
+void String::ClearAndFree()
 {
     if (GetHeader() != g_pEmptyStringHeader)
     {
@@ -443,7 +443,7 @@ void String::FreeHeader(StringHeader* pHeader)
 
 // MFC's CString::Empty; the null test on the fixed buffer never fires, as in the original.
 // FUNCTION: HYPERX 0x0042f720
-void String::Empty(void)
+void String::Empty()
 {
     if (GetHeader()->nRefs >= 0)
     {
@@ -533,7 +533,7 @@ void String::AppendData(int nLength, const char* pchData)
 }
 
 // FUNCTION: HYPERX 0x0042f910
-void String::MakeUnique(void)
+void String::MakeUnique()
 {
     char* const pchOld = m_pchData;
 

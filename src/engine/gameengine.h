@@ -72,28 +72,28 @@ struct GameEngine
 {
     // Reached through g_pGameEngine rather than this.
     static int CountEntitiesInRange(short nWhich);
-    static int CoachConditionNever(void);
+    static int CoachConditionNever();
 
     // The linker folded this empty body onto KeyConfigDialog::SaveKeysAs, which carries the marker.
-    static int CoachConditionUnused(void)
+    static int CoachConditionUnused()
     {
         return 0;
     }
 
-    static int            IsAnyPlayerInjured(void);
+    static int            IsAnyPlayerInjured();
     static void           ShowRokValue(short nRokValue);
-    static int            CheckOpposedCarriersRace(void);
-    static int            CheckCarrierBreakaway(void);
-    static int            CheckGoalieOutOfPosition(void);
-    static void           DestroyAgendaItemPools(void);
-    static void           CreateAgendaItemPools(void);
+    static int            CheckOpposedCarriersRace();
+    static int            CheckCarrierBreakaway();
+    static int            CheckGoalieOutOfPosition();
+    static void           DestroyAgendaItemPools();
+    static void           CreateAgendaItemPools();
     static int            IsComputerTeam(int nSlot);
-    static int            CheckWeaponOutWhileRokCarried(void);
+    static int            CheckWeaponOutWhileRokCarried();
     static void           SubstituteRecoveredReserve(unsigned int nTeam);
     static int            FindNearestLiveMultiplier(EngineObject* pFrom);
-    static int            CheckHandicapCondition(void);
-    static void           InitAgendaItemPools(void);
-    static int            CheckAnyPlayerNeedsSub(void);
+    static int            CheckHandicapCondition();
+    static void           InitAgendaItemPools();
+    static int            CheckAnyPlayerNeedsSub();
     static unsigned short TogglePause(int bRestyle);
     static int            SelectSubstitute(EngineObject* pActor);
     static int            IsTeamWinning(unsigned char nTeam);

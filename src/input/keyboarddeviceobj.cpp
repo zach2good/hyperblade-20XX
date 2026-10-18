@@ -408,7 +408,7 @@ unsigned int* KeyboardDeviceObj::GetDefaultKeyBindings() const
 }
 
 // FUNCTION: HYPERX 0x0045d280
-unsigned int* KeyboardDeviceObj::LoadBindingsFromIni(void)
+unsigned int* KeyboardDeviceObj::LoadBindingsFromIni()
 {
     for (int nKey = 0; nKey < KEY_BINDING_COUNT; nKey++)
     {

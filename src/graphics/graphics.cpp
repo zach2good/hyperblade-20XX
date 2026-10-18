@@ -75,7 +75,7 @@ void Graphics::Initialize(int bResize)
 
 // Loads only when the command line carries the developer marker.
 // FUNCTION: HYPERX 0x0044b6f0
-unsigned int Graphics::LoadMdmTexDLL(void)
+unsigned int Graphics::LoadMdmTexDLL()
 {
     const char* const pszCmdLine = GameApp::Arguments();
 
@@ -116,7 +116,7 @@ unsigned int Graphics::LoadMdmTexDLL(void)
 }
 
 // FUNCTION: HYPERX 0x0044b7a0
-void Graphics::UnloadMdmTexDLL(void)
+void Graphics::UnloadMdmTexDLL()
 {
     if (g_hMdmTexDll)
     {

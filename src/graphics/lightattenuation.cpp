@@ -25,7 +25,7 @@ const float        g_flAttenFloor = 0.0f;
 namespace LightAttenuation
 {
 
-inline float Compute(void)
+inline float Compute()
 {
     const float flAtten = g_flOne / ((g_flDebugLightDistance * g_flLightAttenQuadratic + g_flLightAttenLinear) * g_flDebugLightDistance + g_flLightAttenConstant);
 

@@ -28,7 +28,7 @@ public:
     }
 
     virtual AnimBinding* DestroyViaVtable();
-    virtual char         UpdateTick(void)                                                                                         = 0;
+    virtual char         UpdateTick()                                                                                             = 0;
     virtual char         ClearAnimationSet()                                                                                      = 0;
     virtual char         StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate)                                                 = 0;
     virtual char         StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags)                                         = 0;

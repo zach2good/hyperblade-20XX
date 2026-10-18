@@ -95,7 +95,7 @@ extern char g_szInabilityToReadString[28];
 
 // Five action slots are never written, and only the hit list's names are kept.
 // FUNCTION: HYPERX 0x0046ac10
-void PlanVM::LoadAnimationLists(void)
+void PlanVM::LoadAnimationLists()
 {
     char aHitName[ANIM_NAMES_PER_LINE][ANIM_NAME_MAX];
     char aChkName[ANIM_NAMES_PER_LINE][ANIM_NAME_MAX];
@@ -457,7 +457,7 @@ void PlanVM::LoadAnimationLists(void)
 }
 
 // FUNCTION: HYPERX 0x0047cd60
-void PlanVM::InitRuntimeOpcodeTable(void)
+void PlanVM::InitRuntimeOpcodeTable()
 {
     g_apPlanArgFns[PRN_ME]                        = PlanArg::GetMe;
     g_apPlanArgFns[PRN_MY_TEAMMATE]               = PlanArg::GetMyTeammate;

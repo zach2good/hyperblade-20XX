@@ -399,7 +399,7 @@ void GameApp::Shutdown()
 }
 
 // FUNCTION: HYPERX 0x00419640
-void GameApp::OnStartup(void)
+void GameApp::OnStartup()
 {
     if (g_gameApp.m_bHasWindow)
     {
@@ -413,7 +413,7 @@ void GameApp::OnStartup(void)
 
 // Never returns.
 // FUNCTION: HYPERX 0x00419670
-void GameApp::OnExit(void)
+void GameApp::OnExit()
 {
     Window::Destroy();
 
@@ -450,7 +450,7 @@ GameApp::GameApp(short nStringCount)
 #define CDROM_DRIVE_COUNT ('Z' - 'A' + 1)
 
 // FUNCTION: HYPERX 0x00423140
-void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(void), void (*pfnShutdown)(void))
+void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(), void (*pfnShutdown)())
 {
     m_bHasWindow  = bHasWindow;
     m_pfnShutdown = pfnShutdown;
@@ -659,7 +659,7 @@ void GameApp::FatalString(const char* pszFormat, ...)
 }
 
 // FUNCTION: HYPERX 0x0044b350
-void GameApp::SetupViewports(void)
+void GameApp::SetupViewports()
 {
     int nPrevHeight;
 
@@ -793,7 +793,7 @@ int GameApp::MainUpdate()
 }
 
 // FUNCTION: HYPERX 0x0046eea0
-int GameApp::GetInstallLevel(void)
+int GameApp::GetInstallLevel()
 {
     return g_nInstallLevel;
 }
@@ -822,7 +822,7 @@ void GameApp::OutOfMemoryHandler()
 }
 
 // FUNCTION: HYPERX 0x0048ceb0
-void GameApp::ResetToSinglePlayer(void)
+void GameApp::ResetToSinglePlayer()
 {
     g_nMainMenuTopChoice   = 1;
     g_nMainMenuMatchChoice = 0;
@@ -832,7 +832,7 @@ void GameApp::ResetToSinglePlayer(void)
 
 // A failed allocation is stored through unchecked, as the original does.
 // FUNCTION: HYPERX 0x004922f0
-void GameApp::InstantiateState(void)
+void GameApp::InstantiateState()
 {
     int                nReturnState;
     MatchInfoUIScreen* pScreen;

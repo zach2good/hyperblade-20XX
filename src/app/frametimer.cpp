@@ -53,7 +53,7 @@ unsigned int FrameTimer::Now()
 }
 
 // FUNCTION: HYPERX 0x00442a70
-double FrameTimer::Calibrate(void)
+double FrameTimer::Calibrate()
 {
     const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 
@@ -72,7 +72,7 @@ double FrameTimer::Calibrate(void)
 }
 
 // FUNCTION: HYPERX 0x00442b50
-double FrameTimer::BenchmarkResolution(void)
+double FrameTimer::BenchmarkResolution()
 {
     const unsigned int dwStart = (unsigned int)SDL_GetTicks();
 

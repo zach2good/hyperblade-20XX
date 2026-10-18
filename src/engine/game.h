@@ -6,17 +6,17 @@
 namespace Game
 {
 
-void                    InitMatchMarkers(void);
+void                    InitMatchMarkers();
 extern "C" unsigned int SetEngineState(unsigned int state);
-void                    RunFrame(void);
+void                    RunFrame();
 
 // RunFrame in two halves: one simulation tick, and one frame drawn at flAlpha between the last
 // two ticks.
 void         Tick();
 void         Draw(float flAlpha);
 void         InitializeEngine();
-void         ShutdownEngine(void);
-unsigned int UpdateState(void);
+void         ShutdownEngine();
+unsigned int UpdateState();
 
 } // namespace Game
 

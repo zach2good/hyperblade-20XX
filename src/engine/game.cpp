@@ -46,7 +46,7 @@ Vec3  g_vNoOffset                   = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZe
 Vec3  g_vZeroMarker                 = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 
 // FUNCTION: HYPERX 0x0044c1b0
-void Game::RunFrame(void)
+void Game::RunFrame()
 {
     Game::Tick();
     Game::Draw(1.0f);
@@ -180,7 +180,7 @@ void Game::InitializeEngine()
 
 // The renderer is not nulled, so a second call would tear it down again.
 // FUNCTION: HYPERX 0x0045c9c0
-void Game::ShutdownEngine(void)
+void Game::ShutdownEngine()
 {
     if (g_pMessageQueue != nullptr)
     {
@@ -227,7 +227,7 @@ void Game::ShutdownEngine(void)
 
 // Eight markers against the arena ellipsoid; the y-minus one asks for its height at y = +6, not -6.
 // FUNCTION: HYPERX 0x0047d1c0
-void Game::InitMatchMarkers(void)
+void Game::InitMatchMarkers()
 {
     g_vMarkerRimEast.x = g_arenaEllipsoid.GetRadiusX() + 2.0f;
 
@@ -275,7 +275,7 @@ extern "C" unsigned int Game::SetEngineState(unsigned int state)
 
 // Runs on the frame the state changed; every other frame only ticks the current screen.
 // FUNCTION: HYPERX 0x00491de0
-unsigned int Game::UpdateState(void)
+unsigned int Game::UpdateState()
 {
     char* pszText;
 

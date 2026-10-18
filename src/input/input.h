@@ -6,8 +6,8 @@
 namespace Input
 {
 
-int IsShiftKeyDown(void);
-int IsCtrlKeyDown(void);
+int IsShiftKeyDown();
+int IsCtrlKeyDown();
 
 } // namespace Input
 

@@ -237,7 +237,7 @@ int ColorPalette::NearestIndex(std::uint32_t colour, int nSkip) const
 
 // A version mismatch is fatal and returns 1; any other failure returns nought.
 // FUNCTION: HYPERX 0x00425ec0
-unsigned int ColorPalette::LoadCustomPalette(void)
+unsigned int ColorPalette::LoadCustomPalette()
 {
     char      szName[CUSTOM_NAME_MAX];
     GifScreen screen;
@@ -464,7 +464,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
 
 // Only a count of 256 or one is quiet; the count is returned either way.
 // FUNCTION: HYPERX 0x00426350
-unsigned int ColorPalette::Load(void)
+unsigned int ColorPalette::Load()
 {
     const unsigned int nResult = LoadCustomPalette();
 

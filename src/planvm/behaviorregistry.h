@@ -6,9 +6,9 @@
 namespace BehaviorRegistry
 {
 
-void DestroyAll(void);
-void InitAll(void);
-void Init(void);
+void DestroyAll();
+void InitAll();
+void Init();
 
 } // namespace BehaviorRegistry
 

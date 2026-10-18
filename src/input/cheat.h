@@ -6,21 +6,21 @@
 namespace Cheat
 {
 
-void BroadcastFreakout(void);
-void EnableHiddenTeams(void);
-void PlayActivateSound(void);
-void EnableAllAwards(void);
-void GeorgeActivate(void);
-void RestoreAllPlayers(void);
-void MaxViewedPlayerRatings(void);
-void ShrinkPlayers(void);
-void GrowPlayers(void);
-void MirrorPlayers(void);
-void StretchPlayers(void);
-void FlipPlayers(void);
-void BulkUpPlayers(void);
-void SquashPlayers(void);
-void FlipPlayerLegs(void);
+void BroadcastFreakout();
+void EnableHiddenTeams();
+void PlayActivateSound();
+void EnableAllAwards();
+void GeorgeActivate();
+void RestoreAllPlayers();
+void MaxViewedPlayerRatings();
+void ShrinkPlayers();
+void GrowPlayers();
+void MirrorPlayers();
+void StretchPlayers();
+void FlipPlayers();
+void BulkUpPlayers();
+void SquashPlayers();
+void FlipPlayerLegs();
 
 } // namespace Cheat
 

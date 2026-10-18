@@ -655,7 +655,7 @@ void ObjectsTab()
 // The original's typed cheats, as buttons. The tooltip decodes the code a player types for each.
 struct CheatButton
 {
-    void (*pfnActivate)(void);
+    void (*pfnActivate)();
     const char* pszLabel;
     bool        bInMatch;
 };
@@ -679,7 +679,7 @@ constexpr CheatButton CHEATS[] = {
 };
 
 // The code the table stores for a cheat, each character exclusive-ored with its key.
-std::string CheatCode(void (*pfnActivate)(void))
+std::string CheatCode(void (*pfnActivate)())
 {
     for (const auto& entry : g_aCheatCodes)
     {

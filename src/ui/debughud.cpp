@@ -20,7 +20,7 @@ extern char g_szDebugLightLine[0x64];
 extern const float g_flDebugLightDistance;
 
 // FUNCTION: HYPERX 0x0047ab90
-void DebugHUD::UpdateLightingInfo(void)
+void DebugHUD::UpdateLightingInfo()
 {
     int nLength;
 

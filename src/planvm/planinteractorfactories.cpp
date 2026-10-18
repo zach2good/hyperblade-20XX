@@ -10,7 +10,7 @@
 #include "planvm/planinteractorfactories.h"
 
 // FUNCTION: HYPERX 0x0045d810
-void PlanInteractorFactories::ResetAll(void)
+void PlanInteractorFactories::ResetAll()
 {
     g_pCollInteractorPool->Init();
 
@@ -18,7 +18,7 @@ void PlanInteractorFactories::ResetAll(void)
 }
 
 // FUNCTION: HYPERX 0x0045d830
-void PlanInteractorFactories::DestroyAll(void)
+void PlanInteractorFactories::DestroyAll()
 {
     if (g_pCollInteractorPool != nullptr)
     {

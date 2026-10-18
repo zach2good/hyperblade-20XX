@@ -493,7 +493,7 @@ void Widget::SetText(const char* pszText)
 
 // Both checks go to a stub that discards them.
 // FUNCTION: HYPERX 0x0042b9a0
-void Widget::InitAfterLoad(void)
+void Widget::InitAfterLoad()
 {
     if (m_nFrameIndex == 0)
     {

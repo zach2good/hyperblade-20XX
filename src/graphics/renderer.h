@@ -18,16 +18,16 @@ struct LayoutState;
 class Renderer
 {
 public:
-    static void DrawSceneDispatch(void);
+    static void DrawSceneDispatch();
     static int  SetDromeTextured(int nEnable);
-    static int  ToggleDromeTextured(void);
+    static int  ToggleDromeTextured();
     static void SetRenderOption(RenderOption nOption, int nValue);
-    static void SetLoadingMode(void);
-    static int  PresentFrame(void);
+    static void SetLoadingMode();
+    static int  PresentFrame();
 
-    static void          ClearFrame(void);
-    static void          DrawAllMeshes(void);
-    static void          DrawWholeScene(void);
+    static void          ClearFrame();
+    static void          DrawAllMeshes();
+    static void          DrawWholeScene();
     static RenderOptions GetRenderOptions();
     static void          SetCameraTransformAndViewport(LayoutState block);
 
@@ -73,7 +73,7 @@ public:
     // between two ticks shows the same.
     virtual void BeginTick() = 0;
 
-    static void InitializeLightDirections(void);
+    static void InitializeLightDirections();
 };
 
 #endif

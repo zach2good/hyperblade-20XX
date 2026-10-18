@@ -15,11 +15,11 @@ struct GameApp
 {
     static int  HandleMatchKeypress(unsigned int nKey);
     static void HandleGlobalKeyEvent(int nKey);
-    static void OnStartup(void);
-    static void OnExit(void);
+    static void OnStartup();
+    static void OnExit();
 
     // Free functions in the original, reached through g_gameApp.
-    static int GetInstallLevel(void);
+    static int GetInstallLevel();
     static int SetCursorVisible(int bVisible);
 
     int WasCursorVisible() const
@@ -27,9 +27,9 @@ struct GameApp
         return m_bCursorWasVisible;
     }
 
-    static void                  SetupViewports(void);
-    static void                  InstantiateState(void);
-    static void                  ResetToSinglePlayer(void);
+    static void                  SetupViewports();
+    static void                  InstantiateState();
+    static void                  ResetToSinglePlayer();
     static void                  OutOfMemoryHandler();
     static void                  AnimationPeek(Interactor*, PlanNode*, short*, int nWindow);
     static Window::MessageAnswer ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons);
@@ -67,13 +67,13 @@ struct GameApp
     // The window class name, which the resource path initialiser loads from the string table.
     String m_strCaption; // 0x50
     // Sixteen bytes, and its string at 0x60 is the one the error reporters format into.
-    StringPool m_stringPool;     // 0x54
-    void (*m_pfnShutdown)(void); // 0x64
-    int m_nCDRomDrive;           // 0x68
+    StringPool m_stringPool; // 0x54
+    void (*m_pfnShutdown)(); // 0x64
+    int m_nCDRomDrive;       // 0x68
 
     void OnShutdown();
 
-    void SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(void), void (*pfnShutdown)(void));
+    void SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(), void (*pfnShutdown)());
 
     void FatalErrorFmt(const char* pszFormat, va_list args);
 

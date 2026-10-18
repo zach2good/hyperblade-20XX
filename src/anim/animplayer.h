@@ -33,7 +33,7 @@ public:
         return nullptr;
     }
 
-    char UpdateTick(void) override;
+    char UpdateTick() override;
     char ClearAnimationSet() override;
     char StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate) override;
 

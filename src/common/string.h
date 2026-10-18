@@ -39,10 +39,10 @@ public:
     static String Concat(const String& source, const char* pszSuffix);
     static void   FreeHeader(StringHeader* pHeader);
     static void   Format(String* pString, const char* pszFormat, ...);
-    static char** GetGlobalStringPtr(void);
+    static char** GetGlobalStringPtr();
 
 public:
-    String(void)
+    String()
     {
         m_pchData = *GetGlobalStringPtr();
     }
@@ -60,7 +60,7 @@ public:
     String(const char* psz);
 
     // FUNCTION: HYPERX 0x004197b0
-    ~String(void)
+    ~String()
     {
         FreeBuffer();
     }
@@ -86,19 +86,19 @@ public:
         return GetHeader()->nDataLength == 0;
     }
 
-    void    FreeBuffer(void);
+    void    FreeBuffer();
     String* AssignFromString(const String& src);
     char*   Resize(int nLength);
     void    SetLength(int nLength);
 
-    void ClearAndFree(void);
+    void ClearAndFree();
     void AllocBuffer(int nLength);
     void PrepareForWrite(int nLength);
     void Assign(unsigned int nLength, const char* pchData);
-    void MakeUnique(void);
+    void MakeUnique();
 
     char* Reserve(int nLength);
-    void  Empty(void);
+    void  Empty();
     void  ConcatAlloc(int nLength1, const char* pchData1, int nLength2, const char* pchData2);
     bool  AssignResourceId(unsigned int nID);
     void  AppendData(int nLength, const char* pchData);

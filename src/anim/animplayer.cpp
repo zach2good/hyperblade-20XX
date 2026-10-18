@@ -72,7 +72,7 @@ AnimPlayer::AnimPlayer()
 // Loop mode zero loops forever, above zero counts down, below zero (including -2) plays once.
 
 // FUNCTION: HYPERX 0x00424590
-char AnimPlayer::UpdateTick(void)
+char AnimPlayer::UpdateTick()
 {
     float flDelta;
 

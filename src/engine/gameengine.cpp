@@ -129,7 +129,7 @@ SurfacePoint g_ptPlanEditorOrigin(0x1c, 0x1c);
 #define TEAM_KEYWORD_COUNT 9
 
 // FUNCTION: HYPERX 0x0040b970
-void GameEngine::InitAgendaItemPools(void)
+void GameEngine::InitAgendaItemPools()
 {
     int nSlot;
 
@@ -148,7 +148,7 @@ void GameEngine::InitAgendaItemPools(void)
 
 // The statement order is the original's: the first pool built goes into slot eleven.
 // FUNCTION: HYPERX 0x0040bbf0
-void GameEngine::CreateAgendaItemPools(void)
+void GameEngine::CreateAgendaItemPools()
 {
     g_apAgendaItemPools[Agenda_CGlideOnSurface]       = new CGlideOnSurfacePool;
     g_apAgendaItemPools[Agenda_CSlideOnRail]          = new CSlideOnRailPool;
@@ -191,7 +191,7 @@ void GameEngine::CreateAgendaItemPools(void)
 // Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
 
 // FUNCTION: HYPERX 0x0040c070
-void GameEngine::DestroyAgendaItemPools(void)
+void GameEngine::DestroyAgendaItemPools()
 {
     short iSlot = 0;
 

@@ -7,7 +7,7 @@ namespace DebugHUD
 {
 
 void PushLightString(const char* pszSource, short nLength);
-void UpdateLightingInfo(void);
+void UpdateLightingInfo();
 
 } // namespace DebugHUD
 

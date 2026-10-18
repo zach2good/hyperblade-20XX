@@ -17,8 +17,8 @@ public:
     // What shutdown runs before it frees the palette; the ranges need no teardown.
     void Release();
 
-    unsigned int Load(void);
-    unsigned int LoadCustomPalette(void);
+    unsigned int Load();
+    unsigned int LoadCustomPalette();
 
     int LoadPaletteEntries(const char* pszName, char bRemap);
 

@@ -8,13 +8,13 @@
 namespace PauseMenu
 {
 
-void ActionSave(void);
-void ActionReturn(void);
-void ActionReturnTraining(void);
-void ActionOptions(void);
-void ActionExitToMenu(void);
-void ActionReturnNoSave(void);
-void ActionQuit(void);
+void ActionSave();
+void ActionReturn();
+void ActionReturnTraining();
+void ActionOptions();
+void ActionExitToMenu();
+void ActionReturnNoSave();
+void ActionQuit();
 
 } // namespace PauseMenu
 

@@ -15,8 +15,8 @@ namespace PlanInteractorFactories
 
 MsgInteractor*  CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious);
 CollInteractor* CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious);
-void            ResetAll(void);
-void            DestroyAll(void);
+void            ResetAll();
+void            DestroyAll();
 
 } // namespace PlanInteractorFactories
 

@@ -271,7 +271,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
 
 // Freeing the text can run arbitrary code, so the head is re-read afterwards.
 // FUNCTION: HYPERX 0x00452ee0
-void MessageQueue::ProcessAndClear(void)
+void MessageQueue::ProcessAndClear()
 {
     MessageNode* pWalk;
 
