@@ -4,7 +4,7 @@
 #include "common/stub.h"
 
 // FUNCTION: HYPERX 0x00452130
-InfoBarBase* InfoBarBase::Create()
+std::unique_ptr<InfoBarBase> InfoBarBase::Create()
 {
-    return new InfoBar();
+    return std::make_unique<InfoBar>();
 }

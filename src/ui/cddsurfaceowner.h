@@ -3,6 +3,7 @@
 
 #include "common/compat.h"
 #include "graphics/infobarslot.h"
+#include <memory>
 
 struct RLESprite;
 
@@ -12,8 +13,7 @@ class CDDSurfaceOwner : public InfoBarSlot
 {
 public:
     CDDSurfaceOwner()
-    : m_pszName(nullptr)
-    , m_pSprite(nullptr)
+    : m_pSprite(nullptr)
     {
     }
 
@@ -24,8 +24,8 @@ public:
     int LoadByName(const char* pszName);
 
     // The pair is the other way round from RLESpriteSurface's.
-    char*             m_pszName; // 0x38
-    struct RLESprite* m_pSprite; // 0x3c
+    std::unique_ptr<char[]> m_pszName; // 0x38
+    struct RLESprite*       m_pSprite; // 0x3c
 };
 
 // SYNTHETIC: HYPERX 0x0044f8d0

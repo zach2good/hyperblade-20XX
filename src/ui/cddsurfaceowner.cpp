@@ -15,17 +15,12 @@ CDDSurfaceOwner::~CDDSurfaceOwner()
     {
         Util::SafeFree(m_pSprite);
     }
-
-    if (m_pszName != nullptr)
-    {
-        free(m_pszName);
-    }
 }
 
 // FUNCTION: HYPERX 0x0044f8f0
 int CDDSurfaceOwner::LoadByName(const char* pszName)
 {
-    if (m_pszName == nullptr || SDL_strcasecmp(pszName, m_pszName) != 0)
+    if (m_pszName == nullptr || SDL_strcasecmp(pszName, m_pszName.get()) != 0)
     {
         if (m_pSprite != nullptr)
         {
@@ -34,19 +29,9 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
             m_pSprite = nullptr;
         }
 
-        if (m_pszName != nullptr)
-        {
-            free(m_pszName);
-        }
+        m_pszName = std::make_unique<char[]>(strlen(pszName) + 1);
 
-        auto* const pszCopy = static_cast<char*>(malloc(strlen(pszName) + 1));
-
-        if (pszCopy != nullptr)
-        {
-            strcpy(pszCopy, pszName);
-        }
-
-        m_pszName = pszCopy;
+        strcpy(m_pszName.get(), pszName);
 
         auto* const pSprite = SoftRenderer::LoadRLESprite(pszName);
 
