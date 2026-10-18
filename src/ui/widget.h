@@ -16,16 +16,16 @@ struct FramePos;
 constexpr auto kWidgetMsgLoopDone = 0x66;
 
 // What Widget::m_nType holds; the four button kinds follow ButtonWidget's constructor argument.
-enum WidgetKind
+enum class WidgetKind
 {
-    WIDGET_TEXT_INPUT,
-    WIDGET_FLIPBOOK,
-    WIDGET_BUTTON_0,
-    WIDGET_BUTTON_1,
-    WIDGET_BUTTON_2,
-    WIDGET_BUTTON_3,
-    WIDGET_LOOP_FLIPBOOK,
-    WIDGET_DISPLAY
+    kTextInput,
+    kFlipbook,
+    kButton0,
+    kButton1,
+    kButton2,
+    kButton3,
+    kLoopFlipbook,
+    kDisplay
 };
 
 namespace Str
@@ -97,12 +97,12 @@ public:
     static int         RefuseInput(int nX, int nY);
 
 public:
-    int  GetTypeID() const;
-    void SetHighlighted(int nValue);
-    void SetDepressed(int nValue);
-    void SetDirtyFlag(int nValue);
-    void SetHidden(int nHidden);
-    void SetCurrentFrame(int nValue);
+    WidgetKind GetTypeID() const;
+    void       SetHighlighted(int nValue);
+    void       SetDepressed(int nValue);
+    void       SetDirtyFlag(int nValue);
+    void       SetHidden(int nHidden);
+    void       SetCurrentFrame(int nValue);
 
     void     ClearFrames();
     FramePos AppendFrame(GDI::Bitmap* hBitmap);
@@ -137,16 +137,16 @@ public:
 
 public:
     // The constructor fills all 0x68 bytes.
-    int   m_nType;       // 0x004
-    int   m_nX;          // 0x008
-    int   m_nY;          // 0x00c
-    char* m_pszText;     // 0x010
-    int   m_nTextX;      // 0x014
-    int   m_nTextY;      // 0x018
-    int   m_nWidth;      // 0x01c
-    int   m_nHeight;     // 0x020
-    int   m_nFrameCount; // 0x024
-    int   m_bHidden;     // 0x028
+    WidgetKind m_nType;       // 0x004
+    int        m_nX;          // 0x008
+    int        m_nY;          // 0x00c
+    char*      m_pszText;     // 0x010
+    int        m_nTextX;      // 0x014
+    int        m_nTextY;      // 0x018
+    int        m_nWidth;      // 0x01c
+    int        m_nHeight;     // 0x020
+    int        m_nFrameCount; // 0x024
+    int        m_bHidden;     // 0x028
     // Marks the one widget the screen has highlighted.
     int m_bHighlighted; // 0x02c
     // Overrides the highlight.

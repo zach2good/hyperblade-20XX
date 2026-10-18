@@ -86,7 +86,7 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 
     auto* const pTarget = pContext->GetActor();
 
-    if (pTarget->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pTarget->GetPhase() == ObjectPhase::kLocal)
     {
         const char* const pszName = pTarget->GetPlanState()->m_pszName;
 
@@ -155,7 +155,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
         nWanted = pContext->GetTargetSlot();
 
-        if (pRok->GetPhase() != OBJECT_PHASE_LOCAL)
+        if (pRok->GetPhase() != ObjectPhase::kLocal)
         {
             return;
         }
@@ -422,7 +422,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
     auto* const pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
     auto* const pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
 
-    if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == ObjectPhase::kLocal)
     {
         auto*       pBlock   = pContext->GetActor()->GetPhysicsBody();
         auto* const pTracked = pBlock->pAttach;
@@ -741,7 +741,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
         g_gameApp.Fatal("Fatal failure to initialize the receiver of a pass!");
     }
 
-    if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == ObjectPhase::kLocal)
     {
         const auto nSlot = pContext->GetTargetSlot();
 

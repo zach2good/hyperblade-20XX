@@ -6,11 +6,11 @@
 #include "common/handle.h"
 
 // FileObj::Open's modes. Every mode opens in binary.
-enum FileMode
+enum class FileMode
 {
-    FILE_MODE_READ              = 1,
-    FILE_MODE_WRITE             = 2,
-    FILE_MODE_WRITE_NO_TRUNCATE = 3
+    kRead            = 1,
+    kWrite           = 2,
+    kWriteNoTruncate = 3
 };
 
 // FileObj::SeekRelative's origins. Any other value is taken as SEEK_SET, SEEK_CUR or SEEK_END.
@@ -28,7 +28,7 @@ public:
 
     // Answers whether the file closed cleanly.
     int  CloseAndTest();
-    char Open(const char* pszName, int nMode);
+    char Open(const char* pszName, FileMode mode);
     int  Read(void* pBuffer, int nCount);
     int  SeekRelative(long nOffset, int nOrigin);
     int  GetNextLine(char** ppLine);

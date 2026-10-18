@@ -119,7 +119,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
     m_nActiveState = 0;
 
     // Mode one runs only for a network object and mode zero only for the others.
-    if (!((nMode == 1 && m_pOwner->GetPhase() == OBJECT_PHASE_NETWORK) || (nMode == 0 && m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK)))
+    if (!((nMode == 1 && m_pOwner->GetPhase() == ObjectPhase::kNetwork) || (nMode == 0 && m_pOwner->GetPhase() != ObjectPhase::kNetwork)))
     {
         return;
     }
@@ -149,7 +149,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
         m_pOwner->GetPlanState()->ActivateBehavior(static_cast<unsigned int>(m_nBehaviour));
     }
 
-    if (nMode == 0 && m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK && m_pOwner->GetPhysStateObj() != nullptr)
+    if (nMode == 0 && m_pOwner->GetPhase() != ObjectPhase::kNetwork && m_pOwner->GetPhysStateObj() != nullptr)
     {
         m_pOwner->GetCPlayerStateLock()->lock();
 

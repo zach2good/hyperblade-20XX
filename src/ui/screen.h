@@ -7,6 +7,7 @@
 #include "common/gametime.h"
 
 class Widget;
+enum class WidgetKind;
 
 // Not widget slots: Screen sends these ids after every mouse button message and after Return.
 constexpr auto kWidgetIDMouse  = 100;
@@ -25,7 +26,7 @@ public:
     void InitAllWidgets();
     void InitFrame();
 
-    void SetWidgetDepressedByType(int nType, int nValue);
+    void SetWidgetDepressedByType(WidgetKind nType, int nValue);
 
     virtual int OnKeyMessage(unsigned int wParam, unsigned int lParam);
     virtual ~Screen();

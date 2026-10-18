@@ -207,15 +207,15 @@ void PhysicsBody::PerFrameTick()
 
     switch (pOwner->GetPhase())
     {
-        case OBJECT_PHASE_LOCAL:
-        case OBJECT_PHASE_BUILDING:
+        case ObjectPhase::kLocal:
+        case ObjectPhase::kBuilding:
             if (pTarget != nullptr)
             {
                 pTarget->Process(0);
             }
             break;
 
-        case OBJECT_PHASE_NETWORK:
+        case ObjectPhase::kNetwork:
             pOwner->ProcessReceivedPacket();
 
             if (pTarget != nullptr)

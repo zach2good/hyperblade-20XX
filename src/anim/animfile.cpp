@@ -48,7 +48,7 @@ AnimClipSet* AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nF
     int          nType;
     FileVersion  version;
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         char szInternalName[kAnimInternalNameMax] = { 0 };
 

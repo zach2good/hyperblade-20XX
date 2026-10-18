@@ -44,7 +44,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 
     pLocal->ApplyRotationZ();
 
-    const auto nLevel = g_pGameEngine->GetDifficultyLevel();
+    const auto nLevel = static_cast<int>(g_pGameEngine->GetDifficultyLevel());
     int        i;
 
     if (pDef->m_nRatingsMode == kRatingsField)
@@ -115,7 +115,7 @@ void PlayerObject::Postpass()
 {
     if (g_bSessionActive != 0 && g_pGameEngine != nullptr)
     {
-        if (GetPhase() == OBJECT_PHASE_LOCAL)
+        if (GetPhase() == ObjectPhase::kLocal)
         {
             if (GetSlot() <= kSlotDromer3 && static_cast<unsigned int>(m_nLastSendMs + kDamageUpdateInterval) < g_pGameEngine->m_clock.nTickMs)
             {

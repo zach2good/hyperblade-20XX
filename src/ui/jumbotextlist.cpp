@@ -65,7 +65,7 @@ unsigned int JumboTextList::Load(const char* pszFileName)
     char*      pszText;
     char       szNoString[kJumboMessageMax];
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
         // STRING: HYPERX 0x004c4714
         g_gameApp.Fatal("ERROR OPENING JUMBOTRON ADDS LIST FILE ");

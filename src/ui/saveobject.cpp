@@ -131,7 +131,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
                        kMaxPathLength);
     char*      pLine;
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
         // STRING: HYPERX 0x004c2870
         g_gameApp.Fatal("ERROR OPENING GAUNTLET TEAM FILE ");

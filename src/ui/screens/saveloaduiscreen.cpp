@@ -203,15 +203,15 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn0"));
     pWidget->InitAfterLoad();
 
-    if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_EASY)
+    if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kEasy)
     {
         nMaxSaves = 10;
     }
-    else if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_MEDIUM)
+    else if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kMedium)
     {
         nMaxSaves = 11;
     }
-    else if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_HARD)
+    else if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kHard)
     {
         nMaxSaves = 12;
     }

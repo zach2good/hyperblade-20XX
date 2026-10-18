@@ -720,7 +720,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
     short nGoalie = kSlotSwarf;
     auto  nCount  = 0;
 
-    if (pActor->GetPhase() == OBJECT_PHASE_NETWORK)
+    if (pActor->GetPhase() == ObjectPhase::kNetwork)
     {
         return;
     }

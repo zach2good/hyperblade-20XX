@@ -14,19 +14,19 @@ ButtonWidget::ButtonWidget(int nType, int nX, int nY, int nWidth, int nHeight, i
     switch (nType)
     {
         case 0:
-            m_nType = WIDGET_BUTTON_0;
+            m_nType = WidgetKind::kButton0;
             break;
 
         case 1:
-            m_nType = WIDGET_BUTTON_1;
+            m_nType = WidgetKind::kButton1;
             break;
 
         case 2:
-            m_nType = WIDGET_BUTTON_2;
+            m_nType = WidgetKind::kButton2;
             break;
 
         case 3:
-            m_nType = WIDGET_BUTTON_3;
+            m_nType = WidgetKind::kButton3;
             break;
 
         default:

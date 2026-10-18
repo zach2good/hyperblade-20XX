@@ -20,7 +20,7 @@ TrainingEndScreen::TrainingEndScreen()
     m_nLastWidget    = -1;
 
     m_hBackground = GDI::LoadBitmapAsBackground(
-        g_apszTrainingBackgrounds[g_pGameEngine->GetDifficultyLevel()],
+        g_apszTrainingBackgrounds[static_cast<int>(g_pGameEngine->GetDifficultyLevel())],
         &m_bPaletted);
 }
 

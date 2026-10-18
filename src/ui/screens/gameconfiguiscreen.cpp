@@ -27,12 +27,9 @@ class GameConfigUIScreen;
 // Settings are copied twenty bytes below the live block, so cancelling can restore them.
 
 // The three period lengths the options offer, in milliseconds.
-enum PeriodLength
-{
-    PERIOD_LENGTH_SHORT  = 180000,
-    PERIOD_LENGTH_MEDIUM = 300000,
-    PERIOD_LENGTH_LONG   = 420000,
-};
+constexpr auto kPeriodShortMs  = 180000;
+constexpr auto kPeriodMediumMs = 300000;
+constexpr auto kPeriodLongMs   = 420000;
 
 // FUNCTION: HYPERX 0x00479ad0
 GameConfigUIScreen::~GameConfigUIScreen() = default;
@@ -52,17 +49,17 @@ GameConfigUIScreen::GameConfigUIScreen()
         g_nOptionMusicVolume = g_nOptionsSavedCdVolume = g_pAudioMgr->CDReadVolume();
 
         g_nOptionBrutality = g_nOptionsSavedBrutality = g_pGameEngine->m_nBrutality;
-        g_nOptionDifficulty = g_nOptionsSavedDifficulty = g_pGameEngine->GetDifficultyLevel();
+        g_nOptionDifficulty = g_nOptionsSavedDifficulty = static_cast<int>(g_pGameEngine->GetDifficultyLevel());
 
-        if (g_nPeriodLengthMs == PERIOD_LENGTH_SHORT)
+        if (g_nPeriodLengthMs == kPeriodShortMs)
         {
             g_nOptionPeriodLength = 1;
         }
-        else if (g_nPeriodLengthMs == PERIOD_LENGTH_MEDIUM)
+        else if (g_nPeriodLengthMs == kPeriodMediumMs)
         {
             g_nOptionPeriodLength = 2;
         }
-        else if (g_nPeriodLengthMs == PERIOD_LENGTH_LONG)
+        else if (g_nPeriodLengthMs == kPeriodLongMs)
         {
             g_nOptionPeriodLength = 3;
         }
@@ -487,18 +484,18 @@ const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
         case GAME_CONFIG_PERIOD_LENGTH:
             if (g_nOptionPeriodLength == 1)
             {
-                g_nPeriodLengthMs = PERIOD_LENGTH_SHORT;
+                g_nPeriodLengthMs = kPeriodShortMs;
             }
             else if (g_nOptionPeriodLength == 2)
             {
-                g_nPeriodLengthMs = PERIOD_LENGTH_MEDIUM;
+                g_nPeriodLengthMs = kPeriodMediumMs;
 
                 // STRING: HYPERX 0x004c675c
                 return "perleng5";
             }
             else if (g_nOptionPeriodLength == 3)
             {
-                g_nPeriodLengthMs = PERIOD_LENGTH_LONG;
+                g_nPeriodLengthMs = kPeriodLongMs;
 
                 // STRING: HYPERX 0x004c6750
                 return "perleng7";

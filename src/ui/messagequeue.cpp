@@ -194,7 +194,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
     char       szNoString[kInfobarMessageMax];
     char       szNoDescription[kInfobarMessageMax];
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
         // STRING: HYPERX 0x004c3030
         g_gameApp.Fatal("ERROR OPENING INFOBAR LIST FILE ");

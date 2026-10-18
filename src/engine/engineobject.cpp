@@ -363,8 +363,8 @@ EngineObject::EngineObject(int nSlot, class ObjectDef* pDef)
         InitCollisionBubble(pDef->m_pCollisionList);
     }
 
-    m_nUnusedPhase = OBJECT_PHASE_LOCAL;
-    m_nPhase       = OBJECT_PHASE_LOCAL;
+    m_nUnusedPhase = ObjectPhase::kLocal;
+    m_nPhase       = ObjectPhase::kLocal;
 }
 
 #define RADIUS_PADDING 1.2f
@@ -530,8 +530,8 @@ void EngineObject::InitFields()
     m_vUnusedC.x = m_vUnusedC.y = m_vUnusedC.z = g_flZeroEngineObject;
 
     m_pBubble        = nullptr;
-    m_nPhase         = OBJECT_PHASE_BUILDING;
-    m_nUnusedPhase   = OBJECT_PHASE_BUILDING;
+    m_nPhase         = ObjectPhase::kBuilding;
+    m_nUnusedPhase   = ObjectPhase::kBuilding;
     m_bVisible       = 0;
     m_nFlags         = 0;
     m_pBody          = nullptr;
@@ -1242,7 +1242,7 @@ char EngineObject::ProcessReceivedPacket()
                     }
                 }
 
-                if (pPlayer->pState->nObjectSlot == kSlotRok && m_nPhase == OBJECT_PHASE_NETWORK)
+                if (pPlayer->pState->nObjectSlot == kSlotRok && m_nPhase == ObjectPhase::kNetwork)
                 {
                     const auto nCamera = NetSequenceWord::GetCarrier(body.nSequence);
 
@@ -1293,7 +1293,7 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
         return;
     }
 
-    if (m_nPhase != OBJECT_PHASE_NETWORK)
+    if (m_nPhase != ObjectPhase::kNetwork)
     {
         return;
     }
@@ -1677,7 +1677,7 @@ void EngineObject::SelectAndActivatePlan()
 
         if (pPlayer->pState->nConnected != 0)
         {
-            m_nPhase = OBJECT_PHASE_NETWORK;
+            m_nPhase = ObjectPhase::kNetwork;
         }
 
         nSlot = m_nSlot;
@@ -1906,7 +1906,7 @@ void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short n
 {
     if (m_aSceneHandlerSlot[nMessage] != 0)
     {
-        if (bFromInput != 0 || m_nPhase != OBJECT_PHASE_NETWORK)
+        if (bFromInput != 0 || m_nPhase != ObjectPhase::kNetwork)
         {
             // RegisterSceneMessageHandler adds only message interactors.
             auto* const pInteractor = (MsgInteractor*)m_apSceneHandler[m_aSceneHandlerSlot[nMessage]];
@@ -1917,7 +1917,7 @@ void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short n
             }
         }
 
-        if (m_pBody->pPlayer != nullptr && bFromInput == 0 && m_nPhase == OBJECT_PHASE_LOCAL)
+        if (m_pBody->pPlayer != nullptr && bFromInput == 0 && m_nPhase == ObjectPhase::kLocal)
         {
             PackAndEnqueue(nMessage, nSender, nValue, nArg);
         }

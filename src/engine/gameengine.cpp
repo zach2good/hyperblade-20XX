@@ -431,7 +431,7 @@ GameEngine::GameEngine()
     m_nScoreHome = -1;
     m_nScoreAway = -1;
 
-    m_nDifficulty     = g_pGameOptions->ReadDifficulty();
+    m_nDifficulty     = static_cast<DifficultyLevel>(g_pGameOptions->ReadDifficulty());
     m_nBrutality      = g_pGameOptions->ReadBrutality();
     m_nPeriodLengthMs = g_pGameOptions->ReadPeriodLength();
 
@@ -1114,7 +1114,7 @@ void GameEngine::BeginMatchPlay()
         g_pMessageQueue->Push(pszVs, kTextLineNames, kTextDuration);
         g_pMessageQueue->Push(m_pTeamB->GetName(), kTextLineNames, kTextDuration);
 
-        g_pMessageQueue->PushFromTable(GetDifficultyLevel() + kTextDifficultyBase,
+        g_pMessageQueue->PushFromTable(static_cast<int>(GetDifficultyLevel()) + kTextDifficultyBase,
                                        kTextLineMain,
                                        kTextDuration);
     }
@@ -1207,7 +1207,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
     char*      pLine;
     short      nKeyword;
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         while (file.m_file.GetNextLine(&pLine) > 0)
         {
@@ -2906,7 +2906,7 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, kMaxPathLength);
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         unsigned int nModelId = kModelIDNone;
         auto*        pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
@@ -2949,7 +2949,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszArenaPath).m_pchData, kMaxPathLength);
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         m_pArena = new ArenaState;
 
@@ -3238,7 +3238,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszTeamPath).m_pchData,
                        kMaxPathLength);
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         auto nSlot = 0;
 
@@ -3375,7 +3375,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
             // Only the four outfield seats take ratings.
             if (nRow >= 0)
             {
-                nLevel = m_nDifficulty;
+                nLevel = static_cast<int>(m_nDifficulty);
 
                 if (g_bSessionActive != 0)
                 {
@@ -4037,7 +4037,7 @@ void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
 
     while (pNode != nullptr)
     {
-        if (pNode->GetActiveState() == 1 && pNode->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
+        if (pNode->GetActiveState() == 1 && pNode->GetActor()->GetPhase() == ObjectPhase::kLocal)
         {
             const auto nOtherSlot = pNode->GetOtherSlot();
             const auto nModelSlot = pNode->GetModelSlot();
@@ -4682,7 +4682,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, kMaxPathLength);
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_WRITE) == 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kWrite) == 0)
     {
         return 0;
     }
@@ -4699,7 +4699,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
     }
 
     block.nBracketPos = m_pSaveObject->GetBracketPos();
-    block.nDifficulty = m_nDifficulty;
+    block.nDifficulty = static_cast<int>(m_nDifficulty);
 
     for (nTeam = 0; nTeam < kTeamCount; nTeam++)
     {
@@ -4819,7 +4819,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, kMaxPathLength);
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
         return 0;
     }
@@ -4956,7 +4956,7 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData,
                        kMaxPathLength);
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0 && file.m_file.Read(&block, sizeof(block)) == sizeof(block) && block.nTag == kSaveBlockTagValue)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0 && file.m_file.Read(&block, sizeof(block)) == sizeof(block) && block.nTag == kSaveBlockTagValue)
     {
         nMax--;
 
@@ -4983,7 +4983,7 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 constexpr auto kSlotOrderCount = 4;
 
 // FUNCTION: HYPERX 0x00487e50
-int GameEngine::GetDifficultyLevel() const
+DifficultyLevel GameEngine::GetDifficultyLevel() const
 {
     return m_nDifficulty;
 }
@@ -5000,12 +5000,12 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
     int           nOrder;
     int           nIndex;
 
-    if (nLevel > DIFFICULTY_MAX)
+    if (nLevel > static_cast<unsigned int>(DifficultyLevel::kMax))
     {
         return 0;
     }
 
-    if (m_nDifficulty == static_cast<int>(nLevel))
+    if (m_nDifficulty == static_cast<DifficultyLevel>(nLevel))
     {
         return 1;
     }
@@ -5086,7 +5086,7 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
         }
     }
 
-    m_nDifficulty = nLevel;
+    m_nDifficulty = static_cast<DifficultyLevel>(nLevel);
 
     return 1;
 }

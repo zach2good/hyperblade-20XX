@@ -10,15 +10,6 @@
 #include "graphics/visualeffectfade.h"
 #include "common/pooledownerroot.h"
 
-// The four effect kinds the jump table covers, three of them scalar.
-enum EffectKind
-{
-    EFFECT_SCALAR_A = 1,
-    EFFECT_PLAIN    = 2,
-    EFFECT_SCALAR_B = 3,
-    EFFECT_SCALAR_C = 4,
-};
-
 // FUNCTION: HYPERX 0x00410b10
 void CPaletteEffect::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -57,21 +48,21 @@ void CPaletteEffect::OnListChanged()
 
 // Kind two's fade runs five hundred where the constructor sets a thousand.
 // FUNCTION: HYPERX 0x00410b70
-int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration)
+int CPaletteEffect::CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry peStart, int nDuration)
 {
     const auto anRange = g_pColorPalette->GetFrameRange(nAnim);
 
     if (anRange.nFirst != 0 || anRange.nCount != 0)
     {
-        switch (nKind)
+        switch (kind)
         {
-            case EFFECT_SCALAR_A:
-            case EFFECT_SCALAR_B:
-            case EFFECT_SCALAR_C:
+            case EffectKind::kScalarA:
+            case EffectKind::kScalarB:
+            case EffectKind::kScalarC:
                 m_pEffect = new PaletteScalarFade(&anRange);
                 break;
 
-            case EFFECT_PLAIN:
+            case EffectKind::kPlain:
                 m_pEffect = new VisualEffectFade(&anRange);
                 break;
 

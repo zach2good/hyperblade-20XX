@@ -138,14 +138,14 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
                 switch (pItem->m_nOpcode & kOpMember)
                 {
                     case MEMBER_DO_NET_ACTION:
-                        if (m_pOwner->GetPhase() != OBJECT_PHASE_LOCAL)
+                        if (m_pOwner->GetPhase() != ObjectPhase::kLocal)
                         {
                             g_pfnPlanActionHandlers[static_cast<short>(pItem->m_pArgs[0].n)](reinterpret_cast<Interactor*>(this), pItem, nullptr, 0);
                         }
                         break;
 
                     case MEMBER_DO_LOCAL_ACTION:
-                        if (m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK)
+                        if (m_pOwner->GetPhase() != ObjectPhase::kNetwork)
                         {
                             g_pfnPlanActionHandlers[static_cast<short>(pItem->m_pArgs[0].n)](reinterpret_cast<Interactor*>(this), pItem, nullptr, 0);
                         }
@@ -395,7 +395,7 @@ void GameBehaviorObject::TickAndSortMessages()
 
     while (pMessage != nullptr)
     {
-        if (pMessage->GetState() == 0 || (pMessage->GetState() == 1 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL) || (pMessage->GetState() == 2 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_NETWORK))
+        if (pMessage->GetState() == 0 || (pMessage->GetState() == 1 && pMessage->GetActor()->GetPhase() == ObjectPhase::kLocal) || (pMessage->GetState() == 2 && pMessage->GetActor()->GetPhase() == ObjectPhase::kNetwork))
         {
             m_pOwner->RegisterSceneMessageHandler(pMessage);
         }
@@ -407,7 +407,7 @@ void GameBehaviorObject::TickAndSortMessages()
 
     while (pMessage != nullptr)
     {
-        if (pMessage->GetState() == 0 || (pMessage->GetState() == 1 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL) || (pMessage->GetState() == 2 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_NETWORK))
+        if (pMessage->GetState() == 0 || (pMessage->GetState() == 1 && pMessage->GetActor()->GetPhase() == ObjectPhase::kLocal) || (pMessage->GetState() == 2 && pMessage->GetActor()->GetPhase() == ObjectPhase::kNetwork))
         {
             m_pOwner->RegisterSceneMessageHandler(pMessage);
         }

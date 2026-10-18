@@ -2,12 +2,12 @@
 #define HYPERBLADE_OBJECTPHASE_H
 
 // Who drives an object: this machine, or the moves a network player sends.
-enum ObjectPhase
+enum class ObjectPhase
 {
-    OBJECT_PHASE_LOCAL = 1,
+    kLocal = 1,
     // EngineObject::InitFields leaves it and the constructor replaces it.
-    OBJECT_PHASE_BUILDING = 2,
-    OBJECT_PHASE_NETWORK  = 3
+    kBuilding = 2,
+    kNetwork  = 3
 };
 
 #endif

@@ -73,7 +73,7 @@ unsigned short SoundManager::Load(const char* pszListName)
     int nDuration;
     int nFlag;
 
-    if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
+    if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
         // STRING: HYPERX 0x004c28a8
         sprintf(szMessage, "Cannot open sound list file %s!\n", pszListName);

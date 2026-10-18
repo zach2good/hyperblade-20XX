@@ -9,6 +9,15 @@ class EngineObject;
 
 // Slot 0 is the shared deleting destructor; slot 8 shares CAvoidObjects::IsReplaceable's body.
 // VTABLE: HYPERX 0x004b20ac
+// The four effect kinds the jump table covers, three of them scalar.
+enum class EffectKind
+{
+    kScalarA = 1,
+    kPlain   = 2,
+    kScalarB = 3,
+    kScalarC = 4,
+};
+
 class CPaletteEffect : public ReleasingAgendaItem
 {
 public:
@@ -30,7 +39,7 @@ public:
     void OnListChanged() override;
 
     // Its one call site allocates from g_apAgendaItemPools[Agenda_CPaletteEffect].
-    int CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration);
+    int CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry peStart, int nDuration);
 
     // The fade the tick drives and the engine clock reading it retires itself at.
     class PaletteFade* m_pEffect; // 0x10

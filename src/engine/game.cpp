@@ -35,6 +35,7 @@
 #include "sound/soundids.h"
 #include "engine/messageids.h"
 #include "engine/objectclasses.h"
+#include "planvm/damagegate.h"
 
 float g_flUnusedGame                = g_flZeroGame;
 Vec3  g_vBirdsEyeTrackOffset        = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
@@ -451,7 +452,7 @@ unsigned int Game::UpdateState()
 
                             case kPlayerModeTournament:
                                 // Beating drome two on easy or drome eight on medium graduates the player.
-                                if ((g_nDromeArena == 2 && nDifficulty == 0) || (g_nDromeArena == 8 && nDifficulty == 1))
+                                if ((g_nDromeArena == 2 && nDifficulty == DifficultyLevel::kEasy) || (g_nDromeArena == 8 && nDifficulty == DifficultyLevel::kMedium))
                                 {
                                     g_gameApp.m_nEngineState = kEstateTrainingEnd;
                                 }

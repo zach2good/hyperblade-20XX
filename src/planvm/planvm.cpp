@@ -842,7 +842,7 @@ char PlanVM::SaveBinary(char* pszName)
 
     snprintf(szPath, sizeof(szPath), "%s\\%s.pbn", g_gameApp.m_strPlansPath.m_str.m_pchData, pszName);
 
-    if (file.m_file.Open(szPath, FILE_MODE_WRITE) != 0)
+    if (file.m_file.Open(szPath, FileMode::kWrite) != 0)
     {
         file.m_file.Write(reinterpret_cast<char*>(&m_nPos), sizeof(m_nPos));
 
@@ -931,7 +931,7 @@ char PlanVM::LoadText(short nCamera, char* pszName)
 
     m_nCamera = nCamera;
 
-    if (file.m_file.Open(szPath, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(szPath, FileMode::kRead) != 0)
     {
         const auto bResult = ReadAll(&file.m_file);
 
@@ -1830,7 +1830,7 @@ void PlanVM::LoadSymbolTables()
     char      szPrefixed[kSymbolNameMax];
 
     // STRING: HYPERX 0x004c704c
-    if (fileEnum.m_file.Open("Data\\enumIDs.h", FILE_MODE_READ) != 0)
+    if (fileEnum.m_file.Open("Data\\enumIDs.h", FileMode::kRead) != 0)
     {
         m_nLength = 0;
 
@@ -1879,7 +1879,7 @@ void PlanVM::LoadSymbolTables()
     }
 
     // STRING: HYPERX 0x004c7030
-    if (fileAnim.m_file.Open("Data\\AnimData\\Animassm.txt", FILE_MODE_READ) != 0)
+    if (fileAnim.m_file.Open("Data\\AnimData\\Animassm.txt", FileMode::kRead) != 0)
     {
         m_nLength = 0;
 
@@ -1915,7 +1915,7 @@ void PlanVM::LoadSymbolTables()
     }
 
     // STRING: HYPERX 0x004c701c
-    if (fileSound.m_file.Open("Data\\Sndfiles.lst", FILE_MODE_READ) != 0)
+    if (fileSound.m_file.Open("Data\\Sndfiles.lst", FileMode::kRead) != 0)
     {
         m_nLength = 0;
 
@@ -1958,7 +1958,7 @@ void PlanVM::LoadSymbolTables()
     }
 
     // STRING: HYPERX 0x004c7000
-    if (fileText.m_file.Open("Data\\Infobtxt.lst", FILE_MODE_READ) != 0)
+    if (fileText.m_file.Open("Data\\Infobtxt.lst", FileMode::kRead) != 0)
     {
         m_nLength = 0;
 

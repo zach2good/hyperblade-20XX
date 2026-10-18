@@ -18,7 +18,7 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
 {
     m_nLength   = 0;
     m_nCapacity = kTextInputCapacity;
-    m_nType     = WIDGET_TEXT_INPUT;
+    m_nType     = WidgetKind::kTextInput;
 
     m_pszInput = new char[kTextInputCapacity];
 

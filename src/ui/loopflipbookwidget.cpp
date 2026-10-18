@@ -7,7 +7,7 @@ LoopFlipbookWidget::LoopFlipbookWidget(int nX, int nY, int nWidth, int nHeight, 
 : InertWidget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
     m_nLoopFlag = nLoopFlag;
-    m_nType     = WIDGET_LOOP_FLIPBOOK;
+    m_nType     = WidgetKind::kLoopFlipbook;
 }
 
 // FUNCTION: HYPERX 0x0042bb20

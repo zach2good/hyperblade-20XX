@@ -33,7 +33,7 @@ TeamsBlock::TeamsBlock()
     // STRING: HYPERX 0x004c8378
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, kMaxPathLength);
 
-    if (catFile.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (catFile.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         while (catFile.m_file.GetNextLine(&pLine) > 0)
         {
@@ -64,7 +64,7 @@ TeamsBlock::TeamsBlock()
                 strPath.m_str.AssignFromString(
                     String::Concat(g_gameApp.m_strExeDir.m_str, szTeamFilename));
 
-                if (htmFile.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+                if (htmFile.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
                 {
                     auto* const pTeam = g_pGameEngine->ParseTeamHTMFile(&htmFile.m_file);
 

@@ -30,7 +30,7 @@ void BehObj_MonitorKeyboard::SendTimedMessage()
 
     GameBehaviorObject::SendTimedMessage();
 
-    if (m_pOwner->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (m_pOwner->GetPhase() == ObjectPhase::kLocal)
     {
         const auto nOwnerSlot = m_pOwner->GetSlot();
 

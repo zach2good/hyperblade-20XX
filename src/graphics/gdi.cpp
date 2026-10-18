@@ -107,7 +107,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
     unsigned int      nMagic;
     BitmapInfoHeader* pDib;
 
-    if (file.Open(pszName, FILE_MODE_READ) == 0)
+    if (file.Open(pszName, FileMode::kRead) == 0)
     {
         file.Close();
 

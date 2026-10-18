@@ -402,7 +402,7 @@ void PlanAction::SetPaletteEffect(Interactor* pContext, PlanNode* pNode, short*,
     auto* const pArgs = pNode->m_pArgs;
 
     if (((CPaletteEffect*)pAgendaItem)
-            ->CreateVisualEffect(pArgs[kArgKind].n, pArgs[ARG_ANIM].n, pArgs[kArgStart].pe, pArgs[ARG_DURATION].n) != 0)
+            ->CreateVisualEffect(static_cast<EffectKind>(pArgs[kArgKind].n), pArgs[ARG_ANIM].n, pArgs[kArgStart].pe, pArgs[ARG_DURATION].n) != 0)
     {
         pAgendaItem->Activate();
 
@@ -547,7 +547,7 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
     TeamBlock*    pTeam;
     PlayerObject* pObject;
 
-    if (pActor->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pActor->GetActor()->GetPhase() == ObjectPhase::kLocal)
     {
         return;
     }
@@ -612,7 +612,7 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
 
     auto* const pActor = pContext->GetActor();
 
-    if (pActor->GetPhase() == OBJECT_PHASE_LOCAL)
+    if (pActor->GetPhase() == ObjectPhase::kLocal)
     {
         return;
     }
@@ -678,7 +678,7 @@ void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
 {
     auto* const pActor = pContext->GetPlayerActor();
 
-    if (pActor->GetPhase() != OBJECT_PHASE_LOCAL)
+    if (pActor->GetPhase() != ObjectPhase::kLocal)
     {
         pActor->m_stats.m_aStats[RATING_SLOT(kRatingDamage)] = static_cast<float>(nValue & 0xff);
     }
@@ -710,7 +710,7 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     pActor        = pContext->GetActor();
     auto* pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
 
-    if (pActor != nullptr && pTarget != nullptr && (g_bSessionActive == 0 || (pActor->GetPhase() == OBJECT_PHASE_LOCAL && pTarget->GetPhase() == OBJECT_PHASE_LOCAL)))
+    if (pActor != nullptr && pTarget != nullptr && (g_bSessionActive == 0 || (pActor->GetPhase() == ObjectPhase::kLocal && pTarget->GetPhase() == ObjectPhase::kLocal)))
     {
         g_pGameEngine->m_nViewedSlot = static_cast<short>(nIndex);
 
@@ -764,7 +764,7 @@ void PlanAction::SendMessageToMyCamera(Interactor* pContext, PlanNode* pArgs, sh
         {
             pActor = pContext->GetActor();
 
-            if (pActor->GetPhase() != OBJECT_PHASE_LOCAL)
+            if (pActor->GetPhase() != ObjectPhase::kLocal)
             {
                 return;
             }
@@ -4851,15 +4851,15 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if ((flDamage > DamageGate() || static_cast<float>(nValue) > g_flZeroPlan) && pObject->m_wClockStoppedSemaphore == 0)
     {
-        if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_EASY)
+        if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kEasy)
         {
             flScale = SCALE_EASY;
         }
-        else if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_MEDIUM)
+        else if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kMedium)
         {
             flScale = SCALE_MEDIUM;
         }
-        else if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_HARD)
+        else if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kHard)
         {
             flScale = SCALE_HARD;
         }
@@ -5532,12 +5532,12 @@ constexpr auto kStateAvailable = 0x10;
 #define AT_OBJECT_RANGE 10.0f
 
 // The four answers: the mine, the swarf, no, and neither.
-enum NearestAnswer
+enum NearestAnswer : short
 {
-    ANSWER_MINE    = 0,
-    ANSWER_SWARF   = 1,
-    ANSWER_NO      = 2,
-    ANSWER_NEITHER = 3
+    kAnswerMine    = 0,
+    kAnswerSwarf   = 1,
+    kAnswerNo      = 2,
+    kAnswerNeither = 3
 };
 
 // FUNCTION: HYPERX 0x00465310
@@ -5569,7 +5569,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
         }
         else
         {
-            *pResult = ANSWER_NO;
+            *pResult = kAnswerNo;
             return;
         }
     }
@@ -5586,20 +5586,20 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
         }
         else
         {
-            *pResult = ANSWER_NO;
+            *pResult = kAnswerNo;
             return;
         }
     }
 
     if (nAtFirst > nAtSecond)
     {
-        *pResult = ANSWER_MINE;
+        *pResult = kAnswerMine;
         return;
     }
 
     if (nAtSecond > nAtFirst)
     {
-        *pResult = ANSWER_SWARF;
+        *pResult = kAnswerSwarf;
         return;
     }
 
@@ -5607,7 +5607,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     {
         if (nAtSecond == 0)
         {
-            *pResult = ANSWER_NEITHER;
+            *pResult = kAnswerNeither;
             return;
         }
 
@@ -5860,7 +5860,7 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     const auto flOwnWeight = pStats->GetWeightedStat(kRatingWeightClass);
 
-    if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_EASY)
+    if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kEasy)
     {
         flRange = RANGE_BASE;
     }

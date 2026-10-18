@@ -185,7 +185,7 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 
     if (flRadiusSum * flRadiusSum > flLenSq)
     {
-        if (GetOwner()->GetPhase() == OBJECT_PHASE_LOCAL || pOther->GetOwner()->GetPhase() == OBJECT_PHASE_LOCAL)
+        if (GetOwner()->GetPhase() == ObjectPhase::kLocal || pOther->GetOwner()->GetPhase() == ObjectPhase::kLocal)
         {
             return 1;
         }

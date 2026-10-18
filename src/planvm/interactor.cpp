@@ -44,7 +44,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 switch (nOpcode & kOpMember)
                 {
                     case MEMBER_DO_NET_ACTION:
-                        if (m_pOwner->GetPhase() == OBJECT_PHASE_LOCAL)
+                        if (m_pOwner->GetPhase() == ObjectPhase::kLocal)
                         {
                             break;
                         }
@@ -53,7 +53,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                         break;
 
                     case MEMBER_DO_LOCAL_ACTION:
-                        if (m_pOwner->GetPhase() == OBJECT_PHASE_NETWORK)
+                        if (m_pOwner->GetPhase() == ObjectPhase::kNetwork)
                         {
                             break;
                         }

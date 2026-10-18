@@ -19,13 +19,13 @@ SDL_IOStream* IO(const FileObj& file)
 
 // The original opened with _open's flags, so writing without truncating creates the file when it
 // is missing and keeps it when it is there. A mode outside the three left the flags uninitialised.
-SDL_IOStream* OpenStream(const char* pszPath, int nMode)
+SDL_IOStream* OpenStream(const char* pszPath, FileMode mode)
 {
     const auto path = Path::Native(pszPath);
 
-    switch (nMode)
+    switch (mode)
     {
-        case FILE_MODE_WRITE_NO_TRUNCATE:
+        case FileMode::kWriteNoTruncate:
         {
             auto* const pExisting = SDL_IOFromFile(path.c_str(), "r+b");
 
@@ -37,7 +37,7 @@ SDL_IOStream* OpenStream(const char* pszPath, int nMode)
             return SDL_IOFromFile(path.c_str(), "w+b");
         }
 
-        case FILE_MODE_WRITE:
+        case FileMode::kWrite:
             return SDL_IOFromFile(path.c_str(), "w+b");
 
         default:
@@ -59,11 +59,11 @@ void FileObj::Close()
 }
 
 // FUNCTION: HYPERX 0x00440470
-char FileObj::Open(const char* pszPath, int nMode)
+char FileObj::Open(const char* pszPath, FileMode mode)
 {
     char szResolved[kMaxPathLength];
 
-    m_stream = Stream{ OpenStream(pszPath, nMode) };
+    m_stream = Stream{ OpenStream(pszPath, mode) };
 
     if (!m_stream)
     {
@@ -81,7 +81,7 @@ char FileObj::Open(const char* pszPath, int nMode)
 
         GameApp::ResolveCDRomPath(szResolved);
 
-        m_stream = Stream{ OpenStream(szResolved, nMode) };
+        m_stream = Stream{ OpenStream(szResolved, mode) };
 
         if (!m_stream)
         {

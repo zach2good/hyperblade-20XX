@@ -368,7 +368,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
         PathString path(kMaxPathLength, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, "mat");
         OwnedFile  file;
 
-        if (file.m_file.Open(path.m_str.m_pchData, FILE_MODE_READ) != 0)
+        if (file.m_file.Open(path.m_str.m_pchData, FileMode::kRead) != 0)
         {
             if (MeshMaterial::ParseFile(&file.m_file, pszName, &pMaterials, &paMatNames, &paTexNames, &nMatCount, &nTexCount) != 0)
             {

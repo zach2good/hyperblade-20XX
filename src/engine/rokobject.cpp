@@ -170,7 +170,7 @@ void RokObject::Postpass()
         return;
     }
 
-    if (GetPhase() != OBJECT_PHASE_LOCAL)
+    if (GetPhase() != ObjectPhase::kLocal)
     {
         return;
     }

@@ -98,7 +98,7 @@ Widget::Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nD
     m_bDepressed        = nDepressed;
     m_nFrameCount       = nRows;
     m_nFrameIdle        = nFrameIdle;
-    m_nType             = WIDGET_FLIPBOOK;
+    m_nType             = WidgetKind::kFlipbook;
     m_pszText           = nullptr;
     m_nTextX            = 0;
     m_nTextY            = 0;
@@ -181,7 +181,7 @@ int Widget::AdvanceFrame()
     {
         nLimit = m_nFrameHighlighted;
 
-        if (m_nType == WIDGET_FLIPBOOK && m_nFrameCount > 2 && pSounds->m_nSoundPastFirstLimit > -1 && m_nFrame == m_nFrameIdle + 1)
+        if (m_nType == WidgetKind::kFlipbook && m_nFrameCount > 2 && pSounds->m_nSoundPastFirstLimit > -1 && m_nFrame == m_nFrameIdle + 1)
         {
             g_pAudioMgr->PlaySpecific(pSounds->m_nSoundPastFirstLimit);
         }
@@ -191,13 +191,13 @@ int Widget::AdvanceFrame()
     {
         nLimit = m_nTargetFrame;
 
-        if (m_nType == WIDGET_LOOP_FLIPBOOK && pSounds->m_nSoundAtMark > -1 && m_nFrame == pSounds->m_nMarkFrame)
+        if (m_nType == WidgetKind::kLoopFlipbook && pSounds->m_nSoundAtMark > -1 && m_nFrame == pSounds->m_nMarkFrame)
         {
             g_pAudioMgr->PlaySpecific(pSounds->m_nSoundAtMark);
         }
     }
 
-    if (nLimit == m_nFrameIdle && m_nType == WIDGET_FLIPBOOK && m_nFrameCount > 2 && pSounds->m_nSoundBeforeTarget > -1 && m_nFrame == m_nTargetFrame - 1)
+    if (nLimit == m_nFrameIdle && m_nType == WidgetKind::kFlipbook && m_nFrameCount > 2 && pSounds->m_nSoundBeforeTarget > -1 && m_nFrame == m_nTargetFrame - 1)
     {
         g_pAudioMgr->PlaySpecific(pSounds->m_nSoundBeforeTarget);
     }
@@ -249,7 +249,7 @@ void Widget::Draw(int)
 
     m_bDirty = 0;
 
-    if (m_bHighlighted != 1 && m_nType != WIDGET_DISPLAY && m_nType != WIDGET_TEXT_INPUT)
+    if (m_bHighlighted != 1 && m_nType != WidgetKind::kDisplay && m_nType != WidgetKind::kTextInput)
     {
         return;
     }
@@ -570,7 +570,7 @@ int Widget::GetPositionX() const
 }
 
 // FUNCTION: HYPERX 0x00492b50
-int Widget::GetTypeID() const
+WidgetKind Widget::GetTypeID() const
 {
     return m_nType;
 }

@@ -14,7 +14,7 @@ FlipbookWidget::FlipbookWidget(int nX, int nY, int nWidth, int nHeight, int nHig
 {
     m_flipbook.m_nSoundPastFirstLimit = nSoundPastFirstLimit;
     m_flipbook.m_nSoundBeforeTarget   = nSoundBeforeTarget;
-    m_nType                           = WIDGET_FLIPBOOK;
+    m_nType                           = WidgetKind::kFlipbook;
 }
 
 // FUNCTION: HYPERX 0x0042ba50

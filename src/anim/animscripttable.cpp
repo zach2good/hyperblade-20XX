@@ -49,7 +49,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
         pVm->LoadSymbolTables();
     }
 
-    if (file.m_file.Open(pszPath, FILE_MODE_READ) != 0)
+    if (file.m_file.Open(pszPath, FileMode::kRead) != 0)
     {
         memset(m_apEntries, 0, sizeof(m_apEntries));
 

@@ -6,30 +6,30 @@
 #include "engine/devicector.h"
 #include "engine/gameengine.h"
 
-enum DifficultyLevel
+enum class DifficultyLevel
 {
-    DIFFICULTY_EASY   = 0,
-    DIFFICULTY_MEDIUM = 1,
-    DIFFICULTY_HARD   = 2,
+    kEasy   = 0,
+    kMedium = 1,
+    kHard   = 2,
 
     // The last level, which src/engine/gameengine.cpp clamps against.
-    DIFFICULTY_MAX = 2
+    kMax = 2
 };
 
 // The third arm's compare is dead: nine is taken whatever the level.
 inline float DamageGate()
 {
-    if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_EASY)
+    if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kEasy)
     {
         return 3.0f;
     }
 
-    if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_MEDIUM)
+    if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kMedium)
     {
         return 6.0f;
     }
 
-    if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_HARD)
+    if (g_pGameEngine->GetDifficultyLevel() == DifficultyLevel::kHard)
     {
         return 9.0f;
     }

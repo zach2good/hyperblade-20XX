@@ -44,7 +44,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
             g_pszModelExtension));
     }
 
-    if (pFile->Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
+    if (pFile->Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         int nTag;
 

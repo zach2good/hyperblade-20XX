@@ -23,6 +23,7 @@ class ObjectDef;
 class ParticleSystem;
 struct TeamBlock;
 struct TeamsBlock;
+enum class DifficultyLevel;
 
 #include "teamblock.h"
 #include "devicector.h"
@@ -216,10 +217,10 @@ struct GameEngine
     unsigned short     m_nArenaIndex;    // 0x52a0
     int                m_nPending;       // 0x52a4
     // Minus one means no score yet.
-    int m_nScoreHome;  // 0x52a8
-    int m_nScoreAway;  // 0x52ac
-    int m_nDifficulty; // 0x52b0
-    int m_nBrutality;  // 0x52b4
+    int             m_nScoreHome;  // 0x52a8
+    int             m_nScoreAway;  // 0x52ac
+    DifficultyLevel m_nDifficulty; // 0x52b0
+    int             m_nBrutality;  // 0x52b4
     // The screen size step, 0 to 6.
     int m_nScreenSize;     // 0x52b8
     int m_nPeriodLengthMs; // 0x52bc
@@ -310,23 +311,23 @@ struct GameEngine
     char UnloadAwayTeam();
     char InsertObjectSorted(short nId);
 
-    int           GetHomeScore() const;
-    int           GetAwayScore() const;
-    int           GetDifficultyLevel() const;
-    char          AreAllPlayersInjured();
-    void          BeginMatchPlay();
-    unsigned char IsHomeTeamDead();
-    unsigned char IsAwayTeamDead();
-    void          RestartMatch();
-    void          BroadcastCollisionEvents();
-    void          SyncNetworkStateToObjects();
-    void          ClearPendingEvents();
-    void          InitPlanSystems();
-    void          InitMatchTimers();
-    int           IncrementHomeScore();
-    int           IncrementAwayScore();
-    unsigned char IsHomeTeamInjured();
-    unsigned char IsAwayTeamInjured();
+    int             GetHomeScore() const;
+    int             GetAwayScore() const;
+    DifficultyLevel GetDifficultyLevel() const;
+    char            AreAllPlayersInjured();
+    void            BeginMatchPlay();
+    unsigned char   IsHomeTeamDead();
+    unsigned char   IsAwayTeamDead();
+    void            RestartMatch();
+    void            BroadcastCollisionEvents();
+    void            SyncNetworkStateToObjects();
+    void            ClearPendingEvents();
+    void            InitPlanSystems();
+    void            InitMatchTimers();
+    int             IncrementHomeScore();
+    int             IncrementAwayScore();
+    unsigned char   IsHomeTeamInjured();
+    unsigned char   IsAwayTeamInjured();
 };
 
 // VC6 has no static_assert; a negative array bound makes a wrong offset fail to compile.

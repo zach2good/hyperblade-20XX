@@ -546,7 +546,7 @@ int Screen::PaintToWindow()
 }
 
 // FUNCTION: HYPERX 0x0048c9e0
-void Screen::SetWidgetDepressedByType(int nType, int nValue)
+void Screen::SetWidgetDepressedByType(WidgetKind nType, int nValue)
 {
     for (int nSlot = 0; nSlot <= m_nLastWidget; nSlot++)
     {
@@ -563,7 +563,7 @@ void Screen::ResetAllDepressedStates(int nValue)
 {
     for (int i = 0; i <= m_nLastWidget; i++)
     {
-        if (m_apWidgets[i]->GetTypeID() != WIDGET_BUTTON_0 && m_apWidgets[i]->GetTypeID() != WIDGET_BUTTON_1 && m_apWidgets[i]->GetTypeID() != WIDGET_BUTTON_2 && m_apWidgets[i]->GetTypeID() != WIDGET_BUTTON_3 && m_apWidgets[i]->GetTypeID() != WIDGET_LOOP_FLIPBOOK)
+        if (m_apWidgets[i]->GetTypeID() != WidgetKind::kButton0 && m_apWidgets[i]->GetTypeID() != WidgetKind::kButton1 && m_apWidgets[i]->GetTypeID() != WidgetKind::kButton2 && m_apWidgets[i]->GetTypeID() != WidgetKind::kButton3 && m_apWidgets[i]->GetTypeID() != WidgetKind::kLoopFlipbook)
         {
             m_apWidgets[i]->SetDepressed(nValue);
             m_apWidgets[i]->SetDirtyFlag(1);
@@ -576,7 +576,7 @@ void Screen::ResetAllHighlights(int nValue)
 {
     for (int i = 0; i <= m_nLastWidget; i++)
     {
-        if (m_apWidgets[i]->GetTypeID() != WIDGET_LOOP_FLIPBOOK)
+        if (m_apWidgets[i]->GetTypeID() != WidgetKind::kLoopFlipbook)
         {
             m_apWidgets[i]->SetHighlighted(nValue);
             m_apWidgets[i]->SetDirtyFlag(1);
@@ -587,7 +587,7 @@ void Screen::ResetAllHighlights(int nValue)
 // FUNCTION: HYPERX 0x0048cb00
 int Screen::IsButtonWidget(int nSlot)
 {
-    if (m_apWidgets[nSlot]->GetTypeID() == WIDGET_BUTTON_0 || m_apWidgets[nSlot]->GetTypeID() == WIDGET_BUTTON_1 || m_apWidgets[nSlot]->GetTypeID() == WIDGET_BUTTON_2 || m_apWidgets[nSlot]->GetTypeID() == WIDGET_BUTTON_3)
+    if (m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton0 || m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton1 || m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton2 || m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton3)
     {
         return 1;
     }
@@ -754,7 +754,7 @@ int Screen::FindFocusedWidget()
 {
     for (int i = 0; i < m_nLastWidget + 1; i++)
     {
-        if (m_apWidgets[i]->GetDepressed() != 0 && m_apWidgets[i]->GetTypeID() != WIDGET_LOOP_FLIPBOOK)
+        if (m_apWidgets[i]->GetDepressed() != 0 && m_apWidgets[i]->GetTypeID() != WidgetKind::kLoopFlipbook)
         {
             return i;
         }
