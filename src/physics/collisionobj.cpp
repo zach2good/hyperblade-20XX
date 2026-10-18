@@ -38,11 +38,11 @@ CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFri
 // FUNCTION: HYPERX 0x0042e710
 void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity)
 {
-    const float flUx = pB->x - pOrigin->x;
-    const float flUy = pB->y - pOrigin->y;
-    const float flUz = pB->z - pOrigin->z;
+    const auto flUx = pB->x - pOrigin->x;
+    const auto flUy = pB->y - pOrigin->y;
+    const auto flUz = pB->z - pOrigin->z;
     // The client writes all three components through ECX (0x0042e75a to 0x0042e77b).
-    Vec3* const pNormal = &m_vNormal;
+    auto* const pNormal = &m_vNormal;
     Vec3        vV;
 
     vV.x = pC->x - pOrigin->x;

@@ -8,10 +8,10 @@ void BehObjMonitorKeyboardPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_MonitorKeyboard;
 
-    m_pHead                   = pNode;
-    GameBehaviorObject* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountBehObjMonitorKeyboard;
+    auto nRemaining = g_wPoolCountBehObjMonitorKeyboard;
 
     while (nRemaining-- > 0)
     {
@@ -25,7 +25,7 @@ void BehObjMonitorKeyboardPool::Init()
 // FUNCTION: HYPERX 0x0041f9e0
 void* BehObjMonitorKeyboardPool::Alloc()
 {
-    GameBehaviorObject* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
     pHead->m_pStandby = nullptr;
@@ -43,7 +43,7 @@ BehObjMonitorKeyboardPool::~BehObjMonitorKeyboardPool()
 {
     while (m_pHead != nullptr)
     {
-        GameBehaviorObject* const pNext = m_pHead->m_pStandby;
+        auto* const pNext = m_pHead->m_pStandby;
 
         delete m_pHead;
 

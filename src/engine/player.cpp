@@ -36,7 +36,7 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
     {
         if (((*pnInput & HELD_MOVEMENT) != 0) || (g_nTrickSeqStep != 0) || (pPlayer->GetPhysicsBody()->flSteerScale > 1.0001))
         {
-            const short          nStep  = g_nTrickSeqStep;
+            const auto           nStep  = g_nTrickSeqStep;
             const unsigned short nInput = *pnInput;
 
             if (((nInput & HELD_STOP) == 0) && ((nInput & HELD_ROTATE) != 0))
@@ -101,7 +101,7 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
     }
     else
     {
-        const short nGrab = g_nBoostGrabStep;
+        const auto nGrab = g_nBoostGrabStep;
 
         if (nGrab == 0)
         {
@@ -134,18 +134,18 @@ extern short g_nCheckImpulseFacing;
 EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 {
     EngineObject* pTarget;
-    float         flDxA = 0.0f;
-    float         flDyB = 0.0f;
-    float         flDxB = 0.0f;
+    auto          flDxA = 0.0f;
+    auto          flDyB = 0.0f;
+    auto          flDxB = 0.0f;
     float         flCross;
     float         flDet;
     short         nFacing;
     short         nStep;
 
-    auto                nSlot  = static_cast<short>((pActor->GetSlot() + 1) % 4);
-    EngineObject* const pCandA = g_pGameEngine->m_ppSlots[nSlot];
-    nSlot                      = static_cast<short>((pActor->GetSlot() + 3) % 4);
-    EngineObject* const pCandB = g_pGameEngine->m_ppSlots[nSlot];
+    auto        nSlot  = static_cast<short>((pActor->GetSlot() + 1) % 4);
+    auto* const pCandA = g_pGameEngine->m_ppSlots[nSlot];
+    nSlot              = static_cast<short>((pActor->GetSlot() + 3) % 4);
+    auto* const pCandB = g_pGameEngine->m_ppSlots[nSlot];
 
     const auto flDyA = static_cast<float>(fabs(static_cast<double>(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y)));
 
@@ -222,12 +222,12 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
         }
     }
 
-    const float flSelfGrad   = pActor->GetPhysicsBody()->velDir.y / pActor->GetPhysicsBody()->velDir.x;
-    const float flTargetGrad = pTarget->GetPhysicsBody()->velDir.y / pTarget->GetPhysicsBody()->velDir.x;
+    const auto flSelfGrad   = pActor->GetPhysicsBody()->velDir.y / pActor->GetPhysicsBody()->velDir.x;
+    const auto flTargetGrad = pTarget->GetPhysicsBody()->velDir.y / pTarget->GetPhysicsBody()->velDir.x;
 
-    const float flSelfBase = pActor->GetPositionPtr()->y - flSelfGrad * pActor->GetPositionPtr()->x;
-    const float flTargetY  = pTarget->GetPositionPtr()->y;
-    flCross                = ((flTargetY - flTargetGrad * pTarget->GetPositionPtr()->x) - flSelfBase) / (flSelfGrad - flTargetGrad) * flSelfGrad + flSelfBase;
+    const auto flSelfBase = pActor->GetPositionPtr()->y - flSelfGrad * pActor->GetPositionPtr()->x;
+    const auto flTargetY  = pTarget->GetPositionPtr()->y;
+    flCross               = ((flTargetY - flTargetGrad * pTarget->GetPositionPtr()->x) - flSelfBase) / (flSelfGrad - flTargetGrad) * flSelfGrad + flSelfBase;
 
     const PhysicsBody* pSelfBodyA   = pActor->GetPhysicsBody();
     const PhysicsBody* pTargetBodyA = pTarget->GetPhysicsBody();
@@ -235,15 +235,15 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     const PhysicsBody* pTargetBodyB = pTarget->GetPhysicsBody();
     flDet                           = pTargetBodyA->velDir.y * pSelfBodyA->velDir.x - pTargetBodyB->velDir.x * pSelfBodyB->velDir.y;
 
-    const float  flLead  = (flCross - pTarget->GetPositionPtr()->y) / pTarget->m_pBody->GetVel().y;
-    const double dAbsDet = fabs(static_cast<double>(flDet));
+    const auto flLead  = (flCross - pTarget->GetPositionPtr()->y) / pTarget->m_pBody->GetVel().y;
+    const auto dAbsDet = fabs(static_cast<double>(flDet));
 
     if (flLead * dAbsDet < -4.0)
     {
         return nullptr;
     }
 
-    const float flDiff = static_cast<float>(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
+    const auto flDiff = static_cast<float>(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
 
     if (fabs(static_cast<double>(flDiff)) > 18.0)
     {

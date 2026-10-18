@@ -29,14 +29,14 @@ void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bReady = 0;
     m_pOwner = pOwner;
 
-    short* pFirst = &pOwner->GetPhysicsBody()->nHeldBindings;
-    m_pInput      = pFirst;
-    *pFirst       = static_cast<short>(g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask);
+    auto* pFirst = &pOwner->GetPhysicsBody()->nHeldBindings;
+    m_pInput     = pFirst;
+    *pFirst      = static_cast<short>(g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask);
 
-    short* pSecond = &pOwner->GetPhysicsBody()->nPrevHeldBindings;
-    m_pPrevInput   = pSecond;
-    *pSecond       = 0;
-    m_nMode        = kMonDriveYerGuy;
+    auto* pSecond = &pOwner->GetPhysicsBody()->nPrevHeldBindings;
+    m_pPrevInput  = pSecond;
+    *pSecond      = 0;
+    m_nMode       = kMonDriveYerGuy;
 }
 
 // FUNCTION: HYPERX 0x00410e60
@@ -111,7 +111,7 @@ void CMonitorKeys::Process(int nArg)
 
     g_pGameEngine->GetInputDevice(kSlotKeyboard)->m_nHeldMask = static_cast<unsigned short>(*m_pPrevInput);
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

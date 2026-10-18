@@ -174,7 +174,7 @@ void PlanState::SetOwnerAndReset(EngineObject* pOwner, PlanNode** ppBehaviors)
 // FUNCTION: HYPERX 0x0047b110
 unsigned char PlanState::SetAndInit(const PlanWord* pStream)
 {
-    const short nOldCount = m_nBehaviorCount;
+    const auto nOldCount = m_nBehaviorCount;
 
     PlanNode** const ppCompiled = Compile(pStream);
 
@@ -200,7 +200,7 @@ GameBehaviorObject* PlanState::GetBehaviorByIndex(unsigned int nIndex)
 {
     short nLeft;
 
-    GameBehaviorObject* pAt = m_pHead;
+    auto* pAt = m_pHead;
 
     if (static_cast<int>(nIndex) == PLAN_TOKEN_PREVIOUS_BEH)
     {
@@ -341,8 +341,8 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
         m_apNamedInteractors = nullptr;
     }
 
-    PlanWord* pWord = aWords;
-    char      cFlag = 0;
+    auto* pWord = aWords;
+    char  cFlag = 0;
 
     while (ParseNodeStream(1, &pStream, pWord, &cFlag) != 0)
     {
@@ -394,7 +394,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 {
     char szName[32];
 
-    const PlanWord* pCursor = *ppStream;
+    const auto* pCursor = *ppStream;
 
     if (static_cast<unsigned int>(pCursor->n) == kPlanMarkerNode)
     {
@@ -492,7 +492,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
     *pcPlanRef = '\0';
     *ppStream  = pCursor + 1;
 
-    const PlanWord leaf = *pCursor;
+    const auto leaf = *pCursor;
 
     if (leaf.IsPronoun())
     {
@@ -523,16 +523,16 @@ PlanState* PlanState::Instantiate()
     Interactor*         pCondition  = nullptr;
     GameBehaviorObject* pBehaviour  = nullptr;
     Interactor*         pMessage    = nullptr;
-    int                 nBehaviours = 0;
-    int                 nConditions = 0;
+    auto                nBehaviours = 0;
+    auto                nConditions = 0;
 
     if (m_ppCursor != nullptr)
     {
         for (;;)
         {
-            PlanNode* const pNode = *m_ppCursor;
+            auto* const pNode = *m_ppCursor;
 
-            GameBehaviorObject* const pPrevious = pBehaviour;
+            auto* const pPrevious = pBehaviour;
 
             switch (static_cast<unsigned int>(pNode->m_nOpcode) & kOpCategory)
             {
@@ -593,7 +593,7 @@ PlanState* PlanState::Instantiate()
 
                     while (nRemaining-- != 0)
                     {
-                        PlanNode* const pChild = pChildWord->pNode;
+                        auto* const pChild = pChildWord->pNode;
 
                         switch (static_cast<unsigned int>(pChild->m_nOpcode) & kOpCategory)
                         {

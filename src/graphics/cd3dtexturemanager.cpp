@@ -97,7 +97,7 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
     {
         for (iRecord = 0; iRecord < pLod->m_pMaterials->m_nMatCount; iRecord++)
         {
-            TexCacheEntry* const pEntry = pLod->m_pMaterials->m_pMaterials[iRecord].pTexture;
+            auto* const pEntry = pLod->m_pMaterials->m_pMaterials[iRecord].pTexture;
 
             if (pEntry != nullptr)
             {
@@ -105,13 +105,13 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
             }
         }
 
-        MaterialListNode* const pList = pLod->m_pMaterials;
+        auto* const pList = pLod->m_pMaterials;
 
         pLod->m_pMaterials = pList->m_pNext;
 
         if (pList != nullptr)
         {
-            MeshMaterial* const pArray = pList->m_pMaterials;
+            auto* const pArray = pList->m_pMaterials;
 
             delete[] pArray;
             delete[] pList->m_pszName;
@@ -142,7 +142,7 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
             {
                 for (short iRecord = 0; iRecord < pBlock->m_nMatCount; iRecord++)
                 {
-                    TexCacheEntry* const pEntry = pBlock->m_pMaterials[iRecord].pTexture;
+                    auto* const pEntry = pBlock->m_pMaterials[iRecord].pTexture;
 
                     if (pEntry != nullptr)
                     {
@@ -154,7 +154,7 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
 
                 if (pBlock != nullptr)
                 {
-                    MeshMaterial* const pArray = pBlock->m_pMaterials;
+                    auto* const pArray = pBlock->m_pMaterials;
 
                     delete[] pArray;
                     delete[] pBlock->m_pszName;
@@ -192,8 +192,8 @@ char CD3DTextureManager::ReleaseTexEntry(TexCacheEntry* pEntry)
 // FUNCTION: HYPERX 0x00473400
 char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
 {
-    TexCacheEntry* pAt   = m_pTextureList;
-    TexCacheEntry* pPrev = pAt;
+    auto* pAt   = m_pTextureList;
+    auto* pPrev = pAt;
 
     while (pAt != nullptr)
     {
@@ -246,7 +246,7 @@ int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nS
 
     if (pNode->m_pRecord != nullptr)
     {
-        const short nIndex = pNode->m_pRecord->SlotDesc(nSlot)->m_nLinkId;
+        const auto nIndex = pNode->m_pRecord->SlotDesc(nSlot)->m_nLinkId;
 
         if (nIndex < pNode->m_pRecord->m_nSubComponents)
         {
@@ -281,7 +281,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
         if (pMesh->nCoordBytes != 0)
         {
-            TexCoord* pCoords = pMesh->Coords();
+            auto* pCoords = pMesh->Coords();
 
             char* const pScratch = new char[pMesh->nCoordBytes];
 
@@ -289,7 +289,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
             for (short nFace = 0; nFace < pMesh->nFaceCount; nFace++)
             {
-                MeshFace* const pFace = pMesh->Face(nFace);
+                auto* const pFace = pMesh->Face(nFace);
 
                 if ((pFace->cFlags & kFaceFlagHasUV) != 0)
                 {
@@ -306,7 +306,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                     if (pEntry->pTexture != nullptr && pnCoord != nullptr)
                     {
-                        SoftTex* const pSoftTex = pEntry->pTexture->m_pSoftTexture;
+                        auto* const pSoftTex = pEntry->pTexture->m_pSoftTexture;
 
                         if (pSoftTex != nullptr)
                         {
@@ -328,19 +328,19 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                                 const auto flWide = static_cast<float>(nWideLess);
 
-                                const float flScale = flWide / static_cast<float>(nScaledWidth);
+                                const auto flScale = flWide / static_cast<float>(nScaledWidth);
 
                                 pFace->SetScaledWidth(static_cast<short>(nWideLess));
 
                                 for (int nAt = 0; nAt < pFace->nCorners; nAt++, pnCoord++)
                                 {
-                                    const int nCoord = static_cast<int>(*pnCoord);
+                                    const auto nCoord = static_cast<int>(*pnCoord);
 
                                     if (pScratch[nCoord] == 0)
                                     {
                                         pCoords[nCoord].tu = flScale * pCoords[nCoord].tu;
 
-                                        float* pflV = &pCoords[nCoord].tv;
+                                        auto* pflV = &pCoords[nCoord].tv;
 
                                         *pflV = flScale * *pflV;
 

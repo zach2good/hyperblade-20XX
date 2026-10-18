@@ -98,7 +98,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
         pBehavior = pActor->GetPlanState()->GetBehaviorByIndex(nBehavior);
     }
 
-    int nIndex = pArgs->m_pArgs[ARG_ANIM].n;
+    auto nIndex = pArgs->m_pArgs[ARG_ANIM].n;
 
     if (nIndex == PLAN_TOKEN_MESSAGE_DATA)
     {
@@ -111,7 +111,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (pAnim != nullptr && pContext->GetActor()->GetSlot() <= kPlayerSlotCount - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(kRatingDamage) < 30.0f)
     {
-        const char* pszName = pAnim->GetName();
+        const auto* pszName = pAnim->GetName();
 
         // STRING: HYPERX 0x004bb2a0
         if (strcmp(pszName, "AA_Skate_Std") == 0)
@@ -132,10 +132,10 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (pArgs->m_nArgCount == kArgCountWithRate)
     {
-        PlanWord* const pBlock = pArgs->m_pArgs;
+        auto* const pBlock = pArgs->m_pArgs;
 
-        const float flRate = pBlock[kArgRate].fl;
-        const int   nFlags = pBlock[ARG_FLAGS].n;
+        const auto flRate = pBlock[kArgRate].fl;
+        const auto nFlags = pBlock[ARG_FLAGS].n;
 
         pBehavior->m_pAnimation      = pAnim;
         pBehavior->m_flAnimationRate = flRate;
@@ -209,7 +209,7 @@ void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*
             nEventTarget = pBlock[kArgEventTarget].n;
         }
 
-        const int nEventKind = pBlock[kArgEventKind].n;
+        const auto nEventKind = pBlock[kArgEventKind].n;
 
         pBehavior->m_nEventParam  = nEventParam;
         pBehavior->m_nEventTarget = nEventTarget;
@@ -240,7 +240,7 @@ void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*
 // FUNCTION: HYPERX 0x00401250
 void PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    EngineObject* const pActor = pContext->GetActor();
+    auto* const pActor = pContext->GetActor();
 
     pActor->m_pAnimPlayer->SetPlayState(pArgs->m_pArgs[1].n);
 }
@@ -250,7 +250,7 @@ void PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*
 // FUNCTION: HYPERX 0x00401270
 void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
-    EngineObject* const pActor = pContext->GetActor();
+    auto* const pActor = pContext->GetActor();
 
     const auto flSpeed = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[1].n) * 0.01);
 
@@ -260,8 +260,8 @@ void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*
 // FUNCTION: HYPERX 0x004012b0
 void PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
-    AnimPlayer* const pRate   = pContext->GetActor()->m_pAnimPlayer;
-    AnimPlayer* const pPlayer = pContext->GetActor()->m_pAnimPlayer;
+    auto* const pRate   = pContext->GetActor()->m_pAnimPlayer;
+    auto* const pPlayer = pContext->GetActor()->m_pAnimPlayer;
 
     pPlayer->SetPlaybackRate(
         static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[1].n) * 0.01) * pRate->GetPlaybackRate());
@@ -340,9 +340,9 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
         nSlot = g_pGameEngine->m_nViewedSlot;
     }
 
-    EngineObject* const pActor = pContext->GetActor();
+    auto* const pActor = pContext->GetActor();
 
-    short nIndex = pContext->GetOtherSlot();
+    auto nIndex = pContext->GetOtherSlot();
 
     if (pArgs->m_nArgCount == 2)
     {
@@ -368,9 +368,9 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
         }
     }
 
-    BoundBubble* const pBubble = g_pGameEngine->GetColObjPtr(nIndex);
+    auto* const pBubble = g_pGameEngine->GetColObjPtr(nIndex);
 
-    AttachPak* const pAttach = pBubble->m_pAttach;
+    auto* const pAttach = pBubble->m_pAttach;
 
     pAttach->nIndex = nIndex;
 
@@ -423,8 +423,8 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
 // FUNCTION: HYPERX 0x004015c0
 void PlanAction::Unset_AttachPak(Interactor* pContext, PlanNode*, short*, int)
 {
-    EngineObject* const pActor = pContext->GetActor();
-    PhysicsBody* const  pBlock = pActor->GetPhysicsBody();
+    auto* const pActor = pContext->GetActor();
+    auto* const pBlock = pActor->GetPhysicsBody();
 
     pBlock->pAttach = nullptr;
 }

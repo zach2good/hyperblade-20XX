@@ -59,14 +59,14 @@ void CBeAttached::Process(int nArg)
 
     *m_pPrevPos = *m_pPos;
 
-    PhysicsBody* pState = m_pOwner->GetPhysicsBody();
-    AttachPak*   pBone  = pState->pAttach;
+    auto* pState = m_pOwner->GetPhysicsBody();
+    auto* pBone  = pState->pAttach;
 
     m_pAttach = pBone;
 
     if (pBone != nullptr)
     {
-        EngineObject* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
+        auto* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
 
         if ((pEntity->m_nFlags & kEngineObjectPosed) == 0)
         {
@@ -75,7 +75,7 @@ void CBeAttached::Process(int nArg)
 
         pBone        = m_pAttach;
         pOut         = m_pPos;
-        Vec3 flLocal = pBone->vOffset;
+        auto flLocal = pBone->vOffset;
 
         pTransform = pBone->pTransform;
 
@@ -101,7 +101,7 @@ void CBeAttached::Process(int nArg)
 
     pOut = m_pVel;
 
-    Vec3 vVelocity = *pOut;
+    auto vVelocity = *pOut;
 
     Vec3::ScaleTo(pOut, g_pGameEngine->m_clock.GetInvDelta(), &vVelocity);
 
@@ -109,7 +109,7 @@ void CBeAttached::Process(int nArg)
 
     pState->step = vVelocity;
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {
@@ -125,14 +125,14 @@ void CBeAttached::Release(int nArg)
 
     *m_pPrevPos = *m_pPos;
 
-    PhysicsBody* pState = m_pOwner->GetPhysicsBody();
-    AttachPak*   pBone  = pState->pAttach;
+    auto* pState = m_pOwner->GetPhysicsBody();
+    auto* pBone  = pState->pAttach;
 
     m_pAttach = pBone;
 
     if (pBone != nullptr)
     {
-        EngineObject* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
+        auto* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
 
         if ((pEntity->m_nFlags & kEngineObjectPosed) == 0)
         {
@@ -141,7 +141,7 @@ void CBeAttached::Release(int nArg)
 
         pBone        = m_pAttach;
         pOut         = m_pPos;
-        Vec3 flLocal = pBone->vOffset;
+        auto flLocal = pBone->vOffset;
 
         pTransform = pBone->pTransform;
 
@@ -167,7 +167,7 @@ void CBeAttached::Release(int nArg)
 
     pOut = m_pVel;
 
-    Vec3 vVelocity = *pOut;
+    auto vVelocity = *pOut;
 
     Vec3::ScaleTo(pOut, g_pGameEngine->m_clock.GetInvDelta(), &vVelocity);
 
@@ -175,7 +175,7 @@ void CBeAttached::Release(int nArg)
 
     pState->step = vVelocity;
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

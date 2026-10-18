@@ -13,10 +13,10 @@ void CollInteractorPool::Init()
 {
     auto* pNode = new CollInteractor;
 
-    m_pHead               = pNode;
-    CollInteractor* pTail = pNode;
+    m_pHead     = pNode;
+    auto* pTail = pNode;
 
-    short nRemaining = g_wCollInteractorPoolSize;
+    auto nRemaining = g_wCollInteractorPoolSize;
 
     while (nRemaining-- > 0)
     {
@@ -30,7 +30,7 @@ void CollInteractorPool::Init()
 // FUNCTION: HYPERX 0x0046bbd0
 void* CollInteractorPool::Alloc()
 {
-    Interactor* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead      = pHead->pNext;
     pHead->pNext = nullptr;
@@ -48,7 +48,7 @@ CollInteractorPool::~CollInteractorPool()
 {
     while (m_pHead != nullptr)
     {
-        Interactor* const pNext = m_pHead->pNext;
+        auto* const pNext = m_pHead->pNext;
 
         delete m_pHead;
 

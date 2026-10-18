@@ -64,8 +64,8 @@ void MessageQueue::Update()
         g_pRenderer->ShowMessage();
         g_pRenderer->SetMessageText(g_pMessageHead->m_pszText, nColour);
 
-        MessageNode* const pNode = g_pMessageHead;
-        MessageNode*       pHead = pNode;
+        auto* const pNode = g_pMessageHead;
+        auto*       pHead = pNode;
 
         if (pNode != nullptr)
         {
@@ -76,7 +76,7 @@ void MessageQueue::Update()
                 pHead            = g_pMessageHead;
             }
 
-            MessageNode* pWalk = g_pMessageHead;
+            auto*        pWalk = g_pMessageHead;
             MessageNode* pPrev = nullptr;
 
             for (; pWalk != nullptr; pWalk = pWalk->m_pNext)
@@ -136,7 +136,7 @@ void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLi
         return;
     }
 
-    const char* pszEntry = m_ppNames[nIndex];
+    const auto* pszEntry = m_ppNames[nIndex];
 
     if (pszEntry == nullptr)
     {
@@ -222,18 +222,18 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            char* pSpace = strchr(pLine, ' ');
+            auto* pSpace = strchr(pLine, ' ');
 
             if (pSpace != nullptr)
             {
                 pSpace++;
                 nId = atoi(pSpace);
 
-                char* const pText = strchr(pSpace, ' ');
+                auto* const pText = strchr(pSpace, ' ');
 
                 if (pText != nullptr)
                 {
-                    char* const pMessage = pText + 1;
+                    auto* const pMessage = pText + 1;
 
                     pszText = strcpy(new char[strlen(pMessage) + 1], pMessage);
                 }
@@ -278,7 +278,7 @@ void MessageQueue::ProcessAndClear()
 
     while (g_pMessageHead != nullptr)
     {
-        MessageNode* const pNode = g_pMessageHead;
+        auto* const pNode = g_pMessageHead;
 
         if (pNode != nullptr)
         {

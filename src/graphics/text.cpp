@@ -69,7 +69,7 @@ std::vector<unsigned char> LoadWindowsFont(const char* pszName)
 
     auto nSize = static_cast<size_t>(0);
 
-    void* const pData = SDL_LoadFile(path.c_str(), &nSize);
+    auto* const pData = SDL_LoadFile(path.c_str(), &nSize);
 
     if (pData == nullptr)
     {
@@ -221,7 +221,7 @@ float Kerning(const FontSize& size, unsigned char nFirst, unsigned char nSecond)
 template <class Plot>
 void Rasterise(Text::Font font, int nWidth, int nHeight, int nX, int nY, const char* pszText, Plot plot)
 {
-    FontSize* const pSize = SizeOf(font);
+    auto* const pSize = SizeOf(font);
 
     if (pSize == nullptr || pszText == nullptr)
     {
@@ -309,7 +309,7 @@ Text::Font Text::FindSansSerif(int nHeight)
 
 Text::Size Text::Measure(Font font, const char* pszText)
 {
-    FontSize* const pSize = SizeOf(font);
+    auto* const pSize = SizeOf(font);
 
     if (pSize == nullptr || pszText == nullptr)
     {

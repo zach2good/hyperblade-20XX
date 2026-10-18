@@ -16,8 +16,8 @@ void TeamSetupUIScreen::StepHomeSelection(int nDirection)
 {
     short nTeam;
 
-    int nLocked    = 0;
-    int nRemaining = m_nArenaCount * 3;
+    auto nLocked    = 0;
+    auto nRemaining = m_nArenaCount * 3;
 
     BuildLockedFlagsArray();
 
@@ -81,8 +81,8 @@ void TeamSetupUIScreen::StepArenaSelection(int nDirection)
 {
     int nTeam;
 
-    int nLocked    = 0;
-    int nRemaining = m_nArenaCount;
+    auto nLocked    = 0;
+    auto nRemaining = m_nArenaCount;
 
     BuildLockedFlagsArray();
 

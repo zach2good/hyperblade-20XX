@@ -140,13 +140,13 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
     }
 
     file.m_file.SeekRelative(0, SEEK_SET);
-    int nRound = 0;
+    auto nRound = 0;
 
     while (file.m_file.GetNextLine(&pLine) > 0)
     {
         if (*pLine != '#')
         {
-            char* pSpace = strchr(pLine, ' ');
+            auto* pSpace = strchr(pLine, ' ');
 
             if (pSpace == nullptr)
             {

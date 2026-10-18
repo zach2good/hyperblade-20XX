@@ -48,13 +48,13 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
 {
     float flDivisor;
 
-    const int nHeight = pFrame->m_ptSize.y;
+    const auto nHeight = pFrame->m_ptSize.y;
 
-    const int nHalfWidth = (pFrame->m_ptSize.x - 4) / 2;
-    m_ptDrawOffset.x     = nHalfWidth;
+    const auto nHalfWidth = (pFrame->m_ptSize.x - 4) / 2;
+    m_ptDrawOffset.x      = nHalfWidth;
 
-    const int nHalfHeight = (nHeight - 4) / 2;
-    m_ptDrawOffset.y      = nHalfHeight;
+    const auto nHalfHeight = (nHeight - 4) / 2;
+    m_ptDrawOffset.y       = nHalfHeight;
 
     flDivisor = (std::max)(vLimits.x, vLimits.y);
 
@@ -65,7 +65,7 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
 // FUNCTION: HYPERX 0x0044fdd0
 int InfoBarRadar::TrackSlot(int nSlot)
 {
-    EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
+    auto* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
     if (pObject == nullptr)
     {
@@ -76,16 +76,16 @@ int InfoBarRadar::TrackSlot(int nSlot)
 
     m_vPosition = *pObject->GetPositionPtr();
 
-    CameraObject* const pHeading = g_pGameEngine->GetCamera(kCameraMainSlot);
+    auto* const pHeading = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     if (pHeading == nullptr)
     {
         return 0;
     }
 
-    Vec3 vDirection = pHeading->m_dirOut;
+    auto vDirection = pHeading->m_dirOut;
 
-    const double dAngle = atan2(static_cast<double>(vDirection.x), static_cast<double>(vDirection.y));
+    const auto dAngle = atan2(static_cast<double>(vDirection.x), static_cast<double>(vDirection.y));
 
     m_flSin = static_cast<float>(sin(static_cast<double>(dAngle)));
     m_flCos = static_cast<float>(cos(static_cast<double>(dAngle)));
@@ -136,25 +136,25 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
     ptCentre.x = m_ptDrawOffset.x + m_ptPosition.x;
     ptCentre.y = m_ptDrawOffset.y + m_ptPosition.y;
 
-    EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
+    auto* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
     if (pObject == nullptr)
     {
         return;
     }
 
-    Vec3* const pPosition = pObject->GetPositionPtr();
+    auto* const pPosition = pObject->GetPositionPtr();
 
     vDelta.x = pPosition->x - m_vPosition.x;
     vDelta.y = pPosition->y - m_vPosition.y;
 
     if (vDelta.x <= 170.0f && vDelta.x >= -170.0f && vDelta.y <= 170.0f && vDelta.y >= -170.0f)
     {
-        const float flX = vDelta.x * m_flScaleX;
-        const float flY = vDelta.y * m_flScaleY;
+        const auto flX = vDelta.x * m_flScaleX;
+        const auto flY = vDelta.y * m_flScaleY;
 
-        const int nX = static_cast<int>(flX * m_flCos - flY * m_flSin) + ptCentre.x;
-        const int nY = ptCentre.y - static_cast<int>((flX * m_flSin) + flY * m_flCos);
+        const auto nX = static_cast<int>(flX * m_flCos - flY * m_flSin) + ptCentre.x;
+        const auto nY = ptCentre.y - static_cast<int>((flX * m_flSin) + flY * m_flCos);
 
         SWRend::FillRect(nX, nY, 4, 4, nColour);
 
@@ -174,8 +174,8 @@ void InfoBarRadar::DrawMarker(int)
 
     apt[0].x = 0;
 
-    const int nOriginX = m_ptDrawOffset.x + m_ptPosition.x + 2;
-    const int nOriginY = m_ptDrawOffset.y + m_ptPosition.y + 2;
+    const auto nOriginX = m_ptDrawOffset.x + m_ptPosition.x + 2;
+    const auto nOriginY = m_ptDrawOffset.y + m_ptPosition.y + 2;
 
     if ((m_nSlot & 1) != 0)
     {
@@ -196,8 +196,8 @@ void InfoBarRadar::DrawMarker(int)
 
     for (int i = 0; i < kArrowPoints; i++)
     {
-        const float flX = static_cast<float>(apt[i].x) * m_flScaleX;
-        const float flY = static_cast<float>(apt[i].y) * m_flScaleY;
+        const auto flX = static_cast<float>(apt[i].x) * m_flScaleX;
+        const auto flY = static_cast<float>(apt[i].y) * m_flScaleY;
 
         apt[i].x = static_cast<int>(flX * m_flCos - flY * m_flSin) + nOriginX;
         apt[i].y = nOriginY - static_cast<int>(flX * m_flSin + flY * m_flCos);
@@ -218,7 +218,7 @@ int InfoBarRadar::Draw()
     {
         pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-        AttachPak* pTracked = pBlock->pAttach;
+        auto* pTracked = pBlock->pAttach;
 
         if (pTracked != nullptr && pTracked->nSlot < kPlayerObjectCount && pTracked->nSlot == nSlot)
         {

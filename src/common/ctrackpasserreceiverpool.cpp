@@ -9,10 +9,10 @@ void CTrackPasser_ReceiverPool::Init()
 {
     AgendaItem* pNode = new CTrackPasser_Receiver;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountCTrackPasser_Receiver;
+    auto nRemaining = g_wPoolCountCTrackPasser_Receiver;
 
     while (nRemaining-- > 0)
     {
@@ -26,7 +26,7 @@ void CTrackPasser_ReceiverPool::Init()
 // FUNCTION: HYPERX 0x00414310
 void* CTrackPasser_ReceiverPool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -44,7 +44,7 @@ CTrackPasser_ReceiverPool::~CTrackPasser_ReceiverPool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

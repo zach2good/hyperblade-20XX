@@ -63,7 +63,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     m_apWidgets[UI_WIDGET_PAGE]->SetHidden(1);
 
     m_apWidgets[UI_WIDGET_OKAY]->ClearFrames();
-    GDI::Bitmap* pBitmap = CacheLookup("Okay", &nFlag);
+    auto* pBitmap = CacheLookup("Okay", &nFlag);
     m_apWidgets[UI_WIDGET_OKAY]->AddFrameBitmap(pBitmap, nFlag);
     pBitmap = CacheLookup("Okayr", &nFlag);
     m_apWidgets[UI_WIDGET_OKAY]->AddFrameBitmap(pBitmap, nFlag);
@@ -97,14 +97,14 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     m_nLastWidget = SAVELOAD_LAST_WIDGET;
 
     // STRING: HYPERX 0x004c4f98
-    GDI::Bitmap* const hHeader = GDI::LoadBitmapHandle("savload");
+    auto* const hHeader = GDI::LoadBitmapHandle("savload");
     GDI::GetBitmapDimensions(hHeader, &m_bitmap);
-    const int nHeaderWidth = m_bitmap.nWidth;
-    Widget*   pWidget      = AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
+    const auto nHeaderWidth = m_bitmap.nWidth;
+    Widget*    pWidget      = AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
     pWidget->AppendFrame(hHeader);
 
     // STRING: HYPERX 0x004c4f90
-    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("savwht1");
+    auto* hBitmap = GDI::LoadBitmapHandle("savwht1");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, kSlotRowX, 0x58, kSlotRowWidth, m_bitmap.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
@@ -249,7 +249,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     pWidget->AppendFrame(GDI::LoadBitmapHandle("loadd"));
     pWidget->InitAfterLoad();
 
-    const int nPitch = g_aSlotRows[1].nY - g_aSlotRows[0].nY;
+    const auto nPitch = g_aSlotRows[1].nY - g_aSlotRows[0].nY;
 
     for (int nRow = 0; nRow < g_nSlotRowCount; nRow++)
     {
@@ -471,7 +471,7 @@ void SaveLoadUIScreen::RefreshSlotLabels()
 
     for (int nRow = 0; nRow < g_nSlotRowCount; nRow++)
     {
-        Widget* const pWidget = m_apWidgets[SAVELOAD_LABEL_FIRST + nRow];
+        auto* const pWidget = m_apWidgets[SAVELOAD_LABEL_FIRST + nRow];
 
         g_pGameEngine->ReadSlotLabel(nRow, szLabel, kSlotLabelBytes);
 
@@ -490,8 +490,8 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
     // STRING: HYPERX 0x004c4fa8
     strcpy(szPart, "Match ");
 
-    int nOut = 0;
-    int nAt  = 0;
+    auto nOut = 0;
+    auto nAt  = 0;
 
     while (nOut < nMax || nAt < kPartMax)
     {

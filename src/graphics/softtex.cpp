@@ -29,7 +29,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
 
     const char* pPixels = GDI::PixelBits(pDib);
 
-    const unsigned int nStride = (cx + 3) & 0xfffffffc;
+    const auto nStride = (cx + 3) & 0xfffffffc;
 
     // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
     auto* pSprite = static_cast<RLESprite*>(malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2));
@@ -42,11 +42,11 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     pSprite->cx = cx;
     pSprite->cy = cy;
 
-    char* pOut = reinterpret_cast<char*>(&pSprite->apRows[cy]);
+    auto* pOut = reinterpret_cast<char*>(&pSprite->apRows[cy]);
 
     for (unsigned int nRow = 0; nRow < cy; nRow++)
     {
-        const char*  pSrc    = pPixels + (cy - nRow - 1) * nStride;
+        const auto*  pSrc    = pPixels + (cy - nRow - 1) * nStride;
         char         bPrev   = 0;
         unsigned int nColumn = 0;
 
@@ -147,7 +147,7 @@ void SoftTex::RemoveFromList()
         m_pDib = nullptr;
     }
 
-    SoftTex* pNode = g_pSoftTexHead;
+    auto*    pNode = g_pSoftTexHead;
     SoftTex* pPrev = nullptr;
 
     while (pNode != nullptr)

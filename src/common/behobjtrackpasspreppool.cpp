@@ -8,10 +8,10 @@ void BehObjTrackPassPrepPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_TrackPassPrep;
 
-    m_pHead                   = pNode;
-    GameBehaviorObject* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountBehObjTrackPassPrep;
+    auto nRemaining = g_wPoolCountBehObjTrackPassPrep;
 
     while (nRemaining-- > 0)
     {
@@ -25,7 +25,7 @@ void BehObjTrackPassPrepPool::Init()
 // FUNCTION: HYPERX 0x004206a0
 void* BehObjTrackPassPrepPool::Alloc()
 {
-    GameBehaviorObject* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
     pHead->m_pStandby = nullptr;
@@ -43,7 +43,7 @@ BehObjTrackPassPrepPool::~BehObjTrackPassPrepPool()
 {
     while (m_pHead != nullptr)
     {
-        GameBehaviorObject* const pNext = m_pHead->m_pStandby;
+        auto* const pNext = m_pHead->m_pStandby;
 
         delete m_pHead;
 

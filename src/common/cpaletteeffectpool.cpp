@@ -9,10 +9,10 @@ void CPaletteEffectPool::Init()
 {
     AgendaItem* pNode = new CPaletteEffect;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountCPaletteEffect;
+    auto nRemaining = g_wPoolCountCPaletteEffect;
 
     while (nRemaining-- > 0)
     {
@@ -26,7 +26,7 @@ void CPaletteEffectPool::Init()
 // FUNCTION: HYPERX 0x004147c0
 void* CPaletteEffectPool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -44,7 +44,7 @@ CPaletteEffectPool::~CPaletteEffectPool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

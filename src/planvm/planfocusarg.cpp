@@ -40,7 +40,7 @@ short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cb60
 short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 {
-    const char cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
+    const auto cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
     return static_cast<short>((static_cast<char>(~cFocus) & 1) * 3);
 }
@@ -50,7 +50,7 @@ short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cb80
 short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 {
-    const char cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
+    const auto cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
     return static_cast<short>(((static_cast<char>(~cFocus) & 1) | 2) * 3);
 }
@@ -60,7 +60,7 @@ short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cba0
 short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
 {
-    int nSlot = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nSecondaryTracked;
+    auto nSlot = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nSecondaryTracked;
 
     if (nSlot == -1)
     {
@@ -75,7 +75,7 @@ short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cbc0
 short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
 {
-    int nSlot = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nPrimaryTracked;
+    auto nSlot = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nPrimaryTracked;
 
     if (nSlot == -1)
     {
@@ -88,7 +88,7 @@ short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cbe0
 short PlanFocusArg::GetTrackedObjsTeammate(EngineObject*, PlanNode*)
 {
-    const int nTracked = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nPrimaryTracked;
+    const auto nTracked = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nPrimaryTracked;
 
     return static_cast<short>(TeammateSlot(static_cast<short>(nTracked)));
 }
@@ -116,7 +116,7 @@ short PlanFocusArg::GetViewOwnersTeammate(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cc70
 short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
 {
-    const char cLocal = static_cast<char>(g_pGameEngine->m_nViewedSlot);
+    const auto cLocal = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
     return static_cast<char>(~cLocal) & 1;
 }
@@ -124,7 +124,7 @@ short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cc80
 short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 {
-    const char cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
+    const auto cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
     return (static_cast<char>(~cFocus) & 1) | 2;
 }
@@ -133,9 +133,9 @@ short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cc90
 short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 {
-    PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
+    auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-    AttachPak* pTracked = pBlock->pAttach;
+    auto* pTracked = pBlock->pAttach;
 
     if (pTracked != nullptr && pTracked->nSlot < kPlayerObjectCount)
     {
@@ -156,9 +156,9 @@ short PlanFocusArg::GetLastRokCarrier(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cce0
 short PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 {
-    PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
+    auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-    AttachPak* const pTracked = pBlock->pAttach;
+    auto* const pTracked = pBlock->pAttach;
 
     if (pTracked != nullptr)
     {
@@ -172,13 +172,13 @@ short PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cd10
 short PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
 {
-    PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
+    auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-    AttachPak* const pTracked = pBlock->pAttach;
+    auto* const pTracked = pBlock->pAttach;
 
     if (pTracked != nullptr)
     {
-        const short nTracked = pTracked->nSlot;
+        const auto nTracked = pTracked->nSlot;
 
         if (nTracked < kPlayerObjectCount && ((static_cast<unsigned char>(pActor->GetSlot()) ^ static_cast<unsigned char>(nTracked)) & 1) != 0)
         {

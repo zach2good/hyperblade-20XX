@@ -9,10 +9,10 @@ void CSteerToPositionPool::Init()
 {
     AgendaItem* pNode = new CSteerToPosition;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountCSteerToPosition;
+    auto nRemaining = g_wPoolCountCSteerToPosition;
 
     while (nRemaining-- > 0)
     {
@@ -26,7 +26,7 @@ void CSteerToPositionPool::Init()
 // FUNCTION: HYPERX 0x004132d0
 void* CSteerToPositionPool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -44,7 +44,7 @@ CSteerToPositionPool::~CSteerToPositionPool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

@@ -78,14 +78,14 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
     short nValue;
     int   nJoystick;
 
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
+    auto* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     if (pCamera != nullptr)
     {
         const PlanWord* pBlock = pArgs->m_pArgs;
         if (pBlock[1].IsPronoun())
         {
-            PlanStatFn pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
+            auto pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
 
             nValue = pfnResolver(pContext->GetActor(), pArgs);
         }
@@ -194,7 +194,7 @@ void PlanAction::SetTrackingOffset(Interactor* pContext, PlanNode* pArgs, short*
 
     if (pArgs->m_nArgCount == 2)
     {
-        Vec3* const pMarker = g_apTrackOffsets[pArgs->m_pArgs[1].n];
+        auto* const pMarker = g_apTrackOffsets[pArgs->m_pArgs[1].n];
 
         pActor                 = pContext->GetCameraActor();
         pActor->m_pSettings->x = pMarker->x;
@@ -225,7 +225,7 @@ void PlanAction::IncrementTrackingOffset(Interactor* pContext, PlanNode* pArgs, 
 
     if (pArgs->m_nArgCount == 2)
     {
-        Vec3* const pMarker = g_apTrackOffsets[pArgs->m_pArgs[1].n];
+        auto* const pMarker = g_apTrackOffsets[pArgs->m_pArgs[1].n];
 
         pActor                 = pContext->GetCameraActor();
         pActor->m_pSettings->x = pMarker->x + pActor->m_pSettings->x;
@@ -273,7 +273,7 @@ void PlanAction::IncrementCameraDir(Interactor* pContext, PlanNode* pArgs, short
         pContext->GetActor()->GetPhysicsBody()->velDir.z += static_cast<float>(pArgs->m_pArgs[3].n * 0.01);
     }
 
-    PhysicsBody* pBody = pContext->GetActor()->GetPhysicsBody();
+    auto* pBody = pContext->GetActor()->GetPhysicsBody();
 
     Math::Vec3Normalize(&pBody->velDir);
 }
@@ -283,7 +283,7 @@ void PlanAction::IncrementBungeeLength(Interactor* pContext, PlanNode* pArgs, sh
 {
     float flValue;
 
-    CameraObject* pActor = pContext->GetCameraActor();
+    auto* pActor = pContext->GetCameraActor();
 
     flValue = static_cast<float>(pArgs->m_pArgs[1].n * 0.1) + pActor->GetBungeeLength();
 
@@ -297,7 +297,7 @@ void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, 
 {
     const auto flValue = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 
-    CameraObject* const pActor = pContext->GetCameraActor();
+    auto* const pActor = pContext->GetCameraActor();
 
     pActor->m_flBungeeLength = flValue;
 }
@@ -342,7 +342,7 @@ void PlanAction::SetSolarWindFactor(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00401d30
 void PlanAction::SetOffsetValues(Interactor*, PlanNode* pArgs, short*, int)
 {
-    Vec3* const pPos = g_apTrackOffsets[pArgs->m_pArgs[1].n];
+    auto* const pPos = g_apTrackOffsets[pArgs->m_pArgs[1].n];
 
     pPos->x = static_cast<float>(pArgs->m_pArgs[2].n * 0.1);
     pPos->y = static_cast<float>(pArgs->m_pArgs[3].n * 0.1);
@@ -370,7 +370,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
     const PlanWord* pBlock = pArgs->m_pArgs;
     if (pBlock[1].IsPronoun())
     {
-        PlanStatFn pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
+        auto pfnResolver = g_apPlanStatFns[pBlock[1].wPronoun];
 
         nValue = pfnResolver(pContext->GetActor(), pArgs);
     }
@@ -452,10 +452,10 @@ void PlanAction::IncrementObjectToTrack(Interactor*, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x00401ee0
 void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
 {
-    GameEngine* pEngine = g_pGameEngine;
+    auto* pEngine = g_pGameEngine;
 
-    float flRate   = pEngine->m_clock.flInvDelta;
-    float flFactor = g_flSteadyCamBuffer;
+    auto flRate   = pEngine->m_clock.flInvDelta;
+    auto flFactor = g_flSteadyCamBuffer;
 
     auto nPos = static_cast<short>(flRate * flFactor * POS_WINDOW_SECONDS);
 
@@ -505,7 +505,7 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
     float         flFracX;
     float         flFracY;
 
-    const short nArgCount = pArgs->m_nArgCount;
+    const auto nArgCount = pArgs->m_nArgCount;
 
     if (nArgCount == kArgCountOwnCamera)
     {
@@ -523,7 +523,7 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (nArgCount == kArgCountSlotAndMode)
     {
-        PlanWord* const pBlock = pArgs->m_pArgs;
+        auto* const pBlock = pArgs->m_pArgs;
 
         g_pGameEngine->GetCamera(static_cast<short>(pBlock[ARG_SLOT].n))->SetReticleState(pBlock[kArgMode].n);
 
@@ -558,15 +558,15 @@ void PlanAction::SetHeadCamText(Interactor* pContext, PlanNode* pArgs, short*, i
 // FUNCTION: HYPERX 0x00402070
 void PlanAction::InitRearViewPos(Interactor* pContext, PlanNode*, short*, int)
 {
-    Vec3* const pTarget = &pContext->GetActor()->GetPhysicsBody()->pos;
+    auto* const pTarget = &pContext->GetActor()->GetPhysicsBody()->pos;
 
-    EngineObject* const pTracked = pContext->GetCameraActor()->GetTrackedObject();
+    auto* const pTracked = pContext->GetCameraActor()->GetTrackedObject();
 
     if (pTracked != nullptr)
     {
-        PhysicsBody* pState = pTracked->GetPhysicsBody();
-        Vec3*        pPos   = pTracked->GetPositionPtr();
-        pTarget->x          = g_flRearViewLeadFrames * pState->vel.x + pPos->x;
+        auto* pState = pTracked->GetPhysicsBody();
+        auto* pPos   = pTracked->GetPositionPtr();
+        pTarget->x   = g_flRearViewLeadFrames * pState->vel.x + pPos->x;
 
         pState     = pTracked->GetPhysicsBody();
         pPos       = pTracked->GetPositionPtr();
@@ -581,10 +581,10 @@ void PlanAction::InitRearViewPos(Interactor* pContext, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x00402100
 void PlanAction::SetCamOffsetToLocation(Interactor*, PlanNode*, short*, int)
 {
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
+    auto* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
     const Vec3* const pPos      = &pCamera->GetPhysicsBody()->pos;
-    Vec3* const       pSettings = pCamera->m_pSettings;
+    auto* const       pSettings = pCamera->m_pSettings;
 
     pSettings->x = pPos->x;
     pSettings->y = pPos->y;
@@ -601,18 +601,18 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     float         flDelta;
 
     pTarget                = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs->m_pArgs[1].n)];
-    Vec3* const pTargetPos = pTarget->GetPositionPtr();
+    auto* const pTargetPos = pTarget->GetPositionPtr();
 
-    EngineObject* pActor   = pContext->GetActor();
-    Vec3* const   pSelfPos = pActor->GetPositionPtr();
-
-    pActor                     = pContext->GetActor();
-    PhysicsBody* const pFacing = pActor->GetPhysicsBody();
+    auto*       pActor   = pContext->GetActor();
+    auto* const pSelfPos = pActor->GetPositionPtr();
 
     pActor              = pContext->GetActor();
-    PhysicsBody* pBlock = pActor->GetPhysicsBody();
+    auto* const pFacing = pActor->GetPhysicsBody();
 
-    Vec3* pVelocity = &pBlock->vel;
+    pActor       = pContext->GetActor();
+    auto* pBlock = pActor->GetPhysicsBody();
+
+    auto* pVelocity = &pBlock->vel;
 
     vAim.x = pTargetPos->x - pSelfPos->x;
     vAim.y = pTargetPos->y - pSelfPos->y;
@@ -641,9 +641,9 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
     float flSpread;
     float flSpeed;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
+    auto* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
-    const short nArgCount = pNode->m_nArgCount;
+    const auto nArgCount = pNode->m_nArgCount;
 
     if (nArgCount < 2)
     {
@@ -657,21 +657,21 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
     }
     else
     {
-        PlanWord* const pArgs = pNode->m_pArgs;
+        auto* const pArgs = pNode->m_pArgs;
 
         flSpread = static_cast<float>(pArgs[kArgSpread].n);
         flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
     }
 
-    EngineObject* pObject = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
+    auto* pObject = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
 
     pEntity->GetPhysicsBody()->SetFlatOnTerrain(&pObject->m_pBody->prevPos);
 
     pEntity->SpawnParticles(flSpread, flSpeed);
 
-    AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+    auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-    PlanState* const pOwner = pEntity->GetPlanState();
+    auto* const pOwner = pEntity->GetPlanState();
 
     pAgendaItem->Bind(pEntity, pOwner->m_pCurrent);
     pAgendaItem->Activate();
@@ -688,9 +688,9 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     float flSpeed;
     Vec3  vAgainst;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
+    auto* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
-    const short nArgCount = pNode->m_nArgCount;
+    const auto nArgCount = pNode->m_nArgCount;
 
     if (nArgCount < 2)
     {
@@ -704,7 +704,7 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     }
     else
     {
-        PlanWord* const pArgs = pNode->m_pArgs;
+        auto* const pArgs = pNode->m_pArgs;
 
         flSpread = static_cast<float>(pArgs[kArgSpread].n);
         flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
@@ -714,7 +714,7 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
 
     const Vec3* pBody = &pTarget->m_pBody->vel;
 
-    Vec3 vDirection = *pBody;
+    auto vDirection = *pBody;
 
     vAgainst.x = -vDirection.x;
     vAgainst.y = -vDirection.y;
@@ -725,9 +725,9 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     pEntity->SetOrientation(pTarget->GetPositionPtr(), &vDirection);
     pEntity->SpawnParticles(flSpread, flSpeed);
 
-    AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+    auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-    PlanState* const pOwner = pEntity->GetPlanState();
+    auto* const pOwner = pEntity->GetPlanState();
 
     pAgendaItem->Bind(pEntity, pOwner->m_pCurrent);
     pAgendaItem->Activate();
@@ -741,9 +741,9 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
     float flSpread;
     float flSpeed;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
+    auto* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
-    const short nArgCount = pNode->m_nArgCount;
+    const auto nArgCount = pNode->m_nArgCount;
 
     if (nArgCount < 2)
     {
@@ -757,7 +757,7 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
     }
     else
     {
-        PlanWord* const pArgs = pNode->m_pArgs;
+        auto* const pArgs = pNode->m_pArgs;
 
         flSpread = static_cast<float>(pArgs[kArgSpread].n);
         flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
@@ -767,14 +767,14 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
 
     const Vec3* pBody = &pTarget->m_pBody->vel;
 
-    Vec3 vDirection = *pBody;
+    auto vDirection = *pBody;
 
     pEntity->SetOrientation(pTarget->GetPositionPtr(), &vDirection);
     pEntity->SpawnParticles(flSpread, flSpeed);
 
-    AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+    auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-    PlanState* const pOwner = pEntity->GetPlanState();
+    auto* const pOwner = pEntity->GetPlanState();
 
     pAgendaItem->Bind(pEntity, pOwner->m_pCurrent);
     pAgendaItem->Activate();
@@ -789,9 +789,9 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
     float flSpeed;
     Vec3  vDirection;
 
-    ParticleSystem* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
+    auto* const pEntity = g_pGameEngine->GetParticleSystem(kSlotExplosion);
 
-    const short nArgCount = pNode->m_nArgCount;
+    const auto nArgCount = pNode->m_nArgCount;
 
     if (nArgCount < 2)
     {
@@ -805,7 +805,7 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
     }
     else
     {
-        PlanWord* const pArgs = pNode->m_pArgs;
+        auto* const pArgs = pNode->m_pArgs;
 
         flSpread = static_cast<float>(pArgs[kArgSpread].n);
         flSpeed  = static_cast<float>(pArgs[kArgSpeed].n);
@@ -820,9 +820,9 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
     pEntity->SetOrientation(pTarget->GetPositionPtr(), &vDirection);
     pEntity->SpawnParticlesUniform(flSpread, flSpeed);
 
-    AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+    auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-    PlanState* const pOwner = pEntity->GetPlanState();
+    auto* const pOwner = pEntity->GetPlanState();
 
     pAgendaItem->Bind(pEntity, pOwner->m_pCurrent);
     pAgendaItem->Activate();
@@ -835,17 +835,17 @@ void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vStart;
 
-    EngineObject* const pActor = pContext->GetActor();
+    auto* const pActor = pContext->GetActor();
 
     if (g_pGameEngine->m_nBrutality != 0)
     {
-        ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
+        auto* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
         if (pSystem != nullptr)
         {
             vStart = *pActor->GetPositionPtr();
 
-            Vec3 vDirection = pActor->m_pBody->vel;
+            auto vDirection = pActor->m_pBody->vel;
 
             if (pActor->GetSlot() <= kGoalieSlotB)
             {
@@ -855,9 +855,9 @@ void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
             pSystem->SetOrientation(&vStart, &vDirection);
             pSystem->SpawnParticles(5.0f, 10.0f);
 
-            AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+            auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-            PlanState* const pOwner = pSystem->GetPlanState();
+            auto* const pOwner = pSystem->GetPlanState();
 
             pAgendaItem->Bind(pSystem, pOwner->m_pCurrent);
             pAgendaItem->Activate();
@@ -870,26 +870,26 @@ void PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vStart;
 
-    EngineObject* const pActor = pContext->GetActor();
+    auto* const pActor = pContext->GetActor();
 
     if (g_pGameEngine->m_nBrutality != 0)
     {
-        ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
+        auto* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
         if (pSystem != nullptr)
         {
             vStart = *pActor->GetPositionPtr();
 
-            Vec3 vDirection = pActor->m_pBody->vel;
+            auto vDirection = pActor->m_pBody->vel;
 
             vStart.z = vStart.GetZ() + 3.0f;
 
             pSystem->SetOrientation(&vStart, &vDirection);
             pSystem->SpawnParticles(10.0f, 25.0f);
 
-            AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+            auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-            PlanState* const pOwner = pSystem->GetPlanState();
+            auto* const pOwner = pSystem->GetPlanState();
 
             pAgendaItem->Bind(pSystem, pOwner->m_pCurrent);
             pAgendaItem->Activate();
@@ -946,7 +946,7 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 
                 pBone->m_world.TransformPoint(vOrigin, &vScratch);
 
-                const Vec3 vHead = vScratch;
+                const auto vHead = vScratch;
 
                 vOrigin = vHead;
 
@@ -1002,10 +1002,10 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 // FUNCTION: HYPERX 0x004029f0
 void PlanAction::RegainHead(Interactor* pContext, PlanNode*, short*, int)
 {
-    EngineObject* const pActor = pContext->GetActor();
-    const int           nSlot  = pActor->GetSlot();
+    auto* const pActor = pContext->GetActor();
+    const int   nSlot  = pActor->GetSlot();
 
-    RokObject* const pRok = g_pGameEngine->GetRok();
+    auto* const pRok = g_pGameEngine->GetRok();
 
     if (nSlot < kSlotRok)
     {
@@ -1059,7 +1059,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
     }
     else
     {
-        const int nId = pNode->m_pArgs[ARG_OBJECT].n;
+        const auto nId = pNode->m_pArgs[ARG_OBJECT].n;
 
         if (nId < 0)
         {
@@ -1086,7 +1086,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         return;
     }
 
-    const int nPair = nSlot * 2;
+    const auto nPair = nSlot * 2;
 
     pFirst  = g_pGameEngine->m_ppSlots[static_cast<short>(g_anSubstitutePairs[nPair])];
     pSecond = g_pGameEngine->m_ppSlots[static_cast<short>(g_anSubstitutePairs[nPair + 1])];
@@ -1145,15 +1145,15 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     if (g_pGameEngine->m_nBrutality != 0)
     {
-        Vec3 vPosition = *pSubject->GetPositionPtr();
+        auto vPosition = *pSubject->GetPositionPtr();
 
-        Vec3 vDir = pSubject->GetPhysicsBody()->velDir;
+        auto vDir = pSubject->GetPhysicsBody()->velDir;
 
         const Vec3* pDir = &vDir;
 
         for (nIndex = 0; nIndex < 3; nIndex++)
         {
-            ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
+            auto* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
             if (pSystem != nullptr)
             {
@@ -1185,9 +1185,9 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
                 pSystem->SetOrientation(&vPosition, &vDirection);
                 pSystem->SpawnParticles(1.0f, 50.0f);
 
-                AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+                auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-                PlanState* const pPlan = pSystem->GetPlanState();
+                auto* const pPlan = pSystem->GetPlanState();
 
                 pAgendaItem->Bind(pSystem, pPlan->m_pCurrent);
                 pAgendaItem->Activate();

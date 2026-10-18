@@ -155,9 +155,9 @@ void CRelaxToPosition::Process(int nArg)
     float flSign;
     int   nClamped;
 
-    Vec3* const pPoint = &m_pOwner->GetPhysicsBody()->pos;
+    auto* const pPoint = &m_pOwner->GetPhysicsBody()->pos;
 
-    Vec3 vTarget = m_vDest;
+    auto vTarget = m_vDest;
 
     const auto nBucket = static_cast<short>(g_pGameEngine->m_clock.flInvDelta);
 
@@ -165,7 +165,7 @@ void CRelaxToPosition::Process(int nArg)
 
     nClamped >>= 2;
 
-    float flRate = g_aRelaxRateByFrameRate[static_cast<short>(nClamped)];
+    auto flRate = g_aRelaxRateByFrameRate[static_cast<short>(nClamped)];
 
     if (m_bCameraBias != 0)
     {
@@ -189,7 +189,7 @@ void CRelaxToPosition::Process(int nArg)
 
     Vec3::ScaleTo(&vGap, flRate, &vStep);
 
-    const float flLength = vStep.Magnitude();
+    const auto flLength = vStep.Magnitude();
 
     if ((flRate = m_pOwner->GetPhysicsBody()->flForwardSpeedDt) < flLength)
     {
@@ -203,7 +203,7 @@ void CRelaxToPosition::Process(int nArg)
 
     if (m_pTarget != nullptr)
     {
-        Vec3* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
+        auto* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
 
         pNormal = m_pTarget->GetPositionPtr();
 
@@ -214,7 +214,7 @@ void CRelaxToPosition::Process(int nArg)
         Math::Vec3Normalize(pHeading);
     }
 
-    PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+    auto* const pBody = m_pOwner->GetPhysicsBody();
 
     pNormal = g_arenaEllipsoid.NormalAtPoint(&m_pOwner->GetPhysicsBody()->pos);
 
@@ -237,9 +237,9 @@ void CRelaxToPosition::Release(int nArg)
     float flSign;
     int   nClamped;
 
-    Vec3* const pPoint = &m_pOwner->GetPhysicsBody()->netTarget;
+    auto* const pPoint = &m_pOwner->GetPhysicsBody()->netTarget;
 
-    Vec3 vTarget = m_vDest;
+    auto vTarget = m_vDest;
 
     const auto nBucket = static_cast<short>(g_pGameEngine->m_clock.flInvDelta);
 
@@ -247,7 +247,7 @@ void CRelaxToPosition::Release(int nArg)
 
     nClamped >>= 2;
 
-    float flRate = g_aRelaxRateByFrameRate[static_cast<short>(nClamped)];
+    auto flRate = g_aRelaxRateByFrameRate[static_cast<short>(nClamped)];
 
     if (m_bCameraBias != 0)
     {
@@ -271,7 +271,7 @@ void CRelaxToPosition::Release(int nArg)
 
     Vec3::ScaleTo(&vGap, flRate, &vStep);
 
-    const float flLength = vStep.Magnitude();
+    const auto flLength = vStep.Magnitude();
 
     if ((flRate = m_pOwner->GetPhysicsBody()->flForwardSpeedDt) < flLength)
     {
@@ -285,7 +285,7 @@ void CRelaxToPosition::Release(int nArg)
 
     if (m_pTarget != nullptr)
     {
-        Vec3* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
+        auto* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
 
         pNormal = m_pTarget->GetPositionPtr();
 
@@ -296,7 +296,7 @@ void CRelaxToPosition::Release(int nArg)
         Math::Vec3Normalize(pHeading);
     }
 
-    PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+    auto* const pBody = m_pOwner->GetPhysicsBody();
 
     pNormal = g_arenaEllipsoid.NormalAtPoint(pPoint);
 

@@ -46,7 +46,7 @@ void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pLine  = &pOwner->GetPhysicsBody()->velDir;
     m_pAccum = &pOwner->GetPhysicsBody()->smoothVel;
 
-    float* const pThird = &pOwner->GetPhysicsBody()->flAccelDt;
+    auto* const pThird = &pOwner->GetPhysicsBody()->flAccelDt;
 
     m_cReleaseOnRange = 0;
     m_pLateral        = pThird;
@@ -136,14 +136,14 @@ void CAvoidObjects::Process(int nArg)
     vAxis.y = g_flZeroAgendaItem;
     vAxis.z = g_flOneAgendaItem;
 
-    float flLength = g_flZeroAgendaItem;
+    auto flLength = g_flZeroAgendaItem;
 
     float flRoot;
-    int   bPush = 1;
+    auto  bPush = 1;
 
-    const short nSign = SignTowardGoal(((PlayerObject*)m_pOwner)->m_wTargetGoalSlot);
+    const auto nSign = SignTowardGoal(((PlayerObject*)m_pOwner)->m_wTargetGoalSlot);
 
-    PhysicsBody* const pOwnBody = m_pOwner->GetPhysicsBody();
+    auto* const pOwnBody = m_pOwner->GetPhysicsBody();
 
     if (pOwnBody->flFriction >= 0.8f || g_pGameEngine->m_clock.flInvDelta * pOwnBody->flSpeed < g_flSwerveMinSpeed)
     {
@@ -151,15 +151,15 @@ void CAvoidObjects::Process(int nArg)
     }
 
     // Zero where the first block bails; the original read stack garbage in the wrong-side test.
-    float flDeltaY = 0.0f;
+    auto  flDeltaY = 0.0f;
     float flDeltaX;
 
     if (m_pOwner->GetDistIfFacing(m_pSwerveTarget, g_flZeroAgendaItem) != 0.0f)
     {
         float flScale;
 
-        Vec3* pTargetPos = m_pSwerveTarget->GetPositionPtr();
-        Vec3* pOwnPos    = m_pOwner->GetPositionPtr();
+        auto* pTargetPos = m_pSwerveTarget->GetPositionPtr();
+        auto* pOwnPos    = m_pOwner->GetPositionPtr();
 
         flDeltaX = pTargetPos->x - pOwnPos->x;
 
@@ -179,11 +179,11 @@ void CAvoidObjects::Process(int nArg)
 
             Vec3 vSide;
 
-            Vec3* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
+            auto* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
 
             if (vGap.y * pHeading->x - vGap.x * pHeading->y > 0.0f)
             {
-                Vec3* const pRight = &m_pOwner->GetPhysicsBody()->velDir;
+                auto* const pRight = &m_pOwner->GetPhysicsBody()->velDir;
 
                 vSide.x = vAxis.y * pRight->z - vAxis.z * pRight->y;
                 vSide.y = vAxis.z * pRight->x - vAxis.x * pRight->z;
@@ -191,7 +191,7 @@ void CAvoidObjects::Process(int nArg)
             }
             else
             {
-                Vec3* const pLeft = &m_pOwner->GetPhysicsBody()->velDir;
+                auto* const pLeft = &m_pOwner->GetPhysicsBody()->velDir;
 
                 vSide.x = vAxis.z * pLeft->y - vAxis.y * pLeft->z;
                 vSide.y = vAxis.x * pLeft->z - vAxis.z * pLeft->x;
@@ -230,8 +230,8 @@ void CAvoidObjects::Process(int nArg)
     {
         float flScale;
 
-        Vec3* const pTargetPos = m_pDrawTarget->GetPositionPtr();
-        Vec3* const pOwnPos    = m_pOwner->GetPositionPtr();
+        auto* const pTargetPos = m_pDrawTarget->GetPositionPtr();
+        auto* const pOwnPos    = m_pOwner->GetPositionPtr();
 
         flDeltaX = pTargetPos->x - pOwnPos->x;
 

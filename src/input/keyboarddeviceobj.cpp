@@ -28,7 +28,7 @@
 void KeyboardDeviceObj::CheckButtonTimeouts()
 {
     unsigned int nBit    = 1;
-    unsigned int nSticky = m_nStickyMask;
+    auto         nSticky = m_nStickyMask;
     auto         nCount  = static_cast<short>(m_pBindingTable->m_nKeyCount);
     short        nKey    = 0;
 
@@ -42,7 +42,7 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
                 {
                     if (g_pGameEngine->m_clock.nTickMs - m_aPressTime[nKey] > m_nDoubleTapMs)
                     {
-                        ActionBinding* const pBinding = m_apStickyBinding[nKey];
+                        auto* const pBinding = m_apStickyBinding[nKey];
 
                         if (pBinding != nullptr)
                         {
@@ -137,7 +137,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
 
     pDevice->CommitKeyBindings(KeyboardDeviceObj::LoadBindingsFromIni(), kKeyBindingCount);
 
-    ActionBindingGroup* pGroup = pTable;
+    auto* pGroup = pTable;
 
     for (int nGroup = 0; nGroup < *pnGroupsOut; nGroup++, pGroup++)
     {
@@ -341,7 +341,7 @@ int KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
 // FUNCTION: HYPERX 0x0045d0b0
 KeyboardDeviceObj::~KeyboardDeviceObj()
 {
-    ActionBindingGroup* const pSlots = m_pSlots;
+    auto* const pSlots = m_pSlots;
 
     while (m_nSlots-- != 0)
     {
@@ -370,8 +370,8 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
     int nIndex;
     int nWrite;
 
-    ActionBindingGroup*       pRecord = m_pSlots;
-    ActionBindingGroup* const pEnd    = pRecord + m_nSlots;
+    auto*       pRecord = m_pSlots;
+    auto* const pEnd    = pRecord + m_nSlots;
 
     while (pRecord < pEnd)
     {
@@ -438,10 +438,10 @@ int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 // FUNCTION: HYPERX 0x0045d320
 int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 {
-    int nIndex         = 0;
+    auto nIndex        = 0;
     m_nPrevHeldMask    = m_nHeldMask;
     const auto nCount  = static_cast<short>(m_pBindingTable->m_nKeyCount);
-    int        nResult = -1;
+    auto       nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
     {
@@ -528,11 +528,11 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 // FUNCTION: HYPERX 0x0045d4c0
 int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 {
-    int nIndex = 0;
+    auto nIndex = 0;
 
     m_nPrevHeldMask    = m_nHeldMask;
     const auto nCount  = static_cast<short>(m_pBindingTable->m_nKeyCount);
-    int        nResult = -1;
+    auto       nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
     {

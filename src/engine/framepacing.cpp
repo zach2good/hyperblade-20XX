@@ -198,7 +198,7 @@ void PlaceObjects(float flAlpha)
 {
     for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
+        auto* const pObject = g_pGameEngine->m_ppObjects[i];
 
         const auto it = s_objects.find(pObject);
 
@@ -238,7 +238,7 @@ void RestoreLive(const std::vector<Rows>& live)
 
     for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
+        auto* const pObject = g_pGameEngine->m_ppObjects[i];
 
         for (short nBone = 0; nBone < pObject->m_wBoneCount; nBone++)
         {
@@ -348,7 +348,7 @@ void FramePacing::RecordView(CameraObject& camera)
 
     for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
+        auto* const pObject = g_pGameEngine->m_ppObjects[i];
 
         if (pObject->IsVisible() != 0)
         {

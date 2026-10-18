@@ -73,7 +73,7 @@ static void ShowPadIcons(int nKeyWidth, int nKeyHeight)
 
     for (int i = 0; i < kKeyBindingCount; i++)
     {
-        const int nSlot = g_anKeyConfigDefaultSlots[i];
+        const auto nSlot = g_anKeyConfigDefaultSlots[i];
 
         // The left stick steers, so the four directions show it.
         const auto* const pszControl = [&]
@@ -221,15 +221,15 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
         case 9:
             if (nMsg == kInputLeftUp)
             {
-                const int nActive = m_nActiveRemap;
+                const auto nActive = m_nActiveRemap;
 
                 if (nActive != -1)
                 {
-                    Widget* const pOld = m_apWidgets[nActive];
+                    auto* const pOld = m_apWidgets[nActive];
 
                     pOld->ClearFrames();
 
-                    const unsigned int nKey = g_anKeyConfigKeys[nActive - kKeyBitmapSlot];
+                    const auto nKey = g_anKeyConfigKeys[nActive - kKeyBitmapSlot];
 
                     for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
                     {
@@ -254,8 +254,8 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
                     m_nActiveRemap = -1;
                 }
 
-                const int     nSlot = nWidget + kKeyBitmapSlot;
-                Widget* const pNew  = m_apWidgets[nWidget + kKeyBitmapSlot];
+                const int   nSlot = nWidget + kKeyBitmapSlot;
+                auto* const pNew  = m_apWidgets[nWidget + kKeyBitmapSlot];
 
                 pNew->ClearFrames();
 
@@ -292,7 +292,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 {
     unsigned int nIndex;
 
-    const int nRow = FindActiveRow();
+    const auto nRow = FindActiveRow();
 
     if (nRow == -1 || nRow > kKeyBindingCount - 1)
     {
@@ -336,7 +336,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
         g_anKeyConfigKeys[nRow] = nKeyCode;
     }
 
-    Widget* const pBitmap = m_apWidgets[nRow + kKeyBitmapSlot];
+    auto* const pBitmap = m_apWidgets[nRow + kKeyBitmapSlot];
 
     for (nIndex = 0; nIndex < kKeyBitmapCount; nIndex++)
     {
@@ -360,7 +360,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 
     pBitmap->SetDirtyFlag(1);
 
-    Widget* const pRow = m_apWidgets[nRow];
+    auto* const pRow = m_apWidgets[nRow];
 
     pRow->SetDepressed(0);
     pRow->SetDirtyFlag(1);

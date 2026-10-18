@@ -60,8 +60,8 @@ void SoundManager::FreeEntries()
 // FUNCTION: HYPERX 0x00449280
 unsigned short SoundManager::Load(const char* pszListName)
 {
-    int        nLongest = 0;
-    int        nLines   = 0;
+    auto       nLongest = 0;
+    auto       nLines   = 0;
     OwnedFile  file;
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszListName).m_pchData, kMaxPathLength);
     char       szName[kSoundNameMax];
@@ -99,7 +99,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     short nGroupFirst = 0;
     short nIndex      = 0;
-    int   nGroupPrev  = kGroupNone;
+    auto  nGroupPrev  = kGroupNone;
 
     file.m_file.GetNextLine(&pLine);
 
@@ -190,7 +190,7 @@ extern short g_wSoundSequence;
 // FUNCTION: HYPERX 0x00449680
 SoundEntry* SoundManager::PickFromGroup(int nGroup)
 {
-    int nIndex = g_wSoundSequence % 2 + m_awGroupFirst[nGroup];
+    auto nIndex = g_wSoundSequence % 2 + m_awGroupFirst[nGroup];
 
     g_wSoundSequence++;
 

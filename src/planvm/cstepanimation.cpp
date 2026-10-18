@@ -19,7 +19,7 @@ void CStepAnimation::Process(int nArg)
 {
     m_pOwner->m_pAnimPlayer->UpdateTick();
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {
@@ -32,7 +32,7 @@ void CStepAnimation::Release(int nArg)
 {
     m_pOwner->m_pAnimPlayer->UpdateTick();
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

@@ -38,7 +38,7 @@ void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)
     m_pOrigin = &pOwner->GetPhysicsBody()->pos;
     m_pAxis   = &pOwner->GetPhysicsBody()->velDir;
 
-    Vec3* const pNormal = &pOwner->GetPhysicsBody()->surfNormal;
+    auto* const pNormal = &pOwner->GetPhysicsBody()->surfNormal;
 
     m_cArrived = 0;
     m_pNormal  = pNormal;
@@ -50,7 +50,7 @@ void CSteerBetweenFacing::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+        auto* const pBody = m_pOwner->GetPhysicsBody();
 
         pBody->flFacing = g_flZeroAgendaItem;
 
@@ -68,7 +68,7 @@ void CSteerBetweenFacing::OnListChanged()
 // FUNCTION: HYPERX 0x0040ee50
 void CSteerBetweenFacing::Process(int nArg)
 {
-    const float flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.12f + 0.2f;
+    const auto flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.12f + 0.2f;
 
     Vec3 vDelta;
     Vec3 vAim;
@@ -77,9 +77,9 @@ void CSteerBetweenFacing::Process(int nArg)
     vDelta.y = g_flZeroAgendaItem;
     vDelta.z = g_flZeroAgendaItem;
 
-    Vec3 vA = *m_pPath->m_pObjectA->GetPositionPtr();
-    Vec3 vB = *m_pPath->m_pObjectB->GetPositionPtr();
-    Vec3 vC = *m_pPath->m_pAimObject->GetPositionPtr();
+    auto vA = *m_pPath->m_pObjectA->GetPositionPtr();
+    auto vB = *m_pPath->m_pObjectB->GetPositionPtr();
+    auto vC = *m_pPath->m_pAimObject->GetPositionPtr();
 
     vAim.x = g_flZeroAgendaItem;
     vAim.y = g_flZeroAgendaItem;
@@ -106,8 +106,8 @@ void CSteerBetweenFacing::Process(int nArg)
 
     const Vec3* const pAxis = m_pAxis;
 
-    const float flAim = vAim.x * pAxis->x + (vAim.y * pAxis->y + vAim.z * pAxis->z);
-    float       flFacing;
+    const auto flAim = vAim.x * pAxis->x + (vAim.y * pAxis->y + vAim.z * pAxis->z);
+    float      flFacing;
 
     if (vAim.y * pAxis->x - vAim.x * pAxis->y > 0.0f)
     {
@@ -126,13 +126,13 @@ void CSteerBetweenFacing::Process(int nArg)
     vDelta.y = (vA.y - pPosition->y) * 0.2f;
     vDelta.z = vA.z - pPosition->z;
 
-    const float flRange = vDelta.Magnitude();
+    const auto flRange = vDelta.Magnitude();
 
     if (flRange < 15.0)
     {
-        const float flStop = g_pGameEngine->m_clock.GetDeltaSquared() * -10.0f;
+        const auto flStop = g_pGameEngine->m_clock.GetDeltaSquared() * -10.0f;
 
-        PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+        auto* const pBody = m_pOwner->GetPhysicsBody();
 
         if (pBody->flSpeed > 0.1)
         {
@@ -161,7 +161,7 @@ void CSteerBetweenFacing::Process(int nArg)
 
     const Vec3* const pLeanAxis = m_pAxis;
 
-    const float flLean = g_flOneAgendaItem - (vDelta.x * pLeanAxis->x + (vDelta.y * pLeanAxis->y + vDelta.z * pLeanAxis->z));
+    const auto flLean = g_flOneAgendaItem - (vDelta.x * pLeanAxis->x + (vDelta.y * pLeanAxis->y + vDelta.z * pLeanAxis->z));
 
     float flCross;
 

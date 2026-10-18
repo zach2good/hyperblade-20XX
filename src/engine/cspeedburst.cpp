@@ -86,9 +86,9 @@ void CSpeedBurst::Process(int nArg)
 
     if (*m_pBoost > g_flOneAgendaItem)
     {
-        bool  bFloored  = false;
-        float flStamina = ((PlayerObject*)m_pOwner)->m_stats.m_flSpeedRatio;
-        flDelta         = g_pGameEngine->m_clock.flDelta;
+        auto bFloored  = false;
+        auto flStamina = ((PlayerObject*)m_pOwner)->m_stats.m_flSpeedRatio;
+        flDelta        = g_pGameEngine->m_clock.flDelta;
 
         pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
@@ -117,9 +117,9 @@ void CSpeedBurst::Process(int nArg)
         }
         else if (bFloored)
         {
-            const float flDecay = g_flOneAgendaItem - flDelta * DECAY_RATE;
-            m_flTarget          = g_flZeroAgendaItem;
-            *m_pBoost           = flDecay * *m_pBoost;
+            const auto flDecay = g_flOneAgendaItem - flDelta * DECAY_RATE;
+            m_flTarget         = g_flZeroAgendaItem;
+            *m_pBoost          = flDecay * *m_pBoost;
 
             if (GetBoost() < g_flOneAgendaItem + BOOST_EPSILON)
             {

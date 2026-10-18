@@ -41,7 +41,7 @@ void* MDM1::Decompress(FileObj* pFile)
         return nullptr;
     }
 
-    const int nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, pOut, nSize, pWindow, kWindowBytes);
+    const auto nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, pOut, nSize, pWindow, kWindowBytes);
 
     free(pWindow);
 

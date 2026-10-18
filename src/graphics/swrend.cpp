@@ -168,7 +168,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         return;
     }
 
-    char cBackFace = cFlip;
+    auto cBackFace = cFlip;
 
     if ((cClipFlags & kClipNear) != 0)
     {
@@ -176,14 +176,14 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         Vec3 vCorner1;
         Vec3 vCorner2;
 
-        vCorner0.x           = (1.0f / g_swFaceBuffer.aVertices[0].pos.w) * g_swFaceBuffer.aVertices[0].pos.x;
-        vCorner0.y           = (1.0f / g_swFaceBuffer.aVertices[0].pos.w) * g_swFaceBuffer.aVertices[0].pos.y;
-        const float flScale1 = 1.0f / g_swFaceBuffer.aVertices[1].pos.w;
-        vCorner1.x           = flScale1 * g_swFaceBuffer.aVertices[1].pos.x;
-        vCorner1.y           = flScale1 * g_swFaceBuffer.aVertices[1].pos.y;
-        const float flScale2 = 1.0f / g_swFaceBuffer.aVertices[2].pos.w;
-        vCorner2.x           = flScale2 * g_swFaceBuffer.aVertices[2].pos.x;
-        vCorner2.y           = flScale2 * g_swFaceBuffer.aVertices[2].pos.y;
+        vCorner0.x          = (1.0f / g_swFaceBuffer.aVertices[0].pos.w) * g_swFaceBuffer.aVertices[0].pos.x;
+        vCorner0.y          = (1.0f / g_swFaceBuffer.aVertices[0].pos.w) * g_swFaceBuffer.aVertices[0].pos.y;
+        const auto flScale1 = 1.0f / g_swFaceBuffer.aVertices[1].pos.w;
+        vCorner1.x          = flScale1 * g_swFaceBuffer.aVertices[1].pos.x;
+        vCorner1.y          = flScale1 * g_swFaceBuffer.aVertices[1].pos.y;
+        const auto flScale2 = 1.0f / g_swFaceBuffer.aVertices[2].pos.w;
+        vCorner2.x          = flScale2 * g_swFaceBuffer.aVertices[2].pos.x;
+        vCorner2.y          = flScale2 * g_swFaceBuffer.aVertices[2].pos.y;
 
         vCorner1.x -= vCorner0.x;
         vCorner1.y -= vCorner0.y;
@@ -223,7 +223,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         if (cColourIndex >= g_pColorPalette->m_rampBounds.nFirst && cColourIndex <= g_pColorPalette->m_rampBounds.nCount)
         {
             flLevel             = g_flZeroSWRend;
-            Vec3* const pNormal = &vNormal;
+            auto* const pNormal = &vNormal;
 
             if (pNormal == nullptr)
             {
@@ -231,7 +231,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             }
             else
             {
-                const float flPartial = Vec3::Dot(pNormal, &g_vLightDirModel) * pMaterial->flDiffuse + pMaterial->flAmbient;
+                const auto flPartial = Vec3::Dot(pNormal, &g_vLightDirModel) * pMaterial->flDiffuse + pMaterial->flAmbient;
 
                 flLevel = flPartial + pMaterial->flEmissive;
 
@@ -302,8 +302,8 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         }
     }
 
-    i          = 0;
-    int nIndex = 0;
+    i           = 0;
+    auto nIndex = 0;
 
     if ((g_bBottomUpDIB != 0) == (cBackFace != 0))
     {
@@ -325,15 +325,15 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 
     nIndex = nFirst;
 
-    float flRecip = SW_LIGHT_CEILING / g_swFaceBuffer.aVertices[static_cast<short>(nIndex)].pos.w;
-    pVert         = &g_swFaceBuffer.aVertices[static_cast<short>(nIndex)];
-    pVert->pos.x  = flRecip * pVert->pos.x;
-    pVert->pos.y  = flRecip * pVert->pos.y;
+    auto flRecip = SW_LIGHT_CEILING / g_swFaceBuffer.aVertices[static_cast<short>(nIndex)].pos.w;
+    pVert        = &g_swFaceBuffer.aVertices[static_cast<short>(nIndex)];
+    pVert->pos.x = flRecip * pVert->pos.x;
+    pVert->pos.y = flRecip * pVert->pos.y;
 
     for (i = 0; i < g_swFaceBuffer.nCount; i++)
     {
-        const float flPrevY = pVert->pos.y;
-        const float flPrevX = pVert->pos.x;
+        const auto flPrevY = pVert->pos.y;
+        const auto flPrevX = pVert->pos.x;
 
         nIndex += nStep;
 
@@ -350,10 +350,10 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         }
 
         // The rounding adds the bias constant, and the result is the sum's own low bits.
-        const float flRoundX1 = flPrevX + SW_ROUND_BIAS;
-        const float flRoundY1 = flPrevY + SW_ROUND_BIAS;
-        const float flRoundX2 = pVert->pos.x + SW_ROUND_BIAS;
-        const float flRoundY2 = pVert->pos.y + SW_ROUND_BIAS;
+        const auto flRoundX1 = flPrevX + SW_ROUND_BIAS;
+        const auto flRoundY1 = flPrevY + SW_ROUND_BIAS;
+        const auto flRoundX2 = pVert->pos.x + SW_ROUND_BIAS;
+        const auto flRoundY2 = pVert->pos.y + SW_ROUND_BIAS;
 
         // An edge outside the frame's rows would scan past the edge tables.
         if (EdgeOffScreen(flRoundY1, flRoundY2) != 0)
@@ -385,8 +385,8 @@ void SWRend::SortFaces(short nCount)
         return;
     }
 
-    int nLast  = nCount;
-    int nStart = (nLast >> 1) + 1;
+    int  nLast  = nCount;
+    auto nStart = (nLast >> 1) + 1;
 
     for (;;)
     {
@@ -410,8 +410,8 @@ void SWRend::SortFaces(short nCount)
             }
         }
 
-        int nHole  = nStart;
-        int nChild = nStart + nStart;
+        auto nHole  = nStart;
+        auto nChild = nStart + nStart;
 
         while (nChild <= nLast)
         {
@@ -452,12 +452,12 @@ void SWRend::FillSpans(int nColour)
     const auto nTop    = static_cast<int>(static_cast<unsigned short>(g_wSpanYMin));
     const auto nBottom = static_cast<int>(static_cast<unsigned short>(g_wSpanYMax));
 
-    unsigned char* pRow = g_pBackBufferBitsCopy + nTop * g_nSurfacePitchCopy;
+    auto* pRow = g_pBackBufferBitsCopy + nTop * g_nSurfacePitchCopy;
 
     for (int y = nTop; y <= nBottom; y++)
     {
-        const int nLeft  = g_pLeftStack[y];
-        const int nCount = static_cast<int>(g_pRightStack[y]) - nLeft;
+        const int  nLeft  = g_pLeftStack[y];
+        const auto nCount = static_cast<int>(g_pRightStack[y]) - nLeft;
 
         if (nCount >= 0)
         {
@@ -705,7 +705,7 @@ void SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
         return nPitch;
     }();
 
-    unsigned char* p = g_pBackBufferBitsCopy + nY1 * nPitch + nX1;
+    auto* p = g_pBackBufferBitsCopy + nY1 * nPitch + nX1;
 
     *p = cPixel;
 
@@ -934,15 +934,15 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 
     while (nCount-- > 0)
     {
-        FaceRecord* const pFace = *ppFaces;
+        auto* const pFace = *ppFaces;
 
-        MeshFace* pEntry = pThis->m_pMesh->Face(pFace->nFace);
+        auto* pEntry = pThis->m_pMesh->Face(pFace->nFace);
 
-        EngineObject* pRendOwner = pThis->m_pOwner;
+        auto* pRendOwner = pThis->m_pOwner;
 
         apMaterials[0] = &pRendOwner->m_pModelBlock->m_pMaterials[static_cast<int>(pEntry->cMaterial)];
 
-        const short nSecond = apMaterials[0]->nBackIndex;
+        const auto nSecond = apMaterials[0]->nBackIndex;
 
         if (nSecond >= 0)
         {
@@ -967,16 +967,16 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 // FUNCTION: HYPERX 0x0047fb70
 void SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale)
 {
-    pOut->nCount           = 0;
-    pOut->nMask            = pIn->nMask;
-    const int   nRemaining = pIn->nCount;
-    ClipVertex* pCurr      = &pIn->aVertices[0];
-    ClipVertex* pPrev      = &pIn->aVertices[nRemaining - 1];
-    double      dPrev      = flAxisScale * pPrev->af[nAxis] - flWScale * pPrev->pos.w;
+    pOut->nCount          = 0;
+    pOut->nMask           = pIn->nMask;
+    const auto nRemaining = pIn->nCount;
+    auto*      pCurr      = &pIn->aVertices[0];
+    auto*      pPrev      = &pIn->aVertices[nRemaining - 1];
+    double     dPrev      = flAxisScale * pPrev->af[nAxis] - flWScale * pPrev->pos.w;
 
     if (nRemaining > 0)
     {
-        int nLeft = nRemaining;
+        auto nLeft = nRemaining;
 
         do
         {
@@ -984,9 +984,9 @@ void SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int
 
             if ((dPrev <= 0.0) ^ (dCurr <= 0.0))
             {
-                const double dBlend   = dPrev / (dPrev - dCurr);
+                const auto   dBlend   = dPrev / (dPrev - dCurr);
                 float*       pBlended = pOut->aVertices[pOut->nCount].af;
-                int          nMask    = pIn->nMask;
+                auto         nMask    = pIn->nMask;
                 const float* pFrom    = pPrev->af;
                 const float* pTo      = pCurr->af;
 

@@ -28,7 +28,7 @@ void BehObj_SetInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 
-        AgendaItem* const pNode = m_apSlots[nSlot];
+        auto* const pNode = m_apSlots[nSlot];
         nSlot++;
         pNode->m_bPersistent = 1;
     }

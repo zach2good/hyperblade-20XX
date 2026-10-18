@@ -38,7 +38,7 @@ void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int n
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 
-        AgendaItem* const pNode = m_apSlots[nSlot];
+        auto* const pNode = m_apSlots[nSlot];
         nSlot++;
         pNode->m_bPersistent = 1;
     }

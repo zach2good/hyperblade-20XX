@@ -32,7 +32,7 @@ inline float Cross2D(const Vec3* pA, const Vec3* pB)
 // FUNCTION: HYPERX 0x0044a9a0
 int Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut)
 {
-    const char cClip = Face::ClipCodeAndCullCheck(pFace, pVertexBuf);
+    const auto cClip = Face::ClipCodeAndCullCheck(pFace, pVertexBuf);
 
     *pcClipOut = cClip;
 
@@ -49,9 +49,9 @@ int Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVe
 
         const short* pIndices = pFace->aCorners;
 
-        const TransformedVertex* p2 = &pVertexBuf[pIndices[2]];
-        const TransformedVertex* p1 = &pVertexBuf[pIndices[1]];
-        const TransformedVertex* p0 = &pVertexBuf[pIndices[0]];
+        const auto* p2 = &pVertexBuf[pIndices[2]];
+        const auto* p1 = &pVertexBuf[pIndices[1]];
+        const auto* p0 = &pVertexBuf[pIndices[0]];
 
         v0.x = (1.0f / p0->w) * p0->x;
         v0.y = (1.0f / p0->w) * p0->y;
@@ -85,25 +85,25 @@ char Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* 
 {
     const short* pIndices = pFace->aCorners;
 
-    const short nCount = pFace->nCorners;
+    const auto nCount = pFace->nCorners;
 
     unsigned char cCode = 0;
 
-    int cLeft   = 0;
-    int cRight  = 0;
-    int cTop    = 0;
-    int cBottom = 0;
-    int cNear   = 0;
-    int cFar    = 0;
+    auto cLeft   = 0;
+    auto cRight  = 0;
+    auto cTop    = 0;
+    auto cBottom = 0;
+    auto cNear   = 0;
+    auto cFar    = 0;
 
-    const float flXScale = g_projRenderParams.flMaxX;
-    const float flYScale = g_projRenderParams.flMaxY;
+    const auto flXScale = g_projRenderParams.flMaxX;
+    const auto flYScale = g_projRenderParams.flMaxY;
 
     for (int i = nCount; i > 0; i--)
     {
-        const TransformedVertex* p = &pVertices[*pIndices];
+        const auto* p = &pVertices[*pIndices];
 
-        const float  flW     = p->w;
+        const auto   flW     = p->w;
         const float* pflAxis = p->af;
 
         if (*pflAxis < 0.0)
@@ -169,7 +169,7 @@ unsigned char Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
 {
     ClipPolyBuffer* pSwap;
 
-    ClipPolyBuffer* pSrc = pPoly;
+    auto*           pSrc = pPoly;
     ClipPolyBuffer* pDst = &g_clipPolyStaging;
 
     if ((cClipFlags & kClipLeft) != 0)

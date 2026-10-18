@@ -31,11 +31,11 @@ void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_wKind  = Agenda_CSteerToward;
     m_bReady = 0;
 
-    m_pPosition         = &pOwner->GetPhysicsBody()->pos;
-    m_pTo               = &pOwner->GetPhysicsBody()->prevPos;
-    m_pStep             = &pOwner->GetPhysicsBody()->vel;
-    m_pVelDir           = &pOwner->GetPhysicsBody()->velDir;
-    float* const pFifth = &pOwner->GetPhysicsBody()->flSpeed;
+    m_pPosition        = &pOwner->GetPhysicsBody()->pos;
+    m_pTo              = &pOwner->GetPhysicsBody()->prevPos;
+    m_pStep            = &pOwner->GetPhysicsBody()->vel;
+    m_pVelDir          = &pOwner->GetPhysicsBody()->velDir;
+    auto* const pFifth = &pOwner->GetPhysicsBody()->flSpeed;
 
     m_pOwner            = pOwner;
     m_pflSpeed          = pFifth;
@@ -82,13 +82,13 @@ void CSteerToward::Process(int nArg)
     vLead.y = g_flZeroAgendaItem;
     vLead.z = g_flZeroAgendaItem;
 
-    PhysicsBody* pBody = m_pTarget->GetPhysicsBody();
+    auto* pBody = m_pTarget->GetPhysicsBody();
 
-    Vec3 vOffset = pBody->pos;
+    auto vOffset = pBody->pos;
 
     pBody = m_pOwner->GetPhysicsBody();
 
-    Vec3 vSelf = pBody->pos;
+    auto vSelf = pBody->pos;
 
     pBody = m_pTarget->GetPhysicsBody();
 
@@ -100,13 +100,13 @@ void CSteerToward::Process(int nArg)
 
     if (sqrt(static_cast<double>(vOffset.x * vOffset.x + vOffset.y * vOffset.y + vOffset.z * vOffset.z)) < g_dHomingSix)
     {
-        const short nKind = m_pTarget->GetSlot();
+        const auto nKind = m_pTarget->GetSlot();
 
         if (nKind < kPlayerObjectCount)
         {
-            Vec3* const pPos = &m_pOwner->GetPhysicsBody()->pos;
+            auto* const pPos = &m_pOwner->GetPhysicsBody()->pos;
 
-            TransformObject* const pMatrix = &m_pTarget->m_pBones[kTargetBone].m_world;
+            auto* const pMatrix = &m_pTarget->m_pBones[kTargetBone].m_world;
 
             flPartial = vSide.z * pMatrix->m_a[0][2] + vSide.x * pMatrix->m_a[0][0];
 
@@ -155,9 +155,9 @@ void CSteerToward::Process(int nArg)
         m_pPosition->z = m_pStep->z + m_pPosition->z;
     }
 
-    Vec3* const pStep = m_pStep;
+    auto* const pStep = m_pStep;
 
-    Vec3 vWork = *pStep;
+    auto vWork = *pStep;
 
     Vec3::ScaleTo(pStep, g_pGameEngine->m_clock.GetInvDelta(), &vWork);
 
@@ -189,7 +189,7 @@ void CSteerToward::IntegrateSpringAndGravity()
 
     vPull.ScaleInPlace(g_pGameEngine->m_clock.GetDeltaSquared());
 
-    Vec3* pVel = m_pStep;
+    auto* pVel = m_pStep;
 
     pVel->x = vPull.x + pVel->x;
     pVel->y = vPull.y + pVel->y;
@@ -205,9 +205,9 @@ void CSteerToward::IntegrateSpringAndGravity()
 
     pVel = m_pStep;
 
-    const float flZ = pVel->z;
-    const float flY = pVel->y;
-    const float flX = pVel->x;
+    const auto flZ = pVel->z;
+    const auto flY = pVel->y;
+    const auto flX = pVel->x;
 
     *m_pflSpeed = static_cast<float>(sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ)));
 
@@ -233,13 +233,13 @@ void CSteerToward::Release(int nArg)
     Vec3         vScratch;
 
     const Vec3* const pFrom = m_pPosition;
-    Vec3* const       pTo   = m_pTo;
+    auto* const       pTo   = m_pTo;
 
     pTo->x = pFrom->x;
     pTo->y = pFrom->y;
     pTo->z = pFrom->z;
 
-    char* pFlag = m_pNetTargetPending;
+    auto* pFlag = m_pNetTargetPending;
 
     if (*pFlag != 0)
     {
@@ -249,7 +249,7 @@ void CSteerToward::Release(int nArg)
         m_vTarget.y = m_pNetTarget->y;
         m_vTarget.z = m_pNetTarget->z;
 
-        const float flDt = g_pGameEngine->m_clock.flDelta;
+        const auto flDt = g_pGameEngine->m_clock.flDelta;
 
         pBody = m_pOwner->GetPhysicsBody();
 
@@ -270,20 +270,20 @@ void CSteerToward::Release(int nArg)
 
     IntegrateSpringAndGravity();
 
-    Vec3 vPoint = *m_pOwner->GetWorldPos(&vScratch);
+    auto vPoint = *m_pOwner->GetWorldPos(&vScratch);
 
     const Vec3* pNormal = g_arenaEllipsoid.NormalAtPoint(&vPoint);
 
     if (pNormal != nullptr)
     {
-        Vec3* const pSurfNormal = &m_pOwner->GetPhysicsBody()->surfNormal;
+        auto* const pSurfNormal = &m_pOwner->GetPhysicsBody()->surfNormal;
 
         *pSurfNormal = *pNormal;
 
         m_pOwner->GetPhysicsBody()->pShell = &g_arenaEllipsoid;
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

@@ -105,7 +105,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     if (pContext->GetNamedSlot() == kSlotExplicitPair)
     {
-        BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+        auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
         pSelf = pColSelf->GetOwner();
 
@@ -126,8 +126,8 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
     {
         pOther = pContext->GetActor();
 
-        PlanWord* const pArgs = pNode->m_pArgs;
-        int             nSlot;
+        auto* const pArgs = pNode->m_pArgs;
+        int         nSlot;
 
         if (pArgs[ARG_FIRST].n == PLAN_TOKEN_MESSAGE_DATA)
         {
@@ -150,9 +150,9 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
         }
     }
 
-    PhysicsBody* pBody = pSelf->GetPhysicsBody();
+    auto* pBody = pSelf->GetPhysicsBody();
 
-    const float flRatio = pBody->flSpeed / pBody->GetForwardSpeedDt() * 4.0f;
+    const auto flRatio = pBody->flSpeed / pBody->GetForwardSpeedDt() * 4.0f;
 
     Vec3::ScaleTo(&pBody->vel, flFactor, &vImpulse);
 
@@ -168,12 +168,12 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
     {
         auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
-        GameBehaviorObject* const pBindNode = pSelf->GetPlanState()->m_pCurrent;
+        auto* const pBindNode = pSelf->GetPlanState()->m_pCurrent;
         pRelax->Bind(pSelf, pBindNode);
         pRelax->m_flAngle = g_flHitSpin;
         pRelax->Activate();
 
-        float flFacing = g_flFacingStepBase;
+        auto flFacing = g_flFacingStepBase;
 
         Vec3 aScratch[2];
 
@@ -191,7 +191,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
         Math::Vec3Normalize(&vDiff);
 
-        Vec3* const pDir = &pBody->velDir;
+        auto* const pDir = &pBody->velDir;
 
         vImpulse.x = vDiff.z * pDir->y - vDiff.y * pDir->z;
         vImpulse.y = vDiff.x * pDir->z - vDiff.z * pDir->x;
@@ -224,7 +224,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
                               g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
         pSelf->PostSceneEvent(kMsgYerHit, 0);
 
-        const short nViewed = g_pGameEngine->m_nViewedSlot;
+        const auto nViewed = g_pGameEngine->m_nViewedSlot;
 
         if (pSelf->GetSlot() == nViewed)
         {
@@ -266,7 +266,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
     if (pNode->m_nArgCount < 3)
     {
-        BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+        auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
         pSelf = pColSelf->GetOwner();
 
@@ -285,7 +285,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
     }
     else
     {
-        PlanWord* const pArgs = pNode->m_pArgs;
+        auto* const pArgs = pNode->m_pArgs;
 
         if (pArgs[kArgSecond].n != PLAN_TOKEN_MESSAGE_DATA)
         {
@@ -311,8 +311,8 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
         pOther = g_pGameEngine->m_ppSlots[nResolved];
     }
 
-    PhysicsBody*       pSelfBody  = pSelf->GetPhysicsBody();
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pSelfBody  = pSelf->GetPhysicsBody();
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
     vSelfPos = *pSelf->GetWorldPos(&vDelta);
 
@@ -322,9 +322,9 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
     vOrigin.y = pOther->m_transformC.m_a[1][3];
     vOrigin.z = pOther->m_transformC.m_a[2][3];
 
-    Vec3* const pDelta = vSelfPos.Subtract(&vDelta, &vOrigin);
+    auto* const pDelta = vSelfPos.Subtract(&vDelta, &vOrigin);
 
-    Vec3 vLocal = *pDelta;
+    auto vLocal = *pDelta;
 
     pOther->m_transformC.TransformDirectionByRows(*pDelta, &vLocal);
 
@@ -345,7 +345,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
         *CollisionCheck::ComputeNearestNormal(&vDelta, &box, &vPoint),
         &vLocal);
 
-    Vec3 vNormal = vLocal;
+    auto vNormal = vLocal;
 
     flSpeed = g_pGameEngine->m_clock.flInvDelta * pSelfBody->flSpeed;
 
@@ -361,7 +361,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
         pNormalField = &pSelfBody->surfNormal;
 
-        CollisionShape* const pSavedSurface = pSelfBody->pShell;
+        auto* const pSavedSurface = pSelfBody->pShell;
 
         vLocal = *pNormalField;
 
@@ -410,7 +410,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
             Math::Vec3Normalize(&vOrigin);
 
-            Vec3* const pDir = &pSelfBody->velDir;
+            auto* const pDir = &pSelfBody->velDir;
 
             vDelta.x = vOrigin.z * pDir->y - vOrigin.y * pDir->z;
             vDelta.y = vOrigin.x * pDir->z - vOrigin.z * pDir->x;
@@ -444,11 +444,11 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
                 g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
             pSelf->PostSceneEvent(kMsgYerHit, 0);
 
-            const short nViewed = g_pGameEngine->m_nViewedSlot;
+            const auto nViewed = g_pGameEngine->m_nViewedSlot;
 
             if (pSelf->GetSlot() == nViewed)
             {
-                EngineObject* const pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
+                auto* const pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
                 pAnnounce->PostSceneEvent(kMsgHit, pSelf->GetSlot());
 
@@ -490,7 +490,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
             vOrigin.x -= vDelta.x;
             vOrigin.y -= vDelta.y;
 
-            const float flZ = vOrigin.z - flDot * vLocal.z;
+            const auto flZ = vOrigin.z - flDot * vLocal.z;
 
             flScale = 3.0f / (g_pGameEngine->m_clock.flInvDelta * pSelfBody->flSpeed);
 
@@ -521,7 +521,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
     if (pContext->GetNamedSlot() == kSlotExplicitPair)
     {
-        BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+        auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
         pSelf = pColSelf->GetOwner();
 
@@ -542,8 +542,8 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
         pSelf = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
     }
 
-    PhysicsBody*       pSelfBody  = pSelf->GetPhysicsBody();
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pSelfBody  = pSelf->GetPhysicsBody();
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
     const Vec3* pSelfCentre = pSelf->GetWorldPos(&vSteer);
     vSelfPos                = *pSelfCentre;
@@ -553,7 +553,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
     vDir    = *Object::ComputeSteeringDirection(&vSteer, pOther, &vSelfPos);
     vNormal = vDir;
 
-    Vec3 vEntryVel = pSelf->m_pBody->vel;
+    auto vEntryVel = pSelf->m_pBody->vel;
 
     flSpeed = static_cast<float>(sqrt(static_cast<double>(vEntryVel.x * vEntryVel.x + (vEntryVel.y * vEntryVel.y + vEntryVel.z * vEntryVel.z))) * g_pGameEngine->m_clock.flInvDelta);
 
@@ -568,8 +568,8 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
         CollisionObj plane(&vNormal, &vOtherPos, flFriction, flElasticity);
 
-        CollisionShape* const pSavedSurface = pSelfBody->pShell;
-        pNormalField                        = &pSelfBody->surfNormal;
+        auto* const pSavedSurface = pSelfBody->pShell;
+        pNormalField              = &pSelfBody->surfNormal;
 
         vSaved = *pNormalField;
 
@@ -656,7 +656,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
             Math::Vec3Normalize(&vDiff);
 
-            Vec3* const pDir = &pSelfBody->velDir;
+            auto* const pDir = &pSelfBody->velDir;
 
             vTemp.x = vDiff.z * pDir->y - vDiff.y * pDir->z;
             vTemp.y = vDiff.x * pDir->z - vDiff.z * pDir->x;
@@ -690,11 +690,11 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
                 g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
             pSelf->PostSceneEvent(kMsgYerHit, 0);
 
-            const short nViewed = g_pGameEngine->m_nViewedSlot;
+            const auto nViewed = g_pGameEngine->m_nViewedSlot;
 
             if (pSelf->GetSlot() == nViewed)
             {
-                EngineObject* const pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
+                auto* const pAnnounce = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
                 pAnnounce->PostSceneEvent(kMsgHit, pSelf->GetSlot());
 
@@ -766,23 +766,23 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
     Vec3          vTemp;
     Vec3          vDiff;
 
-    BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* pSelf = pColSelf->GetOwner();
+    auto* pSelf = pColSelf->GetOwner();
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject* const pOther = pColOther->GetOwner();
+    auto* const pOther = pColOther->GetOwner();
 
-    PhysicsBody* pBody = pSelf->GetPhysicsBody();
+    auto* pBody = pSelf->GetPhysicsBody();
 
     Vec3::ScaleTo(&pBody->vel, 0.3f, &vTemp);
 
-    const float flRatio = pBody->flSpeed / pBody->GetForwardSpeedDt() * 4.0f;
+    const auto flRatio = pBody->flSpeed / pBody->GetForwardSpeedDt() * 4.0f;
 
     pSelf->SetVelocity(vTemp);
 
-    float flFacing = g_flFacingStepBase;
+    auto flFacing = g_flFacingStepBase;
 
     {
         Vec3 vSelfScratch;
@@ -803,7 +803,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     Math::Vec3Normalize(&vDiff);
 
-    Vec3* const pDir = &pSelf->GetPhysicsBody()->velDir;
+    auto* const pDir = &pSelf->GetPhysicsBody()->velDir;
 
     vTemp.x = vDiff.z * pDir->y - vDiff.y * pDir->z;
     vTemp.y = vDiff.x * pDir->z - vDiff.z * pDir->x;
@@ -835,7 +835,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
     pSelf->PostSceneEvent(kMsgReallySetAnimation, g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
     pSelf->PostSceneEvent(kMsgYerHit, 0);
 
-    const short nViewed = g_pGameEngine->m_nViewedSlot;
+    const auto nViewed = g_pGameEngine->m_nViewedSlot;
 
     if (pSelf->GetSlot() == nViewed)
     {
@@ -853,7 +853,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
     {
         if (nOtherSlot >= kSlotTurnstile && nOtherSlot <= kSlotTurnstileLast)
         {
-            ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
+            auto* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
             if (pSystem != nullptr)
             {
@@ -869,9 +869,9 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
                 pSystem->SetOrientation(&vPosition, &vVelocity);
                 pSystem->SpawnParticles(10.0f, 50.0f);
 
-                AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
+                auto* const pAgendaItem = AllocAgendaItem(Agenda_CExplosionAnimation);
 
-                PlanState* const pPlan = pSystem->GetPlanState();
+                auto* const pPlan = pSystem->GetPlanState();
 
                 pAgendaItem->Bind(pSystem, pPlan->m_pCurrent);
                 pAgendaItem->Activate();
@@ -894,13 +894,13 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
     int   nSelfSector;
     int   nOtherSector;
 
-    BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* pSelf = pColSelf->GetOwner();
+    auto* pSelf = pColSelf->GetOwner();
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject* pOther = pColOther->GetOwner();
+    auto* pOther = pColOther->GetOwner();
 
     if ((static_cast<unsigned char>(pSelf->m_nFlags) & kEngineObjectHidden) == 0 && (static_cast<unsigned char>(pOther->m_nFlags) & kEngineObjectHidden) == 0)
     {
@@ -909,22 +909,22 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
         const Vec3* pSelfDir  = &pSelf->GetPhysicsBody()->velDir;
         const Vec3* pOtherDir = &pOther->GetPhysicsBody()->velDir;
 
-        float flRoot = pOtherVel->Magnitude();
+        auto flRoot = pOtherVel->Magnitude();
 
-        const float flOtherSpeed = flRoot;
+        const auto flOtherSpeed = flRoot;
 
         flRoot = pSelfVel->Magnitude();
 
-        const float flFacingDot = Vec3::DotInline(pOtherDir, pSelfDir);
+        const auto flFacingDot = Vec3::DotInline(pOtherDir, pSelfDir);
 
-        int nSelfStopped = 1;
+        auto nSelfStopped = 1;
 
         if (pSelfVel->x + (pSelfVel->GetY() + pSelfVel->z) != 0.0f)
         {
             nSelfStopped = 0;
         }
 
-        int nOtherStopped = 1;
+        auto nOtherStopped = 1;
 
         if (pOtherVel->x + pOtherVel->y + pOtherVel->z != 0.0f)
         {
@@ -941,9 +941,9 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
         flOtherWeight = ((PlayerObject*)pOther)->m_stats.GetWeightedStat(kRatingWeightClass) + flOtherSpeed * SPEED_IN_WEIGHT + WEIGHT_FLOOR;
         flSelfWeight  = flRoot * SPEED_IN_WEIGHT + ((PlayerObject*)pSelf)->m_stats.GetWeightedStat(kRatingWeightClass) + WEIGHT_FLOOR;
 
-        const int nOtherParity = pOther->GetSlot() % 2;
+        const auto nOtherParity = pOther->GetSlot() % 2;
 
-        const int nSelfParity = pSelf->GetSlot() % 2;
+        const auto nSelfParity = pSelf->GetSlot() % 2;
 
         if (nSelfParity == nOtherParity)
         {
@@ -963,7 +963,7 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 
         Object::HandleObjectCollisionBounce(pOther, pSelf, pOtherVel, pSelfVel, flFacingDot, flOtherWeight, flSelfWeight, nOtherStopped, nSelfStopped, nOtherSector, nSelfSector, flOtherSpeed, flRoot);
 
-        short nViewed = g_pGameEngine->m_nViewedSlot;
+        auto nViewed = g_pGameEngine->m_nViewedSlot;
 
         if (pSelf->GetSlot() != nViewed)
         {
@@ -975,7 +975,7 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
             }
         }
 
-        EngineObject* const pSoundMan = g_pGameEngine->m_ppSlots[kSlotSoundMan];
+        auto* const pSoundMan = g_pGameEngine->m_ppSlots[kSlotSoundMan];
 
         pSoundMan->PostSceneEvent(kMsgHit, pSelf->GetSlot());
     }
@@ -988,38 +988,38 @@ void PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*
 {
     Vec3 vDir;
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject* pOther = pColOther->GetOwner();
+    auto* pOther = pColOther->GetOwner();
 
-    BoundBubble* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColSelf = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* const pSelf = pColSelf->GetOwner();
+    auto* const pSelf = pColSelf->GetOwner();
 
     if (pSelf != nullptr && pOther != nullptr)
     {
-        Vec3* const pSelfX  = pSelf->GetPositionPtr();
-        Vec3* const pOtherX = pOther->GetPositionPtr();
+        auto* const pSelfX  = pSelf->GetPositionPtr();
+        auto* const pOtherX = pOther->GetPositionPtr();
         vDir.x              = pSelfX->x - pOtherX->x;
 
-        Vec3* const pSelfY  = pSelf->GetPositionPtr();
-        Vec3* const pOtherY = pOther->GetPositionPtr();
+        auto* const pSelfY  = pSelf->GetPositionPtr();
+        auto* const pOtherY = pOther->GetPositionPtr();
         vDir.y              = pSelfY->y - pOtherY->y;
 
-        Vec3* const pSelfZ  = pSelf->GetPositionPtr();
-        Vec3* const pOtherZ = pOther->GetPositionPtr();
+        auto* const pSelfZ  = pSelf->GetPositionPtr();
+        auto* const pOtherZ = pOther->GetPositionPtr();
         vDir.z              = pSelfZ->z - pOtherZ->z;
 
         Math::Vec3Normalize(&vDir);
 
-        float flScale = 1.0f;
+        auto flScale = 1.0f;
 
         if (pParams->m_nArgCount == 2)
         {
             flScale = pParams->m_pArgs[1].n * 0.01f;
         }
 
-        Vec3 vVel = pSelf->GetPhysicsBody()->vel;
+        auto vVel = pSelf->GetPhysicsBody()->vel;
 
         if (pSelf->GetPhysicsBody()->flSpeed < 0.1)
         {
@@ -1029,15 +1029,15 @@ void PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*
             vVel.z *= -1.0f;
         }
 
-        const float flDot = Vec3::DotInline(&vVel, &vDir);
+        const auto flDot = Vec3::DotInline(&vVel, &vDir);
 
-        const float flNegY = -(flDot * vDir.y);
-        const float flNegZ = -(flDot * vDir.z);
-        const float flNegX = -(flDot * vDir.x);
+        const auto flNegY = -(flDot * vDir.y);
+        const auto flNegZ = -(flDot * vDir.z);
+        const auto flNegX = -(flDot * vDir.x);
 
-        const float flInX = vVel.x;
-        const float flInY = vVel.y;
-        const float flInZ = vVel.z;
+        const auto flInX = vVel.x;
+        const auto flInY = vVel.y;
+        const auto flInZ = vVel.z;
 
         vVel.x = flNegX * flScale + (flInX + flNegX) * 0.3f;
         vVel.y = flNegY * flScale + (flInY + flNegY) * 0.3f;

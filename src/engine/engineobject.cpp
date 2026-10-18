@@ -92,8 +92,8 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 
     if (bSameSide)
     {
-        const int nGenderA = static_cast<int>(((PlayerObject*)pA)->m_stats.GetScalar(kRatingGender));
-        int       nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender));
+        const auto nGenderA = static_cast<int>(((PlayerObject*)pA)->m_stats.GetScalar(kRatingGender));
+        auto       nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(kRatingGender));
 
         if ((nGenderA & nGenderB) != 0)
         {
@@ -163,8 +163,8 @@ int EngineObject::GetApproachAngleSector(EngineObject* pSelf, EngineObject* pOth
 
     Math::Vec3Normalize(&vDir);
 
-    Vec3*       pVelDir = &pSelf->GetPhysicsBody()->velDir;
-    const float flDot   = Vec3::DotInline(&vDir, pVelDir);
+    auto*      pVelDir = &pSelf->GetPhysicsBody()->velDir;
+    const auto flDot   = Vec3::DotInline(&vDir, pVelDir);
 
     if (flDot < COS_135_DEGREES)
     {
@@ -382,8 +382,8 @@ void EngineObject::ComputeBoundingSphere()
     Vec3             vSum;
     Vec3             vP;
 
-    Vec3* const pSaved = &m_pBody->pos;
-    Vec3        vSaved = *pSaved;
+    auto* const pSaved = &m_pBody->pos;
+    auto        vSaved = *pSaved;
 
     m_pBody->pos.x = m_pBody->pos.y = m_pBody->pos.z = g_flZeroEngineObject;
 
@@ -393,7 +393,7 @@ void EngineObject::ComputeBoundingSphere()
 
     m_pBody->pos = vSaved;
 
-    int nTotal = 0;
+    auto nTotal = 0;
 
     vSum.z = g_flZeroEngineObject;
     vSum.y = g_flZeroEngineObject;
@@ -416,7 +416,7 @@ void EngineObject::ComputeBoundingSphere()
                 pVert = pMesh->Vertices();
             }
 
-            const short nVertexCount = pMesh->nVertexCount;
+            const auto nVertexCount = pMesh->nVertexCount;
 
             for (iVert = 0; iVert < nVertexCount; iVert++)
             {
@@ -424,7 +424,7 @@ void EngineObject::ComputeBoundingSphere()
 
                 pCur = &pVert[iVert];
 
-                Vec3 vV = *pCur;
+                auto vV = *pCur;
 
                 vP.x = vV.x * pBone->m_world.m_a[0][0] + vV.y * pBone->m_world.m_a[0][1] + vV.z * pBone->m_world.m_a[0][2] + pBone->m_world.GetElement(0, 3);
                 vP.y = vV.x * pBone->m_world.m_a[1][0] + vV.y * pBone->m_world.m_a[1][1] + vV.z * pBone->m_world.m_a[1][2] + pBone->m_world.m_a[1][3];
@@ -465,15 +465,15 @@ void EngineObject::ComputeBoundingSphere()
             {
                 pCur = &pVert[iVert];
 
-                Vec3 vQ = *pCur;
+                auto vQ = *pCur;
 
                 vP.x = vQ.x * pBone->m_world.m_a[0][0] + vQ.y * pBone->m_world.m_a[0][1] + vQ.z * pBone->m_world.m_a[0][2] + pBone->m_world.m_a[0][3];
                 vP.y = vQ.x * pBone->m_world.m_a[1][0] + (vQ.y * pBone->m_world.m_a[1][1] + vQ.z * pBone->m_world.m_a[1][2]) + pBone->m_world.m_a[1][3];
                 vP.z = vQ.x * pBone->m_world.m_a[2][0] + vQ.y * pBone->m_world.m_a[2][1] + vQ.z * pBone->m_world.m_a[2][2] + pBone->m_world.m_a[2][3];
 
-                const float flDx = vP.x - m_vCentre.x;
-                const float flDy = vP.y - m_vCentre.y;
-                const float flDz = vP.z - m_vCentre.z;
+                const auto flDx = vP.x - m_vCentre.x;
+                const auto flDy = vP.y - m_vCentre.y;
+                const auto flDz = vP.z - m_vCentre.z;
 
                 const auto flDist = static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 
@@ -729,7 +729,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
         return 1;
     }
 
-    LODNode* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
+    auto* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
 
     if (pNode != nullptr)
     {
@@ -751,7 +751,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     if (m_pModelBlock == nullptr)
     {
-        char* const pszMaterial = pDef->m_pszMaterial;
+        auto* const pszMaterial = pDef->m_pszMaterial;
 
         if (pszMaterial == nullptr)
         {
@@ -829,13 +829,13 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
         }
     }
 
-    ModelComponent* const pBlob = m_pLod->m_pRecord;
+    auto* const pBlob = m_pLod->m_pRecord;
 
     m_pMeshBlob = pBlob;
 
     ApplyHeaderRotation(pBlob);
 
-    const short nBones = m_pMeshBlob->m_nSubComponents;
+    const auto nBones = m_pMeshBlob->m_nSubComponents;
 
     m_wBoneCount = nBones;
 
@@ -915,7 +915,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         return 1;
     }
 
-    LODNode* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
+    auto* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
 
     if (pNode != nullptr)
     {
@@ -937,7 +937,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
     if (m_pModelBlock == nullptr)
     {
-        char* const pszMaterial = pDef->m_pszMaterial;
+        auto* const pszMaterial = pDef->m_pszMaterial;
 
         if (pszMaterial == nullptr)
         {
@@ -1025,7 +1025,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         }
     }
 
-    ModelComponent* const pBlob = m_pLod->m_pRecord;
+    auto* const pBlob = m_pLod->m_pRecord;
 
     m_pMeshBlob = pBlob;
 
@@ -1033,7 +1033,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
     m_nKind = pDef->m_nTypeId;
 
-    const short nOldBones = m_wBoneCount;
+    const auto nOldBones = m_wBoneCount;
 
     m_wBoneCount = m_pMeshBlob->m_nSubComponents;
 
@@ -1112,7 +1112,7 @@ short EngineObject::GetBehaviorIndex(PlanState* pState, const char* pszName)
 {
     short iNode = 0;
 
-    GameBehaviorObject* pNode = pState->m_pHead;
+    auto* pNode = pState->m_pHead;
 
     while (pNode != nullptr)
     {
@@ -1179,8 +1179,8 @@ char EngineObject::ProcessReceivedPacket()
 
     char bResult = 0;
 
-    short nPlan      = m_pPlanState->m_wSyncValue;
-    short nBehaviour = m_pPlanState->m_pCurrent->m_wSyncValue;
+    auto nPlan      = m_pPlanState->m_wSyncValue;
+    auto nBehaviour = m_pPlanState->m_pCurrent->m_wSyncValue;
 
     pPlayer = m_pBody->pPlayer;
 
@@ -1188,7 +1188,7 @@ char EngineObject::ProcessReceivedPacket()
     {
         pPlayer->m_lock.lock();
 
-        NetMoveRecord* pRecord = pPlayer->DequeueNetRecord();
+        auto* pRecord = pPlayer->DequeueNetRecord();
 
         if (pRecord != nullptr)
         {
@@ -1244,7 +1244,7 @@ char EngineObject::ProcessReceivedPacket()
 
                 if (pPlayer->pState->nObjectSlot == kSlotRok && m_nPhase == OBJECT_PHASE_NETWORK)
                 {
-                    const unsigned int nCamera = NetSequenceWord::GetCarrier(body.nSequence);
+                    const auto nCamera = NetSequenceWord::GetCarrier(body.nSequence);
 
                     if (static_cast<short>(nCamera) != 0)
                     {
@@ -1313,9 +1313,9 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 
     for (int nIndex = 0; nIndex < g_nStationaryCount; nIndex++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(g_aStationarySlots[nIndex])];
+        auto* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(g_aStationarySlots[nIndex])];
 
-        const short nCurrent = pObject->GetPlanState()->m_pCurrent->m_wSyncValue;
+        const auto nCurrent = pObject->GetPlanState()->m_pCurrent->m_wSyncValue;
 
         const auto nValue = static_cast<short>(SlotNibbles::Get(pBody->abNibbles, nIndex));
 
@@ -1345,11 +1345,11 @@ void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
 
     MeshBone** ppChild = pSlot->m_apChildren;
 
-    const MeshBoneDesc* pDescriptor = pSlot->m_pDesc;
+    const auto* pDescriptor = pSlot->m_pDesc;
 
     for (nChild = 0; nChild < pSlot->m_pDesc->m_nChildCount; nChild++)
     {
-        MeshBone* pCandidate = m_pBones;
+        auto* pCandidate = m_pBones;
 
         short nSlot = 0;
 
@@ -1384,8 +1384,8 @@ void EngineObject::UpdateRenderSlotTransform(short nSlotIdx)
     static TransformObject SlotTransform;
 
     m_nFlags |= kEngineObjectPosed;
-    MeshBone* const        pSlot  = &m_pBones[nSlotIdx];
-    TransformObject* const pWorld = &m_transformC;
+    auto* const pSlot  = &m_pBones[nSlotIdx];
+    auto* const pWorld = &m_transformC;
 
     m_transformB.Multiply(pWorld, &m_transformA);
 
@@ -1401,19 +1401,19 @@ void EngineObject::UpdateLODAndPushComponents(CameraObject* pCamera)
 {
     short nWanted;
 
-    CameraProjectionState* const pViewpoint = pCamera->layout.pCamera;
-    MeshBone*                    pComponent = m_pBones;
+    auto* const pViewpoint = pCamera->layout.pCamera;
+    auto*       pComponent = m_pBones;
 
     const Vec3* pPos = GetPositionPtr();
 
-    const float flDx = pViewpoint->m_vEye.x - pPos->x;
-    const float flDy = pViewpoint->m_vEye.y - pPos->y;
-    const float flDz = pViewpoint->m_vEye.z - pPos->z;
+    const auto flDx = pViewpoint->m_vEye.x - pPos->x;
+    const auto flDy = pViewpoint->m_vEye.y - pPos->y;
+    const auto flDz = pViewpoint->m_vEye.z - pPos->z;
 
-    LODNode* const pTable  = m_pLod;
-    const short    nLevels = pTable->m_wLodCount;
+    auto* const pTable  = m_pLod;
+    const auto  nLevels = pTable->m_wLodCount;
 
-    float flDistSq = (flDz * flDz + flDx * flDx) + flDy * flDy;
+    auto flDistSq = (flDz * flDz + flDx * flDx) + flDy * flDy;
 
     if (nLevels > 1)
     {
@@ -1541,8 +1541,8 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
         return;
     }
 
-    const Vec3*        pVert = m_pShadowPoints;
-    TransformedVertex* pOut  = &g_pModelVertexBuf[m_wShadowCount];
+    const auto* pVert = m_pShadowPoints;
+    auto*       pOut  = &g_pModelVertexBuf[m_wShadowCount];
 
     const TransformObject** ppXf = m_ppShadowXforms;
 
@@ -1550,7 +1550,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
     for (short nVert = 0; nVert < m_wShadowCount; nVert++)
     {
-        const TransformObject* pXf = *ppXf;
+        const auto* pXf = *ppXf;
         ppXf++;
 
         pOut->x = ((pXf->m_a[0][2] * pVert->z) + pXf->m_a[0][1] * pVert->y) + pXf->m_a[0][0] * pVert->x + pXf->m_a[0][3];
@@ -1607,9 +1607,9 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
     {
         char cFacing = 1;
 
-        MeshFace* const pFace = &m_pShadowFaceList[static_cast<short>(nFace)].face;
+        auto* const pFace = &m_pShadowFaceList[static_cast<short>(nFace)].face;
 
-        const char cClip = Face::ClipCodeAndCullCheck(pFace, g_pModelVertexBuf);
+        const auto cClip = Face::ClipCodeAndCullCheck(pFace, g_pModelVertexBuf);
 
         if (cClip == CLIP_OFFSCREEN)
         {
@@ -1622,20 +1622,20 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
             const TransformedVertex* pCorner1 = &g_pModelVertexBuf[pFace->aCorners[1]];
             const TransformedVertex* pCorner0 = &g_pModelVertexBuf[pFace->aCorners[0]];
 
-            const float flW0 = 1.0f / pCorner0->w;
-            vA.x             = flW0 * pCorner0->x;
-            vA.y             = flW0 * pCorner0->y;
-            vA.z             = flW0 * pCorner0->z;
+            const auto flW0 = 1.0f / pCorner0->w;
+            vA.x            = flW0 * pCorner0->x;
+            vA.y            = flW0 * pCorner0->y;
+            vA.z            = flW0 * pCorner0->z;
 
-            const float flW1 = 1.0f / pCorner1->w;
-            vB.x             = flW1 * pCorner1->x;
-            vB.y             = flW1 * pCorner1->y;
-            vB.z             = flW1 * pCorner1->z;
+            const auto flW1 = 1.0f / pCorner1->w;
+            vB.x            = flW1 * pCorner1->x;
+            vB.y            = flW1 * pCorner1->y;
+            vB.z            = flW1 * pCorner1->z;
 
-            const float flW2 = 1.0f / pCorner2->w;
-            vC.x             = flW2 * pCorner2->x;
-            vC.y             = flW2 * pCorner2->y;
-            vC.z             = flW2 * pCorner2->z;
+            const auto flW2 = 1.0f / pCorner2->w;
+            vC.x            = flW2 * pCorner2->x;
+            vC.y            = flW2 * pCorner2->y;
+            vC.z            = flW2 * pCorner2->z;
 
             vEdge1.x = vB.x - vA.x;
             vEdge1.y = vB.y - vA.y;
@@ -1944,7 +1944,7 @@ void EngineObject::ResetSceneMessageHandlers()
 // FUNCTION: HYPERX 0x00472200
 void EngineObject::RegisterSceneMessageHandler(Interactor* pHandler)
 {
-    const short nId = pHandler->GetNamedSlot();
+    const auto nId = pHandler->GetNamedSlot();
 
     m_aSceneHandlerSlot[nId] = static_cast<unsigned char>(m_nSceneHandlerCount);
 
@@ -1958,7 +1958,7 @@ void EngineObject::RegisterSceneMessageHandler(Interactor* pHandler)
 // FUNCTION: HYPERX 0x00472250
 void EngineObject::ComputeWorldBoundingCentre(Vec3* pOut)
 {
-    const float flRadius = m_flBoundRadius;
+    const auto flRadius = m_flBoundRadius;
 
     pOut->x = flRadius * m_transformB.m_a[0][2] + m_pBody->pos.x;
     pOut->y = flRadius * m_transformB.m_a[1][2] + m_pBody->pos.y;
@@ -1976,7 +1976,7 @@ void EngineObject::SetVelocity(Vec3 vel)
 
     m_pBody->flSpeed = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vel, &vel))));
 
-    PhysicsBody* const pBody = m_pBody;
+    auto* const pBody = m_pBody;
 
     if (pBody->flSpeed != g_flZeroEngineObject)
     {
@@ -2064,7 +2064,7 @@ void EngineObject::CountVisibleFaces()
 
     for (int iBone = 0; iBone < m_wBoneCount; iBone++)
     {
-        MeshBone* const pBone = &m_pBones[static_cast<short>(iBone)];
+        auto* const pBone = &m_pBones[static_cast<short>(iBone)];
 
         if (pBone->IsUnbound() != 0)
         {
@@ -2080,7 +2080,7 @@ void EngineObject::CountVisibleFaces()
 // FUNCTION: HYPERX 0x00472530
 char EngineObject::InitRenderSlots(LODNode* pLod, MeshBone* pBones, CD3DTextureManager* pTexManager, char bShadowless)
 {
-    MeshBone* pWalk = pBones;
+    auto* pWalk = pBones;
 
     for (short nSlot = 0; nSlot < m_wBoneCount; nSlot++, pWalk++)
     {
@@ -2115,7 +2115,7 @@ char EngineObject::InitRenderSlotsAndShadowLinks(LODNode* pLod, MeshBone* pBones
     {
         if (m_wBoneCount > 1)
         {
-            MeshBone* pBone = pBones;
+            auto* pBone = pBones;
 
             for (short nSlot = 0; nSlot < m_wBoneCount; nSlot++, pBone++)
             {
@@ -2185,9 +2185,9 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
 {
     Vec3 vDiff;
 
-    Vec3 vPos = pOther->GetPhysicsBody()->pos;
+    auto vPos = pOther->GetPhysicsBody()->pos;
 
-    PhysicsBody* const pBody = m_pBody;
+    auto* const pBody = m_pBody;
 
     vDiff.x = vPos.x - pBody->pos.x;
     vDiff.y = vPos.y - pBody->pos.y;
@@ -2197,7 +2197,7 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
 
     Math::Vec3Normalize(&vDiff);
 
-    Vec3* const pAxis = &m_pBody->velDir;
+    auto* const pAxis = &m_pBody->velDir;
 
     if (vDiff.z * pAxis->z + vDiff.y * pAxis->y + vDiff.x * pAxis->x > flMinDot)
     {

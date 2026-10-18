@@ -28,8 +28,8 @@ void CWatch::Process(int nArg)
 {
     Vec3 vDir;
 
-    EngineObject* pWatched = GetCamera()->GetSecondaryTrackedObject();
-    EngineObject* pTracked = GetCamera()->GetTrackedObject();
+    auto* pWatched = GetCamera()->GetSecondaryTrackedObject();
+    auto* pTracked = GetCamera()->GetTrackedObject();
 
     if (pWatched == nullptr)
     {
@@ -43,11 +43,11 @@ void CWatch::Process(int nArg)
         g_gameApp.Fatal("CWatch::Process(): Null pointer for model to track\n");
     }
 
-    Vec3* const pWatchedPos = &pWatched->GetPhysicsBody()->pos;
-    Vec3* const pTrackedPos = &pTracked->GetPhysicsBody()->pos;
+    auto* const pWatchedPos = &pWatched->GetPhysicsBody()->pos;
+    auto* const pTrackedPos = &pTracked->GetPhysicsBody()->pos;
 
-    Vec3* const pCameraPos = &m_pOwner->GetPhysicsBody()->pos;
-    Vec3* const pCameraDir = &m_pOwner->GetPhysicsBody()->velDir;
+    auto* const pCameraPos = &m_pOwner->GetPhysicsBody()->pos;
+    auto* const pCameraDir = &m_pOwner->GetPhysicsBody()->velDir;
 
     vDir.x = pWatchedPos->x - pTrackedPos->x;
     vDir.y = pWatchedPos->y - pTrackedPos->y;

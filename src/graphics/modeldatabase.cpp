@@ -25,8 +25,8 @@ ModelDatabase::~ModelDatabase()
 {
     while (m_pListHead != nullptr)
     {
-        LODNode* const pNext = m_pListHead->m_pNext;
-        LODNode* const pNode = m_pListHead;
+        auto* const pNext = m_pListHead->m_pNext;
+        auto* const pNode = m_pListHead;
 
         delete pNode;
 
@@ -54,7 +54,7 @@ ModelDatabase::~ModelDatabase()
         g_pFaceRecords = nullptr;
     }
 
-    TexCacheEntry* pEntry = m_pTextureList;
+    auto* pEntry = m_pTextureList;
 
     while (pEntry != nullptr)
     {
@@ -79,7 +79,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
     short    i;
     float    afThresholds[kLODLevelCount];
 
-    LODNode* pNode = FindLOD(pszModelName);
+    auto* pNode = FindLOD(pszModelName);
 
     if (pNode != nullptr)
     {
@@ -92,7 +92,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
     if (ModelFile::Open(&file.m_file, pszModelName) != 0)
     {
-        const int nCode = file.m_file.Read(&nLodCount, sizeof(nLodCount));
+        const auto nCode = file.m_file.Read(&nLodCount, sizeof(nLodCount));
 
         if (nCode == 0 || file.m_file.Read(afThresholds, sizeof(afThresholds)) == 0)
         {
@@ -103,7 +103,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             return nullptr;
         }
 
-        ModelComponent* pBlob = ModelComponent::ReadFirst(&file.m_file);
+        auto* pBlob = ModelComponent::ReadFirst(&file.m_file);
 
         if (pBlob != nullptr)
         {
@@ -129,7 +129,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             // Boundary i is farther[i] on the way out and nearer[i - 1] on the way back.
             for (i = 1; i < nLodCount; i++)
             {
-                float flEdge = afThresholds[i];
+                auto flEdge = afThresholds[i];
                 flEdge += m_flLodHysteresis;
                 pNode->m_aflFarther[i] = flEdge * flEdge;
 
@@ -158,9 +158,9 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             m_nNextIndex++;
             m_nNodeCount++;
 
-            pBlob            = pNode->m_pRecord;
-            short nFaceMax   = m_nFaceMax;
-            short nVertexMax = m_nVertexMax;
+            pBlob           = pNode->m_pRecord;
+            auto nFaceMax   = m_nFaceMax;
+            auto nVertexMax = m_nVertexMax;
 
             for (i = 0; i < pBlob->m_nSubComponents; i++)
             {
@@ -339,8 +339,8 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 // FUNCTION: HYPERX 0x00472e10
 MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* pszName)
 {
-    MaterialListNode* pLookup = pLod->m_pMaterials;
-    MaterialListNode* pPrev   = pLookup;
+    auto* pLookup = pLod->m_pMaterials;
+    auto* pPrev   = pLookup;
 
     if (pszName != nullptr)
     {
@@ -418,7 +418,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
     MeshBlock**    pBlobs;
     unsigned short nCount = 0;
 
-    ModelComponent* const pBase = pLodNode->m_pRecord;
+    auto* const pBase = pLodNode->m_pRecord;
 
     if (pBase->m_nSubComponents != 0)
     {
@@ -434,7 +434,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 
             for (short iBlob = 0; iBlob < static_cast<short>(nCount); iBlob++)
             {
-                MeshBlock* const pBlob = pBlobs[iBlob];
+                auto* const pBlob = pBlobs[iBlob];
 
                 ComputeNormals(pBlob, pLodNode);
 
@@ -452,7 +452,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 // FUNCTION: HYPERX 0x00473330
 TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 {
-    TexCacheEntry* pEntry = m_pTextureList;
+    auto*          pEntry = m_pTextureList;
     TexCacheEntry* pPrev  = nullptr;
 
     while (pEntry != nullptr)
@@ -505,8 +505,8 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
         Vec3 v1;
         Vec3 v2;
 
-        MeshFace*   pFace   = pBlob->Face(nFace);
-        Vec3* const pNormal = &pFace->vNormal;
+        auto*       pFace   = pBlob->Face(nFace);
+        auto* const pNormal = &pFace->vNormal;
 
         v2 = pVerts[pFace->aCorners[2]];
         v1 = pVerts[pFace->aCorners[1]];
@@ -514,9 +514,9 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
 
         Vec3 vE2;
 
-        const float flE1X = v1.x - v0.x;
-        const float flE1Y = v1.y - v0.y;
-        const float flE1Z = v1.z - v0.z;
+        const auto flE1X = v1.x - v0.x;
+        const auto flE1Y = v1.y - v0.y;
+        const auto flE1Z = v1.z - v0.z;
 
         vE2.x = v2.x - v0.x;
         vE2.y = v2.y - v0.y;
@@ -533,7 +533,7 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
 // FUNCTION: HYPERX 0x004735c0
 LODNode* ModelDatabase::FindLOD(const char* pszName)
 {
-    LODNode* pNode = m_pListHead;
+    auto* pNode = m_pListHead;
 
     while (pNode != nullptr)
     {

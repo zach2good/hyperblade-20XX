@@ -64,7 +64,7 @@ void CSetPositionRelative::SetPositionWithTerrainHeight(Vec3* pMarker)
 {
     m_pMarker = pMarker;
 
-    CollisionShape* const pShell = m_pOwner->GetPhysicsBody()->pShell;
+    auto* const pShell = m_pOwner->GetPhysicsBody()->pShell;
 
     m_pMarker->z = pShell->GetZ(m_pMarker->x, m_pMarker->y);
 }

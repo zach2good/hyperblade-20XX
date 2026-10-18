@@ -27,8 +27,8 @@ FinalCeremonyScreen::FinalCeremonyScreen()
 
     m_hBackground = GDI::LoadBitmapAsBackground(g_pszFinaleBackground, &m_bPaletted);
 
-    const short       nIndex = g_pGameEngine->m_nTeamHomeIndex;
-    TeamsBlock* const pList  = g_pGameEngine->m_pTeamTable;
+    const short nIndex = g_pGameEngine->m_nTeamHomeIndex;
+    auto* const pList  = g_pGameEngine->m_pTeamTable;
 
     if (nIndex < pList->GetTeamCount())
     {
@@ -39,7 +39,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
         pszName = nullptr;
     }
 
-    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle(pszName);
+    auto* hBitmap = GDI::LoadBitmapHandle(pszName);
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     Widget* const pWidget = AppendWidget(new DisplayWidget(0x2d, 0x4f, 0, 0, this, -1));
     pWidget->AppendFrame(hBitmap);

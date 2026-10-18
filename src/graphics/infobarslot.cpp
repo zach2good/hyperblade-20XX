@@ -15,20 +15,20 @@ int InfoBarSlot::Draw()
 {
     int nWidth;
 
-    const int nRange = m_nFrameCount;
+    const auto nRange = m_nFrameCount;
 
     if (nRange == 0)
     {
         return 0;
     }
 
-    const int nFar = m_nMaxHeight;
+    const auto nFar = m_nMaxHeight;
 
-    const int nY = m_ptDrawOffset.y + m_ptPosition.y;
+    const auto nY = m_ptDrawOffset.y + m_ptPosition.y;
 
-    const float flStep = static_cast<float>(nFar - m_nMinHeight) / nRange;
+    const auto flStep = static_cast<float>(nFar - m_nMinHeight) / nRange;
 
-    int nX = m_ptDrawOffset.x + m_ptPosition.x;
+    auto nX = m_ptDrawOffset.x + m_ptPosition.x;
 
     if (m_nFrame == 0)
     {
@@ -48,7 +48,7 @@ int InfoBarSlot::Draw()
     {
         for (int nIndex = 0; nIndex < m_nFrame; nIndex++)
         {
-            const int nPos = static_cast<int>(static_cast<float>(nIndex) * flStep) + m_nMinHeight;
+            const auto nPos = static_cast<int>(static_cast<float>(nIndex) * flStep) + m_nMinHeight;
 
             SWRend::FillRect(nX, nY - nPos + nFar, m_nUnitWidth, nPos, m_nColour);
 

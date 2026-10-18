@@ -62,14 +62,14 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
     m_ownSlotOrMessage = pPlan->m_pArgs[kArgTag];
     m_nBehaviour       = PLAN_TOKEN_NO_BEH_CHANGE;
 
-    auto      nCount = static_cast<short>(pPlan->m_nArgCount - kArgConditionFirst);
-    PlanWord* pEntry = pPlan->m_pArgs + kArgConditionFirst;
+    auto  nCount = static_cast<short>(pPlan->m_nArgCount - kArgConditionFirst);
+    auto* pEntry = pPlan->m_pArgs + kArgConditionFirst;
 
     while (nCount-- != 0)
     {
-        PlanNode* const    pInstr  = pEntry->pNode;
-        const auto         nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
-        const unsigned int nClass  = nOpcode & kOpCategory;
+        auto* const pInstr  = pEntry->pNode;
+        const auto  nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
+        const auto  nClass  = nOpcode & kOpCategory;
 
         switch (nClass)
         {
@@ -88,7 +88,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
             case CATEGORY_ACTION:
                 if ((nOpcode & kOpMember) == MEMBER_SET_INTERACTOR_PARAM)
                 {
-                    PlanState* const pState = m_pOwner->GetPlanState();
+                    auto* const pState = m_pOwner->GetPlanState();
 
                     g_pfnPlanOpcodeHandlers[static_cast<short>(pInstr->m_pArgs[0].n)].pfnSetParam(
                         m_pOwner, pInstr, pState->m_pCurrent, this);
@@ -127,7 +127,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
     m_wSlot      = -1;
     m_wBehaviour = 0;
 
-    PlanNode* const pNode = m_pNode;
+    auto* const pNode = m_pNode;
 
     if (pNode != nullptr)
     {

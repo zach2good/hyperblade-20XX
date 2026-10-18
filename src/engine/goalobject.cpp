@@ -15,7 +15,7 @@ GoalObject::GoalObject(int nSlot, class ObjectDef* pDef)
 
     for (int nIndex = 0; nIndex < m_wBoneCount; nIndex++)
     {
-        const Vec3* const pRest = &m_pBones[nIndex].m_pDesc->m_vRest;
+        const auto* const pRest = &m_pBones[nIndex].m_pDesc->m_vRest;
 
         m_pBones[nIndex].m_local.SetTranslation(pRest->x, pRest->y, pRest->z);
     }

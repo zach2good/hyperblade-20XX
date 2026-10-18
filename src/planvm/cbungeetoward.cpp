@@ -47,7 +47,7 @@ void CBungeeToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bReady = 0;
     m_pOwner = pOwner;
 
-    Vec3* const pWatched = &pOwner->GetPhysicsBody()->smoothVel;
+    auto* const pWatched = &pOwner->GetPhysicsBody()->smoothVel;
 
     m_pTarget      = nullptr;
     m_pAccum       = pWatched;
@@ -76,7 +76,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
     if (pNode->m_nArgCount > 1)
     {
-        PlanWord* const pArgs = pNode->m_pArgs;
+        auto* const pArgs = pNode->m_pArgs;
 
         if (pArgs[ARG_SLOT].IsPronoun())
         {
@@ -89,7 +89,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
         if (nSlot == kSlotNone)
         {
-            Vec3* pPoint = g_apPositionMarkers[kPointMarker];
+            auto* pPoint = g_apPositionMarkers[kPointMarker];
 
             m_pAnchor = pPoint;
 
@@ -194,7 +194,7 @@ void CBungeeToward::OnListChanged()
 // FUNCTION: HYPERX 0x00410160
 void CBungeeToward::Process(int nArg)
 {
-    bool bHold = false;
+    auto bHold = false;
 
     if (m_bReady != 0)
     {
@@ -202,14 +202,14 @@ void CBungeeToward::Process(int nArg)
         return;
     }
 
-    Vec3* pAnchor = m_pAnchor;
+    auto* pAnchor = m_pAnchor;
 
     if (pAnchor == nullptr)
     {
         pAnchor = m_pTarget->GetPositionPtr();
     }
 
-    Vec3* const pOwnPos = m_pOwner->GetPositionPtr();
+    auto* const pOwnPos = m_pOwner->GetPositionPtr();
 
     Vec3 vGap;
 
@@ -219,18 +219,18 @@ void CBungeeToward::Process(int nArg)
 
     if (m_cLeadTarget != 0)
     {
-        Vec3* const pVel = &m_pTarget->GetPhysicsBody()->vel;
+        auto* const pVel = &m_pTarget->GetPhysicsBody()->vel;
 
         vGap.x = pVel->x * LEAD_SCALE + vGap.x;
         vGap.y = pVel->y * LEAD_SCALE + vGap.y;
         vGap.z = pVel->z * LEAD_SCALE + vGap.z;
     }
 
-    float flLength = vGap.Magnitude();
+    auto flLength = vGap.Magnitude();
 
     Math::Vec3Normalize(&vGap);
 
-    const float flPull = (flLength - m_flRestLength) * m_flGain;
+    const auto flPull = (flLength - m_flRestLength) * m_flGain;
 
     m_pAccum->x = flPull * vGap.x + m_pAccum->x;
     m_pAccum->y = flPull * vGap.y + m_pAccum->y;
@@ -244,9 +244,9 @@ void CBungeeToward::Process(int nArg)
         pTargetBody = m_pTarget->GetPhysicsBody();
         pOwnBody    = m_pOwner->GetPhysicsBody();
 
-        const float flRatio = pTargetBody->flSpeed / pOwnBody->flSpeed;
+        const auto flRatio = pTargetBody->flSpeed / pOwnBody->flSpeed;
 
-        PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+        auto* const pBody = m_pOwner->GetPhysicsBody();
 
         pBody->vel.ScaleInPlace(flRatio);
         m_pOwner->PostSceneEvent(kMsgGotThere, 0);
@@ -254,12 +254,12 @@ void CBungeeToward::Process(int nArg)
 
     if (m_bReady == 0 && flLength >= m_flNearRange && flLength <= m_flFarRange && m_nCountdown-- >= 0)
     {
-        Vec3* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
+        auto* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
 
         if (vGap.z * pHeading->z + vGap.y * pHeading->y + vGap.x * pHeading->x >= m_flDotGate)
         {
-            AttachPak* const pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
-            short            nCarrier;
+            auto* const pCarrier = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
+            short       nCarrier;
 
             if (pCarrier == nullptr || (nCarrier = pCarrier->nSlot) >= kPlayerObjectCount || nCarrier != m_pOwner->GetSlot())
             {

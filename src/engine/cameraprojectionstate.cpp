@@ -78,15 +78,15 @@ void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float
     m_flHalfFov = flHalfFov;
     m_flFarClip = flFarClip;
 
-    const double dTan = tan(static_cast<double>(flHalfFov));
+    const auto dTan = tan(static_cast<double>(flHalfFov));
 
     m_dTanHalfFov = dTan;
 
-    const double dSin = sin(static_cast<double>(flHalfFov));
+    const auto dSin = sin(static_cast<double>(flHalfFov));
 
     m_dSinHalfFov = dSin;
 
-    const double dCos = cos(static_cast<double>(flHalfFov));
+    const auto dCos = cos(static_cast<double>(flHalfFov));
 
     m_dCosHalfFov = dCos;
 
@@ -141,11 +141,11 @@ void CameraProjectionState::BuildMatrix()
 {
     if (m_bHasRow3 == 0)
     {
-        const float flScaleX = m_flNearClip / m_flHalfWidthCm;
+        const auto flScaleX = m_flNearClip / m_flHalfWidthCm;
 
         m_flCotX = flScaleX;
 
-        const float flScaleY = m_flNearClip / m_flHalfHeightCm;
+        const auto flScaleY = m_flNearClip / m_flHalfHeightCm;
 
         m_flCotY = flScaleY;
 
@@ -177,15 +177,15 @@ void CameraProjectionState::BuildMatrix()
     }
     else
     {
-        const float flDepth = m_flFarClip - m_flNearClip;
-        const float flReach = m_flFarClip * m_flTanHalfFov;
+        const auto flDepth = m_flFarClip - m_flNearClip;
+        const auto flReach = m_flFarClip * m_flTanHalfFov;
 
-        const float flDepthScale = flReach / (flDepth * m_flNearClip);
-        const float flDepthBias  = -(flReach / flDepth);
-        const float flWPerZ      = m_flTanHalfFov / m_flNearClip;
+        const auto flDepthScale = flReach / (flDepth * m_flNearClip);
+        const auto flDepthBias  = -(flReach / flDepth);
+        const auto flWPerZ      = m_flTanHalfFov / m_flNearClip;
 
         // The field of view was set for 4:3, so a wider view keeps its height and sees more at the sides.
-        const float flFocalPx = (std::min)(m_flHalfWidthPx, m_flHalfHeightPx * 4.0f / 3.0f);
+        const auto flFocalPx = (std::min)(m_flHalfWidthPx, m_flHalfHeightPx * 4.0f / 3.0f);
 
         if (m_bIdentity != 0)
         {
@@ -351,17 +351,17 @@ void CameraProjectionState::RotateZ(float flAngle)
 // FUNCTION: HYPERX 0x00430cc0
 void CameraProjectionState::SubtractTranslation(float flX, float flY, float flZ)
 {
-    const float flNewX = m_vTranslate.x - flX;
+    const auto flNewX = m_vTranslate.x - flX;
 
     m_vTranslate.x = flNewX;
     m_a[0][3]      = flNewX;
 
-    const float flNewY = m_vTranslate.y - flY;
+    const auto flNewY = m_vTranslate.y - flY;
 
     m_vTranslate.y = flNewY;
     m_a[1][3]      = flNewY;
 
-    const float flNewZ = m_vTranslate.z - flZ;
+    const auto flNewZ = m_vTranslate.z - flZ;
 
     m_vTranslate.z = flNewZ;
     m_a[2][3]      = flNewZ;

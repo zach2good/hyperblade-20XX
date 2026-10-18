@@ -127,7 +127,7 @@ void BehParam::SetDigressive(EngineObject*, PlanNode* pNode, GameBehaviorObject*
 // FUNCTION: HYPERX 0x0041c900
 void BehParam::SetPurgeFlag(EngineObject*, PlanNode* pItem, GameBehaviorObject* pTarget)
 {
-    PlanWord* const pArgs = pItem->m_pArgs;
+    auto* const pArgs = pItem->m_pArgs;
 
     pTarget->SetAgendaPurged(pArgs[1].n, static_cast<char>(pArgs[2].n));
 }
@@ -161,7 +161,7 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
         return;
     }
 
-    Vec3* pVec = pReceiver->m_apSlots[0]->GetVector();
+    auto* pVec = pReceiver->m_apSlots[0]->GetVector();
 
     if (pVec != nullptr)
     {
@@ -255,7 +255,7 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
     // A hurt player swaps the standard and fast skates for their limping versions.
     if (pActor->GetSlot() < kPlayerSlotCount)
     {
-        const float flGate = DamageGate();
+        const auto flGate = DamageGate();
 
         if (((PlayerObject*)pActor)->m_stats.GetScalar(kRatingDamage) < flGate * GATE_SCALE)
         {
@@ -271,7 +271,7 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
 
     if (bLimped == 0 && pActor->GetSlot() < kPlayerSlotCount)
     {
-        const float flGate = DamageGate();
+        const auto flGate = DamageGate();
 
         if (((PlayerObject*)pActor)->m_stats.GetScalar(kRatingDamage) < flGate * GATE_SCALE)
         {
@@ -341,10 +341,10 @@ void BehParam::SetAnimationEvent(EngineObject*, PlanNode* pNode, GameBehaviorObj
         nFourth = 0;
     }
 
-    PlanWord* const pArgs = pNode->m_pArgs;
+    auto* const pArgs = pNode->m_pArgs;
 
-    const int nThird           = pArgs[3].n;
-    const int nSecond          = pArgs[2].n;
+    const auto nThird          = pArgs[3].n;
+    const auto nSecond         = pArgs[2].n;
     pBehaviour->m_nChannelSlot = pArgs[1].n;
     pBehaviour->m_nEventParam  = nFourth;
     pBehaviour->m_nEventTarget = nSecond;
@@ -354,8 +354,8 @@ void BehParam::SetAnimationEvent(EngineObject*, PlanNode* pNode, GameBehaviorObj
 // FUNCTION: HYPERX 0x0041cd80
 void BehParam::SetObjectToFollow(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
-    EngineObject* const pEntity = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
-    AgendaItem* const   pTarget = pBehaviour->m_apSlots[1];
+    auto* const pEntity = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
+    auto* const pTarget = pBehaviour->m_apSlots[1];
 
     pTarget->Tick(pEntity->GetPositionPtr());
 }

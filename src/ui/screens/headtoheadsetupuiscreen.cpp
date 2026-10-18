@@ -492,7 +492,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
 {
     int nLocked;
 
-    int nRemaining = m_nTeamCount;
+    auto nRemaining = m_nTeamCount;
 
     BuildLockedFlagsArray();
 
@@ -623,8 +623,8 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
 // FUNCTION: HYPERX 0x00445170
 void HeadToHeadSetupUIScreen::StepAwaySelection(int nStep)
 {
-    int nLocked    = 0;
-    int nRemaining = m_nTeamCount;
+    auto nLocked    = 0;
+    auto nRemaining = m_nTeamCount;
 
     // The first test reads the array the previous step left behind.
     if (m_nLockedCount != 0)
@@ -712,8 +712,8 @@ void HeadToHeadSetupUIScreen::StepAwaySelection(int nStep)
 // FUNCTION: HYPERX 0x004452f0
 void HeadToHeadSetupUIScreen::StepArenaSelection(int nForward)
 {
-    int nLocked   = 0;
-    int nAttempts = m_nTeamCount;
+    auto nLocked   = 0;
+    auto nAttempts = m_nTeamCount;
 
     BuildLockedFlagsArray();
 
@@ -1977,7 +1977,7 @@ void HeadToHeadSetupUIScreen::RefreshFrames()
         case H2H_HOME_TEAM_BUTTON:
         case H2H_VISITOR_TEAM_BUTTON:
         {
-            const FramePos size = m_apWidgets[H2H_VIEW_PANEL]->GetSize();
+            const auto size = m_apWidgets[H2H_VIEW_PANEL]->GetSize();
 
             // STRING: HYPERX 0x004c27a8
             m_apWidgets[H2H_VIEW_PANEL]->AppendFrameWithPos(GDI::LoadBitmapHandle("playbkg"), size.x, size.y, 0, 0, 0, 0);

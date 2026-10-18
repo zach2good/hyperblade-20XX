@@ -9,10 +9,10 @@ void CSetAttitudePool::Init()
 {
     AgendaItem* pNode = new CSetAttitude;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountCSetAttitude;
+    auto nRemaining = g_wPoolCountCSetAttitude;
 
     while (nRemaining-- > 0)
     {
@@ -26,7 +26,7 @@ void CSetAttitudePool::Init()
 // FUNCTION: HYPERX 0x004138d0
 void* CSetAttitudePool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -44,7 +44,7 @@ CSetAttitudePool::~CSetAttitudePool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

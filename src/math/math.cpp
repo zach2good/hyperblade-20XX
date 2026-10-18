@@ -16,40 +16,40 @@ extern const float g_flRandRangeBias;
 // FUNCTION: HYPERX 0x0042ff20
 void Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
 {
-    const float flRow0X = pA[0][0];
-    const float flRow0Y = pA[0][1];
-    const float flRow0Z = pA[0][2];
-    const float flRow0W = pA[0][3];
+    const auto flRow0X = pA[0][0];
+    const auto flRow0Y = pA[0][1];
+    const auto flRow0Z = pA[0][2];
+    const auto flRow0W = pA[0][3];
 
     pA[0][0] = ((flRow0W * pB[3][0] + flRow0Z * pB[2][0]) + flRow0X * pB[0][0]) + flRow0Y * pB[1][0];
     pA[0][1] = (((flRow0X * pB[0][1]) + flRow0Y * pB[1][1]) + flRow0W * pB[3][1]) + flRow0Z * pB[2][1];
     pA[0][2] = (((flRow0X * pB[0][2]) + flRow0Y * pB[1][2]) + flRow0W * pB[3][2]) + flRow0Z * pB[2][2];
     pA[0][3] = ((flRow0W * pB[3][3] + flRow0Z * pB[2][3]) + flRow0X * pB[0][3]) + flRow0Y * pB[1][3];
 
-    const float flRow1X = pA[1][0];
-    const float flRow1Y = pA[1][1];
-    const float flRow1Z = pA[1][2];
-    const float flRow1W = pA[1][3];
+    const auto flRow1X = pA[1][0];
+    const auto flRow1Y = pA[1][1];
+    const auto flRow1Z = pA[1][2];
+    const auto flRow1W = pA[1][3];
 
     pA[1][0] = ((flRow1W * pB[3][0] + flRow1Z * pB[2][0]) + flRow1X * pB[0][0]) + flRow1Y * pB[1][0];
     pA[1][1] = (((flRow1X * pB[0][1]) + flRow1Y * pB[1][1]) + flRow1W * pB[3][1]) + flRow1Z * pB[2][1];
     pA[1][2] = (((flRow1X * pB[0][2]) + flRow1Y * pB[1][2]) + flRow1W * pB[3][2]) + flRow1Z * pB[2][2];
     pA[1][3] = ((flRow1W * pB[3][3] + flRow1Z * pB[2][3]) + flRow1X * pB[0][3]) + flRow1Y * pB[1][3];
 
-    const float flRow2X = pA[2][0];
-    const float flRow2Y = pA[2][1];
-    const float flRow2Z = pA[2][2];
-    const float flRow2W = pA[2][3];
+    const auto flRow2X = pA[2][0];
+    const auto flRow2Y = pA[2][1];
+    const auto flRow2Z = pA[2][2];
+    const auto flRow2W = pA[2][3];
 
     pA[2][0] = ((flRow2W * pB[3][0] + flRow2Z * pB[2][0]) + flRow2X * pB[0][0]) + flRow2Y * pB[1][0];
     pA[2][1] = (((flRow2X * pB[0][1]) + flRow2Y * pB[1][1]) + flRow2W * pB[3][1]) + flRow2Z * pB[2][1];
     pA[2][2] = (((flRow2X * pB[0][2]) + flRow2Y * pB[1][2]) + flRow2W * pB[3][2]) + flRow2Z * pB[2][2];
     pA[2][3] = ((flRow2W * pB[3][3] + flRow2Z * pB[2][3]) + flRow2X * pB[0][3]) + flRow2Y * pB[1][3];
 
-    const float flRow3X = pA[3][0];
-    const float flRow3Y = pA[3][1];
-    const float flRow3Z = pA[3][2];
-    const float flRow3W = pA[3][3];
+    const auto flRow3X = pA[3][0];
+    const auto flRow3Y = pA[3][1];
+    const auto flRow3Z = pA[3][2];
+    const auto flRow3W = pA[3][3];
 
     pA[3][0] = ((flRow3W * pB[3][0] + flRow3Z * pB[2][0]) + flRow3X * pB[0][0]) + flRow3Y * pB[1][0];
     pA[3][1] = (((flRow3X * pB[0][1]) + flRow3Y * pB[1][1]) + flRow3W * pB[3][1]) + flRow3Z * pB[2][1];
@@ -60,7 +60,7 @@ void Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
 // FUNCTION: HYPERX 0x00430110
 bool Math::Vec3Normalize(Vec3* pVec)
 {
-    const double dLength = sqrt(static_cast<double>(Vec3::DotInline(pVec, pVec)));
+    const auto dLength = sqrt(static_cast<double>(Vec3::DotInline(pVec, pVec)));
 
     if (dLength > g_dNormalizeEpsilon)
     {
@@ -81,7 +81,7 @@ bool Math::Vec3Normalize(Vec3* pVec)
 // FUNCTION: HYPERX 0x004753e0
 int Math::RandInt(int nMin, int nMax)
 {
-    const float flRoll = Math::RandMagnitude();
+    const auto flRoll = Math::RandMagnitude();
 
     nMax -= nMin;
 

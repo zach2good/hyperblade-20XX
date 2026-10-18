@@ -26,11 +26,11 @@ void BehObj_UpdateWhileAttached::SetInteractorsActive(int nArg)
         {
             pFirst->SetActiveState(nArg);
 
-            AttachPak* const pBinding = m_pBody->pAttach;
+            auto* const pBinding = m_pBody->pAttach;
 
             if (pBinding != nullptr)
             {
-                const short nBound = pBinding->nIndex;
+                const auto nBound = pBinding->nIndex;
 
                 if (nBound == pFirst->GetOtherSlot())
                 {

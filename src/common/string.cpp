@@ -28,7 +28,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
     va_list argListSave;
     va_copy(argListSave, argList);
 
-    int nMaxLen = 0;
+    auto nMaxLen = 0;
 
     for (const char* pszCursor = pszFormat; *pszCursor != 0; pszCursor = STEP(pszCursor))
     {
@@ -38,8 +38,8 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
             continue;
         }
 
-        int nItemLen = 0;
-        int nWidth   = 0;
+        auto nItemLen = 0;
+        auto nWidth   = 0;
 
         for (; *pszCursor != 0; pszCursor = STEP(pszCursor))
         {
@@ -71,7 +71,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
             }
         }
 
-        int nPrecision = 0;
+        auto nPrecision = 0;
 
         if (*pszCursor == '.')
         {
@@ -93,7 +93,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
             }
         }
 
-        int nModifier = 0;
+        auto nModifier = 0;
 
         switch (*pszCursor)
         {
@@ -295,7 +295,7 @@ String::String(const char* psz)
             return;
         }
 
-        const int nLength = static_cast<int>(strlen(psz));
+        const auto nLength = static_cast<int>(strlen(psz));
 
         if (nLength != 0)
         {
@@ -309,7 +309,7 @@ String::String(const char* psz)
 // FUNCTION: HYPERX 0x0042f490
 void String::FreeBuffer()
 {
-    StringHeader* const pHeader = GetHeader();
+    auto* const pHeader = GetHeader();
 
     if (pHeader != g_pEmptyStringHeader)
     {
@@ -320,7 +320,7 @@ void String::FreeBuffer()
 // FUNCTION: HYPERX 0x0042f4b0
 bool String::AssignResourceId(unsigned int nID)
 {
-    const char* const pszText = StringTable::Find(nID);
+    const auto* const pszText = StringTable::Find(nID);
 
     Assign(static_cast<unsigned int>(strlen(pszText)), pszText);
 
@@ -373,11 +373,11 @@ void String::Format(String* pString, const char* pszFormat, ...)
 // FUNCTION: HYPERX 0x0042f610
 char* String::Reserve(int nLength)
 {
-    StringHeader* const pOldHeader = GetHeader();
+    auto* const pOldHeader = GetHeader();
 
     if (GetHeader()->nRefs > 1 || nLength > GetHeader()->nAllocLength)
     {
-        const int nOldLength = GetHeader()->nDataLength;
+        const auto nOldLength = GetHeader()->nDataLength;
 
         if (nLength < nOldLength)
         {
@@ -512,7 +512,7 @@ void String::ConcatAlloc(int nLength1, const char* pchData1, int nLength2, const
 // FUNCTION: HYPERX 0x0042f890
 void String::AppendData(int nLength, const char* pchData)
 {
-    char* const pchOld = m_pchData;
+    auto* const pchOld = m_pchData;
 
     if (HeaderOf(pchOld)->nRefs <= 1 &&
         HeaderOf(pchOld)->nDataLength + nLength <=
@@ -535,7 +535,7 @@ void String::AppendData(int nLength, const char* pchData)
 // FUNCTION: HYPERX 0x0042f910
 void String::MakeUnique()
 {
-    char* const pchOld = m_pchData;
+    auto* const pchOld = m_pchData;
 
     if (HeaderOf(pchOld)->nRefs > 1)
     {
@@ -552,7 +552,7 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
 {
     const char* pszEnd;
     int         nLength;
-    int         nResult = -1;
+    auto        nResult = -1;
 
     pszDest[0] = 0;
 
@@ -563,7 +563,7 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
 
         if (pszEnd != nullptr)
         {
-            const char* pszStart = pszEnd + 1;
+            const auto* pszStart = pszEnd + 1;
 
             pszEnd = const_cast<char*>(strpbrk(pszStart,
                                                g_pszTokenDelimiters));

@@ -50,9 +50,9 @@ void Graphics::Initialize(int bResize)
 
     if (g_pGameEngine != nullptr)
     {
-        CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
+        auto* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
-        int nPrevWidth = g_nPrevWidth;
+        auto nPrevWidth = g_nPrevWidth;
 
         if (nPrevWidth == 0 || (nPrevHeight = g_nPrevHeight) == 0)
         {
@@ -77,7 +77,7 @@ void Graphics::Initialize(int bResize)
 // FUNCTION: HYPERX 0x0044b6f0
 unsigned int Graphics::LoadMdmTexDLL()
 {
-    const char* const pszCmdLine = GameApp::Arguments();
+    const auto* const pszCmdLine = GameApp::Arguments();
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
     // STRING: HYPERX 0x004c2da0
@@ -87,7 +87,7 @@ unsigned int Graphics::LoadMdmTexDLL()
     }
 
     // STRING: HYPERX 0x004c2d94
-    SDL_SharedObject* const pLibrary = SDL_LoadObject("mdmtex.dll");
+    auto* const pLibrary = SDL_LoadObject("mdmtex.dll");
 
     if (pLibrary == nullptr)
     {

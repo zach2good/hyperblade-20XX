@@ -34,13 +34,13 @@ void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00410460
 void CSetAttitude::OnKind(short nSlot)
 {
-    PhysicsBody* pAnchorBlock = m_pOwner->GetPhysicsBody();
-    Vec3* const  pAnchor      = &pAnchorBlock->pos;
+    auto*       pAnchorBlock = m_pOwner->GetPhysicsBody();
+    auto* const pAnchor      = &pAnchorBlock->pos;
 
-    Vec3* const pTargetPos = g_pGameEngine->m_ppSlots[nSlot]->GetPositionPtr();
+    auto* const pTargetPos = g_pGameEngine->m_ppSlots[nSlot]->GetPositionPtr();
 
     // The anchor comes from the first answer and everything written goes into the second.
-    PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+    auto* const pBody = m_pOwner->GetPhysicsBody();
 
     m_pVelDir->x = pTargetPos->x - pAnchor->x;
     m_pVelDir->y = pTargetPos->y - pAnchor->y;
@@ -58,7 +58,7 @@ void CSetAttitude::OnKind(short nSlot)
 
     pBody->flFacing = g_flZeroAgendaItem;
 
-    Vec3* const pNormal = pBody->pShell->NormalAtPoint(pAnchor);
+    auto* const pNormal = pBody->pShell->NormalAtPoint(pAnchor);
 
     if (pNormal == nullptr)
     {
@@ -152,7 +152,7 @@ void CSetAttitude::Process(int nArg)
     m_pTransform->m_a[2][2] = vUp.z;
     if (*m_pFacing != g_flZeroAgendaItem)
     {
-        const float flAngle = *m_pFacing;
+        const auto flAngle = *m_pFacing;
 
         pTransform = m_pTransform;
 
@@ -162,7 +162,7 @@ void CSetAttitude::Process(int nArg)
         pTransform->ApplyRotationZ();
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {
@@ -235,7 +235,7 @@ void CSetAttitude::Release(int nArg)
     m_pTransform->m_a[2][2] = vUp.z;
     if (*m_pFacing != g_flZeroAgendaItem)
     {
-        const float flAngle = *m_pFacing;
+        const auto flAngle = *m_pFacing;
 
         pTransform = m_pTransform;
 
@@ -245,7 +245,7 @@ void CSetAttitude::Release(int nArg)
         pTransform->ApplyRotationZ();
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

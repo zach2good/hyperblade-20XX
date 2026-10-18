@@ -8,8 +8,8 @@ void BehObjCoachTeamPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_CoachTeam;
 
-    m_pHead                   = pNode;
-    GameBehaviorObject* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
     auto nRemaining = static_cast<short>(g_nPoolCountBehObjCoachTeam);
 
@@ -25,7 +25,7 @@ void BehObjCoachTeamPool::Init()
 // FUNCTION: HYPERX 0x004207c0
 void* BehObjCoachTeamPool::Alloc()
 {
-    GameBehaviorObject* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
     pHead->m_pStandby = nullptr;
@@ -43,7 +43,7 @@ BehObjCoachTeamPool::~BehObjCoachTeamPool()
 {
     while (m_pHead != nullptr)
     {
-        GameBehaviorObject* const pNext = m_pHead->m_pStandby;
+        auto* const pNext = m_pHead->m_pStandby;
 
         delete m_pHead;
 

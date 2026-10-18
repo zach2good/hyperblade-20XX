@@ -66,7 +66,7 @@ TeamsBlock::TeamsBlock()
 
                 if (htmFile.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
                 {
-                    TeamBlock* const pTeam = g_pGameEngine->ParseTeamHTMFile(&htmFile.m_file);
+                    auto* const pTeam = g_pGameEngine->ParseTeamHTMFile(&htmFile.m_file);
 
                     apTeams[nTeams] = pTeam;
 

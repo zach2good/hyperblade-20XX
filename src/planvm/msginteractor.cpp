@@ -36,14 +36,14 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     m_nBehaviour       = PLAN_TOKEN_NO_BEH_CHANGE;
     m_otherSlot.n      = pObject->GetSlot();
 
-    PlanWord* pEntry = pPlanArg->m_pArgs + kArgMessageFirst;
-    auto      nCount = static_cast<short>(pPlanArg->m_nArgCount - kArgMessageFirst);
+    auto* pEntry = pPlanArg->m_pArgs + kArgMessageFirst;
+    auto  nCount = static_cast<short>(pPlanArg->m_nArgCount - kArgMessageFirst);
 
     while (nCount-- != 0)
     {
-        PlanNode* const    pInstr  = pEntry->pNode;
-        const auto         nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
-        const unsigned int nClass  = nOpcode & kOpCategory;
+        auto* const pInstr  = pEntry->pNode;
+        const auto  nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
+        const auto  nClass  = nOpcode & kOpCategory;
 
         switch (nClass)
         {
@@ -62,7 +62,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
             case CATEGORY_ACTION:
                 if ((nOpcode & kOpMember) == MEMBER_SET_INTERACTOR_PARAM)
                 {
-                    PlanState* const pState = m_pOwner->GetPlanState();
+                    auto* const pState = m_pOwner->GetPlanState();
 
                     g_pfnPlanOpcodeHandlers[static_cast<short>(pInstr->m_pArgs[0].n)].pfnSetParam(
                         m_pOwner, pInstr, pState->m_pCurrent, this);
@@ -101,7 +101,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
     m_wSlot      = -1;
     m_wBehaviour = 0;
 
-    PlanNode* const pNode = m_pNode;
+    auto* const pNode = m_pNode;
 
     if (pNode != nullptr)
     {

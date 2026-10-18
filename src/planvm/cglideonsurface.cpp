@@ -169,30 +169,30 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         m_pSurface->RayIntersection(m_pNormal, &vTarget, m_pPos);
 
-        const Vec3 vDiff = m_pPos->Minus(m_pPosCopy);
+        const auto vDiff = m_pPos->Minus(m_pPosCopy);
         Vec3       vStep;
 
-        vStep.x          = vDiff.x + m_pSmoothVel->x;
-        vStep.y          = vDiff.y + m_pSmoothVel->y;
-        vStep.z          = vDiff.z + m_pSmoothVel->z;
-        const float flSx = vStep.x + m_pBankForce->x;
-        const float flSy = vStep.y + m_pBankForce->y;
-        const float flSz = vStep.z + m_pBankForce->z;
+        vStep.x         = vDiff.x + m_pSmoothVel->x;
+        vStep.y         = vDiff.y + m_pSmoothVel->y;
+        vStep.z         = vDiff.z + m_pSmoothVel->z;
+        const auto flSx = vStep.x + m_pBankForce->x;
+        const auto flSy = vStep.y + m_pBankForce->y;
+        const auto flSz = vStep.z + m_pBankForce->z;
 
         vStep.x = flSx;
         vStep.y = flSy;
         vStep.z = flSz;
 
-        Vec3 vOut = vStep;
+        auto vOut = vStep;
 
         *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flSz * flSz + flSy * flSy + flSx * flSx)));
 
-        float* pSpeed = m_pSpeed;
+        auto* pSpeed = m_pSpeed;
 
         if (g_pGameEngine->m_clock.flInvDelta * *pSpeed > 0.001f)
         {
-            const float flLen = *pSpeed;
-            Vec3* const pDst  = m_pVelDir;
+            const auto  flLen = *pSpeed;
+            auto* const pDst  = m_pVelDir;
             Vec3        vDir;
 
             vDir.x  = flSx * (g_flOneAgendaItem / flLen);
@@ -235,17 +235,17 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         *m_pNormal = *pFound;
 
-        const Vec3 vNormal = *m_pNormal;
+        const auto vNormal = *m_pNormal;
 
         if (m_pPos->z > g_flZeroAgendaItem)
         {
             m_pOwner->PostSceneEvent(kMsgFly, 0);
         }
 
-        float* const pBankScale = m_pBankScale;
-        vBank.x                 = vNormal.z * *pBankScale * vNormal.x;
-        vBank.z                 = (-(vNormal.x * vNormal.x) - vNormal.y * vNormal.y) * *pBankScale;
-        vBank.y                 = vNormal.y * *pBankScale;
+        auto* const pBankScale = m_pBankScale;
+        vBank.x                = vNormal.z * *pBankScale * vNormal.x;
+        vBank.z                = (-(vNormal.x * vNormal.x) - vNormal.y * vNormal.y) * *pBankScale;
+        vBank.y                = vNormal.y * *pBankScale;
         vBank.y *= vNormal.z;
 
         if (m_pOwner->GetSlot() < kPlayerObjectCount)
@@ -286,7 +286,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
                 {
                     auto* const pRelax = (CRelaxYaw*)AllocAgendaItem(Agenda_CRelaxYaw);
 
-                    PlanState* const pPlan = m_pOwner->GetPlanState();
+                    auto* const pPlan = m_pOwner->GetPlanState();
                     pRelax->Bind(m_pOwner, pPlan->m_pCurrent);
 
                     pVelDirPrev = m_pVelDirPrev;
@@ -331,7 +331,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         pBody = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-        AttachPak* const pRokAttach = pBody->pAttach;
+        auto* const pRokAttach = pBody->pAttach;
 
         bCarryingRok = static_cast<char>(pRokAttach != nullptr && (nCarrierSlot = pRokAttach->nSlot) < kPlayerObjectCount && nCarrierSlot == m_pOwner->GetSlot());
 
@@ -353,7 +353,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
             flTarget = g_flOneAgendaItem;
         }
 
-        ObjectStats* const pStats = &((PlayerObject*)m_pOwner)->m_stats;
+        auto* const pStats = &((PlayerObject*)m_pOwner)->m_stats;
 
         if (pStats != nullptr)
         {
@@ -381,10 +381,10 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
         }
         else if (flDouble <= *pSpeed)
         {
-            const Vec3 vDrag = m_pVelDir->Scaled(flDouble);
-            const Vec3 vNext = vOut.Minus(&vDrag);
+            const auto vDrag = m_pVelDir->Scaled(flDouble);
+            const auto vNext = vOut.Minus(&vDrag);
 
-            Vec3* const pVel = m_pVel;
+            auto* const pVel = m_pVel;
 
             if (vNext.z * pVel->z + vNext.y * pVel->y + vNext.x * pVel->x < g_flZeroAgendaItem)
             {
@@ -428,10 +428,10 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
             vSaved.z = pFound->z;
         }
 
-        pVelDir           = m_pVelDir;
-        const float flDot = (vSaved.z * pVelDir->z + vSaved.y * pVelDir->y) + vSaved.x * pVelDir->x;
+        pVelDir          = m_pVelDir;
+        const auto flDot = (vSaved.z * pVelDir->z + vSaved.y * pVelDir->y) + vSaved.x * pVelDir->x;
 
-        const Vec3 vProj = vSaved.Scaled(flDot);
+        const auto vProj = vSaved.Scaled(flDot);
 
         pVelDir->x -= vProj.x;
         pVelDir->y -= vProj.y;
@@ -461,7 +461,7 @@ void CGlideOnSurface::Process(int nArg)
 {
     UpdateTerrainPhysics(nArg);
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {
@@ -501,8 +501,8 @@ void CGlideOnSurface::Release(int nTick)
 
         const auto nElapsed =
             static_cast<unsigned int>(static_cast<long>(g_pGameEngine->m_clock.flDelta * MS_PER_SECOND));
-        const unsigned int nTickBase = g_pGameEngine->m_clock.nPrevTickMs;
-        const float        flDelta   = g_pGameEngine->m_clock.flDelta;
+        const auto nTickBase = g_pGameEngine->m_clock.nPrevTickMs;
+        const auto flDelta   = g_pGameEngine->m_clock.flDelta;
 
         pBody = m_pOwner->GetPhysicsBody();
         Vec3::ScaleTo(&pBody->step, flDelta, m_pVel);
@@ -556,7 +556,7 @@ void CGlideOnSurface::Release(int nTick)
 
             pDir = m_pVelDir;
 
-            float flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
+            auto flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
 
             vProj.x = flDot;
             vProj.x *= vNormal.x;
@@ -600,7 +600,7 @@ void CGlideOnSurface::Release(int nTick)
 
             pDir = m_pVelDir;
 
-            const float flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
+            const auto flDot = vNormal.x * pDir->x + (vNormal.y * pDir->y + vNormal.z * pDir->z);
 
             vProj.x = flDot;
             vProj.x *= vNormal.x;
@@ -615,7 +615,7 @@ void CGlideOnSurface::Release(int nTick)
         }
     }
 
-    Vec3* const pNormal = g_arenaEllipsoid.NormalAtPoint(m_pPos);
+    auto* const pNormal = g_arenaEllipsoid.NormalAtPoint(m_pPos);
 
     if (pNormal != nullptr)
     {

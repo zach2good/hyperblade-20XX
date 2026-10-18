@@ -9,10 +9,10 @@ void CDisplayShotPowerPool::Init()
 {
     AgendaItem* pNode = new CDisplayShotPower;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountCDisplayShotPower;
+    auto nRemaining = g_wPoolCountCDisplayShotPower;
 
     while (nRemaining-- > 0)
     {
@@ -26,7 +26,7 @@ void CDisplayShotPowerPool::Init()
 // FUNCTION: HYPERX 0x004148b0
 void* CDisplayShotPowerPool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -44,7 +44,7 @@ CDisplayShotPowerPool::~CDisplayShotPowerPool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

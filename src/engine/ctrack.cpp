@@ -58,7 +58,7 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pDesiredVel = &pOwner->GetPhysicsBody()->smoothVel;
     m_wCountdown  = 0;
 
-    EngineObject* const pTracked = GetCamera()->GetTrackedObject();
+    auto* const pTracked = GetCamera()->GetTrackedObject();
 
     if (pTracked != nullptr)
     {
@@ -108,7 +108,7 @@ void CTrack::Process(int nArg)
 
     const auto flStep = (g_pGameEngine->m_clock.GetDelta() * 50.0f);
 
-    Vec3* const pOffsetScales = GetCamera()->m_pSettings;
+    auto* const pOffsetScales = GetCamera()->m_pSettings;
 
     auto* pTracked = (PlayerObject*)GetCamera()->GetTrackedObject();
 
@@ -118,8 +118,8 @@ void CTrack::Process(int nArg)
         g_gameApp.Fatal("CTrack::Process(): Null pointer for model to track\n");
     }
 
-    EngineObject* const pLastTracked = GetCamera()->GetLastTrackedObject();
-    PhysicsBody*        pBody        = pTracked->GetPhysicsBody();
+    auto* const pLastTracked = GetCamera()->GetLastTrackedObject();
+    auto*       pBody        = pTracked->GetPhysicsBody();
 
     if (pLastTracked == nullptr || pLastTracked != pTracked)
     {
@@ -154,17 +154,17 @@ void CTrack::Process(int nArg)
 
         if ((static_cast<unsigned char>(pBody->nHeldBindings) & HELD_SHOOT) != 0)
         {
-            AttachPak* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
+            auto* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
             if (pHolder != nullptr)
             {
-                short wCarrier = pHolder->nSlot;
+                auto wCarrier = pHolder->nSlot;
 
                 if (wCarrier < kPlayerObjectCount && wCarrier == pTracked->GetSlot())
                 {
-                    EngineObject* const pGoal   = g_pGameEngine->m_ppSlots[pTracked->m_wTargetGoalSlot];
-                    const Vec3*         pMine   = pTracked->GetPositionPtr();
-                    const Vec3*         pTheirs = pGoal->GetPositionPtr();
+                    auto* const pGoal   = g_pGameEngine->m_ppSlots[pTracked->m_wTargetGoalSlot];
+                    const Vec3* pMine   = pTracked->GetPositionPtr();
+                    const Vec3* pTheirs = pGoal->GetPositionPtr();
 
                     // Worked out and then never read.
                     vScaled.x = pTheirs->x - pMine->x;
@@ -178,8 +178,8 @@ void CTrack::Process(int nArg)
     }
     else
     {
-        const short wViewer = g_pGameEngine->m_nViewedSlot;
-        AttachPak*  pHolder = pBody->pAttach;
+        const auto wViewer = g_pGameEngine->m_nViewedSlot;
+        auto*      pHolder = pBody->pAttach;
 
         if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
         {
@@ -200,7 +200,7 @@ void CTrack::Process(int nArg)
     vTrack.x = vLook.x = aTarget.x - m_pPos->x;
     vTrack.y = vLook.y = aTarget.y - m_pPos->y;
 
-    const float flDrop = aTarget.z - m_pPos->z;
+    const auto flDrop = aTarget.z - m_pPos->z;
 
     vTrack.z = flDrop + g_flCameraTrackingHeight;
     vLook.z  = flDrop + g_flCameraLookHeight;
@@ -227,14 +227,14 @@ void CTrack::Process(int nArg)
         const auto flCos = static_cast<float>(cos(static_cast<double>(pBody->flFacing)));
         const auto flSin = static_cast<float>(sin(static_cast<double>(pBody->flFacing)));
 
-        vRaw.x             = vFacing.z * g_flZeroTracking - vFacing.y * g_flCamFracFull;
-        const float flRawY = vFacing.x * g_flCamFracFull - vFacing.z * g_flZeroTracking;
+        vRaw.x            = vFacing.z * g_flZeroTracking - vFacing.y * g_flCamFracFull;
+        const auto flRawY = vFacing.x * g_flCamFracFull - vFacing.z * g_flZeroTracking;
 
         vFacing.x = vRaw.x * flSin + vFacing.x * flCos;
         vFacing.y = flRawY * flSin + vFacing.y * flCos;
     }
 
-    const short wState = pTracked->GetPlanState()->m_pCurrent->m_wKind;
+    const auto wState = pTracked->GetPlanState()->m_pCurrent->m_wKind;
 
     if (wState == kBehFly || wState == kBehRailSlide || m_wCountdown != 0)
     {
@@ -407,7 +407,7 @@ void CTrack::Process(int nArg)
                     vGap.y = vWish.y - pPos[1];
                     vGap.z = vWish.z - pPos[2];
 
-                    const Vec3 vHalfGap = vGap.Scaled(0.5f);
+                    const auto vHalfGap = vGap.Scaled(0.5f);
 
                     pPos[0] = vHalfGap.x + pPos[0];
                     pPos[1] = vHalfGap.y + pPos[1];
@@ -442,8 +442,8 @@ void CTrack::Process(int nArg)
             }
         }
 
-        Vec3*       pSumClosest;
-        const float flScaleX = pOffsetScales->x;
+        Vec3*      pSumClosest;
+        const auto flScaleX = pOffsetScales->x;
 
         vSide.x = g_flZeroTracking;
         vSide.y = g_flZeroTracking;
@@ -497,7 +497,7 @@ void CTrack::Process(int nArg)
         m_pPos->z = aTarget.z - vFinal.z;
     }
 
-    EngineObject* pSecondary = GetCamera()->GetSecondaryTrackedObject();
+    auto* pSecondary = GetCamera()->GetSecondaryTrackedObject();
 
     if (pSecondary != nullptr)
     {
@@ -505,7 +505,7 @@ void CTrack::Process(int nArg)
 
         if (pSecondary->GetSlot() == kSlotRok)
         {
-            AttachPak* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
+            auto* pHolder = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
             if (pHolder != nullptr && pHolder->nSlot < kPlayerObjectCount)
             {

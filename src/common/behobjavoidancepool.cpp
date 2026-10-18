@@ -8,10 +8,10 @@ void BehObjAvoidancePool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_Avoidance;
 
-    m_pHead                   = pNode;
-    GameBehaviorObject* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountBehObjAvoidance;
+    auto nRemaining = g_wPoolCountBehObjAvoidance;
 
     while (nRemaining-- > 0)
     {
@@ -25,7 +25,7 @@ void BehObjAvoidancePool::Init()
 // FUNCTION: HYPERX 0x0041f0a0
 void* BehObjAvoidancePool::Alloc()
 {
-    GameBehaviorObject* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
     pHead->m_pStandby = nullptr;
@@ -43,7 +43,7 @@ BehObjAvoidancePool::~BehObjAvoidancePool()
 {
     while (m_pHead != nullptr)
     {
-        GameBehaviorObject* const pNext = m_pHead->m_pStandby;
+        auto* const pNext = m_pHead->m_pStandby;
 
         delete m_pHead;
 

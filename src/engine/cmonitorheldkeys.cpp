@@ -20,7 +20,7 @@ void CMonitorHeldKeys::Process(int nArg)
 {
     ((KeyboardDeviceObj*)m_pOwner)->CheckButtonTimeouts();
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

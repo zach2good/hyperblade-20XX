@@ -9,14 +9,14 @@ char ClipSphere::FrustumCull(float flRadius)
 {
     char cVisible;
 
-    int nLeft   = 0;
-    int nRight  = 0;
-    int nBottom = 0;
-    int nTop    = 0;
-    int nNear   = 0;
-    int nFar    = 0;
+    auto nLeft   = 0;
+    auto nRight  = 0;
+    auto nBottom = 0;
+    auto nTop    = 0;
+    auto nNear   = 0;
+    auto nFar    = 0;
 
-    const float flHalfX = g_projRenderParams.flMaxX * flRadius * 0.5f;
+    const auto flHalfX = g_projRenderParams.flMaxX * flRadius * 0.5f;
 
     if (flHalfX + x < 0.0f)
     {
@@ -28,7 +28,7 @@ char ClipSphere::FrustumCull(float flRadius)
         nRight = 1;
     }
 
-    const float flHalfY = g_projRenderParams.flMaxY * flRadius * 0.5f;
+    const auto flHalfY = g_projRenderParams.flMaxY * flRadius * 0.5f;
 
     if (flHalfY + y < 0.0f)
     {
@@ -50,7 +50,7 @@ char ClipSphere::FrustumCull(float flRadius)
         nFar = 1;
     }
 
-    const int nOutside = nFar + nNear + nTop + nBottom + nRight + nLeft;
+    const auto nOutside = nFar + nNear + nTop + nBottom + nRight + nLeft;
 
     if (nOutside != 0)
     {

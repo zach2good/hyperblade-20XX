@@ -27,7 +27,7 @@ SDL_IOStream* OpenStream(const char* pszPath, int nMode)
     {
         case FILE_MODE_WRITE_NO_TRUNCATE:
         {
-            SDL_IOStream* const pExisting = SDL_IOFromFile(path.c_str(), "r+b");
+            auto* const pExisting = SDL_IOFromFile(path.c_str(), "r+b");
 
             if (pExisting != nullptr)
             {
@@ -137,10 +137,10 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
 
     va_end(argList);
 
-    char  ch    = szText[0];
+    auto  ch    = szText[0];
     char* pSrc  = szText;
     char* pDst  = szOut;
-    int   nLeft = kTextMax;
+    auto  nLeft = kTextMax;
 
     while (ch != 0 && nLeft != 0)
     {
@@ -196,12 +196,12 @@ int FileObj::GetNextLine(char** ppLine)
 
     memset(pBuffer, 0, sizeof(m_szLine));
 
-    int   nLength = 0;
-    char* pCursor = pBuffer;
+    auto  nLength = 0;
+    auto* pCursor = pBuffer;
 
     while (nLength < 0x100)
     {
-        int nRead = Read(pCursor, 1);
+        auto nRead = Read(pCursor, 1);
 
         if (nRead != 0)
         {

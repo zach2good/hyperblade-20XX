@@ -23,7 +23,7 @@ void SplineCurve::ComputeTangent(float flT, Vec3* pTangent)
         flStep = g_flSplineTangentStep + flT;
     }
 
-    const float flAhead = m_pfnEval(flStep, m_flA, m_flB, m_flC, m_flD);
+    const auto flAhead = m_pfnEval(flStep, m_flA, m_flB, m_flC, m_flD);
 
     pTangent->x = flAhead - m_pfnEval(flT, m_flA, m_flB, m_flC, m_flD);
     pTangent->y = flStep - flT;

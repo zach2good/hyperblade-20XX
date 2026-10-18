@@ -33,7 +33,7 @@ AnimDB::~AnimDB()
 
     for (short nEntry = 0; nEntry < m_nEntryCount; nEntry++)
     {
-        AnimClipEntry* const pEntry = m_apEntries[nEntry];
+        auto* const pEntry = m_apEntries[nEntry];
 
         if (pEntry != nullptr)
         {
@@ -47,7 +47,7 @@ AnimDB::~AnimDB()
 
     for (short nNode = 0; nNode < m_wNodeCount; nNode++)
     {
-        AnimNode* const pNode = m_apNodes[nNode];
+        auto* const pNode = m_apNodes[nNode];
 
         if (pNode != nullptr)
         {

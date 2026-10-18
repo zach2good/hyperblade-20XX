@@ -151,7 +151,7 @@ bool GameApp::Initialize(const char* pszArguments)
 
     std::set_new_handler(GameApp::OutOfMemoryHandler);
     // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
-    const char* const pszBase = SDL_GetBasePath();
+    const auto* const pszBase = SDL_GetBasePath();
 
     if (pszBase == nullptr || !StringTable::Load(pszBase))
     {
@@ -215,14 +215,14 @@ bool GameApp::Initialize(const char* pszArguments)
 // FUNCTION: HYPERX 0x00419070
 void GameApp::InitializeResourcePaths()
 {
-    char* const pszClassName = g_gameApp.m_stringPool.LoadText(kStringHyperBlade);
+    auto* const pszClassName = g_gameApp.m_stringPool.LoadText(kStringHyperBlade);
 
     g_gameApp.m_strCaption.Assign(String::SafeStrlen(pszClassName), pszClassName);
 
     PathString strDirectory(kMaxPathLength);
 
     // SDL's base path ends in a separator.
-    const char* const pszBase = SDL_GetBasePath();
+    const auto* const pszBase = SDL_GetBasePath();
 
     if (pszBase != nullptr)
     {
@@ -310,7 +310,7 @@ bool GameApp::UpdateSplash()
 // The original skipped the program's name first; the arguments come without it.
 void GameApp::ParseCommandLine(const char* pszArguments)
 {
-    const char* p = pszArguments;
+    const auto* p = pszArguments;
 
     while (*p == ' ' || *p == '\r' || *p == '\n' || *p == 'x')
     {
@@ -368,7 +368,7 @@ void GameApp::Shutdown()
 
     Game::ShutdownEngine();
 
-    ColorPalette* const pPalette = g_pColorPalette;
+    auto* const pPalette = g_pColorPalette;
 
     if (pPalette != nullptr)
     {
@@ -501,7 +501,7 @@ int GameApp::FindCDRomDrive(bool bRequired)
         m_nCDRomDrive = kCdromNotWanted;
     }
 
-    int nDrive = m_nCDRomDrive;
+    auto nDrive = m_nCDRomDrive;
 
     if (nDrive != kCdromNotFound)
     {
@@ -561,7 +561,7 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
         {
             if (SDL_strncasecmp(p, "data", 4) == 0)
             {
-                char* pszDest = pszPath + 3;
+                auto* pszDest = pszPath + 3;
 
                 while (*p != 0)
                 {
@@ -592,14 +592,14 @@ void GameApp::ReportLastError()
 // FUNCTION: HYPERX 0x00423900
 void GameApp::ShowErrorBox(String strMessage)
 {
-    const int nCursor = GameApp::SetCursorVisible(1);
+    const auto nCursor = GameApp::SetCursorVisible(1);
 
     String strCaption = m_strCaption.m_pchData;
 
     strCaption.AppendData(String::SafeStrlen(g_pszCaptionSeparator),
                           g_pszCaptionSeparator);
 
-    char* const pszDetail = m_stringPool.LoadText(kStringAlert);
+    auto* const pszDetail = m_stringPool.LoadText(kStringAlert);
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 
@@ -663,9 +663,9 @@ void GameApp::SetupViewports()
 {
     int nPrevHeight;
 
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
+    auto* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
 
-    int nPrevWidth = g_nPrevWidth;
+    auto nPrevWidth = g_nPrevWidth;
 
     if (nPrevWidth == 0 || (nPrevHeight = g_nPrevHeight) == 0)
     {
@@ -676,16 +676,16 @@ void GameApp::SetupViewports()
     }
 
     // The client computes both insets before pushing either (0x0044b395 to 0x0044b3ae).
-    const int nInsetY = (g_nBackBufferHeight - nPrevHeight) / 2;
-    const int nInsetX = (g_nBackBufferWidth - nPrevWidth) / 2;
+    const auto nInsetY = (g_nBackBufferHeight - nPrevHeight) / 2;
+    const auto nInsetX = (g_nBackBufferWidth - nPrevWidth) / 2;
 
     pCamera->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy, g_nBackBufferWidth, g_nBackBufferHeight, g_nBackBufferWidth, nPrevWidth, nPrevHeight, nInsetX, nInsetY);
 
     pCamera->InitViewTransforms();
 
-    const float flScale = pCamera->m_flHalfFov;
+    const auto flScale = pCamera->m_flHalfFov;
 
-    CameraObject* const pView = g_pGameEngine->GetCamera(kCameraHeadSlot);
+    auto* const pView = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
     if (g_pRenderer == nullptr || pView == nullptr)
     {
@@ -801,7 +801,7 @@ int GameApp::GetInstallLevel()
 // FUNCTION: HYPERX 0x0047adb0
 Window::MessageAnswer GameApp::ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons)
 {
-    const int bWasVisible = GameApp::SetCursorVisible(1);
+    const auto bWasVisible = GameApp::SetCursorVisible(1);
 
     const auto nResult = Window::ShowMessage(pszText, pszCaption, buttons, Window::MessageIcon::INFO);
 

@@ -55,8 +55,8 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
         flDot = m_q0.w * m_q1.w + m_q0.x * m_q1.x + m_q0.y * m_q1.y + m_q0.z * m_q1.z;
     }
 
-    const double dTheta = Math::Acos(flDot);
-    m_flTheta           = static_cast<float>(dTheta);
+    const auto dTheta = Math::Acos(flDot);
+    m_flTheta         = static_cast<float>(dTheta);
 
     if (dTheta < 0.001)
     {
@@ -72,7 +72,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
         g_gameApp.Fatal("0 denom in InitSlerpSeg\n");
     }
 
-    const float flInvSin = g_flQuatOne / flSin;
+    const auto flInvSin = g_flQuatOne / flSin;
 
     m_q0Div.w = flInvSin * m_q0.w;
     m_q0Div.x = flInvSin * m_q0.x;

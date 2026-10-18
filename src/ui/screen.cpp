@@ -114,7 +114,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
         m_nCaptured = -1;
     }
 
-    int bHandled = 0;
+    auto bHandled = 0;
 
     for (int i = 0; i <= m_nLastWidget && bHandled == 0; i++)
     {
@@ -150,7 +150,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
                     {
                         InitFrame();
 
-                        const int nSound = m_apWidgets[i]->m_flipbook.m_nSoundAtMark;
+                        const auto nSound = m_apWidgets[i]->m_flipbook.m_nSoundAtMark;
 
                         if (nSound > -1)
                         {
@@ -214,11 +214,11 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
         return 1;
     }
 
-    const int nFocused = FindFocusedWidget();
+    const auto nFocused = FindFocusedWidget();
 
     if (nFocused != -1)
     {
-        Widget* const pWidget = m_apWidgets[nFocused];
+        auto* const pWidget = m_apWidgets[nFocused];
 
         if (pWidget->OnKeyPress(wParam))
         {
@@ -386,7 +386,7 @@ void Screen::MoveFocusPrev()
 
 inline int Screen::FindHighlightedWidget(int* pnIndex)
 {
-    int i = 0;
+    auto i = 0;
 
     do
     {
@@ -460,11 +460,11 @@ int Screen::TickAnimations()
 {
     SystemTimePair now;
 
-    int bDirty = 0;
+    auto bDirty = 0;
 
     GameTime::Now(&now);
 
-    SystemTimePair* const pTick = &m_lastTick;
+    auto* const pTick = &m_lastTick;
 
     if ((now.nSeconds - pTick->nSeconds) * 1000 - static_cast<unsigned short>(m_lastTick.nMillis) + (now.nMillis & 0xffff) < kTickIntervalMs)
     {

@@ -47,7 +47,7 @@ int main(int argc, char** argv)
         {
             nChecked++;
 
-            void* const pOut = MDM1::Decompress(&file);
+            auto* const pOut = MDM1::Decompress(&file);
 
             if (pOut == nullptr)
             {
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
             {
                 SDL_SeekIO(file.m_stream.As<SDL_IOStream>(), 4, SDL_IO_SEEK_SET);
 
-                int nSize = 0;
+                auto nSize = 0;
                 file.Read(&nSize, sizeof(nSize));
 
                 std::ofstream dump(std::filesystem::path(argv[2]) / entry.path().filename(), std::ios::binary);

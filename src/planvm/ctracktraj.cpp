@@ -44,7 +44,7 @@ constexpr auto kTrajectoryModeBlend  = 1;
 // FUNCTION: HYPERX 0x0040a5c0
 CTrackTraj::~CTrackTraj()
 {
-    Spline* const pList = m_pSpline;
+    auto* const pList = m_pSpline;
 
     if (pList != nullptr)
     {
@@ -80,7 +80,7 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 void CTrackTraj::InitRange()
 {
     const double dLow   = g_arenaEllipsoid.GetRadiusX();
-    float        flHigh = g_arenaEllipsoid.GetRadiusY();
+    auto         flHigh = g_arenaEllipsoid.GetRadiusY();
     flHigh += g_flFrameRateReference;
 
     m_pSpline->InitClamped(static_cast<float>(dLow), flHigh);
@@ -118,7 +118,7 @@ extern const float g_flPi;
 // FUNCTION: HYPERX 0x0040a730
 void CTrackTraj::InitComplexRange()
 {
-    CollisionEllipsoid* const pArena = &g_arenaEllipsoid;
+    auto* const pArena = &g_arenaEllipsoid;
 
     // Through its getter, the radius loads before pi, as the client loads it.
     m_pSpline->InitSpringNode(-(pArena->GetRadiusX() * g_flCamWatchMidpointScale),
@@ -142,9 +142,9 @@ void CTrackTraj::SetBlendT(int nValue)
 // FUNCTION: HYPERX 0x0040a7b0
 void CTrackTraj::Process(int nArg)
 {
-    Vec3* const pCamPos = &m_pOwner->GetPhysicsBody()->pos;
-    Vec3* const pCamVel = GetCamera()->m_pSettings;
-    Vec3* const pCamDir = &m_pOwner->GetPhysicsBody()->velDir;
+    auto* const pCamPos = &m_pOwner->GetPhysicsBody()->pos;
+    auto* const pCamVel = GetCamera()->m_pSettings;
+    auto* const pCamDir = &m_pOwner->GetPhysicsBody()->velDir;
 
     auto* const pCamera = (CameraObject*)m_pOwner;
 
@@ -163,9 +163,9 @@ void CTrackTraj::Process(int nArg)
         pCamera->SetTrackedObject(pViewer);
     }
 
-    Vec3* const pTracked = &GetCamera()->GetTrackedObject()->GetPhysicsBody()->pos;
+    auto* const pTracked = &GetCamera()->GetTrackedObject()->GetPhysicsBody()->pos;
 
-    EngineObject* const pWatched = GetCamera()->GetSecondaryTrackedObject();
+    auto* const pWatched = GetCamera()->GetSecondaryTrackedObject();
 
     if (pWatched == nullptr)
     {
@@ -173,7 +173,7 @@ void CTrackTraj::Process(int nArg)
         g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for model to watch\n");
     }
 
-    Vec3 vWatch = *pWatched->GetPositionPtr();
+    auto vWatch = *pWatched->GetPositionPtr();
 
     switch (m_nMode)
     {

@@ -71,7 +71,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
     *pnMatCount              = 0;
     *pnTexCount              = 0;
     MaterialName* paTexNames = nullptr;
-    int           nTexCount  = 0;
+    auto          nTexCount  = 0;
     *ppTexNames              = nullptr;
     char* pszLine            = szLine;
     short nMatIndex          = -1;
@@ -151,8 +151,8 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                 }
                 else
                 {
-                    int nCopy = kNameCopyMax;
-                    nLength   = static_cast<int>(strlen(szValue));
+                    auto nCopy = kNameCopyMax;
+                    nLength    = static_cast<int>(strlen(szValue));
 
                     if (nLength < nCopy)
                     {
@@ -188,7 +188,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
             else if (SDL_strcasecmp(szKeyword, "Cr") == 0)
             {
                 // STRING: HYPERX 0x004be32c
-                const int nFields = sscanf(pszLine, "%s %hd %hd %hd %s", szKeyword, &nRed, &nGreen, &nBlue, szRamp);
+                const auto nFields = sscanf(pszLine, "%s %hd %hd %hd %s", szKeyword, &nRed, &nGreen, &nBlue, szRamp);
 
                 if (nFields < 4)
                 {

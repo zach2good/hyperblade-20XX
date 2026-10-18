@@ -8,10 +8,10 @@ void BehObjGlidePool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_Glide;
 
-    m_pHead                   = pNode;
-    GameBehaviorObject* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountBehObjGlide;
+    auto nRemaining = g_wPoolCountBehObjGlide;
 
     while (nRemaining-- > 0)
     {
@@ -25,7 +25,7 @@ void BehObjGlidePool::Init()
 // FUNCTION: HYPERX 0x0041f2f0
 void* BehObjGlidePool::Alloc()
 {
-    GameBehaviorObject* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
     pHead->m_pStandby = nullptr;
@@ -43,7 +43,7 @@ BehObjGlidePool::~BehObjGlidePool()
 {
     while (m_pHead != nullptr)
     {
-        GameBehaviorObject* const pNext = m_pHead->m_pStandby;
+        auto* const pNext = m_pHead->m_pStandby;
 
         delete m_pHead;
 

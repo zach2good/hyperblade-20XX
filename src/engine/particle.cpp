@@ -18,23 +18,23 @@ void Particle::InitRandom(float flSpread, float flRise)
     m_vVelocity.x = Math::RandSigned() * flSpread;
     m_vVelocity.z = Math::RandSigned() * flSpread;
 
-    const float flUpRoll = Math::RandMagnitude();
+    const auto flUpRoll = Math::RandMagnitude();
 
-    const float flVertical = flUpRoll * flRise;
-    m_vVelocity.y          = flVertical;
-    const float flSpan     = flVertical * 0.0625f;
-    m_flSpan               = flSpan;
-    m_flLife               = flSpan;
+    const auto flVertical = flUpRoll * flRise;
+    m_vVelocity.y         = flVertical;
+    const auto flSpan     = flVertical * 0.0625f;
+    m_flSpan              = flSpan;
+    m_flLife              = flSpan;
 
-    const float flRateRoll = Math::RandMagnitude();
+    const auto flRateRoll = Math::RandMagnitude();
 
-    const int nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
-    m_flRowRate        = static_cast<float>(nRowRate);
+    const auto nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
+    m_flRowRate         = static_cast<float>(nRowRate);
 
     m_nSet = Math::RandInt(0, kParticleRowSets - 1);
 
-    const int nRow = Math::RandInt(0, kParticleRowsPerSet - 1);
-    m_flRow        = static_cast<float>(nRow);
+    const auto nRow = Math::RandInt(0, kParticleRowsPerSet - 1);
+    m_flRow         = static_cast<float>(nRow);
 }
 
 // Unlike InitRandom, half the particles leave downwards and they live half as long.
@@ -46,7 +46,7 @@ void Particle::InitRandomUniform(float flSpread, float flRise)
     m_vVelocity.x = Math::RandSigned() * flSpread;
     m_vVelocity.z = Math::RandSigned() * flSpread;
 
-    float flVertical = Math::RandSigned() * flRise;
+    auto flVertical = Math::RandSigned() * flRise;
     if (flVertical <= 0.0f)
     {
         m_vVelocity.y = flVertical;
@@ -57,19 +57,19 @@ void Particle::InitRandomUniform(float flSpread, float flRise)
         m_vVelocity.y = flVertical;
     }
 
-    const float flSpan = flVertical * 0.03125f;
-    m_flSpan           = flSpan;
-    m_flLife           = flSpan;
+    const auto flSpan = flVertical * 0.03125f;
+    m_flSpan          = flSpan;
+    m_flLife          = flSpan;
 
-    const float flRateRoll = Math::RandMagnitude();
+    const auto flRateRoll = Math::RandMagnitude();
 
-    const int nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
-    m_flRowRate        = static_cast<float>(nRowRate);
+    const auto nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
+    m_flRowRate         = static_cast<float>(nRowRate);
 
     m_nSet = Math::RandInt(0, kParticleRowSets - 1);
 
-    const int nRow = Math::RandInt(0, kParticleRowsPerSet - 1);
-    m_flRow        = static_cast<float>(nRow);
+    const auto nRow = Math::RandInt(0, kParticleRowsPerSet - 1);
+    m_flRow         = static_cast<float>(nRow);
 }
 
 // FUNCTION: HYPERX 0x00412a10

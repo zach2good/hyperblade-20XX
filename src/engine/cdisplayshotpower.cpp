@@ -30,7 +30,7 @@ void CDisplayShotPower::Process(int nArg)
 {
     if (g_pRenderer != nullptr)
     {
-        CameraObject* const pSource = g_pGameEngine->GetCamera(kCameraHeadSlot);
+        auto* const pSource = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
         if (pSource != nullptr)
         {

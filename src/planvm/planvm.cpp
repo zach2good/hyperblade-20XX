@@ -389,13 +389,13 @@ void PlanVM::LoadAnimationLists()
 
     // Marked in src/graphics/colorpalette.cpp: without /GF each object keeps its own copy.
     // STRING: HYPERX 0x004c4704
-    FILE* const pHitFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "HitAnims.lst")).c_str(), "r");
+    auto* const pHitFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "HitAnims.lst")).c_str(), "r");
     // STRING: HYPERX 0x004c46f4
-    FILE* const pChkFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ChkAnims.lst")).c_str(), "r");
+    auto* const pChkFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ChkAnims.lst")).c_str(), "r");
     // STRING: HYPERX 0x004c46e4
-    FILE* const pJmpFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "JmpAnims.lst")).c_str(), "r");
+    auto* const pJmpFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "JmpAnims.lst")).c_str(), "r");
     // STRING: HYPERX 0x004c46d4
-    FILE* const pThrFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ThrAnims.lst")).c_str(), "r");
+    auto* const pThrFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ThrAnims.lst")).c_str(), "r");
 
     if (pHitFile == nullptr || pChkFile == nullptr || pJmpFile == nullptr || pThrFile == nullptr)
     {
@@ -405,7 +405,7 @@ void PlanVM::LoadAnimationLists()
 
     short* pwIndex              = g_awReactionByDamageAndSector;
     char (*pName)[kAnimNameMax] = g_aAnimListNames;
-    int nLine                   = kAnimListLines;
+    auto nLine                  = kAnimListLines;
 
     do
     {
@@ -415,10 +415,10 @@ void PlanVM::LoadAnimationLists()
         ParseUtil::ReadLine(pThrFile, szThrLine);
 
         // STRING: HYPERX 0x004c4694
-        const int nHitRead = sscanf(szHitLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aHitName[0], aHitName[1], aHitName[2], aHitName[3], aHitName[4], aHitName[5], aHitName[6]);
-        const int nChkRead = sscanf(szChkLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aChkName[0], aChkName[1], aChkName[2], aChkName[3], aChkName[4], aChkName[5], aChkName[6]);
-        const int nJmpRead = sscanf(szJmpLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aJmpName[0], aJmpName[1], aJmpName[2], aJmpName[3], aJmpName[4], aJmpName[5], aJmpName[6]);
-        const int nThrRead = sscanf(szThrLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aThrName[0], aThrName[1], aThrName[2], aThrName[3], aThrName[4], aThrName[5], aThrName[6]);
+        const auto nHitRead = sscanf(szHitLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aHitName[0], aHitName[1], aHitName[2], aHitName[3], aHitName[4], aHitName[5], aHitName[6]);
+        const auto nChkRead = sscanf(szChkLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aChkName[0], aChkName[1], aChkName[2], aChkName[3], aChkName[4], aChkName[5], aChkName[6]);
+        const auto nJmpRead = sscanf(szJmpLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aJmpName[0], aJmpName[1], aJmpName[2], aJmpName[3], aJmpName[4], aJmpName[5], aJmpName[6]);
+        const auto nThrRead = sscanf(szThrLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aThrName[0], aThrName[1], aThrName[2], aThrName[3], aThrName[4], aThrName[5], aThrName[6]);
 
         if (nHitRead != kAnimNamesPerLine || nChkRead != nHitRead || nJmpRead != nHitRead || nThrRead != nHitRead)
         {
@@ -428,8 +428,8 @@ void PlanVM::LoadAnimationLists()
 
         char (*pSource)[kAnimNameMax] = aHitName;
         char (*pDest)[kAnimNameMax]   = pName;
-        short* pwWork                 = pwIndex;
-        int    nName                  = kAnimNamesPerLine;
+        auto* pwWork                  = pwIndex;
+        auto  nName                   = kAnimNamesPerLine;
 
         do
         {
@@ -551,7 +551,7 @@ PlanVM::PlanVM()
     m_pszText = nullptr;
     m_pStream = nullptr;
 
-    PlanOpcodeRef* pEntry = &m_aOpcodes[0];
+    auto* pEntry = &m_aOpcodes[0];
 
     // STRING: HYPERX 0x004c6d0c
     strcpy(pEntry->szName, "SET_COLLISION_INTERACTOR");
@@ -784,7 +784,7 @@ PlanVM::PlanVM()
     strcpy(pEntry->szName, "_PREVIOUS_BEH_");
     pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_PREVIOUS_BEH);
 
-    int nIndex = 0;
+    auto nIndex = 0;
 
     do
     {
@@ -846,7 +846,7 @@ char PlanVM::SaveBinary(char* pszName)
     {
         file.m_file.Write(reinterpret_cast<char*>(&m_nPos), sizeof(m_nPos));
 
-        int nIndex = 0;
+        auto nIndex = 0;
 
         do
         {
@@ -933,7 +933,7 @@ char PlanVM::LoadText(short nCamera, char* pszName)
 
     if (file.m_file.Open(szPath, FILE_MODE_READ) != 0)
     {
-        const char bResult = ReadAll(&file.m_file);
+        const auto bResult = ReadAll(&file.m_file);
 
         file.m_file.CloseAndTest();
 
@@ -1125,7 +1125,7 @@ extern const char* const g_pszDecimalPoint;
 // FUNCTION: HYPERX 0x0047e3a0
 int PlanVM::IsSeparatorChar()
 {
-    const char cAt = m_pszText[m_nCursor];
+    const auto cAt = m_pszText[m_nCursor];
 
     if (cAt == ' ' || cAt == '	' || cAt == ',' || cAt == '&')
     {
@@ -1180,7 +1180,7 @@ int PlanVM::IsAAPrefix(const char* pszToken)
 // FUNCTION: HYPERX 0x0047e470
 unsigned char PlanVM::IsNumericChar(const char* pszToken)
 {
-    const char cFirst = pszToken[0];
+    const auto cFirst = pszToken[0];
 
     int bMatch;
 
@@ -1255,7 +1255,7 @@ char PlanVM::EmitArgToken()
     }
     else if (IsNumericChar(szToken))
     {
-        PlanWord* const pSlot = &m_pStream[m_nPos];
+        auto* const pSlot = &m_pStream[m_nPos];
         m_nPos++;
 
         if (ParseNumber(szToken, pSlot) == 0)
@@ -1270,7 +1270,7 @@ char PlanVM::EmitArgToken()
 
     if (szToken[0] == '"')
     {
-        short nIndex = FindLocalRealIndex(szToken);
+        auto nIndex = FindLocalRealIndex(szToken);
 
         if (nIndex >= 0)
         {
@@ -1435,7 +1435,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
     // STRING: HYPERX 0x004c6f94
     if (pszText[strspn(pszText, "xXABCDEFabcdef0123456789.+-_")] == 0)
     {
-        const int nLength = static_cast<int>(strlen(pszText)) + 1;
+        const auto nLength = static_cast<int>(strlen(pszText)) + 1;
 
         char* pszCopy = new char[nLength];
 
@@ -1478,7 +1478,7 @@ char PlanVM::EmitStringLiteral(const char* pszToken, PlanWord* paStream, int* pn
 
     short iChar = 1;
 
-    char cAt = pszToken[1];
+    auto cAt = pszToken[1];
 
     while (cAt != '"')
     {
@@ -1516,7 +1516,7 @@ void PlanVM::ReadNextToken(char* pToken)
     char cAt;
 
     char  cComment    = 0;
-    bool  bNewline    = false;
+    auto  bNewline    = false;
     char  bCloseBrace = 0;
     short nLength     = 0;
     char  bEnd        = 0;
@@ -1858,7 +1858,7 @@ void PlanVM::LoadSymbolTables()
             const int nValue = nFileSlot;
             nFileSlot++;
 
-            PlanOpcodeRef* const pSymbol = &pTable[nSlot];
+            auto* const pSymbol = &pTable[nSlot];
             nSlot++;
 
             strcpy(pSymbol->szName, szToken);
@@ -1901,7 +1901,7 @@ void PlanVM::LoadSymbolTables()
             const int nValue = nFileSlot;
             nFileSlot++;
 
-            PlanOpcodeRef* const pSymbol = &pTable[nSlot];
+            auto* const pSymbol = &pTable[nSlot];
             nSlot++;
 
             strcpy(pSymbol->szName, szToken);
@@ -1948,7 +1948,7 @@ void PlanVM::LoadSymbolTables()
             const int nValue = nFileSlot;
             nFileSlot++;
 
-            PlanOpcodeRef* const pSymbol = &pTable[nSlot];
+            auto* const pSymbol = &pTable[nSlot];
             nSlot++;
 
             strcpy(pSymbol->szName, szPrefixed);
@@ -1982,7 +1982,7 @@ void PlanVM::LoadSymbolTables()
             const int nValue = nFileSlot;
             nFileSlot++;
 
-            PlanOpcodeRef* const pSymbol = &pTable[nSlot];
+            auto* const pSymbol = &pTable[nSlot];
             nSlot++;
 
             strcpy(pSymbol->szName, szPrefixed);

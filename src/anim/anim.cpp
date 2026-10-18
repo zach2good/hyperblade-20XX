@@ -24,7 +24,7 @@ union FloatWord
 // FUNCTION: HYPERX 0x00416ba0
 void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, short nFrames, const AnimClipHeader* pHeader, TransformObject* pTempXform)
 {
-    const float* pFrameEuler = pInputEulers;
+    const auto* pFrameEuler = pInputEulers;
 
     for (short nFrame = 0; nFrame < nFrames; nFrame++)
     {
@@ -32,7 +32,7 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
 
         for (int nAxis = 0; nAxis < 3; nAxis++)
         {
-            float flAngle = pFrameEuler[2 - nAxis];
+            auto flAngle = pFrameEuler[2 - nAxis];
 
             switch (pHeader->acAxisOrder[2 - nAxis])
             {
@@ -67,13 +67,13 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
 
         pFrameEuler += 3;
 
-        PackedRotation* const pRotation = &pOutput[nFrame];
+        auto* const pRotation = &pOutput[nFrame];
 
         for (int nRow = 0; nRow < 3; nRow++)
         {
             for (int nCol = 0; nCol < 3; nCol++)
             {
-                const float flCell = pTempXform->m_a[nRow][nCol];
+                const auto flCell = pTempXform->m_a[nRow][nCol];
 
                 FloatWord cell;
 
@@ -84,7 +84,7 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
                     cell.fl = 0.0f;
                 }
 
-                const unsigned int nLow = cell.n & 0xfff;
+                const auto nLow = cell.n & 0xfff;
 
                 if (nLow > 0x800)
                 {

@@ -84,7 +84,7 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 {
     unsigned int nPacked;
 
-    EngineObject* const pTarget = pContext->GetActor();
+    auto* const pTarget = pContext->GetActor();
 
     if (pTarget->GetPhase() == OBJECT_PHASE_LOCAL)
     {
@@ -93,7 +93,7 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
         // STRING: HYPERX 0x004bb340
         if (strcmp("Human", pszName) == 0)
         {
-            CameraObject* const pHeadCam = g_pGameEngine->GetCamera(kCameraHeadSlot);
+            auto* const pHeadCam = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
             nPacked = ShotWord::Pack(static_cast<char>(static_cast<int>(pHeadCam->GetViewFracX() * 100.0f)),
                                      static_cast<char>(pHeadCam->m_nShotPowerLevel),
@@ -131,9 +131,9 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
         pRok = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(pContext->GetModelSlot()))];
     }
 
-    Vec3* const pVel          = &pRok->GetPhysicsBody()->velDir;
-    float*      pflSpeedScale = &pRok->GetPhysicsBody()->flSpeed;
-    const float flMaxSpeed    = pRok->GetPhysicsBody()->flForwardSpeedDt;
+    auto* const pVel          = &pRok->GetPhysicsBody()->velDir;
+    auto*       pflSpeedScale = &pRok->GetPhysicsBody()->flSpeed;
+    const auto  flMaxSpeed    = pRok->GetPhysicsBody()->flForwardSpeedDt;
 
     if (pRok->GetSlot() >= kSlotRok)
     {
@@ -305,7 +305,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
             }
             else
             {
-                const float flRise = flInvScale * flDelta * g_pGameEngine->m_clock.flDelta * 32.0f;
+                const auto flRise = flInvScale * flDelta * g_pGameEngine->m_clock.flDelta * 32.0f;
 
                 pVel->z = flRise * 0.5f + flScale * pVel->z;
             }
@@ -367,7 +367,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flFlight = flRoot / *pflSpeedScale;
 
-            const float flGravity = g_pGameEngine->m_clock.flDeltaSquared * 32.0f;
+            const auto flGravity = g_pGameEngine->m_clock.flDeltaSquared * 32.0f;
 
             pVel->z = flGravity * flFlight * flFlight + pVel->z;
 
@@ -419,18 +419,18 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 // FUNCTION: HYPERX 0x00403a30
 void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 {
-    Vec3*  pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
-    float* pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
+    auto* pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
+    auto* pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
 
     if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
     {
-        PhysicsBody*     pBlock   = pContext->GetActor()->GetPhysicsBody();
-        AttachPak* const pTracked = pBlock->pAttach;
+        auto*       pBlock   = pContext->GetActor()->GetPhysicsBody();
+        auto* const pTracked = pBlock->pAttach;
 
         if (pTracked != nullptr)
         {
-            PlayerObject* const pTarget = g_pGameEngine->GetPlayer(pTracked->nSlot);
-            const short         nViewed = g_pGameEngine->m_nViewedSlot;
+            auto* const pTarget = g_pGameEngine->GetPlayer(pTracked->nSlot);
+            const auto  nViewed = g_pGameEngine->m_nViewedSlot;
 
             if (pTarget->GetSlot() == nViewed)
             {
@@ -438,7 +438,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 
                 pContext->GetActor()->GetPhysicsBody();
 
-                const float flDt = g_pGameEngine->m_clock.flDelta;
+                const auto flDt = g_pGameEngine->m_clock.flDelta;
 
                 *pSpeed = ((pTarget->m_stats.GetWeightedStat(kRatingShotPower) * 0.04f + 0.8f) * 110.0f) * flDt;
 
@@ -464,12 +464,12 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x00403cf0
 void PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 {
-    EngineObject* const pActor = pContext->GetActor();
-    PhysicsBody*        pBlock = pActor->GetPhysicsBody();
+    auto* const pActor = pContext->GetActor();
+    auto*       pBlock = pActor->GetPhysicsBody();
 
-    Vec3* const pVelocity = &pBlock->vel;
+    auto* const pVelocity = &pBlock->vel;
 
-    const float flStep = g_pGameEngine->m_clock.flDelta * DAMP_RATE;
+    const auto flStep = g_pGameEngine->m_clock.flDelta * DAMP_RATE;
 
     if (pVelocity->z > 0.0f)
     {
@@ -506,27 +506,27 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
     float flFlight;
     float flScratchB;
 
-    EngineObject* pActor = pContext->GetActor();
+    auto* pActor = pContext->GetActor();
 
-    const int nIndex = pArgs->m_pArgs[1].n;
+    const auto nIndex = pArgs->m_pArgs[1].n;
 
-    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
+    auto* const pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
 
-    Vec3* const pActorPos = pActor->GetPositionPtr();
+    auto* const pActorPos = pActor->GetPositionPtr();
 
-    Vec3 vTargetPos = *pTarget->GetPositionPtr();
+    auto vTargetPos = *pTarget->GetPositionPtr();
 
-    Vec3* const pOut = &pActor->GetPhysicsBody()->vel;
+    auto* const pOut = &pActor->GetPhysicsBody()->vel;
 
     pActor->GetPhysicsBody();
 
-    Vec3 vTargetVel = pTarget->GetPhysicsBody()->vel;
+    auto vTargetVel = pTarget->GetPhysicsBody()->vel;
 
-    const float flTargetScale = pTarget->GetPhysicsBody()->flSpeed;
+    const auto flTargetScale = pTarget->GetPhysicsBody()->flSpeed;
 
     int nSlot = pActor->GetSlot();
 
-    EngineObject* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
+    auto* const pRok = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (pActor->GetSlot() % 2 == 0)
     {
@@ -537,13 +537,13 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
         pGoal = g_apPositionMarkers[kPosSGoalCenter];
     }
 
-    Vec3* const pRokPos = pRok->GetPositionPtr();
+    auto* const pRokPos = pRok->GetPositionPtr();
 
     vDiff.x = pGoal->x - pRokPos->x;
     vDiff.y = pGoal->y - pRokPos->y;
     vDiff.z = pGoal->z - pRokPos->z;
 
-    Vec3 vRokVel = pRok->GetPhysicsBody()->vel;
+    auto vRokVel = pRok->GetPhysicsBody()->vel;
 
     if (nSlot == kGoalieSlotA || nSlot == kGoalieSlotB)
     {
@@ -705,8 +705,8 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
     EngineObject* pTarget;
     unsigned int  nOperand;
 
-    Vec3* const pAxis  = &pContext->GetActor()->GetPhysicsBody()->velDir;
-    float*      pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
+    auto* const pAxis  = &pContext->GetActor()->GetPhysicsBody()->velDir;
+    auto*       pSpeed = &pContext->GetActor()->GetPhysicsBody()->flSpeed;
 
     if (pContext->GetNamedSlot() >= 0)
     {
@@ -743,9 +743,9 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (pContext->GetActor()->GetSlot() == kSlotRok && pContext->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
     {
-        short nSlot = pContext->GetTargetSlot();
+        auto nSlot = pContext->GetTargetSlot();
 
-        AttachPak* const pTracked = pContext->GetActor()->GetPhysicsBody()->pAttach;
+        auto* const pTracked = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
         if (pTracked != nullptr)
         {
@@ -754,7 +754,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
                 return;
             }
 
-            PlayerObject* const pOwner = g_pGameEngine->GetPlayer(pTracked->nSlot);
+            auto* const pOwner = g_pGameEngine->GetPlayer(pTracked->nSlot);
 
             pAxis->x = pTarget->GetPositionPtr()->x;
             pAxis->y = pTarget->GetPositionPtr()->y;
@@ -762,17 +762,17 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
             Math::Vec3Normalize(pAxis);
 
-            const float flDt = g_pGameEngine->m_clock.flDelta;
+            const auto flDt = g_pGameEngine->m_clock.flDelta;
 
             *pSpeed = ((pOwner->m_stats.GetWeightedStat(kRatingShotPower) * 0.02f + 0.9f) * 100.0f) * flDt;
 
-            EngineObject* const pActor = pContext->GetActor();
+            auto* const pActor = pContext->GetActor();
 
-            PhysicsBody* const pBlock = pActor->GetPhysicsBody();
+            auto* const pBlock = pActor->GetPhysicsBody();
 
             Vec3::ScaleTo(pAxis, *pSpeed, &pBlock->vel);
 
-            const int nBehaviour = pContext->m_nBehaviour;
+            const auto nBehaviour = pContext->m_nBehaviour;
 
             GameBehaviorObject* const pBehavior =
                 pContext->GetActor()->GetPlanState()->GetBehaviorByIndex(nBehaviour);
@@ -790,13 +790,13 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
         *pSpeed = pContext->GetActor()->GetPhysicsBody()->GetForwardSpeedDt();
 
-        EngineObject* const pActor = pContext->GetActor();
+        auto* const pActor = pContext->GetActor();
 
-        PhysicsBody* const pBlock = pActor->GetPhysicsBody();
+        auto* const pBlock = pActor->GetPhysicsBody();
 
         Vec3::ScaleTo(pAxis, *pSpeed, &pBlock->vel);
 
-        const int nBehaviour = pContext->m_nBehaviour;
+        const auto nBehaviour = pContext->m_nBehaviour;
 
         GameBehaviorObject* const pBehavior =
             pContext->GetActor()->GetPlanState()->GetBehaviorByIndex(nBehaviour);

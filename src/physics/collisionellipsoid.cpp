@@ -15,7 +15,7 @@ unsigned char CollisionEllipsoid::PointInside(const Vec3* pPoint)
 {
     int nInside;
 
-    const float flSum = m_flInvZZ * pPoint->z * pPoint->z + m_flInvYY * pPoint->y * pPoint->y + m_flInvXX * pPoint->x * pPoint->x;
+    const auto flSum = m_flInvZZ * pPoint->z * pPoint->z + m_flInvYY * pPoint->y * pPoint->y + m_flInvXX * pPoint->x * pPoint->x;
 
     nInside = flSum <= 1.0;
 
@@ -25,7 +25,7 @@ unsigned char CollisionEllipsoid::PointInside(const Vec3* pPoint)
 // FUNCTION: HYPERX 0x00408ee0
 int CollisionEllipsoid::PointNearSurface(const Vec3* pPoint)
 {
-    const float flSum = m_flInvZZ * pPoint->z * pPoint->z + m_flInvYY * pPoint->y * pPoint->y + m_flInvXX * pPoint->x * pPoint->x;
+    const auto flSum = m_flInvZZ * pPoint->z * pPoint->z + m_flInvYY * pPoint->y * pPoint->y + m_flInvXX * pPoint->x * pPoint->x;
 
     if (flSum <= 0.99f)
     {
@@ -447,9 +447,9 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 // FUNCTION: HYPERX 0x0042f350
 float CollisionEllipsoid::RadiusForDirection(const Vec3* pVDir, int)
 {
-    const auto  flHorizontal = static_cast<float>((fabs(static_cast<double>(pVDir->x)) + fabs(static_cast<double>(pVDir->z))) / g_flTwoEllipsoid);
-    const auto  flAbsY       = static_cast<float>(fabs(static_cast<double>(pVDir->y)));
-    const float flTotal      = flAbsY + flHorizontal;
+    const auto flHorizontal = static_cast<float>((fabs(static_cast<double>(pVDir->x)) + fabs(static_cast<double>(pVDir->z))) / g_flTwoEllipsoid);
+    const auto flAbsY       = static_cast<float>(fabs(static_cast<double>(pVDir->y)));
+    const auto flTotal      = flAbsY + flHorizontal;
 
     if (flTotal < DIRECTION_EPS)
     {

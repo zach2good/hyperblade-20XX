@@ -10,8 +10,8 @@ void CSpeedBurstPool::Init()
 {
     AgendaItem* pNode = new CSpeedBurst;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
     auto nRemaining = static_cast<short>(g_nPoolCountCSpeedBurst);
 
@@ -28,7 +28,7 @@ void CSpeedBurstPool::Init()
 // FUNCTION: HYPERX 0x00413d30
 void* CSpeedBurstPool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -46,7 +46,7 @@ CSpeedBurstPool::~CSpeedBurstPool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

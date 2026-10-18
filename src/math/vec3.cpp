@@ -21,7 +21,7 @@ Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
 // FUNCTION: HYPERX 0x00430180
 bool Vec3::NormalizeTo(Vec3* pOut) const
 {
-    const double dLength = sqrt(static_cast<double>(x * x + y * y + z * z));
+    const auto dLength = sqrt(static_cast<double>(x * x + y * y + z * z));
 
     if (dLength > g_dNormalizeEpsilon)
     {
@@ -42,7 +42,7 @@ bool Vec3::NormalizeTo(Vec3* pOut) const
 // FUNCTION: HYPERX 0x004301f0
 bool Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 {
-    const double dLength = sqrt(static_cast<double>(*pX * *pX + *pZ * *pZ + *pY * *pY));
+    const auto dLength = sqrt(static_cast<double>(*pX * *pX + *pZ * *pZ + *pY * *pY));
 
     if (dLength > g_dNormalizeEpsilon)
     {
@@ -82,17 +82,17 @@ void Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 // FUNCTION: HYPERX 0x00430340
 Vec3* Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
 {
-    float dx = pFirst->x - pFrom->x;
-    float dy = pFirst->y - pFrom->y;
-    float dz = pFirst->z - pFrom->z;
+    auto dx = pFirst->x - pFrom->x;
+    auto dy = pFirst->y - pFrom->y;
+    auto dz = pFirst->z - pFrom->z;
 
-    const float flToFirst = dx * dx + dy * dy + dz * dz;
+    const auto flToFirst = dx * dx + dy * dy + dz * dz;
 
     dx = pSecond->x - pFrom->x;
     dy = pSecond->y - pFrom->y;
     dz = pSecond->z - pFrom->z;
 
-    const float flToSecond = dx * dx + dy * dy + dz * dz;
+    const auto flToSecond = dx * dx + dy * dy + dz * dz;
 
     if (flToFirst <= flToSecond)
     {

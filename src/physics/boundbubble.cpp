@@ -105,7 +105,7 @@ void BoundBubble::FindAttachComponent(AttachPak* pRequest)
 {
     for (short i = 0; i < m_pOwner->GetBoneCount(); i++)
     {
-        const short nLinkId = m_pOwner->m_pBones[i].m_pDesc->m_nLinkId;
+        const auto nLinkId = m_pOwner->m_pBones[i].m_pDesc->m_nLinkId;
 
         if (pRequest->nLinkId == nLinkId)
         {
@@ -121,8 +121,8 @@ void BoundBubble::FindAttachComponent(AttachPak* pRequest)
 // FUNCTION: HYPERX 0x0042ad20
 void BoundBubble::GetWorldPosition(Vec3* pOut)
 {
-    Vec3                   local      = m_pShapeNode->m_vCentre;
-    TransformObject* const pTransform = m_pTarget;
+    auto        local      = m_pShapeNode->m_vCentre;
+    auto* const pTransform = m_pTarget;
 
     pOut->x = local.x * pTransform->m_a[0][0] + local.y * pTransform->m_a[0][1] + local.z * pTransform->m_a[0][2] + pTransform->m_a[0][3];
 
@@ -158,14 +158,14 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
     }
     else
     {
-        Vec3                   vLocal  = m_pShapeNode->m_vCentre;
+        auto                   vLocal  = m_pShapeNode->m_vCentre;
         const TransformObject* pOrient = m_pTarget;
         g_vBubbleOwnCentre.x           = vLocal.x * pOrient->m_a[0][0] + vLocal.y * pOrient->m_a[0][1] + vLocal.z * pOrient->m_a[0][2] + pOrient->m_a[0][3];
         g_vBubbleOwnCentre.y           = vLocal.x * pOrient->m_a[1][0] + vLocal.y * pOrient->m_a[1][1] + vLocal.z * pOrient->m_a[1][2] + pOrient->m_a[1][3];
         g_vBubbleOwnCentre.z           = vLocal.x * pOrient->m_a[2][0] + vLocal.y * pOrient->m_a[2][1] + vLocal.z * pOrient->m_a[2][2] + pOrient->m_a[2][3];
     }
 
-    BubbleShapeNode* const pShapeRec = pOther->m_pShapeNode;
+    auto* const pShapeRec = pOther->m_pShapeNode;
 
     if (pShapeRec->m_nComponent == kShapeWorldSpace)
     {

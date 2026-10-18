@@ -276,7 +276,7 @@ void GamepadsSection()
 
     auto nCount = 0;
 
-    SDL_JoystickID* const pIds = SDL_GetGamepads(&nCount);
+    auto* const pIds = SDL_GetGamepads(&nCount);
 
     if (nCount == 0)
     {
@@ -285,7 +285,7 @@ void GamepadsSection()
 
     for (int i = 0; i < nCount; i++)
     {
-        SDL_Gamepad* const pPad = SDL_GetGamepadFromID(pIds[i]);
+        auto* const pPad = SDL_GetGamepadFromID(pIds[i]);
 
         if (pPad == nullptr)
         {
@@ -350,8 +350,8 @@ void InputTab()
 
     ImGui::SeparatorText("Keyboard and mouse");
 
-    float flX = 0.0f;
-    float flY = 0.0f;
+    auto flX = 0.0f;
+    auto flY = 0.0f;
 
     const auto buttons = SDL_GetMouseState(&flX, &flY);
 
@@ -586,7 +586,7 @@ void ObjectsTab()
 
     for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
+        auto* const pObject = g_pGameEngine->m_ppObjects[i];
 
         if (!s_bShowHidden && pObject->IsHidden() != 0)
         {

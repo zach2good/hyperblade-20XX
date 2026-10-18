@@ -39,7 +39,7 @@ Widget::~Widget()
 
         for (i = 0; i <= m_nFrameCount; i++)
         {
-            GDI::Bitmap* const hFrame = m_pFrames[i].hBitmap;
+            auto* const hFrame = m_pFrames[i].hBitmap;
 
             if (hFrame != nullptr)
             {
@@ -175,7 +175,7 @@ int Widget::AdvanceFrame()
         return 0;
     }
 
-    int nLimit = m_nFrameIdle;
+    auto nLimit = m_nFrameIdle;
 
     if (m_bHighlighted == 1)
     {
@@ -202,7 +202,7 @@ int Widget::AdvanceFrame()
         g_pAudioMgr->PlaySpecific(pSounds->m_nSoundBeforeTarget);
     }
 
-    const int nFrame = m_nFrame;
+    const auto nFrame = m_nFrame;
 
     if (nFrame < nLimit)
     {
@@ -238,7 +238,7 @@ void Widget::Draw(int)
         return;
     }
 
-    WidgetDrawFrame* pFrame = m_pFrames;
+    auto* pFrame = m_pFrames;
 
     if (pFrame != nullptr)
     {
@@ -433,7 +433,7 @@ void Widget::ClearFrames()
 
     for (int nIndex = 0; nIndex <= m_nFrameCount; nIndex++)
     {
-        GDI::Bitmap* const hBitmap = m_pFrames[nIndex].hBitmap;
+        auto* const hBitmap = m_pFrames[nIndex].hBitmap;
 
         if (hBitmap != nullptr)
         {
@@ -446,7 +446,7 @@ void Widget::ClearFrames()
                 // A later frame sharing this bitmap or the screen's background must not delete it again.
                 for (int nScan = nIndex + 1; nScan <= m_nFrameCount; nScan++)
                 {
-                    GDI::Bitmap* const hLater = m_pFrames[nScan].hBitmap;
+                    auto* const hLater = m_pFrames[nScan].hBitmap;
 
                     if (hLater == hBitmap || hLater == hOwned)
                     {
@@ -459,7 +459,7 @@ void Widget::ClearFrames()
 
     for (int nDrop = 0; nDrop <= m_nFrameCount; nDrop++)
     {
-        GDI::Bitmap* const hBitmap = m_pFrames[nDrop].hBitmap;
+        auto* const hBitmap = m_pFrames[nDrop].hBitmap;
 
         if (hBitmap != nullptr)
         {

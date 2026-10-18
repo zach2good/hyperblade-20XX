@@ -41,7 +41,7 @@ void BehaviorRegistry::DestroyAll()
 {
     short iSlot = 0;
 
-    PooledOwnerRoot* pNode = g_apBehaviorRegistry[0];
+    auto* pNode = g_apBehaviorRegistry[0];
 
     while (pNode != nullptr)
     {
@@ -58,7 +58,7 @@ void BehaviorRegistry::InitAll()
 {
     short iSlot = 0;
 
-    PooledOwnerRoot* pNode = g_apBehaviorRegistry[0];
+    auto* pNode = g_apBehaviorRegistry[0];
 
     while (pNode != nullptr)
     {

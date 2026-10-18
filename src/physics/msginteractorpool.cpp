@@ -13,10 +13,10 @@ void MsgInteractorPool::Init()
 {
     auto* pNode = new MsgInteractor;
 
-    m_pHead              = pNode;
-    MsgInteractor* pTail = pNode;
+    m_pHead     = pNode;
+    auto* pTail = pNode;
 
-    short nRemaining = g_wMsgInteractorPoolSize;
+    auto nRemaining = g_wMsgInteractorPoolSize;
 
     while (nRemaining-- > 0)
     {
@@ -32,7 +32,7 @@ void MsgInteractorPool::Init()
 // FUNCTION: HYPERX 0x0046bd70
 void* MsgInteractorPool::Alloc()
 {
-    Interactor* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead = pHead->pNext;
 
@@ -51,7 +51,7 @@ MsgInteractorPool::~MsgInteractorPool()
 {
     while (m_pHead != nullptr)
     {
-        Interactor* const pNext = m_pHead->pNext;
+        auto* const pNext = m_pHead->pNext;
 
         delete m_pHead;
 

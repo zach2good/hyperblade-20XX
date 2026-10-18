@@ -16,8 +16,8 @@ constexpr auto kScalarDuration = 500;
 PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 : PaletteFade(pRange)
 {
-    unsigned int  cLeft  = m_cEntries;
-    PaletteEntry* pEntry = m_pEntries;
+    auto  cLeft  = m_cEntries;
+    auto* pEntry = m_pEntries;
 
     m_nKind = kScalarKind;
 
@@ -25,7 +25,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 
     while (cLeft-- != 0)
     {
-        unsigned char cGreen = pEntry->peGreen;
+        auto cGreen = pEntry->peGreen;
 
         if (cGreen <= m_cBrightest)
         {
@@ -62,13 +62,13 @@ int PaletteScalarFade::Tick()
 {
     unsigned char cStep;
 
-    const int bPhase = ApplyPhase(m_bPhase);
+    const auto bPhase = ApplyPhase(m_bPhase);
 
     if (bPhase != m_bPhase)
     {
-        const unsigned char cRange   = m_cBrightest;
-        const double        dSeconds = static_cast<double>(m_nDuration) * MS_TO_SECONDS;
-        cStep                        = static_cast<unsigned char>(m_cBrightest / static_cast<float>(dSeconds * g_pGameEngine->m_clock.GetInvDelta()));
+        const auto cRange   = m_cBrightest;
+        const auto dSeconds = static_cast<double>(m_nDuration) * MS_TO_SECONDS;
+        cStep               = static_cast<unsigned char>(m_cBrightest / static_cast<float>(dSeconds * g_pGameEngine->m_clock.GetInvDelta()));
 
         if (cStep > cRange)
         {
@@ -93,8 +93,8 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
 {
     int nAnswer;
 
-    unsigned int        nAt      = 0;
-    PaletteEntry* const pEntries = m_pWorkEntries;
+    unsigned int nAt      = 0;
+    auto* const  pEntries = m_pWorkEntries;
 
     if (bPhase != 0)
     {

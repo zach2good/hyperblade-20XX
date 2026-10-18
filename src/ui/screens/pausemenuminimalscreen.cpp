@@ -25,7 +25,7 @@ void PauseMenuMinimalScreen::Init()
     m_hBackground = GDI::LoadBitmapAsBackground("escape2", &m_bPaletted);
 
     // STRING: HYPERX 0x004c1f68
-    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Esretur");
+    auto* hBitmap = GDI::LoadBitmapHandle("Esretur");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 210, bm.nWidth, bm.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);

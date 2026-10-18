@@ -27,7 +27,7 @@ void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 
     g_pGameEngine->GetCamera(kCameraHeadSlot)->m_nShotPowerLevel = 1;
 
-    EngineObject* pShooter = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
+    auto* pShooter = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
     m_flPower = ((PlayerObject*)pShooter)->m_stats.GetScalar(kRatingShotPower);
 
@@ -60,7 +60,7 @@ void CUpdateShotPower::Process(int nArg)
 {
     int nAmount;
 
-    CameraObject* const pCamera = g_pGameEngine->GetCamera(kCameraHeadSlot);
+    auto* const pCamera = g_pGameEngine->GetCamera(kCameraHeadSlot);
 
     if (pCamera->m_bShotPowerShown != 0)
     {
@@ -76,7 +76,7 @@ void CUpdateShotPower::Process(int nArg)
         pCamera->SetReticleState(kReticleCommit);
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr && m_bReady == 0)
     {

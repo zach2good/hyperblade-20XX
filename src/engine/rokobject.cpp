@@ -180,7 +180,7 @@ void RokObject::Postpass()
         return;
     }
 
-    int nPayload = 0;
+    auto nPayload = 0;
 
     if (m_sendCursor.GetPossessionTurn() == 0)
     {
@@ -201,7 +201,7 @@ void RokObject::Postpass()
     {
         nMessage = kMsgSyncPossession;
 
-        AttachPak* const pCarrier = GetPhysicsBody()->pAttach;
+        auto* const pCarrier = GetPhysicsBody()->pAttach;
 
         if (pCarrier != nullptr && pCarrier->nSlot < kPlayerObjectCount)
         {
@@ -218,7 +218,7 @@ void RokObject::Postpass()
             nIndex = 0;
         }
 
-        const int nTeam = nIndex / kTeamRowCount;
+        const auto nTeam = nIndex / kTeamRowCount;
 
         if (nTeam == 0)
         {
@@ -229,7 +229,7 @@ void RokObject::Postpass()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const int nRow = nIndex % kTeamRowCount;
+        const auto nRow = nIndex % kTeamRowCount;
 
         nPayload |= PossessionSyncWord::PackTeam(nTeam);
 
@@ -289,11 +289,11 @@ void RokObject::ApplyRenderSlotPose()
 
     for (int i = 0; i < m_wBoneCount; i++)
     {
-        MeshBone* const pSlot = &m_pBones[i];
+        auto* const pSlot = &m_pBones[i];
 
         if (pSlot->IsHidden() == 0)
         {
-            const float flAlong = pSlot->m_flRadius;
+            const auto flAlong = pSlot->m_flRadius;
 
             if (m_bScaledBounds != 0)
             {

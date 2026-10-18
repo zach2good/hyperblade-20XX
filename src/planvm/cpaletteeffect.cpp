@@ -37,7 +37,7 @@ void CPaletteEffect::OnListChanged()
         return;
     }
 
-    PaletteFade* const pHeld = m_pEffect;
+    auto* const pHeld = m_pEffect;
 
     if (pHeld != nullptr)
     {
@@ -59,7 +59,7 @@ void CPaletteEffect::OnListChanged()
 // FUNCTION: HYPERX 0x00410b70
 int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStart, int nDuration)
 {
-    PaletteRange anRange = g_pColorPalette->GetFrameRange(nAnim);
+    auto anRange = g_pColorPalette->GetFrameRange(nAnim);
 
     if (anRange.nFirst != 0 || anRange.nCount != 0)
     {

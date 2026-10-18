@@ -91,7 +91,7 @@ void CHeadTrack::Process(int nArg)
 
     auto* const pCam = (CameraObject*)m_pOwner;
 
-    EngineObject* const pPrimary = pCam->GetTrackedObject();
+    auto* const pPrimary = pCam->GetTrackedObject();
 
     if (pPrimary == nullptr)
     {
@@ -105,7 +105,7 @@ void CHeadTrack::Process(int nArg)
         return;
     }
 
-    TransformObject* const pTransform = &pPrimary->m_pBones[HEAD_BONE].m_world;
+    auto* const pTransform = &pPrimary->m_pBones[HEAD_BONE].m_world;
 
     pPrimary->GetPhysicsBody();
 
@@ -115,7 +115,7 @@ void CHeadTrack::Process(int nArg)
 
     m_pWatchPos->z = pTransform->GetElement(2, 3);
 
-    EngineObject* const pSecondary = pCam->GetSecondaryTrackedObject();
+    auto* const pSecondary = pCam->GetSecondaryTrackedObject();
 
     if (pSecondary != nullptr)
     {
@@ -189,7 +189,7 @@ void CHeadTrack::Process(int nArg)
         {
             flStep = g_pGameEngine->m_clock.flDelta;
 
-            PlayerObject* const pCarrier = g_pGameEngine->GetPlayer(pHolder->nSlot);
+            auto* const pCarrier = g_pGameEngine->GetPlayer(pHolder->nSlot);
 
             flStep = ((pCarrier->m_stats.GetScalar(kRatingShotPower) - 6.0f) * 0.1f + g_flCamFracFull) * flStep;
         }
@@ -204,7 +204,7 @@ void CHeadTrack::Process(int nArg)
 
         if ((nHeld & HELD_ROTATE) != 0)
         {
-            const float flFrac = pCam->m_flViewFracX;
+            const auto flFrac = pCam->m_flViewFracX;
 
             if ((nHeld & HELD_ROTATE_RIGHT) != 0)
             {
@@ -227,7 +227,7 @@ void CHeadTrack::Process(int nArg)
         }
         else if ((nHeld & HELD_THROTTLE) != 0)
         {
-            const float flFrac = pCam->m_flViewFracY;
+            const auto flFrac = pCam->m_flViewFracY;
 
             if ((nHeld & HELD_FORWARD) != 0)
             {

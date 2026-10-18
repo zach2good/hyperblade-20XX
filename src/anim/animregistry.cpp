@@ -89,7 +89,7 @@ short AnimRegistry::FindAnimByNameIdx(const char* pszName)
 // FUNCTION: HYPERX 0x004170f0
 AnimClipSet* AnimRegistry::FindOrLoad(const char* pszName)
 {
-    AnimClipSet* const pSet = FindInCache(pszName);
+    auto* const pSet = FindInCache(pszName);
 
     if (pSet != nullptr)
     {
@@ -134,20 +134,20 @@ AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
 
     for (i = 0; i < pDb->GetNodeCount(); i++)
     {
-        AnimNode* const pNode = pDb->GetNode(i);
+        auto* const pNode = pDb->GetNode(i);
 
         if (pNode == nullptr)
         {
             break;
         }
 
-        AnimClipSet* const pSet = FindOrLoad(pNode->m_szName);
+        auto* const pSet = FindOrLoad(pNode->m_szName);
 
         pNode->m_pSet = pSet;
 
         if (pSet != nullptr)
         {
-            const short nFrames = pSet->m_wEndFrame;
+            const auto nFrames = pSet->m_wEndFrame;
 
             if (pNode->m_wEndFrame > nFrames)
             {
@@ -158,11 +158,11 @@ AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
 
     for (i = 0; i < pDb->GetEntryCount(); i++)
     {
-        AnimClipEntry* const pEntry = pDb->GetEntry(i);
+        auto* const pEntry = pDb->GetEntry(i);
 
         if (pEntry->m_nMessage == kMsgSyncFrame)
         {
-            AnimDB* const pFound = FindAnimByNamePtr(pEntry->m_pRef->m_pszName);
+            auto* const pFound = FindAnimByNamePtr(pEntry->m_pRef->m_pszName);
 
             pEntry->SyncCheck(pFound);
         }

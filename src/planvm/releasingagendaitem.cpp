@@ -5,7 +5,7 @@
 // FUNCTION: HYPERX 0x0040ed80
 void ReleasingAgendaItem::Release(int nArg)
 {
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

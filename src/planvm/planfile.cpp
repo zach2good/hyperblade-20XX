@@ -47,11 +47,11 @@ PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
     unsigned int nCount;
 
     // STRING: HYPERX 0x004bc938
-    FILE* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "rb");
+    auto* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "rb");
 
     if (pFile != nullptr)
     {
-        PlanWord* const pInstructions = PlanFile::ReadBinary(pFile, &nCount);
+        auto* const pInstructions = PlanFile::ReadBinary(pFile, &nCount);
 
         fclose(pFile);
 

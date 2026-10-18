@@ -16,7 +16,7 @@
 // FUNCTION: HYPERX 0x0040b930
 void AgendaItem::OnListChanged()
 {
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {
@@ -38,7 +38,7 @@ char AgendaItem::Activate()
         return bInserted;
     }
 
-    AgendaItem* pNode = m_pOwner->GetObserver();
+    auto* pNode = m_pOwner->GetObserver();
 
     while (pNode != nullptr && m_wKind > pNode->m_wKind)
     {
@@ -144,7 +144,7 @@ void AgendaItem::Detach()
         return;
     }
 
-    AgendaItem* const pHead = m_pOwner->GetObserver();
+    auto* const pHead = m_pOwner->GetObserver();
 
     if (this == pHead)
     {

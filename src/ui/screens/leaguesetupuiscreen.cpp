@@ -52,7 +52,7 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->ClearFrames();
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->SetHidden(0);
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->SetDirtyFlag(1);
-    GDI::Bitmap* pBitmap = CacheLookup("roster", &nFlag);
+    auto* pBitmap = CacheLookup("roster", &nFlag);
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->AddFrameBitmap(pBitmap, nFlag);
     pBitmap = CacheLookup("rosterr", &nFlag);
     m_apWidgets[TEAMSETUP_WIDGET_ROSTER]->AddFrameBitmap(pBitmap, nFlag);
@@ -134,7 +134,7 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
     m_apWidgets[UI_WIDGET_PAGE]->SetHidden(0);
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 
-    GDI::Bitmap* const hBitmap = GDI::LoadBitmapHandle("armor01");
+    auto* const hBitmap = GDI::LoadBitmapHandle("armor01");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
 
@@ -1781,7 +1781,7 @@ void LeagueSetupUIScreen::UpdateStatText()
 
     for (int nStat = kMatchStatTotalPoints; nStat < kMatchStatCount; nStat++)
     {
-        int nTotal = 0;
+        auto nTotal = 0;
 
         if (m_bShowHomeTeam != 0)
         {
@@ -1792,17 +1792,17 @@ void LeagueSetupUIScreen::UpdateStatText()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const int      nRow = (nStat - kMatchStatTotalPoints) * kLeagueGridColumns;
+        const auto     nRow = (nStat - kMatchStatTotalPoints) * kLeagueGridColumns;
         Widget** const pRow = &m_apWidgets[nRow];
 
         for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
         {
-            const float*  pStats  = pTeam->aStatRows[nPlayer].aStat;
-            Widget* const pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer];
+            const float* pStats  = pTeam->aStatRows[nPlayer].aStat;
+            auto* const  pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer];
 
             if (nStat == kMatchStatTimeOfPoss)
             {
-                const int nTime = static_cast<int>(pStats[nStat] * 0.001f);
+                const auto nTime = static_cast<int>(pStats[nStat] * 0.001f);
 
                 StatColumns::FormatClock(szText, static_cast<short>(nTime));
 
@@ -1830,8 +1830,8 @@ void LeagueSetupUIScreen::UpdateStatText()
 
         if (nStat == kMatchStatShootingPct)
         {
-            int nAttempts = 0;
-            int nMade     = 0;
+            auto nAttempts = 0;
+            auto nMade     = 0;
 
             for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
             {
@@ -1874,7 +1874,7 @@ void LeagueSetupUIScreen::HideStatsPanel()
     {
         for (int nColumn = 0; nColumn < kLeagueGridColumns; nColumn++)
         {
-            Widget* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
+            auto* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
 
             pWidget->SetHidden(1);
             pWidget->SetDirtyFlag(0);
@@ -2013,7 +2013,7 @@ void LeagueSetupUIScreen::RefreshTeamDisplay()
     {
         for (int nColumn = 0; nColumn < kLeagueGridColumns; nColumn++)
         {
-            Widget* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
+            auto* const pWidget = m_apWidgets[LEAGUE_WIDGET_STAT_GRID + nRow * kLeagueGridColumns + nColumn];
 
             pWidget->SetHidden(0);
             pWidget->SetDirtyFlag(1);

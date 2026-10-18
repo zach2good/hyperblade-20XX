@@ -219,7 +219,7 @@ void UploadBuffer(SDL_GPUCopyPass* pCopy, SDL_GPUBuffer* pBuffer, const void* pD
     transferInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
     transferInfo.size  = nBytes;
 
-    SDL_GPUTransferBuffer* const pTransfer = SDL_CreateGPUTransferBuffer(s_pDevice, &transferInfo);
+    auto* const pTransfer = SDL_CreateGPUTransferBuffer(s_pDevice, &transferInfo);
 
     if (pTransfer == nullptr)
     {
@@ -274,7 +274,7 @@ void UploadDynamic(SDL_GPUCopyPass* pCopy)
 // vertices, in one copy pass.
 void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 {
-    SDL_GPUCopyPass* const pCopy = SDL_BeginGPUCopyPass(pCommands);
+    auto* const pCopy = SDL_BeginGPUCopyPass(pCommands);
 
     UploadDynamic(pCopy);
 
@@ -303,7 +303,7 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 
         const auto nBytes = static_cast<Uint32>(built.vertices.size() * sizeof(HwMesh::Vertex));
 
-        SDL_GPUBuffer* const pBuffer = CreateVertexBuffer(nBytes);
+        auto* const pBuffer = CreateVertexBuffer(nBytes);
 
         if (pBuffer == nullptr)
         {
@@ -562,7 +562,7 @@ void DrawShadowMap(SDL_GPUCommandBuffer* pCommands, SDL_GPUTexture* pMap, const 
     depth.stencil_load_op  = SDL_GPU_LOADOP_DONT_CARE;
     depth.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE;
 
-    SDL_GPURenderPass* const pPass = SDL_BeginGPURenderPass(pCommands, nullptr, 0, &depth);
+    auto* const pPass = SDL_BeginGPURenderPass(pCommands, nullptr, 0, &depth);
 
     SDL_BindGPUGraphicsPipeline(pPass, s_pShadowPipeline);
 
@@ -712,7 +712,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
         return Texture{};
     }
 
-    SDL_GPUCommandBuffer* const pCommands = SDL_AcquireGPUCommandBuffer(s_pDevice);
+    auto* const pCommands = SDL_AcquireGPUCommandBuffer(s_pDevice);
 
     if (pCommands == nullptr)
     {

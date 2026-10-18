@@ -39,7 +39,7 @@ void BehObj_GlideBetweenFacing::Init(EngineObject* pOwner, PlanNode* pBlock, int
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 
-        AgendaItem* const pNode = m_apSlots[nSlot];
+        auto* const pNode = m_apSlots[nSlot];
         nSlot++;
         pNode->m_bPersistent = 1;
     }

@@ -79,7 +79,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
         g_gameApp.Fatal("Assembly file %s could not be opened!");
     }
 
-    PlanVM* const pOwned = m_pPlanVm;
+    auto* const pOwned = m_pPlanVm;
 
     if (pOwned != nullptr)
     {
@@ -181,7 +181,7 @@ int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, co
     char szName[20];
     char szExtra[32];
 
-    int nResult = 0;
+    auto nResult = 0;
 
     szExtra[0] = 0;
 
@@ -201,7 +201,7 @@ int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, co
 // FUNCTION: HYPERX 0x004185c0
 int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const char* pszExtra)
 {
-    const int nBefore = GameApp::GetInstallLevel();
+    const auto nBefore = GameApp::GetInstallLevel();
 
     auto* const pDb = new AnimDB(pszName, pszExtra);
 
@@ -209,9 +209,9 @@ int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const cha
 
     *ppOut = pDb;
 
-    const int nAfter = GameApp::GetInstallLevel();
+    const auto nAfter = GameApp::GetInstallLevel();
 
-    int* const pLevel = &(*ppOut)->m_nInstallLevel;
+    auto* const pLevel = &(*ppOut)->m_nInstallLevel;
 
     *pLevel += nAfter - nBefore;
 
@@ -237,10 +237,10 @@ inline int AnimScriptTable::ScanFloat(const char** ppszCursor, char* pszToken, f
 // FUNCTION: HYPERX 0x00418670
 int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, const char** ppszCursor)
 {
-    int  nResult = 0;
+    auto nResult = 0;
     char szToken[kSegmentTokenChars];
 
-    const char* pszScan = strpbrk(pszLine, g_pszAnimTokenDelimiters);
+    const auto* pszScan = strpbrk(pszLine, g_pszAnimTokenDelimiters);
     pszScan             = pszScan + 1;
     pszScan             = strpbrk(pszScan, g_pszAnimTokenDelimiters);
     pszScan             = pszScan + 1;
@@ -345,14 +345,14 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
 int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* pnTriggerFrame, char* pszName, char* pszRef, short* pnSyncSegment, short* pnSyncFrame)
 {
     char szToken[kTriggerTokenChars];
-    int  nResult = 1;
+    auto nResult = 1;
 
     *pnSegment      = 0;
     *pnTriggerFrame = -1;
 
     if (pszLine != nullptr)
     {
-        const char* pszScan = pszLine;
+        const auto* pszScan = pszLine;
 
         for (int nIndex = 0; nIndex < kTriggerFields; nIndex++)
         {

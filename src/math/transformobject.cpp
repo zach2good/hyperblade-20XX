@@ -17,7 +17,7 @@ void TransformObject::TransformPoint(Vec3 vPoint, Vec3* pOut)
 // FUNCTION: HYPERX 0x00406de0
 void TransformObject::TransformDirection(Vec3 vec, Vec3* pOut)
 {
-    float flRow = m_a[0][2] * vec.z;
+    auto flRow = m_a[0][2] * vec.z;
     flRow += m_a[0][1] * vec.y;
     pOut->x = flRow + m_a[0][0] * vec.x;
 
@@ -34,7 +34,7 @@ void TransformObject::TransformDirection(Vec3 vec, Vec3* pOut)
 // FUNCTION: HYPERX 0x00406e40
 void TransformObject::TransformDirectionByRows(Vec3 vDir, Vec3* pOut)
 {
-    float flRow = m_a[2][0] * vDir.z;
+    auto flRow = m_a[2][0] * vDir.z;
     flRow += m_a[1][0] * vDir.y;
     pOut->x = flRow + m_a[0][0] * vDir.x;
 
@@ -258,15 +258,15 @@ void TransformObject::RotateAroundY()
 {
     if (m_bIdentity != 0)
     {
-        const float flFresh = m_rotY.flCos;
-        m_a[2][2]           = flFresh;
-        m_a[0][0]           = flFresh;
-        m_a[2][0]           = -m_rotY.flSin;
-        m_a[0][2]           = m_rotY.flSin;
+        const auto flFresh = m_rotY.flCos;
+        m_a[2][2]          = flFresh;
+        m_a[0][0]          = flFresh;
+        m_a[2][0]          = -m_rotY.flSin;
+        m_a[0][2]          = m_rotY.flSin;
     }
     else
     {
-        const SinCos rot = m_rotY;
+        const auto rot = m_rotY;
 
         double dOld = m_a[0][0];
         m_a[0][0]   = static_cast<float>(rot.flCos * dOld - rot.flSin * m_a[0][2]);
@@ -311,27 +311,27 @@ void TransformObject::Compose(const TransformObject* pOther)
     {
         case 0:
         {
-            const float flRow0X = m_a[0][0];
-            const float flRow0Y = m_a[0][1];
-            const float flRow0Z = m_a[0][2];
+            const auto flRow0X = m_a[0][0];
+            const auto flRow0Y = m_a[0][1];
+            const auto flRow0Z = m_a[0][2];
 
             m_a[0][0] = flRow0X * pOther->m_a[0][0] + flRow0Z * pOther->m_a[2][0] + flRow0Y * pOther->m_a[1][0];
             m_a[0][1] = flRow0X * pOther->m_a[0][1] + (flRow0Z * pOther->m_a[2][1] + flRow0Y * pOther->m_a[1][1]);
             m_a[0][2] = flRow0X * pOther->m_a[0][2] + flRow0Z * pOther->m_a[2][2] + flRow0Y * pOther->m_a[1][2];
             m_a[0][3] = ((flRow0Z * pOther->m_a[2][3] + flRow0Y * pOther->m_a[1][3]) + flRow0X * pOther->m_a[0][3]) + m_a[0][3];
 
-            const float flRow1X = m_a[1][0];
-            const float flRow1Y = m_a[1][1];
-            const float flRow1Z = m_a[1][2];
+            const auto flRow1X = m_a[1][0];
+            const auto flRow1Y = m_a[1][1];
+            const auto flRow1Z = m_a[1][2];
 
             m_a[1][0] = flRow1X * pOther->m_a[0][0] + flRow1Z * pOther->m_a[2][0] + flRow1Y * pOther->m_a[1][0];
             m_a[1][1] = flRow1X * pOther->m_a[0][1] + (flRow1Z * pOther->m_a[2][1] + flRow1Y * pOther->m_a[1][1]);
             m_a[1][2] = flRow1X * pOther->m_a[0][2] + flRow1Z * pOther->m_a[2][2] + flRow1Y * pOther->m_a[1][2];
             m_a[1][3] = ((flRow1Z * pOther->m_a[2][3] + flRow1Y * pOther->m_a[1][3]) + flRow1X * pOther->m_a[0][3]) + m_a[1][3];
 
-            const float flRow2X = m_a[2][0];
-            const float flRow2Y = m_a[2][1];
-            const float flRow2Z = m_a[2][2];
+            const auto flRow2X = m_a[2][0];
+            const auto flRow2Y = m_a[2][1];
+            const auto flRow2Z = m_a[2][2];
 
             m_a[2][0] = flRow2X * pOther->m_a[0][0] + flRow2Z * pOther->m_a[2][0] + flRow2Y * pOther->m_a[1][0];
             m_a[2][1] = flRow2X * pOther->m_a[0][1] + (flRow2Z * pOther->m_a[2][1] + flRow2Y * pOther->m_a[1][1]);
@@ -343,30 +343,30 @@ void TransformObject::Compose(const TransformObject* pOther)
 
         case 1:
         {
-            const float flRow0X = m_a[0][0];
-            const float flRow0Y = m_a[0][1];
-            const float flRow0Z = m_a[0][2];
-            const float flRow0W = m_a[0][3];
+            const auto flRow0X = m_a[0][0];
+            const auto flRow0Y = m_a[0][1];
+            const auto flRow0Z = m_a[0][2];
+            const auto flRow0W = m_a[0][3];
 
             m_a[0][0] = flRow0W * pOther->m_a[3][0] + flRow0X * pOther->m_a[0][0] + flRow0Z * pOther->m_a[2][0] + flRow0Y * pOther->m_a[1][0];
             m_a[0][1] = ((flRow0Z * pOther->m_a[2][1] + flRow0Y * pOther->m_a[1][1]) + flRow0W * pOther->m_a[3][1]) + flRow0X * pOther->m_a[0][1];
             m_a[0][2] = flRow0X * pOther->m_a[0][2] + flRow0W * pOther->m_a[3][2] + flRow0Z * pOther->m_a[2][2] + flRow0Y * pOther->m_a[1][2];
             m_a[0][3] = flRow0W * pOther->m_a[3][3] + (flRow0Z * pOther->m_a[2][3] + flRow0Y * pOther->m_a[1][3]) + flRow0X * pOther->m_a[0][3];
 
-            const float flRow1X = m_a[1][0];
-            const float flRow1Y = m_a[1][1];
-            const float flRow1Z = m_a[1][2];
-            const float flRow1W = m_a[1][3];
+            const auto flRow1X = m_a[1][0];
+            const auto flRow1Y = m_a[1][1];
+            const auto flRow1Z = m_a[1][2];
+            const auto flRow1W = m_a[1][3];
 
             m_a[1][0] = flRow1W * pOther->m_a[3][0] + flRow1X * pOther->m_a[0][0] + flRow1Z * pOther->m_a[2][0] + flRow1Y * pOther->m_a[1][0];
             m_a[1][1] = ((flRow1Z * pOther->m_a[2][1] + flRow1Y * pOther->m_a[1][1]) + flRow1W * pOther->m_a[3][1]) + flRow1X * pOther->m_a[0][1];
             m_a[1][2] = flRow1X * pOther->m_a[0][2] + flRow1W * pOther->m_a[3][2] + flRow1Z * pOther->m_a[2][2] + flRow1Y * pOther->m_a[1][2];
             m_a[1][3] = flRow1W * pOther->m_a[3][3] + (flRow1Z * pOther->m_a[2][3] + flRow1Y * pOther->m_a[1][3]) + flRow1X * pOther->m_a[0][3];
 
-            const float flRow2X = m_a[2][0];
-            const float flRow2Y = m_a[2][1];
-            const float flRow2Z = m_a[2][2];
-            const float flRow2W = m_a[2][3];
+            const auto flRow2X = m_a[2][0];
+            const auto flRow2Y = m_a[2][1];
+            const auto flRow2Z = m_a[2][2];
+            const auto flRow2W = m_a[2][3];
 
             m_a[2][0] = flRow2W * pOther->m_a[3][0] + flRow2X * pOther->m_a[0][0] + flRow2Z * pOther->m_a[2][0] + flRow2Y * pOther->m_a[1][0];
             m_a[2][1] = ((flRow2Z * pOther->m_a[2][1] + flRow2Y * pOther->m_a[1][1]) + flRow2W * pOther->m_a[3][1]) + flRow2X * pOther->m_a[0][1];
@@ -382,18 +382,18 @@ void TransformObject::Compose(const TransformObject* pOther)
 
         case 2:
         {
-            const float flRow0X = m_a[0][0];
-            const float flRow0Y = m_a[0][1];
-            const float flRow0Z = m_a[0][2];
+            const auto flRow0X = m_a[0][0];
+            const auto flRow0Y = m_a[0][1];
+            const auto flRow0Z = m_a[0][2];
 
             m_a[0][0] = flRow0X * pOther->m_a[0][0] + flRow0Z * pOther->m_a[2][0] + flRow0Y * pOther->m_a[1][0];
             m_a[0][1] = flRow0X * pOther->m_a[0][1] + (flRow0Z * pOther->m_a[2][1] + flRow0Y * pOther->m_a[1][1]);
             m_a[0][2] = flRow0X * pOther->m_a[0][2] + flRow0Z * pOther->m_a[2][2] + flRow0Y * pOther->m_a[1][2];
             m_a[0][3] = ((flRow0Z * pOther->m_a[2][3] + flRow0Y * pOther->m_a[1][3]) + flRow0X * pOther->m_a[0][3]) + m_a[0][3];
 
-            const float flRow1X = m_a[1][0];
-            const float flRow1Y = m_a[1][1];
-            const float flRow1Z = m_a[1][2];
+            const auto flRow1X = m_a[1][0];
+            const auto flRow1Y = m_a[1][1];
+            const auto flRow1Z = m_a[1][2];
 
             m_a[1][0] = flRow1X * pOther->m_a[0][0] + flRow1Z * pOther->m_a[2][0] + flRow1Y * pOther->m_a[1][0];
             m_a[1][1] = flRow1X * pOther->m_a[0][1] + (flRow1Z * pOther->m_a[2][1] + flRow1Y * pOther->m_a[1][1]);
@@ -401,18 +401,18 @@ void TransformObject::Compose(const TransformObject* pOther)
             m_a[1][3] = ((flRow1Z * pOther->m_a[2][3] + flRow1Y * pOther->m_a[1][3]) + flRow1X * pOther->m_a[0][3]) + m_a[1][3];
 
             // Rows two and three group their sums apart from rows zero and one.
-            const float flRow2X = m_a[2][0];
-            const float flRow2Y = m_a[2][1];
-            const float flRow2Z = m_a[2][2];
+            const auto flRow2X = m_a[2][0];
+            const auto flRow2Y = m_a[2][1];
+            const auto flRow2Z = m_a[2][2];
 
             m_a[2][0] = (flRow2X * pOther->GetElement(0, 0) + flRow2Z * pOther->m_a[2][0]) + flRow2Y * pOther->m_a[1][0];
             m_a[2][1] = flRow2X * pOther->m_a[0][1] + (flRow2Z * pOther->m_a[2][1] + flRow2Y * pOther->m_a[1][1]);
             m_a[2][2] = (flRow2X * pOther->m_a[0][2] + flRow2Z * pOther->m_a[2][2]) + flRow2Y * pOther->m_a[1][2];
             m_a[2][3] = ((flRow2Z * pOther->m_a[2][3] + flRow2Y * pOther->m_a[1][3]) + flRow2X * pOther->m_a[0][3]) + m_a[2][3];
 
-            const float flRow3X = m_a[3][0];
-            const float flRow3Y = m_a[3][1];
-            const float flRow3Z = m_a[3][2];
+            const auto flRow3X = m_a[3][0];
+            const auto flRow3Y = m_a[3][1];
+            const auto flRow3Z = m_a[3][2];
 
             m_a[3][0] = flRow3X * pOther->m_a[0][0] + flRow3Z * pOther->m_a[2][0] + flRow3Y * pOther->m_a[1][0];
             m_a[3][1] = flRow3X * pOther->m_a[0][1] + (flRow3Z * pOther->m_a[2][1] + flRow3Y * pOther->m_a[1][1]);
@@ -890,7 +890,7 @@ void TransformObject::RotateXStaged()
 {
     if (m_bIdentity != 0)
     {
-        const float flCos = m_rotX.flCos;
+        const auto flCos = m_rotX.flCos;
 
         m_a[2][2] = flCos;
         m_a[1][1] = flCos;
@@ -899,24 +899,24 @@ void TransformObject::RotateXStaged()
     }
     else
     {
-        const float flOld0 = m_a[0][1];
+        const auto flOld0 = m_a[0][1];
 
         m_a[0][1] = flOld0 * m_rotX.flCos + GetElement(0, 2) * m_rotX.flSin;
         m_a[0][2] = m_a[0][2] * m_rotX.flCos - flOld0 * m_rotX.flSin;
 
-        const float flOld1 = m_a[1][1];
+        const auto flOld1 = m_a[1][1];
 
         m_a[1][1] = flOld1 * m_rotX.flCos + GetElement(1, 2) * m_rotX.flSin;
         m_a[1][2] = m_a[1][2] * m_rotX.flCos - flOld1 * m_rotX.flSin;
 
-        const float flOld2 = m_a[2][1];
+        const auto flOld2 = m_a[2][1];
 
         m_a[2][1] = flOld2 * m_rotX.flCos + GetElement(2, 2) * m_rotX.flSin;
         m_a[2][2] = m_a[2][2] * m_rotX.flCos - flOld2 * m_rotX.flSin;
 
         if (m_bHasRow3 != 0)
         {
-            const float flOld3 = m_a[3][1];
+            const auto flOld3 = m_a[3][1];
 
             m_a[3][1] = flOld3 * m_rotX.flCos + GetElement(3, 2) * m_rotX.flSin;
             m_a[3][2] = m_a[3][2] * m_rotX.flCos - flOld3 * m_rotX.flSin;
@@ -974,9 +974,9 @@ void TransformObject::ApplyRotationZ()
 // FUNCTION: HYPERX 0x00427ae0
 void TransformObject::ToTransposed()
 {
-    float flSwap = m_a[0][1];
-    m_a[0][1]    = m_a[1][0];
-    m_a[1][0]    = flSwap;
+    auto flSwap = m_a[0][1];
+    m_a[0][1]   = m_a[1][0];
+    m_a[1][0]   = flSwap;
 
     flSwap    = m_a[0][2];
     m_a[0][2] = m_a[2][0];
@@ -1029,11 +1029,11 @@ char TransformObject::ComputeInverse(TransformObject* pDest)
 {
     float flDet;
 
-    const float flA00A11 = m_a[0][0] * m_a[1][1];
-    const float flA21A00 = m_a[2][1] * m_a[0][0];
-    const float flA21A10 = m_a[2][1] * m_a[1][0];
-    const float flA20A01 = m_a[2][0] * m_a[0][1];
-    const float flA20A11 = m_a[2][0] * m_a[1][1];
+    const auto flA00A11 = m_a[0][0] * m_a[1][1];
+    const auto flA21A00 = m_a[2][1] * m_a[0][0];
+    const auto flA21A10 = m_a[2][1] * m_a[1][0];
+    const auto flA20A01 = m_a[2][0] * m_a[0][1];
+    const auto flA20A11 = m_a[2][0] * m_a[1][1];
 
     flDet = flA00A11 * m_a[2][2] - flA21A00 * m_a[1][2] - GetElement(1, 0) * GetElement(0, 1) * m_a[2][2] + flA20A01 * m_a[1][2] + flA21A10 * m_a[0][2] - flA20A11 * m_a[0][2];
 
@@ -1042,7 +1042,7 @@ char TransformObject::ComputeInverse(TransformObject* pDest)
         return 0;
     }
 
-    const float flInvDet = g_flTransformOne / flDet;
+    const auto flInvDet = g_flTransformOne / flDet;
 
     pDest->m_a[0][0] = (m_a[2][2] * m_a[1][1] - m_a[2][1] * m_a[1][2]) * flInvDet;
     pDest->m_a[1][0] = -((m_a[2][2] * m_a[1][0] - m_a[2][0] * m_a[1][2]) * flInvDet);

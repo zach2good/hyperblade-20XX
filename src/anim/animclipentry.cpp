@@ -10,7 +10,7 @@
 // FUNCTION: HYPERX 0x004177c0
 AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 {
-    AnimNamedRef* pRef = m_pRef;
+    auto* pRef = m_pRef;
 
     if (pRef->m_pszName != nullptr)
     {
@@ -21,7 +21,7 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 
     pRef = m_pRef;
 
-    short nNode = pRef->m_nSegment;
+    auto nNode = pRef->m_nSegment;
 
     if (nNode >= kAnimNamedRefBias)
     {
@@ -36,7 +36,7 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 
     if (nNode < pDb->GetNodeCount())
     {
-        AnimNode* const pNode = pDb->GetNode(nNode);
+        auto* const pNode = pDb->GetNode(nNode);
 
         if (pRef->m_nFrame <= pNode->m_wEndFrame)
         {

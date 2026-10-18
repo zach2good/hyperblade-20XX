@@ -28,17 +28,17 @@ float PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
-    EngineObject* const pObjectA = apObjects[nSlotA];
-    EngineObject* const pObjectB = apObjects[nSlotB];
+    auto* const pObjectA = apObjects[nSlotA];
+    auto* const pObjectB = apObjects[nSlotB];
 
     const Vec3* pPosA = pObjectA->GetPositionPtr();
     const Vec3* pPosB = pObjectB->GetPositionPtr();
 
-    const float flDeltaX = pPosB->x - pPosA->x;
-    const float flDeltaY = pPosB->y - pPosA->y;
-    const float flDeltaZ = pPosB->z - pPosA->z;
+    const auto flDeltaX = pPosB->x - pPosA->x;
+    const auto flDeltaY = pPosB->y - pPosA->y;
+    const auto flDeltaZ = pPosB->z - pPosA->z;
 
-    const float flScale = g_flPiPlan / g_flThreePlan;
+    const auto flScale = g_flPiPlan / g_flThreePlan;
 
     flFalloff = (SCORE_RANGE - static_cast<float>(sqrt(static_cast<double>(flDeltaZ * flDeltaZ + flDeltaY * flDeltaY + flDeltaX * flDeltaX)))) * flScale * SCORE_FALLOFF;
 

@@ -196,13 +196,13 @@ void TournamentSetupUIScreen::ShowScrubsCard()
 // FUNCTION: HYPERX 0x00488bf0
 void TournamentSetupUIScreen::OnRightArrowClick()
 {
-    int nGuard = m_nTeamCount;
+    auto nGuard = m_nTeamCount;
 
     BuildLockedFlagsArray();
 
-    int nHome = g_nDromeTeamHome;
+    auto nHome = g_nDromeTeamHome;
 
-    int nLocked = 1;
+    auto nLocked = 1;
 
     while (nLocked != 0 && nGuard != 0)
     {
@@ -236,13 +236,13 @@ void TournamentSetupUIScreen::OnRightArrowClick()
 // FUNCTION: HYPERX 0x00488c60
 void TournamentSetupUIScreen::OnLeftArrowClick()
 {
-    int nGuard = m_nTeamCount * 3;
+    auto nGuard = m_nTeamCount * 3;
 
     BuildLockedFlagsArray();
 
-    int nHome = g_nDromeTeamHome;
+    auto nHome = g_nDromeTeamHome;
 
-    int nLocked = 1;
+    auto nLocked = 1;
 
     while (nLocked != 0 && nGuard != 0)
     {
@@ -1338,7 +1338,7 @@ void TournamentSetupUIScreen::RefreshFrames()
 
     m_apWidgets[UI_WIDGET_PAGE]->SetHidden(0);
 
-    const FramePos size = m_apWidgets[UI_WIDGET_PAGE]->GetSize();
+    const auto size = m_apWidgets[UI_WIDGET_PAGE]->GetSize();
 
     // STRING: HYPERX 0x004c27a8
     m_apWidgets[UI_WIDGET_PAGE]->AppendFrameWithPos(GDI::LoadBitmapHandle("playbkg"), size.x, size.y, 0, 0, 0, 0);

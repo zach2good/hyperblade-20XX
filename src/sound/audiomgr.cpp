@@ -37,7 +37,7 @@ AudioMgr::~AudioMgr()
     {
         for (int nIndex = 0; nIndex < pEntries->m_nSoundCount; nIndex++)
         {
-            SoundEntry* pEntry = pEntries->m_apSounds[nIndex];
+            auto* pEntry = pEntries->m_apSounds[nIndex];
 
             if (pEntry != nullptr && pEntry->m_pSamples != nullptr)
             {
@@ -70,12 +70,12 @@ void AudioMgr::Init()
         }
     }
 
-    int       nIndex = 0;
+    auto      nIndex = 0;
     const int nCount = pEntries->m_nSoundCount;
 
     while (nIndex < nCount)
     {
-        SoundEntry* const pSound = pEntries->m_apSounds[nIndex];
+        auto* const pSound = pEntries->m_apSounds[nIndex];
 
         pSound->m_nLoadState = 0;
 
@@ -169,7 +169,7 @@ void AudioMgr::PlayGroup(int nGroup)
 {
     if (wNoSound == 0)
     {
-        SoundEntry* const pSound = pEntries->PickFromGroup(nGroup);
+        auto* const pSound = pEntries->PickFromGroup(nGroup);
 
         if (pSound != nullptr)
         {
@@ -191,7 +191,7 @@ void AudioMgr::PlaySpecific(int nVoice)
     {
         if (nVoice < pEntries->m_nSoundCount)
         {
-            SoundEntry* pSound = pEntries->m_apSounds[nVoice];
+            auto* pSound = pEntries->m_apSounds[nVoice];
 
             if (pSound != nullptr)
             {
@@ -214,7 +214,7 @@ void AudioMgr::StopEntry(int nSlot)
 {
     if (nSlot < pEntries->m_nSoundCount)
     {
-        SoundEntry* const pOwner = pEntries->m_apSounds[nSlot];
+        auto* const pOwner = pEntries->m_apSounds[nSlot];
 
         if (pOwner != nullptr)
         {
@@ -228,7 +228,7 @@ int AudioMgr::IsPlaying(int nVoice)
 {
     if (nVoice < pEntries->m_nSoundCount)
     {
-        SoundEntry* const pVoice = pEntries->m_apSounds[nVoice];
+        auto* const pVoice = pEntries->m_apSounds[nVoice];
 
         if (pVoice != nullptr)
         {
@@ -356,7 +356,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
     StopCD();
 
     const auto& anTracks = MusicTracks();
-    const int   nTracks  = static_cast<int>(anTracks.size());
+    const auto  nTracks  = static_cast<int>(anTracks.size());
 
     if (nTracks == 0)
     {
@@ -369,12 +369,12 @@ void AudioMgr::PlayCDTrack(int nTrack)
     {
         srand(static_cast<unsigned int>(SDL_GetTicks()));
 
-        int nPicked = kCDTrackRandom;
-        int nScan   = g_nCDRecentCursor;
+        auto nPicked = kCDTrackRandom;
+        auto nScan   = g_nCDRecentCursor;
 
         for (int i = 0; i < nTracks; i++)
         {
-            const int nPick = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
+            const auto nPick = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
 
             if (g_anCDRecentTracks[nScan] != nPick)
             {
@@ -507,7 +507,7 @@ void AudioMgr::FreeGroupBuffers(int nGroup)
 
     for (int iEntry = 0; iEntry < nEntries; iEntry++)
     {
-        SoundEntry* const pEntry = pEntries->m_apSounds[iEntry];
+        auto* const pEntry = pEntries->m_apSounds[iEntry];
 
         if (pEntry->m_nGroup == nGroup)
         {

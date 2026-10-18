@@ -102,7 +102,7 @@ void CSlideOnRail::Process(int nArg)
 
     Vec3::ScaleTo(m_pVelDir, *m_pflSpeed, m_pVelocity);
 
-    Vec3 vScaled = *m_pVelocity;
+    auto vScaled = *m_pVelocity;
 
     Vec3::ScaleTo(m_pVelocity, g_pGameEngine->m_clock.GetInvDelta(), &vScaled);
 
@@ -127,8 +127,8 @@ void CSlideOnRail::Release(int nArg)
     m_pSurfNormal->x = g_flZeroAgendaItem;
     m_pSurfNormal->z = g_flOneAgendaItem;
 
-    Vec3* const pPosition = m_pPosition;
-    Vec3* const pPrevious = m_pPrevPos;
+    auto* const pPosition = m_pPosition;
+    auto* const pPrevious = m_pPrevPos;
 
     pPrevious->x = pPosition->x;
     pPrevious->y = pPosition->y;
@@ -140,7 +140,7 @@ void CSlideOnRail::Release(int nArg)
 
         flDelta = g_pGameEngine->m_clock.flDelta;
 
-        PhysicsBody* pTracked = m_pOwner->GetPhysicsBody();
+        auto* pTracked = m_pOwner->GetPhysicsBody();
 
         Vec3::ScaleTo(&pTracked->step, flDelta, &vScaled);
 
@@ -167,7 +167,7 @@ void CSlideOnRail::Release(int nArg)
     }
 
     const Vec3* const pVelocity  = m_pVelocity;
-    Vec3* const       pDirection = m_pVelDir;
+    auto* const       pDirection = m_pVelDir;
 
     pDirection->x = pVelocity->x;
     pDirection->y = pVelocity->y;

@@ -102,7 +102,7 @@ char AnimPlayer::UpdateTick()
                 {
                     UpdateFrame(0);
 
-                    AnimNode* const pClip = m_pClip;
+                    auto* const pClip = m_pClip;
 
                     if (pClip->m_wLoopCount > 0)
                     {
@@ -129,14 +129,14 @@ char AnimPlayer::UpdateTick()
 
                         if (pClip->m_wLoopCount == 0)
                         {
-                            AnimDB* const pSet          = m_pSet;
-                            const short   nChannelCount = pSet->GetEntryCount();
+                            auto* const pSet          = m_pSet;
+                            const auto  nChannelCount = pSet->GetEntryCount();
 
                             if (nChannelCount != 0)
                             {
                                 for (int iChannel = 0; iChannel < nChannelCount; iChannel++)
                                 {
-                                    AnimClipEntry* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
+                                    auto* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
 
                                     if (pRecord->m_wSegment == m_state.wClipIndex)
                                     {
@@ -184,7 +184,7 @@ char AnimPlayer::UpdateTick()
 // FUNCTION: HYPERX 0x00424760
 int AnimPlayer::SetPlayDirection(int nDirection)
 {
-    const int nWas = m_state.nDirection;
+    const auto nWas = m_state.nDirection;
 
     m_state.nDirection = nDirection;
 
@@ -263,7 +263,7 @@ void AnimPlayer::SetPlaybackRate(float flRate)
     {
         m_state.flPlaybackRate = flRate;
 
-        const float flPerSecond = flRate * m_pClip->m_flStandardFps;
+        const auto flPerSecond = flRate * m_pClip->m_flStandardFps;
 
         if (m_state.nDirection == kAForward)
         {
@@ -325,17 +325,17 @@ void AnimPlayer::UpdateFrame(char bAdvance)
     // The step's sign picks whether the frame must reach or fall to the trigger.
     if (m_state.bChannelPending != 0 && ((m_state.flStep >= g_flAnimBlendZero && m_state.nFrame >= m_state.wEventTrigger) || (m_state.flStep < g_flAnimBlendZero && m_state.nFrame <= m_state.wEventTrigger)))
     {
-        const short nCursor = m_state.wEventCursor;
+        const auto nCursor = m_state.wEventCursor;
 
-        const int nSlot    = m_state.anEventTarget[nCursor];
-        int       nMessage = m_state.anEventMessage[nCursor];
-        const int nParam   = m_state.anEventParam[nCursor];
+        const auto nSlot    = m_state.anEventTarget[nCursor];
+        auto       nMessage = m_state.anEventMessage[nCursor];
+        const auto nParam   = m_state.anEventParam[nCursor];
 
         if (nMessage == kMsgSyncFrame)
         {
             if (m_bPending != 0)
             {
-                AnimNamedRef* const pRef = m_state.pEventRecord->m_pRef;
+                auto* const pRef = m_state.pEventRecord->m_pRef;
 
                 if (m_pending.pSet == pRef->m_pDb)
                 {
@@ -352,7 +352,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 
         if (nNext != m_pSet->GetEntryCount())
         {
-            AnimClipEntry* const pRecord = m_pSet->m_apEntries[nNext];
+            auto* const pRecord = m_pSet->m_apEntries[nNext];
 
             if (pRecord->m_wSegment == m_state.wClipIndex)
             {
@@ -425,15 +425,15 @@ char AnimPlayer::ComputeScale(float flScale)
         {
             static TransformObject s_blendTransform;
 
-            float flSum     = g_flAnimBlendZero;
+            auto  flSum     = g_flAnimBlendZero;
             short nSegments = 0;
 
-            short iBone = m_pBoneSet->m_nClipCount;
+            auto iBone = m_pBoneSet->m_nClipCount;
 
             while (iBone-- > 0)
             {
-                MeshBone*       pSlot = &m_pObject->m_pBones[iBone];
-                AnimClip* const pBone = &m_pBoneSet->m_pClips[iBone];
+                auto*       pSlot = &m_pObject->m_pBones[iBone];
+                auto* const pBone = &m_pBoneSet->m_pClips[iBone];
 
                 if (pBone->m_nFormat != kAnimBoneModeSkip)
                 {
@@ -458,11 +458,11 @@ char AnimPlayer::ComputeScale(float flScale)
             m_flAccum    = 0.0f;
             m_flDuration = flSum / static_cast<float>(nSegments) * flApplied;
 
-            MeshBone* pRoot = m_pObject->m_pBones;
+            auto* pRoot = m_pObject->m_pBones;
 
             if (pRoot->IsAnimationDirty() != 0)
             {
-                TransformObject* const pMatrix = &pRoot->m_local;
+                auto* const pMatrix = &pRoot->m_local;
 
                 pMatrix->SetTranslation(pMatrix->GetElement(0, 3) * pRoot->m_pDesc->m_vScale.x,
                                         pMatrix->GetElement(1, 3) * pRoot->m_pDesc->m_vScale.y,
@@ -476,23 +476,23 @@ char AnimPlayer::ComputeScale(float flScale)
             vPos.z = pRoot->m_local.m_a[2][3];
 
             // The client reads the position back through EAX (0x00424d82 to 0x00424d9b).
-            Vec3* const pPos = &m_vPos;
+            auto* const pPos = &m_vPos;
             *pPos            = vPos;
 
             const Vec3* const pRow = m_pBoneSet->m_pClips[0].m_pTranslation;
 
-            const Vec3* pScale = &pRoot->m_pDesc->m_vScale;
+            const auto* pScale = &pRoot->m_pDesc->m_vScale;
             vProd.x            = pScale->x * pRow->x;
             vProd.y            = pScale->y * pRow->y;
             vProd.z            = pScale->z * pRow->z;
 
             // A second name keeps the delta's stores where the client has them; without it 82.41.
-            Vec3* const pDelta = &m_vDelta;
+            auto* const pDelta = &m_vDelta;
             pDelta->x          = vProd.x - pPos->x;
             pDelta->y          = vProd.y - pPos->y;
             pDelta->z          = vProd.z - pPos->z;
 
-            double flMax = fabs(static_cast<double>(m_vDelta.x));
+            auto flMax = fabs(static_cast<double>(m_vDelta.x));
 
             if (flMax < fabs(static_cast<double>(m_vDelta.y)))
             {
@@ -531,8 +531,8 @@ char AnimPlayer::Advance(float flDelta)
 {
     char cRunning;
 
-    float flAt = flDelta + m_flAccum;
-    m_flAccum  = flAt;
+    auto flAt = flDelta + m_flAccum;
+    m_flAccum = flAt;
 
     if (flAt > m_flDuration)
     {
@@ -549,7 +549,7 @@ char AnimPlayer::Advance(float flDelta)
     {
         if (m_pBoneSet->m_pClips[iBone].m_nFormat != kAnimBoneModeSkip)
         {
-            SlerpSeg* const pSeg = &m_aSlots[iBone];
+            auto* const pSeg = &m_aSlots[iBone];
 
             pSeg->Eval(flAt);
 
@@ -582,7 +582,7 @@ char AnimPlayer::SetPlayState(int nState)
 {
     if (m_state.nPlayState == kAaDone)
     {
-        const char bOk = StartAnimSetDefaultRate(m_pSet);
+        const auto bOk = StartAnimSetDefaultRate(m_pSet);
 
         if (bOk == 0)
         {
@@ -706,7 +706,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
                 m_state.flPlaybackRate = g_flOneAnimPlayer;
                 m_state.wEventCursor   = 0;
 
-                const short nChannelCount = pAnimSet->GetEntryCount();
+                const auto nChannelCount = pAnimSet->GetEntryCount();
                 for (short iChannel = 0; iChannel < nChannelCount; iChannel++)
                 {
                     m_state.anEventTarget[iChannel]  = m_pObject->GetSlot();
@@ -734,9 +734,9 @@ void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 
     if (nIndex == m_state.wClipIndex)
     {
-        AnimNode* const pRange = m_pClip;
+        auto* const pRange = m_pClip;
 
-        const int nFrames = pRange->m_wEndFrame - pRange->m_wStartFrame;
+        const auto nFrames = pRange->m_wEndFrame - pRange->m_wStartFrame;
 
         m_state.flStep = static_cast<float>(nFrames) * g_pGameEngine->m_clock.flDelta / flDuration;
     }
@@ -752,7 +752,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 
     char cResult = 0;
 
-    AnimDB* pSet = m_pSet;
+    auto* pSet = m_pSet;
 
     m_state.wClipIndex = nClipIndex;
 
@@ -803,7 +803,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
             m_state.nLoopFrame = nStart;
             m_state.nEndFrame  = m_pClip->m_wEndFrame;
 
-            const int nMode = m_pClip->m_nLoopCount;
+            const auto nMode = m_pClip->m_nLoopCount;
 
             if (nMode > 0)
             {
@@ -822,13 +822,13 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
             m_pPrevClip             = m_pClip;
             m_state.bChannelPending = 0;
 
-            const short nChannels = pSet->GetEntryCount();
+            const auto nChannels = pSet->GetEntryCount();
 
             if (nChannels != 0)
             {
                 for (int iChannel = 0; iChannel < nChannels; iChannel++)
                 {
-                    AnimClipEntry* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
+                    auto* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
 
                     if (pRecord->m_wSegment == m_state.wClipIndex)
                     {

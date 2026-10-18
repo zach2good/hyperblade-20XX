@@ -122,7 +122,7 @@ void GameConfigUIScreen::SetupWidgets()
     m_apWidgets[UI_WIDGET_CANCEL]->AppendFrame(GDI::LoadBitmapHandle("Cancld"));
 
     // STRING: HYPERX 0x004c6718
-    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Optbkgd");
+    auto* hBitmap = GDI::LoadBitmapHandle("Optbkgd");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new LoopFlipbookWidget(0, 0, 0, 0, 0, 1, 0, 0, 0, 0, this, 0, -1));
     pWidget->AppendFrame(hBitmap);
@@ -166,7 +166,7 @@ void GameConfigUIScreen::SetupWidgets()
 
     for (nOption = 0; nOption < GAME_CONFIG_ARROW_COUNT; nOption++)
     {
-        const int nSide = nOption % 2;
+        const auto nSide = nOption % 2;
 
         if (nSide != 0)
         {
@@ -584,7 +584,7 @@ void GameConfigUIScreen::LoadOptionBitmap(int nOption)
 {
     m_apWidgets[nOption]->ClearFrames();
 
-    GDI::Bitmap* const hBitmap = GDI::LoadBitmapHandle(GetOptionBitmapName(nOption));
+    auto* const hBitmap = GDI::LoadBitmapHandle(GetOptionBitmapName(nOption));
 
     m_apWidgets[nOption]->AppendFrame(hBitmap);
     m_apWidgets[nOption]->SetDirtyFlag(1);

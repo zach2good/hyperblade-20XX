@@ -113,12 +113,12 @@ void Game::Draw(float flAlpha)
 // FUNCTION: HYPERX 0x0045c700
 void Game::InitializeEngine()
 {
-    int nStart = GameApp::GetInstallLevel();
+    auto nStart = GameApp::GetInstallLevel();
 
     // A new of a type with a constructor, for the null test and exception frame.
     g_pTexManager = new CD3DTextureManager;
 
-    int nDelta = GameApp::GetInstallLevel() - nStart;
+    auto nDelta = GameApp::GetInstallLevel() - nStart;
 
     g_pTexManager->m_nInstallLevel += nDelta;
 
@@ -266,7 +266,7 @@ void Game::InitMatchMarkers()
 // FUNCTION: HYPERX 0x00491dd0
 extern "C" unsigned int Game::SetEngineState(unsigned int state)
 {
-    const unsigned int previous = g_gameApp.m_nEngineState;
+    const auto previous = g_gameApp.m_nEngineState;
 
     g_gameApp.m_nEngineState = state;
 
@@ -441,7 +441,7 @@ unsigned int Game::UpdateState()
                     case kEstateChampionshipSetup:
                     case kEstateAwards:
                     {
-                        const int nDifficulty = g_pGameEngine->GetDifficultyLevel();
+                        const auto nDifficulty = g_pGameEngine->GetDifficultyLevel();
 
                         switch (g_nPlayerMode)
                         {

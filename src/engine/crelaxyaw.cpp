@@ -72,9 +72,9 @@ void CRelaxYaw::Process(int nArg)
 {
     if (m_flAngle != g_flZeroAgendaItem)
     {
-        const float flAngle = m_flAngle;
+        const auto flAngle = m_flAngle;
 
-        TransformObject* const pTransform = m_pOwner->GetLocalTransformPtr();
+        auto* const pTransform = m_pOwner->GetLocalTransformPtr();
 
         pTransform->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
         pTransform->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
@@ -84,7 +84,7 @@ void CRelaxYaw::Process(int nArg)
         m_flAngle = m_flDecay * m_flAngle;
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr && m_bReady == 0)
     {
@@ -106,9 +106,9 @@ void CRelaxYaw::Release(int nArg)
 {
     if (m_flAngle != g_flZeroAgendaItem)
     {
-        const float flAngle = m_flAngle;
+        const auto flAngle = m_flAngle;
 
-        TransformObject* const pTransform = m_pOwner->GetLocalTransformPtr();
+        auto* const pTransform = m_pOwner->GetLocalTransformPtr();
 
         pTransform->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
         pTransform->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
@@ -118,7 +118,7 @@ void CRelaxYaw::Release(int nArg)
         m_flAngle = m_flDecay * m_flAngle;
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr && m_bReady == 0)
     {

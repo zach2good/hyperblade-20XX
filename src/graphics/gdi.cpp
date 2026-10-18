@@ -52,14 +52,14 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
             return y;
         }();
 
-        const unsigned char* const pRow = pRows + static_cast<size_t>(nRow) * nStride;
-        std::uint32_t* const       pOut = &pBitmap->pixels[static_cast<size_t>(y) * nWidth];
+        const auto* const pRow = pRows + static_cast<size_t>(nRow) * nStride;
+        auto* const       pOut = &pBitmap->pixels[static_cast<size_t>(y) * nWidth];
 
         for (int x = 0; x < nWidth; x++)
         {
             if (nBits >= 24)
             {
-                const unsigned char* const p = pRow + x * (nBits / 8);
+                const auto* const p = pRow + x * (nBits / 8);
 
                 pOut[x] = static_cast<std::uint32_t>(p[2] << 16 | p[1] << 8 | p[0]);
 
@@ -87,7 +87,7 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
 // FUNCTION: HYPERX 0x00418cc0
 void GDI::DrawBitmapToWindow(const char* pszResourceName)
 {
-    Bitmap* const pBitmap = GDI::LoadBitmapWithPalette(pszResourceName, nullptr);
+    auto* const pBitmap = GDI::LoadBitmapWithPalette(pszResourceName, nullptr);
 
     if (pBitmap != nullptr)
     {
@@ -367,7 +367,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 
     if (nHeaderSize == sizeof(BitmapCoreHeader))
     {
-        const BitmapCoreHeader bmc = header.core;
+        const auto bmc = header.core;
 
         header.info.biSize          = sizeof(BitmapInfoHeader);
         header.info.biWidth         = bmc.bcWidth;
@@ -412,7 +412,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 
     *pDib = header.info;
 
-    RgbQuad* const pColors = GDI::ColorTable(pDib);
+    auto* const pColors = GDI::ColorTable(pDib);
 
     if (nColors != 0)
     {
@@ -557,7 +557,7 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
         return GDI::LoadJPEGImage(strPath.m_str.m_pchData);
     }
 
-    BitmapInfoHeader* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
+    auto* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
 
     if (pDib == nullptr)
     {
@@ -569,7 +569,7 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
         *pbPaletted = 1;
     }
 
-    Bitmap* const pBitmap = FromDIB(pDib);
+    auto* const pBitmap = FromDIB(pDib);
 
     free(pDib);
 
@@ -591,7 +591,7 @@ GDI::Bitmap* GDI::LoadJPEGImage(const char* pszPath)
 
     stbi_set_flip_vertically_on_load_thread(0);
 
-    stbi_uc* const pPixels = stbi_load(Path::Native(pszPath).c_str(), &nWidth, &nHeight, &nChannels, 3);
+    auto* const pPixels = stbi_load(Path::Native(pszPath).c_str(), &nWidth, &nHeight, &nChannels, 3);
 
     if (pPixels == nullptr)
     {

@@ -67,7 +67,7 @@ void RampObject::InitCollisionPlanes()
     vNearMax.y = vMin.y;
     vNearMax.z = vMin.z;
 
-    const float flNegMinZ = -vMin.z;
+    const auto flNegMinZ = -vMin.z;
 
     RampEdge edge;
 
@@ -75,7 +75,7 @@ void RampObject::InitCollisionPlanes()
     edge.flBase   = vMax.x - edge.flSlope * vMin.z;
     m_edgeNearMax = edge;
 
-    const float flMaxZ = vMax.z;
+    const auto flMaxZ = vMax.z;
 
     edge.flSlope = (vMax.x - vTipMax.x) / flMaxZ;
     edge.flBase  = vTipMax.x;

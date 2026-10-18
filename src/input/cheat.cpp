@@ -68,7 +68,7 @@ void Cheat::GeorgeActivate()
 // FUNCTION: HYPERX 0x00449890
 void Cheat::MaxViewedPlayerRatings()
 {
-    PlayerObject* pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
+    auto* pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
     // Only the six player slots carry stats.
     if (pObject != nullptr && pObject->GetSlot() < kPlayerObjectCount)
@@ -98,17 +98,17 @@ void Cheat::RestoreAllPlayers()
 {
     for (int nTeam = 0; nTeam < 4; nTeam++)
     {
-        EngineObject* pTeam = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anTeamOrder[nTeam])];
+        auto* pTeam = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anTeamOrder[nTeam])];
 
         if (pTeam != nullptr)
         {
             for (int nBone = 1; nBone < 15; nBone++)
             {
-                MeshBone* pBone = &pTeam->m_pBones[static_cast<short>(nBone)];
+                auto* pBone = &pTeam->m_pBones[static_cast<short>(nBone)];
 
                 if (pBone != nullptr && pBone->IsBound() != 0)
                 {
-                    TransformObject* const pTransform = &pBone->m_world;
+                    auto* const pTransform = &pBone->m_world;
 
                     pTransform->m_vScale.x = 1.0f;
                     pTransform->m_vScale.y = 1.0f;
@@ -116,7 +116,7 @@ void Cheat::RestoreAllPlayers()
 
                     pTransform->ApplyScale();
 
-                    TransformObject* const pTarget = &pBone->m_local;
+                    auto* const pTarget = &pBone->m_local;
 
                     pBone->m_bHasScale = 0;
 
@@ -370,7 +370,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                             pTeamDef = pEngine->m_pTeamA;
                         }
 
-                        ReserveRows* const pReserves = pEngine->GetReserveRows(pTeamDef);
+                        auto* const pReserves = pEngine->GetReserveRows(pTeamDef);
                         pEntity->PostSceneEvent(kMsgSubstituteDromer, pReserves->anRow[nKey - '1']);
                     }
 

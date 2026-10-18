@@ -42,7 +42,7 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
 
         m_pClips = new AnimClip[header.m_nClipCount];
 
-        AnimClip* pClips = m_pClips;
+        auto* pClips = m_pClips;
 
         for (int nIndex = 0; nIndex < m_nClipCount; nIndex++)
         {

@@ -38,7 +38,7 @@ void CSteerToTarget::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bReady = 0;
     m_pOwner = pOwner;
 
-    Vec3* const pWatched = &pOwner->GetPhysicsBody()->velDir;
+    auto* const pWatched = &pOwner->GetPhysicsBody()->velDir;
 
     m_pTarget = nullptr;
     m_pAxis   = pWatched;
@@ -47,7 +47,7 @@ void CSteerToTarget::Bind(EngineObject* pOwner, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x0040e060
 void CSteerToTarget::SetTargetObjectByIndex(short nIndex)
 {
-    EngineObject* const pObject = g_pGameEngine->m_ppSlots[nIndex];
+    auto* const pObject = g_pGameEngine->m_ppSlots[nIndex];
 
     m_cArrived = 0;
     m_pTarget  = pObject;
@@ -93,26 +93,26 @@ void CSteerToTarget::Process(int nArg)
         flForce = OBJECT_BALANCE;
     }
 
-    const float flClock = g_pGameEngine->m_clock.flDeltaSquared;
-    const int   nJitter = rand() % JITTER_MODULUS;
+    const auto flClock = g_pGameEngine->m_clock.flDeltaSquared;
+    const auto nJitter = rand() % JITTER_MODULUS;
 
     flForce = ((flForce * 0.1f + 1.5f) * flClock * 40.0f) * (static_cast<float>(nJitter) * 0.01f + 1.0f);
 
-    Vec3* const pSelf     = m_pOwner->GetPositionPtr();
-    Vec3* const pOther    = m_pTarget->GetPositionPtr();
-    Vec3* const pOtherVel = &m_pTarget->GetPhysicsBody()->vel;
+    auto* const pSelf     = m_pOwner->GetPositionPtr();
+    auto* const pOther    = m_pTarget->GetPositionPtr();
+    auto* const pOtherVel = &m_pTarget->GetPhysicsBody()->vel;
 
     vDelta.x = pOther->x - pSelf->x;
     vDelta.y = pOther->y - pSelf->y;
     vDelta.z = pOther->z - pSelf->z;
 
-    PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+    auto* const pBody = m_pOwner->GetPhysicsBody();
 
-    const float flSpeed = pBody->flSpeed;
+    const auto flSpeed = pBody->flSpeed;
 
     Vec3 vFlat;
 
-    Vec3 vHeading = pBody->velDir;
+    auto vHeading = pBody->velDir;
     vHeading.z    = 0.0f;
     vFlat.x       = vDelta.x;
     vFlat.y       = vDelta.y;
@@ -123,11 +123,11 @@ void CSteerToTarget::Process(int nArg)
 
     if (Vec3::DotInline(&vHeading, &vFlat) < 0.75f)
     {
-        PhysicsBody* const pTargetBody = m_pTarget->GetPhysicsBody();
+        auto* const pTargetBody = m_pTarget->GetPhysicsBody();
 
         if (g_pGameEngine->m_clock.flInvDelta * pTargetBody->flSpeed > 5.0f)
         {
-            float flGated = flSpeed;
+            auto flGated = flSpeed;
 
             flGated *= 6.0f;
 
@@ -142,13 +142,13 @@ void CSteerToTarget::Process(int nArg)
 
     float flGate;
 
-    PhysicsBody* const pTargetBody = m_pTarget->GetPhysicsBody();
+    auto* const pTargetBody = m_pTarget->GetPhysicsBody();
 
     if (g_pGameEngine->m_clock.flInvDelta * pTargetBody->flSpeed > 3.0f)
     {
         flGate = RANGE_GATE_LEAD;
 
-        float flLead = Vec3::DotInline(&vDelta, &vDelta) * 0.005f;
+        auto flLead = Vec3::DotInline(&vDelta, &vDelta) * 0.005f;
 
         if (flLead < 1.5f)
         {
@@ -177,7 +177,7 @@ void CSteerToTarget::Process(int nArg)
 
     if (Vec3::DotInline(&vDelta, &vDelta) < flGate)
     {
-        PhysicsBody* const pOwnBody = m_pOwner->GetPhysicsBody();
+        auto* const pOwnBody = m_pOwner->GetPhysicsBody();
 
         pOwnBody->smoothVel.x -= pOwnBody->vel.x * 0.15f;
         pOwnBody->smoothVel.y -= pOwnBody->vel.y * 0.15f;
@@ -198,8 +198,8 @@ void CSteerToTarget::Process(int nArg)
 
     const Vec3* const pAxis = m_pAxis;
 
-    const float flLean = g_flOneAgendaItem - (vDelta.x * pAxis->x + (vDelta.y * pAxis->y + vDelta.z * pAxis->z));
-    float       flCross;
+    const auto flLean = g_flOneAgendaItem - (vDelta.x * pAxis->x + (vDelta.y * pAxis->y + vDelta.z * pAxis->z));
+    float      flCross;
 
     if ((flCross = vDelta.y * pAxis->x - vDelta.x * pAxis->y) < BANK_DEADZONE_LOW)
     {

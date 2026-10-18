@@ -36,7 +36,7 @@ void CDopplerSnd::OnListChanged()
 // FUNCTION: HYPERX 0x00412760
 void CDopplerSnd::Process(int nArg)
 {
-    AgendaItem* const pChain = m_pNext;
+    auto* const pChain = m_pNext;
 
     if (pChain != nullptr && m_bReady == 0)
     {

@@ -18,7 +18,7 @@ void CViewIt::Process(int nArg)
 {
     GetCamera()->ViewIt();
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {

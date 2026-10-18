@@ -21,9 +21,9 @@ void AnimEvent::PlaySnd(Interactor*, PlanNode* pEvent, short*, int)
 {
     SoundEntry* pSlot;
 
-    const int nIndex = pEvent->m_pArgs[1].n;
+    const auto nIndex = pEvent->m_pArgs[1].n;
 
-    SoundManager* const pBank = g_pAudioMgr->pEntries;
+    auto* const pBank = g_pAudioMgr->pEntries;
 
     if (nIndex < pBank->m_nSoundCount)
     {
@@ -44,7 +44,7 @@ void AnimEvent::PlaySnd(Interactor*, PlanNode* pEvent, short*, int)
 // FUNCTION: HYPERX 0x00406ef0
 void AnimEvent::PlaySndType(Interactor*, PlanNode* pArgs, short*, int nGroup)
 {
-    const int nTag = pArgs->m_pArgs[1].n;
+    const auto nTag = pArgs->m_pArgs[1].n;
 
     if (nTag == PLAN_TOKEN_MESSAGE_DATA)
     {
@@ -65,7 +65,7 @@ void AnimEvent::PanSndType(Interactor*, PlanNode* pEvent, short*, int nGroup)
         return;
     }
 
-    const int nEventGroup = pEvent->m_pArgs[1].n;
+    const auto nEventGroup = pEvent->m_pArgs[1].n;
 
     if (nEventGroup == PLAN_TOKEN_MESSAGE_DATA)
     {
@@ -94,9 +94,9 @@ void AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, shor
     Vec3        vDelta;
     float       flScaled;
 
-    const int nIndex = pEvent->m_pArgs[1].n;
+    const auto nIndex = pEvent->m_pArgs[1].n;
 
-    SoundManager* const pBank = g_pAudioMgr->pEntries;
+    auto* const pBank = g_pAudioMgr->pEntries;
 
     if (nIndex < pBank->m_nSoundCount)
     {
@@ -107,7 +107,7 @@ void AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, shor
         pSlot = nullptr;
     }
 
-    EngineObject* const pListener = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
+    auto* const pListener = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
     const Vec3* pListenerPos = pListener->GetPositionPtr();
     const Vec3* pEmitterPos  = pContext->GetActor()->GetPositionPtr();

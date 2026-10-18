@@ -122,7 +122,7 @@ void Config::LoadPreferences(const char* pszFileName)
 // FUNCTION: HYPERX 0x0046d8b0
 int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 {
-    FILE* const pFile = fopen(Path::Native(pszData).c_str(), "r");
+    auto* const pFile = fopen(Path::Native(pszData).c_str(), "r");
 
     if (pFile != nullptr)
     {

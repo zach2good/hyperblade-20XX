@@ -100,12 +100,12 @@ double g_dMsPerMinute      = 60.0 * g_dMsPerSecond;
 // FUNCTION: HYPERX 0x00428010
 float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 {
-    Vec3 posFirst  = pFirst->GetPhysicsBody()->pos;
-    Vec3 posSecond = pSecond->GetPhysicsBody()->pos;
+    auto posFirst  = pFirst->GetPhysicsBody()->pos;
+    auto posSecond = pSecond->GetPhysicsBody()->pos;
 
-    const float flDz = posFirst.z - posSecond.z;
-    const float flDy = posFirst.y - posSecond.y;
-    const float flDx = posFirst.x - posSecond.x;
+    const auto flDz = posFirst.z - posSecond.z;
+    const auto flDy = posFirst.y - posSecond.y;
+    const auto flDx = posFirst.x - posSecond.x;
 
     return static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 }
@@ -113,8 +113,8 @@ float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 // FUNCTION: HYPERX 0x00428090
 float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 {
-    Vec3 a = *pA;
-    Vec3 b = *pB;
+    auto a = *pA;
+    auto b = *pB;
 
     return static_cast<float>(sqrt(static_cast<double>((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z))));
 }
@@ -125,16 +125,16 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 {
     int i;
 
-    float flNearest = 2e8f;
-    int   nNearest  = kModelIDNone;
+    auto flNearest = 2e8f;
+    auto nNearest  = kModelIDNone;
 
     for (i = kSlotMultiplier; i <= kSlotMultiplierLast; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(i)];
+        auto* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(i)];
 
         if (pObject != nullptr)
         {
-            const char* pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
+            const auto* pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
 
             // STRING: HYPERX 0x004bcac8
             if (strcmp(pszName, "Spin") != 0)
@@ -142,7 +142,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
                 // STRING: HYPERX 0x004bcabc
                 if (strcmp(pszName, "ScoreSpin") != 0)
                 {
-                    const float flDistance = EngineObject::ComputeDistance(pFrom, pObject);
+                    const auto flDistance = EngineObject::ComputeDistance(pFrom, pObject);
 
                     if (flDistance < flNearest)
                     {
@@ -175,13 +175,13 @@ constexpr auto kTeamAway = 1;
 // FUNCTION: HYPERX 0x00428190
 int EngineObject::IsRokCarrier(EngineObject* pActor)
 {
-    PhysicsBody* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
+    auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-    AttachPak* const pTracked = pBlock->pAttach;
+    auto* const pTracked = pBlock->pAttach;
 
     if (pTracked != nullptr)
     {
-        short nTracked = pTracked->nSlot;
+        auto nTracked = pTracked->nSlot;
 
         if (nTracked < 6 && nTracked == pActor->GetSlot())
         {
@@ -198,7 +198,7 @@ int GameEngine::IsComputerTeam(int nSlot)
 {
     const int nWide = static_cast<short>(nSlot);
 
-    EngineObject* pObject = g_pGameEngine->m_ppSlots[nWide];
+    auto* pObject = g_pGameEngine->m_ppSlots[nWide];
 
     // STRING: HYPERX 0x004bb340
     if (strcmp(pObject->GetPlanState()->GetName(), "Human") == 0)
@@ -213,7 +213,7 @@ int GameEngine::IsComputerTeam(int nSlot)
         return 0;
     }
 
-    const short nLocal = g_pGameEngine->m_nViewedSlot;
+    const auto nLocal = g_pGameEngine->m_nViewedSlot;
 
     if (nLocal == nSlot)
     {
@@ -243,7 +243,7 @@ int GameEngine::CheckHandicapCondition()
 
     pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
 
-    AttachPak* const pnCarrierSlot = pBlock->pAttach;
+    auto* const pnCarrierSlot = pBlock->pAttach;
 
     if (pnCarrierSlot == nullptr || pnCarrierSlot->nSlot >= kPlayerObjectCount)
     {
@@ -284,7 +284,7 @@ int GameEngine::CheckHandicapCondition()
         {
             pSlot = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
-            const float flDamage = pSlot->m_stats.GetScalar(kRatingDamage);
+            const auto flDamage = pSlot->m_stats.GetScalar(kRatingDamage);
 
             if (flDamage <= DamageGate())
             {
@@ -324,9 +324,9 @@ int GameEngine::IsAnyPlayerInjured()
 
     for (i = 0; i < kPlayerSlotCount; i++)
     {
-        PlayerObject* const pPlayer = g_pGameEngine->GetPlayer(static_cast<short>(i));
+        auto* const pPlayer = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
-        const float flDamage = pPlayer->m_stats.GetScalar(kRatingDamage);
+        const auto flDamage = pPlayer->m_stats.GetScalar(kRatingDamage);
 
         if (flDamage <= DamageGate())
         {
@@ -349,16 +349,16 @@ int GameEngine::CheckOpposedCarriersRace()
     const Vec3* pGoal;
     double      flToGoal;
 
-    EngineObject* const pCarrier = g_pGameEngine->m_ppSlots[kSlotSwarf];
-    EngineObject* const pRok     = g_pGameEngine->m_ppSlots[kSlotRok];
+    auto* const pCarrier = g_pGameEngine->m_ppSlots[kSlotSwarf];
+    auto* const pRok     = g_pGameEngine->m_ppSlots[kSlotRok];
 
     if (pCarrier != nullptr)
     {
-        AttachPak* const pSlotA = pCarrier->GetPhysicsBody()->pAttach;
+        auto* const pSlotA = pCarrier->GetPhysicsBody()->pAttach;
 
         if (pSlotA != nullptr && (nSlotA = pSlotA->nSlot) < kPlayerObjectCount)
         {
-            AttachPak* const pSlotB = pRok->GetPhysicsBody()->pAttach;
+            auto* const pSlotB = pRok->GetPhysicsBody()->pAttach;
 
             if (pSlotB != nullptr && (nSlotB = pSlotB->nSlot) < kPlayerObjectCount && ((nSlotA ^ nSlotB) & 1) != 0)
             {
@@ -394,11 +394,11 @@ int GameEngine::CheckWeaponOutWhileRokCarried()
 {
     short nSlot;
 
-    EngineObject* const pDisplay = g_pGameEngine->m_ppSlots[kSlotSwarf];
+    auto* const pDisplay = g_pGameEngine->m_ppSlots[kSlotSwarf];
 
     if (pDisplay != nullptr)
     {
-        PlanState* const pDefinition = pDisplay->GetPlanState();
+        auto* const pDefinition = pDisplay->GetPlanState();
 
         if (strcmp(pDefinition->m_pCurrent->m_pszName,
                    // STRING: HYPERX 0x004bcad0
@@ -436,14 +436,14 @@ int GameEngine::CheckGoalieOutOfPosition()
     auto* const pGoalieA = (PlayerObject*)pSlots[kGoalieSlotA];
     auto* const pGoalieB = (PlayerObject*)pSlots[kGoalieSlotB];
 
-    PhysicsBody* pPosA = pGoalieA->GetPhysicsBody();
-    PhysicsBody* pPosB = pGoalieB->GetPhysicsBody();
+    auto* pPosA = pGoalieA->GetPhysicsBody();
+    auto* pPosB = pGoalieB->GetPhysicsBody();
 
     pNetA = g_pGameEngine->m_ppSlots[kSlotNgoal]->GetPhysicsBody();
     pNetB = g_pGameEngine->m_ppSlots[kSlotSgoal]->GetPhysicsBody();
 
-    const float flReachA = pGoalieA->m_stats.GetScalar(kGoalieRatingIntelligence);
-    const float flReachB = pGoalieB->m_stats.GetScalar(kGoalieRatingIntelligence);
+    const auto flReachA = pGoalieA->m_stats.GetScalar(kGoalieRatingIntelligence);
+    const auto flReachB = pGoalieB->m_stats.GetScalar(kGoalieRatingIntelligence);
 
     if (flReachA < Math::Vec3Distance(&pPosA->pos, &pNetA->pos))
     {
@@ -472,9 +472,9 @@ int GameEngine::CheckCarrierBreakaway()
         nSlot            = pSlot->nSlot;
         const int nIndex = static_cast<short>(nSlot);
 
-        EngineObject* pCarrier   = g_pGameEngine->GetSlot(nIndex);
-        EngineObject* pOpponentA = g_pGameEngine->GetSlot(nIndex ^ 1);
-        EngineObject* pOpponentB = g_pGameEngine->GetSlot(nIndex ^ 3);
+        auto* pCarrier   = g_pGameEngine->GetSlot(nIndex);
+        auto* pOpponentA = g_pGameEngine->GetSlot(nIndex ^ 1);
+        auto* pOpponentB = g_pGameEngine->GetSlot(nIndex ^ 3);
 
         const Vec3* pCarrierPos = &pCarrier->GetPhysicsBody()->pos;
         const Vec3* pPosA       = &pOpponentA->GetPhysicsBody()->pos;
@@ -515,9 +515,9 @@ int GameEngine::CheckAnyPlayerNeedsSub()
 
     for (iPlayer = 0; iPlayer < kPlayerSlotCount; iPlayer++)
     {
-        PlayerObject* const pObject = g_pGameEngine->GetPlayer(iPlayer);
+        auto* const pObject = g_pGameEngine->GetPlayer(iPlayer);
 
-        const float flLimit = pObject->m_stats.GetScalar(kRatingSubOutDamage);
+        const auto flLimit = pObject->m_stats.GetScalar(kRatingSubOutDamage);
 
         if (flLimit > pObject->m_stats.GetScalar(kRatingDamage))
         {
@@ -550,7 +550,7 @@ void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
     {
         if (g_pGameEngine->IsFitSubstitute(nTeam + i * 2, i) != 0)
         {
-            float flLevel = pTeam->aRows[i].aStat[kRatingDamage];
+            auto flLevel = pTeam->aRows[i].aStat[kRatingDamage];
 
             if (pTeam->aReserveSince[i] != 0)
             {
@@ -616,17 +616,17 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
 
     const int nSecond = sChallenger;
 
-    float       flFirst          = pTeam->aRows[nFirst].aStat[kRatingDamage];
-    float       flSecond         = pTeam->aRows[nSecond].aStat[kRatingDamage];
-    const float flFirstMinSubIn  = pTeam->aRows[nFirst].aStat[kRatingMinSubIn];
-    const float flSecondMinSubIn = pTeam->aRows[nSecond].aStat[kRatingMinSubIn];
-    const float flFirstSubOut    = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
+    auto       flFirst          = pTeam->aRows[nFirst].aStat[kRatingDamage];
+    auto       flSecond         = pTeam->aRows[nSecond].aStat[kRatingDamage];
+    const auto flFirstMinSubIn  = pTeam->aRows[nFirst].aStat[kRatingMinSubIn];
+    const auto flSecondMinSubIn = pTeam->aRows[nSecond].aStat[kRatingMinSubIn];
+    const auto flFirstSubOut    = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
     // The second candidate's limit reads the first candidate's row, as in the original.
-    const float flSecondSubOut = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
+    const auto flSecondSubOut = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
 
     if (pTeam->aReserveSince[nFirst] != 0)
     {
-        const float flGate = DamageGate();
+        const auto flGate = DamageGate();
 
         flFirst = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
     }
@@ -718,14 +718,14 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
     short nHeld   = -1;
     short nGoalie = kSlotSwarf;
-    int   nCount  = 0;
+    auto  nCount  = 0;
 
     if (pActor->GetPhase() == OBJECT_PHASE_NETWORK)
     {
         return;
     }
 
-    char* const pszName = pActor->GetPlanState()->m_pszName;
+    auto* const pszName = pActor->GetPlanState()->m_pszName;
 
     if (SDL_strcasecmp(pszName,
                        // STRING: HYPERX 0x004bb340
@@ -735,8 +735,8 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
     }
 
     EngineObject** const ppEngineSlots = g_pGameEngine->m_ppSlots;
-    EngineObject* const  pSwarf        = ppEngineSlots[kSlotSwarf];
-    EngineObject* const  pRok          = ppEngineSlots[kSlotRok];
+    auto* const          pSwarf        = ppEngineSlots[kSlotSwarf];
+    auto* const          pRok          = ppEngineSlots[kSlotRok];
 
     if (pSwarf != nullptr)
     {
@@ -755,11 +755,11 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
         nHeld = pHeld->nSlot;
     }
 
-    nSlot                 = pActor->GetSlot();
-    const int nHeldSlot   = nHeld;
-    int       nSelfParity = nSlot & 1;
-    const int nHeldParity = nHeldSlot & 1;
-    const int nOpposite   = nSelfParity ^ 1;
+    nSlot                  = pActor->GetSlot();
+    const int  nHeldSlot   = nHeld;
+    auto       nSelfParity = nSlot & 1;
+    const auto nHeldParity = nHeldSlot & 1;
+    const auto nOpposite   = nSelfParity ^ 1;
 
     strcpy(szState, pActor->GetPlanState()->m_pCurrent->m_pszName);
 
@@ -778,7 +778,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
                         // STRING: HYPERX 0x004bcb80
                         && strcmp(szState, "CompleatAnimation") != 0)
                     {
-                        const int nMarker = GameEngine::FindNearestLiveMultiplier(pActor);
+                        const auto nMarker = GameEngine::FindNearestLiveMultiplier(pActor);
 
                         if (nMarker != kModelIDNone)
                         {
@@ -946,7 +946,7 @@ void EngineObject::UpdateCoachAI()
 
     for (nSlot = 0; nSlot <= kCoachSlotLast; nSlot++)
     {
-        EngineObject* const pActor = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
+        auto* const pActor = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
         if (GameEngine::IsComputerTeam(nSlot) != 0)
         {
@@ -957,11 +957,11 @@ void EngineObject::UpdateCoachAI()
 
             if (pObject->m_stats.GetScalar(kRatingDamage) < flLimit)
             {
-                const int nTarget = GameEngine::SelectSubstitute(pActor);
+                const auto nTarget = GameEngine::SelectSubstitute(pActor);
 
                 if (nTarget != -1)
                 {
-                    char* const pszName = pActor->GetPlanState()->m_pszName;
+                    auto* const pszName = pActor->GetPlanState()->m_pszName;
 
                     // STRING: HYPERX 0x004bb37c
                     if (strcmp(pszName, "Sideln") != 0)

@@ -93,19 +93,19 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
     MeshBoundingBox boxPostA;
     MeshBoundingBox boxUpper;
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject*      pOther     = pColOther->m_pOwner;
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
-    BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* const pOwn     = pColOwn->m_pOwner;
-    PhysicsBody* const  pOwnBody = pOwn->GetPhysicsBody();
+    auto* const pOwn     = pColOwn->m_pOwner;
+    auto* const pOwnBody = pOwn->GetPhysicsBody();
 
     flGate = DamageGate();
 
-    const float flDamage = ((PlayerObject*)pOwn)->m_stats.GetScalar(kRatingDamage);
+    const auto flDamage = ((PlayerObject*)pOwn)->m_stats.GetScalar(kRatingDamage);
 
     if (flDamage <= flGate)
     {
@@ -114,15 +114,15 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
         return;
     }
 
-    float flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
-    vScratch.y    = pOwnBody->pos.y - pOwnBody->prevPos.y;
-    vScratch.z    = pOwnBody->pos.z - pOwnBody->prevPos.z;
+    auto flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
+    vScratch.y   = pOwnBody->pos.y - pOwnBody->prevPos.y;
+    vScratch.z   = pOwnBody->pos.z - pOwnBody->prevPos.z;
 
     vLocal.x = flDiffX;
     vLocal.y = vScratch.y;
     vLocal.z = vScratch.z;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(vLocal, &vScratch);
 
@@ -142,7 +142,7 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vTrans);
 
-    const float flTransX = pOther->m_transformC.m_a[0][3];
+    const auto flTransX = pOther->m_transformC.m_a[0][3];
 
     vLocal.x = pCentre->x;
     vLocal.y = pCentre->y;
@@ -173,15 +173,15 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
     boxTest.vMax.z = vLocal.z + 1.0f;
     boxTest.vMax.y = vLocal.y + 6.0f;
 
-    float       flInner         = (g_flGoalSpanWidth - g_flGoalFrameWidth) * 0.5f;
-    const float flPostHalfFrame = g_flGoalFrameWidth * 0.5f;
+    auto       flInner         = (g_flGoalSpanWidth - g_flGoalFrameWidth) * 0.5f;
+    const auto flPostHalfFrame = g_flGoalFrameWidth * 0.5f;
 
     boxPostA.vMin.x = flInner - flPostHalfFrame;
     boxPostA.vMin.z = -flPostHalfFrame;
     boxPostA.vMax.x = flPostHalfFrame + flInner;
     boxPostA.vMax.z = flPostHalfFrame;
 
-    const float flHeight = g_flGoalZoneHeight;
+    const auto flHeight = g_flGoalZoneHeight;
 
     boxPostA.vMax.y = flHeight;
 
@@ -206,11 +206,11 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
     boxMouth.vMin.y = 0.0f;
     boxMouth.bValid = 1;
 
-    const float flOuter = (g_flGoalSpanWidth - (g_flGoalFrameWidth + g_flGoalFrameWidth)) * 0.5f;
+    const auto flOuter = (g_flGoalSpanWidth - (g_flGoalFrameWidth + g_flGoalFrameWidth)) * 0.5f;
 
     boxMouth.vMin.x = -flOuter;
 
-    const float flMouthHalfFrame = g_flGoalFrameWidth * 0.5f;
+    const auto flMouthHalfFrame = g_flGoalFrameWidth * 0.5f;
 
     boxMouth.vMin.z = -flMouthHalfFrame;
     boxMouth.vMax.z = flMouthHalfFrame;
@@ -222,14 +222,14 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
         return;
     }
 
-    const float flTop      = g_flGoalZoneHeight - g_flGoalFrameWidth;
-    const float flHalfSpan = g_flGoalSpanWidth * 0.5f;
+    const auto flTop      = g_flGoalZoneHeight - g_flGoalFrameWidth;
+    const auto flHalfSpan = g_flGoalSpanWidth * 0.5f;
 
     boxUpper.vMin.x = -flHalfSpan;
 
     boxUpper.bValid = 1;
 
-    const float flBarHalfFrame = g_flGoalFrameWidth * 0.5f;
+    const auto flBarHalfFrame = g_flGoalFrameWidth * 0.5f;
 
     boxUpper.vMin.z = -flBarHalfFrame;
     boxUpper.vMax.z = flBarHalfFrame;
@@ -242,8 +242,8 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
         return;
     }
 
-    unsigned int       nTick      = g_pGameEngine->m_clock.nTickMs;
-    const unsigned int nLastScore = pOwn->m_nLastGoalTickMs;
+    auto       nTick      = g_pGameEngine->m_clock.nTickMs;
+    const auto nLastScore = pOwn->m_nLastGoalTickMs;
 
     if (nLastScore != 0 && nTick - nLastScore < g_nGoalScoreDebounceMs)
     {
@@ -271,15 +271,15 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
     MeshBoundingBox boxTest;
     MeshBoundingBox boxMesh;
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject*      pOther     = pColOther->m_pOwner;
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
-    BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject*      pOwn     = pColOwn->m_pOwner;
-    PhysicsBody* const pOwnBody = pOwn->GetPhysicsBody();
+    auto*       pOwn     = pColOwn->m_pOwner;
+    auto* const pOwnBody = pOwn->GetPhysicsBody();
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
 
@@ -289,15 +289,15 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 
     boxMesh = *pOther->m_pBones->GetBoundingBox(&boxScratch);
 
-    float flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
-    vLocal.y      = pOtherBody->pos.y - pOtherBody->prevPos.y;
-    vLocal.z      = pOtherBody->pos.z - pOtherBody->prevPos.z;
+    auto flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
+    vLocal.y     = pOtherBody->pos.y - pOtherBody->prevPos.y;
+    vLocal.z     = pOtherBody->pos.z - pOtherBody->prevPos.z;
 
     vScratch.x = flDiffX;
     vScratch.y = vLocal.y;
     vScratch.z = vLocal.z;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(vScratch, &vScratch);
 
@@ -307,24 +307,24 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
     vScratch.y = pOther->m_transformC.m_a[1][3];
     vScratch.z = pOther->m_transformC.m_a[2][3];
 
-    Vec3* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
+    auto* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
 
     vLocal = *pDelta;
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
-    const float flLowY = vLocal.y - g_flVelBoxDropY;
+    const auto flLowY = vLocal.y - g_flVelBoxDropY;
 
     vScratch.Set(vLocal.x, vLocal.y, vLocal.z);
 
-    boxScratch.vMin.x       = vScratch.x - g_flVelBoxSizeX * 0.5f;
-    boxScratch.bValid       = 1;
-    const float flHalfDepth = g_flVelBoxSizeZ * 0.5f;
-    boxScratch.vMin.z       = vScratch.z - flHalfDepth;
-    boxScratch.vMin.y       = flLowY;
-    boxScratch.vMax.x       = g_flVelBoxSizeX * 0.5f + vScratch.x;
-    boxScratch.vMax.z       = flHalfDepth + vScratch.z;
-    boxScratch.vMax.y       = g_flVelBoxSizeY + flLowY;
+    boxScratch.vMin.x      = vScratch.x - g_flVelBoxSizeX * 0.5f;
+    boxScratch.bValid      = 1;
+    const auto flHalfDepth = g_flVelBoxSizeZ * 0.5f;
+    boxScratch.vMin.z      = vScratch.z - flHalfDepth;
+    boxScratch.vMin.y      = flLowY;
+    boxScratch.vMax.x      = g_flVelBoxSizeX * 0.5f + vScratch.x;
+    boxScratch.vMax.z      = flHalfDepth + vScratch.z;
+    boxScratch.vMax.y      = g_flVelBoxSizeY + flLowY;
 
     boxTest = boxScratch;
 
@@ -342,7 +342,7 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 
     nHit = boxMesh.StepIntersectTest(&vDirOther, &vDirOwn, &boxTest);
 
-    PlanState* const pPlan = pOwn->GetPlanState();
+    auto* const pPlan = pOwn->GetPlanState();
 
     if (nHit != 0 && pPlan->m_pCurrent->m_wKind != kBehFly)
     {
@@ -392,11 +392,11 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
 
     if (pContext->GetNamedSlot() == -1)
     {
-        BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+        auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
         pOther = pColOther->m_pOwner;
 
-        BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+        auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
         pOwn = pColOwn->m_pOwner;
     }
@@ -406,8 +406,8 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
         pOwn   = g_pGameEngine->m_ppSlots[nSlot];
     }
 
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
-    PhysicsBody* const pOwnBody   = pOwn->GetPhysicsBody();
+    auto* const pOtherBody = pOther->GetPhysicsBody();
+    auto* const pOwnBody   = pOwn->GetPhysicsBody();
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
 
@@ -415,15 +415,15 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
     vCentre.y = pCentre->y;
     vCentre.z = pCentre->z;
 
-    float flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
-    vScratch.y    = pOtherBody->pos.y - pOtherBody->prevPos.y;
-    vScratch.z    = pOtherBody->pos.z - pOtherBody->prevPos.z;
+    auto flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
+    vScratch.y   = pOtherBody->pos.y - pOtherBody->prevPos.y;
+    vScratch.z   = pOtherBody->pos.z - pOtherBody->prevPos.z;
 
     vLocal.x = flDiffX;
     vLocal.y = vScratch.y;
     vLocal.z = vScratch.z;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(vLocal, &vScratch);
 
@@ -445,9 +445,9 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
 
     vDirOwn = vOut;
 
-    const float flTransX = pOther->m_transformC.m_a[0][3];
-    vLocal.y             = pOther->m_transformC.GetElement(1, 3);
-    vLocal.z             = pOther->m_transformC.m_a[2][3];
+    const auto flTransX = pOther->m_transformC.m_a[0][3];
+    vLocal.y            = pOther->m_transformC.GetElement(1, 3);
+    vLocal.z            = pOther->m_transformC.m_a[2][3];
 
     vOut.x = vCentre.x - flTransX;
     vOut.y = vCentre.y - vLocal.y;
@@ -467,7 +467,7 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
     capOwn.flRadius = g_flCapsuleOtherRadius;
     capOwn.flHeight = g_flCapsuleOtherHeight;
 
-    const int nHit = capOther.CheckCollision(&vDirOther, &vDirOwn, &capOwn);
+    const auto nHit = capOther.CheckCollision(&vDirOther, &vDirOwn, &capOwn);
 
     *pResult = !nHit;
 }
@@ -492,15 +492,15 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     MeshBoundingBox boxBar;
     Vec3            vDelta;
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject*      pOther     = pColOther->m_pOwner;
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
-    BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* const pOwn     = pColOwn->m_pOwner;
-    PhysicsBody* const  pOwnBody = pOwn->GetPhysicsBody();
+    auto* const pOwn     = pColOwn->m_pOwner;
+    auto* const pOwnBody = pOwn->GetPhysicsBody();
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
 
@@ -508,15 +508,15 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     vCentre.y = pCentre->y;
     vCentre.z = pCentre->z;
 
-    float flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
-    vScratch.y    = pOwnBody->pos.y - pOwnBody->prevPos.y;
-    vScratch.z    = pOwnBody->pos.z - pOwnBody->prevPos.z;
+    auto flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
+    vScratch.y   = pOwnBody->pos.y - pOwnBody->prevPos.y;
+    vScratch.z   = pOwnBody->pos.z - pOwnBody->prevPos.z;
 
     vLocal.x = flDiffX;
     vLocal.y = vScratch.y;
     vLocal.z = vScratch.z;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(vLocal, &vScratch);
 
@@ -526,14 +526,14 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     vScratch.y = pOther->m_transformC.m_a[1][3];
     vScratch.z = pOther->m_transformC.m_a[2][3];
 
-    Vec3* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
+    auto* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
 
     vLocal = *pDelta;
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
-    const float flRadius     = pColOwn->m_flRadius;
-    const float flHalfRadius = flRadius * 0.5f;
+    const auto flRadius     = pColOwn->m_flRadius;
+    const auto flHalfRadius = flRadius * 0.5f;
 
     boxTest.vMin.y = vLocal.y;
     boxTest.bValid = 1;
@@ -553,27 +553,27 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 
     pTransform->TransformDirectionByRows(vLocal, &vScratch);
 
-    const float flHalfSpan = g_flZoneSpanWidth * 0.5f;
+    const auto flHalfSpan = g_flZoneSpanWidth * 0.5f;
 
     vDirOther = vScratch;
 
     boxBar.vMin.x = -flHalfSpan;
 
-    const float flHalfFrame = g_flZoneFrameWidth * 0.5f;
+    const auto flHalfFrame = g_flZoneFrameWidth * 0.5f;
 
     boxBar.vMin.y = g_flZoneHeight;
     boxBar.bValid = 1;
 
-    const float flNegHalfFrame = -flHalfFrame;
+    const auto flNegHalfFrame = -flHalfFrame;
 
     boxBar.vMin.z = flNegHalfFrame;
     boxBar.vMax.x = flHalfSpan;
     boxBar.vMax.z = flHalfFrame;
-    float flTop   = g_flZoneFrameWidth;
+    auto flTop    = g_flZoneFrameWidth;
     flTop += g_flZoneHeight;
     boxBar.vMax.y = flTop;
 
-    const float flInner = (g_flZoneSpanWidth - g_flZoneFrameWidth) * 0.5f;
+    const auto flInner = (g_flZoneSpanWidth - g_flZoneFrameWidth) * 0.5f;
 
     boxPostA.vMin.y = 0.0f;
     boxPostA.vMin.z = flNegHalfFrame;
@@ -592,7 +592,7 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 
     boxPostA.vMax.z = flHalfFrame;
 
-    const float flHeight = g_flZoneHeight;
+    const auto flHeight = g_flZoneHeight;
 
     boxPostA.vMax.y = flHeight;
     boxPostB.vMax.y = flHeight;
@@ -600,7 +600,7 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     boxPostB.vMax.x = flHalfFrame + -flInner;
     boxPostB.vMax.z = flHalfFrame;
 
-    const float flOuter = (g_flZoneSpanWidth - (g_flZoneFrameWidth + g_flZoneFrameWidth)) * 0.5f;
+    const auto flOuter = (g_flZoneSpanWidth - (g_flZoneFrameWidth + g_flZoneFrameWidth)) * 0.5f;
 
     boxMouth.vMin.x = -flOuter;
     boxMouth.vMax.x = flOuter;
@@ -634,11 +634,11 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 // FUNCTION: HYPERX 0x00469ef0
 void CollisionCheck::BouncedInGoal(Interactor*, PlanNode*, short* pResult, int)
 {
-    BoundBubble* const pRok = g_pGameEngine->GetColObjPtr(kCOBRok);
+    auto* const pRok = g_pGameEngine->GetColObjPtr(kCOBRok);
 
-    BoundBubble* const pNorthPort = g_pGameEngine->GetColObjPtr(kCOBNgoalPort);
+    auto* const pNorthPort = g_pGameEngine->GetColObjPtr(kCOBNgoalPort);
 
-    BoundBubble* const pSouthPort = g_pGameEngine->GetColObjPtr(kCOBSgoalPort);
+    auto* const pSouthPort = g_pGameEngine->GetColObjPtr(kCOBSgoalPort);
 
     if (pRok->DoesIntersect(pNorthPort) != 0)
     {
@@ -684,11 +684,11 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
 
     if (pContext->GetNamedSlot() == -1)
     {
-        BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+        auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
         pOther = pColOther->m_pOwner;
 
-        BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+        auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
         pOwn = pColOwn->m_pOwner;
     }
@@ -698,8 +698,8 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
         pOwn   = g_pGameEngine->m_ppSlots[nSlot];
     }
 
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
-    PhysicsBody* const pOwnBody   = pOwn->GetPhysicsBody();
+    auto* const pOtherBody = pOther->GetPhysicsBody();
+    auto* const pOwnBody   = pOwn->GetPhysicsBody();
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
 
@@ -707,15 +707,15 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
     vCentre.y = pCentre->y;
     vCentre.z = pCentre->z;
 
-    float flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
-    vScratch.y    = pOtherBody->pos.y - pOtherBody->prevPos.y;
-    vScratch.z    = pOtherBody->pos.z - pOtherBody->prevPos.z;
+    auto flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
+    vScratch.y   = pOtherBody->pos.y - pOtherBody->prevPos.y;
+    vScratch.z   = pOtherBody->pos.z - pOtherBody->prevPos.z;
 
     vLocal.x = flDiffX;
     vLocal.y = vScratch.y;
     vLocal.z = vScratch.z;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(vLocal, &vScratch);
 
@@ -737,9 +737,9 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
 
     vDirOwn = vOut;
 
-    const float flTransX = pOther->m_transformC.m_a[0][3];
-    vLocal.y             = pOther->m_transformC.GetElement(1, 3);
-    vLocal.z             = pOther->m_transformC.m_a[2][3];
+    const auto flTransX = pOther->m_transformC.m_a[0][3];
+    vLocal.y            = pOther->m_transformC.GetElement(1, 3);
+    vLocal.z            = pOther->m_transformC.m_a[2][3];
 
     vOut.x = vCentre.x - flTransX;
     vOut.y = vCentre.y - vLocal.y;
@@ -759,7 +759,7 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
     capOwn.flRadius = g_flMultiplierOtherRadius;
     capOwn.flHeight = g_flMultiplierOtherHeight;
 
-    const int nHit = capOther.CheckCollision(&vDirOther, &vDirOwn, &capOwn);
+    const auto nHit = capOther.CheckCollision(&vDirOther, &vDirOwn, &capOwn);
 
     *pResult = !nHit;
 }
@@ -777,16 +777,16 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
     Vec3            vDelta;
     MeshBoundingBox boxRaw;
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject*      pOther     = pColOther->m_pOwner;
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
-    const short        nOwnSlot = pContext->GetModelSlot();
-    BoundBubble* const pColOwn  = g_pGameEngine->GetColObjPtr(nOwnSlot);
+    const auto  nOwnSlot = pContext->GetModelSlot();
+    auto* const pColOwn  = g_pGameEngine->GetColObjPtr(nOwnSlot);
 
-    EngineObject* const pOwn     = pColOwn->m_pOwner;
-    PhysicsBody* const  pOwnBody = pOwn->GetPhysicsBody();
+    auto* const pOwn     = pColOwn->m_pOwner;
+    auto* const pOwnBody = pOwn->GetPhysicsBody();
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vScratch);
 
@@ -798,29 +798,29 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
     vScratch.y = pOther->m_transformC.m_a[1][3];
     vScratch.z = pOther->m_transformC.m_a[2][3];
 
-    Vec3* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
+    auto* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
 
     vLocal = *pDelta;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
     vScratch = vLocal;
 
-    const float flLowY      = vLocal.y - 2.0f;
-    boxTest.vMin.x          = vScratch.x - g_flColBoxSizeX * 0.5f;
-    boxTest.bValid          = 1;
-    const float flHalfDepth = g_flColBoxSizeZ * 0.5f;
-    boxTest.vMin.z          = vScratch.z - flHalfDepth;
-    boxTest.vMin.y          = flLowY;
-    boxTest.vMax.x          = g_flColBoxSizeX * 0.5f + vScratch.x;
-    boxTest.vMax.z          = flHalfDepth + vScratch.z;
-    boxTest.vMax.y          = g_flColBoxSizeY + flLowY;
+    const auto flLowY      = vLocal.y - 2.0f;
+    boxTest.vMin.x         = vScratch.x - g_flColBoxSizeX * 0.5f;
+    boxTest.bValid         = 1;
+    const auto flHalfDepth = g_flColBoxSizeZ * 0.5f;
+    boxTest.vMin.z         = vScratch.z - flHalfDepth;
+    boxTest.vMin.y         = flLowY;
+    boxTest.vMax.x         = g_flColBoxSizeX * 0.5f + vScratch.x;
+    boxTest.vMax.z         = flHalfDepth + vScratch.z;
+    boxTest.vMax.y         = g_flColBoxSizeY + flLowY;
 
-    float flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
-    vLocal.y      = pOwnBody->pos.y - pOwnBody->prevPos.y;
-    vLocal.z      = pOwnBody->pos.z - pOwnBody->prevPos.z;
+    auto flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
+    vLocal.y     = pOwnBody->pos.y - pOwnBody->prevPos.y;
+    vLocal.z     = pOwnBody->pos.z - pOwnBody->prevPos.z;
 
     vScratch.x = flDiffX;
     vScratch.y = vLocal.y;
@@ -830,7 +830,7 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
 
     vDirOwn = vScratch;
 
-    MeshBoundingBox boxMesh = *pOther->m_pBones->GetBoundingBox(&boxRaw);
+    auto boxMesh = *pOther->m_pBones->GetBoundingBox(&boxRaw);
 
     flDiffX  = pOtherBody->pos.x - pOtherBody->prevPos.x;
     vLocal.y = pOtherBody->pos.y - pOtherBody->prevPos.y;
@@ -895,15 +895,15 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
     MeshBoundingBox boxTest;
     MeshBoundingBox boxZone;
 
-    BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
+    auto* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject*      pOther     = pColOther->m_pOwner;
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    auto*       pOther     = pColOther->m_pOwner;
+    auto* const pOtherBody = pOther->GetPhysicsBody();
 
-    BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* const pOwn     = pColOwn->m_pOwner;
-    PhysicsBody* const  pOwnBody = pOwn->GetPhysicsBody();
+    auto* const pOwn     = pColOwn->m_pOwner;
+    auto* const pOwnBody = pOwn->GetPhysicsBody();
 
     const Vec3* pCentre = pOwn->GetWorldPos(&vTrans);
 
@@ -915,15 +915,15 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
     vTrans.y = pOther->m_transformC.m_a[1][3];
     vTrans.z = pOther->m_transformC.m_a[2][3];
 
-    Vec3* const pDelta = vCentre.Subtract(&vDelta, &vTrans);
+    auto* const pDelta = vCentre.Subtract(&vDelta, &vTrans);
 
     vLocal = *pDelta;
 
-    TransformObject* const pTransform = &pOther->m_transformC;
+    auto* const pTransform = &pOther->m_transformC;
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
-    const float flRadius = pColOwn->m_flRadius;
+    const auto flRadius = pColOwn->m_flRadius;
 
     vDelta.x = vLocal.x - flRadius / g_flSplitBoxXDiv;
     vDelta.z = vLocal.z - flRadius / g_flSplitBoxZDiv;
@@ -934,9 +934,9 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
 
     SetBoxCorners(&boxTest, &vDelta, &vTrans);
 
-    const float flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
-    vDelta.y            = pOwnBody->pos.y - pOwnBody->prevPos.y;
-    vDelta.z            = pOwnBody->pos.z - pOwnBody->prevPos.z;
+    const auto flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
+    vDelta.y           = pOwnBody->pos.y - pOwnBody->prevPos.y;
+    vDelta.z           = pOwnBody->pos.z - pOwnBody->prevPos.z;
 
     vTrans.x = flDiffX;
     vTrans.y = vDelta.y;
@@ -955,9 +955,9 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
 
     SetBoxCorners(&boxZone, &vTrans, &vDelta);
 
-    const float flDx = pOtherBody->pos.x - pOtherBody->prevPos.x;
-    const float flDy = pOtherBody->pos.y - pOtherBody->prevPos.y;
-    const float flDz = pOtherBody->pos.z - pOtherBody->prevPos.z;
+    const auto flDx = pOtherBody->pos.x - pOtherBody->prevPos.x;
+    const auto flDy = pOtherBody->pos.y - pOtherBody->prevPos.y;
+    const auto flDz = pOtherBody->pos.z - pOtherBody->prevPos.z;
 
     vTrans.x = flDx * pTransform->m_a[0][0] + flDy * pTransform->m_a[1][0] + flDz * pTransform->m_a[2][0];
     vTrans.y = flDx * pTransform->m_a[0][1] + flDy * pTransform->m_a[1][1] + flDz * pTransform->m_a[2][1];
@@ -965,7 +965,7 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
 
     vDirOther = vTrans;
 
-    const int nHit = boxZone.StepIntersectTest(&vDirOther, &vDirOwn, &boxTest);
+    const auto nHit = boxZone.StepIntersectTest(&vDirOther, &vDirOwn, &boxTest);
 
     *pResult = !nHit;
 }
@@ -993,7 +993,7 @@ Vec3* CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshBoundingB
             vNormal.x = flScale;
             vNormal.x *= vPoint.x;
             vNormal.y = g_flZeroPlan * flScale;
-            float flZ = flScale;
+            auto flZ  = flScale;
             flZ *= vNormal.z;
             vNormal.z = flZ;
         }

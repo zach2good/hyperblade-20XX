@@ -37,10 +37,10 @@ int NearestSoftPaletteIndex(unsigned int nColour)
 
     for (int i = 0; i < 256; i++)
     {
-        const int dr    = static_cast<int>(g_aSoftTexPalette[i].peRed) - rTarget;
-        const int dg    = static_cast<int>(g_aSoftTexPalette[i].peGreen) - gTarget;
-        const int db    = static_cast<int>(g_aSoftTexPalette[i].peBlue) - bTarget;
-        const int nDist = dr * dr + dg * dg + db * db;
+        const auto dr    = static_cast<int>(g_aSoftTexPalette[i].peRed) - rTarget;
+        const auto dg    = static_cast<int>(g_aSoftTexPalette[i].peGreen) - gTarget;
+        const auto db    = static_cast<int>(g_aSoftTexPalette[i].peBlue) - bTarget;
+        const auto nDist = dr * dr + dg * dg + db * db;
 
         if (nDist < nBestDist)
         {
@@ -79,9 +79,9 @@ void Renderer::DrawAllMeshes()
 {
     MeshBone* pBone;
 
-    EngineObject* pDrome = g_pGameEngine->m_ppSlots[kSlotDrome];
+    auto* pDrome = g_pGameEngine->m_ppSlots[kSlotDrome];
 
-    int nBone = 0;
+    auto nBone = 0;
 
     if (g_bDromeIniDirty != 0 && g_pGameOptions != nullptr)
     {

@@ -75,12 +75,12 @@ void CTrackPasser_Receiver::Process(int nArg)
 {
     Vec3 vAxis;
 
-    const float flStep   = g_pGameEngine->m_clock.GetDelta() * 4.0f;
-    const float flFollow = GetCamera()->GetBungeeLength();
+    const auto flStep   = g_pGameEngine->m_clock.GetDelta() * 4.0f;
+    const auto flFollow = GetCamera()->GetBungeeLength();
 
     static Vec3 s_vLastVel = { g_flZeroTracking, g_flZeroTracking, g_flZeroTracking };
 
-    EngineObject* pTracked = GetCamera()->GetTrackedObject();
+    auto* pTracked = GetCamera()->GetTrackedObject();
 
     if (pTracked == nullptr)
     {
@@ -117,9 +117,9 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     const Vec3* pDir = &pTracked->GetPhysicsBody()->velDir;
 
-    const float flCrossX = vAxis.y * pDir->z - vAxis.z * pDir->y;
-    const float flCrossY = vAxis.z * pDir->x - vAxis.x * pDir->z;
-    const float flCrossZ = vAxis.x * pDir->y - vAxis.y * pDir->x;
+    const auto flCrossX = vAxis.y * pDir->z - vAxis.z * pDir->y;
+    const auto flCrossY = vAxis.z * pDir->x - vAxis.x * pDir->z;
+    const auto flCrossZ = vAxis.x * pDir->y - vAxis.y * pDir->x;
 
     vAxis.x = flCrossY * pDir->z - flCrossZ * pDir->y;
     vAxis.y = flCrossZ * pDir->x - flCrossX * pDir->z;
@@ -129,7 +129,7 @@ void CTrackPasser_Receiver::Process(int nArg)
     g_vCamPasserAim.y = g_flFourTracking * vAxis.y + g_vCamPasserAim.y;
     g_vCamPasserAim.z = g_flFourTracking * vAxis.z + g_vCamPasserAim.z;
 
-    EngineObject* pReceiver = GetCamera()->GetSecondaryTrackedObject();
+    auto* pReceiver = GetCamera()->GetSecondaryTrackedObject();
 
     if (pReceiver == nullptr || pReceiver == pTracked)
     {

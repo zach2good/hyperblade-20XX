@@ -25,7 +25,7 @@ std::vector<unsigned char> s_backBuffer;
 // FUNCTION: HYPERX 0x0044ba50
 int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 {
-    int bWidthRounded = 0;
+    auto bWidthRounded = 0;
 
     if (*pWidth == g_nPrevWidth && *pHeight == g_nPrevHeight)
     {
@@ -77,14 +77,14 @@ RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
     // STRING: HYPERX 0x004bc45c
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszName, "bmp");
 
-    BitmapInfoHeader* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
+    auto* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
 
     if (pDib == nullptr)
     {
         return nullptr;
     }
 
-    RLESprite* const pTexture = SoftTex::CompressToRLE(pDib);
+    auto* const pTexture = SoftTex::CompressToRLE(pDib);
 
     free(pDib);
 

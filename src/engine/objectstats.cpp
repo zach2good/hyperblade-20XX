@@ -47,7 +47,7 @@ ObjectStats* ObjectStats::InitDefaults()
 // FUNCTION: HYPERX 0x00474930
 float ObjectStats::GetWeightedStat(int nIndex)
 {
-    float flEnergy = m_aStats[0];
+    auto flEnergy = m_aStats[0];
     flEnergy *= g_flStatWeightScale;
     flEnergy += 0.25f;
 
@@ -229,8 +229,8 @@ void ObjectStats::UpdateMomentumAndEnergy()
         return;
     }
 
-    const float flAccel = g_flSpeedRateBase + g_flHalfRokObject;
-    flNew               = (flAccel - GetScalar(kRatingStamina) * 0.15f) * g_pGameEngine->m_clock.GetDelta() + m_aStats[0];
+    const auto flAccel = g_flSpeedRateBase + g_flHalfRokObject;
+    flNew              = (flAccel - GetScalar(kRatingStamina) * 0.15f) * g_pGameEngine->m_clock.GetDelta() + m_aStats[0];
 
     if (flNew > 100.0)
     {

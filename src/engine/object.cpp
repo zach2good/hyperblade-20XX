@@ -42,14 +42,14 @@ void Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bB
     // Slot 0x64, the render slot pose, between the transform reset and the transform copy.
     pDest->ApplyRenderSlotPose();
 
-    TransformObject* const pDestMotion = pDest->GetLocalTransformPtr();
-    TransformObject* const pSrcMotion  = pSrc->GetLocalTransformPtr();
+    auto* const pDestMotion = pDest->GetLocalTransformPtr();
+    auto* const pSrcMotion  = pSrc->GetLocalTransformPtr();
 
     pDestMotion->CopyRotation(pSrcMotion);
 
     if (bBoost != 0)
     {
-        PhysicsBody* pSrcBody = pSrc->GetPhysicsBody();
+        auto* pSrcBody = pSrc->GetPhysicsBody();
 
         Vec3::ScaleTo(&pSrcBody->vel, 1.2f, &vVel);
     }
@@ -83,7 +83,7 @@ void Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char 
     Vec3 vOffset;
     Vec3 vScaled;
 
-    Vec3* const pRow = &pSrc->GetPhysicsBody()->velDir;
+    auto* const pRow = &pSrc->GetPhysicsBody()->velDir;
 
     if (bMirrored != 0)
     {
@@ -98,9 +98,9 @@ void Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char 
         vOffset.z = g_vUpAxis.x * pRow->y - g_vUpAxis.y * pRow->x;
     }
 
-    PhysicsBody* const pBody    = pSrc->GetPhysicsBody();
-    Vec3               vBase    = pBody->pos;
-    Vec3*              pDestPos = &pDest->m_pBody->pos;
+    auto* const pBody    = pSrc->GetPhysicsBody();
+    auto        vBase    = pBody->pos;
+    auto*       pDestPos = &pDest->m_pBody->pos;
 
     const Vec3* pOffset = &vOffset;
     vScaled.x           = vOffset.x * 6.0f;
@@ -118,8 +118,8 @@ void Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char 
     // Slot 0x64, the render slot pose, between the transform reset and the transform copy.
     pDest->ApplyRenderSlotPose();
 
-    TransformObject* const pDestMotion = pDest->GetLocalTransformPtr();
-    TransformObject* const pSrcMotion  = pSrc->GetLocalTransformPtr();
+    auto* const pDestMotion = pDest->GetLocalTransformPtr();
+    auto* const pSrcMotion  = pSrc->GetLocalTransformPtr();
 
     pDestMotion->CopyRotation(pSrcMotion);
 
@@ -148,11 +148,11 @@ Vec3* Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     float           flOffset;
     float           flPost;
 
-    const float flZone = g_flDromePostWidth * 10.0f;
+    const auto flZone = g_flDromePostWidth * 10.0f;
 
-    const float flHalf   = flZone * 0.5f;
-    const float flMirror = flZone * -0.5f;
-    const float flCentre = flZone * 0.5f;
+    const auto flHalf   = flZone * 0.5f;
+    const auto flMirror = flZone * -0.5f;
+    const auto flCentre = flZone * 0.5f;
 
     zone.vMin.x = flCentre - flHalf;
     zone.vMin.z = -(flZone * 0.5f);
@@ -194,7 +194,7 @@ Vec3* Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     }
     else
     {
-        const float flHalfSpan = g_flDromeSpanWidth * 0.5f;
+        const auto flHalfSpan = g_flDromeSpanWidth * 0.5f;
 
         box.bValid = 1;
         box.vMin.y = 0.0f;
@@ -208,7 +208,7 @@ Vec3* Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
         box.vMax.z = flPost;
     }
 
-    Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&vNormal, &box, pQueryPos);
+    auto vResult = *CollisionCheck::ComputeNearestNormal(&vNormal, &box, pQueryPos);
 
     *pDirOut = vResult;
 
@@ -233,7 +233,7 @@ static inline Vec3 ToObjectFrame(EngineObject* pObject, const Vec3* pQueryPos)
 
     vLocal = *pDelta;
 
-    TransformObject* const pTransform = &pObject->m_transformC;
+    auto* const pTransform = &pObject->m_transformC;
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
@@ -251,7 +251,7 @@ Vec3* Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, con
 
     vPoint = Object::ToObjectFrame(pObject, pQueryPos);
 
-    TransformObject* const pTransform = &pObject->m_transformC;
+    auto* const pTransform = &pObject->m_transformC;
 
     const int nSlot = pObject->GetSlot();
 
@@ -387,10 +387,10 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
 
     Math::Vec3Normalize(&vNormal);
 
-    PhysicsBody* pBlock    = pSelf->GetPhysicsBody();
-    Vec3* const  pVelocity = &pBlock->velDir;
+    auto*       pBlock    = pSelf->GetPhysicsBody();
+    auto* const pVelocity = &pBlock->velDir;
 
-    const float flDot = -(vNormal.x * pVelocity->x + vNormal.y * pVelocity->y + vNormal.z * pVelocity->z);
+    const auto flDot = -(vNormal.x * pVelocity->x + vNormal.y * pVelocity->y + vNormal.z * pVelocity->z);
 
     vVelocity.x = (flDot * vNormal.x + pVelocity->x) * flSpeed;
     vVelocity.y = (flDot * vNormal.y + pVelocity->y) * flSpeed;
@@ -462,8 +462,8 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
                 return;
             }
 
-            const int    nIndex = static_cast<short>(flSpeed) * kSectorCount + nSelfSector;
-            short* const pEntry = &g_awReactionByDamageAndSector[nIndex];
+            const auto  nIndex = static_cast<short>(flSpeed) * kSectorCount + nSelfSector;
+            auto* const pEntry = &g_awReactionByDamageAndSector[nIndex];
 
             pSelf->PostSceneEvent(kMsgSetAnimation, *pEntry);
             pSelf->PostSceneEvent(kMsgYerHit, *pEntry);
@@ -481,7 +481,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
 
     for (int nSlot = 0; nSlot < 4; nSlot++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anScaleTargetSlots[nSlot])];
+        auto* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anScaleTargetSlots[nSlot])];
 
         if (pObject == nullptr)
         {
@@ -495,21 +495,21 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
             continue;
         }
 
-        int  nLeft  = nCount;
-        int* pIndex = pBoneIndices;
+        auto  nLeft  = nCount;
+        auto* pIndex = pBoneIndices;
 
         do
         {
             if (*pIndex < nBones)
             {
-                MeshBone* pNode = pObject->m_pBones + static_cast<short>(*pIndex);
+                auto* pNode = pObject->m_pBones + static_cast<short>(*pIndex);
 
                 if (pNode != nullptr)
                 {
                     if (pNode->IsBound() != 0)
                     {
-                        TransformObject* const pWorld = &pNode->m_world;
-                        Vec3                   vScale = *pWorld->GetScaleVec(&vOut);
+                        auto* const pWorld = &pNode->m_world;
+                        auto        vScale = *pWorld->GetScaleVec(&vOut);
                         vScale.x *= flScaleX;
                         vScale.y *= flScaleY;
                         pNode->m_bHasScale = 1;
@@ -520,8 +520,8 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
 
                         pWorld->ApplyScale();
 
-                        TransformObject* const pLocal = &pNode->m_local;
-                        Vec3                   vMoved = *pLocal->GetTranslationPtr();
+                        auto* const pLocal = &pNode->m_local;
+                        auto        vMoved = *pLocal->GetTranslationPtr();
                         vMoved.x *= flScaleX;
                         vMoved.y *= flScaleY;
                         vMoved.z *= flScaleZ;

@@ -40,7 +40,7 @@ SDL_GPUTexture* Upload(SDL_GPUDevice* pDevice, const void* pPixels, int nWidth, 
     info.layer_count_or_depth = 1;
     info.num_levels           = nLevels;
 
-    SDL_GPUTexture* const pTexture = SDL_CreateGPUTexture(pDevice, &info);
+    auto* const pTexture = SDL_CreateGPUTexture(pDevice, &info);
 
     if (pTexture == nullptr)
     {
@@ -51,8 +51,8 @@ SDL_GPUTexture* Upload(SDL_GPUDevice* pDevice, const void* pPixels, int nWidth, 
     transferInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
     transferInfo.size  = nBytes;
 
-    SDL_GPUTransferBuffer* const pTransfer = SDL_CreateGPUTransferBuffer(pDevice, &transferInfo);
-    SDL_GPUCommandBuffer* const  pCommands = SDL_AcquireGPUCommandBuffer(pDevice);
+    auto* const pTransfer = SDL_CreateGPUTransferBuffer(pDevice, &transferInfo);
+    auto* const pCommands = SDL_AcquireGPUCommandBuffer(pDevice);
 
     if (pTransfer == nullptr || pCommands == nullptr)
     {
@@ -79,7 +79,7 @@ SDL_GPUTexture* Upload(SDL_GPUDevice* pDevice, const void* pPixels, int nWidth, 
     destination.h       = static_cast<Uint32>(nHeight);
     destination.d       = 1;
 
-    SDL_GPUCopyPass* const pCopy = SDL_BeginGPUCopyPass(pCommands);
+    auto* const pCopy = SDL_BeginGPUCopyPass(pCommands);
 
     SDL_UploadToGPUTexture(pCopy, &source, &destination, false);
     SDL_EndGPUCopyPass(pCopy);
@@ -118,7 +118,7 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
     // count from there.
     stbi_set_flip_vertically_on_load_thread(1);
 
-    stbi_uc* const pPixels = stbi_load(Path::Native(path.m_str.m_pchData).c_str(), &nWidth, &nHeight, &nChannels, 4);
+    auto* const pPixels = stbi_load(Path::Native(path.m_str.m_pchData).c_str(), &nWidth, &nHeight, &nChannels, 4);
 
     // The flip stays set for the thread, and every other load reads top down.
     stbi_set_flip_vertically_on_load_thread(0);
@@ -130,7 +130,7 @@ SDL_GPUTexture* Load(SDL_GPUDevice* pDevice, const char* pszName)
         return Solid(pDevice, s_pMagenta, kMagenta);
     }
 
-    SDL_GPUTexture* const pTexture = Upload(pDevice, pPixels, nWidth, nHeight);
+    auto* const pTexture = Upload(pDevice, pPixels, nWidth, nHeight);
 
     stbi_image_free(pPixels);
 
@@ -169,7 +169,7 @@ HwTexture::Texture HwTexture::Find(HwPipeline::Device device, const TexCacheEntr
         return Texture{ it->second };
     }
 
-    SDL_GPUTexture* const pTexture = Load(pDevice, pEntry->m_pszName);
+    auto* const pTexture = Load(pDevice, pEntry->m_pszName);
 
     s_textures.emplace(std::move(key), pTexture);
 

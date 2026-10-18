@@ -31,21 +31,21 @@ void CDisplayPassBar::Bind(EngineObject* pSubject, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00412550
 void CDisplayPassBar::Process(int nArg)
 {
-    PhysicsBody* const pRokBody = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
-    AttachPak* const   pCarrier = pRokBody->pAttach;
+    auto* const pRokBody = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
+    auto* const pCarrier = pRokBody->pAttach;
 
     if (pCarrier != nullptr)
     {
-        short nSlot = pCarrier->nSlot;
+        auto nSlot = pCarrier->nSlot;
 
         if (nSlot < kPlayerObjectCount && nSlot == g_pGameEngine->m_nViewedSlot && g_pRenderer != nullptr && m_pOwner->GetSlot() == kCameraMainSlot)
         {
-            const int     nSelf = nSlot;
-            EngineObject* pSelf = g_pGameEngine->m_ppSlots[nSelf];
-            Vec3          vSelf;
+            const int nSelf = nSlot;
+            auto*     pSelf = g_pGameEngine->m_ppSlots[nSelf];
+            Vec3      vSelf;
             vSelf = *pSelf->GetPositionPtr();
 
-            Vec3* const pMatePos = g_pGameEngine->m_ppSlots[TeammateSlot(nSlot)]->GetPositionPtr();
+            auto* const pMatePos = g_pGameEngine->m_ppSlots[TeammateSlot(nSlot)]->GetPositionPtr();
 
             ViewExtent pos;
 
@@ -62,7 +62,7 @@ void CDisplayPassBar::Process(int nArg)
 
             const Vec3* pHeading = &pSelf->GetPhysicsBody()->velDir;
 
-            const float flDot = vDir.x * pHeading->x + vDir.y * pHeading->y + vDir.z * pHeading->z;
+            const auto flDot = vDir.x * pHeading->x + vDir.y * pHeading->y + vDir.z * pHeading->z;
 
             const Vec3* pSide = &pSelf->GetPhysicsBody()->velDir;
 
@@ -88,7 +88,7 @@ void CDisplayPassBar::Process(int nArg)
         }
     }
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr && m_bReady == 0)
     {

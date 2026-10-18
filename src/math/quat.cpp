@@ -35,14 +35,14 @@ void Quat::FromMatrix(TransformObject* pSource)
         return;
     }
 
-    float* pflX = &x;
-    float* pflY = &y;
-    float* pflZ = &z;
+    auto* pflX = &x;
+    auto* pflY = &y;
+    auto* pflZ = &z;
 
-    *pflX                   = (g_flQuatOne + pRows[0].af[0]) * 0.5f;
-    *pflY                   = (g_flQuatOne + pRows[1].af[1]) * 0.5f;
-    const float flDiagonalZ = (g_flQuatOne + pRows[2].af[2]) * 0.5f;
-    *pflZ                   = flDiagonalZ;
+    *pflX                  = (g_flQuatOne + pRows[0].af[0]) * 0.5f;
+    *pflY                  = (g_flQuatOne + pRows[1].af[1]) * 0.5f;
+    const auto flDiagonalZ = (g_flQuatOne + pRows[2].af[2]) * 0.5f;
+    *pflZ                  = flDiagonalZ;
 
     if (*pflX >= *pflY)
     {
@@ -76,13 +76,13 @@ void Quat::ToMatrix(TransformObject* pTarget)
 
     pRows = pTarget->GetMatrixPtr();
 
-    const float flSquare = w * w;
-    pRows[0].af[0]       = (x * x + flSquare) * g_flQuatTwo - g_flQuatOne;
-    pRows[2].af[2]       = (z * z + flSquare) * g_flQuatTwo - g_flQuatOne;
-    pRows[1].af[1]       = (y * y + flSquare) * g_flQuatTwo - g_flQuatOne;
+    const auto flSquare = w * w;
+    pRows[0].af[0]      = (x * x + flSquare) * g_flQuatTwo - g_flQuatOne;
+    pRows[2].af[2]      = (z * z + flSquare) * g_flQuatTwo - g_flQuatOne;
+    pRows[1].af[1]      = (y * y + flSquare) * g_flQuatTwo - g_flQuatOne;
 
-    float flFirst  = y * x;
-    float flSecond = z * w;
+    auto flFirst   = y * x;
+    auto flSecond  = z * w;
     pRows[0].af[1] = (flSecond + flFirst) * g_flQuatTwo;
     pRows[1].af[0] = (flFirst - flSecond) * g_flQuatTwo;
 

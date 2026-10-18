@@ -75,7 +75,7 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
     m_flPosWeight = g_flOneCamera * 0.16666667f;
     m_flDirWeight = g_flOneCamera * 0.25f;
 
-    PhysicsBody* pBody = m_pBody;
+    auto* pBody = m_pBody;
 
     vDir.x = g_flZeroCamera - pBody->pos.x;
     vDir.y = g_flZeroCamera - pBody->pos.y;
@@ -183,9 +183,9 @@ CameraObject::~CameraObject()
 // FUNCTION: HYPERX 0x00421d80
 void CameraObject::UpdateSmoothing()
 {
-    PhysicsBody* const pSource = m_pBody;
+    auto* const pSource = m_pBody;
 
-    Vec3 vPosition = pSource->pos;
+    auto vPosition = pSource->pos;
 
     const int iPosition = m_wPosIndex;
 
@@ -215,7 +215,7 @@ void CameraObject::UpdateDirSmoothing()
 {
     const int nIndex = m_wDirIndex;
 
-    Vec3* const pLookAt = &m_pBody->velDir;
+    auto* const pLookAt = &m_pBody->velDir;
 
     m_dirOut.x += (pLookAt->x - m_aDirRing[nIndex].x) * m_flDirWeight;
     m_dirOut.y += (pLookAt->y - m_aDirRing[m_wDirIndex].y) * m_flDirWeight;
@@ -223,7 +223,7 @@ void CameraObject::UpdateDirSmoothing()
 
     m_aDirRing[nIndex] = *pLookAt;
 
-    const int nNext = m_wDirIndex + 1;
+    const auto nNext = m_wDirIndex + 1;
 
     m_wDirIndex = static_cast<short>(nNext % m_wDirCount);
 }
@@ -255,7 +255,7 @@ void CameraObject::ViewIt()
         g_pRenderer->ShowHeadCam();
     }
 
-    EngineObject* const pTracked = GetTrackedObject();
+    auto* const pTracked = GetTrackedObject();
 
     if (pTracked == nullptr)
     {
@@ -263,13 +263,13 @@ void CameraObject::ViewIt()
         g_gameApp.Fatal("Camera::ViewIt(): Null pointer for ModelToTrack\n");
     }
 
-    const short nIndex = m_wPosIndex;
+    const auto nIndex = m_wPosIndex;
 
-    const float flShakeX = m_aPosRing[nIndex].x * -0.01f;
-    const float flShakeY = m_aPosRing[nIndex].y * -0.001f;
-    const float flShakeZ = g_flCameraShakeZ;
+    const auto flShakeX = m_aPosRing[nIndex].x * -0.01f;
+    const auto flShakeY = m_aPosRing[nIndex].y * -0.001f;
+    const auto flShakeZ = g_flCameraShakeZ;
 
-    const short nCount = g_pGameEngine->m_nObjectCount;
+    const auto nCount = g_pGameEngine->m_nObjectCount;
 
     m_pRotB->m_a[0][1] = m_dirOut.x;
     m_pRotB->m_a[1][1] = m_dirOut.y;
@@ -307,9 +307,9 @@ void CameraObject::ViewIt()
     m_pProjection->Multiply(m_pView,
                             m_pRotB);
 
-    Vec3 vDir = m_dirOut;
+    auto vDir = m_dirOut;
 
-    Vec3 vNormal = pTracked->GetPhysicsBody()->surfNormal;
+    auto vNormal = pTracked->GetPhysicsBody()->surfNormal;
 
     vCross.x = vDir.y * vNormal.z - vDir.z * vNormal.GetY();
     vCross.y = vDir.z * vNormal.x - vDir.x * vNormal.z;
@@ -319,7 +319,7 @@ void CameraObject::ViewIt()
     vDir.ScaleInPlace(m_pSettings->y);
     vNormal.ScaleInPlace(m_pSettings->z);
 
-    Vec3 vPos = m_posOut;
+    auto vPos = m_posOut;
 
     vPos.x = (vPos.x + vCross.x) + vDir.x;
     vPos.y = vPos.y + vCross.y + vDir.y;
@@ -331,7 +331,7 @@ void CameraObject::ViewIt()
 
     for (short i = 0; i < nCount; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppObjects[i];
+        auto* const pObject = g_pGameEngine->m_ppObjects[i];
 
         pObject->ComputeWorldBoundingCentre(&vCentre);
 
@@ -345,7 +345,7 @@ void CameraObject::ViewIt()
             if ((static_cast<unsigned char>(pObject->m_nFlags) & kEngineObjectNoCull) == 0)
             {
                 const TransformObject* pView    = m_pView;
-                const float            flRadius = pObject->m_flBoundRadius;
+                const auto             flRadius = pObject->m_flBoundRadius;
 
                 clip.x = (((vCentre.x * pView->m_a[0][0]) + vCentre.y * pView->m_a[0][1]) + vCentre.z * pView->m_a[0][2]) + pView->m_a[0][3];
 
@@ -429,7 +429,7 @@ void CameraObject::SetPosHistorySize(short nCount)
     vSum.y = g_flZeroCamera;
     vSum.z = g_flZeroCamera;
 
-    short nOld    = m_wPosCount;
+    auto nOld     = m_wPosCount;
     m_wPosCount   = nCount;
     m_flPosWeight = g_flOneCamera / nCount;
 
@@ -469,7 +469,7 @@ void CameraObject::SetDirHistorySize(short nCount)
     vSum.y = g_flZeroCamera;
     vSum.z = g_flZeroCamera;
 
-    short nOld    = m_wDirCount;
+    auto nOld     = m_wDirCount;
     m_wDirCount   = nCount;
     m_flDirWeight = g_flOneCamera / nCount;
 
@@ -495,7 +495,7 @@ void CameraObject::SetDirHistorySize(short nCount)
     vSum.y *= m_flDirWeight;
     vSum.z *= m_flDirWeight;
 
-    Vec3* const pOut = &m_dirOut;
+    auto* const pOut = &m_dirOut;
     pOut->x          = vSum.x;
     pOut->y          = vSum.y;
     pOut->z          = vSum.z;
@@ -550,7 +550,7 @@ void CameraObject::InitViewTransforms()
     TransformObject tScratchB;
     TransformObject tScratchA;
 
-    const float flTilt = g_flPiCamera / g_flTwoCamera;
+    const auto flTilt = g_flPiCamera / g_flTwoCamera;
 
     if (g_bBottomUpDIB != 0)
     {
@@ -575,8 +575,8 @@ void CameraObject::SortTransparentQueue()
         return;
     }
 
-    int ir = g_nTransparentCount;
-    int l  = (ir >> 1) + 1;
+    int  ir = g_nTransparentCount;
+    auto l  = (ir >> 1) + 1;
 
     for (;;)
     {
@@ -602,8 +602,8 @@ void CameraObject::SortTransparentQueue()
             }
         }
 
-        int i = l;
-        int j = l + l;
+        auto i = l;
+        auto j = l + l;
 
         while (j <= ir)
         {
@@ -640,7 +640,7 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
 
     for (nIndex = 0; nIndex < g_pGameEngine->m_nObjectCount; nIndex++)
     {
-        EngineObject* pObject = g_pGameEngine->m_ppObjects[nIndex];
+        auto* pObject = g_pGameEngine->m_ppObjects[nIndex];
 
         if (pObject->GetShadowCount() != 0 && pObject->IsVisible() != 0 && pObject->GetSlot() != kGoalieSlotA && pObject->GetSlot() != kGoalieSlotB)
         {
@@ -648,7 +648,7 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
         }
     }
 
-    TransparentEntry* pEntry = g_pTransparentQueue + g_nTransparentCount;
+    auto* pEntry = g_pTransparentQueue + g_nTransparentCount;
 
     for (nIndex = 0; nIndex < g_nTransparentCount; nIndex++)
     {
@@ -661,10 +661,10 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
             pLightDir = &g_lightDirs[2].dir;
         }
 
-        const Vec3 vDir    = *pLightDir;
+        const auto vDir    = *pLightDir;
         g_lightDirs[0].dir = vDir;
 
-        MeshBone* const pSlot = pEntry->pComponent;
+        auto* const pSlot = pEntry->pComponent;
 
         pEntry--;
 
@@ -677,7 +677,7 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
 // FUNCTION: HYPERX 0x00422c70
 EngineObject* CameraObject::GetSecondaryTrackedObject()
 {
-    const int nSlot = m_nSecondaryTracked;
+    const auto nSlot = m_nSecondaryTracked;
 
     if (nSlot != -1)
     {

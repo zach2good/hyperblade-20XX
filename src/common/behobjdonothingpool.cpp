@@ -8,10 +8,10 @@ void BehObjDoNothingPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_DoNothing;
 
-    m_pHead                   = pNode;
-    GameBehaviorObject* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
-    short nRemaining = g_wPoolCountBehObjDoNothing;
+    auto nRemaining = g_wPoolCountBehObjDoNothing;
 
     while (nRemaining-- > 0)
     {
@@ -25,7 +25,7 @@ void BehObjDoNothingPool::Init()
 // FUNCTION: HYPERX 0x0041ffb0
 void* BehObjDoNothingPool::Alloc()
 {
-    GameBehaviorObject* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
     pHead->m_pStandby = nullptr;
@@ -43,7 +43,7 @@ BehObjDoNothingPool::~BehObjDoNothingPool()
 {
     while (m_pHead != nullptr)
     {
-        GameBehaviorObject* const pNext = m_pHead->m_pStandby;
+        auto* const pNext = m_pHead->m_pStandby;
 
         delete m_pHead;
 

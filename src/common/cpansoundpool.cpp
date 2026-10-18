@@ -9,8 +9,8 @@ void CPanSoundPool::Init()
 {
     AgendaItem* pNode = new CPanSound;
 
-    m_pHead           = pNode;
-    AgendaItem* pPool = pNode;
+    m_pHead     = pNode;
+    auto* pPool = pNode;
 
     auto nRemaining = static_cast<short>(g_nPoolCountCPanSound);
 
@@ -26,7 +26,7 @@ void CPanSoundPool::Init()
 // FUNCTION: HYPERX 0x004144e0
 void* CPanSoundPool::Alloc()
 {
-    AgendaItem* const pHead = m_pHead;
+    auto* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
     pHead->m_pNext = nullptr;
@@ -44,7 +44,7 @@ CPanSoundPool::~CPanSoundPool()
 {
     while (m_pHead != nullptr)
     {
-        AgendaItem* const pNext = m_pHead->m_pNext;
+        auto* const pNext = m_pHead->m_pNext;
 
         delete m_pHead;
 

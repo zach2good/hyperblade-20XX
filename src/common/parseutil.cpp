@@ -27,7 +27,7 @@ short ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable, short 
     for (short iEntry = 0; iEntry < nCount; iEntry++)
     {
         // Inline, VC6 loads the entry into ECX; the client uses EAX (0x00435fac).
-        const char* const pszEntry = ppszTable[iEntry];
+        const auto* const pszEntry = ppszTable[iEntry];
 
         if (SDL_strcasecmp(pszEntry, pszWord) == 0)
         {
@@ -49,7 +49,7 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
     // The first character past the blanks, or null when there is none.
     char* const pszScan = [&]() -> char*
     {
-        char* const pszFirst = pszInput + strspn(pszInput, " 	");
+        auto* const pszFirst = pszInput + strspn(pszInput, " 	");
 
         if (*pszFirst == 0)
         {
@@ -78,7 +78,7 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
         pszStart = pszScan;
     }
 
-    char* const pszEnd = strpbrk(pszStart, pszDelimitersB);
+    auto* const pszEnd = strpbrk(pszStart, pszDelimitersB);
 
     if (pszEnd == nullptr)
     {
@@ -115,13 +115,13 @@ char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
     if (pszText != nullptr)
     {
-        int nLeft = static_cast<int>(strlen(pszText));
+        auto nLeft = static_cast<int>(strlen(pszText));
 
         if (nLeft != 0)
         {
             while (nLeft != 0)
             {
-                char cAt = *pszText;
+                auto cAt = *pszText;
 
                 if (cAt == *pszStop)
                 {
@@ -147,7 +147,7 @@ char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 // FUNCTION: HYPERX 0x00487460
 char* ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 {
-    char* const pAt = ParseUtil::SkipToChar(pszText, pszStop);
+    auto* const pAt = ParseUtil::SkipToChar(pszText, pszStop);
 
     if (pAt == nullptr)
     {
@@ -161,7 +161,7 @@ char* ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 // FUNCTION: HYPERX 0x00493ec0
 int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 {
-    char* const pStart = pszBuffer;
+    auto* const pStart = pszBuffer;
 
     *pszBuffer = static_cast<char>(fgetc(pStream));
 

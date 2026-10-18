@@ -71,7 +71,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
     PlanWord*   pCursor;
     AgendaItem* pBubble;
 
-    short nCount = pBlock->m_nArgCount;
+    auto nCount = pBlock->m_nArgCount;
 
     m_pOwner = pOwner;
 
@@ -94,7 +94,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 
     while (nCount-- != 0)
     {
-        PlanNode* const pItem = pCursor->pNode;
+        auto* const pItem = pCursor->pNode;
 
         switch (pItem->m_nOpcode & kOpCategory)
         {
@@ -184,7 +184,7 @@ void GameBehaviorObject::UpdateLimpAnim()
 
     if (m_pOwner->GetSlot() <= kPlayerSlotCount - 1 && ((PlayerObject*)m_pOwner)->m_stats.GetScalar(kRatingDamage) < 30.0f)
     {
-        const char* const pszFirst = m_pPersistentAnimation->GetName();
+        const auto* const pszFirst = m_pPersistentAnimation->GetName();
 
         // STRING: HYPERX 0x004bb2a0
         if (strcmp(pszFirst, "AA_Skate_Std") == 0)
@@ -195,7 +195,7 @@ void GameBehaviorObject::UpdateLimpAnim()
         }
         else
         {
-            const char* const pszSecond = m_pPersistentAnimation->GetName();
+            const auto* const pszSecond = m_pPersistentAnimation->GetName();
 
             // STRING: HYPERX 0x004bb280
             if (strcmp(pszSecond, "AA_Skatefast") == 0)
@@ -278,7 +278,7 @@ void GameBehaviorObject::TickAndSortMessages()
 
     short nSlot = 0;
 
-    AgendaItem* pNode = m_pOwner->GetObserver();
+    auto* pNode = m_pOwner->GetObserver();
 
     AgendaItem* pPrev = nullptr;
 
@@ -426,7 +426,7 @@ void GameBehaviorObject::AssignPriorities(int nStart)
         return;
     }
 
-    int nPriority = nStart;
+    auto nPriority = nStart;
 
     while (pAt != nullptr)
     {
@@ -444,13 +444,13 @@ void GameBehaviorObject::AssignPriorities(int nStart)
 // FUNCTION: HYPERX 0x0041c5f0
 void GameBehaviorObject::RemoveAgendaItem(int nAgendaItem)
 {
-    AgendaItem* pNode = m_pOwner->GetObserver();
+    auto* pNode = m_pOwner->GetObserver();
 
     AgendaItem* pPrev = nullptr;
 
     while (pNode != nullptr)
     {
-        AgendaItem* const pNext = pNode->m_pNext;
+        auto* const pNext = pNode->m_pNext;
 
         if (pNode->m_wKind == nAgendaItem)
         {
@@ -512,7 +512,7 @@ void GameBehaviorObject::Reset()
     m_pMsgInteractors = nullptr;
 
     AgendaItem** ppSlot = &m_apSlots[0];
-    int          nLeft  = kBehaviorSlotCount;
+    auto         nLeft  = kBehaviorSlotCount;
 
     do
     {

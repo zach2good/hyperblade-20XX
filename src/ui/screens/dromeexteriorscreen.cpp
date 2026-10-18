@@ -25,7 +25,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     const char* pszName;
     int         nRound;
 
-    TeamsBlock* pList = g_pGameEngine->m_pTeamTable;
+    auto* pList = g_pGameEngine->m_pTeamTable;
 
     if (static_cast<short>(g_nDromeArena) < pList->GetTeamCount())
     {

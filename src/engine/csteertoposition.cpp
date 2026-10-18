@@ -42,7 +42,7 @@ void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pOrigin = &pOwner->GetPhysicsBody()->pos;
     m_pAxis   = &pOwner->GetPhysicsBody()->velDir;
 
-    Vec3* const pSurfNormal = &pOwner->GetPhysicsBody()->surfNormal;
+    auto* const pSurfNormal = &pOwner->GetPhysicsBody()->surfNormal;
 
     m_pChase   = nullptr;
     m_pNormal  = pSurfNormal;
@@ -56,7 +56,7 @@ void CSteerToPosition::Tick(const Vec3* pTargetPos)
     m_vTarget.x = pTargetPos->x;
     m_vTarget.y = pTargetPos->y;
 
-    CollisionShape* const pSurface = m_pOwner->GetPhysicsBody()->pShell;
+    auto* const pSurface = m_pOwner->GetPhysicsBody()->pShell;
 
     m_vTarget.z = pSurface->GetZ(m_vTarget.x,
                                  m_vTarget.y);
@@ -68,9 +68,9 @@ void CSteerToPosition::OnKind(short nSlot)
 {
     m_pChase = g_pGameEngine->m_ppSlots[nSlot];
 
-    Vec3* const pTargetPos = g_pGameEngine->m_ppSlots[nSlot]->GetPositionPtr();
+    auto* const pTargetPos = g_pGameEngine->m_ppSlots[nSlot]->GetPositionPtr();
 
-    PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+    auto* const pBody = m_pOwner->GetPhysicsBody();
 
     m_pAxis->x = pTargetPos->x - m_pOrigin->x;
     m_pAxis->y = pTargetPos->y - m_pOrigin->y;
@@ -88,7 +88,7 @@ void CSteerToPosition::OnKind(short nSlot)
 
     pBody->flFacing = g_flZeroAgendaItem;
 
-    Vec3* const pNormal = pBody->pShell->NormalAtPoint(m_pOrigin);
+    auto* const pNormal = pBody->pShell->NormalAtPoint(m_pOrigin);
 
     if (pNormal == nullptr)
     {
@@ -104,7 +104,7 @@ void CSteerToPosition::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        PhysicsBody* const pState = m_pOwner->GetPhysicsBody();
+        auto* const pState = m_pOwner->GetPhysicsBody();
 
         pState->flFacing = g_flZeroAgendaItem;
 
@@ -126,9 +126,9 @@ void CSteerToPosition::OnListChanged()
 // FUNCTION: HYPERX 0x0040e9b0
 void CSteerToPosition::Process(int nArg)
 {
-    float flForce = (((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.1f + 1.5f) * g_pGameEngine->m_clock.GetDeltaSquared() * 40.0f;
+    auto flForce = (((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.1f + 1.5f) * g_pGameEngine->m_clock.GetDeltaSquared() * 40.0f;
 
-    const int nJitter = rand() % JITTER_MODULUS;
+    const auto nJitter = rand() % JITTER_MODULUS;
 
     flForce = (static_cast<float>(nJitter) * 0.01f + 1.0f) * flForce;
 
@@ -136,7 +136,7 @@ void CSteerToPosition::Process(int nArg)
     {
         Vec3 vAim;
 
-        Vec3* const       pChasePos = m_pChase->GetPositionPtr();
+        auto* const       pChasePos = m_pChase->GetPositionPtr();
         const Vec3* const pOrigin   = m_pOrigin;
 
         vAim.x = pChasePos->x - pOrigin->x;
@@ -147,8 +147,8 @@ void CSteerToPosition::Process(int nArg)
 
         const Vec3* const pAxis = m_pAxis;
 
-        const float flAim = vAim.x * pAxis->x + (vAim.y * pAxis->y + vAim.z * pAxis->z);
-        float       flFacing;
+        const auto flAim = vAim.x * pAxis->x + (vAim.y * pAxis->y + vAim.z * pAxis->z);
+        float      flFacing;
 
         if (vAim.y * pAxis->x - vAim.x * pAxis->y > 0.0f)
         {
@@ -177,11 +177,11 @@ void CSteerToPosition::Process(int nArg)
     vDelta.y = m_vTarget.y - pOrigin->y;
     vDelta.z = m_vTarget.z - pOrigin->z;
 
-    PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
+    auto* const pBody = m_pOwner->GetPhysicsBody();
 
     Vec3 vFlat;
 
-    Vec3 vHeading = pBody->velDir;
+    auto vHeading = pBody->velDir;
     vHeading.z    = 0.0f;
     vFlat.x       = vDelta.x;
     vFlat.y       = vDelta.y;
@@ -190,13 +190,13 @@ void CSteerToPosition::Process(int nArg)
     Math::Vec3Normalize(&vHeading);
     Math::Vec3Normalize(&vFlat);
 
-    const float flSpeed = pBody->flSpeed;
+    const auto flSpeed = pBody->flSpeed;
 
-    const float flDot = Vec3::DotInline(&vHeading, &vFlat);
+    const auto flDot = Vec3::DotInline(&vHeading, &vFlat);
 
     if (flDot < 0.6f)
     {
-        const float flBrake = g_pGameEngine->m_clock.GetDeltaSquared() * (flDot - 2.0f) * (flSpeed * 4.0f);
+        const auto flBrake = g_pGameEngine->m_clock.GetDeltaSquared() * (flDot - 2.0f) * (flSpeed * 4.0f);
 
         pBody->smoothVel.x = flBrake * pBody->vel.x;
         pBody->smoothVel.y = flBrake * pBody->vel.y;
@@ -206,7 +206,7 @@ void CSteerToPosition::Process(int nArg)
     {
         if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta)))) * g_pGameEngine->m_clock.flDelta < flSpeed + flSpeed)
         {
-            const float flPush = g_pGameEngine->m_clock.GetDeltaSquared() * (flSpeed * 6.0f) * -1.0f;
+            const auto flPush = g_pGameEngine->m_clock.GetDeltaSquared() * (flSpeed * 6.0f) * -1.0f;
 
             pBody->smoothVel.x = flPush * pBody->vel.x + pBody->smoothVel.x;
             pBody->smoothVel.y = flPush * pBody->vel.y + pBody->smoothVel.y;
@@ -216,7 +216,7 @@ void CSteerToPosition::Process(int nArg)
 
     if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta)))) < 15.0)
     {
-        const float flStop = g_pGameEngine->m_clock.flDeltaSquared * -15.0f;
+        const auto flStop = g_pGameEngine->m_clock.flDeltaSquared * -15.0f;
 
         pBody->smoothVel.x = flStop * pBody->vel.x;
         pBody->smoothVel.y = flStop * pBody->vel.y;
@@ -237,7 +237,7 @@ void CSteerToPosition::Process(int nArg)
 
     const Vec3* const pAxis = m_pAxis;
 
-    const float flLean = g_flOneAgendaItem - (vDelta.x * pAxis->x + (vDelta.y * pAxis->y + vDelta.z * pAxis->z));
+    const auto flLean = g_flOneAgendaItem - (vDelta.x * pAxis->x + (vDelta.y * pAxis->y + vDelta.z * pAxis->z));
 
     float flCross;
 

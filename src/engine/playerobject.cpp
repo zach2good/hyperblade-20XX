@@ -28,24 +28,24 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
     ApplyRenderSlotPose();
 
     // The client holds the transform in EDI (0x004741c5).
-    TransformObject* const pLocal = &m_transformB;
+    auto* const pLocal = &m_transformB;
 
-    const float flAngleX = g_flDegToRadPlayer * pDef->m_flElevation;
+    const auto flAngleX = g_flDegToRadPlayer * pDef->m_flElevation;
 
     pLocal->m_rotX.flCos = static_cast<float>(cos(static_cast<double>(flAngleX)));
     pLocal->m_rotX.flSin = static_cast<float>(sin(static_cast<double>(flAngleX)));
 
     pLocal->RotateXStaged();
 
-    const float flAngleZ = g_flDegToRadPlayer * pDef->m_flAzimuth;
+    const auto flAngleZ = g_flDegToRadPlayer * pDef->m_flAzimuth;
 
     pLocal->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngleZ)));
     pLocal->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngleZ)));
 
     pLocal->ApplyRotationZ();
 
-    const int nLevel = g_pGameEngine->GetDifficultyLevel();
-    int       i;
+    const auto nLevel = g_pGameEngine->GetDifficultyLevel();
+    int        i;
 
     if (pDef->m_nRatingsMode == kRatingsField)
     {
@@ -119,7 +119,7 @@ void PlayerObject::Postpass()
         {
             if (GetSlot() <= kSlotDromer3 && static_cast<unsigned int>(m_nLastSendMs + kDamageUpdateInterval) < g_pGameEngine->m_clock.nTickMs)
             {
-                int nDamage = static_cast<int>(m_stats.GetScalar(kRatingDamage));
+                auto nDamage = static_cast<int>(m_stats.GetScalar(kRatingDamage));
                 nDamage &= 0xff;
 
                 PostSceneMessage(kMsgSyncDamage, nDamage, GetSlot(), 0);
@@ -138,7 +138,7 @@ void PlayerObject::UpdateRenderSlotTransform(short nSlotIdx)
     static TransformObject BoneTransform;
 
     m_nFlags |= kEngineObjectPosed;
-    MeshBone* const pSlot = &m_pBones[nSlotIdx];
+    auto* const pSlot = &m_pBones[nSlotIdx];
 
     m_transformB.Multiply(&m_transformC, &m_transformA);
 

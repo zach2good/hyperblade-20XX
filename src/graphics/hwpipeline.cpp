@@ -81,8 +81,8 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
 {
     auto* const pDevice = device.As<SDL_GPUDevice>();
 
-    SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, mesh_vert_dxil, sizeof(mesh_vert_dxil), mesh_vert_spv, sizeof(mesh_vert_spv), 0, 2);
-    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 3, 2);
+    auto* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, mesh_vert_dxil, sizeof(mesh_vert_dxil), mesh_vert_spv, sizeof(mesh_vert_spv), 0, 2);
+    auto* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, mesh_frag_dxil, sizeof(mesh_frag_dxil), mesh_frag_spv, sizeof(mesh_frag_spv), 3, 2);
 
     SDL_GPUGraphicsPipeline* pPipeline = nullptr;
 
@@ -150,8 +150,8 @@ HwPipeline::Pipeline HwPipeline::CreateShadowPipeline(Device device)
 {
     auto* const pDevice = device.As<SDL_GPUDevice>();
 
-    SDL_GPUShader* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, shadow_vert_dxil, sizeof(shadow_vert_dxil), shadow_vert_spv, sizeof(shadow_vert_spv), 0, 1);
-    SDL_GPUShader* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, shadow_frag_dxil, sizeof(shadow_frag_dxil), shadow_frag_spv, sizeof(shadow_frag_spv), 0, 0);
+    auto* const pVertex   = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_VERTEX, shadow_vert_dxil, sizeof(shadow_vert_dxil), shadow_vert_spv, sizeof(shadow_vert_spv), 0, 1);
+    auto* const pFragment = CreateShader(pDevice, SDL_GPU_SHADERSTAGE_FRAGMENT, shadow_frag_dxil, sizeof(shadow_frag_dxil), shadow_frag_spv, sizeof(shadow_frag_spv), 0, 0);
 
     SDL_GPUGraphicsPipeline* pPipeline = nullptr;
 

@@ -83,7 +83,7 @@ struct Scene
 // Draws three vertices from nFirst and leaves the colour target's pixels in the download buffer.
 void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
 {
-    SDL_GPUCommandBuffer* const pCommands = SDL_AcquireGPUCommandBuffer(scene.pDevice);
+    auto* const pCommands = SDL_AcquireGPUCommandBuffer(scene.pDevice);
 
     auto colour        = SDL_GPUColorTargetInfo{};
     colour.texture     = scene.pColour;
@@ -122,7 +122,7 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
 
     SDL_PushGPUFragmentUniformData(pCommands, 0, &textureUniforms, sizeof(textureUniforms));
 
-    SDL_GPURenderPass* const pPass = SDL_BeginGPURenderPass(pCommands, &colour, 1, &depth);
+    auto* const pPass = SDL_BeginGPURenderPass(pCommands, &colour, 1, &depth);
 
     const auto binding = SDL_GPUBufferBinding{ scene.pVertices, 0 };
     // The shadow slots are bound but never sampled, as the shadows are off.
@@ -138,7 +138,7 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
     SDL_DrawGPUPrimitives(pPass, 3, 1, nFirst, 0);
     SDL_EndGPURenderPass(pPass);
 
-    SDL_GPUCopyPass* const pCopy = SDL_BeginGPUCopyPass(pCommands);
+    auto* const pCopy = SDL_BeginGPUCopyPass(pCommands);
 
     auto region    = SDL_GPUTextureRegion{};
     region.texture = scene.pColour;
@@ -152,7 +152,7 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
     SDL_DownloadFromGPUTexture(pCopy, &region, &transfer);
     SDL_EndGPUCopyPass(pCopy);
 
-    SDL_GPUFence* const pFence = SDL_SubmitGPUCommandBufferAndAcquireFence(pCommands);
+    auto* const pFence = SDL_SubmitGPUCommandBufferAndAcquireFence(pCommands);
 
     SDL_WaitForGPUFences(scene.pDevice, true, &pFence, 1);
     SDL_ReleaseGPUFence(scene.pDevice, pFence);
@@ -197,8 +197,8 @@ void Check(const Scene& scene)
     std::memcpy(SDL_MapGPUTransferBuffer(scene.pDevice, pUpload, false), aVertices, sizeof(aVertices));
     SDL_UnmapGPUTransferBuffer(scene.pDevice, pUpload);
 
-    SDL_GPUCommandBuffer* const pCommands = SDL_AcquireGPUCommandBuffer(scene.pDevice);
-    SDL_GPUCopyPass* const      pCopy     = SDL_BeginGPUCopyPass(pCommands);
+    auto* const pCommands = SDL_AcquireGPUCommandBuffer(scene.pDevice);
+    auto* const pCopy     = SDL_BeginGPUCopyPass(pCommands);
 
     const auto source      = SDL_GPUTransferBufferLocation{ pUpload, 0 };
     const auto destination = SDL_GPUBufferRegion{ scene.pVertices, 0, sizeof(aVertices) };
@@ -256,13 +256,13 @@ SDL_GPUTexture* CreateTexture(SDL_GPUDevice* pDevice)
     info.layer_count_or_depth = 1;
     info.num_levels           = 1;
 
-    SDL_GPUTexture* const pTexture = SDL_CreateGPUTexture(pDevice, &info);
+    auto* const pTexture = SDL_CreateGPUTexture(pDevice, &info);
 
     auto transferInfo  = SDL_GPUTransferBufferCreateInfo{};
     transferInfo.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD;
     transferInfo.size  = sizeof(TEXELS);
 
-    SDL_GPUTransferBuffer* const pUpload = SDL_CreateGPUTransferBuffer(pDevice, &transferInfo);
+    auto* const pUpload = SDL_CreateGPUTransferBuffer(pDevice, &transferInfo);
 
     if (pTexture == nullptr || pUpload == nullptr)
     {
@@ -283,8 +283,8 @@ SDL_GPUTexture* CreateTexture(SDL_GPUDevice* pDevice)
     destination.h       = 2;
     destination.d       = 1;
 
-    SDL_GPUCommandBuffer* const pCommands = SDL_AcquireGPUCommandBuffer(pDevice);
-    SDL_GPUCopyPass* const      pCopy     = SDL_BeginGPUCopyPass(pCommands);
+    auto* const pCommands = SDL_AcquireGPUCommandBuffer(pDevice);
+    auto* const pCopy     = SDL_BeginGPUCopyPass(pCommands);
 
     SDL_UploadToGPUTexture(pCopy, &source, &destination, false);
     SDL_EndGPUCopyPass(pCopy);

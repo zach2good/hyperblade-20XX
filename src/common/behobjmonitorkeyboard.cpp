@@ -32,7 +32,7 @@ void BehObj_MonitorKeyboard::SendTimedMessage()
 
     if (m_pOwner->GetPhase() == OBJECT_PHASE_LOCAL)
     {
-        const short nOwnerSlot = m_pOwner->GetSlot();
+        const auto nOwnerSlot = m_pOwner->GetSlot();
 
         g_pGameEngine->GetInputDevice(kSlotKeyboard)->OnButtonDown(kButtonRok);
 
@@ -85,7 +85,7 @@ void BehObj_MonitorKeyboard::Init(EngineObject* pOwner, PlanNode* pBlock, int nF
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 
-        AgendaItem* const pNode = m_apSlots[nSlot];
+        auto* const pNode = m_apSlots[nSlot];
         nSlot++;
         pNode->m_bPersistent = 1;
     }

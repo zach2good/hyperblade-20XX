@@ -10,7 +10,7 @@ AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 
     m_pszName = strcpy(new char[strlen(pszName) + 1], pszName);
 
-    const int nAdjusted = nSegment + kAnimNamedRefBias;
+    const auto nAdjusted = nSegment + kAnimNamedRefBias;
 
     m_nSegment = static_cast<short>(nAdjusted);
 }

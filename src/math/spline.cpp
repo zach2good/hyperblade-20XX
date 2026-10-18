@@ -27,7 +27,7 @@ Spline::Spline()
 // FUNCTION: HYPERX 0x00492ec0
 Spline::~Spline()
 {
-    SplineCurve* pWalk = m_pCurve;
+    auto* pWalk = m_pCurve;
 
     while (pWalk != nullptr)
     {
@@ -77,11 +77,11 @@ Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
         m_pSecond->m_flTag = -1.0f;
     }
 
-    SplineCurve* pHalf = m_pCurve;
-    pHalf->m_flA       = flRadiusX * flRadiusX;
-    pHalf->m_flB       = flRadiusY * flRadiusY;
-    pHalf->m_flC       = g_flZeroSpline;
-    pHalf->m_flD       = g_flZeroSpline;
+    auto* pHalf  = m_pCurve;
+    pHalf->m_flA = flRadiusX * flRadiusX;
+    pHalf->m_flB = flRadiusY * flRadiusY;
+    pHalf->m_flC = g_flZeroSpline;
+    pHalf->m_flD = g_flZeroSpline;
 
     pHalf        = m_pSecond;
     pHalf->m_flA = flRadiusX * flRadiusX;
@@ -98,7 +98,7 @@ Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
     pHalf->m_flUpper = flRadiusY;
 
     pHalf                 = m_pCurve;
-    float flZero          = g_flZeroSpline;
+    auto flZero           = g_flZeroSpline;
     pHalf->m_flValueLower = flZero;
     pHalf->m_flValueUpper = flRadiusX;
 
@@ -124,16 +124,16 @@ Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
     m_pCurve->m_pfnEval  = Spline::EvalLowerHalf;
     m_pSecond->m_pfnEval = Spline::EvalLowerHalf;
 
-    float flZero       = g_flZeroSpline;
+    auto flZero        = g_flZeroSpline;
     m_pCurve->m_flTag  = flZero;
     flZero             = g_flZeroSpline;
     m_pSecond->m_flTag = flZero;
 
-    SplineCurve* pHalf = m_pCurve;
-    pHalf->m_flA       = flRadiusX * flRadiusX;
-    pHalf->m_flB       = flRadiusY * flRadiusY;
-    pHalf->m_flC       = g_flZeroSpline;
-    pHalf->m_flD       = g_flZeroSpline;
+    auto* pHalf  = m_pCurve;
+    pHalf->m_flA = flRadiusX * flRadiusX;
+    pHalf->m_flB = flRadiusY * flRadiusY;
+    pHalf->m_flC = g_flZeroSpline;
+    pHalf->m_flD = g_flZeroSpline;
 
     pHalf        = m_pSecond;
     pHalf->m_flA = flRadiusX * flRadiusX;
@@ -174,16 +174,16 @@ Spline* Spline::InitSegment(float flRadiusX, float flRadiusY)
     m_pCurve->m_pfnEval  = Spline::EvalUpperHalf;
     m_pSecond->m_pfnEval = Spline::EvalLowerHalf;
 
-    float flZero       = g_flZeroSpline;
+    auto flZero        = g_flZeroSpline;
     m_pCurve->m_flTag  = flZero;
     flZero             = g_flZeroSpline;
     m_pSecond->m_flTag = flZero;
 
-    SplineCurve* pHalf = m_pCurve;
-    pHalf->m_flA       = flRadiusX * flRadiusX;
-    pHalf->m_flB       = flRadiusY * flRadiusY;
-    pHalf->m_flC       = g_flZeroSpline;
-    pHalf->m_flD       = g_flZeroSpline;
+    auto* pHalf  = m_pCurve;
+    pHalf->m_flA = flRadiusX * flRadiusX;
+    pHalf->m_flB = flRadiusY * flRadiusY;
+    pHalf->m_flC = g_flZeroSpline;
+    pHalf->m_flD = g_flZeroSpline;
 
     pHalf        = m_pSecond;
     pHalf->m_flA = flRadiusX * flRadiusX;
@@ -220,19 +220,19 @@ Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOff
     m_pCurve->m_pfnEval       = nullptr;
     m_pCurve->m_pfnSpringEval = Spline::EvalSpring;
 
-    SplineCurve* pNode = m_pCurve;
-    pNode->m_flA       = flAmplitude;
-    pNode->m_flB       = flFrequency;
-    pNode->m_flC       = flOffset;
-    pNode->m_flD       = flPhase;
-    pNode->m_flTag     = g_flZeroSpline;
+    auto* pNode    = m_pCurve;
+    pNode->m_flA   = flAmplitude;
+    pNode->m_flB   = flFrequency;
+    pNode->m_flC   = flOffset;
+    pNode->m_flD   = flPhase;
+    pNode->m_flTag = g_flZeroSpline;
 
     pNode            = m_pCurve;
     pNode->m_flUpper = flAmplitude + flOffset;
     pNode->m_flLower = flOffset - flAmplitude;
 
-    const float flLower = g_arenaEllipsoid.GetRadiusX();
-    const float flUpper = g_arenaEllipsoid.GetRadiusX();
+    const auto flLower = g_arenaEllipsoid.GetRadiusX();
+    const auto flUpper = g_arenaEllipsoid.GetRadiusX();
 
     // Upper is below lower, so UpdatePositionVelocity's exit test passes on every step.
     pNode                 = m_pCurve;
@@ -263,18 +263,18 @@ void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
     vDiff.y = pTarget->y - pState->y;
     vDiff.z = pTarget->z - pState->z;
 
-    const float flParam = (vTangent.x * vDiff.x + vTangent.y * vDiff.y + vTangent.z * vDiff.z) * vTangent.y * 0.1f + pState->y;
+    const auto flParam = (vTangent.x * vDiff.x + vTangent.y * vDiff.y + vTangent.z * vDiff.z) * vTangent.y * 0.1f + pState->y;
 
     pState->y = flParam;
 
-    SplineCurve* pCurve = m_pCurve;
+    auto* pCurve = m_pCurve;
 
     if ((flParam >= pCurve->m_flUpper) || (flParam <= pCurve->m_flLower))
     {
         pCurve   = pCurve->m_pNext;
         m_pCurve = pCurve;
 
-        const float flT = pState->y;
+        const auto flT = pState->y;
 
         float flClamped;
 
@@ -291,14 +291,14 @@ void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
             flClamped = flT;
         }
 
-        float flReflected = flClamped;
+        auto flReflected = flClamped;
 
         flReflected *= g_flSplineReflectScale;
 
         pState->y = flReflected - flT;
     }
 
-    SplineCurve* const pEval = m_pCurve;
+    auto* const pEval = m_pCurve;
 
     pState->x = pEval->m_pfnEval(pState->y, pEval->m_flA, pEval->m_flB, pEval->m_flC, pEval->m_flD);
     pState->z = pEval->m_flTag;
@@ -309,16 +309,16 @@ void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
 // FUNCTION: HYPERX 0x00493320
 void Spline::UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity)
 {
-    SplineCurve* const pCurve = m_pCurve;
+    auto* const pCurve = m_pCurve;
 
-    const float flValue = pPosition->x;
+    const auto flValue = pPosition->x;
 
     if ((flValue >= pCurve->m_flValueUpper) || (flValue <= pCurve->m_flValueLower))
     {
         m_pCurve = pCurve->m_pNext;
     }
 
-    SplineCurve* const pEval = m_pCurve;
+    auto* const pEval = m_pCurve;
 
     pPosition->x = pEval->m_pfnEval(pPosition->y, pEval->m_flA, pEval->m_flB, pEval->m_flC, pEval->m_flD);
     pPosition->z = pEval->m_flTag;
@@ -327,18 +327,18 @@ void Spline::UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity)
 
     m_pCurve->ComputeTangent(pPosition->y, &vTangent);
 
-    const float flParam = (vTangent.x * pVelocity->x + vTangent.y * pVelocity->y + vTangent.z * pVelocity->z) * vTangent.y + pPosition->y;
+    const auto flParam = (vTangent.x * pVelocity->x + vTangent.y * pVelocity->y + vTangent.z * pVelocity->z) * vTangent.y + pPosition->y;
 
     pPosition->y = flParam;
 
-    SplineCurve* pStep = m_pCurve;
+    auto* pStep = m_pCurve;
 
     if ((flParam >= pStep->m_flUpper) || (flParam <= pStep->m_flLower))
     {
         pStep    = pStep->m_pNext;
         m_pCurve = pStep;
 
-        const float flT = pPosition->y;
+        const auto flT = pPosition->y;
 
         float flClamped;
 
@@ -355,14 +355,14 @@ void Spline::UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity)
             flClamped = flT;
         }
 
-        float flReflected = flClamped;
+        auto flReflected = flClamped;
 
         flReflected *= g_flSplineReflectScale;
 
         pPosition->y = flReflected - flT;
     }
 
-    SplineCurve* const pFinal = m_pCurve;
+    auto* const pFinal = m_pCurve;
 
     pPosition->x = pFinal->m_pfnEval(pPosition->y, pFinal->m_flA, pFinal->m_flB, pFinal->m_flC, pFinal->m_flD);
     pPosition->z = pFinal->m_flTag;

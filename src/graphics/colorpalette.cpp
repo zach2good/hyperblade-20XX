@@ -220,10 +220,10 @@ int ColorPalette::NearestIndex(std::uint32_t colour, int nSkip) const
             continue;
         }
 
-        const int dr    = static_cast<int>(m_current[i].peRed) - static_cast<int>(colour & 0xff);
-        const int dg    = static_cast<int>(m_current[i].peGreen) - static_cast<int>(colour >> 8 & 0xff);
-        const int db    = static_cast<int>(m_current[i].peBlue) - static_cast<int>(colour >> 16 & 0xff);
-        const int nDist = dr * dr + dg * dg + db * db;
+        const auto dr    = static_cast<int>(m_current[i].peRed) - static_cast<int>(colour & 0xff);
+        const auto dg    = static_cast<int>(m_current[i].peGreen) - static_cast<int>(colour >> 8 & 0xff);
+        const auto db    = static_cast<int>(m_current[i].peBlue) - static_cast<int>(colour >> 16 & 0xff);
+        const auto nDist = dr * dr + dg * dg + db * db;
 
         if (nDist < nBestDist)
         {
@@ -245,7 +245,7 @@ unsigned int ColorPalette::LoadCustomPalette()
     char      c;
 
     // STRING: HYPERX 0x004bc92c
-    FILE* pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "Custom.pal")).c_str(), "r");
+    auto* pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "Custom.pal")).c_str(), "r");
 
     if (pFile == nullptr)
     {
@@ -259,7 +259,7 @@ unsigned int ColorPalette::LoadCustomPalette()
     }
 
     // The client holds the name in EBP (0x00425f22).
-    String* const pName = &m_name;
+    auto* const pName = &m_name;
 
     pName->Assign(String::SafeStrlen(szName), szName);
 
@@ -466,7 +466,7 @@ unsigned int ColorPalette::LoadCustomPalette()
 // FUNCTION: HYPERX 0x00426350
 unsigned int ColorPalette::Load()
 {
-    const unsigned int nResult = LoadCustomPalette();
+    const auto nResult = LoadCustomPalette();
 
     if (nResult != 0x100)
     {
@@ -512,13 +512,13 @@ unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigne
             {
                 if (cColour < pPalette->m_largeRampBounds.nFirst || cColour > pPalette->m_largeRampBounds.nCount)
                 {
-                    const int nRampOut = pPalette->m_rampLength.nFirst + 1;
+                    const auto nRampOut = pPalette->m_rampLength.nFirst + 1;
 
                     return static_cast<unsigned char>(static_cast<int>(pow(static_cast<double>(nRampOut), static_cast<double>(flIntensity))) + cColour - 1);
                 }
                 else
                 {
-                    const int nRampIn = pPalette->m_rampLength.nCount + 1;
+                    const auto nRampIn = pPalette->m_rampLength.nCount + 1;
 
                     return static_cast<unsigned char>(static_cast<int>(pow(static_cast<double>(nRampIn), static_cast<double>(flIntensity))) + cColour - 1);
                 }
@@ -537,15 +537,15 @@ unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigne
 // FUNCTION: HYPERX 0x004264a0
 int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
 {
-    int          nFileVersion = 0;
-    int          nCount       = 0;
+    auto         nFileVersion = 0;
+    auto         nCount       = 0;
     PathString   strPath(kMaxPathLength, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, g_pszPaletteExtension);
     unsigned int nRed;
     unsigned int nGreen;
     unsigned int nBlue;
 
     // STRING: HYPERX 0x004bc990
-    FILE* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "r");
+    auto* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "r");
 
     if (pFile != nullptr)
     {
@@ -567,7 +567,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
             return 1;
         }
 
-        char c = static_cast<char>(getc(pFile));
+        auto c = static_cast<char>(getc(pFile));
 
         while (c != '\n')
         {
@@ -685,14 +685,14 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, Pa
 // FUNCTION: HYPERX 0x00426860
 void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteEntry peColour, float flFloor)
 {
-    auto* pflScale  = new float[nCount];
-    *pflScale       = flFloor;
-    const int nLast = nCount - 1;
+    auto* pflScale   = new float[nCount];
+    *pflScale        = flFloor;
+    const auto nLast = nCount - 1;
 
     const auto flRatio = static_cast<float>(pow(static_cast<double>(1.0f / flFloor), static_cast<double>(1.0f / nLast)));
 
-    PaletteEntry* pOut  = pEntries;
-    const float   flRed = peColour.peRed;
+    auto*       pOut    = pEntries;
+    const float flRed   = peColour.peRed;
     pOut->peRed         = static_cast<unsigned char>(static_cast<int>(flRed * flFloor));
     const float flGreen = peColour.peGreen;
     pOut->peGreen       = static_cast<unsigned char>(static_cast<int>(flGreen * flFloor));
@@ -744,7 +744,7 @@ char ColorPalette::IsEntryUsable(int nIndex)
 
     if (m_rampBounds.Holds(nIndex))
     {
-        int nStep = 1;
+        auto nStep = 1;
 
         if (m_largeRampBounds.Holds(nIndex))
         {

@@ -66,10 +66,10 @@ void InfoBar::DrawPeriodLight()
 {
     m_sPeriodFrame.Draw();
 
-    int       nX = m_sPeriodFrame.m_ptPosition.x;
-    const int nY = m_sPeriodFrame.m_ptPosition.y;
+    auto       nX = m_sPeriodFrame.m_ptPosition.x;
+    const auto nY = m_sPeriodFrame.m_ptPosition.y;
 
-    int nLamp = g_pGameEngine->m_clock.nPeriod - 1;
+    auto nLamp = g_pGameEngine->m_clock.nPeriod - 1;
 
     if (nLamp < 0)
     {
@@ -92,7 +92,7 @@ void InfoBar::UpdateRokValue()
 {
     char szText[kRokTextBuffer];
 
-    RokObject* const pRok = g_pGameEngine->GetRok();
+    auto* const pRok = g_pGameEngine->GetRok();
 
     if (pRok != nullptr)
     {
@@ -107,7 +107,7 @@ void InfoBar::UpdateRokValue()
                 // STRING: HYPERX 0x004c0d6c
                 sprintf(szText, "x%d", abs(nRokValue));
 
-                CDDText* const pLabel = &m_tRokValue;
+                auto* const pLabel = &m_tRokValue;
 
                 pLabel->m_ptDrawOffset.x = 0;
 
@@ -138,7 +138,7 @@ extern int g_nDamageBarColourDim;
 // FUNCTION: HYPERX 0x004501f0
 void InfoBar::UpdateDamageBar(InfoBarSlot* pBar, int nSlot)
 {
-    PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
+    auto* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
 
     if (pObject != nullptr)
     {
@@ -153,13 +153,13 @@ void InfoBar::UpdateDamageBar(InfoBarSlot* pBar, int nSlot)
 
         const double dScaled = pObject->m_stats.GetScalar(kRatingDamage) * 0.01f;
 
-        const int nFrameCount = pBar->m_nFrameCount;
+        const auto nFrameCount = pBar->m_nFrameCount;
 
-        const double dFraction = dScaled * nFrameCount;
+        const auto dFraction = dScaled * nFrameCount;
 
         pBar->m_flScalar = static_cast<float>(dFraction);
 
-        int nFrame = static_cast<int>(dFraction);
+        auto nFrame = static_cast<int>(dFraction);
 
         if (nFrame >= nFrameCount)
         {
@@ -216,7 +216,7 @@ void InfoBar::UpdateOwnTeamDisplay()
         return;
     }
 
-    int       bDirty      = 0;
+    auto      bDirty      = 0;
     const int nViewedSlot = g_pGameEngine->m_nViewedSlot;
 
     if ((nViewedSlot & kEngineSideSwapped) != 0)
@@ -259,7 +259,7 @@ void InfoBar::UpdateOwnTeamDisplay()
         bDirty                     = 1;
     }
 
-    PlayerObject* pObject = g_pGameEngine->GetPlayer(nSlot);
+    auto* pObject = g_pGameEngine->GetPlayer(nSlot);
 
     aDamage[0] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
@@ -269,7 +269,7 @@ void InfoBar::UpdateOwnTeamDisplay()
 
     aDamage[1] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
-    ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
+    auto* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
 
     aDamage[2] = static_cast<int>(pTeam->aRows[pReserves->anRow[0]].aStat[kRatingDamage]);
     aDamage[3] = static_cast<int>(pTeam->aRows[pReserves->anRow[1]].aStat[kRatingDamage]);
@@ -368,7 +368,7 @@ void InfoBar::UpdateFoeTeamDisplay()
         return;
     }
 
-    int bDirty = 0;
+    auto bDirty = 0;
 
     if ((g_pGameEngine->m_nViewedSlot & kEngineSideSwapped) != 0)
     {
@@ -402,7 +402,7 @@ void InfoBar::UpdateFoeTeamDisplay()
         bDirty                     = 1;
     }
 
-    PlayerObject* pObject = g_pGameEngine->GetPlayer(nSlot);
+    auto* pObject = g_pGameEngine->GetPlayer(nSlot);
 
     aDamage[0] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
@@ -412,7 +412,7 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     aDamage[1] = static_cast<int>(pObject->m_stats.GetScalar(kRatingDamage));
 
-    ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
+    auto* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
 
     aDamage[2] = static_cast<int>(pTeam->aRows[pReserves->anRow[0]].aStat[kRatingDamage]);
     aDamage[3] = static_cast<int>(pTeam->aRows[pReserves->anRow[1]].aStat[kRatingDamage]);
@@ -486,8 +486,8 @@ void InfoBar::DrawHUD(int bFull)
 
     const int nElapsed = g_pGameEngine->m_nPeriodLengthMs - g_pGameEngine->m_clock.nPauseStartMs + g_pGameEngine->m_clock.nPeriodStartMs;
 
-    const int nSeconds = static_cast<int>((nElapsed % kMsPerMinute) * 0.001f);
-    const int nMinutes = static_cast<int>(nElapsed * 1.6666667e-005f);
+    const auto nSeconds = static_cast<int>((nElapsed % kMsPerMinute) * 0.001f);
+    const auto nMinutes = static_cast<int>(nElapsed * 1.6666667e-005f);
 
     const int nActive = g_frameTimer.bFrameTimesOn;
 
@@ -518,7 +518,7 @@ void InfoBar::DrawHUD(int bFull)
         return;
     }
 
-    int nScore = g_pGameEngine->GetHomeScore();
+    auto nScore = g_pGameEngine->GetHomeScore();
 
     if (nScore != g_nInfoBarLastHomeScore)
     {
@@ -622,19 +622,19 @@ void InfoBar::DrawScene(int bDraw)
 
             if (nFollowed < kEngineFollowLimit)
             {
-                PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFollowed));
+                auto* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFollowed));
 
                 if (pObject != nullptr)
                 {
-                    CDDSurfaceOwner* const pPanel = &m_oSpeedMeter;
+                    auto* const pPanel = &m_oSpeedMeter;
 
-                    const int nFrameCount = pPanel->m_nFrameCount;
+                    const auto nFrameCount = pPanel->m_nFrameCount;
 
                     const double dFraction = pObject->m_stats.GetSpeedRatio() * nFrameCount;
 
                     pPanel->m_flScalar = static_cast<float>(dFraction);
 
-                    int nFrame = static_cast<int>(dFraction);
+                    auto nFrame = static_cast<int>(dFraction);
 
                     if (nFrame >= nFrameCount)
                     {
@@ -863,7 +863,7 @@ void InfoBar::LayoutSurfaces()
 
     ptSize = m_atTeamNames[0].GetSize();
 
-    int nY = ptRoster.y + ptSize.y + 2;
+    auto nY = ptRoster.y + ptSize.y + 2;
 
     for (int i = 0; i < 4; i++)
     {
@@ -999,7 +999,7 @@ InfoBar::InfoBar()
 
     m_tHeadCamText.SetColour(kColourYellow);
 
-    CDDText* pLabel = &m_tShotCameraLabel;
+    auto* pLabel = &m_tShotCameraLabel;
 
     pLabel->CreateFontFace(g_abInfoBarFontName, kFontLabel);
 
@@ -1020,7 +1020,7 @@ InfoBar::InfoBar()
 
     String strPooled("");
 
-    char* pszPooled = g_gameApp.m_stringPool.LoadText(kStringExitMatch);
+    auto* pszPooled = g_gameApp.m_stringPool.LoadText(kStringExitMatch);
 
     strPooled.Assign(String::SafeStrlen(pszPooled), pszPooled);
 
@@ -1151,13 +1151,13 @@ ViewExtent InfoBar::GetHeadCamOrigin()
 // FUNCTION: HYPERX 0x00451fe0
 void InfoBar::SetShotPower(float flPercent)
 {
-    const int nCount = m_oShotPower.m_nFrameCount;
+    const auto nCount = m_oShotPower.m_nFrameCount;
 
-    const float flPosition = (static_cast<float>(nCount) * flPercent) * 0.01f;
+    const auto flPosition = (static_cast<float>(nCount) * flPercent) * 0.01f;
 
     m_oShotPower.m_flScalar = flPosition;
 
-    int nIndex = static_cast<int>(flPosition);
+    auto nIndex = static_cast<int>(flPosition);
 
     if (nIndex >= nCount)
     {

@@ -123,8 +123,8 @@ SDL_Texture* Fit(SDL_Texture* pTexture, SDL_PixelFormat nFormat, int nWidth, int
 // The largest rect of the source's shape that fits the output, centred; never larger than the source.
 SDL_FRect FitRect(int nWidth, int nHeight, bool bUpscale)
 {
-    int nOutWidth  = 0;
-    int nOutHeight = 0;
+    auto nOutWidth  = 0;
+    auto nOutHeight = 0;
 
     SDL_GetCurrentRenderOutputSize(s_pRenderer, &nOutWidth, &nOutHeight);
 
@@ -168,7 +168,7 @@ SDL_Renderer* CreateGPURenderer(SDL_Window* pWindow)
     SDL_SetBooleanProperty(props, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN, true);
     SDL_SetBooleanProperty(props, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN, true);
 
-    SDL_Renderer* const pRenderer = SDL_CreateRendererWithProperties(props);
+    auto* const pRenderer = SDL_CreateRendererWithProperties(props);
 
     SDL_DestroyProperties(props);
 
@@ -308,7 +308,7 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
 
     for (const auto& icon : s_canvasIcons)
     {
-        SDL_Texture* const pIcon = IconTexture(icon.pszName);
+        auto* const pIcon = IconTexture(icon.pszName);
 
         if (pIcon == nullptr)
         {

@@ -10,12 +10,12 @@ void MoveCodec::Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVelocity)
 {
     MoveVelocityWord velocity;
 
-    const MovePositionWord position = pIn->position;
-    const MoveScaleFlags   flags    = { pIn->cFlags };
+    const auto           position = pIn->position;
+    const MoveScaleFlags flags    = { pIn->cFlags };
 
-    int nPosX = position.GetX();
-    int nPosY = position.GetY();
-    int nPosZ = position.GetZ();
+    auto nPosX = position.GetX();
+    auto nPosY = position.GetY();
+    auto nPosZ = position.GetZ();
 
     if (position.GetXSign() != 0)
     {
@@ -34,10 +34,10 @@ void MoveCodec::Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVelocity)
         nPosZ = -nPosZ;
     }
 
-    const int nPosShift = flags.GetPositionShift();
-    int       nVelX     = velocity.GetX();
-    int       nVelY     = velocity.GetY();
-    int       nVelZ     = velocity.GetZLow() | flags.GetZHigh();
+    const auto nPosShift = flags.GetPositionShift();
+    auto       nVelX     = velocity.GetX();
+    auto       nVelY     = velocity.GetY();
+    auto       nVelZ     = velocity.GetZLow() | flags.GetZHigh();
 
     if (velocity.GetXSign() != 0)
     {
@@ -158,7 +158,7 @@ int MoveCodec::Encode(PackedMove* pOut, const Vec3* pPosition, const Vec3* pVelo
         nPosZ |= (nPosBitsZ >> 21) & 0x400;
     }
 
-    const unsigned int nPosScale = nPosExp - 0x7f;
+    const auto nPosScale = nPosExp - 0x7f;
 
     nVelBitsX = FloatBits(pVelocity->x);
     nVelBitsY = FloatBits(pVelocity->y);

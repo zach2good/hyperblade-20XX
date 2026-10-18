@@ -28,7 +28,7 @@ void PauseMenuFullScreen::Init()
     m_hBackground = GDI::LoadBitmapAsBackground("escape1", &m_bPaletted);
 
     // STRING: HYPERX 0x004c1fb0
-    GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle("Essave");
+    auto* hBitmap = GDI::LoadBitmapHandle("Essave");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 35, bm.nWidth, bm.nHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);

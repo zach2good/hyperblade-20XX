@@ -30,7 +30,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
     AgendaItem* pBubble;
     short       nField;
 
-    GameBehaviorObject* const pOwner = m_pOwner->GetPlanState()->m_pCurrent;
+    auto* const pOwner = m_pOwner->GetPlanState()->m_pCurrent;
 
     while (nCount-- != 0)
     {
@@ -64,7 +64,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
 
                     case MEMBER_SET_INTERACTOR_PARAM:
                     {
-                        PlanState* const pPlan = m_pOwner->GetPlanState();
+                        auto* const pPlan = m_pOwner->GetPlanState();
 
                         g_pfnPlanOpcodeHandlers[static_cast<short>(pNode->m_pArgs[0].n)].pfnSetParam(
                             m_pOwner, pNode, pPlan->m_pCurrent, this);
@@ -82,7 +82,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
 
                     case MEMBER_SET_BEHAVIOR_PARAM:
                     {
-                        PlanState* const pPlan = m_pOwner->GetPlanState();
+                        auto* const pPlan = m_pOwner->GetPlanState();
 
                         g_apfnBehaviorParamHandlers[static_cast<short>(pNode->m_pArgs[0].n)](
                             m_pOwner, pNode, pPlan->m_pCurrent);

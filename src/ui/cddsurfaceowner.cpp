@@ -39,7 +39,7 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
             free(m_pszName);
         }
 
-        char* const pszCopy = static_cast<char*>(malloc(strlen(pszName) + 1));
+        auto* const pszCopy = static_cast<char*>(malloc(strlen(pszName) + 1));
 
         if (pszCopy != nullptr)
         {
@@ -48,7 +48,7 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
 
         m_pszName = pszCopy;
 
-        RLESprite* const pSprite = SoftRenderer::LoadRLESprite(pszName);
+        auto* const pSprite = SoftRenderer::LoadRLESprite(pszName);
 
         if (pSprite != nullptr)
         {

@@ -71,19 +71,19 @@ void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vPoint;
 
-    BoundBubble* pCollision = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+    auto* pCollision = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    EngineObject* const pObject = pCollision->GetOwner();
+    auto* const pObject = pCollision->GetOwner();
 
     pCollision = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject* const pOther = pCollision->GetOwner();
+    auto* const pOther = pCollision->GetOwner();
 
-    PhysicsBody* const pState = pObject->GetPhysicsBody();
+    auto* const pState = pObject->GetPhysicsBody();
 
     pOther->GetPhysicsBody();
 
-    Vec3* const pPoint = pObject->GetWorldPos(&vPoint);
+    auto* const pPoint = pObject->GetWorldPos(&vPoint);
 
     CollisionPlane* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
 
@@ -114,8 +114,8 @@ void PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
 {
     if (pNode->m_nArgCount == kArgCountWithMessage)
     {
-        const int nIndex = pNode->m_pArgs[kArgMessage].n;
-        const int nFirst = g_pMessageQueue->GetAt(nIndex);
+        const auto nIndex = pNode->m_pArgs[kArgMessage].n;
+        const auto nFirst = g_pMessageQueue->GetAt(nIndex);
 
         g_pMessageQueue->PushFromTable(nIndex, nFirst, kInfoBarHoldMs);
     }
@@ -130,12 +130,12 @@ void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*
     int         nKind;
 
     const PlanWord* pBlock = pArgs->m_pArgs;
-    PlanWord        slot   = pBlock[1];
-    const int       nIndex = pBlock[2].n;
+    auto            slot   = pBlock[1];
+    const auto      nIndex = pBlock[2].n;
 
     if (slot.IsPronoun())
     {
-        PlanStatFn pfnResolver = g_apPlanStatFns[slot.wPronoun];
+        auto pfnResolver = g_apPlanStatFns[slot.wPronoun];
 
         slot.n = pfnResolver(pContext->GetActor(), pArgs);
     }
@@ -167,7 +167,7 @@ void PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, 
     int         nKind;
     int         nSlot;
 
-    const int nIndex = pArgs->m_pArgs[1].n;
+    const auto nIndex = pArgs->m_pArgs[1].n;
 
     if (pArgs->m_nArgCount == 2)
     {

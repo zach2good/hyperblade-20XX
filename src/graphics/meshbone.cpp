@@ -60,7 +60,7 @@ void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, Tra
 {
     if ((m_nFlags & kMeshboneAnimationDirty) != 0)
     {
-        const MeshBoneDesc* pDesc = m_pDesc;
+        const auto* pDesc = m_pDesc;
 
         m_local.SetTranslation(m_local.m_a[0][3] * pDesc->m_vScale.x,
                                m_local.m_a[1][3] * pDesc->m_vScale.y,
@@ -75,7 +75,7 @@ void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, Tra
     {
         for (short i = 0; i < m_pDesc->m_nChildCount; i++)
         {
-            MeshBone* const pChild = m_apChildren[i];
+            auto* const pChild = m_apChildren[i];
 
             // There is no visited set, so a link ID cycle of three would recurse forever.
             if (pChild->m_pDesc->m_nLinkId != nSlotIdx)
@@ -97,7 +97,7 @@ void MeshBone::UpdateLeafTransform(unsigned int, TransformObject* pParent)
 {
     if ((m_nFlags & kMeshboneAnimationDirty) != 0)
     {
-        const MeshBoneDesc* pDesc = m_pDesc;
+        const auto* pDesc = m_pDesc;
 
         m_local.SetTranslation(m_local.m_a[0][3] * pDesc->m_vScale.x,
                                m_local.m_a[1][3] * pDesc->m_vScale.y,
@@ -299,8 +299,8 @@ void MeshBone::DrawFaces()
     char                   cClip;
     static TransformObject s_worldView;
 
-    MeshBlock* pBlob = m_pOwner->m_pLod->m_apLodMeshes[m_pOwner->m_wLodLevel][m_wMeshSlot];
-    m_pMesh          = pBlob;
+    auto* pBlob = m_pOwner->m_pLod->m_apLodMeshes[m_pOwner->m_wLodLevel][m_wMeshSlot];
+    m_pMesh     = pBlob;
 
     if (HwRenderer::Capturing())
     {
@@ -318,14 +318,14 @@ void MeshBone::DrawFaces()
         pVertBase = pBlob->Vertices();
     }
 
-    TransformedVertex*     pOut = g_pModelVertexBuf;
-    TransformObject* const pXf  = &m_world;
+    auto*       pOut = g_pModelVertexBuf;
+    auto* const pXf  = &m_world;
 
     g_pCameraTransform->Multiply(&s_worldView,
                                  pXf);
 
-    short nVerts = m_pMesh->nVertexCount;
-    int   nIndex = 0;
+    auto nVerts = m_pMesh->nVertexCount;
+    auto nIndex = 0;
 
     while (nVerts-- > 0)
     {
@@ -357,12 +357,12 @@ void MeshBone::DrawFaces()
     }
 
     FaceRecord** ppSlot = g_ppFaceList + 1;
-    FaceRecord*  pEntry = g_pFaceRecords;
+    auto*        pEntry = g_pFaceRecords;
 
     for (short nFace = 0; nFace < GetFaceCount(); nFace++)
     {
-        MeshFace* const     pFace = GetFace(nFace);
-        MeshMaterial* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[static_cast<int>(pFace->cMaterial)];
+        auto* const pFace = GetFace(nFace);
+        auto* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[static_cast<int>(pFace->cMaterial)];
 
         nResult = Face::BackfaceCullAndClipCheck(pFace, g_pModelVertexBuf, static_cast<char>(pMat->nBackIndex >= 0), &cClip);
 
@@ -393,8 +393,8 @@ void MeshBone::DrawFaces()
         pEntry++;
     }
 
-    pBlob            = m_pMesh;
-    const int nCount = static_cast<int>(pEntry - g_pFaceRecords);
+    pBlob             = m_pMesh;
+    const auto nCount = static_cast<int>(pEntry - g_pFaceRecords);
 
     if (pBlob->SortsFaces() != 0)
     {
@@ -452,7 +452,7 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
 
     if (m_block.bValid == 0)
     {
-        MeshBlock* const pMesh = m_pMesh;
+        auto* const pMesh = m_pMesh;
 
         if (pMesh == nullptr || pMesh->vertexOffset.nBytes == 0)
         {
@@ -463,8 +463,8 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
             pVerts = pMesh->Vertices();
         }
 
-        short nCount = pMesh->nVertexCount;
-        int   nIndex = 0;
+        auto nCount = pMesh->nVertexCount;
+        auto nIndex = 0;
 
         while (nCount-- > 0)
         {
@@ -508,7 +508,7 @@ void MeshBone::CalcVertexColors()
     // Never false.
     if (pXf != nullptr)
     {
-        Vec3 vLight = g_lightDirs[0].dir;
+        auto vLight = g_lightDirs[0].dir;
 
         g_vLightDirModel.x = vLight.x * pXf->m_a[0][0] + vLight.y * pXf->m_a[1][0] + vLight.z * pXf->m_a[2][0];
         g_vLightDirModel.y = vLight.x * pXf->m_a[0][1] + vLight.y * pXf->m_a[1][1] + vLight.z * pXf->m_a[2][1];
@@ -523,9 +523,9 @@ void MeshBone::CalcVertexColors()
     {
         unsigned int nColour;
 
-        MeshFace* pFace = GetFace(i);
+        auto* pFace = GetFace(i);
 
-        MeshMaterial* pMaterial = m_pOwner->m_pModelBlock->m_pMaterials + pFace->cMaterial;
+        auto* pMaterial = m_pOwner->m_pModelBlock->m_pMaterials + pFace->cMaterial;
 
         const Vec3* pNormal = &pFace->vNormal;
 
@@ -596,7 +596,7 @@ void MeshBone::SetFlags(unsigned short nFlags)
     {
         delete[] m_pFaceColours;
 
-        const short nFaceCount = GetFaceCount();
+        const auto nFaceCount = GetFaceCount();
 
         m_pFaceColours = new int[nFaceCount];
 
@@ -700,7 +700,7 @@ int MeshBone::BindToLODMesh(CD3DTextureManager* pLookup, LODNode* pNode, EngineO
         m_pChildIds = pEntry->m_anChildIds;
 
         // A second name keeps the client's schedule; without it 92.98.
-        TransformObject* const pTarget = &m_local;
+        auto* const pTarget = &m_local;
 
         StoreShadow(pTarget, pEntry->m_vRest.x, pEntry->m_vRest.y, pEntry->m_vRest.z);
 
@@ -765,7 +765,7 @@ void MeshBone::ComputeBoundingSphere()
     Vec3  vSum;
     short i;
 
-    MeshBlock* const pMesh = m_pMesh;
+    auto* const pMesh = m_pMesh;
 
     if (pMesh == nullptr || pMesh->vertexOffset.nBytes == 0)
     {
@@ -776,7 +776,7 @@ void MeshBone::ComputeBoundingSphere()
         pVerts = pMesh->Vertices();
     }
 
-    const short nCount = pMesh->nVertexCount;
+    const auto nCount = pMesh->nVertexCount;
 
     vSum.x = g_flZeroMeshBone;
     vSum.y = g_flZeroMeshBone;
@@ -797,9 +797,9 @@ void MeshBone::ComputeBoundingSphere()
 
     for (i = 0; i < nCount; i++)
     {
-        const float flDx = pVerts[i].x - m_vCentre.x;
-        const float flDy = pVerts[i].y - m_vCentre.y;
-        const float flDz = pVerts[i].z - m_vCentre.z;
+        const auto flDx = pVerts[i].x - m_vCentre.x;
+        const auto flDy = pVerts[i].y - m_vCentre.y;
+        const auto flDz = pVerts[i].z - m_vCentre.z;
 
         const auto flDistance = static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 

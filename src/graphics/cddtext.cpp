@@ -55,7 +55,7 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
         return 1;
     }
 
-    char* const pszCopy = static_cast<char*>(malloc(strlen(pszText) + 1));
+    auto* const pszCopy = static_cast<char*>(malloc(strlen(pszText) + 1));
 
     if (pszCopy != nullptr)
     {

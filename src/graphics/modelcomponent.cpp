@@ -33,7 +33,7 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
     ComponentFileHeader header;
     int                 nSize;
 
-    int nTotal = 0;
+    auto nTotal = 0;
     if (pFile->Read(&header, sizeof(header)) != 0)
     {
         unsigned short iEntry  = 0;

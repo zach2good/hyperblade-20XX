@@ -129,7 +129,7 @@ void ParticleSystem::Update(float flDt)
     vScaled.y = pAxis[1] * GRAVITY;
     vScaled.z = pAxis[2] * GRAVITY;
 
-    Vec3 vAccel = vScaled;
+    auto vAccel = vScaled;
 
     m_bAnyAlive = 0;
 
@@ -162,9 +162,9 @@ void ParticleSystem::ApplyToMesh()
     {
         if (pEmitter->m_flLife > 0.0f)
         {
-            Vec3 vBase = pEmitter->m_vPosition;
+            auto vBase = pEmitter->m_vPosition;
 
-            const float flRatio = pEmitter->m_flLife / pEmitter->m_flSpan;
+            const auto flRatio = pEmitter->m_flLife / pEmitter->m_flSpan;
 
             const MeshFace* pPart = pMesh->GetFace(static_cast<short>(nIndex));
 
@@ -174,7 +174,7 @@ void ParticleSystem::ApplyToMesh()
             {
                 pVerts = pMesh->GetVertexArray();
 
-                const Vec3 vStep = pRow[nCorner].Scaled(flRatio);
+                const auto vStep = pRow[nCorner].Scaled(flRatio);
 
                 vOut.x = vBase.x + vStep.x;
                 vOut.y = vBase.GetY() + vStep.y;
@@ -193,7 +193,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
     Vec3 vBasis;
     Vec3 vCross;
 
-    PhysicsBody* pBody = m_pBody;
+    auto* pBody = m_pBody;
 
     pBody->pos = *pPosition;
 
@@ -208,7 +208,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
         vDirection.x = vDirection.y = vDirection.z = 1.0f;
     }
 
-    float flAxis = 0.0f;
+    auto flAxis = 0.0f;
 
     if (fabs(static_cast<double>(1.0f - vDirection.x)) < 0.001f && fabs(static_cast<double>(-vDirection.y)) < 0.001f && fabs(static_cast<double>(-vDirection.z)) < 0.001f)
     {
@@ -221,7 +221,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
 
     Math::Vec3Normalize(&vBasis);
 
-    TransformObject* const pTransform = GetLocalTransformPtr();
+    auto* const pTransform = GetLocalTransformPtr();
 
     if (vBasis.y != g_flZeroRokObject)
     {

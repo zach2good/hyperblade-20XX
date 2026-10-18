@@ -49,7 +49,7 @@ void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pTarget           = &pOwner->GetPhysicsBody()->netTarget;
     m_pNetTargetPending = &pOwner->GetPhysicsBody()->bNetTargetPending;
 
-    unsigned int* const pLast = &pOwner->GetPhysicsBody()->nPrevTick;
+    auto* const pLast = &pOwner->GetPhysicsBody()->nPrevTick;
 
     m_nMode      = 0;
     m_pnPrevTick = pLast;
@@ -108,7 +108,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
         m_pShape                           = &g_arenaEllipsoid;
     }
 
-    Vec3* const pPos   = m_pSource;
+    auto* const pPos   = m_pSource;
     auto* const pShape = (CollisionEllipsoid*)m_pShape;
 
     if (pPos->z < g_flZeroAgendaItem)
@@ -131,13 +131,13 @@ void CProjectAndBounce::ProjectAndBounce(int)
             {
                 pClosest = Vec3::FindClosest(m_pSource, &vNear, &vFar);
             }
-            Vec3* pPosB = m_pSource;
+            auto* pPosB = m_pSource;
 
             if (pClosest->z - pPosB->z > g_flZeroAgendaItem)
             {
                 *pPosB = *pClosest;
 
-                Vec3* const pPosZ = m_pSource;
+                auto* const pPosZ = m_pSource;
                 pPosZ->z          = pPosZ->z + 1.0f;
             }
 
@@ -153,8 +153,8 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             m_pOwner->GetPhysicsBody()->UpdateVelocityDirection();
 
-            Vec3*       pPosC = m_pSource;
-            Vec3* const pPrev = m_pDest;
+            auto*       pPosC = m_pSource;
+            auto* const pPrev = m_pDest;
 
             if ((flSpan = pPosC->x - pPrev->x) != g_flZeroAgendaItem)
             {
@@ -199,7 +199,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
     }
     else
     {
-        const float flPy = pPos->y;
+        const auto flPy = pPos->y;
 
         if ((pShape->GetInvXX() * pPos->x * pPos->x) + pShape->GetInvYY() * flPy * flPy > 1.0)
         {
@@ -219,7 +219,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             *m_pNormal = *pNormal;
 
-            const float flSavedVelZ = m_pVelocity->z;
+            const auto flSavedVelZ = m_pVelocity->z;
 
             m_pOwner->GetPhysicsBody()->UpdateVelocityDirection();
 
@@ -229,11 +229,11 @@ void CProjectAndBounce::ProjectAndBounce(int)
         }
     }
 
-    Vec3* pVel = m_pVelocity;
+    auto* pVel = m_pVelocity;
 
-    const float flVz = pVel->z;
-    const float flVy = pVel->y;
-    const float flVx = pVel->x;
+    const auto flVz = pVel->z;
+    const auto flVy = pVel->y;
+    const auto flVx = pVel->x;
 
     *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flVx * flVx + flVy * flVy + flVz * flVz)));
 
@@ -284,7 +284,7 @@ void CProjectAndBounce::Process(int nArg)
 {
     ProjectAndBounce(nArg);
 
-    AgendaItem* const pNext = m_pNext;
+    auto* const pNext = m_pNext;
 
     if (pNext != nullptr)
     {
@@ -298,7 +298,7 @@ void CProjectAndBounce::IntegrateSpringAndGravity()
 {
     Vec3 vPull;
 
-    Vec3* const pPos = m_pSource;
+    auto* const pPos = m_pSource;
 
     vPull.x = m_vStep.x - pPos->x;
     vPull.y = m_vStep.y - pPos->y;
@@ -306,7 +306,7 @@ void CProjectAndBounce::IntegrateSpringAndGravity()
 
     vPull.ScaleInPlace(g_pGameEngine->m_clock.GetDeltaSquared());
 
-    Vec3* pVel = m_pVelocity;
+    auto* pVel = m_pVelocity;
 
     pVel->x = vPull.x + pVel->x;
     pVel->y = vPull.y + pVel->y;
@@ -322,9 +322,9 @@ void CProjectAndBounce::IntegrateSpringAndGravity()
 
     pVel = m_pVelocity;
 
-    const float flZ = pVel->z;
-    const float flY = pVel->y;
-    const float flX = pVel->x;
+    const auto flZ = pVel->z;
+    const auto flY = pVel->y;
+    const auto flX = pVel->x;
 
     *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ)));
 
@@ -391,9 +391,9 @@ void CProjectAndBounce::Release(int nMessage)
 
     IntegrateSpringAndGravity();
 
-    Vec3 point = *m_pOwner->GetWorldPos(&scratch);
+    auto point = *m_pOwner->GetWorldPos(&scratch);
 
-    Vec3* const pNormal = g_arenaEllipsoid.NormalAtPoint(&point);
+    auto* const pNormal = g_arenaEllipsoid.NormalAtPoint(&point);
 
     if (pNormal != nullptr)
     {

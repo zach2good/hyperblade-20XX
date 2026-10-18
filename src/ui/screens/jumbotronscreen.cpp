@@ -75,8 +75,8 @@ JumbotronScreen::JumbotronScreen()
         pWidget->AppendFrame(nullptr);
     }
 
-    auto        nRound = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
-    TeamsBlock* pList  = g_pGameEngine->m_pTeamTable;
+    auto  nRound = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
+    auto* pList  = g_pGameEngine->m_pTeamTable;
 
     if (nRound < pList->GetTeamCount())
     {

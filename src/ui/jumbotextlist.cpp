@@ -92,7 +92,7 @@ unsigned int JumboTextList::Load(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            char* const pszSource = pLine;
+            auto* const pszSource = pLine;
 
             if (pLine != nullptr)
             {

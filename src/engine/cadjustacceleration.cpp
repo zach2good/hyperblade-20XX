@@ -14,9 +14,9 @@ void CAdjustAcceleration::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bReady = 0;
     m_pOwner = pOwner;
 
-    m_pVelDir               = &pOwner->GetPhysicsBody()->velDir;
-    m_pSmoothVel            = &pOwner->GetPhysicsBody()->smoothVel;
-    float* const pflAccelDt = &pOwner->GetPhysicsBody()->flAccelDt;
+    m_pVelDir              = &pOwner->GetPhysicsBody()->velDir;
+    m_pSmoothVel           = &pOwner->GetPhysicsBody()->smoothVel;
+    auto* const pflAccelDt = &pOwner->GetPhysicsBody()->flAccelDt;
 
     m_pTargetPos = nullptr;
     m_pflStep    = pflAccelDt;
