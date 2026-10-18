@@ -21,8 +21,9 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 
 - Drops into your existing HyperBlade install
 - Supports all releases (original disc release (v1.0.0.0), Windows 2000 patch (v1.0.0.1), both with or without the Voodoo2 launcher (HB3DFxV2.exe))
-- Built for 64-bit Windows with a modern C++23 toolchain
+- 64-bit Windows and Linux builds
 - In-game debug menu on F2
+- Every cheat code in the debug menu
 - Runtime toggles for:
   - Original software renderer
   - New hardware renderer
@@ -34,6 +35,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - HUD and menu scaling
 - Xbox, PlayStation and Switch controller support
 - Music tracks can play from local rips, rather than the CD
+- Bot spectator mode
 - Skippable intro splash screens
 - Experimental uncapped frame rate, with the game still simulated at 30 Hz
 - Various bug and crash fixes
@@ -57,12 +59,9 @@ our fonts and controller icons.
 The first run reads the game's text out of `HYPERX.EXE` into `hyperblade_20XX_strings.txt`, and
 later runs load that file.
 
-To watch the bots play, start with `-b` or tick Autopilot in the debug menu's Spectate tab (F2),
-and press F3 to fly the camera: WASD moves, Q and E sink and rise, Shift hurries, and the right
-mouse button looks.
-
 To play the music without the CD, rip the audio tracks to `Data/Music/Track02.flac`,
-`Track03.flac` etc. FLAC, MP3 and WAV are all supported.
+`Track03.flac` etc. FLAC, MP3 and WAV are all supported. On Linux the rips are the only music, as
+the CD drive is read on Windows alone.
 
 ## Build
 
@@ -129,3 +128,6 @@ for a copy of the game.
 
 LGPL-3.0-only for this project's own work. [NOTICE](NOTICE) says what the licence covers.
 HyperBlade belongs to its rights holders.
+
+`20XX_data.pak` carries two CC0 sets: the [Pixel Operator](res/fonts/PixelOperator-LICENSE.txt)
+fonts and Kenney's [Input Prompts](res/prompts/License.txt).
