@@ -268,7 +268,7 @@ void GameApp::NextSplash()
 
     g_nSplashFrame++;
 
-    if (g_nSplashFrame > (int)std::size(s_apszSplashes))
+    if (g_nSplashFrame > static_cast<int>(std::size(s_apszSplashes)))
     {
         g_nSplashFrame = 0;
 
@@ -281,7 +281,7 @@ void GameApp::NextSplash()
 
     GDI::DrawBitmapToWindow(s_apszSplashes[g_nSplashFrame - 1]);
 
-    s_dwSplashShown = (unsigned int)SDL_GetTicks();
+    s_dwSplashShown = static_cast<unsigned int>(SDL_GetTicks());
 }
 
 bool GameApp::UpdateSplash()
@@ -291,7 +291,7 @@ bool GameApp::UpdateSplash()
         return false;
     }
 
-    if ((unsigned int)SDL_GetTicks() - s_dwSplashShown >= SPLASH_MS)
+    if (static_cast<unsigned int>(SDL_GetTicks()) - s_dwSplashShown >= SPLASH_MS)
     {
         GameApp::NextSplash();
     }
@@ -572,7 +572,7 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
 
                 *pszDest = 0;
 
-                pszPath[0] = (char)(g_gameApp.FindCDRomDrive(false) + 'A');
+                pszPath[0] = static_cast<char>(g_gameApp.FindCDRomDrive(false) + 'A');
             }
         }
     }
@@ -743,7 +743,7 @@ int GameApp::MainUpdate()
     // A finished track is followed by the menu track, or a random one during play.
     if (g_soundMixer.Update() && g_pAudioMgr != nullptr)
     {
-        if (g_pGameEngine == nullptr || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || (short)g_pGameEngine->m_wRunState != ENGINE_RUN_PLAYING)
+        if (g_pGameEngine == nullptr || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || static_cast<short>(g_pGameEngine->m_wRunState) != ENGINE_RUN_PLAYING)
         {
             if (g_pGameOptions != nullptr && g_pGameOptions->m_nInstallLevel != 0)
             {

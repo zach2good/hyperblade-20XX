@@ -396,7 +396,7 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
     vVelocity.y = (flDot * vNormal.y + pVelocity->y) * flSpeed;
     vVelocity.z = (flDot * vNormal.z + pVelocity->z) * flSpeed;
 
-    if (pSelf->GetSlot() != g_pGameEngine->GetViewedSlot() || flSpeed >= 0.05f || (float)sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity))) >= 0.15f)
+    if (pSelf->GetSlot() != g_pGameEngine->GetViewedSlot() || flSpeed >= 0.05f || static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity)))) >= 0.15f)
     {
         pSelf->SetVelocity(vVelocity);
     }
@@ -462,7 +462,7 @@ void Object::HandleObjectCollisionBounce(EngineObject* pSelf,
                 return;
             }
 
-            const int    nIndex = (short)flSpeed * SECTOR_COUNT + nSelfSector;
+            const int    nIndex = static_cast<short>(flSpeed) * SECTOR_COUNT + nSelfSector;
             short* const pEntry = &g_awReactionByDamageAndSector[nIndex];
 
             pSelf->PostSceneEvent(MSG_SET_ANIMATION, *pEntry);
@@ -481,7 +481,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
 
     for (int nSlot = 0; nSlot < 4; nSlot++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)g_teamScaleSlots.anScaleTargetSlots[nSlot]];
+        EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anScaleTargetSlots[nSlot])];
 
         if (pObject == nullptr)
         {
@@ -502,7 +502,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
         {
             if (*pIndex < nBones)
             {
-                MeshBone* pNode = pObject->m_pBones + (short)*pIndex;
+                MeshBone* pNode = pObject->m_pBones + static_cast<short>(*pIndex);
 
                 if (pNode != nullptr)
                 {

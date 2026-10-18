@@ -32,15 +32,15 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 
     const float flAngleX = g_flDegToRadPlayer * pDef->m_flElevation;
 
-    pLocal->m_rotX.flCos = (float)cos(static_cast<double>(flAngleX));
-    pLocal->m_rotX.flSin = (float)sin(static_cast<double>(flAngleX));
+    pLocal->m_rotX.flCos = static_cast<float>(cos(static_cast<double>(flAngleX)));
+    pLocal->m_rotX.flSin = static_cast<float>(sin(static_cast<double>(flAngleX)));
 
     pLocal->RotateXStaged();
 
     const float flAngleZ = g_flDegToRadPlayer * pDef->m_flAzimuth;
 
-    pLocal->m_rotZ.flCos = (float)cos(static_cast<double>(flAngleZ));
-    pLocal->m_rotZ.flSin = (float)sin(static_cast<double>(flAngleZ));
+    pLocal->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngleZ)));
+    pLocal->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngleZ)));
 
     pLocal->ApplyRotationZ();
 
@@ -117,9 +117,9 @@ void PlayerObject::Postpass()
     {
         if (GetPhase() == OBJECT_PHASE_LOCAL)
         {
-            if (GetSlot() <= SLOT_DROMER3 && (unsigned int)(m_nLastSendMs + DAMAGE_UPDATE_INTERVAL) < g_pGameEngine->m_clock.nTickMs)
+            if (GetSlot() <= SLOT_DROMER3 && static_cast<unsigned int>(m_nLastSendMs + DAMAGE_UPDATE_INTERVAL) < g_pGameEngine->m_clock.nTickMs)
             {
-                int nDamage = (int)m_stats.GetScalar(RATING_DAMAGE);
+                int nDamage = static_cast<int>(m_stats.GetScalar(RATING_DAMAGE));
                 nDamage &= 0xff;
 
                 PostSceneMessage(MSG_SYNC_DAMAGE, nDamage, GetSlot(), 0);

@@ -52,70 +52,70 @@ inline short GetTurnstileCollisionObject(EngineObject** ppActor, const PlanWord*
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_TURNSTILE - SLOT_TURNSTILE)));
+    return static_cast<short>(*pResult = (nMe + (COB_TURNSTILE - SLOT_TURNSTILE)));
 }
 
 inline short GetLimboPoleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_LIMBO_POLE - SLOT_LIMBO_POLE)));
+    return static_cast<short>(*pResult = (nMe + (COB_LIMBO_POLE - SLOT_LIMBO_POLE)));
 }
 
 inline short GetLaserHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_LASER_HURDLE - SLOT_LASER_HURDLE)));
+    return static_cast<short>(*pResult = (nMe + (COB_LASER_HURDLE - SLOT_LASER_HURDLE)));
 }
 
 inline short GetFastLaneCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_FAST_LANE - SLOT_FAST_LANE)));
+    return static_cast<short>(*pResult = (nMe + (COB_FAST_LANE - SLOT_FAST_LANE)));
 }
 
 inline short GetSlowLaneCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_SLOW_LANE - SLOT_SLOW_LANE)));
+    return static_cast<short>(*pResult = (nMe + (COB_SLOW_LANE - SLOT_SLOW_LANE)));
 }
 
 inline short GetMineCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_MINE - SLOT_MINE)));
+    return static_cast<short>(*pResult = (nMe + (COB_MINE - SLOT_MINE)));
 }
 
 inline short GetSwarfCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_SWARF - SLOT_SWARF)));
+    return static_cast<short>(*pResult = (nMe + (COB_SWARF - SLOT_SWARF)));
 }
 
 inline short GetExplosionCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_EXPLOSION - SLOT_EXPLOSION)));
+    return static_cast<short>(*pResult = (nMe + (COB_EXPLOSION - SLOT_EXPLOSION)));
 }
 
 inline short GetArmoryCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_ARMORY - SLOT_ARMORY)));
+    return static_cast<short>(*pResult = (nMe + (COB_ARMORY - SLOT_ARMORY)));
 }
 
 inline short GetHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_HURDLE - SLOT_HURDLE)));
+    return static_cast<short>(*pResult = (nMe + (COB_HURDLE - SLOT_HURDLE)));
 }
 
 // The linker folded this body onto GetRedRandomizerCollisionObject, which carries the marker.
@@ -123,7 +123,7 @@ inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const Pla
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = (nMe + (COB_GREEN_RANDOMIZER - SLOT_GREEN_RANDOMIZER)));
+    return static_cast<short>(*pResult = (nMe + (COB_GREEN_RANDOMIZER - SLOT_GREEN_RANDOMIZER)));
 }
 
 // The linker folded this body onto GetMyDragStartPos, which carries the marker.
@@ -131,98 +131,98 @@ inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
 
-    return (short)(*pResult = ((nMe & 1) | GOALIE_SLOT_A));
+    return static_cast<short>(*pResult = ((nMe & 1) | GOALIE_SLOT_A));
 }
 
 // The linker folded these bodies onto GetViewOwner, which carries the marker.
 inline short GetViewOwnerCOB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetVwOwnrAwarnsBub(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetViewOnrsOppn1COB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetViewOnrsOppn2COB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetWatchedObject(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetTrackedObject(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetTrackedObjsTeammate(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetViewOwnersGoal(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetVwOwnrOppnGoalie(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetViewOwnersTeammate(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetViewOnrsOppn1(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetViewOnrsOppn2(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetVwOwnrsOppnGoal(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetRokCarrier(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetLastRokCarrier(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetPrevRokCarrier(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetRokCarrierCOB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 inline short GetNonRokCarryingOppn(EngineObject**, const PlanWord* pStream, int* pResult)
 {
-    return (short)(*pResult = pStream->n);
+    return static_cast<short>(*pResult = pStream->n);
 }
 
 } // namespace PlanArg

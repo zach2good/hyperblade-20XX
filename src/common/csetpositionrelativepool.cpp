@@ -12,7 +12,7 @@ void CSetPositionRelativePool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountCSetPositionRelative;
+    auto nRemaining = static_cast<short>(g_nPoolCountCSetPositionRelative);
 
     while (nRemaining-- > 0)
     {

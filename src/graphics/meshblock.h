@@ -27,7 +27,7 @@ struct MeshBlock
     // Bit five asks the renderer for the depth sort.
     unsigned char SortsFaces() const
     {
-        return (unsigned char)(wFlags >> 5) & 1;
+        return static_cast<unsigned char>(wFlags >> 5) & 1;
     }
 
     Vec3*            Vertices() const;
@@ -45,7 +45,7 @@ inline Vec3* MeshBlock::Vertices() const
 // The texture coordinates follow the vertices and their normals.
 inline TexCoord* MeshBlock::Coords() const
 {
-    return (TexCoord*)(Vertices() + nVertexCount + nNormalCount);
+    return reinterpret_cast<TexCoord*>(Vertices() + nVertexCount + nNormalCount);
 }
 
 inline MeshFace* MeshBlock::Face(int nFace) const

@@ -84,7 +84,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
         }
         else
         {
-            nSlot = (short)pArgs[ARG_SLOT].n;
+            nSlot = static_cast<short>(pArgs[ARG_SLOT].n);
         }
 
         if (nSlot == SLOT_NONE)
@@ -93,9 +93,9 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
             m_pAnchor = pPoint;
 
-            pPoint->x = (float)(short)pNode->m_pArgs[ARG_X].n;
+            pPoint->x = static_cast<float>(static_cast<short>(pNode->m_pArgs[ARG_X].n));
 
-            pPoint->y = (float)(short)pNode->m_pArgs[ARG_Y].n;
+            pPoint->y = static_cast<float>(static_cast<short>(pNode->m_pArgs[ARG_Y].n));
 
             pPoint = m_pAnchor;
 
@@ -150,7 +150,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
     m_nCountdown = COUNTDOWN_OBJECT;
 
-    if (pNode->m_nArgCount > 5 && (short)pNode->m_pArgs[ARG_FLAG].n == 1)
+    if (pNode->m_nArgCount > 5 && static_cast<short>(pNode->m_pArgs[ARG_FLAG].n) == 1)
     {
         m_cLeadTarget = 1;
     }

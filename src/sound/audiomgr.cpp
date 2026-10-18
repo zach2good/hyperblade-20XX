@@ -84,9 +84,9 @@ void AudioMgr::Init()
         nIndex++;
     }
 
-    SfxFadeVolume((int)g_pGameOptions->ReadSfxVolume());
+    SfxFadeVolume(static_cast<int>(g_pGameOptions->ReadSfxVolume()));
 
-    CDFadeVolume((int)g_pGameOptions->ReadMusicVolume());
+    CDFadeVolume(static_cast<int>(g_pGameOptions->ReadMusicVolume()));
 }
 
 // Only mode one reads the bytes; the others keep the offset for the streamer to come back to.
@@ -139,7 +139,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
         return 0;
     }
 
-    pEntry->m_pSamples = (char*)malloc(pEntry->m_nDataBytes);
+    pEntry->m_pSamples = static_cast<char*>(malloc(pEntry->m_nDataBytes));
 
     if (pEntry->m_pSamples == nullptr)
     {
@@ -356,7 +356,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
     StopCD();
 
     const auto& anTracks = MusicTracks();
-    const int   nTracks  = (int)anTracks.size();
+    const int   nTracks  = static_cast<int>(anTracks.size());
 
     if (nTracks == 0)
     {
@@ -367,14 +367,14 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
     if (nTrack == CD_TRACK_RANDOM)
     {
-        srand((unsigned int)SDL_GetTicks());
+        srand(static_cast<unsigned int>(SDL_GetTicks()));
 
         int nPicked = CD_TRACK_RANDOM;
         int nScan   = g_nCDRecentCursor;
 
         for (int i = 0; i < nTracks; i++)
         {
-            const int nPick = (int)((long long)rand() * nTracks / ((long long)RAND_MAX + 1));
+            const int nPick = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
 
             if (g_anCDRecentTracks[nScan] != nPick)
             {
@@ -392,7 +392,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
         if (nPicked == CD_TRACK_RANDOM)
         {
-            nPicked = (int)((long long)rand() * nTracks / ((long long)RAND_MAX + 1));
+            nPicked = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
         }
 
         g_anCDRecentTracks[g_nCDRecentCursor] = nPicked;
@@ -481,7 +481,7 @@ int AudioMgr::PreloadGroup(int nGroup)
 
         strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pSnd->m_pszName, g_pszWaveExtension);
 
-        pSnd->m_pSamples = (char*)malloc(pSnd->m_nDataBytes);
+        pSnd->m_pSamples = static_cast<char*>(malloc(pSnd->m_nDataBytes));
 
         if (pSnd->m_pSamples == nullptr || !Wave::ReadSamples(strPath.m_str.m_pchData, pSnd->m_nDataOffset, pSnd->m_nDataBytes, pSnd->m_pSamples))
         {

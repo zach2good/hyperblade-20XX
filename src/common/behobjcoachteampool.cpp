@@ -11,7 +11,7 @@ void BehObjCoachTeamPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountBehObjCoachTeam;
+    auto nRemaining = static_cast<short>(g_nPoolCountBehObjCoachTeam);
 
     while (nRemaining-- > 0)
     {

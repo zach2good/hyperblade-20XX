@@ -34,7 +34,7 @@ void CDisplayShotPower::Process(int nArg)
 
         if (pSource != nullptr)
         {
-            g_pRenderer->SetShotPower((float)pSource->m_nShotPowerLevel);
+            g_pRenderer->SetShotPower(static_cast<float>(pSource->m_nShotPowerLevel));
             g_pRenderer->ShowShotPower();
         }
     }

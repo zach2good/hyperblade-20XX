@@ -84,7 +84,7 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
         m_nFrame   = header.wFrame;
         m_nFormat  = header.nFormat;
 
-        auto* const pBuffer = new float[(unsigned short)(header.nDataSize >> 2)];
+        auto* const pBuffer = new float[static_cast<unsigned short>(header.nDataSize >> 2)];
 
         if (pBuffer == nullptr)
         {

@@ -53,7 +53,7 @@ short SaveObject::WrapToNextValidTeam(short nTeam, int nDirection)
 
             if (nTeam < 0)
             {
-                nTeam = (short)(nTeamCount - 1);
+                nTeam = static_cast<short>(nTeamCount - 1);
             }
         }
     }
@@ -73,7 +73,7 @@ short SaveObject::BracketIterPeek()
 {
     g_nDromeTeamAway = m_aBracket[g_nDromeTeamHome][m_wBracketPos];
 
-    return (short)g_nDromeTeamAway;
+    return static_cast<short>(g_nDromeTeamAway);
 }
 
 // FUNCTION: HYPERX 0x00448e30
@@ -89,7 +89,7 @@ short SaveObject::BracketIterAdvance()
 
     g_nDromeTeamAway = m_aBracket[g_nDromeTeamHome][m_wBracketPos];
 
-    return (short)g_nDromeTeamAway;
+    return static_cast<short>(g_nDromeTeamAway);
 }
 
 // FUNCTION: HYPERX 0x00448e70
@@ -146,7 +146,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            char* pSpace = (char*)strchr(pLine, ' ');
+            char* pSpace = strchr(pLine, ' ');
 
             if (pSpace == nullptr)
             {
@@ -160,8 +160,8 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
             for (int nSlot = 0; nSlot < GAUNTLET_ROUND_SLOTS && pSpace != nullptr; nSlot++)
             {
                 pSpace++;
-                const auto nValue         = (short)atoi(pSpace);
-                pSpace                    = (char*)strchr(pSpace, ' ');
+                const auto nValue         = static_cast<short>(atoi(pSpace));
+                pSpace                    = strchr(pSpace, ' ');
                 m_aBracket[nRound][nSlot] = nValue;
             }
 

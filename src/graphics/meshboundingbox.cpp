@@ -37,8 +37,8 @@ int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOw
     Vec3            vDeltaB;
     int             nStepsUsed;
 
-    flDistA     = (float)sqrt(static_cast<double>(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x)));
-    flDistB     = (float)sqrt(static_cast<double>(pDirOwn->z * pDirOwn->z + (pDirOwn->y * pDirOwn->y + pDirOwn->x * pDirOwn->x)));
+    flDistA     = static_cast<float>(sqrt(static_cast<double>(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x))));
+    flDistB     = static_cast<float>(sqrt(static_cast<double>(pDirOwn->z * pDirOwn->z + (pDirOwn->y * pDirOwn->y + pDirOwn->x * pDirOwn->x))));
     nStepsSelf  = 1;
     nStepsOther = 1;
 
@@ -55,8 +55,8 @@ int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOw
     }
 
     nStepsUsed = (std::max)(nStepsSelf, nStepsOther);
-    vDeltaA    = pDirOther->Scaled((float)(1.0 / nStepsUsed));
-    vDeltaB    = pDirOwn->Scaled((float)(1.0 / nStepsUsed));
+    vDeltaA    = pDirOther->Scaled(static_cast<float>(1.0 / nStepsUsed));
+    vDeltaB    = pDirOwn->Scaled(static_cast<float>(1.0 / nStepsUsed));
     bodyMine   = *this;
     bodyOther  = *pBox;
     bIntersect = 0;

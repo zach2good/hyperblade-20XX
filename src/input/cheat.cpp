@@ -98,13 +98,13 @@ void Cheat::RestoreAllPlayers()
 {
     for (int nTeam = 0; nTeam < 4; nTeam++)
     {
-        EngineObject* pTeam = g_pGameEngine->m_ppSlots[(short)g_teamScaleSlots.anTeamOrder[nTeam]];
+        EngineObject* pTeam = g_pGameEngine->m_ppSlots[static_cast<short>(g_teamScaleSlots.anTeamOrder[nTeam])];
 
         if (pTeam != nullptr)
         {
             for (int nBone = 1; nBone < 15; nBone++)
             {
-                MeshBone* pBone = &pTeam->m_pBones[(short)nBone];
+                MeshBone* pBone = &pTeam->m_pBones[static_cast<short>(nBone)];
 
                 if (pBone != nullptr && pBone->IsBound() != 0)
                 {
@@ -266,7 +266,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
     {
         if (g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
         {
-            if (g_cheatState.ProcessKeypress((char)nKey))
+            if (g_cheatState.ProcessKeypress(static_cast<char>(nKey)))
             {
                 return 1;
             }
@@ -357,7 +357,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                 case '2':
                     pEngine = g_pGameEngine;
                     nSlot   = pEngine->m_nViewedSlot;
-                    pEntity = pEngine->m_ppSlots[(short)nSlot];
+                    pEntity = pEngine->m_ppSlots[static_cast<short>(nSlot)];
 
                     if (pEntity != nullptr)
                     {

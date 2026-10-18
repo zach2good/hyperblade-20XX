@@ -224,12 +224,12 @@ public:
 
     unsigned char HasNoModel() const
     {
-        return (unsigned char)(m_nFlags >> 2) & 1;
+        return static_cast<unsigned char>(m_nFlags >> 2) & 1;
     }
 
     unsigned char IsHidden() const
     {
-        return (unsigned char)(m_nFlags >> 4) & 1;
+        return static_cast<unsigned char>(m_nFlags >> 4) & 1;
     }
 
     unsigned int m_nFlags; // 0x220

@@ -94,12 +94,12 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 
     if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
     {
-        if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+        if (static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
         {
             // The key goes through a char, so Key::OEM_PLUS and Key::OEM_MINUS never reach their cases.
-            if (GameApp::HandleMatchKeypress((int)(char)nCode) == 0 && g_pInputDevice->HandleKeyDown(nCode) == -1)
+            if (GameApp::HandleMatchKeypress(static_cast<int>(static_cast<char>(nCode))) == 0 && g_pInputDevice->HandleKeyDown(nCode) == -1)
             {
-                GameApp::HandleGlobalKeyEvent((int)nCode);
+                GameApp::HandleGlobalKeyEvent(static_cast<int>(nCode));
             }
 
             return;
@@ -129,7 +129,7 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 
     if (nCode == 'Q' || nCode == Key::ESCAPE || nCode == Key::PAUSE)
     {
-        GameApp::HandleGlobalKeyEvent((int)nCode);
+        GameApp::HandleGlobalKeyEvent(static_cast<int>(nCode));
     }
 }
 
@@ -146,7 +146,7 @@ static void Release(unsigned int nMessage, unsigned int nCode, int nX, int nY)
             g_pActiveScreen->OnMouseMessage(nMessage, nCode, pt.x, pt.y);
         }
     }
-    else if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+    else if (static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
     {
         g_pInputDevice->HandleKeyUp(nCode);
     }
@@ -239,9 +239,9 @@ int WndProc::OnActivate(unsigned int bActive)
 {
     if (g_bShuttingDown == 0 && bActive != g_gameApp.m_bIsActive)
     {
-        g_gameApp.m_bIsActive = (unsigned char)bActive;
+        g_gameApp.m_bIsActive = static_cast<unsigned char>(bActive);
 
-        if ((unsigned char)bActive != 0)
+        if (static_cast<unsigned char>(bActive) != 0)
         {
             SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_HIGH);
 

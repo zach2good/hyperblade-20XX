@@ -10,11 +10,11 @@
 // FUNCTION: HYPERX 0x0042cf20
 int VisualEffectFade::Tick()
 {
-    if ((unsigned int)SDL_GetTicks() - m_dwStepped > m_nDuration)
+    if (static_cast<unsigned int>(SDL_GetTicks()) - m_dwStepped > m_nDuration)
     {
         m_bPhase = ApplyPhase(m_bPhase);
 
-        m_dwStepped = (unsigned int)SDL_GetTicks();
+        m_dwStepped = static_cast<unsigned int>(SDL_GetTicks());
 
         return 1;
     }
@@ -44,7 +44,7 @@ int VisualEffectFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
     {
-        g_pColorPalette->BuildFadeTable(m_pWorkEntries, (short)m_cWorkEntries, *pStartColour, 0.1f);
+        g_pColorPalette->BuildFadeTable(m_pWorkEntries, static_cast<short>(m_cWorkEntries), *pStartColour, 0.1f);
 
         return 1;
     }

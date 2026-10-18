@@ -6,12 +6,12 @@ struct PlanBehaviourWord
 {
     static short GetPlan(unsigned int nWord)
     {
-        return (short)(nWord >> 16);
+        return static_cast<short>(nWord >> 16);
     }
 
     static short GetBehaviour(unsigned int nWord)
     {
-        return (short)nWord;
+        return static_cast<short>(nWord);
     }
 
     static unsigned int Pack(int nPlan, unsigned int nBehaviour)

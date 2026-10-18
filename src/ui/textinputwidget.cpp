@@ -42,9 +42,9 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
         return 1;
     }
 
-    if (SDL_isprint((int)nChar) && m_nLength < m_nCapacity)
+    if (SDL_isprint(nChar) && m_nLength < m_nCapacity)
     {
-        m_pszInput[m_nLength] = (char)nChar;
+        m_pszInput[m_nLength] = static_cast<char>(nChar);
 
         m_nLength++;
 

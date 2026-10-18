@@ -11,7 +11,7 @@ void BehObjTrackTrajectoryPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountBehObjTrackTrajectory;
+    auto nRemaining = static_cast<short>(g_nPoolCountBehObjTrackTrajectory);
 
     while (nRemaining-- > 0)
     {

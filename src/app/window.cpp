@@ -66,7 +66,7 @@ void Window::InvalidateAndUpdate()
 constexpr auto MENU_WIDTH  = 640;
 constexpr auto MENU_HEIGHT = 480;
 
-static std::vector<std::uint32_t> s_menuPixels((size_t)(MENU_WIDTH * MENU_HEIGHT));
+static std::vector<std::uint32_t> s_menuPixels(static_cast<size_t>(MENU_WIDTH* MENU_HEIGHT));
 
 Window::MenuCanvas Window::MenuPixels()
 {
@@ -134,8 +134,8 @@ void Window::OnSize(int cx, int cy)
         return;
     }
 
-    g_dwDisplayWidth  = (unsigned int)nWidth;
-    g_dwDisplayHeight = (unsigned int)nHeight;
+    g_dwDisplayWidth  = static_cast<unsigned int>(nWidth);
+    g_dwDisplayHeight = static_cast<unsigned int>(nHeight);
 
     // ResizeBackBuffer compares against the camera's viewport, which can be smaller than the buffer.
     g_nPrevWidth  = 0;
@@ -208,7 +208,7 @@ static std::pair<int, int> ClientPixels(float flX, float flY)
 {
     const auto flDensity = SDL_GetWindowPixelDensity(s_pWindow);
 
-    return { (int)(flX * flDensity), (int)(flY * flDensity) };
+    return { static_cast<int>(flX * flDensity), static_cast<int>(flY * flDensity) };
 }
 
 static void HandleKey(const SDL_KeyboardEvent& key)
@@ -489,9 +489,9 @@ Window::MessageAnswer Window::ShowMessage(const char* pszText, const char* pszCa
     constexpr auto RETURN = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
     constexpr auto ESCAPE = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT;
 
-    const auto aOK       = std::array{ SDL_MessageBoxButtonData{ RETURN | ESCAPE, (int)MessageAnswer::OK, "OK" } };
-    const auto aOKCancel = std::array{ SDL_MessageBoxButtonData{ RETURN, (int)MessageAnswer::OK, "OK" }, SDL_MessageBoxButtonData{ ESCAPE, (int)MessageAnswer::CANCEL, "Cancel" } };
-    const auto aYesNo    = std::array{ SDL_MessageBoxButtonData{ RETURN, (int)MessageAnswer::YES, "Yes" }, SDL_MessageBoxButtonData{ ESCAPE, (int)MessageAnswer::NO, "No" } };
+    const auto aOK       = std::array{ SDL_MessageBoxButtonData{ RETURN | ESCAPE, static_cast<int>(MessageAnswer::OK), "OK" } };
+    const auto aOKCancel = std::array{ SDL_MessageBoxButtonData{ RETURN, static_cast<int>(MessageAnswer::OK), "OK" }, SDL_MessageBoxButtonData{ ESCAPE, static_cast<int>(MessageAnswer::CANCEL), "Cancel" } };
+    const auto aYesNo    = std::array{ SDL_MessageBoxButtonData{ RETURN, static_cast<int>(MessageAnswer::YES), "Yes" }, SDL_MessageBoxButtonData{ ESCAPE, static_cast<int>(MessageAnswer::NO), "No" } };
 
     const auto choices = [&]
     {
@@ -523,13 +523,13 @@ Window::MessageAnswer Window::ShowMessage(const char* pszText, const char* pszCa
         return SDL_MESSAGEBOX_INFORMATION;
     }();
 
-    const auto data = SDL_MessageBoxData{ flags, s_pWindow, pszCaption, pszText, (int)choices.size(), choices.data(), nullptr };
+    const auto data = SDL_MessageBoxData{ flags, s_pWindow, pszCaption, pszText, static_cast<int>(choices.size()), choices.data(), nullptr };
 
     auto nChosen = choices.back().buttonID;
 
     SDL_ShowMessageBox(&data, &nChosen);
 
-    return (MessageAnswer)nChosen;
+    return static_cast<MessageAnswer>(nChosen);
 }
 
 void Window::SetBusyCursor(bool bBusy)

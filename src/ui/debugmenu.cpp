@@ -321,10 +321,10 @@ void GamepadsSection()
 
         for (int nButton = 0; nButton < SDL_GAMEPAD_BUTTON_COUNT; nButton++)
         {
-            if (SDL_GetGamepadButton(pPad, (SDL_GamepadButton)nButton))
+            if (SDL_GetGamepadButton(pPad, static_cast<SDL_GamepadButton>(nButton)))
             {
                 ImGui::SameLine();
-                ImGui::TextUnformatted(SDL_GetGamepadStringForButton((SDL_GamepadButton)nButton));
+                ImGui::TextUnformatted(SDL_GetGamepadStringForButton(static_cast<SDL_GamepadButton>(nButton)));
             }
         }
 
@@ -355,7 +355,7 @@ void InputTab()
 
     const auto buttons = SDL_GetMouseState(&flX, &flY);
 
-    ImGui::Text("Mouse %.0f, %.0f, buttons 0x%x", flX, flY, (unsigned int)buttons);
+    ImGui::Text("Mouse %.0f, %.0f, buttons 0x%x", flX, flY, static_cast<unsigned int>(buttons));
     ImGui::Text("Keys held:");
 
     for (unsigned int nKey = 0; nKey < 256; nKey++)
@@ -438,7 +438,7 @@ void InputTab()
 
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
-            ImGui::Text("%.1fs", (double)(nNow - entry.nTicksMs) / 1000.0);
+            ImGui::Text("%.1fs", static_cast<double>(nNow - entry.nTicksMs) / 1000.0);
             ImGui::TableNextColumn();
             ImGui::TextUnformatted(entry.pszSource);
             ImGui::TableNextColumn();
@@ -688,14 +688,14 @@ std::string CheatCode(void (*pfnActivate)())
             continue;
         }
 
-        const auto nLast = (unsigned char)entry.pszCode[0];
-        const auto nKey  = (unsigned char)entry.pszCode[1];
+        const auto nLast = static_cast<unsigned char>(entry.pszCode[0]);
+        const auto nKey  = static_cast<unsigned char>(entry.pszCode[1]);
 
         auto code = std::string();
 
         for (unsigned int i = 0; i <= nLast; i++)
         {
-            code += (char)((unsigned char)entry.pszCode[2 + i] ^ nKey);
+            code += static_cast<char>(static_cast<unsigned char>(entry.pszCode[2 + i]) ^ nKey);
         }
 
         return code;

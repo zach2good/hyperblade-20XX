@@ -185,7 +185,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         Vec3 vOut = vStep;
 
-        *m_pSpeed = (float)sqrt(static_cast<double>(flSz * flSz + flSy * flSy + flSx * flSx));
+        *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flSz * flSz + flSy * flSy + flSx * flSx)));
 
         float* pSpeed = m_pSpeed;
 
@@ -206,13 +206,13 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
         {
             pVelDir = m_pVelDir;
 
-            auto flLen = (float)sqrt(static_cast<double>(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z));
+            auto flLen = static_cast<float>(sqrt(static_cast<double>(pVelDir->x * pVelDir->x + pVelDir->y * pVelDir->y + pVelDir->z * pVelDir->z)));
 
             if (flLen == 0.0f)
             {
                 pVelDirPrev = m_pVelDirPrev;
 
-                flLen = (float)sqrt(static_cast<double>(pVelDirPrev->x * pVelDirPrev->x + pVelDirPrev->y * pVelDirPrev->y + pVelDirPrev->z * pVelDirPrev->z));
+                flLen = static_cast<float>(sqrt(static_cast<double>(pVelDirPrev->x * pVelDirPrev->x + pVelDirPrev->y * pVelDirPrev->y + pVelDirPrev->z * pVelDirPrev->z)));
 
                 if (flLen != 0.0f)
                 {
@@ -298,11 +298,11 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
                     if (vCross.z > 0.0)
                     {
-                        pRelax->m_flAngle = (float)Math::Acos(flTarget);
+                        pRelax->m_flAngle = static_cast<float>(Math::Acos(flTarget));
                     }
                     else
                     {
-                        pRelax->m_flAngle = -(float)Math::Acos(flTarget);
+                        pRelax->m_flAngle = -static_cast<float>(Math::Acos(flTarget));
                     }
 
                     pRelax->Activate();
@@ -333,7 +333,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         AttachPak* const pRokAttach = pBody->pAttach;
 
-        bCarryingRok = (char)(pRokAttach != nullptr && (nCarrierSlot = pRokAttach->nSlot) < PLAYER_OBJECT_COUNT && nCarrierSlot == m_pOwner->GetSlot());
+        bCarryingRok = static_cast<char>(pRokAttach != nullptr && (nCarrierSlot = pRokAttach->nSlot) < PLAYER_OBJECT_COUNT && nCarrierSlot == m_pOwner->GetSlot());
 
         if (m_pPos->z > g_flZeroAgendaItem)
         {
@@ -500,7 +500,7 @@ void CGlideOnSurface::Release(int nTick)
         vStep = pBody->step;
 
         const auto nElapsed =
-            (unsigned int)(long)(g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
+            static_cast<unsigned int>(static_cast<long>(g_pGameEngine->m_clock.flDelta * MS_PER_SECOND));
         const unsigned int nTickBase = g_pGameEngine->m_clock.nPrevTickMs;
         const float        flDelta   = g_pGameEngine->m_clock.flDelta;
 
@@ -510,7 +510,7 @@ void CGlideOnSurface::Release(int nTick)
         if (nElapsed > 0)
         {
             const float flDrift =
-                ((float)(nTickBase + nElapsed) - (float)*m_pnPrevTick) / (g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
+                (static_cast<float>(nTickBase + nElapsed) - static_cast<float>(*m_pnPrevTick)) / (g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
 
             vLag.x = flDrift * m_pVel->x;
             vLag.y = flDrift * m_pVel->y;

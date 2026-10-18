@@ -66,7 +66,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
     m_bCameraBias = 0;
     m_pOwner      = pObject;
 
-    m_bCameraBias = (char)pNode->m_pArgs[ARG_FLAGS].n;
+    m_bCameraBias = static_cast<char>(pNode->m_pArgs[ARG_FLAGS].n);
 
     if (pNode->m_nArgCount == ARG_COUNT_MARKER)
     {
@@ -85,16 +85,16 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
             return;
         }
 
-        m_pTarget = g_pGameEngine->m_ppSlots[(short)pArgs[ARG_MARKER_SLOT].n];
+        m_pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[ARG_MARKER_SLOT].n)];
 
         return;
     }
 
     if (pNode->m_nArgCount == ARG_COUNT_POINT)
     {
-        m_vDest.x = (float)pNode->m_pArgs[ARG_X].n;
+        m_vDest.x = static_cast<float>(pNode->m_pArgs[ARG_X].n);
 
-        m_vDest.y = (float)pNode->m_pArgs[ARG_Y].n;
+        m_vDest.y = static_cast<float>(pNode->m_pArgs[ARG_Y].n);
 
         m_vDest.z = g_arenaEllipsoid.GetZ(m_vDest.x, m_vDest.y);
 
@@ -109,7 +109,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
             return;
         }
 
-        m_pTarget = g_pGameEngine->m_ppSlots[(short)pArgs[ARG_POINT_SLOT].n];
+        m_pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[ARG_POINT_SLOT].n)];
 
         return;
     }
@@ -159,13 +159,13 @@ void CRelaxToPosition::Process(int nArg)
 
     Vec3 vTarget = m_vDest;
 
-    const auto nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
+    const auto nBucket = static_cast<short>(g_pGameEngine->m_clock.flInvDelta);
 
     nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
 
     nClamped >>= 2;
 
-    float flRate = g_aRelaxRateByFrameRate[(short)nClamped];
+    float flRate = g_aRelaxRateByFrameRate[static_cast<short>(nClamped)];
 
     if (m_bCameraBias != 0)
     {
@@ -241,13 +241,13 @@ void CRelaxToPosition::Release(int nArg)
 
     Vec3 vTarget = m_vDest;
 
-    const auto nBucket = (short)g_pGameEngine->m_clock.flInvDelta;
+    const auto nBucket = static_cast<short>(g_pGameEngine->m_clock.flInvDelta);
 
     nClamped = std::min<int>(FRAME_RATE_LIMIT, nBucket);
 
     nClamped >>= 2;
 
-    float flRate = g_aRelaxRateByFrameRate[(short)nClamped];
+    float flRate = g_aRelaxRateByFrameRate[static_cast<short>(nClamped)];
 
     if (m_bCameraBias != 0)
     {

@@ -16,7 +16,7 @@ struct ComponentFileHeader
 ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
 {
     int         nSize;
-    auto* const pBlob = (ModelComponent*)ModelComponent::Read(pFile, &nSize);
+    auto* const pBlob = static_cast<ModelComponent*>(ModelComponent::Read(pFile, &nSize));
 
     if (pBlob != nullptr)
     {
@@ -42,11 +42,11 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
         auto** const papBlocks = new MeshBlock*[header.cRecords];
 
         *pppBlocks = papBlocks;
-        *pnCount   = (unsigned short)header.cRecords;
+        *pnCount   = static_cast<unsigned short>(header.cRecords);
 
         while (iEntry != header.cRecords)
         {
-            auto* const pBlock = (MeshBlock*)ModelComponent::Read(pFile, &nSize);
+            auto* const pBlock = static_cast<MeshBlock*>(ModelComponent::Read(pFile, &nSize));
 
             if (pBlock == nullptr)
             {
@@ -68,7 +68,7 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
             iEntry++;
         }
 
-        if (nTotal == header.cBytes && iEntry == (short)header.cRecords)
+        if (nTotal == header.cBytes && iEntry == static_cast<short>(header.cRecords))
         {
             return nTotal;
         }

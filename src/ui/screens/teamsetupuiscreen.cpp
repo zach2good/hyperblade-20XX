@@ -37,7 +37,7 @@ void TeamSetupUIScreen::StepHomeSelection(int nDirection)
                 m_nTeamSlot = m_nTeamSlotCount - 1;
             }
 
-            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam((short)(m_nTeamSlot / 4), 0);
+            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(m_nTeamSlot / 4), 0);
 
             m_nTeamSlot = m_nTeamSlot % 4 + nTeam * 4;
 
@@ -61,7 +61,7 @@ void TeamSetupUIScreen::StepHomeSelection(int nDirection)
                 m_nTeamSlot = 0;
             }
 
-            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam((short)(m_nTeamSlot / 4), 1);
+            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(m_nTeamSlot / 4), 1);
 
             m_nTeamSlot = m_nTeamSlot % 4 + nTeam * 4;
 
@@ -103,7 +103,7 @@ void TeamSetupUIScreen::StepArenaSelection(int nDirection)
             }
 
             nTeam = g_pGameEngine->m_pSaveObject
-                        ->WrapToNextValidTeam((short)m_nArena, 0);
+                        ->WrapToNextValidTeam(static_cast<short>(m_nArena), 0);
 
             m_nArena = nTeam;
 
@@ -128,7 +128,7 @@ void TeamSetupUIScreen::StepArenaSelection(int nDirection)
             }
 
             nTeam = g_pGameEngine->m_pSaveObject
-                        ->WrapToNextValidTeam((short)m_nArena, nDirection);
+                        ->WrapToNextValidTeam(static_cast<short>(m_nArena), nDirection);
 
             m_nArena = nTeam;
 

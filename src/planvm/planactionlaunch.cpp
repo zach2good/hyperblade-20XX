@@ -95,9 +95,9 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
         {
             CameraObject* const pHeadCam = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
 
-            nPacked = ShotWord::Pack((char)(int)(pHeadCam->GetViewFracX() * 100.0f),
-                                     (char)pHeadCam->m_nShotPowerLevel,
-                                     (char)(int)(pHeadCam->GetViewFracY() * 100.0f));
+            nPacked = ShotWord::Pack(static_cast<char>(static_cast<int>(pHeadCam->GetViewFracX() * 100.0f)),
+                                     static_cast<char>(pHeadCam->m_nShotPowerLevel),
+                                     static_cast<char>(static_cast<int>(pHeadCam->GetViewFracY() * 100.0f)));
 
             pHeadCam->m_nShotPowerLevel = SHOT_POWER_RESET;
         }
@@ -118,7 +118,7 @@ extern const float g_flThreeThrow;
 // FUNCTION: HYPERX 0x00403290
 void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const ShotWord shot = { (unsigned int)nArg };
+    const ShotWord shot = { static_cast<unsigned int>(nArg) };
 
     EngineObject* pRok;
 
@@ -128,7 +128,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
     }
     else
     {
-        pRok = g_pGameEngine->m_ppSlots[(short)CollisionObj::GetModelId(pContext->GetModelSlot())];
+        pRok = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(pContext->GetModelSlot()))];
     }
 
     Vec3* const pVel          = &pRok->GetPhysicsBody()->velDir;
@@ -186,12 +186,12 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
         vDiff.y = vGoal.y - pCarrierPos->y;
         vDiff.z = vGoal.z - pCarrierPos->z;
 
-        flRange = (float)shot.GetPower();
-        flSpin  = (float)shot.GetAimX() * 0.01f;
+        flRange = static_cast<float>(shot.GetPower());
+        flSpin  = static_cast<float>(shot.GetAimX()) * 0.01f;
 
         pDiff = &vDiff;
 
-        flDistance = (float)sqrt(static_cast<double>(pDiff->y * pDiff->y + (pDiff->GetX() * pDiff->x + pDiff->z * pDiff->z)));
+        flDistance = static_cast<float>(sqrt(static_cast<double>(pDiff->y * pDiff->y + (pDiff->GetX() * pDiff->x + pDiff->z * pDiff->z))));
 
         Math::Vec3Normalize(&vDiff);
 
@@ -199,7 +199,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
         flLimit = (250.0f - flDistance) * flThird * 0.004f;
         flLimit += flThird;
 
-        if ((float)Math::Acos(vDiff.z * pCarrierDir->z + vDiff.y * pCarrierDir->y + vDiff.x * pCarrierDir->x) > flLimit)
+        if (static_cast<float>(Math::Acos(vDiff.z * pCarrierDir->z + vDiff.y * pCarrierDir->y + vDiff.x * pCarrierDir->x)) > flLimit)
         {
             Vec3* pCarrierVel;
             float flDelta;
@@ -208,13 +208,13 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pCarrierVel = &pCarrier->GetPhysicsBody()->velDir;
 
-            pCarrierVel->z = (float)fabs(static_cast<double>(pCarrierVel->z)) * 0.5f + pCarrierVel->z;
+            pCarrierVel->z = static_cast<float>(fabs(static_cast<double>(pCarrierVel->z))) * 0.5f + pCarrierVel->z;
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
             flPower = pStats->GetScalar(RATING_SHOT_POWER) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY);
 
-            flGain = ((float)rand() * flPower * (1.0f / (float)RAND_MAX) + 10.0f) * flDelta;
+            flGain = (static_cast<float>(rand()) * flPower * (1.0f / static_cast<float>(RAND_MAX)) + 10.0f) * flDelta;
 
             *pflSpeedScale = flGain * *pflSpeedScale;
 
@@ -246,7 +246,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pVel->x = -pRok->GetPositionPtr()->x;
 
-            flDrop = (0.5f - (float)shot.GetAimY() * 0.01f) * 16.0f;
+            flDrop = (0.5f - static_cast<float>(shot.GetAimY()) * 0.01f) * 16.0f;
 
             pVel->z = flDrop - pRok->GetPositionPtr()->z - 10.0f;
 
@@ -276,7 +276,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flHalf = (flRange + 175.0f) * 0.5f;
 
-            flRoot = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
+            flRoot = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)));
 
             flLength = flRoot;
 
@@ -321,8 +321,8 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
             g_pGameEngine->m_ppSlots[pCarrier->m_wTargetGoalSlot]
                 ->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
 
-            g_pGameEngine->m_ppSlots[(short)(pCarrier->m_wTargetGoalSlot - 3)]
-                ->PostSceneEvent(MSG_SHOT_ON_GOAL, (int)flInvScale);
+            g_pGameEngine->m_ppSlots[static_cast<short>(pCarrier->m_wTargetGoalSlot - 3)]
+                ->PostSceneEvent(MSG_SHOT_ON_GOAL, static_cast<int>(flInvScale));
             return;
         }
         else
@@ -338,15 +338,15 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
-            *pflSpeedScale = (((float)rand() * (0.5f / (float)RAND_MAX) + 0.5f) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY) * 10.0f + 75.0f) * flDelta;
+            *pflSpeedScale = ((static_cast<float>(rand()) * (0.5f / static_cast<float>(RAND_MAX)) + 0.5f) * pStats->GetScalar(RATING_OFFENSIVE_ABILITY) * 10.0f + 75.0f) * flDelta;
 
             if (g_bSessionActive != 0)
             {
                 *pflSpeedScale = *pflSpeedScale * 1.5f;
             }
 
-            flJitterX = (float)rand() * (1.0f / (float)RAND_MAX) - 0.5f;
-            flJitterZ = (float)rand() * (1.0f / (float)RAND_MAX) - 0.5f;
+            flJitterX = static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f;
+            flJitterZ = static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f;
 
             pVel->x = flJitterX * 10.0f - pRok->GetPositionPtr()->x;
 
@@ -363,7 +363,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             pVel->z = flJitterZ * 10.0f - pRok->GetPositionPtr()->z - 20.0f;
 
-            flRoot = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
+            flRoot = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)));
 
             flFlight = flRoot / *pflSpeedScale;
 
@@ -384,7 +384,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
             g_pGameEngine->m_ppSlots[pCarrier->m_wTargetGoalSlot]
                 ->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
 
-            g_pGameEngine->m_ppSlots[(short)(pCarrier->m_wTargetGoalSlot - 3)]->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
+            g_pGameEngine->m_ppSlots[static_cast<short>(pCarrier->m_wTargetGoalSlot - 3)]->PostSceneEvent(MSG_SHOT_ON_GOAL, 0);
             return;
         }
     }
@@ -397,7 +397,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
         pRokVel = &pRok->GetPhysicsBody()->vel;
 
-        flSpeed = (float)sqrt(static_cast<double>(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z));
+        flSpeed = static_cast<float>(sqrt(static_cast<double>(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z)));
 
         flBump = g_pGameEngine->m_clock.flDelta * 10.0f;
 
@@ -510,7 +510,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     const int nIndex = pArgs->m_pArgs[1].n;
 
-    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[(short)nIndex];
+    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
 
     Vec3* const pActorPos = pActor->GetPositionPtr();
 
@@ -547,9 +547,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     if (nSlot == GOALIE_SLOT_A || nSlot == GOALIE_SLOT_B)
     {
-        flScratchA = (float)sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff)));
+        flScratchA = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff))));
 
-        flFlight = (flScratchA / (float)sqrt(static_cast<double>(Vec3::DotInline(&vRokVel, &vRokVel)))) * g_pGameEngine->m_clock.flDelta;
+        flFlight = (flScratchA / static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vRokVel, &vRokVel))))) * g_pGameEngine->m_clock.flDelta;
 
         if (nIndex == SLOT_ROK)
         {
@@ -606,7 +606,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
         pOwner     = pContext->GetPlayerActor();
         flHandling = pOwner->m_stats.GetScalar(RATING_ROK_HANDLING);
 
-        flReach = (float)sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff))) * 0.01f;
+        flReach = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff)))) * 0.01f;
 
         if (2.0f <= flReach || 1.0f <= flReach)
         {
@@ -624,12 +624,12 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
         nSlot = nSlot % 2;
 
-        pOwner    = g_pGameEngine->GetPlayer((short)nSlot);
+        pOwner    = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
         flDamageA = pOwner->m_stats.GetScalar(RATING_DAMAGE);
 
         nSlot += 2;
 
-        pOwner    = g_pGameEngine->GetPlayer((short)nSlot);
+        pOwner    = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
         flDamageB = pOwner->m_stats.GetScalar(RATING_DAMAGE);
 
         flGate = DamageGate();
@@ -642,9 +642,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
             }
         }
 
-        flDice = (float)(rand() % DICE_WIDE);
-        flDice = (float)(rand() % DICE_WIDE) + flDice;
-        flDice = (float)(rand() % DICE_NARROW) + flDice - flScratchB;
+        flDice = static_cast<float>(rand() % DICE_WIDE);
+        flDice = static_cast<float>(rand() % DICE_WIDE) + flDice;
+        flDice = static_cast<float>(rand() % DICE_NARROW) + flDice - flScratchB;
 
         if (1.0f > flDice)
         {
@@ -653,9 +653,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
         flScatter = flDice * 0.10000000149011612f;
 
-        vJitter.x = (float)(rand() % JITTER_SPAN - JITTER_BIAS);
-        vJitter.y = (float)(rand() % JITTER_SPAN - JITTER_BIAS);
-        vJitter.z = (float)(rand() % JITTER_SPAN - JITTER_BIAS);
+        vJitter.x = static_cast<float>(rand() % JITTER_SPAN - JITTER_BIAS);
+        vJitter.y = static_cast<float>(rand() % JITTER_SPAN - JITTER_BIAS);
+        vJitter.z = static_cast<float>(rand() % JITTER_SPAN - JITTER_BIAS);
 
         Math::Vec3Normalize(&vJitter);
 
@@ -673,7 +673,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     // Without the scatter the jitter is read unset, as the original does.
     vJitter.ScaleInPlace(
-        (float)sqrt(static_cast<double>((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z)) * 0.6000000238418579f);
+        static_cast<float>(sqrt(static_cast<double>((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z))) * 0.6000000238418579f);
 
     pOut->x = vJitter.x + pOut->x;
     pOut->y = vJitter.y + pOut->y;
@@ -683,7 +683,7 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
     flScratchB = pActor->GetPhysicsBody()->flForwardSpeedDt;
 
-    if ((float)sqrt(static_cast<double>((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z)) > flScratchB)
+    if (static_cast<float>(sqrt(static_cast<double>((pOut->x * pOut->x + pOut->y * pOut->y) + pOut->z * pOut->z))) > flScratchB)
     {
         Math::Vec3Normalize(pOut);
         pOut->ScaleInPlace(flScratchB);
@@ -728,11 +728,11 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if (pArgs->m_nArgCount == ARG_COUNT_WITHOUT_OPERAND)
     {
-        pTarget = g_pGameEngine->m_ppSlots[(short)nOperand];
+        pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nOperand)];
     }
     else
     {
-        pTarget = g_pGameEngine->m_ppSlots[(short)pArgs->m_pArgs[ARG_OPERAND].n];
+        pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs->m_pArgs[ARG_OPERAND].n)];
     }
 
     if ((nOperand & 0xffff) > SLOT_DROMER3)

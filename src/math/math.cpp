@@ -64,9 +64,9 @@ bool Math::Vec3Normalize(Vec3* pVec)
 
     if (dLength > g_dNormalizeEpsilon)
     {
-        pVec->x = (float)(pVec->x / dLength);
-        pVec->y = (float)(pVec->y / dLength);
-        pVec->z = (float)(pVec->z / dLength);
+        pVec->x = static_cast<float>(pVec->x / dLength);
+        pVec->y = static_cast<float>(pVec->y / dLength);
+        pVec->z = static_cast<float>(pVec->z / dLength);
 
         return true;
     }
@@ -85,7 +85,7 @@ int Math::RandInt(int nMin, int nMax)
 
     nMax -= nMin;
 
-    return (int)(flRoll * (nMax + g_flRandRangeBias * 2.0f) + (nMin - g_flRandRangeBias) + 0.5);
+    return static_cast<int>(flRoll * (nMax + g_flRandRangeBias * 2.0f) + (nMin - g_flRandRangeBias) + 0.5);
 }
 
 // FUNCTION: HYPERX 0x0047ab30
@@ -93,13 +93,13 @@ Vec3 Math::SphericalToCartesian(const Vec3* pIn)
 {
     Vec3 vDir;
 
-    vDir.x = (float)((cos(static_cast<double>(pIn->x)) * sin(static_cast<double>(pIn->z))) * pIn->y);
+    vDir.x = static_cast<float>((cos(static_cast<double>(pIn->x)) * sin(static_cast<double>(pIn->z))) * pIn->y);
 
-    const auto flSinZ = (float)sin(static_cast<double>(pIn->z));
+    const auto flSinZ = static_cast<float>(sin(static_cast<double>(pIn->z)));
 
-    vDir.y = (float)((sin(static_cast<double>(pIn->x)) * flSinZ) * pIn->y);
+    vDir.y = static_cast<float>((sin(static_cast<double>(pIn->x)) * flSinZ) * pIn->y);
 
-    vDir.z = (float)(cos(static_cast<double>(pIn->z)) * pIn->y);
+    vDir.z = static_cast<float>(cos(static_cast<double>(pIn->z)) * pIn->y);
 
     Math::Vec3Normalize(&vDir);
 

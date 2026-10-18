@@ -132,7 +132,7 @@ void CameraObject::ResizeTransparentQueue(short nHighest)
     {
         delete[] g_pTransparentQueue;
 
-        g_nTransparentCapacity = (short)(nHighest + 1);
+        g_nTransparentCapacity = static_cast<short>(nHighest + 1);
 
         g_pTransparentQueue = new TransparentEntry[g_nTransparentCapacity];
 
@@ -203,9 +203,9 @@ void CameraObject::UpdateSmoothing()
 
     m_aDirRing[m_wDirIndex] = m_pBody->velDir;
 
-    m_wPosIndex = (short)((m_wPosIndex + 1) % m_wPosCount);
+    m_wPosIndex = static_cast<short>((m_wPosIndex + 1) % m_wPosCount);
 
-    m_wDirIndex = (short)((m_wDirIndex + 1) % m_wDirCount);
+    m_wDirIndex = static_cast<short>((m_wDirIndex + 1) % m_wDirCount);
 }
 
 // Answers nothing; its one caller ignores EAX.
@@ -225,7 +225,7 @@ void CameraObject::UpdateDirSmoothing()
 
     const int nNext = m_wDirIndex + 1;
 
-    m_wDirIndex = (short)(nNext % m_wDirCount);
+    m_wDirIndex = static_cast<short>(nNext % m_wDirCount);
 }
 
 // Three, the shake vector's z.
@@ -335,14 +335,14 @@ void CameraObject::ViewIt()
 
         pObject->ComputeWorldBoundingCentre(&vCentre);
 
-        if (((unsigned char)pObject->m_nFlags & (ENGINEOBJECT_HIDDEN | ENGINEOBJECT_POSED)) == 0)
+        if ((static_cast<unsigned char>(pObject->m_nFlags) & (ENGINEOBJECT_HIDDEN | ENGINEOBJECT_POSED)) == 0)
         {
             pObject->ApplyRenderSlotPose();
         }
 
         if (pObject->IsHidden() == 0)
         {
-            if (((unsigned char)pObject->m_nFlags & ENGINEOBJECT_NO_CULL) == 0)
+            if ((static_cast<unsigned char>(pObject->m_nFlags) & ENGINEOBJECT_NO_CULL) == 0)
             {
                 const TransformObject* pView    = m_pView;
                 const float            flRadius = pObject->m_flBoundRadius;
@@ -681,7 +681,7 @@ EngineObject* CameraObject::GetSecondaryTrackedObject()
 
     if (nSlot != -1)
     {
-        return g_pGameEngine->m_ppSlots[(short)nSlot];
+        return g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
     }
 
     return nullptr;
@@ -708,7 +708,7 @@ EngineObject* CameraObject::GetLastTrackedObject()
         return nullptr;
     }
 
-    return g_pGameEngine->m_ppSlots[(short)m_nLastTracked];
+    return g_pGameEngine->m_ppSlots[static_cast<short>(m_nLastTracked)];
 }
 
 // A tracked object that goes away leaves a stale index; nothing tracked is minus one.
@@ -733,7 +733,7 @@ EngineObject* CameraObject::GetTrackedObject()
         return nullptr;
     }
 
-    return g_pGameEngine->m_ppSlots[(short)m_nPrimaryTracked];
+    return g_pGameEngine->m_ppSlots[static_cast<short>(m_nPrimaryTracked)];
 }
 
 // FUNCTION: HYPERX 0x00422d30

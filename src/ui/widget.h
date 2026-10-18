@@ -33,12 +33,12 @@ namespace Str
 
 inline char* Copy(char*& pText, const char* pszSource)
 {
-    return pText = strcpy((char*)operator new(strlen(pszSource) + 1), pszSource);
+    return pText = strcpy(static_cast<char*>(operator new(strlen(pszSource) + 1)), pszSource);
 }
 
 inline char* Duplicate(char*& pText, const char* pszSource)
 {
-    pText = (char*)operator new(strlen(pszSource) + 1);
+    pText = static_cast<char*>(operator new(strlen(pszSource) + 1));
 
     return strcpy(pText, pszSource);
 }

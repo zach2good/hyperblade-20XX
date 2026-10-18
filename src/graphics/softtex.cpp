@@ -32,7 +32,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     const unsigned int nStride = (cx + 3) & 0xfffffffc;
 
     // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
-    auto* pSprite = (RLESprite*)malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2);
+    auto* pSprite = static_cast<RLESprite*>(malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2));
 
     if (pSprite == nullptr)
     {
@@ -42,7 +42,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     pSprite->cx = cx;
     pSprite->cy = cy;
 
-    char* pOut = (char*)&pSprite->apRows[cy];
+    char* pOut = reinterpret_cast<char*>(&pSprite->apRows[cy]);
 
     for (unsigned int nRow = 0; nRow < cy; nRow++)
     {
@@ -69,12 +69,12 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
                 {
                     if (bPrev == 0)
                     {
-                        *pOut = (char)nCount;
+                        *pOut = static_cast<char>(nCount);
                         pOut++;
                     }
                     else
                     {
-                        *pOut = (char)(nCount | RLE_LITERAL);
+                        *pOut = static_cast<char>(nCount | RLE_LITERAL);
                         pOut++;
 
                         memcpy(pOut, aRun, nCount);
@@ -105,7 +105,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
 
     // The shrink can move the block, and the row pointers point into it.
     const auto  nOld    = (std::uintptr_t)pSprite;
-    auto* const pShrunk = (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
+    auto* const pShrunk = static_cast<RLESprite*>(realloc(pSprite, pOut - reinterpret_cast<char*>(pSprite)));
 
     if (pShrunk == nullptr)
     {
@@ -116,7 +116,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     {
         for (unsigned int nRow = 0; nRow < cy; nRow++)
         {
-            pShrunk->apRows[nRow] = (char*)pShrunk + ((std::uintptr_t)pShrunk->apRows[nRow] - nOld);
+            pShrunk->apRows[nRow] = reinterpret_cast<char*>(pShrunk) + ((std::uintptr_t)pShrunk->apRows[nRow] - nOld);
         }
     }
 
@@ -217,7 +217,7 @@ char SoftTex::Load(const char* pszName)
                     pColours = GDI::ColorTable(m_pDib);
 
                     // A short table leaves the entries past it black.
-                    const auto nEntries = (std::min)((int)((RgbQuad*)GDI::PixelBits(m_pDib) - pColours), 256);
+                    const auto nEntries = (std::min)(static_cast<int>(reinterpret_cast<RgbQuad*>(GDI::PixelBits(m_pDib)) - pColours), 256);
 
                     for (i = 0; i < nEntries; i++)
                     {

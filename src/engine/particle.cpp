@@ -28,13 +28,13 @@ void Particle::InitRandom(float flSpread, float flRise)
 
     const float flRateRoll = Math::RandMagnitude();
 
-    const int nRowRate = (int)(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
-    m_flRowRate        = (float)nRowRate;
+    const int nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
+    m_flRowRate        = static_cast<float>(nRowRate);
 
     m_nSet = Math::RandInt(0, PARTICLE_ROW_SETS - 1);
 
     const int nRow = Math::RandInt(0, PARTICLE_ROWS_PER_SET - 1);
-    m_flRow        = (float)nRow;
+    m_flRow        = static_cast<float>(nRow);
 }
 
 // Unlike InitRandom, half the particles leave downwards and they live half as long.
@@ -63,13 +63,13 @@ void Particle::InitRandomUniform(float flSpread, float flRise)
 
     const float flRateRoll = Math::RandMagnitude();
 
-    const int nRowRate = (int)(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
-    m_flRowRate        = (float)nRowRate;
+    const int nRowRate = static_cast<int>(flRateRoll * PARTICLE_ROW_RATE_MAX + 0.5);
+    m_flRowRate        = static_cast<float>(nRowRate);
 
     m_nSet = Math::RandInt(0, PARTICLE_ROW_SETS - 1);
 
     const int nRow = Math::RandInt(0, PARTICLE_ROWS_PER_SET - 1);
-    m_flRow        = (float)nRow;
+    m_flRow        = static_cast<float>(nRow);
 }
 
 // FUNCTION: HYPERX 0x00412a10

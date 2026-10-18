@@ -22,19 +22,19 @@ int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
     pScreen->nWidth  = nWidth;
     pScreen->nHeight = nHeight;
 
-    pScreen->cFlags      = (unsigned char)fgetc(pFile);
-    pScreen->cBackground = (unsigned char)fgetc(pFile);
-    pScreen->cAspect     = (unsigned char)fgetc(pFile);
+    pScreen->cFlags      = static_cast<unsigned char>(fgetc(pFile));
+    pScreen->cBackground = static_cast<unsigned char>(fgetc(pFile));
+    pScreen->cAspect     = static_cast<unsigned char>(fgetc(pFile));
 
     if ((pScreen->cFlags & FLAG_HAS_TABLE) != 0)
     {
-        nCount = (unsigned short)(1 << ((pScreen->cFlags & FLAG_SIZE_MASK) + 1));
+        nCount = static_cast<unsigned short>(1 << ((pScreen->cFlags & FLAG_SIZE_MASK) + 1));
 
         for (unsigned short nLeft = 0; nLeft < nCount; nLeft++)
         {
-            pScreen->aColours[nLeft][0] = (unsigned char)fgetc(pFile);
-            pScreen->aColours[nLeft][1] = (unsigned char)fgetc(pFile);
-            pScreen->aColours[nLeft][2] = (unsigned char)fgetc(pFile);
+            pScreen->aColours[nLeft][0] = static_cast<unsigned char>(fgetc(pFile));
+            pScreen->aColours[nLeft][1] = static_cast<unsigned char>(fgetc(pFile));
+            pScreen->aColours[nLeft][2] = static_cast<unsigned char>(fgetc(pFile));
         }
     }
 

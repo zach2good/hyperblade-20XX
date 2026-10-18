@@ -101,8 +101,8 @@ SDL_GPUTexture* CreateTarget(SDL_GPUTextureFormat format, SDL_GPUTextureUsageFla
     info.type                 = SDL_GPU_TEXTURETYPE_2D;
     info.format               = format;
     info.usage                = usage;
-    info.width                = (Uint32)nWidth;
-    info.height               = (Uint32)nHeight;
+    info.width                = static_cast<Uint32>(nWidth);
+    info.height               = static_cast<Uint32>(nHeight);
     info.layer_count_or_depth = 1;
     info.num_levels           = 1;
 
@@ -121,8 +121,8 @@ bool Fit(SDL_Renderer* pRenderer, int nWidth, int nHeight)
 
     const auto device = HwPipeline::Device{ s_pDevice };
 
-    s_pTarget = CreateTarget((SDL_GPUTextureFormat)HwPipeline::ColourFormat(), SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, nWidth, nHeight);
-    s_pDepth  = CreateTarget((SDL_GPUTextureFormat)HwPipeline::DepthFormat(device), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, nWidth, nHeight);
+    s_pTarget = CreateTarget(static_cast<SDL_GPUTextureFormat>(HwPipeline::ColourFormat()), SDL_GPU_TEXTUREUSAGE_COLOR_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, nWidth, nHeight);
+    s_pDepth  = CreateTarget(static_cast<SDL_GPUTextureFormat>(HwPipeline::DepthFormat(device)), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET, nWidth, nHeight);
 
     if (s_pTarget == nullptr || s_pDepth == nullptr)
     {
@@ -206,7 +206,7 @@ bool Ready(SDL_Renderer* pRenderer)
     {
         if (pMap == nullptr)
         {
-            pMap = CreateTarget((SDL_GPUTextureFormat)HwPipeline::ShadowFormat(device), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, SHADOW_SIZE, SHADOW_SIZE);
+            pMap = CreateTarget(static_cast<SDL_GPUTextureFormat>(HwPipeline::ShadowFormat(device)), SDL_GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET | SDL_GPU_TEXTUREUSAGE_SAMPLER, SHADOW_SIZE, SHADOW_SIZE);
         }
     }
 
@@ -249,7 +249,7 @@ SDL_GPUBuffer* CreateVertexBuffer(Uint32 nBytes)
 
 void UploadDynamic(SDL_GPUCopyPass* pCopy)
 {
-    const auto nBytes = (Uint32)(s_dynamic.size() * sizeof(HwMesh::Vertex));
+    const auto nBytes = static_cast<Uint32>(s_dynamic.size() * sizeof(HwMesh::Vertex));
 
     if (nBytes == 0)
     {
@@ -301,7 +301,7 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
             continue;
         }
 
-        const auto nBytes = (Uint32)(built.vertices.size() * sizeof(HwMesh::Vertex));
+        const auto nBytes = static_cast<Uint32>(built.vertices.size() * sizeof(HwMesh::Vertex));
 
         SDL_GPUBuffer* const pBuffer = CreateVertexBuffer(nBytes);
 
@@ -313,7 +313,7 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
         UploadBuffer(pCopy, pBuffer, built.vertices.data(), nBytes);
 
         mesh.pBuffer      = pBuffer;
-        mesh.nVertexCount = (Uint32)built.vertices.size();
+        mesh.nVertexCount = static_cast<Uint32>(built.vertices.size());
 
         for (const auto& vertex : built.vertices)
         {
@@ -345,8 +345,8 @@ void UploadMeshes(SDL_GPUCommandBuffer* pCommands)
 // Viewport pixels, y down, into clip space, keeping the engine's 0 to 1 depth.
 HwPipeline::MeshUniforms ClipUniforms(const HwRenderer::Draw& draw)
 {
-    const auto flScaleX = 2.0f / (float)draw.nViewportWidth;
-    const auto flScaleY = -2.0f / (float)draw.nViewportHeight;
+    const auto flScaleX = 2.0f / static_cast<float>(draw.nViewportWidth);
+    const auto flScaleY = -2.0f / static_cast<float>(draw.nViewportHeight);
 
     const float aNDCFromPixel[16] = {
         flScaleX,
@@ -387,9 +387,9 @@ HwPipeline::MeshUniforms ClipUniforms(const HwRenderer::Draw& draw)
     std::memcpy(uniforms.aWorldFromModel, draw.aWorldFromModel, sizeof(uniforms.aWorldFromModel));
     std::memcpy(uniforms.aLightDirs, draw.aLightDirs, sizeof(uniforms.aLightDirs));
 
-    uniforms.aFlags[0] = (float)draw.bPalettised;
-    uniforms.aFlags[1] = (float)draw.nKeyLight;
-    uniforms.aFlags[2] = (float)draw.bArena;
+    uniforms.aFlags[0] = static_cast<float>(draw.bPalettised);
+    uniforms.aFlags[1] = static_cast<float>(draw.nKeyLight);
+    uniforms.aFlags[2] = static_cast<float>(draw.bArena);
 
     return uniforms;
 }
@@ -497,12 +497,12 @@ Matrix LightClipFromWorld(const Vec3& vToLight)
 
         for (int nAxis = 0; nAxis < 3; nAxis++)
         {
-            const auto& axis = *axes[(size_t)nAxis];
+            const auto& axis = *axes[static_cast<size_t>(nAxis)];
 
             const auto flAt = axis[0] * w[3] + axis[1] * w[7] + axis[2] * w[11];
 
-            aflMin[(size_t)nAxis] = (std::min)(aflMin[(size_t)nAxis], flAt - flReach);
-            aflMax[(size_t)nAxis] = (std::max)(aflMax[(size_t)nAxis], flAt + flReach);
+            aflMin[static_cast<size_t>(nAxis)] = (std::min)(aflMin[static_cast<size_t>(nAxis)], flAt - flReach);
+            aflMax[static_cast<size_t>(nAxis)] = (std::max)(aflMax[static_cast<size_t>(nAxis)], flAt + flReach);
         }
     }
 
@@ -518,8 +518,8 @@ Matrix LightClipFromWorld(const Vec3& vToLight)
 
     for (int nAxis = 0; nAxis < 3; nAxis++)
     {
-        const auto& axis    = *axes[(size_t)nAxis];
-        const auto  flSpan  = (std::max)(aflMax[(size_t)nAxis] - aflMin[(size_t)nAxis], 1.0f);
+        const auto& axis    = *axes[static_cast<size_t>(nAxis)];
+        const auto  flSpan  = (std::max)(aflMax[static_cast<size_t>(nAxis)] - aflMin[static_cast<size_t>(nAxis)], 1.0f);
         const auto  flScale = [&]
         {
             // Depth runs 0 to 1, the other two -1 to 1.
@@ -538,7 +538,7 @@ Matrix LightClipFromWorld(const Vec3& vToLight)
                 return -aflMin[2] * flScale;
             }
 
-            return -(aflMin[(size_t)nAxis] + aflMax[(size_t)nAxis]) * 0.5f * flScale;
+            return -(aflMin[static_cast<size_t>(nAxis)] + aflMax[static_cast<size_t>(nAxis)]) * 0.5f * flScale;
         }();
 
         out[nAxis * 4 + 0] = axis[0] * flScale;
@@ -597,8 +597,8 @@ HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool b
 
     std::memcpy(uniforms.aPointLight, s_aPointLight, sizeof(uniforms.aPointLight));
 
-    uniforms.aShadows[0] = (float)bShadows;
-    uniforms.aShadows[1] = (float)GraphicsSettings::On(GraphicsSettings::Switch::PHONG_SHADING);
+    uniforms.aShadows[0] = static_cast<float>(bShadows);
+    uniforms.aShadows[1] = static_cast<float>(GraphicsSettings::On(GraphicsSettings::Switch::PHONG_SHADING));
 
     const auto aWorldLights = std::array<Vec3, 3>{ g_lightDirs[1].dir, g_lightDirs[2].dir, g_vLightDirExtra };
 
@@ -650,8 +650,8 @@ void HwRenderer::SubmitVertices(const std::vector<HwMesh::Vertex>& vertices, con
     auto dynamic = draw;
 
     dynamic.pBlock        = nullptr;
-    dynamic.nDynamicFirst = (int)s_dynamic.size();
-    dynamic.nDynamicCount = (int)vertices.size();
+    dynamic.nDynamicFirst = static_cast<int>(s_dynamic.size());
+    dynamic.nDynamicCount = static_cast<int>(vertices.size());
 
     s_dynamic.insert(s_dynamic.end(), vertices.begin(), vertices.end());
     s_draws.push_back(dynamic);
@@ -776,7 +776,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     // The draws come back to front, as the original painted them. Painted in order, each takes a
     // depth slice in front of the last, so it covers what came before and still hides its own faces.
     const auto bPainters = GraphicsSettings::On(Switch::PAINTERS_ORDER);
-    const auto flSlice   = 1.0f / (float)(std::max)(s_draws.size(), (size_t)1);
+    const auto flSlice   = 1.0f / static_cast<float>((std::max)(s_draws.size(), static_cast<size_t>(1)));
 
     for (size_t nDraw = 0; nDraw < s_draws.size(); nDraw++)
     {
@@ -805,7 +805,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
         {
             if (draw.pBlock == nullptr)
             {
-                dynamicMesh.ranges[0] = GPURange{ (Uint32)draw.nDynamicFirst, (Uint32)draw.nDynamicCount, nullptr };
+                dynamicMesh.ranges[0] = GPURange{ static_cast<Uint32>(draw.nDynamicFirst), static_cast<Uint32>(draw.nDynamicCount), nullptr };
 
                 return &dynamicMesh;
             }
@@ -825,11 +825,11 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
             continue;
         }
 
-        auto viewport = SDL_GPUViewport{ (float)draw.nViewportX, (float)draw.nViewportY, (float)draw.nViewportWidth, (float)draw.nViewportHeight, 0.0f, 1.0f };
+        auto viewport = SDL_GPUViewport{ static_cast<float>(draw.nViewportX), static_cast<float>(draw.nViewportY), static_cast<float>(draw.nViewportWidth), static_cast<float>(draw.nViewportHeight), 0.0f, 1.0f };
 
         if (bPainters)
         {
-            viewport.max_depth = 1.0f - (float)nDraw * flSlice;
+            viewport.max_depth = 1.0f - static_cast<float>(nDraw) * flSlice;
             viewport.min_depth = viewport.max_depth - flSlice;
         }
 
@@ -861,7 +861,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
                 { s_apShadowMaps[1], s_pShadowSampler },
             };
 
-            const auto textureUniforms = HwPipeline::TextureUniforms{ (int)bTextured };
+            const auto textureUniforms = HwPipeline::TextureUniforms{ static_cast<int>(bTextured) };
 
             SDL_BindGPUFragmentSamplers(pPass, 0, aSampled, SDL_arraysize(aSampled));
             SDL_PushGPUFragmentUniformData(pCommands, 0, &textureUniforms, sizeof(textureUniforms));

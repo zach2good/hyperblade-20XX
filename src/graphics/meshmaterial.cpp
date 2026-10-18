@@ -152,7 +152,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                 else
                 {
                     int nCopy = NAME_COPY_MAX;
-                    nLength   = (int)strlen(szValue);
+                    nLength   = static_cast<int>(strlen(szValue));
 
                     if (nLength < nCopy)
                     {
@@ -341,7 +341,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
                         bResult = 0;
                     }
 
-                    const int nKnownTextures = (short)nTexCount;
+                    const int nKnownTextures = static_cast<short>(nTexCount);
 
                     for (i = 0; i < nKnownTextures; i++)
                     {
@@ -361,7 +361,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
 
                         nTexCount++;
 
-                        pMaterials[nMatIndex].nTextureIndex = (short)nTexCount;
+                        pMaterials[nMatIndex].nTextureIndex = static_cast<short>(nTexCount);
                     }
                 }
             }

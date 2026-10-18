@@ -42,7 +42,7 @@ CollInteractor* PlanInteractorFactories::CreateCollInteractor(EngineObject* pObj
         pObject->GetPlanState();
     }
 
-    pInteractor = ((CollInteractor*)g_pCollInteractorPool->Alloc())->Setup(pObject, pInstr);
+    pInteractor = (static_cast<CollInteractor*>(g_pCollInteractorPool->Alloc()))->Setup(pObject, pInstr);
 
     if (pPrevious == nullptr)
     {
@@ -74,7 +74,7 @@ MsgInteractor* PlanInteractorFactories::CreateMsgInteractor(EngineObject* pObjec
         pObject->GetPlanState();
     }
 
-    pInteractor = ((MsgInteractor*)g_pMsgInteractorPool->Alloc())->Setup(pObject, pInstr);
+    pInteractor = (static_cast<MsgInteractor*>(g_pMsgInteractorPool->Alloc()))->Setup(pObject, pInstr);
 
     if (pPrevious == nullptr)
     {

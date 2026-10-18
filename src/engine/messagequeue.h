@@ -37,7 +37,7 @@ inline MessageNode::MessageNode(const char* pszText, int nLine, int nDurationMs)
 
     m_pNext = nullptr;
 
-    pCopy = (char*)operator new(strlen(pszText) + 1);
+    pCopy = static_cast<char*>(operator new(strlen(pszText) + 1));
 
     m_pszText     = strcpy(pCopy, pszText);
     m_nLine       = nLine;

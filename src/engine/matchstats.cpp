@@ -74,7 +74,7 @@ float MatchStats::AccumulateStat(int nStatId, int)
             break;
 
         case MATCH_STAT_POSS_START:
-            m_aStat[MATCH_STAT_POSS_START] = (float)g_pGameEngine->m_clock.nTickMs;
+            m_aStat[MATCH_STAT_POSS_START] = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
 
             g_bStatIntervalOpen = 1;
 
@@ -83,7 +83,7 @@ float MatchStats::AccumulateStat(int nStatId, int)
         case MATCH_STAT_POSS_STOP:
             if (g_bStatIntervalOpen != 0)
             {
-                const auto flNow = (float)g_pGameEngine->m_clock.nTickMs;
+                const auto flNow = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
 
                 m_aStat[MATCH_STAT_POSS_STOP] = flNow;
                 m_aStat[MATCH_STAT_TIME_OF_POSS] =
@@ -117,12 +117,12 @@ float MatchStats::AccumulateStat(int nStatId, int)
             break;
 
         case MATCH_STAT_ASSISTS:
-            if ((float)g_pGameEngine->m_clock.nTickMs - 15000.0f < m_aStat[MATCH_STAT_TOP_STAMP_END])
+            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 15000.0f < m_aStat[MATCH_STAT_TOP_STAMP_END])
             {
                 m_aStat[MATCH_STAT_ASSISTS]++;
             }
 
-            if ((float)g_pGameEngine->m_clock.nTickMs - 1000.0f < m_aStat[MATCH_STAT_TOP_STAMP_END])
+            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 1000.0f < m_aStat[MATCH_STAT_TOP_STAMP_END])
             {
                 m_aStat[MATCH_STAT_ONE_TIMERS]++;
 
@@ -184,7 +184,7 @@ float MatchStats::StartTimer(int nIndex)
 {
     if (m_aStat[nIndex] == 0.0f)
     {
-        m_aStat[nIndex] = (float)g_pGameEngine->m_clock.nTickMs;
+        m_aStat[nIndex] = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
     }
 
     return m_aStat[nIndex];
@@ -195,7 +195,7 @@ float MatchStats::StartTimer(int nIndex)
 // FUNCTION: HYPERX 0x00491cd0
 float MatchStats::StopTimer(int nIndex)
 {
-    const auto flNow = (float)g_pGameEngine->m_clock.nTickMs;
+    const auto flNow = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
 
     m_aStat[nIndex] = flNow;
 

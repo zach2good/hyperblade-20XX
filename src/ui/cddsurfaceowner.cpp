@@ -39,7 +39,7 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
             free(m_pszName);
         }
 
-        char* const pszCopy = (char*)malloc(strlen(pszName) + 1);
+        char* const pszCopy = static_cast<char*>(malloc(strlen(pszName) + 1));
 
         if (pszCopy != nullptr)
         {

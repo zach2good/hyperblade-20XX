@@ -4,7 +4,7 @@
 // A float's bit pattern, for the encoders and rounding tricks that read it.
 inline unsigned int FloatBits(const float& flValue)
 {
-    return *(const unsigned int*)&flValue;
+    return *reinterpret_cast<const unsigned int*>(&flValue);
 }
 
 #endif

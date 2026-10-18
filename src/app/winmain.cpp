@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
         if (g_frameTimer.bFrameTimesOn)
         {
             g_frameTimer.nClockReads++;
-            g_frameTimer.nFrameStartTime = (unsigned int)SDL_GetTicks();
+            g_frameTimer.nFrameStartTime = static_cast<unsigned int>(SDL_GetTicks());
         }
 
         while (Window::Pump())

@@ -45,7 +45,7 @@ float              g_flUnusedVertexColourC = g_flZeroVertexColour;
 // FUNCTION: HYPERX 0x0044be10
 void MeshBone::DrawFaceList(FaceRecord** ppRecords, int nCount)
 {
-    SWRend::DrawFaceList(this, ppRecords, (short)nCount);
+    SWRend::DrawFaceList(this, ppRecords, static_cast<short>(nCount));
 }
 
 // FUNCTION: HYPERX 0x0044be40
@@ -206,7 +206,7 @@ void MeshBone::SubmitToHardware()
             return 0;
         }
 
-        auto nBone = (int)(this - m_pOwner->m_pBones);
+        auto nBone = static_cast<int>(this - m_pOwner->m_pBones);
 
         if (m_pOwner->GetBoneCount() > 2)
         {
@@ -238,11 +238,11 @@ void MeshBone::SubmitToHardware()
     {
         Vec3 vLight;
 
-        world.TransformDirectionByRows(aWorldLights[(size_t)i], &vLight);
+        world.TransformDirectionByRows(aWorldLights[static_cast<size_t>(i)], &vLight);
 
         const auto flStrength = [&]
         {
-            if (!GraphicsSettings::On(LIGHT_SWITCHES[(size_t)i]))
+            if (!GraphicsSettings::On(LIGHT_SWITCHES[static_cast<size_t>(i)]))
             {
                 return 0.0f;
             }
@@ -362,9 +362,9 @@ void MeshBone::DrawFaces()
     for (short nFace = 0; nFace < GetFaceCount(); nFace++)
     {
         MeshFace* const     pFace = GetFace(nFace);
-        MeshMaterial* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[(int)pFace->cMaterial];
+        MeshMaterial* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[static_cast<int>(pFace->cMaterial)];
 
-        nResult = Face::BackfaceCullAndClipCheck(pFace, g_pModelVertexBuf, (char)(pMat->nBackIndex >= 0), &cClip);
+        nResult = Face::BackfaceCullAndClipCheck(pFace, g_pModelVertexBuf, static_cast<char>(pMat->nBackIndex >= 0), &cClip);
 
         if (nResult == -1)
         {
@@ -394,16 +394,16 @@ void MeshBone::DrawFaces()
     }
 
     pBlob            = m_pMesh;
-    const int nCount = (int)(pEntry - g_pFaceRecords);
+    const int nCount = static_cast<int>(pEntry - g_pFaceRecords);
 
     if (pBlob->SortsFaces() != 0)
     {
-        SWRend::SortFaces((short)nCount);
+        SWRend::SortFaces(static_cast<short>(nCount));
     }
 
-    if ((short)nCount > 0)
+    if (static_cast<short>(nCount) > 0)
     {
-        DrawFaceList(g_ppFaceList + (short)nCount, nCount);
+        DrawFaceList(g_ppFaceList + static_cast<short>(nCount), nCount);
     }
 }
 
@@ -500,7 +500,7 @@ void MeshBone::CalcVertexColors()
 
     if (HasColours() == 0)
     {
-        m_nFlags = (unsigned short)(m_nFlags | MESHBONE_COLOURS_PRESENT);
+        m_nFlags = static_cast<unsigned short>(m_nFlags | MESHBONE_COLOURS_PRESENT);
     }
 
     const TransformObject* pXf = &m_world;
@@ -801,7 +801,7 @@ void MeshBone::ComputeBoundingSphere()
         const float flDy = pVerts[i].y - m_vCentre.y;
         const float flDz = pVerts[i].z - m_vCentre.z;
 
-        const auto flDistance = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
+        const auto flDistance = static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 
         if (m_flRadius < flDistance)
         {

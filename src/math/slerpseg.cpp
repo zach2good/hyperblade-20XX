@@ -56,7 +56,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
     }
 
     const double dTheta = Math::Acos(flDot);
-    m_flTheta           = (float)dTheta;
+    m_flTheta           = static_cast<float>(dTheta);
 
     if (dTheta < 0.001)
     {
@@ -64,7 +64,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
         return;
     }
 
-    const auto flSin = (float)sin(static_cast<double>(dTheta));
+    const auto flSin = static_cast<float>(sin(static_cast<double>(dTheta)));
 
     if (flSin == 0.0f)
     {
@@ -96,8 +96,8 @@ bool SlerpSeg::Eval(float flAt)
         return false;
     }
 
-    const auto flWeightTo = (float)sin(static_cast<double>(flAt * m_flTheta));
-    flWeightFrom          = (float)sin(static_cast<double>(m_flTheta - flAt * m_flTheta));
+    const auto flWeightTo = static_cast<float>(sin(static_cast<double>(flAt * m_flTheta)));
+    flWeightFrom          = static_cast<float>(sin(static_cast<double>(m_flTheta - flAt * m_flTheta)));
 
     m_q0.w = flWeightTo * m_q1Div.w + flWeightFrom * m_q0Div.w;
     m_q0.x = flWeightTo * m_q1Div.x + flWeightFrom * m_q0Div.x;

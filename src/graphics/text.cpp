@@ -67,7 +67,7 @@ std::vector<unsigned char> LoadWindowsFont(const char* pszName)
         return std::string(pszWindows) + "\\Fonts\\" + pszName;
     }();
 
-    auto nSize = (size_t)0;
+    auto nSize = static_cast<size_t>(0);
 
     void* const pData = SDL_LoadFile(path.c_str(), &nSize);
 
@@ -76,7 +76,7 @@ std::vector<unsigned char> LoadWindowsFont(const char* pszName)
         return {};
     }
 
-    auto file = std::vector<unsigned char>((const unsigned char*)pData, (const unsigned char*)pData + nSize);
+    auto file = std::vector<unsigned char>(static_cast<const unsigned char*>(pData), static_cast<const unsigned char*>(pData) + nSize);
 
     SDL_free(pData);
 
@@ -131,10 +131,10 @@ FontSize* SizeFor(const Face& face, int nPixels, bool bEm)
     {
         if (bEm)
         {
-            return stbtt_ScaleForMappingEmToPixels(&face.info, (float)nPixels);
+            return stbtt_ScaleForMappingEmToPixels(&face.info, static_cast<float>(nPixels));
         }
 
-        return stbtt_ScaleForPixelHeight(&face.info, (float)nPixels);
+        return stbtt_ScaleForPixelHeight(&face.info, static_cast<float>(nPixels));
     }();
 
     auto nAscent  = 0;
@@ -143,12 +143,12 @@ FontSize* SizeFor(const Face& face, int nPixels, bool bEm)
 
     stbtt_GetFontVMetrics(&face.info, &nAscent, &nDescent, &nLineGap);
 
-    pSize->nAscent     = (int)std::lround(nAscent * pSize->flScale);
+    pSize->nAscent     = static_cast<int>(std::lround(nAscent * pSize->flScale));
     pSize->nCellHeight = [&]
     {
         if (bEm)
         {
-            return (int)std::lround((nAscent - nDescent) * pSize->flScale);
+            return static_cast<int>(std::lround((nAscent - nDescent) * pSize->flScale));
         }
 
         return nPixels;
@@ -200,13 +200,13 @@ const Glyph& GetGlyph(FontSize& size, unsigned char nChar)
         return glyph;
     }
 
-    glyph.mask.resize((size_t)(glyph.nWidth * glyph.nHeight));
+    glyph.mask.resize(static_cast<size_t>(glyph.nWidth * glyph.nHeight));
 
     stbtt_MakeCodepointBitmap(&info, glyph.mask.data(), glyph.nWidth, glyph.nHeight, glyph.nWidth, size.flScale, size.flScale, nChar);
 
     for (auto& nCoverage : glyph.mask)
     {
-        nCoverage = (unsigned char)(nCoverage >= 128);
+        nCoverage = static_cast<unsigned char>(nCoverage >= 128);
     }
 
     return glyph;
@@ -230,13 +230,13 @@ void Rasterise(Text::Font font, int nWidth, int nHeight, int nX, int nY, const c
 
     const auto nBaseline = nY + pSize->nAscent;
 
-    auto flPen = (float)nX;
+    auto flPen = static_cast<float>(nX);
 
-    for (const auto* p = (const unsigned char*)pszText; *p != 0; p++)
+    for (const auto* p = reinterpret_cast<const unsigned char*>(pszText); *p != 0; p++)
     {
         const auto& glyph = GetGlyph(*pSize, *p);
 
-        const auto nLeft = (int)std::floor(flPen) + glyph.nOffsetX;
+        const auto nLeft = static_cast<int>(std::floor(flPen)) + glyph.nOffsetX;
         const auto nTop  = nBaseline + glyph.nOffsetY;
 
         for (int y = 0; y < glyph.nHeight; y++)
@@ -252,7 +252,7 @@ void Rasterise(Text::Font font, int nWidth, int nHeight, int nX, int nY, const c
             {
                 const auto nColumn = nLeft + x;
 
-                if (glyph.mask[(size_t)(y * glyph.nWidth + x)] != 0 && nColumn >= 0 && nColumn < nWidth)
+                if (glyph.mask[static_cast<size_t>(y * glyph.nWidth + x)] != 0 && nColumn >= 0 && nColumn < nWidth)
                 {
                     plot(nColumn, nRow);
                 }
@@ -318,7 +318,7 @@ Text::Size Text::Measure(Font font, const char* pszText)
 
     auto flWidth = 0.0f;
 
-    for (const auto* p = (const unsigned char*)pszText; *p != 0; p++)
+    for (const auto* p = reinterpret_cast<const unsigned char*>(pszText); *p != 0; p++)
     {
         flWidth += GetGlyph(*pSize, *p).flAdvance;
 
@@ -328,7 +328,7 @@ Text::Size Text::Measure(Font font, const char* pszText)
         }
     }
 
-    return Size{ (int)std::ceil(flWidth), pSize->nCellHeight };
+    return Size{ static_cast<int>(std::ceil(flWidth)), pSize->nCellHeight };
 }
 
 void Text::Draw(Font font, unsigned char* pBits, int nPitch, int nWidth, int nHeight, int nX, int nY, const char* pszText, unsigned char nIndex)
@@ -343,6 +343,6 @@ void Text::Draw(Font font, std::uint32_t* pBits, int nPitch, int nWidth, int nHe
 {
     Rasterise(font, nWidth, nHeight, nX, nY, pszText, [&](int x, int y)
               {
-                  *(std::uint32_t*)((unsigned char*)pBits + y * nPitch + x * 4) = nColour;
+                  *reinterpret_cast<std::uint32_t*>(reinterpret_cast<unsigned char*>(pBits) + y * nPitch + x * 4) = nColour;
               });
 }

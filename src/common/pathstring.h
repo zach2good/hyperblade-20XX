@@ -33,7 +33,7 @@ public:
         }
         else
         {
-            nLength = (int)strlen(psz);
+            nLength = static_cast<int>(strlen(psz));
         }
 
         m_str.Assign(nLength, psz);

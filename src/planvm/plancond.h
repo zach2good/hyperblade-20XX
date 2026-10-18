@@ -86,7 +86,7 @@ void MyID(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 // A message's data word packs one field in each nibble.
 inline short MessageNibble(unsigned int nData, int nShift)
 {
-    return (short)((nData >> nShift) & 0xf);
+    return static_cast<short>((nData >> nShift) & 0xf);
 }
 
 void MessageDataNibl0(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);

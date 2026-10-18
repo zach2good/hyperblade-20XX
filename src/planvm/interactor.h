@@ -42,11 +42,11 @@ public:
 
         if (bMessage != 0)
         {
-            m_wHandlerIndex = (short)nSeed;
+            m_wHandlerIndex = static_cast<short>(nSeed);
         }
         else
         {
-            m_wEventKind = (short)nSeed;
+            m_wEventKind = static_cast<short>(nSeed);
         }
     }
 

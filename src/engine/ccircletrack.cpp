@@ -72,8 +72,8 @@ void CCircleTrack::Process(int nArg)
 
     vTracked = *pTrackedPos;
 
-    vPos.x = (float)(dCos * dRadius - dSin * dForward + vTracked.x);
-    vPos.y = (float)(dSin * dRadius + dCos * dForward + vTracked.y);
+    vPos.x = static_cast<float>(dCos * dRadius - dSin * dForward + vTracked.x);
+    vPos.y = static_cast<float>(dSin * dRadius + dCos * dForward + vTracked.y);
     vPos.z = g_flCameraTrackingHeight + vTracked.z;
 
     if (vPos.x * vPos.x * g_camTrackEllipsoid.GetInvXX() + (vPos.y * vPos.y * g_camTrackEllipsoid.GetInvYY() + vPos.z * vPos.z * g_camTrackEllipsoid.GetInvZZ()) > 1.0)

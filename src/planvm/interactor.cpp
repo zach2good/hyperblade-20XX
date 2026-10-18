@@ -36,7 +36,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
     {
         pNode = pCursor->pNode;
 
-        const auto nOpcode = (unsigned int)pNode->m_nOpcode;
+        const auto nOpcode = static_cast<unsigned int>(pNode->m_nOpcode);
 
         switch (nOpcode & OP_CATEGORY)
         {
@@ -49,7 +49,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                             break;
                         }
 
-                        g_pfnPlanActionHandlers[(short)pNode->m_pArgs[0].n](this, pNode, pState, nArg);
+                        g_pfnPlanActionHandlers[static_cast<short>(pNode->m_pArgs[0].n)](this, pNode, pState, nArg);
                         break;
 
                     case MEMBER_DO_LOCAL_ACTION:
@@ -59,14 +59,14 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                         }
 
                     case MEMBER_DO_ACTION:
-                        g_pfnPlanActionHandlers[(short)pNode->m_pArgs[0].n](this, pNode, pState, nArg);
+                        g_pfnPlanActionHandlers[static_cast<short>(pNode->m_pArgs[0].n)](this, pNode, pState, nArg);
                         break;
 
                     case MEMBER_SET_INTERACTOR_PARAM:
                     {
                         PlanState* const pPlan = m_pOwner->GetPlanState();
 
-                        g_pfnPlanOpcodeHandlers[(short)pNode->m_pArgs[0].n].pfnSetParam(
+                        g_pfnPlanOpcodeHandlers[static_cast<short>(pNode->m_pArgs[0].n)].pfnSetParam(
                             m_pOwner, pNode, pPlan->m_pCurrent, this);
                         break;
                     }
@@ -84,7 +84,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                     {
                         PlanState* const pPlan = m_pOwner->GetPlanState();
 
-                        g_apfnBehaviorParamHandlers[(short)pNode->m_pArgs[0].n](
+                        g_apfnBehaviorParamHandlers[static_cast<short>(pNode->m_pArgs[0].n)](
                             m_pOwner, pNode, pPlan->m_pCurrent);
                         break;
                     }
@@ -94,15 +94,15 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
             case CATEGORY_PLAN_CHANGE:
                 if ((nOpcode & OP_MEMBER) == MEMBER_CHANGE_OF_PLAN)
                 {
-                    m_wSlot      = (short)pNode->m_pArgs[0].n;
-                    m_wBehaviour = (short)pNode->m_pArgs[1].n;
+                    m_wSlot      = static_cast<short>(pNode->m_pArgs[0].n);
+                    m_wBehaviour = static_cast<short>(pNode->m_pArgs[1].n);
                 }
                 break;
 
             case CATEGORY_DECIDE:
                 if (DecisionLog::IsRecording(*pState) != 0)
                 {
-                    g_pfnPlanOpcodeHandlers[(short)pNode->m_pArgs[0].n + PLAN_DECISION_BASE].pfnDecide(
+                    g_pfnPlanOpcodeHandlers[static_cast<short>(pNode->m_pArgs[0].n) + PLAN_DECISION_BASE].pfnDecide(
                         this, pNode, &nField, nArg);
 
                     DecisionLog::Push(pState, nField);
@@ -121,8 +121,8 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
             case CATEGORY_AGENDA:
                 switch (nOpcode)
                 {
-                    case (int)CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
-                        pBubble = (AgendaItem*)g_apAgendaItemPools[(short)pNode->m_pArgs[0].n]->Alloc();
+                    case static_cast<int>(CATEGORY_AGENDA) | MEMBER_ADD_AGENDA_ITEM:
+                        pBubble = static_cast<AgendaItem*>(g_apAgendaItemPools[static_cast<short>(pNode->m_pArgs[0].n)]->Alloc());
 
                         if (pNode->m_nArgCount == 1)
                         {
@@ -136,7 +136,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                         pBubble->Activate();
                         break;
 
-                    case (int)CATEGORY_AGENDA | MEMBER_SET_TIMEOUTMSG:
+                    case static_cast<int>(CATEGORY_AGENDA) | MEMBER_SET_TIMEOUTMSG:
                         pBubble = AllocAgendaItem(Agenda_CTimerActivity);
 
                         pBubble->BindWithNode(m_pOwner, pOwner, pNode, nArg);
@@ -144,7 +144,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                         pBubble->Activate();
                         break;
 
-                    case (int)CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM:
+                    case static_cast<int>(CATEGORY_AGENDA) | MEMBER_REMOVE_AGENDA_ITEM:
                         pOwner->RemoveAgendaItem(pNode->m_pArgs[0].n);
                         break;
                 }

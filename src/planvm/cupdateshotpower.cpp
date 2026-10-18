@@ -64,7 +64,7 @@ void CUpdateShotPower::Process(int nArg)
 
     if (pCamera->m_bShotPowerShown != 0)
     {
-        nAmount = (int)((float)(g_pGameEngine->m_clock.nTickMs - m_nStarted) * (m_flPower + 12.0f) * 0.004f);
+        nAmount = static_cast<int>(static_cast<float>(g_pGameEngine->m_clock.nTickMs - m_nStarted) * (m_flPower + 12.0f) * 0.004f);
 
         if (nAmount > SHOT_POWER_MAX)
         {

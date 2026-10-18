@@ -29,16 +29,16 @@ struct DecisionLog
 
         if ((nWord & DECISION_LOG_COUNT) == 0)
         {
-            *pWord = (short)((nWord & 0xfff) | nBranch | DECISION_LOG_RECORDING | DECISION_LOG_ONE);
+            *pWord = static_cast<short>((nWord & 0xfff) | nBranch | DECISION_LOG_RECORDING | DECISION_LOG_ONE);
         }
         else if ((nWord & DECISION_LOG_COUNT) == DECISION_LOG_ONE)
         {
-            *pWord = (short)(((unsigned int)nBranch << 7) | (nWord & 0x7f) | DECISION_LOG_RECORDING | DECISION_LOG_TWO);
+            *pWord = static_cast<short>((static_cast<unsigned int>(nBranch) << 7) | (nWord & 0x7f) | DECISION_LOG_RECORDING | DECISION_LOG_TWO);
         }
         else
         {
             // The third branch is masked where it should be shifted, so its replay takes bits 9-11 (0x0045d963).
-            *pWord = (short)(((nWord >> 2) & 0x1e0) | (nWord & 0x1f) | (nBranch & 0xe00) | DECISION_LOG_RECORDING | DECISION_LOG_COUNT);
+            *pWord = static_cast<short>(((nWord >> 2) & 0x1e0) | (nWord & 0x1f) | (nBranch & 0xe00) | DECISION_LOG_RECORDING | DECISION_LOG_COUNT);
         }
     }
 
@@ -49,21 +49,21 @@ struct DecisionLog
 
         if ((nWord & DECISION_LOG_COUNT) == DECISION_LOG_ONE)
         {
-            *pBranch = (short)(nWord & 0xfff);
+            *pBranch = static_cast<short>(nWord & 0xfff);
 
             *pWord = 0;
         }
         else if ((nWord & DECISION_LOG_COUNT) == DECISION_LOG_TWO)
         {
-            *pBranch = (short)(nWord & 0x7f);
+            *pBranch = static_cast<short>(nWord & 0x7f);
 
-            *pWord = (short)(((nWord >> 7) & ~0x1e0) | DECISION_LOG_ONE);
+            *pWord = static_cast<short>(((nWord >> 7) & ~0x1e0) | DECISION_LOG_ONE);
         }
         else
         {
-            *pBranch = (short)(nWord & 0x1f);
+            *pBranch = static_cast<short>(nWord & 0x1f);
 
-            *pWord = (short)(((short)(((nWord >> 3) & 0x3c) | (nWord & 0xe00)) >> 2) | DECISION_LOG_TWO);
+            *pWord = static_cast<short>((static_cast<short>(((nWord >> 3) & 0x3c) | (nWord & 0xe00)) >> 2) | DECISION_LOG_TWO);
         }
     }
 };

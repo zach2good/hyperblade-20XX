@@ -57,12 +57,12 @@ void Game::Tick()
     if (g_frameTimer.bFrameTimesOn)
     {
         g_frameTimer.nClockReads++;
-        g_dwFrameGameLogicStart       = (unsigned int)SDL_GetTicks();
+        g_dwFrameGameLogicStart       = static_cast<unsigned int>(SDL_GetTicks());
         g_frameTimer.nFrameStartTicks = g_dwFrameGameLogicStart;
     }
     else
     {
-        g_dwFrameGameLogicStart = (unsigned int)SDL_GetTicks();
+        g_dwFrameGameLogicStart = static_cast<unsigned int>(SDL_GetTicks());
     }
 
     if (g_pRenderer != nullptr)
@@ -77,7 +77,7 @@ void Game::Tick()
     if (g_frameTimer.bFrameTimesOn != 0)
     {
         g_frameTimer.nPerfSampleCount++;
-        g_frameTimer.dAccGameLogicMs += (double)((unsigned int)SDL_GetTicks() - g_frameTimer.nFrameStartTicks);
+        g_frameTimer.dAccGameLogicMs += static_cast<double>(static_cast<unsigned int>(SDL_GetTicks()) - g_frameTimer.nFrameStartTicks);
     }
 }
 
@@ -103,7 +103,7 @@ void Game::Draw(float flAlpha)
     if (g_frameTimer.bFrameTimesOn != 0)
     {
         g_frameTimer.nPerfSampleCount++;
-        g_frameTimer.dAccRenderMs += (double)((unsigned int)SDL_GetTicks() - g_frameTimer.nFrameStartTicks);
+        g_frameTimer.dAccRenderMs += static_cast<double>(static_cast<unsigned int>(SDL_GetTicks()) - g_frameTimer.nFrameStartTicks);
     }
 
     g_frameTimer.nFrames++;
@@ -279,7 +279,7 @@ unsigned int Game::UpdateState()
 {
     char* pszText;
 
-    if (g_gameApp.m_nEngineState != (unsigned int)g_nPrevEngineState)
+    if (g_gameApp.m_nEngineState != static_cast<unsigned int>(g_nPrevEngineState))
     {
         if (g_gameApp.m_nEngineState != ESTATE_MATCH_START)
         {
@@ -523,8 +523,8 @@ unsigned int Game::UpdateState()
                 g_pAudioMgr->FreeGroupBuffers(SOUND_GROUP_PRELOAD);
                 g_pAudioMgr->StopEntry(SOUND_SXXAMBA2);
 
-                g_pGameEngine->SetTeams((short)g_nDromeTeamHome, (short)g_nDromeTeamAway);
-                g_pGameEngine->SetArena((short)g_nDromeArena);
+                g_pGameEngine->SetTeams(static_cast<short>(g_nDromeTeamHome), static_cast<short>(g_nDromeTeamAway));
+                g_pGameEngine->SetArena(static_cast<short>(g_nDromeArena));
                 g_pGameEngine->RestartMatch();
                 Screen::ClearBlack();
 

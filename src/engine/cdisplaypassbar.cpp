@@ -51,7 +51,7 @@ void CDisplayPassBar::Process(int nArg)
 
             pos = g_pRenderer->GetPassBarSize();
 
-            const auto flHalf = (float)(pos.y >> 1);
+            const auto flHalf = static_cast<float>(pos.y >> 1);
 
             Vec3 vDir;
             vDir.x = pMatePos->x - vSelf.x;
@@ -73,13 +73,13 @@ void CDisplayPassBar::Process(int nArg)
             {
                 flOffset = (g_flOneAgendaItem - flDot) * OVERLAY_EDGE_SCALE;
                 flOffset *= flHalf;
-                nPos = (int)(flOffset + flHalf);
+                nPos = static_cast<int>(flOffset + flHalf);
             }
             else
             {
                 flOffset = (g_flOneAgendaItem - flDot) * OVERLAY_EDGE_SCALE;
                 flOffset *= flHalf;
-                nPos = (int)(flHalf - flOffset);
+                nPos = static_cast<int>(flHalf - flOffset);
             }
 
             g_pRenderer->SetPassBarMarker(nPos);

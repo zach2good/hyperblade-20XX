@@ -78,9 +78,9 @@ static void ShowPadIcons(int nKeyWidth, int nKeyHeight)
         // The left stick steers, so the four directions show it.
         const auto* const pszControl = [&]
         {
-            if (nSlot < (int)STICK.size())
+            if (nSlot < static_cast<int>(STICK.size()))
             {
-                return STICK[(size_t)nSlot];
+                return STICK[static_cast<size_t>(nSlot)];
             }
 
             return PadControl(g_apszKeyBindingNames[nSlot]);

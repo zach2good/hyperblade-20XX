@@ -222,14 +222,14 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
     {
         if (*pLine != '#')
         {
-            char* pSpace = (char*)strchr(pLine, ' ');
+            char* pSpace = strchr(pLine, ' ');
 
             if (pSpace != nullptr)
             {
                 pSpace++;
                 nId = atoi(pSpace);
 
-                char* const pText = (char*)strchr(pSpace, ' ');
+                char* const pText = strchr(pSpace, ' ');
 
                 if (pText != nullptr)
                 {

@@ -50,10 +50,10 @@ void CSetPositionRelative::BindWithNode(EngineObject* pObject,
     m_bReady = 0;
     m_pOwner = pObject;
 
-    m_pTracked = g_pGameEngine->m_ppSlots[(short)pNode->m_pArgs[1].n];
+    m_pTracked = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
 
     m_pMarker  = g_apPositionMarkers[pNode->m_pArgs[2].n];
-    m_wMode    = (short)pNode->m_pArgs[3].n;
+    m_wMode    = static_cast<short>(pNode->m_pArgs[3].n);
     m_flUnused = pNode->m_pArgs[4].fl;
 
     m_vOffset.x = m_vOffset.y = m_vOffset.z = g_flZeroAgendaItem;

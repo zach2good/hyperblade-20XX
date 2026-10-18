@@ -16,7 +16,7 @@ struct StringHeader
     // The characters follow the header.
     char* Data()
     {
-        return (char*)(this + 1);
+        return reinterpret_cast<char*>(this + 1);
     }
 };
 
@@ -73,7 +73,7 @@ public:
     // The header sits just before the characters.
     static StringHeader* HeaderOf(char* pch)
     {
-        return (StringHeader*)pch - 1;
+        return reinterpret_cast<StringHeader*>(pch) - 1;
     }
 
     StringHeader* GetHeader() const
@@ -116,7 +116,7 @@ public:
             return 0;
         }
 
-        return (int)strlen(psz);
+        return static_cast<int>(strlen(psz));
     }
 
     static void FormatAlloc(String* pString, const char* pszFormat, va_list argList);

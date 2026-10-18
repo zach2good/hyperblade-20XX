@@ -130,7 +130,7 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
     const short         nSlot  = pContext->GetOtherSlot();
     EngineObject* const pActor = pContext->GetActor();
 
-    pRange = g_pGameEngine->m_ppSlots[(short)CollisionObj::GetModelId(nSlot)];
+    pRange = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(nSlot))];
 
     if (pContext->GetActor()->GetPhysicsBody()->pAttach != nullptr)
     {
@@ -158,7 +158,7 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
             vDelta.y = pActor->GetPositionPtr()->y - vPoint.y;
             vDelta.z = pActor->GetPositionPtr()->z - vPoint.z;
 
-            if ((float)sqrt(static_cast<double>(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z)) < INTERACT_RANGE)
+            if (static_cast<float>(sqrt(static_cast<double>(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z))) < INTERACT_RANGE)
             {
                 if (((pRange->GetSlot() ^ pOther->GetSlot()) & 1) != 0)
                 {
@@ -225,7 +225,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
     const float flDy = pGoalCentre->y - pGoalPos->y;
     const float flDz = pGoalCentre->z - pGoalPos->z;
 
-    flTime = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) / (float)sqrt(static_cast<double>(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z)) * g_pGameEngine->m_clock.flDelta;
+    flTime = static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz))) / static_cast<float>(sqrt(static_cast<double>(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z))) * g_pGameEngine->m_clock.flDelta;
 
     vTriple.x = pGoalCentre->x - pPosition->x;
     vTriple.y = pGoalCentre->y - pPosition->y;
@@ -241,7 +241,7 @@ void PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResul
         return;
     }
 
-    if ((float)sqrt(static_cast<double>(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z)) > APPROACH_RANGE_GATE)
+    if (static_cast<float>(sqrt(static_cast<double>(vTriple.x * vTriple.x + vTriple.y * vTriple.y + vTriple.z * vTriple.z))) > APPROACH_RANGE_GATE)
     {
         *pResult = 1;
         return;
@@ -295,7 +295,7 @@ void PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOutValid, 
 // FUNCTION: HYPERX 0x0045e2f0
 void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
 {
-    const auto nIndex = (short)pNode->m_pArgs[1].n;
+    const auto nIndex = static_cast<short>(pNode->m_pArgs[1].n);
 
     pActor->GetPlanState()->m_apNamedInteractors[nIndex] = pInteractor;
 }
@@ -322,7 +322,7 @@ void PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehavio
             return;
         }
 
-        const auto nIndex = (short)pArgs->m_pArgs[1].n;
+        const auto nIndex = static_cast<short>(pArgs->m_pArgs[1].n);
 
         PlanState* const pList = pActor->GetPlanState();
 
@@ -350,7 +350,7 @@ void PlanCond::Decide_Celebration(Interactor* pContext, PlanNode*, short* pResul
 
     EngineObject* const pActor = pContext->GetActor();
 
-    *pResult = (short)(pActor->GetSlot() & 1) != g_wActiveScoreLine;
+    *pResult = static_cast<short>(pActor->GetSlot() & 1) != g_wActiveScoreLine;
 }
 
 // FUNCTION: HYPERX 0x0045e430
@@ -378,7 +378,7 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
     flDelta = g_pGameEngine->m_clock.flDelta;
 
-    const float flSpeed = ((float)(rand() % SCATTER_ROLL) + SCATTER_FLOOR) * flDelta;
+    const float flSpeed = (static_cast<float>(rand() % SCATTER_ROLL) + SCATTER_FLOOR) * flDelta;
 
     PhysicsBody* pBody = pContext->GetActor()->GetPhysicsBody();
 
@@ -430,7 +430,7 @@ void PlanAction::SetDeviceOwner(Interactor* pContext, PlanNode* pArgs, short*, i
     }
     else if (nArgCount == 2)
     {
-        pTarget = g_pGameEngine->m_ppSlots[(short)pArgs->m_pArgs[1].n];
+        pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs->m_pArgs[1].n)];
 
         pActor = (DeviceObject*)pContext->GetActor();
 
@@ -443,7 +443,7 @@ void PlanAction::SignalKeystate(Interactor*, PlanNode* pArgs, short*, int)
 {
     const PlanWord* pBlock = pArgs->m_pArgs;
 
-    g_pGameEngine->GetInputDevice((short)pBlock[1].n)->OnButtonDown((short)pBlock[2].n);
+    g_pGameEngine->GetInputDevice(static_cast<short>(pBlock[1].n))->OnButtonDown(static_cast<short>(pBlock[2].n));
 }
 
 // A target of _MESSAGE_DATA_ uses the interpreter's value, and _BROADCAST_ reaches everyone.
@@ -465,7 +465,7 @@ void PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, in
         nTarget = pBlock[1].n;
     }
 
-    if ((int)nTarget == PLAN_TOKEN_MESSAGE_DATA)
+    if (static_cast<int>(nTarget) == PLAN_TOKEN_MESSAGE_DATA)
     {
         nTarget = nArg;
     }
@@ -484,7 +484,7 @@ void PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, in
         return;
     }
 
-    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[(short)nTarget];
+    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nTarget)];
     pActor                      = pContext->GetActor();
 
     pTarget->DispatchSceneMessage(nEvent, nArg, DECISION_LOG_FRESH, pActor->GetSlot(), 0);
@@ -508,7 +508,7 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
         nTarget = pBlock[1].n;
     }
 
-    if ((int)nTarget == PLAN_TOKEN_MESSAGE_DATA)
+    if (static_cast<int>(nTarget) == PLAN_TOKEN_MESSAGE_DATA)
     {
         nTarget = nParam;
     }
@@ -527,7 +527,7 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
         return;
     }
 
-    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[(short)nTarget];
+    EngineObject* const pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nTarget)];
 
     if (pTarget != nullptr)
     {
@@ -542,7 +542,7 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
 // FUNCTION: HYPERX 0x0045e770
 void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 {
-    const PossessionSyncWord packed = { (unsigned int)nArg };
+    const PossessionSyncWord packed = { static_cast<unsigned int>(nArg) };
 
     TeamBlock*    pTeam;
     PlayerObject* pObject;
@@ -568,24 +568,24 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 
     if (nRecord == pTeam->aSeat[0])
     {
-        pObject = g_pGameEngine->GetPlayer((short)nSide);
+        pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSide));
 
-        pObject->m_matchStats.SetAt(MATCH_STAT_TIME_OF_POSS, (float)nPossessionTime * POSSESSION_TIME_SCALE);
-        pObject->m_matchStats.SetAt(MATCH_STAT_SHOTS_ON_GOAL, (float)nShotsOnGoal);
+        pObject->m_matchStats.SetAt(MATCH_STAT_TIME_OF_POSS, static_cast<float>(nPossessionTime) * POSSESSION_TIME_SCALE);
+        pObject->m_matchStats.SetAt(MATCH_STAT_SHOTS_ON_GOAL, static_cast<float>(nShotsOnGoal));
     }
     else if (nRecord == pTeam->aSeat[1])
     {
-        pObject = g_pGameEngine->GetPlayer((short)(nSide + 2));
+        pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSide + 2));
 
-        pObject->m_matchStats.SetAt(MATCH_STAT_TIME_OF_POSS, (float)nPossessionTime * POSSESSION_TIME_SCALE);
-        pObject->m_matchStats.SetAt(MATCH_STAT_SHOTS_ON_GOAL, (float)nShotsOnGoal);
+        pObject->m_matchStats.SetAt(MATCH_STAT_TIME_OF_POSS, static_cast<float>(nPossessionTime) * POSSESSION_TIME_SCALE);
+        pObject->m_matchStats.SetAt(MATCH_STAT_SHOTS_ON_GOAL, static_cast<float>(nShotsOnGoal));
     }
     else
     {
-        const auto flValue = (float)nPossessionTime;
+        const auto flValue = static_cast<float>(nPossessionTime);
 
         pTeam->aStatRows[nRecord].aStat[MATCH_STAT_TIME_OF_POSS]  = flValue * POSSESSION_TIME_SCALE;
-        pTeam->aStatRows[nRecord].aStat[MATCH_STAT_SHOTS_ON_GOAL] = (float)nShotsOnGoal;
+        pTeam->aStatRows[nRecord].aStat[MATCH_STAT_SHOTS_ON_GOAL] = static_cast<float>(nShotsOnGoal);
     }
 }
 
@@ -606,7 +606,7 @@ extern int g_nPauseRequestStreak;
 // FUNCTION: HYPERX 0x0045e890
 void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const SystemSyncWord packed = { (unsigned int)nArg };
+    const SystemSyncWord packed = { static_cast<unsigned int>(nArg) };
 
     int nTotal;
 
@@ -680,7 +680,7 @@ void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
 
     if (pActor->GetPhase() != OBJECT_PHASE_LOCAL)
     {
-        pActor->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)] = (float)(nValue & 0xff);
+        pActor->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)] = static_cast<float>(nValue & 0xff);
     }
 }
 
@@ -708,14 +708,14 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     }
 
     pActor                = pContext->GetActor();
-    EngineObject* pTarget = g_pGameEngine->m_ppSlots[(short)nIndex];
+    EngineObject* pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
 
     if (pActor != nullptr && pTarget != nullptr && (g_bSessionActive == 0 || (pActor->GetPhase() == OBJECT_PHASE_LOCAL && pTarget->GetPhase() == OBJECT_PHASE_LOCAL)))
     {
-        g_pGameEngine->m_nViewedSlot = (short)nIndex;
+        g_pGameEngine->m_nViewedSlot = static_cast<short>(nIndex);
 
-        g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[(short)nIndex];
-        g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[(short)nIndex];
+        g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
+        g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
 
         if (nIndex == nOwnSlot)
         {
@@ -804,7 +804,7 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
         pBurst->Activate();
 
         pBurst->m_flTarget =
-            (float)(80.0 / (unsigned int)pNode->m_pArgs[ARG_PERIOD].n * flScale + g_flOnePlan);
+            static_cast<float>(80.0 / static_cast<unsigned int>(pNode->m_pArgs[ARG_PERIOD].n) * flScale + g_flOnePlan);
 
         *pBurst->m_pBoost = 1.05f;
 
@@ -823,7 +823,7 @@ void PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, i
 
         Vec3* const pVel = &pFirst->vel;
 
-        const auto flLen = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
+        const auto flLen = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)));
 
         if (flLen < 0.1)
         {
@@ -922,7 +922,7 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x0045edd0
 void PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    auto nSlot = (short)pArgs->m_pArgs[1].n;
+    auto nSlot = static_cast<short>(pArgs->m_pArgs[1].n);
 
     if (nSlot < 0 || nSlot > GOALIE_SLOT_B)
     {
@@ -942,7 +942,7 @@ void PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x0045ee20
 void PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
@@ -952,7 +952,7 @@ void PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, shor
 
         if (pArgs->m_pArgs[2].n != PLAN_TOKEN_MESSAGE_DATA)
         {
-            nIndex = (short)pArgs->m_pArgs[2].n;
+            nIndex = static_cast<short>(pArgs->m_pArgs[2].n);
         }
 
         PlayerObject* const pTarget = g_pGameEngine->GetPlayer(nIndex);
@@ -984,27 +984,27 @@ void PlanAction::HoverAboveArmory(Interactor* pContext, PlanNode* pNode, short*,
     if (nDistance == -1)
     {
         pArgs     = pNode->m_pArgs;
-        pSource   = g_pGameEngine->m_ppSlots[(short)pArgs[1].n];
-        nDistance = (short)pArgs[2].n;
+        pSource   = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[1].n)];
+        nDistance = static_cast<short>(pArgs[2].n);
 
         if (pNode->m_nArgCount == 4)
         {
-            nSlot = (short)pArgs[3].n;
+            nSlot = static_cast<short>(pArgs[3].n);
         }
     }
     else
     {
         pSource   = pContext->GetActor();
         pArgs     = pNode->m_pArgs;
-        nDistance = (short)pArgs[1].n;
+        nDistance = static_cast<short>(pArgs[1].n);
 
         if (pNode->m_nArgCount == 3)
         {
-            nSlot = (short)pArgs[2].n;
+            nSlot = static_cast<short>(pArgs[2].n);
         }
     }
 
-    f.vResult.y = (float)nDistance;
+    f.vResult.y = static_cast<float>(nDistance);
 
     if (pSource != nullptr)
     {
@@ -1125,9 +1125,9 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
     {
         pnArgs = pNode->m_pArgs;
 
-        vVelocity.x = (float)pnArgs[1].n;
-        vVelocity.y = (float)pnArgs[2].n;
-        vVelocity.z = (float)pnArgs[3].n;
+        vVelocity.x = static_cast<float>(pnArgs[1].n);
+        vVelocity.y = static_cast<float>(pnArgs[2].n);
+        vVelocity.z = static_cast<float>(pnArgs[3].n);
     }
     else
     {
@@ -1164,11 +1164,11 @@ void PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 
     pContext->GetActor()->GetPhysicsBody()->smoothVel.z = vVelocity.z;
 
-    if ((float)sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z)) > MIN_VELOCITY_LENGTH)
+    if (static_cast<float>(sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z))) > MIN_VELOCITY_LENGTH)
     {
         PhysicsBody* pBody = pContext->GetActor()->GetPhysicsBody();
 
-        Vec3::ScaleTo(&vVelocity, g_flOnePlan / (float)sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z)), &pBody->velDir);
+        Vec3::ScaleTo(&vVelocity, g_flOnePlan / static_cast<float>(sqrt(static_cast<double>(vVelocity.x * vVelocity.x + vVelocity.y * vVelocity.y + vVelocity.z * vVelocity.z))), &pBody->velDir);
     }
 }
 
@@ -1224,11 +1224,11 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
     Vec3                  vOffset;
     CSetPositionRelative* pSetPosition;
 
-    const auto nFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto nFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
 
     EngineObject* const pFirst = g_pGameEngine->GetSlot(nFirst);
 
-    const auto nSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto nSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
 
     EngineObject* pSecond = g_pGameEngine->GetSlot(nSecond);
 
@@ -1356,11 +1356,11 @@ void PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResu
     PlayerObject* pTarget;
     Vec3          vOffset;
 
-    const auto sFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto sFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
 
     PlayerObject* const pFirst = g_pGameEngine->GetPlayer(sFirst);
 
-    const auto sSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto sSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
 
     PlayerObject* const pSecond = g_pGameEngine->GetPlayer(sSecond);
 
@@ -1453,14 +1453,14 @@ void PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
 {
     const int nNow = g_pGameEngine->m_clock.nTickMs;
 
-    if ((unsigned int)(nNow - g_nAnnouncerLineMs) < ANNOUNCER_GAG_MS)
+    if (static_cast<unsigned int>(nNow - g_nAnnouncerLineMs) < ANNOUNCER_GAG_MS)
     {
-        *pnOut = (short)(pArgs->m_nArgCount - 2);
+        *pnOut = static_cast<short>(pArgs->m_nArgCount - 2);
 
         return;
     }
 
-    *pnOut = (short)((long long)rand() * (pArgs->m_nArgCount - 2) / ((long long)RAND_MAX + 1));
+    *pnOut = static_cast<short>(static_cast<long long>(rand()) * (pArgs->m_nArgCount - 2) / (static_cast<long long>(RAND_MAX) + 1));
 
     g_nAnnouncerLineMs = nNow;
 }
@@ -1486,13 +1486,13 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
     EngineObject* pSecond;
     Vec3          vGap;
 
-    pFirst = g_pGameEngine->m_ppSlots[(short)CollisionObj::GetModelId(
-        (int)pContext->GetModelSlot())];
+    pFirst = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(
+        static_cast<int>(pContext->GetModelSlot())))];
 
     Vec3 vFirst = *pFirst->GetPositionPtr();
 
-    pSecond = g_pGameEngine->m_ppSlots[(short)CollisionObj::GetModelId(
-        (int)pContext->GetOtherSlot())];
+    pSecond = g_pGameEngine->m_ppSlots[static_cast<short>(CollisionObj::GetModelId(
+        static_cast<int>(pContext->GetOtherSlot())))];
 
     Vec3 vSecond = *pSecond->GetPositionPtr();
 
@@ -1511,7 +1511,7 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
         PhysicsBody* pBlockA = pFirst->GetPhysicsBody();
         PhysicsBody* pBlockB = pSecond->GetPhysicsBody();
 
-        if (Vec3::DotInline(&pBlockB->velDir, &pBlockA->velDir) > 0.25 && (float)sqrt(static_cast<double>(vGap.x * vGap.x + vGap.y * vGap.y + vGap.z * vGap.z)) < 150.0f)
+        if (Vec3::DotInline(&pBlockB->velDir, &pBlockA->velDir) > 0.25 && static_cast<float>(sqrt(static_cast<double>(vGap.x * vGap.x + vGap.y * vGap.y + vGap.z * vGap.z))) < 150.0f)
         {
             *pResult = 0;
 
@@ -1601,8 +1601,8 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                     }
                     else
                     {
-                        const auto flFacing = (float)cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
-                            nSlot, (short)TeammateSlot(nSlot))));
+                        const auto flFacing = static_cast<float>(cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
+                            nSlot, static_cast<short>(TeammateSlot(nSlot))))));
 
                         if (g_pGameEngine->GetSlot(g_pGameEngine->m_nViewedSlot)->GetDistIfFacing(g_pGameEngine->GetSlot(TeammateSlot(nSlot)), flFacing) != 0.0f)
                         {
@@ -1628,12 +1628,12 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                     nOther = nKind;
                 }
 
-                if (nSlot == (short)(nOther & 3))
+                if (nSlot == static_cast<short>(nOther & 3))
                 {
                     if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick > ARM_WINDOW_MS)
                     {
-                        const auto flFacing = (float)cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
-                            nSlot, g_pGameEngine->m_nViewedSlot)));
+                        const auto flFacing = static_cast<float>(cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
+                            nSlot, g_pGameEngine->m_nViewedSlot))));
 
                         if (g_pGameEngine->GetSlot(nSlot)->GetDistIfFacing(
                                 g_pGameEngine->GetSlot(g_pGameEngine->m_nViewedSlot), flFacing) != 0.0f)
@@ -1647,7 +1647,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                     }
                     else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > STATE_WINDOW_MS)
                     {
-                        *pResult = (short)((g_pGameEngine->m_bFollowingOther != 0) + 6);
+                        *pResult = static_cast<short>((g_pGameEngine->m_bFollowingOther != 0) + 6);
                     }
                     else
                     {
@@ -1803,11 +1803,11 @@ void PlanCond::InRangeToAttack(Interactor* pContext, PlanNode*, short* pResult, 
     Vec3 vNear;
     Vec3 vFar;
 
-    auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+    auto bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
     const Vec3* pNearAt = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
-    bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+    bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
     const Vec3* pFarAt = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
 
@@ -1851,11 +1851,11 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
     float       flToObject;
 
     EngineObject* pActor = pContext->GetActor();
-    auto          bySlot = (unsigned char)pActor->GetSlot();
+    auto          bySlot = static_cast<unsigned char>(pActor->GetSlot());
     pFirst               = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
     pActor  = pContext->GetActor();
-    bySlot  = (unsigned char)pActor->GetSlot();
+    bySlot  = static_cast<unsigned char>(pActor->GetSlot());
     pSecond = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
 
     pActor = pContext->GetActor();
@@ -1886,16 +1886,16 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
     vObjectSelf.y = pObject->y - pSelf->y;
     vObjectSelf.z = pObject->z - pSelf->z;
 
-    const auto flHypotFirst = (float)sqrt(static_cast<double>(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z));
-    flToSecond              = (float)sqrt(static_cast<double>(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z));
+    const auto flHypotFirst = static_cast<float>(sqrt(static_cast<double>(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z)));
+    flToSecond              = static_cast<float>(sqrt(static_cast<double>(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z)));
 
     const bool bFirstCloser = flHypotFirst < flToSecond;
 
-    flToObject = (float)sqrt(static_cast<double>(vObjectSelf.x * vObjectSelf.x + vObjectSelf.y * vObjectSelf.y + vObjectSelf.z * vObjectSelf.z));
+    flToObject = static_cast<float>(sqrt(static_cast<double>(vObjectSelf.x * vObjectSelf.x + vObjectSelf.y * vObjectSelf.y + vObjectSelf.z * vObjectSelf.z)));
 
     if (bFirstCloser)
     {
-        if (flHypotFirst <= 100.0 && (float)sqrt(static_cast<double>(vFirstSelf.x * vFirstSelf.x + vFirstSelf.y * vFirstSelf.y + vFirstSelf.z * vFirstSelf.z)) + flToObject <= flHypotFirst * PATH_SLACK)
+        if (flHypotFirst <= 100.0 && static_cast<float>(sqrt(static_cast<double>(vFirstSelf.x * vFirstSelf.x + vFirstSelf.y * vFirstSelf.y + vFirstSelf.z * vFirstSelf.z))) + flToObject <= flHypotFirst * PATH_SLACK)
         {
             *pResult = 0;
 
@@ -1907,7 +1907,7 @@ void PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResu
         return;
     }
 
-    if (flToSecond <= 100.0 && (float)sqrt(static_cast<double>(vSecondSelf.x * vSecondSelf.x + vSecondSelf.y * vSecondSelf.y + vSecondSelf.z * vSecondSelf.z)) + flToObject <= flToSecond * PATH_SLACK)
+    if (flToSecond <= 100.0 && static_cast<float>(sqrt(static_cast<double>(vSecondSelf.x * vSecondSelf.x + vSecondSelf.y * vSecondSelf.y + vSecondSelf.z * vSecondSelf.z))) + flToObject <= flToSecond * PATH_SLACK)
     {
         *pResult = 0;
 
@@ -1943,13 +1943,13 @@ void PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* p
 
     pRokAt = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr();
 
-    auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+    auto bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
     const Vec3* pNearAt = pOpponent->GetPositionPtr();
 
-    bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+    bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
     pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(bySlot));
 
@@ -2055,7 +2055,7 @@ void PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, 
     vToSpawn.y = vSpawn.y - vActor.y;
     vToSpawn.z = vSpawn.z - vActor.z;
 
-    if ((float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) > (float)sqrt(static_cast<double>(vToSpawn.x * vToSpawn.x + vToSpawn.y * vToSpawn.y + vToSpawn.z * vToSpawn.z)))
+    if (static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz))) > static_cast<float>(sqrt(static_cast<double>(vToSpawn.x * vToSpawn.x + vToSpawn.y * vToSpawn.y + vToSpawn.z * vToSpawn.z))))
     {
         *pResult = 0;
 
@@ -2075,11 +2075,11 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
 
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
-    EngineObject* const pNear = apObjects[(short)nSlot];
+    EngineObject* const pNear = apObjects[static_cast<short>(nSlot)];
 
     const int nOther = nSlot + 2;
 
-    EngineObject* const pFar = apObjects[(short)nOther];
+    EngineObject* const pFar = apObjects[static_cast<short>(nOther)];
 
     Vec3 vOwn = *pOwner->GetPositionPtr();
 
@@ -2099,9 +2099,9 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
     vToFar.y = vFar.y - vOwn.y;
     vToFar.z = vFar.z - vOwn.z;
 
-    const auto flDistNear = (float)sqrt(static_cast<double>((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x));
+    const auto flDistNear = static_cast<float>(sqrt(static_cast<double>((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x)));
 
-    const auto flDistFar = (float)sqrt(static_cast<double>((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x));
+    const auto flDistFar = static_cast<float>(sqrt(static_cast<double>((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x)));
 
     float flDamageNear = ((PlayerObject*)pNear)->m_stats.GetScalar(RATING_DAMAGE);
 
@@ -2136,13 +2136,13 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
     {
         if (flDamageFar <= DamageGate() || flDistNear >= flDistFar)
         {
-            *pResult = (short)nSlot;
+            *pResult = static_cast<short>(nSlot);
 
             return;
         }
     }
 
-    *pResult = (short)nOther;
+    *pResult = static_cast<short>(nOther);
 }
 
 // Answers zero or one for the opponent to attack and two for neither, DECIDE's child index.
@@ -2249,13 +2249,13 @@ void PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pR
 
     if (flDistanceA == g_flZeroPlan && flDistanceB == g_flZeroPlan)
     {
-        auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+        auto bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
         pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
         const Vec3* pPosA = pOpponent->GetPositionPtr();
 
-        bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+        bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
         pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(bySlot));
 
@@ -2275,12 +2275,12 @@ void PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pR
 
         if (flDamageA > DamageGate())
         {
-            flDistanceA = (float)sqrt(static_cast<double>(vOffsetA.z * vOffsetA.z + vOffsetA.y * vOffsetA.y + vOffsetA.x * vOffsetA.x));
+            flDistanceA = static_cast<float>(sqrt(static_cast<double>(vOffsetA.z * vOffsetA.z + vOffsetA.y * vOffsetA.y + vOffsetA.x * vOffsetA.x)));
         }
 
         if (flDamageB > DamageGate())
         {
-            flDistanceB = (float)sqrt(static_cast<double>(vOffsetB.z * vOffsetB.z + vOffsetB.y * vOffsetB.y + vOffsetB.x * vOffsetB.x));
+            flDistanceB = static_cast<float>(sqrt(static_cast<double>(vOffsetB.z * vOffsetB.z + vOffsetB.y * vOffsetB.y + vOffsetB.x * vOffsetB.x)));
         }
     }
 
@@ -2341,13 +2341,13 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
     if (pnTargetSlot == nullptr || (nSlot = pnTargetSlot->nSlot) >= PLAYER_OBJECT_COUNT)
     {
         // TODO: The original takes the result pointer itself as the slot; was *pResult meant?
-        nSlot = (short)(std::intptr_t)pResult;
+        nSlot = static_cast<short>((std::intptr_t)pResult);
     }
 
     EngineObject* const pActor = g_pGameEngine->GetSlot(nSlot);
 
-    const auto nNear = (short)(~nSlot & 1);
-    const auto nFar  = (short)((~nSlot & 1) | 2);
+    const auto nNear = static_cast<short>(~nSlot & 1);
+    const auto nFar  = static_cast<short>((~nSlot & 1) | 2);
 
     if (flSpeed > MIN_SPEED_FOR_FACING)
     {
@@ -2458,7 +2458,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
             {
                 const short sOther = pOther->GetSlot();
 
-                const auto sMasked = (short)TeammateSlot(sOther);
+                const auto sMasked = static_cast<short>(TeammateSlot(sOther));
 
                 if (sMasked >= pOther->GetSlot())
                 {
@@ -2471,13 +2471,13 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
             }
             else
             {
-                auto bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+                auto bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
                 pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(bySlot));
 
                 const Vec3* pNearAt = pOpponent->GetPositionPtr();
 
-                bySlot = (unsigned char)pContext->GetActor()->GetSlot();
+                bySlot = static_cast<unsigned char>(pContext->GetActor()->GetSlot());
 
                 pOpponent = g_pGameEngine->GetPlayer(OPPOSING_SECOND(bySlot));
 
@@ -2493,8 +2493,8 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
                 vFar.y = pFarAt->y - pOwnAt->y;
                 vFar.z = pFarAt->z - pOwnAt->z;
 
-                flDistNear           = (float)sqrt(static_cast<double>((flNearZ * flNearZ + flNearY * flNearY) + flNearX * flNearX));
-                const auto flDistFar = (float)sqrt(static_cast<double>((vFar.z * vFar.z + vFar.y * vFar.y) + vFar.x * vFar.x));
+                flDistNear           = static_cast<float>(sqrt(static_cast<double>((flNearZ * flNearZ + flNearY * flNearY) + flNearX * flNearX)));
+                const auto flDistFar = static_cast<float>(sqrt(static_cast<double>((vFar.z * vFar.z + vFar.y * vFar.y) + vFar.x * vFar.x)));
 
                 if (flDistNear < flDistFar)
                 {
@@ -2540,7 +2540,7 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
 
     for (int nSlot = SLOT_MULTIPLIER; nSlot <= SLOT_MULTIPLIER_LAST; nSlot++)
     {
-        EngineObject* const pMultiplier = g_pGameEngine->m_ppSlots[(short)nSlot];
+        EngineObject* const pMultiplier = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
         if (pMultiplier != nullptr)
         {
@@ -2557,7 +2557,7 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
                 const float flDy = pOther->y - pPosition->y;
                 const float flDz = pOther->z - pPosition->z;
 
-                const auto flRange = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
+                const auto flRange = static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 
                 if (flRange < flBest)
                 {
@@ -2570,7 +2570,7 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
 
     if (nBest != MODEL_ID_NONE)
     {
-        *pResult = (short)(nBest - (SLOT_MULTIPLIER - 1));
+        *pResult = static_cast<short>(nBest - (SLOT_MULTIPLIER - 1));
     }
     else
     {
@@ -2618,7 +2618,7 @@ void PlanCond::OffenseOrWRok(Interactor* pContext, PlanNode*, short* pResult, in
         nWide = nOther;
     }
 
-    nOther = (short)(nWide & 3);
+    nOther = static_cast<short>(nWide & 3);
     nSlot -= nOther;
 
     if (nSlot != 0)
@@ -2662,7 +2662,7 @@ void PlanCond::RokInWhichTeamsPoss(Interactor*, PlanNode*, short* pResult, int)
 
         if (nSlot < 6)
         {
-            *pResult = (signed char)(nSlot & 1);
+            *pResult = static_cast<signed char>(nSlot & 1);
 
             return;
         }
@@ -2688,7 +2688,7 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
         if (nSlot < PLAYER_OBJECT_COUNT)
         {
             const int nTeamWide = pActor->GetSlot();
-            auto      nTeam     = (short)nTeamWide;
+            auto      nTeam     = static_cast<short>(nTeamWide);
             int       nOther    = nTeam;
 
             if (nTeam < 4)
@@ -2703,14 +2703,14 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
                 return;
             }
 
-            if (nSlot == (short)(nOther & 3))
+            if (nSlot == static_cast<short>(nOther & 3))
             {
                 *pResult = 2;
 
                 return;
             }
 
-            nTeam = (short)(~nTeam & 1);
+            nTeam = static_cast<short>(~nTeam & 1);
 
             if (nSlot == nTeam)
             {
@@ -2719,7 +2719,7 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
                 return;
             }
 
-            if (nSlot == (short)(nTeam | 2))
+            if (nSlot == static_cast<short>(nTeam | 2))
             {
                 *pResult = 4;
 
@@ -2801,7 +2801,7 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
             g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_YER_ATTACKED, 0);
         }
 
-        *pResult = (short)(nLate + 1);
+        *pResult = static_cast<short>(nLate + 1);
     }
 }
 
@@ -2870,7 +2870,7 @@ void PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, short*, int
 // FUNCTION: HYPERX 0x00461ea0
 void PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode, short*, int)
 {
-    BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr((short)pNode->m_pArgs[ARG_COL_OBJECT].n);
+    BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr(static_cast<short>(pNode->m_pArgs[ARG_COL_OBJECT].n));
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
@@ -2886,7 +2886,7 @@ void PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode, short*,
 // FUNCTION: HYPERX 0x00461f30
 void PlanAction::SetTargetWithData(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const auto nIndex = (short)nArg;
+    const auto nIndex = static_cast<short>(nArg);
 
     Vec3 vToTracked;
     Vec3 vToCandidate;
@@ -2965,7 +2965,7 @@ void PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult,
 
     const short nSlot = pContext->GetActor()->GetSlot();
 
-    const auto nMate = (short)TeammateSlot(nSlot);
+    const auto nMate = static_cast<short>(TeammateSlot(nSlot));
 
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
@@ -3132,7 +3132,7 @@ void PlanCond::PickACell(Interactor* pContext, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x004623c0
 void PlanCond::Random(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
-    *pResult = (short)((long long)rand() * (pArgs->m_nArgCount - 1) / ((long long)RAND_MAX + 1));
+    *pResult = static_cast<short>(static_cast<long long>(rand()) * (pArgs->m_nArgCount - 1) / (static_cast<long long>(RAND_MAX) + 1));
 }
 
 // Turns the head camera's shot power into a child index, inverted and clamped.
@@ -3142,13 +3142,13 @@ void PlanCond::ShotPower(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
     const int nScaled = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_nShotPowerLevel * (pArgs->m_nArgCount - 1);
 
-    const int nPosition = (int)((double)nScaled * g_dPeriodScale);
+    const int nPosition = static_cast<int>(static_cast<double>(nScaled) * g_dPeriodScale);
 
-    *pResult = (short)(1 - nPosition);
+    *pResult = static_cast<short>(1 - nPosition);
 
     if (*pResult > pArgs->m_nArgCount - 2)
     {
-        *pResult = (short)(pArgs->m_nArgCount - 2);
+        *pResult = static_cast<short>(pArgs->m_nArgCount - 2);
     }
 }
 
@@ -3171,12 +3171,12 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 
     *pResult = 0;
 
-    for (nSlot = 0; (short)nSlot <= SPAWN_SLOT_LIMIT; nSlot++)
+    for (nSlot = 0; static_cast<short>(nSlot) <= SPAWN_SLOT_LIMIT; nSlot++)
     {
-        PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)nSlot);
+        PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
 
-        vSquare.x = (float)(SPAWN_GRID_HALF - (short)nSlot / 2 * SPAWN_GRID_PITCH);
-        vSquare.y = (float)(SPAWN_GRID_HALF - (short)nSlot % 2 * SPAWN_GRID_PITCH);
+        vSquare.x = static_cast<float>(SPAWN_GRID_HALF - static_cast<short>(nSlot) / 2 * SPAWN_GRID_PITCH);
+        vSquare.y = static_cast<float>(SPAWN_GRID_HALF - static_cast<short>(nSlot) % 2 * SPAWN_GRID_PITCH);
         vSquare.z = g_flZeroPlan;
 
         Vec3 vPosition = *pObject->GetPositionPtr();
@@ -3203,7 +3203,7 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 
             do
             {
-                if (g_pGameEngine->IsFitSubstitute((short)nSlot, nAxis) != 0)
+                if (g_pGameEngine->IsFitSubstitute(static_cast<short>(nSlot), nAxis) != 0)
                 {
                     nMoving++;
                 }
@@ -3327,7 +3327,7 @@ void PlanCond::WhoWonTheGame(Interactor*, PlanNode*, short* pResult, int)
     }
     else
     {
-        *pResult = (short)(g_pGameEngine->GetHomeScore() <= g_pGameEngine->GetAwayScore());
+        *pResult = static_cast<short>(g_pGameEngine->GetHomeScore() <= g_pGameEngine->GetAwayScore());
     }
 }
 
@@ -3348,7 +3348,7 @@ void PlanCond::IsSenderTeammate(Interactor* pContext, PlanNode*, short* pResult,
 
     nSlot &= PLAYER_SLOT_MASK;
 
-    *pResult = pContext->GetTargetSlot() != (short)nSlot;
+    *pResult = pContext->GetTargetSlot() != static_cast<short>(nSlot);
 
     EngineObject* const pActor = pContext->GetActor();
 
@@ -3415,7 +3415,7 @@ void PlanCond::SideKeysAreDown(Interactor*, PlanNode*, short* pResult, int)
     pObject                   = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
     PhysicsBody* const pState = pObject->GetPhysicsBody();
 
-    *pResult = ((char)pState->nHeldBindings & HELD_ROTATE) == 0;
+    *pResult = (static_cast<char>(pState->nHeldBindings) & HELD_ROTATE) == 0;
 }
 
 // FUNCTION: HYPERX 0x00462910
@@ -3441,10 +3441,10 @@ void PlanCond::TeammateIsViewOwner(Interactor* pContext, PlanNode*, short* pResu
         nTeam = g_pGameEngine->m_nViewedSlot;
     }
 
-    *pResult = (unsigned short)(
+    *pResult = static_cast<unsigned short>(
         // STRING: HYPERX 0x004bb340
         strcmp("Human",
-               g_pGameEngine->m_ppSlots[TeammateSlot((short)nTeam)]
+               g_pGameEngine->m_ppSlots[TeammateSlot(static_cast<short>(nTeam))]
                    ->GetPlanState()
                    ->m_pszName) != 0);
 }
@@ -3467,9 +3467,9 @@ void PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*, short* 
         nTeam = g_pGameEngine->m_nViewedSlot;
     }
 
-    const auto nSlot = (short)TeammateSlot((short)nTeam);
+    const auto nSlot = static_cast<short>(TeammateSlot(static_cast<short>(nTeam)));
 
-    nIsBot = (short)(
+    nIsBot = static_cast<short>(
         // STRING: HYPERX 0x004bb340
         strcmp("Human",
                g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
@@ -3494,9 +3494,9 @@ void PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, short* pRes
 {
     const short nTeam = pContext->GetActor()->GetSlot();
 
-    const auto nSlot = (short)TeammateSlot(nTeam);
+    const auto nSlot = static_cast<short>(TeammateSlot(nTeam));
 
-    *pResult = (short)(
+    *pResult = static_cast<short>(
         // STRING: HYPERX 0x004bb340
         strcmp("Human",
                g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
@@ -3521,7 +3521,7 @@ void PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short* pResul
 {
     const short nTeam = pContext->GetActor()->GetSlot();
 
-    const auto nSlot = (short)TeammateSlot(nTeam);
+    const auto nSlot = static_cast<short>(TeammateSlot(nTeam));
 
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
@@ -3604,21 +3604,21 @@ void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, i
                     nOpposite = nOther;
                 }
 
-                if (nTarget != (short)(nOpposite & SLOT_OPPOSITE_WRAP))
+                if (nTarget != static_cast<short>(nOpposite & SLOT_OPPOSITE_WRAP))
                 {
-                    *pResult = (unsigned short)(pContext->GetActor()->GetSlot() >= SLOT_FAR_HALF);
+                    *pResult = static_cast<unsigned short>(pContext->GetActor()->GetSlot() >= SLOT_FAR_HALF);
 
                     return;
                 }
             }
 
-            *pResult = (unsigned short)((nTarget != pContext->GetActor()->GetSlot()) + ROK_TARGETED);
+            *pResult = static_cast<unsigned short>((nTarget != pContext->GetActor()->GetSlot()) + ROK_TARGETED);
 
             return;
         }
     }
 
-    *pResult = (unsigned short)(pContext->GetActor()->GetSlot() >= SLOT_FAR_HALF);
+    *pResult = static_cast<unsigned short>(pContext->GetActor()->GetSlot() >= SLOT_FAR_HALF);
 }
 
 // FUNCTION: HYPERX 0x00462e50
@@ -3776,14 +3776,14 @@ void PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResul
     }
 
     // The client tests the short at 0x004630fe and indexes the int at 0x00463115.
-    if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_PRONOUN)
+    if (static_cast<unsigned short>(static_cast<unsigned int>(static_cast<short>(nSlot)) >> 16) == PLAN_ARG_PRONOUN)
     {
-        nSlot = ((PlanStatFnWide*)g_apPlanStatFns)[nSlot & 0xffff](pContext->GetActor(), pArgs);
+        nSlot = (reinterpret_cast<PlanStatFnWide*>(g_apPlanStatFns))[nSlot & 0xffff](pContext->GetActor(), pArgs);
     }
 
     AttachPak* pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT && pCarrier->nSlot == (short)nSlot)
+    if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT && pCarrier->nSlot == static_cast<short>(nSlot))
     {
         *pResult = 0;
         return;
@@ -3795,7 +3795,7 @@ void PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResul
 // FUNCTION: HYPERX 0x00463170
 void PlanCond::SetResultDirect(Interactor*, PlanNode*, short* pResult, int nValue)
 {
-    *pResult = (short)nValue;
+    *pResult = static_cast<short>(nValue);
 }
 
 // FUNCTION: HYPERX 0x00463180
@@ -3812,7 +3812,7 @@ void PlanCond::IsRokInMyZone(Interactor* pContext, PlanNode*, short* pResult, in
         nAnswer = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPositionPtr()->y < g_flZeroPlan;
     }
 
-    *pResult = (short)nAnswer;
+    *pResult = static_cast<short>(nAnswer);
 }
 
 // FUNCTION: HYPERX 0x004631f0
@@ -3839,7 +3839,7 @@ void PlanAction::SetRenderFlag(Interactor* pContext, PlanNode* pArgs, short*, in
 // FUNCTION: HYPERX 0x00463300
 void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 {
-    const auto nFlag = (unsigned char)nArg;
+    const auto nFlag = static_cast<unsigned char>(nArg);
 
     short nRequest;
 
@@ -3854,11 +3854,11 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 
     if (pArgs->m_pArgs[1].n == PLAN_TOKEN_MESSAGE_DATA)
     {
-        nRequest = (short)(((nFlag & 1) > 0) + 7);
+        nRequest = static_cast<short>(((nFlag & 1) > 0) + 7);
     }
     else
     {
-        nRequest = (short)pArgs->m_pArgs[1].n;
+        nRequest = static_cast<short>(pArgs->m_pArgs[1].n);
     }
 
     if (nRequest == ARENA_TRACK_UP)
@@ -3906,7 +3906,7 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 // FUNCTION: HYPERX 0x004633c0
 void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
 {
-    const auto       nValue = (short)pArgs->m_pArgs[1].n;
+    const auto       nValue = static_cast<short>(pArgs->m_pArgs[1].n);
     RokObject* const pRok   = g_pGameEngine->GetRok();
 
     if (nValue == -1)
@@ -3920,7 +3920,7 @@ void PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int)
         return;
     }
 
-    pRok->m_nKillState = (unsigned char)~(unsigned char)nValue & 1;
+    pRok->m_nKillState = static_cast<unsigned char>(~static_cast<unsigned char>(nValue)) & 1;
 
     pRok->SetRenderSlotFlags();
 
@@ -3947,7 +3947,7 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
     int           nValue = 0;
     PaletteRange  aRange;
 
-    const auto nEnable = (short)pArgs->m_pArgs[1].n;
+    const auto nEnable = static_cast<short>(pArgs->m_pArgs[1].n);
 
     if (pContext->GetNamedSlot() == -1)
     {
@@ -3971,7 +3971,7 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
         nValue = 0;
     }
 
-    const auto nIndex = (short)nValue;
+    const auto nIndex = static_cast<short>(nValue);
 
     if (g_awColorLatched[nIndex] != 0)
     {
@@ -4018,7 +4018,7 @@ void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int
 {
     const PlanWord* pBlock  = pArgs->m_pArgs;
     const float     flValue = pBlock[2].fl;
-    const auto      nIndex  = (short)pBlock[1].n;
+    const auto      nIndex  = static_cast<short>(pBlock[1].n);
 
     EngineObject* const pActor  = pContext->GetActor();
     PlanState* const    pLocals = pActor->GetPlanState();
@@ -4049,11 +4049,11 @@ void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 
             Vec3* const pBody = &pCamera->GetPhysicsBody()->pos;
 
-            pPos->x = pBody->x = (float)(unsigned int)pNode->m_pArgs[ARG_X].n;
+            pPos->x = pBody->x = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_X].n));
 
-            pPos->y = pBody->y = (float)(unsigned int)pNode->m_pArgs[ARG_Y].n;
+            pPos->y = pBody->y = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_Y].n));
 
-            pPos->z = pBody->z = (float)(unsigned int)pNode->m_pArgs[ARG_Z].n;
+            pPos->z = pBody->z = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_Z].n));
         }
     }
 }
@@ -4078,7 +4078,7 @@ void PlanAction::SetOnRim(Interactor*, PlanNode* pNode, short*, int)
 
             pPlanState = pActor->GetPlanState();
 
-            static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->SetDirectedRange((float)(unsigned int)pNode->m_pArgs[ARG_RIM_MODE].n, (float)(unsigned int)pNode->m_pArgs[ARG_HIGH].n);
+            static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->SetDirectedRange(static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_RIM_MODE].n)), static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_HIGH].n)));
 
             return;
         }
@@ -4113,11 +4113,11 @@ void PlanAction::SetFriction(Interactor* pContext, PlanNode* pNode, short*, int)
     {
         pActor = pContext->GetActor();
 
-        const float flParam = (float)(unsigned int)pNode->m_pArgs[ARG_VALUE].n * 0.01f;
+        const float flParam = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_VALUE].n)) * 0.01f;
 
         pActor->GetPhysicsBody()->flFriction = flParam;
 
-        if ((unsigned int)pNode->m_pArgs[ARG_VALUE].n > STEER_SCALE_THRESHOLD)
+        if (static_cast<unsigned int>(pNode->m_pArgs[ARG_VALUE].n) > STEER_SCALE_THRESHOLD)
         {
             pActor = pContext->GetActor();
 
@@ -4150,7 +4150,7 @@ void PlanAction::SetMyGravity(Interactor* pContext, PlanNode* pArgs, short*, int
 {
     EngineObject* const pActor = pContext->GetActor();
 
-    const auto flValue = (float)(unsigned int)pArgs->m_pArgs[1].n;
+    const auto flValue = static_cast<float>(static_cast<unsigned int>(pArgs->m_pArgs[1].n));
 
     pActor->GetPhysicsBody()->flGravAccel = flValue;
 }
@@ -4160,12 +4160,12 @@ void PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
 {
     int nReds;
 
-    const int nJudge = (int)g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x;
+    const int nJudge = static_cast<int>(g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x);
 
     nReds = (std::max)(JUDGE_STATE_LOW,
-                       (std::min)(JUDGE_STATE_HIGH, (int)(short)nJudge + (int)(short)pArgs->m_pArgs[1].n));
+                       (std::min)(JUDGE_STATE_HIGH, static_cast<int>(static_cast<short>(nJudge)) + static_cast<int>(static_cast<short>(pArgs->m_pArgs[1].n))));
 
-    g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x = (float)nReds;
+    g_pGameEngine->m_ppSlots[SLOT_RED_RANDOMIZER]->GetPhysicsBody()->axis.x = static_cast<float>(nReds);
 }
 
 // The two enable ratings are flags; every other rating is added and clamped to nought and ten.
@@ -4173,7 +4173,7 @@ void PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00463900
 void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     PlayerObject* pObject;
     int           nIndex;
@@ -4190,7 +4190,7 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
         }
         else
         {
-            nIndex = (short)pArgs->m_pArgs[ARG_SLOT].n;
+            nIndex = static_cast<short>(pArgs->m_pArgs[ARG_SLOT].n);
 
             pObject = g_pGameEngine->GetPlayer(nIndex);
         }
@@ -4201,13 +4201,13 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
 
         if (pArgs->m_pArgs[ARG_SLOT].n != PLAN_TOKEN_MESSAGE_DATA)
         {
-            nIndex = (short)pArgs->m_pArgs[ARG_SLOT].n;
+            nIndex = static_cast<short>(pArgs->m_pArgs[ARG_SLOT].n);
         }
 
         pObject = g_pGameEngine->GetPlayer(nIndex);
     }
 
-    const auto nAmount = (short)pArgs->m_pArgs[ARG_AMOUNT].n;
+    const auto nAmount = static_cast<short>(pArgs->m_pArgs[ARG_AMOUNT].n);
 
     const float flScalar = pObject->m_stats.GetScalar(nStat);
 
@@ -4227,7 +4227,7 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
             return;
     }
 
-    float flValue = (float)nAmount + flScalar;
+    float flValue = static_cast<float>(nAmount) + flScalar;
 
     if (STAT_CEILING >= flValue && 0.0f > flValue)
     {
@@ -4245,7 +4245,7 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
 // FUNCTION: HYPERX 0x00463a30
 void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, int nPassed)
 {
-    const auto nDefaultSlot = (short)nPassed;
+    const auto nDefaultSlot = static_cast<short>(nPassed);
 
     EngineObject* pActor;
     EngineObject* pNamed;
@@ -4277,7 +4277,7 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
             }
             else
             {
-                nSlot = (short)pBlock[1].n;
+                nSlot = static_cast<short>(pBlock[1].n);
             }
 
             pNamed = g_pGameEngine->m_ppSlots[nSlot];
@@ -4301,7 +4301,7 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
             }
             else
             {
-                nSlot = (short)pBlock[1].n;
+                nSlot = static_cast<short>(pBlock[1].n);
             }
 
             pNamed = g_pGameEngine->m_ppSlots[nSlot];
@@ -4395,11 +4395,11 @@ void PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, short*, 
         nTracked = pContext->GetActor()->GetSlot();
     }
 
-    PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)nObject);
+    PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nObject));
 
     if (pObject->m_stats.GetScalar(RATING_DAMAGE) <= 0.0f)
     {
-        pObject->m_wKilledBySlot = (short)nTracked;
+        pObject->m_wKilledBySlot = static_cast<short>(nTracked);
 
         return;
     }
@@ -4439,7 +4439,7 @@ void PlanAction::FlyingSemaphore(Interactor* pContext, PlanNode* pArgs, short* p
 
     if (pArgs->m_nArgCount == 2)
     {
-        pActor->m_wFlyingSemaphore = (short)pArgs->m_pArgs[1].n;
+        pActor->m_wFlyingSemaphore = static_cast<short>(pArgs->m_pArgs[1].n);
     }
     else
     {
@@ -4454,7 +4454,7 @@ void PlanAction::AnimationSemaphore(Interactor* pContext, PlanNode* pArgs, short
 
     if (pArgs->m_nArgCount == 2)
     {
-        pActor->m_wAnimationSemaphore = (short)pArgs->m_pArgs[1].n;
+        pActor->m_wAnimationSemaphore = static_cast<short>(pArgs->m_pArgs[1].n);
     }
     else
     {
@@ -4469,7 +4469,7 @@ void PlanAction::ClockStoppedSemaphore(Interactor* pContext, PlanNode* pArgs, sh
 
     if (pArgs->m_nArgCount == 2)
     {
-        pActor->m_wClockStoppedSemaphore = (short)pArgs->m_pArgs[1].n;
+        pActor->m_wClockStoppedSemaphore = static_cast<short>(pArgs->m_pArgs[1].n);
     }
     else
     {
@@ -4482,7 +4482,7 @@ void PlanAction::ClockStoppedSemaphore(Interactor* pContext, PlanNode* pArgs, sh
 // FUNCTION: HYPERX 0x00463e40
 void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPassed)
 {
-    const auto nSlot = (unsigned int)nPassed;
+    const auto nSlot = static_cast<unsigned int>(nPassed);
 
     unsigned int nArg;
 
@@ -4499,14 +4499,14 @@ void PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short*
         nArg = pBlock[1].n;
     }
 
-    if ((int)nArg == PLAN_TOKEN_MESSAGE_DATA)
+    if (static_cast<int>(nArg) == PLAN_TOKEN_MESSAGE_DATA)
     {
         nArg = nSlot;
     }
 
     if (pArgs->m_nArgCount == ARG_COUNT_WRITE)
     {
-        pActor->m_wDesiredSubstitute = (short)nArg;
+        pActor->m_wDesiredSubstitute = static_cast<short>(nArg);
 
         return;
     }
@@ -4595,12 +4595,12 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
     {
         const float flGate = DamageGate();
 
-        flFirst = (float)(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
+        flFirst = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
     }
 
     if (pTeam->aReserveSince[nSecond] != 0)
     {
-        flSecond = (float)(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nSecond]) / (13500.0f / DamageGate()) + flSecond;
+        flSecond = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nSecond]) / (13500.0f / DamageGate()) + flSecond;
     }
 
     if (sCandidate < SLOT_FAR_HALF)
@@ -4703,7 +4703,7 @@ void PlanAction::SubstitutePlayer(Interactor* pContext, PlanNode* pArgs, short* 
         return;
     }
 
-    *pResult = (short)(g_pGameEngine->IsFitSubstitute(nSlot, nParam) != 0);
+    *pResult = static_cast<short>(g_pGameEngine->IsFitSubstitute(nSlot, nParam) != 0);
 }
 
 // Whether the team mate may substitute in; the byte answer is normalised to one or zero.
@@ -4715,9 +4715,9 @@ void PlanCond::OkToSubstituteTeammate(Interactor* pContext, PlanNode*, short* pR
 
     EngineObject* const pActor = pContext->GetActor();
 
-    const auto nSlot = (unsigned int)pActor->GetSlot();
+    const auto nSlot = static_cast<unsigned int>(pActor->GetSlot());
 
-    *pResult = (unsigned short)(g_pGameEngine->IsFitSubstitute(TeammateSlot((short)nSlot), nParam) != 0);
+    *pResult = static_cast<unsigned short>(g_pGameEngine->IsFitSubstitute(TeammateSlot(static_cast<short>(nSlot)), nParam) != 0);
 }
 
 // FUNCTION: HYPERX 0x00464200
@@ -4742,7 +4742,7 @@ void PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 {
     int nOther;
 
-    PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)pArgs->m_pArgs[1].n);
+    PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(pArgs->m_pArgs[1].n));
 
     const short nTeam = pObject->GetSlot();
 
@@ -4811,7 +4811,7 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
         else
         {
             pRecord = pArgs->m_pArgs;
-            pObject = g_pGameEngine->GetPlayer((short)pRecord[1].n);
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(pRecord[1].n));
             nValue  = pRecord[2].n;
         }
     }
@@ -4821,11 +4821,11 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 
         if (pRecord[1].n == PLAN_TOKEN_MESSAGE_DATA)
         {
-            nWhich = (short)nParam;
+            nWhich = static_cast<short>(nParam);
         }
         else
         {
-            nWhich = (short)pRecord[1].n;
+            nWhich = static_cast<short>(pRecord[1].n);
         }
 
         nValue = pRecord[2].n;
@@ -4849,7 +4849,7 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
         nKillerSlot = pContext->GetActor()->GetSlot();
     }
 
-    if ((flDamage > DamageGate() || (float)nValue > g_flZeroPlan) && pObject->m_wClockStoppedSemaphore == 0)
+    if ((flDamage > DamageGate() || static_cast<float>(nValue) > g_flZeroPlan) && pObject->m_wClockStoppedSemaphore == 0)
     {
         if (g_pGameEngine->GetDifficultyLevel() == DIFFICULTY_EASY)
         {
@@ -4881,10 +4881,10 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 
         if (nValue <= 0)
         {
-            nValue = (int)((float)nValue * flScale);
+            nValue = static_cast<int>(static_cast<float>(nValue) * flScale);
         }
 
-        const float flTotal = (float)nValue + flDamage;
+        const float flTotal = static_cast<float>(nValue) + flDamage;
 
         if (DAMAGE_CEILING <= flTotal || 0.0f <= flTotal)
         {
@@ -4906,7 +4906,7 @@ void PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int
 
         if (flTotal <= 0.0f)
         {
-            pObject->m_wKilledBySlot = (short)nKillerSlot;
+            pObject->m_wKilledBySlot = static_cast<short>(nKillerSlot);
         }
         else
         {
@@ -4955,7 +4955,7 @@ void PlanAction::IncrementScore(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00464750
 void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     PlanWord*     pArgs;
     PlayerObject* pObject;
@@ -4968,10 +4968,10 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     if (pContext->GetNamedSlot() == -1)
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = (short)pArgs[ARG_GATE].n;
-        nHundredths = (short)pArgs[ARG_HUNDREDTHS].n;
+        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
+        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
 
-        flSpeed = (float)nHundredths * HUNDREDTHS + SPEED_BIAS;
+        flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS + SPEED_BIAS;
 
         if (pNode->m_nArgCount == ARG_COUNT_WITHOUT_SLOT)
         {
@@ -4981,16 +4981,16 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
         }
         else
         {
-            nTarget = (short)pArgs[ARG_SLOT].n;
+            nTarget = static_cast<short>(pArgs[ARG_SLOT].n);
         }
     }
     else
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = (short)pArgs[ARG_GATE].n;
-        nHundredths = (short)pArgs[ARG_HUNDREDTHS].n;
+        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
+        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
 
-        flSpeed = (float)nHundredths * HUNDREDTHS + SPEED_BIAS;
+        flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS + SPEED_BIAS;
 
         if (pArgs[ARG_SLOT].n == PLAN_TOKEN_MESSAGE_DATA)
         {
@@ -4998,7 +4998,7 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
         }
         else
         {
-            nTarget = (short)pArgs[ARG_SLOT].n;
+            nTarget = static_cast<short>(pArgs[ARG_SLOT].n);
         }
     }
 
@@ -5006,7 +5006,7 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     {
         for (int i = 0; i < SPEED_CACHE_COUNT; i++)
         {
-            pObject = g_pGameEngine->GetPlayer((short)i);
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
             g_aOpposSpeedCache[i] = pObject->m_stats.GetScalar(RATING_SPEED);
         }
@@ -5016,7 +5016,7 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
 
     const float flBoosted = flSpeed + 1.0f;
 
-    dReading = (float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f;
+    dReading = static_cast<float>(static_cast<short>(static_cast<long>(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f))) + 0.99f;
 
     if (SPEED_RATING_MAX <= dReading || dReading >= SPEED_RATING_MIN)
     {
@@ -5030,19 +5030,19 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
         dReading = SPEED_RATING_MIN;
     }
 
-    int nFlip = ((unsigned char)~nTarget) & 1;
+    int nFlip = (static_cast<unsigned char>(~nTarget)) & 1;
 
     if (nGate != 0)
     {
-        if (FloatBits(g_aOpposSpeedCache[(short)nFlip]) != SPEED_UNSET_BITS)
+        if (FloatBits(g_aOpposSpeedCache[static_cast<short>(nFlip)]) != SPEED_UNSET_BITS)
         {
-            pObject = g_pGameEngine->GetPlayer((short)nFlip);
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
             pObject->m_stats.SetStat(RATING_SLOT(RATING_SPEED), g_aOpposSpeedCache[nTarget]);
 
             nFlip += 2;
 
-            pObject = g_pGameEngine->GetPlayer((short)nFlip);
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
             pObject->m_stats.SetStat(RATING_SLOT(RATING_SPEED), g_aOpposSpeedCache[nTarget]);
         }
@@ -5051,15 +5051,15 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     }
     else
     {
-        pObject = g_pGameEngine->GetPlayer((short)nFlip);
+        pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_SPEED)] = (float)dReading;
+        pObject->m_stats.m_aStats[RATING_SLOT(RATING_SPEED)] = static_cast<float>(dReading);
 
         nFlip += 2;
 
-        pObject = g_pGameEngine->GetPlayer((short)nFlip);
+        pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
 
-        pObject->m_stats.m_aStats[RATING_SLOT(RATING_SPEED)] = (float)dReading;
+        pObject->m_stats.m_aStats[RATING_SLOT(RATING_SPEED)] = static_cast<float>(dReading);
     }
 }
 
@@ -5073,7 +5073,7 @@ extern short g_nSpeedCacheStale;
 // FUNCTION: HYPERX 0x00464940
 void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     PlanWord*     pArgs;
     PlayerObject* pObject;
@@ -5086,10 +5086,10 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
     if (pContext->GetNamedSlot() == -1)
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = (short)pArgs[ARG_GATE].n;
-        nHundredths = (short)pArgs[ARG_HUNDREDTHS].n;
+        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
+        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
 
-        flSpeed = (float)nHundredths * HUNDREDTHS;
+        flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS;
 
         if (pNode->m_nArgCount == ARG_COUNT_WITHOUT_SLOT)
         {
@@ -5099,16 +5099,16 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
         }
         else
         {
-            nTarget = (short)pArgs[ARG_SLOT].n;
+            nTarget = static_cast<short>(pArgs[ARG_SLOT].n);
         }
     }
     else
     {
         pArgs       = pNode->m_pArgs;
-        nGate       = (short)pArgs[ARG_GATE].n;
-        nHundredths = (short)pArgs[ARG_HUNDREDTHS].n;
+        nGate       = static_cast<short>(pArgs[ARG_GATE].n);
+        nHundredths = static_cast<short>(pArgs[ARG_HUNDREDTHS].n);
 
-        flSpeed = (float)nHundredths * HUNDREDTHS;
+        flSpeed = static_cast<float>(nHundredths) * HUNDREDTHS;
 
         if (pArgs[ARG_SLOT].n == PLAN_TOKEN_MESSAGE_DATA)
         {
@@ -5116,7 +5116,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
         }
         else
         {
-            nTarget = (short)pArgs[ARG_SLOT].n;
+            nTarget = static_cast<short>(pArgs[ARG_SLOT].n);
         }
     }
 
@@ -5124,7 +5124,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
     {
         for (int i = 0; i < SPEED_CACHE_COUNT; i++)
         {
-            pObject = g_pGameEngine->GetPlayer((short)i);
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
             g_aSpeedCache[i] = pObject->m_stats.GetScalar(RATING_SPEED);
         }
@@ -5134,7 +5134,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
 
     const float flBoosted = flSpeed + 1.0f;
 
-    dReading = (float)(short)(long)(flBoosted * g_aSpeedCache[nTarget] + 0.5f) + 0.99f;
+    dReading = static_cast<float>(static_cast<short>(static_cast<long>(flBoosted * g_aSpeedCache[nTarget] + 0.5f))) + 0.99f;
 
     if (SPEED_RATING_MAX <= dReading || dReading >= SPEED_RATING_MIN)
     {
@@ -5148,7 +5148,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
         dReading = SPEED_RATING_MIN;
     }
 
-    const auto flReading = (float)dReading;
+    const auto flReading = static_cast<float>(dReading);
 
     if (nGate != 0)
     {
@@ -5196,7 +5196,7 @@ void PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*
 // FUNCTION: HYPERX 0x00464b10
 void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     PlanWord* pBlock;
     int       nIndex;
@@ -5211,14 +5211,14 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
             pBlock = pArgs->m_pArgs;
 
             ((PlayerObject*)pCollision->GetOwner())->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] =
-                (float)(unsigned int)pBlock[1].n;
+                static_cast<float>(static_cast<unsigned int>(pBlock[1].n));
 
             return;
         }
 
         pBlock  = pArgs->m_pArgs;
-        nIndex  = (short)pBlock[1].n;
-        flValue = (float)(unsigned int)pBlock[2].n;
+        nIndex  = static_cast<short>(pBlock[1].n);
+        flValue = static_cast<float>(static_cast<unsigned int>(pBlock[2].n));
 
         g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] = flValue;
 
@@ -5226,7 +5226,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
     }
 
     pBlock  = pArgs->m_pArgs;
-    flValue = (float)(unsigned int)pBlock[2].n;
+    flValue = static_cast<float>(static_cast<unsigned int>(pBlock[2].n));
 
     if (pBlock[1].n == PLAN_TOKEN_MESSAGE_DATA)
     {
@@ -5234,7 +5234,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
     }
     else
     {
-        nIndex = (short)pBlock[1].n;
+        nIndex = static_cast<short>(pBlock[1].n);
     }
 
     g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] = flValue;
@@ -5261,11 +5261,11 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pWinner;
 
-    const auto nFirst = (short)((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
+    const auto nFirst = static_cast<short>((pContext->GetActor()->GetSlot() + 1) % PLAYER_SLOT_COUNT);
 
     EngineObject* const pFirst = g_pGameEngine->m_ppSlots[nFirst];
 
-    const auto nSecond = (short)((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
+    const auto nSecond = static_cast<short>((pContext->GetActor()->GetSlot() + 3) % PLAYER_SLOT_COUNT);
 
     float flRange = DEFAULT_RANGE;
 
@@ -5280,26 +5280,26 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 
     if (nArgCount > 3)
     {
-        flRange = (float)(unsigned int)pNode->m_pArgs[ARG_RANGE].n;
+        flRange = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_RANGE].n));
 
-        flFacingGate = (float)((unsigned int)pNode->m_pArgs[ARG_FACING_GATE].n * GATE_SCALE - g_flOnePlan);
+        flFacingGate = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_FACING_GATE].n) * GATE_SCALE - g_flOnePlan);
 
-        flDotGate = (float)((unsigned int)pNode->m_pArgs[ARG_DOT_GATE].n * GATE_SCALE - g_flOnePlan);
+        flDotGate = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_DOT_GATE].n) * GATE_SCALE - g_flOnePlan);
     }
 
     if (nArgCount >= 5)
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        pWinner = g_pGameEngine->m_ppSlots[(short)pArgs[ARG_SLOT].n];
+        pWinner = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs[ARG_SLOT].n)];
 
         if (nArgCount >= 6)
         {
-            nDuration = (short)pArgs[ARG_DURATION].n;
+            nDuration = static_cast<short>(pArgs[ARG_DURATION].n);
 
             if (nArgCount >= 7)
             {
-                flLead = (float)(unsigned int)pArgs[ARG_LEAD].n;
+                flLead = static_cast<float>(static_cast<unsigned int>(pArgs[ARG_LEAD].n));
             }
         }
     }
@@ -5368,7 +5368,7 @@ void PlanCond::AttachedToSender(Interactor* pContext, PlanNode*, short* pResult,
         nHolderSlot = pState->nSlot;
     }
 
-    *pResult = (short)nArg == nHolderSlot;
+    *pResult = static_cast<short>(nArg) == nHolderSlot;
 }
 
 #define OWNER_SCALE 0.125f
@@ -5381,7 +5381,7 @@ extern const float g_flFourPlan;
 // FUNCTION: HYPERX 0x00464f80
 void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const auto nOwnerSlot = (short)nArg;
+    const auto nOwnerSlot = static_cast<short>(nArg);
 
     short nCarrier = -1;
     Vec3  vKick;
@@ -5409,9 +5409,9 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
         vJitter.Set(0.0f, 0.0f, 0.0f);
         vVelocity.Add(vKick);
 
-        vJitter.x += ((float)rand() * (1.0f / (float)RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
-        vJitter.y += ((float)rand() * (1.0f / (float)RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
-        vJitter.z += (float)rand() * (1.0f / (float)RAND_MAX) * g_flOnePlan + g_flOnePlan;
+        vJitter.x += (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX))) * g_flTwoPlan - g_flOnePlan;
+        vJitter.y += (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX))) * g_flTwoPlan - g_flOnePlan;
+        vJitter.z += static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) * g_flOnePlan + g_flOnePlan;
 
         Vec3::ScaleTo(&vJitter, g_pGameEngine->m_clock.flDelta * JITTER_RATE, &vJitter);
 
@@ -5449,7 +5449,7 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
     {
         nClamped = std::min<int>(-1, nRokValue);
 
-        nRokValue = (short)-nClamped;
+        nRokValue = static_cast<short>(-nClamped);
     }
     else
     {
@@ -5561,9 +5561,9 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     float flDy = vSelf.y - vFirst.y;
     float flDz = vSelf.z - vFirst.z;
 
-    if ((float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) < AT_OBJECT_RANGE)
+    if (static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz))) < AT_OBJECT_RANGE)
     {
-        if (((unsigned char)pFirst->m_nFlags & STATE_AVAILABLE) != 0)
+        if ((static_cast<unsigned char>(pFirst->m_nFlags) & STATE_AVAILABLE) != 0)
         {
             nAtFirst = 1;
         }
@@ -5578,9 +5578,9 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
     flDy = vSelf.y - vSecond.y;
     flDz = vSelf.z - vSecond.z;
 
-    if ((float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)) < AT_OBJECT_RANGE)
+    if (static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz))) < AT_OBJECT_RANGE)
     {
-        if (((unsigned char)pSecond->m_nFlags & STATE_AVAILABLE) != 0)
+        if ((static_cast<unsigned char>(pSecond->m_nFlags) & STATE_AVAILABLE) != 0)
         {
             nAtSecond = 1;
         }
@@ -5611,7 +5611,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
             return;
         }
 
-        *pResult = (short)(rand() % 2);
+        *pResult = static_cast<short>(rand() % 2);
     }
 }
 
@@ -5628,7 +5628,7 @@ void PlanCond::RandomEmptyArmory(Interactor*, PlanNode*, short* pResult, int)
     for (int iSlot = 0; iSlot < nSlots; iSlot++)
     {
         const int nArmory = iSlot + 1;
-        const int nCount  = GameEngine::CountEntitiesInRange((short)(nArmory + SLOT_ARMORY - 1));
+        const int nCount  = GameEngine::CountEntitiesInRange(static_cast<short>(nArmory + SLOT_ARMORY - 1));
 
         if (nBest > nCount)
         {
@@ -5644,7 +5644,7 @@ void PlanCond::RandomEmptyArmory(Interactor*, PlanNode*, short* pResult, int)
         return;
     }
 
-    *pResult = (short)nFound;
+    *pResult = static_cast<short>(nFound);
 }
 
 // Two arms pick a different killed answer when GameEngine::m_nBrutality is off.
@@ -5806,7 +5806,7 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
         return;
     }
 
-    if (nAttacker == (short)nAttack)
+    if (nAttacker == static_cast<short>(nAttack))
     {
         if (nAttacker >= SLOT_TURNSTILE && nAttacker <= SLOT_TURNSTILE_LAST)
         {
@@ -5975,14 +5975,14 @@ void PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult,
             return;
         }
 
-        int nMagnitude = abs((short)flDamage);
+        int nMagnitude = abs(static_cast<short>(flDamage));
 
         if (nMagnitude > HIT_DAMAGE_CEILING)
         {
             nMagnitude = HIT_DAMAGE_CEILING;
         }
 
-        *pResult = (short)nMagnitude;
+        *pResult = static_cast<short>(nMagnitude);
 
         return;
     }
@@ -6109,7 +6109,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 1;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6134,7 +6134,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 5;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6149,7 +6149,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 7;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6164,7 +6164,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 9;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6179,7 +6179,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 11;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6203,7 +6203,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 1;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6224,7 +6224,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 14;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6246,7 +6246,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         }
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6272,7 +6272,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 21;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
 
@@ -6287,7 +6287,7 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
                         nReaction = 11;
                     }
 
-                    *pResult = (short)nReaction;
+                    *pResult = static_cast<short>(nReaction);
 
                     return;
             }
@@ -6477,7 +6477,7 @@ void PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* 
 
     const int nSlotC = pContext->GetActor()->GetSlot();
 
-    const int nOppC = TeammateSlot((short)nSlotC);
+    const int nOppC = TeammateSlot(static_cast<short>(nSlotC));
 
     pnBoundSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
@@ -6515,7 +6515,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 
         for (; nSlot < GREEN_RANDOMIZER_COUNT; nSlot++)
         {
-            if (g_pGameEngine->m_ppSlots[(short)(nSlot + SLOT_GREEN_RANDOMIZER)] != nullptr)
+            if (g_pGameEngine->m_ppSlots[static_cast<short>(nSlot + SLOT_GREEN_RANDOMIZER)] != nullptr)
             {
                 *pFound = nSlot;
                 nCount++;
@@ -6525,7 +6525,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 
         if (nCount != 0)
         {
-            *pResult = (short)(aFound[rand() % nCount] + 1);
+            *pResult = static_cast<short>(aFound[rand() % nCount] + 1);
 
             return;
         }
@@ -6540,7 +6540,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00466680
 void PlanCond::RatingMaxedOut(Interactor* pContext, PlanNode* pNode, short* pnResult, int nArg)
 {
-    const auto nDefaultSlot = (short)nArg;
+    const auto nDefaultSlot = static_cast<short>(nArg);
 
     PlayerObject* pObject;
 
@@ -6650,9 +6650,9 @@ void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pR
 
     const int nStat = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
 
-    const auto nRange = (short)(pArgs->m_nArgCount - 2);
+    const auto nRange = static_cast<short>(pArgs->m_nArgCount - 2);
 
-    *pResult = (short)(int)(pActor->m_stats.GetScalar(nStat) * (nRange * g_flPlanStatScale));
+    *pResult = static_cast<short>(static_cast<int>(pActor->m_stats.GetScalar(nStat) * (nRange * g_flPlanStatScale)));
 
     if (*pResult > nRange)
     {
@@ -6670,7 +6670,7 @@ void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pR
 // FUNCTION: HYPERX 0x00466870
 void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const auto nBase = (short)nArg;
+    const auto nBase = static_cast<short>(nArg);
 
     EngineObject* pActor;
     AttachPak*    pSlot;
@@ -6748,16 +6748,16 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
         }
     }
 
-    *pResult = (short)(nBase + 1);
+    *pResult = static_cast<short>(nBase + 1);
 }
 
 // FUNCTION: HYPERX 0x00466960
 void PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     EngineObject* const pTarget = g_pGameEngine->m_ppSlots[nSlot];
-    const auto          nLimit  = (short)pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
+    const auto          nLimit  = static_cast<short>(pArgs->m_pArgs[1].pNode->m_pArgs[0].n);
     EngineObject* const pTeam   = g_pGameEngine->m_ppSlots[SLOT_MINE];
 
     // A missing reference object leaves the answer alone rather than writing one.
@@ -6771,7 +6771,7 @@ void PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int 
         const float dz = pTo->z - pFrom->z;
 
         // This one takes the root, unlike its neighbour: the limit here is a plain distance.
-        if ((float)sqrt(static_cast<double>(dx * dx + dy * dy + dz * dz)) <= nLimit)
+        if (static_cast<float>(sqrt(static_cast<double>(dx * dx + dy * dy + dz * dz))) <= nLimit)
         {
             *pResult = 1;
 
@@ -6797,7 +6797,7 @@ void PlanCond::RokValueInMyFavor(Interactor*, PlanNode*, short* pResult, int)
     {
         if ((pState->nSlot & 1) != 0)
         {
-            nDirection = (short)-nDirection;
+            nDirection = static_cast<short>(-nDirection);
         }
     }
     else
@@ -6845,7 +6845,7 @@ void PlanCond::CheckPassingDistance(Interactor* pContext, PlanNode*, short* pRes
 
     const int nSlot = pActor->GetSlot();
 
-    PlayerObject* pMate = g_pGameEngine->GetPlayer(TeammateSlot((short)nSlot));
+    PlayerObject* pMate = g_pGameEngine->GetPlayer(TeammateSlot(static_cast<short>(nSlot)));
 
     Vec3* const pSelfPos = pContext->GetActor()->GetPositionPtr();
 
@@ -6899,7 +6899,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
         nOperand = param.n;
     }
 
-    PlayerObject* const pTarget = g_pGameEngine->GetPlayer((short)nOperand);
+    PlayerObject* const pTarget = g_pGameEngine->GetPlayer(static_cast<short>(nOperand));
 
     if ((nOperand & 0xffff) > SLOT_DROMER3)
     {
@@ -6945,7 +6945,7 @@ void PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* p
 
     const float flFalloff = (SCORE_RANGE - flLength) * flScale * SCORE_FALLOFF;
 
-    const auto flCos = (float)cos(static_cast<double>(flFalloff + flScale));
+    const auto flCos = static_cast<float>(cos(static_cast<double>(flFalloff + flScale)));
 
     if (pActor->GetDistIfFacing(pTarget, flCos) == 0.0f)
     {
@@ -7104,7 +7104,7 @@ void PlanCond::RokIsCharged(Interactor*, PlanNode*, short* pResult, int)
 
     if (pRok->m_bAtSpawnSlot != 0)
     {
-        *pResult = (short)(nFlags + 2);
+        *pResult = static_cast<short>(nFlags + 2);
     }
 }
 
@@ -7132,7 +7132,7 @@ void PlanCond::RokIsChargedAgainst(Interactor* pContext, PlanNode*, short* pResu
 // FUNCTION: HYPERX 0x004671c0
 void PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     Vec3  vDiff;
     Vec3  vImpulse;
@@ -7175,7 +7175,7 @@ extern float g_flInterceptCorridorSq;
 // FUNCTION: HYPERX 0x004672d0
 void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     Vec3  vDelta;
     Vec3  vUnit;
@@ -7202,7 +7202,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
     pActor   = pContext->GetActor();
     vDelta.z = pTarget->GetPositionPtr()->z - pActor->GetPositionPtr()->z;
 
-    flLength = (float)sqrt(static_cast<double>(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z));
+    flLength = static_cast<float>(sqrt(static_cast<double>(vDelta.x * vDelta.x + vDelta.y * vDelta.y + vDelta.z * vDelta.z)));
 
     const float flScale = 1.0f / flLength;
 
@@ -7244,21 +7244,21 @@ void PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
         pObject = pContext->GetActor();
     }
 
-    float flAngle = -(float)Math::Asin(pObject->GetLocalTransformPtr()->m_rotX.flSin);
+    float flAngle = -static_cast<float>(Math::Asin(pObject->GetLocalTransformPtr()->m_rotX.flSin));
 
     TransformObject* pTransform = pObject->GetLocalTransformPtr();
 
-    pTransform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
-    pTransform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
+    pTransform->m_rotX.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+    pTransform->m_rotX.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
     pTransform->RotateXStaged();
 
-    flAngle = (float)(unsigned int)pNode->m_pArgs[ARG_DEGREES].n * DEG_TO_RAD;
+    flAngle = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[ARG_DEGREES].n)) * DEG_TO_RAD;
 
     pTransform = pObject->GetLocalTransformPtr();
 
-    pTransform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
-    pTransform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
+    pTransform->m_rotX.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+    pTransform->m_rotX.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
     pTransform->RotateXStaged();
 }
@@ -7282,8 +7282,8 @@ void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*
     PlanWord* const      pArgs     = pNode->m_pArgs;
     EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
 
-    EngineObject* const pFirst  = apObjects[(short)pArgs[ARG_FIRST_SLOT].n];
-    EngineObject* const pSecond = apObjects[(short)pArgs[ARG_SECOND_SLOT].n];
+    EngineObject* const pFirst  = apObjects[static_cast<short>(pArgs[ARG_FIRST_SLOT].n)];
+    EngineObject* const pSecond = apObjects[static_cast<short>(pArgs[ARG_SECOND_SLOT].n)];
 
     auto* const pFirstBungee  = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
     auto* const pSecondBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
@@ -7348,7 +7348,7 @@ void PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short
             unsigned int  nMask;
             unsigned int  nActions;
 
-            nMask = (unsigned int)pNode->m_pArgs[1].n;
+            nMask = static_cast<unsigned int>(pNode->m_pArgs[1].n);
 
             pTarget = pContext->GetActor();
 
@@ -7416,7 +7416,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
     {
         int nRating = pNode->m_pArgs[ARG_RATING_BASE].n;
 
-        if (GameEngine::IsTeamWinning((unsigned char)pContext->GetActor()->GetSlot()) != 0)
+        if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pContext->GetActor()->GetSlot())) != 0)
         {
             nRating *= 2;
         }
@@ -7425,7 +7425,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
             nRating = nRating * 2 + 1;
         }
 
-        if ((int)pContext->GetPlayerActor()->m_stats.GetScalar(nRating + RATING_SPEEDBURST0A) != 0)
+        if (static_cast<int>(pContext->GetPlayerActor()->m_stats.GetScalar(nRating + RATING_SPEEDBURST0A)) != 0)
         {
             auto* const pBurst = (CSpeedBurst*)AllocAgendaItem(Agenda_CSpeedBurst);
 
@@ -7444,7 +7444,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
             pBurst->Activate();
 
             pBurst->m_flTarget =
-                (float)(80.0 / (unsigned int)pNode->m_pArgs[ARG_PERIOD].n * flScale + g_flOnePlan);
+                static_cast<float>(80.0 / static_cast<unsigned int>(pNode->m_pArgs[ARG_PERIOD].n) * flScale + g_flOnePlan);
 
             *pBurst->m_pBoost = 1.05f;
 
@@ -7463,7 +7463,7 @@ void PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, shor
 
             Vec3* const pVel = &pFirst->vel;
 
-            const auto flLen = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
+            const auto flLen = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)));
 
             if (flLen < 0.1)
             {
@@ -7630,7 +7630,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
 
     if (flOwnX * flOwnX + flOwnY * flOwnY + flOwnZ * flOwnZ < vOpp.x * vOpp.x + vOpp.y * vOpp.y + vOpp.z * vOpp.z)
     {
-        if (GameEngine::IsTeamWinning((unsigned char)pContext->GetActor()->GetSlot()) != 0)
+        if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pContext->GetActor()->GetSlot())) != 0)
         {
             pOwner = pContext->GetPlayerActor();
 
@@ -7645,7 +7645,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
     }
     else
     {
-        if (GameEngine::IsTeamWinning((unsigned char)pContext->GetActor()->GetSlot()) != 0)
+        if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pContext->GetActor()->GetSlot())) != 0)
         {
             pOwner = pContext->GetPlayerActor();
 
@@ -7659,7 +7659,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
         }
     }
 
-    const int nStat = (int)flStat;
+    const int nStat = static_cast<int>(flStat);
 
     if (nStat < 0 || nStat > BRANCH_MAX)
     {
@@ -7667,7 +7667,7 @@ void PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult,
     }
     else
     {
-        *pResult = (unsigned short)nStat;
+        *pResult = static_cast<unsigned short>(nStat);
     }
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
@@ -7703,7 +7703,7 @@ void PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pnResult, 
 
     const float flOdds = (flDamage * flBase) * 0.01f;
 
-    if ((float)nRoll > (flOdds + flBase) * 0.5f)
+    if (static_cast<float>(nRoll) > (flOdds + flBase) * 0.5f)
     {
         *pnResult = 1;
         return;
@@ -7765,17 +7765,17 @@ void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResul
 
             EngineObject* const pActor = pContext->GetActor();
 
-            if (GameEngine::IsTeamWinning((unsigned char)pActor->GetSlot()) != 0)
+            if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pActor->GetSlot())) != 0)
             {
                 pOwner = pContext->GetPlayerActor();
 
-                nThreshold = (short)(&pOwner->m_stats)->GetScalar(RATING_MULTIPLIER0);
+                nThreshold = static_cast<short>((&pOwner->m_stats)->GetScalar(RATING_MULTIPLIER0));
             }
             else
             {
                 pOwner = pContext->GetPlayerActor();
 
-                nThreshold = (short)(&pOwner->m_stats)->GetScalar(RATING_MULTIPLIER1);
+                nThreshold = static_cast<short>((&pOwner->m_stats)->GetScalar(RATING_MULTIPLIER1));
             }
 
             if (g_anCoachConditions[0] != 0)
@@ -7822,7 +7822,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
     {
         nAttackerSlot = g_pGameEngine->m_nViewedSlot;
 
-        nSlot = (short)nAttackerSlot;
+        nSlot = static_cast<short>(nAttackerSlot);
 
         pActor = g_pGameEngine->GetPlayer(nSlot);
 
@@ -7880,7 +7880,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     ObjectStats* const pStats = &pActor->m_stats;
 
-    int nWeight = (int)pStats->GetScalar(RATING_FIGHTING0);
+    int nWeight = static_cast<int>(pStats->GetScalar(RATING_FIGHTING0));
 
     if (nRoll > nWeight)
     {
@@ -7889,7 +7889,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
             nMove++;
             nRoll -= nWeight;
 
-            nWeight = (int)pStats->GetScalar(nMove + RATING_FIGHTING0);
+            nWeight = static_cast<int>(pStats->GetScalar(nMove + RATING_FIGHTING0));
 
             if (nMove > ROLL_STEPS - 1)
             {
@@ -7902,11 +7902,11 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     const Vec3* pSelf = pActor->GetPositionPtr();
 
-    auto bySlot = (unsigned char)pActor->GetSlot();
+    auto bySlot = static_cast<unsigned char>(pActor->GetSlot());
 
     const Vec3* pFar = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(bySlot)]->GetPositionPtr();
 
-    bySlot = (unsigned char)pActor->GetSlot();
+    bySlot = static_cast<unsigned char>(pActor->GetSlot());
 
     const Vec3* pNear = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(bySlot)]->GetPositionPtr();
 
@@ -7960,19 +7960,19 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     if (nMove == 2)
     {
-        *pResult = (short)(nSide + ATTACK_CLOTHES_LINE_L + 1);
+        *pResult = static_cast<short>(nSide + ATTACK_CLOTHES_LINE_L + 1);
 
         return;
     }
 
     if (nMove == 3)
     {
-        *pResult = (short)(nSide + ATTACK_SHOULDER_CHECK_L + 1);
+        *pResult = static_cast<short>(nSide + ATTACK_SHOULDER_CHECK_L + 1);
 
         return;
     }
 
-    *pResult = (short)(nSide + ATTACK_LEG_SWEEP_L + 1);
+    *pResult = static_cast<short>(nSide + ATTACK_LEG_SWEEP_L + 1);
 }
 
 // Both opponents hurt turn an index of one into two; zero and two stand.
@@ -7985,17 +7985,17 @@ void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
     PlayerObject* pOwner;
     int           nState;
 
-    if (GameEngine::IsTeamWinning((unsigned char)pContext->GetActor()->GetSlot()) != 0)
+    if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pContext->GetActor()->GetSlot())) != 0)
     {
         pOwner = pContext->GetPlayerActor();
 
-        nState = (int)(&pOwner->m_stats)->GetScalar(RATING_WIN_OFF_WING_JOB);
+        nState = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_WIN_OFF_WING_JOB));
     }
     else
     {
         pOwner = pContext->GetPlayerActor();
 
-        nState = (int)(&pOwner->m_stats)->GetScalar(RATING_LOSE_OFF_WING_JOB);
+        nState = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_LOSE_OFF_WING_JOB));
     }
 
     if (nState < 0 || nState > OFF_WING_JOB_MAX)
@@ -8003,7 +8003,7 @@ void PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
         nState = 0;
     }
 
-    *pResult = (short)nState;
+    *pResult = static_cast<short>(nState);
 
     PlayerObject* pOpponent = g_pGameEngine->GetPlayer(OPPOSING_FIRST(pContext->GetActor()->GetSlot()));
 
@@ -8034,13 +8034,13 @@ void PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pRes
 
     const int nRange = pArgs->m_nArgCount - 1;
 
-    if ((float)(sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity))) * g_pGameEngine->m_clock.flInvDelta) < 50.0f)
+    if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity))) * g_pGameEngine->m_clock.flInvDelta) < 50.0f)
     {
-        *pResult = (unsigned short)(rand() % (nRange / 2));
+        *pResult = static_cast<unsigned short>(rand() % (nRange / 2));
     }
     else
     {
-        *pResult = (unsigned short)(rand() % nRange);
+        *pResult = static_cast<unsigned short>(rand() % nRange);
     }
 }
 
@@ -8054,11 +8054,11 @@ void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult,
 
     PlayerObject* const pObject = pContext->GetPlayerActor();
 
-    int nMask = (int)pObject->m_stats.GetScalar(RATING_HALFPIPE_REPERTOIRE);
+    int nMask = static_cast<int>(pObject->m_stats.GetScalar(RATING_HALFPIPE_REPERTOIRE));
 
     if (nMask < 1 || nMask > 0x7f)
     {
-        *pResult = (short)(rand() % 7);
+        *pResult = static_cast<short>(rand() % 7);
         return;
     }
 
@@ -8161,7 +8161,7 @@ void PlanCond::AvoidSpinningTurnstile(Interactor* pContext, PlanNode*, short* pR
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
 
-    *pResult = (int)pActor->m_stats.GetScalar(RATING_TURNSTILE0) == 0;
+    *pResult = static_cast<int>(pActor->m_stats.GetScalar(RATING_TURNSTILE0)) == 0;
 }
 
 // FUNCTION: HYPERX 0x00468640
@@ -8184,7 +8184,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
     int           nRange;
     PlayerObject* pBody = pContext->GetPlayerActor();
 
-    nRange = (int)(&pBody->m_stats)->GetScalar(RATING_CARRY_ROK_THROW_DIST);
+    nRange = static_cast<int>((&pBody->m_stats)->GetScalar(RATING_CARRY_ROK_THROW_DIST));
 
     if (nRange < RANGE_MIN || nRange > RANGE_MAX)
     {
@@ -8216,7 +8216,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
 
     Vec3 vAxis = pContext->GetActor()->GetPhysicsBody()->velDir;
 
-    auto flRange = (float)nRange;
+    auto flRange = static_cast<float>(nRange);
 
     Vec3 vDir = vDiff;
 
@@ -8229,7 +8229,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
         {
             flRange *= 0.5f;
 
-            const float flRoll = ((float)rand() * (1.0f / (float)RAND_MAX)) * flRange;
+            const float flRoll = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX))) * flRange;
 
             if (flRoll + flRange > flDistance)
             {
@@ -8273,7 +8273,7 @@ void PlanCond::RegroupSituation(Interactor* pContext, PlanNode*, short* pResult,
 
     EngineObject* pActor = pContext->GetActor();
 
-    if (GameEngine::IsTeamWinning((unsigned char)pActor->GetSlot()) != 0)
+    if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pActor->GetSlot())) != 0)
     {
         pOwner = pContext->GetPlayerActor();
 
@@ -8317,17 +8317,17 @@ void PlanCond::AggressionOnOthers(Interactor* pContext, PlanNode*, short* pResul
 
     EngineObject* pActor = pContext->GetActor();
 
-    if (GameEngine::IsTeamWinning((unsigned char)pActor->GetSlot()) != 0)
+    if (GameEngine::IsTeamWinning(static_cast<unsigned char>(pActor->GetSlot())) != 0)
     {
         pOwner = pContext->GetPlayerActor();
 
-        nLimit = (int)(&pOwner->m_stats)->GetScalar(RATING_WIN_AGGRESSION);
+        nLimit = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_WIN_AGGRESSION));
     }
     else
     {
         pOwner = pContext->GetPlayerActor();
 
-        nLimit = (int)(&pOwner->m_stats)->GetScalar(RATING_LOSE_AGGRESSION);
+        nLimit = static_cast<int>((&pOwner->m_stats)->GetScalar(RATING_LOSE_AGGRESSION));
     }
 
     if (nLimit < 0 || nLimit > AGGRESSION_RADIUS_MAX)
@@ -8338,11 +8338,11 @@ void PlanCond::AggressionOnOthers(Interactor* pContext, PlanNode*, short* pResul
     Vec3* const pSelf = pContext->GetActor()->GetPositionPtr();
 
     pActor             = pContext->GetActor();
-    auto        byTeam = (unsigned char)pActor->GetSlot();
+    auto        byTeam = static_cast<unsigned char>(pActor->GetSlot());
     Vec3* const pFirst = g_pGameEngine->m_ppSlots[OPPOSING_FIRST(byTeam)]->GetPositionPtr();
 
     pActor  = pContext->GetActor();
-    byTeam  = (unsigned char)pActor->GetSlot();
+    byTeam  = static_cast<unsigned char>(pActor->GetSlot());
     pSecond = g_pGameEngine->m_ppSlots[OPPOSING_SECOND(byTeam)]->GetPositionPtr();
 
     const float dxA = pSelf->x - pFirst->x;
@@ -8396,7 +8396,7 @@ void PlanAction::SetShotPowerMeter(Interactor*, PlanNode* pArgs, short*, int)
 // FUNCTION: HYPERX 0x00468aa0
 void PlanCond::NearObjectBy(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     const int nDistance = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
 
@@ -8432,7 +8432,7 @@ void PlanCond::OkToGetRok(Interactor* pContext, PlanNode*, short* pResult, int n
 
     EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
 
-    if ((short)((RokObject*)pRok)->m_nCarrierSlot != (short)nParam)
+    if (static_cast<short>(((RokObject*)pRok)->m_nCarrierSlot) != static_cast<short>(nParam))
     {
         *pResult = pRok->GetPhysicsBody()->pAttach == nullptr;
 
@@ -8457,7 +8457,7 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
 
     if (nTracked >= 0 && nTracked <= 3)
     {
-        const short nGoal = ((PlayerObject*)ppObjects[(short)nTracked])->m_wTargetGoalSlot;
+        const short nGoal = ((PlayerObject*)ppObjects[static_cast<short>(nTracked)])->m_wTargetGoalSlot;
 
         *pResult = nGoal != pActor->GetSlot();
     }
@@ -8494,7 +8494,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     const int nFlag = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
 
-    auto flRange = (float)nRange;
+    auto flRange = static_cast<float>(nRange);
 
     const Vec3* pSelf = pContext->GetActor()->GetPositionPtr();
 
@@ -8506,7 +8506,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
 
     if (nFlag != 0)
     {
-        const float flSide = (float)sqrt(static_cast<double>(flRange)) + g_flOnePlan;
+        const float flSide = static_cast<float>(sqrt(static_cast<double>(flRange))) + g_flOnePlan;
 
         flRange = flSide * flSide;
     }
@@ -8566,7 +8566,7 @@ void PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult,
         {
             const int nTracked = g_pGameEngine->GetRok()->m_nCarrierSlot;
 
-            *pResult = (short)((nTracked == pContext->GetActor()->GetSlot()) + 1);
+            *pResult = static_cast<short>((nTracked == pContext->GetActor()->GetSlot()) + 1);
 
             return;
         }
@@ -8682,7 +8682,7 @@ void PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
 
         if (flDistance < flBest)
         {
-            *pResult = (unsigned short)nSlot;
+            *pResult = static_cast<unsigned short>(nSlot);
 
             flBest = flDistance;
         }
@@ -8692,7 +8692,7 @@ void PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00469110
 void PlanCond::SoundBank(Interactor*, PlanNode*, short* pResult, int)
 {
-    *pResult = PlanUtil::CheckSequenceStep((unsigned int)-1) == 0;
+    *pResult = PlanUtil::CheckSequenceStep(static_cast<unsigned int>(-1)) == 0;
 }
 
 // FUNCTION: HYPERX 0x00469130
@@ -8700,7 +8700,7 @@ void PlanCond::GetTeamParity(Interactor* pContext, PlanNode*, short* pResult, in
 {
     EngineObject* const pActor = pContext->GetActor();
 
-    *pResult = (signed char)(pActor->GetSlot() & 1);
+    *pResult = static_cast<signed char>(pActor->GetSlot() & 1);
 }
 
 // FUNCTION: HYPERX 0x00469150
@@ -8708,8 +8708,8 @@ void PlanCond::WinningOrLosing(Interactor* pContext, PlanNode*, short* pResult, 
 {
     EngineObject* const pActor = pContext->GetActor();
 
-    *pResult = (short)(GameEngine::IsTeamWinning(
-                           (unsigned char)pActor->GetSlot()) == 0);
+    *pResult = static_cast<short>(GameEngine::IsTeamWinning(
+                                      static_cast<unsigned char>(pActor->GetSlot())) == 0);
 }
 
 // A network session always answers two.
@@ -8724,7 +8724,7 @@ void PlanCond::IsDromerKnockedDown(Interactor*, PlanNode* pArgs, short* pResult,
         nSlot = nDefault;
     }
 
-    PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)nSlot);
+    PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
 
     // m_stats at 0xd20 assumes a PlayerObject; RokObject puts its own field at the same offset.
     if (pObject->m_nKnockedDownState == 0 && DamageGate() < pObject->m_stats.GetScalar(RATING_DAMAGE))
@@ -8763,7 +8763,7 @@ void PlanCond::IsDromerInjured(Interactor* pContext, PlanNode* pArgs, short* pRe
         nSlot = nPrevSlot;
     }
 
-    PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)nSlot);
+    PlayerObject* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
 
     flLimit = DamageGate();
 
@@ -8796,7 +8796,7 @@ void PlanCond::CheckRenderFlag(Interactor* pContext, PlanNode* pArgs, short* pRe
         nSlot = nPrevSlot;
     }
 
-    if ((g_pGameEngine->m_ppSlots[(short)nSlot]->m_nFlags & ENGINEOBJECT_HIDDEN) != 0)
+    if ((g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)]->m_nFlags & ENGINEOBJECT_HIDDEN) != 0)
     {
         *pResult = 1;
     }

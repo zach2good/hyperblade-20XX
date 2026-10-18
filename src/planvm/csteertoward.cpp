@@ -209,7 +209,7 @@ void CSteerToward::IntegrateSpringAndGravity()
     const float flY = pVel->y;
     const float flX = pVel->x;
 
-    *m_pflSpeed = (float)sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ));
+    *m_pflSpeed = static_cast<float>(sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ)));
 
     if (*m_pflSpeed > SPEED_EPSILON)
     {

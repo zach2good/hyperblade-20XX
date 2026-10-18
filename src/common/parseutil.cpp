@@ -66,7 +66,7 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
 
     if (pszDelimitersA != nullptr)
     {
-        pszStart = (char*)strpbrk(pszScan, pszDelimitersA);
+        pszStart = strpbrk(pszScan, pszDelimitersA);
 
         if (pszStart == nullptr)
         {
@@ -78,17 +78,17 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
         pszStart = pszScan;
     }
 
-    char* const pszEnd = (char*)strpbrk(pszStart, pszDelimitersB);
+    char* const pszEnd = strpbrk(pszStart, pszDelimitersB);
 
     if (pszEnd == nullptr)
     {
-        nLength = (int)strlen(pszStart);
+        nLength = static_cast<int>(strlen(pszStart));
 
         *ppszNext = nullptr;
     }
     else
     {
-        nLength = (int)(pszEnd - pszStart);
+        nLength = static_cast<int>(pszEnd - pszStart);
 
         if (nLength > nMaxLength - 1)
         {
@@ -115,7 +115,7 @@ char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
     if (pszText != nullptr)
     {
-        int nLeft = (int)strlen(pszText);
+        int nLeft = static_cast<int>(strlen(pszText));
 
         if (nLeft != 0)
         {
@@ -163,7 +163,7 @@ int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 {
     char* const pStart = pszBuffer;
 
-    *pszBuffer = (char)fgetc(pStream);
+    *pszBuffer = static_cast<char>(fgetc(pStream));
 
     while (*pszBuffer != STREAM_EOF)
     {
@@ -178,7 +178,7 @@ int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
             pszBuffer++;
         }
 
-        *pszBuffer = (char)fgetc(pStream);
+        *pszBuffer = static_cast<char>(fgetc(pStream));
     }
 
     if (pStart == pszBuffer && *pszBuffer == STREAM_EOF)
@@ -188,5 +188,5 @@ int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 
     *pszBuffer = '\0';
 
-    return (int)(pszBuffer - pStart);
+    return static_cast<int>(pszBuffer - pStart);
 }

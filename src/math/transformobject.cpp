@@ -269,22 +269,22 @@ void TransformObject::RotateAroundY()
         const SinCos rot = m_rotY;
 
         double dOld = m_a[0][0];
-        m_a[0][0]   = (float)(rot.flCos * dOld - rot.flSin * m_a[0][2]);
-        m_a[0][2]   = (float)((rot.flCos * m_a[0][2]) + rot.flSin * dOld);
+        m_a[0][0]   = static_cast<float>(rot.flCos * dOld - rot.flSin * m_a[0][2]);
+        m_a[0][2]   = static_cast<float>((rot.flCos * m_a[0][2]) + rot.flSin * dOld);
 
         dOld      = m_a[1][0];
-        m_a[1][0] = (float)(rot.flCos * dOld - rot.flSin * m_a[1][2]);
-        m_a[1][2] = (float)((rot.flCos * m_a[1][2]) + rot.flSin * dOld);
+        m_a[1][0] = static_cast<float>(rot.flCos * dOld - rot.flSin * m_a[1][2]);
+        m_a[1][2] = static_cast<float>((rot.flCos * m_a[1][2]) + rot.flSin * dOld);
 
         dOld      = m_a[2][0];
-        m_a[2][0] = (float)(rot.flCos * dOld - rot.flSin * m_a[2][2]);
-        m_a[2][2] = (float)((rot.flCos * m_a[2][2]) + rot.flSin * dOld);
+        m_a[2][0] = static_cast<float>(rot.flCos * dOld - rot.flSin * m_a[2][2]);
+        m_a[2][2] = static_cast<float>((rot.flCos * m_a[2][2]) + rot.flSin * dOld);
 
         if (m_bHasRow3 != 0)
         {
             dOld      = m_a[3][0];
-            m_a[3][0] = (float)(rot.flCos * dOld - rot.flSin * m_a[3][2]);
-            m_a[3][2] = (float)((rot.flCos * m_a[3][2]) + rot.flSin * dOld);
+            m_a[3][0] = static_cast<float>(rot.flCos * dOld - rot.flSin * m_a[3][2]);
+            m_a[3][2] = static_cast<float>((rot.flCos * m_a[3][2]) + rot.flSin * dOld);
         }
     }
 

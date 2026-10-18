@@ -20,7 +20,7 @@ void* MDM1::Decompress(FileObj* pFile)
 {
     int nSize;
 
-    auto* const pWindow = (unsigned char*)malloc(WINDOW_BYTES);
+    auto* const pWindow = static_cast<unsigned char*>(malloc(WINDOW_BYTES));
 
     if (pWindow == nullptr)
     {
@@ -32,7 +32,7 @@ void* MDM1::Decompress(FileObj* pFile)
         return nullptr;
     }
 
-    auto* const pOut = (unsigned char*)malloc(nSize);
+    auto* const pOut = static_cast<unsigned char*>(malloc(nSize));
 
     if (pOut == nullptr)
     {
@@ -80,7 +80,7 @@ int MDM1::LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut
 
         memmove(pWindow, pWindow + nAt, nTail);
 
-        const auto nRead = pfnRead((char*)pWindow + nTail, nWindowSize - nTail, pFile);
+        const auto nRead = pfnRead(reinterpret_cast<char*>(pWindow) + nTail, nWindowSize - nTail, pFile);
 
         nAt  = 0;
         nEnd = nTail + (std::max)(nRead, 0);
@@ -131,8 +131,8 @@ int MDM1::LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut
             const unsigned int nWord = pWindow[nAt] | (pWindow[nAt + 1] << 8);
             nAt += 2;
 
-            const auto nFrom   = nOut - (int)(nWord >> 4);
-            auto       nLength = (int)(nWord & 0xf) + MATCH_LENGTH_BIAS;
+            const auto nFrom   = nOut - static_cast<int>(nWord >> 4);
+            auto       nLength = static_cast<int>(nWord & 0xf) + MATCH_LENGTH_BIAS;
 
             if (nLength == MATCH_LENGTH_LONG)
             {

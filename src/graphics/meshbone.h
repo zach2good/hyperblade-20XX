@@ -75,27 +75,27 @@ public:
     // Clear once the LOD mesh has bound.
     unsigned char IsBound() const
     {
-        return (unsigned char)~(unsigned char)(m_nFlags >> 1) & 1;
+        return static_cast<unsigned char>(~static_cast<unsigned char>(m_nFlags >> 1)) & 1;
     }
 
     unsigned char IsUnbound() const
     {
-        return (unsigned char)(m_nFlags >> 1) & 1;
+        return static_cast<unsigned char>(m_nFlags >> 1) & 1;
     }
 
     unsigned char IsAnimationDirty() const
     {
-        return (unsigned char)(m_nFlags >> 2) & 1;
+        return static_cast<unsigned char>(m_nFlags >> 2) & 1;
     }
 
     unsigned char HasColours() const
     {
-        return (unsigned char)(m_nFlags >> 3) & 1;
+        return static_cast<unsigned char>(m_nFlags >> 3) & 1;
     }
 
     unsigned char IsHidden() const
     {
-        return (unsigned char)(m_nFlags >> 4) & 1;
+        return static_cast<unsigned char>(m_nFlags >> 4) & 1;
     }
 
     void ClearFlags(unsigned short nFlags);

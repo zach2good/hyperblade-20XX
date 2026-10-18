@@ -109,7 +109,7 @@ std::string ToGameText(const std::string& utf8)
 
     for (size_t i = 0; i < utf8.size();)
     {
-        const auto nLead = (unsigned char)utf8[i];
+        const auto nLead = static_cast<unsigned char>(utf8[i]);
 
         const auto nLength = [&]
         {
@@ -131,11 +131,11 @@ std::string ToGameText(const std::string& utf8)
             return 4;
         }();
 
-        auto nCode = (unsigned int)(nLead & (0x7f >> nLength));
+        auto nCode = static_cast<unsigned int>(nLead & (0x7f >> nLength));
 
         for (int n = 1; n < nLength && i + n < utf8.size(); n++)
         {
-            nCode = nCode << 6 | ((unsigned char)utf8[i + n] & 0x3f);
+            nCode = nCode << 6 | (static_cast<unsigned char>(utf8[i + n]) & 0x3f);
         }
 
         if (nLength == 1)
@@ -147,7 +147,7 @@ std::string ToGameText(const std::string& utf8)
         {
             if (nCode < 0x100)
             {
-                return (char)nCode;
+                return static_cast<char>(nCode);
             }
 
             return '?';
@@ -162,25 +162,25 @@ void AppendUTF8(std::string& out, unsigned int nCode)
 {
     if (nCode < 0x80)
     {
-        out += (char)nCode;
+        out += static_cast<char>(nCode);
     }
     else if (nCode < 0x800)
     {
-        out += (char)(0xc0 | nCode >> 6);
-        out += (char)(0x80 | (nCode & 0x3f));
+        out += static_cast<char>(0xc0 | nCode >> 6);
+        out += static_cast<char>(0x80 | (nCode & 0x3f));
     }
     else if (nCode < 0x10000)
     {
-        out += (char)(0xe0 | nCode >> 12);
-        out += (char)(0x80 | (nCode >> 6 & 0x3f));
-        out += (char)(0x80 | (nCode & 0x3f));
+        out += static_cast<char>(0xe0 | nCode >> 12);
+        out += static_cast<char>(0x80 | (nCode >> 6 & 0x3f));
+        out += static_cast<char>(0x80 | (nCode & 0x3f));
     }
     else
     {
-        out += (char)(0xf0 | nCode >> 18);
-        out += (char)(0x80 | (nCode >> 12 & 0x3f));
-        out += (char)(0x80 | (nCode >> 6 & 0x3f));
-        out += (char)(0x80 | (nCode & 0x3f));
+        out += static_cast<char>(0xf0 | nCode >> 18);
+        out += static_cast<char>(0x80 | (nCode >> 12 & 0x3f));
+        out += static_cast<char>(0x80 | (nCode >> 6 & 0x3f));
+        out += static_cast<char>(0x80 | (nCode & 0x3f));
     }
 }
 
@@ -199,7 +199,7 @@ struct Image
             return 0;
         }
 
-        return (unsigned int)(bytes[nAt] | bytes[nAt + 1] << 8);
+        return static_cast<unsigned int>(bytes[nAt] | bytes[nAt + 1] << 8);
     }
 
     unsigned int U32(size_t nAt)
@@ -225,7 +225,7 @@ std::optional<std::map<unsigned int, std::string> > ReadStringResources(const st
 
     auto image = Image{ std::vector<unsigned char>(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()) };
 
-    const auto nPE = (size_t)image.U32(0x3c);
+    const auto nPE = static_cast<size_t>(image.U32(0x3c));
 
     if (image.U32(nPE) != 0x00004550)
     {
@@ -259,7 +259,7 @@ std::optional<std::map<unsigned int, std::string> > ReadStringResources(const st
 
             if (nRVA >= nAddress && nRVA - nAddress < nSize)
             {
-                return image.U32(nAt + 20) + (size_t)(nRVA - nAddress);
+                return image.U32(nAt + 20) + static_cast<size_t>(nRVA - nAddress);
             }
         }
 
@@ -367,7 +367,7 @@ bool WriteFromGame(const std::string& strExe, const std::string& strFile)
 
     for (const auto& [nID, pszText] : s_aOverrides)
     {
-        strings[(unsigned int)nID] = pszText;
+        strings[static_cast<unsigned int>(nID)] = pszText;
     }
 
     auto file = std::ofstream(strFile, std::ios::binary | std::ios::trunc);
@@ -426,7 +426,7 @@ bool StringTable::Load(const char* pszDirectory)
 
         const auto nID = std::strtoul(line.substr(0, nEquals).c_str(), nullptr, 0);
 
-        s_strings[(unsigned int)nID] = ToGameText(Unescape(std::string_view(line).substr(nEquals + 1)));
+        s_strings[static_cast<unsigned int>(nID)] = ToGameText(Unescape(std::string_view(line).substr(nEquals + 1)));
     }
 
     return true;

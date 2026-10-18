@@ -6,7 +6,7 @@
 // FUNCTION: HYPERX 0x00414990
 char AgendaItemOwner::Insert(void* pNode)
 {
-    auto* const pItem = (AgendaItem*)pNode;
+    auto* const pItem = static_cast<AgendaItem*>(pNode);
 
     pItem->m_pNext = m_pHead;
     m_pHead        = pItem;

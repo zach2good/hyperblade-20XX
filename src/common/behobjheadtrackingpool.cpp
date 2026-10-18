@@ -11,7 +11,7 @@ void BehObjHeadTrackingPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountBehObjHeadTracking;
+    auto nRemaining = static_cast<short>(g_nPoolCountBehObjHeadTracking);
 
     while (nRemaining-- > 0)
     {

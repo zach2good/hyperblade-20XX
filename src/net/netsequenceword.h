@@ -8,12 +8,12 @@ struct NetSequenceWord
     // The client masks a short of the shifted word, at 0x0047132b and 0x00471368.
     static int GetTarget(unsigned int nWord)
     {
-        return (short)(nWord >> 16) & 0xff;
+        return static_cast<short>(nWord >> 16) & 0xff;
     }
 
     static int GetSecondTarget(unsigned int nWord)
     {
-        return (short)(nWord >> 24) & 0xff;
+        return static_cast<short>(nWord >> 24) & 0xff;
     }
 
     static unsigned int GetCarrier(unsigned int nWord)

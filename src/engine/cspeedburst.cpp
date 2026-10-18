@@ -40,11 +40,11 @@ void CSpeedBurst::Bind(EngineObject* pOwner, GameBehaviorObject*)
     // The player slots either side of the owner's, the opponents, wrapping through four.
     int nOwnerSlot = pOwner->GetSlot();
 
-    m_pOpponentA = g_pGameEngine->m_ppSlots[(short)((nOwnerSlot + 1) % 4)];
+    m_pOpponentA = g_pGameEngine->m_ppSlots[static_cast<short>((nOwnerSlot + 1) % 4)];
 
     nOwnerSlot = m_pOwner->GetSlot();
 
-    m_pOpponentB = g_pGameEngine->m_ppSlots[(short)((nOwnerSlot + 3) % 4)];
+    m_pOpponentB = g_pGameEngine->m_ppSlots[static_cast<short>((nOwnerSlot + 3) % 4)];
 
     m_pBoost   = &pOwner->GetPhysicsBody()->flSteerScale;
     m_flTarget = g_flZeroAgendaItem;

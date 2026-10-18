@@ -466,7 +466,7 @@ int Screen::TickAnimations()
 
     SystemTimePair* const pTick = &m_lastTick;
 
-    if ((now.nSeconds - pTick->nSeconds) * 1000 - (unsigned short)m_lastTick.nMillis + (now.nMillis & 0xffff) < TICK_INTERVAL_MS)
+    if ((now.nSeconds - pTick->nSeconds) * 1000 - static_cast<unsigned short>(m_lastTick.nMillis) + (now.nMillis & 0xffff) < TICK_INTERVAL_MS)
     {
         return 1;
     }
@@ -524,7 +524,7 @@ int Screen::PaintToWindow()
 
         if (pszCaption != nullptr)
         {
-            GDI::DrawTransparentText(0xffff, m_nCaptionX, m_nCaptionY, pszCaption, (int)strlen(pszCaption), 0);
+            GDI::DrawTransparentText(0xffff, m_nCaptionX, m_nCaptionY, pszCaption, static_cast<int>(strlen(pszCaption)), 0);
         }
 
         for (nSlot = 0; nSlot <= m_nLastWidget; nSlot++)

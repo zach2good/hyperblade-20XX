@@ -11,7 +11,7 @@ void BehObjGlideBetweenFacingPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountBehObjGlideBetweenFacing;
+    auto nRemaining = static_cast<short>(g_nPoolCountBehObjGlideBetweenFacing);
 
     while (nRemaining-- > 0)
     {

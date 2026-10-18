@@ -21,7 +21,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     timer->nPerfSampleCount++;
 
-    const auto         nNow     = (unsigned int)SDL_GetTicks();
+    const auto         nNow     = static_cast<unsigned int>(SDL_GetTicks());
     const unsigned int nElapsed = nNow - nStart;
 
     if (timer->bFrameTimesOn == 0 || nElapsed < 5000)
@@ -35,7 +35,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     dFrameRate = 1.0 / ((((nElapsed - timer->nClockReads * timer->dClockReadCost) - timer->nPerfSampleCount * timer->dSampleCost) - dFrames * timer->dFpsTextCost) / dFrames * 0.001);
 
-    g_gameApp.m_nFrameRate = (int)floor(static_cast<double>(dFrameRate + 0.5));
+    g_gameApp.m_nFrameRate = static_cast<int>(floor(static_cast<double>(dFrameRate + 0.5)));
 
     memset(g_szFpsText, 0, sizeof(g_szFpsText));
 
@@ -49,13 +49,13 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
 unsigned int FrameTimer::Now()
 {
-    return (unsigned int)SDL_GetTicks();
+    return static_cast<unsigned int>(SDL_GetTicks());
 }
 
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate()
 {
-    const auto nStart = (unsigned int)SDL_GetTicks();
+    const auto nStart = static_cast<unsigned int>(SDL_GetTicks());
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
@@ -64,7 +64,7 @@ double FrameTimer::Calibrate()
         SDL_GetTicks();
     }
 
-    const double dResult = ((double)(unsigned int)SDL_GetTicks() - nStart) / nClockReads;
+    const double dResult = (static_cast<double>(static_cast<unsigned int>(SDL_GetTicks())) - nStart) / nClockReads;
 
     Restart();
 
@@ -74,7 +74,7 @@ double FrameTimer::Calibrate()
 // FUNCTION: HYPERX 0x00442b50
 double FrameTimer::BenchmarkResolution()
 {
-    const auto nStart = (unsigned int)SDL_GetTicks();
+    const auto nStart = static_cast<unsigned int>(SDL_GetTicks());
 
     for (int nLoop = 0; nLoop < 10000; nLoop++)
     {
@@ -83,7 +83,7 @@ double FrameTimer::BenchmarkResolution()
         SDL_GetTicks();
     }
 
-    const double dResult = ((double)(unsigned int)SDL_GetTicks() - nStart) / nPerfSampleCount;
+    const double dResult = (static_cast<double>(static_cast<unsigned int>(SDL_GetTicks())) - nStart) / nPerfSampleCount;
 
     Restart();
 
@@ -103,12 +103,12 @@ void FrameTimer::ProcessInitialFrameUpdate()
 
     // The original timed a hundred GDI draws of the label here; the label no longer goes through GDI.
     // STRING: HYPERX 0x004c1e78
-    g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", (int)floor(30.5));
+    g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", static_cast<int>(floor(30.5)));
     dFpsTextCost     = 0.0;
 
     nClockReads++;
 
-    nFrameStartTime = (unsigned int)SDL_GetTicks();
+    nFrameStartTime = static_cast<unsigned int>(SDL_GetTicks());
 
     for (int nFrame = 0; nFrame < 2; nFrame++)
     {

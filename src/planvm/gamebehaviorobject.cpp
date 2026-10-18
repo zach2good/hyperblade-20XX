@@ -81,7 +81,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 
     m_pBody = pOwner->GetPhysicsBody();
 
-    if (pBlock->m_nOpcode == ((int)CATEGORY_BEHAVIOUR | MEMBER_DECLARE_BEHAVIOR))
+    if (pBlock->m_nOpcode == (static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_DECLARE_BEHAVIOR))
     {
         pCursor = pBlock->m_pArgs + HEADER_ITEMS;
 
@@ -113,22 +113,22 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
             case CATEGORY_BEHAVIOUR:
                 if ((pItem->m_nOpcode & OP_MEMBER) == MEMBER_SET_BEHAVIOR_PARAM)
                 {
-                    g_apfnBehaviorParamHandlers[(short)pItem->m_pArgs[0].n](m_pOwner, pItem, this);
+                    g_apfnBehaviorParamHandlers[static_cast<short>(pItem->m_pArgs[0].n)](m_pOwner, pItem, this);
                 }
                 break;
 
             case CATEGORY_AGENDA:
                 switch (pItem->m_nOpcode)
                 {
-                    case (int)CATEGORY_AGENDA | MEMBER_ADD_AGENDA_ITEM:
-                        pBubble = (AgendaItem*)g_apAgendaItemPools[(short)pItem->m_pArgs[0].n]->Alloc();
+                    case static_cast<int>(CATEGORY_AGENDA) | MEMBER_ADD_AGENDA_ITEM:
+                        pBubble = static_cast<AgendaItem*>(g_apAgendaItemPools[static_cast<short>(pItem->m_pArgs[0].n)]->Alloc());
 
                         pBubble->Bind(m_pOwner, this);
 
                         pBubble->Activate();
                         break;
 
-                    case (int)CATEGORY_AGENDA | MEMBER_REMOVE_AGENDA_ITEM:
+                    case static_cast<int>(CATEGORY_AGENDA) | MEMBER_REMOVE_AGENDA_ITEM:
                         RemoveAgendaItem(pItem->m_pArgs[0].n);
                         break;
                 }
@@ -140,23 +140,23 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
                     case MEMBER_DO_NET_ACTION:
                         if (m_pOwner->GetPhase() != OBJECT_PHASE_LOCAL)
                         {
-                            g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n]((Interactor*)this, pItem, nullptr, 0);
+                            g_pfnPlanActionHandlers[static_cast<short>(pItem->m_pArgs[0].n)](reinterpret_cast<Interactor*>(this), pItem, nullptr, 0);
                         }
                         break;
 
                     case MEMBER_DO_LOCAL_ACTION:
                         if (m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK)
                         {
-                            g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n]((Interactor*)this, pItem, nullptr, 0);
+                            g_pfnPlanActionHandlers[static_cast<short>(pItem->m_pArgs[0].n)](reinterpret_cast<Interactor*>(this), pItem, nullptr, 0);
                         }
                         break;
 
                     case MEMBER_DO_ACTION:
-                        g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n](nullptr, pItem, nullptr, 0);
+                        g_pfnPlanActionHandlers[static_cast<short>(pItem->m_pArgs[0].n)](nullptr, pItem, nullptr, 0);
                         break;
 
                     case MEMBER_SET_INTERACTOR_PARAM:
-                        g_pfnPlanOpcodeHandlers[(short)pItem->m_pArgs[0].n].pfnSetParam(m_pOwner, pItem, this, nullptr);
+                        g_pfnPlanOpcodeHandlers[static_cast<short>(pItem->m_pArgs[0].n)].pfnSetParam(m_pOwner, pItem, this, nullptr);
                         break;
                 }
                 break;
@@ -430,7 +430,7 @@ void GameBehaviorObject::AssignPriorities(int nStart)
 
     while (pAt != nullptr)
     {
-        const auto nValue = (short)nPriority;
+        const auto nValue = static_cast<short>(nPriority);
 
         nPriority++;
 

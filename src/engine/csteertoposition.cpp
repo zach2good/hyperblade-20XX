@@ -130,7 +130,7 @@ void CSteerToPosition::Process(int nArg)
 
     const int nJitter = rand() % JITTER_MODULUS;
 
-    flForce = ((float)nJitter * 0.01f + 1.0f) * flForce;
+    flForce = (static_cast<float>(nJitter) * 0.01f + 1.0f) * flForce;
 
     if (m_pChase != nullptr)
     {
@@ -152,11 +152,11 @@ void CSteerToPosition::Process(int nArg)
 
         if (vAim.y * pAxis->x - vAim.x * pAxis->y > 0.0f)
         {
-            flFacing = (float)Math::Acos(flAim);
+            flFacing = static_cast<float>(Math::Acos(flAim));
         }
         else
         {
-            flFacing = -(float)Math::Acos(flAim);
+            flFacing = -static_cast<float>(Math::Acos(flAim));
         }
 
         m_pOwner->GetPhysicsBody()->flFacing = flFacing;
@@ -204,7 +204,7 @@ void CSteerToPosition::Process(int nArg)
     }
     else if (m_pOwner->GetSlot() > SLOT_DROMER3 || ((PlayerObject*)m_pOwner)->m_wClockStoppedSemaphore != 0)
     {
-        if ((float)sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta))) * g_pGameEngine->m_clock.flDelta < flSpeed + flSpeed)
+        if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta)))) * g_pGameEngine->m_clock.flDelta < flSpeed + flSpeed)
         {
             const float flPush = g_pGameEngine->m_clock.GetDeltaSquared() * (flSpeed * 6.0f) * -1.0f;
 
@@ -214,7 +214,7 @@ void CSteerToPosition::Process(int nArg)
         }
     }
 
-    if ((float)sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta))) < 15.0)
+    if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDelta, &vDelta)))) < 15.0)
     {
         const float flStop = g_pGameEngine->m_clock.flDeltaSquared * -15.0f;
 
@@ -243,11 +243,11 @@ void CSteerToPosition::Process(int nArg)
 
     if ((flCross = vDelta.y * pAxis->x - vDelta.x * pAxis->y) < BANK_DEADZONE_LOW)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(static_cast<double>(flLean)) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, static_cast<float>(fabs(static_cast<double>(flLean))) * flForce);
     }
     else if (flCross > BANK_DEADZONE_HIGH)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(static_cast<double>(flLean)) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, static_cast<float>(fabs(static_cast<double>(flLean))) * flForce);
     }
 
     if (m_pNext != nullptr)

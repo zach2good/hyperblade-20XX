@@ -52,7 +52,7 @@ bool Streams(const SoundEntry* pEntry)
         return false;
     }
 
-    return (unsigned int)pEntry->m_nDataBytes > STREAM_THRESHOLD;
+    return static_cast<unsigned int>(pEntry->m_nDataBytes) > STREAM_THRESHOLD;
 }
 
 bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)
@@ -72,13 +72,13 @@ void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, 
 
     float afFrames[MIX_FRAMES * MIX_CHANNELS];
 
-    constexpr auto nFrameBytes = (int)sizeof(float) * MIX_CHANNELS;
+    constexpr auto nFrameBytes = static_cast<int>(sizeof(float)) * MIX_CHANNELS;
 
     while (nAdditional > 0)
     {
         const auto nFrames = std::clamp(nAdditional / nFrameBytes, 1, MIX_FRAMES);
 
-        ma_engine_read_pcm_frames(pEngine, afFrames, (ma_uint64)nFrames, nullptr);
+        ma_engine_read_pcm_frames(pEngine, afFrames, static_cast<ma_uint64>(nFrames), nullptr);
 
         SDL_PutAudioStreamData(pStream, afFrames, nFrames * nFrameBytes);
 
@@ -132,7 +132,7 @@ struct SoundMixer::Impl
 
 float VolumeOf(int nStep)
 {
-    return (float)nStep / (MIXER_VOLUME_LEVELS - 1);
+    return static_cast<float>(nStep) / (MIXER_VOLUME_LEVELS - 1);
 }
 
 class StreamLock
@@ -322,7 +322,7 @@ void SoundMixer::Play(SoundEntry* pSound)
     voice.pSource = pSound;
 
     pSound->m_nPlayState = SOUND_STATE_PLAYING;
-    pSound->m_nStartedMs = (unsigned int)SDL_GetTicks();
+    pSound->m_nStartedMs = static_cast<unsigned int>(SDL_GetTicks());
 }
 
 // FUNCTION: HYPERX 0x004907d0

@@ -43,7 +43,7 @@ struct PossessionSyncWord
     // The row and its two stats.
     static int Pack(int nRow, int nShotsOnGoal, unsigned int nPossessionTime)
     {
-        return (((nShotsOnGoal & 0xff) | (nRow << 12)) << 16) | (int)(nPossessionTime & 0xffff);
+        return (((nShotsOnGoal & 0xff) | (nRow << 12)) << 16) | static_cast<int>(nPossessionTime & 0xffff);
     }
 };
 

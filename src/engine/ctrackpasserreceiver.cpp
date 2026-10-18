@@ -96,7 +96,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         g_vCamPasserAim.y = pWorld->GetElement(1, 3);
 
-        g_vCamPasserAim.z = (float)(pWorld->GetElement(2, 3) + g_flCamTrackVelocityGain);
+        g_vCamPasserAim.z = (pWorld->GetElement(2, 3) + g_flCamTrackVelocityGain);
     }
     else
     {
@@ -109,11 +109,11 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     s_vLastVel = pTracked->GetPhysicsBody()->vel;
 
-    g_vCamPasserAim.x = (float)(g_flCamTrackVelocityGain * s_vLastVel.x + g_vCamPasserAim.x);
+    g_vCamPasserAim.x = (g_flCamTrackVelocityGain * s_vLastVel.x + g_vCamPasserAim.x);
 
-    g_vCamPasserAim.y = (float)(g_flCamTrackVelocityGain * s_vLastVel.y + g_vCamPasserAim.y);
+    g_vCamPasserAim.y = (g_flCamTrackVelocityGain * s_vLastVel.y + g_vCamPasserAim.y);
 
-    g_vCamPasserAim.z = (float)(g_flCamTrackVelocityGain * s_vLastVel.z + g_vCamPasserAim.z);
+    g_vCamPasserAim.z = (g_flCamTrackVelocityGain * s_vLastVel.z + g_vCamPasserAim.z);
 
     const Vec3* pDir = &pTracked->GetPhysicsBody()->velDir;
 
@@ -186,7 +186,7 @@ void CTrackPasser_Receiver::Process(int nArg)
         vToAim.y = g_vCamPasserAim.y - m_pCamPos->y;
         vToAim.z = g_vCamPasserAim.z - m_pCamPos->z;
 
-        flLength = (float)sqrt(static_cast<double>(vToReceiver.x * vToReceiver.x + (vToReceiver.y * vToReceiver.y + vToReceiver.z * vToReceiver.z)));
+        flLength = static_cast<float>(sqrt(static_cast<double>(vToReceiver.x * vToReceiver.x + (vToReceiver.y * vToReceiver.y + vToReceiver.z * vToReceiver.z))));
 
         Math::Vec3Normalize(&vToReceiver);
 
@@ -203,7 +203,7 @@ void CTrackPasser_Receiver::Process(int nArg)
             m_pOwner->PostSceneEvent(MSG_HEAD_CAM_OFF, 0);
         }
 
-        flLead = (float)sqrt(static_cast<double>(vLead.x * vLead.x + (vLead.y * vLead.y + vLead.z * vLead.z)));
+        flLead = static_cast<float>(sqrt(static_cast<double>(vLead.x * vLead.x + (vLead.y * vLead.y + vLead.z * vLead.z))));
 
         Math::Vec3Normalize(&vLead);
 
@@ -263,7 +263,7 @@ void CTrackPasser_Receiver::Process(int nArg)
             vBack.y = g_vCamPasserAim.y - m_pCamPos->y;
             vBack.z = g_vCamPasserAim.z - m_pCamPos->z;
 
-            flGap = (float)sqrt(static_cast<double>(vBack.x * vBack.x + (vBack.y * vBack.y + vBack.z * vBack.z)));
+            flGap = static_cast<float>(sqrt(static_cast<double>(vBack.x * vBack.x + (vBack.y * vBack.y + vBack.z * vBack.z))));
 
             Math::Vec3Normalize(&vBack);
 

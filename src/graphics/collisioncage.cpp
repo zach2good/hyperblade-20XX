@@ -105,13 +105,13 @@ void CollisionCage::ComputeFaceNormals()
 
     pComponent = Component::Get(pOwner, 0);
 
-    nFacesToDo = pComponent->GetFaceCount() <= CAGE_FACES ? pComponent->GetFaceCount() : (short)CAGE_FACES;
+    nFacesToDo = pComponent->GetFaceCount() <= CAGE_FACES ? pComponent->GetFaceCount() : static_cast<short>(CAGE_FACES);
 
     for (nMeshFace = 0; nMeshFace < nFacesToDo; nMeshFace++)
     {
         pFace = pComponent->GetFace(nMeshFace);
 
-        nVertices = pFace->nCorners <= CAGE_VERTICES ? pFace->nCorners : (short)CAGE_VERTICES;
+        nVertices = pFace->nCorners <= CAGE_VERTICES ? pFace->nCorners : static_cast<short>(CAGE_VERTICES);
 
         for (nVertex = 0; nVertex < nVertices; nVertex++)
         {

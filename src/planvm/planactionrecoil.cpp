@@ -119,7 +119,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
         }
         else
         {
-            flFactor = (float)pNode->m_pArgs[ARG_FIRST].n * 0.01f;
+            flFactor = static_cast<float>(pNode->m_pArgs[ARG_FIRST].n) * 0.01f;
         }
     }
     else
@@ -131,11 +131,11 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
         if (pArgs[ARG_FIRST].n == PLAN_TOKEN_MESSAGE_DATA)
         {
-            nSlot = (short)nArg;
+            nSlot = static_cast<short>(nArg);
         }
         else
         {
-            nSlot = (short)pArgs[ARG_FIRST].n;
+            nSlot = static_cast<short>(pArgs[ARG_FIRST].n);
         }
 
         pSelf = g_pGameEngine->m_ppSlots[nSlot];
@@ -146,7 +146,7 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
         }
         else
         {
-            flFactor = (float)pArgs[ARG_SECOND].n * 0.01f;
+            flFactor = static_cast<float>(pArgs[ARG_SECOND].n) * 0.01f;
         }
     }
 
@@ -156,11 +156,11 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     Vec3::ScaleTo(&pBody->vel, flFactor, &vImpulse);
 
-    flMag = (float)sqrt(static_cast<double>(Vec3::DotInline(&vImpulse, &vImpulse))) * 0.125f;
+    flMag = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vImpulse, &vImpulse)))) * 0.125f;
 
-    vImpulse.x = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.x;
-    vImpulse.y = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.y;
-    vImpulse.z = ((float)rand() * (1.0f / (float)RAND_MAX) - 0.5f) * flMag + vImpulse.z;
+    vImpulse.x = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f) * flMag + vImpulse.x;
+    vImpulse.y = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f) * flMag + vImpulse.y;
+    vImpulse.z = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f) * flMag + vImpulse.z;
 
     pSelf->SetVelocity(vImpulse);
 
@@ -215,10 +215,10 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
         }
         else
         {
-            g_nCheckImpulseStep = (short)flRatio;
+            g_nCheckImpulseStep = static_cast<short>(flRatio);
         }
 
-        g_nCheckImpulseFacing = (short)flFacing;
+        g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
         pSelf->PostSceneEvent(MSG_SET_ANIMATION,
                               g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
@@ -247,7 +247,7 @@ extern const float g_flWallBoxTopY;
 // FUNCTION: HYPERX 0x004050d0
 void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     BoundBubble*    pColOther;
     Vec3*           pNormalField;
@@ -276,7 +276,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
         if (pNode->m_nArgCount == 2)
         {
-            flFactor = (float)pNode->m_pArgs[ARG_FIRST].n * 0.01f;
+            flFactor = static_cast<float>(pNode->m_pArgs[ARG_FIRST].n) * 0.01f;
         }
         else
         {
@@ -292,12 +292,12 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
             return;
         }
 
-        const auto nOther = (short)pArgs[ARG_FIRST].n;
+        const auto nOther = static_cast<short>(pArgs[ARG_FIRST].n);
 
         pSelf = g_pGameEngine->m_ppSlots[nSlot];
 
         // Dead for a short; the client tests the short at 0x004051aa and indexes it at 0x004051c2.
-        if ((unsigned short)((unsigned int)nOther >> 16) == PLAN_ARG_PRONOUN)
+        if (static_cast<unsigned short>(static_cast<unsigned int>(nOther) >> 16) == PLAN_ARG_PRONOUN)
         {
             nResolved = g_apPlanStatFns[nOther & 0xffff](pContext->GetActor(), pNode);
         }
@@ -434,10 +434,10 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
             }
             else
             {
-                g_nCheckImpulseStep = (short)flRatio;
+                g_nCheckImpulseStep = static_cast<short>(flRatio);
             }
 
-            g_nCheckImpulseFacing = (short)flFacing;
+            g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
             pSelf->PostSceneEvent(
                 MSG_SET_ANIMATION,
@@ -532,14 +532,14 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
     else
     {
         // Dead for a short; the client tests the short at 0x004059b6 and indexes the int at 0x004059d0.
-        if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_PRONOUN)
+        if (static_cast<unsigned short>(static_cast<unsigned int>(static_cast<short>(nSlot)) >> 16) == PLAN_ARG_PRONOUN)
         {
-            nSlot = ((PlanStatFnWide*)g_apPlanStatFns)[nSlot & 0xffff](pContext->GetActor(), pNode);
+            nSlot = (reinterpret_cast<PlanStatFnWide*>(g_apPlanStatFns))[nSlot & 0xffff](pContext->GetActor(), pNode);
         }
 
         pOther = pContext->GetActor();
 
-        pSelf = g_pGameEngine->m_ppSlots[(short)nSlot];
+        pSelf = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
     }
 
     PhysicsBody*       pSelfBody  = pSelf->GetPhysicsBody();
@@ -555,7 +555,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
     Vec3 vEntryVel = pSelf->m_pBody->vel;
 
-    flSpeed = (float)(sqrt(static_cast<double>(vEntryVel.x * vEntryVel.x + (vEntryVel.y * vEntryVel.y + vEntryVel.z * vEntryVel.z))) * g_pGameEngine->m_clock.flInvDelta);
+    flSpeed = static_cast<float>(sqrt(static_cast<double>(vEntryVel.x * vEntryVel.x + (vEntryVel.y * vEntryVel.y + vEntryVel.z * vEntryVel.z))) * g_pGameEngine->m_clock.flInvDelta);
 
     if (flSpeed > 20.0f)
     {
@@ -680,10 +680,10 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
             }
             else
             {
-                g_nCheckImpulseStep = (short)flRatio;
+                g_nCheckImpulseStep = static_cast<short>(flRatio);
             }
 
-            g_nCheckImpulseFacing = (short)flFacing;
+            g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
             pSelf->PostSceneEvent(
                 MSG_SET_ANIMATION,
@@ -827,10 +827,10 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
     }
     else
     {
-        g_nCheckImpulseStep = (short)flRatio;
+        g_nCheckImpulseStep = static_cast<short>(flRatio);
     }
 
-    g_nCheckImpulseFacing = (short)flFacing;
+    g_nCheckImpulseFacing = static_cast<short>(flFacing);
 
     pSelf->PostSceneEvent(MSG_REALLY_SET_ANIMATION, g_awReactionByDamageAndSector[g_nCheckImpulseStep * 7 + g_nCheckImpulseFacing]);
     pSelf->PostSceneEvent(MSG_YER_HIT, 0);
@@ -902,7 +902,7 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 
     EngineObject* pOther = pColOther->GetOwner();
 
-    if (((unsigned char)pSelf->m_nFlags & ENGINEOBJECT_HIDDEN) == 0 && ((unsigned char)pOther->m_nFlags & ENGINEOBJECT_HIDDEN) == 0)
+    if ((static_cast<unsigned char>(pSelf->m_nFlags) & ENGINEOBJECT_HIDDEN) == 0 && (static_cast<unsigned char>(pOther->m_nFlags) & ENGINEOBJECT_HIDDEN) == 0)
     {
         const Vec3* pOtherVel = &pOther->GetPhysicsBody()->vel;
         const Vec3* pSelfVel  = &pSelf->GetPhysicsBody()->vel;

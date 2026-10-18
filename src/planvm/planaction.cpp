@@ -147,12 +147,12 @@ void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*
 
     if ((slot.n & 1) != 0)
     {
-        pszName = g_pGameEngine->m_ppSlots[(short)slot.n]->m_pszName;
+        pszName = g_pGameEngine->m_ppSlots[static_cast<short>(slot.n)]->m_pszName;
         nKind   = MESSAGE_KIND_ODD;
     }
     else
     {
-        pszName = g_pGameEngine->m_ppSlots[(short)slot.n]->m_pszName;
+        pszName = g_pGameEngine->m_ppSlots[static_cast<short>(slot.n)]->m_pszName;
         nKind   = MESSAGE_KIND_EVEN;
     }
 

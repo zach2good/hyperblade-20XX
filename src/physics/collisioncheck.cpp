@@ -350,7 +350,7 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 
         vLocal = *pVelocity;
 
-        if ((float)(sqrt(static_cast<double>(vLocal.x * vLocal.x + (vLocal.y * vLocal.y + vLocal.z * vLocal.z))) * g_pGameEngine->m_clock.flInvDelta) > g_flVelHitSpeedGate)
+        if (static_cast<float>(sqrt(static_cast<double>(vLocal.x * vLocal.x + (vLocal.y * vLocal.y + vLocal.z * vLocal.z))) * g_pGameEngine->m_clock.flInvDelta) > g_flVelHitSpeedGate)
         {
             *pResult = 1;
 
@@ -377,7 +377,7 @@ extern float g_flZoneHeight;
 // FUNCTION: HYPERX 0x004697b0
 void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     EngineObject* pOther;
     EngineObject* pOwn;
@@ -669,7 +669,7 @@ extern float g_flColBoxSizeY;
 // FUNCTION: HYPERX 0x00469f90
 void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
-    const auto nSlot = (short)nArg;
+    const auto nSlot = static_cast<short>(nArg);
 
     EngineObject* pOther;
     EngineObject* pOwn;
@@ -988,7 +988,7 @@ Vec3* CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshBoundingB
 
             vNormal = vPoint;
 
-            flScale = 1.0f / (float)sqrt(static_cast<double>((g_flZeroPlan * g_flZeroPlan + vPoint.z * vPoint.z) + vPoint.x * vPoint.x));
+            flScale = 1.0f / static_cast<float>(sqrt(static_cast<double>((g_flZeroPlan * g_flZeroPlan + vPoint.z * vPoint.z) + vPoint.x * vPoint.x)));
 
             vNormal.x = flScale;
             vNormal.x *= vPoint.x;

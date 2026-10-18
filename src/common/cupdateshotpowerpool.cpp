@@ -12,7 +12,7 @@ void CUpdateShotPowerPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountCUpdateShotPower;
+    auto nRemaining = static_cast<short>(g_nPoolCountCUpdateShotPower);
 
     while (nRemaining-- > 0)
     {

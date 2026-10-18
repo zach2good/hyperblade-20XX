@@ -133,13 +133,13 @@ TournamentSetupUIScreen::TournamentSetupUIScreen()
 
     InitAllWidgets();
 
-    g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 1);
+    g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 1);
 
     g_nDromeArena = g_pGameEngine->m_pSaveObject
-                        ->WrapToNextValidTeam((short)g_nDromeArena, 1);
+                        ->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 1);
 
     g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                           ->WrapToNextValidTeam((short)g_nDromeTeamAway, 1);
+                           ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 1);
 
     RefreshSelection();
 }
@@ -147,7 +147,7 @@ TournamentSetupUIScreen::TournamentSetupUIScreen()
 // FUNCTION: HYPERX 0x00488ab0
 void TournamentSetupUIScreen::OnOkayClick()
 {
-    g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 1);
+    g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 1);
 
     g_pGameEngine->m_pSaveObject->BracketIterReset();
 
@@ -216,7 +216,7 @@ void TournamentSetupUIScreen::OnRightArrowClick()
             g_nDromeTeamHome = nHome;
         }
 
-        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)nHome, 1);
+        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nHome), 1);
 
         nLocked = 0;
 
@@ -256,7 +256,7 @@ void TournamentSetupUIScreen::OnLeftArrowClick()
             g_nDromeTeamHome = nHome;
         }
 
-        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)nHome, 0);
+        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nHome), 0);
 
         nLocked = 0;
 

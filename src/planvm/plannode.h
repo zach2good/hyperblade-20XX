@@ -37,7 +37,7 @@ union PlanWord
 
     unsigned int GetTag() const
     {
-        return (unsigned short)((unsigned int)n >> 16);
+        return static_cast<unsigned short>(static_cast<unsigned int>(n) >> 16);
     }
 
     bool IsPronoun() const

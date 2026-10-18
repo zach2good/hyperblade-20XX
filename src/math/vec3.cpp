@@ -25,9 +25,9 @@ bool Vec3::NormalizeTo(Vec3* pOut) const
 
     if (dLength > g_dNormalizeEpsilon)
     {
-        pOut->x = (float)(x / dLength);
-        pOut->y = (float)(y / dLength);
-        pOut->z = (float)(z / dLength);
+        pOut->x = static_cast<float>(x / dLength);
+        pOut->y = static_cast<float>(y / dLength);
+        pOut->z = static_cast<float>(z / dLength);
 
         return true;
     }
@@ -46,9 +46,9 @@ bool Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 
     if (dLength > g_dNormalizeEpsilon)
     {
-        *pX = (float)(*pX / dLength);
-        *pY = (float)(*pY / dLength);
-        *pZ = (float)(*pZ / dLength);
+        *pX = static_cast<float>(*pX / dLength);
+        *pY = static_cast<float>(*pY / dLength);
+        *pZ = static_cast<float>(*pZ / dLength);
 
         return true;
     }

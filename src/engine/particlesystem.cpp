@@ -32,7 +32,7 @@ ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
     {
         for (int nFace = 0; nFace < PARTICLE_ROWS_PER_SET; nFace++)
         {
-            const MeshFace* const pRec = pBones->m_pMesh->Face((short)(nGroup * PARTICLE_ROWS_PER_SET + nFace));
+            const MeshFace* const pRec = pBones->m_pMesh->Face(static_cast<short>(nGroup * PARTICLE_ROWS_PER_SET + nFace));
 
             for (int nCorner = 0; nCorner < 3; nCorner++)
             {
@@ -49,7 +49,7 @@ ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
                 }
 
                 m_aRows[nGroup * PARTICLE_ROWS_PER_SET + nFace].aCorners[nCorner] =
-                    pVerts[pRec->aCorners[(short)nCorner]];
+                    pVerts[pRec->aCorners[static_cast<short>(nCorner)]];
             }
         }
     }
@@ -166,9 +166,9 @@ void ParticleSystem::ApplyToMesh()
 
             const float flRatio = pEmitter->m_flLife / pEmitter->m_flSpan;
 
-            const MeshFace* pPart = pMesh->GetFace((short)nIndex);
+            const MeshFace* pPart = pMesh->GetFace(static_cast<short>(nIndex));
 
-            const Vec3* pRow = m_aRows[(int)pEmitter->m_flRow + pEmitter->m_nSet * PARTICLE_ROWS_PER_SET].aCorners;
+            const Vec3* pRow = m_aRows[static_cast<int>(pEmitter->m_flRow) + pEmitter->m_nSet * PARTICLE_ROWS_PER_SET].aCorners;
 
             for (nCorner = 0; nCorner < 3; nCorner++)
             {
@@ -180,7 +180,7 @@ void ParticleSystem::ApplyToMesh()
                 vOut.y = vBase.GetY() + vStep.y;
                 vOut.z = vBase.GetZ() + vStep.z;
 
-                pVerts[pPart->aCorners[(short)nCorner]] = vOut;
+                pVerts[pPart->aCorners[static_cast<short>(nCorner)]] = vOut;
             }
         }
     }

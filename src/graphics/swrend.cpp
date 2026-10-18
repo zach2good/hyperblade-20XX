@@ -45,8 +45,8 @@ int FaceUnprojectable()
 // edge stacks hold one entry per back-buffer row, so that is the bound.
 int EdgeOffScreen(float flRoundY1, float flRoundY2)
 {
-    const int nRow1 = (short)((int)FloatBits(flRoundY1) + g_nViewportOriginY);
-    const int nRow2 = (short)((int)FloatBits(flRoundY2) + g_nViewportOriginY);
+    const int nRow1 = static_cast<short>(static_cast<int>(FloatBits(flRoundY1)) + g_nViewportOriginY);
+    const int nRow2 = static_cast<short>(static_cast<int>(FloatBits(flRoundY2)) + g_nViewportOriginY);
 
     if (nRow1 < 0 || nRow1 >= g_nBackBufferHeight || nRow2 < 0 || nRow2 >= g_nBackBufferHeight)
     {
@@ -263,14 +263,14 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         }
         else
         {
-            g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+            g_nSWFaceColour = static_cast<unsigned int>(pMaterial->nColour);
         }
     }
     else
     {
         if (pVertexColour != nullptr)
         {
-            g_nSWFaceColour = (unsigned int)*pVertexColour;
+            g_nSWFaceColour = static_cast<unsigned int>(*pVertexColour);
         }
         else
         {
@@ -282,9 +282,9 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             {
                 flLevel2 = g_flZeroSWRend;
 
-                cShade = (unsigned char)MeshMaterial::CalcLightIntensity(&flLevel2,
-                                                                         pMaterial,
-                                                                         pFaceNormal);
+                cShade = static_cast<unsigned char>(MeshMaterial::CalcLightIntensity(&flLevel2,
+                                                                                     pMaterial,
+                                                                                     pFaceNormal));
 
                 g_nSWFaceColour =
                     (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex)
@@ -297,7 +297,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             }
             else
             {
-                g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+                g_nSWFaceColour = static_cast<unsigned int>(pMaterial->nColour);
             }
         }
     }
@@ -307,26 +307,26 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 
     if ((g_bBottomUpDIB != 0) == (cBackFace != 0))
     {
-        nFirst = (short)nIndex;
+        nFirst = static_cast<short>(nIndex);
         nStep  = 1;
-        nEnd   = (short)g_swFaceBuffer.nCount;
+        nEnd   = static_cast<short>(g_swFaceBuffer.nCount);
     }
     else
     {
         nStep  = -1;
-        nFirst = (short)(g_swFaceBuffer.nCount - 1);
+        nFirst = static_cast<short>(g_swFaceBuffer.nCount - 1);
         nEnd   = -1;
     }
 
-    g_wSpanYMax      = (short)g_nViewportOriginY;
+    g_wSpanYMax      = static_cast<short>(g_nViewportOriginY);
     g_bRightEdgeUsed = 0;
-    g_wSpanYMin      = (short)(g_nPrevHeight + g_nViewportOriginY - 1);
+    g_wSpanYMin      = static_cast<short>(g_nPrevHeight + g_nViewportOriginY - 1);
     g_bLeftEdgeUsed  = 0;
 
     nIndex = nFirst;
 
-    float flRecip = SW_LIGHT_CEILING / g_swFaceBuffer.aVertices[(short)nIndex].pos.w;
-    pVert         = &g_swFaceBuffer.aVertices[(short)nIndex];
+    float flRecip = SW_LIGHT_CEILING / g_swFaceBuffer.aVertices[static_cast<short>(nIndex)].pos.w;
+    pVert         = &g_swFaceBuffer.aVertices[static_cast<short>(nIndex)];
     pVert->pos.x  = flRecip * pVert->pos.x;
     pVert->pos.y  = flRecip * pVert->pos.y;
 
@@ -337,14 +337,14 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 
         nIndex += nStep;
 
-        if ((short)nIndex == nEnd)
+        if (static_cast<short>(nIndex) == nEnd)
         {
             pVert = &g_swFaceBuffer.aVertices[nFirst];
         }
         else
         {
-            flRecip      = SW_LIGHT_CEILING / g_swFaceBuffer.aVertices[(short)nIndex].pos.w;
-            pVert        = &g_swFaceBuffer.aVertices[(short)nIndex];
+            flRecip      = SW_LIGHT_CEILING / g_swFaceBuffer.aVertices[static_cast<short>(nIndex)].pos.w;
+            pVert        = &g_swFaceBuffer.aVertices[static_cast<short>(nIndex)];
             pVert->pos.x = flRecip * pVert->pos.x;
             pVert->pos.y = flRecip * pVert->pos.y;
         }
@@ -361,10 +361,10 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             continue;
         }
 
-        SWRend::ScanEdge((unsigned short)((int)FloatBits(flRoundX1) + g_nViewportOriginX),
-                         (unsigned short)((int)FloatBits(flRoundY1) + g_nViewportOriginY),
-                         (unsigned short)((int)FloatBits(flRoundX2) + g_nViewportOriginX),
-                         (unsigned short)((int)FloatBits(flRoundY2) + g_nViewportOriginY));
+        SWRend::ScanEdge(static_cast<unsigned short>(static_cast<int>(FloatBits(flRoundX1)) + g_nViewportOriginX),
+                         static_cast<unsigned short>(static_cast<int>(FloatBits(flRoundY1)) + g_nViewportOriginY),
+                         static_cast<unsigned short>(static_cast<int>(FloatBits(flRoundX2)) + g_nViewportOriginX),
+                         static_cast<unsigned short>(static_cast<int>(FloatBits(flRoundY2)) + g_nViewportOriginY));
     }
 
     if (g_bLeftEdgeUsed != 0 && g_bRightEdgeUsed != 0)
@@ -449,15 +449,15 @@ void SWRend::SortFaces(short nCount)
 // FUNCTION: HYPERX 0x0044ab40
 void SWRend::FillSpans(int nColour)
 {
-    const auto nTop    = (int)(unsigned short)g_wSpanYMin;
-    const auto nBottom = (int)(unsigned short)g_wSpanYMax;
+    const auto nTop    = static_cast<int>(static_cast<unsigned short>(g_wSpanYMin));
+    const auto nBottom = static_cast<int>(static_cast<unsigned short>(g_wSpanYMax));
 
     unsigned char* pRow = g_pBackBufferBitsCopy + nTop * g_nSurfacePitchCopy;
 
     for (int y = nTop; y <= nBottom; y++)
     {
         const int nLeft  = g_pLeftStack[y];
-        const int nCount = (int)g_pRightStack[y] - nLeft;
+        const int nCount = static_cast<int>(g_pRightStack[y]) - nLeft;
 
         if (nCount >= 0)
         {
@@ -488,32 +488,32 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
     {
         if (bFalling)
         {
-            return (int)nY1;
+            return static_cast<int>(nY1);
         }
 
-        return (int)nY2;
+        return static_cast<int>(nY2);
     }();
 
-    const auto nDY = std::abs((int)nY2 - (int)nY1);
+    const auto nDY = std::abs(static_cast<int>(nY2) - static_cast<int>(nY1));
 
     auto nX = [&]
     {
         if (bFalling)
         {
-            return (int)nX1;
+            return static_cast<int>(nX1);
         }
 
-        return (int)nX2;
+        return static_cast<int>(nX2);
     }();
 
     const auto nSignedDX = [&]
     {
         if (bFalling)
         {
-            return (int)nX2 - (int)nX1;
+            return static_cast<int>(nX2) - static_cast<int>(nX1);
         }
 
-        return (int)nX1 - (int)nX2;
+        return static_cast<int>(nX1) - static_cast<int>(nX2);
     }();
 
     const auto nDX   = std::abs(nSignedDX);
@@ -541,17 +541,17 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
         return g_pRightStack + nTop;
     }();
 
-    if ((short)nY2 > g_wSpanYMax)
+    if (static_cast<short>(nY2) > g_wSpanYMax)
     {
-        g_wSpanYMax = (short)nY2;
+        g_wSpanYMax = static_cast<short>(nY2);
     }
 
-    if (g_wSpanYMin > (short)nTop)
+    if (g_wSpanYMin > static_cast<short>(nTop))
     {
-        g_wSpanYMin = (short)nTop;
+        g_wSpanYMin = static_cast<short>(nTop);
     }
 
-    *pOut = (unsigned short)nX;
+    *pOut = static_cast<unsigned short>(nX);
 
     if (nDX > nDY)
     {
@@ -570,7 +570,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
                     nError += nDiagonal;
                     nX++;
                     pOut++;
-                    *pOut = (unsigned short)nX;
+                    *pOut = static_cast<unsigned short>(nX);
 
                     if (--nLeft <= 0)
                     {
@@ -584,7 +584,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
 
                     if (--nLeft <= 0)
                     {
-                        *pOut = (unsigned short)nX;
+                        *pOut = static_cast<unsigned short>(nX);
                         break;
                     }
                 }
@@ -596,7 +596,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
             {
                 if (nError > 0)
                 {
-                    *pOut = (unsigned short)nX;
+                    *pOut = static_cast<unsigned short>(nX);
                     nError += nDiagonal;
                     nX--;
                     pOut++;
@@ -609,7 +609,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
 
                 if (--nLeft <= 0)
                 {
-                    *pOut = (unsigned short)nX;
+                    *pOut = static_cast<unsigned short>(nX);
                     break;
                 }
             }
@@ -636,7 +636,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
             }
 
             pOut++;
-            *pOut = (unsigned short)nX;
+            *pOut = static_cast<unsigned short>(nX);
 
             if (--nLeft <= 0)
             {
@@ -653,16 +653,16 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
 // FUNCTION: HYPERX 0x0044aeb0
 void SWRend::FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour)
 {
-    g_wSpanYMin = (short)(g_nBackBufferHeight - 1);
+    g_wSpanYMin = static_cast<short>(g_nBackBufferHeight - 1);
     g_wSpanYMax = 0;
 
     nColour |= ((nColour << 8 | nColour) << 8 | nColour) << 8;
 
-    SWRend::ScanEdge((unsigned short)pPoints[nPoints - 1].x, (unsigned short)pPoints[nPoints - 1].y, (unsigned short)pPoints[0].x, (unsigned short)pPoints[0].y);
+    SWRend::ScanEdge(static_cast<unsigned short>(pPoints[nPoints - 1].x), static_cast<unsigned short>(pPoints[nPoints - 1].y), static_cast<unsigned short>(pPoints[0].x), static_cast<unsigned short>(pPoints[0].y));
 
     for (int i = 1; i < nPoints; i++)
     {
-        SWRend::ScanEdge((unsigned short)pPoints[i - 1].x, (unsigned short)pPoints[i - 1].y, (unsigned short)pPoints[i].x, (unsigned short)pPoints[i].y);
+        SWRend::ScanEdge(static_cast<unsigned short>(pPoints[i - 1].x), static_cast<unsigned short>(pPoints[i - 1].y), static_cast<unsigned short>(pPoints[i].x), static_cast<unsigned short>(pPoints[i].y));
     }
 
     if (g_bLeftEdgeUsed != 0 && g_bRightEdgeUsed != 0)
@@ -670,7 +670,7 @@ void SWRend::FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour
         SWRend::FillSpans(nColour);
     }
 
-    g_wSpanYMin = (short)(g_nBackBufferHeight - 1);
+    g_wSpanYMin = static_cast<short>(g_nBackBufferHeight - 1);
     g_wSpanYMax = 0;
 }
 
@@ -680,7 +680,7 @@ void SWRend::FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour
 void SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
 {
     const auto nPitch = g_nSurfacePitchCopy;
-    const auto cPixel = (unsigned char)nColour;
+    const auto cPixel = static_cast<unsigned char>(nColour);
 
     const auto nDX = std::abs(nX2 - nX1);
     const auto nDY = std::abs(nY2 - nY1);
@@ -840,7 +840,7 @@ void SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* p
     {
         pRow    = pDest;
         nColumn = 0;
-        pData   = (unsigned char*)*ppRows;
+        pData   = reinterpret_cast<unsigned char*>(*ppRows);
 
         while (nColumn < nWidth)
         {
@@ -879,22 +879,22 @@ void SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int
     unsigned char* pRow;
     int            nStep;
 
-    if (nX > (unsigned int)g_nBackBufferWidth)
+    if (nX > static_cast<unsigned int>(g_nBackBufferWidth))
     {
         return;
     }
 
-    if (nY > (unsigned int)g_nBackBufferHeight)
+    if (nY > static_cast<unsigned int>(g_nBackBufferHeight))
     {
         return;
     }
 
-    if ((int)(nWidth + nX) > g_nBackBufferWidth)
+    if (static_cast<int>(nWidth + nX) > g_nBackBufferWidth)
     {
         nWidth = g_nBackBufferWidth - nX;
     }
 
-    if ((int)(nY + nHeight) > g_nBackBufferHeight)
+    if (static_cast<int>(nY + nHeight) > g_nBackBufferHeight)
     {
         nHeight = g_nBackBufferHeight - nY;
     }
@@ -940,7 +940,7 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 
         EngineObject* pRendOwner = pThis->m_pOwner;
 
-        apMaterials[0] = &pRendOwner->m_pModelBlock->m_pMaterials[(int)pEntry->cMaterial];
+        apMaterials[0] = &pRendOwner->m_pModelBlock->m_pMaterials[static_cast<int>(pEntry->cMaterial)];
 
         const short nSecond = apMaterials[0]->nBackIndex;
 
@@ -994,7 +994,7 @@ void SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int
                 {
                     if ((nMask & 1) != 0)
                     {
-                        *pBlended = (float)((*pTo - *pFrom) * dBlend + *pFrom);
+                        *pBlended = static_cast<float>((*pTo - *pFrom) * dBlend + *pFrom);
                     }
 
                     nMask >>= 1;

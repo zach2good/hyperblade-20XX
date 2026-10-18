@@ -91,11 +91,11 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
         }
         else if (pBlock[1].n == PLAN_TOKEN_MESSAGE_DATA)
         {
-            nValue = (short)nSlot;
+            nValue = static_cast<short>(nSlot);
         }
         else
         {
-            nValue = (short)pBlock[1].n;
+            nValue = static_cast<short>(pBlock[1].n);
         }
 
         const int nIndex = nValue;
@@ -209,13 +209,13 @@ void PlanAction::SetTrackingOffset(Interactor* pContext, PlanNode* pArgs, short*
     }
 
     pActor                 = pContext->GetCameraActor();
-    pActor->m_pSettings->x = (float)pArgs->m_pArgs[1].n;
+    pActor->m_pSettings->x = static_cast<float>(pArgs->m_pArgs[1].n);
 
     pActor                 = pContext->GetCameraActor();
-    pActor->m_pSettings->y = (float)pArgs->m_pArgs[2].n;
+    pActor->m_pSettings->y = static_cast<float>(pArgs->m_pArgs[2].n);
 
     pActor                 = pContext->GetCameraActor();
-    pActor->m_pSettings->z = (float)pArgs->m_pArgs[3].n;
+    pActor->m_pSettings->z = static_cast<float>(pArgs->m_pArgs[3].n);
 }
 
 // FUNCTION: HYPERX 0x00401a40
@@ -242,15 +242,15 @@ void PlanAction::IncrementTrackingOffset(Interactor* pContext, PlanNode* pArgs, 
     // The literals are tenths here where the setter takes whole units.
     pActor = pContext->GetCameraActor();
     pActor->m_pSettings->x =
-        (float)(pArgs->m_pArgs[1].n * 0.1 + pActor->m_pSettings->x);
+        static_cast<float>(pArgs->m_pArgs[1].n * 0.1 + pActor->m_pSettings->x);
 
     pActor = pContext->GetCameraActor();
     pActor->m_pSettings->y =
-        (float)(pArgs->m_pArgs[2].n * 0.1 + pActor->m_pSettings->y);
+        static_cast<float>(pArgs->m_pArgs[2].n * 0.1 + pActor->m_pSettings->y);
 
     pActor = pContext->GetCameraActor();
     pActor->m_pSettings->z =
-        (float)(pArgs->m_pArgs[3].n * 0.1 + pActor->m_pSettings->z);
+        static_cast<float>(pArgs->m_pArgs[3].n * 0.1 + pActor->m_pSettings->z);
 }
 
 // FUNCTION: HYPERX 0x00401b10
@@ -267,10 +267,10 @@ void PlanAction::IncrementCameraDir(Interactor* pContext, PlanNode* pArgs, short
     else
     {
         // Hundredths here, where the position adder takes tenths.
-        pContext->GetActor()->GetPhysicsBody()->velDir.x += (float)(pArgs->m_pArgs[1].n * 0.01);
-        pContext->GetActor()->GetPhysicsBody()->velDir.y += (float)(pArgs->m_pArgs[2].n * 0.01);
+        pContext->GetActor()->GetPhysicsBody()->velDir.x += static_cast<float>(pArgs->m_pArgs[1].n * 0.01);
+        pContext->GetActor()->GetPhysicsBody()->velDir.y += static_cast<float>(pArgs->m_pArgs[2].n * 0.01);
 
-        pContext->GetActor()->GetPhysicsBody()->velDir.z += (float)(pArgs->m_pArgs[3].n * 0.01);
+        pContext->GetActor()->GetPhysicsBody()->velDir.z += static_cast<float>(pArgs->m_pArgs[3].n * 0.01);
     }
 
     PhysicsBody* pBody = pContext->GetActor()->GetPhysicsBody();
@@ -285,7 +285,7 @@ void PlanAction::IncrementBungeeLength(Interactor* pContext, PlanNode* pArgs, sh
 
     CameraObject* pActor = pContext->GetCameraActor();
 
-    flValue = (float)(pArgs->m_pArgs[1].n * 0.1) + pActor->GetBungeeLength();
+    flValue = static_cast<float>(pArgs->m_pArgs[1].n * 0.1) + pActor->GetBungeeLength();
 
     pActor = pContext->GetCameraActor();
 
@@ -295,7 +295,7 @@ void PlanAction::IncrementBungeeLength(Interactor* pContext, PlanNode* pArgs, sh
 // FUNCTION: HYPERX 0x00401c40
 void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    const auto flValue = (float)(pArgs->m_pArgs[1].n * 0.1);
+    const auto flValue = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 
     CameraObject* const pActor = pContext->GetCameraActor();
 
@@ -306,25 +306,25 @@ void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, 
 // FUNCTION: HYPERX 0x00401c70
 void PlanAction::SetTrackHeight(Interactor*, PlanNode* pArgs, short*, int)
 {
-    g_flCameraTrackingHeight = (float)(pArgs->m_pArgs[1].n * 0.1);
+    g_flCameraTrackingHeight = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
 // FUNCTION: HYPERX 0x00401c90
 void PlanAction::SetMinHeight(Interactor*, PlanNode* pArgs, short*, int)
 {
-    g_flCameraMinHeight = (float)(pArgs->m_pArgs[1].n * 0.1);
+    g_flCameraMinHeight = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
 // FUNCTION: HYPERX 0x00401cb0
 void PlanAction::SetLookHeight(Interactor*, PlanNode* pArgs, short*, int)
 {
-    g_flCameraLookHeight = (float)(pArgs->m_pArgs[1].n * 0.1);
+    g_flCameraLookHeight = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
 // FUNCTION: HYPERX 0x00401cd0
 void PlanAction::SetCamBufferFactor(Interactor*, PlanNode* pArgs, short*, int)
 {
-    g_flSteadyCamBuffer = (float)(pArgs->m_pArgs[1].n * 0.1);
+    g_flSteadyCamBuffer = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
 // FUNCTION: HYPERX 0x00401cf0
@@ -344,9 +344,9 @@ void PlanAction::SetOffsetValues(Interactor*, PlanNode* pArgs, short*, int)
 {
     Vec3* const pPos = g_apTrackOffsets[pArgs->m_pArgs[1].n];
 
-    pPos->x = (float)(pArgs->m_pArgs[2].n * 0.1);
-    pPos->y = (float)(pArgs->m_pArgs[3].n * 0.1);
-    pPos->z = (float)(pArgs->m_pArgs[4].n * 0.1);
+    pPos->x = static_cast<float>(pArgs->m_pArgs[2].n * 0.1);
+    pPos->y = static_cast<float>(pArgs->m_pArgs[3].n * 0.1);
+    pPos->z = static_cast<float>(pArgs->m_pArgs[4].n * 0.1);
 }
 
 #define TRACKED_SLOT_LIMIT 8
@@ -380,7 +380,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
     }
     else if (pBlock[1].n != PLAN_TOKEN_MESSAGE_DATA)
     {
-        nValue = (short)pBlock[1].n;
+        nValue = static_cast<short>(pBlock[1].n);
     }
     else
     {
@@ -394,21 +394,21 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
         return;
     }
 
-    if ((unsigned int)nValue > TRACKED_SLOT_LIMIT)
+    if (static_cast<unsigned int>(nValue) > TRACKED_SLOT_LIMIT)
     {
         pTarget->m_nSecondaryTracked = -1;
 
         return;
     }
 
-    if ((short)nValue > g_pGameEngine->m_nLoadedCount)
+    if (static_cast<short>(nValue) > g_pGameEngine->m_nLoadedCount)
     {
         pTarget->m_nSecondaryTracked = -1;
 
         return;
     }
 
-    if (g_pGameEngine->m_ppSlots[(short)nValue] == nullptr)
+    if (g_pGameEngine->m_ppSlots[static_cast<short>(nValue)] == nullptr)
     {
         pTarget->m_nSecondaryTracked = -1;
 
@@ -457,7 +457,7 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
     float flRate   = pEngine->m_clock.flInvDelta;
     float flFactor = g_flSteadyCamBuffer;
 
-    auto nPos = (short)(flRate * flFactor * POS_WINDOW_SECONDS);
+    auto nPos = static_cast<short>(flRate * flFactor * POS_WINDOW_SECONDS);
 
     if (nPos > CAMERA_HISTORY_CAPACITY)
     {
@@ -475,7 +475,7 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
     flRate   = pEngine->m_clock.flInvDelta;
     flFactor = g_flSteadyCamBuffer;
 
-    auto nDir = (short)(flRate * flFactor * DIR_WINDOW_SECONDS);
+    auto nDir = static_cast<short>(flRate * flFactor * DIR_WINDOW_SECONDS);
 
     if (nDir > CAMERA_HISTORY_CAPACITY)
     {
@@ -525,7 +525,7 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
     {
         PlanWord* const pBlock = pArgs->m_pArgs;
 
-        g_pGameEngine->GetCamera((short)pBlock[ARG_SLOT].n)->SetReticleState(pBlock[ARG_MODE].n);
+        g_pGameEngine->GetCamera(static_cast<short>(pBlock[ARG_SLOT].n))->SetReticleState(pBlock[ARG_MODE].n);
 
         if (pArgs->m_pArgs[ARG_MODE].n == RETICLE_OFF)
         {
@@ -600,7 +600,7 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     EngineObject* pTarget;
     float         flDelta;
 
-    pTarget                = g_pGameEngine->m_ppSlots[(short)pArgs->m_pArgs[1].n];
+    pTarget                = g_pGameEngine->m_ppSlots[static_cast<short>(pArgs->m_pArgs[1].n)];
     Vec3* const pTargetPos = pTarget->GetPositionPtr();
 
     EngineObject* pActor   = pContext->GetActor();
@@ -652,15 +652,15 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
     }
     else if (nArgCount < 3)
     {
-        flSpread = (float)pNode->m_pArgs[ARG_SPREAD].n;
+        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = (float)pArgs[ARG_SPREAD].n;
-        flSpeed  = (float)pArgs[ARG_SPEED].n;
+        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
+        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
     }
 
     EngineObject* pObject = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -699,15 +699,15 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     }
     else if (nArgCount < 3)
     {
-        flSpread = (float)pNode->m_pArgs[ARG_SPREAD].n;
+        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = (float)pArgs[ARG_SPREAD].n;
-        flSpeed  = (float)pArgs[ARG_SPEED].n;
+        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
+        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
     }
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -752,15 +752,15 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
     }
     else if (nArgCount < 3)
     {
-        flSpread = (float)pNode->m_pArgs[ARG_SPREAD].n;
+        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = (float)pArgs[ARG_SPREAD].n;
-        flSpeed  = (float)pArgs[ARG_SPEED].n;
+        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
+        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
     }
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -800,15 +800,15 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
     }
     else if (nArgCount < 3)
     {
-        flSpread = (float)pNode->m_pArgs[ARG_SPREAD].n;
+        flSpread = static_cast<float>(pNode->m_pArgs[ARG_SPREAD].n);
         flSpeed  = DEFAULT_SPEED;
     }
     else
     {
         PlanWord* const pArgs = pNode->m_pArgs;
 
-        flSpread = (float)pArgs[ARG_SPREAD].n;
-        flSpeed  = (float)pArgs[ARG_SPEED].n;
+        flSpread = static_cast<float>(pArgs[ARG_SPREAD].n);
+        flSpeed  = static_cast<float>(pArgs[ARG_SPEED].n);
     }
 
     pTarget = g_pGameEngine->m_ppSlots[pContext->GetTargetSlot()];
@@ -908,7 +908,7 @@ extern const float g_flOriginComponent;
 // FUNCTION: HYPERX 0x004027a0
 void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 {
-    const auto nSlot = (unsigned int)nArg;
+    const auto nSlot = static_cast<unsigned int>(nArg);
 
     EngineObject* pActor;
     EngineObject* pSpawn;
@@ -928,7 +928,7 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 
     if (pActor->GetSlot() == SLOT_ROK)
     {
-        pSpawn = g_pGameEngine->m_ppSlots[(short)nSlot];
+        pSpawn = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
         if (pSpawn != nullptr)
         {
@@ -1071,7 +1071,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
             return;
         }
 
-        pSubject = g_pGameEngine->m_ppSlots[(short)nId];
+        pSubject = g_pGameEngine->m_ppSlots[static_cast<short>(nId)];
     }
 
     if (pSubject == nullptr)
@@ -1088,19 +1088,19 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     const int nPair = nSlot * 2;
 
-    pFirst  = g_pGameEngine->m_ppSlots[(short)g_anSubstitutePairs[nPair]];
-    pSecond = g_pGameEngine->m_ppSlots[(short)g_anSubstitutePairs[nPair + 1]];
+    pFirst  = g_pGameEngine->m_ppSlots[static_cast<short>(g_anSubstitutePairs[nPair])];
+    pSecond = g_pGameEngine->m_ppSlots[static_cast<short>(g_anSubstitutePairs[nPair + 1])];
 
     for (nIndex = 0; nIndex <= HIDE_LAST; nIndex++)
     {
         if (pFirst != nullptr)
         {
-            pFirst->m_pBones[(short)nIndex].ClearFlags(MESHBONE_HIDDEN);
+            pFirst->m_pBones[static_cast<short>(nIndex)].ClearFlags(MESHBONE_HIDDEN);
         }
 
         if (pSecond != nullptr)
         {
-            pSecond->m_pBones[(short)nIndex].ClearFlags(MESHBONE_HIDDEN);
+            pSecond->m_pBones[static_cast<short>(nIndex)].ClearFlags(MESHBONE_HIDDEN);
         }
     }
 
@@ -1125,7 +1125,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
     {
         for (pBone = g_anSubstituteBones; pBone < g_anSubstituteBones + BONE_SPLIT; pBone++)
         {
-            pFirst->m_pBones[(short)*pBone].SetFlags(MESHBONE_HIDDEN);
+            pFirst->m_pBones[static_cast<short>(*pBone)].SetFlags(MESHBONE_HIDDEN);
         }
 
         Object::CopyPhysicsStateTo(pSubject, pFirst, 1);
@@ -1137,7 +1137,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
              pBone < g_anSubstituteBones + BONE_COUNT;
              pBone++)
         {
-            pSecond->m_pBones[(short)*pBone].SetFlags(MESHBONE_HIDDEN);
+            pSecond->m_pBones[static_cast<short>(*pBone)].SetFlags(MESHBONE_HIDDEN);
         }
 
         Object::CopyPhysicsStateTo(pSubject, pSecond, 0);

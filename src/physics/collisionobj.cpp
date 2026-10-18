@@ -23,7 +23,7 @@ CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFri
 
     if (m_vNormal.x == g_flZeroCollisionObj && m_vNormal.y == g_flZeroCollisionObj && m_vNormal.z == g_flZeroCollisionObj)
     {
-        g_gameApp.FatalString((const char*)(std::uintptr_t)(unsigned short)(STRING_ZERO_NORMAL_IN_PLANE));
+        g_gameApp.FatalString((const char*)static_cast<std::uintptr_t>(static_cast<unsigned short>(STRING_ZERO_NORMAL_IN_PLANE)));
     }
 
     m_vPoint = *pOrigin;
@@ -55,7 +55,7 @@ void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Ve
 
     if (!Math::Vec3Normalize(pNormal))
     {
-        g_gameApp.FatalString((const char*)(std::uintptr_t)(unsigned short)(STRING_ZERO_NORMAL_IN_PLANE));
+        g_gameApp.FatalString((const char*)static_cast<std::uintptr_t>(static_cast<unsigned short>(STRING_ZERO_NORMAL_IN_PLANE)));
     }
 
     m_vPoint = *pOrigin;

@@ -9,7 +9,7 @@ struct RecordOffset
 
     T* In(const void* pRecord) const
     {
-        return (T*)((const char*)pRecord + nBytes);
+        return (T*)(static_cast<const char*>(pRecord) + nBytes);
     }
 };
 

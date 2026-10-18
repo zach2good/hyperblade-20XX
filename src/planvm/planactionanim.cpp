@@ -85,7 +85,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     const unsigned int nBehavior = pContext->m_nBehaviour;
 
-    if ((int)nBehavior == PLAN_TOKEN_NO_BEH_CHANGE)
+    if (static_cast<int>(nBehavior) == PLAN_TOKEN_NO_BEH_CHANGE)
     {
         pActor = pContext->GetActor();
 
@@ -107,7 +107,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     const AnimScriptTable* pDb = g_pAnimRegistry->m_pScripts;
 
-    pAnim = pDb->Find((short)nIndex);
+    pAnim = pDb->Find(static_cast<short>(nIndex));
 
     if (pAnim != nullptr && pContext->GetActor()->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
     {
@@ -155,7 +155,7 @@ void PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, sho
     const unsigned int  nBehavior = pContext->m_nBehaviour;
     GameBehaviorObject* pBehaviour;
 
-    if ((int)nBehavior == PLAN_TOKEN_NO_BEH_CHANGE)
+    if (static_cast<int>(nBehavior) == PLAN_TOKEN_NO_BEH_CHANGE)
     {
         pBehaviour = pContext->GetActor()->GetPlanState()->m_pCurrent;
     }
@@ -185,7 +185,7 @@ void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*
 
     const unsigned int nBehavior = pContext->m_nBehaviour;
 
-    if ((int)nBehavior != PLAN_TOKEN_NO_BEH_CHANGE)
+    if (static_cast<int>(nBehavior) != PLAN_TOKEN_NO_BEH_CHANGE)
     {
         pActor = pContext->GetActor();
 
@@ -252,7 +252,7 @@ void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*
 {
     EngineObject* const pActor = pContext->GetActor();
 
-    const auto flSpeed = (float)((unsigned int)pNode->m_pArgs[1].n * 0.01);
+    const auto flSpeed = static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[1].n) * 0.01);
 
     pActor->m_pAnimPlayer->SetPlaybackRate(flSpeed);
 }
@@ -264,7 +264,7 @@ void PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short
     AnimPlayer* const pPlayer = pContext->GetActor()->m_pAnimPlayer;
 
     pPlayer->SetPlaybackRate(
-        (float)((unsigned int)pNode->m_pArgs[1].n * 0.01) * pRate->GetPlaybackRate());
+        static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[1].n) * 0.01) * pRate->GetPlaybackRate());
 }
 
 // FUNCTION: HYPERX 0x00401310
@@ -346,11 +346,11 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
 
     if (pArgs->m_nArgCount == 2)
     {
-        nIndex = (short)pArgs->m_pArgs[1].n;
+        nIndex = static_cast<short>(pArgs->m_pArgs[1].n);
     }
     else if (nIndex < 0)
     {
-        nIndex = (short)AnimSet::GetFieldOffset((short)nSlot);
+        nIndex = static_cast<short>(AnimSet::GetFieldOffset(static_cast<short>(nSlot)));
     }
 
     if (pActor->GetSlot() == SLOT_ROK)

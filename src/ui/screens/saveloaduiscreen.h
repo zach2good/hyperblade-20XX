@@ -24,13 +24,13 @@ public:
     // FUNCTION: HYPERX 0x0046eb40
     void OnOkayClick() override
     {
-        Game::SetEngineState((unsigned int)m_nReturnState);
+        Game::SetEngineState(static_cast<unsigned int>(m_nReturnState));
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
     void OnCancelClick() override
     {
-        Game::SetEngineState((unsigned int)m_nReturnState);
+        Game::SetEngineState(static_cast<unsigned int>(m_nReturnState));
     }
 
     void RefreshFrames() override;

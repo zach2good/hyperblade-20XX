@@ -81,7 +81,7 @@ bool FindEnd(std::size_t* pnOffset)
 
 bool ReadDirectory()
 {
-    auto nEnd = (std::size_t)0;
+    auto nEnd = static_cast<std::size_t>(0);
 
     if (!FindEnd(&nEnd))
     {
@@ -90,7 +90,7 @@ bool ReadDirectory()
 
     const auto nCount = ReadU16(nEnd + 10);
 
-    auto nOffset = (std::size_t)ReadU32(nEnd + 16);
+    auto nOffset = static_cast<std::size_t>(ReadU32(nEnd + 16));
 
     for (auto i = 0u; i < nCount; i++)
     {
@@ -107,10 +107,10 @@ bool ReadDirectory()
             return false;
         }
 
-        const auto* const pName = (const char*)s_bytes.data() + nOffset + CENTRAL_SIZE;
+        const auto* const pName = reinterpret_cast<const char*>(s_bytes.data()) + nOffset + CENTRAL_SIZE;
 
         s_entries[std::string(pName, nNameLength)] = Entry{
-            (std::uint16_t)ReadU16(nOffset + 10),
+            static_cast<std::uint16_t>(ReadU16(nOffset + 10)),
             ReadU32(nOffset + 20),
             ReadU32(nOffset + 24),
             ReadU32(nOffset + 42),
@@ -150,7 +150,7 @@ std::vector<unsigned char> Pak::Read(std::string_view name)
         return {};
     }
 
-    const auto nData = (std::size_t)entry.nLocalOffset + LOCAL_SIZE + ReadU16(entry.nLocalOffset + 26) + ReadU16(entry.nLocalOffset + 28);
+    const auto nData = static_cast<std::size_t>(entry.nLocalOffset) + LOCAL_SIZE + ReadU16(entry.nLocalOffset + 26) + ReadU16(entry.nLocalOffset + 28);
 
     if (!Fits(nData, entry.nPacked))
     {
@@ -172,9 +172,9 @@ std::vector<unsigned char> Pak::Read(std::string_view name)
 
     auto bytes = std::vector<unsigned char>(entry.nSize);
 
-    const auto nUnpacked = stbi_zlib_decode_noheader_buffer((char*)bytes.data(), (int)bytes.size(), (const char*)pPacked, (int)entry.nPacked);
+    const auto nUnpacked = stbi_zlib_decode_noheader_buffer(reinterpret_cast<char*>(bytes.data()), static_cast<int>(bytes.size()), reinterpret_cast<const char*>(pPacked), static_cast<int>(entry.nPacked));
 
-    if (nUnpacked != (int)entry.nSize)
+    if (nUnpacked != static_cast<int>(entry.nSize))
     {
         return {};
     }

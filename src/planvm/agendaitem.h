@@ -87,7 +87,7 @@ public:
     // The camera's agenda items hang off a CameraObject.
     class CameraObject* GetCamera() const
     {
-        return (class CameraObject*)m_pOwner;
+        return reinterpret_cast<class CameraObject*>(m_pOwner);
     }
 
     void SetNext(AgendaItem* pNext)

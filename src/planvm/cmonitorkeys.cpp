@@ -31,7 +31,7 @@ void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     short* pFirst = &pOwner->GetPhysicsBody()->nHeldBindings;
     m_pInput      = pFirst;
-    *pFirst       = (short)g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask;
+    *pFirst       = static_cast<short>(g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask);
 
     short* pSecond = &pOwner->GetPhysicsBody()->nPrevHeldBindings;
     m_pPrevInput   = pSecond;
@@ -61,7 +61,7 @@ void CMonitorKeys::Process(int nArg)
     float        flEdge;
     PhysicsBody* pBlock;
 
-    *m_pInput = (short)g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask;
+    *m_pInput = static_cast<short>(g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask);
 
     Player::ProcessTrickInput(m_pOwner, m_pInput);
 
@@ -109,7 +109,7 @@ void CMonitorKeys::Process(int nArg)
 
     *m_pPrevInput = *m_pInput;
 
-    g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask = (unsigned short)*m_pPrevInput;
+    g_pGameEngine->GetInputDevice(SLOT_KEYBOARD)->m_nHeldMask = static_cast<unsigned short>(*m_pPrevInput);
 
     AgendaItem* const pNext = m_pNext;
 

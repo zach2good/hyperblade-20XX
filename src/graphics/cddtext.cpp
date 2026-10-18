@@ -23,7 +23,7 @@ int CDDText::Draw()
 {
     if (m_pszText != nullptr && *m_pszText != 0 && g_pBackBufferBitsCopy != nullptr)
     {
-        const auto nIndex = (unsigned char)g_pColorPalette->NearestIndex(m_color, HudLayer::KEY_INDEX);
+        const auto nIndex = static_cast<unsigned char>(g_pColorPalette->NearestIndex(m_color, HudLayer::KEY_INDEX));
 
         Text::Draw(m_font, g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_pszText, nIndex);
     }
@@ -42,7 +42,7 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
         m_pszText = nullptr;
     }
 
-    if (color != (std::uint32_t)-1)
+    if (color != static_cast<std::uint32_t>(-1))
     {
         m_color = color;
     }
@@ -55,7 +55,7 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
         return 1;
     }
 
-    char* const pszCopy = (char*)malloc(strlen(pszText) + 1);
+    char* const pszCopy = static_cast<char*>(malloc(strlen(pszText) + 1));
 
     if (pszCopy != nullptr)
     {

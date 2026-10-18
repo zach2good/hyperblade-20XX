@@ -27,12 +27,12 @@ void DebugHUD::UpdateLightingInfo()
     // STRING: HYPERX 0x004c67fc
     nLength = sprintf(g_szDebugLightLine, "Light: Distance  %0.2f Attenuation %0.2f", g_flDebugLightDistance, g_flLightAttenuation);
 
-    DebugHUD::PushLightString(g_szDebugLightLine, (short)nLength);
+    DebugHUD::PushLightString(g_szDebugLightLine, static_cast<short>(nLength));
 
     // STRING: HYPERX 0x004c67c8
-    nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", (int)((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % DEGREES_PER_TURN, (int)(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % DEGREES_PER_TURN);
+    nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", static_cast<int>((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % DEGREES_PER_TURN, static_cast<int>(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % DEGREES_PER_TURN);
 
-    DebugHUD::PushLightString(g_szDebugLightLine, (short)nLength);
+    DebugHUD::PushLightString(g_szDebugLightLine, static_cast<short>(nLength));
 }
 
 // FUNCTION: HYPERX 0x0047ae10

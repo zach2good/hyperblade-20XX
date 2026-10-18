@@ -90,7 +90,7 @@ void CBeAttached::Process(int nArg)
 
     pOut = m_pVel;
 
-    *m_pflSpeed = (float)sqrt(static_cast<double>(pOut->z * pOut->z + pOut->y * pOut->y + pOut->x * pOut->x));
+    *m_pflSpeed = static_cast<float>(sqrt(static_cast<double>(pOut->z * pOut->z + pOut->y * pOut->y + pOut->x * pOut->x)));
 
     if (0.001 < *m_pflSpeed)
     {
@@ -156,7 +156,7 @@ void CBeAttached::Release(int nArg)
 
     pOut = m_pVel;
 
-    *m_pflSpeed = (float)sqrt(static_cast<double>(pOut->z * pOut->z + pOut->y * pOut->y + pOut->x * pOut->x));
+    *m_pflSpeed = static_cast<float>(sqrt(static_cast<double>(pOut->z * pOut->z + pOut->y * pOut->y + pOut->x * pOut->x)));
 
     if (0.001 < *m_pflSpeed)
     {

@@ -21,16 +21,16 @@ unsigned int MsgEvent::PackScene(unsigned int nMessage, unsigned int nSender, sh
 // FUNCTION: HYPERX 0x0045d790
 void MsgEvent::UnpackScene(unsigned int nPacked, short* pMessage, short* pSender, short* pValue)
 {
-    *pMessage = (short)((nPacked >> 22) & 0x3ff);
-    *pSender  = (short)((nPacked >> 14) & 0xff);
-    *pValue   = (short)(nPacked & 0x3fff);
+    *pMessage = static_cast<short>((nPacked >> 22) & 0x3ff);
+    *pSender  = static_cast<short>((nPacked >> 14) & 0xff);
+    *pValue   = static_cast<short>(nPacked & 0x3fff);
 }
 
 // FUNCTION: HYPERX 0x0045d7d0
 void MsgEvent::Unpack(unsigned int nPacked, short* pKind, short* pHigh, short* pMiddle, short* pLow)
 {
-    *pKind   = (short)((nPacked >> 24) & 0x7f);
-    *pHigh   = (short)((nPacked >> 16) & 0xff);
-    *pMiddle = (short)((nPacked >> 8) & 0xff);
-    *pLow    = (short)(nPacked & 0xff);
+    *pKind   = static_cast<short>((nPacked >> 24) & 0x7f);
+    *pHigh   = static_cast<short>((nPacked >> 16) & 0xff);
+    *pMiddle = static_cast<short>((nPacked >> 8) & 0xff);
+    *pLow    = static_cast<short>(nPacked & 0xff);
 }

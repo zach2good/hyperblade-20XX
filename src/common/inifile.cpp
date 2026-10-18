@@ -30,7 +30,7 @@ bool SameName(std::string_view a, std::string_view b)
 {
     return a.size() == b.size() && std::equal(a.begin(), a.end(), b.begin(), [](char x, char y)
                                               {
-                                                  return std::tolower((unsigned char)x) == std::tolower((unsigned char)y);
+                                                  return std::tolower(static_cast<unsigned char>(x)) == std::tolower(static_cast<unsigned char>(y));
                                               });
 }
 
@@ -161,7 +161,7 @@ unsigned int IniFile::ReadInt(const char* pszPath, const char* pszSection, const
 
     if (!value)
     {
-        return (unsigned int)nDefault;
+        return static_cast<unsigned int>(nDefault);
     }
 
     const auto nRead = std::strtol(value->c_str(), nullptr, 10);
@@ -171,7 +171,7 @@ unsigned int IniFile::ReadInt(const char* pszPath, const char* pszSection, const
         return 0;
     }
 
-    return (unsigned int)nRead;
+    return static_cast<unsigned int>(nRead);
 }
 
 // FUNCTION: HYPERX 0x004798d0
@@ -187,7 +187,7 @@ bool IniFile::WriteString(const char* pszPath, const char* pszSection, const cha
     }
     else if (found.nSection)
     {
-        lines.insert(lines.begin() + (std::ptrdiff_t)found.nSectionEnd, entry);
+        lines.insert(lines.begin() + static_cast<std::ptrdiff_t>(found.nSectionEnd), entry);
     }
     else
     {

@@ -111,11 +111,11 @@ void CSteerBetweenFacing::Process(int nArg)
 
     if (vAim.y * pAxis->x - vAim.x * pAxis->y > 0.0f)
     {
-        flFacing = (float)Math::Acos(flAim);
+        flFacing = static_cast<float>(Math::Acos(flAim));
     }
     else
     {
-        flFacing = -(float)Math::Acos(flAim);
+        flFacing = -static_cast<float>(Math::Acos(flAim));
     }
 
     m_pOwner->GetPhysicsBody()->flFacing = flFacing;
@@ -167,11 +167,11 @@ void CSteerBetweenFacing::Process(int nArg)
 
     if ((flCross = vDelta.y * pLeanAxis->x - vDelta.x * pLeanAxis->y) < BANK_DEADZONE_LOW)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(static_cast<double>(flLean)) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, static_cast<float>(fabs(static_cast<double>(flLean))) * flForce);
     }
     else if (flCross > BANK_DEADZONE_HIGH)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(static_cast<double>(flLean)) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, static_cast<float>(fabs(static_cast<double>(flLean))) * flForce);
     }
 
     if (m_pNext != nullptr)

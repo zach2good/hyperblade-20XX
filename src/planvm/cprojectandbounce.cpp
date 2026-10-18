@@ -158,19 +158,19 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             if ((flSpan = pPosC->x - pPrev->x) != g_flZeroAgendaItem)
             {
-                flFrac = (float)fabs(static_cast<double>((pClosest->x - pPrev->x) / flSpan));
+                flFrac = static_cast<float>(fabs(static_cast<double>((pClosest->x - pPrev->x) / flSpan)));
             }
             else
             {
                 if ((flSpan = pPosC->y - pPrev->y) != g_flZeroAgendaItem)
                 {
-                    flFrac = (float)fabs(static_cast<double>((pClosest->y - pPrev->y) / flSpan));
+                    flFrac = static_cast<float>(fabs(static_cast<double>((pClosest->y - pPrev->y) / flSpan)));
                 }
                 else
                 {
                     if ((flSpan = pPosC->z - pPrev->z) != g_flZeroAgendaItem)
                     {
-                        flFrac = (float)fabs(static_cast<double>((pClosest->z - pPrev->z) / flSpan));
+                        flFrac = static_cast<float>(fabs(static_cast<double>((pClosest->z - pPrev->z) / flSpan)));
                     }
                     else
                     {
@@ -235,7 +235,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
     const float flVy = pVel->y;
     const float flVx = pVel->x;
 
-    *m_pSpeed = (float)sqrt(static_cast<double>(flVx * flVx + flVy * flVy + flVz * flVz));
+    *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flVx * flVx + flVy * flVy + flVz * flVz)));
 
     if ((flCap = g_flTwoAgendaItem * m_pOwner->GetPhysicsBody()->flForwardSpeedDt) < *m_pSpeed)
     {
@@ -326,7 +326,7 @@ void CProjectAndBounce::IntegrateSpringAndGravity()
     const float flY = pVel->y;
     const float flX = pVel->x;
 
-    *m_pSpeed = (float)sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ));
+    *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ)));
 
     if (*m_pSpeed > SPEED_EPSILON)
     {

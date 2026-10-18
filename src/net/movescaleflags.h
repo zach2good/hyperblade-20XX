@@ -28,7 +28,7 @@ struct MoveScaleFlags
 
     static unsigned char Pack(unsigned int nVelocityZ, unsigned int nPositionShift, unsigned int nVelocityShift)
     {
-        return (unsigned char)(((nVelocityZ >> 9) & 3) | (nVelocityShift << 5) | ((nPositionShift & 7) << 2));
+        return static_cast<unsigned char>(((nVelocityZ >> 9) & 3) | (nVelocityShift << 5) | ((nPositionShift & 7) << 2));
     }
 };
 

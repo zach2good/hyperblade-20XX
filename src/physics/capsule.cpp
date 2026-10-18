@@ -54,8 +54,8 @@ int Capsule::CheckCollision(const Vec3* pDirSelf, const Vec3* pDirOther, const C
     Vec3    vDeltaB;
     int     nStepsUsed;
 
-    flDistA     = (float)sqrt(static_cast<double>(pDirSelf->z * pDirSelf->z + (pDirSelf->y * pDirSelf->y + pDirSelf->x * pDirSelf->x)));
-    flDistB     = (float)sqrt(static_cast<double>(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x)));
+    flDistA     = static_cast<float>(sqrt(static_cast<double>(pDirSelf->z * pDirSelf->z + (pDirSelf->y * pDirSelf->y + pDirSelf->x * pDirSelf->x))));
+    flDistB     = static_cast<float>(sqrt(static_cast<double>(pDirOther->z * pDirOther->z + (pDirOther->y * pDirOther->y + pDirOther->x * pDirOther->x))));
     nStepsSelf  = 1;
     nStepsOther = 1;
 
@@ -72,8 +72,8 @@ int Capsule::CheckCollision(const Vec3* pDirSelf, const Vec3* pDirOther, const C
     }
 
     nStepsUsed = (std::max)(nStepsSelf, nStepsOther);
-    vDeltaA    = pDirSelf->Scaled((float)(1.0 / nStepsUsed));
-    vDeltaB    = pDirOther->Scaled((float)(1.0 / nStepsUsed));
+    vDeltaA    = pDirSelf->Scaled(static_cast<float>(1.0 / nStepsUsed));
+    vDeltaB    = pDirOther->Scaled(static_cast<float>(1.0 / nStepsUsed));
     bodyMine   = *this;
     bodyOther  = *pOther;
     bIntersect = 0;

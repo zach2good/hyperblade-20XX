@@ -192,13 +192,13 @@ HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
 
     InitAllWidgets();
 
-    g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 1);
+    g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 1);
 
     g_nDromeArena = g_pGameEngine->m_pSaveObject
-                        ->WrapToNextValidTeam((short)g_nDromeArena, 1);
+                        ->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 1);
 
     g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                           ->WrapToNextValidTeam((short)g_nDromeTeamAway, 1);
+                           ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 1);
 
     StepHomeSelection(1);
     StepArenaSelection(1);
@@ -318,7 +318,7 @@ void HeadToHeadSetupUIScreen::OnLeftArrowClick()
             }
 
             g_nDromeArena = g_pGameEngine->m_pSaveObject
-                                ->WrapToNextValidTeam((short)g_nDromeArena, 0);
+                                ->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 0);
 
             StepArenaSelection(0);
             RefreshSelection();
@@ -327,7 +327,7 @@ void HeadToHeadSetupUIScreen::OnLeftArrowClick()
         case H2H_HOME_TEAM_BUTTON:
             g_nDromeTeamHome--;
 
-            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 0);
+            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 0);
 
             if (g_nDromeTeamHome == g_nDromeTeamAway)
             {
@@ -344,7 +344,7 @@ void HeadToHeadSetupUIScreen::OnLeftArrowClick()
                 }
             }
 
-            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 0);
+            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 0);
 
             StepHomeSelection(0);
             RefreshSelection();
@@ -354,7 +354,7 @@ void HeadToHeadSetupUIScreen::OnLeftArrowClick()
             g_nDromeTeamAway--;
 
             g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                                   ->WrapToNextValidTeam((short)g_nDromeTeamAway, 0);
+                                   ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 0);
 
             if (g_nDromeTeamAway == g_nDromeTeamHome)
             {
@@ -372,7 +372,7 @@ void HeadToHeadSetupUIScreen::OnLeftArrowClick()
             }
 
             g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                                   ->WrapToNextValidTeam((short)g_nDromeTeamAway, 0);
+                                   ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 0);
 
             StepAwaySelection(0);
             RefreshSelection();
@@ -395,7 +395,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
             pEngine          = g_pGameEngine;
             g_nDromeTeamHome = nTeam;
 
-            pEngine->m_pSaveObject->ValidateSetHomeTeam((short)nTeam, 1);
+            pEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nTeam), 1);
 
             nTeam  = g_nDromeTeamHome;
             nOther = g_nDromeTeamAway;
@@ -420,7 +420,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
 
             pEngine = g_pGameEngine;
 
-            pEngine->m_pSaveObject->ValidateSetHomeTeam((short)nTeam, 1);
+            pEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nTeam), 1);
 
             StepHomeSelection(1);
             break;
@@ -435,7 +435,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
 
             pEngine = g_pGameEngine;
 
-            nTeam = pEngine->m_pSaveObject->WrapToNextValidTeam((short)g_nDromeArena, 1);
+            nTeam = pEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 1);
 
             g_nDromeArena = nTeam;
 
@@ -446,7 +446,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
             g_nDromeTeamAway++;
 
             nTeam = g_pGameEngine->m_pSaveObject
-                        ->WrapToNextValidTeam((short)g_nDromeTeamAway, 1);
+                        ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 1);
 
             nOther = g_nDromeTeamHome;
 
@@ -472,7 +472,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
 
             pEngine = g_pGameEngine;
 
-            nTeam = pEngine->m_pSaveObject->WrapToNextValidTeam((short)nTeam, 1);
+            nTeam = pEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(nTeam), 1);
 
             g_nDromeTeamAway = nTeam;
 
@@ -498,7 +498,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
 
     if (nStep == 0)
     {
-        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, nStep);
+        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), nStep);
 
         if (g_nDromeTeamHome == g_nDromeTeamAway)
         {
@@ -515,7 +515,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
             }
         }
 
-        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 0);
+        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 0);
 
         nLocked = 0;
         if (m_nLockedCount != 0)
@@ -529,7 +529,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
         {
             g_nDromeTeamHome--;
 
-            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 0);
+            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 0);
 
             if (g_nDromeTeamHome == g_nDromeTeamAway)
             {
@@ -546,7 +546,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
                 }
             }
 
-            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, 0);
+            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), 0);
 
             nLocked = 0;
             if (m_nLockedCount != 0)
@@ -559,7 +559,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
     }
     else
     {
-        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, nStep);
+        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), nStep);
 
         if (g_nDromeTeamHome == g_nDromeTeamAway)
         {
@@ -576,7 +576,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
             }
         }
 
-        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, nStep);
+        g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), nStep);
 
         nLocked = 0;
         if (m_nLockedCount != 0)
@@ -590,7 +590,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
         {
             g_nDromeTeamHome++;
 
-            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, nStep);
+            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), nStep);
 
             if (g_nDromeTeamHome == g_nDromeTeamAway)
             {
@@ -607,7 +607,7 @@ void HeadToHeadSetupUIScreen::StepHomeSelection(int nStep)
                 }
             }
 
-            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam((short)g_nDromeTeamHome, nStep);
+            g_pGameEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(g_nDromeTeamHome), nStep);
 
             nLocked = 0;
             if (m_nLockedCount != 0)
@@ -641,7 +641,7 @@ void HeadToHeadSetupUIScreen::StepAwaySelection(int nStep)
             g_nDromeTeamAway--;
 
             g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                                   ->WrapToNextValidTeam((short)g_nDromeTeamAway, 0);
+                                   ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 0);
 
             if (g_nDromeTeamAway == g_nDromeTeamHome)
             {
@@ -659,7 +659,7 @@ void HeadToHeadSetupUIScreen::StepAwaySelection(int nStep)
             }
 
             g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                                   ->WrapToNextValidTeam((short)g_nDromeTeamAway, 0);
+                                   ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 0);
 
             nLocked = 0;
             if (m_nLockedCount != 0)
@@ -677,7 +677,7 @@ void HeadToHeadSetupUIScreen::StepAwaySelection(int nStep)
             g_nDromeTeamAway++;
 
             g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                                   ->WrapToNextValidTeam((short)g_nDromeTeamAway, 1);
+                                   ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 1);
 
             if (g_nDromeTeamAway == g_nDromeTeamHome)
             {
@@ -695,7 +695,7 @@ void HeadToHeadSetupUIScreen::StepAwaySelection(int nStep)
             }
 
             g_nDromeTeamAway = g_pGameEngine->m_pSaveObject
-                                   ->WrapToNextValidTeam((short)g_nDromeTeamAway, 1);
+                                   ->WrapToNextValidTeam(static_cast<short>(g_nDromeTeamAway), 1);
 
             nLocked = 0;
             if (m_nLockedCount != 0)
@@ -734,7 +734,7 @@ void HeadToHeadSetupUIScreen::StepArenaSelection(int nForward)
             }
 
             g_nDromeArena = g_pGameEngine->m_pSaveObject
-                                ->WrapToNextValidTeam((short)g_nDromeArena, 0);
+                                ->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 0);
 
             nLocked = 0;
 
@@ -756,7 +756,7 @@ void HeadToHeadSetupUIScreen::StepArenaSelection(int nForward)
             }
 
             g_nDromeArena = g_pGameEngine->m_pSaveObject
-                                ->WrapToNextValidTeam((short)g_nDromeArena, 1);
+                                ->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 1);
 
             nLocked = 0;
 

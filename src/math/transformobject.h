@@ -90,8 +90,8 @@ public:
 
     void RotateX(float flAngle)
     {
-        m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
-        m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
+        m_rotX.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+        m_rotX.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
         RotateXStaged();
     }

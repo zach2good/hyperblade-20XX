@@ -223,8 +223,8 @@ void GameEngine::ShowRokValue(short nRokValue)
 
     if (g_bMultiplierColoursUnsaved != 0)
     {
-        g_wMultiplierRestColour1    = (short)pMaterials[1].nColour;
-        g_wMultiplierRestColour2    = (short)pMaterials[2].nColour;
+        g_wMultiplierRestColour1    = static_cast<short>(pMaterials[1].nColour);
+        g_wMultiplierRestColour2    = static_cast<short>(pMaterials[2].nColour);
         g_bMultiplierColoursUnsaved = 0;
     }
 
@@ -278,7 +278,7 @@ int GameEngine::CountEntitiesInRange(short nWhich)
     for (iEntity = 0; iEntity < nFirst; iEntity++)
     {
         pSelf  = g_pGameEngine->m_ppSlots[nWhich];
-        pOther = g_pGameEngine->m_ppSlots[(short)(iEntity + SLOT_MINE)];
+        pOther = g_pGameEngine->m_ppSlots[static_cast<short>(iEntity + SLOT_MINE)];
 
         pSelfPos  = pSelf->GetPositionPtr();
         pOtherPos = pOther->GetPositionPtr();
@@ -287,7 +287,7 @@ int GameEngine::CountEntitiesInRange(short nWhich)
         flDy = pOtherPos->y - pSelfPos->y;
         flDz = pOtherPos->z - pSelfPos->z;
 
-        if ((float)sqrt(static_cast<double>(flDz * flDz + flDy * flDy + flDx * flDx)) <= 10.0f)
+        if (static_cast<float>(sqrt(static_cast<double>(flDz * flDz + flDy * flDy + flDx * flDx))) <= 10.0f)
         {
             nInRange++;
         }
@@ -296,7 +296,7 @@ int GameEngine::CountEntitiesInRange(short nWhich)
     for (iEntity = 0; iEntity < nSecond; iEntity++)
     {
         pSelf  = g_pGameEngine->m_ppSlots[nWhich];
-        pOther = g_pGameEngine->m_ppSlots[(short)(iEntity + SLOT_SWARF)];
+        pOther = g_pGameEngine->m_ppSlots[static_cast<short>(iEntity + SLOT_SWARF)];
 
         pSelfPos  = pSelf->GetPositionPtr();
         pOtherPos = pOther->GetPositionPtr();
@@ -305,7 +305,7 @@ int GameEngine::CountEntitiesInRange(short nWhich)
         flDy = pOtherPos->y - pSelfPos->y;
         flDz = pOtherPos->z - pSelfPos->z;
 
-        if ((float)sqrt(static_cast<double>(flDz * flDz + flDy * flDy + flDx * flDx)) <= 10.0f)
+        if (static_cast<float>(sqrt(static_cast<double>(flDz * flDz + flDy * flDy + flDx * flDx))) <= 10.0f)
         {
             nInRange++;
         }
@@ -544,8 +544,8 @@ void GameEngine::AdvanceTournamentBracket()
         aAwardReady[AWARD_CRUSH] = 1;
     }
 
-    aAwardReady[AWARD_ARCHER] = (unsigned char)EvalArcherAward();
-    aAwardReady[AWARD_ANVIL]  = (unsigned char)EvalAnvilAward();
+    aAwardReady[AWARD_ARCHER] = static_cast<unsigned char>(EvalArcherAward());
+    aAwardReady[AWARD_ANVIL]  = static_cast<unsigned char>(EvalAnvilAward());
 
     char bAllReady = 1;
 
@@ -598,7 +598,7 @@ void GameEngine::TickClock()
     m_clock.flPrevInvDeltaSquared = m_clock.flInvDeltaSquared;
     m_clock.nPrevTickMs           = m_clock.nTickMs;
 
-    const auto nNow = (unsigned int)SDL_GetTicks();
+    const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
     m_clock.nTickMs = nNow;
 
     // The simulation steps a fixed tick, however long the frame took to draw.
@@ -614,7 +614,7 @@ void GameEngine::TickClock()
     m_clock.flInvDeltaSquared = m_clock.flInvDelta * m_clock.flInvDelta;
 
     m_clock.aflDeltaRing[nSlot] = g_flFrameDelta;
-    m_clock.nRingIndex          = (short)((short)(m_clock.nRingIndex + 1) % CLOCK_RING_LENGTH);
+    m_clock.nRingIndex          = static_cast<short>(static_cast<short>(m_clock.nRingIndex + 1) % CLOCK_RING_LENGTH);
 
     if (m_clock.nPeriod >= FINAL_PERIOD_INDEX)
     {
@@ -627,7 +627,7 @@ void GameEngine::TickClock()
 
     if (m_clock.nPauseMark != 1)
     {
-        if (m_clock.nTickMs - m_clock.nPeriodStartMs < (unsigned int)m_nPeriodLengthMs && m_bEndPeriodRequested == 0 && AreAllPlayersInjured() == 0 && IsHomeTeamInjured() == 0 && IsAwayTeamInjured() == 0)
+        if (m_clock.nTickMs - m_clock.nPeriodStartMs < static_cast<unsigned int>(m_nPeriodLengthMs) && m_bEndPeriodRequested == 0 && AreAllPlayersInjured() == 0 && IsHomeTeamInjured() == 0 && IsAwayTeamInjured() == 0)
         {
             return;
         }
@@ -655,7 +655,7 @@ void GameEngine::TickClock()
 
     if (g_bPeriodCountdownActive != 0)
     {
-        const int nSecs = (int)(m_nPeriodLengthMs - nElapsedMs) / 1000;
+        const int nSecs = static_cast<int>(m_nPeriodLengthMs - nElapsedMs) / 1000;
 
         if (nSecs < g_nCountdownLastSecs)
         {
@@ -664,7 +664,7 @@ void GameEngine::TickClock()
         }
     }
 
-    if (nElapsedMs < (unsigned int)m_nPeriodLengthMs || g_bDragOff != 0)
+    if (nElapsedMs < static_cast<unsigned int>(m_nPeriodLengthMs) || g_bDragOff != 0)
     {
         if (m_clock.nPauseMark == 0 && (IsHomeTeamInjured() != 0 || IsAwayTeamInjured() != 0))
         {
@@ -704,14 +704,14 @@ void GameEngine::TickClock()
         }
         else
         {
-            g_wActiveScoreLine = (short)(GetHomeScore() <= GetAwayScore());
+            g_wActiveScoreLine = static_cast<short>(GetHomeScore() <= GetAwayScore());
         }
 
         m_clock.nPauseMark = 0;
         m_bPeriodEnded     = 1;
     }
 
-    if (g_nPlayerMode == PLAYER_MODE_EXHIBITION && (unsigned int)(m_clock.nTickMs - m_clock.nPeriodStartMs) >= (unsigned int)(m_nPeriodLengthMs + nOvertimeMs) && nElapsedMs >= (unsigned int)m_nPeriodLengthMs && g_bDragOff == 0)
+    if (g_nPlayerMode == PLAYER_MODE_EXHIBITION && (m_clock.nTickMs - m_clock.nPeriodStartMs) >= static_cast<unsigned int>(m_nPeriodLengthMs + nOvertimeMs) && nElapsedMs >= static_cast<unsigned int>(m_nPeriodLengthMs) && g_bDragOff == 0)
     {
         m_clock.nPeriod++;
 
@@ -729,7 +729,7 @@ void GameEngine::TickClock()
         g_nPrevEngineState       = ESTATE_MATCH_LIVE;
     }
 
-    if (IsTournamentMode() != 0 && (unsigned int)(m_clock.nTickMs - m_clock.nPeriodStartMs) >= (unsigned int)(m_nPeriodLengthMs + nOvertimeMs) && nElapsedMs >= (unsigned int)m_nPeriodLengthMs && g_bDragOff == 0)
+    if (IsTournamentMode() != 0 && (m_clock.nTickMs - m_clock.nPeriodStartMs) >= static_cast<unsigned int>(m_nPeriodLengthMs + nOvertimeMs) && nElapsedMs >= static_cast<unsigned int>(m_nPeriodLengthMs) && g_bDragOff == 0)
     {
         m_clock.nPeriod++;
 
@@ -756,7 +756,7 @@ char GameEngine::AreAllPlayersInjured()
     {
         flLimit = DamageGate();
 
-        PlayerObject* const pPlayer = GetPlayer((short)i);
+        PlayerObject* const pPlayer = GetPlayer(static_cast<short>(i));
 
         if (pPlayer->m_stats.GetScalar(RATING_DAMAGE) > flLimit)
         {
@@ -1075,7 +1075,7 @@ void GameEngine::BeginMatchPlay()
         else
         {
             nSlot   = nTeam;
-            pObject = GetPlayer((short)nSlot);
+            pObject = GetPlayer(static_cast<short>(nSlot));
             pObject->m_stats.CopyBaseStats();
             pObject->m_stats.ScaleTo(nSlot);
         }
@@ -1088,7 +1088,7 @@ void GameEngine::BeginMatchPlay()
         else
         {
             nSlot += 2;
-            pObject = GetPlayer((short)nSlot);
+            pObject = GetPlayer(static_cast<short>(nSlot));
             pObject->m_stats.CopyBaseStats();
             pObject->m_stats.ScaleTo(nSlot);
         }
@@ -1154,7 +1154,7 @@ void GameEngine::InitMatchTimers()
     m_clock.nRingIndex = 0;
     m_clock.nPeriod    = 1;
 
-    const auto nNow = (unsigned int)SDL_GetTicks();
+    const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
 
     m_clock.nPeriodStartMs = nNow;
     m_clock.nPauseStartMs  = nNow;
@@ -1604,7 +1604,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 
                     if (pDef->m_nType == id_GOB_BodyPart)
                     {
-                        if ((int)*pnModelId < SLOT_BODY_PART || (int)*pnModelId > SLOT_BODY_PART_LAST)
+                        if (static_cast<int>(*pnModelId) < SLOT_BODY_PART || static_cast<int>(*pnModelId) > SLOT_BODY_PART_LAST)
                         {
                             // STRING: HYPERX 0x004c74b0
                             g_gameApp.Fatal("Invalid model ID for bodypart\n");
@@ -1698,7 +1698,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
         }
     }
 
-    if ((unsigned char)(nSeen & SEEN_REQUIRED) != SEEN_REQUIRED)
+    if (static_cast<unsigned char>(nSeen & SEEN_REQUIRED) != SEEN_REQUIRED)
     {
         g_gameApp.Fatal(
             // STRING: HYPERX 0x004c73b8
@@ -2369,7 +2369,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     memset((void*)pNew, 0, sizeof(BubbleCmd));
 
-    pNew->m_wShape    = (short)anBubbleShapes[nBubbleType];
+    pNew->m_wShape    = static_cast<short>(anBubbleShapes[nBubbleType]);
     pNew->m_nSlot     = nBubbleType;
     pNew->m_pChildren = nullptr;
 
@@ -2387,10 +2387,10 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     }
     else if (bUseDetail != 0)
     {
-        pNew->m_pAttach = (AttachPak*)(std::intptr_t)EXTRA_USE_DETAIL;
+        pNew->m_pAttach = (AttachPak*)static_cast<std::intptr_t>(EXTRA_USE_DETAIL);
     }
 
-    MapModifierToId((short)nModelId, pNew);
+    MapModifierToId(static_cast<short>(nModelId), pNew);
 
     auto* const pPos = new BubbleShapeNode;
 
@@ -2649,7 +2649,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
             break;
         }
 
-        const short nKeyword = ParseUtil::FindKeyword(szToken, ppszTable, (short)nCount);
+        const short nKeyword = ParseUtil::FindKeyword(szToken, ppszTable, static_cast<short>(nCount));
 
         if (nKeyword < 0)
         {
@@ -2668,7 +2668,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
                     szObject);
             }
 
-            pflRatings[nKeyword] = (float)nValue;
+            pflRatings[nKeyword] = static_cast<float>(nValue);
         }
         else
         {
@@ -2697,7 +2697,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
         { COB_NGOAL_PORT, COB_SGOAL_PORT }
     };
 
-    switch ((unsigned short)pCmd->m_nSlot)
+    switch (static_cast<unsigned short>(pCmd->m_nSlot))
     {
         case BUBBLE_BODY_PART:
             pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_BodyPart] + COB_BODY_PART0;
@@ -2815,7 +2815,7 @@ char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
     while (pszCursor != nullptr)
     {
         // STRING: HYPERX 0x004c7324
-        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", (short)strlen(pszCursor), &pszCursor) == 0)
+        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", static_cast<short>(strlen(pszCursor)), &pszCursor) == 0)
         {
             break;
         }
@@ -2865,9 +2865,9 @@ void GameEngine::UnloadArena()
     {
         int nId = m_pArena->m_pnSlotIds[m_pArena->m_wCount];
 
-        EngineObject* const pObject = m_ppSlots[(short)nId];
+        EngineObject* const pObject = m_ppSlots[static_cast<short>(nId)];
 
-        RemoveFromSortedList((short)m_pArena->m_pnSlotIds[m_pArena->m_wCount]);
+        RemoveFromSortedList(static_cast<short>(m_pArena->m_pnSlotIds[m_pArena->m_wCount]));
 
         UnregisterObject(m_pArena->m_pnSlotIds[m_pArena->m_wCount]);
 
@@ -3005,7 +3005,7 @@ char GameEngine::SetArena(short nArena)
     const char* pszPath;
     int         nIndex;
 
-    if (nArena == (short)m_nArenaIndex)
+    if (nArena == static_cast<short>(m_nArenaIndex))
     {
         return 1;
     }
@@ -3029,7 +3029,7 @@ char GameEngine::SetArena(short nArena)
 
         for (nIndex = 0; nIndex < nCount; nIndex++)
         {
-            EngineObject* pObject = m_ppSlots[(short)m_pArena->m_pnSlotIds[nIndex]];
+            EngineObject* pObject = m_ppSlots[static_cast<short>(m_pArena->m_pnSlotIds[nIndex])];
 
             if (pObject != nullptr && pObject->GetSlot() != SLOT_DROME)
             {
@@ -3076,7 +3076,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
                 }
             }
 
-            RemoveFromSortedList((short)nType);
+            RemoveFromSortedList(static_cast<short>(nType));
 
             UnregisterObject(nType);
 
@@ -3135,17 +3135,17 @@ char GameEngine::SetTeams(short nHome, short nAway)
 
     Window::SetBusyCursor(true);
 
-    if (nHome != (short)m_nTeamHomeIndex || m_bMatchOver != 0)
+    if (nHome != static_cast<short>(m_nTeamHomeIndex) || m_bMatchOver != 0)
     {
         UnloadHomeTeam();
     }
 
-    if (nAway != (short)m_nTeamAwayIndex || m_bMatchOver != 0)
+    if (nAway != static_cast<short>(m_nTeamAwayIndex) || m_bMatchOver != 0)
     {
         UnloadAwayTeam();
     }
 
-    if (nHome != (short)m_nTeamHomeIndex || m_bMatchOver != 0)
+    if (nHome != static_cast<short>(m_nTeamHomeIndex) || m_bMatchOver != 0)
     {
         m_nTeamHomeIndex = nHome;
 
@@ -3175,7 +3175,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
         }
     }
 
-    if (nAway != (short)m_nTeamAwayIndex || m_bMatchOver != 0)
+    if (nAway != static_cast<short>(m_nTeamAwayIndex) || m_bMatchOver != 0)
     {
         m_nTeamAwayIndex = nAway;
 
@@ -3276,7 +3276,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
             else if (nSlot == TEAM_SLOT_ROK)
             {
                 g_bSuppressRokId = 1;
-                nObjectId        = (unsigned int)MODEL_ID_UNASSIGNED;
+                nObjectId        = static_cast<unsigned int> MODEL_ID_UNASSIGNED;
             }
             else if (nSlot >= TEAM_SLOT_BODY_PART_FIRST && nSlot <= TEAM_SLOT_BODY_PART_LAST)
             {
@@ -3522,7 +3522,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     int        nDefIndex;
     int        nSide;
 
-    switch ((unsigned int)nWith)
+    switch (static_cast<unsigned int>(nWith))
     {
         case 0:
             nDefIndex = 0;
@@ -3544,7 +3544,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
             return 0;
     }
 
-    switch ((unsigned int)nSlot)
+    switch (static_cast<unsigned int>(nSlot))
     {
         case 0:
             pTeam = m_pTeamA;
@@ -3592,7 +3592,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
 
         flGate = DamageGate();
 
-        const auto   flRested  = (float)(unsigned int)nElapsed;
+        const auto   flRested  = static_cast<float>(static_cast<unsigned int>(nElapsed));
         float* const pflDamage = &pTeam->aRows[nWith].aStat[RATING_DAMAGE];
         float        flDamage;
 
@@ -3884,7 +3884,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 
     if (nEntry != SLOT_DROME)
     {
-        InsertObjectSorted((short)nEntry);
+        InsertObjectSorted(static_cast<short>(nEntry));
     }
 
     return pNew;
@@ -4086,7 +4086,7 @@ void GameEngine::BroadcastCollisionEvents()
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
     short       nIndex;
-    static auto s_dwEventBase = (unsigned int)SDL_GetTicks();
+    static auto s_dwEventBase = static_cast<unsigned int>(SDL_GetTicks());
 
     if (g_bDragOff == 0 || nEvent != MSG_START_DRAG)
     {
@@ -4101,13 +4101,13 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 
     if (nEvent == MSG_GOAL_SCORED)
     {
-        s_dwEventBase = (unsigned int)SDL_GetTicks();
+        s_dwEventBase = static_cast<unsigned int>(SDL_GetTicks());
 
         m_clock.nPauseMark = 0;
     }
     else if (nEvent == MSG_START_DRAG)
     {
-        s_dwEventBase = (unsigned int)SDL_GetTicks();
+        s_dwEventBase = static_cast<unsigned int>(SDL_GetTicks());
 
         m_clock.nPeriodStartMs = s_dwEventBase;
 
@@ -4119,7 +4119,7 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
     {
         if (m_clock.nPauseMark == 0)
         {
-            m_clock.nPauseStartMs = (unsigned int)SDL_GetTicks();
+            m_clock.nPauseStartMs = static_cast<unsigned int>(SDL_GetTicks());
 
             m_clock.nPeriodStartMs += m_clock.nPauseStartMs - s_dwEventBase;
         }
@@ -4310,7 +4310,7 @@ char GameEngine::RemoveFromSortedList(short nId)
 // FUNCTION: HYPERX 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
-    static auto s_dwPauseBase = (unsigned int)SDL_GetTicks();
+    static auto s_dwPauseBase = static_cast<unsigned int>(SDL_GetTicks());
 
     switch (bRunning)
     {
@@ -4319,7 +4319,7 @@ void GameEngine::SetRunState(short bRunning, int)
             {
                 m_clock.nPauseMark = 1;
 
-                m_clock.nPauseStartMs = (unsigned int)SDL_GetTicks();
+                m_clock.nPauseStartMs = static_cast<unsigned int>(SDL_GetTicks());
 
                 m_clock.nPeriodStartMs += m_clock.nPauseStartMs - s_dwPauseBase;
             }
@@ -4332,7 +4332,7 @@ void GameEngine::SetRunState(short bRunning, int)
             break;
 
         case 0:
-            s_dwPauseBase = (unsigned int)SDL_GetTicks();
+            s_dwPauseBase = static_cast<unsigned int>(SDL_GetTicks());
 
             m_wRunState = ENGINE_RUN_PAUSED;
 
@@ -4396,7 +4396,7 @@ GameEngine::~GameEngine()
 // FUNCTION: HYPERX 0x00486fb0
 void GameEngine::ReplaceEntity(int nKind, ObjectDef* pDef)
 {
-    EngineObject* const pObject = m_ppSlots[(short)nKind];
+    EngineObject* const pObject = m_ppSlots[static_cast<short>(nKind)];
 
     UnregisterObject(nKind);
 
@@ -4520,7 +4520,7 @@ void GameEngine::ProcessInputCommandQueue()
                 }
                 else if (nCommand == COMMAND_SET_BEHAVIOR)
                 {
-                    pObject->GetPlanState()->ActivateBehavior((short)nPayload);
+                    pObject->GetPlanState()->ActivateBehavior(static_cast<short>(nPayload));
                 }
                 else if ((nCommand & MSG_EVENT_COLLISION_MARK) != 0)
                 {
@@ -4550,7 +4550,7 @@ void GameEngine::ProcessInputCommandQueue()
 
     for (nPending = 0; nPending < m_nPendingCount; nPending++)
     {
-        m_ppSlots[(short)m_aQueueSlot[nPending]]
+        m_ppSlots[static_cast<short>(m_aQueueSlot[nPending])]
             ->DispatchSceneMessage(m_aQueueMessage[nPending], m_aQueueArg[nPending], DECISION_LOG_FRESH, m_aQueueSender[nPending], m_aQueueFromInput[nPending]);
     }
 }
@@ -4689,7 +4689,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 
     memset(&block, 0, sizeof(block));
 
-    const int nLength = (int)strlen(pszLabel);
+    const int nLength = static_cast<int>(strlen(pszLabel));
 
     block.nTag = SAVE_BLOCK_TAG_VALUE;
 
@@ -4708,14 +4708,14 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
             pTeam = m_pTeamA;
             pDest = &block.teamOne;
 
-            pDest->nTeamIndex = (short)m_nTeamHomeIndex;
+            pDest->nTeamIndex = static_cast<short>(m_nTeamHomeIndex);
         }
         else
         {
             pTeam = m_pTeamB;
             pDest = &block.teamTwo;
 
-            pDest->nTeamIndex = (short)m_nTeamAwayIndex;
+            pDest->nTeamIndex = static_cast<short>(m_nTeamAwayIndex);
         }
 
         for (nSeat = 0; nSeat < TEAM_BLOCK_SEATS; nSeat++)
@@ -4772,7 +4772,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 
     memcpy(block.abAward, m_abAward, sizeof(m_abAward));
 
-    if (file.m_file.Write((char*)&block, sizeof(block)) == sizeof(block))
+    if (file.m_file.Write(reinterpret_cast<char*>(&block), sizeof(block)) == sizeof(block))
     {
         return 1;
     }
@@ -4833,17 +4833,17 @@ char GameEngine::ReadSaveFile(int nSlot)
     {
         SetDifficultyLevel(block.nDifficulty);
 
-        m_pSaveObject->SetBracketPos((short)block.nBracketPos);
+        m_pSaveObject->SetBracketPos(static_cast<short>(block.nBracketPos));
 
         ClearPendingEvents();
 
         m_bMatchOver = 1;
 
-        SetTeams((short)block.teamOne.nTeamIndex, (short)block.teamTwo.nTeamIndex);
+        SetTeams(static_cast<short>(block.teamOne.nTeamIndex), static_cast<short>(block.teamTwo.nTeamIndex));
 
         m_nArenaIndex = ARENA_NONE;
 
-        SetArena((short)block.teamTwo.nTeamIndex);
+        SetArena(static_cast<short>(block.teamTwo.nTeamIndex));
 
         for (short nObject = 0; nObject < m_nObjectCount; nObject++)
         {
@@ -4873,7 +4873,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 
                 g_nDromeTeamHome = nWord;
 
-                m_pSaveObject->ValidateSetHomeTeam((short)nWord, 1);
+                m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nWord), 1);
             }
             else
             {
@@ -4915,11 +4915,11 @@ char GameEngine::ReadSaveFile(int nSlot)
                  nStat < TEAM_ROW_COUNT;
                  nStat++, pStat++, pReserve++)
             {
-                if ((unsigned int)pRecord->aSeat[0] == nStat)
+                if (static_cast<unsigned int>(pRecord->aSeat[0]) == nStat)
                 {
                     ((PlayerObject*)pTeam->apOnIce[0])->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)] = *pStat;
                 }
-                else if ((unsigned int)pRecord->aSeat[1] == nStat)
+                else if (static_cast<unsigned int>(pRecord->aSeat[1]) == nStat)
                 {
                     ((PlayerObject*)pTeam->apOnIce[1])->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)] = *pStat;
                 }
@@ -5005,7 +5005,7 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
         return 0;
     }
 
-    if (m_nDifficulty == (int)nLevel)
+    if (m_nDifficulty == static_cast<int>(nLevel))
     {
         return 1;
     }

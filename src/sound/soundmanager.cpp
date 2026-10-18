@@ -89,7 +89,7 @@ unsigned short SoundManager::Load(const char* pszListName)
         }
     }
 
-    m_nSoundCount = (short)(nLines - 1);
+    m_nSoundCount = static_cast<short>(nLines - 1);
 
     m_apSounds = new SoundEntry*[m_nSoundCount];
 
@@ -154,11 +154,11 @@ unsigned short SoundManager::Load(const char* pszListName)
 
             if (nGroupPrev >= 0)
             {
-                m_awGroupCount[nGroupPrev] = (short)(nIndex - nGroupFirst);
+                m_awGroupCount[nGroupPrev] = static_cast<short>(nIndex - nGroupFirst);
 
                 nGroupFirst = nIndex;
 
-                m_anGroupSamples[nGroupPrev] = (int)(nLongest * SAMPLES_PER_MS);
+                m_anGroupSamples[nGroupPrev] = static_cast<int>(nLongest * SAMPLES_PER_MS);
 
                 nLongest = 0;
             }
@@ -176,8 +176,8 @@ unsigned short SoundManager::Load(const char* pszListName)
         }
     }
 
-    m_awGroupCount[nGroupPrev]   = (short)(nIndex - nGroupFirst);
-    m_anGroupSamples[nGroupPrev] = (int)(nLongest * SAMPLES_PER_MS);
+    m_awGroupCount[nGroupPrev]   = static_cast<short>(nIndex - nGroupFirst);
+    m_anGroupSamples[nGroupPrev] = static_cast<int>(nLongest * SAMPLES_PER_MS);
 
     return nIndex;
 }

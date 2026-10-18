@@ -95,7 +95,7 @@ const char* KeyMap::Name(unsigned int nKey)
     {
         static char s_szName[2];
 
-        s_szName[0] = (char)nKey;
+        s_szName[0] = static_cast<char>(nKey);
         s_szName[1] = 0;
 
         return s_szName;
@@ -114,15 +114,15 @@ const char* KeyMap::Name(unsigned int nKey)
 
 unsigned int KeyMap::ToVirtualKey(int nScancode, int nKeycode)
 {
-    if (nKeycode >= (int)SDLK_A && nKeycode <= (int)SDLK_Z)
+    if (nKeycode >= static_cast<int>(SDLK_A) && nKeycode <= static_cast<int>(SDLK_Z))
     {
-        return 'A' + (unsigned int)(nKeycode - SDLK_A);
+        return 'A' + (nKeycode - SDLK_A);
     }
 
     // SDL numbers the top row 1 to 9, then 0.
     if (nScancode >= SDL_SCANCODE_1 && nScancode <= SDL_SCANCODE_9)
     {
-        return '1' + (unsigned int)(nScancode - SDL_SCANCODE_1);
+        return '1' + static_cast<unsigned int>(nScancode - SDL_SCANCODE_1);
     }
 
     if (nScancode == SDL_SCANCODE_0)

@@ -12,7 +12,7 @@
 
 int FileObj::Read(void* pBuffer, int nCount)
 {
-    return (int)SDL_ReadIO(m_stream.As<SDL_IOStream>(), pBuffer, (size_t)nCount);
+    return static_cast<int>(SDL_ReadIO(m_stream.As<SDL_IOStream>(), pBuffer, static_cast<size_t>(nCount)));
 }
 
 int main(int argc, char** argv)
@@ -62,7 +62,7 @@ int main(int argc, char** argv)
                 file.Read(&nSize, sizeof(nSize));
 
                 std::ofstream dump(std::filesystem::path(argv[2]) / entry.path().filename(), std::ios::binary);
-                dump.write((const char*)pOut, nSize);
+                dump.write(static_cast<const char*>(pOut), nSize);
             }
 
             free(pOut);

@@ -12,7 +12,7 @@ void CBungeeTowardPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountCBungeeToward;
+    auto nRemaining = static_cast<short>(g_nPoolCountCBungeeToward);
 
     while (nRemaining-- > 0)
     {

@@ -16,7 +16,7 @@ int                                   s_nCount   = 0;
 
 void InputLog::Add(const char* pszSource, unsigned int nKey, bool bDown, const char* pszAction)
 {
-    s_aEntries[(size_t)s_nNext] = Entry{ SDL_GetTicks(), pszSource, pszAction, nKey, bDown };
+    s_aEntries[static_cast<size_t>(s_nNext)] = Entry{ SDL_GetTicks(), pszSource, pszAction, nKey, bDown };
 
     s_nNext  = (s_nNext + 1) % LOG_SIZE;
     s_nCount = (std::min)(s_nCount + 1, LOG_SIZE);
@@ -34,7 +34,7 @@ int InputLog::Count()
 
 const InputLog::Entry& InputLog::Recent(int nIndex)
 {
-    return s_aEntries[(size_t)((s_nNext - 1 - nIndex + LOG_SIZE) % LOG_SIZE)];
+    return s_aEntries[static_cast<size_t>((s_nNext - 1 - nIndex + LOG_SIZE) % LOG_SIZE)];
 }
 
 bool InputLog::IsHeld(unsigned int nKey)

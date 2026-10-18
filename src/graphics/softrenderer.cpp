@@ -45,7 +45,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
     g_pszDibOrientationName = g_szTopDownDibName;
     g_bBottomUpDIB          = 0;
 
-    s_backBuffer.assign((size_t)g_nBackBufferPixelCount, 0);
+    s_backBuffer.assign(static_cast<size_t>(g_nBackBufferPixelCount), 0);
 
     g_pBackBufferBitsCopy = s_backBuffer.data();
     g_nBackBufferWidth    = g_nPrevWidth;

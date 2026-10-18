@@ -59,7 +59,7 @@ void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x0040f890
 void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
-    const auto nFallbackIndex = (short)nArg;
+    const auto nFallbackIndex = static_cast<short>(nArg);
 
     m_pNext  = nullptr;
     m_wKind  = Agenda_CAvoidObjects;
@@ -72,8 +72,8 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
     if (pNode->m_nArgCount == 3)
     {
-        m_pSwerveTarget = g_pGameEngine->m_ppSlots[(short)pNode->m_pArgs[1].n];
-        m_pDrawTarget   = g_pGameEngine->m_ppSlots[(short)pNode->m_pArgs[2].n];
+        m_pSwerveTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
+        m_pDrawTarget   = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[2].n)];
     }
 
     if (pNode->m_nArgCount == 5)
@@ -84,11 +84,11 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
         }
         else
         {
-            m_pSwerveTarget = g_pGameEngine->m_ppSlots[(short)pNode->m_pArgs[1].n];
+            m_pSwerveTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
         }
 
         m_pDrawTarget     = nullptr;
-        m_cReleaseOnRange = (char)pNode->m_pArgs[2].n;
+        m_cReleaseOnRange = static_cast<char>(pNode->m_pArgs[2].n);
         m_flRange         = pNode->m_pArgs[3].fl;
         m_flStrength      = pNode->m_pArgs[4].fl;
     }
@@ -165,13 +165,13 @@ void CAvoidObjects::Process(int nArg)
 
         flDeltaY = pTargetPos->y - pOwnPos->y;
 
-        if ((float)(abs((int)flDeltaY) + abs((int)flDeltaX)) < m_flRange)
+        if (static_cast<float>(abs(static_cast<int>(flDeltaY)) + abs(static_cast<int>(flDeltaX))) < m_flRange)
         {
             vGap.x = flDeltaX;
             vGap.y = flDeltaY;
             vGap.z = pTargetPos->z - pOwnPos->z;
 
-            flRoot = (float)sqrt(static_cast<double>(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX));
+            flRoot = static_cast<float>(sqrt(static_cast<double>(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX)));
 
             flLength = flRoot;
 
@@ -237,13 +237,13 @@ void CAvoidObjects::Process(int nArg)
 
         flDeltaY = pTargetPos->y - pOwnPos->y;
 
-        if ((float)(abs((int)flDeltaY) + abs((int)flDeltaX)) < m_flRange)
+        if (static_cast<float>(abs(static_cast<int>(flDeltaY)) + abs(static_cast<int>(flDeltaX))) < m_flRange)
         {
             vGap.x = flDeltaX;
             vGap.y = flDeltaY;
             vGap.z = pTargetPos->z - pOwnPos->z;
 
-            flRoot = (float)sqrt(static_cast<double>(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX));
+            flRoot = static_cast<float>(sqrt(static_cast<double>(vGap.z * vGap.z + flDeltaY * flDeltaY + flDeltaX * flDeltaX)));
 
             flLength = flRoot;
 

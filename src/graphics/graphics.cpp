@@ -26,7 +26,7 @@ void Graphics::Initialize(int bResize)
 
         if (nHeight != 0)
         {
-            g_pLeftStack = (unsigned short*)realloc(g_pLeftStack, nHeight * sizeof(unsigned short));
+            g_pLeftStack = static_cast<unsigned short*>(realloc(g_pLeftStack, nHeight * sizeof(unsigned short)));
 
             if (g_pLeftStack == nullptr)
             {
@@ -34,7 +34,7 @@ void Graphics::Initialize(int bResize)
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (left_stack)!");
             }
 
-            g_pRightStack = (unsigned short*)realloc(g_pRightStack, g_nBackBufferHeight * sizeof(unsigned short));
+            g_pRightStack = static_cast<unsigned short*>(realloc(g_pRightStack, g_nBackBufferHeight * sizeof(unsigned short)));
 
             if (g_pRightStack == nullptr)
             {
@@ -95,10 +95,10 @@ unsigned int Graphics::LoadMdmTexDLL()
     }
 
     // STRING: HYPERX 0x004c2d84
-    g_pfnMdmInitDrawPoly = (MdmInitDrawPolyFn)SDL_LoadFunction(pLibrary, "mdmInitDrawPoly");
+    g_pfnMdmInitDrawPoly = reinterpret_cast<MdmInitDrawPolyFn>(SDL_LoadFunction(pLibrary, "mdmInitDrawPoly"));
 
     // STRING: HYPERX 0x004c2d74
-    g_pfnMdmDrawTexPoly = (MdmDrawTexPolyFn)SDL_LoadFunction(pLibrary, "mdmDrawTexPoly");
+    g_pfnMdmDrawTexPoly = reinterpret_cast<MdmDrawTexPolyFn>(SDL_LoadFunction(pLibrary, "mdmDrawTexPoly"));
 
     // The original freed the library here and kept its handle, which then read as loaded.
     if (g_pfnMdmInitDrawPoly == nullptr || g_pfnMdmDrawTexPoly == nullptr)

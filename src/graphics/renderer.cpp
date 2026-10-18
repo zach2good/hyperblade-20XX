@@ -37,9 +37,9 @@ int NearestSoftPaletteIndex(unsigned int nColour)
 
     for (int i = 0; i < 256; i++)
     {
-        const int dr    = (int)g_aSoftTexPalette[i].peRed - rTarget;
-        const int dg    = (int)g_aSoftTexPalette[i].peGreen - gTarget;
-        const int db    = (int)g_aSoftTexPalette[i].peBlue - bTarget;
+        const int dr    = static_cast<int>(g_aSoftTexPalette[i].peRed) - rTarget;
+        const int dg    = static_cast<int>(g_aSoftTexPalette[i].peGreen) - gTarget;
+        const int db    = static_cast<int>(g_aSoftTexPalette[i].peBlue) - bTarget;
         const int nDist = dr * dr + dg * dg + db * db;
 
         if (nDist < nBestDist)
@@ -120,7 +120,7 @@ void Renderer::DrawAllMeshes()
 
         g_lightDirs[0].dir = g_lightDirs[1].dir;
 
-        nRelitBone = (short)nBone;
+        nRelitBone = static_cast<short>(nBone);
 
         nBone++;
 
@@ -133,7 +133,7 @@ void Renderer::DrawAllMeshes()
 
         g_lightDirs[0].dir = g_lightDirs[2].dir;
 
-        pBone = &pDrome->m_pBones[(short)nBone];
+        pBone = &pDrome->m_pBones[static_cast<short>(nBone)];
 
         if (pBone->IsBound() != 0)
         {
@@ -151,7 +151,7 @@ void Renderer::DrawAllMeshes()
 
     while (nBone < pDrome->GetBoneCount())
     {
-        pBone = &pDrome->m_pBones[(short)nBone];
+        pBone = &pDrome->m_pBones[static_cast<short>(nBone)];
 
         if (pBone->IsBound() != 0)
         {
@@ -301,7 +301,7 @@ void Renderer::ClearFrame()
 void Renderer::SetCameraTransformAndViewport(LayoutState block)
 {
     g_cameraViewportBlock = block;
-    g_pBackBufferBitsCopy = (unsigned char*)block.pBits;
+    g_pBackBufferBitsCopy = static_cast<unsigned char*>(block.pBits);
     g_pCameraTransform    = block.pCamera;
     g_projRenderParams    = block.pCamera->m_clip;
 
@@ -330,14 +330,14 @@ void Renderer::InitializeLightDirections()
     vSpherical2.x    = g_flHalfPi;
     vSpherical2.y    = g_flOne;
     double dDegToRad = g_flDegToRad;
-    vSpherical2.z    = (float)(dDegToRad * g_flLightAzimuth54);
+    vSpherical2.z    = static_cast<float>(dDegToRad * g_flLightAzimuth54);
 
     g_lightDirs[2].dir = Math::SphericalToCartesian(&vSpherical2);
 
     vSpherical3.x = g_flHalfPi;
     vSpherical3.y = g_flOne;
     dDegToRad     = g_flDegToRad;
-    vSpherical3.z = (float)(dDegToRad * g_flLightAzimuth180);
+    vSpherical3.z = static_cast<float>(dDegToRad * g_flLightAzimuth180);
 
     g_vLightDirExtra = Math::SphericalToCartesian(&vSpherical3);
 }

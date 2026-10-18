@@ -314,7 +314,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                             unsigned int nWide = pSoftTex->GetWidth();
 
-                            if (nWide - 1 != (unsigned int)nScaledWidth)
+                            if (nWide - 1 != static_cast<unsigned int>(nScaledWidth))
                             {
                                 nWide = pSoftTex->GetWidth();
 
@@ -326,15 +326,15 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                                 nScaledWidth = pFace->GetScaledWidth();
 
-                                const auto flWide = (float)nWideLess;
+                                const auto flWide = static_cast<float>(nWideLess);
 
-                                const float flScale = flWide / (float)nScaledWidth;
+                                const float flScale = flWide / static_cast<float>(nScaledWidth);
 
-                                pFace->SetScaledWidth((short)nWideLess);
+                                pFace->SetScaledWidth(static_cast<short>(nWideLess));
 
                                 for (int nAt = 0; nAt < pFace->nCorners; nAt++, pnCoord++)
                                 {
-                                    const int nCoord = (int)*pnCoord;
+                                    const int nCoord = static_cast<int>(*pnCoord);
 
                                     if (pScratch[nCoord] == 0)
                                     {
@@ -353,7 +353,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
                                             pCoords[nCoord].tu = flWide;
                                         }
 
-                                        const auto flHigh = (float)nHighLess;
+                                        const auto flHigh = static_cast<float>(nHighLess);
 
                                         if (*pflV < 0.0f)
                                         {

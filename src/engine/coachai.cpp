@@ -107,7 +107,7 @@ float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
     const float flDy = posFirst.y - posSecond.y;
     const float flDx = posFirst.x - posSecond.x;
 
-    return (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
+    return static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 }
 
 // FUNCTION: HYPERX 0x00428090
@@ -116,7 +116,7 @@ float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
     Vec3 a = *pA;
     Vec3 b = *pB;
 
-    return (float)sqrt(static_cast<double>((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z)));
+    return static_cast<float>(sqrt(static_cast<double>((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z))));
 }
 
 // Spent markers read "Spin" or "ScoreSpin"; with none left the answer is 102, id_MOD_NOMODEL.
@@ -130,7 +130,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 
     for (i = SLOT_MULTIPLIER; i <= SLOT_MULTIPLIER_LAST; i++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)i];
+        EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(i)];
 
         if (pObject != nullptr)
         {
@@ -196,7 +196,7 @@ int EngineObject::IsRokCarrier(EngineObject* pActor)
 // FUNCTION: HYPERX 0x004281d0
 int GameEngine::IsComputerTeam(int nSlot)
 {
-    const int nWide = (short)nSlot;
+    const int nWide = static_cast<short>(nSlot);
 
     EngineObject* pObject = g_pGameEngine->m_ppSlots[nWide];
 
@@ -206,7 +206,7 @@ int GameEngine::IsComputerTeam(int nSlot)
         return 0;
     }
 
-    pObject = g_pGameEngine->m_ppSlots[TeammateSlot((short)nSlot)];
+    pObject = g_pGameEngine->m_ppSlots[TeammateSlot(static_cast<short>(nSlot))];
 
     if (strcmp(pObject->GetPlanState()->GetName(), "Human") == 0)
     {
@@ -220,7 +220,7 @@ int GameEngine::IsComputerTeam(int nSlot)
         return 0;
     }
 
-    if (nLocal == (short)TeammateSlot((short)nSlot))
+    if (nLocal == static_cast<short>(TeammateSlot(static_cast<short>(nSlot))))
     {
         return 0;
     }
@@ -261,7 +261,7 @@ int GameEngine::CheckHandicapCondition()
     {
         nElapsed = g_pGameEngine->m_clock.nPauseStartMs - g_pGameEngine->m_clock.nPeriodStartMs;
 
-        if ((double)nElapsed >= (double)g_pGameEngine->m_nPeriodLengthMs - (g_dMsPerMinute + g_dMsPerMinute))
+        if (static_cast<double>(nElapsed) >= static_cast<double>(g_pGameEngine->m_nPeriodLengthMs) - (g_dMsPerMinute + g_dMsPerMinute))
         {
             if (abs(g_pGameEngine->GetHomeScore() - g_pGameEngine->GetAwayScore()) >= 2)
             {
@@ -282,7 +282,7 @@ int GameEngine::CheckHandicapCondition()
     {
         if (((i ^ nCarrier) & 1) != 0)
         {
-            pSlot = g_pGameEngine->GetPlayer((short)i);
+            pSlot = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
             const float flDamage = pSlot->m_stats.GetScalar(RATING_DAMAGE);
 
@@ -293,9 +293,9 @@ int GameEngine::CheckHandicapCondition()
         }
     }
 
-    pSlot = g_pGameEngine->GetPlayer((short)nCarrier);
+    pSlot = g_pGameEngine->GetPlayer(static_cast<short>(nCarrier));
 
-    const auto nSpread = (short)pSlot->m_stats.GetScalar(RATING_MULTI_POINT_SPREAD);
+    const auto nSpread = static_cast<short>(pSlot->m_stats.GetScalar(RATING_MULTI_POINT_SPREAD));
 
     if ((nCarrier & 1) != 0)
     {
@@ -324,7 +324,7 @@ int GameEngine::IsAnyPlayerInjured()
 
     for (i = 0; i < PLAYER_SLOT_COUNT; i++)
     {
-        PlayerObject* const pPlayer = g_pGameEngine->GetPlayer((short)i);
+        PlayerObject* const pPlayer = g_pGameEngine->GetPlayer(static_cast<short>(i));
 
         const float flDamage = pPlayer->m_stats.GetScalar(RATING_DAMAGE);
 
@@ -470,7 +470,7 @@ int GameEngine::CheckCarrierBreakaway()
     if (pSlot != nullptr && pSlot->nSlot < PLAYER_OBJECT_COUNT)
     {
         nSlot            = pSlot->nSlot;
-        const int nIndex = (short)nSlot;
+        const int nIndex = static_cast<short>(nSlot);
 
         EngineObject* pCarrier   = g_pGameEngine->GetSlot(nIndex);
         EngineObject* pOpponentA = g_pGameEngine->GetSlot(nIndex ^ 1);
@@ -554,12 +554,12 @@ void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 
             if (pTeam->aReserveSince[i] != 0)
             {
-                flLevel = (float)(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[i]) / (13500.0f / DamageGate()) + flLevel;
+                flLevel = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[i]) / (13500.0f / DamageGate()) + flLevel;
             }
 
             if (flLevel > pTeam->aRows[i].aStat[RATING_SUB_IN_DAMAGE])
             {
-                g_pGameEngine->m_ppSlots[(short)(nTeam + i * 2)]
+                g_pGameEngine->m_ppSlots[static_cast<short>(nTeam + i * 2)]
                     ->PostSceneEvent(MSG_SUBSTITUTE_DROMER, i);
                 return;
             }
@@ -612,7 +612,7 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
 
     const int nFirst = sCandidate;
 
-    const auto sCount = (short)pTeam->aSeat[(nSlot >> 1) & 1];
+    const auto sCount = static_cast<short>(pTeam->aSeat[(nSlot >> 1) & 1]);
 
     const int nSecond = sChallenger;
 
@@ -628,12 +628,12 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
     {
         const float flGate = DamageGate();
 
-        flFirst = (float)(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
+        flFirst = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
     }
 
     if (pTeam->aReserveSince[nSecond] != 0)
     {
-        flSecond = (float)(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nSecond]) / (13500.0f / DamageGate()) + flSecond;
+        flSecond = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nSecond]) / (13500.0f / DamageGate()) + flSecond;
     }
 
     if (sCandidate == SLOT_NONE)
@@ -870,7 +870,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
                         float         flDamage;
                         PlayerObject* pOther;
 
-                        pOther = g_pGameEngine->GetPlayer((short)nOpposite);
+                        pOther = g_pGameEngine->GetPlayer(static_cast<short>(nOpposite));
 
                         flDamage = pOther->m_stats.GetScalar(RATING_DAMAGE);
 
@@ -941,12 +941,12 @@ void EngineObject::UpdateCoachAI()
 
     for (nSlot = 0; nSlot <= COACH_SLOT_LAST; nSlot++)
     {
-        EngineObject::CoachUpdate(g_pGameEngine->m_ppSlots[(short)nSlot]);
+        EngineObject::CoachUpdate(g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)]);
     }
 
     for (nSlot = 0; nSlot <= COACH_SLOT_LAST; nSlot++)
     {
-        EngineObject* const pActor = g_pGameEngine->m_ppSlots[(short)nSlot];
+        EngineObject* const pActor = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
         if (GameEngine::IsComputerTeam(nSlot) != 0)
         {

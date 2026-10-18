@@ -254,7 +254,7 @@ void Widget::Draw(int)
         return;
     }
 
-    auto color = (std::uint32_t)0xffff;
+    auto color = static_cast<std::uint32_t>(0xffff);
 
     if (m_bHighlighted != 0)
     {
@@ -268,7 +268,7 @@ void Widget::Draw(int)
 
     if (m_pszText != nullptr)
     {
-        GDI::DrawTransparentText(color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, (int)strlen(m_pszText), m_nTextFlag);
+        GDI::DrawTransparentText(color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, static_cast<int>(strlen(m_pszText)), m_nTextFlag);
     }
 }
 
@@ -550,13 +550,13 @@ LayoutState Widget::InitLayoutState(void* pBits, int nWidth, int nHeight, int nP
     state.pCamera      = nullptr;
     state.pBits        = pBits;
     state.nHeight      = nHeight;
-    state.flPrevRight  = (float)nPrevWidth - 1.0f;
+    state.flPrevRight  = static_cast<float>(nPrevWidth) - 1.0f;
     state.nByteSize    = nHeight * nPitch;
     state.nPitch       = nPitch;
     state.nWidth       = nWidth;
     state.nHalfWidth   = nHalfWidth;
     state.nPrevWidth   = nPrevWidth;
-    state.flPrevBottom = (float)nPrevHeight - 1.0f;
+    state.flPrevBottom = static_cast<float>(nPrevHeight) - 1.0f;
     state.nPrevHeight  = nPrevHeight;
     state.nHalfHeight  = nHalfHeight;
 

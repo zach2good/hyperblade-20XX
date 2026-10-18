@@ -48,8 +48,8 @@ int main()
 
         const auto put16 = [&](size_t nAt, unsigned int nValue)
         {
-            image[nAt]     = (unsigned char)nValue;
-            image[nAt + 1] = (unsigned char)(nValue >> 8);
+            image[nAt]     = static_cast<unsigned char>(nValue);
+            image[nAt + 1] = static_cast<unsigned char>(nValue >> 8);
         };
 
         const auto put32 = [&](size_t nAt, unsigned int nValue)
@@ -93,7 +93,7 @@ int main()
         std::filesystem::create_directories(directory);
 
         auto file = std::ofstream(directory / "HYPERX.EXE", std::ios::binary | std::ios::trunc);
-        file.write((const char*)image.data(), (std::streamsize)image.size());
+        file.write(reinterpret_cast<const char*>(image.data()), static_cast<std::streamsize>(image.size()));
     }
 
     Expect(StringTable::Load(strDirectory.c_str()), "strings read from the program");

@@ -188,11 +188,11 @@ void AwardsUIScreen::OnEnter()
             m_apWidgets[AWARDS_ICON_FIRST + nSlot]->SetHidden(
                 g_pGameEngine->HasAward(nSlot) == 0);
             m_apWidgets[AWARDS_ICON_FIRST + nSlot]->SetDirtyFlag(
-                (unsigned char)g_pGameEngine->HasAward(nSlot));
+                static_cast<unsigned char>(g_pGameEngine->HasAward(nSlot)));
             m_apWidgets[AWARDS_BUTTON_FIRST + nSlot]->SetHidden(
                 g_pGameEngine->HasAward(nSlot) == 0);
             m_apWidgets[AWARDS_BUTTON_FIRST + nSlot]->SetDirtyFlag(
-                (unsigned char)g_pGameEngine->HasAward(nSlot));
+                static_cast<unsigned char>(g_pGameEngine->HasAward(nSlot)));
         }
 
         m_apWidgets[UI_WIDGET_PAGE]->ClearFrames();

@@ -11,7 +11,7 @@ void BehObjFlyPool::Init()
     m_pHead                   = pNode;
     GameBehaviorObject* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountBehObjFly;
+    auto nRemaining = static_cast<short>(g_nPoolCountBehObjFly);
 
     while (nRemaining-- > 0)
     {

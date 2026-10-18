@@ -126,7 +126,7 @@ void SnapshotObjects()
 
         auto& pose = s_objects[pObject];
 
-        const auto nBones = (size_t)pObject->m_wBoneCount;
+        const auto nBones = static_cast<size_t>(pObject->m_wBoneCount);
 
         pose.prev.swap(pose.curr);
         pose.curr.resize(nBones);
@@ -202,7 +202,7 @@ void PlaceObjects(float flAlpha)
 
         const auto it = s_objects.find(pObject);
 
-        if (it == s_objects.end() || it->second.curr.size() != (size_t)pObject->m_wBoneCount)
+        if (it == s_objects.end() || it->second.curr.size() != static_cast<size_t>(pObject->m_wBoneCount))
         {
             continue;
         }
@@ -297,7 +297,7 @@ void FramePacing::BeginTick()
 
     if (nNow - s_nRateStart >= 1000)
     {
-        s_flDrift     = (float)((s_dNowMs - s_dDriftStart) - (double)(nNow - s_nRateStart));
+        s_flDrift     = static_cast<float>((s_dNowMs - s_dDriftStart) - static_cast<double>(nNow - s_nRateStart));
         s_nRate       = s_nRateTicks;
         s_nRateStart  = nNow;
         s_dDriftStart = s_dNowMs;
@@ -359,7 +359,7 @@ void FramePacing::RecordView(CameraObject& camera)
 
 float FramePacing::RunTicks()
 {
-    constexpr auto TICK_NS = (std::uint64_t)(TICK_MS * 1000000.0f);
+    constexpr auto TICK_NS = static_cast<std::uint64_t>(TICK_MS * 1000000.0f);
 
     static auto s_nLastNS = std::uint64_t{ 0 };
     static auto s_nOwedNS = std::uint64_t{ 0 };
@@ -387,7 +387,7 @@ float FramePacing::RunTicks()
 
     s_nOwedNS = (std::min)(s_nOwedNS, TICK_NS);
 
-    return (float)s_nOwedNS / (float)TICK_NS;
+    return static_cast<float>(s_nOwedNS) / static_cast<float>(TICK_NS);
 }
 
 void FramePacing::DrawViews(float flAlpha)

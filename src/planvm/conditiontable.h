@@ -13,7 +13,7 @@ extern PooledOwnerRoot* g_apAgendaItemPools[Agenda_Count + 1];
 // Every pool in the table hands out agenda items.
 inline AgendaItem* AllocAgendaItem(int nKind)
 {
-    return (AgendaItem*)g_apAgendaItemPools[nKind]->Alloc();
+    return static_cast<AgendaItem*>(g_apAgendaItemPools[nKind]->Alloc());
 }
 
 #endif

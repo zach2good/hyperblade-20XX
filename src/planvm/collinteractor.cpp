@@ -39,7 +39,7 @@ short CollInteractor::GetOtherSlot()
         return g_apPlanStatFns[m_otherSlot.wPronoun](m_pOwner, m_pNode);
     }
 
-    return (short)m_otherSlot.n;
+    return static_cast<short>(m_otherSlot.n);
 }
 
 // FUNCTION: HYPERX 0x0045dc70
@@ -50,7 +50,7 @@ short CollInteractor::GetModelSlot()
         return g_apPlanStatFns[m_ownSlotOrMessage.wPronoun](m_pOwner, m_pNode);
     }
 
-    return (short)m_ownSlotOrMessage.n;
+    return static_cast<short>(m_ownSlotOrMessage.n);
 }
 
 // FUNCTION: HYPERX 0x0045dd00
@@ -62,13 +62,13 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
     m_ownSlotOrMessage = pPlan->m_pArgs[ARG_TAG];
     m_nBehaviour       = PLAN_TOKEN_NO_BEH_CHANGE;
 
-    auto      nCount = (short)(pPlan->m_nArgCount - ARG_CONDITION_FIRST);
+    auto      nCount = static_cast<short>(pPlan->m_nArgCount - ARG_CONDITION_FIRST);
     PlanWord* pEntry = pPlan->m_pArgs + ARG_CONDITION_FIRST;
 
     while (nCount-- != 0)
     {
         PlanNode* const    pInstr  = pEntry->pNode;
-        const auto         nOpcode = (unsigned int)pInstr->m_nOpcode;
+        const auto         nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
         const unsigned int nClass  = nOpcode & OP_CATEGORY;
 
         switch (nClass)
@@ -90,7 +90,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
                 {
                     PlanState* const pState = m_pOwner->GetPlanState();
 
-                    g_pfnPlanOpcodeHandlers[(short)pInstr->m_pArgs[0].n].pfnSetParam(
+                    g_pfnPlanOpcodeHandlers[static_cast<short>(pInstr->m_pArgs[0].n)].pfnSetParam(
                         m_pOwner, pInstr, pState->m_pCurrent, this);
                 }
                 break;
@@ -142,11 +142,11 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 
     ExecuteScript(pCursor, nCount, nArg, pOutcome);
 
-    if ((unsigned int)m_nBehaviour < (unsigned int)PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
+    if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int> PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
     {
         m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
 
-        m_pOwner->GetPlanState()->ActivateBehavior((unsigned int)m_nBehaviour);
+        m_pOwner->GetPlanState()->ActivateBehavior(static_cast<unsigned int>(m_nBehaviour));
     }
 
     if (nMode == 0 && m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK && m_pOwner->GetPhysStateObj() != nullptr)
@@ -154,9 +154,9 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
         m_pOwner->GetCPlayerStateLock()->lock();
 
         m_pOwner->EnqueueSceneEvent(MsgEvent::Pack(m_wEventKind,
-                                                   (short)m_otherSlot.n,
-                                                   (short)m_ownSlotOrMessage.n,
-                                                   (short)*pOutcome),
+                                                   static_cast<short>(m_otherSlot.n),
+                                                   static_cast<short>(m_ownSlotOrMessage.n),
+                                                   *pOutcome),
                                     nArg);
 
         m_pOwner->GetCPlayerStateLock()->unlock();

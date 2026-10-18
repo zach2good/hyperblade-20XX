@@ -40,7 +40,7 @@ float PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 
     const float flScale = g_flPiPlan / g_flThreePlan;
 
-    flFalloff = (SCORE_RANGE - (float)sqrt(static_cast<double>(flDeltaZ * flDeltaZ + flDeltaY * flDeltaY + flDeltaX * flDeltaX))) * flScale * SCORE_FALLOFF;
+    flFalloff = (SCORE_RANGE - static_cast<float>(sqrt(static_cast<double>(flDeltaZ * flDeltaZ + flDeltaY * flDeltaY + flDeltaX * flDeltaX)))) * flScale * SCORE_FALLOFF;
 
     return flFalloff + flScale;
 }
@@ -55,7 +55,7 @@ int PlanUtil::CheckSequenceStep(unsigned int nStep)
 
     if (g_nPlanSequenceStep < 12)
     {
-        if ((unsigned int)(g_nPlanSequenceStep % 4) == nStep)
+        if (static_cast<unsigned int>(g_nPlanSequenceStep % 4) == nStep)
         {
             g_nPlanSequenceStep++;
 

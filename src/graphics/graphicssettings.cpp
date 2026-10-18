@@ -17,7 +17,7 @@ struct SwitchInfo
     bool        bDefault;
 };
 
-constexpr auto SWITCHES = std::array<SwitchInfo, (size_t)GraphicsSettings::Switch::COUNT>{ {
+constexpr auto SWITCHES = std::array<SwitchInfo, static_cast<size_t>(GraphicsSettings::Switch::COUNT)>{ {
     { "Textures", true },
     { "LinearFiltering", false },
     { "Uncapped", false },
@@ -54,7 +54,7 @@ void Load()
 
     for (size_t i = 0; i < SWITCHES.size(); i++)
     {
-        s_abOn[i] = g_pGameOptions->ReadInt(SECTION, SWITCHES[i].pszKey, (int)SWITCHES[i].bDefault) != 0;
+        s_abOn[i] = g_pGameOptions->ReadInt(SECTION, SWITCHES[i].pszKey, static_cast<int>(SWITCHES[i].bDefault)) != 0;
     }
 }
 
@@ -91,7 +91,7 @@ void GraphicsSettings::ToggleRenderer()
         return Renderer::SOFTWARE;
     }();
 
-    g_pGameOptions->WriteInt(SECTION, RENDERER_KEY, (int)s_renderer);
+    g_pGameOptions->WriteInt(SECTION, RENDERER_KEY, static_cast<int>(s_renderer));
 }
 
 bool GraphicsSettings::On(Switch which)
@@ -101,10 +101,10 @@ bool GraphicsSettings::On(Switch which)
     // Before the options load, every switch reads as its default.
     if (!s_bLoaded)
     {
-        return SWITCHES[(size_t)which].bDefault;
+        return SWITCHES[static_cast<size_t>(which)].bDefault;
     }
 
-    return s_abOn[(size_t)which];
+    return s_abOn[static_cast<size_t>(which)];
 }
 
 void GraphicsSettings::Toggle(Switch which)
@@ -116,11 +116,11 @@ void GraphicsSettings::Toggle(Switch which)
         return;
     }
 
-    auto& bOn = s_abOn[(size_t)which];
+    auto& bOn = s_abOn[static_cast<size_t>(which)];
 
     bOn = !bOn;
 
-    g_pGameOptions->WriteInt(SECTION, SWITCHES[(size_t)which].pszKey, (int)bOn);
+    g_pGameOptions->WriteInt(SECTION, SWITCHES[static_cast<size_t>(which)].pszKey, static_cast<int>(bOn));
 }
 
 float GraphicsSettings::RokLightRadius()

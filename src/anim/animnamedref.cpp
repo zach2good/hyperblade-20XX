@@ -12,7 +12,7 @@ AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 
     const int nAdjusted = nSegment + ANIMNAMEDREF_BIAS;
 
-    m_nSegment = (short)nAdjusted;
+    m_nSegment = static_cast<short>(nAdjusted);
 }
 
 // Only a reference still carrying the bias owns the pointer; a second call is harmless.

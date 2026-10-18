@@ -9,17 +9,17 @@ struct ShotWord
 
     int GetPower() const
     {
-        return (char)(nWord >> 16);
+        return static_cast<char>(nWord >> 16);
     }
 
     int GetAimX() const
     {
-        return (char)(nWord >> 8);
+        return static_cast<char>(nWord >> 8);
     }
 
     int GetAimY() const
     {
-        return (char)nWord;
+        return static_cast<char>(nWord);
     }
 
     // Each byte is sign-extended before the OR, as the client packs it.

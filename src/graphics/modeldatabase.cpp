@@ -432,7 +432,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 
             memset(pSlots, 0, pBase->m_nSubComponents * sizeof(MeshBlock*));
 
-            for (short iBlob = 0; iBlob < (short)nCount; iBlob++)
+            for (short iBlob = 0; iBlob < static_cast<short>(nCount); iBlob++)
             {
                 MeshBlock* const pBlob = pBlobs[iBlob];
 
@@ -445,7 +445,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
         }
     }
 
-    return (short)nCount;
+    return static_cast<short>(nCount);
 }
 
 // A miss takes its reference without testing the pointer, as in the original.
@@ -557,7 +557,7 @@ MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, un
 
     for (short i = 0; i < nMatCount; i++)
     {
-        const auto nTexIndex = (short)pLookup->m_pMaterials[i].nTextureIndex;
+        const auto nTexIndex = static_cast<short>(pLookup->m_pMaterials[i].nTextureIndex);
 
         if (nTexIndex > 0)
         {

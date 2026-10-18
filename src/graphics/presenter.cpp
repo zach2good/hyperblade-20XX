@@ -58,7 +58,7 @@ SDL_Texture* IconTexture(const char* pszName)
 
         stbi_set_flip_vertically_on_load_thread(0);
 
-        return stbi_load_from_memory(png.data(), (int)png.size(), &nWidth, &nHeight, &nChannels, 4);
+        return stbi_load_from_memory(png.data(), static_cast<int>(png.size()), &nWidth, &nHeight, &nChannels, 4);
     }();
 
     if (pPixels != nullptr)
@@ -128,7 +128,7 @@ SDL_FRect FitRect(int nWidth, int nHeight, bool bUpscale)
 
     SDL_GetCurrentRenderOutputSize(s_pRenderer, &nOutWidth, &nOutHeight);
 
-    auto flScale = (std::min)((float)nOutWidth / nWidth, (float)nOutHeight / nHeight);
+    auto flScale = (std::min)(static_cast<float>(nOutWidth) / nWidth, static_cast<float>(nOutHeight) / nHeight);
 
     if (bUpscale == false)
     {
@@ -222,7 +222,7 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
     {
         if (GraphicsSettings::Active() == GraphicsSettings::Renderer::HARDWARE)
         {
-            return HwRenderer::Render(HwRenderer::Renderer{ s_pRenderer }, nWidth, nHeight, (const unsigned char*)pColours).As<SDL_Texture>();
+            return HwRenderer::Render(HwRenderer::Renderer{ s_pRenderer }, nWidth, nHeight, reinterpret_cast<const unsigned char*>(pColours)).As<SDL_Texture>();
         }
 
         s_pFrame = Fit(s_pFrame, SDL_PIXELFORMAT_INDEX8, nWidth, nHeight, SDL_SCALEMODE_LINEAR);
@@ -268,8 +268,8 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 
             const auto rcHud = SDL_FRect{ rcFrame.x + layer.nOriginX * flToScreen,
                                           rcFrame.y + layer.nOriginY * flToScreen,
-                                          (float)layer.nWidth * layer.nScale * flToScreen,
-                                          (float)layer.nHeight * layer.nScale * flToScreen };
+                                          static_cast<float>(layer.nWidth) * layer.nScale * flToScreen,
+                                          static_cast<float>(layer.nHeight) * layer.nScale * flToScreen };
 
             SDL_RenderTexture(s_pRenderer, s_pHud, nullptr, &rcHud);
         }

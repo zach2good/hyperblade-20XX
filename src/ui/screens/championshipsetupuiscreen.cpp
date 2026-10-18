@@ -390,7 +390,7 @@ void ChampionshipSetupUIScreen::OnLeftArrowClick()
                 m_nTeamSlot = m_nTeamSlotCount - 1;
             }
 
-            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam((short)(m_nTeamSlot / 4), 0);
+            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(m_nTeamSlot / 4), 0);
 
             m_nTeamSlot = m_nTeamSlot % 4 + nTeam * 4;
 
@@ -413,7 +413,7 @@ void ChampionshipSetupUIScreen::OnLeftArrowClick()
                 m_nArena = m_nArenaCount - 1;
             }
 
-            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam((short)m_nArena, 0);
+            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(m_nArena), 0);
 
             m_nArena = nTeam;
 
@@ -448,7 +448,7 @@ void ChampionshipSetupUIScreen::OnRightArrowClick()
                 m_nTeamSlot = 0;
             }
 
-            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam((short)(m_nTeamSlot / 4), 1);
+            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(m_nTeamSlot / 4), 1);
 
             m_nTeamSlot = m_nTeamSlot % 4 + nTeam * 4;
 
@@ -473,7 +473,7 @@ void ChampionshipSetupUIScreen::OnRightArrowClick()
                 m_nArena = 0;
             }
 
-            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam((short)m_nArena, 1);
+            nTeam = g_pGameEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(m_nArena), 1);
 
             m_nArena = nTeam;
 
@@ -1958,9 +1958,9 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
 
             if (nStat == MATCH_STAT_TIME_OF_POSS)
             {
-                const int nTime = (int)(pStats[nStat] * 0.001f);
+                const int nTime = static_cast<int>(pStats[nStat] * 0.001f);
 
-                StatColumns::FormatClock(szText, (short)nTime);
+                StatColumns::FormatClock(szText, static_cast<short>(nTime));
 
                 nTotal += nTime;
             }
@@ -1976,9 +1976,9 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
             else
             {
                 // STRING: HYPERX 0x004c3c68
-                sprintf(szText, "%2hd", (short)pStats[nStat]);
+                sprintf(szText, "%2hd", static_cast<short>(pStats[nStat]));
 
-                nTotal += (int)pStats[nStat];
+                nTotal += static_cast<int>(pStats[nStat]);
             }
 
             pWidget->SetText(szText);
@@ -1991,13 +1991,13 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
 
             for (nPlayer = 0; nPlayer < TEAM_ROW_COUNT; nPlayer++)
             {
-                nAttempts += (int)pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_SHOTS_ON_GOAL];
-                nMade += (int)pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_TOTAL_GOALS];
+                nAttempts += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_SHOTS_ON_GOAL]);
+                nMade += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[MATCH_STAT_TOTAL_GOALS]);
             }
 
             if (nAttempts > 0)
             {
-                sprintf(szText, "%.2f%%", (float)nMade / nAttempts * 100.0f);
+                sprintf(szText, "%.2f%%", static_cast<float>(nMade) / nAttempts * 100.0f);
             }
             else
             {
@@ -2007,11 +2007,11 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
         }
         else if (nStat == MATCH_STAT_TIME_OF_POSS)
         {
-            StatColumns::FormatClock(szText, (short)nTotal);
+            StatColumns::FormatClock(szText, static_cast<short>(nTotal));
         }
         else
         {
-            sprintf(szText, "%2hd", (short)nTotal);
+            sprintf(szText, "%2hd", static_cast<short>(nTotal));
         }
 
         pRow[CHAMP_WIDGET_STAT_GRID + TEAM_ROW_COUNT]->SetText(szText);
@@ -2226,7 +2226,7 @@ void ChampionshipSetupUIScreen::LoadBracketTorches()
         pTorch->SetDirtyFlag(1);
     }
 
-    g_pGameEngine->m_pSaveObject->SetBracketPos((short)nCount);
+    g_pGameEngine->m_pSaveObject->SetBracketPos(static_cast<short>(nCount));
     g_pGameEngine->m_pSaveObject->BracketIterPeek();
 
     m_bTorchesLoaded = 1;

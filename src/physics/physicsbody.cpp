@@ -140,9 +140,9 @@ void PhysicsBody::BindToObject(EngineObject* pOwnerObject, ObjectDef* pDefRec)
         pDefRec->m_flAzimuth = g_flDegreesPerTurn + pDefRec->m_flAzimuth;
     }
 
-    velDir.x = (float)cos(static_cast<double>(pDefRec->m_flAzimuth * DEGREES_TO_RADIANS));
-    velDir.y = (float)-sin(static_cast<double>(pDefRec->m_flAzimuth * DEGREES_TO_RADIANS));
-    flFacing = (float)(pDefRec->m_flAzimuth * DEGREES_TO_RADIANS);
+    velDir.x = static_cast<float>(cos(static_cast<double>(pDefRec->m_flAzimuth * DEGREES_TO_RADIANS)));
+    velDir.y = static_cast<float>(-sin(static_cast<double>(pDefRec->m_flAzimuth * DEGREES_TO_RADIANS)));
+    flFacing = static_cast<float>(pDefRec->m_flAzimuth * DEGREES_TO_RADIANS);
 }
 
 // Six of the fields are skipped for the main camera.
@@ -428,11 +428,11 @@ void PhysicsBody::UpdateMovementAxes()
         }
     }
 
-    const auto nAxis = (short)(nHeld & HELD_MOVEMENT);
+    const auto nAxis = static_cast<short>(nHeld & HELD_MOVEMENT);
 
     if (nAxis != 0)
     {
-        if (((unsigned char)nAxis & HELD_MOVEMENT) == HELD_FORWARD)
+        if ((static_cast<unsigned char>(nAxis) & HELD_MOVEMENT) == HELD_FORWARD)
         {
             const Vec3* pRowA = &velDir;
             const Vec3* pRowB = &velDirLatched;
@@ -441,11 +441,11 @@ void PhysicsBody::UpdateMovementAxes()
 
             if ((flCross = pRowB->y * pRowA->x - pRowB->x * pRowA->y) < -0.001)
             {
-                axis.y = (float)fabs(static_cast<double>(flDot)) * flPush + axis.y;
+                axis.y = static_cast<float>(fabs(static_cast<double>(flDot))) * flPush + axis.y;
             }
             else if (flCross > 0.0001f)
             {
-                axis.y -= (float)fabs(static_cast<double>(flDot)) * flPush;
+                axis.y -= static_cast<float>(fabs(static_cast<double>(flDot))) * flPush;
             }
         }
 
@@ -454,7 +454,7 @@ void PhysicsBody::UpdateMovementAxes()
             axis.x = flPush + axis.x;
         }
 
-        g_bMoveAxesStopHeld = (unsigned char)(((unsigned char)nAxis >> 1) & 1);
+        g_bMoveAxesStopHeld = static_cast<unsigned char>((static_cast<unsigned char>(nAxis) >> 1) & 1);
 
         const float flTurn = g_flNetTracking * flSpeed * TURN_SCALE;
 
@@ -511,7 +511,7 @@ void PhysicsBody::UpdateMovementAxes()
     }
     else
     {
-        axis.x = (float)(axis.x / dAbs) * flCap;
+        axis.x = static_cast<float>(axis.x / dAbs) * flCap;
     }
 }
 
@@ -590,7 +590,7 @@ void PhysicsBody::InitOnSurface(int)
     const float flVelZ   = vel.z;
     const float flVelY   = vel.y;
     const float flVelX   = vel.x;
-    const auto  flLength = (float)sqrt(static_cast<double>(flVelX * flVelX + flVelY * flVelY + flVelZ * flVelZ));
+    const auto  flLength = static_cast<float>(sqrt(static_cast<double>(flVelX * flVelX + flVelY * flVelY + flVelZ * flVelZ)));
     flSpeed              = flLength;
 
     if (flLength > g_flMinVelDirSpeed)
@@ -633,7 +633,7 @@ void PhysicsBody::IntegrateMotion()
     float      flZ    = pMoveDir->z;
     float      flY    = pMoveDir->y;
     float      flX    = pMoveDir->x;
-    const auto flRoot = (float)sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ));
+    const auto flRoot = static_cast<float>(sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ)));
 
     Math::Vec3Normalize(pMoveDir);
 
@@ -662,7 +662,7 @@ void PhysicsBody::IntegrateMotion()
     flZ              = step.z;
     flY              = step.y;
     flX              = step.x;
-    flForwardSpeedDt = (float)sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ)) * g_pGameEngine->m_clock.flDelta * 1.232f;
+    flForwardSpeedDt = static_cast<float>(sqrt(static_cast<double>(flX * flX + flY * flY + flZ * flZ))) * g_pGameEngine->m_clock.flDelta * 1.232f;
 
     vel.x = vel.x + smoothVel.x;
     vel.y = smoothVel.y + vel.y;
@@ -810,7 +810,7 @@ char PhysicsBody::UpdateVelocityDirection()
     const float flNewZ = (flProjZ + vel.z) * flBlend + flProjZ * flWeight;
     vel.z              = flNewZ;
 
-    const auto flLength = (float)sqrt(static_cast<double>(vel.LengthSquared()));
+    const auto flLength = static_cast<float>(sqrt(static_cast<double>(vel.LengthSquared())));
     flSpeed             = flLength;
 
     if (flLength > g_flMinVelDirSpeed)
@@ -818,9 +818,9 @@ char PhysicsBody::UpdateVelocityDirection()
         const double dRecip = g_flOnePhysicsReset / flLength;
         cResult             = 1;
 
-        velDir.x = (float)(flNewX * dRecip);
-        velDir.y = (float)(flNewY * dRecip);
-        velDir.z = (float)(flNewZ * dRecip);
+        velDir.x = static_cast<float>(flNewX * dRecip);
+        velDir.y = static_cast<float>(flNewY * dRecip);
+        velDir.z = static_cast<float>(flNewZ * dRecip);
     }
     else
     {
@@ -879,21 +879,21 @@ void PhysicsBody::UpdateBanking()
     {
         if ((nFlags & HELD_ROTATE_LEFT) != 0)
         {
-            flCos   = (float)cos(static_cast<double>(g_flBankingAngleRad));
-            flSin   = (float)sin(static_cast<double>(g_flBankingAngleRad));
+            flCos   = static_cast<float>(cos(static_cast<double>(g_flBankingAngleRad)));
+            flSin   = static_cast<float>(sin(static_cast<double>(g_flBankingAngleRad)));
             flAngle = g_flBankingAngleRad;
         }
         else
         {
             flAngle = -g_flBankingAngleRad;
-            flCos   = (float)cos(static_cast<double>(flAngle));
-            flSin   = (float)sin(static_cast<double>(flAngle));
+            flCos   = static_cast<float>(cos(static_cast<double>(flAngle)));
+            flSin   = static_cast<float>(sin(static_cast<double>(flAngle)));
         }
 
         TransformObject* const pTransform = &pOwner->m_transformB;
 
-        pTransform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
-        pTransform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
+        pTransform->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+        pTransform->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
         pTransform->ApplyRotationZ();
 
@@ -1011,8 +1011,8 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 
     TransformObject* const pTransform = pOwner->GetLocalTransformPtr();
 
-    pTransform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
-    pTransform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
+    pTransform->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+    pTransform->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
     pTransform->ApplyRotationZ();
 
@@ -1041,11 +1041,11 @@ void PhysicsBody::ApplyAnimDrivenForce()
     const double dTransX = pTransform->m_a[0][3];
     const double dTransZ = pTransform->m_a[2][3];
 
-    pos.x = (float)(pMesh->m_world.m_a[0][0] * dTransX + pMesh->m_world.m_a[0][2] * dTransZ + pos.x);
+    pos.x = static_cast<float>(pMesh->m_world.m_a[0][0] * dTransX + pMesh->m_world.m_a[0][2] * dTransZ + pos.x);
 
-    pos.y = (float)(pMesh->m_world.m_a[1][0] * dTransX + pMesh->m_world.m_a[1][2] * dTransZ + pos.y);
+    pos.y = static_cast<float>(pMesh->m_world.m_a[1][0] * dTransX + pMesh->m_world.m_a[1][2] * dTransZ + pos.y);
 
-    pos.z = (float)(pMesh->m_world.m_a[2][0] * dTransX + pMesh->m_world.m_a[2][2] * dTransZ + pos.z);
+    pos.z = static_cast<float>(pMesh->m_world.m_a[2][0] * dTransX + pMesh->m_world.m_a[2][2] * dTransZ + pos.z);
 
     if (pOwner->GetSlot() < PLAYER_OBJECT_COUNT && ((PlayerObject*)pOwner)->m_wFlyingSemaphore != 0)
     {
@@ -1056,7 +1056,7 @@ void PhysicsBody::ApplyAnimDrivenForce()
         pShell->RayIntersection(&surfNormal, &pos, &pos);
     }
 
-    pTransform->SetTranslation(0.0f, (float)pTransform->GetElement(1, 3), 0.0f);
+    pTransform->SetTranslation(0.0f, pTransform->GetElement(1, 3), 0.0f);
 }
 
 // A tenth of a radian, the angle an object banks through in a turn.

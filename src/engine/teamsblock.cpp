@@ -39,7 +39,7 @@ TeamsBlock::TeamsBlock()
         {
             if (pLine != nullptr
                 // STRING: HYPERX 0x004c7324
-                && ParseUtil::ParseToken(pLine, szTeamFilename, nullptr, " \t\n\r", (short)strlen(pLine), &pLine) != 0 && szTeamFilename[0] != COMMENT_CHAR)
+                && ParseUtil::ParseToken(pLine, szTeamFilename, nullptr, " \t\n\r", static_cast<short>(strlen(pLine)), &pLine) != 0 && szTeamFilename[0] != COMMENT_CHAR)
             {
                 if (nTeams == TEAM_MAX)
                 {
@@ -144,9 +144,9 @@ int TeamsBlock::ComputeTeamNameChecksum()
             pszName = nullptr;
         }
 
-        pszLower = (char*)SDL_strlwr(Str::Duplicate(pszLower, pszName));
+        pszLower = SDL_strlwr(Str::Duplicate(pszLower, pszName));
 
-        m_nChecksum += (char)(pszLower[2] + pszLower[1]) ^ (pszLower[0] << 8);
+        m_nChecksum += static_cast<char>(pszLower[2] + pszLower[1]) ^ (pszLower[0] << 8);
 
         // The original tests before it frees.
 

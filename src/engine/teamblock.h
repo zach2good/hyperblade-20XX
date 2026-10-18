@@ -63,9 +63,9 @@ static_assert(sizeof(TeamStatRow) == 0xc4);
 
 inline const char* TeamsBlock::GetTeamPath(int nAt) const
 {
-    if ((short)nAt < m_wTeamCount)
+    if (static_cast<short>(nAt) < m_wTeamCount)
     {
-        return m_ppTeams[(short)nAt]->szPath;
+        return m_ppTeams[static_cast<short>(nAt)]->szPath;
     }
 
     return nullptr;
@@ -73,9 +73,9 @@ inline const char* TeamsBlock::GetTeamPath(int nAt) const
 
 inline const char* TeamsBlock::GetTeamEnvironment(int nAt) const
 {
-    if ((short)nAt < m_wTeamCount)
+    if (static_cast<short>(nAt) < m_wTeamCount)
     {
-        return m_ppTeams[(short)nAt]->szEnvironment;
+        return m_ppTeams[static_cast<short>(nAt)]->szEnvironment;
     }
 
     return nullptr;

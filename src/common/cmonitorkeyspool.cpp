@@ -12,7 +12,7 @@ void CMonitorKeysPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountCMonitorKeys;
+    auto nRemaining = static_cast<short>(g_nPoolCountCMonitorKeys);
 
     while (nRemaining-- > 0)
     {

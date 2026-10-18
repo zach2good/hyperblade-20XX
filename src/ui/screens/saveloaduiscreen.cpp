@@ -428,9 +428,9 @@ void SaveLoadUIScreen::SaveGame()
         return;
     }
 
-    g_pGameEngine->SetTeams((short)g_nDromeTeamHome, (short)g_nDromeTeamAway);
+    g_pGameEngine->SetTeams(static_cast<short>(g_nDromeTeamHome), static_cast<short>(g_nDromeTeamAway));
 
-    g_pGameEngine->SetArena((short)g_nDromeArena);
+    g_pGameEngine->SetArena(static_cast<short>(g_nDromeArena));
 
     FormatSaveDescription(szDescription, DESCRIPTION_MAX);
 

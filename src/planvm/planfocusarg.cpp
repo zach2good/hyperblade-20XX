@@ -24,7 +24,7 @@ short PlanFocusArg::GetViewOwner(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cb40
 short PlanFocusArg::GetViewOwnerCOB(EngineObject*, PlanNode*)
 {
-    return (short)(g_pGameEngine->m_nViewedSlot * 3);
+    return static_cast<short>(g_pGameEngine->m_nViewedSlot * 3);
 }
 
 // The view owner's awareness bubble, mirroring PlanArg::GetMyAwarenessBub.
@@ -32,7 +32,7 @@ short PlanFocusArg::GetViewOwnerCOB(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cb50
 short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 {
-    return (short)(g_pGameEngine->m_nViewedSlot + COB_DR0_AWARENESS);
+    return static_cast<short>(g_pGameEngine->m_nViewedSlot + COB_DR0_AWARENESS);
 }
 
 // Three times the parity opposite the focus slot's, mirroring PlanArg::GetMyLeadOppnCollBub.
@@ -40,9 +40,9 @@ short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cb60
 short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 {
-    const char cFocus = (char)g_pGameEngine->m_nViewedSlot;
+    const char cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
-    return (short)(((char)~cFocus & 1) * 3);
+    return static_cast<short>((static_cast<char>(~cFocus) & 1) * 3);
 }
 
 // The view owner's other opponent's collision bubble, mirroring PlanArg::GetMyOtherOppnCollBub.
@@ -50,9 +50,9 @@ short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cb80
 short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 {
-    const char cFocus = (char)g_pGameEngine->m_nViewedSlot;
+    const char cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
-    return (short)((((char)~cFocus & 1) | 2) * 3);
+    return static_cast<short>(((static_cast<char>(~cFocus) & 1) | 2) * 3);
 }
 
 // The empty slot answers nought rather than the minus one the camera stores.
@@ -67,7 +67,7 @@ short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
         nSlot = 0;
     }
 
-    return (short)nSlot;
+    return static_cast<short>(nSlot);
 }
 
 // The first thing the camera follows, answered the same way.
@@ -82,7 +82,7 @@ short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
         nSlot = 0;
     }
 
-    return (short)nSlot;
+    return static_cast<short>(nSlot);
 }
 
 // FUNCTION: HYPERX 0x0047cbe0
@@ -90,7 +90,7 @@ short PlanFocusArg::GetTrackedObjsTeammate(EngineObject*, PlanNode*)
 {
     const int nTracked = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT)->m_nPrimaryTracked;
 
-    return (short)TeammateSlot((short)nTracked);
+    return static_cast<short>(TeammateSlot(static_cast<short>(nTracked)));
 }
 
 // FUNCTION: HYPERX 0x0047cc10
@@ -104,29 +104,29 @@ short PlanFocusArg::GetViewOwnersGoal(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047cc30
 short PlanFocusArg::GetVwOwnrOppnGoalie(EngineObject*, PlanNode*)
 {
-    return (short)(((g_pGameEngine->m_nViewedSlot - 1) & 1) + GOALIE_SLOT_A);
+    return static_cast<short>(((g_pGameEngine->m_nViewedSlot - 1) & 1) + GOALIE_SLOT_A);
 }
 
 // FUNCTION: HYPERX 0x0047cc50
 short PlanFocusArg::GetViewOwnersTeammate(EngineObject*, PlanNode*)
 {
-    return (short)TeammateSlot(g_pGameEngine->m_nViewedSlot);
+    return static_cast<short>(TeammateSlot(g_pGameEngine->m_nViewedSlot));
 }
 
 // FUNCTION: HYPERX 0x0047cc70
 short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
 {
-    const char cLocal = (char)g_pGameEngine->m_nViewedSlot;
+    const char cLocal = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
-    return (char)~cLocal & 1;
+    return static_cast<char>(~cLocal) & 1;
 }
 
 // FUNCTION: HYPERX 0x0047cc80
 short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 {
-    const char cFocus = (char)g_pGameEngine->m_nViewedSlot;
+    const char cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
 
-    return ((char)~cFocus & 1) | 2;
+    return (static_cast<char>(~cFocus) & 1) | 2;
 }
 
 // A slot of six or more, or no tracker, answers minus one.
@@ -149,7 +149,7 @@ short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 // FUNCTION: HYPERX 0x0047ccc0
 short PlanFocusArg::GetLastRokCarrier(EngineObject*, PlanNode*)
 {
-    return (short)(g_pGameEngine->GetRok())->m_nCarrierSlot;
+    return static_cast<short>((g_pGameEngine->GetRok())->m_nCarrierSlot);
 }
 
 // One word from whatever the tracker points at, or minus one for nothing.
@@ -180,9 +180,9 @@ short PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
     {
         const short nTracked = pTracked->nSlot;
 
-        if (nTracked < PLAYER_OBJECT_COUNT && (((unsigned char)pActor->GetSlot() ^ (unsigned char)nTracked) & 1) != 0)
+        if (nTracked < PLAYER_OBJECT_COUNT && ((static_cast<unsigned char>(pActor->GetSlot()) ^ static_cast<unsigned char>(nTracked)) & 1) != 0)
         {
-            return (short)(((nTracked + 2) % 4) * 3);
+            return static_cast<short>(((nTracked + 2) % 4) * 3);
         }
     }
 

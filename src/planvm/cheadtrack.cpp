@@ -59,10 +59,10 @@ void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
         origin.Zero();
 
         dFracX   = pCam->m_flViewFracX;
-        origin.x = (int)(dFracX * size.x);
+        origin.x = static_cast<int>(dFracX * size.x);
 
         dFracY   = pCam->m_flViewFracY;
-        origin.y = (int)(dFracY * size.y);
+        origin.y = static_cast<int>(dFracY * size.y);
 
         g_pRenderer->SetReticlePos(origin.x, origin.y);
     }
@@ -200,7 +200,7 @@ void CHeadTrack::Process(int nArg)
 
         nFollow = g_pGameEngine->m_apTracked[0]->GetSlot();
 
-        nHeld = (unsigned short)(g_pGameEngine->m_ppSlots[(short)nFollow])->GetPhysicsBody()->nHeldBindings;
+        nHeld = static_cast<unsigned short>((g_pGameEngine->m_ppSlots[static_cast<short>(nFollow)])->GetPhysicsBody()->nHeldBindings);
 
         if ((nHeld & HELD_ROTATE) != 0)
         {
@@ -264,10 +264,10 @@ void CHeadTrack::Process(int nArg)
             double dFracY;
 
             dFracX   = pCam->m_flViewFracX;
-            origin.x = (int)(dFracX * size.x);
+            origin.x = static_cast<int>(dFracX * size.x);
 
             dFracY   = pCam->m_flViewFracY;
-            origin.y = (int)(dFracY * size.y);
+            origin.y = static_cast<int>(dFracY * size.y);
 
             g_pRenderer->SetReticlePos(origin.x, origin.y);
         }

@@ -54,13 +54,13 @@ void MoveCodec::Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVelocity)
         nVelZ = -nVelZ;
     }
 
-    pPosition->x = (float)nPosX / (float)(1 << (9 - nPosShift));
-    pPosition->y = (float)nPosY / (float)(1 << (9 - nPosShift));
-    pPosition->z = (float)nPosZ / (float)(1 << (9 - nPosShift));
+    pPosition->x = static_cast<float>(nPosX) / static_cast<float>(1 << (9 - nPosShift));
+    pPosition->y = static_cast<float>(nPosY) / static_cast<float>(1 << (9 - nPosShift));
+    pPosition->z = static_cast<float>(nPosZ) / static_cast<float>(1 << (9 - nPosShift));
 
-    pVelocity->x = (float)nVelX / (float)(1 << (9 - flags.GetVelocityShift()));
-    pVelocity->y = (float)nVelY / (float)(1 << (9 - flags.GetVelocityShift()));
-    pVelocity->z = (float)nVelZ / (float)(1 << (9 - flags.GetVelocityShift()));
+    pVelocity->x = static_cast<float>(nVelX) / static_cast<float>(1 << (9 - flags.GetVelocityShift()));
+    pVelocity->y = static_cast<float>(nVelY) / static_cast<float>(1 << (9 - flags.GetVelocityShift()));
+    pVelocity->z = static_cast<float>(nVelZ) / static_cast<float>(1 << (9 - flags.GetVelocityShift()));
 }
 
 // A component shifted past 31 bits is stored as zero; an out-of-range exponent refuses the move.

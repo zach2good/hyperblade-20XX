@@ -83,7 +83,7 @@ void CTrackTraj::InitRange()
     float        flHigh = g_arenaEllipsoid.GetRadiusY();
     flHigh += g_flFrameRateReference;
 
-    m_pSpline->InitClamped((float)dLow, flHigh);
+    m_pSpline->InitClamped(static_cast<float>(dLow), flHigh);
 
     m_nMode   = 0;
     m_flBlend = g_flZeroTracking;
@@ -135,7 +135,7 @@ void CTrackTraj::InitComplexRange()
 // FUNCTION: HYPERX 0x0040a790
 void CTrackTraj::SetBlendT(int nValue)
 {
-    m_flBlend = (float)(unsigned int)nValue;
+    m_flBlend = static_cast<float>(static_cast<unsigned int>(nValue));
 }
 
 // Mode zero chases the tracked object on a spring; mode one blends toward a scripted point.
@@ -218,16 +218,16 @@ void CTrackTraj::Process(int nArg)
             vScratch.y = flWatchX * pCamDir->z - flWatchZ * pCamDir->x;
             vScratch.z = flWatchY * pCamDir->x - flWatchX * pCamDir->y;
 
-            flRadius = (float)sqrt(static_cast<double>(vScratch.x * vScratch.x + (vScratch.y * vScratch.y + vScratch.z * vScratch.z))) * 1.2f;
+            flRadius = static_cast<float>(sqrt(static_cast<double>(vScratch.x * vScratch.x + (vScratch.y * vScratch.y + vScratch.z * vScratch.z)))) * 1.2f;
 
             if (flRadius > 190.0)
             {
                 flRadius = 190.0f;
             }
 
-            flMidLength = (float)sqrt(static_cast<double>(vMidOffset.x * vMidOffset.x + (vMidOffset.y * vMidOffset.y + vMidOffset.z * vMidOffset.z)));
+            flMidLength = static_cast<float>(sqrt(static_cast<double>(vMidOffset.x * vMidOffset.x + (vMidOffset.y * vMidOffset.y + vMidOffset.z * vMidOffset.z))));
 
-            flTrajLength = (float)sqrt(static_cast<double>(vTrajOffset.x * vTrajOffset.x + (vTrajOffset.y * vTrajOffset.y + vTrajOffset.z * vTrajOffset.z)));
+            flTrajLength = static_cast<float>(sqrt(static_cast<double>(vTrajOffset.x * vTrajOffset.x + (vTrajOffset.y * vTrajOffset.y + vTrajOffset.z * vTrajOffset.z))));
 
             Math::Vec3Normalize(&vMidOffset);
             Math::Vec3Normalize(&vTrajOffset);

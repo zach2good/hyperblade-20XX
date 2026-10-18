@@ -294,7 +294,7 @@ void OnButton(SDL_GamepadButton button, bool bDown)
 
 void OnTrigger(int nTrigger, ControlId control, int nValue)
 {
-    auto& bHeld = s_abTrigger[(size_t)nTrigger];
+    auto& bHeld = s_abTrigger[static_cast<size_t>(nTrigger)];
 
     const auto bNowHeld = [&]
     {
@@ -372,7 +372,7 @@ bool SDLCALL OnEvent(void*, SDL_Event* pEvent)
         case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
         case SDL_EVENT_GAMEPAD_BUTTON_UP:
             s_nLastPad = pEvent->gbutton.which;
-            OnButton((SDL_GamepadButton)pEvent->gbutton.button, pEvent->gbutton.down);
+            OnButton(static_cast<SDL_GamepadButton>(pEvent->gbutton.button), pEvent->gbutton.down);
             break;
 
         case SDL_EVENT_GAMEPAD_AXIS_MOTION:
@@ -382,7 +382,7 @@ bool SDLCALL OnEvent(void*, SDL_Event* pEvent)
                 s_nLastPad = pEvent->gaxis.which;
             }
 
-            OnAxis((SDL_GamepadAxis)pEvent->gaxis.axis, pEvent->gaxis.value);
+            OnAxis(static_cast<SDL_GamepadAxis>(pEvent->gaxis.axis), pEvent->gaxis.value);
             break;
 
         default:
@@ -407,7 +407,7 @@ void Gamepad::Init()
 
 int Gamepad::BindingCount()
 {
-    return (int)CONTROLS.size();
+    return static_cast<int>(CONTROLS.size());
 }
 
 Gamepad::Binding Gamepad::GetBinding(int nIndex)
@@ -416,15 +416,15 @@ Gamepad::Binding Gamepad::GetBinding(int nIndex)
 
     const auto* const pszAction = [&]
     {
-        if (s_apBindings[(size_t)nIndex] != nullptr)
+        if (s_apBindings[static_cast<size_t>(nIndex)] != nullptr)
         {
-            return s_apBindings[(size_t)nIndex]->pszName;
+            return s_apBindings[static_cast<size_t>(nIndex)]->pszName;
         }
 
-        return CONTROLS[(size_t)nIndex].pszDefault;
+        return CONTROLS[static_cast<size_t>(nIndex)].pszDefault;
     }();
 
-    return Binding{ CONTROLS[(size_t)nIndex].pszKey, pszAction };
+    return Binding{ CONTROLS[static_cast<size_t>(nIndex)].pszKey, pszAction };
 }
 
 unsigned int Gamepad::LastUsed()

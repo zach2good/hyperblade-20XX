@@ -22,7 +22,7 @@ int Display::Initialize()
 {
     Window::ApplyFullscreenStyle();
 
-    g_cMdmTexLoaded = (char)Graphics::LoadMdmTexDLL();
+    g_cMdmTexLoaded = static_cast<char>(Graphics::LoadMdmTexDLL());
     Display::ApplyRenderOptions(g_cMdmTexLoaded & 0xff, 0);
 
     int nWidth  = g_dwDisplayWidth;
@@ -32,7 +32,7 @@ int Display::Initialize()
 
     if (g_bFullScreen == 0)
     {
-        WndProc::OnResize((int)g_dwDisplayWidth, (int)g_dwDisplayHeight);
+        WndProc::OnResize(static_cast<int>(g_dwDisplayWidth), static_cast<int>(g_dwDisplayHeight));
     }
 
     if (g_bBackBufferReady != 0 && g_pRenderer != nullptr)

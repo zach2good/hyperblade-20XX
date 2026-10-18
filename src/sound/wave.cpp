@@ -14,12 +14,12 @@ constexpr auto MAX_CHUNKS = 64;
 
 std::uint32_t ReadU32(const unsigned char* p)
 {
-    return p[0] | (p[1] << 8) | (p[2] << 16) | ((std::uint32_t)p[3] << 24);
+    return p[0] | (p[1] << 8) | (p[2] << 16) | (static_cast<std::uint32_t>(p[3]) << 24);
 }
 
 std::uint16_t ReadU16(const unsigned char* p)
 {
-    return (std::uint16_t)(p[0] | (p[1] << 8));
+    return static_cast<std::uint16_t>(p[0] | (p[1] << 8));
 }
 
 class File
@@ -77,7 +77,7 @@ Wave::Result Wave::ReadInfo(const char* pszPath, Info& info)
     {
         unsigned char aChunk[8];
 
-        if (std::fseek(file.Get(), (long)nOffset, SEEK_SET) != 0 || std::fread(aChunk, 1, sizeof(aChunk), file.Get()) != sizeof(aChunk))
+        if (std::fseek(file.Get(), static_cast<long>(nOffset), SEEK_SET) != 0 || std::fread(aChunk, 1, sizeof(aChunk), file.Get()) != sizeof(aChunk))
         {
             return Result::BAD_FORMAT;
         }
@@ -123,5 +123,5 @@ bool Wave::ReadSamples(const char* pszPath, unsigned int nOffset, unsigned int n
 {
     const auto file = File(pszPath);
 
-    return file.Get() != nullptr && std::fseek(file.Get(), (long)nOffset, SEEK_SET) == 0 && std::fread(pBuffer, 1, nBytes, file.Get()) == nBytes;
+    return file.Get() != nullptr && std::fseek(file.Get(), static_cast<long>(nOffset), SEEK_SET) == 0 && std::fread(pBuffer, 1, nBytes, file.Get()) == nBytes;
 }

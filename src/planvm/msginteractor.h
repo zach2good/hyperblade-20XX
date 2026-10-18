@@ -19,7 +19,7 @@ public:
     // Slot six: the message tag Setup stores in m_ownSlotOrMessage.
     short GetNamedSlot() override
     {
-        return (short)m_ownSlotOrMessage.n;
+        return static_cast<short>(m_ownSlotOrMessage.n);
     }
 
     // Where the base answers minus one, this reads m_otherSlot.

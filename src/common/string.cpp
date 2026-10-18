@@ -65,7 +65,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
         {
             nWidth = atoi(pszCursor);
 
-            for (; *pszCursor != 0 && SDL_isdigit((unsigned char)*pszCursor); pszCursor = STEP(pszCursor))
+            for (; *pszCursor != 0 && SDL_isdigit(static_cast<unsigned char>(*pszCursor)); pszCursor = STEP(pszCursor))
             {
                 ;
             }
@@ -86,7 +86,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
             {
                 nPrecision = atoi(pszCursor);
 
-                for (; *pszCursor != 0 && SDL_isdigit((unsigned char)*pszCursor); pszCursor = STEP(pszCursor))
+                for (; *pszCursor != 0 && SDL_isdigit(static_cast<unsigned char>(*pszCursor)); pszCursor = STEP(pszCursor))
                 {
                     ;
                 }
@@ -145,7 +145,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
                 break;
 
             case 0x53:
-                nItemLen = (int)wcslen((const wchar_t*)va_arg(argList, const unsigned short*));
+                nItemLen = static_cast<int>(wcslen(reinterpret_cast<const wchar_t*>(va_arg(argList, const unsigned short*))));
 
                 if (nItemLen < 1)
                 {
@@ -166,7 +166,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 
             case 0x73 | FORCE_UNICODE:
             case 0x53 | FORCE_UNICODE:
-                nItemLen = (int)wcslen((const wchar_t*)va_arg(argList, const unsigned short*));
+                nItemLen = static_cast<int>(wcslen(reinterpret_cast<const wchar_t*>(va_arg(argList, const unsigned short*))));
 
                 if (nItemLen < 1)
                 {
@@ -290,12 +290,12 @@ String::String(const char* psz)
     {
         if ((((std::uintptr_t)(psz) >> 16) == 0))
         {
-            AssignResourceId((unsigned int)(std::uintptr_t)psz & 0xffff);
+            AssignResourceId(static_cast<unsigned int>((std::uintptr_t)psz) & 0xffff);
 
             return;
         }
 
-        const int nLength = (int)strlen(psz);
+        const int nLength = static_cast<int>(strlen(psz));
 
         if (nLength != 0)
         {
@@ -322,7 +322,7 @@ bool String::AssignResourceId(unsigned int nID)
 {
     const char* const pszText = StringTable::Find(nID);
 
-    Assign((unsigned int)strlen(pszText), pszText);
+    Assign(static_cast<unsigned int>(strlen(pszText)), pszText);
 
     return pszText[0] != 0;
 }
@@ -347,7 +347,7 @@ String String::Concat(const String& source, const char* pszSuffix)
     }
     else
     {
-        nSuffixLength = (int)strlen(pszSuffix);
+        nSuffixLength = static_cast<int>(strlen(pszSuffix));
     }
 
     temp.ConcatAlloc(source.GetHeader()->nDataLength,
@@ -403,7 +403,7 @@ void String::SetLength(int nLength)
 
     if (nLength == -1)
     {
-        nLength = (int)strlen(m_pchData);
+        nLength = static_cast<int>(strlen(m_pchData));
     }
 
     GetHeader()->nDataLength = nLength;
@@ -464,7 +464,7 @@ void String::AllocBuffer(int nLength)
         return;
     }
 
-    auto* const pHeader = (StringHeader*)operator new(sizeof(StringHeader) + nLength + 1);
+    auto* const pHeader = static_cast<StringHeader*>(operator new(sizeof(StringHeader) + nLength + 1));
 
     pHeader->nRefs           = 1;
     pHeader->Data()[nLength] = 0;
@@ -558,21 +558,21 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
 
     if (pszSource != nullptr)
     {
-        pszEnd = (char*)strpbrk(pszSource,
-                                g_pszTokenDelimiters);
+        pszEnd = const_cast<char*>(strpbrk(pszSource,
+                                           g_pszTokenDelimiters));
 
         if (pszEnd != nullptr)
         {
             const char* pszStart = pszEnd + 1;
 
-            pszEnd = (char*)strpbrk(pszStart,
-                                    g_pszTokenDelimiters);
+            pszEnd = const_cast<char*>(strpbrk(pszStart,
+                                               g_pszTokenDelimiters));
 
             *ppszNext = pszEnd;
 
             if (pszEnd != nullptr)
             {
-                nLength = (int)(pszEnd - pszStart);
+                nLength = static_cast<int>(pszEnd - pszStart);
 
                 nResult = 0;
 
@@ -585,7 +585,7 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
             }
             else
             {
-                nLength = (int)strlen(pszStart);
+                nLength = static_cast<int>(strlen(pszStart));
                 nResult = 0;
 
                 if (nLength != 0)

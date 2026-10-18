@@ -47,7 +47,7 @@ void Fit(const DrawTarget& backBuffer)
         return;
     }
 
-    s_layerPixels.assign((size_t)(nWidth * nHeight), 0);
+    s_layerPixels.assign(static_cast<size_t>(nWidth * nHeight), 0);
 
     s_layer.pBits   = s_layerPixels.data();
     s_layer.nPitch  = nWidth;
@@ -117,7 +117,7 @@ void HudLayer::Clear()
 {
     if (s_layer.pBits != nullptr)
     {
-        memset(s_layer.pBits, KEY_INDEX, (size_t)s_layer.nPitch * s_layer.nHeight);
+        memset(s_layer.pBits, KEY_INDEX, static_cast<size_t>(s_layer.nPitch) * s_layer.nHeight);
 
         s_bFresh = 1;
     }

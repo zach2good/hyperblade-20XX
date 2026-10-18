@@ -137,9 +137,9 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
             // STRING: HYPERX 0x004c4e60
             [[maybe_unused]] const auto nFields = fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex);
 
-            pRows[nRow].cFlags = (unsigned char)nFlags;
-            pRows[nRow].nKey   = (unsigned short)nKey;
-            pRows[nRow].nIndex = (unsigned short)nIndex;
+            pRows[nRow].cFlags = static_cast<unsigned char>(nFlags);
+            pRows[nRow].nKey   = static_cast<unsigned short>(nKey);
+            pRows[nRow].nIndex = static_cast<unsigned short>(nIndex);
         }
 
         // STRING: HYPERX 0x004c4e50
@@ -152,7 +152,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 
         if (bRead)
         {
-            g_bVictimCam = (unsigned char)nVictimCam;
+            g_bVictimCam = static_cast<unsigned char>(nVictimCam);
         }
 
         // STRING: HYPERX 0x004c4d9c
@@ -211,7 +211,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
         case Key::PAUSE:
             if (g_bSessionActive == 0 && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0)
             {
-                if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+                if (static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
                 {
                     g_pMessageQueue->ProcessAndClear();
                     g_pMessageQueue->PushFromTable(MSG_PAUSED, 0, MSG_TOGGLE_MS);
@@ -239,11 +239,11 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
         case Key::TAB:
             g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT]->PostSceneEvent(MSG_MOVE_EYE_TRACK, 5);
 
-            g_nTabCycle = (short)((g_nTabCycle + 1) % 2);
+            g_nTabCycle = static_cast<short>((g_nTabCycle + 1) % 2);
             break;
 
         case Key::ESCAPE:
-            if (g_pRenderer != nullptr && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && (short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+            if (g_pRenderer != nullptr && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && static_cast<short>(g_pGameEngine->m_wRunState) == ENGINE_RUN_PLAYING)
             {
                 g_pRenderer->ShowQuitPrompt();
                 return;

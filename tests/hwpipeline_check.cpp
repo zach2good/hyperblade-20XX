@@ -118,7 +118,7 @@ void Draw(const Scene& scene, Uint32 nFirst, bool bTextured)
     SDL_PushGPUVertexUniformData(pCommands, 1, &frame, sizeof(frame));
     SDL_PushGPUFragmentUniformData(pCommands, 1, &colours, sizeof(colours));
 
-    const auto textureUniforms = HwPipeline::TextureUniforms{ (int)bTextured };
+    const auto textureUniforms = HwPipeline::TextureUniforms{ static_cast<int>(bTextured) };
 
     SDL_PushGPUFragmentUniformData(pCommands, 0, &textureUniforms, sizeof(textureUniforms));
 
@@ -163,7 +163,7 @@ bool NearModulated(const unsigned char* pPixel, int nTexel, float flGrey)
 {
     const auto modulated = [&](int nChannel)
     {
-        return (int)std::lround(TEXELS[nTexel * 4 + nChannel] * flGrey);
+        return static_cast<int>(std::lround(TEXELS[nTexel * 4 + nChannel] * flGrey));
     };
 
     return Near(pPixel, modulated(0), modulated(1), modulated(2));
@@ -214,7 +214,7 @@ void Check(const Scene& scene)
     Draw(scene, 0, false);
 
     {
-        const auto* const pPixels = (const unsigned char*)SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false);
+        const auto* const pPixels = static_cast<const unsigned char*>(SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false));
 
         // Lit at 1 * 0.5 + 0.25, each channel truncated as D3DRend::DrawFace did.
         Expect(Near(pPixels + nCentre, 150, 75, 37), "centre lit");
@@ -226,7 +226,7 @@ void Check(const Scene& scene)
     Draw(scene, 3, false);
 
     {
-        const auto* const pPixels = (const unsigned char*)SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false);
+        const auto* const pPixels = static_cast<const unsigned char*>(SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false));
 
         Expect(Near(pPixels + nCentre, 0, 255, 0), "reversed winding culled");
 
@@ -236,7 +236,7 @@ void Check(const Scene& scene)
     Draw(scene, 6, true);
 
     {
-        const auto* const pPixels = (const unsigned char*)SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false);
+        const auto* const pPixels = static_cast<const unsigned char*>(SDL_MapGPUTransferBuffer(scene.pDevice, scene.pDownload, false));
 
         // Lit at 0.75, so grey 191, the material colour ignored.
         Expect(NearModulated(pPixels + nCentre, 1, 191.0f / 255.0f), "centre textured");
@@ -298,7 +298,7 @@ SDL_GPUTexture* CreateTarget(SDL_GPUDevice* pDevice, unsigned int nFormat, SDL_G
 {
     auto info                 = SDL_GPUTextureCreateInfo{};
     info.type                 = SDL_GPU_TEXTURETYPE_2D;
-    info.format               = (SDL_GPUTextureFormat)nFormat;
+    info.format               = static_cast<SDL_GPUTextureFormat>(nFormat);
     info.usage                = usage;
     info.width                = SIZE;
     info.height               = SIZE;

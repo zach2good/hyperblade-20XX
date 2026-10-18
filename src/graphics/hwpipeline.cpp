@@ -101,7 +101,7 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
         };
 
         auto colour   = SDL_GPUColorTargetDescription{};
-        colour.format = (SDL_GPUTextureFormat)ColourFormat();
+        colour.format = static_cast<SDL_GPUTextureFormat>(ColourFormat());
 
         auto info                                          = SDL_GPUGraphicsPipelineCreateInfo{};
         info.vertex_shader                                 = pVertex;
@@ -127,7 +127,7 @@ HwPipeline::Pipeline HwPipeline::CreateMeshPipeline(Device device, bool bFrontCl
         info.depth_stencil_state.enable_depth_write = true;
         info.target_info.color_target_descriptions  = &colour;
         info.target_info.num_color_targets          = 1;
-        info.target_info.depth_stencil_format       = (SDL_GPUTextureFormat)DepthFormat(device);
+        info.target_info.depth_stencil_format       = static_cast<SDL_GPUTextureFormat>(DepthFormat(device));
         info.target_info.has_depth_stencil_target   = true;
 
         pPipeline = SDL_CreateGPUGraphicsPipeline(pDevice, &info);
@@ -180,7 +180,7 @@ HwPipeline::Pipeline HwPipeline::CreateShadowPipeline(Device device)
         info.depth_stencil_state.compare_op              = SDL_GPU_COMPAREOP_LESS_OR_EQUAL;
         info.depth_stencil_state.enable_depth_test       = true;
         info.depth_stencil_state.enable_depth_write      = true;
-        info.target_info.depth_stencil_format            = (SDL_GPUTextureFormat)ShadowFormat(device);
+        info.target_info.depth_stencil_format            = static_cast<SDL_GPUTextureFormat>(ShadowFormat(device));
         info.target_info.has_depth_stencil_target        = true;
 
         pPipeline = SDL_CreateGPUGraphicsPipeline(pDevice, &info);

@@ -29,7 +29,7 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
 {
     unsigned int nBit    = 1;
     unsigned int nSticky = m_nStickyMask;
-    auto         nCount  = (short)m_pBindingTable->m_nKeyCount;
+    auto         nCount  = static_cast<short>(m_pBindingTable->m_nKeyCount);
     short        nKey    = 0;
 
     if (nSticky != 0)
@@ -38,7 +38,7 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
         {
             if ((nSticky & 1) != 0)
             {
-                if ((m_nHeldMask & nBit) != 0 && (unsigned int)m_aReleaseTime[nKey] <= (unsigned int)m_aPressTime[nKey])
+                if ((m_nHeldMask & nBit) != 0 && static_cast<unsigned int>(m_aReleaseTime[nKey]) <= static_cast<unsigned int>(m_aPressTime[nKey]))
                 {
                     if (g_pGameEngine->m_clock.nTickMs - m_aPressTime[nKey] > m_nDoubleTapMs)
                     {
@@ -104,10 +104,10 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 
     for (int nInputSlot = 0; nInputSlot < INPUT_SLOT_COUNT; nInputSlot++)
     {
-        const auto nNow = (unsigned int)SDL_GetTicks();
+        const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
 
-        m_aPressTime[(short)nInputSlot]   = nNow;
-        m_aReleaseTime[(short)nInputSlot] = nNow + REPEAT_STEP_MS;
+        m_aPressTime[static_cast<short>(nInputSlot)]   = nNow;
+        m_aReleaseTime[static_cast<short>(nInputSlot)] = nNow + REPEAT_STEP_MS;
     }
 }
 
@@ -383,7 +383,7 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
 
             if (nIndex < pRecord->m_nKeyCount)
             {
-                pRecord->m_anKey[nIndex] = (unsigned short)pnKeys[g_anKeyBindingOrder[nIndex]];
+                pRecord->m_anKey[nIndex] = static_cast<unsigned short>(pnKeys[g_anKeyBindingOrder[nIndex]]);
             }
         }
 
@@ -423,7 +423,7 @@ unsigned int* KeyboardDeviceObj::LoadBindingsFromIni()
 // FUNCTION: HYPERX 0x0045d2c0
 int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 {
-    if (nButton < (unsigned int)m_pBindingTable->m_nKeyCount && (m_nHeldMask & (1 << nButton)) != 0)
+    if (nButton < static_cast<unsigned int>(m_pBindingTable->m_nKeyCount) && (m_nHeldMask & (1 << nButton)) != 0)
     {
         m_aReleaseTime[nButton] = m_aPressTime[nButton] + 1;
 
@@ -440,7 +440,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 {
     int nIndex         = 0;
     m_nPrevHeldMask    = m_nHeldMask;
-    const auto nCount  = (short)m_pBindingTable->m_nKeyCount;
+    const auto nCount  = static_cast<short>(m_pBindingTable->m_nKeyCount);
     int        nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
@@ -460,13 +460,13 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
             nBit    = 1 << nIndex;
             nResult = 0;
 
-            if ((unsigned int)m_aReleaseTime[nIndex] >= (unsigned int)m_aPressTime[nIndex])
+            if (static_cast<unsigned int>(m_aReleaseTime[nIndex]) >= static_cast<unsigned int>(m_aPressTime[nIndex]))
             {
-                m_aPrevPressTime[(short)nIndex] = m_aPressTime[(short)nIndex];
-                nNow                            = (unsigned int)SDL_GetTicks();
-                m_aPressTime[(short)nIndex]     = nNow;
+                m_aPrevPressTime[static_cast<short>(nIndex)] = m_aPressTime[static_cast<short>(nIndex)];
+                nNow                                         = static_cast<unsigned int>(SDL_GetTicks());
+                m_aPressTime[static_cast<short>(nIndex)]     = nNow;
 
-                if (nNow - (unsigned int)m_aReleaseTime[(short)nIndex] < m_nDoubleTapMs && (unsigned int)(m_aReleaseTime[(short)nIndex] - m_aPrevPressTime[(short)nIndex]) < m_nDoubleTapMs)
+                if (nNow - static_cast<unsigned int>(m_aReleaseTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs && static_cast<unsigned int>(m_aReleaseTime[static_cast<short>(nIndex)] - m_aPrevPressTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs)
                 {
                     nBit = ACTION_BINDING_DOUBLE_TAP << nIndex;
                 }
@@ -531,7 +531,7 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
     int nIndex = 0;
 
     m_nPrevHeldMask    = m_nHeldMask;
-    const auto nCount  = (short)m_pBindingTable->m_nKeyCount;
+    const auto nCount  = static_cast<short>(m_pBindingTable->m_nKeyCount);
     int        nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
@@ -550,13 +550,13 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
             unsigned int   nElapsed;
             int            nActionIndex;
 
-            nResult                           = 0;
-            m_aPrevReleaseTime[(short)nIndex] = m_aReleaseTime[(short)nIndex];
-            nNow                              = (unsigned int)SDL_GetTicks();
-            m_aReleaseTime[(short)nIndex]     = nNow;
-            nElapsed                          = nNow - (unsigned int)m_aPressTime[(short)nIndex];
+            nResult                                        = 0;
+            m_aPrevReleaseTime[static_cast<short>(nIndex)] = m_aReleaseTime[static_cast<short>(nIndex)];
+            nNow                                           = static_cast<unsigned int>(SDL_GetTicks());
+            m_aReleaseTime[static_cast<short>(nIndex)]     = nNow;
+            nElapsed                                       = nNow - static_cast<unsigned int>(m_aPressTime[static_cast<short>(nIndex)]);
 
-            if (nElapsed < m_nDoubleTapMs && (unsigned int)(m_aPressTime[(short)nIndex] - m_aPrevReleaseTime[(short)nIndex]) < m_nDoubleTapMs)
+            if (nElapsed < m_nDoubleTapMs && static_cast<unsigned int>(m_aPressTime[static_cast<short>(nIndex)] - m_aPrevReleaseTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs)
             {
                 nBit = (ACTION_BINDING_DOUBLE_TAP << nIndex) | ACTION_BINDING_UP | ACTION_BINDING_QUICK;
             }
@@ -588,7 +588,7 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 
                 for (i = 0; i < nBindingCount; i++, pBinding++)
                 {
-                    if ((pBinding->m_nAction == (unsigned int)nActionIndex || pBinding->m_nAction == (nBit & (ACTION_BINDING_UP | ACTION_BINDING_QUICK | ACTION_BINDING_MASK)) || pBinding->m_nAction == nBit) && pBinding->m_nCombine == (pBinding->m_nClear & m_nHeldMask))
+                    if ((pBinding->m_nAction == static_cast<unsigned int>(nActionIndex) || pBinding->m_nAction == (nBit & (ACTION_BINDING_UP | ACTION_BINDING_QUICK | ACTION_BINDING_MASK)) || pBinding->m_nAction == nBit) && pBinding->m_nCombine == (pBinding->m_nClear & m_nHeldMask))
                     {
                         m_pEntity->DispatchSceneMessage(
                             MSG_NEW_INPUT, pBinding->m_nKey, DECISION_LOG_FRESH, m_pEntity->GetSlotWord(), 0);

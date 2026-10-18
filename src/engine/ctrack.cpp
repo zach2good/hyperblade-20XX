@@ -106,7 +106,7 @@ void CTrack::Process(int nArg)
     Vec3  vFarRay;
     Vec3  vNearRay;
 
-    const auto flStep = (float)(g_pGameEngine->m_clock.GetDelta() * 50.0f);
+    const auto flStep = (g_pGameEngine->m_clock.GetDelta() * 50.0f);
 
     Vec3* const pOffsetScales = GetCamera()->m_pSettings;
 
@@ -139,7 +139,7 @@ void CTrack::Process(int nArg)
             flFrames = g_pGameEngine->m_clock.flInvDelta * 1.5f;
         }
 
-        m_wCountdown   = (short)flFrames;
+        m_wCountdown   = static_cast<short>(flFrames);
         m_bSwingChosen = 0;
         m_bOutOfView   = 1;
     }
@@ -152,7 +152,7 @@ void CTrack::Process(int nArg)
 
         aTarget.Set(pWorld->m_a[0][3], pWorld->m_a[1][3], pWorld->m_a[2][3]);
 
-        if (((unsigned char)pBody->nHeldBindings & HELD_SHOOT) != 0)
+        if ((static_cast<unsigned char>(pBody->nHeldBindings) & HELD_SHOOT) != 0)
         {
             AttachPak* pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
@@ -207,7 +207,7 @@ void CTrack::Process(int nArg)
 
     Math::Vec3Normalize(&vLook);
 
-    flPull = ((float)sqrt(static_cast<double>(vTrack.x * vTrack.x + (vTrack.y * vTrack.y + vTrack.z * vTrack.z))) - GetCamera()->GetBungeeLength()) * 1.5f;
+    flPull = (static_cast<float>(sqrt(static_cast<double>(vTrack.x * vTrack.x + (vTrack.y * vTrack.y + vTrack.z * vTrack.z)))) - GetCamera()->GetBungeeLength()) * 1.5f;
 
     if (flPull <= g_flZeroTracking)
     {
@@ -224,8 +224,8 @@ void CTrack::Process(int nArg)
 
     if (fabs(static_cast<double>(pBody->flFacing)) > 0.1)
     {
-        const auto flCos = (float)cos(static_cast<double>(pBody->flFacing));
-        const auto flSin = (float)sin(static_cast<double>(pBody->flFacing));
+        const auto flCos = static_cast<float>(cos(static_cast<double>(pBody->flFacing)));
+        const auto flSin = static_cast<float>(sin(static_cast<double>(pBody->flFacing)));
 
         vRaw.x             = vFacing.z * g_flZeroTracking - vFacing.y * g_flCamFracFull;
         const float flRawY = vFacing.x * g_flCamFracFull - vFacing.z * g_flZeroTracking;
@@ -246,7 +246,7 @@ void CTrack::Process(int nArg)
 
         const Vec3* pVel = m_pVel;
 
-        if ((flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z))) > flStep)
+        if ((flSpeed = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)))) > flStep)
         {
             m_pVel->ScaleInPlace(flStep / flSpeed);
         }
@@ -318,7 +318,7 @@ void CTrack::Process(int nArg)
 
             const Vec3* pVel = m_pVel;
 
-            if ((flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z))) > flStep)
+            if ((flSpeed = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)))) > flStep)
             {
                 m_pVel->ScaleInPlace(flStep / flSpeed);
             }
@@ -329,7 +329,7 @@ void CTrack::Process(int nArg)
 
             pVel = m_pVel;
 
-            flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z));
+            flSpeed = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)));
 
             if (flSpeed > flStep * 2.5f)
             {
@@ -346,7 +346,7 @@ void CTrack::Process(int nArg)
 
             const Vec3* pVel = m_pVel;
 
-            if ((flSpeed = (float)sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z))) > flStep)
+            if ((flSpeed = static_cast<float>(sqrt(static_cast<double>(pVel->x * pVel->x + pVel->y * pVel->y + pVel->z * pVel->z)))) > flStep)
             {
                 m_pVel->ScaleInPlace(flStep / flSpeed);
             }
@@ -374,18 +374,18 @@ void CTrack::Process(int nArg)
             pPos = &m_pPos->x;
 
             flDeltaY = vWish.y - aTarget.y;
-            flAbsY   = (float)fabs(static_cast<double>(flDeltaY));
+            flAbsY   = static_cast<float>(fabs(static_cast<double>(flDeltaY)));
 
             vPull = aTarget;
 
             flDeltaX = vWish.x - aTarget.x;
-            flAbsX   = (float)fabs(static_cast<double>(flDeltaX));
+            flAbsX   = static_cast<float>(fabs(static_cast<double>(flDeltaX)));
 
-            flHypot = (float)sqrt(static_cast<double>(flAbsX * flAbsX + flAbsY * flAbsY));
+            flHypot = static_cast<float>(sqrt(static_cast<double>(flAbsX * flAbsX + flAbsY * flAbsY)));
 
             if (flAbsX < 1e-06)
             {
-                flOffset = (float)fabs(static_cast<double>(pPos[0] - vWish.x));
+                flOffset = static_cast<float>(fabs(static_cast<double>(pPos[0] - vWish.x)));
             }
             else
             {
@@ -396,7 +396,7 @@ void CTrack::Process(int nArg)
 
                 flOnLine = (aTarget.y - flSlope * aTarget.x) + flSlope * pPos[0];
 
-                flOffset = (float)(fabs(static_cast<double>(flOnLine - pPos[1])) * cos(static_cast<double>(Math::Asin(flAbsY / flHypot))));
+                flOffset = static_cast<float>(fabs(static_cast<double>(flOnLine - pPos[1])) * cos(static_cast<double>(Math::Asin(flAbsY / flHypot))));
             }
 
             if (flOffset > 2.0f)
@@ -490,7 +490,7 @@ void CTrack::Process(int nArg)
 
         const double dFollow = GetCamera()->GetBungeeLength();
 
-        vFinal.ScaleInPlace((float)dFollow);
+        vFinal.ScaleInPlace(static_cast<float>(dFollow));
 
         m_pPos->x = aTarget.x - vFinal.x;
         m_pPos->y = aTarget.y - vFinal.y;
@@ -555,22 +555,22 @@ void CTrack::Process(int nArg)
 
         Math::Vec3Normalize(&vWish);
 
-        flAngle = (float)Math::Acos(vWish.x * vGap.x + ((vWish.GetY() * vGap.y) + vWish.GetZ() * vGap.z));
+        flAngle = static_cast<float>(Math::Acos(vWish.x * vGap.x + ((vWish.GetY() * vGap.y) + vWish.GetZ() * vGap.z)));
 
         nSteps = std::min<int>(SWING_STEPS, m_wCountdown);
 
-        flCount = (float)nSteps;
+        flCount = static_cast<float>(nSteps);
 
         flStepAngle = flAngle / flCount;
 
-        flDirAngle = (float)Math::Acos(vGap.x * g_flCamFracFull + (vGap.GetY() + vGap.z) * g_flZeroTracking);
+        flDirAngle = static_cast<float>(Math::Acos(vGap.x * g_flCamFracFull + (vGap.GetY() + vGap.z) * g_flZeroTracking));
 
         if (vGap.y < 0.0f)
         {
             flDirAngle = (g_flPi + g_flPi) - flDirAngle;
         }
 
-        flLookAngle = (float)Math::Acos(vWish.x * g_flCamFracFull + (vWish.GetY() + vWish.z) * g_flZeroTracking);
+        flLookAngle = static_cast<float>(Math::Acos(vWish.x * g_flCamFracFull + (vWish.GetY() + vWish.z) * g_flZeroTracking));
 
         if (vWish.y < 0.0f)
         {
@@ -603,8 +603,8 @@ void CTrack::Process(int nArg)
             flAngle = flDirAngle + flStepAngle;
         }
 
-        vFinal.x = (float)cos(static_cast<double>(flAngle));
-        vFinal.y = (float)sin(static_cast<double>(flAngle));
+        vFinal.x = static_cast<float>(cos(static_cast<double>(flAngle)));
+        vFinal.y = static_cast<float>(sin(static_cast<double>(flAngle)));
         vFinal.z = g_flZeroTracking;
 
         Math::Vec3Normalize(&vFinal);

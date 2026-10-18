@@ -48,7 +48,7 @@ int PaletteScalarFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
     {
-        g_pColorPalette->BuildFadeTable(m_pWorkEntries, (short)m_cWorkEntries, *pStartColour, 0.1f);
+        g_pColorPalette->BuildFadeTable(m_pWorkEntries, static_cast<short>(m_cWorkEntries), *pStartColour, 0.1f);
 
         return 1;
     }
@@ -67,8 +67,8 @@ int PaletteScalarFade::Tick()
     if (bPhase != m_bPhase)
     {
         const unsigned char cRange   = m_cBrightest;
-        const double        dSeconds = (double)m_nDuration * MS_TO_SECONDS;
-        cStep                        = (unsigned char)(m_cBrightest / (float)(dSeconds * g_pGameEngine->m_clock.GetInvDelta()));
+        const double        dSeconds = static_cast<double>(m_nDuration) * MS_TO_SECONDS;
+        cStep                        = static_cast<unsigned char>(m_cBrightest / static_cast<float>(dSeconds * g_pGameEngine->m_clock.GetInvDelta()));
 
         if (cStep > cRange)
         {
@@ -110,9 +110,9 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
 
             nValue = (std::max)(0, nValue);
 
-            pEntries[nAt].peGreen = (unsigned char)nValue;
+            pEntries[nAt].peGreen = static_cast<unsigned char>(nValue);
 
-            if ((unsigned char)nValue == 0)
+            if (static_cast<unsigned char>(nValue) == 0)
             {
                 nMask += 1 << nAt;
             }
@@ -141,7 +141,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
                 nValue = nLimit;
             }
 
-            pEntries[nAt].peGreen = (unsigned char)nValue;
+            pEntries[nAt].peGreen = static_cast<unsigned char>(nValue);
 
             if (pEntries[nAt].peGreen == pSource[nAt].peGreen)
             {

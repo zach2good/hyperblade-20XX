@@ -36,7 +36,7 @@ int Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVe
 
     *pcClipOut = cClip;
 
-    if ((unsigned char)cClip == CLIP_ALL)
+    if (static_cast<unsigned char>(cClip) == CLIP_ALL)
     {
         return 0;
     }

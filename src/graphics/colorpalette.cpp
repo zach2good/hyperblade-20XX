@@ -220,9 +220,9 @@ int ColorPalette::NearestIndex(std::uint32_t colour, int nSkip) const
             continue;
         }
 
-        const int dr    = (int)m_current[i].peRed - (int)(colour & 0xff);
-        const int dg    = (int)m_current[i].peGreen - (int)(colour >> 8 & 0xff);
-        const int db    = (int)m_current[i].peBlue - (int)(colour >> 16 & 0xff);
+        const int dr    = static_cast<int>(m_current[i].peRed) - static_cast<int>(colour & 0xff);
+        const int dg    = static_cast<int>(m_current[i].peGreen) - static_cast<int>(colour >> 8 & 0xff);
+        const int db    = static_cast<int>(m_current[i].peBlue) - static_cast<int>(colour >> 16 & 0xff);
         const int nDist = dr * dr + dg * dg + db * db;
 
         if (nDist < nBestDist)
@@ -266,11 +266,11 @@ unsigned int ColorPalette::LoadCustomPalette()
     {
         unsigned short wVersion = 0;
 
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
 
         while (c != '\n')
         {
-            c = (char)getc(pFile);
+            c = static_cast<char>(getc(pFile));
         }
 
         ungetc(c, pFile);
@@ -290,11 +290,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         }
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -305,11 +305,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -319,11 +319,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -333,11 +333,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -347,11 +347,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -361,11 +361,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -375,11 +375,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -389,11 +389,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -403,11 +403,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -417,11 +417,11 @@ unsigned int ColorPalette::LoadCustomPalette()
         return 0;
     }
 
-    c = (char)getc(pFile);
+    c = static_cast<char>(getc(pFile));
 
     while (c != '\n')
     {
-        c = (char)getc(pFile);
+        c = static_cast<char>(getc(pFile));
     }
 
     ungetc(c, pFile);
@@ -502,10 +502,10 @@ unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigne
         case SHADE_WHITE:
             if (cColour >= pPalette->m_largeRampBounds.nFirst && cColour <= pPalette->m_largeRampBounds.nCount)
             {
-                return (unsigned char)(pPalette->m_rampLength.nCount + cColour);
+                return static_cast<unsigned char>(pPalette->m_rampLength.nCount + cColour);
             }
 
-            return (unsigned char)(pPalette->m_rampLength.nFirst + cColour);
+            return static_cast<unsigned char>(pPalette->m_rampLength.nFirst + cColour);
 
         case SHADE_SCALED:
             if (g_bDromePass != 0)
@@ -514,21 +514,21 @@ unsigned char ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigne
                 {
                     const int nRampOut = pPalette->m_rampLength.nFirst + 1;
 
-                    return (unsigned char)((int)pow((double)nRampOut, static_cast<double>(flIntensity)) + cColour - 1);
+                    return static_cast<unsigned char>(static_cast<int>(pow(static_cast<double>(nRampOut), static_cast<double>(flIntensity))) + cColour - 1);
                 }
                 else
                 {
                     const int nRampIn = pPalette->m_rampLength.nCount + 1;
 
-                    return (unsigned char)((int)pow((double)nRampIn, static_cast<double>(flIntensity)) + cColour - 1);
+                    return static_cast<unsigned char>(static_cast<int>(pow(static_cast<double>(nRampIn), static_cast<double>(flIntensity))) + cColour - 1);
                 }
             }
             if (cColour >= pPalette->m_largeRampBounds.nFirst && cColour <= pPalette->m_largeRampBounds.nCount)
             {
-                return (unsigned char)((int)(pPalette->m_rampLength.nCount * flIntensity) + cColour);
+                return static_cast<unsigned char>(static_cast<int>(pPalette->m_rampLength.nCount * flIntensity) + cColour);
             }
 
-            return (unsigned char)((int)(pPalette->m_rampLength.nFirst * flIntensity) + cColour);
+            return static_cast<unsigned char>(static_cast<int>(pPalette->m_rampLength.nFirst * flIntensity) + cColour);
     }
 
     return 0;
@@ -567,11 +567,11 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
             return 1;
         }
 
-        char c = (char)getc(pFile);
+        char c = static_cast<char>(getc(pFile));
 
         while (c != '\n')
         {
-            c = (char)getc(pFile);
+            c = static_cast<char>(getc(pFile));
         }
 
         ungetc(c, pFile);
@@ -591,23 +591,23 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
                     return 0;
                 }
 
-                entry.peRed   = (unsigned char)nRed;
-                entry.peGreen = (unsigned char)nGreen;
-                entry.peBlue  = (unsigned char)nBlue;
+                entry.peRed   = static_cast<unsigned char>(nRed);
+                entry.peGreen = static_cast<unsigned char>(nGreen);
+                entry.peBlue  = static_cast<unsigned char>(nBlue);
                 entry.peFlags = PALETTE_NOCOLLAPSE;
 
-                c = (char)getc(pFile);
+                c = static_cast<char>(getc(pFile));
 
                 while (c != '\n')
                 {
-                    c = (char)getc(pFile);
+                    c = static_cast<char>(getc(pFile));
                 }
 
                 ungetc(c, pFile);
 
                 if (bRemap != 0)
                 {
-                    if ((int)nIndex < m_remapRange.nFirst || (int)nIndex > m_remapRange.nCount)
+                    if (static_cast<int>(nIndex) < m_remapRange.nFirst || static_cast<int>(nIndex) > m_remapRange.nCount)
                     {
                         nIndex &= 0xff;
                     }
@@ -648,7 +648,7 @@ int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, Palette
 
     SyncDIBColorTable(iStart, cEntries);
 
-    return (int)cEntries;
+    return static_cast<int>(cEntries);
 }
 
 // FUNCTION: HYPERX 0x004267a0
@@ -689,15 +689,15 @@ void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteE
     *pflScale       = flFloor;
     const int nLast = nCount - 1;
 
-    const auto flRatio = (float)pow(static_cast<double>(1.0f / flFloor), static_cast<double>(1.0f / nLast));
+    const auto flRatio = static_cast<float>(pow(static_cast<double>(1.0f / flFloor), static_cast<double>(1.0f / nLast)));
 
     PaletteEntry* pOut  = pEntries;
     const float   flRed = peColour.peRed;
-    pOut->peRed         = (unsigned char)(int)(flRed * flFloor);
+    pOut->peRed         = static_cast<unsigned char>(static_cast<int>(flRed * flFloor));
     const float flGreen = peColour.peGreen;
-    pOut->peGreen       = (unsigned char)(int)(flGreen * flFloor);
+    pOut->peGreen       = static_cast<unsigned char>(static_cast<int>(flGreen * flFloor));
     const float flBlue  = peColour.peBlue;
-    pOut->peBlue        = (unsigned char)(int)(flBlue * flFloor);
+    pOut->peBlue        = static_cast<unsigned char>(static_cast<int>(flBlue * flFloor));
     pOut->peFlags       = peColour.peFlags;
     pOut++;
 
@@ -705,10 +705,10 @@ void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteE
     {
         const double dScale = pflScale[i - 1] * flRatio;
 
-        pflScale[i]   = (float)dScale;
-        pOut->peRed   = (unsigned char)(int)(flRed * dScale);
-        pOut->peGreen = (unsigned char)(int)(flGreen * dScale);
-        pOut->peBlue  = (unsigned char)(int)(flBlue * dScale);
+        pflScale[i]   = static_cast<float>(dScale);
+        pOut->peRed   = static_cast<unsigned char>(static_cast<int>(flRed * dScale));
+        pOut->peGreen = static_cast<unsigned char>(static_cast<int>(flGreen * dScale));
+        pOut->peBlue  = static_cast<unsigned char>(static_cast<int>(flBlue * dScale));
         pOut->peFlags = peColour.peFlags;
         pOut++;
     }

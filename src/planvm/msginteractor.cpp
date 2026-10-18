@@ -37,12 +37,12 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     m_otherSlot.n      = pObject->GetSlot();
 
     PlanWord* pEntry = pPlanArg->m_pArgs + ARG_MESSAGE_FIRST;
-    auto      nCount = (short)(pPlanArg->m_nArgCount - ARG_MESSAGE_FIRST);
+    auto      nCount = static_cast<short>(pPlanArg->m_nArgCount - ARG_MESSAGE_FIRST);
 
     while (nCount-- != 0)
     {
         PlanNode* const    pInstr  = pEntry->pNode;
-        const auto         nOpcode = (unsigned int)pInstr->m_nOpcode;
+        const auto         nOpcode = static_cast<unsigned int>(pInstr->m_nOpcode);
         const unsigned int nClass  = nOpcode & OP_CATEGORY;
 
         switch (nClass)
@@ -64,7 +64,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
                 {
                     PlanState* const pState = m_pOwner->GetPlanState();
 
-                    g_pfnPlanOpcodeHandlers[(short)pInstr->m_pArgs[0].n].pfnSetParam(
+                    g_pfnPlanOpcodeHandlers[static_cast<short>(pInstr->m_pArgs[0].n)].pfnSetParam(
                         m_pOwner, pInstr, pState->m_pCurrent, this);
                 }
                 break;
@@ -116,11 +116,11 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 
     ExecuteScript(pCursor, nCount, nArg, pState);
 
-    if ((unsigned int)m_nBehaviour < (unsigned int)PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
+    if (static_cast<unsigned int>(m_nBehaviour) < static_cast<unsigned int> PLAN_TOKEN_NO_BEH_CHANGE && m_bEnabled != 0)
     {
         m_pOwner->DispatchSceneMessage(MSG_EXIT_BEHAVIOR, 0, DECISION_LOG_FRESH, m_pOwner->GetSlot(), 0);
 
-        m_pOwner->GetPlanState()->ActivateBehavior((unsigned int)m_nBehaviour);
+        m_pOwner->GetPlanState()->ActivateBehavior(static_cast<unsigned int>(m_nBehaviour));
     }
 
     m_pOwner->GetPlanState()->m_nCollisionRearmTicks = COLLISION_REARM_TICKS_AFTER_RUN;
@@ -138,5 +138,5 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 // FUNCTION: HYPERX 0x0046bd20
 short MsgInteractor::GetTargetSlot()
 {
-    return (short)m_otherSlot.n;
+    return static_cast<short>(m_otherSlot.n);
 }

@@ -9,12 +9,12 @@ struct SyncSendCursor
 
     short GetPossessionTurn() const
     {
-        return (short)nWord;
+        return static_cast<short>(nWord);
     }
 
     int GetRow() const
     {
-        return (int)(nWord >> 16);
+        return static_cast<int>(nWord >> 16);
     }
 
     void SetPossessionTurn()

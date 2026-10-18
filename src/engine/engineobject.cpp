@@ -92,8 +92,8 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 
     if (bSameSide)
     {
-        const int nGenderA = (int)((PlayerObject*)pA)->m_stats.GetScalar(RATING_GENDER);
-        int       nGenderB = (int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER);
+        const int nGenderA = static_cast<int>(((PlayerObject*)pA)->m_stats.GetScalar(RATING_GENDER));
+        int       nGenderB = static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER));
 
         if ((nGenderA & nGenderB) != 0)
         {
@@ -105,18 +105,18 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
             pB = pA;
         }
 
-        if ((int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER) >= 1)
+        if (static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER)) >= 1)
         {
             return;
         }
 
         if ((pA->GetSlot() & 1) != 0)
         {
-            nTeam = (short)g_pGameEngine->m_nTeamAwayIndex;
+            nTeam = static_cast<short>(g_pGameEngine->m_nTeamAwayIndex);
         }
         else
         {
-            nTeam = (short)g_pGameEngine->m_nTeamHomeIndex;
+            nTeam = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
         }
 
         g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_TEAMMATE_COLLISION, nTeam);
@@ -131,14 +131,14 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 
     if ((pB->GetSlot() & 1) != 0)
     {
-        nTeam = (short)g_pGameEngine->m_nTeamAwayIndex;
+        nTeam = static_cast<short>(g_pGameEngine->m_nTeamAwayIndex);
     }
     else
     {
-        nTeam = (short)g_pGameEngine->m_nTeamHomeIndex;
+        nTeam = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
     }
 
-    if ((int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER) >= 1)
+    if (static_cast<int>(((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER)) >= 1)
     {
         nTeam += g_pGameEngine->m_pTeamTable->GetTeamCount();
     }
@@ -290,7 +290,7 @@ void EngineObject::BindAnimEventChannel(int nChannel, int nTarget, int nKind, in
 // FUNCTION: HYPERX 0x00422f30
 short EngineObject::GetSlot()
 {
-    return (short)m_nSlot;
+    return static_cast<short>(m_nSlot);
 }
 
 // FUNCTION: HYPERX 0x00422f40
@@ -401,7 +401,7 @@ void EngineObject::ComputeBoundingSphere()
 
     for (iBone = 0; iBone < GetComponentCount(); iBone++)
     {
-        pBone = m_pBones + (short)iBone;
+        pBone = m_pBones + static_cast<short>(iBone);
 
         if (pBone->IsUnbound() == 0)
         {
@@ -437,7 +437,7 @@ void EngineObject::ComputeBoundingSphere()
         }
     }
 
-    const auto flCount = (float)(short)nTotal;
+    const auto flCount = static_cast<float>(static_cast<short>(nTotal));
 
     m_flBoundRadius = 0.0f;
     m_vCentre.x     = vSum.x / flCount;
@@ -446,7 +446,7 @@ void EngineObject::ComputeBoundingSphere()
 
     for (iBone = 0; iBone < GetComponentCount(); iBone++)
     {
-        pBone = m_pBones + (short)iBone;
+        pBone = m_pBones + static_cast<short>(iBone);
 
         if (pBone->IsUnbound() == 0)
         {
@@ -475,7 +475,7 @@ void EngineObject::ComputeBoundingSphere()
                 const float flDy = vP.y - m_vCentre.y;
                 const float flDz = vP.z - m_vCentre.z;
 
-                const auto flDist = (float)sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz));
+                const auto flDist = static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 
                 if (flDist > m_flBoundRadius)
                 {
@@ -770,7 +770,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     if (pDef->m_bOwnPalette != 0)
     {
-        bRemap = (char)m_nSlot & 1;
+        bRemap = static_cast<char>(m_nSlot) & 1;
 
         if (pDef->m_bForceRemap != 0)
         {
@@ -783,7 +783,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
     // The remap runs once per list; a shared list was remapped by whichever object loaded it first.
     if (m_pModelBlock->m_nRefs < MATERIAL_SHARED)
     {
-        bRemap = (char)m_nSlot & 1;
+        bRemap = static_cast<char>(m_nSlot) & 1;
 
         if (pDef->m_bForceRemap != 0)
         {
@@ -806,21 +806,21 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
             if (bRemap != 0)
             {
-                if ((int)nColour >= g_pColorPalette->m_remapRange.nFirst &&
-                    (int)nColour <= g_pColorPalette->m_remapRange.nCount)
+                if (static_cast<int>(nColour) >= g_pColorPalette->m_remapRange.nFirst &&
+                    static_cast<int>(nColour) <= g_pColorPalette->m_remapRange.nCount)
                 {
-                    nShifted = g_pColorPalette->m_teamARange.nCount + (int)nColour;
+                    nShifted = g_pColorPalette->m_teamARange.nCount + static_cast<int>(nColour);
                 }
                 else
                 {
-                    nShifted = (int)nColour;
+                    nShifted = static_cast<int>(nColour);
                 }
 
-                nIndex = (unsigned char)nShifted;
+                nIndex = static_cast<unsigned char>(nShifted);
             }
             else
             {
-                nIndex = (unsigned char)nColour;
+                nIndex = static_cast<unsigned char>(nColour);
             }
 
             nColour = nIndex;
@@ -966,7 +966,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
     if (pDef->m_bOwnPalette != 0)
     {
-        bRemap = (char)m_nSlot & 1;
+        bRemap = static_cast<char>(m_nSlot) & 1;
 
         if (pDef->m_bForceRemap != 0)
         {
@@ -979,7 +979,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
     // The remap runs once per list; a shared list was remapped by whichever object loaded it first.
     if (m_pModelBlock->m_nRefs < MATERIAL_SHARED)
     {
-        bRemap = (char)m_nSlot & 1;
+        bRemap = static_cast<char>(m_nSlot) & 1;
 
         if (pDef->m_bForceRemap != 0)
         {
@@ -1002,21 +1002,21 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
             if (bRemap != 0)
             {
-                if ((int)nColour >= g_pColorPalette->m_remapRange.nFirst &&
-                    (int)nColour <= g_pColorPalette->m_remapRange.nCount)
+                if (static_cast<int>(nColour) >= g_pColorPalette->m_remapRange.nFirst &&
+                    static_cast<int>(nColour) <= g_pColorPalette->m_remapRange.nCount)
                 {
-                    nShifted = g_pColorPalette->m_teamARange.nCount + (int)nColour;
+                    nShifted = g_pColorPalette->m_teamARange.nCount + static_cast<int>(nColour);
                 }
                 else
                 {
-                    nShifted = (int)nColour;
+                    nShifted = static_cast<int>(nColour);
                 }
 
-                nIndex = (unsigned char)nShifted;
+                nIndex = static_cast<unsigned char>(nShifted);
             }
             else
             {
-                nIndex = (unsigned char)nColour;
+                nIndex = static_cast<unsigned char>(nColour);
             }
 
             nColour = nIndex;
@@ -1084,7 +1084,7 @@ void EngineObject::CompileAllPlans()
 
             m_pPlanStates[nIndex].m_pszName = m_papszPlanNames[nIndex];
 
-            m_pPlanStates[nIndex].m_wSyncValue = (short)nIndex;
+            m_pPlanStates[nIndex].m_wSyncValue = static_cast<short>(nIndex);
 
             PlanWord* const pSource = *ppSource++;
 
@@ -1246,10 +1246,10 @@ char EngineObject::ProcessReceivedPacket()
                 {
                     const unsigned int nCamera = NetSequenceWord::GetCarrier(body.nSequence);
 
-                    if ((short)nCamera != 0)
+                    if (static_cast<short>(nCamera) != 0)
                     {
                         pColObj = g_pGameEngine->GetColObjPtr(
-                            (short)AnimSet::GetFieldOffset((short)(nCamera - 1)));
+                            static_cast<short>(AnimSet::GetFieldOffset(static_cast<short>(nCamera - 1))));
 
                         pAttach = pColObj->m_pAttach;
 
@@ -1300,12 +1300,12 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 
     if (pOwner->pState->nObjectSlot != SLOT_GOD)
     {
-        if (*pOutPlan != (short)pBody->nPlan || *pOutBehaviour != (short)pBody->nBehaviour)
+        if (*pOutPlan != static_cast<short>(pBody->nPlan) || *pOutBehaviour != static_cast<short>(pBody->nBehaviour))
         {
             EnqueueInputCommand(COMMAND_SET_PLAN_AND_BEHAVIOR, PlanBehaviourWord::Pack(nPlan, pBody->nBehaviour));
 
-            *pOutPlan      = (short)pBody->nPlan;
-            *pOutBehaviour = (short)pBody->nBehaviour;
+            *pOutPlan      = static_cast<short>(pBody->nPlan);
+            *pOutBehaviour = static_cast<short>(pBody->nBehaviour);
         }
 
         return;
@@ -1313,11 +1313,11 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 
     for (int nIndex = 0; nIndex < g_nStationaryCount; nIndex++)
     {
-        EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)g_aStationarySlots[nIndex]];
+        EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(g_aStationarySlots[nIndex])];
 
         const short nCurrent = pObject->GetPlanState()->m_pCurrent->m_wSyncValue;
 
-        const auto nValue = (short)SlotNibbles::Get(pBody->abNibbles, nIndex);
+        const auto nValue = static_cast<short>(SlotNibbles::Get(pBody->abNibbles, nIndex));
 
         *pOutBehaviour = nValue;
 
@@ -1417,14 +1417,14 @@ void EngineObject::UpdateLODAndPushComponents(CameraObject* pCamera)
 
     if (nLevels > 1)
     {
-        if (flDistSq > m_flLodDistSq && (nWanted = (short)(m_wLodLevel + 1)) < nLevels && flDistSq > pTable->m_aflFarther[nWanted])
+        if (flDistSq > m_flLodDistSq && (nWanted = static_cast<short>(m_wLodLevel + 1)) < nLevels && flDistSq > pTable->m_aflFarther[nWanted])
         {
             m_wLodLevel   = nWanted;
             m_flLodDistSq = flDistSq;
         }
         else
         {
-            if (flDistSq < m_flLodDistSq && m_wLodLevel > 0 && flDistSq < pTable->m_aflNearer[(short)(m_wLodLevel - 1)])
+            if (flDistSq < m_flLodDistSq && m_wLodLevel > 0 && flDistSq < pTable->m_aflNearer[static_cast<short>(m_wLodLevel - 1)])
             {
                 m_wLodLevel--;
                 m_flLodDistSq = flDistSq;
@@ -1476,7 +1476,7 @@ void EngineObject::SubmitShadowToHardware() const
 
     const TransformedVertex* const pPosed = &g_pModelVertexBuf[m_wShadowCount];
 
-    auto points = std::vector<Vec3>((size_t)m_wShadowCount);
+    auto points = std::vector<Vec3>(static_cast<size_t>(m_wShadowCount));
 
     for (int i = 0; i < m_wShadowCount; i++)
     {
@@ -1607,7 +1607,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
     {
         char cFacing = 1;
 
-        MeshFace* const pFace = &m_pShadowFaceList[(short)nFace].face;
+        MeshFace* const pFace = &m_pShadowFaceList[static_cast<short>(nFace)].face;
 
         const char cClip = Face::ClipCodeAndCullCheck(pFace, g_pModelVertexBuf);
 
@@ -1652,7 +1652,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 
         MeshMaterial* apMaterials[2];
 
-        apMaterials[0] = &m_pModelBlock->m_pMaterials[(int)pFace->cMaterial];
+        apMaterials[0] = &m_pModelBlock->m_pMaterials[static_cast<int>(pFace->cMaterial)];
         apMaterials[1] = &m_pModelBlock->m_pMaterials[apMaterials[0]->nBackIndex];
 
         MeshBone::DispatchFace(m_pBones, cFacing, pFace, apMaterials, nullptr, g_pModelVertexBuf, &g_vDispatchFaceNormal, cClip);
@@ -1692,8 +1692,8 @@ void EngineObject::SelectAndActivatePlan()
         {
             if (pPlayer->pState->nConnected == 0)
             {
-                g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[(short)nSlot];
-                g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[(short)m_nSlot];
+                g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
+                g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[static_cast<short>(m_nSlot)];
             }
 
             for (nIndex = 0; nIndex < m_nPlanCount; nIndex++)
@@ -1702,7 +1702,7 @@ void EngineObject::SelectAndActivatePlan()
                                    // STRING: HYPERX 0x004bb340
                                    "Human") == 0)
                 {
-                    InstantiateAIPlan((short)nIndex);
+                    InstantiateAIPlan(static_cast<short>(nIndex));
 
                     m_pPlanState->ActivateBehavior(0);
 
@@ -1725,7 +1725,7 @@ void EngineObject::SelectAndActivatePlan()
                                    // STRING: HYPERX 0x004bb384
                                    "Defense") == 0)
                 {
-                    InstantiateAIPlan((short)nIndex);
+                    InstantiateAIPlan(static_cast<short>(nIndex));
 
                     m_pPlanState->ActivateBehavior(0);
 
@@ -1760,7 +1760,7 @@ void EngineObject::SelectAndActivatePlan()
             {
                 if (SDL_strcasecmp(m_papszPlanNames[nIndex], pszWanted) == 0)
                 {
-                    InstantiateAIPlan((short)nIndex);
+                    InstantiateAIPlan(static_cast<short>(nIndex));
 
                     break;
                 }
@@ -1865,9 +1865,9 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
             m_pBubble = pBubble;
 
             // The whole word is tested, since a real AttachPak's low half can carry the tag's bits.
-            if (((std::uintptr_t)pBubble->m_pAttach & ~(std::uintptr_t)0xffff) == EXTRA_USE_DETAIL)
+            if (((std::uintptr_t)pBubble->m_pAttach & ~static_cast<std::uintptr_t>(0xffff)) == EXTRA_USE_DETAIL)
             {
-                nTag = (int)(std::intptr_t)pBubble->m_pAttach;
+                nTag = static_cast<int>((std::intptr_t)pBubble->m_pAttach);
 
                 m_pBubble->m_pCage = new CollisionCage(this, nTag & 0xffff);
             }
@@ -1946,7 +1946,7 @@ void EngineObject::RegisterSceneMessageHandler(Interactor* pHandler)
 {
     const short nId = pHandler->GetNamedSlot();
 
-    m_aSceneHandlerSlot[nId] = (unsigned char)m_nSceneHandlerCount;
+    m_aSceneHandlerSlot[nId] = static_cast<unsigned char>(m_nSceneHandlerCount);
 
     m_apSceneHandler[m_nSceneHandlerCount] = pHandler;
 
@@ -1974,7 +1974,7 @@ void EngineObject::SetVelocity(Vec3 vel)
     m_pBody->prevPos.y = m_pBody->pos.y - vel.y;
     m_pBody->prevPos.z = m_pBody->pos.z - vel.z;
 
-    m_pBody->flSpeed = (float)sqrt(static_cast<double>(Vec3::DotInline(&vel, &vel)));
+    m_pBody->flSpeed = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vel, &vel))));
 
     PhysicsBody* const pBody = m_pBody;
 
@@ -2021,17 +2021,17 @@ void EngineObject::InitShadowVertexLinks(LODNode* pLod, ModelComponent* pMesh)
                     // STRING: HYPERX 0x004c5324
                     g_gameApp.Fatal("DB ERROR: Missing shadow vertex component - Model %s Comp %d!",
                                     pLod->m_pRecord->m_szName,
-                                    (int)*pIndex);
+                                    static_cast<int>(*pIndex));
                     break;
                 }
 
-                if (m_pBones[(short)nComp].m_pDesc->m_nLinkId == *pIndex)
+                if (m_pBones[static_cast<short>(nComp)].m_pDesc->m_nLinkId == *pIndex)
                 {
                     break;
                 }
             }
 
-            *pLink = &m_pBones[(short)nComp].m_world;
+            *pLink = &m_pBones[static_cast<short>(nComp)].m_world;
 
             pLink++;
             pIndex++;
@@ -2064,7 +2064,7 @@ void EngineObject::CountVisibleFaces()
 
     for (int iBone = 0; iBone < m_wBoneCount; iBone++)
     {
-        MeshBone* const pBone = &m_pBones[(short)iBone];
+        MeshBone* const pBone = &m_pBones[static_cast<short>(iBone)];
 
         if (pBone->IsUnbound() != 0)
         {
@@ -2086,14 +2086,14 @@ char EngineObject::InitRenderSlots(LODNode* pLod, MeshBone* pBones, CD3DTextureM
     {
         if (bShadowless != 0)
         {
-            if ((char)pWalk->BindToLODMeshShadowless(pTexManager, pLod, this, nSlot) == 0)
+            if (static_cast<char>(pWalk->BindToLODMeshShadowless(pTexManager, pLod, this, nSlot)) == 0)
             {
                 return 0;
             }
         }
         else
         {
-            if ((char)pWalk->BindToLODMesh(pTexManager, pLod, this, nSlot) == 0)
+            if (static_cast<char>(pWalk->BindToLODMesh(pTexManager, pLod, this, nSlot)) == 0)
             {
                 return 0;
             }
@@ -2142,8 +2142,8 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 
         pTransform = &m_transformA;
 
-        pTransform->m_rotZ.flCos = (float)cos(static_cast<double>(flAngle));
-        pTransform->m_rotZ.flSin = (float)sin(static_cast<double>(flAngle));
+        pTransform->m_rotZ.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+        pTransform->m_rotZ.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
         pTransform->ApplyRotationZ();
     }
@@ -2154,8 +2154,8 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 
         pTransform = &m_transformA;
 
-        pTransform->m_rotX.flCos = (float)cos(static_cast<double>(flAngle));
-        pTransform->m_rotX.flSin = (float)sin(static_cast<double>(flAngle));
+        pTransform->m_rotX.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+        pTransform->m_rotX.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
         pTransform->RotateXStaged();
     }
@@ -2166,8 +2166,8 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 
         pTransform = &m_transformA;
 
-        pTransform->m_rotY.flCos = (float)cos(static_cast<double>(flAngle));
-        pTransform->m_rotY.flSin = (float)sin(static_cast<double>(flAngle));
+        pTransform->m_rotY.flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
+        pTransform->m_rotY.flSin = static_cast<float>(sin(static_cast<double>(flAngle)));
 
         pTransform->RotateAroundY();
     }
@@ -2193,7 +2193,7 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
     vDiff.y = vPos.y - pBody->pos.y;
     vDiff.z = vPos.z - pBody->pos.z;
 
-    const auto flDistance = (float)sqrt(static_cast<double>(vDiff.z * vDiff.z + vDiff.y * vDiff.y + vDiff.x * vDiff.x));
+    const auto flDistance = static_cast<float>(sqrt(static_cast<double>(vDiff.z * vDiff.z + vDiff.y * vDiff.y + vDiff.x * vDiff.x)));
 
     Math::Vec3Normalize(&vDiff);
 
@@ -2237,7 +2237,7 @@ char EngineObject::DequeueEvent(int* pMessage, int* pArg)
     *pMessage = m_anSceneMessage[m_nSceneHead];
     *pArg     = m_anSceneArg[m_nSceneHead];
 
-    m_nSceneHead = (short)((m_nSceneHead + 1) % OBJECT_RING_LENGTH);
+    m_nSceneHead = static_cast<short>((m_nSceneHead + 1) % OBJECT_RING_LENGTH);
     m_nSceneCount--;
 
     return 1;
@@ -2249,7 +2249,7 @@ int EngineObject::PollStationaryEvents(int* pMessage, int* pArg)
 {
     for (int nIndex = 0; nIndex < g_nStationaryCount; nIndex++)
     {
-        if (g_pGameEngine->m_ppSlots[(short)g_aStationarySlots[nIndex]]->DequeueEvent(pMessage, pArg) != 0)
+        if (g_pGameEngine->m_ppSlots[static_cast<short>(g_aStationarySlots[nIndex])]->DequeueEvent(pMessage, pArg) != 0)
         {
             return nIndex + 1;
         }
@@ -2264,7 +2264,7 @@ char EngineObject::EnqueueInputCommand(int nCommand, int nArg)
     while (m_nCommandCount + 1 > OBJECT_RING_LENGTH)
     {
         m_nCommandCount--;
-        m_nCommandHead = (short)((m_nCommandHead + 1) % OBJECT_RING_LENGTH);
+        m_nCommandHead = static_cast<short>((m_nCommandHead + 1) % OBJECT_RING_LENGTH);
     }
 
     m_anCommand[(m_nCommandHead + m_nCommandCount) % OBJECT_RING_LENGTH]    = nCommand;
@@ -2289,7 +2289,7 @@ char EngineObject::DequeueInputCommand(int* pCommand, int* pArg)
     *pCommand = m_anCommand[m_nCommandHead];
     *pArg     = m_anCommandArg[m_nCommandHead];
 
-    m_nCommandHead = (short)((m_nCommandHead + 1) % OBJECT_RING_LENGTH);
+    m_nCommandHead = static_cast<short>((m_nCommandHead + 1) % OBJECT_RING_LENGTH);
     m_nCommandCount--;
 
     return 1;

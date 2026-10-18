@@ -27,9 +27,9 @@ DromeExteriorScreen::DromeExteriorScreen()
 
     TeamsBlock* pList = g_pGameEngine->m_pTeamTable;
 
-    if ((short)g_nDromeArena < pList->GetTeamCount())
+    if (static_cast<short>(g_nDromeArena) < pList->GetTeamCount())
     {
-        pszName = pList->m_ppTeams[(short)g_nDromeArena]->szDromeExt;
+        pszName = pList->m_ppTeams[static_cast<short>(g_nDromeArena)]->szDromeExt;
     }
     else
     {
@@ -49,9 +49,9 @@ DromeExteriorScreen::DromeExteriorScreen()
     {
         pList = g_pGameEngine->m_pTeamTable;
 
-        if ((short)g_nDromeTeamAway < pList->GetTeamCount())
+        if (static_cast<short>(g_nDromeTeamAway) < pList->GetTeamCount())
         {
-            pszName = pList->m_ppTeams[(short)g_nDromeTeamAway]->szTsLogo;
+            pszName = pList->m_ppTeams[static_cast<short>(g_nDromeTeamAway)]->szTsLogo;
         }
         else
         {
@@ -62,9 +62,9 @@ DromeExteriorScreen::DromeExteriorScreen()
     {
         pList = g_pGameEngine->m_pTeamTable;
 
-        if ((short)g_nDromeTeamHome < pList->GetTeamCount())
+        if (static_cast<short>(g_nDromeTeamHome) < pList->GetTeamCount())
         {
-            pszName = pList->m_ppTeams[(short)g_nDromeTeamHome]->szTsLogo;
+            pszName = pList->m_ppTeams[static_cast<short>(g_nDromeTeamHome)]->szTsLogo;
         }
         else
         {
@@ -105,7 +105,7 @@ DromeExteriorScreen::DromeExteriorScreen()
 
         nRound = g_pGameEngine->m_pSaveObject->GetBracketPos();
 
-        if ((unsigned int)nRound >= 0xd)
+        if (static_cast<unsigned int>(nRound) >= 0xd)
         {
             nRound = 0;
         }

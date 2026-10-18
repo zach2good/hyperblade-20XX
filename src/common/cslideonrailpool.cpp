@@ -11,7 +11,7 @@ void CSlideOnRailPool::Init()
     m_pHead           = pNode;
     AgendaItem* pPool = pNode;
 
-    auto nRemaining = (short)g_nPoolCountCSlideOnRail;
+    auto nRemaining = static_cast<short>(g_nPoolCountCSlideOnRail);
 
     while (nRemaining-- > 0)
     {

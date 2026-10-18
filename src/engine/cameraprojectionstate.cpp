@@ -67,7 +67,7 @@ void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float
     m_flHalfWidthPx = m_flHalfWidthPxB = m_flHalfWidthPxA = pView->nPrevWidth * 0.5f;
     m_flHalfHeightPx = m_flHalfHeightPxB = m_flHalfHeightPxA = pView->nPrevHeight * 0.5f;
 
-    m_flCmPerPixel = 1.0f / (float)(72.0 / g_flCmPerInchProjection);
+    m_flCmPerPixel = 1.0f / static_cast<float>(72.0 / g_flCmPerInchProjection);
 
     m_flHalfHeightCm = m_flCmPerPixel * m_flHalfHeightPxA;
     m_flHalfWidthCm  = m_flCmPerPixel * m_flHalfWidthPxA;
@@ -92,7 +92,7 @@ void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float
 
     if (m_bHasRow3 != 0)
     {
-        m_flTanHalfFov = (float)dTan;
+        m_flTanHalfFov = static_cast<float>(dTan);
         m_flNearClip   = 1.0f;
         m_clip.flMinX  = 0.0f;
         m_clip.flMaxX  = pView->flPrevRight;
@@ -103,7 +103,7 @@ void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float
     }
     else
     {
-        m_flNearClip = (float)(m_flHalfWidthCm * dCos / dSin);
+        m_flNearClip = static_cast<float>(m_flHalfWidthCm * dCos / dSin);
     }
 
     BuildMatrix();
@@ -235,10 +235,10 @@ void CameraProjectionState::BuildMatrix()
 // FUNCTION: HYPERX 0x00430960
 void CameraProjectionState::RotateY(float flAngle)
 {
-    const auto flCos = (float)cos(static_cast<double>(flAngle));
+    const auto flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
     m_rotY.flCos     = flCos;
 
-    flAngle      = (float)sin(static_cast<double>(flAngle));
+    flAngle      = static_cast<float>(sin(static_cast<double>(flAngle)));
     m_rotY.flSin = flAngle;
 
     if (m_bIdentity != 0)
@@ -251,16 +251,16 @@ void CameraProjectionState::RotateY(float flAngle)
     else
     {
         double dOld = m_a[0][0];
-        m_a[0][0]   = (float)(flCos * dOld - flAngle * m_a[0][2]);
-        m_a[0][2]   = (float)((flCos * m_a[0][2]) + flAngle * dOld);
+        m_a[0][0]   = static_cast<float>(flCos * dOld - flAngle * m_a[0][2]);
+        m_a[0][2]   = static_cast<float>((flCos * m_a[0][2]) + flAngle * dOld);
 
         dOld      = m_a[1][0];
-        m_a[1][0] = (float)(flCos * dOld - flAngle * m_a[1][2]);
-        m_a[1][2] = (float)(flCos * m_a[1][2] + (flAngle * dOld));
+        m_a[1][0] = static_cast<float>(flCos * dOld - flAngle * m_a[1][2]);
+        m_a[1][2] = static_cast<float>(flCos * m_a[1][2] + (flAngle * dOld));
 
         dOld      = m_a[2][0];
-        m_a[2][0] = (float)(flCos * dOld - flAngle * m_a[2][2]);
-        m_a[2][2] = (float)(flCos * m_a[2][2] + flAngle * dOld);
+        m_a[2][0] = static_cast<float>(flCos * dOld - flAngle * m_a[2][2]);
+        m_a[2][2] = static_cast<float>(flCos * m_a[2][2] + flAngle * dOld);
 
         m_a[0][3] = m_a[0][0] * GetTranslateX() + (m_a[0][1] * m_vTranslate.y) + GetElement(0, 2) * m_vTranslate.z;
         m_a[1][3] = (GetElement(1, 0) * m_vTranslate.x + m_a[1][1] * m_vTranslate.y) + m_a[1][2] * m_vTranslate.z;
@@ -273,10 +273,10 @@ void CameraProjectionState::RotateY(float flAngle)
 // FUNCTION: HYPERX 0x00430a80
 void CameraProjectionState::RotateX(float flAngle)
 {
-    const auto flCos = (float)cos(static_cast<double>(flAngle));
+    const auto flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
     m_rotX.flCos     = flCos;
 
-    flAngle      = (float)sin(static_cast<double>(flAngle));
+    flAngle      = static_cast<float>(sin(static_cast<double>(flAngle)));
     m_rotX.flSin = flAngle;
 
     if (m_bIdentity != 0)
@@ -289,16 +289,16 @@ void CameraProjectionState::RotateX(float flAngle)
     else
     {
         double dOld = m_a[0][1];
-        m_a[0][1]   = (float)(flCos * dOld + flAngle * m_a[0][2]);
-        m_a[0][2]   = (float)(flCos * m_a[0][2] - flAngle * dOld);
+        m_a[0][1]   = static_cast<float>(flCos * dOld + flAngle * m_a[0][2]);
+        m_a[0][2]   = static_cast<float>(flCos * m_a[0][2] - flAngle * dOld);
 
         dOld      = m_a[1][1];
-        m_a[1][1] = (float)(flCos * dOld + flAngle * m_a[1][2]);
-        m_a[1][2] = (float)(flCos * m_a[1][2] - flAngle * dOld);
+        m_a[1][1] = static_cast<float>(flCos * dOld + flAngle * m_a[1][2]);
+        m_a[1][2] = static_cast<float>(flCos * m_a[1][2] - flAngle * dOld);
 
         dOld      = m_a[2][1];
-        m_a[2][1] = (float)(flCos * dOld + flAngle * m_a[2][2]);
-        m_a[2][2] = (float)(flCos * m_a[2][2] - flAngle * dOld);
+        m_a[2][1] = static_cast<float>(flCos * dOld + flAngle * m_a[2][2]);
+        m_a[2][2] = static_cast<float>(flCos * m_a[2][2] - flAngle * dOld);
 
         m_a[0][3] = (m_a[0][0] * m_vTranslate.x + GetElement(0, 1) * m_vTranslate.y) + m_a[0][2] * m_vTranslate.z;
         m_a[1][3] = (m_a[1][0] * m_vTranslate.x + GetElement(1, 2) * m_vTranslate.z) + m_a[1][1] * m_vTranslate.GetY();
@@ -311,10 +311,10 @@ void CameraProjectionState::RotateX(float flAngle)
 // FUNCTION: HYPERX 0x00430ba0
 void CameraProjectionState::RotateZ(float flAngle)
 {
-    const auto flCos = (float)cos(static_cast<double>(flAngle));
+    const auto flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
     m_rotZ.flCos     = flCos;
 
-    flAngle      = (float)sin(static_cast<double>(flAngle));
+    flAngle      = static_cast<float>(sin(static_cast<double>(flAngle)));
     m_rotZ.flSin = flAngle;
 
     if (m_bIdentity != 0)
@@ -327,16 +327,16 @@ void CameraProjectionState::RotateZ(float flAngle)
     else
     {
         double dOld = m_a[0][0];
-        m_a[0][0]   = (float)(flCos * dOld + flAngle * m_a[0][1]);
-        m_a[0][1]   = (float)(flCos * m_a[0][1] - flAngle * dOld);
+        m_a[0][0]   = static_cast<float>(flCos * dOld + flAngle * m_a[0][1]);
+        m_a[0][1]   = static_cast<float>(flCos * m_a[0][1] - flAngle * dOld);
 
         dOld      = m_a[1][0];
-        m_a[1][0] = (float)(flCos * dOld + flAngle * m_a[1][1]);
-        m_a[1][1] = (float)(flCos * m_a[1][1] - flAngle * dOld);
+        m_a[1][0] = static_cast<float>(flCos * dOld + flAngle * m_a[1][1]);
+        m_a[1][1] = static_cast<float>(flCos * m_a[1][1] - flAngle * dOld);
 
         dOld      = m_a[2][0];
-        m_a[2][0] = (float)(flCos * dOld + flAngle * m_a[2][1]);
-        m_a[2][1] = (float)(flCos * m_a[2][1] - flAngle * dOld);
+        m_a[2][0] = static_cast<float>(flCos * dOld + flAngle * m_a[2][1]);
+        m_a[2][1] = static_cast<float>(flCos * m_a[2][1] - flAngle * dOld);
 
         m_a[0][3] = m_a[0][0] * m_vTranslate.x + (m_a[0][1] * m_vTranslate.y) + m_a[0][2] * m_vTranslate.z;
         m_a[1][3] = GetElement(1, 0) * m_vTranslate.x + m_a[1][1] * m_vTranslate.y + m_a[1][2] * m_vTranslate.z;

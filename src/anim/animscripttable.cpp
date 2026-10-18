@@ -126,7 +126,7 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
         {
             nFirst = pState->pDb->GetNodeCount();
 
-            pState->pDb->m_wNodeCount = (short)(nFirst + 1);
+            pState->pDb->m_wNodeCount = static_cast<short>(nFirst + 1);
 
             pState->pDb->m_apNodes[nFirst] = pState->pSegment;
 
@@ -143,14 +143,14 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
             {
                 if (strstr(szName, (const char*)pState->strPrefix) == szName && (pVm = m_pPlanVm) != nullptr)
                 {
-                    nMessage = (int)pVm->LookupSymbol(szName).nValue;
+                    nMessage = static_cast<int>(pVm->LookupSymbol(szName).nValue);
                 }
                 else
                 {
                     nMessage = MSG_NOMSG;
                 }
 
-                pState->pDb->AddClipEntry((unsigned short)nFirst, (unsigned short)nSecond, szName, nMessage, szRef, nSyncSegment, nSyncFrame);
+                pState->pDb->AddClipEntry(static_cast<unsigned short>(nFirst), static_cast<unsigned short>(nSecond), szName, nMessage, szRef, nSyncSegment, nSyncFrame);
             }
         }
     }
@@ -239,11 +239,11 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
     int  nResult = 0;
     char szToken[SEGMENT_TOKEN_CHARS];
 
-    const char* pszScan = (const char*)strpbrk(pszLine, g_pszAnimTokenDelimiters);
+    const char* pszScan = strpbrk(pszLine, g_pszAnimTokenDelimiters);
     pszScan             = pszScan + 1;
-    pszScan             = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
+    pszScan             = strpbrk(pszScan, g_pszAnimTokenDelimiters);
     pszScan             = pszScan + 1;
-    pszScan             = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
+    pszScan             = strpbrk(pszScan, g_pszAnimTokenDelimiters);
 
     *ppszCursor = pszScan;
 
@@ -355,7 +355,7 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
 
         for (int nIndex = 0; nIndex < TRIGGER_FIELDS; nIndex++)
         {
-            pszScan = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
+            pszScan = strpbrk(pszScan, g_pszAnimTokenDelimiters);
 
             if (pszScan == nullptr)
             {

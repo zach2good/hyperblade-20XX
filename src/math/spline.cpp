@@ -115,7 +115,7 @@ Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 // FUNCTION: HYPERX 0x00492fe0
 float Spline::EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
-    return (float)sqrt(static_cast<double>((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq));
+    return static_cast<float>(sqrt(static_cast<double>((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq)));
 }
 
 // FUNCTION: HYPERX 0x00493000
@@ -165,7 +165,7 @@ Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
 // FUNCTION: HYPERX 0x004930c0
 float Spline::EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
-    return -(float)sqrt(static_cast<double>((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq));
+    return -static_cast<float>(sqrt(static_cast<double>((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq)));
 }
 
 // FUNCTION: HYPERX 0x004930e0
@@ -245,7 +245,7 @@ Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOff
 // FUNCTION: HYPERX 0x00493220
 float Spline::EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
-    return (float)cos(static_cast<double>(flT * flFrequency + flPhase)) * flAmplitude + flOffset;
+    return static_cast<float>(cos(static_cast<double>(flT * flFrequency + flPhase))) * flAmplitude + flOffset;
 }
 
 // A parameter that leaves the curve moves to the next one, reflected about its nearer limit.

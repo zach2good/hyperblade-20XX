@@ -75,7 +75,7 @@ JumbotronScreen::JumbotronScreen()
         pWidget->AppendFrame(nullptr);
     }
 
-    auto        nRound = (short)g_pGameEngine->m_nTeamHomeIndex;
+    auto        nRound = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
     TeamsBlock* pList  = g_pGameEngine->m_pTeamTable;
 
     if (nRound < pList->GetTeamCount())
@@ -92,7 +92,7 @@ JumbotronScreen::JumbotronScreen()
     pWidget = AppendWidget(new DisplayWidget(0x82, 0x14, 0, 0, this, -1));
     pWidget->AppendFrame(m_hBitmap);
 
-    nRound = (short)g_pGameEngine->m_nTeamAwayIndex;
+    nRound = static_cast<short>(g_pGameEngine->m_nTeamAwayIndex);
     pList  = g_pGameEngine->m_pTeamTable;
 
     if (nRound < pList->GetTeamCount())

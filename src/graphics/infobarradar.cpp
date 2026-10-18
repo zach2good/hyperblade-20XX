@@ -58,14 +58,14 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
 
     flDivisor = (std::max)(vLimits.x, vLimits.y);
 
-    m_flScaleX = (float)nHalfWidth / flDivisor;
-    m_flScaleY = (float)nHalfHeight / flDivisor;
+    m_flScaleX = static_cast<float>(nHalfWidth) / flDivisor;
+    m_flScaleY = static_cast<float>(nHalfHeight) / flDivisor;
 }
 
 // FUNCTION: HYPERX 0x0044fdd0
 int InfoBarRadar::TrackSlot(int nSlot)
 {
-    EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)nSlot];
+    EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
     if (pObject == nullptr)
     {
@@ -87,8 +87,8 @@ int InfoBarRadar::TrackSlot(int nSlot)
 
     const double dAngle = atan2(static_cast<double>(vDirection.x), static_cast<double>(vDirection.y));
 
-    m_flSin = (float)sin(static_cast<double>(dAngle));
-    m_flCos = (float)cos(static_cast<double>(dAngle));
+    m_flSin = static_cast<float>(sin(static_cast<double>(dAngle)));
+    m_flCos = static_cast<float>(cos(static_cast<double>(dAngle)));
 
     return 1;
 }
@@ -136,7 +136,7 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
     ptCentre.x = m_ptDrawOffset.x + m_ptPosition.x;
     ptCentre.y = m_ptDrawOffset.y + m_ptPosition.y;
 
-    EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)nSlot];
+    EngineObject* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
     if (pObject == nullptr)
     {
@@ -153,8 +153,8 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
         const float flX = vDelta.x * m_flScaleX;
         const float flY = vDelta.y * m_flScaleY;
 
-        const int nX = (int)(flX * m_flCos - flY * m_flSin) + ptCentre.x;
-        const int nY = ptCentre.y - (int)((flX * m_flSin) + flY * m_flCos);
+        const int nX = static_cast<int>(flX * m_flCos - flY * m_flSin) + ptCentre.x;
+        const int nY = ptCentre.y - static_cast<int>((flX * m_flSin) + flY * m_flCos);
 
         SWRend::FillRect(nX, nY, 4, 4, nColour);
 
@@ -196,11 +196,11 @@ void InfoBarRadar::DrawMarker(int)
 
     for (int i = 0; i < ARROW_POINTS; i++)
     {
-        const float flX = (float)apt[i].x * m_flScaleX;
-        const float flY = (float)apt[i].y * m_flScaleY;
+        const float flX = static_cast<float>(apt[i].x) * m_flScaleX;
+        const float flY = static_cast<float>(apt[i].y) * m_flScaleY;
 
-        apt[i].x = (int)(flX * m_flCos - flY * m_flSin) + nOriginX;
-        apt[i].y = nOriginY - (int)(flX * m_flSin + flY * m_flCos);
+        apt[i].x = static_cast<int>(flX * m_flCos - flY * m_flSin) + nOriginX;
+        apt[i].y = nOriginY - static_cast<int>(flX * m_flSin + flY * m_flCos);
     }
 
     SWRend::FillPolygon(apt, ARROW_POINTS, 0xe6);

@@ -23,9 +23,9 @@ namespace
 // true-colour display. Null for a depth the menus never use.
 GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
 {
-    const auto nWidth  = (int)pDib->biWidth;
-    const auto nHeight = std::abs((int)pDib->biHeight);
-    const auto nBits   = (int)pDib->biBitCount;
+    const auto nWidth  = static_cast<int>(pDib->biWidth);
+    const auto nHeight = std::abs(static_cast<int>(pDib->biHeight));
+    const auto nBits   = static_cast<int>(pDib->biBitCount);
 
     if (nWidth <= 0 || nHeight <= 0 || pDib->biCompression != BITMAP_RGB || (nBits != 1 && nBits != 4 && nBits != 8 && nBits != 24 && nBits != 32))
     {
@@ -33,11 +33,11 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
     }
 
     const RgbQuad* const pColours = GDI::ColorTable(pDib);
-    const auto           nColours = (int)((const RgbQuad*)GDI::PixelBits(pDib) - pColours);
-    const auto* const    pRows    = (const unsigned char*)GDI::PixelBits(pDib);
+    const auto           nColours = static_cast<int>(reinterpret_cast<const RgbQuad*>(GDI::PixelBits(pDib)) - pColours);
+    const auto* const    pRows    = reinterpret_cast<const unsigned char*>(GDI::PixelBits(pDib));
     const auto           nStride  = (nWidth * nBits + 31) / 32 * 4;
 
-    auto* const pBitmap = new GDI::Bitmap{ nWidth, nHeight, std::vector<std::uint32_t>((size_t)nWidth * nHeight) };
+    auto* const pBitmap = new GDI::Bitmap{ nWidth, nHeight, std::vector<std::uint32_t>(static_cast<size_t>(nWidth) * nHeight) };
 
     for (int y = 0; y < nHeight; y++)
     {
@@ -52,8 +52,8 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
             return y;
         }();
 
-        const unsigned char* const pRow = pRows + (size_t)nRow * nStride;
-        std::uint32_t* const       pOut = &pBitmap->pixels[(size_t)y * nWidth];
+        const unsigned char* const pRow = pRows + static_cast<size_t>(nRow) * nStride;
+        std::uint32_t* const       pOut = &pBitmap->pixels[static_cast<size_t>(y) * nWidth];
 
         for (int x = 0; x < nWidth; x++)
         {
@@ -61,7 +61,7 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
             {
                 const unsigned char* const p = pRow + x * (nBits / 8);
 
-                pOut[x] = (std::uint32_t)(p[2] << 16 | p[1] << 8 | p[0]);
+                pOut[x] = static_cast<std::uint32_t>(p[2] << 16 | p[1] << 8 | p[0]);
 
                 continue;
             }
@@ -74,7 +74,7 @@ GDI::Bitmap* FromDIB(const BitmapInfoHeader* pDib)
             {
                 const auto& colour = pColours[nIndex];
 
-                pOut[x] = (std::uint32_t)(colour.rgbRed << 16 | colour.rgbGreen << 8 | colour.rgbBlue);
+                pOut[x] = static_cast<std::uint32_t>(colour.rgbRed << 16 | colour.rgbGreen << 8 | colour.rgbBlue);
             }
         }
     }
@@ -116,7 +116,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 
     if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == MDM1_MAGIC)
     {
-        pDib = (BitmapInfoHeader*)MDM1::Decompress(&file);
+        pDib = static_cast<BitmapInfoHeader*>(MDM1::Decompress(&file));
 
         file.CloseAndTest();
         file.Close();
@@ -145,7 +145,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 
     const int nTotalBytes = pDib->biSize + nColors * sizeof(RgbQuad) + nImageBytes;
 
-    auto* pShrunk = (BitmapInfoHeader*)realloc(pDib, nTotalBytes);
+    auto* pShrunk = static_cast<BitmapInfoHeader*>(realloc(pDib, nTotalBytes));
 
     if (pShrunk == nullptr)
     {
@@ -188,15 +188,15 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
     }
 
     const auto bFour   = pDib->biCompression == BITMAP_RLE4;
-    const auto nWidth  = (int)pDib->biWidth;
-    const auto nHeight = (int)pDib->biHeight;
+    const auto nWidth  = static_cast<int>(pDib->biWidth);
+    const auto nHeight = static_cast<int>(pDib->biHeight);
     const auto nStride = (nWidth + 3) & ~3;
 
-    const auto nTableBytes = (int)(GDI::PixelBits(pDib) - (char*)pDib);
-    const auto pIn         = (const unsigned char*)GDI::PixelBits(pDib);
-    const auto nInBytes    = (int)pDib->biSizeImage;
+    const auto nTableBytes = static_cast<int>(GDI::PixelBits(pDib) - reinterpret_cast<char*>(pDib));
+    const auto pIn         = reinterpret_cast<const unsigned char*>(GDI::PixelBits(pDib));
+    const auto nInBytes    = static_cast<int>(pDib->biSizeImage);
 
-    auto* const pOut = (BitmapInfoHeader*)calloc(1, nTableBytes + nStride * nHeight);
+    auto* const pOut = static_cast<BitmapInfoHeader*>(calloc(1, nTableBytes + nStride * nHeight));
 
     if (pOut == nullptr || nWidth <= 0 || nHeight <= 0)
     {
@@ -208,13 +208,13 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 
     memcpy(pOut, pDib, nTableBytes);
 
-    auto* const pRows = (unsigned char*)GDI::PixelBits(pOut);
+    auto* const pRows = reinterpret_cast<unsigned char*>(GDI::PixelBits(pOut));
 
     const auto put = [&](int x, int y, int nPixel)
     {
         if (x < nWidth && y < nHeight)
         {
-            pRows[y * nStride + x] = (unsigned char)nPixel;
+            pRows[y * nStride + x] = static_cast<unsigned char>(nPixel);
         }
     };
 
@@ -293,10 +293,10 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
                 {
                     if (bFour != 0)
                     {
-                        return (int)pIn[at + i / 2];
+                        return static_cast<int>(pIn[at + i / 2]);
                     }
 
-                    return (int)pIn[at + i];
+                    return static_cast<int>(pIn[at + i]);
                 }();
 
                 put(x++, y, nibble(nByte, i));
@@ -363,7 +363,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         return nullptr;
     }
 
-    const auto nHeaderSize = (unsigned int)header.info.biSize;
+    const auto nHeaderSize = static_cast<unsigned int>(header.info.biSize);
 
     if (nHeaderSize == sizeof(BitmapCoreHeader))
     {
@@ -381,7 +381,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         header.info.biClrUsed       = 0;
         header.info.biClrImportant  = 0;
 
-        pFile->SeekRelative((long)sizeof(BitmapCoreHeader) - (long)sizeof(BitmapInfoHeader), FILE_SEEK_CURRENT);
+        pFile->SeekRelative(static_cast<long>(sizeof(BitmapCoreHeader)) - static_cast<long>(sizeof(BitmapInfoHeader)), FILE_SEEK_CURRENT);
     }
 
     if (header.info.biClrUsed == 0 && header.info.biBitCount <= 8)
@@ -395,7 +395,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 
     if (header.info.biSizeImage == 0)
     {
-        header.info.biSizeImage = ((((unsigned int)(header.info.biBitCount * header.info.biWidth) + 31) >> 3) & ~3) * header.info.biHeight;
+        header.info.biSizeImage = (((static_cast<unsigned int>(header.info.biBitCount * header.info.biWidth) + 31) >> 3) & ~3) * header.info.biHeight;
     }
 
     if (header.info.biClrUsed == 0 && header.info.biBitCount <= 8)
@@ -403,7 +403,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
         header.info.biClrUsed = 1 << header.info.biBitCount;
     }
 
-    auto* const pDib = (BitmapInfoHeader*)malloc(header.info.biSize + nColors * sizeof(RgbQuad));
+    auto* const pDib = static_cast<BitmapInfoHeader*>(malloc(header.info.biSize + nColors * sizeof(RgbQuad)));
 
     if (pDib == nullptr)
     {
@@ -427,7 +427,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
                 return nullptr;
             }
 
-            auto* const pTriples = (RgbTriple*)pColors;
+            auto* const pTriples = reinterpret_cast<RgbTriple*>(pColors);
 
             for (int i = nColors - 1; i >= 0; i--)
             {
@@ -530,7 +530,7 @@ void GDI::Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX
 
             if (nFromX >= 0 && nFromX < pBitmap->nWidth && nToX >= 0 && nToX < canvas.nWidth)
             {
-                canvas.pBits[nToY * canvas.nWidth + nToX] = pBitmap->pixels[(size_t)(nFromY * pBitmap->nWidth + nFromX)];
+                canvas.pBits[nToY * canvas.nWidth + nToX] = pBitmap->pixels[static_cast<size_t>(nFromY * pBitmap->nWidth + nFromX)];
             }
         }
     }
@@ -598,13 +598,13 @@ GDI::Bitmap* GDI::LoadJPEGImage(const char* pszPath)
         return nullptr;
     }
 
-    auto* const pBitmap = new Bitmap{ nWidth, nHeight, std::vector<std::uint32_t>((size_t)nWidth * nHeight) };
+    auto* const pBitmap = new Bitmap{ nWidth, nHeight, std::vector<std::uint32_t>(static_cast<size_t>(nWidth) * nHeight) };
 
     for (size_t i = 0; i < pBitmap->pixels.size(); i++)
     {
         const stbi_uc* const p = pPixels + i * 3;
 
-        pBitmap->pixels[i] = (std::uint32_t)(p[0] << 16 | p[1] << 8 | p[2]);
+        pBitmap->pixels[i] = static_cast<std::uint32_t>(p[0] << 16 | p[1] << 8 | p[2]);
     }
 
     stbi_image_free(pPixels);

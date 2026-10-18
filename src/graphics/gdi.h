@@ -13,7 +13,7 @@ namespace GDI
 // The colour table follows the header, which records its own size.
 inline RgbQuad* ColorTable(const BitmapInfoHeader* pHeader)
 {
-    return (RgbQuad*)((const char*)pHeader + pHeader->biSize);
+    return (RgbQuad*)(reinterpret_cast<const char*>(pHeader) + pHeader->biSize);
 }
 
 // A zero biClrUsed means the full table for the bit depth.
@@ -23,7 +23,7 @@ inline char* PixelBits(const BitmapInfoHeader* pHeader)
     {
         if (pHeader->biClrUsed != 0)
         {
-            return (int)pHeader->biClrUsed;
+            return static_cast<int>(pHeader->biClrUsed);
         }
 
         if (pHeader->biBitCount <= 8)
@@ -34,7 +34,7 @@ inline char* PixelBits(const BitmapInfoHeader* pHeader)
         return 0;
     }();
 
-    return (char*)(ColorTable(pHeader) + nColours);
+    return reinterpret_cast<char*>(ColorTable(pHeader) + nColours);
 }
 
 // A picture for the menu canvas, 0x00RRGGBB, top row first.

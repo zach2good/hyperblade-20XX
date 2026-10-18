@@ -81,11 +81,11 @@ void ObjectStats::ScaleTo(int nSlot)
         if (g_pGameEngine->IsTournamentMode() != 0)
         {
             m_flScale = (g_pGameEngine->m_pSaveObject->GetBracketPos() - 3.0f) * 0.03f + m_flScale;
-            m_flScale = (float)(g_pGameEngine->m_clock.nPeriod - 1) * 0.05f + m_flScale;
+            m_flScale = static_cast<float>(g_pGameEngine->m_clock.nPeriod - 1) * 0.05f + m_flScale;
         }
         else
         {
-            m_flScale = (float)g_pGameEngine->m_clock.nPeriod * 0.05f + m_flScale;
+            m_flScale = static_cast<float>(g_pGameEngine->m_clock.nPeriod) * 0.05f + m_flScale;
         }
     }
 

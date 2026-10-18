@@ -110,17 +110,17 @@ int FileObj::SeekRelative(long nOffset, int nOrigin)
                 return SDL_IO_SEEK_END;
 
             default:
-                return (SDL_IOWhence)nOrigin;
+                return static_cast<SDL_IOWhence>(nOrigin);
         }
     }();
 
-    return (int)SDL_SeekIO(IO(*this), nOffset, whence);
+    return static_cast<int>(SDL_SeekIO(IO(*this), nOffset, whence));
 }
 
 // FUNCTION: HYPERX 0x004405b0
 int FileObj::Write(const void* pBuf, unsigned int nCount)
 {
-    return (int)SDL_WriteIO(IO(*this), pBuf, nCount);
+    return static_cast<int>(SDL_WriteIO(IO(*this), pBuf, nCount));
 }
 
 // Each line feed gains a carriage return, so a line of line feeds overruns the second buffer.
@@ -163,13 +163,13 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
 
     *pDst = 0;
 
-    return Write(szOut, (unsigned int)strlen(szOut));
+    return Write(szOut, static_cast<unsigned int>(strlen(szOut)));
 }
 
 // FUNCTION: HYPERX 0x00440670
 int FileObj::Read(void* pBuffer, int nCount)
 {
-    return (int)SDL_ReadIO(IO(*this), pBuffer, (size_t)nCount);
+    return static_cast<int>(SDL_ReadIO(IO(*this), pBuffer, static_cast<size_t>(nCount)));
 }
 
 // FUNCTION: HYPERX 0x00440690
@@ -184,7 +184,7 @@ int FileObj::CloseAndTest()
 
     m_stream = Stream{};
 
-    return (int)bClosed;
+    return static_cast<int>(bClosed);
 }
 
 // FUNCTION: HYPERX 0x004406b0

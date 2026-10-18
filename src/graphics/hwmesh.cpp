@@ -49,7 +49,7 @@ using FacesByVertex = std::vector<std::vector<const MeshFace*> >;
 
 FacesByVertex BuildFacesByVertex(const MeshBlock& block, int nMaterialCount)
 {
-    auto faces = FacesByVertex((size_t)block.nVertexCount);
+    auto faces = FacesByVertex(static_cast<size_t>(block.nVertexCount));
 
     for (auto nFace = 0; nFace < block.nFaceCount; nFace++)
     {
@@ -62,7 +62,7 @@ FacesByVertex BuildFacesByVertex(const MeshBlock& block, int nMaterialCount)
 
         for (auto nCorner = 0; nCorner < face.nCorners; nCorner++)
         {
-            faces[(size_t)face.aCorners[nCorner]].push_back(&face);
+            faces[static_cast<size_t>(face.aCorners[nCorner])].push_back(&face);
         }
     }
 
@@ -73,7 +73,7 @@ Vec3 CornerNormal(const FacesByVertex& faces, const MeshFace& face, int nCorner)
 {
     auto vSum = Vec3{ 0.0f, 0.0f, 0.0f };
 
-    for (const MeshFace* const pOther : faces[(size_t)face.aCorners[nCorner]])
+    for (const MeshFace* const pOther : faces[static_cast<size_t>(face.aCorners[nCorner])])
     {
         const auto& vOther = pOther->vNormal;
 
@@ -98,7 +98,7 @@ void AppendTriangle(std::vector<HwMesh::Vertex>& vertices, const MeshBlock& bloc
     for (const auto nCorner : { nA, nB, nC })
     {
         const auto& vPosition = block.Vertices()[face.aCorners[nCorner]];
-        const auto& vNormal   = normals[(size_t)nCorner];
+        const auto& vNormal   = normals[static_cast<size_t>(nCorner)];
 
         const auto uv = [&]
         {
@@ -166,7 +166,7 @@ std::vector<HwMesh::Vertex> HwMesh::BuildShadow(const Vec3* pPoints, int nPointC
             continue;
         }
 
-        const auto& front = pMaterials[(int)face.cMaterial];
+        const auto& front = pMaterials[static_cast<int>(face.cMaterial)];
 
         for (auto nCorner = face.nCorners - 1; nCorner >= 2; nCorner--)
         {
@@ -242,16 +242,16 @@ HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterial
             continue;
         }
 
-        const auto& front     = pMaterials[(int)face.cMaterial];
+        const auto& front     = pMaterials[static_cast<int>(face.cMaterial)];
         auto&       frontList = group(face, front);
 
-        normals.assign((size_t)face.nCorners, face.vNormal);
+        normals.assign(static_cast<size_t>(face.nCorners), face.vNormal);
 
         if (bSmooth)
         {
             for (auto nCorner = 0; nCorner < face.nCorners; nCorner++)
             {
-                normals[(size_t)nCorner] = CornerNormal(faces, face, nCorner);
+                normals[static_cast<size_t>(nCorner)] = CornerNormal(faces, face, nCorner);
             }
         }
 

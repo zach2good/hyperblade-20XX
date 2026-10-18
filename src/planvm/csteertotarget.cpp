@@ -96,7 +96,7 @@ void CSteerToTarget::Process(int nArg)
     const float flClock = g_pGameEngine->m_clock.flDeltaSquared;
     const int   nJitter = rand() % JITTER_MODULUS;
 
-    flForce = ((flForce * 0.1f + 1.5f) * flClock * 40.0f) * ((float)nJitter * 0.01f + 1.0f);
+    flForce = ((flForce * 0.1f + 1.5f) * flClock * 40.0f) * (static_cast<float>(nJitter) * 0.01f + 1.0f);
 
     Vec3* const pSelf     = m_pOwner->GetPositionPtr();
     Vec3* const pOther    = m_pTarget->GetPositionPtr();
@@ -203,11 +203,11 @@ void CSteerToTarget::Process(int nArg)
 
     if ((flCross = vDelta.y * pAxis->x - vDelta.x * pAxis->y) < BANK_DEADZONE_LOW)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, (float)fabs(static_cast<double>(flLean)) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(0, static_cast<float>(fabs(static_cast<double>(flLean))) * flForce);
     }
     else if (flCross > BANK_DEADZONE_HIGH)
     {
-        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(static_cast<double>(flLean)) * flForce);
+        m_pOwner->GetPhysicsBody()->ApplyBankForce(1, static_cast<float>(fabs(static_cast<double>(flLean))) * flForce);
     }
 
     if (m_pNext != nullptr)

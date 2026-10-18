@@ -124,7 +124,7 @@ char AnimPlayer::UpdateTick()
                         m_state.nLoopFrame = pClip->m_wStartFrame;
                         m_state.nFrame     = m_state.nLoopFrame;
                         m_nFrameInt        = m_state.nLoopFrame;
-                        m_state.flPosition = (float)m_state.nLoopFrame;
+                        m_state.flPosition = static_cast<float>(m_state.nLoopFrame);
                         m_state.nEndFrame  = pClip->m_wEndFrame;
 
                         if (pClip->m_wLoopCount == 0)
@@ -136,11 +136,11 @@ char AnimPlayer::UpdateTick()
                             {
                                 for (int iChannel = 0; iChannel < nChannelCount; iChannel++)
                                 {
-                                    AnimClipEntry* const pRecord = pSet->m_apEntries[(short)iChannel];
+                                    AnimClipEntry* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
 
                                     if (pRecord->m_wSegment == m_state.wClipIndex)
                                     {
-                                        m_state.wEventCursor    = (short)iChannel;
+                                        m_state.wEventCursor    = static_cast<short>(iChannel);
                                         m_state.pEventRecord    = pRecord;
                                         m_state.bChannelPending = 1;
                                         m_state.wEventTrigger   = pRecord->m_wTriggerFrame;
@@ -152,7 +152,7 @@ char AnimPlayer::UpdateTick()
 
                         if (pClip->m_wLoopCount == 0 && m_pObject->GetSlot() < PLAYER_OBJECT_COUNT && ((PlayerObject*)m_pObject)->m_wAnimationSemaphore != 0)
                         {
-                            g_pGameEngine->m_ppSlots[(short)m_state.nSlot]
+                            g_pGameEngine->m_ppSlots[static_cast<short>(m_state.nSlot)]
                                 ->PostSceneEvent(m_state.nArgA, m_state.nArgB);
 
                             return 1;
@@ -211,7 +211,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
             {
                 m_state.nFrame     = nEnd;
                 m_nFrameInt        = nEnd;
-                m_state.flPosition = (float)nEnd;
+                m_state.flPosition = static_cast<float>(nEnd);
             }
 
             return bReached;
@@ -228,7 +228,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
 
                     m_state.nFrame     = nLoop;
                     m_nFrameInt        = nLoop;
-                    m_state.flPosition = (float)nLoop;
+                    m_state.flPosition = static_cast<float>(nLoop);
 
                     bReached = nLoop == nEnd;
 
@@ -250,7 +250,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
     {
         m_state.nFrame     = nEnd;
         m_nFrameInt        = nEnd;
-        m_state.flPosition = (float)nEnd;
+        m_state.flPosition = static_cast<float>(nEnd);
     }
 
     return bReached;
@@ -300,7 +300,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 
             if (pClip->GetBoneTransformFull(
                     pSlot->m_local.GetMatrixPtr(),
-                    (short)m_state.nFrame) != 0)
+                    static_cast<short>(m_state.nFrame)) != 0)
             {
                 pSlot->SetFlags(SLOT_FLAG_MOVED);
             }
@@ -315,7 +315,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
             pSlot = &m_pObject->m_pBones[nBone];
             pClip = &m_pBoneSet->m_pClips[nBone];
 
-            if (pClip->GetBoneTransform(pSlot->m_local.GetMatrixPtr(), (short)m_state.nFrame) != 0)
+            if (pClip->GetBoneTransform(pSlot->m_local.GetMatrixPtr(), static_cast<short>(m_state.nFrame)) != 0)
             {
                 pSlot->SetFlags(SLOT_FLAG_MOVED);
             }
@@ -375,9 +375,9 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 
         if (nMessage != MSG_NOMSG && m_pClip->m_wLoopCount != 0)
         {
-            pTarget = g_pGameEngine->m_ppSlots[(short)nSlot];
+            pTarget = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
 
-            pTarget->PostEvent(nMessage, nParam, (int)m_pObject->GetSlot());
+            pTarget->PostEvent(nMessage, nParam, static_cast<int>(m_pObject->GetSlot()));
         }
     }
 
@@ -403,7 +403,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
             }
         }
 
-        nFrame = (int)m_state.flPosition;
+        nFrame = static_cast<int>(m_state.flPosition);
 
         m_state.nFrame = nFrame;
         m_nFrameInt    = nFrame;
@@ -437,7 +437,7 @@ char AnimPlayer::ComputeScale(float flScale)
 
                 if (pBone->m_nFormat != ANIM_BONE_MODE_SKIP)
                 {
-                    pBone->GetBoneTransformFull(s_blendTransform.m_aMatrixRows, (short)m_state.nFrame);
+                    pBone->GetBoneTransformFull(s_blendTransform.m_aMatrixRows, static_cast<short>(m_state.nFrame));
 
                     m_aSlots[iBone].Init(&pSlot->m_local, &s_blendTransform);
 
@@ -456,7 +456,7 @@ char AnimPlayer::ComputeScale(float flScale)
             }
 
             m_flAccum    = 0.0f;
-            m_flDuration = flSum / (float)nSegments * flApplied;
+            m_flDuration = flSum / static_cast<float>(nSegments) * flApplied;
 
             MeshBone* pRoot = m_pObject->m_pBones;
 
@@ -508,7 +508,7 @@ char AnimPlayer::ComputeScale(float flScale)
 
             if ((dNeed = flMax * flApplied) > m_flDuration)
             {
-                m_flDuration = (float)dNeed;
+                m_flDuration = static_cast<float>(dNeed);
             }
 
             if (m_flDuration > g_flBlendDurationCap)
@@ -738,7 +738,7 @@ void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 
         const int nFrames = pRange->m_wEndFrame - pRange->m_wStartFrame;
 
-        m_state.flStep = (float)nFrames * g_pGameEngine->m_clock.flDelta / flDuration;
+        m_state.flStep = static_cast<float>(nFrames) * g_pGameEngine->m_clock.flDelta / flDuration;
     }
 }
 
@@ -772,7 +772,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
             else
             {
                 m_state.flStep =
-                    (float)(m_pClip->m_wEndFrame - m_pClip->m_wStartFrame) * g_pGameEngine->m_clock.flDelta / m_pClip->m_flSlowFps;
+                    static_cast<float>(m_pClip->m_wEndFrame - m_pClip->m_wStartFrame) * g_pGameEngine->m_clock.flDelta / m_pClip->m_flSlowFps;
 
                 m_state.aflClipDuration[nClipIndex] = m_pClip->m_flSlowFps;
             }
@@ -807,12 +807,12 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 
             if (nMode > 0)
             {
-                m_state.wLoops = (short)nMode;
+                m_state.wLoops = static_cast<short>(nMode);
             }
 
             pSet = m_pSet;
 
-            m_state.flPosition = (float)nStart;
+            m_state.flPosition = static_cast<float>(nStart);
             m_state.nFrame     = nStart;
             m_nFrameInt        = nStart;
 
@@ -828,11 +828,11 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
             {
                 for (int iChannel = 0; iChannel < nChannels; iChannel++)
                 {
-                    AnimClipEntry* const pRecord = pSet->m_apEntries[(short)iChannel];
+                    AnimClipEntry* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
 
                     if (pRecord->m_wSegment == m_state.wClipIndex)
                     {
-                        m_state.wEventCursor    = (short)iChannel;
+                        m_state.wEventCursor    = static_cast<short>(iChannel);
                         m_state.pEventRecord    = pRecord;
                         m_state.bChannelPending = 1;
                         m_state.wEventTrigger   = pRecord->m_wTriggerFrame;
@@ -874,7 +874,7 @@ char AnimPlayer::OnClipEnd()
     {
         m_state.nPlayState = AA_DONE;
 
-        g_pGameEngine->m_ppSlots[(short)m_state.nSlot]->PostSceneEvent(m_state.nArgA, m_state.nArgB);
+        g_pGameEngine->m_ppSlots[static_cast<short>(m_state.nSlot)]->PostSceneEvent(m_state.nArgA, m_state.nArgB);
     }
 
     return cResult;

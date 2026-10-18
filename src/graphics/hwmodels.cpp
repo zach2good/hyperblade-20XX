@@ -108,9 +108,9 @@ void ConvertColours(MaterialListNode& materials, const EngineObject& object, con
 
         PaletteEntry entry;
 
-        const auto& remapped = *g_pColorPalette->GetRemappedEntry(&entry, (unsigned char)nIndex);
+        const auto& remapped = *g_pColorPalette->GetRemappedEntry(&entry, static_cast<unsigned char>(nIndex));
 
-        material.nColour = (int)(0xff000000u | (remapped.peRed << 16) | (remapped.peGreen << 8) | remapped.peBlue);
+        material.nColour = static_cast<int>(0xff000000u | (remapped.peRed << 16) | (remapped.peGreen << 8) | remapped.peBlue);
     }
 }
 
@@ -118,9 +118,9 @@ void ConvertColours(MaterialListNode& materials, const EngineObject& object, con
 // rotations, but every bone below the root sits at the textured file's rest offset.
 void Pose(const EngineObject& object, TexturedModel& model)
 {
-    const auto nBones = (int)object.m_wBoneCount;
+    const auto nBones = static_cast<int>(object.m_wBoneCount);
 
-    model.world.resize((size_t)nBones);
+    model.world.resize(static_cast<size_t>(nBones));
 
     // RokObject::ApplyRenderSlotPose sets each bone straight in the world, keeping no local
     // matrices to rebuild the rig from.
@@ -128,13 +128,13 @@ void Pose(const EngineObject& object, TexturedModel& model)
     {
         for (int i = 0; i < nBones; i++)
         {
-            model.world[(size_t)i] = object.m_pBones[i].m_world;
+            model.world[static_cast<size_t>(i)] = object.m_pBones[i].m_world;
         }
 
         return;
     }
 
-    auto parents = std::vector<int>((size_t)nBones, -1);
+    auto parents = std::vector<int>(static_cast<size_t>(nBones), -1);
 
     for (int i = 0; i < nBones; i++)
     {
@@ -147,26 +147,26 @@ void Pose(const EngineObject& object, TexturedModel& model)
 
         for (int nChild = 0; nChild < bone.m_pDesc->m_nChildCount; nChild++)
         {
-            const auto nIndex = (int)(bone.m_apChildren[nChild] - object.m_pBones);
+            const auto nIndex = static_cast<int>(bone.m_apChildren[nChild] - object.m_pBones);
 
             if (nIndex >= 0 && nIndex < nBones && nIndex != i)
             {
-                parents[(size_t)nIndex] = i;
+                parents[static_cast<size_t>(nIndex)] = i;
             }
         }
     }
 
-    auto unscaled = std::vector<TransformObject>((size_t)nBones);
-    auto posed    = std::vector<bool>((size_t)nBones, false);
+    auto unscaled = std::vector<TransformObject>(static_cast<size_t>(nBones));
+    auto posed    = std::vector<bool>(static_cast<size_t>(nBones), false);
 
     // Parents before children; a hierarchy is at most as deep as it has bones.
     for (int nPass = 0; nPass < nBones; nPass++)
     {
         for (int i = 0; i < nBones; i++)
         {
-            const auto nParent = parents[(size_t)i];
+            const auto nParent = parents[static_cast<size_t>(i)];
 
-            if (posed[(size_t)i] || (nParent >= 0 && !posed[(size_t)nParent]))
+            if (posed[static_cast<size_t>(i)] || (nParent >= 0 && !posed[static_cast<size_t>(nParent)]))
             {
                 continue;
             }
@@ -175,7 +175,7 @@ void Pose(const EngineObject& object, TexturedModel& model)
 
             if (nParent < 0)
             {
-                unscaled[(size_t)i] = bone.m_world;
+                unscaled[static_cast<size_t>(i)] = bone.m_world;
             }
             else
             {
@@ -184,19 +184,19 @@ void Pose(const EngineObject& object, TexturedModel& model)
 
                 local.SetTranslation(rest.x, rest.y, rest.z);
 
-                unscaled[(size_t)nParent].Multiply(&unscaled[(size_t)i], &local);
+                unscaled[static_cast<size_t>(nParent)].Multiply(&unscaled[static_cast<size_t>(i)], &local);
             }
 
-            model.world[(size_t)i] = unscaled[(size_t)i];
+            model.world[static_cast<size_t>(i)] = unscaled[static_cast<size_t>(i)];
 
             // As MeshBone::PropagateTransforms: scale after the children, so it is never inherited.
             if (bone.m_bHasScale != 0 && nParent >= 0)
             {
-                model.world[(size_t)i].m_vScale = bone.m_world.m_vScale;
-                model.world[(size_t)i].ApplyScale();
+                model.world[static_cast<size_t>(i)].m_vScale = bone.m_world.m_vScale;
+                model.world[static_cast<size_t>(i)].ApplyScale();
             }
 
-            posed[(size_t)i] = true;
+            posed[static_cast<size_t>(i)] = true;
         }
     }
 }
@@ -267,7 +267,7 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
         model.nPosedFrame = nFrame;
     }
 
-    const auto nBone = (int)(&bone - object.m_pBones);
+    const auto nBone = static_cast<int>(&bone - object.m_pBones);
     const auto nLod  = [&]
     {
         if (GraphicsSettings::On(GraphicsSettings::Switch::FULL_DETAIL))
@@ -275,10 +275,10 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
             return 0;
         }
 
-        return (std::min)((int)object.m_wLodLevel, model.pLod->m_wLodCount - 1);
+        return (std::min)(static_cast<int>(object.m_wLodLevel), model.pLod->m_wLodCount - 1);
     }();
 
-    if (nBone < 0 || nBone >= (int)model.world.size() || nLod < 0)
+    if (nBone < 0 || nBone >= static_cast<int>(model.world.size()) || nLod < 0)
     {
         return false;
     }
@@ -290,7 +290,7 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
         return false;
     }
 
-    out = Bone{ pBlock, model.pMaterials->m_pMaterials, model.pMaterials->m_nMatCount, &model.world[(size_t)nBone] };
+    out = Bone{ pBlock, model.pMaterials->m_pMaterials, model.pMaterials->m_nMatCount, &model.world[static_cast<size_t>(nBone)] };
 
     return true;
 }
