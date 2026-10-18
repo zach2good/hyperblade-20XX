@@ -30,7 +30,7 @@ LODNode::~LODNode()
         {
             if (m_apLodMeshes[nLevel][nComp] != nullptr)
             {
-                delete m_apLodMeshes[nLevel][nComp];
+                delete[] reinterpret_cast<char*>(m_apLodMeshes[nLevel][nComp]);
             }
         }
     }
@@ -40,5 +40,5 @@ LODNode::~LODNode()
         delete[] m_apLodMeshes[m_wLodCount];
     }
 
-    delete m_pRecord;
+    delete[] reinterpret_cast<char*>(m_pRecord);
 }

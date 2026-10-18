@@ -415,7 +415,6 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
 // FUNCTION: HYPERX 0x00473240
 short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 {
-    MeshBlock**    pBlobs;
     unsigned short nCount = 0;
 
     auto* const pBase = pLodNode->m_pRecord;
@@ -426,6 +425,10 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 
         for (int nLod = 0; nLod < pLodNode->m_wLodCount; nLod++)
         {
+            // A failed header read leaves both untouched.
+            MeshBlock** pBlobs = nullptr;
+            nCount             = 0;
+
             abWhole[nLod] = ModelComponent::ReadAll(pFile, &pBlobs, &nCount);
 
             auto** const pSlots = new MeshBlock*[pBase->m_nSubComponents];
@@ -437,6 +440,14 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
             for (short iBlob = 0; iBlob < static_cast<short>(nCount); iBlob++)
             {
                 auto* const pBlob = pBlobs[iBlob];
+
+                if (pBlob->nSlot < 0 || pBlob->nSlot >= pBase->m_nSubComponents || pSlots[pBlob->nSlot] != nullptr)
+                {
+                    delete[] reinterpret_cast<char*>(pBlob);
+                    abWhole[nLod] = false;
+
+                    continue;
+                }
 
                 ComputeNormals(pBlob, pLodNode);
 
