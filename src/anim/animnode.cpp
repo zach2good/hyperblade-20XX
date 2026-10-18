@@ -14,6 +14,6 @@ AnimNode::AnimNode(char bHasDescription)
     }
     else
     {
-        m_pszDescription = 0;
+        m_pszDescription = nullptr;
     }
 }

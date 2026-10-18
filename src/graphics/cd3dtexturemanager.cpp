@@ -25,7 +25,7 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
 {
     LODNode* pAt;
 
-    if (pLod == 0)
+    if (pLod == nullptr)
     {
         return 0;
     }
@@ -39,9 +39,9 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
             return 1;
         }
 
-        LODNode* pPrev = 0;
+        LODNode* pPrev = nullptr;
 
-        for (pAt = m_pListHead; pAt != 0; pAt = pAt->m_pNext)
+        for (pAt = m_pListHead; pAt != nullptr; pAt = pAt->m_pNext)
         {
             if (pLod == pAt)
             {
@@ -50,7 +50,7 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
                     m_pListTail = pPrev;
                 }
 
-                if (pPrev != 0)
+                if (pPrev != nullptr)
                 {
                     pPrev->m_pNext = pAt->m_pNext;
                 }
@@ -60,7 +60,7 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
 
                     m_pListHead = pAt;
 
-                    if (pAt == 0)
+                    if (pAt == nullptr)
                     {
                         m_pListTail = pAt;
                     }
@@ -93,13 +93,13 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
 {
     short iRecord;
 
-    while (pLod->m_pMaterials != 0)
+    while (pLod->m_pMaterials != nullptr)
     {
         for (iRecord = 0; iRecord < pLod->m_pMaterials->m_nMatCount; iRecord++)
         {
             TexCacheEntry* const pEntry = pLod->m_pMaterials->m_pMaterials[iRecord].pTexture;
 
-            if (pEntry != 0)
+            if (pEntry != nullptr)
             {
                 ReleaseTexEntry(pEntry);
             }
@@ -109,16 +109,16 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
 
         pLod->m_pMaterials = pList->m_pNext;
 
-        if (pList != 0)
+        if (pList != nullptr)
         {
             MeshMaterial* const pArray = pList->m_pMaterials;
 
-            if (pArray != 0)
+            if (pArray != nullptr)
             {
                 delete[] pArray;
             }
 
-            if (pList->m_pszName != 0)
+            if (pList->m_pszName != nullptr)
             {
                 delete[] pList->m_pszName;
             }
@@ -140,7 +140,7 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
 
     char bReleased = 0;
 
-    for (; (pAt = *ppLink) != 0; ppLink = &pAt->m_pNext)
+    for (; (pAt = *ppLink) != nullptr; ppLink = &pAt->m_pNext)
     {
         if (pBlock == pAt)
         {
@@ -152,7 +152,7 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
                 {
                     TexCacheEntry* const pEntry = pBlock->m_pMaterials[iRecord].pTexture;
 
-                    if (pEntry != 0)
+                    if (pEntry != nullptr)
                     {
                         ReleaseTexEntry(pEntry);
                     }
@@ -160,16 +160,16 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
 
                 *ppLink = pBlock->m_pNext;
 
-                if (pBlock != 0)
+                if (pBlock != nullptr)
                 {
                     MeshMaterial* const pArray = pBlock->m_pMaterials;
 
-                    if (pArray != 0)
+                    if (pArray != nullptr)
                     {
                         delete[] pArray;
                     }
 
-                    if (pBlock->m_pszName != 0)
+                    if (pBlock->m_pszName != nullptr)
                     {
                         delete[] pBlock->m_pszName;
                     }
@@ -190,7 +190,7 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
 // FUNCTION: HYPERX 0x004733d0
 char CD3DTextureManager::ReleaseTexEntry(TexCacheEntry* pEntry)
 {
-    if (pEntry != 0)
+    if (pEntry != nullptr)
     {
         pEntry->m_wRefs -= 1;
 
@@ -211,7 +211,7 @@ char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
     TexCacheEntry* pAt   = m_pTextureList;
     TexCacheEntry* pPrev = pAt;
 
-    while (pAt != 0)
+    while (pAt != nullptr)
     {
         if (pAt == pEntry)
         {
@@ -230,7 +230,7 @@ char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
 
                 if (pAt == m_pTextureList)
                 {
-                    m_pTextureList = 0;
+                    m_pTextureList = nullptr;
                 }
 
                 delete pAt;
@@ -260,7 +260,7 @@ int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nS
 {
     MeshBlock* pMesh;
 
-    if (pNode->m_pRecord != 0)
+    if (pNode->m_pRecord != nullptr)
     {
         const short nIndex = pNode->m_pRecord->SlotDesc(nSlot)->m_nLinkId;
 
@@ -270,12 +270,12 @@ int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nS
         }
         else
         {
-            pMesh = 0;
+            pMesh = nullptr;
         }
 
         *ppOut = pMesh;
 
-        return pMesh != 0;
+        return pMesh != nullptr;
     }
 
     return -1;
@@ -313,18 +313,18 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
                 }
                 else
                 {
-                    pnCoord = 0;
+                    pnCoord = nullptr;
                 }
 
-                while (pList != 0)
+                while (pList != nullptr)
                 {
                     pEntry = pList->m_pMaterials + pFace->cMaterial;
 
-                    if (pEntry->pTexture != 0 && pnCoord != 0)
+                    if (pEntry->pTexture != nullptr && pnCoord != nullptr)
                     {
                         SoftTex* const pSoftTex = pEntry->pTexture->m_pSoftTexture;
 
-                        if (pSoftTex != 0)
+                        if (pSoftTex != nullptr)
                         {
                             nScaledWidth = pFace->GetScaledWidth();
 

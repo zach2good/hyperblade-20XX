@@ -94,7 +94,7 @@ void InfoBar::UpdateRokValue()
 
     RokObject* const pRok = g_pGameEngine->GetRok();
 
-    if (pRok != 0)
+    if (pRok != nullptr)
     {
         const int nRokValue = pRok->m_wRokValue;
 
@@ -140,7 +140,7 @@ void InfoBar::UpdateDamageBar(InfoBarSlot* pBar, int nSlot)
 {
     PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)nSlot);
 
-    if (pObject != 0)
+    if (pObject != nullptr)
     {
         if (g_pGameEngine->m_nViewedSlot == nSlot)
         {
@@ -211,7 +211,7 @@ void InfoBar::UpdateOwnTeamDisplay()
 
     short nSlot = 0;
 
-    if (g_pGameEngine == 0)
+    if (g_pGameEngine == nullptr)
     {
         return;
     }
@@ -363,7 +363,7 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     short nSlot = 0;
 
-    if (g_pGameEngine == 0)
+    if (g_pGameEngine == nullptr)
     {
         return;
     }
@@ -595,9 +595,9 @@ void InfoBar::DrawHUD(int bFull)
 // FUNCTION: HYPERX 0x00450b80
 void InfoBar::DrawScene(int bDraw)
 {
-    if (g_pBackBufferBitsCopy != 0)
+    if (g_pBackBufferBitsCopy != nullptr)
     {
-        if (g_pGameEngine == 0 || m_nCachedHomeTeam != g_pGameEngine->m_nTeamHomeIndex || m_nCachedAwayTeam != g_pGameEngine->m_nTeamAwayIndex || m_nCachedArena != g_pGameEngine->m_nArenaIndex)
+        if (g_pGameEngine == nullptr || m_nCachedHomeTeam != g_pGameEngine->m_nTeamHomeIndex || m_nCachedAwayTeam != g_pGameEngine->m_nTeamAwayIndex || m_nCachedArena != g_pGameEngine->m_nArenaIndex)
         {
             m_nCachedHomeTeam = g_pGameEngine->m_nTeamHomeIndex;
             m_nCachedAwayTeam = g_pGameEngine->m_nTeamAwayIndex;
@@ -624,7 +624,7 @@ void InfoBar::DrawScene(int bDraw)
             {
                 PlayerObject* const pObject = g_pGameEngine->GetPlayer((short)nFollowed);
 
-                if (pObject != 0)
+                if (pObject != nullptr)
                 {
                     CDDSurfaceOwner* const pPanel = &m_oSpeedMeter;
 

@@ -132,7 +132,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
     {
         EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)i];
 
-        if (pObject != 0)
+        if (pObject != nullptr)
         {
             const char* pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
 
@@ -179,7 +179,7 @@ int EngineObject::IsRokCarrier(EngineObject* pActor)
 
     AttachPak* const pTracked = pBlock->pAttach;
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         short nTracked = pTracked->nSlot;
 
@@ -245,7 +245,7 @@ int GameEngine::CheckHandicapCondition(void)
 
     AttachPak* const pnCarrierSlot = pBlock->pAttach;
 
-    if (pnCarrierSlot == 0 || pnCarrierSlot->nSlot >= PLAYER_OBJECT_COUNT)
+    if (pnCarrierSlot == nullptr || pnCarrierSlot->nSlot >= PLAYER_OBJECT_COUNT)
     {
         return 0;
     }
@@ -352,15 +352,15 @@ int GameEngine::CheckOpposedCarriersRace(void)
     EngineObject* const pCarrier = g_pGameEngine->m_ppSlots[SLOT_SWARF];
     EngineObject* const pRok     = g_pGameEngine->m_ppSlots[SLOT_ROK];
 
-    if (pCarrier != 0)
+    if (pCarrier != nullptr)
     {
         AttachPak* const pSlotA = pCarrier->GetPhysicsBody()->pAttach;
 
-        if (pSlotA != 0 && (nSlotA = pSlotA->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pSlotA != nullptr && (nSlotA = pSlotA->nSlot) < PLAYER_OBJECT_COUNT)
         {
             AttachPak* const pSlotB = pRok->GetPhysicsBody()->pAttach;
 
-            if (pSlotB != 0 && (nSlotB = pSlotB->nSlot) < PLAYER_OBJECT_COUNT && ((nSlotA ^ nSlotB) & 1) != 0)
+            if (pSlotB != nullptr && (nSlotB = pSlotB->nSlot) < PLAYER_OBJECT_COUNT && ((nSlotA ^ nSlotB) & 1) != 0)
             {
                 const Vec3* pPosB = &g_pGameEngine->m_ppSlots[nSlotB]->GetPhysicsBody()->pos;
                 const Vec3* pPosA = &g_pGameEngine->m_ppSlots[nSlotA]->GetPhysicsBody()->pos;
@@ -396,7 +396,7 @@ int GameEngine::CheckWeaponOutWhileRokCarried(void)
 
     EngineObject* const pDisplay = g_pGameEngine->m_ppSlots[SLOT_SWARF];
 
-    if (pDisplay != 0)
+    if (pDisplay != nullptr)
     {
         PlanState* const pDefinition = pDisplay->GetPlanState();
 
@@ -467,7 +467,7 @@ int GameEngine::CheckCarrierBreakaway(void)
 
     pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != 0 && pSlot->nSlot < PLAYER_OBJECT_COUNT)
+    if (pSlot != nullptr && pSlot->nSlot < PLAYER_OBJECT_COUNT)
     {
         nSlot            = pSlot->nSlot;
         const int nIndex = (short)nSlot;
@@ -738,11 +738,11 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
     EngineObject* const  pSwarf        = ppEngineSlots[SLOT_SWARF];
     EngineObject* const  pRok          = ppEngineSlots[SLOT_ROK];
 
-    if (pSwarf != 0)
+    if (pSwarf != nullptr)
     {
         pHeld = pSwarf->GetPhysicsBody()->pAttach;
 
-        if (pHeld != 0 && pHeld->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHeld != nullptr && pHeld->nSlot < PLAYER_OBJECT_COUNT)
         {
             nGoalie = pHeld->nSlot;
         }
@@ -750,7 +750,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
     pHeld = pRok->GetPhysicsBody()->pAttach;
 
-    if (pHeld != 0 && pHeld->nSlot < PLAYER_OBJECT_COUNT)
+    if (pHeld != nullptr && pHeld->nSlot < PLAYER_OBJECT_COUNT)
     {
         nHeld = pHeld->nSlot;
     }
@@ -796,9 +796,9 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
                     break;
 
                 case 4:
-                    if (pSwarf != 0 && nSlot <= 3 && strcmp(pRok->GetPlanState()->m_pCurrent->m_pszName,
-                                                            // STRING: HYPERX 0x004bcb74
-                                                            "SitInGoal") != 0 &&
+                    if (pSwarf != nullptr && nSlot <= 3 && strcmp(pRok->GetPlanState()->m_pCurrent->m_pszName,
+                                                                  // STRING: HYPERX 0x004bcb74
+                                                                  "SitInGoal") != 0 &&
                         strcmp(pRok->GetPlanState()->m_pCurrent->m_pszName,
                                // STRING: HYPERX 0x004bcb64
                                "SitInStartgun") != 0

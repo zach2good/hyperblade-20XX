@@ -51,11 +51,11 @@ namespace Mem
 template <class T>
 inline void SafeDelete(T*& pBlock)
 {
-    if (pBlock != 0)
+    if (pBlock != nullptr)
     {
         operator delete(pBlock);
 
-        pBlock = 0;
+        pBlock = nullptr;
     }
 }
 

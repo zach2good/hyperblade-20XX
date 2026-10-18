@@ -18,7 +18,7 @@
 void CWatch::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CWatch;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pSubject;
 }
@@ -31,13 +31,13 @@ void CWatch::Process(int nArg)
     EngineObject* pWatched = GetCamera()->GetSecondaryTrackedObject();
     EngineObject* pTracked = GetCamera()->GetTrackedObject();
 
-    if (pWatched == 0)
+    if (pWatched == nullptr)
     {
         // STRING: HYPERX 0x004bb528
         g_gameApp.Fatal("CWatch::Process(): Null pointer for model to watch\n");
     }
 
-    if (pTracked == 0)
+    if (pTracked == nullptr)
     {
         // STRING: HYPERX 0x004bb4f4
         g_gameApp.Fatal("CWatch::Process(): Null pointer for model to track\n");
@@ -69,7 +69,7 @@ void CWatch::Process(int nArg)
 
     GetCamera()->UpdateSmoothing();
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

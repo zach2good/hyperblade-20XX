@@ -247,7 +247,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
     // STRING: HYPERX 0x004bc92c
     FILE* pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "Custom.pal")).c_str(), "r");
 
-    if (pFile == 0)
+    if (pFile == nullptr)
     {
         return 0;
     }
@@ -436,7 +436,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
     // STRING: HYPERX 0x004bc938
     pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, pName->m_pchData)).c_str(), "rb");
 
-    if (pFile != 0)
+    if (pFile != nullptr)
     {
         nCount = CGPalette::ReadGifScreen(&screen, pFile);
 
@@ -547,7 +547,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
     // STRING: HYPERX 0x004bc990
     FILE* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "r");
 
-    if (pFile != 0)
+    if (pFile != nullptr)
     {
         // STRING: HYPERX 0x004bc93c
         if (fscanf(pFile, "%d %d", &nFileVersion, &nCount) == -1)

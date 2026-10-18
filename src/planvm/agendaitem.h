@@ -62,7 +62,7 @@ public:
     // Slots eleven and twelve, folded no-ops in the base.
     virtual struct Vec3* GetVector()
     {
-        return 0;
+        return nullptr;
     }
 
     virtual void OnKind(short)
@@ -73,8 +73,8 @@ public:
     : m_wKind(-1)
     , m_bReady(1)
     , m_bPersistent(0)
-    , m_pOwner(0)
-    , m_pNext(0)
+    , m_pOwner(nullptr)
+    , m_pNext(nullptr)
     {
     }
 

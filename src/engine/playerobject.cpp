@@ -63,7 +63,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
         const float* pSpecial;
         const float* pSource;
 
-        if ((nSlot != GOALIE_SLOT_A) || (nLevel != 0) || ((pSpecial = pDef->m_apRatings[RATINGS_SPECIAL_GOALIE]) == 0) || (g_bSessionActive != 0))
+        if ((nSlot != GOALIE_SLOT_A) || (nLevel != 0) || ((pSpecial = pDef->m_apRatings[RATINGS_SPECIAL_GOALIE]) == nullptr) || (g_bSessionActive != 0))
         {
             pSource = pDef->m_apRatings[nLevel];
         }
@@ -115,7 +115,7 @@ PlayerObject::~PlayerObject()
 // FUNCTION: HYPERX 0x00474330
 void PlayerObject::Postpass()
 {
-    if (g_bSessionActive != 0 && g_pGameEngine != 0)
+    if (g_bSessionActive != 0 && g_pGameEngine != nullptr)
     {
         if (GetPhase() == OBJECT_PHASE_LOCAL)
         {

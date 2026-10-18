@@ -24,7 +24,7 @@ extern float g_flTwoAgendaItem;
 // FUNCTION: HYPERX 0x0040d3b0
 void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CProjectAndBounce;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -60,19 +60,19 @@ void CProjectAndBounce::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext             = 0;
+        m_pNext             = nullptr;
         m_wKind             = Agenda_CProjectAndBounce;
-        m_pOwner            = 0;
-        m_pVelocity         = 0;
-        m_pVelDir           = 0;
-        m_pSource           = 0;
-        m_pDest             = 0;
-        m_pSpeed            = 0;
-        m_pShape            = 0;
-        m_pNormal           = 0;
-        m_pPlayer           = 0;
-        m_pTarget           = 0;
-        m_pNetTargetPending = 0;
+        m_pOwner            = nullptr;
+        m_pVelocity         = nullptr;
+        m_pVelDir           = nullptr;
+        m_pSource           = nullptr;
+        m_pDest             = nullptr;
+        m_pSpeed            = nullptr;
+        m_pShape            = nullptr;
+        m_pNormal           = nullptr;
+        m_pPlayer           = nullptr;
+        m_pTarget           = nullptr;
+        m_pNetTargetPending = nullptr;
         m_nMode             = 0;
         m_bReady            = 1;
 
@@ -143,7 +143,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             pNormal = m_pShape->NormalAtPoint(pClosest);
 
-            if (pNormal == 0)
+            if (pNormal == nullptr)
             {
                 // STRING: HYPERX 0x004bb710
                 g_gameApp.Fatal("BAD SURFACE NORMAL - CProjectAndBounce::Process().");
@@ -211,7 +211,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             pNormal = m_pShape->NormalAtPoint(&vBoundary);
 
-            if (pNormal == 0)
+            if (pNormal == nullptr)
             {
                 // STRING: HYPERX 0x004bb6e8
                 g_gameApp.Fatal("BAD SURFACE NORMAL - ProjectAndBounce.");
@@ -265,7 +265,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
     pNormal = g_arenaEllipsoid.NormalAtPoint(m_pSource);
 
-    if (pNormal != 0)
+    if (pNormal != nullptr)
     {
         pStep = &m_pOwner->GetPhysicsBody()->surfNormal;
 
@@ -286,7 +286,7 @@ void CProjectAndBounce::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }
@@ -354,7 +354,7 @@ void CProjectAndBounce::Release(int nMessage)
     {
         ProjectAndBounce(nMessage);
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Release(nMessage);
         }
@@ -395,7 +395,7 @@ void CProjectAndBounce::Release(int nMessage)
 
     Vec3* const pNormal = g_arenaEllipsoid.NormalAtPoint(&point);
 
-    if (pNormal != 0)
+    if (pNormal != nullptr)
     {
         pBody = m_pOwner->GetPhysicsBody();
 
@@ -406,7 +406,7 @@ void CProjectAndBounce::Release(int nMessage)
         pBody->pShell = &g_arenaEllipsoid;
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Release(nMessage);
     }

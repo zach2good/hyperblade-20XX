@@ -9,7 +9,7 @@ class CRelaxYawPool : public AgendaItemOwner
 public:
     CRelaxYawPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

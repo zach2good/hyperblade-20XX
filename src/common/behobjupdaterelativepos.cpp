@@ -26,7 +26,7 @@ void BehObj_UpdateRelativePos::Init(EngineObject* pOwner, PlanNode* pBlock, int 
     m_wKind = BEH_UPDATE_RELATIVE_POS;
 
     m_apSlots[0] = AllocAgendaItem(Agenda_CSetPositionRelative);
-    m_apSlots[1] = 0;
+    m_apSlots[1] = nullptr;
 
     m_pOwner = pOwner;
     m_pBody  = pOwner->GetPhysicsBody();

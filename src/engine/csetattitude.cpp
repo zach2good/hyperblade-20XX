@@ -20,7 +20,7 @@
 // FUNCTION: HYPERX 0x00410400
 void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSetAttitude;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -60,7 +60,7 @@ void CSetAttitude::OnKind(short nSlot)
 
     Vec3* const pNormal = pBody->pShell->NormalAtPoint(pAnchor);
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         // STRING: HYPERX 0x004bb6c0
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
@@ -74,12 +74,12 @@ void CSetAttitude::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext       = 0;
-        m_pOwner      = 0;
-        m_pVelDir     = 0;
-        m_pFacing     = 0;
-        m_pTransform  = 0;
-        m_pSurfNormal = 0;
+        m_pNext       = nullptr;
+        m_pOwner      = nullptr;
+        m_pVelDir     = nullptr;
+        m_pFacing     = nullptr;
+        m_pTransform  = nullptr;
+        m_pSurfNormal = nullptr;
         m_bLimitPitch = 0;
         m_bReady      = 1;
 
@@ -164,7 +164,7 @@ void CSetAttitude::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }
@@ -247,7 +247,7 @@ void CSetAttitude::Release(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Release(nArg);
     }

@@ -140,7 +140,7 @@ void Pose(const EngineObject& object, TexturedModel& model)
     {
         const auto& bone = object.m_pBones[i];
 
-        if (bone.m_apChildren == 0 || bone.m_pDesc == 0)
+        if (bone.m_apChildren == nullptr || bone.m_pDesc == nullptr)
         {
             continue;
         }

@@ -34,7 +34,7 @@ extern float g_flBankFreeSpeed;
 // FUNCTION: HYPERX 0x0040c0b0
 void CGlideOnSurface::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CGlideOnSurface;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -69,27 +69,27 @@ void CGlideOnSurface::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext             = 0;
-        m_pOwner            = 0;
-        m_pflFriction       = 0;
-        m_pVel              = 0;
-        m_pVelDir           = 0;
-        m_pVelDirPrev       = 0;
-        m_pAxis             = 0;
-        m_pPos              = 0;
-        m_pPosCopy          = 0;
-        m_pSurface          = 0;
-        m_pNormal           = 0;
-        m_pBankScale        = 0;
-        m_pSpeed            = 0;
-        m_pBaseSpeed        = 0;
-        m_pLowAlt           = 0;
-        m_pBankForce        = 0;
-        m_pSmoothVel        = 0;
-        m_pTargetPos        = 0;
-        m_pNetTargetPending = 0;
-        m_pMove             = 0;
-        m_pnHeldBindings    = 0;
+        m_pNext             = nullptr;
+        m_pOwner            = nullptr;
+        m_pflFriction       = nullptr;
+        m_pVel              = nullptr;
+        m_pVelDir           = nullptr;
+        m_pVelDirPrev       = nullptr;
+        m_pAxis             = nullptr;
+        m_pPos              = nullptr;
+        m_pPosCopy          = nullptr;
+        m_pSurface          = nullptr;
+        m_pNormal           = nullptr;
+        m_pBankScale        = nullptr;
+        m_pSpeed            = nullptr;
+        m_pBaseSpeed        = nullptr;
+        m_pLowAlt           = nullptr;
+        m_pBankForce        = nullptr;
+        m_pSmoothVel        = nullptr;
+        m_pTargetPos        = nullptr;
+        m_pNetTargetPending = nullptr;
+        m_pMove             = nullptr;
+        m_pnHeldBindings    = nullptr;
         m_nOnSurface        = 0;
         m_bReady            = 1;
 
@@ -227,7 +227,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         pFound = m_pSurface->NormalAtPoint(m_pPos);
 
-        if (pFound == 0)
+        if (pFound == nullptr)
         {
             // STRING: HYPERX 0x004bb6c0
             g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
@@ -333,7 +333,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         AttachPak* const pRokAttach = pBody->pAttach;
 
-        bCarryingRok = (char)(pRokAttach != 0 && (nCarrierSlot = pRokAttach->nSlot) < PLAYER_OBJECT_COUNT && nCarrierSlot == m_pOwner->GetSlot());
+        bCarryingRok = (char)(pRokAttach != nullptr && (nCarrierSlot = pRokAttach->nSlot) < PLAYER_OBJECT_COUNT && nCarrierSlot == m_pOwner->GetSlot());
 
         if (m_pPos->z > g_flZeroAgendaItem)
         {
@@ -355,7 +355,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         ObjectStats* const pStats = &((PlayerObject*)m_pOwner)->m_stats;
 
-        if (pStats != 0)
+        if (pStats != nullptr)
         {
             flSum = pStats->GetWeightedStat(RATING_SPEED) * 0.05f + 0.65f;
         }
@@ -416,7 +416,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         pFound = g_arenaEllipsoid.NormalAtPoint(&vWorld);
 
-        if (pFound != 0)
+        if (pFound != nullptr)
         {
             pBody             = m_pOwner->GetPhysicsBody();
             pBody->surfNormal = *pFound;
@@ -463,7 +463,7 @@ void CGlideOnSurface::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }
@@ -479,7 +479,7 @@ void CGlideOnSurface::Release(int nTick)
     {
         UpdateTerrainPhysics(nTick);
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Release(nTick);
         }
@@ -523,7 +523,7 @@ void CGlideOnSurface::Release(int nTick)
 
         float flLag;
 
-        if (g_pGameSession != 0)
+        if (g_pGameSession != nullptr)
         {
             flLag = g_pGameSession->nLagMs * SESSION_LAG_SCALE;
         }
@@ -617,7 +617,7 @@ void CGlideOnSurface::Release(int nTick)
 
     Vec3* const pNormal = g_arenaEllipsoid.NormalAtPoint(m_pPos);
 
-    if (pNormal != 0)
+    if (pNormal != nullptr)
     {
         pBody = m_pOwner->GetPhysicsBody();
 
@@ -628,7 +628,7 @@ void CGlideOnSurface::Release(int nTick)
         pBody->pShell = &g_arenaEllipsoid;
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Release(nTick);
     }

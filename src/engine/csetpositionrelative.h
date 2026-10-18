@@ -13,8 +13,8 @@ class CSetPositionRelative : public ReleasingAgendaItem
 {
 public:
     CSetPositionRelative()
-    : m_pTracked(0)
-    , m_pMarker(0)
+    : m_pTracked(nullptr)
+    , m_pMarker(nullptr)
     , m_flUnused(0.0f)
     {
     }

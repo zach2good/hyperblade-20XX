@@ -11,10 +11,10 @@ class CAdjustAcceleration : public ReleasingAgendaItem
 {
 public:
     CAdjustAcceleration()
-    : m_pSmoothVel(0)
-    , m_pVelDir(0)
-    , m_pflStep(0)
-    , m_pTargetPos(0)
+    : m_pSmoothVel(nullptr)
+    , m_pVelDir(nullptr)
+    , m_pflStep(nullptr)
+    , m_pTargetPos(nullptr)
     {
     }
 

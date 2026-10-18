@@ -80,12 +80,12 @@ void BehObj_MonitorKeyboard::Init(EngineObject* pOwner, PlanNode* pBlock, int nF
     m_apSlots[0] = AllocAgendaItem(Agenda_CMonitorKeys);
 
     short nSlot  = 0;
-    m_apSlots[1] = 0;
+    m_apSlots[1] = nullptr;
 
     m_pOwner = pOwner;
     m_pBody  = pOwner->GetPhysicsBody();
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

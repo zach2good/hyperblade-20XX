@@ -25,8 +25,8 @@ void CollInteractor::Discard()
 {
     m_nActiveState = 0;
     m_bEnabled     = 1;
-    m_pNode        = 0;
-    pNext          = 0;
+    m_pNode        = nullptr;
+    pNext          = nullptr;
 
     g_pCollInteractorPool->Insert(this);
 }
@@ -113,7 +113,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
 // FUNCTION: HYPERX 0x0045ddf0
 void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 {
-    PlanWord* pCursor = 0;
+    PlanWord* pCursor = nullptr;
     short     nCount;
 
     m_nActiveState = 0;
@@ -129,7 +129,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 
     PlanNode* const pNode = m_pNode;
 
-    if (pNode != 0)
+    if (pNode != nullptr)
     {
         pCursor = pNode->m_pArgs;
         nCount  = pNode->m_nArgCount;
@@ -149,7 +149,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
         m_pOwner->GetPlanState()->ActivateBehavior((unsigned int)m_nBehaviour);
     }
 
-    if (nMode == 0 && m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK && m_pOwner->GetPhysStateObj() != 0)
+    if (nMode == 0 && m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK && m_pOwner->GetPhysStateObj() != nullptr)
     {
         m_pOwner->GetCPlayerStateLock()->lock();
 

@@ -10,7 +10,7 @@
 // FUNCTION: HYPERX 0x0044f9f0
 CDDText::~CDDText()
 {
-    if (m_pszText != 0)
+    if (m_pszText != nullptr)
     {
         free((void*)m_pszText);
     }
@@ -21,7 +21,7 @@ CDDText::~CDDText()
 // FUNCTION: HYPERX 0x0044fa40
 int CDDText::Draw()
 {
-    if (m_pszText != 0 && *m_pszText != 0 && g_pBackBufferBitsCopy != 0)
+    if (m_pszText != nullptr && *m_pszText != 0 && g_pBackBufferBitsCopy != nullptr)
     {
         const auto nIndex = (unsigned char)g_pColorPalette->NearestIndex(m_color, HudLayer::KEY_INDEX);
 
@@ -35,11 +35,11 @@ int CDDText::Draw()
 // FUNCTION: HYPERX 0x0044faf0
 int CDDText::SetText(const char* pszText, std::uint32_t color)
 {
-    if (m_pszText != 0)
+    if (m_pszText != nullptr)
     {
         free((void*)m_pszText);
 
-        m_pszText = 0;
+        m_pszText = nullptr;
     }
 
     if (color != (std::uint32_t)-1)
@@ -50,14 +50,14 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
     m_ptSize.x = 0;
     m_ptSize.y = 0;
 
-    if (pszText == 0)
+    if (pszText == nullptr)
     {
         return 1;
     }
 
     char* const pszCopy = (char*)malloc(strlen(pszText) + 1);
 
-    if (pszCopy != 0)
+    if (pszCopy != nullptr)
     {
         strcpy(pszCopy, pszText);
 
@@ -69,14 +69,14 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
 
     m_pszText = pszCopy;
 
-    return m_pszText != 0;
+    return m_pszText != nullptr;
 }
 
 // A null face name drops the font and answers success. Every face draws as MS Sans Serif.
 // FUNCTION: HYPERX 0x0044fc10
 int CDDText::CreateFontFace(const char* pszFaceName, int nHeight)
 {
-    if (pszFaceName == 0)
+    if (pszFaceName == nullptr)
     {
         m_font = Text::Font{};
 

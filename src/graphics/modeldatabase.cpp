@@ -23,12 +23,12 @@
 // FUNCTION: HYPERX 0x00472830
 ModelDatabase::~ModelDatabase()
 {
-    while (m_pListHead != 0)
+    while (m_pListHead != nullptr)
     {
         LODNode* const pNext = m_pListHead->m_pNext;
         LODNode* const pNode = m_pListHead;
 
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
             delete pNode;
         }
@@ -36,30 +36,30 @@ ModelDatabase::~ModelDatabase()
         m_pListHead = pNext;
     }
 
-    m_pListTail = 0;
-    m_pListHead = 0;
+    m_pListTail = nullptr;
+    m_pListHead = nullptr;
 
-    if (g_pModelVertexBuf != 0)
+    if (g_pModelVertexBuf != nullptr)
     {
         delete[] g_pModelVertexBuf;
-        g_pModelVertexBuf = 0;
+        g_pModelVertexBuf = nullptr;
     }
 
-    if (g_ppFaceList != 0)
+    if (g_ppFaceList != nullptr)
     {
         delete[] g_ppFaceList;
-        g_ppFaceList = 0;
+        g_ppFaceList = nullptr;
     }
 
-    if (g_pFaceRecords != 0)
+    if (g_pFaceRecords != nullptr)
     {
         delete[] g_pFaceRecords;
-        g_pFaceRecords = 0;
+        g_pFaceRecords = nullptr;
     }
 
     TexCacheEntry* pEntry = m_pTextureList;
 
-    while (pEntry != 0)
+    while (pEntry != nullptr)
     {
         m_pTextureList = pEntry->m_pNext;
 
@@ -84,7 +84,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
     LODNode* pNode = FindLOD(pszModelName);
 
-    if (pNode != 0)
+    if (pNode != nullptr)
     {
         return pNode;
     }
@@ -103,12 +103,12 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
                 // STRING: HYPERX 0x004c5364
                 "Error reading Model Lod header!");
 
-            return 0;
+            return nullptr;
         }
 
         ModelComponent* pBlob = ModelComponent::ReadFirst(&file.m_file);
 
-        if (pBlob != 0)
+        if (pBlob != nullptr)
         {
             pBlob->m_nId = m_nNextIndex;
 
@@ -118,13 +118,13 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             LODNode* const pRaw = new LODNode;
 
-            if (pRaw != 0)
+            if (pRaw != nullptr)
             {
                 pNode = pRaw->Init(nLodCount);
             }
             else
             {
-                pNode = 0;
+                pNode = nullptr;
             }
 
             pResult = pNode;
@@ -147,7 +147,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             file.m_file.CloseAndTest();
 
-            if (m_pListHead == 0)
+            if (m_pListHead == nullptr)
             {
                 m_pListTail = pNode;
                 m_pListHead = pNode;
@@ -169,7 +169,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             {
                 const MeshBlock* pSubBlob = pNode->m_apLodMeshes[0][i];
 
-                if (pSubBlob != 0)
+                if (pSubBlob != nullptr)
                 {
                     if (nVertexMax <= pSubBlob->nVertexCount)
                     {
@@ -185,7 +185,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             if (nVertexMax > m_nVertexMax)
             {
-                if (g_pModelVertexBuf != 0)
+                if (g_pModelVertexBuf != nullptr)
                 {
                     delete[] g_pModelVertexBuf;
                 }
@@ -199,12 +199,12 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
             if (nFaceMax > m_nFaceMax)
             {
-                if (g_ppFaceList != 0)
+                if (g_ppFaceList != nullptr)
                 {
                     delete[] g_ppFaceList;
                 }
 
-                if (g_pFaceRecords != 0)
+                if (g_pFaceRecords != nullptr)
                 {
                     delete[] g_pFaceRecords;
                 }
@@ -230,12 +230,12 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
                 "Error initializing Model file %s!",
                 pszModelName);
 
-            pResult = 0;
+            pResult = nullptr;
         }
     }
     else
     {
-        pResult = 0;
+        pResult = nullptr;
     }
 
     return pResult;
@@ -258,7 +258,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
             {
                 MeshMaterial* const pMaterials = new MeshMaterial[nMatCount];
 
-                MaterialName* paTexNames = 0;
+                MaterialName* paTexNames = nullptr;
 
                 // The texture field holds a pointer once loaded, so records are read in their file layout.
                 MeshMaterialRecord aRecords[256] = {};
@@ -355,9 +355,9 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
     MaterialListNode* pLookup = pLod->m_pMaterials;
     MaterialListNode* pPrev   = pLookup;
 
-    if (pszName != 0)
+    if (pszName != nullptr)
     {
-        while (pLookup != 0)
+        while (pLookup != nullptr)
         {
             if (SDL_strcasecmp(pszName, pLookup->GetName()) == 0)
             {
@@ -371,9 +371,9 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
         }
 
         // Not in the list, so it is loaded and appended.
-        MeshMaterial* pMaterials = 0;
-        MaterialName* paMatNames = 0;
-        MaterialName* paTexNames = 0;
+        MeshMaterial* pMaterials = nullptr;
+        MaterialName* paMatNames = nullptr;
+        MaterialName* paTexNames = nullptr;
         short         nTexCount  = 0;
         unsigned char nMatCount  = 0;
 
@@ -406,7 +406,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
                     "materialList File  %s in model directory could not be initialized!",
                     path.m_str.m_pchData);
 
-                return 0;
+                return nullptr;
             }
         }
         else
@@ -416,7 +416,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
                 "MaterialList File %s in model directory could not be opened!",
                 path.m_str.m_pchData);
 
-            return 0;
+            return nullptr;
         }
     }
 
@@ -466,9 +466,9 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 {
     TexCacheEntry* pEntry = m_pTextureList;
-    TexCacheEntry* pPrev  = 0;
+    TexCacheEntry* pPrev  = nullptr;
 
-    while (pEntry != 0)
+    while (pEntry != nullptr)
     {
         if (SDL_strcasecmp(pEntry->m_pszName, pszName) == 0)
         {
@@ -483,7 +483,7 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 
     TexCacheEntry* const pNew = new TexCacheEntry(pszName);
 
-    if (pPrev != 0)
+    if (pPrev != nullptr)
     {
         pPrev->m_pNext = pNew;
     }
@@ -503,9 +503,9 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
 {
     const Vec3* pVerts;
 
-    if (pBlob == 0 || pBlob->vertexOffset.nBytes == 0)
+    if (pBlob == nullptr || pBlob->vertexOffset.nBytes == 0)
     {
-        pVerts = 0;
+        pVerts = nullptr;
     }
     else
     {
@@ -548,7 +548,7 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
 {
     LODNode* pNode = m_pListHead;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         if (SDL_strcasecmp(pNode->m_pRecord->m_szName, pszName) == 0)
         {
@@ -558,7 +558,7 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
         pNode = pNode->m_pNext;
     }
 
-    return 0;
+    return nullptr;
 }
 
 // FUNCTION: HYPERX 0x00473660
@@ -578,7 +578,7 @@ MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, un
 
             pLookup->m_pMaterials[i].pTexture = FindOrLoadTexture(pszName);
 
-            if (pLookup->m_pMaterials[i].pTexture == 0)
+            if (pLookup->m_pMaterials[i].pTexture == nullptr)
             {
                 g_gameApp.Fatal(
                     // STRING: HYPERX 0x004c55b0

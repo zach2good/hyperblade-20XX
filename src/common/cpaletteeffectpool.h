@@ -9,7 +9,7 @@ class CPaletteEffectPool : public AgendaItemOwner
 public:
     CPaletteEffectPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

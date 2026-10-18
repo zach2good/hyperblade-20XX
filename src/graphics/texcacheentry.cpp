@@ -19,7 +19,7 @@ TexCacheEntry::TexCacheEntry(const char* pszName)
 {
     m_nUnused = 0;
     m_wRefs   = 0;
-    m_pNext   = 0;
+    m_pNext   = nullptr;
 
     m_pszName = strcpy(new char[strlen(pszName) + 1], pszName);
 
@@ -27,10 +27,10 @@ TexCacheEntry::TexCacheEntry(const char* pszName)
 
     pTexture = new SoftTex;
 
-    if (pTexture != 0 && pTexture->Load(pszName) == 0)
+    if (pTexture != nullptr && pTexture->Load(pszName) == 0)
     {
         delete pTexture;
-        pTexture = 0;
+        pTexture = nullptr;
     }
 
     m_pSoftTexture = pTexture;
@@ -41,7 +41,7 @@ void* TexCacheEntry::DestroyTexObj()
 {
     delete m_pSoftTexture;
 
-    m_pSoftTexture = 0;
+    m_pSoftTexture = nullptr;
 
     return m_pSoftTexture;
 }
@@ -49,10 +49,10 @@ void* TexCacheEntry::DestroyTexObj()
 // FUNCTION: HYPERX 0x00492dc0
 TexCacheEntry::~TexCacheEntry()
 {
-    if (m_pszName != 0)
+    if (m_pszName != nullptr)
     {
         delete[] m_pszName;
-        m_pszName = 0;
+        m_pszName = nullptr;
     }
 
     DestroyTexObj();

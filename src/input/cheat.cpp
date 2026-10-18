@@ -71,7 +71,7 @@ void Cheat::MaxViewedPlayerRatings(void)
     PlayerObject* pObject = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
     // Only the six player slots carry stats.
-    if (pObject != 0 && pObject->GetSlot() < PLAYER_OBJECT_COUNT)
+    if (pObject != nullptr && pObject->GetSlot() < PLAYER_OBJECT_COUNT)
     {
         pObject->m_stats.m_aStats[RATING_SLOT(RATING_DAMAGE)]       = 100.0f;
         pObject->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)]     = 100.0f;
@@ -83,7 +83,7 @@ void Cheat::MaxViewedPlayerRatings(void)
 // FUNCTION: HYPERX 0x004498d0
 void Cheat::EnableAllAwards(void)
 {
-    if (g_pGameEngine != 0)
+    if (g_pGameEngine != nullptr)
     {
         for (int nSlot = 0; nSlot < 6; nSlot++)
         {
@@ -100,13 +100,13 @@ void Cheat::RestoreAllPlayers(void)
     {
         EngineObject* pTeam = g_pGameEngine->m_ppSlots[(short)g_teamScaleSlots.anTeamOrder[nTeam]];
 
-        if (pTeam != 0)
+        if (pTeam != nullptr)
         {
             for (int nBone = 1; nBone < 15; nBone++)
             {
                 MeshBone* pBone = &pTeam->m_pBones[(short)nBone];
 
-                if (pBone != 0 && pBone->IsBound() != 0)
+                if (pBone != nullptr && pBone->IsBound() != 0)
                 {
                     TransformObject* const pTransform = &pBone->m_world;
 
@@ -359,7 +359,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     nSlot   = pEngine->m_nViewedSlot;
                     pEntity = pEngine->m_ppSlots[(short)nSlot];
 
-                    if (pEntity != 0)
+                    if (pEntity != nullptr)
                     {
                         if ((nSlot & 1) != 0)
                         {

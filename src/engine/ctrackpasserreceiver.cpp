@@ -36,11 +36,11 @@ extern const float g_flFourTracking;
 // FUNCTION: HYPERX 0x0040aec0
 void CTrackPasser_Receiver::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext        = 0;
+    m_pNext        = nullptr;
     m_wKind        = Agenda_CTrackPasser_Receiver;
     m_bReady       = 0;
     m_pOwner       = pOwner;
-    m_pReceiverPos = 0;
+    m_pReceiverPos = nullptr;
 
     m_pCamPos     = &pOwner->GetPhysicsBody()->pos;
     m_pCamVel     = &pOwner->GetPhysicsBody()->vel;
@@ -54,15 +54,15 @@ void CTrackPasser_Receiver::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner       = 0;
-        m_pReceiverPos = 0;
-        m_pCamPos      = 0;
-        m_pCamVel      = 0;
-        m_pCamDir      = 0;
-        m_pDesiredVel  = 0;
+        m_pOwner       = nullptr;
+        m_pReceiverPos = nullptr;
+        m_pCamPos      = nullptr;
+        m_pCamVel      = nullptr;
+        m_pCamDir      = nullptr;
+        m_pDesiredVel  = nullptr;
 
         m_flSeed = g_flZeroTracking;
-        m_pNext  = 0;
+        m_pNext  = nullptr;
         m_bReady = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -82,7 +82,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     EngineObject* pTracked = GetCamera()->GetTrackedObject();
 
-    if (pTracked == 0)
+    if (pTracked == nullptr)
     {
         // STRING: HYPERX 0x004bb55c
         g_gameApp.Fatal("CTrackPasser_Receiver::Process(): Null pointer for model to track\n");
@@ -131,11 +131,11 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     EngineObject* pReceiver = GetCamera()->GetSecondaryTrackedObject();
 
-    if (pReceiver == 0 || pReceiver == pTracked)
+    if (pReceiver == nullptr || pReceiver == pTracked)
     {
         m_pOwner->PostSceneEvent(MSG_END_PASS_MODE, 0);
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Process(nArg);
         }
@@ -159,7 +159,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pHolder != 0 && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
         {
             wCarrierSlot = pHolder->nSlot;
             bCarried     = 1;
@@ -297,7 +297,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
         GetCamera()->UpdateDirSmoothing();
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Process(nArg);
         }

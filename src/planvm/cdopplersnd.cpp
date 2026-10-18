@@ -8,7 +8,7 @@
 // FUNCTION: HYPERX 0x00412700
 void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
-    m_pNext    = 0;
+    m_pNext    = nullptr;
     m_wKind    = Agenda_CDopplerSnd;
     m_bReady   = 0;
     m_pOwner   = pSubject;
@@ -23,10 +23,10 @@ void CDopplerSnd::OnListChanged()
     if (m_bReady == 0)
     {
         m_nUnusedA = 0;
-        m_pOwner   = 0;
+        m_pOwner   = nullptr;
         m_nUnusedB = 0;
         m_nUnusedC = 0;
-        m_pNext    = 0;
+        m_pNext    = nullptr;
         m_bReady   = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -38,7 +38,7 @@ void CDopplerSnd::Process(int nArg)
 {
     AgendaItem* const pChain = m_pNext;
 
-    if (pChain != 0 && m_bReady == 0)
+    if (pChain != nullptr && m_bReady == 0)
     {
         pChain->Process(nArg);
     }

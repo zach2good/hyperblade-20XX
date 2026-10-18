@@ -31,7 +31,7 @@ void AnimEvent::PlaySnd(Interactor*, PlanNode* pEvent, short*, int)
     }
     else
     {
-        pSlot = 0;
+        pSlot = nullptr;
     }
 
     pSlot->m_nVolume = 0;
@@ -104,7 +104,7 @@ void AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, shor
     }
     else
     {
-        pSlot = 0;
+        pSlot = nullptr;
     }
 
     EngineObject* const pListener = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
@@ -140,7 +140,7 @@ void AnimEvent::IsAmbient(Interactor*, PlanNode*, short* pResult, int nEntry)
     }
     else
     {
-        pEntry = 0;
+        pEntry = nullptr;
     }
 
     // Unguarded: a failed lookup is read through, as in the original.

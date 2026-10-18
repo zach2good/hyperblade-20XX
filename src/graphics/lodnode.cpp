@@ -6,11 +6,11 @@
 // FUNCTION: HYPERX 0x00472740
 LODNode* LODNode::Init(short nLodCount)
 {
-    m_pRecord    = 0;
+    m_pRecord    = nullptr;
     m_wLodCount  = nLodCount;
-    m_pMaterials = 0;
+    m_pMaterials = nullptr;
     m_wRefCount  = 0;
-    m_pNext      = 0;
+    m_pNext      = nullptr;
 
     memset(m_apLodMeshes, 0, sizeof(m_apLodMeshes));
     memset(m_aflFarther, 0, sizeof(m_aflFarther));
@@ -28,7 +28,7 @@ LODNode::~LODNode()
     {
         for (short nComp = 0; nComp < m_pRecord->m_nSubComponents; nComp++)
         {
-            if (m_apLodMeshes[nLevel][nComp] != 0)
+            if (m_apLodMeshes[nLevel][nComp] != nullptr)
             {
                 delete m_apLodMeshes[nLevel][nComp];
             }
@@ -40,7 +40,7 @@ LODNode::~LODNode()
         delete[] m_apLodMeshes[m_wLodCount];
     }
 
-    if (m_pRecord != 0)
+    if (m_pRecord != nullptr)
     {
         delete m_pRecord;
     }

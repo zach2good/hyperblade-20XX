@@ -30,7 +30,7 @@
 // FUNCTION: HYPERX 0x00409fc0
 void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 {
-    m_pNext     = 0;
+    m_pNext     = nullptr;
     m_wKind     = Agenda_CHeadTrack;
     m_bReady    = 0;
     m_pOwner    = pCamera;
@@ -45,7 +45,7 @@ void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 
     m_bAttached = 0;
 
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         ViewExtent size;
         Point      origin;
@@ -93,11 +93,11 @@ void CHeadTrack::Process(int nArg)
 
     EngineObject* const pPrimary = pCam->GetTrackedObject();
 
-    if (pPrimary == 0)
+    if (pPrimary == nullptr)
     {
         pNext = m_pNext;
 
-        if (pNext != 0)
+        if (pNext != nullptr)
         {
             pNext->Process(nArg);
         }
@@ -117,7 +117,7 @@ void CHeadTrack::Process(int nArg)
 
     EngineObject* const pSecondary = pCam->GetSecondaryTrackedObject();
 
-    if (pSecondary != 0)
+    if (pSecondary != nullptr)
     {
         short nSlot;
         Vec3  vTarget;
@@ -185,7 +185,7 @@ void CHeadTrack::Process(int nArg)
 
         pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pHolder != 0 && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
         {
             flStep = g_pGameEngine->m_clock.flDelta;
 
@@ -249,7 +249,7 @@ void CHeadTrack::Process(int nArg)
             }
         }
 
-        if (g_pRenderer != 0)
+        if (g_pRenderer != nullptr)
         {
             ViewExtent size;
             Point      origin;
@@ -275,7 +275,7 @@ void CHeadTrack::Process(int nArg)
 
     pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }

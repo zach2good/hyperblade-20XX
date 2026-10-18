@@ -22,11 +22,11 @@ AnimNamedRef::~AnimNamedRef()
 {
     if (m_nSegment >= ANIMNAMEDREF_BIAS)
     {
-        if (m_pszName != 0)
+        if (m_pszName != nullptr)
         {
             delete[] m_pszName;
 
-            m_pszName = 0;
+            m_pszName = nullptr;
         }
     }
 }

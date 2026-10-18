@@ -153,7 +153,7 @@ bool GameApp::Initialize(const char* pszArguments)
     // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
     const char* const pszBase = SDL_GetBasePath();
 
-    if (pszBase == 0 || !StringTable::Load(pszBase))
+    if (pszBase == nullptr || !StringTable::Load(pszBase))
     {
         Window::ShowMessage("HyperBlade 20XX runs from your HyperBlade folder. Put hyperblade_20XX.exe beside HYPERX.EXE and start it from there.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
 
@@ -224,7 +224,7 @@ void GameApp::InitializeResourcePaths()
     // SDL's base path ends in a separator.
     const char* const pszBase = SDL_GetBasePath();
 
-    if (pszBase != 0)
+    if (pszBase != nullptr)
     {
         strDirectory.m_str.Assign(String::SafeStrlen(pszBase), pszBase);
     }
@@ -370,25 +370,25 @@ void GameApp::Shutdown()
 
     ColorPalette* const pPalette = g_pColorPalette;
 
-    if (pPalette != 0)
+    if (pPalette != nullptr)
     {
         pPalette->Release();
         operator delete(pPalette);
-        g_pColorPalette = 0;
+        g_pColorPalette = nullptr;
     }
 
     SoftRenderer::FreeBackBuffer();
 
-    if (g_pLeftStack != 0)
+    if (g_pLeftStack != nullptr)
     {
         free(g_pLeftStack);
-        g_pLeftStack = 0;
+        g_pLeftStack = nullptr;
     }
 
-    if (g_pRightStack != 0)
+    if (g_pRightStack != nullptr)
     {
         free(g_pRightStack);
-        g_pRightStack = 0;
+        g_pRightStack = nullptr;
     }
 
     auto quit = SDL_Event{};
@@ -441,7 +441,7 @@ GameApp::GameApp(short nStringCount)
 , m_bCursorWasVisible(1)
 , m_stringPool(nStringCount)
 {
-    m_pfnShutdown = 0;
+    m_pfnShutdown = nullptr;
     m_nCDRomDrive = CDROM_NOT_FOUND;
 
     m_vLightSpherical.x = m_vLightSpherical.y = m_vLightSpherical.z = g_flAppInitZero;
@@ -455,7 +455,7 @@ void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(void), v
     m_bHasWindow  = bHasWindow;
     m_pfnShutdown = pfnShutdown;
 
-    if (pfnStartup != 0)
+    if (pfnStartup != nullptr)
     {
         pfnStartup();
     }
@@ -464,12 +464,12 @@ void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(void), v
 // FUNCTION: HYPERX 0x00423160
 void GameApp::OnShutdown()
 {
-    if (g_pAudioMgr != 0)
+    if (g_pAudioMgr != nullptr)
     {
         g_pAudioMgr->StopCD();
     }
 
-    if (m_pfnShutdown != 0)
+    if (m_pfnShutdown != nullptr)
     {
         m_pfnShutdown();
     }
@@ -687,7 +687,7 @@ void GameApp::SetupViewports(void)
 
     CameraObject* const pView = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
 
-    if (g_pRenderer == 0 || pView == 0)
+    if (g_pRenderer == nullptr || pView == nullptr)
     {
         return;
     }
@@ -741,11 +741,11 @@ int GameApp::SetCursorVisible(int bVisible)
 int GameApp::MainUpdate()
 {
     // A finished track is followed by the menu track, or a random one during play.
-    if (g_soundMixer.Update() && g_pAudioMgr != 0)
+    if (g_soundMixer.Update() && g_pAudioMgr != nullptr)
     {
-        if (g_pGameEngine == 0 || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || (short)g_pGameEngine->m_wRunState != ENGINE_RUN_PLAYING)
+        if (g_pGameEngine == nullptr || g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE || (short)g_pGameEngine->m_wRunState != ENGINE_RUN_PLAYING)
         {
-            if (g_pGameOptions != 0 && g_pGameOptions->m_nInstallLevel != 0)
+            if (g_pGameOptions != nullptr && g_pGameOptions->m_nInstallLevel != 0)
             {
                 g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
             }
@@ -837,19 +837,19 @@ void GameApp::InstantiateState(void)
     int                nReturnState;
     MatchInfoUIScreen* pScreen;
 
-    if (g_pScreenMatchInfo != 0)
+    if (g_pScreenMatchInfo != nullptr)
     {
         nReturnState            = g_pScreenMatchInfo->m_nNextState;
         g_nMatchInfoReturnState = nReturnState;
     }
 
-    if (g_pScreenSaveLoad != 0)
+    if (g_pScreenSaveLoad != nullptr)
     {
         nReturnState           = g_pScreenSaveLoad->m_nReturnState;
         g_nSaveLoadReturnState = nReturnState;
     }
 
-    if (g_pScreenGameConfig != 0)
+    if (g_pScreenGameConfig != nullptr)
     {
         nReturnState             = g_pScreenGameConfig->m_nReturnState;
         g_nGameConfigReturnState = nReturnState;
@@ -857,21 +857,21 @@ void GameApp::InstantiateState(void)
 
     delete g_pActiveScreen;
 
-    g_pActiveScreen = 0;
+    g_pActiveScreen = nullptr;
 
-    if (g_pScreenMatchInfo != 0)
+    if (g_pScreenMatchInfo != nullptr)
     {
-        g_pScreenMatchInfo = 0;
+        g_pScreenMatchInfo = nullptr;
     }
 
-    if (g_pScreenSaveLoad != 0)
+    if (g_pScreenSaveLoad != nullptr)
     {
-        g_pScreenSaveLoad = 0;
+        g_pScreenSaveLoad = nullptr;
     }
 
-    if (g_pScreenGameConfig != 0)
+    if (g_pScreenGameConfig != nullptr)
     {
-        g_pScreenGameConfig = 0;
+        g_pScreenGameConfig = nullptr;
     }
 
     switch (g_gameApp.m_nEngineState)
@@ -983,7 +983,7 @@ void GameApp::InstantiateState(void)
         case 1:
         case 2:
         case ESTATE_MATCH_LIVE:
-            g_pActiveScreen = 0;
+            g_pActiveScreen = nullptr;
 
             return;
 
@@ -1007,7 +1007,7 @@ void GameApp::InstantiateState(void)
             return;
     }
 
-    if (g_pActiveScreen != 0)
+    if (g_pActiveScreen != nullptr)
     {
         g_pActiveScreen->InitFrame();
     }

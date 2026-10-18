@@ -42,7 +42,7 @@ public:
     ~BoundBubble() override;
 
     BoundBubble(EngineObject* pOwner, BubbleCmd* pShape)
-    : m_pShapeNode(0)
+    : m_pShapeNode(nullptr)
     , m_flRadius(g_flZeroEngineObject)
     {
         Init(pOwner, pShape);
@@ -78,7 +78,7 @@ inline BoundBubble* GameEngine::GetColObjPtr(short nSlot) const
 {
     BoundBubble* const pBubble = m_ppColObjects[nSlot];
 
-    if (pBubble == 0)
+    if (pBubble == nullptr)
     {
         // STRING: HYPERX 0x004bb2b0
         g_gameApp.Fatal("ERROR: GetColObjPtr: NULL Pointer\n");

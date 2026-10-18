@@ -9,7 +9,7 @@ class CStepAnimationPool : public AgendaItemOwner
 public:
     CStepAnimationPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

@@ -18,7 +18,7 @@
 void CDisplayShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CDisplayShotPower;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pSubject;
 
@@ -28,18 +28,18 @@ void CDisplayShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00412390
 void CDisplayShotPower::Process(int nArg)
 {
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         CameraObject* const pSource = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
 
-        if (pSource != 0)
+        if (pSource != nullptr)
         {
             g_pRenderer->SetShotPower((float)pSource->m_nShotPowerLevel);
             g_pRenderer->ShowShotPower();
         }
     }
 
-    if (m_pNext != 0 && m_bReady == 0)
+    if (m_pNext != nullptr && m_bReady == 0)
     {
         m_pNext->Process(nArg);
     }

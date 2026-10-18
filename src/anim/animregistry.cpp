@@ -23,7 +23,7 @@ AnimRegistry::~AnimRegistry()
     for (int i = 0; i < m_nSetCount; i++)
     {
         delete m_apSets[i];
-        m_apSets[i] = 0;
+        m_apSets[i] = nullptr;
     }
 
     // The original frees a lone set's array with scalar delete.
@@ -36,10 +36,10 @@ AnimRegistry::~AnimRegistry()
         delete[] m_apSets;
     }
 
-    if (m_pScripts != 0)
+    if (m_pScripts != nullptr)
     {
         delete m_pScripts;
-        m_pScripts = 0;
+        m_pScripts = nullptr;
     }
 }
 
@@ -69,7 +69,7 @@ AnimDB* AnimRegistry::FindAnimByNamePtr(const char* pszName)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 // FUNCTION: HYPERX 0x004170a0
@@ -91,7 +91,7 @@ AnimClipSet* AnimRegistry::FindOrLoad(const char* pszName)
 {
     AnimClipSet* const pSet = FindInCache(pszName);
 
-    if (pSet != 0)
+    if (pSet != nullptr)
     {
         return pSet;
     }
@@ -105,11 +105,11 @@ AnimClipSet* AnimRegistry::FindInCache(const char* pszName)
 {
     char szParsed[32];
 
-    AnimClipSet* pFound = 0;
+    AnimClipSet* pFound = nullptr;
 
     for (int i = 0; i < m_nSetCount; i++)
     {
-        if (m_apSets[i] != 0)
+        if (m_apSets[i] != nullptr)
         {
             sscanf(pszName, g_pszAnimNameFormat, szParsed);
 
@@ -136,7 +136,7 @@ AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
     {
         AnimNode* const pNode = pDb->GetNode(i);
 
-        if (pNode == 0)
+        if (pNode == nullptr)
         {
             break;
         }
@@ -145,7 +145,7 @@ AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
 
         pNode->m_pSet = pSet;
 
-        if (pSet != 0)
+        if (pSet != nullptr)
         {
             const short nFrames = pSet->m_wEndFrame;
 

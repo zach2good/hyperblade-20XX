@@ -75,15 +75,15 @@ public:
 inline AnimBinding::AnimBinding()
 : m_nUnused(0)
 , m_nFrameInt(0)
-, m_pObject(0)
+, m_pObject(nullptr)
 , m_wBoneCount(0)
 {
-    m_pSet         = 0;
-    m_pPrevSet     = 0;
-    m_pClip        = 0;
-    m_pPrevClip    = 0;
-    m_pBoneSet     = 0;
-    m_pPrevBoneSet = 0;
+    m_pSet         = nullptr;
+    m_pPrevSet     = nullptr;
+    m_pClip        = nullptr;
+    m_pPrevClip    = nullptr;
+    m_pBoneSet     = nullptr;
+    m_pPrevBoneSet = nullptr;
 }
 
 // Slot one of this table and AnimPlayer's is PooledOwnerRoot::Destroy's folded body, which holds the marker.
@@ -91,7 +91,7 @@ inline AnimBinding* AnimBinding::DestroyViaVtable()
 {
     delete this;
 
-    return 0;
+    return nullptr;
 }
 
 #endif

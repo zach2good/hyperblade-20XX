@@ -21,7 +21,7 @@ char MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMateri
 {
     float flLevel;
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         return SHADE_WHITE;
     }
@@ -70,9 +70,9 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
 
     *pnMatCount              = 0;
     *pnTexCount              = 0;
-    MaterialName* paTexNames = 0;
+    MaterialName* paTexNames = nullptr;
     int           nTexCount  = 0;
-    *ppTexNames              = 0;
+    *ppTexNames              = nullptr;
     char* pszLine            = szLine;
     short nMatIndex          = -1;
     char  bResult            = 1;

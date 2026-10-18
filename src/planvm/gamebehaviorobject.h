@@ -52,7 +52,7 @@ public:
 
     int CanPassOn() const
     {
-        return m_pCollInteractors == 0 && m_pMsgInteractors == 0 && m_pStandby != 0;
+        return m_pCollInteractors == nullptr && m_pMsgInteractors == nullptr && m_pStandby != nullptr;
     }
 
     // Each takes out the agenda items the behaviour it is named for does not run.

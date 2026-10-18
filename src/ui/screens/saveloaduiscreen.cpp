@@ -118,7 +118,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x6f, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f78
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn2"));
     pWidget->InitAfterLoad();
@@ -128,7 +128,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x86, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f68
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn3"));
     pWidget->InitAfterLoad();
@@ -138,7 +138,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x9d, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f58
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn4"));
     pWidget->InitAfterLoad();
@@ -148,7 +148,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xb4, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f48
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn5"));
     pWidget->InitAfterLoad();
@@ -158,7 +158,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xcb, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f38
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn6"));
     pWidget->InitAfterLoad();
@@ -168,7 +168,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xe2, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f28
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn7"));
     pWidget->InitAfterLoad();
@@ -178,7 +178,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xf9, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f18
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn8"));
     pWidget->InitAfterLoad();
@@ -188,7 +188,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x110, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4f08
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn9"));
     pWidget->InitAfterLoad();
@@ -198,7 +198,7 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x127, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     // STRING: HYPERX 0x004c4ef8
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn0"));
     pWidget->InitAfterLoad();

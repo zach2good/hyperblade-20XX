@@ -68,7 +68,7 @@ inline const char* TeamsBlock::GetTeamPath(int nAt) const
         return m_ppTeams[(short)nAt]->szPath;
     }
 
-    return 0;
+    return nullptr;
 }
 
 inline const char* TeamsBlock::GetTeamEnvironment(int nAt) const
@@ -78,6 +78,6 @@ inline const char* TeamsBlock::GetTeamEnvironment(int nAt) const
         return m_ppTeams[(short)nAt]->szEnvironment;
     }
 
-    return 0;
+    return nullptr;
 }
 #endif

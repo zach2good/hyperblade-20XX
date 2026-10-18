@@ -59,16 +59,16 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
         return pszFirst;
     }();
 
-    if (pszScan == 0)
+    if (pszScan == nullptr)
     {
         return 0;
     }
 
-    if (pszDelimitersA != 0)
+    if (pszDelimitersA != nullptr)
     {
         pszStart = (char*)strpbrk(pszScan, pszDelimitersA);
 
-        if (pszStart == 0)
+        if (pszStart == nullptr)
         {
             return 0;
         }
@@ -80,11 +80,11 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
 
     char* const pszEnd = (char*)strpbrk(pszStart, pszDelimitersB);
 
-    if (pszEnd == 0)
+    if (pszEnd == nullptr)
     {
         nLength = (int)strlen(pszStart);
 
-        *ppszNext = 0;
+        *ppszNext = nullptr;
     }
     else
     {
@@ -113,7 +113,7 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
 // FUNCTION: HYPERX 0x00487420
 char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
-    if (pszText != 0)
+    if (pszText != nullptr)
     {
         int nLeft = (int)strlen(pszText);
 
@@ -140,7 +140,7 @@ char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 // Steps past the character, and answers null when there is none.
@@ -149,9 +149,9 @@ char* ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 {
     char* const pAt = ParseUtil::SkipToChar(pszText, pszStop);
 
-    if (pAt == 0)
+    if (pAt == nullptr)
     {
-        return 0;
+        return nullptr;
     }
 
     return pAt + 1;

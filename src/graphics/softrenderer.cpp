@@ -53,7 +53,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 
     Graphics::Initialize(1);
 
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         g_pRenderer->LayoutSurfaces();
     }
@@ -66,7 +66,7 @@ void SoftRenderer::FreeBackBuffer()
 {
     s_backBuffer = {};
 
-    g_pBackBufferBitsCopy = 0;
+    g_pBackBufferBitsCopy = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0044f480
@@ -79,9 +79,9 @@ RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
 
     BitmapInfoHeader* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
 
-    if (pDib == 0)
+    if (pDib == nullptr)
     {
-        return 0;
+        return nullptr;
     }
 
     RLESprite* const pTexture = SoftTex::CompressToRLE(pDib);

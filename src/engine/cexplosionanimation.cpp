@@ -14,7 +14,7 @@
 void CExplosionAnimation::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CExplosionAnimation;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pSubject;
 }

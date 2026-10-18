@@ -38,7 +38,7 @@ extern short g_nWrongSideFrames;
 // FUNCTION: HYPERX 0x0040f830
 void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CAvoidObjects;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -52,8 +52,8 @@ void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pLateral        = pThird;
     m_flRange         = 80.0f;
     m_flStrength      = -6.5f;
-    m_pSwerveTarget   = 0;
-    m_pDrawTarget     = 0;
+    m_pSwerveTarget   = nullptr;
+    m_pDrawTarget     = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0040f890
@@ -61,7 +61,7 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 {
     const short nFallbackIndex = (short)nArg;
 
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CAvoidObjects;
     m_bReady = 0;
     m_pOwner = pObject;
@@ -87,7 +87,7 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
             m_pSwerveTarget = g_pGameEngine->m_ppSlots[(short)pNode->m_pArgs[1].n];
         }
 
-        m_pDrawTarget     = 0;
+        m_pDrawTarget     = nullptr;
         m_cReleaseOnRange = (char)pNode->m_pArgs[2].n;
         m_flRange         = pNode->m_pArgs[3].fl;
         m_flStrength      = pNode->m_pArgs[4].fl;
@@ -99,13 +99,13 @@ void CAvoidObjects::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext           = 0;
-        m_pOwner          = 0;
-        m_pLine           = 0;
-        m_pAccum          = 0;
-        m_pLateral        = 0;
-        m_pSwerveTarget   = 0;
-        m_pDrawTarget     = 0;
+        m_pNext           = nullptr;
+        m_pOwner          = nullptr;
+        m_pLine           = nullptr;
+        m_pAccum          = nullptr;
+        m_pLateral        = nullptr;
+        m_pSwerveTarget   = nullptr;
+        m_pDrawTarget     = nullptr;
         m_bReady          = 1;
         m_cReleaseOnRange = 0;
         m_flRange         = g_flZeroAgendaItem;
@@ -226,7 +226,7 @@ void CAvoidObjects::Process(int nArg)
         cWrongSide = 0;
     }
 
-    if (m_pDrawTarget != 0 && m_pOwner->GetDistIfFacing(m_pDrawTarget, g_flZeroAgendaItem) != 0.0f)
+    if (m_pDrawTarget != nullptr && m_pOwner->GetDistIfFacing(m_pDrawTarget, g_flZeroAgendaItem) != 0.0f)
     {
         float flScale;
 
@@ -286,7 +286,7 @@ void CAvoidObjects::Process(int nArg)
         m_pOwner->PostSceneEvent(MSG_BLOCKED, 0);
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }
@@ -302,13 +302,13 @@ void CAvoidObjects::AddAvoidanceTarget(short nIndex)
 {
     if (FindByRef(g_pGameEngine->GetSlot(nIndex)) != 0)
     {
-        if (m_pSwerveTarget == 0)
+        if (m_pSwerveTarget == nullptr)
         {
             m_pSwerveTarget = g_pGameEngine->GetSlot(nIndex);
             return;
         }
 
-        if (m_pDrawTarget == 0)
+        if (m_pDrawTarget == nullptr)
         {
             m_pDrawTarget = g_pGameEngine->GetSlot(nIndex);
             return;

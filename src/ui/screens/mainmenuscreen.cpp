@@ -72,9 +72,9 @@ MainMenuScreen::MainMenuScreen()
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
     // STRING: HYPERX 0x004c880c
@@ -82,9 +82,9 @@ MainMenuScreen::MainMenuScreen()
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
     // STRING: HYPERX 0x004c8804
@@ -92,15 +92,15 @@ MainMenuScreen::MainMenuScreen()
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
     pWidget = AppendWidget(new FlipbookWidget(96, 289, 0, 0, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
     // STRING: HYPERX 0x004c87fc
@@ -108,9 +108,9 @@ MainMenuScreen::MainMenuScreen()
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, SOUND_SXBUTT5));
     GDI::SafeDeleteBitmap(m_hBitmap);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->SetHidden(1);
 
     InitAllWidgets();
@@ -340,14 +340,14 @@ void MainMenuScreen::LoadButtonBitmaps()
             m_apWidgets[MAIN_MENU_TOURNAMENT]->AppendFrame(GDI::LoadBitmapHandle("Tournd"));
             m_apWidgets[MAIN_MENU_TOURNAMENT]->InitAfterLoad();
 
-            m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->AppendFrame(0);
-            m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->AppendFrame(0);
-            m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->AppendFrame(0);
+            m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->AppendFrame(nullptr);
+            m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->AppendFrame(nullptr);
+            m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->AppendFrame(nullptr);
             m_apWidgets[MAIN_MENU_BUTTON_FIRST + 2]->InitAfterLoad();
 
-            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
-            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
-            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
+            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(nullptr);
+            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(nullptr);
+            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(nullptr);
             m_apWidgets[MAIN_MENU_GAP]->InitAfterLoad();
 
             // STRING: HYPERX 0x004c88e4
@@ -401,9 +401,9 @@ void MainMenuScreen::LoadButtonBitmaps()
             m_apWidgets[MAIN_MENU_LOAD_GAME]->AppendFrame(GDI::LoadBitmapHandle("Loadgmd"));
             m_apWidgets[MAIN_MENU_LOAD_GAME]->InitAfterLoad();
 
-            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
-            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
-            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
+            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(nullptr);
+            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(nullptr);
+            m_apWidgets[MAIN_MENU_GAP]->AppendFrame(nullptr);
             m_apWidgets[MAIN_MENU_GAP]->InitAfterLoad();
 
             // STRING: HYPERX 0x004c87fc

@@ -40,7 +40,7 @@ auto s_flRokLightRadius = 200.0f;
 
 void Load()
 {
-    if (s_bLoaded || g_pGameOptions == 0)
+    if (s_bLoaded || g_pGameOptions == nullptr)
     {
         return;
     }
@@ -76,7 +76,7 @@ void GraphicsSettings::ToggleRenderer()
 {
     Load();
 
-    if (!Presenter::HasGPU() || g_pGameOptions == 0)
+    if (!Presenter::HasGPU() || g_pGameOptions == nullptr)
     {
         return;
     }
@@ -111,7 +111,7 @@ void GraphicsSettings::Toggle(Switch which)
 {
     Load();
 
-    if (g_pGameOptions == 0)
+    if (g_pGameOptions == nullptr)
     {
         return;
     }

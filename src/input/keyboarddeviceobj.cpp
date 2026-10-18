@@ -44,19 +44,19 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
                     {
                         ActionBinding* const pBinding = m_apStickyBinding[nKey];
 
-                        if (pBinding != 0)
+                        if (pBinding != nullptr)
                         {
                             m_pEntity->DispatchSceneMessage(
                                 MSG_NEW_INPUT, pBinding->m_nKey, DECISION_LOG_FRESH, m_pEntity->GetSlotWord(), 0);
                         }
 
                         m_nStickyMask ^= nBit;
-                        m_apStickyBinding[nKey] = 0;
+                        m_apStickyBinding[nKey] = nullptr;
                     }
                 }
                 else
                 {
-                    m_apStickyBinding[nKey] = 0;
+                    m_apStickyBinding[nKey] = nullptr;
                     m_nStickyMask ^= nBit;
                 }
             }
@@ -347,12 +347,12 @@ KeyboardDeviceObj::~KeyboardDeviceObj()
     {
         for (int nKey = 0; nKey < INPUT_SLOT_COUNT; nKey++)
         {
-            if (pSlots[m_nSlots].m_apUp[nKey] != 0)
+            if (pSlots[m_nSlots].m_apUp[nKey] != nullptr)
             {
                 delete[] pSlots[m_nSlots].m_apUp[nKey];
             }
 
-            if (pSlots[m_nSlots].m_apDown[nKey] != 0)
+            if (pSlots[m_nSlots].m_apDown[nKey] != nullptr)
             {
                 delete[] pSlots[m_nSlots].m_apDown[nKey];
             }
@@ -477,7 +477,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
                 nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nMask);
                 pBinding     = m_pBindingTable->m_apDown[nActionIndex];
 
-                if (pBinding != 0)
+                if (pBinding != nullptr)
                 {
                     nBudget       = ((nBit & ACTION_BINDING_HIGH_HALF) != 0) + 1;
                     nBindingCount = m_pBindingTable->m_anDown[nActionIndex];
@@ -576,13 +576,13 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
             nSticky                   = m_nStickyMask;
             m_nHeldMask               = nHeld & nClearMask;
             m_nStickyMask             = nSticky & nClearMask;
-            m_apStickyBinding[nIndex] = 0;
+            m_apStickyBinding[nIndex] = nullptr;
 
             nBudget      = ((nBit & ACTION_BINDING_HIGH_HALF) != 0) + 1;
             nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nBit & ACTION_BINDING_MASK);
             pBinding     = m_pBindingTable->m_apUp[nActionIndex];
 
-            if (pBinding != 0)
+            if (pBinding != nullptr)
             {
                 nBindingCount = m_pBindingTable->m_anUp[nActionIndex];
 

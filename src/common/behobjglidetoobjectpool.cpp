@@ -28,9 +28,9 @@ void* BehObjGlideToObjectPool::Alloc()
     GameBehaviorObject* const pHead = m_pHead;
 
     m_pHead           = pHead->m_pStandby;
-    pHead->m_pStandby = 0;
+    pHead->m_pStandby = nullptr;
 
-    if (m_pHead == 0)
+    if (m_pHead == nullptr)
     {
         m_pHead = new BehObj_GlideToObject;
     }
@@ -41,7 +41,7 @@ void* BehObjGlideToObjectPool::Alloc()
 // FUNCTION: HYPERX 0x00420970
 BehObjGlideToObjectPool::~BehObjGlideToObjectPool()
 {
-    while (m_pHead != 0)
+    while (m_pHead != nullptr)
     {
         GameBehaviorObject* const pNext = m_pHead->m_pStandby;
 

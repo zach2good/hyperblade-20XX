@@ -9,7 +9,7 @@ class BehObjUpdateWhileAttachedPool : public BehaviorOwner
 public:
     BehObjUpdateWhileAttachedPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

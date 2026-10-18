@@ -18,7 +18,7 @@ AnimClip::~AnimClip()
     switch (m_nFormat)
     {
         case 1:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
@@ -27,12 +27,12 @@ AnimClip::~AnimClip()
 
         case 2:
         case 4:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
 
-            if (m_pRotations != 0)
+            if (m_pRotations != nullptr)
             {
                 delete[] m_pRotations;
             }
@@ -40,12 +40,12 @@ AnimClip::~AnimClip()
             break;
 
         case 3:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
 
-            if (m_pRotations != 0)
+            if (m_pRotations != nullptr)
             {
                 delete[] m_pRotations;
             }
@@ -53,12 +53,12 @@ AnimClip::~AnimClip()
             break;
 
         case 5:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
 
-            if (m_pQuaternions != 0)
+            if (m_pQuaternions != nullptr)
             {
                 delete[] m_pQuaternions;
             }
@@ -66,12 +66,12 @@ AnimClip::~AnimClip()
             break;
 
         case 6:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
 
-            if (m_pQuaternions != 0)
+            if (m_pQuaternions != nullptr)
             {
                 delete[] m_pQuaternions;
             }
@@ -79,12 +79,12 @@ AnimClip::~AnimClip()
             break;
 
         case 7:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
 
-            if (m_pMatrices != 0)
+            if (m_pMatrices != nullptr)
             {
                 delete[] m_pMatrices;
             }
@@ -92,12 +92,12 @@ AnimClip::~AnimClip()
             break;
 
         case 8:
-            if (m_pTranslation != 0)
+            if (m_pTranslation != nullptr)
             {
                 delete[] m_pTranslation;
             }
 
-            if (m_pMatrices != 0)
+            if (m_pMatrices != nullptr)
             {
                 delete[] m_pMatrices;
             }
@@ -131,7 +131,7 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 
         float* const pBuffer = new float[(unsigned short)(header.nDataSize >> 2)];
 
-        if (pBuffer == 0)
+        if (pBuffer == nullptr)
         {
             break;
         }
@@ -351,8 +351,8 @@ unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
 AnimClip::AnimClip()
 : m_nSegment(0)
 , m_nFrame(0)
-, m_pRotations(0)
-, m_pTranslation(0)
+, m_pRotations(nullptr)
+, m_pTranslation(nullptr)
 , m_nFormat(0)
 {
 }

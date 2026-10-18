@@ -8,5 +8,5 @@ PooledOwnerRoot* PooledOwnerRoot::Destroy()
 {
     delete this;
 
-    return 0;
+    return nullptr;
 }

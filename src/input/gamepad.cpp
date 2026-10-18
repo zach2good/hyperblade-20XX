@@ -120,7 +120,7 @@ SDL_JoystickID                           s_nLastPad        = 0;
 
 bool InMatch()
 {
-    return g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pGameEngine != 0 && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING && g_pInputDevice != 0;
+    return g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pGameEngine != nullptr && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING && g_pInputDevice != nullptr;
 }
 
 const Action& FindAction(const std::string& name)
@@ -138,7 +138,7 @@ const Action& FindAction(const std::string& name)
 
 void LoadBindings()
 {
-    if (s_bBindingsLoaded || g_pGameOptions == 0)
+    if (s_bBindingsLoaded || g_pGameOptions == nullptr)
     {
         return;
     }

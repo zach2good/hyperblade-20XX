@@ -128,7 +128,7 @@ extern int                    g_bDromePass;
 // viewport, with nothing transformed or rasterised here.
 void MeshBone::SubmitToHardware()
 {
-    if (m_pMesh == 0 || m_pMesh->nFaceCount <= 0 || m_pMesh->vertexOffset.nBytes == 0)
+    if (m_pMesh == nullptr || m_pMesh->nFaceCount <= 0 || m_pMesh->vertexOffset.nBytes == 0)
     {
         return;
     }
@@ -309,9 +309,9 @@ void MeshBone::DrawFaces()
         return;
     }
 
-    if (pBlob == 0 || pBlob->vertexOffset.nBytes == 0)
+    if (pBlob == nullptr || pBlob->vertexOffset.nBytes == 0)
     {
-        pVertBase = 0;
+        pVertBase = nullptr;
     }
     else
     {
@@ -347,7 +347,7 @@ void MeshBone::DrawFaces()
     }
 
     // Never false.
-    if (pXf != 0)
+    if (pXf != nullptr)
     {
         pXf->TransformDirectionByRows(g_lightDirs[0].dir, &g_vLightDirModel);
     }
@@ -454,9 +454,9 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
     {
         MeshBlock* const pMesh = m_pMesh;
 
-        if (pMesh == 0 || pMesh->vertexOffset.nBytes == 0)
+        if (pMesh == nullptr || pMesh->vertexOffset.nBytes == 0)
         {
-            pVerts = 0;
+            pVerts = nullptr;
         }
         else
         {
@@ -493,7 +493,7 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
 // FUNCTION: HYPERX 0x0046f530
 void MeshBone::CalcVertexColors()
 {
-    if (m_pFaceColours == 0)
+    if (m_pFaceColours == nullptr)
     {
         SetFlags(MESHBONE_COLOURS_PRESENT);
     }
@@ -506,7 +506,7 @@ void MeshBone::CalcVertexColors()
     const TransformObject* pXf = &m_world;
 
     // Never false.
-    if (pXf != 0)
+    if (pXf != nullptr)
     {
         Vec3 vLight = g_lightDirs[0].dir;
 
@@ -547,7 +547,7 @@ void MeshBone::CalcVertexColors()
         {
             flIntensity = g_flZeroVertexColour;
 
-            if (pNormal == 0)
+            if (pNormal == nullptr)
             {
                 cShade = SHADE_WHITE;
             }
@@ -594,7 +594,7 @@ void MeshBone::SetFlags(unsigned short nFlags)
 {
     if (nFlags == MESHBONE_COLOURS_PRESENT)
     {
-        if (m_pFaceColours != 0)
+        if (m_pFaceColours != nullptr)
         {
             delete[] m_pFaceColours;
         }
@@ -615,11 +615,11 @@ void MeshBone::ClearFlags(unsigned short nFlags)
 {
     m_nFlags &= ~nFlags;
 
-    if (nFlags == MESHBONE_COLOURS_PRESENT && m_pFaceColours != 0)
+    if (nFlags == MESHBONE_COLOURS_PRESENT && m_pFaceColours != nullptr)
     {
         delete[] m_pFaceColours;
 
-        m_pFaceColours = 0;
+        m_pFaceColours = nullptr;
     }
 }
 
@@ -627,12 +627,12 @@ void MeshBone::ClearFlags(unsigned short nFlags)
 // FUNCTION: HYPERX 0x0046fa50
 MeshBone::MeshBone()
 : m_nUnused(0)
-, m_pOwner(0)
-, m_pDesc(0)
-, m_pChildIds(0)
-, m_apChildren(0)
-, m_pFaceColours(0)
-, m_pBubble(0)
+, m_pOwner(nullptr)
+, m_pDesc(nullptr)
+, m_pChildIds(nullptr)
+, m_apChildren(nullptr)
+, m_pFaceColours(nullptr)
+, m_pBubble(nullptr)
 , m_bHasScale(0)
 , m_flRadius(0)
 {
@@ -644,18 +644,18 @@ MeshBone::MeshBone()
 // FUNCTION: HYPERX 0x0046fb10
 MeshBone::~MeshBone()
 {
-    if (m_apChildren != 0)
+    if (m_apChildren != nullptr)
     {
         delete[] m_apChildren;
 
-        m_apChildren = 0;
+        m_apChildren = nullptr;
     }
 
-    if (m_pFaceColours != 0)
+    if (m_pFaceColours != nullptr)
     {
         delete[] m_pFaceColours;
 
-        m_pFaceColours = 0;
+        m_pFaceColours = nullptr;
     }
 }
 
@@ -690,13 +690,13 @@ int MeshBone::BindToLODMesh(CD3DTextureManager* pLookup, LODNode* pNode, EngineO
             SetFlags(MESHBONE_UNBOUND);
         }
 
-        if (pNode->m_pRecord != 0)
+        if (pNode->m_pRecord != nullptr)
         {
             pEntry = pNode->m_pRecord->SlotDesc(nSlot);
         }
         else
         {
-            pEntry = 0;
+            pEntry = nullptr;
         }
 
         m_pDesc     = pEntry;
@@ -709,7 +709,7 @@ int MeshBone::BindToLODMesh(CD3DTextureManager* pLookup, LODNode* pNode, EngineO
 
         pTarget->ApplyTranslation();
 
-        m_apChildren = 0;
+        m_apChildren = nullptr;
     }
 
     return nResult != -1;
@@ -732,13 +732,13 @@ int MeshBone::BindToLODMeshShadowless(CD3DTextureManager* pLookup, LODNode* pNod
             SetFlags(MESHBONE_UNBOUND);
         }
 
-        if (pNode->m_pRecord != 0)
+        if (pNode->m_pRecord != nullptr)
         {
             pEntry = pNode->m_pRecord->SlotDesc(nSlot);
         }
         else
         {
-            pEntry = 0;
+            pEntry = nullptr;
         }
 
         m_pDesc     = pEntry;
@@ -749,11 +749,11 @@ int MeshBone::BindToLODMeshShadowless(CD3DTextureManager* pLookup, LODNode* pNod
                                pEntry->m_vRest.y,
                                pEntry->m_vRest.z);
 
-        if (m_apChildren != 0)
+        if (m_apChildren != nullptr)
         {
             delete[] m_apChildren;
 
-            m_apChildren = 0;
+            m_apChildren = nullptr;
         }
     }
 
@@ -770,9 +770,9 @@ void MeshBone::ComputeBoundingSphere()
 
     MeshBlock* const pMesh = m_pMesh;
 
-    if (pMesh == 0 || pMesh->vertexOffset.nBytes == 0)
+    if (pMesh == nullptr || pMesh->vertexOffset.nBytes == 0)
     {
-        pVerts = 0;
+        pVerts = nullptr;
     }
     else
     {

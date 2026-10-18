@@ -12,11 +12,11 @@ class CBeAttached : public KindAgendaItem
 {
 public:
     CBeAttached()
-    : m_pVel(0)
-    , m_pPos(0)
-    , m_pPrevPos(0)
-    , m_pflSpeed(0)
-    , m_pAttach(0)
+    : m_pVel(nullptr)
+    , m_pPos(nullptr)
+    , m_pPrevPos(nullptr)
+    , m_pflSpeed(nullptr)
+    , m_pAttach(nullptr)
     {
     }
 

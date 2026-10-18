@@ -20,7 +20,7 @@
 void CRelaxYaw::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind   = Agenda_CRelaxYaw;
-    m_pNext   = 0;
+    m_pNext   = nullptr;
     m_bReady  = 0;
     m_pOwner  = pSubject;
     m_flAngle = g_flZeroAgendaItem;
@@ -31,7 +31,7 @@ void CRelaxYaw::Bind(EngineObject* pSubject, GameBehaviorObject*)
 void CRelaxYaw::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int)
 {
     m_wKind  = Agenda_CRelaxYaw;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pObject;
 
@@ -58,8 +58,8 @@ void CRelaxYaw::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext   = 0;
-        m_pOwner  = 0;
+        m_pNext   = nullptr;
+        m_pOwner  = nullptr;
         m_flAngle = g_flZeroAgendaItem;
         m_bReady  = 1;
 
@@ -86,7 +86,7 @@ void CRelaxYaw::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0 && m_bReady == 0)
+    if (pNext != nullptr && m_bReady == 0)
     {
         pNext->Process(nArg);
     }
@@ -120,7 +120,7 @@ void CRelaxYaw::Release(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0 && m_bReady == 0)
+    if (pNext != nullptr && m_bReady == 0)
     {
         pNext->Release(nArg);
     }

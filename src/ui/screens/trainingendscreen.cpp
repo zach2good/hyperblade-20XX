@@ -57,7 +57,7 @@ void TrainingEndScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 
             GDI::SafeDeleteBitmap(m_hBackground);
 
-            m_hBackground = 0;
+            m_hBackground = nullptr;
 
             m_bPaletted = 0;
 

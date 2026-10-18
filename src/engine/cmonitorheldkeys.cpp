@@ -10,7 +10,7 @@
 void CMonitorHeldKeys::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CMonitorHeldKeys;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pSubject;
 }
@@ -22,7 +22,7 @@ void CMonitorHeldKeys::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }

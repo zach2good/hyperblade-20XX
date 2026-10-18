@@ -24,7 +24,7 @@ void BehObj_UpdateWhileAttached::SetInteractorsActive(int nArg)
     Interactor* pFirst  = m_pCollInteractors;
     Interactor* pSecond = m_pMsgInteractors;
 
-    while (pFirst != 0)
+    while (pFirst != nullptr)
     {
         if (pFirst->GetActiveState() != -1)
         {
@@ -32,7 +32,7 @@ void BehObj_UpdateWhileAttached::SetInteractorsActive(int nArg)
 
             AttachPak* const pBinding = m_pBody->pAttach;
 
-            if (pBinding != 0)
+            if (pBinding != nullptr)
             {
                 const short nBound = pBinding->nIndex;
 
@@ -46,7 +46,7 @@ void BehObj_UpdateWhileAttached::SetInteractorsActive(int nArg)
         pFirst = pFirst->pNext;
     }
 
-    while (pSecond != 0)
+    while (pSecond != nullptr)
     {
         if (pSecond->GetActiveState() != -1)
         {
@@ -73,9 +73,9 @@ void BehObj_UpdateWhileAttached::Init(EngineObject* pOwner, PlanNode* pBlock, in
 
     short nSlot = 0;
 
-    m_apSlots[1] = 0;
+    m_apSlots[1] = nullptr;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         pNode->Bind(m_pOwner, this);
 

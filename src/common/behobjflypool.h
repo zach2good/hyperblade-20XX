@@ -9,7 +9,7 @@ class BehObjFlyPool : public BehaviorOwner
 public:
     BehObjFlyPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

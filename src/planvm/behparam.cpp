@@ -77,7 +77,7 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
         {
             const unsigned int nPronoun = pNode->m_pArgs[ARG_FIRST + nIndex].wPronoun;
 
-            nValue = g_apPlanArgFns[nPronoun](&pActor->GetPlanState()->m_pOwner, 0, 0);
+            nValue = g_apPlanArgFns[nPronoun](&pActor->GetPlanState()->m_pOwner, nullptr, nullptr);
         }
         else
         {
@@ -147,7 +147,7 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
         pReceiver->m_apSlots[0]
             ->Tick(g_apPositionMarkers[pNotify->m_pArgs[ARG_MARKER].n]);
 
-        if (pReceiver->m_apSlots[1] != 0)
+        if (pReceiver->m_apSlots[1] != nullptr)
         {
             pReceiver->m_apSlots[1]
                 ->Tick(g_apPositionMarkers[pNotify->m_pArgs[ARG_MARKER].n]);
@@ -163,7 +163,7 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
 
     Vec3* pVec = pReceiver->m_apSlots[0]->GetVector();
 
-    if (pVec != 0)
+    if (pVec != nullptr)
     {
         pVec->x = (float)pNotify->m_pArgs[ARG_X].n;
         pVec->y = (float)pNotify->m_pArgs[ARG_Y].n;
@@ -172,11 +172,11 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
         pReceiver->m_apSlots[0]->Tick(pVec);
     }
 
-    if (pReceiver->m_apSlots[1] != 0)
+    if (pReceiver->m_apSlots[1] != nullptr)
     {
         pVec = pReceiver->m_apSlots[1]->GetVector();
 
-        if (pVec != 0)
+        if (pVec != nullptr)
         {
             pVec->x = (float)pNotify->m_pArgs[ARG_X].n;
             pVec->y = (float)pNotify->m_pArgs[ARG_Y].n;
@@ -190,7 +190,7 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
     {
         pVec = &((BehObj_GlideToPosition*)pReceiver)->m_vTarget;
 
-        if (pVec != 0)
+        if (pVec != nullptr)
         {
             pVec->x = (float)pNotify->m_pArgs[ARG_X].n;
             pVec->y = (float)pNotify->m_pArgs[ARG_Y].n;
@@ -230,7 +230,7 @@ void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorOb
 
         pTrajectory->m_apSlots[1]->OnKind((short)pNotify->m_pArgs[1].n);
 
-        if (pTrajectory->m_apSlots[4] != 0)
+        if (pTrajectory->m_apSlots[4] != nullptr)
         {
             pTrajectory->m_apSlots[4]->OnKind((short)pNotify->m_pArgs[1].n);
         }

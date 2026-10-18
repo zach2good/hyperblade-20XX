@@ -37,7 +37,7 @@ struct Voice
 
 int IsResidentGroup(const SoundEntry* pEntry, int nGroup)
 {
-    return pEntry->m_pSamples != 0 && pEntry->m_nGroup == nGroup;
+    return pEntry->m_pSamples != nullptr && pEntry->m_nGroup == nGroup;
 }
 
 bool Streams(const SoundEntry* pEntry)
@@ -293,7 +293,7 @@ void SoundMixer::Play(SoundEntry* pSound)
 
     // The voice keeps its own copy, as a DirectSound buffer did: the game frees a group's samples
     // while its sounds may still be playing.
-    if (pSound->m_pSamples != 0)
+    if (pSound->m_pSamples != nullptr)
     {
         voice.samples.assign(pSound->m_pSamples, pSound->m_pSamples + pSound->m_nDataBytes);
     }

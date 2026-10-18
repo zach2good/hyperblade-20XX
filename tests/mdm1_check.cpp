@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
             void* const pOut = MDM1::Decompress(&file);
 
-            if (pOut == 0)
+            if (pOut == nullptr)
             {
                 nFailed++;
                 printf("FAIL %s\n", entry.path().string().c_str());

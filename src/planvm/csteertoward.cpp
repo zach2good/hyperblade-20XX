@@ -27,7 +27,7 @@
 // FUNCTION: HYPERX 0x0040f180
 void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSteerToward;
     m_bReady = 0;
 
@@ -50,17 +50,17 @@ void CSteerToward::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext             = 0;
-        m_pOwner            = 0;
-        m_pPosition         = 0;
-        m_pTo               = 0;
-        m_pStep             = 0;
-        m_pVelDir           = 0;
-        m_pflSpeed          = 0;
-        m_pTarget           = 0;
-        m_pPlayer           = 0;
-        m_pNetTarget        = 0;
-        m_pNetTargetPending = 0;
+        m_pNext             = nullptr;
+        m_pOwner            = nullptr;
+        m_pPosition         = nullptr;
+        m_pTo               = nullptr;
+        m_pStep             = nullptr;
+        m_pVelDir           = nullptr;
+        m_pflSpeed          = nullptr;
+        m_pTarget           = nullptr;
+        m_pPlayer           = nullptr;
+        m_pNetTarget        = nullptr;
+        m_pNetTargetPending = nullptr;
         m_bReady            = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -139,7 +139,7 @@ void CSteerToward::Process(int nArg)
             m_pOwner->PostSceneEvent(MSG_GOAL_RECEIVED, 0);
         }
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Process(nArg);
         }
@@ -165,7 +165,7 @@ void CSteerToward::Process(int nArg)
 
     pBody->step = vWork;
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }
@@ -274,7 +274,7 @@ void CSteerToward::Release(int nArg)
 
     const Vec3* pNormal = g_arenaEllipsoid.NormalAtPoint(&vPoint);
 
-    if (pNormal != 0)
+    if (pNormal != nullptr)
     {
         Vec3* const pSurfNormal = &m_pOwner->GetPhysicsBody()->surfNormal;
 
@@ -285,7 +285,7 @@ void CSteerToward::Release(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Release(nArg);
     }

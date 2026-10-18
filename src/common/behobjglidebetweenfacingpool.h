@@ -9,7 +9,7 @@ class BehObjGlideBetweenFacingPool : public BehaviorOwner
 public:
     BehObjGlideBetweenFacingPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

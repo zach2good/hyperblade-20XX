@@ -11,14 +11,14 @@
 // FUNCTION: HYPERX 0x004172a0
 void AnimClipSet::Init()
 {
-    m_pszName     = 0;
+    m_pszName     = nullptr;
     m_wEndFrame   = 0;
     m_wUnused     = 0;
     m_wFrameRate  = 0;
     m_wFrameCount = 0;
     m_nClipCount  = 0;
     m_flDuration  = g_flZeroAnimClipSet;
-    m_pClips      = 0;
+    m_pClips      = nullptr;
 }
 
 // A clip that will not load is fatal and names the set, as is a header that will not read.
@@ -65,17 +65,17 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
 // FUNCTION: HYPERX 0x004174a0
 AnimClipSet::~AnimClipSet()
 {
-    if (m_pClips != 0)
+    if (m_pClips != nullptr)
     {
         delete[] m_pClips;
 
-        m_pClips = 0;
+        m_pClips = nullptr;
     }
 
-    if (m_pszName != 0)
+    if (m_pszName != nullptr)
     {
         delete[] m_pszName;
 
-        m_pszName = 0;
+        m_pszName = nullptr;
     }
 }

@@ -23,16 +23,16 @@
 // FUNCTION: HYPERX 0x004112e0
 CSpeedBurst::CSpeedBurst() throw()
 {
-    m_pOpponentA = 0;
-    m_pOpponentB = 0;
-    m_pBoost     = 0;
+    m_pOpponentA = nullptr;
+    m_pOpponentB = nullptr;
+    m_pBoost     = nullptr;
     m_flTarget   = g_flZeroAgendaItem;
 }
 
 // FUNCTION: HYPERX 0x00411310
 void CSpeedBurst::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSpeedBurst;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -55,14 +55,14 @@ void CSpeedBurst::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext      = 0;
-        m_pOwner     = 0;
-        m_pOpponentA = 0;
-        m_pOpponentB = 0;
+        m_pNext      = nullptr;
+        m_pOwner     = nullptr;
+        m_pOpponentA = nullptr;
+        m_pOpponentB = nullptr;
 
         *m_pBoost = g_flOneAgendaItem;
 
-        m_pBoost   = 0;
+        m_pBoost   = nullptr;
         m_bReady   = 1;
         m_flTarget = g_flZeroAgendaItem;
 
@@ -92,7 +92,7 @@ void CSpeedBurst::Process(int nArg)
 
         pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pCarrier != 0 && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == m_pOwner->GetSlot())
+        if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == m_pOwner->GetSlot())
         {
             flRate = flDelta * CARRIER_RATE;
         }
@@ -125,7 +125,7 @@ void CSpeedBurst::Process(int nArg)
             {
                 *m_pBoost = g_flOneAgendaItem;
 
-                if (m_pNext != 0)
+                if (m_pNext != nullptr)
                 {
                     m_pNext->Process(nArg);
                 }
@@ -136,7 +136,7 @@ void CSpeedBurst::Process(int nArg)
         }
     }
 
-    if (m_pNext != 0 && m_bReady == 0)
+    if (m_pNext != nullptr && m_bReady == 0)
     {
         m_pNext->Process(nArg);
     }

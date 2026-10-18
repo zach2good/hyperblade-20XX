@@ -43,7 +43,7 @@ void BehaviorRegistry::DestroyAll(void)
 
     PooledOwnerRoot* pNode = g_apBehaviorRegistry[0];
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         g_apBehaviorRegistry[iSlot] = pNode->Destroy();
 
@@ -60,7 +60,7 @@ void BehaviorRegistry::InitAll(void)
 
     PooledOwnerRoot* pNode = g_apBehaviorRegistry[0];
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         iSlot++;
 
@@ -121,5 +121,5 @@ void BehaviorRegistry::Init(void)
     g_apBehaviorRegistry[BEH_TRACK_PASS_PREP]       = new BehObjTrackPassPrepPool;
     g_apBehaviorRegistry[BEH_COACH_TEAM]            = new BehObjCoachTeamPool;
     g_apBehaviorRegistry[BEH_CANDY_TRACKING]        = new BehObjCandyTrackingPool;
-    g_apBehaviorRegistry[BEH_COUNT]                 = 0;
+    g_apBehaviorRegistry[BEH_COUNT]                 = nullptr;
 }

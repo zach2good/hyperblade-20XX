@@ -9,8 +9,8 @@ class RLESpriteSurface : public CDDDrawable
 {
 public:
     RLESpriteSurface()
-    : m_pSprite(0)
-    , m_pszName(0)
+    : m_pSprite(nullptr)
+    , m_pszName(nullptr)
     {
     }
 

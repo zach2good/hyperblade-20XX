@@ -14,7 +14,7 @@
 void CCheckAI::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CCheckAI;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pSubject;
 }
@@ -44,7 +44,7 @@ void CCheckAI::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0 && m_bReady == 0)
+    if (pNext != nullptr && m_bReady == 0)
     {
         pNext->Process(nArg);
     }

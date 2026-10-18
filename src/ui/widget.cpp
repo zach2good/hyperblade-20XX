@@ -28,11 +28,11 @@ Widget::~Widget()
 {
     int i;
 
-    if (m_pFrames != 0)
+    if (m_pFrames != nullptr)
     {
-        GDI::Bitmap* hBackground = 0;
+        GDI::Bitmap* hBackground = nullptr;
 
-        if (m_pOwner != 0)
+        if (m_pOwner != nullptr)
         {
             hBackground = m_pOwner->m_hBackground;
         }
@@ -41,11 +41,11 @@ Widget::~Widget()
         {
             GDI::Bitmap* const hFrame = m_pFrames[i].hBitmap;
 
-            if (hFrame != 0)
+            if (hFrame != nullptr)
             {
                 if (hFrame == hBackground)
                 {
-                    m_pFrames[i].hBitmap = 0;
+                    m_pFrames[i].hBitmap = nullptr;
                 }
                 else
                 {
@@ -53,7 +53,7 @@ Widget::~Widget()
                     {
                         if (m_pFrames[j].hBitmap == hFrame || m_pFrames[j].hBitmap == hBackground)
                         {
-                            m_pFrames[j].hBitmap = 0;
+                            m_pFrames[j].hBitmap = nullptr;
                         }
                     }
                 }
@@ -62,27 +62,27 @@ Widget::~Widget()
 
         for (i = 0; i <= m_nFrameCount; i++)
         {
-            if (m_pFrames[i].hBitmap != 0)
+            if (m_pFrames[i].hBitmap != nullptr)
             {
                 if (m_pFrames[i].bCached == 0)
                 {
                     GDI::SafeDeleteBitmap(m_pFrames[i].hBitmap);
                 }
 
-                m_pFrames[i].hBitmap = 0;
+                m_pFrames[i].hBitmap = nullptr;
             }
         }
 
         delete[] m_pFrames;
 
-        m_pFrames = 0;
+        m_pFrames = nullptr;
     }
 
-    if (m_pszText != 0)
+    if (m_pszText != nullptr)
     {
         Mem::SafeDelete(m_pszText);
 
-        m_pszText = 0;
+        m_pszText = nullptr;
     }
 }
 
@@ -99,7 +99,7 @@ Widget::Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nD
     m_nFrameCount       = nRows;
     m_nFrameIdle        = nFrameIdle;
     m_nType             = WIDGET_FLIPBOOK;
-    m_pszText           = 0;
+    m_pszText           = nullptr;
     m_nTextX            = 0;
     m_nTextY            = 0;
     m_nFrame            = 0;
@@ -111,7 +111,7 @@ Widget::Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nD
 
     for (int i = 0; i <= m_nFrameCount; i++)
     {
-        m_pFrames[i].hBitmap = 0;
+        m_pFrames[i].hBitmap = nullptr;
     }
 
     m_pOwner                          = pOwner;
@@ -240,7 +240,7 @@ void Widget::Draw(int)
 
     WidgetDrawFrame* pFrame = m_pFrames;
 
-    if (pFrame != 0)
+    if (pFrame != nullptr)
     {
         pFrame += m_nFrame;
 
@@ -266,7 +266,7 @@ void Widget::Draw(int)
         color = 0xff;
     }
 
-    if (m_pszText != 0)
+    if (m_pszText != nullptr)
     {
         GDI::DrawTransparentText(color, m_nTextX + m_nX, m_nTextY + m_nY, m_pszText, (int)strlen(m_pszText), m_nTextFlag);
     }
@@ -345,7 +345,7 @@ FramePos Widget::AddFrameBitmap(GDI::Bitmap* hBitmap, int bCached)
     FramePos        pos;
     GDI::BitmapSize bm;
 
-    if (m_pFrames == 0)
+    if (m_pFrames == nullptr)
     {
         m_pFrames = new WidgetDrawFrame[m_nFrameCount + 1];
     }
@@ -355,7 +355,7 @@ FramePos Widget::AddFrameBitmap(GDI::Bitmap* hBitmap, int bCached)
 
     RELEASE_ASSERT(m_nFrameIndex <= m_nFrameCount);
 
-    if (hBitmap != 0)
+    if (hBitmap != nullptr)
     {
         GDI::GetBitmapDimensions(hBitmap, &bm);
         m_pFrames[m_nFrameIndex].nWidth  = bm.bmWidth;
@@ -388,7 +388,7 @@ FramePos Widget::AddFrameWithPos(GDI::Bitmap* hBitmap, int bCached, int nWidth, 
 
     RELEASE_ASSERT(m_nFrameIndex <= m_nFrameCount);
 
-    if (m_pFrames == 0)
+    if (m_pFrames == nullptr)
     {
         m_pFrames = new WidgetDrawFrame[m_nFrameCount];
     }
@@ -424,9 +424,9 @@ FramePos Widget::GetSize()
 // FUNCTION: HYPERX 0x0042b850
 void Widget::ClearFrames()
 {
-    GDI::Bitmap* hOwned = 0;
+    GDI::Bitmap* hOwned = nullptr;
 
-    if (m_pOwner != 0)
+    if (m_pOwner != nullptr)
     {
         hOwned = m_pOwner->m_hBackground;
     }
@@ -435,11 +435,11 @@ void Widget::ClearFrames()
     {
         GDI::Bitmap* const hBitmap = m_pFrames[nIndex].hBitmap;
 
-        if (hBitmap != 0)
+        if (hBitmap != nullptr)
         {
             if (hBitmap == hOwned)
             {
-                m_pFrames[nIndex].hBitmap = 0;
+                m_pFrames[nIndex].hBitmap = nullptr;
             }
             else
             {
@@ -450,7 +450,7 @@ void Widget::ClearFrames()
 
                     if (hLater == hBitmap || hLater == hOwned)
                     {
-                        m_pFrames[nScan].hBitmap = 0;
+                        m_pFrames[nScan].hBitmap = nullptr;
                     }
                 }
             }
@@ -461,14 +461,14 @@ void Widget::ClearFrames()
     {
         GDI::Bitmap* const hBitmap = m_pFrames[nDrop].hBitmap;
 
-        if (hBitmap != 0)
+        if (hBitmap != nullptr)
         {
             if (m_pFrames[nDrop].bCached == 0)
             {
                 GDI::SafeDeleteBitmap(hBitmap);
             }
 
-            m_pFrames[nDrop].hBitmap = 0;
+            m_pFrames[nDrop].hBitmap = nullptr;
         }
     }
 
@@ -547,7 +547,7 @@ LayoutState Widget::InitLayoutState(void* pBits, int nWidth, int nHeight, int nP
 
     memset(&state, 0, sizeof(state));
 
-    state.pCamera      = 0;
+    state.pCamera      = nullptr;
     state.pBits        = pBits;
     state.nHeight      = nHeight;
     state.flPrevRight  = (float)nPrevWidth - 1.0f;

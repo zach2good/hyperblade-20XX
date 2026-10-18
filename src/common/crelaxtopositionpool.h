@@ -9,7 +9,7 @@ class CRelaxToPositionPool : public AgendaItemOwner
 public:
     CRelaxToPositionPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

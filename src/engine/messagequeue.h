@@ -22,9 +22,9 @@ inline MessageNode::MessageNode(const char* pszText, int nLine, int nDurationMs)
 {
     char* pCopy;
 
-    m_pNext = 0;
+    m_pNext = nullptr;
 
-    if (g_pMessageHead != 0)
+    if (g_pMessageHead != nullptr)
     {
         g_pMessageTail->m_pNext = this;
     }
@@ -35,7 +35,7 @@ inline MessageNode::MessageNode(const char* pszText, int nLine, int nDurationMs)
 
     g_pMessageTail = this;
 
-    m_pNext = 0;
+    m_pNext = nullptr;
 
     pCopy = (char*)operator new(strlen(pszText) + 1);
 

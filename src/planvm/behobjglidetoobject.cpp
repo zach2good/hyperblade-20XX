@@ -58,12 +58,12 @@ void BehObj_GlideToObject::Init(EngineObject* pOwner, PlanNode* pBlock, int nFla
     m_apSlots[2] = AllocAgendaItem(Agenda_CGlideOnSurface);
     m_apSlots[3] = AllocAgendaItem(Agenda_CStepAnimation);
     m_apSlots[4] = AllocAgendaItem(Agenda_CSetAttitude);
-    m_apSlots[5] = 0;
+    m_apSlots[5] = nullptr;
 
     m_pOwner = pOwner;
     m_pBody  = pOwner->GetPhysicsBody();
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

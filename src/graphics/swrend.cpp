@@ -83,7 +83,7 @@ extern class TransformObject* g_pCameraTransform;
 void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
     const TexCoord*     pUVTable;
-    TexCacheEntry*      pMatTexture = 0;
+    TexCacheEntry*      pMatTexture = nullptr;
     const MeshMaterial* pMaterial;
     ClipVertex*         pVert;
     float               flLevel;
@@ -96,19 +96,19 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
     short               i;
 
     g_swFaceBuffer.nCount = pFaceData->nCorners;
-    SoftTex* pTexture     = 0;
+    SoftTex* pTexture     = nullptr;
     short*   pIndex       = pFaceData->aCorners;
     g_swFaceBuffer.nMask  = g_nSWVertexPosMask;
 
-    short* pUVIndex = 0;
+    short* pUVIndex = nullptr;
 
     // Only an MDM-textured face that carries UV indices takes texture coordinates.
-    if (g_cMdmTexLoaded != 0 && (pMatTexture = ppMaterials[0]->pTexture) != 0 && (pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0)
+    if (g_cMdmTexLoaded != 0 && (pMatTexture = ppMaterials[0]->pTexture) != nullptr && (pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0)
     {
         pUVIndex = pFaceData->UVIndices();
     }
 
-    if (pUVIndex != 0)
+    if (pUVIndex != nullptr)
     {
         const MeshBlock* pBlob = pRend->m_pMesh;
 
@@ -118,7 +118,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         }
         else
         {
-            pUVTable = 0;
+            pUVTable = nullptr;
         }
 
         g_swFaceBuffer.nMask = g_nSWVertexUVMask | g_nSWVertexPosMask;
@@ -201,7 +201,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         }
     }
 
-    if (g_cMdmTexLoaded != 0 && pTexture != 0 && ppMaterials[0]->pTexture != 0 && cBackFace == 0)
+    if (g_cMdmTexLoaded != 0 && pTexture != nullptr && ppMaterials[0]->pTexture != nullptr && cBackFace == 0)
     {
         pTexture->DrawTexPoly(g_pCameraTransform, &g_swFaceBuffer, g_flZeroSWRend);
 
@@ -225,7 +225,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             flLevel             = g_flZeroSWRend;
             Vec3* const pNormal = &vNormal;
 
-            if (pNormal == 0)
+            if (pNormal == nullptr)
             {
                 cShade = SHADE_WHITE;
             }
@@ -268,7 +268,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
     }
     else
     {
-        if (pVertexColour != 0)
+        if (pVertexColour != nullptr)
         {
             g_nSWFaceColour = (unsigned int)*pVertexColour;
         }
@@ -782,7 +782,7 @@ void SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* p
     int            nColumn;
     unsigned char* pDest;
 
-    if (pSprite == 0)
+    if (pSprite == nullptr)
     {
         return;
     }
@@ -955,7 +955,7 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
         }
         else
         {
-            pColours = 0;
+            pColours = nullptr;
         }
 
         SWRend::DrawFace(pThis, pFace->cFlip, pEntry, apMaterials, pColours, g_pModelVertexBuf, &pEntry->vNormal, pFace->cClip);

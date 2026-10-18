@@ -39,9 +39,9 @@ ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
                 const Vec3*            pVerts;
                 const MeshBlock* const pCorner = pBones->m_pMesh;
 
-                if (pCorner == 0 || pCorner->vertexOffset.nBytes == 0)
+                if (pCorner == nullptr || pCorner->vertexOffset.nBytes == 0)
                 {
-                    pVerts = 0;
+                    pVerts = nullptr;
                 }
                 else
                 {

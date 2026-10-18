@@ -91,7 +91,7 @@ void Config::LoadPreferences(const char* pszFileName)
     FILE* pFile;
 
     // STRING: HYPERX 0x004bc990
-    if ((pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName)).c_str(), "r")) != 0)
+    if ((pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName)).c_str(), "r")) != nullptr)
     {
         if (fscanf(pFile, g_pszScanFormat, szBuffer) == 0)
         {
@@ -124,7 +124,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 {
     FILE* const pFile = fopen(Path::Native(pszData).c_str(), "r");
 
-    if (pFile != 0)
+    if (pFile != nullptr)
     {
         // The shipped files hold fewer than 40 rows. The first short row reads the first force's whole
         // part as its flags, and every short row keeps the key and index the last full row left.
@@ -179,7 +179,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 // FUNCTION: HYPERX 0x0046d9f0
 void GameApp::HandleGlobalKeyEvent(int nKey)
 {
-    if (g_pRenderer != 0 && g_pRenderer->m_bQuitPromptVisible != 0)
+    if (g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible != 0)
     {
         switch (nKey)
         {
@@ -190,7 +190,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
 
                 g_pGameEngine->ResetPeriodToFirst();
 
-                if (g_bSessionActive != 0 && g_pGameSession != 0)
+                if (g_bSessionActive != 0 && g_pGameSession != nullptr)
                 {
                     GameSession::Disconnect();
                 }
@@ -209,7 +209,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
     switch (nKey)
     {
         case Key::PAUSE:
-            if (g_bSessionActive == 0 && g_pGameEngine != 0 && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pRenderer != 0 && g_pRenderer->m_bQuitPromptVisible == 0)
+            if (g_bSessionActive == 0 && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0)
             {
                 if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
                 {
@@ -243,7 +243,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             break;
 
         case Key::ESCAPE:
-            if (g_pRenderer != 0 && g_pGameEngine != 0 && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && (short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+            if (g_pRenderer != nullptr && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && (short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
             {
                 g_pRenderer->ShowQuitPrompt();
                 return;
@@ -271,7 +271,7 @@ int Config::IsCommentLine(const char* pszLine)
 {
     char cFirst;
 
-    if (pszLine != 0)
+    if (pszLine != nullptr)
     {
         if (sscanf(pszLine, g_pszCharFormat, &cFirst) == 1)
         {

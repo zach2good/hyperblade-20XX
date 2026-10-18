@@ -483,7 +483,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
     {
         EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)g_teamScaleSlots.anScaleTargetSlots[nSlot]];
 
-        if (pObject == 0)
+        if (pObject == nullptr)
         {
             continue;
         }
@@ -504,7 +504,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
             {
                 MeshBone* pNode = pObject->m_pBones + (short)*pIndex;
 
-                if (pNode != 0)
+                if (pNode != nullptr)
                 {
                     if (pNode->IsBound() != 0)
                     {

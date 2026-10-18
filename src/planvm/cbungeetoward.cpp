@@ -42,16 +42,16 @@ extern float g_flTwoAgendaItem;
 // FUNCTION: HYPERX 0x0040fee0
 void CBungeeToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CBungeeToward;
     m_bReady = 0;
     m_pOwner = pOwner;
 
     Vec3* const pWatched = &pOwner->GetPhysicsBody()->smoothVel;
 
-    m_pTarget      = 0;
+    m_pTarget      = nullptr;
     m_pAccum       = pWatched;
-    m_pAnchor      = 0;
+    m_pAnchor      = nullptr;
     m_flGain       = g_flOneAgendaItem;
     m_flRestLength = g_flZeroAgendaItem;
     m_flFarRange   = LIMIT_DEFAULT;
@@ -67,7 +67,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 {
     short nSlot;
 
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CBungeeToward;
     m_bReady = 0;
     m_pOwner = pObject;
@@ -109,7 +109,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
             m_flFarRange   = LIMIT_DEFAULT;
             m_cAttached    = 0;
             m_cLeadTarget  = 0;
-            m_pTarget      = 0;
+            m_pTarget      = nullptr;
 
             return;
         }
@@ -118,7 +118,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
     }
     else
     {
-        m_pTarget = 0;
+        m_pTarget = nullptr;
     }
 
     if (pNode->m_nArgCount > 2)
@@ -159,7 +159,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
         m_cLeadTarget = 0;
     }
 
-    m_pAnchor      = 0;
+    m_pAnchor      = nullptr;
     m_flRestLength = g_flZeroAgendaItem;
     m_flFarRange   = LIMIT_DEFAULT;
     m_cAttached    = 0;
@@ -173,11 +173,11 @@ void CBungeeToward::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext        = 0;
-        m_pOwner       = 0;
-        m_pAccum       = 0;
-        m_pTarget      = 0;
-        m_pAnchor      = 0;
+        m_pNext        = nullptr;
+        m_pOwner       = nullptr;
+        m_pAccum       = nullptr;
+        m_pTarget      = nullptr;
+        m_pAnchor      = nullptr;
         m_flGain       = g_flZeroAgendaItem;
         m_flRestLength = g_flZeroAgendaItem;
         m_flFarRange   = g_flZeroAgendaItem;
@@ -204,7 +204,7 @@ void CBungeeToward::Process(int nArg)
 
     Vec3* pAnchor = m_pAnchor;
 
-    if (pAnchor == 0)
+    if (pAnchor == nullptr)
     {
         pAnchor = m_pTarget->GetPositionPtr();
     }
@@ -261,21 +261,21 @@ void CBungeeToward::Process(int nArg)
             AttachPak* const pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
             short            nCarrier;
 
-            if (pCarrier == 0 || (nCarrier = pCarrier->nSlot) >= PLAYER_OBJECT_COUNT || nCarrier != m_pOwner->GetSlot())
+            if (pCarrier == nullptr || (nCarrier = pCarrier->nSlot) >= PLAYER_OBJECT_COUNT || nCarrier != m_pOwner->GetSlot())
             {
-                bHold = m_pTarget == 0 || m_pTarget->GetPhysicsBody()->flFriction <= g_flHalfAgendaItem;
+                bHold = m_pTarget == nullptr || m_pTarget->GetPhysicsBody()->flFriction <= g_flHalfAgendaItem;
             }
         }
     }
 
     if (!bHold)
     {
-        if (m_pTarget != 0)
+        if (m_pTarget != nullptr)
         {
             m_pTarget->PostSceneEvent(MSG_YER_RELEASED, 0);
         }
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Process(nArg);
         }
@@ -283,7 +283,7 @@ void CBungeeToward::Process(int nArg)
         Detach();
     }
 
-    if (m_pNext != 0 && m_bReady == 0)
+    if (m_pNext != nullptr && m_bReady == 0)
     {
         m_pNext->Process(nArg);
     }

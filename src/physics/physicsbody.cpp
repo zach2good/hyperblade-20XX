@@ -44,8 +44,8 @@ extern const Vec3 g_vecZeroPosition;
 // FUNCTION: HYPERX 0x00407520
 PhysicsBody::PhysicsBody()
 {
-    pOwner  = 0;
-    pTarget = 0;
+    pOwner  = nullptr;
+    pTarget = nullptr;
 
     flSpeed            = g_flZeroPhysicsBody;
     flForwardAccel     = g_flZeroPhysicsBody;
@@ -61,8 +61,8 @@ PhysicsBody::PhysicsBody()
     pos     = g_vecZeroPosition;
     prevPos = g_vecZeroPosition;
 
-    pAttach = 0;
-    pShell  = 0;
+    pAttach = nullptr;
+    pShell  = nullptr;
 
     surfNormal = g_vecZeroVelocity;
 
@@ -97,7 +97,7 @@ PhysicsBody::PhysicsBody()
 
     bNetTargetPending = 0;
 
-    pPlayer = 0;
+    pPlayer = nullptr;
 }
 
 PhysicsBody::~PhysicsBody()
@@ -209,7 +209,7 @@ void PhysicsBody::PerFrameTick()
     {
         case OBJECT_PHASE_LOCAL:
         case OBJECT_PHASE_BUILDING:
-            if (pTarget != 0)
+            if (pTarget != nullptr)
             {
                 pTarget->Process(0);
             }
@@ -218,7 +218,7 @@ void PhysicsBody::PerFrameTick()
         case OBJECT_PHASE_NETWORK:
             pOwner->ProcessReceivedPacket();
 
-            if (pTarget != 0)
+            if (pTarget != nullptr)
             {
                 pTarget->Release(0);
             }
@@ -262,7 +262,7 @@ void PhysicsBody::TakeSurfaceNormal(const Vec3* pPoint)
 {
     Vec3* const pNormal = pShell->NormalAtPoint(pPoint);
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         // STRING: HYPERX 0x004bb3bc
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B!");
@@ -285,7 +285,7 @@ void PhysicsBody::ResetOnSurface()
 
     Vec3* const pNormal = pShell->NormalAtPoint(&pos);
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         // STRING: HYPERX 0x004bb3bc
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B!");
@@ -579,7 +579,7 @@ void PhysicsBody::InitOnSurface(int)
 
     Vec3* const pNormal = pShell->NormalAtPoint(&pos);
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         // STRING: HYPERX 0x004bb3bc
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B!");
@@ -954,7 +954,7 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 
     const Vec3* pNormal = pShell->NormalAtPoint(pTargetPos);
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         // STRING: HYPERX 0x004bb410
         g_gameApp.Fatal("BAD SURFACE NORMAL - SetFlat!");

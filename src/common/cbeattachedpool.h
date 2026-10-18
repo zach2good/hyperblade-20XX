@@ -9,7 +9,7 @@ class CBeAttachedPool : public AgendaItemOwner
 public:
     CBeAttachedPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

@@ -26,20 +26,20 @@ extern PlanWord g_aReinitPlanImage[9];
 // FUNCTION: HYPERX 0x0047aef0
 PlanState::PlanState()
 {
-    m_pOwner             = 0;
+    m_pOwner             = nullptr;
     m_nBehaviorCount     = 0;
-    m_ppBehaviors        = 0;
-    m_ppCursor           = 0;
-    m_pHead              = 0;
-    m_pCurrent           = 0;
+    m_ppBehaviors        = nullptr;
+    m_ppCursor           = nullptr;
+    m_pHead              = nullptr;
+    m_pCurrent           = nullptr;
     m_nIndex             = 0;
     m_nPrevious          = 0;
-    m_pCollInteractors   = 0;
-    m_pMsgInteractors    = 0;
+    m_pCollInteractors   = nullptr;
+    m_pMsgInteractors    = nullptr;
     m_nInteractorCount   = 0;
-    m_pflLocalReals      = 0;
+    m_pflLocalReals      = nullptr;
     m_nLocalRealCount    = 0;
-    m_apNamedInteractors = 0;
+    m_apNamedInteractors = nullptr;
     m_nNamedInteractors  = 0;
 }
 
@@ -50,11 +50,11 @@ PlanState::~PlanState()
 
     FreeCompiledBehaviors(m_nBehaviorCount);
 
-    if (m_apNamedInteractors != 0)
+    if (m_apNamedInteractors != nullptr)
     {
         delete[] m_apNamedInteractors;
 
-        m_apNamedInteractors = 0;
+        m_apNamedInteractors = nullptr;
     }
 }
 
@@ -63,7 +63,7 @@ void PlanState::FreeCompiledBehaviors(short nCount)
 {
     PlanNode** const ppNode = m_ppBehaviors;
 
-    if (ppNode != 0)
+    if (ppNode != nullptr)
     {
         for (short i = 0; i < nCount; i++)
         {
@@ -83,7 +83,7 @@ void PlanState::DestroyNode(PlanNode* pNode)
     int       nCount;
     int       nIndex;
 
-    if (pNode != 0 && pNode->m_nArgCount != 0)
+    if (pNode != nullptr && pNode->m_nArgCount != 0)
     {
         switch ((unsigned int)pNode->m_nOpcode)
         {
@@ -178,7 +178,7 @@ unsigned char PlanState::SetAndInit(const PlanWord* pStream)
 
     PlanNode** const ppCompiled = Compile(pStream);
 
-    if (ppCompiled == 0)
+    if (ppCompiled == nullptr)
     {
         return 0;
     }
@@ -240,7 +240,7 @@ CollInteractor* PlanState::WalkLinkedList(short nIndex)
 
     while (nAt++ < nIndex)
     {
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
             pNode = pNode->pNext;
         }
@@ -275,7 +275,7 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
 
     while (nSlot-- != 0)
     {
-        if (m_pCurrent->m_pStandby != 0)
+        if (m_pCurrent->m_pStandby != nullptr)
         {
             m_ppCursor++;
             m_pCurrent = m_pCurrent->m_pStandby;
@@ -310,7 +310,7 @@ void PlanState::PostUpdateCleanup()
     {
         Interactor* pNode = m_pCollInteractors;
 
-        while (pNode != 0)
+        while (pNode != nullptr)
         {
             pNode->SetActiveState(1);
 
@@ -334,11 +334,11 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
     m_nBehaviorCount    = 0;
     m_nNamedInteractors = 0;
 
-    if (m_apNamedInteractors != 0)
+    if (m_apNamedInteractors != nullptr)
     {
         delete[] m_apNamedInteractors;
 
-        m_apNamedInteractors = 0;
+        m_apNamedInteractors = nullptr;
     }
 
     PlanWord* pWord = aWords;
@@ -406,11 +406,11 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         pCursor++;
 
         pNode->m_nArgCount = 0;
-        pNode->m_pArgs     = 0;
+        pNode->m_pArgs     = nullptr;
 
         if (pNode->m_nOpcode == (int)CATEGORY_END_PLAN)
         {
-            pNode->m_pArgs = 0;
+            pNode->m_pArgs = nullptr;
 
             *ppStream   = pCursor;
             pOut->pNode = pNode;
@@ -449,7 +449,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         }
         else
         {
-            pNode->m_pArgs = 0;
+            pNode->m_pArgs = nullptr;
         }
 
         *ppStream   = pCursor;
@@ -520,13 +520,13 @@ PlanState* PlanState::Instantiate()
     short     nOrder;
     short     nSlot;
 
-    Interactor*         pCondition  = 0;
-    GameBehaviorObject* pBehaviour  = 0;
-    Interactor*         pMessage    = 0;
+    Interactor*         pCondition  = nullptr;
+    GameBehaviorObject* pBehaviour  = nullptr;
+    Interactor*         pMessage    = nullptr;
     int                 nBehaviours = 0;
     int                 nConditions = 0;
 
-    if (m_ppCursor != 0)
+    if (m_ppCursor != nullptr)
     {
         for (;;)
         {
@@ -576,7 +576,7 @@ PlanState* PlanState::Instantiate()
 
                     pBehaviour->m_wSyncValue = nOrder;
 
-                    if (pPrevious != 0)
+                    if (pPrevious != nullptr)
                     {
                         pPrevious->m_pStandby = pBehaviour;
                     }
@@ -598,7 +598,7 @@ PlanState* PlanState::Instantiate()
                         switch ((unsigned int)pChild->m_nOpcode & OP_CATEGORY)
                         {
                             case CATEGORY_COLLISION_INTERACTOR:
-                                pCondition = PlanInteractorFactories::CreateCollInteractor(m_pOwner, pChild, 0, pCondition);
+                                pCondition = PlanInteractorFactories::CreateCollInteractor(m_pOwner, pChild, nullptr, pCondition);
 
                                 nOrder = (short)nConditions;
 
@@ -611,7 +611,7 @@ PlanState* PlanState::Instantiate()
                                 break;
 
                             case CATEGORY_MESSAGE_INTERACTOR:
-                                pMessage = PlanInteractorFactories::CreateMsgInteractor(m_pOwner, pChild, 0, pMessage);
+                                pMessage = PlanInteractorFactories::CreateMsgInteractor(m_pOwner, pChild, nullptr, pMessage);
 
                                 pMessage->SetMember((unsigned int)pChild->m_nOpcode & OP_MEMBER);
 
@@ -639,7 +639,7 @@ PlanState* PlanState::Instantiate()
 
             if (((unsigned int)pNode->m_nOpcode & OP_CATEGORY) == CATEGORY_END_PLAN)
             {
-                pBehaviour->m_pStandby = 0;
+                pBehaviour->m_pStandby = nullptr;
 
                 m_nIndex    = 0;
                 m_nPrevious = 0;
@@ -655,7 +655,7 @@ PlanState* PlanState::Instantiate()
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 // The next pointer is read before each discard, because discarding frees the node.
@@ -665,17 +665,17 @@ void PlanState::Teardown()
 {
     Interactor* pNext;
 
-    if (m_pflLocalReals != 0)
+    if (m_pflLocalReals != nullptr)
     {
         delete[] m_pflLocalReals;
 
-        m_pflLocalReals   = 0;
+        m_pflLocalReals   = nullptr;
         m_nLocalRealCount = 0;
     }
 
     Interactor* pNode = m_pCollInteractors;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         pNext = pNode->pNext;
 
@@ -686,9 +686,9 @@ void PlanState::Teardown()
 
     pNode = m_pMsgInteractors;
 
-    m_pCollInteractors = 0;
+    m_pCollInteractors = nullptr;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         pNext = pNode->pNext;
 
@@ -697,17 +697,17 @@ void PlanState::Teardown()
         pNode = pNext;
     }
 
-    m_pMsgInteractors  = 0;
+    m_pMsgInteractors  = nullptr;
     m_nInteractorCount = 0;
 
-    if (m_pOwner != 0)
+    if (m_pOwner != nullptr)
     {
         AgendaItem* pObserver;
         AgendaItem* pNextObserver;
 
         pObserver = m_pOwner->GetObserver();
 
-        while (pObserver != 0)
+        while (pObserver != nullptr)
         {
             pNextObserver = pObserver->m_pNext;
 
@@ -716,17 +716,17 @@ void PlanState::Teardown()
             pObserver = pNextObserver;
         }
 
-        m_pOwner->SetObserver(0);
+        m_pOwner->SetObserver(nullptr);
     }
 
-    if (m_pHead != 0)
+    if (m_pHead != nullptr)
     {
         // Reset cascades through the standby link, so the head alone is enough.
         m_pHead->Reset();
     }
 
-    m_pHead    = 0;
-    m_pCurrent = 0;
+    m_pHead    = nullptr;
+    m_pCurrent = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0047b990

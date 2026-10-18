@@ -21,7 +21,7 @@ struct MeshMaterial
         flAmbient  = 0.0f;
         flDiffuse  = 0.0f;
         flEmissive = 0.0f;
-        pTexture   = 0;
+        pTexture   = nullptr;
         nBackIndex = -1;
         nColour    = 0;
     }

@@ -31,13 +31,13 @@ CSlideOnRail::~CSlideOnRail()
     delete m_pSpline;
 
     // Cleared on both paths here, unlike its twin, which clears inside the branch.
-    m_pSpline = 0;
+    m_pSpline = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0040d010
 void CSlideOnRail::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSlideOnRail;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -60,17 +60,17 @@ void CSlideOnRail::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext             = 0;
-        m_pOwner            = 0;
-        m_pVelocity         = 0;
-        m_pPosition         = 0;
-        m_pPrevPos          = 0;
-        m_pVelDir           = 0;
-        m_pSurfNormal       = 0;
-        m_pflSpeed          = 0;
-        m_pPlayer           = 0;
-        m_pNetTarget        = 0;
-        m_pNetTargetPending = 0;
+        m_pNext             = nullptr;
+        m_pOwner            = nullptr;
+        m_pVelocity         = nullptr;
+        m_pPosition         = nullptr;
+        m_pPrevPos          = nullptr;
+        m_pVelDir           = nullptr;
+        m_pSurfNormal       = nullptr;
+        m_pflSpeed          = nullptr;
+        m_pPlayer           = nullptr;
+        m_pNetTarget        = nullptr;
+        m_pNetTargetPending = nullptr;
         m_bReady            = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -108,7 +108,7 @@ void CSlideOnRail::Process(int nArg)
 
     m_pOwner->GetPhysicsBody()->step = vScaled;
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }
@@ -177,7 +177,7 @@ void CSlideOnRail::Release(int nArg)
 
     Vec3::ScaleTo(m_pVelDir, *m_pflSpeed, m_pVelocity);
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Release(nArg);
     }

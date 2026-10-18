@@ -22,7 +22,7 @@ public:
 
         m_wPollCountdown = m_wLatency;
 
-        if (m_pAnimation != 0)
+        if (m_pAnimation != nullptr)
         {
             m_pOwner->StartClipPlayback(m_pAnimation,
                                         m_flAnimationRate,

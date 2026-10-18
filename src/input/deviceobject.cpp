@@ -15,10 +15,10 @@ DeviceObject::DeviceObject(int nSlot, class ObjectDef* pDef)
 {
     m_pAnimPlayer->SetObject(this);
 
-    m_pSlots        = 0;
+    m_pSlots        = nullptr;
     m_nSlots        = 0;
     m_wUnused       = 0;
-    m_pBindingTable = 0;
+    m_pBindingTable = nullptr;
     m_pOwner        = this;
     m_pEntity       = this;
 }

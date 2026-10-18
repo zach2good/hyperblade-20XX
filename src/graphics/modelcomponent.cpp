@@ -18,7 +18,7 @@ ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
     int                   nSize;
     ModelComponent* const pBlob = (ModelComponent*)ModelComponent::Read(pFile, &nSize);
 
-    if (pBlob != 0)
+    if (pBlob != nullptr)
     {
         pBlob->m_nSize = nSize;
     }
@@ -48,7 +48,7 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
         {
             MeshBlock* const pBlock = (MeshBlock*)ModelComponent::Read(pFile, &nSize);
 
-            if (pBlock == 0)
+            if (pBlock == nullptr)
             {
                 pFile->CloseAndTest();
 
@@ -109,5 +109,5 @@ void* ModelComponent::Read(FileObj* pFile, int* pnSize)
         delete[] pBlock;
     }
 
-    return 0;
+    return nullptr;
 }

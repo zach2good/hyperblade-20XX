@@ -27,7 +27,7 @@ public:
 
         m_str.Reserve(nReserve);
 
-        if (psz == 0)
+        if (psz == nullptr)
         {
             nLength = 0;
         }

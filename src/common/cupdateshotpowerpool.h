@@ -9,7 +9,7 @@ class CUpdateShotPowerPool : public AgendaItemOwner
 public:
     CUpdateShotPowerPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

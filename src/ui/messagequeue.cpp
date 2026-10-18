@@ -19,8 +19,8 @@ MessageQueue::MessageQueue()
 {
     m_wCount      = 0;
     m_nExpiryTick = 0;
-    m_pnIds       = 0;
-    m_ppNames     = 0;
+    m_pnIds       = nullptr;
+    m_ppNames     = nullptr;
 }
 
 #define MESSAGE_COLOUR_GREEN  0xff00
@@ -42,7 +42,7 @@ void MessageQueue::Update()
             m_nExpiryTick = 0;
         }
     }
-    else if (g_pMessageHead != 0)
+    else if (g_pMessageHead != nullptr)
     {
         switch (g_pMessageHead->m_nLine)
         {
@@ -67,23 +67,23 @@ void MessageQueue::Update()
         MessageNode* const pNode = g_pMessageHead;
         MessageNode*       pHead = pNode;
 
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
-            if (pNode->m_pszText != 0)
+            if (pNode->m_pszText != nullptr)
             {
                 delete[] pNode->m_pszText;
-                pNode->m_pszText = 0;
+                pNode->m_pszText = nullptr;
                 pHead            = g_pMessageHead;
             }
 
             MessageNode* pWalk = g_pMessageHead;
-            MessageNode* pPrev = 0;
+            MessageNode* pPrev = nullptr;
 
-            for (; pWalk != 0; pWalk = pWalk->m_pNext)
+            for (; pWalk != nullptr; pWalk = pWalk->m_pNext)
             {
                 if (pWalk == pNode)
                 {
-                    if (pPrev != 0)
+                    if (pPrev != nullptr)
                     {
                         pPrev->m_pNext = pNode->m_pNext;
                         pHead          = g_pMessageHead;
@@ -118,7 +118,7 @@ void MessageQueue::Update()
 // FUNCTION: HYPERX 0x00452850
 void MessageQueue::PushFromTable(int nIndex, int nLine, int nDurationMs)
 {
-    if (nIndex < m_wCount && m_ppNames[nIndex] != 0)
+    if (nIndex < m_wCount && m_ppNames[nIndex] != nullptr)
     {
         new MessageNode(m_ppNames[nIndex], nLine, nDurationMs);
     }
@@ -138,7 +138,7 @@ void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLi
 
     const char* pszEntry = m_ppNames[nIndex];
 
-    if (pszEntry == 0)
+    if (pszEntry == nullptr)
     {
         return;
     }
@@ -162,15 +162,15 @@ MessageQueue* MessageQueue::FreeAll()
     {
         const char** ppName = &m_ppNames[iName];
 
-        if (*ppName != 0)
+        if (*ppName != nullptr)
         {
             delete[] *ppName;
 
-            *ppName = 0;
+            *ppName = nullptr;
         }
     }
 
-    if (m_pnIds != 0)
+    if (m_pnIds != nullptr)
     {
         delete[] m_pnIds;
     }
@@ -227,14 +227,14 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
         {
             char* pSpace = (char*)strchr(pLine, ' ');
 
-            if (pSpace != 0)
+            if (pSpace != nullptr)
             {
                 pSpace++;
                 nId = atoi(pSpace);
 
                 char* const pText = (char*)strchr(pSpace, ' ');
 
-                if (pText != 0)
+                if (pText != nullptr)
                 {
                     char* const pMessage = pText + 1;
 
@@ -279,25 +279,25 @@ void MessageQueue::ProcessAndClear(void)
 
     m_nExpiryTick = 0;
 
-    while (g_pMessageHead != 0)
+    while (g_pMessageHead != nullptr)
     {
         MessageNode* const pNode = g_pMessageHead;
 
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
-            if (pNode->m_pszText != 0)
+            if (pNode->m_pszText != nullptr)
             {
                 delete[] pNode->m_pszText;
-                pNode->m_pszText = 0;
+                pNode->m_pszText = nullptr;
             }
 
-            MessageNode* pPrev = 0;
+            MessageNode* pPrev = nullptr;
 
-            for (pWalk = g_pMessageHead; pWalk != 0; pWalk = pWalk->m_pNext)
+            for (pWalk = g_pMessageHead; pWalk != nullptr; pWalk = pWalk->m_pNext)
             {
                 if (pWalk == pNode)
                 {
-                    if (pPrev != 0)
+                    if (pPrev != nullptr)
                     {
                         pPrev->m_pNext = pNode->m_pNext;
                     }

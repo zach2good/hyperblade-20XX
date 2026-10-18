@@ -32,16 +32,16 @@ GameBehaviorObject::GameBehaviorObject()
 {
     memset(m_apSlots, 0, sizeof(m_apSlots));
 
-    m_pBody                = 0;
-    m_pOwner               = 0;
-    m_pszName              = 0;
-    m_pAnimation           = 0;
-    m_pPersistentAnimation = 0;
+    m_pBody                = nullptr;
+    m_pOwner               = nullptr;
+    m_pszName              = nullptr;
+    m_pAnimation           = nullptr;
+    m_pPersistentAnimation = nullptr;
     m_nEventTarget         = 0;
     m_nEventParam          = 0;
     m_bDigressive          = 0;
-    m_pCollInteractors     = 0;
-    m_pMsgInteractors      = 0;
+    m_pCollInteractors     = nullptr;
+    m_pMsgInteractors      = nullptr;
 
     m_flAnimationRate  = -1.0f;
     m_nAnimationFlags  = -1;
@@ -50,7 +50,7 @@ GameBehaviorObject::GameBehaviorObject()
     m_nEventKind       = MSG_NOMSG;
     m_wPollCountdown   = -1;
     m_wLatency         = BEHAVIOR_DEFAULT_LATENCY;
-    m_pStandby         = 0;
+    m_pStandby         = nullptr;
 }
 
 // Each table is marked where it is filled, so all three are declared bare here.
@@ -77,9 +77,9 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 
     m_pOwner = pOwner;
 
-    Interactor* pCondition = 0;
+    Interactor* pCondition = nullptr;
 
-    Interactor* pMessage = 0;
+    Interactor* pMessage = nullptr;
 
     m_pBody = pOwner->GetPhysicsBody();
 
@@ -142,23 +142,23 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
                     case MEMBER_DO_NET_ACTION:
                         if (m_pOwner->GetPhase() != OBJECT_PHASE_LOCAL)
                         {
-                            g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n]((Interactor*)this, pItem, 0, 0);
+                            g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n]((Interactor*)this, pItem, nullptr, 0);
                         }
                         break;
 
                     case MEMBER_DO_LOCAL_ACTION:
                         if (m_pOwner->GetPhase() != OBJECT_PHASE_NETWORK)
                         {
-                            g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n]((Interactor*)this, pItem, 0, 0);
+                            g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n]((Interactor*)this, pItem, nullptr, 0);
                         }
                         break;
 
                     case MEMBER_DO_ACTION:
-                        g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n](0, pItem, 0, 0);
+                        g_pfnPlanActionHandlers[(short)pItem->m_pArgs[0].n](nullptr, pItem, nullptr, 0);
                         break;
 
                     case MEMBER_SET_INTERACTOR_PARAM:
-                        g_pfnPlanOpcodeHandlers[(short)pItem->m_pArgs[0].n].pfnSetParam(m_pOwner, pItem, this, 0);
+                        g_pfnPlanOpcodeHandlers[(short)pItem->m_pArgs[0].n].pfnSetParam(m_pOwner, pItem, this, nullptr);
                         break;
                 }
                 break;
@@ -179,7 +179,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 // FUNCTION: HYPERX 0x0041c220
 void GameBehaviorObject::UpdateLimpAnim()
 {
-    if (m_pPersistentAnimation == 0)
+    if (m_pPersistentAnimation == nullptr)
     {
         return;
     }
@@ -222,7 +222,7 @@ void GameBehaviorObject::SetInteractorsActive(int nArg)
     Interactor* pFirst  = m_pCollInteractors;
     Interactor* pSecond = m_pMsgInteractors;
 
-    while (pFirst != 0)
+    while (pFirst != nullptr)
     {
         if (pFirst->GetActiveState() != -1)
         {
@@ -232,7 +232,7 @@ void GameBehaviorObject::SetInteractorsActive(int nArg)
         pFirst = pFirst->pNext;
     }
 
-    while (pSecond != 0)
+    while (pSecond != nullptr)
     {
         if (pSecond->GetActiveState() != -1)
         {
@@ -252,7 +252,7 @@ void GameBehaviorObject::SendTimedMessage()
 
     m_wPollCountdown = m_wLatency;
 
-    if (m_pAnimation != 0)
+    if (m_pAnimation != nullptr)
     {
         m_pOwner->StartClipPlayback(m_pAnimation,
                                     m_flAnimationRate,
@@ -282,15 +282,15 @@ void GameBehaviorObject::TickAndSortMessages()
 
     AgendaItem* pNode = m_pOwner->GetObserver();
 
-    AgendaItem* pPrev = 0;
+    AgendaItem* pPrev = nullptr;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         pNext = pNode->m_pNext;
 
         if (m_abAgendaPurged[pNode->m_wKind] != 0)
         {
-            if (pPrev != 0)
+            if (pPrev != nullptr)
             {
                 pPrev->m_pNext = pNext;
             }
@@ -299,7 +299,7 @@ void GameBehaviorObject::TickAndSortMessages()
                 m_pOwner->SetObserver(pNext);
             }
 
-            pNode->SetNext(0);
+            pNode->SetNext(nullptr);
 
             if (pNode->m_bPersistent == 0)
             {
@@ -317,7 +317,7 @@ void GameBehaviorObject::TickAndSortMessages()
 
         pNode = pNext;
 
-        if (pPrev != 0)
+        if (pPrev != nullptr)
         {
             if (pPrev->m_pNext != pNext)
             {
@@ -331,15 +331,15 @@ void GameBehaviorObject::TickAndSortMessages()
     }
 
     pNode = m_pOwner->GetObserver();
-    pPrev = 0;
+    pPrev = nullptr;
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
-        while (pNode != 0)
+        while (pNode != nullptr)
         {
             AgendaItem** const ppSlot = &m_apSlots[nSlot];
 
-            if (*ppSlot == 0)
+            if (*ppSlot == nullptr)
             {
                 break;
             }
@@ -354,14 +354,14 @@ void GameBehaviorObject::TickAndSortMessages()
             if ((*ppSlot)->m_wKind == pNode->m_wKind)
             {
                 (*ppSlot)->m_pNext = pNode->m_pNext;
-                pNode->m_pNext     = 0;
+                pNode->m_pNext     = nullptr;
             }
             else
             {
                 (*ppSlot)->m_pNext = pNode;
             }
 
-            if (pPrev != 0)
+            if (pPrev != nullptr)
             {
                 pPrev->m_pNext = *ppSlot;
             }
@@ -375,9 +375,9 @@ void GameBehaviorObject::TickAndSortMessages()
             pNode = pPrev->m_pNext;
         }
 
-        if (pNode == 0)
+        if (pNode == nullptr)
         {
-            if (pPrev != 0)
+            if (pPrev != nullptr)
             {
                 pPrev->m_pNext = m_apSlots[nSlot];
             }
@@ -395,7 +395,7 @@ void GameBehaviorObject::TickAndSortMessages()
 
     Interactor* pMessage = m_pOwner->GetPlanState()->m_pMsgInteractors;
 
-    while (pMessage != 0)
+    while (pMessage != nullptr)
     {
         if (pMessage->GetState() == 0 || (pMessage->GetState() == 1 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL) || (pMessage->GetState() == 2 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_NETWORK))
         {
@@ -407,7 +407,7 @@ void GameBehaviorObject::TickAndSortMessages()
 
     pMessage = m_pMsgInteractors;
 
-    while (pMessage != 0)
+    while (pMessage != nullptr)
     {
         if (pMessage->GetState() == 0 || (pMessage->GetState() == 1 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL) || (pMessage->GetState() == 2 && pMessage->GetActor()->GetPhase() == OBJECT_PHASE_NETWORK))
         {
@@ -423,14 +423,14 @@ void GameBehaviorObject::AssignPriorities(int nStart)
 {
     Interactor* pAt = m_pCollInteractors;
 
-    if (pAt == 0)
+    if (pAt == nullptr)
     {
         return;
     }
 
     int nPriority = nStart;
 
-    while (pAt != 0)
+    while (pAt != nullptr)
     {
         const short nValue = (short)nPriority;
 
@@ -448,9 +448,9 @@ void GameBehaviorObject::RemoveAgendaItem(int nAgendaItem)
 {
     AgendaItem* pNode = m_pOwner->GetObserver();
 
-    AgendaItem* pPrev = 0;
+    AgendaItem* pPrev = nullptr;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         AgendaItem* const pNext = pNode->m_pNext;
 
@@ -458,9 +458,9 @@ void GameBehaviorObject::RemoveAgendaItem(int nAgendaItem)
         {
             if (pNode->m_bPersistent != 0)
             {
-                pNode->m_pNext = 0;
+                pNode->m_pNext = nullptr;
 
-                if (pPrev != 0)
+                if (pPrev != nullptr)
                 {
                     pPrev->m_pNext = pNext;
                 }
@@ -488,12 +488,12 @@ void GameBehaviorObject::Reset()
 
     Interactor* pNode = m_pCollInteractors;
 
-    if (m_pStandby != 0)
+    if (m_pStandby != nullptr)
     {
         m_pStandby->Reset();
     }
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         pNext = pNode->pNext;
         pNode->Discard();
@@ -502,27 +502,27 @@ void GameBehaviorObject::Reset()
 
     pNode = m_pMsgInteractors;
 
-    m_pCollInteractors = 0;
+    m_pCollInteractors = nullptr;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         pNext = pNode->pNext;
         pNode->Discard();
         pNode = pNext;
     }
 
-    m_pMsgInteractors = 0;
+    m_pMsgInteractors = nullptr;
 
     AgendaItem** ppSlot = &m_apSlots[0];
     int          nLeft  = BEHAVIOR_SLOT_COUNT;
 
     do
     {
-        if (*ppSlot != 0)
+        if (*ppSlot != nullptr)
         {
             (*ppSlot)->OnListChanged();
 
-            *ppSlot = 0;
+            *ppSlot = nullptr;
         }
 
         ppSlot++;
@@ -532,11 +532,11 @@ void GameBehaviorObject::Reset()
     m_nAnimationFlags      = -1;
     m_nPersistentFlags     = -1;
     m_wPollCountdown       = -1;
-    m_pBody                = 0;
-    m_pOwner               = 0;
-    m_pAnimation           = 0;
-    m_pStandby             = 0;
-    m_pPersistentAnimation = 0;
+    m_pBody                = nullptr;
+    m_pOwner               = nullptr;
+    m_pAnimation           = nullptr;
+    m_pStandby             = nullptr;
+    m_pPersistentAnimation = nullptr;
     m_flAnimationRate      = -1.0f;
     m_flPersistentRate     = -1.0f;
     m_nEventTarget         = 0;

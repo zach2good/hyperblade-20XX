@@ -111,7 +111,7 @@ public:
     // MFC's SafeStrlen.
     static int SafeStrlen(const char* psz)
     {
-        if (psz == 0)
+        if (psz == nullptr)
         {
             return 0;
         }

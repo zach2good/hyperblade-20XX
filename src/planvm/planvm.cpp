@@ -397,7 +397,7 @@ void PlanVM::LoadAnimationLists(void)
     // STRING: HYPERX 0x004c46d4
     FILE* const pThrFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ThrAnims.lst")).c_str(), "r");
 
-    if (pHitFile == 0 || pChkFile == 0 || pJmpFile == 0 || pThrFile == 0)
+    if (pHitFile == nullptr || pChkFile == nullptr || pJmpFile == nullptr || pThrFile == nullptr)
     {
         // STRING: HYPERX 0x004c46ac
         g_gameApp.Fatal("Error opening Animation List files.\n");
@@ -548,8 +548,8 @@ PlanVM::PlanVM()
 {
     char szToken[8];
 
-    m_pszText = 0;
-    m_pStream = 0;
+    m_pszText = nullptr;
+    m_pStream = nullptr;
 
     PlanOpcodeRef* pEntry = &m_aOpcodes[0];
 
@@ -806,7 +806,7 @@ PlanVM::PlanVM()
 
     m_pszText = new char[PLAN_SOURCE_CHARS];
 
-    if (m_pszText != 0)
+    if (m_pszText != nullptr)
     {
         m_pszText[0] = 0;
     }
@@ -817,16 +817,16 @@ PlanVM::PlanVM()
 // FUNCTION: HYPERX 0x0047dab0
 PlanVM::~PlanVM()
 {
-    if (m_pszText != 0)
+    if (m_pszText != nullptr)
     {
         delete[] m_pszText;
-        m_pszText = 0;
+        m_pszText = nullptr;
     }
 
-    if (m_pStream != 0)
+    if (m_pStream != nullptr)
     {
         delete[] m_pStream;
-        m_pStream = 0;
+        m_pStream = nullptr;
     }
 }
 
@@ -876,7 +876,7 @@ char PlanVM::ReadAll(FileObj* pFile)
 
     m_nLength = 0;
 
-    if (m_pszText == 0 || m_pStream == 0)
+    if (m_pszText == nullptr || m_pStream == nullptr)
     {
         return 0;
     }
@@ -1319,7 +1319,7 @@ char PlanVM::EmitArgToken()
         {
             PlanVM* const pSub = new PlanVM;
 
-            if (pSub != 0)
+            if (pSub != nullptr)
             {
                 pSub->LoadSymbolTables();
 
@@ -1450,7 +1450,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
                  // STRING: HYPERX 0x004bb808
                  || sscanf(pszText, "%x", &value.n) == 0)
         {
-            if (strpbrk(pszText, g_pszDecimalPoint) != 0)
+            if (strpbrk(pszText, g_pszDecimalPoint) != nullptr)
             {
                 value.fl = (float)atof(pszText);
             }
@@ -1460,7 +1460,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
             }
         }
 
-        if (pszCopy != 0)
+        if (pszCopy != nullptr)
         {
             delete[] pszCopy;
         }

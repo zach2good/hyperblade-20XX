@@ -26,7 +26,7 @@ inline AnimClipEntry::AnimClipEntry(unsigned short wSegment, unsigned short wTri
     m_wSegment      = wSegment;
     m_wTriggerFrame = wTriggerFrame;
     m_nMessage      = nMessage;
-    m_pRef          = 0;
+    m_pRef          = nullptr;
 
     strcpy(m_szName, pszName);
 }

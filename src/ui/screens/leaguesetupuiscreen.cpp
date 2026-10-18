@@ -140,51 +140,51 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
 
     AppendWidget(new LoopFlipbookWidget(0x114, 0x60, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 0xe, 0, 0xe, 0xe, this, 1, -1));
 
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_ANIMATION]->SetHidden(1);
 
     AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TITLE]->SetHidden(1);
 
     AppendWidget(new DisplayWidget(0x14, 0x46, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_OBJECT_TEXT]->SetHidden(1);
 
     AppendWidget(new DisplayWidget(0x2a, 6, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_TEAM_TITLE]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_TEAM_TITLE]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_TEAM_TITLE]->SetHidden(1);
 
     AppendWidget(new DisplayWidget(0x16f, 0x41, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_DEFENDER_CHART]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_DEFENDER_CHART]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_DEFENDER_CHART]->SetHidden(1);
 
     AppendWidget(new DisplayWidget(0x5f, 0x41, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_STRIKER_CHART]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_STRIKER_CHART]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_STRIKER_CHART]->SetHidden(1);
 
     m_apWidgets[MATCHINFO_WIDGET_INFO]->SetDepressed(1);
 
     AppendWidget(new DisplayWidget(g_aLeagueHeaderCells[0].nX, g_aLeagueHeaderCells[0].nY, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->SetHidden(1);
 
     AppendWidget(new DisplayWidget(g_aLeagueHeaderCells[1].nX, g_aLeagueHeaderCells[1].nY, 0, 0, this, -1));
-    m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->AppendFrame(0);
+    m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->AppendFrame(nullptr);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetHidden(1);
 
     g_pGameEngine->SyncPlayerDataToTeam();

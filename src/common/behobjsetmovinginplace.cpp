@@ -33,12 +33,12 @@ void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int n
     m_apSlots[1] = AllocAgendaItem(Agenda_CSetAttitude);
 
     short nSlot  = 0;
-    m_apSlots[2] = 0;
+    m_apSlots[2] = nullptr;
 
     m_pOwner = pOwner;
     m_pBody  = pOwner->GetPhysicsBody();
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

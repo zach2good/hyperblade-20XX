@@ -39,12 +39,12 @@
 // FUNCTION: HYPERX 0x00411c90
 void CRelaxToPosition::Bind(EngineObject* pSubject, GameBehaviorObject* pNode)
 {
-    m_pNext       = 0;
+    m_pNext       = nullptr;
     m_wKind       = Agenda_CRelaxToPosition;
     m_pOwner      = pSubject;
     m_bReady      = 0;
     m_bCameraBias = 0;
-    m_pTarget     = 0;
+    m_pTarget     = nullptr;
 
     if (pNode->m_wKind == BEH_GLIDE_TO_POSITION)
     {
@@ -61,7 +61,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
     PlanWord* pArgs;
 
     m_wKind       = Agenda_CRelaxToPosition;
-    m_pNext       = 0;
+    m_pNext       = nullptr;
     m_bReady      = 0;
     m_bCameraBias = 0;
     m_pOwner      = pObject;
@@ -115,7 +115,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
     }
 
     m_vDest.x = m_vDest.y = m_vDest.z = g_flZeroAgendaItem;
-    m_pTarget                         = 0;
+    m_pTarget                         = nullptr;
 }
 
 // Eases toward the destination at a rate that does not depend on the frame rate.
@@ -138,8 +138,8 @@ void CRelaxToPosition::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext  = 0;
-        m_pOwner = 0;
+        m_pNext  = nullptr;
+        m_pOwner = nullptr;
         m_bReady = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -201,7 +201,7 @@ void CRelaxToPosition::Process(int nArg)
     pPoint->y = vStep.y + pPoint->y;
     pPoint->z = vStep.z + pPoint->z;
 
-    if (m_pTarget != 0)
+    if (m_pTarget != nullptr)
     {
         Vec3* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
 
@@ -220,7 +220,7 @@ void CRelaxToPosition::Process(int nArg)
 
     pBody->surfNormal = *pNormal;
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }
@@ -283,7 +283,7 @@ void CRelaxToPosition::Release(int nArg)
     pPoint->y = vStep.y + pPoint->y;
     pPoint->z = vStep.z + pPoint->z;
 
-    if (m_pTarget != 0)
+    if (m_pTarget != nullptr)
     {
         Vec3* const pHeading = &m_pOwner->GetPhysicsBody()->velDir;
 
@@ -304,7 +304,7 @@ void CRelaxToPosition::Release(int nArg)
 
     m_pOwner->GetPhysicsBody()->pos = *pPoint;
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Release(nArg);
     }

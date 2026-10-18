@@ -8,8 +8,8 @@ void BaseResetAgendaItem::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner = 0;
-        m_pNext  = 0;
+        m_pOwner = nullptr;
+        m_pNext  = nullptr;
         m_bReady = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);

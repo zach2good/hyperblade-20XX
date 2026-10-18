@@ -83,7 +83,7 @@ void Renderer::DrawAllMeshes(void)
 
     int nBone = 0;
 
-    if (g_bDromeIniDirty != 0 && g_pGameOptions != 0)
+    if (g_bDromeIniDirty != 0 && g_pGameOptions != nullptr)
     {
         g_nDromeTextured = g_pGameOptions->ReadInt(g_pszDromeSection,
                                                    g_pszDromeTexturedKey,
@@ -182,7 +182,7 @@ int Renderer::SetDromeTextured(int nEnable)
 
     Renderer::SetLoadingMode();
 
-    if (g_pGameOptions != 0)
+    if (g_pGameOptions != nullptr)
     {
         g_pGameOptions->WriteInt(g_pszDromeSection, g_pszDromeTexturedKey, g_nDromeTextured);
     }
@@ -201,7 +201,7 @@ void Renderer::DrawWholeScene(void)
 {
     DrawPolySurface surface;
 
-    if (g_pfnMdmInitDrawPoly != 0)
+    if (g_pfnMdmInitDrawPoly != nullptr)
     {
         surface.nWidth  = g_nBackBufferWidth;
         surface.nHeight = g_nBackBufferHeight;
@@ -281,11 +281,11 @@ ClipExtents g_projRenderParams;
 // FUNCTION: HYPERX 0x0044bf60
 void Renderer::ClearFrame(void)
 {
-    if (g_pBackBufferBitsCopy != 0)
+    if (g_pBackBufferBitsCopy != nullptr)
     {
         const auto nIndex = [&]
         {
-            if (g_pColorPalette != 0)
+            if (g_pColorPalette != nullptr)
             {
                 return g_pColorPalette->NearestIndex(CLEAR_COLOUR, -1);
             }

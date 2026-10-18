@@ -11,7 +11,7 @@ class CSteerToTarget : public ReleasingAgendaItem
 {
 public:
     CSteerToTarget()
-    : m_pAxis(0)
+    : m_pAxis(nullptr)
     , m_cArrived(0)
     {
     }

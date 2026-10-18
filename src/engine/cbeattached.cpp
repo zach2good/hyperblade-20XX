@@ -21,7 +21,7 @@
 // FUNCTION: HYPERX 0x0040dbe0
 void CBeAttached::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CBeAttached;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -38,13 +38,13 @@ void CBeAttached::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext    = 0;
-        m_pOwner   = 0;
-        m_pVel     = 0;
-        m_pPos     = 0;
-        m_pPrevPos = 0;
-        m_pflSpeed = 0;
-        m_pAttach  = 0;
+        m_pNext    = nullptr;
+        m_pOwner   = nullptr;
+        m_pVel     = nullptr;
+        m_pPos     = nullptr;
+        m_pPrevPos = nullptr;
+        m_pflSpeed = nullptr;
+        m_pAttach  = nullptr;
         m_bReady   = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -64,7 +64,7 @@ void CBeAttached::Process(int nArg)
 
     m_pAttach = pBone;
 
-    if (pBone != 0)
+    if (pBone != nullptr)
     {
         EngineObject* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
 
@@ -111,7 +111,7 @@ void CBeAttached::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }
@@ -130,7 +130,7 @@ void CBeAttached::Release(int nArg)
 
     m_pAttach = pBone;
 
-    if (pBone != 0)
+    if (pBone != nullptr)
     {
         EngineObject* const pEntity = g_pGameEngine->m_ppSlots[pBone->nSlot];
 
@@ -177,7 +177,7 @@ void CBeAttached::Release(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Release(nArg);
     }

@@ -33,9 +33,9 @@ void BehObj_RailSlide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
     m_apSlots[2] = AllocAgendaItem(Agenda_CSetAttitude);
 
     short nSlot  = 0;
-    m_apSlots[3] = 0;
+    m_apSlots[3] = nullptr;
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

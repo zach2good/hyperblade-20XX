@@ -30,10 +30,10 @@ void BehObj_HeadTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlag
     m_apSlots[0] = AllocAgendaItem(Agenda_CHeadTrack);
 
     m_apSlots[1] = AllocAgendaItem(Agenda_CViewIt);
-    m_apSlots[2] = 0;
+    m_apSlots[2] = nullptr;
 
     short nSlot = 0;
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

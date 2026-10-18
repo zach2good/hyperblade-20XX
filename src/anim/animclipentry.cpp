@@ -12,11 +12,11 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 {
     AnimNamedRef* pRef = m_pRef;
 
-    if (pRef->m_pszName != 0)
+    if (pRef->m_pszName != nullptr)
     {
         delete[] pRef->m_pszName;
 
-        pRef->m_pszName = 0;
+        pRef->m_pszName = nullptr;
     }
 
     pRef = m_pRef;
@@ -55,18 +55,18 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 
     pRef = m_pRef;
 
-    if (pRef->m_pszName != 0)
+    if (pRef->m_pszName != nullptr)
     {
         delete[] pRef->m_pszName;
 
-        pRef->m_pszName = 0;
+        pRef->m_pszName = nullptr;
     }
 
     pRef = m_pRef;
 
     delete pRef;
 
-    m_pRef = 0;
+    m_pRef = nullptr;
 
     return this;
 }

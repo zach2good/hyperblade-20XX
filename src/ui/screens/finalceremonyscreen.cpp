@@ -36,7 +36,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
     }
     else
     {
-        pszName = 0;
+        pszName = nullptr;
     }
 
     GDI::Bitmap* hBitmap = GDI::LoadBitmapHandle(pszName);

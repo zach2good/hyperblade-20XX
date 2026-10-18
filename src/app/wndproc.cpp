@@ -59,7 +59,7 @@ static void ReleaseHeldKeys()
 
         s_abKeyHeld[nKey] = 0;
 
-        if (g_pInputDevice != 0)
+        if (g_pInputDevice != nullptr)
         {
             g_pInputDevice->HandleKeyUp(nKey);
         }
@@ -105,7 +105,7 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
             return;
         }
     }
-    else if (g_pActiveScreen != NULL)
+    else if (g_pActiveScreen != nullptr)
     {
         if (nMessage == INPUT_KEY_DOWN)
         {
@@ -139,7 +139,7 @@ static void Release(unsigned int nMessage, unsigned int nCode, int nX, int nY)
 
     if (g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
-        if (nMessage != INPUT_KEY_UP && g_pActiveScreen != NULL)
+        if (nMessage != INPUT_KEY_UP && g_pActiveScreen != nullptr)
         {
             const auto pt = Window::ToMenuPoint(nX, nY);
 
@@ -176,7 +176,7 @@ void WndProc::OnMouseButton(unsigned int nMessage, unsigned int nButtons, int nX
 
 void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
 {
-    if (g_pActiveScreen != NULL && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
+    if (g_pActiveScreen != nullptr && g_gameApp.m_nEngineState != ESTATE_MATCH_LIVE)
     {
         const auto pt = Window::ToMenuPoint(nX, nY);
 
@@ -209,7 +209,7 @@ int WndProc::HandlePaint()
         return 1;
     }
 
-    if (g_pActiveScreen == NULL || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
+    if (g_pActiveScreen == nullptr || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
     {
         if (!g_bIsWindowCreated)
         {
@@ -264,14 +264,14 @@ int WndProc::OnActivate(unsigned int bActive)
                 return 0;
             }
 
-            if (g_pGameEngine != 0)
+            if (g_pGameEngine != nullptr)
             {
                 if (g_gameApp.m_wRunStateOnDeactivate == ENGINE_RUN_PLAYING)
                 {
                     g_pGameEngine->SetRunState(1, 0);
                 }
 
-                if (g_pGameEngine != 0 && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
+                if (g_pGameEngine != nullptr && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
                 {
                     g_gameApp.m_bCursorWasVisible = GameApp::SetCursorVisible(g_gameApp.WasCursorVisible());
                     return 0;
@@ -289,7 +289,7 @@ int WndProc::OnActivate(unsigned int bActive)
 
             SDL_SetCurrentThreadPriority(SDL_THREAD_PRIORITY_LOW);
 
-            if (g_bSingleStepActive == 0 && g_pGameEngine != 0)
+            if (g_bSingleStepActive == 0 && g_pGameEngine != nullptr)
             {
                 g_gameApp.m_wRunStateOnDeactivate = g_pGameEngine->m_wRunState;
 

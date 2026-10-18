@@ -34,10 +34,10 @@ void BehObj_FlyLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
     pFirst->m_nMode                 = 1;
 
     m_apSlots[1] = AllocAgendaItem(Agenda_CStepAnimation);
-    m_apSlots[2] = 0;
+    m_apSlots[2] = nullptr;
 
     short nSlot = 0;
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

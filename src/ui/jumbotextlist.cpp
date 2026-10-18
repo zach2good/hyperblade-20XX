@@ -16,7 +16,7 @@
 JumboTextList* JumboTextList::Init()
 {
     m_nCount   = 0;
-    m_ppszText = 0;
+    m_ppszText = nullptr;
 
     return this;
 }
@@ -29,11 +29,11 @@ void JumboTextList::FreeAll()
     {
         char** ppRow = &m_ppszText[iRow];
 
-        if (*ppRow != 0)
+        if (*ppRow != nullptr)
         {
             delete[] *ppRow;
 
-            *ppRow = 0;
+            *ppRow = nullptr;
         }
     }
 }
@@ -42,7 +42,7 @@ void JumboTextList::FreeAll()
 // FUNCTION: HYPERX 0x0046bfa0
 int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
-    srand((unsigned int)time(0));
+    srand((unsigned int)time(nullptr));
 
     const char* pszRow = m_ppszText[rand() % m_nCount];
 
@@ -94,7 +94,7 @@ unsigned int JumboTextList::Load(const char* pszFileName)
         {
             char* const pszSource = pLine;
 
-            if (pLine != 0)
+            if (pLine != nullptr)
             {
                 pszText = strcpy(new char[strlen(pszSource) + 1], pszSource);
             }

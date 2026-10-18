@@ -250,7 +250,7 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
 // FUNCTION: HYPERX 0x00423860
 String* String::FormatResourcePath(const char* pszDirectory, const char* pszName, const char* pszExtension)
 {
-    if (pszDirectory != 0 && *pszDirectory != 0)
+    if (pszDirectory != nullptr && *pszDirectory != 0)
     {
         // STRING: HYPERX 0x004bc468
         String::Format(this, "%s\\%s.%s", pszDirectory, pszName, pszExtension);
@@ -286,7 +286,7 @@ String::String(const char* psz)
 {
     m_pchData = *GetGlobalStringPtr();
 
-    if (psz != 0)
+    if (psz != nullptr)
     {
         if ((((std::uintptr_t)(psz) >> 16) == 0))
         {
@@ -341,7 +341,7 @@ String String::Concat(const String& source, const char* pszSuffix)
     String temp;
     int    nSuffixLength;
 
-    if (pszSuffix == 0)
+    if (pszSuffix == nullptr)
     {
         nSuffixLength = 0;
     }
@@ -556,12 +556,12 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
 
     pszDest[0] = 0;
 
-    if (pszSource != 0)
+    if (pszSource != nullptr)
     {
         pszEnd = (char*)strpbrk(pszSource,
                                 g_pszTokenDelimiters);
 
-        if (pszEnd != 0)
+        if (pszEnd != nullptr)
         {
             const char* pszStart = pszEnd + 1;
 
@@ -570,7 +570,7 @@ int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppsz
 
             *ppszNext = pszEnd;
 
-            if (pszEnd != 0)
+            if (pszEnd != nullptr)
             {
                 nLength = (int)(pszEnd - pszStart);
 

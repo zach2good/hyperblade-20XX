@@ -21,8 +21,8 @@ void MsgInteractor::Discard()
 {
     m_nActiveState = 0;
     m_bEnabled     = 1;
-    m_pNode        = 0;
-    pNext          = 0;
+    m_pNode        = nullptr;
+    pNext          = nullptr;
 
     g_pMsgInteractorPool->Insert(this);
 }
@@ -95,7 +95,7 @@ void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
 // FUNCTION: HYPERX 0x0045e0d0
 void MsgInteractor::Dispatch(int nArg, short* pState)
 {
-    PlanWord* pCursor = 0;
+    PlanWord* pCursor = nullptr;
     short     nCount;
 
     m_wSlot      = -1;
@@ -103,7 +103,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 
     PlanNode* const pNode = m_pNode;
 
-    if (pNode != 0)
+    if (pNode != nullptr)
     {
         pCursor = pNode->m_pArgs;
         nCount  = pNode->m_nArgCount;

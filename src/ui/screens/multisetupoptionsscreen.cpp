@@ -43,15 +43,15 @@ MultiSetupOptionsScreen::MultiSetupOptionsScreen()
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new FlipbookWidget(540, 390, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new FlipbookWidget(540, 419, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     // STRING: HYPERX 0x004c6490

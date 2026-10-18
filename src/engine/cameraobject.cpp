@@ -113,12 +113,12 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
     m_flUnused = g_flDegToRadCamera * 0.25f;
 
     m_nUnusedD    = 0;
-    m_pProjection = 0;
-    m_pView       = 0;
-    m_pRotB       = 0;
-    m_pRotA       = 0;
+    m_pProjection = nullptr;
+    m_pView       = nullptr;
+    m_pRotB       = nullptr;
+    m_pRotA       = nullptr;
 
-    g_pTransparentQueue    = 0;
+    g_pTransparentQueue    = nullptr;
     g_nTransparentCapacity = 0;
     g_nTransparentCount    = 0;
 
@@ -130,7 +130,7 @@ void CameraObject::ResizeTransparentQueue(short nHighest)
 {
     if (g_nTransparentCapacity != nHighest + 1)
     {
-        if (g_pTransparentQueue != 0)
+        if (g_pTransparentQueue != nullptr)
         {
             delete[] g_pTransparentQueue;
         }
@@ -152,22 +152,22 @@ CameraObject::~CameraObject()
     m_nPrimaryTracked   = -1;
     m_nLastTracked      = -1;
 
-    if (m_pProjection != 0)
+    if (m_pProjection != nullptr)
     {
         m_pProjection = (CameraProjectionState*)m_pProjection->DestroyViaVtable();
     }
 
-    if (m_pView != 0)
+    if (m_pView != nullptr)
     {
         m_pView = (CameraProjectionState*)m_pView->DestroyViaVtable();
     }
 
-    if (m_pRotB != 0)
+    if (m_pRotB != nullptr)
     {
         m_pRotB = m_pRotB->DestroyViaVtable();
     }
 
-    if (m_pRotA != 0)
+    if (m_pRotA != nullptr)
     {
         m_pRotA = m_pRotA->DestroyViaVtable();
     }
@@ -175,11 +175,11 @@ CameraObject::~CameraObject()
     g_nTransparentCount    = 0;
     g_nTransparentCapacity = 0;
 
-    if (g_pTransparentQueue != 0)
+    if (g_pTransparentQueue != nullptr)
     {
         delete[] g_pTransparentQueue;
 
-        g_pTransparentQueue = 0;
+        g_pTransparentQueue = nullptr;
     }
 }
 
@@ -253,14 +253,14 @@ void CameraObject::ViewIt()
         Renderer::SetCameraTransformAndViewport(layout);
     }
 
-    if (g_pRenderer != 0 && m_nSlot == CAMERA_HEAD_SLOT)
+    if (g_pRenderer != nullptr && m_nSlot == CAMERA_HEAD_SLOT)
     {
         g_pRenderer->ShowHeadCam();
     }
 
     EngineObject* const pTracked = GetTrackedObject();
 
-    if (pTracked == 0)
+    if (pTracked == nullptr)
     {
         // STRING: HYPERX 0x004bc3dc
         g_gameApp.Fatal("Camera::ViewIt(): Null pointer for ModelToTrack\n");
@@ -411,7 +411,7 @@ void CameraObject::SetReticleState(int nState)
         m_nShotPowerLevel = 0;
     }
 
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         g_pRenderer->SetReticleState(nState);
 
@@ -512,7 +512,7 @@ extern const float g_flTwoCamera;
 // FUNCTION: HYPERX 0x00422750
 void CameraObject::InitViewTransforms()
 {
-    if (m_pView != 0)
+    if (m_pView != nullptr)
     {
         m_pView->ResetProjection(&layout, m_flHalfFov);
     }
@@ -523,7 +523,7 @@ void CameraObject::InitViewTransforms()
 
     layout.pCamera = m_pView;
 
-    if (m_pProjection != 0)
+    if (m_pProjection != nullptr)
     {
         m_pProjection->ResetProjection(&layout, m_flHalfFov);
     }
@@ -532,7 +532,7 @@ void CameraObject::InitViewTransforms()
         m_pProjection = new CameraProjectionState(1, &layout, m_flHalfFov);
     }
 
-    if (m_pRotA != 0)
+    if (m_pRotA != nullptr)
     {
         m_pRotA->ResetToIdentity();
     }
@@ -541,7 +541,7 @@ void CameraObject::InitViewTransforms()
         m_pRotA = new TransformObject(1);
     }
 
-    if (m_pRotB != 0)
+    if (m_pRotB != nullptr)
     {
         m_pRotB->ResetToIdentity();
     }
@@ -687,13 +687,13 @@ EngineObject* CameraObject::GetSecondaryTrackedObject()
         return g_pGameEngine->m_ppSlots[(short)nSlot];
     }
 
-    return 0;
+    return nullptr;
 }
 
 // FUNCTION: HYPERX 0x00422c90
 void CameraObject::SetSecondaryTrackedObject(EngineObject* pObject)
 {
-    if (pObject == 0)
+    if (pObject == nullptr)
     {
         m_nSecondaryTracked = -1;
 
@@ -708,7 +708,7 @@ EngineObject* CameraObject::GetLastTrackedObject()
 {
     if (m_nLastTracked == -1)
     {
-        return 0;
+        return nullptr;
     }
 
     return g_pGameEngine->m_ppSlots[(short)m_nLastTracked];
@@ -718,7 +718,7 @@ EngineObject* CameraObject::GetLastTrackedObject()
 // FUNCTION: HYPERX 0x00422ce0
 void CameraObject::SetLastTrackedObject(EngineObject* pObject)
 {
-    if (pObject == 0)
+    if (pObject == nullptr)
     {
         m_nLastTracked = -1;
 
@@ -733,7 +733,7 @@ EngineObject* CameraObject::GetTrackedObject()
 {
     if (m_nPrimaryTracked == -1)
     {
-        return 0;
+        return nullptr;
     }
 
     return g_pGameEngine->m_ppSlots[(short)m_nPrimaryTracked];
@@ -742,7 +742,7 @@ EngineObject* CameraObject::GetTrackedObject()
 // FUNCTION: HYPERX 0x00422d30
 void CameraObject::SetTrackedObject(EngineObject* pObject)
 {
-    if (pObject == 0)
+    if (pObject == nullptr)
     {
         m_nPrimaryTracked = -1;
 

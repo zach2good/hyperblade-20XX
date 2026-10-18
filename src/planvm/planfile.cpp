@@ -49,13 +49,13 @@ PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
     // STRING: HYPERX 0x004bc938
     FILE* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "rb");
 
-    if (pFile != 0)
+    if (pFile != nullptr)
     {
         PlanWord* const pInstructions = PlanFile::ReadBinary(pFile, &nCount);
 
         fclose(pFile);
 
-        if (pInstructions == 0)
+        if (pInstructions == nullptr)
         {
             // STRING: HYPERX 0x004bdfcc
             g_gameApp.Error("Inability to read plan %s", pszName);
@@ -67,5 +67,5 @@ PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
     // STRING: HYPERX 0x004bdfa8
     g_gameApp.Error("Binary Plan %s could not be opened!", pszName);
 
-    return 0;
+    return nullptr;
 }

@@ -20,7 +20,7 @@
 // FUNCTION: HYPERX 0x00490830
 AudioMgr::AudioMgr()
 : nInitTimeMs(0)
-, pEntries(0)
+, pEntries(nullptr)
 , wNoSound(0)
 , wNoCD(0)
 , nUnused(0)
@@ -33,13 +33,13 @@ AudioMgr::~AudioMgr()
 {
     g_soundMixer.Shutdown();
 
-    if (pEntries != 0)
+    if (pEntries != nullptr)
     {
         for (int nIndex = 0; nIndex < pEntries->m_nSoundCount; nIndex++)
         {
             SoundEntry* pEntry = pEntries->m_apSounds[nIndex];
 
-            if (pEntry != 0 && pEntry->m_pSamples != 0)
+            if (pEntry != nullptr && pEntry->m_pSamples != nullptr)
             {
                 free(pEntry->m_pSamples);
             }
@@ -47,7 +47,7 @@ AudioMgr::~AudioMgr()
 
         pEntries->FreeEntries();
 
-        if (pEntries != 0)
+        if (pEntries != nullptr)
         {
             delete[] pEntries;
         }
@@ -106,7 +106,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     pEntry->m_nChannels      = 0;
     pEntry->m_nDataBytes     = 0;
     pEntry->m_nDataOffset    = 0;
-    pEntry->m_pSamples       = 0;
+    pEntry->m_pSamples       = nullptr;
     pEntry->m_nUnusedB       = 0;
 
     PathString strPath(MAX_PATH_LENGTH);
@@ -144,7 +144,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
 
     pEntry->m_pSamples = (char*)malloc(pEntry->m_nDataBytes);
 
-    if (pEntry->m_pSamples == 0)
+    if (pEntry->m_pSamples == nullptr)
     {
         pEntry->m_nDataBytes  = 0;
         pEntry->m_nDataOffset = 0;
@@ -156,7 +156,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     {
         free(pEntry->m_pSamples);
 
-        pEntry->m_pSamples    = 0;
+        pEntry->m_pSamples    = nullptr;
         pEntry->m_nDataBytes  = 0;
         pEntry->m_nDataOffset = 0;
         pEntry->m_nLoadState  = SOUND_LOAD_FAILED;
@@ -174,7 +174,7 @@ void AudioMgr::PlayGroup(int nGroup)
     {
         SoundEntry* const pSound = pEntries->PickFromGroup(nGroup);
 
-        if (pSound != 0)
+        if (pSound != nullptr)
         {
             if (pSound->m_nDataBytes == 0)
             {
@@ -196,9 +196,9 @@ void AudioMgr::PlaySpecific(int nVoice)
         {
             SoundEntry* pSound = pEntries->m_apSounds[nVoice];
 
-            if (pSound != 0)
+            if (pSound != nullptr)
             {
-                if (IsPlaying(nVoice) == 0 || (pSound->m_nGroup != SOUND_GROUP_LOOPING && pSound->m_pSamples != 0))
+                if (IsPlaying(nVoice) == 0 || (pSound->m_nGroup != SOUND_GROUP_LOOPING && pSound->m_pSamples != nullptr))
                 {
                     if (pSound->m_nDataBytes == 0)
                     {
@@ -219,7 +219,7 @@ void AudioMgr::StopEntry(int nSlot)
     {
         SoundEntry* const pOwner = pEntries->m_apSounds[nSlot];
 
-        if (pOwner != 0)
+        if (pOwner != nullptr)
         {
             g_soundMixer.StopEntry(pOwner);
         }
@@ -233,7 +233,7 @@ int AudioMgr::IsPlaying(int nVoice)
     {
         SoundEntry* const pVoice = pEntries->m_apSounds[nVoice];
 
-        if (pVoice != 0)
+        if (pVoice != nullptr)
         {
             if (pVoice->m_nPlayState == SOUND_STATE_PLAYING)
             {
@@ -473,7 +473,7 @@ int AudioMgr::PreloadGroup(int nGroup)
             continue;
         }
 
-        if (pSnd->m_pSamples != 0)
+        if (pSnd->m_pSamples != nullptr)
         {
             nLoaded++;
 
@@ -486,11 +486,11 @@ int AudioMgr::PreloadGroup(int nGroup)
 
         pSnd->m_pSamples = (char*)malloc(pSnd->m_nDataBytes);
 
-        if (pSnd->m_pSamples == 0 || !Wave::ReadSamples(strPath.m_str.m_pchData, pSnd->m_nDataOffset, pSnd->m_nDataBytes, pSnd->m_pSamples))
+        if (pSnd->m_pSamples == nullptr || !Wave::ReadSamples(strPath.m_str.m_pchData, pSnd->m_nDataOffset, pSnd->m_nDataBytes, pSnd->m_pSamples))
         {
             free(pSnd->m_pSamples);
 
-            pSnd->m_pSamples   = 0;
+            pSnd->m_pSamples   = nullptr;
             pSnd->m_nDataBytes = 0;
 
             continue;
@@ -514,11 +514,11 @@ void AudioMgr::FreeGroupBuffers(int nGroup)
 
         if (pEntry->m_nGroup == nGroup)
         {
-            if (pEntry->m_pSamples != 0)
+            if (pEntry->m_pSamples != nullptr)
             {
                 free(pEntry->m_pSamples);
 
-                pEntry->m_pSamples = 0;
+                pEntry->m_pSamples = nullptr;
             }
         }
     }

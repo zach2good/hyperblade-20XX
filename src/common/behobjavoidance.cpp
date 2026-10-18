@@ -28,12 +28,12 @@ void BehObj_Avoidance::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
     m_apSlots[0] = AllocAgendaItem(Agenda_CAvoidObjects);
 
     short nSlot  = 0;
-    m_apSlots[2] = 0;
+    m_apSlots[2] = nullptr;
 
     m_pOwner = pOwner;
     m_pBody  = pOwner->GetPhysicsBody();
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

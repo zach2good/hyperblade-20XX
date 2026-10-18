@@ -115,7 +115,7 @@ void SaveObject::SetAllTeamsAvailable(int nAvailable)
 {
     m_nAllTeamsAvailable = nAvailable;
 
-    if (g_pGameOptions != 0 && nAvailable != 0)
+    if (g_pGameOptions != nullptr && nAvailable != 0)
     {
         g_pGameOptions->WriteInt(g_pszMiscSection, g_pszPotatoeKey, 1);
     }
@@ -148,7 +148,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
         {
             char* pSpace = (char*)strchr(pLine, ' ');
 
-            if (pSpace == 0)
+            if (pSpace == nullptr)
             {
                 // STRING: HYPERX 0x004c283c
                 g_gameApp.Error("Gauntlet Error--Opponent Team errors on line: %d!",
@@ -157,7 +157,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
                 return 0;
             }
 
-            for (int nSlot = 0; nSlot < GAUNTLET_ROUND_SLOTS && pSpace != 0; nSlot++)
+            for (int nSlot = 0; nSlot < GAUNTLET_ROUND_SLOTS && pSpace != nullptr; nSlot++)
             {
                 pSpace++;
                 const short nValue        = (short)atoi(pSpace);
@@ -171,7 +171,7 @@ unsigned int SaveObject::ParseGauntletConfig(const char* pszFileName)
 
     file.m_file.CloseAndTest();
 
-    if (g_pGameOptions != 0 && g_pGameOptions->ReadInt(g_pszMiscSection, g_pszPotatoeKey, 0) != 0)
+    if (g_pGameOptions != nullptr && g_pGameOptions->ReadInt(g_pszMiscSection, g_pszPotatoeKey, 0) != 0)
     {
         m_nAllTeamsAvailable = 1;
     }

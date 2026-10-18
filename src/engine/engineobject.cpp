@@ -358,7 +358,7 @@ EngineObject::EngineObject(int nSlot, class ObjectDef* pDef)
 
     m_pszName = strcpy(new char[strlen(pszName) + 1], pszName);
 
-    if (pDef->m_pCollisionList != 0)
+    if (pDef->m_pCollisionList != nullptr)
     {
         InitCollisionBubble(pDef->m_pCollisionList);
     }
@@ -407,9 +407,9 @@ void EngineObject::ComputeBoundingSphere()
         {
             pMesh = pBone->m_pMesh;
 
-            if (pMesh == 0 || pMesh->vertexOffset.nBytes == 0)
+            if (pMesh == nullptr || pMesh->vertexOffset.nBytes == 0)
             {
-                pVert = 0;
+                pVert = nullptr;
             }
             else
             {
@@ -452,9 +452,9 @@ void EngineObject::ComputeBoundingSphere()
         {
             pMesh = pBone->m_pMesh;
 
-            if (pMesh == 0 || pMesh->vertexOffset.nBytes == 0)
+            if (pMesh == nullptr || pMesh->vertexOffset.nBytes == 0)
             {
-                pVert = 0;
+                pVert = nullptr;
             }
             else
             {
@@ -498,7 +498,7 @@ void EngineObject::InitFields()
 
     m_nSlot      = 0;
     m_nKind      = 0;
-    m_pMeshBlob  = 0;
+    m_pMeshBlob  = nullptr;
     m_wBoneCount = 0;
 
     m_pAnimPlayer = new AnimPlayer;
@@ -506,12 +506,12 @@ void EngineObject::InitFields()
     m_wLodLevel        = 0;
     m_cUnused          = 0;
     m_flLodDistSq      = 0.0f;
-    m_pShadowPoints    = 0;
-    m_ppShadowXforms   = 0;
+    m_pShadowPoints    = nullptr;
+    m_ppShadowXforms   = nullptr;
     m_wShadowCount     = 0;
-    m_pShadowFaceList  = 0;
+    m_pShadowFaceList  = nullptr;
     m_wShadowFaceCount = 0;
-    m_pModelBlock      = 0;
+    m_pModelBlock      = nullptr;
 
     m_vCentre.x = m_vCentre.y = m_vCentre.z = g_flZeroEngineObject;
     m_flBoundRadius                         = g_flZeroEngineObject;
@@ -524,26 +524,26 @@ void EngineObject::InitFields()
 
     m_vUnusedB.x = m_vUnusedB.y = m_vUnusedB.z = g_flZeroEngineObject;
 
-    m_pBones        = 0;
+    m_pBones        = nullptr;
     m_bScaledBounds = 0;
 
     m_vUnusedC.x = m_vUnusedC.y = m_vUnusedC.z = g_flZeroEngineObject;
 
-    m_pBubble        = 0;
+    m_pBubble        = nullptr;
     m_nPhase         = OBJECT_PHASE_BUILDING;
     m_nUnusedPhase   = OBJECT_PHASE_BUILDING;
     m_bVisible       = 0;
     m_nFlags         = 0;
-    m_pBody          = 0;
-    m_pPlanState     = 0;
-    m_papszPlanNames = 0;
-    m_pPlanStates    = 0;
-    m_ppPlanBlobs    = 0;
+    m_pBody          = nullptr;
+    m_pPlanState     = nullptr;
+    m_papszPlanNames = nullptr;
+    m_pPlanStates    = nullptr;
+    m_ppPlanBlobs    = nullptr;
     m_nPlanCount     = 0;
 
     m_wVisibleFaceTotal = 0;
 
-    m_pszName = 0;
+    m_pszName = nullptr;
 
     m_nTypeId          = MODEL_ID_NONE;
     m_nEntitySlot      = 0;
@@ -591,70 +591,70 @@ EngineObject::~EngineObject()
             // STRING: HYPERX 0x004c4fd4
             g_gameApp.Fatal("Error deactivating model %s. Check model directory.", pCopy);
 
-            if (pCopy != 0)
+            if (pCopy != nullptr)
             {
                 delete[] pCopy;
             }
         }
         else
         {
-            if (pCopy != 0)
+            if (pCopy != nullptr)
             {
                 delete[] pCopy;
             }
         }
     }
 
-    if (m_pszName != 0)
+    if (m_pszName != nullptr)
     {
         delete[] m_pszName;
 
-        m_pszName = 0;
+        m_pszName = nullptr;
     }
 
-    if (m_pBones != 0)
+    if (m_pBones != nullptr)
     {
         delete[] m_pBones;
 
-        m_pBones = 0;
+        m_pBones = nullptr;
     }
 
-    if (m_pBubble != 0)
+    if (m_pBubble != nullptr)
     {
-        if (m_pBubble->m_pCage != 0)
+        if (m_pBubble->m_pCage != nullptr)
         {
             ::operator delete(m_pBubble->m_pCage);
 
-            m_pBubble->m_pCage = 0;
+            m_pBubble->m_pCage = nullptr;
         }
 
-        if (m_pBubble != 0)
+        if (m_pBubble != nullptr)
         {
             delete m_pBubble;
         }
 
-        m_pBubble = 0;
+        m_pBubble = nullptr;
     }
 
-    if (m_ppShadowXforms != 0)
+    if (m_ppShadowXforms != nullptr)
     {
         delete[] m_ppShadowXforms;
 
-        m_ppShadowXforms = 0;
+        m_ppShadowXforms = nullptr;
     }
 
-    if (m_ppPlanBlobs != 0)
+    if (m_ppPlanBlobs != nullptr)
     {
         short nCount = 0;
 
-        while (m_ppPlanBlobs[nCount] != 0)
+        while (m_ppPlanBlobs[nCount] != nullptr)
         {
             nCount++;
         }
 
         for (short nIndex = nCount - 1; nIndex >= 0; nIndex--)
         {
-            if (m_ppPlanBlobs[nIndex] != 0)
+            if (m_ppPlanBlobs[nIndex] != nullptr)
             {
                 delete[] m_ppPlanBlobs[nIndex];
             }
@@ -663,14 +663,14 @@ EngineObject::~EngineObject()
         delete[] m_ppPlanBlobs;
     }
 
-    if (m_pPlanStates != 0)
+    if (m_pPlanStates != nullptr)
     {
         delete[] m_pPlanStates;
 
-        m_pPlanStates = 0;
+        m_pPlanStates = nullptr;
     }
 
-    if (m_papszPlanNames != 0)
+    if (m_papszPlanNames != nullptr)
     {
         while (m_nPlanCount-- != 0)
         {
@@ -680,18 +680,18 @@ EngineObject::~EngineObject()
         delete[] m_papszPlanNames;
     }
 
-    if (m_pAnimPlayer != 0)
+    if (m_pAnimPlayer != nullptr)
     {
         delete m_pAnimPlayer;
 
-        m_pAnimPlayer = 0;
+        m_pAnimPlayer = nullptr;
     }
 
-    if (m_pBody != 0)
+    if (m_pBody != nullptr)
     {
         delete m_pBody;
 
-        m_pBody = 0;
+        m_pBody = nullptr;
     }
 }
 
@@ -723,10 +723,10 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
             m_ppPlanBlobs[i] = PlanFile::OpenBinary(pDef->m_apszPlanNames[i], &pUnused);
         }
 
-        m_ppPlanBlobs[pDef->m_nPlanCount] = 0;
+        m_ppPlanBlobs[pDef->m_nPlanCount] = nullptr;
         m_papszPlanNames                  = pDef->m_apszPlanNames;
         m_nPlanCount                      = pDef->m_nPlanCount;
-        pDef->m_apszPlanNames             = 0;
+        pDef->m_apszPlanNames             = nullptr;
         pDef->m_nPlanCount                = 0;
     }
 
@@ -740,14 +740,14 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     LODNode* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
 
-    if (pNode != 0)
+    if (pNode != nullptr)
     {
         (pNode->m_wRefCount)++;
     }
 
     m_pLod = pNode;
 
-    if (pNode == 0)
+    if (pNode == nullptr)
     {
         // STRING: HYPERX 0x004c5104
         g_gameApp.Fatal("Could not find model: %s in model database.  Check model directory.",
@@ -758,11 +758,11 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     m_pModelBlock = g_pTexManager->FindOrLoadMaterialList(pNode, pDef->m_pszMaterial);
 
-    if (m_pModelBlock == 0)
+    if (m_pModelBlock == nullptr)
     {
         char* const pszMaterial = pDef->m_pszMaterial;
 
-        if (pszMaterial == 0)
+        if (pszMaterial == nullptr)
         {
             // STRING: HYPERX 0x004c50d8
             g_gameApp.Fatal("Could not get material list for model: %s!",
@@ -877,11 +877,11 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
 inline void EngineObject::FreeName(char*& pszName)
 {
-    if (pszName != 0)
+    if (pszName != nullptr)
     {
         delete[] pszName;
 
-        pszName = 0;
+        pszName = nullptr;
     }
 }
 
@@ -909,7 +909,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         // STRING: HYPERX 0x004c4fd4
         g_gameApp.Fatal("Error deactivating model %s. Check model directory.", pszOldName);
 
-        if (pszOldName != 0)
+        if (pszOldName != nullptr)
         {
             delete[] pszOldName;
         }
@@ -917,7 +917,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         return 0;
     }
 
-    if (pszOldName != 0)
+    if (pszOldName != nullptr)
     {
         delete[] pszOldName;
     }
@@ -932,14 +932,14 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
     LODNode* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
 
-    if (pNode != 0)
+    if (pNode != nullptr)
     {
         (pNode->m_wRefCount)++;
     }
 
     m_pLod = pNode;
 
-    if (pNode == 0)
+    if (pNode == nullptr)
     {
         // STRING: HYPERX 0x004c5104
         g_gameApp.Fatal("Could not find model: %s in model database.  Check model directory.",
@@ -950,11 +950,11 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
     m_pModelBlock = g_pTexManager->FindOrLoadMaterialList(pNode, pDef->m_pszMaterial);
 
-    if (m_pModelBlock == 0)
+    if (m_pModelBlock == nullptr)
     {
         char* const pszMaterial = pDef->m_pszMaterial;
 
-        if (pszMaterial == 0)
+        if (pszMaterial == nullptr)
         {
             // STRING: HYPERX 0x004c50d8
             g_gameApp.Fatal("Could not get material list for model: %s!",
@@ -969,7 +969,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         return 0;
     }
 
-    if (m_pszName != 0)
+    if (m_pszName != nullptr)
     {
         EngineObject::FreeName(m_pszName);
     }
@@ -1057,7 +1057,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         m_transformC.ResetToIdentity();
         m_transformB.ResetToIdentity();
 
-        if (m_pBones != 0)
+        if (m_pBones != nullptr)
         {
             delete[] m_pBones;
         }
@@ -1090,7 +1090,7 @@ void EngineObject::CompileAllPlans()
 {
     PlanWord** ppSource = m_ppPlanBlobs;
 
-    if (ppSource != 0)
+    if (ppSource != nullptr)
     {
         m_pPlanStates = new PlanState[m_nPlanCount];
 
@@ -1108,7 +1108,7 @@ void EngineObject::CompileAllPlans()
 
             PlanNode** const ppCompiled = m_pPlanStates[nIndex].Compile(pSource);
 
-            if (ppCompiled == 0)
+            if (ppCompiled == nullptr)
             {
                 g_gameApp.Error(
                     // STRING: HYPERX 0x004c5184
@@ -1132,7 +1132,7 @@ short EngineObject::GetBehaviorIndex(PlanState* pState, const char* pszName)
 
     GameBehaviorObject* pNode = pState->m_pHead;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         if (SDL_strcasecmp(pNode->GetName(), pszName) == 0)
         {
@@ -1144,7 +1144,7 @@ short EngineObject::GetBehaviorIndex(PlanState* pState, const char* pszName)
         iNode++;
     }
 
-    if (pNode != 0)
+    if (pNode != nullptr)
     {
         return iNode;
     }
@@ -1202,20 +1202,20 @@ char EngineObject::ProcessReceivedPacket()
 
     pPlayer = m_pBody->pPlayer;
 
-    if (pPlayer != 0)
+    if (pPlayer != nullptr)
     {
         pPlayer->m_lock.lock();
 
         NetMoveRecord* pRecord = pPlayer->DequeueNetRecord();
 
-        if (pRecord != 0)
+        if (pRecord != nullptr)
         {
             record = *pRecord;
         }
 
         m_pBody->pPlayer->m_lock.unlock();
 
-        if (pRecord != 0)
+        if (pRecord != nullptr)
         {
             do
             {
@@ -1275,7 +1275,7 @@ char EngineObject::ProcessReceivedPacket()
                     }
                     else
                     {
-                        g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach = 0;
+                        g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach = nullptr;
                     }
                 }
 
@@ -1283,13 +1283,13 @@ char EngineObject::ProcessReceivedPacket()
 
                 pRecord = pPlayer->DequeueNetRecord();
 
-                if (pRecord != 0)
+                if (pRecord != nullptr)
                 {
                     record = *pRecord;
                 }
 
                 m_pBody->pPlayer->m_lock.unlock();
-            } while (pRecord != 0);
+            } while (pRecord != nullptr);
 
             bResult = 1;
         }
@@ -1354,7 +1354,7 @@ void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
 
     if (pSlot->m_pDesc->m_nChildCount == 0)
     {
-        pSlot->m_apChildren = 0;
+        pSlot->m_apChildren = nullptr;
 
         return;
     }
@@ -1673,7 +1673,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
         apMaterials[0] = &m_pModelBlock->m_pMaterials[(int)pFace->cMaterial];
         apMaterials[1] = &m_pModelBlock->m_pMaterials[apMaterials[0]->nBackIndex];
 
-        MeshBone::DispatchFace(m_pBones, cFacing, pFace, apMaterials, 0, g_pModelVertexBuf, &g_vDispatchFaceNormal, cClip);
+        MeshBone::DispatchFace(m_pBones, cFacing, pFace, apMaterials, nullptr, g_pModelVertexBuf, &g_vDispatchFaceNormal, cClip);
     }
 }
 
@@ -1681,7 +1681,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 // FUNCTION: HYPERX 0x00471b60
 void EngineObject::SelectAndActivatePlan()
 {
-    const char* pszWanted = 0;
+    const char* pszWanted = nullptr;
     CPlayer*    pPlayer;
     int         nSlot;
     int         nIndex;
@@ -1689,7 +1689,7 @@ void EngineObject::SelectAndActivatePlan()
     // Cameras reach this with no player, so nothing below runs for them.
     pPlayer = GetPhysicsBody()->pPlayer;
 
-    if (pPlayer != 0)
+    if (pPlayer != nullptr)
     {
         pPlayer = GetPhysicsBody()->pPlayer;
 
@@ -1801,7 +1801,7 @@ void EngineObject::SelectAndActivatePlan()
     // The behaviour just activated, which is what m_pCurrent holds.
     m_pPlanState->m_pCurrent->StartMotion();
 
-    if (m_pBubble != 0 && m_pBubble->m_pCage != 0)
+    if (m_pBubble != nullptr && m_pBubble->m_pCage != nullptr)
     {
         m_pBubble->m_pCage->ComputeFaceNormals();
     }
@@ -1814,26 +1814,26 @@ void EngineObject::InstantiateAIPlan(short nIndex)
 {
     PlanState** ppState = &m_pPlanState;
 
-    if (*ppState != 0)
+    if (*ppState != nullptr)
     {
         (*ppState)->Teardown();
     }
 
     *ppState = &m_pPlanStates[nIndex];
 
-    if (*ppState != 0)
+    if (*ppState != nullptr)
     {
         try
         {
             (*ppState)->m_ppCursor = (*ppState)->m_ppBehaviors;
 
-            if ((*ppState)->Instantiate() == 0)
+            if ((*ppState)->Instantiate() == nullptr)
             {
                 // STRING: HYPERX 0x004c528c
                 g_gameApp.Error("Plan instantiation failed. Setting %s plan to default minimal.",
                                 m_pszName);
 
-                (*ppState)->SetOwnerAndReset(this, 0);
+                (*ppState)->SetOwnerAndReset(this, nullptr);
                 (*ppState)->Reinitialize();
                 (*ppState)->Instantiate();
             }
@@ -1935,7 +1935,7 @@ void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short n
             }
         }
 
-        if (m_pBody->pPlayer != 0 && bFromInput == 0 && m_nPhase == OBJECT_PHASE_LOCAL)
+        if (m_pBody->pPlayer != nullptr && bFromInput == 0 && m_nPhase == OBJECT_PHASE_LOCAL)
         {
             PackAndEnqueue(nMessage, nSender, nValue, nArg);
         }
@@ -2014,10 +2014,10 @@ void EngineObject::InitShadowVertexLinks(LODNode* pLod, ModelComponent* pMesh)
     int                     nLink;
     int                     nComp;
 
-    if (m_ppShadowXforms != 0)
+    if (m_ppShadowXforms != nullptr)
     {
         delete[] m_ppShadowXforms;
-        m_ppShadowXforms = 0;
+        m_ppShadowXforms = nullptr;
     }
 
     if (pMesh->m_shadowOffset.nBytes != 0)
@@ -2067,9 +2067,9 @@ void EngineObject::InitShadowVertexLinks(LODNode* pLod, ModelComponent* pMesh)
     }
     else
     {
-        m_pShadowBlock     = 0;
-        m_pShadowPoints    = 0;
-        m_pShadowFaceList  = 0;
+        m_pShadowBlock     = nullptr;
+        m_pShadowPoints    = nullptr;
+        m_pShadowFaceList  = nullptr;
         m_wShadowCount     = 0;
         m_wShadowFaceCount = 0;
     }

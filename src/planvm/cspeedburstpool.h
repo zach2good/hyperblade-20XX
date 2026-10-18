@@ -9,7 +9,7 @@ class CSpeedBurstPool : public AgendaItemOwner
 public:
     CSpeedBurstPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

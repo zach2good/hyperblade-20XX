@@ -36,9 +36,9 @@ void* MsgInteractorPool::Alloc()
 
     m_pHead = pHead->pNext;
 
-    pHead->pNext = 0;
+    pHead->pNext = nullptr;
 
-    if (m_pHead == 0)
+    if (m_pHead == nullptr)
     {
         m_pHead = new MsgInteractor;
     }
@@ -49,7 +49,7 @@ void* MsgInteractorPool::Alloc()
 // FUNCTION: HYPERX 0x0046bed0
 MsgInteractorPool::~MsgInteractorPool()
 {
-    while (m_pHead != 0)
+    while (m_pHead != nullptr)
     {
         Interactor* const pNext = m_pHead->pNext;
 

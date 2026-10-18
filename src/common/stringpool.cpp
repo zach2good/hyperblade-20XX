@@ -21,7 +21,7 @@ StringPool::StringPool(short nCount)
 
     apBuffers = new char*[nCount + 1];
 
-    if (apBuffers != 0)
+    if (apBuffers != nullptr)
     {
         for (short i = 0; i < wCount; i++)
         {
@@ -33,7 +33,7 @@ StringPool::StringPool(short nCount)
 // FUNCTION: HYPERX 0x00480af0
 StringPool::~StringPool()
 {
-    if (apBuffers != 0)
+    if (apBuffers != nullptr)
     {
         for (short nSlot = 0; nSlot < wCount; nSlot++)
         {
@@ -42,7 +42,7 @@ StringPool::~StringPool()
 
         delete[] apBuffers;
 
-        apBuffers = 0;
+        apBuffers = nullptr;
     }
 }
 

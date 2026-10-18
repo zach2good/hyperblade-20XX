@@ -855,7 +855,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
         {
             ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
-            if (pSystem != 0)
+            if (pSystem != nullptr)
             {
                 Vec3 vPosition;
                 Vec3 vVelocity;
@@ -996,7 +996,7 @@ void PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*
 
     EngineObject* const pSelf = pColSelf->GetOwner();
 
-    if (pSelf != 0 && pOther != 0)
+    if (pSelf != nullptr && pOther != nullptr)
     {
         Vec3* const pSelfX  = pSelf->GetPositionPtr();
         Vec3* const pOtherX = pOther->GetPositionPtr();

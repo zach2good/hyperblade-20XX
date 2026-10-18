@@ -11,8 +11,8 @@ class CSteerBetweenFacing : public ReleasingAgendaItem
 {
 public:
     CSteerBetweenFacing()
-    : m_pOrigin(0)
-    , m_pAxis(0)
+    : m_pOrigin(nullptr)
+    , m_pAxis(nullptr)
     , m_flUnused(0)
     , m_cArrived(0)
     {

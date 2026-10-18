@@ -25,7 +25,7 @@ AnimScriptTable::~AnimScriptTable()
     {
         delete m_apEntries[m_nCount];
 
-        m_apEntries[m_nCount] = 0;
+        m_apEntries[m_nCount] = nullptr;
     }
 }
 
@@ -43,7 +43,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 
     m_pPlanVm = pVm;
 
-    if (pVm != 0)
+    if (pVm != nullptr)
     {
         pVm->LoadSymbolTables();
     }
@@ -80,11 +80,11 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 
     PlanVM* const pOwned = m_pPlanVm;
 
-    if (pOwned != 0)
+    if (pOwned != nullptr)
     {
         delete pOwned;
 
-        m_pPlanVm = 0;
+        m_pPlanVm = nullptr;
     }
 }
 
@@ -111,7 +111,7 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
         return 1;
     }
 
-    const char* pszCursor = 0;
+    const char* pszCursor = nullptr;
 
     if (ParseAndAddAnimDB(&pState->pDb, pszLine, &pszCursor, pState->strFilter) != 0)
     {
@@ -141,7 +141,7 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
 
             if (nSecond != -1)
             {
-                if (strstr(szName, (const char*)pState->strPrefix) == szName && (pVm = m_pPlanVm) != 0)
+                if (strstr(szName, (const char*)pState->strPrefix) == szName && (pVm = m_pPlanVm) != nullptr)
                 {
                     nMessage = (int)pVm->LookupSymbol(szName).nValue;
                 }
@@ -186,7 +186,7 @@ int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, co
 
     if (String::ExtractToken(pszSource, szName, ppszCursor) > 0)
     {
-        if (strstr(szName, (const char*)strFilter) != 0)
+        if (strstr(szName, (const char*)strFilter) != nullptr)
         {
             String::ExtractToken(*ppszCursor, szExtra, ppszCursor);
 
@@ -214,12 +214,12 @@ int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const cha
 
     *pLevel += nAfter - nBefore;
 
-    if (*ppOut != 0)
+    if (*ppOut != nullptr)
     {
         m_nCount++;
     }
 
-    return *ppOut != 0;
+    return *ppOut != nullptr;
 }
 
 inline int AnimScriptTable::ScanShort(const char** ppszCursor, char* pszToken, short* pnOut)
@@ -257,7 +257,7 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
 
         *ppSegment = pNode;
 
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
             strcpy(pNode->m_szName, szToken);
 
@@ -328,11 +328,11 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
                 g_gameApp.Fatal("ERROR in Segment Description field -- %s.", pszLine);
             }
 
-            if ((*ppSegment)->m_pszDescription != 0)
+            if ((*ppSegment)->m_pszDescription != nullptr)
             {
                 delete[] (*ppSegment)->m_pszDescription;
 
-                (*ppSegment)->m_pszDescription = 0;
+                (*ppSegment)->m_pszDescription = nullptr;
             }
         }
     }
@@ -349,7 +349,7 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
     *pnSegment      = 0;
     *pnTriggerFrame = -1;
 
-    if (pszLine != 0)
+    if (pszLine != nullptr)
     {
         const char* pszScan = pszLine;
 
@@ -357,7 +357,7 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
         {
             pszScan = (const char*)strpbrk(pszScan, g_pszAnimTokenDelimiters);
 
-            if (pszScan == 0)
+            if (pszScan == nullptr)
             {
                 return 0;
             }

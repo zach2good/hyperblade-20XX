@@ -77,7 +77,7 @@ int HudLayer::Scale()
 
 void HudLayer::Enter()
 {
-    if (s_bEntered != 0 || g_pBackBufferBitsCopy == 0 || g_nBackBufferWidth <= 0 || g_nBackBufferHeight <= 0)
+    if (s_bEntered != 0 || g_pBackBufferBitsCopy == nullptr || g_nBackBufferWidth <= 0 || g_nBackBufferHeight <= 0)
     {
         return;
     }
@@ -86,7 +86,7 @@ void HudLayer::Enter()
 
     Fit(s_backBuffer);
 
-    if (s_layer.pBits == 0)
+    if (s_layer.pBits == nullptr)
     {
         return;
     }
@@ -115,7 +115,7 @@ bool HudLayer::IsEntered()
 
 void HudLayer::Clear()
 {
-    if (s_layer.pBits != 0)
+    if (s_layer.pBits != nullptr)
     {
         memset(s_layer.pBits, KEY_INDEX, (size_t)s_layer.nPitch * s_layer.nHeight);
 
@@ -138,7 +138,7 @@ bool HudLayer::TakeFrame()
 
     s_bFresh = 0;
 
-    return bFresh && s_layer.pBits != 0;
+    return bFresh && s_layer.pBits != nullptr;
 }
 
 ViewExtent HudLayer::ToBackBuffer(ViewExtent extent)

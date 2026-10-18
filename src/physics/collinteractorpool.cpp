@@ -33,9 +33,9 @@ void* CollInteractorPool::Alloc()
     Interactor* const pHead = m_pHead;
 
     m_pHead      = pHead->pNext;
-    pHead->pNext = 0;
+    pHead->pNext = nullptr;
 
-    if (m_pHead == 0)
+    if (m_pHead == nullptr)
     {
         m_pHead = new CollInteractor;
     }
@@ -46,7 +46,7 @@ void* CollInteractorPool::Alloc()
 // FUNCTION: HYPERX 0x0046be00
 CollInteractorPool::~CollInteractorPool()
 {
-    while (m_pHead != 0)
+    while (m_pHead != nullptr)
     {
         Interactor* const pNext = m_pHead->pNext;
 

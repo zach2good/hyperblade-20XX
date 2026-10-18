@@ -16,10 +16,10 @@ class Interactor
 public:
     // The eight words both pools write before the kind's own three.
     Interactor()
-    : m_pOwner(0)
+    : m_pOwner(nullptr)
     , m_nUnused(0)
-    , m_pNode(0)
-    , pNext(0)
+    , m_pNode(nullptr)
+    , pNext(nullptr)
     , m_nActiveState(0)
     , m_nBehaviour(0)
     , m_nMember(0)
@@ -28,10 +28,10 @@ public:
     }
 
     Interactor(int nOtherSlot, int nOwnSlotOrMessage, int nSeed, int bMessage)
-    : m_pOwner(0)
+    : m_pOwner(nullptr)
     , m_nUnused(0)
-    , m_pNode(0)
-    , pNext(0)
+    , m_pNode(nullptr)
+    , pNext(nullptr)
     , m_nActiveState(0)
     , m_nBehaviour(0)
     , m_nMember(0)

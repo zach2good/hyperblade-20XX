@@ -370,7 +370,7 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
         {
             if (pPoint->y <= AXIS_BAND && pPoint->y >= -AXIS_BAND)
             {
-                return 0;
+                return nullptr;
             }
 
             flAxis = m_flRadiusY;

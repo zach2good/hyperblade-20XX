@@ -7,7 +7,7 @@ void ReleasingAgendaItem::Release(int nArg)
 {
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Release(nArg);
     }

@@ -12,17 +12,17 @@ class CProjectAndBounce : public KindAgendaItem
 {
 public:
     CProjectAndBounce()
-    : m_pVelocity(0)
-    , m_pVelDir(0)
-    , m_pSource(0)
-    , m_pDest(0)
-    , m_pSpeed(0)
-    , m_pShape(0)
-    , m_pNormal(0)
-    , m_pPlayer(0)
-    , m_pTarget(0)
-    , m_pNetTargetPending(0)
-    , m_pnPrevTick(0)
+    : m_pVelocity(nullptr)
+    , m_pVelDir(nullptr)
+    , m_pSource(nullptr)
+    , m_pDest(nullptr)
+    , m_pSpeed(nullptr)
+    , m_pShape(nullptr)
+    , m_pNormal(nullptr)
+    , m_pPlayer(nullptr)
+    , m_pTarget(nullptr)
+    , m_pNetTargetPending(nullptr)
+    , m_pnPrevTick(nullptr)
     , m_nMode(0)
     {
     }

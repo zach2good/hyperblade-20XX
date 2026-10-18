@@ -9,7 +9,7 @@ class CTrackPool : public AgendaItemOwner
 public:
     CTrackPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

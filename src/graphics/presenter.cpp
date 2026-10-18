@@ -17,14 +17,14 @@
 namespace
 {
 
-SDL_Renderer* s_pRenderer = 0;
+SDL_Renderer* s_pRenderer = nullptr;
 
-SDL_Texture* s_pFrame  = 0;
-SDL_Texture* s_pHud    = 0;
-SDL_Texture* s_pCanvas = 0;
+SDL_Texture* s_pFrame  = nullptr;
+SDL_Texture* s_pHud    = nullptr;
+SDL_Texture* s_pCanvas = nullptr;
 
-SDL_Palette* s_pFramePalette = 0;
-SDL_Palette* s_pHudPalette   = 0;
+SDL_Palette* s_pFramePalette = nullptr;
+SDL_Palette* s_pHudPalette   = nullptr;
 
 bool s_bBusy = false;
 
@@ -67,7 +67,7 @@ SDL_Texture* IconTexture(const char* pszName)
 
         if (pTexture != nullptr)
         {
-            SDL_UpdateTexture(pTexture, 0, pPixels, nWidth * 4);
+            SDL_UpdateTexture(pTexture, nullptr, pPixels, nWidth * 4);
             SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND);
             SDL_SetTextureScaleMode(pTexture, SDL_SCALEMODE_LINEAR);
         }
@@ -100,19 +100,19 @@ public:
 // Keeps a streaming texture at the asked size and format, recreating it when either changes.
 SDL_Texture* Fit(SDL_Texture* pTexture, SDL_PixelFormat nFormat, int nWidth, int nHeight, SDL_ScaleMode nScale)
 {
-    if (pTexture != 0 && pTexture->w == nWidth && pTexture->h == nHeight && pTexture->format == nFormat)
+    if (pTexture != nullptr && pTexture->w == nWidth && pTexture->h == nHeight && pTexture->format == nFormat)
     {
         return pTexture;
     }
 
-    if (pTexture != 0)
+    if (pTexture != nullptr)
     {
         SDL_DestroyTexture(pTexture);
     }
 
     pTexture = SDL_CreateTexture(s_pRenderer, nFormat, SDL_TEXTUREACCESS_STREAMING, nWidth, nHeight);
 
-    if (pTexture != 0)
+    if (pTexture != nullptr)
     {
         SDL_SetTextureScaleMode(pTexture, nScale);
     }
@@ -179,7 +179,7 @@ SDL_Renderer* CreateGPURenderer(SDL_Window* pWindow)
 // one, and on whatever SDL can make otherwise, such as WebGL in a browser.
 bool Ready()
 {
-    if (s_pRenderer != 0)
+    if (s_pRenderer != nullptr)
     {
         return true;
     }
@@ -188,12 +188,12 @@ bool Ready()
 
     s_pRenderer = CreateGPURenderer(pWindow);
 
-    if (s_pRenderer == 0)
+    if (s_pRenderer == nullptr)
     {
-        s_pRenderer = SDL_CreateRenderer(pWindow, 0);
+        s_pRenderer = SDL_CreateRenderer(pWindow, nullptr);
     }
 
-    if (s_pRenderer == 0)
+    if (s_pRenderer == nullptr)
     {
         g_gameApp.Fatal("SDL could not make a renderer: %s", SDL_GetError());
 
@@ -212,7 +212,7 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 {
     const auto busy = BusyScope();
 
-    if (pBits == 0 || nWidth <= 0 || nHeight <= 0 || Ready() == false)
+    if (pBits == nullptr || nWidth <= 0 || nHeight <= 0 || Ready() == false)
     {
         return;
     }
@@ -227,19 +227,19 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 
         s_pFrame = Fit(s_pFrame, SDL_PIXELFORMAT_INDEX8, nWidth, nHeight, SDL_SCALEMODE_LINEAR);
 
-        if (s_pFrame == 0)
+        if (s_pFrame == nullptr)
         {
-            return 0;
+            return nullptr;
         }
 
         SetColours(s_pFramePalette, pColours, -1);
         SDL_SetTexturePalette(s_pFrame, s_pFramePalette);
-        SDL_UpdateTexture(s_pFrame, 0, pBits, nPitch);
+        SDL_UpdateTexture(s_pFrame, nullptr, pBits, nPitch);
 
         return s_pFrame;
     }();
 
-    if (pScene == 0)
+    if (pScene == nullptr)
     {
         return;
     }
@@ -248,7 +248,7 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 
     SDL_SetRenderDrawColor(s_pRenderer, 0, 0, 0, 0xff);
     SDL_RenderClear(s_pRenderer);
-    SDL_RenderTexture(s_pRenderer, pScene, 0, &rcFrame);
+    SDL_RenderTexture(s_pRenderer, pScene, nullptr, &rcFrame);
 
     if (HudLayer::TakeFrame())
     {
@@ -256,12 +256,12 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
 
         s_pHud = Fit(s_pHud, SDL_PIXELFORMAT_INDEX8, layer.nWidth, layer.nHeight, SDL_SCALEMODE_NEAREST);
 
-        if (s_pHud != 0)
+        if (s_pHud != nullptr)
         {
             SetColours(s_pHudPalette, pColours, HudLayer::KEY_INDEX);
             SDL_SetTexturePalette(s_pHud, s_pHudPalette);
             SDL_SetTextureBlendMode(s_pHud, SDL_BLENDMODE_BLEND);
-            SDL_UpdateTexture(s_pHud, 0, layer.pBits, layer.nPitch);
+            SDL_UpdateTexture(s_pHud, nullptr, layer.pBits, layer.nPitch);
 
             // The layer covers the back buffer at its scale, from its origin, as the frame is drawn.
             const auto flToScreen = rcFrame.w / nWidth;
@@ -271,7 +271,7 @@ void Presenter::Frame(const unsigned char* pBits, int nPitch, int nWidth, int nH
                                           (float)layer.nWidth * layer.nScale * flToScreen,
                                           (float)layer.nHeight * layer.nScale * flToScreen };
 
-            SDL_RenderTexture(s_pRenderer, s_pHud, 0, &rcHud);
+            SDL_RenderTexture(s_pRenderer, s_pHud, nullptr, &rcHud);
         }
     }
 
@@ -284,25 +284,25 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
 {
     const auto busy = BusyScope();
 
-    if (pBits == 0 || Ready() == false)
+    if (pBits == nullptr || Ready() == false)
     {
         return;
     }
 
     s_pCanvas = Fit(s_pCanvas, SDL_PIXELFORMAT_XRGB8888, nWidth, nHeight, SDL_SCALEMODE_LINEAR);
 
-    if (s_pCanvas == 0)
+    if (s_pCanvas == nullptr)
     {
         return;
     }
 
-    SDL_UpdateTexture(s_pCanvas, 0, pBits, nPitch);
+    SDL_UpdateTexture(s_pCanvas, nullptr, pBits, nPitch);
 
     const auto rcCanvas = FitRect(nWidth, nHeight, true);
 
     SDL_SetRenderDrawColor(s_pRenderer, 0, 0, 0, 0xff);
     SDL_RenderClear(s_pRenderer);
-    SDL_RenderTexture(s_pRenderer, s_pCanvas, 0, &rcCanvas);
+    SDL_RenderTexture(s_pRenderer, s_pCanvas, nullptr, &rcCanvas);
 
     const auto flScale = rcCanvas.w / nWidth;
 
@@ -317,7 +317,7 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
 
         const auto rcIcon = SDL_FRect{ rcCanvas.x + icon.nX * flScale, rcCanvas.y + icon.nY * flScale, icon.nSize * flScale, icon.nSize * flScale };
 
-        SDL_RenderTexture(s_pRenderer, pIcon, 0, &rcIcon);
+        SDL_RenderTexture(s_pRenderer, pIcon, nullptr, &rcIcon);
     }
 
     DebugMenu::Draw(DebugMenu::Renderer{ s_pRenderer });
@@ -327,7 +327,7 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
 
 bool Presenter::HasGPU()
 {
-    return Ready() && SDL_GetGPURendererDevice(s_pRenderer) != 0;
+    return Ready() && SDL_GetGPURendererDevice(s_pRenderer) != nullptr;
 }
 
 bool Presenter::Busy()

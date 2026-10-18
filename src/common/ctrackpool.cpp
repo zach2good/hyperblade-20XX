@@ -29,9 +29,9 @@ void* CTrackPool::Alloc()
     AgendaItem* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
-    pHead->m_pNext = 0;
+    pHead->m_pNext = nullptr;
 
-    if (m_pHead == 0)
+    if (m_pHead == nullptr)
     {
         m_pHead = new CTrack;
     }
@@ -42,7 +42,7 @@ void* CTrackPool::Alloc()
 // FUNCTION: HYPERX 0x00415aa0
 CTrackPool::~CTrackPool()
 {
-    while (m_pHead != 0)
+    while (m_pHead != nullptr)
     {
         AgendaItem* const pNext = m_pHead->m_pNext;
 

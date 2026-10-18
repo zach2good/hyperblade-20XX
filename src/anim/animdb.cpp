@@ -9,7 +9,7 @@
 
 // FUNCTION: HYPERX 0x00417530
 AnimDB::AnimDB(const char* pszName, const char*)
-: m_pOwnedBlock(0)
+: m_pOwnedBlock(nullptr)
 , m_wNodeCount(0)
 , m_nEntryCount(0)
 {
@@ -24,43 +24,43 @@ AnimDB::AnimDB(const char* pszName, const char*)
 // FUNCTION: HYPERX 0x004175c0
 AnimDB::~AnimDB()
 {
-    if (m_pOwnedBlock != 0)
+    if (m_pOwnedBlock != nullptr)
     {
         ::operator delete(m_pOwnedBlock);
 
-        m_pOwnedBlock = 0;
+        m_pOwnedBlock = nullptr;
     }
 
     for (short nEntry = 0; nEntry < m_nEntryCount; nEntry++)
     {
         AnimClipEntry* const pEntry = m_apEntries[nEntry];
 
-        if (pEntry != 0)
+        if (pEntry != nullptr)
         {
             delete pEntry->m_pRef;
 
             delete pEntry;
         }
 
-        m_apEntries[nEntry] = 0;
+        m_apEntries[nEntry] = nullptr;
     }
 
     for (short nNode = 0; nNode < m_wNodeCount; nNode++)
     {
         AnimNode* const pNode = m_apNodes[nNode];
 
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
-            if (pNode->m_pszDescription != 0)
+            if (pNode->m_pszDescription != nullptr)
             {
                 delete[] pNode->m_pszDescription;
 
-                pNode->m_pszDescription = 0;
+                pNode->m_pszDescription = nullptr;
             }
 
             delete pNode;
 
-            m_apNodes[nNode] = 0;
+            m_apNodes[nNode] = nullptr;
         }
     }
 }
@@ -68,7 +68,7 @@ AnimDB::~AnimDB()
 // FUNCTION: HYPERX 0x004176b0
 void AnimDB::SetName(const char* pszName)
 {
-    if (pszName != 0)
+    if (pszName != nullptr)
     {
         SDL_strlcpy(m_szName, pszName, sizeof(m_szName));
 
@@ -86,7 +86,7 @@ void AnimDB::AddClipEntry(unsigned short wSegment, unsigned short wTriggerFrame,
 
     m_apEntries[m_nEntryCount] = pEntry;
 
-    if (pEntry != 0)
+    if (pEntry != nullptr)
     {
         if (nMessage == MSG_SYNC_FRAME)
         {

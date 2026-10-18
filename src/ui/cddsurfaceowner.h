@@ -12,8 +12,8 @@ class CDDSurfaceOwner : public InfoBarSlot
 {
 public:
     CDDSurfaceOwner()
-    : m_pszName(0)
-    , m_pSprite(0)
+    : m_pszName(nullptr)
+    , m_pSprite(nullptr)
     {
     }
 

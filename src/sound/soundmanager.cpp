@@ -15,7 +15,7 @@ SoundManager::SoundManager()
     m_wUnusedA = 0;
 
     m_nSoundCount = 0;
-    m_apSounds    = 0;
+    m_apSounds    = nullptr;
     m_nUnusedB    = 0;
 
     for (int iSlot = 0; iSlot < SOUNDMGR_SLOTS; iSlot++)
@@ -44,10 +44,10 @@ void SoundManager::FreeEntries()
     {
         char** ppName = &m_apSounds[i]->m_pszName;
 
-        if (*ppName != 0)
+        if (*ppName != nullptr)
         {
             delete[] *ppName;
-            *ppName = 0;
+            *ppName = nullptr;
         }
 
         delete m_apSounds[i];
@@ -206,5 +206,5 @@ SoundEntry* SoundManager::PickFromGroup(int nGroup)
         return m_apSounds[nIndex];
     }
 
-    return 0;
+    return nullptr;
 }

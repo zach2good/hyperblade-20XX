@@ -32,7 +32,7 @@
 #include <algorithm>
 
 // The game's one window, which SDL made and owns.
-static SDL_Window* s_pWindow = 0;
+static SDL_Window* s_pWindow = nullptr;
 
 // FUNCTION: HYPERX 0x0044bd60
 void Window::ApplyFullscreenStyle()
@@ -115,7 +115,7 @@ Point Window::ToMenuPoint(int nX, int nY)
 // which the back buffer needs, and PresentFrame centres what that leaves.
 void Window::OnSize(int cx, int cy)
 {
-    if (g_pBackBufferBitsCopy == 0)
+    if (g_pBackBufferBitsCopy == nullptr)
     {
         return;
     }
@@ -129,7 +129,7 @@ void Window::OnSize(int cx, int cy)
     }
 
     // The resize lays out the main camera, which an engine still loading has not made yet.
-    if (g_pGameEngine != 0 && (g_pGameEngine->m_ppSlots == 0 || g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT) == 0))
+    if (g_pGameEngine != nullptr && (g_pGameEngine->m_ppSlots == nullptr || g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT) == nullptr))
     {
         return;
     }
@@ -143,7 +143,7 @@ void Window::OnSize(int cx, int cy)
 
     SoftRenderer::ResizeBackBuffer(&nWidth, &nHeight);
 
-    if (g_pGameEngine == 0)
+    if (g_pGameEngine == nullptr)
     {
         return;
     }
@@ -276,7 +276,7 @@ static void HandleMouseButton(const SDL_MouseButtonEvent& button)
         return;
     }
 
-    auto buttons = SDL_GetMouseState(0, 0);
+    auto buttons = SDL_GetMouseState(nullptr, nullptr);
 
     if (button.down)
     {
@@ -334,7 +334,7 @@ static void HandleWindowEvent(SDL_Event* pEvent)
             break;
 
         case SDL_EVENT_WINDOW_FOCUS_GAINED:
-            if (g_pActiveScreen != 0)
+            if (g_pActiveScreen != nullptr)
             {
                 g_pActiveScreen->SetRepaintBackground(1);
             }
@@ -437,7 +437,7 @@ bool Window::Create(const char* pszTitle)
 
     s_pWindow = SDL_CreateWindow(pszTitle, 640, 480, SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN);
 
-    if (s_pWindow == 0)
+    if (s_pWindow == nullptr)
     {
         return false;
     }
@@ -453,7 +453,7 @@ bool Window::Create(const char* pszTitle)
     SendMessageA(hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 #endif
 
-    SDL_AddEventWatch(OnWindowEvent, 0);
+    SDL_AddEventWatch(OnWindowEvent, nullptr);
 
     return true;
 }
@@ -534,7 +534,7 @@ Window::MessageAnswer Window::ShowMessage(const char* pszText, const char* pszCa
 
 void Window::SetBusyCursor(bool bBusy)
 {
-    static SDL_Cursor* s_pBusy = 0;
+    static SDL_Cursor* s_pBusy = nullptr;
 
     if (bBusy == false)
     {
@@ -543,7 +543,7 @@ void Window::SetBusyCursor(bool bBusy)
         return;
     }
 
-    if (s_pBusy == 0)
+    if (s_pBusy == nullptr)
     {
         s_pBusy = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_WAIT);
     }
@@ -556,7 +556,7 @@ void Window::Destroy()
     SDL_DestroyWindow(s_pWindow);
     SDL_Quit();
 
-    s_pWindow = 0;
+    s_pWindow = nullptr;
 }
 
 bool Window::Pump()
@@ -574,5 +574,5 @@ bool Window::Pump()
 void Window::WaitWhileInactive()
 {
     // A tenth of a second, so a message that raises no SDL event cannot leave the loop asleep.
-    SDL_WaitEventTimeout(0, 100);
+    SDL_WaitEventTimeout(nullptr, 100);
 }

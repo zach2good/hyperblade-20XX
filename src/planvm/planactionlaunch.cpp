@@ -162,7 +162,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
         pAttach = pRok->GetPhysicsBody()->pAttach;
 
-        if (pAttach == 0)
+        if (pAttach == nullptr)
         {
             return;
         }
@@ -427,7 +427,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
         PhysicsBody*     pBlock   = pContext->GetActor()->GetPhysicsBody();
         AttachPak* const pTracked = pBlock->pAttach;
 
-        if (pTracked != 0)
+        if (pTracked != nullptr)
         {
             PlayerObject* const pTarget = g_pGameEngine->GetPlayer(pTracked->nSlot);
             const short         nViewed = g_pGameEngine->m_nViewedSlot;
@@ -747,7 +747,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
         AttachPak* const pTracked = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-        if (pTracked != 0)
+        if (pTracked != nullptr)
         {
             if (nSlot != pTracked->nSlot && nSlot != pContext->GetActor()->GetSlot())
             {

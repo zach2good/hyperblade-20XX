@@ -99,38 +99,38 @@ TournamentSetupUIScreen::TournamentSetupUIScreen()
     AppendWidget(new LoopFlipbookWidget(206, 63, m_bitmap.bmWidth, m_bitmap.bmHeight, 1, 1, 19, 0, 19, 19, this, 1, -1));
     for (int i = 0; i < 20; i++)
     {
-        m_apWidgets[TOURNAMENT_SETUP_ROSTER]->AppendFrame(0);
+        m_apWidgets[TOURNAMENT_SETUP_ROSTER]->AppendFrame(nullptr);
     }
 
     m_apWidgets[TOURNAMENT_SETUP_ROSTER]->SetHidden(1);
     AppendWidget(new DisplayWidget(0, 0, 1, 1, this, -1));
-    m_apWidgets[TOURNAMENT_SETUP_TEAM_NAME]->AppendFrame(0);
+    m_apWidgets[TOURNAMENT_SETUP_TEAM_NAME]->AppendFrame(nullptr);
     m_apWidgets[TOURNAMENT_SETUP_TEAM_NAME]->SetHidden(1);
     AppendWidget(new DisplayWidget(9, 101, 1, 1, this, -1));
-    m_apWidgets[TOURNAMENT_SETUP_LINEUP_CARD]->AppendFrame(0);
+    m_apWidgets[TOURNAMENT_SETUP_LINEUP_CARD]->AppendFrame(nullptr);
     m_apWidgets[TOURNAMENT_SETUP_LINEUP_CARD]->SetHidden(1);
     // STRING: HYPERX 0x004c2130
     m_hBitmap = GDI::LoadBitmapHandle("startr1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     AppendWidget(new ButtonWidget(0, 7, 67, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
-    m_apWidgets[TOURNAMENT_SETUP_STARTERS]->AppendFrame(0);
-    m_apWidgets[TOURNAMENT_SETUP_STARTERS]->AppendFrame(0);
-    m_apWidgets[TOURNAMENT_SETUP_STARTERS]->AppendFrame(0);
+    m_apWidgets[TOURNAMENT_SETUP_STARTERS]->AppendFrame(nullptr);
+    m_apWidgets[TOURNAMENT_SETUP_STARTERS]->AppendFrame(nullptr);
+    m_apWidgets[TOURNAMENT_SETUP_STARTERS]->AppendFrame(nullptr);
     m_apWidgets[TOURNAMENT_SETUP_STARTERS]->SetHidden(1);
     m_apWidgets[TOURNAMENT_SETUP_STARTERS]->SetDepressed(1);
     m_hBitmap = GDI::LoadBitmapHandle("startr1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     AppendWidget(new ButtonWidget(0, 107, 67, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
-    m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->AppendFrame(0);
-    m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->AppendFrame(0);
-    m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->AppendFrame(0);
+    m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->AppendFrame(nullptr);
+    m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->AppendFrame(nullptr);
+    m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->AppendFrame(nullptr);
     m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->SetHidden(1);
     m_apWidgets[TOURNAMENT_SETUP_SCRUBS]->SetDepressed(0);
     AppendWidget(new DisplayWidget(430, 67, 1, 1, this, -1));
-    m_apWidgets[TOURNAMENT_SETUP_TEAM_RATING]->AppendFrame(0);
+    m_apWidgets[TOURNAMENT_SETUP_TEAM_RATING]->AppendFrame(nullptr);
     m_apWidgets[TOURNAMENT_SETUP_TEAM_RATING]->SetHidden(1);
     AppendWidget(new DisplayWidget(580, 9, 1, 1, this, -1));
-    m_apWidgets[TOURNAMENT_SETUP_TEAM_EMBLEM]->AppendFrame(0);
+    m_apWidgets[TOURNAMENT_SETUP_TEAM_EMBLEM]->AppendFrame(nullptr);
     m_apWidgets[TOURNAMENT_SETUP_TEAM_EMBLEM]->SetHidden(1);
 
     InitAllWidgets();

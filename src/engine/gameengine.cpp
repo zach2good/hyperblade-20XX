@@ -137,7 +137,7 @@ void GameEngine::InitAgendaItemPools(void)
 
     for (nSlot = 0; nSlot < Agenda_Count; nSlot++)
     {
-        if (*ppEntry != 0)
+        if (*ppEntry != nullptr)
         {
             (*ppEntry)->Init();
         }
@@ -185,7 +185,7 @@ void GameEngine::CreateAgendaItemPools(void)
     g_apAgendaItemPools[Agenda_CExplosionAnimation]   = new CExplosionAnimationPool;
     g_apAgendaItemPools[Agenda_CCheckAI]              = new CCheckAIPool;
     g_apAgendaItemPools[Agenda_CCircleTrack]          = new CCircleTrackPool;
-    g_apAgendaItemPools[Agenda_Count]                 = 0;
+    g_apAgendaItemPools[Agenda_Count]                 = nullptr;
 }
 
 // Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
@@ -197,7 +197,7 @@ void GameEngine::DestroyAgendaItemPools(void)
 
     PooledOwnerRoot* pNode = g_apAgendaItemPools[0];
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         g_apAgendaItemPools[iSlot] = pNode->Destroy();
 
@@ -214,7 +214,7 @@ void GameEngine::ShowRokValue(short nRokValue)
 {
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[SLOT_MULTIPLIER];
 
-    if (pObject == 0)
+    if (pObject == nullptr)
     {
         return;
     }
@@ -336,7 +336,7 @@ int GameEngine::IsTeamWinning(unsigned char nTeam)
 // FUNCTION: HYPERX 0x0047acf0
 unsigned short GameEngine::TogglePause(int bRestyle)
 {
-    if (g_pGameEngine == 0)
+    if (g_pGameEngine == nullptr)
     {
         return 1;
     }
@@ -375,8 +375,8 @@ GameEngine::GameEngine()
     m_nObjectCount     = 0;
     m_nQueuedSlotCount = 0;
     m_nSlotCount       = 0;
-    m_ppSlots          = 0;
-    m_ppObjects        = 0;
+    m_ppSlots          = nullptr;
+    m_ppObjects        = nullptr;
     memset(m_apCameras, 0, sizeof(m_apCameras));
 
     m_wCameraCount = 0;
@@ -405,11 +405,11 @@ GameEngine::GameEngine()
     m_wUnusedD     = 0;
     m_wDeviceCount = 0;
 
-    m_apTracked[0] = 0;
-    m_apTracked[1] = 0;
-    m_pTeamA       = 0;
-    m_pTeamB       = 0;
-    m_pArena       = 0;
+    m_apTracked[0] = nullptr;
+    m_apTracked[1] = nullptr;
+    m_pTeamA       = nullptr;
+    m_pTeamB       = nullptr;
+    m_pArena       = nullptr;
 
     m_nTeamHomeIndex = 5;
     m_nTeamAwayIndex = 10;
@@ -719,7 +719,7 @@ void GameEngine::TickClock()
         {
             m_bMatchOver = 1;
 
-            if (g_bSessionActive != 0 && g_pGameSession != 0)
+            if (g_bSessionActive != 0 && g_pGameSession != nullptr)
             {
                 GameSession::Disconnect();
             }
@@ -997,28 +997,28 @@ void GameEngine::BeginMatchPlay()
 
     RokObject* const pRok = (RokObject*)m_ppSlots[SLOT_ROK];
 
-    if (pRok != 0)
+    if (pRok != nullptr)
     {
         pRok->m_wRokValue = 0;
         pRok->SetRenderSlotFlags();
         pRok->ActivateAtSpawnSlot(SPAWN_SLOT_ANY);
-        pRok->GetPhysicsBody()->pAttach = 0;
+        pRok->GetPhysicsBody()->pAttach = nullptr;
     }
 
-    if (m_ppSlots[SLOT_RED_RANDOMIZER] != 0)
+    if (m_ppSlots[SLOT_RED_RANDOMIZER] != nullptr)
     {
         m_ppSlots[SLOT_RED_RANDOMIZER]->GetPlanState()->ActivateBehavior(BEHAVIOR_IDLE);
     }
 
-    if (m_ppSlots[SLOT_MINE] != 0)
+    if (m_ppSlots[SLOT_MINE] != nullptr)
     {
-        m_ppSlots[SLOT_MINE]->GetPhysicsBody()->pAttach = 0;
+        m_ppSlots[SLOT_MINE]->GetPhysicsBody()->pAttach = nullptr;
         m_ppSlots[SLOT_MINE]->GetPlanState()->ActivateBehavior(BEHAVIOR_IDLE);
     }
 
-    if (m_ppSlots[SLOT_SWARF] != 0)
+    if (m_ppSlots[SLOT_SWARF] != nullptr)
     {
-        m_ppSlots[SLOT_SWARF]->GetPhysicsBody()->pAttach = 0;
+        m_ppSlots[SLOT_SWARF]->GetPhysicsBody()->pAttach = nullptr;
         m_ppSlots[SLOT_SWARF]->GetPlanState()->ActivateBehavior(BEHAVIOR_IDLE);
     }
 
@@ -1213,18 +1213,18 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
         {
             char* pRest = pLine;
 
-            if (pRest != 0
+            if (pRest != nullptr
                 // STRING: HYPERX 0x004c732c
-                && ParseUtil::ParseToken(pRest, szToken, 0, " \t", PARSE_TOKEN_MAX, &pRest) != 0 && (nKeyword = ParseUtil::FindKeyword(szToken, s_apszKeywords, CONFIG_KEYWORD_COUNT)) >= 0)
+                && ParseUtil::ParseToken(pRest, szToken, nullptr, " \t", PARSE_TOKEN_MAX, &pRest) != 0 && (nKeyword = ParseUtil::FindKeyword(szToken, s_apszKeywords, CONFIG_KEYWORD_COUNT)) >= 0)
             {
                 switch (nKeyword)
                 {
                     case KEYWORD_ARENA:
                         pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                        if (pRest == 0
+                        if (pRest == nullptr
                             // STRING: HYPERX 0x004c7324
-                            || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
+                            || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
                         {
                             g_gameApp.Error(
                                 // STRING: HYPERX 0x004c7278
@@ -1243,7 +1243,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
                     case KEYWORD_HOME:
                         pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                        if (pRest == 0 || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
+                        if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
                         {
                             g_gameApp.Error(
                                 // STRING: HYPERX 0x004c72b4
@@ -1259,7 +1259,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
                     case KEYWORD_AWAY:
                         pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                        if (pRest == 0 || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
+                        if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
                         {
                             g_gameApp.Error(
                                 // STRING: HYPERX 0x004c72ec
@@ -1320,13 +1320,13 @@ ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnMod
     char  szCommand[PARSE_TOKEN_MAX];
     short nCommand;
 
-    ObjectDef* pDef      = 0;
+    ObjectDef* pDef      = nullptr;
     char       bComplete = 0;
 
     while (pFile->GetNextLine(&pLine) > 0)
     {
         // STRING: HYPERX 0x004c732c
-        if (pLine != 0 && ParseUtil::ParseToken(pLine, szCommand, 0, " \t", PARSE_TOKEN_MAX, &pLine) != 0 && (nCommand = ParseUtil::FindKeyword(szCommand, s_apszCommands, COMMAND_COUNT)) >= 0)
+        if (pLine != nullptr && ParseUtil::ParseToken(pLine, szCommand, nullptr, " \t", PARSE_TOKEN_MAX, &pLine) != 0 && (nCommand = ParseUtil::FindKeyword(szCommand, s_apszCommands, COMMAND_COUNT)) >= 0)
         {
             switch (nCommand)
             {
@@ -1335,7 +1335,7 @@ ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnMod
                     break;
 
                 case CMD_MOTION_PARAMS:
-                    if (pDef != 0)
+                    if (pDef != nullptr)
                     {
                         Cmd_SetMotionParams(pLine, pDef);
                     }
@@ -1372,28 +1372,28 @@ ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnMod
                     break;
 
                 case CMD_COLLISION_OBJECT:
-                    if (pDef != 0)
+                    if (pDef != nullptr)
                     {
                         Cmd_SetCollisionObject(pLine, pDef, *pnModelId);
                     }
                     break;
 
                 case CMD_PLANS:
-                    if (pDef != 0)
+                    if (pDef != nullptr)
                     {
                         Cmd_SetPlans(pLine, pDef);
                     }
                     break;
 
                 case CMD_END_DEFINITION:
-                    if (pDef != 0)
+                    if (pDef != nullptr)
                     {
                         bComplete = 1;
                     }
                     break;
             }
 
-            if (pDef == 0)
+            if (pDef == nullptr)
             {
                 g_gameApp.Fatal(
                     // STRING: HYPERX 0x004c736c
@@ -1408,14 +1408,14 @@ ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnMod
         }
     }
 
-    if (pDef != 0)
+    if (pDef != nullptr)
     {
         // STRING: HYPERX 0x004c7330
         g_gameApp.Fatal("Game Config file error: missing of EndOfDefinition for %s!",
                         pDef->m_pszName);
     }
 
-    return 0;
+    return nullptr;
 }
 
 // The scanf format the motion reader pushes.
@@ -1475,7 +1475,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
     char  szToken[PARSE_TOKEN_MAX];
     short nType;
 
-    ObjectDef* const pDef = new ObjectDef(0);
+    ObjectDef* const pDef = new ObjectDef(nullptr);
 
     int nSeen = 0;
 
@@ -1554,10 +1554,10 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 
     memset((void*)pDef, 0, sizeof(ObjectDef));
 
-    while (pRest != 0)
+    while (pRest != nullptr)
     {
         // STRING: HYPERX 0x004c7504
-        if (ParseUtil::ParseToken(pRest, szToken, 0, " =\t", PARSE_TOKEN_MAX, &pRest) == 0)
+        if (ParseUtil::ParseToken(pRest, szToken, nullptr, " =\t", PARSE_TOKEN_MAX, &pRest) == 0)
         {
             break;
         }
@@ -1574,9 +1574,9 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
             case ATTR_TYPE:
                 pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                if (pRest == 0
+                if (pRest == nullptr
                     // STRING: HYPERX 0x004c7324
-                    || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0 || (nType = ParseUtil::FindKeyword(szToken, apszTypes, id_GOB_NUM_OF_TYPES)) < 0)
+                    || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0 || (nType = ParseUtil::FindKeyword(szToken, apszTypes, id_GOB_NUM_OF_TYPES)) < 0)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c7464
@@ -1589,7 +1589,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 
                 if (nType == id_GOB_Dromer)
                 {
-                    if (pnModelId == 0)
+                    if (pnModelId == nullptr)
                     {
                         g_gameApp.Fatal(
                             // STRING: HYPERX 0x004c74d0
@@ -1634,7 +1634,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
             case ATTR_MODEL:
                 pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                if (pRest == 0 || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
+                if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c7438
@@ -1651,7 +1651,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
             case ATTR_NAME:
                 pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                if (pRest == 0 || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
+                if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c7408
@@ -1680,7 +1680,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
             case ATTR_MATERIAL:
                 pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
-                if (pRest == 0 || ParseUtil::ParseToken(pRest, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
+                if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pRest) == 0)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c73d8
@@ -1752,16 +1752,16 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
 
     char* pszCursor = pszLine;
 
-    while (pszCursor != 0)
+    while (pszCursor != nullptr)
     {
-        if (ParseUtil::ParseToken(pszCursor, szToken, 0, " =\t", PARSE_TOKEN_MAX, &pszCursor) == 0)
+        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " =\t", PARSE_TOKEN_MAX, &pszCursor) == 0)
         {
             break;
         }
 
         pszCursor = ParseUtil::SkipToChar(pszCursor, g_pszEqualsSign);
 
-        if (pszCursor == 0)
+        if (pszCursor == nullptr)
         {
             break;
         }
@@ -1779,7 +1779,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
                 pszCursor++;
 
                 if (
-                    ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_vPos.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_vPos.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_vPos.z) != 1)
+                    ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_vPos.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_vPos.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_vPos.z) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: bad type keyword %s!", szToken);
                 }
@@ -1789,7 +1789,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
             case KEY_ACCEL:
                 pszCursor++;
 
-                if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flAccel) != 1)
+                if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flAccel) != 1)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c7658
@@ -1802,7 +1802,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
             case KEY_SPEED:
                 pszCursor++;
 
-                if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flSpeed) != 1)
+                if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flSpeed) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: accel param %s!", szToken);
                 }
@@ -1812,7 +1812,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
             case KEY_AZIM:
                 pszCursor++;
 
-                if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flAzimuth) != 1)
+                if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flAzimuth) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: accel param %s!", szToken);
                 }
@@ -1822,7 +1822,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
             case KEY_ELEV:
                 pszCursor++;
 
-                if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flElevation) != 1)
+                if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flElevation) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: accel param %s!", szToken);
                 }
@@ -1832,7 +1832,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
             case KEY_FRIC:
                 pszCursor++;
 
-                if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flFriction) != 1)
+                if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flFriction) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: accel param %s!", szToken);
                 }
@@ -1842,7 +1842,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
             case KEY_ELAS:
                 pszCursor++;
 
-                if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flElasticity) != 1)
+                if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flElasticity) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: accel param %s!", szToken);
                 }
@@ -1904,7 +1904,7 @@ inline int GameEngine::FindTeamDefinition(FileObj* pFile, char** ppLine, char* p
     do
     {
         // STRING: HYPERX 0x004c732c
-        if (ParseUtil::ParseToken(*ppLine, pszToken, 0, " \t", PARSE_TOKEN_MAX, ppLine) != 0 && SDL_strcasecmp(pszToken, "DefineTeam") == 0)
+        if (ParseUtil::ParseToken(*ppLine, pszToken, nullptr, " \t", PARSE_TOKEN_MAX, ppLine) != 0 && SDL_strcasecmp(pszToken, "DefineTeam") == 0)
         {
             return 1;
         }
@@ -1953,22 +1953,22 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
     if (FindTeamDefinition(pFile, &pLine, szToken) == 0)
     {
-        return 0;
+        return nullptr;
     }
 
     memset((void*)pTeam, 0, sizeof(TeamBlock));
 
-    while (pLine != 0)
+    while (pLine != nullptr)
     {
         // STRING: HYPERX 0x004c7504
-        if (ParseUtil::ParseToken(pLine, szToken, 0, " =\t", PARSE_TOKEN_MAX, &pLine) == 0)
+        if (ParseUtil::ParseToken(pLine, szToken, nullptr, " =\t", PARSE_TOKEN_MAX, &pLine) == 0)
         {
             break;
         }
 
         pLine = ParseUtil::SkipToChar(pLine, g_pszEqualsSign);
 
-        if (pLine == 0)
+        if (pLine == nullptr)
         {
             break;
         }
@@ -1985,7 +1985,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 0:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c7800
                     g_gameApp.Error("Team asgn error: Team name: %s!", szToken);
@@ -2012,7 +2012,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 1:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c77d8
                     g_gameApp.Error("Team asgn error: Team LogoBMPname: %s!", szToken);
@@ -2027,7 +2027,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 2:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c77b0
                     g_gameApp.Error("Team asgn error: Team select logo: %s!", szToken);
@@ -2042,7 +2042,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 3:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c7788
                     g_gameApp.Error("Team asgn error: Team select text: %s!", szToken);
@@ -2057,7 +2057,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 4:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c7760
                     g_gameApp.Error("Team asgn error: Team select title: %s!", szToken);
@@ -2072,7 +2072,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 5:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c772c
                     g_gameApp.Error("Team asgn error: Team select animation name: %s!", szToken);
@@ -2087,7 +2087,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 6:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c76f4
                     g_gameApp.Error("Team asgn error: Team select Drome exterior name: %s!", szToken);
@@ -2102,7 +2102,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
             case 8:
                 pLine++;
 
-                if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
+                if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     // STRING: HYPERX 0x004c76c8
                     g_gameApp.Error("Team asgn error: Team environment name: %s!", szToken);
@@ -2121,7 +2121,7 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
         // STRING: HYPERX 0x004c76ac
         g_gameApp.Error("Incomplete Team def:\n%s!", pLine);
 
-        return 0;
+        return nullptr;
     }
 
     return pTeam;
@@ -2130,7 +2130,7 @@ failed:
     delete pTeam;
 
 quit:
-    return 0;
+    return nullptr;
 }
 
 // A RandomizerBubble on a RedRandomizer becomes the next kind ("MAJOR KLUDGE HERE").
@@ -2228,9 +2228,9 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     char* pszCursor = pszLine;
 
-    while (pszCursor != 0)
+    while (pszCursor != nullptr)
     {
-        if (ParseUtil::ParseToken(pszCursor, szToken, 0, " =\t", PARSE_TOKEN_MAX, &pszCursor) == 0)
+        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " =\t", PARSE_TOKEN_MAX, &pszCursor) == 0)
         {
             break;
         }
@@ -2247,7 +2247,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
             case ATTR_TYPE_KEY:
                 pszCursor = ParseUtil::SkipPastChar(pszCursor, g_pszEqualsSign);
 
-                if (pszCursor != 0 && ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) != 0)
+                if (pszCursor != nullptr && ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) != 0)
                 {
                     nBubbleType = ParseUtil::FindKeyword(szToken, apszBubbles, BUBBLE_COUNT);
 
@@ -2271,7 +2271,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
             case ATTR_COMPONENT:
                 pszCursor = ParseUtil::SkipPastChar(pszCursor, g_pszEqualsSign);
 
-                if (pszCursor == 0 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentHd, &nComponent) != 1)
+                if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentHd, &nComponent) != 1)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c796c
@@ -2284,7 +2284,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
             case ATTR_RADIUS:
                 pszCursor = ParseUtil::SkipPastChar(pszCursor, g_pszEqualsSign);
 
-                if (pszCursor == 0 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &flRadius) != 1)
+                if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &flRadius) != 1)
                 {
                     g_gameApp.Fatal("Game Config file error: collision radius %s!", pszLine);
                 }
@@ -2294,7 +2294,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
             case ATTR_CENTROID:
                 pszCursor = ParseUtil::SkipPastChar(pszCursor, g_pszEqualsSign);
 
-                if (pszCursor == 0 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.z) != 1)
+                if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.z) != 1)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c793c
@@ -2307,7 +2307,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
             case ATTR_ATTACH:
                 pszCursor = ParseUtil::SkipPastChar(pszCursor, g_pszEqualsSign);
 
-                if (pszCursor == 0 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.z) != 1)
+                if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.z) != 1)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c7908
@@ -2350,15 +2350,15 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     BubbleCmd** ppSlot = &pDef->m_pCollisionList;
 
     // The new command goes on the end, as the old tail's one child.
-    BubbleCmd* pTail = 0;
+    BubbleCmd* pTail = nullptr;
 
-    for (BubbleCmd* pNode = *ppSlot; pNode != 0; pNode = *ppSlot)
+    for (BubbleCmd* pNode = *ppSlot; pNode != nullptr; pNode = *ppSlot)
     {
         ppSlot = &pNode->m_pChildren;
         pTail  = pNode;
     }
 
-    if (pTail != 0)
+    if (pTail != nullptr)
     {
         pTail->m_nChildCount++;
     }
@@ -2371,7 +2371,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
     pNew->m_wShape    = (short)anBubbleShapes[nBubbleType];
     pNew->m_nSlot     = nBubbleType;
-    pNew->m_pChildren = 0;
+    pNew->m_pChildren = nullptr;
 
     if (vAttach.x != COLLISION_MISSING)
     {
@@ -2589,7 +2589,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
     int           nValue;
     unsigned char nEntry;
 
-    if (pDef == 0)
+    if (pDef == nullptr)
     {
         return -1;
     }
@@ -2607,7 +2607,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
         nLast     = GOALIE_RATING_COUNT;
     }
 
-    if (pDef->m_apRatings[nLevel] == 0)
+    if (pDef->m_apRatings[nLevel] == nullptr)
     {
         pDef->m_nRatingsMode = nMode;
 
@@ -2635,16 +2635,16 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
     char* pszCursor = pszLine;
 
-    while (pszCursor != 0)
+    while (pszCursor != nullptr)
     {
-        if (ParseUtil::ParseToken(pszCursor, szToken, 0, " =\t", PARSE_TOKEN_MAX, &pszCursor) == 0)
+        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " =\t", PARSE_TOKEN_MAX, &pszCursor) == 0)
         {
             break;
         }
 
         pszCursor = ParseUtil::SkipToChar(pszCursor, g_pszEqualsSign);
 
-        if (pszCursor == 0)
+        if (pszCursor == nullptr)
         {
             break;
         }
@@ -2658,7 +2658,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
         pszCursor++;
 
-        if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) != 0 && sscanf(szToken, g_pszPercentD, &nValue) == 1)
+        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", PARSE_TOKEN_MAX, &pszCursor) != 0 && sscanf(szToken, g_pszPercentD, &nValue) == 1)
         {
             if (nKeyword >= nLast)
             {
@@ -2812,10 +2812,10 @@ char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 
     char* pszCursor = pszText;
 
-    while (pszCursor != 0)
+    while (pszCursor != nullptr)
     {
         // STRING: HYPERX 0x004c7324
-        if (ParseUtil::ParseToken(pszCursor, szToken, 0, " \t\n\r", (short)strlen(pszCursor), &pszCursor) == 0)
+        if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", (short)strlen(pszCursor), &pszCursor) == 0)
         {
             break;
         }
@@ -2884,7 +2884,7 @@ void GameEngine::UnloadArena()
             }
         }
 
-        if (pObject != 0)
+        if (pObject != nullptr)
         {
             delete pObject;
         }
@@ -2892,9 +2892,9 @@ void GameEngine::UnloadArena()
 
     ArenaState* const pArena = m_pArena;
 
-    if (pArena != 0)
+    if (pArena != nullptr)
     {
-        if (pArena->m_pnSlotIds != 0)
+        if (pArena->m_pnSlotIds != nullptr)
         {
             delete[] pArena->m_pnSlotIds;
         }
@@ -2904,7 +2904,7 @@ void GameEngine::UnloadArena()
         delete pArena;
     }
 
-    m_pArena = 0;
+    m_pArena = nullptr;
 }
 
 // The type id starts at 102, so a file that names no type still produces something.
@@ -2919,7 +2919,7 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
         unsigned int nModelId = MODEL_ID_NONE;
         ObjectDef*   pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
 
-        while (pDef != 0)
+        while (pDef != nullptr)
         {
             CreateObject(pDef, nModelId);
 
@@ -2948,12 +2948,12 @@ char GameEngine::LoadArena(const char* pszArenaPath)
     OwnedFile    file;
     unsigned int anModelIds[ARENA_OBJECT_MAX];
 
-    if (m_pArena != 0)
+    if (m_pArena != nullptr)
     {
         UnloadArena();
     }
 
-    m_pArena = 0;
+    m_pArena = nullptr;
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszArenaPath).m_pchData, MAX_PATH_LENGTH);
 
@@ -2966,7 +2966,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
         unsigned int nModelId = MODEL_ID_NONE;
         ObjectDef*   pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
 
-        while (pDef != 0)
+        while (pDef != nullptr)
         {
             if (m_pArena->m_wCount >= ARENA_OBJECT_MAX)
             {
@@ -3028,7 +3028,7 @@ char GameEngine::SetArena(short nArena)
     }
     else
     {
-        pszPath = 0;
+        pszPath = nullptr;
     }
 
     if (LoadArena(pszPath) != 0)
@@ -3039,7 +3039,7 @@ char GameEngine::SetArena(short nArena)
         {
             EngineObject* pObject = m_ppSlots[(short)m_pArena->m_pnSlotIds[nIndex]];
 
-            if (pObject != 0 && pObject->GetSlot() != SLOT_DROME)
+            if (pObject != nullptr && pObject->GetSlot() != SLOT_DROME)
             {
                 pObject->CompileAllPlans();
                 pObject->SelectAndActivatePlan();
@@ -3058,7 +3058,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
     int iRange;
     int nIndex;
 
-    if (pSet == 0)
+    if (pSet == nullptr)
     {
         return;
     }
@@ -3067,7 +3067,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
     {
         EngineObject* const pEntity = pSet->apOnIce[nIndex];
 
-        if (pEntity != 0)
+        if (pEntity != nullptr)
         {
             int nType = pEntity->GetSlot();
 
@@ -3100,11 +3100,11 @@ char GameEngine::UnloadHomeTeam()
 {
     TeamBlock* const pSet = m_pTeamA;
 
-    if (pSet != 0)
+    if (pSet != nullptr)
     {
         UnloadEntitySet(pSet);
 
-        m_pTeamA = 0;
+        m_pTeamA = nullptr;
 
         return 1;
     }
@@ -3117,11 +3117,11 @@ char GameEngine::UnloadAwayTeam()
 {
     TeamBlock* const pSet = m_pTeamB;
 
-    if (pSet != 0)
+    if (pSet != nullptr)
     {
         UnloadEntitySet(pSet);
 
-        m_pTeamB = 0;
+        m_pTeamB = nullptr;
 
         return 1;
     }
@@ -3165,7 +3165,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
         }
         else
         {
-            pszTeam = 0;
+            pszTeam = nullptr;
         }
 
         if (LoadHomeTeam(pszTeam) == 0)
@@ -3195,7 +3195,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
         }
         else
         {
-            pszTeam = 0;
+            pszTeam = nullptr;
         }
 
         if (LoadAwayTeam(pszTeam) == 0)
@@ -3252,12 +3252,12 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 
         TeamBlock* pTeamDef = ParseTeamHTMFile(&file.m_file);
 
-        if (pTeamDef == 0)
+        if (pTeamDef == nullptr)
         {
             // STRING: HYPERX 0x004c8478
             g_gameApp.Fatal("Away team definition error in file %s!", pszTeamPath);
 
-            return 0;
+            return nullptr;
         }
 
         strcpy(pTeamDef->szPath, pszTeamPath);
@@ -3302,7 +3302,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 
             g_bSuppressRokId = 0;
 
-            if (pObjDef == 0)
+            if (pObjDef == nullptr)
             {
                 // STRING: HYPERX 0x004c8454
                 g_gameApp.Fatal("Team definition file incomplete %s!", pszTeamPath);
@@ -3327,7 +3327,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
             }
             else
             {
-                pTeamDef->apOnIce[nSlot] = 0;
+                pTeamDef->apOnIce[nSlot] = nullptr;
             }
 
             switch (nSlot)
@@ -3392,7 +3392,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 
                 pRatings = pObjDef->m_apRatings[nLevel];
 
-                if (pRatings == 0)
+                if (pRatings == nullptr)
                 {
                     pRatings = pObjDef->m_apRatings[0];
                 }
@@ -3414,7 +3414,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
             {
                 delete pObjDef;
 
-                pObjDef = 0;
+                pObjDef = nullptr;
             }
 
             pTeamDef->apDefs[nSlot] = pObjDef;
@@ -3431,7 +3431,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
     // STRING: HYPERX 0x004c8410
     g_gameApp.Fatal("Can't Open away team file %s!", pszTeamPath);
 
-    return 0;
+    return nullptr;
 }
 
 // FUNCTION: HYPERX 0x00485c70
@@ -3441,9 +3441,9 @@ char GameEngine::LoadHomeTeam(const char* pszTeamPath)
 
     m_pTeamA = pTeam;
 
-    if (pTeam != 0)
+    if (pTeam != nullptr)
     {
-        if (g_pRenderer != 0)
+        if (g_pRenderer != nullptr)
         {
             g_pRenderer->SetHomeLogo(pTeam->szIdLogo);
         }
@@ -3461,9 +3461,9 @@ char GameEngine::LoadAwayTeam(const char* pszTeamPath)
 
     m_pTeamB = pTeam;
 
-    if (pTeam != 0)
+    if (pTeam != nullptr)
     {
-        if (g_pRenderer != 0)
+        if (g_pRenderer != nullptr)
         {
             g_pRenderer->SetAwayLogo(pTeam->szIdLogo);
         }
@@ -3477,17 +3477,17 @@ char GameEngine::LoadAwayTeam(const char* pszTeamPath)
 // FUNCTION: HYPERX 0x00485cf0
 ObjectDef* GameEngine::GetArenaRokDef()
 {
-    if (m_pArena != 0)
+    if (m_pArena != nullptr)
     {
         ObjectDef* const pDef = m_pArena->m_pRokDef;
 
-        if (pDef != 0)
+        if (pDef != nullptr)
         {
             return pDef;
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 // FUNCTION: HYPERX 0x00485d10
@@ -3497,7 +3497,7 @@ ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
 
     if (nSlot < SLOT_DROMER0 || nSlot > SLOT_DROMER3)
     {
-        return 0;
+        return nullptr;
     }
 
     if ((nSlot & 1) != 0)
@@ -3509,17 +3509,17 @@ ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
         pCatalog = m_pTeamA;
     }
 
-    if (pCatalog != 0)
+    if (pCatalog != nullptr)
     {
         ObjectDef* const pEntry = pCatalog->apDefs[TEAM_SLOT_ROK];
 
-        if (pEntry != 0)
+        if (pEntry != nullptr)
         {
             return pEntry;
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 // A reserve's recovery since leaving the ice is added once, clamped at a hundred.
@@ -3743,14 +3743,14 @@ void GameEngine::SyncPlayerDataToTeam()
             pTeam = m_pTeamB;
         }
 
-        if (pTeam != 0)
+        if (pTeam != nullptr)
         {
             for (nSeat = 0; nSeat < TEAM_BLOCK_SEATS; nSeat++)
             {
                 const int     nSlot   = pTeam->aSeat[nSeat];
                 PlayerObject* pPlayer = (PlayerObject*)pTeam->apOnIce[nSeat];
 
-                if (pPlayer != 0)
+                if (pPlayer != nullptr)
                 {
                     memmove(&pTeam->aRows[nSlot], &pPlayer->m_stats.m_aStats[1], sizeof(TeamPlayerRow));
                     memmove(&pTeam->aStatRows[nSlot], &pPlayer->m_matchStats, sizeof(TeamStatRow));
@@ -3965,7 +3965,7 @@ char GameEngine::SyncRenderQueueSize()
 
     do
     {
-        if (*ppCamera != 0)
+        if (*ppCamera != nullptr)
         {
             (*ppCamera)->ResizeTransparentQueue(m_nSlotCount);
         }
@@ -3986,7 +3986,7 @@ void GameEngine::StartMatch()
 
     m_wRunState = ENGINE_RUN_PLAYING;
 
-    if (m_pTeamA == 0 || m_pTeamB == 0)
+    if (m_pTeamA == nullptr || m_pTeamB == nullptr)
     {
         // STRING: HYPERX 0x004c84cc
         g_gameApp.Fatal("Home team or Away Team not Assigned!");
@@ -4032,7 +4032,7 @@ void GameEngine::UnregisterObject(int nSlot)
 
     m_nLoadedCount--;
 
-    *ppSlot = 0;
+    *ppSlot = nullptr;
 
     m_nSlotCount -= pObject->GetComponentCount();
 }
@@ -4043,7 +4043,7 @@ void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
 {
     CollInteractor* pNode = pChain;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         if (pNode->GetActiveState() == 1 && pNode->GetActor()->GetPhase() == OBJECT_PHASE_LOCAL)
         {
@@ -4191,14 +4191,14 @@ void GameEngine::PerFrameUpdate()
             ProcessInputCommandQueue();
             GameEngine::ClearPendingEvents();
 
-            if (g_pGameSession != 0)
+            if (g_pGameSession != nullptr)
             {
                 if (g_pGameSession->PumpNetworkCommands() == 0)
                 {
                     GameSession::Disconnect();
                 }
 
-                if (g_pGameSession != 0)
+                if (g_pGameSession != nullptr)
                 {
                     GameEngine::SyncNetworkStateToObjects();
                 }
@@ -4364,7 +4364,7 @@ GameEngine::~GameEngine()
     {
         EngineObject* const pObject = m_ppSlots[nSlot];
 
-        if (pObject != 0)
+        if (pObject != nullptr)
         {
             delete pObject;
 
@@ -4385,9 +4385,9 @@ GameEngine::~GameEngine()
 
     ArenaState* const pArena = m_pArena;
 
-    if (pArena != 0)
+    if (pArena != nullptr)
     {
-        if (pArena->m_pnSlotIds != 0)
+        if (pArena->m_pnSlotIds != nullptr)
         {
             delete[] pArena->m_pnSlotIds;
         }
@@ -4403,7 +4403,7 @@ GameEngine::~GameEngine()
 
     SaveObject* const pSave = m_pSaveObject;
 
-    if (pSave != 0)
+    if (pSave != nullptr)
     {
         delete pSave;
     }
@@ -4519,7 +4519,7 @@ void GameEngine::ProcessInputCommandQueue()
         EngineObject* const pObject = m_ppObjects[nIndex];
         CPlayer*            pLock   = pObject->GetPhysicsBody()->pPlayer;
 
-        if (pLock != 0)
+        if (pLock != nullptr)
         {
             std::recursive_mutex* pSection = &pLock->m_lock;
 
@@ -4544,7 +4544,7 @@ void GameEngine::ProcessInputCommandQueue()
 
                     CollInteractor* pNode = pObject->GetPlanState()->WalkLinkedList(nKind);
 
-                    if (pNode != 0 && pNode->GetOtherSlot() == nWantedOther && pNode->GetModelSlot() == nWantedOwn)
+                    if (pNode != nullptr && pNode->GetOtherSlot() == nWantedOther && pNode->GetModelSlot() == nWantedOwn)
                     {
                         pNode->Process(nPayload, &nLow, 1);
                     }
@@ -5043,11 +5043,11 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
         {
             pRecord = pTeam->apDefs[g_anTeamSlotOrder[nOrder]];
 
-            if (pRecord != 0)
+            if (pRecord != nullptr)
             {
                 pStats = pRecord->m_apRatings[nLevel];
 
-                if (pStats != 0)
+                if (pStats != nullptr)
                 {
                     if (nOrder < TEAM_BLOCK_SEATS && pTeam->aSeat[nOrder] == g_anTeamSlotOrder[nOrder])
                     {
@@ -5086,11 +5086,11 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
 
         pRecord = pTeam->apDefs[2];
 
-        if (pRecord != 0)
+        if (pRecord != nullptr)
         {
             pStats = pRecord->m_apRatings[RATINGS_SPECIAL_GOALIE];
 
-            if (pStats != 0)
+            if (pStats != nullptr)
             {
                 pObject = (PlayerObject*)pTeam->apOnIce[2];
 
@@ -5144,7 +5144,7 @@ void GameEngine::SetScreenSize(int nStep)
 
         g_pGameOptions->WriteScreenSize(nStep);
 
-        g_pScene = 0;
+        g_pScene = nullptr;
 
         const int nBufferWidth = g_nBackBufferWidth;
 
@@ -5155,7 +5155,7 @@ void GameEngine::SetScreenSize(int nStep)
 
         CameraObject* const pCamera = GetCamera(CAMERA_MAIN_SLOT);
 
-        if (pCamera != 0)
+        if (pCamera != nullptr)
         {
             const int nMarginX = (nBufferWidth - nWidth) / 2;
             const int nMarginY = (g_nBackBufferHeight - nHeight) / 2;
@@ -5283,13 +5283,13 @@ ParticleSystem* GameEngine::FindFreeParticleSystem()
     {
         ParticleSystem* pEntity = GetParticleSystem(SLOT_EXPLOSION + iSlot);
 
-        if (pEntity != 0 && pEntity->m_bAnyAlive == 0)
+        if (pEntity != nullptr && pEntity->m_bAnyAlive == 0)
         {
             return pEntity;
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 // FUNCTION: HYPERX 0x00488310
@@ -5302,7 +5302,7 @@ void GameEngine::DeactivateParticleSystems()
     {
         ParticleSystem* const pSystem = GetParticleSystem(SLOT_EXPLOSION + nIndex);
 
-        if (pSystem != 0 && pSystem->m_bAnyAlive != 0)
+        if (pSystem != nullptr && pSystem->m_bAnyAlive != 0)
         {
             pSystem->Deactivate();
         }

@@ -23,7 +23,7 @@ enum EffectKind
 void CPaletteEffect::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind       = Agenda_CPaletteEffect;
-    m_pNext       = 0;
+    m_pNext       = nullptr;
     m_bReady      = 0;
     m_bPersistent = 1;
     m_pOwner      = pSubject;
@@ -39,16 +39,16 @@ void CPaletteEffect::OnListChanged()
 
     PaletteFade* const pHeld = m_pEffect;
 
-    if (pHeld != 0)
+    if (pHeld != nullptr)
     {
         delete pHeld;
 
-        m_pEffect = 0;
+        m_pEffect = nullptr;
     }
 
     m_nExpiry = 0;
-    m_pOwner  = 0;
-    m_pNext   = 0;
+    m_pOwner  = nullptr;
+    m_pNext   = nullptr;
 
     m_bReady = 1;
 
@@ -83,7 +83,7 @@ int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PaletteEntry peStar
         {
             delete m_pEffect;
 
-            m_pEffect = 0;
+            m_pEffect = nullptr;
 
             return 0;
         }
@@ -102,7 +102,7 @@ void CPaletteEffect::Process(int nArg)
 {
     m_pEffect->Tick();
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

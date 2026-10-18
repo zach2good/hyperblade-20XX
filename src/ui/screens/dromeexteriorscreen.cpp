@@ -35,7 +35,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     }
     else
     {
-        pszName = 0;
+        pszName = nullptr;
     }
 
     if (*pszName == 0)
@@ -57,7 +57,7 @@ DromeExteriorScreen::DromeExteriorScreen()
         }
         else
         {
-            pszName = 0;
+            pszName = nullptr;
         }
     }
     else
@@ -70,7 +70,7 @@ DromeExteriorScreen::DromeExteriorScreen()
         }
         else
         {
-            pszName = 0;
+            pszName = nullptr;
         }
     }
 

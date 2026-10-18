@@ -191,7 +191,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
                 {
                     memcpy(g_anKeyConfigAccepted, g_anKeyConfigKeys, sizeof(g_anKeyConfigKeys));
 
-                    if (g_pInputDevice != 0)
+                    if (g_pInputDevice != nullptr)
                     {
                         unsigned int anOrdered[KEY_BINDING_COUNT];
 

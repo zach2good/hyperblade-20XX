@@ -42,7 +42,7 @@ short AnimFile::VersionCompare(const FileVersion* pLeft, const FileVersion* pRig
 // FUNCTION: HYPERX 0x00493cb0
 AnimClipSet* AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nFlags, AnimLoadFn pfnLoad)
 {
-    AnimClipSet* pResult = 0;
+    AnimClipSet* pResult = nullptr;
     PathString   strPath(MAX_PATH_LENGTH, g_gameApp.m_strAnimDataPath.m_str.m_pchData, pszName, g_pszAnimExtension);
     OwnedFile    file;
     int          nType;

@@ -13,8 +13,8 @@ struct AnimScriptState
 {
     AnimScriptState(const char* pszFilter, const char* pszPrefix)
     : bStarted(0)
-    , pDb(0)
-    , pSegment(0)
+    , pDb(nullptr)
+    , pSegment(nullptr)
     , strFilter(pszFilter)
     , strPrefix(pszPrefix)
     {

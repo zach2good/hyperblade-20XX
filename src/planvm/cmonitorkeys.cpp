@@ -24,7 +24,7 @@ extern const float g_flFourPlayer;
 // FUNCTION: HYPERX 0x00410df0
 void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CMonitorKeys;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -44,10 +44,10 @@ void CMonitorKeys::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext      = 0;
-        m_pOwner     = 0;
-        m_pInput     = 0;
-        m_pPrevInput = 0;
+        m_pNext      = nullptr;
+        m_pOwner     = nullptr;
+        m_pInput     = nullptr;
+        m_pPrevInput = nullptr;
         m_nMode      = MON_DRIVE_YER_GUY;
         m_bReady     = 1;
 
@@ -113,7 +113,7 @@ void CMonitorKeys::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->Process(nArg);
     }

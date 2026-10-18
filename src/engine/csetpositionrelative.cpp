@@ -28,12 +28,12 @@
 // FUNCTION: HYPERX 0x0040e490
 void CSetPositionRelative::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
-    m_pNext     = 0;
+    m_pNext     = nullptr;
     m_wKind     = Agenda_CSetPositionRelative;
     m_bReady    = 0;
     m_pOwner    = pSubject;
-    m_pMarker   = 0;
-    m_pTracked  = 0;
+    m_pMarker   = nullptr;
+    m_pTracked  = nullptr;
     m_flUnused  = 120.0f;
     m_vOffset.x = m_vOffset.y = m_vOffset.z = g_flZeroAgendaItem;
     m_wMode                                 = 0;
@@ -46,7 +46,7 @@ void CSetPositionRelative::BindWithNode(EngineObject* pObject,
                                         int)
 {
     m_wKind  = Agenda_CSetPositionRelative;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pObject;
 
@@ -88,10 +88,10 @@ void CSetPositionRelative::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext     = 0;
-        m_pOwner    = 0;
-        m_pMarker   = 0;
-        m_pTracked  = 0;
+        m_pNext     = nullptr;
+        m_pOwner    = nullptr;
+        m_pMarker   = nullptr;
+        m_pTracked  = nullptr;
         m_vOffset.x = m_vOffset.y = m_vOffset.z = g_flZeroAgendaItem;
         m_wMode                                 = 0;
         m_bReady                                = 1;
@@ -156,7 +156,7 @@ void CSetPositionRelative::Process(int nArg)
             break;
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

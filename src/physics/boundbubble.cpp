@@ -24,16 +24,16 @@ extern Vec3 g_vBubbleSeparation;
 // FUNCTION: HYPERX 0x0042a8f0
 BoundBubble::~BoundBubble()
 {
-    if (m_pShapeNode != 0)
+    if (m_pShapeNode != nullptr)
     {
         delete m_pShapeNode;
     }
 
-    if (m_pChildren != 0)
+    if (m_pChildren != nullptr)
     {
         delete[] m_pChildren;
 
-        m_pChildren = 0;
+        m_pChildren = nullptr;
     }
 }
 
@@ -54,9 +54,9 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
     }
 
     m_pShapeNode   = pShape->m_pPos;
-    pShape->m_pPos = 0;
+    pShape->m_pPos = nullptr;
 
-    BubbleCmd* pChildRec = 0;
+    BubbleCmd* pChildRec = nullptr;
 
     m_flRadius        = m_pShapeNode->m_flRadius;
     m_nChildCount     = pShape->m_nChildCount;
@@ -64,7 +64,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
     m_nSlot           = pShape->m_nSlot;
     m_nShape          = pShape->m_wShape;
     m_pAttach         = pShape->m_pAttach;
-    pShape->m_pAttach = 0;
+    pShape->m_pAttach = nullptr;
 
     if (pShape->m_wShape == BUBBLE_SHAPE_ATTACHED)
     {
@@ -98,7 +98,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
     }
     else
     {
-        m_pChildren = 0;
+        m_pChildren = nullptr;
     }
 }
 
@@ -200,7 +200,7 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 // The array element's default constructor, which new BoundBubble[n] names.
 // FUNCTION: HYPERX 0x0042b000
 BoundBubble::BoundBubble()
-: m_pShapeNode(0)
+: m_pShapeNode(nullptr)
 , m_flRadius(g_flZeroFaceNormal)
 {
 }

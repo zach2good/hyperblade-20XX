@@ -40,16 +40,16 @@ Screen::Screen()
         InitBitmapCache();
     }
 
-    m_hBackground = 0;
+    m_hBackground = nullptr;
     m_bPaletted   = 0;
-    m_pszCaption  = 0;
+    m_pszCaption  = nullptr;
     m_nCaptionX   = 0;
     m_nCaptionY   = 0;
     m_nLastWidget = -1;
 
     for (int nSlot = 0; nSlot < 0x100; nSlot++)
     {
-        m_apWidgets[nSlot] = 0;
+        m_apWidgets[nSlot] = nullptr;
     }
 
     m_nUnusedC           = 0;
@@ -58,7 +58,7 @@ Screen::Screen()
     m_nWidgetCount       = 0;
     m_bitmap.bmWidth     = 0;
     m_bitmap.bmHeight    = 0;
-    m_hBitmap            = 0;
+    m_hBitmap            = nullptr;
     m_nUnusedA           = 0;
     m_nUnusedB           = 0;
     m_nCaptured          = -1;
@@ -81,14 +81,14 @@ Screen::~Screen()
         // Every widget's destructor is empty, so the base's non-virtual one destroys it fully.
         delete m_apWidgets[nSlot];
 
-        m_apWidgets[nSlot] = 0;
+        m_apWidgets[nSlot] = nullptr;
     }
 
     delete[] m_pszCaption;
-    m_pszCaption = 0;
+    m_pszCaption = nullptr;
 
     GDI::SafeDeleteBitmap(m_hBackground);
-    m_hBackground = 0;
+    m_hBackground = nullptr;
 
     m_bPaletted = 0;
 }
@@ -496,7 +496,7 @@ int Screen::PaintToWindow()
     GDI::BitmapSize bitmap;
     int             nSlot;
 
-    if (g_pActiveScreen == 0)
+    if (g_pActiveScreen == nullptr)
     {
         return 0;
     }
@@ -514,7 +514,7 @@ int Screen::PaintToWindow()
     {
         GameApp::SetCursorVisible(0);
 
-        if (m_hBackground != 0)
+        if (m_hBackground != nullptr)
         {
             GDI::Blit(0, 0, bitmap.bmWidth, bitmap.bmHeight, m_hBackground, 0, 0);
         }
@@ -522,7 +522,7 @@ int Screen::PaintToWindow()
         const char* pszCaption = m_pszCaption;
         m_bRepaintBackground   = 0;
 
-        if (pszCaption != 0)
+        if (pszCaption != nullptr)
         {
             GDI::DrawTransparentText(0xffff, m_nCaptionX, m_nCaptionY, pszCaption, (int)strlen(pszCaption), 0);
         }
@@ -641,12 +641,12 @@ void Screen::InitBitmapCache()
 
     g_pBitmapCache = new BitmapCacheEntry[BITMAP_CACHE_SLOTS];
 
-    if (g_pBitmapCache != 0)
+    if (g_pBitmapCache != nullptr)
     {
         for (int i = 0; i < BITMAP_CACHE_SLOTS; i++)
         {
-            g_pBitmapCache[i].hBitmap = 0;
-            g_pBitmapCache[i].pszName = 0;
+            g_pBitmapCache[i].hBitmap = nullptr;
+            g_pBitmapCache[i].pszName = nullptr;
         }
     }
 
@@ -660,7 +660,7 @@ int Screen::AddBitmap(const char* pszName)
 
     if (g_nBitmapCacheCount < BITMAP_CACHE_SLOTS)
     {
-        g_pBitmapCache[g_nBitmapCacheCount].hBitmap = GDI::LoadBitmapWithPalette(pszName, 0);
+        g_pBitmapCache[g_nBitmapCacheCount].hBitmap = GDI::LoadBitmapWithPalette(pszName, nullptr);
         g_pBitmapCache[g_nBitmapCacheCount].pszName = pszName;
 
         return 1;
@@ -678,7 +678,7 @@ int Screen::RemoveBitmap(const char* pszName)
     {
         for (int i = 0; i < BITMAP_CACHE_SLOTS; i++)
         {
-            if (g_pBitmapCache[i].pszName == pszName && g_pBitmapCache[i].hBitmap != 0)
+            if (g_pBitmapCache[i].pszName == pszName && g_pBitmapCache[i].hBitmap != nullptr)
             {
                 GDI::SafeDeleteBitmap(g_pBitmapCache[i].hBitmap);
 
@@ -688,8 +688,8 @@ int Screen::RemoveBitmap(const char* pszName)
                     g_pBitmapCache[j].hBitmap = g_pBitmapCache[j + 1].hBitmap;
                 }
 
-                g_pBitmapCache[127].pszName = 0;
-                g_pBitmapCache[127].hBitmap = 0;
+                g_pBitmapCache[127].pszName = nullptr;
+                g_pBitmapCache[127].hBitmap = nullptr;
 
                 g_nBitmapCacheCount = (std::max)(0, g_nBitmapCacheCount);
 
@@ -706,7 +706,7 @@ GDI::Bitmap* Screen::CacheLookup(const char* pszName, int* pbCached)
 {
     for (int nSlot = 0; nSlot < BITMAP_CACHE_SLOTS; nSlot++)
     {
-        if (g_pBitmapCache[nSlot].pszName != 0)
+        if (g_pBitmapCache[nSlot].pszName != nullptr)
         {
             if (strcmp(g_pBitmapCache[nSlot].pszName,
                        pszName) == 0)
@@ -720,28 +720,28 @@ GDI::Bitmap* Screen::CacheLookup(const char* pszName, int* pbCached)
 
     *pbCached = 0;
 
-    return GDI::LoadBitmapWithPalette(pszName, 0);
+    return GDI::LoadBitmapWithPalette(pszName, nullptr);
 }
 
 // FUNCTION: HYPERX 0x0048cde0
 void Screen::FlushBitmapCache()
 {
-    if (g_pBitmapCache != 0)
+    if (g_pBitmapCache != nullptr)
     {
         for (int i = 0; i < BITMAP_CACHE_SLOTS; i++)
         {
-            if (g_pBitmapCache[i].hBitmap != 0)
+            if (g_pBitmapCache[i].hBitmap != nullptr)
             {
                 GDI::SafeDeleteBitmap(g_pBitmapCache[i].hBitmap);
 
-                g_pBitmapCache[i].hBitmap = 0;
-                g_pBitmapCache[i].pszName = 0;
+                g_pBitmapCache[i].hBitmap = nullptr;
+                g_pBitmapCache[i].pszName = nullptr;
             }
         }
 
         delete[] g_pBitmapCache;
 
-        g_pBitmapCache = 0;
+        g_pBitmapCache = nullptr;
     }
 
     g_nBitmapCacheReady = 1;

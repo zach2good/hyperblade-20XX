@@ -9,7 +9,7 @@ class CSteerTowardPool : public AgendaItemOwner
 public:
     CSteerTowardPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

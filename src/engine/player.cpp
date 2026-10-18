@@ -155,19 +155,19 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 
         if (flDyB > 30.0f)
         {
-            return 0;
+            return nullptr;
         }
 
         flDxB = (float)fabs(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
 
         if (flDxB + flDyB > 30.0f)
         {
-            return 0;
+            return nullptr;
         }
 
         if (pActor->GetDistIfFacingDefault(pCandB) == 0.0f)
         {
-            return 0;
+            return nullptr;
         }
 
         pTarget = pCandB;
@@ -182,21 +182,21 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 
             if (flDyB > 30.0f)
             {
-                return 0;
+                return nullptr;
             }
 
             flDxB = (float)fabs(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
 
             if (flDxB + flDyB > 30.0f)
             {
-                return 0;
+                return nullptr;
             }
 
             if (flDxA + flDyA < flDxB + flDyB)
             {
                 if (pActor->GetDistIfFacingDefault(pCandA) == 0.0f)
                 {
-                    return 0;
+                    return nullptr;
                 }
 
                 pTarget = pCandA;
@@ -205,7 +205,7 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
             {
                 if (pActor->GetDistIfFacingDefault(pCandB) == 0.0f)
                 {
-                    return 0;
+                    return nullptr;
                 }
 
                 pTarget = pCandB;
@@ -215,7 +215,7 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
         {
             if (pActor->GetDistIfFacingDefault(pCandA) == 0.0f)
             {
-                return 0;
+                return nullptr;
             }
 
             pTarget = pCandA;
@@ -240,14 +240,14 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 
     if (flLead * dAbsDet < -4.0)
     {
-        return 0;
+        return nullptr;
     }
 
     const float flDiff = (float)(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
 
     if (fabs(flDiff) > 18.0)
     {
-        return 0;
+        return nullptr;
     }
 
     // A negative determinant adds the offset and a non-negative one subtracts it.

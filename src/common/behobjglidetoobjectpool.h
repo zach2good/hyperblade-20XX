@@ -9,7 +9,7 @@ class BehObjGlideToObjectPool : public BehaviorOwner
 public:
     BehObjGlideToObjectPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

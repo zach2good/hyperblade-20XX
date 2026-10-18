@@ -9,7 +9,7 @@ class BehObjSetFlatInPlacePool : public BehaviorOwner
 public:
     BehObjSetFlatInPlacePool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

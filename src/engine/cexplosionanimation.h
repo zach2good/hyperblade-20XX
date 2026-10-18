@@ -21,7 +21,7 @@ public:
 
         AgendaItem* const pNext = m_pNext;
 
-        if (pNext != 0)
+        if (pNext != nullptr)
         {
             pNext->Process(nArg);
         }
@@ -43,7 +43,7 @@ public:
 
         AgendaItem* const pNext = m_pNext;
 
-        if (pNext != 0)
+        if (pNext != nullptr)
         {
             pNext->Process(nArg);
         }

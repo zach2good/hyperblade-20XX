@@ -12,7 +12,7 @@ class CDDText : public CDDDrawable
 public:
     // FUNCTION: HYPERX 0x00451c60
     CDDText()
-    : m_pszText(0)
+    : m_pszText(nullptr)
     , m_color(0)
     {
     }

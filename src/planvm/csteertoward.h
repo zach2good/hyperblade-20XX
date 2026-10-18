@@ -11,11 +11,11 @@ class CSteerToward : public KindAgendaItem
 {
 public:
     CSteerToward()
-    : m_pPosition(0)
-    , m_pStep(0)
-    , m_pVelDir(0)
-    , m_pflSpeed(0)
-    , m_pTarget(0)
+    : m_pPosition(nullptr)
+    , m_pStep(nullptr)
+    , m_pVelDir(nullptr)
+    , m_pflSpeed(nullptr)
+    , m_pTarget(nullptr)
     {
     }
 

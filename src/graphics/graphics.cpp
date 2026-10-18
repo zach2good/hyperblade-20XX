@@ -28,7 +28,7 @@ void Graphics::Initialize(int bResize)
         {
             g_pLeftStack = (unsigned short*)realloc(g_pLeftStack, nHeight * sizeof(unsigned short));
 
-            if (g_pLeftStack == 0)
+            if (g_pLeftStack == nullptr)
             {
                 // STRING: HYPERX 0x004c2d08
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (left_stack)!");
@@ -36,7 +36,7 @@ void Graphics::Initialize(int bResize)
 
             g_pRightStack = (unsigned short*)realloc(g_pRightStack, g_nBackBufferHeight * sizeof(unsigned short));
 
-            if (g_pRightStack == 0)
+            if (g_pRightStack == nullptr)
             {
                 // STRING: HYPERX 0x004c2cc8
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (right_stack)!");
@@ -46,9 +46,9 @@ void Graphics::Initialize(int bResize)
 
     nHeight = g_nBackBufferHeight;
 
-    g_pScene = 0;
+    g_pScene = nullptr;
 
-    if (g_pGameEngine != 0)
+    if (g_pGameEngine != nullptr)
     {
         CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
 
@@ -81,7 +81,7 @@ unsigned int Graphics::LoadMdmTexDLL(void)
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
     // STRING: HYPERX 0x004c2da0
-    if (strstr(pszCmdLine, "dmandappro!") == 0)
+    if (strstr(pszCmdLine, "dmandappro!") == nullptr)
     {
         return 0;
     }
@@ -101,7 +101,7 @@ unsigned int Graphics::LoadMdmTexDLL(void)
     g_pfnMdmDrawTexPoly = (MdmDrawTexPolyFn)SDL_LoadFunction(pLibrary, "mdmDrawTexPoly");
 
     // The original freed the library here and kept its handle, which then read as loaded.
-    if (g_pfnMdmInitDrawPoly == 0 || g_pfnMdmDrawTexPoly == 0)
+    if (g_pfnMdmInitDrawPoly == nullptr || g_pfnMdmDrawTexPoly == nullptr)
     {
         SDL_UnloadObject(pLibrary);
 

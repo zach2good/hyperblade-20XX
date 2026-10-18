@@ -13,7 +13,7 @@ class CHeadTrack : public CameraLiteAgendaItem
 
 public:
     CHeadTrack()
-    : CameraLiteAgendaItem(0, 0)
+    : CameraLiteAgendaItem(nullptr, nullptr)
     {
     }
 

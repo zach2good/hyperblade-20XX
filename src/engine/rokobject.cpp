@@ -129,7 +129,7 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
         pDef = g_pGameEngine->GetTeamRokDef(nSlot);
     }
 
-    if (pDef != 0)
+    if (pDef != nullptr)
     {
         g_pGameEngine->ReplaceEntity(SLOT_ROK, pDef);
 
@@ -167,7 +167,7 @@ void RokObject::Postpass()
         return;
     }
 
-    if (g_pGameEngine == 0)
+    if (g_pGameEngine == nullptr)
     {
         return;
     }
@@ -205,7 +205,7 @@ void RokObject::Postpass()
 
         AttachPak* const pCarrier = GetPhysicsBody()->pAttach;
 
-        if (pCarrier != 0 && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
+        if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
         {
             if (pCarrier->nSlot <= SLOT_DROMER3)
             {

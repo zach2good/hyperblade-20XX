@@ -22,23 +22,23 @@ void* MDM1::Decompress(FileObj* pFile)
 
     unsigned char* const pWindow = (unsigned char*)malloc(WINDOW_BYTES);
 
-    if (pWindow == 0)
+    if (pWindow == nullptr)
     {
         return pWindow;
     }
 
     if (pFile->Read(&nSize, sizeof(nSize)) != sizeof(nSize))
     {
-        return 0;
+        return nullptr;
     }
 
     unsigned char* const pOut = (unsigned char*)malloc(nSize);
 
-    if (pOut == 0)
+    if (pOut == nullptr)
     {
         free(pWindow);
 
-        return 0;
+        return nullptr;
     }
 
     const int nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, pOut, nSize, pWindow, WINDOW_BYTES);
@@ -49,7 +49,7 @@ void* MDM1::Decompress(FileObj* pFile)
     {
         free(pOut);
 
-        return 0;
+        return nullptr;
     }
 
     return pOut;

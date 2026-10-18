@@ -37,9 +37,9 @@ TeamsBlock::TeamsBlock()
     {
         while (catFile.m_file.GetNextLine(&pLine) > 0)
         {
-            if (pLine != 0
+            if (pLine != nullptr
                 // STRING: HYPERX 0x004c7324
-                && ParseUtil::ParseToken(pLine, szTeamFilename, 0, " \t\n\r", (short)strlen(pLine), &pLine) != 0 && szTeamFilename[0] != COMMENT_CHAR)
+                && ParseUtil::ParseToken(pLine, szTeamFilename, nullptr, " \t\n\r", (short)strlen(pLine), &pLine) != 0 && szTeamFilename[0] != COMMENT_CHAR)
             {
                 if (nTeams == TEAM_MAX)
                 {
@@ -70,7 +70,7 @@ TeamsBlock::TeamsBlock()
 
                     apTeams[nTeams] = pTeam;
 
-                    if (pTeam == 0)
+                    if (pTeam == nullptr)
                     {
                         htmFile.m_file.CloseAndTest();
                         catFile.m_file.CloseAndTest();
@@ -141,7 +141,7 @@ int TeamsBlock::ComputeTeamNameChecksum()
         }
         else
         {
-            pszName = 0;
+            pszName = nullptr;
         }
 
         pszLower = (char*)SDL_strlwr(Str::Duplicate(pszLower, pszName));
@@ -149,7 +149,7 @@ int TeamsBlock::ComputeTeamNameChecksum()
         m_nChecksum += (char)(pszLower[2] + pszLower[1]) ^ (pszLower[0] << 8);
 
         // The original tests before it frees.
-        if (pszLower != 0)
+        if (pszLower != nullptr)
         {
             delete pszLower;
         }

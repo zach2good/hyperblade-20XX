@@ -9,7 +9,7 @@ class CDopplerSndPool : public AgendaItemOwner
 public:
     CDopplerSndPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

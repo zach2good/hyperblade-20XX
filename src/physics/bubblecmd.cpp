@@ -10,25 +10,25 @@ BubbleCmd::BubbleCmd()
     m_nSlot       = COB_NONE;
     m_wShape      = 0;
     m_nChildCount = 0;
-    m_pChildren   = 0;
-    m_pAttach     = 0;
-    m_pPos        = 0;
+    m_pChildren   = nullptr;
+    m_pAttach     = nullptr;
+    m_pPos        = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0042a0a0
 BubbleCmd::~BubbleCmd()
 {
-    if (m_pPos != 0)
+    if (m_pPos != nullptr)
     {
         delete m_pPos;
     }
 
-    if (m_wShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != 0)
+    if (m_wShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != nullptr)
     {
         delete m_pAttach;
     }
 
-    if (m_pChildren != 0)
+    if (m_pChildren != nullptr)
     {
         delete m_pChildren;
     }

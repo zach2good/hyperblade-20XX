@@ -133,7 +133,7 @@ MdmDrawTexPolyFn                g_pfnMdmDrawTexPoly;
 Handle<struct MdmTexLibraryTag> g_hMdmTexDll;
 // Initialised to keep source order: SoftTex::Load's palette loop bounds one past the array.
 PaletteEntry              g_aSoftTexPalette[256] = {};
-class SoftTex*            g_pSoftTexHead         = 0;
+class SoftTex*            g_pSoftTexHead         = nullptr;
 int                       g_nGameConfigReturnState;
 int                       g_nSaveLoadReturnState;
 int                       g_nMatchInfoReturnState;
@@ -279,7 +279,7 @@ Vec3* g_apPositionMarkers[11] = {
     &g_vMarkerRimEast,
     &g_vMarkerGoalMouthNorth,
     &g_vMarkerGoalMouthSouth,
-    0
+    nullptr
 };
 PlanStatFn g_apPlanStatFns[PRN_COUNT];
 int        g_nPaletteAnimated;

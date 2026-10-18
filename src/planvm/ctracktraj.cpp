@@ -46,11 +46,11 @@ CTrackTraj::~CTrackTraj()
 {
     Spline* const pList = m_pSpline;
 
-    if (pList != 0)
+    if (pList != nullptr)
     {
         delete pList;
 
-        m_pSpline = 0;
+        m_pSpline = nullptr;
     }
 }
 
@@ -59,7 +59,7 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     EngineObject* pTracked;
 
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CTrackTraj;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -68,7 +68,7 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     pTracked = GetCamera()->GetTrackedObject();
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pTracked->m_nFlags |= ENGINEOBJECT_NO_CULL;
     }
@@ -148,13 +148,13 @@ void CTrackTraj::Process(int nArg)
 
     CameraObject* const pCamera = (CameraObject*)m_pOwner;
 
-    if (pCamera->GetTrackedObject() == 0)
+    if (pCamera->GetTrackedObject() == nullptr)
     {
         EngineObject* pViewer;
 
         pViewer = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot];
 
-        if (pViewer == 0)
+        if (pViewer == nullptr)
         {
             // STRING: HYPERX 0x004bb4c0
             g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for view owner\n");
@@ -167,7 +167,7 @@ void CTrackTraj::Process(int nArg)
 
     EngineObject* const pWatched = GetCamera()->GetSecondaryTrackedObject();
 
-    if (pWatched == 0)
+    if (pWatched == nullptr)
     {
         // STRING: HYPERX 0x004bb488
         g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for model to watch\n");
@@ -352,7 +352,7 @@ void CTrackTraj::Process(int nArg)
 
     GetCamera()->UpdateSmoothing();
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

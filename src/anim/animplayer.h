@@ -30,7 +30,7 @@ public:
     {
         delete this;
 
-        return 0;
+        return nullptr;
     }
 
     char UpdateTick(void) override;
@@ -40,7 +40,7 @@ public:
     // Slot five is EngineObject::PostEvent's folded body.
     char StartClipPlayback(AnimDB* pClip, float flRate, int nFlags) override
     {
-        return SelectAnimationSet(pClip, flRate, nFlags, 0);
+        return SelectAnimationSet(pClip, flRate, nFlags, nullptr);
     }
 
     char  SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition) override;

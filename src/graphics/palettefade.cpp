@@ -13,8 +13,8 @@
 PaletteFade::PaletteFade(const PaletteRange* pRange)
 : m_nKind(0)
 {
-    m_pEntries     = 0;
-    m_pWorkEntries = 0;
+    m_pEntries     = nullptr;
+    m_pWorkEntries = nullptr;
 
     m_iStart = pRange->nFirst;
 

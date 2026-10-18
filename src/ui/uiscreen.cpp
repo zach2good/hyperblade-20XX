@@ -24,11 +24,11 @@
 // FUNCTION: HYPERX 0x0044d4b0
 UIScreen::~UIScreen()
 {
-    if (m_pLockedFlags != 0)
+    if (m_pLockedFlags != nullptr)
     {
         delete[] m_pLockedFlags;
 
-        m_pLockedFlags = 0;
+        m_pLockedFlags = nullptr;
     }
 }
 
@@ -44,7 +44,7 @@ UIScreen::UIScreen()
         PreloadBitmaps();
     }
 
-    m_pLockedFlags = 0;
+    m_pLockedFlags = nullptr;
     m_nLockedCount = 0;
 
     BuildLockedFlagsArray();
@@ -158,116 +158,116 @@ void UIScreen::InitWidgets()
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(0, 2, 362, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(0, 2, 391, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(0, 2, 420, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(0, 2, 449, 100, 29, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(1, 114, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(1, 197, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(1, 280, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(1, 363, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(1, 446, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(1, 529, 428, 80, 49, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget->SetHidden(1);
     pWidget = AppendWidget(new FlipbookWidget(540, 390, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new FlipbookWidget(540, 419, 100, 29, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new FlipbookWidget(218, 391, 27, 31, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new FlipbookWidget(395, 391, 27, 31, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(2, 115, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(2, 218, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(2, 321, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new ButtonWidget(2, 424, 391, 101, 32, 0, 0, 2, 0, 1, 2, this, -1));
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 
     pWidget = AppendWidget(new LoopFlipbookWidget(0, 0, 640, 353, 0, 0, 0, 0, 0, 0, this, 0, -1));
-    pWidget->AppendFrame(0);
+    pWidget->AppendFrame(nullptr);
     pWidget->InitAfterLoad();
 }
 
@@ -285,7 +285,7 @@ void UIScreen::BuildLockedFlagsArray()
 {
     int nTeam;
 
-    if (m_pLockedFlags == 0)
+    if (m_pLockedFlags == nullptr)
     {
         m_pLockedFlags = new int[g_pGameEngine->m_pTeamTable->GetTeamCount()];
     }

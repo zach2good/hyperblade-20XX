@@ -44,12 +44,12 @@ Vec3* CollisionShape::GetNormal()
 CollisionShape::CollisionShape()
 : m_nUnusedA(0)
 , m_nUnusedB(0)
-, m_pUnusedA(0)
+, m_pUnusedA(nullptr)
 , m_wUnusedA(0)
 , m_wUnusedB(0)
-, m_pUnusedB(0)
-, m_pTransform(0)
-, m_pPooled(0)
+, m_pUnusedB(nullptr)
+, m_pTransform(nullptr)
+, m_pPooled(nullptr)
 , m_nShapeKind(SHAPE_KIND_PLANE)
 {
     m_vNormal.x = m_vNormal.y = m_vNormal.z = g_flZeroCollisionObj;
@@ -58,26 +58,26 @@ CollisionShape::CollisionShape()
 // FUNCTION: HYPERX 0x0042e540
 CollisionShape::~CollisionShape()
 {
-    if (m_pUnusedA != 0)
+    if (m_pUnusedA != nullptr)
     {
         operator delete(m_pUnusedA);
 
-        m_pUnusedA = 0;
+        m_pUnusedA = nullptr;
     }
 
-    if (m_pUnusedB != 0)
+    if (m_pUnusedB != nullptr)
     {
         operator delete(m_pUnusedB);
 
-        m_pUnusedB = 0;
+        m_pUnusedB = nullptr;
     }
 
-    if (m_pTransform != 0)
+    if (m_pTransform != nullptr)
     {
         m_pTransform = m_pTransform->DestroyViaVtable();
     }
 
-    if (m_pPooled != 0)
+    if (m_pPooled != nullptr)
     {
         m_pPooled = m_pPooled->Destroy();
     }
@@ -88,7 +88,7 @@ CollisionShape::~CollisionShape()
 // FUNCTION: HYPERX 0x0042e5a0
 TransformObject* CollisionShape::GetOrCreateTransform(...)
 {
-    if (m_pTransform == 0)
+    if (m_pTransform == nullptr)
     {
         m_pTransform = new TransformObject;
     }

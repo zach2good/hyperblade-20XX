@@ -17,7 +17,7 @@
 // FUNCTION: HYPERX 0x00411a10
 void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
-    m_pNext       = 0;
+    m_pNext       = nullptr;
     m_wKind       = Agenda_CTimerActivity;
     m_bReady      = 0;
     m_pOwner      = pSubject;
@@ -30,7 +30,7 @@ void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00411a40
 void CTimerActivity::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_pOwner = pObject;
     m_wKind  = Agenda_CTimerActivity;
     m_bReady = 0;
@@ -60,10 +60,10 @@ void CTimerActivity::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner      = 0;
+        m_pOwner      = nullptr;
         m_nFireTickMs = 0;
         m_nEventParam = 0;
-        m_pNext       = 0;
+        m_pNext       = nullptr;
         m_nEvent      = MSG_NOMSG;
         m_nTargetSlot = TIMER_TARGET_NONE;
         m_bReady      = 1;
@@ -102,7 +102,7 @@ void CTimerActivity::Process(int nArg)
             Detach();
         }
 
-        if (m_pNext != 0 && m_bReady == 0)
+        if (m_pNext != nullptr && m_bReady == 0)
         {
             m_pNext->Process(nArg);
         }
@@ -117,7 +117,7 @@ void CTimerActivity::Process(int nArg)
         Detach();
     }
 
-    if (m_pNext != 0 && m_bReady == 0)
+    if (m_pNext != nullptr && m_bReady == 0)
     {
         m_pNext->Process(nArg);
     }
@@ -138,7 +138,7 @@ void CTimerActivity::Release(int nArg)
                 ->PostSceneEvent(m_nEvent, m_nEventParam);
         }
 
-        if (m_pNext != 0)
+        if (m_pNext != nullptr)
         {
             m_pNext->Process(nArg);
         }
@@ -146,7 +146,7 @@ void CTimerActivity::Release(int nArg)
         Detach();
     }
 
-    if (m_pNext != 0 && m_bReady == 0)
+    if (m_pNext != nullptr && m_bReady == 0)
     {
         m_pNext->Release(nArg);
     }

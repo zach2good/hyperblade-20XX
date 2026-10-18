@@ -9,7 +9,7 @@ class BehObjRailSlidePool : public BehaviorOwner
 public:
     BehObjRailSlidePool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

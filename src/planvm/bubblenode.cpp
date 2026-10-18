@@ -11,27 +11,27 @@
 BubbleNode::BubbleNode()
 {
     m_nShape      = BUBBLE_SHAPE_SPHERE;
-    m_pOwner      = 0;
+    m_pOwner      = nullptr;
     m_nSlot       = -1;
-    m_pTarget     = 0;
-    m_pChildren   = 0;
+    m_pTarget     = nullptr;
+    m_pChildren   = nullptr;
     m_nChildCount = 0;
-    m_pAttach     = 0;
-    m_pCage       = 0;
+    m_pAttach     = nullptr;
+    m_pCage       = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0042a1f0
 BubbleNode::~BubbleNode()
 {
-    if (m_nShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != 0)
+    if (m_nShape == BUBBLE_SHAPE_ATTACHED && m_pAttach != nullptr)
     {
         delete m_pAttach;
     }
 
-    if (m_pCage != 0)
+    if (m_pCage != nullptr)
     {
         delete m_pCage;
 
-        m_pCage = 0;
+        m_pCage = nullptr;
     }
 }

@@ -62,7 +62,7 @@ JumbotronScreen::JumbotronScreen()
     }
     else
     {
-        pWidget->AppendFrame(0);
+        pWidget->AppendFrame(nullptr);
     }
 
     pWidget = AppendWidget(new LoopFlipbookWidget(0x14a, 0x122, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 1, 1, 0, 1, 1, this, 0, -1));
@@ -74,7 +74,7 @@ JumbotronScreen::JumbotronScreen()
     }
     else
     {
-        pWidget->AppendFrame(0);
+        pWidget->AppendFrame(nullptr);
     }
 
     short       nRound = (short)g_pGameEngine->m_nTeamHomeIndex;
@@ -86,7 +86,7 @@ JumbotronScreen::JumbotronScreen()
     }
     else
     {
-        pszName = 0;
+        pszName = nullptr;
     }
 
     m_hBitmap = GDI::LoadBitmapHandle(pszName);
@@ -103,7 +103,7 @@ JumbotronScreen::JumbotronScreen()
     }
     else
     {
-        pszName = 0;
+        pszName = nullptr;
     }
 
     m_hBitmap = GDI::LoadBitmapHandle(pszName);

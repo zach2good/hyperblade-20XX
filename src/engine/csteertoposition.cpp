@@ -34,7 +34,7 @@
 // FUNCTION: HYPERX 0x0040e780
 void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSteerToPosition;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -44,7 +44,7 @@ void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     Vec3* const pSurfNormal = &pOwner->GetPhysicsBody()->surfNormal;
 
-    m_pChase   = 0;
+    m_pChase   = nullptr;
     m_pNormal  = pSurfNormal;
     m_cArrived = 0;
     m_flUnused = 100.0f;
@@ -90,7 +90,7 @@ void CSteerToPosition::OnKind(short nSlot)
 
     Vec3* const pNormal = pBody->pShell->NormalAtPoint(m_pOrigin);
 
-    if (pNormal == 0)
+    if (pNormal == nullptr)
     {
         // STRING: HYPERX 0x004bb6c0
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
@@ -108,12 +108,12 @@ void CSteerToPosition::OnListChanged()
 
         pState->flFacing = g_flZeroAgendaItem;
 
-        m_pNext     = 0;
-        m_pOwner    = 0;
-        m_pOrigin   = 0;
-        m_pAxis     = 0;
-        m_pNormal   = 0;
-        m_pChase    = 0;
+        m_pNext     = nullptr;
+        m_pOwner    = nullptr;
+        m_pOrigin   = nullptr;
+        m_pAxis     = nullptr;
+        m_pNormal   = nullptr;
+        m_pChase    = nullptr;
         m_vTarget.x = m_vTarget.y = m_vTarget.z = g_flZeroAgendaItem;
         m_bReady                                = 1;
         m_cArrived                              = 0;
@@ -132,7 +132,7 @@ void CSteerToPosition::Process(int nArg)
 
     flForce = ((float)nJitter * 0.01f + 1.0f) * flForce;
 
-    if (m_pChase != 0)
+    if (m_pChase != nullptr)
     {
         Vec3 vAim;
 
@@ -250,7 +250,7 @@ void CSteerToPosition::Process(int nArg)
         m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(flLean) * flForce);
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

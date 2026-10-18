@@ -111,7 +111,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
     {
         file.Close();
 
-        return 0;
+        return nullptr;
     }
 
     if (file.Read(&nMagic, sizeof(nMagic)) == sizeof(nMagic) && nMagic == MDM1_MAGIC)
@@ -128,11 +128,11 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 
     pDib = GDI::ReadDIB(&file);
 
-    if (pDib == 0)
+    if (pDib == nullptr)
     {
         file.Close();
 
-        return 0;
+        return nullptr;
     }
 
     const int nImageBytes = pDib->biSizeImage;
@@ -147,11 +147,11 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 
     BitmapInfoHeader* pShrunk = (BitmapInfoHeader*)realloc(pDib, nTotalBytes);
 
-    if (pShrunk == 0)
+    if (pShrunk == nullptr)
     {
         free(pDib);
 
-        pDib = 0;
+        pDib = nullptr;
     }
     else
     {
@@ -169,7 +169,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
             file.CloseAndTest();
             file.Close();
 
-            return 0;
+            return nullptr;
         }
     }
 
@@ -182,7 +182,7 @@ BitmapInfoHeader* GDI::ReadBitmapFile(const char* pszName)
 // Every caller reads raw rows, so an RLE8 or RLE4 DIB is expanded to 8-bit BITMAP_RGB in a new block.
 BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 {
-    if (pDib == 0 || (pDib->biCompression != BITMAP_RLE8 && pDib->biCompression != BITMAP_RLE4))
+    if (pDib == nullptr || (pDib->biCompression != BITMAP_RLE8 && pDib->biCompression != BITMAP_RLE4))
     {
         return pDib;
     }
@@ -198,12 +198,12 @@ BitmapInfoHeader* GDI::ExpandRLE(BitmapInfoHeader* pDib)
 
     auto* const pOut = (BitmapInfoHeader*)calloc(1, nTableBytes + nStride * nHeight);
 
-    if (pOut == 0 || nWidth <= 0 || nHeight <= 0)
+    if (pOut == nullptr || nWidth <= 0 || nHeight <= 0)
     {
         free(pOut);
         free(pDib);
 
-        return 0;
+        return nullptr;
     }
 
     memcpy(pOut, pDib, nTableBytes);
@@ -335,9 +335,9 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
     RgbQuad          quad;
     int              nColors;
 
-    if (pFile == 0)
+    if (pFile == nullptr)
     {
-        return 0;
+        return nullptr;
     }
 
     const long lStart = pFile->SeekRelative(0, FILE_SEEK_CURRENT);
@@ -346,7 +346,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
     {
         pFile->CloseAndTest();
 
-        return 0;
+        return nullptr;
     }
 
     if (bmfh.bfType != BFT_BITMAP)
@@ -360,7 +360,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
     {
         pFile->CloseAndTest();
 
-        return 0;
+        return nullptr;
     }
 
     const auto dwHeaderSize = (unsigned int)header.info.biSize;
@@ -405,9 +405,9 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
 
     BitmapInfoHeader* const pDib = (BitmapInfoHeader*)malloc(header.info.biSize + nColors * sizeof(RgbQuad));
 
-    if (pDib == 0)
+    if (pDib == nullptr)
     {
-        return 0;
+        return nullptr;
     }
 
     *pDib = header.info;
@@ -424,7 +424,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
             {
                 pFile->CloseAndTest();
 
-                return 0;
+                return nullptr;
             }
 
             RgbTriple* const pTriples = (RgbTriple*)pColors;
@@ -447,7 +447,7 @@ BitmapInfoHeader* GDI::ReadDIB(FileObj* pFile)
             {
                 pFile->CloseAndTest();
 
-                return 0;
+                return nullptr;
             }
         }
     }

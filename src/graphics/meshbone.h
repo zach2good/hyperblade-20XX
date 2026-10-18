@@ -131,18 +131,18 @@ public:
 
         pData = m_pMesh;
 
-        if (pData != 0 && pData->vertexOffset.nBytes != 0)
+        if (pData != nullptr && pData->vertexOffset.nBytes != 0)
         {
             return pData->Vertices();
         }
 
-        return 0;
+        return nullptr;
     }
 
     // Nought for a bone with no mesh.
     short GetFaceCount() const
     {
-        if (m_pMesh != 0)
+        if (m_pMesh != nullptr)
         {
             return m_pMesh->nFaceCount;
         }

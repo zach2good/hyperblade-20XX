@@ -33,14 +33,14 @@
 // FUNCTION: HYPERX 0x0040e020
 void CSteerToTarget::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSteerToTarget;
     m_bReady = 0;
     m_pOwner = pOwner;
 
     Vec3* const pWatched = &pOwner->GetPhysicsBody()->velDir;
 
-    m_pTarget = 0;
+    m_pTarget = nullptr;
     m_pAxis   = pWatched;
 }
 
@@ -58,10 +58,10 @@ void CSteerToTarget::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pNext    = 0;
-        m_pOwner   = 0;
-        m_pAxis    = 0;
-        m_pTarget  = 0;
+        m_pNext    = nullptr;
+        m_pOwner   = nullptr;
+        m_pAxis    = nullptr;
+        m_pTarget  = nullptr;
         m_cArrived = 0;
         m_bReady   = 1;
 
@@ -210,7 +210,7 @@ void CSteerToTarget::Process(int nArg)
         m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(flLean) * flForce);
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

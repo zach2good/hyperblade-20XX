@@ -25,7 +25,7 @@ struct ArenaState
 inline ArenaState::ArenaState()
 {
     m_wCount    = 0;
-    m_pnSlotIds = 0;
+    m_pnSlotIds = nullptr;
 
     memset(this, 0, sizeof(*this));
 

@@ -21,7 +21,7 @@
 // FUNCTION: HYPERX 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CCircleTrack;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -44,7 +44,7 @@ void CCircleTrack::Process(int nArg)
     CameraObject* const pCamera   = (CameraObject*)m_pOwner;
     const Vec3*         pSettings = pCamera->m_pSettings;
 
-    if (pTracked == 0)
+    if (pTracked == nullptr)
     {
         // STRING: HYPERX 0x004bb5dc
         g_gameApp.Fatal("CCircleTrack::Process(): Null pointer for model to track\n");
@@ -103,7 +103,7 @@ void CCircleTrack::Process(int nArg)
 
     pCamera->UpdateSmoothing();
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

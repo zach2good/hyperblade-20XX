@@ -80,7 +80,7 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
 
     CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
 
-    if (pCamera != 0)
+    if (pCamera != nullptr)
     {
         const PlanWord* pBlock = pArgs->m_pArgs;
         if (pBlock[1].IsPronoun())
@@ -140,7 +140,7 @@ void PlanAction::IfNotRokTrackMe(Interactor* pContext, PlanNode*, short*, int)
 
     const int nTarget = pContext->GetTargetSlot();
 
-    if (pContext != 0)
+    if (pContext != nullptr)
     {
         pObject = pContext->GetCameraActor();
     }
@@ -153,7 +153,7 @@ void PlanAction::IfNotRokTrackMe(Interactor* pContext, PlanNode*, short*, int)
     {
         pTracked = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pTracked == 0)
+        if (pTracked == nullptr)
         {
             return;
         }
@@ -172,7 +172,7 @@ void PlanAction::SetTrackToViewOwner(Interactor* pContext, PlanNode*, short*, in
 {
     CameraObject* pObject;
 
-    if (pContext != 0)
+    if (pContext != nullptr)
     {
         pObject = pContext->GetCameraActor();
     }
@@ -358,7 +358,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
     CameraObject* pTarget;
     int           nValue;
 
-    if (pContext != 0)
+    if (pContext != nullptr)
     {
         pTarget = pContext->GetCameraActor();
     }
@@ -408,7 +408,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
         return;
     }
 
-    if (g_pGameEngine->m_ppSlots[(short)nValue] == 0)
+    if (g_pGameEngine->m_ppSlots[(short)nValue] == nullptr)
     {
         pTarget->m_nSecondaryTracked = -1;
 
@@ -545,7 +545,7 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
 // FUNCTION: HYPERX 0x00402040
 void PlanAction::SetHeadCamText(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         g_pRenderer->SetHeadCamText(pArgs->m_pArgs[1].psz);
     }
@@ -562,7 +562,7 @@ void PlanAction::InitRearViewPos(Interactor* pContext, PlanNode*, short*, int)
 
     EngineObject* const pTracked = pContext->GetCameraActor()->GetTrackedObject();
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         PhysicsBody* pState = pTracked->GetPhysicsBody();
         Vec3*        pPos   = pTracked->GetPositionPtr();
@@ -841,7 +841,7 @@ void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
     {
         ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
-        if (pSystem != 0)
+        if (pSystem != nullptr)
         {
             vStart = *pActor->GetPositionPtr();
 
@@ -876,7 +876,7 @@ void PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
     {
         ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
-        if (pSystem != 0)
+        if (pSystem != nullptr)
         {
             vStart = *pActor->GetPositionPtr();
 
@@ -930,13 +930,13 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
     {
         pSpawn = g_pGameEngine->m_ppSlots[(short)nSlot];
 
-        if (pSpawn != 0)
+        if (pSpawn != nullptr)
         {
             if (pSpawn->GetSlot() < PLAYER_OBJECT_COUNT)
             {
                 ((RokObject*)pActor)->ActivateAtSpawnSlot(nSlot);
 
-                pActor->GetPhysicsBody()->pAttach = 0;
+                pActor->GetPhysicsBody()->pAttach = nullptr;
 
                 vOrigin.x = g_flOriginComponent;
                 vOrigin.y = g_flOriginComponent;
@@ -981,7 +981,7 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
                 {
                     pSystem = g_pGameEngine->FindFreeParticleSystem();
 
-                    if (pSystem != 0)
+                    if (pSystem != nullptr)
                     {
                         pSystem->SetOrientation(&vOrigin, &vVelocity);
                         pSystem->SpawnParticles(1.0f, 50.0f);
@@ -1074,7 +1074,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         pSubject = g_pGameEngine->m_ppSlots[(short)nId];
     }
 
-    if (pSubject == 0)
+    if (pSubject == nullptr)
     {
         return;
     }
@@ -1093,12 +1093,12 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     for (nIndex = 0; nIndex <= HIDE_LAST; nIndex++)
     {
-        if (pFirst != 0)
+        if (pFirst != nullptr)
         {
             pFirst->m_pBones[(short)nIndex].ClearFlags(MESHBONE_HIDDEN);
         }
 
-        if (pSecond != 0)
+        if (pSecond != nullptr)
         {
             pSecond->m_pBones[(short)nIndex].ClearFlags(MESHBONE_HIDDEN);
         }
@@ -1106,13 +1106,13 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 
     if (pNode->m_nArgCount >= 2)
     {
-        if (pFirst != 0)
+        if (pFirst != nullptr)
         {
             Object::SpawnAtObjectRotated(pSubject, pFirst, 1);
             pFirst->PostSceneEvent(MSG_DEKE, 0);
         }
 
-        if (pSecond != 0)
+        if (pSecond != nullptr)
         {
             Object::SpawnAtObjectRotated(pSubject, pSecond, 0);
             pSecond->PostSceneEvent(MSG_DEKE, 0);
@@ -1121,7 +1121,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         return;
     }
 
-    if (pFirst != 0)
+    if (pFirst != nullptr)
     {
         for (pBone = g_anSubstituteBones; pBone < g_anSubstituteBones + BONE_SPLIT; pBone++)
         {
@@ -1131,7 +1131,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         Object::CopyPhysicsStateTo(pSubject, pFirst, 1);
     }
 
-    if (pSecond != 0)
+    if (pSecond != nullptr)
     {
         for (pBone = g_anSubstituteBones + BONE_SPLIT;
              pBone < g_anSubstituteBones + BONE_COUNT;
@@ -1155,7 +1155,7 @@ void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
         {
             ParticleSystem* const pSystem = g_pGameEngine->FindFreeParticleSystem();
 
-            if (pSystem != 0)
+            if (pSystem != nullptr)
             {
                 switch (nIndex)
                 {

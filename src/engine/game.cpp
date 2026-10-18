@@ -65,7 +65,7 @@ void Game::Tick()
         g_dwFrameGameLogicStart = (unsigned int)SDL_GetTicks();
     }
 
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         g_pRenderer->BeginTick();
     }
@@ -85,7 +85,7 @@ void Game::Draw(float flAlpha)
 {
     FramePacing::DrawViews(flAlpha);
 
-    if (g_pRenderer != 0)
+    if (g_pRenderer != nullptr)
     {
         // The HUD draws at a fraction of the window and is scaled up over the 3D.
         HudLayer::Enter();
@@ -182,46 +182,46 @@ void Game::InitializeEngine()
 // FUNCTION: HYPERX 0x0045c9c0
 void Game::ShutdownEngine(void)
 {
-    if (g_pMessageQueue != 0)
+    if (g_pMessageQueue != nullptr)
     {
         g_pMessageQueue = g_pMessageQueue->FreeAll();
     }
 
     delete g_pRenderer;
 
-    if (g_pAnimRegistry != 0)
+    if (g_pAnimRegistry != nullptr)
     {
         delete g_pAnimRegistry;
 
-        g_pAnimRegistry = 0;
+        g_pAnimRegistry = nullptr;
     }
 
-    if (g_pAudioMgr != 0)
+    if (g_pAudioMgr != nullptr)
     {
         delete g_pAudioMgr;
 
-        g_pAudioMgr = 0;
+        g_pAudioMgr = nullptr;
     }
 
-    if (g_pGameEngine != 0)
+    if (g_pGameEngine != nullptr)
     {
         delete g_pGameEngine;
 
-        g_pGameEngine = 0;
+        g_pGameEngine = nullptr;
     }
 
-    if (g_pGameOptions != 0)
+    if (g_pGameOptions != nullptr)
     {
         delete g_pGameOptions;
 
-        g_pGameOptions = 0;
+        g_pGameOptions = nullptr;
     }
 
-    if (g_pTexManager != 0)
+    if (g_pTexManager != nullptr)
     {
         delete g_pTexManager;
 
-        g_pTexManager = 0;
+        g_pTexManager = nullptr;
     }
 }
 
@@ -292,7 +292,7 @@ unsigned int Game::UpdateState(void)
             g_pAudioMgr->StopAllSfx();
             g_pAudioMgr->PlaySpecific(SOUND_SXXAMBA2);
 
-            if (g_pGameOptions != 0 && g_pGameOptions->m_nInstallLevel != 0)
+            if (g_pGameOptions != nullptr && g_pGameOptions->m_nInstallLevel != 0)
             {
                 g_pAudioMgr->PlayCDTrack(CD_TRACK_MENU);
             }
@@ -535,16 +535,16 @@ unsigned int Game::UpdateState(void)
 
                 delete g_pActiveScreen;
 
-                g_pActiveScreen = 0;
+                g_pActiveScreen = nullptr;
                 GameApp::SetCursorVisible(g_nSavedCursorVisible);
                 g_pGameEngine->m_wRunState = ENGINE_RUN_PLAYING;
 
-                if (g_pActiveScreen != 0 && g_pActiveScreen->HasPalette() != 0)
+                if (g_pActiveScreen != nullptr && g_pActiveScreen->HasPalette() != 0)
                 {
                     Screen::ClearBlack();
                 }
 
-                if (g_hMdmTexDll && g_pColorPalette != 0)
+                if (g_hMdmTexDll && g_pColorPalette != nullptr)
                 {
                     g_pColorPalette->SetEntries(0, 0x100, g_aSoftTexPalette);
                 }
@@ -574,14 +574,14 @@ unsigned int Game::UpdateState(void)
                     Screen::ClearBlack();
 
                     // InitFrame runs before this check, so a run with no screen faults there.
-                    if (g_pActiveScreen != 0)
+                    if (g_pActiveScreen != nullptr)
                     {
                         g_pActiveScreen->InitFrame();
                     }
 
                     delete g_pActiveScreen;
 
-                    g_pActiveScreen = 0;
+                    g_pActiveScreen = nullptr;
                     g_gameApp.OnShutdown();
 
                     break;
@@ -594,7 +594,7 @@ unsigned int Game::UpdateState(void)
                 break;
         }
     }
-    else if (g_pActiveScreen != 0)
+    else if (g_pActiveScreen != nullptr)
     {
         g_pActiveScreen->TickAnimations();
     }

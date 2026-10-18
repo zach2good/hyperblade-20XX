@@ -58,7 +58,7 @@ public:
     {
         delete this;
 
-        return 0;
+        return nullptr;
     }
 
     virtual void       Reset(char bHasRow3);

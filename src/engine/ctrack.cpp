@@ -47,7 +47,7 @@ extern unsigned char g_bSmartCamEnabled;
 // FUNCTION: HYPERX 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CTrack;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -60,7 +60,7 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     EngineObject* const pTracked = GetCamera()->GetTrackedObject();
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pTracked->m_nFlags |= ENGINEOBJECT_NO_CULL;
     }
@@ -73,12 +73,12 @@ void CTrack::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner      = 0;
-        m_pPos        = 0;
-        m_pVel        = 0;
-        m_pDir        = 0;
-        m_pDesiredVel = 0;
-        m_pNext       = 0;
+        m_pOwner      = nullptr;
+        m_pPos        = nullptr;
+        m_pVel        = nullptr;
+        m_pDir        = nullptr;
+        m_pDesiredVel = nullptr;
+        m_pNext       = nullptr;
         m_bReady      = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -112,7 +112,7 @@ void CTrack::Process(int nArg)
 
     PlayerObject* pTracked = (PlayerObject*)GetCamera()->GetTrackedObject();
 
-    if (pTracked == 0)
+    if (pTracked == nullptr)
     {
         // STRING: HYPERX 0x004bb454
         g_gameApp.Fatal("CTrack::Process(): Null pointer for model to track\n");
@@ -121,11 +121,11 @@ void CTrack::Process(int nArg)
     EngineObject* const pLastTracked = GetCamera()->GetLastTrackedObject();
     PhysicsBody*        pBody        = pTracked->GetPhysicsBody();
 
-    if (pLastTracked == 0 || pLastTracked != pTracked)
+    if (pLastTracked == nullptr || pLastTracked != pTracked)
     {
         float flFrames;
 
-        if (pLastTracked != 0)
+        if (pLastTracked != nullptr)
         {
             flFrames = g_pGameEngine->m_clock.flInvDelta * 0.75f;
 
@@ -156,7 +156,7 @@ void CTrack::Process(int nArg)
         {
             AttachPak* pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-            if (pHolder != 0)
+            if (pHolder != nullptr)
             {
                 short wCarrier = pHolder->nSlot;
 
@@ -181,17 +181,17 @@ void CTrack::Process(int nArg)
         const short wViewer = g_pGameEngine->m_nViewedSlot;
         AttachPak*  pHolder = pBody->pAttach;
 
-        if (pHolder != 0 && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+        if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
         {
             GetCamera()->m_nPrimaryTracked = wViewer;
 
-            GetCamera()->SetSecondaryTrackedObject(0);
+            GetCamera()->SetSecondaryTrackedObject(nullptr);
         }
         else if (pTracked->GetPlanState()->m_pCurrent->m_wKind != BEH_FLY_TOWARD)
         {
             GetCamera()->m_nPrimaryTracked = wViewer;
 
-            GetCamera()->SetSecondaryTrackedObject(0);
+            GetCamera()->SetSecondaryTrackedObject(nullptr);
         }
 
         aTarget = pBody->pos;
@@ -499,7 +499,7 @@ void CTrack::Process(int nArg)
 
     EngineObject* pSecondary = GetCamera()->GetSecondaryTrackedObject();
 
-    if (pSecondary != 0)
+    if (pSecondary != nullptr)
     {
         const Vec3* pSecondaryPos;
 
@@ -507,7 +507,7 @@ void CTrack::Process(int nArg)
         {
             AttachPak* pHolder = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-            if (pHolder != 0 && pHolder->nSlot < PLAYER_OBJECT_COUNT)
+            if (pHolder != nullptr && pHolder->nSlot < PLAYER_OBJECT_COUNT)
             {
                 pSecondary = g_pGameEngine->m_ppSlots[pHolder->nSlot];
             }
@@ -632,7 +632,7 @@ void CTrack::Process(int nArg)
 
     GetCamera()->UpdateSmoothing();
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }

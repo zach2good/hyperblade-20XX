@@ -13,7 +13,7 @@ class CPaletteEffect : public ReleasingAgendaItem
 {
 public:
     CPaletteEffect()
-    : m_pEffect(0)
+    : m_pEffect(nullptr)
     , m_nUnused(0)
     , m_nExpiry(0)
     {

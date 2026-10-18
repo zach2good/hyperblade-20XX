@@ -23,7 +23,7 @@
 void CDisplayPassBar::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CDisplayPassBar;
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_pOwner = pSubject;
 }
@@ -34,11 +34,11 @@ void CDisplayPassBar::Process(int nArg)
     PhysicsBody* const pRokBody = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody();
     AttachPak* const   pCarrier = pRokBody->pAttach;
 
-    if (pCarrier != 0)
+    if (pCarrier != nullptr)
     {
         short nSlot = pCarrier->nSlot;
 
-        if (nSlot < PLAYER_OBJECT_COUNT && nSlot == g_pGameEngine->m_nViewedSlot && g_pRenderer != 0 && m_pOwner->GetSlot() == CAMERA_MAIN_SLOT)
+        if (nSlot < PLAYER_OBJECT_COUNT && nSlot == g_pGameEngine->m_nViewedSlot && g_pRenderer != nullptr && m_pOwner->GetSlot() == CAMERA_MAIN_SLOT)
         {
             const int     nSelf = nSlot;
             EngineObject* pSelf = g_pGameEngine->m_ppSlots[nSelf];
@@ -90,7 +90,7 @@ void CDisplayPassBar::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0 && m_bReady == 0)
+    if (pNext != nullptr && m_bReady == 0)
     {
         pNext->Process(nArg);
     }

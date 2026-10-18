@@ -10,16 +10,16 @@
 // FUNCTION: HYPERX 0x00484580
 ObjectDef::ObjectDef(const char* pszModel)
 {
-    m_pszModel       = 0;
-    m_pszMaterial    = 0;
-    m_pszName        = 0;
+    m_pszModel       = nullptr;
+    m_pszMaterial    = nullptr;
+    m_pszName        = nullptr;
     m_nTypeId        = 0;
     m_nRatingsMode   = 0;
     m_bOwnPalette    = 0;
     m_wUnused        = 0;
     m_nPlanCount     = 0;
-    m_pCollisionList = 0;
-    m_apszPlanNames  = 0;
+    m_pCollisionList = nullptr;
+    m_apszPlanNames  = nullptr;
 
     m_flElasticity = g_flZeroGameEngine;
     m_flFriction   = g_flZeroGameEngine;
@@ -30,9 +30,9 @@ ObjectDef::ObjectDef(const char* pszModel)
     m_vPos.x = m_vPos.y = m_vPos.z = g_flZeroGameEngine;
 
     m_bForceRemap  = 0;
-    m_apRatings[0] = m_apRatings[1] = m_apRatings[2] = m_apRatings[3] = 0;
+    m_apRatings[0] = m_apRatings[1] = m_apRatings[2] = m_apRatings[3] = nullptr;
 
-    if (pszModel != 0)
+    if (pszModel != nullptr)
     {
         char* const pOwned = new char[strlen(pszModel) + 1];
         strcpy(pOwned, pszModel);
@@ -46,27 +46,27 @@ ObjectDef::~ObjectDef()
 {
     m_nTypeId = 0;
 
-    if (m_pszName != 0)
+    if (m_pszName != nullptr)
     {
         delete[] m_pszName;
-        m_pszName = 0;
+        m_pszName = nullptr;
     }
 
-    if (m_pszModel != 0)
+    if (m_pszModel != nullptr)
     {
         delete[] m_pszModel;
-        m_pszModel = 0;
+        m_pszModel = nullptr;
     }
 
-    if (m_pszMaterial != 0)
+    if (m_pszMaterial != nullptr)
     {
         delete[] m_pszMaterial;
-        m_pszMaterial = 0;
+        m_pszMaterial = nullptr;
     }
 
     delete m_pCollisionList;
 
-    if (m_apszPlanNames != 0)
+    if (m_apszPlanNames != nullptr)
     {
         while (m_nPlanCount-- != 0)
         {
@@ -78,7 +78,7 @@ ObjectDef::~ObjectDef()
 
     for (int i = 0; i < 4; i++)
     {
-        if (m_apRatings[i] != 0)
+        if (m_apRatings[i] != nullptr)
         {
             delete[] m_apRatings[i];
         }

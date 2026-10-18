@@ -20,12 +20,12 @@ void PlanInteractorFactories::ResetAll(void)
 // FUNCTION: HYPERX 0x0045d830
 void PlanInteractorFactories::DestroyAll(void)
 {
-    if (g_pCollInteractorPool != 0)
+    if (g_pCollInteractorPool != nullptr)
     {
         g_pCollInteractorPool = g_pCollInteractorPool->Destroy();
     }
 
-    if (g_pMsgInteractorPool != 0)
+    if (g_pMsgInteractorPool != nullptr)
     {
         g_pMsgInteractorPool = g_pMsgInteractorPool->Destroy();
     }
@@ -37,16 +37,16 @@ CollInteractor* PlanInteractorFactories::CreateCollInteractor(EngineObject* pObj
 {
     CollInteractor* pInteractor;
 
-    if (pNode == 0)
+    if (pNode == nullptr)
     {
         pObject->GetPlanState();
     }
 
     pInteractor = ((CollInteractor*)g_pCollInteractorPool->Alloc())->Setup(pObject, pInstr);
 
-    if (pPrevious == 0)
+    if (pPrevious == nullptr)
     {
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
             pNode->m_pCollInteractors = pInteractor;
 
@@ -69,16 +69,16 @@ MsgInteractor* PlanInteractorFactories::CreateMsgInteractor(EngineObject* pObjec
 {
     MsgInteractor* pInteractor;
 
-    if (pNode == 0)
+    if (pNode == nullptr)
     {
         pObject->GetPlanState();
     }
 
     pInteractor = ((MsgInteractor*)g_pMsgInteractorPool->Alloc())->Setup(pObject, pInstr);
 
-    if (pPrevious == 0)
+    if (pPrevious == nullptr)
     {
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
             pNode->m_pMsgInteractors = pInteractor;
 

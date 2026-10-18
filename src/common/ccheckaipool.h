@@ -9,7 +9,7 @@ class CCheckAIPool : public AgendaItemOwner
 public:
     CCheckAIPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

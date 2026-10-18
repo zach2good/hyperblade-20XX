@@ -137,7 +137,7 @@ short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 
     AttachPak* pTracked = pBlock->pAttach;
 
-    if (pTracked != 0 && pTracked->nSlot < PLAYER_OBJECT_COUNT)
+    if (pTracked != nullptr && pTracked->nSlot < PLAYER_OBJECT_COUNT)
     {
         return pTracked->nSlot;
     }
@@ -160,7 +160,7 @@ short PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 
     AttachPak* const pTracked = pBlock->pAttach;
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         return pTracked->nIndex;
     }
@@ -176,7 +176,7 @@ short PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
 
     AttachPak* const pTracked = pBlock->pAttach;
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         const short nTracked = pTracked->nSlot;
 

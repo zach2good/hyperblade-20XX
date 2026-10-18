@@ -8,10 +8,10 @@ void CameraLiteAgendaItem::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner    = 0;
-        m_pWatchPos = 0;
-        m_pWatchDir = 0;
-        m_pNext     = 0;
+        m_pOwner    = nullptr;
+        m_pWatchPos = nullptr;
+        m_pWatchDir = nullptr;
+        m_pNext     = nullptr;
         m_bReady    = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);

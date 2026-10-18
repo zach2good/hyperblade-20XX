@@ -34,9 +34,9 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
     RLESprite* pSprite = (RLESprite*)malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2);
 
-    if (pSprite == 0)
+    if (pSprite == nullptr)
     {
-        return 0;
+        return nullptr;
     }
 
     pSprite->cx = cx;
@@ -107,7 +107,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     const auto       nOld    = (std::uintptr_t)pSprite;
     RLESprite* const pShrunk = (RLESprite*)realloc(pSprite, pOut - (char*)pSprite);
 
-    if (pShrunk == 0)
+    if (pShrunk == nullptr)
     {
         return pSprite;
     }
@@ -129,7 +129,7 @@ SoftTex::SoftTex()
 {
     memset(&m_image, 0, sizeof(m_image));
 
-    m_pDib = 0;
+    m_pDib = nullptr;
 
     m_pNext = g_pSoftTexHead;
 
@@ -140,17 +140,17 @@ SoftTex::SoftTex()
 // FUNCTION: HYPERX 0x004928d0
 void SoftTex::RemoveFromList()
 {
-    if (m_pDib != 0)
+    if (m_pDib != nullptr)
     {
         free(m_pDib);
 
-        m_pDib = 0;
+        m_pDib = nullptr;
     }
 
     SoftTex* pNode = g_pSoftTexHead;
-    SoftTex* pPrev = 0;
+    SoftTex* pPrev = nullptr;
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         if (pNode == this)
         {
@@ -162,7 +162,7 @@ void SoftTex::RemoveFromList()
         pNode = pNode->m_pNext;
     }
 
-    if (pPrev != 0)
+    if (pPrev != nullptr)
     {
         pPrev->m_pNext = m_pNext;
 
@@ -195,7 +195,7 @@ char SoftTex::Load(const char* pszName)
 
         memset(&m_image, 0, sizeof(m_image));
 
-        if (m_pDib != 0)
+        if (m_pDib != nullptr)
         {
             const BitmapInfoHeader* pHeader = m_pDib;
 
@@ -232,7 +232,7 @@ char SoftTex::Load(const char* pszName)
             }
 
             free(m_pDib);
-            m_pDib = 0;
+            m_pDib = nullptr;
 
             return 0;
         }
@@ -250,7 +250,7 @@ char SoftTex::Load(const char* pszName)
 // FUNCTION: HYPERX 0x00492b60
 void SoftTex::DrawTexPoly(TransformObject*, FacePolyBuffer* pPoly, float)
 {
-    if (g_pfnMdmDrawTexPoly != 0)
+    if (g_pfnMdmDrawTexPoly != nullptr)
     {
         g_pfnMdmDrawTexPoly(&m_image, pPoly->aVertices, pPoly->nCount, TEXPOLY_EDGE_COUNT);
     }

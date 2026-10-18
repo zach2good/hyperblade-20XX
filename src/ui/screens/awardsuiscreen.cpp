@@ -88,7 +88,7 @@ AwardsUIScreen::AwardsUIScreen()
 
     for (i = 0; i < AWARDS_STRIP_FRAMES; i++)
     {
-        pWidget->AppendFrame(0);
+        pWidget->AppendFrame(nullptr);
     }
 
     pWidget->SetHidden(1);

@@ -132,7 +132,7 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
 
     pRange = g_pGameEngine->m_ppSlots[(short)CollisionObj::GetModelId(nSlot)];
 
-    if (pContext->GetActor()->GetPhysicsBody()->pAttach != 0)
+    if (pContext->GetActor()->GetPhysicsBody()->pAttach != nullptr)
     {
         pOther = g_pGameEngine->m_ppSlots[pContext->GetActor()->GetPhysicsBody()->pAttach->nSlot];
 
@@ -146,7 +146,7 @@ void PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult
 
             flDot = pForwardRange->x * pForwardOther->x + pForwardRange->y * pForwardOther->y + pForwardRange->z * pForwardOther->z;
 
-            if (pColObj == 0)
+            if (pColObj == nullptr)
             {
                 // STRING: HYPERX 0x004bb2b0
                 g_gameApp.Fatal("ERROR: GetColObjPtr: NULL Pointer\n");
@@ -188,7 +188,7 @@ void PlanCond::ForceRearView(Interactor*, PlanNode*, short* pResult, int)
 {
     CameraObject* const pSub = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
 
-    if (pSub != 0)
+    if (pSub != nullptr)
     {
         // The gap word at the end of CameraObject; this is its only reader.
         *pResult = pSub->m_bRearView != 0;
@@ -270,7 +270,7 @@ void PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOutValid, 
 
     char* const pszName = g_pGameEngine->m_ppSlots[nTarget]->GetPlanState()->m_pszName;
 
-    if (pszName == 0
+    if (pszName == nullptr
         // STRING: HYPERX 0x004bb38c
         || SDL_strcasecmp(pszName, "OffWing") == 0
         // STRING: HYPERX 0x004bb384
@@ -283,7 +283,7 @@ void PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOutValid, 
 
     AttachPak* const pHeld = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-    if (pHeld != 0 && nTarget != pHeld->nSlot)
+    if (pHeld != nullptr && nTarget != pHeld->nSlot)
     {
         if (nTarget != pContext->GetActor()->GetSlot())
         {
@@ -330,7 +330,7 @@ void PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehavio
         {
             Interactor* const pEntry = pList->m_apNamedInteractors[nIndex];
 
-            if (pEntry != 0)
+            if (pEntry != nullptr)
             {
                 pEntry->SetActiveState(pArgs->m_pArgs[2].n);
             }
@@ -397,7 +397,7 @@ void PlanAction::SetPaletteEffect(Interactor* pContext, PlanNode* pNode, short*,
 {
     AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CPaletteEffect);
 
-    pAgendaItem->Bind(pContext->GetActor(), 0);
+    pAgendaItem->Bind(pContext->GetActor(), nullptr);
 
     PlanWord* const pArgs = pNode->m_pArgs;
 
@@ -529,7 +529,7 @@ void PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nPar
 
     EngineObject* const pTarget = g_pGameEngine->m_ppSlots[(short)nTarget];
 
-    if (pTarget != 0)
+    if (pTarget != nullptr)
     {
         pActor = pContext->GetActor();
 
@@ -710,7 +710,7 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     pActor                = pContext->GetActor();
     EngineObject* pTarget = g_pGameEngine->m_ppSlots[(short)nIndex];
 
-    if (pActor != 0 && pTarget != 0 && (g_bSessionActive == 0 || (pActor->GetPhase() == OBJECT_PHASE_LOCAL && pTarget->GetPhase() == OBJECT_PHASE_LOCAL)))
+    if (pActor != nullptr && pTarget != nullptr && (g_bSessionActive == 0 || (pActor->GetPhase() == OBJECT_PHASE_LOCAL && pTarget->GetPhase() == OBJECT_PHASE_LOCAL)))
     {
         g_pGameEngine->m_nViewedSlot = (short)nIndex;
 
@@ -750,7 +750,7 @@ void PlanAction::SendMessageToMyCamera(Interactor* pContext, PlanNode* pArgs, sh
 
     EngineObject* const pCamera = g_pGameEngine->m_ppSlots[CAMERA_MAIN_SLOT];
 
-    if (pCamera == 0)
+    if (pCamera == nullptr)
     {
         return;
     }
@@ -868,11 +868,11 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
 
     EngineObject* pTracked = g_pGameEngine->m_ppSlots[SLOT_MINE];
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pSlot = pTracked->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0)
+        if (pSlot != nullptr)
         {
             nSlot = pSlot->nSlot;
 
@@ -885,11 +885,11 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
 
     pTracked = g_pGameEngine->m_ppSlots[SLOT_SWARF];
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pSlot = pTracked->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0)
+        if (pSlot != nullptr)
         {
             nSlot = pSlot->nSlot;
 
@@ -902,11 +902,11 @@ void PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
 
     pTracked = g_pGameEngine->m_ppSlots[SLOT_ROK];
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pSlot = pTracked->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0)
+        if (pSlot != nullptr)
         {
             nSlot = pSlot->nSlot;
 
@@ -957,7 +957,7 @@ void PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, shor
 
         PlayerObject* const pTarget = g_pGameEngine->GetPlayer(nIndex);
 
-        if (pTarget != 0)
+        if (pTarget != nullptr)
         {
             pTarget->m_nKnockedDownState = pArgs->m_pArgs[1].n;
 
@@ -1006,11 +1006,11 @@ void PlanAction::HoverAboveArmory(Interactor* pContext, PlanNode* pNode, short*,
 
     f.vResult.y = (float)nDistance;
 
-    if (pSource != 0)
+    if (pSource != nullptr)
     {
         EngineObject* const pTarget = g_pGameEngine->m_ppSlots[nSlot];
 
-        if (pTarget != 0)
+        if (pTarget != nullptr)
         {
             f.vOffset.x = (pSource->m_transformC.m_a[0][2] + pSource->m_transformC.m_a[0][0]) * g_flZeroPlan + f.vResult.y * pSource->m_transformC.m_a[0][1];
             f.vOffset.y = (pSource->m_transformC.m_a[1][2] + pSource->m_transformC.m_a[1][0]) * g_flZeroPlan + f.vResult.y * pSource->m_transformC.m_a[1][1];
@@ -1234,7 +1234,7 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
 
     pnCarrier = g_pGameEngine->GetSlot(SLOT_ROK)->GetPhysicsBody()->pAttach;
 
-    if (pnCarrier != 0 && pnCarrier->nSlot < PLAYER_OBJECT_COUNT)
+    if (pnCarrier != nullptr && pnCarrier->nSlot < PLAYER_OBJECT_COUNT)
     {
         nCarrier = pnCarrier->nSlot;
         bCarrier = true;
@@ -1263,7 +1263,7 @@ void PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
         return;
     }
 
-    if (pSecond == 0)
+    if (pSecond == nullptr)
     {
         return;
     }
@@ -1379,10 +1379,10 @@ void PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResu
     }
     else
     {
-        pTarget = 0;
+        pTarget = nullptr;
     }
 
-    if (pTarget != 0)
+    if (pTarget != nullptr)
     {
         CSetPositionRelative* const pSetPosition = (CSetPositionRelative*)AllocAgendaItem(Agenda_CSetPositionRelative);
 
@@ -1425,7 +1425,7 @@ void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, i
 {
     AttachPak* const pState = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pState != 0)
+    if (pState != nullptr)
     {
         const short nHolderSlot = pState->nSlot;
 
@@ -1552,7 +1552,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
         pTarget = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pTarget != 0 && (nSlot = pTarget->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pTarget != nullptr && (nSlot = pTarget->nSlot) < PLAYER_OBJECT_COUNT)
         {
             if (nSlot == g_pGameEngine->m_nViewedSlot)
             {
@@ -1581,7 +1581,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
     {
         pTarget = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pTarget != 0 && (nSlot = pTarget->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pTarget != nullptr && (nSlot = pTarget->nSlot) < PLAYER_OBJECT_COUNT)
         {
             if (nSlot == g_pGameEngine->m_nViewedSlot)
             {
@@ -1692,7 +1692,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
     pOwner = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot]->GetPhysicsBody()->pPlayer;
 
-    if (pOwner == 0)
+    if (pOwner == nullptr)
     {
         return;
     }
@@ -1701,7 +1701,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
     CPlayer* const pOtherOwner = g_pGameEngine->m_ppSlots[TeammateSlot(nKind)]->GetPhysicsBody()->pPlayer;
 
-    if (pOtherOwner == 0)
+    if (pOtherOwner == nullptr)
     {
         return;
     }
@@ -1754,7 +1754,7 @@ void PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int nKind)
         EngineObject* const pRok = g_pGameEngine->m_ppSlots[SLOT_ROK];
         pSlot                    = pRok->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0 && (nSlot = pSlot->nSlot) < PLAYER_OBJECT_COUNT)
+        if (pSlot != nullptr && (nSlot = pSlot->nSlot) < PLAYER_OBJECT_COUNT)
         {
             PlayerObject* const pFollowed = g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot);
 
@@ -1784,7 +1784,7 @@ void PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int nKind)
 
     pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != 0 && (nSlot = pSlot->nSlot) < PLAYER_OBJECT_COUNT && nSlot == g_pGameEngine->m_nViewedSlot)
+    if (pSlot != nullptr && (nSlot = pSlot->nSlot) < PLAYER_OBJECT_COUNT && nSlot == g_pGameEngine->m_nViewedSlot)
     {
         *pResult = 2;
 
@@ -2338,7 +2338,7 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     pnTargetSlot = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-    if (pnTargetSlot == 0 || (nSlot = pnTargetSlot->nSlot) >= PLAYER_OBJECT_COUNT)
+    if (pnTargetSlot == nullptr || (nSlot = pnTargetSlot->nSlot) >= PLAYER_OBJECT_COUNT)
     {
         // TODO: The original takes the result pointer itself as the slot; was *pResult meant?
         nSlot = (short)(std::intptr_t)pResult;
@@ -2444,7 +2444,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
     {
         pCarrierSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        const int bNoCarrier = pCarrierSlot == 0 || pCarrierSlot->nSlot >= PLAYER_OBJECT_COUNT;
+        const int bNoCarrier = pCarrierSlot == nullptr || pCarrierSlot->nSlot >= PLAYER_OBJECT_COUNT;
 
         if (bNoCarrier != 0)
         {
@@ -2454,7 +2454,7 @@ void PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pRes
         {
             GameBehaviorObject* const pBehaviour = pTarget->GetPlanState()->m_pCurrent;
 
-            if (pBehaviour->m_wKind == BEH_GLIDE_BETWEEN_FACING && ((pOther = ((BehObj_GlideBetweenFacing*)pBehaviour)->m_pAimObject) == 0 || pOther->GetSlot() <= PLAYER_SLOT_COUNT - 1))
+            if (pBehaviour->m_wKind == BEH_GLIDE_BETWEEN_FACING && ((pOther = ((BehObj_GlideBetweenFacing*)pBehaviour)->m_pAimObject) == nullptr || pOther->GetSlot() <= PLAYER_SLOT_COUNT - 1))
             {
                 const short sOther = pOther->GetSlot();
 
@@ -2542,7 +2542,7 @@ void PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResu
     {
         EngineObject* const pMultiplier = g_pGameEngine->m_ppSlots[(short)nSlot];
 
-        if (pMultiplier != 0)
+        if (pMultiplier != nullptr)
         {
             const char* pszName = pMultiplier->GetPlanState()->m_pCurrent->m_pszName;
 
@@ -2586,7 +2586,7 @@ void PlanCond::OffenseOrWRok(Interactor* pContext, PlanNode*, short* pResult, in
 
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    const bool bNoCarrier = pSlot == 0 || pSlot->nSlot >= PLAYER_OBJECT_COUNT;
+    const bool bNoCarrier = pSlot == nullptr || pSlot->nSlot >= PLAYER_OBJECT_COUNT;
 
     if (bNoCarrier)
     {
@@ -2636,7 +2636,7 @@ void PlanCond::HostIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 {
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != 0)
+    if (pSlot != nullptr)
     {
         const short nSlot = pSlot->nSlot;
 
@@ -2656,7 +2656,7 @@ void PlanCond::RokInWhichTeamsPoss(Interactor*, PlanNode*, short* pResult, int)
 {
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != 0)
+    if (pSlot != nullptr)
     {
         const short nSlot = pSlot->nSlot;
 
@@ -2681,7 +2681,7 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
     EngineObject* const pActor = pContext->GetActor();
     AttachPak* const    pSlot  = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != 0)
+    if (pSlot != nullptr)
     {
         nSlot = pSlot->nSlot;
 
@@ -2736,7 +2736,7 @@ void PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x00461c00
 void PlanCond::IsDoubleScore(Interactor* pContext, PlanNode*, short* pResult, int)
 {
-    if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != 0)
+    if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != nullptr)
     {
         *pResult = 2;
 
@@ -2773,7 +2773,7 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
 
         *pResult = 0;
 
-        if (pTarget != 0)
+        if (pTarget != nullptr)
         {
             pBungee = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
 
@@ -2796,7 +2796,7 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
 
         const int nLate = (g_nCheckImpulseFacing >= LATE_PASS_STEP);
 
-        if (pTarget != 0)
+        if (pTarget != nullptr)
         {
             g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_YER_ATTACKED, 0);
         }
@@ -2842,7 +2842,7 @@ void PlanAction::StartStatTimer(Interactor* pContext, PlanNode* pArgs, short*, i
             pContext->GetActor(), pArgs);
         PlayerObject* const pEntity = g_pGameEngine->GetPlayer(nSlot);
 
-        if (nSlot >= 0 && nSlot < ENTITY_SLOT_LIMIT && pEntity != 0)
+        if (nSlot >= 0 && nSlot < ENTITY_SLOT_LIMIT && pEntity != nullptr)
         {
             pEntity->m_matchStats.StartTimer(pArgs->m_pArgs[2].n);
         }
@@ -2860,7 +2860,7 @@ void PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, short*, int
             pContext->GetActor(), pArgs);
         PlayerObject* const pEntity = g_pGameEngine->GetPlayer(nSlot);
 
-        if (nSlot >= 0 && nSlot < ENTITY_SLOT_LIMIT && pEntity != 0)
+        if (nSlot >= 0 && nSlot < ENTITY_SLOT_LIMIT && pEntity != nullptr)
         {
             pEntity->m_matchStats.StopTimer(pArgs->m_pArgs[2].n);
         }
@@ -2898,7 +2898,7 @@ void PlanAction::SetTargetWithData(Interactor* pContext, PlanNode*, short*, int 
 
     EngineObject* const pCandidate = g_pGameEngine->m_ppSlots[nIndex];
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pActor = pContext->GetActor();
 
@@ -2935,7 +2935,7 @@ void PlanAction::BungeeTowardTarget(Interactor* pContext, PlanNode*, short*, int
 
     pTracked = ((CBungeeToward*)pContext->GetActor()->GetPlanState()->m_pCurrent->m_apSlots[0])->m_pTarget;
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         CBungeeToward* const pTrack = (CBungeeToward*)AllocAgendaItem(Agenda_CBungeeToward);
 
@@ -2984,7 +2984,7 @@ void PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult,
 
     AttachPak* const pnTracked = pBlock->pAttach;
 
-    if (pnTracked != 0 && (nTracked = pnTracked->nSlot) < PLAYER_OBJECT_COUNT && nTracked == nSlot)
+    if (pnTracked != nullptr && (nTracked = pnTracked->nSlot) < PLAYER_OBJECT_COUNT && nTracked == nSlot)
     {
         EngineObject* const pMate = g_pGameEngine->m_ppSlots[nMate];
 
@@ -3047,7 +3047,7 @@ void PlanCond::Decide_HPSpin_Rail_orNot(Interactor* pContext, PlanNode*, short* 
 
     pnTracked = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pnTracked != 0 && (nTracked = pnTracked->nSlot) < PLAYER_OBJECT_COUNT && nTracked == pContext->GetActor()->GetSlot())
+    if (pnTracked != nullptr && (nTracked = pnTracked->nSlot) < PLAYER_OBJECT_COUNT && nTracked == pContext->GetActor()->GetSlot())
     {
         const float flEnergy = pContext->GetPlayerActor()->m_stats.m_aStats[0];
 
@@ -3583,7 +3583,7 @@ void PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, i
 
     pnTargetSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pnTargetSlot != 0)
+    if (pnTargetSlot != nullptr)
     {
         const short nTarget = pnTargetSlot->nSlot;
 
@@ -3646,7 +3646,7 @@ void PlanCond::OwnerIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 {
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pSlot != 0)
+    if (pSlot != nullptr)
     {
         short nSlot = pSlot->nSlot;
 
@@ -3722,7 +3722,7 @@ void PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFl
         {
             pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-            if (pCarrier != 0 && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == pContext->GetActor()->GetSlot())
+            if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == pContext->GetActor()->GetSlot())
             {
                 *pResult = 2;
 
@@ -3736,7 +3736,7 @@ void PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFl
 
         pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-        if (pCarrier != 0 && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == pContext->GetActor()->GetSlot())
+        if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == pContext->GetActor()->GetSlot())
         {
             *pResult = 0;
 
@@ -3750,7 +3750,7 @@ void PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFl
 
     pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != 0 && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == CollisionObj::GetModelId(pContext->GetModelSlot()))
+    if (pCarrier != nullptr && (nCarrier = pCarrier->nSlot) < PLAYER_OBJECT_COUNT && nCarrier == CollisionObj::GetModelId(pContext->GetModelSlot()))
     {
         *pResult = 0;
 
@@ -3783,7 +3783,7 @@ void PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     AttachPak* pCarrier = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != 0 && pCarrier->nSlot < PLAYER_OBJECT_COUNT && pCarrier->nSlot == (short)nSlot)
+    if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT && pCarrier->nSlot == (short)nSlot)
     {
         *pResult = 0;
         return;
@@ -4308,7 +4308,7 @@ void PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, 
         }
     }
 
-    if (pRandomizer == 0 || pNamed == 0)
+    if (pRandomizer == nullptr || pNamed == nullptr)
     {
         return;
     }
@@ -4417,7 +4417,7 @@ void PlanAction::ResetCameraTrack(Interactor* pContext, PlanNode*, short*, int)
 {
     CameraObject* const pCamera = pContext->GetCameraActor();
 
-    pCamera->SetLastTrackedObject(0);
+    pCamera->SetLastTrackedObject(nullptr);
 }
 
 // FUNCTION: HYPERX 0x00463d40
@@ -4425,11 +4425,11 @@ void PlanAction::ClearBehaviorAnimation(Interactor* pContext, PlanNode*, short*,
 {
     EngineObject* pActor = pContext->GetActor();
 
-    pActor->GetPlanState()->m_pCurrent->m_pAnimation = 0;
+    pActor->GetPlanState()->m_pCurrent->m_pAnimation = nullptr;
 
     pActor = pContext->GetActor();
 
-    pActor->GetPlanState()->m_pCurrent->m_pPersistentAnimation = 0;
+    pActor->GetPlanState()->m_pCurrent->m_pPersistentAnimation = nullptr;
 }
 
 // FUNCTION: HYPERX 0x00463d80
@@ -5319,7 +5319,7 @@ void PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
         }
     }
 
-    if (pWinner == 0)
+    if (pWinner == nullptr)
     {
         return;
     }
@@ -5363,7 +5363,7 @@ void PlanCond::AttachedToSender(Interactor* pContext, PlanNode*, short* pResult,
 
     AttachPak* pState = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-    if (pState != 0 && pState->nSlot < 6)
+    if (pState != nullptr && pState->nSlot < 6)
     {
         nHolderSlot = pState->nSlot;
     }
@@ -5390,7 +5390,7 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
 
     AttachPak* pCarrier = pContext->GetActor()->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != 0 && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
+    if (pCarrier != nullptr && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
     {
         nCarrier = pCarrier->nSlot;
     }
@@ -5456,7 +5456,7 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
         nRokValue = 0;
     }
 
-    if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != 0)
+    if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != nullptr)
     {
         *pResult = 4;
     }
@@ -6481,7 +6481,7 @@ void PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* 
 
     pnBoundSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pnBoundSlot != 0 && (nBound = pnBoundSlot->nSlot) < PLAYER_OBJECT_COUNT && (nBound == nSlotC || nBound == nOppC))
+    if (pnBoundSlot != nullptr && (nBound = pnBoundSlot->nSlot) < PLAYER_OBJECT_COUNT && (nBound == nSlotC || nBound == nOppC))
     {
         *pResult = 1;
     }
@@ -6515,7 +6515,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 
         for (; nSlot < GREEN_RANDOMIZER_COUNT; nSlot++)
         {
-            if (g_pGameEngine->m_ppSlots[(short)(nSlot + SLOT_GREEN_RANDOMIZER)] != 0)
+            if (g_pGameEngine->m_ppSlots[(short)(nSlot + SLOT_GREEN_RANDOMIZER)] != nullptr)
             {
                 *pFound = nSlot;
                 nCount++;
@@ -6678,11 +6678,11 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
 
     EngineObject* pTracked = g_pGameEngine->m_ppSlots[SLOT_SWARF];
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pSlot = pTracked->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0)
+        if (pSlot != nullptr)
         {
             nSlot = pSlot->nSlot;
 
@@ -6702,11 +6702,11 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
 
     pTracked = g_pGameEngine->m_ppSlots[SLOT_MINE];
 
-    if (pTracked != 0)
+    if (pTracked != nullptr)
     {
         pSlot = pTracked->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0)
+        if (pSlot != nullptr)
         {
             nSlot = pSlot->nSlot;
 
@@ -6726,11 +6726,11 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
 
     pTracked = g_pGameEngine->m_ppSlots[SLOT_ROK];
 
-    if (pTracked != 0 && ((RokObject*)pTracked)->m_nKillState > -1)
+    if (pTracked != nullptr && ((RokObject*)pTracked)->m_nKillState > -1)
     {
         pSlot = pTracked->GetPhysicsBody()->pAttach;
 
-        if (pSlot != 0)
+        if (pSlot != nullptr)
         {
             nSlot = pSlot->nSlot;
 
@@ -6761,7 +6761,7 @@ void PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int 
     EngineObject* const pTeam   = g_pGameEngine->m_ppSlots[SLOT_MINE];
 
     // A missing reference object leaves the answer alone rather than writing one.
-    if (pTeam != 0)
+    if (pTeam != nullptr)
     {
         Vec3* const pFrom = pTeam->GetPositionPtr();
         Vec3* const pTo   = pTarget->GetPositionPtr();
@@ -6793,7 +6793,7 @@ void PlanCond::RokValueInMyFavor(Interactor*, PlanNode*, short* pResult, int)
 
     AttachPak* pState = pCarrier->GetPhysicsBody()->pAttach;
 
-    if (pState != 0 && pState->nSlot < 6)
+    if (pState != nullptr && pState->nSlot < 6)
     {
         if ((pState->nSlot & 1) != 0)
         {
@@ -7079,7 +7079,7 @@ void PlanCond::Ducking(Interactor* pContext, PlanNode*, short* pResult, int)
 
     const AnimDB* pSet = pColObj->GetOwner()->m_pAnimPlayer->m_pSet;
 
-    if (pSet != 0)
+    if (pSet != nullptr)
     {
         pszName = pSet->GetName();
     }
@@ -7150,7 +7150,7 @@ void PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, int nArg
 
     vImpulse.z = vDiff.y * pVelocity->x - vDiff.x * pVelocity->y;
 
-    pRelax->Bind(pContext->GetActor(), 0);
+    pRelax->Bind(pContext->GetActor(), nullptr);
 
     if (vImpulse.z > 0.0f)
     {
@@ -7184,7 +7184,7 @@ void PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
     EngineObject* pTarget = g_pGameEngine->m_ppSlots[nSlot];
 
     // The original has no guard here, and a run can reach it with an empty slot.
-    if (pTarget == 0)
+    if (pTarget == nullptr)
     {
         *pResult = 1;
         return;
@@ -7745,7 +7745,7 @@ void PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResul
 
     AttachPak* const pCarrier = pRok->GetPhysicsBody()->pAttach;
 
-    if (pCarrier != 0)
+    if (pCarrier != nullptr)
     {
         nSlot = pCarrier->nSlot;
 
@@ -7838,11 +7838,11 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     EngineObject* pWeapon = g_pGameEngine->m_ppSlots[SLOT_ROK];
 
-    if (pWeapon != 0 && ((RokObject*)pWeapon)->m_nKillState > -1)
+    if (pWeapon != nullptr && ((RokObject*)pWeapon)->m_nKillState > -1)
     {
         pWeaponBody = pWeapon->GetPhysicsBody();
 
-        if (pWeaponBody->pAttach != 0 && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
+        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
         {
             *pResult = 0;
 
@@ -7852,11 +7852,11 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     pWeapon = g_pGameEngine->m_ppSlots[SLOT_MINE];
 
-    if (pWeapon != 0)
+    if (pWeapon != nullptr)
     {
         pWeaponBody = pWeapon->GetPhysicsBody();
 
-        if (pWeaponBody->pAttach != 0 && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
+        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
         {
             *pResult = 0;
 
@@ -7866,11 +7866,11 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     pWeapon = g_pGameEngine->m_ppSlots[SLOT_SWARF];
 
-    if (pWeapon != 0)
+    if (pWeapon != nullptr)
     {
         pWeaponBody = pWeapon->GetPhysicsBody();
 
-        if (pWeaponBody->pAttach != 0 && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
+        if (pWeaponBody->pAttach != nullptr && pWeaponBody->pAttach->nSlot < PLAYER_OBJECT_COUNT && pWeaponBody->pAttach->nSlot == nAttackerSlot)
         {
             *pResult = 0;
 
@@ -8434,7 +8434,7 @@ void PlanCond::OkToGetRok(Interactor* pContext, PlanNode*, short* pResult, int n
 
     if ((short)((RokObject*)pRok)->m_nCarrierSlot != (short)nParam)
     {
-        *pResult = pRok->GetPhysicsBody()->pAttach == 0;
+        *pResult = pRok->GetPhysicsBody()->pAttach == nullptr;
 
         return;
     }

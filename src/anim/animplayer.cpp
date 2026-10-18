@@ -40,7 +40,7 @@ void AnimPlayer::SetObject(EngineObject* pObject)
 {
     m_pObject = pObject;
 
-    if (pObject != 0)
+    if (pObject != nullptr)
     {
         m_wBoneCount = pObject->GetBoneCount();
     }
@@ -76,7 +76,7 @@ char AnimPlayer::UpdateTick(void)
 {
     float flDelta;
 
-    if (m_pSet != 0)
+    if (m_pSet != nullptr)
     {
         switch (m_state.nPlayState)
         {
@@ -115,7 +115,7 @@ char AnimPlayer::UpdateTick(void)
                                 return 1;
                             }
 
-                            return ConditionalDispatch(0);
+                            return ConditionalDispatch(nullptr);
                         }
                     }
 
@@ -165,7 +165,7 @@ char AnimPlayer::UpdateTick(void)
                             return 1;
                         }
 
-                        return ConditionalDispatch(0);
+                        return ConditionalDispatch(nullptr);
                     }
                 }
                 else
@@ -259,7 +259,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
 // FUNCTION: HYPERX 0x00424810
 void AnimPlayer::SetPlaybackRate(float flRate)
 {
-    if (m_pSet != 0 && m_state.nPlayState != AA_DONE && m_pClip != 0)
+    if (m_pSet != nullptr && m_state.nPlayState != AA_DONE && m_pClip != nullptr)
     {
         m_state.flPlaybackRate = flRate;
 
@@ -567,7 +567,7 @@ char AnimPlayer::Advance(float flDelta)
 // FUNCTION: HYPERX 0x00424f70
 char AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)
 {
-    if (m_pSet != 0)
+    if (m_pSet != nullptr)
     {
         m_state.anEventTarget[nChannel]  = nTarget;
         m_state.anEventMessage[nChannel] = nMessage;
@@ -599,10 +599,10 @@ char AnimPlayer::SetPlayState(int nState)
 // FUNCTION: HYPERX 0x00424fd0
 char AnimPlayer::ClearAnimationSet()
 {
-    if (m_pSet != 0)
+    if (m_pSet != nullptr)
     {
         m_state.nPlayState = AA_DONE;
-        m_pSet             = 0;
+        m_pSet             = nullptr;
     }
 
     return 1;
@@ -648,7 +648,7 @@ char AnimPlayer::StartAnimSetDefaultRate(AnimDB* pAnimSet)
 // With no transition the set starts at its first clip, from that clip's start frame.
 inline short AnimPlayer::TransitionClip(const AnimNamedRef* pTransition)
 {
-    if (pTransition == 0)
+    if (pTransition == nullptr)
     {
         return 0;
     }
@@ -658,7 +658,7 @@ inline short AnimPlayer::TransitionClip(const AnimNamedRef* pTransition)
 
 inline short AnimPlayer::TransitionLoopStart(const AnimNamedRef* pTransition)
 {
-    if (pTransition == 0)
+    if (pTransition == nullptr)
     {
         return -1;
     }
@@ -678,7 +678,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
 
         if (m_state.nPlayState != AA_PLAY)
         {
-            return ConditionalDispatch(0);
+            return ConditionalDispatch(nullptr);
         }
         else
         {
@@ -689,7 +689,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
     {
         m_bPending = 0;
 
-        if (pAnimSet != 0)
+        if (pAnimSet != nullptr)
         {
             if (m_state.nPlayState == AA_PLAY && pAnimSet != m_pSet)
             {
@@ -700,8 +700,8 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
             {
                 m_pPrevSet             = m_pSet;
                 m_pSet                 = pAnimSet;
-                m_pBoneSet             = 0;
-                m_pClip                = 0;
+                m_pBoneSet             = nullptr;
+                m_pClip                = nullptr;
                 m_state.wClipIndex     = -1;
                 m_state.flPlaybackRate = g_flOneAnimPlayer;
                 m_state.wEventCursor   = 0;
@@ -721,7 +721,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
             SetCallbackTarget(m_pObject->GetSlot(), MSG_CELL_ANIMATION_DONE, 0);
         }
 
-        return pAnimSet != 0;
+        return pAnimSet != nullptr;
     }
 }
 
@@ -760,7 +760,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
     {
         m_pClip = pSet->m_apNodes[nClipIndex];
 
-        if (m_pClip != 0)
+        if (m_pClip != nullptr)
         {
             m_state.bFullDecode = 1;
             m_pBoneSet          = m_pClip->m_pSet;

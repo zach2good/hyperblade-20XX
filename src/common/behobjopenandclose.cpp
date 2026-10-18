@@ -27,7 +27,7 @@ void BehObj_OpenAndClose::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlag
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 
     m_wKind      = BEH_OPEN_AND_CLOSE;
-    m_apSlots[0] = 0;
+    m_apSlots[0] = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0041e6b0
@@ -37,7 +37,7 @@ void BehObj_OpenAndClose::SendTimedMessage()
 
     m_wPollCountdown = m_wLatency;
 
-    if (m_pAnimation != 0)
+    if (m_pAnimation != nullptr)
     {
         m_pOwner->StartClipPlayback(m_pAnimation,
                                     m_flAnimationRate,

@@ -69,7 +69,7 @@ int InfoBarRadar::TrackSlot(int nSlot)
 {
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)nSlot];
 
-    if (pObject == 0)
+    if (pObject == nullptr)
     {
         return 0;
     }
@@ -80,7 +80,7 @@ int InfoBarRadar::TrackSlot(int nSlot)
 
     CameraObject* const pHeading = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
 
-    if (pHeading == 0)
+    if (pHeading == nullptr)
     {
         return 0;
     }
@@ -140,7 +140,7 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)nSlot];
 
-    if (pObject == 0)
+    if (pObject == nullptr)
     {
         return;
     }
@@ -222,7 +222,7 @@ int InfoBarRadar::Draw()
 
         AttachPak* pTracked = pBlock->pAttach;
 
-        if (pTracked != 0 && pTracked->nSlot < PLAYER_OBJECT_COUNT && pTracked->nSlot == nSlot)
+        if (pTracked != nullptr && pTracked->nSlot < PLAYER_OBJECT_COUNT && pTracked->nSlot == nSlot)
         {
             // The odd team's marker is frame seven, the even team's eight.
             int nFrame;

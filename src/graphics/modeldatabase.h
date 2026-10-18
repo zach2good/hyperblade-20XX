@@ -15,10 +15,10 @@ struct MaterialListNode
 {
     explicit MaterialListNode(unsigned char nMatCount)
     {
-        m_pMaterials = 0;
-        m_pszName    = 0;
+        m_pMaterials = nullptr;
+        m_pszName    = nullptr;
         m_nMatCount  = nMatCount;
-        m_pNext      = 0;
+        m_pNext      = nullptr;
         m_nRefs      = 0;
     }
 
@@ -50,9 +50,9 @@ public:
     // Game::InitializeEngine adds a delta to the install level straight after the new.
     ModelDatabase()
     : m_nInstallLevel(0)
-    , m_pListHead(0)
-    , m_pListTail(0)
-    , m_pTextureList(0)
+    , m_pListHead(nullptr)
+    , m_pListTail(nullptr)
+    , m_pTextureList(nullptr)
     , m_nNodeCount(0)
     , m_nFaceMax(0)
     , m_nVertexMax(0)

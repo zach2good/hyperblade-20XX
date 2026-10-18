@@ -18,21 +18,21 @@ void AgendaItem::OnListChanged()
 {
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0)
+    if (pNext != nullptr)
     {
         pNext->OnListChanged();
     }
 
-    m_pNext = 0;
+    m_pNext = nullptr;
 }
 
 // FUNCTION: HYPERX 0x0040b990
 char AgendaItem::Activate()
 {
     const char  bInserted = 1;
-    AgendaItem* pPrev     = 0;
+    AgendaItem* pPrev     = nullptr;
 
-    if (m_pOwner == 0)
+    if (m_pOwner == nullptr)
     {
         OnListChanged();
         return bInserted;
@@ -40,30 +40,30 @@ char AgendaItem::Activate()
 
     AgendaItem* pNode = m_pOwner->GetObserver();
 
-    while (pNode != 0 && m_wKind > pNode->m_wKind)
+    while (pNode != nullptr && m_wKind > pNode->m_wKind)
     {
         pPrev = pNode;
 
         if (pNode->m_pOwner != m_pOwner)
         {
-            pNode->m_pNext = 0;
+            pNode->m_pNext = nullptr;
             pNode->Detach();
         }
 
         pNode = pNode->m_pNext;
     }
 
-    if (pNode == 0)
+    if (pNode == nullptr)
     {
-        if (pPrev != 0)
+        if (pPrev != nullptr)
         {
             pPrev->m_pNext = this;
-            m_pNext        = 0;
+            m_pNext        = nullptr;
             return bInserted;
         }
 
         m_pOwner->SetObserver(this);
-        m_pNext = 0;
+        m_pNext = nullptr;
         return bInserted;
     }
 
@@ -71,14 +71,14 @@ char AgendaItem::Activate()
     {
         if (pNode->m_bPersistent != 0)
         {
-            if (pPrev != 0)
+            if (pPrev != nullptr)
             {
                 pPrev->m_pNext = pNode->m_pNext;
             }
             else
             {
                 m_pOwner->SetObserver(pNode->m_pNext);
-                pNode->m_pNext = 0;
+                pNode->m_pNext = nullptr;
             }
         }
         else
@@ -87,7 +87,7 @@ char AgendaItem::Activate()
         }
     }
 
-    if (pPrev == 0)
+    if (pPrev == nullptr)
     {
         m_pNext = m_pOwner->GetObserver();
 
@@ -110,15 +110,15 @@ char AgendaItem::Activate()
 
         if (FindByRef(pSwerve->m_pSwerveTarget) == 0)
         {
-            pSwerve->m_pSwerveTarget = 0;
+            pSwerve->m_pSwerveTarget = nullptr;
         }
 
         if (FindByRef(pSwerve->m_pDrawTarget) == 0)
         {
-            pSwerve->m_pDrawTarget = 0;
+            pSwerve->m_pDrawTarget = nullptr;
         }
 
-        if (pSwerve->m_pSwerveTarget == 0 && pSwerve->m_pDrawTarget == 0)
+        if (pSwerve->m_pSwerveTarget == nullptr && pSwerve->m_pDrawTarget == nullptr)
         {
             // A virtual delete: slot zero is the real class's scalar deleting destructor.
             delete this;
@@ -139,7 +139,7 @@ void AgendaItem::Detach()
 {
     AgendaItem* pNode;
 
-    if (m_pOwner == 0)
+    if (m_pOwner == nullptr)
     {
         return;
     }
@@ -152,7 +152,7 @@ void AgendaItem::Detach()
     }
     else
     {
-        for (pNode = pHead; pNode != 0; pNode = pNode->m_pNext)
+        for (pNode = pHead; pNode != nullptr; pNode = pNode->m_pNext)
         {
             if (this == pNode->m_pNext)
             {
@@ -160,11 +160,11 @@ void AgendaItem::Detach()
             }
         }
 
-        if (pNode != 0)
+        if (pNode != nullptr)
         {
             pNode->m_pNext = m_pNext;
 
-            m_pNext = 0;
+            m_pNext = nullptr;
         }
         else
         {
@@ -185,7 +185,7 @@ char AgendaItem::FindByRef(EngineObject* pObject)
 {
     CAvoidObjects* pNode = (CAvoidObjects*)m_pOwner->GetObserver();
 
-    while (pNode != 0)
+    while (pNode != nullptr)
     {
         if (pNode->m_wKind == Agenda_CBeAttached)
         {

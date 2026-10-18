@@ -109,7 +109,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
 
     pAnim = pDb->Find((short)nIndex);
 
-    if (pAnim != 0 && pContext->GetActor()->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
+    if (pAnim != nullptr && pContext->GetActor()->GetSlot() <= PLAYER_SLOT_COUNT - 1 && ((PlayerObject*)(pOwner = pContext->GetActor()))->m_stats.GetScalar(RATING_DAMAGE) < 30.0f)
     {
         const char* pszName = pAnim->GetName();
 
@@ -362,7 +362,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
 
         pTracked = pBody->pAttach;
 
-        if (pTracked != 0)
+        if (pTracked != nullptr)
         {
             g_pGameEngine->m_ppSlots[pTracked->nSlot]->PostSceneEvent(MSG_LOST_IT, 0);
         }
@@ -426,5 +426,5 @@ void PlanAction::Unset_AttachPak(Interactor* pContext, PlanNode*, short*, int)
     EngineObject* const pActor = pContext->GetActor();
     PhysicsBody* const  pBlock = pActor->GetPhysicsBody();
 
-    pBlock->pAttach = 0;
+    pBlock->pAttach = nullptr;
 }

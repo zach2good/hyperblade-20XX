@@ -29,9 +29,9 @@ void* CUpdateShotPowerPool::Alloc()
     AgendaItem* const pHead = m_pHead;
 
     m_pHead        = pHead->m_pNext;
-    pHead->m_pNext = 0;
+    pHead->m_pNext = nullptr;
 
-    if (m_pHead == 0)
+    if (m_pHead == nullptr)
     {
         m_pHead = new CUpdateShotPower;
     }
@@ -42,7 +42,7 @@ void* CUpdateShotPowerPool::Alloc()
 // FUNCTION: HYPERX 0x004160e0
 CUpdateShotPowerPool::~CUpdateShotPowerPool()
 {
-    while (m_pHead != 0)
+    while (m_pHead != nullptr)
     {
         AgendaItem* const pNext = m_pHead->m_pNext;
 

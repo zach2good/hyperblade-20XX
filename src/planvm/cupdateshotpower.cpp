@@ -18,7 +18,7 @@
 // FUNCTION: HYPERX 0x004123f0
 void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_bReady = 0;
     m_wKind  = Agenda_CUpdateShotPower;
     m_pOwner = pSubject;
@@ -43,11 +43,11 @@ void CUpdateShotPower::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner   = 0;
+        m_pOwner   = nullptr;
         m_nStarted = 0;
         m_flPower  = 0;
-        m_pOrigin  = 0;
-        m_pNext    = 0;
+        m_pOrigin  = nullptr;
+        m_pNext    = nullptr;
         m_bReady   = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -78,7 +78,7 @@ void CUpdateShotPower::Process(int nArg)
 
     AgendaItem* const pNext = m_pNext;
 
-    if (pNext != 0 && m_bReady == 0)
+    if (pNext != nullptr && m_bReady == 0)
     {
         pNext->Process(nArg);
     }

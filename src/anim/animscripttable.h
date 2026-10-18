@@ -27,7 +27,7 @@ public:
     virtual ~AnimScriptTable();
 
     AnimScriptTable()
-    : m_pPlanVm(0)
+    : m_pPlanVm(nullptr)
     {
         memset(m_apEntries, 0, sizeof(m_apEntries));
 
@@ -58,7 +58,7 @@ public:
     {
         if (nIndex < 0 || nIndex >= m_nCount)
         {
-            return 0;
+            return nullptr;
         }
 
         return m_apEntries[nIndex];

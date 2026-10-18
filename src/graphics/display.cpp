@@ -35,7 +35,7 @@ int Display::Initialize()
         WndProc::OnResize((int)g_dwDisplayWidth, (int)g_dwDisplayHeight);
     }
 
-    if (g_bBackBufferReady != 0 && g_pRenderer != 0)
+    if (g_bBackBufferReady != 0 && g_pRenderer != nullptr)
     {
         g_pRenderer->LayoutSurfaces();
     }

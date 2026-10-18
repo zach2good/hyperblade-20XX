@@ -25,10 +25,10 @@ void BehObj_SetInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 
     m_wKind = BEH_SET_IN_PLACE;
 
-    m_apSlots[0] = 0;
+    m_apSlots[0] = nullptr;
     short nSlot  = 0;
 
-    while (m_apSlots[nSlot] != 0)
+    while (m_apSlots[nSlot] != nullptr)
     {
         m_apSlots[nSlot]->Bind(m_pOwner, this);
 

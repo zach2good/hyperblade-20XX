@@ -9,7 +9,7 @@ class CDisplayPassBarPool : public AgendaItemOwner
 public:
     CDisplayPassBarPool()
     {
-        m_pHead = 0;
+        m_pHead = nullptr;
     }
 
     void  Init() override;

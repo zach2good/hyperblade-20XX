@@ -29,36 +29,36 @@ Spline::~Spline()
 {
     SplineCurve* pWalk = m_pCurve;
 
-    while (pWalk != 0)
+    while (pWalk != nullptr)
     {
         pWalk = pWalk->m_pNext;
 
-        if (pWalk == 0)
+        if (pWalk == nullptr)
         {
             break;
         }
 
-        if (pWalk->m_pNext == m_pCurve || pWalk->m_pNext == 0)
+        if (pWalk->m_pNext == m_pCurve || pWalk->m_pNext == nullptr)
         {
             break;
         }
     }
 
-    if (pWalk != 0)
+    if (pWalk != nullptr)
     {
-        pWalk->m_pNext = 0;
+        pWalk->m_pNext = nullptr;
 
         delete pWalk;
 
-        m_pSecond = 0;
+        m_pSecond = nullptr;
     }
 
-    if (m_pCurve != 0)
+    if (m_pCurve != nullptr)
     {
         delete m_pCurve;
     }
 
-    m_pCurve = 0;
+    m_pCurve = nullptr;
 }
 
 // Both curves take the upper-half evaluator; the tag is -35 past a second radius of three, else -1.
@@ -220,7 +220,7 @@ Spline* Spline::InitSegment(float flRadiusX, float flRadiusY)
 // FUNCTION: HYPERX 0x004931a0
 Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
-    m_pCurve->m_pfnEval       = 0;
+    m_pCurve->m_pfnEval       = nullptr;
     m_pCurve->m_pfnSpringEval = Spline::EvalSpring;
 
     SplineCurve* pNode = m_pCurve;

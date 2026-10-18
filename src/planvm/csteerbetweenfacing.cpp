@@ -29,7 +29,7 @@
 // FUNCTION: HYPERX 0x0040eda0
 void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)
 {
-    m_pNext  = 0;
+    m_pNext  = nullptr;
     m_wKind  = Agenda_CSteerBetweenFacing;
     m_bReady = 0;
     m_pOwner = pOwner;
@@ -54,11 +54,11 @@ void CSteerBetweenFacing::OnListChanged()
 
         pBody->flFacing = g_flZeroAgendaItem;
 
-        m_pNext   = 0;
-        m_pOwner  = 0;
-        m_pOrigin = 0;
-        m_pAxis   = 0;
-        m_pNormal = 0;
+        m_pNext   = nullptr;
+        m_pOwner  = nullptr;
+        m_pOrigin = nullptr;
+        m_pAxis   = nullptr;
+        m_pNormal = nullptr;
         m_bReady  = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
@@ -174,7 +174,7 @@ void CSteerBetweenFacing::Process(int nArg)
         m_pOwner->GetPhysicsBody()->ApplyBankForce(1, (float)fabs(flLean) * flForce);
     }
 
-    if (m_pNext != 0)
+    if (m_pNext != nullptr)
     {
         m_pNext->Process(nArg);
     }
