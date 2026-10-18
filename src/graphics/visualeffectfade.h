@@ -18,8 +18,8 @@ public:
     explicit VisualEffectFade(const PaletteRange* pRange)
     : PaletteFade(pRange)
     {
-        m_nKind     = kPlainFadeKind;
-        m_nDuration = kPlainFadeDuration;
+        m_nKind    = kPlainFadeKind;
+        m_duration = kPlainFadeDuration;
     }
 };
 

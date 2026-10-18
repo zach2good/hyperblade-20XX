@@ -79,7 +79,7 @@ ReserveRows g_aFormationTable[16] = {
     { { 0, 1 } },
     { { -1, -1 } }
 };
-int                  g_nAnnouncerLineMs;
+Clock::Milliseconds  g_announcerLine;
 StationaryPlanRecord g_aStationaryPlans[kStationarySlots] = {};
 int                  g_aStationarySlots[kStationarySlots] = { 0 };
 int                  g_nStationaryCount;
@@ -353,13 +353,13 @@ extern const char* const g_pszPaletteExtension;
 const char* const        g_pszPaletteExtension = "wbp";
 
 // The three statics PhysicsBody::UpdateMovementAxes keeps between frames.
-unsigned char g_bMoveAxesStopHeld;
-unsigned char g_bMoveAxesShootHeld;
-unsigned int  g_nMoveAxesShootReleaseTick;
+unsigned char       g_bMoveAxesStopHeld;
+unsigned char       g_bMoveAxesShootHeld;
+Clock::Milliseconds g_moveAxesShootReleaseTick;
 
 // The two tick stamps PlanCond::AnalyzePadA keeps between calls.
-unsigned int g_nRokCameraArmedTick;
-unsigned int g_nRokCameraStateTick;
+Clock::Milliseconds g_rokCameraArmedTick;
+Clock::Milliseconds g_rokCameraStateTick;
 
 extern const float g_flAnimBlendZero;
 const float        g_flAnimBlendZero = 0.0f;

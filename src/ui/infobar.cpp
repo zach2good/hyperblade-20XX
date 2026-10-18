@@ -484,7 +484,7 @@ void InfoBar::DrawHUD(int bFull)
 {
     char szText[kClockBuffer];
 
-    const int nElapsed = g_pGameEngine->m_nPeriodLengthMs - g_pGameEngine->m_clock.nPauseStartMs + g_pGameEngine->m_clock.nPeriodStartMs;
+    const auto nElapsed = static_cast<int>((g_pGameEngine->m_periodLength - g_pGameEngine->m_clock.pauseStart + g_pGameEngine->m_clock.periodStart).count());
 
     const auto nSeconds = static_cast<int>((nElapsed % kMsPerMinute) * 0.001f);
     const auto nMinutes = static_cast<int>(nElapsed * 1.6666667e-005f);
@@ -555,7 +555,7 @@ void InfoBar::DrawHUD(int bFull)
 
     if (m_bQuitPromptVisible != 0)
     {
-        if (g_pGameEngine->m_clock.nTickMs - m_nQuitPromptTick >= kQuitPromptInterval)
+        if (g_pGameEngine->m_clock.tick - m_quitPromptTick >= kQuitPromptInterval)
         {
             HideQuitPrompt();
         }
@@ -1240,7 +1240,7 @@ void InfoBar::ShowQuitPrompt()
 {
     m_bQuitPromptVisible = 1;
 
-    m_nQuitPromptTick = g_pGameEngine->m_clock.nTickMs;
+    m_quitPromptTick = g_pGameEngine->m_clock.tick;
 }
 
 // FUNCTION: HYPERX 0x00452120

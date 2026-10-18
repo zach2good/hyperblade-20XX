@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include <cstdint>
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/decisionlog.h"
@@ -431,9 +432,9 @@ GameEngine::GameEngine()
     m_nScoreHome = -1;
     m_nScoreAway = -1;
 
-    m_nDifficulty     = static_cast<DifficultyLevel>(g_pGameOptions->ReadDifficulty());
-    m_nBrutality      = g_pGameOptions->ReadBrutality();
-    m_nPeriodLengthMs = g_pGameOptions->ReadPeriodLength();
+    m_nDifficulty  = static_cast<DifficultyLevel>(g_pGameOptions->ReadDifficulty());
+    m_nBrutality   = g_pGameOptions->ReadBrutality();
+    m_periodLength = Clock::Milliseconds{ g_pGameOptions->ReadPeriodLength() };
 
     m_nAttackMode   = g_pGameOptions->ReadInt(g_pszOptionsSection, g_pszAttackModeKey, 0);
     m_nTeammateMode = g_pGameOptions->ReadInt(g_pszOptionsSection, g_pszTeammateModeKey, 0);
@@ -570,14 +571,14 @@ void GameEngine::AdvanceTournamentBracket()
 #define MAX_FRAME_TIME_MS 200.0f
 #define MS_TO_SEC         0.001f
 
-constexpr auto kCountdownStartMs = 10000;
-constexpr auto kCountdownSecs    = 9;
+constexpr auto kCountdownStart = Clock::Milliseconds{ 10000 };
+constexpr auto kCountdownSecs  = 9;
 
 constexpr auto kFinalPeriodIndex = 3;
 constexpr auto kPeriodCount      = 4;
 
-constexpr auto kOvertimeEarlyMs = 10000;
-constexpr auto kOvertimeFinalMs = 30000;
+constexpr auto kOvertimeEarly = Clock::Milliseconds{ 10000 };
+constexpr auto kOvertimeFinal = Clock::Milliseconds{ 30000 };
 
 // The frame delta, in milliseconds before the scaling and in seconds after it.
 extern float g_flFrameDelta;
@@ -589,17 +590,16 @@ extern unsigned char g_bPeriodCountdownActive;
 // FUNCTION: HYPERX 0x00481130
 void GameEngine::TickClock()
 {
-    int          nOvertimeMs;
-    unsigned int nElapsedMs;
+    Clock::Milliseconds overtime;
+    Clock::Milliseconds elapsed;
 
     m_clock.flPrevDelta           = m_clock.flDelta;
     m_clock.flPrevDeltaSquared    = m_clock.flDeltaSquared;
     m_clock.flPrevInvDelta        = m_clock.flInvDelta;
     m_clock.flPrevInvDeltaSquared = m_clock.flInvDeltaSquared;
-    m_clock.nPrevTickMs           = m_clock.nTickMs;
+    m_clock.prevTick              = m_clock.tick;
 
-    const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
-    m_clock.nTickMs = nNow;
+    m_clock.tick = Clock::Now();
 
     // The simulation steps a fixed tick, however long the frame took to draw.
     g_flFrameDelta = FramePacing::kTickMs;
@@ -618,16 +618,16 @@ void GameEngine::TickClock()
 
     if (m_clock.nPeriod >= kFinalPeriodIndex)
     {
-        nOvertimeMs = kOvertimeFinalMs;
+        overtime = kOvertimeFinal;
     }
     else
     {
-        nOvertimeMs = kOvertimeEarlyMs;
+        overtime = kOvertimeEarly;
     }
 
     if (m_clock.nPauseMark != 1)
     {
-        if (m_clock.nTickMs - m_clock.nPeriodStartMs < static_cast<unsigned int>(m_nPeriodLengthMs) && m_bEndPeriodRequested == 0 && AreAllPlayersInjured() == 0 && IsHomeTeamInjured() == 0 && IsAwayTeamInjured() == 0)
+        if (m_clock.tick - m_clock.periodStart < m_periodLength && m_bEndPeriodRequested == 0 && AreAllPlayersInjured() == 0 && IsHomeTeamInjured() == 0 && IsAwayTeamInjured() == 0)
         {
             return;
         }
@@ -635,17 +635,17 @@ void GameEngine::TickClock()
 
     if (m_clock.nPauseMark == 1)
     {
-        m_clock.nPauseStartMs = m_clock.nTickMs;
-        nElapsedMs            = m_clock.nTickMs - m_clock.nPeriodStartMs;
+        m_clock.pauseStart = m_clock.tick;
+        elapsed            = m_clock.tick - m_clock.periodStart;
     }
     else
     {
-        nElapsedMs = m_clock.nPauseStartMs - m_clock.nPeriodStartMs;
+        elapsed = m_clock.pauseStart - m_clock.periodStart;
     }
 
     if (g_bPeriodCountdownActive == 0)
     {
-        if (m_nPeriodLengthMs - nElapsedMs <= kCountdownStartMs)
+        if (m_periodLength - elapsed <= kCountdownStart)
         {
             g_bPeriodCountdownActive = 1;
             g_nCountdownLastSecs     = kCountdownSecs;
@@ -655,7 +655,7 @@ void GameEngine::TickClock()
 
     if (g_bPeriodCountdownActive != 0)
     {
-        const auto nSecs = static_cast<int>(m_nPeriodLengthMs - nElapsedMs) / 1000;
+        const auto nSecs = static_cast<int>((m_periodLength - elapsed).count()) / 1000;
 
         if (nSecs < g_nCountdownLastSecs)
         {
@@ -664,7 +664,7 @@ void GameEngine::TickClock()
         }
     }
 
-    if (nElapsedMs < static_cast<unsigned int>(m_nPeriodLengthMs) || g_bDragOff != 0)
+    if (elapsed < m_periodLength || g_bDragOff != 0)
     {
         if (m_clock.nPauseMark == 0 && (IsHomeTeamInjured() != 0 || IsAwayTeamInjured() != 0))
         {
@@ -673,7 +673,7 @@ void GameEngine::TickClock()
 
         if (AreAllPlayersInjured() != 0 || m_bEndPeriodRequested != 0)
         {
-            m_clock.nPeriodStartMs = m_clock.nPauseStartMs - m_nPeriodLengthMs;
+            m_clock.periodStart = m_clock.pauseStart - m_periodLength;
 
             if (IsHomeTeamDead() != 0 || IsAwayTeamDead() != 0)
             {
@@ -711,7 +711,7 @@ void GameEngine::TickClock()
         m_bPeriodEnded     = 1;
     }
 
-    if (g_nPlayerMode == kPlayerModeExhibition && (m_clock.nTickMs - m_clock.nPeriodStartMs) >= static_cast<unsigned int>(m_nPeriodLengthMs + nOvertimeMs) && nElapsedMs >= static_cast<unsigned int>(m_nPeriodLengthMs) && g_bDragOff == 0)
+    if (g_nPlayerMode == kPlayerModeExhibition && (m_clock.tick - m_clock.periodStart) >= m_periodLength + overtime && elapsed >= m_periodLength && g_bDragOff == 0)
     {
         m_clock.nPeriod++;
 
@@ -729,7 +729,7 @@ void GameEngine::TickClock()
         g_nPrevEngineState       = kEstateMatchLive;
     }
 
-    if (IsTournamentMode() != 0 && (m_clock.nTickMs - m_clock.nPeriodStartMs) >= static_cast<unsigned int>(m_nPeriodLengthMs + nOvertimeMs) && nElapsedMs >= static_cast<unsigned int>(m_nPeriodLengthMs) && g_bDragOff == 0)
+    if (IsTournamentMode() != 0 && (m_clock.tick - m_clock.periodStart) >= m_periodLength + overtime && elapsed >= m_periodLength && g_bDragOff == 0)
     {
         m_clock.nPeriod++;
 
@@ -1024,7 +1024,7 @@ void GameEngine::BeginMatchPlay()
 
     GameEngine::ShowRokValue(kRokValuePlain);
 
-    m_clock.nPeriodStartMs = m_clock.nTickMs;
+    m_clock.periodStart = m_clock.tick;
 
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
@@ -1052,8 +1052,8 @@ void GameEngine::BeginMatchPlay()
             m_pTeamB->aRows[nRow].aStat[kRatingDamage] = FULL_WEIGHT;
         }
 
-        m_pTeamA->aReserveSince[nRow] = 0;
-        m_pTeamB->aReserveSince[nRow] = 0;
+        m_pTeamA->aReserveSince[nRow] = {};
+        m_pTeamB->aReserveSince[nRow] = {};
     }
 
     for (nTeam = 0; nTeam < 2; nTeam++)
@@ -1133,8 +1133,8 @@ void GameEngine::InitMatchTimers()
     m_clock.flPrevInvDelta = MATCH_FRAME_RATE;
     m_clock.flInvDelta     = MATCH_FRAME_RATE;
 
-    m_clock.nTickMs     = 0;
-    m_clock.nPrevTickMs = 0;
+    m_clock.tick     = {};
+    m_clock.prevTick = {};
 
     m_clock.flPrevInvDeltaSquared = MATCH_RATE_SQUARED;
     m_clock.flInvDeltaSquared     = MATCH_RATE_SQUARED;
@@ -1154,11 +1154,11 @@ void GameEngine::InitMatchTimers()
     m_clock.nRingIndex = 0;
     m_clock.nPeriod    = 1;
 
-    const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
+    const auto now = Clock::Now();
 
-    m_clock.nPeriodStartMs = nNow;
-    m_clock.nPauseStartMs  = nNow;
-    m_clock.nPauseMark     = -1;
+    m_clock.periodStart = now;
+    m_clock.pauseStart  = now;
+    m_clock.nPauseMark  = -1;
 }
 
 char        g_bMultiplierColoursUnsaved = 1;
@@ -3581,14 +3581,14 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     memmove(&pTeam->aRows[nWasOn], &pPlayer->m_stats.m_aStats[1], sizeof(TeamPlayerRow));
     memmove(&pTeam->aStatRows[nWasOn], &pPlayer->m_matchStats, sizeof(TeamStatRow));
 
-    pTeam->aReserveSince[nWasOn] = m_clock.nTickMs;
+    pTeam->aReserveSince[nWasOn] = m_clock.tick;
 
     const auto nStamp = pTeam->aReserveSince[nWith];
 
-    if (nStamp != 0)
+    if (nStamp != Clock::Milliseconds{})
     {
-        const int nElapsed = m_clock.nTickMs - nStamp;
-        float     flGate;
+        const auto nElapsed = static_cast<int>((m_clock.tick - nStamp).count());
+        float      flGate;
 
         flGate = DamageGate();
 
@@ -3607,7 +3607,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
 
         *pflDamage = flDamage;
 
-        pTeam->aReserveSince[nWith] = 0;
+        pTeam->aReserveSince[nWith] = {};
     }
 
     ReplaceEntity(nOnIceSlot,
@@ -4086,7 +4086,7 @@ void GameEngine::BroadcastCollisionEvents()
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
     short       nIndex;
-    static auto s_dwEventBase = static_cast<unsigned int>(SDL_GetTicks());
+    static auto s_eventBase = Clock::Now();
 
     if (g_bDragOff == 0 || nEvent != kMsgStartDrag)
     {
@@ -4101,17 +4101,17 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 
     if (nEvent == kMsgGoalScored)
     {
-        s_dwEventBase = static_cast<unsigned int>(SDL_GetTicks());
+        s_eventBase = Clock::Now();
 
         m_clock.nPauseMark = 0;
     }
     else if (nEvent == kMsgStartDrag)
     {
-        s_dwEventBase = static_cast<unsigned int>(SDL_GetTicks());
+        s_eventBase = Clock::Now();
 
-        m_clock.nPeriodStartMs = s_dwEventBase;
+        m_clock.periodStart = s_eventBase;
 
-        m_clock.nPauseStartMs = s_dwEventBase;
+        m_clock.pauseStart = s_eventBase;
 
         m_clock.nPauseMark = 0;
     }
@@ -4119,9 +4119,9 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
     {
         if (m_clock.nPauseMark == 0)
         {
-            m_clock.nPauseStartMs = static_cast<unsigned int>(SDL_GetTicks());
+            m_clock.pauseStart = Clock::Now();
 
-            m_clock.nPeriodStartMs += m_clock.nPauseStartMs - s_dwEventBase;
+            m_clock.periodStart += m_clock.pauseStart - s_eventBase;
         }
 
         m_clock.nPauseMark = 1;
@@ -4310,7 +4310,7 @@ char GameEngine::RemoveFromSortedList(short nId)
 // FUNCTION: HYPERX 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
-    static auto s_dwPauseBase = static_cast<unsigned int>(SDL_GetTicks());
+    static auto s_pauseBase = Clock::Now();
 
     switch (bRunning)
     {
@@ -4319,9 +4319,9 @@ void GameEngine::SetRunState(short bRunning, int)
             {
                 m_clock.nPauseMark = 1;
 
-                m_clock.nPauseStartMs = static_cast<unsigned int>(SDL_GetTicks());
+                m_clock.pauseStart = Clock::Now();
 
-                m_clock.nPeriodStartMs += m_clock.nPauseStartMs - s_dwPauseBase;
+                m_clock.periodStart += m_clock.pauseStart - s_pauseBase;
             }
 
             m_wRunState = kEngineRunPlaying;
@@ -4332,7 +4332,7 @@ void GameEngine::SetRunState(short bRunning, int)
             break;
 
         case 0:
-            s_dwPauseBase = static_cast<unsigned int>(SDL_GetTicks());
+            s_pauseBase = Clock::Now();
 
             m_wRunState = kEngineRunPaused;
 
@@ -5167,9 +5167,9 @@ void GameEngine::SetBrutality(int nValue)
 // FUNCTION: HYPERX 0x00488160
 void GameEngine::SetPeriodLengthMs(int nValue)
 {
-    if (nValue != m_nPeriodLengthMs)
+    if (Clock::Milliseconds{ static_cast<std::uint32_t>(nValue) } != m_periodLength)
     {
-        m_nPeriodLengthMs = nValue;
+        m_periodLength = Clock::Milliseconds{ static_cast<std::uint32_t>(nValue) };
 
         g_pGameOptions->WritePeriodLength(nValue);
     }

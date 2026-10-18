@@ -21,7 +21,7 @@ void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_wKind       = Agenda_CTimerActivity;
     m_bReady      = 0;
     m_pOwner      = pSubject;
-    m_nFireTickMs = 0;
+    m_fireTick    = {};
     m_nEvent      = kMsgNomsg;
     m_nTargetSlot = kTimerTargetNone;
     m_nEventParam = 0;
@@ -35,7 +35,7 @@ void CTimerActivity::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pl
     m_wKind  = Agenda_CTimerActivity;
     m_bReady = 0;
 
-    m_nFireTickMs = static_cast<int>(g_pGameEngine->m_clock.nTickMs + pNode->m_pArgs[0].n * 10);
+    m_fireTick = g_pGameEngine->m_clock.tick + Clock::Milliseconds{ static_cast<std::uint32_t>(pNode->m_pArgs[0].n * 10) };
 
     m_nEvent      = pNode->m_pArgs[1].n;
     m_nTargetSlot = pNode->m_pArgs[2].n;
@@ -61,7 +61,7 @@ void CTimerActivity::OnListChanged()
     if (m_bReady == 0)
     {
         m_pOwner      = nullptr;
-        m_nFireTickMs = 0;
+        m_fireTick    = {};
         m_nEventParam = 0;
         m_pNext       = nullptr;
         m_nEvent      = kMsgNomsg;
@@ -82,7 +82,7 @@ void CTimerActivity::Process(int nArg)
         return;
     }
 
-    if (g_pGameEngine->m_clock.nTickMs > static_cast<unsigned int>(m_nFireTickMs))
+    if (g_pGameEngine->m_clock.tick > m_fireTick)
     {
         if (m_nTargetSlot == kPlanTokenBroadcast)
         {
@@ -126,7 +126,7 @@ void CTimerActivity::Process(int nArg)
 // FUNCTION: HYPERX 0x00411c00
 void CTimerActivity::Release(int nArg)
 {
-    if (g_pGameEngine->m_clock.nTickMs > static_cast<unsigned int>(m_nFireTickMs))
+    if (g_pGameEngine->m_clock.tick > m_fireTick)
     {
         if (m_nTargetSlot == kPlanTokenBroadcast)
         {

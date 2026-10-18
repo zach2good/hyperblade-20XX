@@ -17,10 +17,10 @@ constexpr auto kInfobarMessageMax = 128;
 // FUNCTION: HYPERX 0x00452710
 MessageQueue::MessageQueue()
 {
-    m_wCount      = 0;
-    m_nExpiryTick = 0;
-    m_pnIds       = nullptr;
-    m_ppNames     = nullptr;
+    m_wCount     = 0;
+    m_expiryTick = {};
+    m_pnIds      = nullptr;
+    m_ppNames    = nullptr;
 }
 
 constexpr auto kMessageColourGreen  = 0xff00;
@@ -33,13 +33,13 @@ void MessageQueue::Update()
 {
     int nColour;
 
-    if (m_nExpiryTick != 0)
+    if (m_expiryTick != Clock::Milliseconds{})
     {
-        if (g_pGameEngine->m_clock.nTickMs > m_nExpiryTick)
+        if (g_pGameEngine->m_clock.tick > m_expiryTick)
         {
             g_pRenderer->HideMessage();
 
-            m_nExpiryTick = 0;
+            m_expiryTick = {};
         }
     }
     else if (g_pMessageHead != nullptr)
@@ -59,7 +59,7 @@ void MessageQueue::Update()
                 break;
         }
 
-        m_nExpiryTick = g_pGameEngine->m_clock.nTickMs + g_pMessageHead->m_nDurationMs;
+        m_expiryTick = g_pGameEngine->m_clock.tick + Clock::Milliseconds{ static_cast<std::uint32_t>(g_pMessageHead->m_nDurationMs) };
 
         g_pRenderer->ShowMessage();
         g_pRenderer->SetMessageText(g_pMessageHead->m_pszText, nColour);
@@ -274,7 +274,7 @@ void MessageQueue::ProcessAndClear()
 
     g_pRenderer->HideMessage();
 
-    m_nExpiryTick = 0;
+    m_expiryTick = {};
 
     while (g_pMessageHead != nullptr)
     {

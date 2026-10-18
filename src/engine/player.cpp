@@ -1,4 +1,6 @@
 #include "common/compat.h"
+#include <optional>
+#include "common/clock.h"
 #include "engine/objectclasses.h"
 #include "gameengine.h"
 #include "physics/physicsbody.h"
@@ -11,7 +13,7 @@
 #include "engine/player.h"
 #include "engine/messageids.h"
 
-constexpr auto kTrickHoldMs = 100;
+constexpr auto kTrickHold = Clock::Milliseconds{ 100 };
 
 // The trick and boost-grab steps, and the tick the hold started at; minus one means untimed.
 // GLOBAL: HYPERX 0x004cb4da
@@ -19,7 +21,7 @@ extern short g_nTrickSeqStep;
 // GLOBAL: HYPERX 0x004cb4dc
 extern short g_nBoostGrabStep;
 // GLOBAL: HYPERX 0x004bb668
-extern int g_nTrickHoldStamp;
+extern std::optional<Clock::Milliseconds> g_trickHoldStamp;
 
 // The forward key picks trick or boost-grab; a hundred milliseconds of quiet fires the neutral trick.
 // FUNCTION: HYPERX 0x004110f0
@@ -81,18 +83,18 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
             return;
         }
 
-        if (g_nTrickHoldStamp < 0)
+        if (!g_trickHoldStamp)
         {
-            g_nTrickHoldStamp = g_pGameEngine->m_clock.nTickMs;
+            g_trickHoldStamp = g_pGameEngine->m_clock.tick;
 
             return;
         }
 
-        if (g_pGameEngine->m_clock.nTickMs - static_cast<unsigned int>(g_nTrickHoldStamp) > kTrickHoldMs)
+        if (g_pGameEngine->m_clock.tick - *g_trickHoldStamp > kTrickHold)
         {
-            g_nTrickSeqStep   = 1;
-            g_nTrickHoldStamp = -1;
-            g_nBoostGrabStep  = 0;
+            g_nTrickSeqStep = 1;
+            g_trickHoldStamp.reset();
+            g_nBoostGrabStep = 0;
 
             pPlayer->PostSceneEvent(kMsgNoInputForSec, 0);
 
@@ -304,4 +306,4 @@ EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
     return pTarget;
 }
 
-int g_nTrickHoldStamp = -1;
+std::optional<Clock::Milliseconds> g_trickHoldStamp;

@@ -4,6 +4,7 @@
 #define HYPERBLADE_KEYBOARDDEVICEOBJ_H
 
 #include "engine/devicector.h"
+#include "common/clock.h"
 #include "actionbinding.h"
 #include "engine/gameengine.h"
 
@@ -27,14 +28,14 @@ public:
     int  HandleKeyUp(unsigned int nKey);
     void CheckButtonTimeouts();
 
-    unsigned int m_nHeldMask;                         // 0xd28, the current frame's held-action bitmask
-    unsigned int m_nPrevHeldMask;                     // 0xd2c, the previous frame's snapshot of it
-    unsigned int m_nStickyMask;                       // 0xd30, actions latched by a sticky binding
-    int          m_aPrevPressTime[kInputSlotCount];   // 0xd34, press time before the one in m_aPressTime
-    int          m_aPressTime[kInputSlotCount];       // 0xd74, this key's last press timestamp
-    int          m_aPrevReleaseTime[kInputSlotCount]; // 0xdb4, release time before the one in m_aReleaseTime
-    int          m_aReleaseTime[kInputSlotCount];     // 0xdf4, this key's last release timestamp
-    unsigned int m_nDoubleTapMs;                      // 0xe34, the double-tap window both handlers test against
+    unsigned int        m_nHeldMask;                         // 0xd28, the current frame's held-action bitmask
+    unsigned int        m_nPrevHeldMask;                     // 0xd2c, the previous frame's snapshot of it
+    unsigned int        m_nStickyMask;                       // 0xd30, actions latched by a sticky binding
+    Clock::Milliseconds m_aPrevPressTime[kInputSlotCount];   // 0xd34, press time before the one in m_aPressTime
+    Clock::Milliseconds m_aPressTime[kInputSlotCount];       // 0xd74, this key's last press timestamp
+    Clock::Milliseconds m_aPrevReleaseTime[kInputSlotCount]; // 0xdb4, release time before the one in m_aReleaseTime
+    Clock::Milliseconds m_aReleaseTime[kInputSlotCount];     // 0xdf4, this key's last release timestamp
+    Clock::Milliseconds m_doubleTap;                         // 0xe34, the double-tap window both handlers test against
     // The sticky binding recorded per key, or null.
     struct ActionBinding* m_apStickyBinding[kInputSlotCount]; // 0xe38
 

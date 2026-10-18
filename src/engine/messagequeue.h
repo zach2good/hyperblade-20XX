@@ -3,6 +3,7 @@
 #ifndef HYPERBLADE_MESSAGEQUEUE_H
 #define HYPERBLADE_MESSAGEQUEUE_H
 #include "common/compat.h"
+#include "common/clock.h"
 
 #include "globals.h"
 #include <string.h>
@@ -77,7 +78,7 @@ private:
     int*         m_pnIds;   // 0x04
     short        m_wCount;  // 0x08
     // When the message on show comes down; zero when none is.
-    unsigned int m_nExpiryTick; // 0x0c
+    Clock::Milliseconds m_expiryTick; // 0x0c
 };
 
 #endif

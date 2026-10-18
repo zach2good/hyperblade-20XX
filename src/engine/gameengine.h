@@ -4,6 +4,7 @@
 #define HYPERBLADE_GAMEENGINE_H
 
 #include "common/compat.h"
+#include "common/clock.h"
 #include "engine/engineobject.h"
 #include "engine/coachobject.h"
 #include "engine/collisionobjectids.h"
@@ -222,9 +223,9 @@ struct GameEngine
     DifficultyLevel m_nDifficulty; // 0x52b0
     int             m_nBrutality;  // 0x52b4
     // The screen size step, 0 to 6.
-    int m_nScreenSize;     // 0x52b8
-    int m_nPeriodLengthMs; // 0x52bc
-    int m_nAttackMode;     // 0x52c0
+    int                 m_nScreenSize;  // 0x52b8
+    Clock::Milliseconds m_periodLength; // 0x52bc
+    int                 m_nAttackMode;  // 0x52c0
     // The teammate mode, read from the options under g_pszTeammateModeKey.
     int m_nTeammateMode; // 0x52c4
     // One flag per award, which the awards screen shows.

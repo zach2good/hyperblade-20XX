@@ -23,7 +23,7 @@ void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_wKind  = Agenda_CUpdateShotPower;
     m_pOwner = pSubject;
 
-    m_nStarted = g_pGameEngine->m_clock.nTickMs;
+    m_started = g_pGameEngine->m_clock.tick;
 
     g_pGameEngine->GetCamera(kCameraHeadSlot)->m_nShotPowerLevel = 1;
 
@@ -43,12 +43,12 @@ void CUpdateShotPower::OnListChanged()
 {
     if (m_bReady == 0)
     {
-        m_pOwner   = nullptr;
-        m_nStarted = 0;
-        m_flPower  = 0;
-        m_pOrigin  = nullptr;
-        m_pNext    = nullptr;
-        m_bReady   = 1;
+        m_pOwner  = nullptr;
+        m_started = {};
+        m_flPower = 0;
+        m_pOrigin = nullptr;
+        m_pNext   = nullptr;
+        m_bReady  = 1;
 
         g_apAgendaItemPools[m_wKind]->Insert(this);
     }
@@ -64,7 +64,7 @@ void CUpdateShotPower::Process(int nArg)
 
     if (pCamera->m_bShotPowerShown != 0)
     {
-        nAmount = static_cast<int>(static_cast<float>(g_pGameEngine->m_clock.nTickMs - m_nStarted) * (m_flPower + 12.0f) * 0.004f);
+        nAmount = static_cast<int>(static_cast<float>((g_pGameEngine->m_clock.tick - m_started).count()) * (m_flPower + 12.0f) * 0.004f);
 
         if (nAmount > kShotPowerMax)
         {

@@ -74,7 +74,7 @@ float MatchStats::AccumulateStat(int nStatId, int)
             break;
 
         case kMatchStatPossStart:
-            m_aStat[kMatchStatPossStart] = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
+            m_aStat[kMatchStatPossStart] = static_cast<float>(g_pGameEngine->m_clock.tick.count());
 
             g_bStatIntervalOpen = 1;
 
@@ -83,7 +83,7 @@ float MatchStats::AccumulateStat(int nStatId, int)
         case kMatchStatPossStop:
             if (g_bStatIntervalOpen != 0)
             {
-                const auto flNow = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
+                const auto flNow = static_cast<float>(g_pGameEngine->m_clock.tick.count());
 
                 m_aStat[kMatchStatPossStop] = flNow;
                 m_aStat[kMatchStatTimeOfPoss] =
@@ -117,12 +117,12 @@ float MatchStats::AccumulateStat(int nStatId, int)
             break;
 
         case kMatchStatAssists:
-            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 15000.0f < m_aStat[kMatchStatTopStampEnd])
+            if (static_cast<float>(g_pGameEngine->m_clock.tick.count()) - 15000.0f < m_aStat[kMatchStatTopStampEnd])
             {
                 m_aStat[kMatchStatAssists]++;
             }
 
-            if (static_cast<float>(g_pGameEngine->m_clock.nTickMs) - 1000.0f < m_aStat[kMatchStatTopStampEnd])
+            if (static_cast<float>(g_pGameEngine->m_clock.tick.count()) - 1000.0f < m_aStat[kMatchStatTopStampEnd])
             {
                 m_aStat[kMatchStatOneTimers]++;
 
@@ -184,7 +184,7 @@ float MatchStats::StartTimer(int nIndex)
 {
     if (m_aStat[nIndex] == 0.0f)
     {
-        m_aStat[nIndex] = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
+        m_aStat[nIndex] = static_cast<float>(g_pGameEngine->m_clock.tick.count());
     }
 
     return m_aStat[nIndex];
@@ -195,7 +195,7 @@ float MatchStats::StartTimer(int nIndex)
 // FUNCTION: HYPERX 0x00491cd0
 float MatchStats::StopTimer(int nIndex)
 {
-    const auto flNow = static_cast<float>(g_pGameEngine->m_clock.nTickMs);
+    const auto flNow = static_cast<float>(g_pGameEngine->m_clock.tick.count());
 
     m_aStat[nIndex] = flNow;
 

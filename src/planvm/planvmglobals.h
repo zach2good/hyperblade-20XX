@@ -3,12 +3,13 @@
 #ifndef HYPERBLADE_PLANVMGLOBALS_H
 #define HYPERBLADE_PLANVMGLOBALS_H
 #include "common/compat.h"
+#include "common/clock.h"
 
 #include "globals.h"
 
 // When the announcer last picked a line.
 // GLOBAL: HYPERX 0x004cfa54
-extern int g_nAnnouncerLineMs;
+extern Clock::Milliseconds g_announcerLine;
 
 // GLOBAL: HYPERX 0x004b4110
 extern const char* const g_pszPbnExtension;

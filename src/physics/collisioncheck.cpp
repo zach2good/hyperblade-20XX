@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "planvm/behaviorids.h"
 #include "engine/gameengine.h"
 #include "physicsbody.h"
@@ -34,7 +35,7 @@ extern const float g_flGoalFrameWidth;
 extern float g_flGoalZoneHeight;
 
 // GLOBAL: HYPERX 0x004c2fec
-extern const unsigned int g_nGoalScoreDebounceMs;
+extern const Clock::Milliseconds g_goalScoreDebounce;
 
 // One unit by ten for the acting object, one by four for its partner.
 // GLOBAL: HYPERX 0x004c459c
@@ -242,18 +243,18 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
         return;
     }
 
-    const auto nTick      = g_pGameEngine->m_clock.nTickMs;
-    const auto nLastScore = pOwn->m_nLastGoalTickMs;
+    const auto nTick      = g_pGameEngine->m_clock.tick;
+    const auto nLastScore = pOwn->m_lastGoalTick;
 
-    if (nLastScore != 0 && nTick - nLastScore < g_nGoalScoreDebounceMs)
+    if (nLastScore != Clock::Milliseconds{} && nTick - nLastScore < g_goalScoreDebounce)
     {
         *pResult = 3;
 
         return;
     }
 
-    pOwn->m_nLastGoalTickMs = nTick;
-    *pResult                = 2;
+    pOwn->m_lastGoalTick = nTick;
+    *pResult             = 2;
 }
 
 // id_DCF_DromerRampCollision, opcode 68: a miss answers two, a hit one above speed 50.
@@ -1031,13 +1032,13 @@ Vec3* CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshBoundingB
 extern float g_flGoalZoneHeight;
 float        g_flGoalZoneHeight = 5.0f;
 
-extern const unsigned int g_nGoalScoreDebounceMs;
-const unsigned int        g_nGoalScoreDebounceMs = 400;
-float                     g_flVelBoxSizeX        = 1.0f;
-float                     g_flVelBoxSizeZ        = 1.0f;
-float                     g_flVelBoxSizeY        = 4.0f;
-float                     g_flVelBoxDropY        = 4.0f;
-float                     g_flVelHitSpeedGate    = 50.0f;
+extern const Clock::Milliseconds g_goalScoreDebounce;
+const Clock::Milliseconds        g_goalScoreDebounce{ 400 };
+float                            g_flVelBoxSizeX     = 1.0f;
+float                            g_flVelBoxSizeZ     = 1.0f;
+float                            g_flVelBoxSizeY     = 4.0f;
+float                            g_flVelBoxDropY     = 4.0f;
+float                            g_flVelHitSpeedGate = 50.0f;
 
 extern float g_flCapsuleSelfRadius;
 float        g_flCapsuleSelfRadius = 0.5f;

@@ -340,10 +340,10 @@ short EngineObject::GetComponentCount()
 // FUNCTION: HYPERX 0x0046fe60
 EngineObject::EngineObject(int nSlot, class ObjectDef* pDef)
 {
-    m_nUnusedC        = 0;
-    m_nUnusedB        = 0;
-    m_nUnusedA        = 0;
-    m_nLastGoalTickMs = 0;
+    m_nUnusedC     = 0;
+    m_nUnusedB     = 0;
+    m_nUnusedA     = 0;
+    m_lastGoalTick = {};
 
     InitFields();
 
@@ -571,7 +571,7 @@ void EngineObject::InitFields()
         m_anCommandArg[nEntry] = kObjTableEmpty;
     }
 
-    m_nLastSendMs      = 0;
+    m_lastSend         = {};
     m_sendCursor.nWord = 0;
 }
 

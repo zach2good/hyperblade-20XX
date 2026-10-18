@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "common/path.h"
 #include "soundmixer.h"
 #include "engine/gameoptions.h"
@@ -322,7 +323,7 @@ void SoundMixer::Play(SoundEntry* pSound)
     voice.pSource = pSound;
 
     pSound->m_nPlayState = kSoundStatePlaying;
-    pSound->m_nStartedMs = static_cast<unsigned int>(SDL_GetTicks());
+    pSound->m_started    = Clock::Now();
 }
 
 // FUNCTION: HYPERX 0x004907d0

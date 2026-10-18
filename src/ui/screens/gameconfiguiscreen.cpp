@@ -43,7 +43,7 @@ GameConfigUIScreen::GameConfigUIScreen()
     {
         g_nOptionAttackMode = g_nOptionsSavedAttackMode = g_pGameEngine->m_nAttackMode;
         g_nOptionTeammateMode = g_nOptionsSavedTeammateMode = g_pGameEngine->m_nTeammateMode;
-        g_nPeriodLengthMs = g_nOptionsSavedPeriodLengthMs = g_pGameEngine->m_nPeriodLengthMs;
+        g_nPeriodLengthMs = g_nOptionsSavedPeriodLengthMs = static_cast<int>(g_pGameEngine->m_periodLength.count());
 
         g_nOptionSfxVolume = g_nOptionsSavedSfxVolume = g_pAudioMgr->SfxReadVolume();
         g_nOptionMusicVolume = g_nOptionsSavedCdVolume = g_pAudioMgr->CDReadVolume();

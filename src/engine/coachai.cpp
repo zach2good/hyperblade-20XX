@@ -259,9 +259,9 @@ int GameEngine::CheckHandicapCondition()
 
     if (g_pGameEngine->m_clock.nPeriod == g_nFinalPeriod)
     {
-        nElapsed = g_pGameEngine->m_clock.nPauseStartMs - g_pGameEngine->m_clock.nPeriodStartMs;
+        nElapsed = static_cast<int>((g_pGameEngine->m_clock.pauseStart - g_pGameEngine->m_clock.periodStart).count());
 
-        if (static_cast<double>(nElapsed) >= static_cast<double>(g_pGameEngine->m_nPeriodLengthMs) - (g_dMsPerMinute + g_dMsPerMinute))
+        if (static_cast<double>(nElapsed) >= static_cast<double>(g_pGameEngine->m_periodLength.count()) - (g_dMsPerMinute + g_dMsPerMinute))
         {
             if (abs(g_pGameEngine->GetHomeScore() - g_pGameEngine->GetAwayScore()) >= 2)
             {
@@ -552,9 +552,9 @@ void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
         {
             auto flLevel = pTeam->aRows[i].aStat[kRatingDamage];
 
-            if (pTeam->aReserveSince[i] != 0)
+            if (pTeam->aReserveSince[i] != Clock::Milliseconds{})
             {
-                flLevel = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[i]) / (13500.0f / DamageGate()) + flLevel;
+                flLevel = static_cast<float>((g_pGameEngine->m_clock.tick - pTeam->aReserveSince[i]).count()) / (13500.0f / DamageGate()) + flLevel;
             }
 
             if (flLevel > pTeam->aRows[i].aStat[kRatingSubInDamage])
@@ -624,16 +624,16 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
     // The second candidate's limit reads the first candidate's row, as in the original.
     const auto flSecondSubOut = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
 
-    if (pTeam->aReserveSince[nFirst] != 0)
+    if (pTeam->aReserveSince[nFirst] != Clock::Milliseconds{})
     {
         const auto flGate = DamageGate();
 
-        flFirst = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
+        flFirst = static_cast<float>((g_pGameEngine->m_clock.tick - pTeam->aReserveSince[nFirst]).count()) / (13500.0f / flGate) + flFirst;
     }
 
-    if (pTeam->aReserveSince[nSecond] != 0)
+    if (pTeam->aReserveSince[nSecond] != Clock::Milliseconds{})
     {
-        flSecond = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nSecond]) / (13500.0f / DamageGate()) + flSecond;
+        flSecond = static_cast<float>((g_pGameEngine->m_clock.tick - pTeam->aReserveSince[nSecond]).count()) / (13500.0f / DamageGate()) + flSecond;
     }
 
     if (sCandidate == kSlotNone)

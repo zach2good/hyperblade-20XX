@@ -501,7 +501,7 @@ void CGlideOnSurface::Release(int nTick)
 
         const auto nElapsed =
             static_cast<unsigned int>(static_cast<long>(g_pGameEngine->m_clock.flDelta * MS_PER_SECOND));
-        const auto nTickBase = g_pGameEngine->m_clock.nPrevTickMs;
+        const auto nTickBase = g_pGameEngine->m_clock.prevTick;
         const auto flDelta   = g_pGameEngine->m_clock.flDelta;
 
         pBody = m_pOwner->GetPhysicsBody();
@@ -510,7 +510,7 @@ void CGlideOnSurface::Release(int nTick)
         if (nElapsed > 0)
         {
             const float flDrift =
-                (static_cast<float>(nTickBase + nElapsed) - static_cast<float>(*m_pnPrevTick)) / (g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
+                (static_cast<float>(nTickBase.count() + nElapsed) - static_cast<float>(*m_pnPrevTick)) / (g_pGameEngine->m_clock.flDelta * MS_PER_SECOND);
 
             vLag.x = flDrift * m_pVel->x;
             vLag.y = flDrift * m_pVel->y;

@@ -2,6 +2,7 @@
 #define HYPERBLADE_CTIMERACTIVITY_H
 
 #include "planvm/kindagendaitem.h"
+#include "common/clock.h"
 
 class EngineObject;
 struct PlanNode;
@@ -29,7 +30,7 @@ public:
     }
 
     // No macro names this run; the reads agree on the machine word at every offset.
-    int m_nFireTickMs; // 0x10
+    Clock::Milliseconds m_fireTick; // 0x10
     // The event id and the word that rides with it; the default binds seed kMsgNomsg.
     int m_nEvent; // 0x14
     // 0xffff broadcasts to every object of the owner's kind; anything else indexes the slot array.

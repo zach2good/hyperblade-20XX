@@ -28,7 +28,7 @@ void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     m_pWatchPos = &pOwner->GetPhysicsBody()->pos;
     m_pWatchDir = &pOwner->GetPhysicsBody()->velDir;
-    m_nUnused   = g_pGameEngine->m_clock.nTickMs;
+    m_nUnused   = static_cast<int>(g_pGameEngine->m_clock.tick.count());
 }
 
 // FUNCTION: HYPERX 0x0040b720

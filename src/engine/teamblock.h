@@ -4,6 +4,7 @@
 #define HYPERBLADE_TEAMBLOCK_H
 
 #include "teamplayerrow.h"
+#include "common/clock.h"
 #include "objectdef.h"
 #include "engine/statids.h"
 #include "engine/teamsblock.h"
@@ -56,7 +57,7 @@ struct TeamBlock
     TeamStatRow         aStatRows[kTeamRowCount];     // 0x170
     TeamPlayerRow       aRows[kTeamRowCount];         // 0x480
     int                 aSeat[kTeamBlockSeats];       // 0x870
-    int                 aReserveSince[kTeamRowCount]; // 0x878
+    Clock::Milliseconds aReserveSince[kTeamRowCount]; // 0x878
 };
 
 static_assert(sizeof(TeamStatRow) == 0xc4);

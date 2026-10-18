@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "engine/devicector.h"
 #include "physicsbody.h"
 #include "common/staticinit.h"
@@ -235,7 +236,7 @@ void PhysicsBody::PerFrameTick()
     }
 }
 
-constexpr auto kShootDriveTailMs = 1000;
+constexpr auto kShootDriveTail = Clock::Milliseconds{ 1000 };
 
 #define AXIS_FLOOR_IDLE 0.005
 
@@ -246,7 +247,7 @@ constexpr auto kShootDriveTailMs = 1000;
 // GLOBAL: HYPERX 0x004cb3a9
 extern unsigned char g_bMoveAxesShootHeld;
 // GLOBAL: HYPERX 0x004cb3ac
-extern unsigned int g_nMoveAxesShootReleaseTick;
+extern Clock::Milliseconds g_moveAxesShootReleaseTick;
 
 // The stop binding, published for the two steering blocks and cleared by each.
 // GLOBAL: HYPERX 0x004cb3a8
@@ -356,17 +357,17 @@ void PhysicsBody::UpdateMovementAxes()
     }
     else if (g_bMoveAxesShootHeld != 0)
     {
-        g_nMoveAxesShootReleaseTick = g_pGameEngine->m_clock.nTickMs;
-        g_bMoveAxesShootHeld        = 0;
+        g_moveAxesShootReleaseTick = g_pGameEngine->m_clock.tick;
+        g_bMoveAxesShootHeld       = 0;
     }
 
-    if (g_nMoveAxesShootReleaseTick != 0)
+    if (g_moveAxesShootReleaseTick != Clock::Milliseconds{})
     {
         axis.x = flPush + axis.x;
 
-        if (g_pGameEngine->m_clock.nTickMs - g_nMoveAxesShootReleaseTick > kShootDriveTailMs)
+        if (g_pGameEngine->m_clock.tick - g_moveAxesShootReleaseTick > kShootDriveTail)
         {
-            g_nMoveAxesShootReleaseTick = 0;
+            g_moveAxesShootReleaseTick = {};
         }
     }
 

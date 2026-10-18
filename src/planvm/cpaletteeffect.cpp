@@ -37,9 +37,9 @@ void CPaletteEffect::OnListChanged()
         m_pEffect = nullptr;
     }
 
-    m_nExpiry = 0;
-    m_pOwner  = nullptr;
-    m_pNext   = nullptr;
+    m_expiry = {};
+    m_pOwner = nullptr;
+    m_pNext  = nullptr;
 
     m_bReady = 1;
 
@@ -79,7 +79,7 @@ int CPaletteEffect::CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry 
             return 0;
         }
 
-        m_nExpiry = g_pGameEngine->m_clock.nTickMs + nDuration;
+        m_expiry = g_pGameEngine->m_clock.tick + Clock::Milliseconds{ static_cast<std::uint32_t>(nDuration) };
 
         return 1;
     }
@@ -98,7 +98,7 @@ void CPaletteEffect::Process(int nArg)
         m_pNext->Process(nArg);
     }
 
-    if (g_pGameEngine->m_clock.nTickMs > m_nExpiry)
+    if (g_pGameEngine->m_clock.tick > m_expiry)
     {
         Detach();
     }

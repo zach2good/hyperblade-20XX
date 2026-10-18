@@ -2,6 +2,7 @@
 #define HYPERBLADE_ENGINEOBJECT_H
 
 #include "common/compat.h"
+#include "common/clock.h"
 #include "engine/objectbase.h"
 #include "engine/syncsendcursor.h"
 #include "math/transformobject.h"
@@ -146,7 +147,7 @@ public:
     void BuildShadowComponentLinks(class MeshBone* pSlot);
 
     // The tick of the last goal, for the score debounce; zero means no goal yet.
-    unsigned int m_nLastGoalTickMs; // 0x008
+    Clock::Milliseconds m_lastGoalTick; // 0x008
 protected:
     // Three words the constructor zeroes and nothing reads.
     int m_nUnusedA; // 0x00c
@@ -284,7 +285,7 @@ public:
     short m_wVisibleFaceTotal; // 0xd08
 protected:
     // The tick the last periodic message went out; RokObject and PlayerObject share it.
-    int m_nLastSendMs; // 0xd0c
+    Clock::Milliseconds m_lastSend; // 0xd0c
     // The stat row wraps past kBotSlotLimit.
     SyncSendCursor m_sendCursor; // 0xd10
 

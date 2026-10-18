@@ -135,7 +135,7 @@ unsigned short SoundManager::Load(const char* pszListName)
         m_apSounds[nIndex]->m_nPan        = 0;
         m_apSounds[nIndex]->m_nVolume     = 0;
         m_apSounds[nIndex]->m_nGroup      = nGroup;
-        m_apSounds[nIndex]->m_nStartedMs  = 0;
+        m_apSounds[nIndex]->m_started     = {};
         m_apSounds[nIndex]->m_nPlayState  = kSoundStateIdle;
         m_apSounds[nIndex]->m_nDurationMs = nDuration;
 

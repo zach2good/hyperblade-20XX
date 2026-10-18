@@ -4,6 +4,7 @@
 #define HYPERBLADE_PALETTEFADE_H
 
 #include "common/compat.h"
+#include "common/clock.h"
 #include "graphics/bitmapformat.h"
 #include "graphics/paletterange.h"
 
@@ -25,21 +26,21 @@ public:
     virtual int  ApplyPhase(int bPhase) = 0;                  // slot 4, pure
 
 protected:
-    int           m_nKind;        // 0x004
-    unsigned int  m_iStart;       // 0x008
-    unsigned int  m_cEntries;     // 0x00c
-    PaletteEntry* m_pEntries;     // 0x010
-    unsigned int  m_iWorkStart;   // 0x014
-    unsigned int  m_cWorkEntries; // 0x018
-    PaletteEntry* m_pWorkEntries; // 0x01c
-    unsigned int  m_nDuration;    // 0x020
-    unsigned int  m_dwStepped;    // 0x024
-    int           m_bPhase;       // 0x028
-    int           m_bActive;      // 0x02c
+    int                 m_nKind;        // 0x004
+    unsigned int        m_iStart;       // 0x008
+    unsigned int        m_cEntries;     // 0x00c
+    PaletteEntry*       m_pEntries;     // 0x010
+    unsigned int        m_iWorkStart;   // 0x014
+    unsigned int        m_cWorkEntries; // 0x018
+    PaletteEntry*       m_pWorkEntries; // 0x01c
+    Clock::Milliseconds m_duration;     // 0x020
+    Clock::Milliseconds m_stepped;      // 0x024
+    int                 m_bPhase;       // 0x028
+    int                 m_bActive;      // 0x02c
 };
 
 constexpr auto kPlainFadeKind     = 2;
-constexpr auto kPlainFadeDuration = 500;
+constexpr auto kPlainFadeDuration = Clock::Milliseconds{ 500 };
 
 // SYNTHETIC: HYPERX 0x0042ce40
 // PaletteFade::`scalar deleting destructor'

@@ -58,9 +58,9 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     memcpy(pEntries, &g_pColorPalette->m_current[m_iWorkStart], m_cWorkEntries * sizeof(PaletteEntry));
 
-    m_nDuration = 1000;
+    m_duration = std::chrono::seconds{ 1 };
 
-    m_dwStepped = static_cast<unsigned int>(SDL_GetTicks());
+    m_stepped = Clock::Now();
 
     m_bPhase = 1;
 }

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include <cstdint>
 #include <algorithm>
 #include "math/mathops.h"
@@ -608,8 +609,6 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
 {
     const SystemSyncWord packed = { static_cast<unsigned int>(nArg) };
 
-    int nTotal;
-
     auto* const pActor = pContext->GetActor();
 
     if (pActor->GetPhase() == ObjectPhase::kLocal)
@@ -664,8 +663,7 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
         }
     }
 
-    nTotal                 = pClock->nPauseStartMs - packed.GetElapsed() * kSyncElapsedUnitMs;
-    pClock->nPeriodStartMs = nTotal;
+    pClock->periodStart = pClock->pauseStart - Clock::Milliseconds{ static_cast<std::uint32_t>(packed.GetElapsed() * kSyncElapsedUnitMs) };
 
     g_pGameEngine->SetHomeScore(packed.GetHomeScore());
     g_pGameEngine->SetAwayScore(packed.GetAwayScore());
@@ -1445,15 +1443,15 @@ void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, i
     *pResult = 1;
 }
 
-constexpr auto kAnnouncerGagMs = 0x3a98;
+constexpr auto kAnnouncerGag = Clock::Milliseconds{ 0x3a98 };
 
 // Inside the gag window it answers one past the highest draw.
 // FUNCTION: HYPERX 0x0045fac0
 void PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
 {
-    const int nNow = g_pGameEngine->m_clock.nTickMs;
+    const auto now = g_pGameEngine->m_clock.tick;
 
-    if (static_cast<unsigned int>(nNow - g_nAnnouncerLineMs) < kAnnouncerGagMs)
+    if (now - g_announcerLine < kAnnouncerGag)
     {
         *pnOut = static_cast<short>(pArgs->m_nArgCount - 2);
 
@@ -1462,7 +1460,7 @@ void PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
 
     *pnOut = static_cast<short>(static_cast<long long>(rand()) * (pArgs->m_nArgCount - 2) / (static_cast<long long>(RAND_MAX) + 1));
 
-    g_nAnnouncerLineMs = nNow;
+    g_announcerLine = now;
 }
 
 // FUNCTION: HYPERX 0x0045fb30
@@ -1525,16 +1523,16 @@ void PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult,
 // The selector that arms the throttle instead of answering a state.
 constexpr auto kSelectorArm = 0x18;
 
-constexpr auto kArmWindowMs   = 300;
-constexpr auto kStateWindowMs = 800;
+constexpr auto kArmWindow   = Clock::Milliseconds{ 300 };
+constexpr auto kStateWindow = Clock::Milliseconds{ 800 };
 
 // The tick the arming selector last ran at.
 // GLOBAL: HYPERX 0x004cf9f8
-extern unsigned int g_nRokCameraArmedTick;
+extern Clock::Milliseconds g_rokCameraArmedTick;
 
 // The tick this condition last answered at.
 // GLOBAL: HYPERX 0x004cf9f4
-extern unsigned int g_nRokCameraStateTick;
+extern Clock::Milliseconds g_rokCameraStateTick;
 
 // FUNCTION: HYPERX 0x0045fcf0
 void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector)
@@ -1548,7 +1546,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
     if (nSelector == kSelectorArm)
     {
-        g_nRokCameraArmedTick = g_pGameEngine->m_clock.nTickMs;
+        g_rokCameraArmedTick = g_pGameEngine->m_clock.tick;
 
         pTarget = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody()->pAttach;
 
@@ -1630,7 +1628,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 
                 if (nSlot == static_cast<short>(nOther & 3))
                 {
-                    if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick > kArmWindowMs)
+                    if (g_pGameEngine->m_clock.tick - g_rokCameraArmedTick > kArmWindow)
                     {
                         const auto flFacing = static_cast<float>(cos(static_cast<double>(PlanUtil::ComputeConeHalfAngle(
                             nSlot, g_pGameEngine->m_nViewedSlot))));
@@ -1645,7 +1643,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                             *pResult = 4;
                         }
                     }
-                    else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > kStateWindowMs)
+                    else if (g_pGameEngine->m_clock.tick - g_rokCameraStateTick > kStateWindow)
                     {
                         *pResult = static_cast<short>((g_pGameEngine->m_bFollowingOther != 0) + 6);
                     }
@@ -1654,7 +1652,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                         *pResult = 7;
                     }
                 }
-                else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick < kArmWindowMs && g_pGameEngine->m_clock.nTickMs - g_nRokCameraStateTick > kStateWindowMs)
+                else if (g_pGameEngine->m_clock.tick - g_rokCameraArmedTick < kArmWindow && g_pGameEngine->m_clock.tick - g_rokCameraStateTick > kStateWindow)
                 {
                     if (g_pGameEngine->m_bFollowingOther != 0)
                     {
@@ -1671,7 +1669,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
                 }
             }
         }
-        else if (g_pGameEngine->m_clock.nTickMs - g_nRokCameraArmedTick < kArmWindowMs)
+        else if (g_pGameEngine->m_clock.tick - g_rokCameraArmedTick < kArmWindow)
         {
             if (g_pGameEngine->m_bFollowingOther != 0)
             {
@@ -1687,7 +1685,7 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
             *pResult = 7;
         }
 
-        g_nRokCameraStateTick = g_pGameEngine->m_clock.nTickMs;
+        g_rokCameraStateTick = g_pGameEngine->m_clock.tick;
     }
 
     pOwner = g_pGameEngine->m_ppSlots[g_pGameEngine->m_nViewedSlot]->GetPhysicsBody()->pPlayer;
@@ -4591,16 +4589,16 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
     auto flFirst  = pTeam->aRows[nFirst].aStat[kRatingDamage];
     auto flSecond = pTeam->aRows[nSecond].aStat[kRatingDamage];
 
-    if (pTeam->aReserveSince[nFirst] != 0)
+    if (pTeam->aReserveSince[nFirst] != Clock::Milliseconds{})
     {
         const auto flGate = DamageGate();
 
-        flFirst = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nFirst]) / (13500.0f / flGate) + flFirst;
+        flFirst = static_cast<float>((g_pGameEngine->m_clock.tick - pTeam->aReserveSince[nFirst]).count()) / (13500.0f / flGate) + flFirst;
     }
 
-    if (pTeam->aReserveSince[nSecond] != 0)
+    if (pTeam->aReserveSince[nSecond] != Clock::Milliseconds{})
     {
-        flSecond = static_cast<float>(g_pGameEngine->m_clock.nTickMs - pTeam->aReserveSince[nSecond]) / (13500.0f / DamageGate()) + flSecond;
+        flSecond = static_cast<float>((g_pGameEngine->m_clock.tick - pTeam->aReserveSince[nSecond]).count()) / (13500.0f / DamageGate()) + flSecond;
     }
 
     if (sCandidate < SLOT_FAR_HALF)

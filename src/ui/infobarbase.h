@@ -2,6 +2,7 @@
 #define HYPERBLADE_INFOBARBASE_H
 
 #include "common/compat.h"
+#include "common/clock.h"
 #include "graphics/renderer.h"
 
 // The renderer interface: a destructor, one no-op and twenty three pure slots.
@@ -23,8 +24,8 @@ public:
     ~InfoBarBase() override = default;
 
     // src/app/gameapp.cpp reads the flag to route Enter and Esc.
-    int          m_bQuitPromptVisible; // 0x004
-    unsigned int m_nQuitPromptTick;    // 0x008
+    int                 m_bQuitPromptVisible; // 0x004
+    Clock::Milliseconds m_quitPromptTick;     // 0x008
 
     static InfoBarBase* Create();
 };

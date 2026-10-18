@@ -3,6 +3,8 @@
 #ifndef HYPERBLADE_SOUNDMANAGER_H
 #define HYPERBLADE_SOUNDMANAGER_H
 
+#include "common/clock.h"
+
 constexpr auto kSoundmgrSlots = 15;
 
 // The manager's own "no sound", which the clip index compares against.
@@ -31,8 +33,8 @@ struct SoundEntry
     int m_nPan;    // 0x14
     int m_nVolume; // 0x18
     // When the play started, in milliseconds since start up.
-    unsigned int m_nStartedMs; // 0x1c
-    int          m_nPlayState; // 0x20
+    Clock::Milliseconds m_started;    // 0x1c
+    int                 m_nPlayState; // 0x20
     // Load clears it; CPanSound tests it through a sound pointer nothing sets.
     int   m_bPannable;      // 0x24
     int   m_nSamplesPerSec; // 0x28, WAVEFORMATEX::nSamplesPerSec

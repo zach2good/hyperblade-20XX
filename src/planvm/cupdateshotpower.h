@@ -2,6 +2,7 @@
 #define HYPERBLADE_CUPDATESHOTPOWER_H
 
 #include "planvm/releasingagendaitem.h"
+#include "common/clock.h"
 
 class EngineObject;
 
@@ -15,10 +16,10 @@ public:
     void OnListChanged() override;
 
     // The engine tick at bind, which Process measures against.
-    unsigned int m_nStarted; // 0x10
-    int          m_nUnused;  // 0x14
-    float        m_flPower;  // 0x18
-    Vec3*        m_pOrigin;  // 0x1c
+    Clock::Milliseconds m_started; // 0x10
+    int                 m_nUnused; // 0x14
+    float               m_flPower; // 0x18
+    Vec3*               m_pOrigin; // 0x1c
 };
 
 #endif

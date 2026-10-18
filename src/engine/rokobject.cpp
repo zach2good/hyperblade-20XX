@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "engine/messageids.h"
 #include "physics/physicsbody.h"
 #include "devicector.h"
@@ -147,7 +148,7 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
     }
 }
 
-constexpr auto kBotSendInterval = 0x1f4;
+constexpr auto kBotSendInterval = Clock::Milliseconds{ 0x1f4 };
 constexpr auto kBotSlotLimit    = 7;
 
 // Sent at most every 500 ms; the phase compare reads two bytes that were never written.
@@ -175,7 +176,7 @@ void RokObject::Postpass()
         return;
     }
 
-    if (static_cast<unsigned int>(m_nLastSendMs + kBotSendInterval) >= g_pGameEngine->m_clock.nTickMs)
+    if (m_lastSend + kBotSendInterval >= g_pGameEngine->m_clock.tick)
     {
         return;
     }
@@ -191,7 +192,7 @@ void RokObject::Postpass()
             nPayload = kSystemSyncPaused;
         }
 
-        nIndex = static_cast<int>((g_pGameEngine->m_clock.nPauseStartMs - g_pGameEngine->m_clock.nPeriodStartMs) / 100) & 0x7fff;
+        nIndex = static_cast<int>((g_pGameEngine->m_clock.pauseStart - g_pGameEngine->m_clock.periodStart).count() / 100) & 0x7fff;
 
         nPayload |= SystemSyncWord::Pack(nIndex, g_pGameEngine->GetHomeScore(), g_pGameEngine->GetAwayScore());
 
@@ -261,7 +262,7 @@ void RokObject::Postpass()
 
     PostSceneMessage(nMessage, nPayload, GetSlot(), 0);
 
-    m_nLastSendMs = g_pGameEngine->m_clock.nTickMs;
+    m_lastSend = g_pGameEngine->m_clock.tick;
 }
 
 // The scratch transform is constructed on the first call and never read.

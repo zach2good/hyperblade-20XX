@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include <algorithm>
 #include "graphics/bitmapformat.h"
 #include "palettefade.h"
@@ -10,7 +11,7 @@
 // The duration is five hundred milliseconds.
 
 constexpr auto kScalarKind     = 3;
-constexpr auto kScalarDuration = 500;
+constexpr auto kScalarDuration = Clock::Milliseconds{ 500 };
 
 // FUNCTION: HYPERX 0x0042cfc0
 PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
@@ -37,7 +38,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
         m_cBrightest = cGreen;
     }
 
-    m_nDuration = kScalarDuration;
+    m_duration = kScalarDuration;
 }
 
 // The double constant at 0x004b1ac0.
@@ -67,7 +68,7 @@ int PaletteScalarFade::Tick()
     if (bPhase != m_bPhase)
     {
         const auto cRange   = m_cBrightest;
-        const auto dSeconds = static_cast<double>(m_nDuration) * MS_TO_SECONDS;
+        const auto dSeconds = std::chrono::duration<double>(m_duration).count();
         cStep               = static_cast<unsigned char>(m_cBrightest / static_cast<float>(dSeconds * g_pGameEngine->m_clock.GetInvDelta()));
 
         if (cStep > cRange)

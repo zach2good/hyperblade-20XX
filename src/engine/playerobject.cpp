@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include "engine/messageids.h"
 #include "objectclasses.h"
 #include "objectdef.h"
@@ -98,7 +99,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
     m_wFlyingSemaphore       = 0;
 }
 
-constexpr auto kDamageUpdateInterval = 2000;
+constexpr auto kDamageUpdateInterval = Clock::Milliseconds{ 2000 };
 
 // FUNCTION: HYPERX 0x004742f0
 inline void PlayerObject::ApplyRenderSlotPose()
@@ -117,14 +118,14 @@ void PlayerObject::Postpass()
     {
         if (GetPhase() == ObjectPhase::kLocal)
         {
-            if (GetSlot() <= kSlotDromer3 && static_cast<unsigned int>(m_nLastSendMs + kDamageUpdateInterval) < g_pGameEngine->m_clock.nTickMs)
+            if (GetSlot() <= kSlotDromer3 && m_lastSend + kDamageUpdateInterval < g_pGameEngine->m_clock.tick)
             {
                 auto nDamage = static_cast<int>(m_stats.GetScalar(kRatingDamage));
                 nDamage &= 0xff;
 
                 PostSceneMessage(kMsgSyncDamage, nDamage, GetSlot(), 0);
 
-                m_nLastSendMs = g_pGameEngine->m_clock.nTickMs;
+                m_lastSend = g_pGameEngine->m_clock.tick;
             }
         }
     }

@@ -2,13 +2,14 @@
 #define HYPERBLADE_UI_HUDGLOBALS_H
 
 #include "math/vector.h"
+#include "common/clock.h"
 #include "graphics/clippoly.h"
 #include <stddef.h>
 
 // The clock and quit prompt both HUDs draw.
 constexpr auto kClockBuffer        = 0x50;
 constexpr auto kMsPerMinute        = 60000;
-constexpr auto kQuitPromptInterval = 5000;
+constexpr auto kQuitPromptInterval = Clock::Milliseconds{ 5000 };
 
 // Read only by Quat::ToMatrix, Quat::FromMatrix and SlerpSeg::Init.
 // GLOBAL: HYPERX 0x004b2bb0

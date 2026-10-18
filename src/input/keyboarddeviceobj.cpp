@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/clock.h"
 #include <algorithm>
 #include "input/keycodes.h"
 #include <SDL3/SDL.h>
@@ -38,9 +39,9 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
         {
             if ((nSticky & 1) != 0)
             {
-                if ((m_nHeldMask & nBit) != 0 && static_cast<unsigned int>(m_aReleaseTime[nKey]) <= static_cast<unsigned int>(m_aPressTime[nKey]))
+                if ((m_nHeldMask & nBit) != 0 && m_aReleaseTime[nKey] <= m_aPressTime[nKey])
                 {
-                    if (g_pGameEngine->m_clock.nTickMs - m_aPressTime[nKey] > m_nDoubleTapMs)
+                    if (g_pGameEngine->m_clock.tick - m_aPressTime[nKey] > m_doubleTap)
                     {
                         auto* const pBinding = m_apStickyBinding[nKey];
 
@@ -68,8 +69,8 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
     }
 }
 
-constexpr auto kDoubleTapMs  = 0xfa;
-constexpr auto kRepeatStepMs = 0x32;
+constexpr auto kDoubleTap  = Clock::Milliseconds{ 0xfa };
+constexpr auto kRepeatStep = Clock::Milliseconds{ 0x32 };
 
 // Each release time starts fifty milliseconds past its press, so a first press is never a double tap.
 // FUNCTION: HYPERX 0x0045cc10
@@ -100,14 +101,14 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
         m_pBindingTable = m_pSlots;
     }
 
-    m_nDoubleTapMs = kDoubleTapMs;
+    m_doubleTap = kDoubleTap;
 
     for (int nInputSlot = 0; nInputSlot < kInputSlotCount; nInputSlot++)
     {
-        const auto nNow = static_cast<unsigned int>(SDL_GetTicks());
+        const auto nNow = Clock::Now();
 
         m_aPressTime[static_cast<short>(nInputSlot)]   = nNow;
-        m_aReleaseTime[static_cast<short>(nInputSlot)] = nNow + kRepeatStepMs;
+        m_aReleaseTime[static_cast<short>(nInputSlot)] = nNow + kRepeatStep;
     }
 }
 
@@ -425,7 +426,7 @@ int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 {
     if (nButton < static_cast<unsigned int>(m_pBindingTable->m_nKeyCount) && (m_nHeldMask & (1 << nButton)) != 0)
     {
-        m_aReleaseTime[nButton] = m_aPressTime[nButton] + 1;
+        m_aReleaseTime[nButton] = m_aPressTime[nButton] + Clock::Milliseconds{ 1 };
 
         return HandleKeyDown(m_pBindingTable->m_anKey[nButton]);
     }
@@ -447,26 +448,26 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
     {
         if (nKey == m_pBindingTable->m_anKey[nIndex])
         {
-            unsigned int   nBit;
-            unsigned int   nMask;
-            unsigned int   nStick;
-            ActionBinding* pBinding;
-            int            nBindingCount;
-            int            nBudget;
-            int            i;
-            unsigned int   nNow;
-            int            nActionIndex;
+            unsigned int        nBit;
+            unsigned int        nMask;
+            unsigned int        nStick;
+            ActionBinding*      pBinding;
+            int                 nBindingCount;
+            int                 nBudget;
+            int                 i;
+            Clock::Milliseconds nNow;
+            int                 nActionIndex;
 
             nBit    = 1 << nIndex;
             nResult = 0;
 
-            if (static_cast<unsigned int>(m_aReleaseTime[nIndex]) >= static_cast<unsigned int>(m_aPressTime[nIndex]))
+            if (m_aReleaseTime[nIndex] >= m_aPressTime[nIndex])
             {
                 m_aPrevPressTime[static_cast<short>(nIndex)] = m_aPressTime[static_cast<short>(nIndex)];
-                nNow                                         = static_cast<unsigned int>(SDL_GetTicks());
+                nNow                                         = Clock::Now();
                 m_aPressTime[static_cast<short>(nIndex)]     = nNow;
 
-                if (nNow - static_cast<unsigned int>(m_aReleaseTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs && static_cast<unsigned int>(m_aReleaseTime[static_cast<short>(nIndex)] - m_aPrevPressTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs)
+                if (nNow - m_aReleaseTime[static_cast<short>(nIndex)] < m_doubleTap && m_aReleaseTime[static_cast<short>(nIndex)] - m_aPrevPressTime[static_cast<short>(nIndex)] < m_doubleTap)
                 {
                     nBit = kActionBindingDoubleTap << nIndex;
                 }
@@ -538,25 +539,25 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
     {
         if (nKey == m_pBindingTable->m_anKey[nIndex])
         {
-            unsigned int   nBit;
-            unsigned int   nClearMask;
-            unsigned int   nSticky;
-            unsigned int   nHeld;
-            ActionBinding* pBinding;
-            int            nBindingCount;
-            int            nBudget;
-            int            i;
-            unsigned int   nNow;
-            unsigned int   nElapsed;
-            int            nActionIndex;
+            unsigned int        nBit;
+            unsigned int        nClearMask;
+            unsigned int        nSticky;
+            unsigned int        nHeld;
+            ActionBinding*      pBinding;
+            int                 nBindingCount;
+            int                 nBudget;
+            int                 i;
+            Clock::Milliseconds nNow;
+            Clock::Milliseconds nElapsed;
+            int                 nActionIndex;
 
             nResult                                        = 0;
             m_aPrevReleaseTime[static_cast<short>(nIndex)] = m_aReleaseTime[static_cast<short>(nIndex)];
-            nNow                                           = static_cast<unsigned int>(SDL_GetTicks());
+            nNow                                           = Clock::Now();
             m_aReleaseTime[static_cast<short>(nIndex)]     = nNow;
-            nElapsed                                       = nNow - static_cast<unsigned int>(m_aPressTime[static_cast<short>(nIndex)]);
+            nElapsed                                       = nNow - m_aPressTime[static_cast<short>(nIndex)];
 
-            if (nElapsed < m_nDoubleTapMs && static_cast<unsigned int>(m_aPressTime[static_cast<short>(nIndex)] - m_aPrevReleaseTime[static_cast<short>(nIndex)]) < m_nDoubleTapMs)
+            if (nElapsed < m_doubleTap && m_aPressTime[static_cast<short>(nIndex)] - m_aPrevReleaseTime[static_cast<short>(nIndex)] < m_doubleTap)
             {
                 nBit = (kActionBindingDoubleTap << nIndex) | kActionBindingUp | kActionBindingQuick;
             }
@@ -565,7 +566,7 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
                 // Not a double tap; QUICK is still set when the release came inside the window.
                 nBit = (1 << nIndex) | kActionBindingUp;
 
-                if (nElapsed < m_nDoubleTapMs)
+                if (nElapsed < m_doubleTap)
                 {
                     nBit |= kActionBindingUp | kActionBindingQuick;
                 }
