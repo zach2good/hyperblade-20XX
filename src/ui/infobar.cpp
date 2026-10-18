@@ -1068,7 +1068,7 @@ InfoBar::~InfoBar()
 }
 
 // The original's linker shares this empty body with Stub::Assert; this build cannot fold it.
-void InfoBar::Cleanup() throw()
+void InfoBar::Cleanup() noexcept
 {
 }
 

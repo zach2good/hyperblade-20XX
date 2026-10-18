@@ -11,7 +11,7 @@ class InfoBarRadar : public CDDDrawable
 {
 public:
     InfoBarRadar();
-    ~InfoBarRadar() throw() override;
+    ~InfoBarRadar() noexcept override;
 
     int Draw() override;
 

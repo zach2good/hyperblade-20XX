@@ -12,7 +12,7 @@ class CSpeedBurst : public ReleasingAgendaItem
     // m_bReady is this kind's finished flag; m_pOwner is a player.
 
 public:
-    CSpeedBurst() throw();
+    CSpeedBurst() noexcept;
 
     void Process(int nArg) override;
     void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;

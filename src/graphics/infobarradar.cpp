@@ -40,7 +40,7 @@ InfoBarRadar::InfoBarRadar()
 }
 
 // FUNCTION: HYPERX 0x0044fd60
-InfoBarRadar::~InfoBarRadar() throw()
+InfoBarRadar::~InfoBarRadar() noexcept
 {
 }
 

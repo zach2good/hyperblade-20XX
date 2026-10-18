@@ -21,7 +21,7 @@
 #define BOOST_EPSILON 1e-5f
 
 // FUNCTION: HYPERX 0x004112e0
-CSpeedBurst::CSpeedBurst() throw()
+CSpeedBurst::CSpeedBurst() noexcept
 {
     m_pOpponentA = nullptr;
     m_pOpponentB = nullptr;

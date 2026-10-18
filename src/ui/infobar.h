@@ -51,7 +51,7 @@ public:
     ~InfoBar() override;
 
     // Nothrow, which gives the destructor the original's unwind.
-    void Cleanup() throw();
+    void Cleanup() noexcept;
 
     void LayoutSurfaces() override;
 
