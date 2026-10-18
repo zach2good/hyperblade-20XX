@@ -422,9 +422,11 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 
     if (pBase->m_nSubComponents != 0)
     {
+        bool abWhole[kLODLevelCount] = {};
+
         for (int nLod = 0; nLod < pLodNode->m_wLodCount; nLod++)
         {
-            ModelComponent::ReadAll(pFile, &pBlobs, &nCount);
+            abWhole[nLod] = ModelComponent::ReadAll(pFile, &pBlobs, &nCount);
 
             auto** const pSlots = new MeshBlock*[pBase->m_nSubComponents];
 
@@ -442,6 +444,47 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
             }
 
             delete[] pBlobs;
+        }
+
+        // A damaged level borrows each piece it lost from the nearest level that has it.
+        for (int nLod = 0; nLod < pLodNode->m_wLodCount; nLod++)
+        {
+            if (abWhole[nLod])
+            {
+                continue;
+            }
+
+            for (short iSlot = 0; iSlot < pBase->m_nSubComponents; iSlot++)
+            {
+                if (pLodNode->m_apLodMeshes[nLod][iSlot] != nullptr)
+                {
+                    continue;
+                }
+
+                const MeshBlock* pDonor = nullptr;
+
+                for (int nStep = 1; nStep < pLodNode->m_wLodCount && pDonor == nullptr; nStep++)
+                {
+                    if (nLod + nStep < pLodNode->m_wLodCount)
+                    {
+                        pDonor = pLodNode->m_apLodMeshes[nLod + nStep][iSlot];
+                    }
+
+                    if (pDonor == nullptr && nLod >= nStep)
+                    {
+                        pDonor = pLodNode->m_apLodMeshes[nLod - nStep][iSlot];
+                    }
+                }
+
+                if (pDonor != nullptr)
+                {
+                    auto* const pCopy = new char[pDonor->nSize];
+
+                    memcpy(pCopy, pDonor, pDonor->nSize);
+
+                    pLodNode->m_apLodMeshes[nLod][iSlot] = reinterpret_cast<MeshBlock*>(pCopy);
+                }
+            }
         }
     }
 

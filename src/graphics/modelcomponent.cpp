@@ -5,6 +5,7 @@
 #include "app/gameapp.h"
 #include "modelcomponent.h"
 #include "meshblock.h"
+#include <SDL3/SDL.h>
 
 struct ComponentFileHeader
 {
@@ -26,9 +27,9 @@ ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
     return pBlob;
 }
 
-// The read error reports the identifier from the iteration before, or nought at the first record.
+// The original met a damaged record with a fatal error, and MDLSHD's NEMPTM.WBM ships with one.
 // FUNCTION: HYPERX 0x004363a0
-int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned short* pnCount)
+bool ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned short* pnCount)
 {
     ComponentFileHeader header;
     int                 nSize;
@@ -36,8 +37,9 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
     auto nTotal = 0;
     if (pFile->Read(&header, sizeof(header)) != 0)
     {
-        unsigned short iEntry  = 0;
-        short          nLastId = 0;
+        unsigned short iEntry = 0;
+
+        const auto nStart = pFile->SeekRelative(0, FileSeekOrigin::kCurrent);
 
         auto** const papBlocks = new MeshBlock*[header.cRecords];
 
@@ -50,19 +52,18 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
 
             if (pBlock == nullptr)
             {
-                pFile->CloseAndTest();
+                SDL_Log("Model component %d of %u is damaged", iEntry, header.cRecords);
 
-                // STRING: HYPERX 0x004be078
-                g_gameApp.Fatal("Read error loading ModelComponents\n Last component read %d!", nLastId);
+                *pnCount = iEntry;
 
-                return 0;
+                pFile->SeekRelative(nStart + header.cBytes, FileSeekOrigin::kStart);
+
+                return false;
             }
 
             pBlock->nSize = nSize;
 
             papBlocks[iEntry] = pBlock;
-
-            nLastId = pBlock->nSlot;
 
             nTotal += nSize;
             iEntry++;
@@ -70,7 +71,7 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
 
         if (nTotal == header.cBytes && iEntry == static_cast<short>(header.cRecords))
         {
-            return nTotal;
+            return true;
         }
 
         pFile->CloseAndTest();
@@ -78,7 +79,7 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
         // STRING: HYPERX 0x004be018
         g_gameApp.Fatal("Component file totals error.\nRecord count expected: %d  found %d\nBytes expected: %d found %d!", header.cRecords, iEntry, header.cBytes, nTotal);
 
-        return 0;
+        return false;
     }
 
     pFile->CloseAndTest();
@@ -86,7 +87,7 @@ int ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sho
     // STRING: HYPERX 0x004bdfe8
     g_gameApp.Fatal("Read error loading component file record count!");
 
-    return 0;
+    return false;
 }
 
 // The block's first word is left to the caller.
@@ -95,13 +96,16 @@ void* ModelComponent::Read(FileObj* pFile, int* pnSize)
 {
     int nSize;
 
-    if (pFile->Read(&nSize, sizeof(nSize)) != 0)
+    // A record must hold its own size, and must not run past the end of the file.
+    if (pFile->Read(&nSize, sizeof(nSize)) != 0 && nSize >= static_cast<int>(sizeof(nSize)))
     {
         *pnSize = nSize;
 
         char* const pBlock = new char[nSize];
 
-        if (pFile->Read(pBlock + sizeof(nSize), *pnSize - sizeof(nSize)) != 0)
+        const auto nBody = nSize - static_cast<int>(sizeof(nSize));
+
+        if (pFile->Read(pBlock + sizeof(nSize), nBody) == nBody)
         {
             return pBlock;
         }

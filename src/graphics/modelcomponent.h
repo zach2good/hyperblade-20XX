@@ -31,7 +31,8 @@ struct ModelComponent
     // One entry per slot. C++98 has no flexible array member, so the length is declared as one.
     RecordOffset<const MeshBoneDesc> m_aSlotOffsets[1]; // 0x62
 
-    static int ReadAll(FileObj* pFile, struct MeshBlock*** pppBlocks, unsigned short* pnCount);
+    // False when a record is damaged. The list then stops before it, and the file moves to the list's end.
+    static bool ReadAll(FileObj* pFile, struct MeshBlock*** pppBlocks, unsigned short* pnCount);
 
     ShadowBlock* GetShadowBlock()
     {
