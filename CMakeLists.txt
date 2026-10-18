@@ -146,6 +146,7 @@ set(HYPERX_SOURCES
     src/common/parseutil.cpp
     src/common/pak.cpp
     src/common/path.cpp
+    src/common/sdlmemory.cpp
     src/common/poolcountsdef.cpp
     src/common/pooledownerroot.cpp
     src/common/staticinitglobals.cpp
@@ -434,6 +435,7 @@ enable_testing()
 hyperx_add_check(ini LABELS unit SOURCES tests/ini_check.cpp src/common/inifile.cpp src/common/path.cpp)
 hyperx_add_check(strings LABELS unit SOURCES tests/strings_check.cpp src/common/stringtable.cpp src/common/path.cpp)
 hyperx_add_check(path LABELS unit SOURCES tests/path_check.cpp src/common/path.cpp)
+hyperx_add_check(rawalloc LABELS lint SOURCES tests/rawalloc_check.cpp ARGS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/tests")
 hyperx_add_check(hwmesh LABELS unit PERMISSIVE SOURCES tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
 hyperx_add_check(keymap LABELS unit SOURCES tests/keymap_check.cpp src/input/keymap.cpp LIBRARIES SDL3::SDL3)
 hyperx_add_check(pak LABELS unit
