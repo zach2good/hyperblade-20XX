@@ -11,14 +11,16 @@ constexpr auto kRatingsGoalie = 2;
 constexpr auto kRatingsSpecialGoalie = 3;
 
 // The azimuth is in degrees.
+enum class ObjectKind;
+
 class ObjectDef
 {
 public:
     explicit ObjectDef(const char* pszModel);
 
-    char* m_pszName; // 0x00
-    int   m_nType;   // 0x04
-    int   m_nTypeId; // 0x08
+    char*      m_pszName; // 0x00
+    int        m_nType;   // 0x04
+    ObjectKind m_nTypeId; // 0x08
     // The model name; compared against "null".
     char* m_pszModel;    // 0x0c
     char* m_pszMaterial; // 0x10

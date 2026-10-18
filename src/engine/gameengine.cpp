@@ -1028,7 +1028,7 @@ void GameEngine::BeginMatchPlay()
 
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
-        if (m_ppObjects[nIndex]->m_nKind == KIND_DROMER)
+        if (m_ppObjects[nIndex]->m_nKind == ObjectKind::kDromer)
         {
             auto* const pStats  = &((PlayerObject*)m_ppObjects[nIndex])->m_stats;
             pStats->m_aStats[0] = FULL_WEIGHT;
@@ -1546,8 +1546,8 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
         "Generic"
     };
 
-    const int anTypeIds[kTypeCount] = {
-        KIND_NULL, KIND_DROMER, KIND_ROK, KIND_DROME, KIND_RAMP, KIND_GOAL, KIND_GOAL, KIND_CAMERA, KIND_CAMERA, KIND_START_GUN, KIND_TURNSTILE, KIND_MULTIPLIER, KIND_LASER_HURDLE, KIND_GREEN_RANDOMIZER, KIND_RED_RANDOMIZER, KIND_GOD, KIND_GENERIC, KIND_LIMBO_POLE, KIND_HURDLE, KIND_FAST_LANE, KIND_EXPLOSION, KIND_ARMORY, KIND_KEYBOARD, KIND_GAMEPAD, KIND_JOYSTICK, KIND_MOUSE, KIND_SLOW_LANE, KIND_MINE, KIND_SWARF, KIND_COACH, KIND_BODY_PART, KIND_GENERIC
+    const ObjectKind anTypeIds[kTypeCount] = {
+        ObjectKind::kNull, ObjectKind::kDromer, ObjectKind::kRok, ObjectKind::kDrome, ObjectKind::kRamp, ObjectKind::kGoal, ObjectKind::kGoal, ObjectKind::kCamera, ObjectKind::kCamera, ObjectKind::kStartGun, ObjectKind::kTurnstile, ObjectKind::kMultiplier, ObjectKind::kLaserHurdle, ObjectKind::kGreenRandomizer, ObjectKind::kRedRandomizer, ObjectKind::kGod, ObjectKind::kGeneric, ObjectKind::kLimboPole, ObjectKind::kHurdle, ObjectKind::kFastLane, ObjectKind::kExplosion, ObjectKind::kArmory, ObjectKind::kKeyboard, ObjectKind::kGamepad, ObjectKind::kJoystick, ObjectKind::kMouse, ObjectKind::kSlowLane, ObjectKind::kMine, ObjectKind::kSwarf, ObjectKind::kCoach, ObjectKind::kBodyPart, ObjectKind::kGeneric
     };
 
     auto* pRest = pszLine;
@@ -1576,7 +1576,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 
                 if (pRest == nullptr
                     // STRING: HYPERX 0x004c7324
-                    || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0 || (nType = ParseUtil::FindKeyword(szToken, apszTypes, id_GOB_NUM_OF_TYPES)) < 0)
+                    || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0 || (nType = ParseUtil::FindKeyword(szToken, apszTypes, kGOBNumOfTypes)) < 0)
                 {
                     g_gameApp.Fatal(
                         // STRING: HYPERX 0x004c7464
@@ -1587,7 +1587,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 
                 pDef->m_nTypeId = anTypeIds[nType];
 
-                if (nType == id_GOB_Dromer)
+                if (nType == kGOBDromer)
                 {
                     if (pnModelId == nullptr)
                     {
@@ -1596,13 +1596,13 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
                             "ERROR: ParseModelObjDef: dromer model ID is NULL!");
                     }
 
-                    pDef->m_nType = id_GOB_Dromer;
+                    pDef->m_nType = kGOBDromer;
                 }
                 else
                 {
                     pDef->m_nType = nType;
 
-                    if (pDef->m_nType == id_GOB_BodyPart)
+                    if (pDef->m_nType == kGOBBodyPart)
                     {
                         if (static_cast<int>(*pnModelId) < kSlotBodyPart || static_cast<int>(*pnModelId) > kSlotBodyPartLast)
                         {
@@ -1612,7 +1612,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
                     }
                     else if (m_abTypeHighWater[nType] > g_abObjectTypeLimit[nType])
                     {
-                        if (nType != id_GOB_Rok || g_bSuppressRokId == 0)
+                        if (nType != kGOBRok || g_bSuppressRokId == 0)
                         {
                             g_gameApp.Fatal(
                                 // STRING: HYPERX 0x004c7494
@@ -1620,7 +1620,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
                                 apszTypes[nType]);
                         }
                     }
-                    else if (nType != id_GOB_Rok || g_bSuppressRokId == 0)
+                    else if (nType != kGOBRok || g_bSuppressRokId == 0)
                     {
                         *pnModelId = m_abTypeHighWater[nType];
 
@@ -2253,7 +2253,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 
                     if (nBubbleType >= 0)
                     {
-                        if (nBubbleType == kBubbleRandomizer && pDef->m_nType == id_GOB_RedRandomizer)
+                        if (nBubbleType == kBubbleRandomizer && pDef->m_nType == kGOBRedRandomizer)
                         {
                             nBubbleType = kBubbleKludge;
                         }
@@ -2700,7 +2700,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
     switch (static_cast<unsigned short>(pCmd->m_nSlot))
     {
         case kBubbleBodyPart:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_BodyPart] + kCOBBodyPart0;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBBodyPart] + kCOBBodyPart0;
             return;
         case kBubbleDromerAwareness:
             pCmd->m_nSlot = aRow[0][nModelId];
@@ -2722,7 +2722,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
             pCmd->m_nSlot = kCOBRok;
             return;
         case kBubbleRamp:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Ramp] + kCOBRamp;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBRamp] + kCOBRamp;
             return;
         case kBubbleGoalSide:
             pCmd->m_nSlot = aPair[0][nModelId - kSlotNgoal];
@@ -2746,43 +2746,43 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
             pCmd->m_nSlot = kCOBStartGun;
             return;
         case kBubbleTurnstile:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Turnstile] + kCOBTurnstile;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBTurnstile] + kCOBTurnstile;
             return;
         case kBubbleMultiplier:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Multiplier] + kCOBMultiplier;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBMultiplier] + kCOBMultiplier;
             return;
         case kBubbleLaserHurdle:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_LaserHurdle] + kCOBLaserHurdle;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBLaserHurdle] + kCOBLaserHurdle;
             return;
         case kBubbleKludge:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_RedRandomizer] + kCOBRedRandomizer;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBRedRandomizer] + kCOBRedRandomizer;
             return;
         case kBubbleRandomizer:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_GreenRandomizer] + kCOBGreenRandomizer;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBGreenRandomizer] + kCOBGreenRandomizer;
             return;
         case kBubbleLimboPole:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_LimboPole] + kCOBLimboPole;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBLimboPole] + kCOBLimboPole;
             return;
         case kBubbleHurdle:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Hurdle] + kCOBHurdle;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBHurdle] + kCOBHurdle;
             return;
         case kBubbleFastLane:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_FastLane] + kCOBFastLane;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBFastLane] + kCOBFastLane;
             return;
         case kBubbleExplosion:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Explosion] + kCOBExplosion;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBExplosion] + kCOBExplosion;
             return;
         case kBubbleArmory:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Armory] + kCOBArmory;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBArmory] + kCOBArmory;
             return;
         case kBubbleSlowLane:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_SlowLane] + kCOBSlowLane;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBSlowLane] + kCOBSlowLane;
             return;
         case kBubbleMine:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Mine] + kCOBMine;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBMine] + kCOBMine;
             return;
         case kBubbleSwarf:
-            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[id_GOB_Swarf] + kCOBSwarf;
+            pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBSwarf] + kCOBSwarf;
             return;
         default:
             g_gameApp.Fatal(
@@ -2871,7 +2871,7 @@ void GameEngine::UnloadArena()
 
         UnregisterObject(m_pArena->m_pnSlotIds[m_pArena->m_wCount]);
 
-        for (nType = 0; nType < id_GOB_NUM_OF_TYPES; nType++)
+        for (nType = 0; nType < kGOBNumOfTypes; nType++)
         {
             if (nId >= g_abObjectTypeBaseline[nType] && nId <= g_abObjectTypeLimit[nType])
             {
@@ -3063,7 +3063,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
         {
             const int nType = pEntity->GetSlot();
 
-            for (iRange = 0; iRange < id_GOB_NUM_OF_TYPES; iRange++)
+            for (iRange = 0; iRange < kGOBNumOfTypes; iRange++)
             {
                 if (nType >= g_abObjectTypeBaseline[iRange] && nType <= g_abObjectTypeLimit[iRange])
                 {
@@ -3302,7 +3302,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 
             nKind = pObjDef->m_nType;
 
-            if (nKind == id_GOB_Dromer)
+            if (nKind == kGOBDromer)
             {
                 nPlayers++;
                 nRunningId += 2;
@@ -3313,7 +3313,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
                 pObjDef->m_bForceRemap = 1;
             }
 
-            if ((pObjDef->m_nType == id_GOB_Dromer && nPlayers <= kTeamPlayersOnDrome) || pObjDef->m_nType == id_GOB_BodyPart)
+            if ((pObjDef->m_nType == kGOBDromer && nPlayers <= kTeamPlayersOnDrome) || pObjDef->m_nType == kGOBBodyPart)
             {
                 pTeamDef->apOnIce[nSlot] = CreateObject(pObjDef, nObjectId);
             }
@@ -3329,7 +3329,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
                 case 2:
                 case 3:
                 case 4:
-                    if (pObjDef->m_nType != id_GOB_Dromer)
+                    if (pObjDef->m_nType != kGOBDromer)
                     {
                         // STRING: HYPERX 0x004c8430
                         g_gameApp.Fatal("Team definition file invalid %s!", pszTeamPath);
@@ -3341,7 +3341,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
                 case 6:
                 case 7:
                 case 8:
-                    if (pObjDef->m_nType != id_GOB_BodyPart)
+                    if (pObjDef->m_nType != kGOBBodyPart)
                     {
                         g_gameApp.Fatal("Team definition file invalid %s!", pszTeamPath);
                     }
@@ -3765,24 +3765,24 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 
     switch (pDef->m_nTypeId)
     {
-        case KIND_DROMER:
+        case ObjectKind::kDromer:
             pNew = new PlayerObject(nEntry, pDef);
             break;
 
-        case KIND_ROK:
+        case ObjectKind::kRok:
             pNew = new RokObject(nEntry, pDef);
             break;
 
-        case KIND_MINE:
-        case KIND_SWARF:
+        case ObjectKind::kMine:
+        case ObjectKind::kSwarf:
             pNew = new WeaponObject(nEntry, pDef);
             break;
 
-        case KIND_GOAL:
+        case ObjectKind::kGoal:
             pNew = new GoalObject(nEntry, pDef);
             break;
 
-        case KIND_CAMERA:
+        case ObjectKind::kCamera:
         {
             if (m_wCameraCount == kCameraLimit)
             {
@@ -3800,7 +3800,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
             break;
         }
 
-        case KIND_KEYBOARD:
+        case ObjectKind::kKeyboard:
             if (m_wDeviceCount == kDeviceLimit)
             {
                 // STRING: HYPERX 0x004c84a0
@@ -3816,7 +3816,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
             g_pInputDevice = (class KeyboardDeviceObj*)pNew;
             break;
 
-        case KIND_GAMEPAD:
+        case ObjectKind::kGamepad:
             if (m_wDeviceCount == kDeviceLimit)
             {
                 g_gameApp.Fatal("Too many input devices!");
@@ -3829,7 +3829,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
             m_wDeviceCount++;
             break;
 
-        case KIND_JOYSTICK:
+        case ObjectKind::kJoystick:
             if (m_wDeviceCount == kDeviceLimit)
             {
                 g_gameApp.Fatal("Too many input devices!");
@@ -3842,7 +3842,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
             m_wDeviceCount++;
             break;
 
-        case KIND_MOUSE:
+        case ObjectKind::kMouse:
             if (m_wDeviceCount == kDeviceLimit)
             {
                 g_gameApp.Fatal("Too many input devices!");
@@ -3855,19 +3855,19 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
             m_wDeviceCount++;
             break;
 
-        case KIND_DROME:
+        case ObjectKind::kDrome:
             pNew = new DromeObject(nEntry, pDef);
             break;
 
-        case KIND_RAMP:
+        case ObjectKind::kRamp:
             pNew = new RampObject(nEntry, pDef);
             break;
 
-        case KIND_EXPLOSION:
+        case ObjectKind::kExplosion:
             pNew = new ParticleSystem(nEntry, pDef);
             break;
 
-        case KIND_COACH:
+        case ObjectKind::kCoach:
             pNew = new CoachObject(nEntry, pDef);
             break;
 
@@ -3905,7 +3905,7 @@ void GameEngine::Init(const char* pszConfig)
 
     m_nViewedSlot = 0;
 
-    for (nIndex = 0; nIndex < id_GOB_NUM_OF_TYPES; nIndex++)
+    for (nIndex = 0; nIndex < kGOBNumOfTypes; nIndex++)
     {
         m_abTypeHighWater[nIndex] = g_abObjectTypeBaseline[nIndex];
     }
@@ -4244,7 +4244,7 @@ char GameEngine::InsertObjectSorted(short nId)
 
     const auto nClass = pObject->m_nKind;
 
-    if (nClass == KIND_KEYBOARD || nClass == KIND_GAMEPAD || nClass == KIND_JOYSTICK || nClass == KIND_MOUSE)
+    if (nClass == ObjectKind::kKeyboard || nClass == ObjectKind::kGamepad || nClass == ObjectKind::kJoystick || nClass == ObjectKind::kMouse)
     {
         for (j = nCount; j > 0; j--)
         {
@@ -4253,7 +4253,7 @@ char GameEngine::InsertObjectSorted(short nId)
 
         m_ppObjects[0] = pObject;
     }
-    else if (nClass == KIND_DROMER && nCount > 5)
+    else if (nClass == ObjectKind::kDromer && nCount > 5)
     {
         // The count is read again here: the search above ran against the old one.
         auto nSlot = pObject->GetSlot();
@@ -4570,25 +4570,25 @@ void GameEngine::ClearPendingEvents()
 // FUNCTION: HYPERX 0x00487480
 int GameEngine::GetArmoryCount() const
 {
-    return m_abTypeHighWater[id_GOB_Armory] - g_abObjectTypeBaseline[id_GOB_Armory];
+    return m_abTypeHighWater[kGOBArmory] - g_abObjectTypeBaseline[kGOBArmory];
 }
 
 // FUNCTION: HYPERX 0x00487490
 int GameEngine::GetSwarfCount() const
 {
-    return m_abTypeHighWater[id_GOB_Swarf] - g_abObjectTypeBaseline[id_GOB_Swarf];
+    return m_abTypeHighWater[kGOBSwarf] - g_abObjectTypeBaseline[kGOBSwarf];
 }
 
 // FUNCTION: HYPERX 0x004874b0
 int GameEngine::GetMineCount() const
 {
-    return m_abTypeHighWater[id_GOB_Mine] - g_abObjectTypeBaseline[id_GOB_Mine];
+    return m_abTypeHighWater[kGOBMine] - g_abObjectTypeBaseline[kGOBMine];
 }
 
 // FUNCTION: HYPERX 0x004874c0
 int GameEngine::GetEntityCountOfType(int nType)
 {
-    if (nType >= 0 && nType < id_GOB_NUM_OF_TYPES)
+    if (nType >= 0 && nType < kGOBNumOfTypes)
     {
         return m_abTypeHighWater[nType] - g_abObjectTypeBaseline[nType];
     }
@@ -5261,7 +5261,7 @@ ParticleSystem* GameEngine::FindFreeParticleSystem()
 {
     int iSlot;
 
-    const auto nCount = GetEntityCountOfType(id_GOB_Explosion);
+    const auto nCount = GetEntityCountOfType(kGOBExplosion);
 
     for (iSlot = 1; iSlot < nCount; iSlot++)
     {
@@ -5279,7 +5279,7 @@ ParticleSystem* GameEngine::FindFreeParticleSystem()
 // FUNCTION: HYPERX 0x00488310
 void GameEngine::DeactivateParticleSystems()
 {
-    const auto nCount = GetEntityCountOfType(id_GOB_Explosion);
+    const auto nCount = GetEntityCountOfType(kGOBExplosion);
     int        nIndex;
 
     for (nIndex = 0; nIndex < nCount; nIndex++)

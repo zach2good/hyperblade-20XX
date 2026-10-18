@@ -50,7 +50,7 @@ void CCircleTrack::Process(int nArg)
         g_gameApp.Fatal("CCircleTrack::Process(): Null pointer for model to track\n");
     }
 
-    if (pTracked->m_nKind != KIND_DROMER)
+    if (pTracked->m_nKind != ObjectKind::kDromer)
     {
         // STRING: HYPERX 0x004bb5a0
         g_gameApp.Fatal("CCircleTrack::Process(): Model to track is not a dromer\n");

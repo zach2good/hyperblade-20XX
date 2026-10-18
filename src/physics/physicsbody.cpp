@@ -229,7 +229,7 @@ void PhysicsBody::PerFrameTick()
 
     auto* const pObject = (PlayerObject*)pOwner;
 
-    if (pObject->m_nKind == KIND_DROMER)
+    if (pObject->m_nKind == ObjectKind::kDromer)
     {
         pObject->m_stats.UpdateMomentumAndEnergy();
     }

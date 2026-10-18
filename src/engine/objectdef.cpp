@@ -1,6 +1,7 @@
 // The object definition record's constructor and destructor.
 
 #include "common/compat.h"
+#include "engine/objectkind.h"
 #include "common/staticinit.h"
 #include "objectdef.h"
 #include <cstring>
@@ -13,7 +14,7 @@ ObjectDef::ObjectDef(const char* pszModel)
     m_pszModel       = nullptr;
     m_pszMaterial    = nullptr;
     m_pszName        = nullptr;
-    m_nTypeId        = 0;
+    m_nTypeId        = ObjectKind::kNull;
     m_nRatingsMode   = 0;
     m_bOwnPalette    = 0;
     m_wUnused        = 0;
@@ -44,7 +45,7 @@ ObjectDef::ObjectDef(const char* pszModel)
 // FUNCTION: HYPERX 0x00484660
 ObjectDef::~ObjectDef()
 {
-    m_nTypeId = 0;
+    m_nTypeId = ObjectKind::kNull;
 
     if (m_pszName != nullptr)
     {

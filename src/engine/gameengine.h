@@ -180,7 +180,7 @@ struct GameEngine
     short         m_wDeviceCount;            // 0x002c
     short         m_wCameraCount;            // 0x002e
     // One per type range, holding the highest id handed out in it.
-    unsigned char m_abTypeHighWater[id_GOB_NUM_OF_TYPES]; // 0x0030
+    unsigned char m_abTypeHighWater[kGOBNumOfTypes]; // 0x0030
 
     // The slot being watched, followed or viewed.
     short m_nViewedSlot; // 0x0050

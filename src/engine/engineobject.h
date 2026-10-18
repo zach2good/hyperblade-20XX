@@ -8,6 +8,7 @@
 #include <mutex>
 
 class AnimDB;
+enum class ObjectKind;
 class AnimPlayer;
 class BoundBubble;
 class BubbleCmd;
@@ -155,8 +156,8 @@ protected:
 public:
     int m_nSlot; // 0x018
 
-    char* m_pszName; // 0x01c
-    int   m_nKind;   // 0x020, the value the per-frame tick switches on
+    char*      m_pszName; // 0x01c
+    ObjectKind m_nKind;   // 0x020, the value the per-frame tick switches on
 
 protected:
     // The same record LODNode::m_pRecord points at, copied here when the model is bound.

@@ -3961,12 +3961,12 @@ void PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, shor
     }
 
     // The original leaves the index unset for any other kind; zero picks the first row.
-    if (pObject->m_nKind == KIND_GREEN_RANDOMIZER)
+    if (pObject->m_nKind == ObjectKind::kGreenRandomizer)
     {
         nValue = 1;
     }
 
-    if (pObject->m_nKind == KIND_RED_RANDOMIZER)
+    if (pObject->m_nKind == ObjectKind::kRedRandomizer)
     {
         nValue = 0;
     }
@@ -7340,7 +7340,7 @@ void PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short
 {
     auto* const pOwner = pContext->GetActor();
 
-    if (pOwner->m_nKind == KIND_KEYBOARD || pOwner->m_nKind == KIND_GAMEPAD || pOwner->m_nKind == KIND_JOYSTICK || pOwner->m_nKind == KIND_MOUSE)
+    if (pOwner->m_nKind == ObjectKind::kKeyboard || pOwner->m_nKind == ObjectKind::kGamepad || pOwner->m_nKind == ObjectKind::kJoystick || pOwner->m_nKind == ObjectKind::kMouse)
     {
         if (pNode->m_nArgCount == kArgKindMask)
         {
@@ -7362,7 +7362,7 @@ void PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short
         }
     }
 
-    if (pOwner->m_nKind == KIND_DROMER)
+    if (pOwner->m_nKind == ObjectKind::kDromer)
     {
         pContext->GetActor()->GetPhysicsBody()->nHeldBindings = 0;
         pContext->GetActor()->GetPhysicsBody()->axis.z        = g_flZeroPlan;

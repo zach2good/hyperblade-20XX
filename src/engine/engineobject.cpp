@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/objectkind.h"
 #include <cstdint>
 #include "graphics/hwrenderer.h"
 #include "graphics/graphicssettings.h"
@@ -497,7 +498,7 @@ void EngineObject::InitFields()
     int nEntry;
 
     m_nSlot      = 0;
-    m_nKind      = 0;
+    m_nKind      = ObjectKind::kNull;
     m_pMeshBlob  = nullptr;
     m_wBoneCount = 0;
 
