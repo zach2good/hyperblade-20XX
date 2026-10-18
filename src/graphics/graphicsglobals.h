@@ -10,6 +10,7 @@
 #include "graphics/surfacepoint.h"
 #include "renderoptions.h"
 #include "graphics/gdi.h"
+#include <memory>
 #include <stddef.h>
 
 // A lookup matches on the resource name.
@@ -72,7 +73,7 @@ extern const float g_flZeroMeshBone;
 extern int g_nBitmapCacheCount;
 
 // GLOBAL: HYPERX 0x004d21b4
-extern BitmapCacheEntry* g_pBitmapCache;
+extern std::unique_ptr<BitmapCacheEntry[]> g_pBitmapCache;
 
 // GLOBAL: HYPERX 0x004ce9b8
 extern unsigned char g_bEdgeWalked;

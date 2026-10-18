@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "widget.h"
 #include "ui/screen.h"
+#include <memory>
 
 // The chrome InitWidgets builds for every screen derived from UIScreen. A plate's loop redraws
 // the widgets in front of it.
@@ -142,9 +143,9 @@ public:
 protected:
     int m_nSelectionMode; // 0x464
     // Non-zero where that team's panel bitmap is missing.
-    int* m_pLockedFlags; // 0x468
-    int  m_nLockedCount; // 0x46c
-    int  m_nUnusedD;     // 0x470
+    std::unique_ptr<int[]> m_pLockedFlags; // 0x468
+    int                    m_nLockedCount; // 0x46c
+    int                    m_nUnusedD;     // 0x470
 };
 
 // SYNTHETIC: HYPERX 0x0044d520

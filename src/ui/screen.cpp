@@ -632,7 +632,7 @@ void Screen::InitBitmapCache()
 {
     FlushBitmapCache();
 
-    g_pBitmapCache = new BitmapCacheEntry[kBitmapCacheSlots];
+    g_pBitmapCache = std::make_unique<BitmapCacheEntry[]>(kBitmapCacheSlots);
 
     if (g_pBitmapCache != nullptr)
     {
@@ -732,9 +732,7 @@ void Screen::FlushBitmapCache()
             }
         }
 
-        delete[] g_pBitmapCache;
-
-        g_pBitmapCache = nullptr;
+        g_pBitmapCache.reset();
     }
 
     g_nBitmapCacheReady = 1;

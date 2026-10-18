@@ -20,17 +20,8 @@
 #include "common/stub.h"
 #include "sound/soundids.h"
 
-// The flag array goes out through operator delete.
 // FUNCTION: HYPERX 0x0044d4b0
-UIScreen::~UIScreen()
-{
-    if (m_pLockedFlags != nullptr)
-    {
-        delete[] m_pLockedFlags;
-
-        m_pLockedFlags = nullptr;
-    }
-}
+UIScreen::~UIScreen() = default;
 
 // FUNCTION: HYPERX 0x0044d540
 UIScreen::UIScreen()
@@ -44,7 +35,6 @@ UIScreen::UIScreen()
         PreloadBitmaps();
     }
 
-    m_pLockedFlags = nullptr;
     m_nLockedCount = 0;
 
     BuildLockedFlagsArray();
@@ -287,7 +277,7 @@ void UIScreen::BuildLockedFlagsArray()
 
     if (m_pLockedFlags == nullptr)
     {
-        m_pLockedFlags = new int[g_pGameEngine->m_pTeamTable->GetTeamCount()];
+        m_pLockedFlags = std::make_unique<int[]>(g_pGameEngine->m_pTeamTable->GetTeamCount());
     }
 
     for (nTeam = 0; nTeam < g_pGameEngine->m_pTeamTable->GetTeamCount(); nTeam++)
