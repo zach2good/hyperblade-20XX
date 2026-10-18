@@ -136,7 +136,7 @@ char AnimPlayer::UpdateTick()
                             {
                                 for (int iChannel = 0; iChannel < nChannelCount; iChannel++)
                                 {
-                                    auto* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
+                                    auto* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)].get();
 
                                     if (pRecord->m_wSegment == m_state.wClipIndex)
                                     {
@@ -335,7 +335,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
         {
             if (m_bPending != 0)
             {
-                auto* const pRef = m_state.pEventRecord->m_pRef;
+                auto* const pRef = m_state.pEventRecord->m_pRef.get();
 
                 if (m_pending.pSet == pRef->m_pDb)
                 {
@@ -352,7 +352,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 
         if (nNext != m_pSet->GetEntryCount())
         {
-            auto* const pRecord = m_pSet->m_apEntries[nNext];
+            auto* const pRecord = m_pSet->m_apEntries[nNext].get();
 
             if (pRecord->m_wSegment == m_state.wClipIndex)
             {
@@ -479,7 +479,7 @@ char AnimPlayer::ComputeScale(float flScale)
             auto* const pPos = &m_vPos;
             *pPos            = vPos;
 
-            const Vec3* const pRow = m_pBoneSet->m_pClips[0].m_pTranslation;
+            const Vec3* const pRow = m_pBoneSet->m_pClips[0].m_pTranslation.get();
 
             const auto* const pScale = &pRoot->m_pDesc->m_vScale;
             vProd.x                  = pScale->x * pRow->x;
@@ -758,7 +758,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 
     if (nClipIndex < pSet->GetNodeCount())
     {
-        m_pClip = pSet->m_apNodes[nClipIndex];
+        m_pClip = pSet->m_apNodes[nClipIndex].get();
 
         if (m_pClip != nullptr)
         {
@@ -828,7 +828,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
             {
                 for (int iChannel = 0; iChannel < nChannels; iChannel++)
                 {
-                    auto* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)];
+                    auto* const pRecord = pSet->m_apEntries[static_cast<short>(iChannel)].get();
 
                     if (pRecord->m_wSegment == m_state.wClipIndex)
                     {

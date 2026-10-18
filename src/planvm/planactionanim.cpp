@@ -105,7 +105,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
         nIndex = nParam;
     }
 
-    const AnimScriptTable* const pDb = g_pAnimRegistry->m_pScripts;
+    const AnimScriptTable* const pDb = g_pAnimRegistry->m_pScripts.get();
 
     pAnim = pDb->Find(static_cast<short>(nIndex));
 

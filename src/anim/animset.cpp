@@ -7,7 +7,7 @@
 #include "planvm/planvm.h"
 #include "common/pathstring.h"
 #include <cstring>
-#include <new>
+#include <memory>
 #include <cstdio>
 #include "app/gameapp.h"
 #include "animnode.h"
@@ -40,15 +40,14 @@ int AnimSet::GetFieldOffset(short nKind)
     return 1;
 }
 
-// A failed allocation files a null, so the cache's count advances either way.
 // FUNCTION: HYPERX 0x00417220
 AnimClipSet* AnimSet::LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int, const char* pszName)
 {
-    auto* const pSet = new AnimClipSet(pFile, pszName);
+    auto& pSet = pRegistry->m_apSets[pRegistry->m_nSetCount];
 
-    pRegistry->m_apSets[pRegistry->m_nSetCount] = pSet;
+    pSet = std::make_unique<AnimClipSet>(pFile, pszName);
 
     pRegistry->m_nSetCount++;
 
-    return pSet;
+    return pSet.get();
 }

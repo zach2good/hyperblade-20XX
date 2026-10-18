@@ -1,5 +1,5 @@
 #include "common/compat.h"
-#include <new>
+#include <memory>
 #include "animdb.h"
 #include "animnode.h"
 
@@ -10,10 +10,6 @@ AnimNode::AnimNode(char bHasDescription)
 
     if (bHasDescription != 0)
     {
-        m_pszDescription = new char[kDescriptionChars + 1];
-    }
-    else
-    {
-        m_pszDescription = nullptr;
+        m_pszDescription = std::make_unique_for_overwrite<char[]>(kDescriptionChars + 1);
     }
 }

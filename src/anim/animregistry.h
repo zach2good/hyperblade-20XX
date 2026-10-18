@@ -3,7 +3,10 @@
 #ifndef HYPERBLADE_ANIMREGISTRY_H
 #define HYPERBLADE_ANIMREGISTRY_H
 
+#include "anim/animclipset.h"
 #include "anim/animscripttable.h"
+#include <array>
+#include <memory>
 
 // The registry holds at most this many sets.
 constexpr auto kAnimRegistrySetLimit = 250;
@@ -16,9 +19,8 @@ public:
     {
         m_nLoadCost = 0;
         m_nSetCount = 0;
-        m_apSets    = new class AnimClipSet*[kAnimRegistrySetLimit];
 
-        m_pScripts = new AnimScriptTable;
+        m_pScripts = std::make_unique<AnimScriptTable>();
     }
 
     void LoadFromPath(const char* pszPath);
@@ -35,12 +37,12 @@ public:
 
     int m_nLoadCost; // 0x00
     int m_nSetCount; // 0x04
-    // The loaded sets, m_nSetCount of them, in a thousand-byte buffer.
-    class AnimClipSet**    m_apSets;   // 0x08
-    class AnimScriptTable* m_pScripts; // 0x0c
-
-    // Deletes every loaded set, the table and the script table.
-    ~AnimRegistry();
+    // The loaded sets, m_nSetCount of them; the original allocates the table.
+    std::array<std::unique_ptr<AnimClipSet>, kAnimRegistrySetLimit> m_apSets;   // 0x08
+    std::unique_ptr<AnimScriptTable>                                m_pScripts; // 0x0c
 };
+
+// FUNCTION: HYPERX 0x00416f70
+// AnimRegistry::~AnimRegistry
 
 #endif

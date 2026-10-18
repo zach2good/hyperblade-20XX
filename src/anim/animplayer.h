@@ -26,13 +26,6 @@ public:
 
     ~AnimPlayer() override;
 
-    AnimBinding* DestroyViaVtable() override
-    {
-        delete this;
-
-        return nullptr;
-    }
-
     char UpdateTick() override;
     char ClearAnimationSet() override;
     char StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate) override;
