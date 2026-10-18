@@ -4,7 +4,7 @@
 class SplineCurve;
 struct Vec3;
 
-typedef float (*SplineEvalFn)(float flT, float, float, float, float);
+using SplineEvalFn = float (*)(float flT, float, float, float, float);
 
 // A ring of two curves and the walker that steps along it.
 class Spline

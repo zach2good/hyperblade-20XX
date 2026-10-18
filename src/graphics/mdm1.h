@@ -8,7 +8,7 @@ class FileObj;
 // The tag an MDM1-packed file opens with, "MDM1" read as a little-endian dword.
 #define MDM1_MAGIC 0x314d444d
 
-typedef int (*MDM1ReadFn)(char* pBuffer, int nCount, FileObj* pFile);
+using MDM1ReadFn = int (*)(char* pBuffer, int nCount, FileObj* pFile);
 
 // The decoder for MDM1, the LZSS packing every asset file can carry.
 namespace MDM1

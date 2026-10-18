@@ -7,7 +7,7 @@ class FileObj;
 class AnimClipSet;
 class AnimRegistry;
 
-typedef AnimClipSet* (*AnimLoadFn)(FileObj* pFile, AnimRegistry* pRegistry, int nFlags, const char* pszName);
+using AnimLoadFn = AnimClipSet* (*)(FileObj * pFile, AnimRegistry* pRegistry, int nFlags, const char* pszName);
 
 namespace AnimFile
 {

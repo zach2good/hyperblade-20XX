@@ -612,7 +612,7 @@ unsigned char        g_bPeriodCountdownActive;
 extern char g_bStatIntervalOpen;
 char        g_bStatIntervalOpen;
 
-typedef int (*CoachConditionFn)();
+using CoachConditionFn = int (*)();
 
 short g_wSoundSequence;
 

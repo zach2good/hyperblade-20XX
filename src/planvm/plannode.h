@@ -220,17 +220,17 @@ enum AgendaMember
 };
 
 // How the plan machine calls an action or a decision.
-typedef void (*PlanHandlerFn)(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+using PlanHandlerFn = void (*)(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 
 class EngineObject;
 class GameBehaviorObject;
 
 // How the plan machine calls a behaviour parameter: the actor, the node and the behaviour it sets.
-typedef void (*BehParamHandlerFn)(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pTarget);
+using BehParamHandlerFn = void (*)(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pTarget);
 
 // How SET_INTERACTOR_PARAM calls an id_SET_ interactor parameter: the actor, the node, the behaviour
 // and the interactor it sets, which is null in the behaviour's own setup pass.
-typedef void (*InteractorParamFn)(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour, Interactor* pInteractor);
+using InteractorParamFn = void (*)(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour, Interactor* pInteractor);
 
 // The opcode table: SET_INTERACTOR_PARAM reads its first two slots and a decision the rest.
 union PlanOpcodeSlot

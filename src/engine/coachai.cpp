@@ -157,7 +157,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
     return nNearest;
 }
 
-typedef int (*CoachConditionFn)();
+using CoachConditionFn = int (*)();
 
 // The thirteen conditions the coach evaluates, in the image's order.
 // GLOBAL: HYPERX 0x004bca88
