@@ -9,6 +9,7 @@ namespace Graphics
 unsigned int LoadMdmTexDLL();
 void         UnloadMdmTexDLL();
 void         Initialize(int bResize);
+void         FreeEdgeStacks();
 
 } // namespace Graphics
 

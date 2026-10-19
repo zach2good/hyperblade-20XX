@@ -21,6 +21,7 @@
 #include "common/stringtable.h"
 #include <SDL3/SDL.h>
 #include "graphics/gdi.h"
+#include "graphics/graphics.h"
 #include "common/string.h"
 struct GameApp;
 #include "ui/torchbitmaps.h"
@@ -387,17 +388,7 @@ void GameApp::Shutdown()
 
     SoftRenderer::FreeBackBuffer();
 
-    if (g_pLeftStack != nullptr)
-    {
-        free(g_pLeftStack);
-        g_pLeftStack = nullptr;
-    }
-
-    if (g_pRightStack != nullptr)
-    {
-        free(g_pRightStack);
-        g_pRightStack = nullptr;
-    }
+    Graphics::FreeEdgeStacks();
 
     auto quit = SDL_Event{};
 

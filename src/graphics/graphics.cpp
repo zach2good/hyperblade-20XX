@@ -4,13 +4,22 @@
 #include "globals.h"
 #include "graphicsglobals.h"
 #include "graphics/display.h"
-#include <cstdlib>
 #include <cstring>
+#include <vector>
 #include "app/gameapp.h"
 #include "engine/objectclasses.h"
 #include "ui/widget.h"
 #include "engine/cameraobject.h"
 #include "graphics/graphics.h"
+
+namespace
+{
+
+// The edge stacks, one entry per back buffer row, which g_pLeftStack and g_pRightStack view.
+auto s_leftStack  = std::vector<unsigned short>();
+auto s_rightStack = std::vector<unsigned short>();
+
+} // namespace
 
 // The previous size is latched the first time either half is zero.
 // FUNCTION: HYPERX 0x0044b170
@@ -26,7 +35,8 @@ void Graphics::Initialize(int bResize)
 
         if (nHeight != 0)
         {
-            g_pLeftStack = static_cast<unsigned short*>(realloc(g_pLeftStack, nHeight * sizeof(unsigned short)));
+            s_leftStack.resize(nHeight);
+            g_pLeftStack = s_leftStack.data();
 
             if (g_pLeftStack == nullptr)
             {
@@ -34,7 +44,8 @@ void Graphics::Initialize(int bResize)
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (left_stack)!");
             }
 
-            g_pRightStack = static_cast<unsigned short*>(realloc(g_pRightStack, g_nBackBufferHeight * sizeof(unsigned short)));
+            s_rightStack.resize(g_nBackBufferHeight);
+            g_pRightStack = s_rightStack.data();
 
             if (g_pRightStack == nullptr)
             {
@@ -124,4 +135,13 @@ void Graphics::UnloadMdmTexDLL()
 
         g_hMdmTexDll = {};
     }
+}
+
+void Graphics::FreeEdgeStacks()
+{
+    s_leftStack  = std::vector<unsigned short>();
+    s_rightStack = std::vector<unsigned short>();
+
+    g_pLeftStack  = nullptr;
+    g_pRightStack = nullptr;
 }
