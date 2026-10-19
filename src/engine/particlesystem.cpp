@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "app/simulator.h"
 #include "particle.h"
 #include "globals.h"
 #include "math/vector.h"
@@ -143,7 +144,11 @@ void ParticleSystem::Update(float flDt)
         m_bAnyAlive = m_bAnyAlive != 0 || m_aParticles[nIndex].m_flLife > 0.0f;
     }
 
-    ApplyToMesh();
+    // The mesh is only drawn.
+    if (!Simulator::Requested())
+    {
+        ApplyToMesh();
+    }
 }
 
 // Moves three mesh vertices per live particle along its axes.

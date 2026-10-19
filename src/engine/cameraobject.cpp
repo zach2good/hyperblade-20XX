@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "app/simulator.h"
 #include "engine/spectator.h"
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/planstate.h"
@@ -353,6 +354,9 @@ void CameraObject::ViewIt()
 
     g_nTransparentCount = 0;
 
+    // A simulation draws nothing, so it poses the objects but culls and pushes none of them.
+    const auto bHeadless = Simulator::Requested();
+
     for (short i = 0; i < nCount; i++)
     {
         auto* const pObject = g_pGameEngine->m_ppObjects[i];
@@ -362,6 +366,11 @@ void CameraObject::ViewIt()
         if ((static_cast<unsigned char>(pObject->m_nFlags) & (kEngineObjectHidden | kEngineObjectPosed)) == 0)
         {
             pObject->ApplyRenderSlotPose();
+        }
+
+        if (bHeadless)
+        {
+            continue;
         }
 
         if (pObject->IsHidden() == 0)
@@ -403,7 +412,10 @@ void CameraObject::ViewIt()
     }
 
     // The frame draws what this pushed, blended between this tick and the last.
-    FramePacing::RecordView(*this);
+    if (!bHeadless)
+    {
+        FramePacing::RecordView(*this);
+    }
 }
 
 void CameraObject::DrawView()

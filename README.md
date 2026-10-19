@@ -72,7 +72,7 @@ the CD drive is read on Windows alone.
 
 ## Simulating matches
 
-`-sim` plays AI-only matches with no window or sound, about 470 times faster than real time, and
+`-sim` plays AI-only matches with no window or sound, about 2,000 times faster than real time on one core, and
 writes every player's match stats to `sim_results.csv` beside the executable:
 
 ```sh
