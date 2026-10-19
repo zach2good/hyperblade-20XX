@@ -16,15 +16,8 @@ BubbleNode::BubbleNode()
     m_pTarget     = nullptr;
     m_pChildren   = nullptr;
     m_nChildCount = 0;
-    m_pAttach     = nullptr;
-    m_pCage       = nullptr;
+    m_bUseDetail  = false;
 }
 
 // FUNCTION: HYPERX 0x0042a1f0
-BubbleNode::~BubbleNode()
-{
-    if (m_nShape == BubbleShape::kAttached && m_pAttach != nullptr)
-    {
-        delete m_pAttach;
-    }
-}
+BubbleNode::~BubbleNode() = default;

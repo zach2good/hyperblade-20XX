@@ -11,6 +11,7 @@
 #include <cstring>
 #include <string>
 #include "gameengine.h"
+#include "teamblock.h"
 #include "app/gameapp.h"
 #include "common/parseutil.h"
 #include <SDL3/SDL.h>
@@ -26,11 +27,10 @@ constexpr auto kTeamFilenameMax = 32;
 // FUNCTION: HYPERX 0x004847d0
 TeamsBlock::TeamsBlock()
 {
-    TeamBlock* apTeams[kTeamMax];
-    OwnedFile  catFile;
-    char       szTeamFilename[kParseTokenMax];
-    char*      pLine;
-    short      nTeams = 0;
+    OwnedFile catFile;
+    char      szTeamFilename[kParseTokenMax];
+    char*     pLine;
+    short     nTeams = 0;
     // STRING: HYPERX 0x004c8378
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, kMaxPathLength);
 
@@ -67,9 +67,7 @@ TeamsBlock::TeamsBlock()
 
                 if (htmFile.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
                 {
-                    auto* const pTeam = g_pGameEngine->ParseTeamHTMFile(&htmFile.m_file);
-
-                    apTeams[nTeams] = pTeam;
+                    auto* const pTeam = m_ppTeams.emplace_back(g_pGameEngine->ParseTeamHTMFile(&htmFile.m_file)).get();
 
                     if (pTeam == nullptr)
                     {
@@ -112,10 +110,6 @@ TeamsBlock::TeamsBlock()
 
         m_wTeamCount = nTeams;
 
-        m_ppTeams = new TeamBlock*[nTeams];
-
-        memcpy(m_ppTeams, apTeams, nTeams * sizeof(TeamBlock*));
-
         ComputeTeamNameChecksum();
     }
     else
@@ -125,6 +119,8 @@ TeamsBlock::TeamsBlock()
         g_gameApp.OnShutdown();
     }
 }
+
+TeamsBlock::~TeamsBlock() = default;
 
 // Three characters of every lowercased name, summed; the low byte of the total is dropped.
 

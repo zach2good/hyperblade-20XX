@@ -206,7 +206,7 @@ void MeshBone::SubmitToHardware()
             return 0;
         }
 
-        auto nBone = static_cast<int>(this - m_pOwner->m_pBones);
+        auto nBone = static_cast<int>(this - m_pOwner->m_pBones.get());
 
         if (m_pOwner->GetBoneCount() > 2)
         {

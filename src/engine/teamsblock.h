@@ -2,6 +2,9 @@
 #ifndef HYPERBLADE_TEAMSBLOCK_H
 #define HYPERBLADE_TEAMSBLOCK_H
 
+#include <memory>
+#include <vector>
+
 struct TeamBlock;
 
 // The team catalogue, 0x8c bytes: the team blocks and their count.
@@ -19,9 +22,9 @@ struct TeamsBlock
     // Folds every team's name into a checksum and stores it in m_nChecksum.
     int ComputeTeamNameChecksum();
 
-    struct TeamBlock** m_ppTeams;    // 0x00
-    short              m_wTeamCount; // 0x04
-    short              m_wUnused;    // 0x06
+    std::vector<std::unique_ptr<TeamBlock> > m_ppTeams;    // 0x00
+    short                                    m_wTeamCount; // 0x04
+    short                                    m_wUnused;    // 0x06
 
     union
     {
@@ -32,6 +35,12 @@ struct TeamsBlock
     int m_anUnused[(0x8c - 0x0c) / 4]; // 0x0c
 
     TeamsBlock();
+    ~TeamsBlock();
+
+    TeamsBlock(const TeamsBlock&)            = delete;
+    TeamsBlock(TeamsBlock&&)                 = delete;
+    TeamsBlock& operator=(const TeamsBlock&) = delete;
+    TeamsBlock& operator=(TeamsBlock&&)      = delete;
 };
 
 #endif

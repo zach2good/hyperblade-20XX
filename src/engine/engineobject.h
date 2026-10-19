@@ -6,7 +6,9 @@
 #include "engine/objectbase.h"
 #include "engine/syncsendcursor.h"
 #include "math/transformobject.h"
+#include <memory>
 #include <mutex>
+#include <vector>
 
 class AnimDB;
 enum class ObjectKind;
@@ -23,6 +25,7 @@ struct ModelComponent;
 class ObjectDef;
 struct PhysicsBody;
 class PlanState;
+union PlanWord;
 class TransformObject;
 struct Vec3;
 
@@ -64,6 +67,11 @@ public:
     void CountVisibleFaces();
 
     ~EngineObject() override;
+
+    EngineObject(const EngineObject&)            = delete;
+    EngineObject(EngineObject&&)                 = delete;
+    EngineObject& operator=(const EngineObject&) = delete;
+    EngineObject& operator=(EngineObject&&)      = delete;
 
     // The engine slot, not the kind; every class shares this body. The kind is m_nKind.
     short GetSlot() override;
@@ -157,8 +165,8 @@ protected:
 public:
     int m_nSlot; // 0x018
 
-    char*      m_pszName; // 0x01c
-    ObjectKind m_nKind;   // 0x020, the value the per-frame tick switches on
+    std::unique_ptr<char[]> m_pszName; // 0x01c
+    ObjectKind              m_nKind;   // 0x020, the value the per-frame tick switches on
 
 protected:
     // The same record LODNode::m_pRecord points at, copied here when the model is bound.
@@ -177,15 +185,15 @@ public:
 protected:
     float m_flLodDistSq; // 0x030
 public:
-    class AnimPlayer* m_pAnimPlayer; // 0x034
+    std::unique_ptr<AnimPlayer> m_pAnimPlayer; // 0x034
 
     struct MaterialListNode* m_pModelBlock; // 0x038
 protected:
     char                m_cUnused;       // 0x03c
     struct ShadowBlock* m_pShadowBlock;  // 0x040
     const Vec3*         m_pShadowPoints; // 0x044
-    // One bone transform per shadow vertex, owned by this object and m_wShadowCount long.
-    const TransformObject** m_ppShadowXforms; // 0x048
+    // One bone transform per shadow vertex, m_wShadowCount long.
+    std::unique_ptr<const TransformObject*[]> m_ppShadowXforms; // 0x048
     // Some macros read these words as a vertex and face count; most read them as the shadow counts.
     short              m_wShadowCount;     // 0x04c
     struct ShadowFace* m_pShadowFaceList;  // 0x050
@@ -202,8 +210,8 @@ protected:
     Vec3  m_vUnusedB;    // 0x07c, zeroed by InitFields; nothing in this tree reads it
     Vec3  m_vUnusedC;    // 0x088, zeroed by InitFields; nothing in this tree reads it
 public:
-    class MeshBone* m_pBones; // 0x094
-    void            AttachBubble(short nBone, BoundBubble* pBubble);
+    std::unique_ptr<MeshBone[]> m_pBones; // 0x094
+    void                        AttachBubble(short nBone, BoundBubble* pBubble);
 
     // Public because src/physics/physicsbody.cpp reads one column of the second matrix.
     TransformObject m_transformA; // 0x098
@@ -212,8 +220,8 @@ public:
 
 protected:
     // InitFields clears it and the model loaders set it.
-    char         m_bScaledBounds; // 0x20c
-    BoundBubble* m_pBubble;       // 0x210
+    char                         m_bScaledBounds; // 0x20c
+    std::unique_ptr<BoundBubble> m_pBubble;       // 0x210
 public:
     ObjectPhase m_nPhase; // 0x214
 protected:
@@ -236,23 +244,23 @@ public:
 
     unsigned int m_nFlags; // 0x220
 
-    PhysicsBody* m_pBody; // 0x224
+    std::unique_ptr<PhysicsBody> m_pBody; // 0x224
 
     // A PlanState list head.
     // Public: src/planvm/planeditordialog.cpp writes it.
     class PlanState* m_pPlanState; // 0x228
     // Public: src/engine/level.cpp reads it from a free function.
-    class PlanState* m_pPlanStates; // 0x22c
+    std::unique_ptr<PlanState[]> m_pPlanStates; // 0x22c
 protected:
-    // One plan blob per plan, null terminated.
-    union PlanWord** m_ppPlanBlobs; // 0x230
+    // One plan blob per plan.
+    std::vector<std::unique_ptr<PlanWord[]> > m_ppPlanBlobs; // 0x230
 public:
     // The plan names, taken straight off ObjectDef::m_apszPlanNames.
-    char** m_papszPlanNames; // 0x234
+    std::vector<std::unique_ptr<char[]> > m_papszPlanNames; // 0x234
 
     const char* GetPlanName(short iPlan) const
     {
-        return m_papszPlanNames[iPlan];
+        return m_papszPlanNames[iPlan].get();
     }
 
     short m_nPlanCount; // 0x238, ObjectDef::m_nPlanCount copied
@@ -299,8 +307,6 @@ public:
     void ApplySyncedBehaviour(class CPlayer* pOwner, const struct NetMoveBody* pBody, short* pOutPlan, short* pOutBehaviour);
 
     static void StoreVector(Vec3* pDest, float flX, float flY, float flZ);
-
-    static void FreeName(char*& pszName);
 
     static void CoachUpdate(class EngineObject* pActor);
 };

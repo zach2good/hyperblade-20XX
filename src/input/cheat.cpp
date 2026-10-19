@@ -363,11 +363,11 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     {
                         if ((nSlot & 1) != 0)
                         {
-                            pTeamDef = pEngine->m_pTeamB;
+                            pTeamDef = pEngine->m_pTeamB.get();
                         }
                         else
                         {
-                            pTeamDef = pEngine->m_pTeamA;
+                            pTeamDef = pEngine->m_pTeamA.get();
                         }
 
                         auto* const pReserves = pEngine->GetReserveRows(pTeamDef);

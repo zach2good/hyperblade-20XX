@@ -43,8 +43,8 @@ void RampObject::InitCollisionPlanes()
 
     m_bPlanesReady = 1;
 
-    vMin = m_pBones->GetBoundingBox(&box)->vMin;
-    vMax = m_pBones->GetBoundingBox(&box)->vMax;
+    vMin = m_pBones[0].GetBoundingBox(&box)->vMin;
+    vMax = m_pBones[0].GetBoundingBox(&box)->vMax;
 
     vTipMax.x = vMax.x * g_flOneThird;
     vTipMax.y = vMax.y;

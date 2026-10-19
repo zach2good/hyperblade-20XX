@@ -77,7 +77,7 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
     m_flPosWeight = g_flOneCamera * 0.16666667f;
     m_flDirWeight = g_flOneCamera * 0.25f;
 
-    auto* pBody = m_pBody;
+    auto* pBody = m_pBody.get();
 
     vDir.x = g_flZeroCamera - pBody->pos.x;
     vDir.y = g_flZeroCamera - pBody->pos.y;
@@ -95,7 +95,7 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
         m_aDirRing[i].z = vDir.z;
     }
 
-    pBody = m_pBody;
+    pBody = m_pBody.get();
 
     m_posOut.x = pBody->pos.x;
     m_posOut.y = pBody->pos.y;
@@ -155,7 +155,7 @@ CameraObject::~CameraObject()
 // FUNCTION: HYPERX 0x00421d80
 void CameraObject::UpdateSmoothing()
 {
-    auto* const pSource = m_pBody;
+    auto* const pSource = m_pBody.get();
 
     const auto vPosition = pSource->pos;
 

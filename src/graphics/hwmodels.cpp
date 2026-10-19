@@ -147,7 +147,7 @@ void Pose(const EngineObject& object, TexturedModel& model)
 
         for (int nChild = 0; nChild < bone.m_pDesc->m_nChildCount; nChild++)
         {
-            const auto nIndex = static_cast<int>(bone.m_apChildren[nChild] - object.m_pBones);
+            const auto nIndex = static_cast<int>(bone.m_apChildren[nChild] - object.m_pBones.get());
 
             if (nIndex >= 0 && nIndex < nBones && nIndex != i)
             {
@@ -224,7 +224,7 @@ void HwModels::Load(EngineObject& object, const ObjectDef& def)
 
         if (pLod != nullptr)
         {
-            pMaterials = Database().FindOrLoadMaterialList(pLod, def.m_pszMaterial);
+            pMaterials = Database().FindOrLoadMaterialList(pLod, def.m_pszMaterial.get());
         }
     }
 
@@ -267,7 +267,7 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
         model.nPosedFrame = nFrame;
     }
 
-    const auto nBone = static_cast<int>(&bone - object.m_pBones);
+    const auto nBone = static_cast<int>(&bone - object.m_pBones.get());
     const auto nLod  = [&]
     {
         if (GraphicsSettings::On(GraphicsSettings::Switch::FULL_DETAIL))

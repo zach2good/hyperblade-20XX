@@ -458,7 +458,7 @@ char AnimPlayer::ComputeScale(float flScale)
             m_flAccum    = 0.0f;
             m_flDuration = flSum / static_cast<float>(nSegments) * flApplied;
 
-            auto* const pRoot = m_pObject->m_pBones;
+            auto* const pRoot = m_pObject->m_pBones.get();
 
             if (pRoot->IsAnimationDirty() != 0)
             {
@@ -557,9 +557,9 @@ char AnimPlayer::Advance(float flDelta)
         }
     }
 
-    m_pObject->m_pBones->m_local.SetTranslation(flAt * m_vDelta.x + m_vPos.x,
-                                                flAt * m_vDelta.y + m_vPos.y,
-                                                flAt * m_vDelta.z + m_vPos.z);
+    m_pObject->m_pBones[0].m_local.SetTranslation(flAt * m_vDelta.x + m_vPos.x,
+                                                  flAt * m_vDelta.y + m_vPos.y,
+                                                  flAt * m_vDelta.z + m_vPos.z);
 
     return cRunning;
 }

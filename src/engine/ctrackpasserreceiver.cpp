@@ -90,7 +90,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     if (pTracked->GetSlot() < kPlayerObjectCount)
     {
-        const TransformObject* const pWorld = &pTracked->m_pBones->m_world;
+        const TransformObject* const pWorld = &pTracked->m_pBones[0].m_world;
 
         g_vCamPasserAim.x = pWorld->GetElement(0, 3);
 

@@ -50,7 +50,7 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 
     if (pDef->m_nRatingsMode == kRatingsField)
     {
-        const float* pSource = pDef->m_apRatings[nLevel];
+        const float* pSource = pDef->m_apRatings[nLevel].get();
         for (i = 0; i < kRatingCount; i++)
         {
             m_stats.SetStat(i + 1, *pSource);
@@ -64,9 +64,9 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
         const float* pSpecial;
         const float* pSource;
 
-        if ((nSlot != kGoalieSlotA) || (nLevel != 0) || ((pSpecial = pDef->m_apRatings[kRatingsSpecialGoalie]) == nullptr) || (g_bSessionActive != 0))
+        if ((nSlot != kGoalieSlotA) || (nLevel != 0) || ((pSpecial = pDef->m_apRatings[kRatingsSpecialGoalie].get()) == nullptr) || (g_bSessionActive != 0))
         {
-            pSource = pDef->m_apRatings[nLevel];
+            pSource = pDef->m_apRatings[nLevel].get();
         }
         else
         {

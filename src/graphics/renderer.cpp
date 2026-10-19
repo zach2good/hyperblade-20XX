@@ -110,7 +110,7 @@ void Renderer::DrawAllMeshes()
 
             nBone = 1;
 
-            pBone = pDrome->m_pBones;
+            pBone = pDrome->m_pBones.get();
 
             if (pBone->IsBound() != 0)
             {

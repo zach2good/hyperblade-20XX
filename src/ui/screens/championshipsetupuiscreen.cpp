@@ -1941,11 +1941,11 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
 
         if (m_bShowHomeTeam != 0)
         {
-            pTeam = g_pGameEngine->m_pTeamA;
+            pTeam = g_pGameEngine->m_pTeamA.get();
         }
         else
         {
-            pTeam = g_pGameEngine->m_pTeamB;
+            pTeam = g_pGameEngine->m_pTeamB.get();
         }
 
         const auto        nRow = (nStat - kMatchStatTotalPoints) * kChampGridColumns;

@@ -1024,7 +1024,7 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 // FUNCTION: HYPERX 0x00408cc0
 void PhysicsBody::ApplyAnimDrivenForce()
 {
-    auto* const pMesh      = pOwner->m_pBones;
+    auto* const pMesh      = pOwner->m_pBones.get();
     auto* const pTransform = &pMesh->m_local;
 
     if (pMesh->IsAnimationDirty() != 0)
@@ -1036,7 +1036,7 @@ void PhysicsBody::ApplyAnimDrivenForce()
             pTransform->GetElement(1, 3) * pBone->m_vScale.y,
             pTransform->m_a[2][3] * pBone->m_vScale.z);
 
-        pOwner->m_pBones->ClearFlags(kMeshboneAnimationDirty);
+        pOwner->m_pBones[0].ClearFlags(kMeshboneAnimationDirty);
     }
 
     const double dTransX = pTransform->m_a[0][3];

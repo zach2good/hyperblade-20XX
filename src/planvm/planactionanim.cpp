@@ -260,8 +260,8 @@ void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*
 // FUNCTION: HYPERX 0x004012b0
 void PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
-    auto* const pRate   = pContext->GetActor()->m_pAnimPlayer;
-    auto* const pPlayer = pContext->GetActor()->m_pAnimPlayer;
+    auto* const pRate   = pContext->GetActor()->m_pAnimPlayer.get();
+    auto* const pPlayer = pContext->GetActor()->m_pAnimPlayer.get();
 
     pPlayer->SetPlaybackRate(
         static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[1].n) * 0.01) * pRate->GetPlaybackRate());
@@ -292,7 +292,7 @@ void PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode* pArgs, 
             pKeyedOn = pContext->GetActor();
             pActor   = pContext->GetActor();
 
-            pPlayer = pActor->m_pAnimPlayer;
+            pPlayer = pActor->m_pAnimPlayer.get();
 
             pPlayer->SetCallbackTarget(pKeyedOn->GetSlot(), pArgs->m_pArgs[1].n, 0);
             break;
@@ -370,7 +370,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
 
     auto* const pBubble = g_pGameEngine->GetColObjPtr(nIndex);
 
-    auto* const pAttach = pBubble->m_pAttach;
+    auto* const pAttach = pBubble->m_pAttach.get();
 
     pAttach->nIndex = nIndex;
 
