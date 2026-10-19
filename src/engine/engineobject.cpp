@@ -758,7 +758,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     m_pBones = std::make_unique<MeshBone[]>(nBones);
 
-    if (InitRenderSlotsAndShadowLinks(m_pLod, m_pBones.get(), g_pTexManager, 0) != 0)
+    if (InitRenderSlotsAndShadowLinks(m_pLod, m_pBones.get(), g_pTexManager.get(), 0) != 0)
     {
         InitShadowVertexLinks(m_pLod, m_pMeshBlob);
 
@@ -946,7 +946,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
         m_pBones = std::make_unique<MeshBone[]>(m_wBoneCount);
     }
 
-    if (InitRenderSlotsAndShadowLinks(m_pLod, m_pBones.get(), g_pTexManager, nOldBones == m_wBoneCount) != 0)
+    if (InitRenderSlotsAndShadowLinks(m_pLod, m_pBones.get(), g_pTexManager.get(), nOldBones == m_wBoneCount) != 0)
     {
         InitShadowVertexLinks(m_pLod, m_pMeshBlob);
 

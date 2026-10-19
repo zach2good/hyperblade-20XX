@@ -574,13 +574,13 @@ void MeshBone::CalcVertexColors()
             }
 
             nColour = (((ColorPalette::LookupColorIntensity(
-                             g_pColorPalette, cShade, flIntensity, cIndex)
+                             g_pColorPalette.get(), cShade, flIntensity, cIndex)
                              << 8 |
-                         ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
+                         ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flIntensity, cIndex))
                             << 8 |
-                        ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
+                        ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flIntensity, cIndex))
                        << 8) |
-                      ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex);
+                      ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flIntensity, cIndex);
         }
 
         m_pFaceColours[i] = nColour;

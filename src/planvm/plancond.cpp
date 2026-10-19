@@ -6994,7 +6994,7 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
 
     const auto nNearSlot = OPPOSING_FIRST(nSlot);
 
-    auto* const pEngine = g_pGameEngine;
+    auto* const pEngine = g_pGameEngine.get();
 
     auto* const pNear = pEngine->m_ppSlots[nNearSlot];
 
