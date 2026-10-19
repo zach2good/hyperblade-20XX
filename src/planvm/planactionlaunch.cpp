@@ -1,5 +1,6 @@
 #include "math/squirrel5.h"
 #include "common/compat.h"
+#include "engine/planfixes.h"
 #include "math/mathops.h"
 #include "engine/messageids.h"
 #include "planvm/ctracktraj.h"
@@ -560,7 +561,20 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
     {
         flScratchA = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vDiff, &vDiff))));
 
-        flFlight = (flScratchA / static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vRokVel, &vRokVel))))) * g_pGameEngine->m_clock.flDelta;
+        // A goalie standing still holds a rok with no speed, and the infinite flight time zeroes the launch.
+        const auto flRokSpeed = [&]
+        {
+            const auto flHeld = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vRokVel, &vRokVel))));
+
+            if (PlanFixes::On() && flHeld == 0.0f)
+            {
+                return pActor->GetPhysicsBody()->flForwardSpeedDt;
+            }
+
+            return flHeld;
+        }();
+
+        flFlight = (flScratchA / flRokSpeed) * g_pGameEngine->m_clock.flDelta;
 
         if (nIndex == kSlotRok)
         {

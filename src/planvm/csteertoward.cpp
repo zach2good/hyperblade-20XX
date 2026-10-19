@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/planfixes.h"
 #include "planvm/agendaitemids.h"
 #include "physics/physicsbody.h"
 #include "engine/devicector.h"
@@ -70,6 +71,17 @@ void CSteerToward::OnListChanged()
 // FUNCTION: HYPERX 0x0040f260
 void CSteerToward::Process(int nArg)
 {
+    // A launch at a rok with no carrier returns before it sets the target.
+    if (m_pTarget == nullptr)
+    {
+        if (m_pNext != nullptr)
+        {
+            m_pNext->Process(nArg);
+        }
+
+        return;
+    }
+
     // The side vector's y is never written or read.
     Vec3  vSide;
     Vec3  vLead;
@@ -139,7 +151,8 @@ void CSteerToward::Process(int nArg)
             m_pOwner->PostSceneEvent(kMsgGoalReceived, 0);
         }
 
-        if (m_pNext != nullptr)
+        // The original steps the rest of the agenda here and again below.
+        if (!PlanFixes::On() && m_pNext != nullptr)
         {
             m_pNext->Process(nArg);
         }

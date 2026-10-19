@@ -247,7 +247,10 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
     *m_pSpeed = static_cast<float>(sqrt(static_cast<double>(flVx * flVx + flVy * flVy + flVz * flVz)));
 
-    if ((flCap = g_flTwoAgendaItem * m_pOwner->GetPhysicsBody()->flForwardSpeedDt) < *m_pSpeed)
+    flCap = g_flTwoAgendaItem * m_pOwner->GetPhysicsBody()->flForwardSpeedDt;
+
+    // The swarf and the mine define no speed, so the cap stopped them dead in flight.
+    if ((!PlanFixes::On() || flCap != 0.0f) && flCap < *m_pSpeed)
     {
         *m_pSpeed = flCap;
 
