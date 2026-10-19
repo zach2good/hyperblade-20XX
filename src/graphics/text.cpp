@@ -1,5 +1,6 @@
 #include "graphics/text.h"
 #include "common/pak.h"
+#include "common/sdlmemory.h"
 #include <SDL3/SDL.h>
 #include <array>
 #include <cmath>
@@ -69,18 +70,16 @@ std::vector<unsigned char> LoadWindowsFont(const char* pszName)
 
     auto nSize = static_cast<size_t>(0);
 
-    auto* const pData = SDL_LoadFile(path.c_str(), &nSize);
+    const auto pData = SDLPtr<void>(SDL_LoadFile(path.c_str(), &nSize));
 
     if (pData == nullptr)
     {
         return {};
     }
 
-    const auto file = std::vector<unsigned char>(static_cast<const unsigned char*>(pData), static_cast<const unsigned char*>(pData) + nSize);
+    const auto* const pBytes = static_cast<const unsigned char*>(pData.get());
 
-    SDL_free(pData);
-
-    return file;
+    return std::vector<unsigned char>(pBytes, pBytes + nSize);
 }
 
 // Pixel Operator, CC0, from the pak. Each draws crisply at a multiple of its design size.
