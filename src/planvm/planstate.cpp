@@ -10,6 +10,7 @@
 #include "planvmglobals.h"
 #include "ui/hudglobals.h"
 #include "planvm/agendaitem.h"
+#include <vector>
 #include <cstring>
 #include <utility>
 #include "collinteractor.h"
@@ -191,9 +192,6 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
     }
 }
 
-constexpr auto kPlanNodesFirst = 500;
-constexpr auto kPlanNodesGrow  = 250;
-
 // FUNCTION: HYPERX 0x0047b290
 void PlanState::PostUpdateCleanup()
 {
@@ -212,48 +210,32 @@ void PlanState::PostUpdateCleanup()
     m_pCurrent->UpdateBehaviorPollCountdown();
 }
 
-// A plan of 500 nodes or more keeps parsing into the array the grow just released.
+// The original grew its word array mid-parse and kept writing through a pointer into the old one.
 // FUNCTION: HYPERX 0x0047b2d0
 PlanNode** PlanState::Compile(const PlanWord* pStream)
 {
-    int nIndex;
-
-    short nCapacity = kPlanNodesFirst;
-    auto  aWords    = std::make_unique<PlanWord[]>(nCapacity);
-
     m_nBehaviorCount    = 0;
     m_nNamedInteractors = 0;
 
     m_apNamedInteractors.reset();
 
-    auto* pWord = aWords.get();
-    char  cFlag = 0;
+    auto words = std::vector<PlanWord>();
 
-    while (ParseNodeStream(1, &pStream, pWord, &cFlag) != 0)
+    auto word  = PlanWord{};
+    char cFlag = 0;
+
+    while (ParseNodeStream(1, &pStream, &word, &cFlag) != 0)
     {
-        pWord++;
+        words.push_back(word);
         m_nBehaviorCount++;
 
-        if (m_nBehaviorCount == nCapacity)
-        {
-            nCapacity += kPlanNodesGrow;
-            auto aGrown = std::make_unique<PlanWord[]>(nCapacity);
-
-            for (nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
-            {
-                aGrown[nIndex] = aWords[nIndex];
-            }
-
-            aWords = std::move(aGrown);
-        }
-
-        if (pWord[-1].pNode->m_nOpcode == static_cast<int>(CATEGORY_END_PLAN))
+        if (word.pNode->m_nOpcode == static_cast<int>(CATEGORY_END_PLAN))
         {
             m_pending.apBehaviors = std::make_unique<PlanNode*[]>(m_nBehaviorCount);
 
-            for (nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
+            for (int nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
             {
-                m_pending.apBehaviors[nIndex] = aWords[nIndex].pNode;
+                m_pending.apBehaviors[nIndex] = words[nIndex].pNode;
             }
 
             if (m_nNamedInteractors != 0)
