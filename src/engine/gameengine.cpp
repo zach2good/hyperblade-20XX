@@ -1376,7 +1376,7 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
                                 continue;
                             }
 
-                            for (const auto [nRating, flEasy] : { std::pair{ kRatingSubInDamage, 50.0f }, std::pair{ kRatingMinSubIn, 40.0f } })
+                            for (const auto& [nRating, flEasy] : { std::pair{ kRatingSubInDamage, 50.0f }, std::pair{ kRatingMinSubIn, 40.0f } })
                             {
                                 auto& flValue = pDef->m_apRatings[nLevel][nRating];
 
