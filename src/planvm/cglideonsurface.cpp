@@ -24,6 +24,7 @@
 #include "common/pooledownerroot.h"
 #include "engine/statids.h"
 #include "engine/messageids.h"
+#include "engine/objectkind.h"
 
 #define ROK_CARRIER_SPEED_SCALE 0.9f
 
@@ -353,11 +354,10 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
             flTarget = g_flOneAgendaItem;
         }
 
-        auto* const pStats = &((PlayerObject*)m_pOwner)->m_stats;
-
-        if (pStats != nullptr)
+        // The rok glides too, and has no stats; the original read past its object.
+        if (m_pOwner->m_nKind == ObjectKind::kDromer)
         {
-            flSum = pStats->GetWeightedStat(kRatingSpeed) * 0.05f + 0.65f;
+            flSum = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingSpeed) * 0.05f + 0.65f;
         }
         else
         {

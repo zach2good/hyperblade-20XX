@@ -84,8 +84,8 @@ team can play itself. A team is its file name, its name or its index;
 an unknown team lists them all. The match settings in `booie.ini`, such as difficulty and period
 length, still apply. Each row is one player in one match, with their health at the end (100 is
 unhurt), the score, and the game's own match stats. A seed does not yet replay a match exactly.
-Errors print instead of opening a dialog. A fatal one, such as the physics' rare "BAD SURFACE
-NORMAL", ends the run with exit code 3 and keeps the matches already written.
+Errors print instead of opening a dialog. A fatal one ends the run with exit code 3 and keeps the matches
+already written.
 
 ## Build
 
