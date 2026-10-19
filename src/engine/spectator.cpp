@@ -1,6 +1,7 @@
 #include "engine/spectator.h"
 #include "app/gameapp.h"
 #include "app/wndproc.h"
+#include "common/sdlmemory.h"
 #include "engine/engineobject.h"
 #include "engine/framepacing.h"
 #include "engine/gameengine.h"
@@ -168,7 +169,7 @@ std::optional<Spectator::View> Spectator::FreeView(const Vec3& eye, const Vec3& 
     auto nPads = 0;
 
     // The first pad the game opened flies too: left stick moves, right stick looks, triggers rise.
-    if (auto* const pIds = SDL_GetGamepads(&nPads); pIds != nullptr)
+    if (const auto pIds = SDLPtr<SDL_JoystickID[]>(SDL_GetGamepads(&nPads)); pIds != nullptr)
     {
         auto* const pPad = [&]() -> SDL_Gamepad*
         {
@@ -189,8 +190,6 @@ std::optional<Spectator::View> Spectator::FreeView(const Vec3& eye, const Vec3& 
             flRise += Stick(pPad, SDL_GAMEPAD_AXIS_RIGHT_TRIGGER) - Stick(pPad, SDL_GAMEPAD_AXIS_LEFT_TRIGGER);
             bFast = bFast || SDL_GetGamepadButton(pPad, SDL_GAMEPAD_BUTTON_LEFT_SHOULDER);
         }
-
-        SDL_free(pIds);
     }
 
     const auto flStep = FramePacing::kTickMs / 1000.0f;
