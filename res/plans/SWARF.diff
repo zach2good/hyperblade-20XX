@@ -1,0 +1,9 @@
+--- a/SWARF
++++ b/SWARF
+@@ -45,5 +45,5 @@
+                 Block 2
+                     DO_ACTION 3 id_ACF_HoverAboveArmory 4 53
+-                    SET_TIMEOUTMSG 3 200 id_MSG_DeployWeapon 52
++                    SET_TIMEOUTMSG 3 200 id_MSG_DeployWeapon 53
+     SET_MESSAGE_INTERACTOR 2 id_MSG_Display
+         Enable 1

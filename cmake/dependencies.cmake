@@ -106,3 +106,29 @@ target_compile_definitions(imgui PUBLIC IMGUI_DISABLE_OBSOLETE_FUNCTIONS)
 # stb ships in third_party/, header only.
 add_library(stb INTERFACE)
 target_include_directories(stb SYSTEM INTERFACE "${PROJECT_SOURCE_DIR}/third_party/stb")
+
+# libadlib decompiles and compiles the plans. The fixes in res/plans are edits to its decompiled
+# source, so it is pinned by commit. Its own build wants POSIX, so only the compiler and decompiler
+# are built, with a patch for the one dirent.h use.
+set(LIBADLIB_COMMIT b1d307d7f881ec3bba2933aa69cfdf29603264a0)
+
+CPMAddPackage(
+    NAME libadlib
+    URL "https://github.com/vomitselfie/libadlib/archive/${LIBADLIB_COMMIT}.tar.gz"
+    URL_HASH SHA256=09f639b77aae6d7f564d743449d2ca3c7a9db60f884a6433af453d4f2ba77c73
+    PATCHES "${PROJECT_SOURCE_DIR}/cmake/libadlib-msvc.patch"
+    DOWNLOAD_ONLY YES)
+
+add_library(adlib STATIC
+    "${libadlib_SOURCE_DIR}/src/vocabulary.cpp"
+    "${libadlib_SOURCE_DIR}/src/pbn.cpp"
+    "${libadlib_SOURCE_DIR}/src/pbn_writer.cpp"
+    "${libadlib_SOURCE_DIR}/src/compiler/numbers.cpp"
+    "${libadlib_SOURCE_DIR}/src/compiler/symbols.cpp"
+    "${libadlib_SOURCE_DIR}/src/compiler/compiler.cpp"
+    "${libadlib_SOURCE_DIR}/src/compiler/strict.cpp"
+    "${libadlib_SOURCE_DIR}/src/tools/symbols.cpp"
+    "${libadlib_SOURCE_DIR}/src/tools/decompile.cpp")
+target_include_directories(adlib SYSTEM PUBLIC "${libadlib_SOURCE_DIR}/include")
+target_compile_features(adlib PUBLIC cxx_std_17)
+target_compile_options(adlib PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/EHsc>)

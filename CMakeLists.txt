@@ -317,7 +317,7 @@ else()
 endif()
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
-target_link_libraries(hyperx_objects PRIVATE hyperx_options hyperx_permissive SDL3::SDL3 miniaudio imgui stb)
+target_link_libraries(hyperx_objects PRIVATE hyperx_options hyperx_permissive SDL3::SDL3 miniaudio imgui stb adlib)
 
 set(HYPERX_SHADERS shaders/mesh.vert.hlsl shaders/mesh.frag.hlsl shaders/shadow.vert.hlsl shaders/shadow.frag.hlsl)
 hyperx_add_shaders(hyperx_objects ${HYPERX_SHADERS})
@@ -327,7 +327,7 @@ add_executable(hyperx $<TARGET_OBJECTS:hyperx_objects>)
 set_target_properties(hyperx PROPERTIES
     OUTPUT_NAME hyperblade_20XX
     RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
-target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui)
+target_link_libraries(hyperx PRIVATE SDL3::SDL3 miniaudio imgui adlib)
 hyperx_copy_runtime_dlls(hyperx "${HYPERX_OUT}")
 
 if(WIN32)
@@ -344,6 +344,19 @@ set(HYPERX_PAK_FILES
     fonts/PixelOperator.ttf
     fonts/PixelOperator8.ttf
     fonts/PixelOperator-LICENSE.txt
+    plans/ARMORY.diff
+    plans/CAMERA.diff
+    plans/CARRYROK.diff
+    plans/DEFENSE.diff
+    plans/GOALIE.diff
+    plans/MULTPLR.diff
+    plans/NGOAL.diff
+    plans/OFFWING.diff
+    plans/ROK.diff
+    plans/RRANDOM.diff
+    plans/SGOAL.diff
+    plans/SWARF.diff
+    plans/TURNSTIL.diff
     prompts/License.txt
     prompts/xbox_button_back.png
     prompts/xbox_button_color_a.png
@@ -399,6 +412,7 @@ hyperx_add_check(wave LABELS data DATA
     ARGS "${HYPERX_GAME_DATA}/Data")
 hyperx_add_check(planpatch LABELS data DATA
     SOURCES tests/planpatch_check.cpp src/planvm/planpatch.cpp
-    ARGS "${HYPERX_GAME_DATA}/Data")
+    LIBRARIES adlib
+    ARGS "${HYPERX_GAME_DATA}/Data" "${PROJECT_SOURCE_DIR}/res/plans")
 
 include(cmake/package.cmake)

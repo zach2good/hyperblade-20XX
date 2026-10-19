@@ -1,0 +1,65 @@
+--- a/OFFWING
++++ b/OFFWING
+@@ -251,5 +251,5 @@
+                 Block 4
+                     DO_ACTION 2 id_ACF_SetAnimation 105
+-                    ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++                    ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+                     DO_ACTION 3 id_ACF_ReallySendMsg id_PRN_Me 88
+                     CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+@@ -297,5 +297,5 @@
+         Enable 3
+             DO_ACTION 3 id_ACF_SendMessage id_PRN_Me id_MSG_SanityCheck
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             SET_TIMEOUTMSG 3 75 id_MSG_TimeOutMessage id_PRN_Me
+     SET_MESSAGE_INTERACTOR 2 id_MSG_TimeOutMessage
+@@ -308,5 +308,5 @@
+         Enable 5
+             DO_ACTION 3 id_ACF_SendMessage id_PRN_Me id_MSG_SanityCheck
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             DO_ACTION 2 id_ACF_SetKnockedDownState 0
+             DECIDE_BY_AMONG 5 id_DCF_MyID
+@@ -372,5 +372,5 @@
+             DO_ACTION 3 id_ACF_SendMessage id_PRN_Me id_MSG_SanityCheck
+             DO_ACTION 2 id_ACF_SetKnockedDownState 0
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             SET_TIMEOUTMSG 3 50 id_MSG_CheckPassingDistance id_PRN_Me
+     SET_MESSAGE_INTERACTOR 2 id_MSG_CheckPassingDistance
+@@ -458,5 +458,5 @@
+         Enable 3
+             DO_ACTION 3 id_ACF_SendMessage id_PRN_Me id_MSG_SanityCheck
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             SET_TIMEOUTMSG 3 75 id_MSG_TimeOutMessage id_PRN_Me
+     SET_MESSAGE_INTERACTOR 2 id_MSG_TimeOutMessage
+@@ -473,5 +473,5 @@
+             DO_ACTION 3 id_ACF_SendMessage id_PRN_Me id_MSG_SanityCheck
+             DO_ACTION 2 id_ACF_SetKnockedDownState 0
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             SET_TIMEOUTMSG 3 500 id_MSG_TimeOutMessage id_PRN_Me
+             CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+@@ -514,5 +514,5 @@
+             DECIDE_BY_AMONG 3 id_DCF_AnimationSemaphore
+                 Block 3
+-                    ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++                    ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+                     SET_TIMEOUTMSG 3 50 id_MSG_CheckPassingDistance id_PRN_Me
+                     CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+@@ -631,5 +631,5 @@
+             REMOVE_AGENDA_ITEM 1 id_AGD_CAvoidObjects
+             DO_ACTION 2 id_ACF_SetKnockedDownState 0
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             DO_ACTION 3 id_ACF_SpeedBurstSituation 4 100
+             SET_TIMEOUTMSG 3 400 id_MSG_TimeOutMessage id_PRN_Me
+@@ -857,5 +857,5 @@
+             REMOVE_AGENDA_ITEM 1 id_AGD_CAvoidObjects
+             DO_ACTION 2 id_ACF_SetKnockedDownState 0
+-            ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyTeammate 9
++            ADD_AGENDA_ITEM 5 id_AGD_CAvoidObjects id_PRN_MyTeammate 0 80.0 -6.5
+             DO_ACTION 3 id_ACF_SendMessage id_PRN_Me id_MSG_SendRandomTimeout
+             DECIDE_BY_AMONG 4 id_DCF_WhichOppnIsClosestToMe

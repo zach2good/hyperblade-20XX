@@ -1,0 +1,30 @@
+--- a/NGOAL
++++ b/NGOAL
+@@ -17,5 +17,5 @@
+                             DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 35
+                             DO_ACTION 3 id_ACF_SetInfoTextDromer id_PRN_LastRokCarrier 24
+-                        CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        CHANGE_TO_BEHAVIOR 1 "PostScoreWait4Drag"
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 0
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_PrevRokCarrier 2
+@@ -30,5 +30,5 @@
+                             DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 42
+                             DO_ACTION 3 id_ACF_SetInfoTextDromer id_PRN_LastRokCarrier 25
+-                        CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        CHANGE_TO_BEHAVIOR 1 "PostScoreWait4Drag"
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 0
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_PrevRokCarrier 2
+@@ -44,5 +44,5 @@
+                             DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 43
+                             DO_ACTION 3 id_ACF_SetInfoTextDromer id_PRN_LastRokCarrier 26
+-                        CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        CHANGE_TO_BEHAVIOR 1 "PostScoreWait4Drag"
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 0
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_PrevRokCarrier 2
+@@ -60,5 +60,5 @@
+                             DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 43
+                             DO_ACTION 3 id_ACF_SetInfoTextDromer id_PRN_LastRokCarrier 26
+-                        CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        CHANGE_TO_BEHAVIOR 1 "PostScoreWait4Drag"
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 0
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_PrevRokCarrier 2

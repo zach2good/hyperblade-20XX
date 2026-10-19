@@ -6,9 +6,11 @@ game, so "Confirmed" means the code path is certain and the in-game effect is st
 
 The port fixes them, and the debug menu's Plans tab (F2) turns the fixes off and on:
 
-- `src/planvm/planpatch.cpp` edits the compiled words of 13 plans as they load. A plan whose word
-  count or hash differs from the shipped file is left as it is. `planpatch_check` runs every
-  fix against the game's `Data` and can write the fixed plans out for `plan_dump.py`.
+- Each fix is a unified diff in `res/plans` against the plan's source as
+  [libadlib](https://github.com/vomitselfie/libadlib) decompiles it. The diffs go into the pak.
+  When a plan loads, the engine reads it from the disc, decompiles it, checks that it recompiles
+  to the same words, applies the diff and compiles the result in memory. A plan whose diff does
+  not apply runs as shipped. No plan source is committed beyond the diffs' context lines.
 - Every object compiles both sets of plans at load. Switching restarts each object's current
   behaviour from the other set. A network session cannot switch.
 - `PlanFixes::On()` gates the engine faults: the speed restore, the power-up resets, three-leaf
@@ -36,6 +38,18 @@ Ratings used in both:
 - **Confirmed**: the data flow is certain from the plan bytes and the VM code.
 - **Probable**: the data flow is certain, and the intent is clear enough from sibling code.
 - **Odd**: the plan does something unusual that may be deliberate.
+
+To write a new fix, decompile the plans, edit a copy and diff it:
+
+```sh
+planpatch_check <Data folder> res/plans <output folder>
+diff -U2 --label a/DEFENSE --label b/DEFENSE <output folder>/DEFENSE.txt DEFENSE.txt > res/plans/DEFENSE.diff
+```
+
+`planpatch_check` writes every plan's decompiled source and every fixed plan to the output
+folder. Add the diff to `HYPERX_PAK_FILES` in `CMakeLists.txt`. The author writes every child
+count in ADLIB source, and the compiler does not check them, so a dump of the fixed `.PBN` with
+`plan_dump.py` is the way to see that a fix landed where it should.
 
 ## Plan VM rules
 
@@ -100,7 +114,7 @@ one word to the node, so the node's argument count goes from 3 to 4. Adding it a
 to `SendMessage(id_PRN_Me, id_MSG_Extra2)` works too. PassingPlay repeats the slip once, in its
 re-armed `SET_TIMEOUTMSG 50, id_MSG_TimeOutMessage, id_PRN_Me`.
 
-Fixed: `planpatch.cpp` adds the fourth leaf to both timers.
+Fixed: `res/plans/CARRYROK.diff` adds the fourth leaf to both timers.
 
 ## Summary
 

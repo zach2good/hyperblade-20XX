@@ -1,0 +1,16 @@
+--- a/CAMERA
++++ b/CAMERA
+@@ -160,5 +160,5 @@
+                     DO_ACTION 2 id_ACF_SetObjectToWatch _STRAIGHTAHEAD_
+                     DO_ACTION 2 id_ACF_SetObjectToTrack id_PRN_ViewOwner
+-                    CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                    CHANGE_TO_BEHAVIOR 1 "BasicOverTheShoulderView"
+     SET_MESSAGE_INTERACTOR 3 id_MSG_TimeOutMessage
+         CHANGE_TO_BEHAVIOR 1 "BasicOverTheShoulderView"
+@@ -172,5 +172,5 @@
+                     DO_ACTION 2 id_ACF_SetObjectToWatch _STRAIGHTAHEAD_
+                     DO_ACTION 2 id_ACF_SetObjectToTrack id_PRN_ViewOwner
+-                    CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                    CHANGE_TO_BEHAVIOR 1 "BasicOverTheShoulderView"
+     SET_MESSAGE_INTERACTOR 3 id_MSG_MoveEyeTrack
+         CHANGE_TO_BEHAVIOR 1 "PressCam"

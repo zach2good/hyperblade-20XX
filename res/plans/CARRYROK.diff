@@ -1,0 +1,56 @@
+--- a/CARRYROK
++++ b/CARRYROK
+@@ -291,5 +291,5 @@
+             DO_ACTION 2 id_ACF_SetKnockedDownState 0
+             DO_ACTION 3 id_ACF_SpeedBurstSituation 3 100
+-            SET_TIMEOUTMSG 3 15 id_MSG_TimeOutMessage id_PRN_Me
++            SET_TIMEOUTMSG 4 15 id_MSG_TimeOutMessage id_PRN_Me id_PRN_MyTeammate
+             SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
+             ADD_AGENDA_ITEM 3 id_AGD_CAvoidObjects id_PRN_MyLeadOpponent id_PRN_MyOtherOpponent
+@@ -322,9 +322,18 @@
+                 Block 2
+                     DO_ACTION 3 id_ACF_SpeedBurstSituation 0 100
+-                    DECIDE_BY_AMONG 3 id_DCF_ShootSituation
++                    DECIDE_BY_AMONG 6 id_DCF_ShootSituation
+                         CHANGE_TO_BEHAVIOR 1 "Throwing"
+                         Block 2
+                             SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
+                             CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        Block 2
++                            SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
++                            CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        Block 2
++                            SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
++                            CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        Block 2
++                            SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
++                            CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+     SET_COLLISION_INTERACTOR 3 id_PRN_MyOtherOppnCollBub id_PRN_MyCollisionBub
+         Enable 1
+@@ -334,9 +343,18 @@
+                 Block 2
+                     DO_ACTION 3 id_ACF_SpeedBurstSituation 0 100
+-                    DECIDE_BY_AMONG 3 id_DCF_ShootSituation
++                    DECIDE_BY_AMONG 6 id_DCF_ShootSituation
+                         CHANGE_TO_BEHAVIOR 1 "Throwing"
+                         Block 2
+                             SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
+                             CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        Block 2
++                            SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
++                            CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        Block 2
++                            SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
++                            CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
++                        Block 2
++                            SET_TIMEOUTMSG 3 50 id_MSG_Attack id_PRN_Me
++                            CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+     SET_MESSAGE_INTERACTOR 2 id_MSG_Breakaway
+         CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+@@ -590,5 +608,5 @@
+             DECIDE_BY_AMONG 3 id_DCF_RecvrInRangeNView
+                 DO_ACTION 4 id_ACF_ReallySendMsg id_PRN_Me 123 id_PRN_MyTeammate
+-                SET_TIMEOUTMSG 3 50 id_MSG_TimeOutMessage id_PRN_Me
++                SET_TIMEOUTMSG 4 50 id_MSG_TimeOutMessage id_PRN_Me id_PRN_MyTeammate
+     SET_MESSAGE_INTERACTOR 2 id_MSG_Extra0
+         Enable 1

@@ -1,0 +1,32 @@
+--- a/MULTPLR
++++ b/MULTPLR
+@@ -146,5 +146,5 @@
+         Enable 3
+             DO_ACTION 1 id_ACF_SpinTurnstile
+-            SET_TIMEOUTMSG 3 20 id_MSG_TimeOutMessage id_PRN_Me
++            SET_TIMEOUTMSG 4 20 id_MSG_TimeOutMessage id_PRN_Me _MESSAGE_DATA_
+             DECIDE_BY_AMONG 3 id_DCF_SpinUp
+                 DO_ACTION 1 id_ACF_ReflectOffModel
+@@ -157,6 +157,5 @@
+ DECLARE_BEHAVIOR 6 id_BEH_SetInPlace "ScoreArming"
+     SET_MESSAGE_INTERACTOR 2 id_MSG_Initiate
+-        Enable 2
+-            DO_ACTION 3 id_ACF_ReallySendMsg id_PRN_Me 123
++        Enable 1
+             DECIDE_BY_AMONG 6 id_DCF_Random
+                 DO_ACTION 2 id_ACF_PlaySound 82
+@@ -168,5 +167,5 @@
+         Enable 3
+             DO_ACTION 1 id_ACF_SpinTurnstile
+-            SET_TIMEOUTMSG 3 20 id_MSG_TimeOutMessage id_PRN_Me
++            SET_TIMEOUTMSG 4 20 id_MSG_TimeOutMessage id_PRN_Me _MESSAGE_DATA_
+             DECIDE_BY_AMONG 3 id_DCF_SpinUp
+                 DO_ACTION 1 id_ACF_ReflectOffModel
+@@ -177,5 +176,6 @@
+             CHANGE_TO_BEHAVIOR 1 "Spin"
+     SET_MESSAGE_INTERACTOR 2 id_MSG_YerHit
+-        Enable 1
++        Enable 2
++            DO_ACTION 3 id_ACF_ReallySendMsg id_PRN_Me 123
+             DECIDE_BY_AMONG 4 id_DCF_RokInWhichTeamsPoss
+                 Block 2

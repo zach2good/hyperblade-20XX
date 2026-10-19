@@ -1,0 +1,10 @@
+--- a/RRANDOM
++++ b/RRANDOM
+@@ -188,6 +188,5 @@
+             SET_TIMEOUTMSG 3 150 id_MSG_TimeOutMessage id_PRN_Me
+     SET_MESSAGE_INTERACTOR 2 id_MSG_TimeOutMessage
+-        Enable 2
+-            REMOVE_AGENDA_ITEM 1 id_AGD_CTimerActivity
++        Enable 1
+             CHANGE_TO_BEHAVIOR 1 "Active"
+ END_PLAN

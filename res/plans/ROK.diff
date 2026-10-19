@@ -1,0 +1,15 @@
+--- a/ROK
++++ b/ROK
+@@ -234,5 +234,5 @@
+             DECIDE_BY_AMONG 3 id_DCF_OkToLaunchRok
+                 CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+-                Block 6
++                Block 7
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 38
+                     DO_ACTION 3 id_ACF_EndStatTimer id_PRN_RokCarrier 9
+@@ -241,4 +241,5 @@
+                     DO_ACTION 3 id_ACF_SendMessage _BROADCAST_ id_MSG_RokIsFree
+                     DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 1
++                    CHANGE_TO_BEHAVIOR 1 "Flying"
+     SET_MESSAGE_INTERACTOR 2 id_MSG_PassTo
+         Enable 1
