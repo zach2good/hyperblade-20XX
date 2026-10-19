@@ -5,7 +5,9 @@
 #include "engine/engineobject.h"
 #include "engine/framepacing.h"
 #include "engine/gameengine.h"
+#include "engine/messageids.h"
 #include "engine/objectclasses.h"
+#include "planvm/decisionlog.h"
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/planstate.h"
 #include "globals.h"
@@ -113,6 +115,8 @@ void ApplyAutopilot(bool bWasOn)
 
             if (pDromer != nullptr && SDL_strcasecmp(pDromer->GetPlanState()->GetName(), "Human") == 0)
             {
+                // A Human flight clears its flying flag on exit, as an interactor's plan change does.
+                pDromer->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, pDromer->GetSlot(), 0);
                 pDromer->RunPlanFrom("Defense", pDromer->GetPlanState()->m_pCurrent->GetName());
             }
         }
@@ -133,6 +137,13 @@ void ApplyAutopilot(bool bWasOn)
         pOwner = g_pGameEngine->m_ppSlots[pOwner->GetSlot() ^ 2];
     }
 
+    // With both on the bench, Human would take a hidden dromer, so the AI keeps them.
+    if (SDL_strcasecmp(pOwner->GetPlanState()->GetName(), "Sideln") == 0)
+    {
+        return;
+    }
+
+    pOwner->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, pOwner->GetSlot(), 0);
     pOwner->RunPlanFrom("Human", pOwner->GetPlanState()->m_pCurrent->GetName());
 }
 

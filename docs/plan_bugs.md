@@ -14,7 +14,7 @@ The port fixes them, and the debug menu's Plans tab (F2) turns the fixes off and
 - Every object compiles both sets of plans at load. Switching restarts each object's current
   behaviour from the other set. A network session cannot switch.
 - `PlanFixes::On()` gates the engine faults: animation events on glide behaviours, the speed
-  restore, the power-up resets, three-leaf avoidance, `SelectSubstitute`, the upward speed clamp in `CProjectAndBounce::Bind`, and the ratings parser. The team file fixes apply when the next
+  restore, the power-up resets, three-leaf avoidance, `SelectSubstitute`, the bounce clamps and speed cap, the goalie's `LaunchAt`, `CSteerToward`'s double step, a computer team sent to Human, and the ratings parser. The team file fixes apply when the next
   match loads its teams.
 
 The AI runs from the plan files in `Data/PLANS`, scripts that the plan VM in `src/planvm/`
@@ -153,39 +153,24 @@ Not fixed:
 ## Second review
 
 A later pass over every plan and the plan VM found these. Each was checked against the code; none
-has been watched in the game.
+has been watched in the game. The fixes follow the toggle, except the crash guards and the port's
+autopilot code, which always apply.
 
-Fixed:
-
-- `CProjectAndBounce::Bind` clamps a rise faster than eighty a second by setting eighty divided by
-  the frame delta, thirty times too fast. The original does the same (`fdivr` at 0x0040d3fb). The
-  fixes multiply instead.
-- `ClosestTargetToProjectile` with no carrier uses the address of its result as a slot. It now
-  answers the goalie, the arm that launches plainly.
-- The DEFENSE substitution gate from finding 4 is dropped rather than swapped, so the coach's
-  substitutions still land in play.
-
-Not fixed:
-
-- RRANDOM: a goal or drag during a red boost kills the timer that undoes it, so the maximum speed
-  stays at 2.0 until another red expires. Arenas without green randomisers keep it all match.
-- ROK: arm 0 of the free rok's dromer collisions re-enters "GlidingFree", so a downed dromer lying
-  on the rok rebroadcasts `RokIsFree` about every tenth of a second and restarts every AI skater.
-- ARMORY "Open": the awareness timer re-enters "Open" and cancels the deploy poll whenever a skater
-  passes within range.
-- ROK: deploying an uncharged rok re-enters "BeingCarried", whose exit turns the head camera off.
-- ROK: the goal-launch fallback and the throw arm never count a shot on goal, so a player can score
-  with no shots and an infinite shooting percentage.
-- OFFWING's global `id_MSG_PassReceived` gives control to the receiver when its teammate is injured
-  or due a substitute. That is right for the player's team, but a computer team's receiver then
-  reads the keyboard.
-- CARRYROK "GoForGoal": the timeout's first arm has no behaviour change, so later shoot decisions
-  run `Initiate` twice and play its sound twice.
-- CARRYROK "TurnToMate" is dead: nothing sends `id_MSG_TurnTowardMate`.
-- SWARF and MINE have no forward speed, so `CProjectAndBounce` caps their flight speed at nought
-  and a launched swarf sinks.
-- GOALIE `LaunchAt` divides by the held rok's speed, which is nought while the goalie stands still.
-- `CSteerToward` can run before `LaunchToward` sets its target, when the rok has no carrier.
-- `CSteerToward` steps the next agenda item twice on arrival.
-- Turning autopilot on skips `kMsgExitBehavior`, so a dromer redirected mid-flight keeps its flying
-  flag. Turning it off can hand the player a benched, hidden dromer.
+| Where | Bug | Effect | Fix |
+| --- | --- | --- | --- |
+| `CProjectAndBounce::Bind` | A rise faster than eighty a second is clamped to eighty divided by the frame delta (`fdivr` at 0x0040d3fb) | A body changing plan while rising jumps thirty times too fast; the rok's spikes come from here | Engine: multiplies by the delta |
+| `CProjectAndBounce` | The speed cap is twice the forward speed, and SWARF and MINE define none | A launched swarf stops dead and sinks | Engine: no cap for a body with no forward speed |
+| `ClosestTargetToProjectile` | With no carrier it uses the address of its result as a slot | A read far outside the slot table | Engine, always: answers the goalie, the arm that launches plainly |
+| GOALIE `LaunchAt` | Divides by the held rok's speed, which is nought while the goalie stands still | The launch has no speed and the rok drops at the goalie's feet | Engine: uses the goalie's forward speed |
+| `CSteerToward` | Runs before `LaunchToward` sets its target when the rok has no carrier | Null pointer | Engine, always: does nothing until it has a target |
+| `CSteerToward` | Steps the next agenda item twice on arrival | The rok's and swarf's animation steps twice that frame | Engine: steps it once |
+| DEFENSE | Finding 4's gate, swapped in the first pass, blocked the coach's substitutions in play | A damaged AI defender stays on until the next drag | Drops the gate |
+| RRANDOM | A goal or drag during a red boost kills the timer that undoes it | Maximum speed stays at 2.0 until another red expires, all match in arenas without green randomisers | "Setup" restores 0.7 |
+| ROK "GlidingFree", "Flying" | The knocked-down arm of each dromer collision re-enters the behaviour | A downed dromer on the rok rebroadcasts `RokIsFree` about every tenth of a second and restarts every AI skater | `_NO_BEH_CHANGE_` |
+| ROK "BeingCarried" | Deploying an uncharged rok re-enters "BeingCarried" | Its exit turns the head camera off and the carry timers reset | `_NO_BEH_CHANGE_` for the uncharged arms |
+| ROK | The goal-launch fallback and the throw count no shot on goal | A player can score with no shots and an infinite shooting percentage | Both count stat 40 |
+| ARMORY "Open" | The awareness timer re-enters "Open" | The deploy poll restarts whenever a skater passes within range | The timer changes nothing |
+| CARRYROK "GoForGoal" | The timeout's first arm has no behaviour change | Later shoot decisions run `Initiate` twice and play its sound twice | `_NO_BEH_CHANGE_` |
+| OFFWING | The global `id_MSG_PassReceived` gives the receiver the keys when its team mate is hurt or due off | Right for the player's team, but a computer team's receiver reads the keyboard | Engine: a computer team's dromer sent to Human runs Defense, as autopilot does |
+| Autopilot | Turning it on or off skips `kMsgExitBehavior` | A dromer moved mid-flight keeps its flying flag and skips the surface snap | Port: sends the exit first |
+| Autopilot | Turning it off with both dromers benched hands Human a hidden dromer | The player steers an invisible dromer | Port: the AI keeps them |

@@ -1065,11 +1065,14 @@ void EngineObject::SwapPlanSet()
 
 void EngineObject::ChangePlan(short nPlan, unsigned int nBehaviour)
 {
-    InstantiateAIPlan(nPlan);
-
     const auto bDromer = m_nSlot >= kSlotDromer0 && m_nSlot <= kSlotDromer3;
 
-    if (!Spectator::Autopilot() || !bDromer || static_cast<int>(nBehaviour) == PLAN_TOKEN_PREVIOUS_BEH || SDL_strcasecmp(m_pPlanState->GetName(), "Human") != 0)
+    // OFFWING hands a pass receiver the keys when its team mate is hurt, even on a computer team.
+    const auto bAI = bDromer && (Spectator::Autopilot() || (PlanFixes::On() && GameEngine::IsComputerTeam(m_nSlot) != 0));
+
+    InstantiateAIPlan(nPlan);
+
+    if (!bAI || static_cast<int>(nBehaviour) == PLAN_TOKEN_PREVIOUS_BEH || SDL_strcasecmp(m_pPlanState->GetName(), "Human") != 0)
     {
         m_pPlanState->ActivateBehavior(nBehaviour);
 
