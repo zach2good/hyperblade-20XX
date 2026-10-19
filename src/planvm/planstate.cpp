@@ -11,6 +11,7 @@
 #include "ui/hudglobals.h"
 #include "planvm/agendaitem.h"
 #include <cstring>
+#include <utility>
 #include "collinteractor.h"
 #include "msginteractor.h"
 #include "engine/engineobject.h"
@@ -47,114 +48,6 @@ PlanState::PlanState()
 PlanState::~PlanState()
 {
     Teardown();
-
-    FreeCompiledBehaviors(m_nBehaviorCount);
-
-    if (m_apNamedInteractors != nullptr)
-    {
-        delete[] m_apNamedInteractors;
-
-        m_apNamedInteractors = nullptr;
-    }
-}
-
-// FUNCTION: HYPERX 0x0047af60
-void PlanState::FreeCompiledBehaviors(short nCount)
-{
-    PlanNode** const ppNode = m_ppBehaviors;
-
-    if (ppNode != nullptr)
-    {
-        for (short i = 0; i < nCount; i++)
-        {
-            DestroyNode(ppNode[i]);
-        }
-
-        delete[] m_ppBehaviors;
-    }
-}
-
-// The operand array and the node are freed whatever the opcode, even an unknown one.
-// FUNCTION: HYPERX 0x0047afa0
-void PlanState::DestroyNode(PlanNode* pNode)
-{
-    PlanWord* pOperands;
-    PlanWord* pCursor;
-    int       nCount;
-    int       nIndex;
-
-    if (pNode != nullptr && pNode->m_nArgCount != 0)
-    {
-        switch (static_cast<unsigned int>(pNode->m_nOpcode))
-        {
-            case static_cast<int>(CATEGORY_DEBUG) | MEMBER_SET_TRACE:
-                delete[] pNode->m_pArgs[0].psz;
-                break;
-
-            case static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_DECLARE_BEHAVIOR:
-                delete[] pNode->m_pArgs[1].psz;
-                // Falls through: a declaration's children start where a collision interactor's do.
-
-            case static_cast<int>(CATEGORY_COLLISION_INTERACTOR) | MEMBER_SET_COLLISION_INTERACTOR:
-                nCount    = pNode->m_nArgCount;
-                pOperands = pNode->m_pArgs;
-                pCursor   = &pOperands[nCount - 1];
-
-                for (nIndex = nCount - 1; nIndex >= 2; nIndex--)
-                {
-                    DestroyNode(pCursor->pNode);
-                    pCursor--;
-                }
-
-                break;
-
-            case static_cast<int>(CATEGORY_MESSAGE_INTERACTOR) | MEMBER_SET_MESSAGE_INTERACTOR:
-            case static_cast<int>(CATEGORY_DECIDE) | MEMBER_DECIDE_BY_AMONG:
-            case static_cast<int>(CATEGORY_DECIDE) | MEMBER_DECIDE_BY_WITH_AMONG:
-                nCount    = pNode->m_nArgCount;
-                pOperands = pNode->m_pArgs;
-                pCursor   = &pOperands[nCount - 1];
-
-                for (nIndex = nCount - 1; nIndex >= 1; nIndex--)
-                {
-                    DestroyNode(pCursor->pNode);
-                    pCursor--;
-                }
-
-                break;
-
-            case static_cast<int>(CATEGORY_ACTION) | MEMBER_DO_ACTION:
-                // The one action whose second operand is a string the node owns.
-                if (pNode->m_pArgs[0].n == kACFSetHeadCamText)
-                {
-                    delete[] pNode->m_pArgs[1].psz;
-                }
-
-                break;
-
-            case CATEGORY_GLOBAL_INTERACTORS:
-            case CATEGORY_BLOCK:
-            case CATEGORY_ENABLE:
-                nCount    = pNode->m_nArgCount;
-                pOperands = pNode->m_pArgs;
-                pCursor   = &pOperands[nCount - 1];
-
-                for (nIndex = nCount - 1; nIndex >= 0; nIndex--)
-                {
-                    DestroyNode(pCursor->pNode);
-                    pCursor--;
-                }
-
-                break;
-
-            default:
-                break;
-        }
-
-        delete[] pNode->m_pArgs;
-    }
-
-    delete pNode;
 }
 
 // FUNCTION: HYPERX 0x0047b0e0
@@ -164,7 +57,7 @@ void PlanState::SetOwnerAndReset(EngineObject* pOwner, PlanNode** ppBehaviors)
 
     if (m_ppBehaviors != ppBehaviors)
     {
-        FreeCompiledBehaviors(m_nBehaviorCount);
+        m_compiled = std::exchange(m_pending, {});
     }
 
     m_ppBehaviors = ppBehaviors;
@@ -174,8 +67,6 @@ void PlanState::SetOwnerAndReset(EngineObject* pOwner, PlanNode** ppBehaviors)
 // FUNCTION: HYPERX 0x0047b110
 unsigned char PlanState::SetAndInit(const PlanWord* pStream)
 {
-    const auto nOldCount = m_nBehaviorCount;
-
     PlanNode** const ppCompiled = Compile(pStream);
 
     if (ppCompiled == nullptr)
@@ -185,7 +76,7 @@ unsigned char PlanState::SetAndInit(const PlanWord* pStream)
 
     if (m_ppBehaviors != ppCompiled)
     {
-        FreeCompiledBehaviors(nOldCount);
+        m_compiled = std::exchange(m_pending, {});
     }
 
     m_ppBehaviors = ppCompiled;
@@ -328,20 +219,14 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
     int nIndex;
 
     short nCapacity = kPlanNodesFirst;
-    auto* aWords    = new PlanWord[nCapacity]();
-    memset(aWords, 0, nCapacity * sizeof(PlanWord));
+    auto  aWords    = std::make_unique<PlanWord[]>(nCapacity);
 
     m_nBehaviorCount    = 0;
     m_nNamedInteractors = 0;
 
-    if (m_apNamedInteractors != nullptr)
-    {
-        delete[] m_apNamedInteractors;
+    m_apNamedInteractors.reset();
 
-        m_apNamedInteractors = nullptr;
-    }
-
-    auto* pWord = aWords;
+    auto* pWord = aWords.get();
     char  cFlag = 0;
 
     while (ParseNodeStream(1, &pStream, pWord, &cFlag) != 0)
@@ -352,35 +237,31 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
         if (m_nBehaviorCount == nCapacity)
         {
             nCapacity += kPlanNodesGrow;
-            auto* const aGrown = new PlanWord[nCapacity]();
+            auto aGrown = std::make_unique<PlanWord[]>(nCapacity);
 
             for (nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
             {
                 aGrown[nIndex] = aWords[nIndex];
             }
 
-            delete[] aWords;
-
-            aWords = aGrown;
+            aWords = std::move(aGrown);
         }
 
         if (pWord[-1].pNode->m_nOpcode == static_cast<int>(CATEGORY_END_PLAN))
         {
-            auto** const apResult = new PlanNode*[m_nBehaviorCount];
+            m_pending.apBehaviors = std::make_unique<PlanNode*[]>(m_nBehaviorCount);
 
             for (nIndex = 0; nIndex < m_nBehaviorCount; nIndex++)
             {
-                apResult[nIndex] = aWords[nIndex].pNode;
+                m_pending.apBehaviors[nIndex] = aWords[nIndex].pNode;
             }
-
-            delete[] aWords;
 
             if (m_nNamedInteractors != 0)
             {
-                m_apNamedInteractors = new Interactor*[m_nNamedInteractors];
+                m_apNamedInteractors = std::make_unique<Interactor*[]>(m_nNamedInteractors);
             }
 
-            return apResult;
+            return m_pending.apBehaviors.get();
         }
     }
 
@@ -400,7 +281,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
     {
         pCursor++;
 
-        auto* pNode = new PlanNode;
+        auto* pNode = m_pending.apNodes.emplace_back(std::make_unique<PlanNode>()).get();
 
         pNode->m_nOpcode = pCursor->n;
         pCursor++;
@@ -425,8 +306,8 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         {
             const auto nMasked = static_cast<short>(pNode->m_nArgCount & 0x7fff);
 
-            // Zeroed: an integer word fills only the low half, and teardown reads child words as nodes.
-            PlanWord* pChild = pNode->m_pArgs = new PlanWord[nMasked]();
+            // Zeroed: an integer word fills only the low half.
+            PlanWord* pChild = pNode->m_pArgs = m_pending.apArgs.emplace_back(std::make_unique<PlanWord[]>(nMasked)).get();
 
             for (int nChild = 0; nChild < nMasked; nChild++)
             {
@@ -481,7 +362,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
         }
         else
         {
-            pOut->psz = strcpy(new char[nLength], szName);
+            pOut->psz = strcpy(m_pending.apStrings.emplace_back(std::make_unique<char[]>(nLength)).get(), szName);
         }
 
         *ppStream = pCursor + nLength;
@@ -541,7 +422,7 @@ PlanState* PlanState::Instantiate()
 
                     m_nLocalRealCount = nRemaining;
 
-                    m_pflLocalReals = new float[nRemaining];
+                    m_pflLocalReals = std::make_unique<float[]>(nRemaining);
 
                     for (nSlot = 0; nSlot < m_nLocalRealCount; nSlot++)
                     {
@@ -667,9 +548,8 @@ void PlanState::Teardown()
 
     if (m_pflLocalReals != nullptr)
     {
-        delete[] m_pflLocalReals;
+        m_pflLocalReals.reset();
 
-        m_pflLocalReals   = nullptr;
         m_nLocalRealCount = 0;
     }
 
