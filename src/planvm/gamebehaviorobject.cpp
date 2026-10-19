@@ -24,6 +24,8 @@
 #include "common/pooledownerroot.h"
 #include "engine/messageids.h"
 #include "engine/objectphase.h"
+#include "engine/modelids.h"
+#include "engine/planfixes.h"
 
 // The game object's construction, shared by twenty-four derived constructors.
 
@@ -255,6 +257,12 @@ void GameBehaviorObject::SendTimedMessage()
         m_pOwner->StartClipPlayback(m_pAnimation,
                                     m_flAnimationRate,
                                     m_nAnimationFlags);
+    }
+
+    // The original binds this only for flying, so a gliding AI carrier never released a throw.
+    if (PlanFixes::On() && m_nEventTarget != kModelIDNone && m_nEventKind != kMsgNomsg)
+    {
+        m_pOwner->BindAnimEventChannel(0, m_nEventTarget, m_nEventKind, m_nEventParam);
     }
 }
 

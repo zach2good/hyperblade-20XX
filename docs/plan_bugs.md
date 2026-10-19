@@ -13,8 +13,8 @@ The port fixes them, and the debug menu's Plans tab (F2) turns the fixes off and
   not apply runs as shipped. No plan source is committed beyond the diffs' context lines.
 - Every object compiles both sets of plans at load. Switching restarts each object's current
   behaviour from the other set. A network session cannot switch.
-- `PlanFixes::On()` gates the engine faults: the speed restore, the power-up resets, three-leaf
-  avoidance, `SelectSubstitute`, and the ratings parser. The team file fixes apply when the next
+- `PlanFixes::On()` gates the engine faults: animation events on glide behaviours, the speed
+  restore, the power-up resets, three-leaf avoidance, `SelectSubstitute`, and the ratings parser. The team file fixes apply when the next
   match loads its teams.
 
 The AI runs from the plan files in `Data/PLANS`, scripts that the plan VM in `src/planvm/`
@@ -120,6 +120,7 @@ Fixed: `res/plans/CARRYROK.diff` adds the fourth leaf to both timers.
 
 | Plan | Bug | Effect | What the port does |
 |---|---|---|---|
+| CARRYROK "Throwing", "PassingPlayPass" | Only `BehObj_Fly`, `BehObj_FlyLcl` and `BehObj_OpenAndClose` bind `id_SET_AnimationEvent` when they start. These two are `id_BEH_Glide`, and the throw animation's own trigger, "release", names no message | AI carriers wind up, release nothing and change plan still holding the rok, so they pump fake and never pass or shoot. HUMAN's "Throwing" works because it also binds the event with `DO_ACTION id_ACF_SetAnimationEvent` | Engine: `GameBehaviorObject::SendTimedMessage` binds the event after starting the animation, as those three do |
 | CARRYROK "GoForGoal", "PassingPlay" | Two receiver timers carry data 0 | AI carriers test slot 0 as their receiver and pass where they should shoot | Adds `id_PRN_MyTeammate` to both timers |
 | CARRYROK "GoForGoal" | A collision keeps 8 bits of the decision log, so a second `ShootSituation` branch of 1 replays as 4 | In a network match another player's copy of the AI carrier may briefly enter a stale "PassingPlay" or "Throwing" | Gives `ShootSituation` five arms, 2 to 4 copies of arm 1 |
 | DEFENSE | Six collision interactors name opponents by slot, not by collision object | Attacks never react to dromers 2 and 3 | Uses `id_PRN_LeadOppnBodyBub` and `id_PRN_OtherOppnBodyBub`, as "ManOnMan" does |
