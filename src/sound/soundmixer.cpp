@@ -13,6 +13,8 @@
 #include <miniaudio.h>
 #include <algorithm>
 #include <array>
+#include <cmath>
+#include <span>
 #include <cstdio>
 #include <vector>
 
@@ -21,6 +23,10 @@ SoundMixer g_soundMixer;
 constexpr auto kMixChannels = 2;
 constexpr auto kMixRate     = 44100;
 constexpr auto kMixFrames   = 1024;
+
+// The limiter's ceiling, and how far its gain recovers toward one each frame.
+constexpr auto kLimitCeiling = 0.95f;
+constexpr auto kLimitRelease = 0.00003f;
 
 // The original streamed anything this large, and only a streamed sound ever looped.
 constexpr auto kStreamThreshold = 0x8800u;
@@ -67,26 +73,6 @@ bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)
     return Wave::ReadSamples(strPath.m_str.m_pchData, pEntry->m_nDataOffset, pEntry->m_nDataBytes, samples.data());
 }
 
-void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, int)
-{
-    auto* const pEngine = static_cast<ma_engine*>(pUser);
-
-    float afFrames[kMixFrames * kMixChannels];
-
-    constexpr auto nFrameBytes = static_cast<int>(sizeof(float)) * kMixChannels;
-
-    while (nAdditional > 0)
-    {
-        const auto nFrames = std::clamp(nAdditional / nFrameBytes, 1, kMixFrames);
-
-        ma_engine_read_pcm_frames(pEngine, afFrames, static_cast<ma_uint64>(nFrames), nullptr);
-
-        SDL_PutAudioStreamData(pStream, afFrames, nFrames * nFrameBytes);
-
-        nAdditional -= nFrames * nFrameBytes;
-    }
-}
-
 } // namespace
 
 // SDL calls FeedStream with the stream locked, so holding the lock keeps the voices still.
@@ -100,6 +86,8 @@ struct SoundMixer::Impl
     ma_decoder                            decoder{};
     ma_sound                              track{};
     bool                                  bTrack = false;
+    // Only FeedStream touches it.
+    float flLimitGain = 1.0f;
 
     void Stop(Voice& voice)
     {
@@ -130,6 +118,53 @@ struct SoundMixer::Impl
         bTrack = false;
     }
 };
+
+// Busy moments sum the voices past full scale, which the device clipped to fuzz. The gain drops
+// at once to keep each frame under the ceiling, and recovers over about half a second.
+void Limit(std::span<float> samples, float& flGain)
+{
+    for (size_t i = 0; i + 1 < samples.size(); i += kMixChannels)
+    {
+        const auto flPeak = std::max(std::fabs(samples[i]), std::fabs(samples[i + 1]));
+
+        const auto flTarget = [&]
+        {
+            if (flPeak > kLimitCeiling)
+            {
+                return kLimitCeiling / flPeak;
+            }
+
+            return 1.0f;
+        }();
+
+        flGain = std::min(flTarget, flGain + kLimitRelease);
+
+        samples[i] *= flGain;
+        samples[i + 1] *= flGain;
+    }
+}
+
+void SDLCALL FeedStream(void* pUser, SDL_AudioStream* pStream, int nAdditional, int)
+{
+    auto* const pImpl = static_cast<SoundMixer::Impl*>(pUser);
+
+    float afFrames[kMixFrames * kMixChannels];
+
+    constexpr auto nFrameBytes = static_cast<int>(sizeof(float)) * kMixChannels;
+
+    while (nAdditional > 0)
+    {
+        const auto nFrames = std::clamp(nAdditional / nFrameBytes, 1, kMixFrames);
+
+        ma_engine_read_pcm_frames(&pImpl->engine, afFrames, static_cast<ma_uint64>(nFrames), nullptr);
+
+        Limit(std::span(afFrames, static_cast<size_t>(nFrames * kMixChannels)), pImpl->flLimitGain);
+
+        SDL_PutAudioStreamData(pStream, afFrames, nFrames * nFrameBytes);
+
+        nAdditional -= nFrames * nFrameBytes;
+    }
+}
 
 float VolumeOf(int nStep)
 {
@@ -196,7 +231,7 @@ int SoundMixer::Init()
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO))
     {
-        pImpl->pStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, FeedStream, &pImpl->engine);
+        pImpl->pStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, FeedStream, pImpl.get());
     }
 
     if (pImpl->pStream == nullptr)
@@ -278,6 +313,20 @@ void SoundMixer::Play(SoundEntry* pSound)
         return;
     }
 
+    // The voice keeps its own copy, as a DirectSound buffer did: the game frees a group's samples
+    // while its sounds may still be playing. The disk read happens before the lock, which the
+    // mixer waits on.
+    auto samples = std::vector<unsigned char>();
+
+    if (pSound->m_pSamples != nullptr)
+    {
+        samples.assign(pSound->m_pSamples.get(), pSound->m_pSamples.get() + pSound->m_nDataBytes);
+    }
+    else if (!ReadData(pSound, samples))
+    {
+        return;
+    }
+
     const auto lock = StreamLock(m_pImpl->pStream);
 
     const auto it = std::find_if(m_pImpl->aVoices.begin(), m_pImpl->aVoices.end(), [](const Voice& voice)
@@ -292,18 +341,7 @@ void SoundMixer::Play(SoundEntry* pSound)
 
     auto& voice = *it;
 
-    // The voice keeps its own copy, as a DirectSound buffer did: the game frees a group's samples
-    // while its sounds may still be playing.
-    if (pSound->m_pSamples != nullptr)
-    {
-        voice.samples.assign(pSound->m_pSamples.get(), pSound->m_pSamples.get() + pSound->m_nDataBytes);
-    }
-    else if (!ReadData(pSound, voice.samples))
-    {
-        voice.samples.clear();
-
-        return;
-    }
+    voice.samples = std::move(samples);
 
     ma_audio_buffer_ref_init(format, pSound->m_nChannels, voice.samples.data(), pSound->m_nDataBytes / nFrameBytes, &voice.buffer);
     voice.buffer.sampleRate = pSound->m_nSamplesPerSec;

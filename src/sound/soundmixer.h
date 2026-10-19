@@ -43,9 +43,10 @@ public:
     // Marks the sounds that have played to their end as stopped; true when the music track has.
     bool Update();
 
-private:
+    // Public so the audio callback can name it.
     struct Impl;
 
+private:
     std::unique_ptr<Impl> m_pImpl;
     int                   m_nVolumeStep = 0;
     int                   m_nMusicStep  = 0;
