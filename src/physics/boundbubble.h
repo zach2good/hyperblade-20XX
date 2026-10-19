@@ -7,6 +7,7 @@ struct Vec3;
 
 #include "engine/gameengine.h"
 #include "common/staticinit.h"
+#include <memory>
 
 class EngineObject;
 
@@ -39,8 +40,6 @@ public:
 
     BoundBubble();
 
-    ~BoundBubble() override;
-
     BoundBubble(EngineObject* pOwner, BubbleCmd* pShape)
     : m_pShapeNode(nullptr)
     , m_flRadius(g_flZeroEngineObject)
@@ -57,9 +56,14 @@ public:
 
     unsigned char SphereSphereOverlap(BoundBubble* pOther);
 
-    BubbleShapeNode* m_pShapeNode; // 0x024
-    float            m_flRadius;   // 0x028, the shape node's radius, copied at init
+    std::unique_ptr<BubbleShapeNode> m_pShapeNode; // 0x024
+    float                            m_flRadius;   // 0x028, the shape node's radius, copied at init
+    // What BubbleNode::m_pChildren points at.
+    std::unique_ptr<BoundBubble[]> m_pChildBlock;
 };
+
+// FUNCTION: HYPERX 0x0042a8f0
+// BoundBubble::~BoundBubble
 
 // SYNTHETIC: HYPERX 0x0042ac10
 // BoundBubble::`vector deleting destructor'

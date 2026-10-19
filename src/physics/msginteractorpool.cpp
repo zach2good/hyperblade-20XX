@@ -6,12 +6,13 @@
 #include "physics/msginteractorpool.h"
 #include "planvm/msginteractor.h"
 #include "interactorpoolcounts.h"
+#include <memory>
 
 // A head node and then g_wMsgInteractorPoolSize more, each linked to the last.
 // FUNCTION: HYPERX 0x0046bc40
 void MsgInteractorPool::Init()
 {
-    auto* pNode = new MsgInteractor;
+    auto* pNode = m_nodes.emplace_back(std::make_unique<MsgInteractor>()).get();
 
     m_pHead     = pNode;
     auto* pTail = pNode;
@@ -20,7 +21,7 @@ void MsgInteractorPool::Init()
 
     while (nRemaining-- > 0)
     {
-        pNode = new MsgInteractor;
+        pNode = m_nodes.emplace_back(std::make_unique<MsgInteractor>()).get();
 
         pTail->pNext = pNode;
         pTail        = pNode;
@@ -40,21 +41,8 @@ void* MsgInteractorPool::Alloc()
 
     if (m_pHead == nullptr)
     {
-        m_pHead = new MsgInteractor;
+        m_pHead = m_nodes.emplace_back(std::make_unique<MsgInteractor>()).get();
     }
 
     return pHead;
-}
-
-// FUNCTION: HYPERX 0x0046bed0
-MsgInteractorPool::~MsgInteractorPool()
-{
-    while (m_pHead != nullptr)
-    {
-        auto* const pNext = m_pHead->pNext;
-
-        delete m_pHead;
-
-        m_pHead = pNext;
-    }
 }

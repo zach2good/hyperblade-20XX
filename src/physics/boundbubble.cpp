@@ -9,6 +9,7 @@
 #include "globals.h"
 #include "app/gameapp.h"
 #include "engine/objectphase.h"
+#include <memory>
 
 constexpr auto kShapeWorldSpace = (-2);
 
@@ -20,19 +21,6 @@ extern Vec3 g_vBubbleOtherCentre;
 
 // GLOBAL: HYPERX 0x004cb740
 extern Vec3 g_vBubbleSeparation;
-
-// FUNCTION: HYPERX 0x0042a8f0
-BoundBubble::~BoundBubble()
-{
-    delete m_pShapeNode;
-
-    if (m_pChildren != nullptr)
-    {
-        delete[] m_pChildren;
-
-        m_pChildren = nullptr;
-    }
-}
 
 // FUNCTION: HYPERX 0x0042a9a0
 void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
@@ -50,7 +38,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
         pOwner->AttachBubble(pShape->m_pPos->m_nComponent, this);
     }
 
-    m_pShapeNode   = pShape->m_pPos;
+    m_pShapeNode.reset(pShape->m_pPos);
     pShape->m_pPos = nullptr;
 
     BubbleCmd* pChildRec = nullptr;
@@ -72,7 +60,8 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 
     if (pShape->m_nChildCount > 0)
     {
-        m_pChildren = new BoundBubble[pShape->m_nChildCount];
+        m_pChildBlock = std::make_unique<BoundBubble[]>(pShape->m_nChildCount);
+        m_pChildren   = m_pChildBlock.get();
 
         for (i = 0; i < pShape->m_nChildCount; i++)
         {
@@ -165,7 +154,7 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
         g_vBubbleOwnCentre.z                 = vLocal.x * pOrient->m_a[2][0] + vLocal.y * pOrient->m_a[2][1] + vLocal.z * pOrient->m_a[2][2] + pOrient->m_a[2][3];
     }
 
-    auto* const pShapeRec = pOther->m_pShapeNode;
+    auto* const pShapeRec = pOther->m_pShapeNode.get();
 
     if (pShapeRec->m_nComponent == kShapeWorldSpace)
     {
