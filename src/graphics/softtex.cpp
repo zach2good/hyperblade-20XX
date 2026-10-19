@@ -4,7 +4,6 @@
 #include "rlesprite.h"
 #include "softtex.h"
 #include "graphicsglobals.h"
-#include <cstdlib>
 #include <cstring>
 #include <algorithm>
 #include "globals.h"
@@ -16,9 +15,9 @@
 constexpr auto kRLEMaxRun  = 0x7f;
 constexpr auto kRLELiteral = 0x80;
 
-// Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent. The block leaks.
+// Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent.
 // FUNCTION: HYPERX 0x0044f550
-RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
+Record<RLESprite> SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
 {
     char aRun[128];
     char cPixel  = 0;
@@ -32,12 +31,7 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
     const auto nStride = (cx + 3) & 0xfffffffc;
 
     // Room for every row pointer, then each row's worst case of a count byte per pixel and a literal.
-    auto* const pSprite = static_cast<RLESprite*>(malloc(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2));
-
-    if (pSprite == nullptr)
-    {
-        return nullptr;
-    }
+    const auto pSprite = MakeRecord<RLESprite>(sizeof(RLESprite) + cy * sizeof(char*) + (cx + 2) * cy * 2);
 
     pSprite->cx = cx;
     pSprite->cy = cy;
@@ -103,21 +97,16 @@ RLESprite* SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
         } while (nColumn <= cx);
     }
 
-    // The shrink can move the block, and the row pointers point into it.
-    const auto  nOld    = (std::uintptr_t)pSprite;
-    auto* const pShrunk = static_cast<RLESprite*>(realloc(pSprite, pOut - reinterpret_cast<char*>(pSprite)));
+    // The runs move to a block of their own size, and the row pointers move with them.
+    auto* const pOld    = reinterpret_cast<char*>(pSprite.get());
+    const auto  nUsed   = static_cast<size_t>(pOut - pOld);
+    auto        pShrunk = MakeRecord<RLESprite>(nUsed);
 
-    if (pShrunk == nullptr)
-    {
-        return pSprite;
-    }
+    memcpy(pShrunk.get(), pSprite.get(), nUsed);
 
-    if ((std::uintptr_t)pShrunk != nOld)
+    for (unsigned int nRow = 0; nRow < cy; nRow++)
     {
-        for (unsigned int nRow = 0; nRow < cy; nRow++)
-        {
-            pShrunk->apRows[nRow] = reinterpret_cast<char*>(pShrunk) + ((std::uintptr_t)pShrunk->apRows[nRow] - nOld);
-        }
+        pShrunk->apRows[nRow] = reinterpret_cast<char*>(pShrunk.get()) + (pSprite->apRows[nRow] - pOld);
     }
 
     return pShrunk;
@@ -129,8 +118,6 @@ SoftTex::SoftTex()
 {
     memset(&m_image, 0, sizeof(m_image));
 
-    m_pDib = nullptr;
-
     m_pNext = g_pSoftTexHead;
 
     g_pSoftTexHead = this;
@@ -140,12 +127,7 @@ SoftTex::SoftTex()
 // FUNCTION: HYPERX 0x004928d0
 void SoftTex::RemoveFromList()
 {
-    if (m_pDib != nullptr)
-    {
-        free(m_pDib);
-
-        m_pDib = nullptr;
-    }
+    m_pDib = nullptr;
 
     auto*    pNode = g_pSoftTexHead;
     SoftTex* pPrev = nullptr;
@@ -197,7 +179,7 @@ char SoftTex::Load(const char* pszName)
 
         if (m_pDib != nullptr)
         {
-            const BitmapInfoHeader* const pHeader = m_pDib;
+            const BitmapInfoHeader* const pHeader = m_pDib.get();
 
             if (pHeader->biBitCount == 8)
             {
@@ -205,7 +187,7 @@ char SoftTex::Load(const char* pszName)
                 m_image.nHeight = pHeader->biHeight;
                 m_image.nStride = (m_image.nWidth + 3) & ~3;
                 m_image.nBpp    = 8;
-                m_image.pPixels = GDI::PixelBits(m_pDib);
+                m_image.pPixels = GDI::PixelBits(m_pDib.get());
 
                 if (g_bSoftTexPaletteBuilt == 0)
                 {
@@ -214,10 +196,10 @@ char SoftTex::Load(const char* pszName)
 
                     g_bSoftTexPaletteBuilt = 1;
 
-                    pColours = GDI::ColorTable(m_pDib);
+                    pColours = GDI::ColorTable(m_pDib.get());
 
                     // A short table leaves the entries past it black.
-                    const auto nEntries = (std::min)(static_cast<int>(reinterpret_cast<RgbQuad*>(GDI::PixelBits(m_pDib)) - pColours), 256);
+                    const auto nEntries = (std::min)(static_cast<int>(reinterpret_cast<RgbQuad*>(GDI::PixelBits(m_pDib.get())) - pColours), 256);
 
                     for (i = 0; i < nEntries; i++)
                     {
@@ -231,7 +213,6 @@ char SoftTex::Load(const char* pszName)
                 return 1;
             }
 
-            free(m_pDib);
             m_pDib = nullptr;
 
             return 0;

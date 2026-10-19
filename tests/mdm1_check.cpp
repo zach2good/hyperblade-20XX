@@ -47,7 +47,7 @@ int main(int argc, char** argv)
         {
             nChecked++;
 
-            auto* const pOut = MDM1::Decompress(&file);
+            const auto pOut = MDM1::Decompress(&file);
 
             if (pOut == nullptr)
             {
@@ -62,10 +62,8 @@ int main(int argc, char** argv)
                 file.Read(&nSize, sizeof(nSize));
 
                 std::ofstream dump(std::filesystem::path(argv[2]) / entry.path().filename(), std::ios::binary);
-                dump.write(static_cast<const char*>(pOut), nSize);
+                dump.write(reinterpret_cast<const char*>(pOut.get()), nSize);
             }
-
-            free(pOut);
         }
 
         SDL_CloseIO(file.m_stream.As<SDL_IOStream>());

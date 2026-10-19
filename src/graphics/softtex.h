@@ -2,6 +2,7 @@
 #define HYPERBLADE_SOFTTEX_H
 
 #include "common/compat.h"
+#include "common/record.h"
 #include "graphics/bitmapformat.h"
 #include <stddef.h>
 
@@ -21,7 +22,7 @@ class SoftTex
 {
 public:
     // Handed a loaded DIB, not a SoftTex.
-    static RLESprite* CompressToRLE(const BitmapInfoHeader* pDib);
+    static Record<RLESprite> CompressToRLE(const BitmapInfoHeader* pDib);
 
 public:
     SoftTex();
@@ -42,9 +43,9 @@ public:
     int GetHeight() const;
 
 private:
-    SoftTexImage      m_image; // 0x00
-    BitmapInfoHeader* m_pDib;  // 0x14
-    class SoftTex*    m_pNext; // 0x18
+    SoftTexImage             m_image; // 0x00
+    Record<BitmapInfoHeader> m_pDib;  // 0x14
+    class SoftTex*           m_pNext; // 0x18
 
     friend struct SoftTexLayout;
 };

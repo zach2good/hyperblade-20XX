@@ -11,11 +11,6 @@
 // FUNCTION: HYPERX 0x0044f890
 CDDSurfaceOwner::~CDDSurfaceOwner()
 {
-    if (m_pSprite != nullptr)
-    {
-        Util::SafeFree(m_pSprite);
-    }
-
     if (m_pszName != nullptr)
     {
         free(m_pszName);
@@ -27,12 +22,7 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
 {
     if (m_pszName == nullptr || SDL_strcasecmp(pszName, m_pszName) != 0)
     {
-        if (m_pSprite != nullptr)
-        {
-            Util::SafeFree(m_pSprite);
-
-            m_pSprite = nullptr;
-        }
+        m_pSprite = nullptr;
 
         if (m_pszName != nullptr)
         {
@@ -48,14 +38,14 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
 
         m_pszName = pszCopy;
 
-        auto* const pSprite = SoftRenderer::LoadRLESprite(pszName);
+        auto pSprite = SoftRenderer::LoadRLESprite(pszName);
 
         if (pSprite != nullptr)
         {
-            m_pSprite = pSprite;
-
             m_ptSize.x = pSprite->cx;
             m_ptSize.y = pSprite->cy;
+
+            m_pSprite = std::move(pSprite);
         }
         else
         {
@@ -74,7 +64,7 @@ int CDDSurfaceOwner::Draw()
 {
     if (m_pSprite != nullptr)
     {
-        SWRend::BlitRLESprite(m_ptDrawOffset.x + m_ptPosition.x, m_ptDrawOffset.y + m_ptPosition.y, m_nUnitWidth * m_nFrame, m_ptSize.y, m_pSprite);
+        SWRend::BlitRLESprite(m_ptDrawOffset.x + m_ptPosition.x, m_ptDrawOffset.y + m_ptPosition.y, m_nUnitWidth * m_nFrame, m_ptSize.y, m_pSprite.get());
     }
 
     return 1;
