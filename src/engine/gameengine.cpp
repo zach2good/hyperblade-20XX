@@ -4329,26 +4329,25 @@ void GameEngine::RestartMatch()
     BroadcastEvent(kMsgStartDrag, 0, kSlotGod);
 }
 
-// A full queue keeps the five words it wrote and answers false.
-
+// The original wrote the five words before checking for room, and the terminator one past the end.
 // FUNCTION: HYPERX 0x004870b0
 char GameEngine::PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender, int bFromInput)
 {
+    if (m_nPendingCount >= kPendingQueueLength - 1)
+    {
+        return 0;
+    }
+
     m_aQueueSlot[m_nPendingCount]      = nSlot;
     m_aQueueMessage[m_nPendingCount]   = nMessage;
     m_aQueueArg[m_nPendingCount]       = nArg;
     m_aQueueSender[m_nPendingCount]    = nSender;
     m_aQueueFromInput[m_nPendingCount] = bFromInput;
 
-    if (m_nPendingCount < kPendingQueueLength)
-    {
-        m_nPendingCount++;
-        m_aQueueMessage[m_nPendingCount] = kMsgNomsg;
+    m_nPendingCount++;
+    m_aQueueMessage[m_nPendingCount] = kMsgNomsg;
 
-        return 1;
-    }
-
-    return 0;
+    return 1;
 }
 
 // The lock is taken only around each pull; the pending list at the end runs unguarded.
