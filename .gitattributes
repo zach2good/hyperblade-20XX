@@ -8,3 +8,7 @@ third_party/** -text linguist-vendored
 *.jpg binary
 *.png binary
 *.bmp binary
+
+# Patches apply byte for byte to the LF sources they were made from.
+*.patch -text
+*.diff -text
