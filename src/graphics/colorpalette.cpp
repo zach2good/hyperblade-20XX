@@ -8,6 +8,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cmath>
+#include <memory>
 #include "app/gameapp.h"
 #include "graphics/cgpalette.h"
 #include "graphics/meshmaterial.h"
@@ -685,9 +686,9 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, Pa
 // FUNCTION: HYPERX 0x00426860
 void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteEntry peColour, float flFloor)
 {
-    auto* const pflScale = new float[nCount];
-    *pflScale            = flFloor;
-    const auto nLast     = nCount - 1;
+    const auto pflScale = std::make_unique<float[]>(nCount);
+    pflScale[0]         = flFloor;
+    const auto nLast    = nCount - 1;
 
     const auto flRatio = static_cast<float>(pow(static_cast<double>(1.0f / flFloor), static_cast<double>(1.0f / nLast)));
 
@@ -712,8 +713,6 @@ void ColorPalette::BuildFadeTable(PaletteEntry* pEntries, short nCount, PaletteE
         pOut->peFlags = peColour.peFlags;
         pOut++;
     }
-
-    delete[] pflScale;
 }
 
 // FUNCTION: HYPERX 0x00426980
