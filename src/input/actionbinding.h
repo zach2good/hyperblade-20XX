@@ -3,6 +3,8 @@
 #ifndef HYPERBLADE_ACTIONBINDING_H
 #define HYPERBLADE_ACTIONBINDING_H
 
+#include <memory>
+
 // The device's sixteen action slots.
 constexpr auto kInputSlotCount = 0x10;
 
@@ -33,13 +35,13 @@ struct ActionBinding
 // One device's binding table, sorted into a down list and an up list per slot.
 struct ActionBindingGroup
 {
-    int            m_nKeyCount;               // 0x000
-    ActionBinding* m_apDown[kInputSlotCount]; // 0x004
-    ActionBinding* m_apUp[kInputSlotCount];   // 0x044
-    int            m_anUp[kInputSlotCount];   // 0x084
-    int            m_anDown[kInputSlotCount]; // 0x0c4
-    int            m_nCount;                  // 0x104
-    unsigned short m_anKey[kInputSlotCount];  // 0x108
+    int                              m_nKeyCount;               // 0x000
+    std::unique_ptr<ActionBinding[]> m_apDown[kInputSlotCount]; // 0x004
+    std::unique_ptr<ActionBinding[]> m_apUp[kInputSlotCount];   // 0x044
+    int                              m_anUp[kInputSlotCount];   // 0x084
+    int                              m_anDown[kInputSlotCount]; // 0x0c4
+    int                              m_nCount;                  // 0x104
+    unsigned short                   m_anKey[kInputSlotCount];  // 0x108
 };
 
 extern const ActionBinding g_aActionBindings[kActionBindingCount];

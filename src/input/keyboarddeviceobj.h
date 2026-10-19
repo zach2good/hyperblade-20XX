@@ -14,10 +14,8 @@ class KeyboardDeviceObj : public DeviceObject
 public:
     KeyboardDeviceObj(int nSlot, class ObjectDef* pDef);
 
-    ~KeyboardDeviceObj() override;
-
     static int  GetActionBitIndex(unsigned int nMask);
-    static char BuildActionBindingTable(struct ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice);
+    static char BuildActionBindingTable(std::unique_ptr<ActionBindingGroup>* ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice);
 
     void CommitKeyBindings(const unsigned int* pnKeys, int nCount);
 
@@ -41,6 +39,9 @@ public:
 
     static unsigned int* LoadBindingsFromIni();
 };
+
+// FUNCTION: HYPERX 0x0045d0b0
+// KeyboardDeviceObj::~KeyboardDeviceObj
 
 // SYNTHETIC: HYPERX 0x0045d090
 // KeyboardDeviceObj::`scalar deleting destructor'
