@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
-#include <new>
+#include <memory>
 #include "sound/wave.h"
 #include "sound/soundids.h"
 #include <filesystem>
@@ -21,47 +21,29 @@
 // FUNCTION: HYPERX 0x00490830
 AudioMgr::AudioMgr()
 : nInitTimeMs(0)
-, pEntries(nullptr)
 , wNoSound(0)
 , wNoCD(0)
 , nUnused(0)
 {
 }
 
-// Init allocates the manager with new; it is freed here with delete[].
+// The mixer stops before the samples it may be reading are freed.
 // FUNCTION: HYPERX 0x00490880
 AudioMgr::~AudioMgr()
 {
     g_soundMixer.Shutdown();
 
-    if (pEntries != nullptr)
-    {
-        for (int nIndex = 0; nIndex < pEntries->m_nSoundCount; nIndex++)
-        {
-            auto* const pEntry = pEntries->m_apSounds[nIndex];
-
-            if (pEntry != nullptr && pEntry->m_pSamples != nullptr)
-            {
-                free(pEntry->m_pSamples);
-            }
-        }
-
-        pEntries->FreeEntries();
-
-        delete[] pEntries;
-    }
+    pEntries.reset();
 }
 
 // A device that will not open mutes the manager; the mixer lines are set up either way.
 // FUNCTION: HYPERX 0x00490990
 void AudioMgr::Init()
 {
-    auto* const pSounds = new SoundManager;
-
-    pEntries = pSounds;
+    pEntries = std::make_unique<SoundManager>();
 
     // STRING: HYPERX 0x004c8a90
-    pSounds->Load("SndFiles.lst");
+    pEntries->Load("SndFiles.lst");
 
     if (wNoSound == 0)
     {
@@ -76,7 +58,7 @@ void AudioMgr::Init()
 
     while (nIndex < nCount)
     {
-        auto* const pSound = pEntries->m_apSounds[nIndex];
+        auto* const pSound = pEntries->m_apSounds[nIndex].get();
 
         pSound->m_nLoadState = 0;
 
@@ -104,12 +86,12 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     pEntry->m_nChannels      = 0;
     pEntry->m_nDataBytes     = 0;
     pEntry->m_nDataOffset    = 0;
-    pEntry->m_pSamples       = nullptr;
-    pEntry->m_nUnusedB       = 0;
+    pEntry->m_pSamples.reset();
+    pEntry->m_nUnusedB = 0;
 
     PathString strPath(kMaxPathLength);
 
-    strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
+    strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_strName.c_str(), g_pszWaveExtension);
 
     auto info = Wave::Info{};
 
@@ -140,21 +122,11 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
         return 0;
     }
 
-    pEntry->m_pSamples = static_cast<char*>(malloc(pEntry->m_nDataBytes));
+    pEntry->m_pSamples = std::make_unique_for_overwrite<char[]>(pEntry->m_nDataBytes);
 
-    if (pEntry->m_pSamples == nullptr)
+    if (!Wave::ReadSamples(strPath.m_str.m_pchData, pEntry->m_nDataOffset, pEntry->m_nDataBytes, pEntry->m_pSamples.get()))
     {
-        pEntry->m_nDataBytes  = 0;
-        pEntry->m_nDataOffset = 0;
-
-        return 0;
-    }
-
-    if (!Wave::ReadSamples(strPath.m_str.m_pchData, pEntry->m_nDataOffset, pEntry->m_nDataBytes, pEntry->m_pSamples))
-    {
-        free(pEntry->m_pSamples);
-
-        pEntry->m_pSamples    = nullptr;
+        pEntry->m_pSamples.reset();
         pEntry->m_nDataBytes  = 0;
         pEntry->m_nDataOffset = 0;
         pEntry->m_nLoadState  = kSoundLoadFailed;
@@ -192,7 +164,7 @@ void AudioMgr::PlaySpecific(int nVoice)
     {
         if (nVoice < pEntries->m_nSoundCount)
         {
-            auto* const pSound = pEntries->m_apSounds[nVoice];
+            auto* const pSound = pEntries->m_apSounds[nVoice].get();
 
             if (pSound != nullptr)
             {
@@ -215,7 +187,7 @@ void AudioMgr::StopEntry(int nSlot)
 {
     if (nSlot < pEntries->m_nSoundCount)
     {
-        auto* const pOwner = pEntries->m_apSounds[nSlot];
+        auto* const pOwner = pEntries->m_apSounds[nSlot].get();
 
         if (pOwner != nullptr)
         {
@@ -229,7 +201,7 @@ int AudioMgr::IsPlaying(int nVoice)
 {
     if (nVoice < pEntries->m_nSoundCount)
     {
-        auto* const pVoice = pEntries->m_apSounds[nVoice];
+        auto* const pVoice = pEntries->m_apSounds[nVoice].get();
 
         if (pVoice != nullptr)
         {
@@ -449,7 +421,7 @@ int AudioMgr::PreloadGroup(int nGroup)
 
     for (int nIndex = 0; nIndex < nCount; nIndex++)
     {
-        pSnd = pEntries->m_apSounds[nIndex];
+        pSnd = pEntries->m_apSounds[nIndex].get();
 
         if (pSnd->m_nGroup != nGroup)
         {
@@ -480,15 +452,13 @@ int AudioMgr::PreloadGroup(int nGroup)
 
         PathString strPath(kMaxPathLength);
 
-        strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pSnd->m_pszName, g_pszWaveExtension);
+        strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pSnd->m_strName.c_str(), g_pszWaveExtension);
 
-        pSnd->m_pSamples = static_cast<char*>(malloc(pSnd->m_nDataBytes));
+        pSnd->m_pSamples = std::make_unique_for_overwrite<char[]>(pSnd->m_nDataBytes);
 
-        if (pSnd->m_pSamples == nullptr || !Wave::ReadSamples(strPath.m_str.m_pchData, pSnd->m_nDataOffset, pSnd->m_nDataBytes, pSnd->m_pSamples))
+        if (!Wave::ReadSamples(strPath.m_str.m_pchData, pSnd->m_nDataOffset, pSnd->m_nDataBytes, pSnd->m_pSamples.get()))
         {
-            free(pSnd->m_pSamples);
-
-            pSnd->m_pSamples   = nullptr;
+            pSnd->m_pSamples.reset();
             pSnd->m_nDataBytes = 0;
 
             continue;
@@ -500,7 +470,6 @@ int AudioMgr::PreloadGroup(int nGroup)
     return nLoaded;
 }
 
-// The buffer pointer is cleared after the free, so freeing a group twice is harmless.
 // FUNCTION: HYPERX 0x004912d0
 void AudioMgr::FreeGroupBuffers(int nGroup)
 {
@@ -508,16 +477,11 @@ void AudioMgr::FreeGroupBuffers(int nGroup)
 
     for (int iEntry = 0; iEntry < nEntries; iEntry++)
     {
-        auto* const pEntry = pEntries->m_apSounds[iEntry];
+        auto* const pEntry = pEntries->m_apSounds[iEntry].get();
 
         if (pEntry->m_nGroup == nGroup)
         {
-            if (pEntry->m_pSamples != nullptr)
-            {
-                free(pEntry->m_pSamples);
-
-                pEntry->m_pSamples = nullptr;
-            }
+            pEntry->m_pSamples.reset();
         }
     }
 }

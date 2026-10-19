@@ -8,8 +8,9 @@ struct GameApp;
 #include "planvm/planvm.h"
 #include "common/pathstring.h"
 #include <cstdint>
+#include <algorithm>
 #include <cstring>
-#include <new>
+#include <memory>
 #include <cstdio>
 #include "app/gameapp.h"
 #include "engine/messageids.h"
@@ -17,18 +18,8 @@ struct GameApp;
 #include "app/config.h"
 #include <SDL3/SDL.h>
 
-// Each entry is released through its own scalar deleting destructor.
-
 // FUNCTION: HYPERX 0x004181b0
-AnimScriptTable::~AnimScriptTable()
-{
-    while (m_nCount-- > 0)
-    {
-        delete m_apEntries[m_nCount];
-
-        m_apEntries[m_nCount] = nullptr;
-    }
-}
+AnimScriptTable::~AnimScriptTable() = default;
 
 // A set is taken when its name holds the first; a clip starting with the second gets a kind.
 constexpr auto kSetFilterResource  = std::uintptr_t{ 0x20 };
@@ -40,18 +31,15 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 {
     OwnedFile file;
 
-    auto* const pVm = new PlanVM;
+    const auto pVm = std::make_unique<PlanVM>();
 
-    m_pPlanVm = pVm;
+    m_pPlanVm = pVm.get();
 
-    if (pVm != nullptr)
-    {
-        pVm->LoadSymbolTables();
-    }
+    pVm->LoadSymbolTables();
 
     if (file.m_file.Open(pszPath, FileMode::kRead) != 0)
     {
-        memset(m_apEntries, 0, sizeof(m_apEntries));
+        std::ranges::fill(m_apEntries, nullptr);
 
         m_nCount = 0;
 
@@ -68,7 +56,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
         {
             for (short nSet = 0; nSet < m_nCount; nSet++)
             {
-                pAnimMgr->BindAnimSets(m_apEntries[nSet]);
+                pAnimMgr->BindAnimSets(m_apEntries[nSet].get());
             }
         }
     }
@@ -79,14 +67,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
         g_gameApp.Fatal("Assembly file %s could not be opened!");
     }
 
-    auto* const pOwned = m_pPlanVm;
-
-    if (pOwned != nullptr)
-    {
-        delete pOwned;
-
-        m_pPlanVm = nullptr;
-    }
+    m_pPlanVm = nullptr;
 }
 
 constexpr auto kRefChars  = 0x14;
@@ -129,7 +110,7 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
 
             pState->pDb->m_wNodeCount = static_cast<short>(nFirst + 1);
 
-            pState->pDb->m_apNodes[nFirst] = pState->pSegment;
+            pState->pDb->m_apNodes[nFirst] = std::move(pState->pSegment);
 
             return 1;
         }
@@ -203,11 +184,9 @@ int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const cha
 {
     const auto nBefore = GameApp::GetInstallLevel();
 
-    auto* const pDb = new AnimDB(pszName, pszExtra);
+    m_apEntries[m_nCount] = std::make_unique<AnimDB>(pszName, pszExtra);
 
-    m_apEntries[m_nCount] = pDb;
-
-    *ppOut = pDb;
+    *ppOut = m_apEntries[m_nCount].get();
 
     const auto nAfter = GameApp::GetInstallLevel();
 
@@ -235,7 +214,7 @@ inline int AnimScriptTable::ScanFloat(const char** ppszCursor, char* pszToken, f
 
 // A segment's description is freed on every path out; nothing clamps the fast rate.
 // FUNCTION: HYPERX 0x00418670
-int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, const char** ppszCursor)
+int AnimScriptTable::ParseSegment(std::unique_ptr<AnimNode>* ppSegment, const char* pszLine, const char** ppszCursor)
 {
     auto nResult = 0;
     char szToken[kSegmentTokenChars];
@@ -254,88 +233,78 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
     }
     else
     {
-        auto* const pNode = new AnimNode(1);
+        *ppSegment = std::make_unique<AnimNode>(1);
 
-        *ppSegment = pNode;
+        strcpy((*ppSegment)->m_szName, szToken);
 
-        if (pNode != nullptr)
+        if (String::ExtractToken(*ppszCursor, szToken, ppszCursor) >= 0)
         {
-            strcpy(pNode->m_szName, szToken);
+            SDL_strlcpy((*ppSegment)->m_pszDescription.get(), szToken, kDescriptionChars);
 
-            if (String::ExtractToken(*ppszCursor, szToken, ppszCursor) >= 0)
+            (*ppSegment)->m_pszDescription[kDescriptionChars] = 0;
+
+            if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wStartFrame))
             {
-                SDL_strlcpy((*ppSegment)->m_pszDescription, szToken, kDescriptionChars);
-
-                (*ppSegment)->m_pszDescription[kDescriptionChars] = 0;
-
-                if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wStartFrame))
+                if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wEndFrame))
                 {
-                    if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wEndFrame))
+                    if (ScanFloat(ppszCursor, szToken, &(*ppSegment)->m_flSlowFps))
                     {
-                        if (ScanFloat(ppszCursor, szToken, &(*ppSegment)->m_flSlowFps))
+                        if (ScanFloat(ppszCursor, szToken, &(*ppSegment)->m_flStandardFps))
                         {
-                            if (ScanFloat(ppszCursor, szToken, &(*ppSegment)->m_flStandardFps))
+                            if (ScanFloat(ppszCursor, szToken, &(*ppSegment)->m_flFastFps))
                             {
-                                if (ScanFloat(ppszCursor, szToken, &(*ppSegment)->m_flFastFps))
+                                if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wLoopCount))
                                 {
-                                    if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wLoopCount))
+                                    if ((*ppSegment)->m_flSlowFps > (*ppSegment)->m_flStandardFps)
                                     {
-                                        if ((*ppSegment)->m_flSlowFps > (*ppSegment)->m_flStandardFps)
-                                        {
-                                            (*ppSegment)->m_flSlowFps = (*ppSegment)->m_flStandardFps;
-                                        }
+                                        (*ppSegment)->m_flSlowFps = (*ppSegment)->m_flStandardFps;
+                                    }
 
-                                        nResult = 1;
-                                    }
-                                    else
-                                    {
-                                        // STRING: HYPERX 0x004bb9b4
-                                        g_gameApp.Fatal("ERROR: in Loop Count field -- %s.", pszLine);
-                                    }
+                                    nResult = 1;
                                 }
                                 else
                                 {
-                                    // STRING: HYPERX 0x004bb994
-                                    g_gameApp.Fatal("ERROR: in Fast FPS field -- %s.", pszLine);
+                                    // STRING: HYPERX 0x004bb9b4
+                                    g_gameApp.Fatal("ERROR: in Loop Count field -- %s.", pszLine);
                                 }
                             }
                             else
                             {
-                                // STRING: HYPERX 0x004bb970
-                                g_gameApp.Fatal("ERROR: in Standard FPS field -- %s.", pszLine);
+                                // STRING: HYPERX 0x004bb994
+                                g_gameApp.Fatal("ERROR: in Fast FPS field -- %s.", pszLine);
                             }
                         }
                         else
                         {
-                            // STRING: HYPERX 0x004bb950
-                            g_gameApp.Fatal("ERROR: in Slow FPS field -- %s.", pszLine);
+                            // STRING: HYPERX 0x004bb970
+                            g_gameApp.Fatal("ERROR: in Standard FPS field -- %s.", pszLine);
                         }
                     }
                     else
                     {
-                        // STRING: HYPERX 0x004bb92c
-                        g_gameApp.Fatal("ERROR: in End Frame field -- %s.", pszLine);
+                        // STRING: HYPERX 0x004bb950
+                        g_gameApp.Fatal("ERROR: in Slow FPS field -- %s.", pszLine);
                     }
                 }
                 else
                 {
-                    // STRING: HYPERX 0x004bb908
-                    g_gameApp.Fatal("ERROR: in Start Frame field -- %s.", pszLine);
+                    // STRING: HYPERX 0x004bb92c
+                    g_gameApp.Fatal("ERROR: in End Frame field -- %s.", pszLine);
                 }
             }
             else
             {
-                // STRING: HYPERX 0x004bb8dc
-                g_gameApp.Fatal("ERROR in Segment Description field -- %s.", pszLine);
-            }
-
-            if ((*ppSegment)->m_pszDescription != nullptr)
-            {
-                delete[] (*ppSegment)->m_pszDescription;
-
-                (*ppSegment)->m_pszDescription = nullptr;
+                // STRING: HYPERX 0x004bb908
+                g_gameApp.Fatal("ERROR: in Start Frame field -- %s.", pszLine);
             }
         }
+        else
+        {
+            // STRING: HYPERX 0x004bb8dc
+            g_gameApp.Fatal("ERROR in Segment Description field -- %s.", pszLine);
+        }
+
+        (*ppSegment)->m_pszDescription.reset();
     }
 
     return nResult;

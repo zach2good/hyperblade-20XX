@@ -4,6 +4,7 @@
 #define HYPERBLADE_ANIMCLIP_H
 
 #include "math/vector.h"
+#include <memory>
 
 // A format of one means the clip contributes no slerp segment.
 constexpr auto kAnimBoneModeSkip = 1;
@@ -91,6 +92,11 @@ public:
 
     virtual ~AnimClip();
 
+    AnimClip(const AnimClip&)            = delete;
+    AnimClip& operator=(const AnimClip&) = delete;
+    AnimClip(AnimClip&&)                 = delete;
+    AnimClip& operator=(AnimClip&&)      = delete;
+
     unsigned char Load(FileObj* pFile, const AnimHeader* pSetHeader);
 
     // One frame's transform out of the packed stream, in the two shapes the players ask for.
@@ -100,16 +106,14 @@ public:
     short m_nSegment; // 0x04
     short m_nFrame;   // 0x06
 
-    // The rotation stream m_nFormat picks.
-    union
-    {
-        PackedRotation*   m_pRotations; // 0x08
-        PackedQuaternion* m_pQuaternions;
-        PackedBoneMatrix* m_pMatrices;
-    };
+    // The rotation stream m_nFormat picks; the original shares one slot between the three.
+    std::unique_ptr<PackedRotation[]>   m_pRotations; // 0x08
+    std::unique_ptr<PackedQuaternion[]> m_pQuaternions;
+    // Never allocated: both formats that read it stop at a fatal error in Load.
+    std::unique_ptr<PackedBoneMatrix[]> m_pMatrices;
 
-    Vec3* m_pTranslation; // 0x0c, one row per frame
-    int   m_nFormat;      // 0x10
+    std::unique_ptr<Vec3[]> m_pTranslation; // 0x0c, one row per frame
+    int                     m_nFormat;      // 0x10
 };
 
 // Ghidra calls this class a plan condition expression; it is not one (docs/re_corrections.md).

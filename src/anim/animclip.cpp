@@ -5,73 +5,20 @@
 #include "math/transformobject.h"
 #include "math/vector.h"
 #include "ui/hudglobals.h"
-#include <new>
+#include <memory>
 #include <cstring>
 #include "app/gameapp.h"
 #include "anim/anim.h"
 
-// Neither field is nulled after it is freed, so this is a teardown and not a reset.
-
 // FUNCTION: HYPERX 0x004163e0
-AnimClip::~AnimClip()
-{
-    switch (m_nFormat)
-    {
-        case 1:
-            delete[] m_pTranslation;
-
-            break;
-
-        case 2:
-        case 4:
-            delete[] m_pTranslation;
-            delete[] m_pRotations;
-
-            break;
-
-        case 3:
-            delete[] m_pTranslation;
-            delete[] m_pRotations;
-
-            break;
-
-        case 5:
-            delete[] m_pTranslation;
-            delete[] m_pQuaternions;
-
-            break;
-
-        case 6:
-            delete[] m_pTranslation;
-            delete[] m_pQuaternions;
-
-            break;
-
-        case 7:
-            delete[] m_pTranslation;
-            delete[] m_pMatrices;
-
-            break;
-
-        case 8:
-            delete[] m_pTranslation;
-            delete[] m_pMatrices;
-
-            break;
-
-        default:
-            break;
-    }
-}
+AnimClip::~AnimClip() = default;
 
 // Two of the eight formats are unimplemented; a size not a multiple of four overruns the buffer.
 // FUNCTION: HYPERX 0x00416510
 unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 {
-    unsigned char   bSuccess = 0;
-    AnimClipHeader  header;
-    Vec3*           pTranslation;
-    PackedRotation* pRotations;
+    unsigned char  bSuccess = 0;
+    AnimClipHeader header;
 
     do
     {
@@ -84,37 +31,29 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
         m_nFrame   = header.wFrame;
         m_nFormat  = header.nFormat;
 
-        auto* const pBuffer = new float[static_cast<unsigned short>(header.nDataSize >> 2)];
+        const auto pBuffer = std::make_unique_for_overwrite<float[]>(static_cast<unsigned short>(header.nDataSize >> 2));
 
-        if (pBuffer == nullptr)
-        {
-            break;
-        }
-
-        if (pFile->Read(pBuffer, header.nDataSize) != 0)
+        if (pFile->Read(pBuffer.get(), header.nDataSize) != 0)
         {
             TransformObject xform;
 
             switch (m_nFormat)
             {
                 case 1:
-                    pTranslation   = new Vec3[pSetHeader->m_nFrameCount];
-                    m_pTranslation = pTranslation;
+                    m_pTranslation = std::make_unique_for_overwrite<Vec3[]>(pSetHeader->m_nFrameCount);
 
-                    memcpy(pTranslation, pBuffer, pSetHeader->m_nFrameCount * sizeof(Vec3));
+                    memcpy(m_pTranslation.get(), pBuffer.get(), pSetHeader->m_nFrameCount * sizeof(Vec3));
                     break;
 
                 case 3:
-                    pTranslation   = new Vec3[pSetHeader->m_nFrameCount];
-                    m_pTranslation = pTranslation;
+                    m_pTranslation = std::make_unique_for_overwrite<Vec3[]>(pSetHeader->m_nFrameCount);
 
-                    memcpy(pTranslation, pBuffer, pSetHeader->m_nFrameCount * sizeof(Vec3));
+                    memcpy(m_pTranslation.get(), pBuffer.get(), pSetHeader->m_nFrameCount * sizeof(Vec3));
 
-                    pRotations   = new PackedRotation[pSetHeader->m_nFrameCount];
-                    m_pRotations = pRotations;
+                    m_pRotations = std::make_unique_for_overwrite<PackedRotation[]>(pSetHeader->m_nFrameCount);
 
-                    Anim::EulerToMatrix(pBuffer + pSetHeader->m_nFrameCount * 3,
-                                        pRotations,
+                    Anim::EulerToMatrix(pBuffer.get() + pSetHeader->m_nFrameCount * 3,
+                                        m_pRotations.get(),
                                         pSetHeader->m_nFrameCount,
                                         &header,
                                         &xform);
@@ -122,33 +61,29 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 
                 case 2:
                 case 4:
-                    pTranslation   = new Vec3;
-                    m_pTranslation = pTranslation;
+                    m_pTranslation = std::make_unique_for_overwrite<Vec3[]>(1);
 
-                    memcpy(pTranslation, pBuffer, sizeof(Vec3));
+                    memcpy(m_pTranslation.get(), pBuffer.get(), sizeof(Vec3));
 
-                    pRotations   = new PackedRotation[pSetHeader->m_nFrameCount];
-                    m_pRotations = pRotations;
+                    m_pRotations = std::make_unique_for_overwrite<PackedRotation[]>(pSetHeader->m_nFrameCount);
 
-                    Anim::EulerToMatrix(pBuffer + 3, pRotations, pSetHeader->m_nFrameCount, &header, &xform);
+                    Anim::EulerToMatrix(pBuffer.get() + 3, m_pRotations.get(), pSetHeader->m_nFrameCount, &header, &xform);
                     break;
 
                 case 5:
-                    pTranslation   = new Vec3;
-                    m_pTranslation = pTranslation;
+                    m_pTranslation = std::make_unique_for_overwrite<Vec3[]>(1);
 
-                    memcpy(pTranslation, pBuffer, sizeof(Vec3));
+                    memcpy(m_pTranslation.get(), pBuffer.get(), sizeof(Vec3));
 
-                    m_pQuaternions = new PackedQuaternion[pSetHeader->m_nFrameCount];
+                    m_pQuaternions = std::make_unique_for_overwrite<PackedQuaternion[]>(pSetHeader->m_nFrameCount);
                     break;
 
                 case 6:
-                    pTranslation   = new Vec3[pSetHeader->m_nFrameCount];
-                    m_pTranslation = pTranslation;
+                    m_pTranslation = std::make_unique_for_overwrite<Vec3[]>(pSetHeader->m_nFrameCount);
 
-                    memcpy(pTranslation, pBuffer, pSetHeader->m_nFrameCount * sizeof(Vec3));
+                    memcpy(m_pTranslation.get(), pBuffer.get(), pSetHeader->m_nFrameCount * sizeof(Vec3));
 
-                    m_pQuaternions = new PackedQuaternion[pSetHeader->m_nFrameCount];
+                    m_pQuaternions = std::make_unique_for_overwrite<PackedQuaternion[]>(pSetHeader->m_nFrameCount);
                     break;
 
                 case 7:
@@ -165,7 +100,6 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
             bSuccess = 1;
         }
 
-        delete[] pBuffer;
     } while (0);
 
     return bSuccess;
@@ -250,9 +184,9 @@ unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
             break;
 
         case 5:
-            pDest[0].af[3] = m_pTranslation->x;
-            pDest[1].af[3] = m_pTranslation->y;
-            pDest[2].af[3] = m_pTranslation->z;
+            pDest[0].af[3] = m_pTranslation[0].x;
+            pDest[1].af[3] = m_pTranslation[0].y;
+            pDest[2].af[3] = m_pTranslation[0].z;
 
             return 1;
 
@@ -264,9 +198,9 @@ unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
             return 1;
 
         case 7:
-            pDest[0].af[3] = m_pTranslation->x;
-            pDest[1].af[3] = m_pTranslation->y;
-            pDest[2].af[3] = m_pTranslation->z;
+            pDest[0].af[3] = m_pTranslation[0].x;
+            pDest[1].af[3] = m_pTranslation[0].y;
+            pDest[2].af[3] = m_pTranslation[0].z;
 
             pSrc = &m_pMatrices[nFrame];
 
@@ -306,8 +240,6 @@ unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
 AnimClip::AnimClip()
 : m_nSegment(0)
 , m_nFrame(0)
-, m_pRotations(nullptr)
-, m_pTranslation(nullptr)
 , m_nFormat(0)
 {
 }

@@ -5,13 +5,14 @@
 #include "planvm/interactor.h"
 #include "physics/collinteractorpool.h"
 #include "interactorpoolcounts.h"
+#include <memory>
 #include "planvm/collinteractor.h"
 #include "planvm/msginteractor.h"
 
 // FUNCTION: HYPERX 0x0046ba80
 void CollInteractorPool::Init()
 {
-    auto* pNode = new CollInteractor;
+    auto* pNode = m_nodes.emplace_back(std::make_unique<CollInteractor>()).get();
 
     m_pHead     = pNode;
     auto* pTail = pNode;
@@ -20,7 +21,7 @@ void CollInteractorPool::Init()
 
     while (nRemaining-- > 0)
     {
-        pNode = new CollInteractor;
+        pNode = m_nodes.emplace_back(std::make_unique<CollInteractor>()).get();
 
         pTail->pNext = pNode;
         pTail        = pNode;
@@ -37,21 +38,8 @@ void* CollInteractorPool::Alloc()
 
     if (m_pHead == nullptr)
     {
-        m_pHead = new CollInteractor;
+        m_pHead = m_nodes.emplace_back(std::make_unique<CollInteractor>()).get();
     }
 
     return pHead;
-}
-
-// FUNCTION: HYPERX 0x0046be00
-CollInteractorPool::~CollInteractorPool()
-{
-    while (m_pHead != nullptr)
-    {
-        auto* const pNext = m_pHead->pNext;
-
-        delete m_pHead;
-
-        m_pHead = pNext;
-    }
 }

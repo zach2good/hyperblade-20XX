@@ -3,6 +3,8 @@
 
 #include "common/compat.h"
 #include "engine/engineobject.h"
+#include "input/actionbinding.h"
+#include <memory>
 
 class EngineObject;
 
@@ -18,8 +20,8 @@ public:
 
     // Public: KeyboardDeviceObj's constructor writes four of these, and the bring-up key replay reads them.
 public:
-    struct ActionBindingGroup* m_pSlots; // 0xd14
-    short                      m_nSlots; // 0xd18
+    std::unique_ptr<ActionBindingGroup> m_pSlots; // 0xd14
+    short                               m_nSlots; // 0xd18
     // Only ever stored to 0 and never read.
     short m_wUnused; // 0xd1a
     // Null unless the group count is positive.

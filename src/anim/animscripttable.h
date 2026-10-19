@@ -4,9 +4,10 @@
 #define HYPERBLADE_ANIMSCRIPTTABLE_H
 
 #include "common/compat.h"
+#include "anim/animdb.h"
 #include "anim/animset.h"
+#include <memory>
 
-class AnimDB;
 class String;
 
 struct AnimScriptHead
@@ -26,11 +27,14 @@ class AnimScriptTable
 public:
     virtual ~AnimScriptTable();
 
+    AnimScriptTable(const AnimScriptTable&)            = delete;
+    AnimScriptTable& operator=(const AnimScriptTable&) = delete;
+    AnimScriptTable(AnimScriptTable&&)                 = delete;
+    AnimScriptTable& operator=(AnimScriptTable&&)      = delete;
+
     AnimScriptTable()
     : m_pPlanVm(nullptr)
     {
-        memset(m_apEntries, 0, sizeof(m_apEntries));
-
         m_nCount = 0;
     }
 
@@ -41,7 +45,7 @@ public:
     void ParseScript(const char* pszPath, class AnimRegistry* pAnimMgr, int bBind);
 
     unsigned int ParseScriptLine(const char* pszLine, struct AnimScriptState* pState);
-    int          ParseSegment(class AnimNode** ppSegment, const char* pszLine, const char** ppszCursor);
+    int          ParseSegment(std::unique_ptr<AnimNode>* ppSegment, const char* pszLine, const char** ppszCursor);
     int          ParseTrigger(const char* pszLine, short* pnSegment, short* pnTriggerFrame, char* pszName, char* pszRef, short* pnSyncSegment, short* pnSyncFrame);
 
     // Each reads the next token and scans one value from it; nonzero when both succeed.
@@ -50,7 +54,7 @@ public:
 
     AnimDB* GetEntry(short iEntry) const
     {
-        return m_apEntries[iEntry];
+        return m_apEntries[iEntry].get();
     }
 
     // The original reads index -1 as the zero word before the table, so any index outside it is null.
@@ -61,13 +65,13 @@ public:
             return nullptr;
         }
 
-        return m_apEntries[nIndex];
+        return m_apEntries[nIndex].get();
     }
 
-    AnimScriptHead m_headWord;                   // 0x004
-    AnimDB*        m_apEntries[kAnimsetEntries]; // 0x008  three hundred script databases, 0x68 each
-    short          m_nCount;                     // 0x4b8  how many are filled
-    // The plan VM the parser builds the script into.
+    AnimScriptHead          m_headWord;                   // 0x004
+    std::unique_ptr<AnimDB> m_apEntries[kAnimsetEntries]; // 0x008  three hundred script databases, 0x68 each
+    short                   m_nCount;                     // 0x4b8  how many are filled
+    // The plan VM the parser builds the script into, alive only while ParseScript runs.
     class PlanVM* m_pPlanVm; // 0x4bc
 };
 

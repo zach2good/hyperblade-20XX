@@ -3,23 +3,15 @@
 #include "animdb.h"
 #include "common/animnamedref.h"
 #include "globals.h"
-#include <new>
 #include "app/gameapp.h"
 #include "animnode.h"
 
 // FUNCTION: HYPERX 0x004177c0
 AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 {
-    auto* pRef = m_pRef;
+    auto* const pRef = m_pRef.get();
 
-    if (pRef->m_pszName != nullptr)
-    {
-        delete[] pRef->m_pszName;
-
-        pRef->m_pszName = nullptr;
-    }
-
-    pRef = m_pRef;
+    pRef->m_pszName.reset();
 
     auto nNode = pRef->m_nSegment;
 
@@ -29,8 +21,6 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 
         pRef->m_nSegment = nNode;
     }
-
-    pRef = m_pRef;
 
     nNode = pRef->m_nSegment;
 
@@ -48,25 +38,12 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 
     // STRING: HYPERX 0x004bb85c
     g_gameApp.Error("Sync Data< %s seg: %d frm: %d > is bad for assem: %s and will be left out\n",
-                    pRef->m_pszName,
+                    pRef->m_pszName.get(),
                     nNode,
                     pRef->m_nFrame,
                     pDb->GetName());
 
-    pRef = m_pRef;
-
-    if (pRef->m_pszName != nullptr)
-    {
-        delete[] pRef->m_pszName;
-
-        pRef->m_pszName = nullptr;
-    }
-
-    pRef = m_pRef;
-
-    delete pRef;
-
-    m_pRef = nullptr;
+    m_pRef.reset();
 
     return this;
 }

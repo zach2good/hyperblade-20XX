@@ -6,13 +6,13 @@
 #include "animclip.h"
 
 #include "anim/animobject.h"
+#include <memory>
+#include <string>
 
 // VTABLE: HYPERX 0x004b22a0
 class AnimClipSet : public AnimObject
 {
 public:
-    ~AnimClipSet() override;
-
     // AnimSet::LoadIntoRegistry files it in the registry's set table.
     AnimClipSet(FileObj* pFile, const char* pszName)
     {
@@ -22,16 +22,19 @@ public:
     void Init();
     void Load(FileObj* pFile, const char* pszName);
 
-    short m_nClipCount; // 0x08
-    char* m_pszName;    // 0x0c
+    short       m_nClipCount; // 0x08
+    std::string m_strName;    // 0x0c
     // Copied from the file header; the clip pointer sits between the third and fourth.
-    short     m_wFrameCount; // 0x10
-    short     m_wFrameRate;  // 0x12
-    float     m_flDuration;  // 0x14
-    AnimClip* m_pClips;      // 0x18
-    short     m_wUnused;     // 0x1c
-    short     m_wEndFrame;   // 0x1e, the bound the binder clamps a node's end frame to
+    short                       m_wFrameCount; // 0x10
+    short                       m_wFrameRate;  // 0x12
+    float                       m_flDuration;  // 0x14
+    std::unique_ptr<AnimClip[]> m_pClips;      // 0x18
+    short                       m_wUnused;     // 0x1c
+    short                       m_wEndFrame;   // 0x1e, the bound the binder clamps a node's end frame to
 };
+
+// FUNCTION: HYPERX 0x004174a0
+// AnimClipSet::~AnimClipSet
 
 // SYNTHETIC: HYPERX 0x00417960
 // AnimClipSet::`scalar deleting destructor'

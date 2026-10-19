@@ -23,6 +23,7 @@
 #include "engine/gameengine.h"
 #include "engine/messageids.h"
 #include "planvm/decisionlog.h"
+#include <memory>
 
 // A held binding fires once its key stays down past the double-tap window; a release drops it.
 // FUNCTION: HYPERX 0x0045cb10
@@ -98,7 +99,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
     if (m_nSlots > 0)
     {
         m_wUnused       = 0;
-        m_pBindingTable = m_pSlots;
+        m_pBindingTable = m_pSlots.get();
     }
 
     m_doubleTap = kDoubleTap;
@@ -116,7 +117,7 @@ constexpr auto kTableKeyCount = 8;
 
 // An up entry whose action folds to slot zero is reported and the build keeps going.
 // FUNCTION: HYPERX 0x0045cd20
-char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
+char KeyboardDeviceObj::BuildActionBindingTable(std::unique_ptr<ActionBindingGroup>* ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
 {
     int anUp[kInputSlotCount];
     int anDown[kInputSlotCount];
@@ -124,9 +125,9 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
     int nSlot;
     int nIndex;
 
-    auto* const pTable = new ActionBindingGroup;
+    *ppTableOut = std::make_unique<ActionBindingGroup>();
 
-    *ppTableOut         = pTable;
+    auto* const pTable  = ppTableOut->get();
     pTable->m_nKeyCount = kTableKeyCount;
     pTable->m_nCount    = kActionBindingCount;
 
@@ -142,7 +143,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
 
     for (int nGroup = 0; nGroup < *pnGroupsOut; nGroup++, pGroup++)
     {
-        auto* const pWork = new ActionBinding[pGroup->m_nCount];
+        const auto pWork = std::make_unique_for_overwrite<ActionBinding[]>(pGroup->m_nCount);
 
         for (nEntry = 0; nEntry < pGroup->m_nCount; nEntry++)
         {
@@ -183,23 +184,20 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
             }
         }
 
-        memset(pGroup->m_apUp, 0, sizeof(pGroup->m_apUp));
-        memset(pGroup->m_apDown, 0, sizeof(pGroup->m_apDown));
-
         for (nSlot = 0; nSlot < kInputSlotCount; nSlot++)
         {
             pGroup->m_anUp[nSlot] = anUp[nSlot];
 
             if (anUp[nSlot] != 0)
             {
-                pGroup->m_apUp[nSlot] = new ActionBinding[anUp[nSlot]];
+                pGroup->m_apUp[nSlot] = std::make_unique_for_overwrite<ActionBinding[]>(anUp[nSlot]);
             }
 
             pGroup->m_anDown[nSlot] = anDown[nSlot];
 
             if (anDown[nSlot] != 0)
             {
-                pGroup->m_apDown[nSlot] = new ActionBinding[anDown[nSlot]];
+                pGroup->m_apDown[nSlot] = std::make_unique_for_overwrite<ActionBinding[]>(anDown[nSlot]);
             }
         }
 
@@ -238,8 +236,6 @@ char KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut,
                 pGroup->m_apDown[nIndex][anDown[nIndex]++] = pWork[nEntry];
             }
         }
-
-        delete[] pWork;
     }
 
     return 1;
@@ -338,31 +334,6 @@ int KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
     return 0;
 }
 
-// Each slot owns its up and down binding arrays.
-// FUNCTION: HYPERX 0x0045d0b0
-KeyboardDeviceObj::~KeyboardDeviceObj()
-{
-    auto* const pSlots = m_pSlots;
-
-    while (m_nSlots-- != 0)
-    {
-        for (int nKey = 0; nKey < kInputSlotCount; nKey++)
-        {
-            if (pSlots[m_nSlots].m_apUp[nKey] != nullptr)
-            {
-                delete[] pSlots[m_nSlots].m_apUp[nKey];
-            }
-
-            if (pSlots[m_nSlots].m_apDown[nKey] != nullptr)
-            {
-                delete[] pSlots[m_nSlots].m_apDown[nKey];
-            }
-        }
-    }
-
-    delete[] m_pSlots;
-}
-
 // Each record's copy of the keys is the identity with four and five exchanged, at most ten.
 // FUNCTION: HYPERX 0x0045d190
 void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount)
@@ -371,7 +342,7 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
     int nIndex;
     int nWrite;
 
-    auto*       pRecord = m_pSlots;
+    auto*       pRecord = m_pSlots.get();
     auto* const pEnd    = pRecord + m_nSlots;
 
     while (pRecord < pEnd)
@@ -476,7 +447,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
                 m_nHeldMask |= nMask;
 
                 nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nMask);
-                pBinding     = m_pBindingTable->m_apDown[nActionIndex];
+                pBinding     = m_pBindingTable->m_apDown[nActionIndex].get();
 
                 if (pBinding != nullptr)
                 {
@@ -581,7 +552,7 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 
             nBudget      = ((nBit & kActionBindingHighHalf) != 0) + 1;
             nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nBit & kActionBindingMask);
-            pBinding     = m_pBindingTable->m_apUp[nActionIndex];
+            pBinding     = m_pBindingTable->m_apUp[nActionIndex].get();
 
             if (pBinding != nullptr)
             {

@@ -23,11 +23,11 @@ void AnimEvent::PlaySnd(Interactor*, PlanNode* pEvent, short*, int)
 
     const auto nIndex = pEvent->m_pArgs[1].n;
 
-    auto* const pBank = g_pAudioMgr->pEntries;
+    auto* const pBank = g_pAudioMgr->pEntries.get();
 
     if (nIndex < pBank->m_nSoundCount)
     {
-        pSlot = pBank->m_apSounds[nIndex];
+        pSlot = pBank->m_apSounds[nIndex].get();
     }
     else
     {
@@ -96,11 +96,11 @@ void AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, shor
 
     const auto nIndex = pEvent->m_pArgs[1].n;
 
-    auto* const pBank = g_pAudioMgr->pEntries;
+    auto* const pBank = g_pAudioMgr->pEntries.get();
 
     if (nIndex < pBank->m_nSoundCount)
     {
-        pSlot = pBank->m_apSounds[nIndex];
+        pSlot = pBank->m_apSounds[nIndex].get();
     }
     else
     {
@@ -136,7 +136,7 @@ void AnimEvent::IsAmbient(Interactor*, PlanNode*, short* pResult, int nEntry)
 
     if (nEntry < g_pAudioMgr->pEntries->m_nSoundCount)
     {
-        pEntry = g_pAudioMgr->pEntries->m_apSounds[nEntry];
+        pEntry = g_pAudioMgr->pEntries->m_apSounds[nEntry].get();
     }
     else
     {

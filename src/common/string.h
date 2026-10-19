@@ -6,6 +6,7 @@
 #include "common/compat.h"
 #include <stdarg.h>
 #include <cstring>
+#include <memory>
 
 struct StringHeader
 {
@@ -37,7 +38,6 @@ public:
     // Free functions in the original, made static members named by the class.
     static int    ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext);
     static String Concat(const String& source, const char* pszSuffix);
-    static void   FreeHeader(StringHeader* pHeader);
     static void   Format(String* pString, const char* pszFormat, ...);
     static char** GetGlobalStringPtr();
 
@@ -56,14 +56,15 @@ public:
     // 0x0042f3e0; it initialises m_pchData first, so it is the copy constructor.
     String(const String& src);
 
+    String(String&& src) noexcept;
+    String& operator=(const String& src);
+    String& operator=(String&& src) noexcept;
+
     // 0x0042f420; not explicit, because callers convert from a C string.
     String(const char* psz);
 
     // FUNCTION: HYPERX 0x004197b0
-    ~String()
-    {
-        FreeBuffer();
-    }
+    ~String() = default;
 
     operator const char*() const
     {
@@ -120,6 +121,14 @@ public:
     }
 
     static void FormatAlloc(String* pString, const char* pszFormat, va_list argList);
+
+private:
+    // The header and the characters, or null while m_pchData is the shared empty string.
+    std::unique_ptr<char[]> m_pBlock;
 };
+
+// Each caller now frees the old block by moving it into a local.
+// FUNCTION: HYPERX 0x0042f700
+// String::FreeHeader
 
 #endif

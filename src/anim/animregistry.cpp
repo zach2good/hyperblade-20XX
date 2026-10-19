@@ -17,32 +17,6 @@
 #include "engine/messageids.h"
 #include <SDL3/SDL.h>
 
-// FUNCTION: HYPERX 0x00416f70
-AnimRegistry::~AnimRegistry()
-{
-    for (int i = 0; i < m_nSetCount; i++)
-    {
-        delete m_apSets[i];
-        m_apSets[i] = nullptr;
-    }
-
-    // The original frees a lone set's array with scalar delete.
-    if (m_nSetCount == 1)
-    {
-        delete m_apSets;
-    }
-    else
-    {
-        delete[] m_apSets;
-    }
-
-    if (m_pScripts != nullptr)
-    {
-        delete m_pScripts;
-        m_pScripts = nullptr;
-    }
-}
-
 // The parse runs on m_pScripts and this one is only the owner.
 
 // FUNCTION: HYPERX 0x00416fd0
@@ -113,11 +87,11 @@ AnimClipSet* AnimRegistry::FindInCache(const char* pszName)
         {
             sscanf(pszName, g_pszAnimNameFormat, szParsed);
 
-            const char* const pszSlot = m_apSets[i]->m_pszName;
+            const char* const pszSlot = m_apSets[i]->m_strName.c_str();
 
             if (SDL_strncasecmp(szParsed, pszSlot, 32) == 0)
             {
-                pFound = m_apSets[i];
+                pFound = m_apSets[i].get();
                 break;
             }
         }
@@ -162,7 +136,7 @@ AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
 
         if (pEntry->m_nMessage == kMsgSyncFrame)
         {
-            auto* const pFound = FindAnimByNamePtr(pEntry->m_pRef->m_pszName);
+            auto* const pFound = FindAnimByNamePtr(pEntry->m_pRef->m_pszName.get());
 
             pEntry->SyncCheck(pFound);
         }

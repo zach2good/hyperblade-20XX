@@ -6,6 +6,7 @@
 class AnimClipEntry;
 
 #include "animclipset.h"
+#include <memory>
 #include <string.h>
 
 class AnimNode;
@@ -16,6 +17,11 @@ class AnimDB : public AnimObject
 public:
     AnimDB(const char* pszName, const char* pszExtra);
     ~AnimDB() override;
+
+    AnimDB(const AnimDB&)            = delete;
+    AnimDB& operator=(const AnimDB&) = delete;
+    AnimDB(AnimDB&&)                 = delete;
+    AnimDB& operator=(AnimDB&&)      = delete;
 
     void SetName(const char* pszName);
 
@@ -41,24 +47,24 @@ public:
 
     class AnimClipEntry* GetEntry(short nIndex) const
     {
-        return m_apEntries[nIndex];
+        return m_apEntries[nIndex].get();
     }
 
     class AnimNode* GetNode(short nIndex) const
     {
-        return m_apNodes[nIndex];
+        return m_apNodes[nIndex].get();
     }
 
     // AnimDB::SetName copies at most 20 bytes here.
     char m_szName[20]; // 0x08
-    // Freed by the destructor; nothing in this tree allocates it.
+    // Always null; the original's destructor frees it, and nothing allocates it.
     void* m_pOwnedBlock; // 0x1c
-    // Six nodes; the destructor frees each node's m_pszDescription.
-    short           m_wNodeCount; // 0x20
-    class AnimNode* m_apNodes[6]; // 0x24
+    // Six nodes.
+    short                     m_wNodeCount; // 0x20
+    std::unique_ptr<AnimNode> m_apNodes[6]; // 0x24
     // Ten clip entries and their count; AddClipEntry appends at the count.
-    class AnimClipEntry* m_apEntries[10]; // 0x3c
-    short                m_nEntryCount;   // 0x64
+    std::unique_ptr<AnimClipEntry> m_apEntries[10]; // 0x3c
+    short                          m_nEntryCount;   // 0x64
 };
 
 // SYNTHETIC: HYPERX 0x004175a0

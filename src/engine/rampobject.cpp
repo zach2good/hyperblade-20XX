@@ -12,6 +12,7 @@
 #include "physics/collisionobj.h"
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
+#include <utility>
 
 // Each of the four collision parts takes five copies of one global.
 
@@ -102,7 +103,7 @@ void RampObject::InitCollisionPlanes()
 
     CollisionObj planeMaxX(&vTipMaxA, &vFarMaxA, &vNearMaxA, flFriction, flElasticity);
 
-    m_planeMaxX = planeMaxX;
+    m_planeMaxX = std::move(planeMaxX);
 
     Vec3 vTipMinB;
     Vec3 vNearMinB;
@@ -114,7 +115,7 @@ void RampObject::InitCollisionPlanes()
 
     CollisionObj planeMinX(&vTipMinB, &vNearMinB, &vFarMinB, flFriction, flElasticity);
 
-    m_planeMinX = planeMinX;
+    m_planeMinX = std::move(planeMinX);
 
     Vec3 vTipMaxC;
     Vec3 vNearMaxC;
@@ -126,7 +127,7 @@ void RampObject::InitCollisionPlanes()
 
     CollisionObj planeNear(&vTipMaxC, &vNearMaxC, &vNearMinC, flFriction, flElasticity);
 
-    m_planeNear = planeNear;
+    m_planeNear = std::move(planeNear);
 
     Vec3 vTipMinD;
     Vec3 vFarMinD;
@@ -138,7 +139,7 @@ void RampObject::InitCollisionPlanes()
 
     CollisionObj planeFar(&vTipMinD, &vFarMinD, &vFarMaxD, flFriction, flElasticity);
 
-    m_planeFar = planeFar;
+    m_planeFar = std::move(planeFar);
 }
 
 // Builds the planes on first use.

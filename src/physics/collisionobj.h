@@ -17,6 +17,11 @@ public:
     // FUNCTION: HYPERX 0x00405850
     ~CollisionObj() noexcept = default;
 
+    CollisionObj(const CollisionObj&)                = delete;
+    CollisionObj& operator=(const CollisionObj&)     = delete;
+    CollisionObj(CollisionObj&&) noexcept            = default;
+    CollisionObj& operator=(CollisionObj&&) noexcept = default;
+
     // What RampObject's four parts are built with.
     CollisionObj()
     {

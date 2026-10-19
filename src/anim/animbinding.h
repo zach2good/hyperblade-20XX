@@ -25,21 +25,20 @@ public:
     // FUNCTION: HYPERX 0x00425450
     virtual ~AnimBinding() = default;
 
-    virtual AnimBinding* DestroyViaVtable();
-    virtual char         UpdateTick()                                                                                             = 0;
-    virtual char         ClearAnimationSet()                                                                                      = 0;
-    virtual char         StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate)                                                 = 0;
-    virtual char         StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags)                                         = 0;
-    virtual char         SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition) = 0;
-    virtual char         StartAnimSetDefaultRate(class AnimDB* pAnimSet)                                                          = 0;
-    virtual char         AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)                                 = 0;
-    virtual int          SetPlayDirection(int nDirection)                                                                         = 0;
-    virtual char         SetPlayState(int nState)                                                                                 = 0;
-    virtual float        GetPlaybackRate()                                                                                        = 0;
-    virtual void         SetPlaybackRate(float flRate)                                                                            = 0;
-    virtual int          GetPlayState()                                                                                           = 0;
-    virtual void         SetClipDuration(short nIndex, float flDuration)                                                          = 0;
-    virtual void         UpdateFrame(char bAdvance)                                                                               = 0;
+    virtual char  UpdateTick()                                                                                             = 0;
+    virtual char  ClearAnimationSet()                                                                                      = 0;
+    virtual char  StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate)                                                 = 0;
+    virtual char  StartClipPlayback(class AnimDB* pClip, float flRate, int nFlags)                                         = 0;
+    virtual char  SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition) = 0;
+    virtual char  StartAnimSetDefaultRate(class AnimDB* pAnimSet)                                                          = 0;
+    virtual char  AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)                                 = 0;
+    virtual int   SetPlayDirection(int nDirection)                                                                         = 0;
+    virtual char  SetPlayState(int nState)                                                                                 = 0;
+    virtual float GetPlaybackRate()                                                                                        = 0;
+    virtual void  SetPlaybackRate(float flRate)                                                                            = 0;
+    virtual int   GetPlayState()                                                                                           = 0;
+    virtual void  SetClipDuration(short nIndex, float flDuration)                                                          = 0;
+    virtual void  UpdateFrame(char bAdvance)                                                                               = 0;
 
     AnimBinding();
 
@@ -82,14 +81,6 @@ inline AnimBinding::AnimBinding()
     m_pPrevClip    = nullptr;
     m_pBoneSet     = nullptr;
     m_pPrevBoneSet = nullptr;
-}
-
-// Slot one of this table and AnimPlayer's is PooledOwnerRoot::Destroy's folded body, which holds the marker.
-inline AnimBinding* AnimBinding::DestroyViaVtable()
-{
-    delete this;
-
-    return nullptr;
 }
 
 #endif

@@ -4,21 +4,21 @@
 #include "animglobals.h"
 #include "animclip.h"
 #include "common/fileobj.h"
-#include <new>
+#include <memory>
 #include <cstring>
 #include "app/gameapp.h"
 
 // FUNCTION: HYPERX 0x004172a0
 void AnimClipSet::Init()
 {
-    m_pszName     = nullptr;
+    m_strName.clear();
     m_wEndFrame   = 0;
     m_wUnused     = 0;
     m_wFrameRate  = 0;
     m_wFrameCount = 0;
     m_nClipCount  = 0;
     m_flDuration  = g_flZeroAnimClipSet;
-    m_pClips      = nullptr;
+    m_pClips.reset();
 }
 
 // A clip that will not load is fatal and names the set, as is a header that will not read.
@@ -27,7 +27,7 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
 {
     Init();
 
-    m_pszName = strcpy(new char[strlen(pszName) + 1], pszName);
+    m_strName = pszName;
 
     AnimHeader header;
 
@@ -40,9 +40,9 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
         m_wUnused     = header.m_wUnused;
         m_wEndFrame   = header.m_wEndFrame;
 
-        m_pClips = new AnimClip[header.m_nClipCount];
+        m_pClips = std::make_unique<AnimClip[]>(header.m_nClipCount);
 
-        auto* pClips = m_pClips;
+        auto* pClips = m_pClips.get();
 
         for (int nIndex = 0; nIndex < m_nClipCount; nIndex++)
         {
@@ -59,23 +59,5 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
     {
         // STRING: HYPERX 0x004bb820
         g_gameApp.Fatal("Error reading AnimHeader %s!", pszName);
-    }
-}
-
-// FUNCTION: HYPERX 0x004174a0
-AnimClipSet::~AnimClipSet()
-{
-    if (m_pClips != nullptr)
-    {
-        delete[] m_pClips;
-
-        m_pClips = nullptr;
-    }
-
-    if (m_pszName != nullptr)
-    {
-        delete[] m_pszName;
-
-        m_pszName = nullptr;
     }
 }

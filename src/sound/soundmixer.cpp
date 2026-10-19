@@ -60,7 +60,7 @@ bool ReadData(const SoundEntry* pEntry, std::vector<unsigned char>& samples)
 {
     PathString strPath(kMaxPathLength);
 
-    strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_pszName, g_pszWaveExtension);
+    strPath.m_str.FormatResourcePath(g_gameApp.m_strSoundsPath.m_str.m_pchData, pEntry->m_strName.c_str(), g_pszWaveExtension);
 
     samples.resize(pEntry->m_nDataBytes);
 
@@ -296,7 +296,7 @@ void SoundMixer::Play(SoundEntry* pSound)
     // while its sounds may still be playing.
     if (pSound->m_pSamples != nullptr)
     {
-        voice.samples.assign(pSound->m_pSamples, pSound->m_pSamples + pSound->m_nDataBytes);
+        voice.samples.assign(pSound->m_pSamples.get(), pSound->m_pSamples.get() + pSound->m_nDataBytes);
     }
     else if (!ReadData(pSound, voice.samples))
     {
