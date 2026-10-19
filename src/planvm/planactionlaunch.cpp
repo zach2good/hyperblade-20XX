@@ -294,8 +294,18 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
-            flScale    = (flHalf * 0.015f + 0.1f) * flReference / flLength;
-            flInvScale = 1.0f / flScale;
+            flScale = (flHalf * 0.015f + 0.1f) * flReference / flLength;
+
+            // A swarf with no kill target has no forward speed; an infinite rise sent it to NaN.
+            flInvScale = [&]
+            {
+                if (flScale == 0.0f)
+                {
+                    return 0.0f;
+                }
+
+                return 1.0f / flScale;
+            }();
 
             pVel->x = flScale * pVel->x;
             pVel->y = flScale * pVel->y;
