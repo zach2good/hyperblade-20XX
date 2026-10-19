@@ -1,6 +1,7 @@
 // Globals shared across translation units. Names follow the Ghidra reading of each address, corrected where wrong.
 
 #include <stdarg.h>
+#include <memory>
 
 #ifndef HYPERBLADE_GLOBALS_H
 #define HYPERBLADE_GLOBALS_H
@@ -388,7 +389,7 @@ extern float g_flOneAgendaItem;
 extern float g_flHalfAgendaItem;
 
 // GLOBAL: HYPERX 0x004cf4e8
-extern class PooledOwnerRoot* g_pCollInteractorPool;
+extern std::unique_ptr<class PooledOwnerRoot> g_pCollInteractorPool;
 
 // GLOBAL: HYPERX 0x004cf05c
 extern class AnimRegistry* g_pAnimRegistry;
@@ -406,7 +407,7 @@ extern int g_nBitmapCacheReady;
 extern int g_nSetupBitmapsUnloaded;
 
 // GLOBAL: HYPERX 0x004cf4ec
-extern class PooledOwnerRoot* g_pMsgInteractorPool;
+extern std::unique_ptr<class PooledOwnerRoot> g_pMsgInteractorPool;
 
 // GLOBAL: HYPERX 0x004b2bd0
 extern const float g_flZeroCollisionObj;

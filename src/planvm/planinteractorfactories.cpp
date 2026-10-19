@@ -22,12 +22,12 @@ void PlanInteractorFactories::DestroyAll()
 {
     if (g_pCollInteractorPool != nullptr)
     {
-        g_pCollInteractorPool = g_pCollInteractorPool->Destroy();
+        g_pCollInteractorPool.reset();
     }
 
     if (g_pMsgInteractorPool != nullptr)
     {
-        g_pMsgInteractorPool = g_pMsgInteractorPool->Destroy();
+        g_pMsgInteractorPool.reset();
     }
 }
 

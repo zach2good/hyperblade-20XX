@@ -2,6 +2,7 @@
 #include "planvm/agendaitemids.h"
 #include "planvm/agendaitem.h"
 #include "planvm/cavoidobjects.h"
+#include "common/agendaitempools.h"
 #include "globals.h"
 #include "planvmglobals.h"
 #include "engine/engineglobals.h"
@@ -120,8 +121,7 @@ char AgendaItem::Activate()
 
         if (pSwerve->m_pSwerveTarget == nullptr && pSwerve->m_pDrawTarget == nullptr)
         {
-            // A virtual delete: slot zero is the real class's scalar deleting destructor.
-            delete this;
+            static_cast<CAvoidObjectsPool*>(g_apAgendaItemPools[Agenda_CAvoidObjects].get())->Free(this);
 
             return 0;
         }

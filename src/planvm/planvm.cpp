@@ -13,6 +13,8 @@ struct GameApp;
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <memory>
+#include <vector>
 #include "planopcodetable.h"
 #include "physics/collinteractorpool.h"
 #include "physics/msginteractorpool.h"
@@ -106,8 +108,8 @@ void PlanVM::LoadAnimationLists()
     char szJmpLine[kAnimLineMax];
     char szChkLine[kAnimLineMax];
 
-    g_pCollInteractorPool = new CollInteractorPool();
-    g_pMsgInteractorPool  = new MsgInteractorPool();
+    g_pCollInteractorPool = std::make_unique<CollInteractorPool>();
+    g_pMsgInteractorPool  = std::make_unique<MsgInteractorPool>();
 
     g_nAnimListNamesLead                                                                  = 0;
     g_pfnPlanOpcodeHandlers[kSetInteractorName].pfnSetParam                               = PlanCond::SetInteractorName;
@@ -804,31 +806,18 @@ PlanVM::PlanVM()
     strcpy(pEntry->szName, g_pszPlanVmEmptyName);
     pEntry->nValue = static_cast<unsigned int>(-1);
 
-    m_pszText = new char[kPlanSourceChars];
+    m_pszText = std::make_unique<char[]>(kPlanSourceChars);
 
     if (m_pszText != nullptr)
     {
         m_pszText[0] = 0;
     }
 
-    m_pStream = new PlanWord[kPlanStreamWords]();
+    m_pStream = std::make_unique<PlanWord[]>(kPlanStreamWords);
 }
 
 // FUNCTION: HYPERX 0x0047dab0
-PlanVM::~PlanVM()
-{
-    if (m_pszText != nullptr)
-    {
-        delete[] m_pszText;
-        m_pszText = nullptr;
-    }
-
-    if (m_pStream != nullptr)
-    {
-        delete[] m_pStream;
-        m_pStream = nullptr;
-    }
-}
+PlanVM::~PlanVM() = default;
 
 constexpr auto kPathChars = 0x100;
 
@@ -1291,7 +1280,7 @@ char PlanVM::EmitArgToken()
         }
         else if (g_wArgsSinceDeclareBehavior == 3)
         {
-            if (EmitStringLiteral(szToken, m_pStream, &m_nPos) == 0)
+            if (EmitStringLiteral(szToken, m_pStream.get(), &m_nPos) == 0)
             {
                 g_szInabilityToReadString[kUnreadableStringMessageLength] = 0;
                 strcat(g_szInabilityToReadString, szToken);
@@ -1303,7 +1292,7 @@ char PlanVM::EmitArgToken()
         }
         else if (g_wArgsSinceChangeOfPlan == 2)
         {
-            if (EmitStringLiteral(szToken, m_pStream, &m_nPos) == 0)
+            if (EmitStringLiteral(szToken, m_pStream.get(), &m_nPos) == 0)
             {
                 g_szInabilityToReadString[kUnreadableStringMessageLength] = 0;
                 strcat(g_szInabilityToReadString, szToken);
@@ -1317,21 +1306,16 @@ char PlanVM::EmitArgToken()
         }
         else if (g_wArgsSinceChangeOfPlan == 3)
         {
-            auto* const pSub = new PlanVM;
+            const auto pSub = std::make_unique<PlanVM>();
 
-            if (pSub != nullptr)
-            {
-                pSub->LoadSymbolTables();
+            pSub->LoadSymbolTables();
 
-                pSub->LoadText(m_nCamera, tok.szName);
+            pSub->LoadText(m_nCamera, tok.szName);
 
-                pSub->ParseHeaderDeclarations();
+            pSub->ParseHeaderDeclarations();
 
-                m_pStream[m_nPos].n = pSub->FindBehaviorIndexOrThrow(PlanVM::UnquoteString(szToken));
-                m_nPos++;
-
-                delete pSub;
-            }
+            m_pStream[m_nPos].n = pSub->FindBehaviorIndexOrThrow(PlanVM::UnquoteString(szToken));
+            m_nPos++;
 
             return 1;
         }
@@ -1365,7 +1349,7 @@ char PlanVM::EmitArgToken()
         }
         else
         {
-            if (EmitStringLiteral(szToken, m_pStream, &m_nPos) == 0)
+            if (EmitStringLiteral(szToken, m_pStream.get(), &m_nPos) == 0)
             {
                 g_szInabilityToReadString[kUnreadableStringMessageLength] = 0;
                 strcat(g_szInabilityToReadString, szToken);
@@ -1437,7 +1421,8 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
     {
         const auto nLength = static_cast<int>(strlen(pszText)) + 1;
 
-        char* const pszCopy = new char[nLength];
+        auto        copy    = std::vector<char>(nLength);
+        auto* const pszCopy = copy.data();
 
         // STRING: HYPERX 0x004bb810
         sscanf(pszText, "%s", pszCopy);
@@ -1459,8 +1444,6 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
                 value.n = atol(pszText);
             }
         }
-
-        delete[] pszCopy;
 
         *pOut = value;
 

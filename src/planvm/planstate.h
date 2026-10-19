@@ -1,10 +1,24 @@
 #ifndef HYPERBLADE_PLANSTATE_H
 #define HYPERBLADE_PLANSTATE_H
 
+#include <memory>
+#include <vector>
+
+#include "planvm/plannode.h"
+
 class EngineObject;
 
 // Ticks after any interactor runs before every collision interactor is set active again.
 constexpr auto kCollisionRearmTicksAfterRun = 0x0c;
+
+// Everything one compile allocates; the tree inside it only points.
+struct CompiledPlan
+{
+    std::vector<std::unique_ptr<PlanNode> >   apNodes;
+    std::vector<std::unique_ptr<PlanWord[]> > apArgs;
+    std::vector<std::unique_ptr<char[]> >     apStrings;
+    std::unique_ptr<PlanNode*[]>              apBehaviors;
+};
 
 class PlanState
 {
@@ -23,9 +37,6 @@ public:
     struct PlanNode**         Compile(const union PlanWord* pStream);
 
     char ParseNodeStream(int nDepth, const union PlanWord** ppStream, union PlanWord* pOut, char* pcPlanRef);
-
-    void FreeCompiledBehaviors(short nCount);
-    void DestroyNode(struct PlanNode* pNode);
 
     void PostUpdateCleanup();
 
@@ -48,15 +59,20 @@ public:
     short                     m_nIndex;         // 0x1c
     short                     m_nPrevious;      // 0x1e
     // The plan's global interactors, chained as GameBehaviorObject chains its own.
-    class CollInteractor* m_pCollInteractors;     // 0x20
-    class MsgInteractor*  m_pMsgInteractors;      // 0x24
-    short                 m_nInteractorCount;     // 0x28
-    short                 m_nCollisionRearmTicks; // 0x2a
-    float*                m_pflLocalReals;        // 0x2c
-    short                 m_nLocalRealCount;      // 0x30
+    class CollInteractor*    m_pCollInteractors;     // 0x20
+    class MsgInteractor*     m_pMsgInteractors;      // 0x24
+    short                    m_nInteractorCount;     // 0x28
+    short                    m_nCollisionRearmTicks; // 0x2a
+    std::unique_ptr<float[]> m_pflLocalReals;        // 0x2c
+    short                    m_nLocalRealCount;      // 0x30
     // One interactor per name that id_SET_InteractorName gives; plancond.cpp reads them back.
-    class Interactor** m_apNamedInteractors; // 0x34
-    short              m_nNamedInteractors;  // 0x38
+    std::unique_ptr<class Interactor*[]> m_apNamedInteractors; // 0x34
+    short                                m_nNamedInteractors;  // 0x38
+
+private:
+    // The set m_ppBehaviors points into, and the one the last compile built.
+    CompiledPlan m_compiled;
+    CompiledPlan m_pending;
 };
 
 #endif

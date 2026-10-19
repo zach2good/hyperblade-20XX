@@ -57,7 +57,7 @@ protected:
     void* m_pUnusedB; // 0x020
     // GetOrCreateTransform stores it, GetTransform returns it, ~CollisionShape destroys it.
     TransformObject* m_pTransform; // 0x024
-    // Released through the pool's slot one; no site names what it points at.
+    // Nothing writes it beyond the constructor's null.
     class PooledOwnerRoot* m_pPooled; // 0x028
     // The surface's half of the bounce, paired with the body's own flFriction and flElasticity.
     float     m_flFriction;   // 0x02c

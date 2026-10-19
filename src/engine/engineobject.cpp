@@ -620,9 +620,7 @@ EngineObject::~EngineObject()
     {
         if (m_pBubble->m_pCage != nullptr)
         {
-            ::operator delete(m_pBubble->m_pCage);
-
-            m_pBubble->m_pCage = nullptr;
+            m_pBubble->m_pCage.reset();
         }
 
         delete m_pBubble;
@@ -714,7 +712,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
         for (short i = 0; i < pDef->m_nPlanCount; i++)
         {
-            m_ppPlanBlobs[i] = PlanFile::OpenBinary(pDef->m_apszPlanNames[i], &pUnused);
+            m_ppPlanBlobs[i] = PlanFile::OpenBinary(pDef->m_apszPlanNames[i], &pUnused).release();
         }
 
         m_ppPlanBlobs[pDef->m_nPlanCount] = nullptr;
@@ -1882,7 +1880,7 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
             {
                 nTag = static_cast<int>((std::intptr_t)pBubble->m_pAttach);
 
-                m_pBubble->m_pCage = new CollisionCage(this, nTag & 0xffff);
+                m_pBubble->m_pCage = std::make_unique<CollisionCage>(this, nTag & 0xffff);
             }
 
             break;

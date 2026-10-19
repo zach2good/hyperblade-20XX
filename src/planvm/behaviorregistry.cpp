@@ -2,54 +2,25 @@
 #include "planvm/behaviorids.h"
 #include "globals.h"
 #include "planvmglobals.h"
-#include "common/pooledownerroot.h"
-#include "common/behobjglidetoobjectpool.h"
-#include "common/behobjglidetopositionpool.h"
-#include "common/behobjglidebetweenfacingpool.h"
-#include "common/behobjavoidancepool.h"
-#include "common/behobjupdaterelativepospool.h"
-#include "common/behobjglidepool.h"
-#include "common/behobjglidelclpool.h"
-#include "common/behobjrailslidepool.h"
-#include "common/behobjflypool.h"
-#include "common/behobjflylclpool.h"
-#include "common/behobjflytowardpool.h"
-#include "common/behobjmonitorkeyboardpool.h"
-#include "common/behobjupdatewhileattachedpool.h"
-#include "common/behobjsetinplacepool.h"
-#include "common/behobjsetflatinplacepool.h"
-#include "common/behobjsetmovinginplacepool.h"
-#include "common/behobjdonothingpool.h"
-#include "common/behobjopenandclosepool.h"
-#include "common/behobjtrackingpool.h"
-#include "common/behobjheadtrackingpool.h"
-#include "common/behobjwatchingpool.h"
-#include "common/behobjtracktrajectorypool.h"
-#include "common/behobjtrackpasspreppool.h"
-#include "common/behobjcoachteampool.h"
-#include "common/behobjcandytrackingpool.h"
+#include "common/behaviorpools.h"
 #include "engine/devicector.h"
 #include "behparam.h"
 #include "plannode.h"
 #include "engine/engineobject.h"
 #include "planvm/behaviorregistry.h"
 
-// Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
+// Destroys each pool, stopping at the first null.
 
 // FUNCTION: HYPERX 0x0041c650
 void BehaviorRegistry::DestroyAll()
 {
     short iSlot = 0;
 
-    auto* pNode = g_apBehaviorRegistry[0];
-
-    while (pNode != nullptr)
+    while (g_apBehaviorRegistry[iSlot] != nullptr)
     {
-        g_apBehaviorRegistry[iSlot] = pNode->Destroy();
+        g_apBehaviorRegistry[iSlot].reset();
 
         iSlot++;
-
-        pNode = g_apBehaviorRegistry[iSlot];
     }
 }
 
@@ -58,7 +29,7 @@ void BehaviorRegistry::InitAll()
 {
     short iSlot = 0;
 
-    auto* pNode = g_apBehaviorRegistry[0];
+    auto* pNode = g_apBehaviorRegistry[0].get();
 
     while (pNode != nullptr)
     {
@@ -66,7 +37,7 @@ void BehaviorRegistry::InitAll()
 
         pNode->Init();
 
-        pNode = g_apBehaviorRegistry[iSlot];
+        pNode = g_apBehaviorRegistry[iSlot].get();
     }
 }
 
@@ -94,32 +65,32 @@ void BehaviorRegistry::Init()
     g_apfnBehaviorParamHandlers[kSetTargetGoal]          = BehParam::SetTargetGoal;
     g_apfnBehaviorParamHandlers[kSetObjectToFollow]      = BehParam::SetObjectToFollow;
 
-    g_apBehaviorRegistry[kBehGlideToObject] = new BehObjGlideToObjectPool;
+    g_apBehaviorRegistry[kBehGlideToObject] = std::make_unique<BehObjGlideToObjectPool>();
 
     g_apfnBehaviorParamHandlers[kSetDoubleScore]  = BehParam::SetTargetGoal;
-    g_apBehaviorRegistry[kBehGlideToPosition]     = new BehObjGlideToPositionPool;
-    g_apBehaviorRegistry[kBehGlideBetweenFacing]  = new BehObjGlideBetweenFacingPool;
-    g_apBehaviorRegistry[kBehAvoidance]           = new BehObjAvoidancePool;
-    g_apBehaviorRegistry[kBehUpdateRelativePos]   = new BehObjUpdateRelativePosPool;
-    g_apBehaviorRegistry[kBehGlide]               = new BehObjGlidePool;
-    g_apBehaviorRegistry[kBehGlideLcl]            = new BehObjGlideLCLPool;
-    g_apBehaviorRegistry[kBehRailSlide]           = new BehObjRailSlidePool;
-    g_apBehaviorRegistry[kBehFly]                 = new BehObjFlyPool;
-    g_apBehaviorRegistry[kBehFlyLcl]              = new BehObjFlyLCLPool;
-    g_apBehaviorRegistry[kBehFlyToward]           = new BehObjFlyTowardPool;
-    g_apBehaviorRegistry[kBehMonitorKeyboard]     = new BehObjMonitorKeyboardPool;
-    g_apBehaviorRegistry[kBehUpdateWhileAttached] = new BehObjUpdateWhileAttachedPool;
-    g_apBehaviorRegistry[kBehSetInPlace]          = new BehObjSetInPlacePool;
-    g_apBehaviorRegistry[kBehSetFlatInPlace]      = new BehObjSetFlatInPlacePool;
-    g_apBehaviorRegistry[kBehSetMovingInPlace]    = new BehObjSetMovingInPlacePool;
-    g_apBehaviorRegistry[kBehDoNothing]           = new BehObjDoNothingPool;
-    g_apBehaviorRegistry[kBehOpenAndClose]        = new BehObjOpenAndClosePool;
-    g_apBehaviorRegistry[kBehTracking]            = new BehObjTrackingPool;
-    g_apBehaviorRegistry[kBehHeadTracking]        = new BehObjHeadTrackingPool;
-    g_apBehaviorRegistry[kBehWatching]            = new BehObjWatchingPool;
-    g_apBehaviorRegistry[kBehTrackTrajectory]     = new BehObjTrackTrajectoryPool;
-    g_apBehaviorRegistry[kBehTrackPassPrep]       = new BehObjTrackPassPrepPool;
-    g_apBehaviorRegistry[kBehCoachTeam]           = new BehObjCoachTeamPool;
-    g_apBehaviorRegistry[kBehCandyTracking]       = new BehObjCandyTrackingPool;
+    g_apBehaviorRegistry[kBehGlideToPosition]     = std::make_unique<BehObjGlideToPositionPool>();
+    g_apBehaviorRegistry[kBehGlideBetweenFacing]  = std::make_unique<BehObjGlideBetweenFacingPool>();
+    g_apBehaviorRegistry[kBehAvoidance]           = std::make_unique<BehObjAvoidancePool>();
+    g_apBehaviorRegistry[kBehUpdateRelativePos]   = std::make_unique<BehObjUpdateRelativePosPool>();
+    g_apBehaviorRegistry[kBehGlide]               = std::make_unique<BehObjGlidePool>();
+    g_apBehaviorRegistry[kBehGlideLcl]            = std::make_unique<BehObjGlideLCLPool>();
+    g_apBehaviorRegistry[kBehRailSlide]           = std::make_unique<BehObjRailSlidePool>();
+    g_apBehaviorRegistry[kBehFly]                 = std::make_unique<BehObjFlyPool>();
+    g_apBehaviorRegistry[kBehFlyLcl]              = std::make_unique<BehObjFlyLCLPool>();
+    g_apBehaviorRegistry[kBehFlyToward]           = std::make_unique<BehObjFlyTowardPool>();
+    g_apBehaviorRegistry[kBehMonitorKeyboard]     = std::make_unique<BehObjMonitorKeyboardPool>();
+    g_apBehaviorRegistry[kBehUpdateWhileAttached] = std::make_unique<BehObjUpdateWhileAttachedPool>();
+    g_apBehaviorRegistry[kBehSetInPlace]          = std::make_unique<BehObjSetInPlacePool>();
+    g_apBehaviorRegistry[kBehSetFlatInPlace]      = std::make_unique<BehObjSetFlatInPlacePool>();
+    g_apBehaviorRegistry[kBehSetMovingInPlace]    = std::make_unique<BehObjSetMovingInPlacePool>();
+    g_apBehaviorRegistry[kBehDoNothing]           = std::make_unique<BehObjDoNothingPool>();
+    g_apBehaviorRegistry[kBehOpenAndClose]        = std::make_unique<BehObjOpenAndClosePool>();
+    g_apBehaviorRegistry[kBehTracking]            = std::make_unique<BehObjTrackingPool>();
+    g_apBehaviorRegistry[kBehHeadTracking]        = std::make_unique<BehObjHeadTrackingPool>();
+    g_apBehaviorRegistry[kBehWatching]            = std::make_unique<BehObjWatchingPool>();
+    g_apBehaviorRegistry[kBehTrackTrajectory]     = std::make_unique<BehObjTrackTrajectoryPool>();
+    g_apBehaviorRegistry[kBehTrackPassPrep]       = std::make_unique<BehObjTrackPassPrepPool>();
+    g_apBehaviorRegistry[kBehCoachTeam]           = std::make_unique<BehObjCoachTeamPool>();
+    g_apBehaviorRegistry[kBehCandyTracking]       = std::make_unique<BehObjCandyTrackingPool>();
     g_apBehaviorRegistry[kBehCount]               = nullptr;
 }

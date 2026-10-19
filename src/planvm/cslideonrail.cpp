@@ -8,31 +8,21 @@
 #include "engine/devicector.h"
 #include "engine/objectstats.h"
 #include "math/vector.h"
-#include <new>
 #include "planvm/cslideonrail.h"
 #include "math/spline.h"
 #include "physics/collisionellipsoid.h"
 #include "math/mathops.h"
 #include "common/pooledownerroot.h"
 
-// The field holds InitSegment's answer, not the new block.
-
 // FUNCTION: HYPERX 0x0040cee0
 CSlideOnRail::CSlideOnRail()
+: m_pSpline(std::make_unique<Spline>())
 {
-    float flSegmentA;
-
-    m_pSpline = (new Spline)->InitSegment(flSegmentA = g_arenaEllipsoid.GetRadiusX(), g_arenaEllipsoid.GetRadiusY());
+    m_pSpline->InitSegment(g_arenaEllipsoid.GetRadiusX(), g_arenaEllipsoid.GetRadiusY());
 }
 
 // FUNCTION: HYPERX 0x0040cfa0
-CSlideOnRail::~CSlideOnRail()
-{
-    delete m_pSpline;
-
-    // Cleared on both paths here, unlike its twin, which clears inside the branch.
-    m_pSpline = nullptr;
-}
+CSlideOnRail::~CSlideOnRail() = default;
 
 // FUNCTION: HYPERX 0x0040d010
 void CSlideOnRail::Bind(EngineObject* pOwner, GameBehaviorObject*)

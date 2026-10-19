@@ -16,15 +16,14 @@
 #include "math/spline.h"
 #include "planvm/planvmglobals.h"
 #include "app/gameapp.h"
-#include <new>
 #include <cmath>
 #include "engine/engineobject.h"
 #include "planvm/ctracktraj.h"
 
 // FUNCTION: HYPERX 0x0040a510
 CTrackTraj::CTrackTraj()
+: m_pSpline(std::make_unique<Spline>())
 {
-    m_pSpline = new Spline;
 }
 
 // Two: the share of its own velocity the camera spends on position in each axis.
@@ -42,17 +41,7 @@ constexpr auto kTrajectoryModeSpring = 0;
 constexpr auto kTrajectoryModeBlend  = 1;
 
 // FUNCTION: HYPERX 0x0040a5c0
-CTrackTraj::~CTrackTraj()
-{
-    auto* const pList = m_pSpline;
-
-    if (pList != nullptr)
-    {
-        delete pList;
-
-        m_pSpline = nullptr;
-    }
-}
+CTrackTraj::~CTrackTraj() = default;
 
 // FUNCTION: HYPERX 0x0040a630
 void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)

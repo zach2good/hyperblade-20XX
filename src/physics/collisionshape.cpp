@@ -76,11 +76,6 @@ CollisionShape::~CollisionShape()
     {
         m_pTransform = m_pTransform->DestroyViaVtable();
     }
-
-    if (m_pPooled != nullptr)
-    {
-        m_pPooled = m_pPooled->Destroy();
-    }
 }
 
 // The plane's slot thirteen calls this with six arguments, so it is variadic and __cdecl.
