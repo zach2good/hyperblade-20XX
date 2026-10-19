@@ -8,11 +8,12 @@
 #include "plannode.h"
 #include "common/pathstring.h"
 #include <cstdio>
+#include <vector>
 #include "app/gameapp.h"
 
 // A truncated file yields a short plan rather than a refusal.
 // FUNCTION: HYPERX 0x00436200
-PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
+std::unique_ptr<PlanWord[]> PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
 {
     if (fread(pnCount, 4, 1, pFile) != 1)
     {
@@ -21,10 +22,10 @@ PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
     }
 
     // The file holds 4-byte words; a PlanWord is pointer-sized, so each is widened as it is read.
-    auto* const pInstructions = new PlanWord[*pnCount]();
-    auto* const pWords        = new int[*pnCount]();
+    auto pInstructions = std::make_unique<PlanWord[]>(*pnCount);
+    auto words         = std::vector<int>(*pnCount);
 
-    if (fread(pWords, sizeof(int), *pnCount, pFile) != *pnCount)
+    if (fread(words.data(), sizeof(int), *pnCount, pFile) != *pnCount)
     {
         // STRING: HYPERX 0x004bdf94
         g_gameApp.Error("Misread binary plan");
@@ -32,16 +33,14 @@ PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
 
     for (unsigned int i = 0; i < *pnCount; i++)
     {
-        pInstructions[i].n = pWords[i];
+        pInstructions[i].n = words[i];
     }
-
-    delete[] pWords;
 
     return pInstructions;
 }
 
 // FUNCTION: HYPERX 0x00436270
-PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
+std::unique_ptr<PlanWord[]> PlanFile::OpenBinary(const char* pszName, void**)
 {
     PathString   strPath(kMaxPathLength, g_gameApp.m_strPlansPath.m_str.m_pchData, pszName, g_pszPbnExtension);
     unsigned int nCount;
@@ -51,7 +50,7 @@ PlanWord* PlanFile::OpenBinary(const char* pszName, void**)
 
     if (pFile != nullptr)
     {
-        auto* const pInstructions = PlanFile::ReadBinary(pFile, &nCount);
+        auto pInstructions = PlanFile::ReadBinary(pFile, &nCount);
 
         fclose(pFile);
 

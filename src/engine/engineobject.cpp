@@ -714,7 +714,7 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
         for (short i = 0; i < pDef->m_nPlanCount; i++)
         {
-            m_ppPlanBlobs[i] = PlanFile::OpenBinary(pDef->m_apszPlanNames[i], &pUnused);
+            m_ppPlanBlobs[i] = PlanFile::OpenBinary(pDef->m_apszPlanNames[i], &pUnused).release();
         }
 
         m_ppPlanBlobs[pDef->m_nPlanCount] = nullptr;

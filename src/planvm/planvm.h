@@ -1,6 +1,8 @@
 #ifndef HYPERBLADE_PLANVM_H
 #define HYPERBLADE_PLANVM_H
 
+#include <memory>
+
 #include "planstate.h"
 #include "interactor.h"
 
@@ -75,12 +77,12 @@ public:
 
     void LoadSymbolTables();
 
-    short           m_nCamera; // 0x00
-    int             m_nLength; // 0x04
-    int             m_nCursor; // 0x08
-    int             m_nPos;    // 0x0c
-    char*           m_pszText; // 0x10
-    union PlanWord* m_pStream; // 0x14
+    short                       m_nCamera; // 0x00
+    int                         m_nLength; // 0x04
+    int                         m_nCursor; // 0x08
+    int                         m_nPos;    // 0x0c
+    std::unique_ptr<char[]>     m_pszText; // 0x10
+    std::unique_ptr<PlanWord[]> m_pStream; // 0x14
 
     // The plan's declared names: behaviours, local reals and interactors; messages are below.
     char m_aBehaviorNames[kPlanVMBehaviorLimit][0x20];         // 0x00018
