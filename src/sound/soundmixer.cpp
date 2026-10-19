@@ -229,6 +229,9 @@ int SoundMixer::Init()
 
     const auto spec = SDL_AudioSpec{ SDL_AUDIO_F32, kMixChannels, kMixRate };
 
+    // SDL's default device buffer is a few milliseconds, so any stall on the audio thread ran it dry.
+    SDL_SetHint(SDL_HINT_AUDIO_DEVICE_SAMPLE_FRAMES, "2048");
+
     if (SDL_InitSubSystem(SDL_INIT_AUDIO))
     {
         pImpl->pStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, FeedStream, pImpl.get());
