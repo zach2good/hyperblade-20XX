@@ -3968,6 +3968,14 @@ void GameEngine::InitPlanSystems()
 // FUNCTION: HYPERX 0x00486890
 void GameEngine::RegisterObject(int nSlot, std::unique_ptr<EngineObject> pObject)
 {
+    // The original leaked an object registered over, and it went on ticking; freeing it here would
+    // leave the sorted list holding it, so it leaves that list first.
+    if (m_apSlotOwners[nSlot] != nullptr)
+    {
+        RemoveFromSortedList(static_cast<short>(nSlot));
+        UnregisterObject(nSlot).reset();
+    }
+
     m_nLoadedCount++;
 
     m_ppSlots[nSlot] = pObject.get();
