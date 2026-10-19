@@ -993,6 +993,9 @@ void EngineObject::CompileAllPlans()
         return;
     }
 
+    // The original leaked the old states; freeing them would leave this pointing into the old array.
+    m_pPlanState = nullptr;
+
     m_pPlanStates      = std::make_unique<PlanState[]>(m_nPlanCount);
     m_pFixedPlanStates = std::make_unique<PlanState[]>(m_nPlanCount);
 
