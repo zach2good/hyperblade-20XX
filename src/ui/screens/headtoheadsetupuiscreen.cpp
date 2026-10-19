@@ -392,7 +392,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
     {
         case H2H_HOME_TEAM_BUTTON:
             nTeam            = g_nDromeTeamHome + 1;
-            pEngine          = g_pGameEngine;
+            pEngine          = g_pGameEngine.get();
             g_nDromeTeamHome = nTeam;
 
             pEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nTeam), 1);
@@ -418,7 +418,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
                 }
             }
 
-            pEngine = g_pGameEngine;
+            pEngine = g_pGameEngine.get();
 
             pEngine->m_pSaveObject->ValidateSetHomeTeam(static_cast<short>(nTeam), 1);
 
@@ -433,7 +433,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
                 g_nDromeArena = 0;
             }
 
-            pEngine = g_pGameEngine;
+            pEngine = g_pGameEngine.get();
 
             nTeam = pEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(g_nDromeArena), 1);
 
@@ -470,7 +470,7 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
                 }
             }
 
-            pEngine = g_pGameEngine;
+            pEngine = g_pGameEngine.get();
 
             nTeam = pEngine->m_pSaveObject->WrapToNextValidTeam(static_cast<short>(nTeam), 1);
 

@@ -555,11 +555,11 @@ void PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 
     if (packed.GetAwayTeam() == 0)
     {
-        pTeam = g_pGameEngine->m_pTeamA;
+        pTeam = g_pGameEngine->m_pTeamA.get();
     }
     else
     {
-        pTeam = g_pGameEngine->m_pTeamB;
+        pTeam = g_pGameEngine->m_pTeamB.get();
     }
 
     const auto nRecord         = packed.GetRow();
@@ -2071,7 +2071,7 @@ void PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResu
 
     const auto nSlot = pOwner->GetSlot() % 2;
 
-    EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const apObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pNear = apObjects[static_cast<short>(nSlot)];
 
@@ -2965,7 +2965,7 @@ void PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult,
 
     const auto nMate = static_cast<short>(TeammateSlot(nSlot));
 
-    EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const apObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pActor = (PlayerObject*)apObjects[nSlot];
 
@@ -3841,7 +3841,7 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 
     short nRequest;
 
-    EngineObject** const pSlots = g_pGameEngine->m_ppSlots;
+    EngineObject** const pSlots = g_pGameEngine->m_ppSlots.get();
     auto* const          pRok   = (RokObject*)pSlots[kSlotRok];
     auto                 nMode  = pRok->m_wRokValue;
 
@@ -4576,11 +4576,11 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
 
     if (nSlot % 2 != 0)
     {
-        pTeam = g_pGameEngine->m_pTeamB;
+        pTeam = g_pGameEngine->m_pTeamB.get();
     }
     else
     {
-        pTeam = g_pGameEngine->m_pTeamA;
+        pTeam = g_pGameEngine->m_pTeamA.get();
     }
 
     const int nFirst  = sCandidate;
@@ -5399,7 +5399,7 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
 
         Vec3::ScaleTo(&pCarrierBlock->vel, g_flFourPlan, &vKick);
 
-        auto* const pBody  = pContext->GetActor()->m_pBody;
+        auto* const pBody  = pContext->GetActor()->m_pBody.get();
         const auto  vOwner = pBody->vel;
 
         Vec3::ScaleTo(&vOwner, OWNER_SCALE, &vVelocity);
@@ -5546,7 +5546,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
 
     auto* const pActor = pContext->GetActor();
 
-    EngineObject** const apSlots = g_pGameEngine->m_ppSlots;
+    EngineObject** const apSlots = g_pGameEngine->m_ppSlots.get();
     auto* const          pFirst  = apSlots[kSlotMine];
     auto* const          pSecond = apSlots[kSlotSwarf];
 
@@ -6994,7 +6994,7 @@ void PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult
 
     const auto nNearSlot = OPPOSING_FIRST(nSlot);
 
-    auto* const pEngine = g_pGameEngine;
+    auto* const pEngine = g_pGameEngine.get();
 
     auto* const pNear = pEngine->m_ppSlots[nNearSlot];
 
@@ -7278,7 +7278,7 @@ void PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*
     auto* const pTarget = pContext->GetActor();
 
     auto* const          pArgs     = pNode->m_pArgs;
-    EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const apObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pFirst  = apObjects[static_cast<short>(pArgs[kArgFirstSlot].n)];
     auto* const pSecond = apObjects[static_cast<short>(pArgs[kArgSecondSlot].n)];
@@ -7498,7 +7498,7 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
 
     const auto nMate = TeammateSlot(nSlot);
 
-    EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const apObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pNear = apObjects[OPPOSING_FIRST(nSlot)];
 
@@ -8193,7 +8193,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
 
     const auto nOwnSlot = pContext->GetActor()->GetSlot();
 
-    EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const apObjects = g_pGameEngine->m_ppSlots.get();
 
     if ((nOwnSlot & 1) != 0)
     {
@@ -8447,7 +8447,7 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
 {
     auto* const pActor = pContext->GetActor();
 
-    EngineObject** const ppObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const ppObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pRok = (RokObject*)ppObjects[kSlotRok];
 
@@ -8595,7 +8595,7 @@ void PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
 
     auto flBest = RANGE_START;
 
-    EngineObject** const ppObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const ppObjects = g_pGameEngine->m_ppSlots.get();
 
     apActor[0] = ppObjects[0];
     apActor[1] = ppObjects[1];

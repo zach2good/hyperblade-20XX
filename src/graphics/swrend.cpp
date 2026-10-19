@@ -253,13 +253,13 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
             }
 
             g_nSWFaceColour =
-                (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex)
+                (((ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel, cColourIndex)
                        << 8 |
-                   ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
+                   ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel, cColourIndex))
                       << 8 |
-                  ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
+                  ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel, cColourIndex))
                  << 8) |
-                ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex);
+                ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel, cColourIndex);
         }
         else
         {
@@ -285,13 +285,13 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
                 cShade = MeshMaterial::CalcLightIntensity(&flLevel2, pMaterial, pFaceNormal);
 
                 g_nSWFaceColour =
-                    (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex)
+                    (((ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel2, cColourIndex)
                            << 8 |
-                       ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
+                       ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel2, cColourIndex))
                           << 8 |
-                      ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
+                      ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel2, cColourIndex))
                      << 8) |
-                    ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex);
+                    ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flLevel2, cColourIndex);
             }
             else
             {

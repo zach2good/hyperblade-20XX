@@ -9,6 +9,11 @@
 #include "engine/coachobject.h"
 #include "engine/collisionobjectids.h"
 #include "common/commonglobals.h"
+#include <array>
+#include <memory>
+
+// The length of both slot tables, m_ppSlots and m_ppObjects.
+constexpr auto kEngineSlotCount = 0x66;
 
 // The length of each of the scene message queue's five arrays.
 constexpr auto kPendingQueueLength = 0x400;
@@ -22,6 +27,7 @@ class KeyboardDeviceObj;
 class FileObj;
 class ObjectDef;
 class ParticleSystem;
+class SaveObject;
 struct TeamBlock;
 struct TeamsBlock;
 enum class DifficultyLevel;
@@ -111,12 +117,13 @@ struct GameEngine
     char ReadSlotLabel(int nSlot, char* pszLabel, int nMax);
     char PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender, int bFromInput);
 
-    class ObjectDef* GetArenaRokDef();
-    class ObjectDef* GetTeamRokDef(int nSlot);
-    void             UnregisterObject(int nSlot);
-    void             RegisterObject(int nSlot, EngineObject* pObject);
-    char             SyncRenderQueueSize();
-    void             ReplaceEntity(int nKind, class ObjectDef* pDef);
+    class ObjectDef*                            GetArenaRokDef();
+    class ObjectDef*                            GetTeamRokDef(int nSlot);
+    [[nodiscard]] std::unique_ptr<EngineObject> UnregisterObject(int nSlot);
+
+    void RegisterObject(int nSlot, std::unique_ptr<EngineObject> pObject);
+    char SyncRenderQueueSize();
+    void ReplaceEntity(int nKind, class ObjectDef* pDef);
 
     void SetAttackMode(int nOn);
     void SetTeammateMode(int nOn);
@@ -132,8 +139,8 @@ struct GameEngine
     char EvalArcherAward();
     char EvalAnvilAward();
 
-    TeamBlock* ParseTeamHTMFile(class FileObj* pFile);
-    static int FindTeamDefinition(class FileObj* pFile, char** ppLine, char* pszToken);
+    std::unique_ptr<TeamBlock> ParseTeamHTMFile(class FileObj* pFile);
+    static int                 FindTeamDefinition(class FileObj* pFile, char** ppLine, char* pszToken);
 
     ReserveRows* GetReserveRows(const TeamBlock* pTeam);
 
@@ -160,10 +167,13 @@ struct GameEngine
     short m_nQueuedSlotCount; // 0x000a
 
     // Indexed by model id: 0 to 5 the dromers, 6 the Rok, 7 and 8 the goals, 23 God, 0x36 Mine.
-    EngineObject** m_ppSlots; // 0x000c
+    std::unique_ptr<EngineObject*[]> m_ppSlots; // 0x000c
 
     // Walked from 0 to m_nObjectCount.
-    EngineObject** m_ppObjects; // 0x0010
+    std::unique_ptr<EngineObject*[]> m_ppObjects; // 0x0010
+
+    // The objects m_ppSlots names, owned slot for slot.
+    std::array<std::unique_ptr<EngineObject>, kEngineSlotCount> m_apSlotOwners;
 
     // The typed views of m_ppSlots; each is defined beside its class.
     PlayerObject*      GetPlayer(int nSlot) const;
@@ -209,14 +219,14 @@ struct GameEngine
     // The two tracked objects.
     EngineObject* m_apTracked[2]; // 0x5288
     // The home team's definition, and the score block the end of a match clears.
-    TeamBlock* m_pTeamA; // 0x5290
-    TeamBlock* m_pTeamB; // 0x5294
+    std::unique_ptr<TeamBlock> m_pTeamA; // 0x5290
+    std::unique_ptr<TeamBlock> m_pTeamB; // 0x5294
     // src/engine/arenastate.h holds the record.
-    struct ArenaState* m_pArena;         // 0x5298
-    unsigned short     m_nTeamHomeIndex; // 0x529c
-    unsigned short     m_nTeamAwayIndex; // 0x529e
-    unsigned short     m_nArenaIndex;    // 0x52a0
-    int                m_nPending;       // 0x52a4
+    std::unique_ptr<ArenaState> m_pArena;         // 0x5298
+    unsigned short              m_nTeamHomeIndex; // 0x529c
+    unsigned short              m_nTeamAwayIndex; // 0x529e
+    unsigned short              m_nArenaIndex;    // 0x52a0
+    int                         m_nPending;       // 0x52a4
     // Minus one means no score yet.
     int             m_nScoreHome;  // 0x52a8
     int             m_nScoreAway;  // 0x52ac
@@ -233,37 +243,37 @@ struct GameEngine
     char m_bFollowingOther;      // 0x52ce
     char m_bEndPeriodRequested;  // 0x52cf
     // Tested before ending a period and set when one ends.
-    char               m_bPeriodEnded; // 0x52d0
-    struct TeamsBlock* m_pTeamTable;   // 0x52d4
-    class SaveObject*  m_pSaveObject;  // 0x52d8
-    int                m_bMatchOver;   // 0x52dc
+    char                        m_bPeriodEnded; // 0x52d0
+    std::unique_ptr<TeamsBlock> m_pTeamTable;   // 0x52d4
+    std::unique_ptr<SaveObject> m_pSaveObject;  // 0x52d8
+    int                         m_bMatchOver;   // 0x52dc
 
     void DispatchCollisionToRule(class CollInteractor* pChain);
     void SetRunState(short bRunning, int nReason);
     void BroadcastEvent(int nEvent, int nParam, int nSender);
 
     // Answers null at the end of the file; the model id is written back through the second argument.
-    class ObjectDef* ParseObjectDefinition(class FileObj* pFile, unsigned int* pnModelId);
-    EngineObject*    CreateObject(class ObjectDef* pDef, unsigned int nModelId);
-    char             LoadConfigFile(const char* pszFileName);
-    char             LoadGameConfig(const char* pszFileName);
-    char             LoadObjectsFromConfig(const char* pszFileName);
+    std::unique_ptr<ObjectDef> ParseObjectDefinition(class FileObj* pFile, unsigned int* pnModelId);
+    EngineObject*              CreateObject(class ObjectDef* pDef, unsigned int nModelId);
+    char                       LoadConfigFile(const char* pszFileName);
+    char                       LoadGameConfig(const char* pszFileName);
+    char                       LoadObjectsFromConfig(const char* pszFileName);
 
     // The five commands a game configuration file is made of.
-    class ObjectDef* Cmd_DefineObject(char* pszLine, unsigned int* pnModelId);
-    char             Cmd_SetMotionParams(char* pszLine, class ObjectDef* pDef);
-    int              Cmd_SetRatings(char* pszLine, class ObjectDef* pDef, int nMode, int nLevel);
-    char             Cmd_SetCollisionObject(char* pszLine, class ObjectDef* pDef, unsigned int nModelId);
-    void             MapModifierToId(short nModelId, class BubbleCmd* pCmd);
-    char             Cmd_SetPlans(char* pszLine, class ObjectDef* pDef);
+    std::unique_ptr<ObjectDef> Cmd_DefineObject(char* pszLine, unsigned int* pnModelId);
+    char                       Cmd_SetMotionParams(char* pszLine, class ObjectDef* pDef);
+    int                        Cmd_SetRatings(char* pszLine, class ObjectDef* pDef, int nMode, int nLevel);
+    char                       Cmd_SetCollisionObject(char* pszLine, class ObjectDef* pDef, unsigned int nModelId);
+    void                       MapModifierToId(short nModelId, class BubbleCmd* pCmd);
+    char                       Cmd_SetPlans(char* pszLine, class ObjectDef* pDef);
     // Reads only g_nPlayerMode.
     unsigned char IsExhibitionMode();
 
     void TickClock();
 
-    char       LoadHomeTeam(const char* pszTeamPath);
-    char       LoadAwayTeam(const char* pszTeamPath);
-    TeamBlock* LoadTeamFromFile(const char* pszTeamPath, int nTeam);
+    char                       LoadHomeTeam(const char* pszTeamPath);
+    char                       LoadAwayTeam(const char* pszTeamPath);
+    std::unique_ptr<TeamBlock> LoadTeamFromFile(const char* pszTeamPath, int nTeam);
 
     char LoadArena(const char* pszArenaPath);
 
@@ -291,6 +301,12 @@ struct GameEngine
     char SetDifficultyLevel(unsigned int nLevel);
     void UnloadArena();
     ~GameEngine();
+
+    GameEngine(const GameEngine&)            = delete;
+    GameEngine(GameEngine&&)                 = delete;
+    GameEngine& operator=(const GameEngine&) = delete;
+    GameEngine& operator=(GameEngine&&)      = delete;
+
     char RemoveFromSortedList(short nId);
 
     // Each writes the setting back to the ini file as well, and only when it changed.

@@ -25,7 +25,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     const char* pszName;
     int         nRound;
 
-    auto* pList = g_pGameEngine->m_pTeamTable;
+    auto* pList = g_pGameEngine->m_pTeamTable.get();
 
     if (static_cast<short>(g_nDromeArena) < pList->GetTeamCount())
     {
@@ -47,7 +47,7 @@ DromeExteriorScreen::DromeExteriorScreen()
 
     if (g_nDromeTeamAway == g_nDromeArena)
     {
-        pList = g_pGameEngine->m_pTeamTable;
+        pList = g_pGameEngine->m_pTeamTable.get();
 
         if (static_cast<short>(g_nDromeTeamAway) < pList->GetTeamCount())
         {
@@ -60,7 +60,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     }
     else
     {
-        pList = g_pGameEngine->m_pTeamTable;
+        pList = g_pGameEngine->m_pTeamTable.get();
 
         if (static_cast<short>(g_nDromeTeamHome) < pList->GetTeamCount())
         {

@@ -10,20 +10,17 @@ BubbleCmd::BubbleCmd()
     m_nSlot       = kCOBNone;
     m_wShape      = BubbleShape::kNone;
     m_nChildCount = 0;
-    m_pChildren   = nullptr;
-    m_pAttach     = nullptr;
-    m_pPos        = nullptr;
+    m_bUseDetail  = false;
 }
 
 // FUNCTION: HYPERX 0x0042a0a0
 BubbleCmd::~BubbleCmd()
 {
-    delete m_pPos;
+    // One link at a time, so a long chain can't overflow the stack.
+    auto pChild = std::move(m_pChildren);
 
-    if (m_wShape == BubbleShape::kAttached && m_pAttach != nullptr)
+    while (pChild != nullptr)
     {
-        delete m_pAttach;
+        pChild = std::move(pChild->m_pChildren);
     }
-
-    delete m_pChildren;
 }

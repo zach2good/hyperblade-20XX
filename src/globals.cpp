@@ -43,23 +43,27 @@
 #include "engine/objectclasses.h"
 #include "physics/physicsbody.h"
 #include "planvm/planopcodetable.h"
+#include "graphics/cd3dtexturemanager.h"
+#include "engine/gameoptions.h"
+#include "engine/messagequeue.h"
+#include "ui/screen.h"
 
-char                g_szFpsText[100];
-unsigned char       g_bIsWindowCreated;
-int                 g_nPrevEngineState;
-RenderFlags         g_renderFlags = { 1, 1 };
-Clock::Milliseconds g_frameGameLogicStart;
-InfoBarBase*        g_pRenderer;
-struct GameEngine*  g_pGameEngine;
-int                 g_bNoSoundArg;
-int                 g_nSplashFrame;
-ColorPalette*       g_pColorPalette;
-const char* const   g_pszModelExtension       = "wbm";
-const char* const   g_pszWaveExtension        = "wav";
-const float         g_flCamWatchMidpointScale = 0.5f;
-FileVersion         g_modelVersion            = { 1, 7, 0, 0, 0 };
-GameApp             g_gameApp(2);
-AudioMgr*           g_pAudioMgr;
+char                          g_szFpsText[100];
+unsigned char                 g_bIsWindowCreated;
+int                           g_nPrevEngineState;
+RenderFlags                   g_renderFlags = { 1, 1 };
+Clock::Milliseconds           g_frameGameLogicStart;
+std::unique_ptr<InfoBarBase>  g_pRenderer;
+std::unique_ptr<GameEngine>   g_pGameEngine;
+int                           g_bNoSoundArg;
+int                           g_nSplashFrame;
+std::unique_ptr<ColorPalette> g_pColorPalette;
+const char* const             g_pszModelExtension       = "wbm";
+const char* const             g_pszWaveExtension        = "wav";
+const float                   g_flCamWatchMidpointScale = 0.5f;
+FileVersion                   g_modelVersion            = { 1, 7, 0, 0, 0 };
+GameApp                       g_gameApp(2);
+std::unique_ptr<AudioMgr>     g_pAudioMgr;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
 ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } },
@@ -85,44 +89,44 @@ int                  g_aStationarySlots[kStationarySlots] = { 0 };
 int                  g_nStationaryCount;
 
 // STRING: HYPERX 0x004c724c
-const char*               g_pszEqualsSign = "=";
-unsigned char             g_bNetworkGame;
-unsigned char             g_bShowLightingInfo;
-int                       g_bSkipAssetValidation;
-int                       g_bModemPlay;
-class CD3DTextureManager* g_pTexManager;
-int                       g_nCountdownLastSecs;
-int                       g_nSavedCursorVisible;
-const char* const         g_pszPbnExtension    = "pbn";
-const char* const         g_pszTokenDelimiters = "	";
-int                       g_nPlanSequenceStep;
-const char* const         g_pszPlanVmEmptyName = "";
-char                      g_bShuttingDown;
-class KeyboardDeviceObj*  g_pInputDevice;
-unsigned char             g_bRightEdgeUsed;
-unsigned char             g_bLeftEdgeUsed;
-short                     g_wSpanYMax;
-short                     g_wSpanYMin;
-int                       g_nRadarLineColour;
-int                       g_nRadarBlipColourRok;
-int                       g_nRadarBlipColourDromer3;
-int                       g_nRadarBlipColourDromer1;
-int                       g_nRadarBlipColourDromer2;
-int                       g_nRadarBlipColourDromer0;
-unsigned char             g_bEdgeWalked;
-int                       g_nFillColour;
-class Screen*             g_pActiveScreen;
-class MessageQueue*       g_pMessageQueue;
-class CheatState          g_cheatState;
-int                       g_bCursorHidden = 1;
-int                       g_bShadedDromeModels;
-GameOptions*              g_pGameOptions;
-int                       g_bBackBufferReady;
-unsigned char             g_cMdmTexLoaded;
-int                       g_nSurfacePitchCopy;
-int                       g_nViewportOriginY;
-int                       g_nViewportOriginX;
-unsigned char*            g_pBackBufferBitsCopy;
+const char*                         g_pszEqualsSign = "=";
+unsigned char                       g_bNetworkGame;
+unsigned char                       g_bShowLightingInfo;
+int                                 g_bSkipAssetValidation;
+int                                 g_bModemPlay;
+std::unique_ptr<CD3DTextureManager> g_pTexManager;
+int                                 g_nCountdownLastSecs;
+int                                 g_nSavedCursorVisible;
+const char* const                   g_pszPbnExtension    = "pbn";
+const char* const                   g_pszTokenDelimiters = "	";
+int                                 g_nPlanSequenceStep;
+const char* const                   g_pszPlanVmEmptyName = "";
+char                                g_bShuttingDown;
+class KeyboardDeviceObj*            g_pInputDevice;
+unsigned char                       g_bRightEdgeUsed;
+unsigned char                       g_bLeftEdgeUsed;
+short                               g_wSpanYMax;
+short                               g_wSpanYMin;
+int                                 g_nRadarLineColour;
+int                                 g_nRadarBlipColourRok;
+int                                 g_nRadarBlipColourDromer3;
+int                                 g_nRadarBlipColourDromer1;
+int                                 g_nRadarBlipColourDromer2;
+int                                 g_nRadarBlipColourDromer0;
+unsigned char                       g_bEdgeWalked;
+int                                 g_nFillColour;
+std::unique_ptr<Screen>             g_pActiveScreen;
+std::unique_ptr<MessageQueue>       g_pMessageQueue;
+class CheatState                    g_cheatState;
+int                                 g_bCursorHidden = 1;
+int                                 g_bShadedDromeModels;
+std::unique_ptr<GameOptions>        g_pGameOptions;
+int                                 g_bBackBufferReady;
+unsigned char                       g_cMdmTexLoaded;
+int                                 g_nSurfacePitchCopy;
+int                                 g_nViewportOriginY;
+int                                 g_nViewportOriginX;
+unsigned char*                      g_pBackBufferBitsCopy;
 // Full screen by default; -w turns it off.
 int g_bFullScreen = 1;
 int g_nBackBufferHeight;
@@ -230,26 +234,26 @@ const double g_dSurfaceTolerance = 0.01f;
 
 std::unique_ptr<PooledOwnerRoot> g_pCollInteractorPool;
 
-class AnimRegistry* g_pAnimRegistry;
-extern const float  g_flZeroProjection  = 0.0f;
-const float         g_flTransformZero   = 0.0f;
-const float         g_flTransformOne    = 1.0f;
-float               g_flOnePhysicsReset = 1.0f;
-char                g_szSfxBarName[20];
-char                g_szMusicBarName[20];
-const double        g_dHomingSix     = 6.0;
-const float         g_flOneThird     = 0.33f;
-const float         g_flCollisionOne = 1.0f;
-int                 g_nOptionsSavedCdVolume;
-int                 g_nOptionsSavedSfxVolume;
-int                 g_nOptionDifficulty;
-int                 g_nOptionBrutality;
-int                 g_nOptionMusicVolume;
-int                 g_nOptionSfxVolume;
-int                 g_nOptionPeriodLength;
-int                 g_nPeriodLengthMs;
-int                 g_nOptionTeammateMode;
-int                 g_nOptionAttackMode;
+std::unique_ptr<AnimRegistry> g_pAnimRegistry;
+extern const float            g_flZeroProjection  = 0.0f;
+const float                   g_flTransformZero   = 0.0f;
+const float                   g_flTransformOne    = 1.0f;
+float                         g_flOnePhysicsReset = 1.0f;
+char                          g_szSfxBarName[20];
+char                          g_szMusicBarName[20];
+const double                  g_dHomingSix     = 6.0;
+const float                   g_flOneThird     = 0.33f;
+const float                   g_flCollisionOne = 1.0f;
+int                           g_nOptionsSavedCdVolume;
+int                           g_nOptionsSavedSfxVolume;
+int                           g_nOptionDifficulty;
+int                           g_nOptionBrutality;
+int                           g_nOptionMusicVolume;
+int                           g_nOptionSfxVolume;
+int                           g_nOptionPeriodLength;
+int                           g_nPeriodLengthMs;
+int                           g_nOptionTeammateMode;
+int                           g_nOptionAttackMode;
 // STRING: HYPERX 0x004bb818
 const char*                         g_pszCharFormat          = "%c";
 extern const float                  g_flCollisionPartDefault = 0.0f;
@@ -289,10 +293,10 @@ Vec3* g_apPositionMarkers[11] = {
 PlanStatFn g_apPlanStatFns[PRN_COUNT];
 int        g_nPaletteAnimated;
 #include "graphics/transparentqueue.h"
-TransparentEntry  g_transparentSiftEntry;
-TransparentEntry* g_pTransparentQueue;
-short             g_nTransparentCapacity;
-short             g_nTransparentCount;
+TransparentEntry                    g_transparentSiftEntry;
+std::unique_ptr<TransparentEntry[]> g_pTransparentQueue;
+short                               g_nTransparentCapacity;
+short                               g_nTransparentCount;
 #include "net/gamesession.h"
 #include "common/pooledownerroot.h"
 #include "anim/animregistry.h"

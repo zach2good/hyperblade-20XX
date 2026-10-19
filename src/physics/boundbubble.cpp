@@ -10,6 +10,7 @@
 #include "app/gameapp.h"
 #include "engine/objectphase.h"
 #include <memory>
+#include <utility>
 
 constexpr auto kShapeWorldSpace = (-2);
 
@@ -38,22 +39,21 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
         pOwner->AttachBubble(pShape->m_pPos->m_nComponent, this);
     }
 
-    m_pShapeNode.reset(pShape->m_pPos);
-    pShape->m_pPos = nullptr;
+    m_pShapeNode = std::move(pShape->m_pPos);
 
     BubbleCmd* pChildRec = nullptr;
 
-    m_flRadius        = m_pShapeNode->m_flRadius;
-    m_nChildCount     = pShape->m_nChildCount;
-    m_pOwner          = pOwner;
-    m_nSlot           = pShape->m_nSlot;
-    m_nShape          = pShape->m_wShape;
-    m_pAttach         = pShape->m_pAttach;
-    pShape->m_pAttach = nullptr;
+    m_flRadius    = m_pShapeNode->m_flRadius;
+    m_nChildCount = pShape->m_nChildCount;
+    m_pOwner      = pOwner;
+    m_nSlot       = pShape->m_nSlot;
+    m_nShape      = pShape->m_wShape;
+    m_pAttach     = std::move(pShape->m_pAttach);
+    m_bUseDetail  = std::exchange(pShape->m_bUseDetail, false);
 
     if (pShape->m_wShape == BubbleShape::kAttached)
     {
-        FindAttachComponent(m_pAttach);
+        FindAttachComponent(m_pAttach.get());
     }
 
     g_pGameEngine->SetColObject(m_nSlot, this);
@@ -65,7 +65,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 
         for (i = 0; i < pShape->m_nChildCount; i++)
         {
-            pChildRec = pShape->m_pChildren + i;
+            pChildRec = pShape->m_pChildren.get() + i;
 
             switch (pChildRec->m_wShape)
             {

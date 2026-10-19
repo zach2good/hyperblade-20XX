@@ -28,7 +28,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
     m_hBackground = GDI::LoadBitmapAsBackground(g_pszFinaleBackground, &m_bPaletted);
 
     const short nIndex = g_pGameEngine->m_nTeamHomeIndex;
-    auto* const pList  = g_pGameEngine->m_pTeamTable;
+    auto* const pList  = g_pGameEngine->m_pTeamTable.get();
 
     if (nIndex < pList->GetTeamCount())
     {

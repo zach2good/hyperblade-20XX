@@ -287,7 +287,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                         return 1;
                     }
 
-                    pEngine = g_pGameEngine;
+                    pEngine = g_pGameEngine.get();
                     pEngine->SetScreenSize(pEngine->m_nScreenSize - 1);
                     return 1;
 
@@ -305,7 +305,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                         return 1;
                     }
 
-                    pEngine = g_pGameEngine;
+                    pEngine = g_pGameEngine.get();
                     pEngine->SetScreenSize(pEngine->m_nScreenSize + 1);
                     return 1;
 
@@ -355,7 +355,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
 
                 case '1':
                 case '2':
-                    pEngine = g_pGameEngine;
+                    pEngine = g_pGameEngine.get();
                     nSlot   = pEngine->m_nViewedSlot;
                     pEntity = pEngine->m_ppSlots[static_cast<short>(nSlot)];
 
@@ -363,11 +363,11 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                     {
                         if ((nSlot & 1) != 0)
                         {
-                            pTeamDef = pEngine->m_pTeamB;
+                            pTeamDef = pEngine->m_pTeamB.get();
                         }
                         else
                         {
-                            pTeamDef = pEngine->m_pTeamA;
+                            pTeamDef = pEngine->m_pTeamA.get();
                         }
 
                         auto* const pReserves = pEngine->GetReserveRows(pTeamDef);
@@ -381,7 +381,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
 
                     if (nKey == pBindings[kBindingJump])
                     {
-                        pEngine = g_pGameEngine;
+                        pEngine = g_pGameEngine.get();
                         nSlot   = pEngine->m_nViewedSlot;
                         pEngine->m_ppSlots[nSlot]->PostSceneEvent(kMsgJump, 0);
                         return 1;
@@ -392,7 +392,7 @@ int GameApp::HandleMatchKeypress(unsigned int nKey)
                         return 0;
                     }
 
-                    pEngine = g_pGameEngine;
+                    pEngine = g_pGameEngine.get();
                     nSlot   = pEngine->m_nViewedSlot;
                     pEngine->m_ppSlots[nSlot]->PostSceneEvent(kMsgThrowWindUp, 0);
                     return 1;

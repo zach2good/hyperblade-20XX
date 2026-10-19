@@ -76,7 +76,7 @@ JumbotronScreen::JumbotronScreen()
     }
 
     auto  nRound = static_cast<short>(g_pGameEngine->m_nTeamHomeIndex);
-    auto* pList  = g_pGameEngine->m_pTeamTable;
+    auto* pList  = g_pGameEngine->m_pTeamTable.get();
 
     if (nRound < pList->GetTeamCount())
     {
@@ -93,7 +93,7 @@ JumbotronScreen::JumbotronScreen()
     pWidget->AppendFrame(m_hBitmap);
 
     nRound = static_cast<short>(g_pGameEngine->m_nTeamAwayIndex);
-    pList  = g_pGameEngine->m_pTeamTable;
+    pList  = g_pGameEngine->m_pTeamTable.get();
 
     if (nRound < pList->GetTeamCount())
     {

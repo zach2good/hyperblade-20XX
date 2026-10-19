@@ -452,7 +452,7 @@ void PlanAction::IncrementObjectToTrack(Interactor*, PlanNode*, short*, int)
 // FUNCTION: HYPERX 0x00401ee0
 void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
 {
-    auto* pEngine = g_pGameEngine;
+    auto* pEngine = g_pGameEngine.get();
 
     auto flRate   = pEngine->m_clock.flInvDelta;
     auto flFactor = g_flSteadyCamBuffer;
@@ -470,7 +470,7 @@ void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
 
     pEngine->GetCamera(kCameraMainSlot)->SetPosHistorySize(nPos);
 
-    pEngine = g_pGameEngine;
+    pEngine = g_pGameEngine.get();
 
     flRate   = pEngine->m_clock.flInvDelta;
     flFactor = g_flSteadyCamBuffer;

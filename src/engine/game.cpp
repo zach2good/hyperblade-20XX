@@ -118,17 +118,17 @@ void Game::InitializeEngine()
     auto nStart = GameApp::GetInstallLevel();
 
     // A new of a type with a constructor, for the null test and exception frame.
-    g_pTexManager = new CD3DTextureManager;
+    g_pTexManager = std::make_unique<CD3DTextureManager>();
 
     auto nDelta = GameApp::GetInstallLevel() - nStart;
 
     g_pTexManager->m_nInstallLevel += nDelta;
 
-    g_pGameOptions = new GameOptions;
+    g_pGameOptions = std::make_unique<GameOptions>();
 
     nStart = GameApp::GetInstallLevel();
 
-    g_pGameEngine = new GameEngine;
+    g_pGameEngine = std::make_unique<GameEngine>();
 
     nDelta = GameApp::GetInstallLevel() - nStart;
 
@@ -136,7 +136,7 @@ void Game::InitializeEngine()
 
     nStart = GameApp::GetInstallLevel();
 
-    g_pAudioMgr = new AudioMgr;
+    g_pAudioMgr = std::make_unique<AudioMgr>();
 
     g_pAudioMgr->Init();
 
@@ -150,9 +150,7 @@ void Game::InitializeEngine()
 
     nStart = GameApp::GetInstallLevel();
 
-    auto* const pAnimDb = new AnimRegistry;
-
-    g_pAnimRegistry = pAnimDb;
+    g_pAnimRegistry = std::make_unique<AnimRegistry>();
 
     // STRING: HYPERX 0x004c41c0
     g_pAnimRegistry->LoadFromPath("animdata\\AnimAssm.txt");
@@ -163,7 +161,7 @@ void Game::InitializeEngine()
 
     nStart = GameApp::GetInstallLevel();
 
-    g_pRenderer = InfoBarBase::Create().release();
+    g_pRenderer = InfoBarBase::Create();
 
     // STRING: HYPERX 0x004c41b4
     g_pGameEngine->Init("game.cfg");
@@ -174,57 +172,27 @@ void Game::InitializeEngine()
 
     g_pGameEngine->m_nLoadCost += nDelta;
 
-    g_pMessageQueue = new MessageQueue;
+    g_pMessageQueue = std::make_unique<MessageQueue>();
 
     // STRING: HYPERX 0x004c41a4
     g_pMessageQueue->LoadList("infobtxt.lst");
 }
 
-// The renderer is not nulled, so a second call would tear it down again.
+// The message queue is emptied and kept, as the original keeps it.
 // FUNCTION: HYPERX 0x0045c9c0
 void Game::ShutdownEngine()
 {
     if (g_pMessageQueue != nullptr)
     {
-        g_pMessageQueue = g_pMessageQueue->FreeAll();
+        g_pMessageQueue->FreeAll();
     }
 
-    delete g_pRenderer;
-
-    if (g_pAnimRegistry != nullptr)
-    {
-        delete g_pAnimRegistry;
-
-        g_pAnimRegistry = nullptr;
-    }
-
-    if (g_pAudioMgr != nullptr)
-    {
-        delete g_pAudioMgr;
-
-        g_pAudioMgr = nullptr;
-    }
-
-    if (g_pGameEngine != nullptr)
-    {
-        delete g_pGameEngine;
-
-        g_pGameEngine = nullptr;
-    }
-
-    if (g_pGameOptions != nullptr)
-    {
-        delete g_pGameOptions;
-
-        g_pGameOptions = nullptr;
-    }
-
-    if (g_pTexManager != nullptr)
-    {
-        delete g_pTexManager;
-
-        g_pTexManager = nullptr;
-    }
+    g_pRenderer.reset();
+    g_pAnimRegistry.reset();
+    g_pAudioMgr.reset();
+    g_pGameEngine.reset();
+    g_pGameOptions.reset();
+    g_pTexManager.reset();
 }
 
 // Eight markers against the arena ellipsoid; the y-minus one asks for its height at y = +6, not -6.
@@ -535,8 +503,6 @@ unsigned int Game::UpdateState()
                     Display::ChangeColorDepth(0);
                 }
 
-                delete g_pActiveScreen;
-
                 g_pActiveScreen = nullptr;
                 GameApp::SetCursorVisible(g_nSavedCursorVisible);
                 g_pGameEngine->m_wRunState = kEngineRunPlaying;
@@ -580,8 +546,6 @@ unsigned int Game::UpdateState()
                     {
                         g_pActiveScreen->InitFrame();
                     }
-
-                    delete g_pActiveScreen;
 
                     g_pActiveScreen = nullptr;
                     g_gameApp.OnShutdown();

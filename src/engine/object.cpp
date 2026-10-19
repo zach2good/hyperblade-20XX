@@ -502,7 +502,7 @@ void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flS
         {
             if (*pIndex < nBones)
             {
-                auto* const pNode = pObject->m_pBones + static_cast<short>(*pIndex);
+                auto* const pNode = pObject->m_pBones.get() + static_cast<short>(*pIndex);
 
                 if (pNode != nullptr)
                 {

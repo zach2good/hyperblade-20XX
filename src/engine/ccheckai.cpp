@@ -22,7 +22,7 @@ void CCheckAI::Bind(EngineObject* pSubject, GameBehaviorObject*)
 // FUNCTION: HYPERX 0x00412b30
 void CCheckAI::Process(int nArg)
 {
-    EngineObject** const ppObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const ppObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pOwner = m_pOwner;
 

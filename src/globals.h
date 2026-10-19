@@ -59,7 +59,7 @@ extern int g_bSkipAssetValidation;
 extern int g_bModemPlay;
 
 // GLOBAL: HYPERX 0x004cf054
-extern class CD3DTextureManager* g_pTexManager;
+extern std::unique_ptr<class CD3DTextureManager> g_pTexManager;
 
 // GLOBAL: HYPERX 0x004c1e88
 extern int g_nDromeTextured;
@@ -82,7 +82,7 @@ extern int g_bShadedDromeModels;
 extern int g_nSplashFrame;
 
 // GLOBAL: HYPERX 0x004cb6f0
-extern ColorPalette* g_pColorPalette;
+extern std::unique_ptr<ColorPalette> g_pColorPalette;
 
 // GLOBAL: HYPERX 0x004b40f8
 extern const char* const g_pszModelExtension;
@@ -156,19 +156,19 @@ extern FrameTimer g_frameTimer;
 extern char g_szFpsText[100];
 
 // GLOBAL: HYPERX 0x004cf068
-extern GameOptions* g_pGameOptions;
+extern std::unique_ptr<GameOptions> g_pGameOptions;
 
 // GLOBAL: HYPERX 0x004cf060
-extern AudioMgr* g_pAudioMgr;
+extern std::unique_ptr<AudioMgr> g_pAudioMgr;
 
 // GLOBAL: HYPERX 0x004cef49
 extern unsigned char g_bIsWindowCreated;
 
 // GLOBAL: HYPERX 0x004cefd0
-extern InfoBarBase* g_pRenderer;
+extern std::unique_ptr<InfoBarBase> g_pRenderer;
 
 // GLOBAL: HYPERX 0x004cf058
-extern struct GameEngine* g_pGameEngine;
+extern std::unique_ptr<struct GameEngine> g_pGameEngine;
 
 // GLOBAL: HYPERX 0x004d2764
 extern int g_nPrevEngineState;
@@ -225,7 +225,7 @@ struct KeyRow
 extern KeyRow g_aKeyRows[40];
 
 // GLOBAL: HYPERX 0x004cf064
-extern MessageQueue* g_pMessageQueue;
+extern std::unique_ptr<MessageQueue> g_pMessageQueue;
 
 // GLOBAL: HYPERX 0x004b3f2c
 extern const float g_flGravityGameEngine;
@@ -293,7 +293,7 @@ extern unsigned char g_abObjectTypeBaseline[32];
 extern unsigned char g_abObjectTypeLimit[32];
 
 // GLOBAL: HYPERX 0x004d21b8
-extern class Screen* g_pActiveScreen;
+extern std::unique_ptr<class Screen> g_pActiveScreen;
 
 // GLOBAL: HYPERX 0x004d21bc
 extern int g_nPlayerMode;
@@ -392,7 +392,7 @@ extern float g_flHalfAgendaItem;
 extern std::unique_ptr<class PooledOwnerRoot> g_pCollInteractorPool;
 
 // GLOBAL: HYPERX 0x004cf05c
-extern class AnimRegistry* g_pAnimRegistry;
+extern std::unique_ptr<class AnimRegistry> g_pAnimRegistry;
 
 // GLOBAL: HYPERX 0x004cb800
 extern float g_flScreenDotsPerCmProjection;

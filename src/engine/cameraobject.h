@@ -7,6 +7,9 @@
 #include "gameengine.h"
 #include "engine/engineobject.h"
 #include "planvm/interactor.h"
+#include <memory>
+
+class CameraProjectionState;
 
 // The camera's two history windows, each a ring of positions or directions.
 // The reticle states, as DATA/ENUMIDS.H's Reticle_State numbers them.
@@ -113,10 +116,10 @@ public:
     // Zeroed by the constructor and read nowhere.
     int m_nUnusedD; // 0x1018
     // The first two are CameraProjectionState and the last two TransformObject.
-    class CameraProjectionState* m_pProjection; // 0x101c
-    class CameraProjectionState* m_pView;       // 0x1020
-    TransformObject*             m_pRotB;       // 0x1024
-    TransformObject*             m_pRotA;       // 0x1028
+    std::unique_ptr<CameraProjectionState> m_pProjection; // 0x101c
+    std::unique_ptr<CameraProjectionState> m_pView;       // 0x1020
+    std::unique_ptr<TransformObject>       m_pRotB;       // 0x1024
+    std::unique_ptr<TransformObject>       m_pRotA;       // 0x1028
     // Only the constructor sets it.
     char m_bRearView; // 0x102c
 };

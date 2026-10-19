@@ -206,7 +206,7 @@ void MeshBone::SubmitToHardware()
             return 0;
         }
 
-        auto nBone = static_cast<int>(this - m_pOwner->m_pBones);
+        auto nBone = static_cast<int>(this - m_pOwner->m_pBones.get());
 
         if (m_pOwner->GetBoneCount() > 2)
         {
@@ -417,7 +417,7 @@ void MeshBone::PushToRenderStack(CameraObject* pCamera)
     float flWorldZ;
     float flSortZ;
 
-    const CameraProjectionState* const pView = pCamera->m_pView;
+    const CameraProjectionState* const pView = pCamera->m_pView.get();
     pRows                                    = m_world.m_a;
     const Vec3* const pOrigin                = &m_pMesh->vOrigin;
 
@@ -574,13 +574,13 @@ void MeshBone::CalcVertexColors()
             }
 
             nColour = (((ColorPalette::LookupColorIntensity(
-                             g_pColorPalette, cShade, flIntensity, cIndex)
+                             g_pColorPalette.get(), cShade, flIntensity, cIndex)
                              << 8 |
-                         ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
+                         ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flIntensity, cIndex))
                             << 8 |
-                        ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex))
+                        ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flIntensity, cIndex))
                        << 8) |
-                      ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flIntensity, cIndex);
+                      ColorPalette::LookupColorIntensity(g_pColorPalette.get(), cShade, flIntensity, cIndex);
         }
 
         m_pFaceColours[i] = nColour;

@@ -53,14 +53,6 @@ public:
 
     virtual ~TransformObject();
 
-    // The linker folded this onto PooledOwnerRoot::Destroy, which carries the marker.
-    virtual TransformObject* DestroyViaVtable()
-    {
-        delete this;
-
-        return nullptr;
-    }
-
     virtual void       Reset(char bHasRow3);
     virtual void       ResetToIdentity();
     virtual MatrixRow* GetMatrixPtr();

@@ -148,7 +148,7 @@ void CTrack::Process(int nArg)
 
     if (pTracked->GetSlot() < kPlayerObjectCount)
     {
-        const TransformObject* const pWorld = &pTracked->m_pBones->m_world;
+        const TransformObject* const pWorld = &pTracked->m_pBones[0].m_world;
 
         aTarget.Set(pWorld->m_a[0][3], pWorld->m_a[1][3], pWorld->m_a[2][3]);
 

@@ -380,16 +380,12 @@ GameEngine::GameEngine()
 
     m_nPending = 0;
 
-    auto* const pTeams = new TeamsBlock;
+    m_pTeamTable = std::make_unique<TeamsBlock>();
 
-    m_pTeamTable = pTeams;
-
-    auto* const pSave = new SaveObject(kHiddenTeamA, kHiddenTeamB);
-
-    m_pSaveObject = pSave;
+    m_pSaveObject = std::make_unique<SaveObject>(kHiddenTeamA, kHiddenTeamB);
 
     // STRING: HYPERX 0x004c7268
-    pSave->ParseGauntletConfig("gauntlet.cfg");
+    m_pSaveObject->ParseGauntletConfig("gauntlet.cfg");
 
     m_nScoreHome = -1;
     m_nScoreAway = -1;
@@ -1022,11 +1018,11 @@ void GameEngine::BeginMatchPlay()
     {
         if (nTeam == 0)
         {
-            pTeam = m_pTeamA;
+            pTeam = m_pTeamA.get();
         }
         else
         {
-            pTeam = m_pTeamB;
+            pTeam = m_pTeamB.get();
         }
 
         if (pTeam->aRows[0].aStat[kRatingDamage] > g_flZeroGameEngine && pTeam->aSeat[0] != 0 && pTeam->aSeat[1] != 0)
@@ -1276,14 +1272,14 @@ enum ObjectDefCommand
 
 // Fourteen commands; the ratings commands write without checking a definition exists.
 // FUNCTION: HYPERX 0x00482170
-ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnModelId)
+std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnModelId)
 {
     char* pLine;
     char  szCommand[kParseTokenMax];
     short nCommand;
 
-    ObjectDef* pDef      = nullptr;
-    char       bComplete = 0;
+    std::unique_ptr<ObjectDef> pDef;
+    char                       bComplete = 0;
 
     while (pFile->GetNextLine(&pLine) > 0)
     {
@@ -1299,51 +1295,51 @@ ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnMod
                 case CMD_MOTION_PARAMS:
                     if (pDef != nullptr)
                     {
-                        Cmd_SetMotionParams(pLine, pDef);
+                        Cmd_SetMotionParams(pLine, pDef.get());
                     }
                     break;
 
                 case CMD_RATINGS:
                 case CMD_RATINGS_1:
-                    Cmd_SetRatings(pLine, pDef, kRatingsField, 0);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsField, 0);
                     break;
 
                 case CMD_RATINGS_2:
-                    Cmd_SetRatings(pLine, pDef, kRatingsField, 1);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsField, 1);
                     break;
 
                 case CMD_RATINGS_3:
-                    Cmd_SetRatings(pLine, pDef, kRatingsField, 2);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsField, 2);
                     break;
 
                 case CMD_GOALIE_RATINGS:
                 case CMD_GOALIE_RATINGS_1:
-                    Cmd_SetRatings(pLine, pDef, kRatingsGoalie, 0);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsGoalie, 0);
                     break;
 
                 case CMD_GOALIE_RATINGS_2:
-                    Cmd_SetRatings(pLine, pDef, kRatingsGoalie, 1);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsGoalie, 1);
                     break;
 
                 case CMD_GOALIE_RATINGS_3:
-                    Cmd_SetRatings(pLine, pDef, kRatingsGoalie, 2);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsGoalie, 2);
                     break;
 
                 case CMD_GOALIE_RATINGS_SPECIAL:
-                    Cmd_SetRatings(pLine, pDef, kRatingsGoalie, kRatingsSpecialGoalie);
+                    Cmd_SetRatings(pLine, pDef.get(), kRatingsGoalie, kRatingsSpecialGoalie);
                     break;
 
                 case CMD_COLLISION_OBJECT:
                     if (pDef != nullptr)
                     {
-                        Cmd_SetCollisionObject(pLine, pDef, *pnModelId);
+                        Cmd_SetCollisionObject(pLine, pDef.get(), *pnModelId);
                     }
                     break;
 
                 case CMD_PLANS:
                     if (pDef != nullptr)
                     {
-                        Cmd_SetPlans(pLine, pDef);
+                        Cmd_SetPlans(pLine, pDef.get());
                     }
                     break;
 
@@ -1374,7 +1370,7 @@ ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnMod
     {
         // STRING: HYPERX 0x004c7330
         g_gameApp.Fatal("Game Config file error: missing of EndOfDefinition for %s!",
-                        pDef->m_pszName);
+                        pDef->m_pszName.get());
     }
 
     return nullptr;
@@ -1416,7 +1412,7 @@ enum ObjectAttributeSeen
 
 // SGoal counts as NGoal and HeadCam as MainCamera; the last of the 32 type names never matches.
 // FUNCTION: HYPERX 0x00482390
-ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
+std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 {
     const char* apszAttributes[kAttributeCount] = {
         // STRING: HYPERX 0x004c7650
@@ -1437,7 +1433,7 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
     char  szToken[kParseTokenMax];
     short nType;
 
-    auto* const pDef = new ObjectDef(nullptr);
+    auto pDef = std::make_unique<ObjectDef>(nullptr);
 
     auto nSeen = 0;
 
@@ -1513,8 +1509,6 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
     };
 
     auto* pRest = pszLine;
-
-    memset((void*)pDef, 0, sizeof(ObjectDef));
 
     while (pRest != nullptr)
     {
@@ -1605,7 +1599,9 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
                     break;
                 }
 
-                pDef->m_pszModel = strcpy(new char[strlen(szToken) + 1], szToken);
+                pDef->m_pszModel = std::make_unique<char[]>(strlen(szToken) + 1);
+
+                strcpy(pDef->m_pszModel.get(), szToken);
 
                 nSeen |= SEEN_MODEL;
                 break;
@@ -1634,7 +1630,9 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
                     pAt++;
                 }
 
-                pDef->m_pszName = strcpy(new char[strlen(szToken) + 1], szToken);
+                pDef->m_pszName = std::make_unique<char[]>(strlen(szToken) + 1);
+
+                strcpy(pDef->m_pszName.get(), szToken);
 
                 nSeen |= SEEN_NAME;
                 break;
@@ -1651,7 +1649,9 @@ ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
                     break;
                 }
 
-                pDef->m_pszMaterial = strcpy(new char[strlen(szToken) + 1], szToken);
+                pDef->m_pszMaterial = std::make_unique<char[]>(strlen(szToken) + 1);
+
+                strcpy(pDef->m_pszMaterial.get(), szToken);
                 break;
 
             case ATTR_OWN_PALETTE:
@@ -1877,7 +1877,7 @@ inline int GameEngine::FindTeamDefinition(FileObj* pFile, char** ppLine, char* p
 
 // The environment and dromext errors each name the other's field.
 // FUNCTION: HYPERX 0x00482e70
-TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
+std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 {
     const char* apszKeyword[kTeamKeywordCount] = {
         // STRING: HYPERX 0x004c7638
@@ -1900,13 +1900,13 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
         "dromext"
     };
 
-    char       szToken[kParseTokenMax];
-    TeamBlock* pTeam;
-    char*      pLine;
-    char*      pAt;
-    short      nKeyword;
+    char                       szToken[kParseTokenMax];
+    std::unique_ptr<TeamBlock> pTeam;
+    char*                      pLine;
+    char*                      pAt;
+    short                      nKeyword;
 
-    pTeam = new TeamBlock;
+    pTeam = std::make_unique<TeamBlock>();
 
     if (pFile->GetNextLine(&pLine) <= 0)
     {
@@ -1917,8 +1917,6 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
     {
         return nullptr;
     }
-
-    memset((void*)pTeam, 0, sizeof(TeamBlock));
 
     while (pLine != nullptr)
     {
@@ -2089,8 +2087,6 @@ TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
     return pTeam;
 
 failed:
-    delete pTeam;
-
 quit:
     return nullptr;
 }
@@ -2309,12 +2305,12 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
             pszLine);
     }
 
-    BubbleCmd** ppSlot = &pDef->m_pCollisionList;
+    auto* ppSlot = &pDef->m_pCollisionList;
 
     // The new command goes on the end, as the old tail's one child.
     BubbleCmd* pTail = nullptr;
 
-    for (BubbleCmd* pNode = *ppSlot; pNode != nullptr; pNode = *ppSlot)
+    for (auto* pNode = ppSlot->get(); pNode != nullptr; pNode = ppSlot->get())
     {
         ppSlot = &pNode->m_pChildren;
         pTail  = pNode;
@@ -2325,38 +2321,31 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
         pTail->m_nChildCount++;
     }
 
-    auto* const pNew = new BubbleCmd;
+    *ppSlot = std::make_unique<BubbleCmd>();
 
-    *ppSlot = pNew;
+    auto* const pNew = ppSlot->get();
 
-    memset((void*)pNew, 0, sizeof(BubbleCmd));
-
-    pNew->m_wShape    = anBubbleShapes[nBubbleType];
-    pNew->m_nSlot     = nBubbleType;
-    pNew->m_pChildren = nullptr;
+    pNew->m_wShape = anBubbleShapes[nBubbleType];
+    pNew->m_nSlot  = nBubbleType;
 
     if (vAttach.x != COLLISION_MISSING)
     {
-        auto* const pExtra = new AttachPak;
+        pNew->m_pAttach = std::make_unique<AttachPak>();
 
-        memset(pExtra, 0, sizeof(AttachPak));
+        pNew->m_pAttach->nLinkId = nComponent;
 
-        pExtra->nLinkId = nComponent;
-
-        pExtra->vOffset = vAttach;
-
-        pNew->m_pAttach = pExtra;
+        pNew->m_pAttach->vOffset = vAttach;
     }
     else if (bUseDetail != 0)
     {
-        pNew->m_pAttach = (AttachPak*)static_cast<std::intptr_t>(kExtraUseDetail);
+        pNew->m_bUseDetail = true;
     }
 
     MapModifierToId(static_cast<short>(nModelId), pNew);
 
-    auto* const pPos = new BubbleShapeNode;
+    pNew->m_pPos = std::make_unique<BubbleShapeNode>();
 
-    pNew->m_pPos = pPos;
+    auto* const pPos = pNew->m_pPos.get();
 
     pPos->m_nComponent = nComponent;
 
@@ -2575,7 +2564,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
         if (nMode == kRatingsField)
         {
-            pDef->m_apRatings[nLevel] = new float[kRatingCount];
+            pDef->m_apRatings[nLevel] = std::make_unique<float[]>(kRatingCount);
 
             for (nEntry = 0; nEntry < kRatingCount; nEntry++)
             {
@@ -2584,7 +2573,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
         }
         else
         {
-            pDef->m_apRatings[nLevel] = new float[kGoalieRatingCount];
+            pDef->m_apRatings[nLevel] = std::make_unique<float[]>(kGoalieRatingCount);
 
             for (nEntry = 0; nEntry < kGoalieRatingCount; nEntry++)
             {
@@ -2593,7 +2582,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
         }
     }
 
-    auto* const pflRatings = pDef->m_apRatings[nLevel];
+    auto* const pflRatings = pDef->m_apRatings[nLevel].get();
 
     auto* pszCursor = pszLine;
 
@@ -2757,18 +2746,12 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
 
 // This parser's own token bound. src/common/parseutil.h has 0x78 and planscat.cpp uses 0x100.
 constexpr auto kPlanTokenMax = 0x50;
-constexpr auto kTokensMax    = 30;
 
-// A token longer than the buffer overruns it; nothing bounds the token count.
+// A token longer than the buffer overruns it.
 // FUNCTION: HYPERX 0x00484460
 char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 {
-    char* apTokens[kTokensMax];
-    char  szToken[kPlanTokenMax];
-
-    short nIndex;
-
-    short nParsed = 0;
+    char szToken[kPlanTokenMax];
 
     memset(szToken, 0, sizeof(szToken));
 
@@ -2782,36 +2765,12 @@ char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
             break;
         }
 
-        char** ppSlot = &apTokens[nParsed];
+        auto& pszName = pDef->m_apszPlanNames.emplace_back(std::make_unique<char[]>(strlen(szToken) + 1));
 
-        nParsed++;
-
-        *ppSlot = strcpy(new char[strlen(szToken) + 1], szToken);
+        strcpy(pszName.get(), szToken);
     }
 
-    const auto   nOld  = pDef->m_nPlanCount;
-    char** const apOld = pDef->m_apszPlanNames;
-
-    nParsed += nOld;
-
-    pDef->m_nPlanCount = nParsed;
-
-    pDef->m_apszPlanNames = new char*[nParsed];
-
-    if (nOld != 0)
-    {
-        for (nIndex = 0; nIndex < nOld; nIndex++)
-        {
-            pDef->m_apszPlanNames[nIndex] = apOld[nIndex];
-        }
-
-        delete[] apOld;
-    }
-
-    for (nIndex = nOld; nIndex < pDef->m_nPlanCount; nIndex++)
-    {
-        pDef->m_apszPlanNames[nIndex] = apTokens[nIndex - nOld];
-    }
+    pDef->m_nPlanCount = static_cast<short>(pDef->m_apszPlanNames.size());
 
     return 1;
 }
@@ -2827,11 +2786,9 @@ void GameEngine::UnloadArena()
     {
         const auto nId = m_pArena->m_pnSlotIds[m_pArena->m_wCount];
 
-        auto* const pObject = m_ppSlots[static_cast<short>(nId)];
-
         RemoveFromSortedList(static_cast<short>(m_pArena->m_pnSlotIds[m_pArena->m_wCount]));
 
-        UnregisterObject(m_pArena->m_pnSlotIds[m_pArena->m_wCount]);
+        const auto pObject = UnregisterObject(m_pArena->m_pnSlotIds[m_pArena->m_wCount]);
 
         for (nType = 0; nType < kGOBNumOfTypes; nType++)
         {
@@ -2845,17 +2802,6 @@ void GameEngine::UnloadArena()
                 break;
             }
         }
-
-        delete pObject;
-    }
-
-    auto* const pArena = m_pArena;
-
-    if (pArena != nullptr)
-    {
-        delete[] pArena->m_pnSlotIds;
-        delete pArena->m_pRokDef;
-        delete pArena;
     }
 
     m_pArena = nullptr;
@@ -2871,13 +2817,11 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
     if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
         unsigned int nModelId = kModelIDNone;
-        auto*        pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
+        auto         pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
 
         while (pDef != nullptr)
         {
-            CreateObject(pDef, nModelId);
-
-            delete pDef;
+            CreateObject(pDef.get(), nModelId);
 
             pDef = ParseObjectDefinition(&file.m_file, &nModelId);
         }
@@ -2913,12 +2857,12 @@ char GameEngine::LoadArena(const char* pszArenaPath)
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) != 0)
     {
-        m_pArena = new ArenaState;
+        m_pArena = std::make_unique<ArenaState>();
 
         Renderer::SetLoadingMode();
 
         unsigned int nModelId = kModelIDNone;
-        auto*        pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
+        auto         pDef     = ParseObjectDefinition(&file.m_file, &nModelId);
 
         while (pDef != nullptr)
         {
@@ -2930,25 +2874,21 @@ char GameEngine::LoadArena(const char* pszArenaPath)
                 pApp->Fatal("Too many objects in .ENV file");
             }
 
-            CreateObject(pDef, nModelId);
+            CreateObject(pDef.get(), nModelId);
 
             anModelIds[m_pArena->m_wCount++] = nModelId;
 
             if (nModelId == kSlotRok)
             {
-                m_pArena->m_pRokDef = pDef;
-            }
-            else
-            {
-                delete pDef;
+                m_pArena->m_pRokDef = std::move(pDef);
             }
 
             pDef = ParseObjectDefinition(&file.m_file, &nModelId);
         }
 
-        m_pArena->m_pnSlotIds = new int[m_pArena->m_wCount];
+        m_pArena->m_pnSlotIds = std::make_unique<int[]>(m_pArena->m_wCount);
 
-        memcpy(m_pArena->m_pnSlotIds, anModelIds, m_pArena->m_wCount * sizeof(int));
+        memcpy(m_pArena->m_pnSlotIds.get(), anModelIds, m_pArena->m_wCount * sizeof(int));
 
         file.m_file.CloseAndTest();
 
@@ -2974,7 +2914,7 @@ char GameEngine::SetArena(short nArena)
 
     m_nArenaIndex = nArena;
 
-    auto* const pTable = g_pGameEngine->m_pTeamTable;
+    auto* const pTable = g_pGameEngine->m_pTeamTable.get();
 
     if (nArena < pTable->GetTeamCount())
     {
@@ -3040,19 +2980,15 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
 
             RemoveFromSortedList(static_cast<short>(nType));
 
-            UnregisterObject(nType);
-
-            delete pEntity;
+            const auto pObject = UnregisterObject(nType);
         }
     }
-
-    delete pSet;
 }
 
 // FUNCTION: HYPERX 0x00485250
 char GameEngine::UnloadHomeTeam()
 {
-    auto* const pSet = m_pTeamA;
+    auto* const pSet = m_pTeamA.get();
 
     if (pSet != nullptr)
     {
@@ -3069,7 +3005,7 @@ char GameEngine::UnloadHomeTeam()
 // FUNCTION: HYPERX 0x00485280
 char GameEngine::UnloadAwayTeam()
 {
-    auto* const pSet = m_pTeamB;
+    auto* const pSet = m_pTeamB.get();
 
     if (pSet != nullptr)
     {
@@ -3111,7 +3047,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
     {
         m_nTeamHomeIndex = nHome;
 
-        pTable = g_pGameEngine->m_pTeamTable;
+        pTable = g_pGameEngine->m_pTeamTable.get();
 
         if (nHome < pTable->GetTeamCount())
         {
@@ -3141,7 +3077,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
     {
         m_nTeamAwayIndex = nAway;
 
-        pTable = g_pGameEngine->m_pTeamTable;
+        pTable = g_pGameEngine->m_pTeamTable.get();
 
         if (nAway < pTable->GetTeamCount())
         {
@@ -3191,11 +3127,11 @@ constexpr auto kTeamPlayersOnDrome = 3;
 
 // Ten slots: five players, four body parts and the team's Rok; only four players get ratings.
 // FUNCTION: HYPERX 0x004858b0
-TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
+std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 {
-    OwnedFile  file;
-    ObjectDef* pObjDef;
-    int        nRow;
+    OwnedFile                  file;
+    std::unique_ptr<ObjectDef> pObjDef;
+    int                        nRow;
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszTeamPath).m_pchData,
                        kMaxPathLength);
@@ -3204,7 +3140,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
     {
         auto nSlot = 0;
 
-        auto* const pTeamDef = ParseTeamHTMFile(&file.m_file);
+        auto pTeamDef = ParseTeamHTMFile(&file.m_file);
 
         if (pTeamDef == nullptr)
         {
@@ -3277,7 +3213,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 
             if ((pObjDef->m_nType == kGOBDromer && nPlayers <= kTeamPlayersOnDrome) || pObjDef->m_nType == kGOBBodyPart)
             {
-                pTeamDef->apOnIce[nSlot] = CreateObject(pObjDef, nObjectId);
+                pTeamDef->apOnIce[nSlot] = CreateObject(pObjDef.get(), nObjectId);
             }
             else
             {
@@ -3344,11 +3280,11 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
                     nLevel = 0;
                 }
 
-                pRatings = pObjDef->m_apRatings[nLevel];
+                pRatings = pObjDef->m_apRatings[nLevel].get();
 
                 if (pRatings == nullptr)
                 {
-                    pRatings = pObjDef->m_apRatings[0];
+                    pRatings = pObjDef->m_apRatings[0].get();
                 }
 
                 pRow = pTeamDef->aRows[nRow].aStat;
@@ -3366,12 +3302,10 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 
             if (nSlot >= kTeamSlotBodyPartFirst && nSlot <= kTeamSlotBodyPartLast)
             {
-                delete pObjDef;
-
                 pObjDef = nullptr;
             }
 
-            pTeamDef->apDefs[nSlot] = pObjDef;
+            pTeamDef->apDefs[nSlot] = std::move(pObjDef);
 
             pTeamDef->aSeat[0] = 0;
             pTeamDef->aSeat[1] = 1;
@@ -3391,9 +3325,9 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 // FUNCTION: HYPERX 0x00485c70
 char GameEngine::LoadHomeTeam(const char* pszTeamPath)
 {
-    auto* const pTeam = LoadTeamFromFile(pszTeamPath, 0);
+    m_pTeamA = LoadTeamFromFile(pszTeamPath, 0);
 
-    m_pTeamA = pTeam;
+    auto* const pTeam = m_pTeamA.get();
 
     if (pTeam != nullptr)
     {
@@ -3411,9 +3345,9 @@ char GameEngine::LoadHomeTeam(const char* pszTeamPath)
 // FUNCTION: HYPERX 0x00485cb0
 char GameEngine::LoadAwayTeam(const char* pszTeamPath)
 {
-    auto* const pTeam = LoadTeamFromFile(pszTeamPath, 1);
+    m_pTeamB = LoadTeamFromFile(pszTeamPath, 1);
 
-    m_pTeamB = pTeam;
+    auto* const pTeam = m_pTeamB.get();
 
     if (pTeam != nullptr)
     {
@@ -3433,7 +3367,7 @@ ObjectDef* GameEngine::GetArenaRokDef()
 {
     if (m_pArena != nullptr)
     {
-        auto* const pDef = m_pArena->m_pRokDef;
+        auto* const pDef = m_pArena->m_pRokDef.get();
 
         if (pDef != nullptr)
         {
@@ -3456,16 +3390,16 @@ ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
 
     if ((nSlot & 1) != 0)
     {
-        pCatalog = m_pTeamB;
+        pCatalog = m_pTeamB.get();
     }
     else
     {
-        pCatalog = m_pTeamA;
+        pCatalog = m_pTeamA.get();
     }
 
     if (pCatalog != nullptr)
     {
-        auto* const pEntry = pCatalog->apDefs[kTeamSlotRok];
+        auto* const pEntry = pCatalog->apDefs[kTeamSlotRok].get();
 
         if (pEntry != nullptr)
         {
@@ -3509,23 +3443,23 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     switch (static_cast<unsigned int>(nSlot))
     {
         case 0:
-            pTeam = m_pTeamA;
+            pTeam = m_pTeamA.get();
             nSide = 0;
             break;
 
         case 2:
-            pTeam = m_pTeamA;
+            pTeam = m_pTeamA.get();
             nSide = 1;
             break;
 
         case 1:
             nSide = 0;
-            pTeam = m_pTeamB;
+            pTeam = m_pTeamB.get();
             break;
 
         case 3:
             nSide = 1;
-            pTeam = m_pTeamB;
+            pTeam = m_pTeamB.get();
             break;
 
         default:
@@ -3573,7 +3507,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     }
 
     ReplaceEntity(nOnIceSlot,
-                  pTeam->apDefs[nDefIndex]);
+                  pTeam->apDefs[nDefIndex].get());
 
     pPlayer->ApplyRenderSlotPose();
 
@@ -3625,13 +3559,13 @@ unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
     switch (nSlot)
     {
         case kSlotTeamOneFirst:
-            pTeam  = m_pTeamA;
+            pTeam  = m_pTeamA.get();
             nSelf  = 0;
             nOther = 1;
             break;
 
         case kSlotTeamOneSecond:
-            pTeam  = m_pTeamA;
+            pTeam  = m_pTeamA.get();
             nSelf  = 1;
             nOther = 0;
             break;
@@ -3639,13 +3573,13 @@ unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
         case kSlotTeamTwoFirst:
             nSelf  = 0;
             nOther = 1;
-            pTeam  = m_pTeamB;
+            pTeam  = m_pTeamB.get();
             break;
 
         case kSlotTeamTwoSecond:
             nSelf  = 1;
             nOther = 0;
-            pTeam  = m_pTeamB;
+            pTeam  = m_pTeamB.get();
             break;
 
         default:
@@ -3690,11 +3624,11 @@ void GameEngine::SyncPlayerDataToTeam()
     {
         if (nSide == 0)
         {
-            pTeam = m_pTeamA;
+            pTeam = m_pTeamA.get();
         }
         else
         {
-            pTeam = m_pTeamB;
+            pTeam = m_pTeamB.get();
         }
 
         if (pTeam != nullptr)
@@ -3720,28 +3654,28 @@ void GameEngine::SyncPlayerDataToTeam()
 // FUNCTION: HYPERX 0x00486200
 EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 {
-    EngineObject* pNew;
-    const int     nEntry = nModelId;
+    std::unique_ptr<EngineObject> pNew;
+    const int                     nEntry = nModelId;
 
     const auto nStart = GameApp::GetInstallLevel();
 
     switch (pDef->m_nTypeId)
     {
         case ObjectKind::kDromer:
-            pNew = new PlayerObject(nEntry, pDef);
+            pNew = std::make_unique<PlayerObject>(nEntry, pDef);
             break;
 
         case ObjectKind::kRok:
-            pNew = new RokObject(nEntry, pDef);
+            pNew = std::make_unique<RokObject>(nEntry, pDef);
             break;
 
         case ObjectKind::kMine:
         case ObjectKind::kSwarf:
-            pNew = new WeaponObject(nEntry, pDef);
+            pNew = std::make_unique<WeaponObject>(nEntry, pDef);
             break;
 
         case ObjectKind::kGoal:
-            pNew = new GoalObject(nEntry, pDef);
+            pNew = std::make_unique<GoalObject>(nEntry, pDef);
             break;
 
         case ObjectKind::kCamera:
@@ -3752,11 +3686,11 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
                 g_gameApp.Fatal("Too many cameras!");
             }
 
-            auto* const pCamera = new CameraObject(nEntry, pDef);
+            auto pCamera = std::make_unique<CameraObject>(nEntry, pDef);
 
-            m_apCameras[m_wCameraCount] = pCamera;
+            m_apCameras[m_wCameraCount] = pCamera.get();
 
-            pNew = pCamera;
+            pNew = std::move(pCamera);
 
             m_wCameraCount++;
             break;
@@ -3769,13 +3703,13 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
                 g_gameApp.Fatal("Too many input devices!");
             }
 
-            pNew = new KeyboardDeviceObj(nEntry, pDef);
+            pNew = std::make_unique<KeyboardDeviceObj>(nEntry, pDef);
 
-            m_apDevices[m_wDeviceCount] = pNew;
+            m_apDevices[m_wDeviceCount] = pNew.get();
 
             m_wDeviceCount++;
 
-            g_pInputDevice = (class KeyboardDeviceObj*)pNew;
+            g_pInputDevice = (class KeyboardDeviceObj*)pNew.get();
             break;
 
         case ObjectKind::kGamepad:
@@ -3784,9 +3718,9 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
                 g_gameApp.Fatal("Too many input devices!");
             }
 
-            pNew = new GamepadDeviceObj(nEntry, pDef);
+            pNew = std::make_unique<GamepadDeviceObj>(nEntry, pDef);
 
-            m_apDevices[m_wDeviceCount] = pNew;
+            m_apDevices[m_wDeviceCount] = pNew.get();
 
             m_wDeviceCount++;
             break;
@@ -3797,9 +3731,9 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
                 g_gameApp.Fatal("Too many input devices!");
             }
 
-            pNew = new JoystickDeviceObj(nEntry, pDef);
+            pNew = std::make_unique<JoystickDeviceObj>(nEntry, pDef);
 
-            m_apDevices[m_wDeviceCount] = pNew;
+            m_apDevices[m_wDeviceCount] = pNew.get();
 
             m_wDeviceCount++;
             break;
@@ -3810,50 +3744,49 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
                 g_gameApp.Fatal("Too many input devices!");
             }
 
-            pNew = new MouseDeviceObj(nEntry, pDef);
+            pNew = std::make_unique<MouseDeviceObj>(nEntry, pDef);
 
-            m_apDevices[m_wDeviceCount] = pNew;
+            m_apDevices[m_wDeviceCount] = pNew.get();
 
             m_wDeviceCount++;
             break;
 
         case ObjectKind::kDrome:
-            pNew = new DromeObject(nEntry, pDef);
+            pNew = std::make_unique<DromeObject>(nEntry, pDef);
             break;
 
         case ObjectKind::kRamp:
-            pNew = new RampObject(nEntry, pDef);
+            pNew = std::make_unique<RampObject>(nEntry, pDef);
             break;
 
         case ObjectKind::kExplosion:
-            pNew = new ParticleSystem(nEntry, pDef);
+            pNew = std::make_unique<ParticleSystem>(nEntry, pDef);
             break;
 
         case ObjectKind::kCoach:
-            pNew = new CoachObject(nEntry, pDef);
+            pNew = std::make_unique<CoachObject>(nEntry, pDef);
             break;
 
         default:
-            pNew = new EngineObject(nEntry, pDef);
+            pNew = std::make_unique<EngineObject>(nEntry, pDef);
             break;
     }
 
-    RegisterObject(nEntry, pNew);
+    auto* const pObject = pNew.get();
 
-    pNew->m_installCost.nLevels += GameApp::GetInstallLevel() - nStart;
+    RegisterObject(nEntry, std::move(pNew));
 
-    m_nLoadCost -= pNew->m_installCost.nLevels;
+    pObject->m_installCost.nLevels += GameApp::GetInstallLevel() - nStart;
+
+    m_nLoadCost -= pObject->m_installCost.nLevels;
 
     if (nEntry != kSlotDrome)
     {
         InsertObjectSorted(static_cast<short>(nEntry));
     }
 
-    return pNew;
+    return pObject;
 }
-
-// The length of both slot tables, m_ppSlots and m_ppObjects.
-constexpr auto kEngineSlotCount = 0x66;
 
 // The first slot array is the camera holder; stubbing it faults the graphics set-up.
 // FUNCTION: HYPERX 0x00486680
@@ -3861,9 +3794,7 @@ void GameEngine::Init(const char* pszConfig)
 {
     int nIndex;
 
-    auto* const pState = new ArenaState;
-
-    m_pArena = pState;
+    m_pArena = std::make_unique<ArenaState>();
 
     m_nViewedSlot = 0;
 
@@ -3880,17 +3811,9 @@ void GameEngine::Init(const char* pszConfig)
 
     m_nPending = -1;
 
-    auto** const ppSlots = new EngineObject*[kEngineSlotCount];
+    m_ppSlots = std::make_unique<EngineObject*[]>(kEngineSlotCount);
 
-    m_ppSlots = ppSlots;
-
-    memset(ppSlots, 0, kEngineSlotCount * sizeof(EngineObject*));
-
-    auto** const ppObjects = new EngineObject*[kEngineSlotCount];
-
-    m_ppObjects = ppObjects;
-
-    memset(ppObjects, 0, kEngineSlotCount * sizeof(EngineObject*));
+    m_ppObjects = std::make_unique<EngineObject*[]>(kEngineSlotCount);
 
     m_nLoadedCount = 0;
     m_nObjectCount = 0;
@@ -3969,17 +3892,19 @@ void GameEngine::InitPlanSystems()
 }
 
 // FUNCTION: HYPERX 0x00486890
-void GameEngine::RegisterObject(int nSlot, EngineObject* pObject)
+void GameEngine::RegisterObject(int nSlot, std::unique_ptr<EngineObject> pObject)
 {
     m_nLoadedCount++;
 
-    m_ppSlots[nSlot] = pObject;
+    m_ppSlots[nSlot] = pObject.get();
 
     m_nSlotCount += pObject->GetComponentCount();
+
+    m_apSlotOwners[nSlot] = std::move(pObject);
 }
 
 // FUNCTION: HYPERX 0x004868c0
-void GameEngine::UnregisterObject(int nSlot)
+std::unique_ptr<EngineObject> GameEngine::UnregisterObject(int nSlot)
 {
     EngineObject** ppSlot  = &m_ppSlots[nSlot];
     auto* const    pObject = *ppSlot;
@@ -3989,6 +3914,8 @@ void GameEngine::UnregisterObject(int nSlot)
     *ppSlot = nullptr;
 
     m_nSlotCount -= pObject->GetComponentCount();
+
+    return std::move(m_apSlotOwners[nSlot]);
 }
 
 // The first overlap found is processed and ends the walk.
@@ -4030,7 +3957,7 @@ void GameEngine::BroadcastCollisionEvents()
 {
     short nIndex;
 
-    EngineObject** ppObject = m_ppObjects;
+    EngineObject** ppObject = m_ppObjects.get();
 
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
@@ -4097,7 +4024,7 @@ void GameEngine::PerFrameUpdate()
 {
     short nIndex;
 
-    EngineObject** ppObject = m_ppObjects;
+    EngineObject** ppObject = m_ppObjects.get();
 
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
@@ -4127,7 +4054,7 @@ void GameEngine::PerFrameUpdate()
 
             m_flGravityDt = g_flGravityGameEngine * m_clock.flDeltaSquared;
 
-            ppObject = m_ppObjects;
+            ppObject = m_ppObjects.get();
 
             for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
             {
@@ -4170,7 +4097,7 @@ void GameEngine::SyncNetworkStateToObjects()
 {
     short nIndex;
 
-    EngineObject** ppObject = m_ppObjects;
+    EngineObject** ppObject = m_ppObjects.get();
 
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
@@ -4316,55 +4243,35 @@ GameEngine::~GameEngine()
 {
     for (short nSlot = 0; nSlot < kEngineSlotCount; nSlot++)
     {
-        auto* const pObject = m_ppSlots[nSlot];
-
-        if (pObject != nullptr)
+        if (m_apSlotOwners[nSlot] != nullptr)
         {
-            delete pObject;
+            m_apSlotOwners[nSlot].reset();
 
             m_nLoadedCount--;
         }
     }
 
-    delete[] m_ppSlots;
-    delete[] m_ppObjects;
-
-    auto* pTeam = m_pTeamA;
-
-    delete pTeam;
-
-    pTeam = m_pTeamB;
-
-    delete pTeam;
-
-    auto* const pArena = m_pArena;
-
-    if (pArena != nullptr)
-    {
-        delete[] pArena->m_pnSlotIds;
-        delete pArena->m_pRokDef;
-        delete pArena;
-    }
+    m_ppSlots.reset();
+    m_ppObjects.reset();
+    m_pTeamA.reset();
+    m_pTeamB.reset();
+    m_pArena.reset();
 
     BehaviorRegistry::DestroyAll();
     GameEngine::DestroyAgendaItemPools();
     PlanInteractorFactories::DestroyAll();
 
-    auto* const pSave = m_pSaveObject;
-
-    delete pSave;
+    m_pSaveObject.reset();
 }
 
 // FUNCTION: HYPERX 0x00486fb0
 void GameEngine::ReplaceEntity(int nKind, ObjectDef* pDef)
 {
-    auto* const pObject = m_ppSlots[static_cast<short>(nKind)];
-
-    UnregisterObject(nKind);
+    auto pObject = UnregisterObject(nKind);
 
     pObject->ReInitModel(pObject->GetSlotWord(), pDef);
 
-    RegisterObject(nKind, pObject);
+    RegisterObject(nKind, std::move(pObject));
 
     SyncRenderQueueSize();
 }
@@ -4667,14 +4574,14 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
     {
         if (nTeam == 0)
         {
-            pTeam = m_pTeamA;
+            pTeam = m_pTeamA.get();
             pDest = &block.teamOne;
 
             pDest->nTeamIndex = static_cast<short>(m_nTeamHomeIndex);
         }
         else
         {
-            pTeam = m_pTeamB;
+            pTeam = m_pTeamB.get();
             pDest = &block.teamTwo;
 
             pDest->nTeamIndex = static_cast<short>(m_nTeamAwayIndex);
@@ -4830,7 +4737,7 @@ char GameEngine::ReadSaveFile(int nSlot)
             if (nTeam == 0)
             {
                 nWord   = block.teamOne.nTeamIndex;
-                pTeam   = m_pTeamA;
+                pTeam   = m_pTeamA.get();
                 pRecord = &block.teamOne;
 
                 g_nDromeTeamHome = nWord;
@@ -4840,7 +4747,7 @@ char GameEngine::ReadSaveFile(int nSlot)
             else
             {
                 nWord   = block.teamTwo.nTeamIndex;
-                pTeam   = m_pTeamB;
+                pTeam   = m_pTeamB.get();
                 pRecord = &block.teamTwo;
 
                 g_nDromeTeamAway = nWord;
@@ -4978,20 +4885,20 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
     {
         if (nTeam == 0)
         {
-            pTeam = m_pTeamA;
+            pTeam = m_pTeamA.get();
         }
         else
         {
-            pTeam = m_pTeamB;
+            pTeam = m_pTeamB.get();
         }
 
         for (nOrder = 0; nOrder < kSlotOrderCount; nOrder++)
         {
-            pRecord = pTeam->apDefs[g_anTeamSlotOrder[nOrder]];
+            pRecord = pTeam->apDefs[g_anTeamSlotOrder[nOrder]].get();
 
             if (pRecord != nullptr)
             {
-                pStats = pRecord->m_apRatings[nLevel];
+                pStats = pRecord->m_apRatings[nLevel].get();
 
                 if (pStats != nullptr)
                 {
@@ -5028,13 +4935,13 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
 
     if (nLevel == 0 && g_bSessionActive == 0)
     {
-        pTeam = m_pTeamA;
+        pTeam = m_pTeamA.get();
 
-        pRecord = pTeam->apDefs[2];
+        pRecord = pTeam->apDefs[2].get();
 
         if (pRecord != nullptr)
         {
-            pStats = pRecord->m_apRatings[kRatingsSpecialGoalie];
+            pStats = pRecord->m_apRatings[kRatingsSpecialGoalie].get();
 
             if (pStats != nullptr)
             {

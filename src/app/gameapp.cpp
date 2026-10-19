@@ -176,7 +176,7 @@ bool GameApp::Initialize(const char* pszArguments)
     // A modern desktop keeps its own mode, so the game runs windowed.
     g_bFullScreen = 0;
 
-    g_pColorPalette = new ColorPalette;
+    g_pColorPalette = std::make_unique<ColorPalette>();
 
     pszAppClassName    = g_gameApp.m_strCaption.m_pchData;
     const auto bWindow = GameApp::CreateMainWindow(pszAppClassName);
@@ -375,14 +375,14 @@ void GameApp::Shutdown()
         GameSession::Disconnect();
     }
 
+    // Freed here, before the engine, rather than by the static destructors after main.
+    g_pActiveScreen = nullptr;
+
     Game::ShutdownEngine();
 
-    auto* const pPalette = g_pColorPalette;
-
-    if (pPalette != nullptr)
+    if (g_pColorPalette != nullptr)
     {
-        pPalette->Release();
-        operator delete(pPalette);
+        g_pColorPalette->Release();
         g_pColorPalette = nullptr;
     }
 
@@ -834,8 +834,7 @@ void GameApp::ResetToSinglePlayer()
 // FUNCTION: HYPERX 0x004922f0
 void GameApp::InstantiateState()
 {
-    int                nReturnState;
-    MatchInfoUIScreen* pScreen;
+    int nReturnState;
 
     if (g_pScreenMatchInfo != nullptr)
     {
@@ -854,8 +853,6 @@ void GameApp::InstantiateState()
         nReturnState             = g_pScreenGameConfig->m_nReturnState;
         g_nGameConfigReturnState = nReturnState;
     }
-
-    delete g_pActiveScreen;
 
     g_pActiveScreen = nullptr;
 
@@ -877,38 +874,45 @@ void GameApp::InstantiateState()
     switch (g_gameApp.m_nEngineState)
     {
         case kEstateLobby:
-            g_pActiveScreen = new LobbyScreen;
+            g_pActiveScreen = std::make_unique<LobbyScreen>();
             break;
 
         case kEstateMainMenu:
-            g_pActiveScreen = new MainMenuScreen;
+            g_pActiveScreen = std::make_unique<MainMenuScreen>();
             break;
 
         case kEstateSaveLoad:
-            g_pScreenSaveLoad = new SaveLoadUIScreen;
+        {
+            auto pScreen = std::make_unique<SaveLoadUIScreen>();
+
+            g_pScreenSaveLoad = pScreen.get();
 
             if (g_nPrevEngineState != kEstatePauseMinimal)
             {
                 g_pScreenSaveLoad->m_nReturnState = g_nPrevEngineState;
-                g_pActiveScreen                   = g_pScreenSaveLoad;
+                g_pActiveScreen                   = std::move(pScreen);
 
                 break;
             }
 
             g_pScreenSaveLoad->m_nReturnState = g_nSaveLoadReturnState;
-            g_pActiveScreen                   = g_pScreenSaveLoad;
+            g_pActiveScreen                   = std::move(pScreen);
             break;
+        }
 
         case kEstateTournamentSetup:
-            g_pActiveScreen = new TournamentSetupUIScreen;
+            g_pActiveScreen = std::make_unique<TournamentSetupUIScreen>();
             break;
 
         case kEstateHeadToHeadSetup:
-            g_pActiveScreen = new HeadToHeadSetupUIScreen;
+            g_pActiveScreen = std::make_unique<HeadToHeadSetupUIScreen>();
             break;
 
         case kEstateMatchInfo:
-            g_pScreenMatchInfo = new MatchInfoUIScreen;
+        {
+            auto pScreen = std::make_unique<MatchInfoUIScreen>();
+
+            g_pScreenMatchInfo = pScreen.get();
             nReturnState       = g_nPrevEngineState;
 
             if (g_nPrevEngineState == kEstatePauseMinimal || g_nPrevEngineState == kEstateSaveLoad)
@@ -917,20 +921,27 @@ void GameApp::InstantiateState()
             }
 
             g_pScreenMatchInfo->m_nNextState = nReturnState;
-            g_pActiveScreen                  = g_pScreenMatchInfo;
+            g_pActiveScreen                  = std::move(pScreen);
             break;
+        }
 
         case kEstateChampionshipSetup:
-            pScreen               = new ChampionshipSetupUIScreen;
+        {
+            auto pScreen = std::make_unique<ChampionshipSetupUIScreen>();
+
             pScreen->m_nNextState = g_nMatchInfoReturnState;
-            g_pActiveScreen       = pScreen;
+            g_pActiveScreen       = std::move(pScreen);
             break;
+        }
 
         case kEstateLeagueSetup:
-            pScreen               = new LeagueSetupUIScreen;
+        {
+            auto pScreen = std::make_unique<LeagueSetupUIScreen>();
+
             pScreen->m_nNextState = g_nMatchInfoReturnState;
-            g_pActiveScreen       = pScreen;
+            g_pActiveScreen       = std::move(pScreen);
             break;
+        }
 
         case kEstateGameClipsViewer:
             // STRING: HYPERX 0x004c8c2c
@@ -938,13 +949,19 @@ void GameApp::InstantiateState()
             break;
 
         case kEstateAwards:
-            pScreen               = new AwardsUIScreen;
+        {
+            auto pScreen = std::make_unique<AwardsUIScreen>();
+
             pScreen->m_nNextState = g_nMatchInfoReturnState;
-            g_pActiveScreen       = pScreen;
+            g_pActiveScreen       = std::move(pScreen);
             break;
+        }
 
         case kEstateGameConfig:
-            g_pScreenGameConfig = new GameConfigUIScreen;
+        {
+            auto pScreen = std::make_unique<GameConfigUIScreen>();
+
+            g_pScreenGameConfig = pScreen.get();
             nReturnState        = g_nPrevEngineState;
 
             if (g_nPrevEngineState == kEstatePauseMinimal || g_nPrevEngineState == kEstateKeyConfig)
@@ -953,31 +970,32 @@ void GameApp::InstantiateState()
             }
 
             g_pScreenGameConfig->m_nReturnState = nReturnState;
-            g_pActiveScreen                     = g_pScreenGameConfig;
+            g_pActiveScreen                     = std::move(pScreen);
             break;
+        }
 
         case kEstateKeyConfig:
-            g_pActiveScreen = new KeyConfigScreen;
+            g_pActiveScreen = std::make_unique<KeyConfigScreen>();
             break;
 
         case kEstateDromeExterior:
-            g_pActiveScreen = new DromeExteriorScreen;
+            g_pActiveScreen = std::make_unique<DromeExteriorScreen>();
             break;
 
         case kEstateJumbotron:
-            g_pActiveScreen = new JumbotronScreen;
+            g_pActiveScreen = std::make_unique<JumbotronScreen>();
             break;
 
         case kEstatePauseFull:
-            g_pActiveScreen = new PauseMenuFullScreen;
+            g_pActiveScreen = std::make_unique<PauseMenuFullScreen>();
             break;
 
         case kEstatePauseMinimal:
-            g_pActiveScreen = new PauseMenuMinimalScreen;
+            g_pActiveScreen = std::make_unique<PauseMenuMinimalScreen>();
             break;
 
         case kEstatePauseNoSave:
-            g_pActiveScreen = new PauseMenuNoSaveScreen;
+            g_pActiveScreen = std::make_unique<PauseMenuNoSaveScreen>();
             break;
 
         case 1:
@@ -988,19 +1006,19 @@ void GameApp::InstantiateState()
             return;
 
         case kEstateMultiSetupOptions:
-            g_pActiveScreen = new MultiSetupOptionsScreen;
+            g_pActiveScreen = std::make_unique<MultiSetupOptionsScreen>();
             break;
 
         case kEstateFinalCeremony:
-            g_pActiveScreen = new FinalCeremonyScreen;
+            g_pActiveScreen = std::make_unique<FinalCeremonyScreen>();
             break;
 
         case kEstateGameIntro:
-            g_pActiveScreen = new GameIntroScreen;
+            g_pActiveScreen = std::make_unique<GameIntroScreen>();
             break;
 
         case kEstateTrainingEnd:
-            g_pActiveScreen = new TrainingEndScreen;
+            g_pActiveScreen = std::make_unique<TrainingEndScreen>();
             break;
 
         default:

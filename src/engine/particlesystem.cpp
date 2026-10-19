@@ -24,7 +24,7 @@ constexpr auto kSpawnCount = 100;
 ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
-    const MeshBone* pBones = m_pBones;
+    const MeshBone* pBones = m_pBones.get();
 
     m_bAnyAlive = 0;
 
@@ -154,7 +154,7 @@ void ParticleSystem::ApplyToMesh()
     Vec3  vOut;
     int   nCorner;
 
-    const MeshBone* const pMesh = m_pBones;
+    const MeshBone* const pMesh = m_pBones.get();
 
     Particle* pEmitter = m_aParticles;
 
@@ -193,7 +193,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
     Vec3 vBasis;
     Vec3 vCross;
 
-    auto* pBody = m_pBody;
+    auto* pBody = m_pBody.get();
 
     pBody->pos = *pPosition;
 
@@ -244,7 +244,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
         pTransform->m_a[2][0] = vCross.z;
     }
 
-    pBody = m_pBody;
+    pBody = m_pBody.get();
 
     pBody->prevPos = pBody->pos;
 

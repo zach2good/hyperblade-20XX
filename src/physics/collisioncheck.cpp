@@ -288,7 +288,7 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
     vCentre.y = pCentre->y;
     vCentre.z = pCentre->z;
 
-    boxMesh = *pOther->m_pBones->GetBoundingBox(&boxScratch);
+    boxMesh = *pOther->m_pBones[0].GetBoundingBox(&boxScratch);
 
     auto flDiffX = pOtherBody->pos.x - pOtherBody->prevPos.x;
     vLocal.y     = pOtherBody->pos.y - pOtherBody->prevPos.y;
@@ -831,7 +831,7 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
 
     vDirOwn = vScratch;
 
-    auto boxMesh = *pOther->m_pBones->GetBoundingBox(&boxRaw);
+    auto boxMesh = *pOther->m_pBones[0].GetBoundingBox(&boxRaw);
 
     flDiffX  = pOtherBody->pos.x - pOtherBody->prevPos.x;
     vLocal.y = pOtherBody->pos.y - pOtherBody->prevPos.y;

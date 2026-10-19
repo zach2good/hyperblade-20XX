@@ -437,7 +437,7 @@ int GameEngine::CheckGoalieOutOfPosition()
     PhysicsBody* pNetA;
     PhysicsBody* pNetB;
 
-    EngineObject** const pSlots = g_pGameEngine->m_ppSlots;
+    EngineObject** const pSlots = g_pGameEngine->m_ppSlots.get();
 
     auto* const pGoalieA = (PlayerObject*)pSlots[kGoalieSlotA];
     auto* const pGoalieB = (PlayerObject*)pSlots[kGoalieSlotB];
@@ -545,11 +545,11 @@ void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 
     if (nTeam != 0)
     {
-        pTeam = g_pGameEngine->m_pTeamB;
+        pTeam = g_pGameEngine->m_pTeamB.get();
     }
     else
     {
-        pTeam = g_pGameEngine->m_pTeamA;
+        pTeam = g_pGameEngine->m_pTeamA.get();
     }
 
     for (i = 0; i < kReserveCount; i++)
@@ -609,11 +609,11 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
 
     if (nSlot % 2 != 0)
     {
-        pTeam = g_pGameEngine->m_pTeamB;
+        pTeam = g_pGameEngine->m_pTeamB.get();
     }
     else
     {
-        pTeam = g_pGameEngine->m_pTeamA;
+        pTeam = g_pGameEngine->m_pTeamA.get();
     }
 
     const int nFirst = sCandidate;
@@ -740,7 +740,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
         return;
     }
 
-    EngineObject** const ppEngineSlots = g_pGameEngine->m_ppSlots;
+    EngineObject** const ppEngineSlots = g_pGameEngine->m_ppSlots.get();
     auto* const          pSwarf        = ppEngineSlots[kSlotSwarf];
     auto* const          pRok          = ppEngineSlots[kSlotRok];
 
@@ -832,7 +832,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
                         pSelfPos = &pActor->GetPhysicsBody()->pos;
 
-                        ppSlots = g_pGameEngine->m_ppSlots;
+                        ppSlots = g_pGameEngine->m_ppSlots.get();
 
                         if (nHeld & 1)
                         {

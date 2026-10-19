@@ -3,32 +3,25 @@
 #ifndef HYPERBLADE_ARENASTATE_H
 #define HYPERBLADE_ARENASTATE_H
 
-#include <string.h>
+#include "engine/objectdef.h"
 #include "physics/collisionellipsoid.h"
-
-class ObjectDef;
+#include <memory>
 
 struct ArenaState
 {
     ArenaState();
 
-    int   m_anUnused[4];
-    short m_wCount; // 0x10
+    int   m_anUnused[4] = {};
+    short m_wCount      = 0; // 0x10
     // The slot ids, one int per object. Readers index m_ppSlots with each one.
-    int*                      m_pnSlotIds;  // 0x14
+    std::unique_ptr<int[]>    m_pnSlotIds;  // 0x14
     class CollisionEllipsoid* m_pEllipsoid; // 0x18
     // The Rok's definition, which the loader keeps for RokObject::ActivateAtSpawnSlot to respawn it.
-    class ObjectDef* m_pRokDef; // 0x1c
+    std::unique_ptr<ObjectDef> m_pRokDef; // 0x1c
 };
 
-// Zeroes two members, then clears the whole record over them; only the ellipsoid store survives.
 inline ArenaState::ArenaState()
 {
-    m_wCount    = 0;
-    m_pnSlotIds = nullptr;
-
-    memset(this, 0, sizeof(*this));
-
     m_pEllipsoid = &g_arenaEllipsoid;
 }
 

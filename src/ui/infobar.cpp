@@ -221,8 +221,8 @@ void InfoBar::UpdateOwnTeamDisplay()
 
     if ((nViewedSlot & kEngineSideSwapped) != 0)
     {
-        pOther = g_pGameEngine->m_pTeamA;
-        pTeam  = g_pGameEngine->m_pTeamB;
+        pOther = g_pGameEngine->m_pTeamA.get();
+        pTeam  = g_pGameEngine->m_pTeamB.get();
         nSlot  = 1;
 
         if (g_nInfoBarOwnAwayTeam != g_pGameEngine->m_nTeamAwayIndex)
@@ -233,8 +233,8 @@ void InfoBar::UpdateOwnTeamDisplay()
     }
     else
     {
-        pOther = g_pGameEngine->m_pTeamB;
-        pTeam  = g_pGameEngine->m_pTeamA;
+        pOther = g_pGameEngine->m_pTeamB.get();
+        pTeam  = g_pGameEngine->m_pTeamA.get();
 
         if (g_nInfoBarOwnHomeTeam != g_pGameEngine->m_nTeamHomeIndex)
         {
@@ -372,7 +372,7 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     if ((g_pGameEngine->m_nViewedSlot & kEngineSideSwapped) != 0)
     {
-        pTeam = g_pGameEngine->m_pTeamA;
+        pTeam = g_pGameEngine->m_pTeamA.get();
 
         if (g_nInfoBarFoeHomeTeam != g_pGameEngine->m_nTeamHomeIndex)
         {
@@ -382,7 +382,7 @@ void InfoBar::UpdateFoeTeamDisplay()
     }
     else
     {
-        pTeam = g_pGameEngine->m_pTeamB;
+        pTeam = g_pGameEngine->m_pTeamB.get();
         nSlot = 1;
 
         if (g_nInfoBarFoeAwayTeam != g_pGameEngine->m_nTeamAwayIndex)

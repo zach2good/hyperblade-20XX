@@ -26,7 +26,7 @@ float PlanUtil::ComputeConeHalfAngle(short nSlotA, short nSlotB)
 {
     float flFalloff;
 
-    EngineObject** const apObjects = g_pGameEngine->m_ppSlots;
+    EngineObject** const apObjects = g_pGameEngine->m_ppSlots.get();
 
     auto* const pObjectA = apObjects[nSlotA];
     auto* const pObjectB = apObjects[nSlotB];
