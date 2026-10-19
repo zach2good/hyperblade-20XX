@@ -35,7 +35,10 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - HUD and menu scaling
 - Xbox, PlayStation and Switch controller support
 - Music tracks can play from local rips, rather than the CD
-- Bot spectator mode
+- Bot spectator mode, where every dromer plays on the AI plans. Turn it on in the debug menu, start
+  with `-b`, or press Tab for the side view
+- Fixes for the bugs in the shipped AI plans, so AI carriers pass and shoot. The debug menu switches
+  between them and the plans as shipped ([docs/plan_bugs.md](docs/plan_bugs.md))
 - Skippable intro splash screens
 - Experimental uncapped frame rate, with the game still simulated at 30 Hz
 - Various bug and crash fixes
@@ -46,7 +49,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Play-test the Linux build, which builds and passes its tests but has not been run on a desktop
 - Mac and browser builds via Emscripten
 - Net and local multiplayer
-- AI plan bug and balance fixes ([docs/plan_bugs.md](docs/plan_bugs.md))
+- AI balance fixes
 - The original RC, debug and plan menus in the debug menu
 
 ## Install
