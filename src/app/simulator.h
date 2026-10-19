@@ -7,12 +7,14 @@
 namespace Simulator
 {
 
-// Takes the words after -sim: HOME AWAY COUNT [SEED] [shipped|fixed]. Answers how many it used.
+// Takes the words after -sim: HOME AWAY COUNT [SEED] [shipped|fixed] [OUTPUT.csv]. Answers how
+// many it used.
 int TakeArguments(int nCount, char** ppszWords);
 
 bool Requested();
 
-// Plays the matches and writes sim_results.csv beside the executable. Answers the exit code.
+// Plays the matches and writes the CSV, sim_results.csv beside the executable unless named.
+// Answers the exit code.
 int Run();
 
 } // namespace Simulator

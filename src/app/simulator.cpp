@@ -44,6 +44,8 @@ struct Request
     int         nCount = 0;
     uint32_t    nSeed  = 1;
     bool        bFixed = true;
+    // Beside the executable when empty.
+    std::string strOutput;
 };
 
 std::optional<Request> s_request;
@@ -264,13 +266,17 @@ int Simulator::TakeArguments(int nCount, char** ppszWords)
 
     auto nUsed = 3;
 
-    for (; nUsed < nCount && nUsed < 5 && ppszWords[nUsed][0] != '-'; nUsed++)
+    for (; nUsed < nCount && nUsed < 6 && ppszWords[nUsed][0] != '-'; nUsed++)
     {
         const auto word = std::string_view(ppszWords[nUsed]);
 
         if (word == "shipped" || word == "fixed")
         {
             request.bFixed = word == "fixed";
+        }
+        else if (word.ends_with(".csv"))
+        {
+            request.strOutput = word;
         }
         else
         {
@@ -307,7 +313,7 @@ int Simulator::Run()
 
     if (!home.has_value() || !away.has_value() || s_request->nCount <= 0)
     {
-        std::printf("usage: hyperblade_20XX -sim HOME AWAY COUNT [SEED] [shipped|fixed]\n");
+        std::printf("usage: hyperblade_20XX -sim HOME AWAY COUNT [SEED] [shipped|fixed] [OUTPUT.csv]\n");
         ListTeams(table);
 
         return 2;
@@ -316,8 +322,16 @@ int Simulator::Run()
     auto vocabulary = adlib::Vocabulary();
     vocabulary.loadEnumHeaderFile(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ENUMIDS.H").m_pchData));
 
-    const auto strCsv = std::string(SDL_GetBasePath()) + "sim_results.csv";
-    auto       csv    = std::ofstream(strCsv, std::ios::trunc);
+    const auto strCsv = [&]
+    {
+        if (!s_request->strOutput.empty())
+        {
+            return s_request->strOutput;
+        }
+
+        return std::string(SDL_GetBasePath()) + "sim_results.csv";
+    }();
+    auto csv = std::ofstream(strCsv, std::ios::trunc);
 
     WriteHeader(csv, vocabulary.find("StatID"));
 

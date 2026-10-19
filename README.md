@@ -78,7 +78,8 @@ hyperblade_20XX -sim LOSAN SEATTLE 100 1 fixed
 ```
 
 The arguments are the home team, the away team, the number of matches, the first seed (each
-match adds one) and `fixed` or `shipped` plans. A team is its file name, its name or its index;
+match adds one), `fixed` or `shipped` plans, and optionally a file ending in `.csv` to write in
+place of `sim_results.csv`. A team is its file name, its name or its index;
 an unknown team lists them all. The match settings in `booie.ini`, such as difficulty and period
 length, still apply. Each row is one player in one match, with their health at the end (100 is
 unhurt), the score, and the game's own match stats. A seed does not yet replay a match exactly.
