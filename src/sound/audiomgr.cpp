@@ -4,6 +4,7 @@
 #include "common/path.h"
 #include <SDL3/SDL.h>
 #include "globals.h"
+#include "app/appglobals.h"
 #include "app/gameapp.h"
 #include "audiomgr.h"
 #include "soundmixer.h"
@@ -45,6 +46,13 @@ void AudioMgr::Init()
 
     // STRING: HYPERX 0x004c8a90
     pEntries->Load("SndFiles.lst");
+
+    // -s opens no audio device at all.
+    if (g_bNoSoundArg != 0)
+    {
+        wNoSound = 1;
+        wNoCD    = 1;
+    }
 
     if (wNoSound == 0)
     {

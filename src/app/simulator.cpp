@@ -46,6 +46,8 @@ struct Request
     bool        bFixed = true;
     // Beside the executable when empty.
     std::string strOutput;
+    // The home team's drome when empty.
+    std::string strArena;
 };
 
 std::optional<Request> s_request;
@@ -266,7 +268,7 @@ int Simulator::TakeArguments(int nCount, char** ppszWords)
 
     auto nUsed = 3;
 
-    for (; nUsed < nCount && nUsed < 6 && ppszWords[nUsed][0] != '-'; nUsed++)
+    for (; nUsed < nCount && nUsed < 7 && ppszWords[nUsed][0] != '-'; nUsed++)
     {
         const auto word = std::string_view(ppszWords[nUsed]);
 
@@ -277,6 +279,10 @@ int Simulator::TakeArguments(int nCount, char** ppszWords)
         else if (word.ends_with(".csv"))
         {
             request.strOutput = word;
+        }
+        else if (word.starts_with("arena="))
+        {
+            request.strArena = word.substr(6);
         }
         else
         {
@@ -311,9 +317,20 @@ int Simulator::Run()
     const auto  home  = FindTeam(table, s_request->strHome);
     const auto  away  = FindTeam(table, s_request->strAway);
 
-    if (!home.has_value() || !away.has_value() || s_request->nCount <= 0)
+    // A team's drome is the arena of the same index.
+    const auto arena = [&]
     {
-        std::printf("usage: hyperblade_20XX -sim HOME AWAY COUNT [SEED] [shipped|fixed] [OUTPUT.csv]\n");
+        if (s_request->strArena.empty())
+        {
+            return home;
+        }
+
+        return FindTeam(table, s_request->strArena);
+    }();
+
+    if (!home.has_value() || !away.has_value() || !arena.has_value() || s_request->nCount <= 0)
+    {
+        std::printf("usage: hyperblade_20XX -sim HOME AWAY COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]\n");
         ListTeams(table);
 
         return 2;
@@ -355,7 +372,7 @@ int Simulator::Run()
         g_nPlayerMode    = kPlayerModeExhibition;
         g_nDromeTeamHome = *home;
         g_nDromeTeamAway = *away;
-        g_nDromeArena    = *home;
+        g_nDromeArena    = *arena;
 
         if (!PlayMatch(nSeed, elapsed, nTicks))
         {
@@ -365,6 +382,9 @@ int Simulator::Run()
         }
 
         WriteRows(csv, nMatch, nSeed);
+
+        // A fatal error ends the process, and the matches before it should survive.
+        csv.flush();
         nDone++;
 
         std::printf("match %d: %s %d, %s %d\n", nMatch, g_pGameEngine->m_pTeamA->szName, g_pGameEngine->GetHomeScore(), g_pGameEngine->m_pTeamB->szName, g_pGameEngine->GetAwayScore());

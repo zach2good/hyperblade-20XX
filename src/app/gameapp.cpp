@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include "engine/spectator.h"
+#include "app/simulator.h"
 #include "common/clock.h"
 #include <cstdlib>
 #include <string>
@@ -185,11 +186,15 @@ bool GameApp::Initialize(const char* pszArguments)
 
     g_gameApp.m_bCursorWasVisible = Display::Initialize();
 
-    Window::Show();
-    GameApp::SetCursorVisible(1);
+    // A simulation never shows its window.
+    if (!Simulator::Requested())
+    {
+        Window::Show();
+        GameApp::SetCursorVisible(1);
 
-    g_nSplashFrame = 0;
-    GameApp::NextSplash();
+        g_nSplashFrame = 0;
+        GameApp::NextSplash();
+    }
 
     // Windows shows its start-up busy cursor until a new program first takes its messages.
     Window::Pump();
@@ -602,7 +607,16 @@ void GameApp::ShowErrorBox(String strMessage)
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 
-    ERROR_BOX(strMessage.m_pchData, strCaption.m_pchData);
+    // A simulation runs unattended, so it reports to its output.
+    if (Simulator::Requested())
+    {
+        std::printf("error: %s\n", strMessage.m_pchData);
+        std::fflush(stdout);
+    }
+    else
+    {
+        ERROR_BOX(strMessage.m_pchData, strCaption.m_pchData);
+    }
 
     GameApp::SetCursorVisible(nCursor);
 }
@@ -641,6 +655,12 @@ void GameApp::FatalErrorFmt(const char* pszFormat, va_list args)
 void GameApp::FatalError(String strMessage)
 {
     ShowErrorBox(strMessage);
+
+    // The matches already written stand; the batch reruns the rest.
+    if (Simulator::Requested())
+    {
+        std::_Exit(3);
+    }
 
     SHUT_DOWN(this);
 }

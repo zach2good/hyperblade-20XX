@@ -7,8 +7,8 @@
 namespace Simulator
 {
 
-// Takes the words after -sim: HOME AWAY COUNT [SEED] [shipped|fixed] [OUTPUT.csv]. Answers how
-// many it used.
+// Takes the words after -sim: HOME AWAY COUNT [SEED] [shipped|fixed] [arena=TEAM]
+// [OUTPUT.csv]. Answers how many it used.
 int TakeArguments(int nCount, char** ppszWords);
 
 bool Requested();
