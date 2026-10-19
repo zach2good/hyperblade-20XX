@@ -127,6 +127,9 @@ void CTrackTraj::SetBlendT(int nValue)
     m_flBlend = static_cast<float>(static_cast<unsigned int>(nValue));
 }
 
+// How far the press camera turns toward the rok each tick.
+constexpr auto kPressCamEase = 0.2f;
+
 // Mode zero chases the tracked object on a spring; mode one blends toward a scripted point.
 // FUNCTION: HYPERX 0x0040a7b0
 void CTrackTraj::Process(int nArg)
@@ -330,9 +333,27 @@ void CTrackTraj::Process(int nArg)
                 }
             }
 
-            pCamDir->x = vWatch.x - pCamPos->x;
-            pCamDir->y = vWatch.y - pCamPos->y;
-            pCamDir->z = vWatch.z - pCamPos->z;
+            if (m_flBlend > 10000.0)
+            {
+                // The press camera snapped to the bouncing rok every tick; it eases there instead.
+                auto vTarget = vWatch;
+
+                vTarget.x -= pCamPos->x;
+                vTarget.y -= pCamPos->y;
+                vTarget.z -= pCamPos->z;
+
+                Math::Vec3Normalize(&vTarget);
+
+                pCamDir->x += (vTarget.x - pCamDir->x) * kPressCamEase;
+                pCamDir->y += (vTarget.y - pCamDir->y) * kPressCamEase;
+                pCamDir->z += (vTarget.z - pCamDir->z) * kPressCamEase;
+            }
+            else
+            {
+                pCamDir->x = vWatch.x - pCamPos->x;
+                pCamDir->y = vWatch.y - pCamPos->y;
+                pCamDir->z = vWatch.z - pCamPos->z;
+            }
 
             Math::Vec3Normalize(pCamDir);
 
