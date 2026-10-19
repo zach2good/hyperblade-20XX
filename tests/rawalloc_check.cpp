@@ -1,5 +1,5 @@
 // Fails on any raw new, delete, malloc family call or shared_ptr in the given folders. Ownership goes
-// through std::unique_ptr, and SDL's own allocations through the deleter in common/sdlmemory.h.
+// through std::unique_ptr, and SDL's own allocations through the deleter in common/sdlmemory.
 //     rawalloc_check <folder>...
 
 #include <cstdio>
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
                 continue;
             }
 
-            if (path.filename() == "sdlmemory.h" || path.filename() == "rawalloc_check.cpp")
+            if (path.stem() == "sdlmemory" || path.filename() == "rawalloc_check.cpp")
             {
                 continue;
             }
