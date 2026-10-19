@@ -17,6 +17,7 @@
 #include "planvmglobals.h"
 #include "common/pooledownerroot.h"
 #include "engine/messageids.h"
+#include "engine/planfixes.h"
 
 // Two; src/globals.cpp defines it.
 extern float g_flTwoAgendaItem;
@@ -33,7 +34,16 @@ void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
     if (g_flFrameRateReference * g_pGameEngine->m_clock.GetDelta() < m_pVelocity->z)
     {
-        m_pVelocity->z = g_flFrameRateReference / g_pGameEngine->m_clock.GetDelta();
+        // The original clamps a rise to eighty a second by dividing, which sets thirty times the frame's worth.
+        m_pVelocity->z = [&]
+        {
+            if (PlanFixes::On())
+            {
+                return g_flFrameRateReference * g_pGameEngine->m_clock.GetDelta();
+            }
+
+            return g_flFrameRateReference / g_pGameEngine->m_clock.GetDelta();
+        }();
     }
 
     m_pVelDir = &pOwner->GetPhysicsBody()->velDir;

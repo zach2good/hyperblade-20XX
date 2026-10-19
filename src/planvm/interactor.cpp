@@ -28,7 +28,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
 {
     PlanNode*   pNode;
     AgendaItem* pBubble;
-    short       nField;
+    short       nField = 0;
 
     auto* const pOwner = m_pOwner->GetPlanState()->m_pCurrent;
 

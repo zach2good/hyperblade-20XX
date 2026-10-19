@@ -2340,8 +2340,10 @@ void PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short*
 
     if (pnTargetSlot == nullptr || (nSlot = pnTargetSlot->nSlot) >= kPlayerObjectCount)
     {
-        // TODO: The original takes the result pointer itself as the slot; was *pResult meant?
-        nSlot = static_cast<short>((std::intptr_t)pResult);
+        // The original takes the result pointer itself as the slot and reads far outside the table.
+        *pResult = kGoalieSlotA;
+
+        return;
     }
 
     auto* const pActor = g_pGameEngine->GetSlot(nSlot);
