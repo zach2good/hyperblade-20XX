@@ -10,7 +10,6 @@ namespace Util
 {
 
 void GetLaserHurdleCharge(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
-void SafeFree(void* block);
 
 } // namespace Util
 
