@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "app/simulator.h"
 #include "common/inifile.h"
 #include "gameoptions.h"
 #include "globals.h"
@@ -47,6 +48,12 @@ GameOptions::~GameOptions() = default;
 // FUNCTION: HYPERX 0x004798d0
 int GameOptions::WriteString(const char* pszSection, const char* pszKey, const char* pszValue)
 {
+    // Parallel simulations would rewrite the file under each other and read back the pieces.
+    if (Simulator::Requested())
+    {
+        return 0;
+    }
+
     // STRING: HYPERX 0x004c64fc
     const int nResult = IniFile::WriteString(String::Concat(g_gameApp.m_strExeDir.m_str, "booie.ini"), pszSection, pszKey, pszValue);
 
