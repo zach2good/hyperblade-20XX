@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "math/mathops.h"
 #include "planvm/agendaitemids.h"
@@ -128,7 +129,7 @@ void CSteerToPosition::Process(int nArg)
 {
     auto flForce = (((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.1f + 1.5f) * g_pGameEngine->m_clock.GetDeltaSquared() * 40.0f;
 
-    const auto nJitter = rand() % JITTER_MODULUS;
+    const auto nJitter = Math::Rand() % JITTER_MODULUS;
 
     flForce = (static_cast<float>(nJitter) * 0.01f + 1.0f) * flForce;
 

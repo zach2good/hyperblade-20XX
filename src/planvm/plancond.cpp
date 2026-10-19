@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "common/clock.h"
 #include <cstdint>
@@ -362,7 +363,7 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
     auto* const pForward = &pContext->GetActor()->GetPhysicsBody()->velDir;
 
-    if ((rand() & 1) == 0)
+    if ((Math::Rand() & 1) == 0)
     {
         flSign = -g_flOnePlan;
     }
@@ -379,7 +380,7 @@ void PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int
 
     flDelta = g_pGameEngine->m_clock.flDelta;
 
-    const auto flSpeed = (static_cast<float>(rand() % kScatterRoll) + SCATTER_FLOOR) * flDelta;
+    const auto flSpeed = (static_cast<float>(Math::Rand() % kScatterRoll) + SCATTER_FLOOR) * flDelta;
 
     auto* const pBody = pContext->GetActor()->GetPhysicsBody();
 
@@ -1458,7 +1459,7 @@ void PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
         return;
     }
 
-    *pnOut = static_cast<short>(static_cast<long long>(rand()) * (pArgs->m_nArgCount - 2) / (static_cast<long long>(RAND_MAX) + 1));
+    *pnOut = static_cast<short>(static_cast<long long>(Math::Rand()) * (pArgs->m_nArgCount - 2) / (static_cast<long long>(Math::kRandMax) + 1));
 
     g_announcerLine = now;
 }
@@ -3130,7 +3131,7 @@ void PlanCond::PickACell(Interactor* pContext, PlanNode*, short* pResult, int)
 // FUNCTION: HYPERX 0x004623c0
 void PlanCond::Random(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
-    *pResult = static_cast<short>(static_cast<long long>(rand()) * (pArgs->m_nArgCount - 1) / (static_cast<long long>(RAND_MAX) + 1));
+    *pResult = static_cast<short>(static_cast<long long>(Math::Rand()) * (pArgs->m_nArgCount - 1) / (static_cast<long long>(Math::kRandMax) + 1));
 }
 
 // Turns the head camera's shot power into a child index, inverted and clamped.
@@ -5407,9 +5408,9 @@ void PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, 
         vJitter.Set(0.0f, 0.0f, 0.0f);
         vVelocity.Add(vKick);
 
-        vJitter.x += (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX))) * g_flTwoPlan - g_flOnePlan;
-        vJitter.y += (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX))) * g_flTwoPlan - g_flOnePlan;
-        vJitter.z += static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) * g_flOnePlan + g_flOnePlan;
+        vJitter.x += (static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax))) * g_flTwoPlan - g_flOnePlan;
+        vJitter.y += (static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax))) * g_flTwoPlan - g_flOnePlan;
+        vJitter.z += static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax)) * g_flOnePlan + g_flOnePlan;
 
         Vec3::ScaleTo(&vJitter, g_pGameEngine->m_clock.flDelta * JITTER_RATE, &vJitter);
 
@@ -5609,7 +5610,7 @@ void PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pRes
             return;
         }
 
-        *pResult = static_cast<short>(rand() % 2);
+        *pResult = static_cast<short>(Math::Rand() % 2);
     }
 }
 
@@ -6523,7 +6524,7 @@ void PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 
         if (nCount != 0)
         {
-            *pResult = static_cast<short>(aFound[rand() % nCount] + 1);
+            *pResult = static_cast<short>(aFound[Math::Rand() % nCount] + 1);
 
             return;
         }
@@ -7581,7 +7582,7 @@ void PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResul
         *pResult = 0;
     }
 
-    if (rand() % kOneInChance == 0)
+    if (Math::Rand() % kOneInChance == 0)
     {
         *pResult = !*pResult;
     }
@@ -7697,7 +7698,7 @@ void PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pnResult, 
     const auto flBase   = pActor->m_stats.GetWeightedStat(kRatingRokHandling) * PERCENT_SCALE;
     const auto flDamage = pActor->m_stats.GetScalar(kRatingDamage);
 
-    const unsigned int nRoll = rand() % kPercentRange;
+    const unsigned int nRoll = Math::Rand() % kPercentRange;
 
     const auto flOdds = (flDamage * flBase) * 0.01f;
 
@@ -7810,7 +7811,7 @@ void PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, i
 
     auto nMove = 0;
 
-    auto nRoll = rand() % kPercentRange;
+    auto nRoll = Math::Rand() % kPercentRange;
 
     auto* pActor = pContext->GetPlayerActor();
 
@@ -8034,11 +8035,11 @@ void PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pRes
 
     if (static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vVelocity, &vVelocity))) * g_pGameEngine->m_clock.flInvDelta) < 50.0f)
     {
-        *pResult = static_cast<unsigned short>(rand() % (nRange / 2));
+        *pResult = static_cast<unsigned short>(Math::Rand() % (nRange / 2));
     }
     else
     {
-        *pResult = static_cast<unsigned short>(rand() % nRange);
+        *pResult = static_cast<unsigned short>(Math::Rand() % nRange);
     }
 }
 
@@ -8056,7 +8057,7 @@ void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult,
 
     if (nMask < 1 || nMask > 0x7f)
     {
-        *pResult = static_cast<short>(rand() % 7);
+        *pResult = static_cast<short>(Math::Rand() % 7);
         return;
     }
 
@@ -8095,7 +8096,7 @@ void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult,
         nCount++;
     }
 
-    const auto nRemainder = rand() % nCount;
+    const auto nRemainder = Math::Rand() % nCount;
 
     // Steps to the next set bit of the mask once for each of nought to the remainder.
     for (int nStep = -1; nStep < nRemainder; nStep++)
@@ -8227,7 +8228,7 @@ void PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, i
         {
             flRange *= 0.5f;
 
-            const auto flRoll = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX))) * flRange;
+            const auto flRoll = (static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax))) * flRange;
 
             if (flRoll + flRange > flDistance)
             {

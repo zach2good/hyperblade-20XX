@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "common/clock.h"
 #include "common/path.h"
@@ -340,14 +341,14 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
     if (nTrack == kCDTrackRandom)
     {
-        srand(Clock::Now().count());
+        Math::SeedRand(static_cast<uint32_t>(Clock::Now().count()));
 
         auto nPicked = kCDTrackRandom;
         auto nScan   = g_nCDRecentCursor;
 
         for (int i = 0; i < nTracks; i++)
         {
-            const auto nPick = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
+            const auto nPick = static_cast<int>(static_cast<long long>(Math::Rand()) * nTracks / (static_cast<long long>(Math::kRandMax) + 1));
 
             if (g_anCDRecentTracks[nScan] != nPick)
             {
@@ -365,7 +366,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
 
         if (nPicked == kCDTrackRandom)
         {
-            nPicked = static_cast<int>(static_cast<long long>(rand()) * nTracks / (static_cast<long long>(RAND_MAX) + 1));
+            nPicked = static_cast<int>(static_cast<long long>(Math::Rand()) * nTracks / (static_cast<long long>(Math::kRandMax) + 1));
         }
 
         g_anCDRecentTracks[g_nCDRecentCursor] = nPicked;

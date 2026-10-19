@@ -1,5 +1,6 @@
 // The game at the top level: engine setup and teardown, one frame, and the state machine.
 
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "common/clock.h"
 #include <SDL3/SDL.h>
@@ -534,7 +535,7 @@ unsigned int Game::UpdateState()
 
             case kEstateQuit:
                 Game::SetEngineState(kEstateLobby);
-                pszText = g_gameApp.m_stringPool.LoadText(rand() % 3 + kStringReallyQuit);
+                pszText = g_gameApp.m_stringPool.LoadText(Math::Rand() % 3 + kStringReallyQuit);
 
                 if (Window::AskYesNo(pszText,
                                      g_gameApp.m_stringPool.LoadText(kStringQuit)))

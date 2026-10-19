@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "engine/framepacing.h"
 #include "engine/spectator.h"
@@ -80,7 +81,7 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
     short nTeam;
     bool  bSameSide;
 
-    if (rand() % 5 != 0)
+    if (Math::Rand() % 5 != 0)
     {
         return;
     }
@@ -104,7 +105,7 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
             return;
         }
 
-        if ((rand() & 1) != 0)
+        if ((Math::Rand() & 1) != 0)
         {
             pB = pA;
         }
@@ -128,7 +129,7 @@ void EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
         return;
     }
 
-    if (rand() % 2 != 0)
+    if (Math::Rand() % 2 != 0)
     {
         pB = pA;
     }

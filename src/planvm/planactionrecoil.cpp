@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "engine/messageids.h"
 #include "planvm/ctracktraj.h"
@@ -158,9 +159,9 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 
     flMag = static_cast<float>(sqrt(static_cast<double>(Vec3::DotInline(&vImpulse, &vImpulse)))) * 0.125f;
 
-    vImpulse.x = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f) * flMag + vImpulse.x;
-    vImpulse.y = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f) * flMag + vImpulse.y;
-    vImpulse.z = (static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f) * flMag + vImpulse.z;
+    vImpulse.x = (static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax)) - 0.5f) * flMag + vImpulse.x;
+    vImpulse.y = (static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax)) - 0.5f) * flMag + vImpulse.y;
+    vImpulse.z = (static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax)) - 0.5f) * flMag + vImpulse.z;
 
     pSelf->SetVelocity(vImpulse);
 

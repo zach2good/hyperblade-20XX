@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "math/mathops.h"
 #include "engine/messageids.h"
@@ -214,7 +215,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flPower = pStats->GetScalar(kRatingShotPower) * pStats->GetScalar(kRatingOffensiveAbility);
 
-            flGain = (static_cast<float>(rand()) * flPower * (1.0f / static_cast<float>(RAND_MAX)) + 10.0f) * flDelta;
+            flGain = (static_cast<float>(Math::Rand()) * flPower * (1.0f / static_cast<float>(Math::kRandMax)) + 10.0f) * flDelta;
 
             *pflSpeedScale = flGain * *pflSpeedScale;
 
@@ -338,15 +339,15 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 
             flDelta = g_pGameEngine->m_clock.flDelta;
 
-            *pflSpeedScale = ((static_cast<float>(rand()) * (0.5f / static_cast<float>(RAND_MAX)) + 0.5f) * pStats->GetScalar(kRatingOffensiveAbility) * 10.0f + 75.0f) * flDelta;
+            *pflSpeedScale = ((static_cast<float>(Math::Rand()) * (0.5f / static_cast<float>(Math::kRandMax)) + 0.5f) * pStats->GetScalar(kRatingOffensiveAbility) * 10.0f + 75.0f) * flDelta;
 
             if (g_bSessionActive != 0)
             {
                 *pflSpeedScale = *pflSpeedScale * 1.5f;
             }
 
-            flJitterX = static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f;
-            flJitterZ = static_cast<float>(rand()) * (1.0f / static_cast<float>(RAND_MAX)) - 0.5f;
+            flJitterX = static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax)) - 0.5f;
+            flJitterZ = static_cast<float>(Math::Rand()) * (1.0f / static_cast<float>(Math::kRandMax)) - 0.5f;
 
             pVel->x = flJitterX * 10.0f - pRok->GetPositionPtr()->x;
 
@@ -642,9 +643,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
             }
         }
 
-        flDice = static_cast<float>(rand() % kDiceWide);
-        flDice = static_cast<float>(rand() % kDiceWide) + flDice;
-        flDice = static_cast<float>(rand() % kDiceNarrow) + flDice - flScratchB;
+        flDice = static_cast<float>(Math::Rand() % kDiceWide);
+        flDice = static_cast<float>(Math::Rand() % kDiceWide) + flDice;
+        flDice = static_cast<float>(Math::Rand() % kDiceNarrow) + flDice - flScratchB;
 
         if (1.0f > flDice)
         {
@@ -653,9 +654,9 @@ void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 
         flScatter = flDice * 0.10000000149011612f;
 
-        vJitter.x = static_cast<float>(rand() % kJitterSpan - kJitterBias);
-        vJitter.y = static_cast<float>(rand() % kJitterSpan - kJitterBias);
-        vJitter.z = static_cast<float>(rand() % kJitterSpan - kJitterBias);
+        vJitter.x = static_cast<float>(Math::Rand() % kJitterSpan - kJitterBias);
+        vJitter.y = static_cast<float>(Math::Rand() % kJitterSpan - kJitterBias);
+        vJitter.z = static_cast<float>(Math::Rand() % kJitterSpan - kJitterBias);
 
         Math::Vec3Normalize(&vJitter);
 

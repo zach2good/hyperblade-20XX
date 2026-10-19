@@ -1,3 +1,4 @@
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "common/fileobj.h"
 #include "globals.h"
@@ -29,9 +30,9 @@ void JumboTextList::FreeAll()
 // FUNCTION: HYPERX 0x0046bfa0
 int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
-    srand(static_cast<unsigned int>(time(nullptr)));
+    Math::SeedRand(static_cast<uint32_t>(time(nullptr)));
 
-    const char* const pszRow = m_rows[rand() % static_cast<int>(m_rows.size())].c_str();
+    const char* const pszRow = m_rows[Math::Rand() % static_cast<int>(m_rows.size())].c_str();
 
     if (static_cast<int>(strlen(pszRow)) < nMax)
     {

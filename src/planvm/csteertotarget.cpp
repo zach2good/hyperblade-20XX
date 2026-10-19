@@ -1,5 +1,6 @@
 // Kind one: steering toward the object it was bound against.
 
+#include "math/squirrel5.h"
 #include "common/compat.h"
 #include "planvm/agendaitemids.h"
 #include "engine/messageids.h"
@@ -94,7 +95,7 @@ void CSteerToTarget::Process(int nArg)
     }
 
     const auto flClock = g_pGameEngine->m_clock.flDeltaSquared;
-    const auto nJitter = rand() % JITTER_MODULUS;
+    const auto nJitter = Math::Rand() % JITTER_MODULUS;
 
     flForce = ((flForce * 0.1f + 1.5f) * flClock * 40.0f) * (static_cast<float>(nJitter) * 0.01f + 1.0f);
 
