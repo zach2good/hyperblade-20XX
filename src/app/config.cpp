@@ -59,7 +59,6 @@
 #include "engine/engineobject.h"
 #include "graphics/colorpalette.h"
 #include "frametimer.h"
-#include <new>
 #include "graphics/display.h"
 #include "ui/infobarbase.h"
 #include "graphics/cgpalette.h"
