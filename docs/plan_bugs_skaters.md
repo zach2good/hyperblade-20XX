@@ -166,8 +166,13 @@ teammate is injured.
 In game: pressing a substitute key at a face-off to bench a healthy AI teammate does nothing and
 gives no refusal sound. An injured teammate is substituted.
 
-Fix: swap the two arms of the `ClockStoppedSemaphore` decision, or drop the gate so the handler
-matches OFFWING's.
+Second correction: GettingThere is not the only sender. The coach posts `id_MSG_SubstituteDromer`
+to every damaged computer-team dromer outside SIDELN each frame (`UpdateCoachAI`), and when a
+reserve has recovered (`SubstituteRecoveredReserve`), clock running or not. Arm [0] is the one
+that applies those, so swapping the arms would keep a damaged AI defender on the floor until the
+next drag.
+
+Fix: drop the gate so the handler matches OFFWING's.
 
 ## 5. GOALIE "Flying": the timer sends a message nothing in "Flying" handles
 
