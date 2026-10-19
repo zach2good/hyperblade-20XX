@@ -795,15 +795,24 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
     m_transformA.ResetToIdentity();
 
-    // The release frees the record this name lives in, so the copy has to come first.
-    const auto strOldName = std::string(m_pLod->m_pRecord->m_szName);
-
-    if (g_pTexManager->ReleaseLOD(m_pLod, m_pModelBlock) == 0)
+    // The original released a "null" model's LOD again on the next swap, and kept its bones on it.
+    if (HasNoModel() == 0)
     {
-        // STRING: HYPERX 0x004c4fd4
-        g_gameApp.Fatal("Error deactivating model %s. Check model directory.", strOldName.c_str());
+        // The release frees the record this name lives in, so the copy has to come first.
+        const auto strOldName = std::string(m_pLod->m_pRecord->m_szName);
 
-        return 0;
+        FramePacing::DropBones(m_pBones.get(), m_wBoneCount);
+
+        if (g_pTexManager->ReleaseLOD(m_pLod, m_pModelBlock) == 0)
+        {
+            // STRING: HYPERX 0x004c4fd4
+            g_gameApp.Fatal("Error deactivating model %s. Check model directory.", strOldName.c_str());
+
+            return 0;
+        }
+
+        m_pLod        = nullptr;
+        m_pModelBlock = nullptr;
     }
 
     // STRING: HYPERX 0x004c5148
@@ -813,6 +822,10 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 
         return 1;
     }
+
+    m_nFlags &= ~kEngineObjectNoModel;
+    m_wLodLevel   = 0;
+    m_flLodDistSq = 0.0f;
 
     auto* const pNode = g_pTexManager->LoadLOD(pDef->GetModel());
 
@@ -1833,11 +1846,17 @@ void EngineObject::ResetSceneMessageHandlers()
     m_nSceneHandlerCount = 1;
 }
 
-// The byte table holds the low byte of the slot, so more than 255 handlers answer wrongly.
-
+// The original had no bound, so a 51st handler overwrote the count after the table.
 // FUNCTION: HYPERX 0x00472200
 void EngineObject::RegisterSceneMessageHandler(Interactor* pHandler)
 {
+    if (m_nSceneHandlerCount >= kSceneHandlerSlots)
+    {
+        g_gameApp.Fatal("Too many scene message handlers on one object!");
+
+        return;
+    }
+
     const auto nId = pHandler->GetNamedSlot();
 
     m_aSceneHandlerSlot[nId] = static_cast<unsigned char>(m_nSceneHandlerCount);
