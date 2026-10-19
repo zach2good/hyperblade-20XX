@@ -1,14 +1,12 @@
 #include "common/compat.h"
 #include "rlespritesurface.h"
 #include "rlesprite.h"
-#include <cstdlib>
 #include <cstring>
 #include "common/commonglobals.h"
 #include "graphics/infobarradar.h"
 #include "ui/cddsurfaceowner.h"
 #include "graphics/swrend.h"
 #include "graphics/softrenderer.h"
-#include "common/util.h"
 #include "common/staticinit.h"
 #include <SDL3/SDL.h>
 
@@ -20,25 +18,14 @@ float              g_flUnusedSurface2C = g_flZeroSurface2;
 // The multibyte compare. See library.h.
 
 // FUNCTION: HYPERX 0x0044f140
-RLESpriteSurface::~RLESpriteSurface()
-{
-    if (m_pSprite != nullptr)
-    {
-        Util::SafeFree(m_pSprite);
-    }
-
-    if (m_pszName != nullptr)
-    {
-        free(m_pszName);
-    }
-}
+RLESpriteSurface::~RLESpriteSurface() = default;
 
 // FUNCTION: HYPERX 0x0044f210
 int RLESpriteSurface::Draw()
 {
     if (m_pSprite != nullptr)
     {
-        SWRend::BlitRLESprite(m_ptDrawOffset.x + m_ptPosition.x, m_ptDrawOffset.y + m_ptPosition.y, m_ptSize.x, m_ptSize.y, m_pSprite);
+        SWRend::BlitRLESprite(m_ptDrawOffset.x + m_ptPosition.x, m_ptDrawOffset.y + m_ptPosition.y, m_ptSize.x, m_ptSize.y, m_pSprite.get());
     }
 
     return 1;
@@ -48,37 +35,19 @@ int RLESpriteSurface::Draw()
 // FUNCTION: HYPERX 0x0044f3c0
 int RLESpriteSurface::LoadByName(const char* pszName)
 {
-    if (m_pszName == nullptr || SDL_strcasecmp(pszName, m_pszName) != 0)
+    if (m_strName.empty() || SDL_strcasecmp(pszName, m_strName.c_str()) != 0)
     {
-        if (m_pSprite != nullptr)
-        {
-            Util::SafeFree(m_pSprite);
+        m_pSprite = nullptr;
+        m_strName = pszName;
 
-            m_pSprite = nullptr;
-        }
-
-        if (m_pszName != nullptr)
-        {
-            free(m_pszName);
-        }
-
-        auto* const pszCopy = static_cast<char*>(malloc(strlen(pszName) + 1));
-
-        if (pszCopy != nullptr)
-        {
-            strcpy(pszCopy, pszName);
-        }
-
-        m_pszName = pszCopy;
-
-        auto* const pSprite = SoftRenderer::LoadRLESprite(pszName);
+        auto pSprite = SoftRenderer::LoadRLESprite(pszName);
 
         if (pSprite != nullptr)
         {
-            m_pSprite = pSprite;
-
             m_ptSize.x = pSprite->cx;
             m_ptSize.y = pSprite->cy;
+
+            m_pSprite = std::move(pSprite);
         }
         else
         {

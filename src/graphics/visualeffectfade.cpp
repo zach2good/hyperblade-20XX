@@ -29,11 +29,11 @@ int VisualEffectFade::ApplyPhase(int bPhase)
 {
     if (bPhase != 0)
     {
-        g_nPaletteAnimated = g_pColorPalette->AnimateEntries(m_iStart, m_cEntries, m_pEntries) & 0xff;
+        g_nPaletteAnimated = g_pColorPalette->AnimateEntries(m_iStart, m_cEntries, m_pEntries.get()) & 0xff;
     }
     else
     {
-        g_nPaletteAnimated = g_pColorPalette->AnimateEntries(m_iWorkStart, m_cWorkEntries, m_pWorkEntries) & 0xff;
+        g_nPaletteAnimated = g_pColorPalette->AnimateEntries(m_iWorkStart, m_cWorkEntries, m_pWorkEntries.get()) & 0xff;
     }
 
     return bPhase == 0;
@@ -44,7 +44,7 @@ int VisualEffectFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
     {
-        g_pColorPalette->BuildFadeTable(m_pWorkEntries, static_cast<short>(m_cWorkEntries), *pStartColour, 0.1f);
+        g_pColorPalette->BuildFadeTable(m_pWorkEntries.get(), static_cast<short>(m_cWorkEntries), *pStartColour, 0.1f);
 
         return 1;
     }

@@ -12,7 +12,7 @@
 #include "graphics/texcoord.h"
 #include "ui/widget.h"
 #include "app/gameapp.h"
-#include <new>
+#include <memory>
 #include <cstdlib>
 #include <cstring>
 #include "engine/object.h"
@@ -41,7 +41,7 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
 
         LODNode* pPrev = nullptr;
 
-        for (pAt = m_pListHead; pAt != nullptr; pAt = pAt->m_pNext)
+        for (pAt = m_pListHead.get(); pAt != nullptr; pAt = pAt->m_pNext.get())
         {
             if (pLod == pAt)
             {
@@ -50,25 +50,17 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
                     m_pListTail = pPrev;
                 }
 
+                ReleaseModel(pLod);
+
+                // Unlinking the node destroys it.
                 if (pPrev != nullptr)
                 {
-                    pPrev->m_pNext = pAt->m_pNext;
+                    pPrev->m_pNext = std::move(pAt->m_pNext);
                 }
                 else
                 {
-                    pAt = pAt->m_pNext;
-
-                    m_pListHead = pAt;
-
-                    if (pAt == nullptr)
-                    {
-                        m_pListTail = pAt;
-                    }
+                    m_pListHead = std::move(pAt->m_pNext);
                 }
-
-                ReleaseModel(pLod);
-
-                delete pLod;
 
                 return 1;
             }
@@ -105,18 +97,7 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
             }
         }
 
-        auto* const pList = pLod->m_pMaterials;
-
-        pLod->m_pMaterials = pList->m_pNext;
-
-        if (pList != nullptr)
-        {
-            auto* const pArray = pList->m_pMaterials;
-
-            delete[] pArray;
-            delete[] pList->m_pszName;
-            delete pList;
-        }
+        pLod->m_pMaterials = std::move(pLod->m_pMaterials->m_pNext);
     }
 
     return 1;
@@ -128,11 +109,11 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
 {
     MaterialListNode* pAt;
 
-    MaterialListNode** ppLink = &pLod->m_pMaterials;
+    auto* ppLink = &pLod->m_pMaterials;
 
     char bReleased = 0;
 
-    for (; (pAt = *ppLink) != nullptr; ppLink = &pAt->m_pNext)
+    for (; (pAt = ppLink->get()) != nullptr; ppLink = &pAt->m_pNext)
     {
         if (pBlock == pAt)
         {
@@ -150,16 +131,8 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
                     }
                 }
 
-                *ppLink = pBlock->m_pNext;
-
-                if (pBlock != nullptr)
-                {
-                    auto* const pArray = pBlock->m_pMaterials;
-
-                    delete[] pArray;
-                    delete[] pBlock->m_pszName;
-                    delete pBlock;
-                }
+                // Unlinking the block destroys it.
+                *ppLink = std::move(pBlock->m_pNext);
             }
 
             bReleased = 1;
@@ -192,7 +165,7 @@ char CD3DTextureManager::ReleaseTexEntry(TexCacheEntry* pEntry)
 // FUNCTION: HYPERX 0x00473400
 char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
 {
-    auto* pAt   = m_pTextureList;
+    auto* pAt   = m_pTextureList.get();
     auto* pPrev = pAt;
 
     while (pAt != nullptr)
@@ -201,23 +174,17 @@ char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
         {
             if (pAt->m_wRefs == 0)
             {
-                if (pAt == m_pTextureList)
+                pAt->DestroyTexObj();
+
+                // Unlinking the entry destroys it.
+                if (pAt == m_pTextureList.get())
                 {
-                    m_pTextureList = pAt->m_pNext;
+                    m_pTextureList = std::move(pAt->m_pNext);
                 }
                 else
                 {
-                    pPrev->m_pNext = pAt->m_pNext;
+                    pPrev->m_pNext = std::move(pAt->m_pNext);
                 }
-
-                pAt->DestroyTexObj();
-
-                if (pAt == m_pTextureList)
-                {
-                    m_pTextureList = nullptr;
-                }
-
-                delete pAt;
 
                 return 1;
             }
@@ -229,7 +196,7 @@ char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
         }
 
         pPrev = pAt;
-        pAt   = pAt->m_pNext;
+        pAt   = pAt->m_pNext.get();
     }
 
     // STRING: HYPERX 0x004c5590
@@ -250,7 +217,7 @@ int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nS
 
         if (nIndex < pNode->m_pRecord->m_nSubComponents)
         {
-            pMesh = pNode->m_apLodMeshes[nLevel][nIndex];
+            pMesh = pNode->m_apLodMeshes[nLevel][nIndex].get();
         }
         else
         {
@@ -277,15 +244,13 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
     while (nLevel < pLod->m_wLodCount)
     {
-        const MeshBlock* const pMesh = pLod->m_apLodMeshes[nLevel][nMeshIndex];
+        const MeshBlock* const pMesh = pLod->m_apLodMeshes[nLevel][nMeshIndex].get();
 
         if (pMesh->nCoordBytes != 0)
         {
             auto* const pCoords = pMesh->Coords();
 
-            char* const pScratch = new char[pMesh->nCoordBytes];
-
-            memset(pScratch, 0, pMesh->nCoordBytes);
+            const auto pScratch = std::make_unique<char[]>(pMesh->nCoordBytes);
 
             for (short nFace = 0; nFace < pMesh->nFaceCount; nFace++)
             {
@@ -302,11 +267,11 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                 while (pList != nullptr)
                 {
-                    pEntry = pList->m_pMaterials + pFace->cMaterial;
+                    pEntry = pList->m_pMaterials.get() + pFace->cMaterial;
 
                     if (pEntry->pTexture != nullptr && pnCoord != nullptr)
                     {
-                        auto* const pSoftTex = pEntry->pTexture->m_pSoftTexture;
+                        auto* const pSoftTex = pEntry->pTexture->m_pSoftTexture.get();
 
                         if (pSoftTex != nullptr)
                         {
@@ -373,11 +338,9 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
                         break;
                     }
 
-                    pList = pList->m_pNext;
+                    pList = pList->m_pNext.get();
                 }
             }
-
-            delete[] pScratch;
         }
 
         nLevel++;

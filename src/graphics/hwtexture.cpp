@@ -150,12 +150,12 @@ HwTexture::Texture HwTexture::Find(HwPipeline::Device device, const TexCacheEntr
 {
     auto* const pDevice = device.As<SDL_GPUDevice>();
 
-    if (pEntry == nullptr || pEntry->m_pszName == nullptr)
+    if (pEntry == nullptr || pEntry->m_strName.empty())
     {
         return Texture{ Solid(pDevice, s_pWhite, kWhite) };
     }
 
-    auto key = std::string(pEntry->m_pszName);
+    auto key = pEntry->m_strName;
 
     for (auto& c : key)
     {
@@ -169,7 +169,7 @@ HwTexture::Texture HwTexture::Find(HwPipeline::Device device, const TexCacheEntr
         return Texture{ it->second };
     }
 
-    auto* const pTexture = Load(pDevice, pEntry->m_pszName);
+    auto* const pTexture = Load(pDevice, pEntry->m_strName.c_str());
 
     s_textures.emplace(std::move(key), pTexture);
 

@@ -13,20 +13,15 @@
 PaletteFade::PaletteFade(const PaletteRange* pRange)
 : m_nKind(0)
 {
-    m_pEntries     = nullptr;
-    m_pWorkEntries = nullptr;
-
     m_iStart = pRange->nFirst;
 
     unsigned int nCount = pRange->nCount;
 
     m_cEntries = nCount;
 
-    auto* pEntries = new PaletteEntry[nCount];
+    m_pEntries = std::make_unique<PaletteEntry[]>(nCount);
 
-    m_pEntries = pEntries;
-
-    memcpy(pEntries, &g_pColorPalette->m_current[m_iStart], m_cEntries * sizeof(PaletteEntry));
+    memcpy(m_pEntries.get(), &g_pColorPalette->m_current[m_iStart], m_cEntries * sizeof(PaletteEntry));
 
     if (m_pEntries[0].peFlags == kPaletteReserved)
     {
@@ -44,7 +39,7 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     g_pColorPalette->SetEntries(m_iStart,
                                 m_cEntries,
-                                m_pEntries);
+                                m_pEntries.get());
 
     m_iWorkStart = pRange->nFirst;
 
@@ -52,11 +47,9 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 
     m_cWorkEntries = nCount;
 
-    pEntries = new PaletteEntry[nCount];
+    m_pWorkEntries = std::make_unique<PaletteEntry[]>(nCount);
 
-    m_pWorkEntries = pEntries;
-
-    memcpy(pEntries, &g_pColorPalette->m_current[m_iWorkStart], m_cWorkEntries * sizeof(PaletteEntry));
+    memcpy(m_pWorkEntries.get(), &g_pColorPalette->m_current[m_iWorkStart], m_cWorkEntries * sizeof(PaletteEntry));
 
     m_duration = std::chrono::seconds{ 1 };
 
@@ -65,14 +58,10 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
     m_bPhase = 1;
 }
 
-// The two blocks are freed without a null check.
 // FUNCTION: HYPERX 0x0042ce60
 PaletteFade::~PaletteFade()
 {
     RestoreEntries();
-
-    delete[] m_pEntries;
-    delete[] m_pWorkEntries;
 }
 
 // FUNCTION: HYPERX 0x0042ce90
@@ -83,14 +72,14 @@ void PaletteFade::RestoreEntries()
         return;
     }
 
-    g_pColorPalette->AnimateEntries(m_iStart, m_cEntries, m_pEntries);
+    g_pColorPalette->AnimateEntries(m_iStart, m_cEntries, m_pEntries.get());
 
     for (unsigned int i = 0; i < m_cEntries; i++)
     {
         m_pEntries[i].peFlags = kPaletteNoCollapse;
     }
 
-    g_pColorPalette->SetEntries(m_iStart, m_cEntries, m_pEntries);
+    g_pColorPalette->SetEntries(m_iStart, m_cEntries, m_pEntries.get());
 
     m_bActive = 0;
 }

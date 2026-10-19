@@ -70,25 +70,21 @@ void SoftRenderer::FreeBackBuffer()
 }
 
 // FUNCTION: HYPERX 0x0044f480
-RLESprite* SoftRenderer::LoadRLESprite(const char* pszName)
+Record<RLESprite> SoftRenderer::LoadRLESprite(const char* pszName)
 {
     PathString strPath(kMaxPathLength);
 
     // STRING: HYPERX 0x004bc45c
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszName, "bmp");
 
-    auto* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
+    const auto pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
 
     if (pDib == nullptr)
     {
         return nullptr;
     }
 
-    auto* const pTexture = SoftTex::CompressToRLE(pDib);
-
-    free(pDib);
-
-    return pTexture;
+    return SoftTex::CompressToRLE(pDib.get());
 }
 
 char g_szTopDownDibName[12] = "TopDownDIB ";

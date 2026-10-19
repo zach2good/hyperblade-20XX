@@ -18,7 +18,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 : PaletteFade(pRange)
 {
     auto  cLeft  = m_cEntries;
-    auto* pEntry = m_pEntries;
+    auto* pEntry = m_pEntries.get();
 
     m_nKind = kScalarKind;
 
@@ -49,7 +49,7 @@ int PaletteScalarFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
     {
-        g_pColorPalette->BuildFadeTable(m_pWorkEntries, static_cast<short>(m_cWorkEntries), *pStartColour, 0.1f);
+        g_pColorPalette->BuildFadeTable(m_pWorkEntries.get(), static_cast<short>(m_cWorkEntries), *pStartColour, 0.1f);
 
         return 1;
     }
@@ -95,7 +95,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
     int nAnswer;
 
     unsigned int nAt      = 0;
-    auto* const  pEntries = m_pWorkEntries;
+    auto* const  pEntries = m_pWorkEntries.get();
 
     if (bPhase != 0)
     {
@@ -129,7 +129,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
         PaletteEntry* pSource;
 
         nMask   = 0;
-        pSource = m_pEntries;
+        pSource = m_pEntries.get();
 
         for (; nAt < m_cWorkEntries; nAt++)
         {
@@ -156,7 +156,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
     g_nPaletteAnimateResult =
         g_pColorPalette->AnimateEntries(m_iWorkStart,
                                         m_cWorkEntries,
-                                        m_pWorkEntries) &
+                                        m_pWorkEntries.get()) &
         0xff;
 
     return nAnswer;

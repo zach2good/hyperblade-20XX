@@ -7,6 +7,7 @@
 #include "common/clock.h"
 #include "graphics/bitmapformat.h"
 #include "graphics/paletterange.h"
+#include <memory>
 
 // GLOBAL: HYPERX 0x004cb780
 extern int g_nPaletteAnimated;
@@ -19,6 +20,10 @@ public:
 
     // Slots one, two and four hold _purecall in the original's table.
     virtual ~PaletteFade(); // slot 0
+    PaletteFade(const PaletteFade&)            = delete;
+    PaletteFade& operator=(const PaletteFade&) = delete;
+    PaletteFade(PaletteFade&&)                 = delete;
+    PaletteFade& operator=(PaletteFade&&)      = delete;
     // cpaletteeffect.cpp starts the fade through slot one and steps it through slot two.
     virtual int  Start(const PaletteEntry* pStartColour) = 0;
     virtual int  Tick()                                  = 0; // slot 2, pure
@@ -26,17 +31,17 @@ public:
     virtual int  ApplyPhase(int bPhase) = 0;                  // slot 4, pure
 
 protected:
-    int                 m_nKind;        // 0x004
-    unsigned int        m_iStart;       // 0x008
-    unsigned int        m_cEntries;     // 0x00c
-    PaletteEntry*       m_pEntries;     // 0x010
-    unsigned int        m_iWorkStart;   // 0x014
-    unsigned int        m_cWorkEntries; // 0x018
-    PaletteEntry*       m_pWorkEntries; // 0x01c
-    Clock::Milliseconds m_duration;     // 0x020
-    Clock::Milliseconds m_stepped;      // 0x024
-    int                 m_bPhase;       // 0x028
-    int                 m_bActive;      // 0x02c
+    int                             m_nKind;        // 0x004
+    unsigned int                    m_iStart;       // 0x008
+    unsigned int                    m_cEntries;     // 0x00c
+    std::unique_ptr<PaletteEntry[]> m_pEntries;     // 0x010
+    unsigned int                    m_iWorkStart;   // 0x014
+    unsigned int                    m_cWorkEntries; // 0x018
+    std::unique_ptr<PaletteEntry[]> m_pWorkEntries; // 0x01c
+    Clock::Milliseconds             m_duration;     // 0x020
+    Clock::Milliseconds             m_stepped;      // 0x024
+    int                             m_bPhase;       // 0x028
+    int                             m_bActive;      // 0x02c
 };
 
 constexpr auto kPlainFadeKind     = 2;

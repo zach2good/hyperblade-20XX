@@ -33,12 +33,12 @@ struct TexturedModel
 std::map<const EngineObject*, TexturedModel> s_models;
 std::set<const MaterialListNode*>            s_converted;
 
-// Made once and kept for the life of the process, so nothing it owns is torn down at exit.
+// Made once and kept for the life of the process.
 CD3DTextureManager& Database()
 {
-    static auto* const s_pDatabase = new CD3DTextureManager;
+    static auto s_database = CD3DTextureManager();
 
-    return *s_pDatabase;
+    return s_database;
 }
 
 // Both databases size the shared transform and face buffers from their own maximum, so the two
@@ -283,14 +283,14 @@ bool HwModels::Find(MeshBone& bone, unsigned int nFrame, Bone& out)
         return false;
     }
 
-    const MeshBlock* const pBlock = model.pLod->m_apLodMeshes[nLod][bone.m_wMeshSlot];
+    const MeshBlock* const pBlock = model.pLod->m_apLodMeshes[nLod][bone.m_wMeshSlot].get();
 
     if (pBlock == nullptr)
     {
         return false;
     }
 
-    out = Bone{ pBlock, model.pMaterials->m_pMaterials, model.pMaterials->m_nMatCount, &model.world[static_cast<size_t>(nBone)] };
+    out = Bone{ pBlock, model.pMaterials->m_pMaterials.get(), model.pMaterials->m_nMatCount, &model.world[static_cast<size_t>(nBone)] };
 
     return true;
 }

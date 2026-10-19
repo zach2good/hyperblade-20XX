@@ -122,7 +122,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
         }
 
         g_swFaceBuffer.nMask = g_nSWVertexUVMask | g_nSWVertexPosMask;
-        pTexture             = pMatTexture->m_pSoftTexture;
+        pTexture             = pMatTexture->m_pSoftTexture.get();
 
         for (i = 0; i < pFaceData->nCorners; i++)
         {
@@ -949,7 +949,7 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 
         if (pFace->cFlip == 0 && nShadeMode == -1)
         {
-            pColours = pThis->m_pFaceColours + pFace->nFace;
+            pColours = pThis->m_pFaceColours.get() + pFace->nFace;
         }
         else
         {

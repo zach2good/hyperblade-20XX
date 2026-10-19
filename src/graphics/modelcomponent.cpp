@@ -1,6 +1,5 @@
 #include "common/compat.h"
 #include "common/fileobj.h"
-#include <new>
 #include "globals.h"
 #include "app/gameapp.h"
 #include "modelcomponent.h"
@@ -14,10 +13,10 @@ struct ComponentFileHeader
 };
 
 // FUNCTION: HYPERX 0x004361e0
-ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
+Record<ModelComponent> ModelComponent::ReadFirst(FileObj* pFile)
 {
-    int         nSize;
-    auto* const pBlob = static_cast<ModelComponent*>(ModelComponent::Read(pFile, &nSize));
+    int  nSize;
+    auto pBlob = ModelComponent::Read<ModelComponent>(pFile, &nSize);
 
     if (pBlob != nullptr)
     {
@@ -29,7 +28,7 @@ ModelComponent* ModelComponent::ReadFirst(FileObj* pFile)
 
 // The original met a damaged record with a fatal error, and MDLSHD's NEMPTM.WBM ships with one.
 // FUNCTION: HYPERX 0x004363a0
-bool ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned short* pnCount)
+bool ModelComponent::ReadAll(FileObj* pFile, std::vector<Record<MeshBlock> >* pBlocks)
 {
     ComponentFileHeader header;
     int                 nSize;
@@ -41,20 +40,16 @@ bool ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sh
 
         const auto nStart = pFile->SeekRelative(0, FileSeekOrigin::kCurrent);
 
-        auto** const papBlocks = new MeshBlock*[header.cRecords];
-
-        *pppBlocks = papBlocks;
-        *pnCount   = static_cast<unsigned short>(header.cRecords);
+        pBlocks->clear();
+        pBlocks->reserve(header.cRecords);
 
         while (iEntry != header.cRecords)
         {
-            auto* const pBlock = static_cast<MeshBlock*>(ModelComponent::Read(pFile, &nSize));
+            auto pBlock = ModelComponent::Read<MeshBlock>(pFile, &nSize);
 
             if (pBlock == nullptr)
             {
                 SDL_Log("Model component %d of %u is damaged", iEntry, header.cRecords);
-
-                *pnCount = iEntry;
 
                 pFile->SeekRelative(nStart + header.cBytes, FileSeekOrigin::kStart);
 
@@ -63,7 +58,7 @@ bool ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sh
 
             pBlock->nSize = nSize;
 
-            papBlocks[iEntry] = pBlock;
+            pBlocks->push_back(std::move(pBlock));
 
             nTotal += nSize;
             iEntry++;
@@ -92,7 +87,8 @@ bool ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned sh
 
 // The block's first word is left to the caller.
 // FUNCTION: HYPERX 0x00436d30
-void* ModelComponent::Read(FileObj* pFile, int* pnSize)
+template <class T>
+Record<T> ModelComponent::Read(FileObj* pFile, int* pnSize)
 {
     int nSize;
 
@@ -101,16 +97,14 @@ void* ModelComponent::Read(FileObj* pFile, int* pnSize)
     {
         *pnSize = nSize;
 
-        char* const pBlock = new char[nSize];
+        auto pBlock = MakeRecord<T>(nSize);
 
         const auto nBody = nSize - static_cast<int>(sizeof(nSize));
 
-        if (pFile->Read(pBlock + sizeof(nSize), nBody) == nBody)
+        if (pFile->Read(reinterpret_cast<char*>(pBlock.get()) + sizeof(nSize), nBody) == nBody)
         {
             return pBlock;
         }
-
-        delete[] pBlock;
     }
 
     return nullptr;

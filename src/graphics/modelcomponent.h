@@ -1,9 +1,11 @@
 #ifndef HYPERBLADE_MODELCOMPONENT_H
 #define HYPERBLADE_MODELCOMPONENT_H
 
+#include "common/record.h"
 #include "graphics/recordoffset.h"
 #include "math/vector.h"
 #include "graphics/shadowblock.h"
+#include <vector>
 
 class MeshBoneDesc;
 class FileObj;
@@ -11,8 +13,9 @@ class FileObj;
 struct ModelComponent
 {
     // Free functions in the original.
-    static void*           Read(FileObj* pFile, int* pnSize);
-    static ModelComponent* ReadFirst(FileObj* pFile);
+    template <class T>
+    static Record<T>              Read(FileObj* pFile, int* pnSize);
+    static Record<ModelComponent> ReadFirst(FileObj* pFile);
 
     const MeshBoneDesc* SlotDesc(short nSlot) const
     {
@@ -32,7 +35,7 @@ struct ModelComponent
     RecordOffset<const MeshBoneDesc> m_aSlotOffsets[1]; // 0x62
 
     // False when a record is damaged. The list then stops before it, and the file moves to the list's end.
-    static bool ReadAll(FileObj* pFile, struct MeshBlock*** pppBlocks, unsigned short* pnCount);
+    static bool ReadAll(FileObj* pFile, std::vector<Record<struct MeshBlock> >* pBlocks);
 
     ShadowBlock* GetShadowBlock()
     {

@@ -6,7 +6,6 @@
 #include "globals.h"
 #include "common/staticinit.h"
 #include "math/vector.h"
-#include <new>
 #include <cstdio>
 #include <cstring>
 #include "common/fileobj.h"
@@ -52,7 +51,7 @@ constexpr auto kMaterialMax = 0xff;
 
 // A complaint before the first newmtl names index minus one. r8 and r16 both store nought.
 // FUNCTION: HYPERX 0x004364e0
-char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount)
+char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMaterial[]>* ppMaterials, std::unique_ptr<MaterialName[]>* ppMatNames, std::unique_ptr<MaterialName[]>* ppTexNames, unsigned char* pnMatCount, short* pnTexCount)
 {
     float flValue;
     short nColourIndex;
@@ -106,19 +105,19 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMater
         }
     }
 
-    auto* const pMaterials = new MeshMaterial[*pnMatCount];
+    *ppMaterials = std::make_unique<MeshMaterial[]>(*pnMatCount);
 
-    *ppMaterials = pMaterials;
+    auto* const pMaterials = ppMaterials->get();
 
-    auto* const paMatNames = new MaterialName[*pnMatCount];
+    *ppMatNames = std::make_unique<MaterialName[]>(*pnMatCount);
 
-    *ppMatNames = paMatNames;
+    auto* const paMatNames = ppMatNames->get();
 
     if (*pnTexCount != 0)
     {
-        paTexNames = new MaterialName[*pnTexCount];
+        *ppTexNames = std::make_unique<MaterialName[]>(*pnTexCount);
 
-        *ppTexNames = paTexNames;
+        paTexNames = ppTexNames->get();
 
         memset(paTexNames, 0, *pnTexCount * sizeof(MaterialName));
     }

@@ -4,28 +4,20 @@
 #include "cddtext.h"
 #include "graphics/hudlayer.h"
 #include "graphics/colorpalette.h"
-#include <cstring>
-#include <cstdlib>
 
 // FUNCTION: HYPERX 0x0044f9f0
-CDDText::~CDDText()
-{
-    if (m_pszText != nullptr)
-    {
-        free((void*)m_pszText);
-    }
-}
+CDDText::~CDDText() = default;
 
 // Draws into whatever the back-buffer globals point at, the HUD layer during a match, in the palette
 // entry nearest the colour, as GDI matched a colour against the DIB's table.
 // FUNCTION: HYPERX 0x0044fa40
 int CDDText::Draw()
 {
-    if (m_pszText != nullptr && *m_pszText != 0 && g_pBackBufferBitsCopy != nullptr)
+    if (!m_strText.empty() && g_pBackBufferBitsCopy != nullptr)
     {
         const auto nIndex = static_cast<unsigned char>(g_pColorPalette->NearestIndex(m_color, HudLayer::kKeyIndex));
 
-        Text::Draw(m_font, g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_pszText, nIndex);
+        Text::Draw(m_font, g_pBackBufferBitsCopy, g_nSurfacePitchCopy, g_nBackBufferWidth, g_nBackBufferHeight, m_ptPosition.x + m_ptDrawOffset.x, m_ptPosition.y + m_ptDrawOffset.y, m_strText.c_str(), nIndex);
     }
 
     return 1;
@@ -35,12 +27,7 @@ int CDDText::Draw()
 // FUNCTION: HYPERX 0x0044faf0
 int CDDText::SetText(const char* pszText, std::uint32_t color)
 {
-    if (m_pszText != nullptr)
-    {
-        free((void*)m_pszText);
-
-        m_pszText = nullptr;
-    }
+    m_strText.clear();
 
     if (color != static_cast<std::uint32_t>(-1))
     {
@@ -55,21 +42,14 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
         return 1;
     }
 
-    auto* const pszCopy = static_cast<char*>(malloc(strlen(pszText) + 1));
+    m_strText = pszText;
 
-    if (pszCopy != nullptr)
-    {
-        strcpy(pszCopy, pszText);
+    const auto size = Text::Measure(m_font, m_strText.c_str());
 
-        const auto size = Text::Measure(m_font, pszCopy);
+    m_ptSize.x = size.nWidth;
+    m_ptSize.y = size.nHeight;
 
-        m_ptSize.x = size.nWidth;
-        m_ptSize.y = size.nHeight;
-    }
-
-    m_pszText = pszCopy;
-
-    return m_pszText != nullptr;
+    return 1;
 }
 
 // A null face name drops the font and answers success. Every face draws as MS Sans Serif.

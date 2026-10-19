@@ -6,7 +6,6 @@
 #include "texcacheentry.h"
 #include "engine/gameengine.h"
 #include "planvm/planvm.h"
-#include <new>
 #include <cstring>
 #include "app/gameapp.h"
 #include "common/stringpool.h"
@@ -16,44 +15,37 @@
 
 // FUNCTION: HYPERX 0x00492b90
 TexCacheEntry::TexCacheEntry(const char* pszName)
+: m_strName(pszName)
 {
     m_nUnused = 0;
     m_wRefs   = 0;
-    m_pNext   = nullptr;
 
-    m_pszName = strcpy(new char[strlen(pszName) + 1], pszName);
+    auto pTexture = std::make_unique<SoftTex>();
 
-    SoftTex* pTexture;
-
-    pTexture = new SoftTex;
-
-    if (pTexture != nullptr && pTexture->Load(pszName) == 0)
+    if (pTexture->Load(pszName) == 0)
     {
-        delete pTexture;
         pTexture = nullptr;
     }
 
-    m_pSoftTexture = pTexture;
+    m_pSoftTexture = std::move(pTexture);
 }
 
 // FUNCTION: HYPERX 0x00492d70
 void* TexCacheEntry::DestroyTexObj()
 {
-    delete m_pSoftTexture;
-
     m_pSoftTexture = nullptr;
 
-    return m_pSoftTexture;
+    return m_pSoftTexture.get();
 }
 
+// Unlinks the rest of the list one entry at a time, so a long list cannot exhaust the stack.
 // FUNCTION: HYPERX 0x00492dc0
 TexCacheEntry::~TexCacheEntry()
 {
-    if (m_pszName != nullptr)
-    {
-        delete[] m_pszName;
-        m_pszName = nullptr;
-    }
+    auto pNext = std::move(m_pNext);
 
-    DestroyTexObj();
+    while (pNext != nullptr)
+    {
+        pNext = std::move(pNext->m_pNext);
+    }
 }

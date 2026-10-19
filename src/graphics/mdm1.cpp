@@ -2,9 +2,10 @@
 
 #include "common/compat.h"
 #include "common/fileobj.h"
-#include <cstdlib>
+#include "graphics/mdm1.h"
 #include <cstring>
 #include <algorithm>
+#include <memory>
 
 constexpr auto kMatchLengthBias = 3;
 constexpr auto kMatchLengthLong = 0x12;
@@ -14,41 +15,25 @@ constexpr auto kWindowMargin = 0x80;
 
 constexpr auto kWindowBytes = 0x1000;
 
-// The window is freed before the size check that can discard the output.
 // FUNCTION: HYPERX 0x00440140
-void* MDM1::Decompress(FileObj* pFile)
+Record<BitmapInfoHeader> MDM1::Decompress(FileObj* pFile)
 {
     int nSize;
 
-    auto* const pWindow = static_cast<unsigned char*>(malloc(kWindowBytes));
+    const auto pWindow = std::make_unique<unsigned char[]>(kWindowBytes);
 
-    if (pWindow == nullptr)
-    {
-        return pWindow;
-    }
-
-    if (pFile->Read(&nSize, sizeof(nSize)) != sizeof(nSize))
+    // A negative size failed the original's allocation.
+    if (pFile->Read(&nSize, sizeof(nSize)) != sizeof(nSize) || nSize < 0)
     {
         return nullptr;
     }
 
-    auto* const pOut = static_cast<unsigned char*>(malloc(nSize));
+    auto pOut = MakeRecord<BitmapInfoHeader>(nSize);
 
-    if (pOut == nullptr)
-    {
-        free(pWindow);
-
-        return nullptr;
-    }
-
-    const auto nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, pOut, nSize, pWindow, kWindowBytes);
-
-    free(pWindow);
+    const auto nDecompressed = MDM1::LZSSDecompress(MDM1::ReadCallback, pFile, reinterpret_cast<unsigned char*>(pOut.get()), nSize, pWindow.get(), kWindowBytes);
 
     if (nDecompressed != nSize)
     {
-        free(pOut);
-
         return nullptr;
     }
 

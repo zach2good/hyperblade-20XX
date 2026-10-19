@@ -1,6 +1,7 @@
 #ifndef HYPERBLADE_GDI_H
 #define HYPERBLADE_GDI_H
 #include "common/compat.h"
+#include "common/record.h"
 #include "graphics/bitmapformat.h"
 #include <cstdint>
 #include <vector>
@@ -37,7 +38,8 @@ inline char* PixelBits(const BitmapInfoHeader* pHeader)
     return reinterpret_cast<char*>(ColorTable(pHeader) + nColours);
 }
 
-// A picture for the menu canvas, 0x00RRGGBB, top row first.
+// A picture for the menu canvas, 0x00RRGGBB, top row first. GDI owns every one it hands out until
+// SafeDeleteBitmap.
 struct Bitmap
 {
     int                        nWidth;
@@ -52,16 +54,16 @@ struct BitmapSize
     int nHeight;
 };
 
-Bitmap*           LoadBitmapHandle(const char* pszName);
-Bitmap*           LoadBitmapAsBackground(const char* pszName, int* pbPaletted);
-Bitmap*           LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted);
-void              SafeDeleteBitmap(Bitmap* pBitmap);
-void              GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize);
-BitmapInfoHeader* ReadBitmapFile(const char* pszName);
-BitmapInfoHeader* ReadDIB(FileObj* pFile);
-BitmapInfoHeader* ExpandRLE(BitmapInfoHeader* pDib);
-Bitmap*           LoadJPEGImage(const char* pszPath);
-void              Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
+Bitmap*                  LoadBitmapHandle(const char* pszName);
+Bitmap*                  LoadBitmapAsBackground(const char* pszName, int* pbPaletted);
+Bitmap*                  LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted);
+void                     SafeDeleteBitmap(Bitmap* pBitmap);
+void                     GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize);
+Record<BitmapInfoHeader> ReadBitmapFile(const char* pszName);
+Record<BitmapInfoHeader> ReadDIB(FileObj* pFile);
+Record<BitmapInfoHeader> ExpandRLE(Record<BitmapInfoHeader> pDib);
+Bitmap*                  LoadJPEGImage(const char* pszPath);
+void                     Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY);
 // The colour is 0x00BBGGRR.
 void DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int nTextLength, int nUnused);
 void DrawBitmapToWindow(const char* pszResourceName);
