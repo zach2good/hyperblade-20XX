@@ -9,6 +9,7 @@ Findings about the game and its code, carried over from the decomp.
 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
+| [sim_results.md](sim_results.md) | Simulated round robins on the shipped and fixed plans, against the menu ratings |
 
 [src/README.md](../src/README.md) says what each source folder holds.
 
