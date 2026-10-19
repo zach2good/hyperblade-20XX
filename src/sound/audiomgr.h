@@ -2,6 +2,8 @@
 #define HYPERBLADE_AUDIOMGR_H
 
 #include "sound/audiomgrbase.h"
+#include "sound/soundmanager.h"
+#include <memory>
 
 // PlayCDTrack's tracks.
 constexpr auto kCDTrackRandom = (-1);
@@ -15,6 +17,11 @@ struct AudioMgr : public AudioMgrBase
     AudioMgr();
 
     ~AudioMgr() override;
+
+    AudioMgr(const AudioMgr&)            = delete;
+    AudioMgr& operator=(const AudioMgr&) = delete;
+    AudioMgr(AudioMgr&&)                 = delete;
+    AudioMgr& operator=(AudioMgr&&)      = delete;
 
     void StopCD() override;
 
@@ -41,9 +48,8 @@ struct AudioMgr : public AudioMgrBase
 
     void PlayCDTrack(int nTrack) override;
 
-    int nInitTimeMs; // 0x004, how long Init took
-    // The sound manager, built with `new SoundManager`.
-    class SoundManager* pEntries; // 0x008
+    int                           nInitTimeMs; // 0x004, how long Init took
+    std::unique_ptr<SoundManager> pEntries;    // 0x008
     // Set when DirectSound fails to start.
     short wNoSound; // 0x00c
     // Set when there are no music tracks to play.

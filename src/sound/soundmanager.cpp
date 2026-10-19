@@ -3,7 +3,7 @@
 #include "common/fileobj.h"
 #include "globals.h"
 #include "common/pathstring.h"
-#include <new>
+#include <memory>
 #include <cstdio>
 #include <cstring>
 #include "app/gameapp.h"
@@ -15,7 +15,6 @@ SoundManager::SoundManager()
     m_wUnusedA = 0;
 
     m_nSoundCount = 0;
-    m_apSounds    = nullptr;
     m_nUnusedB    = 0;
 
     for (int iSlot = 0; iSlot < kSoundmgrSlots; iSlot++)
@@ -40,20 +39,7 @@ constexpr auto kGroupNone = (-1);
 // FUNCTION: HYPERX 0x00449210
 void SoundManager::FreeEntries()
 {
-    for (short i = 0; i < m_nSoundCount; i++)
-    {
-        char** ppName = &m_apSounds[i]->m_pszName;
-
-        if (*ppName != nullptr)
-        {
-            delete[] *ppName;
-            *ppName = nullptr;
-        }
-
-        delete m_apSounds[i];
-    }
-
-    delete[] m_apSounds;
+    m_apSounds.clear();
 }
 
 // The first line is a header; both walks stop at the first blank line, not at the end of file.
@@ -91,9 +77,8 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     m_nSoundCount = static_cast<short>(nLines - 1);
 
-    m_apSounds = new SoundEntry*[m_nSoundCount];
-
-    memset(m_apSounds, 0, m_nSoundCount * sizeof(SoundEntry*));
+    m_apSounds.clear();
+    m_apSounds.resize(m_nSoundCount);
 
     file.m_file.SeekRelative(0, FileSeekOrigin::kStart);
 
@@ -121,15 +106,10 @@ unsigned short SoundManager::Load(const char* pszListName)
             continue;
         }
 
-        m_apSounds[nIndex] = new SoundEntry;
+        m_apSounds[nIndex] = std::make_unique<SoundEntry>();
 
-        memset(m_apSounds[nIndex], 0, sizeof(SoundEntry));
-
-        m_apSounds[nIndex]->m_nIndex = nIndex;
-
-        char** ppName = &m_apSounds[nIndex]->m_pszName;
-
-        *ppName = strcpy(new char[strlen(szName) + 1], szName);
+        m_apSounds[nIndex]->m_nIndex  = nIndex;
+        m_apSounds[nIndex]->m_strName = szName;
 
         m_apSounds[nIndex]->m_nUnusedA    = 0;
         m_apSounds[nIndex]->m_nPan        = 0;
@@ -203,7 +183,7 @@ SoundEntry* SoundManager::PickFromGroup(int nGroup)
             nIndex = nFirst;
         }
 
-        return m_apSounds[nIndex];
+        return m_apSounds[nIndex].get();
     }
 
     return nullptr;
