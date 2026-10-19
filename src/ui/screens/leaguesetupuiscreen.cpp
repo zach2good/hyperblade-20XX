@@ -1,4 +1,6 @@
 #include "common/compat.h"
+#include "engine/careerstats.h"
+#include <array>
 #include "engine/teamsblock.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
@@ -24,6 +26,10 @@
 
 #define LEAGUE_INITIAL_LAST_WIDGET TEAMSETUP_WIDGET_STATS_TEAM_TITLE
 #define LEAGUE_GRID_LAST           (LEAGUE_WIDGET_STAT_GRID + kLeagueGridRows * kLeagueGridColumns - 1)
+
+// Below the grid. TODO: Check the spot in game.
+constexpr auto kCareerLabelX      = 382;
+constexpr auto kCareerLabelY      = 304;
 constexpr auto kLeagueGridRows    = 10;
 constexpr auto kLeagueGridColumns = 5;
 
@@ -205,6 +211,11 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
         }
     }
 
+    m_nLastWidget++;
+
+    m_pCareerLabel = AppendWidget(std::make_unique<DisplayWidget>(kCareerLabelX, kCareerLabelY, 0, 0, this, -1));
+    m_pCareerLabel->SetHidden(1);
+
     InitAllWidgets();
 }
 
@@ -310,7 +321,7 @@ void LeagueSetupUIScreen::OnLeftArrowClick()
             break;
 
         case TEAMSETUP_WIDGET_STATS:
-            m_bShowHomeTeam = !m_bShowHomeTeam;
+            StepStatsView(-1);
 
             RefreshSelection();
 
@@ -368,7 +379,7 @@ void LeagueSetupUIScreen::OnRightArrowClick()
             break;
 
         case TEAMSETUP_WIDGET_STATS:
-            m_bShowHomeTeam = !m_bShowHomeTeam;
+            StepStatsView(1);
 
             RefreshSelection();
 
@@ -1779,25 +1790,51 @@ void LeagueSetupUIScreen::UpdateStatText()
     const TeamBlock* pTeam;
     int              nPlayer;
 
+    pTeam = [&]
+    {
+        if (m_bShowHomeTeam != 0)
+        {
+            return g_pGameEngine->m_pTeamA.get();
+        }
+
+        return g_pGameEngine->m_pTeamB.get();
+    }();
+
+    auto rows     = std::array<TeamStatRow, kTeamRowCount>{};
+    auto anPlayed = std::array<int, kTeamRowCount>{};
+
+    for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
+    {
+        rows[nPlayer] = [&]
+        {
+            if (m_bShowCareer != 0)
+            {
+                return CareerStats::Row(*pTeam, nPlayer, &anPlayed[nPlayer]);
+            }
+
+            return pTeam->aStatRows[nPlayer];
+        }();
+    }
+
+    if (m_bShowCareer != 0)
+    {
+        sprintf(szText, "Career: %d, %d, %d and %d matches", anPlayed[0], anPlayed[1], anPlayed[2], anPlayed[3]);
+        m_pCareerLabel->SetText(szText);
+    }
+
+    m_pCareerLabel->SetHidden(static_cast<char>(m_bShowCareer == 0));
+    m_pCareerLabel->SetDirtyFlag(1);
+
     for (int nStat = kMatchStatTotalPoints; nStat < kMatchStatCount; nStat++)
     {
         auto nTotal = 0;
-
-        if (m_bShowHomeTeam != 0)
-        {
-            pTeam = g_pGameEngine->m_pTeamA.get();
-        }
-        else
-        {
-            pTeam = g_pGameEngine->m_pTeamB.get();
-        }
 
         const auto        nRow = (nStat - kMatchStatTotalPoints) * kLeagueGridColumns;
         const auto* const pRow = &m_apWidgets[nRow];
 
         for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
         {
-            const float* pStats  = pTeam->aStatRows[nPlayer].aStat;
+            const float* pStats  = rows[nPlayer].aStat;
             auto* const  pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer].get();
 
             if (nStat == kMatchStatTimeOfPoss)
@@ -1835,8 +1872,8 @@ void LeagueSetupUIScreen::UpdateStatText()
 
             for (nPlayer = 0; nPlayer < kTeamRowCount; nPlayer++)
             {
-                nAttempts += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[kMatchStatShotsOnGoal]);
-                nMade += static_cast<int>(pTeam->aStatRows[nPlayer].aStat[kMatchStatTotalGoals]);
+                nAttempts += static_cast<int>(rows[nPlayer].aStat[kMatchStatShotsOnGoal]);
+                nMade += static_cast<int>(rows[nPlayer].aStat[kMatchStatTotalGoals]);
             }
 
             if (nAttempts > 0)
@@ -1865,6 +1902,9 @@ void LeagueSetupUIScreen::UpdateStatText()
 // FUNCTION: HYPERX 0x00457250
 void LeagueSetupUIScreen::HideStatsPanel()
 {
+    m_pCareerLabel->SetHidden(1);
+    m_pCareerLabel->SetDirtyFlag(0);
+
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->SetHidden(1);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_PLAYER_NAMES]->SetDirtyFlag(0);
     m_apWidgets[TEAMSETUP_WIDGET_STATS_TEAM_TITLE]->SetHidden(1);
@@ -1880,6 +1920,14 @@ void LeagueSetupUIScreen::HideStatsPanel()
             pWidget->SetDirtyFlag(0);
         }
     }
+}
+
+void LeagueSetupUIScreen::StepStatsView(int nStep)
+{
+    const auto nView = (m_bShowCareer * 2 + static_cast<int>(m_bShowHomeTeam == 0) + nStep + 4) % 4;
+
+    m_bShowCareer   = static_cast<char>(nView / 2);
+    m_bShowHomeTeam = static_cast<char>(nView % 2 == 0);
 }
 
 // FUNCTION: HYPERX 0x004572c0

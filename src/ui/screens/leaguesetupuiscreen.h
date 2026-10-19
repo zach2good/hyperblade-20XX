@@ -41,12 +41,19 @@ public:
 
     void HideStatsPanel();
 
+    // Home, away, home career and away career, in that order.
+    void StepStatsView(int nStep);
+
     void RefreshTeamDisplay();
     void UpdateStatText();
     void LoadTeamBitmaps(int nShow);
 
 private:
     char m_bShowHomeTeam; // 0x494, set for the home team's stats, clear for the away team's
+
+    // Set while the grid shows the totals kept across Gauntlet matches.
+    char    m_bShowCareer  = 0;
+    Widget* m_pCareerLabel = nullptr;
 };
 
 #endif

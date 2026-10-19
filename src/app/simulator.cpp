@@ -59,8 +59,6 @@ constexpr auto kMaxPeriodTicks = 30 * 60 * 30;
 constexpr auto kMaxPeriods = 4;
 
 // The roster slots of the four skater rows; slot 2 is the goalie.
-constexpr auto kRowRosterSlots = std::array{ 0, 1, 3, 4 };
-
 // An hour in: nought marks a clock stamp as unset in places.
 constexpr auto kSimulatedStart = Clock::Milliseconds{ 60 * 60 * 1000 };
 

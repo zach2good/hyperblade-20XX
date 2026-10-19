@@ -8,12 +8,16 @@
 #include "objectdef.h"
 #include "engine/statids.h"
 #include "engine/teamsblock.h"
+#include <array>
 #include <memory>
 
 class EngineObject;
 
 constexpr auto kTeamBlockSlots = 10;
 constexpr auto kTeamBlockSeats = 2;
+
+// The roster slot each stat row's player comes from.
+constexpr auto kRowRosterSlots = std::array{ 0, 1, 3, 4 };
 
 // One player's 49 match stats as the bench holds them.
 struct TeamStatRow

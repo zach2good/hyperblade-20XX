@@ -46,6 +46,9 @@ public:
 
     void HideBracketTorches();
     void HideStatsPanel();
+
+    // Home, away, home career and away career, in that order.
+    void StepStatsView(int nStep);
     void RefreshStatsDisplay();
     void UpdatePlayerRows();
     void LoadTeamBitmaps(int nShow);
@@ -53,11 +56,15 @@ public:
     void LoadObstacleFrames(int nBuild);
 
 private:
-    int  m_nUnusedF;        // 0x494
-    int  m_nUnusedG;        // 0x498
-    char m_bShowHomeTeam;   // 0x49c, set for the home team's stats, clear for the away team's
-    int  m_nLastGridWidget; // 0x4a0
-    char m_bTorchesLoaded;  // 0x4a4, set to 1 by championshipsetupuiscreen.cpp, cleared as a byte
+    int  m_nUnusedF;      // 0x494
+    int  m_nUnusedG;      // 0x498
+    char m_bShowHomeTeam; // 0x49c, set for the home team's stats, clear for the away team's
+
+    // Set while the grid shows the totals kept across Gauntlet matches.
+    char    m_bShowCareer  = 0;
+    Widget* m_pCareerLabel = nullptr;
+    int     m_nLastGridWidget; // 0x4a0
+    char    m_bTorchesLoaded;  // 0x4a4, set to 1 by championshipsetupuiscreen.cpp, cleared as a byte
 private:
     // Coming from the jumbotron makes the constructor restore the bracket.
     int m_nPrevState; // 0x4a8

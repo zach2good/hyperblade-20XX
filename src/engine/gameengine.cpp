@@ -83,6 +83,7 @@ struct GameApp;
 #include "app/stringids.h"
 #include "sound/soundids.h"
 #include "engine/objectphase.h"
+#include "engine/careerstats.h"
 
 float        g_flUnusedAgendaItemA = g_flZeroAgendaItem;
 float        g_flUnusedAgendaItemB = g_flZeroAgendaItem;
@@ -694,6 +695,11 @@ void GameEngine::TickClock()
 
         if (m_clock.nPeriod == kPeriodCount)
         {
+            SyncPlayerDataToTeam();
+            CareerStats::RecordMatch(*m_pTeamA);
+            CareerStats::RecordMatch(*m_pTeamB);
+            CareerStats::Save();
+
             AdvanceTournamentBracket();
         }
 

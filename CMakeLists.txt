@@ -99,6 +99,7 @@ set(HYPERX_SOURCES
     src/engine/cadjustacceleration.cpp
     src/engine/cameraobject.cpp
     src/engine/cameraprojectionstate.cpp
+    src/engine/careerstats.cpp
     src/engine/cbeattached.cpp
     src/engine/ccheckai.cpp
     src/engine/ccircletrack.cpp
@@ -388,6 +389,7 @@ enable_testing()
 hyperx_add_check(ini LABELS unit SOURCES tests/ini_check.cpp src/common/inifile.cpp src/common/path.cpp)
 hyperx_add_check(strings LABELS unit SOURCES tests/strings_check.cpp src/common/stringtable.cpp src/common/path.cpp)
 hyperx_add_check(path LABELS unit SOURCES tests/path_check.cpp src/common/path.cpp)
+hyperx_add_check(careerstats LABELS unit SOURCES tests/careerstats_check.cpp src/engine/careerstats.cpp)
 hyperx_add_check(rawalloc LABELS lint SOURCES tests/rawalloc_check.cpp ARGS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/tests")
 hyperx_add_check(hwmesh LABELS unit PERMISSIVE SOURCES tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
 hyperx_add_check(keymap LABELS unit SOURCES tests/keymap_check.cpp src/input/keymap.cpp LIBRARIES SDL3::SDL3)
