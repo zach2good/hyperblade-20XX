@@ -124,6 +124,7 @@ int main(int argc, char** argv)
     const auto pattern = std::regex(
         R"((^|[^\w.>])(new|delete|malloc|calloc|realloc|free|strdup|_strdup|SDL_malloc|SDL_calloc|SDL_realloc|SDL_free|SDL_strdup|shared_ptr|make_shared)\b)");
     const auto deletedFunction = std::regex(R"(=\s*delete\b)");
+    const auto preprocessor    = std::regex(R"(^\s*#)");
 
     auto nFound = 0;
 
@@ -147,19 +148,26 @@ int main(int argc, char** argv)
             auto buffer = std::stringstream();
             buffer << stream.rdbuf();
 
-            auto lines = std::istringstream(StripNonCode(buffer.str()));
-            auto line  = std::string();
-            auto nLine = 0;
+            auto code     = std::istringstream(StripNonCode(buffer.str()));
+            auto original = std::istringstream(buffer.str());
+            auto line     = std::string();
+            auto text     = std::string();
+            auto nLine    = 0;
 
-            while (std::getline(lines, line))
+            while (std::getline(code, line) && std::getline(original, text))
             {
                 nLine++;
+
+                if (std::regex_search(line, preprocessor))
+                {
+                    continue;
+                }
 
                 const auto stripped = std::regex_replace(line, deletedFunction, "");
 
                 if (std::regex_search(stripped, pattern))
                 {
-                    std::printf("%s:%d: %s\n", path.generic_string().c_str(), nLine, line.c_str());
+                    std::printf("%s:%d: %s\n", path.generic_string().c_str(), nLine, text.c_str());
                     nFound++;
                 }
             }
