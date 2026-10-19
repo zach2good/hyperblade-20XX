@@ -92,6 +92,7 @@
 #include "math/mathglobals.h"
 #include "math/randroll.h"
 #include <SDL3/SDL.h>
+#include "engine/planfixes.h"
 
 float  g_flUnusedDistanceA = g_flZeroDistance;
 float  g_flUnusedDistanceB = g_flZeroDistance;
@@ -627,8 +628,16 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
     const auto flFirstMinSubIn  = pTeam->aRows[nFirst].aStat[kRatingMinSubIn];
     const auto flSecondMinSubIn = pTeam->aRows[nSecond].aStat[kRatingMinSubIn];
     const auto flFirstSubOut    = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
-    // The second candidate's limit reads the first candidate's row, as in the original.
-    const auto flSecondSubOut = pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
+    // The original reads the second candidate's limit from the first candidate's row.
+    const auto flSecondSubOut = [&]
+    {
+        if (PlanFixes::On())
+        {
+            return pTeam->aRows[nSecond].aStat[kRatingSubOutDamage];
+        }
+
+        return pTeam->aRows[nFirst].aStat[kRatingSubOutDamage];
+    }();
 
     if (pTeam->aReserveSince[nFirst] != Clock::Milliseconds{})
     {

@@ -34,7 +34,8 @@ In game: after one failed check, the AI carrier decides whether to pass by the p
 It can pass when its teammate is covered, or keep skating when the teammate is open.
 
 Fix: give the re-arm a fourth leaf, `SET_TIMEOUTMSG 50, id_MSG_TimeOutMessage, id_PRN_Me,
-id_PRN_MyTeammate` (add the word 0xfedc0001 and raise the node's count from 3 to 4).
+id_PRN_MyTeammate` (add the word 0xfedc0001 and raise the node's count from 3 to 4). The port does
+this (see [plan_bugs.md](plan_bugs.md#summary)).
 
 Related dead code: "PassingPlay" also handles `id_MSG_Extra2` and re-arms it with the teammate's
 slot, but nothing in "PassingPlay" sends the first `id_MSG_Extra2`. Only a GoForGoal `Extra2`

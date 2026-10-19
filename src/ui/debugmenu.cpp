@@ -9,6 +9,7 @@
 #include "engine/framepacing.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
+#include "engine/planfixes.h"
 #include "globals.h"
 #include "graphics/graphicssettings.h"
 #include "graphics/meshblock.h"
@@ -799,6 +800,36 @@ void SpectateTab()
     ImGui::EndTabItem();
 }
 
+void PlansTab()
+{
+    if (!ImGui::BeginTabItem("Plans"))
+    {
+        return;
+    }
+
+    ImGui::BeginDisabled(g_bSessionActive != 0);
+
+    auto bFixed = PlanFixes::On();
+
+    if (ImGui::Checkbox("Fixed plans", &bFixed))
+    {
+        PlanFixes::Set(bFixed);
+    }
+
+    ImGui::SetItemTooltip("The fixes for the bugs docs/plan_bugs.md lists in the shipped AI and object plans, and the engine faults they hit. Off runs the plans as shipped.");
+    ImGui::EndDisabled();
+
+    ImGui::TextDisabled("Both sets are compiled at load; switching restarts each object's current behaviour.");
+    ImGui::TextDisabled("The team file fixes take effect when the next match loads its teams.");
+
+    if (g_bSessionActive != 0)
+    {
+        ImGui::TextDisabled("Locked during a network session, as every player must run the same plans.");
+    }
+
+    ImGui::EndTabItem();
+}
+
 void Build()
 {
     ImGui::SetNextWindowPos(ImVec2(16, 16), ImGuiCond_FirstUseEver);
@@ -816,6 +847,7 @@ void Build()
         ObjectsTab();
         CheatsTab();
         SpectateTab();
+        PlansTab();
 
         ImGui::EndTabBar();
     }

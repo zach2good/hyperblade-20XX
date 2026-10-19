@@ -1,9 +1,19 @@
 # Plan bugs
 
-These are bugs in the shipped plan data and the team ratings files of HYPERX.EXE v1.0.0.1. The
-fixes are suggestions only: neither the game data nor this repository applies them. Each finding
-survived an adversarial check against the original's code. None has been watched in the game, so
-"Confirmed" means the code path is certain and the in-game effect is still an inference.
+These are bugs in the shipped plan data and the team ratings files of HYPERX.EXE v1.0.0.1. Each
+finding survived an adversarial check against the original's code. None has been watched in the
+game, so "Confirmed" means the code path is certain and the in-game effect is still an inference.
+
+The port fixes them, and the debug menu's Plans tab (F2) turns the fixes off and on:
+
+- `src/planvm/planpatch.cpp` edits the compiled words of 13 plans as they load. A plan whose word
+  count or hash differs from the shipped file is left as it is. `planpatch_check` runs every
+  fix against the game's `Data` and can write the fixed plans out for `plan_dump.py`.
+- Every object compiles both sets of plans at load. Switching restarts each object's current
+  behaviour from the other set. A network session cannot switch.
+- `PlanFixes::On()` gates the engine faults: the speed restore, the power-up resets, three-leaf
+  avoidance, `SelectSubstitute`, and the ratings parser. The team file fixes apply when the next
+  match loads its teams.
 
 The AI runs from the plan files in `Data/PLANS`, scripts that the plan VM in `src/planvm/`
 interprets (see the [glossary](README.md#glossary)). `tools/plan_dump.py` prints them as readable
@@ -90,20 +100,37 @@ one word to the node, so the node's argument count goes from 3 to 4. Adding it a
 to `SendMessage(id_PRN_Me, id_MSG_Extra2)` works too. PassingPlay repeats the slip once, in its
 re-armed `SET_TIMEOUTMSG 50, id_MSG_TimeOutMessage, id_PRN_Me`.
 
+Fixed: `planpatch.cpp` adds the fourth leaf to both timers.
+
 ## Summary
 
-| Plan | Bug | Effect | Fix |
+| Plan | Bug | Effect | What the port does |
 |---|---|---|---|
-| CARRYROK "PassingPlay" | The re-armed timer has no receiver | After one failed check the carrier tests slot 0 as its receiver | Add `id_PRN_MyTeammate` to `SET_TIMEOUTMSG 50` |
-| CARRYROK "GoForGoal" | A collision keeps 8 bits of the decision log, so a second `ShootSituation` branch of 1 replays as 4 | In a network match another player's copy of the AI carrier may briefly enter a stale "PassingPlay" or "Throwing" | Give `ShootSituation` five arms, arm 4 a copy of arm 1 |
-| DEFENSE | Six collision interactors name opponents by slot, not by collision object | Attacks never react to dromers 2 and 3 | Use `id_PRN_LeadOppnBodyBub` and `id_PRN_OtherOppnBodyBub`, as "ManOnMan" does |
-| MULTPLR "Arming", "ScoreArming" | Timer and `Initiate` carry data 0 where the hitter's slot is read | Spins take their sign from dromer 0, and dromer 0 can be bounced from anywhere | Add `_MESSAGE_DATA_` to both timers; send `Extra0` from the `YerHit` handler |
-| TURNSTIL | The same data-0 pattern | Extra spin impulse from slot 0, and slot 0 can be bounced | Drop the `Initiate` `ReallySendMsg`; add `_MESSAGE_DATA_` to the timer |
-| GOALIE "Flying" | The timer sends `id_MSG_TimeOutMessage`, which "Flying" does not handle | An airborne goalie without the rok is not kicked down | Send `id_MSG_Extra1`, as "SaveFromGoal" does |
-| GRANDOM "Inactivate" | `ModifyOpposTeamFriction` copies one cached Speed to both slots of a pair | All four skaters get slot 0's Speed 150 ms into each period, after each goal and each green expiry | Engine fix only: write each slot's own cached value |
-| GRANDOM "Inactivate" | Blanket resets of long pass, long shot and immunity for slots 0 to 3 | Seattle's built-in long pass is lost every period | Remove the resets; send the plan's unused "End..." messages from timers |
-| RRANDOM "Active" | `REMOVE_AGENDA_ITEM` kills the 45 s `RedIsUp` timer | The 2.0 speed boost lasts until a green randomizer resets it | Delete that `REMOVE_AGENDA_ITEM` |
-| ROK "BeingCarried" | A refused throw's `_NO_BEH_CHANGE_` sticks | Later throws that period leave the rok hanging in the air | Add `CHANGE_TO_BEHAVIOR 3 "Flying"` to the throw arm |
-| NGOAL, SGOAL | `_NO_BEH_CHANGE_` in the own-goal arm sticks | Later goals into that net skip the post-goal sequence | Use `CHANGE_TO_BEHAVIOR 1 "PostScoreWait4Drag"` (8 places) |
-| Team files | Ratings parser stops a line at the first unknown keyword | JAMCA and NEM players with `id_RAT_RokReceiving` or `id_RAT_Stealing` lose RokHandling and drop the rok on about 99% of jostles | Rename to `MultiPointSpread` and `RokHandling` |
-| Team files | `SetSpecialRatings` is not a command | JAMCA's special easy goalie ratings are ignored | Rename to `SetSpecialGoalieRatings` |
+| CARRYROK "GoForGoal", "PassingPlay" | Two receiver timers carry data 0 | AI carriers test slot 0 as their receiver and pass where they should shoot | Adds `id_PRN_MyTeammate` to both timers |
+| CARRYROK "GoForGoal" | A collision keeps 8 bits of the decision log, so a second `ShootSituation` branch of 1 replays as 4 | In a network match another player's copy of the AI carrier may briefly enter a stale "PassingPlay" or "Throwing" | Gives `ShootSituation` five arms, 2 to 4 copies of arm 1 |
+| DEFENSE | Six collision interactors name opponents by slot, not by collision object | Attacks never react to dromers 2 and 3 | Uses `id_PRN_LeadOppnBodyBub` and `id_PRN_OtherOppnBodyBub`, as "ManOnMan" does |
+| DEFENSE | `id_MSG_SubstituteDromer` only runs with the clock going | A face-off substitute key never benches a healthy AI teammate | Swaps the `ClockStoppedSemaphore` arms |
+| DEFENSE, OFFWING, CARRYROK | Three-leaf `CAvoidObjects` has no range, and its second target in DEFENSE and OFFWING is the camera | AI skaters never swerve round teammates or opponents | Rewrites the 17 DEFENSE and OFFWING items to `id_PRN_MyTeammate, 0, 80.0, -6.5`; the engine gives CARRYROK's three-leaf items `Bind`'s range and strength |
+| MULTPLR "Arming", "ScoreArming" | Timer and `Initiate` carry data 0 where the hitter's slot is read | Spins take their sign from dromer 0, and dromer 0 can be bounced from anywhere | Adds `_MESSAGE_DATA_` to both timers; sends `Extra0` from the `YerHit` handler |
+| TURNSTIL | The same data-0 pattern | Extra spin impulse from slot 0, and slot 0 can be bounced | Drops the `Initiate` `ReallySendMsg`; adds `_MESSAGE_DATA_` to the timer |
+| GOALIE "Flying" | The timer sends `id_MSG_TimeOutMessage`, which "Flying" does not handle | An airborne goalie without the rok is not kicked down | Sends `id_MSG_Extra1`, as "SaveFromGoal" does |
+| GRANDOM "Inactivate" | `ModifyOpposTeamFriction` copies one cached Speed to both slots of a pair | All four skaters get slot 0's Speed 150 ms into each period, after each goal and each green expiry | Engine: a slow-down saves each opponent's speed and the restore puts it back |
+| GRANDOM "Inactivate" | Blanket resets of long pass, long shot and immunity for slots 0 to 3 | Seattle's built-in long pass is lost every period | Engine: a power-up saves the value it raises and a reset restores only that. End timers would not work: "Inactive" is not digressive, so entering it kills them (rule 2) |
+| RRANDOM "Active" | `REMOVE_AGENDA_ITEM` kills the 45 s `RedIsUp` timer | The 2.0 speed boost lasts until a green randomizer resets it | Deletes that `REMOVE_AGENDA_ITEM` |
+| ROK "BeingCarried" | A refused throw's `_NO_BEH_CHANGE_` sticks | Later throws that period leave the rok hanging in the air | Adds `CHANGE_TO_BEHAVIOR 3 "Flying"` to the throw arm |
+| NGOAL, SGOAL | `_NO_BEH_CHANGE_` in the own-goal arm sticks | Later goals into that net skip the post-goal sequence | Uses `CHANGE_TO_BEHAVIOR 1 "PostScoreWait4Drag"` (8 places) |
+| ARMORY | Display arms rely on the header after a sticky "Closed" | The armory can stay "Closed" for up to 5 s per weapon cycle | Adds `CHANGE_TO_BEHAVIOR 1 "Open"` to arms 0 and 1 |
+| SWARF | The timer tells armory 52 to deploy over armory 53 | Armory 52 polls early for nothing | Sends to 53 |
+| CAMERA "ViewSelfandOther" | `_NO_BEH_CHANGE_` in two arms sticks | The camera can stay in pass view | Names `CHANGE_TO_BEHAVIOR 2 "BasicOverTheShoulderView"`, which also undoes a sticky "PressCam" |
+| Coach | `SelectSubstitute` reads the first candidate's `SubOutDamage` for both | The second candidate's limit is wrong | Engine: reads the second candidate's row |
+| Team files | Ratings parser stops a line at the first unknown keyword | JAMCA and NEM players with `id_RAT_RokReceiving` or `id_RAT_Stealing` lose RokHandling and drop the rok on about 99% of jostles | Reads `RokReceiving`, `Stealing`, `d_RAT_SubInDamage` and `id_RAT_Pass` as `MultiPointSpread`, `RokHandling`, `SubInDamage` and `Pass2` |
+| Team files | `SetSpecialRatings` is not a command | JAMCA's special easy goalie ratings are ignored | Reads it as `SetSpecialGoalieRatings` |
+| Team files | NEM's easy blocks leave out `SubInDamage` and `MinSubIn` | Both read as 0 | An easy block without them gets 50 and 40, as every other team's has |
+
+Not fixed:
+
+- `RokScoreValue` cannot return 4, so a carried-in rok scores. Arm 4 is a sticky `_NO_BEH_CHANGE_`,
+  so making it reachable would also break the post-goal sequence. The intent is unclear.
+- LOSAN's `id_RAT_Speedburst4b 0 1`: the intended value is unclear.
+- LIMBOPO's sends to pole 40, the dead handlers, and the "Looks odd" findings: no effect, or
+  maybe deliberate.

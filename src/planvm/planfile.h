@@ -3,14 +3,22 @@
 
 #include <cstdio>
 #include <memory>
+#include <vector>
 
 union PlanWord;
 
 namespace PlanFile
 {
 
-std::unique_ptr<PlanWord[]> ReadBinary(FILE* pFile, unsigned int* pnCount);
-std::unique_ptr<PlanWord[]> OpenBinary(const char* pszName, void** ppUnused);
+struct Blobs
+{
+    std::unique_ptr<PlanWord[]> pShipped;
+    // Null when PlanPatch has no fixes for the plan.
+    std::unique_ptr<PlanWord[]> pFixed;
+};
+
+std::vector<int> ReadBinary(FILE* pFile);
+Blobs            OpenBinary(const char* pszName);
 
 } // namespace PlanFile
 

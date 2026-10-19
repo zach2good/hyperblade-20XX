@@ -136,6 +136,7 @@ set(HYPERX_SOURCES
     src/engine/objectstats.cpp
     src/engine/particle.cpp
     src/engine/particlesystem.cpp
+    src/engine/planfixes.cpp
     src/engine/player.cpp
     src/engine/playerobject.cpp
     src/engine/rampobject.cpp
@@ -255,6 +256,7 @@ set(HYPERX_SOURCES
     src/planvm/planarg.cpp
     src/planvm/plancond.cpp
     src/planvm/planfile.cpp
+    src/planvm/planpatch.cpp
     src/planvm/planfocusarg.cpp
     src/planvm/planinteractorfactories.cpp
     src/planvm/planstate.cpp
@@ -394,6 +396,9 @@ hyperx_add_check(mdm1 LABELS data DATA PERMISSIVE
     ARGS "${HYPERX_GAME_DATA}/Data")
 hyperx_add_check(wave LABELS data DATA
     SOURCES tests/wave_check.cpp src/sound/wave.cpp src/common/path.cpp
+    ARGS "${HYPERX_GAME_DATA}/Data")
+hyperx_add_check(planpatch LABELS data DATA
+    SOURCES tests/planpatch_check.cpp src/planvm/planpatch.cpp
     ARGS "${HYPERX_GAME_DATA}/Data")
 
 include(cmake/package.cmake)

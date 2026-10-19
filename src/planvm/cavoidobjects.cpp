@@ -20,6 +20,7 @@
 #include "common/pooledownerroot.h"
 #include "engine/messageids.h"
 #include "app/gameapp.h"
+#include "engine/planfixes.h"
 
 // How many frames on the wrong side the counter tolerates before the message goes out.
 constexpr auto kWrongSideLimit = 0x14;
@@ -74,6 +75,14 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
     {
         m_pSwerveTarget = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
         m_pDrawTarget   = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[2].n)];
+
+        // This form sets no range, so in the original it never steers; the fixes give it Bind's.
+        if (PlanFixes::On())
+        {
+            m_cReleaseOnRange = 0;
+            m_flRange         = 80.0f;
+            m_flStrength      = -6.5f;
+        }
     }
 
     if (pNode->m_nArgCount == 5)

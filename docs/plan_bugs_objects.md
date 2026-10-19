@@ -3,7 +3,8 @@
 HYPERX.EXE v1.0.0.1's shipped object plans and team ratings files, decoded with
 `tools/plan_dump.py` and checked against `src/planvm/` and, where it mattered, Ghidra. [plan_bugs.md](plan_bugs.md) covers the confidence ratings and the
 [plan VM rules](plan_bugs.md#plan-vm-rules), and [plan_bugs_skaters.md](plan_bugs_skaters.md) the
-skater and goalie plans. "Rule N" below is rule N there.
+skater and goalie plans. "Rule N" below is rule N there. Its [summary](plan_bugs.md#summary) says what the port
+fixes.
 
 ## The decision log
 

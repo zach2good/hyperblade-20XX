@@ -1,4 +1,4 @@
-// Opening a compiled plan and reading it in; both failures report and neither throws.
+// Opening a compiled plan and reading it in, with its fixed version; both failures report and neither throws.
 
 #include "common/compat.h"
 #include "common/path.h"
@@ -7,31 +7,20 @@
 #include "planfile.h"
 #include "plannode.h"
 #include "common/pathstring.h"
+#include "planvm/planpatch.h"
 #include <cstdio>
 #include <vector>
 #include "app/gameapp.h"
 
-// A truncated file yields a short plan rather than a refusal.
-// FUNCTION: HYPERX 0x00436200
-std::unique_ptr<PlanWord[]> PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
+namespace
 {
-    if (fread(pnCount, 4, 1, pFile) != 1)
-    {
-        // STRING: HYPERX 0x004bdf94
-        g_gameApp.Error("Misread binary plan");
-    }
 
-    // The file holds 4-byte words; a PlanWord is pointer-sized, so each is widened as it is read.
-    auto pInstructions = std::make_unique<PlanWord[]>(*pnCount);
-    auto words         = std::vector<int>(*pnCount);
+// The file holds 4-byte words; a PlanWord is pointer-sized, so each is widened.
+std::unique_ptr<PlanWord[]> Widen(std::span<const int> words)
+{
+    auto pInstructions = std::make_unique<PlanWord[]>(words.size());
 
-    if (fread(words.data(), sizeof(int), *pnCount, pFile) != *pnCount)
-    {
-        // STRING: HYPERX 0x004bdf94
-        g_gameApp.Error("Misread binary plan");
-    }
-
-    for (unsigned int i = 0; i < *pnCount; i++)
+    for (size_t i = 0; i < words.size(); i++)
     {
         pInstructions[i].n = words[i];
     }
@@ -39,32 +28,57 @@ std::unique_ptr<PlanWord[]> PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCo
     return pInstructions;
 }
 
-// FUNCTION: HYPERX 0x00436270
-std::unique_ptr<PlanWord[]> PlanFile::OpenBinary(const char* pszName, void**)
+} // namespace
+
+// A truncated file yields a short plan rather than a refusal.
+// FUNCTION: HYPERX 0x00436200
+std::vector<int> PlanFile::ReadBinary(FILE* pFile)
 {
-    PathString   strPath(kMaxPathLength, g_gameApp.m_strPlansPath.m_str.m_pchData, pszName, g_pszPbnExtension);
-    unsigned int nCount;
+    unsigned int nCount = 0;
+
+    if (fread(&nCount, 4, 1, pFile) != 1)
+    {
+        // STRING: HYPERX 0x004bdf94
+        g_gameApp.Error("Misread binary plan");
+    }
+
+    auto words = std::vector<int>(nCount);
+
+    if (fread(words.data(), sizeof(int), nCount, pFile) != nCount)
+    {
+        // STRING: HYPERX 0x004bdf94
+        g_gameApp.Error("Misread binary plan");
+    }
+
+    return words;
+}
+
+// FUNCTION: HYPERX 0x00436270
+PlanFile::Blobs PlanFile::OpenBinary(const char* pszName)
+{
+    PathString strPath(kMaxPathLength, g_gameApp.m_strPlansPath.m_str.m_pchData, pszName, g_pszPbnExtension);
 
     // STRING: HYPERX 0x004bc938
     auto* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "rb");
 
-    if (pFile != nullptr)
+    if (pFile == nullptr)
     {
-        auto pInstructions = PlanFile::ReadBinary(pFile, &nCount);
+        // STRING: HYPERX 0x004bdfa8
+        g_gameApp.Error("Binary Plan %s could not be opened!", pszName);
 
-        fclose(pFile);
-
-        if (pInstructions == nullptr)
-        {
-            // STRING: HYPERX 0x004bdfcc
-            g_gameApp.Error("Inability to read plan %s", pszName);
-        }
-
-        return pInstructions;
+        return {};
     }
 
-    // STRING: HYPERX 0x004bdfa8
-    g_gameApp.Error("Binary Plan %s could not be opened!", pszName);
+    const auto words = PlanFile::ReadBinary(pFile);
 
-    return nullptr;
+    fclose(pFile);
+
+    auto blobs = Blobs{ Widen(words), nullptr };
+
+    if (const auto fixed = PlanPatch::Fixed(pszName, words))
+    {
+        blobs.pFixed = Widen(*fixed);
+    }
+
+    return blobs;
 }

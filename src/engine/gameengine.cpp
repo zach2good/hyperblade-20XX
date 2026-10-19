@@ -35,6 +35,7 @@
 #include "graphics/meshmaterial.h"
 #include "ui/uiglobals.h"
 #include "teamsblock.h"
+#include "engine/planfixes.h"
 #include "ui/torchbitmaps.h"
 #include "ui/saveload.h"
 #include "ui/screens/dromeexteriorscreen.h"
@@ -991,6 +992,9 @@ void GameEngine::BeginMatchPlay()
             auto* const pStats  = &((PlayerObject*)m_ppObjects[nIndex])->m_stats;
             pStats->m_aStats[0] = FULL_WEIGHT;
 
+            // The base speeds come back below, so a slow-down's saved speed is stale.
+            ((PlayerObject*)m_ppObjects[nIndex])->m_powerUpRestore.oflSpeed.reset();
+
             if (pStats->GetScalar(kRatingDamage) > g_flZeroGameEngine)
             {
                 pStats->m_aStats[RATING_SLOT(kRatingDamage)] = FULL_WEIGHT;
@@ -1270,6 +1274,22 @@ enum ObjectDefCommand
     CMD_PLANS                  = 13,
 };
 
+// With the fixes on, JAMCA's misspelt special goalie command is read too.
+static short FindCommand(const char* pszCommand)
+{
+    const auto nCommand = ParseUtil::FindKeyword(pszCommand, s_apszCommands, kCommandCount);
+
+    if (nCommand < 0 && PlanFixes::On() && SDL_strcasecmp(pszCommand, "SetSpecialRatings") == 0)
+    {
+        return CMD_GOALIE_RATINGS_SPECIAL;
+    }
+
+    return nCommand;
+}
+
+// The rows NEM's easy blocks leave out read as this until the definition ends.
+constexpr auto kRatingUnset = -1.0f;
+
 // Fourteen commands; the ratings commands write without checking a definition exists.
 // FUNCTION: HYPERX 0x00482170
 std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnModelId)
@@ -1284,7 +1304,7 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
     while (pFile->GetNextLine(&pLine) > 0)
     {
         // STRING: HYPERX 0x004c732c
-        if (pLine != nullptr && ParseUtil::ParseToken(pLine, szCommand, nullptr, " \t", kParseTokenMax, &pLine) != 0 && (nCommand = ParseUtil::FindKeyword(szCommand, s_apszCommands, kCommandCount)) >= 0)
+        if (pLine != nullptr && ParseUtil::ParseToken(pLine, szCommand, nullptr, " \t", kParseTokenMax, &pLine) != 0 && (nCommand = FindCommand(szCommand)) >= 0)
         {
             switch (nCommand)
             {
@@ -1347,6 +1367,35 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
                     if (pDef != nullptr)
                     {
                         bComplete = 1;
+
+                        // Every other team's easy block sets these two; the rest left them nought.
+                        for (int nLevel = 0; nLevel < 3; nLevel++)
+                        {
+                            if (pDef->m_nRatingsMode != kRatingsField || pDef->m_apRatings[nLevel] == nullptr)
+                            {
+                                continue;
+                            }
+
+                            for (const auto [nRating, flEasy] : { std::pair{ kRatingSubInDamage, 50.0f }, std::pair{ kRatingMinSubIn, 40.0f } })
+                            {
+                                auto& flValue = pDef->m_apRatings[nLevel][nRating];
+
+                                if (flValue != kRatingUnset)
+                                {
+                                    continue;
+                                }
+
+                                flValue = [&]
+                                {
+                                    if (nLevel == 0)
+                                    {
+                                        return flEasy;
+                                    }
+
+                                    return 0.0f;
+                                }();
+                            }
+                        }
                     }
                     break;
             }
@@ -2570,6 +2619,12 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
             {
                 pDef->m_apRatings[nLevel][nEntry] = 0.0f;
             }
+
+            if (PlanFixes::On())
+            {
+                pDef->m_apRatings[nLevel][kRatingSubInDamage] = kRatingUnset;
+                pDef->m_apRatings[nLevel][kRatingMinSubIn]    = kRatingUnset;
+            }
         }
         else
         {
@@ -2600,7 +2655,26 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
             break;
         }
 
-        const auto nKeyword = ParseUtil::FindKeyword(szToken, ppszTable, static_cast<short>(nCount));
+        auto nKeyword = ParseUtil::FindKeyword(szToken, ppszTable, static_cast<short>(nCount));
+
+        // Old names and typos in the shipped team files, which stop the line in the original.
+        if (nKeyword < 0 && PlanFixes::On() && nMode == kRatingsField)
+        {
+            constexpr std::pair<const char*, const char*> kAliases[] = {
+                { "id_RAT_RokReceiving", "id_RAT_MultiPointSpread" },
+                { "id_RAT_Stealing", "id_RAT_RokHandling" },
+                { "d_RAT_SubInDamage", "id_RAT_SubInDamage" },
+                { "id_RAT_Pass", "id_RAT_Pass2" },
+            };
+
+            for (const auto& [pszAlias, pszName] : kAliases)
+            {
+                if (SDL_strcasecmp(szToken, pszAlias) == 0)
+                {
+                    nKeyword = ParseUtil::FindKeyword(pszName, ppszTable, static_cast<short>(nCount));
+                }
+            }
+        }
 
         if (nKeyword < 0)
         {

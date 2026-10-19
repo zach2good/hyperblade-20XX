@@ -229,8 +229,11 @@ protected:
     // The camera's cull result each frame; the model loaders set it.
     char m_bVisible; // 0x21c
 public:
-    // Compiles every plan the object owns, one PlanState per source.
+    // Compiles every plan the object owns, one PlanState per source, and again from the fixed sources.
     void CompileAllPlans();
+
+    // Re-runs the current plan from the set PlanFixes::On picks, in the behaviour it was in.
+    void SwapPlanSet();
 
     unsigned char HasNoModel() const
     {
@@ -254,6 +257,10 @@ public:
 protected:
     // One plan blob per plan.
     std::vector<std::unique_ptr<PlanWord[]> > m_ppPlanBlobs; // 0x230
+    // The same plans with PlanPatch's fixes, compiled beside them; null where a plan has none.
+    std::vector<std::unique_ptr<PlanWord[]> > m_ppFixedPlanBlobs;
+    std::unique_ptr<PlanState[]>              m_pFixedPlanStates;
+
 public:
     // The plan names, taken straight off ObjectDef::m_apszPlanNames.
     std::vector<std::unique_ptr<char[]> > m_papszPlanNames; // 0x234

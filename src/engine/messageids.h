@@ -51,6 +51,7 @@ constexpr auto kMsgWatchOutArmory     = 0x6e;
 constexpr auto kMsgReallySetAnimation = 0x70;
 constexpr auto kMsgTeammateCollision  = 0x75;
 constexpr auto kMsgOpponentCollision  = 0x76;
+constexpr auto kMsgExtra1             = 0x7c;
 constexpr auto kMsgEndOfPeriod        = 0x87;
 constexpr auto kMsgEndOfGame          = 0x88;
 constexpr auto kMsgSyncPossession     = 0x8b;

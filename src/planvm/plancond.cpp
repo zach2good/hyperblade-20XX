@@ -84,6 +84,7 @@
 #include "engine/object.h"
 #include "engine/objectphase.h"
 #include "planvm/decisionlog.h"
+#include "engine/planfixes.h"
 #include <SDL3/SDL.h>
 
 constexpr auto kEntitySlotLimit = 0x66;
@@ -4214,6 +4215,39 @@ void PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int
     {
         case kRatingLongShotEnable:
         case kRatingLongPassEnable:
+            if (PlanFixes::On())
+            {
+                // A power-up saves the flag it raises and its end puts that back, so a team's own
+                // long pass survives every Inactivate.
+                auto& flFlag   = pObject->m_stats.m_aStats[RATING_SLOT(nStat)];
+                auto& oflSaved = [&]() -> std::optional<float>&
+                {
+                    if (nStat == kRatingLongShotEnable)
+                    {
+                        return pObject->m_powerUpRestore.oflLongShot;
+                    }
+
+                    return pObject->m_powerUpRestore.oflLongPass;
+                }();
+
+                if (nAmount > 0)
+                {
+                    if (!oflSaved.has_value())
+                    {
+                        oflSaved = flFlag;
+                    }
+
+                    flFlag = 1.0f;
+                }
+                else if (oflSaved.has_value())
+                {
+                    flFlag = *oflSaved;
+                    oflSaved.reset();
+                }
+
+                return;
+            }
+
             if (nAmount <= 0)
             {
                 pObject->m_stats.m_aStats[RATING_SLOT(nStat)] = 0.0f;
@@ -5001,6 +5035,30 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
         }
     }
 
+    auto nFlip = (static_cast<unsigned char>(~nTarget)) & 1;
+
+    // The shipped restore gives both opponents the target's cached speed, and refills the cache
+    // from the slowed speeds before the second pair. The fixes put back what the slow-down saved.
+    if (PlanFixes::On() && nGate != 0)
+    {
+        for (const auto nOpponent : { nFlip, nFlip + 2 })
+        {
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(nOpponent));
+
+            auto& oflSaved = pObject->m_powerUpRestore.oflSpeed;
+
+            if (oflSaved.has_value())
+            {
+                pObject->m_stats.SetStat(RATING_SLOT(kRatingSpeed), *oflSaved);
+                oflSaved.reset();
+            }
+        }
+
+        g_nOpposSpeedCacheStale = 1;
+
+        return;
+    }
+
     if (g_nOpposSpeedCacheStale != 0)
     {
         for (int i = 0; i < kSpeedCacheCount; i++)
@@ -5029,8 +5087,6 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
         dReading = SPEED_RATING_MIN;
     }
 
-    auto nFlip = (static_cast<unsigned char>(~nTarget)) & 1;
-
     if (nGate != 0)
     {
         if (FloatBits(g_aOpposSpeedCache[static_cast<short>(nFlip)]) != kSpeedUnsetBits)
@@ -5050,15 +5106,19 @@ void PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, 
     }
     else
     {
-        pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
+        for (const auto nOpponent : { nFlip, nFlip + 2 })
+        {
+            pObject = g_pGameEngine->GetPlayer(static_cast<short>(nOpponent));
 
-        pObject->m_stats.m_aStats[RATING_SLOT(kRatingSpeed)] = static_cast<float>(dReading);
+            auto& oflSaved = pObject->m_powerUpRestore.oflSpeed;
 
-        nFlip += 2;
+            if (PlanFixes::On() && !oflSaved.has_value())
+            {
+                oflSaved = pObject->m_stats.GetScalar(kRatingSpeed);
+            }
 
-        pObject = g_pGameEngine->GetPlayer(static_cast<short>(nFlip));
-
-        pObject->m_stats.m_aStats[RATING_SLOT(kRatingSpeed)] = static_cast<float>(dReading);
+            pObject->m_stats.m_aStats[RATING_SLOT(kRatingSpeed)] = static_cast<float>(dReading);
+        }
     }
 }
 
@@ -5192,6 +5252,37 @@ constexpr auto kDefaultDuration = 20;
 
 constexpr auto kLaunchMessageArg = 2;
 
+// With the fixes on, a power-up saves the immunity it replaces and its end puts that back, so the
+// immunity cheat survives every Inactivate.
+static void WriteImmunity(PlayerObject* pPlayer, float flValue)
+{
+    auto& flImmunity = pPlayer->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)];
+
+    if (!PlanFixes::On())
+    {
+        flImmunity = flValue;
+
+        return;
+    }
+
+    auto& oflSaved = pPlayer->m_powerUpRestore.oflImmunity;
+
+    if (flValue != 0.0f)
+    {
+        if (!oflSaved.has_value())
+        {
+            oflSaved = flImmunity;
+        }
+
+        flImmunity = flValue;
+    }
+    else if (oflSaved.has_value())
+    {
+        flImmunity = *oflSaved;
+        oflSaved.reset();
+    }
+}
+
 // FUNCTION: HYPERX 0x00464b10
 void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
@@ -5209,8 +5300,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
 
             pBlock = pArgs->m_pArgs;
 
-            ((PlayerObject*)pCollision->GetOwner())->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)] =
-                static_cast<float>(static_cast<unsigned int>(pBlock[1].n));
+            WriteImmunity((PlayerObject*)pCollision->GetOwner(), static_cast<float>(static_cast<unsigned int>(pBlock[1].n)));
 
             return;
         }
@@ -5219,7 +5309,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
         nIndex  = static_cast<short>(pBlock[1].n);
         flValue = static_cast<float>(static_cast<unsigned int>(pBlock[2].n));
 
-        g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)] = flValue;
+        WriteImmunity(g_pGameEngine->GetPlayer(nIndex), flValue);
 
         return;
     }
@@ -5236,7 +5326,7 @@ void PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int 
         nIndex = static_cast<short>(pBlock[1].n);
     }
 
-    g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(kRatingImmunity)] = flValue;
+    WriteImmunity(g_pGameEngine->GetPlayer(nIndex), flValue);
 }
 
 // FUNCTION: HYPERX 0x00464c00

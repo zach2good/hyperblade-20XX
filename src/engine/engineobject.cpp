@@ -63,6 +63,7 @@
 #include "math/mathops.h"
 #include "engine/msgevent.h"
 #include "planvm/planfile.h"
+#include "engine/planfixes.h"
 #include "planvm/plannode.h"
 #include "common/stub.h"
 #include "graphics/modelcomponent.h"
@@ -602,6 +603,8 @@ EngineObject::~EngineObject()
     m_ppShadowXforms.reset();
     m_ppPlanBlobs.clear();
     m_pPlanStates.reset();
+    m_ppFixedPlanBlobs.clear();
+    m_pFixedPlanStates.reset();
     m_papszPlanNames.clear();
     m_pAnimPlayer.reset();
     m_pBody.reset();
@@ -626,11 +629,12 @@ char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 
     if (pDef->m_nPlanCount > 0)
     {
-        void* pUnused;
-
         for (short i = 0; i < pDef->m_nPlanCount; i++)
         {
-            m_ppPlanBlobs.push_back(PlanFile::OpenBinary(pDef->m_apszPlanNames[i].get(), &pUnused));
+            auto blobs = PlanFile::OpenBinary(pDef->m_apszPlanNames[i].get());
+
+            m_ppPlanBlobs.push_back(std::move(blobs.pShipped));
+            m_ppFixedPlanBlobs.push_back(std::move(blobs.pFixed));
         }
 
         m_papszPlanNames   = std::move(pDef->m_apszPlanNames);
@@ -983,21 +987,46 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 // FUNCTION: HYPERX 0x00470fb0
 void EngineObject::CompileAllPlans()
 {
-    if (!m_ppPlanBlobs.empty())
+    if (m_ppPlanBlobs.empty())
     {
-        m_pPlanStates = std::make_unique<PlanState[]>(m_nPlanCount);
+        return;
+    }
 
-        for (int nIndex = 0; nIndex < m_nPlanCount; nIndex++)
+    m_pPlanStates      = std::make_unique<PlanState[]>(m_nPlanCount);
+    m_pFixedPlanStates = std::make_unique<PlanState[]>(m_nPlanCount);
+
+    for (int nIndex = 0; nIndex < m_nPlanCount; nIndex++)
+    {
+        for (const auto bFixed : { false, true })
         {
-            m_pPlanStates[nIndex].m_pOwner = this;
+            auto& state = [&]() -> PlanState&
+            {
+                if (bFixed)
+                {
+                    return m_pFixedPlanStates[nIndex];
+                }
 
-            m_pPlanStates[nIndex].m_pszName = m_papszPlanNames[nIndex].get();
+                return m_pPlanStates[nIndex];
+            }();
 
-            m_pPlanStates[nIndex].m_wSyncValue = static_cast<short>(nIndex);
+            state.m_pOwner = this;
 
-            PlanWord* const pSource = m_ppPlanBlobs[nIndex].get();
+            state.m_pszName = m_papszPlanNames[nIndex].get();
 
-            PlanNode** const ppCompiled = m_pPlanStates[nIndex].Compile(pSource);
+            state.m_wSyncValue = static_cast<short>(nIndex);
+
+            // A plan with no fixes compiles from the shipped words in both sets.
+            PlanWord* const pSource = [&]
+            {
+                if (bFixed && m_ppFixedPlanBlobs[nIndex] != nullptr)
+                {
+                    return m_ppFixedPlanBlobs[nIndex].get();
+                }
+
+                return m_ppPlanBlobs[nIndex].get();
+            }();
+
+            PlanNode** const ppCompiled = state.Compile(pSource);
 
             if (ppCompiled == nullptr)
             {
@@ -1010,9 +1039,24 @@ void EngineObject::CompileAllPlans()
                 return;
             }
 
-            m_pPlanStates[nIndex].SetOwnerAndReset(this, ppCompiled);
+            state.SetOwnerAndReset(this, ppCompiled);
         }
     }
+}
+
+void EngineObject::SwapPlanSet()
+{
+    if (m_pPlanState == nullptr || m_pFixedPlanStates == nullptr)
+    {
+        return;
+    }
+
+    const auto nPlan      = m_pPlanState->m_wSyncValue;
+    const auto nBehaviour = m_pPlanState->m_nIndex;
+
+    InstantiateAIPlan(nPlan);
+
+    m_pPlanState->ActivateBehavior(nBehaviour);
 }
 
 // Answers minus one when not found, which nothing stops a caller indexing with.
@@ -1718,7 +1762,15 @@ void EngineObject::InstantiateAIPlan(short nIndex)
         (*ppState)->Teardown();
     }
 
-    *ppState = &m_pPlanStates[nIndex];
+    *ppState = [&]
+    {
+        if (PlanFixes::On())
+        {
+            return &m_pFixedPlanStates[nIndex];
+        }
+
+        return &m_pPlanStates[nIndex];
+    }();
 
     if (*ppState != nullptr)
     {

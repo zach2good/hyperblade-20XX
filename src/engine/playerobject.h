@@ -7,6 +7,7 @@
 #include "engine/objectstats.h"
 #include "engine/engineobject.h"
 #include "engine/matchstats.h"
+#include "engine/planfixes.h"
 #include "engine/gameengine.h"
 #include "planvm/interactor.h"
 
@@ -41,6 +42,8 @@ public:
     // The model to substitute to, or minus one.
     short m_wDesiredSubstitute; // 0xfee
     short m_wFlyingSemaphore;   // 0xff0
+
+    PowerUpRestore m_powerUpRestore;
 };
 
 // SYNTHETIC: HYPERX 0x00474300
