@@ -49,6 +49,7 @@ set(HYPERX_SOURCES
     src/app/config.cpp
     src/app/frametimer.cpp
     src/app/gameapp.cpp
+    src/app/simulator.cpp
     src/app/window.cpp
     src/app/winmain.cpp
     src/app/wndproc.cpp

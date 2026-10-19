@@ -20,8 +20,18 @@ static_assert(sizeof(Milliseconds) == 4 && sizeof(FractionalMilliseconds) == 8);
 
 inline const auto kStart = std::chrono::steady_clock::now();
 
+// A batch simulation steps the clock a tick at a time, so plan timers and the period clock keep
+// pace with physics that runs as fast as the CPU allows.
+inline bool         g_bSimulated = false;
+inline Milliseconds g_simulatedNow{};
+
 inline Milliseconds Now()
 {
+    if (g_bSimulated)
+    {
+        return g_simulatedNow;
+    }
+
     return std::chrono::duration_cast<Milliseconds>(std::chrono::steady_clock::now() - kStart);
 }
 

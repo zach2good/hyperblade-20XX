@@ -68,6 +68,21 @@ To play the music without the CD, rip the audio tracks to `Data/Music/Track02.fl
 `Track03.flac` etc. FLAC, MP3 and WAV are all supported. On Linux the rips are the only music, as
 the CD drive is read on Windows alone.
 
+## Simulating matches
+
+`-sim` plays AI-only matches with no window or sound, about 470 times faster than real time, and
+writes every player's match stats to `sim_results.csv` beside the executable:
+
+```sh
+hyperblade_20XX -sim LOSAN SEATTLE 100 1 fixed
+```
+
+The arguments are the home team, the away team, the number of matches, the first seed (each
+match adds one) and `fixed` or `shipped` plans. A team is its file name, its name or its index;
+an unknown team lists them all. The match settings in `booie.ini`, such as difficulty and period
+length, still apply. Each row is one player in one match, with their health at the end (100 is
+unhurt), the score, and the game's own match stats. A seed does not yet replay a match exactly.
+
 ## Build
 
 The build needs nothing from the game. Each preset in [CMakePresets.json](CMakePresets.json)
