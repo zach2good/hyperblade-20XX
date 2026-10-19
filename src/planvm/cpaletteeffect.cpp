@@ -28,14 +28,7 @@ void CPaletteEffect::OnListChanged()
         return;
     }
 
-    auto* const pHeld = m_pEffect;
-
-    if (pHeld != nullptr)
-    {
-        delete pHeld;
-
-        m_pEffect = nullptr;
-    }
+    m_pEffect.reset();
 
     m_expiry = {};
     m_pOwner = nullptr;
@@ -59,11 +52,11 @@ int CPaletteEffect::CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry 
             case EffectKind::kScalarA:
             case EffectKind::kScalarB:
             case EffectKind::kScalarC:
-                m_pEffect = new PaletteScalarFade(&anRange);
+                m_pEffect = std::make_unique<PaletteScalarFade>(&anRange);
                 break;
 
             case EffectKind::kPlain:
-                m_pEffect = new VisualEffectFade(&anRange);
+                m_pEffect = std::make_unique<VisualEffectFade>(&anRange);
                 break;
 
             default:
@@ -72,9 +65,7 @@ int CPaletteEffect::CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry 
 
         if (m_pEffect->Start(&peStart) == 0)
         {
-            delete m_pEffect;
-
-            m_pEffect = nullptr;
+            m_pEffect.reset();
 
             return 0;
         }

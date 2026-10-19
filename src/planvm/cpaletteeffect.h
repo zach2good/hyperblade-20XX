@@ -1,9 +1,12 @@
 #ifndef HYPERBLADE_CPALETTEEFFECT_H
 #define HYPERBLADE_CPALETTEEFFECT_H
 
+#include <memory>
+
 #include "common/compat.h"
 #include "common/clock.h"
 #include "graphics/bitmapformat.h"
+#include "graphics/palettefade.h"
 #include "planvm/releasingagendaitem.h"
 
 class EngineObject;
@@ -43,9 +46,9 @@ public:
     int CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry peStart, int nDuration);
 
     // The fade the tick drives and the engine clock reading it retires itself at.
-    class PaletteFade*  m_pEffect; // 0x10
-    int                 m_nUnused; // 0x14
-    Clock::Milliseconds m_expiry;  // 0x18
+    std::unique_ptr<PaletteFade> m_pEffect; // 0x10
+    int                          m_nUnused; // 0x14
+    Clock::Milliseconds          m_expiry;  // 0x18
 };
 
 #endif
