@@ -1,15 +1,96 @@
 --- a/ROK
 +++ b/ROK
-@@ -234,5 +234,5 @@
+@@ -83,5 +83,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 0
+-                CHANGE_TO_BEHAVIOR 1 "GlidingFree"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -92,5 +92,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 1
+-                CHANGE_TO_BEHAVIOR 1 "GlidingFree"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -101,5 +101,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 2
+-                CHANGE_TO_BEHAVIOR 1 "GlidingFree"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -110,5 +110,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 3
+-                CHANGE_TO_BEHAVIOR 1 "GlidingFree"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -195,9 +195,9 @@
+                     CHANGE_TO_BEHAVIOR 1 "BeingCarried"
+                     DO_ACTION 3 id_ACF_SendMessage 6 id_MSG_ShootToKill
+-                CHANGE_TO_BEHAVIOR 1 "BeingCarried"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 2
+                     CHANGE_TO_BEHAVIOR 1 "BeingCarried"
+                     DO_ACTION 3 id_ACF_SendMessage 6 id_MSG_ShootToKill
+-                CHANGE_TO_BEHAVIOR 1 "BeingCarried"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+     SET_MESSAGE_INTERACTOR 2 id_MSG_ShootToKill
+         Enable 1
+@@ -222,8 +222,9 @@
+                             CHANGE_TO_BEHAVIOR 1 "KillSeeking"
+                             DO_ACTION 2 id_ACF_LaunchToward 3
+-                        Block 4
++                        Block 5
+                             DO_ACTION 2 id_ACF_Trace 9999
+                             CHANGE_TO_BEHAVIOR 1 "FlyingToGoal"
+                             DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 1
++                            DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 40
+                             DO_ACTION 1 id_ACF_Launch
+                     DO_ACTION 1 id_ACF_Unset_AttachPak
+@@ -234,6 +235,7 @@
              DECIDE_BY_AMONG 3 id_DCF_OkToLaunchRok
                  CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
 -                Block 6
-+                Block 7
++                Block 8
                      DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 38
++                    DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 40
                      DO_ACTION 3 id_ACF_EndStatTimer id_PRN_RokCarrier 9
-@@ -241,4 +241,5 @@
+                     DO_ACTION 1 id_ACF_Throw
+@@ -241,4 +243,5 @@
                      DO_ACTION 3 id_ACF_SendMessage _BROADCAST_ id_MSG_RokIsFree
                      DO_ACTION 3 id_ACF_IncrementStat id_PRN_LastRokCarrier 1
 +                    CHANGE_TO_BEHAVIOR 1 "Flying"
      SET_MESSAGE_INTERACTOR 2 id_MSG_PassTo
          Enable 1
+@@ -347,5 +350,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 0
+-                CHANGE_TO_BEHAVIOR 1 "Flying"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -356,5 +359,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 1
+-                CHANGE_TO_BEHAVIOR 1 "Flying"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -365,5 +368,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 2
+-                CHANGE_TO_BEHAVIOR 1 "Flying"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak
+@@ -374,5 +377,5 @@
+             DECIDE_BY_WITH_AMONG 4 id_DCF_IsDromerKnockedDown
+                 DataBlock 1 3
+-                CHANGE_TO_BEHAVIOR 1 "Flying"
++                CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+                 Block 3
+                     DO_ACTION 1 id_ACF_Set_AttachPak

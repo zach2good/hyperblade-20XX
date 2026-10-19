@@ -13,3 +13,10 @@
 +                    CHANGE_TO_BEHAVIOR 1 "Open"
                  CHANGE_TO_BEHAVIOR 1 "Open"
                  CHANGE_TO_BEHAVIOR 1 "Closed"
+@@ -33,5 +37,5 @@
+             SET_TIMEOUTMSG 3 150 id_MSG_TimeOutMessage id_PRN_Me
+     SET_MESSAGE_INTERACTOR 2 id_MSG_TimeOutMessage
+-        CHANGE_TO_BEHAVIOR 1 "Open"
++        CHANGE_TO_BEHAVIOR 1 _NO_BEH_CHANGE_
+     SET_MESSAGE_INTERACTOR 2 id_MSG_DeployWeapon
+         Enable 2

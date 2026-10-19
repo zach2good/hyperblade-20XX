@@ -1,6 +1,15 @@
 --- a/RRANDOM
 +++ b/RRANDOM
-@@ -188,6 +188,5 @@
+@@ -62,6 +62,7 @@
+ DECLARE_BEHAVIOR 3 id_BEH_SetFlatInPlace "Setup"
+     SET_MESSAGE_INTERACTOR 2 id_MSG_Initiate
+-        Enable 4
++        Enable 5
+             DO_ACTION 2 id_ACF_SetRenderFlag 0
++            DO_ACTION 2 id_ACF_SetMaxSpeed 0.7
+             DO_ACTION 2 id_ACF_ModifyAvailableReds 8
+             DO_ACTION 2 id_ACF_SwapRandomizers id_PRN_Me
+@@ -188,6 +189,5 @@
              SET_TIMEOUTMSG 3 150 id_MSG_TimeOutMessage id_PRN_Me
      SET_MESSAGE_INTERACTOR 2 id_MSG_TimeOutMessage
 -        Enable 2

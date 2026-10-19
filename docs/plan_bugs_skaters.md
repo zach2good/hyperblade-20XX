@@ -264,6 +264,7 @@ No plan transition targets these, and the engine starts plans at behaviour 0:
 
 - DEFENSE 9 "Halted".
 - OFFWING 5 "SetUpToReceive", 6 "ReceivePass", 7 "PassingPlayRecv".
+- CARRYROK "TurnToMate": nothing in a plan or the engine sends `id_MSG_TurnTowardMate`.
 - HUMAN 11 "GlideToStop" and its pair 12 "GlideToStop2", 17 "GoalScoredDrag". 1 "GeneralGliding"
   and 14 "Stopped2" are reached as the keyboard behaviours' standby partners.
 - SIDELN 4 "InjStart", 6 "HumanInjStart".
