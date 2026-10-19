@@ -1,6 +1,8 @@
 #ifndef HYPERBLADE_BUBBLENODE_H
 #define HYPERBLADE_BUBBLENODE_H
 
+#include <memory>
+
 struct Vec3;
 
 class EngineObject;
@@ -24,8 +26,8 @@ public:
     BoundBubble*           m_pChildren;   // 0x014
     short                  m_nChildCount; // 0x018
     // An AttachPak for an attached bubble, else the parser's kExtraUseDetail sentinel.
-    struct AttachPak*     m_pAttach; // 0x01c
-    struct CollisionCage* m_pCage;   // 0x020
+    struct AttachPak*                     m_pAttach; // 0x01c
+    std::unique_ptr<struct CollisionCage> m_pCage;   // 0x020
 };
 
 #endif

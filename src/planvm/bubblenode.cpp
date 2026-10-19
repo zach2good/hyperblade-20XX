@@ -27,11 +27,4 @@ BubbleNode::~BubbleNode()
     {
         delete m_pAttach;
     }
-
-    if (m_pCage != nullptr)
-    {
-        delete m_pCage;
-
-        m_pCage = nullptr;
-    }
 }
