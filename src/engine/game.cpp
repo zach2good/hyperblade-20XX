@@ -121,9 +121,11 @@ void Game::InitializeEngine()
     auto nStart = GameApp::GetInstallLevel();
 
     // A simulation records nothing; its matches are not anyone's career.
-    if (!Simulator::Requested())
+    const auto* const pszBase = SDL_GetBasePath();
+
+    if (!Simulator::Requested() && pszBase != nullptr)
     {
-        CareerStats::Open(String::Concat(g_gameApp.m_strExeDir.m_str, "hyperblade_20XX_career.txt").m_pchData);
+        CareerStats::Open(std::string(pszBase) + "hyperblade_20XX_career.txt");
     }
 
     // A new of a type with a constructor, for the null test and exception frame.
