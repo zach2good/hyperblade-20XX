@@ -235,6 +235,13 @@ public:
     // Re-runs the current plan from the set PlanFixes::On picks, in the behaviour it was in.
     void SwapPlanSet();
 
+    // CHANGE_OF_PLAN: runs plan nPlan from behaviour nBehaviour. With autopilot on, a dromer sent to
+    // Human runs Defense instead.
+    void ChangePlan(short nPlan, unsigned int nBehaviour);
+
+    // Runs the named plan from its behaviour of the same name as pszBehaviour, else from its first.
+    void RunPlanFrom(const char* pszPlan, const char* pszBehaviour);
+
     unsigned char HasNoModel() const
     {
         return static_cast<unsigned char>(m_nFlags >> 2) & 1;

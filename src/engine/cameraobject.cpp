@@ -1,5 +1,8 @@
 #include "common/compat.h"
 #include "engine/spectator.h"
+#include "planvm/gamebehaviorobject.h"
+#include "planvm/planstate.h"
+#include <SDL3/SDL.h>
 #include <optional>
 #include "cameraobject.h"
 #include "anim/animbinding.h"
@@ -233,6 +236,11 @@ void CameraObject::ViewIt()
     {
         // STRING: HYPERX 0x004bc3dc
         g_gameApp.Fatal("Camera::ViewIt(): Null pointer for ModelToTrack\n");
+    }
+
+    if (m_nSlot == kCameraMainSlot)
+    {
+        Spectator::FollowCamera(SDL_strcasecmp(GetPlanState()->m_pCurrent->GetName(), "PressCam") == 0);
     }
 
     // The free camera flies in the main camera's place, seeded from last tick's eye, unshaken.

@@ -1,4 +1,4 @@
-// Bot spectator mode: the player's dromer runs on the AI plans, and the main camera flies free.
+// Bot spectator mode: every dromer runs on the AI plans, and the main camera flies free.
 
 #ifndef HYPERBLADE_SPECTATOR_H
 #define HYPERBLADE_SPECTATOR_H
@@ -9,10 +9,21 @@
 namespace Spectator
 {
 
-// Slot 0 runs the Defense plan, as slot 1 does for the other team, instead of the keyboard's Human
-// plan. Changing it mid-match swaps the plan at once; a network session refuses it.
+// Every dromer runs the AI plans: a dromer sent to the keyboard's Human plan runs Defense instead.
+// On while the setting is on or the Tab side view is up. Changing it mid-match swaps the plans at
+// once, handing control back to the dromer the camera follows; a network session refuses it.
 bool Autopilot();
+
+// The debug menu's and -b's setting, which holds whatever the camera does.
+bool AutopilotSetting();
 void SetAutopilot(bool bOn);
+
+// Tab flips the main camera to the side view and back. The side view spectates while the camera
+// stays there; the camera leaving it for a goal or the drag hands control back.
+void ToggleSideView();
+
+// The main camera says each view whether it is in the side view.
+void FollowCamera(bool bSideView);
 
 // The main camera follows the keyboard, mouse and pad instead of its tracking plan.
 bool FreeCamera();

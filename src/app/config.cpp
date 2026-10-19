@@ -1,6 +1,7 @@
 #include "common/compat.h"
 #include "common/path.h"
 #include "input/keycodes.h"
+#include "engine/spectator.h"
 #include "globals.h"
 #include "appglobals.h"
 #include "config.h"
@@ -239,6 +240,8 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             g_pGameEngine->m_ppSlots[kCameraMainSlot]->PostSceneEvent(kMsgMoveEyeTrack, 5);
 
             g_nTabCycle = static_cast<short>((g_nTabCycle + 1) % 2);
+
+            Spectator::ToggleSideView();
             break;
 
         case Key::kEscape:

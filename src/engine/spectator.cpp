@@ -5,6 +5,9 @@
 #include "engine/engineobject.h"
 #include "engine/framepacing.h"
 #include "engine/gameengine.h"
+#include "engine/objectclasses.h"
+#include "planvm/gamebehaviorobject.h"
+#include "planvm/planstate.h"
 #include "globals.h"
 #include "physics/physicsbody.h"
 #include "ui/debugmenu.h"
@@ -30,9 +33,16 @@ constexpr auto kPitchLimit = 1.5f;
 constexpr auto kStickDeadZone = 8000.0f;
 constexpr auto kStickRange    = 32767.0f;
 
-bool s_bAutopilot  = false;
-bool s_bFreeCamera = false;
-bool s_bSeeded     = false;
+bool s_bAutopilot = false;
+bool s_bSideView  = false;
+
+// Views a Tab waits for the camera to reach the side view before it gives up.
+constexpr auto kSideViewWait = 30;
+
+// Views since a Tab sent the camera to the side view, or minus one when none is pending.
+int  s_nSideViewWait = -1;
+bool s_bFreeCamera   = false;
+bool s_bSeeded       = false;
 
 Vec3  s_eye     = {};
 float s_flYaw   = 0.0f;
@@ -73,28 +83,126 @@ float Stick(SDL_Gamepad* pPad, SDL_GamepadAxis axis)
     return std::clamp(flRaw / kStickRange, -1.0f, 1.0f);
 }
 
+// Moves the dromers onto or off the AI plans when Autopilot() has changed, each in the behaviour
+// of the same name.
+void ApplyAutopilot(bool bWasOn)
+{
+    const auto bOn = Spectator::Autopilot();
+
+    if (bOn == bWasOn)
+    {
+        return;
+    }
+
+    ReleasePlayer();
+
+    if (g_pGameEngine == nullptr || g_gameApp.m_nEngineState != kEstateMatchLive)
+    {
+        return;
+    }
+
+    if (bOn)
+    {
+        for (auto nSlot = kSlotDromer0; nSlot <= kSlotDromer3; nSlot++)
+        {
+            auto* const pDromer = g_pGameEngine->m_ppSlots[nSlot];
+
+            if (pDromer != nullptr && SDL_strcasecmp(pDromer->GetPlanState()->GetName(), "Human") == 0)
+            {
+                pDromer->RunPlanFrom("Defense", pDromer->GetPlanState()->m_pCurrent->GetName());
+            }
+        }
+
+        return;
+    }
+
+    // The tracked dromer is yours unless it is on the bench, when its team mate takes over.
+    auto* pOwner = g_pGameEngine->m_apTracked[0];
+
+    if (pOwner == nullptr || pOwner->GetSlot() > kSlotDromer3 || pOwner->GetSlot() % 2 != 0)
+    {
+        pOwner = g_pGameEngine->m_ppSlots[kSlotDromer0];
+    }
+
+    if (SDL_strcasecmp(pOwner->GetPlanState()->GetName(), "Sideln") == 0)
+    {
+        pOwner = g_pGameEngine->m_ppSlots[pOwner->GetSlot() ^ 2];
+    }
+
+    pOwner->RunPlanFrom("Human", pOwner->GetPlanState()->m_pCurrent->GetName());
+}
+
 } // namespace
 
 bool Spectator::Autopilot()
+{
+    return s_bAutopilot || s_bSideView;
+}
+
+bool Spectator::AutopilotSetting()
 {
     return s_bAutopilot;
 }
 
 void Spectator::SetAutopilot(bool bOn)
 {
-    if (bOn == s_bAutopilot || g_bSessionActive != 0)
+    if (g_bSessionActive != 0)
     {
         return;
     }
 
+    const auto bWasOn = Autopilot();
+
     s_bAutopilot = bOn;
 
-    ReleasePlayer();
+    ApplyAutopilot(bWasOn);
+}
 
-    if (g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive && g_pGameEngine->m_ppSlots[0] != nullptr)
+void Spectator::ToggleSideView()
+{
+    if (g_bSessionActive != 0)
     {
-        g_pGameEngine->m_ppSlots[0]->SelectAndActivatePlan();
+        return;
     }
+
+    // The camera takes the Tab on its next tick, so turning on waits for it to arrive.
+    if (!s_bSideView)
+    {
+        s_nSideViewWait = 0;
+
+        return;
+    }
+
+    const auto bWasOn = Autopilot();
+
+    s_bSideView = false;
+
+    ApplyAutopilot(bWasOn);
+}
+
+void Spectator::FollowCamera(bool bSideView)
+{
+    const auto bWasOn = Autopilot();
+
+    if (s_nSideViewWait >= 0)
+    {
+        if (bSideView)
+        {
+            s_bSideView     = true;
+            s_nSideViewWait = -1;
+        }
+        else if (++s_nSideViewWait > kSideViewWait)
+        {
+            s_nSideViewWait = -1;
+        }
+    }
+    else if (!bSideView)
+    {
+        // A goal, the drag or a shot took the camera off the side view.
+        s_bSideView = false;
+    }
+
+    ApplyAutopilot(bWasOn);
 }
 
 bool Spectator::FreeCamera()

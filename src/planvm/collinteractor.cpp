@@ -168,9 +168,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
     {
         m_pOwner->DispatchSceneMessage(kMsgExitBehavior, 0, kDecisionLogFresh, m_pOwner->GetSlot(), 0);
 
-        m_pOwner->InstantiateAIPlan(m_wSlot);
-
-        m_pOwner->GetPlanState()->ActivateBehavior(m_wBehaviour);
+        m_pOwner->ChangePlan(m_wSlot, m_wBehaviour);
     }
 }
 

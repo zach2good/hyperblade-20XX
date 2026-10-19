@@ -48,6 +48,7 @@
 #include "rokobject.h"
 #include <cstdlib>
 #include <cmath>
+#include <algorithm>
 #include <cstring>
 #include <new>
 #include <cstdio>
@@ -1055,6 +1056,57 @@ void EngineObject::SwapPlanSet()
     const auto nBehaviour = m_pPlanState->m_nIndex;
 
     InstantiateAIPlan(nPlan);
+
+    m_pPlanState->ActivateBehavior(nBehaviour);
+}
+
+void EngineObject::ChangePlan(short nPlan, unsigned int nBehaviour)
+{
+    InstantiateAIPlan(nPlan);
+
+    const auto bDromer = m_nSlot >= kSlotDromer0 && m_nSlot <= kSlotDromer3;
+
+    if (!Spectator::Autopilot() || !bDromer || static_cast<int>(nBehaviour) == PLAN_TOKEN_PREVIOUS_BEH || SDL_strcasecmp(m_pPlanState->GetName(), "Human") != 0)
+    {
+        m_pPlanState->ActivateBehavior(nBehaviour);
+
+        return;
+    }
+
+    const auto strBehaviour = std::string(m_pPlanState->GetBehaviorByIndex(nBehaviour)->GetName());
+
+    RunPlanFrom("Defense", strBehaviour.c_str());
+}
+
+void EngineObject::RunPlanFrom(const char* pszPlan, const char* pszBehaviour)
+{
+    const auto nPlan = FindPlanByName(pszPlan);
+
+    if (nPlan < 0)
+    {
+        return;
+    }
+
+    // The name may live in the plan being torn down.
+    const auto strBehaviour = std::string(pszBehaviour);
+
+    InstantiateAIPlan(nPlan);
+
+    // GetBehaviorIndex is fatal on a miss, and most behaviours have no namesake in the other plan.
+    auto nBehaviour = 0u;
+    auto nIndex     = 0u;
+
+    for (auto* pNode = m_pPlanState->m_pHead; pNode != nullptr; pNode = pNode->m_pStandby)
+    {
+        if (SDL_strcasecmp(pNode->GetName(), strBehaviour.c_str()) == 0)
+        {
+            nBehaviour = nIndex;
+
+            break;
+        }
+
+        nIndex++;
+    }
 
     m_pPlanState->ActivateBehavior(nBehaviour);
 }

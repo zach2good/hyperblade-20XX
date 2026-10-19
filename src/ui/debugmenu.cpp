@@ -772,14 +772,14 @@ void SpectateTab()
 
     ImGui::BeginDisabled(g_bSessionActive != 0);
 
-    auto bAutopilot = Spectator::Autopilot();
+    auto bAutopilot = Spectator::AutopilotSetting();
 
     if (ImGui::Checkbox("Autopilot", &bAutopilot))
     {
         Spectator::SetAutopilot(bAutopilot);
     }
 
-    ImGui::SetItemTooltip("Your dromer plays on the AI plans, as the others do. Start with -b to have it from the off.");
+    ImGui::SetItemTooltip("Every dromer plays on the AI plans, whoever control passes to. Start with -b to have it from the off. Tab's side view turns it on while it is up.");
     ImGui::EndDisabled();
 
     auto bFreeCamera = Spectator::FreeCamera();
