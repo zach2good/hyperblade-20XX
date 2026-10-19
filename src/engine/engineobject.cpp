@@ -1787,7 +1787,7 @@ void EngineObject::SelectAndActivatePlan()
         }
         else if (Spectator::Autopilot() && nSlot <= kSlotDromer3)
         {
-            // Plan 0 is Human in every team file, so a substitute would take the keys.
+            // Plan 0 is Human for many skaters in the team files, so a substitute would take the keys.
             InstantiateAIPlan(FindPlanByName("Defense"));
         }
         else
