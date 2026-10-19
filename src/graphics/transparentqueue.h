@@ -3,6 +3,8 @@
 #ifndef HYPERBLADE_TRANSPARENTQUEUE_H
 #define HYPERBLADE_TRANSPARENTQUEUE_H
 
+#include <memory>
+
 struct TransparentEntry
 {
     class MeshBone* pComponent;
@@ -22,7 +24,7 @@ extern TransparentEntry g_transparentSiftEntry;
 extern short g_nTransparentCapacity;
 
 // GLOBAL: HYPERX 0x004cb5c8
-extern TransparentEntry* g_pTransparentQueue;
+extern std::unique_ptr<TransparentEntry[]> g_pTransparentQueue;
 
 // GLOBAL: HYPERX 0x004cb5cc
 extern short g_nTransparentCount;

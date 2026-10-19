@@ -114,11 +114,7 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
 
     m_flUnused = g_flDegToRadCamera * 0.25f;
 
-    m_nUnusedD    = 0;
-    m_pProjection = nullptr;
-    m_pView       = nullptr;
-    m_pRotB       = nullptr;
-    m_pRotA       = nullptr;
+    m_nUnusedD = 0;
 
     g_pTransparentQueue    = nullptr;
     g_nTransparentCapacity = 0;
@@ -132,17 +128,11 @@ void CameraObject::ResizeTransparentQueue(short nHighest)
 {
     if (g_nTransparentCapacity != nHighest + 1)
     {
-        delete[] g_pTransparentQueue;
-
         g_nTransparentCapacity = static_cast<short>(nHighest + 1);
 
-        g_pTransparentQueue = new TransparentEntry[g_nTransparentCapacity];
-
-        memset(g_pTransparentQueue, 0, g_nTransparentCapacity * sizeof(TransparentEntry));
+        g_pTransparentQueue = std::make_unique<TransparentEntry[]>(g_nTransparentCapacity);
     }
 }
-
-// Each release's answer is stored back over the pointer it released.
 
 // FUNCTION: HYPERX 0x00421ca0
 CameraObject::~CameraObject()
@@ -151,35 +141,15 @@ CameraObject::~CameraObject()
     m_nPrimaryTracked   = -1;
     m_nLastTracked      = -1;
 
-    if (m_pProjection != nullptr)
-    {
-        m_pProjection = (CameraProjectionState*)m_pProjection->DestroyViaVtable();
-    }
-
-    if (m_pView != nullptr)
-    {
-        m_pView = (CameraProjectionState*)m_pView->DestroyViaVtable();
-    }
-
-    if (m_pRotB != nullptr)
-    {
-        m_pRotB = m_pRotB->DestroyViaVtable();
-    }
-
-    if (m_pRotA != nullptr)
-    {
-        m_pRotA = m_pRotA->DestroyViaVtable();
-    }
+    m_pProjection.reset();
+    m_pView.reset();
+    m_pRotB.reset();
+    m_pRotA.reset();
 
     g_nTransparentCount    = 0;
     g_nTransparentCapacity = 0;
 
-    if (g_pTransparentQueue != nullptr)
-    {
-        delete[] g_pTransparentQueue;
-
-        g_pTransparentQueue = nullptr;
-    }
+    g_pTransparentQueue.reset();
 }
 
 // FUNCTION: HYPERX 0x00421d80
@@ -345,8 +315,8 @@ void CameraObject::ViewIt()
 
     m_pRotB->ToTransposed();
 
-    m_pProjection->Multiply(m_pView,
-                            m_pRotB);
+    m_pProjection->Multiply(m_pView.get(),
+                            m_pRotB.get());
 
     auto vDir = dirOut;
 
@@ -390,7 +360,7 @@ void CameraObject::ViewIt()
         {
             if ((static_cast<unsigned char>(pObject->m_nFlags) & kEngineObjectNoCull) == 0)
             {
-                const TransformObject* const pView    = m_pView;
+                const TransformObject* const pView    = m_pView.get();
                 const auto                   flRadius = pObject->m_flBoundRadius;
 
                 clip.x = (((vCentre.x * pView->m_a[0][0]) + vCentre.y * pView->m_a[0][1]) + vCentre.z * pView->m_a[0][2]) + pView->m_a[0][3];
@@ -561,10 +531,10 @@ void CameraObject::InitViewTransforms()
     }
     else
     {
-        m_pView = new CameraProjectionState(1, &layout, m_flHalfFov);
+        m_pView = std::make_unique<CameraProjectionState>(1, &layout, m_flHalfFov);
     }
 
-    layout.pCamera = m_pView;
+    layout.pCamera = m_pView.get();
 
     if (m_pProjection != nullptr)
     {
@@ -572,7 +542,7 @@ void CameraObject::InitViewTransforms()
     }
     else
     {
-        m_pProjection = new CameraProjectionState(1, &layout, m_flHalfFov);
+        m_pProjection = std::make_unique<CameraProjectionState>(1, &layout, m_flHalfFov);
     }
 
     if (m_pRotA != nullptr)
@@ -581,7 +551,7 @@ void CameraObject::InitViewTransforms()
     }
     else
     {
-        m_pRotA = new TransformObject(1);
+        m_pRotA = std::make_unique<TransformObject>(1);
     }
 
     if (m_pRotB != nullptr)
@@ -590,7 +560,7 @@ void CameraObject::InitViewTransforms()
     }
     else
     {
-        m_pRotB = new TransformObject(1);
+        m_pRotB = std::make_unique<TransformObject>(1);
     }
 
     TransformObject tScratchB;
@@ -609,7 +579,7 @@ void CameraObject::InitViewTransforms()
         m_pRotA->RotateX(flTilt);
     }
 
-    m_pProjection->Compose(m_pRotA);
+    m_pProjection->Compose(m_pRotA.get());
 }
 
 // The Numerical Recipes heapsort, one-based, so element zero is never touched.
@@ -694,7 +664,7 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
         }
     }
 
-    auto* pEntry = g_pTransparentQueue + g_nTransparentCount;
+    auto* pEntry = g_pTransparentQueue.get() + g_nTransparentCount;
 
     for (nIndex = 0; nIndex < g_nTransparentCount; nIndex++)
     {

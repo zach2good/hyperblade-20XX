@@ -417,7 +417,7 @@ void MeshBone::PushToRenderStack(CameraObject* pCamera)
     float flWorldZ;
     float flSortZ;
 
-    const CameraProjectionState* const pView = pCamera->m_pView;
+    const CameraProjectionState* const pView = pCamera->m_pView.get();
     pRows                                    = m_world.m_a;
     const Vec3* const pOrigin                = &m_pMesh->vOrigin;
 

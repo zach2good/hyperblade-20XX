@@ -289,10 +289,10 @@ Vec3* g_apPositionMarkers[11] = {
 PlanStatFn g_apPlanStatFns[PRN_COUNT];
 int        g_nPaletteAnimated;
 #include "graphics/transparentqueue.h"
-TransparentEntry  g_transparentSiftEntry;
-TransparentEntry* g_pTransparentQueue;
-short             g_nTransparentCapacity;
-short             g_nTransparentCount;
+TransparentEntry                    g_transparentSiftEntry;
+std::unique_ptr<TransparentEntry[]> g_pTransparentQueue;
+short                               g_nTransparentCapacity;
+short                               g_nTransparentCount;
 #include "net/gamesession.h"
 #include "common/pooledownerroot.h"
 #include "anim/animregistry.h"
