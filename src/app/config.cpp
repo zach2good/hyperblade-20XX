@@ -2,6 +2,10 @@
 #include "common/path.h"
 #include "input/keycodes.h"
 #include "engine/spectator.h"
+#include "engine/planfixes.h"
+#include "planvm/gamebehaviorobject.h"
+#include "planvm/planstate.h"
+#include <SDL3/SDL.h>
 #include "globals.h"
 #include "appglobals.h"
 #include "config.h"
@@ -259,6 +263,26 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             g_pGameEngine->GetSlot(nGoalieSlot)->PostSceneEvent(kMsgAttack, 0);
         }
         break;
+
+        // Sends your goalie up-ice after the rok, or back to the net: the fixed GOALIE's "SkateOut".
+        case 'G':
+            if (PlanFixes::On() && g_bSessionActive == 0)
+            {
+                auto* const pGoalie = g_pGameEngine->GetSlot((g_pGameEngine->m_nViewedSlot & 1) + kGoalieSlotA);
+
+                const auto nMessage = [&]
+                {
+                    if (SDL_strcasecmp(pGoalie->GetPlanState()->m_pCurrent->GetName(), "SkateOut") == 0)
+                    {
+                        return kMsgExtra7;
+                    }
+
+                    return kMsgExtra6;
+                }();
+
+                pGoalie->PostSceneEvent(nMessage, 0);
+            }
+            break;
 
         case Key::kF10:
         {

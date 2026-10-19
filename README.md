@@ -39,6 +39,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
   with `-b`, or press Tab for the side view
 - Fixes for the bugs in the shipped AI plans, so AI carriers pass and shoot. The debug menu switches
   between them and the plans as shipped ([docs/plan_bugs.md](docs/plan_bugs.md))
+- G, or a pad's left shoulder, sends your goalie up-ice after the rok and calls it back, with the
+  fixed plans on
 - Skippable intro splash screens
 - Experimental uncapped frame rate, with the game still simulated at 30 Hz
 - Various bug and crash fixes

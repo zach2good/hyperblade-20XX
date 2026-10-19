@@ -52,6 +52,7 @@ constexpr Action ACTIONS[] = {
     { "Substitute1", -1, '1' },
     { "Substitute2", -1, '2' },
     { "Camera", -1, Key::kTab },
+    { "Goalie", -1, 'G' },
     // Escape pauses a match.
     { "Pause", -1, Key::kEscape },
 };
@@ -89,7 +90,7 @@ constexpr auto kControls = std::array<Control, CONTROL_COUNT>{ {
     { "B", "Jump", Key::kEscape },
     { "X", "SpeedBurst", 0 },
     { "Y", "Pass", 0 },
-    { "LeftShoulder", "None", 0 },
+    { "LeftShoulder", "Goalie", 0 },
     { "RightShoulder", "QuickShot", 0 },
     { "LeftTrigger", "None", 0 },
     { "RightTrigger", "Shoot", 0 },
