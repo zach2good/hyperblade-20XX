@@ -1,6 +1,8 @@
 #ifndef HYPERBLADE_SPLINE_H
 #define HYPERBLADE_SPLINE_H
 
+#include <memory>
+
 class SplineCurve;
 struct Vec3;
 
@@ -19,6 +21,11 @@ public:
 
     ~Spline();
 
+    Spline(const Spline&)            = delete;
+    Spline& operator=(const Spline&) = delete;
+    Spline(Spline&&)                 = delete;
+    Spline& operator=(Spline&&)      = delete;
+
     Spline* InitClamped(float flRadiusX, float flRadiusY);
     Spline* InitSymmetric(float flRadiusX, float flRadiusY);
     Spline* InitSegment(float flRadiusX, float flRadiusY);
@@ -31,6 +38,11 @@ public:
     SplineCurve* m_pCurve; // 0x00
     // The second curve; the spring path never touches it.
     SplineCurve* m_pSecond; // 0x04
+
+private:
+    // The ring's two curves.
+    std::unique_ptr<SplineCurve> m_pOwnedFirst;
+    std::unique_ptr<SplineCurve> m_pOwnedSecond;
 };
 
 #endif

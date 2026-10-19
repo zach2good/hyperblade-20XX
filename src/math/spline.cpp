@@ -2,7 +2,7 @@
 #include "spline.h"
 #include "ui/hudglobals.h"
 #include "globals.h"
-#include <new>
+#include <memory>
 #include <cmath>
 #include "math/splinecurve.h"
 #include "physics/collisionellipsoid.h"
@@ -14,49 +14,18 @@ extern const float g_flSplineReflectScale;
 
 // FUNCTION: HYPERX 0x00492e90
 Spline::Spline()
+: m_pOwnedFirst(std::make_unique<SplineCurve>())
+, m_pOwnedSecond(std::make_unique<SplineCurve>())
 {
-    m_pSecond = new SplineCurve;
-    m_pCurve  = new SplineCurve;
+    m_pSecond = m_pOwnedSecond.get();
+    m_pCurve  = m_pOwnedFirst.get();
 
     m_pCurve->m_pNext  = m_pSecond;
     m_pSecond->m_pNext = m_pCurve;
 }
 
-// Unlinks and frees the curve whose next is the head, then frees the head: two curves go.
-
 // FUNCTION: HYPERX 0x00492ec0
-Spline::~Spline()
-{
-    auto* pWalk = m_pCurve;
-
-    while (pWalk != nullptr)
-    {
-        pWalk = pWalk->m_pNext;
-
-        if (pWalk == nullptr)
-        {
-            break;
-        }
-
-        if (pWalk->m_pNext == m_pCurve || pWalk->m_pNext == nullptr)
-        {
-            break;
-        }
-    }
-
-    if (pWalk != nullptr)
-    {
-        pWalk->m_pNext = nullptr;
-
-        delete pWalk;
-
-        m_pSecond = nullptr;
-    }
-
-    delete m_pCurve;
-
-    m_pCurve = nullptr;
-}
+Spline::~Spline() = default;
 
 // Both curves take the upper-half evaluator; the tag is -35 past a second radius of three, else -1.
 
