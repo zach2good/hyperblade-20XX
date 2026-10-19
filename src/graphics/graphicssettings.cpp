@@ -20,7 +20,7 @@ struct SwitchInfo
 constexpr auto kSwitches = std::array<SwitchInfo, static_cast<size_t>(GraphicsSettings::Switch::COUNT)>{ {
     { "Textures", true },
     { "LinearFiltering", false },
-    { "Uncapped", false },
+    { "Uncapped", true },
     { "FullDetail", true },
     { "SmoothShading", false },
     { "PhongShading", false },
@@ -29,12 +29,12 @@ constexpr auto kSwitches = std::array<SwitchInfo, static_cast<size_t>(GraphicsSe
     { "Light180", true },
     { "SeveralLights", false },
     { "RokLight", false },
-    { "ShadowMaps", false },
+    { "ShadowMaps", true },
     { "PaintersOrder", true },
 } };
 
 auto s_bLoaded          = false;
-auto s_renderer         = GraphicsSettings::Renderer::SOFTWARE;
+auto s_renderer         = GraphicsSettings::Renderer::HARDWARE;
 auto s_abOn             = std::array<bool, kSwitches.size()>{};
 auto s_flRokLightRadius = 200.0f;
 
@@ -47,9 +47,9 @@ void Load()
 
     s_bLoaded = true;
 
-    if (g_pGameOptions->ReadInt(kSection, kRendererKey, 0) == 1)
+    if (g_pGameOptions->ReadInt(kSection, kRendererKey, 1) == 0)
     {
-        s_renderer = GraphicsSettings::Renderer::HARDWARE;
+        s_renderer = GraphicsSettings::Renderer::SOFTWARE;
     }
 
     for (size_t i = 0; i < kSwitches.size(); i++)

@@ -42,7 +42,9 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - G, or a pad's left shoulder, sends your goalie up-ice after the rok and calls it back, with the
   fixed plans on
 - Skippable intro splash screens
-- Experimental uncapped frame rate, with the game still simulated at 30 Hz
+- Uncapped frame rate, with the game still simulated at 30 Hz
+- Starts on the hardware renderer with realtime shadows, the uncapped frame rate and the plan
+  fixes, where a GPU allows. The debug menu turns each off, and the choice is saved
 - Various bug and crash fixes
 
 ## TODO

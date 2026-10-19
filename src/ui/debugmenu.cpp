@@ -252,7 +252,7 @@ void TimingTab()
     }
 
     ImGui::SeparatorText("Frame rate");
-    Checkbox("Uncapped (experimental)", Switch::UNCAPPED, "A match draws as often as it can, blending between the 30 Hz simulation ticks. Off draws once a tick.");
+    Checkbox("Uncapped", Switch::UNCAPPED, "A match draws as often as it can, blending between the 30 Hz simulation ticks. Off draws once a tick.");
 
     ImGui::SeparatorText("Simulation");
     ImGui::Text("%d ticks a second", FramePacing::TicksPerSecond());
