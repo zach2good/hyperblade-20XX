@@ -107,6 +107,53 @@ With the fixes the top teams score through the 4x multiplier:
 Goals are per team per match, from the Fixed run. The DredNoks take the most shots in the
 league, 24.2 a match, but few of them go through the multiplier.
 
+## Period length
+
+The options menu offers periods of 3, 5 and 7 minutes. Each length played its own 910-match
+round robin on the fixed plans, all on the same build.
+
+| | 3 minutes | 5 minutes | 7 minutes |
+| --- | --- | --- | --- |
+| Points scored per match, both teams | 5.2 | 11.5 | 16.8 |
+| Points per period | 1.7 | 3.8 | 5.6 |
+| Draws | 16.4% | 5.4% | 3.2% |
+| Matches won by 10 or more | 5.9% | 28.9% | 49.3% |
+| Matches won by the team with more possession | 66.6% | 76.1% | 84.4% |
+| BLAM! Nemesis points % | 90.8 | 97.7 | 99.6 |
+| Card rank against results, starters' cards | 0.51 | 0.33 | 0.19 |
+
+Scoring grows faster than the clock. A straight line through the points per period reaches nought
+at about 1.2 minutes, so roughly the first minute of every period produces no points, whatever its
+length. Short periods are therefore far more even: a third of 3-minute matches end drawn or by one
+point, and nearly half of 7-minute matches are won by 10 or more.
+
+| Team | 3 min pts% | Rank | 5 min pts% | Rank | 7 min pts% | Rank |
+| --- | --- | --- | --- | --- | --- | --- |
+| BLAM! Nemesis | 90.8 | 1 | 97.7 | 1 | 99.6 | 1 |
+| The DredNoks (Jamaica) | 81.5 | 2 | 75.0 | 3 | 64.6 | 5 |
+| The Ambush (Warsaw) | 63.5 | 3 | 63.8 | 5 | 65.4 | 4 |
+| The Machine (Chicago) | 51.9 | 4 | 71.5 | 4 | 74.2 | 3 |
+| The Knights (Leeds) | 50.0 | 5 | 78.1 | 2 | 81.9 | 2 |
+| The T-34s (Moscow) | 49.2 | 6 | 40.4 | 7 | 28.5 | 12 |
+| The Crusade (Toronto) | 45.8 | 7 | 46.2 | 6 | 54.2 | 6 |
+| The BlackJack (Las Vegas) | 45.0 | 8 | 28.5 | 12 | 31.2 | 11 |
+| The LoneStars (Houston) | 40.8 | 9 | 38.1 | 8 | 40.8 | 8 |
+| The Glory (New York) | 40.4 | 10 | 38.1 | 9 | 40.4 | 9 |
+| The Shockwave (Los Angeles) | 38.5 | 11 | 28.1 | 13 | 23.1 | 13 |
+| The Ronins (Tokyo) | 38.5 | 12 | 37.3 | 10 | 35.0 | 10 |
+| The Sturmnacht (Munich) | 35.0 | 13 | 21.9 | 14 | 17.7 | 14 |
+| The Fury (Seattle) | 29.2 | 14 | 35.4 | 11 | 43.5 | 7 |
+
+- Neighbouring lengths agree at 0.89 (Spearman); 3 and 7 minutes agree at only 0.72.
+- Defence wins short matches. The DredNoks concede 0.6 a match at 3 minutes and finish 2nd, but
+  end 7-minute matches with the most injured squad among the top five (health 27) and drop to
+  5th.
+- Scoring wins long ones. The Knights and The Machine, who score through the 4x multiplier,
+  climb from 5th and 4th to 2nd and 3rd. Seattle climbs from last to 7th.
+- The T-34s and The BlackJack do best in short matches and fade as the minutes add up.
+- Strength matters at every length. Rok handling and jumping matter most at 3 minutes, and weight
+  at 7.
+
 ## Home advantage
 
 Away teams win slightly more often in the First fixes and Fixed runs, but each match is played
@@ -127,7 +174,8 @@ Treat both as unverified.
 ## Not covered
 
 - A seed does not yet replay a match exactly, so a single match cannot be repeated.
-- Only the default difficulty and period length were played.
+- Only the default difficulty was played. The sections other than "Period length" use 5-minute
+  periods.
 - The Shipped and Fixed runs are small. A full 9,100-match run of each would firm up the middle
   of the table.
 - The mirror matches were not repeated after the second review.
