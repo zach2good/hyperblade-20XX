@@ -158,7 +158,7 @@ bool PlayMatch(uint32_t nSeed, Clock::FractionalMilliseconds& elapsed, long long
 
 void WriteHeader(std::ofstream& csv, const adlib::Namespace* pStats)
 {
-    csv << "match,seed,plans,difficulty,team,side,player,row,health,score,opponent_score";
+    csv << "match,seed,plans,difficulty,period_ms,team,side,player,row,health,score,opponent_score";
 
     for (auto i = 0; i < kMatchStatCount; i++)
     {
@@ -238,7 +238,7 @@ void WriteRows(std::ofstream& csv, int nMatch, uint32_t nSeed)
 
         for (auto nRow = 0; nRow < kTeamRowCount; nRow++)
         {
-            csv << nMatch << ',' << nSeed << ',' << pszPlans << ',' << static_cast<int>(g_pGameEngine->m_nDifficulty) << ',' << pTeam->szName << ',';
+            csv << nMatch << ',' << nSeed << ',' << pszPlans << ',' << static_cast<int>(g_pGameEngine->m_nDifficulty) << ',' << g_pGameEngine->m_periodLength.count() << ',' << pTeam->szName << ',';
             csv << pszSide << ',' << pTeam->GetRosterName(kRowRosterSlots[nRow]) << ',' << nRow << ',';
             csv << pTeam->aRows[nRow].aStat[kRatingDamage] << ',' << nScore << ',' << nOpponentScore;
 
