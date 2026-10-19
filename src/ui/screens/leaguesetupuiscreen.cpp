@@ -1818,7 +1818,9 @@ void LeagueSetupUIScreen::UpdateStatText()
 
     if (m_bShowCareer != 0)
     {
-        sprintf(szText, "Career: %d, %d, %d and %d matches", anPlayed[0], anPlayed[1], anPlayed[2], anPlayed[3]);
+        const auto record = CareerStats::Record(*pTeam);
+
+        sprintf(szText, "Lifetime %d-%d-%d, dromers %d %d %d %d", record.nWins, record.nDraws, record.nLosses, anPlayed[0], anPlayed[1], anPlayed[2], anPlayed[3]);
         m_pCareerLabel->SetText(szText);
     }
 

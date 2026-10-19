@@ -41,9 +41,9 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
   between them and the plans as shipped ([docs/plan_bugs.md](docs/plan_bugs.md))
 - G, or a pad's left shoulder, sends your goalie up-ice after the rok and calls it back, with the
   fixed plans on
-- Career stats: every Gauntlet match adds to each player's totals, saved in
-  `hyperblade_20XX_career.txt`. On the stats panel, the arrows step through home, away, home
-  career and away career
+- Lifetime stats: every period of an exhibition or Gauntlet match adds to each dromer's totals and
+  each finished match to its teams' records, saved in `hyperblade_20XX_career.txt`. On the stats
+  panel, the arrows step through home, away, home lifetime and away lifetime
 - Skippable intro splash screens
 - Uncapped frame rate, with the game still simulated at 30 Hz
 - Starts on the hardware renderer with realtime shadows, the uncapped frame rate and the plan

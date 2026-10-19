@@ -675,6 +675,9 @@ void GameEngine::TickClock()
     {
         m_clock.nPeriod++;
 
+        SyncPlayerDataToTeam();
+        CareerStats::EndPeriod(*m_pTeamA, *m_pTeamB, GetHomeScore(), GetAwayScore(), m_clock.nPeriod == kPeriodCount);
+
         if (m_clock.nPeriod == kPeriodCount)
         {
             m_bMatchOver = 1;
@@ -693,13 +696,11 @@ void GameEngine::TickClock()
     {
         m_clock.nPeriod++;
 
+        SyncPlayerDataToTeam();
+        CareerStats::EndPeriod(*m_pTeamA, *m_pTeamB, GetHomeScore(), GetAwayScore(), m_clock.nPeriod == kPeriodCount);
+
         if (m_clock.nPeriod == kPeriodCount)
         {
-            SyncPlayerDataToTeam();
-            CareerStats::RecordMatch(*m_pTeamA);
-            CareerStats::RecordMatch(*m_pTeamB);
-            CareerStats::Save();
-
             AdvanceTournamentBracket();
         }
 
@@ -4381,6 +4382,8 @@ void GameEngine::RestartMatch()
 
     if (m_clock.nPeriod == kFirstPeriod)
     {
+        CareerStats::StartMatch();
+
         Reset();
 
         // No active score line.

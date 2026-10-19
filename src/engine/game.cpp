@@ -39,6 +39,7 @@
 #include "engine/objectclasses.h"
 #include "planvm/damagegate.h"
 #include "engine/careerstats.h"
+#include "app/simulator.h"
 
 float g_flUnusedGame                = g_flZeroGame;
 Vec3  g_vBirdsEyeTrackOffset        = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
@@ -119,7 +120,11 @@ void Game::InitializeEngine()
 {
     auto nStart = GameApp::GetInstallLevel();
 
-    CareerStats::Open(String::Concat(g_gameApp.m_strExeDir.m_str, "hyperblade_20XX_career.txt").m_pchData);
+    // A simulation records nothing; its matches are not anyone's career.
+    if (!Simulator::Requested())
+    {
+        CareerStats::Open(String::Concat(g_gameApp.m_strExeDir.m_str, "hyperblade_20XX_career.txt").m_pchData);
+    }
 
     // A new of a type with a constructor, for the null test and exception frame.
     g_pTexManager = std::make_unique<CD3DTextureManager>();
