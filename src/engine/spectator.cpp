@@ -40,9 +40,13 @@ bool s_bSideView  = false;
 constexpr auto kSideViewWait = 30;
 
 // Views since a Tab sent the camera to the side view, or minus one when none is pending.
-int  s_nSideViewWait = -1;
-bool s_bFreeCamera   = false;
-bool s_bSeeded       = false;
+int s_nSideViewWait = -1;
+
+// Whether the main camera was in the side view at its last view.
+bool s_bCameraSideView = false;
+
+bool s_bFreeCamera = false;
+bool s_bSeeded     = false;
 
 Vec3  s_eye     = {};
 float s_flYaw   = 0.0f;
@@ -158,51 +162,54 @@ void Spectator::SetAutopilot(bool bOn)
     ApplyAutopilot(bWasOn);
 }
 
-void Spectator::ToggleSideView()
+bool Spectator::ToggleSideView()
 {
     if (g_bSessionActive != 0)
     {
-        return;
-    }
-
-    // The camera takes the Tab on its next tick, so turning on waits for it to arrive.
-    if (!s_bSideView)
-    {
-        s_nSideViewWait = 0;
-
-        return;
+        return true;
     }
 
     const auto bWasOn = Autopilot();
 
-    s_bSideView = false;
+    // Going on waits for the camera to take the Tab on its next tick, unless it is there already.
+    if (!s_bSideView && !s_bCameraSideView)
+    {
+        s_nSideViewWait = 0;
+
+        return true;
+    }
+
+    // Going off moves the camera back only if it is still in the side view.
+    s_bSideView     = !s_bSideView;
+    s_nSideViewWait = -1;
 
     ApplyAutopilot(bWasOn);
+
+    return !s_bSideView && s_bCameraSideView;
 }
 
 void Spectator::FollowCamera(bool bSideView)
 {
-    const auto bWasOn = Autopilot();
+    s_bCameraSideView = bSideView;
 
-    if (s_nSideViewWait >= 0)
+    if (s_nSideViewWait < 0)
     {
-        if (bSideView)
-        {
-            s_bSideView     = true;
-            s_nSideViewWait = -1;
-        }
-        else if (++s_nSideViewWait > kSideViewWait)
-        {
-            s_nSideViewWait = -1;
-        }
-    }
-    else if (!bSideView)
-    {
-        // A goal, the drag or a shot took the camera off the side view.
-        s_bSideView = false;
+        return;
     }
 
-    ApplyAutopilot(bWasOn);
+    if (bSideView)
+    {
+        const auto bWasOn = Autopilot();
+
+        s_bSideView     = true;
+        s_nSideViewWait = -1;
+
+        ApplyAutopilot(bWasOn);
+    }
+    else if (++s_nSideViewWait > kSideViewWait)
+    {
+        s_nSideViewWait = -1;
+    }
 }
 
 bool Spectator::FreeCamera()

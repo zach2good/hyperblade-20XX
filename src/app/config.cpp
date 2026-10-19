@@ -237,11 +237,12 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             break;
 
         case Key::kTab:
-            g_pGameEngine->m_ppSlots[kCameraMainSlot]->PostSceneEvent(kMsgMoveEyeTrack, 5);
+            if (Spectator::ToggleSideView())
+            {
+                g_pGameEngine->m_ppSlots[kCameraMainSlot]->PostSceneEvent(kMsgMoveEyeTrack, 5);
+            }
 
             g_nTabCycle = static_cast<short>((g_nTabCycle + 1) % 2);
-
-            Spectator::ToggleSideView();
             break;
 
         case Key::kEscape:

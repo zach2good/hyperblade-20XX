@@ -18,9 +18,9 @@ bool Autopilot();
 bool AutopilotSetting();
 void SetAutopilot(bool bOn);
 
-// Tab flips the main camera to the side view and back. The side view spectates while the camera
-// stays there; the camera leaving it for a goal or the drag hands control back.
-void ToggleSideView();
+// Tab spectates from the side view, and the next Tab hands control back, wherever the camera has
+// gone in between. Answers whether the camera should take the Tab too.
+bool ToggleSideView();
 
 // The main camera says each view whether it is in the side view.
 void FollowCamera(bool bSideView);

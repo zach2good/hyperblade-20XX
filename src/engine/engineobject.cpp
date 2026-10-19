@@ -1785,6 +1785,11 @@ void EngineObject::SelectAndActivatePlan()
                                 m_pszName.get());
             }
         }
+        else if (Spectator::Autopilot() && nSlot <= kSlotDromer3)
+        {
+            // Plan 0 is Human in every team file, so a substitute would take the keys.
+            InstantiateAIPlan(FindPlanByName("Defense"));
+        }
         else
         {
             InstantiateAIPlan(0);
