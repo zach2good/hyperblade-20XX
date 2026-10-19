@@ -246,7 +246,8 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
     {
         const MeshBlock* const pMesh = pLod->m_apLodMeshes[nLevel][nMeshIndex].get();
 
-        if (pMesh->nCoordBytes != 0)
+        // A piece missing from every level of a damaged file stays empty.
+        if (pMesh != nullptr && pMesh->nCoordBytes != 0)
         {
             auto* const pCoords = pMesh->Coords();
 

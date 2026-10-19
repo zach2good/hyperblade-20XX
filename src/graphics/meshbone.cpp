@@ -432,10 +432,13 @@ void MeshBone::PushToRenderStack(CameraObject* pCamera)
     g_renderPushEntry.flSortZ  = flSortZ;
     g_renderPushEntry.flWorldY = flWorldY;
 
-    if (g_nTransparentCount > g_pGameEngine->m_nSlotCount)
+    // The original checked the slot count after the queue was already full, and wrote on past Fatal.
+    if (g_nTransparentCount + 1 >= g_nTransparentCapacity)
     {
         // STRING: HYPERX 0x004c4fb0
         g_gameApp.Fatal("STACK OVERFLOW in pushModComp!");
+
+        return;
     }
 
     g_nTransparentCount++;

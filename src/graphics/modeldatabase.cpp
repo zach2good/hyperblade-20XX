@@ -98,6 +98,14 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             return nullptr;
         }
 
+        // The level tables hold kLODLevelCount entries, and the original trusted the file's count.
+        if (nLodCount < 1 || nLodCount > kLODLevelCount)
+        {
+            g_gameApp.Error("Model %s has %d levels of detail!", pszModelName, nLodCount);
+
+            return nullptr;
+        }
+
         auto pBlob = ModelComponent::ReadFirst(&file.m_file);
 
         if (pBlob != nullptr)
