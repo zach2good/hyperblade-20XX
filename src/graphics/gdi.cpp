@@ -13,7 +13,6 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
-#include <algorithm>
 #include <memory>
 #include "stb_image.h"
 #include "graphics/text.h"
