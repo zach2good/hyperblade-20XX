@@ -7,7 +7,7 @@ struct PlayerSlotName
     // The game messages carry the whole record as one string, the role byte first.
     char* GetWireName()
     {
-        return reinterpret_cast<char*>(this);
+        return &cSlotFlags;
     }
 
     char cSlotFlags;
