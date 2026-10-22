@@ -382,9 +382,10 @@ HANDLE CPlayer::StartNetworkThread(HANDLE hEvent)
             return g_hNetworkThread;
         }
 
+        // The name goes out as the whole wire record, from its role byte on.
         // STRING: HYPERX 0x004bcdd0
         g_gameApp.Error("CreateThread failed for %s! LastError Code %0X\n",
-                        pState->slotName.GetWireName(),
+                        &pState->slotName.cSlotFlags,
                         GetLastError());
     }
 
@@ -666,7 +667,7 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                     default:
                         // STRING: HYPERX 0x004bce00
                         g_gameApp.Error("CPlayer %s received Unknown Message Type%X!\n",
-                                        pState->slotName.GetWireName(),
+                                        &pState->slotName.cSlotFlags,
                                         nMessage & 0xff);
                         break;
                 }

@@ -32,7 +32,9 @@ void PlanEditor::ApplyBehaviorSelection(HWND hDlg, HWND hControl)
     {
         SendMessageA(hControl, CB_ADDSTRING, 0, (LPARAM)pName);
 
-        pName = pText->m_aBehaviorNames[nIndex++];
+        const short nNext = nIndex++;
+
+        pName = pText->m_aBehaviorNames[nNext];
     }
 
     const char* pBehaviour = g_pGameEngine->m_ppSlots[nCamera]->GetPlanState()->m_pCurrent->m_pszName;
