@@ -46,9 +46,9 @@ bool __fastcall Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 
     if (dLength > g_dNormalizeEpsilon)
     {
-        *pX = (float)(*pX / dLength);
-        *pY = (float)(*pY / dLength);
-        *pZ = (float)(*pZ / dLength);
+        *pX /= dLength;
+        *pY /= dLength;
+        *pZ /= dLength;
 
         return true;
     }
