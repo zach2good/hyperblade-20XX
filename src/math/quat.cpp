@@ -91,10 +91,8 @@ void Quat::ToMatrix(TransformObject* pTarget)
     pRows[2].af[0] = (flSecond + flFirst) * g_flQuatTwo;
     pRows[0].af[2] = (flFirst - flSecond) * g_flQuatTwo;
 
-    flFirst = y;
-    flFirst *= z;
-    flSecond = w;
-    flSecond *= x;
+    flFirst        = y * z;
+    flSecond       = w * x;
     pRows[1].af[2] = (flSecond + flFirst) * g_flQuatTwo;
     pRows[2].af[1] = (flFirst - flSecond) * g_flQuatTwo;
 }
