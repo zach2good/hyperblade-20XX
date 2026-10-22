@@ -606,12 +606,7 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
     {
         if ((pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0)
         {
-            pCornerUV = &pFaceData->aCorners[pFaceData->nCorners];
-
-            if ((pFaceData->cFlags & FACE_FLAG_UV_SKIP) != 0)
-            {
-                pCornerUV += pFaceData->nCorners;
-            }
+            pCornerUV = &pFaceData->aCorners[pFaceData->nCorners] + ((pFaceData->cFlags & FACE_FLAG_UV_SKIP) != 0 ? pFaceData->nCorners : 0);
         }
         else
         {
