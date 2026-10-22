@@ -613,7 +613,8 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     pActor              = pContext->GetActor();
     PhysicsBody* pBlock = pActor->GetPhysicsBody();
 
-    Vec3* pVelocity = &pBlock->vel;
+    Vec3* const       pVelocity = &pBlock->vel;
+    const Vec3* const pAimDir   = pVelocity;
 
     vAim.x = pTargetPos->x - pSelfPos->x;
     vAim.y = pTargetPos->y - pSelfPos->y;
@@ -622,7 +623,7 @@ void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, i
     Math::Vec3Normalize(&vAim);
 
     *pVelocity      = vAim;
-    pFacing->velDir = pBlock->GetVel();
+    pFacing->velDir = *pAimDir;
 
     flDelta = g_pGameEngine->m_clock.flDelta;
 
