@@ -3435,7 +3435,39 @@ void PlanCond::SideKeysAreDown(Interactor*, PlanNode*, short* pResult, int)
 void __cdecl PlanCond::AmViewOwner(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     // Nought when the actor is either tracked object.
-    *pResult = pContext->GetActor()->GetSlot() != g_pGameEngine->m_apTracked[0]->GetSlot() && pContext->GetActor()->GetSlot() != g_pGameEngine->m_apTracked[1]->GetSlot();
+    EngineObject* pActor;
+    GameEngine*   pEngine;
+    int           nTracked;
+    int           nActor;
+    short         nAnswer;
+
+    pActor   = pContext->GetActor();
+    pEngine  = g_pGameEngine;
+    nTracked = pEngine->m_apTracked[0]->GetSlot();
+    nActor   = pActor->GetSlot();
+
+    if (nActor == nTracked)
+    {
+        goto tracked;
+    }
+
+    pActor   = pContext->GetActor();
+    pEngine  = g_pGameEngine;
+    nTracked = pEngine->m_apTracked[1]->GetSlot();
+    nActor   = pActor->GetSlot();
+
+    if (nActor != nTracked)
+    {
+        nAnswer = 1;
+
+        goto store;
+    }
+
+tracked:
+    nAnswer = 0;
+
+store:
+    *pResult = nAnswer;
 }
 
 // An actor on the Input plan stands in for the viewed slot when finding its team mate.

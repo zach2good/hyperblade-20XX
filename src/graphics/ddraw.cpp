@@ -2338,7 +2338,7 @@ int __cdecl DDraw::ChangeDisplayMode(int nMode)
         switch (lResult)
         {
             case 0:
-                break;
+                goto done;
 
             case 1:
                 g_hrLastResult = g_ddrawDevice.pDDrawObject->SetCooperativeLevel(g_hWndGame, DDSCL_NORMAL);
@@ -2347,6 +2347,7 @@ int __cdecl DDraw::ChangeDisplayMode(int nMode)
                 break;
         }
 
+    done:
         return lResult;
     }
 

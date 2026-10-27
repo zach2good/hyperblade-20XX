@@ -71,7 +71,6 @@ float g_flUnusedEngineObjectC = g_flZeroEngineObject;
 void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 {
     short nTeam;
-    bool  bSameSide;
 
     if (rand() % 5 != 0)
     {
@@ -80,45 +79,14 @@ void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObjec
 
     if ((pA->GetSlot() & 1) != 0)
     {
-        bSameSide = (pB->GetSlot() & 1) != 0;
+        if ((pB->GetSlot() & 1) != 0)
+        {
+            goto same;
+        }
     }
-    else
+    else if ((pB->GetSlot() & 1) == 0)
     {
-        bSameSide = (pB->GetSlot() & 1) == 0;
-    }
-
-    if (bSameSide)
-    {
-        const int nGenderA = (int)((PlayerObject*)pA)->m_stats.GetScalar(RATING_GENDER);
-        int       nGenderB = (int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER);
-
-        if ((nGenderA & nGenderB) != 0)
-        {
-            return;
-        }
-
-        if ((rand() & 1) != 0)
-        {
-            pB = pA;
-        }
-
-        if ((int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER) >= 1)
-        {
-            return;
-        }
-
-        if ((pA->GetSlot() & 1) != 0)
-        {
-            nTeam = (short)g_pGameEngine->m_nTeamAwayIndex;
-        }
-        else
-        {
-            nTeam = (short)g_pGameEngine->m_nTeamHomeIndex;
-        }
-
-        g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_TEAMMATE_COLLISION, nTeam);
-
-        return;
+        goto same;
     }
 
     if (rand() % 2 != 0)
@@ -141,6 +109,38 @@ void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObjec
     }
 
     g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_OPPONENT_COLLISION, nTeam);
+
+    return;
+
+same:
+    const int nGenderA = (int)((PlayerObject*)pA)->m_stats.GetScalar(RATING_GENDER);
+    int       nGenderB = (int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER);
+
+    if ((nGenderA & nGenderB) != 0)
+    {
+        return;
+    }
+
+    if ((rand() & 1) != 0)
+    {
+        pB = pA;
+    }
+
+    if ((int)((PlayerObject*)pB)->m_stats.GetScalar(RATING_GENDER) >= 1)
+    {
+        return;
+    }
+
+    if ((pA->GetSlot() & 1) != 0)
+    {
+        nTeam = (short)g_pGameEngine->m_nTeamAwayIndex;
+    }
+    else
+    {
+        nTeam = (short)g_pGameEngine->m_nTeamHomeIndex;
+    }
+
+    g_pGameEngine->m_ppSlots[SLOT_SOUND_MAN]->PostSceneEvent(MSG_TEAMMATE_COLLISION, nTeam);
 }
 
 // Two of the three band boundaries, as doubles; the third and the side test's zero are literals.
