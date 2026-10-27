@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="150" viewBox="0 0 480 150" font-family="ui-monospace,Consolas,monospace" font-weight="bold">
 <rect width="480" height="150" rx="8" fill="#1e293b"/>
 <text x="240" y="38" fill="#ffffff" font-size="22" text-anchor="middle">HYPERX.EXE</text>
-<text x="40" y="70" fill="#e2e8f0" font-size="14"><tspan>Implemented: 80.03% (3298/4121)</tspan><tspan x="40" dy="20">Accuracy:    99.04%</tspan></text>
+<text x="40" y="70" fill="#e2e8f0" font-size="14"><tspan>Implemented: 80.05% (3299/4121)</tspan><tspan x="40" dy="20">Accuracy:    99.12%</tspan></text>
 <rect x="40" y="106" width="400" height="22" fill="#0f172a" stroke="#e2e8f0"/>
-<rect x="40" y="106" width="317.0" height="22" fill="#2563eb"/>
-<text x="240" y="122" fill="#ffffff" font-size="13" text-anchor="middle"><tspan>79.26%</tspan></text>
+<rect x="40" y="106" width="317.4" height="22" fill="#2563eb"/>
+<text x="240" y="122" fill="#ffffff" font-size="13" text-anchor="middle"><tspan>79.35%</tspan></text>
 </svg>
