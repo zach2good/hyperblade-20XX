@@ -32,17 +32,7 @@ char __cdecl MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial*
 
     *pflOut = flLevel;
 
-    if (flLevel > g_flZeroLightLevel)
-    {
-        if (flLevel < 1.0f)
-        {
-            return SHADE_SCALED;
-        }
-
-        return SHADE_WHITE;
-    }
-
-    return SHADE_BLACK;
+    return flLevel > g_flZeroLightLevel ? (flLevel < 1.0f ? SHADE_SCALED : SHADE_WHITE) : SHADE_BLACK;
 }
 
 #define LINE_MAX      120
