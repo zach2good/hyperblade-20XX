@@ -36,7 +36,7 @@
 #include "cameraprojectionstate.h"
 #include "cameraobject.h"
 #include "graphics/meshmaterial.h"
-#include "sound/adliberror.h"
+#include "planvm/adliberror.h"
 #include "physics/collisioncage.h"
 #include "planvm/agendaitem.h"
 #include "statids.h"

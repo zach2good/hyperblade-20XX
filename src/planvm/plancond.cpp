@@ -3228,8 +3228,8 @@ void PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
     }
 }
 
-constexpr auto kArenaTrackUp   = 7;
-constexpr auto kArenaTrackDown = 8;
+constexpr auto kArenaTrackUp   = short{ 7 };
+constexpr auto kArenaTrackDown = short{ 8 };
 
 // FUNCTION: HYPERX 0x00462620
 void PlanAction::EndPeriodNow(Interactor*, PlanNode*, short*, int)
@@ -3856,7 +3856,15 @@ void PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 
     if (pArgs->m_pArgs[1].n == PLAN_TOKEN_MESSAGE_DATA)
     {
-        nRequest = static_cast<short>(((nFlag & 1) > 0) + 7);
+        nRequest = [&]
+        {
+            if ((nFlag & 1) != 0)
+            {
+                return kArenaTrackDown;
+            }
+
+            return kArenaTrackUp;
+        }();
     }
     else
     {
