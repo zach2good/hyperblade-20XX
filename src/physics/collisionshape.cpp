@@ -98,3 +98,22 @@ TransformObject* CollisionShape::GetOrCreateTransform(...)
 
     return m_pTransform;
 }
+
+// FUNCTION: HYPERX 0x00480850
+CollisionShape& CollisionShape::operator=(const CollisionShape& other)
+{
+    m_nUnusedA     = other.m_nUnusedA;
+    m_nUnusedB     = other.m_nUnusedB;
+    m_vNormal      = other.m_vNormal;
+    m_pUnusedA     = other.m_pUnusedA;
+    m_wUnusedA     = other.m_wUnusedA;
+    m_wUnusedB     = other.m_wUnusedB;
+    m_pUnusedB     = other.m_pUnusedB;
+    m_pTransform   = other.m_pTransform;
+    m_pPooled      = other.m_pPooled;
+    m_flFriction   = other.m_flFriction;
+    m_flElasticity = other.m_flElasticity;
+    m_nShapeKind   = other.m_nShapeKind;
+
+    return *this;
+}

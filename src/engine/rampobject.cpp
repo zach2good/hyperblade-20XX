@@ -92,53 +92,61 @@ void RampObject::InitCollisionPlanes()
     flFriction   = GetPhysicsBody()->flFriction;
     flElasticity = GetPhysicsBody()->flElasticity;
 
-    Vec3 vTipMaxA;
-    Vec3 vFarMaxA;
-    Vec3 vNearMaxA;
+    {
+        Vec3 vTipMaxA;
+        Vec3 vFarMaxA;
+        Vec3 vNearMaxA;
 
-    m_transformC.TransformPoint(vNearMax, &vNearMaxA);
-    m_transformC.TransformPoint(vFarMax, &vFarMaxA);
-    m_transformC.TransformPoint(vTipMax, &vTipMaxA);
+        m_transformC.TransformPoint(vNearMax, &vNearMaxA);
+        m_transformC.TransformPoint(vFarMax, &vFarMaxA);
+        m_transformC.TransformPoint(vTipMax, &vTipMaxA);
 
-    CollisionObj planeMaxX(&vTipMaxA, &vFarMaxA, &vNearMaxA, flFriction, flElasticity);
+        CollisionObj planeMaxX(vTipMaxA, vFarMaxA, vNearMaxA, flFriction, flElasticity);
 
-    m_planeMaxX = planeMaxX;
+        m_planeMaxX.CopyInline(planeMaxX);
+    }
 
-    Vec3 vTipMinB;
-    Vec3 vNearMinB;
-    Vec3 vFarMinB;
+    {
+        Vec3 vTipMinB;
+        Vec3 vNearMinB;
+        Vec3 vFarMinB;
 
-    m_transformC.TransformPoint(vFarMin, &vFarMinB);
-    m_transformC.TransformPoint(vNearMin, &vNearMinB);
-    m_transformC.TransformPoint(vTipMin, &vTipMinB);
+        m_transformC.TransformPoint(vFarMin, &vFarMinB);
+        m_transformC.TransformPoint(vNearMin, &vNearMinB);
+        m_transformC.TransformPoint(vTipMin, &vTipMinB);
 
-    CollisionObj planeMinX(&vTipMinB, &vNearMinB, &vFarMinB, flFriction, flElasticity);
+        CollisionObj planeMinX(vTipMinB, vNearMinB, vFarMinB, flFriction, flElasticity);
 
-    m_planeMinX = planeMinX;
+        m_planeMinX.CopyInline(planeMinX);
+    }
 
-    Vec3 vTipMaxC;
-    Vec3 vNearMaxC;
-    Vec3 vNearMinC;
+    {
+        Vec3 vTipMaxC;
+        Vec3 vNearMaxC;
+        Vec3 vNearMinC;
 
-    m_transformC.TransformPoint(vNearMin, &vNearMinC);
-    m_transformC.TransformPoint(vNearMax, &vNearMaxC);
-    m_transformC.TransformPoint(vTipMax, &vTipMaxC);
+        m_transformC.TransformPoint(vNearMin, &vNearMinC);
+        m_transformC.TransformPoint(vNearMax, &vNearMaxC);
+        m_transformC.TransformPoint(vTipMax, &vTipMaxC);
 
-    CollisionObj planeNear(&vTipMaxC, &vNearMaxC, &vNearMinC, flFriction, flElasticity);
+        CollisionObj planeNear(vTipMaxC, vNearMaxC, vNearMinC, flFriction, flElasticity);
 
-    m_planeNear = planeNear;
+        m_planeNear.CopyInline(planeNear);
+    }
 
-    Vec3 vTipMinD;
-    Vec3 vFarMinD;
-    Vec3 vFarMaxD;
+    {
+        Vec3 vTipMinD;
+        Vec3 vFarMinD;
+        Vec3 vFarMaxD;
 
-    m_transformC.TransformPoint(vFarMax, &vFarMaxD);
-    m_transformC.TransformPoint(vFarMin, &vFarMinD);
-    m_transformC.TransformPoint(vTipMin, &vTipMinD);
+        m_transformC.TransformPoint(vFarMax, &vFarMaxD);
+        m_transformC.TransformPoint(vFarMin, &vFarMinD);
+        m_transformC.TransformPoint(vTipMin, &vTipMinD);
 
-    CollisionObj planeFar(&vTipMinD, &vFarMinD, &vFarMaxD, flFriction, flElasticity);
+        CollisionObj planeFar(&vTipMinD, &vFarMinD, &vFarMaxD, flFriction, flElasticity);
 
-    m_planeFar = planeFar;
+        m_planeFar = planeFar;
+    }
 }
 
 // Builds the planes on first use.
