@@ -279,7 +279,6 @@ struct GameEngine
 
     // Every caller drops the answer.
     char          SubstitutePlayer(int nSlot, int nWith);
-    static int    SubstituteSlot(int nTeam, int nSeat);
     unsigned char IsFitSubstitute(unsigned int nSlot, int nWhich);
 
     void SetScreenSize(int nStep);

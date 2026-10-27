@@ -5045,19 +5045,6 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 
 #define ARENA_NONE ((short)0xffff)
 
-// A team's first seat is its slot; every other seat shares the slot two above it.
-inline int GameEngine::SubstituteSlot(int nTeam, int nSeat)
-{
-    int nSlot = nTeam;
-
-    if (nSeat != 0)
-    {
-        nSlot += 2;
-    }
-
-    return nSlot;
-}
-
 // The teams are set first, because that builds the objects the rest writes into.
 // FUNCTION: HYPERX 0x004878f0
 char GameEngine::ReadSaveFile(int nSlot)
@@ -5117,12 +5104,13 @@ char GameEngine::ReadSaveFile(int nSlot)
         {
             if (m_pTeamA->aSeat[nIndex] != block.teamOne.aSeat[nIndex])
             {
-                SubstitutePlayer(SubstituteSlot(0, nIndex), block.teamOne.aSeat[nIndex]);
+                // A team's first seat is its slot; every other seat shares the slot two above it.
+                SubstitutePlayer(nIndex != 0 ? 2 : 0, block.teamOne.aSeat[nIndex]);
             }
 
             if (m_pTeamB->aSeat[nIndex] != block.teamTwo.aSeat[nIndex])
             {
-                SubstitutePlayer(SubstituteSlot(1, nIndex), block.teamTwo.aSeat[nIndex]);
+                SubstitutePlayer(nIndex != 0 ? 3 : 1, block.teamTwo.aSeat[nIndex]);
             }
         }
 
