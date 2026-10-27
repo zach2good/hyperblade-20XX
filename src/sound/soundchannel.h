@@ -40,17 +40,6 @@ public:
 
     void Stop();
 
-    // Eight-bit samples are unsigned, so their silence is 0x80.
-    char GetSilence() const
-    {
-        if (m_format.wBitsPerSample == 8)
-        {
-            return (char)0x80;
-        }
-
-        return 0;
-    }
-
     SoundChannel();
     ~SoundChannel();
 

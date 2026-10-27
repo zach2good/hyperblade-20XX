@@ -822,14 +822,7 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
             m_bBottomUp = m_pBitmapRecord->biHeight > 0;
 
             // BI_BITFIELDS carries three DWORD masks; anything else carries biClrUsed RGBQUADs.
-            if (m_pBitmapRecord->biCompression == BI_BITFIELDS)
-            {
-                m_pPixels = (char*)((DWORD*)GDI::ColorTable(m_pBitmapRecord) + 3);
-            }
-            else
-            {
-                m_pPixels = (char*)(GDI::ColorTable(m_pBitmapRecord) + m_pBitmapRecord->biClrUsed);
-            }
+            m_pPixels = m_pBitmapRecord->biCompression == BI_BITFIELDS ? (char*)m_pBitmapRecord + m_pBitmapRecord->biSize + 3 * sizeof(DWORD) : (char*)m_pBitmapRecord + m_pBitmapRecord->biSize + m_pBitmapRecord->biClrUsed * sizeof(RGBQUAD);
 
             m_nRowBytes = ((m_pBitmapRecord->biWidth + 3) & ~3) * (m_pBitmapRecord->biBitCount / 8);
 

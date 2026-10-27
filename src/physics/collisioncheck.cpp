@@ -95,8 +95,8 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
 
     BoundBubble* const pColOther = g_pGameEngine->GetColObjPtr(pContext->GetOtherSlot());
 
-    EngineObject*      pOther     = pColOther->m_pOwner;
-    PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
+    EngineObject* const pOther     = pColOther->m_pOwner;
+    PhysicsBody* const  pOtherBody = pOther->GetPhysicsBody();
 
     BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
@@ -140,14 +140,14 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
 
     vDirOther = vScratch;
 
-    const Vec3* pCentre = pOwn->GetWorldPos(&vTrans);
+    const Vec3* const pCentre = pOwn->GetWorldPos(&vTrans);
 
     const float flTransX = pOther->m_transformC.m_a[0][3];
 
     vLocal.x = pCentre->x;
     vLocal.y = pCentre->y;
-    vLocal.z = pCentre->z;
     vTrans.y = pOther->m_transformC.m_a[1][3];
+    vLocal.z = pCentre->z;
     vTrans.z = pOther->m_transformC.m_a[2][3];
 
     vScratch.x = vLocal.x - flTransX;
@@ -181,17 +181,17 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
     boxPostA.vMax.x = flPostHalfFrame + flInner;
     boxPostA.vMax.z = flPostHalfFrame;
 
-    const float flHeight = g_flGoalZoneHeight;
+    float flHeight = g_flGoalZoneHeight;
 
     boxPostA.vMax.y = flHeight;
 
     flInner = -flInner;
 
-    boxPostB.vMax.z = flPostHalfFrame;
-    boxPostB.vMax.y = flHeight;
-    boxPostB.vMin.x = flInner - flPostHalfFrame;
-    boxPostB.vMin.z = -flPostHalfFrame;
-    boxPostB.vMax.x = flPostHalfFrame + flInner;
+    boxPostB.vMax.z         = flPostHalfFrame;
+    *(int*)&boxPostB.vMax.y = *(const int*)&flHeight;
+    boxPostB.vMin.x         = flInner - flPostHalfFrame;
+    boxPostB.vMin.z         = -flPostHalfFrame;
+    boxPostB.vMax.x         = flPostHalfFrame + flInner;
 
     *pResult = 0;
 
@@ -210,12 +210,13 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
 
     boxMouth.vMin.x = -flOuter;
 
-    const float flMouthHalfFrame = g_flGoalFrameWidth * 0.5f;
+    float flMouthHalfFrame = g_flGoalFrameWidth * 0.5f;
 
-    boxMouth.vMin.z = -flMouthHalfFrame;
-    boxMouth.vMax.z = flMouthHalfFrame;
-    boxMouth.vMax.x = flOuter;
-    boxMouth.vMax.y = g_flGoalZoneHeight;
+    boxMouth.vMin.z         = -flMouthHalfFrame;
+    *(int*)&boxMouth.vMax.z = *(const int*)&flMouthHalfFrame;
+    boxMouth.vMax.x         = flOuter;
+    const double dblHeight  = g_flGoalZoneHeight;
+    boxMouth.vMax.y         = (float)dblHeight;
 
     if (boxMouth.StepIntersectTest(&vDirOther, &vDirOwn, &boxTest) == 0)
     {
@@ -229,20 +230,20 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
 
     boxUpper.bValid = 1;
 
-    const float flBarHalfFrame = g_flGoalFrameWidth * 0.5f;
+    float flBarHalfFrame = g_flGoalFrameWidth * 0.5f;
 
-    boxUpper.vMin.z = -flBarHalfFrame;
-    boxUpper.vMax.z = flBarHalfFrame;
-    boxUpper.vMin.y = flTop;
-    boxUpper.vMax.x = flHalfSpan;
-    boxUpper.vMax.y = flTop + 5.0f;
+    boxUpper.vMin.z         = -flBarHalfFrame;
+    *(int*)&boxUpper.vMax.z = *(const int*)&flBarHalfFrame;
+    boxUpper.vMin.y         = flTop;
+    boxUpper.vMax.x         = flHalfSpan;
+    boxUpper.vMax.y         = flTop + 5.0f;
 
     if (boxUpper.StepIntersectTest(&vDirOther, &vDirOwn, &boxTest) == 0)
     {
         return;
     }
 
-    unsigned int       nTick      = g_pGameEngine->m_clock.nTickMs;
+    const unsigned int nTick      = g_pGameEngine->m_clock.nTickMs;
     const unsigned int nLastScore = pOwn->m_nLastGoalTickMs;
 
     if (nLastScore != 0 && nTick - nLastScore < g_nGoalScoreDebounceMs)

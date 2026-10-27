@@ -132,7 +132,8 @@ int SoundChannel::FillBuffer(unsigned int nBytes, unsigned int nOffset)
                 {
                     const int nMissing = nTake - nRead;
 
-                    memset(pSegment + nRead, GetSilence(), nMissing);
+                    // Eight-bit samples are unsigned, so their silence is 0x80.
+                    memset(pSegment + nRead, (char)((m_format.wBitsPerSample == 8) ? 0x80 : 0x00), nMissing);
 
                     m_nState = CHANNEL_DRAINED;
                     break;
@@ -176,7 +177,7 @@ int SoundChannel::FillBuffer(unsigned int nBytes, unsigned int nOffset)
 
         if (nSpill != 0)
         {
-            memset(pSegment, GetSilence(), nSpill);
+            memset(pSegment, (char)((m_format.wBitsPerSample == 8) ? 0x80 : 0x00), nSpill);
         }
 
         m_nState = CHANNEL_DRAINED;
