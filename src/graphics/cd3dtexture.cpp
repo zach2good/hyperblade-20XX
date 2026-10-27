@@ -316,35 +316,35 @@ struct IDirectDrawSurface;
 // FUNCTION: HYPERX 0x00434260
 IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int)
 {
-    int                 nColourCount;
-    unsigned int        dwPackedRGB;
-    DDSURFACEDESC       lockDesc;
-    LPDIRECTDRAWPALETTE pPalette;
-    PALETTEENTRY        paletteEntries[256];
-    int                 nRowCount;
-    int                 nI;
-    DDSURFACEDESC       sd;
-    LPDIRECTDRAWSURFACE pSurfacePtr;
-    int                 nMaxColours;
-    int                 nPaletteCaps;
-    const RGBTRIPLE*    pPalSource;
-    unsigned char*      pBytes;
-    int                 nBitShift;
-    int                 nGreenDiv;
-    unsigned int        aColourArray[256];
-    unsigned char*      pDest;
-    int                 bPaletted;
-    const RGBTRIPLE*    pRead;
-    unsigned short*     pRow16;
-    int                 nShiftBlue;
-    unsigned int*       pRowOf32;
-    int                 nAcross;
-    unsigned int        dwChannelMask;
-    int                 nRedUp;
-    int                 nBDivisor;
-    int                 nShiftG;
-    int                 nRowY;
-    int                 nDivRed;
+    int                  nColourCount;
+    unsigned int         dwPackedRGB;
+    DDSURFACEDESC        lockDesc;
+    LPDIRECTDRAWPALETTE  pPalette;
+    PALETTEENTRY         paletteEntries[256];
+    int                  nRowCount;
+    int                  nI;
+    DDSURFACEDESC        sd;
+    LPDIRECTDRAWSURFACE  pSurfacePtr;
+    int                  nMaxColours;
+    int                  nPaletteCaps;
+    const unsigned char* pPalSource;
+    unsigned char*       pBytes;
+    int                  nBitShift;
+    int                  nGreenDiv;
+    unsigned int         aColourArray[256];
+    unsigned char*       pDest;
+    int                  bPaletted;
+    const unsigned char* pRead;
+    unsigned short*      pRow16;
+    int                  nShiftBlue;
+    unsigned int*        pRowOf32;
+    int                  nAcross;
+    unsigned int         dwChannelMask;
+    int                  nRedUp;
+    int                  nBDivisor;
+    int                  nShiftG;
+    int                  nRowY;
+    int                  nDivRed;
 
     pSurfacePtr = 0;
     bPaletted   = 0;
@@ -433,7 +433,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
         nShiftBlue = nBitShift;
         nBDivisor  = 255 / (sd.ddpfPixelFormat.dwBBitMask >> nBitShift);
 
-        pRead = (const RGBTRIPLE*)m_pPixels;
+        pRead = (const unsigned char*)m_pPixels;
 
         switch (sd.ddpfPixelFormat.dwRGBBitCount)
         {
@@ -448,10 +448,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
                         int nBlueDivided;
                         int nGreenDivided;
 
-                        nBlueDivided  = pRead->rgbtBlue / nDivRed;
-                        nGreenDivided = pRead->rgbtGreen / nGreenDiv;
-                        nRedDivided   = pRead->rgbtRed / nBDivisor;
-                        pRead++;
+                        nBlueDivided  = *pRead++ / nDivRed;
+                        nGreenDivided = *pRead++ / nGreenDiv;
+                        nRedDivided   = *pRead++ / nBDivisor;
 
                         *pRowOf32++ = (nRedDivided << nRedUp) | (nGreenDivided << nShiftG) | (nBlueDivided << nShiftBlue);
                     }
@@ -469,10 +468,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
                         int nBlueDivided;
                         int nGreenDivided;
 
-                        nBlueDivided  = pRead->rgbtBlue / nDivRed;
-                        nGreenDivided = pRead->rgbtGreen / nGreenDiv;
-                        nRedDivided   = pRead->rgbtRed / nBDivisor;
-                        pRead++;
+                        nBlueDivided  = *pRead++ / nDivRed;
+                        nGreenDivided = *pRead++ / nGreenDiv;
+                        nRedDivided   = *pRead++ / nBDivisor;
 
                         *pRow16++ = (unsigned short)((nRedDivided << nRedUp) | (nGreenDivided << nShiftG) | (nBlueDivided << nShiftBlue));
                     }
@@ -490,10 +488,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
                         int nBlueDivided;
                         int nGreenDivided;
 
-                        nBlueDivided  = pRead->rgbtBlue / nDivRed;
-                        nGreenDivided = pRead->rgbtGreen / nGreenDiv;
-                        nRedDivided   = pRead->rgbtRed / nBDivisor;
-                        pRead++;
+                        nBlueDivided  = *pRead++ / nDivRed;
+                        nGreenDivided = *pRead++ / nGreenDiv;
+                        nRedDivided   = *pRead++ / nBDivisor;
 
                         *pBytes++ = (unsigned char)((nRedDivided << nRedUp) | (nGreenDivided << nShiftG) | (nBlueDivided << nShiftBlue));
                     }
@@ -528,7 +525,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
         pPalette     = 0;
         nColourCount = 0;
 
-        pPalSource = (const RGBTRIPLE*)m_pPixels;
+        pPalSource = (const unsigned char*)m_pPixels;
 
         for (nRowCount = 0; nRowCount < m_pBitmapRecord->biHeight; nRowCount++)
         {
@@ -541,10 +538,9 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
                 int nGreenByte;
                 int nEntry;
 
-                nBlueByte  = pPalSource->rgbtBlue;
-                nGreenByte = pPalSource->rgbtGreen;
-                nRedByte   = pPalSource->rgbtRed;
-                pPalSource++;
+                nBlueByte  = *pPalSource++;
+                nGreenByte = *pPalSource++;
+                nRedByte   = *pPalSource++;
 
                 dwPackedRGB = (nRedByte << 16) | (nGreenByte << 8) | nBlueByte;
 
