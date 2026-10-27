@@ -148,23 +148,22 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     float           flOffset;
     float           flPost;
 
-    const float flZone = g_flDromePostWidth * 10.0f;
-
+    const float flZone   = g_flDromePostWidth * 10.0f;
     const float flHalf   = flZone * 0.5f;
     const float flMirror = flZone * -0.5f;
-    const float flCentre = flZone * 0.5f;
+    const float flCentre = flHalf;
 
-    zone.vMin.x = flCentre - flHalf;
-    zone.vMin.z = -(flZone * 0.5f);
-    zone.vMax.x = flHalf + flCentre;
-    zone.vMax.y = g_flDromeHeight;
-    zone.vMax.z = flZone * 0.5f;
+    zone.vMin.x         = flCentre - flHalf;
+    zone.vMin.z         = -(g_flDromePostWidth * 10.0f * 0.5f);
+    zone.vMax.x         = flHalf + flCentre;
+    *(int*)&zone.vMax.y = *(const int*)&g_flDromeHeight;
+    zone.vMax.z         = g_flDromePostWidth * 10.0f * 0.5f;
 
-    box.vMin.x = flMirror - flHalf;
-    box.vMin.z = -(flZone * 0.5f);
-    box.vMax.x = flHalf + flMirror;
-    box.vMax.y = g_flDromeHeight;
-    box.vMax.z = flZone * 0.5f;
+    box.vMin.x         = flMirror - flHalf;
+    *(int*)&box.vMin.z = *(const int*)&zone.vMin.z;
+    box.vMax.x         = flHalf + flMirror;
+    *(int*)&box.vMax.y = *(const int*)&g_flDromeHeight;
+    box.vMax.z         = g_flDromePostWidth * 10.0f * 0.5f;
 
     if (zone.vMin.x <= pQueryPos->x && pQueryPos->x <= zone.vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= zone.vMax.y && zone.vMin.z <= pQueryPos->z && pQueryPos->z <= zone.vMax.z)
     {
