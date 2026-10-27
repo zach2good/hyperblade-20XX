@@ -58,9 +58,9 @@ the change moved.
   Annotate it as [docs/ANNOTATIONS.md](docs/ANNOTATIONS.md#hand-written-assembly) says. Never
   write assembly to steer a compiled function's bytes. `python tools/check_asm_bodies.py`
   enforces this.
-- **Avoid `volatile`.** Use it only for a value really shared with another thread or the
-  hardware, with the reason on the line or the line above. Never use it to force a load or a store
-  the original's scheduler happened to emit. `python tools/check_volatile.py` enforces this.
+- **Avoid `volatile`.** Use it only for a value really shared with another thread, the hardware
+  or a re-entered callback, with the reason on the line or the line above. Never use it to force
+  a load or a store the original's scheduler happened to emit. `python tools/check_volatile.py` enforces this.
 - **Put bring-up fixes inside `#ifdef HYPERX_BRINGUP`.** They must not change the measured image.
 - **Source comments describe the code.** They never record scores, percentages or match history.
   Default to no comment. When one is needed, state the unusual fact about the original in one

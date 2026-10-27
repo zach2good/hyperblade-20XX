@@ -19,7 +19,8 @@ a tool most often breaks.
 - Record a failed spelling in `symbols/retired.csv`, never in a comment or a doc.
 - Link library code; never copy it. Pair runtime and JPEG routines with `// LIBRARY:` markers.
 - Write assembly only where the original was assembly, as listed in `symbols/original_asm.csv`.
-- Avoid `volatile`, except for a value really shared with another thread or the hardware.
+- Avoid `volatile`, except for a value really shared with another thread, the hardware or a
+  re-entered callback.
 - Every function is a member or lives in a named namespace: no `Name__Function` free functions.
   One class, one `.h` and `.cpp` pair.
 - Commit nothing from the original. Commit one matched function at a time, titled as
