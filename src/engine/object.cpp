@@ -149,15 +149,16 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     float           flPost;
 
     const float flZone   = g_flDromePostWidth * 10.0f;
+    const float flHeight = g_flDromeHeight;
     const float flHalf   = flZone * 0.5f;
     const float flMirror = flZone * -0.5f;
     const float flCentre = flHalf;
 
-    zone.vMin.x         = flCentre - flHalf;
-    zone.vMin.z         = -(g_flDromePostWidth * 10.0f * 0.5f);
-    zone.vMax.x         = flHalf + flCentre;
-    *(int*)&zone.vMax.y = *(const int*)&g_flDromeHeight;
-    zone.vMax.z         = g_flDromePostWidth * 10.0f * 0.5f;
+    zone.vMin.x = flCentre - flHalf;
+    zone.vMin.z = -(g_flDromePostWidth * 10.0f * 0.5f);
+    zone.vMax.x = flHalf + flCentre;
+    zone.vMax.y = flHeight;
+    zone.vMax.z = g_flDromePostWidth * 10.0f * 0.5f;
 
     box.vMin.x         = flMirror - flHalf;
     *(int*)&box.vMin.z = *(const int*)&zone.vMin.z;
