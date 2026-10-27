@@ -263,18 +263,16 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
         {
             if (nKeyCode == pEntry->nKey)
             {
-                break;
+                goto found;
             }
         }
 
         // A key with no bitmap cannot be shown, so it is refused.
-        if (pEntry >= g_aKeyBitmaps + KEY_BITMAP_COUNT)
-        {
-            g_pAudioMgr->PlaySpecific(SOUND_ENDSIR);
+        g_pAudioMgr->PlaySpecific(SOUND_ENDSIR);
 
-            return 1;
-        }
+        return 1;
 
+    found:
         g_anKeyConfigKeys[nRow] = nKeyCode;
     }
 
