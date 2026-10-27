@@ -34,20 +34,10 @@ struct ShadowFace
 
 #pragma pack(pop)
 
+// The UV indices follow the corners; a skipping face adds a second block, counted in bytes.
 inline short* MeshFace::UVIndices()
 {
-    int nSkip;
-
-    if ((cFlags & FACE_FLAG_UV_SKIP) != 0)
-    {
-        nSkip = nCorners;
-    }
-    else
-    {
-        nSkip = 0;
-    }
-
-    return &aCorners[nSkip + nCorners];
+    return (short*)((char*)aCorners + ((cFlags & FACE_FLAG_UV_SKIP) != 0 ? nCorners * sizeof(short) : 0) + nCorners * sizeof(short));
 }
 
 inline short MeshFace::GetScaledWidth()
