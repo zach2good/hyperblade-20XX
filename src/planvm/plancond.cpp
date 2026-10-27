@@ -955,14 +955,7 @@ void __cdecl PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pAr
 
     if (pArgs->m_nArgCount == ARG_COUNT_SLOT)
     {
-        int nIndex = nSlot;
-
-        if (pArgs->m_pArgs[2].n != PLAN_TOKEN_MESSAGE_DATA)
-        {
-            nIndex = (short)pArgs->m_pArgs[2].n;
-        }
-
-        PlayerObject* const pTarget = g_pGameEngine->GetPlayer(nIndex);
+        PlayerObject* const pTarget = g_pGameEngine->GetPlayer(pArgs->m_pArgs[2].n != PLAN_TOKEN_MESSAGE_DATA ? (short)pArgs->m_pArgs[2].n : nSlot);
 
         if (pTarget != 0)
         {
