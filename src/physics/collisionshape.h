@@ -38,6 +38,8 @@ public:
 
     ~CollisionShape();
 
+    CollisionShape& operator=(const CollisionShape& other);
+
     // The 0x04 to 0x38 run CollisionPlane and CollisionEllipsoid share.
     ShapeKind GetShapeKind() const
     {
@@ -64,8 +66,5 @@ protected:
     float     m_flElasticity; // 0x030
     ShapeKind m_nShapeKind;   // 0x034
 };
-
-// SYNTHETIC: HYPERX 0x00480850
-// CollisionShape::operator=
 
 #endif

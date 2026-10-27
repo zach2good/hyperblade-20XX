@@ -33,10 +33,28 @@ public:
     CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFriction, float flElasticity);
 
     CollisionObj(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity);
+
+    // RampObject's first three parts inline this and the copy below; its fourth calls the out-of-line forms.
+    CollisionObj(const Vec3& vOrigin, const Vec3& vB, const Vec3& vC, float flFriction, float flElasticity)
+    {
+        InitFrom3Points(&vOrigin, &vB, &vC, flFriction, flElasticity);
+    }
+
+    CollisionObj& operator=(const CollisionObj& other);
+
+    // The base's copy, then this class's own fields.
+    void CopyInline(const CollisionObj& other)
+    {
+        CollisionShape::operator=(other);
+
+        m_vPoint   = other.m_vPoint;
+        m_flSlopeX = other.m_flSlopeX;
+        m_flSlopeY = other.m_flSlopeY;
+        m_flOffset = other.m_flOffset;
+        m_bCached  = other.m_bCached;
+    }
+
     void InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity);
 };
-
-// SYNTHETIC: HYPERX 0x004807b0
-// CollisionObj::operator=
 
 #endif
