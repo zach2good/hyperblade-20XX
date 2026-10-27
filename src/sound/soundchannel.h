@@ -68,7 +68,8 @@ public:
     // The ring size for a stream; zero for a sound small enough to hold whole.
     int m_nRingSize; // 0x50
     int m_nRingHalf; // 0x54
-    int m_nBusy;     // 0x58
+    // Shared with a re-entered timer tick, so every read and write goes to memory.
+    volatile int m_nBusy; // 0x58
 
     static int IsResidentGroup(const struct SoundEntry* pEntry, int nGroup);
 };

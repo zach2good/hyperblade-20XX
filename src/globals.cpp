@@ -822,8 +822,11 @@ extern float g_flArenaEllipsoidElasticity = 0.95f;
 
 EllipsoidRatios g_ellipsoidRatios;
 
-int  g_nInstallLevel;
-int  g_nSoundTimerDepth;
+int g_nInstallLevel;
+
+// Shared with a re-entered timer tick, so every read and write goes to memory.
+volatile int g_nSoundTimerDepth;
+
 char g_bChampFromJumbotron;
 
 float g_flOneSteering = 1.0f;

@@ -144,8 +144,8 @@ words with no code term is often missed, so read a file end to end once it gives
 
 `volatile` written to force a load or a store the original's scheduler happened to emit. It
 misstates the code, because the value isn't volatile. Remove it and accept the score. A value really
-shared with another thread or the hardware keeps it, with the reason on the line or the line
-above; `tools/check_volatile.py` fails on one without.
+shared with another thread, the hardware or a re-entered callback keeps it, with the reason on
+the line or the line above; `tools/check_volatile.py` fails on one without.
 
 ### The assembly body
 
