@@ -20,6 +20,9 @@ void DumpWidgets();
 }
 #endif
 
+// The widget array's offset in words from the start of a screen.
+#define SCREEN_WIDGET_WORD 6
+
 // The three virtuals are the whole of 0x004b4040; two are folded across a dozen tables.
 // VTABLE: HYPERX 0x004b4040
 class Screen

@@ -1803,13 +1803,14 @@ void LeagueSetupUIScreen::UpdateStatText()
             pTeam = g_pGameEngine->m_pTeamB;
         }
 
-        const int      nRow = (nStat - MATCH_STAT_TOTAL_POINTS) * LEAGUE_GRID_COLUMNS;
-        Widget** const pRow = &m_apWidgets[nRow];
+        const int nRow = (nStat - MATCH_STAT_TOTAL_POINTS) * LEAGUE_GRID_COLUMNS;
+        // The row pointer counts words from the screen itself, six before the widget array.
+        Widget** const pRow = &m_apWidgets[nRow - SCREEN_WIDGET_WORD];
 
         for (nPlayer = 0; nPlayer < TEAM_ROW_COUNT; nPlayer++)
         {
             const float*  pStats  = pTeam->aStatRows[nPlayer].aStat;
-            Widget* const pWidget = pRow[LEAGUE_WIDGET_STAT_GRID + nPlayer];
+            Widget* const pWidget = pRow[SCREEN_WIDGET_WORD + LEAGUE_WIDGET_STAT_GRID + nPlayer];
 
             if (nStat == MATCH_STAT_TIME_OF_POSS)
             {
@@ -1871,7 +1872,7 @@ void LeagueSetupUIScreen::UpdateStatText()
             sprintf(szText, "%2hd", (short)nTotal);
         }
 
-        pRow[LEAGUE_WIDGET_STAT_GRID + TEAM_ROW_COUNT]->SetText(szText);
+        pRow[SCREEN_WIDGET_WORD + LEAGUE_WIDGET_STAT_GRID + TEAM_ROW_COUNT]->SetText(szText);
     }
 }
 
