@@ -81,7 +81,12 @@ bool __fastcall Math::Vec3Normalize(Vec3* pVec)
 // FUNCTION: HYPERX 0x004753e0
 int __cdecl Math::RandInt(int nMin, int nMax)
 {
-    const float flRoll = Math::RandMagnitude();
+    float flRoll = Math::RandSigned();
+
+    if (flRoll <= 0.0f)
+    {
+        flRoll = -flRoll;
+    }
 
     nMax -= nMin;
 
