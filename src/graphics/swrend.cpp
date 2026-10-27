@@ -65,13 +65,8 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     short*   pIndex       = pFaceData->aCorners;
     g_swFaceBuffer.nMask  = g_nSWVertexPosMask;
 
-    short* pUVIndex = 0;
-
     // Only an MDM-textured face that carries UV indices takes texture coordinates.
-    if (g_cMdmTexLoaded != 0 && (pMatTexture = ppMaterials[0]->pTexture) != 0 && (pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0)
-    {
-        pUVIndex = pFaceData->UVIndices();
-    }
+    short* pUVIndex = g_cMdmTexLoaded != 0 && (pMatTexture = ppMaterials[0]->pTexture) != 0 && (pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0 ? pFaceData->UVIndices() : 0;
 
     if (pUVIndex != 0)
     {
@@ -86,21 +81,18 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
             pUVTable = 0;
         }
 
-        g_swFaceBuffer.nMask = g_nSWVertexUVMask | g_nSWVertexPosMask;
         pTexture             = pMatTexture->m_pSoftTexture;
+        g_swFaceBuffer.nMask = g_nSWVertexUVMask | g_nSWVertexPosMask;
 
         for (i = 0; i < pFaceData->nCorners; i++)
         {
             const TexCoord* pUV;
 
-            pVert = &g_swFaceBuffer.aVertices[i];
-
             const TransformedVertex* const pSource = &pVertexBufBase[*pIndex++];
 
-            pVert->pos.x = pSource->x;
-            pVert->pos.y = pSource->y;
-            pVert->pos.z = pSource->z;
-            pVert->pos.w = pSource->w;
+            pVert = &g_swFaceBuffer.aVertices[i];
+
+            pVert->pos = *pSource;
 
             pUV = &pUVTable[*pUVIndex++];
 
@@ -113,12 +105,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         {
             pVert = &g_swFaceBuffer.aVertices[i];
 
-            const TransformedVertex* const pSource = &pVertexBufBase[*pIndex++];
-
-            pVert->pos.x = pSource->x;
-            pVert->pos.y = pSource->y;
-            pVert->pos.z = pSource->z;
-            pVert->pos.w = pSource->w;
+            pVert->pos = pVertexBufBase[*pIndex++];
         }
     }
 
@@ -175,6 +162,8 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         return;
     }
 
+    unsigned int dwColour;
+
     if (cBackFace != 0)
     {
         pMaterial = ppMaterials[1];
@@ -221,7 +210,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
                     }
                 }
 
-                g_nSWFaceColour =
+                dwColour =
                     (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex)
                            << 8 |
                        ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel, cColourIndex))
@@ -232,7 +221,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
             }
             else
             {
-                g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+                dwColour = (unsigned int)pMaterial->nColour;
             }
         }
         else
@@ -244,11 +233,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
             switch (nKind)
             {
                 case SHADE_WHITE:
-                    g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+                    dwColour = (unsigned int)pMaterial->nColour;
                     break;
 
                 case SHADE_SCALED:
-                    g_nSWFaceColour =
+                    dwColour =
                         ((((unsigned int)(int)(pMaterial->acChannel[2] * flLevel) | COLOUR_ALPHA_BITS)
                               << 8 |
                           (unsigned int)(int)(pMaterial->acChannel[1] * flLevel))
@@ -258,7 +247,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
                     break;
 
                 default:
-                    g_nSWFaceColour = COLOUR_OPAQUE;
+                    dwColour = COLOUR_OPAQUE;
                     break;
             }
         }
@@ -267,7 +256,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     {
         if (pVertexColour != 0)
         {
-            g_nSWFaceColour = (unsigned int)*pVertexColour;
+            dwColour = (unsigned int)*pVertexColour;
         }
         else
         {
@@ -285,7 +274,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
                                                                              pMaterial,
                                                                              pFaceNormal);
 
-                    g_nSWFaceColour =
+                    dwColour =
                         (((ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex)
                                << 8 |
                            ColorPalette::LookupColorIntensity(g_pColorPalette, cShade, flLevel2, cColourIndex))
@@ -296,7 +285,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
                 }
                 else
                 {
-                    g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+                    dwColour = (unsigned int)pMaterial->nColour;
                 }
             }
             else
@@ -308,11 +297,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
                 switch (nKind)
                 {
                     case SHADE_WHITE:
-                        g_nSWFaceColour = (unsigned int)pMaterial->nColour;
+                        dwColour = (unsigned int)pMaterial->nColour;
                         break;
 
                     case SHADE_SCALED:
-                        g_nSWFaceColour =
+                        dwColour =
                             ((((unsigned int)(int)(pMaterial->acChannel[2] * flLevel2) | COLOUR_ALPHA_BITS)
                                   << 8 |
                               (unsigned int)(int)(pMaterial->acChannel[1] * flLevel2))
@@ -322,17 +311,19 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
                         break;
 
                     default:
-                        g_nSWFaceColour = COLOUR_OPAQUE;
+                        dwColour = COLOUR_OPAQUE;
                         break;
                 }
             }
         }
     }
 
+    g_nSWFaceColour = dwColour;
+
     i          = 0;
     int nIndex = 0;
 
-    if ((g_bBottomUpDIB != 0) == (cBackFace != 0))
+    if ((g_bBottomUpDIB != 0 && cBackFace != 0) || (g_bBottomUpDIB == 0 && cBackFace == 0))
     {
         nFirst = nIndex;
         nStep  = 1;
@@ -340,8 +331,8 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     }
     else
     {
-        nStep  = -1;
         nFirst = g_swFaceBuffer.nCount - 1;
+        nStep  = -1;
         nEnd   = -1;
     }
 
