@@ -1020,7 +1020,9 @@ void DebugMenu::RendererControls()
         return;
     }
 
-    for (const auto& [pszName, pfnTab] : { std::pair{ "Graphics", GraphicsTab }, std::pair{ "Lighting", LightingTab } })
+    constexpr std::pair<const char*, void (*)()> aTabs[] = { { "Graphics", GraphicsTab }, { "Lighting", LightingTab } };
+
+    for (const auto& [pszName, pfnTab] : aTabs)
     {
         if (OriginalUI::BeginTabItem(pszName, false))
         {
