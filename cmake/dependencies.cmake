@@ -112,6 +112,14 @@ target_include_directories(stb SYSTEM INTERFACE "${PROJECT_SOURCE_DIR}/third_par
 # are built, with a patch for the one dirent.h use.
 set(LIBADLIB_COMMIT b1d307d7f881ec3bba2933aa69cfdf29603264a0)
 
+# Git's patch, ahead of the PATH: Strawberry Perl's 2.5.9 on the Windows runners crashes on the patch.
+if(CMAKE_HOST_WIN32)
+    find_package(Git REQUIRED)
+    cmake_path(GET GIT_EXECUTABLE PARENT_PATH GIT_BIN_DIR)
+    cmake_path(GET GIT_BIN_DIR PARENT_PATH GIT_ROOT_DIR)
+    find_program(PATCH_EXECUTABLE patch PATHS "${GIT_ROOT_DIR}/usr/bin" NO_DEFAULT_PATH REQUIRED)
+endif()
+
 CPMAddPackage(
     NAME libadlib
     URL "https://github.com/vomitselfie/libadlib/archive/${LIBADLIB_COMMIT}.tar.gz"
