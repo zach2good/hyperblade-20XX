@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://github.com/zach2good/hyperblade-20XX/actions/workflows/ci.yml"><img src="https://github.com/zach2good/hyperblade-20XX/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://github.com/zach2good/hyperblade-20XX/releases/latest"><img src="https://img.shields.io/github/v/release/zach2good/hyperblade-20XX" alt="Latest release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/zach2good/hyperblade-20XX" alt="Licence"></a>
+  <a href="COPYING.LESSER"><img src="https://img.shields.io/github/license/zach2good/hyperblade-20XX" alt="Licence"></a>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-informational" alt="Windows and Linux">
   <img src="https://img.shields.io/badge/C%2B%2B-23-blue" alt="C++23">
   <a href="https://github.com/zach2good/hyperblade-decomp"><img src="https://img.shields.io/badge/built%20on-hyperblade--decomp-purple" alt="Built on hyperblade-decomp"></a>
