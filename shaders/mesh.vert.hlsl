@@ -8,6 +8,7 @@ cbuffer MeshUniforms : register(b0, space1)
     row_major float4x4 WorldFromModel;
     float4 LightDirs[3]; // In the model's space; w is the light's strength, zero for off.
     float4 Flags;        // x: the colour is a palette index. y: the key light, or -1. z: the drome's curve.
+    float4 Eye;          // The camera's eye in the world; w is zero when there is none.
 };
 
 cbuffer FrameUniforms : register(b1, space1)
@@ -37,6 +38,7 @@ struct Output
     float4 ShadowPosition0 : TEXCOORD7;
     float4 ShadowPosition1 : TEXCOORD8;
     nointerpolation float3 Strengths : TEXCOORD9; // Each scene light's strength.
+    float4 View : TEXCOORD10; // From the eye to the corner in the world; w as Eye's.
     float4 Position : SV_Position;
 };
 
@@ -83,6 +85,7 @@ Output main(Input input)
     output.WorldNormal = mul((float3x3)WorldFromModel, input.Normal);
     output.ShadowPosition0 = mul(LightClipFromWorld[0], world);
     output.ShadowPosition1 = mul(LightClipFromWorld[1], world);
+    output.View = float4(world.xyz - Eye.xyz, Eye.w);
 
     return output;
 }

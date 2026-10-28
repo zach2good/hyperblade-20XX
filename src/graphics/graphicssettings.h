@@ -67,6 +67,12 @@ void Toggle(Switch which);
 float RokLightRadius();
 void  SetRokLightRadius(float flRadius);
 
+// How far a realtime shadow's edge spreads, in world units; nought is a hard edge. Set changes it
+// for the frames that follow, and Save writes it to booie.ini.
+float ShadowSoftness();
+void  SetShadowSoftness(float flRadius);
+void  SaveShadowSoftness();
+
 } // namespace GraphicsSettings
 
 #endif

@@ -240,6 +240,23 @@ void LightingTab()
     ImGui::SeparatorText("Shadows");
     Checkbox("Realtime shadows", Switch::SHADOW_MAPS, "Objects cast shadow maps from both lights above the arena, in place of the original's shadow shapes.");
 
+    ImGui::BeginDisabled(!GraphicsSettings::On(Switch::SHADOW_MAPS));
+
+    auto flSoftness = GraphicsSettings::ShadowSoftness();
+
+    if (ImGui::SliderFloat("Softness", &flSoftness, 0.0f, 1.5f, "%.2f"))
+    {
+        GraphicsSettings::SetShadowSoftness(flSoftness);
+    }
+
+    if (ImGui::IsItemDeactivatedAfterEdit())
+    {
+        GraphicsSettings::SaveShadowSoftness();
+    }
+
+    ImGui::SetItemTooltip("How far a shadow's edge spreads, in world units. Nought is a hard edge.");
+    ImGui::EndDisabled();
+
     ImGui::EndDisabled();
     ImGui::EndTabItem();
 }

@@ -4,6 +4,7 @@
 #include "engine/gameoptions.h"
 #include "globals.h"
 #include <array>
+#include <cmath>
 
 namespace
 {
@@ -38,6 +39,12 @@ auto s_renderer         = GraphicsSettings::Renderer::HARDWARE;
 auto s_abOn             = std::array<bool, kSwitches.size()>{};
 auto s_flRokLightRadius = 200.0f;
 
+// Saved in hundredths of a world unit, as the options file holds whole numbers.
+constexpr auto kShadowSoftnessKey     = "ShadowSoftness";
+constexpr auto kShadowSoftnessDefault = 12;
+
+auto s_flShadowSoftness = kShadowSoftnessDefault / 100.0f;
+
 void Load()
 {
     if (s_bLoaded || g_pGameOptions == nullptr)
@@ -56,6 +63,8 @@ void Load()
     {
         s_abOn[i] = g_pGameOptions->ReadInt(kSection, kSwitches[i].pszKey, static_cast<int>(kSwitches[i].bDefault)) != 0;
     }
+
+    s_flShadowSoftness = static_cast<int>(g_pGameOptions->ReadInt(kSection, kShadowSoftnessKey, kShadowSoftnessDefault)) / 100.0f;
 }
 
 } // namespace
@@ -131,4 +140,26 @@ float GraphicsSettings::RokLightRadius()
 void GraphicsSettings::SetRokLightRadius(float flRadius)
 {
     s_flRokLightRadius = flRadius;
+}
+
+float GraphicsSettings::ShadowSoftness()
+{
+    Load();
+
+    return s_flShadowSoftness;
+}
+
+void GraphicsSettings::SetShadowSoftness(float flRadius)
+{
+    Load();
+
+    s_flShadowSoftness = flRadius;
+}
+
+void GraphicsSettings::SaveShadowSoftness()
+{
+    if (g_pGameOptions != nullptr)
+    {
+        g_pGameOptions->WriteInt(kSection, kShadowSoftnessKey, static_cast<int>(std::lround(s_flShadowSoftness * 100.0f)));
+    }
 }

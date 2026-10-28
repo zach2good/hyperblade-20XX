@@ -6,6 +6,7 @@
 #include "graphics/colorpalette.h"
 #include "graphics/graphicsglobals.h"
 #include "globals.h"
+#include "common/staticinit.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <array>
@@ -385,6 +386,29 @@ HwPipeline::MeshUniforms ClipUniforms(const HwRenderer::Draw& draw)
     }
 
     std::memcpy(uniforms.aWorldFromModel, draw.aWorldFromModel, sizeof(uniforms.aWorldFromModel));
+
+    // The eye is the model point the pixel x, y and w rows all send to nought.
+    const auto* const m = draw.aPixelFromModel;
+
+    const auto flDet = m[0] * (m[5] * m[14] - m[6] * m[13]) - m[1] * (m[4] * m[14] - m[6] * m[12]) + m[2] * (m[4] * m[13] - m[5] * m[12]);
+
+    if (std::abs(flDet) > 1e-12f)
+    {
+        const auto aEye = std::array<float, 3>{
+            -(m[3] * (m[5] * m[14] - m[6] * m[13]) - m[1] * (m[7] * m[14] - m[6] * m[15]) + m[2] * (m[7] * m[13] - m[5] * m[15])) / flDet,
+            -(m[0] * (m[7] * m[14] - m[6] * m[15]) - m[3] * (m[4] * m[14] - m[6] * m[12]) + m[2] * (m[4] * m[15] - m[7] * m[12])) / flDet,
+            -(m[0] * (m[5] * m[15] - m[7] * m[13]) - m[1] * (m[4] * m[15] - m[7] * m[12]) + m[3] * (m[4] * m[13] - m[5] * m[12])) / flDet,
+        };
+
+        const auto* const w = draw.aWorldFromModel;
+
+        for (int nRow = 0; nRow < 3; nRow++)
+        {
+            uniforms.aEye[nRow] = w[nRow * 4] * aEye[0] + w[nRow * 4 + 1] * aEye[1] + w[nRow * 4 + 2] * aEye[2] + w[nRow * 4 + 3];
+        }
+
+        uniforms.aEye[3] = 1.0f;
+    }
     std::memcpy(uniforms.aLightDirs, draw.aLightDirs, sizeof(uniforms.aLightDirs));
 
     uniforms.aFlags[0] = static_cast<float>(draw.bPalettised);
@@ -591,7 +615,7 @@ void DrawShadowMap(SDL_GPUCommandBuffer* pCommands, SDL_GPUTexture* pMap, const 
 
 // The shaded models' colours are palette indices, lit along the live palette's ramps; the
 // textured models' are RGB.
-HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool bShadows)
+HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool bShadows, const HwPipeline::FrameUniforms& frame)
 {
     auto uniforms = HwPipeline::ColourUniforms{};
 
@@ -599,6 +623,7 @@ HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool b
 
     uniforms.aShadows[0] = static_cast<float>(bShadows);
     uniforms.aShadows[1] = static_cast<float>(GraphicsSettings::On(GraphicsSettings::Switch::PHONG_SHADING));
+    uniforms.aShadows[2] = GraphicsSettings::ShadowSoftness();
 
     const auto aWorldLights = std::array<Vec3, 3>{ g_lightDirs[1].dir, g_lightDirs[2].dir, g_vLightDirExtra };
 
@@ -608,6 +633,12 @@ HwPipeline::ColourUniforms PaletteUniforms(const unsigned char* pPalette, bool b
         uniforms.aWorldLightDirs[i][1] = aWorldLights[i].y;
         uniforms.aWorldLightDirs[i][2] = aWorldLights[i].z;
     }
+
+    std::memcpy(uniforms.aLightClipFromWorld, frame.aLightClipFromWorld, sizeof(uniforms.aLightClipFromWorld));
+
+    uniforms.aArenaEllipsoid[0] = g_flArenaEllipsoidX;
+    uniforms.aArenaEllipsoid[1] = g_flArenaEllipsoidY;
+    uniforms.aArenaEllipsoid[2] = g_flArenaEllipsoidZ;
 
     uniforms.nLargeRampFirst  = g_pColorPalette->m_largeRampBounds.nFirst;
     uniforms.nLargeRampLast   = g_pColorPalette->m_largeRampBounds.nCount;
@@ -755,7 +786,7 @@ HwRenderer::Texture HwRenderer::Render(Renderer renderer, int nWidth, int nHeigh
     depth.stencil_load_op  = SDL_GPU_LOADOP_DONT_CARE;
     depth.stencil_store_op = SDL_GPU_STOREOP_DONT_CARE;
 
-    const auto colours = PaletteUniforms(pPalette, bShadows);
+    const auto colours = PaletteUniforms(pPalette, bShadows, frame);
 
     SDL_GPUSampler* const pSampler = [&]
     {
