@@ -1,11 +1,17 @@
 # hyperblade-20XX
 
 <p align="center">
-  <img src="docs/hb_20XX_logo.png" alt="HyperBlade 20XX" width="320">
+  <img src="docs/hb_20XX_logo.png" alt="HyperBlade 20XX" height="280">
+  <img src="docs/gameplay_0.webp" alt="A match on the hardware renderer" height="280">
 </p>
 
 <p align="center">
   <a href="https://github.com/zach2good/hyperblade-20XX/actions/workflows/ci.yml"><img src="https://github.com/zach2good/hyperblade-20XX/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/zach2good/hyperblade-20XX/releases/latest"><img src="https://img.shields.io/github/v/release/zach2good/hyperblade-20XX" alt="Latest release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/zach2good/hyperblade-20XX" alt="Licence"></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-informational" alt="Windows and Linux">
+  <img src="https://img.shields.io/badge/C%2B%2B-23-blue" alt="C++23">
+  <a href="https://github.com/zach2good/hyperblade-decomp"><img src="https://img.shields.io/badge/built%20on-hyperblade--decomp-purple" alt="Built on hyperblade-decomp"></a>
 </p>
 
 HyperBlade (1996), rebuilt and improved for modern systems. Built on top of
@@ -13,43 +19,21 @@ HyperBlade (1996), rebuilt and improved for modern systems. Built on top of
 
 You need your own copy of the game. Not affiliated with Activision or WizBang! Software Productions.
 
-<p align="center">
-  <img src="docs/gameplay_1080p.png" alt="A match on the hardware renderer" width="640">
-</p>
-
 ## Features
 
-- Drops into your existing HyperBlade install
-- Supports all releases (original disc release (v1.0.0.0), Windows 2000 patch (v1.0.0.1), both with or without the Voodoo2 launcher (HB3DFxV2.exe))
+- Drops into any HyperBlade install: v1.0.0.0, v1.0.0.1, with or without the Voodoo2 launcher
 - 64-bit Windows and Linux builds
-- In-game debug menu on F2
-- Every cheat code in the debug menu
-- Runtime toggles for:
-  - Original software renderer
-  - New hardware renderer
-  - Textured models
-  - Gouraud shading/Phong shading
-  - Rok emits light
-  - Realtime shadows
-- Widescreen support
-- HUD and menu scaling
-- Xbox, PlayStation and Switch controller support
-- Music tracks can play from local rips, rather than the CD
-- Bot spectator mode, where every dromer plays on the AI plans. Turn it on in the debug menu, start
-  with `-b`, or press Tab for the side view
-- Fixes for the bugs in the shipped AI plans, so AI carriers pass and shoot. The debug menu switches
-  between them and the plans as shipped ([docs/plan_bugs.md](docs/plan_bugs.md))
-- G, or a pad's left shoulder, sends your goalie up-ice after the rok and calls it back, with the
-  fixed plans on
-- Lifetime stats: every period of an exhibition or Gauntlet match adds to each dromer's totals and
-  each finished match to its teams' records, saved in `hyperblade_20XX_career.txt` beside the
-  executable. On the stats panel, the arrows step through home, away, home lifetime and away
-  lifetime
-- Skippable intro splash screens
-- Uncapped frame rate, with the game still simulated at 30 Hz
-- Starts on the hardware renderer with realtime shadows, the uncapped frame rate and the plan
-  fixes, where a GPU allows. The debug menu turns each off, and the choice is saved
-- Various bug and crash fixes
+- New hardware renderer with realtime soft shadows, smooth shading and a light on the rok, or the
+  original software renderer
+- Widescreen, HUD and menu scaling, and an uncapped frame rate over the 30 Hz simulation
+- Xbox, PlayStation and Switch controllers
+- Music from local rips instead of the CD
+- Fixed AI plans, so AI carriers pass and shoot ([docs/plan_bugs.md](docs/plan_bugs.md))
+- Goalie control: G or left shoulder sends your goalie after the rok and back
+- Bot spectator mode: `-b`, or Tab for the side view
+- Lifetime stats for dromers and teams, saved beside the executable
+- Debug menu on F2, with every cheat and a switch for each new feature
+- Skippable intro, and many bug and crash fixes
 
 ## TODO
 
