@@ -108,23 +108,14 @@ add_library(stb INTERFACE)
 target_include_directories(stb SYSTEM INTERFACE "${PROJECT_SOURCE_DIR}/third_party/stb")
 
 # libadlib decompiles and compiles the plans. The fixes in res/plans are edits to its decompiled
-# source, so it is pinned by commit. Its own build wants POSIX, so only the compiler and decompiler
-# are built, with a patch for the one dirent.h use.
-set(LIBADLIB_COMMIT b1d307d7f881ec3bba2933aa69cfdf29603264a0)
-
-# Git's patch, ahead of the PATH: Strawberry Perl's 2.5.9 on the Windows runners crashes on the patch.
-if(CMAKE_HOST_WIN32)
-    find_package(Git REQUIRED)
-    cmake_path(GET GIT_EXECUTABLE PARENT_PATH GIT_BIN_DIR)
-    cmake_path(GET GIT_BIN_DIR PARENT_PATH GIT_ROOT_DIR)
-    find_program(PATCH_EXECUTABLE patch PATHS "${GIT_ROOT_DIR}/usr/bin" NO_DEFAULT_PATH REQUIRED)
-endif()
+# source, so it is pinned by commit, on the fork that builds with MSVC. Only the compiler and
+# decompiler are built.
+set(LIBADLIB_COMMIT abb9daacb799423daf30a7fc93ae4871160dcbff)
 
 CPMAddPackage(
     NAME libadlib
-    URL "https://github.com/vomitselfie/libadlib/archive/${LIBADLIB_COMMIT}.tar.gz"
-    URL_HASH SHA256=09f639b77aae6d7f564d743449d2ca3c7a9db60f884a6433af453d4f2ba77c73
-    PATCHES "${PROJECT_SOURCE_DIR}/cmake/libadlib-msvc.patch"
+    URL "https://github.com/zach2good/libadlib/archive/${LIBADLIB_COMMIT}.tar.gz"
+    URL_HASH SHA256=74a0fb62cbfb3575be5bd23e749ef358ecce8769d16ecfed2ac8da73ced8e058
     DOWNLOAD_ONLY YES)
 
 add_library(adlib STATIC
@@ -134,6 +125,7 @@ add_library(adlib STATIC
     "${libadlib_SOURCE_DIR}/src/compiler/numbers.cpp"
     "${libadlib_SOURCE_DIR}/src/compiler/symbols.cpp"
     "${libadlib_SOURCE_DIR}/src/compiler/compiler.cpp"
+    "${libadlib_SOURCE_DIR}/src/compiler/later.cpp"
     "${libadlib_SOURCE_DIR}/src/compiler/strict.cpp"
     "${libadlib_SOURCE_DIR}/src/tools/symbols.cpp"
     "${libadlib_SOURCE_DIR}/src/tools/decompile.cpp")

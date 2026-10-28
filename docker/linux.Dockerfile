@@ -9,7 +9,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        ca-certificates cmake ninja-build g++-14 clang-20 git patch pkg-config \
+        ca-certificates cmake ninja-build g++-14 clang-20 git pkg-config \
         libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxi-dev libxss-dev libxfixes-dev libxtst-dev \
         libwayland-dev libxkbcommon-dev wayland-protocols libegl-dev libgl-dev libdrm-dev libgbm-dev \
         libasound2-dev libpulse-dev libpipewire-0.3-dev libdecor-0-dev libudev-dev libdbus-1-dev \
