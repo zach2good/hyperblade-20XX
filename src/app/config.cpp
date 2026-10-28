@@ -11,6 +11,8 @@
 #include "config.h"
 #include <cstdio>
 #include <cstring>
+#include <optional>
+#include "engine/gameoptions.h"
 #include "gameapp.h"
 #include "common/fileobj.h"
 #include "engine/messageids.h"
@@ -176,6 +178,36 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
     return 1;
 }
 
+namespace
+{
+
+constexpr auto kGameplaySection = "Gameplay";
+constexpr auto kEscapePausesKey = "EscapePauses";
+
+std::optional<bool> s_obEscapePauses;
+
+} // namespace
+
+bool Config::EscapePauses()
+{
+    if (!s_obEscapePauses.has_value() && g_pGameOptions != nullptr)
+    {
+        s_obEscapePauses = g_pGameOptions->ReadInt(kGameplaySection, kEscapePausesKey, 1) != 0;
+    }
+
+    return s_obEscapePauses.value_or(true);
+}
+
+void Config::SetEscapePauses(bool bOn)
+{
+    s_obEscapePauses = bOn;
+
+    if (g_pGameOptions != nullptr)
+    {
+        g_pGameOptions->WriteInt(kGameplaySection, kEscapePausesKey, static_cast<int>(bOn));
+    }
+}
+
 // Message table entries the pause key shows, and how long they stay up.
 constexpr auto kMsgPaused = 0x4f;
 #define MSG_TOGGLE_MS 0x5dc
@@ -204,6 +236,12 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
                 // Falls into the escape case: both keys end in the same call.
             case Key::kEscape:
                 g_pRenderer->HideQuitPrompt();
+
+                if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPaused)
+                {
+                    g_pGameEngine->SetRunState(1, 0);
+                }
+
                 break;
         }
 
@@ -253,6 +291,14 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             if (g_pRenderer != nullptr && g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive && static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
             {
                 g_pRenderer->ShowQuitPrompt();
+
+                // Deviation: the original kept playing under the prompt. A network match cannot pause.
+                if (g_bSessionActive == 0 && Config::EscapePauses())
+                {
+                    Game::RunFrame();
+                    g_pGameEngine->SetRunState(0, 0);
+                }
+
                 return;
             }
             break;

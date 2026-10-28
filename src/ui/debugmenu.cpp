@@ -3,6 +3,7 @@
 #include "common/clock.h"
 #include "common/sdlmemory.h"
 #include "ui/debugmenu.h"
+#include "app/config.h"
 #include "app/gameapp.h"
 #include "app/window.h"
 #include "engine/engineobject.h"
@@ -359,6 +360,15 @@ void InputTab()
     {
         return;
     }
+
+    auto bEscapePauses = Config::EscapePauses();
+
+    if (ImGui::Checkbox("Escape pauses the match", &bEscapePauses))
+    {
+        Config::SetEscapePauses(bEscapePauses);
+    }
+
+    ImGui::SetItemTooltip("Escape stops play under its quit prompt until you answer it. Off keeps the match running, as the original did. A network match never pauses.");
 
     if (InputLog::Count() > 0)
     {

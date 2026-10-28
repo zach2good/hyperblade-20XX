@@ -12,6 +12,10 @@ void LoadPreferences(const char* pszFileName);
 int  ParseFile(const char* pszData, const char* pszFallbackPath, KeyRow* pRows);
 int  IsCommentLine(const char* pszLine);
 
+// Whether Escape pauses a single-player match under its quit prompt. Saved under [Gameplay].
+bool EscapePauses();
+void SetEscapePauses(bool bOn);
+
 } // namespace Config
 
 // The unit's first initialiser thunk, and g_strPrefs's atexit registration and destructor thunk.

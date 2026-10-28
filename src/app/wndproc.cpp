@@ -136,7 +136,8 @@ static void Press(unsigned int nMessage, unsigned int nCode, int nX, int nY)
         return;
     }
 
-    if (nCode == 'Q' || nCode == Key::kEscape || nCode == Key::kPause)
+    // Return answers the quit prompt, which pauses the match.
+    if (nCode == 'Q' || nCode == Key::kEscape || nCode == Key::kPause || nCode == Key::kReturn)
     {
         GameApp::HandleGlobalKeyEvent(static_cast<int>(nCode));
     }
