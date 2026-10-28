@@ -1,12 +1,12 @@
 #include "stringtable.h"
 #include "common/path.h"
+#include "common/peresources.h"
 #include "app/stringids.h"
 #include <cstdio>
 #include <array>
 #include <cstdlib>
 #include <fstream>
 #include <algorithm>
-#include <iterator>
 #include <map>
 #include <optional>
 #include <string>
@@ -184,170 +184,70 @@ void AppendUTF8(std::string& out, unsigned int nCode)
     }
 }
 
-// Little-endian reads that mark the image bad instead of reading past its end.
-struct Image
-{
-    std::vector<unsigned char> bytes;
-    bool                       bValid = true;
-
-    unsigned int U16(size_t nAt)
-    {
-        if (nAt + 2 > bytes.size())
-        {
-            bValid = false;
-
-            return 0;
-        }
-
-        return static_cast<unsigned int>(bytes[nAt] | bytes[nAt + 1] << 8);
-    }
-
-    unsigned int U32(size_t nAt)
-    {
-        return U16(nAt) | U16(nAt + 2) << 16;
-    }
-};
-
-constexpr auto kRtStringID     = 6u;
-constexpr auto kSubdirectory   = 0x80000000u;
-constexpr auto kMaxResourceDir = 4096u;
-
-// The program's string resources, read from its file without loading it. Under RT_STRING, block n
-// holds ids (n - 1) * 16 onward as sixteen counted UTF-16 strings. The first language is taken.
+// The program's string resources. Under RT_STRING, block n holds ids (n - 1) * 16 onward as
+// sixteen counted UTF-16 strings.
 std::optional<std::map<unsigned int, std::string> > ReadStringResources(const std::string& strExe)
 {
-    auto file = std::ifstream(strExe, std::ios::binary);
+    const auto resources = PEResources::Read(strExe);
 
-    if (!file)
+    if (!resources)
     {
         return std::nullopt;
     }
-
-    auto image = Image{ std::vector<unsigned char>(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()) };
-
-    const auto nPE = static_cast<size_t>(image.U32(0x3c));
-
-    if (image.U32(nPE) != 0x00004550)
-    {
-        return std::nullopt;
-    }
-
-    const auto nCOFF     = nPE + 4;
-    const auto nSections = image.U16(nCOFF + 2);
-    const auto nOptional = nCOFF + 20;
-
-    const auto nDirectories = [&]
-    {
-        // PE32+ widens the fields before the data directories.
-        if (image.U16(nOptional) == 0x20b)
-        {
-            return nOptional + 112;
-        }
-
-        return nOptional + 96;
-    }();
-
-    const auto nSectionTable = nOptional + image.U16(nCOFF + 16);
-
-    const auto toOffset = [&](unsigned int nRVA) -> size_t
-    {
-        for (unsigned int nSection = 0; nSection < nSections; nSection++)
-        {
-            const auto nAt      = nSectionTable + nSection * 40;
-            const auto nAddress = image.U32(nAt + 12);
-            const auto nSize    = (std::max)(image.U32(nAt + 8), image.U32(nAt + 16));
-
-            if (nRVA >= nAddress && nRVA - nAddress < nSize)
-            {
-                return image.U32(nAt + 20) + static_cast<size_t>(nRVA - nAddress);
-            }
-        }
-
-        image.bValid = false;
-
-        return 0;
-    };
-
-    const auto nRoot = toOffset(image.U32(nDirectories + 2 * 8));
-
-    // Each directory entry is an id and an offset from the resource root.
-    const auto entries = [&](size_t nDirectory)
-    {
-        auto found = std::vector<std::pair<unsigned int, unsigned int> >();
-
-        const auto nCount = (std::min)(image.U16(nDirectory + 12) + image.U16(nDirectory + 14), kMaxResourceDir);
-
-        for (unsigned int n = 0; n < nCount && image.bValid; n++)
-        {
-            found.emplace_back(image.U32(nDirectory + 16 + n * 8), image.U32(nDirectory + 20 + n * 8));
-        }
-
-        return found;
-    };
 
     auto strings = std::map<unsigned int, std::string>();
 
-    for (const auto& [nType, nTypeAt] : entries(nRoot))
+    for (const auto& resource : *resources)
     {
-        if (nType != kRtStringID || (nTypeAt & kSubdirectory) == 0)
+        if (resource.nType != PEResources::kTypeString || resource.nID == 0)
         {
             continue;
         }
 
-        for (const auto& [nBlock, nBlockAt] : entries(nRoot + (nTypeAt & ~kSubdirectory)))
+        const auto& data = resource.data;
+
+        const auto u16 = [&](size_t nAt) -> unsigned int
         {
-            if ((nBlockAt & kSubdirectory) == 0)
+            if (nAt + 2 > data.size())
             {
-                continue;
+                return 0;
             }
 
-            const auto languages = entries(nRoot + (nBlockAt & ~kSubdirectory));
+            return static_cast<unsigned int>(data[nAt] | data[nAt + 1] << 8);
+        };
 
-            if (languages.empty() || (languages[0].second & kSubdirectory) != 0)
+        auto nAt = size_t(0);
+
+        for (unsigned int nString = 0; nString < 16 && nAt + 2 <= data.size(); nString++)
+        {
+            const auto nLength = u16(nAt);
+
+            nAt += 2;
+
+            auto text = std::string();
+
+            for (unsigned int n = 0; n < nLength; n++)
             {
-                continue;
+                auto nCode = u16(nAt + n * 2);
+
+                if (nCode >= 0xd800 && nCode < 0xdc00 && n + 1 < nLength)
+                {
+                    nCode = 0x10000 + ((nCode - 0xd800) << 10) + (u16(nAt + (n + 1) * 2) - 0xdc00);
+                    n++;
+                }
+
+                AppendUTF8(text, nCode);
             }
 
-            const auto nEntry = nRoot + languages[0].second;
+            nAt += nLength * 2;
 
-            auto nAt = toOffset(image.U32(nEntry));
+            const auto nID = (resource.nID - 1) * 16 + nString;
 
-            for (unsigned int nString = 0; nString < 16 && image.bValid; nString++)
+            if (nLength > 0 && nID < kMaxStringID)
             {
-                const auto nLength = image.U16(nAt);
-
-                nAt += 2;
-
-                auto text = std::string();
-
-                for (unsigned int n = 0; n < nLength && image.bValid; n++)
-                {
-                    auto nCode = image.U16(nAt + n * 2);
-
-                    if (nCode >= 0xd800 && nCode < 0xdc00 && n + 1 < nLength)
-                    {
-                        nCode = 0x10000 + ((nCode - 0xd800) << 10) + (image.U16(nAt + (n + 1) * 2) - 0xdc00);
-                        n++;
-                    }
-
-                    AppendUTF8(text, nCode);
-                }
-
-                nAt += nLength * 2;
-
-                const auto nID = (nBlock - 1) * 16 + nString;
-
-                if (nLength > 0 && nID < kMaxStringID)
-                {
-                    strings[nID] = text;
-                }
+                strings[nID] = text;
             }
         }
-    }
-
-    if (!image.bValid)
-    {
-        return std::nullopt;
     }
 
     return strings;
