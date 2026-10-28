@@ -729,6 +729,11 @@ void InfoBar::LayoutSurfaces()
     ptPos.y = 9;
     m_tClock.SetPosition(ptPos);
 
+    // Deviation: the original put the frame rate down the left edge, where it overlaps the rosters.
+    ptPos.x = (g_nBackBufferWidth - Text::Measure(m_tFrameRate.m_font, "FPS 00 BLIT").nWidth) / 2;
+    ptPos.y = ptSize.y + 4;
+    m_tFrameRate.SetPosition(ptPos);
+
     ptPos.x = 0;
     ptPos.y = 0;
     m_sSpeedFrame.SetPosition(ptPos);
@@ -741,10 +746,6 @@ void InfoBar::LayoutSurfaces()
 
     ptRoster.y = ptSize.y + ptPos.y;
     ptRoster.x = ptPos.x + 6;
-
-    ptPos.x = 0x14;
-    ptPos.y = ptSize.y + 0x14;
-    m_tFrameRate.SetPosition(ptPos);
 
     ptSize = m_sTeamAFrame.GetSize();
 
