@@ -288,9 +288,8 @@ int WndProc::OnActivate(unsigned int bActive)
                 }
             }
 
-            GameEngine::TogglePause(0);
+            // Deviation: the original unpaused around the repaint, which ran a tick of the match.
             WndProc::HandlePaint();
-            GameEngine::TogglePause(0);
         }
         else
         {

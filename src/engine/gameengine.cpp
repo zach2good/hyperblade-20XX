@@ -559,7 +559,7 @@ void GameEngine::TickClock()
     m_clock.flPrevInvDeltaSquared = m_clock.flInvDeltaSquared;
     m_clock.prevTick              = m_clock.tick;
 
-    m_clock.tick = Clock::Now();
+    m_clock.tick = MatchNow();
 
     // The simulation steps a fixed tick, however long the frame took to draw.
     g_flFrameDelta = FramePacing::kTickMs;
@@ -1123,7 +1123,7 @@ void GameEngine::InitMatchTimers()
     m_clock.nRingIndex = 0;
     m_clock.nPeriod    = 1;
 
-    const auto now = Clock::Now();
+    const auto now = MatchNow();
 
     m_clock.periodStart = now;
     m_clock.pauseStart  = now;
@@ -4064,7 +4064,7 @@ void GameEngine::BroadcastCollisionEvents()
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
     short       nIndex;
-    static auto s_eventBase = Clock::Now();
+    static auto s_eventBase = MatchNow();
 
     if (g_bDragOff == 0 || nEvent != kMsgStartDrag)
     {
@@ -4079,13 +4079,13 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 
     if (nEvent == kMsgGoalScored)
     {
-        s_eventBase = Clock::Now();
+        s_eventBase = MatchNow();
 
         m_clock.nPauseMark = 0;
     }
     else if (nEvent == kMsgStartDrag)
     {
-        s_eventBase = Clock::Now();
+        s_eventBase = MatchNow();
 
         m_clock.periodStart = s_eventBase;
 
@@ -4097,7 +4097,7 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
     {
         if (m_clock.nPauseMark == 0)
         {
-            m_clock.pauseStart = Clock::Now();
+            m_clock.pauseStart = MatchNow();
 
             m_clock.periodStart += m_clock.pauseStart - s_eventBase;
         }
@@ -4288,16 +4288,21 @@ char GameEngine::RemoveFromSortedList(short nId)
 // FUNCTION: HYPERX 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
-    static auto s_pauseBase = Clock::Now();
+    static auto s_pauseBase = MatchNow();
 
     switch (bRunning)
     {
         case 1:
+            if (m_wRunState == kEngineRunPaused)
+            {
+                m_paused += Clock::Now() - m_pausedSince;
+            }
+
             if (m_clock.nPauseMark == -1)
             {
                 m_clock.nPauseMark = 1;
 
-                m_clock.pauseStart = Clock::Now();
+                m_clock.pauseStart = MatchNow();
 
                 m_clock.periodStart += m_clock.pauseStart - s_pauseBase;
             }
@@ -4310,7 +4315,12 @@ void GameEngine::SetRunState(short bRunning, int)
             break;
 
         case 0:
-            s_pauseBase = Clock::Now();
+            if (m_wRunState != kEngineRunPaused)
+            {
+                m_pausedSince = Clock::Now();
+            }
+
+            s_pauseBase = MatchNow();
 
             m_wRunState = kEngineRunPaused;
 
@@ -4324,6 +4334,16 @@ void GameEngine::SetRunState(short bRunning, int)
             SDL_EnableScreenSaver();
             break;
     }
+}
+
+Clock::Milliseconds GameEngine::MatchNow()
+{
+    if (g_pGameEngine == nullptr)
+    {
+        return Clock::Now();
+    }
+
+    return Clock::Now() - g_pGameEngine->m_paused;
 }
 
 // A slot whose object is already released leaves the count wrong.

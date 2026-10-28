@@ -106,7 +106,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 
     for (int nInputSlot = 0; nInputSlot < kInputSlotCount; nInputSlot++)
     {
-        const auto nNow = Clock::Now();
+        const auto nNow = GameEngine::MatchNow();
 
         m_aPressTime[static_cast<short>(nInputSlot)]   = nNow;
         m_aReleaseTime[static_cast<short>(nInputSlot)] = nNow + kRepeatStep;
@@ -435,7 +435,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
             if (m_aReleaseTime[nIndex] >= m_aPressTime[nIndex])
             {
                 m_aPrevPressTime[static_cast<short>(nIndex)] = m_aPressTime[static_cast<short>(nIndex)];
-                nNow                                         = Clock::Now();
+                nNow                                         = GameEngine::MatchNow();
                 m_aPressTime[static_cast<short>(nIndex)]     = nNow;
 
                 if (nNow - m_aReleaseTime[static_cast<short>(nIndex)] < m_doubleTap && m_aReleaseTime[static_cast<short>(nIndex)] - m_aPrevPressTime[static_cast<short>(nIndex)] < m_doubleTap)
@@ -524,7 +524,7 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 
             nResult                                        = 0;
             m_aPrevReleaseTime[static_cast<short>(nIndex)] = m_aReleaseTime[static_cast<short>(nIndex)];
-            nNow                                           = Clock::Now();
+            nNow                                           = GameEngine::MatchNow();
             m_aReleaseTime[static_cast<short>(nIndex)]     = nNow;
             nElapsed                                       = nNow - m_aPressTime[static_cast<short>(nIndex)];
 

@@ -248,6 +248,13 @@ struct GameEngine
     std::unique_ptr<SaveObject> m_pSaveObject;  // 0x52d8
     int                         m_bMatchOver;   // 0x52dc
 
+    // Match time leaves the pauses out, so plan timers, input and the period clock stop with play.
+    Clock::Milliseconds m_paused{};
+    Clock::Milliseconds m_pausedSince{};
+
+    // The match clock, or the wall clock while there is no engine.
+    static Clock::Milliseconds MatchNow();
+
     void DispatchCollisionToRule(class CollInteractor* pChain);
     void SetRunState(short bRunning, int nReason);
     void BroadcastEvent(int nEvent, int nParam, int nSender);
