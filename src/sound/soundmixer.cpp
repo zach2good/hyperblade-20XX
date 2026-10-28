@@ -316,6 +316,21 @@ void SoundMixer::Play(SoundEntry* pSound)
         return;
     }
 
+    // Deviation: the original gave a sound already playing another channel. A whoosh fired every
+    // few ticks stacked four deep, a wall of noise, so a sound that does not loop restarts instead.
+    if (pSound->m_nGroup != kSoundGroupLooping)
+    {
+        const auto lock = StreamLock(m_pImpl->pStream);
+
+        for (auto& voice : m_pImpl->aVoices)
+        {
+            if (voice.pSource == pSound)
+            {
+                m_pImpl->Stop(voice);
+            }
+        }
+    }
+
     // The voice keeps its own copy, as a DirectSound buffer did: the game frees a group's samples
     // while its sounds may still be playing. The disk read happens before the lock, which the
     // mixer waits on.
