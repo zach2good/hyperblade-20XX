@@ -5,10 +5,15 @@
 #include "common/compat.h"
 
 #include "globals.h"
+#include "input/keycodes.h"
+#include <array>
 #include <stddef.h>
 class CheatState;
 
 constexpr auto kKeyBindingCount = 10;
+
+// The bindings the game starts with before any are saved.
+constexpr auto kFactoryKeyBindings = std::array<unsigned int, kKeyBindingCount>{ Key::kUp, Key::kDown, Key::kLeft, Key::kRight, 'S', 'D', Key::kSpace, 'C', 'F', 'E' };
 
 // The ten key bindings: ini name, default, and what was read.
 // GLOBAL: HYPERX 0x004c41e0

@@ -88,16 +88,20 @@ class AwardsUIScreen;
 #include "engine/framepacing.h"
 #include "graphics/graphicssettings.h"
 #include "app/stringids.h"
+#include "ui/originalui.h"
+#include "ui/scenes.h"
 #include "common/staticinit.h"
 
 float g_flUnusedConfigDialogA = g_flZeroConfigDialog;
 float g_flUnusedConfigDialogB = g_flZeroConfigDialog;
 float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
 
-// id_ACF_AnimationPeek in DATA/ENUMIDS.H. It opened a debug dialog, which went with the resources.
+// id_ACF_AnimationPeek in DATA/ENUMIDS.H. The original's dialog was modal and paused the match;
+// this one leaves it running.
 // FUNCTION: HYPERX 0x004013d0
 void GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int)
 {
+    OriginalUI::OpenDialog(OriginalUI::kDialogAnimationPeek);
 }
 
 // FUNCTION: HYPERX 0x004017a0
@@ -779,6 +783,15 @@ int GameApp::MainUpdate()
     {
         if (GameApp::UpdateSplash())
         {
+            return 0;
+        }
+
+        // A scene takes the screen, and the menus or the match wait under it.
+        if (Scenes::Frame())
+        {
+            FrameTimer::EndFrameUpdate(&g_frameTimer);
+            FrameTimer::Pace();
+
             return 0;
         }
 

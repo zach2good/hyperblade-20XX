@@ -274,6 +274,7 @@ set(HYPERX_SOURCES
     src/ui/cddsurfaceowner.cpp
     src/ui/debughud.cpp
     src/ui/debugmenu.cpp
+    src/ui/dialogtemplates.cpp
     src/ui/displaywidget.cpp
     src/ui/flipbookwidget.cpp
     src/ui/holdingwidget.cpp
@@ -284,8 +285,10 @@ set(HYPERX_SOURCES
     src/ui/loopflipbookwidget.cpp
     src/ui/mainwindow.cpp
     src/ui/messagequeue.cpp
+    src/ui/originalui.cpp
     src/ui/pausemenu.cpp
     src/ui/saveobject.cpp
+    src/ui/scenes.cpp
     src/ui/screen.cpp
     src/ui/screens/awardsuiscreen.cpp
     src/ui/screens/championshipsetupuiscreen.cpp
@@ -389,6 +392,7 @@ enable_testing()
 # The unit checks need nothing from the game.
 hyperx_add_check(ini LABELS unit SOURCES tests/ini_check.cpp src/common/inifile.cpp src/common/path.cpp)
 hyperx_add_check(strings LABELS unit SOURCES tests/strings_check.cpp src/common/stringtable.cpp src/common/peresources.cpp src/common/path.cpp)
+hyperx_add_check(dialogtemplates LABELS unit SOURCES tests/dialogtemplates_check.cpp src/ui/dialogtemplates.cpp)
 hyperx_add_check(path LABELS unit SOURCES tests/path_check.cpp src/common/path.cpp)
 hyperx_add_check(careerstats LABELS unit SOURCES tests/careerstats_check.cpp src/engine/careerstats.cpp)
 hyperx_add_check(rawalloc LABELS lint SOURCES tests/rawalloc_check.cpp ARGS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/tests")

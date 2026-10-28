@@ -77,6 +77,9 @@ public:
 
     void LoadSymbolTables();
 
+    // The first loaded symbol with this value and prefix, or null.
+    const char* FindSymbolName(unsigned int nValue, const char* pszPrefix) const;
+
     short                       m_nCamera; // 0x00
     int                         m_nLength; // 0x04
     int                         m_nCursor; // 0x08

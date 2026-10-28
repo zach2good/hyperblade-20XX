@@ -4,6 +4,7 @@
 #include "sound/audiomgrbase.h"
 #include "sound/soundmanager.h"
 #include <memory>
+#include <vector>
 
 // PlayCDTrack's tracks.
 constexpr auto kCDTrackRandom = (-1);
@@ -27,6 +28,9 @@ struct AudioMgr : public AudioMgrBase
 
     // Whether any of the CD's tracks are ripped to Data/Music.
     static bool HasRippedMusic();
+
+    // The numbers of the tracks ripped to Data/Music, lowest first.
+    static const std::vector<int>& MusicTracks();
 
     int  SfxReadVolume();
     void SfxFadeVolume(int nVolume);

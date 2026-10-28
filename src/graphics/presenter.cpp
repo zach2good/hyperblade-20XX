@@ -325,6 +325,23 @@ void Presenter::Canvas(const void* pBits, int nPitch, int nWidth, int nHeight)
     SDL_RenderPresent(s_pRenderer);
 }
 
+void Presenter::Clear(unsigned char nRed, unsigned char nGreen, unsigned char nBlue)
+{
+    const auto busy = BusyScope();
+
+    if (Ready() == false)
+    {
+        return;
+    }
+
+    SDL_SetRenderDrawColor(s_pRenderer, nRed, nGreen, nBlue, 0xff);
+    SDL_RenderClear(s_pRenderer);
+
+    DebugMenu::Draw(DebugMenu::Renderer{ s_pRenderer });
+
+    SDL_RenderPresent(s_pRenderer);
+}
+
 bool Presenter::HasGPU()
 {
     return Ready() && SDL_GetGPURendererDevice(s_pRenderer) != nullptr;

@@ -3,6 +3,8 @@
 #include "common/clock.h"
 #include "common/sdlmemory.h"
 #include "ui/debugmenu.h"
+#include "ui/originalui.h"
+#include "ui/scenes.h"
 #include "app/config.h"
 #include "app/gameapp.h"
 #include "app/window.h"
@@ -40,6 +42,36 @@ bool s_bReady      = false;
 bool s_bOpen       = false;
 bool s_bShowHidden = true;
 
+// The original's menu bar hides like a full-screen menu bar: it is up while the debug menu is, and
+// otherwise while the pointer is at the top of the window or a menu hangs from the bar.
+bool  s_bMenuBarKept    = false;
+float s_flMenuBarHeight = 20.0f;
+
+bool PointerAtTop()
+{
+    if (SDL_GetMouseFocus() == nullptr)
+    {
+        return false;
+    }
+
+    auto flY = 0.0f;
+
+    SDL_GetMouseState(nullptr, &flY);
+
+    return flY < s_flMenuBarHeight;
+}
+
+bool MenuBarShown()
+{
+    return s_bOpen || s_bMenuBarKept || PointerAtTop();
+}
+
+// An original dialog stays up after the debug menu closes, until its own buttons close it.
+bool AnythingShown()
+{
+    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None;
+}
+
 void Ready(SDL_Renderer* pRenderer)
 {
     if (s_bReady)
@@ -58,6 +90,10 @@ void Ready(SDL_Renderer* pRenderer)
 
     ImGui::StyleColorsDark();
 
+    // A little larger than ImGui's 13 pixels, in its scalable default font so it stays sharp.
+    ImGui::GetStyle().FontSizeBase = 16.0f;
+    io.Fonts->AddFontDefaultVector();
+
     ImGui_ImplSDL3_InitForSDLRenderer(Window::Native().As<SDL_Window>(), pRenderer);
     ImGui_ImplSDLRenderer3_Init(pRenderer);
 
@@ -68,12 +104,12 @@ void Checkbox(const char* pszLabel, Switch which, const char* pszTooltip)
 {
     auto bOn = GraphicsSettings::On(which);
 
-    if (ImGui::Checkbox(pszLabel, &bOn))
+    if (OriginalUI::Checkbox(pszLabel, &bOn))
     {
         GraphicsSettings::Toggle(which);
     }
 
-    ImGui::SetItemTooltip("%s", pszTooltip);
+    OriginalUI::SetItemTooltip("%s", pszTooltip);
 }
 
 bool Hardware()
@@ -86,12 +122,12 @@ void BeginHardwareOnly()
 {
     if (!Hardware())
     {
-        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "The software renderer draws the original look,");
-        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "so these only take effect on the hardware renderer.");
+        ImGui::TextColored(ImVec4(0.5f, 0.0f, 0.0f, 1.0f), "The software renderer draws the original look,");
+        ImGui::TextColored(ImVec4(0.5f, 0.0f, 0.0f, 1.0f), "so these only take effect on the hardware renderer.");
 
         ImGui::BeginDisabled(!Presenter::HasGPU());
 
-        if (ImGui::Button("Switch to hardware"))
+        if (OriginalUI::Button("Switch to hardware"))
         {
             GraphicsSettings::ToggleRenderer();
         }
@@ -105,23 +141,18 @@ void BeginHardwareOnly()
 
 void GraphicsTab()
 {
-    if (!ImGui::BeginTabItem("Graphics"))
-    {
-        return;
-    }
-
-    ImGui::SeparatorText("Renderer");
+    OriginalUI::SeparatorText("Renderer");
 
     ImGui::BeginDisabled(!Presenter::HasGPU());
 
-    if (ImGui::RadioButton("Original software renderer", !Hardware()) && Hardware())
+    if (OriginalUI::RadioButton("Original software renderer", !Hardware()) && Hardware())
     {
         GraphicsSettings::ToggleRenderer();
     }
 
     ImGui::SameLine();
 
-    if (ImGui::RadioButton("New hardware renderer", Hardware()) && !Hardware())
+    if (OriginalUI::RadioButton("New hardware renderer", Hardware()) && !Hardware())
     {
         GraphicsSettings::ToggleRenderer();
     }
@@ -135,7 +166,7 @@ void GraphicsTab()
 
     BeginHardwareOnly();
 
-    ImGui::SeparatorText("Models");
+    OriginalUI::SeparatorText("Models");
     Checkbox("Textured models", Switch::TEXTURES, "The textured model set, as the original's Direct3D mode drew it. Off draws the shaded models in palette colours.");
     Checkbox("Full detail at any distance", Switch::FULL_DETAIL, "Always the most detailed textured model. Off steps down with distance, as the engine picks.");
 
@@ -143,23 +174,23 @@ void GraphicsTab()
 
     ImGui::BeginDisabled(g_bShadedDromeModels != 0);
 
-    if (ImGui::Checkbox("Textured drome (F8)", &bDrome))
+    if (OriginalUI::Checkbox("Textured drome (F8)", &bDrome))
     {
         Renderer::ToggleDromeTextured();
     }
 
-    ImGui::SetItemTooltip("The original's F8: the drome with its textures, or shaded. The -m switch keeps it shaded.");
+    OriginalUI::SetItemTooltip("The original's F8: the drome with its textures, or shaded. The -m switch keeps it shaded.");
     ImGui::EndDisabled();
 
-    ImGui::SeparatorText("Surfaces");
+    OriginalUI::SeparatorText("Surfaces");
     Checkbox("Smooth texture filtering", Switch::LINEAR_FILTERING, "Linear filtering, as the original's F7 toggled. Off is nearest.");
 
-    ImGui::SeparatorText("Shading");
+    OriginalUI::SeparatorText("Shading");
 
     const auto bSmooth = GraphicsSettings::On(Switch::SMOOTH_SHADING);
     const auto bPhong  = GraphicsSettings::On(Switch::PHONG_SHADING);
 
-    if (ImGui::RadioButton("Flat (original)", !bSmooth))
+    if (OriginalUI::RadioButton("Flat (original)", !bSmooth))
     {
         if (bSmooth)
         {
@@ -167,10 +198,10 @@ void GraphicsTab()
         }
     }
 
-    ImGui::SetItemTooltip("Each face lit as one, as the original did.");
+    OriginalUI::SetItemTooltip("Each face lit as one, as the original did.");
     ImGui::SameLine();
 
-    if (ImGui::RadioButton("Gouraud shading", bSmooth && !bPhong))
+    if (OriginalUI::RadioButton("Gouraud shading", bSmooth && !bPhong))
     {
         if (!bSmooth)
         {
@@ -183,10 +214,10 @@ void GraphicsTab()
         }
     }
 
-    ImGui::SetItemTooltip("Light worked out at each corner and blended across the face, smooth across edges that don't crease.");
+    OriginalUI::SetItemTooltip("Light worked out at each corner and blended across the face, smooth across edges that don't crease.");
     ImGui::SameLine();
 
-    if (ImGui::RadioButton("Phong shading", bSmooth && bPhong))
+    if (OriginalUI::RadioButton("Phong shading", bSmooth && bPhong))
     {
         if (!bSmooth)
         {
@@ -199,31 +230,25 @@ void GraphicsTab()
         }
     }
 
-    ImGui::SetItemTooltip("Light worked out at each pixel from the blended normal, for the smoothest highlights.");
+    OriginalUI::SetItemTooltip("Light worked out at each pixel from the blended normal, for the smoothest highlights.");
 
-    ImGui::SeparatorText("Draw order");
+    OriginalUI::SeparatorText("Draw order");
     Checkbox("Paint in original order", Switch::PAINTERS_ORDER, "Each mesh covers the ones sorted behind it, as the original painted them. Off depth tests every mesh against the others.");
 
     ImGui::EndDisabled();
-    ImGui::EndTabItem();
 }
 
 void LightingTab()
 {
-    if (!ImGui::BeginTabItem("Lighting"))
-    {
-        return;
-    }
-
     BeginHardwareOnly();
 
-    ImGui::SeparatorText("Scene lights");
+    OriginalUI::SeparatorText("Scene lights");
     Checkbox("Light from 303\xc2\xb0", Switch::LIGHT_303, "One of the two lights above the arena.");
     Checkbox("Light from 54\xc2\xb0", Switch::LIGHT_54, "The other light above the arena.");
     Checkbox("Light from below", Switch::LIGHT_180, "Lights the drome's first piece from underneath.");
     Checkbox("Fill from every light", Switch::SEVERAL_LIGHTS, "The original lights each face by one light. On, the other lights fill in where they face it.");
 
-    ImGui::SeparatorText("Rok");
+    OriginalUI::SeparatorText("Rok");
     Checkbox("Rok emits light", Switch::ROK_LIGHT, "A point light carried by the rok, added over the scene lights.");
 
     ImGui::BeginDisabled(!GraphicsSettings::On(Switch::ROK_LIGHT));
@@ -235,10 +260,10 @@ void LightingTab()
         GraphicsSettings::SetRokLightRadius(flRadius);
     }
 
-    ImGui::SetItemTooltip("How far the glow reaches, in world units. Not saved.");
+    OriginalUI::SetItemTooltip("How far the glow reaches, in world units. Not saved.");
     ImGui::EndDisabled();
 
-    ImGui::SeparatorText("Shadows");
+    OriginalUI::SeparatorText("Shadows");
     Checkbox("Realtime shadows", Switch::SHADOW_MAPS, "Objects cast shadow maps from both lights above the arena, in place of the original's shadow shapes.");
 
     ImGui::BeginDisabled(!GraphicsSettings::On(Switch::SHADOW_MAPS));
@@ -255,30 +280,22 @@ void LightingTab()
         GraphicsSettings::SaveShadowSoftness();
     }
 
-    ImGui::SetItemTooltip("How far a shadow's edge spreads, in world units. Nought is a hard edge.");
+    OriginalUI::SetItemTooltip("How far a shadow's edge spreads, in world units. Nought is a hard edge.");
     ImGui::EndDisabled();
 
     ImGui::EndDisabled();
-    ImGui::EndTabItem();
 }
 
 void TimingTab()
 {
-    if (!ImGui::BeginTabItem("Timing"))
-    {
-        return;
-    }
-
-    ImGui::SeparatorText("Frame rate");
+    OriginalUI::SeparatorText("Frame rate");
     Checkbox("Uncapped", Switch::UNCAPPED, "A match draws as often as it can, blending between the 30 Hz simulation ticks. Off draws once a tick.");
 
-    ImGui::SeparatorText("Simulation");
+    OriginalUI::SeparatorText("Simulation");
     ImGui::Text("%d ticks a second", FramePacing::TicksPerSecond());
-    ImGui::SetItemTooltip("Should read 30 in a match.");
+    OriginalUI::SetItemTooltip("Should read 30 in a match.");
     ImGui::Text("Clock drift %+.0f ms a second", FramePacing::DriftMs());
-    ImGui::SetItemTooltip("How far the ticks ran ahead of the wall clock. Should read near 0.");
-
-    ImGui::EndTabItem();
+    OriginalUI::SetItemTooltip("How far the ticks ran ahead of the wall clock. Should read near 0.");
 }
 
 // The key bindings in use: the input device's once a match has one, the saved ones before.
@@ -294,7 +311,7 @@ const unsigned int* KeyBindings()
 
 void GamepadsSection()
 {
-    ImGui::SeparatorText("Controllers");
+    OriginalUI::SeparatorText("Controllers");
 
     auto nCount = 0;
 
@@ -331,7 +348,7 @@ void GamepadsSection()
         if (pIds[i] == Gamepad::LastUsed())
         {
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "last used");
+            ImGui::TextColored(ImVec4(0.0f, 0.5f, 0.0f, 1.0f), "last used");
         }
 
         ImGui::Indent();
@@ -356,19 +373,14 @@ void GamepadsSection()
 
 void InputTab()
 {
-    if (!ImGui::BeginTabItem("Input"))
-    {
-        return;
-    }
-
     auto bEscapePauses = Config::EscapePauses();
 
-    if (ImGui::Checkbox("Escape pauses the match", &bEscapePauses))
+    if (OriginalUI::Checkbox("Escape pauses the match", &bEscapePauses))
     {
         Config::SetEscapePauses(bEscapePauses);
     }
 
-    ImGui::SetItemTooltip("Escape stops play under its quit prompt until you answer it. Off keeps the match running, as the original did. A network match never pauses.");
+    OriginalUI::SetItemTooltip("Escape stops play under its quit prompt until you answer it. Off keeps the match running, as the original did. A network match never pauses.");
 
     if (InputLog::Count() > 0)
     {
@@ -377,7 +389,7 @@ void InputTab()
 
     GamepadsSection();
 
-    ImGui::SeparatorText("Keyboard and mouse");
+    OriginalUI::SeparatorText("Keyboard and mouse");
 
     auto flX = 0.0f;
     auto flY = 0.0f;
@@ -396,7 +408,7 @@ void InputTab()
         }
     }
 
-    ImGui::SeparatorText("Bindings");
+    OriginalUI::SeparatorText("Bindings");
 
     if (ImGui::BeginTable("bindings", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit))
     {
@@ -416,7 +428,7 @@ void InputTab()
 
             if (bHeld)
             {
-                ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "%s", g_apszKeyBindingNames[i]);
+                ImGui::TextColored(ImVec4(0.0f, 0.5f, 0.0f, 1.0f), "%s", g_apszKeyBindingNames[i]);
             }
             else
             {
@@ -448,7 +460,7 @@ void InputTab()
         ImGui::EndTable();
     }
 
-    ImGui::SeparatorText("Recent");
+    OriginalUI::SeparatorText("Recent");
 
     if (ImGui::BeginTable("recent", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY, ImVec2(0.0f, 220.0f)))
     {
@@ -491,8 +503,6 @@ void InputTab()
 
         ImGui::EndTable();
     }
-
-    ImGui::EndTabItem();
 }
 
 struct SlotRun
@@ -539,28 +549,8 @@ constexpr SlotRun SLOT_RUNS[] = {
 
 void SlotText(int nSlot)
 {
-    for (const auto& run : SLOT_RUNS)
-    {
-        if (nSlot < run.nFirst || nSlot > run.nLast)
-        {
-            continue;
-        }
-
-        if (run.nFirst == run.nLast)
-        {
-            ImGui::Text("%s", run.pszName);
-        }
-        else
-        {
-            ImGui::Text("%s %d", run.pszName, nSlot - run.nFirst);
-        }
-
-        ImGui::SetItemTooltip("Slot %d", nSlot);
-
-        return;
-    }
-
-    ImGui::Text("Slot %d", nSlot);
+    ImGui::TextUnformatted(DebugMenu::SlotName(nSlot).c_str());
+    OriginalUI::SetItemTooltip("Slot %d", nSlot);
 }
 
 const char* StateText(EngineObject& object)
@@ -581,27 +571,18 @@ const char* StateText(EngineObject& object)
 // Each engine object as the renderer saw it on the last frame.
 void ObjectsTab()
 {
-    if (!ImGui::BeginTabItem("Objects"))
-    {
-        return;
-    }
-
     if (g_pGameEngine == nullptr || g_pGameEngine->m_ppObjects == nullptr)
     {
         ImGui::TextDisabled("No match loaded.");
-        ImGui::EndTabItem();
-
         return;
     }
 
-    ImGui::Checkbox("Show hidden objects", &s_bShowHidden);
+    OriginalUI::Checkbox("Show hidden objects", &s_bShowHidden);
 
     constexpr auto kFlags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY;
 
     if (!ImGui::BeginTable("objects", 7, kFlags, ImVec2(0.0f, 360.0f)))
     {
-        ImGui::EndTabItem();
-
         return;
     }
 
@@ -678,7 +659,6 @@ void ObjectsTab()
     }
 
     ImGui::EndTable();
-    ImGui::EndTabItem();
 }
 
 // The original's typed cheats, as buttons. The tooltip decodes the code a player types for each.
@@ -735,14 +715,9 @@ std::string CheatCode(void (*pfnActivate)())
 
 void CheatsTab()
 {
-    if (!ImGui::BeginTabItem("Cheats"))
-    {
-        return;
-    }
-
     const auto bInMatch = g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive;
 
-    ImGui::SeparatorText("Unlocks");
+    OriginalUI::SeparatorText("Unlocks");
 
     for (const auto& cheat : CHEATS)
     {
@@ -753,16 +728,16 @@ void CheatsTab()
 
         ImGui::BeginDisabled(g_pGameEngine == nullptr);
 
-        if (ImGui::Button(cheat.pszLabel))
+        if (OriginalUI::Button(cheat.pszLabel))
         {
             cheat.pfnActivate();
         }
 
         ImGui::EndDisabled();
-        ImGui::SetItemTooltip("Typed in a match as %s", CheatCode(cheat.pfnActivate).c_str());
+        OriginalUI::SetItemTooltip("Typed in a match as %s", CheatCode(cheat.pfnActivate).c_str());
     }
 
-    ImGui::SeparatorText("In a match");
+    OriginalUI::SeparatorText("In a match");
 
     if (!bInMatch)
     {
@@ -778,40 +753,33 @@ void CheatsTab()
 
         ImGui::BeginDisabled(!bInMatch);
 
-        if (ImGui::Button(cheat.pszLabel))
+        if (OriginalUI::Button(cheat.pszLabel))
         {
             cheat.pfnActivate();
         }
 
         ImGui::EndDisabled();
-        ImGui::SetItemTooltip("Typed in a match as %s", CheatCode(cheat.pfnActivate).c_str());
+        OriginalUI::SetItemTooltip("Typed in a match as %s", CheatCode(cheat.pfnActivate).c_str());
     }
-
-    ImGui::EndTabItem();
 }
 
 void SpectateTab()
 {
-    if (!ImGui::BeginTabItem("Spectate"))
-    {
-        return;
-    }
-
     ImGui::BeginDisabled(g_bSessionActive != 0);
 
     auto bAutopilot = Spectator::AutopilotSetting();
 
-    if (ImGui::Checkbox("Autopilot", &bAutopilot))
+    if (OriginalUI::Checkbox("Autopilot", &bAutopilot))
     {
         Spectator::SetAutopilot(bAutopilot);
     }
 
-    ImGui::SetItemTooltip("Every dromer plays on the AI plans, whoever control passes to. Start with -b to have it from the off. Tab's side view turns it on while it is up.");
+    OriginalUI::SetItemTooltip("Every dromer plays on the AI plans, whoever control passes to. Start with -b to have it from the off. Tab's side view turns it on while it is up.");
     ImGui::EndDisabled();
 
     auto bFreeCamera = Spectator::FreeCamera();
 
-    if (ImGui::Checkbox("Free camera (F3)", &bFreeCamera))
+    if (OriginalUI::Checkbox("Free camera (F3)", &bFreeCamera))
     {
         Spectator::SetFreeCamera(bFreeCamera);
     }
@@ -823,27 +791,20 @@ void SpectateTab()
     {
         ImGui::TextDisabled("Your keys reach only the match keys while either is on.");
     }
-
-    ImGui::EndTabItem();
 }
 
 void PlansTab()
 {
-    if (!ImGui::BeginTabItem("Plans"))
-    {
-        return;
-    }
-
     ImGui::BeginDisabled(g_bSessionActive != 0);
 
     auto bFixed = PlanFixes::On();
 
-    if (ImGui::Checkbox("Fixed plans", &bFixed))
+    if (OriginalUI::Checkbox("Fixed plans", &bFixed))
     {
         PlanFixes::Set(bFixed);
     }
 
-    ImGui::SetItemTooltip("The fixes for the bugs docs/plan_bugs.md lists in the shipped AI and object plans, and the engine faults they hit. Off runs the plans as shipped.");
+    OriginalUI::SetItemTooltip("The fixes for the bugs docs/plan_bugs.md lists in the shipped AI and object plans, and the engine faults they hit. Off runs the plans as shipped.");
     ImGui::EndDisabled();
 
     ImGui::TextDisabled("Both sets are compiled at load; switching restarts each object's current behaviour.");
@@ -853,33 +814,112 @@ void PlansTab()
     {
         ImGui::TextDisabled("Locked during a network session, as every player must run the same plans.");
     }
+}
 
-    ImGui::EndTabItem();
+// The window's tabs in order, which the Debug menu lists too.
+constexpr std::pair<const char*, void (*)()> s_aTabs[] = {
+    { "Graphics", GraphicsTab },
+    { "Lighting", LightingTab },
+    { "Timing", TimingTab },
+    { "Input", InputTab },
+    { "Objects", ObjectsTab },
+    { "Cheats", CheatsTab },
+    { "Spectate", SpectateTab },
+    { "Plans", PlansTab },
+};
+
+// The tab the Debug menu last picked, selected when the window next draws.
+const char* s_pszPickedTab = nullptr;
+
+void DebugMenuOnBar()
+{
+    if (!OriginalUI::BeginMenu("Debug", true))
+    {
+        return;
+    }
+
+    if (OriginalUI::MenuItem("Debug window", "F2", s_bOpen, true))
+    {
+        s_bOpen = !s_bOpen;
+    }
+
+    OriginalUI::Separator();
+
+    for (const auto& [pszName, pfnTab] : s_aTabs)
+    {
+        if (OriginalUI::MenuItem(pszName, nullptr, false, true))
+        {
+            s_bOpen        = true;
+            s_pszPickedTab = pszName;
+        }
+    }
+
+    OriginalUI::Separator();
+
+    constexpr std::pair<const char*, Scenes::Scene> SCENES[] = {
+        { "Model viewer", Scenes::Scene::ModelViewer },
+        { "Sound player", Scenes::Scene::SoundPlayer },
+        { "Image browser", Scenes::Scene::ImageBrowser },
+    };
+
+    for (const auto& [pszName, scene] : SCENES)
+    {
+        const auto bOpen = Scenes::Current() == scene;
+
+        if (!OriginalUI::MenuItem(pszName, nullptr, bOpen, true))
+        {
+            continue;
+        }
+
+        if (bOpen)
+        {
+            Scenes::Open(Scenes::Scene::None);
+        }
+        else
+        {
+            Scenes::Open(scene);
+        }
+    }
+
+    ImGui::EndMenu();
 }
 
 void Build()
 {
-    ImGui::SetNextWindowPos(ImVec2(16, 16), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(16, 16 + ImGui::GetFrameHeight()), ImGuiCond_FirstUseEver);
 
-    ImGui::Begin("HyperBlade 20XX", &s_bOpen, ImGuiWindowFlags_AlwaysAutoResize);
+    const auto theme = OriginalUI::Theme();
+
+    // Its slider takes a sunken edge from ImGui; the other controls draw their own.
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+
+    ImGui::Begin("HyperBlade 20XX", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+
+    if (!OriginalUI::DrawWindowFrame("HyperBlade 20XX"))
+    {
+        s_bOpen = false;
+    }
 
     ImGui::Text("%.0f FPS, %d ticks a second", ImGui::GetIO().Framerate, FramePacing::TicksPerSecond());
 
-    if (ImGui::BeginTabBar("tabs"))
+    if (OriginalUI::BeginTabBar("tabs"))
     {
-        GraphicsTab();
-        LightingTab();
-        TimingTab();
-        InputTab();
-        ObjectsTab();
-        CheatsTab();
-        SpectateTab();
-        PlansTab();
+        for (const auto& [pszName, pfnTab] : s_aTabs)
+        {
+            if (OriginalUI::BeginTabItem(pszName, pszName == s_pszPickedTab))
+            {
+                pfnTab();
+                OriginalUI::EndTabItem();
+            }
+        }
 
-        ImGui::EndTabBar();
+        s_pszPickedTab = nullptr;
+
+        OriginalUI::EndTabBar();
     }
 
     ImGui::End();
+    ImGui::PopStyleVar();
 }
 
 } // namespace
@@ -899,12 +939,12 @@ void DebugMenu::OnEvent(Event event)
 
 bool DebugMenu::WantsMouse()
 {
-    return s_bOpen && s_bReady && ImGui::GetIO().WantCaptureMouse;
+    return s_bReady && (Scenes::Current() != Scenes::Scene::None || (AnythingShown() && ImGui::GetIO().WantCaptureMouse));
 }
 
 bool DebugMenu::WantsKeyboard()
 {
-    return s_bOpen && s_bReady && ImGui::GetIO().WantCaptureKeyboard;
+    return s_bReady && (Scenes::Current() != Scenes::Scene::None || (AnythingShown() && ImGui::GetIO().WantCaptureKeyboard));
 }
 
 void DebugMenu::Draw(Renderer renderer)
@@ -913,17 +953,81 @@ void DebugMenu::Draw(Renderer renderer)
 
     Ready(pRenderer);
 
-    if (!s_bOpen)
+    if (!AnythingShown())
     {
         return;
     }
+
+    const auto bMenuBar = MenuBarShown();
 
     ImGui_ImplSDLRenderer3_NewFrame();
     ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
 
-    Build();
+    if (bMenuBar)
+    {
+        const auto theme = OriginalUI::Theme();
+
+        if (ImGui::BeginMainMenuBar())
+        {
+            OriginalUI::DrawMenus();
+            DebugMenuOnBar();
+            ImGui::EndMainMenuBar();
+        }
+
+        s_flMenuBarHeight = ImGui::GetFrameHeight();
+    }
+
+    if (s_bOpen)
+    {
+        Build();
+    }
+
+    OriginalUI::DrawDialogs();
+    Scenes::DrawWindows();
+
+    // The bar stays while the pointer is over it or one of its menus is open.
+    s_bMenuBarKept = bMenuBar && (PointerAtTop() || ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId));
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), pRenderer);
+}
+
+std::string DebugMenu::SlotName(int nSlot)
+{
+    for (const auto& run : SLOT_RUNS)
+    {
+        if (nSlot < run.nFirst || nSlot > run.nLast)
+        {
+            continue;
+        }
+
+        if (run.nFirst == run.nLast)
+        {
+            return run.pszName;
+        }
+
+        return std::string(run.pszName) + " " + std::to_string(nSlot - run.nFirst);
+    }
+
+    return "Slot " + std::to_string(nSlot);
+}
+
+void DebugMenu::RendererControls()
+{
+    if (!OriginalUI::BeginTabBar("renderer"))
+    {
+        return;
+    }
+
+    for (const auto& [pszName, pfnTab] : { std::pair{ "Graphics", GraphicsTab }, std::pair{ "Lighting", LightingTab } })
+    {
+        if (OriginalUI::BeginTabItem(pszName, false))
+        {
+            pfnTab();
+            OriginalUI::EndTabItem();
+        }
+    }
+
+    OriginalUI::EndTabBar();
 }

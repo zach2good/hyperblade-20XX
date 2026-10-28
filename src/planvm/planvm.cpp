@@ -1793,6 +1793,26 @@ short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
 
 constexpr auto kSymbolNameMax = 40;
 
+const char* PlanVM::FindSymbolName(unsigned int nValue, const char* pszPrefix) const
+{
+    const auto nPrefix = strlen(pszPrefix);
+
+    for (const auto& symbol : m_aSymbols)
+    {
+        if (symbol.nValue == kPlanOpcodeNone)
+        {
+            break;
+        }
+
+        if (symbol.nValue == nValue && SDL_strncasecmp(symbol.szName, pszPrefix, nPrefix) == 0)
+        {
+            return symbol.szName;
+        }
+    }
+
+    return nullptr;
+}
+
 #define TOKEN_OPEN  '{'
 #define TOKEN_CLOSE '}'
 

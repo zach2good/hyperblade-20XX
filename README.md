@@ -33,6 +33,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Bot spectator mode: `-b`, or Tab for the side view
 - Lifetime stats for dromers and teams, saved beside the executable
 - Debug menu on F2, with every cheat and a switch for each new feature
+- The original's menu bar and dialogs, rebuilt, plus a model viewer, sound player and image browser
 - Skippable intro, and many bug and crash fixes
 
 ## TODO
