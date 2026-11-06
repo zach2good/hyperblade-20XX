@@ -158,9 +158,10 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             m_nNextIndex++;
             m_nNodeCount++;
 
-            pBlob            = pNode->m_pRecord;
-            short nFaceMax   = m_nFaceMax;
-            short nVertexMax = m_nVertexMax;
+            pBlob = pNode->m_pRecord;
+            // The original keeps the widest face count in a frame slot.
+            volatile short nFaceMax   = m_nFaceMax;
+            short          nVertexMax = m_nVertexMax;
 
             for (i = 0; i < pBlob->m_nSubComponents; i++)
             {
