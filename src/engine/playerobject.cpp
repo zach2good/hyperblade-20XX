@@ -124,7 +124,8 @@ void PlayerObject::Postpass()
                 int nDamage = (int)m_stats.GetScalar(RATING_DAMAGE);
                 nDamage &= 0xff;
 
-                PostSceneMessage(MSG_SYNC_DAMAGE, nDamage, GetSlot(), 0);
+                // The constant select keeps the client's copy of the vtable for GetSlot.
+                PostSceneMessage(MSG_SYNC_DAMAGE, nDamage, true ? GetSlot() : 0, 0);
 
                 m_nLastSendMs = g_pGameEngine->m_clock.nTickMs;
             }
