@@ -146,14 +146,17 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
     dwNow = timeGetTime();
 
+    const unsigned int nSlotHeld = nSlot;
+
     if (m_nLastSend + (unsigned int)FULL_MS < dwNow || (bThrottled == 0 && bHeld == 0 && (memcmp(&m_vPrevVel, &vStep, sizeof(Vec3)) != 0 || memcmp(&m_vPrevPos, &vPos, sizeof(Vec3)) != 0)))
     {
-        MovePacket* const pMove = &pBufferB->move;
+        NetSendBuffer* const pBuffer = pBufferB;
+        MovePacket* const    pMove   = &pBuffer->move;
 
         nUsed = LENGTH_ENCODED;
 
         pMove->nKind = PACKET_ENCODED;
-        pMove->nSlot = nSlot;
+        pMove->nSlot = nSlotHeld;
 
         if (g_bMovePackingEnabled == 0 || MoveCodec::Encode(&pMove->packed, &vPos, &vStep) == 0)
         {
@@ -165,19 +168,20 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
             pMove->raw.vStep = vStep;
         }
 
-        BroadcastState(pBufferB, nUsed, nObjectSlot);
+        BroadcastState(pBuffer, nUsed, nObjectSlot);
 
         m_nLastSend = timeGetTime();
     }
 
     if (pObject->DequeueEvent(&nPayload, &nSecond) != 0)
     {
-        EventsPacket* const pEvents = &pBufferB->events;
+        NetSendBuffer* const pBuffer = pBufferB;
+        EventsPacket* const  pEvents = &pBuffer->events;
 
         nUsed = 5;
 
         pEvents->nKind      = PACKET_EVENTS;
-        pEvents->nSlot      = nSlot;
+        pEvents->nSlot      = nSlotHeld;
         pEvents->nPlan      = nPlan;
         pEvents->nBehaviour = nBehaviour;
         pEvents->nCount     = 0;
@@ -196,7 +200,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
             if (nUsed > EVENT_LIMIT)
             {
-                BroadcastState(pBufferB, nUsed, nObjectSlot);
+                BroadcastState(pBuffer, nUsed, nObjectSlot);
 
                 pEvents->nCount = 0;
                 nUsed           = 0;
@@ -207,7 +211,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
         if (nUsed != 0)
         {
-            BroadcastState(pBufferB, nUsed, nObjectSlot);
+            BroadcastState(pBuffer, nUsed, nObjectSlot);
         }
     }
 
