@@ -3275,73 +3275,75 @@ char GameEngine::UpdateTeamSounds(short nHome, short nAway)
 
     for (i = 0; i < TAUNT_NAMES; i++)
     {
+        // A missing taunt file sends every name back to the CD.
         if (FindFirstFileA(*apNames[i], &findData) == INVALID_HANDLE_VALUE)
         {
-            break;
+            goto rebuild;
         }
     }
 
-    // A missing taunt file sends every name back to the CD.
-    if (i < TAUNT_NAMES)
+    goto release;
+
+rebuild:
+{
+    for (i = 0; i < TAUNT_NAMES; i++)
     {
-        for (i = 0; i < TAUNT_NAMES; i++)
+        apCandidates[i] = new String;
+
+        apCandidates[i]->Resize(MAX_PATH);
+
+        _splitpath(apNames[i]->m_pchData, szDrive, szDir, apCandidates[i]->m_pchData, szExt);
+
+        strcat(apCandidates[i]->m_pchData, szExt);
+    }
+
+    String* const pPattern = new String;
+
+    pPattern->Resize(MAX_PATH);
+
+    // STRING: HYPERX 0x004bbb2c
+    sprintf(pPattern->m_pchData, "%s\\satun*.wav", g_gameApp.m_strSoundsPath.m_str.m_pchData);
+
+    const HANDLE hFind = FindFirstFileA(*pPattern, &findData);
+
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        do
         {
-            apCandidates[i] = new String;
-
-            apCandidates[i]->Resize(MAX_PATH);
-
-            _splitpath(apNames[i]->m_pchData, szDrive, szDir, apCandidates[i]->m_pchData, szExt);
-
-            strcat(apCandidates[i]->m_pchData, szExt);
-        }
-
-        String* const pPattern = new String;
-
-        pPattern->Resize(MAX_PATH);
-
-        // STRING: HYPERX 0x004bbb2c
-        sprintf(pPattern->m_pchData, "%s\\satun*.wav", g_gameApp.m_strSoundsPath.m_str.m_pchData);
-
-        const HANDLE hFind = FindFirstFileA(*pPattern, &findData);
-
-        if (hFind != INVALID_HANDLE_VALUE)
-        {
-            do
+            for (i = 0; i < TAUNT_NAMES; i++)
             {
-                for (i = 0; i < TAUNT_NAMES; i++)
+                if (_mbsicmp((const unsigned char*)findData.cFileName, (const unsigned char*)apCandidates[i]->m_pchData) == 0)
                 {
-                    if (_mbsicmp((const unsigned char*)findData.cFileName, (const unsigned char*)apCandidates[i]->m_pchData) == 0)
-                    {
-                        apCandidates[i]->m_pchData[0] = 0;
+                    apCandidates[i]->m_pchData[0] = 0;
 
-                        break;
-                    }
+                    goto next;
                 }
-
-                // A file that matches no taunt name is stale.
-                if (i == TAUNT_NAMES)
-                {
-                    // STRING: HYPERX 0x004bbb24
-                    sprintf(szPath, "%s\\%s", g_gameApp.m_strSoundsPath.m_str.m_pchData, findData.cFileName);
-
-                    DeleteFileA(szPath);
-                }
-            } while (FindNextFileA(hFind, &findData) != 0);
-
-            FindClose(hFind);
-        }
-
-        for (i = 0; i < TAUNT_NAMES; i++)
-        {
-            if (apCandidates[i]->m_pchData[0] != 0)
-            {
-                g_gameApp.CopyCDFile(apNames[i]->m_pchData);
             }
 
-            delete apCandidates[i];
-        }
+            // A file that matches no taunt name is stale.
+            // STRING: HYPERX 0x004bbb24
+            sprintf(szPath, "%s\\%s", g_gameApp.m_strSoundsPath.m_str.m_pchData, findData.cFileName);
+
+            DeleteFileA(szPath);
+
+        next:;
+        } while (FindNextFileA(hFind, &findData) != 0);
+
+        FindClose(hFind);
     }
 
+    for (i = 0; i < TAUNT_NAMES; i++)
+    {
+        if (apCandidates[i]->m_pchData[0] != 0)
+        {
+            g_gameApp.CopyCDFile(apNames[i]->m_pchData);
+        }
+
+        delete apCandidates[i];
+    }
+}
+
+release:
     for (i = 0; i < TAUNT_NAMES; i++)
     {
         delete apNames[i];
