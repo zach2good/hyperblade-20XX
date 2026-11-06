@@ -803,11 +803,9 @@ char __fastcall AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoop
             m_state.nLoopFrame = nStart;
             m_state.nEndFrame  = m_pClip->m_wEndFrame;
 
-            const int nMode = m_pClip->m_nLoopCount;
-
-            if (nMode > 0)
+            if (m_pClip->m_nLoopCount > 0)
             {
-                m_state.wLoops = (short)nMode;
+                m_state.wLoops = (short)m_pClip->m_nLoopCount;
             }
 
             pSet = m_pSet;
