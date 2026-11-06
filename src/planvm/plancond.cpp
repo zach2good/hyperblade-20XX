@@ -6546,13 +6546,22 @@ void __cdecl PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*,
         }
     }
 
-    const int nSlotC = pContext->GetActor()->GetSlot();
+    const short nSlotC = pContext->GetActor()->GetSlot();
 
-    const int nOppC = TeammateSlot(nSlotC);
+    const int nOwnC = nSlotC;
+
+    int nOppC = (short)nOwnC;
+
+    if ((short)nOwnC < PLAYER_SLOT_COUNT)
+    {
+        nOppC = (short)nOwnC + 2;
+    }
+
+    nOppC &= 3;
 
     pnBoundSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
 
-    if (pnBoundSlot != 0 && (nBound = pnBoundSlot->nSlot) < PLAYER_OBJECT_COUNT && (nBound == nSlotC || nBound == nOppC))
+    if (pnBoundSlot != 0 && (nBound = pnBoundSlot->nSlot) < PLAYER_OBJECT_COUNT && (nBound == nOwnC || nBound == nOppC))
     {
         *pResult = 1;
     }
