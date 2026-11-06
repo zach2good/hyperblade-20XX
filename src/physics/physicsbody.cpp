@@ -184,8 +184,8 @@ void PhysicsBody::ResetDynamics()
 // FUNCTION: HYPERX 0x00407960
 void PhysicsBody::PreUpdateTick()
 {
-    const float flStep = g_pGameEngine->m_clock.flDelta * g_pGameEngine->m_clock.flPrevInvDelta;
-    flSpeed            = flStep * flSpeed;
+    float flStep;
+    flSpeed = (flStep = g_pGameEngine->m_clock.flDelta * g_pGameEngine->m_clock.flPrevInvDelta) * flSpeed;
 
     vel.ScaleInPlace(flStep);
 
