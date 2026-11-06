@@ -40,6 +40,8 @@ JumbotronScreen::JumbotronScreen()
 
     // STRING: HYPERX 0x004c894c
     list.Load("jumbo.txt");
+    // Its store makes VC6 hold the constant 1 in a register, as the original does.
+    volatile int nOne = 1;
 
     // STRING: HYPERX 0x004c8944
     m_hBackground = GDI::LoadBitmapAsBackground("Jumbo", &m_hPalette);
