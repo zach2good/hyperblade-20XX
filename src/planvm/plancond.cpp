@@ -4867,17 +4867,15 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
     else
     {
         pRecord = pArgs->m_pArgs;
+        nValue  = pRecord[2].n;
 
-        if (pRecord[1].n == PLAN_TOKEN_MESSAGE_DATA)
-        {
-            nWhich = (short)nParam;
-        }
-        else
-        {
-            nWhich = (short)pRecord[1].n;
-        }
+        nWhich = (short)nParam;
 
-        nValue = pRecord[2].n;
+        if (pRecord[1].n != PLAN_TOKEN_MESSAGE_DATA)
+        {
+            // The original reloads the slot word here.
+            nWhich = *(const volatile short*)&pRecord[1].n;
+        }
 
         pObject = g_pGameEngine->GetPlayer(nWhich);
     }
