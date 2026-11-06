@@ -530,9 +530,12 @@ void GameBehaviorObject::Reset()
         nLeft--;
     } while (nLeft != 0);
 
-    m_nAnimationFlags      = -1;
-    m_nPersistentFlags     = -1;
-    m_wPollCountdown       = -1;
+    m_nAnimationFlags  = -1;
+    m_nPersistentFlags = -1;
+    m_wPollCountdown   = -1;
+
+    const int nKind = m_wKind;
+
     m_pBody                = 0;
     m_pOwner               = 0;
     m_pAnimation           = 0;
@@ -547,7 +550,7 @@ void GameBehaviorObject::Reset()
     m_bDigressive          = 0;
     m_wLatency             = BEHAVIOR_DEFAULT_LATENCY;
 
-    g_apBehaviorRegistry[m_wKind]->Insert(this);
+    g_apBehaviorRegistry[nKind]->Insert(this);
 }
 
 // FUNCTION: HYPERX 0x0041d1b0
