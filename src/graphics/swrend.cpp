@@ -55,8 +55,9 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     unsigned char       cShade;
     unsigned char       cColourIndex;
     int                 nKind;
-    // The original keeps the edge walk's start and step in frame slots.
+    // The original keeps the edge walk's step in a frame slot.
     volatile short nStep;
+    // The original keeps the edge walk's start in a frame slot.
     volatile short nFirst;
     short          nEnd;
     short          i;
