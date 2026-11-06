@@ -1189,8 +1189,9 @@ extern const float g_flThreePlan;
 namespace PlanAction
 {
 
-// Facing within range and heading the same way.
-inline bool IsInReach(Interactor* pContext, EngineObject* pMate, float flFacing, float flRange, float flDotGate)
+// Facing within range and heading the same way. The tackle range is a double compare.
+template <class TRange>
+inline bool IsInReach(Interactor* pContext, EngineObject* pMate, float flFacing, TRange flRange, float flDotGate)
 {
     float flDistance;
 
