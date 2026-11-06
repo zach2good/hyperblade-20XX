@@ -17,7 +17,7 @@ public:
     {
     }
 
-    virtual ~CDDSurfaceOwner();
+    virtual ~CDDSurfaceOwner() throw();
     virtual int Draw();
 
     // The same body RLESpriteSurface has, over this class's pair.
