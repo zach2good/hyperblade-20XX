@@ -304,9 +304,13 @@ void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*
 
     vDirOther = vScratch;
 
-    vScratch.x = pOther->m_transformC.m_a[0][3];
-    vScratch.y = pOther->m_transformC.m_a[1][3];
-    vScratch.z = pOther->m_transformC.m_a[2][3];
+    const int nTransX = *(const int*)&pOther->m_transformC.m_a[0][3];
+    const int nTransY = *(const int*)&pOther->m_transformC.m_a[1][3];
+    const int nTransZ = *(const int*)&pOther->m_transformC.m_a[2][3];
+
+    *(int*)&vScratch.z = nTransZ;
+    *(int*)&vScratch.x = nTransX;
+    *(int*)&vScratch.y = nTransY;
 
     Vec3* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
 
@@ -316,7 +320,9 @@ void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*
 
     const float flLowY = vLocal.y - g_flVelBoxDropY;
 
-    vScratch.Set(vLocal.x, vLocal.y, vLocal.z);
+    *(int*)&vScratch.x = *(const int*)&vLocal.x;
+    *(int*)&vScratch.y = *(const int*)&vLocal.y;
+    *(int*)&vScratch.z = *(const int*)&vLocal.z;
 
     boxScratch.vMin.x       = vScratch.x - g_flVelBoxSizeX * 0.5f;
     boxScratch.bValid       = 1;
