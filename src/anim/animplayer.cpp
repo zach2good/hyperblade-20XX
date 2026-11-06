@@ -678,9 +678,10 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
 {
     if (nDeferred == 1)
     {
-        m_bPending       = 1;
-        m_pending.pSet   = pAnimSet;
-        m_pending.flRate = flRate;
+        m_bPending     = 1;
+        m_pending.pSet = pAnimSet;
+        // The original stores the rate above the play state test.
+        *(volatile float*)&m_pending.flRate = flRate;
 
         if (m_state.nPlayState != AA_PLAY)
         {

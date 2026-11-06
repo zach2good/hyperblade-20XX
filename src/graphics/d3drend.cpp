@@ -512,7 +512,10 @@ inline void D3DRend::CopyUV(TexCoord& rDst, const TexCoord& rSrc)
 
 #define BATCH_VERTEX_LIMIT 0x3f6
 
-#define D3D_HARDWARE_SHADING 1
+inline int D3DRend::UsesHardwareShading()
+{
+    return 1;
+}
 
 // FUNCTION: HYPERX 0x004327c0
 int D3DRend::ExecuteScene(int nWhich)
@@ -606,7 +609,7 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
     {
         if ((pFaceData->cFlags & FACE_FLAG_HAS_UV) != 0)
         {
-            pCornerUV = (short*)((char*)pFaceData->aCorners + ((pFaceData->cFlags & FACE_FLAG_UV_SKIP) != 0 ? pFaceData->nCorners * sizeof(short) : 0) + pFaceData->nCorners * sizeof(short));
+            pCornerUV = (short*)((char*)pFaceData->aCorners + (((pFaceData->cFlags & FACE_FLAG_UV_SKIP) != 0 ? pFaceData->nCorners * sizeof(short) : 0) + pFaceData->nCorners * sizeof(short)));
         }
         else
         {
@@ -632,7 +635,7 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
 
                 if (pBlock->nCoordBytes != 0)
                 {
-                    pMeshUVs = (const TexCoord*)(&pBlock->Vertices()[pBlock->nVertexCount] + pBlock->nNormalCount);
+                    pMeshUVs = (const TexCoord*)(&((const Vec3*)((const char*)pBlock + pBlock->vertexOffset.nBytes))[pBlock->nVertexCount] + pBlock->nNormalCount);
                 }
                 else
                 {
@@ -779,7 +782,7 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
 
     if (bTextured != 0)
     {
-        CopyUV(aVert[0].uv, g_d3dFaceBuffer.aVertices[0].uv);
+        CopyUV(*(TexCoord*)((char*)aVert + offsetof(D3DBatchVertex, uv)), *(const TexCoord*)((const char*)g_d3dFaceBuffer.aVertices + offsetof(ClipVertex, uv)));
     }
 
     if (pVertexColour == 0)
@@ -793,16 +796,18 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
         unsigned char cPalIndex;
 
         // The palette path is the original's dead code.
-        if (!D3D_HARDWARE_SHADING)
+        if (!UsesHardwareShading())
         {
             cPalIndex = (unsigned char)(matUsed.nColour & 0xff);
             nPalIndex = cPalIndex;
 
-            if ((nPalIndex < g_pColorPalette->m_rampBounds.nFirst || nPalIndex > g_pColorPalette->m_rampBounds.nCount) != 0)
+            if ((bool)(nPalIndex < g_pColorPalette->m_rampBounds.nFirst || nPalIndex > g_pColorPalette->m_rampBounds.nCount))
             {
                 dwPaletteColour = matUsed.nColour;
+
+                goto shaded;
             }
-            else
+
             {
                 flPaletteLevel = g_flZeroLightLevel;
                 cPaletteShade  = (unsigned char)MeshMaterial::CalcLightIntensity(&flPaletteLevel,
@@ -859,7 +864,7 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
                         break;
                     }
 
-                    dwPaletteColour = ((unsigned int)((int)((float)matUsed.GetRed() * flLighting) << 0x10) | 0xff000000) | (unsigned int)((int)((float)matUsed.GetGreen() * flLighting) << 8) | (unsigned int)(int)((float)matUsed.GetBlue() * flLighting);
+                    dwPaletteColour = ((unsigned int)((int)((float)matUsed.acChannel[2] * flLighting) << 0x10) | 0xff000000) | (unsigned int)((int)((float)matUsed.acChannel[1] * flLighting) << 8) | (unsigned int)(int)((float)matUsed.acChannel[0] * flLighting);
 
                     break;
 
@@ -870,6 +875,7 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
             }
         }
 
+    shaded:
         aVert[0].dwColour = dwPaletteColour;
     }
     else

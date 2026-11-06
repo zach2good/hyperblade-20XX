@@ -31,6 +31,7 @@ int             FlushBatch(int nWhich);
 void __fastcall DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, unsigned char cClipFlags);
 int __cdecl     CreateExecuteBuffer(IDirect3DDevice* pDevice, IDirect3D* pUnused);
 inline void     CopyUV(TexCoord& rDst, const TexCoord& rSrc);
+inline int      UsesHardwareShading();
 int             ExecuteScene(int nWhich);
 
 } // namespace D3DRend

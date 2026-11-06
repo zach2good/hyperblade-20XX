@@ -382,7 +382,8 @@ void CTrack::Process(int nArg)
             flDeltaX = vWish.x - aTarget.x;
             flAbsX   = (float)fabs(flDeltaX);
 
-            flHypot = (float)sqrt(flAbsX * flAbsX + flAbsY * flAbsY);
+            // The original stores the root above the test.
+            *(volatile float*)&flHypot = (float)sqrt(flAbsX * flAbsX + flAbsY * flAbsY);
 
             if (flAbsX < 1e-06)
             {
@@ -395,7 +396,8 @@ void CTrack::Process(int nArg)
 
                 flSlope = flDeltaY / flDeltaX;
 
-                flOnLine = (aTarget.y - flSlope * aTarget.x) + flSlope * pPos[0];
+                // The original stores this before asin.
+                *(volatile float*)&flOnLine = (aTarget.y - flSlope * aTarget.x) + flSlope * pPos[0];
 
                 flOffset = (float)(fabs(flOnLine - pPos[1]) * cos(asin(flAbsY / flHypot)));
             }

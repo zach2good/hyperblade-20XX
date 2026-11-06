@@ -449,12 +449,12 @@ int __cdecl GameEngine::CheckGoalieOutOfPosition(void)
     const float flReachA = pGoalieA->m_stats.GetScalar(GOALIE_RATING_INTELLIGENCE);
     const float flReachB = pGoalieB->m_stats.GetScalar(GOALIE_RATING_INTELLIGENCE);
 
-    if (flReachA < Math::Vec3Distance(&pPosA->pos, &pNetA->pos))
+    if ((double)Math::Vec3Distance(&pPosA->pos, &pNetA->pos) > flReachA)
     {
         return 1;
     }
 
-    if (flReachB < Math::Vec3Distance(&pPosB->pos, &pNetB->pos))
+    if ((double)Math::Vec3Distance(&pPosB->pos, &pNetB->pos) > flReachB)
     {
         return 1;
     }

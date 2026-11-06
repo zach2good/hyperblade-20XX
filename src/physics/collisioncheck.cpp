@@ -825,7 +825,8 @@ void __cdecl CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNod
     boxTest.vMin.y          = flLowY;
     boxTest.vMax.x          = g_flColBoxSizeX * 0.5f + vScratch.x;
     boxTest.vMax.z          = flHalfDepth + vScratch.z;
-    boxTest.vMax.y          = g_flColBoxSizeY + flLowY;
+    // The original loads the box height last and keeps the floor on the stack.
+    boxTest.vMax.y = *(const volatile float*)&g_flColBoxSizeY + flLowY;
 
     float flDiffX = pOwnBody->pos.x - pOwnBody->prevPos.x;
     vLocal.y      = pOwnBody->pos.y - pOwnBody->prevPos.y;

@@ -822,9 +822,10 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
         return;
     }
 
-    const int nSlot    = g_pGameEngine->m_nViewedSlot;
     int       nChanged = 0;
-    if ((g_pGameEngine->m_nViewedSlot & 1) != 0)
+    const int nSlot    = g_pGameEngine->m_nViewedSlot;
+
+    if ((nSlot & 1) != 0)
     {
         pOther = g_pGameEngine->m_pTeamA;
         pTeam  = g_pGameEngine->m_pTeamB;
@@ -892,7 +893,10 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
 
     if (nChanged != 0)
     {
-        const int nHalf = ((unsigned int)nSlot >> 1) & 1;
+        int nHalf;
+
+        // The original keeps this in its frame slot and compares it from there.
+        *(volatile int*)&nHalf = ((unsigned int)nSlot >> 1) & 1;
 
         for (i = 0; i < 4; i++)
         {

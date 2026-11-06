@@ -184,8 +184,8 @@ void PhysicsBody::ResetDynamics()
 // FUNCTION: HYPERX 0x00407960
 void PhysicsBody::PreUpdateTick()
 {
-    const float flStep = g_pGameEngine->m_clock.flDelta * g_pGameEngine->m_clock.flPrevInvDelta;
-    flSpeed            = flStep * flSpeed;
+    float flStep;
+    flSpeed = (flStep = g_pGameEngine->m_clock.flDelta * g_pGameEngine->m_clock.flPrevInvDelta) * flSpeed;
 
     vel.ScaleInPlace(flStep);
 
@@ -813,7 +813,16 @@ char PhysicsBody::UpdateVelocityDirection()
     const float flNewZ = (flProjZ + vel.z) * flBlend + flProjZ * flWeight;
     vel.z              = flNewZ;
 
-    const float flLength = (float)sqrt(vel.LengthSquared());
+    // The original reloads the velocity it has just stored.
+    const volatile Vec3& vStored = vel;
+
+    float       flSquares = vStored.z;
+    const float flY       = vStored.y;
+    const float flX       = vStored.x;
+    flSquares *= flSquares;
+    flSquares += flX * flX;
+    flSquares += flY * flY;
+    const float flLength = (float)sqrt(flSquares);
     flSpeed              = flLength;
 
     if (flLength > g_flMinVelDirSpeed)
@@ -1041,10 +1050,10 @@ void PhysicsBody::ApplyAnimDrivenForce()
         pOwner->m_pBones->ClearFlags(MESHBONE_ANIMATION_DIRTY);
     }
 
-    const double dTransX = pTransform->m_a[0][3];
-    const double dTransZ = pTransform->m_a[2][3];
+    double dTransX;
+    double dTransZ;
 
-    pos.x = (float)(pMesh->m_world.m_a[0][0] * dTransX + pMesh->m_world.m_a[0][2] * dTransZ + pos.x);
+    pos.x = (float)(pMesh->m_world.m_a[0][0] * (dTransX = pTransform->m_a[0][3]) + pMesh->m_world.m_a[0][2] * (dTransZ = pTransform->m_a[2][3]) + pos.x);
 
     pos.y = (float)(pMesh->m_world.m_a[1][0] * dTransX + pMesh->m_world.m_a[1][2] * dTransZ + pos.y);
 

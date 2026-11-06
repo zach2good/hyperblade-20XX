@@ -266,7 +266,9 @@ void TransformObject::RotateAroundY()
     }
     else
     {
-        const SinCos rot = m_rotY;
+        SinCos rot;
+        *(int*)&rot.flSin = *(const int*)&m_rotY.flSin;
+        *(int*)&rot.flCos = *(const int*)&m_rotY.flCos;
 
         double dOld = m_a[0][0];
         m_a[0][0]   = (float)(rot.flCos * dOld - rot.flSin * m_a[0][2]);
