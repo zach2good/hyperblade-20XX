@@ -353,8 +353,14 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
     PlanWord* pWord = aWords;
     char      cFlag = 0;
 
-    while (ParseNodeStream(1, &pStream, pWord, &cFlag) != 0)
+    for (;;)
     {
+        if (ParseNodeStream(1, &pStream, pWord, &cFlag) == 0)
+        {
+            // STRING: HYPERX 0x004c68c0
+            throw (char*)"ERROR: No Instruction returned from DecodeArg at Top Level\n";
+        }
+
         pWord++;
         m_nBehaviorCount++;
 
@@ -392,9 +398,6 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
             return apResult;
         }
     }
-
-    // STRING: HYPERX 0x004c68c0
-    throw (char*)"ERROR: No Instruction returned from DecodeArg at Top Level\n";
 }
 
 // Only a compound node answers yes; CHANGE_OF_PLAN sets the flag that resolves strings to indices.
