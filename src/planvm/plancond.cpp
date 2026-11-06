@@ -8499,9 +8499,9 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
 
     RokObject* const pRok = (RokObject*)ppObjects[SLOT_ROK];
 
-    int nTracked = pRok->m_nCarrierSlot;
+    const int nTracked = pRok->m_nCarrierSlot;
 
-    if (nTracked >= 0 && nTracked <= 3)
+    if (nTracked >= 0 && pRok->m_nCarrierSlot <= 3)
     {
         const short nGoal = ((PlayerObject*)ppObjects[(short)nTracked])->m_wTargetGoalSlot;
 
