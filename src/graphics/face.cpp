@@ -18,17 +18,6 @@ float g_flUnusedFaceC = g_flZeroFace;
 
 #define CLIP_ALL 0xff
 
-namespace Face
-{
-
-// The z of the cross product of two screen-space edges.
-inline float Cross2D(const Vec3* pA, const Vec3* pB)
-{
-    return pA->x * pB->y - pA->y * pB->x;
-}
-
-} // namespace Face
-
 // FUNCTION: HYPERX 0x0044a9a0
 int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut)
 {
@@ -43,9 +32,13 @@ int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const Transformed
 
     if ((cClip & CLIP_NEAR) == 0)
     {
-        Vec3 v0;
-        Vec3 v1;
-        Vec3 v2;
+        // One record, so the corners keep the original's frame offsets.
+        struct
+        {
+            Vec3 v2;
+            Vec3 v1;
+            Vec3 v0;
+        } t;
 
         const short* pIndices = pFace->aCorners;
 
@@ -53,19 +46,21 @@ int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const Transformed
         const TransformedVertex* p1 = &pVertexBuf[pIndices[1]];
         const TransformedVertex* p0 = &pVertexBuf[pIndices[0]];
 
-        v0.x = (1.0f / p0->w) * p0->x;
-        v0.y = (1.0f / p0->w) * p0->y;
-        v1.x = (1.0f / p1->w) * p1->x;
-        v1.y = (1.0f / p1->w) * p1->y;
-        v2.x = (1.0f / p2->w) * p2->x;
-        v2.y = (1.0f / p2->w) * p2->y;
+        t.v0.x = (1.0f / p0->w) * p0->x;
+        t.v0.y = (1.0f / p0->w) * p0->y;
+        t.v1.x = (1.0f / p1->w) * p1->x;
+        t.v1.y = (1.0f / p1->w) * p1->y;
+        t.v2.x = (1.0f / p2->w) * p2->x;
+        t.v2.y = (1.0f / p2->w) * p2->y;
 
-        v1.x -= v0.x;
-        v1.y -= v0.y;
-        v2.x -= v0.x;
-        v2.y -= v0.y;
+        t.v1.x -= t.v0.x;
+        t.v1.y -= t.v0.y;
+        t.v0.x = t.v2.x - t.v0.x;
+        t.v2.y -= t.v0.y;
 
-        if (Cross2D(&v2, &v1) <= 0.0)
+        const float flX = t.v0.x;
+
+        if (flX * t.v1.y - t.v2.y * t.v1.x <= 0.0)
         {
             if (cFacing != 0)
             {
