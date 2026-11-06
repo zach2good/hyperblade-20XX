@@ -158,7 +158,9 @@ void Texture::Init(Texture* pSource)
 
     caps.dwSize = sizeof(caps);
 
-    m_hr = g_pSurfaceDDraw->GetCaps((LPDDCAPS)&caps, 0);
+    HRESULT* const pHr = &m_hr;
+
+    *pHr = g_pSurfaceDDraw->GetCaps((LPDDCAPS)&caps, 0);
 
     m_dwSurfaceCaps = caps.ddsCaps.dwCaps;
 
