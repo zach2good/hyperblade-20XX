@@ -2104,7 +2104,7 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
     vToFar.y = vFar.y - vOwn.y;
     vToFar.z = vFar.z - vOwn.z;
 
-    const float flDistNear = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
+    const float flDistNear = vToNear.x = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
 
     const float flDistFar = (float)sqrt((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x);
 
