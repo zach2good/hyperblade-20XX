@@ -1044,12 +1044,14 @@ void __cdecl GameApp::SetupViewports(void)
 
     CameraObject* const pCamera = g_pGameEngine->GetCamera(CAMERA_MAIN_SLOT);
 
+    const int nWidth = g_nBackBufferWidth;
+
     int nPrevWidth = g_nPrevWidth;
 
     if (nPrevWidth == 0 || (nPrevHeight = g_nPrevHeight) == 0)
     {
         nPrevHeight   = g_nBackBufferHeight;
-        nPrevWidth    = g_nBackBufferWidth;
+        nPrevWidth    = nWidth;
         g_nPrevWidth  = nPrevWidth;
         g_nPrevHeight = nPrevHeight;
     }
