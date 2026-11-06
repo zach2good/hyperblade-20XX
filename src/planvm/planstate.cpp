@@ -65,9 +65,18 @@ void PlanState::FreeCompiledBehaviors(short nCount)
 
     if (ppNode != 0)
     {
-        for (short i = 0; i < nCount; i++)
+        if (nCount > 0)
         {
-            DestroyNode(ppNode[i]);
+            PlanNode** ppCursor   = ppNode;
+            int        nRemaining = (short)(nCount - 1) + 1;
+
+            do
+            {
+                DestroyNode(*ppCursor);
+
+                ppCursor++;
+                nRemaining--;
+            } while (nRemaining != 0);
         }
 
         delete[] m_ppBehaviors;

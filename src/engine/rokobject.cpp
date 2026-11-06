@@ -195,7 +195,8 @@ void RokObject::Postpass()
 
         nIndex = (int)((g_pGameEngine->m_clock.nPauseStartMs - g_pGameEngine->m_clock.nPeriodStartMs) / 100) & 0x7fff;
 
-        nPayload |= SystemSyncWord::Pack(nIndex, g_pGameEngine->GetHomeScore(), g_pGameEngine->GetAwayScore());
+        nPayload |= ((g_pGameEngine->GetAwayScore() & 0xff) | (nIndex << 8)) << 8;
+        nPayload |= g_pGameEngine->GetHomeScore() & 0xff;
 
         m_sendCursor.SetPossessionTurn();
     }
@@ -207,7 +208,12 @@ void RokObject::Postpass()
 
         if (pCarrier != 0 && pCarrier->nSlot < PLAYER_OBJECT_COUNT)
         {
-            if (pCarrier->nSlot <= SLOT_DROMER3)
+            int nCarrierSlot;
+
+            // The original stores the slot's low word and tests all four bytes.
+            *(short*)&nCarrierSlot = pCarrier->nSlot;
+
+            if (nCarrierSlot <= SLOT_DROMER3)
             {
                 nPayload = POSSESSION_SYNC_DROMER_CARRIER;
             }

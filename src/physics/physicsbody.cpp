@@ -827,12 +827,15 @@ char PhysicsBody::UpdateVelocityDirection()
 
     if (flLength > g_flMinVelDirSpeed)
     {
-        const double dRecip = g_flOnePhysicsReset / flLength;
+        const float flRecip = g_flOnePhysicsReset / flLength;
         cResult             = 1;
 
-        velDir.x = (float)(flNewX * dRecip);
-        velDir.y = (float)(flNewY * dRecip);
-        velDir.z = (float)(flNewZ * dRecip);
+        const float flX = flNewX;
+        velDir.x        = flX * flRecip;
+        const float flY = flNewY;
+        velDir.y        = flY * flRecip;
+        const float flZ = flNewZ;
+        velDir.z        = flZ * flRecip;
     }
     else
     {
