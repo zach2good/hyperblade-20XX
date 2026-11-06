@@ -527,13 +527,14 @@ int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 {
     int nIndex = 0;
 
-    m_nPrevHeldMask     = m_nHeldMask;
-    const short nCount  = (short)m_pBindingTable->m_nKeyCount;
-    int         nResult = -1;
+    m_nPrevHeldMask               = m_nHeldMask;
+    const short           nCount  = (short)m_pBindingTable->m_nKeyCount;
+    const unsigned short* pnKey   = m_pBindingTable->m_anKey;
+    int                   nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
     {
-        if (nKey == m_pBindingTable->m_anKey[nIndex])
+        if (nKey == *pnKey++)
         {
             unsigned int   nBit;
             unsigned int   nClearMask;
