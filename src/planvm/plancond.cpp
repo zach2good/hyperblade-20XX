@@ -1891,8 +1891,8 @@ void __cdecl PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, shor
     vObjectSelf.y = pObject->y - pSelf->y;
     vObjectSelf.z = pObject->z - pSelf->z;
 
-    const float flHypotFirst = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
-    flToSecond               = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
+    const float flHypotFirst = vFirst.x = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
+    flToSecond                          = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
 
     const bool bFirstCloser = (double)flHypotFirst < flToSecond;
 
