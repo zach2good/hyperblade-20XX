@@ -380,7 +380,7 @@ void MeshBone::CalcVertexColors(int nUseMdm)
 
             if (cIndex < nRangeFirst || cIndex > g_pColorPalette->m_rampBounds.nCount)
             {
-                nColour = pMaterial->nColour;
+                goto materialColour;
             }
             else
             {
@@ -464,6 +464,7 @@ void MeshBone::CalcVertexColors(int nUseMdm)
                     }
                     else
                     {
+                    materialColour:
                         nColour = pMaterial->nColour;
                     }
                     break;
