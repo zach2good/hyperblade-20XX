@@ -31,21 +31,6 @@ struct MeshMaterial
     {
     }
 
-    unsigned char GetRed() const
-    {
-        return (unsigned char)(nColour >> 16);
-    }
-
-    unsigned char GetGreen() const
-    {
-        return (unsigned char)(nColour >> 8);
-    }
-
-    unsigned char GetBlue() const
-    {
-        return (unsigned char)nColour;
-    }
-
     // 0xAARRGGBB; the low channel is a palette index to the software paths.
     union
     {
