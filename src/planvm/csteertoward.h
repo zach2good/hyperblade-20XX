@@ -24,8 +24,8 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
-    void        IntegrateSpringAndGravity();
-    static void AddStep(Vec3* pTarget, const Vec3* pStep);
+    void IntegrateSpringAndGravity();
+    void AddStep(const Vec3* pStep);
 
     float GetSpeed() const
     {
