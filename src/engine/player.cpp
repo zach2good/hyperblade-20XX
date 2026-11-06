@@ -155,19 +155,19 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
 
         if (flDyB > 30.0f)
         {
-            return 0;
+            goto notFound;
         }
 
         flDxB = (float)fabs(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
 
         if (flDxB + flDyB > 30.0f)
         {
-            return 0;
+            goto notFound;
         }
 
         if (pActor->GetDistIfFacingDefault(pCandB) == 0.0f)
         {
-            return 0;
+            goto notFound;
         }
 
         pTarget = pCandB;
@@ -182,21 +182,21 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
 
             if (flDyB > 30.0f)
             {
-                return 0;
+                goto notFound;
             }
 
             flDxB = (float)fabs(pCandB->GetPositionPtr()->x - pActor->GetPositionPtr()->x);
 
             if (flDxB + flDyB > 30.0f)
             {
-                return 0;
+                goto notFound;
             }
 
             if (flDxA + flDyA < flDxB + flDyB)
             {
                 if (pActor->GetDistIfFacingDefault(pCandA) == 0.0f)
                 {
-                    return 0;
+                    goto notFound;
                 }
 
                 pTarget = pCandA;
@@ -205,7 +205,7 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
             {
                 if (pActor->GetDistIfFacingDefault(pCandB) == 0.0f)
                 {
-                    return 0;
+                    goto notFound;
                 }
 
                 pTarget = pCandB;
@@ -215,93 +215,98 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
         {
             if (pActor->GetDistIfFacingDefault(pCandA) == 0.0f)
             {
-                return 0;
+                goto notFound;
             }
 
             pTarget = pCandA;
         }
     }
 
-    const float flSelfGrad   = pActor->GetPhysicsBody()->velDir.y / pActor->GetPhysicsBody()->velDir.x;
-    const float flTargetGrad = pTarget->GetPhysicsBody()->velDir.y / pTarget->GetPhysicsBody()->velDir.x;
-
-    const float flSelfBase = pActor->GetPositionPtr()->y - flSelfGrad * pActor->GetPositionPtr()->x;
-    const float flTargetY  = pTarget->GetPositionPtr()->y;
-    flCross                = ((flTargetY - flTargetGrad * pTarget->GetPositionPtr()->x) - flSelfBase) / (flSelfGrad - flTargetGrad) * flSelfGrad + flSelfBase;
-
-    const PhysicsBody* pSelfBodyA   = pActor->GetPhysicsBody();
-    const PhysicsBody* pTargetBodyA = pTarget->GetPhysicsBody();
-    const PhysicsBody* pSelfBodyB   = pActor->GetPhysicsBody();
-    const PhysicsBody* pTargetBodyB = pTarget->GetPhysicsBody();
-    flDet                           = pTargetBodyA->velDir.y * pSelfBodyA->velDir.x - pTargetBodyB->velDir.x * pSelfBodyB->velDir.y;
-
-    const float  flLead  = (flCross - pTarget->GetPositionPtr()->y) / pTarget->m_pBody->GetVel().y;
-    const double dAbsDet = fabs(flDet);
-
-    if (flLead * dAbsDet < -4.0)
     {
-        return 0;
-    }
+        const float flSelfGrad   = pActor->GetPhysicsBody()->velDir.y / pActor->GetPhysicsBody()->velDir.x;
+        const float flTargetGrad = pTarget->GetPhysicsBody()->velDir.y / pTarget->GetPhysicsBody()->velDir.x;
 
-    const float flDiff = (float)(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
+        const float flSelfBase = pActor->GetPositionPtr()->y - flSelfGrad * pActor->GetPositionPtr()->x;
+        const float flTargetY  = pTarget->GetPositionPtr()->y;
+        flCross                = ((flTargetY - flTargetGrad * pTarget->GetPositionPtr()->x) - flSelfBase) / (flSelfGrad - flTargetGrad) * flSelfGrad + flSelfBase;
 
-    if (fabs(flDiff) > 18.0)
-    {
-        return 0;
-    }
+        const PhysicsBody* pSelfBodyA   = pActor->GetPhysicsBody();
+        const PhysicsBody* pTargetBodyA = pTarget->GetPhysicsBody();
+        const PhysicsBody* pSelfBodyB   = pActor->GetPhysicsBody();
+        const PhysicsBody* pTargetBodyB = pTarget->GetPhysicsBody();
+        flDet                           = pTargetBodyA->velDir.y * pSelfBodyA->velDir.x - pTargetBodyB->velDir.x * pSelfBodyB->velDir.y;
 
-    // A negative determinant adds the offset and a non-negative one subtracts it.
-    if (flDet < g_flZeroAgendaItem)
-    {
-        nFacing = (short)((flDiff + 9.0f) / g_flPassAngleStep);
-    }
-    else
-    {
-        nFacing = (short)((9.0f - flDiff) / g_flPassAngleStep);
-    }
+        const float  flLead  = (flCross - pTarget->GetPositionPtr()->y) / pTarget->m_pBody->GetVel().y;
+        const double dAbsDet = fabs(flDet);
 
-    g_nCheckImpulseFacing = nFacing;
-
-    nStep = (short)(5 - (int)((pActor->m_pBody->GetVel().x * pTarget->m_pBody->GetVel().x + pActor->m_pBody->GetVel().y * pTarget->m_pBody->GetVel().y + 9.0f) / g_flFourPlayer));
-
-    if (nStep < 0)
-    {
-        g_nCheckImpulseStep = 0;
-    }
-    else
-    {
-        g_nCheckImpulseStep = 4;
-
-        if (nStep <= 4)
+        if (flLead * dAbsDet < -4.0)
         {
-            g_nCheckImpulseStep = nStep;
+            return 0;
         }
-    }
 
-    if (nFacing < 0)
-    {
-        g_nCheckImpulseFacing = 0;
-    }
-    else
-    {
-        g_nCheckImpulseFacing = 6;
+        const float flDiff = (float)(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
 
-        if (nFacing <= 6)
+        if (fabs(flDiff) > 18.0)
         {
-            g_nCheckImpulseFacing = nFacing;
+            return 0;
         }
-    }
 
-    if (pTarget == pCandA)
-    {
-        *pflOut = (float)sqrt(flDxA * flDxA + flDyA * flDyA);
+        // A negative determinant adds the offset and a non-negative one subtracts it.
+        if (flDet < g_flZeroAgendaItem)
+        {
+            nFacing = (short)((flDiff + 9.0f) / g_flPassAngleStep);
+        }
+        else
+        {
+            nFacing = (short)((9.0f - flDiff) / g_flPassAngleStep);
+        }
+
+        g_nCheckImpulseFacing = nFacing;
+
+        nStep = (short)(5 - (int)((pActor->m_pBody->GetVel().x * pTarget->m_pBody->GetVel().x + pActor->m_pBody->GetVel().y * pTarget->m_pBody->GetVel().y + 9.0f) / g_flFourPlayer));
+
+        if (nStep < 0)
+        {
+            g_nCheckImpulseStep = 0;
+        }
+        else
+        {
+            g_nCheckImpulseStep = 4;
+
+            if (nStep <= 4)
+            {
+                g_nCheckImpulseStep = nStep;
+            }
+        }
+
+        if (nFacing < 0)
+        {
+            g_nCheckImpulseFacing = 0;
+        }
+        else
+        {
+            g_nCheckImpulseFacing = 6;
+
+            if (nFacing <= 6)
+            {
+                g_nCheckImpulseFacing = nFacing;
+            }
+        }
+
+        if (pTarget == pCandA)
+        {
+            *pflOut = (float)sqrt(flDxA * flDxA + flDyA * flDyA);
+
+            return pTarget;
+        }
+
+        *pflOut = (float)sqrt(flDxB * flDxB + flDyB * flDyB);
 
         return pTarget;
     }
 
-    *pflOut = (float)sqrt(flDxB * flDxB + flDyB * flDyB);
-
-    return pTarget;
+notFound:
+    return 0;
 }
 
 int g_nTrickHoldStamp = -1;
