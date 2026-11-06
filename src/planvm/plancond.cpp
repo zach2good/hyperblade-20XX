@@ -1244,8 +1244,10 @@ inline short TackleCountdown(bool bLoose)
 // FUNCTION: HYPERX 0x0045f450
 void __cdecl PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
 {
+    // The original keeps the carrier slot in the frame.
+    volatile short nCarrier;
+
     AttachPak*            pnCarrier;
-    short                 nCarrier;
     bool                  bCarrier;
     float                 flDotGate;
     Vec3                  vOffset;
