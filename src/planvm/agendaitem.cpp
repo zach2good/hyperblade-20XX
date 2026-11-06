@@ -29,7 +29,7 @@ void AgendaItem::OnListChanged()
 // FUNCTION: HYPERX 0x0040b990
 char AgendaItem::Activate()
 {
-    const char  bInserted = 1;
+    char        bInserted = 1;
     AgendaItem* pPrev     = 0;
 
     if (m_pOwner == 0)
@@ -43,6 +43,9 @@ char AgendaItem::Activate()
     while (pNode != 0 && m_wKind > pNode->m_wKind)
     {
         pPrev = pNode;
+
+        // The original keeps the result in a register rather than folding it to a constant.
+        bInserted = 1;
 
         if (pNode->m_pOwner != m_pOwner)
         {
