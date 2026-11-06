@@ -29,12 +29,6 @@ struct SystemSyncWord
     {
         return nWord & 0xff;
     }
-
-    // Every field but the pause mark. Away is last: the client reads it first, right to left.
-    static int Pack(int nElapsed, int nHomeScore, int nAwayScore)
-    {
-        return (((nAwayScore & 0xff) | (nElapsed << 8)) << 8) | (nHomeScore & 0xff);
-    }
 };
 
 #endif
