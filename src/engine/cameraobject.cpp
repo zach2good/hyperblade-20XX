@@ -540,7 +540,9 @@ void CameraObject::InitViewTransforms()
         m_pView = new CameraProjectionState(1, &layout, m_flHalfFov);
     }
 
-    layout.pCamera = m_pView;
+    CameraProjectionState* const pView = m_pView;
+
+    layout.pCamera = pView;
 
     if (m_pProjection != 0)
     {
@@ -579,13 +581,13 @@ void CameraObject::InitViewTransforms()
         m_pRotA->RotateX(-flTilt);
 
         m_pProjection->MirrorZ(g_bBottomUpDIB);
+        m_pProjection->Compose(m_pRotA);
     }
     else
     {
         m_pRotA->RotateX(flTilt);
+        m_pProjection->Compose(m_pRotA);
     }
-
-    m_pProjection->Compose(m_pRotA);
 }
 
 // The Numerical Recipes heapsort, one-based, so element zero is never touched.
