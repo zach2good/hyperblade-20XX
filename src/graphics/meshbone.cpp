@@ -354,7 +354,8 @@ void MeshBone::CalcVertexColors(int nUseMdm)
         g_vLightDirModel = g_lightDirs[0].dir;
     }
 
-    for (short i = 0; i < GetFaceCount(); i++)
+    // The original keeps the face index in a frame slot.
+    for (volatile short i = 0; i < GetFaceCount(); i++)
     {
         unsigned int nColour;
 
