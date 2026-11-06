@@ -393,30 +393,24 @@ void Screen::MoveFocusPrev()
     OnWidgetMessage(WM_MOUSEMOVE, i);
 }
 
-inline int Screen::FindHighlightedWidget(int* pnIndex)
+// FUNCTION: HYPERX 0x0048c600
+void Screen::MoveFocusNext()
 {
-    int i = 0;
+    char bFound = 0;
+    int  i      = 0;
 
     do
     {
         if (m_apWidgets[i]->GetHighlighted() != 0 && m_apWidgets[i]->IsDisplayOnly() == 0 && m_apWidgets[i]->GetHidden() == 0)
         {
-            *pnIndex = i;
-            return 1;
+            bFound = 1;
+            break;
         }
 
         i++;
     } while (i <= m_nLastWidget);
 
-    return 0;
-}
-
-// FUNCTION: HYPERX 0x0048c600
-void Screen::MoveFocusNext()
-{
-    int i;
-
-    if (FindHighlightedWidget(&i) == 0)
+    if (bFound == 0)
     {
         for (i = 0; i <= m_nLastWidget; i++)
         {

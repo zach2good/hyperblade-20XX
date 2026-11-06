@@ -65,7 +65,6 @@ public:
 
     void    MoveFocusPrev();
     void    MoveFocusNext();
-    int     FindHighlightedWidget(int* pnIndex);
     int     FindFocusedWidget();
     HBITMAP CacheLookup(const char* pszName, int* pbCached);
 
