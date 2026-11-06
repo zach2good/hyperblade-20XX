@@ -912,9 +912,13 @@ void __cdecl CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*,
     vCentre.y = pCentre->y;
     vCentre.z = pCentre->z;
 
-    vTrans.x = pOther->m_transformC.m_a[0][3];
-    vTrans.y = pOther->m_transformC.m_a[1][3];
-    vTrans.z = pOther->m_transformC.m_a[2][3];
+    const int nTransX = *(const int*)&pOther->m_transformC.m_a[0][3];
+    const int nTransY = *(const int*)&pOther->m_transformC.m_a[1][3];
+    const int nTransZ = *(const int*)&pOther->m_transformC.m_a[2][3];
+
+    *(int*)&vTrans.z = nTransZ;
+    *(int*)&vTrans.x = nTransX;
+    *(int*)&vTrans.y = nTransY;
 
     Vec3* const pDelta = vCentre.Subtract(&vDelta, &vTrans);
 
