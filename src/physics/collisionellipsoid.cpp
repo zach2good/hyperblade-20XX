@@ -157,9 +157,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
             pFarOut->y = (float)(dOffsetHi * dSlopeA + dOriginY);
             pFarOut->z = (float)(dOffsetHi * dSlopeB + dOriginZ);
 
-            Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
-
-            return 1;
+            goto found;
         }
         else
         {
@@ -171,9 +169,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
             pFarOut->y = (float)(dOffsetLo * dSlopeA + dOriginY);
             pFarOut->z = (float)(dOffsetLo * dSlopeB + dOriginZ);
 
-            Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
-
-            return 1;
+            goto found;
         }
     }
     else if (dDirY <= AXIS_EPS_UPPER && dDirY >= AXIS_EPS_LOWER)
@@ -217,9 +213,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
             pFarOut->y = (float)(dOffsetHi * dSlopeA + dOriginY);
             pFarOut->x = (float)(dSlopeB * dOffsetHi + dOriginX);
 
-            Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
-
-            return 1;
+            goto found;
         }
         else
         {
@@ -231,9 +225,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
             pFarOut->y = (float)(dOffsetLo * dSlopeA + dOriginY);
             pFarOut->x = (float)(dSlopeB * dOffsetLo + dOriginX);
 
-            Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
-
-            return 1;
+            goto found;
         }
     }
     else
@@ -277,9 +269,7 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
             pFarOut->x = (float)(dSlopeB * dOffsetHi + dOriginX);
             pFarOut->z = (float)(dOffsetHi * dSlopeA + dOriginZ);
 
-            Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
-
-            return 1;
+            goto found;
         }
         else
         {
@@ -291,11 +281,14 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
             pFarOut->x = (float)(dSlopeB * dOffsetLo + dOriginX);
             pFarOut->z = (float)(dOffsetLo * dSlopeA + dOriginZ);
 
-            Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
-
-            return 1;
+            goto found;
         }
     }
+
+found:
+    Vec3::FindClosest(pOrigin, pNearOut, pFarOut);
+
+    return 1;
 }
 
 // The epsilon appears twice at two addresses: as a double and as a float.
