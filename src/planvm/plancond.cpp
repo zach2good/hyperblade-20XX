@@ -6985,10 +6985,11 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
     const short nTargetSlot = pTarget->GetSlot();
     const short nActorSlot  = pActor->GetSlot();
 
-    EngineObject* const pTargetSlot = g_pGameEngine->m_ppSlots[nTargetSlot];
+    EngineObject** const ppSlots = g_pGameEngine->m_ppSlots;
 
-    vDelta = *pTargetSlot->GetPositionPtr()->Subtract(&vScratch,
-                                                      g_pGameEngine->m_ppSlots[nActorSlot]->GetPositionPtr());
+    EngineObject* const pActorSlot = ppSlots[nActorSlot];
+
+    vDelta = *ppSlots[nTargetSlot]->GetPositionPtr()->Subtract(&vScratch, pActorSlot->GetPositionPtr());
 
     const float flLength = Vec3::Length(&vDelta);
 
@@ -6996,7 +6997,10 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 
     const float flFalloff = (SCORE_RANGE - flLength) * flScale * SCORE_FALLOFF;
 
-    const float flCos = (float)cos(flFalloff + flScale);
+    float flCos;
+
+    // The original stores the cosine to its slot and pushes it from there.
+    *(volatile float*)&flCos = (float)cos(flFalloff + flScale);
 
     if (pActor->GetDistIfFacing(pTarget, flCos) == 0.0f)
     {
