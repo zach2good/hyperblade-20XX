@@ -66,8 +66,10 @@ Spline::~Spline()
 // FUNCTION: HYPERX 0x00492f10
 Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 {
-    m_pCurve->m_pfnEval  = Spline::EvalUpperHalf;
-    m_pSecond->m_pfnEval = Spline::EvalUpperHalf;
+    // The original stores the first evaluator above the radius test.
+    *(volatile SplineEvalFn*)&m_pCurve->m_pfnEval = Spline::EvalUpperHalf;
+    // The original stores the second evaluator above the radius test.
+    *(volatile SplineEvalFn*)&m_pSecond->m_pfnEval = Spline::EvalUpperHalf;
 
     if (flRadiusY > 3.0f)
     {
