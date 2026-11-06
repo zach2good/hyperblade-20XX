@@ -5454,7 +5454,7 @@ void __cdecl PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* p
 
         vJitter.x += ((float)rand() * (1.0f / RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
         vJitter.y += ((float)rand() * (1.0f / RAND_MAX)) * g_flTwoPlan - g_flOnePlan;
-        vJitter.z += (float)rand() * (1.0f / RAND_MAX) * g_flOnePlan + g_flOnePlan;
+        vJitter.z += ((float)rand() * (1.0f / RAND_MAX)) * g_flOnePlan + (double)g_flOnePlan;
 
         Vec3::ScaleTo(&vJitter, g_pGameEngine->m_clock.flDelta * JITTER_RATE, &vJitter);
 
