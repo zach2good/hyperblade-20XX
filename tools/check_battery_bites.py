@@ -405,8 +405,8 @@ PROBES = (
 
     # A retired row that names a function the tree has renamed.
     ("check_retired.py", "symbols/retired.csv",
-     "0x00452730,MessageQueue::Update,",
-     "0x00452730,InfoBar::ProcessMessageQueue,"),
+     "0x0042c030,MoveCodec::Encode,",
+     "0x0042c030,MoveCodec::EncodeFrame,"),
 
     ("base_this_casts.py", "src/planvm/cslideonrail.cpp",
      "    m_pSpline = 0;",

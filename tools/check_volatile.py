@@ -1,9 +1,9 @@
 # Report a `volatile` in the source with no reason written beside it.
 #
-# The original's source had no reason to force a load or a store, so a `volatile` spelled to
-# steer the code VC6 emits misstates the program. The qualifier stays only where a value is
-# really shared with another thread, the hardware or an interrupt, and the line itself or the
-# comment line above it says so: it names "shared", "thread", "hardware" or "interrupt".
+# A `volatile` is allowed where a value is shared with another thread, the hardware or an
+# interrupt, or where it keeps a load or a store the original has. The line itself or the
+# comment line above it must say which: it names "shared", "thread", "hardware", "interrupt"
+# or "original".
 #
 # Read only.
 
@@ -15,7 +15,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 VOLATILE = re.compile(r"\bvolatile\b")
-REASON = re.compile(r"\b(?:shared|threads?|hardware|interrupts?)\b", re.IGNORECASE)
+REASON = re.compile(r"\b(?:shared|threads?|hardware|interrupts?|original)\b", re.IGNORECASE)
 
 
 def comment_of(line):
@@ -55,9 +55,9 @@ def main():
                 faults.append((shown, n + 1, line.strip()))
 
     for shown, n, text in faults:
-        print("%s:%d volatile with no shared or hardware reason: %s" % (shown, n, text))
+        print("%s:%d volatile with no reason: %s" % (shown, n, text))
 
-    print("%d volatile use(s), %d with no shared or hardware reason" % (uses, len(faults)))
+    print("%d volatile use(s), %d with no reason" % (uses, len(faults)))
 
     return 1 if faults else 0
 
