@@ -959,10 +959,13 @@ void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
 
     String strCaption = m_strCaption.m_pchData;
 
-    strCaption.AppendData(String::SafeStrlen(g_pszCaptionSeparator),
-                          g_pszCaptionSeparator);
+    const char* const pszSeparator = g_pszCaptionSeparator;
 
-    char* const pszDetail = m_stringPool.LoadText(m_hInstance, STRING_ALERT);
+    strCaption.AppendData(String::SafeStrlen(g_pszCaptionSeparator), pszSeparator);
+
+    const HINSTANCE hInstance = m_hInstance;
+
+    char* const pszDetail = m_stringPool.LoadText(hInstance, STRING_ALERT);
 
     strCaption.AppendData(String::SafeStrlen(pszDetail), pszDetail);
 
