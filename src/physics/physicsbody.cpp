@@ -1041,10 +1041,10 @@ void PhysicsBody::ApplyAnimDrivenForce()
         pOwner->m_pBones->ClearFlags(MESHBONE_ANIMATION_DIRTY);
     }
 
-    const double dTransX = pTransform->m_a[0][3];
-    const double dTransZ = pTransform->m_a[2][3];
+    double dTransX;
+    double dTransZ;
 
-    pos.x = (float)(pMesh->m_world.m_a[0][0] * dTransX + pMesh->m_world.m_a[0][2] * dTransZ + pos.x);
+    pos.x = (float)(pMesh->m_world.m_a[0][0] * (dTransX = pTransform->m_a[0][3]) + pMesh->m_world.m_a[0][2] * (dTransZ = pTransform->m_a[2][3]) + pos.x);
 
     pos.y = (float)(pMesh->m_world.m_a[1][0] * dTransX + pMesh->m_world.m_a[1][2] * dTransZ + pos.y);
 
