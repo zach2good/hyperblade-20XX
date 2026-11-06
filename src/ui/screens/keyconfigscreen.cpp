@@ -197,12 +197,13 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
                 }
 
                 const int     nSlot = nWidget + KEY_BITMAP_SLOT;
-                Widget* const pNew  = m_apWidgets[nWidget + KEY_BITMAP_SLOT];
+                Widget* const pNew  = m_apWidgets[nSlot];
 
                 pNew->ClearFrames();
 
                 // STRING: HYPERX 0x004bd4e8
-                pNew->AppendFrame(GDI::LoadBitmapHandle("key-"));
+                const HBITMAP hKey = GDI::LoadBitmapHandle("key-");
+                pNew->AppendFrame(hKey);
 
                 pNew->SetDirtyFlag(1);
 

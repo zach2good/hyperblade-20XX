@@ -1894,7 +1894,7 @@ void __cdecl PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, shor
     const float flHypotFirst = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
     flToSecond               = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
 
-    const bool bFirstCloser = flHypotFirst < flToSecond;
+    const bool bFirstCloser = (double)flHypotFirst < flToSecond;
 
     flToObject = (float)sqrt(vObjectSelf.x * vObjectSelf.x + vObjectSelf.y * vObjectSelf.y + vObjectSelf.z * vObjectSelf.z);
 
@@ -2884,7 +2884,9 @@ void __cdecl PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode,
 
     const float flLow = PlanArg::ResolveFloat(pContext, pNode, 3);
 
-    pColObj->m_flRadius = (PlanArg::ResolveFloat(pContext, pNode, 4) - flLow) * (flStat * g_flPlanStatScale) + flLow;
+    const double dStat = flStat;
+
+    pColObj->m_flRadius = (float)((PlanArg::ResolveFloat(pContext, pNode, 4) - flLow) * (dStat * g_flPlanStatScale) + flLow);
 }
 
 // Slot one on the tracked object answers a short, read here as a slot and elsewhere as a team.
