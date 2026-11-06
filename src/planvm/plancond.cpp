@@ -4931,17 +4931,15 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
             nValue = (int)((float)nValue * flScale);
         }
 
-        const float flTotal = (float)nValue + flDamage;
-
-        if (DAMAGE_CEILING <= flTotal || 0.0f <= flTotal)
+        if (DAMAGE_CEILING < (float)nValue + flDamage || 0.0f <= (float)nValue + flDamage)
         {
-            if (DAMAGE_CEILING < flTotal)
+            if (DAMAGE_CEILING < (float)nValue + flDamage)
             {
                 flClamped = DAMAGE_CEILING;
             }
             else
             {
-                flClamped = flTotal;
+                flClamped = (float)nValue + flDamage;
             }
         }
         else
@@ -4951,7 +4949,7 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
 
         pStats->m_aStats[RATING_SLOT(RATING_DAMAGE)] = flClamped;
 
-        if (flTotal <= 0.0f)
+        if ((float)nValue + flDamage <= 0.0f)
         {
             pObject->m_wKilledBySlot = (short)nKillerSlot;
         }
