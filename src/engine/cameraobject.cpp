@@ -212,7 +212,12 @@ void CameraObject::UpdateSmoothing()
 
     m_wPosIndex = (short)((m_wPosIndex + 1) % m_wPosCount);
 
-    m_wDirIndex = (short)((m_wDirIndex + 1) % m_wDirCount);
+    {
+        const int nDirCount = m_wDirCount;
+
+        // The original loads the index after the position store.
+        m_wDirIndex = (short)((*(volatile short*)&m_wDirIndex + 1) % nDirCount);
+    }
 }
 
 // Answers nothing; its one caller ignores EAX.
