@@ -880,8 +880,9 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PA
 void ColorPalette::BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEENTRY peColour, float flFloor)
 {
     float* pflScale = new float[nCount];
-    *pflScale       = flFloor;
-    const int nLast = nCount - 1;
+    // The original stores this before it loads the reciprocal.
+    *(volatile float*)pflScale = flFloor;
+    const int nLast            = nCount - 1;
 
     const float flRatio = (float)pow(1.0f / flFloor, 1.0f / nLast);
 

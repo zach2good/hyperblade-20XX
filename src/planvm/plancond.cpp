@@ -3539,7 +3539,8 @@ void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*,
 
     if (nIsBot == 1)
     {
-        PlayerObject* const pBody = g_pGameEngine->GetPlayer(nSlot);
+        // The original reads the engine here into a fresh scratch register.
+        PlayerObject* const pBody = (*(GameEngine* const volatile*)&g_pGameEngine)->GetPlayer(nSlot);
 
         const float flDamage = pBody->m_stats.GetScalar(RATING_DAMAGE);
 

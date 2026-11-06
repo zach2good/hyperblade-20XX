@@ -1060,10 +1060,11 @@ void __cdecl GameApp::SetupViewports(void)
     }
 
     // The client computes both insets before pushing either (0x0044b395 to 0x0044b3ae).
-    const int nInsetY = (g_nBackBufferHeight - nPrevHeight) / 2;
-    const int nInsetX = (g_nBackBufferWidth - nPrevWidth) / 2;
+    const int   nInsetY = (g_nBackBufferHeight - nPrevHeight) / 2;
+    const int   nInsetX = (g_nBackBufferWidth - nPrevWidth) / 2;
+    void* const pBits   = g_pBackBufferBitsCopy;
 
-    pCamera->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy, g_nBackBufferWidth, g_nBackBufferHeight, g_nBackBufferWidth, nPrevWidth, nPrevHeight, nInsetX, nInsetY);
+    pCamera->layout = Widget::InitLayoutState(pBits, g_nBackBufferWidth, g_nBackBufferHeight, g_nBackBufferWidth, nPrevWidth, nPrevHeight, nInsetX, nInsetY);
 
     pCamera->InitViewTransforms();
 
@@ -1095,7 +1096,9 @@ void __cdecl GameApp::SetupViewports(void)
         size   = g_pRenderer->GetHeadCamSize();
         offset = g_pRenderer->GetHeadCamOrigin();
 
-        pView->layout = Widget::InitLayoutState(g_pBackBufferBitsCopy,
+        void* const pViewBits = g_pBackBufferBitsCopy;
+
+        pView->layout = Widget::InitLayoutState(pViewBits,
                                                 g_nBackBufferWidth,
                                                 g_nBackBufferHeight,
                                                 g_nBackBufferWidth,

@@ -219,10 +219,12 @@ void CSteerToward::IntegrateSpringAndGravity()
     }
 }
 
-inline void CSteerToward::AddStep(Vec3* pTarget, const Vec3* pStep)
+inline void CSteerToward::AddStep(const Vec3* pStep)
 {
+    Vec3* const pTarget = &m_vTarget;
+
     pTarget->x += pStep->x;
-    pTarget->y = pStep->y + pTarget->y;
+    m_vTarget.y = pStep->y + m_vTarget.y;
 }
 
 // Kind three's release step: seed the flight once, integrate, set the normal.
@@ -261,7 +263,7 @@ void CSteerToward::Release(int nArg)
     {
         pBody = m_pOwner->GetPhysicsBody();
 
-        AddStep(&m_vTarget, &pBody->step);
+        AddStep(&pBody->step);
 
         m_pStep->z -= g_pGameEngine->m_clock.flDeltaSquared * GRAVITY_SCALE;
 
