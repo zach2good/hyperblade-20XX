@@ -4270,15 +4270,19 @@ void __cdecl PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, sho
             return;
     }
 
-    float flValue = (float)nAmount + flScalar;
+    float flValue;
 
-    if (STAT_CEILING >= flValue && 0.0f > flValue)
+    if (STAT_CEILING >= (float)nAmount + flScalar && 0.0f > (float)nAmount + flScalar)
     {
         flValue = 0.0f;
     }
-    else if (STAT_CEILING <= flValue)
+    else if (STAT_CEILING < (float)nAmount + flScalar)
     {
         flValue = STAT_CEILING;
+    }
+    else
+    {
+        flValue = (float)nAmount + flScalar;
     }
 
     pObject->m_stats.m_aStats[RATING_SLOT(nStat)] = flValue;
