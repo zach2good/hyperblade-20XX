@@ -374,9 +374,7 @@ void CameraObject::ViewIt()
 
                     if (clip.FrustumCull(flRadius) == 0)
                     {
-                        pObject->SetVisible(0);
-
-                        continue;
+                        goto hide;
                     }
                 }
 
@@ -385,6 +383,7 @@ void CameraObject::ViewIt()
             }
             else
             {
+            hide:
                 pObject->SetVisible(0);
             }
         }
