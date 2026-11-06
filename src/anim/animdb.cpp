@@ -36,7 +36,10 @@ AnimDB::~AnimDB()
 
         if (pEntry != 0)
         {
-            delete pEntry->m_pRef;
+            if (pEntry->m_pRef != 0)
+            {
+                delete pEntry->m_pRef;
+            }
 
             delete pEntry;
         }
