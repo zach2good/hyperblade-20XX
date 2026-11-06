@@ -142,10 +142,10 @@ words with no code term is often missed, so read a file end to end once it gives
 
 ### The byte-steering keyword
 
-`volatile` written to force a load or a store the original's scheduler happened to emit. It
-misstates the code, because the value isn't volatile. Remove it and accept the score. A value really
-shared with another thread, the hardware or a re-entered callback keeps it, with the reason on
-the line or the line above; `tools/check_volatile.py` fails on one without.
+A `volatile` with no reason beside it. `volatile` is a fair lever for a load or a store the
+original has, and for a value shared with another thread, the hardware or a re-entered callback.
+Each one needs its reason on the line or the line above, naming the shared value or the
+original's load or store; `tools/check_volatile.py` fails on one without.
 
 ### The assembly body
 
@@ -206,7 +206,7 @@ These shapes are gone, and each tool reads zero:
 - Forward declarations of nothing: `python tools/check_ghost_forwards.py`
 - Retired rows with a stale score: `python tools/check_ledger_figures.py`
 - Checkers that read nothing: `python tools/check_battery_reach.py`
-- `volatile` with no shared or hardware reason: `python tools/check_volatile.py`
+- `volatile` with no reason: `python tools/check_volatile.py`
 - Extern arrays with no bound: `python tools/check_extern_bounds.py`
 
 A clean build carries 19 warnings: 18 C4244 and one C4700. The compiler warnings entry under
@@ -214,8 +214,9 @@ A clean build carries 19 warnings: 18 C4244 and one C4700. The compiler warnings
 
 ## The fix list
 
-`goto` and `do { } while (0)` stay, because they are how code of this age was written. Every
-other shape below gets fixed, even where the fix costs matching bytes. Record each cost in the
+`goto`, `?:`, `volatile` and `do { } while (0)` stay, because they are how code of this age was
+written and they reach the original's bytes. Every other shape below gets fixed, even where the
+fix costs matching bytes. Record each cost in the
 commit body, and in `symbols/retired.csv` when a row moves more than a point.
 
 | Shape | Count | Rule |
