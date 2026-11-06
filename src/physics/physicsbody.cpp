@@ -813,7 +813,16 @@ char PhysicsBody::UpdateVelocityDirection()
     const float flNewZ = (flProjZ + vel.z) * flBlend + flProjZ * flWeight;
     vel.z              = flNewZ;
 
-    const float flLength = (float)sqrt(vel.LengthSquared());
+    // The original reloads the velocity it has just stored.
+    const volatile Vec3& vStored = vel;
+
+    float       flSquares = vStored.z;
+    const float flY       = vStored.y;
+    const float flX       = vStored.x;
+    flSquares *= flSquares;
+    flSquares += flX * flX;
+    flSquares += flY * flY;
+    const float flLength = (float)sqrt(flSquares);
     flSpeed              = flLength;
 
     if (flLength > g_flMinVelDirSpeed)
