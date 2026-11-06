@@ -554,10 +554,10 @@ void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*,
         {
             float flSteps;
 
-            flSteps = flScratchA * 0.016666667535901070f;
-
-            if (g_flThrowStepsCap <= flSteps || 1.0f <= flSteps)
+            if (g_flThrowStepsCap < flScratchA * 0.016666667535901070f || 1.0f <= flScratchA * 0.016666667535901070f)
             {
+                flSteps = flScratchA * 0.016666667535901070f;
+
                 if (g_flThrowStepsCap < flSteps)
                 {
                     flSteps = g_flThrowStepsCap;
