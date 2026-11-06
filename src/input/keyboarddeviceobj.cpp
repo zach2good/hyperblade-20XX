@@ -435,18 +435,17 @@ int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 // FUNCTION: HYPERX 0x0045d320
 int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 {
-    int nIndex          = 0;
-    m_nPrevHeldMask     = m_nHeldMask;
-    const short nCount  = (short)m_pBindingTable->m_nKeyCount;
-    int         nResult = -1;
+    int nIndex                    = 0;
+    m_nPrevHeldMask               = m_nHeldMask;
+    const short           nCount  = (short)m_pBindingTable->m_nKeyCount;
+    const unsigned short* pnKey   = m_pBindingTable->m_anKey;
+    int                   nResult = -1;
 
     for (; nIndex < nCount; nIndex++)
     {
-        if (nKey == m_pBindingTable->m_anKey[nIndex])
+        if (nKey == *pnKey++)
         {
             unsigned int   nBit;
-            unsigned int   nMask;
-            unsigned int   nStick;
             ActionBinding* pBinding;
             int            nBindingCount;
             int            nBudget;
@@ -468,16 +467,15 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
                     nBit = ACTION_BINDING_DOUBLE_TAP << nIndex;
                 }
 
-                nMask = nBit & ACTION_BINDING_MASK;
-                m_nHeldMask |= nMask;
+                m_nHeldMask |= nBit & ACTION_BINDING_MASK;
 
-                nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nMask);
+                nActionIndex = KeyboardDeviceObj::GetActionBitIndex(nBit & ACTION_BINDING_MASK);
                 pBinding     = m_pBindingTable->m_apDown[nActionIndex];
 
                 if (pBinding != 0)
                 {
-                    nBudget       = ((nBit & ACTION_BINDING_HIGH_HALF) != 0) + 1;
                     nBindingCount = m_pBindingTable->m_anDown[nActionIndex];
+                    nBudget       = ((nBit & ACTION_BINDING_HIGH_HALF) != 0) + 1;
 
                     for (i = 0; i < nBindingCount; i++, pBinding++)
                     {
@@ -485,9 +483,8 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
                         {
                             if ((pBinding->m_nAction & ACTION_BINDING_HELD) != 0)
                             {
-                                nStick                    = nMask;
                                 m_apStickyBinding[nIndex] = pBinding;
-                                m_nStickyMask |= nStick;
+                                m_nStickyMask |= nBit & ACTION_BINDING_MASK;
                                 nBudget--;
 
                                 if (nBudget == 0)
