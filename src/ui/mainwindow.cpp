@@ -155,7 +155,8 @@ BOOL CALLBACK MainWindow::DebugParamsDialogProc(HWND hDlg, UINT nMsg, UINT wPara
 // FUNCTION: HYPERX 0x0044cac0
 LRESULT __cdecl MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify)
 {
-    RECT rect;
+    RECT         rect;
+    unsigned int nMenuId;
 
     switch (nCommand)
     {
@@ -250,7 +251,10 @@ LRESULT __cdecl MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM l
             if (MoveWindow(hWnd, rect.left, rect.top, 0x288, 0x20e, TRUE) != 0)
             {
                 CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_LARGE, MF_CHECKED);
-                CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_MEDIUM, MF_UNCHECKED);
+                nMenuId = ID_MENU_SIZE_MEDIUM;
+
+            ClearOtherSizes:
+                CheckMenuItem(g_gameApp.m_hMenu, nMenuId, MF_UNCHECKED);
                 CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_SMALL, MF_UNCHECKED);
             }
 
@@ -262,8 +266,8 @@ LRESULT __cdecl MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM l
             if (MoveWindow(hWnd, rect.left, rect.top, 0x1e8, 0x196, TRUE) != 0)
             {
                 CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_MEDIUM, MF_CHECKED);
-                CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_LARGE, MF_UNCHECKED);
-                CheckMenuItem(g_gameApp.m_hMenu, ID_MENU_SIZE_SMALL, MF_UNCHECKED);
+                nMenuId = ID_MENU_SIZE_LARGE;
+                goto ClearOtherSizes;
             }
 
             break;

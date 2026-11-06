@@ -477,10 +477,12 @@ GameEngine::GameEngine()
 // FUNCTION: HYPERX 0x00480fc0
 void GameEngine::AdvanceTournamentBracket()
 {
-    int aAwardReady[AWARD_COUNT];
-    int nIndex;
-    int nRemaining;
-    int nEntry;
+    int  aAwardReady[AWARD_COUNT];
+    int  nIndex;
+    int  nRemaining;
+    int  nEntry;
+    char bAllReady;
+    int* pReady;
 
     memset(aAwardReady, 0, sizeof(aAwardReady));
 
@@ -492,82 +494,76 @@ void GameEngine::AdvanceTournamentBracket()
         {
             if (m_pTeamB->aRows[nIndex].aStat[RATING_DAMAGE] > 0.0f)
             {
-                m_pSaveObject->BracketIterReset();
-
-                nEntry = m_pSaveObject->BracketIterPeek();
-
-                g_nDromeTeamAway = nEntry;
-                g_nDromeArena    = nEntry;
-
-                ClearAwards();
-
-                m_bMatchOver = 1;
-
-                return;
+                goto restart;
             }
         }
-    }
-    else if (m_nScoreHome <= m_nScoreAway)
-    {
-        m_pSaveObject->BracketIterReset();
 
-        nEntry = m_pSaveObject->BracketIterPeek();
+        goto advance;
+    }
+
+    if (m_nScoreHome > m_nScoreAway)
+    {
+    advance:
+        nEntry = m_pSaveObject->BracketIterAdvance();
 
         g_nDromeTeamAway = nEntry;
         g_nDromeArena    = nEntry;
 
-        ClearAwards();
+        if (nEntry == BRACKET_END)
+        {
+            g_pGameEngine->SetAward(AWARD_RAZOR, 1);
+        }
 
-        m_bMatchOver = 1;
+        if (m_nScoreHome >= SUPER_AWARD_SCORE)
+        {
+            SetAward(AWARD_SUPER, 1);
+
+            aAwardReady[AWARD_SUPER] = 1;
+        }
+
+        if (m_nScoreAway == 0)
+        {
+            SetAward(AWARD_CRUSH, 1);
+
+            aAwardReady[AWARD_CRUSH] = 1;
+        }
+
+        aAwardReady[AWARD_ARCHER] = (unsigned char)EvalArcherAward();
+        aAwardReady[AWARD_ANVIL]  = (unsigned char)EvalAnvilAward();
+
+        bAllReady = 1;
+
+        pReady = &aAwardReady[AWARD_JUDGED_FIRST];
+
+        for (nRemaining = 0; nRemaining < AWARD_JUDGED; nRemaining++)
+        {
+            if (*pReady == 0)
+            {
+                bAllReady = 0;
+            }
+
+            pReady++;
+        }
+
+        if (HasAward(AWARD_AGGREGATE) == 0)
+        {
+            SetAward(AWARD_AGGREGATE, bAllReady);
+        }
 
         return;
     }
 
-    nEntry = m_pSaveObject->BracketIterAdvance();
+restart:
+    m_pSaveObject->BracketIterReset();
+
+    nEntry = m_pSaveObject->BracketIterPeek();
 
     g_nDromeTeamAway = nEntry;
     g_nDromeArena    = nEntry;
 
-    if (nEntry == BRACKET_END)
-    {
-        g_pGameEngine->SetAward(AWARD_RAZOR, 1);
-    }
+    ClearAwards();
 
-    if (m_nScoreHome >= SUPER_AWARD_SCORE)
-    {
-        SetAward(AWARD_SUPER, 1);
-
-        aAwardReady[AWARD_SUPER] = 1;
-    }
-
-    if (m_nScoreAway == 0)
-    {
-        SetAward(AWARD_CRUSH, 1);
-
-        aAwardReady[AWARD_CRUSH] = 1;
-    }
-
-    aAwardReady[AWARD_ARCHER] = (unsigned char)EvalArcherAward();
-    aAwardReady[AWARD_ANVIL]  = (unsigned char)EvalAnvilAward();
-
-    char bAllReady = 1;
-
-    int* pReady = &aAwardReady[AWARD_JUDGED_FIRST];
-
-    for (nRemaining = 0; nRemaining < AWARD_JUDGED; nRemaining++)
-    {
-        if (*pReady == 0)
-        {
-            bAllReady = 0;
-        }
-
-        pReady++;
-    }
-
-    if (HasAward(AWARD_AGGREGATE) == 0)
-    {
-        SetAward(AWARD_AGGREGATE, bAllReady);
-    }
+    m_bMatchOver = 1;
 }
 
 #define MAX_FRAME_TIME_MS 200.0f

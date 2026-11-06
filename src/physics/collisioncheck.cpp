@@ -304,9 +304,13 @@ void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*
 
     vDirOther = vScratch;
 
-    vScratch.x = pOther->m_transformC.m_a[0][3];
-    vScratch.y = pOther->m_transformC.m_a[1][3];
-    vScratch.z = pOther->m_transformC.m_a[2][3];
+    const int nTransX = *(const int*)&pOther->m_transformC.m_a[0][3];
+    const int nTransY = *(const int*)&pOther->m_transformC.m_a[1][3];
+    const int nTransZ = *(const int*)&pOther->m_transformC.m_a[2][3];
+
+    *(int*)&vScratch.z = nTransZ;
+    *(int*)&vScratch.x = nTransX;
+    *(int*)&vScratch.y = nTransY;
 
     Vec3* const pDelta = vCentre.Subtract(&vDelta, &vScratch);
 
@@ -316,7 +320,9 @@ void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*
 
     const float flLowY = vLocal.y - g_flVelBoxDropY;
 
-    vScratch.Set(vLocal.x, vLocal.y, vLocal.z);
+    *(int*)&vScratch.x = *(const int*)&vLocal.x;
+    *(int*)&vScratch.y = *(const int*)&vLocal.y;
+    *(int*)&vScratch.z = *(const int*)&vLocal.z;
 
     boxScratch.vMin.x       = vScratch.x - g_flVelBoxSizeX * 0.5f;
     boxScratch.bValid       = 1;
@@ -807,7 +813,9 @@ void __cdecl CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNod
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
-    vScratch = vLocal;
+    *(int*)&vScratch.x = *(const int*)&vLocal.x;
+    *(int*)&vScratch.y = *(const int*)&vLocal.y;
+    *(int*)&vScratch.z = *(const int*)&vLocal.z;
 
     const float flLowY      = vLocal.y - 2.0f;
     boxTest.vMin.x          = vScratch.x - g_flColBoxSizeX * 0.5f;
@@ -912,9 +920,13 @@ void __cdecl CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*,
     vCentre.y = pCentre->y;
     vCentre.z = pCentre->z;
 
-    vTrans.x = pOther->m_transformC.m_a[0][3];
-    vTrans.y = pOther->m_transformC.m_a[1][3];
-    vTrans.z = pOther->m_transformC.m_a[2][3];
+    const int nTransX = *(const int*)&pOther->m_transformC.m_a[0][3];
+    const int nTransY = *(const int*)&pOther->m_transformC.m_a[1][3];
+    const int nTransZ = *(const int*)&pOther->m_transformC.m_a[2][3];
+
+    *(int*)&vTrans.z = nTransZ;
+    *(int*)&vTrans.x = nTransX;
+    *(int*)&vTrans.y = nTransY;
 
     Vec3* const pDelta = vCentre.Subtract(&vDelta, &vTrans);
 

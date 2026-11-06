@@ -66,7 +66,6 @@ void MessageQueue::Update()
         g_pRenderer->SetMessageText(g_pMessageHead->m_pszText, nColour);
 
         MessageNode* const pNode = g_pMessageHead;
-        MessageNode*       pHead = pNode;
 
         if (pNode != 0)
         {
@@ -74,25 +73,22 @@ void MessageQueue::Update()
             {
                 delete[] pNode->m_pszText;
                 pNode->m_pszText = 0;
-                pHead            = g_pMessageHead;
             }
 
-            MessageNode* pWalk = g_pMessageHead;
             MessageNode* pPrev = 0;
 
-            for (; pWalk != 0; pWalk = pWalk->m_pNext)
+            for (MessageNode* pWalk = g_pMessageHead; pWalk != 0; pWalk = pWalk->m_pNext)
             {
                 if (pWalk == pNode)
                 {
                     if (pPrev != 0)
                     {
                         pPrev->m_pNext = pNode->m_pNext;
-                        pHead          = g_pMessageHead;
                     }
 
-                    if (pNode == pHead)
+                    if (pNode == g_pMessageHead)
                     {
-                        g_pMessageHead = pHead->m_pNext;
+                        g_pMessageHead = g_pMessageHead->m_pNext;
                     }
 
                     if (pNode == g_pMessageTail)

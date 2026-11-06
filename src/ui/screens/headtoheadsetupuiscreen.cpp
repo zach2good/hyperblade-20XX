@@ -411,14 +411,14 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
 
             if (nTeam >= m_nTeamCount)
             {
-                nTeam            = 0;
-                g_nDromeTeamHome = nTeam;
+                g_nDromeTeamHome = 0;
 
                 if (nOther == 0)
                 {
-                    nTeam            = 1;
-                    g_nDromeTeamHome = nTeam;
+                    g_nDromeTeamHome = 1;
                 }
+
+                nTeam = g_nDromeTeamHome;
             }
 
             pEngine = g_pGameEngine;
@@ -463,14 +463,14 @@ void HeadToHeadSetupUIScreen::OnRightArrowClick()
 
             if (nTeam >= m_nTeamCount)
             {
-                nTeam            = 0;
-                g_nDromeTeamAway = nTeam;
+                g_nDromeTeamAway = 0;
 
                 if (nOther == 0)
                 {
-                    nTeam            = 1;
-                    g_nDromeTeamAway = nTeam;
+                    g_nDromeTeamAway = 1;
                 }
+
+                nTeam = g_nDromeTeamAway;
             }
 
             pEngine = g_pGameEngine;

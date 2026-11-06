@@ -124,30 +124,54 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     switch (nId)
     {
         case MAIN_MENU_ARENA_DOOR:
-            if (nMsg != WM_LBUTTONUP)
+            switch (g_nMainMenuMatchChoice)
             {
-                break;
+                case MAIN_MENU_MATCH_TOURNAMENT:
+                    if (nMsg != WM_LBUTTONUP)
+                    {
+                        break;
+                    }
+
+                    g_nPlayerMode = PLAYER_MODE_TOURNAMENT;
+                    goto Ready;
+
+                case MAIN_MENU_MATCH_EXHIBITION:
+                    if (nMsg != WM_LBUTTONUP)
+                    {
+                        break;
+                    }
+
+                    g_nPlayerMode = PLAYER_MODE_EXHIBITION;
+
+                Exterior:
+                    Game::SetEngineState(ESTATE_DROME_EXTERIOR);
+
+                    FlushBitmapCache();
+                    break;
+
+                default:
+                    if (nMsg != WM_LBUTTONUP)
+                    {
+                        break;
+                    }
+
+                    if (g_nPlayerMode != PLAYER_MODE_TOURNAMENT)
+                    {
+                        goto Exterior;
+                    }
+
+                Ready:
+                    if (g_pGameEngine->m_pSaveObject->GetBracketPos() != 0)
+                    {
+                        goto Exterior;
+                    }
+
+                    Game::SetEngineState(ESTATE_GAME_INTRO);
+
+                    FlushBitmapCache();
+                    break;
             }
 
-            if (g_nMainMenuMatchChoice == MAIN_MENU_MATCH_TOURNAMENT)
-            {
-                g_nPlayerMode = PLAYER_MODE_TOURNAMENT;
-            }
-            else if (g_nMainMenuMatchChoice == MAIN_MENU_MATCH_EXHIBITION)
-            {
-                g_nPlayerMode = PLAYER_MODE_EXHIBITION;
-            }
-
-            if (g_nPlayerMode == PLAYER_MODE_TOURNAMENT && g_pGameEngine->m_pSaveObject->GetBracketPos() == 0)
-            {
-                Game::SetEngineState(ESTATE_GAME_INTRO);
-            }
-            else
-            {
-                Game::SetEngineState(ESTATE_DROME_EXTERIOR);
-            }
-
-            FlushBitmapCache();
             break;
 
         case MAIN_MENU_SIGN:
