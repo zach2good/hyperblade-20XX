@@ -73,7 +73,8 @@ int SteppedScrollBitmap::DrawScrolled()
 
     if (nRight > nEnd)
     {
-        nRight = nEnd;
+        // The original tests the loop condition again after this clamp.
+        nRight = *(volatile int*)&nEnd;
     }
 
     while (nRight <= nEnd)
@@ -110,7 +111,8 @@ int SteppedScrollBitmap::DrawScrolled()
             break;
         }
 
-        nRight += m_nStepX;
+        // The original loads the step into a register before the add.
+        nRight += *(volatile int*)&m_nStepX;
 
         if (nRight > nEnd)
         {
