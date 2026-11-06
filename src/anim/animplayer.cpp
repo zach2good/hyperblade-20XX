@@ -49,6 +49,12 @@ void AnimPlayer::SetObject(EngineObject* pObject)
 // The base's table is stored before the blend slot array is built and the derived's after.
 // FUNCTION: HYPERX 0x00424490
 AnimPlayer::AnimPlayer()
+: m_pSet(0)
+, m_pPrevSet(0)
+, m_pClip(0)
+, m_pPrevClip(0)
+, m_pBoneSet(0)
+, m_pPrevBoneSet(0)
 {
     memset(&m_state, 0, sizeof(m_state));
 
@@ -803,11 +809,9 @@ char __fastcall AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoop
             m_state.nLoopFrame = nStart;
             m_state.nEndFrame  = m_pClip->m_wEndFrame;
 
-            const int nMode = m_pClip->m_nLoopCount;
-
-            if (nMode > 0)
+            if (m_pClip->m_nLoopCount > 0)
             {
-                m_state.wLoops = (short)nMode;
+                m_state.wLoops = (short)m_pClip->m_nLoopCount;
             }
 
             pSet = m_pSet;

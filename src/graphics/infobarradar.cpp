@@ -48,9 +48,11 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
 {
     float flDivisor;
 
-    const int nHeight = pFrame->m_ptSize.y;
+    const SurfacePoint ptSize = pFrame->GetSize();
 
-    const int nHalfWidth = (pFrame->m_ptSize.x - 4) / 2;
+    const int nHeight = ptSize.y;
+
+    const int nHalfWidth = (ptSize.x - 4) / 2;
     m_ptDrawOffset.x     = nHalfWidth;
 
     const int nHalfHeight = (nHeight - 4) / 2;

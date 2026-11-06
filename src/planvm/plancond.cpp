@@ -4270,15 +4270,19 @@ void __cdecl PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, sho
             return;
     }
 
-    float flValue = (float)nAmount + flScalar;
+    float flValue;
 
-    if (STAT_CEILING >= flValue && 0.0f > flValue)
+    if (STAT_CEILING >= (float)nAmount + flScalar && 0.0f > (float)nAmount + flScalar)
     {
         flValue = 0.0f;
     }
-    else if (STAT_CEILING <= flValue)
+    else if (STAT_CEILING < (float)nAmount + flScalar)
     {
         flValue = STAT_CEILING;
+    }
+    else
+    {
+        flValue = (float)nAmount + flScalar;
     }
 
     pObject->m_stats.m_aStats[RATING_SLOT(nStat)] = flValue;
@@ -4927,17 +4931,15 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
             nValue = (int)((float)nValue * flScale);
         }
 
-        const float flTotal = (float)nValue + flDamage;
-
-        if (DAMAGE_CEILING <= flTotal || 0.0f <= flTotal)
+        if (DAMAGE_CEILING < (float)nValue + flDamage || 0.0f <= (float)nValue + flDamage)
         {
-            if (DAMAGE_CEILING < flTotal)
+            if (DAMAGE_CEILING < (float)nValue + flDamage)
             {
                 flClamped = DAMAGE_CEILING;
             }
             else
             {
-                flClamped = flTotal;
+                flClamped = (float)nValue + flDamage;
             }
         }
         else
@@ -4947,7 +4949,7 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
 
         pStats->m_aStats[RATING_SLOT(RATING_DAMAGE)] = flClamped;
 
-        if (flTotal <= 0.0f)
+        if ((float)nValue + flDamage <= 0.0f)
         {
             pObject->m_wKilledBySlot = (short)nKillerSlot;
         }
@@ -5059,13 +5061,15 @@ void __cdecl PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode*
 
     const float flBoosted = flSpeed + 1.0f;
 
-    dReading = (float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f;
-
-    if (SPEED_RATING_MAX <= dReading || dReading >= SPEED_RATING_MIN)
+    if (SPEED_RATING_MAX < ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f) || SPEED_RATING_MIN <= ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f))
     {
-        if (dReading > SPEED_RATING_MAX)
+        if (SPEED_RATING_MAX < ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f))
         {
             dReading = SPEED_RATING_MAX;
+        }
+        else
+        {
+            dReading = ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f);
         }
     }
     else
@@ -5177,13 +5181,15 @@ void __cdecl PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode
 
     const float flBoosted = flSpeed + 1.0f;
 
-    dReading = (float)(short)(long)(flBoosted * g_aSpeedCache[nTarget] + 0.5f) + 0.99f;
-
-    if (SPEED_RATING_MAX <= dReading || dReading >= SPEED_RATING_MIN)
+    if (SPEED_RATING_MAX < ((float)(short)(long)(flBoosted * g_aSpeedCache[nTarget] + 0.5f) + 0.99f) || SPEED_RATING_MIN <= ((float)(short)(long)(flBoosted * g_aSpeedCache[nTarget] + 0.5f) + 0.99f))
     {
-        if (dReading > SPEED_RATING_MAX)
+        if (SPEED_RATING_MAX < ((float)(short)(long)(flBoosted * g_aSpeedCache[nTarget] + 0.5f) + 0.99f))
         {
             dReading = SPEED_RATING_MAX;
+        }
+        else
+        {
+            dReading = ((float)(short)(long)(flBoosted * g_aSpeedCache[nTarget] + 0.5f) + 0.99f);
         }
     }
     else

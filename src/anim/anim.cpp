@@ -23,7 +23,8 @@ union FloatWord
 // FUNCTION: HYPERX 0x00416ba0
 void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, short nFrames, const AnimClipHeader* pHeader, TransformObject* pTempXform)
 {
-    const float* pFrameEuler = pInputEulers;
+    const float*    pFrameEuler = pInputEulers;
+    unsigned short* pWord       = &pOutput->aw[0][0];
 
     for (short nFrame = 0; nFrame < nFrames; nFrame++)
     {
@@ -66,8 +67,6 @@ void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOut
 
         pFrameEuler += 3;
 
-        PackedRotation* const pRotation = &pOutput[nFrame];
-
         for (int nRow = 0; nRow < 3; nRow++)
         {
             for (int nCol = 0; nCol < 3; nCol++)
@@ -101,7 +100,7 @@ void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOut
 
                 cell.n <<= 4;
 
-                pRotation->aw[nRow][nCol] = cell.wHigh;
+                *pWord++ = cell.wHigh;
             }
         }
     }

@@ -554,10 +554,10 @@ void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*,
         {
             float flSteps;
 
-            flSteps = flScratchA * 0.016666667535901070f;
-
-            if (g_flThrowStepsCap <= flSteps || 1.0f <= flSteps)
+            if (g_flThrowStepsCap < flScratchA * 0.016666667535901070f || 1.0f <= flScratchA * 0.016666667535901070f)
             {
+                flSteps = flScratchA * 0.016666667535901070f;
+
                 if (g_flThrowStepsCap < flSteps)
                 {
                     flSteps = g_flThrowStepsCap;
@@ -605,10 +605,12 @@ void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*,
         pOwner     = pContext->GetPlayerActor();
         flHandling = pOwner->m_stats.GetScalar(RATING_ROK_HANDLING);
 
-        flReach = (float)sqrt(Vec3::DotInline(&vDiff, &vDiff)) * 0.01f;
+        const float flDist = (float)sqrt(Vec3::DotInline(&vDiff, &vDiff));
 
-        if (2.0f <= flReach || 1.0f <= flReach)
+        if (2.0f < flDist * 0.01f || 1.0f <= flDist * 0.01f)
         {
+            flReach = flDist * 0.01f;
+
             if (2.0f < flReach)
             {
                 flReach = 2.0f;

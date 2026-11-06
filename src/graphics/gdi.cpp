@@ -447,7 +447,7 @@ HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 
     if (pDib != 0)
     {
-        const HDC hdc = GetDC(g_gameApp.m_hWnd);
+        const HDC hdc = GetDC(g_gameApp.GetMainWindow());
 
         HPALETTE hPalette = GDI::CreatePaletteFromDIB(pDib, &cColors);
 
