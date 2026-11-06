@@ -926,7 +926,8 @@ void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
                 case 10:
                     if (nSlot < 4 && nSelfParity != nHeldParity)
                     {
-                        const int nMatch = strcmp(szState, "AttackOpponent");
+                        // The original stores this result although nothing reads it.
+                        volatile int nMatch = strcmp(szState, "AttackOpponent");
                     }
                     break;
             }

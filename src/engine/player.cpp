@@ -134,20 +134,24 @@ extern short g_nCheckImpulseFacing;
 EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 {
     EngineObject* pTarget;
-    float         flDxA;
-    float         flDyB;
-    float         flDxB;
-    float         flCross;
-    float         flDet;
-    short         nFacing;
-    short         nStep;
+    // The original reloads the distance terms from the frame for the final comparison.
+    volatile float flDxA;
+    // The original reloads this too.
+    volatile float flDyB;
+    // The original reloads this too.
+    volatile float flDxB;
+    float          flCross;
+    float          flDet;
+    short          nFacing;
+    short          nStep;
 
     short               nSlot  = (short)((pActor->GetSlot() + 1) % 4);
     EngineObject* const pCandA = g_pGameEngine->m_ppSlots[nSlot];
     nSlot                      = (short)((pActor->GetSlot() + 3) % 4);
     EngineObject* const pCandB = g_pGameEngine->m_ppSlots[nSlot];
 
-    const float flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+    // The original reloads this from the frame for the final comparison.
+    const volatile float flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
 
     if (flDyA > 30.0f)
     {
@@ -167,7 +171,8 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
 
         if (pActor->GetDistIfFacingDefault(pCandB) == 0.0f)
         {
-            goto notFound;
+        notFound:
+            return 0;
         }
 
         pTarget = pCandB;
@@ -196,7 +201,7 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
             {
                 if (pActor->GetDistIfFacingDefault(pCandA) == 0.0f)
                 {
-                    goto notFound;
+                    return 0;
                 }
 
                 pTarget = pCandA;
@@ -241,7 +246,7 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
 
         if (flLead * dAbsDet < -4.0)
         {
-            return 0;
+            goto notFound;
         }
 
         const float flDiff = (float)(((flCross - pActor->GetPositionPtr()->y) / pActor->m_pBody->GetVel().y - flLead) * dAbsDet);
@@ -304,9 +309,6 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
 
         return pTarget;
     }
-
-notFound:
-    return 0;
 }
 
 int g_nTrickHoldStamp = -1;

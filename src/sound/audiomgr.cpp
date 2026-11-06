@@ -551,13 +551,16 @@ int AudioMgr::PreloadGroup(int nGroup)
     int         nLoaded;
     int         nBytes;
 
+    // The original rereads the table from its frame slot on every pass.
+    SoundManager* volatile pTable = pEntries;
+
     nCount  = pEntries->m_nSoundCount;
     nLoaded = 0;
     nBytes  = 0;
 
     for (int nIndex = 0; nIndex < nCount; nIndex++)
     {
-        pSnd = pEntries->m_apSounds[nIndex];
+        pSnd = pTable->m_apSounds[nIndex];
 
         if (pSnd->m_nGroup != nGroup)
         {

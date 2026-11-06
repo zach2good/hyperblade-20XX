@@ -82,7 +82,8 @@ void __cdecl Renderer::DrawAllMeshes(void)
 
     g_nMdmTexturesReady = g_nDromeTextured;
 
-    if (g_bNetworkGame != 0 || g_bLoadingMode != 0)
+    // The original loads the flag into a register to test it.
+    if (g_bNetworkGame != 0 || *(volatile char*)&g_bLoadingMode != 0)
     {
         short nRelitBone;
         Vec3  vSavedDir;

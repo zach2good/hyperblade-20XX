@@ -55,10 +55,12 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     unsigned char       cShade;
     unsigned char       cColourIndex;
     int                 nKind;
-    short               nStep;
-    short               nFirst;
-    short               nEnd;
-    short               i;
+    // The original keeps the edge walk's step in a frame slot.
+    volatile short nStep;
+    // The original keeps the edge walk's start in a frame slot.
+    volatile short nFirst;
+    short          nEnd;
+    short          i;
 
     g_swFaceBuffer.nCount = pFaceData->nCorners;
     SoftTex* pTexture     = 0;

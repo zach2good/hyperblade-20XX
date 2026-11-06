@@ -636,7 +636,7 @@ void PhysicsBody::IntegrateMotion()
     float       flZ    = pMoveDir->z;
     float       flY    = pMoveDir->y;
     float       flX    = pMoveDir->x;
-    const float flRoot = (float)sqrt(flX * flX + flY * flY + flZ * flZ);
+    const float flRoot = flZ = (float)sqrt(flX * flX + flY * flY + flZ * flZ);
 
     Math::Vec3Normalize(pMoveDir);
 

@@ -1891,8 +1891,8 @@ void __cdecl PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, shor
     vObjectSelf.y = pObject->y - pSelf->y;
     vObjectSelf.z = pObject->z - pSelf->z;
 
-    const float flHypotFirst = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
-    flToSecond               = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
+    const float flHypotFirst = vFirst.x = (float)sqrt(vFirst.x * vFirst.x + vFirst.y * vFirst.y + vFirst.z * vFirst.z);
+    flToSecond                          = (float)sqrt(vSecond.x * vSecond.x + vSecond.y * vSecond.y + vSecond.z * vSecond.z);
 
     const bool bFirstCloser = (double)flHypotFirst < flToSecond;
 
@@ -2104,7 +2104,7 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
     vToFar.y = vFar.y - vOwn.y;
     vToFar.z = vFar.z - vOwn.z;
 
-    const float flDistNear = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
+    const float flDistNear = vToNear.x = (float)sqrt((vToNear.z * vToNear.z + vToNear.y * vToNear.y) + vToNear.x * vToNear.x);
 
     const float flDistFar = (float)sqrt((vToFar.z * vToFar.z + vToFar.y * vToFar.y) + vToFar.x * vToFar.x);
 
@@ -4867,17 +4867,15 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
     else
     {
         pRecord = pArgs->m_pArgs;
+        nValue  = pRecord[2].n;
 
-        if (pRecord[1].n == PLAN_TOKEN_MESSAGE_DATA)
-        {
-            nWhich = (short)nParam;
-        }
-        else
-        {
-            nWhich = (short)pRecord[1].n;
-        }
+        nWhich = (short)nParam;
 
-        nValue = pRecord[2].n;
+        if (pRecord[1].n != PLAN_TOKEN_MESSAGE_DATA)
+        {
+            // The original reloads the slot word here.
+            nWhich = *(const volatile short*)&pRecord[1].n;
+        }
 
         pObject = g_pGameEngine->GetPlayer(nWhich);
     }
@@ -6985,10 +6983,11 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
     const short nTargetSlot = pTarget->GetSlot();
     const short nActorSlot  = pActor->GetSlot();
 
-    EngineObject* const pTargetSlot = g_pGameEngine->m_ppSlots[nTargetSlot];
+    EngineObject** const ppSlots = g_pGameEngine->m_ppSlots;
 
-    vDelta = *pTargetSlot->GetPositionPtr()->Subtract(&vScratch,
-                                                      g_pGameEngine->m_ppSlots[nActorSlot]->GetPositionPtr());
+    EngineObject* const pActorSlot = ppSlots[nActorSlot];
+
+    vDelta = *ppSlots[nTargetSlot]->GetPositionPtr()->Subtract(&vScratch, pActorSlot->GetPositionPtr());
 
     const float flLength = Vec3::Length(&vDelta);
 
@@ -6996,7 +6995,10 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 
     const float flFalloff = (SCORE_RANGE - flLength) * flScale * SCORE_FALLOFF;
 
-    const float flCos = (float)cos(flFalloff + flScale);
+    float flCos;
+
+    // The original stores the cosine to its slot and pushes it from there.
+    *(volatile float*)&flCos = (float)cos(flFalloff + flScale);
 
     if (pActor->GetDistIfFacing(pTarget, flCos) == 0.0f)
     {
