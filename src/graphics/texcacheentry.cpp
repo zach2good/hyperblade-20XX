@@ -71,20 +71,18 @@ TexCacheEntry::TexCacheEntry(const char* pszName, HPALETTE hPalette)
 // FUNCTION: HYPERX 0x00492d70
 void* TexCacheEntry::DestroyTexObj()
 {
-    CD3DTexture* const pD3DTexture = m_pD3DTexture;
-
-    if (pD3DTexture != 0)
+    if (m_pD3DTexture != 0)
     {
         if (m_bIsD3D != 0)
         {
-            delete pD3DTexture;
+            delete m_pD3DTexture;
+            m_pD3DTexture = 0;
         }
         else
         {
             delete m_pSoftTexture;
+            m_pD3DTexture = 0;
         }
-
-        m_pD3DTexture = 0;
     }
 
     return m_pD3DTexture;
