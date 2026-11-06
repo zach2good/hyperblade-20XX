@@ -130,13 +130,14 @@ int PlanEditorDialog::PopulateCameraList(HWND hDlg)
 // FUNCTION: HYPERX 0x0047bbc0
 void PlanEditorDialog::PopulateBehaviorList(HWND hDlg, short nCamera)
 {
-    short i = 0;
     char* pszName;
 
     const HWND hCombo = GetDlgItem(hDlg, IDC_PLAN_BEHAVIOR);
 
     if (hCombo != 0)
     {
+        short i = 0;
+
         SendMessageA(hCombo, CB_RESETCONTENT, 0, 0);
 
         while (*(pszName = PlanName(g_pGameEngine->m_ppSlots[nCamera], i++)) != 0)
@@ -144,7 +145,9 @@ void PlanEditorDialog::PopulateBehaviorList(HWND hDlg, short nCamera)
             SendMessageA(hCombo, CB_ADDSTRING, 0, (LPARAM)pszName);
         }
 
-        pszName = g_pGameEngine->m_ppSlots[nCamera]->GetPlanState()->m_pszName;
+        PlanState* const pState = g_pGameEngine->m_ppSlots[nCamera]->GetPlanState();
+
+        pszName = pState->m_pszName;
 
         SendMessageA(hCombo, CB_SETCURSEL, g_pGameEngine->m_ppSlots[nCamera]->FindPlanByName(pszName), 0);
 
