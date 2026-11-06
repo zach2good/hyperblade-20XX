@@ -313,67 +313,87 @@ void TransformObject::Compose(const TransformObject* pOther)
     {
         case 0:
         {
-            const float flRow0X = m_a[0][0];
-            const float flRow0Y = m_a[0][1];
-            const float flRow0Z = m_a[0][2];
+            {
+                const float flX = m_a[0][0];
+                const float flY = m_a[0][1];
+                const float flZ = m_a[0][2];
 
-            m_a[0][0] = flRow0X * pOther->m_a[0][0] + flRow0Z * pOther->m_a[2][0] + flRow0Y * pOther->m_a[1][0];
-            m_a[0][1] = flRow0X * pOther->m_a[0][1] + (flRow0Z * pOther->m_a[2][1] + flRow0Y * pOther->m_a[1][1]);
-            m_a[0][2] = flRow0X * pOther->m_a[0][2] + flRow0Z * pOther->m_a[2][2] + flRow0Y * pOther->m_a[1][2];
-            m_a[0][3] = ((flRow0Z * pOther->m_a[2][3] + flRow0Y * pOther->m_a[1][3]) + flRow0X * pOther->m_a[0][3]) + m_a[0][3];
+                m_a[0][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[0][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[0][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[0][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[0][3]);
+            }
 
-            const float flRow1X = m_a[1][0];
-            const float flRow1Y = m_a[1][1];
-            const float flRow1Z = m_a[1][2];
+            {
+                const float flX = m_a[1][0];
+                const float flY = m_a[1][1];
+                const float flZ = m_a[1][2];
 
-            m_a[1][0] = flRow1X * pOther->m_a[0][0] + flRow1Z * pOther->m_a[2][0] + flRow1Y * pOther->m_a[1][0];
-            m_a[1][1] = flRow1X * pOther->m_a[0][1] + (flRow1Z * pOther->m_a[2][1] + flRow1Y * pOther->m_a[1][1]);
-            m_a[1][2] = flRow1X * pOther->m_a[0][2] + flRow1Z * pOther->m_a[2][2] + flRow1Y * pOther->m_a[1][2];
-            m_a[1][3] = ((flRow1Z * pOther->m_a[2][3] + flRow1Y * pOther->m_a[1][3]) + flRow1X * pOther->m_a[0][3]) + m_a[1][3];
+                m_a[1][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[1][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[1][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[1][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[1][3]);
+            }
 
-            const float flRow2X = m_a[2][0];
-            const float flRow2Y = m_a[2][1];
-            const float flRow2Z = m_a[2][2];
+            {
+                const float flX = m_a[2][0];
+                const float flY = m_a[2][1];
+                const float flZ = m_a[2][2];
 
-            m_a[2][0] = flRow2X * pOther->m_a[0][0] + flRow2Z * pOther->m_a[2][0] + flRow2Y * pOther->m_a[1][0];
-            m_a[2][1] = flRow2X * pOther->m_a[0][1] + (flRow2Z * pOther->m_a[2][1] + flRow2Y * pOther->m_a[1][1]);
-            m_a[2][2] = flRow2X * pOther->m_a[0][2] + flRow2Z * pOther->m_a[2][2] + flRow2Y * pOther->m_a[1][2];
-            m_a[2][3] = ((flRow2Z * pOther->m_a[2][3] + flRow2Y * pOther->m_a[1][3]) + flRow2X * pOther->m_a[0][3]) + m_a[2][3];
-
+                m_a[2][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[2][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[2][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[2][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[2][3]);
+            }
             break;
         }
 
         case 1:
         {
-            const float flRow0X = m_a[0][0];
-            const float flRow0Y = m_a[0][1];
-            const float flRow0Z = m_a[0][2];
-            const float flRow0W = m_a[0][3];
+            {
+                const float flX = m_a[0][0];
+                const float flY = m_a[0][1];
+                const float flZ = m_a[0][2];
+                const float flW = m_a[0][3];
 
-            m_a[0][0] = flRow0W * pOther->m_a[3][0] + flRow0X * pOther->m_a[0][0] + flRow0Z * pOther->m_a[2][0] + flRow0Y * pOther->m_a[1][0];
-            m_a[0][1] = ((flRow0Z * pOther->m_a[2][1] + flRow0Y * pOther->m_a[1][1]) + flRow0W * pOther->m_a[3][1]) + flRow0X * pOther->m_a[0][1];
-            m_a[0][2] = flRow0X * pOther->m_a[0][2] + flRow0W * pOther->m_a[3][2] + flRow0Z * pOther->m_a[2][2] + flRow0Y * pOther->m_a[1][2];
-            m_a[0][3] = flRow0W * pOther->m_a[3][3] + (flRow0Z * pOther->m_a[2][3] + flRow0Y * pOther->m_a[1][3]) + flRow0X * pOther->m_a[0][3];
+                m_a[0][0] =
+                    (((flW * pOther->m_a[3][0] + flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[0][1] =
+                    (((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flW * pOther->m_a[3][1]) + flX * pOther->m_a[0][1]);
+                m_a[0][2] =
+                    ((((flX * pOther->m_a[0][2]) + flW * pOther->m_a[3][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[0][3] = flW * pOther->m_a[3][3] + (flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3];
+            }
 
-            const float flRow1X = m_a[1][0];
-            const float flRow1Y = m_a[1][1];
-            const float flRow1Z = m_a[1][2];
-            const float flRow1W = m_a[1][3];
+            {
+                const float flX = m_a[1][0];
+                const float flY = m_a[1][1];
+                const float flZ = m_a[1][2];
+                const float flW = m_a[1][3];
 
-            m_a[1][0] = flRow1W * pOther->m_a[3][0] + flRow1X * pOther->m_a[0][0] + flRow1Z * pOther->m_a[2][0] + flRow1Y * pOther->m_a[1][0];
-            m_a[1][1] = ((flRow1Z * pOther->m_a[2][1] + flRow1Y * pOther->m_a[1][1]) + flRow1W * pOther->m_a[3][1]) + flRow1X * pOther->m_a[0][1];
-            m_a[1][2] = flRow1X * pOther->m_a[0][2] + flRow1W * pOther->m_a[3][2] + flRow1Z * pOther->m_a[2][2] + flRow1Y * pOther->m_a[1][2];
-            m_a[1][3] = flRow1W * pOther->m_a[3][3] + (flRow1Z * pOther->m_a[2][3] + flRow1Y * pOther->m_a[1][3]) + flRow1X * pOther->m_a[0][3];
+                m_a[1][0] =
+                    (((flW * pOther->m_a[3][0] + flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[1][1] =
+                    (((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flW * pOther->m_a[3][1]) + flX * pOther->m_a[0][1]);
+                m_a[1][2] =
+                    ((((flX * pOther->m_a[0][2]) + flW * pOther->m_a[3][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[1][3] = flW * pOther->m_a[3][3] + (flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3];
+            }
 
-            const float flRow2X = m_a[2][0];
-            const float flRow2Y = m_a[2][1];
-            const float flRow2Z = m_a[2][2];
-            const float flRow2W = m_a[2][3];
+            {
+                const float flX = m_a[2][0];
+                const float flY = m_a[2][1];
+                const float flZ = m_a[2][2];
+                const float flW = m_a[2][3];
 
-            m_a[2][0] = flRow2W * pOther->m_a[3][0] + flRow2X * pOther->m_a[0][0] + flRow2Z * pOther->m_a[2][0] + flRow2Y * pOther->m_a[1][0];
-            m_a[2][1] = ((flRow2Z * pOther->m_a[2][1] + flRow2Y * pOther->m_a[1][1]) + flRow2W * pOther->m_a[3][1]) + flRow2X * pOther->m_a[0][1];
-            m_a[2][2] = flRow2X * pOther->m_a[0][2] + flRow2W * pOther->m_a[3][2] + flRow2Z * pOther->m_a[2][2] + flRow2Y * pOther->m_a[1][2];
-            m_a[2][3] = flRow2W * pOther->m_a[3][3] + (flRow2Z * pOther->m_a[2][3] + flRow2Y * pOther->m_a[1][3]) + flRow2X * pOther->m_a[0][3];
+                m_a[2][0] =
+                    (((flW * pOther->m_a[3][0] + flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[2][1] =
+                    (((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flW * pOther->m_a[3][1]) + flX * pOther->m_a[0][1]);
+                m_a[2][2] =
+                    ((((flX * pOther->m_a[0][2]) + flW * pOther->m_a[3][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[2][3] = flW * pOther->m_a[3][3] + (flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3];
+            }
 
             m_a[3][0] = pOther->m_a[3][0];
             m_a[3][1] = pOther->m_a[3][1];
@@ -384,43 +404,49 @@ void TransformObject::Compose(const TransformObject* pOther)
 
         case 2:
         {
-            const float flRow0X = m_a[0][0];
-            const float flRow0Y = m_a[0][1];
-            const float flRow0Z = m_a[0][2];
+            {
+                const float flX = m_a[0][0];
+                const float flY = m_a[0][1];
+                const float flZ = m_a[0][2];
 
-            m_a[0][0] = flRow0X * pOther->m_a[0][0] + flRow0Z * pOther->m_a[2][0] + flRow0Y * pOther->m_a[1][0];
-            m_a[0][1] = flRow0X * pOther->m_a[0][1] + (flRow0Z * pOther->m_a[2][1] + flRow0Y * pOther->m_a[1][1]);
-            m_a[0][2] = flRow0X * pOther->m_a[0][2] + flRow0Z * pOther->m_a[2][2] + flRow0Y * pOther->m_a[1][2];
-            m_a[0][3] = ((flRow0Z * pOther->m_a[2][3] + flRow0Y * pOther->m_a[1][3]) + flRow0X * pOther->m_a[0][3]) + m_a[0][3];
+                m_a[0][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[0][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[0][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[0][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[0][3]);
+            }
 
-            const float flRow1X = m_a[1][0];
-            const float flRow1Y = m_a[1][1];
-            const float flRow1Z = m_a[1][2];
+            {
+                const float flX = m_a[1][0];
+                const float flY = m_a[1][1];
+                const float flZ = m_a[1][2];
 
-            m_a[1][0] = flRow1X * pOther->m_a[0][0] + flRow1Z * pOther->m_a[2][0] + flRow1Y * pOther->m_a[1][0];
-            m_a[1][1] = flRow1X * pOther->m_a[0][1] + (flRow1Z * pOther->m_a[2][1] + flRow1Y * pOther->m_a[1][1]);
-            m_a[1][2] = flRow1X * pOther->m_a[0][2] + flRow1Z * pOther->m_a[2][2] + flRow1Y * pOther->m_a[1][2];
-            m_a[1][3] = ((flRow1Z * pOther->m_a[2][3] + flRow1Y * pOther->m_a[1][3]) + flRow1X * pOther->m_a[0][3]) + m_a[1][3];
+                m_a[1][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[1][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[1][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[1][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[1][3]);
+            }
 
-            // Rows two and three group their sums apart from rows zero and one.
-            const float flRow2X = m_a[2][0];
-            const float flRow2Y = m_a[2][1];
-            const float flRow2Z = m_a[2][2];
+            {
+                const float flX = m_a[2][0];
+                const float flY = m_a[2][1];
+                const float flZ = m_a[2][2];
 
-            m_a[2][0] = (flRow2X * pOther->GetElement(0, 0) + flRow2Z * pOther->m_a[2][0]) + flRow2Y * pOther->m_a[1][0];
-            m_a[2][1] = flRow2X * pOther->m_a[0][1] + (flRow2Z * pOther->m_a[2][1] + flRow2Y * pOther->m_a[1][1]);
-            m_a[2][2] = (flRow2X * pOther->m_a[0][2] + flRow2Z * pOther->m_a[2][2]) + flRow2Y * pOther->m_a[1][2];
-            m_a[2][3] = ((flRow2Z * pOther->m_a[2][3] + flRow2Y * pOther->m_a[1][3]) + flRow2X * pOther->m_a[0][3]) + m_a[2][3];
+                m_a[2][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[2][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[2][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[2][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[2][3]);
+            }
 
-            const float flRow3X = m_a[3][0];
-            const float flRow3Y = m_a[3][1];
-            const float flRow3Z = m_a[3][2];
+            {
+                const float flX = m_a[3][0];
+                const float flY = m_a[3][1];
+                const float flZ = m_a[3][2];
 
-            m_a[3][0] = flRow3X * pOther->m_a[0][0] + flRow3Z * pOther->m_a[2][0] + flRow3Y * pOther->m_a[1][0];
-            m_a[3][1] = flRow3X * pOther->m_a[0][1] + (flRow3Z * pOther->m_a[2][1] + flRow3Y * pOther->m_a[1][1]);
-            m_a[3][2] = (flRow3X * pOther->m_a[0][2] + flRow3Z * pOther->m_a[2][2]) + flRow3Y * pOther->m_a[1][2];
-            m_a[3][3] = ((flRow3Z * pOther->m_a[2][3] + flRow3Y * pOther->m_a[1][3]) + flRow3X * pOther->m_a[0][3]) + m_a[3][3];
-
+                m_a[3][0] = (((flX * pOther->m_a[0][0]) + flZ * pOther->m_a[2][0]) + flY * pOther->m_a[1][0]);
+                m_a[3][1] = ((flZ * pOther->m_a[2][1] + flY * pOther->m_a[1][1]) + flX * pOther->m_a[0][1]);
+                m_a[3][2] = (((flX * pOther->m_a[0][2]) + flZ * pOther->m_a[2][2]) + flY * pOther->m_a[1][2]);
+                m_a[3][3] = (((flZ * pOther->m_a[2][3] + flY * pOther->m_a[1][3]) + flX * pOther->m_a[0][3]) + m_a[3][3]);
+            }
             break;
         }
 
