@@ -856,7 +856,8 @@ void __cdecl CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNod
 
     if (boxMesh.StepIntersectTest(&vDirOther, &vDirOwn, &boxTest) != 0)
     {
-        PlanState* const pDiscarded = pOwn->GetPlanState();
+        // The original stores the plan state it never reads.
+        PlanState* volatile pDiscarded = pOwn->GetPlanState();
 
         *pResult = 0;
 
