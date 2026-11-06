@@ -5059,13 +5059,15 @@ void __cdecl PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode*
 
     const float flBoosted = flSpeed + 1.0f;
 
-    dReading = (float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f;
-
-    if (SPEED_RATING_MAX <= dReading || dReading >= SPEED_RATING_MIN)
+    if (SPEED_RATING_MAX < ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f) || SPEED_RATING_MIN <= ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f))
     {
-        if (dReading > SPEED_RATING_MAX)
+        if (SPEED_RATING_MAX < ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f))
         {
             dReading = SPEED_RATING_MAX;
+        }
+        else
+        {
+            dReading = ((float)(short)(long)(flBoosted * g_aOpposSpeedCache[nTarget] + 0.5f) + 0.99f);
         }
     }
     else
