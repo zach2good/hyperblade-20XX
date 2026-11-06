@@ -94,7 +94,7 @@ Vec3* __fastcall Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
 
     const float flToSecond = dx * dx + dy * dy + dz * dz;
 
-    if (flToFirst <= flToSecond)
+    if ((double)flToFirst <= flToSecond)
     {
         pSecond = pFirst;
     }
