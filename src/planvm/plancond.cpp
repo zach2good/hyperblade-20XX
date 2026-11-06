@@ -1205,6 +1205,27 @@ inline bool IsInReach(Interactor* pContext, EngineObject* pMate, float flFacing,
     return Vec3::DotInline(&pOwnerBody->velDir, &pMateBody->velDir) > flDotGate;
 }
 
+// The getter loads the mate's x first, as the client's second copy does.
+inline float DotMateXFirst(const Vec3* pOwner, const Vec3* pMate)
+{
+    return pOwner->x * pMate->GetX() + pOwner->y * pMate->y + pOwner->z * pMate->z;
+}
+
+inline bool IsInReachMateXFirst(Interactor* pContext, EngineObject* pMate, float flFacing, float flRange, float flDotGate)
+{
+    float flDistance;
+
+    if ((flDistance = pContext->GetActor()->GetDistIfFacing(pMate, flFacing)) == 0.0f || flDistance >= flRange)
+    {
+        return false;
+    }
+
+    PhysicsBody* const pMateBody  = pMate->GetPhysicsBody();
+    PhysicsBody* const pOwnerBody = pContext->GetActor()->GetPhysicsBody();
+
+    return DotMateXFirst(&pOwnerBody->velDir, &pMateBody->velDir) > flDotGate;
+}
+
 // A loose rok is chased for a second, a carried one for two.
 inline short TackleCountdown(bool bLoose)
 {
@@ -5358,7 +5379,7 @@ void __cdecl PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, shor
         {
             pWinner = pFirst;
         }
-        else if (IsInReach(pContext, pSecond, flFacingGate, flRange, flDotGate))
+        else if (IsInReachMateXFirst(pContext, pSecond, flFacingGate, flRange, flDotGate))
         {
             pWinner = pSecond;
         }
