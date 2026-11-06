@@ -2884,7 +2884,9 @@ void __cdecl PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode,
 
     const float flLow = PlanArg::ResolveFloat(pContext, pNode, 3);
 
-    pColObj->m_flRadius = (PlanArg::ResolveFloat(pContext, pNode, 4) - flLow) * (flStat * g_flPlanStatScale) + flLow;
+    const double dStat = flStat;
+
+    pColObj->m_flRadius = (float)((PlanArg::ResolveFloat(pContext, pNode, 4) - flLow) * (dStat * g_flPlanStatScale) + flLow);
 }
 
 // Slot one on the tracked object answers a short, read here as a slot and elsewhere as a team.
