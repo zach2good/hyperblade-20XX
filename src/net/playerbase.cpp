@@ -146,7 +146,8 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
     dwNow = timeGetTime();
 
-    const unsigned int nSlotHeld = nSlot;
+    // The original reads the slot byte off the stack here.
+    const unsigned char nSlotHeld = *(volatile unsigned char*)&nSlot;
 
     if (m_nLastSend + (unsigned int)FULL_MS < dwNow || (bThrottled == 0 && bHeld == 0 && (memcmp(&m_vPrevVel, &vStep, sizeof(Vec3)) != 0 || memcmp(&m_vPrevPos, &vPos, sizeof(Vec3)) != 0)))
     {
