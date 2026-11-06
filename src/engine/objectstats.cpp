@@ -103,7 +103,8 @@ void ObjectStats::ScaleTo(int nSlot)
             case RATING_STAMINA:
             case RATING_BALANCE:
             case RATING_ROK_HANDLING:
-                pStat[STATS_COUNT] = *pStat;
+                // The original backs the stat up before it loads it.
+                *(volatile float*)&pStat[STATS_COUNT] = *pStat;
 
                 flValue = *pStat * m_flScale;
 
@@ -126,7 +127,8 @@ void ObjectStats::ScaleTo(int nSlot)
             case RATING_SPEED:
             case RATING_SHOT_POWER:
             case RATING_OFFENSIVE_ABILITY:
-                pStat[STATS_COUNT] = *pStat;
+                // The original backs the stat up before it loads it.
+                *(volatile float*)&pStat[STATS_COUNT] = *pStat;
 
                 flValue = *pStat * m_flScale;
 
