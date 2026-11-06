@@ -813,7 +813,9 @@ void __cdecl CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNod
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
-    vScratch = vLocal;
+    *(int*)&vScratch.x = *(const int*)&vLocal.x;
+    *(int*)&vScratch.y = *(const int*)&vLocal.y;
+    *(int*)&vScratch.z = *(const int*)&vLocal.z;
 
     const float flLowY      = vLocal.y - 2.0f;
     boxTest.vMin.x          = vScratch.x - g_flColBoxSizeX * 0.5f;
