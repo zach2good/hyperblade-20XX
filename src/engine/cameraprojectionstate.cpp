@@ -143,7 +143,8 @@ void CameraProjectionState::BuildMatrix()
 
         const float flScaleY = m_flNearClip / m_flHalfHeightCm;
 
-        m_flCotY = flScaleY;
+        // The original finishes this copy before it starts the reciprocals.
+        *(volatile float*)&m_flCotY = flScaleY;
 
         m_flTanX = 1.0f / flScaleX;
         m_flTanY = 1.0f / flScaleY;
