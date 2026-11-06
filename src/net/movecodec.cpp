@@ -158,7 +158,7 @@ int __cdecl MoveCodec::Encode(PackedMove* pOut, const Vec3* pPosition, const Vec
         nPosZ |= (nPosBitsZ >> 21) & 0x400;
     }
 
-    const unsigned int nPosScale = nPosExp - 0x7f;
+    nPosExp -= 0x7f;
 
     nVelBitsX = FloatBits(pVelocity->x);
     nVelBitsY = FloatBits(pVelocity->y);
@@ -233,7 +233,7 @@ int __cdecl MoveCodec::Encode(PackedMove* pOut, const Vec3* pPosition, const Vec
 
     pOut->velocity.Set(nVelX, nVelY, nVelZ, nPosZ);
 
-    pOut->cFlags = MoveScaleFlags::Pack(nVelZ, nPosScale, nVelExp - 0x7f);
+    pOut->cFlags = MoveScaleFlags::Pack(nVelZ, nPosExp, nVelExp - 0x7f);
 
     return 1;
 }
