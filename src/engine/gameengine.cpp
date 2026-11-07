@@ -5381,19 +5381,21 @@ void GameEngine::SetScreenSize(int nStep)
 
         const int nBufferWidth = g_nBackBufferWidth;
 
-        const int nTwelfths = nStep + SCREEN_TWELFTHS_MIN;
+        nStep += SCREEN_TWELFTHS_MIN;
 
-        const int nWidth  = nBufferWidth * nTwelfths / 12;
-        const int nHeight = g_nBackBufferHeight * nTwelfths / 12;
+        const int nWidth  = nBufferWidth * nStep / 12;
+        const int nHeight = g_nBackBufferHeight * nStep / 12;
 
         CameraObject* const pCamera = GetCamera(CAMERA_MAIN_SLOT);
 
         if (pCamera != 0)
         {
+            unsigned char* const pBits = g_pBackBufferBitsCopy;
+
             const int nMarginX = (nBufferWidth - nWidth) / 2;
             const int nMarginY = (g_nBackBufferHeight - nHeight) / 2;
 
-            state = Widget::InitLayoutState(g_pBackBufferBitsCopy, nBufferWidth, g_nBackBufferHeight, nBufferWidth, nWidth, nHeight, nMarginX, nMarginY);
+            state = Widget::InitLayoutState(pBits, nBufferWidth, g_nBackBufferHeight, nBufferWidth, nWidth, nHeight, nMarginX, nMarginY);
 
             pCamera->layout = state;
 

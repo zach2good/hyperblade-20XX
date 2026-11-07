@@ -185,11 +185,9 @@ void __cdecl CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, Pl
 
     boxPostA.vMax.y = flHeight;
 
-    flInner = -flInner;
-
+    boxPostB.vMin.x         = (flInner = -flInner) - flPostHalfFrame;
     boxPostB.vMax.z         = flPostHalfFrame;
     *(int*)&boxPostB.vMax.y = *(const int*)&flHeight;
-    boxPostB.vMin.x         = flInner - flPostHalfFrame;
     boxPostB.vMin.z         = -flPostHalfFrame;
     boxPostB.vMax.x         = flPostHalfFrame + flInner;
 

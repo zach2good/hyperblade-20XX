@@ -207,6 +207,8 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                         if (_mbsicmp((const unsigned char*)szRamp, (const unsigned char*)"r8") == 0)
                         {
                             pMaterials[nMatIndex].nColour = 0;
+
+                            goto nextline;
                         }
                         // STRING: HYPERX 0x004be2f4
                         else if (_mbsicmp((const unsigned char*)szRamp, (const unsigned char*)"r16") != 0)
@@ -337,22 +339,17 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                     {
                         if (_mbsicmp((const unsigned char*)paTexNames[i], (const unsigned char*)szValue) == 0)
                         {
-                            break;
+                            pMaterials[nMatIndex].nTextureIndex = i + 1;
+
+                            goto nextline;
                         }
                     }
 
-                    if (i < nKnownTextures)
-                    {
-                        pMaterials[nMatIndex].nTextureIndex = i + 1;
-                    }
-                    else
-                    {
-                        strcpy(paTexNames[nKnownTextures], szValue);
+                    strcpy(paTexNames[nKnownTextures], szValue);
 
-                        nTexCount++;
+                    nTexCount++;
 
-                        pMaterials[nMatIndex].nTextureIndex = (short)nTexCount;
-                    }
+                    pMaterials[nMatIndex].nTextureIndex = (short)nTexCount;
                 }
             }
             // STRING: HYPERX 0x004be164
@@ -376,23 +373,22 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                         {
                             pMaterials[nMatIndex].nBackIndex = j;
 
-                            break;
+                            goto nextline;
                         }
                     }
 
-                    if (j > nMatIndex)
-                    {
-                        g_gameApp.Error(
-                            // STRING: HYPERX 0x004be0e4
-                            "Material File Error backface material name - not found for: %s!",
-                            paMatNames[nMatIndex],
-                            szValue);
+                    g_gameApp.Error(
+                        // STRING: HYPERX 0x004be0e4
+                        "Material File Error backface material name - not found for: %s!",
+                        paMatNames[nMatIndex],
+                        szValue);
 
-                        bResult = 0;
-                    }
+                    bResult = 0;
                 }
             }
         }
+
+    nextline:;
     }
 
     nMatIndex++;

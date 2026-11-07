@@ -16,7 +16,7 @@ public:
     {
     }
 
-    virtual ~CDDText();
+    virtual ~CDDText() throw();
     virtual int Draw();
 
     // Not CreateFont: windows.h defines that as a macro for CreateFontA.

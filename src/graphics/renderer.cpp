@@ -84,17 +84,14 @@ void __cdecl Renderer::DrawAllMeshes(void)
 
     if (g_bNetworkGame != 0 || g_bLoadingMode != 0)
     {
-        int   nSavedX;
         short nRelitBone;
-        int   nSavedY;
-        // The original keeps the saved z in a frame slot and the x and y in registers.
-        volatile int anSavedZ[3];
+        int   anSaved[3];
 
         pDrome->ApplyRenderSlotPose();
 
-        *(int*)&anSavedZ[2] = *(const int*)&g_lightDirs[0].dir.z;
-        nSavedX             = *(const int*)&g_lightDirs[0].dir.x;
-        nSavedY             = *(const int*)&g_lightDirs[0].dir.y;
+        anSaved[0] = *(const int*)&g_lightDirs[0].dir.x;
+        anSaved[1] = *(const int*)&g_lightDirs[0].dir.y;
+        anSaved[2] = *(const int*)&g_lightDirs[0].dir.z;
 
         g_bDromePass = 1;
 
@@ -112,7 +109,9 @@ void __cdecl Renderer::DrawAllMeshes(void)
             }
         }
 
-        g_lightDirs[0].dir = g_lightDirs[1].dir;
+        g_lightDirs[0].dir.x = g_lightDirs[1].dir.x;
+        g_lightDirs[0].dir.y = g_lightDirs[1].dir.y;
+        g_lightDirs[0].dir.z = g_lightDirs[1].dir.z;
 
         nRelitBone = (short)nBone;
 
@@ -125,7 +124,9 @@ void __cdecl Renderer::DrawAllMeshes(void)
             pBone->CalcVertexColors(g_nMdmTexturesReady);
         }
 
-        g_lightDirs[0].dir = g_lightDirs[2].dir;
+        g_lightDirs[0].dir.x = g_lightDirs[2].dir.x;
+        g_lightDirs[0].dir.y = g_lightDirs[2].dir.y;
+        g_lightDirs[0].dir.z = g_lightDirs[2].dir.z;
 
         pBone = &pDrome->m_pBones[(short)nBone];
 
@@ -134,9 +135,9 @@ void __cdecl Renderer::DrawAllMeshes(void)
             pBone->CalcVertexColors(g_nMdmTexturesReady);
         }
 
-        *(int*)&g_lightDirs[0].dir.x = nSavedX;
-        *(int*)&g_lightDirs[0].dir.y = nSavedY;
-        *(int*)&g_lightDirs[0].dir.z = anSavedZ[2];
+        *(int*)&g_lightDirs[0].dir.z = anSaved[2];
+        *(int*)&g_lightDirs[0].dir.x = anSaved[0];
+        *(int*)&g_lightDirs[0].dir.y = anSaved[1];
 
         g_bDromePass = 0;
     }

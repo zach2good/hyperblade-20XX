@@ -877,13 +877,13 @@ void GameApp::CopyCDFile(const char* pszName)
     }
     else
     {
-        // The title and the text go in swapped, so the box reads "Error" under a long title.
+        // The disk-full text's buffer holds the caption here.
         strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_ERROR));
 
-        const char* const pszCaption =
+        const char* const pszText =
             m_stringPool.LoadText(m_hInstance, STRING_CD_FILE_OPEN_FAILED + (bSourceOpen != 0));
 
-        GameApp::ShowMessageBox(GetActiveWindow(), szMessage, pszCaption, MB_OK);
+        GameApp::ShowMessageBox(GetActiveWindow(), pszText, szMessage, MB_OK);
     }
 
     free(pBuffer);
