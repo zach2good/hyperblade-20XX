@@ -620,7 +620,8 @@ EngineObject::~EngineObject()
         {
             ::operator delete(m_pBubble->m_pCage);
 
-            m_pBubble->m_pCage = 0;
+            BoundBubble* const pBubble = m_pBubble;
+            pBubble->m_pCage           = 0;
         }
 
         if (m_pBubble != 0)
