@@ -142,77 +142,89 @@ extern const float g_flSteerBoxTopY;
 // FUNCTION: HYPERX 0x00404670
 Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 {
-    MeshBoundingBox zone;
-    MeshBoundingBox box;
-    Vec3            vNormal;
+    MeshBoundingBox aBoxes[2];
+    Vec3            avCentre[2];
     float           flOffset;
     float           flPost;
 
-    const float flZone   = g_flDromePostWidth * 10.0f;
-    const float flHeight = g_flDromeHeight;
-    const float flHalf   = flZone * 0.5f;
-    const float flMirror = flZone * -0.5f;
-    const float flCentre = flHalf;
+    float       fl     = g_flDromePostWidth * 10.0f;
+    const float flHalf = fl * 0.5f;
 
-    zone.vMin.x = flCentre - flHalf;
-    zone.vMin.z = -(g_flDromePostWidth * 10.0f * 0.5f);
-    zone.vMax.x = flHalf + flCentre;
-    zone.vMax.y = flHeight;
-    zone.vMax.z = g_flDromePostWidth * 10.0f * 0.5f;
+    avCentre[1].x         = fl * -0.5f;
+    *(int*)&avCentre[0].x = *(const int*)&flHalf;
 
-    box.vMin.x         = flMirror - flHalf;
-    *(int*)&box.vMin.z = *(const int*)&zone.vMin.z;
-    box.vMax.x         = flHalf + flMirror;
-    *(int*)&box.vMax.y = *(const int*)&g_flDromeHeight;
-    box.vMax.z         = g_flDromePostWidth * 10.0f * 0.5f;
+    aBoxes[0].vMin.x = avCentre[0].x - flHalf;
+    aBoxes[0].vMin.z = -((g_flDromePostWidth * 10.0f) * 0.5f);
+    aBoxes[0].vMax.x = flHalf + avCentre[0].x;
+    fl               = g_flDromeHeight;
+    aBoxes[0].vMax.y = g_flDromeHeight;
+    aBoxes[0].vMax.z = (g_flDromePostWidth * 10.0f) * 0.5f;
 
-    if (zone.vMin.x <= pQueryPos->x && pQueryPos->x <= zone.vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= zone.vMax.y && zone.vMin.z <= pQueryPos->z && pQueryPos->z <= zone.vMax.z)
+    aBoxes[1].vMin.x = avCentre[1].x - flHalf;
+    aBoxes[1].vMin.z = -((g_flDromePostWidth * 10.0f) * 0.5f);
+    aBoxes[1].vMax.x = flHalf + avCentre[1].x;
+    aBoxes[1].vMax.y = g_flDromeHeight;
+    aBoxes[1].vMax.z = aBoxes[0].vMax.z;
+
+    if (aBoxes[0].vMin.x <= pQueryPos->x && pQueryPos->x <= aBoxes[0].vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= aBoxes[0].vMax.y && aBoxes[0].vMin.z <= pQueryPos->z && pQueryPos->z <= aBoxes[0].vMax.z)
     {
         flOffset = (g_flDromeSpanWidth - g_flDromePostWidth) * 0.5f;
         flPost   = g_flDromePostWidth * 0.5f;
 
-        box.bValid = 1;
-        box.vMin.y = 0.0f;
-        box.vMin.x = flOffset - flPost;
-        box.vMin.z = -flPost;
-        box.vMax.x = flPost + flOffset;
-        box.vMax.y = g_flDromeHeight;
-        box.vMax.z = flPost;
+        aBoxes[1].bValid = 1;
+        aBoxes[1].vMin.y = 0.0f;
+        aBoxes[1].vMin.x = flOffset - flPost;
+        aBoxes[1].vMin.z = -flPost;
+        aBoxes[1].vMax.x = flPost + flOffset;
+        aBoxes[1].vMax.y = fl;
+        aBoxes[1].vMax.z = flPost;
+
+        Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&avCentre[1], &aBoxes[1], pQueryPos);
+
+        *pDirOut = vResult;
+
+        return pDirOut;
     }
-    else if (box.vMin.x <= pQueryPos->x && pQueryPos->x <= box.vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= box.vMax.y && box.vMin.z <= pQueryPos->z && pQueryPos->z <= box.vMax.z)
+    else if (aBoxes[1].vMin.x <= pQueryPos->x && pQueryPos->x <= aBoxes[1].vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= aBoxes[1].vMax.y && aBoxes[1].vMin.z <= pQueryPos->z && pQueryPos->z <= aBoxes[1].vMax.z)
     {
         flOffset = (g_flDromeSpanWidth - g_flDromePostWidth) * -0.5f;
         flPost   = g_flDromePostWidth * 0.5f;
 
-        box.bValid = 1;
-        box.vMin.y = 0.0f;
-        box.vMin.x = flOffset - flPost;
-        box.vMin.z = -flPost;
-        box.vMax.x = flPost + flOffset;
-        box.vMax.y = g_flDromeHeight;
-        box.vMax.z = flPost;
+        aBoxes[1].bValid = 1;
+        aBoxes[1].vMin.y = 0.0f;
+        aBoxes[1].vMin.x = flOffset - flPost;
+        aBoxes[1].vMin.z = -flPost;
+        aBoxes[1].vMax.x = flPost + flOffset;
+        aBoxes[1].vMax.y = fl;
+        aBoxes[1].vMax.z = flPost;
+
+        Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&avCentre[1], &aBoxes[1], pQueryPos);
+
+        *pDirOut = vResult;
+
+        return pDirOut;
     }
     else
     {
         const float flHalfSpan = g_flDromeSpanWidth * 0.5f;
 
-        box.bValid = 1;
-        box.vMin.y = 0.0f;
-        box.vMin.x = -flHalfSpan;
+        aBoxes[1].bValid = 1;
+        aBoxes[1].vMin.y = 0.0f;
+        aBoxes[1].vMin.x = -flHalfSpan;
 
         flPost = g_flDromePostWidth * 0.5f;
 
-        box.vMin.z = -flPost;
-        box.vMax.x = flHalfSpan;
-        box.vMax.y = g_flDromeHeight;
-        box.vMax.z = flPost;
+        aBoxes[1].vMin.z = -flPost;
+        aBoxes[1].vMax.x = flHalfSpan;
+        aBoxes[1].vMax.y = g_flDromeHeight;
+        aBoxes[1].vMax.z = flPost;
+
+        Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&avCentre[1], &aBoxes[1], pQueryPos);
+
+        *pDirOut = vResult;
+
+        return pDirOut;
     }
-
-    Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&vNormal, &box, pQueryPos);
-
-    *pDirOut = vResult;
-
-    return pDirOut;
 }
 
 namespace Object
