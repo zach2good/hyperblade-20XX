@@ -147,8 +147,10 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     float           flOffset;
     float           flPost;
 
-    float       fl     = g_flDromePostWidth * 10.0f;
-    const float flHalf = fl * 0.5f;
+    float fl;
+    // The original stores the width and reads it back from the frame.
+    *(volatile float*)&fl = g_flDromePostWidth * 10.0f;
+    const float flHalf    = fl * 0.5f;
 
     avCentre[1].x         = fl * -0.5f;
     *(int*)&avCentre[0].x = *(const int*)&flHalf;
@@ -173,10 +175,10 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 
         aBoxes[1].bValid = 1;
         aBoxes[1].vMin.y = 0.0f;
+        aBoxes[1].vMax.y = g_flDromeHeight;
         aBoxes[1].vMin.x = flOffset - flPost;
         aBoxes[1].vMin.z = -flPost;
         aBoxes[1].vMax.x = flPost + flOffset;
-        aBoxes[1].vMax.y = fl;
         aBoxes[1].vMax.z = flPost;
 
         Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&avCentre[1], &aBoxes[1], pQueryPos);
@@ -192,10 +194,10 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 
         aBoxes[1].bValid = 1;
         aBoxes[1].vMin.y = 0.0f;
+        aBoxes[1].vMax.y = fl;
         aBoxes[1].vMin.x = flOffset - flPost;
         aBoxes[1].vMin.z = -flPost;
         aBoxes[1].vMax.x = flPost + flOffset;
-        aBoxes[1].vMax.y = fl;
         aBoxes[1].vMax.z = flPost;
 
         Vec3 vResult = *CollisionCheck::ComputeNearestNormal(&avCentre[1], &aBoxes[1], pQueryPos);
