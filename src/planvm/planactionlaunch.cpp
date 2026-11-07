@@ -391,21 +391,16 @@ void __cdecl PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, i
     {
         Vec3*        pRokVel;
         PhysicsBody* pRokBody;
-        float        flSpeed;
+        double       flSpeed;
         float        flBump;
 
         pRokVel = &pRok->GetPhysicsBody()->vel;
 
-        flSpeed = (float)sqrt(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z);
+        flSpeed = sqrt(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z);
 
         flBump = g_pGameEngine->m_clock.flDelta * 10.0f;
 
-        if (flBump <= flSpeed)
-        {
-            flBump = flSpeed * 0.5f;
-        }
-
-        pRokVel->z = flBump + pRokVel->z;
+        pRokVel->z = (flSpeed < flBump ? flBump : (float)flSpeed * 0.5f) + pRokVel->z;
 
         pRok->PostSceneEvent(MSG_FLY, 0);
 

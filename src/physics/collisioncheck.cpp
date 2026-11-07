@@ -546,7 +546,7 @@ void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode
     boxTest.vMin.z = vLocal.z - flHalfRadius * 0.5f;
     boxTest.vMax.x = flHalfRadius * 0.5f + vLocal.x;
     boxTest.vMax.z = flHalfRadius * 0.5f + vLocal.z;
-    boxTest.vMax.y = flRadius + (flRadius + vLocal.y);
+    boxTest.vMax.y = flRadius + flRadius + vLocal.y;
 
     flDiffX    = pOtherBody->pos.x - pOtherBody->prevPos.x;
     vScratch.y = pOtherBody->pos.y - pOtherBody->prevPos.y;
@@ -578,7 +578,7 @@ void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode
     flTop += g_flZoneHeight;
     boxBar.vMax.y = flTop;
 
-    const float flInner = (g_flZoneSpanWidth - g_flZoneFrameWidth) * 0.5f;
+    const double flInner = (g_flZoneSpanWidth - g_flZoneFrameWidth) * 0.5f;
 
     boxPostA.vMin.y = 0.0f;
     boxPostA.vMin.z = flNegHalfFrame;
