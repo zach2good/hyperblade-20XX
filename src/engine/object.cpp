@@ -145,19 +145,19 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     MeshBoundingBox aBoxes[2];
     Vec3            avCentre[2];
 
-    float fl;
+    float flWidthHeight;
     // The original stores the width and reads it back from the frame.
-    *(volatile float*)&fl = g_flDromePostWidth * 10.0f;
-    const float flHalf    = fl * 0.5f;
+    *(volatile float*)&flWidthHeight = g_flDromePostWidth * 10.0f;
+    const float flHalf               = flWidthHeight * 0.5f;
 
-    avCentre[1].x         = fl * -0.5f;
+    avCentre[1].x         = flWidthHeight * -0.5f;
     *(int*)&avCentre[0].x = *(const int*)&flHalf;
 
     aBoxes[0].vMin.x = avCentre[0].x - flHalf;
     aBoxes[0].vMin.z = -((g_flDromePostWidth * 10.0f) * 0.5f);
     aBoxes[0].vMax.x = flHalf;
     aBoxes[0].vMax.x += avCentre[0].x;
-    fl               = g_flDromeHeight;
+    flWidthHeight    = g_flDromeHeight;
     aBoxes[0].vMax.y = g_flDromeHeight;
     aBoxes[0].vMax.z = (g_flDromePostWidth * 10.0f) * 0.5f;
 
@@ -194,7 +194,7 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 
         aBoxes[1].bValid = 1;
         aBoxes[1].vMin.y = 0.0f;
-        aBoxes[1].vMax.y = fl;
+        aBoxes[1].vMax.y = flWidthHeight;
         aBoxes[1].vMin.x = flOffset - flPost;
         aBoxes[1].vMin.z = -flPost;
         aBoxes[1].vMax.x = flPost + flOffset;
