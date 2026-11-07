@@ -404,21 +404,22 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
     {
         Vec3*        pRokVel;
         PhysicsBody* pRokBody;
-        float        flSpeed;
-        float        flBump;
 
         pRokVel = &pRok->GetPhysicsBody()->vel;
 
-        flSpeed = static_cast<float>(sqrt(static_cast<double>(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z)));
+        // The speed stays unrounded, as on the client's x87 stack.
+        const auto flSpeed = sqrt(static_cast<double>(pRokVel->x * pRokVel->x + pRokVel->y * pRokVel->y + pRokVel->z * pRokVel->z));
+        const auto flBump  = g_pGameEngine->m_clock.flDelta * 10.0f;
 
-        flBump = g_pGameEngine->m_clock.flDelta * 10.0f;
-
-        if (flBump <= flSpeed)
+        pRokVel->z = [&]
         {
-            flBump = flSpeed * 0.5f;
-        }
+            if (flSpeed < flBump)
+            {
+                return flBump;
+            }
 
-        pRokVel->z = flBump + pRokVel->z;
+            return static_cast<float>(flSpeed) * 0.5f;
+        }() + pRokVel->z;
 
         pRok->PostSceneEvent(kMsgFly, 0);
 

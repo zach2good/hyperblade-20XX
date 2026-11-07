@@ -738,7 +738,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
             vVel = pSelf->m_pBody->vel;
 
-            flDot = vSurface.x * vVel.x + (vVel.y * vSurface.y + vVel.z * vSurface.z);
+            flDot = vSurface.x * vVel.x + vVel.z * vSurface.z + vVel.y * vSurface.y;
 
             vPush.x = vSurface.x * flDot;
             vPush.y = vSurface.y * flDot;

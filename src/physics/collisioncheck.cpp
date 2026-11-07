@@ -542,7 +542,7 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     boxTest.vMin.z = vLocal.z - flHalfRadius * 0.5f;
     boxTest.vMax.x = flHalfRadius * 0.5f + vLocal.x;
     boxTest.vMax.z = flHalfRadius * 0.5f + vLocal.z;
-    boxTest.vMax.y = flRadius + (flRadius + vLocal.y);
+    boxTest.vMax.y = flRadius + flRadius + vLocal.y;
 
     flDiffX    = pOtherBody->pos.x - pOtherBody->prevPos.x;
     vScratch.y = pOtherBody->pos.y - pOtherBody->prevPos.y;
@@ -574,12 +574,13 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
     flTop += g_flZoneHeight;
     boxBar.vMax.y = flTop;
 
-    const auto flInner = (g_flZoneSpanWidth - g_flZoneFrameWidth) * 0.5f;
+    // Unrounded, as on the client's x87 stack.
+    const auto flInner = (static_cast<double>(g_flZoneSpanWidth) - g_flZoneFrameWidth) * 0.5;
 
     boxPostA.vMin.y = 0.0f;
     boxPostA.vMin.z = flNegHalfFrame;
-    boxPostA.vMin.x = flInner - flHalfFrame;
-    boxPostA.vMax.x = flHalfFrame + flInner;
+    boxPostA.vMin.x = static_cast<float>(flInner - flHalfFrame);
+    boxPostA.vMax.x = static_cast<float>(flHalfFrame + flInner);
     boxPostA.bValid = 1;
 
     boxPostB.vMin.y = 0.0f;
@@ -597,8 +598,8 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 
     boxPostA.vMax.y = flHeight;
     boxPostB.vMax.y = flHeight;
-    boxPostB.vMin.x = -flInner - flHalfFrame;
-    boxPostB.vMax.x = flHalfFrame + -flInner;
+    boxPostB.vMin.x = static_cast<float>(-flInner - flHalfFrame);
+    boxPostB.vMax.x = static_cast<float>(flHalfFrame + -flInner);
     boxPostB.vMax.z = flHalfFrame;
 
     const auto flOuter = (g_flZoneSpanWidth - (g_flZoneFrameWidth + g_flZoneFrameWidth)) * 0.5f;
