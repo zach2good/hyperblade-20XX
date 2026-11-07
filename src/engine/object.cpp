@@ -144,8 +144,6 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 {
     MeshBoundingBox aBoxes[2];
     Vec3            avCentre[2];
-    float           flOffset;
-    float           flPost;
 
     float fl;
     // The original stores the width and reads it back from the frame.
@@ -157,21 +155,23 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 
     aBoxes[0].vMin.x = avCentre[0].x - flHalf;
     aBoxes[0].vMin.z = -((g_flDromePostWidth * 10.0f) * 0.5f);
-    aBoxes[0].vMax.x = flHalf + avCentre[0].x;
+    aBoxes[0].vMax.x = flHalf;
+    aBoxes[0].vMax.x += avCentre[0].x;
     fl               = g_flDromeHeight;
     aBoxes[0].vMax.y = g_flDromeHeight;
     aBoxes[0].vMax.z = (g_flDromePostWidth * 10.0f) * 0.5f;
 
     aBoxes[1].vMin.x = avCentre[1].x - flHalf;
     aBoxes[1].vMin.z = -((g_flDromePostWidth * 10.0f) * 0.5f);
-    aBoxes[1].vMax.x = flHalf + avCentre[1].x;
+    aBoxes[1].vMax.x = flHalf;
+    aBoxes[1].vMax.x += avCentre[1].x;
     aBoxes[1].vMax.y = g_flDromeHeight;
-    aBoxes[1].vMax.z = aBoxes[0].vMax.z;
+    aBoxes[1].vMax.z = -aBoxes[0].vMin.z;
 
     if (aBoxes[0].vMin.x <= pQueryPos->x && pQueryPos->x <= aBoxes[0].vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= aBoxes[0].vMax.y && aBoxes[0].vMin.z <= pQueryPos->z && pQueryPos->z <= aBoxes[0].vMax.z)
     {
-        flOffset = (g_flDromeSpanWidth - g_flDromePostWidth) * 0.5f;
-        flPost   = g_flDromePostWidth * 0.5f;
+        const float flOffset = (g_flDromeSpanWidth - g_flDromePostWidth) * 0.5f;
+        const float flPost   = g_flDromePostWidth * 0.5f;
 
         aBoxes[1].bValid = 1;
         aBoxes[1].vMin.y = 0.0f;
@@ -189,8 +189,8 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
     }
     else if (aBoxes[1].vMin.x <= pQueryPos->x && pQueryPos->x <= aBoxes[1].vMax.x && 0.0f <= pQueryPos->y && pQueryPos->y <= aBoxes[1].vMax.y && aBoxes[1].vMin.z <= pQueryPos->z && pQueryPos->z <= aBoxes[1].vMax.z)
     {
-        flOffset = (g_flDromeSpanWidth - g_flDromePostWidth) * -0.5f;
-        flPost   = g_flDromePostWidth * 0.5f;
+        const float flOffset = (g_flDromeSpanWidth - g_flDromePostWidth) * -0.5f;
+        const float flPost   = g_flDromePostWidth * 0.5f;
 
         aBoxes[1].bValid = 1;
         aBoxes[1].vMin.y = 0.0f;
@@ -214,7 +214,7 @@ Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
         aBoxes[1].vMin.y = 0.0f;
         aBoxes[1].vMin.x = -flHalfSpan;
 
-        flPost = g_flDromePostWidth * 0.5f;
+        const float flPost = g_flDromePostWidth * 0.5f;
 
         aBoxes[1].vMin.z = -flPost;
         aBoxes[1].vMax.x = flHalfSpan;
