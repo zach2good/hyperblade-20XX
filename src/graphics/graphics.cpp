@@ -63,7 +63,10 @@ void Graphics::Initialize(int bResize)
             g_nPrevHeight = nPrevHeight;
         }
 
-        layout = Widget::InitLayoutState(g_pBackBufferBitsCopy, g_nBackBufferWidth, nHeight, g_nBackBufferWidth, nPrevWidth, nPrevHeight, (g_nBackBufferWidth - nPrevWidth) / 2, (nHeight - nPrevHeight) / 2);
+        const int nInsetY = (nHeight - nPrevHeight) / 2;
+        const int nInsetX = (g_nBackBufferWidth - nPrevWidth) / 2;
+
+        layout = Widget::InitLayoutState(g_pBackBufferBitsCopy, g_nBackBufferWidth, nHeight, g_nBackBufferWidth, nPrevWidth, nPrevHeight, nInsetX, nInsetY);
 
         pCamera->layout = layout;
 
