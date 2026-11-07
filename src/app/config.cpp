@@ -143,27 +143,17 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
 
         for (int nRow = 0; nRow < 40; nRow++)
         {
-            int nFlags;
-            int nKey;
-            int nIndex;
-
+            // BUG: Each %d writes four bytes into a one or two byte field, so the last row overruns the table.
             // STRING: HYPERX 0x004c4e60
-            fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex);
-
-            pRows[nRow].cFlags = (unsigned char)nFlags;
-            pRows[nRow].nKey   = (unsigned short)nKey;
-            pRows[nRow].nIndex = (unsigned short)nIndex;
+            fscanf(pFile, "%d %d %d: ", &pRows[nRow].cFlags, &pRows[nRow].nKey, &pRows[nRow].nIndex);
         }
 
         // STRING: HYPERX 0x004c4e50
         fscanf(pFile, " %f %f %f %f", &g_flForceIncrement, &g_flMaxAcceleration, &g_flMaxSpeed, &g_flForceRelaxation);
 
-        int nVictimCam;
-
+        // BUG: The %d writes four bytes into the one byte g_bVictimCam.
         // STRING: HYPERX 0x004c4e34
-        fscanf(pFile, "  @v02 %d %f %f %f %f %f :", &nVictimCam, &g_flBandwidth, &g_flNetTracking, &g_flStopForceFactor, &g_flSpeedBurstFactor, &g_vViewSteepness.z);
-
-        g_bVictimCam = (unsigned char)nVictimCam;
+        fscanf(pFile, "  @v02 %d %f %f %f %f %f :", &g_bVictimCam, &g_flBandwidth, &g_flNetTracking, &g_flStopForceFactor, &g_flSpeedBurstFactor, &g_vViewSteepness.z);
 
         // STRING: HYPERX 0x004c4d9c
         fscanf(pFile, " %f %f %f :", &g_vBirdsEyeTrackOffset.x, &g_vBirdsEyeTrackOffset.y, &g_vBirdsEyeTrackOffset.z);
