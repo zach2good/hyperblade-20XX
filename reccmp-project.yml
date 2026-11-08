@@ -29,3 +29,9 @@ targets:
       - symbols/library_data.csv
     hash:
       sha256: 514bcec6805f27136bed6e4de8796e75d99f224a94e3d7098a4477b029ea24cd
+  # v1.0.0.0. Its markers are best guesses until the VC4 toolchain can build it.
+  HYPERX100:
+    filename: HYPERX.EXE
+    source-root: src
+    hash:
+      sha256: 08c7b7a462847089d41a4e3ac0d61df3409ec8c9107cb97deff08364c4c0de60
