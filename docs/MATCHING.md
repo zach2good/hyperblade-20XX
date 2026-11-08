@@ -2686,9 +2686,6 @@ is not a COMDAT. Every `/OPT:ICF` row loses, so `hyperx_sym` stays `/OPT:NOREF` 
 
 ### Other walls
 
-- Scaled-index calls. reccmp compares `call dword ptr [reg*4 + table]` as a raw address, because it
-  runs only one of its two operand substitutions on an indirect `call`; the same operand in a
-  `mov` pairs. `tools/reccmp_call_table.patch` carries the one-line fix to reccmp.
 - C runtime data. Operands that name the CRT's own unsymbolled data, such as the SEH scope tables,
   sit at addresses the linker chose, and moving one global does not fix it. A library literal
   takes a `string` or `widechar` row in `symbols/library_data.csv`, named as our side of the diff

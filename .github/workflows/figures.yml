@@ -47,14 +47,9 @@ jobs:
           printf 'targets:\n  HYPERX:\n    path: %s\n' "$(pwd -W)/reference/HYPERX.EXE" > reccmp-user.yml
           python tools/reference.py
 
-      # The figures assume tools/reccmp_call_table.patch.
-      - name: Install reccmp and apply the call-table patch
+      - name: Install reccmp
         shell: bash
-        run: |
-          set -e
-          pip install -r tools/requirements.txt
-          SITE=$(python -c "import os, reccmp; print(os.path.dirname(os.path.dirname(reccmp.__file__)))")
-          patch -p1 --forward -d "$SITE" < tools/reccmp_call_table.patch
+        run: pip install -r tools/requirements.txt
 
       - name: Build main
         shell: cmd

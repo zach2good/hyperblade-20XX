@@ -5,6 +5,10 @@
 # loop bound (&jpeg_natural_order[64]), is then compared as a raw number and never pairs. With
 # the size, both sides render it as the same element.
 #
+# A size alone also keeps reccmp from typing an unnamed LIBCMT double or literal as a float or
+# string. It finds the original's by pointer scan, and our copy has no symbol, so the two never
+# pair.
+#
 # A name: LIBCMT data our PDB names and no marker in src declares, such as the math constants.
 #
 # A string: a literal in vendored IJG source or LIBCMT, which takes no STRING marker. reccmp's csv
@@ -12,6 +16,13 @@
 address,type,name,size
 0x004ca0c0,,,640
 0x004b433c,,,320
+0x004b4824,,,8
+0x004b482c,,,8
+0x004b4834,,,8
+0x004b483c,,,8
+0x004b4844,,,8
+0x004ca0a8,,,4
+0x004b484c,,,8
 0x004bc928,string,"\"%s\\n\"",4
 0x004ca024,string,"\"%ld%c\"",6
 0x004ca02c,string,"\"JPEGMEM\"",8

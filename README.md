@@ -68,11 +68,10 @@ A different hash usually means v1.0.0.0, the unpatched release. Install the 1.0.
 
 ## Setup
 
-1. Install the Python requirements, then patch reccmp:
+1. Install the Python requirements:
 
    ```sh
    pip install -r tools/requirements.txt
-   patch -p1 -d "$(python -c 'import os, reccmp; print(os.path.dirname(os.path.dirname(reccmp.__file__)))')" < tools/reccmp_call_table.patch
    ```
 
 2. Clone [zach2good/vc6-sp3-toolchain](https://github.com/zach2good/vc6-sp3-toolchain) and set

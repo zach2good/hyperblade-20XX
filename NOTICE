@@ -42,9 +42,6 @@ software is based in part on the work of the Independent JPEG Group.
 src/engine/bmpwriter.cpp derives from wrbmp.c in IJG release 6a and is under the same IJG
 licence, not the LGPL. Its header says what was changed.
 
-tools/reccmp_call_table.patch is a change to reccmp's source and falls under reccmp's licence,
-AGPL-3.0.
-
 
 EXTERNAL DEPENDENCIES, NOT VENDORED HERE
 

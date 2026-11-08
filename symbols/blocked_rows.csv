@@ -13,23 +13,9 @@
 # to the vector iterator; the original's link folded it onto Object::Trace's `ret`, and
 # hyperx_sym links /OPT:NOREF, so the push names a different symbol on each side.
 #
-# Call-table rows are a reccmp parser limit, not a fault in this tree. A line of the form
-# `call dword ptr [reg*4 + table]` cannot pair, because reccmp prints a raw address on both
-# sides and the two tables sit at different addresses. The marker exists: 0x004d1798 is named
-# in src/planvm/planvm.h.
-#
-# The fault is one branch in reccmp/compare/asm/parse.py. `sanitize` runs two substitutions on
-# an ordinary instruction: `ptr_replace_regex` for `[0xADDR]` and `displace_replace_regex` for
-# `[reg*4 + 0xADDR]`. For an absolute indirect CALL it takes an earlier branch that runs only
-# the first, and that one cannot match a displacement because it anchors on `[`. So a MOV with
-# the same operand shape resolves to `g_table[8] (OFFSET)` and pairs, and the CALL does not.
-# Adding the displacement substitution to the indirect-CALL branch is the whole fix.
-#
-# tools/reccmp_call_table.patch carries the fix; apply it with `patch -p1` inside the reccmp
-# package. The score this tree reports needs it. reccmp is installed, not vendored, so a
-# checkout without the patch scores twelve rows lower and reads the difference as a
-# regression. Measured on one unchanged build, the patch is worth twelve exact rows and 2,094
-# bytes, with none lost, and the rows it closed have left this file. The fix belongs upstream.
+# Call-table rows are a reccmp limit, not a fault in this tree: an operand that names a call
+# table or a code address the scorer never pairs. reccmp 0.1.9 resolves the
+# `call dword ptr [reg*4 + table]` displacement itself, so the rows left are other operands.
 #
 # Columns: address, name, blocker, and the file that holds the measurement. The scope-table row
 # carries the measurement in the row instead.
