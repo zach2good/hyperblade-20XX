@@ -868,8 +868,6 @@ void __cdecl PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*
 // FUNCTION: HYPERX 0x004026d0
 void __cdecl PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 {
-    Vec3 vStart;
-
     EngineObject* const pActor = pContext->GetActor();
 
     if (g_pGameEngine->m_nBrutality != 0)
@@ -878,11 +876,11 @@ void __cdecl PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*
 
         if (pSystem != 0)
         {
-            vStart = *pActor->GetPositionPtr();
+            Vec3 vStart = *pActor->GetPositionPtr();
 
             Vec3 vDirection = pActor->m_pBody->vel;
 
-            vStart.z = vStart.GetZ() + 3.0f;
+            vStart.z += 3.0f;
 
             pSystem->SetOrientation(&vStart, &vDirection);
             pSystem->SpawnParticles(10.0f, 25.0f);
