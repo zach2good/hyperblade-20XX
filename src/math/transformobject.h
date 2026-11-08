@@ -55,6 +55,7 @@ public:
     virtual ~TransformObject();
 
     // The linker folded this onto AgendaItemOwner::Destroy, which carries the marker.
+    // FUNCTION: HYPERX100 0x0040ac70
     virtual TransformObject* DestroyViaVtable()
     {
         delete this;
@@ -148,6 +149,19 @@ public:
 
     void ApplyScale();
     void MirrorZ(char bMirror);
+
+#ifdef HYPERX_V100
+    // The full four by four product; marks this transform changed, not the result.
+    void MultiplyFull(TransformObject* pResult, const TransformObject* pRhs);
+
+    TransformObject MultipliedBy(const TransformObject* pRhs) const;
+
+    // The rotation that turns one unit vector onto another.
+    void SetRotationBetween(const Vec3* pFrom, const Vec3* pTo);
+
+    // As SetRotationBetween, but the axis is divided by the angle's sine, not by its own length.
+    void SetRotationBetweenByAngle(const Vec3* pFrom, const Vec3* pTo, float flAngle);
+#endif
 
     // The mesh bone holds two of these at 0x54 and 0xe0; the 16 bytes between belong to it.
     // 0x04, row major; column 3 is the translation and the bottom row (0, 0, 0, 1).

@@ -14,6 +14,11 @@ float           Vec3Distance(const Vec3* pA, const Vec3* pB);
 Vec3            SphericalToCartesian(const Vec3* pIn);
 bool __fastcall Vec3Normalize(Vec3* pVec);
 
+#ifdef HYPERX_V100
+// SphericalToCartesian's inverse: x the azimuth, y the length and z the polar angle.
+Vec3 CartesianToSpherical(const Vec3* pIn);
+#endif
+
 } // namespace Math
 
 #endif

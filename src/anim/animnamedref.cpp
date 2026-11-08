@@ -3,6 +3,7 @@
 #include <string.h>
 #include <new.h>
 
+// FUNCTION: HYPERX100 0x0045a730
 // FUNCTION: HYPERX 0x00417880
 AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 {
@@ -17,6 +18,7 @@ AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 
 // Only a reference still carrying the bias owns the pointer; a second call is harmless.
 
+// FUNCTION: HYPERX100 0x0045a7b0
 // FUNCTION: HYPERX 0x004178e0
 AnimNamedRef::~AnimNamedRef()
 {

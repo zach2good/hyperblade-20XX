@@ -58,6 +58,11 @@ public:
 
     unsigned char SphereSphereOverlap(BoundBubble* pOther);
 
+#ifdef HYPERX_V100
+    void TestOverlap(BoundBubble* pOther);
+    void Collide(BoundBubble* pOther);
+#endif
+
     BubbleShapeNode* m_pShapeNode; // 0x024
     float            m_flRadius;   // 0x028, the shape node's radius, copied at init
 };

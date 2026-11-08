@@ -37,6 +37,7 @@ inline char* PlanEditorDialog::PlanName(EngineObject* pObject, short nIndex)
     return g_pszDefaultPlanName;
 }
 
+// FUNCTION: HYPERX100 0x00479ec0
 // FUNCTION: HYPERX 0x0047b9a0
 short PlanEditorDialog::ApplyCameraSelection(HWND hDlg)
 {
@@ -48,12 +49,14 @@ short PlanEditorDialog::ApplyCameraSelection(HWND hDlg)
     return pObject->GetSlot();
 }
 
+// FUNCTION: HYPERX100 0x00479f10
 // FUNCTION: HYPERX 0x0047b9e0
 LRESULT PlanEditorDialog::GetBehaviorSel(HWND hDlg)
 {
     return SendMessageA(GetDlgItem(hDlg, IDC_PLAN_BEHAVIOR), CB_GETCURSEL, 0, 0);
 }
 
+// FUNCTION: HYPERX100 0x00479f40
 // FUNCTION: HYPERX 0x0047ba10
 LRESULT PlanEditorDialog::GetNodeSel(HWND hDlg)
 {
@@ -66,6 +69,7 @@ LRESULT PlanEditorDialog::GetCondSel(HWND hDlg)
     return SendMessageA(GetDlgItem(hDlg, IDC_PLAN_CONDITION), CB_GETCURSEL, 0, 0);
 }
 
+// FUNCTION: HYPERX100 0x00479fa0
 // FUNCTION: HYPERX 0x0047ba70
 BOOL CALLBACK PlanEditorDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {
@@ -83,6 +87,7 @@ BOOL CALLBACK PlanEditorDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lPa
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047a020
 // FUNCTION: HYPERX 0x0047bad0
 int PlanEditorDialog::OnInit(HWND hDlg, HWND, LPARAM lParam)
 {
@@ -104,6 +109,7 @@ int PlanEditorDialog::OnInit(HWND hDlg, HWND, LPARAM lParam)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0047a0c0
 // FUNCTION: HYPERX 0x0047bb50
 int PlanEditorDialog::PopulateCameraList(HWND hDlg)
 {
@@ -127,6 +133,7 @@ int PlanEditorDialog::PopulateCameraList(HWND hDlg)
 }
 
 // The list ends at the first empty name, which PlanName answers past the count.
+// FUNCTION: HYPERX100 0x0047a150
 // FUNCTION: HYPERX 0x0047bbc0
 void PlanEditorDialog::PopulateBehaviorList(HWND hDlg, short nCamera)
 {
@@ -155,6 +162,7 @@ void PlanEditorDialog::PopulateBehaviorList(HWND hDlg, short nCamera)
     }
 }
 
+// FUNCTION: HYPERX100 0x0047a270
 // FUNCTION: HYPERX 0x0047bc90
 int PlanEditorDialog::OnCommand(HWND hDlg, int nId, HWND hwndCtl, int nCode)
 {
@@ -192,6 +200,7 @@ int PlanEditorDialog::OnCommand(HWND hDlg, int nId, HWND hwndCtl, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047a410
 // FUNCTION: HYPERX 0x0047be10
 int PlanEditorDialog::OnClose(HWND hDlg, int, HWND, int nCode)
 {
@@ -209,6 +218,7 @@ int PlanEditorDialog::OnClose(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047a460
 // FUNCTION: HYPERX 0x0047be50
 int PlanEditorDialog::OnCameraChanged(HWND hDlg, int, HWND, int nCode)
 {
@@ -225,6 +235,7 @@ int PlanEditorDialog::OnCameraChanged(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047a4e0
 // FUNCTION: HYPERX 0x0047beb0
 int PlanEditorDialog::OnBehaviorChanged(HWND hDlg, int, HWND, int nCode)
 {
@@ -238,6 +249,15 @@ int PlanEditorDialog::OnBehaviorChanged(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00479f70
+void PlanEditorDialog::ClearConditionList(HWND hDlg)
+{
+    SendMessageA(GetDlgItem(hDlg, IDC_PLAN_CONDITION), CB_RESETCONTENT, 0, 0);
+}
+#endif
+
+// FUNCTION: HYPERX100 0x0047a520
 // FUNCTION: HYPERX 0x0047bee0
 int PlanEditorDialog::OnNodeChanged(HWND hDlg, int, HWND, int nCode)
 {
@@ -251,6 +271,7 @@ int PlanEditorDialog::OnNodeChanged(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047a610
 // FUNCTION: HYPERX 0x0047bf10
 int PlanEditorDialog::OnLoadPlan(HWND hDlg, int, HWND, int nCode)
 {
@@ -297,6 +318,7 @@ int PlanEditorDialog::OnLoadPlan(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047a830
 // FUNCTION: HYPERX 0x0047c0a0
 int PlanEditorDialog::OnCompilePlan(HWND hDlg, int, HWND, int nCode)
 {
@@ -343,6 +365,7 @@ int PlanEditorDialog::OnCompilePlan(HWND hDlg, int, HWND, int nCode)
 
 // The try sits inside both loops, so a plan that throws costs only its own name.
 
+// FUNCTION: HYPERX100 0x0047a9b0
 // FUNCTION: HYPERX 0x0047c1a0
 int PlanEditorDialog::OnCompileAll(HWND hDlg, int, HWND, int nCode)
 {
@@ -403,6 +426,7 @@ int PlanEditorDialog::OnCompileAll(HWND hDlg, int, HWND, int nCode)
 }
 
 // A mismatch means the list shows a plan that has since been replaced.
+// FUNCTION: HYPERX100 0x0047ab80
 // FUNCTION: HYPERX 0x0047c2f0
 int PlanEditorDialog::OnActivateBehavior(HWND hDlg, int, HWND, int nCode)
 {
@@ -433,6 +457,7 @@ int PlanEditorDialog::OnActivateBehavior(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047ac90
 // FUNCTION: HYPERX 0x0047c3c0
 int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
 {
@@ -482,6 +507,7 @@ int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047ae20
 // FUNCTION: HYPERX 0x0047c4f0
 PlanVM* __cdecl PlanEditorDialog::LoadPlanText(HWND hDlg, short nBehavior, short nCamera)
 {

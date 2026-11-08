@@ -1,5 +1,6 @@
 build/
 build-bringup/
+build-v100/
 out/
 CMakeUserPresets.json
 *.obj

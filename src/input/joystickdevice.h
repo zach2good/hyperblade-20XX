@@ -10,6 +10,7 @@ class JoystickDevice
 public:
     JoystickDevice();
 
+    // FUNCTION: HYPERX100 0x00498190
     ~JoystickDevice()
     {
     }

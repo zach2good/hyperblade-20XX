@@ -13,11 +13,13 @@ public:
     }
 
     // Both slots hold Widget::RefuseInput, which carries the marker.
+    // FUNCTION: HYPERX100 0x00477560
     virtual int HitTest(int, int)
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x00477570
     virtual int TryActivate(int, int)
     {
         return 0;

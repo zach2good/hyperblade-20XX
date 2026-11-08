@@ -4,6 +4,7 @@
 #include "engine/cpansound.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041e660
 // FUNCTION: HYPERX 0x00414460
 void CPanSoundPool::Init()
 {
@@ -23,6 +24,7 @@ void CPanSoundPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004227f0
 // FUNCTION: HYPERX 0x004144e0
 void* CPanSoundPool::Alloc()
 {

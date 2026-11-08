@@ -15,6 +15,7 @@
 
 // Raises the head camera's m_nShotPowerLevel.
 
+// FUNCTION: HYPERX100 0x0042c6c0
 // FUNCTION: HYPERX 0x004123f0
 void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -38,6 +39,7 @@ void CUpdateShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 
 #define SHOT_POWER_MAX 100
 
+// FUNCTION: HYPERX100 0x0042c760
 // FUNCTION: HYPERX 0x00412470
 void CUpdateShotPower::OnListChanged()
 {
@@ -55,6 +57,7 @@ void CUpdateShotPower::OnListChanged()
 }
 
 // The fog ramp is only ever raised here; the head camera's m_bShotPowerShown stops the whole block.
+// FUNCTION: HYPERX100 0x0042c7a0
 // FUNCTION: HYPERX 0x004124a0
 void CUpdateShotPower::Process(int nArg)
 {

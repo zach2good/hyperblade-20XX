@@ -7,6 +7,7 @@
 #include "graphics/ddrawcaps.h"
 #include "graphics/ddrawapi.h"
 
+// FUNCTION: HYPERX100 0x00442ba0
 // FUNCTION: HYPERX 0x004386c0
 ScrollBitmap::ScrollBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : CDDBitMap(pDDraw, pPrimary, pBack)
@@ -14,18 +15,21 @@ ScrollBitmap::ScrollBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, ID
     ClearState();
 }
 
+// FUNCTION: HYPERX100 0x00442c70
 // FUNCTION: HYPERX 0x00438730
 void ScrollBitmap::SetScrollColorMode(int nScrollColor)
 {
     m_dwScrollColor = nScrollColor;
 }
 
+// FUNCTION: HYPERX100 0x00442c80
 // FUNCTION: HYPERX 0x00438760
 ScrollBitmap::ScrollBitmap()
 {
     ClearState();
 }
 
+// FUNCTION: HYPERX100 0x00442d10
 // FUNCTION: HYPERX 0x004387c0
 void ScrollBitmap::ClearState()
 {
@@ -48,6 +52,7 @@ void ScrollBitmap::ClearState()
     m_bDirty = 0;
 }
 
+// FUNCTION: HYPERX100 0x00442dc0
 // FUNCTION: HYPERX 0x00438850
 ScrollBitmap::~ScrollBitmap()
 {
@@ -55,6 +60,7 @@ ScrollBitmap::~ScrollBitmap()
 
 #define BITMAP_KEY_COLOUR 0xffffff
 
+// FUNCTION: HYPERX100 0x00442e30
 // FUNCTION: HYPERX 0x00438860
 int ScrollBitmap::LoadFromFile(const char* pszName, int bColourKey, int)
 {
@@ -101,6 +107,7 @@ int ScrollBitmap::LoadFromFile(const char* pszName, int bColourKey, int)
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x00443050
 // FUNCTION: HYPERX 0x00438a10
 int ScrollBitmap::RestoreContents()
 {
@@ -113,6 +120,7 @@ int ScrollBitmap::RestoreContents()
 }
 
 // The float input is the lower bound plus the position, and both edge comparisons are unsigned.
+// FUNCTION: HYPERX100 0x00443090
 // FUNCTION: HYPERX 0x00438a30
 int ScrollBitmap::ScrollTo(int nPosition)
 {
@@ -180,6 +188,7 @@ int ScrollBitmap::ScrollTo(int nPosition)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00443480
 // FUNCTION: HYPERX 0x00438c50
 int ScrollBitmap::DrawScrolled()
 {
@@ -219,3 +228,70 @@ int ScrollBitmap::DrawScrolled()
 
     return m_hr == 0;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00443070
+int ScrollBitmap::ScrollStep()
+{
+    return ScrollTo(m_nScrollPos + m_nUnusedB);
+}
+
+// The target is m_nUnusedA; unlike ScrollTo, an unmoved bar is not redrawn.
+// FUNCTION: HYPERX100 0x00443200
+int ScrollBitmap::ScrollToTarget()
+{
+    if (m_bVisible == 0)
+    {
+        return 0;
+    }
+
+    int nChanged = 0;
+
+    if (m_nScrollPos != m_nUnusedA)
+    {
+        if (m_nScrollPos > m_nUnusedA)
+        {
+            BltFillColour(m_dwFillColor);
+        }
+
+        m_nScrollPos = m_nUnusedA;
+
+        if (m_nScrollPos > m_ptSteps.y)
+        {
+            m_nScrollPos = m_ptSteps.y;
+            nChanged     = 1;
+        }
+
+        const int nLower = m_ptSteps.x;
+
+        if (m_nScrollPos < nLower)
+        {
+            m_nScrollPos = nLower;
+            nChanged     = 1;
+        }
+
+        if (m_bHorizontal != 0)
+        {
+            m_nScrollEdge = (int)((float)(nLower + m_nScrollPos) * m_flStep) + m_ptInset.x;
+
+            if ((unsigned int)m_nScrollEdge > (unsigned int)m_ptInset.x)
+            {
+                DrawScrolled();
+            }
+        }
+        else
+        {
+            m_nScrollEdge = m_ptSize.y - (int)((float)(nLower + m_nScrollPos) * m_flStep) - m_ptInset.y;
+
+            if ((unsigned int)m_nScrollEdge < (unsigned int)(m_ptSize.y - m_ptInset.y))
+            {
+                DrawScrolled();
+            }
+        }
+    }
+
+    CDDBitMap::Draw();
+
+    return nChanged;
+}
+#endif

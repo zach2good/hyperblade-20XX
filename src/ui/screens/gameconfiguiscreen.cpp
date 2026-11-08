@@ -34,11 +34,13 @@ enum PeriodLength
     PERIOD_LENGTH_LONG   = 420000,
 };
 
+// FUNCTION: HYPERX100 0x00433b00
 // FUNCTION: HYPERX 0x00479ad0
 GameConfigUIScreen::~GameConfigUIScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00433be0
 // FUNCTION: HYPERX 0x00479b00
 GameConfigUIScreen::GameConfigUIScreen()
 {
@@ -77,6 +79,7 @@ GameConfigUIScreen::GameConfigUIScreen()
     SetupWidgets();
 }
 
+// FUNCTION: HYPERX100 0x00433da0
 // FUNCTION: HYPERX 0x00479c40
 void GameConfigUIScreen::SetupWidgets()
 {
@@ -221,6 +224,7 @@ void GameConfigUIScreen::SetupWidgets()
 
 #define VOLUME_MAX 7
 
+// FUNCTION: HYPERX100 0x00434460
 // FUNCTION: HYPERX 0x0047a160
 void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
@@ -451,6 +455,7 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 
 // The difficulty setter's answer is discarded.
 
+// FUNCTION: HYPERX100 0x00434a00
 // FUNCTION: HYPERX 0x0047a5e0
 void GameConfigUIScreen::OnOkayClick()
 {
@@ -466,6 +471,7 @@ void GameConfigUIScreen::OnOkayClick()
 
 // Only the volumes are undone; nothing else is written until OK.
 
+// FUNCTION: HYPERX100 0x00434a90
 // FUNCTION: HYPERX 0x0047a650
 void GameConfigUIScreen::OnCancelClick()
 {
@@ -476,6 +482,7 @@ void GameConfigUIScreen::OnCancelClick()
 }
 
 // Also sets the period length: 180000, 300000 or 420000 ms.
+// FUNCTION: HYPERX100 0x00434ae0
 // FUNCTION: HYPERX 0x0047a690
 const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
 {
@@ -584,6 +591,7 @@ const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
     return "opbar0";
 }
 
+// FUNCTION: HYPERX100 0x00434ca0
 // FUNCTION: HYPERX 0x0047a7f0
 void GameConfigUIScreen::LoadOptionBitmap(int nOption)
 {

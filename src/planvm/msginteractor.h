@@ -17,6 +17,7 @@ public:
     virtual void Discard();
 
     // Slot six: the message tag Setup stores in m_ownSlotOrMessage.
+    // FUNCTION: HYPERX100 0x004b8be0
     virtual short GetNamedSlot()
     {
         return (short)m_ownSlotOrMessage.n;

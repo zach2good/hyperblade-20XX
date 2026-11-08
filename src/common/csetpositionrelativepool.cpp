@@ -4,6 +4,7 @@
 #include "engine/csetpositionrelative.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00420e40
 // FUNCTION: HYPERX 0x00413110
 void CSetPositionRelativePool::Init()
 {
@@ -23,6 +24,7 @@ void CSetPositionRelativePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423c30
 // FUNCTION: HYPERX 0x004131b0
 void* CSetPositionRelativePool::Alloc()
 {

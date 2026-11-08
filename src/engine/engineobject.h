@@ -99,6 +99,7 @@ public:
 
     // Slots twenty six to thirty one, which the base's table does not have.
     // The original folds this with every bare `ret` at 0x00416e30, so it carries no marker.
+    // FUNCTION: HYPERX100 0x00460c90
     virtual void Postpass()
     {
     }
@@ -141,6 +142,16 @@ public:
     char InitRenderSlotsAndShadowLinks(class LODNode* pLod, class MeshBone* pBones, class CD3DTextureManager* pTexManager, char bShadowless);
     void InitShadowVertexLinks(class LODNode* pLod, struct ModelComponent* pMesh);
     void BuildShadowComponentLinks(class MeshBone* pSlot);
+
+#ifdef HYPERX_V100
+    // BuildShadowComponentLinks, freeing the old child list first.
+    void RebuildComponentLinks(class MeshBone* pSlot);
+
+    float GetDistIfFacingSlot(short nSlot);
+
+    // The attach pak of the collision bubble that stands for this object's slot.
+    struct AttachPak* GetBubbleAttach();
+#endif
 
     // The tick of the last goal, for the score debounce; zero means no goal yet.
     unsigned int m_nLastGoalTickMs; // 0x008

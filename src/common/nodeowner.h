@@ -12,6 +12,7 @@ public:
     {
     }
 
+    // FUNCTION: HYPERX100 0x004b8380
     // FUNCTION: HYPERX 0x0046be80
     virtual ~NodeOwner()
     {

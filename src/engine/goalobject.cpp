@@ -7,6 +7,7 @@
 #include "engine/goalobject.h"
 #include "engine/engineobject.h"
 
+// FUNCTION: HYPERX100 0x00471bb0
 // FUNCTION: HYPERX 0x00474490
 GoalObject::GoalObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)

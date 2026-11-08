@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c80d0
 // FUNCTION: HYPERX 0x0041f480
 void BehObjRailSlidePool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjRailSlidePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c99b0
 // FUNCTION: HYPERX 0x0041f540
 void* BehObjRailSlidePool::Alloc()
 {

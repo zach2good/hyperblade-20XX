@@ -4,6 +4,7 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
+// FUNCTION: HYPERX100 0x004cd1f0
 // FUNCTION: HYPERX 0x0041ea60
 BehObj_TrackPassPrep::BehObj_TrackPassPrep()
 {
@@ -14,6 +15,7 @@ BehObj_TrackPassPrep::~BehObj_TrackPassPrep()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cd310
 // FUNCTION: HYPERX 0x0041eab0
 void BehObj_TrackPassPrep::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

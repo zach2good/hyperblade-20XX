@@ -7,6 +7,7 @@
 #include "engine/engineobject.h"
 #include "engine/objectclasses.h"
 
+// FUNCTION: HYPERX100 0x004cc510
 // FUNCTION: HYPERX 0x0041e450
 BehObj_SetMovingInPlace::BehObj_SetMovingInPlace()
 {
@@ -17,6 +18,7 @@ BehObj_SetMovingInPlace::~BehObj_SetMovingInPlace()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cc630
 // FUNCTION: HYPERX 0x0041e4b0
 void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

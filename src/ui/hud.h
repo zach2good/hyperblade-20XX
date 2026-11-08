@@ -30,6 +30,7 @@ public:
     ~HUD();
 
     // Each forwards to the body the table names, except the four whose bodies are this class's own.
+    // FUNCTION: HYPERX100 0x004c1a20
     virtual void Unused()
     {
     }

@@ -28,6 +28,7 @@ public:
     virtual void OnOkayClick();
 
     // The linker folded this body onto HeadToHeadSetupUIScreen::OnOkayClick, which carries the marker.
+    // FUNCTION: HYPERX100 0x00447320
     virtual void OnCancelClick()
     {
         Game::SetEngineState(g_nSetupReturnState);

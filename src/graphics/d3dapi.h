@@ -20,6 +20,11 @@ int               EnumDrivers(void);
 int __cdecl       SelectDisplayMode(int* pnDriver, int* pnMode);
 HRESULT __stdcall EnumTextureFormatsCallback(DDSURFACEDESC* pFormat, void* pContext);
 
+#ifdef HYPERX_V100
+int         RestoreDisplayMode(void);
+int __cdecl MarkFittingModes(int nDriver);
+#endif
+
 } // namespace D3D
 
 #endif

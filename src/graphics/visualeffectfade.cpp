@@ -5,6 +5,7 @@
 #include "palettefade.h"
 
 // The phase turns only after the duration has passed since the last advance.
+// FUNCTION: HYPERX100 0x00497bd0
 // FUNCTION: HYPERX 0x0042cf20
 int VisualEffectFade::Tick()
 {
@@ -22,6 +23,7 @@ int VisualEffectFade::Tick()
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00497c20
 // FUNCTION: HYPERX 0x0042cf70
 int VisualEffectFade::ApplyPhase(int bPhase)
 {
@@ -38,6 +40,7 @@ int VisualEffectFade::ApplyPhase(int bPhase)
 }
 
 // Folded with PaletteScalarFade::Start onto one address, so it carries no marker.
+// FUNCTION: HYPERX100 0x00497b80
 int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
 {
     if (m_bActive != 0)

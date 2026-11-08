@@ -4,6 +4,7 @@
 #include "planvm/cupdateshotpower.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041dbd0
 // FUNCTION: HYPERX 0x00414910
 void CUpdateShotPowerPool::Init()
 {
@@ -23,6 +24,7 @@ void CUpdateShotPowerPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004222c0
 // FUNCTION: HYPERX 0x004149b0
 void* CUpdateShotPowerPool::Alloc()
 {

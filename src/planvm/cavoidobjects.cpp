@@ -38,6 +38,7 @@ extern short g_nWrongSideFrames;
 
 HYPERBLADE_FIELD_AT(CAvoidObjects, m_pAccum, 0x10);
 
+// FUNCTION: HYPERX100 0x00428b00
 // FUNCTION: HYPERX 0x0040f830
 void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -59,6 +60,7 @@ void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pDrawTarget     = 0;
 }
 
+// FUNCTION: HYPERX100 0x00428b80
 // FUNCTION: HYPERX 0x0040f890
 void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
@@ -97,6 +99,7 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
     }
 }
 
+// FUNCTION: HYPERX100 0x00428c80
 // FUNCTION: HYPERX 0x0040f970
 void CAvoidObjects::OnListChanged()
 {
@@ -128,6 +131,7 @@ inline short CAvoidObjects::SignTowardGoal(short nGoalSlot)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00428ce0
 // FUNCTION: HYPERX 0x0040f9c0
 void CAvoidObjects::Process(int nArg)
 {
@@ -300,6 +304,7 @@ void CAvoidObjects::Process(int nArg)
     }
 }
 
+// FUNCTION: HYPERX100 0x004292e0
 // FUNCTION: HYPERX 0x0040fe30
 void CAvoidObjects::AddAvoidanceTarget(short nIndex)
 {

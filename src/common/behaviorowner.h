@@ -12,6 +12,7 @@ public:
     {
     }
 
+    // FUNCTION: HYPERX100 0x004c6c10
     // FUNCTION: HYPERX 0x004209f0
     virtual ~BehaviorOwner()
     {

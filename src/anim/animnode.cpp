@@ -3,6 +3,7 @@
 #include "animdb.h"
 #include "animnode.h"
 
+// FUNCTION: HYPERX100 0x00459850
 // FUNCTION: HYPERX 0x00416f30
 AnimNode::AnimNode(char bHasDescription)
 {

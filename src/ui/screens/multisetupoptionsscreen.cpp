@@ -11,6 +11,7 @@
 #include "graphics/gdi.h"
 #include "engine/game.h"
 
+// FUNCTION: HYPERX100 0x004a5770
 // FUNCTION: HYPERX 0x004793f0
 MultiSetupOptionsScreen::MultiSetupOptionsScreen()
 {
@@ -82,6 +83,7 @@ MultiSetupOptionsScreen::~MultiSetupOptionsScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x004a5df0
 // FUNCTION: HYPERX 0x00479850
 void MultiSetupOptionsScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {

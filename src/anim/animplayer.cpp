@@ -35,6 +35,7 @@ extern float g_flBlendDurationCap;
 // GLOBAL: HYPERX 0x004b296c
 extern const float g_flAnimBlendZero;
 
+// FUNCTION: HYPERX100 0x0045a140
 // FUNCTION: HYPERX 0x00417510
 void AnimPlayer::SetObject(EngineObject* pObject)
 {
@@ -47,6 +48,7 @@ void AnimPlayer::SetObject(EngineObject* pObject)
 }
 
 // The base's table is stored before the blend slot array is built and the derived's after.
+// FUNCTION: HYPERX100 0x00439040
 // FUNCTION: HYPERX 0x00424490
 AnimPlayer::AnimPlayer()
 : m_pSet(0)
@@ -77,6 +79,7 @@ AnimPlayer::AnimPlayer()
 
 // Loop mode zero loops forever, above zero counts down, below zero (including -2) plays once.
 
+// FUNCTION: HYPERX100 0x004392a0
 // FUNCTION: HYPERX 0x00424590
 char AnimPlayer::UpdateTick(void)
 {
@@ -187,6 +190,7 @@ char AnimPlayer::UpdateTick(void)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004396f0
 // FUNCTION: HYPERX 0x00424760
 int __fastcall AnimPlayer::SetPlayDirection(int nDirection)
 {
@@ -198,6 +202,7 @@ int __fastcall AnimPlayer::SetPlayDirection(int nDirection)
 }
 
 // Clamps to the end frame, or forward to a pending trigger frame; other directions answer no.
+// FUNCTION: HYPERX100 0x00439700
 // FUNCTION: HYPERX 0x00424770
 unsigned char AnimPlayer::CheckLoopPoint()
 {
@@ -262,6 +267,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
     return bReached;
 }
 
+// FUNCTION: HYPERX100 0x00439890
 // FUNCTION: HYPERX 0x00424810
 void AnimPlayer::SetPlaybackRate(float flRate)
 {
@@ -285,6 +291,7 @@ void AnimPlayer::SetPlaybackRate(float flRate)
 #define SLOT_FLAG_MOVED 4
 
 // MSG_NOMSG marks an event consumed; a zero argument still poses the skeleton.
+// FUNCTION: HYPERX100 0x00439930
 // FUNCTION: HYPERX 0x00424880
 void AnimPlayer::UpdateFrame(char bAdvance)
 {
@@ -417,6 +424,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 }
 
 // The blend's duration is capped at 0.35 and never shorter than the root's own travel.
+// FUNCTION: HYPERX100 0x00439ca0
 // FUNCTION: HYPERX 0x00424b40
 char AnimPlayer::ComputeScale(float flScale)
 {
@@ -532,6 +540,7 @@ char AnimPlayer::ComputeScale(float flScale)
 }
 
 // Returns zero once the blend has run out; a bone in mode one is skipped.
+// FUNCTION: HYPERX100 0x0043a0b0
 // FUNCTION: HYPERX 0x00424e60
 char AnimPlayer::Advance(float flDelta)
 {
@@ -570,6 +579,7 @@ char AnimPlayer::Advance(float flDelta)
     return cRunning;
 }
 
+// FUNCTION: HYPERX100 0x0043a240
 // FUNCTION: HYPERX 0x00424f70
 char __fastcall AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)
 {
@@ -583,6 +593,7 @@ char __fastcall AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int n
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0043a280
 // FUNCTION: HYPERX 0x00424fa0
 char __fastcall AnimPlayer::SetPlayState(int nState)
 {
@@ -602,6 +613,7 @@ char __fastcall AnimPlayer::SetPlayState(int nState)
 }
 
 // Answers yes whether or not there was a set to drop.
+// FUNCTION: HYPERX100 0x0043a2d0
 // FUNCTION: HYPERX 0x00424fd0
 char AnimPlayer::ClearAnimationSet()
 {
@@ -614,6 +626,7 @@ char AnimPlayer::ClearAnimationSet()
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0043a300
 // FUNCTION: HYPERX 0x00424ff0
 void __fastcall AnimPlayer::SetCallbackTarget(int nSlot, int nArgA, int nArgB)
 {
@@ -623,6 +636,7 @@ void __fastcall AnimPlayer::SetCallbackTarget(int nSlot, int nArgA, int nArgB)
 }
 
 // Starts the parked set, if there is one, and answers what SelectAnimationSet answered, or nought.
+// FUNCTION: HYPERX100 0x0043a330
 // FUNCTION: HYPERX 0x00425010
 char AnimPlayer::ConditionalDispatch(AnimNamedRef* pTransition)
 {
@@ -639,12 +653,14 @@ char AnimPlayer::ConditionalDispatch(AnimNamedRef* pTransition)
 }
 
 // Both forward to slot five with a deferred flag of minus one, which is off.
+// FUNCTION: HYPERX100 0x0043a380
 // FUNCTION: HYPERX 0x00425040
 char AnimPlayer::StartAnimSetAtRate(AnimDB* pAnimSet, float flRate)
 {
     return StartClipPlayback(pAnimSet, flRate, -1);
 }
 
+// FUNCTION: HYPERX100 0x0043a3a0
 // FUNCTION: HYPERX 0x00425060
 char AnimPlayer::StartAnimSetDefaultRate(AnimDB* pAnimSet)
 {
@@ -673,6 +689,7 @@ inline short AnimPlayer::TransitionLoopStart(const AnimNamedRef* pTransition)
 }
 
 // A deferred request parks in m_pending.pSet; asking for the playing set again does not restart it.
+// FUNCTION: HYPERX100 0x0043a3c0
 // FUNCTION: HYPERX 0x00425080
 char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferred, AnimNamedRef* pTransition)
 {
@@ -735,6 +752,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
 
 // A duration of zero divides by zero.
 
+// FUNCTION: HYPERX100 0x0043a610
 // FUNCTION: HYPERX 0x004251d0
 void __fastcall AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 {
@@ -753,6 +771,7 @@ void __fastcall AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 #define CLIP_DURATION_TIMED (-2)
 
 // A clip whose last frame precedes its first plays backwards with a negated step.
+// FUNCTION: HYPERX100 0x0043a690
 // FUNCTION: HYPERX 0x00425220
 char __fastcall AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 {
@@ -863,6 +882,7 @@ char __fastcall AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoop
     return cResult;
 }
 
+// FUNCTION: HYPERX100 0x0043a8c0
 // FUNCTION: HYPERX 0x004253e0
 char AnimPlayer::OnClipEnd()
 {
@@ -886,12 +906,14 @@ char AnimPlayer::OnClipEnd()
     return cResult;
 }
 
+// FUNCTION: HYPERX100 0x004396d0
 // FUNCTION: HYPERX 0x00425540
 int AnimPlayer::GetPlayState()
 {
     return m_state.nPlayState;
 }
 
+// FUNCTION: HYPERX100 0x004396e0
 // FUNCTION: HYPERX 0x00425550
 float AnimPlayer::GetPlaybackRate()
 {
@@ -906,3 +928,28 @@ AnimPlayer::~AnimPlayer()
 
 // 0.35, the cap on a blend's duration.
 float g_flBlendDurationCap = 0.35f;
+
+#ifdef HYPERX_V100
+#include <stdio.h>
+#include "ui/debughud.h"
+
+// Nothing in v1.0.0.0 sets either of these.
+const char* g_pszDebugAnimName = 0;
+char        g_bDebugAnimQueued = 0;
+
+// TODO: The size is a guess; the buffer is only ever written here.
+char g_szDebugAnimLine[150];
+
+// FUNCTION: HYPERX100 0x0043a5a0
+void AnimPlayer::PrintAnimDebug()
+{
+    if (g_bDebugAnimQueued != 0)
+    {
+        DebugHUD::PushLightString(g_szDebugAnimLine, (short)sprintf(g_szDebugAnimLine, "Que anim: %s ", g_pszDebugAnimName));
+
+        return;
+    }
+
+    DebugHUD::PushLightString(g_szDebugAnimLine, (short)sprintf(g_szDebugAnimLine, "Set anim: %s ", g_pszDebugAnimName));
+}
+#endif

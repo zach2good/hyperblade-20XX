@@ -37,6 +37,7 @@ public:
     virtual NetReceiveBuffer* GetRecvBufBase();
     virtual NetSendBuffer*    GetSendBufBase();
 
+    // FUNCTION: HYPERX100 0x0044b9a0
     // FUNCTION: HYPERX 0x0042cce0
     virtual unsigned char* GetSendPayloadPtr()
     {

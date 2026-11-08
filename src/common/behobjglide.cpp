@@ -4,6 +4,7 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
+// FUNCTION: HYPERX100 0x004caf20
 // FUNCTION: HYPERX 0x0041d960
 BehObj_Glide::BehObj_Glide()
 {
@@ -14,6 +15,7 @@ BehObj_Glide::~BehObj_Glide()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cb040
 // FUNCTION: HYPERX 0x0041d9b0
 void BehObj_Glide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

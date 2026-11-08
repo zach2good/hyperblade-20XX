@@ -4,6 +4,7 @@
 #include "planvm/cdopplersnd.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041e450
 // FUNCTION: HYPERX 0x00414540
 void CDopplerSndPool::Init()
 {
@@ -23,6 +24,7 @@ void CDopplerSndPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004226f0
 // FUNCTION: HYPERX 0x004145c0
 void* CDopplerSndPool::Alloc()
 {

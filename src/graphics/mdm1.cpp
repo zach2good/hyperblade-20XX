@@ -30,6 +30,7 @@ float g_flUnusedMDM1C = g_flZeroMDM1;
 #define WINDOW_BYTES 0x1000
 
 // The window is freed before the size check that can discard the output.
+// FUNCTION: HYPERX100 0x0048d7d0
 // FUNCTION: HYPERX 0x00440140
 void* MDM1::Decompress(FileObj* pFile)
 {
@@ -70,6 +71,7 @@ void* MDM1::Decompress(FileObj* pFile)
     return pOut;
 }
 
+// FUNCTION: HYPERX100 0x0048d8b0
 // FUNCTION: HYPERX 0x004401e0
 int MDM1::ReadCallback(char* pBuffer, int nCount, FileObj* pFile)
 {
@@ -89,6 +91,7 @@ namespace MDM1
 // out. A carry out of the long-form length ends the stream.
 // Why assembly: C cannot share a frame with a callee, return through a PUSHAD slot, or branch
 // on the flags a call returns.
+// FUNCTION: HYPERX100 0x004967dc
 // FUNCTION: HYPERX 0x00493f80
 __declspec(naked) int LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut, unsigned char* pWindow, int nWindowSize)
 {
@@ -217,6 +220,7 @@ __declspec(naked) int LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigne
 // What it does: moves the unread tail of the window to its front, asks the read callback to
 // fill the rest, and leaves ESI at the front of the window for the caller to read on.
 // Why assembly: C cannot read another function's frame or pass values in ESI and the flags.
+// FUNCTION: HYPERX100 0x00496896
 // FUNCTION: HYPERX 0x0049403a
 __declspec(naked) void RefillInputWindow()
 {

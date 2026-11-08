@@ -4,6 +4,7 @@
 #include "planvm/csteertoward.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004207b0
 // FUNCTION: HYPERX 0x00413440
 void CSteerTowardPool::Init()
 {
@@ -23,6 +24,7 @@ void CSteerTowardPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004238b0
 // FUNCTION: HYPERX 0x004134f0
 void* CSteerTowardPool::Alloc()
 {

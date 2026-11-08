@@ -9,6 +9,7 @@
 class InfoBarSlot : public CDDDrawable
 {
 public:
+    // FUNCTION: HYPERX100 0x004bd8a0
     // FUNCTION: HYPERX 0x00451be0
     InfoBarSlot()
     : m_nFrameCount(0)

@@ -17,12 +17,14 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
+    // FUNCTION: HYPERX100 0x00425680
     virtual unsigned char GetReadyFlag()
     {
         return 1;
     }
 
     // Slot eight answering one keeps several timers of one kind; nought would evict all but the last.
+    // FUNCTION: HYPERX100 0x00425690
     virtual char IsReplaceable()
     {
         return 1;

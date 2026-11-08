@@ -4,6 +4,7 @@
 #include "engine/cmonitorheldkeys.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041f6f0
 // FUNCTION: HYPERX 0x00413be0
 void CMonitorHeldKeysPool::Init()
 {
@@ -23,6 +24,7 @@ void CMonitorHeldKeysPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423070
 // FUNCTION: HYPERX 0x00413c70
 void* CMonitorHeldKeysPool::Alloc()
 {

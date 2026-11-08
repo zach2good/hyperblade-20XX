@@ -14,6 +14,7 @@ public:
 
 public:
     // 0x00405850 stores this table and jumps to ~CollisionShape, skipping CollisionPlane.
+    // FUNCTION: HYPERX100 0x00412270
     // FUNCTION: HYPERX 0x00405850
     ~CollisionObj() throw()
     {

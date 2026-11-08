@@ -17,9 +17,17 @@
 #include "app/stringids.h"
 #include "common/fileobj.h"
 #include "common/ownedfile.h"
+#ifdef HYPERX_V100
+#include <stdio.h>
+#include "common/string.h"
+#include "engine/gameengine.h"
+#include "engine/engineobject.h"
+#include "physics/physicsbody.h"
+#endif
 
 // The Ratings dialog handler in ratingsdialog.cpp is the same, down to the string id.
 
+// FUNCTION: HYPERX100 0x00467980
 // FUNCTION: HYPERX 0x0046c300
 int __cdecl KeyConfigDialog::OnInitDialog(HWND hDlg, HWND, LPARAM)
 {
@@ -57,6 +65,7 @@ extern short g_aDefaultKeyBindings[120];
 #define ACTION_COUNT 40
 #define KEY_COUNT    59
 
+// FUNCTION: HYPERX100 0x00467a10
 // FUNCTION: HYPERX 0x0046c370
 int __cdecl KeyConfigDialog::Init(HWND hDlg)
 {
@@ -362,6 +371,7 @@ extern char* g_pszKeyConfigDefaultName;
 #define FLAG_SET 1
 
 // The check boxes toggle: a clear box XORs the flag, so a clear box on a clear flag sets it.
+// FUNCTION: HYPERX100 0x00468240
 // FUNCTION: HYPERX 0x0046ca00
 unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hControl, int nNotify)
 {
@@ -576,6 +586,7 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
     }
 }
 
+// FUNCTION: HYPERX100 0x00468e90
 // FUNCTION: HYPERX 0x0046d320
 void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
 {
@@ -605,6 +616,7 @@ void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
     EndDialog(hWnd, nResult);
 }
 
+// FUNCTION: HYPERX100 0x00411110
 // FUNCTION: HYPERX 0x0042bcd0
 int __cdecl KeyConfigDialog::SaveKeysAs(HWND, KeyRow*)
 {
@@ -612,6 +624,7 @@ int __cdecl KeyConfigDialog::SaveKeysAs(HWND, KeyRow*)
 }
 
 // The buffer handed to the writer is allocated and never filled; the original does the same.
+// FUNCTION: HYPERX100 0x00468f20
 // FUNCTION: HYPERX 0x0046d3a0
 int Config::SavePreferences(HWND hWnd, const char* pszText)
 {
@@ -644,3 +657,204 @@ int Config::SavePreferences(HWND hWnd, const char* pszText)
 
     return 0;
 }
+
+#ifdef HYPERX_V100
+#define KEY_FILE_BUFFER   652
+#define MOVE_ACTION_COUNT 7
+
+#define KEY_MODIFIER_80  0x80
+#define KEY_MODIFIER_100 0x100
+
+typedef void(__cdecl* KeyHandlerFn)(int nContext, int bDown, int nSlot);
+
+// TODO: Which keys set these two modifier bits? Only the two functions below read or write them.
+unsigned short g_wV100KeyModifiers;
+
+// TODO: The size is a guess; it is indexed by a modifier bit ORed with a key.
+KeyHandlerFn g_apfnV100KeyHandlers[0x200];
+
+// The open for reading is the wrong way round: a file that opens is overwritten without asking.
+// The prompt text is passed as the caption.
+// FUNCTION: HYPERX100 0x00410c80
+int __cdecl KeyConfigDialog::SaveKeys(HWND hDlg, KeyRow* pRows)
+{
+    char      szBuffer[KEY_FILE_BUFFER];
+    int       nLength = 0;
+    OwnedFile file;
+
+    if (file.m_file.Open(g_strPrefs.m_pchData, FILE_MODE_READ) == 0)
+    {
+        String strPrompt;
+
+        String::Format(&strPrompt, "File \"%s\" already exists!\n\nAre you sure you want to overwrite it?", g_strPrefs.m_pchData);
+
+        if (GameApp::ShowMessageBox(hDlg, 0, strPrompt.m_pchData, MB_OKCANCEL | MB_ICONQUESTION) == IDCANCEL)
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        file.m_file.CloseAndTest();
+    }
+
+    if (file.m_file.Open(g_strPrefs.m_pchData, FILE_MODE_WRITE) == 0)
+    {
+        g_gameApp.Error("Could not create file %s!", g_strPrefs.m_pchData);
+
+        return 0;
+    }
+
+    for (int nRow = 0; nRow < ACTION_COUNT; nRow++)
+    {
+        nLength += sprintf(szBuffer + nLength, " %d %d %d: ", pRows[nRow].cFlags, pRows[nRow].nKey, pRows[nRow].nIndex);
+    }
+
+    nLength += sprintf(szBuffer + nLength, " %f %f %f  %f ", g_flForceIncrement, g_flMaxAcceleration, g_flMaxSpeed, g_flForceRelaxation);
+
+    nLength += sprintf(szBuffer + nLength, " @v02 ");
+
+    nLength += sprintf(szBuffer + nLength, " %d %f  %f %f %f %f :", g_bVictimCam, g_flBandwidth, g_flNetTracking, g_flStopForceFactor, g_flSpeedBurstFactor, g_vViewSteepness.z);
+
+    nLength += sprintf(szBuffer + nLength, " %f %f %f :", g_vBirdsEyeTrackOffset.x, g_vBirdsEyeTrackOffset.y, g_vBirdsEyeTrackOffset.z);
+
+    nLength += sprintf(szBuffer + nLength, " %f %f %f :", g_vFirstPersonTrackOffset.x, g_vFirstPersonTrackOffset.y, g_vFirstPersonTrackOffset.z);
+
+    nLength += sprintf(szBuffer + nLength, " %f %f %f :", g_vOverShoulderTrackOffset.x, g_vOverShoulderTrackOffset.y, g_vOverShoulderTrackOffset.z);
+
+    nLength += sprintf(szBuffer + nLength, " %f %f %f :", g_vOverShoulderRokTrackOffset.x, g_vOverShoulderRokTrackOffset.y, g_vOverShoulderRokTrackOffset.z);
+
+    if (file.m_file.Write(szBuffer, nLength) == 0)
+    {
+        g_gameApp.Error("Error writing file.");
+
+        return 0;
+    }
+
+    file.m_file.CloseAndTest();
+
+    g_gameApp.Error("FileSaved: %s!", g_strPrefs.m_pchData);
+
+    return 1;
+}
+
+// One key per set bit, for the first seven actions, the movement ones.
+// FUNCTION: HYPERX100 0x004108e0
+void __cdecl KeyConfigDialog::GetHeldMoveKeys(unsigned int nHeldBindings, unsigned int* pnKeys)
+{
+    if (g_aKeyRows[0].cFlags == 0)
+    {
+        memcpy(g_aKeyRows, g_aDefaultKeyBindings, sizeof(g_aKeyRows));
+    }
+
+    for (int nRow = 0; nRow < MOVE_ACTION_COUNT; nRow++)
+    {
+        if (((nHeldBindings >> nRow) & 1) != 0)
+        {
+            *pnKeys = g_aKeyRows[nRow].nKey;
+            pnKeys++;
+        }
+    }
+}
+
+// Lifts every held movement key, changes the modifier, then presses them again under it.
+// FUNCTION: HYPERX100 0x00410940
+void __cdecl KeyConfigDialog::ApplyModifier80(int nContext, char bSet, int nSlot)
+{
+    unsigned int  anKeys[ACTION_COUNT + 1] = { 0 };
+    unsigned int* pnKey;
+
+    KeyConfigDialog::GetHeldMoveKeys(g_pGameEngine->m_apTracked[nSlot]->GetPhysicsBody()->nHeldBindings, anKeys);
+
+    if (bSet != 0)
+    {
+        for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+        {
+            if (*pnKey != 0)
+            {
+                g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 0, nSlot);
+            }
+        }
+
+        g_wV100KeyModifiers |= KEY_MODIFIER_80;
+
+        for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+        {
+            if (*pnKey != 0)
+            {
+                g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 1, nSlot);
+            }
+        }
+
+        return;
+    }
+
+    for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+    {
+        if (*pnKey != 0)
+        {
+            g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 0, nSlot);
+        }
+    }
+
+    g_wV100KeyModifiers &= ~KEY_MODIFIER_80;
+
+    for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+    {
+        if (*pnKey != 0)
+        {
+            g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 1, nSlot);
+        }
+    }
+}
+
+// FUNCTION: HYPERX100 0x00410ae0
+void __cdecl KeyConfigDialog::ApplyModifier100(int nContext, char bSet, int nSlot)
+{
+    unsigned int  anKeys[ACTION_COUNT + 1] = { 0 };
+    unsigned int* pnKey;
+
+    KeyConfigDialog::GetHeldMoveKeys(g_pGameEngine->m_apTracked[nSlot]->GetPhysicsBody()->nHeldBindings, anKeys);
+
+    if (bSet != 0)
+    {
+        for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+        {
+            if (*pnKey != 0)
+            {
+                g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 0, nSlot);
+            }
+        }
+
+        g_wV100KeyModifiers |= KEY_MODIFIER_100;
+
+        for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+        {
+            if (*pnKey != 0)
+            {
+                g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 1, nSlot);
+            }
+        }
+
+        return;
+    }
+
+    for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+    {
+        if (*pnKey != 0)
+        {
+            g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 0, nSlot);
+        }
+    }
+
+    g_wV100KeyModifiers &= ~KEY_MODIFIER_100;
+
+    for (pnKey = anKeys; pnKey < &anKeys[MOVE_ACTION_COUNT]; pnKey++)
+    {
+        if (*pnKey != 0)
+        {
+            g_apfnV100KeyHandlers[g_wV100KeyModifiers | *pnKey](nContext, 1, nSlot);
+        }
+    }
+}
+#endif

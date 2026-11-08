@@ -28,6 +28,7 @@
 
 HYPERBLADE_FIELD_AT(CSteerBetweenFacing, m_pPath, 0x10);
 
+// FUNCTION: HYPERX100 0x00427dc0
 // FUNCTION: HYPERX 0x0040eda0
 void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)
 {
@@ -47,6 +48,7 @@ void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)
     m_flUnused = 100.0f;
 }
 
+// FUNCTION: HYPERX100 0x00427e30
 // FUNCTION: HYPERX 0x0040ee00
 void CSteerBetweenFacing::OnListChanged()
 {
@@ -67,6 +69,7 @@ void CSteerBetweenFacing::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x00427e90
 // FUNCTION: HYPERX 0x0040ee50
 void CSteerBetweenFacing::Process(int nArg)
 {

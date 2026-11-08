@@ -14,6 +14,7 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 
+// FUNCTION: HYPERX100 0x00485ed0
 // FUNCTION: HYPERX 0x0040ad50
 void CWatch::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -23,6 +24,7 @@ void CWatch::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
+// FUNCTION: HYPERX100 0x00485f20
 // FUNCTION: HYPERX 0x0040ad70
 void CWatch::Process(int nArg)
 {

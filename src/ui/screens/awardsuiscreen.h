@@ -15,6 +15,11 @@ public:
     virtual void OnOtherButton(int nMsg, unsigned int nId);
     virtual void OnExitTabClick();
 
+#ifdef HYPERX_V100
+    // TODO: The name is a guess. OnExitTabClick tests this function's address, not its result.
+    static char IsChampFromJumbotron();
+#endif
+
 private:
     int m_nAward;      // 0x478, which award is showing, minus one for none
     int m_nAwardsView; // 0x47c, non-zero once the award panel has been built

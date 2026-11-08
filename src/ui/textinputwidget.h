@@ -11,11 +11,13 @@ class TextInputWidget : public HoldingWidget
 {
 public:
     // Slots four and five hold KeyConfigDialog::SaveKeysAs, so both keep a stand-in.
+    // FUNCTION: HYPERX100 0x004779a0
     virtual int OnMouseUp()
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x004779b0
     virtual int IsDisplayOnly()
     {
         return 0;
@@ -23,6 +25,10 @@ public:
 
 public:
     TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark);
+
+#ifdef HYPERX_V100
+    TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nCapacity, int nSoundAtMark);
+#endif
 
     ~TextInputWidget()
     {

@@ -13,6 +13,7 @@
 extern const float g_flRandRangeBias;
 
 // A = A * B for four by four matrices, with B read only.
+// FUNCTION: HYPERX100 0x00445080
 // FUNCTION: HYPERX 0x0042ff20
 void __fastcall Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
 {
@@ -57,6 +58,7 @@ void __fastcall Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4]
     pA[3][3] = ((flRow3W * pB[3][3] + flRow3Z * pB[2][3]) + flRow3X * pB[0][3]) + flRow3Y * pB[1][3];
 }
 
+// FUNCTION: HYPERX100 0x004454c0
 // FUNCTION: HYPERX 0x00430110
 bool __fastcall Math::Vec3Normalize(Vec3* pVec)
 {
@@ -78,6 +80,7 @@ bool __fastcall Math::Vec3Normalize(Vec3* pVec)
     return false;
 }
 
+// FUNCTION: HYPERX100 0x00473290
 // FUNCTION: HYPERX 0x004753e0
 int __cdecl Math::RandInt(int nMin, int nMax)
 {
@@ -93,6 +96,7 @@ int __cdecl Math::RandInt(int nMin, int nMax)
     return (int)(flRoll * (nMax + g_flRandRangeBias * 2.0f) + (nMin - g_flRandRangeBias) + 0.5);
 }
 
+// FUNCTION: HYPERX100 0x00473960
 // FUNCTION: HYPERX 0x0047ab30
 Vec3 Math::SphericalToCartesian(const Vec3* pIn)
 {
@@ -110,3 +114,27 @@ Vec3 Math::SphericalToCartesian(const Vec3* pIn)
 
     return vDir;
 }
+
+#ifdef HYPERX_V100
+// A zero vector takes the arc cosine of nought.
+// FUNCTION: HYPERX100 0x004739e0
+Vec3 Math::CartesianToSpherical(const Vec3* pIn)
+{
+    Vec3   vOut;
+    double dCos = 0.0;
+
+    const float flAzimuth = (float)atan2(pIn->y, pIn->x);
+    const float flLength  = (float)sqrt(pIn->x * pIn->x + pIn->z * pIn->z + pIn->y * pIn->y);
+
+    if (flLength != 0.0f)
+    {
+        dCos = pIn->z / flLength;
+    }
+
+    vOut.x = flAzimuth;
+    vOut.y = flLength;
+    vOut.z = (float)acos(dCos);
+
+    return vOut;
+}
+#endif

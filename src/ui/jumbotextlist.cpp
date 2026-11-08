@@ -12,6 +12,7 @@
 
 #define JUMBO_MESSAGE_MAX 128
 
+// FUNCTION: HYPERX100 0x00482e30
 // FUNCTION: HYPERX 0x0046bf50
 JumboTextList* JumboTextList::Init()
 {
@@ -22,6 +23,7 @@ JumboTextList* JumboTextList::Init()
 }
 
 // A null row is skipped.
+// FUNCTION: HYPERX100 0x00482e50
 // FUNCTION: HYPERX 0x0046bf60
 void JumboTextList::FreeAll()
 {
@@ -38,7 +40,28 @@ void JumboTextList::FreeAll()
     }
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00482ea0
+JumboTextList* JumboTextList::FreeRows()
+{
+    for (int iRow = 0; iRow < m_nCount; iRow++)
+    {
+        char** ppRow = &m_ppszText[iRow];
+
+        if (*ppRow != 0)
+        {
+            delete[] *ppRow;
+
+            *ppRow = 0;
+        }
+    }
+
+    return this;
+}
+#endif
+
 // Reseeds from the clock every call, so calls within a second draw the same row.
+// FUNCTION: HYPERX100 0x00482ef0
 // FUNCTION: HYPERX 0x0046bfa0
 int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
@@ -56,6 +79,7 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00482f90
 // FUNCTION: HYPERX 0x0046c010
 unsigned int JumboTextList::Load(const char* pszFileName)
 {

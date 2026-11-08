@@ -6,6 +6,7 @@
 #include "engine/weaponobject.h"
 #include "engine/engineobject.h"
 
+// FUNCTION: HYPERX100 0x00471310
 // FUNCTION: HYPERX 0x00473ee0
 WeaponObject::WeaponObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)

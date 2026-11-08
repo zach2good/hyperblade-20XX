@@ -51,17 +51,20 @@ public:
         }
     }
 
+    // FUNCTION: HYPERX100 0x004b8b30
     virtual ~Interactor()
     {
     }
 
     // Object::Trace, which eleven tables share; CollInteractor overrides it.
+    // FUNCTION: HYPERX100 0x004b8b40
     virtual void Discard()
     {
     }
 
     virtual int GetActiveState();
 
+    // FUNCTION: HYPERX100 0x004b8b60
     // FUNCTION: HYPERX 0x0046bb50
     virtual void SetMember(int nMember)
     {
@@ -76,22 +79,26 @@ public:
     CameraObject* GetCameraActor();
 
     // The message id EngineObject::RegisterSceneMessageHandler indexes its byte table by.
+    // FUNCTION: HYPERX100 0x004b8b90
     // FUNCTION: HYPERX 0x0046bba0
     virtual short GetNamedSlot()
     {
         return -1;
     }
 
+    // FUNCTION: HYPERX100 0x004b8ba0
     virtual short GetOtherSlot()
     {
         return -1;
     }
 
+    // FUNCTION: HYPERX100 0x004b8bb0
     virtual short GetModelSlot()
     {
         return -1;
     }
 
+    // FUNCTION: HYPERX100 0x004b8bc0
     virtual short GetTargetSlot()
     {
         return -1;

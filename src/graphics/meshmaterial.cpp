@@ -16,6 +16,7 @@
 extern Vec3 g_vLightDirModel;
 
 // Answers the face's FaceShade and level; a face with no normal is lit white.
+// FUNCTION: HYPERX100 0x0045f9d0
 // FUNCTION: HYPERX 0x00433820
 char __cdecl MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const Vec3* pNormal)
 {
@@ -41,6 +42,7 @@ char __cdecl MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial*
 #define MATERIAL_MAX  0xff
 
 // A complaint before the first newmtl names index minus one. r8 and r16 both store nought.
+// FUNCTION: HYPERX100 0x0044fe90
 // FUNCTION: HYPERX 0x004364e0
 char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial** ppMaterials, MaterialName** ppMatNames, MaterialName** ppTexNames, unsigned char* pnMatCount, short* pnTexCount)
 {

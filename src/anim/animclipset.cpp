@@ -8,6 +8,7 @@
 #include <string.h>
 #include "app/gameapp.h"
 
+// FUNCTION: HYPERX100 0x00459e20
 // FUNCTION: HYPERX 0x004172a0
 void AnimClipSet::Init()
 {
@@ -22,6 +23,7 @@ void AnimClipSet::Init()
 }
 
 // A clip that will not load is fatal and names the set, as is a header that will not read.
+// FUNCTION: HYPERX100 0x00459e50
 // FUNCTION: HYPERX 0x004172d0
 void AnimClipSet::Load(FileObj* pFile, const char* pszName)
 {
@@ -62,6 +64,7 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
     }
 }
 
+// FUNCTION: HYPERX100 0x0045a090
 // FUNCTION: HYPERX 0x004174a0
 AnimClipSet::~AnimClipSet()
 {

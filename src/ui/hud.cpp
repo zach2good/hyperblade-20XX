@@ -136,6 +136,7 @@ extern int g_nFoeRowRating1;
 extern int g_anFoeRowNameOrder[4];
 
 // symbols/hud_surfaces.csv maps these surface names to the database's.
+// FUNCTION: HYPERX100 0x00482350
 // FUNCTION: HYPERX 0x0043d8d0
 void __stdcall HUD::PlaceSurfaces(void)
 {
@@ -416,6 +417,7 @@ void __stdcall HUD::PlaceSurfaces(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c18f0
 // FUNCTION: HYPERX 0x0043e070
 HUD::HUD(int)
 {
@@ -429,6 +431,7 @@ HUD::HUD(int)
     LayoutSurfaces();
 }
 
+// FUNCTION: HYPERX100 0x004c1a10
 // FUNCTION: HYPERX 0x0043e0f0
 void HUD::DrawHUD(int, HDC)
 {
@@ -463,6 +466,7 @@ void HUD::LayoutSurfaces()
     HUD::PlaceSurfaces();
 }
 
+// FUNCTION: HYPERX100 0x004c1b10
 // FUNCTION: HYPERX 0x0043e150
 void HUD::DrawScene(int bDraw)
 {
@@ -803,6 +807,7 @@ void HUD::DrawScene(int bDraw)
 }
 
 // The own-team row and the opposing row are one function written twice.
+// FUNCTION: HYPERX100 0x004c22b0
 // FUNCTION: HYPERX 0x0043e740
 void __stdcall HUD::UpdateOwnScoreboard(void)
 {
@@ -953,6 +958,7 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
     g_hudSurfaces.apTeamNames[1]->Draw();
 }
 
+// FUNCTION: HYPERX100 0x004c2810
 // FUNCTION: HYPERX 0x0043eb30
 void __stdcall HUD::UpdateFoeScoreboard(void)
 {
@@ -1080,6 +1086,7 @@ void __stdcall HUD::UpdateFoeScoreboard(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2be0
 // FUNCTION: HYPERX 0x0043ee50
 void HUD::SetMessageText(const char* pszText, unsigned long nCode)
 {
@@ -1113,18 +1120,21 @@ void HUD::SetMessageText(const char* pszText, unsigned long nCode)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2c60
 // FUNCTION: HYPERX 0x0043eeb0
 void HUD::ShowMessage()
 {
     m_bMessageVisible = 1;
 }
 
+// FUNCTION: HYPERX100 0x004c2c70
 // FUNCTION: HYPERX 0x0043eec0
 void HUD::HideMessage()
 {
     m_bMessageVisible = 0;
 }
 
+// FUNCTION: HYPERX100 0x004c2c80
 // FUNCTION: HYPERX 0x0043eed0
 void HUD::SetHomeLogo(char* pTeamData)
 {
@@ -1134,6 +1144,7 @@ void HUD::SetHomeLogo(char* pTeamData)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2cb0
 // FUNCTION: HYPERX 0x0043eef0
 void HUD::SetAwayLogo(char* pTeamData)
 {
@@ -1143,12 +1154,14 @@ void HUD::SetAwayLogo(char* pTeamData)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2ce0
 // FUNCTION: HYPERX 0x0043ef10
 Texture* HUD::GetHeadCamSurface()
 {
     return g_hudSurfaces.pHeadCamFrame;
 }
 
+// FUNCTION: HYPERX100 0x004c2cf0
 // FUNCTION: HYPERX 0x0043ef20
 void HUD::ShowHeadCam()
 {
@@ -1160,6 +1173,7 @@ void HUD::ShowHeadCam()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2d20
 // FUNCTION: HYPERX 0x0043ef40
 void HUD::SetHeadCamText(const char* pszText)
 {
@@ -1193,6 +1207,7 @@ void HUD::SetHeadCamText(const char* pszText)
 
 // The point is shrunk by the pair twice over.
 
+// FUNCTION: HYPERX100 0x004c2d80
 // FUNCTION: HYPERX 0x0043ef90
 ViewExtent HUD::GetHeadCamSize()
 {
@@ -1214,6 +1229,7 @@ ViewExtent HUD::GetHeadCamSize()
 }
 
 // The scratch point is zeroed and never read.
+// FUNCTION: HYPERX100 0x004c2e30
 // FUNCTION: HYPERX 0x0043f010
 ViewExtent HUD::GetHeadCamOrigin()
 {
@@ -1229,6 +1245,7 @@ ViewExtent HUD::GetHeadCamOrigin()
 }
 
 // The truncated reading is also kept in a global nothing else reads.
+// FUNCTION: HYPERX100 0x004c2e70
 // FUNCTION: HYPERX 0x0043f030
 void HUD::SetShotPower(float flPower)
 {
@@ -1247,6 +1264,7 @@ void HUD::SetShotPower(float flPower)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2ed0
 // FUNCTION: HYPERX 0x0043f080
 void HUD::ShowShotPower()
 {
@@ -1260,6 +1278,7 @@ void HUD::ShowShotPower()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2f00
 // FUNCTION: HYPERX 0x0043f0b0
 void HUD::SetReticlePos(int nDx, int nDy)
 {
@@ -1274,6 +1293,7 @@ void HUD::SetReticlePos(int nDx, int nDy)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c2fa0
 // FUNCTION: HYPERX 0x0043f130
 ViewExtent HUD::GetReticleSize()
 {
@@ -1292,6 +1312,7 @@ ViewExtent HUD::GetReticleSize()
 
 #define RETICLE_FILE_KEEP 1
 
+// FUNCTION: HYPERX100 0x004c3010
 // FUNCTION: HYPERX 0x0043f190
 void HUD::SetReticleState(int nMode)
 {
@@ -1328,6 +1349,7 @@ void HUD::SetReticleState(int nMode)
 }
 
 // 100 by 10 when there is no bar.
+// FUNCTION: HYPERX100 0x004c30f0
 // FUNCTION: HYPERX 0x0043f220
 ViewExtent HUD::GetPassBarSize()
 {
@@ -1344,6 +1366,7 @@ ViewExtent HUD::GetPassBarSize()
     return pt;
 }
 
+// FUNCTION: HYPERX100 0x004c3150
 // FUNCTION: HYPERX 0x0043f280
 void HUD::SetPassBarMarker(int nPosition)
 {
@@ -1357,6 +1380,7 @@ void HUD::SetPassBarMarker(int nPosition)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c3190
 // FUNCTION: HYPERX 0x0043f2b0
 void HUD::ShowPassBar()
 {
@@ -1368,6 +1392,7 @@ void HUD::ShowPassBar()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c31c0
 // FUNCTION: HYPERX 0x0043f2d0
 void HUD::ShowQuitPrompt()
 {
@@ -1386,6 +1411,7 @@ void HUD::ShowQuitPrompt()
     m_nQuitPromptTick = g_pGameEngine->m_clock.nTickMs;
 }
 
+// FUNCTION: HYPERX100 0x004c3210
 // FUNCTION: HYPERX 0x0043f320
 void HUD::HideQuitPrompt()
 {

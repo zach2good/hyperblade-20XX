@@ -4,6 +4,7 @@
 #include "planvm/csteertotarget.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00421070
 // FUNCTION: HYPERX 0x00413010
 void CSteerToTargetPool::Init()
 {
@@ -23,6 +24,7 @@ void CSteerToTargetPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423d50
 // FUNCTION: HYPERX 0x004130b0
 void* CSteerToTargetPool::Alloc()
 {

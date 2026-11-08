@@ -4,6 +4,7 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
+// FUNCTION: HYPERX100 0x004cd410
 // FUNCTION: HYPERX 0x0041eb70
 BehObj_CandyTracking::BehObj_CandyTracking()
 {
@@ -14,6 +15,7 @@ BehObj_CandyTracking::~BehObj_CandyTracking()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cd530
 // FUNCTION: HYPERX 0x0041ebd0
 void BehObj_CandyTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

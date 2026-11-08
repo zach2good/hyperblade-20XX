@@ -56,6 +56,7 @@ public:
     virtual void Unlock();
 
     // Slot 24 is KeyConfigDialog::SaveKeysAs in the base, shared with unrelated tables.
+    // FUNCTION: HYPERX100 0x00441080
     virtual int RestoreContents()
     {
         return 0;

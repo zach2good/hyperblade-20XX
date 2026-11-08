@@ -15,6 +15,7 @@
 #include "sound/wave.h"
 #include "sound/soundids.h"
 
+// FUNCTION: HYPERX100 0x0048ba50
 // FUNCTION: HYPERX 0x00490830
 AudioMgr::AudioMgr()
 : nInitTimeMs(0)
@@ -28,6 +29,7 @@ AudioMgr::AudioMgr()
 }
 
 // Init allocates the manager with new; it is freed here with delete[].
+// FUNCTION: HYPERX100 0x0048bb60
 // FUNCTION: HYPERX 0x00490880
 AudioMgr::~AudioMgr()
 {
@@ -75,6 +77,7 @@ AudioMgr::~AudioMgr()
 }
 
 // A device that will not open mutes the manager; the mixer lines are set up either way.
+// FUNCTION: HYPERX100 0x0048bcf0
 // FUNCTION: HYPERX 0x00490990
 void AudioMgr::Init(HWND hWindow)
 {
@@ -127,6 +130,7 @@ void AudioMgr::Init(HWND hWindow)
 #endif
 
 // Only mode one reads the bytes; the others keep the offset for the streamer to come back to.
+// FUNCTION: HYPERX100 0x0048be70
 // FUNCTION: HYPERX 0x00490aa0
 int AudioMgr::LoadSound(SoundEntry* pEntry)
 {
@@ -226,6 +230,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     return nLoadedBytes;
 }
 
+// FUNCTION: HYPERX100 0x0048c0f0
 // FUNCTION: HYPERX 0x00490c80
 void AudioMgr::PlayGroup(int nGroup)
 {
@@ -246,6 +251,7 @@ void AudioMgr::PlayGroup(int nGroup)
 }
 
 // A playing sound restarts only when it does not loop and its samples are resident.
+// FUNCTION: HYPERX100 0x0048c140
 // FUNCTION: HYPERX 0x00490cc0
 void AudioMgr::PlaySpecific(int nVoice)
 {
@@ -271,6 +277,7 @@ void AudioMgr::PlaySpecific(int nVoice)
     }
 }
 
+// FUNCTION: HYPERX100 0x0048c1d0
 // FUNCTION: HYPERX 0x00490d30
 void AudioMgr::StopEntry(int nSlot)
 {
@@ -285,6 +292,7 @@ void AudioMgr::StopEntry(int nSlot)
     }
 }
 
+// FUNCTION: HYPERX100 0x0048c210
 // FUNCTION: HYPERX 0x00490d60
 int AudioMgr::IsPlaying(int nVoice)
 {
@@ -304,6 +312,7 @@ int AudioMgr::IsPlaying(int nVoice)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0048c260
 // FUNCTION: HYPERX 0x00490da0
 void AudioMgr::SfxFadeVolume(int nVolume)
 {
@@ -314,6 +323,7 @@ void AudioMgr::SfxFadeVolume(int nVolume)
 }
 
 // A set mute word returns zero without reaching the fader.
+// FUNCTION: HYPERX100 0x0048c280
 // FUNCTION: HYPERX 0x00490dc0
 int AudioMgr::SfxReadVolume()
 {
@@ -357,6 +367,7 @@ int g_nCDRecentTracks = 20;
 int g_nCDRecentCursor;
 
 // Opens "cdaudio" lazily; a random track is one not in the recent-tracks ring.
+// FUNCTION: HYPERX100 0x0048c2a0
 // FUNCTION: HYPERX 0x00490de0
 void AudioMgr::PlayCDTrack(int nTrack)
 {
@@ -495,6 +506,7 @@ void AudioMgr::PlayCDTrack(int nTrack)
     }
 }
 
+// FUNCTION: HYPERX100 0x0048c5a0
 // FUNCTION: HYPERX 0x00491070
 void AudioMgr::StopCD()
 {
@@ -504,12 +516,14 @@ void AudioMgr::StopCD()
     }
 }
 
+// FUNCTION: HYPERX100 0x0048c5d0
 // FUNCTION: HYPERX 0x00491090
 int AudioMgr::CDReadVolume()
 {
     return g_mixerCompactDisc.ReadVolume();
 }
 
+// FUNCTION: HYPERX100 0x0048c5e0
 // FUNCTION: HYPERX 0x004910a0
 void AudioMgr::CDFadeVolume(int nVolume)
 {
@@ -541,6 +555,7 @@ void AudioMgr::CDFadeVolume(int nVolume)
 }
 
 // Returns how many it loaded; a short read throws the size away so the entry reads unloaded.
+// FUNCTION: HYPERX100 0x0048c640
 // FUNCTION: HYPERX 0x004910f0
 int AudioMgr::PreloadGroup(int nGroup)
 {
@@ -640,6 +655,7 @@ int AudioMgr::PreloadGroup(int nGroup)
 }
 
 // The buffer pointer is cleared after the free, so freeing a group twice is harmless.
+// FUNCTION: HYPERX100 0x0048c8a0
 // FUNCTION: HYPERX 0x004912d0
 void AudioMgr::FreeGroupBuffers(int nGroup)
 {
@@ -661,6 +677,7 @@ void AudioMgr::FreeGroupBuffers(int nGroup)
     }
 }
 
+// FUNCTION: HYPERX100 0x0048c910
 // FUNCTION: HYPERX 0x00491320
 void AudioMgr::StopAllSfx()
 {

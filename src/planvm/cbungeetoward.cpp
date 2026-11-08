@@ -40,6 +40,7 @@ extern float g_flTwoAgendaItem;
 
 #define LIMIT_DEFAULT 1000.0f
 
+// FUNCTION: HYPERX100 0x004293e0
 // FUNCTION: HYPERX 0x0040fee0
 void CBungeeToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -63,6 +64,7 @@ void CBungeeToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_cLeadTarget  = 0;
 }
 
+// FUNCTION: HYPERX100 0x00429460
 // FUNCTION: HYPERX 0x0040ff50
 void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int)
 {
@@ -171,6 +173,7 @@ void CBungeeToward::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
 
 HYPERBLADE_FIELD_AT(CBungeeToward, m_pAccum, 0x10);
 
+// FUNCTION: HYPERX100 0x00429660
 // FUNCTION: HYPERX 0x004100f0
 void CBungeeToward::OnListChanged()
 {
@@ -194,6 +197,7 @@ void CBungeeToward::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x004296c0
 // FUNCTION: HYPERX 0x00410160
 void CBungeeToward::Process(int nArg)
 {

@@ -78,6 +78,7 @@ float              g_flUnusedPlanLaunchC = g_flZeroPlanLaunch;
 #define SHOT_UNAIMED 0xffff0000
 
 // The human packs the head camera's aim and shot power into the shot; any other plan sends it unaimed.
+// FUNCTION: HYPERX100 0x004d4720
 // FUNCTION: HYPERX 0x004031e0
 void __cdecl PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 {
@@ -114,6 +115,7 @@ void __cdecl PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, shor
 extern const float g_flThreeThrow;
 
 // The packed parameter holds three signed bytes: elevation, spin and range gate.
+// FUNCTION: HYPERX100 0x004d4810
 // FUNCTION: HYPERX 0x00403290
 void __cdecl PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
@@ -410,6 +412,7 @@ void __cdecl PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, i
 }
 
 // Hands the rok the velocity of whatever the camera is watching, behind four gates.
+// FUNCTION: HYPERX100 0x004d52c0
 // FUNCTION: HYPERX 0x00403a30
 void __cdecl PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 {
@@ -455,6 +458,7 @@ void __cdecl PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 #define VERTICAL_HALVING 0.5f
 #define HORIZONTAL_SCALE (-0.25f)
 
+// FUNCTION: HYPERX100 0x004d56a0
 // FUNCTION: HYPERX 0x00403cf0
 void __cdecl PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 {
@@ -489,6 +493,7 @@ void __cdecl PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, shor
 #define JITTER_SPAN 21
 #define JITTER_BIAS 10
 
+// FUNCTION: HYPERX100 0x004d5730
 // FUNCTION: HYPERX 0x00403d70
 void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
@@ -693,6 +698,7 @@ void __cdecl PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*,
 
 #define SPEED_FLOOR 10.0f
 
+// FUNCTION: HYPERX100 0x004d5f00
 // FUNCTION: HYPERX 0x00404320
 void __cdecl PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {

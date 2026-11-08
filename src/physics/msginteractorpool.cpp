@@ -8,6 +8,7 @@
 #include "interactorpoolcounts.h"
 
 // A head node and then g_wMsgInteractorPoolSize more, each linked to the last.
+// FUNCTION: HYPERX100 0x004b83b0
 // FUNCTION: HYPERX 0x0046bc40
 void MsgInteractorPool::Init()
 {
@@ -29,6 +30,7 @@ void MsgInteractorPool::Init()
 
 // The list is refilled only when unlinking the head emptied it.
 
+// FUNCTION: HYPERX100 0x004b88b0
 // FUNCTION: HYPERX 0x0046bd70
 void* MsgInteractorPool::Alloc()
 {

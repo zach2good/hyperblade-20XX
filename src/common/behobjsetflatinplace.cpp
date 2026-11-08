@@ -2,6 +2,7 @@
 #include "planvm/behaviorids.h"
 #include "common/pooledclasses.h"
 
+// FUNCTION: HYPERX100 0x004cc390
 // FUNCTION: HYPERX 0x0041e380
 BehObj_SetFlatInPlace::BehObj_SetFlatInPlace()
 {
@@ -12,6 +13,7 @@ BehObj_SetFlatInPlace::~BehObj_SetFlatInPlace()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cc4b0
 // FUNCTION: HYPERX 0x0041e3d0
 void BehObj_SetFlatInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

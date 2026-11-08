@@ -20,6 +20,7 @@
 #define SPLASH_SUBBLOCK_STRING 0x3c
 #define SPLASH_FACE_STRING     0x3d
 
+// FUNCTION: HYPERX100 0x004be2c0
 // FUNCTION: HYPERX 0x004070b0
 BOOL CALLBACK SplashDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {
@@ -47,6 +48,7 @@ BOOL CALLBACK SplashDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
     return FALSE;
 }
 
+// FUNCTION: HYPERX100 0x004be3b0
 // FUNCTION: HYPERX 0x00407150
 BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
 {
@@ -114,6 +116,7 @@ BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004be680
 // FUNCTION: HYPERX 0x00407360
 int SplashDialog::OnCommand(HWND hDlg, int nId, LONG, int)
 {
@@ -130,6 +133,7 @@ int SplashDialog::OnCommand(HWND hDlg, int nId, LONG, int)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004be6d0
 // FUNCTION: HYPERX 0x004073a0
 BOOL __cdecl SplashDialog::PaintSplashBitmap(HWND hDlg)
 {
@@ -182,6 +186,7 @@ BOOL __cdecl SplashDialog::PaintSplashBitmap(HWND hDlg)
     return bPainted;
 }
 
+// FUNCTION: HYPERX100 0x0048fc70
 // FUNCTION: HYPERX 0x0044d320
 void SplashDialog::ShowAbout(HINSTANCE hInstance, HWND hWnd)
 {

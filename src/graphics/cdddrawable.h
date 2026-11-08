@@ -8,12 +8,14 @@
 class CDDDrawable
 {
 public:
+    // FUNCTION: HYPERX100 0x004b8e50
     virtual ~CDDDrawable()
     {
     }
 
     virtual int Draw() = 0;
 
+    // FUNCTION: HYPERX100 0x004bd840
     // FUNCTION: HYPERX 0x00451b90
     CDDDrawable()
     {

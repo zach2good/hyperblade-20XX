@@ -22,6 +22,7 @@ extern int g_nDisplayHorzRes;
 extern int g_nDisplayVertRes;
 
 // The loader's palette is returned whether or not anything was drawn.
+// FUNCTION: HYPERX100 0x004bf0a0
 // FUNCTION: HYPERX 0x00418cc0
 HPALETTE GDI::DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName)
 {
@@ -92,6 +93,7 @@ HPALETTE GDI::DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName)
 }
 
 // A file starting with MDM1 goes to the decompressor.
+// FUNCTION: HYPERX100 0x0048d5d0
 // FUNCTION: HYPERX 0x0043fff0
 BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
 {
@@ -184,6 +186,7 @@ union DibHeader
 };
 
 // The file header is optional, and an OS/2 core header is widened in place.
+// FUNCTION: HYPERX100 0x0048d8d0
 // FUNCTION: HYPERX 0x00440200
 BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
 {
@@ -327,12 +330,14 @@ void GDI::QueryDisplayCaps(void)
     g_nDisplayVertRes      = GetDeviceCaps(hdc, VERTRES);
 }
 
+// FUNCTION: HYPERX100 0x00418290
 // FUNCTION: HYPERX 0x0048f330
 HBITMAP GDI::LoadBitmapHandle(const char* pszName)
 {
     return GDI::LoadBitmapWithPalette(pszName, 0);
 }
 
+// FUNCTION: HYPERX100 0x004182b0
 // FUNCTION: HYPERX 0x0048f340
 HBITMAP GDI::LoadBitmapAsBackground(const char* pszName, HPALETTE* phPalette)
 {
@@ -345,6 +350,7 @@ HDC GDI::BeginPaint(LPPAINTSTRUCT pPaint)
     return ::BeginPaint(g_gameApp.GetMainWindow(), pPaint);
 }
 
+// FUNCTION: HYPERX100 0x004796d0
 // FUNCTION: HYPERX 0x0048f380
 HPALETTE GDI::SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackground)
 {
@@ -353,12 +359,14 @@ HPALETTE GDI::SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackgro
     return SelectPalette(hdc, hPalette, bForceBackground);
 }
 
+// FUNCTION: HYPERX100 0x00479700
 // FUNCTION: HYPERX 0x0048f3a0
 UINT GDI::RealizePalette(HDC hdc)
 {
     return ::RealizePalette(hdc);
 }
 
+// FUNCTION: HYPERX100 0x00479720
 // FUNCTION: HYPERX 0x0048f3b0
 void GDI::DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char* pszText, int cchText, int)
 {
@@ -375,6 +383,7 @@ BOOL GDI::EndPaint(const PAINTSTRUCT* pPaint)
     return ::EndPaint(g_gameApp.m_hWnd, pPaint);
 }
 
+// FUNCTION: HYPERX100 0x004797d0
 // FUNCTION: HYPERX 0x0048f410
 void GDI::SafeDeleteBitmap(HBITMAP hBitmap)
 {
@@ -384,12 +393,14 @@ void GDI::SafeDeleteBitmap(HBITMAP hBitmap)
     }
 }
 
+// FUNCTION: HYPERX100 0x004797f0
 // FUNCTION: HYPERX 0x0048f420
 BOOL GDI::DeleteObject(HGDIOBJ hObject)
 {
     return ::DeleteObject(hObject);
 }
 
+// FUNCTION: HYPERX100 0x00479810
 // FUNCTION: HYPERX 0x0048f430
 void GDI::GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap)
 {
@@ -397,6 +408,7 @@ void GDI::GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap)
 }
 
 // The raster operation is not read: the blit is always a straight copy.
+// FUNCTION: HYPERX100 0x00479960
 // FUNCTION: HYPERX 0x0048f4b0
 int GDI::BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, HPALETTE hPalette, int x1, int y1, DWORD)
 {
@@ -420,6 +432,7 @@ int GDI::BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, 
 }
 
 // The JPEG loader returns a device bitmap and no palette.
+// FUNCTION: HYPERX100 0x00479a60
 // FUNCTION: HYPERX 0x0048f540
 HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 {
@@ -496,6 +509,7 @@ HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 }
 
 // Entries 10 to 245 are marked reserved, leaving the system colours in place.
+// FUNCTION: HYPERX100 0x00479c50
 // FUNCTION: HYPERX 0x0048f720
 HPALETTE GDI::CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors)
 {

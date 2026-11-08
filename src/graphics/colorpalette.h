@@ -38,6 +38,13 @@ public:
     PALETTEENTRY* GetRemappedEntry(PALETTEENTRY* pOut, int nIndex);
     char          IsEntryUsable(int nIndex);
 
+#ifdef HYPERX_V100
+    char WriteCustomPalette();
+    int  WriteRangeFiles();
+    int  WritePaletteFile(const String& strName, const PaletteRange& range, int nIndexOffset);
+    void RemapDIB(BITMAPINFOHEADER* pHeader);
+#endif
+
     unsigned short m_wVersion;     // 0x000
     unsigned short m_wNumEntries;  // 0x002
     PALETTEENTRY   m_entries[256]; // 0x004

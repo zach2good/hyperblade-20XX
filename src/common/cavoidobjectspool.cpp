@@ -4,6 +4,7 @@
 #include "planvm/cavoidobjects.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00420370
 // FUNCTION: HYPERX 0x00413660
 void CAvoidObjectsPool::Init()
 {
@@ -23,6 +24,7 @@ void CAvoidObjectsPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423680
 // FUNCTION: HYPERX 0x004136f0
 void* CAvoidObjectsPool::Alloc()
 {

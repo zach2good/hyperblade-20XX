@@ -4,6 +4,7 @@
 #include "planvm/ctimeractivity.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041f1c0
 // FUNCTION: HYPERX 0x00413e60
 void CTimerActivityPool::Init()
 {
@@ -23,6 +24,7 @@ void CTimerActivityPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00422db0
 // FUNCTION: HYPERX 0x00413f00
 void* CTimerActivityPool::Alloc()
 {

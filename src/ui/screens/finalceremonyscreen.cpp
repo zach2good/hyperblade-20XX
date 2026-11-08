@@ -17,6 +17,7 @@
 #include "engine/game.h"
 
 // The flipbook frames are "finan01" to "finan60"; the prefix is re-read every iteration.
+// FUNCTION: HYPERX100 0x004671d0
 // FUNCTION: HYPERX 0x00442fc0
 FinalCeremonyScreen::FinalCeremonyScreen()
 {
@@ -66,6 +67,7 @@ FinalCeremonyScreen::~FinalCeremonyScreen()
 }
 
 // The id is compared unsigned.
+// FUNCTION: HYPERX100 0x004674e0
 // FUNCTION: HYPERX 0x004431a0
 void FinalCeremonyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

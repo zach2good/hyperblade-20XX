@@ -8,11 +8,13 @@
 #include "ui/radar.h"
 #include "graphics/gdi.h"
 
+// FUNCTION: HYPERX100 0x00434d50
 // FUNCTION: HYPERX 0x004433c0
 PauseMenuFullScreen::~PauseMenuFullScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00434df0
 // FUNCTION: HYPERX 0x004433f0
 PauseMenuFullScreen::PauseMenuFullScreen()
 {
@@ -21,6 +23,7 @@ PauseMenuFullScreen::PauseMenuFullScreen()
     Init();
 }
 
+// FUNCTION: HYPERX100 0x00434e80
 // FUNCTION: HYPERX 0x00443450
 void PauseMenuFullScreen::Init()
 {
@@ -86,6 +89,7 @@ void PauseMenuFullScreen::Init()
 }
 
 // The id is compared unsigned, so an id above the table falls to the default.
+// FUNCTION: HYPERX100 0x004354a0
 // FUNCTION: HYPERX 0x00443820
 void PauseMenuFullScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

@@ -11,6 +11,14 @@ class SplineCurve
 public:
     void ComputeTangent(float flT, Vec3* pTangent);
 
+#ifdef HYPERX_V100
+    // ComputeTangent along the value range, through the second evaluator, with x and z swapped.
+    void ComputeValueTangent(float flValue, Vec3* pTangent);
+
+    // Where the line through pPoint along pDir meets the curve, as the original works it out.
+    void IntersectLine(const Vec3* pDir, const Vec3* pPoint, Vec3* pOut);
+#endif
+
     SplineEvalFn m_pfnEval; // 0x00
     // Spline::InitSpringNode stores its evaluator here and clears m_pfnEval.
     SplineEvalFn m_pfnSpringEval; // 0x04

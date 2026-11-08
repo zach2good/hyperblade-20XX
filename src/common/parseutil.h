@@ -15,6 +15,14 @@ char* __cdecl SkipPastChar(char* pszText, const char* pszStop);
 char __cdecl  ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext);
 short __cdecl FindKeyword(const char* pszWord, const char** ppszTable, short nCount);
 
+#ifdef HYPERX_V100
+// An empty string reads past its terminator.
+char __cdecl LastChar(LPCSTR pszText);
+
+// Cuts the text at its last full stop.
+unsigned char* __cdecl StripExtension(unsigned char* pszPath);
+#endif
+
 } // namespace ParseUtil
 
 #endif

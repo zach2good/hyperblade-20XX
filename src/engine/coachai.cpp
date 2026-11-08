@@ -101,6 +101,7 @@ float  g_flUnusedDistanceB = g_flZeroDistance;
 float  g_flUnusedDistanceC = g_flZeroDistance;
 double g_dMsPerMinute      = 60.0 * g_dMsPerSecond;
 
+// FUNCTION: HYPERX100 0x0045ca80
 // FUNCTION: HYPERX 0x00428010
 float __cdecl EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 {
@@ -114,6 +115,7 @@ float __cdecl EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* 
     return (float)sqrt(flDx * flDx + flDy * flDy + flDz * flDz);
 }
 
+// FUNCTION: HYPERX100 0x0045cb20
 // FUNCTION: HYPERX 0x00428090
 float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 {
@@ -124,6 +126,7 @@ float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 }
 
 // Spent markers read "Spin" or "ScoreSpin"; with none left the answer is 102, id_MOD_NOMODEL.
+// FUNCTION: HYPERX100 0x0045cba0
 // FUNCTION: HYPERX 0x00428100
 int __cdecl GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 {
@@ -176,6 +179,7 @@ extern int g_anCoachConditions[13];
 #define TEAM_HOME 0
 #define TEAM_AWAY 1
 
+// FUNCTION: HYPERX100 0x0045cc90
 // FUNCTION: HYPERX 0x00428190
 int __cdecl EngineObject::IsRokCarrier(EngineObject* pActor)
 {
@@ -197,6 +201,7 @@ int __cdecl EngineObject::IsRokCarrier(EngineObject* pActor)
 }
 
 // Neither the slot nor its teammate is a human plan, and the slot is not the viewed one.
+// FUNCTION: HYPERX100 0x0045cd00
 // FUNCTION: HYPERX 0x004281d0
 int __cdecl GameEngine::IsComputerTeam(int nSlot)
 {
@@ -237,6 +242,7 @@ int __cdecl GameEngine::IsComputerTeam(int nSlot)
 extern const short g_nFinalPeriod;
 
 // The trailing team earns the handicap on a late lead, a weak opponent, or a wide multi spread.
+// FUNCTION: HYPERX100 0x0045ce10
 // FUNCTION: HYPERX 0x004282c0
 int __cdecl GameEngine::CheckHandicapCondition(void)
 {
@@ -321,6 +327,7 @@ int __cdecl GameEngine::CheckHandicapCondition(void)
 
 // DamageGate's third arm asks the difficulty and discards the answer.
 
+// FUNCTION: HYPERX100 0x0045d1a0
 // FUNCTION: HYPERX 0x004284c0
 int __cdecl GameEngine::IsAnyPlayerInjured(void)
 {
@@ -345,6 +352,7 @@ int __cdecl GameEngine::IsAnyPlayerInjured(void)
 #define GOALIE_RATING_INTELLIGENCE 6
 
 // The swarf and rok carriers must be on opposite sides; both are measured to the rok side's goal.
+// FUNCTION: HYPERX100 0x0045d280
 // FUNCTION: HYPERX 0x00428550
 int __cdecl GameEngine::CheckOpposedCarriersRace(void)
 {
@@ -393,6 +401,7 @@ int __cdecl GameEngine::CheckOpposedCarriersRace(void)
 
 // Yes only when slot 55's name is "DisplayOverArmory" and a player carries the rok.
 
+// FUNCTION: HYPERX100 0x0045d3f0
 // FUNCTION: HYPERX 0x00428650
 int GameEngine::CheckWeaponOutWhileRokCarried(void)
 {
@@ -423,12 +432,14 @@ int GameEngine::CheckWeaponOutWhileRokCarried(void)
 
 // The coach condition that never fires; six of the thirteen entries point here.
 
+// FUNCTION: HYPERX100 0x0045d270
 // FUNCTION: HYPERX 0x004286e0
 int __cdecl GameEngine::CoachConditionNever(void)
 {
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0045d4e0
 // FUNCTION: HYPERX 0x004286f0
 int __cdecl GameEngine::CheckGoalieOutOfPosition(void)
 {
@@ -462,6 +473,7 @@ int __cdecl GameEngine::CheckGoalieOutOfPosition(void)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0045d5f0
 // FUNCTION: HYPERX 0x004287d0
 int __cdecl GameEngine::CheckCarrierBreakaway(void)
 {
@@ -512,6 +524,7 @@ int __cdecl GameEngine::CheckCarrierBreakaway(void)
 
 // Nothing checks there are four players, so fewer reads whatever is in the table.
 
+// FUNCTION: HYPERX100 0x0045d760
 // FUNCTION: HYPERX 0x004288c0
 int GameEngine::CheckAnyPlayerNeedsSub(void)
 {
@@ -535,6 +548,7 @@ int GameEngine::CheckAnyPlayerNeedsSub(void)
 #define RESERVE_COUNT 2
 
 // A harder game recovers faster: elapsed ms / 13500 over the difficulty gate.
+// FUNCTION: HYPERX100 0x0045d7e0
 // FUNCTION: HYPERX 0x00428920
 void __cdecl GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 {
@@ -577,6 +591,7 @@ void __cdecl GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 #define NEAR_SLOT_BOOST 0.05f
 
 // Near-half slots get a twentieth; the "limp" threshold at 0x004b1408 is a plain speed test here.
+// FUNCTION: HYPERX100 0x0045d990
 // FUNCTION: HYPERX 0x00428a40
 int __cdecl GameEngine::SelectSubstitute(EngineObject* pActor)
 {
@@ -712,6 +727,7 @@ int __cdecl GameEngine::SelectSubstitute(EngineObject* pActor)
 }
 
 // The six conditions with a body run in the order 0, 3, 4, 1, 9, 10; case ten discards a strcmp.
+// FUNCTION: HYPERX100 0x0045ded0
 // FUNCTION: HYPERX 0x00428d80
 void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
 {
@@ -937,6 +953,7 @@ void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
 
 // Thirteen match conditions, six coach updates, six substitution checks, then two goal notifications.
 
+// FUNCTION: HYPERX100 0x0045eac0
 // FUNCTION: HYPERX 0x00429620
 void EngineObject::UpdateCoachAI()
 {

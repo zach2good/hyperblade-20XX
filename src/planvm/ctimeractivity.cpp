@@ -15,6 +15,7 @@
 // One past the last engine slot: no target.
 #define TIMER_TARGET_NONE 0x66
 
+// FUNCTION: HYPERX100 0x0042b9e0
 // FUNCTION: HYPERX 0x00411a10
 void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -28,6 +29,7 @@ void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nEventParam = 0;
 }
 
+// FUNCTION: HYPERX100 0x0042ba20
 // FUNCTION: HYPERX 0x00411a40
 void CTimerActivity::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
@@ -56,6 +58,7 @@ void CTimerActivity::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pl
     m_nEventParam = 0;
 }
 
+// FUNCTION: HYPERX100 0x0042bac0
 // FUNCTION: HYPERX 0x00411ac0
 void CTimerActivity::OnListChanged()
 {
@@ -73,6 +76,7 @@ void CTimerActivity::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x0042bb10
 // FUNCTION: HYPERX 0x00411b00
 void CTimerActivity::Process(int nArg)
 {
@@ -132,6 +136,7 @@ void CTimerActivity::Process(int nArg)
     }
 }
 
+// FUNCTION: HYPERX100 0x0042bc50
 // FUNCTION: HYPERX 0x00411c00
 void CTimerActivity::Release(int nArg)
 {

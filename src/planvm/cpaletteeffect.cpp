@@ -18,6 +18,7 @@ enum EffectKind
     EFFECT_SCALAR_C = 4,
 };
 
+// FUNCTION: HYPERX100 0x0042a370
 // FUNCTION: HYPERX 0x00410b10
 void CPaletteEffect::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -28,6 +29,7 @@ void CPaletteEffect::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner      = pSubject;
 }
 
+// FUNCTION: HYPERX100 0x0042a3a0
 // FUNCTION: HYPERX 0x00410b30
 void CPaletteEffect::OnListChanged()
 {
@@ -55,6 +57,7 @@ void CPaletteEffect::OnListChanged()
 }
 
 // Kind two's fade runs five hundred where the constructor sets a thousand.
+// FUNCTION: HYPERX100 0x0042a3f0
 // FUNCTION: HYPERX 0x00410b70
 int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PALETTEENTRY peStart, int nDuration)
 {
@@ -96,6 +99,7 @@ int CPaletteEffect::CreateVisualEffect(int nKind, int nAnim, PALETTEENTRY peStar
 }
 
 // The deadline comparison is unsigned, so a wrapped deadline keeps the effect alive.
+// FUNCTION: HYPERX100 0x0042a670
 // FUNCTION: HYPERX 0x00410cf0
 void CPaletteEffect::Process(int nArg)
 {

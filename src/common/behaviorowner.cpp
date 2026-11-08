@@ -2,6 +2,7 @@
 #include "common/behaviorowner.h"
 #include "pooledclasses.h"
 
+// FUNCTION: HYPERX100 0x004c89d0
 // FUNCTION: HYPERX 0x0041ed00
 char BehaviorOwner::Insert(void* pObject)
 {

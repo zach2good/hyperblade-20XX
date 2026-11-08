@@ -10,6 +10,7 @@
 FrameTimer g_frameTimer;
 
 // Reports every five seconds. Every caller discards the result.
+// FUNCTION: HYPERX100 0x00475d20
 // FUNCTION: HYPERX 0x00442940
 double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 {
@@ -53,6 +54,7 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 }
 
 // Passes an uninitialised period to timeEndPeriod when timeGetDevCaps fails.
+// FUNCTION: HYPERX100 0x004760e0
 // FUNCTION: HYPERX 0x00442a70
 double FrameTimer::Calibrate(void)
 {
@@ -90,6 +92,7 @@ double FrameTimer::Calibrate(void)
     return dResult;
 }
 
+// FUNCTION: HYPERX100 0x00476230
 // FUNCTION: HYPERX 0x00442b50
 double FrameTimer::BenchmarkResolution(void)
 {
@@ -111,6 +114,7 @@ double FrameTimer::BenchmarkResolution(void)
     return dResult;
 }
 
+// FUNCTION: HYPERX100 0x00476310
 // FUNCTION: HYPERX 0x00442be0
 double FrameTimer::BenchmarkTextSpeed(HDC hDC)
 {
@@ -133,6 +137,7 @@ double FrameTimer::BenchmarkTextSpeed(HDC hDC)
     return dResult;
 }
 
+// FUNCTION: HYPERX100 0x00476410
 // FUNCTION: HYPERX 0x00442ca0
 void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
 {

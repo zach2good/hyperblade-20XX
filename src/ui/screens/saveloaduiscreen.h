@@ -21,6 +21,7 @@ enum SaveLoadWidget
 class SaveLoadUIScreen : public UIScreen
 {
 public:
+    // FUNCTION: HYPERX100 0x0046b7e0
     // FUNCTION: HYPERX 0x0046eb40
     virtual void OnOkayClick()
     {
@@ -28,12 +29,30 @@ public:
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
+    // FUNCTION: HYPERX100 0x0046b800
     virtual void OnCancelClick()
     {
         Game::SetEngineState((unsigned int)m_nReturnState);
     }
 
     virtual void RefreshFrames();
+
+#ifdef HYPERX_V100
+    // FUNCTION: HYPERX100 0x0046b930
+    virtual void RefreshSelection()
+    {
+    }
+
+    // FUNCTION: HYPERX100 0x0046b820
+    virtual void OnLeftArrowClick()
+    {
+    }
+
+    // FUNCTION: HYPERX100 0x0046b830
+    virtual void OnRightArrowClick()
+    {
+    }
+#endif
     virtual void OnOtherButton(int nMsg, unsigned int nId);
     SaveLoadUIScreen();
     ~SaveLoadUIScreen();

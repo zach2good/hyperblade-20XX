@@ -4,6 +4,7 @@
 #include "planvm/cviewit.h"
 #include "engine/cameraobject.h"
 
+// FUNCTION: HYPERX100 0x00486b60
 // FUNCTION: HYPERX 0x0040b690
 void CViewIt::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -13,6 +14,7 @@ void CViewIt::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
+// FUNCTION: HYPERX100 0x00486bb0
 // FUNCTION: HYPERX 0x0040b6b0
 void CViewIt::Process(int nArg)
 {

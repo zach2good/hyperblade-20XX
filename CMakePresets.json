@@ -29,6 +29,15 @@
       "cacheVariables": {
         "HYPERX_BRINGUP": "ON"
       }
+    },
+    {
+      "name": "v100",
+      "displayName": "v1.0.0.0 build, with VC6 until the VC4 toolchain is in",
+      "inherits": "vc6",
+      "binaryDir": "${sourceDir}/build-v100",
+      "cacheVariables": {
+        "HYPERX_V100": "ON"
+      }
     }
   ],
   "buildPresets": [
@@ -46,6 +55,10 @@
     {
       "name": "bringup",
       "configurePreset": "bringup"
+    },
+    {
+      "name": "v100",
+      "configurePreset": "v100"
     }
   ]
 }

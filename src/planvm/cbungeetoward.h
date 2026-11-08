@@ -19,6 +19,7 @@ public:
     virtual void OnListChanged();
 
     // Slot seven answers one where the base answers nought; the original folds it onto one shared body.
+    // FUNCTION: HYPERX100 0x00425140
     virtual unsigned char GetReadyFlag()
     {
         return 1;

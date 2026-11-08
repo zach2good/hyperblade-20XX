@@ -4,6 +4,7 @@
 #include "engine/cwatch.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041ec90
 // FUNCTION: HYPERX 0x00414170
 void CWatchPool::Init()
 {
@@ -23,6 +24,7 @@ void CWatchPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00422af0
 // FUNCTION: HYPERX 0x00414200
 void* CWatchPool::Alloc()
 {

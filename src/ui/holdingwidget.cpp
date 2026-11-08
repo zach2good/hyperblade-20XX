@@ -5,6 +5,7 @@
 #include "ui/screen.h"
 #include "ui/holdingwidget.h"
 
+// FUNCTION: HYPERX100 0x00477310
 // FUNCTION: HYPERX 0x0042bd90
 int HoldingWidget::OnMouseDown()
 {

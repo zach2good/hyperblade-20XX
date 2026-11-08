@@ -25,6 +25,17 @@ option(HYPERX_BRINGUP
 option(HYPERX_NO_REFERENCE
     "Build without your copy of the game: HYPERX_sym.exe only, with no resources, stamp or check." OFF)
 
+# v1.0.0.0 came from Visual C++ 4.0 and an incremental link. Until that toolchain is here, this
+# builds its source with VC6, so its reccmp scores are a guide and not a match.
+option(HYPERX_V100 "Build v1.0.0.0 rather than v1.0.0.1." OFF)
+
+if(HYPERX_V100)
+    set(HYPERX_TARGET HYPERX100)
+    add_compile_definitions(HYPERX_V100)
+else()
+    set(HYPERX_TARGET HYPERX)
+endif()
+
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 if(NOT HYPERX_NO_REFERENCE)
@@ -410,6 +421,23 @@ set(HYPERX_SOURCES
     src/input/input.cpp
     src/anim/animset.cpp)
 
+# Code only v1.0.0.0 has. Nothing calls it, and v1.0.0.1's /OPT:REF link dropped it.
+set(HYPERX_V100_SOURCES
+    src/app/pagemngm.cpp
+    src/app/debugoverlay.cpp
+    src/common/stringv100.cpp
+    src/net/packedfields.cpp
+    src/engine/gamecatalog.cpp
+    src/math/slerpwalk.cpp
+    src/graphics/framebitmap.cpp
+    src/graphics/depthsort.cpp
+    src/math/vec2.cpp
+    src/planvm/planvmv100.cpp)
+
+if(HYPERX_V100)
+    list(APPEND HYPERX_SOURCES ${HYPERX_V100_SOURCES})
+endif()
+
 # The optimisation is set per source, so that no flag on a command line overrides another. /Ox /Gf
 # is /O2 without /Gy: the original folds inline bodies only.
 set_source_files_properties(${HYPERX_SOURCES} PROPERTIES COMPILE_FLAGS "/Ox /Gf")
@@ -634,3 +662,4 @@ endif()
 message(STATUS "VC6 tree  : ${VC6_ROOT}")
 message(STATUS "Reference : ${HYPERX_REFERENCE}")
 message(STATUS "Bring-up  : ${HYPERX_BRINGUP}")
+message(STATUS "Target    : ${HYPERX_TARGET}")

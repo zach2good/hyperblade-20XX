@@ -7,6 +7,7 @@
 #include "graphics/softrenderer.h"
 #include "common/util.h"
 
+// FUNCTION: HYPERX100 0x004b9730
 // FUNCTION: HYPERX 0x0044f890
 CDDSurfaceOwner::~CDDSurfaceOwner() throw()
 {
@@ -21,6 +22,7 @@ CDDSurfaceOwner::~CDDSurfaceOwner() throw()
     }
 }
 
+// FUNCTION: HYPERX100 0x004b9860
 // FUNCTION: HYPERX 0x0044f8f0
 int CDDSurfaceOwner::LoadByName(const char* pszName)
 {
@@ -68,6 +70,7 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004b9960
 // FUNCTION: HYPERX 0x0044f9b0
 int CDDSurfaceOwner::Draw()
 {

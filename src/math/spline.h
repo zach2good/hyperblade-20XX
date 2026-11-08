@@ -27,6 +27,14 @@ public:
     void UpdateTowardTarget(Vec3* pState, Vec3* pTarget);
     void UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity);
 
+#ifdef HYPERX_V100
+    // Only the radii and the parameter range of both curves; nothing else is touched.
+    void SetRadii(float flRadiusX, float flRadiusY);
+
+    // UpdateTowardTarget along the value range, with the rate as a parameter.
+    void StepTowardOnValue(Vec3* pState, Vec3* pTarget, float flRate);
+#endif
+
     // The curve the walker is on.
     SplineCurve* m_pCurve; // 0x00
     // The second curve; the spring path never touches it.

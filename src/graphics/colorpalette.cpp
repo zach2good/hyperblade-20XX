@@ -9,6 +9,9 @@
 #include "app/gameapp.h"
 #include "graphics/cgpalette.h"
 #include "graphics/meshmaterial.h"
+#ifdef HYPERX_V100
+#include "common/ownedfile.h"
+#endif
 
 // Set while the renderer draws the drome.
 // GLOBAL: HYPERX 0x004ce984
@@ -31,6 +34,7 @@ struct LogPalette256
 // The name off the first line has no length check of its own.
 #define CUSTOM_NAME_MAX 80
 
+// FUNCTION: HYPERX100 0x0044c590
 // FUNCTION: HYPERX 0x004255e0
 ColorPalette::ColorPalette()
 : m_hPalette(0)
@@ -64,6 +68,7 @@ ColorPalette::ColorPalette()
     Load();
 }
 
+// FUNCTION: HYPERX100 0x0044c8b0
 // FUNCTION: HYPERX 0x00425750
 PaletteRange ColorPalette::GetFrameRange(int nKind)
 {
@@ -200,6 +205,7 @@ PaletteRange ColorPalette::GetFrameRange(int nKind)
 }
 
 // A colour matching a static one has its blue nudged until it does not.
+// FUNCTION: HYPERX100 0x0044cd50
 // FUNCTION: HYPERX 0x00425a90
 HPALETTE ColorPalette::CreateFromDC(ColorPalette* pPalette, int nCount)
 {
@@ -334,6 +340,7 @@ HPALETTE ColorPalette::CreateFromDC(ColorPalette* pPalette, int nCount)
     return m_hPalette;
 }
 
+// FUNCTION: HYPERX100 0x0044d080
 // FUNCTION: HYPERX 0x00425d50
 HPALETTE ColorPalette::ReloadPalette(short nMode)
 {
@@ -357,6 +364,7 @@ HPALETTE ColorPalette::ReloadPalette(short nMode)
     return m_hPalette;
 }
 
+// FUNCTION: HYPERX100 0x0044d0f0
 // FUNCTION: HYPERX 0x00425db0
 void ColorPalette::ResetSystem()
 {
@@ -392,6 +400,7 @@ void ColorPalette::ResetSystem()
     }
 }
 
+// FUNCTION: HYPERX100 0x0044d1b0
 // FUNCTION: HYPERX 0x00425e40
 char ColorPalette::RealizePalette()
 {
@@ -417,6 +426,7 @@ char ColorPalette::RealizePalette()
 }
 
 // A version mismatch is fatal and returns 1; any other failure returns nought.
+// FUNCTION: HYPERX100 0x0044d920
 // FUNCTION: HYPERX 0x00425ec0
 unsigned int ColorPalette::LoadCustomPalette(void)
 {
@@ -644,6 +654,7 @@ unsigned int ColorPalette::LoadCustomPalette(void)
 }
 
 // Only a count of 256 or one is quiet; the count is returned either way.
+// FUNCTION: HYPERX100 0x0044df60
 // FUNCTION: HYPERX 0x00426350
 unsigned int ColorPalette::Load(void)
 {
@@ -672,6 +683,7 @@ unsigned int ColorPalette::Load(void)
 }
 
 // The drome pass raises the ramp base to the light level and takes one off.
+// FUNCTION: HYPERX100 0x0044dfc0
 // FUNCTION: HYPERX 0x004263a0
 unsigned char __fastcall ColorPalette::LookupColorIntensity(ColorPalette* pPalette, unsigned char cShade, float flIntensity, unsigned char cColour)
 {
@@ -715,6 +727,7 @@ unsigned char __fastcall ColorPalette::LookupColorIntensity(ColorPalette* pPalet
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0044e160
 // FUNCTION: HYPERX 0x004264a0
 int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
 {
@@ -821,6 +834,7 @@ int ColorPalette::LoadPaletteEntries(const char* pszName, char bRemap)
     return nCount;
 }
 
+// FUNCTION: HYPERX100 0x0044e470
 // FUNCTION: HYPERX 0x00426740
 int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries)
 {
@@ -836,6 +850,7 @@ int ColorPalette::SetEntries(unsigned int iStart, unsigned int cEntries, PALETTE
     return nAccepted;
 }
 
+// FUNCTION: HYPERX100 0x0044e4e0
 // FUNCTION: HYPERX 0x004267a0
 void ColorPalette::SyncDIBColorTable(unsigned int iStart, unsigned int cEntries)
 {
@@ -859,6 +874,7 @@ void ColorPalette::SyncDIBColorTable(unsigned int iStart, unsigned int cEntries)
     SetDIBColorTable(g_hSoftBackDC, iStart, cEntries, pColors);
 }
 
+// FUNCTION: HYPERX100 0x0044e560
 // FUNCTION: HYPERX 0x00426810
 char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PALETTEENTRY* pEntries)
 {
@@ -876,6 +892,7 @@ char ColorPalette::AnimateEntries(unsigned int iStart, unsigned int cEntries, PA
 }
 
 // Rises geometrically from the floor to the full colour. The object is never touched.
+// FUNCTION: HYPERX100 0x0044e5c0
 // FUNCTION: HYPERX 0x00426860
 void ColorPalette::BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEENTRY peColour, float flFloor)
 {
@@ -911,6 +928,7 @@ void ColorPalette::BuildFadeTable(PALETTEENTRY* pEntries, short nCount, PALETTEE
     delete[] pflScale;
 }
 
+// FUNCTION: HYPERX100 0x0044e820
 // FUNCTION: HYPERX 0x00426980
 PALETTEENTRY* ColorPalette::GetRemappedEntry(PALETTEENTRY* pOut, int nIndex)
 {
@@ -932,6 +950,7 @@ PALETTEENTRY* ColorPalette::GetRemappedEntry(PALETTEENTRY* pOut, int nIndex)
 }
 
 // The tail repeats a range test already failed, so it always returns 1.
+// FUNCTION: HYPERX100 0x0044e8c0
 // FUNCTION: HYPERX 0x004269f0
 char ColorPalette::IsEntryUsable(int nIndex)
 {
@@ -975,3 +994,123 @@ void ColorPalette::Release()
 
     m_name.FreeBuffer();
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x0044d260
+char ColorPalette::WriteCustomPalette()
+{
+    String     strPath  = String::Concat(g_gameApp.m_strExeDir.m_str, "Custom.pal");
+    const UINT nEntries = GetPaletteEntries(m_hPalette, 0, m_wNumEntries, m_entries);
+    OwnedFile  file;
+
+    if (file.m_file.Open(strPath, FILE_MODE_WRITE) == 0)
+    {
+        return 0;
+    }
+
+    file.m_file.PrintFormatted("%s\n", strPath.m_pchData);
+    file.m_file.PrintFormatted("%03u %03u\n", m_wVersion, m_wNumEntries);
+    file.m_file.PrintFormatted("%03d %3d\n", m_rampBounds.nFirst, m_rampBounds.nCount);
+    file.m_file.PrintFormatted("%03d %3d\n", m_smallRampBounds.nFirst, m_smallRampBounds.nCount);
+    file.m_file.PrintFormatted("%03d %3d\n", m_largeRampBounds.nFirst, m_largeRampBounds.nCount);
+    file.m_file.PrintFormatted("%03d %3d\n", m_rampLength.nFirst, m_rampLength.nCount);
+
+    for (short i = 0; i < (short)nEntries; i++)
+    {
+        file.m_file.PrintFormatted("%03d %03d %03d %03d %03d\n", i, m_entries[i].peRed, m_entries[i].peGreen, m_entries[i].peBlue, m_entries[i].peFlags);
+    }
+
+    file.m_file.CloseAndTest();
+
+    return 1;
+}
+
+// Team B's indices are written 32 lower than the palette holds them.
+// FUNCTION: HYPERX100 0x0044d4d0
+int ColorPalette::WriteRangeFiles()
+{
+    int nWritten;
+
+    nWritten = WritePaletteFile("Arenas.wbp", m_arenaRange, 0);
+    nWritten += WritePaletteFile("Objects.wbp", m_objectRange, 0);
+    nWritten += WritePaletteFile("TeamA.wbp", m_teamARange, 0);
+    nWritten += WritePaletteFile("TeamB.wbp", m_teamBRange, -0x20);
+    nWritten += WritePaletteFile("theRok.wbp", m_rokRange, 0);
+    nWritten += WritePaletteFile("Open.wbp", m_openRange, 0);
+    nWritten += WritePaletteFile("General.wbp", m_generalRange, 0);
+
+    return nWritten;
+}
+
+// The rows are read from the range's own indices and numbered from the offset ones.
+// FUNCTION: HYPERX100 0x0044d740
+int ColorPalette::WritePaletteFile(const String& strName, const PaletteRange& range, int nIndexOffset)
+{
+    // TODO: The original joins the two with String's String-plus-String operator, 0x00414370.
+    String       strPath  = String::Concat(g_gameApp.m_strExeDir.m_str, strName);
+    int          nWritten = 0;
+    PaletteRange written(0, 0);
+    OwnedFile    file;
+
+    if (file.m_file.Open(strPath, FILE_MODE_WRITE) != 0)
+    {
+        g_gameApp.Error("Writing %s\t...", strPath.m_pchData);
+
+        file.m_file.PrintFormatted("%03u %03d\t\t\t# Version & NumPaletteEntries\n", m_wVersion, range.nCount);
+
+        const PALETTEENTRY* pEntry = &m_entries[range.nFirst];
+
+        written.Set(range.nFirst + nIndexOffset, range.nCount);
+
+        for (int i = written.nFirst; i < written.nFirst + written.nCount; i++)
+        {
+            file.m_file.PrintFormatted("%03d %03d %03d %03d\t# Index\tRed Green Blue\n", i, pEntry->peRed, pEntry->peGreen, pEntry->peBlue);
+
+            pEntry++;
+            nWritten++;
+        }
+
+        file.m_file.CloseAndTest();
+    }
+
+    g_gameApp.Error(" (%d, %d)\t%d entries!", written.nFirst, written.nCount, nWritten);
+
+    return nWritten;
+}
+
+// Shifts every pixel in the remap range by team A's count, row by padded row.
+// FUNCTION: HYPERX100 0x0044e760
+void ColorPalette::RemapDIB(BITMAPINFOHEADER* pHeader)
+{
+    const int nWidth   = pHeader->biWidth;
+    int       nColours = pHeader->biClrUsed;
+
+    if (nColours == 0 && pHeader->biBitCount < 9)
+    {
+        nColours = 1 << pHeader->biBitCount;
+    }
+
+    unsigned char* pPixel = (unsigned char*)pHeader + pHeader->biSize + nColours * sizeof(RGBQUAD);
+
+    for (int y = 0; y < pHeader->biHeight; y++)
+    {
+        for (int x = 0; x < pHeader->biWidth; x++)
+        {
+            const unsigned char cIndex = *pPixel;
+
+            if (m_remapRange.Holds(cIndex))
+            {
+                *pPixel = (unsigned char)(cIndex + m_teamARange.nCount);
+            }
+            else
+            {
+                *pPixel = cIndex;
+            }
+
+            pPixel++;
+        }
+
+        pPixel += ((nWidth + 3) & ~3) - nWidth;
+    }
+}
+#endif

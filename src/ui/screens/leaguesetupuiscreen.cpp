@@ -27,6 +27,7 @@
 #define LEAGUE_GRID_ROWS           10
 #define LEAGUE_GRID_COLUMNS        5
 
+// FUNCTION: HYPERX100 0x0042d830
 // FUNCTION: HYPERX 0x00452f80
 LeagueSetupUIScreen::LeagueSetupUIScreen()
 {
@@ -208,6 +209,7 @@ LeagueSetupUIScreen::LeagueSetupUIScreen()
     InitAllWidgets();
 }
 
+// FUNCTION: HYPERX100 0x0042e780
 // FUNCTION: HYPERX 0x004538b0
 void LeagueSetupUIScreen::OnExitTabClick()
 {
@@ -218,6 +220,7 @@ void LeagueSetupUIScreen::OnExitTabClick()
     Game::SetEngineState(m_nNextState);
 }
 
+// FUNCTION: HYPERX100 0x0042e7b0
 // FUNCTION: HYPERX 0x004538d0
 void LeagueSetupUIScreen::OnFirstPageTabClick()
 {
@@ -235,6 +238,7 @@ void LeagueSetupUIScreen::OnFirstPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x0042e820
 // FUNCTION: HYPERX 0x00453930
 void LeagueSetupUIScreen::OnSecondPageTabClick()
 {
@@ -252,6 +256,7 @@ void LeagueSetupUIScreen::OnSecondPageTabClick()
     RefreshTeamDisplay();
 }
 
+// FUNCTION: HYPERX100 0x0042e890
 // FUNCTION: HYPERX 0x00453990
 void LeagueSetupUIScreen::OnThirdPageTabClick()
 {
@@ -269,6 +274,7 @@ void LeagueSetupUIScreen::OnThirdPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x0042e900
 // FUNCTION: HYPERX 0x004539f0
 void LeagueSetupUIScreen::OnFourthPageTabClick()
 {
@@ -287,6 +293,7 @@ void LeagueSetupUIScreen::OnFourthPageTabClick()
 }
 
 // Each direction exists twice in the image with identical bodies.
+// FUNCTION: HYPERX100 0x0042e970
 // FUNCTION: HYPERX 0x00453a50
 void LeagueSetupUIScreen::OnLeftArrowClick()
 {
@@ -343,6 +350,7 @@ void LeagueSetupUIScreen::OnLeftArrowClick()
     }
 }
 
+// FUNCTION: HYPERX100 0x0042eaf0
 // FUNCTION: HYPERX 0x00453b90
 void LeagueSetupUIScreen::OnRightArrowClick()
 {
@@ -405,6 +413,7 @@ void LeagueSetupUIScreen::OnRightArrowClick()
     }
 }
 
+// FUNCTION: HYPERX100 0x0042eca0
 // FUNCTION: HYPERX 0x00453ce0
 void LeagueSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
@@ -427,6 +436,7 @@ void LeagueSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     }
 }
 
+// FUNCTION: HYPERX100 0x0042ece0
 // FUNCTION: HYPERX 0x00453d10
 void LeagueSetupUIScreen::RefreshSelection()
 {
@@ -457,6 +467,7 @@ void LeagueSetupUIScreen::RefreshSelection()
 }
 
 // The number / 4 is the team; a remainder hides the bitmaps. Two methods compile to the same code.
+// FUNCTION: HYPERX100 0x0042ed90
 // FUNCTION: HYPERX 0x00453d80
 void LeagueSetupUIScreen::LoadTeamBitmaps(int nShow)
 {
@@ -690,6 +701,7 @@ void LeagueSetupUIScreen::LoadTeamBitmaps(int nShow)
 }
 
 // The same function as ChampionshipSetupUIScreen::LoadObstacleFrames.
+// FUNCTION: HYPERX100 0x0042f660
 // FUNCTION: HYPERX 0x004544e0
 void LeagueSetupUIScreen::RefreshObjectBitmaps(int nBuild)
 {
@@ -1287,6 +1299,7 @@ void LeagueSetupUIScreen::RefreshObjectBitmaps(int nBuild)
     }
 }
 
+// FUNCTION: HYPERX100 0x00431800
 // FUNCTION: HYPERX 0x00456270
 void LeagueSetupUIScreen::RefreshFrames()
 {
@@ -1780,6 +1793,7 @@ void LeagueSetupUIScreen::RefreshFrames()
 }
 
 // The championship screen does this identically.
+// FUNCTION: HYPERX100 0x00432490
 // FUNCTION: HYPERX 0x00456f90
 void LeagueSetupUIScreen::UpdateStatText()
 {
@@ -1876,6 +1890,7 @@ void LeagueSetupUIScreen::UpdateStatText()
     }
 }
 
+// FUNCTION: HYPERX100 0x004327d0
 // FUNCTION: HYPERX 0x00457250
 void LeagueSetupUIScreen::HideStatsPanel()
 {
@@ -1896,6 +1911,7 @@ void LeagueSetupUIScreen::HideStatsPanel()
     }
 }
 
+// FUNCTION: HYPERX100 0x00432860
 // FUNCTION: HYPERX 0x004572c0
 void LeagueSetupUIScreen::RefreshTeamDisplay()
 {

@@ -6,6 +6,7 @@
 #include "engine/engineobject.h"
 #include "planvm/cprojectandbounce.h"
 
+// FUNCTION: HYPERX100 0x004cb720
 // FUNCTION: HYPERX 0x0041dd40
 BehObj_FlyLCL::BehObj_FlyLCL()
 {
@@ -16,6 +17,7 @@ BehObj_FlyLCL::~BehObj_FlyLCL()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cb840
 // FUNCTION: HYPERX 0x0041dd90
 void BehObj_FlyLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

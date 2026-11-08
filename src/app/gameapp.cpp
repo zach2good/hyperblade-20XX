@@ -88,6 +88,7 @@ float g_flUnusedConfigDialogB = g_flZeroConfigDialog;
 float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
 
 // id_ACF_AnimationPeek in DATA/ENUMIDS.H: the plan action table registers this body at 16.
+// FUNCTION: HYPERX100 0x0040f7e0
 // FUNCTION: HYPERX 0x004013d0
 void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int nWindow)
 {
@@ -104,6 +105,7 @@ void __cdecl GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int nWindow)
     GameEngine::TogglePause(hWnd, 0);
 }
 
+// FUNCTION: HYPERX100 0x0040d9a0
 // FUNCTION: HYPERX 0x004017a0
 void GameApp::Fatal(const char* pszFormat, ...)
 {
@@ -116,6 +118,7 @@ void GameApp::Fatal(const char* pszFormat, ...)
     va_end(argList);
 }
 
+// FUNCTION: HYPERX100 0x0040f180
 // FUNCTION: HYPERX 0x00411be0
 void GameApp::Error(const char* pszFormat, ...)
 {
@@ -129,6 +132,7 @@ void GameApp::Error(const char* pszFormat, ...)
 }
 
 // The Animation Peek dialog's procedure, which GameApp::AnimationPeek opens.
+// FUNCTION: HYPERX100 0x004c0dd0
 // FUNCTION: HYPERX 0x004179e0
 BOOL CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {
@@ -146,6 +150,7 @@ BOOL CALLBACK GameApp::AnimationPeekDialogProc(HWND hDlg, UINT nMsg, UINT wParam
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004befb0
 // FUNCTION: HYPERX 0x00418c10
 void GameApp::SetModelPath(int bTexEnabled)
 {
@@ -164,6 +169,7 @@ void GameApp::SetModelPath(int bTexEnabled)
     }
 }
 
+// FUNCTION: HYPERX100 0x004bf270
 // FUNCTION: HYPERX 0x00418e10
 HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShowCmd, LPSTR lpCmdLine)
 {
@@ -282,6 +288,7 @@ HWND GameApp::Initialize(HINSTANCE hInstance, HINSTANCE hPrevInstance, int nShow
     return hWnd;
 }
 
+// FUNCTION: HYPERX100 0x004bf5a0
 // FUNCTION: HYPERX 0x00419070
 void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
 {
@@ -332,6 +339,7 @@ void GameApp::InitializeResourcePaths(HINSTANCE hInstance)
 }
 
 // The paint block sets and restores four GDI attributes with nothing drawn between.
+// FUNCTION: HYPERX100 0x004bf860
 // FUNCTION: HYPERX 0x00419290
 void __stdcall GameApp::SplashTimerCallback(UINT, UINT, DWORD dwUser, DWORD, DWORD)
 {
@@ -416,19 +424,24 @@ void __stdcall GameApp::SplashTimerCallback(UINT, UINT, DWORD dwUser, DWORD, DWO
 }
 
 // 'x' is a separator as well as a flag. v1.0.0.1 swapped -w and -x from v1.0.0.0.
+// FUNCTION: HYPERX100 0x004bfa20
 // FUNCTION: HYPERX 0x00419420
 void GameApp::ParseCommandLine(LPSTR lpCmdLine)
 {
-    int nSaved;
+    int   nSaved;
+    char* p;
 
+    // v1.0.0.0 stops at the first space, inside a quoted path such as "C:\Program Files\...".
+#ifndef HYPERX_V100
     // STRING: HYPERX 0x004bbb00
-    char* p = strpbrk(lpCmdLine, "\"");
+    p = strpbrk(lpCmdLine, "\"");
 
     if (p != 0)
     {
         p         = strpbrk(p + 1, "\"");
         lpCmdLine = p + 1;
     }
+#endif
 
     p = (char*)_mbschr((const unsigned char*)lpCmdLine, ' ');
 
@@ -488,9 +501,15 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
                 break;
 
             case 'x':
+#ifdef HYPERX_V100
+                // In v1.0.0.0 -x asks for the 3D card.
+                g_bForceSoftwareRender = 0;
+                g_cUseSoftRenderer     = 0;
+#else
                 g_bForceSoftwareRender = 1;
                 g_cUseSoftRenderer     = 1;
-                p                      = CharNextA(p);
+#endif
+                p = CharNextA(p);
                 break;
 
             case 's':
@@ -516,6 +535,7 @@ void GameApp::ParseCommandLine(LPSTR lpCmdLine)
     } while (*p == '-');
 }
 
+// FUNCTION: HYPERX100 0x004bfbe0
 // FUNCTION: HYPERX 0x00419580
 void __cdecl GameApp::Shutdown(HWND)
 {
@@ -566,6 +586,7 @@ void __cdecl GameApp::Shutdown(HWND)
     PostQuitMessage(0);
 }
 
+// FUNCTION: HYPERX100 0x004bfea0
 // FUNCTION: HYPERX 0x00419640
 void __stdcall GameApp::OnStartup(void)
 {
@@ -580,6 +601,7 @@ void __stdcall GameApp::OnStartup(void)
 }
 
 // Never returns. The pattern String is never released.
+// FUNCTION: HYPERX100 0x004bfed0
 // FUNCTION: HYPERX 0x00419670
 void __stdcall GameApp::OnExit(void)
 {
@@ -625,6 +647,7 @@ void __stdcall GameApp::OnExit(void)
 #define CDROM_NOT_WANTED (-2)
 
 // Runs before WinMain.
+// FUNCTION: HYPERX100 0x0045b780
 // FUNCTION: HYPERX 0x00422f90
 GameApp::GameApp(short nStringCount)
 : m_strExeDir(MAX_PATH)
@@ -655,6 +678,7 @@ GameApp::GameApp(short nStringCount)
 
 #define CDROM_DRIVE_COUNT ('Z' - 'A' + 1)
 
+// FUNCTION: HYPERX100 0x0045ba40
 // FUNCTION: HYPERX 0x00423140
 void GameApp::SetWindowAndCallbacks(HWND hWnd, void(__stdcall* pfnStartup)(void), void(__stdcall* pfnShutdown)(void))
 {
@@ -667,6 +691,7 @@ void GameApp::SetWindowAndCallbacks(HWND hWnd, void(__stdcall* pfnStartup)(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x0045ba70
 // FUNCTION: HYPERX 0x00423160
 void __fastcall GameApp::OnShutdown()
 {
@@ -681,6 +706,7 @@ void __fastcall GameApp::OnShutdown()
     }
 }
 
+// FUNCTION: HYPERX100 0x0045bac0
 // FUNCTION: HYPERX 0x00423180
 int GameApp::FindCDRomDrive(bool bRequired)
 {
@@ -792,6 +818,7 @@ done:
 #define CD_OPEN_WRITE 2
 
 // The scan carries on over the string it has just rewritten.
+// FUNCTION: HYPERX100 0x0045be80
 // FUNCTION: HYPERX 0x004233d0
 char* GameApp::ResolveCDRomPath(char* pszPath)
 {
@@ -823,6 +850,7 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
 }
 
 // A short write reports and carries on, so a full disc gives one message box per block.
+// FUNCTION: HYPERX100 0x0045bf50
 // FUNCTION: HYPERX 0x00423480
 void GameApp::CopyCDFile(const char* pszName)
 {
@@ -895,6 +923,7 @@ void GameApp::CopyCDFile(const char* pszName)
     free(pBuffer);
 }
 
+// FUNCTION: HYPERX100 0x0045c2b0
 // FUNCTION: HYPERX 0x00423730
 HBITMAP GameApp::LoadGDIBitmap(const char* pszName)
 {
@@ -943,6 +972,7 @@ HBITMAP GameApp::LoadGDIBitmap(const char* pszName)
 #define ERROR_BOX(w, t, c) MessageBoxA(w, t, c, ERROR_BOX_STYLE)
 #endif
 
+// FUNCTION: HYPERX100 0x0045c4c0
 // FUNCTION: HYPERX 0x004238b0
 void GameApp::ReportLastError(HWND)
 {
@@ -956,6 +986,7 @@ void GameApp::ReportLastError(HWND)
     }
 }
 
+// FUNCTION: HYPERX100 0x0045c530
 // FUNCTION: HYPERX 0x00423900
 void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
 {
@@ -991,6 +1022,7 @@ void GameApp::ShowErrorBox(HWND hWnd, String strMessage)
     GameApp::SetCursorVisible(nCursor);
 }
 
+// FUNCTION: HYPERX100 0x0045c700
 // FUNCTION: HYPERX 0x00423a00
 void GameApp::FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args)
 {
@@ -1006,6 +1038,7 @@ void GameApp::FatalErrorFmtString(HWND hWnd, const char* pszFormat, va_list args
 #define SHUT_DOWN(pApp) pApp->OnShutdown()
 #endif
 
+// FUNCTION: HYPERX100 0x0045c790
 // FUNCTION: HYPERX 0x00423a70
 void GameApp::ErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
 {
@@ -1016,6 +1049,7 @@ void GameApp::ErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
     m_stringPool.m_strMessage.Empty();
 }
 
+// FUNCTION: HYPERX100 0x0045c840
 // FUNCTION: HYPERX 0x00423ab0
 void GameApp::FatalErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
 {
@@ -1026,6 +1060,7 @@ void GameApp::FatalErrorFmt(HWND hWnd, const char* pszFormat, va_list args)
     m_stringPool.m_strMessage.Empty();
 }
 
+// FUNCTION: HYPERX100 0x0045c8f0
 // FUNCTION: HYPERX 0x00423af0
 void GameApp::FatalError(HWND hWnd, String strMessage)
 {
@@ -1034,6 +1069,7 @@ void GameApp::FatalError(HWND hWnd, String strMessage)
     SHUT_DOWN(this);
 }
 
+// FUNCTION: HYPERX100 0x00494f40
 // FUNCTION: HYPERX 0x0042f3b0
 void GameApp::FatalString(const char* pszFormat, ...)
 {
@@ -1046,6 +1082,7 @@ void GameApp::FatalString(const char* pszFormat, ...)
     va_end(argList);
 }
 
+// FUNCTION: HYPERX100 0x0046d650
 // FUNCTION: HYPERX 0x0044b350
 void __cdecl GameApp::SetupViewports(void)
 {
@@ -1122,6 +1159,7 @@ void __cdecl GameApp::SetupViewports(void)
     pView->InitViewTransforms();
 }
 
+// FUNCTION: HYPERX100 0x0046e1b0
 // FUNCTION: HYPERX 0x0044bca0
 int __cdecl GameApp::SetCursorVisible(int bVisible)
 {
@@ -1172,6 +1210,7 @@ int __cdecl GameApp::SetCursorVisible(int bVisible)
     return bWasVisible;
 }
 
+// FUNCTION: HYPERX100 0x0048e490
 // FUNCTION: HYPERX 0x0044c160
 int GameApp::MainUpdate(HWND hWnd)
 {
@@ -1210,6 +1249,7 @@ int GameApp::MainUpdate(HWND hWnd)
     return g_gameApp.m_bIsActive == 0;
 }
 
+// FUNCTION: HYPERX100 0x0048f0b0
 // FUNCTION: HYPERX 0x0044ca00
 void __cdecl GameApp::ShowHelp(HWND hWnd)
 {
@@ -1229,12 +1269,14 @@ void __cdecl GameApp::ShowHelp(HWND hWnd)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c3c80
 // FUNCTION: HYPERX 0x0046eea0
 int __cdecl GameApp::GetInstallLevel(void)
 {
     return g_nInstallLevel;
 }
 
+// FUNCTION: HYPERX100 0x00486f90
 // FUNCTION: HYPERX 0x0047aca0
 void __cdecl GameApp::ClipCursorToWindow(HWND hWnd)
 {
@@ -1254,6 +1296,7 @@ void __cdecl GameApp::ClipCursorToWindow(HWND hWnd)
     ClipCursor(0);
 }
 
+// FUNCTION: HYPERX100 0x00487100
 // FUNCTION: HYPERX 0x0047adb0
 int __cdecl GameApp::ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption, UINT nType)
 {
@@ -1267,6 +1310,7 @@ int __cdecl GameApp::ShowMessageBox(HWND hWnd, LPCSTR pszText, LPCSTR pszCaption
 }
 
 // Returning zero tells the runtime not to retry.
+// FUNCTION: HYPERX100 0x004871a0
 // FUNCTION: HYPERX 0x0047adf0
 int __cdecl GameApp::OutOfMemoryHandler(unsigned int)
 {
@@ -1276,6 +1320,7 @@ int __cdecl GameApp::OutOfMemoryHandler(unsigned int)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00414ea0
 // FUNCTION: HYPERX 0x0048ceb0
 void __cdecl GameApp::ResetToSinglePlayer(void)
 {
@@ -1285,6 +1330,7 @@ void __cdecl GameApp::ResetToSinglePlayer(void)
     g_nMainMenuPage        = 0;
 }
 
+// FUNCTION: HYPERX100 0x00479880
 // FUNCTION: HYPERX 0x0048f490
 LRESULT __cdecl GameApp::ClearSplashPalette(void)
 {
@@ -1294,6 +1340,7 @@ LRESULT __cdecl GameApp::ClearSplashPalette(void)
 }
 
 // A failed allocation is stored through unchecked, as the original does.
+// FUNCTION: HYPERX100 0x0040d020
 // FUNCTION: HYPERX 0x004922f0
 void __stdcall GameApp::InstantiateState(void)
 {
@@ -1477,6 +1524,7 @@ void __stdcall GameApp::InstantiateState(void)
 }
 
 // Zero only when the class neither existed nor registered.
+// FUNCTION: HYPERX100 0x00408810
 // FUNCTION: HYPERX 0x004937f0
 unsigned int __cdecl GameApp::RegisterWindowClass(HINSTANCE hInstance, LPCSTR pszClassName)
 {
@@ -1505,6 +1553,7 @@ unsigned int __cdecl GameApp::RegisterWindowClass(HINSTANCE hInstance, LPCSTR ps
     return RegisterClassA(&wc) != 0;
 }
 
+// FUNCTION: HYPERX100 0x004088b0
 // FUNCTION: HYPERX 0x00493870
 HWND __cdecl GameApp::CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName, LPVOID pParam)
 {
@@ -1527,3 +1576,16 @@ HWND __cdecl GameApp::CreateMainWindow(HINSTANCE hInstance, LPCSTR pszClassName,
 
     return CreateWindowExA(0, pszClassName, pszClassName, WS_BORDER, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top, 0, 0, hInstance, pParam);
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00487150
+int GameApp::DialogBoxWithCursor(HINSTANCE hInstance, LPCSTR pszTemplate, HWND hWndParent, DLGPROC pfnDialog, LPARAM lParam)
+{
+    const int bWasVisible = GameApp::SetCursorVisible(1);
+    const int nResult     = DialogBoxParamA(hInstance, pszTemplate, hWndParent, pfnDialog, lParam);
+
+    GameApp::SetCursorVisible(bWasVisible);
+
+    return nResult;
+}
+#endif

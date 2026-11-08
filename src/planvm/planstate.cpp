@@ -23,6 +23,7 @@ extern PlanWord g_aReinitPlanImage[9];
 
 // The constructor skips the two fields the object's plan table fills in itself.
 
+// FUNCTION: HYPERX100 0x0045a830
 // FUNCTION: HYPERX 0x0047aef0
 PlanState::PlanState()
 {
@@ -43,6 +44,7 @@ PlanState::PlanState()
     m_nNamedInteractors  = 0;
 }
 
+// FUNCTION: HYPERX100 0x0045a880
 // FUNCTION: HYPERX 0x0047af30
 PlanState::~PlanState()
 {
@@ -58,6 +60,7 @@ PlanState::~PlanState()
     }
 }
 
+// FUNCTION: HYPERX100 0x0045a8c0
 // FUNCTION: HYPERX 0x0047af60
 void PlanState::FreeCompiledBehaviors(short nCount)
 {
@@ -84,6 +87,7 @@ void PlanState::FreeCompiledBehaviors(short nCount)
 }
 
 // The operand array and the node are freed whatever the opcode, even an unknown one.
+// FUNCTION: HYPERX100 0x0045a940
 // FUNCTION: HYPERX 0x0047afa0
 void PlanState::DestroyNode(PlanNode* pNode)
 {
@@ -166,6 +170,7 @@ void PlanState::DestroyNode(PlanNode* pNode)
     delete pNode;
 }
 
+// FUNCTION: HYPERX100 0x0045ab10
 // FUNCTION: HYPERX 0x0047b0e0
 void PlanState::SetOwnerAndReset(EngineObject* pOwner, PlanNode** ppBehaviors)
 {
@@ -180,6 +185,7 @@ void PlanState::SetOwnerAndReset(EngineObject* pOwner, PlanNode** ppBehaviors)
     m_ppCursor    = ppBehaviors;
 }
 
+// FUNCTION: HYPERX100 0x0045ac00
 // FUNCTION: HYPERX 0x0047b110
 unsigned char PlanState::SetAndInit(const PlanWord* pStream)
 {
@@ -204,6 +210,7 @@ unsigned char PlanState::SetAndInit(const PlanWord* pStream)
 }
 
 // An index past the end walks off the list: there is no bound.
+// FUNCTION: HYPERX100 0x0045ac50
 // FUNCTION: HYPERX 0x0047b150
 GameBehaviorObject* PlanState::GetBehaviorByIndex(unsigned int nIndex)
 {
@@ -230,6 +237,7 @@ GameBehaviorObject* PlanState::GetBehaviorByIndex(unsigned int nIndex)
 
 // The index is continuous across the two lists, split at m_nInteractorCount.
 
+// FUNCTION: HYPERX100 0x0045ac90
 // FUNCTION: HYPERX 0x0047b180
 CollInteractor* PlanState::WalkLinkedList(short nIndex)
 {
@@ -259,6 +267,7 @@ CollInteractor* PlanState::WalkLinkedList(short nIndex)
 }
 
 // A negative index runs the counted walk rather than skipping it.
+// FUNCTION: HYPERX100 0x0045ace0
 // FUNCTION: HYPERX 0x0047b1c0
 void PlanState::ActivateBehavior(unsigned int nIndex)
 {
@@ -312,6 +321,7 @@ void PlanState::ActivateBehavior(unsigned int nIndex)
 #define PLAN_NODES_FIRST 500
 #define PLAN_NODES_GROW  250
 
+// FUNCTION: HYPERX100 0x0045ade0
 // FUNCTION: HYPERX 0x0047b290
 void PlanState::PostUpdateCleanup()
 {
@@ -331,6 +341,7 @@ void PlanState::PostUpdateCleanup()
 }
 
 // A plan of 500 nodes or more keeps parsing into the array the grow just released.
+// FUNCTION: HYPERX100 0x0045ae30
 // FUNCTION: HYPERX 0x0047b2d0
 PlanNode** PlanState::Compile(const PlanWord* pStream)
 {
@@ -401,6 +412,7 @@ PlanNode** PlanState::Compile(const PlanWord* pStream)
 }
 
 // Only a compound node answers yes; CHANGE_OF_PLAN sets the flag that resolves strings to indices.
+// FUNCTION: HYPERX100 0x0045b000
 // FUNCTION: HYPERX 0x0047b430
 char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord* pOut, char* pcPlanRef)
 {
@@ -523,6 +535,7 @@ char PlanState::ParseNodeStream(int nDepth, const PlanWord** ppStream, PlanWord*
 // Ticks after instantiation before every collision interactor is set active again.
 #define COLLISION_REARM_TICKS 10
 
+// FUNCTION: HYPERX100 0x0045b300
 // FUNCTION: HYPERX 0x0047b680
 PlanState* PlanState::Instantiate()
 {
@@ -671,6 +684,7 @@ PlanState* PlanState::Instantiate()
 
 // The next pointer is read before each discard, because discarding frees the node.
 
+// FUNCTION: HYPERX100 0x0045b650
 // FUNCTION: HYPERX 0x0047b900
 void PlanState::Teardown()
 {
@@ -740,6 +754,7 @@ void PlanState::Teardown()
     m_pCurrent = 0;
 }
 
+// FUNCTION: HYPERX100 0x0045b720
 // FUNCTION: HYPERX 0x0047b990
 void PlanState::Reinitialize()
 {

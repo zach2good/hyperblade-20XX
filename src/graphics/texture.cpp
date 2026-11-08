@@ -15,12 +15,14 @@
 
 // The original's messages call this class CDDSurface.
 
+// FUNCTION: HYPERX100 0x00440b60
 // FUNCTION: HYPERX 0x00433890
 void Texture::SetVisible(int nVisible)
 {
     m_bVisible = nVisible;
 }
 
+// FUNCTION: HYPERX100 0x00440b70
 // FUNCTION: HYPERX 0x004338a0
 void Texture::SetPosition(Point pt)
 {
@@ -28,48 +30,56 @@ void Texture::SetPosition(Point pt)
     m_ptPosition.y = pt.y;
 }
 
+// FUNCTION: HYPERX100 0x00440bc0
 // FUNCTION: HYPERX 0x004338c0
 Point Texture::GetPosition()
 {
     return m_ptPosition;
 }
 
+// FUNCTION: HYPERX100 0x00440bf0
 // FUNCTION: HYPERX 0x004338e0
 IDirectDrawSurface* Texture::GetSurface()
 {
     return m_pSurface;
 }
 
+// FUNCTION: HYPERX100 0x00440c00
 // FUNCTION: HYPERX 0x004338f0
 Texture* Texture::GetSourceSurface()
 {
     return m_pSourceSurface;
 }
 
+// FUNCTION: HYPERX100 0x00440c10
 // FUNCTION: HYPERX 0x00433900
 Point Texture::GetSize()
 {
     return m_ptSize;
 }
 
+// FUNCTION: HYPERX100 0x00440c30
 // FUNCTION: HYPERX 0x00433920
 int Texture::GetForeColor()
 {
     return m_dwScrollColor;
 }
 
+// FUNCTION: HYPERX100 0x00440c40
 // FUNCTION: HYPERX 0x00433930
 int Texture::GetBgColor()
 {
     return m_dwFillColor;
 }
 
+// FUNCTION: HYPERX100 0x00440c50
 // FUNCTION: HYPERX 0x00433940
 Point Texture::GetInset()
 {
     return m_ptInset;
 }
 
+// FUNCTION: HYPERX100 0x00440c80
 // FUNCTION: HYPERX 0x00433960
 void Texture::Unlock()
 {
@@ -78,6 +88,7 @@ void Texture::Unlock()
 
 SurfacePoint g_ptSurfacePixels;
 
+// FUNCTION: HYPERX100 0x00440810
 // FUNCTION: HYPERX 0x00436db0
 Texture::Texture()
 : m_nUnusedA(0)
@@ -85,6 +96,7 @@ Texture::Texture()
     Init(0);
 }
 
+// FUNCTION: HYPERX100 0x00440890
 // FUNCTION: HYPERX 0x00436e10
 Texture::Texture(Texture* pSource)
 : m_nUnusedA(0)
@@ -93,6 +105,7 @@ Texture::Texture(Texture* pSource)
 }
 
 // The pixel counters are cleared only when nothing has been recorded before.
+// FUNCTION: HYPERX100 0x004408e0
 // FUNCTION: HYPERX 0x00436e50
 Texture::Texture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : m_nUnusedA(0)
@@ -112,6 +125,7 @@ Texture::Texture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawS
 
 // Fatal when a DirectDraw pointer is missing. The GetCaps result is overwritten with nought.
 
+// FUNCTION: HYPERX100 0x00440970
 // FUNCTION: HYPERX 0x00436ed0
 void Texture::Init(Texture* pSource)
 {
@@ -186,12 +200,14 @@ void Texture::Init(Texture* pSource)
 }
 
 // Slot 18 shares slot 17's address in five of six tables; slot 24 is KeyConfigDialog::SaveKeysAs.
+// FUNCTION: HYPERX100 0x00440fc0
 void Texture::SetScrollColorMode(int nScrollColor)
 {
     m_dwScrollColor = nScrollColor;
 }
 
 // Where the surface lives picks which pixel total it comes off.
+// FUNCTION: HYPERX100 0x00440ca0
 // FUNCTION: HYPERX 0x00437050
 Texture::~Texture()
 {
@@ -231,6 +247,7 @@ struct IDirectDrawSurface;
 #define KEY_WHITE 0xffffff
 
 // System memory answers nought and adds to .x; video memory answers the pixel count and adds to .y.
+// FUNCTION: HYPERX100 0x00440d40
 // FUNCTION: HYPERX 0x004370e0
 int Texture::AllocSurface(SurfacePoint size, int bColourKey, int bSystemMemory)
 {
@@ -295,18 +312,21 @@ int Texture::AllocSurface(SurfacePoint size, int bColourKey, int bSystemMemory)
     return m_ptSize.y * m_ptSize.x;
 }
 
+// FUNCTION: HYPERX100 0x00440f80
 // FUNCTION: HYPERX 0x00437240
 void Texture::SetFillColor(int nFillColor)
 {
     m_dwFillColor = nFillColor;
 }
 
+// FUNCTION: HYPERX100 0x00441000
 // FUNCTION: HYPERX 0x00437250
 void Texture::SetColorMode(int nScrollColor)
 {
     m_dwScrollColor = nScrollColor;
 }
 
+// FUNCTION: HYPERX100 0x00441030
 // FUNCTION: HYPERX 0x00437260
 int Texture::OnSurfaceLost()
 {
@@ -328,6 +348,7 @@ int Texture::OnSurfaceLost()
 }
 
 // The key is the surface's own pixel for white, so it works at any depth.
+// FUNCTION: HYPERX100 0x00441090
 // FUNCTION: HYPERX 0x004372a0
 IDirectDrawSurface* Texture::CreateSurface(int nWidth, int nHeight, int bColourKey, int bSystemMemory)
 {
@@ -379,6 +400,7 @@ IDirectDrawSurface* Texture::CreateSurface(int nWidth, int nHeight, int bColourK
     return pSurface;
 }
 
+// FUNCTION: HYPERX100 0x004411d0
 // FUNCTION: HYPERX 0x004373b0
 void Texture::DispatchRect(int nLeft, int nTop, int nRight, int nBottom)
 {
@@ -393,6 +415,7 @@ void Texture::DispatchRect(int nLeft, int nTop, int nRight, int nBottom)
 }
 
 // A high-edge nudge subtracts the size, so nudging the right edge moves the origin left.
+// FUNCTION: HYPERX100 0x00441210
 // FUNCTION: HYPERX 0x004373f0
 void Texture::SetOffset(TextureRect rect)
 {
@@ -441,6 +464,7 @@ void Texture::SetOffset(TextureRect rect)
 }
 
 // A lost screen is the only error handled; a failed restore is fatal.
+// FUNCTION: HYPERX100 0x00441360
 // FUNCTION: HYPERX 0x004374e0
 int Texture::Draw()
 {
@@ -471,6 +495,7 @@ int Texture::Draw()
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00441420
 // FUNCTION: HYPERX 0x00437570
 void Texture::SetClipRect(int nClipped, Point pt)
 {
@@ -479,6 +504,7 @@ void Texture::SetClipRect(int nClipped, Point pt)
     m_ptInset.y = pt.y;
 }
 
+// FUNCTION: HYPERX100 0x00441450
 // FUNCTION: HYPERX 0x004375a0
 int Texture::BltFill()
 {
@@ -510,6 +536,7 @@ int Texture::BltFill()
     return m_hr == 0;
 }
 
+// FUNCTION: HYPERX100 0x00441540
 // FUNCTION: HYPERX 0x00437650
 int Texture::BltFillColour(unsigned int nColour)
 {
@@ -542,6 +569,7 @@ int Texture::BltFillColour(unsigned int nColour)
 }
 
 // A clipped surface answers the clip origin's pixel.
+// FUNCTION: HYPERX100 0x00441650
 // FUNCTION: HYPERX 0x00437710
 unsigned char* Texture::LockAndGetPitch(int* pnPitch)
 {
@@ -577,6 +605,7 @@ unsigned char* Texture::LockAndGetPitch(int* pnPitch)
     return (unsigned char*)desc.lpSurface;
 }
 
+// FUNCTION: HYPERX100 0x00441730
 // FUNCTION: HYPERX 0x004377e0
 void Texture::Unused(int, int, int)
 {

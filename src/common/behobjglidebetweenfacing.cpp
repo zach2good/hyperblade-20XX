@@ -4,17 +4,23 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
+#ifdef HYPERX_V100
+#include "engine/gameengine.h"
+#endif
 
+// FUNCTION: HYPERX100 0x004ca8c0
 // FUNCTION: HYPERX 0x0041d6a0
 BehObj_GlideBetweenFacing::BehObj_GlideBetweenFacing()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ca980
 // FUNCTION: HYPERX 0x0041d6e0
 BehObj_GlideBetweenFacing::~BehObj_GlideBetweenFacing()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ca9f0
 // FUNCTION: HYPERX 0x0041d6f0
 void BehObj_GlideBetweenFacing::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
@@ -49,3 +55,14 @@ void BehObj_GlideBetweenFacing::Init(EngineObject* pOwner, PlanNode* pBlock, int
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x004caaf0
+void BehObj_GlideBetweenFacing::SetObjects(short nSlotA, short nSlotB, short nAimSlot, float flBlendStep)
+{
+    m_pObjectA    = g_pGameEngine->m_ppSlots[nSlotA];
+    m_pObjectB    = g_pGameEngine->m_ppSlots[nSlotB];
+    m_pAimObject  = g_pGameEngine->m_ppSlots[nAimSlot];
+    m_flBlendStep = flBlendStep;
+}
+#endif

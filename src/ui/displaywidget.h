@@ -23,16 +23,19 @@ class DisplayWidget : public InertWidget
 {
 public:
     // Stand-ins for shared stubs whose addresses several tables hold, so none carries a marker.
+    // FUNCTION: HYPERX100 0x00477b30
     virtual int OnMouseDown()
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x00477b40
     virtual int OnMouseUp()
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x00477b50
     virtual int IsDisplayOnly()
     {
         return 1;

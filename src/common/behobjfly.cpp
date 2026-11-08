@@ -5,6 +5,7 @@
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
 
+// FUNCTION: HYPERX100 0x004cb4d0
 // FUNCTION: HYPERX 0x0041dc10
 BehObj_Fly::BehObj_Fly()
 {
@@ -15,6 +16,7 @@ BehObj_Fly::~BehObj_Fly()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cb5f0
 // FUNCTION: HYPERX 0x0041dc60
 void BehObj_Fly::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

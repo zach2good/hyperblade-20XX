@@ -20,12 +20,14 @@
 #include "app/win32.h"
 #include "app/window.h"
 
+// FUNCTION: HYPERX100 0x0045bdb0
 // FUNCTION: HYPERX 0x004233b0
 int Win32::IsCDRomDrive(const char* pszRoot)
 {
     return GetDriveTypeA(pszRoot) == DRIVE_CDROM;
 }
 
+// FUNCTION: HYPERX100 0x004870b0
 // FUNCTION: HYPERX 0x0047ad70
 int Win32::GetWindowTextAlloc(HWND hWnd, char** ppszOut)
 {
@@ -48,12 +50,14 @@ int Win32::GetWindowTextAlloc(HWND hWnd, char** ppszOut)
     return nLength;
 }
 
+// FUNCTION: HYPERX100 0x00479860
 // FUNCTION: HYPERX 0x0048f470
 int Win32::AskYesNo(const char* pszText, const char* pszCaption)
 {
     return MessageBoxA(g_gameApp.GetMainWindow(), pszText, pszCaption, MB_ICONQUESTION | MB_YESNO);
 }
 
+// FUNCTION: HYPERX100 0x00479d30
 // FUNCTION: HYPERX 0x0048fb50
 void Win32::CenterWindow(HWND hWnd, HWND hParent)
 {

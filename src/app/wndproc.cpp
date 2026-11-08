@@ -25,6 +25,7 @@
 
 // Key and button messages go to the input device during a match and to the screen otherwise.
 
+// FUNCTION: HYPERX100 0x0048e6d0
 // FUNCTION: HYPERX 0x0044c330
 LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -254,6 +255,7 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 }
 
+// FUNCTION: HYPERX100 0x0048ef70
 // FUNCTION: HYPERX 0x0044c910
 int __cdecl WndProc::HandlePaint(HWND hWnd)
 {
@@ -289,6 +291,7 @@ int __cdecl WndProc::HandlePaint(HWND hWnd)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0048fa80
 // FUNCTION: HYPERX 0x0044d190
 int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 {
@@ -383,6 +386,7 @@ int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004bdfb0
 // FUNCTION: HYPERX 0x004939b0
 unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand)
 {

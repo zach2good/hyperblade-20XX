@@ -23,6 +23,7 @@ extern unsigned char g_bEnergyDraining;
 
 // Everything is five except the first and seventeenth, a hundred, and the sixth, seven.
 
+// FUNCTION: HYPERX100 0x004723d0
 // FUNCTION: HYPERX 0x004748e0
 ObjectStats* ObjectStats::InitDefaults()
 {
@@ -44,6 +45,7 @@ ObjectStats* ObjectStats::InitDefaults()
     return this;
 }
 
+// FUNCTION: HYPERX100 0x00472430
 // FUNCTION: HYPERX 0x00474930
 float ObjectStats::GetWeightedStat(int nIndex)
 {
@@ -56,6 +58,7 @@ float ObjectStats::GetWeightedStat(int nIndex)
 
 // The stat index is a word offset from the body's second field, not a table lookup.
 
+// FUNCTION: HYPERX100 0x00472450
 // FUNCTION: HYPERX 0x00474950
 float ObjectStats::GetScalar(int nWhich) const
 {
@@ -64,6 +67,7 @@ float ObjectStats::GetScalar(int nWhich) const
 
 // Only eight of the 63 stats are scaled: four cap at twelve and four at fifteen.
 
+// FUNCTION: HYPERX100 0x00472460
 // FUNCTION: HYPERX 0x00474960
 void ObjectStats::ScaleTo(int nSlot)
 {
@@ -152,6 +156,7 @@ void ObjectStats::ScaleTo(int nSlot)
 
 // Only eight of the first fourteen are restored; the sentinel in m_flScale marks a restored block.
 
+// FUNCTION: HYPERX100 0x00472650
 // FUNCTION: HYPERX 0x00474b30
 void ObjectStats::CopyBaseStats()
 {
@@ -183,6 +188,7 @@ void ObjectStats::CopyBaseStats()
     m_flScale = g_flBaseStatsSentinel;
 }
 
+// FUNCTION: HYPERX100 0x004726e0
 // FUNCTION: HYPERX 0x00474bb0
 void ObjectStats::UpdateMomentumAndEnergy()
 {

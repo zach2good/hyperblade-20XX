@@ -4,6 +4,7 @@
 #include "planvm/cbungeetoward.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00420160
 // FUNCTION: HYPERX 0x00413750
 void CBungeeTowardPool::Init()
 {
@@ -23,6 +24,7 @@ void CBungeeTowardPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423580
 // FUNCTION: HYPERX 0x004137d0
 void* CBungeeTowardPool::Alloc()
 {

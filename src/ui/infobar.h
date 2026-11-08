@@ -39,10 +39,12 @@ public:
     virtual ViewExtent GetPassBarSize();
 
     // Twenty one and twenty two are EngineObject::CheckObjectAI and Stub::Assert, shared bare rets.
+    // FUNCTION: HYPERX100 0x004bdd20
     virtual void SetPassBarMarker(int)
     {
     }
 
+    // FUNCTION: HYPERX100 0x004bdd30
     virtual void ShowPassBar()
     {
     }

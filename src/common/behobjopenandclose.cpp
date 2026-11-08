@@ -5,6 +5,7 @@
 #include "engine/messageids.h"
 #include "engine/modelids.h"
 
+// FUNCTION: HYPERX100 0x004cc8a0
 // FUNCTION: HYPERX 0x0041e600
 BehObj_OpenAndClose::BehObj_OpenAndClose()
 {
@@ -16,6 +17,7 @@ BehObj_OpenAndClose::~BehObj_OpenAndClose()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cc9c0
 // FUNCTION: HYPERX 0x0041e660
 void BehObj_OpenAndClose::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
@@ -30,6 +32,7 @@ void BehObj_OpenAndClose::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlag
     m_apSlots[0] = 0;
 }
 
+// FUNCTION: HYPERX100 0x004cca20
 // FUNCTION: HYPERX 0x0041e6b0
 void BehObj_OpenAndClose::SendTimedMessage()
 {

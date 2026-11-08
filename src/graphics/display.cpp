@@ -21,6 +21,7 @@ extern int g_nDisplayVertRes;
 extern int g_nDisplayBitsPerPixel;
 
 // The hardware path returns 0 or 1; the software path returns the back buffer resize result.
+// FUNCTION: HYPERX100 0x0046d8a0
 // FUNCTION: HYPERX 0x0044b500
 int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
 {
@@ -113,6 +114,7 @@ int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
     return g_bBackBufferReady;
 }
 
+// FUNCTION: HYPERX100 0x0046dcc0
 // FUNCTION: HYPERX 0x0044b850
 LONG __cdecl Display::ChangeColorDepth(int nMode)
 {
@@ -240,6 +242,7 @@ LONG __cdecl Display::ChangeColorDepth(int nMode)
     return lResult;
 }
 
+// FUNCTION: HYPERX100 0x004bdeb0
 // FUNCTION: HYPERX 0x00493900
 void Display::ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter)
 {

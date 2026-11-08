@@ -26,6 +26,10 @@ void __cdecl          DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour);
 void __fastcall       DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags);
 void __fastcall       DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount);
 
+#ifdef HYPERX_V100
+void __cdecl GetBltDestRect(RECT* pRect);
+#endif
+
 } // namespace SWRend
 
 #endif

@@ -100,6 +100,17 @@ struct PhysicsBody
     void TakeSurfaceNormal(const Vec3* pPoint);
     void InitOnSurface(int nUnused);
 
+#ifdef HYPERX_V100
+    // Places the body on its shell at vPos, moving at flStartSpeed along a heading in degrees.
+    void InitOnSurfaceAt(Vec3 vPos, float flStartSpeed, float flHeading);
+
+    // Turns the owner's transform about z toward pPoint, unless its y axis already lines up.
+    void TurnToward(const Vec3* pPoint);
+
+    // Minus one unless the body is rising under gravity; otherwise vel.z over the gravity step.
+    float GetTimeToApex() const;
+#endif
+
     // The movement axes the trick input reads, and the axis the player's turn is taken from.
     void  UpdateMovementAxes();
     float GetAxisX() const;

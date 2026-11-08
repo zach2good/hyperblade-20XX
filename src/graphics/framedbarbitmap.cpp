@@ -15,6 +15,7 @@
 #include "math/point.h"
 #include "graphics/ddrawapi.h"
 
+// FUNCTION: HYPERX100 0x00444050
 // FUNCTION: HYPERX 0x004390d0
 FramedBarBitmap::FramedBarBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : CDDBitMap(pDDraw, pPrimary, pBack)
@@ -22,6 +23,7 @@ FramedBarBitmap::FramedBarBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrima
     ClearState();
 }
 
+// FUNCTION: HYPERX100 0x00444120
 // FUNCTION: HYPERX 0x00439140
 void FramedBarBitmap::SetScrollColorMode(int nScrollColor)
 {
@@ -32,6 +34,7 @@ void FramedBarBitmap::SetScrollColorMode(int nScrollColor)
     m_nScrollPos = nNext;
 }
 
+// FUNCTION: HYPERX100 0x004441d0
 // FUNCTION: HYPERX 0x00439180
 void FramedBarBitmap::ClearState()
 {
@@ -51,6 +54,7 @@ void FramedBarBitmap::ClearState()
     SetRect(&m_rcScroll, 0, 0, 0, 0);
 }
 
+// FUNCTION: HYPERX100 0x00444270
 // FUNCTION: HYPERX 0x00439200
 FramedBarBitmap::~FramedBarBitmap()
 {
@@ -67,6 +71,7 @@ FramedBarBitmap::~FramedBarBitmap()
 #define BITMAP_KEY_COLOUR 0xffffff
 #define BITMAP_NAME_MAX   0x100
 
+// FUNCTION: HYPERX100 0x00444300
 // FUNCTION: HYPERX 0x00439270
 int FramedBarBitmap::LoadFromFile(const char* pszName, int nUnused, int bColourKey, int)
 {
@@ -130,6 +135,7 @@ int FramedBarBitmap::LoadFromFile(const char* pszName, int nUnused, int bColourK
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x00444620
 // FUNCTION: HYPERX 0x00439400
 int FramedBarBitmap::RestoreContents()
 {
@@ -141,6 +147,7 @@ int FramedBarBitmap::RestoreContents()
     return CDDBitMap::RestoreContents();
 }
 
+// FUNCTION: HYPERX100 0x00444650
 // FUNCTION: HYPERX 0x00439420
 int FramedBarBitmap::DrawWithWidth(int nWidth)
 {
@@ -169,6 +176,7 @@ int FramedBarBitmap::DrawWithWidth(int nWidth)
 }
 
 // The four zeros are the whole message; the owned bitmap reads the position back itself.
+// FUNCTION: HYPERX100 0x00444810
 // FUNCTION: HYPERX 0x00439490
 void FramedBarBitmap::SetPosition(Point pt)
 {

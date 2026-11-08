@@ -22,6 +22,7 @@ extern short g_nBoostGrabStep;
 extern int g_nTrickHoldStamp;
 
 // The forward key picks trick or boost-grab; a hundred milliseconds of quiet fires the neutral trick.
+// FUNCTION: HYPERX100 0x0042abe0
 // FUNCTION: HYPERX 0x004110f0
 void __cdecl Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 {
@@ -130,6 +131,7 @@ extern short g_nCheckImpulseStep;
 extern short g_nCheckImpulseFacing;
 
 // The opponents one and three slots on; a lead under -4 or a difference over 18 finds none.
+// FUNCTION: HYPERX100 0x0042b2a0
 // FUNCTION: HYPERX 0x00411550
 EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 {

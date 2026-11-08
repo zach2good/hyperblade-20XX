@@ -13,6 +13,7 @@ float g_flUnusedPlanA = g_flZeroPlan;
 float g_flUnusedPlanB = g_flZeroPlan;
 float g_flUnusedPlanC = g_flZeroPlan;
 
+// FUNCTION: HYPERX100 0x00494e20
 // FUNCTION: HYPERX 0x0042e640
 CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFriction, float flElasticity)
 {
@@ -34,6 +35,7 @@ CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFri
 }
 
 // The failure path passes a string resource id where a format string belongs.
+// FUNCTION: HYPERX100 0x00495010
 // FUNCTION: HYPERX 0x0042e710
 void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity)
 {
@@ -65,6 +67,7 @@ void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Ve
 }
 
 // Maps a CollisionObjectID to its ModelType; an unknown id is fatal.
+// FUNCTION: HYPERX100 0x004a5f80
 // FUNCTION: HYPERX 0x0045e200
 int __cdecl CollisionObj::GetModelId(int nIndex)
 {
@@ -141,6 +144,7 @@ CollisionObj::CollisionObj(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, 
     InitFrom3Points(pOrigin, pB, pC, flFriction, flElasticity);
 }
 
+// FUNCTION: HYPERX100 0x0046ccf0
 // FUNCTION: HYPERX 0x004807b0
 CollisionObj& CollisionObj::operator=(const CollisionObj& other)
 {

@@ -4,6 +4,7 @@
 #include "planvm/cpaletteeffect.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041dff0
 // FUNCTION: HYPERX 0x00414720
 void CPaletteEffectPool::Init()
 {
@@ -23,6 +24,7 @@ void CPaletteEffectPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004224c0
 // FUNCTION: HYPERX 0x004147c0
 void* CPaletteEffectPool::Alloc()
 {

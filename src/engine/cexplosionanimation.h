@@ -12,6 +12,7 @@ class EngineObject;
 class CExplosionAnimation : public BaseResetAgendaItem
 {
 public:
+    // FUNCTION: HYPERX100 0x0042cc10
     // FUNCTION: HYPERX 0x004127a0
     virtual void Process(int nArg)
     {
@@ -35,6 +36,7 @@ public:
     }
 
     // The original's linker folded this body onto Process, which carries the marker.
+    // FUNCTION: HYPERX100 0x0042cc80
     virtual void Release(int nArg)
     {
         ParticleSystem* const pSystem = (ParticleSystem*)m_pOwner;

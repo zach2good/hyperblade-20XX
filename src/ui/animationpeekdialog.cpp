@@ -39,6 +39,7 @@ const char* AnimationPeekDialog::NameOrDefault(const AnimDB* pSet)
     return g_pszEmptyDefaultName;
 }
 
+// FUNCTION: HYPERX100 0x004c0e50
 // FUNCTION: HYPERX 0x00417a40
 unsigned int __cdecl AnimationPeekDialog::OnInit(HWND hDlg, unsigned int, long)
 {
@@ -110,6 +111,7 @@ extern unsigned char g_bEnergyOn;
 
 // OK stores the second direction field over the first, and clears two physics-sheet flags.
 // 0x40e and 0x41e belong to the physics sheet; GetDlgItem answers null for both here.
+// FUNCTION: HYPERX100 0x004c13d0
 // FUNCTION: HYPERX 0x00417e80
 unsigned int __cdecl AnimationPeekDialog::OnCommand(HWND hDlg, int nCommand, HWND, int nNotify)
 {

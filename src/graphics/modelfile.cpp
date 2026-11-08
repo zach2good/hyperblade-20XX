@@ -21,6 +21,7 @@ float g_flScreenDotsPerCmModelFile   = g_flScreenDotsPerInchModelFile / g_flCmPe
 #define MODEL_TAG_DIRECTORY     1
 #define MODEL_INTERNAL_NAME_MAX 32
 
+// FUNCTION: HYPERX100 0x0044f280
 // FUNCTION: HYPERX 0x00435fe0
 char ModelFile::Open(FileObj* pFile, const char* pszModelName)
 {
@@ -86,6 +87,7 @@ done:
     return bSuccess;
 }
 
+// FUNCTION: HYPERX100 0x004a0390
 // FUNCTION: HYPERX 0x00493be0
 int ModelFile::ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion* pVersion)
 {
@@ -104,3 +106,30 @@ int ModelFile::ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion
 
     return 0;
 }
+
+#ifdef HYPERX_V100
+// Answers fread's count, or -1 with no file.
+// FUNCTION: HYPERX100 0x004a0410
+size_t ModelFile::ReadHeaderFromStream(FILE* pFile, int* pnTag, char* pszName, FileVersion* pVersion)
+{
+    FileHeader header;
+
+    size_t nRead = (size_t)-1;
+
+    if (pFile != 0)
+    {
+        nRead = fread(&header, sizeof(header), 1, pFile);
+
+        if ((int)nRead > 0)
+        {
+            *pnTag = header.nTag;
+
+            lstrcpynA(pszName, header.szName, sizeof(header.szName));
+
+            *pVersion = header.version;
+        }
+    }
+
+    return nRead;
+}
+#endif

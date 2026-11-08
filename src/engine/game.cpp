@@ -47,6 +47,7 @@ Vec3  g_vFallTrackOffset            = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZe
 Vec3  g_vNoOffset                   = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 Vec3  g_vZeroMarker                 = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 
+// FUNCTION: HYPERX100 0x0048e500
 // FUNCTION: HYPERX 0x0044c1b0
 void __stdcall Game::RunFrame(void)
 {
@@ -114,6 +115,7 @@ void __stdcall Game::RunFrame(void)
 }
 
 // Builds the game's owners in the original's order, timing each stage.
+// FUNCTION: HYPERX100 0x004097a0
 // FUNCTION: HYPERX 0x0045c700
 void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC)
 {
@@ -198,6 +200,7 @@ void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPa
 }
 
 // The renderer is not nulled, so a second call would tear it down again.
+// FUNCTION: HYPERX100 0x00409cf0
 // FUNCTION: HYPERX 0x0045c9c0
 void __cdecl Game::ShutdownEngine(void)
 {
@@ -245,6 +248,7 @@ void __cdecl Game::ShutdownEngine(void)
 }
 
 // Eight markers against the arena ellipsoid; the y-minus one asks for its height at y = +6, not -6.
+// FUNCTION: HYPERX100 0x004e1750
 // FUNCTION: HYPERX 0x0047d1c0
 void Game::InitMatchMarkers(void)
 {
@@ -282,6 +286,7 @@ void Game::InitMatchMarkers(void)
     g_vMarkerGoalMouthSouth.y = 3.0f - g_arenaEllipsoid.GetRadiusY();
 }
 
+// FUNCTION: HYPERX100 0x0040c910
 // FUNCTION: HYPERX 0x00491dd0
 extern "C" unsigned int Game::SetEngineState(unsigned int state)
 {
@@ -293,6 +298,7 @@ extern "C" unsigned int Game::SetEngineState(unsigned int state)
 }
 
 // Runs on the frame the state changed; every other frame only ticks the current screen.
+// FUNCTION: HYPERX100 0x0040c930
 // FUNCTION: HYPERX 0x00491de0
 unsigned int __stdcall Game::UpdateState(void)
 {
@@ -638,3 +644,24 @@ unsigned int __stdcall Game::UpdateState(void)
 
     return 1;
 }
+
+#ifdef HYPERX_V100
+#include "gameengine.h"
+#include "playerobject.h"
+#include "rokobject.h"
+#include "objectclasses.h"
+
+// FUNCTION: HYPERX100 0x004e1070
+short Game::GetOpponentTargetGoalSlot(void)
+{
+    const short nSlot = (short)((g_pGameEngine->m_nViewedSlot & 1) == 0);
+
+    return ((PlayerObject*)g_pGameEngine->m_ppSlots[nSlot])->m_wTargetGoalSlot;
+}
+
+// FUNCTION: HYPERX100 0x004e11b0
+short Game::GetRokPrevCarrierSlot(void)
+{
+    return (short)((RokObject*)g_pGameEngine->m_ppSlots[SLOT_ROK])->m_nPrevCarrierSlot;
+}
+#endif

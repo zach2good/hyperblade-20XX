@@ -21,6 +21,7 @@ public:
     virtual int OnMouseUp();
 
     // Slot five is KeyConfigDialog::SaveKeysAs, shared by many tables, so this is a stand-in.
+    // FUNCTION: HYPERX100 0x004777a0
     virtual int IsDisplayOnly()
     {
         return 0;

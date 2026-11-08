@@ -21,11 +21,13 @@
 
 float g_flFifthGameEngine = 0.2f * g_flOneGameEngine;
 
+// FUNCTION: HYPERX100 0x00446870
 // FUNCTION: HYPERX 0x00488400
 TournamentSetupUIScreen::~TournamentSetupUIScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00446910
 // FUNCTION: HYPERX 0x00488430
 TournamentSetupUIScreen::TournamentSetupUIScreen()
 {
@@ -147,6 +149,7 @@ TournamentSetupUIScreen::TournamentSetupUIScreen()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x004472b0
 // FUNCTION: HYPERX 0x00488ab0
 void TournamentSetupUIScreen::OnOkayClick()
 {
@@ -162,6 +165,7 @@ void TournamentSetupUIScreen::OnOkayClick()
     Game::SetEngineState(g_nSetupReturnState);
 }
 
+// FUNCTION: HYPERX100 0x00447340
 // FUNCTION: HYPERX 0x00488b10
 void TournamentSetupUIScreen::ShowStartersCard()
 {
@@ -178,6 +182,7 @@ void TournamentSetupUIScreen::ShowStartersCard()
     InitFrame();
 }
 
+// FUNCTION: HYPERX100 0x004473b0
 // FUNCTION: HYPERX 0x00488b70
 void TournamentSetupUIScreen::ShowScrubsCard()
 {
@@ -196,6 +201,7 @@ void TournamentSetupUIScreen::ShowScrubsCard()
 }
 
 // Forward tries once per team, backward three times. The guard's final count is never read.
+// FUNCTION: HYPERX100 0x00447490
 // FUNCTION: HYPERX 0x00488bf0
 void TournamentSetupUIScreen::OnRightArrowClick()
 {
@@ -236,6 +242,7 @@ void TournamentSetupUIScreen::OnRightArrowClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x00447440
 // FUNCTION: HYPERX 0x00488c60
 void TournamentSetupUIScreen::OnLeftArrowClick()
 {
@@ -277,6 +284,7 @@ void TournamentSetupUIScreen::OnLeftArrowClick()
 }
 
 // The displays return silently; an identifier outside the page calls the stub.
+// FUNCTION: HYPERX100 0x004474f0
 // FUNCTION: HYPERX 0x00488cd0
 void TournamentSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
@@ -314,6 +322,7 @@ void TournamentSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     }
 }
 
+// FUNCTION: HYPERX100 0x00447580
 // FUNCTION: HYPERX 0x00488d40
 void TournamentSetupUIScreen::RefreshSelection()
 {
@@ -351,6 +360,7 @@ void TournamentSetupUIScreen::RefreshSelection()
 }
 
 // The same function as HeadToHeadSetupUIScreen::LoadTeamPlayerBitmaps.
+// FUNCTION: HYPERX100 0x004476c0
 // FUNCTION: HYPERX 0x00488e50
 void TournamentSetupUIScreen::LoadTeamPlayerBitmaps(int nTeam)
 {
@@ -989,6 +999,7 @@ void TournamentSetupUIScreen::LoadTeamPlayerBitmaps(int nTeam)
 }
 
 // The same function as HeadToHeadSetupUIScreen::LoadTeamInfoPanel.
+// FUNCTION: HYPERX100 0x00449700
 // FUNCTION: HYPERX 0x0048a9d0
 void TournamentSetupUIScreen::LoadTeamInfoPanel(int nTeam)
 {
@@ -1338,6 +1349,7 @@ void TournamentSetupUIScreen::LoadTeamInfoPanel(int nTeam)
     }
 }
 
+// FUNCTION: HYPERX100 0x0044b080
 // FUNCTION: HYPERX 0x0048be80
 void TournamentSetupUIScreen::RefreshFrames()
 {

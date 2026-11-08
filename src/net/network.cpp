@@ -27,6 +27,7 @@
 extern int         g_anNetworkSlotObject[16];
 extern const char* g_apNetworkSlotNames[16];
 
+// FUNCTION: HYPERX100 0x00492730
 // FUNCTION: HYPERX 0x00440cc0
 int __fastcall Network::AddPlayer(GameSession* pSession, unsigned int nDpid, PlayerSlotName* pName)
 {
@@ -75,6 +76,7 @@ int __fastcall Network::AddPlayer(GameSession* pSession, unsigned int nDpid, Pla
 
 // The list is a set, so an id already there is accepted; a full list answers no, even for one it holds.
 
+// FUNCTION: HYPERX100 0x00492890
 // FUNCTION: HYPERX 0x00440dc0
 int __fastcall Network::AddDPID(GameSession* pSession, DWORD nId)
 {
@@ -108,6 +110,7 @@ int __fastcall Network::AddDPID(GameSession* pSession, DWORD nId)
 }
 
 // The list is compacted in place.
+// FUNCTION: HYPERX100 0x00492910
 // FUNCTION: HYPERX 0x00440e20
 int __fastcall Network::RemoveDPID(GameSession* pSession, DWORD nId)
 {
@@ -140,6 +143,7 @@ int __fastcall Network::RemoveDPID(GameSession* pSession, DWORD nId)
 
 // Each entry's id must equal its index and its kind be zero or one; anything else is fatal.
 
+// FUNCTION: HYPERX100 0x00493320
 // FUNCTION: HYPERX 0x004415a0
 int __stdcall Network::ValidateStaticObjects(void)
 {
@@ -164,6 +168,7 @@ int __stdcall Network::ValidateStaticObjects(void)
 }
 
 // An empty slot takes its refusal name.
+// FUNCTION: HYPERX100 0x0049e350
 // FUNCTION: HYPERX 0x00477c40
 unsigned int Network::SetupPlayerSlot(unsigned int nDpid, int nSlot)
 {
@@ -223,6 +228,7 @@ unsigned int Network::SetupPlayerSlot(unsigned int nDpid, int nSlot)
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x0049ed30
 // FUNCTION: HYPERX 0x004783c0
 int Network::ShowWaitingDialog(void)
 {
@@ -235,6 +241,7 @@ int Network::ShowWaitingDialog(void)
 }
 
 // The dialog that holds the game between periods; it has no controls the player uses.
+// FUNCTION: HYPERX100 0x0049ed70
 // FUNCTION: HYPERX 0x004783f0
 BOOL CALLBACK Network::PeriodDialogProc(HWND hDlg, UINT nMsg, UINT, LONG)
 {
@@ -318,6 +325,7 @@ BOOL CALLBACK Network::PeriodDialogProc(HWND hDlg, UINT nMsg, UINT, LONG)
 
 // The lobby is dropped without release when the session owned it.
 
+// FUNCTION: HYPERX100 0x0049efb0
 // FUNCTION: HYPERX 0x00478590
 unsigned int Network::AbortAndCleanup(HWND hWnd)
 {
@@ -378,6 +386,7 @@ unsigned int Network::AbortAndCleanup(HWND hWnd)
 #define ASSET_CATALOG_MAX  0x28
 
 // Four blocks of type 2 to 5: a type byte, a count, then six-byte records.
+// FUNCTION: HYPERX100 0x0049f0f0
 // FUNCTION: HYPERX 0x00478690
 void __cdecl Network::SendAssetData(int nRequesterId)
 {
@@ -428,6 +437,7 @@ void __cdecl Network::SendAssetData(int nRequesterId)
 }
 
 // A length mismatch complains and stores the block anyway; the sender id is never read.
+// FUNCTION: HYPERX100 0x0049f360
 // FUNCTION: HYPERX 0x00478840
 void __cdecl Network::ReceiveAssetPacket(const SyncBlockHeader* pPacket, unsigned int nLength, int)
 {
@@ -540,6 +550,7 @@ void __cdecl Network::ReceiveAssetPacket(const SyncBlockHeader* pPacket, unsigne
 }
 
 // The host's answer to a slot request; from the last dialog state on, every request is refused.
+// FUNCTION: HYPERX100 0x0049f670
 // FUNCTION: HYPERX 0x00478aa0
 void __cdecl Network::OnPlayerConnected(DWORD idFrom, int nSlot)
 {
@@ -589,6 +600,7 @@ void __cdecl Network::OnPlayerConnected(DWORD idFrom, int nSlot)
 }
 
 // Refuses outside NETSETUP_STATE_OFFERED; the offered slot must be empty with no join in flight.
+// FUNCTION: HYPERX100 0x0049f740
 // FUNCTION: HYPERX 0x00478b30
 void Network::OnAcceptPlayerSlot(int nPlayer)
 {
@@ -656,6 +668,7 @@ void Network::OnAcceptPlayerSlot(int nPlayer)
     g_gameApp.Error("Trying to process ACCEPT with NULL dialog box");
 }
 
+// FUNCTION: HYPERX100 0x0049f970
 // FUNCTION: HYPERX 0x00478cd0
 void Network::OnRejectPlayerSlot(int nPlayer)
 {
@@ -701,6 +714,7 @@ void Network::OnRejectPlayerSlot(int nPlayer)
     g_gameApp.Error("Trying to process REJECT with NULL dialog box");
 }
 
+// FUNCTION: HYPERX100 0x004a0260
 // FUNCTION: HYPERX 0x00479360
 void Network::FlushPendingPlayerName(void)
 {

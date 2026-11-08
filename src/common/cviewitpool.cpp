@@ -4,6 +4,7 @@
 #include "planvm/cviewit.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041e870
 // FUNCTION: HYPERX 0x00414370
 void CViewItPool::Init()
 {
@@ -23,6 +24,7 @@ void CViewItPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004228f0
 // FUNCTION: HYPERX 0x00414400
 void* CViewItPool::Alloc()
 {

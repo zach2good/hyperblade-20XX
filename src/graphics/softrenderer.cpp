@@ -13,6 +13,7 @@
 #include "graphics/softrenderer.h"
 
 // The width rounds up to a multiple of four; the answer is only whether that changed it.
+// FUNCTION: HYPERX100 0x0046dec0
 // FUNCTION: HYPERX 0x0044ba50
 int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 {
@@ -95,6 +96,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
     return bWidthRounded;
 }
 
+// FUNCTION: HYPERX100 0x004b9200
 // FUNCTION: HYPERX 0x0044f480
 RLESprite* __cdecl SoftRenderer::LoadRLESprite(const char* pszName)
 {

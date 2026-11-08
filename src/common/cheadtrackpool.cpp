@@ -3,6 +3,7 @@
 #include "engine/cheadtrack.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041e220
 // FUNCTION: HYPERX 0x00414620
 void CHeadTrackPool::Init()
 {
@@ -22,6 +23,7 @@ void CHeadTrackPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004225e0
 // FUNCTION: HYPERX 0x004146c0
 void* CHeadTrackPool::Alloc()
 {

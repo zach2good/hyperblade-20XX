@@ -7,6 +7,7 @@
 #include <math.h>
 #include "physicsglobals.h"
 
+// FUNCTION: HYPERX100 0x004122e0
 // FUNCTION: HYPERX 0x00405860
 Vec3* CollisionPlane::NormalAtPoint(const Vec3*)
 {
@@ -14,12 +15,14 @@ Vec3* CollisionPlane::NormalAtPoint(const Vec3*)
 }
 
 // Handing six values to the transform getter, which reads none of them.
+// FUNCTION: HYPERX100 0x00412300
 // FUNCTION: HYPERX 0x00405880
 void CollisionPlane::ForwardTransformRequest(int nA, int nB, float flC, float flD, float flE, float flF)
 {
     CollisionShape::GetOrCreateTransform(nA, nB, flC, flE, flD, flF);
 }
 
+// FUNCTION: HYPERX100 0x00412360
 // FUNCTION: HYPERX 0x004058c0
 unsigned char CollisionPlane::PointInside(const Vec3*)
 {
@@ -27,6 +30,7 @@ unsigned char CollisionPlane::PointInside(const Vec3*)
 }
 
 // On the surface when the point's height is within a hundredth of the surface's.
+// FUNCTION: HYPERX100 0x00412370
 // FUNCTION: HYPERX 0x004058d0
 int CollisionPlane::PointNearSurface(const Vec3* pPoint)
 {
@@ -40,6 +44,7 @@ int CollisionPlane::PointNearSurface(const Vec3* pPoint)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004123b0
 // FUNCTION: HYPERX 0x00405910
 float CollisionPlane::RadiusForDirection(const Vec3*, int)
 {
@@ -47,6 +52,7 @@ float CollisionPlane::RadiusForDirection(const Vec3*, int)
 }
 
 // The direction lives in a file-scope vector, so two of these cannot run at once.
+// FUNCTION: HYPERX100 0x00495130
 // FUNCTION: HYPERX 0x0042e7d0
 int CollisionPlane::SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut)
 {
@@ -58,6 +64,7 @@ int CollisionPlane::SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut)
 }
 
 // Tests the whole line: answers -1 for a null direction, 0 when parallel, 1 with the crossing.
+// FUNCTION: HYPERX100 0x00495180
 // FUNCTION: HYPERX 0x0042e810
 int CollisionPlane::RayIntersection(Vec3* pVDir, Vec3* pVOrigin, Vec3* pVHitOut)
 {
@@ -97,6 +104,7 @@ int CollisionPlane::RayIntersection(Vec3* pVDir, Vec3* pVOrigin, Vec3* pVHitOut)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00495320
 // FUNCTION: HYPERX 0x0042e930
 float CollisionPlane::GetZ(float x, float y)
 {

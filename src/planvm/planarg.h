@@ -48,6 +48,7 @@ short         GetViewOwner(EngineObject** ppUnused, const PlanWord* pStream, int
 float __cdecl ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex);
 
 // The linker folded these bodies onto GetMultiplierCollisionObject, which carries the marker.
+// FUNCTION: HYPERX100 0x004e0a70
 inline short GetTurnstileCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -55,6 +56,7 @@ inline short GetTurnstileCollisionObject(EngineObject** ppActor, const PlanWord*
     return (short)(*pResult = (nMe + (COB_TURNSTILE - SLOT_TURNSTILE)));
 }
 
+// FUNCTION: HYPERX100 0x004e0aa0
 inline short GetLimboPoleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -62,6 +64,7 @@ inline short GetLimboPoleCollisionObject(EngineObject** ppActor, const PlanWord*
     return (short)(*pResult = (nMe + (COB_LIMBO_POLE - SLOT_LIMBO_POLE)));
 }
 
+// FUNCTION: HYPERX100 0x004e0ad0
 inline short GetLaserHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -69,6 +72,7 @@ inline short GetLaserHurdleCollisionObject(EngineObject** ppActor, const PlanWor
     return (short)(*pResult = (nMe + (COB_LASER_HURDLE - SLOT_LASER_HURDLE)));
 }
 
+// FUNCTION: HYPERX100 0x004e0b20
 inline short GetFastLaneCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -76,6 +80,7 @@ inline short GetFastLaneCollisionObject(EngineObject** ppActor, const PlanWord*,
     return (short)(*pResult = (nMe + (COB_FAST_LANE - SLOT_FAST_LANE)));
 }
 
+// FUNCTION: HYPERX100 0x004e0b50
 inline short GetSlowLaneCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -83,6 +88,7 @@ inline short GetSlowLaneCollisionObject(EngineObject** ppActor, const PlanWord*,
     return (short)(*pResult = (nMe + (COB_SLOW_LANE - SLOT_SLOW_LANE)));
 }
 
+// FUNCTION: HYPERX100 0x004e0b80
 inline short GetMineCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -90,6 +96,7 @@ inline short GetMineCollisionObject(EngineObject** ppActor, const PlanWord*, int
     return (short)(*pResult = (nMe + (COB_MINE - SLOT_MINE)));
 }
 
+// FUNCTION: HYPERX100 0x004e0bb0
 inline short GetSwarfCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -97,6 +104,7 @@ inline short GetSwarfCollisionObject(EngineObject** ppActor, const PlanWord*, in
     return (short)(*pResult = (nMe + (COB_SWARF - SLOT_SWARF)));
 }
 
+// FUNCTION: HYPERX100 0x004e0be0
 inline short GetExplosionCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -104,6 +112,7 @@ inline short GetExplosionCollisionObject(EngineObject** ppActor, const PlanWord*
     return (short)(*pResult = (nMe + (COB_EXPLOSION - SLOT_EXPLOSION)));
 }
 
+// FUNCTION: HYPERX100 0x004e0c10
 inline short GetArmoryCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -111,6 +120,7 @@ inline short GetArmoryCollisionObject(EngineObject** ppActor, const PlanWord*, i
     return (short)(*pResult = (nMe + (COB_ARMORY - SLOT_ARMORY)));
 }
 
+// FUNCTION: HYPERX100 0x004e0c40
 inline short GetHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -119,6 +129,7 @@ inline short GetHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, i
 }
 
 // The linker folded this body onto GetRedRandomizerCollisionObject, which carries the marker.
+// FUNCTION: HYPERX100 0x004e0ca0
 inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -127,6 +138,7 @@ inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const Pla
 }
 
 // The linker folded this body onto GetMyDragStartPos, which carries the marker.
+// FUNCTION: HYPERX100 0x004e06a0
 inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
 {
     const short nMe = (*ppActor)->GetSlot();
@@ -135,91 +147,109 @@ inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
 }
 
 // The linker folded these bodies onto GetViewOwner, which carries the marker.
+// FUNCTION: HYPERX100 0x004e0d70
 inline short GetViewOwnerCOB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0d80
 inline short GetVwOwnrAwarnsBub(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0d90
 inline short GetViewOnrsOppn1COB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0da0
 inline short GetViewOnrsOppn2COB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0db0
 inline short GetWatchedObject(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0dc0
 inline short GetTrackedObject(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0dd0
 inline short GetTrackedObjsTeammate(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0de0
 inline short GetViewOwnersGoal(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e00
 inline short GetVwOwnrOppnGoalie(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e10
 inline short GetViewOwnersTeammate(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e20
 inline short GetViewOnrsOppn1(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e30
 inline short GetViewOnrsOppn2(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0df0
 inline short GetVwOwnrsOppnGoal(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e40
 inline short GetRokCarrier(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e50
 inline short GetLastRokCarrier(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e60
 inline short GetPrevRokCarrier(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e70
 inline short GetRokCarrierCOB(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);
 }
 
+// FUNCTION: HYPERX100 0x004e0e80
 inline short GetNonRokCarryingOppn(EngineObject**, const PlanWord* pStream, int* pResult)
 {
     return (short)(*pResult = pStream->n);

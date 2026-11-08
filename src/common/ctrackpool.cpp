@@ -4,6 +4,7 @@
 #include "engine/ctrack.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041efb0
 // FUNCTION: HYPERX 0x00413f60
 void CTrackPool::Init()
 {
@@ -23,6 +24,7 @@ void CTrackPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00422cb0
 // FUNCTION: HYPERX 0x00413ff0
 void* CTrackPool::Alloc()
 {

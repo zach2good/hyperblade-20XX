@@ -17,6 +17,7 @@
 #define RLE_LITERAL 0x80
 
 // Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent. The block leaks.
+// FUNCTION: HYPERX100 0x004b9300
 // FUNCTION: HYPERX 0x0044f550
 RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
 {
@@ -106,6 +107,7 @@ RLESprite* __cdecl SoftTex::CompressToRLE(const BITMAPINFOHEADER* pDib)
 }
 
 // The newest texture is unlinked first.
+// FUNCTION: HYPERX100 0x00445a40
 // FUNCTION: HYPERX 0x004928a0
 SoftTex::SoftTex()
 {
@@ -119,6 +121,7 @@ SoftTex::SoftTex()
 }
 
 // A texture not in the list sets the head to its own next pointer.
+// FUNCTION: HYPERX100 0x00445a70
 // FUNCTION: HYPERX 0x004928d0
 void SoftTex::RemoveFromList()
 {
@@ -156,6 +159,7 @@ void SoftTex::RemoveFromList()
 
 // The palette is built from the first bitmap loaded, so later textures show through its colours.
 
+// FUNCTION: HYPERX100 0x00445ad0
 // FUNCTION: HYPERX 0x00492920
 char SoftTex::Load(const char* pszName, HPALETTE)
 {
@@ -226,6 +230,7 @@ char SoftTex::Load(const char* pszName, HPALETTE)
 #define TEXPOLY_EDGE_COUNT 0x1f
 
 // The entry point is loaded at run time; a null one drops the polygon.
+// FUNCTION: HYPERX100 0x00445db0
 // FUNCTION: HYPERX 0x00492b60
 void SoftTex::DrawTexPoly(TransformObject*, FacePolyBuffer* pPoly, float)
 {
@@ -235,13 +240,15 @@ void SoftTex::DrawTexPoly(TransformObject*, FacePolyBuffer* pPoly, float)
     }
 }
 
+// FUNCTION: HYPERX100 0x00445d70
 // FUNCTION: HYPERX 0x00492b40
 int SoftTex::GetWidth() const
 {
     return m_image.nWidth;
 }
 
-// The original's linker folded this onto Widget::GetTypeID, so it has no address of its own.
+// v1.0.0.1's linker folded this onto Widget::GetTypeID, so it has no address of its own there.
+// FUNCTION: HYPERX100 0x00445d80
 int SoftTex::GetHeight() const
 {
     return m_image.nHeight;

@@ -12,6 +12,11 @@ public:
     void FromMatrix(TransformObject* pSource);
     void ToMatrix(TransformObject* pTarget);
 
+#ifdef HYPERX_V100
+    // This times pRhs, in place, so each term reads the parts already written.
+    void MultiplyInPlace(const Quat* pRhs);
+#endif
+
     float w;
     float x;
     float y;

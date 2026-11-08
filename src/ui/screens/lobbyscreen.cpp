@@ -10,12 +10,14 @@
 #include "engine/game.h"
 #include "sound/soundids.h"
 
+// FUNCTION: HYPERX100 0x00414ed0
 // FUNCTION: HYPERX 0x0048ced0
 LobbyScreen::~LobbyScreen()
 {
 }
 
 // Six widgets and twenty-six bitmaps; only the bitmap that sizes a widget is kept.
+// FUNCTION: HYPERX100 0x00414f80
 // FUNCTION: HYPERX 0x0048cf00
 LobbyScreen::LobbyScreen()
 {
@@ -117,6 +119,7 @@ LobbyScreen::LobbyScreen()
 }
 
 // The lights are in the table and empty.
+// FUNCTION: HYPERX100 0x00415c90
 // FUNCTION: HYPERX 0x0048d820
 void LobbyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

@@ -43,6 +43,7 @@ extern Vec3 g_vLightDirModel;
 #define SW_ROUND_BIAS 12582912.0f
 
 // Screen coordinates are rounded by adding a large constant and reading the float's low word.
+// FUNCTION: HYPERX100 0x0045ee40
 // FUNCTION: HYPERX 0x0044a200
 void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
@@ -396,6 +397,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 }
 
 // A one-indexed heapsort keyed on the depth four bytes into each face.
+// FUNCTION: HYPERX100 0x0045fbe0
 // FUNCTION: HYPERX 0x0044aa90
 void __fastcall SWRend::SortFaces(short nCount)
 {
@@ -476,6 +478,7 @@ void __fastcall SWRend::SortFaces(short nCount)
 // a time, and the colour goes through g_nFillColour because that arm needs every register.
 // Why assembly: C cannot take EBP as a data register inside a framed function, and has no dead
 // load.
+// FUNCTION: HYPERX100 0x0045fd20
 // FUNCTION: HYPERX 0x0044ab40
 void __cdecl SWRend::FillSpans(int nColour)
 {
@@ -661,6 +664,7 @@ void __cdecl SWRend::FillSpans(int nColour)
 // only. It returns whether it walked the edge, which a flat edge does not.
 // Why assembly: C cannot save and restore ESP and the flags, or use EBP as a data register
 // inside a framed function.
+// FUNCTION: HYPERX100 0x0045ff50
 // FUNCTION: HYPERX 0x0044ad00
 unsigned char __cdecl SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2)
 {
@@ -843,6 +847,7 @@ unsigned char __cdecl SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, u
     return bWalked;
 }
 
+// FUNCTION: HYPERX100 0x00460170
 // FUNCTION: HYPERX 0x0044aeb0
 void __cdecl SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int nColour)
 {
@@ -875,6 +880,7 @@ void __cdecl SWRend::FillPolygon(const POINT* pPoints, int nPoints, unsigned int
 // and at most one row draws only its first pixel.
 // Why assembly: C cannot use EBP as a data register inside a framed function, or hand a value
 // from one arm to the next on the stack.
+// FUNCTION: HYPERX100 0x00460250
 // FUNCTION: HYPERX 0x0044af70
 void __cdecl SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
 {
@@ -989,12 +995,22 @@ void __cdecl SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
     }
 }
 
+// FUNCTION: HYPERX100 0x0046d370
 // FUNCTION: HYPERX 0x0044b150
 BOOL SWRend::SetBltDestRect(int nLeft, int nTop, int nRight, int nBottom)
 {
     return SetRect(&g_rcBltDest, nLeft, nTop, nRight, nBottom);
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x0046d3a0
+void __cdecl SWRend::GetBltDestRect(RECT* pRect)
+{
+    *pRect = g_rcBltDest;
+}
+#endif
+
+// FUNCTION: HYPERX100 0x0048f000
 // FUNCTION: HYPERX 0x0044c980
 int __cdecl SWRend::RefreshBltDestRect(HWND hWnd, WPARAM, int, int)
 {
@@ -1025,6 +1041,7 @@ int __cdecl SWRend::RefreshBltDestRect(HWND hWnd, WPARAM, int, int)
 // edges. Each row is a list of runs; a byte with the top bit set starts a run of that many
 // opaque pixels, which are copied, and any other byte skips that many transparent ones.
 // Why assembly: no C spelling of the copy gives the byte, word, dword order the original has.
+// FUNCTION: HYPERX100 0x004b8f00
 // FUNCTION: HYPERX 0x0044f240
 void __cdecl SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite)
 {
@@ -1146,6 +1163,7 @@ void __cdecl SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLES
     } while (nRows != 0);
 }
 
+// FUNCTION: HYPERX100 0x004b9630
 // FUNCTION: HYPERX 0x0044f7d0
 void __cdecl SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour)
 {
@@ -1197,6 +1215,7 @@ void __cdecl SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWi
 }
 
 // With no second material the previous face's stays; the rasteriser reads it only when told to.
+// FUNCTION: HYPERX100 0x00451a40
 // FUNCTION: HYPERX 0x0046f970
 void __fastcall SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 {
@@ -1237,6 +1256,7 @@ void __fastcall SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, shor
     }
 }
 
+// FUNCTION: HYPERX100 0x00499e20
 // FUNCTION: HYPERX 0x0047fb70
 void __fastcall SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale)
 {

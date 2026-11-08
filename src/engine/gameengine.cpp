@@ -131,6 +131,7 @@ SurfacePoint g_ptPlanEditorOrigin(0x1c, 0x1c);
 
 #define TEAM_KEYWORD_COUNT 9
 
+// FUNCTION: HYPERX100 0x0048dcf0
 // FUNCTION: HYPERX 0x0040b970
 void __cdecl GameEngine::InitAgendaItemPools(void)
 {
@@ -150,6 +151,7 @@ void __cdecl GameEngine::InitAgendaItemPools(void)
 }
 
 // The statement order is the original's: the first pool built goes into slot eleven.
+// FUNCTION: HYPERX100 0x0041a900
 // FUNCTION: HYPERX 0x0040bbf0
 void __cdecl GameEngine::CreateAgendaItemPools(void)
 {
@@ -193,6 +195,7 @@ void __cdecl GameEngine::CreateAgendaItemPools(void)
 
 // Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
 
+// FUNCTION: HYPERX100 0x004243c0
 // FUNCTION: HYPERX 0x0040c070
 void __cdecl GameEngine::DestroyAgendaItemPools(void)
 {
@@ -212,6 +215,7 @@ void __cdecl GameEngine::DestroyAgendaItemPools(void)
 
 // Colours the multiplier's two materials by the rok's value; the first call saves their rest colours.
 
+// FUNCTION: HYPERX100 0x004aced0
 // FUNCTION: HYPERX 0x00463220
 void __cdecl GameEngine::ShowRokValue(short nRokValue)
 {
@@ -261,6 +265,7 @@ void __cdecl GameEngine::ShowRokValue(short nRokValue)
 }
 
 // Counts the mines, then the swarfs, within ten units of slot nWhich.
+// FUNCTION: HYPERX100 0x004afce0
 // FUNCTION: HYPERX 0x00465530
 int __cdecl GameEngine::CountEntitiesInRange(short nWhich)
 {
@@ -325,6 +330,7 @@ int __cdecl GameEngine::CountEntitiesInRange(short nWhich)
 #define HIDDEN_TEAM_A 8
 #define HIDDEN_TEAM_B 2
 
+// FUNCTION: HYPERX100 0x004b4f80
 // FUNCTION: HYPERX 0x00469380
 int __cdecl GameEngine::IsTeamWinning(unsigned char nTeam)
 {
@@ -336,6 +342,7 @@ int __cdecl GameEngine::IsTeamWinning(unsigned char nTeam)
     return g_pGameEngine->GetHomeScore() > g_pGameEngine->GetAwayScore();
 }
 
+// FUNCTION: HYPERX100 0x00486ff0
 // FUNCTION: HYPERX 0x0047acf0
 unsigned short __fastcall GameEngine::TogglePause(HWND hWnd, int bRestyle)
 {
@@ -370,6 +377,7 @@ unsigned short __fastcall GameEngine::TogglePause(HWND hWnd, int bRestyle)
     return g_pGameEngine->m_wRunState;
 }
 
+// FUNCTION: HYPERX100 0x004d64f0
 // FUNCTION: HYPERX 0x00480d20
 GameEngine::GameEngine()
 {
@@ -474,6 +482,7 @@ GameEngine::GameEngine()
 
 // A drawn score with any away row still damaged restarts the bracket; awards nought and five
 // are written and never read.
+// FUNCTION: HYPERX100 0x004d6870
 // FUNCTION: HYPERX 0x00480fc0
 void GameEngine::AdvanceTournamentBracket()
 {
@@ -585,6 +594,7 @@ extern float g_flFrameDelta;
 extern unsigned char g_bPeriodCountdownActive;
 
 // The five-slot ring holds the mean.
+// FUNCTION: HYPERX100 0x004d6a90
 // FUNCTION: HYPERX 0x00481130
 void GameEngine::TickClock()
 {
@@ -761,6 +771,7 @@ void GameEngine::TickClock()
     }
 }
 
+// FUNCTION: HYPERX100 0x004d7020
 // FUNCTION: HYPERX 0x00481590
 char GameEngine::AreAllPlayersInjured()
 {
@@ -785,6 +796,7 @@ char GameEngine::AreAllPlayersInjured()
     return bAll;
 }
 
+// FUNCTION: HYPERX100 0x004d70e0
 // FUNCTION: HYPERX 0x00481620
 unsigned char GameEngine::IsHomeTeamInjured()
 {
@@ -836,6 +848,7 @@ unsigned char GameEngine::IsHomeTeamInjured()
     return bBelow;
 }
 
+// FUNCTION: HYPERX100 0x004d72c0
 // FUNCTION: HYPERX 0x004817a0
 unsigned char GameEngine::IsHomeTeamDead()
 {
@@ -881,6 +894,7 @@ unsigned char GameEngine::IsHomeTeamDead()
     return bBelow;
 }
 
+// FUNCTION: HYPERX100 0x004d73a0
 // FUNCTION: HYPERX 0x00481820
 unsigned char GameEngine::IsAwayTeamInjured()
 {
@@ -950,6 +964,7 @@ extern unsigned char g_bPeriodCountdownActive;
 #define TEXT_LINE_NAMES      2
 #define TEXT_DURATION        0x640
 
+// FUNCTION: HYPERX100 0x004d7590
 // FUNCTION: HYPERX 0x004819a0
 unsigned char GameEngine::IsAwayTeamDead()
 {
@@ -997,6 +1012,7 @@ unsigned char GameEngine::IsAwayTeamDead()
 
 // The order is the original's: reset flags, park the rok, idle the AI, then scale the stats.
 
+// FUNCTION: HYPERX100 0x004d7670
 // FUNCTION: HYPERX 0x00481a20
 void GameEngine::BeginMatchPlay()
 {
@@ -1150,6 +1166,7 @@ void GameEngine::BeginMatchPlay()
 #define MATCH_STEP         (1.0f / 18.0f)
 
 // Eighteen frames per second; the ring starts at nought and the pause mark at minus one.
+// FUNCTION: HYPERX100 0x004d7ab0
 // FUNCTION: HYPERX 0x00481d60
 void GameEngine::InitMatchTimers()
 {
@@ -1206,6 +1223,7 @@ enum ConfigKeyword
     KEYWORD_AWAY  = 2
 };
 
+// FUNCTION: HYPERX100 0x004d7b90
 // FUNCTION: HYPERX 0x00481e10
 char GameEngine::LoadConfigFile(const char* pszFileName)
 {
@@ -1223,6 +1241,7 @@ char GameEngine::LoadConfigFile(const char* pszFileName)
 }
 
 // Reading game.cfg: the arena and the two teams; a known keyword with no value is fatal.
+// FUNCTION: HYPERX100 0x004d7be0
 // FUNCTION: HYPERX 0x00481e50
 char GameEngine::LoadGameConfig(const char* pszFileName)
 {
@@ -1338,6 +1357,7 @@ enum ObjectDefCommand
 };
 
 // Fourteen commands; the ratings commands write without checking a definition exists.
+// FUNCTION: HYPERX100 0x004d7fc0
 // FUNCTION: HYPERX 0x00482170
 ObjectDef* GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnModelId)
 {
@@ -1478,6 +1498,7 @@ enum ObjectAttributeSeen
 #define NAME_SPACER '_'
 
 // SGoal counts as NGoal and HeadCam as MainCamera; the last of the 32 type names never matches.
+// FUNCTION: HYPERX100 0x004d8250
 // FUNCTION: HYPERX 0x00482390
 ObjectDef* GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 {
@@ -1751,6 +1772,7 @@ enum ObjectDefKey
 };
 
 // Neither complaint names the failing field, and neither stops the walk.
+// FUNCTION: HYPERX100 0x004d8b40
 // FUNCTION: HYPERX 0x00482b00
 char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
 {
@@ -1939,6 +1961,7 @@ inline int GameEngine::FindTeamDefinition(FileObj* pFile, char** ppLine, char* p
 }
 
 // The environment and dromext errors each name the other's field.
+// FUNCTION: HYPERX100 0x004d8ff0
 // FUNCTION: HYPERX 0x00482e70
 TeamBlock* GameEngine::ParseTeamHTMFile(FileObj* pFile)
 {
@@ -2160,6 +2183,7 @@ quit:
 
 // A RandomizerBubble on a RedRandomizer becomes the next kind ("MAJOR KLUDGE HERE").
 
+// FUNCTION: HYPERX100 0x004d97c0
 // FUNCTION: HYPERX 0x00483300
 char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned int nModelId)
 {
@@ -2436,6 +2460,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
 #define GOALIE_RATING_DEFAULT 5.0f
 
 // Values are whole; EndRatings or anything past the end stores one past the array.
+// FUNCTION: HYPERX100 0x004da160
 // FUNCTION: HYPERX 0x00483b50
 int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nLevel)
 {
@@ -2706,6 +2731,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
 // The modifier map: a bubble kind on the way in, its CollisionObjectID on the way out.
 
+// FUNCTION: HYPERX100 0x004da7c0
 // FUNCTION: HYPERX 0x00484070
 void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
 {
@@ -2823,6 +2849,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
 #define TOKENS_MAX     30
 
 // A token longer than the buffer overruns it; nothing bounds the token count.
+// FUNCTION: HYPERX100 0x004dad20
 // FUNCTION: HYPERX 0x00484460
 char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 {
@@ -2880,6 +2907,7 @@ char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 }
 
 // A type's id counter never goes below that type's baseline.
+// FUNCTION: HYPERX100 0x004db760
 // FUNCTION: HYPERX 0x00484be0
 void GameEngine::UnloadArena()
 {
@@ -2933,6 +2961,7 @@ void GameEngine::UnloadArena()
 }
 
 // The type id starts at 102, so a file that names no type still produces something.
+// FUNCTION: HYPERX100 0x004db8b0
 // FUNCTION: HYPERX 0x00484cf0
 char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
 {
@@ -2967,6 +2996,7 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
 #define ARENA_OBJECT_MAX 100
 
 // Fatal returns, so an object past the hundredth is still built and overruns anModelIds.
+// FUNCTION: HYPERX100 0x004dba80
 // FUNCTION: HYPERX 0x00484e80
 char GameEngine::LoadArena(const char* pszArenaPath)
 {
@@ -3032,6 +3062,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
 }
 
 // Selecting the arena already selected answers true at once.
+// FUNCTION: HYPERX100 0x004dbd90
 // FUNCTION: HYPERX 0x004850f0
 char GameEngine::SetArena(short nArena)
 {
@@ -3083,6 +3114,7 @@ char GameEngine::SetArena(short nArena)
 // Two letters and a terminator for each of the two teams.
 #define TEAM_ABBREVIATION 3
 
+// FUNCTION: HYPERX100 0x004dbe90
 // FUNCTION: HYPERX 0x004851a0
 void GameEngine::UnloadEntitySet(TeamBlock* pSet)
 {
@@ -3126,6 +3158,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
     delete pSet;
 }
 
+// FUNCTION: HYPERX100 0x004dbf80
 // FUNCTION: HYPERX 0x00485250
 char GameEngine::UnloadHomeTeam()
 {
@@ -3143,6 +3176,7 @@ char GameEngine::UnloadHomeTeam()
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dbfb0
 // FUNCTION: HYPERX 0x00485280
 char GameEngine::UnloadAwayTeam()
 {
@@ -3162,6 +3196,7 @@ char GameEngine::UnloadAwayTeam()
 
 // Taunt files satun<team><n>.wav are copied off the CD; the existence checks leak their find
 // handles and pPattern is never freed, as in the original.
+// FUNCTION: HYPERX100 0x004dbfe0
 // FUNCTION: HYPERX 0x004852b0
 char GameEngine::UpdateTeamSounds(short nHome, short nAway)
 {
@@ -3359,6 +3394,7 @@ release:
 #define FIRST_RUN_LAST   2
 
 // A rematch reloads the same teams; a failed load names the home team whichever half failed.
+// FUNCTION: HYPERX100 0x004dc510
 // FUNCTION: HYPERX 0x004856f0
 char GameEngine::SetTeams(short nHome, short nAway)
 {
@@ -3463,6 +3499,7 @@ extern int g_anBodyPartModelIds[8];
 #define TEAM_PLAYERS_ON_DROME 3
 
 // Ten slots: five players, four body parts and the team's Rok; only four players get ratings.
+// FUNCTION: HYPERX100 0x004dc700
 // FUNCTION: HYPERX 0x004858b0
 TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 {
@@ -3661,6 +3698,7 @@ TeamBlock* GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dcbd0
 // FUNCTION: HYPERX 0x00485c70
 char GameEngine::LoadHomeTeam(const char* pszTeamPath)
 {
@@ -3681,6 +3719,7 @@ char GameEngine::LoadHomeTeam(const char* pszTeamPath)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dcc20
 // FUNCTION: HYPERX 0x00485cb0
 char GameEngine::LoadAwayTeam(const char* pszTeamPath)
 {
@@ -3701,6 +3740,7 @@ char GameEngine::LoadAwayTeam(const char* pszTeamPath)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dcc70
 // FUNCTION: HYPERX 0x00485cf0
 ObjectDef* GameEngine::GetArenaRokDef()
 {
@@ -3717,6 +3757,7 @@ ObjectDef* GameEngine::GetArenaRokDef()
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dcc90
 // FUNCTION: HYPERX 0x00485d10
 ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
 {
@@ -3750,6 +3791,7 @@ ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
 }
 
 // A reserve's recovery since leaving the ice is added once, clamped at a hundred.
+// FUNCTION: HYPERX100 0x004dcce0
 // FUNCTION: HYPERX 0x00485d50
 char GameEngine::SubstitutePlayer(int nSlot, int nWith)
 {
@@ -3870,6 +3912,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
 #define SLOT_TEAM_TWO_SECOND 3
 
 // DamageGate's third arm asks the difficulty and discards the answer.
+// FUNCTION: HYPERX100 0x004dd150
 // FUNCTION: HYPERX 0x00486030
 unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
 {
@@ -3951,6 +3994,7 @@ unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
 }
 
 // The larger block goes into the 252-byte slots and the smaller into the 196-byte ones.
+// FUNCTION: HYPERX100 0x004dd300
 // FUNCTION: HYPERX 0x00486140
 void GameEngine::SyncPlayerDataToTeam()
 {
@@ -3990,6 +4034,7 @@ void GameEngine::SyncPlayerDataToTeam()
 }
 
 // Undecoded kinds fall to the base object; construction cost is charged to the install level.
+// FUNCTION: HYPERX100 0x004dd400
 // FUNCTION: HYPERX 0x00486200
 EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 {
@@ -4129,6 +4174,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 #define ENGINE_SLOT_COUNT 0x66
 
 // The first slot array is the camera holder; stubbing it faults the graphics set-up.
+// FUNCTION: HYPERX100 0x004ddaf0
 // FUNCTION: HYPERX 0x00486680
 void GameEngine::Init(const char* pszConfig)
 {
@@ -4192,6 +4238,7 @@ void GameEngine::Init(const char* pszConfig)
     }
 }
 
+// FUNCTION: HYPERX100 0x004ddcd0
 // FUNCTION: HYPERX 0x004867b0
 char GameEngine::SyncRenderQueueSize()
 {
@@ -4219,6 +4266,7 @@ char GameEngine::SyncRenderQueueSize()
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004ddd30
 // FUNCTION: HYPERX 0x004867f0
 void GameEngine::StartMatch()
 {
@@ -4242,6 +4290,7 @@ void GameEngine::StartMatch()
     }
 }
 
+// FUNCTION: HYPERX100 0x004dddc0
 // FUNCTION: HYPERX 0x00486860
 void GameEngine::InitPlanSystems()
 {
@@ -4254,6 +4303,7 @@ void GameEngine::InitPlanSystems()
     PlanInteractorFactories::ResetAll();
 }
 
+// FUNCTION: HYPERX100 0x004dddf0
 // FUNCTION: HYPERX 0x00486890
 void GameEngine::RegisterObject(int nSlot, EngineObject* pObject)
 {
@@ -4264,6 +4314,7 @@ void GameEngine::RegisterObject(int nSlot, EngineObject* pObject)
     m_nSlotCount += pObject->GetComponentCount();
 }
 
+// FUNCTION: HYPERX100 0x004dde20
 // FUNCTION: HYPERX 0x004868c0
 void GameEngine::UnregisterObject(int nSlot)
 {
@@ -4278,6 +4329,7 @@ void GameEngine::UnregisterObject(int nSlot)
 }
 
 // The first overlap found is processed and ends the walk.
+// FUNCTION: HYPERX100 0x004dde60
 // FUNCTION: HYPERX 0x004868f0
 void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
 {
@@ -4311,6 +4363,7 @@ void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
     }
 }
 
+// FUNCTION: HYPERX100 0x004ddf60
 // FUNCTION: HYPERX 0x004869c0
 void GameEngine::BroadcastCollisionEvents()
 {
@@ -4330,6 +4383,7 @@ void GameEngine::BroadcastCollisionEvents()
 
 // The sender is not told about its own event. A goal stops the clock, a shot restarts it and a
 // start drag zeroes it.
+// FUNCTION: HYPERX100 0x004ddfc0
 // FUNCTION: HYPERX 0x00486a10
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
@@ -4378,6 +4432,7 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 
 // Mode three restarts the match, two hands the main camera its view, one is the ordinary frame.
 
+// FUNCTION: HYPERX100 0x004de100
 // FUNCTION: HYPERX 0x00486b20
 void GameEngine::PerFrameUpdate()
 {
@@ -4456,6 +4511,7 @@ void GameEngine::PerFrameUpdate()
     }
 }
 
+// FUNCTION: HYPERX100 0x004de250
 // FUNCTION: HYPERX 0x00486c20
 void GameEngine::SyncNetworkStateToObjects()
 {
@@ -4478,6 +4534,7 @@ void GameEngine::SyncNetworkStateToObjects()
     }
 }
 
+// FUNCTION: HYPERX100 0x004de2c0
 // FUNCTION: HYPERX 0x00486c70
 char GameEngine::InsertObjectSorted(short nId)
 {
@@ -4531,6 +4588,7 @@ char GameEngine::InsertObjectSorted(short nId)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004de3f0
 // FUNCTION: HYPERX 0x00486d60
 char GameEngine::RemoveFromSortedList(short nId)
 {
@@ -4560,6 +4618,7 @@ char GameEngine::RemoveFromSortedList(short nId)
 }
 
 // The second argument is never read.
+// FUNCTION: HYPERX100 0x004de490
 // FUNCTION: HYPERX 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
@@ -4604,6 +4663,7 @@ void GameEngine::SetRunState(short bRunning, int)
 }
 
 // A slot whose object is already released leaves the count wrong.
+// FUNCTION: HYPERX100 0x004de5d0
 // FUNCTION: HYPERX 0x00486ee0
 GameEngine::~GameEngine()
 {
@@ -4656,6 +4716,7 @@ GameEngine::~GameEngine()
     }
 }
 
+// FUNCTION: HYPERX100 0x004de6e0
 // FUNCTION: HYPERX 0x00486fb0
 void GameEngine::ReplaceEntity(int nKind, ObjectDef* pDef)
 {
@@ -4671,6 +4732,7 @@ void GameEngine::ReplaceEntity(int nKind, ObjectDef* pDef)
 }
 
 // The tournament case clears the score block and both stat arrays.
+// FUNCTION: HYPERX100 0x004de730
 // FUNCTION: HYPERX 0x00486ff0
 void GameEngine::RestartMatch()
 {
@@ -4725,6 +4787,7 @@ void GameEngine::RestartMatch()
 
 // A full queue keeps the five words it wrote and answers false.
 
+// FUNCTION: HYPERX100 0x004de830
 // FUNCTION: HYPERX 0x004870b0
 char GameEngine::PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender, int bFromInput)
 {
@@ -4746,6 +4809,7 @@ char GameEngine::PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender
 }
 
 // The lock is taken only around each pull; the pending list at the end runs unguarded.
+// FUNCTION: HYPERX100 0x004de8f0
 // FUNCTION: HYPERX 0x00487140
 void GameEngine::ProcessInputCommandQueue()
 {
@@ -4818,6 +4882,7 @@ void GameEngine::ProcessInputCommandQueue()
     }
 }
 
+// FUNCTION: HYPERX100 0x004deb70
 // FUNCTION: HYPERX 0x00487340
 void GameEngine::ClearPendingEvents()
 {
@@ -4830,24 +4895,28 @@ void GameEngine::ClearPendingEvents()
     m_aQueueMessage[0] = MSG_NOMSG;
 }
 
+// FUNCTION: HYPERX100 0x004ded80
 // FUNCTION: HYPERX 0x00487480
 int GameEngine::GetArmoryCount() const
 {
     return m_abTypeHighWater[id_GOB_Armory] - g_abObjectTypeBaseline[id_GOB_Armory];
 }
 
+// FUNCTION: HYPERX100 0x004deda0
 // FUNCTION: HYPERX 0x00487490
 int GameEngine::GetSwarfCount() const
 {
     return m_abTypeHighWater[id_GOB_Swarf] - g_abObjectTypeBaseline[id_GOB_Swarf];
 }
 
+// FUNCTION: HYPERX100 0x004dedc0
 // FUNCTION: HYPERX 0x004874b0
 int GameEngine::GetMineCount() const
 {
     return m_abTypeHighWater[id_GOB_Mine] - g_abObjectTypeBaseline[id_GOB_Mine];
 }
 
+// FUNCTION: HYPERX100 0x004dede0
 // FUNCTION: HYPERX 0x004874c0
 int GameEngine::GetEntityCountOfType(int nType)
 {
@@ -4859,30 +4928,35 @@ int GameEngine::GetEntityCountOfType(int nType)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dee10
 // FUNCTION: HYPERX 0x004874f0
 int GameEngine::GetHomeScore() const
 {
     return m_nScoreHome;
 }
 
+// FUNCTION: HYPERX100 0x004dee20
 // FUNCTION: HYPERX 0x00487500
 int GameEngine::GetAwayScore() const
 {
     return m_nScoreAway;
 }
 
+// FUNCTION: HYPERX100 0x004dee30
 // FUNCTION: HYPERX 0x00487510
 void GameEngine::SetHomeScore(int nScoreHome)
 {
     m_nScoreHome = nScoreHome;
 }
 
+// FUNCTION: HYPERX100 0x004dee40
 // FUNCTION: HYPERX 0x00487520
 void GameEngine::SetAwayScore(int nScoreAway)
 {
     m_nScoreAway = nScoreAway;
 }
 
+// FUNCTION: HYPERX100 0x004dee50
 // FUNCTION: HYPERX 0x00487530
 int GameEngine::IncrementHomeScore()
 {
@@ -4891,6 +4965,7 @@ int GameEngine::IncrementHomeScore()
     return m_nScoreHome;
 }
 
+// FUNCTION: HYPERX100 0x004dee70
 // FUNCTION: HYPERX 0x00487540
 int GameEngine::IncrementAwayScore()
 {
@@ -4899,6 +4974,7 @@ int GameEngine::IncrementAwayScore()
     return m_nScoreAway;
 }
 
+// FUNCTION: HYPERX100 0x004dee90
 // FUNCTION: HYPERX 0x00487550
 void GameEngine::Reset()
 {
@@ -4909,6 +4985,7 @@ void GameEngine::Reset()
     InfoBar::IncrementScore(4);
 }
 
+// FUNCTION: HYPERX100 0x004deec0
 // FUNCTION: HYPERX 0x00487580
 void GameEngine::ResetPeriodToFirst()
 {
@@ -4918,6 +4995,7 @@ void GameEngine::ResetPeriodToFirst()
 #define TEAM_COUNT 2
 
 // Writes only in tournament player mode.
+// FUNCTION: HYPERX100 0x004deed0
 // FUNCTION: HYPERX 0x00487590
 char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 {
@@ -5046,6 +5124,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 #define ARENA_NONE ((short)0xffff)
 
 // The teams are set first, because that builds the objects the rest writes into.
+// FUNCTION: HYPERX100 0x004df2f0
 // FUNCTION: HYPERX 0x004878f0
 char GameEngine::ReadSaveFile(int nSlot)
 {
@@ -5190,6 +5269,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 }
 
 // Always answers false; the caller can tell success only by the buffer.
+// FUNCTION: HYPERX100 0x004df7a0
 // FUNCTION: HYPERX 0x00487cb0
 char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 {
@@ -5233,6 +5313,7 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 
 #define SLOT_ORDER_COUNT 4
 
+// FUNCTION: HYPERX100 0x004df960
 // FUNCTION: HYPERX 0x00487e50
 int GameEngine::GetDifficultyLevel() const
 {
@@ -5240,6 +5321,7 @@ int GameEngine::GetDifficultyLevel() const
 }
 
 // RATING_DAMAGE is never copied; a level above two answers no.
+// FUNCTION: HYPERX100 0x004df970
 // FUNCTION: HYPERX 0x00487e60
 char GameEngine::SetDifficultyLevel(unsigned int nLevel)
 {
@@ -5342,12 +5424,14 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004dfb90
 // FUNCTION: HYPERX 0x00488010
 unsigned char GameEngine::IsTournamentMode()
 {
     return g_nPlayerMode == PLAYER_MODE_TOURNAMENT;
 }
 
+// FUNCTION: HYPERX100 0x004dfba0
 // FUNCTION: HYPERX 0x00488020
 unsigned char GameEngine::IsExhibitionMode()
 {
@@ -5359,6 +5443,7 @@ unsigned char GameEngine::IsExhibitionMode()
 #define SCREEN_TWELFTHS_MIN 6
 
 // The drawn area is (step + 6) twelfths of the buffer, centred.
+// FUNCTION: HYPERX100 0x004dfbb0
 // FUNCTION: HYPERX 0x00488030
 void GameEngine::SetScreenSize(int nStep)
 {
@@ -5406,6 +5491,7 @@ void GameEngine::SetScreenSize(int nStep)
     }
 }
 
+// FUNCTION: HYPERX100 0x004dfce0
 // FUNCTION: HYPERX 0x00488130
 void GameEngine::SetBrutality(int nValue)
 {
@@ -5417,6 +5503,7 @@ void GameEngine::SetBrutality(int nValue)
     }
 }
 
+// FUNCTION: HYPERX100 0x004dfd10
 // FUNCTION: HYPERX 0x00488160
 void GameEngine::SetPeriodLengthMs(int nValue)
 {
@@ -5428,12 +5515,14 @@ void GameEngine::SetPeriodLengthMs(int nValue)
     }
 }
 
+// FUNCTION: HYPERX100 0x004dfd40
 // FUNCTION: HYPERX 0x00488190
 void GameEngine::SetAward(int nSlot, char cValue)
 {
     m_abAward[nSlot] = cValue;
 }
 
+// FUNCTION: HYPERX100 0x004dfd60
 // FUNCTION: HYPERX 0x004881b0
 void GameEngine::ClearAwards()
 {
@@ -5445,12 +5534,14 @@ void GameEngine::ClearAwards()
     }
 }
 
+// FUNCTION: HYPERX100 0x004dfd80
 // FUNCTION: HYPERX 0x004881d0
 char GameEngine::HasAward(int nSlot) const
 {
     return m_abAward[nSlot];
 }
 
+// FUNCTION: HYPERX100 0x004dfda0
 // FUNCTION: HYPERX 0x004881e0
 char GameEngine::EvalArcherAward()
 {
@@ -5485,6 +5576,7 @@ char GameEngine::EvalArcherAward()
     return bEligible;
 }
 
+// FUNCTION: HYPERX100 0x004dfe70
 // FUNCTION: HYPERX 0x00488270
 char GameEngine::EvalAnvilAward()
 {
@@ -5509,6 +5601,7 @@ char GameEngine::EvalAnvilAward()
 }
 
 // The particle systems start sixty slots in; a count of one or less finds nothing.
+// FUNCTION: HYPERX100 0x004dfee0
 // FUNCTION: HYPERX 0x004882d0
 ParticleSystem* GameEngine::FindFreeParticleSystem()
 {
@@ -5529,6 +5622,7 @@ ParticleSystem* GameEngine::FindFreeParticleSystem()
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004dff40
 // FUNCTION: HYPERX 0x00488310
 void GameEngine::DeactivateParticleSystems()
 {
@@ -5546,6 +5640,7 @@ void GameEngine::DeactivateParticleSystems()
     }
 }
 
+// FUNCTION: HYPERX100 0x004dff90
 // FUNCTION: HYPERX 0x00488350
 void GameEngine::SetAttackMode(int nOn)
 {
@@ -5556,6 +5651,7 @@ void GameEngine::SetAttackMode(int nOn)
     g_pGameOptions->WriteInt(g_pszOptionsSection, g_pszAttackModeKey, nFlag);
 }
 
+// FUNCTION: HYPERX100 0x004dffd0
 // FUNCTION: HYPERX 0x00488380
 void GameEngine::SetTeammateMode(int nOn)
 {
@@ -5566,6 +5662,7 @@ void GameEngine::SetTeammateMode(int nOn)
     g_pGameOptions->WriteInt(g_pszOptionsSection, g_pszTeammateModeKey, nFlag);
 }
 
+// FUNCTION: HYPERX100 0x004e0010
 // FUNCTION: HYPERX 0x004883b0
 ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
 {
@@ -5573,6 +5670,7 @@ ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
 }
 
 // Empty; folded with every empty two-argument body, so its call names Screen::OnWidgetMessage.
+// FUNCTION: HYPERX100 0x004d6860
 void GameEngine::SetInstance(HINSTANCE, int)
 {
 }
@@ -5589,3 +5687,36 @@ unsigned char g_abObjectTypeLimit[32] = {
 int g_anBodyPartModelIds[8] = { 94, 95, 96, 97, 98, 99, 100, 101 };
 
 int g_anTeamSlotOrder[4] = { 0, 1, 3, 4 };
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x004d6a20
+char GameEngine::EndMatchEarly()
+{
+    if (m_clock.nPeriod >= FINAL_PERIOD_INDEX && m_clock.nTickMs - m_clock.nPeriodStartMs >= (unsigned int)(m_nPeriodLengthMs - 5000))
+    {
+        return 0;
+    }
+
+    m_bMatchOver    = 1;
+    m_clock.nPeriod = PERIOD_COUNT;
+
+    g_gameApp.m_nEngineState = ESTATE_JUMBOTRON;
+    g_nPrevEngineState       = ESTATE_MATCH_LIVE;
+
+    return 1;
+}
+
+// FUNCTION: HYPERX100 0x004debb0
+void GameEngine::ForceNetBehaviorChange(short nSlot, unsigned short nPlan, unsigned short nBehaviour)
+{
+    if (m_nPending == -1)
+    {
+        m_nPending = (nSlot << 16) | ((nPlan & 0xff) << 8) | (nBehaviour & 0xff);
+
+        return;
+    }
+
+    // STRING: HYPERX100 0x0051ea8c
+    g_gameApp.Error("Too many forced net Behavior changes in this frame!");
+}
+#endif

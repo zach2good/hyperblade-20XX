@@ -35,6 +35,7 @@
 #define ARG_COUNT_MARKER 4
 #define ARG_COUNT_POINT  5
 
+// FUNCTION: HYPERX100 0x0042bd10
 // FUNCTION: HYPERX 0x00411c90
 void CRelaxToPosition::Bind(EngineObject* pSubject, GameBehaviorObject* pNode)
 {
@@ -54,6 +55,7 @@ void CRelaxToPosition::Bind(EngineObject* pSubject, GameBehaviorObject* pNode)
     m_vDest.x = m_vDest.y = m_vDest.z = g_flZeroAgendaItem;
 }
 
+// FUNCTION: HYPERX100 0x0042bd90
 // FUNCTION: HYPERX 0x00411cf0
 void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int)
 {
@@ -132,6 +134,7 @@ void CRelaxToPosition::BindWithNode(EngineObject* pObject, GameBehaviorObject*, 
 // GLOBAL: HYPERX 0x004bb674
 extern float g_aRelaxRateByFrameRate[15];
 
+// FUNCTION: HYPERX100 0x0042bf50
 // FUNCTION: HYPERX 0x00411e30
 void CRelaxToPosition::OnListChanged()
 {
@@ -145,6 +148,15 @@ void CRelaxToPosition::OnListChanged()
     }
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x0042bf80
+void CRelaxToPosition::SetDest(const Vec3* pDest)
+{
+    m_vDest = *pDest;
+}
+#endif
+
+// FUNCTION: HYPERX100 0x0042bfa0
 // FUNCTION: HYPERX 0x00411e60
 void CRelaxToPosition::Process(int nArg)
 {
@@ -227,6 +239,7 @@ void CRelaxToPosition::Process(int nArg)
 
 // The same routine on the staged point at 0xf4, run in phase three, then published.
 
+// FUNCTION: HYPERX100 0x0042c200
 // FUNCTION: HYPERX 0x00412050
 void CRelaxToPosition::Release(int nArg)
 {

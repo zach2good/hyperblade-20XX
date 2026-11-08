@@ -5,6 +5,7 @@
 #include "engine/cspeedburst.h"
 #include "common/poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041f5e0
 // FUNCTION: HYPERX 0x00413cd0
 void CSpeedBurstPool::Init()
 {
@@ -25,6 +26,7 @@ void CSpeedBurstPool::Init()
 }
 
 // A failed refill writes null over the head, which is already null.
+// FUNCTION: HYPERX100 0x00422fb0
 // FUNCTION: HYPERX 0x00413d30
 void* CSpeedBurstPool::Alloc()
 {

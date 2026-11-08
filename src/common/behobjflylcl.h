@@ -15,7 +15,8 @@ public:
     virtual ~BehObj_FlyLCL();
     virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
 
-    // Folded onto BehObj_Fly::SendTimedMessage in the original, so it carries no marker.
+    // v1.0.0.1 folds it onto BehObj_Fly::SendTimedMessage.
+    // FUNCTION: HYPERX100 0x004cb900
     virtual void SendTimedMessage()
     {
         m_pOwner->PostEvent(MSG_INITIATE, 0, m_pOwner->GetSlot());

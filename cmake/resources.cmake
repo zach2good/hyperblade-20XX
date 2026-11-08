@@ -4,6 +4,7 @@
 if(NOT HYPERX_REFERENCE)
     execute_process(
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tools/reference.py"
+                --target "${HYPERX_TARGET}"
         OUTPUT_VARIABLE HYPERX_REFERENCE_FOUND
         ERROR_VARIABLE HYPERX_REFERENCE_ERROR
         RESULT_VARIABLE HYPERX_REFERENCE_STATUS
@@ -14,7 +15,7 @@ if(NOT HYPERX_REFERENCE)
     endif()
 
     set(HYPERX_REFERENCE "${HYPERX_REFERENCE_FOUND}"
-        CACHE FILEPATH "The original HYPERX.EXE" FORCE)
+        CACHE FILEPATH "The original HYPERX.EXE for this build's target" FORCE)
 endif()
 
 if(NOT EXISTS "${HYPERX_REFERENCE}")

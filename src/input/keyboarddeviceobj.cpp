@@ -21,6 +21,7 @@
 #include "planvm/decisionlog.h"
 
 // A held binding fires once its key stays down past the double-tap window; a release drops it.
+// FUNCTION: HYPERX100 0x00490050
 // FUNCTION: HYPERX 0x0045cb10
 void KeyboardDeviceObj::CheckButtonTimeouts()
 {
@@ -69,6 +70,7 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
 #define REPEAT_STEP_MS 0x32
 
 // Each release time starts fifty milliseconds past its press, so a first press is never a double tap.
+// FUNCTION: HYPERX100 0x00490170
 // FUNCTION: HYPERX 0x0045cc10
 KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 : DeviceObject(nSlot, pDef)
@@ -111,6 +113,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 #define TABLE_KEY_COUNT 8
 
 // An up entry whose action folds to slot zero is reported and the build keeps going.
+// FUNCTION: HYPERX100 0x00490380
 // FUNCTION: HYPERX 0x0045cd20
 char __cdecl KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
 {
@@ -243,6 +246,7 @@ char __cdecl KeyboardDeviceObj::BuildActionBindingTable(ActionBindingGroup** ppT
 
 // Returns the one-based index of the highest set bit, or zero for an empty mask.
 
+// FUNCTION: HYPERX100 0x00490720
 // FUNCTION: HYPERX 0x0045cff0
 int __cdecl KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
 {
@@ -335,6 +339,7 @@ int __cdecl KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
 }
 
 // Each slot owns its up and down binding arrays.
+// FUNCTION: HYPERX100 0x004907e0
 // FUNCTION: HYPERX 0x0045d0b0
 KeyboardDeviceObj::~KeyboardDeviceObj()
 {
@@ -360,6 +365,7 @@ KeyboardDeviceObj::~KeyboardDeviceObj()
 }
 
 // Each record's copy of the keys is the identity with four and five exchanged, at most ten.
+// FUNCTION: HYPERX100 0x00490920
 // FUNCTION: HYPERX 0x0045d190
 void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount)
 {
@@ -398,12 +404,14 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
     }
 }
 
+// FUNCTION: HYPERX100 0x00490a50
 // FUNCTION: HYPERX 0x0045d270
 unsigned int* KeyboardDeviceObj::GetDefaultKeyBindings() const
 {
     return g_anKeyBindingDefaults;
 }
 
+// FUNCTION: HYPERX100 0x00490a60
 // FUNCTION: HYPERX 0x0045d280
 unsigned int* KeyboardDeviceObj::LoadBindingsFromIni(void)
 {
@@ -417,6 +425,7 @@ unsigned int* KeyboardDeviceObj::LoadBindingsFromIni(void)
     return g_anKeyBindings;
 }
 
+// FUNCTION: HYPERX100 0x00490ab0
 // FUNCTION: HYPERX 0x0045d2c0
 int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 {
@@ -432,6 +441,7 @@ int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 
 // Both key handlers copy m_nHeldMask into m_nPrevHeldMask, and nothing reads the copy.
 
+// FUNCTION: HYPERX100 0x00490b30
 // FUNCTION: HYPERX 0x0045d320
 int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 {
@@ -519,6 +529,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x00490d70
 // FUNCTION: HYPERX 0x0045d4c0
 int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 {

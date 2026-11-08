@@ -9,6 +9,10 @@ class LODNode
 public:
     LODNode* Init(short nLodCount);
 
+#ifdef HYPERX_V100
+    LODNode();
+#endif
+
     ~LODNode();
 
     // The variable-length blob ModelComponent::Read pulls from the model file; see modelcomponent.h.

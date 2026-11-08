@@ -7,6 +7,7 @@
 #include "globals.h"
 #include "planvm/conditiontable.h"
 
+// FUNCTION: HYPERX100 0x004cbe20
 // FUNCTION: HYPERX 0x0041e0a0
 BehObj_UpdateWhileAttached::BehObj_UpdateWhileAttached()
 {
@@ -18,6 +19,7 @@ BehObj_UpdateWhileAttached::~BehObj_UpdateWhileAttached()
 }
 
 // Unlike the base, it sets the collision interactor aimed at the attached object back to zero.
+// FUNCTION: HYPERX100 0x004cbf40
 // FUNCTION: HYPERX 0x0041e0f0
 void BehObj_UpdateWhileAttached::SetInteractorsActive(int nArg)
 {
@@ -57,6 +59,7 @@ void BehObj_UpdateWhileAttached::SetInteractorsActive(int nArg)
     }
 }
 
+// FUNCTION: HYPERX100 0x004cbff0
 // FUNCTION: HYPERX 0x0041e170
 void BehObj_UpdateWhileAttached::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

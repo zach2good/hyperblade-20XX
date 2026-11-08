@@ -13,6 +13,28 @@ struct MeshMaterial;
 struct TexCoord;
 struct TransformedVertex;
 
+#ifdef HYPERX_V100
+// The render state globals in their address order, thirteen ints and the two fog distances.
+struct D3DRenderStates
+{
+    int   nZEnable;
+    int   nTexturePerspective;
+    int   nShadeMode;
+    int   nTextureFilter;
+    int   nTextureMapBlend;
+    int   nFillMode;
+    int   nCullMode;
+    int   nDither;
+    int   nSpecular;
+    int   nAntiAlias;
+    int   nFog;
+    int   nFogColour;
+    int   nFogTableMode;
+    float flFogStart;
+    float flFogEnd;
+};
+#endif
+
 namespace D3DRend
 {
 
@@ -33,6 +55,11 @@ int __cdecl     CreateExecuteBuffer(IDirect3DDevice* pDevice, IDirect3D* pUnused
 inline void     CopyUV(TexCoord& rDst, const TexCoord& rSrc);
 inline int      UsesHardwareShading();
 int             ExecuteScene(int nWhich);
+
+#ifdef HYPERX_V100
+void __cdecl GetRenderStates(D3DRenderStates* pStates);
+int          CreateWorldMatrix(void);
+#endif
 
 } // namespace D3DRend
 

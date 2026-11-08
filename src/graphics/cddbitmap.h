@@ -34,6 +34,10 @@ public:
     String*               m_pName;    // 0x0d4
 
     void ClearBounds();
+
+#ifdef HYPERX_V100
+    void ReloadBitmap();
+#endif
 };
 
 // SYNTHETIC: HYPERX 0x00437f80

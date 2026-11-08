@@ -19,6 +19,11 @@ public:
 
     void SetName(const char* pszName);
 
+#ifdef HYPERX_V100
+    char AddNode(class AnimNode* pNode);
+    char RemoveNode(class AnimNode* pNode);
+#endif
+
     void AddClipEntry(unsigned short wSegment, unsigned short wTriggerFrame, const char* pszName, int nMessage, const char* pszRef, short nSyncSegment, short nSyncFrame);
 
     // A record the anim player and the registry walk, so the layout is public.

@@ -8,6 +8,7 @@
 class AnimObject
 {
 public:
+    // FUNCTION: HYPERX100 0x00459e10
     // FUNCTION: HYPERX 0x00417930
     virtual ~AnimObject()
     {

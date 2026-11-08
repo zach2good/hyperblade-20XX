@@ -169,6 +169,9 @@ long                       g_nDisplayWindowID;
 unsigned char              g_cMdmTexLoaded;
 #ifdef HYPERX_BRINGUP
 int g_bForceSoftwareRender = 1;
+#elif defined(HYPERX_V100)
+// v1.0.0.0 renders in software unless -x clears this.
+int g_bForceSoftwareRender = 1;
 #else
 int g_bForceSoftwareRender;
 #endif

@@ -27,6 +27,7 @@
 
 #define HISTORY_WINDOW_OFF 1
 
+// FUNCTION: HYPERX100 0x00484cb0
 // FUNCTION: HYPERX 0x00409fc0
 void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 {
@@ -84,6 +85,7 @@ extern const float g_flFourTracking;
 #define HEAD_BONE 9
 
 // One function that Ghidra splits at 0x0040a2f8.
+// FUNCTION: HYPERX100 0x00484e30
 // FUNCTION: HYPERX 0x0040a100
 void CHeadTrack::Process(int nArg)
 {

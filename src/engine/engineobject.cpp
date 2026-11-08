@@ -67,6 +67,7 @@ float g_flUnusedEngineObjectB = g_flZeroEngineObject;
 float g_flUnusedEngineObjectC = g_flZeroEngineObject;
 
 // One collision in five posts teammate or opponent commentary; the two coin tosses differ, as in the original.
+// FUNCTION: HYPERX100 0x00466730
 // FUNCTION: HYPERX 0x00406620
 void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
 {
@@ -148,6 +149,7 @@ same:
 #define COS_60_DEGREES  0.5
 
 // Answers n on one side and 7 - n on the other; the side test uses only X and Y.
+// FUNCTION: HYPERX100 0x00466d50
 // FUNCTION: HYPERX 0x00406a90
 int __cdecl EngineObject::GetApproachAngleSector(EngineObject* pSelf, EngineObject* pOther)
 {
@@ -198,48 +200,56 @@ inline void EngineObject::StoreVector(Vec3* pDest, float flX, float flY, float f
     pDest->z = flZ;
 }
 
+// FUNCTION: HYPERX100 0x00460f70
 // FUNCTION: HYPERX 0x00422df0
 void EngineObject::SetEntitySlot(int nEntitySlot)
 {
     m_nEntitySlot = nEntitySlot;
 }
 
+// FUNCTION: HYPERX100 0x00460f80
 // FUNCTION: HYPERX 0x00422e00
 AgendaItem* EngineObject::GetObserver()
 {
     return m_pBody->pTarget;
 }
 
+// FUNCTION: HYPERX100 0x00460f90
 // FUNCTION: HYPERX 0x00422e10
 void EngineObject::SetObserver(AgendaItem* pObserver)
 {
     m_pBody->pTarget = pObserver;
 }
 
+// FUNCTION: HYPERX100 0x00460fb0
 // FUNCTION: HYPERX 0x00422e20
 short EngineObject::GetShadowCount()
 {
     return m_wShadowCount;
 }
 
+// FUNCTION: HYPERX100 0x00460fd0
 // FUNCTION: HYPERX 0x00422e30
 CPlayer* EngineObject::GetPhysStateObj()
 {
     return m_pBody->pPlayer;
 }
 
+// FUNCTION: HYPERX100 0x00460fe0
 // FUNCTION: HYPERX 0x00422e40
 CRITICAL_SECTION* EngineObject::GetCPlayerStateLock()
 {
     return &m_pBody->pPlayer->m_lock;
 }
 
+// FUNCTION: HYPERX100 0x00461000
 // FUNCTION: HYPERX 0x00422e60
 Vec3* EngineObject::GetPositionPtr()
 {
     return &m_pBody->pos;
 }
 
+// FUNCTION: HYPERX100 0x00461010
 // FUNCTION: HYPERX 0x00422e70
 Vec3* EngineObject::GetWorldPos(Vec3* pOut)
 {
@@ -254,42 +264,49 @@ Vec3* EngineObject::GetWorldPos(Vec3* pOut)
     return pOut;
 }
 
+// FUNCTION: HYPERX100 0x00461490
 // FUNCTION: HYPERX 0x00422ec0
 PhysicsBody* EngineObject::GetPhysicsBody()
 {
     return m_pBody;
 }
 
+// FUNCTION: HYPERX100 0x004614a0
 // FUNCTION: HYPERX 0x00422ed0
 TransformObject* EngineObject::GetLocalTransformPtr()
 {
     return &m_transformB;
 }
 
+// FUNCTION: HYPERX100 0x004614b0
 // FUNCTION: HYPERX 0x00422ee0
 ObjectPhase EngineObject::GetPhase()
 {
     return m_nPhase;
 }
 
+// FUNCTION: HYPERX100 0x004619b0
 // FUNCTION: HYPERX 0x00422ef0
 void EngineObject::StartClipPlayback(AnimDB* pClip, float flRate, int nFlags)
 {
     m_pAnimPlayer->StartClipPlayback(pClip, flRate, nFlags);
 }
 
+// FUNCTION: HYPERX100 0x004619e0
 // FUNCTION: HYPERX 0x00422f10
 void EngineObject::BindAnimEventChannel(int nChannel, int nTarget, int nKind, int nParam)
 {
     m_pAnimPlayer->AssignAnimEventSlot(nChannel, nTarget, nKind, nParam);
 }
 
+// FUNCTION: HYPERX100 0x00461a10
 // FUNCTION: HYPERX 0x00422f30
 short EngineObject::GetSlot()
 {
     return (short)m_nSlot;
 }
 
+// FUNCTION: HYPERX100 0x00461a20
 // FUNCTION: HYPERX 0x00422f40
 PlanState* EngineObject::GetPlanState()
 {
@@ -297,24 +314,28 @@ PlanState* EngineObject::GetPlanState()
 }
 
 // The event names no target object.
+// FUNCTION: HYPERX100 0x00461a30
 // FUNCTION: HYPERX 0x00422f50
 void EngineObject::PostSceneEvent(int nMessage, int nArg)
 {
     PostSceneMessage(nMessage, nArg, MODEL_ID_NONE, 0);
 }
 
+// FUNCTION: HYPERX100 0x00461a80
 // FUNCTION: HYPERX 0x00422f70
 char EngineObject::IsVisible()
 {
     return m_bVisible;
 }
 
+// FUNCTION: HYPERX100 0x00461a90
 // FUNCTION: HYPERX 0x00422f80
 void EngineObject::SetVisible(char bFlag)
 {
     m_bVisible = bFlag;
 }
 
+// FUNCTION: HYPERX100 0x00461a50
 // FUNCTION: HYPERX 0x00425520
 void EngineObject::PostEvent(int nMessage, int nArg, int nSender)
 {
@@ -322,17 +343,20 @@ void EngineObject::PostEvent(int nMessage, int nArg, int nSender)
 }
 
 // The original's linker folds CCircleTrack::Release and InfoBar::SetPassBarMarker onto this.
+// FUNCTION: HYPERX100 0x0045dec0
 // FUNCTION: HYPERX 0x0040b900
 void EngineObject::CheckObjectAI(EngineObject*)
 {
 }
 
+// FUNCTION: HYPERX100 0x00460fc0
 // FUNCTION: HYPERX 0x0046bd10
 short EngineObject::GetComponentCount()
 {
     return m_wBoneCount;
 }
 
+// FUNCTION: HYPERX100 0x00460510
 // FUNCTION: HYPERX 0x0046fe60
 EngineObject::EngineObject(int nSlot, class ObjectDef* pDef)
 {
@@ -367,6 +391,7 @@ EngineObject::EngineObject(int nSlot, class ObjectDef* pDef)
 #define RADIUS_PADDING 1.2f
 
 // Dereferences a null mesh's vertex count, as the original does; the radius is padded by a fifth.
+// FUNCTION: HYPERX100 0x004607a0
 // FUNCTION: HYPERX 0x0046ffc0
 void EngineObject::ComputeBoundingSphere()
 {
@@ -488,6 +513,7 @@ void EngineObject::ComputeBoundingSphere()
 #define OBJ_TABLE_EMPTY (-1)
 
 // The binding is the only allocation; the virtual call reaches the class being built.
+// FUNCTION: HYPERX100 0x00460ca0
 // FUNCTION: HYPERX 0x004702f0
 void EngineObject::InitFields()
 {
@@ -572,6 +598,7 @@ void EngineObject::InitFields()
 }
 
 // The name is copied before the release, which frees the record it lives in.
+// FUNCTION: HYPERX100 0x00461070
 // FUNCTION: HYPERX 0x004704e0
 EngineObject::~EngineObject()
 {
@@ -696,6 +723,7 @@ EngineObject::~EngineObject()
 #define MATERIAL_SHARED 2
 
 // The only writer of m_ppPlanBlobs, m_papszPlanNames and m_nPlanCount; a model named "null" is a success.
+// FUNCTION: HYPERX100 0x004614c0
 // FUNCTION: HYPERX 0x00470790
 char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
 {
@@ -893,6 +921,7 @@ inline void EngineObject::FreeName(char*& pszName)
 }
 
 // InitModel's second half; the bone array is rebuilt only when the bone count changes.
+// FUNCTION: HYPERX100 0x00461aa0
 // FUNCTION: HYPERX 0x00470b40
 char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 {
@@ -1102,6 +1131,7 @@ char EngineObject::ReInitModel(int nSlot, ObjectDef* pDef)
 }
 
 // A plan that will not compile stops the whole table there.
+// FUNCTION: HYPERX100 0x00462070
 // FUNCTION: HYPERX 0x00470fb0
 void EngineObject::CompileAllPlans()
 {
@@ -1142,6 +1172,7 @@ void EngineObject::CompileAllPlans()
 }
 
 // Answers minus one when not found, which nothing stops a caller indexing with.
+// FUNCTION: HYPERX100 0x00462220
 // FUNCTION: HYPERX 0x004710f0
 short EngineObject::GetBehaviorIndex(PlanState* pState, const char* pszName)
 {
@@ -1174,6 +1205,7 @@ short EngineObject::GetBehaviorIndex(PlanState* pState, const char* pszName)
 
 // A plan named in the wrong case is not found; the miss answers minus one.
 
+// FUNCTION: HYPERX100 0x00462290
 // FUNCTION: HYPERX 0x00471150
 short EngineObject::FindPlanByName(const char* pszName)
 {
@@ -1203,6 +1235,7 @@ short EngineObject::FindPlanByName(const char* pszName)
 #define RECORD_MARK 0xff
 
 // The lock is released before each record is used, because the work can call back into the queue.
+// FUNCTION: HYPERX100 0x00462320
 // FUNCTION: HYPERX 0x004711c0
 char EngineObject::ProcessReceivedPacket()
 {
@@ -1318,6 +1351,7 @@ char EngineObject::ProcessReceivedPacket()
 #define STATE_NONE 0xff
 
 // The referee applies a signed nibble to every stationary object; 0xff is reserved.
+// FUNCTION: HYPERX100 0x00462670
 // FUNCTION: HYPERX 0x00471460
 void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBody, short* pOutPlan, short* pOutBehaviour)
 {
@@ -1364,6 +1398,7 @@ void EngineObject::ApplySyncedBehaviour(CPlayer* pOwner, const NetMoveBody* pBod
 }
 
 // A child id nothing answers to is fatal, as is a zero slot count with children to place.
+// FUNCTION: HYPERX100 0x004627a0
 // FUNCTION: HYPERX 0x00471560
 void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
 {
@@ -1412,6 +1447,7 @@ void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
 }
 
 // One static scratch transform serves every object; 0x004743d0 is the same source in another unit.
+// FUNCTION: HYPERX100 0x004629e0
 // FUNCTION: HYPERX 0x00471630
 void EngineObject::UpdateRenderSlotTransform(short nSlotIdx)
 {
@@ -1431,6 +1467,7 @@ void EngineObject::UpdateRenderSlotTransform(short nSlotIdx)
 
 // Two threshold tables keep the level from flickering; it moves one step a frame at most.
 
+// FUNCTION: HYPERX100 0x00462ac0
 // FUNCTION: HYPERX 0x004716f0
 void EngineObject::UpdateLODAndPushComponents(CameraObject* pCamera)
 {
@@ -1494,6 +1531,7 @@ extern class TransformObject* g_pCameraTransform;
 #define CLIP_OFFSCREEN 0xff
 #define CLIP_ANY_PLANE 1
 
+// FUNCTION: HYPERX100 0x00462c10
 // FUNCTION: HYPERX 0x00471800
 void EngineObject::ApplyRenderSlotPose()
 {
@@ -1502,6 +1540,7 @@ void EngineObject::ApplyRenderSlotPose()
 
 // Transformed vertices land in the upper half of the model vertex buffer, projected in the lower.
 
+// FUNCTION: HYPERX100 0x00462c20
 // FUNCTION: HYPERX 0x00471810
 void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 {
@@ -1629,6 +1668,7 @@ void EngineObject::DrawTransformedMesh(CollisionShape* pSurface)
 }
 
 // A named slot runs Human, an unnamed one Defense; a slot below 0 searches with an unset name.
+// FUNCTION: HYPERX100 0x00463130
 // FUNCTION: HYPERX 0x00471b60
 void EngineObject::SelectAndActivatePlan()
 {
@@ -1760,6 +1800,7 @@ void EngineObject::SelectAndActivatePlan()
 
 // Retries once with the default minimal plan; the handlers catch AdlibError& and char*.
 
+// FUNCTION: HYPERX100 0x00463430
 // FUNCTION: HYPERX 0x00471da0
 void EngineObject::InstantiateAIPlan(short nIndex)
 {
@@ -1811,6 +1852,7 @@ void EngineObject::InstantiateAIPlan(short nIndex)
 
 // Any shape but a sphere, an attached or a caged bubble is fatal.
 
+// FUNCTION: HYPERX100 0x004635a0
 // FUNCTION: HYPERX 0x00471eb0
 void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
 {
@@ -1852,6 +1894,7 @@ void EngineObject::InitCollisionBubble(BubbleCmd* pShape)
 
 // A refused message kind is not an error; a full queue is, and it names the model.
 
+// FUNCTION: HYPERX100 0x00463890
 // FUNCTION: HYPERX 0x00472090
 void EngineObject::PostSceneMessage(int nMessage, int nArg, int nSender, int bFromInput)
 {
@@ -1874,6 +1917,7 @@ void EngineObject::PostSceneMessage(int nMessage, int nArg, int nSender, int bFr
     }
 }
 
+// FUNCTION: HYPERX100 0x00463930
 // FUNCTION: HYPERX 0x00472110
 void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short nValue, unsigned int nSender, int bFromInput)
 {
@@ -1901,12 +1945,14 @@ void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short n
     }
 }
 
+// FUNCTION: HYPERX100 0x004639f0
 // FUNCTION: HYPERX 0x004721a0
 void EngineObject::PackAndEnqueue(unsigned int nMessage, unsigned int nSender, short nValue, int nArg)
 {
     EnqueueSceneEvent(MsgEvent::PackScene(nMessage, nSender, nValue), nArg);
 }
 
+// FUNCTION: HYPERX100 0x00463a30
 // FUNCTION: HYPERX 0x004721d0
 void EngineObject::ResetSceneMessageHandlers()
 {
@@ -1919,6 +1965,7 @@ void EngineObject::ResetSceneMessageHandlers()
 
 // The byte table holds the low byte of the slot, so more than 255 handlers answer wrongly.
 
+// FUNCTION: HYPERX100 0x00463a70
 // FUNCTION: HYPERX 0x00472200
 void EngineObject::RegisterSceneMessageHandler(Interactor* pHandler)
 {
@@ -1933,6 +1980,7 @@ void EngineObject::RegisterSceneMessageHandler(Interactor* pHandler)
     pHandler->m_wHandlerIndex = nIndex;
 }
 
+// FUNCTION: HYPERX100 0x00463ad0
 // FUNCTION: HYPERX 0x00472250
 void EngineObject::ComputeWorldBoundingCentre(Vec3* pOut)
 {
@@ -1943,6 +1991,7 @@ void EngineObject::ComputeWorldBoundingCentre(Vec3* pOut)
     pOut->z = flRadius * m_transformB.m_a[2][2] + m_pBody->pos.z;
 }
 
+// FUNCTION: HYPERX100 0x00463b30
 // FUNCTION: HYPERX 0x004722a0
 void EngineObject::SetVelocity(Vec3 vel)
 {
@@ -1965,6 +2014,7 @@ void EngineObject::SetVelocity(Vec3 vel)
 }
 
 // A shadow component id no component carries is fatal.
+// FUNCTION: HYPERX100 0x00463c30
 // FUNCTION: HYPERX 0x00472360
 void EngineObject::InitShadowVertexLinks(LODNode* pLod, ModelComponent* pMesh)
 {
@@ -2035,6 +2085,7 @@ void EngineObject::InitShadowVertexLinks(LODNode* pLod, ModelComponent* pMesh)
     }
 }
 
+// FUNCTION: HYPERX100 0x00463e10
 // FUNCTION: HYPERX 0x004724c0
 void EngineObject::CountVisibleFaces()
 {
@@ -2055,6 +2106,7 @@ void EngineObject::CountVisibleFaces()
     }
 }
 
+// FUNCTION: HYPERX100 0x00463e90
 // FUNCTION: HYPERX 0x00472530
 char EngineObject::InitRenderSlots(LODNode* pLod, MeshBone* pBones, CD3DTextureManager* pTexManager, char bShadowless)
 {
@@ -2086,6 +2138,7 @@ char EngineObject::InitRenderSlots(LODNode* pLod, MeshBone* pBones, CD3DTextureM
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00463f30
 // FUNCTION: HYPERX 0x004725c0
 char EngineObject::InitRenderSlotsAndShadowLinks(LODNode* pLod, MeshBone* pBones, CD3DTextureManager* pTexManager, char bShadowless)
 {
@@ -2108,6 +2161,7 @@ char EngineObject::InitRenderSlotsAndShadowLinks(LODNode* pLod, MeshBone* pBones
 }
 
 // Applied Z, X, Y, and a zero angle is skipped, leaving the last model's sine and cosine in place.
+// FUNCTION: HYPERX100 0x00463fa0
 // FUNCTION: HYPERX 0x00472620
 void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
 {
@@ -2151,6 +2205,7 @@ void EngineObject::ApplyHeaderRotation(const ModelComponent* pBlob)
     }
 }
 
+// FUNCTION: HYPERX100 0x00471d60
 // FUNCTION: HYPERX 0x00474570
 float EngineObject::GetDistIfFacingDefault(EngineObject* pOther)
 {
@@ -2158,6 +2213,7 @@ float EngineObject::GetDistIfFacingDefault(EngineObject* pOther)
 }
 
 // A dot at or below the threshold answers zero, so "behind me" and "on top of me" look alike.
+// FUNCTION: HYPERX100 0x00471d80
 // FUNCTION: HYPERX 0x00474590
 float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
 {
@@ -2185,6 +2241,7 @@ float EngineObject::GetDistIfFacing(EngineObject* pOther, float flMinDot)
     return g_flZeroRokObject;
 }
 
+// FUNCTION: HYPERX100 0x00471e80
 // FUNCTION: HYPERX 0x00474650
 char EngineObject::EnqueueSceneEvent(int nMessage, int nArg)
 {
@@ -2201,6 +2258,7 @@ char EngineObject::EnqueueSceneEvent(int nMessage, int nArg)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00471f00
 // FUNCTION: HYPERX 0x004746b0
 char EngineObject::DequeueEvent(int* pMessage, int* pArg)
 {
@@ -2222,6 +2280,7 @@ char EngineObject::DequeueEvent(int* pMessage, int* pArg)
 }
 
 // The answer is the slot's index plus one, so nought means none had anything.
+// FUNCTION: HYPERX100 0x00471fa0
 // FUNCTION: HYPERX 0x00474720
 int EngineObject::PollStationaryEvents(int* pMessage, int* pArg)
 {
@@ -2236,6 +2295,7 @@ int EngineObject::PollStationaryEvents(int* pMessage, int* pArg)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00472010
 // FUNCTION: HYPERX 0x00474780
 char EngineObject::EnqueueInputCommand(int nCommand, int nArg)
 {
@@ -2253,6 +2313,7 @@ char EngineObject::EnqueueInputCommand(int nCommand, int nArg)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004720d0
 // FUNCTION: HYPERX 0x00474810
 char EngineObject::DequeueInputCommand(int* pCommand, int* pArg)
 {
@@ -2272,3 +2333,66 @@ char EngineObject::DequeueInputCommand(int* pCommand, int* pArg)
 
     return 1;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x004628b0
+void EngineObject::RebuildComponentLinks(MeshBone* pSlot)
+{
+    short nChild;
+
+    if (pSlot->m_pDesc->m_nChildCount == 0)
+    {
+        pSlot->m_apChildren = 0;
+
+        return;
+    }
+
+    delete[] pSlot->m_apChildren;
+
+    MeshBone** ppChild = new MeshBone*[pSlot->m_pDesc->m_nChildCount];
+
+    pSlot->m_apChildren = ppChild;
+
+    const MeshBoneDesc* pDescriptor = pSlot->m_pDesc;
+
+    for (nChild = 0; nChild < pSlot->m_pDesc->m_nChildCount; nChild++)
+    {
+        MeshBone* pCandidate = m_pBones;
+
+        short nSlot = 0;
+
+        char bFound = 0;
+
+        while (nSlot < m_wBoneCount && bFound == 0)
+        {
+            if (pDescriptor->m_anChildIds[nChild] == pCandidate->m_pDesc->m_nLinkId)
+            {
+                *ppChild = pCandidate;
+                ppChild++;
+                bFound = 1;
+            }
+
+            nSlot++;
+            pCandidate++;
+        }
+
+        if (bFound == 0)
+        {
+            // STRING: HYPERX100 0x005134d0
+            g_gameApp.Fatal("No match for linkID in while setting up model component links\n");
+        }
+    }
+}
+
+// FUNCTION: HYPERX100 0x00471d30
+float EngineObject::GetDistIfFacingSlot(short nSlot)
+{
+    return GetDistIfFacingDefault(g_pGameEngine->m_ppSlots[nSlot]);
+}
+
+// FUNCTION: HYPERX100 0x004728e0
+AttachPak* EngineObject::GetBubbleAttach()
+{
+    return g_pGameEngine->GetColObjPtr((short)AnimSet::GetFieldOffset((short)m_nSlot))->m_pAttach;
+}
+#endif

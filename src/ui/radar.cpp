@@ -26,12 +26,30 @@ float        g_flUnusedRadarB = g_flZeroRadar;
 float        g_flUnusedRadarC = g_flZeroRadar;
 SurfacePoint g_ptRadarInset(4, 4);
 
+// FUNCTION: HYPERX100 0x0046fbb0
 // FUNCTION: HYPERX 0x0043f3f0
 Radar::Radar()
 {
     ClearState();
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x0046fa10
+Radar::Radar(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
+: Texture(pDDraw, pPrimary, pBack)
+{
+    ClearState();
+}
+
+// FUNCTION: HYPERX100 0x0046fb00
+Radar::Radar(Texture* pSource)
+: Texture(pSource)
+{
+    ClearState();
+}
+#endif
+
+// FUNCTION: HYPERX100 0x0046fc80
 // FUNCTION: HYPERX 0x0043f440
 void Radar::ClearState()
 {
@@ -60,6 +78,7 @@ void Radar::ClearState()
 }
 
 // The pen and brush are module globals the radar did not allocate but frees.
+// FUNCTION: HYPERX100 0x0046fd30
 // FUNCTION: HYPERX 0x0043f4d0
 Radar::~Radar()
 {
@@ -87,6 +106,7 @@ Radar::~Radar()
 
 struct IDirectDrawSurface;
 
+// FUNCTION: HYPERX100 0x0046fe70
 // FUNCTION: HYPERX 0x0043f570
 void Radar::CacheObjectColors()
 {
@@ -117,6 +137,7 @@ struct IDirectDrawSurface;
 #define RADAR_COLOUR_MODE 1
 #define RADAR_KEY_COLOUR  0xffffff
 
+// FUNCTION: HYPERX100 0x0046ffa0
 // FUNCTION: HYPERX 0x0043f650
 int Radar::Init(const char* pszName, const Vec3* pRadii, int nBlitMode)
 {
@@ -182,6 +203,7 @@ struct BlitOffset
     POINT m_pt;
 };
 
+// FUNCTION: HYPERX100 0x004701a0
 // FUNCTION: HYPERX 0x0043f7b0
 int Radar::RestoreContents()
 {
@@ -202,6 +224,7 @@ int Radar::RestoreContents()
     return nDrawn;
 }
 
+// FUNCTION: HYPERX100 0x004701d0
 // FUNCTION: HYPERX 0x0043f7e0
 void Radar::SetPosition(Point pt)
 {
@@ -212,6 +235,7 @@ void Radar::SetPosition(Point pt)
 }
 
 // The heading lives in globals, so the cosine reloads the angle just stored.
+// FUNCTION: HYPERX100 0x00470240
 // FUNCTION: HYPERX 0x0043f810
 int Radar::Update(short nSlot)
 {
@@ -268,6 +292,7 @@ extern DWORD g_dwRadarCarrierColour;
 #define ARROW_BASE 140
 #define ARROW_HALF 15
 
+// FUNCTION: HYPERX100 0x00470480
 // FUNCTION: HYPERX 0x0043f960
 int Radar::DrawObject(int nWhich)
 {
@@ -449,6 +474,7 @@ int Radar::DrawObject(int nWhich)
 }
 
 // A lost surface still answers zero.
+// FUNCTION: HYPERX100 0x00470a20
 // FUNCTION: HYPERX 0x0043fdd0
 int Radar::BltSprite(const POINT* pOffset, DWORD dwColour)
 {

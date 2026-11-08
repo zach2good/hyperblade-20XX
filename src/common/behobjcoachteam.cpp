@@ -2,6 +2,7 @@
 #include "planvm/behaviorids.h"
 #include "common/pooledclasses.h"
 
+// FUNCTION: HYPERX100 0x004cc210
 // FUNCTION: HYPERX 0x0041e2b0
 BehObj_CoachTeam::BehObj_CoachTeam()
 {
@@ -12,6 +13,7 @@ BehObj_CoachTeam::~BehObj_CoachTeam()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cc330
 // FUNCTION: HYPERX 0x0041e300
 void BehObj_CoachTeam::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

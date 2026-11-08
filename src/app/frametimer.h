@@ -6,6 +6,7 @@
 
 struct FrameTimer
 {
+    // FUNCTION: HYPERX100 0x00475ca0
     FrameTimer()
     : nFrames(0)
     , nClockReads(0)

@@ -19,6 +19,7 @@
 
 // On failure the entry stays in the cache with a null texture. Only the Direct3D path complains.
 
+// FUNCTION: HYPERX100 0x00491390
 // FUNCTION: HYPERX 0x00492b90
 TexCacheEntry::TexCacheEntry(const char* pszName, HPALETTE hPalette)
 {
@@ -68,6 +69,7 @@ TexCacheEntry::TexCacheEntry(const char* pszName, HPALETTE hPalette)
     }
 }
 
+// FUNCTION: HYPERX100 0x00491660
 // FUNCTION: HYPERX 0x00492d70
 void* TexCacheEntry::DestroyTexObj()
 {
@@ -88,6 +90,7 @@ void* TexCacheEntry::DestroyTexObj()
     return m_pD3DTexture;
 }
 
+// FUNCTION: HYPERX100 0x004916e0
 // FUNCTION: HYPERX 0x00492dc0
 TexCacheEntry::~TexCacheEntry()
 {

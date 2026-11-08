@@ -12,6 +12,7 @@ extern const float g_flSplineReflectScale;
 
 // The two curves point at each other through m_pNext, so the ring is closed before either fills.
 
+// FUNCTION: HYPERX100 0x004364a0
 // FUNCTION: HYPERX 0x00492e90
 Spline::Spline()
 {
@@ -24,6 +25,7 @@ Spline::Spline()
 
 // Unlinks and frees the curve whose next is the head, then frees the head: two curves go.
 
+// FUNCTION: HYPERX100 0x004365b0
 // FUNCTION: HYPERX 0x00492ec0
 Spline::~Spline()
 {
@@ -63,6 +65,7 @@ Spline::~Spline()
 
 // Both curves take the upper-half evaluator; the tag is -35 past a second radius of three, else -1.
 
+// FUNCTION: HYPERX100 0x00436620
 // FUNCTION: HYPERX 0x00492f10
 Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 {
@@ -117,12 +120,14 @@ Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 
 // Half an ellipse, reached only through m_pfnEval: the first radius times sqrt(1 - t*t/B).
 
+// FUNCTION: HYPERX100 0x00436700
 // FUNCTION: HYPERX 0x00492fe0
 float __cdecl Spline::EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
     return (float)sqrt((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq);
 }
 
+// FUNCTION: HYPERX100 0x00436740
 // FUNCTION: HYPERX 0x00493000
 Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
 {
@@ -167,12 +172,14 @@ Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
     return this;
 }
 
+// FUNCTION: HYPERX100 0x00436800
 // FUNCTION: HYPERX 0x004930c0
 float __cdecl Spline::EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
     return -(float)sqrt((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq);
 }
 
+// FUNCTION: HYPERX100 0x00436840
 // FUNCTION: HYPERX 0x004930e0
 Spline* Spline::InitSegment(float flRadiusX, float flRadiusY)
 {
@@ -219,6 +226,7 @@ Spline* Spline::InitSegment(float flRadiusX, float flRadiusY)
 
 // The only initialiser that clears m_pfnEval; it stores the cosine evaluator in m_pfnSpringEval.
 
+// FUNCTION: HYPERX100 0x00436900
 // FUNCTION: HYPERX 0x004931a0
 Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
@@ -247,6 +255,7 @@ Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOff
     return this;
 }
 
+// FUNCTION: HYPERX100 0x004369a0
 // FUNCTION: HYPERX 0x00493220
 float __cdecl Spline::EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
@@ -255,6 +264,7 @@ float __cdecl Spline::EvalSpring(float flT, float flAmplitude, float flFrequency
 
 // A parameter that leaves the curve moves to the next one, reflected about its nearer limit.
 
+// FUNCTION: HYPERX100 0x00436a40
 // FUNCTION: HYPERX 0x00493240
 void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
 {
@@ -311,6 +321,7 @@ void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
 
 // UpdateTowardTarget's twin, stepping curves on the value range and with no tenth in its step.
 
+// FUNCTION: HYPERX100 0x00436dd0
 // FUNCTION: HYPERX 0x00493320
 void Spline::UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity)
 {
@@ -372,3 +383,42 @@ void Spline::UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity)
     pPosition->x = pFinal->m_pfnEval(pPosition->y, pFinal->m_flA, pFinal->m_flB, pFinal->m_flC, pFinal->m_flD);
     pPosition->z = pFinal->m_flTag;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x004369c0
+void Spline::SetRadii(float flRadiusX, float flRadiusY)
+{
+    SplineCurve* pHalf = m_pCurve;
+    pHalf->m_flA       = flRadiusX * flRadiusX;
+    pHalf->m_flB       = flRadiusY * flRadiusY;
+    pHalf->m_flC       = g_flZeroSpline;
+    pHalf->m_flD       = g_flZeroSpline;
+
+    pHalf        = m_pCurve->m_pNext;
+    pHalf->m_flA = flRadiusX * flRadiusX;
+    pHalf->m_flB = flRadiusY * flRadiusY;
+    pHalf->m_flC = g_flZeroSpline;
+    pHalf->m_flD = g_flZeroSpline;
+
+    m_pCurve->m_flUpper = flRadiusY;
+    m_pCurve->m_flLower = -flRadiusY;
+
+    m_pCurve->m_pNext->m_flUpper = flRadiusY;
+    m_pCurve->m_pNext->m_flLower = -flRadiusY;
+}
+
+// FUNCTION: HYPERX100 0x00436c10
+void Spline::StepTowardOnValue(Vec3* pState, Vec3* pTarget, float flRate)
+{
+    Vec3 vTangent;
+
+    m_pCurve->ComputeValueTangent(pState->x, &vTangent);
+
+    pState->x = ((pTarget->x - pState->x) * vTangent.x + (pTarget->z - pState->z) * vTangent.z + (pTarget->y - pState->y) * vTangent.y) * vTangent.x * flRate + pState->x;
+
+    SplineCurve* const pEval = m_pCurve;
+
+    pState->z = pEval->m_pfnSpringEval(pState->x, pEval->m_flA, pEval->m_flB, pEval->m_flC, pEval->m_flD);
+    pState->y = g_flZeroSpline;
+}
+#endif

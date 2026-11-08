@@ -11,6 +11,7 @@ float g_flUnusedDisplayModeC = g_flZeroDisplayMode;
 // What it does: clears 192 bytes as three runs of 64, first dwords, then words, then bytes, with
 // one pointer walking on through all three.
 // Why assembly: VC6 turns every C spelling of the word and byte runs into REP STOSD.
+// FUNCTION: HYPERX100 0x0047c830
 // FUNCTION: HYPERX 0x00439590
 void __cdecl Mem::ZeroBlock192(void* pBlock)
 {
@@ -34,6 +35,7 @@ void __cdecl Mem::ZeroBlock192(void* pBlock)
 // downwards in pairs, then the word run starts again from the base, so the first 64 bytes are
 // cleared twice before a byte run clears the next 64.
 // Why assembly: C has no dead load and VC6 never writes a word run with REP STOSW.
+// FUNCTION: HYPERX100 0x0047c860
 // FUNCTION: HYPERX 0x004395c0
 void __cdecl Mem::ZeroBlockUnrolled128(void* pBlock)
 {

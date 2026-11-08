@@ -23,6 +23,7 @@ extern PlanHandlerFn     g_pfnPlanActionHandlers[140];
 extern PlanOpcodeSlot    g_pfnPlanOpcodeHandlers[141];
 extern BehParamHandlerFn g_apfnBehaviorParamHandlers[17];
 
+// FUNCTION: HYPERX100 0x004cd7c0
 // FUNCTION: HYPERX 0x0045d860
 void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short* pState)
 {
@@ -163,24 +164,28 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
     }
 }
 
+// FUNCTION: HYPERX100 0x004b8b50
 // FUNCTION: HYPERX 0x0046bb40
 int Interactor::GetActiveState()
 {
     return m_nActiveState;
 }
 
+// FUNCTION: HYPERX100 0x004b8b70
 // FUNCTION: HYPERX 0x0046bb60
 int Interactor::GetState()
 {
     return m_nMember;
 }
 
+// FUNCTION: HYPERX100 0x004b8b80
 // FUNCTION: HYPERX 0x0046bb70
 EngineObject* Interactor::GetActor()
 {
     return m_pOwner;
 }
 
+// FUNCTION: HYPERX100 0x004b8bd0
 // FUNCTION: HYPERX 0x0046bb80
 void Interactor::SetActiveState(int nState)
 {

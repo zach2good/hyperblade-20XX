@@ -10,6 +10,7 @@
 #include "joystickmgr.h"
 #include "engine/gameoptions.h"
 
+// FUNCTION: HYPERX100 0x00498380
 // FUNCTION: HYPERX 0x00423bf0
 void __cdecl JoystickMgr::StartCapture(int nTwoPlayers)
 {
@@ -67,6 +68,7 @@ void __cdecl JoystickMgr::StartCapture(int nTwoPlayers)
 }
 
 // Only ports that answer joyGetPosEx are counted, so with no stick m_pDevices stays null.
+// FUNCTION: HYPERX100 0x004984a0
 // FUNCTION: HYPERX 0x00423ca0
 JoystickMgr::JoystickMgr(HWND hWnd, int bCaptureEnabled)
 {
@@ -122,6 +124,7 @@ JoystickMgr::JoystickMgr(HWND hWnd, int bCaptureEnabled)
     }
 }
 
+// FUNCTION: HYPERX100 0x00498800
 // FUNCTION: HYPERX 0x00423e00
 JoystickMgr::~JoystickMgr()
 {
@@ -138,6 +141,7 @@ JoystickMgr::~JoystickMgr()
     }
 }
 
+// FUNCTION: HYPERX100 0x00498870
 // FUNCTION: HYPERX 0x00423e60
 int JoystickMgr::CaptureJoystick(UINT uJoyID, HWND hWnd)
 {
@@ -155,6 +159,7 @@ int JoystickMgr::CaptureJoystick(UINT uJoyID, HWND hWnd)
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x004988c0
 // FUNCTION: HYPERX 0x00423ea0
 int JoystickMgr::SetThreshold(UINT uJoyID, int nShift)
 {
@@ -181,6 +186,7 @@ int JoystickMgr::SetThreshold(UINT uJoyID, int nShift)
 }
 
 // Outside a live match the pad sends menu keys.
+// FUNCTION: HYPERX100 0x00498d80
 // FUNCTION: HYPERX 0x00423f20
 void JoystickMgr::HandleButtonPress(int, unsigned int nButton, unsigned int, unsigned int)
 {
@@ -247,6 +253,7 @@ void JoystickMgr::HandleButtonPress(int, unsigned int nButton, unsigned int, uns
 }
 
 // Each button defaults to its own position; a value outside one to four leaves it unbound.
+// FUNCTION: HYPERX100 0x00498fa0
 // FUNCTION: HYPERX 0x004240d0
 void JoystickMgr::LoadButtonConfig(void)
 {
@@ -280,6 +287,7 @@ void JoystickMgr::LoadButtonConfig(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x00499020
 // FUNCTION: HYPERX 0x00424140
 void JoystickMgr::HandleButtonRelease(int, unsigned int nButton, unsigned int, unsigned int)
 {
@@ -342,6 +350,7 @@ void JoystickMgr::HandleButtonRelease(int, unsigned int nButton, unsigned int, u
     }
 }
 
+// FUNCTION: HYPERX100 0x004991f0
 // FUNCTION: HYPERX 0x004242b0
 void JoystickMgr::HandleJoyAxis(int nDevice, unsigned int, unsigned short nX, unsigned short nY)
 {
@@ -444,6 +453,192 @@ void JoystickMgr::HandleJoyAxis(int nDevice, unsigned int, unsigned short nX, un
     m_pDevices[nDevice].m_infoPrevious.dwXpos = nX;
     m_pDevices[nDevice].m_infoPrevious.dwYpos = nY;
 }
+
+#ifdef HYPERX_V100
+// The bound test lets nDevice equal the count, one past the last device.
+// FUNCTION: HYPERX100 0x00498950
+JOYINFOEX* JoystickMgr::PollDevice(unsigned int nDevice)
+{
+    UINT uJoyID = (UINT)-1;
+
+    if (nDevice <= m_nDeviceCount)
+    {
+        uJoyID = m_pDevices[nDevice].m_uJoyID;
+    }
+
+    if (uJoyID == (UINT)-1)
+    {
+        return 0;
+    }
+
+    m_pDevices[nDevice].m_infoPrevious = m_pDevices[nDevice].m_info;
+
+    m_pDevices[nDevice].m_info.dwSize  = sizeof(JOYINFOEX);
+    m_pDevices[nDevice].m_info.dwFlags = JOY_RETURNALL | JOY_RETURNCENTERED | JOY_USEDEADZONE;
+
+    JOYINFOEX* const pInfo = &m_pDevices[nDevice].m_info;
+
+    if (joyGetPosEx(uJoyID, pInfo) == JOYERR_NOERROR)
+    {
+        return pInfo;
+    }
+
+    return 0;
+}
+
+#define JOY_POLL_SHIFT 11
+
+// The polled counterpart of HandleJoyAxis, which also turns the four buttons into keys.
+// FUNCTION: HYPERX100 0x00498a00
+JOYINFOEX* JoystickMgr::PollAndSendKeys(unsigned int nDevice)
+{
+    JOYINFOEX* const pInfo = PollDevice(nDevice);
+
+    if (pInfo != 0)
+    {
+        unsigned int* pnKeys = g_anJoystickDefaultKeys;
+
+        if (g_pInputDevice != 0)
+        {
+            pnKeys = g_pInputDevice->GetDefaultKeyBindings();
+        }
+
+        pInfo->dwXpos >>= JOY_POLL_SHIFT;
+        pInfo->dwYpos >>= JOY_POLL_SHIFT;
+
+        unsigned int nVKey = g_dwPrevJoyXVKey;
+        unsigned int nPos  = pInfo->dwXpos;
+
+        const unsigned int nKeyLeft  = pnKeys[BINDING_LEFT];
+        const unsigned int nKeyRight = pnKeys[BINDING_RIGHT];
+
+        if (nPos < (unsigned int)(m_pDevices[nDevice].m_nRangeX - m_pDevices[nDevice].m_nHalfRangeX))
+        {
+            nVKey = nKeyLeft;
+
+            if (g_pInputDevice != 0)
+            {
+                if (g_dwPrevJoyXVKey != nKeyLeft)
+                {
+                    g_pInputDevice->HandleKeyUp(g_dwPrevJoyXVKey);
+                }
+                g_pInputDevice->HandleKeyDown(nKeyLeft);
+            }
+        }
+        else if (nPos > (unsigned int)(m_pDevices[nDevice].m_nRangeX + m_pDevices[nDevice].m_nHalfRangeX))
+        {
+            nVKey = nKeyRight;
+
+            if (g_pInputDevice != 0)
+            {
+                if (g_dwPrevJoyXVKey != nKeyRight)
+                {
+                    g_pInputDevice->HandleKeyUp(g_dwPrevJoyXVKey);
+                }
+                g_pInputDevice->HandleKeyDown(nKeyRight);
+            }
+        }
+        else if (nPos != m_pDevices[nDevice].m_infoPrevious.dwXpos && g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(g_dwPrevJoyXVKey);
+        }
+
+        g_dwPrevJoyXVKey = nVKey;
+
+        nVKey = g_dwPrevJoyYVKey;
+        nPos  = m_pDevices[nDevice].m_info.dwYpos;
+
+        const unsigned int nKeyUp   = pnKeys[0];
+        const unsigned int nKeyDown = pnKeys[BINDING_DOWN];
+
+        if (nPos < (unsigned int)(m_pDevices[nDevice].m_nRangeY - m_pDevices[nDevice].m_nHalfRangeX))
+        {
+            nVKey = nKeyUp;
+
+            if (g_pInputDevice != 0)
+            {
+                if (nKeyUp != g_dwPrevJoyYVKey)
+                {
+                    g_pInputDevice->HandleKeyUp(g_dwPrevJoyYVKey);
+                }
+                g_pInputDevice->HandleKeyDown(nKeyUp);
+            }
+        }
+        else if (nPos > (unsigned int)(m_pDevices[nDevice].m_nRangeY + m_pDevices[nDevice].m_nHalfRangeX))
+        {
+            nVKey = nKeyDown;
+
+            if (g_pInputDevice != 0)
+            {
+                if (nKeyDown != g_dwPrevJoyYVKey)
+                {
+                    g_pInputDevice->HandleKeyUp(g_dwPrevJoyYVKey);
+                }
+                g_pInputDevice->HandleKeyDown(nKeyDown);
+            }
+        }
+        else if (nPos != m_pDevices[nDevice].m_infoPrevious.dwYpos && g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(g_dwPrevJoyYVKey);
+        }
+
+        g_dwPrevJoyYVKey = nVKey;
+
+        const unsigned int nButtons     = m_pDevices[nDevice].m_info.dwButtons;
+        const unsigned int nPrevButtons = m_pDevices[nDevice].m_infoPrevious.dwButtons;
+
+        if ((nPrevButtons & JOY_BUTTON1) < (nButtons & JOY_BUTTON1))
+        {
+            if (g_pInputDevice != 0)
+            {
+                g_pInputDevice->HandleKeyDown(pnKeys[6]);
+            }
+        }
+        else if ((nButtons & JOY_BUTTON1) < (nPrevButtons & JOY_BUTTON1) && g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(pnKeys[6]);
+        }
+
+        if ((nPrevButtons & JOY_BUTTON2) < (nButtons & JOY_BUTTON2))
+        {
+            if (g_pInputDevice != 0)
+            {
+                g_pInputDevice->HandleKeyDown(pnKeys[7]);
+            }
+        }
+        else if ((nButtons & JOY_BUTTON2) < (nPrevButtons & JOY_BUTTON2) && g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(pnKeys[7]);
+        }
+
+        if ((nPrevButtons & JOY_BUTTON3) < (nButtons & JOY_BUTTON3))
+        {
+            if (g_pInputDevice != 0)
+            {
+                g_pInputDevice->HandleKeyDown(pnKeys[5]);
+            }
+        }
+        else if ((nButtons & JOY_BUTTON3) < (nPrevButtons & JOY_BUTTON3) && g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(pnKeys[5]);
+        }
+
+        if ((nPrevButtons & JOY_BUTTON4) < (nButtons & JOY_BUTTON4))
+        {
+            if (g_pInputDevice != 0)
+            {
+                g_pInputDevice->HandleKeyDown(pnKeys[BINDING_ATTACK]);
+            }
+        }
+        else if ((nButtons & JOY_BUTTON4) < (nPrevButtons & JOY_BUTTON4) && g_pInputDevice != 0)
+        {
+            g_pInputDevice->HandleKeyUp(pnKeys[BINDING_ATTACK]);
+        }
+    }
+
+    return &m_pDevices[nDevice].m_info;
+}
+#endif
 
 int g_nJoystickId1       = -1;
 int g_nJoystickId2       = -1;

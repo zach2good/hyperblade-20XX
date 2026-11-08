@@ -19,6 +19,7 @@
 #include "sound/soundids.h"
 
 // The flag array goes out through operator delete.
+// FUNCTION: HYPERX100 0x004a3430
 // FUNCTION: HYPERX 0x0044d4b0
 UIScreen::~UIScreen()
 {
@@ -30,6 +31,7 @@ UIScreen::~UIScreen()
     }
 }
 
+// FUNCTION: HYPERX100 0x004a34d0
 // FUNCTION: HYPERX 0x0044d540
 UIScreen::UIScreen()
 {
@@ -51,6 +53,7 @@ UIScreen::UIScreen()
 }
 
 // Widgets that show nothing yet get three empty frames so their indices line up.
+// FUNCTION: HYPERX100 0x004a35b0
 // FUNCTION: HYPERX 0x0044d5d0
 void UIScreen::InitWidgets()
 {
@@ -351,6 +354,7 @@ void UIScreen::BuildLockedFlagsArray()
     }
 }
 
+// FUNCTION: HYPERX100 0x004a4be0
 // FUNCTION: HYPERX 0x0044ea10
 void UIScreen::RefreshTabs()
 {
@@ -365,6 +369,7 @@ void UIScreen::RefreshTabs()
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 }
 
+// FUNCTION: HYPERX100 0x004a4c30
 // FUNCTION: HYPERX 0x0044ea50
 void UIScreen::RefreshPageTabs()
 {
@@ -381,6 +386,7 @@ void UIScreen::RefreshPageTabs()
     m_apWidgets[UI_WIDGET_PAGE_TAB_FIRST + 5]->SetDirtyFlag(1);
 }
 
+// FUNCTION: HYPERX100 0x004a4c90
 // FUNCTION: HYPERX 0x0044eaa0
 void UIScreen::RefreshConfirmButtons()
 {
@@ -390,6 +396,7 @@ void UIScreen::RefreshConfirmButtons()
 }
 
 // The stat row redraws before the arrows.
+// FUNCTION: HYPERX100 0x004a4cb0
 // FUNCTION: HYPERX 0x0044eac0
 void UIScreen::RefreshStatRow()
 {
@@ -406,12 +413,14 @@ void UIScreen::RefreshStatRow()
     m_apWidgets[UI_WIDGET_RIGHT_ARROW]->SetDirtyFlag(1);
 }
 
+// FUNCTION: HYPERX100 0x004a4d10
 // FUNCTION: HYPERX 0x0044eb10
 void UIScreen::OnOtherButton(int, unsigned int)
 {
     RELEASE_ASSERT(0);
 }
 
+// FUNCTION: HYPERX100 0x004a4d20
 // FUNCTION: HYPERX 0x0044eb20
 void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
@@ -611,6 +620,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 }
 
 // "2gray6" appears in two blocks and "4gamcl3" twice in a row.
+// FUNCTION: HYPERX100 0x004a5270
 // FUNCTION: HYPERX 0x0044ef00
 void UIScreen::PreloadBitmaps()
 {
@@ -698,6 +708,57 @@ void UIScreen::PreloadBitmaps()
     g_nSetupBitmapsUnloaded = 0;
 }
 
+#ifdef HYPERX_V100
+// PreloadBitmaps' list in the same order, duplicates included.
+// FUNCTION: HYPERX100 0x004a54c0
+void UIScreen::UnloadBitmaps()
+{
+    RemoveBitmap("1data3");
+    RemoveBitmap("1data4");
+    RemoveBitmap("1data5");
+    RemoveBitmap("1gray6");
+    RemoveBitmap("1data1");
+    RemoveBitmap("1data2");
+    RemoveBitmap("2five3");
+    RemoveBitmap("2five4");
+    RemoveBitmap("2five5");
+    RemoveBitmap("2gray6");
+    RemoveBitmap("2five1");
+    RemoveBitmap("2five2");
+    RemoveBitmap("3gray3");
+    RemoveBitmap("3gray4");
+    RemoveBitmap("3gray5");
+    RemoveBitmap("3gray6");
+    RemoveBitmap("3game1");
+    RemoveBitmap("3game2");
+    RemoveBitmap("4gray3");
+    RemoveBitmap("4gray4");
+    RemoveBitmap("4gray5");
+    RemoveBitmap("4gray6");
+    RemoveBitmap("4stat1");
+    RemoveBitmap("4stat2");
+    RemoveBitmap("4stat3");
+    RemoveBitmap("4gamgr3");
+    RemoveBitmap("4gamgr4");
+    RemoveBitmap("4gamgr5");
+    RemoveBitmap("4gamcl1");
+    RemoveBitmap("4gamcl2");
+    RemoveBitmap("4gamcl3");
+    RemoveBitmap("4gamcl3");
+    RemoveBitmap("2three3");
+    RemoveBitmap("2three4");
+    RemoveBitmap("2three5");
+    RemoveBitmap("2gray6");
+    RemoveBitmap("2three1");
+    RemoveBitmap("2three2");
+
+    g_nSetupBitmapsUnloaded = 1;
+
+    FlushBitmapCache();
+}
+#endif
+
+// FUNCTION: HYPERX100 0x0042ec80
 // FUNCTION: HYPERX 0x00488bd0
 void UIScreen::ResetFrameOnLoopDone(int nMsg)
 {

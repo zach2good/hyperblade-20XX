@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "planvm/conditiontable.h"
 
+// FUNCTION: HYPERX100 0x00484df0
 // FUNCTION: HYPERX 0x0040a0d0
 void CameraLiteAgendaItem::OnListChanged()
 {

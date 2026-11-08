@@ -9,6 +9,7 @@
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004191a0
 // FUNCTION: HYPERX 0x0042a150
 BubbleNode::BubbleNode()
 {
@@ -22,6 +23,7 @@ BubbleNode::BubbleNode()
     m_pCage       = 0;
 }
 
+// FUNCTION: HYPERX100 0x00419280
 // FUNCTION: HYPERX 0x0042a1f0
 BubbleNode::~BubbleNode()
 {

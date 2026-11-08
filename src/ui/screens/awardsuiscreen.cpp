@@ -28,6 +28,7 @@ class AwardsUIScreen;
 #define AWARDS_STRIP_X 0xf6
 #define AWARDS_STRIP_Y 0x29
 
+// FUNCTION: HYPERX100 0x00435710
 // FUNCTION: HYPERX 0x0041b870
 AwardsUIScreen::AwardsUIScreen()
 {
@@ -94,6 +95,7 @@ AwardsUIScreen::AwardsUIScreen()
     pWidget->SetHidden(1);
 }
 
+// FUNCTION: HYPERX100 0x00435cc0
 // FUNCTION: HYPERX 0x0041bbb0
 void AwardsUIScreen::OnExitTabClick()
 {
@@ -110,10 +112,19 @@ void AwardsUIScreen::OnExitTabClick()
     Game::SetEngineState(m_nNextState);
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00435d10
+char AwardsUIScreen::IsChampFromJumbotron()
+{
+    return g_bChampFromJumbotron;
+}
+#endif
+
 // Every arm ends by re-entering the screen, including the one that matched no button.
 
 #define AWARDS_NO_SOUND (-1)
 
+// FUNCTION: HYPERX100 0x00435d20
 // FUNCTION: HYPERX 0x0041bbf0
 void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
@@ -170,6 +181,7 @@ void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     OnEnter();
 }
 
+// FUNCTION: HYPERX100 0x00435ed0
 // FUNCTION: HYPERX 0x0041bd30
 void AwardsUIScreen::OnEnter()
 {

@@ -21,12 +21,14 @@ class JumbotronScreen;
 #include "engine/game.h"
 #include "net/network.h"
 
+// FUNCTION: HYPERX100 0x004170f0
 // FUNCTION: HYPERX 0x0048e710
 JumbotronScreen::~JumbotronScreen()
 {
 }
 
 // The advert comes from jumbo.txt. Separators two and three show only for three or four periods.
+// FUNCTION: HYPERX100 0x00417190
 // FUNCTION: HYPERX 0x0048e740
 JumbotronScreen::JumbotronScreen()
 {
@@ -158,6 +160,7 @@ JumbotronScreen::JumbotronScreen()
 #define WIDGET_BACK          9
 #define MATCH_STATE_FINISHED 4
 
+// FUNCTION: HYPERX100 0x00417b70
 // FUNCTION: HYPERX 0x0048ee40
 void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

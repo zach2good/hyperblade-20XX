@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c7c50
 // FUNCTION: HYPERX 0x0041f920
 void BehObjMonitorKeyboardPool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjMonitorKeyboardPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c96b0
 // FUNCTION: HYPERX 0x0041f9e0
 void* BehObjMonitorKeyboardPool::Alloc()
 {

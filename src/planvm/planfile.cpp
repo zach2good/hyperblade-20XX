@@ -10,6 +10,7 @@
 #include "app/gameapp.h"
 
 // A truncated file yields a short plan rather than a refusal.
+// FUNCTION: HYPERX100 0x0044f560
 // FUNCTION: HYPERX 0x00436200
 PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
 {
@@ -30,6 +31,7 @@ PlanWord* PlanFile::ReadBinary(FILE* pFile, unsigned int* pnCount)
     return pInstructions;
 }
 
+// FUNCTION: HYPERX100 0x0044f5f0
 // FUNCTION: HYPERX 0x00436270
 PlanWord* __cdecl PlanFile::OpenBinary(const char* pszName, void**)
 {

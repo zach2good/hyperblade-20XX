@@ -4,6 +4,7 @@
 #include "planvm/cmonitorkeys.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041f900
 // FUNCTION: HYPERX 0x00413af0
 void CMonitorKeysPool::Init()
 {
@@ -23,6 +24,7 @@ void CMonitorKeysPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423170
 // FUNCTION: HYPERX 0x00413b80
 void* CMonitorKeysPool::Alloc()
 {

@@ -30,6 +30,7 @@
 #define SLOT_ROW_X     0x69
 #define SLOT_ROW_WIDTH 0x1ab
 
+// FUNCTION: HYPERX100 0x0046a2d0
 // FUNCTION: HYPERX 0x0046dc50
 SaveLoadUIScreen::SaveLoadUIScreen()
 {
@@ -275,6 +276,7 @@ SaveLoadUIScreen::~SaveLoadUIScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x0046b570
 // FUNCTION: HYPERX 0x0046e960
 void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 {
@@ -419,6 +421,7 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 
 #define PART_MAX 0x100
 
+// FUNCTION: HYPERX100 0x0046b840
 // FUNCTION: HYPERX 0x0046eb50
 void SaveLoadUIScreen::SaveGame()
 {
@@ -444,6 +447,7 @@ void SaveLoadUIScreen::SaveGame()
     InitFrame();
 }
 
+// FUNCTION: HYPERX100 0x0046b900
 // FUNCTION: HYPERX 0x0046ebf0
 void SaveLoadUIScreen::LoadGame()
 {
@@ -457,6 +461,7 @@ void SaveLoadUIScreen::LoadGame()
     g_nPlayerMode = PLAYER_MODE_TOURNAMENT;
 }
 
+// FUNCTION: HYPERX100 0x0046b940
 // FUNCTION: HYPERX 0x0046ec20
 void SaveLoadUIScreen::RefreshFrames()
 {
@@ -465,6 +470,7 @@ void SaveLoadUIScreen::RefreshFrames()
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 }
 
+// FUNCTION: HYPERX100 0x0046b960
 // FUNCTION: HYPERX 0x0046ec40
 void SaveLoadUIScreen::RefreshSlotLabels()
 {
@@ -481,6 +487,7 @@ void SaveLoadUIScreen::RefreshSlotLabels()
     }
 }
 
+// FUNCTION: HYPERX100 0x0046b9e0
 // FUNCTION: HYPERX 0x0046eca0
 void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 {

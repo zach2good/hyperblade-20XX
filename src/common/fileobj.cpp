@@ -11,6 +11,7 @@
 #define TEXT_MAX 0x100
 
 // Close tests the descriptor against zero, not -1, so a failed open is closed anyway.
+// FUNCTION: HYPERX100 0x00413c90
 // FUNCTION: HYPERX 0x00440460
 void FileObj::Close()
 {
@@ -22,6 +23,7 @@ void FileObj::Close()
 
 // A mode outside the three leaves the flags uninitialised, as in the original.
 
+// FUNCTION: HYPERX100 0x00413cb0
 // FUNCTION: HYPERX 0x00440470
 char FileObj::Open(const char* pszPath, int nMode)
 {
@@ -83,6 +85,7 @@ char FileObj::Open(const char* pszPath, int nMode)
 }
 
 // The loader's origins are one to three where the C library wants zero to two.
+// FUNCTION: HYPERX100 0x00413dd0
 // FUNCTION: HYPERX 0x00440550
 int FileObj::SeekRelative(long nOffset, int nOrigin)
 {
@@ -104,6 +107,7 @@ int FileObj::SeekRelative(long nOffset, int nOrigin)
     return _lseek(m_fd, nOffset, nOrigin);
 }
 
+// FUNCTION: HYPERX100 0x00413e40
 // FUNCTION: HYPERX 0x004405b0
 int FileObj::Write(const void* pBuf, unsigned int nCount)
 {
@@ -111,6 +115,7 @@ int FileObj::Write(const void* pBuf, unsigned int nCount)
 }
 
 // Each line feed gains a carriage return, so a line of line feeds overruns the second buffer.
+// FUNCTION: HYPERX100 0x00413e60
 // FUNCTION: HYPERX 0x004405d0
 int FileObj::PrintFormatted(const char* pszFormat, ...)
 {
@@ -153,18 +158,21 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
     return _write(m_fd, szOut, strlen(szOut));
 }
 
+// FUNCTION: HYPERX100 0x00413f20
 // FUNCTION: HYPERX 0x00440670
 int FileObj::Read(void* pBuffer, int nCount)
 {
     return _read(m_fd, pBuffer, nCount);
 }
 
+// FUNCTION: HYPERX100 0x00413f40
 // FUNCTION: HYPERX 0x00440690
 int FileObj::CloseAndTest()
 {
     return _close(m_fd) == 0;
 }
 
+// FUNCTION: HYPERX100 0x00414080
 // FUNCTION: HYPERX 0x004406b0
 int FileObj::GetNextLine(char** ppLine)
 {
@@ -218,3 +226,31 @@ int FileObj::GetNextLine(char** ppLine)
 
     return nLength;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00413f60
+long FileObj::GetFileLength(const char* pszPath)
+{
+    if (Open(pszPath, FILE_MODE_READ) != 0)
+    {
+        const long nLength = _filelength(m_fd);
+
+        CloseAndTest();
+
+        return nLength;
+    }
+
+    return 0;
+}
+
+// FUNCTION: HYPERX100 0x00413fd0
+long FileObj::GetLength()
+{
+    if (m_fd != 0)
+    {
+        return _filelength(m_fd);
+    }
+
+    return 0;
+}
+#endif

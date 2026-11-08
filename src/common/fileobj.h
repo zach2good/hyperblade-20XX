@@ -35,6 +35,13 @@ public:
 
     int PrintFormatted(const char* pszFormat, ...);
 
+#ifdef HYPERX_V100
+    // Opens the file to measure it and closes it again; zero when it will not open.
+    long GetFileLength(const char* pszPath);
+
+    long GetLength();
+#endif
+
     int  m_fd;          // 0x000
     char m_szLine[256]; // 0x004
 };

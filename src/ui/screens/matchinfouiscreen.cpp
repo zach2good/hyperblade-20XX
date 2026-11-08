@@ -12,6 +12,7 @@ class MatchInfoUIScreen;
 #define MATCHINFO_FIRST_PERIOD 1
 
 // RegisterBitmaps claims every bitmap name's STRING marker.
+// FUNCTION: HYPERX100 0x004c32a0
 // FUNCTION: HYPERX 0x00435790
 MatchInfoUIScreen::MatchInfoUIScreen()
 {
@@ -108,6 +109,7 @@ MatchInfoUIScreen::MatchInfoUIScreen()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c3720
 // FUNCTION: HYPERX 0x00435b20
 void MatchInfoUIScreen::OnFirstTabClick()
 {
@@ -125,6 +127,7 @@ void MatchInfoUIScreen::OnFirstTabClick()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c3760
 // FUNCTION: HYPERX 0x00435b50
 void MatchInfoUIScreen::OnSecondTabClick()
 {
@@ -133,6 +136,7 @@ void MatchInfoUIScreen::OnSecondTabClick()
     Game::SetEngineState(ESTATE_AWARDS);
 }
 
+// FUNCTION: HYPERX100 0x004c3780
 // FUNCTION: HYPERX 0x00435b70
 void MatchInfoUIScreen::OnThirdTabClick()
 {
@@ -150,6 +154,7 @@ void MatchInfoUIScreen::OnThirdTabClick()
     Game::SetEngineState(m_nNextState);
 }
 
+// FUNCTION: HYPERX100 0x004c3800
 // FUNCTION: HYPERX 0x00435bd0
 void MatchInfoUIScreen::OnExitTabClick()
 {
@@ -159,6 +164,7 @@ void MatchInfoUIScreen::OnExitTabClick()
 }
 
 // Nine images in three states each: plain, "r" rollover and "d" depressed.
+// FUNCTION: HYPERX100 0x004c3820
 // FUNCTION: HYPERX 0x00435bf0
 void MatchInfoUIScreen::RegisterBitmaps()
 {
@@ -236,6 +242,7 @@ void MatchInfoUIScreen::RegisterBitmaps()
     g_nMatchInfoBitmapsUnloaded = 0;
 }
 
+// FUNCTION: HYPERX100 0x004c3a80
 // FUNCTION: HYPERX 0x00435d50
 void MatchInfoUIScreen::UnloadBitmaps()
 {

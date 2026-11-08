@@ -25,6 +25,7 @@
 #endif
 
 // Returns zero whatever happened.
+// FUNCTION: HYPERX100 0x004d4570
 // FUNCTION: HYPERX 0x00433780
 unsigned int __cdecl CD3DTextureManager::RestoreAllTextures(void)
 {
@@ -43,6 +44,7 @@ unsigned int __cdecl CD3DTextureManager::RestoreAllTextures(void)
 }
 
 // Frees the node only when its m_wRefCount drops to zero.
+// FUNCTION: HYPERX100 0x00478890
 // FUNCTION: HYPERX 0x00473020
 char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
 {
@@ -111,6 +113,7 @@ char CD3DTextureManager::ReleaseLOD(LODNode* pLod, MaterialListNode* pBlock)
 
 // The head is re-read after every step, because releasing an entry can run arbitrary code.
 
+// FUNCTION: HYPERX100 0x00478970
 // FUNCTION: HYPERX 0x004730d0
 char CD3DTextureManager::ReleaseModel(LODNode* pLod)
 {
@@ -154,6 +157,7 @@ char CD3DTextureManager::ReleaseModel(LODNode* pLod)
 }
 
 // Frees the block only when its m_nRefs drops to zero.
+// FUNCTION: HYPERX100 0x00478a30
 // FUNCTION: HYPERX 0x00473180
 char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNode* pBlock)
 {
@@ -210,6 +214,7 @@ char CD3DTextureManager::DeactivateMaterialLookup(LODNode* pLod, MaterialListNod
     return bReleased;
 }
 
+// FUNCTION: HYPERX100 0x00478d60
 // FUNCTION: HYPERX 0x004733d0
 char CD3DTextureManager::ReleaseTexEntry(TexCacheEntry* pEntry)
 {
@@ -228,6 +233,7 @@ char CD3DTextureManager::ReleaseTexEntry(TexCacheEntry* pEntry)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00478d90
 // FUNCTION: HYPERX 0x00473400
 char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
 {
@@ -278,6 +284,7 @@ char CD3DTextureManager::FreeTexEntry(TexCacheEntry* pEntry)
 }
 
 // SlotDesc turns the slot into a descriptor whose link id is the mesh index.
+// FUNCTION: HYPERX100 0x00479080
 // FUNCTION: HYPERX 0x00473600
 int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nSlot, MeshBlock** ppOut)
 {
@@ -305,6 +312,7 @@ int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nS
 }
 
 // uv *= (width - 1) / the width last scaled to, clamped with negatives wrapped. Software renderer only.
+// FUNCTION: HYPERX100 0x00479260
 // FUNCTION: HYPERX 0x00473720
 int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, MaterialListNode* pList)
 {

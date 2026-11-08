@@ -32,6 +32,13 @@ struct TeamsBlock
     int m_anUnused[(0x8c - 0x0c) / 4]; // 0x0c
 
     TeamsBlock();
+
+#ifdef HYPERX_V100
+    ~TeamsBlock();
+
+    // The index of the team with this name, ignoring case, or 0xff.
+    unsigned char FindTeamByName(const char* pszName) const;
+#endif
 };
 
 #endif

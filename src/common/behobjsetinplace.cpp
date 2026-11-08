@@ -2,6 +2,7 @@
 #include "planvm/behaviorids.h"
 #include "common/pooledclasses.h"
 
+// FUNCTION: HYPERX100 0x004cc090
 // FUNCTION: HYPERX 0x0041e1e0
 BehObj_SetInPlace::BehObj_SetInPlace()
 {
@@ -13,6 +14,7 @@ BehObj_SetInPlace::~BehObj_SetInPlace()
 }
 
 // The first slot is nulled and then read back, so the walk never runs.
+// FUNCTION: HYPERX100 0x004cc1b0
 // FUNCTION: HYPERX 0x0041e230
 void BehObj_SetInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

@@ -15,6 +15,7 @@
 
 // Each of the four collision parts takes five copies of one global.
 
+// FUNCTION: HYPERX100 0x0046be80
 // FUNCTION: HYPERX 0x0047fc90
 RampObject::RampObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
@@ -25,6 +26,7 @@ RampObject::RampObject(int nSlot, class ObjectDef* pDef)
 }
 
 // Four planes through six corners of the bounding box, marked ready once built.
+// FUNCTION: HYPERX100 0x0046c250
 // FUNCTION: HYPERX 0x0047ff00
 void RampObject::InitCollisionPlanes()
 {
@@ -167,6 +169,7 @@ void RampObject::InitCollisionPlanes()
 }
 
 // Builds the planes on first use.
+// FUNCTION: HYPERX100 0x0046cde0
 // FUNCTION: HYPERX 0x004808c0
 CollisionObj* RampObject::GetCollisionObjForPoint(Vec3* pPoint)
 {

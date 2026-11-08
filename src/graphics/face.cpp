@@ -18,6 +18,7 @@ float g_flUnusedFaceC = g_flZeroFace;
 
 #define CLIP_ALL 0xff
 
+// FUNCTION: HYPERX100 0x0045fa50
 // FUNCTION: HYPERX 0x0044a9a0
 int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut)
 {
@@ -75,6 +76,7 @@ int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const Transformed
 }
 
 // Screen y grows down, so y below zero is above the top edge. Near is strict and far is not.
+// FUNCTION: HYPERX100 0x00499520
 // FUNCTION: HYPERX 0x0047f7b0
 char __fastcall Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* pVertices)
 {
@@ -161,6 +163,7 @@ char __fastcall Face::ClipCodeAndCullCheck(const MeshFace* pFace, const Transfor
 #define AXIS_Y 1
 #define AXIS_Z 2
 
+// FUNCTION: HYPERX100 0x004996e0
 // FUNCTION: HYPERX 0x0047f8f0
 unsigned char __fastcall Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
 {
@@ -272,3 +275,177 @@ unsigned char __fastcall Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char 
 
     return 0;
 }
+
+#ifdef HYPERX_V100
+// Two when every vertex is inside, nought when the polygon is rejected or clipped away, one when clipped.
+// The outcodes test against nought, but the clip planes use the minimum extents.
+// FUNCTION: HYPERX100 0x004998f0
+unsigned char __fastcall Face::ClassifyAndClipPolygon(ClipPolyBuffer* pPoly)
+{
+    ClipPolyBuffer* pSwap;
+
+    int nLeft   = 0;
+    int nRight  = 0;
+    int nTop    = 0;
+    int nBottom = 0;
+    int nNear   = 0;
+    int nFar    = 0;
+
+    const ClipVertex* pVertex = pPoly->aVertices;
+
+    for (int i = pPoly->nCount; i != 0; i--)
+    {
+        const float* const pfl = pVertex->af;
+
+        if (pfl[0] < 0.0f)
+        {
+            nLeft++;
+        }
+
+        if (pfl[3] * g_projRenderParams.flMaxX < pfl[0])
+        {
+            nRight++;
+        }
+
+        if (pfl[1] < 0.0f)
+        {
+            nTop++;
+        }
+
+        if (pfl[3] * g_projRenderParams.flMaxY < pfl[1])
+        {
+            nBottom++;
+        }
+
+        if (pfl[2] < 0.0f)
+        {
+            nNear++;
+        }
+
+        if (pfl[3] <= pfl[2])
+        {
+            nFar++;
+        }
+
+        pVertex++;
+    }
+
+    if (nNear + nBottom + nFar + nLeft + nRight + nTop == 0)
+    {
+        return 2;
+    }
+
+    const int nCount = pPoly->nCount;
+
+    if (nCount == nLeft || nCount == nRight || nCount == nTop || nCount == nBottom || nCount == nNear || nCount == nFar)
+    {
+        pPoly->nCount = 0;
+
+        return 0;
+    }
+
+    ClipPolyBuffer* pSrc = pPoly;
+    ClipPolyBuffer* pDst = &g_clipPolyStaging;
+
+    if (nLeft != 0)
+    {
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_X, -1.0f, -g_projRenderParams.flMinX);
+
+        if (pDst->nCount == 0)
+        {
+            pPoly->nCount = 0;
+
+            return 0;
+        }
+
+        pSwap = pSrc;
+        pSrc  = pDst;
+        pDst  = pSwap;
+    }
+
+    if (nRight != 0)
+    {
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_X, 1.0f, g_projRenderParams.flMaxX);
+
+        if (pDst->nCount == 0)
+        {
+            pPoly->nCount = 0;
+
+            return 0;
+        }
+
+        pSwap = pSrc;
+        pSrc  = pDst;
+        pDst  = pSwap;
+    }
+
+    if (nTop != 0)
+    {
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Y, -1.0f, -g_projRenderParams.flMinY);
+
+        if (pDst->nCount == 0)
+        {
+            pPoly->nCount = 0;
+
+            return 0;
+        }
+
+        pSwap = pSrc;
+        pSrc  = pDst;
+        pDst  = pSwap;
+    }
+
+    if (nBottom != 0)
+    {
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Y, 1.0f, g_projRenderParams.flMaxY);
+
+        if (pDst->nCount == 0)
+        {
+            pPoly->nCount = 0;
+
+            return 0;
+        }
+
+        pSwap = pSrc;
+        pSrc  = pDst;
+        pDst  = pSwap;
+    }
+
+    if (nNear != 0)
+    {
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Z, -1.0f, -g_projRenderParams.flMinZ);
+
+        if (pDst->nCount == 0)
+        {
+            pPoly->nCount = 0;
+
+            return 0;
+        }
+
+        pSwap = pSrc;
+        pSrc  = pDst;
+        pDst  = pSwap;
+    }
+
+    if (nFar != 0)
+    {
+        SWRend::ClipPolyAgainstPlane(pSrc, pDst, AXIS_Z, 0.0f, 0.0f);
+
+        if (pDst->nCount == 0)
+        {
+            pPoly->nCount = 0;
+
+            return 0;
+        }
+
+        pSrc = pDst;
+    }
+
+    if (pSrc == &g_clipPolyStaging)
+    {
+        memcpy(pPoly, &g_clipPolyStaging, g_clipPolyStaging.nCount * sizeof(ClipVertex) + offsetof(ClipPolyBuffer, aVertices));
+    }
+
+    return 1;
+}
+#endif

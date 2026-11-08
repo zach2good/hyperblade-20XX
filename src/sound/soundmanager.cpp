@@ -7,7 +7,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "app/gameapp.h"
+#ifdef HYPERX_V100
+#include <stdlib.h>
+#endif
 
+// FUNCTION: HYPERX100 0x004698a0
 // FUNCTION: HYPERX 0x004491c0
 SoundManager::SoundManager()
 {
@@ -37,6 +41,7 @@ SoundManager::SoundManager()
 // No group read yet.
 #define GROUP_NONE (-1)
 
+// FUNCTION: HYPERX100 0x00469900
 // FUNCTION: HYPERX 0x00449210
 void SoundManager::FreeEntries()
 {
@@ -57,6 +62,7 @@ void SoundManager::FreeEntries()
 }
 
 // The first line is a header; both walks stop at the first blank line, not at the end of file.
+// FUNCTION: HYPERX100 0x00469990
 // FUNCTION: HYPERX 0x00449280
 unsigned short SoundManager::Load(const char* pszListName)
 {
@@ -187,6 +193,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 extern short g_wSoundSequence;
 
 // Alternates between a group's first two sounds; a negative counter returns no sound.
+// FUNCTION: HYPERX100 0x00469f10
 // FUNCTION: HYPERX 0x00449680
 SoundEntry* SoundManager::PickFromGroup(int nGroup)
 {
@@ -208,3 +215,121 @@ SoundEntry* SoundManager::PickFromGroup(int nGroup)
 
     return 0;
 }
+
+#ifdef HYPERX_V100
+// The original's list of candidates holds two, and a group with more unplayed sounds overruns it.
+#define SOUNDMGR_PICK_LIMIT 2
+
+// A play state no SOUND_STATE_ value names; a sound has it until it first plays.
+#define SOUND_STATE_UNPLAYED 0
+
+// A sound in a group past this ends the walk with no answer.
+#define SOUNDMGR_GROUP_LIMIT 0x299
+
+// FUNCTION: HYPERX100 0x00469f80
+SoundEntry* SoundManager::PickUnplayedFromGroup(int nGroup)
+{
+    SoundEntry* apCandidates[SOUNDMGR_PICK_LIMIT];
+    short       nCandidates = 0;
+    short       nIndex      = m_awGroupFirst[nGroup];
+    const short nEnd        = m_awGroupCount[nGroup] + nIndex;
+
+    if (nIndex < 0)
+    {
+        return 0;
+    }
+
+    for (; nIndex < nEnd; nIndex++)
+    {
+        SoundEntry* const pSound = m_apSounds[nIndex];
+
+        if (pSound->m_nPlayState == SOUND_STATE_UNPLAYED)
+        {
+            apCandidates[nCandidates++] = pSound;
+        }
+    }
+
+    if (nCandidates != 0)
+    {
+        return apCandidates[(short)(rand() * nCandidates / (RAND_MAX + 1))];
+    }
+
+    return FindResidentInGroup(nGroup);
+}
+
+// FUNCTION: HYPERX100 0x0046a040
+SoundEntry* SoundManager::FindResidentInGroup(int nGroup)
+{
+    short       nIndex = m_awGroupFirst[nGroup];
+    const short nEnd   = m_awGroupCount[nGroup] + nIndex;
+
+    if (nIndex < 0)
+    {
+        // STRING: HYPERX100 0x00513c88
+        g_gameApp.Error("No resident sound");
+
+        return 0;
+    }
+
+    for (; nIndex < nEnd; nIndex++)
+    {
+        const int nState = m_apSounds[nIndex]->m_nPlayState;
+
+        if (nState == SOUND_STATE_UNPLAYED || nState == SOUND_STATE_STOPPED)
+        {
+            return m_apSounds[nIndex];
+        }
+    }
+
+    g_gameApp.Error("No resident sound");
+
+    return 0;
+}
+
+// FUNCTION: HYPERX100 0x0046a0e0
+SoundEntry* SoundManager::FindNewestStopped()
+{
+    SoundEntry*  pNewest   = 0;
+    unsigned int nNewestMs = 0;
+
+    for (short nIndex = 0; nIndex < m_nSoundCount; nIndex++)
+    {
+        SoundEntry* const pSound = m_apSounds[nIndex];
+
+        if (pSound->m_nGroup > SOUNDMGR_GROUP_LIMIT)
+        {
+            return 0;
+        }
+
+        if (pSound->m_nPlayState == SOUND_STATE_STOPPED && pSound->m_nStartedMs > nNewestMs)
+        {
+            pNewest   = pSound;
+            nNewestMs = pSound->m_nStartedMs;
+        }
+    }
+
+    return pNewest;
+}
+
+// FUNCTION: HYPERX100 0x0046a180
+SoundEntry* SoundManager::FindOldestIdleInGroup(int nGroup)
+{
+    SoundEntry*  pOldest   = 0;
+    short        nIndex    = m_awGroupFirst[nGroup];
+    const short  nEnd      = m_awGroupCount[nGroup] + nIndex;
+    unsigned int nOldestMs = 0xffffffff;
+
+    for (; nIndex < nEnd; nIndex++)
+    {
+        SoundEntry* const pSound = m_apSounds[nIndex];
+
+        if (pSound->m_nStartedMs < nOldestMs && pSound->m_nPlayState == SOUND_STATE_IDLE)
+        {
+            pOldest   = pSound;
+            nOldestMs = pSound->m_nStartedMs;
+        }
+    }
+
+    return pOldest;
+}
+#endif

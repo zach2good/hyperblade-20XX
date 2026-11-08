@@ -24,6 +24,7 @@
 
 #define PACKET_LIMIT 0xf1
 
+// FUNCTION: HYPERX100 0x0044b160
 // FUNCTION: HYPERX 0x0042be90
 PlayerBase::~PlayerBase()
 {
@@ -31,6 +32,7 @@ PlayerBase::~PlayerBase()
 
 // Three of the fields come from the object's own vtable rather than a constant.
 
+// FUNCTION: HYPERX100 0x0044b1a0
 // FUNCTION: HYPERX 0x0042bea0
 void PlayerBase::InitDirectPlayParams()
 {
@@ -68,6 +70,7 @@ void PlayerBase::InitDirectPlayParams()
 #define CARRIER_NONE 0xff
 
 // A rok packet carries the carrier's slot, 0xff if none; the packet goes to every remote id.
+// FUNCTION: HYPERX100 0x0044b8a0
 // FUNCTION: HYPERX 0x0042c300
 void __fastcall PlayerBase::BroadcastState(NetSendBuffer* pPacket, int nLength, int nObjectSlot)
 {
@@ -99,6 +102,7 @@ void __fastcall PlayerBase::BroadcastState(NetSendBuffer* pPacket, int nLength, 
 #define EVENT_NONE 0xffffffff
 
 // A move goes out every second regardless; between those only when it changed, the Rok is not held and a modem link is not throttled.
+// FUNCTION: HYPERX100 0x0044b9b0
 // FUNCTION: HYPERX 0x0042c380
 void PlayerBase::NetUpdateObject(unsigned char nSlot)
 {
@@ -226,6 +230,7 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
 
 // Two stationary slots per nibble byte, then five-byte events, nine with a parameter; flushed at 0xf1 bytes.
 
+// FUNCTION: HYPERX100 0x0044bd60
 // FUNCTION: HYPERX 0x0042c670
 void PlayerBase::NetUpdateMultiObject(int)
 {
@@ -314,6 +319,7 @@ void PlayerBase::NetUpdateMultiObject(int)
 #define NO_SEQUENCE 0xff
 
 // One record is reused, so each event inherits the fields it does not set.
+// FUNCTION: HYPERX100 0x0044bf70
 // FUNCTION: HYPERX 0x0042c830
 void PlayerBase::RecvStaticObjectPacket(const NetReceiveBuffer* pPacket, int nLength)
 {
@@ -392,6 +398,7 @@ void PlayerBase::RecvStaticObjectPacket(const NetReceiveBuffer* pPacket, int nLe
 #define PACKET_MOVING_EVENT 0x12
 
 // The Rok's packets end with its carrier's slot, CARRIER_NONE when nobody holds it.
+// FUNCTION: HYPERX100 0x0044c130
 // FUNCTION: HYPERX 0x0042c970
 void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength)
 {
@@ -542,12 +549,14 @@ void PlayerBase::RecvMovementPacket(const NetReceiveBuffer* pPacket, int nLength
     } while (nEvent < pEvents->nCount);
 }
 
+// FUNCTION: HYPERX100 0x0044b980
 // FUNCTION: HYPERX 0x0042ccc0
 NetReceiveBuffer* PlayerBase::GetRecvBufBase()
 {
     return &m_recvBuf;
 }
 
+// FUNCTION: HYPERX100 0x0044b990
 // FUNCTION: HYPERX 0x0042ccd0
 NetSendBuffer* PlayerBase::GetSendBufBase()
 {

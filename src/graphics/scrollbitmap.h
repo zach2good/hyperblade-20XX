@@ -15,6 +15,7 @@ class ScrollBitmap : public CDDBitMap
 public:
     virtual ~ScrollBitmap();
 
+    // FUNCTION: HYPERX100 0x00443340
     // FUNCTION: HYPERX 0x00438b60
     virtual int BltFillColour(unsigned int dwFillColor)
     {
@@ -57,6 +58,7 @@ public:
 
     virtual void SetScrollColorMode(int nScrollColor);
 
+    // FUNCTION: HYPERX100 0x00442f40
     // FUNCTION: HYPERX 0x00438940
     virtual void SetClipRect(int nClipped, Point pt)
     {
@@ -93,6 +95,11 @@ public:
     // The third argument is never read.
     int LoadFromFile(const char* pszName, int bColourKey, int nUnused);
     int ScrollTo(int nPosition);
+
+#ifdef HYPERX_V100
+    int ScrollStep();
+    int ScrollToTarget();
+#endif
 
     ScrollBitmap();
     ScrollBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack);

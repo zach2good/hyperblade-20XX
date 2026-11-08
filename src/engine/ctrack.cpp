@@ -45,6 +45,7 @@ extern unsigned char g_bSmartCamEnabled;
 
 HYPERBLADE_FIELD_AT(CTrack, m_pPos, 0x10);
 
+// FUNCTION: HYPERX100 0x00483540
 // FUNCTION: HYPERX 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -69,6 +70,7 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bUnused = 0;
 }
 
+// FUNCTION: HYPERX100 0x004835d0
 // FUNCTION: HYPERX 0x00408f90
 void CTrack::OnListChanged()
 {
@@ -86,6 +88,7 @@ void CTrack::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x00483630
 // FUNCTION: HYPERX 0x00408fd0
 void CTrack::Process(int nArg)
 {

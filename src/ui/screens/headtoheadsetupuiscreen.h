@@ -34,6 +34,7 @@ public:
     virtual void OnSecondPageTabClick();
     virtual void OnThirdPageTabClick();
 
+    // FUNCTION: HYPERX100 0x0043b750
     // FUNCTION: HYPERX 0x00444b30
     virtual void OnOkayClick()
     {
@@ -41,6 +42,7 @@ public:
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
+    // FUNCTION: HYPERX100 0x0043b770
     virtual void OnCancelClick()
     {
         Game::SetEngineState(g_nSetupReturnState);

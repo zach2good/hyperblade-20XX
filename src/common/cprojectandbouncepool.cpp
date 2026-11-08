@@ -4,6 +4,7 @@
 #include "planvm/cprojectandbounce.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004214c0
 // FUNCTION: HYPERX 0x00412d90
 void CProjectAndBouncePool::Init()
 {
@@ -23,6 +24,7 @@ void CProjectAndBouncePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423f90
 // FUNCTION: HYPERX 0x00412e70
 void* CProjectAndBouncePool::Alloc()
 {

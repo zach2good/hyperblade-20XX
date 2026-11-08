@@ -14,10 +14,16 @@ class DeviceObject : public EngineObject
 public:
     DeviceObject(int nSlot, class ObjectDef* pDef);
 
+    // FUNCTION: HYPERX100 0x00490310
     // FUNCTION: HYPERX 0x0045d700
     ~DeviceObject()
     {
     }
+
+#ifdef HYPERX_V100
+    // TODO: The name is a guess; nothing calls it.
+    void SetOwnerFromSlot(short nSlot);
+#endif
 
     // Public: KeyboardDeviceObj's constructor writes four of these, and the bring-up key replay reads them.
 public:

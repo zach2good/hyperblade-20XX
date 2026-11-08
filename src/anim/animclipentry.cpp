@@ -7,6 +7,7 @@
 #include "app/gameapp.h"
 #include "animnode.h"
 
+// FUNCTION: HYPERX100 0x0045a630
 // FUNCTION: HYPERX 0x004177c0
 AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 {

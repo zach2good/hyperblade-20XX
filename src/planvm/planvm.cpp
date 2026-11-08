@@ -93,6 +93,7 @@ extern char g_szInabilityToReadString[28];
 #define PLAN_STRING_LIMIT 0x28
 
 // Five action slots are never written, and only the hit list's names are kept.
+// FUNCTION: HYPERX100 0x004b6f00
 // FUNCTION: HYPERX 0x0046ac10
 void PlanVM::LoadAnimationLists(void)
 {
@@ -455,6 +456,7 @@ void PlanVM::LoadAnimationLists(void)
     fclose(pThrFile);
 }
 
+// FUNCTION: HYPERX100 0x004e1290
 // FUNCTION: HYPERX 0x0047cd60
 void __cdecl PlanVM::InitRuntimeOpcodeTable(void)
 {
@@ -542,6 +544,7 @@ void __cdecl PlanVM::InitRuntimeOpcodeTable(void)
 #define PLAN_LAST_NUMBERED_TOKEN 50
 
 // Builds the two keyword tables; each ends in an empty-name entry valued minus one.
+// FUNCTION: HYPERX100 0x00487790
 // FUNCTION: HYPERX 0x0047d340
 PlanVM::PlanVM()
 {
@@ -813,6 +816,7 @@ PlanVM::PlanVM()
     m_pStream = new PlanWord[PLAN_STREAM_WORDS];
 }
 
+// FUNCTION: HYPERX100 0x00488220
 // FUNCTION: HYPERX 0x0047dab0
 PlanVM::~PlanVM()
 {
@@ -832,6 +836,7 @@ PlanVM::~PlanVM()
 #define PATH_CHARS 0x100
 
 // The sentinel goes out too, and the descriptor is closed twice on the success path.
+// FUNCTION: HYPERX100 0x00488260
 // FUNCTION: HYPERX 0x0047daf0
 char PlanVM::SaveBinary(char* pszName)
 {
@@ -883,6 +888,7 @@ char PlanVM::SaveBinary(char* pszName)
 #define PLAN_TEXT_LIMIT 0x1387f
 
 // Only the first byte of each of the four tables is cleared: a leading zero marks an empty slot.
+// FUNCTION: HYPERX100 0x00488490
 // FUNCTION: HYPERX 0x0047dca0
 char PlanVM::ReadAll(FileObj* pFile)
 {
@@ -936,6 +942,7 @@ char PlanVM::ReadAll(FileObj* pFile)
 #define PLAN_PATH_CHARS 0x100
 
 // The path is built beside the executable; a file that will not open throws.
+// FUNCTION: HYPERX100 0x004885e0
 // FUNCTION: HYPERX 0x0047dd80
 char PlanVM::LoadText(short nCamera, char* pszName)
 {
@@ -976,6 +983,7 @@ char PlanVM::LoadText(short nCamera, char* pszName)
 
 // An emit that fails throws, so the compile has one error path, which the editor dialog catches.
 
+// FUNCTION: HYPERX100 0x00488880
 // FUNCTION: HYPERX 0x0047df00
 unsigned char PlanVM::Compile()
 {
@@ -1014,6 +1022,7 @@ unsigned char PlanVM::Compile()
 }
 
 // The message name keeps its quotes, and the first behaviour's messages land in row one.
+// FUNCTION: HYPERX100 0x00488900
 // FUNCTION: HYPERX 0x0047df70
 char PlanVM::ParseHeaderDeclarations()
 {
@@ -1152,6 +1161,7 @@ char PlanVM::ParseHeaderDeclarations()
 extern const char* const g_pszDecimalPoint;
 
 // Four characters end a token: the two whitespace ones, the comma and the ampersand.
+// FUNCTION: HYPERX100 0x00488ec0
 // FUNCTION: HYPERX 0x0047e3a0
 int PlanVM::IsSeparatorChar()
 {
@@ -1166,6 +1176,7 @@ int PlanVM::IsSeparatorChar()
 }
 
 // Whether the token under the cursor opens a comment or a group.
+// FUNCTION: HYPERX100 0x00488ef0
 // FUNCTION: HYPERX 0x0047e3d0
 int PlanVM::IsCommentOrGroup()
 {
@@ -1178,6 +1189,7 @@ int PlanVM::IsCommentOrGroup()
 }
 
 // Accepts four prefixes: "id", a leading underscore, "A_" and "AA_".
+// FUNCTION: HYPERX100 0x00488f30
 // FUNCTION: HYPERX 0x0047e400
 unsigned char PlanVM::IsIdentifierPrefix(const char* pszToken)
 {
@@ -1195,6 +1207,7 @@ unsigned char PlanVM::IsIdentifierPrefix(const char* pszToken)
     return (unsigned char)bMatch;
 }
 
+// FUNCTION: HYPERX100 0x00488f90
 // FUNCTION: HYPERX 0x0047e440
 int PlanVM::IsAAPrefix(const char* pszToken)
 {
@@ -1207,6 +1220,7 @@ int PlanVM::IsAAPrefix(const char* pszToken)
 }
 
 // Nothing checks what follows, so "+" alone is numeric.
+// FUNCTION: HYPERX100 0x00488fc0
 // FUNCTION: HYPERX 0x0047e470
 unsigned char PlanVM::IsNumericChar(const char* pszToken)
 {
@@ -1226,6 +1240,7 @@ unsigned char PlanVM::IsNumericChar(const char* pszToken)
     return (unsigned char)bMatch;
 }
 
+// FUNCTION: HYPERX100 0x00488ff0
 // FUNCTION: HYPERX 0x0047e4a0
 unsigned char PlanVM::IsPRN(const char* pOpcode)
 {
@@ -1243,6 +1258,7 @@ unsigned char PlanVM::IsPRN(const char* pOpcode)
     return (unsigned char)bMatch;
 }
 
+// FUNCTION: HYPERX100 0x00489020
 // FUNCTION: HYPERX 0x0047e4d0
 char PlanVM::EmitArgToken()
 {
@@ -1457,6 +1473,7 @@ char PlanVM::EmitArgToken()
 }
 
 // A float token's bit pattern is stored raw where the other readings store an integer.
+// FUNCTION: HYPERX100 0x00489780
 // FUNCTION: HYPERX 0x0047ea50
 char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
 {
@@ -1504,6 +1521,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
 }
 
 // The last character over the limit is already in the stream when the failure is reported.
+// FUNCTION: HYPERX100 0x004898b0
 // FUNCTION: HYPERX 0x0047eb30
 char PlanVM::EmitStringLiteral(const char* pszToken, PlanWord* paStream, int* pnPos)
 {
@@ -1542,6 +1560,7 @@ char PlanVM::EmitStringLiteral(const char* pszToken, PlanWord* paStream, int* pn
 }
 
 // A closing brace with nothing copied is itself the token; an empty run goes round again.
+// FUNCTION: HYPERX100 0x00489940
 // FUNCTION: HYPERX 0x0047ebb0
 void PlanVM::ReadNextToken(char* pToken)
 {
@@ -1654,6 +1673,7 @@ void PlanVM::ReadNextToken(char* pToken)
 }
 
 // Skips the rest of the line; the second scan only moves past a lone carriage return.
+// FUNCTION: HYPERX100 0x00489ac0
 // FUNCTION: HYPERX 0x0047ecd0
 short PlanVM::SkipLine()
 {
@@ -1680,6 +1700,7 @@ short PlanVM::SkipLine()
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00489b40
 // FUNCTION: HYPERX 0x0047ed20
 short PlanVM::SkipSeparators()
 {
@@ -1696,6 +1717,7 @@ short PlanVM::SkipSeparators()
 }
 
 // The address test on each entry is the array's own, so it never fails; the original has it too.
+// FUNCTION: HYPERX100 0x00489c20
 // FUNCTION: HYPERX 0x0047ed50
 short PlanVM::FindLocalRealIndex(char* pszName)
 {
@@ -1719,6 +1741,7 @@ short PlanVM::FindLocalRealIndex(char* pszName)
     return -1;
 }
 
+// FUNCTION: HYPERX100 0x00489d30
 // FUNCTION: HYPERX 0x0047ee30
 short PlanVM::FindInteractorNameIndex(char* pszName)
 {
@@ -1742,6 +1765,7 @@ short PlanVM::FindInteractorNameIndex(char* pszName)
     return -1;
 }
 
+// FUNCTION: HYPERX100 0x00489e40
 // FUNCTION: HYPERX 0x0047ef10
 PlanOpcodeRef PlanVM::LookupKeyword(char* pszName)
 {
@@ -1761,6 +1785,7 @@ PlanOpcodeRef PlanVM::LookupKeyword(char* pszName)
 }
 
 // The token table is compared exactly and the loaded table without case.
+// FUNCTION: HYPERX100 0x00489f00
 // FUNCTION: HYPERX 0x0047efc0
 PlanOpcodeRef PlanVM::LookupSymbol(char* pszName)
 {
@@ -1803,6 +1828,7 @@ extern char g_szCouldNotFindInteractorNamed[34];
 
 // The behaviour table ends at the first empty name, and reaching it is the refusal.
 
+// FUNCTION: HYPERX100 0x0048a030
 // FUNCTION: HYPERX 0x0047f0c0
 short PlanVM::FindBehaviorIndexOrThrow(char* pszName)
 {
@@ -1824,6 +1850,7 @@ short PlanVM::FindBehaviorIndexOrThrow(char* pszName)
     return nSlot;
 }
 
+// FUNCTION: HYPERX100 0x0048a160
 // FUNCTION: HYPERX 0x0047f1a0
 short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
 {
@@ -1850,6 +1877,7 @@ short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
 #define TOKEN_CLOSE '}'
 
 // A name of thirty-three characters or more overruns both buffers, as in the original.
+// FUNCTION: HYPERX100 0x0048a240
 // FUNCTION: HYPERX 0x0047f250
 void PlanVM::LoadSymbolTables()
 {
@@ -2035,6 +2063,7 @@ void PlanVM::LoadSymbolTables()
 }
 
 // Takes the quotes off a token in place, without a copy.
+// FUNCTION: HYPERX100 0x0048a900
 // FUNCTION: HYPERX 0x0047f730
 char* PlanVM::UnquoteString(char* pszText)
 {

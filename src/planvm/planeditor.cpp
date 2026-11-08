@@ -13,6 +13,7 @@
 
 #define NODE_LIST_ITEM 0x430
 
+// FUNCTION: HYPERX100 0x0047ae90
 // FUNCTION: HYPERX 0x0047c550
 void PlanEditor::ApplyBehaviorSelection(HWND hDlg, HWND hControl)
 {
@@ -49,6 +50,7 @@ void PlanEditor::ApplyBehaviorSelection(HWND hDlg, HWND hControl)
 #define NODE_CONDITION_STRIDE 20
 
 // One index runs through both loops unreset, so the second block starts one past the first.
+// FUNCTION: HYPERX100 0x0047afd0
 // FUNCTION: HYPERX 0x0047c640
 void PlanEditor::ApplyNodeSelection(HWND hDlg, HWND hControl)
 {

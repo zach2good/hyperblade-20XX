@@ -13,6 +13,7 @@ struct Vec3;
 class Particle
 {
 public:
+    // FUNCTION: HYPERX100 0x00472b80
     Particle()
     {
         m_vPosition.z = 0.0f;

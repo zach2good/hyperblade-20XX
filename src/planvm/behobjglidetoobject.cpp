@@ -29,16 +29,19 @@
 #include "collinteractor.h"
 #include "engine/engineobject.h"
 
+// FUNCTION: HYPERX100 0x004ca450
 // FUNCTION: HYPERX 0x0041d460
 BehObj_GlideToObject::BehObj_GlideToObject()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ca510
 // FUNCTION: HYPERX 0x0041d4a0
 BehObj_GlideToObject::~BehObj_GlideToObject()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ca580
 // FUNCTION: HYPERX 0x0041d4b0
 void BehObj_GlideToObject::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
@@ -74,6 +77,7 @@ void BehObj_GlideToObject::Init(EngineObject* pOwner, PlanNode* pBlock, int nFla
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 }
 
+// FUNCTION: HYPERX100 0x004ca670
 // FUNCTION: HYPERX 0x0041d570
 void BehObj_GlideToObject::SendTimedMessage()
 {
