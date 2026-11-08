@@ -73,25 +73,21 @@ int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
 
 #ifdef HYPERX_BRINGUP
             // The main viewport is sized from the mode entry, so HB_RES has to reach it separately.
-            {
-                int nViewW = g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nWidth;
-                int nViewH = g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nHeight;
+            int nViewW = g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nWidth;
+            int nViewH = g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nHeight;
 
-                BringUp::OverrideDisplayMode(&nViewW, &nViewH);
+            BringUp::OverrideDisplayMode(&nViewW, &nViewH);
 
-                if (D3DViewport::Setup(&g_d3dState.apViewports[0], g_d3dState.pDevice, nViewW, nViewH, 0, 0) != 0
+            if (D3DViewport::Setup(&g_d3dState.apViewports[0], g_d3dState.pDevice, nViewW, nViewH, 0, 0) != 0
 #else
             if (D3DViewport::Setup(&g_d3dState.apViewports[0], g_d3dState.pDevice, g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nWidth, g_displayState.aDisplayModes[g_displayState.nDisplayModeIndex].nHeight, 0, 0) != 0
 #endif
-                    && D3DRend::SetupRenderStates(g_d3dState.pDevice, g_d3dState.apViewports[0], g_nRenderStateTexturePerspective) != 0 && D3DRend::CreateMaterial() != 0)
-                {
-                    D3DRend::InitBatchPools();
+                && D3DRend::SetupRenderStates(g_d3dState.pDevice, g_d3dState.apViewports[0], g_nRenderStateTexturePerspective) != 0 && D3DRend::CreateMaterial() != 0)
+            {
+                D3DRend::InitBatchPools();
 
-                    return 1;
-                }
-#ifdef HYPERX_BRINGUP
+                return 1;
             }
-#endif
         }
     }
     else

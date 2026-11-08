@@ -14,7 +14,6 @@ struct RadarRect : public RECT
 };
 
 // VTABLE: HYPERX 0x004b30d4
-
 class Radar : public Texture
 {
 public:
