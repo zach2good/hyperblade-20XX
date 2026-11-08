@@ -64,6 +64,9 @@ the change moved.
   line above, naming the shared value or the original's load or store.
   `python tools/check_volatile.py` enforces the reason.
 - **Put bring-up fixes inside `#ifdef HYPERX_BRINGUP`.** They must not change the measured image.
+- **Put v1.0.0.0's differences inside `#ifdef HYPERX_V100`.** Mark a function with
+  `// FUNCTION: HYPERX100 0xADDRESS` above its `HYPERX` marker. [docs/v1000.md](docs/v1000.md)
+  has the rules.
 - **Source comments describe the code.** They never record scores, percentages or match history.
   Default to no comment. When one is needed, state the unusual fact about the original in one
   line. `python tools/check_score_prose.py` enforces this.

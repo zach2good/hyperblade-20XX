@@ -25,6 +25,9 @@ A by-name marker takes its name from the comment line under it: the mangled or C
 library's. By-name markers go in headers: reccmp's `decomplint` reports one in a `.cpp` file as
 `byname_function_in_cpp`.
 
+v1.0.0.0 has its own module, `HYPERX100`. Its marker goes directly above the `HYPERX` marker, so
+the `HYPERX` marker stays next to the declaration. [v1000.md](v1000.md) has the rules.
+
 `FUNCTION: HYPERX 0xADDR FOLDED` tells reccmp that several markers may claim one recompiled
 address, for a build that folds our own bodies. It can't restore a symbol the linker discarded,
 and it does nothing for the original's folds.

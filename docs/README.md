@@ -15,10 +15,12 @@ decompilation.
 | 7 | [re_corrections.md](re_corrections.md) | Ghidra readings that are wrong, with the evidence |
 | 8 | [class_hierarchy.md](class_hierarchy.md) | Vtable layouts and the class hierarchy |
 | 9 | [v1000_debug_directory.md](v1000_debug_directory.md) | The FPO data in v1.0.0.0 and what it tells us about v1.0.0.1 |
-| 10 | [OTHER_MODULES.md](OTHER_MODULES.md) | The other executables and DLLs on the disc, and why they're out of scope |
-| 11 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
-| 12 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
-| 13 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
+| 10 | [v1000.md](v1000.md) | Building v1.0.0.0, its markers, and what the patch changed |
+| 11 | [v1000_cutting_room.md](v1000_cutting_room.md) | Cut and unfinished content v1.0.0.0 and the resources keep |
+| 12 | [OTHER_MODULES.md](OTHER_MODULES.md) | The other executables and DLLs on the disc, and why they're out of scope |
+| 13 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
+| 14 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
+| 15 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
 
 [tools/README.md](../tools/README.md) describes every tool, [src/README.md](../src/README.md)
 what each source folder holds, and [symbols/README.md](../symbols/README.md) the CSVs the build
@@ -29,6 +31,7 @@ and the checkers read.
 | Term | Meaning |
 | --- | --- |
 | the original, the client | The retail `HYPERX.EXE` v1.0.0.1. "The client" is the original's side of a diff. |
+| v1.0.0.0 | The 1996 release, reccmp target `HYPERX100`. See [v1000.md](v1000.md). |
 | this build, ours | The image this repository builds, `build/out/HYPERX_sym.exe` for scoring. |
 | row | One function in `symbols/functions.csv`, and its line in reccmp's report. |
 | marker | A comment such as `// FUNCTION: HYPERX 0x00401000` that pairs source with an address. See [ANNOTATIONS.md](ANNOTATIONS.md). |
