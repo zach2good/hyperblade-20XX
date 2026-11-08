@@ -111,7 +111,8 @@ void CSteerToTarget::Process(int nArg)
 
     PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
 
-    const float flSpeed = pBody->flSpeed;
+    // The original copies the speed through the FPU.
+    const float& flSpeed = (float)(pBody->flSpeed * 1.0f);
 
     Vec3 vFlat;
 
