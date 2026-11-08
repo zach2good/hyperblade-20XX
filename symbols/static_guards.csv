@@ -22,5 +22,5 @@ address,type,name
 0x004d063c,global,?$S13@?1??UpdateRenderSlotTransform@EngineObject@@UAEXF@Z@4EA
 0x004d06d4,global,?$S1@?1??UpdateRenderSlotTransform@PlayerObject@@UAEXF@Z@4EA
 0x004d0764,global,?$S10@?1??ApplyRenderSlotPose@RokObject@@UAEXXZ@4EA
-0x004d2164,global,?$S23@?1??SetRunState@GameEngine@@QAEXFH@Z@4EA
-0x004d216c,global,?$S22@?1??BroadcastEvent@GameEngine@@QAEXHHH@Z@4EA
+0x004d2164,global,?$S24@?1??SetRunState@GameEngine@@QAEXFH@Z@4EA
+0x004d216c,global,?$S23@?1??BroadcastEvent@GameEngine@@QAEXHHH@Z@4EA
