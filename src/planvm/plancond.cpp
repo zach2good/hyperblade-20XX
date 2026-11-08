@@ -7029,10 +7029,7 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 
     const float flFalloff = (SCORE_RANGE - flLength) * flScale * SCORE_FALLOFF;
 
-    float flCos;
-
-    // The original stores the cosine to its slot and pushes it from there.
-    *(volatile float*)&flCos = (float)cos(flFalloff + flScale);
+    const float& flCos = (float)cos(flFalloff + flScale);
 
     if (pActor->GetDistIfFacing(pTarget, flCos) == 0.0f)
     {
