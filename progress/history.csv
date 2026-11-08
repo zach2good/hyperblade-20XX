@@ -1,4 +1,4 @@
-date,game_bytes,matched_bytes,written_bytes,matched_count,written_count
+date,game_bytes,matched_bytes,written_bytes,matched_count,written_count,card_exact,card_total,card_accuracy
 2026-08-29,616014,80,80,5,5
 2026-08-29,616014,80,80,5,5
 2026-08-29,616014,80,80,5,5
@@ -446,3 +446,4 @@ date,game_bytes,matched_bytes,written_bytes,matched_count,written_count
 2026-11-06,628779,500979,448688,2846,2154
 2026-11-07,628779,504852,452561,2853,2161
 2026-11-07,628779,505168,452877,2854,2162
+2026-11-08,628779,505168,452877,2854,2162,2642,2795,99.30
