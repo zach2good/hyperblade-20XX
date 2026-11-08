@@ -326,8 +326,7 @@ void CameraObject::ViewIt()
     Vec3 vNormal = pTracked->GetPhysicsBody()->surfNormal;
 
     vCross.x = vDir.y * vNormal.z - vDir.z * vNormal.GetY();
-    // The original loads the normal first in this product.
-    vCross.y = vDir.z * vNormal.x - vDir.x * *(volatile float*)&vNormal.z;
+    vCross.y = vDir.z * vNormal.x - vDir.x * vNormal.GetZ();
     vCross.z = vDir.x * vNormal.y - vDir.y * vNormal.x;
 
     vCross.ScaleInPlace(m_pSettings->x);
