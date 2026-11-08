@@ -19,8 +19,8 @@ alerts = []
 for path in sorted(glob.glob("src/**/*.cpp", recursive=True)) + sorted(glob.glob("src/**/*.h", recursive=True)):
     parser = DecompParser()
 
-    for line in open(path, encoding="utf-8", errors="replace"):
-        parser.read_line(line)
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        parser.read(handle.read())
 
     for alert in parser.alerts:
         code = getattr(alert.code, "name", alert.code)
