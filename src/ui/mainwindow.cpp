@@ -28,6 +28,7 @@
 extern unsigned char g_bEnergyOn;
 
 // Resource 0x13e: OK writes nine live physics constants. "Save As" writes nothing.
+// FUNCTION: HYPERX100 0x004e0090
 // FUNCTION: HYPERX 0x004197e0
 BOOL CALLBACK MainWindow::PhysicsConfigProc(HWND hDlg, UINT nMsg, UINT wParam, LONG)
 {
@@ -97,6 +98,7 @@ BOOL CALLBACK MainWindow::PhysicsConfigProc(HWND hDlg, UINT nMsg, UINT wParam, L
 
 // The Ratings dialog, which sets one rating of one player.
 
+// FUNCTION: HYPERX100 0x00451f30
 // FUNCTION: HYPERX 0x00419a40
 BOOL CALLBACK MainWindow::RatingsDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {
@@ -115,6 +117,7 @@ BOOL CALLBACK MainWindow::RatingsDialogProc(HWND hDlg, UINT nMsg, UINT wParam, L
 }
 
 // Both buttons answer only the plain click, and both return one.
+// FUNCTION: HYPERX100 0x0046bca0
 // FUNCTION: HYPERX 0x0043ff70
 BOOL CALLBACK MainWindow::DebugParamsDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG)
 {
@@ -152,6 +155,7 @@ BOOL CALLBACK MainWindow::DebugParamsDialogProc(HWND hDlg, UINT nMsg, UINT wPara
 }
 
 // Cases 4 and 0x66 share a resize-check tail: the original jumps into the other case's body.
+// FUNCTION: HYPERX100 0x0048f1c0
 // FUNCTION: HYPERX 0x0044cac0
 LRESULT __cdecl MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM lParam, int nNotify)
 {
@@ -343,6 +347,7 @@ LRESULT __cdecl MainWindow::OnCommand(HWND hWnd, unsigned int nCommand, LPARAM l
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0048f960
 // FUNCTION: HYPERX 0x0044d0d0
 int MainWindow::OnCreate(HWND hWnd, LPARAM)
 {
@@ -367,12 +372,14 @@ int MainWindow::OnCreate(HWND hWnd, LPARAM)
 }
 
 // The dialog owns the PlanVM from here; its close handler releases it.
+// FUNCTION: HYPERX100 0x0048fd00
 // FUNCTION: HYPERX 0x0044d390
 int MainWindow::OpenPlanEditor(HINSTANCE hInstance, HWND hParent)
 {
     return DialogBoxParamA(hInstance, MAKEINTRESOURCEA(DIALOG_PLAN_EDITOR), hParent, PlanEditorDialog::Proc, (LPARAM) new PlanVM);
 }
 
+// FUNCTION: HYPERX100 0x004678e0
 // FUNCTION: HYPERX 0x0046c2a0
 BOOL CALLBACK MainWindow::KeyboardDialogProc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {

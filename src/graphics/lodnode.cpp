@@ -2,6 +2,7 @@
 #include "lodnode.h"
 #include "graphics/modelcomponent.h"
 
+// FUNCTION: HYPERX100 0x00477bb0
 // FUNCTION: HYPERX 0x00472740
 LODNode* LODNode::Init(short nLodCount)
 {
@@ -20,6 +21,7 @@ LODNode* LODNode::Init(short nLodCount)
 
 // Leaves the level count at minus one.
 
+// FUNCTION: HYPERX100 0x00477c80
 // FUNCTION: HYPERX 0x004727a0
 LODNode::~LODNode()
 {
@@ -44,3 +46,26 @@ LODNode::~LODNode()
         delete m_pRecord;
     }
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00477c20
+LODNode::LODNode()
+{
+    m_wLodCount  = 0;
+    m_pRecord    = 0;
+    m_wRefCount  = 0;
+    m_pMaterials = 0;
+    m_pNext      = 0;
+
+    for (int i = 0; i < LOD_LEVEL_COUNT; i++)
+    {
+        m_apLodMeshes[i] = 0;
+    }
+
+    for (int j = 0; j < LOD_LEVEL_COUNT; j++)
+    {
+        m_aflFarther[j] = 0.0f;
+        m_aflNearer[j]  = 0.0f;
+    }
+}
+#endif

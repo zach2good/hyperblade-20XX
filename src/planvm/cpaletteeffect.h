@@ -21,6 +21,7 @@ public:
     virtual void Process(int nArg);
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
 
+    // FUNCTION: HYPERX100 0x00425150
     virtual char IsReplaceable()
     {
         return 1;

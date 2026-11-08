@@ -17,11 +17,13 @@
 #include "common/stub.h"
 #include "sound/soundids.h"
 
+// FUNCTION: HYPERX100 0x00415d90
 // FUNCTION: HYPERX 0x0048d8f0
 MainMenuScreen::~MainMenuScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00415e30
 // FUNCTION: HYPERX 0x0048d920
 MainMenuScreen::MainMenuScreen()
 {
@@ -118,6 +120,7 @@ MainMenuScreen::MainMenuScreen()
 }
 
 // Each case names its slot by the top page's button; the inner switch picks the page.
+// FUNCTION: HYPERX100 0x00416770
 // FUNCTION: HYPERX 0x0048df90
 void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
@@ -341,6 +344,7 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 }
 
 // Plain, "r" rollover and "d" pressed. Empty buttons keep three frames so indices line up.
+// FUNCTION: HYPERX100 0x00416c70
 // FUNCTION: HYPERX 0x0048e350
 void MainMenuScreen::LoadButtonBitmaps()
 {

@@ -32,6 +32,7 @@
 // GLOBAL: HYPERX 0x004bb63c
 extern float g_flBankFreeSpeed;
 
+// FUNCTION: HYPERX100 0x00424420
 // FUNCTION: HYPERX 0x0040c0b0
 void CGlideOnSurface::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -65,6 +66,7 @@ void CGlideOnSurface::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_nOnSurface = 0;
 }
 
+// FUNCTION: HYPERX100 0x00424580
 // FUNCTION: HYPERX 0x0040c200
 void CGlideOnSurface::OnListChanged()
 {
@@ -114,6 +116,7 @@ static inline Vec3 Sum(const Vec3& vA, const Vec3& vB)
 
 } // namespace TerrainStep
 
+// FUNCTION: HYPERX100 0x00424610
 // FUNCTION: HYPERX 0x0040c270
 void CGlideOnSurface::UpdateTerrainPhysics(int)
 {
@@ -459,6 +462,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
 HYPERBLADE_FIELD_AT(CGlideOnSurface, m_pflFriction, 0x10);
 
+// FUNCTION: HYPERX100 0x00425160
 // FUNCTION: HYPERX 0x0040cb00
 void CGlideOnSurface::Process(int nArg)
 {
@@ -473,6 +477,7 @@ void CGlideOnSurface::Process(int nArg)
 }
 
 // m_pNetTargetPending is the network correction; its z drift reads the x term back.
+// FUNCTION: HYPERX100 0x00425190
 // FUNCTION: HYPERX 0x0040cb20
 void CGlideOnSurface::Release(int nTick)
 {

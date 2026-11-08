@@ -15,6 +15,7 @@ struct ParticleRow
 {
     Vec3 aCorners[3];
 
+    // FUNCTION: HYPERX100 0x00472bb0
     ParticleRow()
     {
         int nCorner;

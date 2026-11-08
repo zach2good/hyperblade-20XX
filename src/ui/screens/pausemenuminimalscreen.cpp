@@ -5,11 +5,13 @@
 #include "ui/radar.h"
 #include "graphics/gdi.h"
 
+// FUNCTION: HYPERX100 0x0049a6c0
 // FUNCTION: HYPERX 0x00443950
 PauseMenuMinimalScreen::~PauseMenuMinimalScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x0049a760
 // FUNCTION: HYPERX 0x00443980
 PauseMenuMinimalScreen::PauseMenuMinimalScreen()
 {
@@ -18,6 +20,7 @@ PauseMenuMinimalScreen::PauseMenuMinimalScreen()
     Init();
 }
 
+// FUNCTION: HYPERX100 0x0049a7f0
 // FUNCTION: HYPERX 0x004439e0
 void PauseMenuMinimalScreen::Init()
 {
@@ -49,6 +52,7 @@ void PauseMenuMinimalScreen::Init()
     pWidget->InitAfterLoad();
 }
 
+// FUNCTION: HYPERX100 0x0049aa80
 // FUNCTION: HYPERX 0x00443ba0
 void PauseMenuMinimalScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

@@ -26,6 +26,7 @@ struct InstallCost
 class ObjectBase
 {
 public:
+    // FUNCTION: HYPERX100 0x00460790
     // FUNCTION: HYPERX 0x004726f0
     virtual ~ObjectBase()
     {

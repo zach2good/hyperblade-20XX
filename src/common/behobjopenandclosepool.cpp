@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c7590
 // FUNCTION: HYPERX 0x00420020
 void BehObjOpenAndClosePool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjOpenAndClosePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c9230
 // FUNCTION: HYPERX 0x004200d0
 void* BehObjOpenAndClosePool::Alloc()
 {

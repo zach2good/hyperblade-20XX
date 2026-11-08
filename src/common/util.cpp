@@ -6,6 +6,7 @@
 
 // Guards the free, so callers can hand it null.
 
+// FUNCTION: HYPERX100 0x004b8e90
 // FUNCTION: HYPERX 0x0044f200
 void Util::SafeFree(void* block)
 {
@@ -15,6 +16,7 @@ void Util::SafeFree(void* block)
     }
 }
 
+// FUNCTION: HYPERX100 0x0044f0d0
 // FUNCTION: HYPERX 0x00452700
 void Util::GetLaserHurdleCharge(Interactor*, PlanNode*, short* pResult, int)
 {

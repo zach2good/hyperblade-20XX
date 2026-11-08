@@ -30,6 +30,7 @@ extern float g_flDromeHeight;
 extern float g_flDromeSpanWidth;
 
 // The receiving object always leaves upwards; the translation is not copied.
+// FUNCTION: HYPERX100 0x004a1860
 // FUNCTION: HYPERX 0x00402dc0
 void __cdecl Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bBoost)
 {
@@ -77,6 +78,7 @@ void __cdecl Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest,
 }
 
 // Puts one object six units to one side of another.
+// FUNCTION: HYPERX100 0x004a1a00
 // FUNCTION: HYPERX 0x00402f20
 void __cdecl Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char bMirrored)
 {
@@ -139,6 +141,7 @@ extern const float g_flSteerBoxSizeZ;
 extern const float g_flSteerBoxTopY;
 
 // Picks one of the gate's two posts or the bar between them by where the point is.
+// FUNCTION: HYPERX100 0x004640c0
 // FUNCTION: HYPERX 0x00404670
 Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 {
@@ -257,6 +260,7 @@ static inline Vec3 ToObjectFrame(EngineObject* pObject, const Vec3* pQueryPos)
 } // namespace Object
 
 // A slot no range claims returns whatever the frame held, as in the original.
+// FUNCTION: HYPERX100 0x00464490
 // FUNCTION: HYPERX 0x00404910
 Vec3* __cdecl Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos)
 {
@@ -376,6 +380,7 @@ extern short g_awReactionByDamageAndSector[35];
 
 // Contact with no energy does not nudge the local player; the reaction is sent as
 // MSG_SET_ANIMATION and then MSG_YER_HIT.
+// FUNCTION: HYPERX100 0x004662f0
 // FUNCTION: HYPERX 0x00406350
 void __cdecl Object::HandleObjectCollisionBounce(EngineObject* pSelf,
                                                  EngineObject* pOther,
@@ -499,6 +504,7 @@ int Object::Trace(const char*, ...)
 #pragma warning(pop)
 
 // Both scalings are cumulative, so the bone moves as well as grows.
+// FUNCTION: HYPERX100 0x004c03f0
 // FUNCTION: HYPERX 0x004499d0
 void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flScaleY, float flScaleZ)
 {

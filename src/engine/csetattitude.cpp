@@ -17,6 +17,7 @@
 #include "engine/objectclasses.h"
 #include "planvm/conditiontable.h"
 
+// FUNCTION: HYPERX100 0x00429a50
 // FUNCTION: HYPERX 0x00410400
 void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -31,6 +32,7 @@ void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pSurfNormal = &pOwner->GetPhysicsBody()->surfNormal;
 }
 
+// FUNCTION: HYPERX100 0x00429ac0
 // FUNCTION: HYPERX 0x00410460
 void CSetAttitude::OnKind(short nSlot)
 {
@@ -69,6 +71,7 @@ void CSetAttitude::OnKind(short nSlot)
     *m_pSurfNormal = *pNormal;
 }
 
+// FUNCTION: HYPERX100 0x00429bf0
 // FUNCTION: HYPERX 0x00410560
 void CSetAttitude::OnListChanged()
 {
@@ -87,6 +90,7 @@ void CSetAttitude::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x00429c40
 // FUNCTION: HYPERX 0x004105a0
 void CSetAttitude::Process(int nArg)
 {
@@ -170,6 +174,7 @@ void CSetAttitude::Process(int nArg)
     }
 }
 
+// FUNCTION: HYPERX100 0x00429e80
 // FUNCTION: HYPERX 0x00410760
 void CSetAttitude::Release(int nArg)
 {

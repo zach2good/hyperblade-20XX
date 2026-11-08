@@ -9,6 +9,7 @@ class MatchStats
 public:
     MatchStats();
 
+    // FUNCTION: HYPERX100 0x004719e0
     ~MatchStats()
     {
     }

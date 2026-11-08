@@ -22,6 +22,7 @@
 // A record starts with its 32-byte filename, followed by the name the checksum reads.
 #define TEAM_FILENAME_MAX 32
 
+// FUNCTION: HYPERX100 0x004db140
 // FUNCTION: HYPERX 0x004847d0
 TeamsBlock::TeamsBlock()
 {
@@ -127,6 +128,7 @@ TeamsBlock::TeamsBlock()
 
 // Three characters of every lowercased name, summed; the low byte of the total is dropped.
 
+// FUNCTION: HYPERX100 0x004db590
 // FUNCTION: HYPERX 0x00484b30
 int TeamsBlock::ComputeTeamNameChecksum()
 {
@@ -159,3 +161,43 @@ int TeamsBlock::ComputeTeamNameChecksum()
 
     return m_nChecksum;
 }
+
+#ifdef HYPERX_V100
+#include "teamblock.h"
+
+// FUNCTION: HYPERX100 0x004db680
+unsigned char TeamsBlock::FindTeamByName(const char* pszName) const
+{
+    const char* pszTeamName;
+
+    for (unsigned char nTeam = 0; (short)nTeam < m_wTeamCount; nTeam++)
+    {
+        if ((short)nTeam < m_wTeamCount)
+        {
+            pszTeamName = m_ppTeams[(short)nTeam]->szName;
+        }
+        else
+        {
+            pszTeamName = 0;
+        }
+
+        if (_mbsicmp((const unsigned char*)pszName, (const unsigned char*)pszTeamName) == 0)
+        {
+            return nTeam;
+        }
+    }
+
+    return 0xff;
+}
+
+// FUNCTION: HYPERX100 0x004db6f0
+TeamsBlock::~TeamsBlock()
+{
+    while (m_wTeamCount-- != 0)
+    {
+        delete m_ppTeams[m_wTeamCount];
+    }
+
+    delete[] m_ppTeams;
+}
+#endif

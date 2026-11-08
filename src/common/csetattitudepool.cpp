@@ -4,6 +4,7 @@
 #include "engine/csetattitude.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041ff40
 // FUNCTION: HYPERX 0x00413830
 void CSetAttitudePool::Init()
 {
@@ -23,6 +24,7 @@ void CSetAttitudePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423480
 // FUNCTION: HYPERX 0x004138d0
 void* CSetAttitudePool::Alloc()
 {

@@ -17,16 +17,19 @@ class LoopFlipbookWidget : public InertWidget
 {
 public:
     // Three shared addresses in slots three to five, three stand-ins.
+    // FUNCTION: HYPERX100 0x00477580
     virtual int OnMouseDown()
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x00477590
     virtual int OnMouseUp()
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x00477630
     virtual int IsDisplayOnly()
     {
         return 1;

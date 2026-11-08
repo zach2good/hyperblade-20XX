@@ -91,6 +91,10 @@ public:
 
     void UpdateBehaviorPollCountdown();
 
+#ifdef HYPERX_V100
+    char IsFlying();
+#endif
+
     short m_wKind;      // 0x04
     short m_wSyncValue; // 0x06
 

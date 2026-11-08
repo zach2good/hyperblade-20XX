@@ -78,6 +78,7 @@ struct GameEngine
     static int         CoachConditionNever(void);
 
     // The linker folded this empty body onto KeyConfigDialog::SaveKeysAs, which carries the marker.
+    // FUNCTION: HYPERX100 0x0045d750
     static int CoachConditionUnused(void)
     {
         return 0;
@@ -242,6 +243,14 @@ struct GameEngine
 
     void DispatchCollisionToRule(class CollInteractor* pChain);
     void SetRunState(short bRunning, int nReason);
+
+#ifdef HYPERX_V100
+    // Ends the match unless the final period has under five seconds left to run.
+    char EndMatchEarly();
+
+    // Queues one forced behaviour change for the network this frame; a second is an error.
+    void ForceNetBehaviorChange(short nSlot, unsigned short nPlan, unsigned short nBehaviour);
+#endif
     void BroadcastEvent(int nEvent, int nParam, int nSender);
 
     // Answers null at the end of the file; the model id is written back through the second argument.

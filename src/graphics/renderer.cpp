@@ -45,6 +45,7 @@ extern int g_nMdmTexturesReady;
 #define DROME_TEXTURED_DEFAULT 1
 
 // Only a null target clears first. The answer is always nought.
+// FUNCTION: HYPERX100 0x004d45d0
 // FUNCTION: HYPERX 0x004337b0
 int __cdecl Renderer::RenderFrame(const Texture* pTarget)
 {
@@ -59,6 +60,7 @@ int __cdecl Renderer::RenderFrame(const Texture* pTarget)
 }
 
 // A network or loading frame relights the first slots from fixed directions first.
+// FUNCTION: HYPERX100 0x00445ee0
 // FUNCTION: HYPERX 0x00442d20
 void __cdecl Renderer::DrawAllMeshes(void)
 {
@@ -161,12 +163,14 @@ void __cdecl Renderer::DrawAllMeshes(void)
     g_bLoadingMode = 0;
 }
 
+// FUNCTION: HYPERX100 0x004461b0
 // FUNCTION: HYPERX 0x00442f40
 void __cdecl Renderer::SetLoadingMode(void)
 {
     g_bLoadingMode = 1;
 }
 
+// FUNCTION: HYPERX100 0x004461c0
 // FUNCTION: HYPERX 0x00442f50
 int __cdecl Renderer::SetDromeTextured(int nEnable)
 {
@@ -187,12 +191,14 @@ int __cdecl Renderer::SetDromeTextured(int nEnable)
     return g_nDromeTextured;
 }
 
+// FUNCTION: HYPERX100 0x00446220
 // FUNCTION: HYPERX 0x00442fa0
 int __cdecl Renderer::ToggleDromeTextured(void)
 {
     return Renderer::SetDromeTextured(g_nDromeTextured == 0);
 }
 
+// FUNCTION: HYPERX100 0x0046d5a0
 // FUNCTION: HYPERX 0x0044b2c0
 void __stdcall Renderer::DrawWholeScene(void)
 {
@@ -219,6 +225,7 @@ void __stdcall Renderer::DrawWholeScene(void)
     g_pScene->DrawShadowAndTransparentPass(&g_arenaEllipsoid);
 }
 
+// FUNCTION: HYPERX100 0x0046dc50
 // FUNCTION: HYPERX 0x0044b7c0
 void __stdcall Renderer::DestroyBackBuffer(void)
 {
@@ -242,6 +249,7 @@ void __stdcall Renderer::DestroyBackBuffer(void)
 }
 
 // The flip is skipped while the cursor shows.
+// FUNCTION: HYPERX100 0x0046e120
 // FUNCTION: HYPERX 0x0044bc30
 int __stdcall Renderer::PresentFrame(void)
 {
@@ -270,6 +278,7 @@ int __stdcall Renderer::PresentFrame(void)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0046e190
 // FUNCTION: HYPERX 0x0044bc80
 void __stdcall Renderer::DrawSceneDispatch(void)
 {
@@ -283,12 +292,14 @@ void __stdcall Renderer::DrawSceneDispatch(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x0046e480
 // FUNCTION: HYPERX 0x0044be80
 RenderOptions __cdecl Renderer::GetRenderOptions()
 {
     return g_renderOptions;
 }
 
+// FUNCTION: HYPERX100 0x0046e4b0
 // FUNCTION: HYPERX 0x0044beb0
 void __cdecl Renderer::SetRenderOption(RenderOption nOption, int nValue)
 {
@@ -320,6 +331,7 @@ LayoutState g_cameraViewportBlock;
 ClipExtents g_projRenderParams;
 
 // The software path has nothing to bracket and reports success.
+// FUNCTION: HYPERX100 0x0046e530
 // FUNCTION: HYPERX 0x0044bf00
 int __stdcall Renderer::BeginScene(void)
 {
@@ -342,6 +354,7 @@ int __stdcall Renderer::BeginScene(void)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0046e570
 // FUNCTION: HYPERX 0x0044bf40
 int __stdcall Renderer::EndScene(void)
 {
@@ -353,6 +366,7 @@ int __stdcall Renderer::EndScene(void)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0046e5a0
 // FUNCTION: HYPERX 0x0044bf60
 void __cdecl Renderer::ClearFrame(void)
 {
@@ -380,6 +394,7 @@ void __cdecl Renderer::ClearFrame(void)
 }
 
 // Under Direct3D the second and fourth projection floats gain a pixel.
+// FUNCTION: HYPERX100 0x00473630
 // FUNCTION: HYPERX 0x0047a980
 void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
 {
@@ -403,6 +418,7 @@ void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
 }
 
 // Azimuths 303, 54 and 180 degrees; the first fills two table entries.
+// FUNCTION: HYPERX100 0x00473700
 // FUNCTION: HYPERX 0x0047aa20
 void __stdcall Renderer::InitializeLightDirections(void)
 {

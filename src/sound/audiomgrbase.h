@@ -7,6 +7,7 @@
 class AudioMgrBase
 {
 public:
+    // FUNCTION: HYPERX100 0x0048bb50
     // FUNCTION: HYPERX 0x00491850
     virtual ~AudioMgrBase()
     {

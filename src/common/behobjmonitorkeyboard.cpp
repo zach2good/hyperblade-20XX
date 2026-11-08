@@ -17,6 +17,7 @@
 // GLOBAL: HYPERX 0x004cb5e4
 extern int g_bTwoPlayers;
 
+// FUNCTION: HYPERX100 0x004cbb50
 // FUNCTION: HYPERX 0x0041def0
 BehObj_MonitorKeyboard::BehObj_MonitorKeyboard()
 {
@@ -27,6 +28,7 @@ BehObj_MonitorKeyboard::~BehObj_MonitorKeyboard()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cbc70
 // FUNCTION: HYPERX 0x0041df50
 void BehObj_MonitorKeyboard::SendTimedMessage()
 {
@@ -67,6 +69,7 @@ void BehObj_MonitorKeyboard::SendTimedMessage()
     }
 }
 
+// FUNCTION: HYPERX100 0x004cbd60
 // FUNCTION: HYPERX 0x0041e010
 void BehObj_MonitorKeyboard::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

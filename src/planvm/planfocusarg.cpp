@@ -13,6 +13,7 @@
 #include "engine/cbeattached.h"
 #include "physics/physicsbody.h"
 
+// FUNCTION: HYPERX100 0x004e0e90
 // FUNCTION: HYPERX 0x0047cb30
 short PlanFocusArg::GetViewOwner(EngineObject*, PlanNode*)
 {
@@ -21,6 +22,7 @@ short PlanFocusArg::GetViewOwner(EngineObject*, PlanNode*)
 
 // Three times the focus slot, mirroring PlanArg::GetMyCollisionBub.
 
+// FUNCTION: HYPERX100 0x004e0ea0
 // FUNCTION: HYPERX 0x0047cb40
 short PlanFocusArg::GetViewOwnerCOB(EngineObject*, PlanNode*)
 {
@@ -29,6 +31,7 @@ short PlanFocusArg::GetViewOwnerCOB(EngineObject*, PlanNode*)
 
 // The view owner's awareness bubble, mirroring PlanArg::GetMyAwarenessBub.
 
+// FUNCTION: HYPERX100 0x004e0ec0
 // FUNCTION: HYPERX 0x0047cb50
 short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 {
@@ -37,6 +40,7 @@ short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 
 // Three times the parity opposite the focus slot's, mirroring PlanArg::GetMyLeadOppnCollBub.
 
+// FUNCTION: HYPERX100 0x004e0ee0
 // FUNCTION: HYPERX 0x0047cb60
 short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 {
@@ -47,6 +51,7 @@ short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 
 // The view owner's other opponent's collision bubble, mirroring PlanArg::GetMyOtherOppnCollBub.
 
+// FUNCTION: HYPERX100 0x004e0f00
 // FUNCTION: HYPERX 0x0047cb80
 short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 {
@@ -57,6 +62,7 @@ short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 
 // The empty slot answers nought rather than the minus one the camera stores.
 
+// FUNCTION: HYPERX100 0x004e0f50
 // FUNCTION: HYPERX 0x0047cba0
 short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
 {
@@ -72,6 +78,7 @@ short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
 
 // The first thing the camera follows, answered the same way.
 
+// FUNCTION: HYPERX100 0x004e1000
 // FUNCTION: HYPERX 0x0047cbc0
 short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
 {
@@ -85,6 +92,7 @@ short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
     return nSlot;
 }
 
+// FUNCTION: HYPERX100 0x004e1020
 // FUNCTION: HYPERX 0x0047cbe0
 short PlanFocusArg::GetTrackedObjsTeammate(EngineObject*, PlanNode*)
 {
@@ -93,6 +101,7 @@ short PlanFocusArg::GetTrackedObjsTeammate(EngineObject*, PlanNode*)
     return (short)TeammateSlot((short)nTracked);
 }
 
+// FUNCTION: HYPERX100 0x004e1050
 // FUNCTION: HYPERX 0x0047cc10
 short PlanFocusArg::GetViewOwnersGoal(EngineObject*, PlanNode*)
 {
@@ -101,18 +110,21 @@ short PlanFocusArg::GetViewOwnersGoal(EngineObject*, PlanNode*)
 
 // The goalie of the side opposite the focus slot's, mirroring PlanArg::GetMyGoalie.
 
+// FUNCTION: HYPERX100 0x004e10a0
 // FUNCTION: HYPERX 0x0047cc30
 short PlanFocusArg::GetVwOwnrOppnGoalie(EngineObject*, PlanNode*)
 {
     return (short)(((g_pGameEngine->m_nViewedSlot - 1) & 1) + GOALIE_SLOT_A);
 }
 
+// FUNCTION: HYPERX100 0x004e10c0
 // FUNCTION: HYPERX 0x0047cc50
 short PlanFocusArg::GetViewOwnersTeammate(EngineObject*, PlanNode*)
 {
     return (short)TeammateSlot(g_pGameEngine->m_nViewedSlot);
 }
 
+// FUNCTION: HYPERX100 0x004e10f0
 // FUNCTION: HYPERX 0x0047cc70
 short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
 {
@@ -121,6 +133,7 @@ short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
     return (char)~cLocal & 1;
 }
 
+// FUNCTION: HYPERX100 0x004e1110
 // FUNCTION: HYPERX 0x0047cc80
 short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 {
@@ -130,6 +143,7 @@ short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 }
 
 // A slot of six or more, or no tracker, answers minus one.
+// FUNCTION: HYPERX100 0x004e1130
 // FUNCTION: HYPERX 0x0047cc90
 short __cdecl PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 {
@@ -146,6 +160,7 @@ short __cdecl PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 }
 
 // The Rok keeps its carrier slot itself; the last and previous carrier pronouns both answer it.
+// FUNCTION: HYPERX100 0x004e1190
 // FUNCTION: HYPERX 0x0047ccc0
 short PlanFocusArg::GetLastRokCarrier(EngineObject*, PlanNode*)
 {
@@ -153,6 +168,7 @@ short PlanFocusArg::GetLastRokCarrier(EngineObject*, PlanNode*)
 }
 
 // One word from whatever the tracker points at, or minus one for nothing.
+// FUNCTION: HYPERX100 0x004e11d0
 // FUNCTION: HYPERX 0x0047cce0
 short __cdecl PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 {
@@ -169,6 +185,7 @@ short __cdecl PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 }
 
 // A non-player or same-parity carrier answers minus one; otherwise three times its team mate's slot.
+// FUNCTION: HYPERX100 0x004e1200
 // FUNCTION: HYPERX 0x0047cd10
 short __cdecl PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
 {

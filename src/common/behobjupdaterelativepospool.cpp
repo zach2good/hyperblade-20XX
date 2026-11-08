@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c8430
 // FUNCTION: HYPERX 0x0041f110
 void BehObjUpdateRelativePosPool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjUpdateRelativePosPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c9bf0
 // FUNCTION: HYPERX 0x0041f1c0
 void* BehObjUpdateRelativePosPool::Alloc()
 {

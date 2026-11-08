@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00421730
 // FUNCTION: HYPERX 0x00412c70
 void CSlideOnRailPool::Init()
 {
@@ -22,6 +23,7 @@ void CSlideOnRailPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004240b0
 // FUNCTION: HYPERX 0x00412d20
 void* CSlideOnRailPool::Alloc()
 {

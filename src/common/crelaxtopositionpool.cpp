@@ -8,6 +8,7 @@
 #include "poolcounts.h"
 #include "planvm/collinteractor.h"
 
+// FUNCTION: HYPERX100 0x0041f3d0
 // FUNCTION: HYPERX 0x00413d80
 void CRelaxToPositionPool::Init()
 {
@@ -27,6 +28,7 @@ void CRelaxToPositionPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00422eb0
 // FUNCTION: HYPERX 0x00413e00
 void* CRelaxToPositionPool::Alloc()
 {

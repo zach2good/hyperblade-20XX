@@ -15,17 +15,20 @@ class AgendaItem
 {
 public:
     // The whole body is the vptr store; the deleting destructors call it out of line.
+    // FUNCTION: HYPERX100 0x00424280
     // FUNCTION: HYPERX 0x00412f90
     virtual ~AgendaItem()
     {
     }
 
     // Slot one, folded onto slot ten's body; nothing in the image reads the argument.
+    // FUNCTION: HYPERX100 0x00424290
     virtual void Process(int)
     {
     }
 
     // Slot two, folded onto slot ten's body.
+    // FUNCTION: HYPERX100 0x004242a0
     virtual void Release(int)
     {
     }
@@ -33,6 +36,7 @@ public:
     virtual void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg);
 
     // Slot four, folded onto 0x00480fb0, which the engine calls by name.
+    // FUNCTION: HYPERX100 0x0048dfd0
     virtual void Bind(class EngineObject*, class GameBehaviorObject*)
     {
     }
@@ -40,6 +44,7 @@ public:
     virtual char Activate();
     virtual void Detach();
 
+    // FUNCTION: HYPERX100 0x004242b0
     // FUNCTION: HYPERX 0x0040b920
     virtual unsigned char GetReadyFlag()
     {
@@ -47,6 +52,7 @@ public:
     }
 
     // Slot eight, folded onto slot seven's body.
+    // FUNCTION: HYPERX100 0x004242c0
     virtual char IsReplaceable()
     {
         return 0;
@@ -54,17 +60,20 @@ public:
 
     virtual void OnListChanged();
 
+    // FUNCTION: HYPERX100 0x004242f0
     // FUNCTION: HYPERX 0x0040b910
     virtual void Tick(const struct Vec3*)
     {
     }
 
     // Slots eleven and twelve, folded no-ops in the base.
+    // FUNCTION: HYPERX100 0x00424410
     virtual struct Vec3* GetVector()
     {
         return 0;
     }
 
+    // FUNCTION: HYPERX100 0x00424300
     virtual void OnKind(short)
     {
     }

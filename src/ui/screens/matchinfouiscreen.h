@@ -27,6 +27,7 @@ public:
     MatchInfoUIScreen();
 
     // Inline, so the derived screens that declare none share this body.
+    // FUNCTION: HYPERX100 0x0042e4a0
     // FUNCTION: HYPERX 0x004581c0
     ~MatchInfoUIScreen()
     {

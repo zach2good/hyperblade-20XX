@@ -28,6 +28,7 @@
 #define CHAMP_GRID_ROWS           10
 #define CHAMP_GRID_COLUMNS        5
 
+// FUNCTION: HYPERX100 0x00453e20
 // FUNCTION: HYPERX 0x00457710
 ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
 {
@@ -250,6 +251,7 @@ ChampionshipSetupUIScreen::ChampionshipSetupUIScreen()
     InitAllWidgets();
 }
 
+// FUNCTION: HYPERX100 0x00454d50
 // FUNCTION: HYPERX 0x004581d0
 void ChampionshipSetupUIScreen::RefreshTabs()
 {
@@ -264,6 +266,7 @@ void ChampionshipSetupUIScreen::RefreshTabs()
     }
 }
 
+// FUNCTION: HYPERX100 0x00454dc0
 // FUNCTION: HYPERX 0x00458210
 void ChampionshipSetupUIScreen::OnExitTabClick()
 {
@@ -284,6 +287,7 @@ void ChampionshipSetupUIScreen::OnExitTabClick()
 }
 
 // The arena selector refreshes the stats display and does not show the bracket cells.
+// FUNCTION: HYPERX100 0x00454e20
 // FUNCTION: HYPERX 0x00458260
 void ChampionshipSetupUIScreen::OnFirstPageTabClick()
 {
@@ -303,6 +307,7 @@ void ChampionshipSetupUIScreen::OnFirstPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x00454ea0
 // FUNCTION: HYPERX 0x004582c0
 void ChampionshipSetupUIScreen::OnSecondPageTabClick()
 {
@@ -322,6 +327,7 @@ void ChampionshipSetupUIScreen::OnSecondPageTabClick()
     RefreshStatsDisplay();
 }
 
+// FUNCTION: HYPERX100 0x00454f20
 // FUNCTION: HYPERX 0x00458320
 void ChampionshipSetupUIScreen::OnThirdPageTabClick()
 {
@@ -341,6 +347,7 @@ void ChampionshipSetupUIScreen::OnThirdPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x00454fa0
 // FUNCTION: HYPERX 0x00458380
 void ChampionshipSetupUIScreen::OnFourthPageTabClick()
 {
@@ -360,6 +367,7 @@ void ChampionshipSetupUIScreen::OnFourthPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x00455020
 // FUNCTION: HYPERX 0x004583e0
 void ChampionshipSetupUIScreen::OnFifthPageTabClick()
 {
@@ -376,6 +384,7 @@ void ChampionshipSetupUIScreen::OnFifthPageTabClick()
     LoadBracketTorches();
 }
 
+// FUNCTION: HYPERX100 0x00455070
 // FUNCTION: HYPERX 0x00458420
 void ChampionshipSetupUIScreen::OnLeftArrowClick()
 {
@@ -432,6 +441,7 @@ void ChampionshipSetupUIScreen::OnLeftArrowClick()
     }
 }
 
+// FUNCTION: HYPERX100 0x004551f0
 // FUNCTION: HYPERX 0x00458560
 void ChampionshipSetupUIScreen::OnRightArrowClick()
 {
@@ -495,6 +505,7 @@ void ChampionshipSetupUIScreen::OnRightArrowClick()
 }
 
 // The object text falls to the stub where its neighbours are silent.
+// FUNCTION: HYPERX100 0x004553a0
 // FUNCTION: HYPERX 0x004586b0
 void ChampionshipSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
@@ -517,6 +528,7 @@ void ChampionshipSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 }
 
 // A column outside the range calls the stub.
+// FUNCTION: HYPERX100 0x00455400
 // FUNCTION: HYPERX 0x00458700
 void ChampionshipSetupUIScreen::RefreshSelection()
 {
@@ -547,6 +559,7 @@ void ChampionshipSetupUIScreen::RefreshSelection()
     }
 }
 
+// FUNCTION: HYPERX100 0x004554d0
 // FUNCTION: HYPERX 0x00458770
 void ChampionshipSetupUIScreen::LoadTeamBitmaps(int nShow)
 {
@@ -780,6 +793,7 @@ void ChampionshipSetupUIScreen::LoadTeamBitmaps(int nShow)
 }
 
 // The switch reads m_nObstacleSet; the argument only picks between the two halves.
+// FUNCTION: HYPERX100 0x00455da0
 // FUNCTION: HYPERX 0x00459170
 void ChampionshipSetupUIScreen::LoadObstacleFrames(int nBuild)
 {
@@ -1384,6 +1398,7 @@ void ChampionshipSetupUIScreen::LoadObstacleFrames(int nBuild)
 // GLOBAL: HYPERX 0x004c3f80
 extern const char* g_pszTournamentBackground;
 
+// FUNCTION: HYPERX100 0x00457f40
 // FUNCTION: HYPERX 0x0045af00
 void ChampionshipSetupUIScreen::RefreshFrames()
 {
@@ -1935,6 +1950,7 @@ void ChampionshipSetupUIScreen::RefreshFrames()
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 }
 
+// FUNCTION: HYPERX100 0x00458bf0
 // FUNCTION: HYPERX 0x0045bc40
 void ChampionshipSetupUIScreen::UpdatePlayerRows()
 {
@@ -2031,6 +2047,7 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
     }
 }
 
+// FUNCTION: HYPERX100 0x00458f30
 // FUNCTION: HYPERX 0x0045bf00
 void ChampionshipSetupUIScreen::HideStatsPanel()
 {
@@ -2051,6 +2068,7 @@ void ChampionshipSetupUIScreen::HideStatsPanel()
     }
 }
 
+// FUNCTION: HYPERX100 0x00458fc0
 // FUNCTION: HYPERX 0x0045bf70
 void ChampionshipSetupUIScreen::RefreshStatsDisplay()
 {
@@ -2194,6 +2212,7 @@ void ChampionshipSetupUIScreen::RefreshStatsDisplay()
     InitFrame();
 }
 
+// FUNCTION: HYPERX100 0x004594e0
 // FUNCTION: HYPERX 0x0045c3c0
 void ChampionshipSetupUIScreen::LoadBracketTorches()
 {
@@ -2248,6 +2267,7 @@ void ChampionshipSetupUIScreen::LoadBracketTorches()
 }
 
 // The page index is a widget offset, already multiplied by the caller.
+// FUNCTION: HYPERX100 0x00459720
 // FUNCTION: HYPERX 0x0045c590
 void ChampionshipSetupUIScreen::HideBracketTorches()
 {

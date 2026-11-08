@@ -45,10 +45,12 @@ public:
 
     // Slots three, four and ten to twenty seven of 0x004b323c all hold Object::Trace, so each is
     // empty here.
+    // FUNCTION: HYPERX100 0x0042e5a0
     virtual void RefreshSelection()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e5b0
     virtual void RefreshFrames()
     {
     }
@@ -61,74 +63,92 @@ public:
     virtual void RefreshStatRow();
 
     // Named for the UIScreenWidget slot each answers.
+    // FUNCTION: HYPERX100 0x00433ba0
     virtual void OnFirstTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x00433bb0
     virtual void OnSecondTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x00433bc0
     virtual void OnThirdTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x00433bd0
     virtual void OnExitTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e5c0
     virtual void OnFirstPageTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e5d0
     virtual void OnSecondPageTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e5e0
     virtual void OnThirdPageTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e5f0
     virtual void OnFourthPageTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e600
     virtual void OnFifthPageTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e610
     virtual void OnSixthPageTabClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e620
     virtual void OnOkayClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e630
     virtual void OnCancelClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e640
     virtual void OnLeftArrowClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e650
     virtual void OnRightArrowClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e660
     virtual void OnFirstStatClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e670
     virtual void OnSecondStatClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e680
     virtual void OnThirdStatClick()
     {
     }
 
+    // FUNCTION: HYPERX100 0x0042e690
     virtual void OnFourthStatClick()
     {
     }
@@ -138,6 +158,9 @@ public:
 
     void BuildLockedFlagsArray();
     void PreloadBitmaps();
+#ifdef HYPERX_V100
+    void UnloadBitmaps();
+#endif
 
 protected:
     int m_nSelectionMode; // 0x464

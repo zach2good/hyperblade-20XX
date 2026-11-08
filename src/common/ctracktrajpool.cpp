@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041eea0
 // FUNCTION: HYPERX 0x00414050
 void CTrackTrajPool::Init()
 {
@@ -22,6 +23,7 @@ void CTrackTrajPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00422bf0
 // FUNCTION: HYPERX 0x00414100
 void* CTrackTrajPool::Alloc()
 {

@@ -15,11 +15,13 @@
 #include "graphics/gdi.h"
 #include "engine/game.h"
 
+// FUNCTION: HYPERX100 0x00417cf0
 // FUNCTION: HYPERX 0x0048ef70
 DromeExteriorScreen::~DromeExteriorScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00417d90
 // FUNCTION: HYPERX 0x0048efa0
 DromeExteriorScreen::DromeExteriorScreen()
 {
@@ -118,6 +120,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     }
 }
 
+// FUNCTION: HYPERX100 0x004181f0
 // FUNCTION: HYPERX 0x0048f2c0
 void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

@@ -53,6 +53,7 @@
 #define ARG_FIRST  1
 #define ARG_PERIOD 4
 
+// FUNCTION: HYPERX100 0x004c4570
 // FUNCTION: HYPERX 0x0041c780
 void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -110,12 +111,14 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
 
 // The node stores the value in hundredths of whatever the engine counts in.
 
+// FUNCTION: HYPERX100 0x004c4710
 // FUNCTION: HYPERX 0x0041c8a0
 void BehParam::SetInteractorLatency(EngineObject*, PlanNode* pNode, GameBehaviorObject* pTarget)
 {
     pTarget->m_wLatency = (short)(g_pGameEngine->m_clock.flInvDelta * ((short)pNode->m_pArgs[1].n * 0.01));
 }
 
+// FUNCTION: HYPERX100 0x004c4760
 // FUNCTION: HYPERX 0x0041c8e0
 void BehParam::SetDigressive(EngineObject*, PlanNode* pNode, GameBehaviorObject* pTarget)
 {
@@ -124,6 +127,7 @@ void BehParam::SetDigressive(EngineObject*, PlanNode* pNode, GameBehaviorObject*
 
 // The only data-driven way to set a behaviour's purged byte for an agenda id.
 
+// FUNCTION: HYPERX100 0x004c4780
 // FUNCTION: HYPERX 0x0041c900
 void BehParam::SetPurgeFlag(EngineObject*, PlanNode* pItem, GameBehaviorObject* pTarget)
 {
@@ -132,6 +136,7 @@ void BehParam::SetPurgeFlag(EngineObject*, PlanNode* pItem, GameBehaviorObject* 
     pTarget->SetAgendaPurged(pArgs[1].n, (char)pArgs[2].n);
 }
 
+// FUNCTION: HYPERX100 0x004c47a0
 // FUNCTION: HYPERX 0x0041c920
 void BehParam::SetTarget(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -139,6 +144,7 @@ void BehParam::SetTarget(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBe
 }
 
 // The receiver's copy at 0x98 is kept only when its kind is eleven, and nothing reads it.
+// FUNCTION: HYPERX100 0x004c47c0
 // FUNCTION: HYPERX 0x0041c940
 void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorObject* pReceiver)
 {
@@ -201,6 +207,7 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
 
 // A plan names a spot on the rink here, not a player.
 
+// FUNCTION: HYPERX100 0x004c4920
 // FUNCTION: HYPERX 0x0041ca60
 void BehParam::SetRelativePosition(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -208,12 +215,14 @@ void BehParam::SetRelativePosition(EngineObject*, PlanNode* pNode, GameBehaviorO
         ->SetPositionWithTerrainHeight(g_apPositionMarkers[pNode->m_pArgs[1].n]);
 }
 
+// FUNCTION: HYPERX100 0x004c4950
 // FUNCTION: HYPERX 0x0041ca80
 void BehParam::SetModelImRelativeTo(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     static_cast<CSetPositionRelative*>(pBehaviour->m_apSlots[0])->SetSourceObjectByIndex((short)pNode->m_pArgs[1].n);
 }
 
+// FUNCTION: HYPERX100 0x004c4970
 // FUNCTION: HYPERX 0x0041caa0
 void BehParam::SetObjectToAvoid(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -221,6 +230,7 @@ void BehParam::SetObjectToAvoid(EngineObject*, PlanNode* pNode, GameBehaviorObje
 }
 
 // MODEL_ID_NONE means nothing: the first two followers are told zero and the third not at all.
+// FUNCTION: HYPERX100 0x004c4990
 // FUNCTION: HYPERX 0x0041cac0
 void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorObject* pTrajectory)
 {
@@ -243,6 +253,7 @@ void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorOb
     pTrajectory->m_apSlots[1]->OnKind(0);
 }
 
+// FUNCTION: HYPERX100 0x004c4a10
 // FUNCTION: HYPERX 0x0041cb20
 void __cdecl BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, GameBehaviorObject* pOut)
 {
@@ -312,6 +323,7 @@ void __cdecl BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pR
     pOut->m_nAnimationFlags  = 1;
 }
 
+// FUNCTION: HYPERX100 0x004c4d00
 // FUNCTION: HYPERX 0x0041cce0
 void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -341,6 +353,7 @@ void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* 
     pBehaviour->m_nAnimationFlags = -1;
 }
 
+// FUNCTION: HYPERX100 0x004c4d70
 // FUNCTION: HYPERX 0x0041cd40
 void BehParam::SetAnimationEvent(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -365,6 +378,7 @@ void BehParam::SetAnimationEvent(EngineObject*, PlanNode* pNode, GameBehaviorObj
     pBehaviour->m_nEventKind   = nThird;
 }
 
+// FUNCTION: HYPERX100 0x004c4de0
 // FUNCTION: HYPERX 0x0041cd80
 void BehParam::SetObjectToFollow(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
@@ -374,6 +388,7 @@ void BehParam::SetObjectToFollow(EngineObject*, PlanNode* pNode, GameBehaviorObj
     pTarget->Tick(pEntity->GetPositionPtr());
 }
 
+// FUNCTION: HYPERX100 0x004c4dc0
 // FUNCTION: HYPERX 0x0041cdb0
 void BehParam::SetTargetGoal(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*)
 {

@@ -14,6 +14,12 @@ struct ModelComponent
     static void* __cdecl           Read(FileObj* pFile, int* pnSize);
     static ModelComponent* __cdecl ReadFirst(FileObj* pFile);
 
+#ifdef HYPERX_V100
+    static ModelComponent* __cdecl ReadFirstOrFail(FileObj* pFile);
+    static void __cdecl            PrintMaterials(FileObj* pFile, FileObj* pOut);
+    static const char* __cdecl     MatchKeyword(const char* pszLine, short* pnKeyword);
+#endif
+
     const MeshBoneDesc* SlotDesc(short nSlot) const
     {
         return m_aSlotOffsets[nSlot].In(this);

@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c6ff0
 // FUNCTION: HYPERX 0x004205e0
 void BehObjTrackPassPrepPool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjTrackPassPrepPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c8e70
 // FUNCTION: HYPERX 0x004206a0
 void* BehObjTrackPassPrepPool::Alloc()
 {

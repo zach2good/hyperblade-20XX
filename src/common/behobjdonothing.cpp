@@ -2,6 +2,7 @@
 #include "planvm/behaviorids.h"
 #include "common/pooledclasses.h"
 
+// FUNCTION: HYPERX100 0x004cc720
 // FUNCTION: HYPERX 0x0041e560
 BehObj_DoNothing::BehObj_DoNothing()
 {
@@ -12,6 +13,7 @@ BehObj_DoNothing::~BehObj_DoNothing()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cc840
 // FUNCTION: HYPERX 0x0041e5b0
 void BehObj_DoNothing::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

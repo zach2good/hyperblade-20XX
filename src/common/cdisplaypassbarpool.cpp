@@ -4,6 +4,7 @@
 #include "engine/cdisplaypassbar.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041d9c0
 // FUNCTION: HYPERX 0x00414a10
 void CDisplayPassBarPool::Init()
 {
@@ -23,6 +24,7 @@ void CDisplayPassBarPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004221c0
 // FUNCTION: HYPERX 0x00414aa0
 void* CDisplayPassBarPool::Alloc()
 {

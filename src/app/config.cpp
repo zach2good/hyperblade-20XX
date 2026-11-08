@@ -91,12 +91,14 @@ Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteeri
 // STRING: HYPERX 0x004c4750
 String g_strPrefs("Data\\DftKeybd.cfg");
 
+// FUNCTION: HYPERX100 0x00411120
 // FUNCTION: HYPERX 0x0046d700
 int __cdecl KeyConfigDialog::ClearKeys(HWND, KeyRow*)
 {
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00411140
 // FUNCTION: HYPERX 0x0046d710
 void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
 {
@@ -132,6 +134,7 @@ void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
 }
 
 // A missing file still returns true.
+// FUNCTION: HYPERX100 0x00411340
 // FUNCTION: HYPERX 0x0046d8b0
 int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRows)
 {
@@ -179,6 +182,7 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
 #define MSG_PAUSED    0x4f
 #define MSG_TOGGLE_MS 0x5dc
 
+// FUNCTION: HYPERX100 0x004114e0
 // FUNCTION: HYPERX 0x0046d9f0
 void __cdecl GameApp::HandleGlobalKeyEvent(HWND, int nKey)
 {
@@ -269,6 +273,7 @@ void __cdecl GameApp::HandleGlobalKeyEvent(HWND, int nKey)
     }
 }
 
+// FUNCTION: HYPERX100 0x0043fe10
 // FUNCTION: HYPERX 0x00480c60
 int __cdecl Config::IsCommentLine(const char* pszLine)
 {

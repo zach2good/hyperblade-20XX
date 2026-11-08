@@ -24,12 +24,14 @@ DSoundMgr::DSoundMgr()
 {
 }
 
+// FUNCTION: HYPERX100 0x0048aa20
 // FUNCTION: HYPERX 0x0048fd10
 DSoundMgr::~DSoundMgr()
 {
     Shutdown();
 }
 
+// FUNCTION: HYPERX100 0x0048b5d0
 // FUNCTION: HYPERX 0x00490490
 void DSoundMgr::Update()
 {
@@ -49,6 +51,7 @@ int DSoundMgr::ReadSfxVolume()
 }
 
 // The options are written only when the fade took.
+// FUNCTION: HYPERX100 0x0048b610
 // FUNCTION: HYPERX 0x004904d0
 int DSoundMgr::FadeSfxVolume(int nStep)
 {
@@ -72,6 +75,7 @@ int DSoundMgr::FadeSfxVolume(int nStep)
 }
 
 // The original's descriptor is 36 bytes where this SDK's is 20; DirectSound takes either.
+// FUNCTION: HYPERX100 0x0048b670
 // FUNCTION: HYPERX 0x00490520
 int DSoundMgr::Init(HWND hWindow)
 {
@@ -135,6 +139,7 @@ int DSoundMgr::Init(HWND hWindow)
 }
 
 // A counter, not a flag, guards re-entry: a nested tick is dropped and the count comes back.
+// FUNCTION: HYPERX100 0x0048b870
 // FUNCTION: HYPERX 0x004906a0
 void __stdcall DSoundMgr::TimerProc(HWND, UINT, UINT, DWORD)
 {
@@ -148,6 +153,7 @@ void __stdcall DSoundMgr::TimerProc(HWND, UINT, UINT, DWORD)
     g_nSoundTimerDepth--;
 }
 
+// FUNCTION: HYPERX100 0x0048b8a0
 // FUNCTION: HYPERX 0x004906d0
 void DSoundMgr::Shutdown()
 {
@@ -183,6 +189,7 @@ void DSoundMgr::Shutdown()
     }
 }
 
+// FUNCTION: HYPERX100 0x0048b930
 // FUNCTION: HYPERX 0x00490750
 SoundChannel* DSoundMgr::FindFreeChannel()
 {
@@ -201,6 +208,7 @@ SoundChannel* DSoundMgr::FindFreeChannel()
 }
 
 // The start time is stamped only when playback succeeded.
+// FUNCTION: HYPERX100 0x0048b980
 // FUNCTION: HYPERX 0x00490780
 void DSoundMgr::Play(SoundEntry* pSound)
 {
@@ -217,6 +225,7 @@ void DSoundMgr::Play(SoundEntry* pSound)
     }
 }
 
+// FUNCTION: HYPERX100 0x0048b9e0
 // FUNCTION: HYPERX 0x004907d0
 void DSoundMgr::StopEntry(SoundEntry* pOwner)
 {
@@ -229,6 +238,7 @@ void DSoundMgr::StopEntry(SoundEntry* pOwner)
     }
 }
 
+// FUNCTION: HYPERX100 0x0048ba20
 // FUNCTION: HYPERX 0x00490800
 void DSoundMgr::StopAll()
 {

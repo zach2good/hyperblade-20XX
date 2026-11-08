@@ -8,6 +8,7 @@
 
 // Returns the conjugate of the textbook result; the fallback path leaves w near zero, not unit.
 
+// FUNCTION: HYPERX100 0x004a2900
 // FUNCTION: HYPERX 0x0042e130
 void Quat::FromMatrix(TransformObject* pSource)
 {
@@ -69,6 +70,7 @@ void Quat::FromMatrix(TransformObject* pSource)
 
 // Writes the transpose of the textbook rotation; Quat::FromMatrix inverts it exactly.
 
+// FUNCTION: HYPERX100 0x004a2b10
 // FUNCTION: HYPERX 0x0042e280
 void Quat::ToMatrix(TransformObject* pTarget)
 {
@@ -97,6 +99,7 @@ void Quat::ToMatrix(TransformObject* pTarget)
     pRows[2].af[1] = (flFirst - flSecond) * g_flQuatTwo;
 }
 
+// FUNCTION: HYPERX100 0x00445730
 // FUNCTION: HYPERX 0x00430260
 bool __fastcall Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
 {
@@ -119,3 +122,25 @@ bool __fastcall Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
 
     return false;
 }
+
+#ifdef HYPERX_V100
+// Equal vector parts take a shortcut that subtracts one from w instead of the dot product.
+// FUNCTION: HYPERX100 0x004a3290
+void Quat::MultiplyInPlace(const Quat* pRhs)
+{
+    if (x == pRhs->x && y == pRhs->y && z == pRhs->z)
+    {
+        w = w * pRhs->w - 1.0f;
+        x = x * pRhs->w + w * pRhs->x;
+        y = y * pRhs->w + pRhs->y * w;
+        z = z * pRhs->w + pRhs->z * w;
+
+        return;
+    }
+
+    w = ((w * pRhs->w - y * pRhs->y) - x * pRhs->x) - z * pRhs->z;
+    x = x * pRhs->w + pRhs->x * w + (y * pRhs->z - pRhs->y * z);
+    y = y * pRhs->w + pRhs->y * w + (z * pRhs->x - x * pRhs->z);
+    z = z * pRhs->w + pRhs->z * w + (x * pRhs->y - y * pRhs->x);
+}
+#endif

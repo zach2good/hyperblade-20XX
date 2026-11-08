@@ -4,6 +4,7 @@
 #include "engine/ccheckai.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041d5c0
 // FUNCTION: HYPERX 0x00414c00
 void CCheckAIPool::Init()
 {
@@ -23,6 +24,7 @@ void CCheckAIPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00421fc0
 // FUNCTION: HYPERX 0x00414c80
 void* CCheckAIPool::Alloc()
 {

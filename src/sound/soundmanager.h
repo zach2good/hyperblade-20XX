@@ -60,6 +60,18 @@ public:
 
     void FreeEntries();
 
+#ifdef HYPERX_V100
+    // A random unplayed sound from the group, or else its first resident one.
+    SoundEntry* PickUnplayedFromGroup(int nGroup);
+
+    SoundEntry* FindResidentInGroup(int nGroup);
+
+    // The stopped sound that started last; none once the walk reaches a group above 665.
+    SoundEntry* FindNewestStopped();
+
+    SoundEntry* FindOldestIdleInGroup(int nGroup);
+#endif
+
     int   m_nUnusedA; // 0x00
     short m_wUnusedA; // 0x04
     // One row per group: first sound, count, and longest length in samples at 44100 Hz.

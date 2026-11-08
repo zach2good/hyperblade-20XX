@@ -15,6 +15,7 @@
 #include "graphics/swrend.h"
 
 // The points are zeroed by the helper and then again field by field, as in the original.
+// FUNCTION: HYPERX100 0x004b9de0
 // FUNCTION: HYPERX 0x0044fcd0
 InfoBarRadar::InfoBarRadar()
 {
@@ -37,12 +38,14 @@ InfoBarRadar::InfoBarRadar()
     m_nSlot = MODEL_ID_NONE;
 }
 
+// FUNCTION: HYPERX100 0x004b9ef0
 // FUNCTION: HYPERX 0x0044fd60
 InfoBarRadar::~InfoBarRadar() throw()
 {
 }
 
 // The limits and a third, unread value arrive as one twelve-byte block.
+// FUNCTION: HYPERX100 0x004b9f60
 // FUNCTION: HYPERX 0x0044fd70
 void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
 {
@@ -64,6 +67,7 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
     m_flScaleY = (float)nHalfHeight / flDivisor;
 }
 
+// FUNCTION: HYPERX100 0x004ba030
 // FUNCTION: HYPERX 0x0044fdd0
 int InfoBarRadar::TrackSlot(int nSlot)
 {
@@ -95,6 +99,7 @@ int InfoBarRadar::TrackSlot(int nSlot)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004ba120
 // FUNCTION: HYPERX 0x0044fe70
 void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 {
@@ -169,6 +174,7 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 
 #define ARROW_POINTS 3
 
+// FUNCTION: HYPERX100 0x004ba310
 // FUNCTION: HYPERX 0x00450000
 void InfoBarRadar::DrawMarker(int)
 {
@@ -209,6 +215,7 @@ void InfoBarRadar::DrawMarker(int)
 }
 
 // The marker is drawn only when slot six tracks the engine's slot; the four low slots draw no line.
+// FUNCTION: HYPERX100 0x004ba440
 // FUNCTION: HYPERX 0x004500e0
 int InfoBarRadar::Draw()
 {

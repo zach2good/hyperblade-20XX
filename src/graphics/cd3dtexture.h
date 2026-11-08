@@ -19,6 +19,10 @@ public:
     virtual IDirectDrawSurface* CreateSurface(int nWidth, int nHeight, int bColourKey, int bSystemMemory);
 
     CD3DTexture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack);
+#ifdef HYPERX_V100
+    CD3DTexture();
+    explicit CD3DTexture(Texture* pSource);
+#endif
     int           Create(const char* pszName, int bColourKey, int bSystemMemory);
     unsigned char LoadBitmapFile(const char* pszName);
     int           CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurface** ppSurface, IDirect3DTexture** ppTexture);

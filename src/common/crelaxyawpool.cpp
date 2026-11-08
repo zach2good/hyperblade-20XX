@@ -4,6 +4,7 @@
 #include "engine/crelaxyaw.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041fd30
 // FUNCTION: HYPERX 0x00413930
 void CRelaxYawPool::Init()
 {
@@ -23,6 +24,7 @@ void CRelaxYawPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423380
 // FUNCTION: HYPERX 0x004139b0
 void* CRelaxYawPool::Alloc()
 {

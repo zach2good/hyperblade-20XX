@@ -4,6 +4,7 @@
 #include "engine/cdisplayshotpower.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041dde0
 // FUNCTION: HYPERX 0x00414820
 void CDisplayShotPowerPool::Init()
 {
@@ -23,6 +24,7 @@ void CDisplayShotPowerPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004223c0
 // FUNCTION: HYPERX 0x004148b0
 void* CDisplayShotPowerPool::Alloc()
 {

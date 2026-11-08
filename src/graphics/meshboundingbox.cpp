@@ -23,6 +23,7 @@ inline Vec3* MeshBoundingBox::Max()
 #define SPAN_MIN(a, b) ((double)(a) < (double)(b) ? (float)(double)(a) : (float)(double)(b))
 #define SPAN_MAX(a, b) ((double)(a) > (double)(b) ? (float)(double)(a) : (float)(double)(b))
 
+// FUNCTION: HYPERX100 0x004183b0
 // FUNCTION: HYPERX 0x00429740
 int MeshBoundingBox::StepIntersectTest(const Vec3* pDirOther, const Vec3* pDirOwn, const MeshBoundingBox* pBox)
 {

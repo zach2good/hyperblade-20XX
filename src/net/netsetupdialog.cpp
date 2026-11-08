@@ -40,6 +40,7 @@ STATIC_ASSERT(sizeof(SyncBlockSlot) == SYNC_BLOCK_BYTES);
 extern int g_nNetProviderCount;
 
 // Modems are hidden unless enabled.
+// FUNCTION: HYPERX100 0x0049b900
 // FUNCTION: HYPERX 0x00475c70
 BOOL __stdcall NetSetupDialog::AddProvider(LPGUID pGuid, LPSTR pszName, DWORD, DWORD, LPVOID pContext)
 {
@@ -60,6 +61,7 @@ BOOL __stdcall NetSetupDialog::AddProvider(LPGUID pGuid, LPSTR pszName, DWORD, D
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0049b9a0
 // FUNCTION: HYPERX 0x00475cf0
 unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
 {
@@ -154,6 +156,7 @@ unsigned int __cdecl NetSetupDialog::EnumerateProviders(HWND hDlg)
 
 // The item data is read back from the list head, which is the entry just added.
 
+// FUNCTION: HYPERX100 0x0049bcb0
 // FUNCTION: HYPERX 0x00475f30
 BOOL __stdcall NetSetupDialog::AddSessionEntry(LPDPSESSIONDESC pDesc, LPVOID pContext, LPDWORD, DWORD)
 {
@@ -195,6 +198,7 @@ BOOL __stdcall NetSetupDialog::AddSessionEntry(LPDPSESSIONDESC pDesc, LPVOID pCo
 #define ENUM_TIMEOUT_MS 2000
 
 // Closes anything open, then creates a fresh lobby from the chosen provider's GUID.
+// FUNCTION: HYPERX100 0x0049bd90
 // FUNCTION: HYPERX 0x00475fe0
 unsigned int __cdecl NetSetupDialog::SearchSessions(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -294,6 +298,7 @@ unsigned int __cdecl NetSetupDialog::SearchSessions(HWND hDlg, unsigned int, uns
 extern DPSESSIONDESC* g_pSelectedSession;
 
 // An empty selection restores the dialog and succeeds.
+// FUNCTION: HYPERX100 0x0049c090
 // FUNCTION: HYPERX 0x00476210
 unsigned int __cdecl NetSetupDialog::SelectSession(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -335,6 +340,7 @@ unsigned int __cdecl NetSetupDialog::SelectSession(HWND hDlg, unsigned int, unsi
 
 // Reads only its first argument and answers nought or one.
 
+// FUNCTION: HYPERX100 0x0049c1c0
 // FUNCTION: HYPERX 0x00476300
 BOOL __stdcall NetSetupDialog::OnEnumeratedPlayer(DWORD nPlayerId, LPSTR, LPSTR, DWORD, LPVOID)
 {
@@ -342,6 +348,7 @@ BOOL __stdcall NetSetupDialog::OnEnumeratedPlayer(DWORD nPlayerId, LPSTR, LPSTR,
 }
 
 // The cursor stays an hourglass until VerifyAssets resets it.
+// FUNCTION: HYPERX100 0x0049c1e0
 // FUNCTION: HYPERX 0x00476320
 unsigned int __cdecl NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -469,6 +476,7 @@ unsigned int __cdecl NetSetupDialog::JoinSession(HWND hDlg, unsigned int, unsign
 }
 
 // Past the three reported refusals, a failed check tears the connection down silently.
+// FUNCTION: HYPERX100 0x0049c5e0
 // FUNCTION: HYPERX 0x00476660
 unsigned int __cdecl NetSetupDialog::VerifyAssets(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -569,6 +577,7 @@ __inline char* NetSetupDialog::TeamCatalogueName(short nIndex)
 }
 
 // The away box skips the home selection and the home box the away one.
+// FUNCTION: HYPERX100 0x0049c820
 // FUNCTION: HYPERX 0x00476820
 void __cdecl NetSetupDialog::PopulateSelectionLists(HWND hDlg)
 {
@@ -625,6 +634,7 @@ void __cdecl NetSetupDialog::PopulateSelectionLists(HWND hDlg)
 }
 
 // Two teams the same is refused after the store, so the selection is on record.
+// FUNCTION: HYPERX100 0x0049cb60
 // FUNCTION: HYPERX 0x00476a90
 unsigned int __cdecl NetSetupDialog::OnSelectionChanged(HWND hDlg, unsigned int, unsigned int nControl, long)
 {
@@ -694,6 +704,7 @@ unsigned int __cdecl NetSetupDialog::OnSelectionChanged(HWND hDlg, unsigned int,
 
 // The dialog changes shape before the refusals are checked.
 
+// FUNCTION: HYPERX100 0x0049cd10
 // FUNCTION: HYPERX 0x00476bd0
 unsigned int __cdecl NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -767,6 +778,7 @@ unsigned int __cdecl NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsign
 
 // The updating flag is restored rather than cleared, except that an unknown control returns with it set.
 
+// FUNCTION: HYPERX100 0x0049cf70
 // FUNCTION: HYPERX 0x00476da0
 int __cdecl NetSetupDialog::ValidatePlayerName(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -827,6 +839,7 @@ int __cdecl NetSetupDialog::ValidatePlayerName(HWND hDlg, unsigned int, unsigned
 #define NAME_READ 0x3e
 
 // Controls 0x4c1 to 0x4c4 select slots 2, 1, 4 and 3: home and away pair down the column.
+// FUNCTION: HYPERX100 0x0049d050
 // FUNCTION: HYPERX 0x00476e30
 unsigned int __cdecl NetSetupDialog::SelectPlayerPosition(HWND hDlg, unsigned int, unsigned int nControl, long)
 {
@@ -937,6 +950,7 @@ unsigned int __cdecl NetSetupDialog::SelectPlayerPosition(HWND hDlg, unsigned in
 #define ROLE_HOST (PLAYER_NAME_HOST | PLAYER_NAME_HUMAN | PLAYER_NAME_LOCAL)
 #define ROLE_JOIN (PLAYER_NAME_HUMAN | PLAYER_NAME_LOCAL)
 
+// FUNCTION: HYPERX100 0x0049d2d0
 // FUNCTION: HYPERX 0x00477000
 unsigned int __cdecl NetSetupDialog::ConfirmPlayerPosition(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -1152,6 +1166,7 @@ extern int g_bChatEntryActive;
 #define CHAT_HISTORY 3
 
 // The chat box keeps four lines; a nameless pending player sends as "????".
+// FUNCTION: HYPERX100 0x0049da70
 // FUNCTION: HYPERX 0x00477550
 unsigned int __cdecl NetSetupDialog::SendChatMessage(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -1218,6 +1233,7 @@ unsigned int __cdecl NetSetupDialog::SendChatMessage(HWND hDlg, unsigned int, un
 }
 
 // The two waiting messages differ by three dots, which shows which side you are on.
+// FUNCTION: HYPERX100 0x0049dd60
 // FUNCTION: HYPERX 0x00477790
 unsigned int __cdecl NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned int, long)
 {
@@ -1330,6 +1346,7 @@ unsigned int __cdecl NetSetupDialog::StartGame(HWND hDlg, unsigned int, unsigned
 }
 
 // The updating flag is saved and restored rather than cleared.
+// FUNCTION: HYPERX100 0x0049e180
 // FUNCTION: HYPERX 0x00477b00
 unsigned int __cdecl NetSetupDialog::OnPlayerJoined(unsigned int nFlags, PlayerSlotName* pEntry)
 {
@@ -1381,6 +1398,7 @@ unsigned int __cdecl NetSetupDialog::OnPlayerJoined(unsigned int nFlags, PlayerS
 
 #define SLOT_UNOCCUPIED (-1)
 
+// FUNCTION: HYPERX100 0x0049e310
 // FUNCTION: HYPERX 0x00477c10
 int NetSetupDialog::CheckPlayerReadyButton(int nPlayer)
 {
@@ -1397,6 +1415,7 @@ int NetSetupDialog::CheckPlayerReadyButton(int nPlayer)
 }
 
 // A state other than NETSETUP_STATE_READY skips straight to starting the game.
+// FUNCTION: HYPERX100 0x0049e510
 // FUNCTION: HYPERX 0x00477d70
 unsigned int NetSetupDialog::FinalizeAndStartGame(void)
 {
@@ -1435,6 +1454,7 @@ unsigned int NetSetupDialog::FinalizeAndStartGame(void)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0049e6b0
 // FUNCTION: HYPERX 0x00477eb0
 int NetSetupDialog::OnTimer(HWND)
 {
@@ -1452,6 +1472,7 @@ int NetSetupDialog::OnTimer(HWND)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0049e6f0
 // FUNCTION: HYPERX 0x00477ef0
 unsigned int __cdecl NetSetupDialog::RefreshSessionList(HWND hDlg)
 {
@@ -1516,6 +1537,7 @@ unsigned int __cdecl NetSetupDialog::RefreshSessionList(HWND hDlg)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0049e950
 // FUNCTION: HYPERX 0x004780c0
 int NetSetupDialog::PopulateSessionList(HWND hDlg)
 {
@@ -1548,6 +1570,7 @@ int NetSetupDialog::PopulateSessionList(HWND hDlg)
 }
 
 // A timeout is not a failure.
+// FUNCTION: HYPERX100 0x0049ea40
 // FUNCTION: HYPERX 0x00478180
 BOOL __stdcall NetSetupDialog::AddEnumeratedSession(LPDPSESSIONDESC pDesc, LPVOID, LPDWORD, DWORD nFlags)
 {
@@ -1578,6 +1601,7 @@ BOOL __stdcall NetSetupDialog::AddEnumeratedSession(LPDPSESSIONDESC pDesc, LPVOI
 }
 
 // An unexpected state is reported and then carried on with; all four taken is the only failure.
+// FUNCTION: HYPERX100 0x0049ead0
 // FUNCTION: HYPERX 0x004781f0
 unsigned int __cdecl NetSetupDialog::OnChangeSlot(HWND hDlg)
 {

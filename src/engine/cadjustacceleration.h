@@ -22,6 +22,7 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
+    // FUNCTION: HYPERX100 0x00425120
     virtual void Tick(const Vec3* pTargetPos)
     {
         m_pTargetPos = pTargetPos;

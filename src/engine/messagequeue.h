@@ -70,6 +70,11 @@ public:
     // Frees every name and the block they came from, and returns the queue.
     MessageQueue* FreeAll();
 
+#ifdef HYPERX_V100
+    // TODO: The body is a destructor's; declaring ~MessageQueue would run it at exit.
+    void FreeAllNoReturn();
+#endif
+
     // One line per message, an id and then the text.
     unsigned int LoadList(const char* pszFileName);
 

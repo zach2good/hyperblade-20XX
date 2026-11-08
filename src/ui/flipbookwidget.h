@@ -20,6 +20,7 @@ public:
     // Table 0x004b2a84 differs from Widget's only in slots three to five; slot five is a stand-in.
     virtual int OnMouseUp(); // 0x0042ba50
 
+    // FUNCTION: HYPERX100 0x00477340
     virtual int IsDisplayOnly()
     {
         return 0;

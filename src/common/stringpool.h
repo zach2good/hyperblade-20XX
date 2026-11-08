@@ -17,6 +17,11 @@ struct StringPool
 
     // Not named LoadString: windows.h makes that a macro for LoadStringA.
     char* LoadText(HINSTANCE hInstance, unsigned int uID);
+
+#ifdef HYPERX_V100
+    // A new copy of the string; the ring does not advance.
+    char* LoadTextCopy(HINSTANCE hInstance, unsigned int uID);
+#endif
 };
 
 #endif

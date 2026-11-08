@@ -12,6 +12,7 @@
 #define MIXER_NOT_FOUND ((unsigned int)-1)
 
 // Every exit from the search is a throw; zero is the fader found and minus one is none.
+// FUNCTION: HYPERX100 0x0048c920
 // FUNCTION: HYPERX 0x00491330
 int Mixer::Open(unsigned int nComponentType)
 {
@@ -195,6 +196,7 @@ int Mixer::Open(unsigned int nComponentType)
 #define MIXER_DETAIL_SLOTS 32
 
 // Unlike ReadVolume, the result is clamped to the control's own bounds.
+// FUNCTION: HYPERX100 0x0048cdd0
 // FUNCTION: HYPERX 0x004916c0
 int Mixer::FadeVolume(int nVolume)
 {
@@ -240,6 +242,7 @@ int Mixer::FadeVolume(int nVolume)
 }
 
 // Nothing clamps the result, so a control outside its own bounds returns a step out of range.
+// FUNCTION: HYPERX100 0x0048cee0
 // FUNCTION: HYPERX 0x004917a0
 int Mixer::ReadVolume()
 {

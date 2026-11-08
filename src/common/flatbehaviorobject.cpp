@@ -2,6 +2,7 @@
 #include "common/pooledclasses.h"
 #include "physics/physicsbody.h"
 
+// FUNCTION: HYPERX100 0x004cc4a0
 // FUNCTION: HYPERX 0x0041e470
 void FlatBehaviorObject::StartMotion()
 {

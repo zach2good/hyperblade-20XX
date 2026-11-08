@@ -27,6 +27,10 @@ int                   OnTriggerCondition(HWND hDlg, int nId, HWND hwndCtl, int n
 class PlanVM* __cdecl LoadPlanText(HWND hDlg, short nBehavior, short nCamera);
 inline char*          PlanName(class EngineObject* pObject, short nIndex);
 
+#ifdef HYPERX_V100
+void ClearConditionList(HWND hDlg);
+#endif
+
 } // namespace PlanEditorDialog
 
 #endif

@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c8790
 // FUNCTION: HYPERX 0x0041ed90
 void BehObjGlideToPositionPool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjGlideToPositionPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c9e30
 // FUNCTION: HYPERX 0x0041ee50
 void* BehObjGlideToPositionPool::Alloc()
 {

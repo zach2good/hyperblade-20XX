@@ -18,6 +18,7 @@ public:
     }
 
     // Slot five holds KeyConfigDialog::ClearKeys, one address several tables share.
+    // FUNCTION: HYPERX100 0x00477480
     virtual int IsDisplayOnly()
     {
         return 1;

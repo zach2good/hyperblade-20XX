@@ -13,6 +13,7 @@
 #include "app/gameapp.h"
 #include "physics/collisionellipsoid.h"
 
+// FUNCTION: HYPERX100 0x004242d0
 // FUNCTION: HYPERX 0x0040b930
 void AgendaItem::OnListChanged()
 {
@@ -26,6 +27,7 @@ void AgendaItem::OnListChanged()
     m_pNext = 0;
 }
 
+// FUNCTION: HYPERX100 0x0048dd20
 // FUNCTION: HYPERX 0x0040b990
 char AgendaItem::Activate()
 {
@@ -137,6 +139,7 @@ char AgendaItem::Activate()
 
 // An agenda item not in the list is notified twice, as in the original.
 
+// FUNCTION: HYPERX100 0x0048df20
 // FUNCTION: HYPERX 0x0040bb10
 void AgendaItem::Detach()
 {
@@ -178,11 +181,13 @@ void AgendaItem::Detach()
     OnListChanged();
 }
 
+// FUNCTION: HYPERX100 0x0048e060
 // FUNCTION: HYPERX 0x0040bb80
 void AgendaItem::BindWithNode(EngineObject*, GameBehaviorObject*, PlanNode*, int)
 {
 }
 
+// FUNCTION: HYPERX100 0x00429380
 // FUNCTION: HYPERX 0x0040fea0
 char AgendaItem::FindByRef(EngineObject* pObject)
 {

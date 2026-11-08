@@ -27,6 +27,7 @@ public:
     virtual void OnWidgetMessage(int nMsg, unsigned int nWidget);
 
     // Both go to the main menu.
+    // FUNCTION: HYPERX100 0x004a5da0
     // FUNCTION: HYPERX 0x00479840
     virtual void OnOkay()
     {
@@ -34,6 +35,7 @@ public:
     }
 
     // The original folded this body onto OnOkay's, which carries the marker.
+    // FUNCTION: HYPERX100 0x004a5db0
     virtual void OnCancel()
     {
         Game::SetEngineState(ESTATE_MAIN_MENU);

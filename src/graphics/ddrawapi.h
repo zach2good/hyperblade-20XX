@@ -56,6 +56,11 @@ int __stdcall          RestoreAllSurfaces(void);
 unsigned int           InitDeviceAndSurfaces(HPALETTE hPalette);
 int __cdecl            ChangeDisplayMode(int nMode);
 
+#ifdef HYPERX_V100
+unsigned int GetTotalVideoMemory(void);
+int          BltZoom(void);
+#endif
+
 } // namespace DDraw
 
 #endif

@@ -13,6 +13,7 @@
 #include "math/point.h"
 #include "graphics/ddrawapi.h"
 
+// FUNCTION: HYPERX100 0x00441740
 // FUNCTION: HYPERX 0x004377f0
 CDDTextSurface::CDDTextSurface()
 {
@@ -25,6 +26,7 @@ int CDDTextSurface::Draw()
     return Texture::Draw();
 }
 
+// FUNCTION: HYPERX100 0x00441830
 // FUNCTION: HYPERX 0x00437880
 CDDTextSurface::CDDTextSurface(Texture* pSource)
 : Texture(pSource)
@@ -32,6 +34,7 @@ CDDTextSurface::CDDTextSurface(Texture* pSource)
     InitFields();
 }
 
+// FUNCTION: HYPERX100 0x004418e0
 // FUNCTION: HYPERX 0x004378f0
 CDDTextSurface::CDDTextSurface(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : Texture(pDDraw, pPrimary, pBack)
@@ -39,6 +42,7 @@ CDDTextSurface::CDDTextSurface(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary
     InitFields();
 }
 
+// FUNCTION: HYPERX100 0x004419a0
 // FUNCTION: HYPERX 0x00437960
 void CDDTextSurface::InitFields()
 {
@@ -53,6 +57,7 @@ void CDDTextSurface::InitFields()
     m_nTextAlign = 0;
 }
 
+// FUNCTION: HYPERX100 0x00441a00
 // FUNCTION: HYPERX 0x004379b0
 CDDTextSurface::~CDDTextSurface()
 {
@@ -70,6 +75,7 @@ CDDTextSurface::~CDDTextSurface()
 #define FONT_POINTS_WIDE   18
 #define FONT_POINTS_NARROW 12
 
+// FUNCTION: HYPERX100 0x00441ab0
 // FUNCTION: HYPERX 0x00437a20
 int CDDTextSurface::SetFontScaled(const char* pszName, const char* pszText, int bColourKey, int bSystemMemory)
 {
@@ -83,6 +89,7 @@ STATIC_ASSERT(offsetof(DDBLTFX, dwFillColor) == 0x50);
 #define COLOUR_ENABLED  0xffffff
 #define COLOUR_DISABLED 0x808080
 
+// FUNCTION: HYPERX100 0x00441b00
 // FUNCTION: HYPERX 0x00437a60
 int CDDTextSurface::SetFont(const char* pszName, int nSize, const char* pszText, int bColourKey, int bSystemMemory)
 {
@@ -167,6 +174,7 @@ int CDDTextSurface::SetFont(const char* pszName, int nSize, const char* pszText,
 
 #define CLIP_EXTENT 0x2710
 
+// FUNCTION: HYPERX100 0x00441d20
 // FUNCTION: HYPERX 0x00437c10
 SurfacePoint CDDTextSurface::RenderText(int bColourKey)
 {
@@ -176,6 +184,18 @@ SurfacePoint CDDTextSurface::RenderText(int bColourKey)
 
     size.Set(0, 0);
 
+#ifdef HYPERX_V100
+    // A surface pixel value handed to GDI as a COLORREF, which Windows 2000 draws black.
+    if (bColourKey != 0)
+    {
+        m_nTextMode   = OPAQUE;
+        m_dwFillColor = DDraw::ColourToPixel(m_pSurface, COLOUR_ENABLED);
+    }
+    else
+    {
+        m_dwFillColor = DDraw::ColourToPixel(m_pSurface, COLOUR_DISABLED);
+    }
+#else
     if (bColourKey != 0)
     {
         m_nTextMode   = OPAQUE;
@@ -185,6 +205,7 @@ SurfacePoint CDDTextSurface::RenderText(int bColourKey)
     {
         m_dwFillColor = COLOUR_DISABLED;
     }
+#endif
 
     SetColorMode(0xffff);
 
@@ -194,7 +215,9 @@ SurfacePoint CDDTextSurface::RenderText(int bColourKey)
 
         SetTextColor(hdc, m_dwScrollColor);
         SetBkColor(hdc, m_dwFillColor);
+#ifndef HYPERX_V100
         SetBkMode(hdc, m_nTextMode);
+#endif
 
         SetRect(&rect, 0, 0, CLIP_EXTENT, CLIP_EXTENT);
 
@@ -219,6 +242,7 @@ int CDDTextSurface::OnSurfaceLost()
 }
 
 // All three fatal strings name it CDDText::RestoreContents.
+// FUNCTION: HYPERX100 0x00441ed0
 // FUNCTION: HYPERX 0x00437d70
 int CDDTextSurface::RestoreContents()
 {
@@ -265,8 +289,14 @@ int CDDTextSurface::RestoreContents()
     }
 
     HGDIOBJ hOldFont = SelectObject(hdc, m_hFont);
+#ifdef HYPERX_V100
+    // DIBINDEX: both colours name palette slots, which a non-palette surface DC does not have.
+    SetTextColor(hdc, 0x10ff0000 | (WORD)m_dwScrollColor);
+    SetBkColor(hdc, 0x10ff0000 | (WORD)m_dwFillColor);
+#else
     SetTextColor(hdc, m_dwScrollColor);
     SetBkColor(hdc, m_dwFillColor);
+#endif
     SetTextAlign(hdc, m_nTextAlign);
 
     ExtTextOutA(hdc, 0, 0, m_nTextMode, m_pDestRect, m_strText.m_pchData, m_strText.GetHeader()->nDataLength, 0);
@@ -277,6 +307,7 @@ int CDDTextSurface::RestoreContents()
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004420a0
 // FUNCTION: HYPERX 0x00437ee0
 int CDDTextSurface::DrawText(const char* pszText)
 {
@@ -296,3 +327,11 @@ int CDDTextSurface::DrawText(const char* pszText)
 
     return 0;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00442090
+void CDDTextSurface::SetTextAlignment(UINT nTextAlign)
+{
+    m_nTextAlign = nTextAlign;
+}
+#endif

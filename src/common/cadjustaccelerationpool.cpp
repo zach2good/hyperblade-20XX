@@ -4,6 +4,7 @@
 #include "engine/cadjustacceleration.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00420580
 // FUNCTION: HYPERX 0x00413560
 void CAdjustAccelerationPool::Init()
 {
@@ -23,6 +24,7 @@ void CAdjustAccelerationPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423780
 // FUNCTION: HYPERX 0x00413600
 void* CAdjustAccelerationPool::Alloc()
 {

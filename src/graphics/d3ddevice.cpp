@@ -17,6 +17,7 @@
 #include "graphics/display.h"
 #include "d3dviewport.h"
 
+// FUNCTION: HYPERX100 0x004d1510
 // FUNCTION: HYPERX 0x004314d0
 int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
 {
@@ -99,6 +100,7 @@ int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
     return D3DRend::ReleaseAllBuffers();
 }
 
+// FUNCTION: HYPERX100 0x004d20f0
 // FUNCTION: HYPERX 0x00431c40
 int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
 {
@@ -284,6 +286,7 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004d3080
 // FUNCTION: HYPERX 0x00432810
 int __stdcall D3DDevice::BeginScene(void)
 {
@@ -299,6 +302,7 @@ int __stdcall D3DDevice::BeginScene(void)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004d30c0
 // FUNCTION: HYPERX 0x00432840
 int __stdcall D3DDevice::EndDeviceScene(void)
 {
@@ -317,6 +321,7 @@ int __stdcall D3DDevice::EndDeviceScene(void)
 }
 
 // Answers nought whatever happened.
+// FUNCTION: HYPERX100 0x004822c0
 // FUNCTION: HYPERX 0x0043d850
 int __stdcall D3DDevice::EndScene(void)
 {

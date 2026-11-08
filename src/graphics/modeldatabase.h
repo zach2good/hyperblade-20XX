@@ -48,6 +48,10 @@ public:
     void                 ComputeNormals(struct MeshBlock* pBlob, class LODNode* pUnused);
     ~ModelDatabase();
 
+#ifdef HYPERX_V100
+    LODNode* FindLODById(short nId);
+#endif
+
     // Game::InitializeEngine adds a delta to the install level straight after the new.
     ModelDatabase()
     : m_nInstallLevel(0)

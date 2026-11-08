@@ -10,6 +10,7 @@
 extern const float g_flAnimBlendZero;
 
 // Clears one of the animation binding's twenty 68-byte blend slots.
+// FUNCTION: HYPERX100 0x00439520
 // FUNCTION: HYPERX 0x00425480
 SlerpSeg::SlerpSeg()
 {
@@ -34,6 +35,7 @@ SlerpSeg::SlerpSeg()
 
 // A half angle under a thousandth of a radian stores zero, which tells Eval to do nothing.
 
+// FUNCTION: HYPERX100 0x004a2fa0
 // FUNCTION: HYPERX 0x0042e360
 void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 {
@@ -85,6 +87,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 
 // Returns zero and writes nothing for a zero angle; Init already divided both by sin(theta).
 
+// FUNCTION: HYPERX100 0x004a3170
 // FUNCTION: HYPERX 0x0042e480
 bool SlerpSeg::Eval(float flAt)
 {
@@ -105,3 +108,78 @@ bool SlerpSeg::Eval(float flAt)
 
     return true;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x004a2cb0
+void SlerpSeg::InitFromQuats(const Quat* pQ0, Quat* pQ1)
+{
+    float flDot = pQ1->y * pQ0->y + pQ0->x * pQ1->x + pQ1->z * pQ0->z + pQ1->w * pQ0->w;
+
+    if (flDot < 0.0f)
+    {
+        pQ1->w = -pQ1->w;
+        pQ1->x = -pQ1->x;
+        pQ1->y = -pQ1->y;
+        pQ1->z = -pQ1->z;
+
+        flDot = pQ1->y * pQ0->y + pQ1->z * pQ0->z + pQ1->x * pQ0->x + pQ1->w * pQ0->w;
+    }
+
+    m_flTheta = (float)acos(flDot);
+
+    const double dSin = sin(m_flTheta);
+
+    if (dSin == 0.0f)
+    {
+        // STRING: HYPERX100 0x0051bd98
+        g_gameApp.Fatal("0 denom in InitSlerpSeg\n");
+    }
+
+    const float flInvSin = g_flQuatOne / (float)dSin;
+
+    m_q0Div.w = pQ0->w * flInvSin;
+    m_q0Div.x = pQ0->x * flInvSin;
+    m_q0Div.y = pQ0->y * flInvSin;
+    m_q0Div.z = pQ0->z * flInvSin;
+    m_q1Div.w = pQ1->w * flInvSin;
+    m_q1Div.x = pQ1->x * flInvSin;
+    m_q1Div.y = pQ1->y * flInvSin;
+    m_q1Div.z = pQ1->z * flInvSin;
+}
+
+// FUNCTION: HYPERX100 0x004a2e30
+void SlerpSeg::InitInPlace()
+{
+    float flDot = m_q1Div.z * m_q0Div.z + m_q0Div.x * m_q1Div.x + m_q1Div.y * m_q0Div.y + m_q0Div.w * m_q1Div.w;
+
+    if (flDot < 0.0f)
+    {
+        m_q1Div.w = -m_q1Div.w;
+        m_q1Div.x = -m_q1Div.x;
+        m_q1Div.y = -m_q1Div.y;
+        m_q1Div.z = -m_q1Div.z;
+
+        flDot = m_q1Div.y * m_q0Div.y + m_q1Div.z * m_q0Div.z + m_q1Div.w * m_q0Div.w + m_q1Div.x * m_q0Div.x;
+    }
+
+    m_flTheta = (float)acos(flDot);
+
+    const double dSin = sin(m_flTheta);
+
+    if (dSin == 0.0f)
+    {
+        g_gameApp.Fatal("0 denom in InitSlerpSeg\n");
+    }
+
+    const float flInvSin = g_flQuatOne / (float)dSin;
+
+    m_q0Div.w = m_q0Div.w * flInvSin;
+    m_q0Div.x = m_q0Div.x * flInvSin;
+    m_q0Div.y = m_q0Div.y * flInvSin;
+    m_q0Div.z = m_q0Div.z * flInvSin;
+    m_q1Div.w = m_q1Div.w * flInvSin;
+    m_q1Div.x = m_q1Div.x * flInvSin;
+    m_q1Div.y = m_q1Div.y * flInvSin;
+    m_q1Div.z = m_q1Div.z * flInvSin;
+}
+#endif

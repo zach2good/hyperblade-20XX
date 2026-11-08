@@ -4,6 +4,7 @@
 #include "engine/ccircletrack.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041d380
 // FUNCTION: HYPERX 0x00414ce0
 void CCircleTrackPool::Init()
 {
@@ -23,6 +24,7 @@ void CCircleTrackPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00421ec0
 // FUNCTION: HYPERX 0x00414d70
 void* CCircleTrackPool::Alloc()
 {

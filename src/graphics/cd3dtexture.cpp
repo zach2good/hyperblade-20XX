@@ -20,6 +20,7 @@
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004ce820
 // FUNCTION: HYPERX 0x004339a0
 CD3DTexture::CD3DTexture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : Texture(pDDraw, pPrimary, pBack)
@@ -27,7 +28,23 @@ CD3DTexture::CD3DTexture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDir
     ClearRecord();
 }
 
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x004ce510
+CD3DTexture::CD3DTexture()
+{
+    ClearRecord();
+}
+
+// FUNCTION: HYPERX100 0x004ce740
+CD3DTexture::CD3DTexture(Texture* pSource)
+: Texture(pSource)
+{
+    ClearRecord();
+}
+#endif
+
 // The one caller qualifies the call, or it becomes the inlined scalar deleting destructor.
+// FUNCTION: HYPERX100 0x004ce5e0
 // FUNCTION: HYPERX 0x00433a20
 CD3DTexture::~CD3DTexture()
 {
@@ -50,6 +67,7 @@ CD3DTexture::~CD3DTexture()
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004ce900
 // FUNCTION: HYPERX 0x00433ae0
 void CD3DTexture::ClearRecord()
 {
@@ -75,6 +93,7 @@ void CD3DTexture::ClearRecord()
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004cea30
 // FUNCTION: HYPERX 0x00433bb0
 int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 {
@@ -180,6 +199,7 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004ced70
 // FUNCTION: HYPERX 0x00433ed0
 int CD3DTexture::OnSurfaceLost()
 {
@@ -190,6 +210,7 @@ int CD3DTexture::OnSurfaceLost()
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004ceda0
 // FUNCTION: HYPERX 0x00433ef0
 int CD3DTexture::Restore(const char* pName)
 {
@@ -291,6 +312,7 @@ int CD3DTexture::Restore(const char* pName)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004cf160
 // FUNCTION: HYPERX 0x00434220
 int CD3DTexture::RestoreContents()
 {
@@ -313,6 +335,7 @@ struct IDirectDrawSurface;
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004cf1f0
 // FUNCTION: HYPERX 0x00434260
 IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int)
 {
@@ -663,6 +686,7 @@ struct IDirectDrawSurface;
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004cffc0
 // FUNCTION: HYPERX 0x00434f90
 int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurface** ppSurface, IDirect3DTexture** ppTexture)
 {
@@ -791,6 +815,7 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004d0310
 // FUNCTION: HYPERX 0x00435310
 unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 {
@@ -887,6 +912,7 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 // 1012 stands where 1024 belongs, so a texture 1024 across is a fatal error.
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x004d0770
 // FUNCTION: HYPERX 0x004355e0
 int __cdecl CD3DTexture::GetLog2Size(unsigned int nSize)
 {

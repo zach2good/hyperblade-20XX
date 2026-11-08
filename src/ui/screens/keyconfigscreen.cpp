@@ -40,6 +40,7 @@ extern unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT];
 // GLOBAL: HYPERX 0x004cb7b0
 extern unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT];
 
+// FUNCTION: HYPERX100 0x00438850
 // FUNCTION: HYPERX 0x0042f9d0
 KeyConfigScreen::KeyConfigScreen()
 {
@@ -117,6 +118,7 @@ KeyConfigScreen::~KeyConfigScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00438c10
 // FUNCTION: HYPERX 0x0042fc40
 void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
@@ -230,6 +232,7 @@ inline int KeyConfigScreen::FindActiveRow()
 }
 
 // Tab and Escape keep the key. A duplicate or unknown key plays a refusal.
+// FUNCTION: HYPERX100 0x00438e00
 // FUNCTION: HYPERX 0x0042fdc0
 int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 {

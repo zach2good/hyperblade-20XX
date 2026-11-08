@@ -23,6 +23,10 @@ int __fastcall           BackfaceCullAndClipCheck(MeshFace* pFace, const struct 
 char __fastcall          ClipCodeAndCullCheck(const MeshFace* pFace, const struct TransformedVertex* pVertices);
 unsigned char __fastcall ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags);
 
+#ifdef HYPERX_V100
+unsigned char __fastcall ClassifyAndClipPolygon(ClipPolyBuffer* pPoly);
+#endif
+
 // The clip mask of nCount vertex floats from nFirst on.
 inline int VertexMask(int nFirst, int nCount)
 {

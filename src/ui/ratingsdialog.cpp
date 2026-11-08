@@ -21,6 +21,7 @@
 
 // The key configuration sheet's handler in keyconfigdialog.cpp is the same, down to the string id.
 
+// FUNCTION: HYPERX100 0x00451fb0
 // FUNCTION: HYPERX 0x00419aa0
 int __cdecl RatingsDialog::OnInit(HWND hDlg, HWND, LPARAM)
 {
@@ -49,6 +50,7 @@ extern const float g_flRatingStart;
 
 #define PLAYER_COUNT 6
 
+// FUNCTION: HYPERX100 0x00452040
 // FUNCTION: HYPERX 0x00419b10
 unsigned int __cdecl RatingsDialog::OnCommand(HWND hDlg, int nCommand, HWND hControl, int nNotify)
 {
@@ -162,6 +164,7 @@ unsigned int __cdecl RatingsDialog::OnCommand(HWND hDlg, int nCommand, HWND hCon
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00452380
 // FUNCTION: HYPERX 0x00419d50
 int __cdecl RatingsDialog::InitControls(HWND hDlg)
 {
@@ -413,6 +416,7 @@ int __cdecl RatingsDialog::InitControls(HWND hDlg)
 
 // Two parallel arrays of sixty three strings, walked by byte offset.
 
+// FUNCTION: HYPERX100 0x00453cf0
 // FUNCTION: HYPERX 0x0041b7e0
 void __cdecl RatingsDialog::Close(HWND hWnd, INT_PTR nResult)
 {

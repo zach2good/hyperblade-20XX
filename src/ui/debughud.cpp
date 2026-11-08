@@ -27,6 +27,7 @@ extern CDDTextSurface* g_pDebugLightRangePanel;
 // GLOBAL: HYPERX 0x004d0a74
 extern CDDTextSurface* g_pDebugLightAnglePanel;
 
+// FUNCTION: HYPERX100 0x00473ab0
 // FUNCTION: HYPERX 0x0047ab90
 void DebugHUD::UpdateLightingInfo(void)
 {
@@ -89,6 +90,7 @@ void DebugHUD::UpdateLightingInfo(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x00487470
 // FUNCTION: HYPERX 0x0047ae10
 void __cdecl DebugHUD::PushLightString(const char* pszSource, short nLength)
 {

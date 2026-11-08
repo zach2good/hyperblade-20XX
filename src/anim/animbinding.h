@@ -23,6 +23,7 @@ class AnimNode;
 class AnimBinding
 {
 public:
+    // FUNCTION: HYPERX100 0x0043a090
     // FUNCTION: HYPERX 0x00425450
     virtual ~AnimBinding()
     {
@@ -66,6 +67,7 @@ inline AnimBinding::AnimBinding()
 }
 
 // Slot one of this table and AnimPlayer's is AgendaItemOwner::Destroy's folded body, which holds the marker.
+// FUNCTION: HYPERX100 0x0043a0a0
 inline AnimBinding* AnimBinding::DestroyViaVtable()
 {
     if (this != 0)

@@ -14,6 +14,21 @@ public:
     int AutoScroll();
     int UpdateScrollPos(int nPosition);
 
+#ifdef HYPERX_V100
+    PassBar();
+    PassBar(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack);
+    virtual ~PassBar();
+
+    virtual void SetPosition(Point pt);
+    virtual void SetScrollColorMode(int nScrollColor);
+    virtual void SetClipRect(int nClipped, Point pt);
+    virtual int  RestoreContents();
+
+    void ClearState();
+    int  LoadFromFile(const char* pszBarName, const char* pszMarkerName, int bColourKey, int bSystemMemory);
+    int  Step();
+#endif
+
     Texture* m_pMarkerTexture; // 0x0d8
     // The lowest and highest position, which GetPassBarSize answers as the bar's size.
     Point m_ptRange;        // 0x0dc

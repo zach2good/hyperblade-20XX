@@ -3,6 +3,7 @@
 #include "common/compat.h"
 #include "math/point.h"
 
+// FUNCTION: HYPERX100 0x00414d70
 // FUNCTION: HYPERX 0x0042f950
 Point* Point::Zero()
 {
@@ -12,6 +13,7 @@ Point* Point::Zero()
     return this;
 }
 
+// FUNCTION: HYPERX100 0x00414d90
 // FUNCTION: HYPERX 0x0042f960
 Point* Point::Set(int nX, int nY)
 {
@@ -21,6 +23,7 @@ Point* Point::Set(int nX, int nY)
     return this;
 }
 
+// FUNCTION: HYPERX100 0x00414dd0
 // FUNCTION: HYPERX 0x0042f980
 void Point::Offset(int nDx, int nDy)
 {

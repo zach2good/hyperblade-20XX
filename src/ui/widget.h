@@ -134,6 +134,16 @@ public:
     Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark);
     ~Widget();
 
+#ifdef HYPERX_V100
+    Widget();
+
+    void SetFrameIdle(int nFrameIdle);
+    int  GetFrameIdle() const;
+    int  GetTargetFrame() const;
+    void SetType(int nType);
+    void SetSize(int nWidth, int nHeight);
+#endif
+
 public:
     // The constructor fills all 0x68 bytes.
     int   m_nType;       // 0x004

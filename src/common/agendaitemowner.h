@@ -12,6 +12,7 @@ public:
     {
     }
 
+    // FUNCTION: HYPERX100 0x0041d140
     // FUNCTION: HYPERX 0x00414e70
     virtual ~AgendaItemOwner()
     {
@@ -19,6 +20,7 @@ public:
 
     // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
     // Inline, as each owner's is, so the linker folds all three onto this one.
+    // FUNCTION: HYPERX100 0x0044b970
     // FUNCTION: HYPERX 0x00414b00
     virtual AgendaItemOwner* Destroy()
     {

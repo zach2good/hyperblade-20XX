@@ -22,6 +22,7 @@
 // Two; src/globals.cpp defines it.
 extern float g_flTwoAgendaItem;
 
+// FUNCTION: HYPERX100 0x00425ce0
 // FUNCTION: HYPERX 0x0040d3b0
 void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -56,6 +57,7 @@ void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pnPrevTick = pLast;
 }
 
+// FUNCTION: HYPERX100 0x00425e20
 // FUNCTION: HYPERX 0x0040d4c0
 void CProjectAndBounce::OnListChanged()
 {
@@ -82,6 +84,7 @@ void CProjectAndBounce::OnListChanged()
 }
 
 // One frame of a projectile riding the arena's collision ellipsoid; the argument is never read.
+// FUNCTION: HYPERX100 0x00425e80
 // FUNCTION: HYPERX 0x0040d510
 void CProjectAndBounce::ProjectAndBounce(int)
 {
@@ -280,6 +283,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
 #define SPEED_EPSILON 0.0001
 
+// FUNCTION: HYPERX100 0x00426430
 // FUNCTION: HYPERX 0x0040d960
 void CProjectAndBounce::Process(int nArg)
 {
@@ -294,6 +298,7 @@ void CProjectAndBounce::Process(int nArg)
 }
 
 // The vertical axis gets this frame's gravity before its step; the other two do not.
+// FUNCTION: HYPERX100 0x00426460
 // FUNCTION: HYPERX 0x0040d980
 void CProjectAndBounce::IntegrateSpringAndGravity()
 {
@@ -346,6 +351,7 @@ inline void CProjectAndBounce::AddStep(const Vec3* pStep)
 }
 
 // Mode zero is the whole integrator; any other mode hands the frame to the projecting worker.
+// FUNCTION: HYPERX100 0x004265b0
 // FUNCTION: HYPERX 0x0040da80
 void CProjectAndBounce::Release(int nMessage)
 {

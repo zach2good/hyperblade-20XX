@@ -4,6 +4,7 @@
 #include "planvm/cglideonsurface.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00421840
 // FUNCTION: HYPERX 0x00412b80
 void CGlideOnSurfacePool::Init()
 {
@@ -23,6 +24,7 @@ void CGlideOnSurfacePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00424170
 // FUNCTION: HYPERX 0x00412c10
 void* CGlideOnSurfacePool::Alloc()
 {

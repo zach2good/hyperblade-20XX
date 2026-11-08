@@ -23,6 +23,7 @@ extern Vec3 g_vBubbleSeparation;
 
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x00419d40
 // FUNCTION: HYPERX 0x0042a8f0
 BoundBubble::~BoundBubble()
 {
@@ -39,6 +40,7 @@ BoundBubble::~BoundBubble()
     }
 }
 
+// FUNCTION: HYPERX100 0x00419e50
 // FUNCTION: HYPERX 0x0042a9a0
 void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 {
@@ -105,6 +107,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 }
 
 // Not finding the bone is fatal, and the message names InitAttachPaks.
+// FUNCTION: HYPERX100 0x0041a290
 // FUNCTION: HYPERX 0x0042ac80
 void BoundBubble::FindAttachComponent(AttachPak* pRequest)
 {
@@ -123,6 +126,7 @@ void BoundBubble::FindAttachComponent(AttachPak* pRequest)
     g_gameApp.Fatal("InitAttachPaks: can't find component!");
 }
 
+// FUNCTION: HYPERX100 0x0041a390
 // FUNCTION: HYPERX 0x0042ad20
 void BoundBubble::GetWorldPosition(Vec3* pOut)
 {
@@ -141,6 +145,7 @@ void BoundBubble::GetWorldPosition(Vec3* pOut)
 // Only a sphere is handled; the fatal message misspells the function it names.
 #pragma optimize("", off)
 
+// FUNCTION: HYPERX100 0x0041a490
 // FUNCTION: HYPERX 0x0042ade0
 unsigned char BoundBubble::DoesIntersect(BoundBubble* pOther)
 {
@@ -155,6 +160,7 @@ unsigned char BoundBubble::DoesIntersect(BoundBubble* pOther)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0041a580
 // FUNCTION: HYPERX 0x0042ae20
 unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 {
@@ -201,9 +207,32 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 #pragma optimize("", on)
 
 // The array element's default constructor, which new BoundBubble[n] names.
+// FUNCTION: HYPERX100 0x0041a210
 // FUNCTION: HYPERX 0x0042b000
 BoundBubble::BoundBubble()
 : m_pShapeNode(0)
 , m_flRadius(g_flZeroFaceNormal)
 {
 }
+
+#ifdef HYPERX_V100
+#pragma optimize("", off)
+
+// FUNCTION: HYPERX100 0x0041a500
+void BoundBubble::Collide(BoundBubble* pOther)
+{
+    TestOverlap(pOther);
+}
+
+// FUNCTION: HYPERX100 0x0041a530
+void BoundBubble::TestOverlap(BoundBubble* pOther)
+{
+    // TODO: Both arms are empty in the original. Was a response left unwritten here?
+    if (SphereSphereOverlap(pOther) != 0)
+    {
+        return;
+    }
+}
+
+#pragma optimize("", on)
+#endif

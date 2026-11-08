@@ -36,6 +36,7 @@ extern const float g_flFourTracking;
 
 HYPERBLADE_FIELD_AT(CTrackPasser_Receiver, m_pReceiverPos, 0x10);
 
+// FUNCTION: HYPERX100 0x004860e0
 // FUNCTION: HYPERX 0x0040aec0
 void CTrackPasser_Receiver::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -52,6 +53,7 @@ void CTrackPasser_Receiver::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flSeed      = g_flZeroTracking;
 }
 
+// FUNCTION: HYPERX100 0x00486150
 // FUNCTION: HYPERX 0x0040af20
 void CTrackPasser_Receiver::OnListChanged()
 {
@@ -73,6 +75,7 @@ void CTrackPasser_Receiver::OnListChanged()
 }
 
 // A carrier turning across the camera drags the aim point sideways.
+// FUNCTION: HYPERX100 0x004861a0
 // FUNCTION: HYPERX 0x0040af60
 void CTrackPasser_Receiver::Process(int nArg)
 {

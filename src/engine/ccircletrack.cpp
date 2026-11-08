@@ -21,6 +21,7 @@
 
 HYPERBLADE_FIELD_AT(CCircleTrack, m_pWatchPos, 0x10);
 
+// FUNCTION: HYPERX100 0x00486c00
 // FUNCTION: HYPERX 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -34,6 +35,7 @@ void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_nUnused   = g_pGameEngine->m_clock.nTickMs;
 }
 
+// FUNCTION: HYPERX100 0x00486ca0
 // FUNCTION: HYPERX 0x0040b720
 void CCircleTrack::Process(int nArg)
 {

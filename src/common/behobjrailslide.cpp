@@ -4,6 +4,7 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
+// FUNCTION: HYPERX100 0x004cb2f0
 // FUNCTION: HYPERX 0x0041db30
 BehObj_RailSlide::BehObj_RailSlide()
 {
@@ -14,6 +15,7 @@ BehObj_RailSlide::~BehObj_RailSlide()
 {
 }
 
+// FUNCTION: HYPERX100 0x004cb410
 // FUNCTION: HYPERX 0x0041db80
 void BehObj_RailSlide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

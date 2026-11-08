@@ -4,6 +4,7 @@
 #include "planvm/csteerbetweenfacing.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004209e0
 // FUNCTION: HYPERX 0x00413340
 void CSteerBetweenFacingPool::Init()
 {
@@ -23,6 +24,7 @@ void CSteerBetweenFacingPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004239e0
 // FUNCTION: HYPERX 0x004133e0
 void* CSteerBetweenFacingPool::Alloc()
 {

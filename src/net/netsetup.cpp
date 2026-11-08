@@ -15,6 +15,7 @@
 #include "net/network.h"
 
 // A name for the slot this end was waiting on cancels the wait and goes back to choosing.
+// FUNCTION: HYPERX100 0x0049faa0
 // FUNCTION: HYPERX 0x00478da0
 void NetSetup::ProcessAddPlayerMsg(int nDpid, int nSlot, PlayerSlotName* pName)
 {
@@ -67,6 +68,7 @@ void NetSetup::ProcessAddPlayerMsg(int nDpid, int nSlot, PlayerSlotName* pName)
 }
 
 // The start signal is sent four times, because nothing acknowledges it.
+// FUNCTION: HYPERX100 0x0049fc30
 // FUNCTION: HYPERX 0x00478ec0
 void __cdecl NetSetup::OnPlayerReady(unsigned int nSlot)
 {
@@ -111,6 +113,7 @@ void __cdecl NetSetup::OnPlayerReady(unsigned int nSlot)
     }
 }
 
+// FUNCTION: HYPERX100 0x0049fd70
 // FUNCTION: HYPERX 0x00478fb0
 void __stdcall NetSetup::OnHostStartGame(void)
 {
@@ -143,6 +146,7 @@ void __stdcall NetSetup::OnHostStartGame(void)
 
 // The list is trimmed to two entries first, so the newest is always the third.
 
+// FUNCTION: HYPERX100 0x0049fe30
 // FUNCTION: HYPERX 0x00479050
 void NetSetup::DisplayChatMessage(int, const char* pszText, int)
 {
@@ -177,6 +181,7 @@ void NetSetup::DisplayChatMessage(int, const char* pszText, int)
 
 // Resets the slot of a player who has left and marks a disconnect pending.
 
+// FUNCTION: HYPERX100 0x0049ff50
 // FUNCTION: HYPERX 0x00479140
 void __cdecl NetSetup::OnPlayerDisconnect(DWORD nId)
 {

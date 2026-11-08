@@ -8,6 +8,7 @@
 class CDDText : public CDDDrawable
 {
 public:
+    // FUNCTION: HYPERX100 0x004bd970
     // FUNCTION: HYPERX 0x00451c60
     CDDText()
     : m_pszText(0)

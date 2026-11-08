@@ -93,6 +93,7 @@ extern short g_nCheckImpulseOtherSlot;
 // GLOBAL: HYPERX 0x004cb386
 extern short g_nCheckImpulseSelfSlot;
 
+// FUNCTION: HYPERX100 0x004649e0
 // FUNCTION: HYPERX 0x00404d20
 void __cdecl PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
@@ -246,6 +247,7 @@ void __cdecl PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, sh
 // GLOBAL: HYPERX 0x004b1548
 extern const float g_flWallBoxTopY;
 
+// FUNCTION: HYPERX100 0x00464e80
 // FUNCTION: HYPERX 0x004050d0
 void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
@@ -507,6 +509,7 @@ void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, s
 
 // Action 78: the velocity copy scaled by minus ten is overwritten unread, in the original too.
 
+// FUNCTION: HYPERX100 0x004657b0
 // FUNCTION: HYPERX 0x00405920
 void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, int nSlot)
 {
@@ -761,6 +764,7 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
 
 // Slows the collision's own object to three tenths of its velocity and picks its reaction animation.
 
+// FUNCTION: HYPERX100 0x00465f60
 // FUNCTION: HYPERX 0x00405fd0
 void __cdecl PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 {
@@ -888,6 +892,7 @@ void __cdecl PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, shor
 #define SPEED_IN_WEIGHT 5.0f
 #define WEIGHT_FLOOR    0.001f
 
+// FUNCTION: HYPERX100 0x00466900
 // FUNCTION: HYPERX 0x00406770
 void __cdecl PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 {
@@ -985,6 +990,7 @@ void __cdecl PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*,
 
 // A nearly stopped object leaves along the other's reversed velocity, and always upwards.
 
+// FUNCTION: HYPERX100 0x00466eb0
 // FUNCTION: HYPERX 0x00406ba0
 void __cdecl PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*, int)
 {

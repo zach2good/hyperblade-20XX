@@ -8,6 +8,7 @@
 #include "planvm/collinteractor.h"
 #include "planvm/msginteractor.h"
 
+// FUNCTION: HYPERX100 0x004b8620
 // FUNCTION: HYPERX 0x0046ba80
 void CollInteractorPool::Init()
 {
@@ -27,6 +28,7 @@ void CollInteractorPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004b89f0
 // FUNCTION: HYPERX 0x0046bbd0
 void* CollInteractorPool::Alloc()
 {

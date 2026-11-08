@@ -29,6 +29,7 @@
 
 // The game object's construction, shared by twenty-four derived constructors.
 
+// FUNCTION: HYPERX100 0x004a1d00
 // FUNCTION: HYPERX 0x0041bf50
 GameBehaviorObject::GameBehaviorObject()
 {
@@ -63,12 +64,14 @@ extern PlanHandlerFn     g_pfnPlanActionHandlers[140];
 #define HEADER_ITEMS 2
 
 // Out of line: the original calls this destructor from every derived one.
+// FUNCTION: HYPERX100 0x004a1dc0
 // FUNCTION: HYPERX 0x0041bfe0
 GameBehaviorObject::~GameBehaviorObject()
 {
 }
 
 // The behaviour's setup pass over a compiled plan block; every BehObj_*::Init ends by calling it.
+// FUNCTION: HYPERX100 0x004a1dd0
 // FUNCTION: HYPERX 0x0041bff0
 void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 {
@@ -178,6 +181,7 @@ void GameBehaviorObject::Init(EngineObject* pOwner, PlanNode* pBlock, int)
 }
 
 // The limp swap: the standard skate becomes the limp skate and the fast skate the limp speed.
+// FUNCTION: HYPERX100 0x004a20f0
 // FUNCTION: HYPERX 0x0041c220
 void GameBehaviorObject::UpdateLimpAnim()
 {
@@ -218,6 +222,7 @@ void GameBehaviorObject::UpdateLimpAnim()
 
 // Both heads are read before either walk, so an interactor added during the first is not set.
 
+// FUNCTION: HYPERX100 0x004a2270
 // FUNCTION: HYPERX 0x0041c2c0
 void GameBehaviorObject::SetInteractorsActive(int nArg)
 {
@@ -247,6 +252,7 @@ void GameBehaviorObject::SetInteractorsActive(int nArg)
 
 // Sends the node's timed message as MSG_INITIATE and starts its next wait.
 
+// FUNCTION: HYPERX100 0x004a22e0
 // FUNCTION: HYPERX 0x0041c320
 void GameBehaviorObject::SendTimedMessage()
 {
@@ -264,6 +270,7 @@ void GameBehaviorObject::SendTimedMessage()
 
 // The counter decrements every frame, so a fired poll wraps to -1 and keeps counting.
 
+// FUNCTION: HYPERX100 0x004a2360
 // FUNCTION: HYPERX 0x0041c360
 void GameBehaviorObject::UpdateBehaviorPollCountdown()
 {
@@ -273,8 +280,24 @@ void GameBehaviorObject::UpdateBehaviorPollCountdown()
     }
 }
 
+#ifdef HYPERX_V100
+#include "planvm/behaviorids.h"
+
+// FUNCTION: HYPERX100 0x004a2380
+char GameBehaviorObject::IsFlying()
+{
+    if (m_wKind != BEH_FLY && m_wKind != BEH_FLY_TOWARD)
+    {
+        return 0;
+    }
+
+    return 1;
+}
+#endif
+
 // Run as the behaviour is activated: purge, detach, merge the slots, then re-register the message interactors.
 
+// FUNCTION: HYPERX100 0x004a23a0
 // FUNCTION: HYPERX 0x0041c380
 void GameBehaviorObject::TickAndSortMessages()
 {
@@ -420,6 +443,7 @@ void GameBehaviorObject::TickAndSortMessages()
     }
 }
 
+// FUNCTION: HYPERX100 0x004a2670
 // FUNCTION: HYPERX 0x0041c5d0
 void GameBehaviorObject::AssignPriorities(int nStart)
 {
@@ -445,6 +469,7 @@ void GameBehaviorObject::AssignPriorities(int nStart)
 }
 
 // The walk reads the next link first, because Detach can free the node it stands on.
+// FUNCTION: HYPERX100 0x004a26a0
 // FUNCTION: HYPERX 0x0041c5f0
 void GameBehaviorObject::RemoveAgendaItem(int nAgendaItem)
 {
@@ -483,6 +508,7 @@ void GameBehaviorObject::RemoveAgendaItem(int nAgendaItem)
     }
 }
 
+// FUNCTION: HYPERX100 0x004a27b0
 // FUNCTION: HYPERX 0x0041c6c0
 void GameBehaviorObject::Reset()
 {
@@ -554,6 +580,7 @@ void GameBehaviorObject::Reset()
     g_apBehaviorRegistry[nKind]->Insert(this);
 }
 
+// FUNCTION: HYPERX100 0x004c9fb0
 // FUNCTION: HYPERX 0x0041d1b0
 void GameBehaviorObject::PurgeAgendaForGlideToObject()
 {
@@ -566,6 +593,7 @@ void GameBehaviorObject::PurgeAgendaForGlideToObject()
     m_abAgendaPurged[Agenda_CSlideOnRail]        = 1;
 }
 
+// FUNCTION: HYPERX100 0x004c9ff0
 // FUNCTION: HYPERX 0x0041d1e0
 void GameBehaviorObject::PurgeAgendaForGlideToPosition()
 {
@@ -578,6 +606,7 @@ void GameBehaviorObject::PurgeAgendaForGlideToPosition()
     m_abAgendaPurged[Agenda_CSlideOnRail]        = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca030
 // FUNCTION: HYPERX 0x0041d210
 void GameBehaviorObject::PurgeAgendaForGlideBetweenFacing()
 {
@@ -589,6 +618,7 @@ void GameBehaviorObject::PurgeAgendaForGlideBetweenFacing()
     m_abAgendaPurged[Agenda_CSlideOnRail]      = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca0c0
 // FUNCTION: HYPERX 0x0041d240
 void GameBehaviorObject::PurgeAgendaForGlide()
 {
@@ -604,6 +634,7 @@ void GameBehaviorObject::PurgeAgendaForGlide()
     m_abAgendaPurged[Agenda_CSlideOnRail]        = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca110
 // FUNCTION: HYPERX 0x0041d280
 void GameBehaviorObject::PurgeAgendaForRailSlide()
 {
@@ -617,6 +648,7 @@ void GameBehaviorObject::PurgeAgendaForRailSlide()
     m_abAgendaPurged[Agenda_CSteerBetweenFacing] = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca160
 // FUNCTION: HYPERX 0x0041d2c0
 void GameBehaviorObject::PurgeAgendaForFly()
 {
@@ -632,6 +664,7 @@ void GameBehaviorObject::PurgeAgendaForFly()
     m_abAgendaPurged[Agenda_CSpeedBurst]         = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca250
 // FUNCTION: HYPERX 0x0041d300
 void GameBehaviorObject::PurgeAgendaForUpdateWhileAttached()
 {
@@ -647,6 +680,7 @@ void GameBehaviorObject::PurgeAgendaForUpdateWhileAttached()
     m_abAgendaPurged[Agenda_CAdjustAcceleration] = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca2a0
 // FUNCTION: HYPERX 0x0041d340
 void GameBehaviorObject::PurgeAgendaForSetMovingInPlace()
 {
@@ -665,6 +699,7 @@ void GameBehaviorObject::PurgeAgendaForSetMovingInPlace()
     m_abAgendaPurged[Agenda_CProjectAndBounce]    = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca300
 // FUNCTION: HYPERX 0x0041d390
 void GameBehaviorObject::PurgeAgendaForTracking()
 {
@@ -676,6 +711,7 @@ void GameBehaviorObject::PurgeAgendaForTracking()
     m_abAgendaPurged[Agenda_CCircleTrack]          = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca380
 // FUNCTION: HYPERX 0x0041d3c0
 void GameBehaviorObject::PurgeAgendaForWatching()
 {
@@ -687,6 +723,7 @@ void GameBehaviorObject::PurgeAgendaForWatching()
     m_abAgendaPurged[Agenda_CCircleTrack]          = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca3c0
 // FUNCTION: HYPERX 0x0041d3f0
 void GameBehaviorObject::PurgeAgendaForTrackTrajectory()
 {
@@ -698,6 +735,7 @@ void GameBehaviorObject::PurgeAgendaForTrackTrajectory()
     m_abAgendaPurged[Agenda_CCircleTrack]          = 1;
 }
 
+// FUNCTION: HYPERX100 0x004ca400
 // FUNCTION: HYPERX 0x0041d420
 void GameBehaviorObject::PurgeAgendaForTrackPassPrep()
 {
@@ -710,6 +748,7 @@ void GameBehaviorObject::PurgeAgendaForTrackPassPrep()
     m_abAgendaPurged[Agenda_CCircleTrack]     = 1;
 }
 
+// FUNCTION: HYPERX100 0x004cd3c0
 // FUNCTION: HYPERX 0x0041eb30
 void GameBehaviorObject::PurgeAgendaForCandyTracking()
 {

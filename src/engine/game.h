@@ -13,6 +13,12 @@ void                    InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETT
 void __cdecl            ShutdownEngine(void);
 unsigned int __stdcall  UpdateState(void);
 
+#ifdef HYPERX_V100
+// The target goal slot of the player in the slot the viewed one is not, of slots 0 and 1.
+short GetOpponentTargetGoalSlot(void);
+short GetRokPrevCarrierSlot(void);
+#endif
+
 } // namespace Game
 
 #endif

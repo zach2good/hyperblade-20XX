@@ -23,6 +23,7 @@ extern FileVersion g_animVersion;
 #define ANIM_INTERNAL_NAME_MAX 32
 
 // Minus one when any component of the right is smaller, one when any is larger, else nought.
+// FUNCTION: HYPERX100 0x004a04a0
 // FUNCTION: HYPERX 0x00493c40
 short AnimFile::VersionCompare(const FileVersion* pLeft, const FileVersion* pRight)
 {
@@ -39,6 +40,7 @@ short AnimFile::VersionCompare(const FileVersion* pLeft, const FileVersion* pRig
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004a05e0
 // FUNCTION: HYPERX 0x00493cb0
 AnimClipSet* __cdecl AnimFile::Open(const char* pszName, AnimRegistry* pRegistry, int nFlags, AnimLoadFn pfnLoad)
 {
@@ -96,6 +98,7 @@ done:
     return pResult;
 }
 
+// FUNCTION: HYPERX100 0x004a07e0
 // FUNCTION: HYPERX 0x00493e60
 int __cdecl AnimFile::CheckVersion(const char* pszName, const FileVersion* pExpected, const FileVersion* pFound)
 {

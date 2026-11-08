@@ -16,6 +16,7 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
 
     // Five tables share this body at slot seven or eight; the original's link folded the copies.
+    // FUNCTION: HYPERX100 0x00425130
     // FUNCTION: HYPERX 0x00413ef0
     virtual char IsReplaceable()
     {

@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c78f0
 // FUNCTION: HYPERX 0x0041fca0
 void BehObjSetFlatInPlacePool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjSetFlatInPlacePool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c9470
 // FUNCTION: HYPERX 0x0041fd60
 void* BehObjSetFlatInPlacePool::Alloc()
 {

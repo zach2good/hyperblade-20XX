@@ -16,6 +16,7 @@
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 
+// FUNCTION: HYPERX100 0x004cdd90
 // FUNCTION: HYPERX 0x0045dc20
 void MsgInteractor::Discard()
 {
@@ -27,6 +28,7 @@ void MsgInteractor::Discard()
     g_pMsgInteractorPool->Insert(this);
 }
 
+// FUNCTION: HYPERX100 0x004ce240
 // FUNCTION: HYPERX 0x0045dfc0
 MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
 {
@@ -84,6 +86,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     return this;
 }
 
+// FUNCTION: HYPERX100 0x004ce380
 // FUNCTION: HYPERX 0x0045e0b0
 void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
 {
@@ -92,6 +95,7 @@ void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
     Dispatch(nArg, pState);
 }
 
+// FUNCTION: HYPERX100 0x004ce3b0
 // FUNCTION: HYPERX 0x0045e0d0
 void MsgInteractor::Dispatch(int nArg, short* pState)
 {
@@ -135,6 +139,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
     }
 }
 
+// FUNCTION: HYPERX100 0x004b8bf0
 // FUNCTION: HYPERX 0x0046bd20
 short MsgInteractor::GetTargetSlot()
 {

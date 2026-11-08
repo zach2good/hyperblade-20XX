@@ -9,6 +9,7 @@ float g_flUnusedWinMainA = g_flZeroWinMain;
 float g_flUnusedWinMainB = g_flZeroWinMain;
 float g_flUnusedWinMainC = g_flZeroWinMain;
 
+// FUNCTION: HYPERX100 0x0048e360
 // FUNCTION: HYPERX 0x0044c070
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nShowCmd)
 {

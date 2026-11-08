@@ -21,6 +21,10 @@ namespace AnimSet
 int __cdecl          GetFieldOffset(short nKind);
 AnimClipSet* __cdecl LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int nUnused, const char* pszName);
 
+#ifdef HYPERX_V100
+short __cdecl GetKindFromOffset(int nOffset);
+#endif
+
 } // namespace AnimSet
 
 #endif

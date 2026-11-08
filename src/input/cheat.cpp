@@ -32,12 +32,14 @@
 
 #define CHEAT_MESSAGE_MS 1500
 
+// FUNCTION: HYPERX100 0x004c01b0
 // FUNCTION: HYPERX 0x004497f0
 void Cheat::BroadcastFreakout(void)
 {
     g_pGameEngine->BroadcastEvent(MSG_PLAY_CD, 0, 0);
 }
 
+// FUNCTION: HYPERX100 0x004c01d0
 // FUNCTION: HYPERX 0x00449810
 void Cheat::EnableHiddenTeams(void)
 {
@@ -47,6 +49,7 @@ void Cheat::EnableHiddenTeams(void)
     g_pMessageQueue->Push("Hidden teams enabled", 0, CHEAT_MESSAGE_MS);
 }
 
+// FUNCTION: HYPERX100 0x004c0210
 // FUNCTION: HYPERX 0x00449840
 void Cheat::PlayActivateSound(void)
 {
@@ -54,6 +57,7 @@ void Cheat::PlayActivateSound(void)
 }
 
 // Changes nothing in the game; the queued row appears whenever something next drains the queue.
+// FUNCTION: HYPERX100 0x004c0230
 // FUNCTION: HYPERX 0x00449860
 void Cheat::GeorgeActivate(void)
 {
@@ -63,6 +67,7 @@ void Cheat::GeorgeActivate(void)
     g_pMessageQueue->Push("George, it's good to see you", 0, CHEAT_MESSAGE_MS);
 }
 
+// FUNCTION: HYPERX100 0x004c0270
 // FUNCTION: HYPERX 0x00449890
 void __cdecl Cheat::MaxViewedPlayerRatings(void)
 {
@@ -78,6 +83,7 @@ void __cdecl Cheat::MaxViewedPlayerRatings(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c02c0
 // FUNCTION: HYPERX 0x004498d0
 void Cheat::EnableAllAwards(void)
 {
@@ -91,6 +97,7 @@ void Cheat::EnableAllAwards(void)
 }
 
 // The walk starts at one, so bone zero is never touched.
+// FUNCTION: HYPERX100 0x004c02f0
 // FUNCTION: HYPERX 0x00449900
 void Cheat::RestoreAllPlayers(void)
 {
@@ -125,30 +132,35 @@ void Cheat::RestoreAllPlayers(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x004c03c0
 // FUNCTION: HYPERX 0x004499a0
 void Cheat::ShrinkPlayers(void)
 {
     Object::ScaleBones(g_anShrinkBones, 15, g_teamScaleSlots.flShrinkScaleX, g_teamScaleSlots.flShrinkScaleY, g_teamScaleSlots.flShrinkScaleZ);
 }
 
+// FUNCTION: HYPERX100 0x004c05d0
 // FUNCTION: HYPERX 0x00449b50
 void Cheat::GrowPlayers(void)
 {
     Object::ScaleBones(g_anGrowBones, 15, g_flGrowScaleX, g_flGrowScaleY, g_flGrowScaleZ);
 }
 
+// FUNCTION: HYPERX100 0x004c0600
 // FUNCTION: HYPERX 0x00449b80
 void Cheat::MirrorPlayers(void)
 {
     Object::ScaleBones(g_anMirrorBones, 15, g_flMirrorScaleX, g_flMirrorScaleY, g_flMirrorScaleZ);
 }
 
+// FUNCTION: HYPERX100 0x004c0630
 // FUNCTION: HYPERX 0x00449bb0
 void Cheat::StretchPlayers(void)
 {
     Object::ScaleBones(g_anStretchBones, 15, g_flStretchScaleX, g_flStretchScaleY, g_flStretchScaleZ);
 }
 
+// FUNCTION: HYPERX100 0x004c0660
 // FUNCTION: HYPERX 0x00449be0
 void Cheat::FlipPlayers(void)
 {
@@ -157,6 +169,7 @@ void Cheat::FlipPlayers(void)
 
 // Bones 4, 7, 9, 12 and 15 are the feet, the head and the hands; the body bones are the rest.
 // This and the next two overwrite their globals, so a second use scales the first list differently.
+// FUNCTION: HYPERX100 0x004c0690
 // FUNCTION: HYPERX 0x00449c10
 void Cheat::BulkUpPlayers(void)
 {
@@ -175,6 +188,7 @@ void Cheat::BulkUpPlayers(void)
     Object::ScaleBones(g_anBulkUpHeadFootBones, 3, g_flBulkUpScaleX, g_flBulkUpScaleY, g_flBulkUpScaleZ);
 }
 
+// FUNCTION: HYPERX100 0x004c0740
 // FUNCTION: HYPERX 0x00449cb0
 void Cheat::SquashPlayers(void)
 {
@@ -188,6 +202,7 @@ void Cheat::SquashPlayers(void)
 }
 
 // The hip and the spine flip with the legs; the arms keep their scale.
+// FUNCTION: HYPERX100 0x004c07a0
 // FUNCTION: HYPERX 0x00449d10
 void Cheat::FlipPlayerLegs(void)
 {
@@ -200,6 +215,7 @@ void Cheat::FlipPlayerLegs(void)
     Object::ScaleBones(g_anFlipLegsExtremityBones, 5, g_flFlipLegsScaleX, g_flFlipLegsScaleY, g_flFlipLegsScaleZ);
 }
 
+// FUNCTION: HYPERX100 0x004c0800
 // FUNCTION: HYPERX 0x00449d70
 int CheatState::ProcessKeypress(char cKey)
 {
@@ -256,6 +272,7 @@ int CheatState::ProcessKeypress(char cKey)
 #define MSG_DROME_TEXTURED_OFF 0x57
 #define MSG_TOGGLE_MS          0x5dc
 
+// FUNCTION: HYPERX100 0x004c08d0
 // FUNCTION: HYPERX 0x00449e20
 int __cdecl GameApp::HandleMatchKeypress(unsigned int nKey)
 {

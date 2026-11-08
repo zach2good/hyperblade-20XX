@@ -8,6 +8,7 @@
 #define SWP_MOVE_FLAGS (SWP_SHOWWINDOW | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE)
 
 // The second argument is unread.
+// FUNCTION: HYPERX100 0x0046e280
 // FUNCTION: HYPERX 0x0044bd60
 void Window::ApplyFullscreenStyle(HWND hWnd, int)
 {
@@ -32,6 +33,7 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
 }
 
 // The original swaps X and Y too; SWP_NOMOVE ignores both.
+// FUNCTION: HYPERX100 0x0046e2f0
 // FUNCTION: HYPERX 0x0044bdb0
 unsigned int Window::OnWindowMove(HWND hWnd, int nFlag)
 {
@@ -55,6 +57,7 @@ WNDCLASSA g_wndClass;
 // GLOBAL: HYPERX 0x004d2bb0
 WNDCLASSA* g_pWndClass;
 
+// FUNCTION: HYPERX100 0x00479830
 // FUNCTION: HYPERX 0x0048f450
 void Window::InvalidateAndUpdate(void)
 {
@@ -64,6 +67,7 @@ void Window::InvalidateAndUpdate(void)
 }
 
 // Non-zero when the class already existed. The class name's typo is shipped.
+// FUNCTION: HYPERX100 0x00408730
 // FUNCTION: HYPERX 0x00493750
 int Window::EnsureClassRegistered(HINSTANCE hInstance)
 {
@@ -102,3 +106,27 @@ int Window::EnsureClassRegistered(HINSTANCE hInstance)
 
     return 0;
 }
+
+#ifdef HYPERX_V100
+// TODO: The flag is matched to g_cD3DActive by its place among the renderer flags.
+// FUNCTION: HYPERX100 0x0046e360
+BOOL Window::Destroy(HWND hWnd)
+{
+    const BOOL bResult = DestroyWindow(hWnd);
+
+    if (g_cD3DActive == 0)
+    {
+        HDC const     hDC       = GetDC(g_gameApp.m_hWnd);
+        HGDIOBJ const hBrush    = GetStockObject(BLACK_BRUSH);
+        HGDIOBJ const hOldBrush = SelectObject(hDC, hBrush);
+
+        Rectangle(hDC, 0, 0, 640, 480);
+
+        SelectObject(hDC, hOldBrush);
+        DeleteObject(hBrush);
+        ReleaseDC(g_gameApp.m_hWnd, hDC);
+    }
+
+    return bResult;
+}
+#endif

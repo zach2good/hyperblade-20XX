@@ -13,6 +13,7 @@
 #include "graphics/graphics.h"
 
 // The previous size is latched the first time either half is zero.
+// FUNCTION: HYPERX100 0x0046d3e0
 // FUNCTION: HYPERX 0x0044b170
 void Graphics::Initialize(int bResize)
 {
@@ -77,6 +78,7 @@ void Graphics::Initialize(int bResize)
 }
 
 // Loads only when the command line carries the developer marker.
+// FUNCTION: HYPERX100 0x0046db40
 // FUNCTION: HYPERX 0x0044b6f0
 unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
 {
@@ -124,6 +126,7 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0046dc20
 // FUNCTION: HYPERX 0x0044b7a0
 void Graphics::UnloadMdmTexDLL(void)
 {

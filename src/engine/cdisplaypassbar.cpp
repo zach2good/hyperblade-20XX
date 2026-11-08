@@ -19,6 +19,7 @@
 // 1 / (1 - cos 45), so the offset is the whole half width at 45 degrees off the heading.
 #define OVERLAY_EDGE_SCALE 3.4142139f
 
+// FUNCTION: HYPERX100 0x0042c870
 // FUNCTION: HYPERX 0x00412530
 void CDisplayPassBar::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -28,6 +29,7 @@ void CDisplayPassBar::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
+// FUNCTION: HYPERX100 0x0042c8c0
 // FUNCTION: HYPERX 0x00412550
 void CDisplayPassBar::Process(int nArg)
 {

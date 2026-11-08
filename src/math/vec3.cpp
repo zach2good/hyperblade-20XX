@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "mathglobals.h"
 
+// FUNCTION: HYPERX100 0x004b5d70
 // FUNCTION: HYPERX 0x00406300
 Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
 {
@@ -18,6 +19,7 @@ Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
     return pOut;
 }
 
+// FUNCTION: HYPERX100 0x00445590
 // FUNCTION: HYPERX 0x00430180
 bool __fastcall Vec3::NormalizeTo(Vec3* pOut) const
 {
@@ -39,6 +41,7 @@ bool __fastcall Vec3::NormalizeTo(Vec3* pOut) const
     return false;
 }
 
+// FUNCTION: HYPERX100 0x00445660
 // FUNCTION: HYPERX 0x004301f0
 bool __fastcall Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 {
@@ -60,6 +63,7 @@ bool __fastcall Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
     return false;
 }
 
+// FUNCTION: HYPERX100 0x00445830
 // FUNCTION: HYPERX 0x004302f0
 Vec3* Vec3::ScaleInPlace(float flScale)
 {
@@ -70,6 +74,7 @@ Vec3* Vec3::ScaleInPlace(float flScale)
     return this;
 }
 
+// FUNCTION: HYPERX100 0x00445860
 // FUNCTION: HYPERX 0x00430320
 void __fastcall Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 {
@@ -79,6 +84,7 @@ void __fastcall Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 }
 
 // The second point wins only on a strict improvement.
+// FUNCTION: HYPERX100 0x004458c0
 // FUNCTION: HYPERX 0x00430340
 Vec3* __fastcall Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
 {
@@ -102,18 +108,21 @@ Vec3* __fastcall Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
     return pSecond;
 }
 
+// FUNCTION: HYPERX100 0x004d44b0
 // FUNCTION: HYPERX 0x0044b050
 float __cdecl Vec3::Dot(const Vec3* pA, const Vec3* pB)
 {
     return DotInline(pA, pB);
 }
 
+// FUNCTION: HYPERX100 0x004b1dc0
 // FUNCTION: HYPERX 0x00466df0
 float __cdecl Vec3::Length(const Vec3* pVec)
 {
     return pVec->Magnitude();
 }
 
+// FUNCTION: HYPERX100 0x004630e0
 // FUNCTION: HYPERX 0x004726b0
 void __cdecl Vec3::CrossProduct(const Vec3* pA, const Vec3* pB, Vec3* pOut)
 {

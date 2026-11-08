@@ -15,6 +15,7 @@ public:
     virtual ~BehObj_Fly();
     virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
 
+    // FUNCTION: HYPERX100 0x004cb6a0
     // FUNCTION: HYPERX 0x0041dce0
     virtual void SendTimedMessage()
     {

@@ -18,10 +18,16 @@ public:
     virtual void OnListChanged();
 
     // Slot seven answers one where the base answers nought; the original folds it onto one shared body.
+    // FUNCTION: HYPERX100 0x004256a0
     virtual unsigned char GetReadyFlag()
     {
         return 1;
     }
+
+#ifdef HYPERX_V100
+    // TODO: The name is a guess; nothing in v1.0.0.0 calls it.
+    void SetDest(const Vec3* pDest);
+#endif
 
     // 0x20 is read as two types in equal numbers, so it stays raw.
     Vec3          m_vDest;       // 0x10

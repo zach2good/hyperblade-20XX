@@ -3,6 +3,7 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x004c6db0
 // FUNCTION: HYPERX 0x00420830
 void BehObjCandyTrackingPool::Init()
 {
@@ -22,6 +23,7 @@ void BehObjCandyTrackingPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004c8cf0
 // FUNCTION: HYPERX 0x004208e0
 void* BehObjCandyTrackingPool::Alloc()
 {

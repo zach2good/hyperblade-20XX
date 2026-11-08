@@ -33,6 +33,11 @@ public:
     virtual unsigned char PointInside(const Vec3* pPoint);
     virtual int           PointNearSurface(const Vec3* pPoint);
 
+#ifdef HYPERX_V100
+    // Samples the lower half over an nRows by nCols grid into m_pUnusedA, as x, y and z triples.
+    TransformObject* BuildHeightGrid(short nRows, short nCols, float flMinX, float flMinY, float flMaxX, float flMaxY);
+#endif
+
     float GetRadiusX() const
     {
         return m_flRadiusX;

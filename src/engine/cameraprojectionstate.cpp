@@ -10,12 +10,14 @@
 #include "math/mathglobals.h"
 #include <math.h>
 
+// FUNCTION: HYPERX100 0x0040e250
 // FUNCTION: HYPERX 0x00422d60
 void CameraProjectionState::ResetProjection(LayoutState* pViewport, float flFov)
 {
     InitializeProjection(m_bHasRow3, pViewport, flFov);
 }
 
+// FUNCTION: HYPERX100 0x0040e270
 // FUNCTION: HYPERX 0x00422d80
 void CameraProjectionState::InitializeProjection(char cFlag, LayoutState* pViewport, float flFov)
 {
@@ -25,12 +27,14 @@ void CameraProjectionState::InitializeProjection(char cFlag, LayoutState* pViewp
     CreateProjectionState(cFlag, pViewport, flFov);
 }
 
+// FUNCTION: HYPERX100 0x0040e4c0
 // FUNCTION: HYPERX 0x00422db0
 float CameraProjectionState::GetHalfFov()
 {
     return m_flHalfFov;
 }
 
+// FUNCTION: HYPERX100 0x0040da10
 // FUNCTION: HYPERX 0x004303b0
 void CameraProjectionState::CreateProjectionState(char cFlag, LayoutState* pViewport, float flFov)
 {
@@ -57,6 +61,7 @@ void CameraProjectionState::CreateProjectionState(char cFlag, LayoutState* pView
 
 // Assumes a 72-dot-per-inch screen for the centimetre conversion.
 
+// FUNCTION: HYPERX100 0x0040e2c0
 // FUNCTION: HYPERX 0x004304a0
 void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float flFarClip)
 {
@@ -112,6 +117,7 @@ inline void CameraProjectionState::StoreTranslate(CameraProjectionState* pState,
     pState->m_vTranslate.z = flZ;
 }
 
+// FUNCTION: HYPERX100 0x0040e500
 // FUNCTION: HYPERX 0x00430620
 void CameraProjectionState::SetEyePoint(const Vec3* pEye)
 {
@@ -122,6 +128,7 @@ void CameraProjectionState::SetEyePoint(const Vec3* pEye)
     ApplyTranslation();
 }
 
+// FUNCTION: HYPERX100 0x0040e560
 // FUNCTION: HYPERX 0x00430660
 void CameraProjectionState::GetEyePoint(Vec3* pOut)
 {
@@ -132,6 +139,7 @@ void CameraProjectionState::GetEyePoint(Vec3* pOut)
 
 // Maps camera space straight to pixels; the aspect fix is on the perspective path only.
 
+// FUNCTION: HYPERX100 0x0040e6a0
 // FUNCTION: HYPERX 0x00430690
 void CameraProjectionState::BuildMatrix()
 {
@@ -226,6 +234,7 @@ void CameraProjectionState::BuildMatrix()
 
 // An identity matrix is written as the rotation rather than multiplied into.
 
+// FUNCTION: HYPERX100 0x0040eb50
 // FUNCTION: HYPERX 0x00430960
 void CameraProjectionState::RotateY(float flAngle)
 {
@@ -264,6 +273,7 @@ void CameraProjectionState::RotateY(float flAngle)
     MarkChanged();
 }
 
+// FUNCTION: HYPERX100 0x0040ecc0
 // FUNCTION: HYPERX 0x00430a80
 void CameraProjectionState::RotateX(float flAngle)
 {
@@ -302,6 +312,7 @@ void CameraProjectionState::RotateX(float flAngle)
     MarkChanged();
 }
 
+// FUNCTION: HYPERX100 0x0040ee30
 // FUNCTION: HYPERX 0x00430ba0
 void CameraProjectionState::RotateZ(float flAngle)
 {
@@ -342,6 +353,7 @@ void CameraProjectionState::RotateZ(float flAngle)
 
 // The new translation also goes, negated, to m_vEye.
 
+// FUNCTION: HYPERX100 0x0040efa0
 // FUNCTION: HYPERX 0x00430cc0
 void CameraProjectionState::SubtractTranslation(float flX, float flY, float flZ)
 {
@@ -366,3 +378,26 @@ void CameraProjectionState::SubtractTranslation(float flX, float flY, float flZ)
 
     MarkChanged();
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x0040dae0
+CameraProjectionState CameraProjectionState::MultipliedBy(const TransformObject* pRhs) const
+{
+    CameraProjectionState result;
+
+    result = *this;
+
+    Multiply(&result, pRhs);
+
+    return result;
+}
+
+// FUNCTION: HYPERX100 0x0040e640
+void __fastcall CameraProjectionState::ProjectToScreen(const CameraProjectionState* pState, const Vec3* pPoint, float* pflX, float* pflY)
+{
+    const float flInvZ = 1.0f / pPoint->z;
+
+    *pflX = pState->m_flHalfWidthPx * pPoint->x * flInvZ + pState->m_flOffsetXPx;
+    *pflY = pPoint->y * pState->m_flHalfHeightPx * flInvZ + pState->m_flOffsetYPx;
+}
+#endif

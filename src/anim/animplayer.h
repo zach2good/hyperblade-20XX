@@ -38,6 +38,7 @@ public:
     virtual char StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate);
 
     // Slot five is EngineObject::PostEvent's folded body.
+    // FUNCTION: HYPERX100 0x00439680
     virtual char StartClipPlayback(AnimDB* pClip, float flRate, int nFlags)
     {
         return SelectAnimationSet(pClip, flRate, nFlags, 0);
@@ -93,6 +94,10 @@ public:
     unsigned char CheckLoopPoint();
 
     char OnClipEnd();
+
+#ifdef HYPERX_V100
+    static void PrintAnimDebug();
+#endif
 };
 
 STATIC_ASSERT(sizeof(AnimPlayer) == ANIM_DB_BINDING_BYTES);

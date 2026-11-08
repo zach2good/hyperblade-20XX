@@ -23,6 +23,11 @@ struct GameApp
     static int GetInstallLevel(void);
     static int SetCursorVisible(int bVisible);
 
+#ifdef HYPERX_V100
+    // Shows the cursor for the dialog and puts it back as it was.
+    static int DialogBoxWithCursor(HINSTANCE hInstance, LPCSTR pszTemplate, HWND hWndParent, DLGPROC pfnDialog, LPARAM lParam);
+#endif
+
     int WasCursorVisible() const
     {
         return m_bCursorWasVisible;

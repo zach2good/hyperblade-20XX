@@ -20,6 +20,7 @@
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 
+// FUNCTION: HYPERX100 0x004cdd60
 // FUNCTION: HYPERX 0x0045dc00
 void CollInteractor::Discard()
 {
@@ -31,6 +32,7 @@ void CollInteractor::Discard()
     g_pCollInteractorPool->Insert(this);
 }
 
+// FUNCTION: HYPERX100 0x004cddc0
 // FUNCTION: HYPERX 0x0045dc40
 short CollInteractor::GetOtherSlot()
 {
@@ -42,6 +44,7 @@ short CollInteractor::GetOtherSlot()
     return (short)m_otherSlot.n;
 }
 
+// FUNCTION: HYPERX100 0x004cddf0
 // FUNCTION: HYPERX 0x0045dc70
 short CollInteractor::GetModelSlot()
 {
@@ -53,6 +56,7 @@ short CollInteractor::GetModelSlot()
     return (short)m_ownSlotOrMessage.n;
 }
 
+// FUNCTION: HYPERX100 0x004cdea0
 // FUNCTION: HYPERX 0x0045dd00
 CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
 {
@@ -110,6 +114,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
     return this;
 }
 
+// FUNCTION: HYPERX100 0x004cdfe0
 // FUNCTION: HYPERX 0x0045ddf0
 void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 {

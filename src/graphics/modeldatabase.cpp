@@ -19,6 +19,7 @@
 #include "graphics/meshbone.h"
 
 // Frees every node whatever its reference count.
+// FUNCTION: HYPERX100 0x00477d40
 // FUNCTION: HYPERX 0x00472830
 ModelDatabase::~ModelDatabase()
 {
@@ -73,6 +74,7 @@ ModelDatabase::~ModelDatabase()
 // GLOBAL: HYPERX 0x004b39d8
 extern const float g_flDegreesToRadians;
 
+// FUNCTION: HYPERX100 0x00477e50
 // FUNCTION: HYPERX 0x004728e0
 LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 {
@@ -241,6 +243,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
 // Count, source file name, skipped names, MeshMaterial[count], then texture count and names.
 
+// FUNCTION: HYPERX100 0x00478310
 // FUNCTION: HYPERX 0x00472c00
 void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 {
@@ -332,6 +335,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 
 // The multibyte compare at 0x0049f2d2, not _stricmp.
 
+// FUNCTION: HYPERX100 0x004785b0
 // FUNCTION: HYPERX 0x00472e10
 MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* pszName)
 {
@@ -408,6 +412,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
     return pLookup;
 }
 
+// FUNCTION: HYPERX100 0x00478b20
 // FUNCTION: HYPERX 0x00473240
 short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 {
@@ -445,6 +450,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 }
 
 // A miss takes its reference without testing the pointer, as in the original.
+// FUNCTION: HYPERX100 0x00478c60
 // FUNCTION: HYPERX 0x00473330
 TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 {
@@ -481,6 +487,7 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 }
 
 // The cross product is the second edge crossed with the first.
+// FUNCTION: HYPERX100 0x00478e50
 // FUNCTION: HYPERX 0x004734a0
 void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
 {
@@ -526,6 +533,7 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
     }
 }
 
+// FUNCTION: HYPERX100 0x00479010
 // FUNCTION: HYPERX 0x004735c0
 LODNode* ModelDatabase::FindLOD(const char* pszName)
 {
@@ -544,6 +552,7 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x004790f0
 // FUNCTION: HYPERX 0x00473660
 MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, unsigned char nMatCount, MaterialName* paTexNames, short nTexCount)
 {
@@ -578,3 +587,23 @@ MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, un
 
     return pLookup;
 }
+
+#ifdef HYPERX_V100
+// FUNCTION: HYPERX100 0x00479050
+LODNode* ModelDatabase::FindLODById(short nId)
+{
+    LODNode* pNode = m_pListHead;
+
+    while (pNode != 0)
+    {
+        if (pNode->m_pRecord->m_nId == nId)
+        {
+            return pNode;
+        }
+
+        pNode = pNode->m_pNext;
+    }
+
+    return 0;
+}
+#endif

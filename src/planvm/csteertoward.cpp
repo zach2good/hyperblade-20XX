@@ -24,6 +24,7 @@
 // The bone whose world transform the homing aim tracks.
 #define TARGET_BONE 15
 
+// FUNCTION: HYPERX100 0x004282a0
 // FUNCTION: HYPERX 0x0040f180
 void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -45,6 +46,7 @@ void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pPrevTick         = &pOwner->GetPhysicsBody()->nPrevTick;
 }
 
+// FUNCTION: HYPERX100 0x00428350
 // FUNCTION: HYPERX 0x0040f220
 void CSteerToward::OnListChanged()
 {
@@ -67,6 +69,7 @@ void CSteerToward::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x004283b0
 // FUNCTION: HYPERX 0x0040f260
 void CSteerToward::Process(int nArg)
 {
@@ -176,6 +179,7 @@ void CSteerToward::Process(int nArg)
 #define SPEED_EPSILON 0.0001
 
 // The same integrator as CProjectAndBounce::IntegrateSpringAndGravity, over different field offsets.
+// FUNCTION: HYPERX100 0x00428700
 // FUNCTION: HYPERX 0x0040f500
 void CSteerToward::IntegrateSpringAndGravity()
 {
@@ -228,6 +232,7 @@ inline void CSteerToward::AddStep(const Vec3* pStep)
 }
 
 // Kind three's release step: seed the flight once, integrate, set the normal.
+// FUNCTION: HYPERX100 0x00428850
 // FUNCTION: HYPERX 0x0040f600
 void CSteerToward::Release(int nArg)
 {

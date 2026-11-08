@@ -66,6 +66,7 @@ extern unsigned int g_nVideoMemoryTotal;
 struct IDirectDraw;
 struct IDirectDrawSurface;
 
+// FUNCTION: HYPERX100 0x004d0bc0
 // FUNCTION: HYPERX 0x00430e40
 HRESULT WINAPI DDraw::EnumDisplayModesCallback(DDSURFACEDESC* pDesc, void*)
 {
@@ -89,6 +90,7 @@ HRESULT WINAPI DDraw::EnumDisplayModesCallback(DDSURFACEDESC* pDesc, void*)
 }
 
 // Deepest first, then widest, then tallest.
+// FUNCTION: HYPERX100 0x004d0c40
 // FUNCTION: HYPERX 0x00430ea0
 int __cdecl DDraw::CompareDisplayModes(const void* pLeft, const void* pRight)
 {
@@ -133,6 +135,7 @@ int __cdecl DDraw::CompareDisplayModes(const void* pLeft, const void* pRight)
 }
 
 // The scan keeps looking after a hit, so the last matching entry wins.
+// FUNCTION: HYPERX100 0x004d0d60
 // FUNCTION: HYPERX 0x00430f00
 int __cdecl DDraw::EnumDisplayModes(struct IDirectDraw* pDDraw)
 {
@@ -196,6 +199,7 @@ int __cdecl DDraw::EnumDisplayModes(struct IDirectDraw* pDDraw)
 
 #define TIMED_FRAMES 100
 
+// FUNCTION: HYPERX100 0x0047c8d0
 // FUNCTION: HYPERX 0x00439620
 unsigned int __cdecl DDraw::DetectFlipCapability(void)
 {
@@ -369,6 +373,7 @@ releasePrimary:
 }
 
 // rcWindow.top gets a dead store from the client area, as in the original.
+// FUNCTION: HYPERX100 0x0047cef0
 // FUNCTION: HYPERX 0x00439a90
 unsigned int DDraw::BlitBackToWindow(HWND hWnd, int bMenu)
 {
@@ -422,6 +427,7 @@ unsigned int DDraw::BlitBackToWindow(HWND hWnd, int bMenu)
 }
 
 // The body never reads pDDraw, but its one caller pushes it, so the parameter stays declared.
+// FUNCTION: HYPERX100 0x0047d0a0
 // FUNCTION: HYPERX 0x00439bb0
 int DDraw::GetCurrentDisplayMode(struct IDirectDraw*)
 {
@@ -449,6 +455,7 @@ int DDraw::GetCurrentDisplayMode(struct IDirectDraw*)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x0047d140
 // FUNCTION: HYPERX 0x00439c30
 int __stdcall DDraw::CheckDisplayMode(void)
 {
@@ -473,6 +480,7 @@ int __stdcall DDraw::CheckDisplayMode(void)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0047d2c0
 // FUNCTION: HYPERX 0x00439cc0
 int __cdecl DDraw::GetCaps(struct DDrawCaps* pDriver, struct DDrawCaps* pHel)
 {
@@ -502,6 +510,7 @@ int __cdecl DDraw::GetCaps(struct DDrawCaps* pDriver, struct DDrawCaps* pHel)
 
 // The capability blocks are 380 bytes, the DirectX 6 DDCAPS; this tree's ddraw.h declares 364.
 
+// FUNCTION: HYPERX100 0x0047d360
 // FUNCTION: HYPERX 0x00439d50
 BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
 {
@@ -565,6 +574,7 @@ BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
     return DDENUMRET_OK;
 }
 
+// FUNCTION: HYPERX100 0x0047d510
 // FUNCTION: HYPERX 0x00439ec0
 char* DDraw::ErrorToString(int hr)
 {
@@ -1063,6 +1073,7 @@ char* DDraw::ErrorToString(int hr)
     return "Unrecognized error value.";
 }
 
+// FUNCTION: HYPERX100 0x0047df10
 // FUNCTION: HYPERX 0x0043a6c0
 unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 {
@@ -1375,6 +1386,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 }
 
 // The 2904 byte device block, the 868 byte display state and the 448 byte HUD surfaces.
+// FUNCTION: HYPERX100 0x0047e920
 // FUNCTION: HYPERX 0x0043ade0
 void DDraw::ClearDeviceState(void)
 {
@@ -1390,6 +1402,7 @@ void DDraw::ClearDeviceState(void)
 // GLOBAL: HYPERX 0x004cee68
 extern int g_bDoubleResMode;
 
+// FUNCTION: HYPERX100 0x0047e970
 // FUNCTION: HYPERX 0x0043ae20
 int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 {
@@ -1447,6 +1460,7 @@ int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 }
 
 // Nothing returns from the fatal box, so the zero below is unreachable.
+// FUNCTION: HYPERX100 0x0047eae0
 // FUNCTION: HYPERX 0x0043af20
 int __cdecl DDraw::FailInitialization(int nError)
 {
@@ -1459,6 +1473,7 @@ int __cdecl DDraw::FailInitialization(int nError)
 }
 
 // Eight bits per pixel has no masks, so the key is 0xff.
+// FUNCTION: HYPERX100 0x0047eb10
 // FUNCTION: HYPERX 0x0043af40
 unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 {
@@ -1695,6 +1710,13 @@ extern char g_szHudSampleText[128];
 
 #define SHOT_CAM_Y 28
 
+// v1.0.0.0's inset starts the camera off a four byte boundary.
+#define SHOT_CAM_X_V100 25
+
+#define SHOT_CAM_Y_V100 23
+
+#define SHOT_CAM_Y_V100_D3D 24
+
 #define SHOT_CAM_COLOUR 0x505050
 
 #define SHOT_CAM_POINTS 10
@@ -1714,6 +1736,7 @@ inline void HUD::AssignName(String* pName, const char* psz)
 
 #define WIDGET_POINTS 9
 
+// FUNCTION: HYPERX100 0x0047f100
 // FUNCTION: HYPERX 0x0043b330
 int __cdecl HUD::CreateSurfaces(void)
 {
@@ -1930,8 +1953,18 @@ int __cdecl HUD::CreateSurfaces(void)
         }
     }
 
+#ifdef HYPERX_V100
+    pt.x = SHOT_CAM_X_V100;
+    pt.y = SHOT_CAM_Y_V100;
+
+    if (g_ddrawDevice.bD3DActive != 0)
+    {
+        pt.y = SHOT_CAM_Y_V100_D3D;
+    }
+#else
     pt.x = SHOT_CAM_X;
     pt.y = SHOT_CAM_Y;
+#endif
 
     g_hudSurfaces.pHeadCamFrame->SetClipRect(1, pt);
 
@@ -2057,6 +2090,7 @@ int __cdecl HUD::CreateSurfaces(void)
 }
 
 // The clipper is released until its count reaches nought.
+// FUNCTION: HYPERX100 0x00480180
 // FUNCTION: HYPERX 0x0043bf80
 void __stdcall DDraw::DestroyAllSurfaces(void)
 {
@@ -2298,6 +2332,7 @@ void __stdcall DDraw::DestroyAllSurfaces(void)
 }
 
 // A windowed run never changes the mode and answers success.
+// FUNCTION: HYPERX100 0x004806c0
 // FUNCTION: HYPERX 0x0043c310
 int __cdecl DDraw::ChangeDisplayMode(int nMode)
 {
@@ -2354,12 +2389,14 @@ int __cdecl DDraw::ChangeDisplayMode(int nMode)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00480800
 // FUNCTION: HYPERX 0x0043c410
 int DDraw::GetLastError(void)
 {
     return g_hrLastResult;
 }
 
+// FUNCTION: HYPERX100 0x00480810
 // FUNCTION: HYPERX 0x0043c420
 int __stdcall DDraw::RestoreAllSurfaces(void)
 {
@@ -2524,6 +2561,7 @@ int __stdcall DDraw::RestoreAllSurfaces(void)
 }
 
 // The millisecond line is formatted before its surface exists, so it measures "0:00".
+// FUNCTION: HYPERX100 0x00480bc0
 // FUNCTION: HYPERX 0x0043c700
 int __stdcall HUD::CreateFPSText(void)
 {
@@ -2555,6 +2593,7 @@ int __stdcall HUD::CreateFPSText(void)
 }
 
 // A meter that exists but did not load still reaches the caller as a failure.
+// FUNCTION: HYPERX100 0x00480d70
 // FUNCTION: HYPERX 0x0043c830
 int __cdecl HUD::CreateSpeedMeter(void)
 {
@@ -2580,6 +2619,7 @@ int __cdecl HUD::CreateSpeedMeter(void)
 }
 
 // The answer is the five loads summed. The Point set to a hundred is never read.
+// FUNCTION: HYPERX100 0x00480e80
 // FUNCTION: HYPERX 0x0043c900
 int __cdecl HUD::CreateDamageAndRadar(void)
 {
@@ -2674,6 +2714,7 @@ int __cdecl HUD::CreateDamageAndRadar(void)
 }
 
 // A lost surface is restored and a failed restore is fatal; any other failure is an error.
+// FUNCTION: HYPERX100 0x00481380
 // FUNCTION: HYPERX 0x0043cc80
 int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 {
@@ -2739,6 +2780,7 @@ int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 
 #define CLEAR_PASSES 4
 
+// FUNCTION: HYPERX100 0x00481500
 // FUNCTION: HYPERX 0x0043cda0
 int __stdcall DDraw::ClearAllBuffers(void)
 {
@@ -2789,6 +2831,7 @@ int __stdcall DDraw::ClearAllBuffers(void)
 // GLOBAL: HYPERX 0x004b4f20
 EXTERN_C const GUID IID_IDirectDrawSurface2;
 
+// FUNCTION: HYPERX100 0x00481600
 // FUNCTION: HYPERX 0x0043ce60
 LPDIRECTDRAWSURFACE DDraw::CreateOffscreenSurface(int nWidth, int nHeight, int bSystemMemory, int bColourKey)
 {
@@ -2854,6 +2897,7 @@ LPDIRECTDRAWSURFACE DDraw::CreateOffscreenSurface(int nWidth, int nHeight, int b
 
 // The surface's pixel for a colour, in through GDI and back through Lock; no device context answers nought.
 
+// FUNCTION: HYPERX100 0x004817b0
 // FUNCTION: HYPERX 0x0043cfc0
 unsigned int __cdecl DDraw::ColourToPixel(IDirectDrawSurface* pSurface,
                                           unsigned int        nColour)
@@ -2905,6 +2949,7 @@ unsigned int __cdecl DDraw::ColourToPixel(IDirectDrawSurface* pSurface,
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00481950
 // FUNCTION: HYPERX 0x0043d0b0
 int __stdcall DDraw::Flip(void)
 {
@@ -2916,6 +2961,7 @@ int __stdcall DDraw::Flip(void)
     return g_ddrawDevice.pDDrawPrimary->Flip(0, DDFLIP_WAIT) == 0;
 }
 
+// FUNCTION: HYPERX100 0x00481970
 // FUNCTION: HYPERX 0x0043d0d0
 int __stdcall DDraw::BltFrontFromBack(void)
 {
@@ -2933,6 +2979,7 @@ int __stdcall DDraw::BltFrontFromBack(void)
     return hr;
 }
 
+// FUNCTION: HYPERX100 0x004819b0
 // FUNCTION: HYPERX 0x0043d100
 int __stdcall DDraw::FlipOrBlt(void)
 {
@@ -2954,6 +3001,7 @@ int __stdcall DDraw::FlipOrBlt(void)
 }
 
 // A failure returns zeroes, which read as a card with no memory.
+// FUNCTION: HYPERX100 0x004819e0
 // FUNCTION: HYPERX 0x0043d130
 VideoMemory* DDraw::GetVideoMemory(VideoMemory* pMemory, IDirectDraw* pDevice)
 {
@@ -2983,6 +3031,7 @@ VideoMemory* DDraw::GetVideoMemory(VideoMemory* pMemory, IDirectDraw* pDevice)
     return pMemory;
 }
 
+// FUNCTION: HYPERX100 0x00481a90
 // FUNCTION: HYPERX 0x0043d1c0
 int __cdecl DDraw::GetSurfaceDesc(DDSURFACEDESC* pDesc, struct IDirectDrawSurface* pSurface)
 {
@@ -2995,6 +3044,7 @@ int __cdecl DDraw::GetSurfaceDesc(DDSURFACEDESC* pDesc, struct IDirectDrawSurfac
     return g_hrD3DResult == 0;
 }
 
+// FUNCTION: HYPERX100 0x00481ad0
 // FUNCTION: HYPERX 0x0043d200
 void __stdcall DDraw::LockBackBuffer(void)
 {
@@ -3057,6 +3107,7 @@ void __stdcall DDraw::LockBackBuffer(void)
     g_nBackBufferHeight          = g_dwDisplayHeight;
 }
 
+// FUNCTION: HYPERX100 0x00481c70
 // FUNCTION: HYPERX 0x0043d370
 void __stdcall DDraw::UnlockBackBuffer(void)
 {
@@ -3071,6 +3122,7 @@ void __stdcall DDraw::UnlockBackBuffer(void)
 }
 
 // Returns an uninitialised value when there is no surface, as the original does.
+// FUNCTION: HYPERX100 0x00481cb0
 // FUNCTION: HYPERX 0x0043d3a0
 HDC __stdcall DDraw::GetBackBufferDC(void)
 {
@@ -3097,6 +3149,7 @@ HDC __stdcall DDraw::GetBackBufferDC(void)
     return hdc;
 }
 
+// FUNCTION: HYPERX100 0x00481d30
 // FUNCTION: HYPERX 0x0043d3e0
 void DDraw::ReleaseBackBufferDC(HDC hdc)
 {
@@ -3114,6 +3167,7 @@ void DDraw::ReleaseBackBufferDC(HDC hdc)
 }
 
 // A failed lock on the back buffer is fatal.
+// FUNCTION: HYPERX100 0x00481d70
 // FUNCTION: HYPERX 0x0043d410
 void __stdcall DDraw::PaintSurface(void)
 {
@@ -3207,6 +3261,7 @@ void __stdcall DDraw::PaintSurface(void)
     g_ddrawDevice.pBackSurface->Unlock(0);
 }
 
+// FUNCTION: HYPERX100 0x00481fc0
 // FUNCTION: HYPERX 0x0043d600
 int DDraw::FlipToGDISurface(int bShowGDI)
 {
@@ -3237,6 +3292,7 @@ int DDraw::FlipToGDISurface(int bShowGDI)
     return hr == 0;
 }
 
+// FUNCTION: HYPERX100 0x00482030
 // FUNCTION: HYPERX 0x0043d660
 int __stdcall DDraw::BlitPrimaryToScreen(void)
 {
@@ -3272,6 +3328,7 @@ struct DibInfo565
 };
 
 // The size is the screen globals', so a larger surface is read short.
+// FUNCTION: HYPERX100 0x004820f0
 // FUNCTION: HYPERX 0x0043d6f0
 HBITMAP DDraw::SurfaceToGDIBitmap(struct IDirectDrawSurface* pSurface)
 {
@@ -3336,3 +3393,56 @@ unsigned int g_dwDisplayBpp    = 8;
 
 // The colour mode every HUD picture load is handed.
 int g_nHudColourMode = 1;
+
+#ifdef HYPERX_V100
+// The DirectX 3 DDCAPS, which is what v1.0.0.0 hands GetCaps.
+#define DX3_DDCAPS_SIZE 0x13c
+
+// The message says free memory, but the total is what is read: the driver's, or the emulation layer's when that is nought.
+// FUNCTION: HYPERX100 0x0047d200
+unsigned int DDraw::GetTotalVideoMemory(void)
+{
+    DDCAPS capsDriver;
+    DDCAPS capsHel;
+
+    memset(&capsDriver, 0, DX3_DDCAPS_SIZE);
+    capsDriver.dwSize = DX3_DDCAPS_SIZE;
+    memset(&capsHel, 0, DX3_DDCAPS_SIZE);
+    capsHel.dwSize = DX3_DDCAPS_SIZE;
+
+    g_hrD3DResult = g_ddrawDevice.pDDrawObject->GetCaps(&capsDriver, &capsHel);
+
+    if (g_hrD3DResult != 0)
+    {
+        g_gameApp.Error("GetCaps failed while checking for free memory.\n%s\n", DDraw::ErrorToString(g_hrD3DResult));
+
+        return 0;
+    }
+
+    if (capsDriver.dwVidMemTotal != 0)
+    {
+        return capsDriver.dwVidMemTotal;
+    }
+
+    return capsHel.dwVidMemTotal;
+}
+
+// Nothing writes it, so the zoom copies an empty rectangle.
+RECT g_rcZoomSource;
+
+// FUNCTION: HYPERX100 0x004818d0
+int DDraw::BltZoom(void)
+{
+    if (g_ddrawDevice.pZoomSurface != 0)
+    {
+        g_ddrawDevice.pZoomSurface->Blt(0, g_ddrawDevice.pBackSurface, &g_rcZoomSource, DDBLT_WAIT, 0);
+        g_ddrawDevice.pBackSurface->Blt(0, g_ddrawDevice.pZoomSurface, 0, DDBLT_WAIT, 0);
+
+        return 1;
+    }
+
+    g_ddrawDevice.pBackSurface->Blt(0, g_ddrawDevice.pBackSurface, &g_rcZoomSource, DDBLT_WAIT, 0);
+
+    return 1;
+}
+#endif

@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+// FUNCTION: HYPERX100 0x004b99b0
 // FUNCTION: HYPERX 0x0044f9f0
 CDDText::~CDDText() throw()
 {
@@ -19,6 +20,7 @@ CDDText::~CDDText() throw()
     }
 }
 
+// FUNCTION: HYPERX100 0x004b9a80
 // FUNCTION: HYPERX 0x0044fa40
 int CDDText::Draw()
 {
@@ -47,6 +49,7 @@ int CDDText::Draw()
 }
 
 // A colour of -1 leaves the colour alone.
+// FUNCTION: HYPERX100 0x004b9b60
 // FUNCTION: HYPERX 0x0044faf0
 int CDDText::SetText(const char* pszText, COLORREF color)
 {
@@ -117,6 +120,7 @@ int CDDText::SetText(const char* pszText, COLORREF color)
 }
 
 // A null face name drops the font and answers success.
+// FUNCTION: HYPERX100 0x004b9cd0
 // FUNCTION: HYPERX 0x0044fc10
 int CDDText::CreateFontFace(const char* pszFaceName, int nHeight)
 {

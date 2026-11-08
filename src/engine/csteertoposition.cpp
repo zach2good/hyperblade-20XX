@@ -33,6 +33,7 @@
 
 HYPERBLADE_FIELD_AT(CSteerToPosition, m_pOrigin, 0x10);
 
+// FUNCTION: HYPERX100 0x00427640
 // FUNCTION: HYPERX 0x0040e780
 void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -52,6 +53,7 @@ void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flUnused = 100.0f;
 }
 
+// FUNCTION: HYPERX100 0x004276b0
 // FUNCTION: HYPERX 0x0040e7e0
 void CSteerToPosition::Tick(const Vec3* pTargetPos)
 {
@@ -65,6 +67,7 @@ void CSteerToPosition::Tick(const Vec3* pTargetPos)
     m_cArrived  = 0;
 }
 
+// FUNCTION: HYPERX100 0x00427700
 // FUNCTION: HYPERX 0x0040e820
 void CSteerToPosition::OnKind(short nSlot)
 {
@@ -101,6 +104,7 @@ void CSteerToPosition::OnKind(short nSlot)
     *m_pNormal = *pNormal;
 }
 
+// FUNCTION: HYPERX100 0x00427860
 // FUNCTION: HYPERX 0x0040e940
 void CSteerToPosition::OnListChanged()
 {
@@ -125,6 +129,7 @@ void CSteerToPosition::OnListChanged()
 }
 
 // Brakes hard inside fifteen units and sends the arrival message once.
+// FUNCTION: HYPERX100 0x004278d0
 // FUNCTION: HYPERX 0x0040e9b0
 void CSteerToPosition::Process(int nArg)
 {
@@ -259,6 +264,7 @@ void CSteerToPosition::Process(int nArg)
     }
 }
 
+// FUNCTION: HYPERX100 0x00424600
 // FUNCTION: HYPERX 0x004132c0
 Vec3* CSteerToPosition::GetVector()
 {

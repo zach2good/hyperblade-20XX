@@ -35,6 +35,10 @@ public:
     // OPAQUE and ETO_OPAQUE are both 2, so either API could be the first one's intent.
     UINT m_nTextMode;  // 0x0c8
     UINT m_nTextAlign; // 0x0cc
+
+#ifdef HYPERX_V100
+    void SetTextAlignment(UINT nTextAlign);
+#endif
 };
 
 // SYNTHETIC: HYPERX 0x00437860

@@ -10,6 +10,9 @@ class SaveObject
 {
 public:
     SaveObject(short nHiddenTeamA, short nHiddenTeamB);
+#ifdef HYPERX_V100
+    SaveObject();
+#endif
 
     unsigned int ParseGauntletConfig(const char* pszFileName);
     void         SetAllTeamsAvailable(int nAvailable);

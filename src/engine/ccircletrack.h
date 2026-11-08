@@ -15,6 +15,7 @@ public:
     virtual void Process(int nArg);
 
     // The original's linker folded this onto EngineObject::CheckObjectAI, which carries the marker.
+    // FUNCTION: HYPERX100 0x00486f30
     virtual void Release(int)
     {
     }

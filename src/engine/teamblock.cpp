@@ -4,6 +4,7 @@
 #include <string.h>
 #include "objectdef.h"
 
+// FUNCTION: HYPERX100 0x004db080
 // FUNCTION: HYPERX 0x00484730
 TeamBlock::TeamBlock()
 {
@@ -25,6 +26,7 @@ TeamBlock::TeamBlock()
 
 // The slot keeps the freed pointer: this runs at shutdown and nothing reads the table again.
 
+// FUNCTION: HYPERX100 0x004db100
 // FUNCTION: HYPERX 0x004847a0
 TeamBlock::~TeamBlock()
 {

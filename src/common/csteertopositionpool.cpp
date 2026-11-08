@@ -4,6 +4,7 @@
 #include "engine/csteertoposition.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00420c10
 // FUNCTION: HYPERX 0x00413210
 void CSteerToPositionPool::Init()
 {
@@ -23,6 +24,7 @@ void CSteerToPositionPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423b00
 // FUNCTION: HYPERX 0x004132d0
 void* CSteerToPositionPool::Alloc()
 {

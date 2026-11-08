@@ -9,6 +9,7 @@
 #include "graphics/d3dviewport.h"
 
 // The scales are the dimensions halved, so both maxima come out one.
+// FUNCTION: HYPERX100 0x004d1810
 // FUNCTION: HYPERX 0x004316f0
 int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* pDevice, int nWidth, int nHeight, int nX, int nY)
 {
@@ -73,14 +74,19 @@ int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* 
     return 1;
 }
 
-// The width rounds up to a multiple of four; the height does not.
+// The width rounds up to a multiple of four, except in v1.0.0.0; the height does not.
+// FUNCTION: HYPERX100 0x004d1a60
 // FUNCTION: HYPERX 0x00431880
 int __cdecl D3DViewport::SetForTexture(unsigned int nViewportId, Texture* pSource)
 {
     Point extent = pSource->GetSize();
     Point inset  = pSource->GetInset();
 
+#ifdef HYPERX_V100
+    extent.x -= inset.x * 2;
+#else
     extent.x = (extent.x - inset.x * 2 + 3) & ~3;
+#endif
     extent.y -= inset.y * 2;
 
     Point origin = pSource->GetPosition();
@@ -102,6 +108,7 @@ int __cdecl D3DViewport::SetForTexture(unsigned int nViewportId, Texture* pSourc
     return g_hrD3DResult == 0;
 }
 
+// FUNCTION: HYPERX100 0x004d2ac0
 // FUNCTION: HYPERX 0x00432370
 int __stdcall D3DViewport::Clear(void)
 {

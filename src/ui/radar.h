@@ -24,6 +24,10 @@ public:
     virtual int  RestoreContents();
 
     Radar();
+#ifdef HYPERX_V100
+    Radar(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack);
+    explicit Radar(Texture* pSource);
+#endif
     int Init(const char* pszName, const Vec3* pRadii, int nBlitMode);
 
     void CacheObjectColors();

@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "planvm/conditiontable.h"
 
+// FUNCTION: HYPERX100 0x0042cb00
 // FUNCTION: HYPERX 0x00412700
 void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
@@ -17,6 +18,7 @@ void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nUnusedC = 0;
 }
 
+// FUNCTION: HYPERX100 0x0042cb30
 // FUNCTION: HYPERX 0x00412730
 void CDopplerSnd::OnListChanged()
 {
@@ -33,6 +35,7 @@ void CDopplerSnd::OnListChanged()
     }
 }
 
+// FUNCTION: HYPERX100 0x0042cb70
 // FUNCTION: HYPERX 0x00412760
 void CDopplerSnd::Process(int nArg)
 {

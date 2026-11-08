@@ -69,6 +69,7 @@ extern int g_anNetworkSlotObject[16];
 #define ASSETS_DIFFER "Network connection failed because HOST and CLIENT had different asset files.\n"
 
 // The undo walk after a failed allocation runs one slot past the last success.
+// FUNCTION: HYPERX100 0x004920c0
 // FUNCTION: HYPERX 0x00440850
 GameSession::GameSession(HWND hDlgIn, IDirectPlay* pLobby)
 {
@@ -112,6 +113,7 @@ GameSession::GameSession(HWND hDlgIn, IDirectPlay* pLobby)
 // GLOBAL: HYPERX 0x004ce924
 extern HANDLE g_hPacketCarrierEvent;
 
+// FUNCTION: HYPERX100 0x00492220
 // FUNCTION: HYPERX 0x00440940
 GameSession::~GameSession()
 {
@@ -132,6 +134,7 @@ GameSession::~GameSession()
 }
 
 // The wait between retries does not wait: it spins only once the deadline has already passed.
+// FUNCTION: HYPERX100 0x00492290
 // FUNCTION: HYPERX 0x00440980
 int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
 {
@@ -176,6 +179,7 @@ int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00492380
 // FUNCTION: HYPERX 0x00440a60
 int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
 {
@@ -235,6 +239,7 @@ int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
 
 // Slot fifteen is " Packet Carrier"; the leading space keeps it first in a sorted list.
 
+// FUNCTION: HYPERX100 0x00492610
 // FUNCTION: HYPERX 0x00440be0
 unsigned int GameSession::CreatePacketCarrier()
 {
@@ -273,6 +278,7 @@ unsigned int GameSession::CreatePacketCarrier()
 
 // The plan starts only when the object's current plan is named Human, compared with _strcmpi.
 
+// FUNCTION: HYPERX100 0x00492990
 // FUNCTION: HYPERX 0x00440e90
 void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
 {
@@ -316,6 +322,7 @@ void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
 
 // The second slot chain has no final arm; its fall-through reads an unassigned local.
 
+// FUNCTION: HYPERX100 0x00492b50
 // FUNCTION: HYPERX 0x00441000
 void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
 {
@@ -453,6 +460,7 @@ void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
 
 // Answers whether there was a session, not whether any command was handled.
 
+// FUNCTION: HYPERX100 0x00492fb0
 // FUNCTION: HYPERX 0x00441360
 int GameSession::PumpNetworkCommands()
 {
@@ -498,6 +506,7 @@ int GameSession::PumpNetworkCommands()
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00493080
 // FUNCTION: HYPERX 0x00441400
 int GameSession::AreAllSlotsReady()
 {
@@ -550,6 +559,7 @@ int GameSession::AreAllSlotsReady()
 
 // An empty slot zero skips the whole loop and leaves the rest attached.
 
+// FUNCTION: HYPERX100 0x00493160
 // FUNCTION: HYPERX 0x004414b0
 GameSession* GameSession::Destroy()
 {
@@ -614,6 +624,7 @@ GameSession* GameSession::Destroy()
 }
 
 // The settings are narrowed to their packet width, so both machines agree on a truncated value.
+// FUNCTION: HYPERX100 0x004935f0
 // FUNCTION: HYPERX 0x004417d0
 int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 {
@@ -833,6 +844,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 }
 
 // Opens a find handle only to read the write time and size; a missing file answers zero.
+// FUNCTION: HYPERX100 0x00493f30
 // FUNCTION: HYPERX 0x00441f00
 int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int* pnSize)
 {
@@ -858,6 +870,7 @@ int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int*
 #define SCAT_COMMENT '#'
 
 // Fills the name with eight question marks first; a hash starts a comment line.
+// FUNCTION: HYPERX100 0x00493fa0
 // FUNCTION: HYPERX 0x00441f60
 int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, int nWanted)
 {
@@ -913,6 +926,7 @@ int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, i
 
 // The host's difficulty, brutality, period, arena and teams win; the period arrives in seconds.
 
+// FUNCTION: HYPERX100 0x004942c0
 // FUNCTION: HYPERX 0x004421d0
 int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* pRemote)
 {
@@ -1114,6 +1128,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 }
 
 // Frees the catalogue's buffer and wipes both descriptors.
+// FUNCTION: HYPERX100 0x00494b90
 // FUNCTION: HYPERX 0x00442830
 int GameSession::FreeAssetBuffer(SyncBlocks* pCatalog, SyncBlocks* pDescriptor)
 {
@@ -1136,6 +1151,7 @@ int GameSession::FreeAssetBuffer(SyncBlocks* pCatalog, SyncBlocks* pDescriptor)
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x004a02d0
 // FUNCTION: HYPERX 0x004793b0
 void __stdcall GameSession::Disconnect(void)
 {

@@ -4,6 +4,7 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
+// FUNCTION: HYPERX100 0x004cce40
 // FUNCTION: HYPERX 0x0041e8b0
 BehObj_Watching::BehObj_Watching()
 {
@@ -14,6 +15,7 @@ BehObj_Watching::~BehObj_Watching()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ccf60
 // FUNCTION: HYPERX 0x0041e900
 void BehObj_Watching::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

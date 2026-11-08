@@ -16,11 +16,13 @@ public:
     {
     }
 
+    // FUNCTION: HYPERX100 0x004bd820
     virtual ~InfoBarBase()
     {
     }
 
     // Slot one is Object::Trace in the original, a shared free function.
+    // FUNCTION: HYPERX100 0x004bd830
     virtual void Unused()
     {
     }

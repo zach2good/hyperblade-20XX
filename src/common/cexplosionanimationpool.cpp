@@ -4,6 +4,7 @@
 #include "engine/cexplosionanimation.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x0041d7c0
 // FUNCTION: HYPERX 0x00414b10
 void CExplosionAnimationPool::Init()
 {
@@ -23,6 +24,7 @@ void CExplosionAnimationPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x004220c0
 // FUNCTION: HYPERX 0x00414ba0
 void* CExplosionAnimationPool::Alloc()
 {

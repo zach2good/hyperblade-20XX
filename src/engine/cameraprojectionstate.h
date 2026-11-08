@@ -36,6 +36,18 @@ public:
     virtual void RotateZ(float flAngle);
     virtual void SubtractTranslation(float flX, float flY, float flZ);
 
+#ifdef HYPERX_V100
+    // Only the transform is reset; the projection state is left as it is.
+    CameraProjectionState()
+    {
+    }
+
+    CameraProjectionState MultipliedBy(const TransformObject* pRhs) const;
+
+    // The point's screen position, by the perspective divide on its z.
+    static void __fastcall ProjectToScreen(const CameraProjectionState* pState, const Vec3* pPoint, float* pflX, float* pflY);
+#endif
+
     // 0x75 is m_bHasRow3 on the transform and the perspective flag here; which is unknown.
     float m_flCmPerPixel;    // 0x7c
     float m_flPixelsPerCm;   // 0x80
@@ -79,11 +91,15 @@ private:
     static void StoreTranslate(CameraProjectionState* pState, float flX, float flY, float flZ);
 };
 
+// SYNTHETIC: HYPERX100 0x0040deb0
 // SYNTHETIC: HYPERX 0x00422de0
 // CameraProjectionState::~CameraProjectionState
 
 // SYNTHETIC: HYPERX 0x00422dc0
 // CameraProjectionState::`scalar deleting destructor'
+
+// SYNTHETIC: HYPERX100 0x0040df10
+// CameraProjectionState::operator=
 
 STATIC_ASSERT(sizeof(CameraProjectionState) == 0x118);
 #endif

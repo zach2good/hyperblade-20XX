@@ -51,6 +51,20 @@ public:
     void                UpdateDirSmoothing();
     void                SetViewTransform(unsigned int nViewport, class Texture* pSource);
 
+#ifdef HYPERX_V100
+    // Fills both history rings, and both means, with the tracked object's position and direction.
+    void InitBuffers();
+
+    // The position half of UpdateSmoothing.
+    void UpdatePosSmoothing();
+
+    // Takes the new sample from pDir, but stores the body's own direction in the ring.
+    void UpdateDirSmoothingFrom(const Vec3* pDir);
+
+    // Steps the field of view by m_flUnused when m_nUnusedD asks: 1 narrows it, 2 widens it.
+    void ApplyFovStep();
+#endif
+
     // The transparent queue is a global; each camera resizes it and the draw pass sorts it.
     void        ResizeTransparentQueue(short nHighest);
     static void SortTransparentQueue();

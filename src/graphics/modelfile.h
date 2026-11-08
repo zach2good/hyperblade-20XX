@@ -3,6 +3,9 @@
 
 #include "common/compat.h"
 #include "common/staticassert.h"
+#ifdef HYPERX_V100
+#include <stdio.h>
+#endif
 
 class FileObj;
 
@@ -31,6 +34,10 @@ namespace ModelFile
 
 char Open(FileObj* pFile, const char* pszModelName);
 int  ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion* pVersion);
+
+#ifdef HYPERX_V100
+size_t ReadHeaderFromStream(FILE* pFile, int* pnTag, char* pszName, FileVersion* pVersion);
+#endif
 
 } // namespace ModelFile
 

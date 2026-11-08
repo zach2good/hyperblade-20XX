@@ -11,6 +11,11 @@ public:
     // Never reads the object.
     unsigned int ReadInt(const char* pszSection, const char* pszKey, int nDefault);
 
+#ifdef HYPERX_V100
+    // Never reads the object.
+    unsigned long ReadString(const char* pszSection, const char* pszKey, const char* pszDefault, char* pszOut, unsigned long nSize);
+#endif
+
     int  WriteString(const char* pszSection, const char* pszKey, const char* pszValue);
     void WriteInt(const char* pszSection, const char* pszKey, int nValue);
 

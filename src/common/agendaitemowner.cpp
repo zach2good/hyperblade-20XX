@@ -3,6 +3,7 @@
 #include "common/agendaitemowner.h"
 #include "pooledclasses.h"
 
+// FUNCTION: HYPERX100 0x00421a60
 // FUNCTION: HYPERX 0x00414990
 char AgendaItemOwner::Insert(void* pNode)
 {

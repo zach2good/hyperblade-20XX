@@ -22,6 +22,11 @@ public:
     void HandleButtonRelease(int nDevice, unsigned int nButton, unsigned int nX, unsigned int nY);
     void HandleJoyAxis(int nDevice, unsigned int nFlags, unsigned short nX, unsigned short nY);
 
+#ifdef HYPERX_V100
+    struct joyinfoex_tag* PollDevice(unsigned int nDevice);
+    struct joyinfoex_tag* PollAndSendKeys(unsigned int nDevice);
+#endif
+
     HWND            m_hWnd;            // 0x000
     int             m_bCaptureEnabled; // 0x004
     JoystickDevice* m_pDevices;        // 0x008

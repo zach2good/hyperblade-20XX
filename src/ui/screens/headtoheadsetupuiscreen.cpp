@@ -47,11 +47,13 @@ TeamRatingCards g_aTeamRatingCards[14] = {
     { "war_aw", "war_ws" }
 };
 
+// FUNCTION: HYPERX100 0x0043a9c0
 // FUNCTION: HYPERX 0x00444190
 HeadToHeadSetupUIScreen::~HeadToHeadSetupUIScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x0043aa60
 // FUNCTION: HYPERX 0x004441c0
 HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
 {
@@ -212,6 +214,7 @@ HeadToHeadSetupUIScreen::HeadToHeadSetupUIScreen()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x0043b600
 // FUNCTION: HYPERX 0x00444a10
 void HeadToHeadSetupUIScreen::OnFirstPageTabClick()
 {
@@ -227,6 +230,7 @@ void HeadToHeadSetupUIScreen::OnFirstPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x0043b670
 // FUNCTION: HYPERX 0x00444a70
 void HeadToHeadSetupUIScreen::OnSecondPageTabClick()
 {
@@ -242,6 +246,7 @@ void HeadToHeadSetupUIScreen::OnSecondPageTabClick()
     RefreshSelection();
 }
 
+// FUNCTION: HYPERX100 0x0043b6e0
 // FUNCTION: HYPERX 0x00444ad0
 void HeadToHeadSetupUIScreen::OnThirdPageTabClick()
 {
@@ -258,6 +263,7 @@ void HeadToHeadSetupUIScreen::OnThirdPageTabClick()
 }
 
 // Only the two team columns have a ratings card; the arena column shows none.
+// FUNCTION: HYPERX100 0x0043b790
 // FUNCTION: HYPERX 0x00444b40
 void HeadToHeadSetupUIScreen::ShowStartersCard()
 {
@@ -282,6 +288,7 @@ void HeadToHeadSetupUIScreen::ShowStartersCard()
     InitFrame();
 }
 
+// FUNCTION: HYPERX100 0x0043b840
 // FUNCTION: HYPERX 0x00444bd0
 void HeadToHeadSetupUIScreen::ShowScrubsCard()
 {
@@ -307,6 +314,7 @@ void HeadToHeadSetupUIScreen::ShowScrubsCard()
 }
 
 // Two players can share an arena, so the arena column skips no pick.
+// FUNCTION: HYPERX100 0x0043b910
 // FUNCTION: HYPERX 0x00444c60
 void HeadToHeadSetupUIScreen::OnLeftArrowClick()
 {
@@ -384,6 +392,7 @@ void HeadToHeadSetupUIScreen::OnLeftArrowClick()
 }
 
 // Wrapping lands on zero unless the other team is there, then on one.
+// FUNCTION: HYPERX100 0x0043bae0
 // FUNCTION: HYPERX 0x00444dc0
 void HeadToHeadSetupUIScreen::OnRightArrowClick()
 {
@@ -771,6 +780,7 @@ void HeadToHeadSetupUIScreen::StepArenaSelection(int nForward)
     }
 }
 
+// FUNCTION: HYPERX100 0x0043bcd0
 // FUNCTION: HYPERX 0x004453e0
 void HeadToHeadSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
@@ -808,6 +818,7 @@ void HeadToHeadSetupUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     }
 }
 
+// FUNCTION: HYPERX100 0x0043bd60
 // FUNCTION: HYPERX 0x00445450
 void HeadToHeadSetupUIScreen::RefreshSelection()
 {
@@ -892,6 +903,7 @@ void HeadToHeadSetupUIScreen::RefreshSelection()
 }
 
 // Ten players a team, each appended twice. Case 100 is the empty slot.
+// FUNCTION: HYPERX100 0x0043c080
 // FUNCTION: HYPERX 0x00445620
 void HeadToHeadSetupUIScreen::LoadTeamPlayerBitmaps(int nTeam)
 {
@@ -1530,6 +1542,7 @@ void HeadToHeadSetupUIScreen::LoadTeamPlayerBitmaps(int nTeam)
 }
 
 // The guard tests the address of a member, so it can never fail.
+// FUNCTION: HYPERX100 0x0043e0c0
 // FUNCTION: HYPERX 0x004471a0
 void HeadToHeadSetupUIScreen::LoadTeamInfoPanel(int nTeam)
 {
@@ -1879,6 +1892,7 @@ void HeadToHeadSetupUIScreen::LoadTeamInfoPanel(int nTeam)
     }
 }
 
+// FUNCTION: HYPERX100 0x0043fa40
 // FUNCTION: HYPERX 0x00448650
 void HeadToHeadSetupUIScreen::RefreshFrames()
 {

@@ -5,16 +5,19 @@
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
 
+// FUNCTION: HYPERX100 0x004ca690
 // FUNCTION: HYPERX 0x0041d590
 BehObj_GlideToPosition::BehObj_GlideToPosition()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ca750
 // FUNCTION: HYPERX 0x0041d5d0
 BehObj_GlideToPosition::~BehObj_GlideToPosition()
 {
 }
 
+// FUNCTION: HYPERX100 0x004ca7c0
 // FUNCTION: HYPERX 0x0041d5e0
 void BehObj_GlideToPosition::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {

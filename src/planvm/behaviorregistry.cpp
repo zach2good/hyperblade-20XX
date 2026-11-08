@@ -36,6 +36,7 @@
 
 // Runs each pool's Destroy slot and stores its answer back, stopping at the first null.
 
+// FUNCTION: HYPERX100 0x004a2720
 // FUNCTION: HYPERX 0x0041c650
 void BehaviorRegistry::DestroyAll(void)
 {
@@ -53,6 +54,7 @@ void BehaviorRegistry::DestroyAll(void)
     }
 }
 
+// FUNCTION: HYPERX100 0x004a2770
 // FUNCTION: HYPERX 0x0041c690
 void BehaviorRegistry::InitAll(void)
 {
@@ -74,6 +76,7 @@ void BehaviorRegistry::InitAll(void)
 extern BehParamHandlerFn g_apfnBehaviorParamHandlers[SET_BEHAVIOR_PARAM_COUNT];
 
 // Called once by GameEngine::InitPlanSystems; the registry ends at its first null slot.
+// FUNCTION: HYPERX100 0x004c4e50
 // FUNCTION: HYPERX 0x0041cdd0
 void BehaviorRegistry::Init(void)
 {

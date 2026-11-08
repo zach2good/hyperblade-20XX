@@ -12,6 +12,7 @@
 
 // Neither field is nulled after it is freed, so this is a teardown and not a reset.
 
+// FUNCTION: HYPERX100 0x004e1940
 // FUNCTION: HYPERX 0x004163e0
 AnimClip::~AnimClip()
 {
@@ -110,6 +111,7 @@ AnimClip::~AnimClip()
 }
 
 // Two of the eight formats are unimplemented; a size not a multiple of four overruns the buffer.
+// FUNCTION: HYPERX100 0x004e1b10
 // FUNCTION: HYPERX 0x00416510
 unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 {
@@ -218,6 +220,7 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 
 // Reading one frame out of a clip, whichever way the clip stores it.
 
+// FUNCTION: HYPERX100 0x004e1ee0
 // FUNCTION: HYPERX 0x00416800
 unsigned char AnimClip::GetBoneTransform(MatrixRow* pDest, short nFrame)
 {
@@ -347,6 +350,7 @@ unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x0045a050
 // FUNCTION: HYPERX 0x00417910
 AnimClip::AnimClip()
 : m_nSegment(0)

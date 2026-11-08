@@ -74,6 +74,7 @@
 #define RATE_NONE -1.0f
 
 // Applies the same limp swap as GameBehaviorObject::UpdateLimpAnim before handing the animation over.
+// FUNCTION: HYPERX100 0x0040f2d0
 // FUNCTION: HYPERX 0x00401000
 void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
@@ -156,6 +157,7 @@ void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, sho
     pContext->GetActor()->StartClipPlayback(pAnim, RATE_NONE, -1);
 }
 
+// FUNCTION: HYPERX100 0x0040f490
 // FUNCTION: HYPERX 0x00401140
 void __cdecl PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, short*, int)
 {
@@ -181,6 +183,7 @@ void __cdecl PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNo
 #define ARG_COUNT_WITH_PARAM 5
 
 // Without a behaviour the four values go to the actor's own event channel.
+// FUNCTION: HYPERX100 0x0040f4f0
 // FUNCTION: HYPERX 0x00401190
 void __cdecl PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
@@ -244,6 +247,7 @@ void __cdecl PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs
     pActor->BindAnimEventChannel(pBlock[ARG_EVENT_CHANNEL].n, nEventTarget, pBlock[ARG_EVENT_KIND].n, nEventParam);
 }
 
+// FUNCTION: HYPERX100 0x0040f5d0
 // FUNCTION: HYPERX 0x00401250
 void __cdecl PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
@@ -254,6 +258,7 @@ void __cdecl PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs
 
 // The speed is in hundredths and converts as unsigned, so a negative one becomes very large.
 
+// FUNCTION: HYPERX100 0x0040f600
 // FUNCTION: HYPERX 0x00401270
 void __cdecl PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
@@ -264,6 +269,7 @@ void __cdecl PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode
     pActor->m_pAnimPlayer->SetPlaybackRate(flSpeed);
 }
 
+// FUNCTION: HYPERX100 0x0040f660
 // FUNCTION: HYPERX 0x004012b0
 void __cdecl PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
@@ -274,6 +280,7 @@ void __cdecl PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNod
         (float)((unsigned int)pNode->m_pArgs[1].n * 0.01) * pRate->GetPlaybackRate());
 }
 
+// FUNCTION: HYPERX100 0x0040f6d0
 // FUNCTION: HYPERX 0x00401310
 void __cdecl PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
@@ -336,6 +343,7 @@ void __cdecl PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode*
 
 // The Rok's carrier slots hold its carrier history; slot parity is the team.
 
+// FUNCTION: HYPERX100 0x00469380
 // FUNCTION: HYPERX 0x00401460
 void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, int nSlot)
 {
@@ -427,6 +435,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
     }
 }
 
+// FUNCTION: HYPERX100 0x00469530
 // FUNCTION: HYPERX 0x004015c0
 void PlanAction::Unset_AttachPak(Interactor* pContext, PlanNode*, short*, int)
 {

@@ -5,11 +5,13 @@
 #include "ui/radar.h"
 #include "graphics/gdi.h"
 
+// FUNCTION: HYPERX100 0x0043ff80
 // FUNCTION: HYPERX 0x00443c80
 PauseMenuNoSaveScreen::~PauseMenuNoSaveScreen()
 {
 }
 
+// FUNCTION: HYPERX100 0x00440020
 // FUNCTION: HYPERX 0x00443cb0
 PauseMenuNoSaveScreen::PauseMenuNoSaveScreen()
 {
@@ -18,6 +20,7 @@ PauseMenuNoSaveScreen::PauseMenuNoSaveScreen()
     Init();
 }
 
+// FUNCTION: HYPERX100 0x004400b0
 // FUNCTION: HYPERX 0x00443d10
 void PauseMenuNoSaveScreen::Init()
 {
@@ -71,6 +74,7 @@ void PauseMenuNoSaveScreen::Init()
     pWidget->InitAfterLoad();
 }
 
+// FUNCTION: HYPERX100 0x00440530
 // FUNCTION: HYPERX 0x00444030
 void PauseMenuNoSaveScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {

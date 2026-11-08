@@ -18,6 +18,7 @@ struct GameApp;
 
 // Each entry is released through its own scalar deleting destructor.
 
+// FUNCTION: HYPERX100 0x00496a80
 // FUNCTION: HYPERX 0x004181b0
 AnimScriptTable::~AnimScriptTable()
 {
@@ -34,6 +35,7 @@ AnimScriptTable::~AnimScriptTable()
 #define CLIP_PREFIX_RESOURCE 0x42
 
 // The parse stops at the first line the line parser refuses, so a bad line truncates the file.
+// FUNCTION: HYPERX100 0x00496b00
 // FUNCTION: HYPERX 0x00418210
 void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, int bBind)
 {
@@ -92,6 +94,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
 #define NAME_CHARS 0x18
 
 // Blank lines and comments are skipped; a clip's message defaults to MSG_NOMSG.
+// FUNCTION: HYPERX100 0x00496df0
 // FUNCTION: HYPERX 0x004183e0
 unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptState* pState)
 {
@@ -174,6 +177,7 @@ extern const char* const g_pszAnimFloatFormat;
 
 #define TRIGGER_FIELDS 3
 
+// FUNCTION: HYPERX100 0x00496f90
 // FUNCTION: HYPERX 0x00418540
 int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, const char** ppszCursor, const String& strFilter)
 {
@@ -197,6 +201,7 @@ int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, co
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x004970e0
 // FUNCTION: HYPERX 0x004185c0
 int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const char* pszExtra)
 {
@@ -233,6 +238,7 @@ inline int AnimScriptTable::ScanFloat(const char** ppszCursor, char* pszToken, f
 }
 
 // A segment's description is freed on every path out; nothing clamps the fast rate.
+// FUNCTION: HYPERX100 0x004971e0
 // FUNCTION: HYPERX 0x00418670
 int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, const char** ppszCursor)
 {
@@ -340,6 +346,7 @@ int AnimScriptTable::ParseSegment(AnimNode** ppSegment, const char* pszLine, con
     return nResult;
 }
 
+// FUNCTION: HYPERX100 0x00497620
 // FUNCTION: HYPERX 0x004189c0
 int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* pnTriggerFrame, char* pszName, char* pszRef, short* pnSyncSegment, short* pnSyncFrame)
 {

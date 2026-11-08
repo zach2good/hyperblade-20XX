@@ -4,6 +4,7 @@
 #include "engine/cbeattached.h"
 #include "poolcounts.h"
 
+// FUNCTION: HYPERX100 0x00421290
 // FUNCTION: HYPERX 0x00412ef0
 void CBeAttachedPool::Init()
 {
@@ -23,6 +24,7 @@ void CBeAttachedPool::Init()
     }
 }
 
+// FUNCTION: HYPERX100 0x00423e60
 // FUNCTION: HYPERX 0x00412fa0
 void* CBeAttachedPool::Alloc()
 {

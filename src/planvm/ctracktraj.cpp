@@ -21,6 +21,7 @@
 #include "engine/engineobject.h"
 #include "planvm/ctracktraj.h"
 
+// FUNCTION: HYPERX100 0x00485360
 // FUNCTION: HYPERX 0x0040a510
 CTrackTraj::CTrackTraj()
 {
@@ -41,6 +42,7 @@ extern const float g_flFourTracking;
 #define TRAJECTORY_MODE_SPRING 0
 #define TRAJECTORY_MODE_BLEND  1
 
+// FUNCTION: HYPERX100 0x00485470
 // FUNCTION: HYPERX 0x0040a5c0
 CTrackTraj::~CTrackTraj()
 {
@@ -54,6 +56,7 @@ CTrackTraj::~CTrackTraj()
     }
 }
 
+// FUNCTION: HYPERX100 0x00485510
 // FUNCTION: HYPERX 0x0040a630
 void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
@@ -76,6 +79,7 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
 // The high bound adds the frame-rate reference, eighty, which is not a distance here.
 
+// FUNCTION: HYPERX100 0x00485580
 // FUNCTION: HYPERX 0x0040a680
 void CTrackTraj::InitRange()
 {
@@ -93,6 +97,7 @@ void CTrackTraj::InitRange()
 #define RANGE_KIND_SYMMETRIC 2
 
 // A low bound at or below the unset marker builds a symmetric range of kind two instead.
+// FUNCTION: HYPERX100 0x004855d0
 // FUNCTION: HYPERX 0x0040a6c0
 void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
 {
@@ -115,6 +120,7 @@ void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
 // GLOBAL: HYPERX 0x004b16ac
 extern const float g_flPi;
 
+// FUNCTION: HYPERX100 0x00485650
 // FUNCTION: HYPERX 0x0040a730
 void CTrackTraj::InitComplexRange()
 {
@@ -132,6 +138,7 @@ void CTrackTraj::InitComplexRange()
 
 // A negative fraction widens as unsigned and becomes a very large one.
 
+// FUNCTION: HYPERX100 0x004856f0
 // FUNCTION: HYPERX 0x0040a790
 void CTrackTraj::SetBlendT(int nValue)
 {
@@ -139,6 +146,7 @@ void CTrackTraj::SetBlendT(int nValue)
 }
 
 // Mode zero chases the tracked object on a spring; mode one blends toward a scripted point.
+// FUNCTION: HYPERX100 0x00485750
 // FUNCTION: HYPERX 0x0040a7b0
 void CTrackTraj::Process(int nArg)
 {
