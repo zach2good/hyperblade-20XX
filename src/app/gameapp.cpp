@@ -828,8 +828,6 @@ void GameApp::CopyCDFile(const char* pszName)
 {
     char         szTarget[MAX_PATH];
     char         szSource[MAX_PATH];
-    char         szMessage[MAX_PATH];
-    char         szCaption[MAX_PATH];
     unsigned int nRead;
 
     strcpy(szTarget, pszName);
@@ -867,9 +865,12 @@ void GameApp::CopyCDFile(const char* pszName)
             {
                 if (nRead != (unsigned int)fileTarget.m_file.Write(pBuffer, (int)nRead))
                 {
-                    strcpy(szCaption,
-                           m_stringPool.LoadText(m_hInstance, STRING_ERROR_DISK_FULL));
-                    strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_DISK_FULL));
+                    char szCaption[MAX_PATH];
+                    char szMessage[MAX_PATH];
+
+                    strcpy(szCaption, m_stringPool.LoadText(m_hInstance, STRING_ERROR_DISK_FULL));
+                    const HINSTANCE hInstance = m_hInstance;
+                    strcpy(szMessage, m_stringPool.LoadText(hInstance, STRING_DISK_FULL));
 
                     GameApp::ShowMessageBox(GetActiveWindow(), szMessage, szCaption, MB_OK);
 
@@ -880,13 +881,15 @@ void GameApp::CopyCDFile(const char* pszName)
     }
     else
     {
-        // The disk-full text's buffer holds the caption here.
-        strcpy(szMessage, m_stringPool.LoadText(m_hInstance, STRING_ERROR));
+        char szCaption[MAX_PATH];
 
-        const char* const pszText =
-            m_stringPool.LoadText(m_hInstance, STRING_CD_FILE_OPEN_FAILED + (bSourceOpen != 0));
+        strcpy(szCaption, m_stringPool.LoadText(m_hInstance, STRING_ERROR));
 
-        GameApp::ShowMessageBox(GetActiveWindow(), pszText, szMessage, MB_OK);
+        const HINSTANCE    hInstance = m_hInstance;
+        const unsigned int nText     = STRING_CD_FILE_OPEN_FAILED + (bSourceOpen != 0);
+        const char* const  pszText   = m_stringPool.LoadText(hInstance, nText);
+
+        GameApp::ShowMessageBox(GetActiveWindow(), pszText, szCaption, MB_OK);
     }
 
     free(pBuffer);
