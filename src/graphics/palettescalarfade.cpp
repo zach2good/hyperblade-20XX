@@ -106,10 +106,7 @@ int PaletteScalarFade::ApplyPhase(int bPhase)
 
         for (nAt = 0; nAt < m_cWorkEntries; nAt++)
         {
-            nValue = pEntries[nAt].peGreen;
-            nValue -= m_cStep;
-
-            nValue = max(0, nValue);
+            nValue = max(0, pEntries[nAt].peGreen - m_cStep);
 
             pEntries[nAt].peGreen = (unsigned char)nValue;
 
