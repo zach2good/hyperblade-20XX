@@ -69,20 +69,17 @@ void BehObj_UpdateWhileAttached::Init(EngineObject* pOwner, PlanNode* pBlock, in
 
     m_wKind = BEH_UPDATE_WHILE_ATTACHED;
 
-    AgendaItem* pNode = m_apSlots[0] = AllocAgendaItem(Agenda_CBeAttached);
+    m_apSlots[0] = AllocAgendaItem(Agenda_CBeAttached);
 
-    short nSlot = 0;
-
+    short nSlot  = 0;
     m_apSlots[1] = 0;
 
-    while (pNode != 0)
+    while (m_apSlots[nSlot] != 0)
     {
-        pNode->Bind(m_pOwner, this);
+        m_apSlots[nSlot]->Bind(m_pOwner, this);
 
-        pNode = m_apSlots[nSlot];
+        AgendaItem* const pNode = m_apSlots[nSlot];
         nSlot++;
         pNode->m_bPersistent = 1;
-
-        pNode = m_apSlots[nSlot];
     }
 }
