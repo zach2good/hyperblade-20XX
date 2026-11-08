@@ -835,8 +835,6 @@ void __cdecl PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, s
 // FUNCTION: HYPERX 0x004025f0
 void __cdecl PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 {
-    Vec3 vStart;
-
     EngineObject* const pActor = pContext->GetActor();
 
     if (g_pGameEngine->m_nBrutality != 0)
@@ -845,7 +843,7 @@ void __cdecl PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*
 
         if (pSystem != 0)
         {
-            vStart = *pActor->GetPositionPtr();
+            Vec3 vStart = *pActor->GetPositionPtr();
 
             Vec3 vDirection = pActor->m_pBody->vel;
 
