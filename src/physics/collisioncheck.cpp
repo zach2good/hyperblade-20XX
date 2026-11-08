@@ -539,12 +539,14 @@ void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode
 
     const float flRadius     = pColOwn->m_flRadius;
     const float flHalfRadius = flRadius * 0.5f;
+    // The original reloads the half radius once from its stack copy.
+    const float flQuarter = *(const volatile float*)&flHalfRadius * 0.5f;
 
     boxTest.vMin.y = vLocal.y;
     boxTest.bValid = 1;
-    boxTest.vMin.x = vLocal.x - flHalfRadius * 0.5f;
+    boxTest.vMin.x = vLocal.x - flQuarter;
     boxTest.vMin.z = vLocal.z - flHalfRadius * 0.5f;
-    boxTest.vMax.x = flHalfRadius * 0.5f + vLocal.x;
+    boxTest.vMax.x = flQuarter + vLocal.x;
     boxTest.vMax.z = flHalfRadius * 0.5f + vLocal.z;
     boxTest.vMax.y = flRadius + flRadius + vLocal.y;
 
