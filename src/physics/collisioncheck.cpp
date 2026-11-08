@@ -316,7 +316,7 @@ void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*
 
     pTransform->TransformDirectionByRows(*pDelta, &vLocal);
 
-    const float flLowY = vLocal.y - g_flVelBoxDropY;
+    const double flLowY = vLocal.y - g_flVelBoxDropY;
 
     *(int*)&vScratch.x = *(const int*)&vLocal.x;
     *(int*)&vScratch.y = *(const int*)&vLocal.y;
@@ -326,7 +326,7 @@ void __cdecl CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*
     boxScratch.bValid       = 1;
     const float flHalfDepth = g_flVelBoxSizeZ * 0.5f;
     boxScratch.vMin.z       = vScratch.z - flHalfDepth;
-    boxScratch.vMin.y       = flLowY;
+    boxScratch.vMin.y       = (float)flLowY;
     boxScratch.vMax.x       = g_flVelBoxSizeX * 0.5f + vScratch.x;
     boxScratch.vMax.z       = flHalfDepth + vScratch.z;
     boxScratch.vMax.y       = g_flVelBoxSizeY + flLowY;
