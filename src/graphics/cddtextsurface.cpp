@@ -284,7 +284,9 @@ int CDDTextSurface::DrawText(const char* pszText)
     {
         if (pszText != 0)
         {
-            m_strText.Assign(lstrlenA(pszText), pszText);
+            String* const& pText = &m_strText;
+
+            pText->Assign(lstrlenA(pszText), pszText);
 
             RestoreContents();
         }
