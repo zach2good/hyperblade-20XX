@@ -7,7 +7,7 @@
 #include "graphics/colorpalette.h"
 #include "common/stub.h"
 #include "graphics/visualeffectfade.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // The four effect kinds the jump table covers, three of them scalar.
 enum EffectKind

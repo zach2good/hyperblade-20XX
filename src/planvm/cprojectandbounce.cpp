@@ -16,7 +16,7 @@
 #include "physics/collisionshape.h"
 #include "physics/collisionplane.h"
 #include "planvmglobals.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/messageids.h"
 
 // Two; src/globals.cpp defines it.

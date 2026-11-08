@@ -18,7 +18,7 @@
 #include <math.h>
 #include "engine/playerobject.h"
 #include "engine/engineobject.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/statids.h"
 
 #define MSG_SPEED_BURST_ARG 0x96

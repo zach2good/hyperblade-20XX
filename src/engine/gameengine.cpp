@@ -4,7 +4,7 @@
 #include "gameengine.h"
 #include "globals.h"
 #include "planvm/planvmglobals.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "common/cglideonsurfacepool.h"
 #include "common/cslideonrailpool.h"
 #include "common/cprojectandbouncepool.h"
@@ -136,7 +136,7 @@ void __cdecl GameEngine::InitAgendaItemPools(void)
 {
     int nSlot;
 
-    PooledOwnerRoot** ppEntry = g_apAgendaItemPools;
+    AgendaItemOwner** ppEntry = g_apAgendaItemPools;
 
     for (nSlot = 0; nSlot < Agenda_Count; nSlot++)
     {
@@ -198,7 +198,7 @@ void __cdecl GameEngine::DestroyAgendaItemPools(void)
 {
     short iSlot = 0;
 
-    PooledOwnerRoot* pNode = g_apAgendaItemPools[0];
+    AgendaItemOwner* pNode = g_apAgendaItemPools[0];
 
     while (pNode != 0)
     {

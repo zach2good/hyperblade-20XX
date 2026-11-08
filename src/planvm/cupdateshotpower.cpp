@@ -10,7 +10,7 @@
 #include "engine/cameraobject.h"
 #include "engine/playerobject.h"
 #include "engine/engineobject.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/statids.h"
 
 // Raises the head camera's m_nShotPowerLevel.

@@ -3,7 +3,6 @@
 #include "common/pooledclasses.h"
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041ea60
 BehObj_TrackPassPrep::BehObj_TrackPassPrep()

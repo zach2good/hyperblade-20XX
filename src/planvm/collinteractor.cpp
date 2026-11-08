@@ -7,7 +7,7 @@
 #include "planvm.h"
 #include "common/pooledclasses.h"
 #include "engine/msgevent.h"
-#include "common/pooledownerroot.h"
+#include "common/nodeowner.h"
 #include "engine/objectphase.h"
 #include "engine/messageids.h"
 #include "engine/engineobject.h"

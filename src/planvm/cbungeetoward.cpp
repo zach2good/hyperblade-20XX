@@ -18,7 +18,7 @@
 #include "engine/engineobject.h"
 #include "engine/arenastate.h"
 #include "physics/collisionellipsoid.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // GLOBAL: HYPERX 0x004b17b0
 extern float g_flTwoAgendaItem;

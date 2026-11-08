@@ -22,7 +22,8 @@
 #include <mbstring.h>
 #include "engine/engineobject.h"
 #include "planvm/planinteractorfactories.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
+#include "common/behaviorowner.h"
 #include "engine/messageids.h"
 #include "engine/objectphase.h"
 

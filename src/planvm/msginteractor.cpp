@@ -6,7 +6,7 @@
 #include "globals.h"
 #include "msginteractor.h"
 #include "collinteractor.h"
-#include "common/pooledownerroot.h"
+#include "common/nodeowner.h"
 #include "engine/engineobject.h"
 #include "planvm/decisionlog.h"
 

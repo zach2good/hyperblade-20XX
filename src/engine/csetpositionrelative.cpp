@@ -15,7 +15,7 @@
 #include "playerobject.h"
 #include "physics/collisionplane.h"
 #include "planvm/plannode.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 #define MODE_TO_CENTRE 0
 #define MODE_ON_OBJECT 1

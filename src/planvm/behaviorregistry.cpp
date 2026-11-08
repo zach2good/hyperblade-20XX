@@ -2,7 +2,7 @@
 #include "planvm/behaviorids.h"
 #include "globals.h"
 #include "planvmglobals.h"
-#include "common/pooledownerroot.h"
+#include "common/behaviorowner.h"
 #include "common/behobjglidetoobjectpool.h"
 #include "common/behobjglidetopositionpool.h"
 #include "common/behobjglidebetweenfacingpool.h"
@@ -41,7 +41,7 @@ void BehaviorRegistry::DestroyAll(void)
 {
     short iSlot = 0;
 
-    PooledOwnerRoot* pNode = g_apBehaviorRegistry[0];
+    BehaviorOwner* pNode = g_apBehaviorRegistry[0];
 
     while (pNode != 0)
     {
@@ -58,7 +58,7 @@ void BehaviorRegistry::InitAll(void)
 {
     short iSlot = 0;
 
-    PooledOwnerRoot* pNode = g_apBehaviorRegistry[0];
+    BehaviorOwner* pNode = g_apBehaviorRegistry[0];
 
     while (pNode != 0)
     {

@@ -81,6 +81,7 @@
 #include "engine/object.h"
 #include "engine/objectphase.h"
 #include "planvm/decisionlog.h"
+#include "planvm/conditiontable.h"
 
 #define ENTITY_SLOT_LIMIT 0x66
 

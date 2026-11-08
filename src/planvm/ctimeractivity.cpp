@@ -9,7 +9,7 @@
 #include "app/gameapp.h"
 #include "app/bringup.h"
 #include "plannode.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/messageids.h"
 
 // One past the last engine slot: no target.

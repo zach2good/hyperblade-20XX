@@ -11,7 +11,7 @@
 #include "planvm.h"
 #include "common/pooledclasses.h"
 #include "engine/msgevent.h"
-#include "common/pooledownerroot.h"
+#include "common/agendaitemowner.h"
 #include "engine/objectphase.h"
 #include "engine/engineobject.h"
 

@@ -28,7 +28,6 @@
 #include "planvm.h"
 #include "collinteractor.h"
 #include "engine/engineobject.h"
-#include "common/pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d460
 BehObj_GlideToObject::BehObj_GlideToObject()

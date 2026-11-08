@@ -22,7 +22,7 @@
 #include "net/gamesession.h"
 #include "physics/collisionplane.h"
 #include "math/mathops.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/statids.h"
 #include "engine/messageids.h"
 

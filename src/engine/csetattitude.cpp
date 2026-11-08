@@ -15,7 +15,7 @@
 #include "physics/collisionplane.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x00410400
 void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)

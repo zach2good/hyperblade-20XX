@@ -5,7 +5,7 @@
 #include "planvm/msginteractor.h"
 #include "physics/physicsbody.h"
 #include "globals.h"
-#include "pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x0041e0a0
 BehObj_UpdateWhileAttached::BehObj_UpdateWhileAttached()

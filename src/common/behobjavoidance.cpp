@@ -3,7 +3,6 @@
 #include "common/pooledclasses.h"
 #include "planvm/conditiontable.h"
 #include "engine/engineobject.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d7b0
 BehObj_Avoidance::BehObj_Avoidance()

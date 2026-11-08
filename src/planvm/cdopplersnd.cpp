@@ -3,7 +3,7 @@
 #include "planvm/agendaitem.h"
 #include "planvm/cdopplersnd.h"
 #include "globals.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x00412700
 void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)

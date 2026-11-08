@@ -5,7 +5,7 @@
 #include "engineobject.h"
 #include "globals.h"
 #include "physics/physicsbody.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 HYPERBLADE_FIELD_AT(CAdjustAcceleration, m_pSmoothVel, 0x10);
 

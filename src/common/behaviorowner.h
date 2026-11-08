@@ -1,24 +1,37 @@
 #ifndef HYPERBLADE_BEHAVIOROWNER_H
 #define HYPERBLADE_BEHAVIOROWNER_H
 
-#include "common/pooledownerroot.h"
-
 class GameBehaviorObject;
 
+// A root class: with a base destructor to call, VC6 stops inlining this one into the deleter.
 // VTABLE: HYPERX 0x004b2834
-class BehaviorOwner : public PooledOwnerRoot
+class BehaviorOwner
 {
 public:
     __forceinline BehaviorOwner()
     {
     }
 
-    virtual char Insert(void* pNode);
-
     // FUNCTION: HYPERX 0x004209f0
-    ~BehaviorOwner()
+    virtual ~BehaviorOwner()
     {
     }
+
+    // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
+    // The linker folded this onto AgendaItemOwner::Destroy, which carries the marker.
+    virtual BehaviorOwner* Destroy()
+    {
+        delete this;
+
+        return 0;
+    }
+
+    virtual void Init() = 0;
+
+    virtual char Insert(void* pNode);
+
+    // Answers with a node off the free list.
+    virtual void* Alloc() = 0;
 
     GameBehaviorObject* m_pHead;
 };

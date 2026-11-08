@@ -22,7 +22,7 @@
 #include "physics/collisionplane.h"
 #include "arenastate.h"
 #include "physics/collisionellipsoid.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/statids.h"
 
 #define JITTER_MODULUS 0x32

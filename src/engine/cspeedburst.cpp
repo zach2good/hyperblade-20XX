@@ -14,7 +14,7 @@
 #include <new.h>
 #include "playerobject.h"
 #include "engine/engineobject.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 #define CARRIER_RATE  1.5f
 #define DECAY_RATE    0.8f

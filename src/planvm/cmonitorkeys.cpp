@@ -13,7 +13,7 @@
 #include "input/keyboarddeviceobj.h"
 #include "physics/collisionellipsoid.h"
 #include "engine/player.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 #define ARENA_LIMIT 6.0
 #define CLAMP_RATE  5.0f

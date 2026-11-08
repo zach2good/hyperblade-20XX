@@ -21,7 +21,7 @@ public:
     virtual ~PlayerBase();
 
     // Answers what the slot the caller read this from should hold afterwards.
-    // The original's linker folded this body onto PooledOwnerRoot::Destroy, which carries the marker.
+    // The original's linker folded this body onto AgendaItemOwner::Destroy, which carries the marker.
     virtual PlayerBase* DestroyViaVtable()
     {
         delete this;

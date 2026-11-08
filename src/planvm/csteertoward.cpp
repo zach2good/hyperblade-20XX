@@ -14,7 +14,7 @@
 #include <math.h>
 #include "engine/arenastate.h"
 #include "physics/collisionellipsoid.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/messageids.h"
 
 // Aims six frames ahead of the target, and hands over to the target's matrix within six units.

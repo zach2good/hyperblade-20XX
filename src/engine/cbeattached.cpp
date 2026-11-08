@@ -16,7 +16,7 @@
 
 #include <math.h>
 #include "engine/engineobject.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x0040dbe0
 void CBeAttached::Bind(EngineObject* pOwner, GameBehaviorObject*)

@@ -359,7 +359,6 @@ set(HYPERX_SOURCES
     src/app/winmain.cpp
     src/ui/debughud.cpp
     src/engine/matchstats.cpp
-    src/common/pooledownerroot.cpp
     src/engine/teamsblock.cpp
     src/math/spline.cpp
     src/planvm/cbungeetoward.cpp

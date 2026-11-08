@@ -1,7 +1,7 @@
 #include "common/compat.h"
 #include "planvm/baseresetagendaitem.h"
 #include "globals.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x00412360
 void BaseResetAgendaItem::OnListChanged()

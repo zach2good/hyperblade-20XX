@@ -15,7 +15,7 @@
 #include "msginteractor.h"
 #include "engine/engineobject.h"
 #include "planvm/planinteractorfactories.h"
-#include "common/pooledownerroot.h"
+#include "common/behaviorowner.h"
 
 // The plan PlanState::Reinitialize compiles: nine words, one compound node then END_PLAN.
 // GLOBAL: HYPERX 0x004c689c

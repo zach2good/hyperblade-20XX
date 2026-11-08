@@ -1,7 +1,7 @@
 #include "common/compat.h"
 #include "planvm/cameraliteagendaitem.h"
 #include "globals.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x0040a0d0
 void CameraLiteAgendaItem::OnListChanged()

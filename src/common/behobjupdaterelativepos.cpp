@@ -3,7 +3,6 @@
 #include "common/pooledclasses.h"
 #include "planvm/conditiontable.h"
 #include "engine/engineobject.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d890
 BehObj_UpdateRelativePos::BehObj_UpdateRelativePos()

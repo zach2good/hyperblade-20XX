@@ -13,7 +13,7 @@
 #include "math/spline.h"
 #include "physics/collisionellipsoid.h"
 #include "math/mathops.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // The field holds InitSegment's answer, not the new block.
 

@@ -1,6 +1,6 @@
 #include "common/compat.h"
 #include "globals.h"
-#include "common/pooledownerroot.h"
+#include "common/nodeowner.h"
 #include "anim/animbinding.h"
 #include "collinteractor.h"
 #include "msginteractor.h"

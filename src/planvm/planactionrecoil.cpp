@@ -64,6 +64,7 @@
 #include "engine/object.h"
 #include "planvm/planaction.h"
 #include "planvm/plancond.h"
+#include "planvm/conditiontable.h"
 
 // The impulse is the struck object's velocity scaled, plus independent scatter on each axis.
 

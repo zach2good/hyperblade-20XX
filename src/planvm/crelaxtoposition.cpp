@@ -19,7 +19,7 @@
 #include "engine/playerobject.h"
 #include "engine/engineobject.h"
 #include "engine/cameraobject.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/statids.h"
 
 // Four arguments copy a marker; five put an x and y on the floor; any other count zeroes it.

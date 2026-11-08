@@ -7,8 +7,8 @@
 #include "globals.h"
 #include "engine/gameengine.h"
 #include "input/keyboarddeviceobj.h"
-#include "pooledownerroot.h"
 #include "engine/objectphase.h"
+#include "planvm/conditiontable.h"
 
 // The button the rok throw comes in on.
 #define BUTTON_ROK 4

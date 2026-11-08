@@ -21,7 +21,7 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "graphics/meshbone.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/messageids.h"
 
 // The aim point the camera springs at, rebuilt every frame.

@@ -4,7 +4,6 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d6a0
 BehObj_GlideBetweenFacing::BehObj_GlideBetweenFacing()

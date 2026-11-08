@@ -18,7 +18,6 @@ struct IDirectPlay;
 #include "ui/radar.h"
 #include "graphics/texture.h"
 #include "graphics/surfacepoint.h"
-#include "planvm/conditiontable.h"
 #include "ui/hudsurfaces.h"
 
 class JoystickMgr;
@@ -488,7 +487,7 @@ extern float g_flOneAgendaItem;
 extern float g_flHalfAgendaItem;
 
 // GLOBAL: HYPERX 0x004cf4e8
-extern class PooledOwnerRoot* g_pCollInteractorPool;
+extern class NodeOwner* g_pCollInteractorPool;
 
 // GLOBAL: HYPERX 0x004cf05c
 extern class AnimRegistry* g_pAnimRegistry;
@@ -520,7 +519,7 @@ extern int g_nBitmapCacheReady;
 extern int g_nSetupBitmapsUnloaded;
 
 // GLOBAL: HYPERX 0x004cf4ec
-extern class PooledOwnerRoot* g_pMsgInteractorPool;
+extern class NodeOwner* g_pMsgInteractorPool;
 
 // GLOBAL: HYPERX 0x004cede8
 extern char g_szClockText[32];

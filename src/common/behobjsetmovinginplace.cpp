@@ -6,7 +6,6 @@
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
 #include "engine/objectclasses.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041e450
 BehObj_SetMovingInPlace::BehObj_SetMovingInPlace()

@@ -5,7 +5,6 @@
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
 #include "planvm/cprojectandbounce.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041dd40
 BehObj_FlyLCL::BehObj_FlyLCL()

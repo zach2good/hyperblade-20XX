@@ -26,7 +26,7 @@
 #include "playerobject.h"
 #include "engine/engineobject.h"
 #include "graphics/meshbone.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // Two, the factor an overshooting spring is doubled by.
 extern const float g_flCamTrackVelocityGain;

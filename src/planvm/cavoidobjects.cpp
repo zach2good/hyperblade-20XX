@@ -18,7 +18,7 @@
 #include "engine/engineobject.h"
 #include "plannode.h"
 #include "engine/gameengine.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 #include "engine/messageids.h"
 #include "app/gameapp.h"
 

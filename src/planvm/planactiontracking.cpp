@@ -63,6 +63,7 @@
 #include "planvm/planaction.h"
 #include "planvm/plancond.h"
 #include "common/staticinit.h"
+#include "planvm/conditiontable.h"
 
 extern const float g_flZeroPlanTracking    = 0.0f;
 float              g_flUnusedPlanTrackingA = g_flZeroPlanTracking;

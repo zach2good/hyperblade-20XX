@@ -11,7 +11,7 @@
 #include "planvm/agendaitem.h"
 #include "engine/crelaxyaw.h"
 #include "planvm/plannode.h"
-#include "common/pooledownerroot.h"
+#include "planvm/conditiontable.h"
 
 // The band's upper bound is the tenth at 0x004b1440.
 #define SPIN_BAND 0.1

@@ -3,7 +3,6 @@
 #include "common/pooledclasses.h"
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
-#include "pooledownerroot.h"
 
 // FUNCTION: HYPERX 0x0041d960
 BehObj_Glide::BehObj_Glide()

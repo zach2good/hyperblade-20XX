@@ -18,7 +18,7 @@ struct ViewExtent;
 
 struct LayoutState;
 
-class __declspec(novtable) Renderer
+class Renderer
 {
 public:
     static void __stdcall        DrawSceneDispatch(void);
@@ -36,46 +36,6 @@ public:
     static RenderOptions __cdecl GetRenderOptions();
     static void                  SetCameraTransformAndViewport(LayoutState block);
     static void __stdcall        DestroyBackBuffer(void);
-
-    virtual ~Renderer()
-    {
-    }
-
-    // Filled with the shared empty body at 0x0043e130; nothing calls it.
-    virtual void Unused()                                                 = 0;
-    virtual void LayoutSurfaces()                                         = 0;
-    virtual void DrawScene(int nFlags)                                    = 0;
-    virtual void DrawHUD(int nFlags, HDC hDC)                             = 0;
-    virtual void SetMessageText(const char* pszText, unsigned long nCode) = 0;
-    virtual void ShowMessage()                                            = 0;
-
-    virtual void HideMessage() = 0;
-
-    virtual void SetHomeLogo(char* pTeamData) = 0;
-    virtual void SetAwayLogo(char* pTeamData) = 0;
-    // Nought when the renderer has no head cam.
-    virtual class Texture* GetHeadCamSurface()                 = 0;
-    virtual void           ShowHeadCam()                       = 0;
-    virtual void           SetHeadCamText(const char* pszText) = 0;
-    virtual ViewExtent     GetHeadCamSize()                    = 0;
-    virtual ViewExtent     GetHeadCamOrigin()                  = 0;
-
-    // A camera going to render mode one hands it zero.
-    virtual void SetShotPower(float flPower) = 0;
-    virtual void ShowShotPower()             = 0;
-
-    virtual void       SetReticlePos(int x, int y) = 0;
-    virtual ViewExtent GetReticleSize()            = 0;
-
-    // The modes are Reticle_State; nought hides the reticle.
-    virtual void SetReticleState(int nMode) = 0;
-
-    // CDisplayPassBar is the only caller.
-    virtual ViewExtent GetPassBarSize()           = 0;
-    virtual void       SetPassBarMarker(int nPos) = 0;
-    virtual void       ShowPassBar()              = 0;
-    virtual void       ShowQuitPrompt()           = 0;
-    virtual void       HideQuitPrompt()           = 0;
 
     static void __stdcall InitializeLightDirections(void);
 };

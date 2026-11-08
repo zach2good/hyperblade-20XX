@@ -54,7 +54,7 @@ public:
 
     virtual ~TransformObject();
 
-    // The linker folded this onto PooledOwnerRoot::Destroy, which carries the marker.
+    // The linker folded this onto AgendaItemOwner::Destroy, which carries the marker.
     virtual TransformObject* DestroyViaVtable()
     {
         delete this;
