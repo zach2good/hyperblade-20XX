@@ -685,7 +685,6 @@ void __fastcall GameApp::OnShutdown()
 int GameApp::FindCDRomDrive(bool bRequired)
 {
     char  szCaption[MAX_PATH];
-    char  szFileSystem[MAX_PATH];
     char  szLabel[MAX_PATH];
     char  szText[MAX_PATH];
     char  szVolume[MAX_PATH];
@@ -721,6 +720,8 @@ int GameApp::FindCDRomDrive(bool bRequired)
             goto done;
         }
 
+        char szFileSystem[MAX_PATH];
+
         // STRING: HYPERX 0x004bc418
         memcpy(szRoot, "A:\\", sizeof("A:\\"));
         szRoot[0] += nDrive;
@@ -745,6 +746,8 @@ int GameApp::FindCDRomDrive(bool bRequired)
         {
             if (Win32::IsCDRomDrive(szScanRoot) != 0)
             {
+                char szFileSystem[MAX_PATH];
+
                 // STRING: HYPERX 0x004bc418
                 memcpy(szRoot, "A:\\", sizeof("A:\\"));
                 szRoot[0] += nDrive;
