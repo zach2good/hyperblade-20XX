@@ -181,6 +181,9 @@ void CSteerToPosition::Process(int nArg)
 
     PhysicsBody* const pBody = m_pOwner->GetPhysicsBody();
 
+    // The original copies the speed through the FPU.
+    const float& flSpeed = (float)(pBody->flSpeed * 1.0f);
+
     Vec3 vFlat;
 
     Vec3 vHeading = pBody->velDir;
@@ -191,8 +194,6 @@ void CSteerToPosition::Process(int nArg)
 
     Math::Vec3Normalize(&vHeading);
     Math::Vec3Normalize(&vFlat);
-
-    const float flSpeed = pBody->flSpeed;
 
     const float flDot = Vec3::DotInline(&vHeading, &vFlat);
 
