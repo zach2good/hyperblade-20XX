@@ -1079,4 +1079,10 @@
 // LIBRARY: HYPERX 0x004ab6ab
 // __fpclass
 
+// LIBRARY: HYPERX 0x004a6e65
+// ?__CxxRestoreUnhandledExceptionFilter@@YAXXZ
+
+// LIBRARY: HYPERX 0x004abc80
+// _strcspn
+
 #endif
