@@ -15,10 +15,12 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import status_card  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPORT = os.path.join(ROOT, "build", "report.json")
 INVENTORY = os.path.join(ROOT, "symbols", "functions.csv")
-STATUS_SVG = os.path.join(ROOT, "progress", "status.svg")
 BRINGUP = os.path.join(ROOT, "tools", "bringup_baseline.json")
 
 GAME_CODE_LIMIT = 0x004A0000
@@ -118,27 +120,6 @@ def get_inventory_sizes():
     return sizes
 
 
-def get_card_stats():
-    stats = {}
-    if os.path.exists(STATUS_SVG):
-        try:
-            content = open(STATUS_SVG, encoding="utf-8").read()
-            m_impl = re.search(r"Implemented:\s*([\d.]+)%\s*\((\d+)/(\d+)\)", content)
-            if m_impl:
-                stats["impl_pct"] = float(m_impl.group(1))
-                stats["implemented"] = int(m_impl.group(2))
-                stats["total"] = int(m_impl.group(3))
-            m_acc = re.search(r"Accuracy:\s*([\d.]+)%", content)
-            if m_acc:
-                stats["accuracy"] = float(m_acc.group(1))
-            m_prog = re.search(r"<tspan[^>]*>([\d.]+)%</tspan>", content)
-            if m_prog:
-                stats["progress"] = float(m_prog.group(1))
-        except Exception:
-            pass
-    return stats
-
-
 def get_exact_stats(sizes):
     exact_count = 0
     exact_bytes = 0
@@ -178,15 +159,16 @@ def make_bar(percent, width=30):
 
 def main():
     sizes = get_inventory_sizes()
-    card_stats = get_card_stats()
     exact_count, exact_bytes = get_exact_stats(sizes)
     bringup_states = get_bringup_states()
 
-    total_inventory = card_stats.get("total", len(sizes) or 4121)
-    implemented_count = card_stats.get("implemented", 3307)
-    impl_pct = card_stats.get("impl_pct", (implemented_count / total_inventory * 100.0) if total_inventory else 0.0)
-    accuracy = card_stats.get("accuracy", 98.24)
-    progress_score = card_stats.get("progress", (impl_pct * accuracy / 100.0))
+    game_exact = 0
+    game_total = 1
+    accuracy = 0.0
+    if os.path.exists(REPORT):
+        with open(REPORT, encoding="utf-8") as f:
+            game_exact, game_total, accuracy = status_card.game_figures(json.load(f))
+    exact_game_share = 100.0 * game_exact / game_total
 
     game_inventory = sum(1 for a in sizes if a < GAME_CODE_LIMIT) or 3054
     game_bytes = sum(s for a, s in sizes.items() if a < GAME_CODE_LIMIT) or 628779
@@ -203,13 +185,12 @@ def main():
     print()
     print("STREAM 1: BYTE MATCHING (RETAIL FIDELITY)")
     print("--------------------------------------------------------------------------------")
-    print("  Overall Progress:   %6.2f%% %s" % (progress_score, make_bar(progress_score)))
-    print("  Implemented:        %6.2f%% (%d / %d functions; %d unwritten)" %
-          (impl_pct, implemented_count, total_inventory, total_inventory - implemented_count))
-    print("  Opcode Accuracy:    %6.2f%% (similarity across implemented functions)" % accuracy)
+    print("  Exact Game Fns:     %6.2f%% %s" % (exact_game_share, make_bar(exact_game_share)))
+    print("                      (%d / %d game functions, less LIBCMT and JPEG)" % (game_exact, game_total))
+    print("  Accuracy:           %6.2f%% (average score of the game functions written)" % accuracy)
     print("  Exact Game Bytes:   %6.2f%% (%d / %d game code bytes)" %
           (exact_byte_share, exact_bytes, game_bytes))
-    print("  Exact Functions:    %6.2f%% (%d / %d game functions)" %
+    print("  Exact Below CRT:    %6.2f%% (%d / %d functions below 0x004a0000)" %
           (exact_func_share, exact_count, game_inventory))
     print()
     print("STREAM 2: CRUFT CLEANING (CODE ARCHITECTURE)")

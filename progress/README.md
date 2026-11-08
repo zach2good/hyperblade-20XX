@@ -1,6 +1,8 @@
 # Progress
 
-`history.csv` gets a row each time `python tools/progress.py --record` runs after a score.
+`history.csv` gets a row each time `python tools/progress.py --record` runs after a score. The
+`card_` columns, from 2026-11-08, are the status card's figures: exact game functions, game
+functions, and their average score.
 `status.svg` is the card at the top of the main README, drawn by `tools/status_card.py`.
 
 Pull requests leave this folder and the README figures alone. Every six hours the `figures`

@@ -33,6 +33,7 @@ REPORT = os.path.join(ROOT, "build", "report.json")
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from staleness import report_is_stale
+import status_card
 
 INVENTORY = os.path.join(ROOT, "symbols", "functions.csv")
 HISTORY = os.path.join(ROOT, "progress", "history.csv")
@@ -176,9 +177,13 @@ def main():
             writer = csv.writer(handle)
             if fresh:
                 writer.writerow(["date", "game_bytes", "matched_bytes", "written_bytes",
-                                 "matched_count", "written_count"])
+                                 "matched_count", "written_count", "card_exact", "card_total",
+                                 "card_accuracy"])
+            with open(REPORT, encoding="utf-8") as report:
+                card_exact, card_total, card_accuracy = status_card.game_figures(json.load(report))
             writer.writerow([datetime.date.today().isoformat(), game_bytes, matched_bytes,
-                             written_bytes, matched_count, written_count])
+                             written_bytes, matched_count, written_count, card_exact, card_total,
+                             "%.2f" % card_accuracy])
         print()
         print("appended to %s" % HISTORY)
 
