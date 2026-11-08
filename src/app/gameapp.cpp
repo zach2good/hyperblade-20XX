@@ -1102,10 +1102,11 @@ void __cdecl GameApp::SetupViewports(void)
         size   = g_pRenderer->GetHeadCamSize();
         offset = g_pRenderer->GetHeadCamOrigin();
 
-        void* const pViewBits = g_pBackBufferBitsCopy;
+        const int   nViewWidth = g_nBackBufferWidth;
+        BYTE* const pViewBits  = g_pBackBufferBitsCopy;
 
         pView->layout = Widget::InitLayoutState(pViewBits,
-                                                g_nBackBufferWidth,
+                                                nViewWidth,
                                                 g_nBackBufferHeight,
                                                 g_nBackBufferWidth,
                                                 size.x,
