@@ -167,8 +167,19 @@ int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 
     while (*pszBuffer != STREAM_EOF)
     {
-        if (*pszBuffer == '\n' || *pszBuffer == '\r')
+        if (*pszBuffer == '\n')
         {
+            break;
+        }
+
+        // Windows' text mode hands over a CRLF as one newline; elsewhere the LF follows on its own.
+        if (*pszBuffer == '\r')
+        {
+            if (const auto nNext = fgetc(pStream); nNext != '\n' && nNext != EOF)
+            {
+                ungetc(nNext, pStream);
+            }
+
             break;
         }
 
