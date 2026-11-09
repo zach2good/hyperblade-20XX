@@ -3,6 +3,7 @@
 #include "input/keycodes.h"
 #include "engine/spectator.h"
 #include "engine/planfixes.h"
+#include "engine/timeout.h"
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/planstate.h"
 #include <SDL3/SDL.h>
@@ -388,6 +389,14 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
                 }();
 
                 pGoalie->PostSceneEvent(nMessage, 0);
+            }
+            break;
+
+        // Deviation: neither release had a called time out. T calls the viewed team's.
+        case 'T':
+            if (g_bSessionActive == 0)
+            {
+                TimeOut::Call(g_pGameEngine->m_nViewedSlot & 1);
             }
             break;
 

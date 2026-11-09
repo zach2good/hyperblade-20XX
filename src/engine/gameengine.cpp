@@ -54,6 +54,7 @@ struct GameApp;
 #include "rampobject.h"
 #include "planvm/planopcodetable.h"
 #include "saveblock.h"
+#include "timeout.h"
 #include <cstring>
 #include <cstdlib>
 #include <cmath>
@@ -4395,6 +4396,7 @@ void GameEngine::RestartMatch()
 
     ClearPendingEvents();
 
+    TimeOut::Reset();
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
         m_ppObjects[nIndex]->SelectAndActivatePlan();

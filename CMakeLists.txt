@@ -147,6 +147,7 @@ set(HYPERX_SOURCES
     src/engine/rokobject.cpp
     src/engine/spectator.cpp
     src/engine/teamblock.cpp
+    src/engine/timeout.cpp
     src/engine/teamsblock.cpp
     src/engine/trackingellipsoidstatics.cpp
     src/engine/weaponobject.cpp
