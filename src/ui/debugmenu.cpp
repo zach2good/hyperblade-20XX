@@ -16,6 +16,10 @@
 #include "engine/objectclasses.h"
 #include "engine/planfixes.h"
 #include "engine/playerobject.h"
+#include "engine/statids.h"
+#include "engine/teamblock.h"
+#include "common/stringtable.h"
+#include "ui/infobarbase.h"
 #include "globals.h"
 #include "graphics/graphicssettings.h"
 #include "graphics/meshblock.h"
@@ -32,6 +36,7 @@
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <deque>
+#include <vector>
 #include <format>
 #include <string>
 #include <imgui.h>
@@ -86,9 +91,144 @@ bool InMatch()
     return g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive;
 }
 
+// Paused by the Pause key, not under Escape's quit prompt.
+bool PausedForReport()
+{
+    return InMatch() && static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPaused && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0;
+}
+
 bool AnythingShown()
 {
-    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None || (s_bShowEnergy && InMatch());
+    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None || (s_bShowEnergy && InMatch()) || PausedForReport();
+}
+
+// The scouting report's rows: the string table's heading for each, and the ratings it averages.
+struct ScoutingRow
+{
+    unsigned int     nString;
+    std::vector<int> ratings;
+};
+
+const ScoutingRow s_aScoutingRows[] = {
+    { 0x33, { kRatingOffensiveAbility } },
+    { 0x34, { kRatingBalance } },
+    { 0x35, { kRatingShotPower, kRatingShotAccuracy } },
+    { 0x36, { kRatingRokHandling } },
+    { 0x37, { kRatingWinCloseFreeRok, kRatingWinFarFreeRok } },
+    { 0x38, { kRatingChecking } },
+    { 0x39, { kRatingSpeed } },
+};
+
+constexpr auto kStringOverall  = 0x3a;
+constexpr auto kStringScouting = 0x3b;
+
+// The whole roster's mean, bench included, since either may skate.
+float RosterMean(const TeamBlock& team, const std::vector<int>& ratings)
+{
+    auto flSum = 0.0f;
+
+    for (const auto& row : team.aRows)
+    {
+        for (const auto nRating : ratings)
+        {
+            flSum += row.aStat[nRating];
+        }
+    }
+
+    return flSum / static_cast<float>(kTeamRowCount * ratings.size());
+}
+
+void ScoutingBar(float flValue, float flBest)
+{
+    const auto flFraction = [&]
+    {
+        if (flBest <= 0.0f)
+        {
+            return 0.0f;
+        }
+
+        return flValue / flBest;
+    }();
+
+    ImGui::ProgressBar(flFraction, ImVec2(120.0f, 0.0f), std::format("{:.1f}", flValue).c_str());
+}
+
+// Deviation: the original's string table names a scouting report that neither release draws. It
+// compares the two rosters' ratings, each bar against the better team's.
+void DrawScoutingReport()
+{
+    const auto* const pViewport = ImGui::GetMainViewport();
+
+    ImGui::SetNextWindowPos(ImVec2(pViewport->GetCenter().x, pViewport->GetCenter().y), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowBgAlpha(0.85f);
+    ImGui::Begin("###scouting", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoSavedSettings);
+
+    ImGui::TextUnformatted(StringTable::Find(kStringScouting));
+
+    const auto& own = [&]() -> const TeamBlock&
+    {
+        if ((g_pGameEngine->m_nViewedSlot & 1) != 0)
+        {
+            return *g_pGameEngine->m_pTeamB;
+        }
+
+        return *g_pGameEngine->m_pTeamA;
+    }();
+
+    const auto& foe = [&]() -> const TeamBlock&
+    {
+        if (&own == g_pGameEngine->m_pTeamA.get())
+        {
+            return *g_pGameEngine->m_pTeamB;
+        }
+
+        return *g_pGameEngine->m_pTeamA;
+    }();
+
+    if (ImGui::BeginTable("scouting", 3, ImGuiTableFlags_SizingFixedFit))
+    {
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(own.GetName());
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(foe.GetName());
+
+        auto flOwnTotal = 0.0f;
+        auto flFoeTotal = 0.0f;
+
+        const auto drawRow = [&](const char* pszHeading, float flOwn, float flFoe)
+        {
+            const auto flBest = (std::max)(flOwn, flFoe);
+
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::TextUnformatted(pszHeading);
+            ImGui::TableNextColumn();
+            ScoutingBar(flOwn, flBest);
+            ImGui::TableNextColumn();
+            ScoutingBar(flFoe, flBest);
+        };
+
+        for (const auto& row : s_aScoutingRows)
+        {
+            const auto flOwn = RosterMean(own, row.ratings);
+            const auto flFoe = RosterMean(foe, row.ratings);
+
+            drawRow(StringTable::Find(row.nString), flOwn, flFoe);
+
+            flOwnTotal += flOwn;
+            flFoeTotal += flFoe;
+        }
+
+        constexpr auto flRows = static_cast<float>(std::size(s_aScoutingRows));
+
+        drawRow(StringTable::Find(kStringOverall), flOwnTotal / flRows, flFoeTotal / flRows);
+
+        ImGui::EndTable();
+    }
+
+    ImGui::End();
 }
 
 void AddTraceLine(std::string strLine)
@@ -1167,6 +1307,11 @@ void DebugMenu::Draw(Renderer renderer)
     if (s_bShowEnergy && InMatch())
     {
         DrawDromerEnergy();
+    }
+
+    if (PausedForReport())
+    {
+        DrawScoutingReport();
     }
 
     // The bar stays while the pointer is over it or one of its menus is open.
