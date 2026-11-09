@@ -12,6 +12,8 @@
 #include "graphics/gdi.h"
 #include "graphics/meshblock.h"
 #include "graphics/meshbone.h"
+#include "graphics/meshmaterial.h"
+#include "graphics/modeldatabase.h"
 #include "graphics/presenter.h"
 #include "graphics/renderer.h"
 #include "graphics/transparentqueue.h"
@@ -351,6 +353,56 @@ void SteerOrbit()
     }
 }
 
+// v1.0.0.0's ModelComponent::PrintMaterials, as a table of the shown model's materials.
+void MaterialsSection(const EngineObject& object)
+{
+    const auto* const pList = object.m_pModelBlock;
+
+    if (pList == nullptr)
+    {
+        return;
+    }
+
+    OriginalUI::SeparatorText("Materials");
+    ImGui::Text("%s, %d materials", pList->GetName(), pList->m_nMatCount);
+
+    constexpr auto kFlags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY;
+
+    if (!ImGui::BeginTable("materials", 5, kFlags, ImVec2(0.0f, 160.0f)))
+    {
+        return;
+    }
+
+    for (const auto* pszHeading : { "#", "Colour", "Ambient", "Diffuse", "Emissive" })
+    {
+        ImGui::TableSetupColumn(pszHeading);
+    }
+
+    ImGui::TableSetupScrollFreeze(0, 1);
+    ImGui::TableHeadersRow();
+
+    for (int i = 0; i < pList->m_nMatCount; i++)
+    {
+        const auto& material = pList->m_pMaterials[static_cast<size_t>(i)];
+
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::Text("%d", i);
+        ImGui::TableNextColumn();
+        ImGui::ColorButton("##colour", ImVec4(material.GetRed() / 255.0f, material.GetGreen() / 255.0f, material.GetBlue() / 255.0f, 1.0f), ImGuiColorEditFlags_NoTooltip, ImVec2(12.0f, 12.0f));
+        ImGui::SameLine();
+        ImGui::Text("%02x%02x%02x", material.GetRed(), material.GetGreen(), material.GetBlue());
+        ImGui::TableNextColumn();
+        ImGui::Text("%.2f", material.flAmbient);
+        ImGui::TableNextColumn();
+        ImGui::Text("%.2f", material.flDiffuse);
+        ImGui::TableNextColumn();
+        ImGui::Text("%.2f", material.flEmissive);
+    }
+
+    ImGui::EndTable();
+}
+
 void ModelViewerWindow()
 {
     SteerOrbit();
@@ -397,6 +449,11 @@ void ModelViewerWindow()
     }
 
     ImGui::TextDisabled("Drag the model to turn it; the wheel zooms.");
+
+    if (const auto* const pObject = pEngine->GetSlot(s_nModelSlot); pObject != nullptr)
+    {
+        MaterialsSection(*pObject);
+    }
 
     OriginalUI::SeparatorText("Renderer");
     DebugMenu::RendererControls();
