@@ -12,6 +12,7 @@
 #include "engine/engineobject.h"
 #include "engine/cameraobject.h"
 #include "engine/crashtest.h"
+#include "engine/oneonone.h"
 #include "engine/game.h"
 #include "engine/gameengine.h"
 #include "engine/gameoptions.h"
@@ -1544,12 +1545,30 @@ void Run(int nCommand)
             Open(kIDDialogSplash);
             break;
 
+        // Deviation: the original left both unhandled. Either restarts the match in its mode.
+        case kIDMenuOneOnOne:
+        case kIDMenuTwoOnTwo:
+            if (g_bSessionActive == 0)
+            {
+                if (g_pGameEngine != nullptr)
+                {
+                    OneOnOne::Unpark();
+                }
+
+                OneOnOne::Set(nCommand == kIDMenuOneOnOne);
+
+                if (g_pGameEngine != nullptr)
+                {
+                    g_pGameEngine->RestartMatch();
+                }
+            }
+
+            break;
+
         case kIDMenuMIDIOff:
         case kIDMenuNetworkConnection:
         case kIDMenuNetworkPlayers:
         case kIDMenuTwoPlayer:
-        case kIDMenuOneOnOne:
-        case kIDMenuTwoOnTwo:
             // The original fell through to DefWindowProc for these, or returned at once.
             break;
 
@@ -1588,6 +1607,12 @@ bool IsChecked(const DialogTemplates::MenuEntry& entry)
 
         case kIDMenuShowGoalies:
             return s_bGoaliesShown;
+
+        case kIDMenuOneOnOne:
+            return OneOnOne::On();
+
+        case kIDMenuTwoOnTwo:
+            return !OneOnOne::On();
 
         case kIDMenuDragOff:
             return g_bDragOff != 0;

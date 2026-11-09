@@ -138,6 +138,7 @@ set(HYPERX_SOURCES
     src/engine/objectbase.cpp
     src/engine/objectdef.cpp
     src/engine/objectstats.cpp
+    src/engine/oneonone.cpp
     src/engine/particle.cpp
     src/engine/particlesystem.cpp
     src/engine/planfixes.cpp

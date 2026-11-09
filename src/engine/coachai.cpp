@@ -1,5 +1,6 @@
 // The coach: thirteen match conditions, the per-player orders they drive, and the pass hints.
 
+#include "engine/oneonone.h"
 #include "common/compat.h"
 #include "engine/spectator.h"
 #include "engine/messageids.h"
@@ -287,7 +288,8 @@ int GameEngine::CheckHandicapCondition()
 
     for (i = 0; i < kPlayerSlotCount; i++)
     {
-        if (((i ^ nCarrier) & 1) != 0)
+        // A dromer sitting out One on One is not a handicap.
+        if (((i ^ nCarrier) & 1) != 0 && !OneOnOne::Parked(i))
         {
             pSlot = g_pGameEngine->GetPlayer(static_cast<short>(i));
 

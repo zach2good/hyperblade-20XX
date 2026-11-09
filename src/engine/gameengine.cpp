@@ -54,6 +54,7 @@ struct GameApp;
 #include "rampobject.h"
 #include "planvm/planopcodetable.h"
 #include "saveblock.h"
+#include "oneonone.h"
 #include "timeout.h"
 #include <cstring>
 #include <cstdlib>
@@ -1063,6 +1064,8 @@ void GameEngine::BeginMatchPlay()
             pObject->m_stats.ScaleTo(nSlot);
         }
     }
+
+    OneOnOne::ParkSeconds();
 
     DeactivateParticleSystems();
 
