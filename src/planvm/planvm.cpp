@@ -1791,8 +1791,6 @@ short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
     throw (char*)g_szCouldNotFindInteractorNamed;
 }
 
-constexpr auto kSymbolNameMax = 40;
-
 const char* PlanVM::FindSymbolName(unsigned int nValue, const char* pszPrefix) const
 {
     const auto nPrefix = strlen(pszPrefix);
@@ -1816,7 +1814,6 @@ const char* PlanVM::FindSymbolName(unsigned int nValue, const char* pszPrefix) c
 #define TOKEN_OPEN  '{'
 #define TOKEN_CLOSE '}'
 
-// A name of thirty-three characters or more overruns both buffers, as in the original.
 // FUNCTION: HYPERX 0x0047f250
 void PlanVM::LoadSymbolTables()
 {

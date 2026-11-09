@@ -17,10 +17,14 @@ constexpr auto kPlanVMBehaviorLimit       = 60;
 constexpr auto kPlanVMInteractorNameLimit = 150;
 constexpr auto kPlanVMMessagesPerBehavior = 20;
 
+// The longest symbol name LoadSymbolTables reads, with its terminator.
+constexpr auto kSymbolNameMax = 40;
+
 // A keyword table entry: the name, a sentinel word, and the value the name stands for.
+// Deviation: the original's name held 32, which ENUMIDS.H's 33-character names overran.
 struct PlanOpcodeRef
 {
-    char         szName[0x20];
+    char         szName[kSymbolNameMax];
     unsigned int nMagic;
     unsigned int nValue;
 };
