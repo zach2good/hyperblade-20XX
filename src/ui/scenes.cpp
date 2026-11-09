@@ -25,6 +25,7 @@
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <filesystem>
@@ -607,12 +608,13 @@ void SoundPlayerWindow()
 }
 
 // Image browser. The menu art in ASSETS8 is MDM1-packed, so it goes through the game's own reader;
-// the model textures are plain bitmaps.
+// the model textures are plain bitmaps, and Data holds the one GIF.
 
 enum class ImageSource
 {
     Assets,
     Textures,
+    Data,
 };
 
 struct ImageFolder
@@ -622,7 +624,7 @@ struct ImageFolder
     bool                     bRead = false;
 };
 
-auto s_imageFolders = std::array<ImageFolder, 2>{ ImageFolder{ "Menu art (ASSETS8)" }, ImageFolder{ "Model textures (TEXTURES)" } };
+auto s_imageFolders = std::array<ImageFolder, 3>{ ImageFolder{ "Menu art (ASSETS8)" }, ImageFolder{ "Model textures (TEXTURES)" }, ImageFolder{ "Data (GIF)" } };
 auto s_imageSource  = ImageSource::Assets;
 auto s_imageFilter  = std::array<char, 64>{};
 auto s_strImage     = std::string();
@@ -632,6 +634,13 @@ int  s_nImageZoom   = 0;
 
 SDL_Texture* s_pImage = nullptr;
 
+// A numbered run of frames playing, as v1.0.0.0's FrameBitmap played "%s%02d", and when the
+// next one is due.
+constexpr auto kFrameMs = std::chrono::milliseconds{ 100 };
+
+auto s_frames    = std::vector<std::string>();
+auto s_nextFrame = std::chrono::steady_clock::time_point{};
+
 std::string FolderPath(ImageSource source)
 {
     if (source == ImageSource::Assets)
@@ -639,7 +648,22 @@ std::string FolderPath(ImageSource source)
         return g_gameApp.m_strAssetsPath.m_str.m_pchData;
     }
 
+    if (source == ImageSource::Data)
+    {
+        return std::string(g_gameApp.m_strExeDir.m_str.m_pchData) + "Data";
+    }
+
     return std::string(g_gameApp.m_strExeDir.m_str.m_pchData) + "Textures";
+}
+
+const char* FolderExtension(ImageSource source)
+{
+    if (source == ImageSource::Data)
+    {
+        return ".gif";
+    }
+
+    return ".bmp";
 }
 
 ImageFolder& Folder(ImageSource source)
@@ -657,7 +681,7 @@ ImageFolder& Folder(ImageSource source)
 
     for (const auto& entry : std::filesystem::directory_iterator(Path::Native(FolderPath(source).c_str()), error))
     {
-        if (SDL_strcasecmp(entry.path().extension().string().c_str(), ".bmp") == 0)
+        if (SDL_strcasecmp(entry.path().extension().string().c_str(), FolderExtension(source)) == 0)
         {
             folder.names.push_back(entry.path().stem().string());
         }
@@ -727,7 +751,7 @@ void ShowImage(const std::string& strName)
         return;
     }
 
-    const auto strPath = FolderPath(s_imageSource) + "\\" + strName + ".bmp";
+    const auto strPath = FolderPath(s_imageSource) + "\\" + strName + FolderExtension(s_imageSource);
 
     int   nWidth    = 0;
     int   nHeight   = 0;
@@ -741,6 +765,60 @@ void ShowImage(const std::string& strName)
     }
 }
 
+// The run a numbered name belongs to: every name with its stem and as many digits, in order.
+std::vector<std::string> FrameRun(const std::vector<std::string>& names, const std::string& strName)
+{
+    const auto nStem = strName.find_last_not_of("0123456789") + 1;
+
+    if (nStem == strName.size())
+    {
+        return {};
+    }
+
+    auto run = std::vector<std::string>();
+
+    for (const auto& strOther : names)
+    {
+        if (strOther.size() == strName.size() && SDL_strncasecmp(strOther.c_str(), strName.c_str(), nStem) == 0 && strOther.find_last_not_of("0123456789") + 1 == nStem)
+        {
+            run.push_back(strOther);
+        }
+    }
+
+    if (run.size() < 2)
+    {
+        return {};
+    }
+
+    return run;
+}
+
+void StepFrames()
+{
+    const auto now = std::chrono::steady_clock::now();
+
+    if (s_frames.empty() || now < s_nextFrame)
+    {
+        return;
+    }
+
+    const auto it = std::find(s_frames.begin(), s_frames.end(), s_strImage);
+
+    // Picking an image outside the run stops it.
+    if (it == s_frames.end())
+    {
+        s_frames.clear();
+
+        return;
+    }
+
+    const auto nNext = (static_cast<size_t>(it - s_frames.begin()) + 1) % s_frames.size();
+
+    ShowImage(s_frames[nNext]);
+
+    s_nextFrame = now + kFrameMs;
+}
+
 void ImageBrowserWindow()
 {
     ImGui::SetNextWindowPos(ImVec2(16.0f, 40.0f), ImGuiCond_FirstUseEver);
@@ -749,11 +827,12 @@ void ImageBrowserWindow()
 
     ImGui::BeginChild("##list", ImVec2(300.0f, 0.0f));
 
-    for (const auto source : { ImageSource::Assets, ImageSource::Textures })
+    for (const auto source : { ImageSource::Assets, ImageSource::Textures, ImageSource::Data })
     {
         if (OriginalUI::RadioButton(s_imageFolders[static_cast<size_t>(source)].pszLabel, s_imageSource == source))
         {
             s_imageSource = source;
+            s_frames.clear();
             ForgetImage();
         }
     }
@@ -835,6 +914,37 @@ void ImageBrowserWindow()
     else
     {
         ImGui::Text("%s, %d by %d", s_strImage.c_str(), s_nImageWidth, s_nImageHeight);
+    }
+
+    StepFrames();
+
+    if (const auto run = FrameRun(folder.names, s_strImage); !run.empty())
+    {
+        ImGui::SameLine();
+
+        const auto* const pszLabel = [&]
+        {
+            if (s_frames.empty())
+            {
+                return "Play frames";
+            }
+
+            return "Stop";
+        }();
+
+        if (OriginalUI::Button(pszLabel))
+        {
+            if (s_frames.empty())
+            {
+                s_frames = run;
+            }
+            else
+            {
+                s_frames.clear();
+            }
+        }
+
+        OriginalUI::SetItemTooltip("Steps through the %zu numbered frames this image belongs to, ten a second.", run.size());
     }
 
     for (const auto& [nZoom, pszLabel] : { std::pair{ 0, "Fit" }, std::pair{ 1, "1x" }, std::pair{ 2, "2x" }, std::pair{ 4, "4x" } })

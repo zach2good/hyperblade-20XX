@@ -3,6 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ONLY_JPEG
 #define STBI_ONLY_BMP
+#define STBI_ONLY_GIF
 #define STBI_SUPPORT_ZLIB
 #define STBI_ONLY_PNG
 #include "stb_image.h"
