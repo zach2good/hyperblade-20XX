@@ -442,7 +442,6 @@ void CTrack::Process(int nArg)
             }
         }
 
-        Vec3*      pSumClosest;
         const auto flScaleX = pOffsetScales->x;
 
         vSide.x = g_flZeroTracking;
@@ -476,11 +475,11 @@ void CTrack::Process(int nArg)
 
         Vec3::ScaleTo(&pBody->surfNormal, g_flCameraMinHeight, &vScaled);
 
-        g_camTrackEllipsoid.IntersectRay(&vScaled, &vSum, &vNearRay, &vFarRay);
-
-        pSumClosest = Vec3::FindClosest(&vSum, &vNearRay, &vFarRay);
-
-        vSum = *pSumClosest;
+        // Deviation: a ray that misses the ellipsoid writes neither end, and the original took one anyway.
+        if (g_camTrackEllipsoid.IntersectRay(&vScaled, &vSum, &vNearRay, &vFarRay) != 0)
+        {
+            vSum = *Vec3::FindClosest(&vSum, &vNearRay, &vFarRay);
+        }
 
         vFinal.x = aTarget.x - (vScaled.x + vSum.x);
         vFinal.y = aTarget.y - (vScaled.GetY() + vSum.y);
