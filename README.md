@@ -31,6 +31,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Fixed AI plans, so AI carriers pass and shoot ([docs/plan_bugs.md](docs/plan_bugs.md))
 - Goalie control: G or left shoulder sends your goalie after the rok and back
 - Bot spectator mode: `-b`, or Tab for the side view
+- Cut content finished: One on One, local 2 Player Mode, instant replay (R), time outs (T) and a
+  scouting report on pause
 - Lifetime stats for dromers and teams, saved beside the executable
 - Debug menu on F2, with every cheat and a switch for each new feature
 - The original's menu bar and dialogs, rebuilt, plus a model viewer, sound player and image browser
@@ -41,7 +43,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Update menus to support controller button re-binding
 - Play-test the Linux build, which builds and passes its tests but has not been run on a desktop
 - Mac and browser builds via Emscripten
-- Net and local multiplayer
+- Net multiplayer, and split screen for local 2 Player Mode
 - AI balance fixes
 - The original RC, debug and plan menus in the debug menu
 
