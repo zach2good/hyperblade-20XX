@@ -13,6 +13,7 @@
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
 #include "engine/planfixes.h"
+#include "engine/playerobject.h"
 #include "globals.h"
 #include "graphics/graphicssettings.h"
 #include "graphics/meshblock.h"
@@ -28,6 +29,7 @@
 #include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
+#include <format>
 #include <string>
 #include <imgui.h>
 #include <imgui_impl_sdl3.h>
@@ -41,6 +43,7 @@ using GraphicsSettings::Switch;
 bool s_bReady      = false;
 bool s_bOpen       = false;
 bool s_bShowHidden = true;
+bool s_bShowEnergy = false;
 
 // The original's menu bar hides like a full-screen menu bar: it is up while the debug menu is, and
 // otherwise while the pointer is at the top of the window or a menu hangs from the bar.
@@ -67,9 +70,46 @@ bool MenuBarShown()
 }
 
 // An original dialog stays up after the debug menu closes, until its own buttons close it.
+bool InMatch()
+{
+    return g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive;
+}
+
 bool AnythingShown()
 {
-    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None;
+    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None || (s_bShowEnergy && InMatch());
+}
+
+// v1.0.0.0's DebugOverlay::DrawDromerEnergy: one team's pair in each bottom corner.
+void DrawDromerEnergy()
+{
+    constexpr auto flMargin = 10.0f;
+
+    const auto* const pViewport = ImGui::GetMainViewport();
+    auto* const       pDraw     = ImGui::GetForegroundDrawList();
+
+    const auto flY = pViewport->Pos.y + pViewport->Size.y - ImGui::GetTextLineHeight() - flMargin;
+
+    for (int nTeam = 0; nTeam < 2; nTeam++)
+    {
+        const auto strText = std::format("Dr{} E: {:.1f}, Dr{} E: {:.1f}",
+                                         nTeam,
+                                         g_pGameEngine->GetPlayer(nTeam)->m_stats.m_aStats[0],
+                                         nTeam + 2,
+                                         g_pGameEngine->GetPlayer(nTeam + 2)->m_stats.m_aStats[0]);
+
+        const auto flX = [&]
+        {
+            if (nTeam == 0)
+            {
+                return pViewport->Pos.x + flMargin;
+            }
+
+            return pViewport->Pos.x + pViewport->Size.x - ImGui::CalcTextSize(strText.c_str()).x - flMargin;
+        }();
+
+        pDraw->AddText(ImVec2(flX, flY), IM_COL32_WHITE, strText.c_str());
+    }
 }
 
 void Ready(SDL_Renderer* pRenderer)
@@ -578,6 +618,8 @@ void ObjectsTab()
     }
 
     OriginalUI::Checkbox("Show hidden objects", &s_bShowHidden);
+    OriginalUI::Checkbox("Show dromer energy", &s_bShowEnergy);
+    OriginalUI::SetItemTooltip("Each dromer's energy in the bottom corners, as v1.0.0.0's debug overlay drew it.");
 
     constexpr auto kFlags = ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY;
 
@@ -715,7 +757,7 @@ std::string CheatCode(void (*pfnActivate)())
 
 void CheatsTab()
 {
-    const auto bInMatch = g_pGameEngine != nullptr && g_gameApp.m_nEngineState == kEstateMatchLive;
+    const auto bInMatch = InMatch();
 
     OriginalUI::SeparatorText("Unlocks");
 
@@ -985,6 +1027,10 @@ void DebugMenu::Draw(Renderer renderer)
 
     OriginalUI::DrawDialogs();
     Scenes::DrawWindows();
+    if (s_bShowEnergy && InMatch())
+    {
+        DrawDromerEnergy();
+    }
 
     // The bar stays while the pointer is over it or one of its menus is open.
     s_bMenuBarKept = bMenuBar && (PointerAtTop() || ImGui::IsPopupOpen("", ImGuiPopupFlags_AnyPopupId));
