@@ -8,6 +8,8 @@
 #include "app/config.h"
 #include "app/gameapp.h"
 #include "app/window.h"
+#include "anim/animdb.h"
+#include "anim/animplayer.h"
 #include "engine/engineobject.h"
 #include "engine/framepacing.h"
 #include "engine/gameengine.h"
@@ -29,6 +31,7 @@
 #include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
+#include <deque>
 #include <format>
 #include <string>
 #include <imgui.h>
@@ -44,6 +47,14 @@ bool s_bReady      = false;
 bool s_bOpen       = false;
 bool s_bShowHidden = true;
 bool s_bShowEnergy = false;
+
+// The animation trace: the object it follows, the sets it last saw, and its newest lines last.
+constexpr auto kTraceLines = 64;
+
+int                     s_nTraceSlot = -1;
+const AnimDB*           s_pTraceSet  = nullptr;
+const AnimDB*           s_pTraceQued = nullptr;
+std::deque<std::string> s_traceLines;
 
 // The original's menu bar hides like a full-screen menu bar: it is up while the debug menu is, and
 // otherwise while the pointer is at the top of the window or a menu hangs from the bar.
@@ -78,6 +89,129 @@ bool InMatch()
 bool AnythingShown()
 {
     return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None || (s_bShowEnergy && InMatch());
+}
+
+void AddTraceLine(std::string strLine)
+{
+    s_traceLines.push_back(std::move(strLine));
+
+    if (s_traceLines.size() > kTraceLines)
+    {
+        s_traceLines.pop_front();
+    }
+}
+
+// v1.0.0.0's AnimPlayer::PrintAnimDebug, which printed each set queued on or given to one object.
+// Watched once a frame, so two changes inside one frame show as the last.
+void TraceAnimations()
+{
+    if (s_nTraceSlot < 0 || !InMatch())
+    {
+        return;
+    }
+
+    const auto* const pObject = g_pGameEngine->GetSlot(s_nTraceSlot);
+
+    if (pObject == nullptr || pObject->m_pAnimPlayer == nullptr)
+    {
+        return;
+    }
+
+    const auto& player = *pObject->m_pAnimPlayer;
+
+    const auto* const pQueued = [&]() -> const AnimDB*
+    {
+        if (player.m_bPending == 0)
+        {
+            return nullptr;
+        }
+
+        return player.m_pending.pSet;
+    }();
+
+    if (pQueued != nullptr && pQueued != s_pTraceQued)
+    {
+        AddTraceLine(std::format("Que anim: {}", pQueued->GetName()));
+    }
+
+    if (player.m_pSet != nullptr && player.m_pSet != s_pTraceSet)
+    {
+        AddTraceLine(std::format("Set anim: {}", player.m_pSet->GetName()));
+    }
+
+    s_pTraceQued = pQueued;
+    s_pTraceSet  = player.m_pSet;
+}
+
+void TraceSection()
+{
+    OriginalUI::SeparatorText("Animation trace");
+
+    const auto strPicked = [&]
+    {
+        if (s_nTraceSlot < 0)
+        {
+            return std::string("Off");
+        }
+
+        return DebugMenu::SlotName(s_nTraceSlot);
+    }();
+
+    ImGui::SetNextItemWidth(200.0f);
+
+    if (ImGui::BeginCombo("Follow", strPicked.c_str()))
+    {
+        if (ImGui::Selectable("Off", s_nTraceSlot < 0))
+        {
+            s_nTraceSlot = -1;
+        }
+
+        for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
+        {
+            auto* const pObject = g_pGameEngine->m_ppObjects[i];
+
+            if (pObject->m_pAnimPlayer == nullptr)
+            {
+                continue;
+            }
+
+            const auto nSlot    = pObject->GetSlot();
+            const auto strLabel = DebugMenu::SlotName(nSlot) + "##trace" + std::to_string(nSlot);
+
+            if (ImGui::Selectable(strLabel.c_str(), nSlot == s_nTraceSlot))
+            {
+                s_nTraceSlot = nSlot;
+                s_pTraceSet  = nullptr;
+                s_pTraceQued = nullptr;
+                s_traceLines.clear();
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+
+    OriginalUI::SetItemTooltip("Lists each animation set queued on or given to one object, as v1.0.0.0's animation debug printed them.");
+
+    ImGui::SameLine();
+
+    if (OriginalUI::Button("Clear"))
+    {
+        s_traceLines.clear();
+    }
+
+    ImGui::BeginChild("trace", ImVec2(0.0f, 140.0f), ImGuiChildFlags_Borders);
+
+    for (const auto& strLine : s_traceLines)
+    {
+        ImGui::TextUnformatted(strLine.c_str());
+    }
+
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+    {
+        ImGui::SetScrollHereY(1.0f);
+    }
+
+    ImGui::EndChild();
 }
 
 // v1.0.0.0's DebugOverlay::DrawDromerEnergy: one team's pair in each bottom corner.
@@ -701,6 +835,8 @@ void ObjectsTab()
     }
 
     ImGui::EndTable();
+
+    TraceSection();
 }
 
 // The original's typed cheats, as buttons. The tooltip decodes the code a player types for each.
@@ -994,6 +1130,7 @@ void DebugMenu::Draw(Renderer renderer)
     auto* const pRenderer = renderer.As<SDL_Renderer>();
 
     Ready(pRenderer);
+    TraceAnimations();
 
     if (!AnythingShown())
     {
