@@ -28,10 +28,11 @@ public:
     Vec3 m_vPoint; // 0x038
 
     // The plane equation, cached: GetZ fills it once and raises the byte.
-    float         m_flSlopeX; // 0x044
-    float         m_flSlopeY; // 0x048
-    float         m_flOffset; // 0x04c
-    unsigned char m_bCached;  // 0x050
+    // Deviation: the three-point constructor left the byte to whatever the stack held.
+    float         m_flSlopeX = 0.0f; // 0x044
+    float         m_flSlopeY = 0.0f; // 0x048
+    float         m_flOffset = 0.0f; // 0x04c
+    unsigned char m_bCached  = 0;    // 0x050
 };
 
 #endif
