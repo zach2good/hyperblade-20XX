@@ -12,6 +12,10 @@ void LoadPreferences(const char* pszFileName);
 int  ParseFile(const char* pszData, const char* pszFallbackPath, KeyRow* pRows);
 int  IsCommentLine(const char* pszLine);
 
+// Writes the key rows, physics and camera tuning beside the executable, in the layout ParseFile
+// reads. LoadPreferences reads that file in place of the game's own when it exists.
+bool SaveTuning(const KeyRow* pRows);
+
 // Whether Escape pauses a single-player match under its quit prompt. Saved under [Gameplay].
 bool EscapePauses();
 void SetEscapePauses(bool bOn);

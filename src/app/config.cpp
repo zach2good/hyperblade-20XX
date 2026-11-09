@@ -11,6 +11,7 @@
 #include "config.h"
 #include <cstdio>
 #include <cstring>
+#include <filesystem>
 #include <optional>
 #include "engine/gameoptions.h"
 #include "gameapp.h"
@@ -90,6 +91,13 @@ Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteeri
 // STRING: HYPERX 0x004c4750
 String g_strPrefs("Data\\DftKeybd.cfg");
 
+namespace
+{
+
+constexpr auto kTuningFile = "Tuning.cfg";
+
+} // namespace
+
 // FUNCTION: HYPERX 0x0046d710
 void Config::LoadPreferences(const char* pszFileName)
 {
@@ -121,7 +129,60 @@ void Config::LoadPreferences(const char* pszFileName)
                           "Data\\DftKeybd.cfg");
     }
 
+    const auto strTuning = String::Concat(g_gameApp.m_strExeDir.m_str, kTuningFile);
+
+    if (std::filesystem::exists(Path::Native(strTuning)))
+    {
+        Config::ParseFile(strTuning.m_pchData, "Data\\DftKeybd.cfg", g_aKeyRows);
+
+        return;
+    }
+
     Config::ParseFile(g_strPrefs.m_pchData, "Data\\DftKeybd.cfg", g_aKeyRows);
+}
+
+// Deviation: v1.0.0.0's KeyConfigDialog::SaveKeys wrote over the file Prefs.txt names, and asked
+// before overwriting only when that file was missing.
+bool Config::SaveTuning(const KeyRow* pRows)
+{
+    const auto strPath = String::Concat(g_gameApp.m_strExeDir.m_str, kTuningFile);
+
+    auto* const pFile = fopen(Path::Native(strPath).c_str(), "w");
+
+    if (pFile == nullptr)
+    {
+        g_gameApp.Error("Could not create file %s!", strPath.m_pchData);
+
+        return false;
+    }
+
+    for (int nRow = 0; nRow < 40; nRow++)
+    {
+        fprintf(pFile, " %d %d %d: ", pRows[nRow].cFlags, pRows[nRow].nKey, pRows[nRow].nIndex);
+    }
+
+    fprintf(pFile, " %f %f %f  %f ", g_flForceIncrement, g_flMaxAcceleration, g_flMaxSpeed, g_flForceRelaxation);
+    fprintf(pFile, " @v02 ");
+    fprintf(pFile, " %d %f  %f %f %f %f :", g_bVictimCam, g_flBandwidth, g_flNetTracking, g_flStopForceFactor, g_flSpeedBurstFactor, g_vViewSteepness.z);
+    fprintf(pFile, " %f %f %f :", g_vBirdsEyeTrackOffset.x, g_vBirdsEyeTrackOffset.y, g_vBirdsEyeTrackOffset.z);
+    fprintf(pFile, " %f %f %f :", g_vFirstPersonTrackOffset.x, g_vFirstPersonTrackOffset.y, g_vFirstPersonTrackOffset.z);
+    fprintf(pFile, " %f %f %f :", g_vOverShoulderTrackOffset.x, g_vOverShoulderTrackOffset.y, g_vOverShoulderTrackOffset.z);
+    fprintf(pFile, " %f %f %f :", g_vOverShoulderRokTrackOffset.x, g_vOverShoulderRokTrackOffset.y, g_vOverShoulderRokTrackOffset.z);
+
+    const auto bWritten = ferror(pFile) == 0;
+
+    fclose(pFile);
+
+    if (!bWritten)
+    {
+        g_gameApp.Error("Error writing file.");
+
+        return false;
+    }
+
+    g_gameApp.Error("FileSaved: %s!", strPath.m_pchData);
+
+    return true;
 }
 
 // A missing file still returns true.

@@ -1,4 +1,5 @@
 #include "ui/originalui.h"
+#include "app/config.h"
 #include "app/frametimer.h"
 #include "app/gameapp.h"
 #include "app/menuids.h"
@@ -812,7 +813,7 @@ void InitKeys()
     ControlByID(nDialog, kIDKeysUseAsDefault).bChecked = true;
     ShowKeyBinding();
 
-    Disable(nDialog, { kIDKeysControl, kIDKeysShift, kIDKeysJoystick, kIDKeysUseAsDefault, kIDKeysCustomFile, kIDKeysSaveAs, kIDKeysLoadConfig });
+    Disable(nDialog, { kIDKeysControl, kIDKeysShift, kIDKeysJoystick, kIDKeysUseAsDefault, kIDKeysCustomFile, kIDKeysLoadConfig });
 }
 
 void KeysSelectionChanged(unsigned short nControl, int nSelection)
@@ -836,6 +837,12 @@ void KeysClicked(unsigned short nControl)
     {
         s_anKeyEdits = kFactoryKeyBindings;
         ShowKeyBinding();
+    }
+
+    // Save As keeps the physics and camera tuning, which the bindings' own save leaves out.
+    if (nControl == kIDKeysSaveAs)
+    {
+        Config::SaveTuning(g_aKeyRows);
     }
 }
 
