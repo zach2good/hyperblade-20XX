@@ -36,6 +36,10 @@ void KeyUp(unsigned int nKey);
 // Player two's held-key timeouts, which the keyboard device runs for player one each tick.
 void CheckSecondTimeouts();
 
+// Holds the main camera on the press box view, which watches the rok for both players, while play
+// is live. The camera's plan leaves it for the follow view at times; this sends it back.
+void KeepSharedCamera();
+
 // Points m_apTracked at the slot: its own team's entry alone in 2 Player Mode, both otherwise.
 void Track(int nSlot);
 

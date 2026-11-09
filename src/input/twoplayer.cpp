@@ -7,6 +7,8 @@
 #include "engine/spectator.h"
 #include "globals.h"
 #include "input/keyboarddeviceobj.h"
+#include "planvm/gamebehaviorobject.h"
+#include "planvm/planstate.h"
 #include <algorithm>
 #include <array>
 
@@ -179,6 +181,24 @@ void TwoPlayer::CheckSecondTimeouts()
         {
             g_pInputDevice->CheckButtonTimeouts();
         });
+}
+
+void TwoPlayer::KeepSharedCamera()
+{
+    // The CAMERA plan's global interactor for this goes to "PressCam".
+    constexpr auto kMsgCameraToSideline = 0x84;
+
+    if (!Ready() || static_cast<short>(g_pGameEngine->m_wRunState) != kEngineRunPlaying || g_pGameEngine->m_clock.nPauseMark != 1)
+    {
+        return;
+    }
+
+    auto* const pCamera = g_pGameEngine->m_ppSlots[kCameraMainSlot];
+
+    if (SDL_strcasecmp(pCamera->GetPlanState()->m_pCurrent->GetName(), "PressCam") != 0)
+    {
+        pCamera->PostSceneEvent(kMsgCameraToSideline, 0);
+    }
 }
 
 void TwoPlayer::Track(int nSlot)

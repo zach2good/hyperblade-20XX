@@ -1,6 +1,7 @@
 // The game at the top level: engine setup and teardown, one frame, and the state machine.
 
 #include "math/squirrel5.h"
+#include "input/twoplayer.h"
 #include "common/compat.h"
 #include "common/clock.h"
 #include <SDL3/SDL.h>
@@ -78,6 +79,8 @@ void Game::Tick()
     FramePacing::BeginTick();
 
     g_pGameEngine->PerFrameUpdate();
+
+    TwoPlayer::KeepSharedCamera();
 
     if (g_frameTimer.bFrameTimesOn != 0)
     {
