@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/twoplayer.h"
 #include "planvm/behaviorids.h"
 #include "engine/objectclasses.h"
 #include "common/pooledclasses.h"
@@ -56,8 +57,7 @@ void BehObj_MonitorKeyboard::SendTimedMessage()
 
         g_pGameEngine->m_nViewedSlot = nOwnerSlot;
 
-        g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[nOwnerSlot];
-        g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[nOwnerSlot];
+        TwoPlayer::Track(nOwnerSlot);
 
         g_pGameEngine->m_bFollowingOther = 0;
     }

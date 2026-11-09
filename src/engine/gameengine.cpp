@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/twoplayer.h"
 #include "common/clock.h"
 #include <cstdint>
 #include "planvm/gamebehaviorobject.h"
@@ -4400,6 +4401,8 @@ void GameEngine::RestartMatch()
     ClearPendingEvents();
 
     TimeOut::Reset();
+    TwoPlayer::Reset();
+
     for (nIndex = 0; nIndex < m_nObjectCount; nIndex++)
     {
         m_ppObjects[nIndex]->SelectAndActivatePlan();

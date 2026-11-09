@@ -1,4 +1,5 @@
 #include "math/squirrel5.h"
+#include "input/twoplayer.h"
 #include "common/compat.h"
 #include "common/clock.h"
 #include <cstdint>
@@ -715,8 +716,7 @@ void PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, sh
     {
         g_pGameEngine->m_nViewedSlot = static_cast<short>(nIndex);
 
-        g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
-        g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[static_cast<short>(nIndex)];
+        TwoPlayer::Track(nIndex);
 
         if (nIndex == nOwnSlot)
         {

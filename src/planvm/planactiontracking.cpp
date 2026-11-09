@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/twoplayer.h"
 #include "engine/messageids.h"
 #include "planvm/ctracktraj.h"
 #include "planvm/csteertotarget.h"
@@ -120,12 +121,12 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
             return;
         }
 
-        if (nValue < kPlayerObjectCount)
+        // In 2 Player Mode the camera stays with player one, and leaves player two's dromer alone.
+        if (nValue < kPlayerObjectCount && !TwoPlayer::IsSecondPlayers(nValue))
         {
             g_pGameEngine->m_nViewedSlot = nValue;
 
-            g_pGameEngine->m_apTracked[0] = g_pGameEngine->m_ppSlots[nIndex];
-            g_pGameEngine->m_apTracked[1] = g_pGameEngine->m_ppSlots[nIndex];
+            TwoPlayer::Track(nIndex);
         }
     }
 }

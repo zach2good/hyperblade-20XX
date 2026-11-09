@@ -25,6 +25,7 @@
 #include "graphics/renderer.h"
 #include "input/inputglobals.h"
 #include "input/keyboarddeviceobj.h"
+#include "input/twoplayer.h"
 #include "physics/physicsbody.h"
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/msginteractor.h"
@@ -1565,10 +1566,18 @@ void Run(int nCommand)
 
             break;
 
+        // Deviation: the original left this unhandled. It restarts the match with a second human.
+        case kIDMenuTwoPlayer:
+            if (TwoPlayer::Set(!TwoPlayer::On()) && g_pGameEngine != nullptr)
+            {
+                g_pGameEngine->RestartMatch();
+            }
+
+            break;
+
         case kIDMenuMIDIOff:
         case kIDMenuNetworkConnection:
         case kIDMenuNetworkPlayers:
-        case kIDMenuTwoPlayer:
             // The original fell through to DefWindowProc for these, or returned at once.
             break;
 
@@ -1610,6 +1619,9 @@ bool IsChecked(const DialogTemplates::MenuEntry& entry)
 
         case kIDMenuOneOnOne:
             return OneOnOne::On();
+
+        case kIDMenuTwoPlayer:
+            return TwoPlayer::On();
 
         case kIDMenuTwoOnTwo:
             return !OneOnOne::On();

@@ -1,6 +1,7 @@
 // Ages the owner's button timeouts, then passes the message down the chain.
 
 #include "common/compat.h"
+#include "input/twoplayer.h"
 #include "planvm/agendaitemids.h"
 #include "planvm/agendaitem.h"
 #include "engine/cmonitorheldkeys.h"
@@ -19,6 +20,8 @@ void CMonitorHeldKeys::Bind(EngineObject* pSubject, GameBehaviorObject*)
 void CMonitorHeldKeys::Process(int nArg)
 {
     ((KeyboardDeviceObj*)m_pOwner)->CheckButtonTimeouts();
+
+    TwoPlayer::CheckSecondTimeouts();
 
     auto* const pNext = m_pNext;
 

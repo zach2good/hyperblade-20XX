@@ -9,8 +9,10 @@
 #include "input/inputglobals.h"
 #include "input/inputlog.h"
 #include "input/keyboarddeviceobj.h"
+#include "input/twoplayer.h"
 #include <SDL3/SDL.h>
 #include <array>
+#include <unordered_map>
 
 namespace
 {
@@ -109,12 +111,26 @@ struct Press
     unsigned int nKey      = 0;
     const char*  pszSource = nullptr;
     const char*  pszAction = nullptr;
+
+    // Pressed for 2 Player Mode's second player, so the release goes the same way.
+    bool bSecond = false;
 };
 
-std::array<Press, DIRECTION_COUNT>       s_aDirections;
-std::array<Press, CONTROL_COUNT>         s_aControls;
-std::array<bool, DIRECTION_COUNT>        s_abStick         = {};
-std::array<bool, 2>                      s_abTrigger       = {};
+// What each pad holds, so two pads never let go of each other's keys.
+struct PadState
+{
+    std::array<Press, DIRECTION_COUNT> aDirections;
+    std::array<Press, CONTROL_COUNT>   aControls;
+    std::array<bool, DIRECTION_COUNT>  abStick   = {};
+    std::array<bool, 2>                abTrigger = {};
+};
+
+std::unordered_map<SDL_JoystickID, PadState> s_pads;
+
+// The pad whose event is being handled.
+SDL_JoystickID s_nPad = 0;
+PadState*      s_pPad = nullptr;
+
 std::array<const Action*, CONTROL_COUNT> s_apBindings      = {};
 bool                                     s_bBindingsLoaded = false;
 SDL_JoystickID                           s_nLastPad        = 0;
@@ -170,9 +186,19 @@ void Down(Press& press, unsigned int nKey, const char* pszSource, const char* ps
         return;
     }
 
-    press = Press{ true, nKey, pszSource, pszAction };
+    const auto bSecond = InMatch() && TwoPlayer::PadIsSecond(s_nPad);
+
+    press = Press{ true, nKey, pszSource, pszAction, bSecond };
 
     InputLog::Add(pszSource, nKey, true, pszAction);
+
+    if (bSecond)
+    {
+        TwoPlayer::KeyDown(nKey);
+
+        return;
+    }
+
     WndProc::OnKeyDown(nKey);
 }
 
@@ -181,7 +207,15 @@ void Up(Press& press)
     if (press.bDown)
     {
         InputLog::Add(press.pszSource, press.nKey, false, press.pszAction);
-        WndProc::OnKeyUp(press.nKey);
+
+        if (press.bSecond)
+        {
+            TwoPlayer::KeyUp(press.nKey);
+        }
+        else
+        {
+            WndProc::OnKeyUp(press.nKey);
+        }
     }
 
     press = Press{};
@@ -196,9 +230,9 @@ void UpdateDirections()
 
     for (int nDirection = 0; nDirection < DIRECTION_COUNT; nDirection++)
     {
-        if (!s_abStick[nDirection])
+        if (!s_pPad->abStick[nDirection])
         {
-            Up(s_aDirections[nDirection]);
+            Up(s_pPad->aDirections[nDirection]);
 
             continue;
         }
@@ -223,13 +257,13 @@ void UpdateDirections()
             return nullptr;
         }();
 
-        Down(s_aDirections[nDirection], nKey, kNames[nDirection], pszAction);
+        Down(s_pPad->aDirections[nDirection], nKey, kNames[nDirection], pszAction);
     }
 }
 
 void OnControl(ControlId control, bool bDown)
 {
-    auto& press = s_aControls[control];
+    auto& press = s_pPad->aControls[control];
 
     if (!bDown)
     {
@@ -295,7 +329,7 @@ void OnButton(SDL_GamepadButton button, bool bDown)
 
 void OnTrigger(int nTrigger, ControlId control, int nValue)
 {
-    auto& bHeld = s_abTrigger[static_cast<size_t>(nTrigger)];
+    auto& bHeld = s_pPad->abTrigger[static_cast<size_t>(nTrigger)];
 
     const auto bNowHeld = [&]
     {
@@ -320,14 +354,14 @@ void OnAxis(SDL_GamepadAxis axis, int nValue)
     switch (axis)
     {
         case SDL_GAMEPAD_AXIS_LEFTX:
-            s_abStick[DIRECTION_LEFT]  = nValue < -kStickThreshold;
-            s_abStick[DIRECTION_RIGHT] = nValue > kStickThreshold;
+            s_pPad->abStick[DIRECTION_LEFT]  = nValue < -kStickThreshold;
+            s_pPad->abStick[DIRECTION_RIGHT] = nValue > kStickThreshold;
             UpdateDirections();
             break;
 
         case SDL_GAMEPAD_AXIS_LEFTY:
-            s_abStick[DIRECTION_UP]   = nValue < -kStickThreshold;
-            s_abStick[DIRECTION_DOWN] = nValue > kStickThreshold;
+            s_pPad->abStick[DIRECTION_UP]   = nValue < -kStickThreshold;
+            s_pPad->abStick[DIRECTION_DOWN] = nValue > kStickThreshold;
             UpdateDirections();
             break;
 
@@ -346,15 +380,21 @@ void OnAxis(SDL_GamepadAxis axis, int nValue)
 
 void ReleaseAll()
 {
-    s_abStick   = {};
-    s_abTrigger = {};
+    s_pPad->abStick   = {};
+    s_pPad->abTrigger = {};
 
     UpdateDirections();
 
-    for (auto& press : s_aControls)
+    for (auto& press : s_pPad->aControls)
     {
         Up(press);
     }
+}
+
+void SelectPad(SDL_JoystickID nPad)
+{
+    s_nPad = nPad;
+    s_pPad = &s_pads[nPad];
 }
 
 bool SDLCALL OnEvent(void*, SDL_Event* pEvent)
@@ -367,12 +407,16 @@ bool SDLCALL OnEvent(void*, SDL_Event* pEvent)
 
         case SDL_EVENT_GAMEPAD_REMOVED:
             SDL_CloseGamepad(SDL_GetGamepadFromID(pEvent->gdevice.which));
+            SelectPad(pEvent->gdevice.which);
             ReleaseAll();
+            s_pads.erase(pEvent->gdevice.which);
+            s_pPad = nullptr;
             break;
 
         case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
         case SDL_EVENT_GAMEPAD_BUTTON_UP:
             s_nLastPad = pEvent->gbutton.which;
+            SelectPad(pEvent->gbutton.which);
             OnButton(static_cast<SDL_GamepadButton>(pEvent->gbutton.button), pEvent->gbutton.down);
             break;
 
@@ -382,6 +426,8 @@ bool SDLCALL OnEvent(void*, SDL_Event* pEvent)
             {
                 s_nLastPad = pEvent->gaxis.which;
             }
+
+            SelectPad(pEvent->gaxis.which);
 
             OnAxis(static_cast<SDL_GamepadAxis>(pEvent->gaxis.axis), pEvent->gaxis.value);
             break;

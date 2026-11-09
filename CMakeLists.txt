@@ -196,6 +196,7 @@ set(HYPERX_SOURCES
     src/graphics/visualeffectfade.cpp
     src/input/actionbindings.cpp
     src/input/cheat.cpp
+    src/input/twoplayer.cpp
     src/input/deviceobject.cpp
     src/input/input.cpp
     src/input/inputlog.cpp

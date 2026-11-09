@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "input/twoplayer.h"
 #include "common/clock.h"
 #include "engine/devicector.h"
 #include "physicsbody.h"
@@ -204,6 +205,8 @@ void PhysicsBody::PreUpdateTick()
 // FUNCTION: HYPERX 0x004079f0
 void PhysicsBody::PerFrameTick()
 {
+    const auto scope = TwoPlayer::Scope(pOwner);
+
     PreUpdateTick();
 
     switch (pOwner->GetPhase())

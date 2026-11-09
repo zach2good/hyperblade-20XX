@@ -55,6 +55,7 @@
 #include <string>
 #include "physics/collisionplane.h"
 #include "engine/engineobject.h"
+#include "input/twoplayer.h"
 #include "net/netrecords.h"
 #include "net/netsequenceword.h"
 #include "net/slotnibbles.h"
@@ -1772,7 +1773,15 @@ void EngineObject::SelectAndActivatePlan()
             }
             else if (nSlot == 1)
             {
-                pszWanted = "Defense";
+                pszWanted = [&]
+                {
+                    if (TwoPlayer::IsSecondPlayers(nSlot))
+                    {
+                        return "Human";
+                    }
+
+                    return "Defense";
+                }();
             }
 
             for (nIndex = 0; nIndex < m_nPlanCount; nIndex++)
@@ -1927,6 +1936,8 @@ void EngineObject::PostSceneMessage(int nMessage, int nArg, int nSender, int bFr
 // FUNCTION: HYPERX 0x00472110
 void EngineObject::DispatchSceneMessage(unsigned int nMessage, int nArg, short nValue, unsigned int nSender, int bFromInput)
 {
+    const auto scope = TwoPlayer::Scope(this);
+
     if (m_aSceneHandlerSlot[nMessage] != 0)
     {
         if (bFromInput != 0 || m_nPhase != ObjectPhase::kNetwork)
