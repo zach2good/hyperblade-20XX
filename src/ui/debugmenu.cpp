@@ -94,12 +94,12 @@ bool InMatch()
 // Paused by the Pause key, not under Escape's quit prompt.
 bool PausedForReport()
 {
-    return InMatch() && static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPaused && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0;
+    return InMatch() && static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPaused && g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible == 0 && !FramePacing::Replaying();
 }
 
 bool AnythingShown()
 {
-    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None || (s_bShowEnergy && InMatch()) || PausedForReport();
+    return MenuBarShown() || OriginalUI::HasOpenDialogs() || Scenes::Current() != Scenes::Scene::None || (s_bShowEnergy && InMatch()) || PausedForReport() || (FramePacing::Replaying() && InMatch());
 }
 
 // The scouting report's rows: the string table's heading for each, and the ratings it averages.
@@ -1304,6 +1304,7 @@ void DebugMenu::Draw(Renderer renderer)
 
     OriginalUI::DrawDialogs();
     Scenes::DrawWindows();
+
     if (s_bShowEnergy && InMatch())
     {
         DrawDromerEnergy();
@@ -1312,6 +1313,18 @@ void DebugMenu::Draw(Renderer renderer)
     if (PausedForReport())
     {
         DrawScoutingReport();
+    }
+
+    if (FramePacing::Replaying() && InMatch())
+    {
+        constexpr auto kStringInstantReplay = 0x47;
+
+        const auto* const pViewport = ImGui::GetMainViewport();
+        const auto* const pszText   = StringTable::Find(kStringInstantReplay);
+
+        const auto flX = pViewport->GetCenter().x - ImGui::CalcTextSize(pszText).x * 0.5f;
+
+        ImGui::GetForegroundDrawList()->AddText(ImVec2(flX, pViewport->Pos.y + 40.0f), IM_COL32(255, 255, 0, 255), pszText);
     }
 
     // The bar stays while the pointer is over it or one of its menus is open.

@@ -2,6 +2,7 @@
 #include "common/path.h"
 #include "input/keycodes.h"
 #include "engine/spectator.h"
+#include "engine/framepacing.h"
 #include "engine/planfixes.h"
 #include "engine/timeout.h"
 #include "planvm/gamebehaviorobject.h"
@@ -310,6 +311,17 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
         return;
     }
 
+    // Deviation: neither release had a replay. These keys end one early; the rest wait for it.
+    if (FramePacing::Replaying())
+    {
+        if (nKey == Key::kEscape || nKey == Key::kPause || nKey == 'R')
+        {
+            FramePacing::StopReplay();
+        }
+
+        return;
+    }
+
     switch (nKey)
     {
         case Key::kPause:
@@ -389,6 +401,13 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
                 }();
 
                 pGoalie->PostSceneEvent(nMessage, 0);
+            }
+            break;
+
+        case 'R':
+            if (g_gameApp.m_nEngineState == kEstateMatchLive)
+            {
+                FramePacing::StartReplay();
             }
             break;
 

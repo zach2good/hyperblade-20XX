@@ -6,6 +6,7 @@
 #include "engine/engineobject.h"
 #include "engine/game.h"
 #include "engine/gameengine.h"
+#include "engine/spectator.h"
 #include "graphics/meshbone.h"
 #include "graphics/transparentqueue.h"
 #include "globals.h"
@@ -15,6 +16,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <deque>
 #include <functional>
 #include <unordered_map>
 #include <vector>
@@ -54,6 +56,29 @@ struct View
     std::vector<MeshBone*>     components;
     std::vector<EngineObject*> visible;
 };
+
+// The instant replay keeps the last eight seconds of drawn ticks: each object's bones and whether
+// the main camera saw it, and the camera itself.
+constexpr auto kReplayTicks = 240;
+
+struct ReplayObject
+{
+    EngineObject*     pObject = nullptr;
+    std::vector<Rows> bones;
+    bool              bVisible = false;
+};
+
+struct ReplayFrame
+{
+    std::vector<ReplayObject> objects;
+    std::array<float, 16>     view = {};
+    Vec3                      eye  = {};
+};
+
+std::deque<ReplayFrame>  s_recorded;
+std::vector<ReplayFrame> s_playing;
+size_t                   s_nPlayed    = 0;
+bool                     s_bReplaying = false;
 
 std::unordered_map<const EngineObject*, ObjectPose> s_objects;
 std::unordered_map<CameraObject*, CameraPose>       s_cameras;
@@ -195,6 +220,109 @@ void SnapshotCamera(CameraObject& camera)
     }
 
     pose.nTick = s_nTick;
+}
+
+void RecordReplayFrame(const CameraObject& camera)
+{
+    auto frame = ReplayFrame();
+
+    frame.objects.reserve(static_cast<size_t>(g_pGameEngine->m_nObjectCount));
+
+    for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
+    {
+        auto* const pObject = g_pGameEngine->m_ppObjects[i];
+
+        frame.objects.push_back(ReplayObject{ pObject, s_objects[pObject].curr, pObject->IsVisible() != 0 });
+    }
+
+    std::memcpy(frame.view.data(), camera.m_pView->m_a, sizeof(frame.view));
+
+    frame.eye = camera.m_pView->m_vEye;
+
+    s_recorded.push_back(std::move(frame));
+
+    if (s_recorded.size() > kReplayTicks)
+    {
+        s_recorded.pop_front();
+    }
+}
+
+// The engine runs on from where it paused; the poses snap back to it at once.
+void EndReplay()
+{
+    s_bReplaying = false;
+    s_playing.clear();
+
+    for (auto& [pObject, pose] : s_objects)
+    {
+        pose.prev = pose.curr;
+    }
+
+    if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPaused)
+    {
+        g_pGameEngine->SetRunState(1, 0);
+    }
+}
+
+// ponytail: an object is matched by its address and bone count, so one freed and replaced at the
+// same address mid-replay would take the old one's pose. Record slots if that ever shows.
+void PlayReplayFrame(CameraObject& camera, View& view)
+{
+    const auto& frame = s_playing[s_nPlayed];
+    const auto& prev  = s_playing[(std::max)(s_nPlayed, size_t{ 1 }) - 1];
+
+    view.visible.clear();
+    view.components.clear();
+
+    for (size_t n = 0; n < frame.objects.size(); n++)
+    {
+        const auto& recorded = frame.objects[n];
+
+        const auto it = s_objects.find(recorded.pObject);
+
+        if (it == s_objects.end() || recorded.bones.size() != static_cast<size_t>(recorded.pObject->m_wBoneCount))
+        {
+            continue;
+        }
+
+        it->second.curr = recorded.bones;
+        it->second.prev = recorded.bones;
+
+        if (n < prev.objects.size() && prev.objects[n].pObject == recorded.pObject && prev.objects[n].bones.size() == recorded.bones.size())
+        {
+            it->second.prev = prev.objects[n].bones;
+        }
+
+        if (!recorded.bVisible)
+        {
+            continue;
+        }
+
+        view.visible.push_back(recorded.pObject);
+
+        for (short nBone = 0; nBone < recorded.pObject->m_wBoneCount; nBone++)
+        {
+            auto* const pBone = &recorded.pObject->m_pBones[nBone];
+
+            if (pBone->m_pMesh != nullptr && pBone->IsHidden() == 0)
+            {
+                view.components.push_back(pBone);
+            }
+        }
+    }
+
+    // The free camera flies where it likes over the replay.
+    if (!Spectator::FreeCamera())
+    {
+        auto& pose = s_cameras[&camera];
+
+        pose.prev    = prev.view;
+        pose.curr    = frame.view;
+        pose.prevEye = prev.eye;
+        pose.currEye = frame.eye;
+    }
+
+    s_nPlayed++;
 }
 
 void PlaceObjects(float flAlpha)
@@ -358,6 +486,62 @@ void FramePacing::RecordView(CameraObject& camera)
             it->visible.push_back(pObject);
         }
     }
+
+    // Only the main camera draws while the engine is paused, so it is the one replayed.
+    if (it != s_views.begin())
+    {
+        return;
+    }
+
+    if (!s_bReplaying)
+    {
+        if (static_cast<short>(g_pGameEngine->m_wRunState) == kEngineRunPlaying)
+        {
+            RecordReplayFrame(camera);
+        }
+
+        return;
+    }
+
+    // Anything that set the engine running again, or the last frame, ends the replay.
+    if (static_cast<short>(g_pGameEngine->m_wRunState) != kEngineRunPaused || s_nPlayed >= s_playing.size())
+    {
+        EndReplay();
+
+        return;
+    }
+
+    PlayReplayFrame(camera, *it);
+}
+
+bool FramePacing::StartReplay()
+{
+    constexpr auto kMinTicks = 30;
+
+    if (s_bReplaying || g_bSessionActive != 0 || static_cast<short>(g_pGameEngine->m_wRunState) != kEngineRunPlaying || s_recorded.size() < kMinTicks)
+    {
+        return false;
+    }
+
+    s_playing.assign(std::make_move_iterator(s_recorded.begin()), std::make_move_iterator(s_recorded.end()));
+    s_recorded.clear();
+
+    s_nPlayed    = 0;
+    s_bReplaying = true;
+
+    g_pGameEngine->SetRunState(0, 0);
+
+    return true;
+}
+
+void FramePacing::StopReplay()
+{
+    s_nPlayed = s_playing.size();
+}
+
+bool FramePacing::Replaying()
+{
+    return s_bReplaying;
 }
 
 float FramePacing::RunTicks()
@@ -454,5 +638,8 @@ void FramePacing::Reset()
     s_views.clear();
     s_objects.clear();
     s_cameras.clear();
-    s_last = {};
+    s_recorded.clear();
+    s_playing.clear();
+    s_bReplaying = false;
+    s_last       = {};
 }

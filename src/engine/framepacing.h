@@ -37,6 +37,15 @@ void DropBones(const MeshBone* pBones, int nCount);
 // Forgets every recorded view and pose, for when the objects they point at go away.
 void Reset();
 
+// The instant replay: pauses the match and draws the last eight seconds of ticks again, then
+// lets play run on. False in a network match, while paused, or before a second has been recorded.
+bool StartReplay();
+
+// Ends the replay at the next tick.
+void StopReplay();
+
+bool Replaying();
+
 } // namespace FramePacing
 
 #endif
