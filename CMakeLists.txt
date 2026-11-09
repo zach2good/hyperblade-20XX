@@ -111,6 +111,7 @@ set(HYPERX_SOURCES
     src/engine/coachai.cpp
     src/engine/coachobject.cpp
     src/engine/cpansound.cpp
+    src/engine/crashtest.cpp
     src/engine/crelaxyaw.cpp
     src/engine/csetattitude.cpp
     src/engine/csetpositionrelative.cpp

@@ -50,6 +50,7 @@
 #include "engine/engineobject.h"
 #include "anim/animset.h"
 #include "planvm/planaction.h"
+#include "engine/crashtest.h"
 #include "planvm/plancond.h"
 #include "planvm/planutil.h"
 #include "engine/player.h"
@@ -6122,6 +6123,8 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
         return;
     }
+
+    CrashTest::RecordAttack(pActor->GetSlot(), nSlot, nAttack);
 
     auto* const pStats = &pActor->m_stats;
 

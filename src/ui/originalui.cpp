@@ -11,6 +11,7 @@
 #include "common/peresources.h"
 #include "engine/engineobject.h"
 #include "engine/cameraobject.h"
+#include "engine/crashtest.h"
 #include "engine/game.h"
 #include "engine/gameengine.h"
 #include "engine/gameoptions.h"
@@ -69,6 +70,7 @@ constexpr auto kIDDialogPlanEditor        = 319;
 constexpr auto kIDDialogRatings           = 320;
 constexpr auto kIDDialogDebugParameters   = 321;
 constexpr auto kIDDialogAnimationPeek     = OriginalUI::kDialogAnimationPeek;
+constexpr auto kIDDialogCrashTest         = 463;
 
 constexpr std::pair<unsigned short, const char*> s_aDialogNames[] = {
     { 122, "Options chooser" },
@@ -82,7 +84,7 @@ constexpr std::pair<unsigned short, const char*> s_aDialogNames[] = {
     { kIDDialogRatings, "Ratings" },
     { kIDDialogDebugParameters, "Debug parameters" },
     { kIDDialogAnimationPeek, "Animation peek" },
-    { 463, "Crash test" },
+    { kIDDialogCrashTest, "Crash test" },
     { 603, "Waiting for network players" },
     { 604, "Multiplayer setup" },
     { 607, "Select player name and position" },
@@ -246,6 +248,17 @@ const std::pair<unsigned short, float*> s_aPeekFields[] = {
     { 0x4ae, &g_flCameraMinHeight },
     { 0x4b0, &g_flSolarWindFactor },
 };
+
+// Crash Test's inputs, then the three read-only boxes it reports in.
+constexpr auto kIDCrashMySpeed     = 1126;
+constexpr auto kIDCrashHisSpeed    = 1127;
+constexpr auto kIDCrashMyDistance  = 1123;
+constexpr auto kIDCrashHisDistance = 1124;
+constexpr auto kIDCrashMyClock     = 1125;
+constexpr auto kIDCrashHisClock    = 1119;
+constexpr auto kIDCrashLastAnim    = 1120;
+constexpr auto kIDCrashHitLevel    = 1121;
+constexpr auto kIDCrashHitZone     = 1122;
 
 constexpr auto kIDKeysAction       = 1008;
 constexpr auto kIDKeysKey          = 1009;
@@ -863,6 +876,56 @@ void AcceptKeys()
     }
 }
 
+// A head-on run at the top speed, from far enough out to see the dromers close.
+void InitCrashTest()
+{
+    constexpr auto nDialog = kIDDialogCrashTest;
+
+    ShowFloat(nDialog, kIDCrashMySpeed, g_flMaxSpeed);
+    ShowFloat(nDialog, kIDCrashHisSpeed, g_flMaxSpeed);
+    ShowFloat(nDialog, kIDCrashMyDistance, 30.0f);
+    ShowFloat(nDialog, kIDCrashHisDistance, 30.0f);
+    ShowFloat(nDialog, kIDCrashMyClock, 6.0f);
+    ShowFloat(nDialog, kIDCrashHisClock, 12.0f);
+}
+
+// Deviation: neither release opened this dialog. OK stages the run and leaves it open to report.
+void StageCrashTest()
+{
+    constexpr auto nDialog = kIDDialogCrashTest;
+
+    const auto mine = CrashTest::Approach{ ReadFloat(nDialog, kIDCrashMySpeed), ReadFloat(nDialog, kIDCrashMyDistance), ReadFloat(nDialog, kIDCrashMyClock) };
+    const auto his  = CrashTest::Approach{ ReadFloat(nDialog, kIDCrashHisSpeed), ReadFloat(nDialog, kIDCrashHisDistance), ReadFloat(nDialog, kIDCrashHisClock) };
+
+    if (!CrashTest::Stage(mine, his))
+    {
+        g_gameApp.Error("Start a match and follow a dromer to run a crash test.");
+    }
+}
+
+// The report boxes follow the viewed dromer's animation and the last staged hit every frame.
+void ShowCrashTest()
+{
+    constexpr auto nDialog = kIDDialogCrashTest;
+
+    const auto* const pAnimSet = [&]() -> const AnimDB*
+    {
+        if (g_pGameEngine == nullptr || g_pGameEngine->m_nViewedSlot < kSlotDromer0 || g_pGameEngine->m_nViewedSlot > kSlotDromer3)
+        {
+            return nullptr;
+        }
+
+        return g_pGameEngine->GetSlot(g_pGameEngine->m_nViewedSlot)->m_pAnimPlayer->m_pSet;
+    }();
+
+    ShowText(nDialog, kIDCrashLastAnim, AnimSetName(pAnimSet));
+
+    const auto& hit = CrashTest::LastHit();
+
+    ShowText(nDialog, kIDCrashHitLevel, hit.strLevel.c_str());
+    ShowText(nDialog, kIDCrashHitZone, hit.strZone.c_str());
+}
+
 // A combo box opens on its first item, or on none when it has none.
 int FirstOrNone(const std::vector<std::string>& items)
 {
@@ -1194,6 +1257,10 @@ void InitDialog(unsigned short nDialog)
 
         case kIDDialogPlanEditor:
             InitPlanEditor();
+            break;
+
+        case kIDDialogCrashTest:
+            InitCrashTest();
             break;
 
         default:
@@ -1770,6 +1837,13 @@ void Clicked(unsigned short nDialog, unsigned short nControl)
 // True when the button closes its dialog.
 bool PressButton(unsigned short nDialog, unsigned short nControl)
 {
+    if (nDialog == kIDDialogCrashTest && nControl == kIDOK)
+    {
+        StageCrashTest();
+
+        return false;
+    }
+
     if (nControl == kIDOK)
     {
         AcceptDialog(nDialog);
@@ -1993,6 +2067,11 @@ bool DrawDialog(const DialogTemplates::Dialog& dialog)
 
         return dialog.strCaption;
     }();
+
+    if (dialog.nID == kIDDialogCrashTest)
+    {
+        ShowCrashTest();
+    }
 
     ImGui::Begin(("###original" + strID).c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
 
