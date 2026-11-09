@@ -20,6 +20,7 @@
 #include "engine/playerobject.h"
 #include "engine/statids.h"
 #include "globals.h"
+#include "graphics/graphicssettings.h"
 #include "graphics/renderer.h"
 #include "input/inputglobals.h"
 #include "input/keyboarddeviceobj.h"
@@ -29,6 +30,7 @@
 #include "planvm/planstate.h"
 #include "planvm/planvm.h"
 #include "sound/audiomgr.h"
+#include "ui/debugmenu.h"
 #include "ui/dialogtemplates.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
@@ -70,12 +72,14 @@ constexpr auto kIDDialogPlanEditor        = 319;
 constexpr auto kIDDialogRatings           = 320;
 constexpr auto kIDDialogDebugParameters   = 321;
 constexpr auto kIDDialogAnimationPeek     = OriginalUI::kDialogAnimationPeek;
+constexpr auto kIDDialogOptionsChooser    = 122;
+constexpr auto kIDDialogAudioVisual       = 137;
 constexpr auto kIDDialogCrashTest         = 463;
 
 constexpr std::pair<unsigned short, const char*> s_aDialogNames[] = {
-    { 122, "Options chooser" },
+    { kIDDialogOptionsChooser, "Options chooser" },
     { 136, "Practice chooser" },
-    { 137, "Audio visual options" },
+    { kIDDialogAudioVisual, "Audio visual options" },
     { kIDDialogSplash, "About HyperBlade" },
     { 315, "Loading" },
     { kIDDialogConfigureKeyboard, "Configure keyboard" },
@@ -248,6 +252,20 @@ const std::pair<unsigned short, float*> s_aPeekFields[] = {
     { 0x4ae, &g_flCameraMinHeight },
     { 0x4b0, &g_flSolarWindFactor },
 };
+
+// The options chooser's two buttons.
+constexpr auto kIDChooserGameOptions = 1032;
+constexpr auto kIDChooserAudioVisual = 1033;
+
+// Audio Visual Options' drop-downs. Its On and Off lists put On first.
+constexpr auto kIDAVMusic      = 1008;
+constexpr auto kIDAVSound      = 1011;
+constexpr auto kIDAVAnnouncer  = 1012;
+constexpr auto kIDAVCamera     = 1013;
+constexpr auto kIDAVDetail     = 1014;
+constexpr auto kIDAVResolution = 1015;
+constexpr auto kIDAVShading    = 1016;
+constexpr auto kIDAVTexture    = 1017;
 
 // Crash Test's inputs, then the three read-only boxes it reports in.
 constexpr auto kIDCrashMySpeed     = 1126;
@@ -876,6 +894,77 @@ void AcceptKeys()
     }
 }
 
+void SetWindowSize(int nCommand, int cx, int cy);
+
+// The window sizes the resolution list offers, in its order.
+constexpr std::pair<int, std::pair<int, int> > s_aAVSizes[] = {
+    { kIDMenuSizeLarge, { 640, 480 } },
+    { kIDMenuSizeMedium, { 480, 360 } },
+    { kIDMenuSizeSmall, { 320, 240 } },
+};
+
+// Deviation: neither release opened this panel. Its lists drive the port's own switches. Detail
+// High is the full-detail switch, and Medium and Low both leave the engine to pick.
+void InitAudioVisual()
+{
+    constexpr auto nDialog = kIDDialogAudioVisual;
+
+    const auto bMusic = g_pAudioMgr != nullptr && g_pAudioMgr->wNoCD == 0;
+    const auto bSound = g_pAudioMgr != nullptr && g_pAudioMgr->wNoSound == 0;
+
+    ControlByID(nDialog, kIDAVMusic).nSelection = static_cast<int>(!bMusic);
+    ControlByID(nDialog, kIDAVSound).nSelection = static_cast<int>(!bSound);
+
+    const auto* const pSize = std::ranges::find(s_aAVSizes, s_nSizeCommand, &std::pair<int, std::pair<int, int> >::first);
+
+    ControlByID(nDialog, kIDAVResolution).nSelection = static_cast<int>(pSize - std::begin(s_aAVSizes));
+    ControlByID(nDialog, kIDAVDetail).nSelection     = static_cast<int>(!GraphicsSettings::On(GraphicsSettings::Switch::FULL_DETAIL));
+    ControlByID(nDialog, kIDAVShading).nSelection    = static_cast<int>(GraphicsSettings::On(GraphicsSettings::Switch::SMOOTH_SHADING));
+    ControlByID(nDialog, kIDAVTexture).nSelection    = static_cast<int>(GraphicsSettings::On(GraphicsSettings::Switch::TEXTURES));
+
+    // Nothing gags the announcer, and the camera's plan steps through its views whatever it is sent.
+    Disable(nDialog, { kIDAVAnnouncer, kIDAVCamera });
+}
+
+void SetSwitch(GraphicsSettings::Switch which, bool bOn)
+{
+    if (GraphicsSettings::On(which) != bOn)
+    {
+        GraphicsSettings::Toggle(which);
+    }
+}
+
+void AcceptAudioVisual()
+{
+    constexpr auto nDialog = kIDDialogAudioVisual;
+
+    if (g_pAudioMgr != nullptr)
+    {
+        const auto bMusic = ControlByID(nDialog, kIDAVMusic).nSelection == 0;
+
+        if (!bMusic)
+        {
+            g_pAudioMgr->StopCD();
+        }
+
+        g_pAudioMgr->wNoCD    = static_cast<short>(!bMusic || !AudioMgr::HasRippedMusic());
+        g_pAudioMgr->wNoSound = static_cast<short>(ControlByID(nDialog, kIDAVSound).nSelection != 0);
+    }
+
+    const auto nSize = ControlByID(nDialog, kIDAVResolution).nSelection;
+
+    if (nSize >= 0 && nSize < static_cast<int>(std::size(s_aAVSizes)))
+    {
+        const auto& [nCommand, size] = s_aAVSizes[static_cast<size_t>(nSize)];
+
+        SetWindowSize(nCommand, size.first, size.second);
+    }
+
+    SetSwitch(GraphicsSettings::Switch::FULL_DETAIL, ControlByID(nDialog, kIDAVDetail).nSelection == 0);
+    SetSwitch(GraphicsSettings::Switch::SMOOTH_SHADING, ControlByID(nDialog, kIDAVShading).nSelection == 1);
+    SetSwitch(GraphicsSettings::Switch::TEXTURES, ControlByID(nDialog, kIDAVTexture).nSelection == 1);
+}
+
 // A head-on run at the top speed, from far enough out to see the dromers close.
 void InitCrashTest()
 {
@@ -1259,6 +1348,10 @@ void InitDialog(unsigned short nDialog)
             InitPlanEditor();
             break;
 
+        case kIDDialogAudioVisual:
+            InitAudioVisual();
+            break;
+
         case kIDDialogCrashTest:
             InitCrashTest();
             break;
@@ -1287,6 +1380,10 @@ void AcceptDialog(unsigned short nDialog)
 
         case kIDDialogConfigureKeyboard:
             AcceptKeys();
+            break;
+
+        case kIDDialogAudioVisual:
+            AcceptAudioVisual();
             break;
 
         default:
@@ -1842,6 +1939,22 @@ bool PressButton(unsigned short nDialog, unsigned short nControl)
         StageCrashTest();
 
         return false;
+    }
+
+    // Deviation: the original's chooser had no handler. Game options are the port's own debug menu.
+    if (nDialog == kIDDialogOptionsChooser)
+    {
+        if (nControl == kIDChooserGameOptions)
+        {
+            DebugMenu::Toggle();
+        }
+
+        if (nControl == kIDChooserAudioVisual)
+        {
+            Open(kIDDialogAudioVisual);
+        }
+
+        return nControl == kIDChooserGameOptions || nControl == kIDChooserAudioVisual;
     }
 
     if (nControl == kIDOK)
