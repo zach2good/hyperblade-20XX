@@ -255,6 +255,10 @@ int AnimScriptTable::ParseSegment(std::unique_ptr<AnimNode>* ppSegment, const ch
                             {
                                 if (ScanShort(ppszCursor, szToken, &(*ppSegment)->m_wLoopCount))
                                 {
+                                    const auto wLoopCount = (*ppSegment)->m_wLoopCount;
+
+                                    (*ppSegment)->m_nLoopCount = wLoopCount;
+
                                     if ((*ppSegment)->m_flSlowFps > (*ppSegment)->m_flStandardFps)
                                     {
                                         (*ppSegment)->m_flSlowFps = (*ppSegment)->m_flStandardFps;

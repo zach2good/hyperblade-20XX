@@ -25,7 +25,8 @@ public:
     float                   m_flStandardFps;  // 0x28
     float                   m_flFastFps;      // 0x2c
 
-    // %hd sets the low half and nothing clears the high half, as in the original; readers take both widths.
+    // %hd sets the low half. Deviation: the parse sign-extends it over the high half, which the
+    // original left to the heap, so the readers of either width agree.
     union
     {
         int   m_nLoopCount; // 0x30
