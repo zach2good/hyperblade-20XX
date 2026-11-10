@@ -119,17 +119,14 @@ jobs:
           cmake --build build-mac -- -k 0 2>&1 | tee build.log || report build.log
           ctest --test-dir build-mac --output-on-failure 2>&1 | tee test.log || report test.log
 
-      # With no game data the installed game may wait on a dialog, so it gets ten seconds. A
-      # library that fails to load stops it at once, with "Library not loaded" in its output.
+      # Away from a HyperBlade folder the installed game says where to run it and exits, which it
+      # can only do once its libraries load.
       - name: Package
         run: |
           cmake --install build-mac --prefix build-mac/package
-          mkdir -p empty && cd empty
-          ../build-mac/package/hyperblade_20XX -s -sim LOSAN SEATTLE 1 > run.log 2>&1 &
-          sleep 10
-          kill $! 2>/dev/null || true
+          build-mac/package/hyperblade_20XX -s -sim LOSAN SEATTLE 1 > run.log 2>&1 || true
           cat run.log
-          ! grep -q "Library not loaded" run.log
+          grep -q "HYPERX.EXE" run.log
           cd .. && cmake --build build-mac --target package
 
       - uses: actions/upload-artifact@v4
