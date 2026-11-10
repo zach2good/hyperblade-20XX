@@ -87,7 +87,7 @@ jobs:
         if: matrix.compiler.tidy
         run: |
           docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux sh -c \
-            'git config --global --add safe.directory /src && { git ls-files "src/*.cpp" | xargs grep -L "FUNCTION: HYPERX"; git ls-files "tests/*.cpp"; } | xargs clang-tidy-20 -p /build --quiet --warnings-as-errors="*"'
+            'git config --global --add safe.directory /src && { git ls-files "src/*.cpp" | xargs grep -L "FUNCTION: HYPERX"; git ls-files "tests/*.cpp"; } | xargs -P "$(nproc)" -n 4 clang-tidy-20 -p /build --quiet --warnings-as-errors="*"'
 
       - uses: actions/upload-artifact@v4
         if: matrix.compiler.package
