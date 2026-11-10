@@ -142,6 +142,8 @@ python -m http.server --directory build-wasm/out
 
 Open `hyperblade_20XX.html` in a desktop browser. The page asks for your HyperBlade folder once
 and keeps a copy in the browser, with your saves and career. The files never leave your machine.
+Command-line arguments go in the address, as `?args=-s -sim JAMCA LEEDS 2 7 fixed`; a simulation
+prints to the browser console.
 
 ### Tests
 

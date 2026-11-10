@@ -16,7 +16,11 @@
 <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
 <div id="loading">Loading</div>
 <script>
+  // Command-line arguments come from the URL, as ?args=-s -sim JAMCA LEEDS 2 7 fixed.
+  const args = new URLSearchParams(location.search).get('args');
+
   var Module = {
+    arguments: (args ?? '').split(' ').filter(Boolean),
     canvas: document.getElementById('canvas'),
     setStatus(text) {
       document.getElementById('loading').textContent = text;
