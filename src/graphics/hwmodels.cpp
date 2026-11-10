@@ -106,7 +106,7 @@ void ConvertColours(MaterialListNode& materials, const EngineObject& object, con
             return nColour;
         }();
 
-        PaletteEntry entry;
+        auto entry = PaletteEntry{};
 
         const auto& remapped = *g_pColorPalette->GetRemappedEntry(&entry, static_cast<unsigned char>(nIndex));
 
