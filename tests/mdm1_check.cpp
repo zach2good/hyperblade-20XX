@@ -9,7 +9,9 @@
 #include <fstream>
 #include <SDL3/SDL.h>
 #include <cstdio>
+#include <print>
 
+// NOLINTNEXTLINE(readability-make-member-function-const): Stubs the engine's non-const Read.
 int FileObj::Read(void* pBuffer, int nCount)
 {
     return static_cast<int>(SDL_ReadIO(m_stream.As<SDL_IOStream>(), pBuffer, static_cast<size_t>(nCount)));
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
 {
     if (argc < 2)
     {
-        fprintf(stderr, "usage: mdm1_check <folder> [<dump folder>]\n");
+        std::println(stderr, "usage: mdm1_check <folder> [<dump folder>]");
         return 2;
     }
 
@@ -60,7 +62,7 @@ int main(int argc, char** argv)
             if (pOut == nullptr)
             {
                 nFailed++;
-                printf("FAIL %s\n", entry.path().string().c_str());
+                std::println("FAIL {}", entry.path().string());
             }
             else if (argc > 2)
             {
@@ -77,7 +79,7 @@ int main(int argc, char** argv)
         SDL_CloseIO(file.m_stream.As<SDL_IOStream>());
     }
 
-    printf("%d MDM1 file(s), %d failed\n", nChecked, nFailed);
+    std::println("{} MDM1 file(s), {} failed", nChecked, nFailed);
 
     if (nFailed != 0 || nChecked == 0)
     {

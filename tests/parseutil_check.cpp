@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <print>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -16,7 +17,7 @@ static void Expect(bool bOK, const std::string& strWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", strWhat.c_str());
+        std::println("failed: {}", strWhat);
         s_nFailed++;
     }
 }

@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <print>
 #include <string>
 
 static int s_nFailed = 0;
@@ -12,7 +13,7 @@ static void Expect(bool bOK, const char* pszWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", pszWhat);
+        std::println("failed: {}", pszWhat);
         s_nFailed++;
     }
 }

@@ -3,13 +3,14 @@
 #include "sound/wave.h"
 #include <cstdio>
 #include <filesystem>
+#include <print>
 #include <vector>
 
 int main(int nArgs, char** ppszArgs)
 {
     if (nArgs != 2)
     {
-        std::printf("usage: wave_check <Data folder>\n");
+        std::println("usage: wave_check <Data folder>");
 
         return 2;
     }
@@ -32,7 +33,7 @@ int main(int nArgs, char** ppszArgs)
 
         if (Wave::ReadInfo(strPath.c_str(), info) != Wave::Result::OK || info.nChannels == 0 || info.nSamplesPerSec == 0)
         {
-            std::printf("bad header: %s\n", strPath.c_str());
+            std::println("bad header: {}", strPath);
             nFailed++;
 
             continue;
@@ -42,12 +43,12 @@ int main(int nArgs, char** ppszArgs)
 
         if (!Wave::ReadSamples(strPath.c_str(), info.nDataOffset, info.nDataBytes, samples.data()))
         {
-            std::printf("short data: %s\n", strPath.c_str());
+            std::println("short data: {}", strPath);
             nFailed++;
         }
     }
 
-    std::printf("%d waves, %d failed\n", nChecked, nFailed);
+    std::println("{} waves, {} failed", nChecked, nFailed);
 
     if (nChecked == 0 || nFailed != 0)
     {

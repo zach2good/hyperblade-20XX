@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <print>
 #include <vector>
 
 static int s_nFailed = 0;
@@ -15,7 +16,7 @@ static void Expect(bool bOK, const char* pszWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", pszWhat);
+        std::println("failed: {}", pszWhat);
         s_nFailed++;
     }
 }
@@ -166,15 +167,17 @@ static bool IsRange(const HwMesh::Range& range, std::uint32_t nFirst, std::uint3
 }
 
 // Never dereferenced: Build only compares them.
-static TexCacheEntry* FakeTexture(std::uintptr_t nAddress)
+static TexCacheEntry* FakeTexture(int nIndex)
 {
-    return reinterpret_cast<TexCacheEntry*>(nAddress);
+    static char s_storage[2];
+
+    return reinterpret_cast<TexCacheEntry*>(&s_storage[nIndex]);
 }
 
 static void CheckRanges(const std::vector<Vec3>& positions, const std::vector<TexCoord>& coords)
 {
-    auto* const pTextureA = FakeTexture(0x1000);
-    auto* const pTextureB = FakeTexture(0x2000);
+    auto* const pTextureA = FakeTexture(0);
+    auto* const pTextureB = FakeTexture(1);
 
     const auto vUp = Vec3{ 0.0f, 0.0f, 1.0f };
 
@@ -322,7 +325,7 @@ int main()
 
     if (vertices.size() != 3 * 10)
     {
-        std::printf("%d failed\n", s_nFailed);
+        std::println("{} failed", s_nFailed);
 
         return 1;
     }
@@ -365,7 +368,7 @@ int main()
 
     CheckSmooth();
 
-    std::printf("%d failed\n", s_nFailed);
+    std::println("{} failed", s_nFailed);
 
     if (s_nFailed != 0)
     {

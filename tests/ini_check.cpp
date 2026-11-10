@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <print>
 #include <sstream>
 #include <string>
 
@@ -13,7 +14,7 @@ static void Expect(bool bOK, const char* pszWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", pszWhat);
+        std::println("failed: {}", pszWhat);
         s_nFailed++;
     }
 }
@@ -52,7 +53,7 @@ int main()
 
     std::filesystem::remove(path);
 
-    std::printf("%d failed\n", s_nFailed);
+    std::println("{} failed", s_nFailed);
 
     if (s_nFailed != 0)
     {

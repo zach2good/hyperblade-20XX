@@ -5,6 +5,7 @@
 #include "input/keymap.h"
 #include <SDL3/SDL.h>
 #include <cstdio>
+#include <print>
 
 static int s_nFailed = 0;
 
@@ -12,7 +13,7 @@ static void Expect(unsigned int nGot, unsigned int nWanted, const char* pszWhat)
 {
     if (nGot != nWanted)
     {
-        std::printf("failed: %s, got 0x%x, wanted 0x%x\n", pszWhat, nGot, nWanted);
+        std::println("failed: {}, got 0x{:x}, wanted 0x{:x}", pszWhat, nGot, nWanted);
         s_nFailed++;
     }
 }
@@ -37,7 +38,7 @@ int main(int, char**)
     Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_LALT, SDLK_LALT), 0, "alt");
     Expect(KeyMap::ToVirtualKey(SDL_SCANCODE_F10, SDLK_F10), 0, "F10");
 
-    std::printf("%d failed\n", s_nFailed);
+    std::println("{} failed", s_nFailed);
 
     if (s_nFailed != 0)
     {

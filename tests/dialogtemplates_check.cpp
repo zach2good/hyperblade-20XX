@@ -3,6 +3,7 @@
 
 #include "ui/dialogtemplates.h"
 #include <cstdio>
+#include <print>
 #include <span>
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@ static void Expect(bool bOK, const char* pszWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", pszWhat);
+        std::println("failed: {}", pszWhat);
         s_nFailed++;
     }
 }
@@ -289,7 +290,7 @@ int main()
         return 1;
     }
 
-    std::printf("dialog templates check passed\n");
+    std::println("dialog templates check passed");
 
     return 0;
 }

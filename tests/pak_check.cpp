@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <fstream>
 #include <iterator>
+#include <print>
 #include <string>
 #include <vector>
 
@@ -11,13 +12,13 @@ int main(int nArgs, char** ppszArgs)
 {
     if (nArgs < 3)
     {
-        std::printf("usage: pak_check <pak> <res folder> <files...>\n");
+        std::println("usage: pak_check <pak> <res folder> <files...>");
         return 1;
     }
 
     if (!Pak::Open(ppszArgs[1]))
     {
-        std::printf("failed: %s does not open\n", ppszArgs[1]);
+        std::println("failed: {} does not open", ppszArgs[1]);
         return 1;
     }
 
@@ -30,14 +31,14 @@ int main(int nArgs, char** ppszArgs)
 
         if (expected.empty() || Pak::Read(ppszArgs[i]) != expected)
         {
-            std::printf("failed: %s\n", ppszArgs[i]);
+            std::println("failed: {}", ppszArgs[i]);
             nFailed++;
         }
     }
 
     if (!Pak::Read("missing.bin").empty())
     {
-        std::printf("failed: a missing file reads as empty\n");
+        std::println("failed: a missing file reads as empty");
         nFailed++;
     }
 

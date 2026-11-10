@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <print>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -167,14 +168,14 @@ int main(int argc, char** argv)
 
                 if (std::regex_search(stripped, pattern))
                 {
-                    std::printf("%s:%d: %s\n", path.generic_string().c_str(), nLine, text.c_str());
+                    std::println("{}:{}: {}", path.generic_string(), nLine, text);
                     nFound++;
                 }
             }
         }
     }
 
-    std::printf("%d raw allocation sites\n", nFound);
+    std::println("{} raw allocation sites", nFound);
 
     return static_cast<int>(nFound != 0);
 }

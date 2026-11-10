@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <print>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -51,7 +52,7 @@ int main(int nArgs, char** ppszArgs)
 {
     if (nArgs != 3 && nArgs != 4)
     {
-        std::printf("usage: planpatch_check <Data folder> <res/plans folder> [output folder]\n");
+        std::println("usage: planpatch_check <Data folder> <res/plans folder> [output folder]");
 
         return 2;
     }
@@ -61,7 +62,7 @@ int main(int nArgs, char** ppszArgs)
     // A hunk whose old lines are not there is refused.
     if (PlanPatch::ApplyDiff("a\nb\nc\n", "@@ -2,1 +2,1 @@\n-b\n+B\n") != "a\nB\nc\n" || PlanPatch::ApplyDiff("a\nb\nc\n", "@@ -2,1 +2,1 @@\n-x\n+B\n").has_value())
     {
-        std::printf("ApplyDiff is wrong\n");
+        std::println("ApplyDiff is wrong");
         nFails++;
     }
 
@@ -70,7 +71,7 @@ int main(int nArgs, char** ppszArgs)
 
     if (!compiler.has_value())
     {
-        std::printf("no compiler symbols in %s\n", ppszArgs[1]);
+        std::println("no compiler symbols in {}", ppszArgs[1]);
 
         return 1;
     }
@@ -92,7 +93,7 @@ int main(int nArgs, char** ppszArgs)
 
         if (!fixed.has_value() || *fixed == words)
         {
-            std::printf("not fixed: %s\n", strName.c_str());
+            std::println("not fixed: {}", strName);
             nFails++;
 
             continue;
@@ -117,7 +118,7 @@ int main(int nArgs, char** ppszArgs)
         }
     }
 
-    std::printf("%d plans, %d failed\n", nPlans, nFails);
+    std::println("{} plans, {} failed", nPlans, nFails);
 
     if (nFails != 0)
     {

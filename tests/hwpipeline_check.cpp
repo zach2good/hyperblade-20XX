@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
+#include <print>
 
 namespace
 {
@@ -42,7 +43,7 @@ void Expect(bool bOK, const char* pszWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", pszWhat);
+        std::println("failed: {}", pszWhat);
         s_nFailed++;
     }
 }
@@ -328,13 +329,13 @@ int main()
 
     if (pDevice == nullptr)
     {
-        std::printf("no GPU device, skipped (%s)\n", SDL_GetError());
+        std::println("no GPU device, skipped ({})", SDL_GetError());
         SDL_Quit();
 
         return kSkipped;
     }
 
-    std::printf("driver %s\n", SDL_GetGPUDeviceDriver(pDevice));
+    std::println("driver {}", SDL_GetGPUDeviceDriver(pDevice));
 
     const auto device   = HwPipeline::Device{ pDevice };
     const auto pipeline = HwPipeline::CreateMeshPipeline(device, true);
@@ -385,7 +386,7 @@ int main()
     SDL_DestroyGPUDevice(pDevice);
     SDL_Quit();
 
-    std::printf("%d failed\n", s_nFailed);
+    std::println("{} failed", s_nFailed);
 
     if (s_nFailed != 0)
     {

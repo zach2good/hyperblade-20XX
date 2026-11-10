@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstring>
 #include <limits>
+#include <print>
 #include <string>
 
 // globals.cpp defines these for the game; it brings the whole game with it.
@@ -23,7 +24,7 @@ static void Expect(bool bOK, const std::string& strWhat)
 {
     if (!bOK)
     {
-        std::printf("failed: %s\n", strWhat.c_str());
+        std::println("failed: {}", strWhat);
         s_nFailed++;
     }
 }
@@ -60,7 +61,7 @@ int main()
 
     if (s_nFailed == 0)
     {
-        std::printf("anim: all passed\n");
+        std::println("anim: all passed");
     }
 
     return static_cast<int>(s_nFailed != 0);

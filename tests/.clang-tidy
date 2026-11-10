@@ -1,0 +1,3 @@
+# A throw in a check fails the test, as it should.
+InheritParentConfig: true
+Checks: -bugprone-exception-escape
