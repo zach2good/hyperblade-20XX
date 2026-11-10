@@ -226,6 +226,33 @@ original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The 
 
 The port ships no game data, so this stays a proposal.
 
+## Balance proposal: the bottom teams
+
+The same measure (the port's AI, 3-minute periods, seed 1, 10 matches per matchup against the other
+13 teams, home and away) puts The Sturmnacht at 33.7% and The LoneStars at 38.1%.
+
+Pulling their ratings toward The Machine's per-rating medians makes them worse, down to 25.6% and
+25.0%: four identical median dromers are a weaker team than The Machine's real roster. Copying The
+Machine's rating lines row for row gives 47.5% and 47.3%, near The Machine's own 53.7%. So the
+proposal blends each rating line toward its counterpart in The Machine's file:
+`machine + k * (team - machine)`, rounded.
+
+| k | The Sturmnacht pts% | The LoneStars pts% |
+| --- | --- | --- |
+| 1 (shipped) | 33.7 | 38.1 |
+| 0.5 | 30.8 | 43.8 |
+| 0.375 | 47.5 | |
+| 0.25 | 47.9 | 46.9 |
+| 0 | 47.5 | 47.3 |
+
+The LoneStars need nothing: 38.1% is within noise of the middle of the table. The Sturmnacht take
+k = 0.375, which puts them mid-table. Their share jumps between k = 0.5 and 0.375 and is flat
+below, which points to one rating crossing a threshold there; no run has isolated it.
+
+The models, the goalies and the drome don't explain the gap. With The Machine's models The Sturmnacht
+take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)
+as well as away (28.5%).
+
 ## Not covered
 
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
