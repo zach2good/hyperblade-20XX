@@ -1311,6 +1311,7 @@ void PlansTab()
     if (OriginalUI::Checkbox("Balanced teams", &bBalanced))
     {
         Balance::Set(bBalanced);
+        Balance::Save();
     }
 
     OriginalUI::SetItemTooltip("The balance proposals in docs/sim_results.md: BLAM! Nemesis's skater ratings move halfway to The Machine's medians, and The Sturmnacht's most of the way to The Machine's own.");

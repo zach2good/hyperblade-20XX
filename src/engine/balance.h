@@ -5,10 +5,14 @@
 namespace Balance
 {
 
+// booie.ini's choice until Set changes it.
 bool On();
 
-// Takes effect when the next match loads its teams.
+// For this run only, taking effect when the next match loads its teams.
 void Set(bool bOn);
+
+// Writes the current choice to booie.ini.
+void Save();
 
 // Brackets the parse of one team file, given its full path.
 void BeginTeam(const char* pszPath);

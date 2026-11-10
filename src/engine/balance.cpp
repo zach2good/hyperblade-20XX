@@ -1,6 +1,8 @@
 #include "engine/balance.h"
 #include "common/fileobj.h"
+#include "engine/gameoptions.h"
 #include "engine/planfixes.h"
+#include "globals.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 #include <charconv>
@@ -45,7 +47,10 @@ struct Machine
     std::map<std::tuple<int, int, std::string>, int> values;
 };
 
-bool s_bOn = false;
+constexpr auto kSection = "Gameplay";
+constexpr auto kKey     = "BalancedTeams";
+
+std::optional<bool> s_obOn;
 
 std::optional<Machine> s_machine;
 
@@ -201,19 +206,32 @@ std::optional<Machine> ReadMachine(const std::string& strPath)
 
 bool Balance::On()
 {
-    return s_bOn;
+    if (!s_obOn.has_value() && g_pGameOptions != nullptr)
+    {
+        s_obOn = g_pGameOptions->ReadInt(kSection, kKey, 0) != 0;
+    }
+
+    return s_obOn.value_or(false);
 }
 
 void Balance::Set(bool bOn)
 {
-    s_bOn = bOn;
+    s_obOn = bOn;
+}
+
+void Balance::Save()
+{
+    if (g_pGameOptions != nullptr)
+    {
+        g_pGameOptions->WriteInt(kSection, kKey, static_cast<int>(On()));
+    }
 }
 
 void Balance::BeginTeam(const char* pszPath)
 {
     EndTeam();
 
-    if (!s_bOn)
+    if (!On())
     {
         return;
     }
