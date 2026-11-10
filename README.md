@@ -89,8 +89,9 @@ The arguments, in order:
 - Optionally a file ending in `.csv`, to write instead of `sim_results.csv`.
 
 The match settings in `booie.ini`, such as difficulty and period length, still apply, and a
-simulation never writes that file. Each row is one player in one match: the difficulty and period
-length, the player's health at the end (100 is unhurt), the score and the game's own match stats.
+simulation never writes that file. Each row is one player in one match: the plans, whether the
+balance proposals were on, the difficulty and period length, the player's health at the end (100 is
+unhurt), the score and the game's own match stats.
 
 With `gauntlet` in place of the away team, the count is seasons: the home team plays the
 Gauntlet's bracket each season until it loses or wins, and one line per season says how far it

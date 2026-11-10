@@ -18,7 +18,10 @@ function(play name)
         message(FATAL_ERROR "-sim ${ARGN} exited with ${result}")
     endif()
 
-    file(SHA256 "${OUT}/${name}.csv" hash)
+    # The balanced column says which run it was; only the matches themselves are compared.
+    file(READ "${OUT}/${name}.csv" content)
+    string(REGEX REPLACE "\n([^,]*,[^,]*,[^,]*),[01]," "\n\\1,," content "${content}")
+    string(SHA256 hash "${content}")
     set(${name} "${hash}" PARENT_SCOPE)
 endfunction()
 
