@@ -177,34 +177,35 @@ unverified.
 ## Balance proposal: BLAM! Nemesis
 
 BLAM! Nemesis wins about 9 of 10 matches against every other team. As the Gauntlet's last
-opponent it should stay on top, but be beatable. A newer run than the tables above, with the port's AI, 3-minute periods,
-seed 1 and 10 matches per matchup, measured its points % against the other 13 teams, home and away.
+opponent it should stay on top, but be beatable. A newer run than the tables above, with the port's
+AI, 3-minute periods, seed 1 and 10 matches per matchup, measured its points % against the other 13
+teams, home and away.
 
 Setting one Nemesis rating at a time to The Machine's median moves it by under 4 points. Checking
-does most, from 92.1 to 88.3, then weight class to 89.4. Its goalie ratings (`id_GRT_*`) do
-nothing. No single rating carries the lead.
+does most, from 92.1 to 88.3, then weight class to 89.4. Its goalie ratings (`id_GRT_*`) and its
+goalie's motion speed (120, against 80 for most teams) do nothing. No single rating carries the
+lead.
 
-So the proposal pulls every skater rating toward The Machine's median by the same factor k:
-`median + k * (nemesis - median)`, rounded.
+So the proposal pulls every skater rating toward The Machine's median for the same difficulty by
+one factor k: `median + k * (nemesis - median)`, rounded.
 
 | k | Nemesis pts% |
 | --- | --- |
 | 1 (shipped) | 92.1 |
-| 0.75 | 89.8 |
-| 0.5 | 83.5 |
-| 0.25 | 75.6 |
-| 0 | 69.0 |
+| 0.5 | 82.7 |
+| 0.25 | 73.1 |
+| 0 | 56.7 |
 
-k = 0.5 puts Nemesis at The DredNoks' level and keeps it first. For example, its median checking
-goes from 13.5 to 9, and stamina from 11 to 8. With 260 matches a point, each figure is good to
-about 2 points.
+k = 0.5 puts Nemesis at The DredNoks' level and keeps it first. On medium, its median checking goes
+from 12.5 to 9, and stamina from 11 to 7. With 260 matches a point, each figure is good to about 2
+points.
 
-At k = 0 Nemesis still takes 69%, more than The Machine whose ratings it then has. The rest of the
-lead comes from outside the skater ratings.
+At k = 0 Nemesis lands near The Machine's 53.7%, and The DredNoks given the same treatment take
+57.5%. The whole lead is in the ratings; models, goalies and dromes add nothing measurable.
 
-Its goalie's motion speed is not it. Nemesis's goalie has `speed= 120` against 80 for most teams,
-but setting it to 80 leaves Nemesis at 94.4% at k = 1, and at 83.3% at k = 0.5 (83.1% with 100).
-The remaining candidates are its models and its drome.
+The two teams are also the only ones whose files use `id_RAT_Stealing` and `id_RAT_RokReceiving`.
+The original stopped reading a line at either name. The port reads them as `id_RAT_RokHandling`
+and `id_RAT_MultiPointSpread`, so any shrink must change those lines too.
 
 The port ships no game data, so this stays a proposal.
 
