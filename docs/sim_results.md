@@ -249,14 +249,14 @@ against The DredNoks. It is a mild change, and the harder of the two choices on 
 
 ### In the Gauntlet
 
-The Gauntlet barely meets Nemesis. Its bracket is 13 rounds, and a loss, or a draw with any
-opponent still standing, ends the season. Over 20 simulated seasons each, The DredNoks, The
-Knights, The Machine and The Ambush averaged 2.3 to 4.8 matches a season, and only one season in
-80 reached Nemesis, and 35 of the 80 ended on a draw, 13 of The DredNoks' 20. Draws are 15% of
-these 3-minute-period matches, against 6.3% in the Fixed round robin's 5-minute ones. With
-Nemesis shrunk, The DredNoks won one title in 20; no other team's seasons changed. At a 70% win rate, 13 straight wins come once in a hundred seasons, so the format, not
-Nemesis, is what keeps AI teams from titles. A person playing the home team is another matter, and
-untested.
+The Gauntlet barely meets Nemesis. Its bracket is 13 rounds, and a loss, or a draw with any opponent
+still standing, ends the season. Over 20 simulated seasons each, The DredNoks, The Knights, The
+Machine and The Ambush averaged 2.3 to 4.8 matches a season. Only one season in 80 reached Nemesis,
+and 35 ended on a draw, 13 of them The DredNoks'. Draws are 15% of these 3-minute-period matches,
+against 6.3% in the Fixed round robin's 5-minute ones. With Nemesis shrunk at k = 0.5, The DredNoks
+won one title in 20; no other team's seasons changed. At a 70% win rate, 13 straight wins come once
+in a hundred seasons, so the format, not Nemesis, is what keeps AI teams from titles. A person
+playing the home team is another matter, and untested.
 
 ## Balance proposal: the bottom teams
 
@@ -282,13 +282,17 @@ k = 0.375, which puts them mid-table. Their share rises steeply between k = 0.5 
 is flat below. No single rating carries the rise: of the 39 that change between those two blends,
 any half lifts them only part of the way (29.6% to 42.9% from 30.8%), so it builds up across many.
 
+The models, the goalies and the drome don't explain the gap. With The Machine's models The
+Sturmnacht take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at
+home (22.7%) as well as away (28.5%).
+
 The same switch as the Nemesis proposal applies this one. It pairs each Sturmnacht rating with The
 Machine's for the same dromer, difficulty and name. The script paired the n-th rating line of each
 file, and six lines list different names in the two files, so it left three `id_RAT_SubInDamage`
 values alone that the switch blends. The switch gives 46.5% against the script's re-measured
 46.7%.
 
-### At each difficulty
+## Both proposals at each difficulty
 
 The same measure at each difficulty. Balanced figures have the switch on, so each team meets the
 other balanced:
@@ -301,10 +305,6 @@ other balanced:
 
 Nemesis stays first and The Sturmnacht lands mid-table at all three. On easy the Nemesis change
 barely shows.
-
-The models, the goalies and the drome don't explain the gap. With The Machine's models The Sturmnacht
-take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)
-as well as away (28.5%).
 
 ## Same matches everywhere
 
@@ -319,10 +319,10 @@ shipped and 83.1% at k = 0.5, The Sturmnacht 30.8% shipped and 46.7% at k = 0.37
 
 ## Not covered
 
-- These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
-  single match, but the figures here would shift slightly if rerun.
-- Only the default difficulty was played. The sections other than "Period length" use 5-minute
-  periods.
+- The tables before the balance proposals predate exact replay. A seed now replays the same
+  matches, but those figures would shift slightly if rerun.
+- Those tables played only the default difficulty, and the sections other than "Period length" use
+  5-minute periods. The proposals were measured at all three difficulties.
 - The Shipped and Fixed runs are small. A full 9,100-match run of each would firm up the middle
   of the table.
 - The mirror matches were not repeated after the second review.
