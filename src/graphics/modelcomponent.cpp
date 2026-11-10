@@ -14,7 +14,7 @@ struct ComponentFileHeader
 // FUNCTION: HYPERX 0x004361e0
 Record<ModelComponent> ModelComponent::ReadFirst(FileObj* pFile)
 {
-    int  nSize;
+    auto nSize = 0;
     auto pBlob = ModelComponent::Read<ModelComponent>(pFile, &nSize);
 
     if (pBlob != nullptr)
