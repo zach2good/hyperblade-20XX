@@ -205,7 +205,9 @@ At k = 0 Nemesis lands near The Machine's 53.7%, and The DredNoks given the same
 
 The two teams are also the only ones whose files use `id_RAT_Stealing` and `id_RAT_RokReceiving`.
 The original stopped reading a line at either name. The port reads them as `id_RAT_RokHandling`
-and `id_RAT_MultiPointSpread`, so any shrink must change those lines too.
+and `id_RAT_MultiPointSpread`, so any shrink must change those lines too. Reading them as the
+original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The DredNoks from
+83.1% to 77.5%, a lift for The DredNoks just inside the noise of two such runs.
 
 The port ships no game data, so this stays a proposal.
 
