@@ -232,8 +232,8 @@ The Gauntlet barely meets Nemesis. Its bracket is 13 rounds, and a loss, or a dr
 opponent still standing, ends the season. Over 20 simulated seasons each, The DredNoks, The
 Knights, The Machine and The Ambush averaged 2.3 to 4.8 matches a season, and only one season in
 80 reached Nemesis, and 35 of the 80 ended on a draw, 13 of The DredNoks' 20. Draws are 15% of
-these matches, against 6.3% in the Fixed round robin. With Nemesis shrunk, The DredNoks won one
-title in 20; no other team's seasons changed. At a 70% win rate, 13 straight wins come once in a hundred seasons, so the format, not
+these 3-minute-period matches, against 6.3% in the Fixed round robin's 5-minute ones. With
+Nemesis shrunk, The DredNoks won one title in 20; no other team's seasons changed. At a 70% win rate, 13 straight wins come once in a hundred seasons, so the format, not
 Nemesis, is what keeps AI teams from titles. A person playing the home team is another matter, and
 untested.
 
