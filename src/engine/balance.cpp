@@ -36,7 +36,7 @@ struct Proposal
 };
 
 constexpr Proposal kProposals[] = {
-    { "NEM.HTM", Target::Median, 0.5 },
+    { "NEM.HTM", Target::Median, 0.6875 },
     { "MUNIC.HTM", Target::SameDromer, 0.375 },
 };
 

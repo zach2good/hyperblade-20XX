@@ -212,9 +212,7 @@ one factor k: `median + k * (nemesis - median)`, rounded.
 | 0.25 | 73.1 |
 | 0 | 56.7 |
 
-k = 0.5 puts Nemesis at The DredNoks' level and keeps it first. On medium, its median checking goes
-from 12.5 to 9, and stamina from 11 to 7. With 260 matches a point, each figure is good to about 2
-points.
+With 260 matches a point, each figure is good to about 2 points.
 
 At k = 0 Nemesis lands near The Machine's 53.7%, and The DredNoks given the same treatment take
 57.5%. The whole lead is in the ratings; models, goalies and dromes add nothing measurable.
@@ -227,8 +225,27 @@ original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The 
 
 The port ships no game data, so it applies the proposal as the team file loads instead: the
 "Balanced teams" switch in the F2 menu's Plans tab, or the `balanced` word to `-sim`. It is off
-by default. It gives the same 93.5% shipped and 83.1% balanced as the re-measured script run
-below, and leaves matches without Nemesis alone.
+by default and leaves matches without Nemesis alone. At k = 0.5 it gave the same 83.1% as the
+re-measured script run below, which checks it against the script.
+
+### Choosing k
+
+The DredNoks are Nemesis's only rival. Shipped, Nemesis beats them 9 times in 20, draws 5 and loses
+6. At k = 0.5 they overtake it and win the head-to-head 11 to 5, so Nemesis is no longer the last
+opponent it should be. The same measure on medium with the switch on, so The Sturmnacht are
+balanced too:
+
+| k | Nemesis pts% | The DredNoks pts% | Nemesis against The DredNoks (W-D-L) |
+| --- | --- | --- | --- |
+| 1 (shipped, switch off) | 93.5 | 82.5 | 9-5-6 |
+| 0.75 | 91.2 | 81.9 | 12-3-5 |
+| 0.6875 | 89.6 | 82.5 | 9-6-5 |
+| 0.625 | 83.1 | 84.2 | 4-7-9 |
+| 0.5 | 81.5 | 84.4 | 5-4-11 |
+
+The share jumps between k = 0.625 and 0.6875; nothing in between puts Nemesis a little ahead. The
+switch uses k = 0.6875: Nemesis stays first by 7 points and still loses a quarter of its matches
+against The DredNoks. It is a mild change, and the harder of the two choices on players.
 
 ### In the Gauntlet
 
@@ -268,21 +285,22 @@ any half lifts them only part of the way (29.6% to 42.9% from 30.8%), so it buil
 The same switch as the Nemesis proposal applies this one. It pairs each Sturmnacht rating with The
 Machine's for the same dromer, difficulty and name. The script paired the n-th rating line of each
 file, and six lines list different names in the two files, so it left three `id_RAT_SubInDamage`
-values alone that the switch blends. The switch gives 47.7% against the script's re-measured 46.7%, within
-noise. With it on, Nemesis meets the balanced Sturmnacht too and takes 81.5%.
+values alone that the switch blends. The switch gives 46.5% against the script's re-measured
+46.7%.
 
 ### At each difficulty
 
-Both proposals hold at every difficulty. The same measure with the switch on, so each team also
-meets the other one balanced:
+The same measure at each difficulty. Balanced figures have the switch on, so each team meets the
+other balanced:
 
-| Difficulty | Nemesis shipped | Nemesis balanced | Sturmnacht shipped | Sturmnacht balanced |
-| --- | --- | --- | --- | --- |
-| Easy | 97.1 | 82.7 | 38.1 | 45.6 |
-| Medium | 93.5 | 81.5 | 30.8 | 47.7 |
-| Hard | 90.0 | 81.2 | 29.8 | 45.8 |
+| Difficulty | Nemesis shipped | Nemesis balanced | The DredNoks balanced | Sturmnacht shipped | Sturmnacht balanced |
+| --- | --- | --- | --- | --- | --- |
+| Easy | 97.1 | 94.6 | 74.0 | 38.1 | 45.2 |
+| Medium | 93.5 | 89.6 | 82.5 | 30.8 | 46.5 |
+| Hard | 90.0 | 87.9 | 62.1 | 29.8 | 45.0 |
 
-Nemesis stays first and The Sturmnacht lands mid-table at all three.
+Nemesis stays first and The Sturmnacht lands mid-table at all three. On easy the Nemesis change
+barely shows.
 
 The models, the goalies and the drome don't explain the gap. With The Machine's models The Sturmnacht
 take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)

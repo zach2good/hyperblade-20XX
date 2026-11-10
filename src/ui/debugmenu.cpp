@@ -1314,7 +1314,7 @@ void PlansTab()
         Balance::Save();
     }
 
-    OriginalUI::SetItemTooltip("The balance proposals in docs/sim_results.md: BLAM! Nemesis's skater ratings move halfway to The Machine's medians, and The Sturmnacht's most of the way to The Machine's own.");
+    OriginalUI::SetItemTooltip("The balance proposals in docs/sim_results.md: BLAM! Nemesis's skater ratings move a third of the way to The Machine's medians, and The Sturmnacht's most of the way to The Machine's own.");
     ImGui::EndDisabled();
 
     ImGui::TextDisabled("Both sets are compiled at load; switching restarts each object's current behaviour.");
