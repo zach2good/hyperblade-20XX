@@ -5,7 +5,7 @@ file(STRINGS "${CSV}" lines)
 list(POP_FRONT lines header)
 string(REPLACE "," ";" header "${header}")
 
-foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_rOneTimers id_STA_rPassesAttempted id_STA_rPassesCompleted id_STA_rChecksGiven id_STA_rHangTime period_ms)
+foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_rOneTimers id_STA_rPassesAttempted id_STA_rPassesCompleted id_STA_rChecksGiven id_STA_rHangTime id_STA_rInterceptions period_ms)
     list(FIND header ${column} index)
 
     if(index LESS 0)
@@ -15,19 +15,49 @@ foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_r
     set(at_${column} ${index})
 endforeach()
 
-# Goals per team per match, to compare each player's assists with their teammates' goals.
+function(add_to name value)
+    if(NOT DEFINED ${name})
+        set(${name} 0)
+    endif()
+
+    math(EXPR sum "${${name}} + ${value}")
+    set(${name} ${sum} PARENT_SCOPE)
+endfunction()
+
+# Per team per match: goals, to compare each player's assists with their teammates' goals, and pass
+# attempts and interceptions, since a team can't intercept more passes than the other side tried.
+set(sides "")
+
 foreach(line IN LISTS lines)
     string(REPLACE "," ";" row "${line}")
     list(GET row ${at_match} match)
     list(GET row ${at_team} team)
     list(GET row ${at_id_STA_rGoals} goals)
-    string(MAKE_C_IDENTIFIER "goals_${match}_${team}" key)
+    list(GET row ${at_id_STA_rPassesAttempted} attempted)
+    list(GET row ${at_id_STA_rInterceptions} intercepted)
+    string(MAKE_C_IDENTIFIER "${match}_${team}" side)
+    string(MAKE_C_IDENTIFIER "${match}" whole)
 
-    if(NOT DEFINED ${key})
-        set(${key} 0)
+    add_to(goals_${side} ${goals})
+    add_to(attempts_${side} ${attempted})
+    add_to(attempts_${whole} ${attempted})
+    add_to(intercepts_${side} ${intercepted})
+    list(APPEND sides "${side}|${whole}|${match}|${team}")
+endforeach()
+
+list(REMOVE_DUPLICATES sides)
+
+foreach(entry IN LISTS sides)
+    string(REPLACE "|" ";" parts "${entry}")
+    list(GET parts 0 side)
+    list(GET parts 1 whole)
+    list(GET parts 2 match)
+    list(GET parts 3 team)
+    math(EXPR opponent_attempts "${attempts_${whole}} - ${attempts_${side}}")
+
+    if(intercepts_${side} GREATER opponent_attempts)
+        message(FATAL_ERROR "match ${match}, ${team}: ${intercepts_${side}} interceptions of ${opponent_attempts} passes tried against them")
     endif()
-
-    math(EXPR ${key} "${${key}} + ${goals}")
 endforeach()
 
 set(completed_total 0)
@@ -50,8 +80,8 @@ foreach(line IN LISTS lines)
     string(REGEX REPLACE "\\..*" "" hang "${hang}")
     string(REGEX REPLACE "\\..*" "" period "${period}")
     math(EXPR match_ms "3 * ${period}")
-    string(MAKE_C_IDENTIFIER "goals_${match}_${team}" key)
-    math(EXPR teammate_goals "${${key}} - ${goals}")
+    string(MAKE_C_IDENTIFIER "${match}_${team}" side)
+    math(EXPR teammate_goals "${goals_${side}} - ${goals}")
 
     if(completed GREATER attempted)
         message(FATAL_ERROR "match ${match}, ${player}: ${completed} passes completed of ${attempted} attempted")
