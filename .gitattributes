@@ -2,6 +2,9 @@
 # stores LF and a checkout gets the platform's own, so Windows and Linux never fight over them.
 * text=auto
 
+# Shell scripts run in Linux containers off a Windows checkout, so they stay LF there too.
+*.sh text eol=lf
+
 # Vendored third party: never line-ending converted, and not counted as this project's own code
 # in the language statistics. See third_party/README.md.
 third_party/** -text linguist-vendored
