@@ -181,8 +181,8 @@ opponent it should stay on top, but be beatable. A newer run than the tables abo
 seed 1 and 10 matches per matchup, measured its points % against the other 13 teams, home and away.
 
 Setting one Nemesis rating at a time to The Machine's median moves it by under 4 points. Checking
-does most, from 92.1 to 88.3, then weight class to 89.4. Its goalie ratings do nothing. No single
-rating carries the lead.
+does most, from 92.1 to 88.3, then weight class to 89.4. Its goalie ratings (`id_GRT_*`) do
+nothing. No single rating carries the lead.
 
 So the proposal pulls every skater rating toward The Machine's median by the same factor k:
 `median + k * (nemesis - median)`, rounded.
@@ -200,8 +200,13 @@ goes from 13.5 to 9, and stamina from 11 to 8. With 260 matches a point, each fi
 about 2 points.
 
 At k = 0 Nemesis still takes 69%, more than The Machine whose ratings it then has. The rest of the
-lead comes from outside the skater ratings: its goalies' plans, its roster or its drome. The port
-ships no game data, so this stays a proposal.
+lead comes from outside the skater ratings.
+
+Its goalie's motion speed is not it. Nemesis's goalie has `speed= 120` against 80 for most teams,
+but setting it to 80 leaves Nemesis at 94.4% at k = 1, and at 83.3% at k = 0.5 (83.1% with 100).
+The remaining candidates are its models and its drome.
+
+The port ships no game data, so this stays a proposal.
 
 ## Not covered
 
