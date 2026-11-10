@@ -398,6 +398,7 @@ hyperx_add_check(ini LABELS unit SOURCES tests/ini_check.cpp src/common/inifile.
 hyperx_add_check(strings LABELS unit SOURCES tests/strings_check.cpp src/common/stringtable.cpp src/common/peresources.cpp src/common/path.cpp)
 hyperx_add_check(dialogtemplates LABELS unit SOURCES tests/dialogtemplates_check.cpp src/ui/dialogtemplates.cpp)
 hyperx_add_check(path LABELS unit SOURCES tests/path_check.cpp src/common/path.cpp)
+hyperx_add_check(parseutil LABELS unit SOURCES tests/parseutil_check.cpp src/common/parseutil.cpp LIBRARIES SDL3::SDL3)
 hyperx_add_check(careerstats LABELS unit SOURCES tests/careerstats_check.cpp src/engine/careerstats.cpp)
 hyperx_add_check(rawalloc LABELS lint SOURCES tests/rawalloc_check.cpp ARGS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/tests")
 hyperx_add_check(hwmesh LABELS unit PERMISSIVE SOURCES tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
