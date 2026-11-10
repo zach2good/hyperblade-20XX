@@ -43,6 +43,11 @@ int main()
     Expect(knights.nMatches == 2 && knights.nWins == 1 && knights.nDraws == 1 && knights.nLosses == 0, "wins and draws counted");
     Expect(knights.nScored == 12 && knights.nConceded == 7, "points summed");
 
+    CareerStats::AddSeason(career, "The Knights", true);
+    CareerStats::AddSeason(career, "The Knights", false);
+
+    Expect(knights.nSeasons == 2 && knights.nTitles == 1, "seasons and titles counted");
+
     auto out = std::stringstream();
     CareerStats::Write(out, career);
 
@@ -54,6 +59,15 @@ int main()
     Expect(read.dromers.at(key).nMatches == 2, "the match count survives");
     Expect(read.dromers.at(key).aStat[kMatchStatTimeOfPoss] == 3000124.5f, "the sums survive at full precision");
     Expect(read.teams.at("BLAM! Nemesis").nLosses == 1, "the team record survives");
+    Expect(read.teams.at("The Knights").nSeasons == 2 && read.teams.at("The Knights").nTitles == 1, "the season record survives");
+
+    // A team line from before seasons were kept.
+    auto        older   = std::stringstream("=The Glory\t3\t1\t1\t1\t9\t8\n");
+    const auto  readOld = CareerStats::Parse(older);
+    const auto& glory   = readOld.teams.at("The Glory");
+
+    Expect(glory.nMatches == 3 && glory.nConceded == 8, "an older team line still reads");
+    Expect(glory.nSeasons == 0 && glory.nTitles == 0, "an older team line has no seasons");
 
     return s_nFailed;
 }

@@ -462,6 +462,8 @@ void GameEngine::AdvanceTournamentBracket()
 
                 ClearAwards();
 
+                CareerStats::EndSeason(*m_pTeamA, false);
+
                 m_bMatchOver = 1;
 
                 return;
@@ -479,6 +481,8 @@ void GameEngine::AdvanceTournamentBracket()
 
         ClearAwards();
 
+        CareerStats::EndSeason(*m_pTeamA, false);
+
         m_bMatchOver = 1;
 
         return;
@@ -492,6 +496,8 @@ void GameEngine::AdvanceTournamentBracket()
     if (nEntry == kBracketEnd)
     {
         g_pGameEngine->SetAward(kAwardRazor, 1);
+
+        CareerStats::EndSeason(*m_pTeamA, true);
     }
 
     if (m_nScoreHome >= kSuperAwardScore)

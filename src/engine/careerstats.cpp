@@ -123,6 +123,23 @@ void CareerStats::AddResult(Career& career, std::string_view team, int nScored, 
     }
 }
 
+void CareerStats::AddSeason(Career& career, std::string_view team, bool bWon)
+{
+    auto it = career.teams.find(team);
+
+    if (it == career.teams.end())
+    {
+        it = career.teams.emplace(std::string(team), TeamRecord{}).first;
+    }
+
+    it->second.nSeasons++;
+
+    if (bWon)
+    {
+        it->second.nTitles++;
+    }
+}
+
 CareerStats::Career CareerStats::Parse(std::istream& in)
 {
     auto career  = Career{};
@@ -146,6 +163,15 @@ CareerStats::Career CareerStats::Parse(std::istream& in)
 
             if (!fields.fail())
             {
+                // An older file stops at six counts, which leaves the seasons at nought.
+                fields >> record.nSeasons >> record.nTitles;
+
+                if (fields.fail())
+                {
+                    record.nSeasons = 0;
+                    record.nTitles  = 0;
+                }
+
                 career.teams[strLine.substr(1, nNameEnd - 1)] = record;
             }
 
@@ -187,7 +213,7 @@ void CareerStats::Write(std::ostream& out, const Career& career)
     for (const auto& [strName, record] : career.teams)
     {
         out << '=' << strName << '\t' << record.nMatches << '\t' << record.nWins << '\t' << record.nDraws << '\t' << record.nLosses << '\t'
-            << record.nScored << '\t' << record.nConceded << '\n';
+            << record.nScored << '\t' << record.nConceded << '\t' << record.nSeasons << '\t' << record.nTitles << '\n';
     }
 
     for (const auto& [strKey, totals] : career.dromers)
@@ -230,6 +256,20 @@ void CareerStats::EndPeriod(const TeamBlock& home, const TeamBlock& away, int nH
         AddResult(Loaded(), home.GetName(), nHomeScore, nAwayScore);
         AddResult(Loaded(), away.GetName(), nAwayScore, nHomeScore);
     }
+
+    auto file = std::ofstream(s_strPath, std::ios::trunc);
+
+    Write(file, Loaded());
+}
+
+void CareerStats::EndSeason(const TeamBlock& team, bool bWon)
+{
+    if (s_strPath.empty())
+    {
+        return;
+    }
+
+    AddSeason(Loaded(), team.GetName(), bWon);
 
     auto file = std::ofstream(s_strPath, std::ios::trunc);
 

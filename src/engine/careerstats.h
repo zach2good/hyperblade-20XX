@@ -34,6 +34,10 @@ struct TeamRecord
     int nLosses   = 0;
     int nScored   = 0;
     int nConceded = 0;
+
+    // Gauntlets finished, and those won.
+    int nSeasons = 0;
+    int nTitles  = 0;
 };
 
 struct Career
@@ -50,9 +54,10 @@ std::string Key(std::string_view team, std::string_view dromer);
 void AddGain(Career& career, std::string_view key, const Stats& gain, bool bFirstOfMatch);
 
 void AddResult(Career& career, std::string_view team, int nScored, int nConceded);
+void AddSeason(Career& career, std::string_view team, bool bWon);
 
 // A dromer's line is the key, the match count and the 49 sums; a team's starts with '=' and its
-// name, then the six counts. Fields are tab separated.
+// name, then the eight counts, of which an older file holds the first six. Fields are tab separated.
 Career Parse(std::istream& in);
 void   Write(std::ostream& out, const Career& career);
 
@@ -64,6 +69,9 @@ void StartMatch();
 
 // Adds each dromer's gain since the last period, the result too once the match is over, and saves.
 void EndPeriod(const TeamBlock& home, const TeamBlock& away, int nHomeScore, int nAwayScore, bool bMatchOver);
+
+// A Gauntlet ended, won or lost: counts it for the team and saves.
+void EndSeason(const TeamBlock& team, bool bWon);
 
 // The row's lifetime sums, with the shooting percentage worked out from them, and its match count.
 TeamStatRow Row(const TeamBlock& team, int nRow, int* pnMatches);

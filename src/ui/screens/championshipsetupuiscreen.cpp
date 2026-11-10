@@ -1976,7 +1976,7 @@ void ChampionshipSetupUIScreen::UpdatePlayerRows()
     {
         const auto record = CareerStats::Record(*pTeam);
 
-        sprintf(szText, "Lifetime %d-%d-%d, dromers %d %d %d %d", record.nWins, record.nDraws, record.nLosses, anPlayed[0], anPlayed[1], anPlayed[2], anPlayed[3]);
+        sprintf(szText, "Lifetime %d-%d-%d, titles %d/%d, dromers %d %d %d %d", record.nWins, record.nDraws, record.nLosses, record.nTitles, record.nSeasons, anPlayed[0], anPlayed[1], anPlayed[2], anPlayed[3]);
         m_pCareerLabel->SetText(szText);
     }
 
