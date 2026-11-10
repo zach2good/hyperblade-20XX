@@ -268,6 +268,10 @@ as well as away (28.5%).
 
 ## Not covered
 
+- A seed replays the same matches, byte for byte, on Windows (MSVC) and Linux (GCC). Clang builds,
+  the browser build among them, play different matches from the same seed. The first difference
+  is the rok's position in a single frame; Valgrind and AddressSanitizer find no memory error
+  behind it, and turning off strict aliasing does not change it. The cause is not found.
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
   single match, but the figures here would shift slightly if rerun.
 - Only the default difficulty was played. The sections other than "Period length" use 5-minute
