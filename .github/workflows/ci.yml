@@ -123,7 +123,8 @@ jobs:
       # can only do once its libraries load.
       - name: Package
         run: |
-          cmake --install build-mac --prefix build-mac/package
+          trap 'echo "::error::Package failed at: $BASH_COMMAND"' ERR
+          cmake --install build-mac --prefix build-mac/package 2>&1 | tee install.log || { sed 's/^/::error::/' install.log | head -20; exit 1; }
           build-mac/package/hyperblade_20XX -s -sim LOSAN SEATTLE 1 > run.log 2>&1 || echo "exit $?" >> run.log
           cat run.log
           grep -q "HYPERX.EXE" run.log || { ls -l build-mac/package; head -20 run.log; } | sed 's/^/::error::/'
