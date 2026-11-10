@@ -2743,7 +2743,17 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
         { kCOBNgoalPort, kCOBSgoalPort }
     };
 
-    switch (static_cast<unsigned short>(pCmd->m_nSlot))
+    const auto nKind      = static_cast<unsigned short>(pCmd->m_nSlot);
+    const auto bDromerRow = nKind == kBubbleDromerAwareness || nKind == kBubbleDromerModel || nKind == kBubbleDromerBody || nKind == kBubbleDromerScoop;
+
+    // Deviation: bench dromers load with no model id, and the original read their bubbles' ids from past the table.
+    if (bDromerRow && (nModelId < 0 || nModelId >= static_cast<short>(std::size(aRow[0]))))
+    {
+        pCmd->m_nSlot = kCOBNone;
+        return;
+    }
+
+    switch (nKind)
     {
         case kBubbleBodyPart:
             pCmd->m_nSlot = nModelId - g_abObjectTypeBaseline[kGOBBodyPart] + kCOBBodyPart0;
