@@ -110,7 +110,7 @@ std::vector<int> ModelSlots(GameEngine& engine)
         slots.push_back(kSlotDrome);
     }
 
-    std::sort(slots.begin(), slots.end());
+    std::ranges::sort(slots);
 
     return slots;
 }
@@ -686,9 +686,8 @@ ImageFolder& Folder(ImageSource source)
         }
     }
 
-    std::sort(
-        folder.names.begin(),
-        folder.names.end(),
+    std::ranges::sort(
+        folder.names,
         [](const std::string& a, const std::string& b)
         {
             return SDL_strcasecmp(a.c_str(), b.c_str()) < 0;
@@ -801,7 +800,7 @@ void StepFrames()
         return;
     }
 
-    const auto it = std::find(s_frames.begin(), s_frames.end(), s_strImage);
+    const auto it = std::ranges::find(s_frames, s_strImage);
 
     // Picking an image outside the run stops it.
     if (it == s_frames.end())
@@ -854,12 +853,12 @@ void ImageBrowserWindow()
     // Up and down step through the list while no field has the keyboard.
     if (!ImGui::GetIO().WantTextInput && !shown.empty())
     {
-        const auto it    = std::find_if(shown.begin(),
-                                        shown.end(),
-                                        [](const std::string* pName)
-                                        {
-                                         return *pName == s_strImage;
-                                        });
+        const auto it = std::ranges::find_if(
+            shown,
+            [](const std::string* pName)
+            {
+                return *pName == s_strImage;
+            });
         const auto nAt   = static_cast<int>(it - shown.begin());
         const auto nLast = static_cast<int>(shown.size()) - 1;
 

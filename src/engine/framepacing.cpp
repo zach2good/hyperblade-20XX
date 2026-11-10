@@ -466,13 +466,7 @@ void FramePacing::RecordView(CameraObject& camera)
 
     SnapshotCamera(camera);
 
-    auto it = std::find_if(
-        s_views.begin(),
-        s_views.end(),
-        [&](const View& view)
-        {
-            return view.pCamera == &camera;
-        });
+    auto it = std::ranges::find(s_views, &camera, &View::pCamera);
 
     if (it == s_views.end())
     {

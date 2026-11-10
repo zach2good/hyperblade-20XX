@@ -1394,7 +1394,7 @@ void AcceptDialog(unsigned short nDialog)
 
 void Open(unsigned short nDialog)
 {
-    if (std::find(s_open.begin(), s_open.end(), nDialog) == s_open.end())
+    if (!std::ranges::contains(s_open, nDialog))
     {
         InitDialog(nDialog);
         s_open.push_back(nDialog);
@@ -2765,13 +2765,7 @@ void OriginalUI::DrawDialogs()
 
     for (const auto nDialog : open)
     {
-        const auto it = std::find_if(
-            s_dialogs.begin(),
-            s_dialogs.end(),
-            [&](const DialogTemplates::Dialog& dialog)
-            {
-                return dialog.nID == nDialog;
-            });
+        const auto it = std::ranges::find(s_dialogs, nDialog, &DialogTemplates::Dialog::nID);
 
         if (it == s_dialogs.end() || !DrawDialog(*it))
         {
