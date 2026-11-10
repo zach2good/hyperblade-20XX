@@ -174,6 +174,35 @@ dromer's plan credits its attacker, or the owner of the mine, rok or turnstile t
 equal goals in 99.7% of rows, which points to the scorer getting the assist; that one is
 unverified.
 
+## Balance proposal: BLAM! Nemesis
+
+BLAM! Nemesis wins about 9 of 10 matches against every other team. As the Gauntlet's last
+opponent it should stay on top, but be beatable. A newer run than the tables above, with the port's AI, 3-minute periods,
+seed 1 and 10 matches per matchup, measured its points % against the other 13 teams, home and away.
+
+Setting one Nemesis rating at a time to The Machine's median moves it by under 4 points. Checking
+does most, from 92.1 to 88.3, then weight class to 89.4. Its goalie ratings do nothing. No single
+rating carries the lead.
+
+So the proposal pulls every skater rating toward The Machine's median by the same factor k:
+`median + k * (nemesis - median)`, rounded.
+
+| k | Nemesis pts% |
+| --- | --- |
+| 1 (shipped) | 92.1 |
+| 0.75 | 89.8 |
+| 0.5 | 83.5 |
+| 0.25 | 75.6 |
+| 0 | 69.0 |
+
+k = 0.5 puts Nemesis at The DredNoks' level and keeps it first. For example, its median checking
+goes from 13.5 to 9, and stamina from 11 to 8. With 260 matches a point, each figure is good to
+about 2 points.
+
+At k = 0 Nemesis still takes 69%, more than The Machine whose ratings it then has. The rest of the
+lead comes from outside the skater ratings: its goalies' plans, its roster or its drome. The port
+ships no game data, so this stays a proposal.
+
 ## Not covered
 
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
