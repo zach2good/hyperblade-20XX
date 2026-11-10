@@ -274,6 +274,9 @@ whose X and Z angles are NaN, and packing that frame kept the NaN's sign, which 
 picks differently. The rok jumped for that frame, a different distance per compiler. The frame
 now holds the previous frame's angles, so the jump is gone and every build agrees.
 
+Re-measured after the animation fix, the proposals hold within noise: BLAM! Nemesis 93.5%
+shipped and 83.1% at k = 0.5, The Sturmnacht 30.8% shipped and 46.7% at k = 0.375.
+
 ## Not covered
 
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
