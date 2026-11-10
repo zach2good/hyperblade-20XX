@@ -169,10 +169,12 @@ them: completed passes, checks and injuries given, interceptions, drags won, pow
 short-handed stats, 2-point stats, rail time and hang time. The 26th, freestyle moves, is written
 only by the Human plan's rail slide, so it moves only when a person plays.
 
-The port now records two of them. The plans count pass attempts, and the next possession within 3
+The port now records three of them. The plans count pass attempts, and the next possession within 3
 seconds settles each pass: a teammate's completes it, an opponent's is an interception. In 5
 DredNoks against Knights matches, 66% of 335 passes were completed, 6% intercepted, and the rest
-went loose for longer. Scores and every other stat are unchanged.
+went loose for longer. It also counts checks given: every attack that reaches an opponent. In
+10 Nemesis against Sturmnacht matches, The Sturmnacht gave more checks (753 to 647) but caused 1
+injury or fatality to Nemesis's 21. Scores and every other stat are unchanged.
 
 The Injuries and Fatalities columns count harm a player inflicts, not harm taken: the hurt
 dromer's plan credits its attacker, or the owner of the mine, rok or turnstile that hit it. Assists

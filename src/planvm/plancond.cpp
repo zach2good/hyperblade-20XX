@@ -6227,6 +6227,12 @@ void PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResul
 
     CrashTest::RecordAttack(pActor->GetSlot(), nSlot, nAttack);
 
+    // Deviation: nothing wrote checks given. Every attack that reaches an opponent counts.
+    if (nSlot <= kSlotDromer3 && nSlot % 2 != pActor->GetSlot() % 2)
+    {
+        g_pGameEngine->GetPlayer(nSlot)->m_matchStats.AccumulateStat(kMatchStatChecksGiven, nSlot);
+    }
+
     auto* const pStats = &pActor->m_stats;
 
     auto flDamage = pStats->GetScalar(kRatingDamage);

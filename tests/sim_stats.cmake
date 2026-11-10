@@ -1,11 +1,11 @@
-# Checks a simulated run's CSV against rules the port's pass, assist and one-timer stats keep.
+# Checks a simulated run's CSV against rules the port's pass, assist, one-timer and check stats keep.
 # Included by sim_replay.cmake with CSV set to the file.
 
 file(STRINGS "${CSV}" lines)
 list(POP_FRONT lines header)
 string(REPLACE "," ";" header "${header}")
 
-foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_rOneTimers id_STA_rPassesAttempted id_STA_rPassesCompleted)
+foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_rOneTimers id_STA_rPassesAttempted id_STA_rPassesCompleted id_STA_rChecksGiven)
     list(FIND header ${column} index)
 
     if(index LESS 0)
@@ -31,6 +31,7 @@ foreach(line IN LISTS lines)
 endforeach()
 
 set(completed_total 0)
+set(checks_total 0)
 
 foreach(line IN LISTS lines)
     string(REPLACE "," ";" row "${line}")
@@ -42,6 +43,7 @@ foreach(line IN LISTS lines)
     list(GET row ${at_id_STA_rOneTimers} onetimers)
     list(GET row ${at_id_STA_rPassesAttempted} attempted)
     list(GET row ${at_id_STA_rPassesCompleted} completed)
+    list(GET row ${at_id_STA_rChecksGiven} checks)
     string(MAKE_C_IDENTIFIER "goals_${match}_${team}" key)
     math(EXPR teammate_goals "${${key}} - ${goals}")
 
@@ -58,8 +60,13 @@ foreach(line IN LISTS lines)
     endif()
 
     math(EXPR completed_total "${completed_total} + ${completed}")
+    math(EXPR checks_total "${checks_total} + ${checks}")
 endforeach()
 
 if(completed_total EQUAL 0)
     message(FATAL_ERROR "no pass was completed in ${CSV}")
+endif()
+
+if(checks_total EQUAL 0)
+    message(FATAL_ERROR "no check was given in ${CSV}")
 endif()
