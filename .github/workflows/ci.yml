@@ -111,9 +111,12 @@ jobs:
           CPM_SOURCE_CACHE: ${{ github.workspace }}/.cpm-cache
         run: |
           brew install ninja
-          cmake -S . -B build-mac -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
-          cmake --build build-mac -- -k 0
-          ctest --test-dir build-mac --output-on-failure
+          set -o pipefail
+          # Errors become annotations, which anyone can read without signing in.
+          report() { grep -E "error|Error|FAILED" "$1" | head -20 | sed 's/^/::error::/'; exit 1; }
+          cmake -S . -B build-mac -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo 2>&1 | tee configure.log || report configure.log
+          cmake --build build-mac -- -k 0 2>&1 | tee build.log || report build.log
+          ctest --test-dir build-mac --output-on-failure 2>&1 | tee test.log || report test.log
 
   build-web:
     name: Build (browser)
