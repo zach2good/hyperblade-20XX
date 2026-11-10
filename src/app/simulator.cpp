@@ -349,7 +349,21 @@ int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds&
 
                 if (pSave->GetBracketPos() == 0)
                 {
-                    std::printf("season %d: lost to %s in round %d\n", nSeason, g_pGameEngine->m_pTeamB->szName, nRound);
+                    const auto nHome = static_cast<int>(g_pGameEngine->GetHomeScore());
+                    const auto nAway = static_cast<int>(g_pGameEngine->GetAwayScore());
+
+                    // A draw ends a season too, unless every opponent is down.
+                    const auto* const pszHow = [&]
+                    {
+                        if (nHome == nAway)
+                        {
+                            return "drew with";
+                        }
+
+                        return "lost to";
+                    }();
+
+                    std::printf("season %d: %s %s in round %d, %d-%d\n", nSeason, pszHow, g_pGameEngine->m_pTeamB->szName, nRound, nHome, nAway);
 
                     return "lost";
                 }
