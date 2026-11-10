@@ -167,9 +167,8 @@ Being the home team makes no difference, so the gap comes from the dromes.
 Of the per-player match stats, 26 are 0 in every simulated row. No plan and no code writes 25 of
 them: completed passes, checks and injuries given, interceptions, drags won, power play and
 short-handed stats, 2-point stats, rail time and hang time. The 26th, freestyle moves, is written
-only by the Human plan's rail slide, so it moves only when a person plays. The AI never slides
-a rail at all: its plans pick the rail slide behaviour and drop it in the same frame, 13 times in
-2 matches.
+only by the Human plan's rail slide, so it moves only when a person plays. No AI plan slides a
+rail: only the Human plan declares the rail slide behaviour.
 
 The port now records four of them. The plans count pass attempts, and the next possession within 3
 seconds settles each pass: a teammate's completes it, an opponent's is an interception. In 5
