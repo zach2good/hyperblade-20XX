@@ -226,6 +226,16 @@ original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The 
 
 The port ships no game data, so this stays a proposal.
 
+### In the Gauntlet
+
+The Gauntlet barely meets Nemesis. Its bracket is 13 rounds, and a loss, or a draw with any
+opponent still standing, ends the season. Over 20 simulated seasons each, The DredNoks, The
+Knights, The Machine and The Ambush averaged 2.3 to 4.8 matches a season, and only one season in
+80 reached Nemesis. With Nemesis shrunk, The DredNoks won one title in 20; no other team's seasons
+changed. At a 70% win rate, 13 straight wins come once in a hundred seasons, so the format, not
+Nemesis, is what keeps AI teams from titles. A person playing the home team is another matter, and
+untested.
+
 ## Balance proposal: the bottom teams
 
 The same measure (the port's AI, 3-minute periods, seed 1, 10 matches per matchup against the other
