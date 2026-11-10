@@ -156,6 +156,10 @@ cmake --preset msvc-x64 -DHYPERX_GAME_DATA=C:/Games/HyperBlade
 ctest --preset msvc-x64 -L data
 ```
 
+[.clang-tidy](.clang-tidy) holds the static checks. Configure with
+`-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`, then run `clang-tidy -p build` on a file. The decomp's files
+keep the original's style and raise some of them by design.
+
 ## Tools
 
 These need Python 3.12 or later. Some read your `HYPERX.EXE`, so copy `hyperx-user.example.yml` to

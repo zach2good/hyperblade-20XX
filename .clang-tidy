@@ -1,0 +1,24 @@
+# The checks that found real problems in the port's own code. The decomp's files follow the
+# original's style and raise many of these by design, so judge findings there one by one.
+Checks: >
+  -*,
+  bugprone-*,
+  performance-*,
+  misc-redundant-expression,
+  misc-unused-using-decls,
+  misc-const-correctness,
+  readability-make-member-function-const,
+  modernize-use-std-print,
+  modernize-use-ranges,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-reserved-identifier,
+  -bugprone-macro-parentheses,
+  -bugprone-derived-method-shadowing-base-method,
+  -bugprone-throwing-static-initialization,
+  -bugprone-branch-clone,
+  -performance-enum-size
+WarningsAsErrors: ''
+HeaderFilterRegex: 'src/.*'
+FormatStyle: file
