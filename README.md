@@ -41,7 +41,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 ## TODO
 
 - Update menus to support controller button re-binding
-- Play-test the Linux build, which builds and passes its tests but has not been run on a desktop
+- Play-test the Linux build on a desktop. It builds, passes its tests and plays simulated matches
 - Mac and browser builds via Emscripten
 - Net multiplayer, and split screen for local 2 Player Mode
 - AI balance fixes
