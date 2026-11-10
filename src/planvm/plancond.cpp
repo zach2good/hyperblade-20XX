@@ -2808,6 +2808,53 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
     }
 }
 
+// Deviation: the plans count pass attempts but never their outcome, so the next possession settles
+// each pass: a teammate completes it, an opponent intercepts it.
+static void SettlePass(PlayerObject* pPlayer, int nStat)
+{
+    struct PendingPass
+    {
+        short               nSlot = -1;
+        Clock::Milliseconds tick{};
+    };
+
+    // A new match's clock restarts, so a pass left from the last one falls outside the window.
+    constexpr auto kPassWindow = Clock::Milliseconds(3000);
+
+    static auto s_pass = PendingPass();
+
+    const auto now = g_pGameEngine->m_clock.tick;
+
+    if (nStat == kMatchStatPassesAttempted)
+    {
+        s_pass = PendingPass{ pPlayer->GetSlot(), now };
+        return;
+    }
+
+    if (nStat != kMatchStatPossStart || s_pass.nSlot < 0 || pPlayer->GetSlot() == s_pass.nSlot)
+    {
+        return;
+    }
+
+    const auto elapsed = now - s_pass.tick;
+
+    if (elapsed >= Clock::Milliseconds(0) && elapsed <= kPassWindow)
+    {
+        auto* const pPasser = g_pGameEngine->GetPlayer(s_pass.nSlot);
+
+        if (pPasser->m_wTargetGoalSlot == pPlayer->m_wTargetGoalSlot)
+        {
+            pPasser->m_matchStats.AccumulateStat(kMatchStatPassesCompleted, s_pass.nSlot);
+        }
+        else
+        {
+            pPlayer->m_matchStats.AccumulateStat(kMatchStatInterceptions, pPlayer->GetSlot());
+        }
+    }
+
+    s_pass = PendingPass();
+}
+
 // The stat handler is asked twice with the same index and its two answers are used differently.
 
 // FUNCTION: HYPERX 0x00461d20
@@ -2828,6 +2875,8 @@ void PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, short*, in
 
         pTarget->m_matchStats.AccumulateStat(pArgs->m_pArgs[2].n,
                                              pSource->GetSlot());
+
+        SettlePass(pTarget, pArgs->m_pArgs[2].n);
     }
 }
 

@@ -67,6 +67,7 @@ constexpr auto kMatchStatShortHandedAttempts  = 0x0e;
 constexpr auto kMatchStatShortHandedCompleted = 0x0f;
 constexpr auto kMatchStatPowerPlayAttempts    = 0x11;
 constexpr auto kMatchStatPowerPlayCompleted   = 0x12;
+constexpr auto kMatchStatInterceptions        = 0x13;
 constexpr auto kMatchStatTimeOnRail           = 0x17;
 constexpr auto kMatchStatTorStampStart        = 0x18;
 constexpr auto kMatchStatTorStampEnd          = 0x19;
