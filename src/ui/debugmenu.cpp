@@ -913,6 +913,48 @@ void InputTab()
         ImGui::EndTable();
     }
 
+    // Deviation: booie.ini [Gamepad] was the only way to change what a pad control does.
+    OriginalUI::SeparatorText("Controller");
+
+    if (ImGui::BeginTable("pad", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit))
+    {
+        for (int nControl = 0; nControl < Gamepad::BindingCount(); nControl++)
+        {
+            const auto binding = Gamepad::GetBinding(nControl);
+
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::TextUnformatted(binding.pszControl);
+            ImGui::TableNextColumn();
+            ImGui::SetNextItemWidth(140.0f);
+
+            if (ImGui::BeginCombo(std::format("##pad{}", nControl).c_str(), binding.pszAction))
+            {
+                for (int nAction = 0; nAction < Gamepad::ActionCount(); nAction++)
+                {
+                    const auto* const pszName = Gamepad::ActionName(nAction);
+
+                    if (ImGui::Selectable(pszName, SDL_strcasecmp(pszName, binding.pszAction) == 0))
+                    {
+                        Gamepad::SetBinding(nControl, pszName);
+                    }
+                }
+
+                ImGui::EndCombo();
+            }
+        }
+
+        ImGui::EndTable();
+    }
+
+    if (ImGui::Button("Controller defaults"))
+    {
+        for (int nControl = 0; nControl < Gamepad::BindingCount(); nControl++)
+        {
+            Gamepad::SetBinding(nControl, Gamepad::GetBinding(nControl).pszDefault);
+        }
+    }
+
     OriginalUI::SeparatorText("Recent");
 
     if (ImGui::BeginTable("recent", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_ScrollY, ImVec2(0.0f, 220.0f)))

@@ -42,7 +42,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 
 ## TODO
 
-- Update menus to support controller button re-binding
+- Controller button re-binding in the game's own menus. The F2 Bindings window does it for now
 - Play-test the Linux build on a desktop. It builds, passes its tests and plays simulated matches
 - Mac builds
 - Play-test the browser build from [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile): pick a real

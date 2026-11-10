@@ -471,7 +471,31 @@ Gamepad::Binding Gamepad::GetBinding(int nIndex)
         return kControls[static_cast<size_t>(nIndex)].pszDefault;
     }();
 
-    return Binding{ kControls[static_cast<size_t>(nIndex)].pszKey, pszAction };
+    return Binding{ kControls[static_cast<size_t>(nIndex)].pszKey, pszAction, kControls[static_cast<size_t>(nIndex)].pszDefault };
+}
+
+void Gamepad::SetBinding(int nIndex, const char* pszAction)
+{
+    LoadBindings();
+
+    const auto& action = FindAction(pszAction);
+
+    s_apBindings[static_cast<size_t>(nIndex)] = &action;
+
+    if (g_pGameOptions != nullptr)
+    {
+        g_pGameOptions->WriteString("Gamepad", kControls[static_cast<size_t>(nIndex)].pszKey, action.pszName);
+    }
+}
+
+int Gamepad::ActionCount()
+{
+    return static_cast<int>(std::size(ACTIONS));
+}
+
+const char* Gamepad::ActionName(int nIndex)
+{
+    return ACTIONS[nIndex].pszName;
 }
 
 unsigned int Gamepad::LastUsed()
