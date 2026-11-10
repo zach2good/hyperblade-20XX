@@ -24,6 +24,7 @@
 #include <optional>
 #include <utility>
 #include <cstdio>
+#include <print>
 #include <fstream>
 #include <string>
 #include <string_view>
@@ -116,11 +117,11 @@ std::optional<short> FindTeam(const TeamsBlock& table, std::string_view name)
 
 void ListTeams(const TeamsBlock& table)
 {
-    std::printf("Teams:\n");
+    std::println("Teams:");
 
     for (short i = 0; i < table.GetTeamCount(); i++)
     {
-        std::printf("  %d  %s  %s\n", i, table.m_ppTeams[i]->szPath, table.m_ppTeams[i]->szName);
+        std::println("  {}  {}  {}", i, table.m_ppTeams[i]->szPath, table.m_ppTeams[i]->szName);
     }
 }
 
@@ -381,7 +382,7 @@ int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds&
                         return "lost to";
                     }();
 
-                    std::printf("season %d: %s %s in round %d, %d-%d\n", nSeason, pszHow, g_pGameEngine->m_pTeamB->szName, nRound, nHome, nAway);
+                    std::println("season {}: {} {} in round {}, {}-{}", nSeason, pszHow, g_pGameEngine->m_pTeamB->szName, nRound, nHome, nAway);
 
                     return "lost";
                 }
@@ -395,15 +396,15 @@ int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds&
         if (SDL_strcmp(pszResult, "won") == 0)
         {
             nTitles++;
-            std::printf("season %d: won the Gauntlet\n", nSeason);
+            std::println("season {}: won the Gauntlet", nSeason);
         }
         else if (SDL_strcmp(pszResult, "lost") != 0)
         {
-            std::printf("season %d: %s\n", nSeason, pszResult);
+            std::println("season {}: {}", nSeason, pszResult);
         }
     }
 
-    std::printf("%d titles in %d seasons\n", nTitles, s_request->nCount);
+    std::println("{} titles in {} seasons", nTitles, s_request->nCount);
 
     return nMatch;
 }
@@ -449,12 +450,12 @@ int Simulator::Run()
 
     if (!s_request->strUnknown.empty())
     {
-        std::printf("unknown argument: %s\n", s_request->strUnknown.c_str());
+        std::println("unknown argument: {}", s_request->strUnknown);
     }
 
     if (!home.has_value() || !away.has_value() || !arena.has_value() || s_request->nCount <= 0 || !s_request->strUnknown.empty())
     {
-        std::printf("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]\n");
+        std::println("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]");
         ListTeams(table);
 
         return 2;
@@ -506,7 +507,7 @@ int Simulator::Run()
 
         if (!PlayMatch(nSeed, elapsed, nTicks))
         {
-            std::printf("match %d (seed %u) stalled and was dropped\n", nMatch, nSeed);
+            std::println("match {} (seed {}) stalled and was dropped", nMatch, nSeed);
 
             continue;
         }
@@ -517,26 +518,30 @@ int Simulator::Run()
         csv.flush();
         nDone++;
 
-        std::printf("match %d: %s %d, %s %d\n", nMatch, g_pGameEngine->m_pTeamA->szName, g_pGameEngine->GetHomeScore(), g_pGameEngine->m_pTeamB->szName, g_pGameEngine->GetAwayScore());
+        std::println("match {}: {} {}, {} {}", nMatch, g_pGameEngine->m_pTeamA->szName, g_pGameEngine->GetHomeScore(), g_pGameEngine->m_pTeamB->szName, g_pGameEngine->GetAwayScore());
     }
 
     const auto seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
 
-    std::printf("%d of %d matches, %lld ticks in %.1f s: %.0f ticks a second, %.0fx real time\n%s\n", nDone, [&]
-                {
-                    // A Gauntlet's count is seasons, and every match it started is counted.
-                    if (bGauntlet)
-                    {
-                        return nDone;
-                    }
+    const auto nPlanned = [&]
+    {
+        // A Gauntlet's count is seasons, and every match it started is counted.
+        if (bGauntlet)
+        {
+            return nDone;
+        }
 
-                    return s_request->nCount;
-                }(),
-                nTicks,
-                seconds,
-                static_cast<double>(nTicks) / seconds,
-                static_cast<double>(nTicks) * FramePacing::kTickMs / (seconds * 1000.0),
-                strCsv.c_str());
+        return s_request->nCount;
+    }();
+
+    std::println("{} of {} matches, {} ticks in {:.1f} s: {:.0f} ticks a second, {:.0f}x real time\n{}",
+                 nDone,
+                 nPlanned,
+                 nTicks,
+                 seconds,
+                 static_cast<double>(nTicks) / seconds,
+                 static_cast<double>(nTicks) * FramePacing::kTickMs / (seconds * 1000.0),
+                 strCsv);
 
     return 0;
 }
