@@ -266,15 +266,16 @@ The models, the goalies and the drome don't explain the gap. With The Machine's 
 take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)
 as well as away (28.5%).
 
+## Same matches everywhere
+
+A seed now plays the same matches, byte for byte, with MSVC on Windows, GCC and Clang on Linux,
+and in the browser build. Clang builds used to differ: one shipped animation clip holds a frame
+whose X and Z angles are NaN, and packing that frame kept the NaN's sign, which each compiler
+picks differently. The rok jumped for that frame, a different distance per compiler. The frame
+now holds the previous frame's angles, so the jump is gone and every build agrees.
+
 ## Not covered
 
-- A seed replays the same matches, byte for byte, on Windows (MSVC) and Linux (GCC). Clang builds
-  play different matches from the same seed, but agree with each other: the browser build's two
-  matches in a page match Linux Clang's byte for byte. The first difference is the rok's position
-  in a single frame. Valgrind and AddressSanitizer find no memory error behind it, and strict
-  aliasing is not the cause. Linking the GCC build with Clang's copy of
-  `TransformObject::RotateAroundY` alone reproduces Clang's matches; why that function's two
-  builds differ is not yet found.
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
   single match, but the figures here would shift slightly if rerun.
 - Only the default difficulty was played. The sections other than "Period length" use 5-minute

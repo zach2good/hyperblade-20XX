@@ -32,7 +32,23 @@ void Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, sho
 
         for (int nAxis = 0; nAxis < 3; nAxis++)
         {
-            auto flAngle = pFrameEuler[2 - nAxis];
+            // Deviation: one shipped clip has a frame of NaN angles, whose sign each compiler packs differently; it holds the last frame's.
+            auto flAngle = [&]
+            {
+                const auto flStored = pFrameEuler[2 - nAxis];
+
+                if (!std::isnan(flStored))
+                {
+                    return flStored;
+                }
+
+                if (nFrame > 0 && !std::isnan(pFrameEuler[2 - nAxis - 3]))
+                {
+                    return pFrameEuler[2 - nAxis - 3];
+                }
+
+                return 0.0f;
+            }();
 
             switch (pHeader->acAxisOrder[2 - nAxis])
             {
