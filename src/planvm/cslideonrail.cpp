@@ -4,6 +4,9 @@
 #include "globals.h"
 #include "common/pooledclasses.h"
 #include "engine/gameengine.h"
+#include "engine/objectclasses.h"
+#include "engine/playerobject.h"
+#include "engine/statids.h"
 #include "physics/physicsbody.h"
 #include "engine/devicector.h"
 #include "engine/objectstats.h"
@@ -97,6 +100,14 @@ void CSlideOnRail::Process(int nArg)
     Vec3::ScaleTo(m_pVelocity, g_pGameEngine->m_clock.GetInvDelta(), &vScaled);
 
     m_pOwner->GetPhysicsBody()->step = vScaled;
+
+    // Deviation: nothing timed rail slides, so each frame on a rail counts to the dromer's time on rail.
+    if (const auto nSlot = m_pOwner->GetSlot(); nSlot >= 0 && nSlot <= kSlotDromer3)
+    {
+        auto& stats = g_pGameEngine->GetPlayer(nSlot)->m_matchStats;
+
+        stats.SetAt(kMatchStatTimeOnRail, stats.GetAt(kMatchStatTimeOnRail) + g_pGameEngine->m_clock.flDelta * 1000.0f);
+    }
 
     if (m_pNext != nullptr)
     {

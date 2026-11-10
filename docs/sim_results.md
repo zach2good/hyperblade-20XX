@@ -167,14 +167,18 @@ Being the home team makes no difference, so the gap comes from the dromes.
 Of the per-player match stats, 26 are 0 in every simulated row. No plan and no code writes 25 of
 them: completed passes, checks and injuries given, interceptions, drags won, power play and
 short-handed stats, 2-point stats, rail time and hang time. The 26th, freestyle moves, is written
-only by the Human plan's rail slide, so it moves only when a person plays.
+only by the Human plan's rail slide, so it moves only when a person plays. The AI never slides
+a rail at all: its plans pick the rail slide behaviour and drop it in the same frame, 13 times in
+2 matches.
 
-The port now records three of them. The plans count pass attempts, and the next possession within 3
+The port now records four of them. The plans count pass attempts, and the next possession within 3
 seconds settles each pass: a teammate's completes it, an opponent's is an interception. In 5
 DredNoks against Knights matches, 66% of 335 passes were completed, 6% intercepted, and the rest
 went loose for longer. It also counts checks given: every attack that reaches an opponent. In
 10 Nemesis against Sturmnacht matches, The Sturmnacht gave more checks (753 to 647) but caused 1
-injury or fatality to Nemesis's 21. Scores and every other stat are unchanged.
+injury or fatality to Nemesis's 21. Time on rail now counts each frame a dromer spends on a
+rail; since the AI never slides, only a person's slides add to it. Scores and every other stat
+are unchanged.
 
 The Injuries and Fatalities columns count harm a player inflicts, not harm taken: the hurt
 dromer's plan credits its attacker, or the owner of the mine, rok or turnstile that hit it. Assists
