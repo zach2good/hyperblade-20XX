@@ -31,6 +31,9 @@ constexpr auto kCameraMainSlot = 9;
 // The helmet camera, id_MOD_HeadCam.
 constexpr auto kCameraHeadSlot = 25;
 
+// id_MOD_StartGun.
+constexpr auto kSlotStartGun = 26;
+
 // id_MOD_Drome, the slot src/graphics/renderer.cpp walks the scene from.
 constexpr auto kSlotDrome = 10;
 

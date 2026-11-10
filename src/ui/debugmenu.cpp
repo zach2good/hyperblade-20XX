@@ -1021,7 +1021,7 @@ constexpr SlotRun SLOT_RUNS[] = {
     { kSlotGod, kSlotGod, "God" },
     { kSlotSoundMan, kSlotSoundMan, "Sound man" },
     { kCameraHeadSlot, kCameraHeadSlot, "Head cam" },
-    { 26, 26, "Start gun" }, // TODO: Name in objectclasses.h; the STARTGUN plan times itself out to 26.
+    { kSlotStartGun, kSlotStartGun, "Start gun" },
     { kSlotMultiplier, kSlotMultiplierLast, "Multiplier" },
     { kSlotTurnstile, kSlotTurnstileLast, "Turnstile" },
     { kSlotLimboPole, kSlotLimboPoleLast, "Limbo pole" },
