@@ -268,8 +268,9 @@ as well as away (28.5%).
 
 ## Not covered
 
-- A seed replays the same matches, byte for byte, on Windows (MSVC) and Linux (GCC). Clang builds,
-  the browser build among them, play different matches from the same seed. The first difference
+- A seed replays the same matches, byte for byte, on Windows (MSVC) and Linux (GCC). Clang builds
+  play different matches from the same seed, but agree with each other: the browser build's two
+  matches in a page match Linux Clang's byte for byte. The first difference
   is the rok's position in a single frame; Valgrind and AddressSanitizer find no memory error
   behind it, and turning off strict aliasing does not change it. The cause is not found.
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
