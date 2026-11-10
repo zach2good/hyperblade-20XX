@@ -118,6 +118,21 @@ jobs:
           cmake --build build-mac -- -k 0 2>&1 | tee build.log || report build.log
           ctest --test-dir build-mac --output-on-failure 2>&1 | tee test.log || report test.log
 
+      # With no game data the installed game must stop on the data, not on loading libSDL3.
+      - name: Package
+        run: |
+          cmake --install build-mac --prefix build-mac/package
+          mkdir -p empty && cd empty
+          ../build-mac/package/hyperblade_20XX -s -sim LOSAN SEATTLE 1 > run.log 2>&1 || true
+          cat run.log
+          ! grep -q "Library not loaded" run.log
+          cd .. && cmake --build build-mac --target package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hyperblade_20XX-macos
+          path: build-mac/packages/hyperblade_20XX-macos.tar.gz
+
   build-web:
     name: Build (browser)
     runs-on: ubuntu-24.04
