@@ -312,10 +312,10 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
         return;
     }
 
-    // Deviation: neither release had a replay. These keys end one early; the rest wait for it.
+    // Deviation: neither release had a replay. Escape or Pause, the keys a pause lets through, end one early.
     if (FramePacing::Replaying())
     {
-        if (nKey == Key::kEscape || nKey == Key::kPause || nKey == 'R')
+        if (nKey == Key::kEscape || nKey == Key::kPause)
         {
             FramePacing::StopReplay();
         }

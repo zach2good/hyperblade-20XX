@@ -57,8 +57,7 @@ struct View
     std::vector<EngineObject*> visible;
 };
 
-// The instant replay keeps the last eight seconds of drawn ticks: each object's bones and whether
-// the main camera saw it, and the camera itself.
+// The instant replay's last eight seconds of drawn ticks: bones, visibility and the main camera.
 constexpr auto kReplayTicks = 240;
 
 struct ReplayObject
@@ -224,15 +223,32 @@ void SnapshotCamera(CameraObject& camera)
 
 void RecordReplayFrame(const CameraObject& camera)
 {
-    auto frame = ReplayFrame();
+    // Once the ring is full, the oldest frame's buffers take the newest tick.
+    auto frame = [&]
+    {
+        if (s_recorded.size() < kReplayTicks)
+        {
+            return ReplayFrame();
+        }
 
-    frame.objects.reserve(static_cast<size_t>(g_pGameEngine->m_nObjectCount));
+        auto oldest = std::move(s_recorded.front());
+
+        s_recorded.pop_front();
+
+        return oldest;
+    }();
+
+    frame.objects.resize(static_cast<size_t>(g_pGameEngine->m_nObjectCount));
 
     for (short i = 0; i < g_pGameEngine->m_nObjectCount; i++)
     {
-        auto* const pObject = g_pGameEngine->m_ppObjects[i];
+        auto* const pObject  = g_pGameEngine->m_ppObjects[i];
+        auto&       recorded = frame.objects[static_cast<size_t>(i)];
+        const auto& bones    = s_objects[pObject].curr;
 
-        frame.objects.push_back(ReplayObject{ pObject, s_objects[pObject].curr, pObject->IsVisible() != 0 });
+        recorded.pObject  = pObject;
+        recorded.bVisible = pObject->IsVisible() != 0;
+        recorded.bones.assign(bones.begin(), bones.end());
     }
 
     std::memcpy(frame.view.data(), camera.m_pView->m_a, sizeof(frame.view));
@@ -240,11 +256,6 @@ void RecordReplayFrame(const CameraObject& camera)
     frame.eye = camera.m_pView->m_vEye;
 
     s_recorded.push_back(std::move(frame));
-
-    if (s_recorded.size() > kReplayTicks)
-    {
-        s_recorded.pop_front();
-    }
 }
 
 // The engine runs on from where it paused; the poses snap back to it at once.
@@ -264,8 +275,7 @@ void EndReplay()
     }
 }
 
-// ponytail: an object is matched by its address and bone count, so one freed and replaced at the
-// same address mid-replay would take the old one's pose. Record slots if that ever shows.
+// ponytail: objects match by address and bone count; record slots if a reused address ever shows.
 void PlayReplayFrame(CameraObject& camera, View& view)
 {
     const auto& frame = s_playing[s_nPlayed];
