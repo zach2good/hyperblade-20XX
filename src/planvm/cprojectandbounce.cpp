@@ -9,6 +9,9 @@
 #include "math/vector.h"
 #include "engine/devicector.h"
 #include "engine/gameengine.h"
+#include "engine/objectclasses.h"
+#include "engine/playerobject.h"
+#include "engine/statids.h"
 #include "common/stub.h"
 #include <cmath>
 #include "app/gameapp.h"
@@ -296,6 +299,14 @@ void CProjectAndBounce::ProjectAndBounce(int)
 void CProjectAndBounce::Process(int nArg)
 {
     ProjectAndBounce(nArg);
+
+    // Deviation: nothing timed flight, so each frame a dromer flies counts to its hang time.
+    if (const auto nSlot = m_pOwner->GetSlot(); nSlot >= 0 && nSlot <= kSlotDromer3)
+    {
+        auto& stats = g_pGameEngine->GetPlayer(nSlot)->m_matchStats;
+
+        stats.SetAt(kMatchStatHangTime, stats.GetAt(kMatchStatHangTime) + g_pGameEngine->m_clock.flDelta * 1000.0f);
+    }
 
     auto* const pNext = m_pNext;
 

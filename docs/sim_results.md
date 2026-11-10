@@ -182,6 +182,7 @@ The port records or corrects these. Scores and every other stat are unchanged.
 | One-timers | The scorer, when the shot left within a second of receiving that pass | Same run: 3 of 30 goals |
 | Checks given | Every attack that reaches an opponent | Same run: Sturmnacht 753, Nemesis 647 |
 | Time on rail | Each frame a dromer spends on a rail | 0 with no person playing |
+| Hang time | Each frame a dromer spends flying: jumps and being thrown | Nemesis against Sturmnacht: 9.7 s a dromer a match, 40.9 s at most |
 
 The Sturmnacht gave more checks than Nemesis but caused 1 injury or fatality to Nemesis's 21.
 
