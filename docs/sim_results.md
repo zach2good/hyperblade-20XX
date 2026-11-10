@@ -226,7 +226,7 @@ original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The 
 83.1% to 77.5%, a lift for The DredNoks just inside the noise of two such runs.
 
 The port ships no game data, so it applies the proposal as the team file loads instead: the
-"Balanced Nemesis" switch in the F2 menu's Plans tab, or the `balanced` word to `-sim`. It is off
+"Balanced teams" switch in the F2 menu's Plans tab, or the `balanced` word to `-sim`. It is off
 by default. It gives the same 93.5% shipped and 83.1% balanced as the re-measured script run
 below, and leaves matches without Nemesis alone. Only medium was measured; easy and hard follow
 the same rule.
@@ -265,6 +265,12 @@ The LoneStars need nothing: 38.1% is within noise of the middle of the table. Th
 k = 0.375, which puts them mid-table. Their share rises steeply between k = 0.5 and 0.375 and
 is flat below. No single rating carries the rise: of the 39 that change between those two blends,
 any half lifts them only part of the way (29.6% to 42.9% from 30.8%), so it builds up across many.
+
+The same switch as the Nemesis proposal applies this one. It pairs each Sturmnacht rating with The
+Machine's for the same dromer, difficulty and name. The script paired the n-th rating line of each
+file, and six lines list different names in the two files, so it left three `id_RAT_SubInDamage`
+values alone that the switch blends. The switch gives 47.7% against the script's re-measured 46.7%, within
+noise. With it on, Nemesis meets the balanced Sturmnacht too and takes 81.5%.
 
 The models, the goalies and the drome don't explain the gap. With The Machine's models The Sturmnacht
 take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)

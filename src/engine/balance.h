@@ -14,8 +14,9 @@ void Set(bool bOn);
 void BeginTeam(const char* pszPath);
 void EndTeam();
 
-// A skater rating as the proposal would have it, or nValue when it leaves this one alone.
-int Adjust(const char* pszRating, int nLevel, int nValue);
+// A skater rating of the definition pDromer as the proposal would have it, or nValue when it
+// leaves this one alone.
+int Adjust(const void* pDromer, const char* pszRating, int nLevel, int nValue);
 
 } // namespace Balance
 

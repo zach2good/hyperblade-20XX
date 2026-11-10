@@ -48,8 +48,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Play-test the browser build from [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile): pick a real
   folder, play a match, reload
 - Net multiplayer, and split screen for local 2 Player Mode
-- More AI balance fixes. The BLAM! Nemesis proposal is a switch in the F2 menu's Plans tab, off
-  by default; the bottom teams' proposal in [docs/sim_results.md](docs/sim_results.md) isn't
+- Turn the balance proposals on by default once people have played them. They're the
+  "Balanced teams" switch in the F2 menu's Plans tab, off for now
 - The original RC, debug and plan menus in the debug menu
 
 ## Install
@@ -83,8 +83,8 @@ The arguments, in order:
 - The first seed. Each match adds one, and the same seed replays the same matches, byte for byte,
   on Windows, Linux and in the browser.
 - `fixed` or `shipped` plans.
-- Optionally `balanced`, to play BLAM! Nemesis with the ratings the
-  [balance proposal](docs/sim_results.md#balance-proposal-blam-nemesis) gives it.
+- Optionally `balanced`, to play BLAM! Nemesis and The Sturmnacht with the ratings the balance
+  proposals in [docs/sim_results.md](docs/sim_results.md#balance-proposal-blam-nemesis) give them.
 - Optionally `arena=TEAM`, to play in that team's drome instead of the home team's.
 - Optionally a file ending in `.csv`, to write instead of `sim_results.csv`.
 

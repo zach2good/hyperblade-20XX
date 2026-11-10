@@ -2709,7 +2709,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
             if (nMode == kRatingsField)
             {
-                nValue = Balance::Adjust(ppszTable[nKeyword], nLevel, nValue);
+                nValue = Balance::Adjust(pDef, ppszTable[nKeyword], nLevel, nValue);
             }
 
             pflRatings[nKeyword] = static_cast<float>(nValue);

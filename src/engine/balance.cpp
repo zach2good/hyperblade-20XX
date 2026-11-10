@@ -9,24 +9,51 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
 namespace
 {
 
-// BLAM! Nemesis moves halfway to The Machine's median for each rating and difficulty.
-constexpr auto kShrink = 0.5;
-
 constexpr auto kLevels = 3;
 
-using Medians = std::map<std::pair<int, std::string>, double>;
+// What a team's rating moves toward: The Machine's median for that rating and difficulty, or
+// The Machine's own value for the same dromer, rating and difficulty.
+enum class Target
+{
+    Median,
+    SameDromer,
+};
+
+struct Proposal
+{
+    const char* pszFile;
+    Target      target;
+    double      flShrink;
+};
+
+constexpr Proposal kProposals[] = {
+    { "NEM.HTM", Target::Median, 0.5 },
+    { "MUNIC.HTM", Target::SameDromer, 0.375 },
+};
+
+// The Machine's ratings, by (level, rating) and by (dromer, level, rating).
+struct Machine
+{
+    std::map<std::pair<int, std::string>, double>    medians;
+    std::map<std::tuple<int, int, std::string>, int> values;
+};
 
 bool s_bOn = false;
 
-std::optional<Medians> s_machine;
+std::optional<Machine> s_machine;
 
-const Medians* s_pActive = nullptr;
+const Proposal* s_pProposal = nullptr;
+
+// The definition Adjust last saw, and how many have come with ratings so far.
+const void* s_pDromer = nullptr;
+int         s_nDromer = -1;
 
 std::string_view FileName(std::string_view path)
 {
@@ -60,8 +87,9 @@ std::string Key(std::string_view name)
     return key;
 }
 
-// Every `name = value` on the file's SetRatings1 to SetRatings3 lines, by level and rating.
-std::optional<Medians> ReadMedians(const std::string& strPath)
+// Every `name = value` on the file's SetRatings1 to SetRatings3 lines. A dromer is a definition
+// with such lines, counted from 0.
+std::optional<Machine> ReadMachine(const std::string& strPath)
 {
     auto file = FileObj();
 
@@ -70,7 +98,10 @@ std::optional<Medians> ReadMedians(const std::string& strPath)
         return std::nullopt;
     }
 
-    auto values = std::map<std::pair<int, std::string>, std::vector<int> >();
+    auto machine = Machine();
+    auto lists   = std::map<std::pair<int, std::string>, std::vector<int> >();
+    auto nDromer = -1;
+    auto bNewDef = false;
 
     char* pszLine = nullptr;
 
@@ -83,6 +114,14 @@ std::optional<Medians> ReadMedians(const std::string& strPath)
 
         auto       line   = std::string_view(pszLine);
         const auto nStart = std::min(line.find_first_not_of(" \t"), line.size());
+
+        constexpr char kDefine[] = "DefineObject";
+
+        if (SDL_strncasecmp(pszLine + nStart, kDefine, sizeof(kDefine) - 1) == 0)
+        {
+            bNewDef = true;
+            continue;
+        }
 
         constexpr char kCommand[]   = "SetRatings";
         constexpr auto nCommandSize = sizeof(kCommand) - 1;
@@ -103,6 +142,12 @@ std::optional<Medians> ReadMedians(const std::string& strPath)
 
         line.remove_prefix(nCommandSize + 1);
 
+        if (bNewDef)
+        {
+            bNewDef = false;
+            nDromer++;
+        }
+
         for (auto nEquals = line.find('='); nEquals != std::string_view::npos; nEquals = line.find('='))
         {
             auto name = line.substr(0, nEquals);
@@ -121,7 +166,10 @@ std::optional<Medians> ReadMedians(const std::string& strPath)
                 break;
             }
 
-            values[{ nLevel, Key(name) }].push_back(nValue);
+            auto key = Key(name);
+
+            lists[{ nLevel, key }].push_back(nValue);
+            machine.values[{ nDromer, nLevel, std::move(key) }] = nValue;
 
             line.remove_prefix(static_cast<size_t>(result.ptr - line.data()));
         }
@@ -129,15 +177,13 @@ std::optional<Medians> ReadMedians(const std::string& strPath)
 
     file.Close();
 
-    auto medians = Medians();
-
-    for (auto& [key, list] : values)
+    for (auto& [key, list] : lists)
     {
         std::ranges::sort(list);
 
         const auto nMiddle = list.size() / 2;
 
-        medians[key] = [&]
+        machine.medians[key] = [&]
         {
             if (list.size() % 2 == 0)
             {
@@ -148,7 +194,7 @@ std::optional<Medians> ReadMedians(const std::string& strPath)
         }();
     }
 
-    return medians;
+    return machine;
 }
 
 } // namespace
@@ -165,47 +211,90 @@ void Balance::Set(bool bOn)
 
 void Balance::BeginTeam(const char* pszPath)
 {
-    s_pActive = nullptr;
+    EndTeam();
+
+    if (!s_bOn)
+    {
+        return;
+    }
 
     const auto path = std::string_view(pszPath);
+    const auto name = std::string(FileName(path));
 
-    if (!s_bOn || SDL_strcasecmp(std::string(FileName(path)).c_str(), "NEM.HTM") != 0)
+    const auto* const pProposal = std::ranges::find_if(
+        kProposals,
+        [&](const Proposal& proposal)
+        {
+            return SDL_strcasecmp(name.c_str(), proposal.pszFile) == 0;
+        });
+
+    if (pProposal == std::end(kProposals))
     {
         return;
     }
 
     if (!s_machine.has_value())
     {
-        s_machine = ReadMedians(std::string(path.substr(0, path.size() - FileName(path).size())) + "CHICO.HTM");
+        s_machine = ReadMachine(std::string(path.substr(0, path.size() - name.size())) + "CHICO.HTM");
     }
 
     if (s_machine.has_value())
     {
-        s_pActive = &*s_machine;
+        s_pProposal = pProposal;
     }
 }
 
 void Balance::EndTeam()
 {
-    s_pActive = nullptr;
+    s_pProposal = nullptr;
+    s_pDromer   = nullptr;
+    s_nDromer   = -1;
 }
 
-int Balance::Adjust(const char* pszRating, int nLevel, int nValue)
+int Balance::Adjust(const void* pDromer, const char* pszRating, int nLevel, int nValue)
 {
-    if (s_pActive == nullptr)
+    if (s_pProposal == nullptr)
     {
         return nValue;
     }
 
-    const auto found = s_pActive->find({ nLevel, Key(pszRating) });
+    if (pDromer != s_pDromer)
+    {
+        s_pDromer = pDromer;
+        s_nDromer++;
+    }
 
-    if (found == s_pActive->end())
+    const auto key = Key(pszRating);
+
+    const auto target = [&] -> std::optional<double>
+    {
+        if (s_pProposal->target == Target::Median)
+        {
+            const auto found = s_machine->medians.find({ nLevel, key });
+
+            if (found == s_machine->medians.end())
+            {
+                return std::nullopt;
+            }
+
+            return found->second;
+        }
+
+        const auto found = s_machine->values.find({ s_nDromer, nLevel, key });
+
+        if (found == s_machine->values.end())
+        {
+            return std::nullopt;
+        }
+
+        return found->second;
+    }();
+
+    if (!target.has_value())
     {
         return nValue;
     }
 
-    const auto flMedian = found->second;
-
-    // Halves round to even, as the measured proposal did.
-    return static_cast<int>(std::nearbyint(flMedian + kShrink * (nValue - flMedian)));
+    // Halves round to even, as the measured proposals did.
+    return static_cast<int>(std::nearbyint(*target + s_pProposal->flShrink * (nValue - *target)));
 }
