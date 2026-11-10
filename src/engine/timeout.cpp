@@ -38,7 +38,7 @@ bool TimeOut::Call(int nTeam)
 
     for (int nSlot = nTeam; nSlot < kPlayerSlotCount; nSlot += 2)
     {
-        auto& flHealth = g_pGameEngine->GetPlayer(nSlot)->m_stats.m_aStats[kRatingDamage + 1];
+        auto& flHealth = g_pGameEngine->GetPlayer(nSlot)->m_stats.m_aStats[RATING_SLOT(kRatingDamage)];
 
         flHealth = (std::min)(flHealth + flRested, 100.0f);
     }

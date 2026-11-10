@@ -634,8 +634,7 @@ int  s_nImageZoom   = 0;
 
 SDL_Texture* s_pImage = nullptr;
 
-// A numbered run of frames playing, as v1.0.0.0's FrameBitmap played "%s%02d", and when the
-// next one is due.
+// A numbered run playing, as v1.0.0.0's FrameBitmap played "%s%02d", and when the next frame is due.
 constexpr auto kFrameMs = std::chrono::milliseconds{ 100 };
 
 auto s_frames    = std::vector<std::string>();

@@ -905,8 +905,7 @@ constexpr std::pair<int, std::pair<int, int> > s_aAVSizes[] = {
     { kIDMenuSizeSmall, { 320, 240 } },
 };
 
-// Deviation: neither release opened this panel. Its lists drive the port's own switches. Detail
-// High is the full-detail switch, and Medium and Low both leave the engine to pick.
+// Deviation: neither release opened this panel; Detail High is full detail, Medium and Low the engine's pick.
 void InitAudioVisual()
 {
     constexpr auto nDialog = kIDDialogAudioVisual;

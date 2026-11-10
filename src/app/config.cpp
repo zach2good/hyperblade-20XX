@@ -144,8 +144,7 @@ void Config::LoadPreferences(const char* pszFileName)
     Config::ParseFile(g_strPrefs.m_pchData, "Data\\DftKeybd.cfg", g_aKeyRows);
 }
 
-// Deviation: v1.0.0.0's KeyConfigDialog::SaveKeys wrote over the file Prefs.txt names, and asked
-// before overwriting only when that file was missing.
+// Deviation: v1.0.0.0's KeyConfigDialog::SaveKeys overwrote the file Prefs.txt names.
 bool Config::SaveTuning(const KeyRow* pRows)
 {
     const auto strPath = String::Concat(g_gameApp.m_strExeDir.m_str, kTuningFile);

@@ -1,5 +1,4 @@
-// A called time out, which the original's string table names and nothing in either release does.
-// A team calls one a period while play is stopped, and its two skaters rest as if benched.
+// A called time out, which only the string table names: one a period, and the skaters rest as if benched.
 
 #ifndef HYPERBLADE_TIMEOUT_H
 #define HYPERBLADE_TIMEOUT_H

@@ -153,8 +153,7 @@ void ScoutingBar(float flValue, float flBest)
     ImGui::ProgressBar(flFraction, ImVec2(120.0f, 0.0f), std::format("{:.1f}", flValue).c_str());
 }
 
-// Deviation: the original's string table names a scouting report that neither release draws. It
-// compares the two rosters' ratings, each bar against the better team's.
+// Deviation: a scouting report only the string table names, each bar against the better team's.
 void DrawScoutingReport()
 {
     const auto* const pViewport = ImGui::GetMainViewport();
@@ -241,8 +240,7 @@ void AddTraceLine(std::string strLine)
     }
 }
 
-// v1.0.0.0's AnimPlayer::PrintAnimDebug, which printed each set queued on or given to one object.
-// Watched once a frame, so two changes inside one frame show as the last.
+// v1.0.0.0's AnimPlayer::PrintAnimDebug, checked once a frame, so a frame's last change shows.
 void TraceAnimations()
 {
     if (s_nTraceSlot < 0 || !InMatch())
