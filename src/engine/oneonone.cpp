@@ -1,21 +1,23 @@
 #include "engine/oneonone.h"
 #include "engine/engineobject.h"
 #include "engine/gameengine.h"
+#include "engine/objectclasses.h"
 #include "engine/playerobject.h"
 #include "engine/statids.h"
 #include "engine/teamblock.h"
 #include "globals.h"
+#include <algorithm>
 #include <array>
 
 namespace
 {
 
-constexpr auto kFirstParked = 2;
-constexpr auto kParkedCount = 2;
+constexpr auto kTeams = 2;
 
 bool s_bOn = false;
 
-std::array<bool, kParkedCount> s_abParked = {};
+// The slot each team sits out this period, or kSlotNone.
+std::array<int, kTeams> s_anParked = { kSlotNone, kSlotNone };
 
 TeamBlock& TeamOf(int nSlot)
 {
@@ -41,51 +43,50 @@ void OneOnOne::Set(bool bOn)
 
 void OneOnOne::ParkSeconds()
 {
-    s_abParked = {};
+    s_anParked.fill(kSlotNone);
 
     if (!s_bOn || g_bSessionActive != 0 || g_pGameEngine->IsExhibitionMode() == 0)
     {
         return;
     }
 
-    for (int n = 0; n < kParkedCount; n++)
+    for (int nTeam = 0; nTeam < kTeams; nTeam++)
     {
-        const auto nSlot = kFirstParked + n;
+        // The second dromer sits out, or the first when the human is on the second.
+        const auto nSlot = [&]
+        {
+            if (g_pGameEngine->m_nViewedSlot == nTeam + 2)
+            {
+                return nTeam;
+            }
+
+            return nTeam + 2;
+        }();
 
         auto* const pPlayer = g_pGameEngine->GetPlayer(nSlot);
-
-        // A human never sits out: the camera may follow either dromer at the start.
-        if (nSlot == g_pGameEngine->m_nViewedSlot)
-        {
-            continue;
-        }
 
         // Set here rather than through ModifyDamage, which the difficulty scales short of nought.
         pPlayer->m_stats.m_aStats[RATING_SLOT(kRatingDamage)] = 0.0f;
         pPlayer->m_nFlags |= kEngineObjectHidden;
         pPlayer->RunPlanFrom("Sideln", "SideLined");
 
-        s_abParked[static_cast<size_t>(n)] = true;
+        s_anParked[static_cast<size_t>(nTeam)] = nSlot;
     }
 }
 
 bool OneOnOne::Parked(int nSlot)
 {
-    const auto n = nSlot - kFirstParked;
-
-    return n >= 0 && n < kParkedCount && s_abParked[static_cast<size_t>(n)];
+    return nSlot != kSlotNone && std::ranges::contains(s_anParked, nSlot);
 }
 
 void OneOnOne::Unpark()
 {
-    for (int n = 0; n < kParkedCount; n++)
+    for (const auto nSlot : s_anParked)
     {
-        if (!s_abParked[static_cast<size_t>(n)])
+        if (nSlot == kSlotNone)
         {
             continue;
         }
-
-        const auto nSlot = kFirstParked + n;
 
         auto* const pPlayer = g_pGameEngine->GetPlayer(nSlot);
 
@@ -94,8 +95,9 @@ void OneOnOne::Unpark()
 
         auto& team = TeamOf(nSlot);
 
-        team.aRows[team.aSeat[1]].aStat[kRatingDamage] = 100.0f;
+        // Slots 0 and 1 hold seat 0, slots 2 and 3 seat 1.
+        team.aRows[team.aSeat[nSlot >> 1]].aStat[kRatingDamage] = 100.0f;
     }
 
-    s_abParked = {};
+    s_anParked.fill(kSlotNone);
 }
