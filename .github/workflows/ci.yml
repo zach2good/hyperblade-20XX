@@ -129,7 +129,7 @@ jobs:
           cat run.log
           grep -q "HYPERX.EXE" run.log || { ls -l build-mac/package; head -20 run.log; } | sed 's/^/::error::/'
           grep -q "HYPERX.EXE" run.log
-          cd .. && cmake --build build-mac --target package
+          cmake --build build-mac --target package
 
       - uses: actions/upload-artifact@v4
         with:
