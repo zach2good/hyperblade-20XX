@@ -5,6 +5,7 @@
 #include "engine/framepacing.h"
 #include "engine/planfixes.h"
 #include "engine/timeout.h"
+#include "input/twoplayer.h"
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/planstate.h"
 #include <SDL3/SDL.h>
@@ -353,6 +354,12 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
             break;
 
         case Key::kTab:
+            // The side view hands every dromer to the AI, and 2 Player Mode holds its own camera.
+            if (TwoPlayer::On())
+            {
+                break;
+            }
+
             if (Spectator::ToggleSideView())
             {
                 g_pGameEngine->m_ppSlots[kCameraMainSlot]->PostSceneEvent(kMsgMoveEyeTrack, 5);

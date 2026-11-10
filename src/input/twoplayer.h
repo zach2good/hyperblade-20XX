@@ -1,9 +1,4 @@
-// 2 Player Mode, the original menu's unhandled item: two humans on one machine, one per team,
-// sharing the camera, which follows player one.
-//
-// The engine has one keyboard device and one view owner, and the plans read both. So player two's
-// held keys, sticky bindings and dromer are kept aside, and swapped into the device and
-// m_nViewedSlot whenever the engine runs player two's team's dromers, or player two's input.
+// 2 Player Mode: player two's keys and dromer swap into the one device and view owner as they act.
 
 #ifndef HYPERBLADE_TWOPLAYER_H
 #define HYPERBLADE_TWOPLAYER_H
@@ -36,8 +31,7 @@ void KeyUp(unsigned int nKey);
 // Player two's held-key timeouts, which the keyboard device runs for player one each tick.
 void CheckSecondTimeouts();
 
-// Holds the main camera on the press box view, which watches the rok for both players, while play
-// is live. The camera's plan leaves it for the follow view at times; this sends it back.
+// Holds the main camera on the press box view, which watches the rok for both players, while play is live.
 void KeepSharedCamera();
 
 // Points m_apTracked at the slot: its own team's entry alone in 2 Player Mode, both otherwise.

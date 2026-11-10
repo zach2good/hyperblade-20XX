@@ -32,9 +32,10 @@ bool s_bOn = false;
 
 int s_nSecondTeam = 1;
 
-// The player not at the keys right now: their device state and their dromer.
-DeviceState s_other;
-short       s_nOtherViewed = 1;
+// The player not at the keys right now: their device state, the device it belongs to, and their dromer.
+DeviceState              s_other;
+const KeyboardDeviceObj* s_pOtherDevice = nullptr;
+short                    s_nOtherViewed = 1;
 
 bool s_bSecondActive = false;
 
@@ -53,6 +54,13 @@ void SwapDevice(KeyboardDeviceObj& device)
 // Hands the keys and the view owner to the other player.
 void SwapPlayers()
 {
+    // A new match builds a new device, which the old state's sticky bindings do not point into.
+    if (!s_bSecondActive && s_pOtherDevice != g_pInputDevice)
+    {
+        s_other        = DeviceState();
+        s_pOtherDevice = g_pInputDevice;
+    }
+
     SwapDevice(*g_pInputDevice);
     std::swap(g_pGameEngine->m_nViewedSlot, s_nOtherViewed);
 
@@ -103,6 +111,12 @@ bool TwoPlayer::Set(bool bOn)
     }
 
     s_bOn = bOn;
+
+    // One player again: both teams' tracked entries go back to them.
+    if (!bOn && g_pGameEngine != nullptr)
+    {
+        Track(g_pGameEngine->m_nViewedSlot);
+    }
 
     return true;
 }
