@@ -26,7 +26,7 @@ Record<ModelComponent> ModelComponent::ReadFirst(FileObj* pFile)
     return pBlob;
 }
 
-// The original met a damaged record with a fatal error, and MDLSHD's NEMPTM.WBM ships with one.
+// The original met a damaged record with a fatal error, and MDLSHD's NEMPTM.WBM and CHISOM.WBM ship with one.
 // FUNCTION: HYPERX 0x004363a0
 bool ModelComponent::ReadAll(FileObj* pFile, std::vector<Record<MeshBlock> >* pBlocks)
 {
