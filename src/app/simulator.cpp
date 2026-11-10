@@ -449,7 +449,8 @@ int Simulator::Run()
 
         return std::string(SDL_GetBasePath()) + "sim_results.csv";
     }();
-    auto csv = std::ofstream(strCsv, std::ios::trunc);
+    // Binary, so every platform writes the same line endings.
+    auto csv = std::ofstream(strCsv, std::ios::binary | std::ios::trunc);
 
     WriteHeader(csv, vocabulary.find("StatID"));
 
