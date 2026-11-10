@@ -164,12 +164,15 @@ Being the home team makes no difference, so the gap comes from the dromes.
 
 ## Stats the game never records
 
-Of the per-player match stats, 26 are 0 in all 72,800 player rows of the First fixes run. Among
+Of the per-player match stats, 26 are 0 in every simulated row. No plan and no code writes 25 of
 them: completed passes, checks and injuries given, interceptions, drags won, power play and
-short-handed stats, 2-point stats, rail time, hang time and freestyle moves. Passes attempted
-and injuries taken are counted, so the game either never wired the others up or the port loses
-the calls. Assists equal goals in 99.7% of rows, which points to the scorer getting the assist.
-Treat both as unverified.
+short-handed stats, 2-point stats, rail time and hang time. The 26th, freestyle moves, is written
+only by the Human plan's rail slide, so it moves only when a person plays.
+
+The Injuries and Fatalities columns count harm a player inflicts, not harm taken: the hurt
+dromer's plan credits its attacker, or the owner of the mine, rok or turnstile that hit it. Assists
+equal goals in 99.7% of rows, which points to the scorer getting the assist; that one is
+unverified.
 
 ## Not covered
 

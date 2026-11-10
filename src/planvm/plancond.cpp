@@ -4674,30 +4674,30 @@ void PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResu
     *pResult = sChallenger;
 }
 
-#define CREDIT_OTHER()                                                                                \
-    if (nTeam % 2 == nOther % 2)                                                                      \
-    {                                                                                                 \
-        return;                                                                                       \
-    }                                                                                                 \
-                                                                                                      \
-    g_pGameEngine->GetPlayer((short)nOther)->m_matchStats.AccumulateStat(kMatchStatInjuries, nOther); \
+#define CREDIT_OTHER(nLowStat)                                                              \
+    if (nTeam % 2 == nOther % 2)                                                            \
+    {                                                                                       \
+        return;                                                                             \
+    }                                                                                       \
+                                                                                            \
+    g_pGameEngine->GetPlayer((short)nOther)->m_matchStats.AccumulateStat(nLowStat, nOther); \
     return;
 
 #define ACCUMULATE_HIT(nLowStat)                                                       \
     if (nSlot == kSlotMine)                                                            \
     {                                                                                  \
         nOther = g_pGameEngine->m_ppSlots[kSlotMine]->m_nEntitySlot;                   \
-        CREDIT_OTHER()                                                                 \
+        CREDIT_OTHER(nLowStat)                                                         \
     }                                                                                  \
     else if (nSlot == kSlotRok)                                                        \
     {                                                                                  \
         nOther = g_pGameEngine->m_ppSlots[kSlotRok]->m_nEntitySlot;                    \
-        CREDIT_OTHER()                                                                 \
+        CREDIT_OTHER(nLowStat)                                                         \
     }                                                                                  \
     else if (nSlot >= kSlotTurnstile && nSlot <= kSlotTurnstileLast)                   \
     {                                                                                  \
         nOther = g_pGameEngine->m_ppSlots[nSlot]->m_nEntitySlot;                       \
-        CREDIT_OTHER()                                                                 \
+        CREDIT_OTHER(nLowStat)                                                         \
     }                                                                                  \
     else                                                                               \
     {                                                                                  \
@@ -4780,6 +4780,7 @@ void PlanAction::TrackTurnstile(Interactor* pContext, PlanNode* pArgs, short*, i
 }
 
 // Nothing is credited when hitter and target are on the same side, the two parities.
+// Deviation: the original credited a mine, rok or turnstile kill to its owner as an injury.
 
 // FUNCTION: HYPERX 0x00464230
 void PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int)
