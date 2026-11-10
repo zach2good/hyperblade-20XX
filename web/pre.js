@@ -11,3 +11,9 @@ if (typeof document !== 'undefined') {
     style.textContent = '#canvas { width: auto !important; height: auto !important; max-width: 100vw; max-height: 100vh; }';
     document.head.append(style);
 }
+
+// Emscripten 4 calls SDL's page-close handler as returning an int, but it returns a pointer under
+// wasm64 and throws. Registered first, this stops the event before SDL sees it; saves need none.
+if (typeof window !== 'undefined') {
+    window.addEventListener('beforeunload', (event) => event.stopImmediatePropagation(), true);
+}
