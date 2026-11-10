@@ -270,9 +270,11 @@ as well as away (28.5%).
 
 - A seed replays the same matches, byte for byte, on Windows (MSVC) and Linux (GCC). Clang builds
   play different matches from the same seed, but agree with each other: the browser build's two
-  matches in a page match Linux Clang's byte for byte. The first difference
-  is the rok's position in a single frame; Valgrind and AddressSanitizer find no memory error
-  behind it, and turning off strict aliasing does not change it. The cause is not found.
+  matches in a page match Linux Clang's byte for byte. The first difference is the rok's position
+  in a single frame. Valgrind and AddressSanitizer find no memory error behind it, and strict
+  aliasing is not the cause. Linking the GCC build with Clang's copy of
+  `TransformObject::RotateAroundY` alone reproduces Clang's matches; why that function's two
+  builds differ is not yet found.
 - These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
   single match, but the figures here would shift slightly if rerun.
 - Only the default difficulty was played. The sections other than "Period length" use 5-minute
