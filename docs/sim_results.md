@@ -176,8 +176,10 @@ went loose for longer. Scores and every other stat are unchanged.
 
 The Injuries and Fatalities columns count harm a player inflicts, not harm taken: the hurt
 dromer's plan credits its attacker, or the owner of the mine, rok or turnstile that hit it. Assists
-equal goals in 99.7% of rows, which points to the scorer getting the assist; that one is
-unverified.
+equal goals in 99.7% of rows: the plans credit the assist to the previous rok carrier, and that
+pronoun answers the current one, the scorer. The port gives it to the teammate whose completed
+pass last reached the scorer, or to no one. In 10 Nemesis against Sturmnacht matches, 15 of 30
+goals were assisted.
 
 ## Balance proposal: BLAM! Nemesis
 

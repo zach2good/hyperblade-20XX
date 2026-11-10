@@ -2808,51 +2808,72 @@ void PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult,
     }
 }
 
+namespace
+{
+
+struct Pass
+{
+    short               nPasser   = -1;
+    short               nReceiver = -1;
+    Clock::Milliseconds tick{};
+};
+
+// The pass in flight, and the last one that reached a teammate.
+auto s_pending   = Pass();
+auto s_completed = Pass();
+
+} // namespace
+
 // Deviation: the plans count pass attempts but never their outcome, so the next possession settles
 // each pass: a teammate completes it, an opponent intercepts it.
 static void SettlePass(PlayerObject* pPlayer, int nStat)
 {
-    struct PendingPass
-    {
-        short               nSlot = -1;
-        Clock::Milliseconds tick{};
-    };
-
     // A new match's clock restarts, so a pass left from the last one falls outside the window.
     constexpr auto kPassWindow = Clock::Milliseconds(3000);
 
-    static auto s_pass = PendingPass();
-
-    const auto now = g_pGameEngine->m_clock.tick;
+    const auto now   = g_pGameEngine->m_clock.tick;
+    const auto nSlot = pPlayer->GetSlot();
 
     if (nStat == kMatchStatPassesAttempted)
     {
-        s_pass = PendingPass{ pPlayer->GetSlot(), now };
+        s_pending = Pass{ nSlot, -1, now };
         return;
     }
 
-    if (nStat != kMatchStatPossStart || s_pass.nSlot < 0 || pPlayer->GetSlot() == s_pass.nSlot)
+    if (nStat != kMatchStatPossStart)
     {
         return;
     }
 
-    const auto elapsed = now - s_pass.tick;
+    if (nSlot != s_completed.nReceiver)
+    {
+        s_completed = Pass();
+    }
+
+    if (s_pending.nPasser < 0 || nSlot == s_pending.nPasser)
+    {
+        return;
+    }
+
+    const auto elapsed = now - s_pending.tick;
 
     if (elapsed >= Clock::Milliseconds(0) && elapsed <= kPassWindow)
     {
-        auto* const pPasser = g_pGameEngine->GetPlayer(s_pass.nSlot);
+        auto* const pPasser = g_pGameEngine->GetPlayer(s_pending.nPasser);
 
         if (pPasser->m_wTargetGoalSlot == pPlayer->m_wTargetGoalSlot)
         {
-            pPasser->m_matchStats.AccumulateStat(kMatchStatPassesCompleted, s_pass.nSlot);
+            pPasser->m_matchStats.AccumulateStat(kMatchStatPassesCompleted, s_pending.nPasser);
+
+            s_completed = Pass{ s_pending.nPasser, nSlot, now };
         }
         else
         {
-            pPlayer->m_matchStats.AccumulateStat(kMatchStatInterceptions, pPlayer->GetSlot());
+            pPlayer->m_matchStats.AccumulateStat(kMatchStatInterceptions, nSlot);
         }
     }
 
-    s_pass = PendingPass();
+    s_pending = Pass();
 }
 
 // The stat handler is asked twice with the same index and its two answers are used differently.
@@ -2873,10 +2894,24 @@ void PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, short*, in
         pTarget = (PlayerObject*)g_pGameEngine->m_ppSlots[g_apPlanStatFns[pArgs->m_pArgs[1].wPronoun](
             pContext->GetActor(), pArgs)];
 
-        pTarget->m_matchStats.AccumulateStat(pArgs->m_pArgs[2].n,
+        const auto nStat = pArgs->m_pArgs[2].n;
+
+        // Deviation: the previous carrier pronoun answers the scorer, who got an assist for every
+        // goal. The assist goes to the teammate whose pass last reached the scorer.
+        if (nStat == kMatchStatAssists)
+        {
+            if (s_completed.nReceiver == pTarget->GetSlot())
+            {
+                g_pGameEngine->GetPlayer(s_completed.nPasser)->m_matchStats.AccumulateStat(kMatchStatAssists, s_completed.nPasser);
+            }
+
+            return;
+        }
+
+        pTarget->m_matchStats.AccumulateStat(nStat,
                                              pSource->GetSlot());
 
-        SettlePass(pTarget, pArgs->m_pArgs[2].n);
+        SettlePass(pTarget, nStat);
     }
 }
 
