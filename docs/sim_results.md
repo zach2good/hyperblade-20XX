@@ -183,6 +183,7 @@ The port records or corrects these. Scores and every other stat are unchanged.
 | Checks given | Every attack that reaches an opponent | Same run: Sturmnacht 753, Nemesis 647 |
 | Time on rail | Each frame a dromer spends on a rail | 0 with no person playing |
 | Hang time | Each frame a dromer spends flying: jumps and being thrown | Nemesis against Sturmnacht: 9.7 s a dromer a match, 40.9 s at most |
+| Drags won | The first dromer to the rok after a drag starts: each period's start and after each goal | Same run: 56 drags in 10 matches, 27 to Nemesis, 29 to Sturmnacht |
 
 The Sturmnacht gave more checks than Nemesis but caused 1 injury or fatality to Nemesis's 21.
 

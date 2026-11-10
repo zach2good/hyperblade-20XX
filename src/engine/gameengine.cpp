@@ -971,7 +971,7 @@ void GameEngine::BeginMatchPlay()
     m_bFollowingOther        = 0;
     g_bPeriodCountdownActive = 0;
 
-    PlanAction::ResetPassTracking();
+    PlanAction::ResetPlayTracking();
 
     auto* const pRok = (RokObject*)m_ppSlots[kSlotRok];
 

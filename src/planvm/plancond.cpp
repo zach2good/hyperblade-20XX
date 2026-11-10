@@ -2818,17 +2818,19 @@ struct Pass
     Clock::Milliseconds tick{};
 };
 
-// The pass in flight, and the last one that reached a teammate.
+// The pass in flight, the last one that reached a teammate, and whether a drag waits for its winner.
 auto s_pending   = Pass();
 auto s_completed = Pass();
+auto s_bDragOpen = false;
 
 } // namespace
 
-// The match clock runs on between matches, so play starts with no pass in flight.
-void PlanAction::ResetPassTracking()
+// Play starts with a drag and no pass in flight; the match clock runs on between matches.
+void PlanAction::ResetPlayTracking()
 {
     s_pending   = Pass();
     s_completed = Pass();
+    s_bDragOpen = true;
 }
 
 // Deviation: the plans count pass attempts but never their outcome, so the next possession settles
@@ -2846,9 +2848,24 @@ static void SettlePass(PlayerObject* pPlayer, int nStat)
         return;
     }
 
+    // After a goal the plans restart play with a drag of their own.
+    if (nStat == kMatchStatGoals)
+    {
+        s_pending   = Pass();
+        s_bDragOpen = true;
+        return;
+    }
+
     if (nStat != kMatchStatPossStart)
     {
         return;
+    }
+
+    // Deviation: nothing wrote drags won. The first dromer to the rok after a drag starts wins it.
+    if (s_bDragOpen)
+    {
+        s_bDragOpen = false;
+        pPlayer->m_matchStats.AccumulateStat(kMatchStatDragsWon, nSlot);
     }
 
     if (nSlot != s_completed.nReceiver)

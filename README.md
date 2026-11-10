@@ -34,8 +34,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Cut content finished: One on One, local 2 Player Mode, instant replay (R), time outs (T) and a
   scouting report on pause, with the match's stats and both rosters' health
 - Lifetime stats for dromers and teams, saved beside the executable
-- Stats the original never recorded or got wrong: passes, interceptions, checks given, hang time,
-  rail time, assists and one-timers ([docs/sim_results.md](docs/sim_results.md#match-stats))
+- Stats the original never recorded or got wrong: passes, interceptions, checks given, drags won,
+  hang time, rail time, assists and one-timers ([docs/sim_results.md](docs/sim_results.md#match-stats))
 - Debug menu on F2, with every cheat and a switch for each new feature
 - The original's menu bar and dialogs, rebuilt, plus a model viewer, sound player and image browser
 - Skippable intro, and many bug and crash fixes
