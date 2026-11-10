@@ -146,18 +146,19 @@ float MatchStats::AccumulateStat(int nStatId, int)
 
             break;
 
+        // Deviation: the original wrote all three percentages to the 2-point slot, this one from passes.
         case kMatchStat2PointCompleted:
             m_aStat[kMatchStat2PointCompleted]++;
 
             m_aStat[kMatchStat2PointScores] =
-                Percent(kMatchStatPassesCompleted, kMatchStatPassesAttempted);
+                Percent(kMatchStat2PointCompleted, kMatchStat2PointAttempted);
 
             break;
 
         case kMatchStatShortHandedCompleted:
             m_aStat[kMatchStatShortHandedCompleted]++;
 
-            m_aStat[kMatchStat2PointScores] =
+            m_aStat[kMatchStatShortHandedScores] =
                 Percent(kMatchStatShortHandedCompleted, kMatchStatShortHandedAttempts);
 
             break;
@@ -165,7 +166,7 @@ float MatchStats::AccumulateStat(int nStatId, int)
         case kMatchStatPowerPlayCompleted:
             m_aStat[kMatchStatPowerPlayCompleted]++;
 
-            m_aStat[kMatchStat2PointScores] =
+            m_aStat[kMatchStatPowerPlayScores] =
                 Percent(kMatchStatPowerPlayCompleted, kMatchStatPowerPlayAttempts);
 
             break;
