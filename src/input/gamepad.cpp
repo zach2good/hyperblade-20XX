@@ -478,13 +478,13 @@ void Gamepad::SetBinding(int nIndex, const char* pszAction)
 {
     LoadBindings();
 
-    const auto& action = FindAction(pszAction);
+    const auto* const pAction = &FindAction(pszAction);
 
-    s_apBindings[static_cast<size_t>(nIndex)] = &action;
+    s_apBindings[static_cast<size_t>(nIndex)] = pAction;
 
     if (g_pGameOptions != nullptr)
     {
-        g_pGameOptions->WriteString("Gamepad", kControls[static_cast<size_t>(nIndex)].pszKey, action.pszName);
+        g_pGameOptions->WriteString("Gamepad", kControls[static_cast<size_t>(nIndex)].pszKey, pAction->pszName);
     }
 }
 
