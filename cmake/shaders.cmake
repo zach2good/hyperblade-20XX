@@ -33,6 +33,20 @@ function(hyperx_add_shaders target)
 
         string(MAKE_C_IDENTIFIER "${name}" symbol)
 
+        # Metal takes neither format, so on Apple a byte stands in and the shader fails to load as
+        # the real one would. DXC ships no macOS build.
+        if(APPLE)
+            foreach(format dxil spv)
+                set(header "${out_dir}/${name}.${format}.h")
+                file(WRITE "${header}" "#pragma once
+
+inline constexpr unsigned char ${symbol}_${format}[] = { 0x00 };
+")
+                target_sources(${target} PRIVATE "${header}")
+            endforeach()
+            continue()
+        endif()
+
         # Register spaces already match SDL's descriptor sets, so SPIR-V needs no binding shifts.
         foreach(format dxil spv)
             set(format_flags)

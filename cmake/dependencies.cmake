@@ -80,14 +80,16 @@ else()
     set(DXC_BIN bin)
 endif()
 
-CPMAddPackage(
-    NAME dxc
-    VERSION ${DXC_VERSION}
-    URL "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v${DXC_VERSION}/${DXC_ARCHIVE}"
-    URL_HASH SHA256=${DXC_HASH}
-    DOWNLOAD_ONLY YES)
+if(NOT APPLE)
+    CPMAddPackage(
+        NAME dxc
+        VERSION ${DXC_VERSION}
+        URL "https://github.com/microsoft/DirectXShaderCompiler/releases/download/v${DXC_VERSION}/${DXC_ARCHIVE}"
+        URL_HASH SHA256=${DXC_HASH}
+        DOWNLOAD_ONLY YES)
 
-find_program(DXC_EXECUTABLE dxc PATHS "${dxc_SOURCE_DIR}/${DXC_BIN}" NO_DEFAULT_PATH REQUIRED)
+    find_program(DXC_EXECUTABLE dxc PATHS "${dxc_SOURCE_DIR}/${DXC_BIN}" NO_DEFAULT_PATH REQUIRED)
+endif()
 
 # Dear ImGui draws the debug menu, through SDL's renderer.
 set(IMGUI_VERSION 1.92.9b)
