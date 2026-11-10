@@ -125,6 +125,20 @@ docker run --rm -e PRESET=linux-gcc -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:
 On a Linux machine with those tools, the `linux-gcc` and `linux-clang` presets work as the Windows
 one does. GCC and Clang build with `-Wall -Werror`, and MSVC with `/W4 /WX`.
 
+### Browser
+
+[docker/emscripten.Dockerfile](docker/emscripten.Dockerfile) builds a wasm64 page into
+`build-wasm/out`:
+
+```sh
+docker build -t hyperblade-emscripten -f docker/emscripten.Dockerfile docker
+docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-wasm:/build" hyperblade-emscripten
+python -m http.server --directory build-wasm/out
+```
+
+Open `hyperblade_20XX.html` in a desktop browser. The page asks for your HyperBlade folder once
+and keeps a copy in the browser, with your saves and career. The files never leave your machine.
+
 ### Tests
 
 The `unit` checks need nothing. `gpu` draws through SDL's GPU API and reports itself skipped with
