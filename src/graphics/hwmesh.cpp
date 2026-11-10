@@ -166,7 +166,7 @@ std::vector<HwMesh::Vertex> HwMesh::BuildShadow(const Vec3* pPoints, int nPointC
             continue;
         }
 
-        const auto& front = pMaterials[static_cast<int>(face.cMaterial)];
+        const auto& front = pMaterials[static_cast<unsigned char>(face.cMaterial)];
 
         for (auto nCorner = face.nCorners - 1; nCorner >= 2; nCorner--)
         {
@@ -242,7 +242,7 @@ HwMesh::Mesh HwMesh::Build(const MeshBlock& block, const MeshMaterial* pMaterial
             continue;
         }
 
-        const auto& front     = pMaterials[static_cast<int>(face.cMaterial)];
+        const auto& front     = pMaterials[static_cast<unsigned char>(face.cMaterial)];
         auto&       frontList = group(face, front);
 
         normals.assign(static_cast<size_t>(face.nCorners), face.vNormal);

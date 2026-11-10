@@ -141,7 +141,7 @@ bool HudLayer::TakeFrame()
     return bFresh && s_layer.pBits != nullptr;
 }
 
-ViewExtent HudLayer::ToBackBuffer(ViewExtent extent)
+ViewExtent HudLayer::ToBackBuffer(const ViewExtent& extent)
 {
     ViewExtent scaled;
 

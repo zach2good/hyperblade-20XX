@@ -326,7 +326,7 @@ bool Simulator::Requested()
 
 // Each season starts a Gauntlet as the Tournament setup screen does and plays its bracket out.
 // Returns the matches played.
-int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds& elapsed, long long& nTicks)
+int PlayGauntlet(const Request& request, std::ofstream& csv, short nHome, Clock::FractionalMilliseconds& elapsed, long long& nTicks)
 {
     auto* const pSave  = g_pGameEngine->m_pSaveObject.get();
     const auto  nTeams = g_pGameEngine->m_pTeamTable->GetTeamCount();
@@ -334,7 +334,7 @@ int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds&
     auto nMatch  = 0;
     auto nTitles = 0;
 
-    for (auto nSeason = 0; nSeason < s_request->nCount; nSeason++)
+    for (auto nSeason = 0; nSeason < request.nCount; nSeason++)
     {
         g_nPlayerMode = kPlayerModeTournament;
 
@@ -347,7 +347,7 @@ int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds&
         {
             for (auto nRound = 1; nRound <= nTeams; nRound++)
             {
-                const auto nSeed = s_request->nSeed + static_cast<uint32_t>(nMatch);
+                const auto nSeed = request.nSeed + static_cast<uint32_t>(nMatch);
 
                 g_nDromeTeamAway = nOpponent;
                 g_nDromeArena    = nOpponent;
@@ -404,13 +404,20 @@ int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds&
         }
     }
 
-    std::println("{} titles in {} seasons", nTitles, s_request->nCount);
+    std::println("{} titles in {} seasons", nTitles, request.nCount);
 
     return nMatch;
 }
 
 int Simulator::Run()
 {
+    if (!s_request.has_value())
+    {
+        return 2;
+    }
+
+    const auto& request = *s_request;
+
 #if defined(_WIN32)
     // A windowed program started from a console has no stdout unless it was redirected; it
     // reports to that console instead.
@@ -423,8 +430,8 @@ int Simulator::Run()
     SDL_HideWindow(Window::Native().As<SDL_Window>());
 
     const auto& table     = *g_pGameEngine->m_pTeamTable;
-    const auto  bGauntlet = SDL_strcasecmp(s_request->strAway.c_str(), "gauntlet") == 0;
-    const auto  home      = FindTeam(table, s_request->strHome);
+    const auto  bGauntlet = SDL_strcasecmp(request.strAway.c_str(), "gauntlet") == 0;
+    const auto  home      = FindTeam(table, request.strHome);
 
     // A Gauntlet's opponents come from the bracket, so any team stands in for the away one.
     const auto away = [&]
@@ -434,26 +441,26 @@ int Simulator::Run()
             return home;
         }
 
-        return FindTeam(table, s_request->strAway);
+        return FindTeam(table, request.strAway);
     }();
 
     // A team's drome is the arena of the same index.
     const auto arena = [&]
     {
-        if (s_request->strArena.empty())
+        if (request.strArena.empty())
         {
             return home;
         }
 
-        return FindTeam(table, s_request->strArena);
+        return FindTeam(table, request.strArena);
     }();
 
-    if (!s_request->strUnknown.empty())
+    if (!request.strUnknown.empty())
     {
-        std::println("unknown argument: {}", s_request->strUnknown);
+        std::println("unknown argument: {}", request.strUnknown);
     }
 
-    if (!home.has_value() || !away.has_value() || !arena.has_value() || s_request->nCount <= 0 || !s_request->strUnknown.empty())
+    if (!home.has_value() || !away.has_value() || !arena.has_value() || request.nCount <= 0 || !request.strUnknown.empty())
     {
         std::println("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]");
         ListTeams(table);
@@ -466,9 +473,9 @@ int Simulator::Run()
 
     const auto strCsv = [&]
     {
-        if (!s_request->strOutput.empty())
+        if (!request.strOutput.empty())
         {
-            return s_request->strOutput;
+            return request.strOutput;
         }
 
         return std::string(SDL_GetBasePath()) + "sim_results.csv";
@@ -479,7 +486,7 @@ int Simulator::Run()
     WriteHeader(csv, vocabulary.find("StatID"));
 
     Spectator::SetAutopilot(true);
-    PlanFixes::Set(s_request->bFixed);
+    PlanFixes::Set(request.bFixed);
 
     // A fixed start, so no timer depends on when the run began.
     Clock::g_bSimulated   = true;
@@ -493,12 +500,12 @@ int Simulator::Run()
 
     if (bGauntlet)
     {
-        nDone = PlayGauntlet(csv, *home, elapsed, nTicks);
+        nDone = PlayGauntlet(request, csv, *home, elapsed, nTicks);
     }
 
-    for (auto nMatch = 0; !bGauntlet && nMatch < s_request->nCount; nMatch++)
+    for (auto nMatch = 0; !bGauntlet && nMatch < request.nCount; nMatch++)
     {
-        const auto nSeed = s_request->nSeed + static_cast<uint32_t>(nMatch);
+        const auto nSeed = request.nSeed + static_cast<uint32_t>(nMatch);
 
         g_nPlayerMode    = kPlayerModeExhibition;
         g_nDromeTeamHome = *home;
@@ -531,7 +538,7 @@ int Simulator::Run()
             return nDone;
         }
 
-        return s_request->nCount;
+        return request.nCount;
     }();
 
     std::println("{} of {} matches, {} ticks in {:.1f} s: {:.0f} ticks a second, {:.0f}x real time\n{}",

@@ -18,6 +18,7 @@
 #include <cstring>
 #include <deque>
 #include <functional>
+#include <ranges>
 #include <unordered_map>
 #include <vector>
 
@@ -264,7 +265,7 @@ void EndReplay()
     s_bReplaying = false;
     s_playing.clear();
 
-    for (auto& [pObject, pose] : s_objects)
+    for (auto& pose : s_objects | std::views::values)
     {
         pose.prev = pose.curr;
     }
