@@ -49,6 +49,8 @@ struct Request
     std::string strOutput;
     // The home team's drome when empty.
     std::string strArena;
+    // The first word no argument reads, which stops the run instead of becoming the seed.
+    std::string strUnknown;
 };
 
 std::optional<Request> s_request;
@@ -75,15 +77,27 @@ constexpr auto kTournamentPeriods = 3;
 // SaveObject's bracket row ends with this, as GameEngine's kBracketEnd.
 constexpr auto kBracketEnd = -1;
 
+// A whole word as a number, or none when any of it is not one.
+template <class T>
+std::optional<T> ParseWhole(std::string_view word)
+{
+    auto value            = T{};
+    const auto [pEnd, ec] = std::from_chars(word.data(), word.data() + word.size(), value);
+
+    if (ec != std::errc{} || pEnd != word.data() + word.size())
+    {
+        return std::nullopt;
+    }
+
+    return value;
+}
+
 // A team by index, file name or name, any case.
 std::optional<short> FindTeam(const TeamsBlock& table, std::string_view name)
 {
-    if (auto nIndex = 0; std::from_chars(name.data(), name.data() + name.size(), nIndex).ec == std::errc{})
+    if (const auto nIndex = ParseWhole<int>(name); nIndex.has_value() && *nIndex >= 0 && *nIndex < table.GetTeamCount())
     {
-        if (nIndex >= 0 && nIndex < table.GetTeamCount())
-        {
-            return static_cast<short>(nIndex);
-        }
+        return static_cast<short>(*nIndex);
     }
 
     for (short i = 0; i < table.GetTeamCount(); i++)
@@ -269,7 +283,7 @@ int Simulator::TakeArguments(int nCount, char** ppszWords)
     auto request    = Request{};
     request.strHome = ppszWords[0];
     request.strAway = ppszWords[1];
-    request.nCount  = std::atoi(ppszWords[2]);
+    request.nCount  = ParseWhole<int>(ppszWords[2]).value_or(0);
 
     auto nUsed = 3;
 
@@ -289,9 +303,13 @@ int Simulator::TakeArguments(int nCount, char** ppszWords)
         {
             request.strArena = word.substr(6);
         }
-        else
+        else if (const auto nSeed = ParseWhole<uint32_t>(word); nSeed.has_value())
         {
-            request.nSeed = static_cast<uint32_t>(std::strtoul(ppszWords[nUsed], nullptr, 10));
+            request.nSeed = *nSeed;
+        }
+        else if (request.strUnknown.empty())
+        {
+            request.strUnknown = word;
         }
     }
 
@@ -429,7 +447,12 @@ int Simulator::Run()
         return FindTeam(table, s_request->strArena);
     }();
 
-    if (!home.has_value() || !away.has_value() || !arena.has_value() || s_request->nCount <= 0)
+    if (!s_request->strUnknown.empty())
+    {
+        std::printf("unknown argument: %s\n", s_request->strUnknown.c_str());
+    }
+
+    if (!home.has_value() || !away.has_value() || !arena.has_value() || s_request->nCount <= 0 || !s_request->strUnknown.empty())
     {
         std::printf("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]\n");
         ListTeams(table);
