@@ -80,7 +80,8 @@ The arguments, in order:
 - The home team and the away team: a file name, a team name or an index. A team can play itself,
   and an unknown team lists them all.
 - The number of matches.
-- The first seed. Each match adds one, and the same seed replays the same matches.
+- The first seed. Each match adds one, and the same seed replays the same matches, byte for byte,
+  on Windows, Linux and in the browser.
 - `fixed` or `shipped` plans.
 - Optionally `arena=TEAM`, to play in that team's drome instead of the home team's.
 - Optionally a file ending in `.csv`, to write instead of `sim_results.csv`.
