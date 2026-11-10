@@ -228,8 +228,7 @@ original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The 
 The port ships no game data, so it applies the proposal as the team file loads instead: the
 "Balanced teams" switch in the F2 menu's Plans tab, or the `balanced` word to `-sim`. It is off
 by default. It gives the same 93.5% shipped and 83.1% balanced as the re-measured script run
-below, and leaves matches without Nemesis alone. Only medium was measured; easy and hard follow
-the same rule.
+below, and leaves matches without Nemesis alone.
 
 ### In the Gauntlet
 
@@ -271,6 +270,19 @@ Machine's for the same dromer, difficulty and name. The script paired the n-th r
 file, and six lines list different names in the two files, so it left three `id_RAT_SubInDamage`
 values alone that the switch blends. The switch gives 47.7% against the script's re-measured 46.7%, within
 noise. With it on, Nemesis meets the balanced Sturmnacht too and takes 81.5%.
+
+### At each difficulty
+
+Both proposals hold at every difficulty. The same measure with the switch on, so each team also
+meets the other one balanced:
+
+| Difficulty | Nemesis shipped | Nemesis balanced | Sturmnacht shipped | Sturmnacht balanced |
+| --- | --- | --- | --- | --- |
+| Easy | 97.1 | 82.7 | 38.1 | 45.6 |
+| Medium | 93.5 | 81.5 | 30.8 | 47.7 |
+| Hard | 90.0 | 81.2 | 29.8 | 45.8 |
+
+Nemesis stays first and The Sturmnacht lands mid-table at all three.
 
 The models, the goalies and the drome don't explain the gap. With The Machine's models The Sturmnacht
 take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)
