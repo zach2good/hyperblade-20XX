@@ -454,6 +454,9 @@ hyperx_add_check(planpatch LABELS data DATA
 if(HYPERX_GAME_DATA)
     add_test(NAME simreplay COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simreplay -P "${PROJECT_SOURCE_DIR}/tests/sim_replay.cmake")
     set_tests_properties(simreplay PROPERTIES LABELS data)
+
+    add_test(NAME simusage COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -P "${PROJECT_SOURCE_DIR}/tests/sim_usage.cmake")
+    set_tests_properties(simusage PROPERTIES LABELS data)
 endif()
 
 # The browser build packs its page differently; that comes later.
