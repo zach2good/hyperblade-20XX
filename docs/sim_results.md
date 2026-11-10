@@ -337,8 +337,9 @@ Their goalie is part of it. The Fury are the only team whose goalie has a model 
 the other eleven use 6, and the top two 8. With The Machine's goalie bubbles (model 6, body 5
 against their 4), The Fury concede 2.97 goals a match instead of 4.04 and take 35.8% instead of
 31.0%, still last. Their skaters are also the only ones with `fric=.03` in `SetMotionParams`,
-against `.01` for everyone else, but the engine doesn't use a dromer's friction: changing it plays
-the same matches byte for byte.
+against `.01` for everyone else, but the plans set a dromer's friction themselves with
+`SetFriction`, so the file's value never takes effect: changing it plays the same matches byte for
+byte.
 
 A proposal for The Fury: give their goalie the common bubble sizes. The switch doesn't apply it yet,
 since it changes collision sizes rather than ratings. The file can't say whether the small goalie
