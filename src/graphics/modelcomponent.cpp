@@ -4,7 +4,6 @@
 #include "app/gameapp.h"
 #include "modelcomponent.h"
 #include "meshblock.h"
-#include <SDL3/SDL.h>
 
 struct ComponentFileHeader
 {
@@ -49,8 +48,6 @@ bool ModelComponent::ReadAll(FileObj* pFile, std::vector<Record<MeshBlock> >* pB
 
             if (pBlock == nullptr)
             {
-                SDL_Log("Model component %d of %u is damaged", iEntry, header.cRecords);
-
                 pFile->SeekRelative(nStart + header.cBytes, FileSeekOrigin::kStart);
 
                 return false;

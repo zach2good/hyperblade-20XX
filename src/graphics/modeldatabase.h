@@ -43,7 +43,7 @@ public:
     void                              ReadMaterials(FileObj* pFile, LODNode* pLodNode);
     LODNode*                          LoadLOD(char* pszModelName);
     LODNode*                          FindLOD(const char* pszName);
-    short                             LinkComponents(FileObj* pFile, LODNode* pLodNode);
+    bool                              LinkComponents(FileObj* pFile, LODNode* pLodNode);
     void                              ComputeNormals(struct MeshBlock* pBlob, class LODNode* pUnused);
     ~ModelDatabase();
 

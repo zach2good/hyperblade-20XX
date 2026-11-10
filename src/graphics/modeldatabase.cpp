@@ -13,6 +13,8 @@
 #include "common/pathstring.h"
 #include "math/vector.h"
 #include <memory>
+#include <set>
+#include <string>
 #include <cstring>
 #include "app/gameapp.h"
 #include "graphics/modelfile.h"
@@ -136,7 +138,13 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             pNode->m_pRecord = std::move(pBlob);
 
             ReadMaterials(&file.m_file, pNode);
-            LinkComponents(&file.m_file, pNode);
+            // A damaged model reloads with every match, so it is reported the first time only.
+            static auto s_reported = std::set<std::string, std::less<> >();
+
+            if (!LinkComponents(&file.m_file, pNode) && s_reported.insert(pszModelName).second)
+            {
+                SDL_Log("Model %s has a damaged level; its other levels fill the gaps", pszModelName);
+            }
 
             file.m_file.CloseAndTest();
 
@@ -393,9 +401,10 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
 }
 
 // FUNCTION: HYPERX 0x00473240
-short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
+// Deviation: the original returned the last level's component count, which nothing read.
+bool ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 {
-    unsigned short nCount = 0;
+    auto bWhole = true;
 
     const auto* const pBase = pLodNode->m_pRecord.get();
 
@@ -409,7 +418,6 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
             auto blobs = std::vector<Record<MeshBlock> >();
 
             abWhole[nLod] = ModelComponent::ReadAll(pFile, &blobs);
-            nCount        = static_cast<unsigned short>(blobs.size());
 
             pLodNode->m_apLodMeshes[nLod] = std::make_unique<Record<MeshBlock>[]>(pBase->m_nSubComponents);
 
@@ -440,6 +448,8 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
             {
                 continue;
             }
+
+            bWhole = false;
 
             for (short iSlot = 0; iSlot < pBase->m_nSubComponents; iSlot++)
             {
@@ -475,7 +485,7 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
         }
     }
 
-    return static_cast<short>(nCount);
+    return bWhole;
 }
 
 // A miss takes its reference without testing the pointer, as in the original.
