@@ -33,6 +33,14 @@ int main(int argc, char** argv)
             continue;
         }
 
+        // A save slot's block is tagged MDM1 too, but its body is not packed.
+        const auto strName = entry.path().filename().string();
+
+        if (SDL_strncasecmp(strName.c_str(), "SAVE", 4) == 0 && SDL_strcasecmp(entry.path().extension().string().c_str(), ".BIN") == 0)
+        {
+            continue;
+        }
+
         FileObj file;
         file.m_stream = FileObj::Stream{ SDL_IOFromFile(entry.path().string().c_str(), "rb") };
 
