@@ -44,8 +44,9 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 
 - Controller button re-binding in the game's own menus. The F2 Bindings window does it for now
 - Play-test the Linux build on a desktop. It builds, passes its tests and plays simulated matches
-- Play-test on a Mac. CI builds it with AppleClang on macOS 15 and passes its tests, but the hardware
-  renderer can't load its shaders there until they're built in Metal's format
+- Play-test on a Mac: each CI run uploads `hyperblade_20XX-macos`, built with AppleClang on macOS
+  15. It passes its tests, but the hardware renderer can't load its shaders there until they're
+  built in Metal's format, and it's unsigned, so open it with a right-click the first time
 - Play-test the browser build from [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile): pick a real
   folder, play a match, reload
 - Net multiplayer, and split screen for local 2 Player Mode
