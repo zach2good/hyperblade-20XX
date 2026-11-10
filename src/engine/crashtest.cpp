@@ -13,8 +13,12 @@
 namespace
 {
 
-short s_nMine = -1;
-short s_nHis  = -1;
+// A staged run's hits count for this long; later ones are ordinary play.
+constexpr auto kWindow = Clock::Milliseconds{ 10000 };
+
+short               s_nMine = -1;
+short               s_nHis  = -1;
+Clock::Milliseconds s_stagedAt{};
 
 CrashTest::Hit s_lastHit;
 
@@ -121,16 +125,17 @@ bool CrashTest::Stage(const Approach& mine, const Approach& his)
     Launch(nMine, vMeet, vForward, mine);
     Launch(nHis, vMeet, vForward, his);
 
-    s_nMine   = nMine;
-    s_nHis    = nHis;
-    s_lastHit = {};
+    s_nMine    = nMine;
+    s_nHis     = nHis;
+    s_stagedAt = g_pGameEngine->m_clock.tick;
+    s_lastHit  = {};
 
     return true;
 }
 
 void CrashTest::RecordAttack(short nVictim, short nAttacker, int nAttack)
 {
-    if (nVictim != s_nMine && nVictim != s_nHis)
+    if ((nVictim != s_nMine && nVictim != s_nHis) || g_pGameEngine->m_clock.tick - s_stagedAt > kWindow)
     {
         return;
     }

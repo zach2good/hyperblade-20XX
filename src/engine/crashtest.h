@@ -1,5 +1,4 @@
-// The Crash Test dialog's engine side: it sets two dromers on a collision course and records the
-// attack that follows. Neither release opened the dialog; this is a port of what its fields ask.
+// The Crash Test dialog, which neither release opened: two dromers on a collision course, and the hit.
 
 #ifndef HYPERBLADE_CRASHTEST_H
 #define HYPERBLADE_CRASHTEST_H
@@ -9,8 +8,7 @@
 namespace CrashTest
 {
 
-// A dromer's run in to the meeting point: its speed, how far out it starts, and the side it comes
-// from as a clock position, 12 o'clock being the way the viewed dromer faces.
+// A run in to the meeting point, its side a clock position with 12 the way the viewed dromer faces.
 struct Approach
 {
     float flSpeed    = 0.0f;
@@ -24,8 +22,7 @@ struct Hit
     std::string strZone;
 };
 
-// Sends the viewed dromer and the nearest opponent at the point the viewed dromer stands on.
-// False when no match is running or the camera follows no dromer.
+// The viewed dromer and the nearest opponent; false without a match or a followed dromer.
 bool Stage(const Approach& mine, const Approach& his);
 
 // Called by PlanCond::AttackedAnim as an attack reaches nVictim.
