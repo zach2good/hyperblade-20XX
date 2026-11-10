@@ -307,6 +307,33 @@ other balanced:
 Nemesis stays first and The Sturmnacht lands mid-table at all three. On easy the Nemesis change
 barely shows.
 
+## The league with both proposals
+
+A full double round robin on medium: every pairing of the 14 teams, 10 matches each way, seed 1,
+fixed plans, 3-minute periods, sorted by the balanced share.
+
+| Team | Shipped pts% | Balanced pts% |
+| --- | --- | --- |
+| BLAM! Nemesis | 93.5 | 89.6 |
+| The DredNoks | 82.5 | 82.5 |
+| The Knights | 58.3 | 57.1 |
+| The Ambush | 56.7 | 56.2 |
+| The Machine | 54.2 | 53.8 |
+| The Sturmnacht | 30.8 | 46.5 |
+| The Crusade | 45.4 | 43.1 |
+| The T-34s | 42.3 | 42.9 |
+| The Ronins | 42.1 | 41.3 |
+| The LoneStars | 40.6 | 41.2 |
+| The Shockwave | 41.5 | 39.2 |
+| The Glory | 41.3 | 38.8 |
+| The BlackJack | 39.8 | 38.1 |
+| The Fury | 31.0 | 29.6 |
+
+The Sturmnacht's gain comes out of the middle of the table, a point or two from each team. The Fury
+are now last on their own. Their ratings aren't the cause: given The Machine's ratings outright they
+take 30.4%, the same as the row blend's k = 0.375. They climb to 7th in 7-minute matches (see
+"Period length"), so they're a short-match team, and no rating proposal is made for them.
+
 ## Same matches everywhere
 
 A seed now plays the same matches, byte for byte, with MSVC on Windows, GCC and Clang on Linux,
