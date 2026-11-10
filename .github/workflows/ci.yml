@@ -95,6 +95,26 @@ jobs:
           name: hyperblade_20XX-linux
           path: build-linux/packages/hyperblade_20XX-linux.tar.gz
 
+  build-mac:
+    name: Build (AppleClang macOS)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/cache@v4
+        with:
+          path: .cpm-cache
+          key: cpm-${{ runner.os }}-${{ hashFiles('cmake/dependencies.cmake') }}
+
+      - name: Configure, build and test
+        env:
+          CPM_SOURCE_CACHE: ${{ github.workspace }}/.cpm-cache
+        run: |
+          brew install ninja
+          cmake -S . -B build-mac -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build build-mac -- -k 0
+          ctest --test-dir build-mac --output-on-failure
+
   build-web:
     name: Build (browser)
     runs-on: ubuntu-24.04
