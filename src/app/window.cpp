@@ -1,4 +1,8 @@
 #include "common/compat.h"
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 #include "input/keycodes.h"
 #include "input/inputevent.h"
 #include "globals.h"
@@ -405,6 +409,13 @@ static void ReplayDeferred()
     }
 }
 
+#ifdef __EMSCRIPTEN__
+// The browser raises events from its own callbacks, while the game's loop sleeps mid-frame.
+constexpr auto kDeferAll = true;
+#else
+constexpr auto kDeferAll = false;
+#endif
+
 static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
 {
     if (!g_gameApp.m_bHasWindow)
@@ -415,7 +426,7 @@ static bool SDLCALL OnWindowEvent(void*, SDL_Event* pEvent)
     // ImGui queues what it is given, so it can take events mid-frame.
     DebugMenu::OnEvent(DebugMenu::Event{ pEvent });
 
-    if (Presenter::Busy())
+    if (kDeferAll || Presenter::Busy())
     {
         Defer(*pEvent);
 
@@ -561,6 +572,11 @@ void Window::Destroy()
 
 bool Window::Pump()
 {
+#ifdef __EMSCRIPTEN__
+    // The browser draws the canvas and delivers input only between turns of its own loop.
+    emscripten_sleep(0);
+#endif
+
     SDL_PumpEvents();
 
     ReplayDeferred();

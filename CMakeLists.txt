@@ -349,6 +349,20 @@ if(MSVC)
     target_link_options(hyperx PRIVATE "/MAP:${HYPERX_OUT}/hyperblade_20XX.map")
 endif()
 
+# The browser build is a page. The game's loop yields to the browser each frame through Asyncify,
+# and our pak sits at the root of its file system, where SDL_GetBasePath points.
+if(EMSCRIPTEN)
+    set(HYPERX_WEB_PRELOAD "" CACHE PATH
+        "For local testing only: a HyperBlade folder whose Data and HYPERX.EXE are packed into the page. Never publish such a build")
+
+    set_target_properties(hyperx PROPERTIES SUFFIX ".html" LINK_DEPENDS "${CMAKE_SOURCE_DIR}/web/pre.js")
+    target_link_options(hyperx PRIVATE -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 "--pre-js=${CMAKE_SOURCE_DIR}/web/pre.js" "--preload-file=${HYPERX_OUT}/${HYPERX_PAK_NAME}@/${HYPERX_PAK_NAME}")
+
+    if(HYPERX_WEB_PRELOAD)
+        target_link_options(hyperx PRIVATE "--preload-file=${HYPERX_WEB_PRELOAD}/Data@/Data" "--preload-file=${HYPERX_WEB_PRELOAD}/HYPERX.EXE@/HYPERX.EXE")
+    endif()
+endif()
+
 # Our own assets, which the game reads from the pak beside it.
 set(HYPERX_PAK_FILES
     fonts/PixelOperator.ttf
