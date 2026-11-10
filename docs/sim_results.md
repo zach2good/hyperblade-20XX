@@ -246,8 +246,9 @@ proposal blends each rating line toward its counterpart in The Machine's file:
 | 0 | 47.5 | 47.3 |
 
 The LoneStars need nothing: 38.1% is within noise of the middle of the table. The Sturmnacht take
-k = 0.375, which puts them mid-table. Their share jumps between k = 0.5 and 0.375 and is flat
-below, which points to one rating crossing a threshold there; no run has isolated it.
+k = 0.375, which puts them mid-table. Their share rises steeply between k = 0.5 and 0.375 and
+is flat below. No single rating carries the rise: of the 39 that change between those two blends,
+any half lifts them only part of the way (29.6% to 42.9% from 30.8%), so it builds up across many.
 
 The models, the goalies and the drome don't explain the gap. With The Machine's models The Sturmnacht
 take 27.1% at the median ratings, their goalie is The Machine's size, and they lose at home (22.7%)
