@@ -58,27 +58,34 @@ The first run reads the game's text out of `HYPERX.EXE` into `hyperblade_20XX_st
 later runs load that file.
 
 To play the music without the CD, rip the audio tracks to `Data/Music/Track02.flac`,
-`Track03.flac` etc. FLAC, MP3 and WAV are all supported. On Linux the rips are the only music, as
-the CD drive is read on Windows alone.
+`Track03.flac` and so on, as FLAC, MP3 or WAV. On Linux the rips are the only music, as the
+port reads the CD drive on Windows alone.
 
 ## Simulating matches
 
-`-sim` plays AI-only matches with no window or sound, about 2,000 times faster than real time on one core, and
-writes every player's match stats to `sim_results.csv` beside the executable:
+`-sim` plays AI-only matches with no window or sound, about 2,000 times faster than real time on
+one core, and writes every player's match stats to `sim_results.csv` beside the executable:
 
 ```sh
 hyperblade_20XX -sim LOSAN SEATTLE 100 1 fixed
 ```
 
-The arguments are the home team, the away team, the number of matches, the first seed (each
-match adds one), `fixed` or `shipped` plans, optionally `arena=TEAM` to play in that team's drome rather than the
-home team's, and optionally a file ending in `.csv` to write in place of `sim_results.csv`. A
-team can play itself. A team is its file name, its name or its index;
-an unknown team lists them all. The match settings in `booie.ini`, such as difficulty and period
-length, still apply, and a simulation never writes the file. Each row is one player in one match, with the difficulty and period length it
-was played at, their health at the end (100 is unhurt), the score, and the game's own match stats. The same seed replays the same matches.
-Errors print instead of opening a dialog. A fatal one ends the run with exit code 3 and keeps the matches
-already written.
+The arguments, in order:
+
+- The home team and the away team: a file name, a team name or an index. A team can play itself,
+  and an unknown team lists them all.
+- The number of matches.
+- The first seed. Each match adds one, and the same seed replays the same matches.
+- `fixed` or `shipped` plans.
+- Optionally `arena=TEAM`, to play in that team's drome instead of the home team's.
+- Optionally a file ending in `.csv`, to write instead of `sim_results.csv`.
+
+The match settings in `booie.ini`, such as difficulty and period length, still apply, and a
+simulation never writes that file. Each row is one player in one match: the difficulty and period
+length, the player's health at the end (100 is unhurt), the score and the game's own match stats.
+
+Errors print instead of opening a dialog. A fatal one ends the run with exit code 3 and keeps the
+matches already written.
 
 ## Build
 
@@ -134,8 +141,9 @@ python tools/plan_dump.py           # the AI plans, printed as pseudo-source
 python tools/make_icon.py           # redraws the Rok icon into res/
 ```
 
-[docs/](docs/README.md) holds what we know about the game: the class hierarchy, the other files on
-the disc, and the bugs in the shipped AI plans.
+[docs/](docs/README.md) holds what we know about the game and the port: the class hierarchy, the
+other files on the disc, the bugs in the shipped AI plans, the hardware renderer and simulated
+matches.
 
 ## Legal
 

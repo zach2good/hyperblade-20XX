@@ -1,11 +1,13 @@
 # Documents
 
-Findings about the game and its code, carried over from the decomp.
+Findings about the game and its code. Most came over from the decomp; the hardware renderer and
+the simulated matches are the port's own.
 
 | Document | Read it for |
 | --- | --- |
 | [class_hierarchy.md](class_hierarchy.md) | Vtable layouts and the class hierarchy |
 | [OTHER_MODULES.md](OTHER_MODULES.md) | The other executables and DLLs on the disc |
+| [hardware_renderer.md](hardware_renderer.md) | The SDL GPU renderer beside the original software one |
 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
