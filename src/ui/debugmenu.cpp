@@ -138,6 +138,84 @@ float RosterMean(const TeamBlock& team, const std::vector<int>& ratings)
     return flSum / static_cast<float>(kTeamRowCount * ratings.size());
 }
 
+// A match stat summed over the roster. Dromers on the ice hold theirs live until the next sync.
+float TeamMatchStat(const TeamBlock& team, int nStat)
+{
+    auto flSum = 0.0f;
+
+    for (auto nRow = 0; nRow < kTeamRowCount; nRow++)
+    {
+        const auto* pLive = static_cast<const PlayerObject*>(nullptr);
+
+        for (auto nSeat = 0; nSeat < kTeamBlockSeats; nSeat++)
+        {
+            if (team.aSeat[nSeat] == nRow && team.apOnIce[nSeat] != nullptr)
+            {
+                pLive = static_cast<const PlayerObject*>(team.apOnIce[nSeat]);
+            }
+        }
+
+        if (pLive != nullptr)
+        {
+            flSum += pLive->m_matchStats.GetAt(nStat);
+        }
+        else
+        {
+            flSum += team.aStatRows[nRow].aStat[nStat];
+        }
+    }
+
+    return flSum;
+}
+
+void DrawMatchStats(const TeamBlock& own, const TeamBlock& foe)
+{
+    struct MatchRow
+    {
+        const char* pszHeading;
+        int         nStat;
+    };
+
+    constexpr MatchRow kRows[] = {
+        { "Goals", kMatchStatGoals },
+        { "Shots on goal", kMatchStatShotsOnGoal },
+        { "Assists", kMatchStatAssists },
+        { "Interceptions", kMatchStatInterceptions },
+        { "Checks given", kMatchStatChecksGiven },
+        { "Injuries caused", kMatchStatInjuries },
+    };
+
+    if (!ImGui::BeginTable("matchstats", 3, ImGuiTableFlags_SizingFixedFit))
+    {
+        return;
+    }
+
+    const auto drawRow = [](const char* pszHeading, const std::string& strOwn, const std::string& strFoe)
+    {
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(pszHeading);
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(strOwn.c_str());
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(strFoe.c_str());
+    };
+
+    for (const auto& row : kRows)
+    {
+        drawRow(row.pszHeading, std::format("{:.0f}", TeamMatchStat(own, row.nStat)), std::format("{:.0f}", TeamMatchStat(foe, row.nStat)));
+    }
+
+    const auto passes = [](const TeamBlock& team)
+    {
+        return std::format("{:.0f} / {:.0f}", TeamMatchStat(team, kMatchStatPassesCompleted), TeamMatchStat(team, kMatchStatPassesAttempted));
+    };
+
+    drawRow("Passes completed", passes(own), passes(foe));
+
+    ImGui::EndTable();
+}
+
 void ScoutingBar(float flValue, float flBest)
 {
     const auto flFraction = [&]
@@ -226,6 +304,11 @@ void DrawScoutingReport()
 
         ImGui::EndTable();
     }
+
+    ImGui::Separator();
+    ImGui::TextUnformatted("This match");
+
+    DrawMatchStats(own, foe);
 
     ImGui::End();
 }
