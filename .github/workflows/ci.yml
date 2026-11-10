@@ -1,6 +1,7 @@
-# The game needs nothing from the original to build, so CI links it with MSVC, GCC and Clang, runs the
-# tests that need no game data, and uploads each drop-in archive. A pushed version tag, such as
-# 0.1.0, publishes both as a GitHub release whose notes give their SHA256.
+# The game needs nothing from the original to build, so CI links it with MSVC, GCC, Clang and
+# Emscripten, runs the tests that need no game data, and uploads each build. A pushed version tag,
+# such as 0.1.0, publishes the Windows and Linux archives as a GitHub release whose notes give
+# their SHA256.
 
 name: ci
 
@@ -85,6 +86,33 @@ jobs:
         with:
           name: hyperblade_20XX-linux
           path: build-linux/packages/hyperblade_20XX-linux.tar.gz
+
+  build-web:
+    name: Build (browser)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/cache@v4
+        with:
+          path: .cpm-cache-linux
+          key: cpm-web-${{ hashFiles('cmake/dependencies.cmake') }}
+
+      # The image builds the page and runs the unit and lint checks under Node. With no
+      # HYPERX_WEB_PRELOAD the page asks for the player's folder, so it holds no game data.
+      - name: Build and test in the Emscripten image
+        run: |
+          docker build -t hyperblade-emscripten -f docker/emscripten.Dockerfile docker
+          docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-wasm:/build" hyperblade-emscripten
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hyperblade_20XX-web
+          path: |
+            build-wasm/out/hyperblade_20XX.html
+            build-wasm/out/hyperblade_20XX.js
+            build-wasm/out/hyperblade_20XX.wasm
+            build-wasm/out/hyperblade_20XX.data
 
   release:
     name: Release
