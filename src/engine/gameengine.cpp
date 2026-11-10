@@ -13,6 +13,7 @@
 #include "objectdef.h"
 #include "devicector.h"
 #include "planvm/planvm.h"
+#include "planvm/planaction.h"
 #include "objectclasses.h"
 #include "engine/collisionobjectids.h"
 #include "engine/messageids.h"
@@ -969,6 +970,8 @@ void GameEngine::BeginMatchPlay()
     m_bPeriodEnded           = 0;
     m_bFollowingOther        = 0;
     g_bPeriodCountdownActive = 0;
+
+    PlanAction::ResetPassTracking();
 
     auto* const pRok = (RokObject*)m_ppSlots[kSlotRok];
 

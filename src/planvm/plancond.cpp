@@ -2824,11 +2824,17 @@ auto s_completed = Pass();
 
 } // namespace
 
+// The match clock runs on between matches, so play starts with no pass in flight.
+void PlanAction::ResetPassTracking()
+{
+    s_pending   = Pass();
+    s_completed = Pass();
+}
+
 // Deviation: the plans count pass attempts but never their outcome, so the next possession settles
 // each pass: a teammate completes it, an opponent intercepts it.
 static void SettlePass(PlayerObject* pPlayer, int nStat)
 {
-    // A new match's clock restarts, so a pass left from the last one falls outside the window.
     constexpr auto kPassWindow = Clock::Milliseconds(3000);
 
     const auto now   = g_pGameEngine->m_clock.tick;

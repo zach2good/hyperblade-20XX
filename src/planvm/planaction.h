@@ -130,6 +130,7 @@ void SetLocation(Interactor* pContext, PlanNode* pNode, short* pState, int nMark
 void SetVelocity(Interactor* pContext, PlanNode* pNode, short* pState, int nArg);
 void Engage_Opponent(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
 void IncrementStat(Interactor* pContext, PlanNode* pArgs, short* pResult, int nParam);
+void ResetPassTracking();
 void ScaleBubToRating(Interactor* pContext, PlanNode* pNode, short* pState, int nArg);
 void SetTargetWithData(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
 void BungeeTowardTarget(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
