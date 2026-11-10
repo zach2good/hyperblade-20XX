@@ -43,8 +43,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Update menus to support controller button re-binding
 - Play-test the Linux build on a desktop. It builds, passes its tests and plays simulated matches
 - Mac builds
-- Browser build: saves. [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile) builds a page that asks for
-  your HyperBlade folder once and keeps it in the browser, but saves and the career file are lost on reload
+- Play-test the browser build from [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile): pick a real
+  folder, play a match, reload
 - Net multiplayer, and split screen for local 2 Player Mode
 - AI balance fixes
 - The original RC, debug and plan menus in the debug menu

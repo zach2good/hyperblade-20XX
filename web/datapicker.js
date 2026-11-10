@@ -5,11 +5,18 @@ Module['preRun'].push(() => {
 
     addRunDependency('hyperblade-data');
     FS.mkdir(store);
-    FS.mount(IDBFS, {}, store);
+    FS.mount(IDBFS, { autoPersist: true }, store);
 
     const findExe = () => FS.readdir(store).find((name) => name.toUpperCase() === 'HYPERX.EXE');
 
     const start = () => {
+        // The career file sits beside the executable, so it is linked in like the data.
+        const career = `${store}/hyperblade_20XX_career.txt`;
+
+        if (!FS.analyzePath(career).exists) {
+            FS.writeFile(career, '');
+        }
+
         for (const name of FS.readdir(store)) {
             if (name !== '.' && name !== '..') {
                 FS.symlink(`${store}/${name}`, `/${name}`);
