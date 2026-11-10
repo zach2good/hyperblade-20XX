@@ -32,7 +32,7 @@ public:
 
     GameOptions();
     // Empty; the original linker folded it onto Stub::Assert.
-    ~GameOptions();
+    ~GameOptions() = default;
 
     // A table of ini names; the section is at 0x00.
     const char* m_pszSection;      // 0x00

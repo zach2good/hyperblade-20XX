@@ -13,10 +13,6 @@
 // Stand-ins for the game's own, which bring the whole game with them.
 std::unique_ptr<GameOptions> g_pGameOptions;
 
-GameOptions::~GameOptions()
-{
-}
-
 unsigned int GameOptions::ReadInt(const char*, const char*, int nDefault)
 {
     return static_cast<unsigned int>(nDefault);
