@@ -355,12 +355,19 @@ if(EMSCRIPTEN)
     set(HYPERX_WEB_PRELOAD "" CACHE PATH
         "For local testing only: a HyperBlade folder whose Data and HYPERX.EXE are packed into the page. Never publish such a build")
 
-    set_target_properties(hyperx PROPERTIES SUFFIX ".html" LINK_DEPENDS "${CMAKE_SOURCE_DIR}/web/pre.js")
-    target_link_options(hyperx PRIVATE -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 "--pre-js=${CMAKE_SOURCE_DIR}/web/pre.js" "--preload-file=${HYPERX_OUT}/${HYPERX_PAK_NAME}@/${HYPERX_PAK_NAME}")
+    set(HYPERX_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/web/pre.js")
 
     if(HYPERX_WEB_PRELOAD)
         target_link_options(hyperx PRIVATE "--preload-file=${HYPERX_WEB_PRELOAD}/Data@/Data" "--preload-file=${HYPERX_WEB_PRELOAD}/HYPERX.EXE@/HYPERX.EXE")
+    else()
+        list(APPEND HYPERX_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/web/datapicker.js")
+        target_link_options(hyperx PRIVATE -lidbfs.js)
     endif()
+
+    list(TRANSFORM HYPERX_WEB_PRE_JS PREPEND "--pre-js=" OUTPUT_VARIABLE HYPERX_WEB_PRE_JS_OPTIONS)
+
+    set_target_properties(hyperx PROPERTIES SUFFIX ".html" LINK_DEPENDS "${HYPERX_WEB_PRE_JS}")
+    target_link_options(hyperx PRIVATE -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 ${HYPERX_WEB_PRE_JS_OPTIONS} "--preload-file=${HYPERX_OUT}/${HYPERX_PAK_NAME}@/${HYPERX_PAK_NAME}")
 endif()
 
 # Our own assets, which the game reads from the pak beside it.
