@@ -423,6 +423,7 @@ hyperx_add_check(path LABELS unit SOURCES tests/path_check.cpp src/common/path.c
 hyperx_add_check(parseutil LABELS unit SOURCES tests/parseutil_check.cpp src/common/parseutil.cpp LIBRARIES SDL3::SDL3)
 hyperx_add_check(careerstats LABELS unit SOURCES tests/careerstats_check.cpp src/engine/careerstats.cpp)
 hyperx_add_check(anim LABELS unit SOURCES tests/anim_check.cpp src/anim/anim.cpp src/math/transformobject.cpp src/math/math.cpp)
+hyperx_add_check(balance LABELS unit SOURCES tests/balance_check.cpp src/engine/balance.cpp src/common/fileobj.cpp src/common/path.cpp LIBRARIES SDL3::SDL3)
 hyperx_add_check(rawalloc LABELS lint SOURCES tests/rawalloc_check.cpp ARGS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/tests")
 hyperx_add_check(hwmesh LABELS unit PERMISSIVE SOURCES tests/hwmesh_check.cpp src/graphics/hwmesh.cpp)
 hyperx_add_check(keymap LABELS unit SOURCES tests/keymap_check.cpp src/input/keymap.cpp LIBRARIES SDL3::SDL3)
