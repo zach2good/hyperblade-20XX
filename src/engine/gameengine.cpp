@@ -37,6 +37,7 @@
 #include "graphics/meshmaterial.h"
 #include "ui/uiglobals.h"
 #include "teamsblock.h"
+#include "engine/balance.h"
 #include "engine/planfixes.h"
 #include "ui/torchbitmaps.h"
 #include "ui/saveload.h"
@@ -2678,17 +2679,9 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
         auto nKeyword = ParseUtil::FindKeyword(szToken, ppszTable, static_cast<short>(nCount));
 
-        // Old names and typos in the shipped team files, which stop the line in the original.
         if (nKeyword < 0 && PlanFixes::On() && nMode == kRatingsField)
         {
-            constexpr std::pair<const char*, const char*> kAliases[] = {
-                { "id_RAT_RokReceiving", "id_RAT_MultiPointSpread" },
-                { "id_RAT_Stealing", "id_RAT_RokHandling" },
-                { "d_RAT_SubInDamage", "id_RAT_SubInDamage" },
-                { "id_RAT_Pass", "id_RAT_Pass2" },
-            };
-
-            for (const auto& [pszAlias, pszName] : kAliases)
+            for (const auto& [pszAlias, pszName] : PlanFixes::kRatingAliases)
             {
                 if (SDL_strcasecmp(szToken, pszAlias) == 0)
                 {
@@ -2712,6 +2705,11 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
                     // STRING: HYPERX 0x004c7bd8
                     "Game Config file error: ratings for object %s!",
                     szObject);
+            }
+
+            if (nMode == kRatingsField)
+            {
+                nValue = Balance::Adjust(ppszTable[nKeyword], nLevel, nValue);
             }
 
             pflRatings[nKeyword] = static_cast<float>(nValue);
@@ -3245,12 +3243,16 @@ std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath,
     {
         auto nSlot = 0;
 
+        Balance::BeginTeam(strPath.m_str.m_pchData);
+
         auto pTeamDef = ParseTeamHTMFile(&file.m_file);
 
         if (pTeamDef == nullptr)
         {
             // STRING: HYPERX 0x004c8478
             g_gameApp.Fatal("Away team definition error in file %s!", pszTeamPath);
+
+            Balance::EndTeam();
 
             return nullptr;
         }
@@ -3417,6 +3419,8 @@ std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath,
         }
 
         file.m_file.CloseAndTest();
+
+        Balance::EndTeam();
 
         return pTeamDef;
     }

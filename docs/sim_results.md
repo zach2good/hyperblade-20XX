@@ -225,7 +225,11 @@ and `id_RAT_MultiPointSpread`, so any shrink must change those lines too. Readin
 original did, cut at the name, leaves Nemesis where it is (94.6%) and drops The DredNoks from
 83.1% to 77.5%, a lift for The DredNoks just inside the noise of two such runs.
 
-The port ships no game data, so this stays a proposal.
+The port ships no game data, so it applies the proposal as the team file loads instead: the
+"Balanced Nemesis" switch in the F2 menu's Plans tab, or the `balanced` word to `-sim`. It is off
+by default. It gives the same 93.5% shipped and 83.1% balanced as the re-measured script run
+below, and leaves matches without Nemesis alone. Only medium was measured; easy and hard follow
+the same rule.
 
 ### In the Gauntlet
 

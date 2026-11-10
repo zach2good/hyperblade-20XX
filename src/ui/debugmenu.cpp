@@ -14,6 +14,7 @@
 #include "engine/framepacing.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
+#include "engine/balance.h"
 #include "engine/planfixes.h"
 #include "engine/playerobject.h"
 #include "engine/statids.h"
@@ -1304,10 +1305,19 @@ void PlansTab()
     }
 
     OriginalUI::SetItemTooltip("The fixes for the bugs docs/plan_bugs.md lists in the shipped AI and object plans, and the engine faults they hit. Off runs the plans as shipped.");
+
+    auto bBalanced = Balance::On();
+
+    if (OriginalUI::Checkbox("Balanced Nemesis", &bBalanced))
+    {
+        Balance::Set(bBalanced);
+    }
+
+    OriginalUI::SetItemTooltip("BLAM! Nemesis's skater ratings move halfway to The Machine's median for each difficulty, the proposal in docs/sim_results.md.");
     ImGui::EndDisabled();
 
     ImGui::TextDisabled("Both sets are compiled at load; switching restarts each object's current behaviour.");
-    ImGui::TextDisabled("The team file fixes take effect when the next match loads its teams.");
+    ImGui::TextDisabled("The team file fixes and the balance take effect when the next match loads its teams.");
 
     if (g_bSessionActive != 0)
     {

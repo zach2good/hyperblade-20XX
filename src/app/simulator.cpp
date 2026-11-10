@@ -6,6 +6,7 @@
 #include "common/path.h"
 #include "engine/framepacing.h"
 #include "engine/game.h"
+#include "engine/balance.h"
 #include "engine/gameengine.h"
 #include "engine/planfixes.h"
 #include "engine/spectator.h"
@@ -43,9 +44,10 @@ struct Request
 {
     std::string strHome;
     std::string strAway;
-    int         nCount = 0;
-    uint32_t    nSeed  = 1;
-    bool        bFixed = true;
+    int         nCount    = 0;
+    uint32_t    nSeed     = 1;
+    bool        bFixed    = true;
+    bool        bBalanced = false;
     // Beside the executable when empty.
     std::string strOutput;
     // The home team's drome when empty.
@@ -288,13 +290,17 @@ int Simulator::TakeArguments(int nCount, char** ppszWords)
 
     auto nUsed = 3;
 
-    for (; nUsed < nCount && nUsed < 7 && ppszWords[nUsed][0] != '-'; nUsed++)
+    for (; nUsed < nCount && nUsed < 8 && ppszWords[nUsed][0] != '-'; nUsed++)
     {
         const auto word = std::string_view(ppszWords[nUsed]);
 
         if (word == "shipped" || word == "fixed")
         {
             request.bFixed = word == "fixed";
+        }
+        else if (word == "balanced")
+        {
+            request.bBalanced = true;
         }
         else if (word.ends_with(".csv"))
         {
@@ -462,7 +468,7 @@ int Simulator::Run()
 
     if (!home.has_value() || !away.has_value() || !arena.has_value() || request.nCount <= 0 || !request.strUnknown.empty())
     {
-        std::println("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]");
+        std::println("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [balanced] [arena=TEAM] [OUTPUT.csv]");
         ListTeams(table);
 
         return 2;
@@ -487,6 +493,7 @@ int Simulator::Run()
 
     Spectator::SetAutopilot(true);
     PlanFixes::Set(request.bFixed);
+    Balance::Set(request.bBalanced);
 
     // A fixed start, so no timer depends on when the run began.
     Clock::g_bSimulated   = true;

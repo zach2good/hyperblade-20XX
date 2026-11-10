@@ -141,6 +141,7 @@ set(HYPERX_SOURCES
     src/engine/oneonone.cpp
     src/engine/particle.cpp
     src/engine/particlesystem.cpp
+    src/engine/balance.cpp
     src/engine/planfixes.cpp
     src/engine/player.cpp
     src/engine/playerobject.cpp
@@ -457,6 +458,9 @@ if(HYPERX_GAME_DATA)
 
     add_test(NAME simusage COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -P "${PROJECT_SOURCE_DIR}/tests/sim_usage.cmake")
     set_tests_properties(simusage PROPERTIES LABELS data)
+
+    add_test(NAME simbalance COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simbalance -P "${PROJECT_SOURCE_DIR}/tests/sim_balance.cmake")
+    set_tests_properties(simbalance PROPERTIES LABELS data)
 endif()
 
 # The browser build packs its page differently; that comes later.
