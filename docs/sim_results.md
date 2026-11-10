@@ -333,10 +333,10 @@ The Sturmnacht's gain comes out of the middle of the table, a point or two from 
 are now last on their own. Their ratings aren't the cause: given The Machine's ratings outright they
 take 30.4%, the same as the row blend's k = 0.375.
 
-Their goalie is part of it. The Fury are the only team whose goalie has a model bubble of radius 4
-and a body bubble of 4; twelve teams use 6 and 5, and the top two a model bubble of 8. With The
-Machine's sizes, 6 and 5, The Fury concede 2.97 goals a match instead of 4.04 and take 35.8% instead
-of 31.0%, still last. Their skaters are also the only ones with `fric=.03` in `SetMotionParams`,
+Their goalie is part of it. The Fury are the only team whose goalie has a model bubble of radius 4;
+the other eleven use 6, and the top two 8. With The Machine's goalie bubbles (model 6, body 5
+against their 4), The Fury concede 2.97 goals a match instead of 4.04 and take 35.8% instead of
+31.0%, still last. Their skaters are also the only ones with `fric=.03` in `SetMotionParams`,
 against `.01` for everyone else, but the engine doesn't use a dromer's friction: changing it plays
 the same matches byte for byte.
 
