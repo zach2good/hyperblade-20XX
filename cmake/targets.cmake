@@ -9,6 +9,12 @@ if(MSVC)
     target_compile_definitions(hyperx_options INTERFACE _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
 else()
     target_compile_options(hyperx_options INTERFACE -Wall -Werror -Wno-delete-non-virtual-dtor -finput-charset=UTF-8)
+
+    # Apple deprecates sprintf, which the decompiled source uses throughout; MSVC's version of this
+    # is silenced above. Apple has no narrower switch, so deprecations stay warnings there.
+    if(APPLE)
+        target_compile_options(hyperx_options INTERFACE -Wno-error=deprecated-declarations)
+    endif()
 endif()
 
 # The decompiled source is C++98 written against VC6, so MSVC's conformance checks are relaxed for it.
