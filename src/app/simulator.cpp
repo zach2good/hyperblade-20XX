@@ -14,6 +14,7 @@
 #include "engine/teamsblock.h"
 #include "globals.h"
 #include "math/squirrel5.h"
+#include "ui/saveobject.h"
 #include "ui/screens/dromeexteriorscreen.h"
 #include <SDL3/SDL.h>
 #include <adlib/vocabulary.h>
@@ -67,6 +68,12 @@ constexpr auto kNoArena = 0xffff;
 
 // Events pumped this often, so the hidden window never looks hung.
 constexpr auto kPumpTicks = 600;
+
+// A tournament match is over after its third period; it never sets m_bMatchOver when won.
+constexpr auto kTournamentPeriods = 3;
+
+// SaveObject's bracket row ends with this, as GameEngine's kBracketEnd.
+constexpr auto kBracketEnd = -1;
 
 // A team by index, file name or name, any case.
 std::optional<short> FindTeam(const TeamsBlock& table, std::string_view name)
@@ -145,7 +152,7 @@ bool PlayMatch(uint32_t nSeed, Clock::FractionalMilliseconds& elapsed, long long
 
         nTicks += nPeriodTicks;
 
-        if (g_pGameEngine->m_bMatchOver != 0)
+        if (g_pGameEngine->m_bMatchOver != 0 || (g_pGameEngine->IsTournamentMode() != 0 && nPeriod + 1 >= kTournamentPeriods))
         {
             return true;
         }
@@ -298,6 +305,77 @@ bool Simulator::Requested()
     return s_request.has_value();
 }
 
+// Each season starts a Gauntlet as the Tournament setup screen does and plays its bracket out.
+// Returns the matches played.
+int PlayGauntlet(std::ofstream& csv, short nHome, Clock::FractionalMilliseconds& elapsed, long long& nTicks)
+{
+    auto* const pSave  = g_pGameEngine->m_pSaveObject.get();
+    const auto  nTeams = g_pGameEngine->m_pTeamTable->GetTeamCount();
+
+    auto nMatch  = 0;
+    auto nTitles = 0;
+
+    for (auto nSeason = 0; nSeason < s_request->nCount; nSeason++)
+    {
+        g_nPlayerMode = kPlayerModeTournament;
+
+        pSave->ValidateSetHomeTeam(nHome, 1);
+        pSave->BracketIterReset();
+
+        auto nOpponent = static_cast<int>(pSave->BracketIterPeek());
+
+        const auto* const pszResult = [&]
+        {
+            for (auto nRound = 1; nRound <= nTeams; nRound++)
+            {
+                const auto nSeed = s_request->nSeed + static_cast<uint32_t>(nMatch);
+
+                g_nDromeTeamAway = nOpponent;
+                g_nDromeArena    = nOpponent;
+
+                if (!PlayMatch(nSeed, elapsed, nTicks))
+                {
+                    return "stalled";
+                }
+
+                WriteRows(csv, nMatch, nSeed);
+                csv.flush();
+                nMatch++;
+
+                if (g_nDromeTeamAway == kBracketEnd)
+                {
+                    return "won";
+                }
+
+                if (pSave->GetBracketPos() == 0)
+                {
+                    std::printf("season %d: lost to %s in round %d\n", nSeason, g_pGameEngine->m_pTeamB->szName, nRound);
+
+                    return "lost";
+                }
+
+                nOpponent = g_nDromeTeamAway;
+            }
+
+            return "unfinished";
+        }();
+
+        if (SDL_strcmp(pszResult, "won") == 0)
+        {
+            nTitles++;
+            std::printf("season %d: won the Gauntlet\n", nSeason);
+        }
+        else if (SDL_strcmp(pszResult, "lost") != 0)
+        {
+            std::printf("season %d: %s\n", nSeason, pszResult);
+        }
+    }
+
+    std::printf("%d titles in %d seasons\n", nTitles, s_request->nCount);
+
+    return nMatch;
+}
+
 int Simulator::Run()
 {
 #if defined(_WIN32)
@@ -311,9 +389,20 @@ int Simulator::Run()
 
     SDL_HideWindow(Window::Native().As<SDL_Window>());
 
-    const auto& table = *g_pGameEngine->m_pTeamTable;
-    const auto  home  = FindTeam(table, s_request->strHome);
-    const auto  away  = FindTeam(table, s_request->strAway);
+    const auto& table     = *g_pGameEngine->m_pTeamTable;
+    const auto  bGauntlet = SDL_strcasecmp(s_request->strAway.c_str(), "gauntlet") == 0;
+    const auto  home      = FindTeam(table, s_request->strHome);
+
+    // A Gauntlet's opponents come from the bracket, so any team stands in for the away one.
+    const auto away = [&]
+    {
+        if (bGauntlet)
+        {
+            return home;
+        }
+
+        return FindTeam(table, s_request->strAway);
+    }();
 
     // A team's drome is the arena of the same index.
     const auto arena = [&]
@@ -328,7 +417,7 @@ int Simulator::Run()
 
     if (!home.has_value() || !away.has_value() || !arena.has_value() || s_request->nCount <= 0)
     {
-        std::printf("usage: hyperblade_20XX -sim HOME AWAY COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]\n");
+        std::printf("usage: hyperblade_20XX -sim HOME AWAY|gauntlet COUNT [SEED] [shipped|fixed] [arena=TEAM] [OUTPUT.csv]\n");
         ListTeams(table);
 
         return 2;
@@ -363,7 +452,12 @@ int Simulator::Run()
     auto       nTicks = 0LL;
     auto       nDone  = 0;
 
-    for (auto nMatch = 0; nMatch < s_request->nCount; nMatch++)
+    if (bGauntlet)
+    {
+        nDone = PlayGauntlet(csv, *home, elapsed, nTicks);
+    }
+
+    for (auto nMatch = 0; !bGauntlet && nMatch < s_request->nCount; nMatch++)
     {
         const auto nSeed = s_request->nSeed + static_cast<uint32_t>(nMatch);
 
@@ -390,9 +484,16 @@ int Simulator::Run()
 
     const auto seconds = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
 
-    std::printf("%d of %d matches, %lld ticks in %.1f s: %.0f ticks a second, %.0fx real time\n%s\n",
-                nDone,
-                s_request->nCount,
+    std::printf("%d of %d matches, %lld ticks in %.1f s: %.0f ticks a second, %.0fx real time\n%s\n", nDone, [&]
+                {
+                    // A Gauntlet's count is seasons, and every match it started is counted.
+                    if (bGauntlet)
+                    {
+                        return nDone;
+                    }
+
+                    return s_request->nCount;
+                }(),
                 nTicks,
                 seconds,
                 static_cast<double>(nTicks) / seconds,

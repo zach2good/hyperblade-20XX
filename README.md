@@ -84,6 +84,11 @@ The match settings in `booie.ini`, such as difficulty and period length, still a
 simulation never writes that file. Each row is one player in one match: the difficulty and period
 length, the player's health at the end (100 is unhurt), the score and the game's own match stats.
 
+With `gauntlet` in place of the away team, the count is seasons: the home team plays the
+Gauntlet's bracket each season until it loses or wins, and one line per season says how far it
+got. Each match loads both teams afresh, so injuries do not carry from match to match as they may
+in a played Gauntlet.
+
 Errors print instead of opening a dialog. A fatal one ends the run with exit code 3 and keeps the
 matches already written.
 
