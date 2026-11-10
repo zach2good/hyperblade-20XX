@@ -57,6 +57,11 @@ function(hyperx_add_check name)
 
     hyperx_copy_runtime_dlls(${target} $<TARGET_FILE_DIR:${target}>)
 
+    # Node runs the browser build's checks, which read the host's files.
+    if(EMSCRIPTEN)
+        target_link_options(${target} PRIVATE -sNODERAWFS=1)
+    endif()
+
     if(check_DATA AND NOT HYPERX_GAME_DATA)
         return()
     endif()

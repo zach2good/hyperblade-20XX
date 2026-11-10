@@ -23,4 +23,5 @@ WORKDIR /src
 
 CMD emcmake cmake -S /src -B /build -G Ninja -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_C_FLAGS=-sMEMORY64=1 -DCMAKE_CXX_FLAGS=-sMEMORY64=1 -DCMAKE_EXE_LINKER_FLAGS=-sMEMORY64=1 \
-    && cmake --build /build -- -k 0
+    && cmake --build /build -- -k 0 \
+    && ctest --test-dir /build -L "unit|lint" --output-on-failure

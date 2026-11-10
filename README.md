@@ -127,8 +127,8 @@ one does. GCC and Clang build with `-Wall -Werror`, and MSVC with `/W4 /WX`.
 
 ### Browser
 
-[docker/emscripten.Dockerfile](docker/emscripten.Dockerfile) builds a wasm64 page into
-`build-wasm/out`:
+[docker/emscripten.Dockerfile](docker/emscripten.Dockerfile) builds a wasm64 page into `build-wasm/out`
+and runs the unit checks under Node:
 
 ```sh
 docker build -t hyperblade-emscripten -f docker/emscripten.Dockerfile docker
