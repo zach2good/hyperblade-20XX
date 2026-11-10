@@ -5,7 +5,7 @@ file(STRINGS "${CSV}" lines)
 list(POP_FRONT lines header)
 string(REPLACE "," ";" header "${header}")
 
-foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_rOneTimers id_STA_rPassesAttempted id_STA_rPassesCompleted id_STA_rChecksGiven id_STA_rHangTime id_STA_rInterceptions period_ms)
+foreach(column IN ITEMS match team player id_STA_rGoals id_STA_rAssists id_STA_rOneTimers id_STA_rPassesAttempted id_STA_rPassesCompleted id_STA_rChecksGiven id_STA_rHangTime id_STA_rInterceptions id_STA_rDragsWon period_ms)
     list(FIND header ${column} index)
 
     if(index LESS 0)
@@ -35,6 +35,7 @@ foreach(line IN LISTS lines)
     list(GET row ${at_id_STA_rGoals} goals)
     list(GET row ${at_id_STA_rPassesAttempted} attempted)
     list(GET row ${at_id_STA_rInterceptions} intercepted)
+    list(GET row ${at_id_STA_rDragsWon} drags)
     string(MAKE_C_IDENTIFIER "${match}_${team}" side)
     string(MAKE_C_IDENTIFIER "${match}" whole)
 
@@ -42,6 +43,8 @@ foreach(line IN LISTS lines)
     add_to(attempts_${side} ${attempted})
     add_to(attempts_${whole} ${attempted})
     add_to(intercepts_${side} ${intercepted})
+    add_to(drags_${whole} ${drags})
+    add_to(goals_${whole} ${goals})
     list(APPEND sides "${side}|${whole}|${match}|${team}")
 endforeach()
 
@@ -57,6 +60,13 @@ foreach(entry IN LISTS sides)
 
     if(intercepts_${side} GREATER opponent_attempts)
         message(FATAL_ERROR "match ${match}, ${team}: ${intercepts_${side}} interceptions of ${opponent_attempts} passes tried against them")
+    endif()
+
+    # A drag starts each of the three periods and follows each goal.
+    math(EXPR most_drags "3 + ${goals_${whole}}")
+
+    if(drags_${whole} LESS 3 OR drags_${whole} GREATER most_drags)
+        message(FATAL_ERROR "match ${match}: ${drags_${whole}} drags won, outside 3 to ${most_drags}")
     endif()
 endforeach()
 
