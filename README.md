@@ -156,9 +156,10 @@ cmake --preset msvc-x64 -DHYPERX_GAME_DATA=C:/Games/HyperBlade
 ctest --preset msvc-x64 -L data
 ```
 
-[.clang-tidy](.clang-tidy) holds the static checks. Configure with
-`-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`, then run `clang-tidy -p build` on a file. The decomp's files
-keep the original's style and raise some of them by design.
+[.clang-tidy](.clang-tidy) holds the static checks. The presets export compile commands, so run
+`clang-tidy -p build` on a file. CI runs it on the port's own files, those without a
+`FUNCTION: HYPERX` marker, and fails on any finding. The decomp's files keep the original's style
+and raise some of the checks by design.
 
 ## Tools
 

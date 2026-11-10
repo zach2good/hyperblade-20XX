@@ -65,8 +65,8 @@ jobs:
       fail-fast: false
       matrix:
         compiler:
-          - { name: GCC, preset: linux-gcc, package: true }
-          - { name: Clang, preset: linux-clang, package: false }
+          - { name: GCC, preset: linux-gcc, package: true, tidy: false }
+          - { name: Clang, preset: linux-clang, package: false, tidy: true }
     steps:
       - uses: actions/checkout@v5
 
@@ -80,6 +80,14 @@ jobs:
           docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
           docker run --rm -e PRESET=${{ matrix.compiler.preset }} \
             -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux
+
+      # Only the port's own files, those without a FUNCTION: HYPERX marker. The decomp's follow the
+      # original's style and raise many findings by design.
+      - name: clang-tidy
+        if: matrix.compiler.tidy
+        run: |
+          docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build-linux:/build" hyperblade-linux sh -c \
+            'git config --global --add safe.directory /src && git ls-files "src/*.cpp" | xargs grep -L "FUNCTION: HYPERX" | xargs clang-tidy-20 -p /build --quiet --warnings-as-errors="*"'
 
       - uses: actions/upload-artifact@v4
         if: matrix.compiler.package
