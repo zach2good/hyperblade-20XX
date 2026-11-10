@@ -76,7 +76,7 @@ home team's, and optionally a file ending in `.csv` to write in place of `sim_re
 team can play itself. A team is its file name, its name or its index;
 an unknown team lists them all. The match settings in `booie.ini`, such as difficulty and period
 length, still apply, and a simulation never writes the file. Each row is one player in one match, with the difficulty and period length it
-was played at, their health at the end (100 is unhurt), the score, and the game's own match stats. A seed does not yet replay a match exactly.
+was played at, their health at the end (100 is unhurt), the score, and the game's own match stats. The same seed replays the same matches.
 Errors print instead of opening a dialog. A fatal one ends the run with exit code 3 and keeps the matches
 already written.
 

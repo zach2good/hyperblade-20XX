@@ -173,7 +173,8 @@ Treat both as unverified.
 
 ## Not covered
 
-- A seed does not yet replay a match exactly, so a single match cannot be repeated.
+- These runs predate exact replay. A seed now replays the same matches, so later runs can repeat a
+  single match, but the figures here would shift slightly if rerun.
 - Only the default difficulty was played. The sections other than "Period length" use 5-minute
   periods.
 - The Shipped and Fixed runs are small. A full 9,100-match run of each would firm up the middle
