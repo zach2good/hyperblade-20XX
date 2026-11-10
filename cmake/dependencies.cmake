@@ -35,13 +35,20 @@ if(WIN32)
 
     find_package(SDL3 ${SDL3_VERSION} EXACT REQUIRED CONFIG PATHS "${SDL3_SOURCE_DIR}/cmake" NO_DEFAULT_PATH)
 else()
-    # SDL3 built from source as a shared library.
+    # SDL3 built from source: a shared library, or a static one in the browser, which has no
+    # shared libraries.
+    if(EMSCRIPTEN)
+        set(SDL3_LINKAGE "SDL_SHARED OFF" "SDL_STATIC ON")
+    else()
+        set(SDL3_LINKAGE "SDL_SHARED ON" "SDL_STATIC OFF")
+    endif()
+
     CPMAddPackage(
         NAME SDL3
         VERSION ${SDL3_VERSION}
         URL "https://github.com/libsdl-org/SDL/releases/download/release-${SDL3_VERSION}/SDL3-${SDL3_VERSION}.tar.gz"
         URL_HASH SHA256=9c75cf16330322c217dedd2e0609f1124f1b54b8633e763467b4684d0f4334a3
-        OPTIONS "SDL_SHARED ON" "SDL_STATIC OFF" "SDL_TEST_LIBRARY OFF" "SDL_EXAMPLES OFF")
+        OPTIONS ${SDL3_LINKAGE} "SDL_TEST_LIBRARY OFF" "SDL_EXAMPLES OFF")
 endif()
 
 # miniaudio mixes the game's sounds and decodes its music, and SDL plays the result, so its

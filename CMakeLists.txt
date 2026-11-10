@@ -434,4 +434,7 @@ if(HYPERX_GAME_DATA)
     set_tests_properties(simreplay PROPERTIES LABELS data)
 endif()
 
-include(cmake/package.cmake)
+# The browser build packs its page differently; that comes later.
+if(NOT EMSCRIPTEN)
+    include(cmake/package.cmake)
+endif()

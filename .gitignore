@@ -3,6 +3,7 @@ build/
 build-linux/
 build-linux-gcc/
 build-linux-clang/
+build-wasm/
 .cpm-cache-linux/
 out/
 CMakeUserPresets.json
