@@ -8,12 +8,15 @@
 #include "globals.h"
 #include "gameapp.h"
 #include "app/window.h"
+#include "app/simulator.h"
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
+#include <cstdio>
+#include <print>
 #include <vector>
 #include "graphics/presenter.h"
 #include "wndproc.h"
@@ -534,9 +537,19 @@ Window::MessageAnswer Window::ShowMessage(const char* pszText, const char* pszCa
         return SDL_MESSAGEBOX_INFORMATION;
     }();
 
-    const auto data = SDL_MessageBoxData{ flags, s_pWindow, pszCaption, pszText, static_cast<int>(choices.size()), choices.data(), nullptr };
-
     auto nChosen = choices.back().buttonID;
+
+    // A simulation runs unattended, so it reports to its output and takes the answer closing the
+    // box would.
+    if (Simulator::Requested())
+    {
+        std::println("{}: {}", pszCaption, pszText);
+        std::fflush(stdout);
+
+        return static_cast<MessageAnswer>(nChosen);
+    }
+
+    const auto data = SDL_MessageBoxData{ flags, s_pWindow, pszCaption, pszText, static_cast<int>(choices.size()), choices.data(), nullptr };
 
     SDL_ShowMessageBox(&data, &nChosen);
 

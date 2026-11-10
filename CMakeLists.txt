@@ -452,6 +452,13 @@ hyperx_add_check(planpatch LABELS data DATA
     LIBRARIES adlib
     ARGS "${HYPERX_GAME_DATA}/Data" "${PROJECT_SOURCE_DIR}/res/plans")
 
+# A copy of the game in an empty folder must explain itself and exit, not wait on a dialog.
+if(NOT EMSCRIPTEN)
+    add_test(NAME simnodata COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DSDL=$<TARGET_FILE:SDL3::SDL3>
+        -DPAK=${HYPERX_OUT}/${HYPERX_PAK_NAME} -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simnodata -P "${PROJECT_SOURCE_DIR}/tests/sim_nodata.cmake")
+    set_tests_properties(simnodata PROPERTIES LABELS unit TIMEOUT 60)
+endif()
+
 # Two games at once play the same seeded matches, and must write the same stats.
 if(HYPERX_GAME_DATA)
     add_test(NAME simreplay COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simreplay -P "${PROJECT_SOURCE_DIR}/tests/sim_replay.cmake")

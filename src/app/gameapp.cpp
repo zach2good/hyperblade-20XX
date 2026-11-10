@@ -503,8 +503,8 @@ int GameApp::FindCDRomDrive(bool bRequired)
     }
 
     // Ripped music plays in place of the disc's tracks, so the disc is only looked for without it,
-    // and only where the platform can look.
-    if (m_nCDRomDrive == kCdromNotFound && (AudioMgr::HasRippedMusic() || !CdDrive::Supported()))
+    // only where the platform can look, and never for a silent simulation.
+    if (m_nCDRomDrive == kCdromNotFound && (AudioMgr::HasRippedMusic() || !CdDrive::Supported() || Simulator::Requested()))
     {
         m_nCDRomDrive = kCdromNotWanted;
     }
