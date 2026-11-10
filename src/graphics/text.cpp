@@ -199,7 +199,7 @@ const Glyph& GetGlyph(FontSize& size, unsigned char nChar)
         return glyph;
     }
 
-    glyph.mask.resize(static_cast<size_t>(glyph.nWidth * glyph.nHeight));
+    glyph.mask.resize(static_cast<size_t>(glyph.nWidth) * static_cast<size_t>(glyph.nHeight));
 
     stbtt_MakeCodepointBitmap(&info, glyph.mask.data(), glyph.nWidth, glyph.nHeight, glyph.nWidth, size.flScale, size.flScale, nChar);
 
@@ -251,7 +251,7 @@ void Rasterise(Text::Font font, int nWidth, int nHeight, int nX, int nY, const c
             {
                 const auto nColumn = nLeft + x;
 
-                if (glyph.mask[static_cast<size_t>(y * glyph.nWidth + x)] != 0 && nColumn >= 0 && nColumn < nWidth)
+                if (glyph.mask[static_cast<size_t>(y) * static_cast<size_t>(glyph.nWidth) + static_cast<size_t>(x)] != 0 && nColumn >= 0 && nColumn < nWidth)
                 {
                     plot(nColumn, nRow);
                 }

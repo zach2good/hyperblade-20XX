@@ -47,7 +47,7 @@ void Fit(const DrawTarget& backBuffer)
         return;
     }
 
-    s_layerPixels.assign(static_cast<size_t>(nWidth * nHeight), 0);
+    s_layerPixels.assign(static_cast<size_t>(nWidth) * static_cast<size_t>(nHeight), 0);
 
     s_layer.pBits   = s_layerPixels.data();
     s_layer.nPitch  = nWidth;
