@@ -179,7 +179,8 @@ dromer's plan credits its attacker, or the owner of the mine, rok or turnstile t
 equal goals in 99.7% of rows: the plans credit the assist to the previous rok carrier, and that
 pronoun answers the current one, the scorer. The port gives it to the teammate whose completed
 pass last reached the scorer, or to no one. In 10 Nemesis against Sturmnacht matches, 15 of 30
-goals were assisted.
+goals were assisted. One-timers had the same fault, counting 7 of 8 goals; the port counts one
+when the scorer shot within a second of receiving that pass, 3 of the 30.
 
 ## Balance proposal: BLAM! Nemesis
 

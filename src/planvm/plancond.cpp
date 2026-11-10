@@ -2896,13 +2896,29 @@ void PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, short*, in
 
         const auto nStat = pArgs->m_pArgs[2].n;
 
-        // Deviation: the previous carrier pronoun answers the scorer, who got an assist for every
-        // goal. The assist goes to the teammate whose pass last reached the scorer.
+        // Deviation: the previous carrier pronoun answers the scorer, who got an assist and a
+        // one-timer for nearly every goal. The assist goes to the teammate whose pass last reached
+        // the scorer, and the one-timer to a scorer who shot within a second of that pass.
         if (nStat == kMatchStatAssists)
         {
-            if (s_completed.nReceiver == pTarget->GetSlot())
+            if (s_completed.nReceiver != pTarget->GetSlot())
             {
-                g_pGameEngine->GetPlayer(s_completed.nPasser)->m_matchStats.AccumulateStat(kMatchStatAssists, s_completed.nPasser);
+                return;
+            }
+
+            auto&      passer   = g_pGameEngine->GetPlayer(s_completed.nPasser)->m_matchStats;
+            auto&      scorer   = pTarget->m_matchStats;
+            const auto flNow    = static_cast<float>(g_pGameEngine->m_clock.tick.count());
+            const auto flPassed = static_cast<float>(s_completed.tick.count());
+
+            if (flNow - 15000.0f < passer.GetAt(kMatchStatTopStampEnd))
+            {
+                passer.SetAt(kMatchStatAssists, passer.GetAt(kMatchStatAssists) + 1.0f);
+            }
+
+            if (scorer.GetAt(kMatchStatTopStampEnd) - flPassed <= 1000.0f)
+            {
+                scorer.SetAt(kMatchStatOneTimers, scorer.GetAt(kMatchStatOneTimers) + 1.0f);
             }
 
             return;
