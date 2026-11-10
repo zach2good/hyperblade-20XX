@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperBlade 20XX</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; color: #bbb; font: 14px sans-serif; }
+  body { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  /* SDL maps the mouse assuming the canvas has no border or padding. */
+  #canvas { display: block; border: 0; padding: 0; background: #000; }
+  #loading { position: fixed; left: 0; right: 0; bottom: 12px; text-align: center; }
+</style>
+</head>
+<body>
+<canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+<div id="loading">Loading</div>
+<script>
+  var Module = {
+    canvas: document.getElementById('canvas'),
+    setStatus(text) {
+      document.getElementById('loading').textContent = text;
+    },
+    totalDependencies: 0,
+    monitorRunDependencies(left) {
+      this.totalDependencies = Math.max(this.totalDependencies, left);
+      Module.setStatus(left ? `Loading ${this.totalDependencies - left} of ${this.totalDependencies}` : '');
+    },
+  };
+
+  window.addEventListener('error', () => {
+    Module.setStatus('The game stopped. The browser console has the details.');
+  });
+</script>
+{{{ SCRIPT }}}
+</body>
+</html>

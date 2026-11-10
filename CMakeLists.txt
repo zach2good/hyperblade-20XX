@@ -366,8 +366,8 @@ if(EMSCRIPTEN)
 
     list(TRANSFORM HYPERX_WEB_PRE_JS PREPEND "--pre-js=" OUTPUT_VARIABLE HYPERX_WEB_PRE_JS_OPTIONS)
 
-    set_target_properties(hyperx PROPERTIES SUFFIX ".html" LINK_DEPENDS "${HYPERX_WEB_PRE_JS}")
-    target_link_options(hyperx PRIVATE -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 ${HYPERX_WEB_PRE_JS_OPTIONS} "--preload-file=${HYPERX_OUT}/${HYPERX_PAK_NAME}@/${HYPERX_PAK_NAME}")
+    set_target_properties(hyperx PROPERTIES SUFFIX ".html" LINK_DEPENDS "${HYPERX_WEB_PRE_JS};${CMAKE_SOURCE_DIR}/web/shell.html")
+    target_link_options(hyperx PRIVATE -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 "--shell-file=${CMAKE_SOURCE_DIR}/web/shell.html" ${HYPERX_WEB_PRE_JS_OPTIONS} "--preload-file=${HYPERX_OUT}/${HYPERX_PAK_NAME}@/${HYPERX_PAK_NAME}")
 endif()
 
 # Our own assets, which the game reads from the pak beside it.

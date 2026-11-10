@@ -8,6 +8,6 @@ Module['SDL3'] = {
 // through the canvas's on-screen size, so clicks still land.
 if (typeof document !== 'undefined') {
     const style = document.createElement('style');
-    style.textContent = '#canvas { width: auto !important; height: auto !important; max-width: 100%; max-height: 85vh; }';
+    style.textContent = '#canvas { width: auto !important; height: auto !important; max-width: 100vw; max-height: 100vh; }';
     document.head.append(style);
 }
