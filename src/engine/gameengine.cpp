@@ -5206,7 +5206,8 @@ char GameEngine::EvalArcherAward()
         }
     }
 
-    if (flTotal / nCounted < STAT_MINIMUM)
+    // Deviation: with no shot on goal the original divided nought by nought and gave the award.
+    if (nCounted == 0 || flTotal / nCounted < STAT_MINIMUM)
     {
         bEligible = 0;
     }
