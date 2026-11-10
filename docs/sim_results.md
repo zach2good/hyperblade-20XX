@@ -162,30 +162,31 @@ itself 100 times in Toronto's drome, the arena with the fewest multipliers and r
 first fixes. Home won 639 and away won 651, with 110 drawn: 49.5% of decided matches, p = 0.74.
 Being the home team makes no difference, so the gap comes from the dromes.
 
-## Stats the game never records
+## Match stats
 
-Of the per-player match stats, 26 are 0 in every simulated row. No plan and no code writes 25 of
-them: completed passes, checks and injuries given, interceptions, drags won, power play and
+In the shipped game, 26 of the per-player match stats are 0 in every simulated row. No plan or code
+writes 25 of them: completed passes, interceptions, checks given, drags won, power play and
 short-handed stats, 2-point stats, rail time and hang time. The 26th, freestyle moves, is written
-only by the Human plan's rail slide, so it moves only when a person plays. No AI plan slides a
-rail: only the Human plan declares the rail slide behaviour.
+only by the Human plan's rail slide, and no AI plan slides a rail.
 
-The port now records four of them. The plans count pass attempts, and the next possession within 3
-seconds settles each pass: a teammate's completes it, an opponent's is an interception. In 5
-DredNoks against Knights matches, 66% of 335 passes were completed, 6% intercepted, and the rest
-went loose for longer. It also counts checks given: every attack that reaches an opponent. In
-10 Nemesis against Sturmnacht matches, The Sturmnacht gave more checks (753 to 647) but caused 1
-injury or fatality to Nemesis's 21. Time on rail now counts each frame a dromer spends on a
-rail; since the AI never slides, only a person's slides add to it. Scores and every other stat
-are unchanged.
+Two stats that are written are wrong. Assists equal goals in 99.7% of rows: the plans credit the
+previous rok carrier, and that pronoun answers the current one, the scorer. One-timers counted 7 of
+8 goals, because the test asked whether the scorer released the rok within a second of the goal.
 
-The Injuries and Fatalities columns count harm a player inflicts, not harm taken: the hurt
-dromer's plan credits its attacker, or the owner of the mine, rok or turnstile that hit it. Assists
-equal goals in 99.7% of rows: the plans credit the assist to the previous rok carrier, and that
-pronoun answers the current one, the scorer. The port gives it to the teammate whose completed
-pass last reached the scorer, or to no one. In 10 Nemesis against Sturmnacht matches, 15 of 30
-goals were assisted. One-timers had the same fault, counting 7 of 8 goals; the port counts one
-when the scorer shot within a second of receiving that pass, 3 of the 30.
+The port records or corrects these. Scores and every other stat are unchanged.
+
+| Stat | The port's rule | Seeded run |
+| --- | --- | --- |
+| Passes completed, interceptions | The next possession within 3 seconds of a pass: a teammate's completes it, an opponent's intercepts it | DredNoks against Knights, 5 matches: 66% of 335 passes completed, 6% intercepted |
+| Assists | The teammate whose completed pass last reached the scorer, within 15 seconds | Nemesis against Sturmnacht, 10 matches: 15 of 30 goals |
+| One-timers | The scorer, when the shot left within a second of receiving that pass | Same run: 3 of 30 goals |
+| Checks given | Every attack that reaches an opponent | Same run: Sturmnacht 753, Nemesis 647 |
+| Time on rail | Each frame a dromer spends on a rail | 0 with no person playing |
+
+The Sturmnacht gave more checks than Nemesis but caused 1 injury or fatality to Nemesis's 21.
+
+The Injuries and Fatalities columns count harm a player inflicts, not harm taken: the hurt dromer's
+plan credits its attacker, or the owner of the mine, rok or turnstile that hit it.
 
 ## Balance proposal: BLAM! Nemesis
 
