@@ -118,8 +118,8 @@ cmake --build --preset msvc-x64 --target package
 
 ### Linux
 
-[docker/linux.Dockerfile](docker/linux.Dockerfile) holds GCC 14, Clang 20 and SDL's build
-dependencies. It builds, tests and packages with the preset `PRESET` names, `linux-gcc` by default:
+[docker/linux.Dockerfile](docker/linux.Dockerfile) holds GCC 14, Clang 20, clang-tidy 20 and
+SDL's build dependencies. It builds, tests and packages with the preset `PRESET` names, `linux-gcc` by default:
 
 ```sh
 docker build -t hyperblade-linux -f docker/linux.Dockerfile docker
@@ -157,8 +157,8 @@ ctest --preset msvc-x64 -L data
 ```
 
 [.clang-tidy](.clang-tidy) holds the static checks. The presets export compile commands, so run
-`clang-tidy -p build` on a file. CI runs it on the port's own files, those without a
-`FUNCTION: HYPERX` marker, and fails on any finding. The decomp's files keep the original's style
+`clang-tidy -p build` on a file. CI runs it on the port's own files, the tests and the
+sources without a `FUNCTION: HYPERX` marker, and fails on any finding. The decomp's files keep the original's style
 and raise some of the checks by design.
 
 ## Tools
