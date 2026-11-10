@@ -428,4 +428,10 @@ hyperx_add_check(planpatch LABELS data DATA
     LIBRARIES adlib
     ARGS "${HYPERX_GAME_DATA}/Data" "${PROJECT_SOURCE_DIR}/res/plans")
 
+# Two games at once play the same seeded matches, and must write the same stats.
+if(HYPERX_GAME_DATA)
+    add_test(NAME simreplay COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simreplay -P "${PROJECT_SOURCE_DIR}/tests/sim_replay.cmake")
+    set_tests_properties(simreplay PROPERTIES LABELS data)
+endif()
+
 include(cmake/package.cmake)
