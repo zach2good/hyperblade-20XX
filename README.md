@@ -22,7 +22,7 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 ## Features
 
 - Drops into any HyperBlade install: v1.0.0.0, v1.0.0.1, with or without the Voodoo2 launcher
-- 64-bit Windows and Linux builds
+- 64-bit Windows and Linux builds, and a browser build that loads your own HyperBlade folder
 - New hardware renderer with realtime soft shadows, smooth shading and a light on the rok, or the
   original software renderer
 - Widescreen, HUD and menu scaling, and an uncapped frame rate over the 30 Hz simulation
@@ -32,8 +32,10 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Goalie control: G or left shoulder sends your goalie after the rok and back
 - Bot spectator mode: `-b`, or Tab for the side view
 - Cut content finished: One on One, local 2 Player Mode, instant replay (R), time outs (T) and a
-  scouting report on pause
+  scouting report on pause, with the match's stats and both rosters' health
 - Lifetime stats for dromers and teams, saved beside the executable
+- Stats the original never recorded or got wrong: passes, interceptions, checks given, hang time,
+  rail time, assists and one-timers ([docs/sim_results.md](docs/sim_results.md#match-stats))
 - Debug menu on F2, with every cheat and a switch for each new feature
 - The original's menu bar and dialogs, rebuilt, plus a model viewer, sound player and image browser
 - Skippable intro, and many bug and crash fixes
@@ -46,7 +48,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Play-test the browser build from [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile): pick a real
   folder, play a match, reload
 - Net multiplayer, and split screen for local 2 Player Mode
-- AI balance fixes
+- AI balance fixes, starting with the BLAM! Nemesis proposal in
+  [docs/sim_results.md](docs/sim_results.md#balance-proposal-blam-nemesis)
 - The original RC, debug and plan menus in the debug menu
 
 ## Install
