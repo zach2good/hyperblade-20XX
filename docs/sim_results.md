@@ -254,9 +254,10 @@ still standing, ends the season. Over 20 simulated seasons each, The DredNoks, T
 Machine and The Ambush averaged 2.3 to 4.8 matches a season. Only one season in 80 reached Nemesis,
 and 35 ended on a draw, 13 of them The DredNoks'. Draws are 15% of these 3-minute-period matches,
 against 6.3% in the Fixed round robin's 5-minute ones. With Nemesis shrunk at k = 0.5, The DredNoks
-won one title in 20; no other team's seasons changed. At a 70% win rate, 13 straight wins come once
-in a hundred seasons, so the format, not Nemesis, is what keeps AI teams from titles. A person
-playing the home team is another matter, and untested.
+won one title in 20; no other team's seasons changed. With the switch on, at k = 0.6875, none of the
+four won a title, and The DredNoks reached Nemesis once and lost 1-5. At a 70% win rate, 13 straight
+wins come once in a hundred seasons, so the format, not Nemesis, is what keeps AI teams from titles.
+A person playing the home team is another matter, and untested.
 
 ## Balance proposal: the bottom teams
 
