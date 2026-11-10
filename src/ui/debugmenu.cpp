@@ -138,6 +138,20 @@ float RosterMean(const TeamBlock& team, const std::vector<int>& ratings)
     return flSum / static_cast<float>(kTeamRowCount * ratings.size());
 }
 
+// The dromer on the ice for a roster row, or none when the row sits on the bench.
+const PlayerObject* SeatedPlayer(const TeamBlock& team, int nRow)
+{
+    for (auto nSeat = 0; nSeat < kTeamBlockSeats; nSeat++)
+    {
+        if (team.aSeat[nSeat] == nRow && team.apOnIce[nSeat] != nullptr)
+        {
+            return static_cast<const PlayerObject*>(team.apOnIce[nSeat]);
+        }
+    }
+
+    return nullptr;
+}
+
 // A match stat summed over the roster. Dromers on the ice hold theirs live until the next sync.
 float TeamMatchStat(const TeamBlock& team, int nStat)
 {
@@ -145,17 +159,7 @@ float TeamMatchStat(const TeamBlock& team, int nStat)
 
     for (auto nRow = 0; nRow < kTeamRowCount; nRow++)
     {
-        const auto* pLive = static_cast<const PlayerObject*>(nullptr);
-
-        for (auto nSeat = 0; nSeat < kTeamBlockSeats; nSeat++)
-        {
-            if (team.aSeat[nSeat] == nRow && team.apOnIce[nSeat] != nullptr)
-            {
-                pLive = static_cast<const PlayerObject*>(team.apOnIce[nSeat]);
-            }
-        }
-
-        if (pLive != nullptr)
+        if (const auto* const pLive = SeatedPlayer(team, nRow); pLive != nullptr)
         {
             flSum += pLive->m_matchStats.GetAt(nStat);
         }
@@ -229,6 +233,55 @@ void ScoutingBar(float flValue, float flBest)
     }();
 
     ImGui::ProgressBar(flFraction, ImVec2(120.0f, 0.0f), std::format("{:.1f}", flValue).c_str());
+}
+
+// Deviation: the press promised substitutions in season mode, but the game shows no bench. The
+// roster's health tells a player who is fit to send on.
+void DrawRosters(const TeamBlock& own, const TeamBlock& foe)
+{
+    if (!ImGui::BeginTable("rosters", 4, ImGuiTableFlags_SizingFixedFit))
+    {
+        return;
+    }
+
+    const auto drawCell = [](const TeamBlock& team, int nRow)
+    {
+        const auto* const pLive = SeatedPlayer(team, nRow);
+
+        const auto flHealth = [&]
+        {
+            if (pLive != nullptr)
+            {
+                return pLive->m_stats.GetScalar(kRatingDamage);
+            }
+
+            return team.aRows[nRow].aStat[kRatingDamage];
+        }();
+
+        const auto* const pszWhere = [&]
+        {
+            if (pLive != nullptr)
+            {
+                return "";
+            }
+
+            return " (bench)";
+        }();
+
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted(std::format("{}{}", team.GetRosterName(kRowRosterSlots[nRow]), pszWhere).c_str());
+        ImGui::TableNextColumn();
+        ScoutingBar(flHealth, 100.0f);
+    };
+
+    for (auto nRow = 0; nRow < kTeamRowCount; nRow++)
+    {
+        ImGui::TableNextRow();
+        drawCell(own, nRow);
+        drawCell(foe, nRow);
+    }
+
+    ImGui::EndTable();
 }
 
 // Deviation: a scouting report only the string table names, each bar against the better team's.
@@ -309,6 +362,11 @@ void DrawScoutingReport()
     ImGui::TextUnformatted("This match");
 
     DrawMatchStats(own, foe);
+
+    ImGui::Separator();
+    ImGui::TextUnformatted("Rosters");
+
+    DrawRosters(own, foe);
 
     ImGui::End();
 }
