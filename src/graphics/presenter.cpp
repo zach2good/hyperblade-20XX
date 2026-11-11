@@ -342,9 +342,17 @@ void Presenter::Clear(unsigned char nRed, unsigned char nGreen, unsigned char nB
     SDL_RenderPresent(s_pRenderer);
 }
 
+// The shaders ship as DXIL and SPIR-V, so a device that takes neither, such as Metal, can't draw.
 bool Presenter::HasGPU()
 {
-    return Ready() && SDL_GetGPURendererDevice(s_pRenderer) != nullptr;
+    if (!Ready())
+    {
+        return false;
+    }
+
+    auto* const pDevice = SDL_GetGPURendererDevice(s_pRenderer);
+
+    return pDevice != nullptr && (SDL_GetGPUShaderFormats(pDevice) & (SDL_GPU_SHADERFORMAT_DXIL | SDL_GPU_SHADERFORMAT_SPIRV)) != 0;
 }
 
 bool Presenter::Busy()
