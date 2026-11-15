@@ -11,7 +11,6 @@
 #include "app/frametimer.h"
 #include "sound/audiomgr.h"
 #include "sound/dsoundmgr.h"
-#include "input/cheatstate.h"
 #include "app/gameapp.h"
 #include "anim/animglobals.h"
 #include "app/appglobals.h"
@@ -151,7 +150,6 @@ unsigned char              g_bEdgeWalked;
 int                        g_nFillColour;
 class Screen*              g_pActiveScreen;
 class MessageQueue*        g_pMessageQueue;
-class CheatState           g_cheatState;
 char                       g_bSWClipRectDirty;
 int                        g_bCursorHidden        = 1;
 int                        g_nSavedSoftRenderer   = -1;

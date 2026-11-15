@@ -118,9 +118,12 @@ struct GameApp;
 #include "app/stringids.h"
 #include "sound/soundids.h"
 #include "engine/objectphase.h"
+#include "input/cheatstate.h"
 
-float        g_flUnusedAgendaItemA = g_flZeroAgendaItem;
-float        g_flUnusedAgendaItemB = g_flZeroAgendaItem;
+float g_flUnusedAgendaItemA = g_flZeroAgendaItem;
+float g_flUnusedAgendaItemB = g_flZeroAgendaItem;
+// The original's .CRT$XCU runs its empty initialiser between these floats'.
+CheatState   g_cheatState;
 float        g_flUnusedAgendaItemC = g_flZeroAgendaItem;
 float        g_flUnusedGameEngineA = g_flZeroGameEngine;
 float        g_flUnusedGameEngineB = g_flZeroGameEngine;

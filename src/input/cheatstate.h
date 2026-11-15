@@ -4,6 +4,10 @@
 class CheatState
 {
 public:
+    CheatState()
+    {
+    }
+
     int ProcessKeypress(char cKey);
 
     // ProcessKeypress shifts the history down and writes the newest key in the last byte.
