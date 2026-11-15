@@ -6,9 +6,7 @@
 #
 # Three hold a compiler-made deleter the original folds onto another class's,
 # and a deleter is always an inline COMDAT.
-# type_info's table is the runtime's.
 address,name
 004b35e4,JoystickDeviceObj::`vftable'
 004b3664,MouseDeviceObj::`vftable'
 004b3814,MsgInteractor::`vftable'
-004b4790,type_info::`vftable'
