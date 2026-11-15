@@ -2687,7 +2687,7 @@ original's group, give the marked copy and its twins the same kind:
 
 A deleter calls its class's destructor, so deleters fold only when the destructors they call
 already do. An implicit destructor becomes a `jmp` thunk that no deleter can share; declaring
-the leaf destructors out of line, as `GamepadDeviceObj`'s, lets the three device deleters fold.
+the three leaf device destructors out of line lets their deleters fold onto `GamepadDeviceObj`'s.
 
 ### Why the game builds with `/O2`
 
