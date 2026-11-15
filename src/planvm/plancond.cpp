@@ -3948,7 +3948,13 @@ void __cdecl PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short
 
 // FUNCTION: HYPERX100 0x004ac140
 // FUNCTION: HYPERX 0x00463170
-void PlanCond::SetResultDirect(Interactor*, PlanNode*, short* pResult, int nValue)
+void PlanCond::MessageData(Interactor*, PlanNode*, short* pResult, int nValue)
+{
+    *pResult = (short)nValue;
+}
+
+// Out of line, so the linker folds it onto , as the original's did.
+void PlanCond::RunTimeData(Interactor*, PlanNode*, short* pResult, int nValue)
 {
     *pResult = (short)nValue;
 }
@@ -8421,7 +8427,19 @@ void PlanCond::AvoidSpinningTurnstile(Interactor* pContext, PlanNode*, short* pR
 
 // FUNCTION: HYPERX100 0x004b3e00
 // FUNCTION: HYPERX 0x00468640
-void PlanCond::DecideNever(Interactor*, PlanNode*, short* pResult, int)
+void PlanCond::TargetTurnstile(Interactor*, PlanNode*, short* pResult, int)
+{
+    *pResult = 0;
+}
+
+// Out of line, so the linker folds it onto , as the original's did.
+void PlanCond::UseKillball(Interactor*, PlanNode*, short* pResult, int)
+{
+    *pResult = 0;
+}
+
+// Out of line, so the linker folds it onto , as the original's did.
+void PlanCond::UseRandomizer(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = 0;
 }
@@ -8964,7 +8982,15 @@ void PlanCond::SoundBank(Interactor*, PlanNode*, short* pResult, int)
 
 // FUNCTION: HYPERX100 0x004a1c70
 // FUNCTION: HYPERX 0x00469130
-void PlanCond::GetTeamParity(Interactor* pContext, PlanNode*, short* pResult, int)
+void PlanCond::HomeOrAwayTeam(Interactor* pContext, PlanNode*, short* pResult, int)
+{
+    EngineObject* const pActor = pContext->GetActor();
+
+    *pResult = (signed char)(pActor->GetSlot() & 1);
+}
+
+// Out of line, so the linker folds it onto , as the original's did.
+void PlanCond::BodyPartAnimation(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
 

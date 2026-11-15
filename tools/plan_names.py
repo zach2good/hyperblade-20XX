@@ -39,20 +39,9 @@ TABLES = [
 
 # A body whose name disagrees with its id's and has a reason to.
 CLEARED = {
-    ("g_pfnPlanOpcodeHandlers", 10, "PlanCond::SetResultDirect"):
-        "one body registered at two ids, so it can carry neither name.",
-    ("g_pfnPlanOpcodeHandlers", 36, "PlanCond::SetResultDirect"): "as opcode 10.",
-    ("g_pfnPlanOpcodeHandlers", 77, "PlanCond::DecideNever"):
-        "one body registered at three ids.",
-    ("g_pfnPlanOpcodeHandlers", 78, "PlanCond::DecideNever"): "as opcode 77.",
-    ("g_pfnPlanOpcodeHandlers", 79, "PlanCond::DecideNever"): "as opcode 77.",
-    ("g_pfnPlanOpcodeHandlers", 105, "PlanCond::GetTeamParity"):
-        "one body registered at two ids, so it can carry neither name. Its other slot is 93, "
-        "where id_DCF_HomeOrAwayTeam happens to share a word with it.",
     ("g_pfnPlanOpcodeHandlers", 0, "PlanCond::SetInteractorName"):
         "slot nought, which is one of the two the enum has no entry for.",
     ("g_pfnPlanOpcodeHandlers", 1, "PlanCond::SetActiveState"): "as opcode 0.",
-    ("g_pfnPlanOpcodeHandlers", 93, "PlanCond::GetTeamParity"): "as opcode 105.",
     ("g_pfnPlanActionHandlers", 5, "PlanAction::SendMsg"):
         "windows.h defines SendMessage as a macro, which would rename the member.",
     ("g_pfnPlanActionHandlers", 7, "AnimEvent::PlaySnd"):

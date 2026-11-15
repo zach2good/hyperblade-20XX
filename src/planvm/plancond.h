@@ -96,7 +96,8 @@ void         OwnerIsViewOwner(Interactor* pContext, PlanNode* pArgs, short* pRes
 void __cdecl ViewOwnersMateInFront(Interactor* pContext, PlanNode* pArgs, short* pOutFacing, int nArg);
 void __cdecl IHaveRok(Interactor* pContext, PlanNode* pArgs, short* pResult, int nFlag);
 void __cdecl DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPrevSlot);
-void         SetResultDirect(Interactor* pContext, PlanNode* pArgs, short* pResult, int nValue);
+void         MessageData(Interactor* pContext, PlanNode* pArgs, short* pResult, int nValue);
+void         RunTimeData(Interactor* pContext, PlanNode* pArgs, short* pResult, int nValue);
 void __cdecl IsRokInMyZone(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         SubstitutionSemaphore(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl PickValidSubstitute(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
@@ -139,7 +140,9 @@ void __cdecl OffWingJob(Interactor* pContext, PlanNode* pArgs, short* pResult, i
 void __cdecl PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         PickHalfpipeMove(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         AvoidSpinningTurnstile(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
-void         DecideNever(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+void         TargetTurnstile(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+void         UseRandomizer(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+void         UseKillball(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl ShootSituation(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl RegroupSituation(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl AggressionOnOthers(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
@@ -150,7 +153,8 @@ void         Interception(Interactor* pContext, PlanNode* pArgs, short* pResult,
 void __cdecl RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl ClosestDromerToRok(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         SoundBank(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
-void         GetTeamParity(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+void         HomeOrAwayTeam(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+void         BodyPartAnimation(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         WinningOrLosing(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl IsDromerKnockedDown(Interactor* pContext, PlanNode* pArgs, short* pResult, int nDefault);
 void __cdecl IsDromerInjured(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPrevSlot);

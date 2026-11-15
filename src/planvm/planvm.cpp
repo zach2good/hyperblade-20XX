@@ -133,7 +133,7 @@ void PlanVM::LoadAnimationLists(void)
     g_pfnPlanActionHandlers[ACF_LOSE_HEAD]                                                    = PlanAction::LoseHead;
     g_pfnPlanActionHandlers[ACF_REGAIN_HEAD]                                                  = PlanAction::RegainHead;
     g_pfnPlanActionHandlers[ACF_BODY_SPLIT]                                                   = PlanAction::BodySplit;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_BODY_PART_ANIMATION].pfnDecide           = PlanCond::GetTeamParity;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_BODY_PART_ANIMATION].pfnDecide           = PlanCond::BodyPartAnimation;
     g_pfnPlanActionHandlers[ACF_SET_SPEED_BURST]                                              = PlanAction::Set_SpeedBurst;
     g_pfnPlanActionHandlers[ACF_ENGAGE_OPPONENT]                                              = PlanAction::Engage_Opponent;
     g_pfnPlanActionHandlers[ACF_PLAY_SOUND]                                                   = AnimEvent::PlaySnd;
@@ -261,7 +261,7 @@ void PlanVM::LoadAnimationLists(void)
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_IS_SENDER_TEAMMATE].pfnDecide            = PlanCond::IsSenderTeammate;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_AM_MAIN_DROMER].pfnDecide                = PlanCond::AmMainDromer;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_MY_ID].pfnDecide                         = PlanCond::MyID;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_MESSAGE_DATA].pfnDecide                  = PlanCond::SetResultDirect;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_MESSAGE_DATA].pfnDecide                  = PlanCond::MessageData;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_MESSAGE_DATA_NIBL0].pfnDecide            = PlanCond::MessageDataNibl0;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_MESSAGE_DATA_NIBL1].pfnDecide            = PlanCond::MessageDataNibl1;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_MESSAGE_DATA_NIBL4].pfnDecide            = PlanCond::MessageDataNibl4;
@@ -273,7 +273,7 @@ void PlanVM::LoadAnimationLists(void)
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_VIEW_OWNERS_MATE_IN_FRONT].pfnDecide     = PlanCond::ViewOwnersMateInFront;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_I_HAVE_ROK].pfnDecide                    = PlanCond::IHaveRok;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_DROMER_HAS_ROK].pfnDecide                = PlanCond::DromerHasRok;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_RUN_TIME_DATA].pfnDecide                 = PlanCond::SetResultDirect;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_RUN_TIME_DATA].pfnDecide                 = PlanCond::RunTimeData;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_IS_ROK_IN_MY_ZONE].pfnDecide             = PlanCond::IsRokInMyZone;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_DECIDE_POSITION].pfnDecide               = PlanCond::DecidePosition;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_COLLISION_DETAIL].pfnDecide              = PlanCond::CollisionDetail;
@@ -327,9 +327,9 @@ void PlanVM::LoadAnimationLists(void)
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_PICK_FLYING_MOVE].pfnDecide              = PlanCond::PickFlyingMove;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_PICK_HALFPIPE_MOVE].pfnDecide            = PlanCond::PickHalfpipeMove;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_AVOID_SPINNING_TURNSTILE].pfnDecide      = PlanCond::AvoidSpinningTurnstile;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_TARGET_TURNSTILE].pfnDecide              = PlanCond::DecideNever;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_USE_KILLBALL].pfnDecide                  = PlanCond::DecideNever;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_USE_RANDOMIZER].pfnDecide                = PlanCond::DecideNever;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_TARGET_TURNSTILE].pfnDecide              = PlanCond::TargetTurnstile;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_USE_KILLBALL].pfnDecide                  = PlanCond::UseKillball;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_USE_RANDOMIZER].pfnDecide                = PlanCond::UseRandomizer;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_SHOOT_SITUATION].pfnDecide               = PlanCond::ShootSituation;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_REGROUP_SITUATION].pfnDecide             = PlanCond::RegroupSituation;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_AGGRESSION_ON_OTHERS].pfnDecide          = PlanCond::AggressionOnOthers;
@@ -341,7 +341,7 @@ void PlanVM::LoadAnimationLists(void)
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_NEAR_OBJECT_BY].pfnDecide                = PlanCond::NearObjectBy;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_CHOOSE_TEAM_TUNE].pfnDecide              = PlanCond::ChooseTeamTune;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_SOUND_BANK].pfnDecide                    = PlanCond::SoundBank;
-    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_HOME_OR_AWAY_TEAM].pfnDecide             = PlanCond::GetTeamParity;
+    g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_HOME_OR_AWAY_TEAM].pfnDecide             = PlanCond::HomeOrAwayTeam;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_WINNING_OR_LOSING].pfnDecide             = PlanCond::WinningOrLosing;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_IS_DROMER_KNOCKED_DOWN].pfnDecide        = PlanCond::IsDromerKnockedDown;
     g_pfnPlanOpcodeHandlers[PLAN_DECISION_BASE + DCF_RANDOM_EMPTY_ARMORY].pfnDecide           = PlanCond::RandomEmptyArmory;
