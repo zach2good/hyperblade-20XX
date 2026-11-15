@@ -439,8 +439,21 @@ if(HYPERX_V100)
 endif()
 
 # The optimisation is set per source, so that no flag on a command line overrides another. /Ox /Gf
-# is /O2 without /Gy: the original folds inline bodies only.
+# is /O2 without /Gy: most units fold only their inline bodies.
 set_source_files_properties(${HYPERX_SOURCES} PROPERTIES COMPILE_FLAGS "/Ox /Gf")
+
+# These units built with /Gy: their out-of-line empty bodies fold onto Stub::Assert, which the
+# original keeps apart from the inline ones on Object::Trace.
+set_source_files_properties(
+    src/common/stub.cpp
+    src/ui/hud.cpp
+    src/ui/infobar.cpp
+    src/planvm/planaction.cpp
+    src/planvm/plancond.cpp
+    src/planvm/behparam.cpp
+    src/ui/screens/leaguesetupuiscreen.cpp
+    src/ui/screens/championshipsetupuiscreen.cpp
+    PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
 target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src" "${JPEG6A_DIR}")

@@ -26,11 +26,7 @@ public:
     // Everything UIScreen::OnWidgetMessage's jump table does not answer by identifier.
     virtual void OnOtherButton(int nMsg, unsigned int nId);
 
-    // The linker folded this empty body onto Stub::Assert, which carries the marker.
-    // FUNCTION: HYPERX100 0x0042e770
-    virtual void OnFirstTabClick()
-    {
-    }
+    virtual void OnFirstTabClick();
 
     virtual void OnExitTabClick();
     virtual void OnFirstPageTabClick();

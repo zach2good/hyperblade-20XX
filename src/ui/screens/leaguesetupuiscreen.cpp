@@ -2060,3 +2060,9 @@ ConfigPoint g_aLeagueGridCells[50] = {
 };
 
 ConfigPoint g_aLeagueHeaderCells[2] = { { 225, 62 }, { 171, 311 } };
+
+// Out of line, so the linker folds it onto Stub::Assert, as the original's did.
+// FUNCTION: HYPERX100 0x0042e770
+void LeagueSetupUIScreen::OnFirstTabClick()
+{
+}

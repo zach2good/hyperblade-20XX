@@ -1453,3 +1453,8 @@ int g_nFoeRowRating1         = -1;
 int g_anFoeRowNameOrder[4] = { 0, 1, 3, 4 };
 int g_anPeriodOverlayX[4]  = { -1, 19, 38, 57 };
 int g_nLastRokValue        = -1;
+
+// FUNCTION: HYPERX100 0x004c1a20
+void HUD::Unused()
+{
+}

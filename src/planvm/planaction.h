@@ -9,36 +9,12 @@ class Interactor;
 namespace PlanAction
 {
 
-// The linker folded these empty bodies onto Stub::Assert, which carries the marker.
-// FUNCTION: HYPERX100 0x004ab300
-inline void NoteStats4Possessors(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004a64f0
-inline void GetKeystateFlags(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004a64e0
-inline void SetInputMode(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x0044f0e0
-inline void SetLaserHurdleCharge(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004ab160
-inline void KillBallStaging(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004ab170
-inline void KillBallExecute(Interactor*, PlanNode*, short*, int)
-{
-}
+void NoteStats4Possessors(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void GetKeystateFlags(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void SetInputMode(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void SetLaserHurdleCharge(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void KillBallStaging(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void KillBallExecute(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
 
 void         SetTrackHeight(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
 void         SetMinHeight(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);

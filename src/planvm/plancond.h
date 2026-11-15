@@ -24,21 +24,9 @@ enum AttackType
 namespace PlanCond
 {
 
-// The linker folded these empty bodies onto Stub::Assert, which carries the marker.
-// FUNCTION: HYPERX100 0x004a8be0
-inline void AnalyzePadC(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004ab140
-inline void TryForKillball(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004ab150
-inline void TargetAcquired(Interactor*, PlanNode*, short*, int)
-{
-}
+void AnalyzePadC(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void TryForKillball(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
+void TargetAcquired(Interactor* pContext, PlanNode* pArgs, short* pState, int nArg);
 
 void __cdecl DecideGoalieLaunch(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl Decide_Attachment(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);

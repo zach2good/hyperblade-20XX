@@ -9082,3 +9082,19 @@ void __cdecl PlanCond::CheckRenderFlag(Interactor* pContext, PlanNode* pArgs, sh
 // GLOBAL: HYPERX 0x004c4568
 extern float g_flInterceptCorridorSq;
 float        g_flInterceptCorridorSq = 2.2f;
+
+// Out of line, so the linker folds these empty bodies onto Stub::Assert, as the original's did.
+// FUNCTION: HYPERX100 0x004a8be0
+void PlanCond::AnalyzePadC(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004ab140
+void PlanCond::TryForKillball(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004ab150
+void PlanCond::TargetAcquired(Interactor*, PlanNode*, short*, int)
+{
+}

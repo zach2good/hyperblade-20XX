@@ -26,11 +26,7 @@ void         SetTargetPosition(EngineObject* pActor, PlanNode* pNotify, GameBeha
 void         SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour);
 void __cdecl SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, GameBehaviorObject* pOut);
 
-// The linker folded this empty body onto Stub::Assert, which carries the marker.
-// FUNCTION: HYPERX100 0x004c4e40
-inline void SetKeyMonitorMode(EngineObject*, PlanNode*, GameBehaviorObject*)
-{
-}
+void SetKeyMonitorMode(EngineObject*, PlanNode*, GameBehaviorObject*);
 
 } // namespace BehParam
 

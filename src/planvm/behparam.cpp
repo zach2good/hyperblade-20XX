@@ -394,3 +394,9 @@ void BehParam::SetTargetGoal(EngineObject* pActor, PlanNode* pNode, GameBehavior
 {
     ((PlayerObject*)pActor)->m_wTargetGoalSlot = (short)pNode->m_pArgs[1].n;
 }
+
+// Out of line, so the linker folds it onto Stub::Assert, as the original's did.
+// FUNCTION: HYPERX100 0x004c4e40
+void BehParam::SetKeyMonitorMode(EngineObject*, PlanNode*, GameBehaviorObject*)
+{
+}

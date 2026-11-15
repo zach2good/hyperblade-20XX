@@ -26,11 +26,7 @@ public:
     virtual void OnOtherButton(int nMsg, unsigned int nId);
     virtual void RefreshTabs();
 
-    // The linker folded this empty body onto Stub::Assert, which carries the marker.
-    // FUNCTION: HYPERX100 0x00454db0
-    virtual void OnFirstTabClick()
-    {
-    }
+    virtual void OnFirstTabClick();
 
     virtual void OnExitTabClick();
     virtual void OnFirstPageTabClick();

@@ -1126,7 +1126,7 @@ InfoBar::~InfoBar()
     Cleanup();
 }
 
-// The original's linker shares this empty body with Stub::Assert; this build cannot fold it.
+// The original's linker shares this empty body with Stub::Assert.
 // FUNCTION: HYPERX100 0x004bbdb0
 void InfoBar::Cleanup() throw()
 {
