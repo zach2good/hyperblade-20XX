@@ -464,6 +464,8 @@ set_source_files_properties(
     src/engine/ccircletrack.cpp
     src/engine/gameengine.cpp
     src/planvm/agendaitem.cpp
+    src/anim/animplayer.cpp
+    src/planvm/msginteractor.cpp
     PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})

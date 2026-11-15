@@ -38,11 +38,7 @@ public:
     virtual char StartAnimSetAtRate(class AnimDB* pAnimSet, float flRate);
 
     // Slot five is EngineObject::PostEvent's folded body.
-    // FUNCTION: HYPERX100 0x00439680
-    virtual char StartClipPlayback(AnimDB* pClip, float flRate, int nFlags)
-    {
-        return SelectAnimationSet(pClip, flRate, nFlags, 0);
-    }
+    virtual char StartClipPlayback(AnimDB* pClip, float flRate, int nFlags);
 
     virtual char            SelectAnimationSet(class AnimDB* pAnimSet, float flRate, int nDeferred, class AnimNamedRef* pTransition);
     virtual char            StartAnimSetDefaultRate(class AnimDB* pAnimSet);
