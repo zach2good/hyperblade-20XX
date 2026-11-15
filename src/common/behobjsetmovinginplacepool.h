@@ -12,7 +12,15 @@ public:
         m_pHead = 0;
     }
 
+    virtual BehaviorOwner* Destroy()
+    {
+        delete this;
+
+        return 0;
+    }
+
     virtual void  Init();
+    virtual char  Insert(void* pNode);
     virtual void* Alloc();
 
     ~BehObjSetMovingInPlacePool();

@@ -23,6 +23,16 @@ void CSlideOnRailPool::Init()
     }
 }
 
+char CSlideOnRailPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004240b0
 // FUNCTION: HYPERX 0x00412d20
 void* CSlideOnRailPool::Alloc()

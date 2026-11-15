@@ -371,11 +371,11 @@ address,name,size,convention,signature
 0x00414820,CDisplayShotPowerPool::Init,141,__fastcall,undefined __fastcall CDisplayShotPowerPool::Init(int param_1)
 0x004148b0,CDisplayShotPowerPool::Alloc,83,__fastcall,int __fastcall CDisplayShotPowerPool::Alloc(int param_1)
 0x00414910,CUpdateShotPowerPool::Init,128,__fastcall,void __fastcall CUpdateShotPowerPool::Init(int param_1)
-0x00414990,AgendaItemOwner::Insert,18,__thiscall,"undefined4 __thiscall AgendaItemOwner::Insert(void * this, int pNode)"
+0x00414990,CUpdateShotPowerPool::Insert,18,__thiscall,"undefined4 __thiscall CUpdateShotPowerPool::Insert(void * this, int pNode)"
 0x004149b0,CUpdateShotPowerPool::Alloc,83,__fastcall,int __fastcall CUpdateShotPowerPool::Alloc(int param_1)
 0x00414a10,CDisplayPassBarPool::Init,141,__fastcall,undefined __fastcall CDisplayPassBarPool::Init(int param_1)
 0x00414aa0,CDisplayPassBarPool::Alloc,83,__fastcall,int __fastcall CDisplayPassBarPool::Alloc(int param_1)
-0x00414b00,PooledOwnerRoot::Destroy,13,__fastcall,undefined4 __fastcall PooledOwnerRoot::Destroy(undefined4 * param_1)
+0x00414b00,CDisplayPassBarPool::Destroy,13,__fastcall,undefined4 __fastcall CDisplayPassBarPool::Destroy(undefined4 * param_1)
 0x00414b10,CExplosionAnimationPool::Init,141,__fastcall,undefined __fastcall CExplosionAnimationPool::Init(int param_1)
 0x00414ba0,CExplosionAnimationPool::Alloc,83,__fastcall,int __fastcall CExplosionAnimationPool::Alloc(int param_1)
 0x00414c00,CCheckAIPool::Init,128,__fastcall,void __fastcall CCheckAIPool::Init(int param_1)
@@ -688,7 +688,7 @@ address,name,size,convention,signature
 0x0041ebc0,BehObj_CandyTracking::~BehObj_CandyTracking,11,__fastcall,void __fastcall BehObj_CandyTracking::~BehObj_CandyTracking(dword * param_1)
 0x0041ebd0,BehObj_CandyTracking::Init,124,__thiscall,"void __thiscall BehObj_CandyTracking::Init(void * this, int * param_1, int * param_2, undefined4 param_3)"
 0x0041ec50,BehObjGlideToObjectPool::Init,170,__fastcall,void __fastcall BehObjGlideToObjectPool::Init(int param_1)
-0x0041ed00,BehaviorOwner::Insert,18,__thiscall,"dword __thiscall BehaviorOwner::Insert(void * this, int param_1)"
+0x0041ed00,BehObjGlideToObjectPool::Insert,18,__thiscall,"dword __thiscall BehObjGlideToObjectPool::Insert(void * this, int param_1)"
 0x0041ed20,BehObjGlideToObjectPool::Alloc,111,__fastcall,int __fastcall BehObjGlideToObjectPool::Alloc(int param_1)
 0x0041ed90,BehObjGlideToPositionPool::Init,181,__fastcall,void __fastcall BehObjGlideToPositionPool::Init(int param_1)
 0x0041ee50,BehObjGlideToPositionPool::Alloc,111,__fastcall,int __fastcall BehObjGlideToPositionPool::Alloc(int param_1)
@@ -2045,7 +2045,7 @@ address,name,size,convention,signature
 0x0046bd10,EngineObject::GetComponentCount,5,__fastcall,word __fastcall EngineObject::GetComponentCount(int param_1)
 0x0046bd20,MsgInteractor::GetTargetSlot,5,__fastcall,short __fastcall MsgInteractor::GetTargetSlot(void * pOwner)
 0x0046bd30,CBoundBubblePool__VDtor,30,__thiscall,"dword * __thiscall CBoundBubblePool__VDtor(void * this, byte param_1)"
-0x0046bd50,NodeOwner::Insert,18,__thiscall,"bool __thiscall NodeOwner::Insert(void * this, int pNode)"
+0x0046bd50,MsgInteractorPool::Insert,18,__thiscall,"bool __thiscall MsgInteractorPool::Insert(void * this, int pNode)"
 0x0046bd70,MsgInteractorPool::Alloc,105,__fastcall,int __fastcall MsgInteractorPool::Alloc(int param_1)
 0x0046bde0,CBoundBubbleList__VDtor,30,__thiscall,"dword * __thiscall CBoundBubbleList__VDtor(void * this, byte param_1)"
 0x0046be00,CollInteractorPool::~CollInteractorPool,121,__fastcall,void __fastcall CollInteractorPool::~CollInteractorPool(dword * param_1)

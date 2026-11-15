@@ -24,6 +24,16 @@ void CViewItPool::Init()
     }
 }
 
+char CViewItPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004228f0
 // FUNCTION: HYPERX 0x00414400
 void* CViewItPool::Alloc()

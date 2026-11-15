@@ -24,6 +24,16 @@ void CBungeeTowardPool::Init()
     }
 }
 
+char CBungeeTowardPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x00423580
 // FUNCTION: HYPERX 0x004137d0
 void* CBungeeTowardPool::Alloc()

@@ -54,7 +54,7 @@ public:
 
     virtual ~TransformObject();
 
-    // The linker folded this onto AgendaItemOwner::Destroy, which carries the marker.
+    // The linker folded this onto CDisplayPassBarPool::Destroy, which carries the marker.
     // FUNCTION: HYPERX100 0x0040ac70
     virtual TransformObject* DestroyViaVtable()
     {

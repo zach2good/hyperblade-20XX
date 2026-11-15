@@ -24,6 +24,16 @@ void CMonitorHeldKeysPool::Init()
     }
 }
 
+char CMonitorHeldKeysPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x00423070
 // FUNCTION: HYPERX 0x00413c70
 void* CMonitorHeldKeysPool::Alloc()

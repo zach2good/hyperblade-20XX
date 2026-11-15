@@ -411,9 +411,6 @@ set(HYPERX_SOURCES
     src/planvm/planfocusarg.cpp
     src/physics/collinteractorpool.cpp
     src/engine/arenaellipsoidstatic.cpp
-    src/common/agendaitemowner.cpp
-    src/common/nodeowner.cpp
-    src/common/behaviorowner.cpp
     src/engine/inplacebehaviorobject.cpp
     src/common/flightbehaviorobject.cpp
     src/common/classsizes.cpp

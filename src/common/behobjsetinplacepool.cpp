@@ -23,6 +23,16 @@ void BehObjSetInPlacePool::Init()
     }
 }
 
+char BehObjSetInPlacePool::Insert(void* pNode)
+{
+    GameBehaviorObject* const pItem = (GameBehaviorObject*)pNode;
+
+    pItem->m_pStandby = m_pHead;
+    m_pHead           = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004c9530
 // FUNCTION: HYPERX 0x0041fc30
 void* BehObjSetInPlacePool::Alloc()

@@ -18,18 +18,12 @@ public:
     {
     }
 
-    // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
-    // The linker folded this onto AgendaItemOwner::Destroy, which carries the marker.
-    virtual NodeOwner* Destroy()
-    {
-        delete this;
-
-        return 0;
-    }
+    // Pure: every pool defines its own, and the linker folds the copies.
+    virtual NodeOwner* Destroy() = 0;
 
     virtual void Init() = 0;
 
-    virtual char Insert(void* pNode);
+    virtual char Insert(void* pNode) = 0;
 
     // Answers with a node off the free list.
     virtual void* Alloc() = 0;

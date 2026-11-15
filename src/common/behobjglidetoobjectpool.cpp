@@ -23,6 +23,19 @@ void BehObjGlideToObjectPool::Init()
     }
 }
 
+// The linker folds every pool's copy onto this one, as the original's did.
+// FUNCTION: HYPERX100 0x004c89d0
+// FUNCTION: HYPERX 0x0041ed00
+char BehObjGlideToObjectPool::Insert(void* pNode)
+{
+    GameBehaviorObject* const pItem = (GameBehaviorObject*)pNode;
+
+    pItem->m_pStandby = m_pHead;
+    m_pHead           = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004c9ef0
 // FUNCTION: HYPERX 0x0041ed20
 void* BehObjGlideToObjectPool::Alloc()

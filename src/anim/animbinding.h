@@ -66,7 +66,7 @@ inline AnimBinding::AnimBinding()
 {
 }
 
-// Slot one of this table and AnimPlayer's is AgendaItemOwner::Destroy's folded body, which holds the marker.
+// Slot one of this table and AnimPlayer's is CDisplayPassBarPool::Destroy's folded body, which holds the marker.
 // FUNCTION: HYPERX100 0x0043a0a0
 inline AnimBinding* AnimBinding::DestroyViaVtable()
 {

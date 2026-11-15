@@ -24,6 +24,16 @@ void CSetAttitudePool::Init()
     }
 }
 
+char CSetAttitudePool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x00423480
 // FUNCTION: HYPERX 0x004138d0
 void* CSetAttitudePool::Alloc()

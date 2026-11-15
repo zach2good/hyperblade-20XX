@@ -23,6 +23,16 @@ void CTrackTrajPool::Init()
     }
 }
 
+char CTrackTrajPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x00422bf0
 // FUNCTION: HYPERX 0x00414100
 void* CTrackTrajPool::Alloc()

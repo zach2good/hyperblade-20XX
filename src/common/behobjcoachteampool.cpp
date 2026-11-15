@@ -23,6 +23,16 @@ void BehObjCoachTeamPool::Init()
     }
 }
 
+char BehObjCoachTeamPool::Insert(void* pNode)
+{
+    GameBehaviorObject* const pItem = (GameBehaviorObject*)pNode;
+
+    pItem->m_pStandby = m_pHead;
+    m_pHead           = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004c8db0
 // FUNCTION: HYPERX 0x004207c0
 void* BehObjCoachTeamPool::Alloc()

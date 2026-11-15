@@ -28,6 +28,16 @@ void CollInteractorPool::Init()
     }
 }
 
+char CollInteractorPool::Insert(void* pNode)
+{
+    Interactor* const pItem = (Interactor*)pNode;
+
+    pItem->pNext = m_pHead;
+    m_pHead      = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004b89f0
 // FUNCTION: HYPERX 0x0046bbd0
 void* CollInteractorPool::Alloc()

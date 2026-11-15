@@ -28,6 +28,19 @@ void MsgInteractorPool::Init()
     }
 }
 
+// The linker folds every pool's copy onto this one, as the original's did.
+// FUNCTION: HYPERX100 0x004b8890
+// FUNCTION: HYPERX 0x0046bd50
+char MsgInteractorPool::Insert(void* pNode)
+{
+    Interactor* const pItem = (Interactor*)pNode;
+
+    pItem->pNext = m_pHead;
+    m_pHead      = pItem;
+
+    return 1;
+}
+
 // The list is refilled only when unlinking the head emptied it.
 
 // FUNCTION: HYPERX100 0x004b88b0

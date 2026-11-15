@@ -24,6 +24,19 @@ void CUpdateShotPowerPool::Init()
     }
 }
 
+// The linker folds every pool's copy onto this one, as the original's did.
+// FUNCTION: HYPERX100 0x00421a60
+// FUNCTION: HYPERX 0x00414990
+char CUpdateShotPowerPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004222c0
 // FUNCTION: HYPERX 0x004149b0
 void* CUpdateShotPowerPool::Alloc()

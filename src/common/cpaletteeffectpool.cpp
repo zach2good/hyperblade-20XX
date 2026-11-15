@@ -24,6 +24,16 @@ void CPaletteEffectPool::Init()
     }
 }
 
+char CPaletteEffectPool::Insert(void* pNode)
+{
+    AgendaItem* const pItem = (AgendaItem*)pNode;
+
+    pItem->m_pNext = m_pHead;
+    m_pHead        = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004224c0
 // FUNCTION: HYPERX 0x004147c0
 void* CPaletteEffectPool::Alloc()

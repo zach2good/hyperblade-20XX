@@ -12,7 +12,18 @@ public:
         m_pHead = 0;
     }
 
+    // The linker folds every pool's copy onto this one, as the original's did.
+    // FUNCTION: HYPERX100 0x0044b970
+    // FUNCTION: HYPERX 0x00414b00
+    virtual AgendaItemOwner* Destroy()
+    {
+        delete this;
+
+        return 0;
+    }
+
     virtual void  Init();
+    virtual char  Insert(void* pNode);
     virtual void* Alloc();
 
     ~CDisplayPassBarPool();

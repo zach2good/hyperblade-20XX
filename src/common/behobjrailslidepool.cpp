@@ -23,6 +23,16 @@ void BehObjRailSlidePool::Init()
     }
 }
 
+char BehObjRailSlidePool::Insert(void* pNode)
+{
+    GameBehaviorObject* const pItem = (GameBehaviorObject*)pNode;
+
+    pItem->m_pStandby = m_pHead;
+    m_pHead           = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004c99b0
 // FUNCTION: HYPERX 0x0041f540
 void* BehObjRailSlidePool::Alloc()

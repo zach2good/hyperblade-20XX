@@ -23,6 +23,16 @@ void BehObjGlidePool::Init()
     }
 }
 
+char BehObjGlidePool::Insert(void* pNode)
+{
+    GameBehaviorObject* const pItem = (GameBehaviorObject*)pNode;
+
+    pItem->m_pStandby = m_pHead;
+    m_pHead           = pItem;
+
+    return 1;
+}
+
 // FUNCTION: HYPERX100 0x004c9b30
 // FUNCTION: HYPERX 0x0041f2f0
 void* BehObjGlidePool::Alloc()

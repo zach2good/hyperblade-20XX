@@ -18,20 +18,12 @@ public:
     {
     }
 
-    // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
-    // Inline, as each owner's is, so the linker folds all three onto this one.
-    // FUNCTION: HYPERX100 0x0044b970
-    // FUNCTION: HYPERX 0x00414b00
-    virtual AgendaItemOwner* Destroy()
-    {
-        delete this;
-
-        return 0;
-    }
+    // Pure: every pool defines its own, and the linker folds the copies.
+    virtual AgendaItemOwner* Destroy() = 0;
 
     virtual void Init() = 0;
 
-    virtual char Insert(void* pNode);
+    virtual char Insert(void* pNode) = 0;
 
     // Answers with a node off the free list.
     virtual void* Alloc() = 0;
