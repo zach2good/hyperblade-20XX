@@ -89,7 +89,8 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "placeholder_globals.py --max 0",
             "placeholder_functions.py --max 0",
             "x87_precision.py --selftest",
-            "plan_dump.py --selftest")
+            "plan_dump.py --selftest",
+            "foldcmp.py --selftest")
 
 
 def refresh():

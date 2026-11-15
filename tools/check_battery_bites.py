@@ -486,6 +486,11 @@ PROBES = (
     ("plan_dump.py --selftest", "tools/plan_dump.py",
      "        return short((word & 0xfff) | branch | 0x9000)",
      "        return short((word & 0xfff) | branch | 0xa000)"),
+
+    # A name the map lists twice kept, so one fold group takes the wrong address.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "if seen[name] == 1}",
+     "if seen[name] >= 1}"),
 )
 
 # Checkers with no probe, and what a probe would have to plant.

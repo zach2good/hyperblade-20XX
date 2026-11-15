@@ -10,11 +10,13 @@ Takes asmcmp's arguments unchanged:
 
     python tools/foldcmp.py --target HYPERX --json build/report.json --silent
     python tools/foldcmp.py --target HYPERX --verbose 0x004b3794 --no-color
+    python tools/foldcmp.py --selftest
 """
 
 import collections
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 from reccmp.compare import functions
@@ -112,5 +114,38 @@ def main():
     return asmcmp.main()
 
 
+def selftest():
+    """Checks the map reading and grouping on three folded bodies and one name listed twice."""
+    measured = (
+        " 0001:0002a200       ?A@@UAEPAV1@XZ 0042b200 f i a.obj\n"
+        " 0001:0002a200       ?B@@UAEPAV1@XZ 0042b200 f i a.obj\n"
+        " 0001:0002a200       ?C@@UAEPAV1@XZ 0042b200 f i a.obj\n"
+        " 0001:0002a300       ?D@@YAXXZ 0042b300 f   d.obj\n"
+        " 0001:0002a400       _twice 0042b400 f   e.obj\n"
+        " 0001:0002a500       _twice 0042b500 f   f.obj\n"
+    )
+    symbols = (
+        " 0001:00001000       ?A@@UAEPAV1@XZ 00402000 f i a.obj\n"
+        " 0001:00003000       ?B@@UAEPAV1@XZ 00404000 f i b.obj\n"
+        " 0001:00005000       ?C@@UAEPAV1@XZ 00406000 f i c.obj\n"
+        " 0001:00007000       ?D@@YAXXZ 00408000 f   d.obj\n"
+    )
+    with tempfile.TemporaryDirectory() as folder:
+        measured_path = Path(folder) / "measured.map"
+        symbols_path = Path(folder) / "symbols.map"
+        measured_path.write_text(measured)
+        symbols_path.write_text(symbols)
+        read = read_map(measured_path)
+        groups = fold_groups(read, read_map(symbols_path))
+
+    assert "_twice" not in read
+    assert groups == [{0x402000, 0x404000, 0x406000}], groups
+    print("selftest passed")
+    return 0
+
+
 if __name__ == "__main__":
+    if sys.argv[1:] == ["--selftest"]:
+        raise SystemExit(selftest())
+
     raise SystemExit(main())
