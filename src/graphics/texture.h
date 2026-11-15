@@ -31,13 +31,20 @@ public:
     virtual int BltFillColour(unsigned int nColour);
     virtual int Draw();
     // Empty, never overridden, never called.
-    virtual void                Unused(int, int, int);
-    virtual void                SetVisible(int nVisible);
-    virtual void                SetPosition(Point pt);
-    virtual Point               GetPosition();
-    virtual void                SetOffset(TextureRect rect);
-    virtual void                DispatchRect(int nLeft, int nTop, int nRight, int nBottom);
-    virtual IDirectDrawSurface* GetSurface();
+    virtual void  Unused(int, int, int);
+    virtual void  SetVisible(int nVisible);
+    virtual void  SetPosition(Point pt);
+    virtual Point GetPosition();
+    virtual void  SetOffset(TextureRect rect);
+    virtual void  DispatchRect(int nLeft, int nTop, int nRight, int nBottom);
+
+    // Inline, so it stays apart from the out-of-line accessors of the same bytes.
+    // FUNCTION: HYPERX100 0x00440bf0
+    // FUNCTION: HYPERX 0x004338e0
+    virtual IDirectDrawSurface* GetSurface()
+    {
+        return m_pSurface;
+    }
 
     // Nothing calls it.
     // FUNCTION: HYPERX100 0x00440c00

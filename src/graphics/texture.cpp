@@ -37,13 +37,6 @@ Point Texture::GetPosition()
     return m_ptPosition;
 }
 
-// FUNCTION: HYPERX100 0x00440bf0
-// FUNCTION: HYPERX 0x004338e0
-IDirectDrawSurface* Texture::GetSurface()
-{
-    return m_pSurface;
-}
-
 // FUNCTION: HYPERX100 0x00440c10
 // FUNCTION: HYPERX 0x00433900
 Point Texture::GetSize()
