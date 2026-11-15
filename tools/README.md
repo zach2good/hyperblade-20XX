@@ -256,6 +256,7 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `status.py` | Displays status across matching, clean-up and bring-up. |
 | `status_card.py` | Draw progress/status.svg, the status card, from build/report.json. |
 | `table_content.py` | Verify a dispatch table's content against the original, slot by slot. |
+| `text_budget.py` | Compare HYPERX.exe's `.text` with the original's, region by region. |
 | `this_casts.py` | Report every member that casts `this` to a class it has no relation to. |
 | `undeclared_reads.py` | Rank classes by the bytes their own members reach and the class never declares. |
 | `undecoded_views.py` | Find records whose first member is a byte run, which is a view rather than a decode. |
