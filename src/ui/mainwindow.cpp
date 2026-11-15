@@ -27,6 +27,8 @@
 
 extern unsigned char g_bEnergyOn;
 
+#pragma inline_depth(0)
+
 // Resource 0x13e: OK writes nine live physics constants. "Save As" writes nothing.
 // FUNCTION: HYPERX100 0x004e0090
 // FUNCTION: HYPERX 0x004197e0
@@ -95,6 +97,8 @@ BOOL CALLBACK MainWindow::PhysicsConfigProc(HWND hDlg, UINT nMsg, UINT wParam, L
 
     return 0;
 }
+
+#pragma inline_depth()
 
 // The Ratings dialog, which sets one rating of one player.
 

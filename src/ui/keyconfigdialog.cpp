@@ -370,6 +370,8 @@ extern char* g_pszKeyConfigDefaultName;
 
 #define FLAG_SET 1
 
+#pragma inline_depth(0)
+
 // The check boxes toggle: a clear box XORs the flag, so a clear box on a clear flag sets it.
 // FUNCTION: HYPERX100 0x00468240
 // FUNCTION: HYPERX 0x0046ca00
@@ -586,6 +588,8 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
     }
 }
 
+#pragma inline_depth()
+
 // FUNCTION: HYPERX100 0x00468e90
 // FUNCTION: HYPERX 0x0046d320
 void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
@@ -614,13 +618,6 @@ void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
     SetWindowLongA(hWnd, GWL_USERDATA, 0);
 
     EndDialog(hWnd, nResult);
-}
-
-// FUNCTION: HYPERX100 0x00411110
-// FUNCTION: HYPERX 0x0042bcd0
-int __cdecl KeyConfigDialog::SaveKeysAs(HWND, KeyRow*)
-{
-    return 0;
 }
 
 // The buffer handed to the writer is allocated and never filled; the original does the same.

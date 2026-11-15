@@ -12,8 +12,8 @@ void __cdecl         CloseDialog(HWND hWnd, INT_PTR nResult);
 unsigned int __cdecl OnCommand(HWND hDlg, int nCommand, HWND hControl, int nNotify);
 
 // Unwritten in the original, and the linker shares each body with unrelated table slots.
-int __cdecl SaveKeysAs(HWND hDlg, struct KeyRow* pRows);
-int __cdecl ClearKeys(HWND hDlg, struct KeyRow* pRows);
+inline int __cdecl SaveKeysAs(HWND hDlg, struct KeyRow* pRows);
+int __cdecl        ClearKeys(HWND hDlg, struct KeyRow* pRows);
 
 #ifdef HYPERX_V100
 int __cdecl  SaveKeys(HWND hDlg, struct KeyRow* pRows);
@@ -23,5 +23,13 @@ void __cdecl ApplyModifier100(int nContext, char bSet, int nSlot);
 #endif
 
 } // namespace KeyConfigDialog
+
+// Inline, so the linker folds every empty `return 0` onto it; each caller turns inlining off.
+// FUNCTION: HYPERX100 0x00411110
+// FUNCTION: HYPERX 0x0042bcd0
+inline int __cdecl KeyConfigDialog::SaveKeysAs(HWND, struct KeyRow*)
+{
+    return 0;
+}
 
 #endif
