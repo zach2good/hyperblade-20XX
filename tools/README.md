@@ -207,6 +207,7 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `field_names.py` | Rewrite byte-offset reads of a class's own fields as the field names. |
 | `fix_row_extents.py` | Give every matching row the extent reccmp actually compared, and drop what that swallows. |
 | `fixincludes.py` | Builds, and adds the missing include to each failing file until the build passes. |
+| `fold_candidates.py` | Rank the functions the original folds bodies onto, where this build does not. |
 | `frame.py` | Canonical frame slots for one function, on either side, as a map you can diff. |
 | `frame_search.py` | Search an /Od function's local names for the frame map the client has. |
 | `gap_shape.py` | Split the remaining accuracy by the shape of each row's difference. |

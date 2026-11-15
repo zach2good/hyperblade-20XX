@@ -2666,6 +2666,9 @@ copy, or more than one, is left alone.
 
 #### Reaching the original's fold groups
 
+`python tools/fold_candidates.py` ranks the functions the original folds bodies onto where this
+build does not, with the copies of ours that should join them.
+
 VC6 folds a COMDAT only with COMDATs of its own kind. An `inline` body is a pick-any COMDAT. Under
 `/Gy` an out-of-line function or a `static` is a no-duplicates COMDAT. So to put a body in the
 original's group, give the marked copy and its twins the same kind:
