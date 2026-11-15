@@ -35,9 +35,9 @@ affiliated with Activision or WizBang! Software Productions.
 | Measure | Value |
 | --- | --- |
 | Game functions, below `0x004a0000` | 3,054 |
-| **Matching exactly** | **2,854** |
-| Effective but not exact | 24 |
-| Exact bytes of game code | 505,168 of 628,779 |
+| **Matching exactly** | **2,869** |
+| Effective but not exact | 25 |
+| Exact bytes of game code | 511,751 of 628,779 |
 | Rows in `symbols/functions.csv`, the C runtime included | 4,121 |
 
 ## Requirements
