@@ -90,7 +90,7 @@ def symbol_addresses(lines):
     return addresses
 
 
-def budget(found, funclets, symbols, pairs, original_funclets):
+def budget(found, symbols, pairs, original_funclets):
     """Answers (region, our size, the original's size) for game, libjpeg, and LIBCMT with the
     import thunks, which the two links order differently. A region starts at its lowest paired
     original address, the game at 0x401000, and ends where the next starts or `.text$x` does."""
@@ -136,7 +136,7 @@ def main():
                if ",Unwind@" in line]
 
     print("%-16s %10s %10s %8s" % ("region", "ours", "original", "delta"))
-    for name, size, theirs in budget(found, funclets, symbols, pairs, min(unwinds)):
+    for name, size, theirs in budget(found, symbols, pairs, min(unwinds)):
         print("%-16s %#10x %#10x %+8d" % (name, size, theirs, size - theirs))
 
     print("%-14s %#10x, the original's at %#x" % (".text$x", funclets, min(unwinds)))
@@ -173,7 +173,7 @@ def selftest():
     # libjpeg's first function pairs at 0x500200 and LIBCMT's at 0x500290; .text$x at 0x500380.
     symbols = {"_jpeg_x": 0x402180, "_strlen": 0x402200}
     pairs = {0x402180: 0x500200, 0x402200: 0x500290}
-    assert budget(found, funclets, symbols, pairs, 0x500380) == [
+    assert budget(found, symbols, pairs, 0x500380) == [
         ("game", 0x180, 0xff200), ("libjpeg", 0x80, 0x90), ("LIBCMT, imports", 0x100, 0xf0)]
     print("selftest passed")
     return 0

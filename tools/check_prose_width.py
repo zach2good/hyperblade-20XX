@@ -1,9 +1,10 @@
 """Fail on a prose line wider than 100 columns that could wrap.
 
 Prose is a Markdown line, a `#` comment in a register under symbols/ or a Python tool, and a `//`
-comment in src/. A line counts only when it has a space to break at by column 100, past its
-marker and first word and outside a code span, so a lone long identifier or path passes. Tables,
-code fences and lines holding a URL are skipped.
+comment in src/. Comment text indented past the marker's one space is an example or a list
+continuation, and is skipped. A line counts only when it has a space to break at by column 100,
+past its marker and first word and outside a code span, so a lone long identifier or path passes.
+Tables, code fences and lines holding a URL are skipped.
 
     python tools/check_prose_width.py
 """
