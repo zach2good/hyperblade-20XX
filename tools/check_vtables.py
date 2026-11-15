@@ -113,12 +113,12 @@ def register():
 
 
 def save(found):
+    # The register's comment block says why its rows are open, so a save keeps it.
+    with open(REGISTER) as handle:
+        comments = [line for line in handle if line.startswith("#")]
+
     with open(REGISTER, "w") as handle:
-        handle.write("# Vtables that do not pair against the original.\n")
-        handle.write("#\n")
-        handle.write("# tools/check_vtables.py fails when a table not named here stops pairing, and\n")
-        handle.write("# when a table named here starts. Remove the row in the same change that\n")
-        handle.write("# closes the gap.\n")
+        handle.writelines(comments)
         handle.write(HEADER)
         for address, name in found:
             handle.write("%08x,%s\n" % (address, name))

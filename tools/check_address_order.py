@@ -33,8 +33,8 @@ def bodies(path):
     """Answers (line, HYPERX address or None, HYPERX100 address or None) for each marked body."""
     found = []
     pending = {}
-    # One [only v1.0.0.0, a branch excluded v1.0.0.0] pair per open #if. Only a branch
-    # whose whole condition is HYPERX_V100 counts as v1.0.0.0's; any other shape counts as both.
+    # One [only v1.0.0.0, a branch excluded v1.0.0.0] pair per open #if. Only a branch whose whole
+    # condition is HYPERX_V100 counts as v1.0.0.0's; any other shape counts as both.
     stack = []
     for number, line in enumerate(open(path, encoding="utf-8", errors="replace"), 1):
         words = line.split()
