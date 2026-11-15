@@ -152,3 +152,8 @@ short MsgInteractor::GetTargetSlot()
 {
     return (short)m_otherSlot.n;
 }
+
+// Out of line, as CollInteractor's is, so the two fold and so do their deleters.
+MsgInteractor::~MsgInteractor()
+{
+}

@@ -14,6 +14,8 @@ public:
     {
     }
 
+    virtual ~MsgInteractor();
+
     virtual void Discard();
 
     // Slot six: the message tag Setup stores in m_ownSlotOrMessage.
