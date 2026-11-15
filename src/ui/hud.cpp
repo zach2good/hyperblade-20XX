@@ -431,12 +431,6 @@ HUD::HUD(int)
     LayoutSurfaces();
 }
 
-// FUNCTION: HYPERX100 0x004c1a10
-// FUNCTION: HYPERX 0x0043e0f0
-void HUD::DrawHUD(int, HDC)
-{
-}
-
 // Only restores InfoBarBase's vtable; slot nought calls it out of line.
 // FUNCTION: HYPERX 0x0043e120
 HUD::~HUD()

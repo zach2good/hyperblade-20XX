@@ -35,11 +35,7 @@ public:
 
     virtual void BindWithNode(class EngineObject* pObject, class GameBehaviorObject* pOwner, PlanNode* pNode, int nArg);
 
-    // Slot four, folded onto 0x00480fb0, which the engine calls by name.
-    // FUNCTION: HYPERX100 0x0048dfd0
-    virtual void Bind(class EngineObject*, class GameBehaviorObject*)
-    {
-    }
+    virtual void Bind(class EngineObject*, class GameBehaviorObject*);
 
     virtual char Activate();
     virtual void Detach();

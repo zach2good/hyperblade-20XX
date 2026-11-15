@@ -32,9 +32,16 @@ public:
     // Each forwards to the body the table names, except the four whose bodies are this class's own.
     virtual void Unused();
 
-    virtual void     LayoutSurfaces();                                         // 0x0043e140
-    virtual void     DrawScene(int bDraw);                                     // 0x0043e150
-    virtual void     DrawHUD(int bDisplayHUDArt, HDC hUnused);                 // 0x0043e0f0
+    virtual void LayoutSurfaces();     // 0x0043e140
+    virtual void DrawScene(int bDraw); // 0x0043e150
+
+    // Inline, so it stays apart from the out-of-line empty bodies, as the original keeps it.
+    // FUNCTION: HYPERX100 0x004c1a10
+    // FUNCTION: HYPERX 0x0043e0f0
+    virtual void DrawHUD(int, HDC)
+    {
+    }
+
     virtual void     SetMessageText(const char* pszText, unsigned long nCode); // 0x0043ee50
     virtual void     ShowMessage();                                            // 0x0043eeb0
     virtual void     HideMessage();                                            // 0x0043eec0

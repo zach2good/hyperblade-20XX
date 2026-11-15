@@ -462,6 +462,8 @@ set_source_files_properties(
     src/physics/physicsbody.cpp
     src/engine/engineobject.cpp
     src/engine/ccircletrack.cpp
+    src/engine/gameengine.cpp
+    src/planvm/agendaitem.cpp
     PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
