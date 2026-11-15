@@ -4,8 +4,8 @@
 # when a table named here starts. Remove the row in the same change that
 # closes the gap.
 #
-# Two hold a compiler-made deleter the original folds onto another class's,
-# and a deleter is always an inline COMDAT.
+# Both are device deleters the original folds onto GamepadDeviceObj's. Ours call each
+# class's implicit destructor, and no spelling tried yet inlines it as the original does.
 address,name
 004b35e4,JoystickDeviceObj::`vftable'
 004b3664,MouseDeviceObj::`vftable'
