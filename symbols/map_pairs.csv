@@ -1,5 +1,5 @@
-# LIBCMT statics. Our PDB has no symbol for a static, but HYPERX_sym.map's "Static symbols"
-# section lists each with its address, so tools/foldcmp.py pairs the two by the map name.
+# Statics, mostly LIBCMT's. Our PDB has no symbol for a static, but HYPERX_sym.map's "Static
+# symbols" section lists each with its address, so tools/foldcmp.py pairs the two by the map name.
 # A name the map lists in several objects takes the object it lives in.
 address,symbol,size,object
 0x0045c6d0,_$E11,10,arenaellipsoidstatic.cpp.obj

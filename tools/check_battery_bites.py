@@ -515,6 +515,11 @@ PROBES = (
      "                if level != our_level or (",
      "                if False or ("),
 
+    # A copy folded for missing from the measured map, without the relabel that shows a fold.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "isinstance(key, tuple) and key[0] in folded and",
+     "isinstance(key, tuple) and"),
+
     # A map pair that ignores its row's object.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            if row.get(\"object\"):",

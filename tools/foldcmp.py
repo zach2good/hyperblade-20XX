@@ -70,9 +70,25 @@ def read_lines(lines):
     return found
 
 
-def fold_groups(measured, symbols):
+def relabelled(lines):
+    """Answers each name a map lists twice in one object at one address: the linker gives a
+    folded static the object of the copy it keeps."""
+    seen = collections.Counter()
+    addresses = collections.defaultdict(set)
+    for line in lines:
+        found = OBJECT_LINE.match(line)
+        if found:
+            key = (found.group(1), found.group(3))
+            seen[key] += 1
+            addresses[key].add(int(found.group(2), 16))
+
+    return {name for (name, owner), count in seen.items()
+            if count > 1 and len(addresses[(name, owner)]) == 1}
+
+
+def fold_groups(measured, symbols, folded=frozenset()):
     """Answers the sets of HYPERX_sym.exe addresses that HYPERX.exe puts on one address. A copy
-    in an object HYPERX.map no longer lists joins the one address its name has there."""
+    of a name in `folded`, in an object HYPERX.map no longer lists, joins that name's address."""
     groups = collections.defaultdict(set)
     for name, addr in measured.items():
         if name in symbols:
@@ -84,7 +100,8 @@ def fold_groups(measured, symbols):
             by_name[key[0]].add(addr)
 
     for key, addr in symbols.items():
-        if isinstance(key, tuple) and key not in measured and len(by_name[key[0]]) == 1:
+        if isinstance(key, tuple) and key[0] in folded and key not in measured and (
+                len(by_name[key[0]]) == 1):
             groups[min(by_name[key[0]])].add(addr)
 
     return [group for group in groups.values() if len(group) > 1]
@@ -285,7 +302,9 @@ def function_sizes():
 
 def install():
     """Patches reccmp so every Compare built afterwards reads the folding. Other tools call this."""
-    groups = fold_groups(read_map(OUT / "HYPERX.map"), read_map(OUT / "HYPERX_sym.map"))
+    measured = (OUT / "HYPERX.map").read_text(errors="replace").splitlines()
+    groups = fold_groups(read_lines(measured), read_map(OUT / "HYPERX_sym.map"),
+                         relabelled(measured))
     lookup = EntityDb.get
     aliases = {}
 
@@ -358,6 +377,8 @@ def selftest():
         " 0001:0002a500       _twice 0042b500 f   f.obj\n"
         " 0001:0002a600       _dup 0042b600 f   g.obj\n"
         " 0001:0002a600       _dup 0042b600 f   g.obj\n"
+        " 0001:0002a800       _tri 0042b800 f   k.obj\n"
+        " 0001:0002a800       _tri 0042b800 f   l.obj\n"
     )
     symbols = (
         " 0001:00001000       ?A@@UAEPAV1@XZ 00402000 f i a.obj\n"
@@ -366,6 +387,9 @@ def selftest():
         " 0001:00007000       ?D@@YAXXZ 00408000 f   d.obj\n"
         " 0001:00009000       _dup 0040a000 f   g.obj\n"
         " 0001:0000a000       _dup 0040b000 f   h.obj\n"
+        " 0001:0000b000       _tri 0040c000 f   k.obj\n"
+        " 0001:0000c000       _tri 0040d000 f   l.obj\n"
+        " 0001:0000d000       _tri 0040e000 f   m.obj\n"
     )
     with tempfile.TemporaryDirectory() as folder:
         measured_path = Path(folder) / "measured.map"
@@ -373,13 +397,14 @@ def selftest():
         measured_path.write_text(measured)
         symbols_path.write_text(symbols)
         read = read_map(measured_path)
-        groups = fold_groups(read, read_map(symbols_path))
+        groups = fold_groups(read, read_map(symbols_path), relabelled(measured.splitlines()))
         symbols_path.write_text(symbols + " Static symbols\n" + measured)
         statics = map_statics(symbols_path)
 
     assert "_twice" not in read
-    # h.obj's _dup folded onto g.obj's, which the measured map lists twice.
-    assert groups == [{0x402000, 0x404000, 0x406000}, {0x40A000, 0x40B000}], groups
+    # h.obj's _dup folded onto g.obj's, which the measured map lists twice. m.obj's _tri was
+    # dropped, not relabelled, so it stays out of k.obj's and l.obj's group.
+    assert groups == [{0x402000, 0x404000, 0x406000}, {0x40A000, 0x40B000}, {0x40C000, 0x40D000}],         groups
     assert "?D@@YAXXZ" in statics and statics["?D@@YAXXZ"] == 0x42B300, statics
     assert "_twice" not in statics and statics[("_twice", "f.obj")] == 0x42B500, statics
 

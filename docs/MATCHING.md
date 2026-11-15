@@ -2370,8 +2370,8 @@ thunks. A file linked before the last of them needs its own `$E2` marked, so its
 those owners must match the client's address order. For example, `config.cpp` holds g_strPrefs's
 unit and links straight after `globals.cpp`, because its `$E2` (`0x0046d530`) is the next marked
 `$E2` after g_gameApp's (`0x0044c060`). Some thunks fit no order: the arena's destructor thunk
-`0x0045c6d0` stays unmarked, since the client orders its `$E11` after `staticinitglobals.cpp`'s and
-before `config.cpp`'s.
+`0x0045c6d0` stays unmarked, since the client orders its `$E11` after `staticinitglobals.cpp`'s
+and before `config.cpp`'s; `symbols/map_pairs.csv` pairs it by its object instead.
 
 Link a walled unit's file after every marked owner of each name, and it can leave all its thunks
 unmarked: reccmp pairs them through the startup table. `hud.cpp` links after `playerobject.cpp`
