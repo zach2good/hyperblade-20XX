@@ -2679,8 +2679,7 @@ original's group, give the marked copy and its twins the same kind:
   joins libjpeg's empty hooks, as `wrbmp.c`'s `METHODDEF` has it.
 - Build the unit `/O2` (which implies `/Gy`) and move the bodies out of line: the empty bodies the
   original keeps on `Stub::Assert`, apart from the inline ones on `Object::Trace`. `CMakeLists.txt`
-  lists those units. Measure a unit with static initialisers before you move it: `/Gy` on
-  `gameengine.cpp` breaks the pairing of its initialiser thunks.
+  lists those units. Add a unit to that list, never to `HYPERX_SOURCES`, whose order is the link's.
 
 A second `/OPT:ICF` pass changes nothing: the device-object deleters, which call different
 destructors that fold only at link time, stay apart.
