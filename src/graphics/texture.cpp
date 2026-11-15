@@ -199,13 +199,6 @@ void Texture::Init(Texture* pSource)
     }
 }
 
-// Slot 18 shares slot 17's address in five of six tables; slot 24 is KeyConfigDialog::SaveKeysAs.
-// FUNCTION: HYPERX100 0x00440fc0
-void Texture::SetScrollColorMode(int nScrollColor)
-{
-    m_dwScrollColor = nScrollColor;
-}
-
 // Where the surface lives picks which pixel total it comes off.
 // FUNCTION: HYPERX100 0x00440ca0
 // FUNCTION: HYPERX 0x00437050
@@ -317,13 +310,6 @@ int Texture::AllocSurface(SurfacePoint size, int bColourKey, int bSystemMemory)
 void Texture::SetFillColor(int nFillColor)
 {
     m_dwFillColor = nFillColor;
-}
-
-// FUNCTION: HYPERX100 0x00441000
-// FUNCTION: HYPERX 0x00437250
-void Texture::SetColorMode(int nScrollColor)
-{
-    m_dwScrollColor = nScrollColor;
 }
 
 // FUNCTION: HYPERX100 0x00441030

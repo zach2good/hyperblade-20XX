@@ -43,10 +43,21 @@ public:
     virtual Point    GetSize();
     virtual int      GetForeColor();
     virtual int      GetBgColor();
-    virtual void     SetColorMode(int nScrollColor);
+
+    // Inline, as slot 18 is, so the linker folds slot 18 onto this one as the original's did.
+    // FUNCTION: HYPERX100 0x00441000
+    // FUNCTION: HYPERX 0x00437250
+    virtual void SetColorMode(int nScrollColor)
+    {
+        m_dwScrollColor = nScrollColor;
+    }
 
     // Slot 18 holds slot 17's address in five of the six tables; only ScrollBitmap overrides it.
-    virtual void SetScrollColorMode(int nScrollColor);
+    // FUNCTION: HYPERX100 0x00440fc0
+    virtual void SetScrollColorMode(int nScrollColor)
+    {
+        m_dwScrollColor = nScrollColor;
+    }
 
     virtual void           SetFillColor(int nFillColor);
     virtual void           SetClipRect(int nClipped, Point pt);
