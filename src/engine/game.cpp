@@ -241,7 +241,10 @@ void __cdecl Game::ShutdownEngine(void)
 
     if (g_pTexManager != 0)
     {
-        delete g_pTexManager;
+        // The original deletes it as the database it derives from.
+        ModelDatabase* const pDatabase = g_pTexManager;
+
+        delete pDatabase;
 
         g_pTexManager = 0;
     }
