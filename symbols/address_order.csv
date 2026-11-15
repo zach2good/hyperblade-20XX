@@ -1,10 +1,10 @@
 # HYPERX markers that sit below a higher one in their file, from before
 # tools/check_address_order.py. A new descent fails; remove a row once it is fixed.
-path,address
-src/common/string.cpp,0x00423860
-src/common/string.cpp,0x0042f500
-src/engine/bmpwriter.cpp,0x00494759
-src/engine/engineobject.cpp,0x0040b900
-src/graphics/colorpalette.cpp,0x004197c0
-src/graphics/softtex.cpp,0x00492b40
-src/ui/screen.cpp,0x00480fb0
+path,address,reason
+src/common/string.cpp,0x00423860,older than this check; moving the body is unmeasured
+src/common/string.cpp,0x0042f500,older than this check; moving the body is unmeasured
+src/engine/bmpwriter.cpp,0x00494759,older than this check; moving the body is unmeasured
+src/engine/engineobject.cpp,0x0040b900,older than this check; moving the body is unmeasured
+src/graphics/colorpalette.cpp,0x004197c0,older than this check; moving the body is unmeasured
+src/graphics/softtex.cpp,0x00492b40,older than this check; moving the body is unmeasured
+src/ui/screen.cpp,0x00480fb0,older than this check; moving the body is unmeasured

@@ -4,9 +4,9 @@ Each .cpp lists its bodies in the order the original placed them. Two rules:
 
 1. HYPERX markers ascend down the file. symbols/address_order.csv lists the descents that predate
    this check, so only a new one fails.
-2. A body with a HYPERX100 marker and no HYPERX one, outside #ifdef HYPERX_V100, sits between the
-   HYPERX100 markers above and below it when those two ascend. v1.0.0.0's order is not checked
-   otherwise: its link order differs.
+2. A body with a HYPERX100 marker and no HYPERX one, outside v1.0.0.0-only code, sits between the
+   nearest HYPERX100 markers above and below it when those two ascend, or on the right side of
+   the only one it has. v1.0.0.0's order is not checked otherwise: its link order differs.
 
     python tools/check_address_order.py
     python tools/check_address_order.py --save    # write the register from today's descents
@@ -20,6 +20,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGISTER = os.path.join(ROOT, "symbols", "address_order.csv")
+REASON = "older than this check; moving the body is unmeasured"
 
 MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*(HYPERX100|HYPERX)\s+0x([0-9a-fA-F]+)")
 
@@ -28,22 +29,33 @@ def bodies(path):
     """Answers (line, HYPERX address or None, HYPERX100 address or None) for each marked body."""
     found = []
     pending = {}
-    depth = 0
-    v100 = 0
+    # One [only v1.0.0.0, tests HYPERX_V100] pair per open #if.
+    stack = []
     for number, line in enumerate(open(path, encoding="utf-8", errors="replace"), 1):
-        stripped = line.strip()
-        if stripped.startswith("#if"):
-            depth += 1
-            if stripped.startswith("#ifdef HYPERX_V100") and v100 == 0:
-                v100 = depth
+        words = line.split()
+        directive = words[0] if words else ""
+        named = "HYPERX_V100" in line
+        if directive in ("#if", "#ifdef"):
+            stack.append([named and "!" not in line, named])
+            continue
+
+        if directive == "#ifndef":
+            stack.append([False, named])
+            continue
+
+        if directive == "#elif" and stack:
+            stack[-1] = [named and "!" not in line, stack[-1][1] or named]
+            continue
+
+        # A branch that tests HYPERX_V100 hands the other build its #else.
+        if directive == "#else" and stack:
+            if stack[-1][1]:
+                stack[-1][0] = not stack[-1][0]
 
             continue
 
-        if stripped.startswith("#endif"):
-            if depth == v100:
-                v100 = 0
-
-            depth -= 1
+        if directive == "#endif" and stack:
+            stack.pop()
             continue
 
         hit = MARKER.match(line)
@@ -51,10 +63,11 @@ def bodies(path):
             pending[hit.group(1)] = int(hit.group(2), 16)
             continue
 
+        stripped = line.strip()
         if stripped.startswith("//") or stripped == "":
             continue
 
-        if pending and v100 == 0:
+        if pending and not any(only for only, _ in stack):
             found.append((number, pending.get("HYPERX"), pending.get("HYPERX100")))
 
         pending = {}
@@ -105,9 +118,9 @@ def main():
         with open(REGISTER, "w", newline="\n", encoding="utf-8") as handle:
             handle.write("# HYPERX markers that sit below a higher one in their file, from before\n")
             handle.write("# tools/check_address_order.py. A new descent fails; remove a row once it is fixed.\n")
-            handle.write("path,address\n")
-            for row in descents:
-                handle.write("%s,%s\n" % row)
+            handle.write("path,address,reason\n")
+            for path, addr in descents:
+                handle.write("%s,%s,%s\n" % (path, addr, REASON))
 
         print("saved %d descent(s)" % len(descents))
         return 0
