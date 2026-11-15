@@ -453,6 +453,7 @@ set_source_files_properties(
     src/planvm/behparam.cpp
     src/ui/screens/leaguesetupuiscreen.cpp
     src/ui/screens/championshipsetupuiscreen.cpp
+    src/math/point.cpp
     PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
