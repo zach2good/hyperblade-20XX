@@ -172,7 +172,9 @@ def main():
 
 
 def selftest():
-    """Checks the map reading and grouping on three folded bodies and one name listed twice."""
+    """Checks the map reading and grouping on three folded bodies and one name listed twice, and
+    the pairing of statics through their thunks: one pairs, one thunk has no pair, one isn't a
+    mov ecx."""
     measured = (
         " 0001:0002a200       ?A@@UAEPAV1@XZ 0042b200 f i a.obj\n"
         " 0001:0002a200       ?B@@UAEPAV1@XZ 0042b200 f i a.obj\n"
@@ -212,7 +214,8 @@ def selftest():
             batch.match(orig, ours)
 
     rows = [{"address": "0x004c0000", "name": "A::s_one", "size": "0x7c", "thunk": "0x00410000"},
-            {"address": "0x004c0100", "name": "B::s_two", "size": "0x7c", "thunk": "0x00410010"}]
+            {"address": "0x004c0100", "name": "B::s_two", "size": "0x7c", "thunk": "0x00410010"},
+            {"address": "0x004c0200", "name": "C::s_three", "size": "0x7c", "thunk": "0x00410020"}]
     assert pair_statics(db, Image(), EntityDb.get, rows) == 1
     assert db.get(ImageId.ORIG, 0x4C0000).recomp_addr == 0x499000
 

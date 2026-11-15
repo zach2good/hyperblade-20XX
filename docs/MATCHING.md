@@ -2337,7 +2337,7 @@ thunks must link in the order of the client's thunk addresses, and an unmarked t
 must link after the last marked one. `symbols/link_order.csv` names each marked thunk's object with
 the client's evidence, and `python tools/check_link_order.py` fails when `HYPERX_SOURCES` would pair
 a marker with another object's thunk. A thunk that names a function-local static pairs only
-through `symbols/static_objects.csv`, since our PDB gives the static no symbol (see Link folding).
+through `symbols/static_objects.csv`, since our PDB gives the static no symbol (see [Link folding](#link-folding)).
 
 To place a file, take its first marked function in the client and its thunk addresses, and put it
 where both orders hold. The startup table at `0x004bb004` runs in client code order, so an
@@ -2667,7 +2667,8 @@ the original doesn't make.
 foldcmp also pairs function-scope static objects, which VC6 gives no symbol, so no `GLOBAL` marker
 reaches ours. `symbols/static_objects.csv` names each by the original's address and its atexit
 thunk; foldcmp reads our object's address off our thunk's first instruction, `mov ecx` with the
-object, and pairs the two. The code around them is the same; only the link-chosen address differs.
+object, pairs the two, and names on stderr each row it can't pair. The code around them is the
+same; only the link-chosen address differs.
 
 #### Reaching the original's fold groups
 
