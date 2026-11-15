@@ -15,9 +15,8 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Byte and resource comparisons are left out: they need the reference image, and `verify` runs
-# them. So is check_vtable_arity_declared.py, which reads the reference, and
-# check_conventions.py, which needs the Ghidra bridge.
+# Byte and resource comparisons are left out: `verify` runs them. So is check_conventions.py,
+# which needs the Ghidra bridge. The checkers that read the reference are in REFERENCE below.
 CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_owner.py",
             "check_self_casts.py", "check_slot_arity.py", "check_tables_named.py",
             "check_virtual_bodies.py", "check_vptr_offsets.py", "check_dtor_calls.py",
@@ -94,6 +93,11 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "plan_dump.py --selftest",
             "foldcmp.py --selftest")
 
+# The checkers that read the original or a register of its differences. They join the battery
+# whenever the reference is configured; about ten seconds together.
+REFERENCE = ("check_vtables.py", "check_folded.py", "check_datavalues.py",
+             "check_vtable_arity_declared.py")
+
 
 def refresh():
     """Regenerate build/report.json when the image is newer than it.
@@ -113,13 +117,24 @@ def refresh():
                    cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
+def with_reference():
+    """The battery, and the register checkers `verify` runs when the original and the symbol
+    build are both here, so a register cannot go stale while this reads clean."""
+    image = os.path.join(ROOT, "build", "out", "HYPERX_sym.exe")
+    if os.path.exists(os.path.join(ROOT, "reccmp-user.yml")) and os.path.exists(image):
+        return CHECKERS + REFERENCE
+
+    return CHECKERS
+
+
 def main():
     full = "--full" in sys.argv[1:]
     failed = []
 
     refresh()
 
-    for entry in CHECKERS:
+    battery = with_reference()
+    for entry in battery:
         parts = entry.split()
         result = subprocess.run([sys.executable, os.path.join(ROOT, "tools", parts[0])]
                                 + parts[1:], cwd=ROOT, capture_output=True, text=True)
@@ -145,7 +160,7 @@ def main():
         return 1
 
     print("")
-    print("%d checker(s), all clean" % len(CHECKERS))
+    print("%d checker(s), all clean" % len(battery))
 
     return 0
 
