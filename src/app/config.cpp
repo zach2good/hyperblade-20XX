@@ -91,13 +91,6 @@ Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteeri
 // STRING: HYPERX 0x004c4750
 String g_strPrefs("Data\\DftKeybd.cfg");
 
-// FUNCTION: HYPERX100 0x00411120
-// FUNCTION: HYPERX 0x0046d700
-int __cdecl KeyConfigDialog::ClearKeys(HWND, KeyRow*)
-{
-    return 1;
-}
-
 // FUNCTION: HYPERX100 0x00411140
 // FUNCTION: HYPERX 0x0046d710
 void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
