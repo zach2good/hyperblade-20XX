@@ -21,7 +21,8 @@ address,name,function
 0x004ca508,__rgcode_page_info$end,0x004a3183
 0x004ca810,__dosmaperr$table,0x004a772e
 0x004cac70,_tzset$cache,0x004a8ccc
-0x004cad18,__NMSG_WRITE$table,0x004a9989
+0x004cad18,_rterrs,0x004a9989
+0x004cad1c,_rterrs$rterrtxt,0x004a9989
 0x004cadb0,__ld12tod$data,0x004aa35e
 0x004cadc8,__ld12tof$data,0x004aa374
 0x004caf3c,__lpdays$before,0x004a9120
