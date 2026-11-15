@@ -2679,13 +2679,13 @@ The linker relabels a folded static with the object of the copy it keeps, so `HY
 list one object's name twice at one address. foldcmp reads that as a fold of every copy of the
 name in `HYPERX_sym.map`.
 
-Some LIBCMT data has no symbol in the map either: scope tables, throw records and small `.data`
-tables. `symbols/data_operands.csv` names each by the original's address and a function that
-holds it as an immediate. foldcmp finds the immediate in the original's function, reads ours at
-the same offset in our copy, and pairs the two. A one-past-end bound pairs only where nothing
-follows the table on either side, as after `__rgcode_page_info`. Where a datum follows, as at
-`$CRT_C_Initializer(2)`'s bound, it's a different one in each link, and the pair costs that
-datum's readers.
+Some data has no symbol in the map either: LIBCMT's scope tables, throw records and small `.data`
+tables, and a game's plain-data local static, which has no atexit thunk to read it from.
+`symbols/data_operands.csv` names each by the original's address and a function that holds it as an
+immediate. foldcmp finds the immediate in the original's function, reads ours at the same offset in
+our copy, and pairs the two. A one-past-end bound pairs only where nothing follows the table on
+either side, as after `__rgcode_page_info`. Where a datum follows, as at `$CRT_C_Initializer(2)`'s
+bound, it's a different one in each link, and the pair costs that datum's readers.
 
 A `$scopetable` row also pairs the funclets its table names. foldcmp walks the table's entries,
 the enclosing level, filter and handler, on both sides and pairs each filter and handler, sized

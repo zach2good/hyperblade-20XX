@@ -19,7 +19,7 @@ The ones you'll meet first:
 - `map_pairs.csv`: statics with no PDB symbol, mostly LIBCMT's. `tools/foldcmp.py` pairs each
   with the static of that name in HYPERX_sym.map, in the row's object when the map lists the
   name in several.
-- `data_operands.csv`: LIBCMT data with no symbol at all. `tools/foldcmp.py` pairs each through
-  the function that names it.
+- `data_operands.csv`: data with no symbol at all, LIBCMT's and a few game statics.
+  `tools/foldcmp.py` pairs each through the function that names it.
 
 The rest record exceptions a checker would otherwise report, each with its reason.

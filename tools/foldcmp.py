@@ -86,7 +86,7 @@ def relabelled(lines):
             if count > 1 and len(addresses[(name, owner)]) == 1}
 
 
-def fold_groups(measured, symbols, folded=frozenset()):
+def fold_groups(measured, symbols, folded):
     """Answers the sets of HYPERX_sym.exe addresses that HYPERX.exe puts on one address. A copy
     of a name in `folded`, in an object HYPERX.map no longer lists, joins that name's address."""
     groups = collections.defaultdict(set)
@@ -404,7 +404,8 @@ def selftest():
     assert "_twice" not in read
     # h.obj's _dup folded onto g.obj's, which the measured map lists twice. m.obj's _tri was
     # dropped, not relabelled, so it stays out of k.obj's and l.obj's group.
-    assert groups == [{0x402000, 0x404000, 0x406000}, {0x40A000, 0x40B000}, {0x40C000, 0x40D000}],         groups
+    expected = [{0x402000, 0x404000, 0x406000}, {0x40A000, 0x40B000}, {0x40C000, 0x40D000}]
+    assert groups == expected, groups
     assert "?D@@YAXXZ" in statics and statics["?D@@YAXXZ"] == 0x42B300, statics
     assert "_twice" not in statics and statics[("_twice", "f.obj")] == 0x42B500, statics
 
