@@ -22,6 +22,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGISTER = os.path.join(ROOT, "symbols", "address_order.csv")
 REASON = "older than this check; moving the body is unmeasured"
 
+# A condition, spaces removed, that holds only in v1.0.0.0, and one that holds only outside it.
+V100 = ("HYPERX_V100", "defined(HYPERX_V100)")
+NOT_V100 = ("!defined(HYPERX_V100)", "!HYPERX_V100")
+
 MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*(HYPERX100|HYPERX)\s+0x([0-9a-fA-F]+)")
 
 
@@ -37,14 +41,15 @@ def bodies(path):
         directive = words[0] if words else ""
         condition = "".join(words[1:])
         if directive in ("#if", "#ifdef", "#ifndef"):
-            only = condition in ("HYPERX_V100", "defined(HYPERX_V100)") and directive != "#ifndef"
-            stack.append([only, directive == "#ifndef" and condition == "HYPERX_V100"])
+            only = condition in V100 and directive != "#ifndef"
+            excludes = (directive == "#ifndef" and condition == "HYPERX_V100") or condition in NOT_V100
+            stack.append([only, excludes])
             continue
 
-        # After a lone #ifndef HYPERX_V100, every later branch is v1.0.0.0's.
+        # After a branch that excludes v1.0.0.0, every later branch is v1.0.0.0's.
         if directive == "#elif" and stack:
             after_ifndef = stack[-1][1]
-            stack[-1] = [after_ifndef or condition == "defined(HYPERX_V100)", after_ifndef]
+            stack[-1] = [after_ifndef or condition in V100, after_ifndef]
             continue
 
         if directive == "#else" and stack:
@@ -123,9 +128,10 @@ def main():
         with open(REGISTER, "w", newline="\n", encoding="utf-8") as handle:
             handle.write("# HYPERX markers that sit below a higher one in their file, from before\n")
             handle.write("# tools/check_address_order.py. A new descent fails; remove a row once it is fixed.\n")
-            handle.write("path,address,reason\n")
+            writer = csv.writer(handle, lineterminator="\n")
+            writer.writerow(("path", "address", "reason"))
             for key in descents:
-                handle.write("%s,%s,%s\n" % (key + (reasons.get(key, REASON),)))
+                writer.writerow(key + (reasons.get(key, REASON),))
 
         print("saved %d descent(s)" % len(descents))
         return 0
