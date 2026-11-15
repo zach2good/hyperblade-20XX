@@ -206,8 +206,7 @@ collide with a `windows.h` macro.
 handler takes its id's name, as the plan handlers do, in place of a name for what Ghidra saw it
 write. `SetShortAtPlus72` is `SetInteractorLatency`, `SetByteAtPlus74` is
 `SetDigressive` and `SetVec4AtPlus50` is `SetAnimationEvent`; the other eleven follow the same
-rule. `SetCameraTrackingSlot` is registered at ids 10 and 14, `TargetGoal` and `DoubleScore`, so it
-keeps a name of its own. The fields the first two write are `GameBehaviorObject::m_wLatency`, the
+rule. `SetTargetGoal` and `SetDoubleScore`, ids 10 and 14, share one body, which the linker folds. The fields the first two write are `GameBehaviorObject::m_wLatency`, the
 poll interval in frames, and `m_bDigressive`; the tree called them `m_wSlotCount` and `m_bQuiet`.
 
 ## Classes Ghidra split or merged

@@ -395,7 +395,7 @@ void BehParam::SetTargetGoal(EngineObject* pActor, PlanNode* pNode, GameBehavior
     ((PlayerObject*)pActor)->m_wTargetGoalSlot = (short)pNode->m_pArgs[1].n;
 }
 
-// The double-score slot's own handler; the linker folds it onto SetTargetGoal.
+// Out of line, so the linker folds it onto SetTargetGoal, as the original's did.
 void BehParam::SetDoubleScore(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*)
 {
     ((PlayerObject*)pActor)->m_wTargetGoalSlot = (short)pNode->m_pArgs[1].n;
