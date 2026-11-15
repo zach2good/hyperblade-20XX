@@ -2678,8 +2678,10 @@ foldcmp pairs the two, naming on stderr any symbol the map doesn't list.
 Some LIBCMT data has no symbol in the map either: scope tables, throw records and small `.data`
 tables. `symbols/data_operands.csv` names each by the original's address and a function that
 holds it as an immediate. foldcmp finds the immediate in the original's function, reads ours at
-the same offset in our copy, and pairs the two. Leave out a one-past-end bound: the datum after
-it differs between the two links.
+the same offset in our copy, and pairs the two. A one-past-end bound pairs only where nothing
+follows the table on either side, as after `__rgcode_page_info`. Where a datum follows, as at
+`$CRT_C_Initializer(2)`'s bound, it's a different one in each link, and the pair costs that
+datum's readers.
 
 #### Reaching the original's fold groups
 

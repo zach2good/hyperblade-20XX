@@ -514,7 +514,7 @@ PROBES = (
      "            ours = int.from_bytes(recomp_bin.read(function.recomp_addr + offset, 4), \"little\")",
      "            ours = int.from_bytes(recomp_bin.read(function.recomp_addr + offset + 1, 4), \"little\")"),
 
-    # The map's statics read from the top, so a public of the same name wins.
+    # The cut at "Static symbols" missed, so the map's statics come back empty.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "if line.startswith(\" Static symbols\")),",
      "if line.startswith(\" Static symbolz\")),"),
