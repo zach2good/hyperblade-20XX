@@ -440,7 +440,7 @@ endif()
 # the image's sections start where the original's do.
 set_source_files_properties(${HYPERX_SOURCES} PROPERTIES COMPILE_FLAGS "/O2")
 
-# Without /Gy no body here is a COMDAT, so CoachConditionNever keeps its own address as the
+# Without /Gy no out-of-line body here is a COMDAT, so CoachConditionNever keeps its own address as the
 # original's does, apart from the identical bodies that fold elsewhere.
 set_source_files_properties(src/engine/coachai.cpp PROPERTIES COMPILE_FLAGS "/Ox /Gf")
 

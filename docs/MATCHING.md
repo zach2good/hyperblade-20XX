@@ -2337,7 +2337,8 @@ thunks must link in the order of the client's thunk addresses, and an unmarked t
 must link after the last marked one. `symbols/link_order.csv` names each marked thunk's object with
 the client's evidence, and `python tools/check_link_order.py` fails when `HYPERX_SOURCES` would pair
 a marker with another object's thunk. A thunk that names a function-local static pairs only
-through `symbols/static_objects.csv`, since our PDB gives the static no symbol (see [Link folding](#link-folding)).
+through `symbols/static_objects.csv`, since our PDB gives the static no symbol (see
+[Link folding](#link-folding)).
 
 To place a file, take its first marked function in the client and its thunk addresses, and put it
 where both orders hold. The startup table at `0x004bb004` runs in client code order, so an
@@ -2691,7 +2692,7 @@ original's group, give the marked copy and its twins the same kind:
   the inline ones on `Object::Trace`. A marked accessor the original keeps apart from an
   out-of-line twin is `inline`: `Interactor::GetActor`, `Texture::GetSourceSurface`.
 - Build the unit `/Ox /Gf`, which is `/O2` without `/Gy`, when a body must fold with nothing: no
-  body in it is a COMDAT. `GameEngine::CoachConditionNever` stays apart from the inline and the
+  out-of-line body in it is a COMDAT. `GameEngine::CoachConditionNever` stays apart from the inline and the
   out-of-line `return 0` groups this way, as the original's does.
 
 A deleter calls its class's destructor, so deleters fold only when the destructors they call
