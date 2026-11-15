@@ -968,6 +968,12 @@ extern char g_abInfoBarFontName[0x50];
 #define BAR_MIN_HEIGHT  2
 #define BAR_MAX_HEIGHT  8
 
+// The original's linker shares this empty body with Stub::Assert.
+// FUNCTION: HYPERX100 0x004bbdb0
+void InfoBar::Cleanup() throw()
+{
+}
+
 // FUNCTION: HYPERX100 0x004bbdc0
 // FUNCTION: HYPERX 0x00451280
 InfoBar::InfoBar(HDC hDC)
@@ -1124,12 +1130,6 @@ Texture* InfoBar::GetHeadCamSurface()
 InfoBar::~InfoBar()
 {
     Cleanup();
-}
-
-// The original's linker shares this empty body with Stub::Assert.
-// FUNCTION: HYPERX100 0x004bbdb0
-void InfoBar::Cleanup() throw()
-{
 }
 
 // FUNCTION: HYPERX100 0x004bda40

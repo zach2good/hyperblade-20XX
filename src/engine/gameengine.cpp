@@ -480,6 +480,12 @@ GameEngine::GameEngine()
 
 #define BRACKET_END (-1)
 
+// Empty; folded with every empty two-argument body, so its call names Screen::OnWidgetMessage.
+// FUNCTION: HYPERX100 0x004d6860
+void GameEngine::SetInstance(HINSTANCE, int)
+{
+}
+
 // A drawn score with any away row still damaged restarts the bracket; awards nought and five
 // are written and never read.
 // FUNCTION: HYPERX100 0x004d6870
@@ -5667,12 +5673,6 @@ void GameEngine::SetTeammateMode(int nOn)
 ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
 {
     return &g_aFormationTable[pTeam->aSeat[1] + pTeam->aSeat[0] * 4];
-}
-
-// Empty; folded with every empty two-argument body, so its call names Screen::OnWidgetMessage.
-// FUNCTION: HYPERX100 0x004d6860
-void GameEngine::SetInstance(HINSTANCE, int)
-{
 }
 
 unsigned char g_abObjectTypeBaseline[32] = {

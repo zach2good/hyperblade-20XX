@@ -266,6 +266,12 @@ void ChampionshipSetupUIScreen::RefreshTabs()
     }
 }
 
+// Out of line, so the linker folds it onto Stub::Assert, as the original's did.
+// FUNCTION: HYPERX100 0x00454db0
+void ChampionshipSetupUIScreen::OnFirstTabClick()
+{
+}
+
 // FUNCTION: HYPERX100 0x00454dc0
 // FUNCTION: HYPERX 0x00458210
 void ChampionshipSetupUIScreen::OnExitTabClick()
@@ -2315,9 +2321,3 @@ TorchBitmaps g_aTorchBitmaps[14] = {
     { "tortor1", "tortor2", "tortor3" },
     { "torwar1", "torwar2", "torwar3" }
 };
-
-// Out of line, so the linker folds it onto Stub::Assert, as the original's did.
-// FUNCTION: HYPERX100 0x00454db0
-void ChampionshipSetupUIScreen::OnFirstTabClick()
-{
-}

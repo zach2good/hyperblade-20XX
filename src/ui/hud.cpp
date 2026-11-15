@@ -460,6 +460,11 @@ void HUD::LayoutSurfaces()
     HUD::PlaceSurfaces();
 }
 
+// FUNCTION: HYPERX100 0x004c1a20
+void HUD::Unused()
+{
+}
+
 // FUNCTION: HYPERX100 0x004c1b10
 // FUNCTION: HYPERX 0x0043e150
 void HUD::DrawScene(int bDraw)
@@ -1447,8 +1452,3 @@ int g_nFoeRowRating1         = -1;
 int g_anFoeRowNameOrder[4] = { 0, 1, 3, 4 };
 int g_anPeriodOverlayX[4]  = { -1, 19, 38, 57 };
 int g_nLastRokValue        = -1;
-
-// FUNCTION: HYPERX100 0x004c1a20
-void HUD::Unused()
-{
-}

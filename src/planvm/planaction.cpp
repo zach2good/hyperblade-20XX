@@ -68,6 +68,37 @@
 
 // The second object's state block is fetched and never used, in the original too.
 
+// Out of line, so these empty bodies fold onto Stub::Assert; v1.0.0.0 keeps them apart.
+// FUNCTION: HYPERX100 0x0044f0e0
+void PlanAction::SetLaserHurdleCharge(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004a64e0
+void PlanAction::SetInputMode(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004a64f0
+void PlanAction::GetKeystateFlags(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004ab160
+void PlanAction::KillBallStaging(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004ab170
+void PlanAction::KillBallExecute(Interactor*, PlanNode*, short*, int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004ab300
+void PlanAction::NoteStats4Possessors(Interactor*, PlanNode*, short*, int)
+{
+}
+
 // FUNCTION: HYPERX100 0x004b6c60
 // FUNCTION: HYPERX 0x0046a9e0
 void __cdecl PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
@@ -215,34 +246,3 @@ float        g_aSpeedCache[4] = { -1.0f, -1.0f, -1.0f, -1.0f };
 
 extern short g_nSpeedCacheStale;
 short        g_nSpeedCacheStale = 1;
-
-// Out of line, so the linker folds these empty bodies onto Stub::Assert, as the original's did.
-// FUNCTION: HYPERX100 0x004ab300
-void PlanAction::NoteStats4Possessors(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004a64f0
-void PlanAction::GetKeystateFlags(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004a64e0
-void PlanAction::SetInputMode(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x0044f0e0
-void PlanAction::SetLaserHurdleCharge(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004ab160
-void PlanAction::KillBallStaging(Interactor*, PlanNode*, short*, int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004ab170
-void PlanAction::KillBallExecute(Interactor*, PlanNode*, short*, int)
-{
-}

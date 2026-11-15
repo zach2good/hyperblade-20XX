@@ -4,6 +4,22 @@
 #include "colorpalette.h"
 #include "palettefade.h"
 
+// Folded with PaletteScalarFade::Start onto one address, so it carries no marker and keeps that body.
+// FUNCTION: HYPERX100 0x00497b80
+int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
+{
+    if (m_bActive != 0)
+    {
+        const PALETTEENTRY startColour = *pStartColour;
+
+        g_pColorPalette->BuildFadeTable(m_pWorkEntries, (short)m_cWorkEntries, startColour, 0.1f);
+
+        return 1;
+    }
+
+    return 0;
+}
+
 // The phase turns only after the duration has passed since the last advance.
 // FUNCTION: HYPERX100 0x00497bd0
 // FUNCTION: HYPERX 0x0042cf20
@@ -37,20 +53,4 @@ int VisualEffectFade::ApplyPhase(int bPhase)
     }
 
     return bPhase == 0;
-}
-
-// Folded with PaletteScalarFade::Start onto one address, so it carries no marker and keeps that body.
-// FUNCTION: HYPERX100 0x00497b80
-int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
-{
-    if (m_bActive != 0)
-    {
-        const PALETTEENTRY startColour = *pStartColour;
-
-        g_pColorPalette->BuildFadeTable(m_pWorkEntries, (short)m_cWorkEntries, startColour, 0.1f);
-
-        return 1;
-    }
-
-    return 0;
 }
