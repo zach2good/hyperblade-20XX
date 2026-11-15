@@ -1,0 +1,37 @@
+# LIBCMT data no symbol names: scope tables, throw records and small .data tables. The paired
+# function holds the original's address as an immediate; tools/foldcmp.py reads ours at the
+# same offset in our copy and pairs the two.
+address,name,function
+0x004b4760,??_L$scopetable,0x0049f5fc
+0x004b4770,??_M$scopetable,0x0049f67e
+0x004b4780,__ArrayUnwind$scopetable,0x0049f6fe
+0x004b4798,__CxxThrowException$throwinfo,0x0049fba1
+0x004b47b8,_WinMainCRTStartup$scopetable,0x004a209f
+0x004b4858,___FrameUnwindToState$scopetable,0x004a4291
+0x004b4868,CallCatchBlock$scopetable,0x004a43c0
+0x004b4880,BuildCatchObject$scopetable,0x004a4505
+0x004b4890,_DestructExceptionObject$scopetable,0x004a46c9
+0x004b48a0,terminate$scopetable,0x004a47ac
+0x004b48b8,_inconsistency$scopetable,0x004a480d
+0x004b48d8,___crtLCMapStringA$scopetable,0x004a5423
+0x004b4970,___crtGetStringTypeA$scopetable,0x004a759c
+0x004b4da0,___crtCompareStringA$scopetable,0x004abdc3
+0x004ca418,__mbctypes$table,0x004a3183
+0x004ca508,__mbctypes$tableend,0x004a3183
+0x004ca810,__dosmaperr$table,0x004a772e
+0x004cac70,_tzset$cache,0x004a8ccc
+0x004cad18,__NMSG_WRITE$table,0x004a9989
+0x004cadb0,__ld12tod$data,0x004aa35e
+0x004cadc8,__ld12tof$data,0x004aa374
+0x004caf3c,__lpdays$before,0x004a9120
+0x004d2c60,_time$data,0x004a16bb
+0x004d2c84,_raise$data0,0x004a26cb
+0x004d2c88,_raise$data1,0x004a26cb
+0x004d2c8c,_raise$data2,0x004a26cb
+0x004d2c90,_raise$data3,0x004a26cb
+0x004d2c98,_namebuf0,0x004a2f84
+0x004d2ca8,_namebuf1,0x004a2eae
+0x004d2d70,__tzset_lk$data0,0x004a8ccc
+0x004d2d74,__tzset_lk$data1,0x004a8ccc
+0x004d2dc8,__tzset_lk$data2,0x004a8ccc
+0x004d2e24,__setargv$data,0x004a95d1

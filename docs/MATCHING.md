@@ -2675,6 +2675,12 @@ LIBCMT statics have no PDB symbol either, but `HYPERX_sym.map`'s "Static symbols
 them. `symbols/map_pairs.csv` names each by the original's address and its map symbol, and
 foldcmp pairs the two, naming on stderr any symbol the map doesn't list.
 
+Some LIBCMT data has no symbol in the map either: scope tables, throw records and small `.data`
+tables. `symbols/data_operands.csv` names each by the original's address and a function that
+holds it as an immediate. foldcmp finds the immediate in the original's function, reads ours at
+the same offset in our copy, and pairs the two. Leave out a one-past-end bound: the datum after
+it differs between the two links.
+
 #### Reaching the original's fold groups
 
 `python tools/fold_candidates.py` ranks the functions the original folds bodies onto where this

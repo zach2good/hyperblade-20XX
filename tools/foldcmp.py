@@ -158,6 +158,38 @@ def pair_map_symbols(db, rows, statics):
     return paired
 
 
+def pair_operands(db, orig_bin, recomp_bin, lookup, rows):
+    """Pairs each row of symbols/data_operands.csv with the datum our copy of its function names.
+
+    The row's address is an immediate in the original's function. Ours sits at the same offset
+    in our copy. Names on stderr each row it can't pair, and answers how many it paired.
+    """
+    paired = 0
+    with db.batch() as batch:
+        for row in rows:
+            function = lookup(db, ImageId.ORIG, int(row["function"], 16))
+            if function is None or function.recomp_addr is None:
+                print("foldcmp: %s: its function %s has no pair" % (row["name"], row["function"]),
+                      file=sys.stderr)
+                continue
+
+            orig = int(row["address"], 16)
+            size = function.any_size(ImageId.ORIG)
+            offset = orig_bin.read(function.orig_addr, size).find(orig.to_bytes(4, "little"))
+            if offset < 0:
+                print("foldcmp: %s: %s doesn't hold its address" % (row["name"], row["function"]),
+                      file=sys.stderr)
+                continue
+
+            ours = int.from_bytes(recomp_bin.read(function.recomp_addr + offset, 4), "little")
+            batch.set(ImageId.ORIG, orig, type=EntityType.DATA, name=row["name"], size=4)
+            batch.set(ImageId.RECOMP, ours, type=EntityType.DATA, name=row["name"], size=4)
+            batch.match(orig, ours)
+            paired += 1
+
+    return paired
+
+
 def install():
     """Patches reccmp so every Compare built afterwards reads the folding. Other tools call this."""
     groups = fold_groups(read_map(OUT / "HYPERX.map"), read_map(OUT / "HYPERX_sym.map"))
@@ -194,6 +226,9 @@ def install():
         statics = map_statics(OUT / "HYPERX_sym.map")
         print("foldcmp: %d library static(s) paired by their map names"
               % pair_map_symbols(compare._db, register("map_pairs.csv"), statics), file=sys.stderr)
+        print("foldcmp: %d library datum(s) paired through their functions"
+              % pair_operands(compare._db, compare.orig_bin, compare.recomp_bin, lookup,
+                              register("data_operands.csv")), file=sys.stderr)
         aliases.update(aliases_for(compare._db, groups, lookup))
         print("foldcmp: %d fold groups, %d copies read as their marked twin"
               % (len(groups), len(aliases)), file=sys.stderr)
@@ -210,9 +245,11 @@ def main():
 
 
 def selftest():
-    """Checks the map reading and grouping on three folded bodies and one name listed twice, and
-    the pairing of statics through their thunks: one pairs, one thunk has no pair, one isn't a
-    mov ecx."""
+    """Checks the map reading and grouping on three folded bodies and one name listed twice; the
+    pairing of statics through their thunks: one pairs, one thunk has no pair, one isn't a mov
+    ecx; the map's statics, read from "Static symbols" on: one listed, one missing; and the
+    pairing of data through their functions: one pairs, one the function doesn't hold, one whose
+    function has no pair."""
     measured = (
         " 0001:0002a200       ?A@@UAEPAV1@XZ 0042b200 f i a.obj\n"
         " 0001:0002a200       ?B@@UAEPAV1@XZ 0042b200 f i a.obj\n"
@@ -234,9 +271,12 @@ def selftest():
         symbols_path.write_text(symbols)
         read = read_map(measured_path)
         groups = fold_groups(read, read_map(symbols_path))
+        symbols_path.write_text(symbols + " Static symbols\n" + measured)
+        statics = map_statics(symbols_path)
 
     assert "_twice" not in read
     assert groups == [{0x402000, 0x404000, 0x406000}], groups
+    assert "?D@@YAXXZ" in statics and statics["?D@@YAXXZ"] == 0x42B300, statics
 
     # Two paired thunks; ours for the first starts mov ecx, 0x00499000, the second doesn't.
     class Image:
@@ -262,6 +302,28 @@ def selftest():
                {"address": "0x004a0010", "symbol": "_missing", "size": "16"}]
     assert pair_map_symbols(db, symbols, {"_listed": 0x4B0000}) == 1
     assert db.get(ImageId.ORIG, 0x4A0000).recomp_addr == 0x4B0000
+
+    # A paired function that pushes 0x004d0000; ours pushes 0x004e0000 at the same offset.
+    class Bytes:
+        def __init__(self, at, code):
+            self.at = at
+            self.code = code
+
+        def read(self, addr, size):
+            return self.code[addr - self.at:addr - self.at + size]
+
+    with db.batch() as batch:
+        batch.set(ImageId.ORIG, 0x410100, type=EntityType.FUNCTION, name="pusher", size=8)
+        batch.set(ImageId.RECOMP, 0x420100, type=EntityType.FUNCTION, name="pusher", size=8)
+        batch.match(0x410100, 0x420100)
+
+    data = [{"address": "0x004d0000", "name": "_scope", "function": "0x00410100"},
+            {"address": "0x004d0010", "name": "_absent", "function": "0x00410100"},
+            {"address": "0x004d0020", "name": "_lonely", "function": "0x00410200"}]
+    orig_bin = Bytes(0x410100, bytes([0x90, 0x68, 0x00, 0x00, 0x4D, 0x00, 0x90, 0x90]))
+    recomp_bin = Bytes(0x420100, bytes([0x90, 0x68, 0x00, 0x00, 0x4E, 0x00, 0x90, 0x90]))
+    assert pair_operands(db, orig_bin, recomp_bin, EntityDb.get, data) == 1
+    assert db.get(ImageId.ORIG, 0x4D0000).recomp_addr == 0x4E0000
 
     print("selftest passed")
     return 0

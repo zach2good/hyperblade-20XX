@@ -159,8 +159,8 @@ other.
 
 A library routine rewritten in the tree to score it. The original linked the C runtime and the IJG
 JPEG library; so does this build, and `// LIBRARY:` markers pair their routines. The runtime's
-statics stay unpaired, and `symbols/retired.csv` marks them `library-internal`. The JPEG library
-is built from `third_party/jpeg-6a` with `/Zi`, so its statics pair by name too.
+statics and unnamed data pair through `tools/foldcmp.py`'s registers. The JPEG library is built from
+`third_party/jpeg-6a` with `/Zi`, so its statics pair by name too.
 
 ## Rules
 

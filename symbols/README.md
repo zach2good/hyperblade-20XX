@@ -16,7 +16,9 @@ The ones you'll meet first:
   the original on its own. `reccmp-project.yml` reads them.
 - `static_objects.csv`: function-scope statics, which have no symbol on our side. `tools/foldcmp.py`
   pairs each through its atexit thunk.
-- `map_pairs.csv`: LIBCMT statics, which have no PDB symbol either. `tools/foldcmp.py` pairs each with
-  the static of that name in HYPERX_sym.map.
+- `map_pairs.csv`: LIBCMT statics, which have no PDB symbol either. `tools/foldcmp.py` pairs each
+  with the static of that name in HYPERX_sym.map.
+- `data_operands.csv`: LIBCMT data with no symbol at all. `tools/foldcmp.py` pairs each through
+  the function that names it.
 
 The rest record exceptions a checker would otherwise report, each with its reason.

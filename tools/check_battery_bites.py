@@ -509,6 +509,16 @@ PROBES = (
      "            ours = statics.get(row[\"symbol\"])",
      "            ours = next(iter(statics.values()))"),
 
+    # A library datum read from our function at an offset the original doesn't use.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "            ours = int.from_bytes(recomp_bin.read(function.recomp_addr + offset, 4), \"little\")",
+     "            ours = int.from_bytes(recomp_bin.read(function.recomp_addr + offset + 1, 4), \"little\")"),
+
+    # The map's statics read from the top, so a public of the same name wins.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "if line.startswith(\" Static symbols\")),",
+     "if line.startswith(\" Static symbolz\")),"),
+
     # A static paired off a thunk that doesn't load it.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            if code[0] != MOV_ECX:",

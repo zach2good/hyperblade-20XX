@@ -8,6 +8,7 @@ address,symbol,size
 0x004a1b61,_strtoxl,517
 0x004a21cc,_fast_error_exit,36
 0x004a230a,_flsall,164
+0x004a2669,_ctrlevent_capture@4,98
 0x004a284d,_siglookup,61
 0x004a2f84,_init_namebuf,97
 0x004a2fe5,_genfname,70
