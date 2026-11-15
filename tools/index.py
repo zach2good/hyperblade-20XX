@@ -14,6 +14,7 @@ The battery runs `--check`, so adding a script and not regenerating fails before
 import pathlib
 import re
 import sys
+import textwrap
 
 ROOT = pathlib.Path(__file__).resolve().parent
 OUTPUT = ROOT / "README.md"
@@ -146,7 +147,7 @@ def render():
             continue
         lines.append("## %s" % title)
         lines.append("")
-        lines.append(blurb)
+        lines.extend(textwrap.wrap(blurb, 100, break_on_hyphens=False))
         lines.append("")
         lines.append("| Script | What it does |")
         lines.append("|---|---|")

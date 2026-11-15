@@ -530,7 +530,8 @@ void Widget::ClearFrames()
             }
             else
             {
-                // A later frame sharing this bitmap or the screen's background must not delete it again.
+                // A later frame sharing this bitmap or the screen's background must not delete it
+                // again.
                 for (int nScan = nIndex + 1; nScan <= m_nFrameCount; nScan++)
                 {
                     const HBITMAP hLater = m_pFrames[nScan].hBitmap;

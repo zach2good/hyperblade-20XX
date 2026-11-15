@@ -22,7 +22,8 @@ struct AttachPak
 
 STATIC_ASSERT(sizeof(AttachPak) == 0x1c);
 
-// The bindings held this frame, one bit per key slot; g_anKeyBindingOrder swaps Attack and SpeedBurst.
+// The bindings held this frame, one bit per key slot; g_anKeyBindingOrder swaps Attack and
+// SpeedBurst.
 enum HeldBinding
 {
     HELD_FORWARD      = 0x001,

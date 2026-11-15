@@ -466,7 +466,8 @@ float CollisionEllipsoid::RadiusForDirection(const Vec3* pVDir, int)
 }
 
 #ifdef HYPERX_V100
-// A row starts where the last row's final point would go; with no columns, that reads before the grid.
+// A row starts where the last row's final point would go; with no columns, that reads before the
+// grid.
 // FUNCTION: HYPERX100 0x00496530
 TransformObject* CollisionEllipsoid::BuildHeightGrid(short nRows, short nCols, float flMinX, float flMinY, float flMaxX, float flMaxY)
 {

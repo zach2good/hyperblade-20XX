@@ -312,7 +312,8 @@ void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, 
     pActor->m_flBungeeLength = flValue;
 }
 
-// Plan operations that write one setting each; the three camera heights and the buffer factor take tenths.
+// Plan operations that write one setting each; the three camera heights and the buffer factor take
+// tenths.
 // FUNCTION: HYPERX100 0x00437620
 // FUNCTION: HYPERX 0x00401c70
 void PlanAction::SetTrackHeight(Interactor*, PlanNode* pArgs, short*, int)
@@ -468,7 +469,8 @@ void PlanAction::IncrementObjectToTrack(Interactor*, PlanNode*, short*, int)
 #define POS_WINDOW_SECONDS 0.5
 #define DIR_WINDOW_SECONDS 0.4
 
-// Sizes the smoothing windows from the frame rate; at the default factor the position one saturates above about 55 fps.
+// Sizes the smoothing windows from the frame rate; at the default factor the position one saturates
+// above about 55 fps.
 // FUNCTION: HYPERX100 0x00437970
 // FUNCTION: HYPERX 0x00401ee0
 void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
@@ -705,7 +707,8 @@ void __cdecl PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, shor
     pAgendaItem->Activate();
 }
 
-// The three aimed bursts differ in emitter direction: against, along, and world up (+Z); the up one spawns uniformly.
+// The three aimed bursts differ in emitter direction: against, along, and world up (+Z); the up one
+// spawns uniformly.
 
 // FUNCTION: HYPERX100 0x004a0a10
 // FUNCTION: HYPERX 0x00402300
@@ -859,7 +862,8 @@ void __cdecl PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, s
     pAgendaItem->Activate();
 }
 
-// The two blood spurts fire only with brutality on and a free particle system; the small one lifts only a player's.
+// The two blood spurts fire only with brutality on and a free particle system; the small one lifts
+// only a player's.
 
 // FUNCTION: HYPERX100 0x004a0e60
 // FUNCTION: HYPERX 0x004025f0
@@ -1063,7 +1067,8 @@ void __cdecl PlanAction::RegainHead(Interactor* pContext, PlanNode*, short*, int
 short g_nSecondaryCamCursorA = -1;
 short g_nSecondaryCamCursorB = -1;
 
-// Slots four and five, the goalies, pass the guard and read bone indices as entity slots; the overrun is shipped.
+// Slots four and five, the goalies, pass the guard and read bone indices as entity slots; the
+// overrun is shipped.
 // GLOBAL: HYPERX 0x004bb2e4
 int g_anSubstitutePairs[8] = { 94, 95, 98, 99, 96, 97, 100, 101 };
 

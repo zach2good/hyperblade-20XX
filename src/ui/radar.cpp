@@ -341,7 +341,8 @@ int Radar::DrawObject(int nWhich)
 
                     if (nCarrier == g_pGameEngine->m_nViewedSlot)
                     {
-                        // The DC slot doubles as the arrow flag until GetDC fills it, as in the client.
+                        // The DC slot doubles as the arrow flag until GetDC fills it, as in the
+                        // client.
                         hdc = (HDC)1;
                         if ((nCarrier & 1) != 0)
                         {

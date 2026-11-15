@@ -2895,7 +2895,8 @@ LPDIRECTDRAWSURFACE DDraw::CreateOffscreenSurface(int nWidth, int nHeight, int b
     return pSurface;
 }
 
-// The surface's pixel for a colour, in through GDI and back through Lock; no device context answers nought.
+// The surface's pixel for a colour, in through GDI and back through Lock; no device context answers
+// nought.
 
 // FUNCTION: HYPERX100 0x004817b0
 // FUNCTION: HYPERX 0x0043cfc0
@@ -3398,7 +3399,8 @@ int g_nHudColourMode = 1;
 // The DirectX 3 DDCAPS, which is what v1.0.0.0 hands GetCaps.
 #define DX3_DDCAPS_SIZE 0x13c
 
-// The message says free memory, but the total is what is read: the driver's, or the emulation layer's when that is nought.
+// The message says free memory, but the total is what is read: the driver's, or the emulation
+// layer's when that is nought.
 // FUNCTION: HYPERX100 0x0047d200
 unsigned int DDraw::GetTotalVideoMemory(void)
 {

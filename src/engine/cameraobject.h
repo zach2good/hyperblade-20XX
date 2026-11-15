@@ -69,7 +69,8 @@ public:
     void        ResizeTransparentQueue(short nHighest);
     static void SortTransparentQueue();
 
-    // Engine slots or minus one: the two objects the camera follows, and the one tracking saw last frame.
+    // Engine slots or minus one: the two objects the camera follows, and the one tracking saw last
+    // frame.
     int m_nPrimaryTracked;   // 0x0d14
     int m_nSecondaryTracked; // 0x0d18
     int m_nLastTracked;      // 0x0d1c

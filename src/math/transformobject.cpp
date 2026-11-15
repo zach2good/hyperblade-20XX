@@ -309,7 +309,8 @@ void TransformObject::RotateAroundY()
     MarkChanged();
 }
 
-// The two fourth-row flags pick one of four multiplies; only four by four calls Math::MatrixMultiplyInPlace.
+// The two fourth-row flags pick one of four multiplies; only four by four calls
+// Math::MatrixMultiplyInPlace.
 
 // FUNCTION: HYPERX100 0x0040ac80
 // FUNCTION: HYPERX 0x00426f40

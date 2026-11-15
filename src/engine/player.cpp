@@ -21,7 +21,8 @@ extern short g_nBoostGrabStep;
 // GLOBAL: HYPERX 0x004bb668
 extern int g_nTrickHoldStamp;
 
-// The forward key picks trick or boost-grab; a hundred milliseconds of quiet fires the neutral trick.
+// The forward key picks trick or boost-grab; a hundred milliseconds of quiet fires the neutral
+// trick.
 // FUNCTION: HYPERX100 0x0042abe0
 // FUNCTION: HYPERX 0x004110f0
 void __cdecl Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)

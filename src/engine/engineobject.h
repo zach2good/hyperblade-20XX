@@ -31,8 +31,8 @@ struct Vec3;
 #define OBJECT_RING_LENGTH 0x96
 
 // The bits of EngineObject::m_nFlags. An unculled object skips the camera's frustum test, one with
-// no model has nothing to release, a hidden one is neither drawn nor body checked, and the posed bit
-// says the render slots were transformed this frame and is cleared before the next.
+// no model has nothing to release, a hidden one is neither drawn nor body checked, and the posed
+// bit says the render slots were transformed this frame and is cleared before the next.
 #define ENGINEOBJECT_NO_CULL  0x01
 #define ENGINEOBJECT_NO_MODEL 0x04
 #define ENGINEOBJECT_HIDDEN   0x10

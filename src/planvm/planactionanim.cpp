@@ -73,7 +73,8 @@
 // Minus one as a float, pushed when the block carries no rate.
 #define RATE_NONE -1.0f
 
-// Applies the same limp swap as GameBehaviorObject::UpdateLimpAnim before handing the animation over.
+// Applies the same limp swap as GameBehaviorObject::UpdateLimpAnim before handing the animation
+// over.
 // FUNCTION: HYPERX100 0x0040f2d0
 // FUNCTION: HYPERX 0x00401000
 void __cdecl PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int nParam)

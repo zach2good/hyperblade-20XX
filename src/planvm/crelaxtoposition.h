@@ -6,7 +6,8 @@
 class EngineObject;
 struct PlanNode;
 
-// Slot 0 is KindAgendaItem's shared deleting destructor; slot 7 shares CAvoidObjects::IsReplaceable's body.
+// Slot 0 is KindAgendaItem's shared deleting destructor; slot 7 shares
+// CAvoidObjects::IsReplaceable's body.
 // VTABLE: HYPERX 0x004b1ed8
 class CRelaxToPosition : public KindAgendaItem
 {
@@ -17,7 +18,8 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
-    // Slot seven answers one where the base answers nought; the original folds it onto one shared body.
+    // Slot seven answers one where the base answers nought; the original folds it onto one shared
+    // body.
     // FUNCTION: HYPERX100 0x004256a0
     virtual unsigned char GetReadyFlag()
     {

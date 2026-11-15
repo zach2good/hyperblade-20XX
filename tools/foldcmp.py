@@ -31,7 +31,8 @@ MOV_ECX = 0xB9
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "build" / "out"
 
-# 0001:000059e0       ?Destroy@CDisplayPassBarPool@@UAEPAVAgendaItemOwner@@XZ 004069e0 f i cameraobject.cpp.obj
+# 0001:000059e0       ?Destroy@CDisplayPassBarPool@@UAEPAVAgendaItemOwner@@XZ 004069e0 f i
+# cameraobject.cpp.obj
 FUNCTION_LINE = re.compile(r"^ 0001:[0-9a-f]{8}\s+(\S+)\s+([0-9a-f]{8}) f ")
 
 

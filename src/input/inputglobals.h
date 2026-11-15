@@ -54,7 +54,8 @@ extern int g_anGamepadButton[4];
 // GLOBAL: HYPERX 0x004bc4c4
 extern const char* g_apszGamepadButtonKey[4];
 
-// The default keys a joystick stands in for when there is no input device; the axes read the first four.
+// The default keys a joystick stands in for when there is no input device; the axes read the first
+// four.
 // GLOBAL: HYPERX 0x004bc494
 extern unsigned int g_anJoystickDefaultKeys[12];
 

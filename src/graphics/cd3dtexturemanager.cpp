@@ -311,7 +311,8 @@ int CD3DTextureManager::LookupMeshForSlot(LODNode* pNode, short nLevel, short nS
     return -1;
 }
 
-// uv *= (width - 1) / the width last scaled to, clamped with negatives wrapped. Software renderer only.
+// uv *= (width - 1) / the width last scaled to, clamped with negatives wrapped. Software renderer
+// only.
 // FUNCTION: HYPERX100 0x00479260
 // FUNCTION: HYPERX 0x00473720
 int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, MaterialListNode* pList)

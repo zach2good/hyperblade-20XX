@@ -39,7 +39,8 @@ public:
     float            m_flElasticity;   // 0x48
     // Forces the palette remap on where the object's own entry bit would leave it off.
     int m_bForceRemap; // 0x4c
-    // One ratings table per difficulty level, then the special goalie set at RATINGS_SPECIAL_GOALIE.
+    // One ratings table per difficulty level, then the special goalie set at
+    // RATINGS_SPECIAL_GOALIE.
     float* m_apRatings[4]; // 0x50
 
     char* GetModel() const

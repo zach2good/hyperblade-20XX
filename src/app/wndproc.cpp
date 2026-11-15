@@ -122,7 +122,8 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             {
                 if ((short)g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
                 {
-                    // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach their cases.
+                    // The key goes through a char, so VK_OEM_PLUS and VK_OEM_MINUS never reach
+                    // their cases.
                     if (GameApp::HandleMatchKeypress((int)(char)wParam) == 0 && g_pInputDevice->HandleKeyDown(wParam) == -1)
                     {
                         GameApp::HandleGlobalKeyEvent(hWnd, wParam);

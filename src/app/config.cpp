@@ -139,7 +139,8 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
 
         for (int nRow = 0; nRow < 40; nRow++)
         {
-            // BUG: Each %d writes four bytes into a one or two byte field, so the last row overruns the table.
+            // BUG: Each %d writes four bytes into a one or two byte field, so the last row overruns
+            // the table.
             // STRING: HYPERX 0x004c4e60
             fscanf(pFile, "%d %d %d: ", &pRows[nRow].cFlags, &pRows[nRow].nKey, &pRows[nRow].nIndex);
         }

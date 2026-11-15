@@ -69,7 +69,8 @@ void KeyboardDeviceObj::CheckButtonTimeouts()
 #define DOUBLE_TAP_MS  0xfa
 #define REPEAT_STEP_MS 0x32
 
-// Each release time starts fifty milliseconds past its press, so a first press is never a double tap.
+// Each release time starts fifty milliseconds past its press, so a first press is never a double
+// tap.
 // FUNCTION: HYPERX100 0x00490170
 // FUNCTION: HYPERX 0x0045cc10
 KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)

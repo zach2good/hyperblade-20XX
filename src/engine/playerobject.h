@@ -23,7 +23,8 @@ public:
     virtual void Postpass();
     virtual void UpdateRenderSlotTransform(short nSlotIdx);
 
-    // The goal this player shoots at, SLOT_NGOAL or SLOT_SGOAL; three below it is that goal's keeper.
+    // The goal this player shoots at, SLOT_NGOAL or SLOT_SGOAL; three below it is that goal's
+    // keeper.
     short m_wTargetGoalSlot; // 0xd14
     short m_wUnused;         // 0xd16
     // Written by id_ACF_SetAttackee and id_ACF_SetKnockedDownState; minus one and nought at first.

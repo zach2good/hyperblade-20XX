@@ -31,6 +31,7 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "check_unassigned_locals.py",
             "check_marker_comments.py",
             "check_text_hygiene.py",
+            "check_prose_width.py",
             "check_score_prose.py",
             "check_volatile.py",
             "check_asm_bodies.py",

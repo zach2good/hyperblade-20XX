@@ -25,7 +25,8 @@ public:
     void SetOwnerFromSlot(short nSlot);
 #endif
 
-    // Public: KeyboardDeviceObj's constructor writes four of these, and the bring-up key replay reads them.
+    // Public: KeyboardDeviceObj's constructor writes four of these, and the bring-up key replay
+    // reads them.
 public:
     struct ActionBindingGroup* m_pSlots; // 0xd14
     short                      m_nSlots; // 0xd18

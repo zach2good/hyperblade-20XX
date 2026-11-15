@@ -345,7 +345,8 @@ int D3D::RestoreDisplayMode(void)
     return 1;
 }
 
-// Sets each mode's last word when the driver renders at its depth and, on hardware, the frame fits in video memory.
+// Sets each mode's last word when the driver renders at its depth and, on hardware, the frame fits
+// in video memory.
 // FUNCTION: HYPERX100 0x004d1ee0
 int __cdecl D3D::MarkFittingModes(int nDriver)
 {

@@ -41,7 +41,8 @@
 // LIBRARY: HYPERX 0x004a6436
 // ___from_strstr_to_strchr
 
-// __findfirst, __findclose and their FILETIME converters; 0x0049f9b0 is strpbrk, 0x0049f7d2 _mbspbrk.
+// __findfirst, __findclose and their FILETIME converters; 0x0049f9b0 is strpbrk, 0x0049f7d2
+// _mbspbrk.
 // LIBRARY: HYPERX 0x004a108f
 // ___timet_from_ft
 
@@ -122,7 +123,8 @@
 // LIBRARY: HYPERX 0x0049fbdb
 // __mbctolower
 
-// The string formatter's six; it walks the format with the multibyte routines, so the build is _MBCS.
+// The string formatter's six; it walks the format with the multibyte routines, so the build is
+// _MBCS.
 // LIBRARY: HYPERX 0x004a131a
 // __mbsinc
 

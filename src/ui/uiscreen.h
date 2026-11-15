@@ -38,7 +38,8 @@ class UIScreen : public Screen
 public:
     void InitWidgets();
 
-    // Four screens call this, only one a TournamentSetupUIScreen; it rewinds only the first own widget.
+    // Four screens call this, only one a TournamentSetupUIScreen; it rewinds only the first own
+    // widget.
     void ResetFrameOnLoopDone(int nMsg);
 
     virtual void OnWidgetMessage(int nMsg, unsigned int nId);

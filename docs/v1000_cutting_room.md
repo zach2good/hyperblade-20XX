@@ -42,8 +42,8 @@ The dialogs are in both releases' resources. Neither release opens them.
 ## Menu items
 
 - "2 Player Mode" (command 155) is in the menu, and neither release handles it.
-- "One on One" (104), "Two on Two" (105) and the network "Connection..." (138) and "Players..." (140)
-  items have no handler in either release.
+- "One on One" (104), "Two on Two" (105) and the network "Connection..." (138) and "Players..."
+  (140) items have no handler in either release.
 - v1.0.0.0 handles command 159 with an empty case. No menu item has that number.
 - The resolution menu keeps a greyed 480x360 mode.
 

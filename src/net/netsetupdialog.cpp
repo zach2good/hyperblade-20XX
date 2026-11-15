@@ -776,7 +776,8 @@ unsigned int __cdecl NetSetupDialog::HostSession(HWND hDlg, unsigned int, unsign
     return 0;
 }
 
-// The updating flag is restored rather than cleared, except that an unknown control returns with it set.
+// The updating flag is restored rather than cleared, except that an unknown control returns with it
+// set.
 
 // FUNCTION: HYPERX100 0x0049cf70
 // FUNCTION: HYPERX 0x00476da0

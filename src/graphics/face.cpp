@@ -277,8 +277,8 @@ unsigned char __fastcall Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char 
 }
 
 #ifdef HYPERX_V100
-// Two when every vertex is inside, nought when the polygon is rejected or clipped away, one when clipped.
-// The outcodes test against nought, but the clip planes use the minimum extents.
+// Two when every vertex is inside, nought when the polygon is rejected or clipped away, one when
+// clipped. The outcodes test against nought, but the clip planes use the minimum extents.
 // FUNCTION: HYPERX100 0x004998f0
 unsigned char __fastcall Face::ClassifyAndClipPolygon(ClipPolyBuffer* pPoly)
 {

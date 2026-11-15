@@ -20,7 +20,8 @@
 #define SOUND_DOORCLS2 0x129
 #define SOUND_ENDSIR   0x14b
 
-// SNDFILES.LST's group column. The menu group is held loaded outside a match; the ambient group loops.
+// SNDFILES.LST's group column. The menu group is held loaded outside a match; the ambient group
+// loops.
 #define SOUND_GROUP_LOOPING 0x29a
 #define SOUND_GROUP_PRELOAD 0x309
 

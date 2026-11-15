@@ -9,7 +9,8 @@ public:
     {
     }
 
-    // Answers what the holding pointer should hold afterwards; every caller assigns it straight back.
+    // Answers what the holding pointer should hold afterwards; every caller assigns it straight
+    // back.
     virtual PooledOwnerRoot* Destroy() = 0;
 };
 

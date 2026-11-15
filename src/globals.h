@@ -1,4 +1,5 @@
-// Globals shared across translation units. Names follow the Ghidra reading of each address, corrected where wrong.
+// Globals shared across translation units. Names follow the Ghidra reading of each address,
+// corrected where wrong.
 
 #include <stdarg.h>
 
@@ -35,7 +36,8 @@ extern SurfacePoint g_ptRadarInset;
 
 // GLOBAL: HYPERX 0x004cd4e4
 extern String g_strHudDefaultName;
-// VC6 numbers globals.cpp's $E functions in definition order, so a dynamic initialiser added there renumbers these.
+// VC6 numbers globals.cpp's $E functions in definition order, so a dynamic initialiser added there
+// renumbers these.
 // SYNTHETIC: HYPERX 0x00439570
 // $E8
 // SYNTHETIC: HYPERX 0x00439580
@@ -445,7 +447,8 @@ extern float g_flForceIncrement;
 // GLOBAL: HYPERX 0x004d01dc
 extern int g_bSingleStepActive;
 
-// z is IDC_VIEW_STEEPNESS in the physics dialog, the original's own resource naming it; nothing reads x or y.
+// z is IDC_VIEW_STEEPNESS in the physics dialog, the original's own resource naming it; nothing
+// reads x or y.
 // GLOBAL: HYPERX 0x004d01f0
 extern Vec3 g_vViewSteepness;
 
@@ -453,7 +456,8 @@ extern Vec3 g_vViewSteepness;
 // GLOBAL: HYPERX 0x004d01fc
 extern unsigned char g_bVictimCam;
 
-// DATA/ENUMIDS.H's ID_OFS camera tracking offsets, which SetOffsetValues writes by index; the config file reads the first four.
+// DATA/ENUMIDS.H's ID_OFS camera tracking offsets, which SetOffsetValues writes by index; the
+// config file reads the first four.
 // GLOBAL: HYPERX 0x004d19e8
 extern Vec3 g_vBirdsEyeTrackOffset;
 // GLOBAL: HYPERX 0x004d19f8

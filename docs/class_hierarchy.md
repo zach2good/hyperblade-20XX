@@ -141,11 +141,11 @@ the original left that slot to a derived class.
 
 ## Slots shared across unrelated tables
 
-The linker folded identical bodies onto one address, so some slot bodies appear in many
-unrelated tables and cannot be one class's member. `Object::Trace` is in seventeen tables,
-`DispatchSceneMessage` in twelve, `CreateSurface` in seven and `KeyConfigDialog::SaveKeysAs` in five.
-`symbols/free_slots.csv` lists the slot bodies that the tree writes as free functions, with the
-reason for each.
+The linker folded identical bodies onto one address, so some slot bodies appear in many unrelated
+tables and cannot be one class's member. `Object::Trace` is in seventeen tables,
+`DispatchSceneMessage` in twelve, `CreateSurface` in seven and `KeyConfigDialog::SaveKeysAs` in
+five. `symbols/free_slots.csv` lists the slot bodies that the tree writes as free functions, with
+the reason for each.
 
 ## COM interfaces
 

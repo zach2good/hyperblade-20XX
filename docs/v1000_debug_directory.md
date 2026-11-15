@@ -16,11 +16,11 @@ The CODEVIEW path names the original build tree and shows that v1.0.0.0 was a Re
 still shipped with live asserts: the `Assertion failed: %s, file %s, line %d` string and the
 just-in-time debugger prompt are in v1.0.0.0 and not in v1.0.0.1.
 
-The FPO (frame pointer omission) table is the useful part. Each 16-byte record gives a function's start, its byte size,
-its prologue length, the dwords of parameters and of locals in its frame, the number of saved
-registers, and whether it uses SEH. All 4242 records have frame type `fpo`, so the table covers
-only the functions without a frame pointer: 526,565 of the 1,017,854 bytes of `.text`. The
-EBP-framed functions are absent.
+The FPO (frame pointer omission) table is the useful part. Each 16-byte record gives a function's
+start, its byte size, its prologue length, the dwords of parameters and of locals in its frame, the
+number of saved registers, and whether it uses SEH. All 4242 records have frame type `fpo`, so the
+table covers only the functions without a frame pointer: 526,565 of the 1,017,854 bytes of `.text`.
+The EBP-framed functions are absent.
 
 ## Reading the table
 
@@ -101,9 +101,9 @@ Every clean site of one callee must agree. Written source passes.
 ### Cases no byte count can settle
 
 - **Folded stubs.** `Stub::Assert`, `KeyConfigDialog::SaveKeysAs` and `KeyConfigDialog::ClearKeys`
-  are one, three and six bytes of `ret`. The linker folded several unrelated functions onto each, so one address
-  is a vtable slot, a four-argument `__stdcall` and a two-argument `__cdecl`. No one signature
-  fits, and the tree calls them through casts. Both tools skip bodies under eight bytes.
+  are one, three and six bytes of `ret`. The linker folded several unrelated functions onto each, so
+  one address is a vtable slot, a four-argument `__stdcall` and a two-argument `__cdecl`. No one
+  signature fits, and the tree calls them through casts. Both tools skip bodies under eight bytes.
 - **Structs by value.** `Object::SetVelocity` takes one `Vec3` by value, which is three stack
   dwords.
 - **Hidden return pointers.** A function that returns a struct by value has one more stack dword

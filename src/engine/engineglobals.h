@@ -1,4 +1,5 @@
-// Globals the engine files share. Most are defined in src/globals.cpp, in the original's .data order.
+// Globals the engine files share. Most are defined in src/globals.cpp, in the original's .data
+// order.
 
 #ifndef HYPERBLADE_ENGINEGLOBALS_H
 #define HYPERBLADE_ENGINEGLOBALS_H

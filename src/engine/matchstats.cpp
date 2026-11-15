@@ -1,4 +1,5 @@
-// The match stat array: the block cleared, one element read or written, and the plan's stat updates.
+// The match stat array: the block cleared, one element read or written, and the plan's stat
+// updates.
 
 #include "common/compat.h"
 #include "engine/matchstats.h"

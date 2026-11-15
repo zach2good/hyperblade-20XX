@@ -253,7 +253,8 @@ struct GameEngine
 #endif
     void BroadcastEvent(int nEvent, int nParam, int nSender);
 
-    // Answers null at the end of the file; the model id is written back through the second argument.
+    // Answers null at the end of the file; the model id is written back through the second
+    // argument.
     class ObjectDef* ParseObjectDefinition(class FileObj* pFile, unsigned int* pnModelId);
     EngineObject*    CreateObject(class ObjectDef* pDef, unsigned int nModelId);
     char             LoadConfigFile(const char* pszFileName);

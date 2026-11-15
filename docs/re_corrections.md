@@ -17,8 +17,8 @@ as [GHIDRA.md](GHIDRA.md#pushing-to-ghidra) says.
 Ghidra: `InfoBar__UpdateTimerDisplay`. Tree: `InfoBar::UpdateRokValue`.
 
 The format string at 0x004c0d6c is `"x%d"`, and the value is `abs(RokObject::m_wRokValue)` at
-slot+0xd24, the same figure `src/ui/hud.cpp` draws into `g_hudSurfaces.pSmallText`, which starts as "x4".
-The global it caches through, 0x004cef54, is a second last-value cache beside the HUD's
+slot+0xd24, the same figure `src/ui/hud.cpp` draws into `g_hudSurfaces.pSmallText`, which starts as
+"x4". The global it caches through, 0x004cef54, is a second last-value cache beside the HUD's
 `g_nLastRokValue`, so the two displays reformat independently. The tree names it
 `g_nInfoBarLastRokValue`.
 
@@ -372,8 +372,8 @@ literals, so every scanf call there loads the format from memory. Tree: `g_pszPe
 the wrong thing:
 
 - 0x004cd52c and 0x004cd530, `g_pHUD_TeamADamageSurface` and `g_pHUD_TeamBDamageSurface`, are the
-  logo borders "frdamgA" and "frdamgB" (`g_hudSurfaces.pTeamAFrame`, `g_hudSurfaces.pTeamBFrame`). The error strings in
-  `HUD::CreateSurfaces` say "team A logo borders" and "team B logo borders".
+  logo borders "frdamgA" and "frdamgB" (`g_hudSurfaces.pTeamAFrame`, `g_hudSurfaces.pTeamBFrame`).
+  The error strings in `HUD::CreateSurfaces` say "team A logo borders" and "team B logo borders".
 - 0x004cd534 and 0x004cd538, `g_pHUD_TeamALossSurface` and `g_pHUD_TeamBSeaSurface`, are the two
   team logos. Their default bitmaps "hudlos" and "hudsea" are Los Angeles and Seattle.
 - 0x004cd560 and 0x004cd564, `g_pHUD_TimerText1` and `g_pHUD_TimerText2`, hold strings 159 and
@@ -385,12 +385,12 @@ the wrong thing:
 
 ### Folded stubs have no one signature
 
-`Stub::Assert` (0x0043e130), `KeyConfigDialog::SaveKeysAs` (0x0042bcd0) and `KeyConfigDialog::ClearKeys`
-(0x0046d700) are one, three and six bytes of `ret`. The linker folded several unrelated functions
-onto each address. 0x0043e130 is reached as a vtable slot, as a call with no arguments and as a
-one-argument `__cdecl`. 0x0042bcd0 and 0x0046d700 are each called from
-`KeyConfigDialog::OnCommand` with `(HWND, KeyRow*)` and cleaned with `add esp, 8`, and each is
-also a vtable slot that takes `this`. No arity check can settle them.
+`Stub::Assert` (0x0043e130), `KeyConfigDialog::SaveKeysAs` (0x0042bcd0) and
+`KeyConfigDialog::ClearKeys` (0x0046d700) are one, three and six bytes of `ret`. The linker folded
+several unrelated functions onto each address. 0x0043e130 is reached as a vtable slot, as a call
+with no arguments and as a one-argument `__cdecl`. 0x0042bcd0 and 0x0046d700 are each called from
+`KeyConfigDialog::OnCommand` with `(HWND, KeyRow*)` and cleaned with `add esp, 8`, and each is also
+a vtable slot that takes `this`. No arity check can settle them.
 
 ### 0x00475510 and 0x004757f0: dialog procedures Ghidra does not have
 
@@ -416,8 +416,8 @@ data, so there is no call site to read.
 
 ### 0x00491de0: Game::UpdateState takes nothing
 
-The propagated v1.0.0.0 pairing gives two stack dwords. `GameApp::MainUpdate` calls it at 0x0044c17f with
-no pushes and no cleanup, so the pairing is wrong.
+The propagated v1.0.0.0 pairing gives two stack dwords. `GameApp::MainUpdate` calls it at 0x0044c17f
+with no pushes and no cleanup, so the pairing is wrong.
 
 ### Functions Ghidra left free that are class members
 

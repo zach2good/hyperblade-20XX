@@ -141,7 +141,8 @@ void __cdecl PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short*
             const Vec3* pForwardOther = &pOther->GetPhysicsBody()->velDir;
             const Vec3* pForwardRange = &pRange->GetPhysicsBody()->velDir;
 
-            // Not GetColObjPtr: the client stores the dot between the load and its test (0x0040168a to 0x0040169c).
+            // Not GetColObjPtr: the client stores the dot between the load and its test (0x0040168a
+            // to 0x0040169c).
             BoundBubble* const pColObj = g_pGameEngine->m_ppColObjects[nSlot];
 
             flDot = pForwardRange->x * pForwardOther->x + pForwardRange->y * pForwardOther->y + pForwardRange->z * pForwardOther->z;
@@ -624,7 +625,8 @@ extern int g_nPauseRequestStreak;
 // The host packs the period's elapsed time in tenths of a second.
 #define SYNC_ELAPSED_UNIT_MS 100
 
-// Matches the host's clock by replaying the goal plans' broadcasts: a shot starts it, a goal stops it.
+// Matches the host's clock by replaying the goal plans' broadcasts: a shot starts it, a goal stops
+// it.
 // FUNCTION: HYPERX100 0x004a6920
 // FUNCTION: HYPERX 0x0045e890
 void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
@@ -1538,7 +1540,8 @@ void PlanCond::IsScanningModeOn(Interactor*, PlanNode*, short* pResult, int)
     *pResult = !g_bScanningModesEnabled;
 }
 
-// Zero only when the second object heads away from the first, both move the same way, and they are within a hundred and fifty.
+// Zero only when the second object heads away from the first, both move the same way, and they are
+// within a hundred and fifty.
 
 // FUNCTION: HYPERX100 0x004a8230
 // FUNCTION: HYPERX 0x0045fb70
@@ -1858,7 +1861,8 @@ void __cdecl PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int n
     *pResult = 3;
 }
 
-// Five hundred, as a squared distance, a little over twenty two: both opponents have to be beyond it.
+// Five hundred, as a squared distance, a little over twenty two: both opponents have to be beyond
+// it.
 #define FAR_RANGE_SQUARED 500.0f
 
 // FUNCTION: HYPERX100 0x004a8bf0
@@ -2750,7 +2754,8 @@ void PlanCond::RokInWhichTeamsPoss(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 2;
 }
 
-// Zero when the rok is loose, else one to four by which skater holds it relative to the actor; a goalie holder leaves the answer alone.
+// Zero when the rok is loose, else one to four by which skater holds it relative to the actor; a
+// goalie holder leaves the answer alone.
 
 // FUNCTION: HYPERX100 0x004ab010
 // FUNCTION: HYPERX 0x00461b60
@@ -3687,7 +3692,8 @@ void __cdecl PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short
     }
 }
 
-// Five below the damage gate and four for the actor's m_wClockStoppedSemaphore, before the rok is asked.
+// Five below the damage gate and four for the actor's m_wClockStoppedSemaphore, before the rok is
+// asked.
 
 // The slot two along, wrapped: zero pairs with two and one with three.
 #define SLOT_OPPOSITE_STEP  2
@@ -5633,7 +5639,8 @@ void __cdecl PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* p
     *pResult = 1;
 }
 
-// The south goal clamps the Rok's value up to one; the north clamps it down to minus one and flips it.
+// The south goal clamps the Rok's value up to one; the north clamps it down to minus one and flips
+// it.
 
 // FUNCTION: HYPERX100 0x004af7c0
 // FUNCTION: HYPERX 0x00465150
@@ -5733,7 +5740,8 @@ void __cdecl PlanCond::Jumping(Interactor* pContext, PlanNode*, short* pResult, 
     *pResult = 1;
 }
 
-// Within ten of an object without the 0x10 bit answers two; both or neither answers three or a coin.
+// Within ten of an object without the 0x10 bit answers two; both or neither answers three or a
+// coin.
 
 #define STATE_AVAILABLE 0x10
 
@@ -6511,7 +6519,8 @@ void __cdecl PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short
     *pResult = pArgs->m_nArgCount - 2;
 }
 
-// The straight arm is looked up and never read; the shoulder checks split left from right only in states nine and thirteen.
+// The straight arm is looked up and never read; the shoulder checks split left from right only in
+// states nine and thirteen.
 
 // GameEngine::SetTeams writes the first from its home argument and the second from its away one.
 // FUNCTION: HYPERX100 0x004b0d10
@@ -7582,8 +7591,9 @@ void PlanAction::ResetAccTransient(Interactor* pContext, PlanNode*, short*, int)
     static_cast<CTrackTraj*>(pPlanState->m_pCurrent->m_apSlots[0])->m_flBlend = g_flZeroPlan;
 }
 
-// Every input device is written as a KeyboardDeviceObj, so on the 0xd28-byte gamepad, joystick and mouse the
-// mask lands past the object, as the original's writes at 0x0046763a and 0x00467649 do (allocated at 0x004863f0).
+// Every input device is written as a KeyboardDeviceObj, so on the 0xd28-byte gamepad, joystick and
+// mouse the mask lands past the object, as the original's writes at 0x0046763a and 0x00467649 do
+// (allocated at 0x004863f0).
 // FUNCTION: HYPERX100 0x004b2870
 // FUNCTION: HYPERX 0x004675f0
 void __cdecl PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short*, int)
@@ -8759,7 +8769,8 @@ void PlanCond::Interception(Interactor* pContext, PlanNode*, short* pResult, int
     *pResult = pRok->m_nCarrierSlot % 2 != pRok->m_nPrevCarrierSlot % 2;
 }
 
-// Two out of range or facing away; in range, two when the actor is the Rok's carrier slot, else one.
+// Two out of range or facing away; in range, two when the actor is the Rok's carrier slot, else
+// one.
 
 // The largest range the condition will test, and the dot the actor has to beat.
 #define RANGE_CEILING 150.0f

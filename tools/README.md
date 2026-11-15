@@ -30,7 +30,8 @@ What the build and the score run, in the order they run it.
 
 ## Checkers
 
-Run by CI, by the `verify` build targets, or by `checkers.py`. Each fails on one fault and says which.
+Run by CI, by the `verify` build targets, or by `checkers.py`. Each fails on one fault and says
+which.
 
 | Script | What it does |
 |---|---|
@@ -81,6 +82,7 @@ Run by CI, by the `verify` build targets, or by `checkers.py`. Each fails on one
 | `check_null_test_casts.py` | Fails on a cast applied to a name that is then compared straight against zero. |
 | `check_parser_alerts.py` | Report files whose annotations reccmp's own parser rejects. |
 | `check_prefixed_functions.py` | Report a `Name__Function` in src: a class or namespace spelled into a free function's name. |
+| `check_prose_width.py` | Fail on a prose line wider than 100 columns that could wrap. |
 | `check_record_arith.py` | Fail on byte arithmetic done through a pointer to a record. |
 | `check_redundant_forwards.py` | Finds a forward declaration in a .cpp for a class an include above it already defines. |
 | `check_restated_externs.py` | Report a `.cpp` extern that restates one a header it includes already declares, with no reason. |
@@ -115,7 +117,7 @@ Run by CI, by the `verify` build targets, or by `checkers.py`. Each fails on one
 | `implicit_narrowing.py` | Lists integer assignments that narrow a value without an explicit cast. |
 | `kind_names.py` | Compare every name the tree gives an object kind with the name the client gives it. |
 | `marker_next_line.py` | Find reccmp markers whose name is not the declaration on the line under them. |
-| `namespace_spread.py` | Counts the classes and namespaces whose bodies sit in more than one .cpp, or in no .cpp named for them. |
+| `namespace_spread.py` | Counts the classes and namespaces with bodies in more than one .cpp, or in no .cpp named for them. |
 | `placeholder_functions.py` | Lists functions and methods whose name is a placeholder, with their callers and what each touches. |
 | `placeholder_globals.py` | Lists globals whose name gives only their address, with the functions that read and write each. |
 | `plan_dump.py` | Print a compiled plan file as indented pseudo-source, every id named from ENUMIDS.H. |
@@ -162,7 +164,8 @@ Ask a question of the reference image and print what it finds.
 
 ## Naming
 
-Propose names for what the original has and this tree does not. A proposal is not an answer: apply it, rescore, and drop what does not reach 100.
+Propose names for what the original has and this tree does not. A proposal is not an answer: apply
+it, rescore, and drop what does not reach 100.
 
 | Script | What it does |
 |---|---|
@@ -181,7 +184,8 @@ Drive the bring-up build, which runs the game. Never measure that build.
 
 ## The v1.0.0.0 frame-pointer tables
 
-v1.0.0.0 ships an unstripped debug directory. These read it and carry what it knows across to v1.0.0.1.
+v1.0.0.0 ships an unstripped debug directory. These read it and carry what it knows across to
+v1.0.0.1.
 
 | Script | What it does |
 |---|---|

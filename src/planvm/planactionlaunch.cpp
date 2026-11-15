@@ -77,7 +77,8 @@ float              g_flUnusedPlanLaunchC = g_flZeroPlanLaunch;
 // Range byte -1: Launch takes its unaimed branch.
 #define SHOT_UNAIMED 0xffff0000
 
-// The human packs the head camera's aim and shot power into the shot; any other plan sends it unaimed.
+// The human packs the head camera's aim and shot power into the shot; any other plan sends it
+// unaimed.
 // FUNCTION: HYPERX100 0x004d4720
 // FUNCTION: HYPERX 0x004031e0
 void __cdecl PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
@@ -451,7 +452,8 @@ void __cdecl PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
     }
 }
 
-// Pushes the vertical velocity down and never lets it rise, and reverses and quarters the horizontal pair.
+// Pushes the vertical velocity down and never lets it rise, and reverses and quarters the
+// horizontal pair.
 
 // Ten units a second, and the two scale factors.
 #define DAMP_RATE        10.0f

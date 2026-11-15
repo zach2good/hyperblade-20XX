@@ -161,7 +161,8 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
     return 1;
 }
 
-// The tab the two field walkers split on; src/common/commonglobals.h names the same character at 0x004b3f00.
+// The tab the two field walkers split on; src/common/commonglobals.h names the same character at
+// 0x004b3f00.
 // GLOBAL: HYPERX 0x004b22d0
 extern const char* const g_pszAnimTokenDelimiters;
 

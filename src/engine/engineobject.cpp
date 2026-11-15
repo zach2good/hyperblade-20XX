@@ -66,7 +66,8 @@ float g_flUnusedEngineObjectA = g_flZeroEngineObject;
 float g_flUnusedEngineObjectB = g_flZeroEngineObject;
 float g_flUnusedEngineObjectC = g_flZeroEngineObject;
 
-// One collision in five posts teammate or opponent commentary; the two coin tosses differ, as in the original.
+// One collision in five posts teammate or opponent commentary; the two coin tosses differ, as in
+// the original.
 // FUNCTION: HYPERX100 0x00466730
 // FUNCTION: HYPERX 0x00406620
 void __cdecl EngineObject::PostCollisionCommentary(EngineObject* pA, EngineObject* pB)
@@ -722,7 +723,8 @@ EngineObject::~EngineObject()
 
 #define MATERIAL_SHARED 2
 
-// The only writer of m_ppPlanBlobs, m_papszPlanNames and m_nPlanCount; a model named "null" is a success.
+// The only writer of m_ppPlanBlobs, m_papszPlanNames and m_nPlanCount; a model named "null" is a
+// success.
 // FUNCTION: HYPERX100 0x004614c0
 // FUNCTION: HYPERX 0x00470790
 char EngineObject::InitModel(int nSlot, ObjectDef* pDef)
@@ -1451,7 +1453,8 @@ void EngineObject::BuildShadowComponentLinks(MeshBone* pSlot)
 // FUNCTION: HYPERX 0x00471630
 void EngineObject::UpdateRenderSlotTransform(short nSlotIdx)
 {
-    // The original's object at 0x004d05c0 takes no marker; symbols/static_guards.csv names its guard.
+    // The original's object at 0x004d05c0 takes no marker; symbols/static_guards.csv names its
+    // guard.
     static TransformObject SlotTransform;
 
     m_nFlags |= ENGINEOBJECT_POSED;

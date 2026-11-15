@@ -630,7 +630,8 @@ void InfoBar::DrawScene(int bDraw)
             m_nCachedArena    = g_pGameEngine->m_nArenaIndex;
 
 #ifdef HYPERX_BRINGUP
-            // g_hDisplayPalette is a deleted handle here, in the original too, and GDI32 faults on it.
+            // g_hDisplayPalette is a deleted handle here, in the original too, and GDI32 faults on
+            // it.
             if (g_pColorPalette != 0 && g_pColorPalette->m_hPalette != 0)
             {
                 g_hDisplayPalette = g_pColorPalette->m_hPalette;

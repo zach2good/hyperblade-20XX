@@ -27,7 +27,8 @@ struct SoundEntry
     int   m_nUnusedA;    // 0x08
     int   m_nDurationMs; // 0x0c, SNDFILES.LST's second column
     int   m_nGroup;      // 0x10, SNDFILES.LST's third column, via SoundManager::Load
-    // DirectSound pan and volume in hundredths of a decibel; AnimEvent sets them and nothing reads them.
+    // DirectSound pan and volume in hundredths of a decibel; AnimEvent sets them and nothing reads
+    // them.
     int m_nPan;    // 0x14
     int m_nVolume; // 0x18
     // When the play started, from timeGetTime.

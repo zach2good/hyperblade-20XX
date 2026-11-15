@@ -1,4 +1,5 @@
-// Carries the input word from KeyboardDeviceObj::m_nHeldMask on object 0x56 into the player and back.
+// Carries the input word from KeyboardDeviceObj::m_nHeldMask on object 0x56 into the player and
+// back.
 
 #include "common/compat.h"
 #include "planvm/agendaitemids.h"

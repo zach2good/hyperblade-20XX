@@ -209,7 +209,8 @@ int __cdecl CGPalette::ReadGifComment(GifComment* pComment, FILE* pFile)
     return 0;
 }
 
-// Keeps each sub-block's length byte. Every grow asks for only the next block's size, not the total.
+// Keeps each sub-block's length byte. Every grow asks for only the next block's size, not the
+// total.
 // FUNCTION: HYPERX100 0x0049a580
 char* __cdecl CGPalette::ReadGifSubBlocks(FILE* pFile)
 {

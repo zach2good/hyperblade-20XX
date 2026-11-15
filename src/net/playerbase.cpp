@@ -101,7 +101,8 @@ void __fastcall PlayerBase::BroadcastState(NetSendBuffer* pPacket, int nLength, 
 
 #define EVENT_NONE 0xffffffff
 
-// A move goes out every second regardless; between those only when it changed, the Rok is not held and a modem link is not throttled.
+// A move goes out every second regardless; between those only when it changed, the Rok is not held
+// and a modem link is not throttled.
 // FUNCTION: HYPERX100 0x0044b9b0
 // FUNCTION: HYPERX 0x0042c380
 void PlayerBase::NetUpdateObject(unsigned char nSlot)
@@ -228,7 +229,8 @@ void PlayerBase::NetUpdateObject(unsigned char nSlot)
     m_nPrevBehaviour = nBehaviour;
 }
 
-// Two stationary slots per nibble byte, then five-byte events, nine with a parameter; flushed at 0xf1 bytes.
+// Two stationary slots per nibble byte, then five-byte events, nine with a parameter; flushed at
+// 0xf1 bytes.
 
 // FUNCTION: HYPERX100 0x0044bd60
 // FUNCTION: HYPERX 0x0042c670

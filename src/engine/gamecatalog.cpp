@@ -104,7 +104,8 @@ void GameCatalog::AssignTeams(int nTeam)
     }
 }
 
-// The three counts and the away score share one error message; the game index is parsed and dropped.
+// The three counts and the away score share one error message; the game index is parsed and
+// dropped.
 // FUNCTION: HYPERX100 0x00438180
 void GameCatalog::ParseGameCat(FileObj* pFile)
 {

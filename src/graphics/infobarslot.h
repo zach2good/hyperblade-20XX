@@ -39,7 +39,8 @@ public:
         m_nMaxHeight  = nMaxHeight;
     }
 
-    // infobar.cpp seeds m_nMinHeight, m_nMaxHeight and m_nUnitWidth with two, eight and nine for each damage bar.
+    // infobar.cpp seeds m_nMinHeight, m_nMaxHeight and m_nUnitWidth with two, eight and nine for
+    // each damage bar.
     int   m_nFrameCount; // 0x1c
     int   m_nFrame;      // 0x20
     int   m_nMinHeight;  // 0x24

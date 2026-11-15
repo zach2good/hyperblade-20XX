@@ -1,6 +1,7 @@
 #ifdef HYPERX_V100
 
-// A bitmap that shows one of several frames, loaded from numbered files. Nothing in v1.0.0.0 builds one.
+// A bitmap that shows one of several frames, loaded from numbered files. Nothing in v1.0.0.0 builds
+// one.
 #ifndef HYPERBLADE_FRAMEBITMAP_H
 #define HYPERBLADE_FRAMEBITMAP_H
 

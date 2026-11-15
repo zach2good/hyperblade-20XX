@@ -216,7 +216,8 @@ void __cdecl GameEngine::DestroyAgendaItemPools(void)
     }
 }
 
-// Colours the multiplier's two materials by the rok's value; the first call saves their rest colours.
+// Colours the multiplier's two materials by the rok's value; the first call saves their rest
+// colours.
 
 // FUNCTION: HYPERX100 0x004aced0
 // FUNCTION: HYPERX 0x00463220

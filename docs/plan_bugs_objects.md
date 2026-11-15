@@ -1,15 +1,16 @@
 # Bugs in the object plans and the team ratings files
 
-HYPERX.EXE v1.0.0.1's shipped object plans and team ratings files, decoded with
-`tools/plan_dump.py` and checked against `src/planvm/` and, where it mattered, Ghidra. [plan_bugs.md](plan_bugs.md) covers the confidence ratings and the
-[plan VM rules](plan_bugs.md#plan-vm-rules), and [plan_bugs_skaters.md](plan_bugs_skaters.md) the
-skater and goalie plans. "Rule N" below is rule N there.
+HYPERX.EXE v1.0.0.1's shipped object plans and team ratings files, decoded with `tools/plan_dump.py`
+and checked against `src/planvm/` and, where it mattered, Ghidra. [plan_bugs.md](plan_bugs.md)
+covers the confidence ratings and the [plan VM rules](plan_bugs.md#plan-vm-rules), and
+[plan_bugs_skaters.md](plan_bugs_skaters.md) the skater and goalie plans. "Rule N" below is rule N
+there.
 
 ## The decision log
 
 `Interactor::ExecuteScript` (0x0045d860) records each DECIDE branch in one `short`, the
-`DecisionLog` in `src/planvm/decisionlog.h`, so that a network copy takes the same branches as
-the local object. The local caller passes -1: `GameEngine::DispatchCollisionToRule` for a collision and
+`DecisionLog` in `src/planvm/decisionlog.h`, so that a network copy takes the same branches as the
+local object. The local caller passes -1: `GameEngine::DispatchCollisionToRule` for a collision and
 `EngineObject::DispatchSceneMessage` (0x00472110) for a message. While bit 15 is set, each DECIDE
 calls its selector and pushes the branch (0x0045d8f0 to 0x0045d970); otherwise it pops the oldest
 branch and runs that (0x0045d972 to 0x0045d9d3). Branches replay oldest first.
@@ -140,12 +141,12 @@ Confirmed bug (checked adversarially). Same handler:
             DO_ACTION id_ACF_SetImmunity(0, 0)          ... for slots 0-3
 ```
 
-Rating 11 is `LongPassEnable`, 9 is `LongShotEnable`. `ModifyRating` treats both as flags and
-zeroes them for any non-positive amount (`planaction.cpp`). SEATTLE sets
-`id_RAT_LongPassEnable = 9` for S._Vanacher and Cowboy_Bob at all levels and Kiem at hard. The
-rating lifts the pass-range limit on the receiver (`PlanCond::CheckPassingDistance` and
-`RecvrInRangeNView`). After the first `Inactivate`, on-ice Seattle players lose it for the rest of the period. The immunity
-reset also cancels the immunity cheat.
+Rating 11 is `LongPassEnable`, 9 is `LongShotEnable`. `ModifyRating` treats both as flags and zeroes
+them for any non-positive amount (`planaction.cpp`). SEATTLE sets `id_RAT_LongPassEnable = 9` for
+S._Vanacher and Cowboy_Bob at all levels and Kiem at hard. The rating lifts the pass-range limit on
+the receiver (`PlanCond::CheckPassingDistance` and `RecvrInRangeNView`). After the first
+`Inactivate`, on-ice Seattle players lose it for the rest of the period. The immunity reset also
+cancels the immunity cheat.
 
 The plan already has per-player undo handlers that nothing sends: `EndImmunity`,
 `EndSlowDown`, `EndLongShot`, `EndLongPass` (see 11). Smallest fix: delete the blanket resets
@@ -275,10 +276,10 @@ DECLARE_BEHAVIOR 3 "Arming"
 it as a slot (`planaction.cpp`, `plancond.cpp`, `planactionrecoil.cpp`). `Initiate`
 carries 0, and the 3-argument timer carries 0, so each hit adds a second `YerHit` about slot
 0. The extra `SpinTurnstile` adds an impulse whose direction comes from slot 0's motion, so the
-turnstile can spin against the push. In "Arming", the timer's `YerHit` is queued and handled after
-the change to "Spin", so there it costs only that extra impulse. In "ClockStoppedSpin", when slot
-0's line of travel passes within 1.5 units of the turnstile, `ReflectOffModel` bounces slot 0 or cuts its speed
-to 3, wherever it is on the rink.
+   turnstile can spin against the push. In "Arming", the timer's `YerHit` is queued and handled
+   after the change to "Spin", so there it costs only that extra impulse. In "ClockStoppedSpin",
+   when slot 0's line of travel passes within 1.5 units of the turnstile, `ReflectOffModel` bounces
+   slot 0 or cuts its speed to 3, wherever it is on the rink.
 
 Smallest fix: delete the `ReallySendMsg` from "ClockStoppedSpin" `Initiate`, because the
 collision already sends `YerHit` with the slot. In "Arming", give the timer the slot:
@@ -441,8 +442,8 @@ any other team's easy block.
   medium, and all four NEM skaters on easy. It also applies in every network game. Handling
   also scales `RokInRange` (0.65x instead of about 1.15x at 10).
 - **ArmoryRange 0: moderate.** The coach's weapon check (`EngineObject::CoachUpdate` in
-  `coachai.cpp`) needs the distance to the swarf carrier to be within ArmoryRange, so these players never react to an
-  opponent with the swarf.
+  `coachai.cpp`) needs the distance to the swarf carrier to be within ArmoryRange, so these players
+  never react to an opponent with the swarf.
 - **MultiPointSpread 0: mild.** `CheckHandicapCondition` (`coachai.cpp`) sends a
   carrier to a multiplier when its team trails by more than the spread. At 0, any deficit
   triggers it, against 4-10 for teammates.
@@ -451,10 +452,10 @@ any other team's easy block.
 - **SubInDamage 0 (Martinez, easy): little.** A benched Martinez is fit to return at once.
   On easy LOSAN never subs out by damage, so it only matters after an injury.
 - **Speedburst4b (J._Vanacher, hard): none to slight.** Two of three teammates also have 0.
-- **JAMCA special goalie: mild.** At easy, offline, the home goalie (slot 4) uses the special
-  set when it exists (`PlayerObject::PlayerObject`, 0x00474150). JAMCA's goalie keeps its easy
-  set instead: Intelligence 40 instead of 20, CatchingAbility 4 instead of 8. Fix: rename the six lines to
-  `SetSpecialGoalieRatings`, as in the other 13 files.
+- **JAMCA special goalie: mild.** At easy, offline, the home goalie (slot 4) uses the special set
+  when it exists (`PlayerObject::PlayerObject`, 0x00474150). JAMCA's goalie keeps its easy set
+  instead: Intelligence 40 instead of 20, CatchingAbility 4 instead of 8. Fix: rename the six lines
+  to `SetSpecialGoalieRatings`, as in the other 13 files.
 
 ### Other oddities
 

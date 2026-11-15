@@ -951,7 +951,8 @@ void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
     }
 }
 
-// Thirteen match conditions, six coach updates, six substitution checks, then two goal notifications.
+// Thirteen match conditions, six coach updates, six substitution checks, then two goal
+// notifications.
 
 // FUNCTION: HYPERX100 0x0045eac0
 // FUNCTION: HYPERX 0x00429620

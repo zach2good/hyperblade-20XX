@@ -504,6 +504,12 @@ PROBES = (
      "    m_pSpline = 0;",
      "    // probe\x01\n    m_pSpline = 0;"),
 
+    # A comment that runs past 100 columns where it could wrap.
+    ("check_prose_width.py", "src/planvm/cslideonrail.cpp",
+     "    m_pSpline = 0;",
+     "    // probe probe probe probe probe probe probe probe probe probe probe probe probe probe probe probe\n"
+     "    m_pSpline = 0;"),
+
     # A library static paired with a map symbol it doesn't name.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            ours = statics.get(row[\"symbol\"])",

@@ -4,7 +4,8 @@
 #include "colorpalette.h"
 #include "palettefade.h"
 
-// Folded with PaletteScalarFade::Start onto one address, so it carries no marker and keeps that body.
+// Folded with PaletteScalarFade::Start onto one address, so it carries no marker and keeps that
+// body.
 // FUNCTION: HYPERX100 0x00497b80
 int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
 {

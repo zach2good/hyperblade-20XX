@@ -139,7 +139,8 @@ ModelComponent* __cdecl ModelComponent::ReadFirstOrFail(FileObj* pFile)
     return pBlob;
 }
 
-// Reads a model's material block and prints it; each material's texture index is cleared as it goes.
+// Reads a model's material block and prints it; each material's texture index is cleared as it
+// goes.
 // FUNCTION: HYPERX100 0x0044f860
 void __cdecl ModelComponent::PrintMaterials(FileObj* pFile, FileObj* pOut)
 {

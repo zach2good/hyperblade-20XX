@@ -74,7 +74,8 @@ int __fastcall Network::AddPlayer(GameSession* pSession, unsigned int nDpid, Pla
     return 1;
 }
 
-// The list is a set, so an id already there is accepted; a full list answers no, even for one it holds.
+// The list is a set, so an id already there is accepted; a full list answers no, even for one it
+// holds.
 
 // FUNCTION: HYPERX100 0x00492890
 // FUNCTION: HYPERX 0x00440dc0

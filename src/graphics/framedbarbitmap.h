@@ -18,7 +18,8 @@ class FramedBarBitmap : public CDDBitMap
 public:
     virtual ~FramedBarBitmap();
 
-    // ScrollBitmap carries the markers for slots four and twenty: the original's linker folded each pair.
+    // ScrollBitmap carries the markers for slots four and twenty: the original's linker folded each
+    // pair.
     // FUNCTION: HYPERX100 0x004446d0
     virtual int BltFillColour(unsigned int dwFillColor)
     {

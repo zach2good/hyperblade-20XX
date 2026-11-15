@@ -178,7 +178,8 @@ void CSteerToward::Process(int nArg)
 
 #define SPEED_EPSILON 0.0001
 
-// The same integrator as CProjectAndBounce::IntegrateSpringAndGravity, over different field offsets.
+// The same integrator as CProjectAndBounce::IntegrateSpringAndGravity, over different field
+// offsets.
 // FUNCTION: HYPERX100 0x00428700
 // FUNCTION: HYPERX 0x0040f500
 void CSteerToward::IntegrateSpringAndGravity()

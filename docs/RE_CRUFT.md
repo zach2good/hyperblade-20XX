@@ -151,9 +151,8 @@ original's load or store; `tools/check_volatile.py` fails on one without.
 
 An `__asm` block or `__declspec(naked)` function that reproduces the bytes of compiled code. It
 becomes C. A routine the original wrote in assembly stays assembly, listed in
-`symbols/original_asm.csv` and annotated as
-[ANNOTATIONS.md](ANNOTATIONS.md#hand-written-assembly) says. `tools/check_asm_bodies.py` fails on any
-other.
+`symbols/original_asm.csv` and annotated as [ANNOTATIONS.md](ANNOTATIONS.md#hand-written-assembly)
+says. `tools/check_asm_bodies.py` fails on any other.
 
 ### The copied library
 
@@ -196,10 +195,13 @@ These shapes are gone, and each tool reads zero:
 - Offset reads: `python tools/offset_reads.py`
 - Leading undecoded byte runs: `python tools/undecoded_views.py`
 - Views: `python tools/view_classes.py`
-- Bodies at global scope, besides `WinMain` and `_purecall`, which the CRT and the linker find by name, and classes and namespaces spread over more than one `.cpp` or in none named for them: `python tools/namespace_spread.py`
+- Bodies at global scope, besides `WinMain` and `_purecall`, which the CRT and the linker find by
+  name, and classes and namespaces spread over more than one `.cpp` or in none named for them:
+  `python tools/namespace_spread.py`
 - Files with bodies of more than one class: `python tools/class_files.py`
 - Globals named for their address: `python tools/placeholder_globals.py --list`
-- Functions named for an address, a slot or a resource: `python tools/placeholder_functions.py --list`
+- Functions named for an address, a slot or a resource:
+  `python tools/placeholder_functions.py --list`
 - Locals initialised once and not const: `python tools/const_locals.py`
 - Headers that do not compile alone: `python tools/check_headers_standalone.py`
 - Header guard faults: `python tools/check_include_hygiene.py`
@@ -264,91 +266,140 @@ commit body, and in `symbols/retired.csv` when a row moves more than a point.
 
 `void*` members:
 
-- `CollisionShape::m_pUnusedA` and `m_pUnusedB`, `AnimDB::m_pOwnedBlock`: the destructor frees each and nothing allocates or reads it, so nothing names its type.
+- `CollisionShape::m_pUnusedA` and `m_pUnusedB`, `AnimDB::m_pOwnedBlock`: the destructor frees each
+  and nothing allocates or reads it, so nothing names its type.
 
 Unions, each selected by the tag in brackets:
 
-- `DibHeader` (the leading size word, a Windows or an OS/2 header, which `GDI::ReadDIB` compares with 0x28 and 0xc), `SyncBlockSlot` (the slot index), `MovePacket` (`nKind`), the `anim/animclip.h` union (the format), the `common/animnamedref.h` and `graphics/meshmaterial.h` textures (name or index until resolved), `graphics/texcacheentry.h` (`m_bIsD3D`, tested by `TexCacheEntry::DestroyTexObj`), `net/netrecords.h` (the static record), `net/netreceivebuffer.h` (the sender, then the message type or kind), `net/netsendbuffer.h` (the message kind), `PlanWord` (the opcode), `PlanOpcodeSlot` (the opcode's category and member).
-- `FloatWord` in `anim/anim.cpp`: `Anim::EulerToMatrix` stores a matrix cell as a float and reads it back as bits and a top half (0x00416c73 to 0x00416cc4).
+- `DibHeader` (the leading size word, a Windows or an OS/2 header, which `GDI::ReadDIB` compares
+  with 0x28 and 0xc), `SyncBlockSlot` (the slot index), `MovePacket` (`nKind`), the
+  `anim/animclip.h` union (the format), the `common/animnamedref.h` and `graphics/meshmaterial.h`
+  textures (name or index until resolved), `graphics/texcacheentry.h` (`m_bIsD3D`, tested by
+  `TexCacheEntry::DestroyTexObj`), `net/netrecords.h` (the static record), `net/netreceivebuffer.h`
+  (the sender, then the message type or kind), `net/netsendbuffer.h` (the message kind), `PlanWord`
+  (the opcode), `PlanOpcodeSlot` (the opcode's category and member).
+- `FloatWord` in `anim/anim.cpp`: `Anim::EulerToMatrix` stores a matrix cell as a float and reads it
+  back as bits and a top half (0x00416c73 to 0x00416cc4).
 - `MatrixRow` in `math/transformobject.h`: a row read by column or assigned an axis.
-- `ClipVertex` in `graphics/clippoly.h`: `SWRend::ClipPolyAgainstPlane` reads the plane axis by index (0x0047fb9a) and walks the nine components under the mask (from 0x0047fc1c).
+- `ClipVertex` in `graphics/clippoly.h`: `SWRend::ClipPolyAgainstPlane` reads the plane axis by
+  index (0x0047fb9a) and walks the nine components under the mask (from 0x0047fc1c).
 
 Casts of `this`:
 
-- `GameBehaviorObject::Init`'s DO_NET_ACTION and DO_LOCAL_ACTION pass `(Interactor*)this` to `g_pfnPlanActionHandlers`: the client pushes the behaviour itself (`PUSH EDI` at 0x0041c197) and a null pushes 0 (0x0041c1ac).
-- `AgendaItem::Activate`'s `static_cast<CAvoidObjects*>`: the original's base body tests `m_wKind` against `Agenda_CAvoidObjects` and reads the swerve and draw targets at 0x28 and 0x2c, and `CAvoidObjects`'s table holds that body.
-- `PlayerSlotName::GetWireName`: the game's messages send and print the record as one string, role byte first.
+- `GameBehaviorObject::Init`'s DO_NET_ACTION and DO_LOCAL_ACTION pass `(Interactor*)this` to
+  `g_pfnPlanActionHandlers`: the client pushes the behaviour itself (`PUSH EDI` at 0x0041c197) and a
+  null pushes 0 (0x0041c1ac).
+- `AgendaItem::Activate`'s `static_cast<CAvoidObjects*>`: the original's base body tests `m_wKind`
+  against `Agenda_CAvoidObjects` and reads the swerve and draw targets at 0x28 and 0x2c, and
+  `CAvoidObjects`'s table holds that body.
+- `PlayerSlotName::GetWireName`: the game's messages send and print the record as one string, role
+  byte first.
 - `StringHeader::Data`: returns `(char*)(this + 1)`, where MFC's string header puts the characters.
 
 Puns:
 
-- `FloatBits` in `math/floatbits.h`: each client reads the float's bits with an integer instruction, such as `CMP dword ptr [ESI + 0x200],0x3f800000` in `ObjectStats` (0x0047497e) and `CMP ... 0xbf800000` in `ModifyOpposTeamFriction` (0x004648bc).
+- `FloatBits` in `math/floatbits.h`: each client reads the float's bits with an integer instruction,
+  such as `CMP dword ptr [ESI + 0x200],0x3f800000` in `ObjectStats` (0x0047497e) and
+  `CMP ... 0xbf800000` in `ModifyOpposTeamFriction` (0x004648bc).
 
 Hand-expanded helpers:
 
-- `MatchStats::AccumulateStat`'s four shooting percentages: the client merges the four tails and keeps the goal count on the x87 stack, so `Percent` costs 13.53 points.
-- The null-checked bubble read in `planvm/` stays written out at 34 sites; `GameEngine::GetColObjPtr` serves the rest of the tree.
+- `MatchStats::AccumulateStat`'s four shooting percentages: the client merges the four tails and
+  keeps the goal count on the x87 stack, so `Percent` costs 13.53 points.
+- The null-checked bubble read in `planvm/` stays written out at 34 sites;
+  `GameEngine::GetColObjPtr` serves the rest of the tree.
 
 Pointer casts between unrelated types:
 
-- `AnimClip::Load` copies its single translation from the file buffer with `memcpy`, like its three array copies of the same floats.
+- `AnimClip::Load` copies its single translation from the file buffer with `memcpy`, like its three
+  array copies of the same floats.
 
 Raw buffers in `net/`:
 
-- `GetSendPayloadPtr`'s six-byte offset: the original computes and stores a byte pointer that nothing dereferences.
-- The receive loop's one read of the system type under the lock: the client loads the dword once and switches on its low byte.
-- The carrier byte `BroadcastState` appends and the sequence byte `RecvMovementPacket` reads: each follows a message of varying length, so the buffers keep `aBytes`.
-- The stationary stream's byte cursor and its `StationaryEvent` overlay: an event is five bytes or nine and follows a nibble bitmap sized by the stationary count.
+- `GetSendPayloadPtr`'s six-byte offset: the original computes and stores a byte pointer that
+  nothing dereferences.
+- The receive loop's one read of the system type under the lock: the client loads the dword once and
+  switches on its low byte.
+- The carrier byte `BroadcastState` appends and the sequence byte `RecvMovementPacket` reads: each
+  follows a message of varying length, so the buffers keep `aBytes`.
+- The stationary stream's byte cursor and its `StationaryEvent` overlay: an event is five bytes or
+  nine and follows a nibble bitmap sized by the stationary count.
 - `NetSessionEntry`: the asserted mirror of DirectPlay's `DPSESSIONDESC`.
 
 Ids written as numbers, left:
 
-- `MainWindow::OnCommand`'s commands 0x7a and 0x9f: no menu, accelerator or sent `WM_COMMAND` in the image holds either, and the numbers are also dialog 122 and `STRING_EXIT_MATCH`, so nothing names the commands. 0x7a reads as a Birds Eye View that posts eye track 0.
+- `MainWindow::OnCommand`'s commands 0x7a and 0x9f: no menu, accelerator or sent `WM_COMMAND` in the
+  image holds either, and the numbers are also dialog 122 and `STRING_EXIT_MATCH`, so nothing names
+  the commands. 0x7a reads as a Birds Eye View that posts eye track 0.
 
 Numbers that carry meaning:
 
-- Left: `SyncFileStamp`'s time halves, where a setter or getter costs 12 to 35 points; the WM_SIZE pair, which the client adds unmasked; and colours, palette versions and pixel offsets, which no SDK or table names.
+- Left: `SyncFileStamp`'s time halves, where a setter or getter costs 12 to 35 points; the WM_SIZE
+  pair, which the client adds unmasked; and colours, palette versions and pixel offsets, which no
+  SDK or table names.
 - `CD3DTexture::GetLog2Size`'s 1012: the original's literal where 1024 belongs (0x00435644).
-- 0x20000000 stays inside `ACTION_BINDING_HELD`: no reader tests it alone, and the one row that sets it also sets the quick flag.
-- Three pronoun tests stay by hand: the client tests a short and indexes another value (0x00405195, 0x004059b6, 0x004630fe).
+- 0x20000000 stays inside `ACTION_BINDING_HELD`: no reader tests it alone, and the one row that sets
+  it also sets the quick flag.
+- Three pronoun tests stay by hand: the client tests a short and indexes another value (0x00405195,
+  0x004059b6, 0x004630fe).
 
 Found-flags:
 
-- `EngineObject::BuildShadowComponentLinks`: the client clears, sets and tests the flag in `cl` (0x004715b5, 0x004715da, 0x004715ec) and keeps scanning after a hit.
+- `EngineObject::BuildShadowComponentLinks`: the client clears, sets and tests the flag in `cl`
+  (0x004715b5, 0x004715da, 0x004715ec) and keeps scanning after a hit.
 
 Names with a number or a letter, each authored in ENUMIDS.H:
 
 - `PlanCond::AnalyzePadA` and `B` (`id_DCF_AnalyzePadA`, `B`).
-- `PlanFocusArg::GetViewOnrsOppn1` and `2` with their `COB` pair (`id_PRN_ViewOnrsOppn1`, `2`, `1COB`, `2COB`).
+- `PlanFocusArg::GetViewOnrsOppn1` and `2` with their `COB` pair (`id_PRN_ViewOnrsOppn1`, `2`,
+  `1COB`, `2COB`).
 - `PlanCond::BungeeVictimLorR` (`id_DCF_BungeeVictimLorR`).
 
 Names for a shape, left:
 
-- The six arguments `CollisionPlane::ForwardTransformRequest` hands a getter that reads none: no call through slot 0x34 pushes its 24 bytes, and nothing calls 0x00405880 directly.
+- The six arguments `CollisionPlane::ForwardTransformRequest` hands a getter that reads none: no
+  call through slot 0x34 pushes its 24 bytes, and nothing calls 0x00405880 directly.
 
 One local for two values:
 
-- `PlanAction::ClothesLineRecoil`'s and `ReflectOffModel`'s `vTemp`, the scaled velocity and then the cross product: each client stores the cross product's unread x and y into the slot `Vec3::ScaleTo` wrote (`ClothesLineRecoil` at 0x00406118 and 0x0040612b over ESP+0x20 from 0x0040603e; `ReflectOffModel` at 0x00405d25 and 0x00405d39 over the slot 0x00405c98 passes).
-- `Radar::DrawObject`'s `hdc`, the carrier-arrow flag until `GetDC` fills it: the client stores 1 (0x0043f9ea), compares the slot with 1 (0x0043fb3d) and passes its address to `GetDC` (0x0043fb55).
+- `PlanAction::ClothesLineRecoil`'s and `ReflectOffModel`'s `vTemp`, the scaled velocity and then
+  the cross product: each client stores the cross product's unread x and y into the slot
+  `Vec3::ScaleTo` wrote (`ClothesLineRecoil` at 0x00406118 and 0x0040612b over ESP+0x20 from
+  0x0040603e; `ReflectOffModel` at 0x00405d25 and 0x00405d39 over the slot 0x00405c98 passes).
+- `Radar::DrawObject`'s `hdc`, the carrier-arrow flag until `GetDC` fills it: the client stores 1
+  (0x0043f9ea), compares the slot with 1 (0x0043fb3d) and passes its address to `GetDC`
+  (0x0043fb55).
 
 Steering syntax, among the 88 copies and 7 bare scopes:
 
-- `flTransX` in the three `CollisionCheck` dromer handlers: held on the x87 stack across the centre stores and popped with `FSTP ST0` (0x004523ee, 0x00469998, 0x0046a178).
-- `CameraObject::DrawShadowAndTransparentPass`'s `vDir`: y and z load (0x00422c40, 0x00422c43) before the store into `g_lightDirs[0]` that may alias them (0x00422c46).
-- The teammate in `PlanCond::RecvrInRangeNView` and `ShootSituation`: loaded before the test whose arm alone reads it (0x00466d61, 0x004687f8).
-- The viewport id in `D3DRend::ExecuteScene` and the target in `DDraw::PaintSurface`: loaded before the test whose arm alone uses it (0x004327c5, 0x0043d427).
+- `flTransX` in the three `CollisionCheck` dromer handlers: held on the x87 stack across the centre
+  stores and popped with `FSTP ST0` (0x004523ee, 0x00469998, 0x0046a178).
+- `CameraObject::DrawShadowAndTransparentPass`'s `vDir`: y and z load (0x00422c40, 0x00422c43)
+  before the store into `g_lightDirs[0]` that may alias them (0x00422c46).
+- The teammate in `PlanCond::RecvrInRangeNView` and `ShootSituation`: loaded before the test whose
+  arm alone reads it (0x00466d61, 0x004687f8).
+- The viewport id in `D3DRend::ExecuteScene` and the target in `DDraw::PaintSurface`: loaded before
+  the test whose arm alone uses it (0x004327c5, 0x0043d427).
 - The frame top in `InfoBar::DrawPeriodLight`: loaded before the lamp clamp's branches (0x0044fc85).
-- The two meter sizes in `InfoBar::InfoBar`: the client stores the unused y (0x004517b8, 0x004519e4).
-- Bare scopes whose slots the client overlaps: `InfoBar::InfoBar`'s radar block, whose `SurfacePoint` takes the meter sizes' slot 0x18; `Calibrate`, `CopyBitmap` and `LoadCustomPalette`, which grow their frames without the block; `ReflectOffModel`'s velocity copy and position scratch (0xb0 against 0xbc) and `ClothesLineRecoil`'s position scratch pair (0x34 against 0x4c).
+- The two meter sizes in `InfoBar::InfoBar`: the client stores the unused y (0x004517b8,
+  0x004519e4).
+- Bare scopes whose slots the client overlaps: `InfoBar::InfoBar`'s radar block, whose
+  `SurfacePoint` takes the meter sizes' slot 0x18; `Calibrate`, `CopyBitmap` and
+  `LoadCustomPalette`, which grow their frames without the block; `ReflectOffModel`'s velocity copy
+  and position scratch (0xb0 against 0xbc) and `ClothesLineRecoil`'s position scratch pair (0x34
+  against 0x4c).
 
 Inlining pragmas:
 
-- `__forceinline` on the `BehaviorOwner` and `AgendaItemOwner` constructors: VC6 runs out of inline budget part way through their callers.
-- The 16 `optimize("", off)` pairs: `tools/find_unoptimised.py` lists their 25 bodies as unoptimised in the client, each opening `push ebp`, `mov ebp, esp`.
+- `__forceinline` on the `BehaviorOwner` and `AgendaItemOwner` constructors: VC6 runs out of inline
+  budget part way through their callers.
+- The 16 `optimize("", off)` pairs: `tools/find_unoptimised.py` lists their 25 bodies as unoptimised
+  in the client, each opening `push ebp`, `mov ebp, esp`.
 
 Function tables called through a cast:
 
-- `CPlayer::NetworkReceiveThreadProc`: a `__cdecl` body the original passes to `CreateThread` as its `LPTHREAD_START_ROUTINE` (0x0042e120 loads and jumps to `NetworkReceiveLoop`, no `ret 4`).
+- `CPlayer::NetworkReceiveThreadProc`: a `__cdecl` body the original passes to `CreateThread` as its
+  `LPTHREAD_START_ROUTINE` (0x0042e120 loads and jumps to `NetworkReceiveLoop`, no `ret 4`).
 - The bring-up's `GetProcAddress` results.
 
 Raw buffers in `graphics/`:
@@ -365,11 +416,15 @@ Raw buffers in `planvm/`, `ui/`, `engine/` and `anim/`:
 - `AnimClip::Load`'s payload: a float stream whose Euler triples follow the header's axis order.
 - `VerQueryValueA`'s `void*` result.
 - The `AttachPak` sentinel `EXTRA_USE_DETAIL`, the original's shape.
-- The pools' `void*` `Alloc`: a `PooledOwnerRoot` slot the three owner hierarchies share, and VC6 has no covariant returns (C2555).
+- The pools' `void*` `Alloc`: a `PooledOwnerRoot` slot the three owner hierarchies share, and VC6
+  has no covariant returns (C2555).
 
 Assembly, each idiom read in the original:
 
-- `REP STOSW` in both `Mem` fills and a dead `MOV EAX,[EDI]` in the unrolled one; `SHL EAX,0x11` and `JC` in `Anim::UnpackFixed16ToFloat`; `PUSHAD` in `MDM1::LZSSDecompress`; `OR EAX,EAX` flag returns in `MDM1::RefillInputWindow`; `PUSH ESP` and `PUSHF` in `SWRend::ScanEdge`; `MOV EBX,0x0` and a pushed EBP in `FillSpans` and `DrawLine`; `REP MOVSW` in `BlitRLESprite`.
+- `REP STOSW` in both `Mem` fills and a dead `MOV EAX,[EDI]` in the unrolled one; `SHL EAX,0x11` and
+  `JC` in `Anim::UnpackFixed16ToFloat`; `PUSHAD` in `MDM1::LZSSDecompress`; `OR EAX,EAX` flag
+  returns in `MDM1::RefillInputWindow`; `PUSH ESP` and `PUSHF` in `SWRend::ScanEdge`; `MOV EBX,0x0`
+  and a pushed EBP in `FillSpans` and `DrawLine`; `REP MOVSW` in `BlitRLESprite`.
 
 Globals typed smaller than their data:
 
@@ -377,13 +432,21 @@ Globals typed smaller than their data:
 
 Compiler warnings:
 
-- 18 C4244 in `CameraProjectionState::RotateX`, `RotateY` and `RotateZ`, which store a `double` old element into a float: the client holds it on the x87 stack in the order VC6 gives a `double`, and a `float` local or a `(float)` cast reorders the loads.
-- One C4700 in `Object::ComputeSteeringDirection`, which returns an unset `vResult` for a kind it does not handle, as the original does (0x00404c99 jumps to the copy-out with that slot never written).
+- 18 C4244 in `CameraProjectionState::RotateX`, `RotateY` and `RotateZ`, which store a `double` old
+  element into a float: the client holds it on the x87 stack in the order VC6 gives a `double`, and
+  a `float` local or a `(float)` cast reorders the loads.
+- One C4700 in `Object::ComputeSteeringDirection`, which returns an unset `vResult` for a kind it
+  does not handle, as the original does (0x00404c99 jumps to the copy-out with that slot never
+  written).
 
 Uninitialised reads:
 
-- `AnimNode::m_nLoopCount`: `AnimScriptTable::ParseSegment` scans `%hd` into its low half (0x004188d9, 0x004188f4), `operator new` does not clear the node (0x0049f2bb), the constructor at 0x00416f30 leaves it unset, and `AnimPlayer` reads the whole `int` (0x004245db, 0x0042525d, 0x00425311, 0x004253c5).
-- `PlanCond::AmIKnockedLoose`: without a carrier the client compares the low half of the `pResult` slot (0x00464fa6).
+- `AnimNode::m_nLoopCount`: `AnimScriptTable::ParseSegment` scans `%hd` into its low half
+  (0x004188d9, 0x004188f4), `operator new` does not clear the node (0x0049f2bb), the constructor at
+  0x00416f30 leaves it unset, and `AnimPlayer` reads the whole `int` (0x004245db, 0x0042525d,
+  0x00425311, 0x004253c5).
+- `PlanCond::AmIKnockedLoose`: without a carrier the client compares the low half of the `pResult`
+  slot (0x00464fa6).
 - `PlanCond::AttachedToSender`: the holder slot on the path that never wrote it.
 - `Object::ComputeSteeringDirection`: see compiler warnings.
 
@@ -393,7 +456,8 @@ Conditional operators:
 
 Pointer walks over counted loops:
 
-- `KeyConfigScreen::OnKeyMessage`'s key search: the client compares the end pointer after the loop, and an index costs 22 points.
+- `KeyConfigScreen::OnKeyMessage`'s key search: the client compares the end pointer after the loop,
+  and an index costs 22 points.
 
 Local CRT declarations:
 

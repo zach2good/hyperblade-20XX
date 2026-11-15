@@ -20,8 +20,8 @@ class PlayerBase
 public:
     virtual ~PlayerBase();
 
-    // Answers what the slot the caller read this from should hold afterwards.
-    // The original's linker folded this body onto CDisplayPassBarPool::Destroy, which carries the marker.
+    // Answers what the slot the caller read this from should hold afterwards. The original's linker
+    // folded this body onto CDisplayPassBarPool::Destroy, which carries the marker.
     virtual PlayerBase* DestroyViaVtable()
     {
         delete this;
@@ -66,7 +66,8 @@ public:
 
     NetReceiveBuffer m_recvBuf; // 0x03c
     NetSendBuffer    m_sendBuf; // 0x13c
-    // m_dplayLock serialises the DirectPlay sends and receives; m_lock guards the applied object state.
+    // m_dplayLock serialises the DirectPlay sends and receives; m_lock guards the applied object
+    // state.
     CRITICAL_SECTION m_dplayLock; // 0x23c
     CRITICAL_SECTION m_lock;      // 0x254
 };

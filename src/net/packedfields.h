@@ -1,4 +1,5 @@
-// v1.0.0.0's mixed-radix packer: each field multiplies into, or divides out of, one word of a block.
+// v1.0.0.0's mixed-radix packer: each field multiplies into, or divides out of, one word of a
+// block.
 
 #ifdef HYPERX_V100
 #ifndef HYPERBLADE_PACKEDFIELDS_H

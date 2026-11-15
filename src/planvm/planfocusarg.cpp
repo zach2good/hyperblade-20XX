@@ -184,7 +184,8 @@ short __cdecl PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
     return -1;
 }
 
-// A non-player or same-parity carrier answers minus one; otherwise three times its team mate's slot.
+// A non-player or same-parity carrier answers minus one; otherwise three times its team mate's
+// slot.
 // FUNCTION: HYPERX100 0x004e1200
 // FUNCTION: HYPERX 0x0047cd10
 short __cdecl PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)

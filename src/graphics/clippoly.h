@@ -7,7 +7,8 @@
 #include "math/vector.h"
 #include <stddef.h>
 
-// Bit n of a buffer's mask names component n: the point's four, three no renderer sets, then the UV pair.
+// Bit n of a buffer's mask names component n: the point's four, three no renderer sets, then the UV
+// pair.
 struct ClipVertex
 {
     union

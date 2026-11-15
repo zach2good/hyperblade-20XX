@@ -536,7 +536,8 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
     }
     else
     {
-        // Dead for a short; the client tests the short at 0x004059b6 and indexes the int at 0x004059d0.
+        // Dead for a short; the client tests the short at 0x004059b6 and indexes the int at
+        // 0x004059d0.
         if ((unsigned short)((unsigned int)(short)nSlot >> 16) == PLAN_ARG_PRONOUN)
         {
             nSlot = ((PlanStatFnWide*)g_apPlanStatFns)[nSlot & 0xffff](pContext->GetActor(), pNode);
@@ -762,7 +763,8 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
     }
 }
 
-// Slows the collision's own object to three tenths of its velocity and picks its reaction animation.
+// Slows the collision's own object to three tenths of its velocity and picks its reaction
+// animation.
 
 // FUNCTION: HYPERX100 0x00465f60
 // FUNCTION: HYPERX 0x00405fd0

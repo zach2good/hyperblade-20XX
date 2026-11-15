@@ -17,7 +17,8 @@ public:
     bool Eval(float flAt);
 
 #ifdef HYPERX_V100
-    // Init from two quaternions, without the small-angle cut-off; flips pQ1 into the near hemisphere.
+    // Init from two quaternions, without the small-angle cut-off; flips pQ1 into the near
+    // hemisphere.
     void InitFromQuats(const Quat* pQ0, Quat* pQ1);
 
     // Init on the quaternions already in m_q0Div and m_q1Div, dividing them by sin(theta) in place.

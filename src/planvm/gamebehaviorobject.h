@@ -79,7 +79,8 @@ public:
     void UpdateLimpAnim();
 
     virtual void Reset();
-    // The motion a behaviour starts in; src/engine/rokobject.cpp calls it when behaviour nought activates.
+    // The motion a behaviour starts in; src/engine/rokobject.cpp calls it when behaviour nought
+    // activates.
     virtual void StartMotion() = 0;
     virtual void SendTimedMessage();
     virtual void SetInteractorsActive(int nArg);

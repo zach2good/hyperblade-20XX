@@ -1,4 +1,5 @@
-// The info bar's radar: it follows the viewed object and plots the other players and the rok round it.
+// The info bar's radar: it follows the viewed object and plots the other players and the rok round
+// it.
 
 #ifndef HYPERBLADE_INFOBARRADAR_H
 #define HYPERBLADE_INFOBARRADAR_H

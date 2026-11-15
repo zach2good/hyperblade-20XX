@@ -1,8 +1,8 @@
 # Builds, and adds the missing include to each failing file until the build passes.
 #
-# For each name the compiler cannot see, it adds the header that declares it (or, for an
-# undefined type, the one that defines it). It stops when a round changes nothing. Includes go after the last include at conditional depth
-# zero, never inside a bring-up block.
+# For each name the compiler cannot see, it adds the header that declares it (or, for an undefined
+# type, the one that defines it). It stops when a round changes nothing. Includes go after the last
+# include at conditional depth zero, never inside a bring-up block.
 
 import glob
 import os

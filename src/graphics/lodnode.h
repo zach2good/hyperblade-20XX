@@ -15,7 +15,8 @@ public:
 
     ~LODNode();
 
-    // The variable-length blob ModelComponent::Read pulls from the model file; see modelcomponent.h.
+    // The variable-length blob ModelComponent::Read pulls from the model file; see
+    // modelcomponent.h.
     struct ModelComponent*   m_pRecord;                      // 0x000
     struct MeshBlock**       m_apLodMeshes[LOD_LEVEL_COUNT]; // 0x004
     struct MaterialListNode* m_pMaterials;                   // 0x018, the lookup the loader stores once the materials are found

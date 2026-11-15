@@ -1,8 +1,9 @@
 # Source files that keep a body of a class whose own file is elsewhere, and why.
 #
-# The layout rule is one class to one .cpp. A file listed here is a real exception: the body
-# cannot live in its class file without being a different translation unit from the original's.
-# tools/class_spread.py reads this list and settles what it names; tools/namespace_spread.py settles it too.
+# The layout rule is one class to one .cpp. A file listed here is a real exception: the body cannot
+# live in its class file without being a different translation unit from the original's.
+# tools/class_spread.py reads this list and settles what it names; tools/namespace_spread.py settles
+# it too.
 path,reason
 src/planvm/planactionanim.cpp,The original unit at 0x00401000; PlanAction bodies of its other units stay in planaction.cpp
 src/planvm/planactiontracking.cpp,The original unit at 0x004017c0; PlanAction bodies of its other units stay in planaction.cpp

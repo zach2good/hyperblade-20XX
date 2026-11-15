@@ -45,7 +45,8 @@ extern const float g_flQuatTwo;
 // GLOBAL: HYPERX 0x004b15f8
 extern const float g_flGravityHalf;
 
-// With the half, (3 - dot) / 2 scales the chaser's speed from one, heading together, to two, head on.
+// With the half, (3 - dot) / 2 scales the chaser's speed from one, heading together, to two, head
+// on.
 // GLOBAL: HYPERX 0x004b1420
 extern const float g_flChaseSpeedBias;
 

@@ -832,7 +832,8 @@ unsigned int __cdecl CPlayer::NetworkReceiveThreadProc(CPlayer* pPlayer)
     return pPlayer->NetworkReceiveLoop();
 }
 
-// Last in the file so the unit's literals follow it. The walk is bounded by the count, and entry zero matches kind zero before the trailing one can.
+// Last in the file so the unit's literals follow it. The walk is bounded by the count, and entry
+// zero matches kind zero before the trailing one can.
 // GLOBAL: HYPERX 0x004bccc8
 NetSendFlags g_aSendFlagsByType[22] = {
     { 0x00, 0 }, { 0x01, DPSEND_GUARANTEED }, { 0x02, DPSEND_GUARANTEED }, { 0x03, DPSEND_GUARANTEED }, { 0x04, DPSEND_GUARANTEED }, { 0x05, DPSEND_GUARANTEED }, { 0x06, 0 }, { 0x07, 0 }, { 0x08, DPSEND_GUARANTEED }, { 0x09, DPSEND_GUARANTEED }, { 0x0a, DPSEND_GUARANTEED }, { 0x0b, DPSEND_GUARANTEED }, { 0x0c, DPSEND_GUARANTEED }, { 0x0d, DPSEND_GUARANTEED }, { 0x0e, DPSEND_GUARANTEED }, { 0x0f, 0 }, { 0x10, 0 }, { 0x11, 0 }, { 0x12, 0 }, { 0x13, 0 }, { 0x14, 0 }, { 0x00, 0 }

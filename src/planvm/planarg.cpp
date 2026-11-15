@@ -17,7 +17,8 @@ float g_flUnusedPlanArgC = g_flZeroPlanArg;
 // Each skater owns three collision objects: its bubble, its baton zone and its body.
 #define COB_PER_DROMER (COB_DROMER_1 - COB_DROMER_0)
 
-// Under a PLAN_ARG_LOCAL_REAL high half the low half indexes the actor's local reals; any other word is its own value.
+// Under a PLAN_ARG_LOCAL_REAL high half the low half indexes the actor's local reals; any other
+// word is its own value.
 
 // FUNCTION: HYPERX100 0x004a6240
 // FUNCTION: HYPERX 0x0045e390

@@ -478,7 +478,8 @@ unsigned int __stdcall Game::UpdateState(void)
                                 break;
 
                             case PLAYER_MODE_TOURNAMENT:
-                                // Beating drome two on easy or drome eight on medium graduates the player.
+                                // Beating drome two on easy or drome eight on medium graduates the
+                                // player.
                                 if ((g_nDromeArena == 2 && nDifficulty == 0) || (g_nDromeArena == 8 && nDifficulty == 1))
                                 {
                                     g_gameApp.m_nEngineState = ESTATE_TRAINING_END;

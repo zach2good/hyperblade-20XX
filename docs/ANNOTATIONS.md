@@ -7,7 +7,8 @@ technique.
 
 ## Markers
 
-Each marker is one line, `// KIND: HYPERX 0xADDRESS`, alone on its line and directly above what it names.
+Each marker is one line, `// KIND: HYPERX 0xADDRESS`, alone on its line and directly above what it
+names.
 
 | Marker | Names | Rule |
 |---|---|---|
@@ -85,10 +86,10 @@ cause. `--only` keeps the rows with no code line left. Most such rows are walls:
 - `bare`: neither side has a symbol. LIBCMT's static data and the C++ function-local statics
   have none in our PDB, and VC6 writes the guard byte but not the object. A one-past-the-end
   loop bound lands on whatever the linker put next, which differs between the images.
-- `rival`: both sides are named, differently. For a call or a function pointer this is the
-  client's identical-COMDAT folding (`Stub::Assert`, `Object::Trace`, the `PlanArg` getters).
-  The `$E` thunks of each number share one name and pair in address order, so the link order
-  decides which object's thunk a marker takes ([Data, globals and link order](MATCHING.md#data-globals-and-link-order)).
+- `rival`: both sides are named, differently. For a call or a function pointer this is the client's
+  identical-COMDAT folding (`Stub::Assert`, `Object::Trace`, the `PlanArg` getters). The `$E` thunks
+  of each number share one name and pair in address order, so the link order decides which object's
+  thunk a marker takes ([Data, globals and link order](MATCHING.md#data-globals-and-link-order)).
 
 The fixable causes are wrong annotations, and the checks below fail on each:
 
@@ -149,10 +150,10 @@ given up.
   `mid-struct-rebase`, `commoned-nought`, `call-table` or `comdat-fold`.
 - `evidence` says what was tried and what each spelling measured. A failed spelling goes here.
 
-A retired function is written and linked, and behaves as the original. Only the attempt on its
-last instructions is retired. Read a row as "not reachable with the levers known when it was
-written". When a new lever lands, re-test the rows on the walls it could reach.
-`tools/near_misses.py` leaves retired rows out; pass `--retired` to list them. `tools/check_regressions.py` fails with a STALE
+A retired function is written and linked, and behaves as the original. Only the attempt on its last
+instructions is retired. Read a row as "not reachable with the levers known when it was written".
+When a new lever lands, re-test the rows on the walls it could reach. `tools/near_misses.py` leaves
+retired rows out; pass `--retired` to list them. `tools/check_regressions.py` fails with a STALE
 RETIREMENT line when a retired row is exact, so remove the row when you close it.
 
 Count rows with `awk -F, '/^0x/' symbols/retired.csv`, not `grep -c`: the header is prose.

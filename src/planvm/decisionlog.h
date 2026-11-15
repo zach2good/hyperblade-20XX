@@ -1,7 +1,8 @@
 #ifndef HYPERBLADE_DECISIONLOG_H
 #define HYPERBLADE_DECISIONLOG_H
 
-// A local object records the branches its decisions take; its network copy replays them oldest first.
+// A local object records the branches its decisions take; its network copy replays them oldest
+// first.
 #define DECISION_LOG_RECORDING 0x8000
 // How many branches the word holds; each count packs them at its own widths.
 #define DECISION_LOG_COUNT 0x3000
@@ -37,7 +38,8 @@ struct DecisionLog
         }
         else
         {
-            // The third branch is masked where it should be shifted, so its replay takes bits 9-11 (0x0045d963).
+            // The third branch is masked where it should be shifted, so its replay takes bits 9-11
+            // (0x0045d963).
             *pWord = (short)(((nWord >> 2) & 0x1e0) | (nWord & 0x1f) | (nBranch & 0xe00) | DECISION_LOG_RECORDING | DECISION_LOG_COUNT);
         }
     }

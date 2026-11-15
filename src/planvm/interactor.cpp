@@ -15,7 +15,8 @@
 #include "engine/objectphase.h"
 #include "engine/engineobject.h"
 
-// The action table is the opcode table's tail, 141 slots on; the node count is never bounds-checked.
+// The action table is the opcode table's tail, 141 slots on; the node count is never
+// bounds-checked.
 
 // The tables are marked where they are filled, so they are declared bare here.
 

@@ -6,7 +6,8 @@
 class EngineObject;
 struct PlanNode;
 
-// Slots 0 and 2 are shared bodies declared where they are defined; slot 7 shares CAvoidObjects::IsReplaceable's body.
+// Slots 0 and 2 are shared bodies declared where they are defined; slot 7 shares
+// CAvoidObjects::IsReplaceable's body.
 // VTABLE: HYPERX 0x004b1da0
 class CBungeeToward : public ReleasingAgendaItem
 {
@@ -18,7 +19,8 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
-    // Slot seven answers one where the base answers nought; the original folds it onto one shared body.
+    // Slot seven answers one where the base answers nought; the original folds it onto one shared
+    // body.
     // FUNCTION: HYPERX100 0x00425140
     virtual unsigned char GetReadyFlag()
     {

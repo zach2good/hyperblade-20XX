@@ -32,7 +32,8 @@ public:
 
     ObjectStats();
 
-    // m_aStats[k] holds rating k - 1; m_aStats[0] is the energy that scales every weighted read. Ids are RatingMeasureID.
+    // m_aStats[k] holds rating k - 1; m_aStats[0] is the energy that scales every weighted read.
+    // Ids are RatingMeasureID.
     float m_aStats[64]; // 0x000
     // The pre-scale copy ScaleTo takes of ids one to sixty three.
     float m_aBackup[63];  // 0x100

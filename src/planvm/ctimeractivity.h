@@ -23,7 +23,8 @@ public:
         return 1;
     }
 
-    // Slot eight answering one keeps several timers of one kind; nought would evict all but the last.
+    // Slot eight answering one keeps several timers of one kind; nought would evict all but the
+    // last.
     // FUNCTION: HYPERX100 0x00425690
     virtual char IsReplaceable()
     {

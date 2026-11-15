@@ -28,7 +28,8 @@ public:
     void SetObjects(short nSlotA, short nSlotB, short nAimSlot, float flBlendStep);
 #endif
 
-    // BehParam::SetModsTweenNFacing writes these four; the third is the one the behaviour heads for.
+    // BehParam::SetModsTweenNFacing writes these four; the third is the one the behaviour heads
+    // for.
     class EngineObject* m_pObjectA;   // 0x98
     class EngineObject* m_pObjectB;   // 0x9c
     class EngineObject* m_pAimObject; // 0xa0

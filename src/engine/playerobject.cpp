@@ -19,8 +19,9 @@
 #include "engine/engineobject.h"
 #include "engine/objectphase.h"
 
-// Two rotations stage their cosine and sine in m_transformB; a skater copies 63 ratings, a goalie 16.
-// The home team's players default to the keyboard's model id and the away team's to the gamepad's.
+// Two rotations stage their cosine and sine in m_transformB; a skater copies 63 ratings, a goalie
+// 16. The home team's players default to the keyboard's model id and the away team's to the
+// gamepad's.
 // FUNCTION: HYPERX100 0x004716c0
 // FUNCTION: HYPERX 0x00474150
 PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
@@ -141,7 +142,8 @@ void PlayerObject::Postpass()
 // FUNCTION: HYPERX 0x004743d0
 void PlayerObject::UpdateRenderSlotTransform(short nSlotIdx)
 {
-    // The original's object at 0x004d0658 takes no marker; symbols/static_guards.csv names its guard.
+    // The original's object at 0x004d0658 takes no marker; symbols/static_guards.csv names its
+    // guard.
     static TransformObject BoneTransform;
 
     m_nFlags |= ENGINEOBJECT_POSED;

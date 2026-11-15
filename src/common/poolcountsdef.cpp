@@ -1,8 +1,8 @@
 #include "compat.h"
 #include "poolcounts.h"
 
-// Each int count is a dword its pool loads whole (0x00412cb3, against MOV AX at 0x0041304d for a short),
-// so its high half carries the short two bytes after it.
+// Each int count is a dword its pool loads whole (0x00412cb3, against MOV AX at 0x0041304d for a
+// short), so its high half carries the short two bytes after it.
 
 short g_wPoolCountCTrack                    = 2;
 short g_wPoolCountCHeadTrack                = 2;

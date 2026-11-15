@@ -97,7 +97,8 @@ def main():
                 cls = None
                 continue
 
-            # A member is declared at the class's own depth; deeper is a statement in an inline body.
+            # A member is declared at the class's own depth; deeper is a statement in an inline
+            # body.
             if depth != 1:
                 continue
 

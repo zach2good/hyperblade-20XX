@@ -1,4 +1,5 @@
-// Asserts every class size the original's own `new` calls give, as tools/object_sizes.py reports them.
+// Asserts every class size the original's own `new` calls give, as tools/object_sizes.py reports
+// them.
 
 #include "common/compat.h"
 #include "common/staticassert.h"

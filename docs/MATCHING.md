@@ -2597,9 +2597,9 @@ table as its only reference, put the marker on that class's override and delete 
 Example: `RokObject::Postpass`.
 
 Where many vtables want one body in one slot, the missing class is a layer with no fields: an
-intermediate class that overrides only that slot and changes no offsets. A derived class that declares no virtuals has a
-table that copies its base's; where the original's slot names a function this tree already has,
-declare that member `virtual` under the base's slot name.
+intermediate class that overrides only that slot and changes no offsets. A derived class that
+declares no virtuals has a table that copies its base's; where the original's slot names a function
+this tree already has, declare that member `virtual` under the base's slot name.
 
 A base whose original table is pure leaves the body to each derived class. The three pool owner
 bases hold pure `Destroy` and `Insert` slots. Each of the sixty-two pools defines both: `Destroy`

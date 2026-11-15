@@ -26,7 +26,8 @@ struct DepthBucket
     int        nCount;
 };
 
-// Read back as an int after the rounding constant is added, the double's low word is the rounded value.
+// Read back as an int after the rounding constant is added, the double's low word is the rounded
+// value.
 union RoundedDouble
 {
     double d;
@@ -80,7 +81,8 @@ void __cdecl DepthSort::Free(void)
     s_pBucket   = 0;
 }
 
-// Keeps each bucket sorted by sort depth, deepest first. A full pool or a bucket past the end drops the entry.
+// Keeps each bucket sorted by sort depth, deepest first. A full pool or a bucket past the end drops
+// the entry.
 // FUNCTION: HYPERX100 0x004090c0
 void __cdecl DepthSort::Insert(TransparentEntry* pEntry, int nBucket)
 {
@@ -120,7 +122,8 @@ void __cdecl DepthSort::Insert(TransparentEntry* pEntry, int nBucket)
     {
         if (s_pWalk->pEntry->flSortZ < pEntry->flSortZ)
         {
-            // The new node takes the walked node's entry and place, and the walked node takes the new entry.
+            // The new node takes the walked node's entry and place, and the walked node takes the
+            // new entry.
             s_pFreeNode->pEntry = s_pWalk->pEntry;
             s_pWalk->pEntry     = pEntry;
             s_pFreeNode->pNext  = s_pWalk->pNext;

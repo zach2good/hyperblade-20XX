@@ -81,7 +81,8 @@ HDC                g_hSoftBackDC;
 HPALETTE           g_hSplashPalette;
 AudioMgr*          g_pAudioMgr;
 int                g_hrRestoreResult;
-// The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
+// The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with
+// no formation.
 ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } },
     { { 2, 3 } },
@@ -651,7 +652,8 @@ short        g_awReactionByDamageAndSector[35];
 extern const float g_flCamTrackVelocityGain;
 const float        g_flCamTrackVelocityGain = 2.0f;
 
-// The debug dialog's IDC_WATCH_ROK checkbox. Clear, the tracking camera takes no new look direction.
+// The debug dialog's IDC_WATCH_ROK checkbox. Clear, the tracking camera takes no new look
+// direction.
 extern char g_bCamTrackLookEnabled;
 char        g_bCamTrackLookEnabled = 1;
 

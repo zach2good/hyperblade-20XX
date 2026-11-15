@@ -1,4 +1,4 @@
-# Counts the classes and namespaces whose bodies sit in more than one .cpp, or in no .cpp named for them.
+# Counts the classes and namespaces with bodies in more than one .cpp, or in no .cpp named for them.
 #
 #   python tools/namespace_spread.py           # the summary line
 #   python tools/namespace_spread.py --list    # each such qualifier, its files and body counts
@@ -16,7 +16,8 @@
 #
 # A file is named for a qualifier when its name, lower case and without underscores, is the
 # qualifier's last part: namespace BringUp belongs in bringup.cpp. A file listed in
-# symbols/layout_exceptions.csv settles its bodies, so they do not count as a spread; --list marks it.
+# symbols/layout_exceptions.csv settles its bodies, so they do not count as a spread; --list marks
+# it.
 #
 # Read only. Three ratchets: exits 1 when more qualifiers are spread than CEILING, when more have
 # no file named for them than UNNAMED_CEILING, or when more bodies sit at global scope than

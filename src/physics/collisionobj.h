@@ -35,7 +35,8 @@ public:
 
     CollisionObj(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity);
 
-    // RampObject's first three parts inline this and the copy below; its fourth calls the out-of-line forms.
+    // RampObject's first three parts inline this and the copy below; its fourth calls the
+    // out-of-line forms.
     CollisionObj(const Vec3& vOrigin, const Vec3& vB, const Vec3& vC, float flFriction, float flElasticity)
     {
         InitFrom3Points(&vOrigin, &vB, &vC, flFriction, flElasticity);

@@ -295,7 +295,8 @@ char GameBehaviorObject::IsFlying()
 }
 #endif
 
-// Run as the behaviour is activated: purge, detach, merge the slots, then re-register the message interactors.
+// Run as the behaviour is activated: purge, detach, merge the slots, then re-register the message
+// interactors.
 
 // FUNCTION: HYPERX100 0x004a23a0
 // FUNCTION: HYPERX 0x0041c380

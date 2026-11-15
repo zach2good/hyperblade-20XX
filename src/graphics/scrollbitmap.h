@@ -1,4 +1,5 @@
-// The scrolling bitmap behind the shot power meter. Every writer of the vtable at 0x004b2e98 reaches it here.
+// The scrolling bitmap behind the shot power meter. Every writer of the vtable at 0x004b2e98
+// reaches it here.
 
 #ifndef HYPERBLADE_SCROLLBITMAP_H
 #define HYPERBLADE_SCROLLBITMAP_H

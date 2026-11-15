@@ -18,7 +18,8 @@ struct ArenaState
     // The slot ids, one int per object. Readers index m_ppSlots with each one.
     int*                      m_pnSlotIds;  // 0x14
     class CollisionEllipsoid* m_pEllipsoid; // 0x18
-    // The Rok's definition, which the loader keeps for RokObject::ActivateAtSpawnSlot to respawn it.
+    // The Rok's definition, which the loader keeps for RokObject::ActivateAtSpawnSlot to respawn
+    // it.
     class ObjectDef* m_pRokDef; // 0x1c
 };
 
