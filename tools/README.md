@@ -94,6 +94,7 @@ Run by CI, by the `verify` build targets, or by `checkers.py`. Each fails on one
 | `check_source_paths.py` | Report a comment in src/ that names a file path the tree does not have. |
 | `check_stray_sources.py` | Find source files under src/ that git does not track, or that sit at the top of src/. |
 | `check_tables_named.py` | Fail when a vtable in the image has no class in this tree. |
+| `check_text_hygiene.py` | Fail on a control character in the tree's text files. |
 | `check_unassigned_locals.py` | Find a local pointer that is read but never written, which compiles and is wrong. |
 | `check_undefined_members.py` | Report a member function declared in a header, defined nowhere, with no comment saying why. |
 | `check_vararg_calls.py` | Report GameApp::Error and GameApp::Fatal calls whose format string wants arguments and gets none. |

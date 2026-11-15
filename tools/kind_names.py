@@ -58,7 +58,7 @@ def client_table(kinds):
         sys.exit(2)
 
     names = re.findall(r'"([^"]+)"', names.group(1))
-    unknown = [token for token in re.findall(r"KIND_\w+", ids.group(1)) if token not in kinds]
+    unknown = [token for token in re.findall(r"\bKIND_\w+", ids.group(1)) if token not in kinds]
 
     if unknown:
         sys.stderr.write("%s does not name %s\n" % (KIND_FILE, ", ".join(unknown)))

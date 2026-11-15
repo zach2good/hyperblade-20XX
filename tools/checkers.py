@@ -30,6 +30,7 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "check_dead_this_alias.py",
             "check_unassigned_locals.py",
             "check_marker_comments.py",
+            "check_text_hygiene.py",
             "check_score_prose.py",
             "check_volatile.py",
             "check_asm_bodies.py",

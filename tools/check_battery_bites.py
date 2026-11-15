@@ -487,6 +487,11 @@ PROBES = (
      "        return short((word & 0xfff) | branch | 0x9000)",
      "        return short((word & 0xfff) | branch | 0xa000)"),
 
+    # A control byte where an escape was meant.
+    ("check_text_hygiene.py", "src/planvm/cslideonrail.cpp",
+     "    m_pSpline = 0;",
+     "    // probe\x01\n    m_pSpline = 0;"),
+
     # A name the map lists twice kept, so one fold group takes the wrong address.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "if seen[name] == 1}",
