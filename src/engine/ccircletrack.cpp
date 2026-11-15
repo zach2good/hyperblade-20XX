@@ -113,3 +113,9 @@ void CCircleTrack::Process(int nArg)
         m_pNext->Process(nArg);
     }
 }
+
+// Out of line, so the linker folds it onto EngineObject::CheckObjectAI, as the original's did.
+// FUNCTION: HYPERX100 0x00486f30
+void CCircleTrack::Release(int)
+{
+}

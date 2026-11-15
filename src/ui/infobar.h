@@ -32,22 +32,17 @@ class InfoBarBase;
 class InfoBar : public InfoBarBase
 {
 public:
+    // Slot one differs from the base's: the original folds this onto Stub::Assert.
+    virtual void Unused();
+
     // Free functions in the original.
     static void __cdecl IncrementScore(int nWhich);
 
 public:
     virtual ViewExtent GetPassBarSize();
 
-    // Twenty one and twenty two are EngineObject::CheckObjectAI and Stub::Assert, shared bare rets.
-    // FUNCTION: HYPERX100 0x004bdd20
-    virtual void SetPassBarMarker(int)
-    {
-    }
-
-    // FUNCTION: HYPERX100 0x004bdd30
-    virtual void ShowPassBar()
-    {
-    }
+    virtual void SetPassBarMarker(int nPos);
+    virtual void ShowPassBar();
 
     virtual void ShowQuitPrompt();
     virtual void HideQuitPrompt();
