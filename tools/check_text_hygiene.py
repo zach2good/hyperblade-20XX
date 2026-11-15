@@ -12,21 +12,27 @@ import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-TEXT = (".c", ".cpp", ".h", ".md", ".csv", ".py", ".txt", ".json", ".yml", ".yaml", ".cmake")
 ALLOWED = {9, 10, 13}
 CONTROL = set(range(32)) - ALLOWED | {127}
 
 
 def tracked():
-    out = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT)
-    return [path for path in out.stdout.splitlines() if path.endswith(TEXT)]
+    """Every tracked file; a git failure stops the check rather than passing it."""
+    out = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT, check=True)
+    return out.stdout.splitlines()
 
 
 def main():
     faults = 0
     for path in tracked():
         with open(os.path.join(ROOT, path), "rb") as handle:
-            for number, line in enumerate(handle, 1):
+            data = handle.read()
+
+        # A NUL marks a binary file, such as an image.
+        if 0 in data:
+            continue
+
+        for number, line in enumerate(data.splitlines(True), 1):
                 found = sorted({byte for byte in line if byte in CONTROL})
                 if found:
                     faults += 1
