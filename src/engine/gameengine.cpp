@@ -122,7 +122,7 @@ struct GameApp;
 
 float g_flUnusedAgendaItemA = g_flZeroAgendaItem;
 float g_flUnusedAgendaItemB = g_flZeroAgendaItem;
-// The original's .CRT$XCU runs its empty initialiser between these floats'.
+// The original's .CRT$XCU runs this empty initialiser between these floats.
 CheatState   g_cheatState;
 float        g_flUnusedAgendaItemC = g_flZeroAgendaItem;
 float        g_flUnusedGameEngineA = g_flZeroGameEngine;
