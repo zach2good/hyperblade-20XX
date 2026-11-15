@@ -9,6 +9,9 @@
 # string. It finds the original's by pointer scan, and our copy has no symbol, so the two never
 # pair.
 #
+# A size also ends a LIBCMT vtable at its last slot: type_info's has one, and without the row
+# reccmp reads the zero word after it as a second.
+#
 # A name: LIBCMT data our PDB names and no marker in src declares, such as the math constants.
 #
 # A string: a literal in vendored IJG source or LIBCMT, which takes no STRING marker. reccmp's csv
