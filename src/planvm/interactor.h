@@ -72,8 +72,15 @@ public:
     }
 
     // Zero, one or two: the phase the object below is checked against.
-    virtual int           GetState();
-    virtual EngineObject* GetActor();
+    virtual int GetState();
+
+    // FUNCTION: HYPERX100 0x004b8b80
+    // FUNCTION: HYPERX 0x0046bb70
+    virtual EngineObject* GetActor()
+    {
+        return m_pOwner;
+    }
+
     // The actor as the class the caller knows it to be; each is defined beside its class.
     PlayerObject* GetPlayerActor();
     CameraObject* GetCameraActor();

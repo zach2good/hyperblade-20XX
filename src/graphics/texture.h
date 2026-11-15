@@ -38,11 +38,18 @@ public:
     virtual void                SetOffset(TextureRect rect);
     virtual void                DispatchRect(int nLeft, int nTop, int nRight, int nBottom);
     virtual IDirectDrawSurface* GetSurface();
+
     // Nothing calls it.
-    virtual Texture* GetSourceSurface();
-    virtual Point    GetSize();
-    virtual int      GetForeColor();
-    virtual int      GetBgColor();
+    // FUNCTION: HYPERX100 0x00440c00
+    // FUNCTION: HYPERX 0x004338f0
+    virtual Texture* GetSourceSurface()
+    {
+        return m_pSourceSurface;
+    }
+
+    virtual Point GetSize();
+    virtual int   GetForeColor();
+    virtual int   GetBgColor();
 
     // Inline, as slot 18 is, so the linker folds slot 18 onto this one as the original's did.
     // FUNCTION: HYPERX100 0x00441000

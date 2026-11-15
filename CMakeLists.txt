@@ -438,38 +438,10 @@ if(HYPERX_V100)
     list(APPEND HYPERX_SOURCES ${HYPERX_V100_SOURCES})
 endif()
 
-# The optimisation is set per source, so that no flag on a command line overrides another. /Ox /Gf
-# is /O2 without /Gy: most units fold only their inline bodies.
-set_source_files_properties(${HYPERX_SOURCES} PROPERTIES COMPILE_FLAGS "/Ox /Gf")
-
-# These units built with /Gy, so their out-of-line bodies fold with identical ones in other /Gy
-# units, as the original's did: the empty ones onto Stub::Assert, apart from the inline ones on
-# Object::Trace.
-set_source_files_properties(
-    src/common/stub.cpp
-    src/ui/hud.cpp
-    src/ui/infobar.cpp
-    src/planvm/planaction.cpp
-    src/planvm/plancond.cpp
-    src/planvm/behparam.cpp
-    src/ui/screens/leaguesetupuiscreen.cpp
-    src/ui/screens/championshipsetupuiscreen.cpp
-    src/math/point.cpp
-    src/ui/widget.cpp
-    src/graphics/softtex.cpp
-    src/ui/screen.cpp
-    src/engine/gameoptions.cpp
-    src/physics/physicsbody.cpp
-    src/engine/engineobject.cpp
-    src/engine/ccircletrack.cpp
-    src/engine/gameengine.cpp
-    src/planvm/agendaitem.cpp
-    src/anim/animplayer.cpp
-    src/planvm/msginteractor.cpp
-    src/graphics/palettescalarfade.cpp
-    src/graphics/visualeffectfade.cpp
-    src/math/viewextent.cpp
-    PROPERTIES COMPILE_FLAGS "/O2")
+# The optimisation is set per source, so that no flag on a command line overrides another. /O2
+# implies /Gy: every out-of-line function is its own COMDAT, so the linker folds identical ones, and
+# the image's sections start where the original's do.
+set_source_files_properties(${HYPERX_SOURCES} PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
 target_include_directories(hyperx_objects PRIVATE "${CMAKE_SOURCE_DIR}/src" "${JPEG6A_DIR}")

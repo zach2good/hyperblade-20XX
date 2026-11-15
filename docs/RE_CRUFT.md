@@ -241,7 +241,7 @@ commit body, and in `symbols/retired.csv` when a row moves more than a point.
 | Names for a shape | 1 open | A shared body is named for the caller or slot its address belongs to, and a wrapper, scratch value or parameter for what it holds; symmetric operands such as `Vec3::Dot`'s `pA` and `pB` stay |
 | One local for two values | 0 open, 3 kept by the client | Each value gets its own local, scoped so VC6 overlays them as the client does, unless the client proves one slot |
 | Steering syntax | 0 open, 95 kept | Parentheses round one operand, casts to the operand's own type, bare scopes and renamed single-use copies go; a copy or scope stays only where the client's frame or load order proves it, and parentheses round a product or quotient term stay |
-| Inlining pragmas | 0 open; 16 kept by the client, 2 kept by the compiler | A helper the client inlines is marked `inline`, since the game builds at `/Ox /Gf` (`/Ob1`), and `__forceinline` and `optimize` pragmas stay only where the bytes need them |
+| Inlining pragmas | 0 open; 16 kept by the client, 2 kept by the compiler | A helper the client inlines is marked `inline`, since the game builds at `/O2` (`/Ob1`), and `__forceinline` and `optimize` pragmas stay only where the bytes need them |
 | Casts that change nothing | 0 open | A cast to the operand's own type or constness goes; `tools/check_self_casts.py` sees only casts of `this`, so read for the rest |
 | Integer returns that carry a pointer | 0 open | A function that returns a pointer declares the pointer type |
 | Function tables called through a cast | 0 open, 2 kept | Each table takes the signature its callers use, and each entry names its own body |

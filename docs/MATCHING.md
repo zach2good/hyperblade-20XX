@@ -90,7 +90,7 @@ the original wrote in assembly: see [Hand-written assembly](ANNOTATIONS.md#hand-
   - [Vtables](#vtables)
 - [Known walls](#known-walls)
   - [Link folding](#link-folding)
-  - [Why the game builds without `/Gy`](#why-the-game-builds-without-gy)
+  - [Why the game builds with `/O2`](#why-the-game-builds-with-o2)
   - [Other walls](#other-walls)
   - [Screens that look like walls and are not](#screens-that-look-like-walls-and-are-not)
 
@@ -107,10 +107,10 @@ link /SUBSYSTEM:WINDOWS,4.0 /FIXED /BASE:0x400000 /FILEALIGN:4096 /INCREMENTAL:N
 
 `CMakeLists.txt` adds the optimisation per source, so no flag overrides another:
 
-- The game's sources get `/Ox /Gf`, which is VC6's `/O2` without `/Gy`. The code is the same as
-  `/O2`'s, including `/Ob1`: VC6 inlines only a function marked `inline` or defined in its class
-  body. Without `/Gy` only inline and compiler-made functions are COMDATs, so the link folds only
-  those, as the original's does. [Known walls](#known-walls) has the evidence.
+- The game's sources get `/O2`, including `/Ob1`: VC6 inlines only a function marked `inline` or
+  defined in its class body. `/O2` implies `/Gy`, so every function is a COMDAT and the link folds
+  identical ones of the same kind, as the original's does.
+  [Why the game builds with `/O2`](#why-the-game-builds-with-o2) has the evidence.
 - The `jpeg6a_objects` target, which holds the JPEG library and `bmpwriter.cpp`, builds at
   `/O1 /Ob2`, as the original's did. The tell is `pop ecx` cleanup and copies as calls.
 - `/GX` turns on C++ exception handling, which gives every function with a live destructor an
@@ -2637,11 +2637,9 @@ the folded operands alone. Example: `PlanVM::InitRuntimeOpcodeTable`.
 The original folded only some identical bodies. Its vtables share bodies across unrelated classes:
 `AgendaItem`'s slots 1, 2 and 12 all name the `ret 4` at `0x0040b910`. But the same image keeps six
 `ret` bodies apart, among them `Object::Trace` and `Stub::Assert`, and five `xor eax, eax; ret`
-bodies, which a full `/OPT:ICF` would have folded. The pattern fits objects built without `/Gy`:
-`/O2` implies `/Gy`, which puts every function in its own COMDAT, while inline and compiler-made
-functions are COMDATs either way, and only COMDATs fold. A VC6 probe object shows both halves. The
-original's `.text` (0xaf12b) is near our `/OPT:REF` image's (0xaeb4d), not our `/OPT:NOREF`
-image's (0xb499d).
+bodies. VC6 folds a COMDAT only with COMDATs of its own kind, inline or out of line, so each of
+those bodies leads a group of one kind. The original's `.text` (0xaf12b) is near our `/OPT:REF`
+image's, not our `/OPT:NOREF` image's (0xb499d).
 
 Measured on `hyperx_sym`, against the `/OPT:NOREF` baseline:
 
@@ -2680,14 +2678,15 @@ original's group, give the marked copy and its twins the same kind:
   stays: `KeyConfigDialog::SaveKeysAs` and `ClearKeys`.
 - Make a file-local routine `static` where the original's source does: `BmpWriter::start_output_bmp`
   joins libjpeg's empty hooks, as `wrbmp.c`'s `METHODDEF` has it.
-- Build the unit `/O2` (which implies `/Gy`) and move the bodies out of line: the empty bodies the
-  original keeps on `Stub::Assert`, apart from the inline ones on `Object::Trace`. `CMakeLists.txt`
-  lists those units. Add a unit to that list, never to `HYPERX_SOURCES`, whose order is the link's.
+- Move the body out of line: every unit builds `/O2`, which implies `/Gy`, so it folds with the
+  other out-of-line copies, as the empty bodies the original keeps on `Stub::Assert`, apart from
+  the inline ones on `Object::Trace`. A marked accessor the original keeps apart from an
+  out-of-line twin is `inline`: `Interactor::GetActor`, `Texture::GetSourceSurface`.
 
 A second `/OPT:ICF` pass changes nothing: the device-object deleters, which call different
 destructors that fold only at link time, stay apart.
 
-### Why the game builds without `/Gy`
+### Why the game builds with `/O2`
 
 VC6 has no `/Gy-` or `/GF-`: `/O2 /Gy-` still makes a COMDAT of every function. `/Ox` is
 `/Og /Oi /Ot /Oy /Ob1 /Gs`, so `/O2` without `/Gy` is `/Ox /Gf`. A probe object shows the string
@@ -2708,11 +2707,14 @@ and measured on `hyperx_sym` against `/O2`:
 | `/Ox /Gy` | `/OPT:NOREF` | -292 | -19850.6 | 1089 extra copies |
 | `/Ox /Gy` | `/OPT:NOREF /OPT:ICF` | -396 | -20176.2 | 1089 extra copies |
 
-`/Ox /Gf` scores the same as `/O2` on every row, and it changes `HYPERX.exe` toward the original:
-`Object::Trace` and `Stub::Assert` keep their own addresses, and `.text` is 0xaecdd, against
-`/O2`'s 0xaeb4d and the original's 0xaf12b, because `/OPT:REF` cannot drop an unused function that
-is not a COMDAT. Every `/OPT:ICF` row loses, so `hyperx_sym` stays `/OPT:NOREF` alone. The
-`/Ox /Gf` ICF row counts the 8 rows that fold away as lost; the other ICF rows understate the loss.
+`/Ox /Gf` scores the same as `/O2` on `hyperx_sym`, which keeps every body apart, so the table
+cannot choose between them. `HYPERX.exe` can. The tree once built `/Ox /Gf` because the original
+keeps `Object::Trace` and `Stub::Assert` apart, which looked like folding of inline bodies only.
+Two kinds of COMDAT explain it instead (Reaching the original's fold groups, above). With the empty
+bodies placed by kind and the whole game at `/O2`, `HYPERX.exe`'s `.text` is 0xaf0cd against the
+original's 0xaf12b, its raw size equals the original's, and `.rdata` and `.data` start at the
+original's addresses; `/Ox /Gf` left `.text` 0xaecad. Every `/OPT:ICF` row loses, so `hyperx_sym`
+stays `/OPT:NOREF` alone.
 
 ### Other walls
 

@@ -44,13 +44,6 @@ IDirectDrawSurface* Texture::GetSurface()
     return m_pSurface;
 }
 
-// FUNCTION: HYPERX100 0x00440c00
-// FUNCTION: HYPERX 0x004338f0
-Texture* Texture::GetSourceSurface()
-{
-    return m_pSourceSurface;
-}
-
 // FUNCTION: HYPERX100 0x00440c10
 // FUNCTION: HYPERX 0x00433900
 Point Texture::GetSize()
