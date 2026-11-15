@@ -2685,8 +2685,9 @@ datum's readers.
 
 A `$scopetable` row also pairs the funclets its table names. foldcmp walks the table's entries,
 the enclosing level, filter and handler, on both sides and pairs each filter and handler, sized
-from `symbols/functions.csv`. The tables sit back to back with no terminator, so the walk stops
-at the next row's table or at a word that isn't a funclet on both sides.
+from `symbols/functions.csv`; one without its own row there is skipped. The tables sit back to
+back with no terminator, so the walk stops at the next row's table, where the two sides' levels
+differ, or at a word that isn't a funclet on both sides.
 
 #### Reaching the original's fold groups
 

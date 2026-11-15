@@ -204,8 +204,8 @@ def pair_scope_entries(db, orig_bin, recomp_bin, lookup, rows, sizes):
     An entry is three words: the enclosing level, the filter (0 for a __finally) and the handler.
     The tables sit back to back with no terminator, so a walk stops before the next row's table,
     at an enclosing level that isn't -1 or an earlier entry, or at a filter or handler outside
-    .text on either side. A funclet takes its size from symbols/functions.csv. Answers how many
-    funclets it paired.
+    .text on either side, or where the two sides' levels differ. A funclet takes its size from
+    symbols/functions.csv and is skipped without a row there. Answers how many funclets it paired.
     """
     starts = sorted(int(row["address"], 16) for row in rows)
     paired = 0
@@ -225,8 +225,8 @@ def pair_scope_entries(db, orig_bin, recomp_bin, lookup, rows, sizes):
                 ours = recomp_bin.read(table.recomp_addr + entry * 12, 12)
                 words = [(int.from_bytes(theirs[at:at + 4], "little"),
                           int.from_bytes(ours[at:at + 4], "little")) for at in (0, 4, 8)]
-                level, funclets = words[0][0], words[1:]
-                if level != 0xFFFFFFFF and level >= entry:
+                (level, our_level), funclets = words[0], words[1:]
+                if level != our_level or (level != 0xFFFFFFFF and level >= entry):
                     break
 
                 if not all((orig == 0 and mine == 0) or (in_text(orig) and in_text(mine))
