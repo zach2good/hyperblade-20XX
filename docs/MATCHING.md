@@ -2661,7 +2661,8 @@ asmcmp's arguments. It reads which bodies `HYPERX.map` puts on one address and `
 keeps apart, and makes reccmp read a reference to an unmarked copy as one to the group's marked
 copy, as `HYPERX.exe` calls it. Symbols stay where they are, so no row folds away. A fold the
 original didn't make still fails, because its slot names another address. A group with no marked
-copy, or more than one, is left alone.
+copy, or more than one, is left alone; foldcmp names on stderr each group with several, a fold
+the original doesn't make.
 
 #### Reaching the original's fold groups
 
