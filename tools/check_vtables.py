@@ -114,8 +114,10 @@ def register():
 
 def save(found):
     # The register's comment block says why its rows are open, so a save keeps it.
-    with open(REGISTER) as handle:
-        comments = [line for line in handle if line.startswith("#")]
+    comments = ["# Vtables that do not pair against the original.\n"]
+    if REGISTER.exists():
+        with open(REGISTER) as handle:
+            comments = [line for line in handle if line.startswith("#")]
 
     with open(REGISTER, "w") as handle:
         handle.writelines(comments)
