@@ -25,7 +25,6 @@ namespace BmpWriter
 {
 
 djpeg_dest_ptr __cdecl Create(j_decompress_ptr cinfo, boolean is_os2);
-void __cdecl           start_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo);
 void __cdecl           put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION rows_supplied);
 void __cdecl           put_gray_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION rows_supplied);
 void __cdecl           finish_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo);

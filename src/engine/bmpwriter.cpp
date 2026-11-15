@@ -4,6 +4,14 @@
 
 #include "bmpwriter.h"
 
+namespace BmpWriter
+{
+
+// Static, as wrbmp.c's METHODDEF makes it, so the linker folds it with the library's empty hooks.
+static void __cdecl start_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo);
+
+} // namespace BmpWriter
+
 // FUNCTION: HYPERX 0x00494693
 djpeg_dest_ptr __cdecl BmpWriter::Create(j_decompress_ptr cinfo, boolean is_os2)
 {
@@ -67,7 +75,7 @@ djpeg_dest_ptr __cdecl BmpWriter::Create(j_decompress_ptr cinfo, boolean is_os2)
     return (djpeg_dest_ptr)dest;
 }
 
-// The original's link folded this onto every other empty hook, so it carries their shared address.
+// The original's link folded every other empty hook onto this one.
 // FUNCTION: HYPERX 0x0049ce32
 void __cdecl BmpWriter::start_output_bmp(j_decompress_ptr, djpeg_dest_ptr)
 {
