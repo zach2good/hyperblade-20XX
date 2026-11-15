@@ -1,7 +1,8 @@
 """Rank the functions the original folds bodies onto, where this build does not.
 
 Reads build/report.json and counts every changed line where the original names one function and
-this build names another: a call, a pushed or stored function address, or a vtable slot. A body
+this build names another: a call, a pushed or stored function address, or a vtable slot, paired
+by its offset. An original `__purecall` against a body here shows as one more target. A body
 the original folds onto a marked function shows up once per site. MATCHING.md, Link folding, says
 how to put a body in the original's group.
 
@@ -39,6 +40,31 @@ def names(row, orig, recomp):
     return found_orig.group(1), found_recomp.group(1)
 
 
+def changed_lines(row):
+    """Answers the (original, ours) text of each changed line.
+
+    A vtable's diff can put a slot's two sides in separate blocks, so its lines pair by slot offset.
+    """
+    if row.get("type") != VTABLE:
+        for _, blocks in row.get("diff", []):
+            for block in blocks:
+                for orig, recomp in zip(block.get("orig", []), block.get("recomp", [])):
+                    yield orig[1], recomp[1]
+
+        return
+
+    sides = {"orig": {}, "recomp": {}}
+    for _, blocks in row.get("diff", []):
+        for block in blocks:
+            for side, slots in sides.items():
+                for offset, text in block.get(side, []):
+                    slots[offset] = text
+
+    for offset, orig in sides["orig"].items():
+        if offset in sides["recomp"]:
+            yield orig, sides["recomp"][offset]
+
+
 def main():
     if not os.path.exists(REPORT):
         print("no build/report.json; run python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
@@ -51,16 +77,14 @@ def main():
         if row.get("matching", 1) >= 1:
             continue
 
-        for _, blocks in row.get("diff", []):
-            for block in blocks:
-                for orig, recomp in zip(block.get("orig", []), block.get("recomp", [])):
-                    pair = names(row, orig[1], recomp[1])
-                    if pair is None or pair[0] == pair[1]:
-                        continue
+        for orig, recomp in changed_lines(row):
+            pair = names(row, orig, recomp)
+            if pair is None or pair[0] == pair[1]:
+                continue
 
-                    counts[pair[0]] += 1
-                    ours[pair[0]].add(pair[1])
-                    rows[pair[0]].add(row["name"])
+            counts[pair[0]] += 1
+            ours[pair[0]].add(pair[1])
+            rows[pair[0]].add(row["name"])
 
     limit = None if "--all" in sys.argv else 20
     for target, count in counts.most_common(limit):
