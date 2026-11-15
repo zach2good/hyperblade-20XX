@@ -14,6 +14,7 @@ void         SetInteractorLatency(EngineObject* pActor, PlanNode* pNode, GameBeh
 void         SetDigressive(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pTarget);
 void         SetPurgeFlag(EngineObject* pActor, PlanNode* pItem, GameBehaviorObject* pTarget);
 void         SetTargetGoal(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour);
+void         SetDoubleScore(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour);
 void         SetTarget(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour);
 void         SetRelativePosition(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour);
 void         SetModelImRelativeTo(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour);

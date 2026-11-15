@@ -97,9 +97,9 @@ void BehaviorRegistry::Init(void)
     g_apfnBehaviorParamHandlers[SET_TARGET_GOAL]          = BehParam::SetTargetGoal;
     g_apfnBehaviorParamHandlers[SET_OBJECT_TO_FOLLOW]     = BehParam::SetObjectToFollow;
 
-    g_apBehaviorRegistry[BEH_GLIDE_TO_OBJECT] = new BehObjGlideToObjectPool;
+    g_apfnBehaviorParamHandlers[SET_DOUBLE_SCORE] = BehParam::SetDoubleScore;
+    g_apBehaviorRegistry[BEH_GLIDE_TO_OBJECT]     = new BehObjGlideToObjectPool;
 
-    g_apfnBehaviorParamHandlers[SET_DOUBLE_SCORE]   = BehParam::SetTargetGoal;
     g_apBehaviorRegistry[BEH_GLIDE_TO_POSITION]     = new BehObjGlideToPositionPool;
     g_apBehaviorRegistry[BEH_GLIDE_BETWEEN_FACING]  = new BehObjGlideBetweenFacingPool;
     g_apBehaviorRegistry[BEH_AVOIDANCE]             = new BehObjAvoidancePool;
