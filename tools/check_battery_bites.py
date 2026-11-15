@@ -494,6 +494,10 @@ PROBES = (
     ("check_address_order.py", "src/ui/infobar.cpp",
      "// FUNCTION: HYPERX100 0x004bdd30",
      "// FUNCTION: HYPERX100 0x004bdd50"),
+    # The #else of an #ifdef HYPERX_V100 is v1.0.0.1's, so a low marker there is a descent.
+    ("check_address_order.py", "src/app/gameapp.cpp",
+     "#else\n                g_bForceSoftwareRender = 1;",
+     "#else\n// FUNCTION: HYPERX 0x00400000\n                g_bForceSoftwareRender = 1;"),
 
     # A control byte where an escape was meant.
     ("check_text_hygiene.py", "src/planvm/cslideonrail.cpp",

@@ -177,7 +177,7 @@ inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
     return (short)(*pResult = ((nMe & 1) | GOALIE_SLOT_A));
 }
 
-// Keeps the argument block's first word; inline, so its copies below fold onto it.
+// Keeps the argument block's first word; its inline copies fold onto it, not in v1.0.0.0.
 // FUNCTION: HYPERX100 0x004e0d60
 // FUNCTION: HYPERX 0x0047cb20
 inline short GetViewOwner(EngineObject**, const PlanWord* pStream, int* pResult)

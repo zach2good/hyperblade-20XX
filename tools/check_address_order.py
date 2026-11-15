@@ -29,29 +29,26 @@ def bodies(path):
     """Answers (line, HYPERX address or None, HYPERX100 address or None) for each marked body."""
     found = []
     pending = {}
-    # One [only v1.0.0.0, tests HYPERX_V100] pair per open #if.
+    # One [only v1.0.0.0, the #if was a lone #ifndef HYPERX_V100] pair per open #if. Only a branch
+    # whose whole condition is HYPERX_V100 counts as v1.0.0.0's; any other shape counts as both.
     stack = []
     for number, line in enumerate(open(path, encoding="utf-8", errors="replace"), 1):
         words = line.split()
         directive = words[0] if words else ""
-        named = "HYPERX_V100" in line
-        if directive in ("#if", "#ifdef"):
-            stack.append([named and "!" not in line, named])
+        condition = "".join(words[1:])
+        if directive in ("#if", "#ifdef", "#ifndef"):
+            only = condition in ("HYPERX_V100", "defined(HYPERX_V100)") and directive != "#ifndef"
+            stack.append([only, directive == "#ifndef" and condition == "HYPERX_V100"])
             continue
 
-        if directive == "#ifndef":
-            stack.append([False, named])
-            continue
-
+        # After a lone #ifndef HYPERX_V100, every later branch is v1.0.0.0's.
         if directive == "#elif" and stack:
-            stack[-1] = [named and "!" not in line, stack[-1][1] or named]
+            after_ifndef = stack[-1][1]
+            stack[-1] = [after_ifndef or condition == "defined(HYPERX_V100)", after_ifndef]
             continue
 
-        # A branch that tests HYPERX_V100 hands the other build its #else.
         if directive == "#else" and stack:
-            if stack[-1][1]:
-                stack[-1][0] = not stack[-1][0]
-
+            stack[-1] = [stack[-1][1], False]
             continue
 
         if directive == "#endif" and stack:
@@ -114,21 +111,24 @@ def main():
         found.extend(faults(path))
 
     descents = sorted((shown, "0x%08x" % addr) for kind, shown, addr, _ in found if kind == "descent")
+
+    reasons = {}
+    if os.path.exists(REGISTER):
+        rows = (line for line in open(REGISTER, encoding="utf-8") if not line.startswith("#"))
+        reasons = {(row["path"], row["address"]): row.get("reason") or REASON for row in csv.DictReader(rows)}
+
+    known = set(reasons)
+
     if "--save" in sys.argv:
         with open(REGISTER, "w", newline="\n", encoding="utf-8") as handle:
             handle.write("# HYPERX markers that sit below a higher one in their file, from before\n")
             handle.write("# tools/check_address_order.py. A new descent fails; remove a row once it is fixed.\n")
             handle.write("path,address,reason\n")
-            for path, addr in descents:
-                handle.write("%s,%s,%s\n" % (path, addr, REASON))
+            for key in descents:
+                handle.write("%s,%s,%s\n" % (key + (reasons.get(key, REASON),)))
 
         print("saved %d descent(s)" % len(descents))
         return 0
-
-    known = set()
-    if os.path.exists(REGISTER):
-        rows = (line for line in open(REGISTER, encoding="utf-8") if not line.startswith("#"))
-        known = {(row["path"], row["address"]) for row in csv.DictReader(rows)}
 
     bad = 0
     for kind, shown, addr, number in found:
