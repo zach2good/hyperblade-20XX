@@ -2,7 +2,8 @@
 
 The `verify` build target also runs checkers, but a failure there is buried in build output.
 This runs the tree's structural checkers directly and prints a short table. It does not build
-or compare bytes.
+or compare bytes. When the reference is configured it also runs the checkers in REFERENCE,
+which read the original or a register of its differences.
 
     python tools/checkers.py            # one line each, failures last
     python tools/checkers.py --full     # the full output of every checker that failed

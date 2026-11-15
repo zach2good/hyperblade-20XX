@@ -512,6 +512,10 @@ PROBES = (
 
 # Checkers with no probe, and what a probe would have to plant.
 UNPROVEN = {
+    "check_vtables.py": "a rebuild with a slot changed, and the reference image",
+    "check_folded.py": "a rebuild with a FOLDED marker that matches nothing",
+    "check_datavalues.py": "a rebuild with a global's initial value changed, and the reference image",
+    "check_vtable_arity_declared.py": "a class declaring one virtual fewer, and the reference image",
 }
 
 
@@ -638,8 +642,9 @@ def main():
 
         faults.append((entry, why))
 
+    everything = battery.CHECKERS + battery.REFERENCE
     listed = set(entry for entry, path, find, plant in PROBES) | set(UNPROVEN)
-    missing = [entry for entry in battery.CHECKERS if entry not in listed]
+    missing = [entry for entry in everything if entry not in listed]
 
     for entry in missing:
         faults.append((entry, "is in the battery and this file does not mention it"))
@@ -649,15 +654,15 @@ def main():
             print("%-40s bites, %s" % (entry, why))
 
         for entry in sorted(UNPROVEN):
-            if entry in battery.CHECKERS:
+            if entry in everything:
                 print("%-40s UNPROVEN, would need %s" % (entry, UNPROVEN[entry]))
 
     for entry, why in faults:
         print("FAULT %-34s %s" % (entry, why))
 
     print("%d checker(s) in the battery: %d probe(s) bite, %d with no probe, %d fault(s)"
-          % (len(battery.CHECKERS), len(bit),
-             len([e for e in UNPROVEN if e in battery.CHECKERS]), len(faults)))
+          % (len(everything), len(bit),
+             len([e for e in UNPROVEN if e in everything]), len(faults)))
 
     return 1 if faults else 0
 
