@@ -7,8 +7,7 @@
 # Three are pool owner bases whose original slots are pure; python
 # tools/vtable_behaviour.py lists them. Three hold a compiler-made deleter the
 # original folds onto another class's, and a deleter is always an inline COMDAT.
-# Screen_SaveLoad's slots are out of step with the original's, and type_info's
-# table is the runtime's.
+# type_info's table is the runtime's.
 address,name
 004b2218,AgendaItemOwner::`vftable'
 004b2834,BehaviorOwner::`vftable'
@@ -16,5 +15,4 @@ address,name
 004b3664,MouseDeviceObj::`vftable'
 004b3814,MsgInteractor::`vftable'
 004b3840,NodeOwner::`vftable'
-004b3868,Screen_SaveLoad::`vftable'
 004b4790,type_info::`vftable'

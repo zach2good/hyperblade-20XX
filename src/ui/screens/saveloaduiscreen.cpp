@@ -421,6 +421,17 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 
 #define PART_MAX 0x100
 
+// Out of line, so the linker folds these onto Stub::Assert, as the original's did.
+// FUNCTION: HYPERX100 0x0046b820
+void SaveLoadUIScreen::OnLeftArrowClick()
+{
+}
+
+// FUNCTION: HYPERX100 0x0046b830
+void SaveLoadUIScreen::OnRightArrowClick()
+{
+}
+
 // FUNCTION: HYPERX100 0x0046b840
 // FUNCTION: HYPERX 0x0046eb50
 void SaveLoadUIScreen::SaveGame()
@@ -459,6 +470,12 @@ void SaveLoadUIScreen::LoadGame()
     g_pGameEngine->ReadSaveFile(m_nSlot);
 
     g_nPlayerMode = PLAYER_MODE_TOURNAMENT;
+}
+
+// Out of line, so the linker folds it onto Stub::Assert, as the original's did.
+// FUNCTION: HYPERX100 0x0046b930
+void SaveLoadUIScreen::RefreshSelection()
+{
 }
 
 // FUNCTION: HYPERX100 0x0046b940

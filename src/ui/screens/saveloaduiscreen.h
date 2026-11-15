@@ -37,22 +37,9 @@ public:
 
     virtual void RefreshFrames();
 
-#ifdef HYPERX_V100
-    // FUNCTION: HYPERX100 0x0046b930
-    virtual void RefreshSelection()
-    {
-    }
-
-    // FUNCTION: HYPERX100 0x0046b820
-    virtual void OnLeftArrowClick()
-    {
-    }
-
-    // FUNCTION: HYPERX100 0x0046b830
-    virtual void OnRightArrowClick()
-    {
-    }
-#endif
+    virtual void RefreshSelection();
+    virtual void OnLeftArrowClick();
+    virtual void OnRightArrowClick();
     virtual void OnOtherButton(int nMsg, unsigned int nId);
     SaveLoadUIScreen();
     ~SaveLoadUIScreen();
