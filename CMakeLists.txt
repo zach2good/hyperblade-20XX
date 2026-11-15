@@ -468,6 +468,7 @@ set_source_files_properties(
     src/planvm/msginteractor.cpp
     src/graphics/palettescalarfade.cpp
     src/graphics/visualeffectfade.cpp
+    src/math/viewextent.cpp
     PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
