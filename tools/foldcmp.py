@@ -37,9 +37,13 @@ FUNCTION_LINE = re.compile(r"^ 0001:[0-9a-f]{8}\s+(\S+)\s+([0-9a-f]{8}) f ")
 
 def read_map(path):
     """Answers each function name the map lists once, with its address."""
+    return read_lines(path.read_text(errors="replace").splitlines())
+
+
+def read_lines(lines):
     seen = collections.Counter()
     addresses = {}
-    for line in path.read_text(errors="replace").splitlines():
+    for line in lines:
         found = FUNCTION_LINE.match(line)
         if found:
             seen[found.group(1)] += 1
@@ -87,9 +91,8 @@ def aliases_for(db, groups, lookup):
     return aliases
 
 
-def static_rows():
-    lines = (line for line in open(ROOT / "symbols" / "static_objects.csv", encoding="utf-8")
-             if not line.startswith("#"))
+def register(name):
+    lines = (line for line in open(ROOT / "symbols" / name, encoding="utf-8") if not line.startswith("#"))
     return list(csv.DictReader(lines))
 
 
@@ -118,6 +121,37 @@ def pair_statics(db, recomp_bin, lookup, rows):
             orig = int(row["address"], 16)
             batch.set(ImageId.ORIG, orig, type=EntityType.DATA, name=row["name"], size=size)
             batch.set(ImageId.RECOMP, ours, type=EntityType.DATA, name=row["name"], size=size)
+            batch.match(orig, ours)
+            paired += 1
+
+    return paired
+
+
+def map_statics(path):
+    """Answers each function the map's "Static symbols" section lists once, with its address."""
+    lines = path.read_text(errors="replace").splitlines()
+    start = next((number for number, line in enumerate(lines) if line.startswith(" Static symbols")),
+                 len(lines))
+    return read_lines(lines[start:])
+
+
+def pair_map_symbols(db, rows, statics):
+    """Pairs each row of symbols/map_pairs.csv with our static of that name in the map.
+
+    Names on stderr each row whose symbol the map doesn't list, and answers how many it paired.
+    """
+    paired = 0
+    with db.batch() as batch:
+        for row in rows:
+            ours = statics.get(row["symbol"])
+            if ours is None:
+                print("foldcmp: %s is not a static in the map" % row["symbol"], file=sys.stderr)
+                continue
+
+            orig = int(row["address"], 16)
+            size = int(row["size"])
+            batch.set(ImageId.ORIG, orig, type=EntityType.FUNCTION, name=row["symbol"], size=size)
+            batch.set(ImageId.RECOMP, ours, type=EntityType.FUNCTION, name=row["symbol"], size=size)
             batch.match(orig, ours)
             paired += 1
 
@@ -155,7 +189,11 @@ def install():
     def from_target(cls, target):
         compare = build(cls, target)
         print("foldcmp: %d function-scope static(s) paired through their thunks"
-              % pair_statics(compare._db, compare.recomp_bin, lookup, static_rows()), file=sys.stderr)
+              % pair_statics(compare._db, compare.recomp_bin, lookup, register("static_objects.csv")),
+              file=sys.stderr)
+        statics = map_statics(OUT / "HYPERX_sym.map")
+        print("foldcmp: %d library static(s) paired by their map names"
+              % pair_map_symbols(compare._db, register("map_pairs.csv"), statics), file=sys.stderr)
         aliases.update(aliases_for(compare._db, groups, lookup))
         print("foldcmp: %d fold groups, %d copies read as their marked twin"
               % (len(groups), len(aliases)), file=sys.stderr)
@@ -218,6 +256,12 @@ def selftest():
             {"address": "0x004c0200", "name": "C::s_three", "size": "0x7c", "thunk": "0x00410020"}]
     assert pair_statics(db, Image(), EntityDb.get, rows) == 1
     assert db.get(ImageId.ORIG, 0x4C0000).recomp_addr == 0x499000
+
+    # One library static the map lists, one it doesn't.
+    symbols = [{"address": "0x004a0000", "symbol": "_listed", "size": "16"},
+               {"address": "0x004a0010", "symbol": "_missing", "size": "16"}]
+    assert pair_map_symbols(db, symbols, {"_listed": 0x4B0000}) == 1
+    assert db.get(ImageId.ORIG, 0x4A0000).recomp_addr == 0x4B0000
 
     print("selftest passed")
     return 0

@@ -504,6 +504,11 @@ PROBES = (
      "    m_pSpline = 0;",
      "    // probe\x01\n    m_pSpline = 0;"),
 
+    # A library static paired with a map symbol it doesn't name.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "            ours = statics.get(row[\"symbol\"])",
+     "            ours = next(iter(statics.values()))"),
+
     # A static paired off a thunk that doesn't load it.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            if code[0] != MOV_ECX:",

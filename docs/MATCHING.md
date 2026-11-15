@@ -2671,6 +2671,10 @@ thunk; foldcmp reads our object's address off our thunk's first instruction, `mo
 object, pairs the two, and names on stderr each row it can't pair. The code around them is the
 same; only the link-chosen address differs.
 
+LIBCMT statics have no PDB symbol either, but `HYPERX_sym.map`'s "Static symbols" section lists
+them. `symbols/map_pairs.csv` names each by the original's address and its map symbol, and
+foldcmp pairs the two, naming on stderr any symbol the map doesn't list.
+
 #### Reaching the original's fold groups
 
 `python tools/fold_candidates.py` ranks the functions the original folds bodies onto where this
