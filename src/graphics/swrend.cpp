@@ -27,6 +27,7 @@ int          g_nSWVertexUVMask  = Face::VertexMask(7, 2);
 float        g_flUnusedDisplayA = g_flZeroDisplay;
 float        g_flUnusedDisplayB = g_flZeroDisplay;
 float        g_flUnusedDisplayC = g_flZeroDisplay;
+SurfacePoint g_ptHudFpsAnchor(0, 0);
 SurfacePoint g_ptHudClockAnchor(0, 0);
 SurfacePoint g_ptHudAnchorC(0, 0);
 SurfacePoint g_ptHudAnchorD(0, 0);

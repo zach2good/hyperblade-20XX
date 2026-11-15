@@ -3,7 +3,6 @@
 #ifndef HYPERBLADE_HUDSURFACES_H
 #define HYPERBLADE_HUDSURFACES_H
 
-#include "math/point.h"
 #include "graphics/surfacepoint.h"
 #include "common/staticassert.h"
 #include <stddef.h>
@@ -82,7 +81,7 @@ extern SurfacePoint g_ptHudInset;
 extern SurfacePoint g_ptHudClockAnchor;
 
 // GLOBAL: HYPERX 0x004cede0
-extern Point g_ptHudFpsAnchor;
+extern SurfacePoint g_ptHudFpsAnchor;
 
 // The right margin, which is the screen width less ten.
 // GLOBAL: HYPERX 0x004ceeb4

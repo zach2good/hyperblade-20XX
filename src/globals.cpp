@@ -127,7 +127,6 @@ int                        g_nCountdownLastSecs;
 int                        g_nSavedCursorVisible;
 const char* const          g_pszPbnExtension    = "pbn";
 const char* const          g_pszTokenDelimiters = "	";
-Point                      g_ptHudFpsAnchor     = { 0, 0 };
 int                        g_nHudRightMargin;
 int                        g_nPlanSequenceStep;
 SavedDisplayMetrics*       g_pSavedDesktopMode  = 0;
@@ -403,7 +402,6 @@ char              g_szNetSetupStatus[256];
 #include "sound/mixer.h"
 #include "engine/playerobject.h"
 #include "input/joystickmgr.h"
-#include "math/point.h"
 #include "engine/object.h"
 #include "input/cheat.h"
 #include "planvm/plannode.h"

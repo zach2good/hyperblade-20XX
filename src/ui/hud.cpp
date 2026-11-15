@@ -309,7 +309,7 @@ void __stdcall HUD::PlaceSurfaces(void)
 
         if (g_ddrawDevice.pFpsText != 0)
         {
-            g_ddrawDevice.pFpsText->SetPosition(g_ptHudFpsAnchor);
+            g_ddrawDevice.pFpsText->SetPosition(static_cast<Point&>(g_ptHudFpsAnchor));
         }
 
         if (g_hudSurfaces.pNetworkIcon != 0)
