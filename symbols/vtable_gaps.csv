@@ -4,9 +4,4 @@
 # when a table named here starts. Remove the row in the same change that
 # closes the gap.
 #
-# Both are device deleters the original folds onto GamepadDeviceObj's, which calls an
-# out-of-line ~InputDeviceObj. Ours call each class's implicit destructor; giving ours that
-# out-of-line destructor folds these two but takes GamepadDeviceObj's deleter from 100 to 90.91.
 address,name
-004b35e4,JoystickDeviceObj::`vftable'
-004b3664,MouseDeviceObj::`vftable'

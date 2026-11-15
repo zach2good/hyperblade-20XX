@@ -10,6 +10,7 @@ class GamepadDeviceObj : public InputDeviceObj
 {
 public:
     GamepadDeviceObj(int nSlot, class ObjectDef* pDef);
+    ~GamepadDeviceObj();
 };
 
 STATIC_ASSERT(sizeof(GamepadDeviceObj) == 0xd28);

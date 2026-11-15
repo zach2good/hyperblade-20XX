@@ -13,11 +13,8 @@ public:
     }
 };
 
-// No device class declares a destructor, so each deleter calls an inline copy of DeviceObject's.
+// Each leaf's deleter calls its out-of-line destructor, so the three fold onto Gamepad's.
 // SYNTHETIC: HYPERX 0x0045d690
 // GamepadDeviceObj::`scalar deleting destructor'
-
-// SYNTHETIC: HYPERX 0x0045d6b0
-// GamepadDeviceObj::~GamepadDeviceObj
 
 #endif

@@ -7,3 +7,9 @@ GamepadDeviceObj::GamepadDeviceObj(int nSlot, class ObjectDef* pDef)
 : InputDeviceObj(nSlot, pDef)
 {
 }
+
+// FUNCTION: HYPERX100 0x00491040
+// FUNCTION: HYPERX 0x0045d6b0
+GamepadDeviceObj::~GamepadDeviceObj()
+{
+}

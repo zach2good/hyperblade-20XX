@@ -10,6 +10,7 @@ class MouseDeviceObj : public InputDeviceObj
 {
 public:
     MouseDeviceObj(int nSlot, class ObjectDef* pDef);
+    ~MouseDeviceObj();
 };
 
 STATIC_ASSERT(sizeof(MouseDeviceObj) == 0xd28);

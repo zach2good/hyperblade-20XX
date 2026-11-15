@@ -10,6 +10,7 @@ class JoystickDeviceObj : public InputDeviceObj
 {
 public:
     JoystickDeviceObj(int nSlot, class ObjectDef* pDef);
+    ~JoystickDeviceObj();
 };
 
 STATIC_ASSERT(sizeof(JoystickDeviceObj) == 0xd28);

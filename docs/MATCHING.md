@@ -2685,8 +2685,9 @@ original's group, give the marked copy and its twins the same kind:
   the inline ones on `Object::Trace`. A marked accessor the original keeps apart from an
   out-of-line twin is `inline`: `Interactor::GetActor`, `Texture::GetSourceSurface`.
 
-A second `/OPT:ICF` pass changes nothing: the device-object deleters, which call different
-destructors that fold only at link time, stay apart.
+A deleter calls its class's destructor, so deleters fold only when the destructors they call
+already do. An implicit destructor becomes a `jmp` thunk that no deleter can share; declaring
+the leaf destructors out of line, as `GamepadDeviceObj`'s, lets the three device deleters fold.
 
 ### Why the game builds with `/O2`
 
