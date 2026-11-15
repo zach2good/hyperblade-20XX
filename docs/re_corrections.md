@@ -197,8 +197,8 @@ The action and condition tables are indexed by `ActionFunctionIDs` and `Decision
 `DATA/ENUMIDS.H`. The fifty-five handlers registered at one id each take the id's name in place of
 Ghidra's, so `CheckTackleOpponentIfFacing` is `Engage_Opponent` and `GetRokCarrierState` is
 `IHaveRok`. The handlers that keep another name sit at a slot the enum has no entry for, are
-registered in both tables, are `Stub::Assert`, live in `AnimEvent` with callers of their own, or, as `SendMsg`, would
-collide with a `windows.h` macro.
+registered in both tables, are `Stub::Assert`, live in `AnimEvent` with callers of their own,
+or, as `SendMsg`, would collide with a `windows.h` macro.
 
 ### The behaviour-parameter handlers take the names the plans use
 
