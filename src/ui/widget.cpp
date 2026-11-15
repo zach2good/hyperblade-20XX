@@ -602,13 +602,6 @@ void Widget::SetTextFlag(int nFlag)
     m_nTextFlag = nFlag;
 }
 
-// A stub body kept out of its callers' unit.
-// FUNCTION: HYPERX 0x0042be70
-int __stdcall Widget::RefuseInput(int, int)
-{
-    return 0;
-}
-
 // Table 0x004b2a68. Slot nought's `return 0` also serves FlipbookWidget's table.
 // FUNCTION: HYPERX100 0x004766f0
 // FUNCTION: HYPERX 0x0042be80
