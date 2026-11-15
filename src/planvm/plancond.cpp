@@ -3953,7 +3953,7 @@ void PlanCond::MessageData(Interactor*, PlanNode*, short* pResult, int nValue)
     *pResult = (short)nValue;
 }
 
-// Out of line, so the linker folds it onto , as the original's did.
+// Out of line, so the linker folds it onto MessageData, as the original's did.
 void PlanCond::RunTimeData(Interactor*, PlanNode*, short* pResult, int nValue)
 {
     *pResult = (short)nValue;
@@ -8432,13 +8432,13 @@ void PlanCond::TargetTurnstile(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 0;
 }
 
-// Out of line, so the linker folds it onto , as the original's did.
+// Out of line, so the linker folds it onto TargetTurnstile, as the original's did.
 void PlanCond::UseKillball(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = 0;
 }
 
-// Out of line, so the linker folds it onto , as the original's did.
+// Out of line, so the linker folds it onto TargetTurnstile, as the original's did.
 void PlanCond::UseRandomizer(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = 0;
@@ -8989,7 +8989,7 @@ void PlanCond::HomeOrAwayTeam(Interactor* pContext, PlanNode*, short* pResult, i
     *pResult = (signed char)(pActor->GetSlot() & 1);
 }
 
-// Out of line, so the linker folds it onto , as the original's did.
+// Out of line, so the linker folds it onto HomeOrAwayTeam, as the original's did.
 void PlanCond::BodyPartAnimation(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();

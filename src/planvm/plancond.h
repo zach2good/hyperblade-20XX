@@ -141,8 +141,8 @@ void __cdecl PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pResul
 void         PickHalfpipeMove(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         AvoidSpinningTurnstile(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         TargetTurnstile(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
-void         UseRandomizer(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void         UseKillball(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
+void         UseRandomizer(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl ShootSituation(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl RegroupSituation(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);
 void __cdecl AggressionOnOthers(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg);

@@ -196,8 +196,8 @@ the same renderer slots. Ghidra names them for guesses about dialogs, scenes, ov
 The action and condition tables are indexed by `ActionFunctionIDs` and `DecisionFunctionIDs` in
 `DATA/ENUMIDS.H`. The fifty-five handlers registered at one id each take the id's name in place of
 Ghidra's, so `CheckTackleOpponentIfFacing` is `Engage_Opponent` and `GetRokCarrierState` is
-`IHaveRok`. The handlers that keep another name are shared by several ids,
-are `Stub::Assert`, live in `AnimEvent` with callers of their own, or, as `SendMsg`, would
+`IHaveRok`. The handlers that keep another name sit at a slot the enum has no entry for, are
+registered in both tables, are `Stub::Assert`, live in `AnimEvent` with callers of their own, or, as `SendMsg`, would
 collide with a `windows.h` macro.
 
 ### The behaviour-parameter handlers take the names the plans use
@@ -206,8 +206,9 @@ collide with a `windows.h` macro.
 handler takes its id's name, as the plan handlers do, in place of a name for what Ghidra saw it
 write. `SetShortAtPlus72` is `SetInteractorLatency`, `SetByteAtPlus74` is
 `SetDigressive` and `SetVec4AtPlus50` is `SetAnimationEvent`; the other eleven follow the same
-rule. `SetTargetGoal` and `SetDoubleScore`, ids 10 and 14, share one body, which the linker folds. The fields the first two write are `GameBehaviorObject::m_wLatency`, the
-poll interval in frames, and `m_bDigressive`; the tree called them `m_wSlotCount` and `m_bQuiet`.
+rule. `SetTargetGoal` and `SetDoubleScore`, ids 10 and 14, share one body, which the linker
+folds. `SetInteractorLatency` writes `GameBehaviorObject::m_wLatency`, the poll interval in frames,
+and `SetDigressive` writes `m_bDigressive`; the tree called them `m_wSlotCount` and `m_bQuiet`.
 
 ## Classes Ghidra split or merged
 
