@@ -9,6 +9,11 @@
 #include "engine/objectclasses.h"
 #include "planvm/plannode.h"
 
+// ENUMIDS.H id_POS_ positions whose north and south pair a team parity selects.
+#define POS_N_GOAL_DEFENDER     0x02
+#define POS_HOME_DRAG_START_POS 0x04
+#define POS_N_GOAL_CENTER       0x08
+
 class EngineObject;
 
 class Interactor;
@@ -38,14 +43,20 @@ short         GetMyBodyBubble(EngineObject** ppActor, const PlanWord* pStream, i
 short         GetLeadOppnBodyBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 short         GetOtherOppnBodyBub(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 short         GetRampCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetRedRandomizerCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 short         GetMyBackDefWgPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 short         GetMyGoalPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetMyDragStartPos(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 short         GetBodyPartCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
-short         GetViewOwner(EngineObject** ppUnused, const PlanWord* pStream, int* pResult);
 float __cdecl ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex);
+
+// Inline, as its copies below are, so the linker folds them onto this one as the original's did.
+// FUNCTION: HYPERX100 0x004e0a40
+// FUNCTION: HYPERX 0x0047ca80
+inline short GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
+{
+    const short nMe = (*ppActor)->GetSlot();
+
+    return (short)(*pResult = (nMe + (COB_MULTIPLIER - SLOT_MULTIPLIER)));
+}
 
 // The linker folded these bodies onto GetMultiplierCollisionObject, which carries the marker.
 // FUNCTION: HYPERX100 0x004e0a70
@@ -128,6 +139,16 @@ inline short GetHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, i
     return (short)(*pResult = (nMe + (COB_HURDLE - SLOT_HURDLE)));
 }
 
+// Inline, as its copy below is, so the linker folds it onto this one as the original's did.
+// FUNCTION: HYPERX100 0x004e0c70
+// FUNCTION: HYPERX 0x0047caa0
+inline short GetRedRandomizerCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
+{
+    const short nMe = (*ppActor)->GetSlot();
+
+    return (short)(*pResult = (nMe + (COB_RED_RANDOMIZER - SLOT_RED_RANDOMIZER)));
+}
+
 // The linker folded this body onto GetRedRandomizerCollisionObject, which carries the marker.
 // FUNCTION: HYPERX100 0x004e0ca0
 inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
@@ -137,6 +158,16 @@ inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const Pla
     return (short)(*pResult = (nMe + (COB_GREEN_RANDOMIZER - SLOT_GREEN_RANDOMIZER)));
 }
 
+// Inline, as its copy below is, so the linker folds it onto this one as the original's did.
+// FUNCTION: HYPERX100 0x004e0d30
+// FUNCTION: HYPERX 0x0047cb00
+inline short GetMyDragStartPos(EngineObject** ppActor, const PlanWord*, int* pResult)
+{
+    const short nMe = (*ppActor)->GetSlot();
+
+    return (short)(*pResult = ((nMe & 1) | POS_HOME_DRAG_START_POS));
+}
+
 // The linker folded this body onto GetMyDragStartPos, which carries the marker.
 // FUNCTION: HYPERX100 0x004e06a0
 inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
@@ -144,6 +175,15 @@ inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
     const short nMe = (*ppActor)->GetSlot();
 
     return (short)(*pResult = ((nMe & 1) | GOALIE_SLOT_A));
+}
+
+// The view and Rok pronouns resolve at run time: each resolver keeps the first word of the argument block.
+// Inline, as its copies below are, so the linker folds them onto this one as the original's did.
+// FUNCTION: HYPERX100 0x004e0d60
+// FUNCTION: HYPERX 0x0047cb20
+inline short GetViewOwner(EngineObject**, const PlanWord* pStream, int* pResult)
+{
+    return (short)(*pResult = pStream->n);
 }
 
 // The linker folded these bodies onto GetViewOwner, which carries the marker.

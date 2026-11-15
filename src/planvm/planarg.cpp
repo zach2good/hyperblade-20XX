@@ -14,11 +14,6 @@ float g_flUnusedPlanArgA = g_flZeroPlanArg;
 float g_flUnusedPlanArgB = g_flZeroPlanArg;
 float g_flUnusedPlanArgC = g_flZeroPlanArg;
 
-// ENUMIDS.H id_POS_ positions whose north and south pair a team parity selects.
-#define POS_N_GOAL_DEFENDER     0x02
-#define POS_HOME_DRAG_START_POS 0x04
-#define POS_N_GOAL_CENTER       0x08
-
 // Each skater owns three collision objects: its bubble, its baton zone and its body.
 #define COB_PER_DROMER (COB_DROMER_1 - COB_DROMER_0)
 
@@ -275,24 +270,6 @@ short PlanArg::GetRampCollisionObject(EngineObject** ppActor, const PlanWord*, i
     return (short)(*pResult = (nMe + (COB_RAMP - SLOT_RAMP)));
 }
 
-// FUNCTION: HYPERX100 0x004e0a40
-// FUNCTION: HYPERX 0x0047ca80
-short PlanArg::GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
-{
-    const short nMe = (*ppActor)->GetSlot();
-
-    return (short)(*pResult = (nMe + (COB_MULTIPLIER - SLOT_MULTIPLIER)));
-}
-
-// FUNCTION: HYPERX100 0x004e0c70
-// FUNCTION: HYPERX 0x0047caa0
-short PlanArg::GetRedRandomizerCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
-{
-    const short nMe = (*ppActor)->GetSlot();
-
-    return (short)(*pResult = (nMe + (COB_RED_RANDOMIZER - SLOT_RED_RANDOMIZER)));
-}
-
 // FUNCTION: HYPERX100 0x004e0cd0
 // FUNCTION: HYPERX 0x0047cac0
 short PlanArg::GetMyBackDefWgPos(EngineObject** ppActor, const PlanWord*, int* pResult)
@@ -309,23 +286,6 @@ short PlanArg::GetMyGoalPos(EngineObject** ppActor, const PlanWord*, int* pResul
     const short nMe = (*ppActor)->GetSlot();
 
     return (short)(*pResult = ((nMe & 1) | POS_N_GOAL_CENTER));
-}
-
-// FUNCTION: HYPERX100 0x004e0d30
-// FUNCTION: HYPERX 0x0047cb00
-short PlanArg::GetMyDragStartPos(EngineObject** ppActor, const PlanWord*, int* pResult)
-{
-    const short nMe = (*ppActor)->GetSlot();
-
-    return (short)(*pResult = ((nMe & 1) | POS_HOME_DRAG_START_POS));
-}
-
-// The view and Rok pronouns resolve at run time: each resolver keeps the first word of the argument block.
-// FUNCTION: HYPERX100 0x004e0d60
-// FUNCTION: HYPERX 0x0047cb20
-short PlanArg::GetViewOwner(EngineObject**, const PlanWord* pStream, int* pResult)
-{
-    return (short)(*pResult = pStream->n);
 }
 
 // FUNCTION: HYPERX100 0x004e1640
