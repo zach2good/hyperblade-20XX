@@ -2387,8 +2387,8 @@ thunk, including a body marked as its thunk.
 
 ### Unit boundaries
 
-Without `/Gy` each unit's code is one run in link order, so a `.cpp` whose bodies form separate
-runs holds several units. Three things confirm a boundary:
+Each unit's code is one run in link order, apart from bodies folded onto another unit's, so a
+`.cpp` whose bodies form separate runs holds several units. Three things confirm a boundary:
 
 - A triple of `mov eax, [k]; mov [g], eax; ret` initialisers sharing one `k` heads every unit that
   includes the header behind them. The startup table at `0x004bb004` lists them in link order.
