@@ -4,12 +4,11 @@
 # when a table named here starts. Remove the row in the same change that
 # closes the gap.
 #
-# Most rows are interactors and share one cause. The original's linker folded
-# identical bodies, so the base's no-op slots all read one address, while
-# hyperx_sym links so that nothing folds, because a folded function loses its
-# symbol and stops counting. One of our bodies can carry the marker and the
-# rest of each group cannot pair. python tools/vtable_behaviour.py separates
-# those folds from slots that run other code.
+# Three are pool owner bases whose original slots are pure; python
+# tools/vtable_behaviour.py lists them. Three hold a compiler-made deleter the
+# original folds onto another class's, and a deleter is always an inline COMDAT.
+# Screen_SaveLoad's slots are out of step with the original's, and type_info's
+# table is the runtime's.
 address,name
 004b2218,AgendaItemOwner::`vftable'
 004b2834,BehaviorOwner::`vftable'
