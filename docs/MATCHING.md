@@ -2629,7 +2629,7 @@ source named separate functions with one body, and the linker folded them.
 `python tools/check_folded.py` must report no folded addresses in our build.
 
 Write those functions anyway. Give each slot its own function, named for what the slot holds, and
-write the copies the linker folded `inline` in the header, as `BehParam::SetKeyMonitorMode` is.
+write the copies the linker folded `inline` in the header, as `PlanArg::GetViewOwnerCOB` is.
 The marker goes on the copy the client kept, which sits where the first function to name it would.
 Global optimisation then commons only a function the source really names twice, and the residue is
 the folded operands alone. Example: `PlanVM::InitRuntimeOpcodeTable`.
@@ -2657,15 +2657,32 @@ apart. Those library rows alone cost 5 to 10 exact rows and 38 to 50 weighted by
 every call operand it could pair, so `/OPT:ICF` stays off. Our link order does not place functions
 where the original's did, so moving markers cannot pick the same survivors.
 
-The project scores with `python tools/foldcmp.py`, which applies our own folding. It takes
-asmcmp's arguments. It
-reads which bodies `HYPERX.map` puts on one address and `HYPERX_sym.map` keeps apart, and makes
-reccmp read a reference to an unmarked copy as one to the group's marked copy, as `HYPERX.exe`
-calls it. Symbols stay where they are, so no row folds away. A fold the original didn't make still
-fails, because its slot names another address. A group with no marked copy, or more than one, is left
-alone. `Object::Trace` is `inline` for this: VC6 never inlines a varargs function, so it stays a
-called COMDAT, and the 47 empty bodies fold onto it as the original's did at `0x00416e30`. Against plain asmcmp it lifts 85 rows, 41 of
-them to exact, and drops none: mostly the pool and interactor vtables whose `Destroy` or destructor slot folds.
+The project scores with `python tools/foldcmp.py`, which applies our own folding and takes
+asmcmp's arguments. It reads which bodies `HYPERX.map` puts on one address and `HYPERX_sym.map`
+keeps apart, and makes reccmp read a reference to an unmarked copy as one to the group's marked
+copy, as `HYPERX.exe` calls it. Symbols stay where they are, so no row folds away. A fold the
+original didn't make still fails, because its slot names another address. A group with no marked
+copy, or more than one, is left alone.
+
+#### Reaching the original's fold groups
+
+VC6 folds a COMDAT only with COMDATs of its own kind. An `inline` body is a pick-any COMDAT. Under
+`/Gy` an out-of-line function or a `static` is a no-duplicates COMDAT. So to put a body in the
+original's group, give the marked copy and its twins the same kind:
+
+- Make the marked copy `inline` when nothing calls it directly: `Texture::SetColorMode`, the
+  `PlanArg` resolvers. VC6 never inlines a varargs function, so `Object::Trace` can be `inline`
+  and still be called.
+- When something calls it directly, wrap each caller in `#pragma inline_depth(0)` so the call
+  stays: `KeyConfigDialog::SaveKeysAs` and `ClearKeys`.
+- Make a file-local routine `static` where the original's source does: `BmpWriter::start_output_bmp`
+  joins libjpeg's empty hooks, as `wrbmp.c`'s `METHODDEF` has it.
+- Build the unit `/O2` (which implies `/Gy`) and move the bodies out of line: the empty bodies the
+  original keeps on `Stub::Assert`, apart from the inline ones on `Object::Trace`. `CMakeLists.txt`
+  lists those units.
+
+A second `/OPT:ICF` pass changes nothing: the device-object deleters, which call different
+destructors that fold only at link time, stay apart.
 
 ### Why the game builds without `/Gy`
 
