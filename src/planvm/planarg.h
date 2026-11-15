@@ -48,7 +48,7 @@ short         GetMyGoalPos(EngineObject** ppActor, const PlanWord* pStream, int*
 short         GetBodyPartCollisionObject(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 float __cdecl ResolveFloat(Interactor* pContext, PlanNode* pNode, int nIndex);
 
-// Inline, as its copies below are, so the linker folds them onto this one as the original's did.
+// Inline, so its copies below fold onto it; v1.0.0.0 keeps them apart.
 // FUNCTION: HYPERX100 0x004e0a40
 // FUNCTION: HYPERX 0x0047ca80
 inline short GetMultiplierCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
@@ -139,7 +139,7 @@ inline short GetHurdleCollisionObject(EngineObject** ppActor, const PlanWord*, i
     return (short)(*pResult = (nMe + (COB_HURDLE - SLOT_HURDLE)));
 }
 
-// Inline, as its copy below is, so the linker folds it onto this one as the original's did.
+// Inline, so its copy below folds onto it; v1.0.0.0 keeps them apart.
 // FUNCTION: HYPERX100 0x004e0c70
 // FUNCTION: HYPERX 0x0047caa0
 inline short GetRedRandomizerCollisionObject(EngineObject** ppActor, const PlanWord*, int* pResult)
@@ -158,7 +158,7 @@ inline short GetGreenRandomizerCollisionObject(EngineObject** ppActor, const Pla
     return (short)(*pResult = (nMe + (COB_GREEN_RANDOMIZER - SLOT_GREEN_RANDOMIZER)));
 }
 
-// Inline, as its copy below is, so the linker folds it onto this one as the original's did.
+// Inline, so its copy below folds onto it; v1.0.0.0 keeps them apart.
 // FUNCTION: HYPERX100 0x004e0d30
 // FUNCTION: HYPERX 0x0047cb00
 inline short GetMyDragStartPos(EngineObject** ppActor, const PlanWord*, int* pResult)
@@ -177,8 +177,7 @@ inline short GetMyGoalie(EngineObject** ppActor, const PlanWord*, int* pResult)
     return (short)(*pResult = ((nMe & 1) | GOALIE_SLOT_A));
 }
 
-// The view and Rok pronouns resolve at run time: each resolver keeps the first word of the argument block.
-// Inline, as its copies below are, so the linker folds them onto this one as the original's did.
+// Keeps the argument block's first word; inline, so its copies below fold onto it.
 // FUNCTION: HYPERX100 0x004e0d60
 // FUNCTION: HYPERX 0x0047cb20
 inline short GetViewOwner(EngineObject**, const PlanWord* pStream, int* pResult)
