@@ -1310,6 +1310,21 @@ ViewExtent InfoBar::GetPassBarSize()
     return size;
 }
 
+// Out of line, so the empty slots fold as the original's: onto Stub::Assert or CheckObjectAI.
+void InfoBar::Unused()
+{
+}
+
+// FUNCTION: HYPERX100 0x004bdd20
+void InfoBar::SetPassBarMarker(int)
+{
+}
+
+// FUNCTION: HYPERX100 0x004bdd30
+void InfoBar::ShowPassBar()
+{
+}
+
 // FUNCTION: HYPERX100 0x004bdd40
 // FUNCTION: HYPERX 0x00452100
 void InfoBar::ShowQuitPrompt()
@@ -1369,19 +1384,3 @@ int g_anInfoBarFoeDamage[4]    = { -1, -1, -1, -1 };
 int g_anFoeFormationSlotMap[4] = { 0, 1, 3, 4 };
 int g_nInfoBarLastHomeScore    = -1;
 int g_nInfoBarLastAwayScore    = -1;
-
-// Out of line, so the linker folds these empty bodies as the original's did: slot one and twenty two
-// onto Stub::Assert, twenty one onto EngineObject::CheckObjectAI.
-void InfoBar::Unused()
-{
-}
-
-// FUNCTION: HYPERX100 0x004bdd20
-void InfoBar::SetPassBarMarker(int)
-{
-}
-
-// FUNCTION: HYPERX100 0x004bdd30
-void InfoBar::ShowPassBar()
-{
-}

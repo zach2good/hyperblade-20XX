@@ -906,6 +906,13 @@ char AnimPlayer::OnClipEnd()
     return cResult;
 }
 
+// Out of line, so the linker folds it onto EngineObject::PostEvent, as the original's did.
+// FUNCTION: HYPERX100 0x00439680
+char AnimPlayer::StartClipPlayback(AnimDB* pClip, float flRate, int nFlags)
+{
+    return SelectAnimationSet(pClip, flRate, nFlags, 0);
+}
+
 // FUNCTION: HYPERX100 0x004396d0
 // FUNCTION: HYPERX 0x00425540
 int AnimPlayer::GetPlayState()
@@ -953,10 +960,3 @@ void AnimPlayer::PrintAnimDebug()
     DebugHUD::PushLightString(g_szDebugAnimLine, (short)sprintf(g_szDebugAnimLine, "Set anim: %s ", g_pszDebugAnimName));
 }
 #endif
-
-// Out of line, so the linker folds it onto EngineObject::PostEvent, as the original's did.
-// FUNCTION: HYPERX100 0x00439680
-char AnimPlayer::StartClipPlayback(AnimDB* pClip, float flRate, int nFlags)
-{
-    return SelectAnimationSet(pClip, flRate, nFlags, 0);
-}

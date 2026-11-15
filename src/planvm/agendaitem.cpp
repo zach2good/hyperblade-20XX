@@ -181,6 +181,12 @@ void AgendaItem::Detach()
     OnListChanged();
 }
 
+// Out of line, so the linker folds it onto Screen::OnWidgetMessage, as the original's did.
+// FUNCTION: HYPERX100 0x0048dfd0
+void AgendaItem::Bind(class EngineObject*, class GameBehaviorObject*)
+{
+}
+
 // FUNCTION: HYPERX100 0x0048e060
 // FUNCTION: HYPERX 0x0040bb80
 void AgendaItem::BindWithNode(EngineObject*, GameBehaviorObject*, PlanNode*, int)
@@ -217,10 +223,4 @@ char AgendaItem::FindByRef(EngineObject* pObject)
     }
 
     return 1;
-}
-
-// Out of line, so the linker folds it onto Screen::OnWidgetMessage, as the original's did.
-// FUNCTION: HYPERX100 0x0048dfd0
-void AgendaItem::Bind(class EngineObject*, class GameBehaviorObject*)
-{
 }

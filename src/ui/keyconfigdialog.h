@@ -24,8 +24,7 @@ void __cdecl ApplyModifier100(int nContext, char bSet, int nSlot);
 
 } // namespace KeyConfigDialog
 
-// Inline, so the linker folds every bare `return 0` and `return 1` onto these; each caller turns
-// inlining off.
+// Inline, so bare `return 0` and `return 1` bodies fold onto these; callers turn inlining off.
 // FUNCTION: HYPERX100 0x00411110
 // FUNCTION: HYPERX 0x0042bcd0
 inline int __cdecl KeyConfigDialog::SaveKeysAs(HWND, struct KeyRow*)

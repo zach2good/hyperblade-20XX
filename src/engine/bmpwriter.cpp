@@ -7,8 +7,7 @@
 namespace BmpWriter
 {
 
-// Static, as wrbmp.c's METHODDEF and LOCAL make them, so the linker folds the empty hook with the
-// library's.
+// Static, as wrbmp.c's METHODDEF and LOCAL make them, so the empty hook folds with the library's.
 static void __cdecl start_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo);
 static void __cdecl put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION rows_supplied);
 static void __cdecl put_gray_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION rows_supplied);

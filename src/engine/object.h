@@ -19,8 +19,7 @@ Vec3* __cdecl ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos);
 
 } // namespace Object
 
-// The release build compiled the body out but kept the int return the trace macro reads. Inline,
-// so the linker folds every bare `ret` onto it, as the original's did.
+// Inline, so every bare `ret` folds onto it; the release build kept only the int return.
 #pragma warning(push)
 #pragma warning(disable : 4716)
 

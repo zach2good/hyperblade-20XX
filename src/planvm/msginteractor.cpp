@@ -139,16 +139,16 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
     }
 }
 
-// FUNCTION: HYPERX100 0x004b8bf0
-// FUNCTION: HYPERX 0x0046bd20
-short MsgInteractor::GetTargetSlot()
-{
-    return (short)m_otherSlot.n;
-}
-
 // Out of line, so the linker folds it onto EngineObject::GetComponentCount, as the original's did.
 // FUNCTION: HYPERX100 0x004b8be0
 short MsgInteractor::GetNamedSlot()
 {
     return (short)m_ownSlotOrMessage.n;
+}
+
+// FUNCTION: HYPERX100 0x004b8bf0
+// FUNCTION: HYPERX 0x0046bd20
+short MsgInteractor::GetTargetSlot()
+{
+    return (short)m_otherSlot.n;
 }
