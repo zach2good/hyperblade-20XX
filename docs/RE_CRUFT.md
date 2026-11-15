@@ -188,7 +188,7 @@ output of the tool its row names; `python tools/check_doc_figures.py` checks tha
 | Member names with two types | **20, 0 open** | `python tools/check_member_name_collisions.py --types`: open is a builtin pointer beside a class pointer; the rest are separate records |
 | Record pairs declaring the same offsets | **2** | `python tools/layout_twins.py`: both chance agreements |
 | Records the tree declares as scattered globals | **0 overlap, 0 bound, 0 reads past, 0 short, 0 unsized** | `python tools/scattered_records.py`: needs the original image and the map; the 33 escapes are API out-parameters |
-| Vtable slots that run a different body from the original's | **7** | `python tools/vtable_behaviour.py`: folds excluded; six are the concrete `Destroy` and `Insert` in the three pool owner bases, whose original tables are pure, and one is `VisualEffectFade::Start`, which the original folds onto its twin `PaletteScalarFade::Start`; both read the start colour in place, which the client does not |
+| Vtable slots that run a different body from the original's | **6** | `python tools/vtable_behaviour.py`: folds excluded; all six are the concrete `Destroy` and `Insert` in the three pool owner bases, whose original tables are pure |
 
 These shapes are gone, and each tool reads zero:
 

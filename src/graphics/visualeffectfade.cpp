@@ -39,13 +39,15 @@ int VisualEffectFade::ApplyPhase(int bPhase)
     return bPhase == 0;
 }
 
-// Folded with PaletteScalarFade::Start onto one address, so it carries no marker.
+// Folded with PaletteScalarFade::Start onto one address, so it carries no marker and keeps that body.
 // FUNCTION: HYPERX100 0x00497b80
 int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
 {
     if (m_bActive != 0)
     {
-        g_pColorPalette->BuildFadeTable(m_pWorkEntries, (short)m_cWorkEntries, *pStartColour, 0.1f);
+        const PALETTEENTRY startColour = *pStartColour;
+
+        g_pColorPalette->BuildFadeTable(m_pWorkEntries, (short)m_cWorkEntries, startColour, 0.1f);
 
         return 1;
     }
