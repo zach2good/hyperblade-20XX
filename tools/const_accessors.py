@@ -130,7 +130,8 @@ def main():
         for hit in INLINE.finditer(text):
             head = hit.group("head")
 
-            if ") const" in head or "static" in head or "virtual" in head:
+            # A qualified head is a definition outside the class, often of a namespace function.
+            if ") const" in head or "static" in head or "virtual" in head or "::" in head:
                 continue
 
             if not expression_reads(hit.group("expr")):
