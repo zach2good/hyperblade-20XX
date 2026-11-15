@@ -106,7 +106,7 @@ def refresh():
         return
 
     print("report.json is behind the binary; regenerating it first")
-    subprocess.run([sys.executable, "-m", "reccmp.tools.asmcmp", "--target", "HYPERX",
+    subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX",
                     "--json", os.path.join("build", "report.json"), "--silent"],
                    cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 

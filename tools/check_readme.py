@@ -156,7 +156,7 @@ def main():
     strict = "--strict" in sys.argv
     if not os.path.exists(REPORT):
         print("No report. Run:")
-        print("  python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent")
+        print("  python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
         return 1
 
     late = report_is_stale(ROOT, IMAGE, REPORT)

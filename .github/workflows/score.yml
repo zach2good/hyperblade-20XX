@@ -95,7 +95,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
+          python tools/foldcmp.py --target HYPERX --json build/report.json --silent
           cp build/report.json build/report_baseline.json
 
       - name: Download the pull request's image
@@ -138,14 +138,14 @@ jobs:
           set -e
           rm -rf src symbols
           cp -r pr/src pr/symbols .
-          cp pr-image/HYPERX_sym.exe pr-image/HYPERX_sym.pdb build/out/
+          cp pr-image/HYPERX_sym.exe pr-image/HYPERX_sym.pdb pr-image/HYPERX_sym.map pr-image/HYPERX.map build/out/
 
       - name: Score the pull request
         id: score
         if: github.event.workflow_run.event == 'pull_request'
         shell: bash
         run: |
-          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent || exit 1
+          python tools/foldcmp.py --target HYPERX --json build/report.json --silent || exit 1
           set +e
           python tools/check_regressions.py > regressions.txt 2>&1
           echo "status=$?" >> "$GITHUB_OUTPUT"

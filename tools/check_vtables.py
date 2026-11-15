@@ -36,6 +36,9 @@ def engine():
     except ImportError:
         raise SystemExit("reccmp is not installed; pip install reccmp")
 
+    import foldcmp
+
+    foldcmp.install()
     project = RecCmpProject.from_directory(ROOT)
     if not project:
         raise SystemExit("no reccmp project at %s" % ROOT)
@@ -79,14 +82,14 @@ def gaps(compare, verbose):
     found = []
 
     for match in compare.compare_vtables():
-        if match.ratio >= 1:
+        if match.accuracy >= 1:
             continue
 
         found.append((match.orig_addr, match.name))
 
         if verbose:
             print("%s : orig 0x%x, recomp 0x%x" % (match.name, match.orig_addr, match.recomp_addr))
-            print_combined_diff(raw_diff_to_udiff(match.result.diff), True)
+            print_combined_diff(raw_diff_to_udiff(match.rdiff), True)
             print()
 
     return sorted(found)

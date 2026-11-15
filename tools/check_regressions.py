@@ -6,7 +6,7 @@ the total drops.
 
     python tools/check_regressions.py --save        # before touching anything
     ...work...
-    python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
+    python tools/foldcmp.py --target HYPERX --json build/report.json --silent
     python tools/check_regressions.py               # after
 
 It reports functions that vanished from the report, fell out of an exact match, reached one,

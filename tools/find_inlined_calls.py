@@ -54,7 +54,7 @@ def main():
         if (row.get("matching") or 0) >= 1 or address not in home:
             continue
 
-        out = subprocess.run([sys.executable, "-m", "reccmp.tools.asmcmp", "--target", "HYPERX",
+        out = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX",
                               "--verbose", hex(address)],
                              capture_output=True, text=True, errors="ignore").stdout
         out = re.sub(r"\x1b\[[0-9;]*m", "", out)

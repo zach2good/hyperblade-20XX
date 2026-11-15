@@ -74,7 +74,8 @@ def aliases_for(db, groups, lookup):
     return aliases
 
 
-def main():
+def install():
+    """Patches reccmp so every Compare built afterwards reads the folding. Other tools call this."""
     groups = fold_groups(read_map(OUT / "HYPERX.map"), read_map(OUT / "HYPERX_sym.map"))
     lookup = EntityDb.get
     aliases = {}
@@ -111,6 +112,10 @@ def main():
     EntityDb.get = get
     functions.create_name_lookup = create_name_lookup
     asmcmp.Compare.from_target = classmethod(from_target)
+
+
+def main():
+    install()
     return asmcmp.main()
 
 

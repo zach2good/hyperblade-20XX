@@ -8,7 +8,7 @@ functions, and their average score.
 Pull requests leave this folder and the README figures alone. Every six hours the `figures`
 workflow scores main and commits all three when they have moved.
 
-Two stretches of `history.csv` need care:
+Three stretches of `history.csv` need care:
 
 - Rows dated before 2026-09-01 count matched C runtime bytes above `0x004a0000` in
   `matched_bytes`, but not in `game_bytes`. They read up to about 23,000 bytes high, so don't
@@ -16,3 +16,6 @@ Two stretches of `history.csv` need care:
 - Rows from 2,133 to 2,315 exact functions were written in afterwards from figures recorded at
   the time. `written_bytes` and `written_count` are blank there because nobody wrote them down.
   `game_bytes` moves in that stretch because the function inventory was corrected seven times.
+- From 2026-11-15 the score is `tools/foldcmp.py`, which reads our link folding. On the same
+  build it reads 41 more exact rows than plain `asmcmp`, mostly vtables, so the step is the
+  scorer, not the source.

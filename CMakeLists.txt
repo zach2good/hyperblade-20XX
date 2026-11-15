@@ -515,8 +515,10 @@ hyperx_image(hyperx_sym HYPERX_sym
 
 # Everything below needs the original: its resources, its timestamp, or its bytes to compare.
 # HYPERX_sym.exe without resources still scores, since reccmp compares only code and data.
+# tools/foldcmp.py reads HYPERX.map, and folding depends on neither the resources nor the stamp.
 if(HYPERX_NO_REFERENCE)
-    message(STATUS "No reference: only HYPERX_sym.exe is linked")
+    hyperx_image(hyperx HYPERX)
+    message(STATUS "No reference: HYPERX.exe links without resources, for its map")
     return()
 endif()
 
@@ -539,7 +541,7 @@ function(hyperx_check name tool comment)
 endfunction()
 
 add_custom_target(match
-    COMMAND "${Python3_EXECUTABLE}" -m reccmp.tools.asmcmp --target HYPERX --no-color
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tools/foldcmp.py" --target HYPERX --no-color
     DEPENDS hyperx_sym
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     COMMENT "Scoring every annotated function against the original"

@@ -129,12 +129,13 @@ the change moved.
    cmake --build build
    ```
 
-6. **Score.** Always pass `--json`. Without it, `asmcmp` leaves the old `build/report.json` in
-   place, and every figure you read is from the previous build.
+6. **Score.** `tools/foldcmp.py` is reccmp's `asmcmp` with our link folding applied, and takes
+   its arguments. Always pass `--json`. Without it, the old `build/report.json` stays in place,
+   and every figure you read is from the previous build.
 
    ```sh
-   python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
-   python -m reccmp.tools.asmcmp --target HYPERX --verbose 0xADDRESS --no-color
+   python tools/foldcmp.py --target HYPERX --json build/report.json --silent
+   python tools/foldcmp.py --target HYPERX --verbose 0xADDRESS --no-color
    ```
 
 7. **Check for regressions.** A change to a header, a global or a marker moves rows in files you

@@ -79,7 +79,7 @@ def main():
 
     if not os.path.exists(REPORT):
         print("No report. Run:")
-        print("  python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent")
+        print("  python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
         return 1
 
     late = report_is_stale(ROOT, IMAGE, REPORT)
@@ -95,7 +95,7 @@ def main():
     if os.path.exists(IMAGE) and os.path.getmtime(IMAGE) > os.path.getmtime(REPORT):
         print("STALE REPORT: the image is newer than build/report.json.")
         print("Every figure below is the PREVIOUS build. Regenerate first:")
-        print("  python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent")
+        print("  python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
         print()
 
     sizes = load_sizes()

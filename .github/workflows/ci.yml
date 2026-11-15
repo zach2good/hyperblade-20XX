@@ -127,6 +127,8 @@ jobs:
           path: |
             build/out/HYPERX_sym.exe
             build/out/HYPERX_sym.pdb
+            build/out/HYPERX_sym.map
+            build/out/HYPERX.map
             build/out/pr.txt
             build/out/built.txt
           retention-days: 7

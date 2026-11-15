@@ -12,7 +12,7 @@ but does not fail the run; it is usually an unmarked scalar-deleting destructor.
 
 To diff one table slot by slot with reccmp:
 
-    python -m reccmp.tools.asmcmp --target HYPERX --verbose 0x4b323c --no-color
+    python tools/foldcmp.py --target HYPERX --verbose 0x4b323c --no-color
 
     python tools/vtable_slots.py                   # every table with a suspect slot
     python tools/vtable_slots.py --table 0x4b3370  # one table, every slot

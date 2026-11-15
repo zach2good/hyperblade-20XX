@@ -64,7 +64,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
+          python tools/foldcmp.py --target HYPERX --json build/report.json --silent
           python tools/check_readme.py --write
           python tools/status_card.py
           python tools/check_readme.py --strict

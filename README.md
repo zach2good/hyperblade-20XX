@@ -86,7 +86,7 @@ A different hash usually means v1.0.0.0, the unpatched release. Install the 1.0.
 cmake --preset vc6sp3
 cmake --build --preset vc6sp3
 cmake --build build --target verify
-python -m reccmp.tools.asmcmp --target HYPERX --verbose 0xADDRESS --no-color
+python tools/foldcmp.py --target HYPERX --verbose 0xADDRESS --no-color
 ```
 
 `verify` scores every function and runs the structural checks. The last line shows one

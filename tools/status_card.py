@@ -6,7 +6,7 @@ LIBCMT marker. Its bar is the share that match exactly, and its second line the 
 score of the game functions written, with an effective match counted as exact. It is drawn here,
 not from reccmp's own card template, and it carries no artwork.
 
-    python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
+    python tools/foldcmp.py --target HYPERX --json build/report.json --silent
     python tools/status_card.py
     python tools/status_card.py --html    # also reccmp's HTML report, progress/status.html
 """
@@ -123,7 +123,7 @@ def main():
           % ((os.path.relpath(SVG_OUT, ROOT),) + figures))
 
     if args.html:
-        return subprocess.run([sys.executable, "-m", "reccmp.tools.asmcmp", "--target", "HYPERX",
+        return subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX",
                                "--html", HTML_OUT, "--silent"], cwd=ROOT).returncode
     return 0
 

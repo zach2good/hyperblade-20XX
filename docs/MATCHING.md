@@ -133,8 +133,8 @@ target, `HYPERX`. `symbols/float_constants.csv` names the x87 constants, because
 linked `/FIXED` and has no relocations to find them by.
 
 ```sh
-python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
-python -m reccmp.tools.asmcmp --target HYPERX --verbose 0xADDR --no-color
+python tools/foldcmp.py --target HYPERX --json build/report.json --silent
+python tools/foldcmp.py --target HYPERX --verbose 0xADDR --no-color
 ```
 
 The first writes `build/report.json`, which holds every row's score and its whole instruction
@@ -2657,14 +2657,15 @@ apart. Those library rows alone cost 5 to 10 exact rows and 38 to 50 weighted by
 every call operand it could pair, so `/OPT:ICF` stays off. Our link order does not place functions
 where the original's did, so moving markers cannot pick the same survivors.
 
-`python tools/foldcmp.py` scores with our own folding instead. It takes asmcmp's arguments. It
+The project scores with `python tools/foldcmp.py`, which applies our own folding. It takes
+asmcmp's arguments. It
 reads which bodies `HYPERX.map` puts on one address and `HYPERX_sym.map` keeps apart, and makes
 reccmp read a reference to an unmarked copy as one to the group's marked copy, as `HYPERX.exe`
 calls it. Symbols stay where they are, so no row folds away. A fold the original didn't make still
 fails, because its slot names another address. A group with more than one marked copy is left
 alone: our 47 empty bodies fold onto one, where the original keeps six `ret` bodies apart, so the
-`Object::Trace` rows stay. It lifts 85 rows, 41 of them to exact, and drops
-none: mostly the pool and interactor vtables whose `Destroy` or destructor slot folds.
+`Object::Trace` rows stay. Against plain asmcmp it lifts 85 rows, 41 of
+them to exact, and drops none: mostly the pool and interactor vtables whose `Destroy` or destructor slot folds.
 
 ### Why the game builds without `/Gy`
 

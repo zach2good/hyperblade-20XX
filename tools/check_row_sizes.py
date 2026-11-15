@@ -86,7 +86,7 @@ def main():
 
     if not os.path.exists(REPORT):
         print('no build/report.json. Run:')
-        print('  python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent')
+        print('  python tools/foldcmp.py --target HYPERX --json build/report.json --silent')
         return 1
 
     sizes = inventory()

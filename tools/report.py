@@ -10,7 +10,7 @@ the image it describes.
 The check compares the image's modification time with the report's. Regenerate the report
 with
 
-    python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent
+    python tools/foldcmp.py --target HYPERX --json build/report.json --silent
 """
 import json
 import os
@@ -19,7 +19,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPORT = os.path.join(ROOT, "build", "report.json")
 IMAGE = os.path.join(ROOT, "build", "out", "HYPERX_sym.exe")
-REGENERATE = ("  python -m reccmp.tools.asmcmp --target HYPERX --json build/report.json --silent")
+REGENERATE = ("  python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
 
 
 def stale():
