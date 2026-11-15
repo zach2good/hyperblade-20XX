@@ -55,7 +55,11 @@ def fold_groups(measured, symbols):
 
 
 def aliases_for(db, groups, lookup):
-    """Answers, for each unmarked copy in a group with exactly one marked copy, that copy."""
+    """Answers, for each unmarked copy in a group with exactly one marked copy, that copy.
+
+    Names on stderr each group it skips for holding several marked copies, which no alias can
+    settle: the original keeps those bodies apart, so this build folds what the original doesn't.
+    """
     aliases = {}
     for group in groups:
         marked = []
@@ -63,6 +67,11 @@ def aliases_for(db, groups, lookup):
             entity = lookup(db, ImageId.RECOMP, addr)
             if entity is not None and entity.orig_addr is not None:
                 marked.append(addr)
+
+        if len(marked) > 1:
+            names = sorted(lookup(db, ImageId.RECOMP, addr).name for addr in marked)
+            print("foldcmp: one body holds %d marked copies: %s" % (len(marked), ", ".join(names)),
+                  file=sys.stderr)
 
         if len(marked) != 1:
             continue
