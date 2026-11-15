@@ -2683,6 +2683,11 @@ follows the table on either side, as after `__rgcode_page_info`. Where a datum f
 `$CRT_C_Initializer(2)`'s bound, it's a different one in each link, and the pair costs that
 datum's readers.
 
+A `$scopetable` row also pairs the funclets its table names. foldcmp walks the table's entries,
+the enclosing level, filter and handler, on both sides and pairs each filter and handler, sized
+from `symbols/functions.csv`. The tables sit back to back with no terminator, so the walk stops
+at the next row's table or at a word that isn't a funclet on both sides.
+
 #### Reaching the original's fold groups
 
 `python tools/fold_candidates.py` ranks the functions the original folds bodies onto where this

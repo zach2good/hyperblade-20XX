@@ -25,6 +25,10 @@ from reccmp.compare.db import EntityDb
 from reccmp.tools import asmcmp
 from reccmp.types import EntityType, ImageId
 
+# Both images' .text, which holds every funclet a scope table names.
+TEXT_START = 0x00401000
+TEXT_END = 0x004B1000
+
 # The opcode of `mov ecx, imm32`.
 MOV_ECX = 0xB9
 
@@ -190,6 +194,65 @@ def pair_operands(db, orig_bin, recomp_bin, lookup, rows):
     return paired
 
 
+def in_text(addr):
+    return TEXT_START <= addr < TEXT_END
+
+
+def pair_scope_entries(db, orig_bin, recomp_bin, lookup, rows, sizes):
+    """Pairs the filters and handlers of each paired `$scopetable` row in data_operands.csv.
+
+    An entry is three words: the enclosing level, the filter (0 for a __finally) and the handler.
+    The tables sit back to back with no terminator, so a walk stops before the next row's table,
+    at an enclosing level that isn't -1 or an earlier entry, or at a filter or handler outside
+    .text on either side. A funclet takes its size from symbols/functions.csv. Answers how many
+    funclets it paired.
+    """
+    starts = sorted(int(row["address"], 16) for row in rows)
+    paired = 0
+    with db.batch() as batch:
+        for row in rows:
+            if not row["name"].endswith("$scopetable"):
+                continue
+
+            table = lookup(db, ImageId.ORIG, int(row["address"], 16))
+            if table is None or table.recomp_addr is None:
+                continue
+
+            limit = next((start for start in starts if start > table.orig_addr),
+                         table.orig_addr + 0x100)
+            for entry in range((limit - table.orig_addr) // 12):
+                theirs = orig_bin.read(table.orig_addr + entry * 12, 12)
+                ours = recomp_bin.read(table.recomp_addr + entry * 12, 12)
+                words = [(int.from_bytes(theirs[at:at + 4], "little"),
+                          int.from_bytes(ours[at:at + 4], "little")) for at in (0, 4, 8)]
+                level, funclets = words[0][0], words[1:]
+                if level != 0xFFFFFFFF and level >= entry:
+                    break
+
+                if not all((orig == 0 and mine == 0) or (in_text(orig) and in_text(mine))
+                           for orig, mine in funclets):
+                    break
+
+                for kind, (orig, mine) in zip(("filter", "handler"), funclets):
+                    if orig == 0 or orig not in sizes:
+                        continue
+
+                    name = "%s$%s%d" % (row["name"][:-len("$scopetable")], kind, entry)
+                    size = sizes[orig]
+                    batch.set(ImageId.ORIG, orig, type=EntityType.FUNCTION, name=name, size=size)
+                    batch.set(ImageId.RECOMP, mine, type=EntityType.FUNCTION, name=name, size=size)
+                    batch.match(orig, mine)
+                    paired += 1
+
+    return paired
+
+
+def function_sizes():
+    """Answers each original function's size, as symbols/functions.csv gives it."""
+    with open(ROOT / "symbols" / "functions.csv", encoding="utf-8") as handle:
+        return {int(row["address"], 16): int(row["size"]) for row in csv.DictReader(handle)}
+
+
 def install():
     """Patches reccmp so every Compare built afterwards reads the folding. Other tools call this."""
     groups = fold_groups(read_map(OUT / "HYPERX.map"), read_map(OUT / "HYPERX_sym.map"))
@@ -229,6 +292,10 @@ def install():
         print("foldcmp: %d library datum(s) paired through their functions"
               % pair_operands(compare._db, compare.orig_bin, compare.recomp_bin, lookup,
                               register("data_operands.csv")), file=sys.stderr)
+        print("foldcmp: %d library funclet(s) paired through their scope tables"
+              % pair_scope_entries(compare._db, compare.orig_bin, compare.recomp_bin, lookup,
+                                   register("data_operands.csv"), function_sizes()),
+              file=sys.stderr)
         aliases.update(aliases_for(compare._db, groups, lookup))
         print("foldcmp: %d fold groups, %d copies read as their marked twin"
               % (len(groups), len(aliases)), file=sys.stderr)
@@ -249,7 +316,8 @@ def selftest():
     pairing of statics through their thunks: one pairs, one thunk has no pair, one isn't a mov
     ecx; the map's statics, read from "Static symbols" on: one listed, one missing; and the
     pairing of data through their functions: one pairs, one the function doesn't hold, one whose
-    function has no pair."""
+    function has no pair; and the walk of a scope table: a __finally entry, a nested entry with a
+    filter, and a stop at the next table."""
     measured = (
         " 0001:0002a200       ?A@@UAEPAV1@XZ 0042b200 f i a.obj\n"
         " 0001:0002a200       ?B@@UAEPAV1@XZ 0042b200 f i a.obj\n"
@@ -324,6 +392,25 @@ def selftest():
     recomp_bin = Bytes(0x420100, bytes([0x90, 0x68, 0x00, 0x00, 0x4E, 0x00, 0x90, 0x90]))
     assert pair_operands(db, orig_bin, recomp_bin, EntityDb.get, data) == 1
     assert db.get(ImageId.ORIG, 0x4D0000).recomp_addr == 0x4E0000
+
+    # Two entries, then the next row's table, whose -1 entry the walk must not read as a third.
+    def words(*values):
+        return b"".join(value.to_bytes(4, "little") for value in values)
+
+    theirs = words(0xFFFFFFFF, 0, 0x401100, 0, 0x401200, 0x401210, 0xFFFFFFFF, 0, 0x401300)
+    ours = words(0xFFFFFFFF, 0, 0x402100, 0, 0x402200, 0x402210, 0xFFFFFFFF, 0, 0x402300)
+    tables = [{"address": "0x004d0100", "name": "_f$scopetable", "function": "0x00410100"},
+              {"address": "0x004d0118", "name": "_g$scopetable", "function": "0x00410200"}]
+    with db.batch() as batch:
+        batch.set(ImageId.ORIG, 0x4D0100, type=EntityType.DATA, name="_f$scopetable", size=4)
+        batch.set(ImageId.RECOMP, 0x4E0100, type=EntityType.DATA, name="_f$scopetable", size=4)
+        batch.match(0x4D0100, 0x4E0100)
+
+    sizes = {0x401100: 8, 0x401200: 4, 0x401210: 8, 0x401300: 8}
+    assert pair_scope_entries(db, Bytes(0x4D0100, theirs), Bytes(0x4E0100, ours), EntityDb.get,
+                              tables, sizes) == 3
+    assert db.get(ImageId.ORIG, 0x401200).recomp_addr == 0x402200
+    assert db.get(ImageId.ORIG, 0x401300) is None
 
     print("selftest passed")
     return 0

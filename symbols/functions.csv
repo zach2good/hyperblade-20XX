@@ -3180,8 +3180,7 @@ address,name,size,convention,signature
 0x004a43c0,EH__CallHandler,165,__cdecl,"dword __cdecl EH__CallHandler(DWORD param_1, dword param_2, DWORD param_3, dword param_4, dword param_5, int param_6, int param_7)"
 0x004a4465,FUN_004a4465,10,__stdcall,undefined __stdcall FUN_004a4465(void)
 0x004a446f,FUN_004a446f,24,__stdcall,undefined4 __stdcall FUN_004a446f(void)
-0x004a4487,FUN_004a4487,6,__stdcall,undefined __stdcall FUN_004a4487(void)
-0x004a448d,EH__RestoreHandler,78,__stdcall,void __stdcall EH__RestoreHandler(void)
+0x004a4487,FUN_004a4487,84,__stdcall,undefined __stdcall FUN_004a4487(void)
 0x004a44db,FUN_004a44db,42,__cdecl,undefined4 __cdecl FUN_004a44db(int * param_1)
 0x004a4505,EH__CopyExceptionObject,440,__cdecl,"void __cdecl EH__CopyExceptionObject(int param_1, int param_2, byte * param_3, byte * param_4)"
 0x004a46bd,FUN_004a46bd,4,__stdcall,undefined4 __stdcall FUN_004a46bd(void)

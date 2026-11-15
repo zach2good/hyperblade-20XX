@@ -515,6 +515,11 @@ PROBES = (
      "            ours = statics.get(row[\"symbol\"])",
      "            ours = next(iter(statics.values()))"),
 
+    # A scope-table walk that runs on into the next row's table.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "            limit = next((start for start in starts if start > table.orig_addr),",
+     "            limit = next((start for start in starts if start > table.orig_addr + 0x40),"),
+
     # A library datum read from our function at an offset the original doesn't use.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            ours = int.from_bytes(recomp_bin.read(function.recomp_addr + offset, 4), \"little\")",
