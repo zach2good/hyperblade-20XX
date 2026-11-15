@@ -510,9 +510,19 @@ PROBES = (
      "    // probe probe probe probe probe probe probe probe probe probe probe probe probe probe probe probe\n"
      "    m_pSpline = 0;"),
 
+    # A scope walk that reads on past an entry whose levels differ.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "                if level != our_level or (",
+     "                if False or ("),
+
+    # A map pair that ignores its row's object.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "            if row.get(\"object\"):",
+     "            if False:"),
+
     # A library static paired with a map symbol it doesn't name.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
-     "            ours = statics.get(row[\"symbol\"])",
+     "            ours = statics.get(key)",
      "            ours = next(iter(statics.values()))"),
 
     # A scope-table walk that runs on into the next row's table.
@@ -537,8 +547,8 @@ PROBES = (
 
     # A name the map lists twice kept, so one fold group takes the wrong address.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
-     "if seen[name] == 1}",
-     "if seen[name] >= 1}"),
+     "        if seen[name] == 1:",
+     "        if seen[name] >= 1:"),
 )
 
 # Checkers with no probe, and what a probe would have to plant.

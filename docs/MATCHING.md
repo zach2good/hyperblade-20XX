@@ -2673,7 +2673,11 @@ same; only the link-chosen address differs.
 
 LIBCMT statics have no PDB symbol either, but `HYPERX_sym.map`'s "Static symbols" section lists
 them. `symbols/map_pairs.csv` names each by the original's address and its map symbol, and
-foldcmp pairs the two, naming on stderr any symbol the map doesn't list.
+foldcmp pairs the two, naming on stderr any symbol the map doesn't list. A name the map lists in
+several objects, such as each unit's `$E11` or LIBCMT's two `_strncnt`, takes an `object` column.
+The linker relabels a folded static with the object of the copy it keeps, so `HYPERX.map` can
+list one object's name twice at one address. foldcmp reads that as a fold of every copy of the
+name in `HYPERX_sym.map`.
 
 Some LIBCMT data has no symbol in the map either: scope tables, throw records and small `.data`
 tables. `symbols/data_operands.csv` names each by the original's address and a function that
@@ -2686,8 +2690,8 @@ datum's readers.
 A `$scopetable` row also pairs the funclets its table names. foldcmp walks the table's entries,
 the enclosing level, filter and handler, on both sides and pairs each filter and handler, sized
 from `symbols/functions.csv`; one without its own row there is skipped. The tables sit back to
-back with no terminator, so the walk stops at the next row's table, where the two sides' levels
-differ, or at a word that isn't a funclet on both sides.
+back with no terminator. The walk stops at the next row's table, at an entry whose level differs
+between the two sides, or at a word that isn't a funclet on both sides.
 
 #### Reaching the original's fold groups
 

@@ -36,32 +36,56 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "build" / "out"
 
 #  0001:000059e0       ?Destroy@CDisplayPassBarPool@@UAEPAVAgendaItemOwner@@XZ 004069e0 f i cameraobject.cpp.obj
-FUNCTION_LINE = re.compile(r"^ 0001:[0-9a-f]{8}\s+(\S+)\s+([0-9a-f]{8}) f ")
+OBJECT_LINE = re.compile(r"^ 0001:[0-9a-f]{8}\s+(\S+)\s+([0-9a-f]{8}) f\s+(?:i\s+)?(\S+)$")
 
 
 def read_map(path):
-    """Answers each function name the map lists once, with its address."""
+    """Answers each function the map lists, with its address: by name when the map lists the name
+    once, by (name, object) when it lists the name in several objects."""
     return read_lines(path.read_text(errors="replace").splitlines())
 
 
 def read_lines(lines):
     seen = collections.Counter()
-    addresses = {}
+    addresses = collections.defaultdict(set)
     for line in lines:
-        found = FUNCTION_LINE.match(line)
+        found = OBJECT_LINE.match(line)
         if found:
+            key = (found.group(1), found.group(3))
             seen[found.group(1)] += 1
-            addresses[found.group(1)] = int(found.group(2), 16)
+            addresses[key].add(int(found.group(2), 16))
 
-    return {name: addr for name, addr in addresses.items() if seen[name] == 1}
+    # The linker relabels a folded static with the object of the copy it keeps, so one object can
+    # list a name twice at one address.
+    found = {}
+    for (name, owner), addrs in addresses.items():
+        if len(addrs) != 1:
+            continue
+
+        if seen[name] == 1:
+            found[name] = min(addrs)
+        else:
+            found[(name, owner)] = min(addrs)
+
+    return found
 
 
 def fold_groups(measured, symbols):
-    """Answers the sets of HYPERX_sym.exe addresses that HYPERX.exe puts on one address."""
+    """Answers the sets of HYPERX_sym.exe addresses that HYPERX.exe puts on one address. A copy
+    in an object HYPERX.map no longer lists joins the one address its name has there."""
     groups = collections.defaultdict(set)
     for name, addr in measured.items():
         if name in symbols:
             groups[addr].add(symbols[name])
+
+    by_name = collections.defaultdict(set)
+    for key, addr in measured.items():
+        if isinstance(key, tuple):
+            by_name[key[0]].add(addr)
+
+    for key, addr in symbols.items():
+        if isinstance(key, tuple) and key not in measured and len(by_name[key[0]]) == 1:
+            groups[min(by_name[key[0]])].add(addr)
 
     return [group for group in groups.values() if len(group) > 1]
 
@@ -132,7 +156,8 @@ def pair_statics(db, recomp_bin, lookup, rows):
 
 
 def map_statics(path):
-    """Answers each function the map's "Static symbols" section lists once, with its address."""
+    """Answers each function the map's "Static symbols" section lists, keyed as read_lines keys
+    them."""
     lines = path.read_text(errors="replace").splitlines()
     start = next((number for number, line in enumerate(lines) if line.startswith(" Static symbols")),
                  len(lines))
@@ -140,14 +165,19 @@ def map_statics(path):
 
 
 def pair_map_symbols(db, rows, statics):
-    """Pairs each row of symbols/map_pairs.csv with our static of that name in the map.
+    """Pairs each row of symbols/map_pairs.csv with our static of that name in the map, in the
+    row's object when it names one.
 
     Names on stderr each row whose symbol the map doesn't list, and answers how many it paired.
     """
     paired = 0
     with db.batch() as batch:
         for row in rows:
-            ours = statics.get(row["symbol"])
+            key = row["symbol"]
+            if row.get("object"):
+                key = (row["symbol"], row["object"])
+
+            ours = statics.get(key)
             if ours is None:
                 print("foldcmp: %s is not a static in the map" % row["symbol"], file=sys.stderr)
                 continue
@@ -202,9 +232,9 @@ def pair_scope_entries(db, orig_bin, recomp_bin, lookup, rows, sizes):
     """Pairs the filters and handlers of each paired `$scopetable` row in data_operands.csv.
 
     An entry is three words: the enclosing level, the filter (0 for a __finally) and the handler.
-    The tables sit back to back with no terminator, so a walk stops before the next row's table,
-    at an enclosing level that isn't -1 or an earlier entry, or at a filter or handler outside
-    .text on either side, or where the two sides' levels differ. A funclet takes its size from
+    The tables sit back to back with no terminator, so a walk stops at the first of these: the
+    next row's table; a level that isn't -1 or an earlier entry; levels that differ between the
+    two sides; a filter or handler outside .text on either side. A funclet takes its size from
     symbols/functions.csv and is skipped without a row there. Answers how many funclets it paired.
     """
     starts = sorted(int(row["address"], 16) for row in rows)
@@ -312,12 +342,13 @@ def main():
 
 
 def selftest():
-    """Checks the map reading and grouping on three folded bodies and one name listed twice; the
-    pairing of statics through their thunks: one pairs, one thunk has no pair, one isn't a mov
-    ecx; the map's statics, read from "Static symbols" on: one listed, one missing; and the
-    pairing of data through their functions: one pairs, one the function doesn't hold, one whose
-    function has no pair; and the walk of a scope table: a __finally entry, a nested entry with a
-    filter, and a stop at the next table."""
+    """Checks, in turn:
+    - map reading and grouping: three folded bodies, a name listed twice, a relabelled static;
+    - statics through their thunks: one pairs, one thunk has no pair, one isn't a mov ecx;
+    - the map's statics from "Static symbols" on: one listed, one missing, one by its object;
+    - data through their functions: one pairs, one not held, one whose function has no pair;
+    - scope tables: a __finally entry, a nested entry with a filter, a stop at the next table,
+      and a stop where our level differs."""
     measured = (
         " 0001:0002a200       ?A@@UAEPAV1@XZ 0042b200 f i a.obj\n"
         " 0001:0002a200       ?B@@UAEPAV1@XZ 0042b200 f i a.obj\n"
@@ -325,12 +356,16 @@ def selftest():
         " 0001:0002a300       ?D@@YAXXZ 0042b300 f   d.obj\n"
         " 0001:0002a400       _twice 0042b400 f   e.obj\n"
         " 0001:0002a500       _twice 0042b500 f   f.obj\n"
+        " 0001:0002a600       _dup 0042b600 f   g.obj\n"
+        " 0001:0002a600       _dup 0042b600 f   g.obj\n"
     )
     symbols = (
         " 0001:00001000       ?A@@UAEPAV1@XZ 00402000 f i a.obj\n"
         " 0001:00003000       ?B@@UAEPAV1@XZ 00404000 f i b.obj\n"
         " 0001:00005000       ?C@@UAEPAV1@XZ 00406000 f i c.obj\n"
         " 0001:00007000       ?D@@YAXXZ 00408000 f   d.obj\n"
+        " 0001:00009000       _dup 0040a000 f   g.obj\n"
+        " 0001:0000a000       _dup 0040b000 f   h.obj\n"
     )
     with tempfile.TemporaryDirectory() as folder:
         measured_path = Path(folder) / "measured.map"
@@ -343,8 +378,10 @@ def selftest():
         statics = map_statics(symbols_path)
 
     assert "_twice" not in read
-    assert groups == [{0x402000, 0x404000, 0x406000}], groups
+    # h.obj's _dup folded onto g.obj's, which the measured map lists twice.
+    assert groups == [{0x402000, 0x404000, 0x406000}, {0x40A000, 0x40B000}], groups
     assert "?D@@YAXXZ" in statics and statics["?D@@YAXXZ"] == 0x42B300, statics
+    assert "_twice" not in statics and statics[("_twice", "f.obj")] == 0x42B500, statics
 
     # Two paired thunks; ours for the first starts mov ecx, 0x00499000, the second doesn't.
     class Image:
@@ -370,6 +407,12 @@ def selftest():
                {"address": "0x004a0010", "symbol": "_missing", "size": "16"}]
     assert pair_map_symbols(db, symbols, {"_listed": 0x4B0000}) == 1
     assert db.get(ImageId.ORIG, 0x4A0000).recomp_addr == 0x4B0000
+
+    # A name in two objects, asked for by the second.
+    symbols = [{"address": "0x004a0020", "symbol": "_twice", "size": "16", "object": "f.obj"}]
+    statics = {("_twice", "e.obj"): 0x4B0400, ("_twice", "f.obj"): 0x4B0500}
+    assert pair_map_symbols(db, symbols, statics) == 1
+    assert db.get(ImageId.ORIG, 0x4A0020).recomp_addr == 0x4B0500
 
     # A paired function that pushes 0x004d0000; ours pushes 0x004e0000 at the same offset.
     class Bytes:
@@ -411,6 +454,18 @@ def selftest():
                               tables, sizes) == 3
     assert db.get(ImageId.ORIG, 0x401200).recomp_addr == 0x402200
     assert db.get(ImageId.ORIG, 0x401300) is None
+
+    # The same table, but our first entry sits at another level.
+    ours = words(0, 0, 0x403100) + ours[12:]
+    tables[0]["address"] = "0x004d0200"
+    with db.batch() as batch:
+        batch.set(ImageId.ORIG, 0x4D0200, type=EntityType.DATA, name="_f$scopetable", size=4)
+        batch.set(ImageId.RECOMP, 0x4E0200, type=EntityType.DATA, name="_f$scopetable", size=4)
+        batch.match(0x4D0200, 0x4E0200)
+
+    tables[1]["address"] = "0x004d0218"
+    assert pair_scope_entries(db, Bytes(0x4D0200, theirs), Bytes(0x4E0200, ours), EntityDb.get,
+                              tables, sizes) == 0
 
     print("selftest passed")
     return 0
