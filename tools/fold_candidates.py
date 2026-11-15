@@ -25,6 +25,10 @@ VTABLE = 5
 def names(row, orig, recomp):
     """Answers the two function names a changed line holds, or None."""
     if row.get("type") == VTABLE:
+        # A slot with no name on either side, such as an unannotated runtime table's, says nothing.
+        if ":  " not in orig or ":  " not in recomp:
+            return None
+
         return orig.split(":  ")[-1], recomp.split(":  ")[-1]
 
     found_orig = OPERAND.search(orig)
