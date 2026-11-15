@@ -1,8 +1,8 @@
 # Lists globals whose name gives only their address, with the functions that read and write each.
 #
-# python tools/placeholder_globals.py            # the summary line python
-# tools/placeholder_globals.py --list     # one row per global, with its readers and writers python
-# tools/placeholder_globals.py --max N    # also fail when there are more than N
+#   python tools/placeholder_globals.py            # the summary line
+#   python tools/placeholder_globals.py --list     # one row per global, with its readers and writers
+#   python tools/placeholder_globals.py --max N    # also fail when there are more than N
 #
 # A name is a placeholder when it embeds an address in the image, as g_flInit004B14A0 or
 # g_wPoolCount00004BB444 did, or when it is a Ghidra default such as DAT_004b14a0. Only a

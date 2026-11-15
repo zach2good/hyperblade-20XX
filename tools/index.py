@@ -147,7 +147,7 @@ def render():
             continue
         lines.append("## %s" % title)
         lines.append("")
-        lines.extend(textwrap.wrap(blurb, 100, break_on_hyphens=False))
+        lines.extend(textwrap.wrap(blurb, 100, break_long_words=False, break_on_hyphens=False))
         lines.append("")
         lines.append("| Script | What it does |")
         lines.append("|---|---|")

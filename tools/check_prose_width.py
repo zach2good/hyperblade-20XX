@@ -49,8 +49,10 @@ def prose(path, lines):
     else:
         return
 
+    # Text indented past the marker's one space is an example or a list continuation.
     for number, line in enumerate(lines, 1):
-        if line.lstrip().startswith(marker):
+        text = line.lstrip()
+        if text.startswith(marker) and not text[len(marker):].startswith(("  ", " \t")):
             yield number, line
 
 

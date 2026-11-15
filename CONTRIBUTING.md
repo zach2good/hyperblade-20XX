@@ -70,6 +70,8 @@ the change moved.
 - **Source comments describe the code.** They never record scores, percentages or match history.
   Default to no comment. When one is needed, state the unusual fact about the original in one
   line. `python tools/check_score_prose.py` enforces this.
+- **Wrap prose at 100 columns:** comments, docs and register headers.
+  `python tools/check_prose_width.py` enforces this.
 - **Treat a Ghidra name as a claim.** [docs/re_corrections.md](docs/re_corrections.md) lists the
   known wrong ones.
 - **Never run `build/out/HYPERX.exe` or the original.** Both change the display resolution. Run

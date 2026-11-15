@@ -272,14 +272,14 @@ DECLARE_BEHAVIOR 3 "Arming"
             DO_ACTION id_ACF_SendMessage(id_PRN_Me, id_MSG_YerHit)
 ```
 
-`YerHit` data is the skater's slot. `SpinTurnstile`, `SpinUp` and `ReflectOffModel` all read
-it as a slot (`planaction.cpp`, `plancond.cpp`, `planactionrecoil.cpp`). `Initiate`
-carries 0, and the 3-argument timer carries 0, so each hit adds a second `YerHit` about slot
-0. The extra `SpinTurnstile` adds an impulse whose direction comes from slot 0's motion, so the
-   turnstile can spin against the push. In "Arming", the timer's `YerHit` is queued and handled
-   after the change to "Spin", so there it costs only that extra impulse. In "ClockStoppedSpin",
-   when slot 0's line of travel passes within 1.5 units of the turnstile, `ReflectOffModel` bounces
-   slot 0 or cuts its speed to 3, wherever it is on the rink.
+`YerHit` data is the skater's slot. `SpinTurnstile`, `SpinUp` and `ReflectOffModel` all read it as a
+slot (`planaction.cpp`, `plancond.cpp`, `planactionrecoil.cpp`). `Initiate` carries 0, and the
+3-argument timer carries 0, so each hit adds a second `YerHit` about slot 0. The extra
+`SpinTurnstile` adds an impulse whose direction comes from slot 0's motion, so the turnstile can
+spin against the push. In "Arming", the timer's `YerHit` is queued and handled after the change to
+"Spin", so there it costs only that extra impulse. In "ClockStoppedSpin", when slot 0's line of
+travel passes within 1.5 units of the turnstile, `ReflectOffModel` bounces slot 0 or cuts its speed
+to 3, wherever it is on the rink.
 
 Smallest fix: delete the `ReallySendMsg` from "ClockStoppedSpin" `Initiate`, because the
 collision already sends `YerHit` with the slot. In "Arming", give the timer the slot:

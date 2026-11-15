@@ -21,11 +21,11 @@
 # Levers, and where they reach:
 #   - allocator: where a value is read can decide which callee-saved register takes it. A read
 #     placed after the incumbent's last use finds that register free. Measured on 0x004015e0.
-# - frame slots: tools/slot_residue.py --retired screens the rows without a build and prints a kind
-# for each fault: `size` where the two builds spell `sub esp, K` differently, `perm` where the slot
-# deltas carry both signs, `push` where a callee-saved push stands on one side only, and `shift` for
-# the rest. A `perm` is a slot order; no typed spelling is known to reach it. Most retired rows have
-# no frame-slot fault at all, whatever their wall is called.
+#   - frame slots: tools/slot_residue.py --retired screens the rows without a build and prints
+#     a kind for each fault: `size` where the two builds spell `sub esp, K` differently, `perm`
+#     where the slot deltas carry both signs, `push` where a callee-saved push stands on one side
+#     only, and `shift` for the rest. A `perm` is a slot order; no typed spelling is known to reach it.
+#     Most retired rows have no frame-slot fault at all, whatever their wall is called.
 #   - /Od rows: the frame is pools ordered by a name hash, not a rank. A local the client had
 #     in an inlined helper belongs to a later pool, so write the helper as a helper.
 #
