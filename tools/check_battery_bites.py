@@ -487,6 +487,14 @@ PROBES = (
      "        return short((word & 0xfff) | branch | 0x9000)",
      "        return short((word & 0xfff) | branch | 0xa000)"),
 
+    # A HYPERX marker below a higher one, and a v1.0.0.0-only body outside its neighbours.
+    ("check_address_order.py", "src/anim/animplayer.cpp",
+     "// FUNCTION: HYPERX 0x00425550",
+     "// FUNCTION: HYPERX 0x00425530"),
+    ("check_address_order.py", "src/ui/infobar.cpp",
+     "// FUNCTION: HYPERX100 0x004bdd30",
+     "// FUNCTION: HYPERX100 0x004bdd50"),
+
     # A control byte where an escape was meant.
     ("check_text_hygiene.py", "src/planvm/cslideonrail.cpp",
      "    m_pSpline = 0;",

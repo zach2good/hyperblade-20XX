@@ -1,0 +1,138 @@
+"""Fail when a body breaks its file's address order.
+
+Each .cpp lists its bodies in the order the original placed them. Two rules:
+
+1. HYPERX markers ascend down the file. symbols/address_order.csv lists the descents that predate
+   this check, so only a new one fails.
+2. A body with a HYPERX100 marker and no HYPERX one, outside #ifdef HYPERX_V100, sits between the
+   HYPERX100 markers above and below it when those two ascend. v1.0.0.0's order is not checked
+   otherwise: its link order differs.
+
+    python tools/check_address_order.py
+    python tools/check_address_order.py --save    # write the register from today's descents
+"""
+
+import csv
+import glob
+import os
+import re
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REGISTER = os.path.join(ROOT, "symbols", "address_order.csv")
+
+MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*(HYPERX100|HYPERX)\s+0x([0-9a-fA-F]+)")
+
+
+def bodies(path):
+    """Answers (line, HYPERX address or None, HYPERX100 address or None) for each marked body."""
+    found = []
+    pending = {}
+    depth = 0
+    v100 = 0
+    for number, line in enumerate(open(path, encoding="utf-8", errors="replace"), 1):
+        stripped = line.strip()
+        if stripped.startswith("#if"):
+            depth += 1
+            if stripped.startswith("#ifdef HYPERX_V100") and v100 == 0:
+                v100 = depth
+
+            continue
+
+        if stripped.startswith("#endif"):
+            if depth == v100:
+                v100 = 0
+
+            depth -= 1
+            continue
+
+        hit = MARKER.match(line)
+        if hit:
+            pending[hit.group(1)] = int(hit.group(2), 16)
+            continue
+
+        if stripped.startswith("//") or stripped == "":
+            continue
+
+        if pending and v100 == 0:
+            found.append((number, pending.get("HYPERX"), pending.get("HYPERX100")))
+
+        pending = {}
+
+    return found
+
+
+def faults(path):
+    shown = os.path.relpath(path, ROOT).replace(os.sep, "/")
+    found = bodies(path)
+    out = []
+
+    last = None
+    for number, addr, _ in found:
+        if addr is None:
+            continue
+
+        if last is not None and addr < last:
+            out.append(("descent", shown, addr, number))
+
+        last = addr
+
+    for index, (number, addr, addr100) in enumerate(found):
+        if addr is not None or addr100 is None:
+            continue
+
+        above = [a for _, _, a in found[:index] if a is not None]
+        below = [a for _, _, a in found[index + 1:] if a is not None]
+        low = above[-1] if above else None
+        high = below[0] if below else None
+        if low is not None and high is not None and low > high:
+            continue
+
+        if (low is not None and addr100 < low) or (high is not None and addr100 > high):
+            out.append(("v100", shown, addr100, number))
+
+    return out
+
+
+def main():
+    os.chdir(ROOT)
+    found = []
+    for path in sorted(glob.glob(os.path.join(ROOT, "src", "**", "*.cpp"), recursive=True)):
+        found.extend(faults(path))
+
+    descents = sorted((shown, "0x%08x" % addr) for kind, shown, addr, _ in found if kind == "descent")
+    if "--save" in sys.argv:
+        with open(REGISTER, "w", newline="\n", encoding="utf-8") as handle:
+            handle.write("# HYPERX markers that sit below a higher one in their file, from before\n")
+            handle.write("# tools/check_address_order.py. A new descent fails; remove a row once it is fixed.\n")
+            handle.write("path,address\n")
+            for row in descents:
+                handle.write("%s,%s\n" % row)
+
+        print("saved %d descent(s)" % len(descents))
+        return 0
+
+    known = set()
+    if os.path.exists(REGISTER):
+        rows = (line for line in open(REGISTER, encoding="utf-8") if not line.startswith("#"))
+        known = {(row["path"], row["address"]) for row in csv.DictReader(rows)}
+
+    bad = 0
+    for kind, shown, addr, number in found:
+        if kind == "descent" and (shown, "0x%08x" % addr) in known:
+            continue
+
+        bad += 1
+        print("%s:%d: %s 0x%08x out of order" % (shown, number, "HYPERX100" if kind == "v100" else "HYPERX", addr))
+
+    stale = known - set(descents)
+    for shown, addr in sorted(stale):
+        bad += 1
+        print("%s: registered descent %s is gone; remove its row" % (shown, addr))
+
+    print("%d body(ies) out of address order, %d registered descent(s)" % (bad, len(known)))
+    return 1 if bad else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

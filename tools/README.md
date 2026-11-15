@@ -37,6 +37,7 @@ Run by CI, by the `verify` build targets, or by `checkers.py`. Each fails on one
 | `base_reads_derived.py` | Fail when a base's own member reads an offset one of its derived classes declares. |
 | `base_this_casts.py` | Find casts of `this` to a class the enclosing class already derives from. |
 | `blob_rivals.py` | Finds files that name a record's offsets differently from the class that covers them. |
+| `check_address_order.py` | Fail when a body breaks its file's address order. |
 | `check_asm_bodies.py` | Check inline assembly and naked routines against the register of original assembly. |
 | `check_balance.py` | Fail on a source file whose brackets do not balance. |
 | `check_body_reach.py` | Fail when a marked body reads at or past the end of its own class. |

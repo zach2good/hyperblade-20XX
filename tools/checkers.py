@@ -83,6 +83,7 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "plan_names.py",
             "enum_names.py",
             "marker_next_line.py",
+            "check_address_order.py",
             "check_lint.py",
             "check_prefixed_functions.py",
             "namespace_spread.py",
