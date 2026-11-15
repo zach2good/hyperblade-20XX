@@ -3,6 +3,8 @@
 address,symbol,size
 0x0049ed96,?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z,37
 0x0049ee71,?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z,117
+0x0049fa39,_doexit,165
+0x0049faf0,__initterm,26
 0x004a02d5,_shortsort,78
 0x004a0323,_swap,44
 0x004a1b61,_strtoxl,517
@@ -29,6 +31,9 @@ address,symbol,size
 0x004a4505,?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PBU_s_HandlerType@@PBU_s_CatchableType@@@Z,440
 0x004a4730,?AdjustPointer@@YAPAXPAXABUPMD@@@Z,35
 0x004a61a6,__hextodec,55
+0x004a61dd,__inc,26
+0x004a61f7,__un_inc,23
+0x004a620e,__whiteout,36
 0x004a6d45,_write_char,53
 0x004a6d7a,_write_multi_char,49
 0x004a6dab,_write_string,56

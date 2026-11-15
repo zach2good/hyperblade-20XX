@@ -225,6 +225,12 @@
 // GLOBAL: HYPERX 0x004d2c4c
 // __exitflag
 
+// GLOBAL: HYPERX 0x004d2c50
+// __C_Termination_Done
+
+// GLOBAL: HYPERX 0x004d2c54
+// __C_Exit_Done
+
 // GLOBAL: HYPERX 0x004d2c78
 // __aenvptr
 
@@ -261,6 +267,19 @@
 
 // GLOBAL: HYPERX 0x004bb248
 // ___xi_z
+
+// The pre-termination and termination tables doexit runs.
+// GLOBAL: HYPERX 0x004bb24c
+// ___xp_a
+
+// GLOBAL: HYPERX 0x004bb258
+// ___xp_z
+
+// GLOBAL: HYPERX 0x004bb25c
+// ___xt_a
+
+// GLOBAL: HYPERX 0x004bb264
+// ___xt_z
 
 // ___loctotime_t's time-zone values: seconds west of UTC, whether summer time applies, its offset.
 // GLOBAL: HYPERX 0x004cabdc
