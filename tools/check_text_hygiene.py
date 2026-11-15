@@ -33,10 +33,10 @@ def main():
             continue
 
         for number, line in enumerate(data.splitlines(True), 1):
-                found = sorted({byte for byte in line if byte in CONTROL})
-                if found:
-                    faults += 1
-                    print("%s:%d: control byte %s" % (path, number, ", ".join("0x%02x" % b for b in found)))
+            found = sorted({byte for byte in line if byte in CONTROL})
+            if found:
+                faults += 1
+                print("%s:%d: control byte %s" % (path, number, ", ".join("0x%02x" % b for b in found)))
 
     print("%d line(s) with a control byte" % faults)
     return 1 if faults else 0
