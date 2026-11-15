@@ -25,12 +25,6 @@ namespace BmpWriter
 {
 
 djpeg_dest_ptr __cdecl Create(j_decompress_ptr cinfo, boolean is_os2);
-void __cdecl           put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION rows_supplied);
-void __cdecl           put_gray_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION rows_supplied);
-void __cdecl           finish_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo);
-void                   write_bmp_header(j_decompress_ptr cinfo, bmp_dest_ptr dest);
-void                   write_os2_header(j_decompress_ptr cinfo, bmp_dest_ptr dest);
-void                   write_colormap(j_decompress_ptr cinfo, bmp_dest_ptr dest, int map_colors, int map_entry_size);
 
 } // namespace BmpWriter
 
