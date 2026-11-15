@@ -2689,6 +2689,9 @@ original's group, give the marked copy and its twins the same kind:
   other out-of-line copies, as the empty bodies the original keeps on `Stub::Assert`, apart from
   the inline ones on `Object::Trace`. A marked accessor the original keeps apart from an
   out-of-line twin is `inline`: `Interactor::GetActor`, `Texture::GetSourceSurface`.
+- Build the unit `/Ox /Gf`, which is `/O2` without `/Gy`, when a body must fold with nothing: no
+  body in it is a COMDAT. `GameEngine::CoachConditionNever` stays apart from the inline and the
+  out-of-line `return 0` groups this way, as the original's does.
 
 A deleter calls its class's destructor, so deleters fold only when the destructors they call
 already do. An implicit destructor becomes a `jmp` thunk that no deleter can share; declaring
