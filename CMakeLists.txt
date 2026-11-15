@@ -458,6 +458,8 @@ set_source_files_properties(
     src/ui/widget.cpp
     src/graphics/softtex.cpp
     src/ui/screen.cpp
+    src/engine/gameoptions.cpp
+    src/physics/physicsbody.cpp
     PROPERTIES COMPILE_FLAGS "/O2")
 
 add_library(hyperx_objects OBJECT ${HYPERX_SOURCES})
