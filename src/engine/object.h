@@ -9,7 +9,7 @@ struct Vec3;
 namespace Object
 {
 
-int           Trace(const char* pszFormat, ...);
+inline int    Trace(const char* pszFormat, ...);
 void __cdecl  CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bBoost);
 void __cdecl  SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char bMirrored);
 Vec3* __cdecl ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos);
@@ -18,6 +18,18 @@ void          ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float fl
 Vec3* __cdecl ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos);
 
 } // namespace Object
+
+// The release build compiled the body out but kept the int return the trace macro reads. Inline,
+// so the linker folds every bare `ret` onto it, as the original's did.
+#pragma warning(push)
+#pragma warning(disable : 4716)
+
+// FUNCTION: HYPERX 0x00416e30
+inline int Object::Trace(const char*, ...)
+{
+}
+
+#pragma warning(pop)
 
 // MFC's release TRACE: the call stays in the source but never runs.
 #define TRACE 1 ? 0 : Object::Trace
