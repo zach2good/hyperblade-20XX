@@ -2336,8 +2336,8 @@ the lowest unpaired `$En` of ours, both sides in address order. So the objects t
 thunks must link in the order of the client's thunk addresses, and an unmarked thunk of that name
 must link after the last marked one. `symbols/link_order.csv` names each marked thunk's object with
 the client's evidence, and `python tools/check_link_order.py` fails when `HYPERX_SOURCES` would pair
-a marker with another object's thunk. A thunk that names a function-local static still does not
-pair: the client's address of the static is an immediate, and our PDB gives the static no symbol.
+a marker with another object's thunk. A thunk that names a function-local static pairs only
+through `symbols/static_objects.csv`, since our PDB gives the static no symbol (see Link folding).
 
 To place a file, take its first marked function in the client and its thunk addresses, and put it
 where both orders hold. The startup table at `0x004bb004` runs in client code order, so an

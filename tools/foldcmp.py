@@ -87,24 +87,30 @@ def aliases_for(db, groups, lookup):
     return aliases
 
 
-def pair_statics(db, recomp_bin, lookup):
-    """Pairs each row of symbols/static_objects.csv with our copy, read off its thunk.
+def static_rows():
+    lines = (line for line in open(ROOT / "symbols" / "static_objects.csv", encoding="utf-8")
+             if not line.startswith("#"))
+    return list(csv.DictReader(lines))
+
+
+def pair_statics(db, recomp_bin, lookup, rows):
+    """Pairs each row, as symbols/static_objects.csv gives it, with our copy, read off its thunk.
 
     Our PDB has no symbol for a function-scope static. Its atexit thunk, which pairs by name,
     starts `mov ecx, <object>` on both sides, so our object's address is the thunk's immediate.
-    Answers how many it paired.
+    Names on stderr each row it can't pair, and answers how many it paired.
     """
-    rows = (line for line in open(ROOT / "symbols" / "static_objects.csv", encoding="utf-8")
-            if not line.startswith("#"))
     paired = 0
     with db.batch() as batch:
-        for row in csv.DictReader(rows):
+        for row in rows:
             thunk = lookup(db, ImageId.ORIG, int(row["thunk"], 16))
             if thunk is None or thunk.recomp_addr is None:
+                print("foldcmp: %s: its thunk %s has no pair" % (row["name"], row["thunk"]), file=sys.stderr)
                 continue
 
             code = recomp_bin.read(thunk.recomp_addr, 5)
             if code[0] != MOV_ECX:
+                print("foldcmp: %s: our thunk does not start with mov ecx" % row["name"], file=sys.stderr)
                 continue
 
             ours = int.from_bytes(code[1:5], "little")
@@ -149,7 +155,7 @@ def install():
     def from_target(cls, target):
         compare = build(cls, target)
         print("foldcmp: %d function-scope static(s) paired through their thunks"
-              % pair_statics(compare._db, compare.recomp_bin, lookup), file=sys.stderr)
+              % pair_statics(compare._db, compare.recomp_bin, lookup, static_rows()), file=sys.stderr)
         aliases.update(aliases_for(compare._db, groups, lookup))
         print("foldcmp: %d fold groups, %d copies read as their marked twin"
               % (len(groups), len(aliases)), file=sys.stderr)
@@ -191,6 +197,25 @@ def selftest():
 
     assert "_twice" not in read
     assert groups == [{0x402000, 0x404000, 0x406000}], groups
+
+    # Two paired thunks; ours for the first starts mov ecx, 0x00499000, the second doesn't.
+    class Image:
+        def read(self, addr, size):
+            return {0x420000: bytes([MOV_ECX, 0x00, 0x90, 0x49, 0x00]),
+                    0x420010: bytes([0x90] * 5)}[addr][:size]
+
+    db = EntityDb()
+    with db.batch() as batch:
+        for orig, ours in ((0x410000, 0x420000), (0x410010, 0x420010)):
+            batch.set(ImageId.ORIG, orig, type=EntityType.FUNCTION, name="thunk")
+            batch.set(ImageId.RECOMP, ours, type=EntityType.FUNCTION, name="thunk")
+            batch.match(orig, ours)
+
+    rows = [{"address": "0x004c0000", "name": "A::s_one", "size": "0x7c", "thunk": "0x00410000"},
+            {"address": "0x004c0100", "name": "B::s_two", "size": "0x7c", "thunk": "0x00410010"}]
+    assert pair_statics(db, Image(), EntityDb.get, rows) == 1
+    assert db.get(ImageId.ORIG, 0x4C0000).recomp_addr == 0x499000
+
     print("selftest passed")
     return 0
 

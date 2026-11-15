@@ -14,5 +14,7 @@ The ones you'll meet first:
 - `retired.csv`: functions no source spelling has matched yet, and what each attempt measured.
 - `float_constants.csv`, `static_guards.csv` and `library_data.csv`: data reccmp can't find in
   the original on its own. `reccmp-project.yml` reads them.
+- `static_objects.csv`: function-scope statics, which have no symbol on our side. `tools/foldcmp.py`
+  pairs each through its atexit thunk.
 
 The rest record exceptions a checker would otherwise report, each with its reason.

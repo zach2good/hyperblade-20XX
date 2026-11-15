@@ -32,9 +32,8 @@ same address, so those rows need the data at the original's address.
 [MATCHING.md](MATCHING.md#data-globals-and-link-order) gives the layout rules.
 
 The remaining rows whose only fault is a data address are blocked by data the tree can't place.
-They read the CRT's storage, such as `__iob` and `__pi_by_2_to_61`, or pass the address of a
-function-scope static, which VC6 gives no symbol to mark. `EngineObject::UpdateRenderSlotTransform`,
-its twin in `PlayerObject` and `MeshBone::DrawFaces` are the static cases.
+They read the CRT's storage, such as `__iob` and `__pi_by_2_to_61`. Function-scope statics, which
+VC6 gives no symbol, pair through `symbols/static_objects.csv`.
 
 ## Other modules on the disc
 

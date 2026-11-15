@@ -504,6 +504,11 @@ PROBES = (
      "    m_pSpline = 0;",
      "    // probe\x01\n    m_pSpline = 0;"),
 
+    # A static paired off a thunk that doesn't load it.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "            if code[0] != MOV_ECX:",
+     "            if code[0] == MOV_ECX:"),
+
     # A name the map lists twice kept, so one fold group takes the wrong address.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "if seen[name] == 1}",
