@@ -1,0 +1,9 @@
+# Function-scope static objects. VC6 gives a function-scope static no symbol, so reccmp can't name
+# ours and no GLOBAL marker reaches it. tools/foldcmp.py reads each one's address here off the
+# first instruction of the paired atexit thunk, mov ecx with the object, and pairs the two sides.
+address,name,size,thunk
+0x004cb668,AnimPlayer::ComputeScale::s_blendTransform,0x7c,0x00424e50
+0x004d0520,MeshBone::DrawFaces::s_worldView,0x7c,0x0046f330
+0x004d05c0,EngineObject::UpdateRenderSlotTransform::SlotTransform,0x7c,0x004716e0
+0x004d0658,PlayerObject::UpdateRenderSlotTransform::BoneTransform,0x7c,0x00474480
+0x004d06e8,RokObject::ApplyRenderSlotPose::s_scratch,0x7c,0x00474140

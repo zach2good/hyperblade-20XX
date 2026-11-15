@@ -14,6 +14,7 @@ Takes asmcmp's arguments unchanged:
 """
 
 import collections
+import csv
 import re
 import sys
 import tempfile
@@ -22,7 +23,10 @@ from pathlib import Path
 from reccmp.compare import functions
 from reccmp.compare.db import EntityDb
 from reccmp.tools import asmcmp
-from reccmp.types import ImageId
+from reccmp.types import EntityType, ImageId
+
+# The opcode of `mov ecx, imm32`.
+MOV_ECX = 0xB9
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "build" / "out"
@@ -83,6 +87,37 @@ def aliases_for(db, groups, lookup):
     return aliases
 
 
+def pair_statics(db, recomp_bin, lookup):
+    """Pairs each row of symbols/static_objects.csv with our copy, read off its thunk.
+
+    Our PDB has no symbol for a function-scope static. Its atexit thunk, which pairs by name,
+    starts `mov ecx, <object>` on both sides, so our object's address is the thunk's immediate.
+    Answers how many it paired.
+    """
+    rows = (line for line in open(ROOT / "symbols" / "static_objects.csv", encoding="utf-8")
+            if not line.startswith("#"))
+    paired = 0
+    with db.batch() as batch:
+        for row in csv.DictReader(rows):
+            thunk = lookup(db, ImageId.ORIG, int(row["thunk"], 16))
+            if thunk is None or thunk.recomp_addr is None:
+                continue
+
+            code = recomp_bin.read(thunk.recomp_addr, 5)
+            if code[0] != MOV_ECX:
+                continue
+
+            ours = int.from_bytes(code[1:5], "little")
+            size = int(row["size"], 16)
+            orig = int(row["address"], 16)
+            batch.set(ImageId.ORIG, orig, type=EntityType.DATA, name=row["name"], size=size)
+            batch.set(ImageId.RECOMP, ours, type=EntityType.DATA, name=row["name"], size=size)
+            batch.match(orig, ours)
+            paired += 1
+
+    return paired
+
+
 def install():
     """Patches reccmp so every Compare built afterwards reads the folding. Other tools call this."""
     groups = fold_groups(read_map(OUT / "HYPERX.map"), read_map(OUT / "HYPERX_sym.map"))
@@ -113,6 +148,8 @@ def install():
 
     def from_target(cls, target):
         compare = build(cls, target)
+        print("foldcmp: %d function-scope static(s) paired through their thunks"
+              % pair_statics(compare._db, compare.recomp_bin, lookup), file=sys.stderr)
         aliases.update(aliases_for(compare._db, groups, lookup))
         print("foldcmp: %d fold groups, %d copies read as their marked twin"
               % (len(groups), len(aliases)), file=sys.stderr)

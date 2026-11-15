@@ -2664,6 +2664,11 @@ original didn't make still fails, because its slot names another address. A grou
 copy, or more than one, is left alone; foldcmp names on stderr each group with several, a fold
 the original doesn't make.
 
+foldcmp also pairs function-scope static objects, which VC6 gives no symbol, so no `GLOBAL` marker
+reaches ours. `symbols/static_objects.csv` names each by the original's address and its atexit
+thunk; foldcmp reads our object's address off our thunk's first instruction, `mov ecx` with the
+object, and pairs the two. The code around them is the same; only the link-chosen address differs.
+
 #### Reaching the original's fold groups
 
 `python tools/fold_candidates.py` ranks the functions the original folds bodies onto where this
