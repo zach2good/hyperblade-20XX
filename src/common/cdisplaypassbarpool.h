@@ -12,7 +12,7 @@ public:
         m_pHead = 0;
     }
 
-    // The linker folds every pool's copy onto this one, as the original's did.
+    // Every pool's copy folds onto this one; v1.0.0.0 keeps them apart.
     // FUNCTION: HYPERX100 0x0044b970
     // FUNCTION: HYPERX 0x00414b00
     virtual AgendaItemOwner* Destroy()

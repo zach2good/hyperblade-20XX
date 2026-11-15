@@ -28,7 +28,7 @@ void MsgInteractorPool::Init()
     }
 }
 
-// The linker folds every pool's copy onto this one, as the original's did.
+// Both interactor pools' copies fold onto this one; v1.0.0.0 keeps them apart.
 // FUNCTION: HYPERX100 0x004b8890
 // FUNCTION: HYPERX 0x0046bd50
 char MsgInteractorPool::Insert(void* pNode)

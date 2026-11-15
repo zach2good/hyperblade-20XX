@@ -23,7 +23,7 @@ void BehObjGlideToObjectPool::Init()
     }
 }
 
-// The linker folds every pool's copy onto this one, as the original's did.
+// Every behaviour pool's copy folds onto this one; v1.0.0.0 keeps them apart.
 // FUNCTION: HYPERX100 0x004c89d0
 // FUNCTION: HYPERX 0x0041ed00
 char BehObjGlideToObjectPool::Insert(void* pNode)

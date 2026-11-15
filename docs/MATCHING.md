@@ -2600,10 +2600,11 @@ intermediate class that overrides only that slot and changes no offsets. A deriv
 table that copies its base's; where the original's slot names a function this tree already has,
 declare that member `virtual` under the base's slot name.
 
-A base whose original table is pure cannot share a body its derived tables fold. The three pool
-owner bases hold pure `Destroy` slots, and sixty-two derived tables hold one `Destroy` body.
-Abstract bases would need one `Destroy` for each family, and only one can carry the marker, so
-the bases stay concrete.
+A base whose original table is pure leaves the body to each derived class. The three pool owner
+bases hold pure `Destroy` and `Insert` slots. Each of the sixty-two pools defines both: `Destroy`
+inline, which folds onto one body, and `Insert` out of line between `Init` and `Alloc`, which folds
+onto one body per owner family. The markers sit on the pools whose code the original's addresses
+fall in.
 
 A pure slot must resolve to the library's `_purecall`, not a local function with the same body.
 

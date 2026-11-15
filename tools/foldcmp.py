@@ -27,7 +27,7 @@ from reccmp.types import ImageId
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "build" / "out"
 
-# 0001:0002a200       ?Destroy@NodeOwner@@UAEPAV1@XZ 0042b200 f i planvm.cpp.obj
+# 0001:00013b00       ?Destroy@CDisplayPassBarPool@@UAEPAVAgendaItemOwner@@XZ 00414b00 f i x.cpp.obj
 FUNCTION_LINE = re.compile(r"^ 0001:[0-9a-f]{8}\s+(\S+)\s+([0-9a-f]{8}) f ")
 
 
