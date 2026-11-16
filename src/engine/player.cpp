@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "engine/objectclasses.h"
 #include "gameengine.h"
 #include "physics/physicsbody.h"
@@ -153,8 +154,13 @@ EngineObject* __cdecl Player::FindBungeeVictim(EngineObject* pActor, float* pflO
     nSlot                      = (short)((pActor->GetSlot() + 3) % 4);
     EngineObject* const pCandB = g_pGameEngine->m_ppSlots[nSlot];
 
-    // The original reloads this from the frame for the final comparison.
-    const volatile float flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+    const float flDyA = (float)fabs(pCandA->GetPositionPtr()->y - pActor->GetPositionPtr()->y);
+
+    // Never runs; taking its address keeps flDyA in a frame slot.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&flDyA);
+    }
 
     if (flDyA > 30.0f)
     {
