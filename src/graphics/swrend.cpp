@@ -230,9 +230,9 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         }
         else
         {
-            flLevel = g_flZeroSWRend;
+            float flBackLevel = g_flZeroSWRend;
 
-            nKind = MeshMaterial::CalcLightIntensity(&flLevel, pMaterial, &vNormal) & 0xff;
+            nKind = MeshMaterial::CalcLightIntensity(&flBackLevel, pMaterial, &vNormal) & 0xff;
 
             switch (nKind)
             {
@@ -242,11 +242,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
                 case SHADE_SCALED:
                     dwColour =
-                        ((((unsigned int)(int)(pMaterial->acChannel[2] * flLevel) | COLOUR_ALPHA_BITS)
+                        ((((unsigned int)(int)(pMaterial->acChannel[2] * flBackLevel) | COLOUR_ALPHA_BITS)
                               << 8 |
-                          (unsigned int)(int)(pMaterial->acChannel[1] * flLevel))
+                          (unsigned int)(int)(pMaterial->acChannel[1] * flBackLevel))
                          << 8) |
-                        (unsigned int)(int)(pMaterial->acChannel[0] * flLevel);
+                        (unsigned int)(int)(pMaterial->acChannel[0] * flBackLevel);
 
                     break;
 
@@ -294,9 +294,9 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
             }
             else
             {
-                flLevel2 = g_flZeroSWRend;
+                float flFrontD3DLevel = g_flZeroSWRend;
 
-                nKind = MeshMaterial::CalcLightIntensity(&flLevel2, pMaterial, pFaceNormal) & 0xff;
+                nKind = MeshMaterial::CalcLightIntensity(&flFrontD3DLevel, pMaterial, pFaceNormal) & 0xff;
 
                 switch (nKind)
                 {
@@ -306,11 +306,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
                     case SHADE_SCALED:
                         dwColour =
-                            ((((unsigned int)(int)(pMaterial->acChannel[2] * flLevel2) | COLOUR_ALPHA_BITS)
+                            ((((unsigned int)(int)(pMaterial->acChannel[2] * flFrontD3DLevel) | COLOUR_ALPHA_BITS)
                                   << 8 |
-                              (unsigned int)(int)(pMaterial->acChannel[1] * flLevel2))
+                              (unsigned int)(int)(pMaterial->acChannel[1] * flFrontD3DLevel))
                              << 8) |
-                            (unsigned int)(int)(pMaterial->acChannel[0] * flLevel2);
+                            (unsigned int)(int)(pMaterial->acChannel[0] * flFrontD3DLevel);
 
                         break;
 
