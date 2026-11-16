@@ -73,6 +73,7 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
     return 0;
 }
 
+// FUNCTION: HYPERX100 0x00477990
 int TextInputWidget::OnMouseDown()
 {
     m_bDepressed = 1;

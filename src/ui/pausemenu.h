@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include "globals.h"
-#include "ui/holdingwidget.h"
 
 namespace PauseMenu
 {

@@ -302,7 +302,6 @@ set(HYPERX_SOURCES
     src/net/playerbase.cpp
     src/engine/rampobject.cpp
     src/ui/messagequeue.cpp
-    src/ui/holdingwidget.cpp
     src/planvm/planinteractorfactories.cpp
     src/planvm/ctracktraj.cpp
     src/planvm/cslideonrail.cpp

@@ -16,7 +16,7 @@ class Screen;
 class ButtonWidget : public Widget
 {
 public:
-    // HoldingWidget::OnMouseDown's body, so the linker folds the two.
+    // FlipbookWidget::OnMouseDown's body, so the linker folds the two.
     virtual int OnMouseDown();
 
     // Reached only through this table.

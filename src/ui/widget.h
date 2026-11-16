@@ -122,7 +122,7 @@ public:
     // Nonzero on the display and looping flipbook widgets, which the focus walks skip.
     virtual int IsDisplayOnly() = 0;
 
-    // Unused names for HoldingWidget::OnMouseDown and FlipbookWidget::OnMouseUp.
+    // Unused names for FlipbookWidget::OnMouseDown and OnMouseUp.
     int          BeginWithoutHold();
     int          BeginWithHold();
     virtual void Draw(HDC hdc, HPALETTE hPalette, int nSlot);

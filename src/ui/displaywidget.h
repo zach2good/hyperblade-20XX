@@ -8,7 +8,6 @@
 
 #include "ui/widget.h"
 
-#include "ui/holdingwidget.h"
 #include "ui/flipbookwidget.h"
 
 #include "common/compat.h"

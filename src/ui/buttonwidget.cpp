@@ -47,6 +47,7 @@ int ButtonWidget::OnMouseUp()
     return 1;
 }
 
+// FUNCTION: HYPERX100 0x00477760
 int ButtonWidget::OnMouseDown()
 {
     m_bDepressed = 1;

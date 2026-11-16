@@ -9,7 +9,7 @@
 class TextInputWidget : public Widget
 {
 public:
-    // HoldingWidget::OnMouseDown's body, so the linker folds the two.
+    // FlipbookWidget::OnMouseDown's body, so the linker folds the two.
     virtual int OnMouseDown();
 
     // Slots four and five hold KeyConfigDialog::SaveKeysAs, so both keep a stand-in.
