@@ -600,6 +600,11 @@ PROBES = (
      "        if seen[name] == 1:",
      "        if seen[name] >= 1:"),
 
+    # An original body keeps its trailing padding.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "    while end > 0 and code[end - 1] in PADDING:",
+     "    while False:"),
+
     # A slot holding another name counts as agreeing.
     ("pecompare.py --selftest", "tools/pecompare.py",
      "if ours.get(address, (None,))[0] == name)",

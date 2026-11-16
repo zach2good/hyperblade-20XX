@@ -6,6 +6,10 @@ puts several functions at one address and HYPERX_sym.map keeps them apart, every
 reference to a copy without a marker reads as a reference to the one copy with a marker. Call
 operands and vtable slots then name what HYPERX.exe really calls.
 
+reccmp reads a game row's original only as far as our function runs. Here each game row's
+original runs to the next function in symbols/functions.csv, less its trailing padding, so a
+shorter body is scored against the original's whole tail and a longer one never reads padding.
+
 Takes asmcmp's arguments unchanged:
 
     python tools/foldcmp.py --target HYPERX --json build/report.json --silent
@@ -13,6 +17,7 @@ Takes asmcmp's arguments unchanged:
     python tools/foldcmp.py --selftest
 """
 
+import bisect
 import collections
 import csv
 import re
@@ -301,6 +306,39 @@ def function_sizes():
         return {int(row["address"], 16): int(row["size"]) for row in csv.DictReader(handle)}
 
 
+# Game rows end below libjpeg's first function; library rows keep reccmp's own extent.
+LIBRARY_START = 0x00494070
+PADDING = (0x90, 0xCC)
+
+
+def own_end(code):
+    """The length of an original body read to the next function, less its trailing padding."""
+    end = len(code)
+    while end > 0 and code[end - 1] in PADDING:
+        end -= 1
+
+    return end
+
+
+def score_to_own_end(compare_function, starts):
+    """Wraps FunctionComparator.compare_function so a game row's original is read to `own_end`
+    of the span up to the next of the sorted `starts`, within reccmp's own limit."""
+    def wrapped(self, match):
+        addr = match.orig_addr
+        if addr is not None and addr < LIBRARY_START and match.size(ImageId.ORIG) is None:
+            limit = match.max_size(ImageId.ORIG)
+            following = bisect.bisect_right(starts, addr)
+            if limit and following < len(starts):
+                limit = min(limit, starts[following] - addr)
+            if limit:
+                match._kvstore = dict(match._kvstore)
+                match._kvstore["orig_size"] = own_end(self.orig_bin.read(addr, limit))
+
+        return compare_function(self, match)
+
+    return wrapped
+
+
 # The jumps that take a condition; reccmp names only a `jmp`'s target.
 CONDITIONAL_JUMPS = {name for name in parse.SINGLE_OPERAND_INSTS
                      if name.startswith(("j", "loop")) and name != "jmp"}
@@ -379,6 +417,8 @@ def install():
         return compare
 
     EntityDb.get = get
+    functions.FunctionComparator.compare_function = score_to_own_end(
+        functions.FunctionComparator.compare_function, sorted(function_sizes()))
     parse.ParseAsm.sanitize, parse.ParseAsm.parse_asm = name_far_jumps(
         parse.ParseAsm.sanitize, parse.ParseAsm.parse_asm)
     functions.create_name_lookup = create_name_lookup
@@ -388,6 +428,12 @@ def install():
 def main():
     install()
     return asmcmp.main()
+
+
+def selftest_own_end():
+    assert own_end(bytes([0xC3, 0x90, 0x90, 0xCC])) == 1
+    assert own_end(bytes([0x55, 0xC3])) == 2
+    assert own_end(bytes([0x90])) == 0
 
 
 def selftest():
@@ -535,6 +581,7 @@ def selftest():
     assert sanitize(parser, (0x401010, 6, "jne", "0x500000")) == ("jne", "__fast_exit")
     assert sanitize(parser, (0x401010, 6, "jne", "0x401100")) == ("jne", "displacement")
 
+    selftest_own_end()
     print("selftest passed")
     return 0
 
