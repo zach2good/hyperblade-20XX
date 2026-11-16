@@ -81,11 +81,12 @@ def runs(lines):
 
 
 def symbol_addresses(lines):
+    """Answers each symbol's first address and region."""
     addresses = {}
     for line in lines:
         function = FUNCTION_LINE.match(line)
         if function:
-            addresses.setdefault(function.group(1), int(function.group(2), 16))
+            addresses.setdefault(function.group(1), (int(function.group(2), 16), region(function.group(3))))
 
     return addresses
 
@@ -100,7 +101,11 @@ def budget(found, symbols, pairs, original_funclets):
         name = "LIBCMT, imports" if run[0] in ("LIBCMT", "import thunks") else run[0]
         ours[name] = ours.get(name, 0) + run[2] - run[1]
         for addr, symbol in run[3]:
-            theirs = pairs.get(symbols.get(symbol))
+            # A folded copy can sit under another region's object in one map; it votes for neither.
+            address, home = symbols.get(symbol, (None, None))
+            if home != run[0]:
+                continue
+            theirs = pairs.get(address)
             if theirs is not None:
                 lowest[name] = min(lowest.get(name, theirs), theirs)
 
@@ -171,10 +176,17 @@ def selftest():
         ("LIBCMT", 0x401200, 0x401280), ("import thunks", 0x401280, 0x401300)], found
     assert funclets == 0x401300
     # libjpeg's first function pairs at 0x500200 and LIBCMT's at 0x500290; .text$x at 0x500380.
-    symbols = {"_jpeg_x": 0x402180, "_strlen": 0x402200}
+    symbols = {"_jpeg_x": (0x402180, "libjpeg"), "_strlen": (0x402200, "LIBCMT")}
     pairs = {0x402180: 0x500200, 0x402200: 0x500290}
     assert budget(found, symbols, pairs, 0x500380) == [
         ("game", 0x180, 0xff200), ("libjpeg", 0x80, 0x90), ("LIBCMT, imports", 0x100, 0xf0)]
+    # The symbol map lists _strlen under libjpeg, folded: it no longer sets LIBCMT's start.
+    pairs[0x402300] = 0x500100
+    symbols["_strlen"] = (0x402300, "libjpeg")
+    symbols["_DirectDrawCreate@12"] = (0x402280, "import thunks")
+    pairs[0x402280] = 0x500300
+    assert budget(found, symbols, pairs, 0x500380) == [
+        ("game", 0x180, 0xff200), ("libjpeg", 0x80, 0x100), ("LIBCMT, imports", 0x100, 0x80)]
     print("selftest passed")
     return 0
 
