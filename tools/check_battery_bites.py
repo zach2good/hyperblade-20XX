@@ -520,6 +520,11 @@ PROBES = (
      "isinstance(key, tuple) and key[0] in folded and",
      "isinstance(key, tuple) and"),
 
+    # A conditional jump to the function's own end named as if it left the function.
+    ("foldcmp.py --selftest", "tools/foldcmp.py",
+     "and not start <= target <= end:",
+     "and not start <= target < end:"),
+
     # A map pair that ignores its row's object.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            if row.get(\"object\"):",

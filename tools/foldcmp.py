@@ -21,6 +21,7 @@ import tempfile
 from pathlib import Path
 
 from reccmp.compare import functions
+from reccmp.compare.asm import parse
 from reccmp.compare.db import EntityDb
 from reccmp.tools import asmcmp
 from reccmp.types import EntityType, ImageId
@@ -300,6 +301,33 @@ def function_sizes():
         return {int(row["address"], 16): int(row["size"]) for row in csv.DictReader(handle)}
 
 
+# The jumps that take a condition; reccmp names only a `jmp`'s target.
+CONDITIONAL_JUMPS = {name for name in parse.SINGLE_OPERAND_INSTS
+                     if name.startswith(("j", "loop")) and name != "jmp"}
+
+
+def name_far_jumps(sanitize, parse_asm):
+    """Wraps ParseAsm so a conditional jump out of the function, to an address with an exact name,
+    renders the name, as a `jmp` does. A jump inside the function, or to its end, keeps its
+    displacement, even onto a label one side names, such as LIBCMT's __NLG_Return2."""
+    def wrapped_parse(self, data, start_addr):
+        self.extent = (start_addr, start_addr + len(data))
+        return parse_asm(self, data, start_addr)
+
+    def wrapped_sanitize(self, inst):
+        mnemonic = inst[2]
+        target = parse.from_hex(inst[3])
+        start, end = getattr(self, "extent", (0, 0))
+        if mnemonic in CONDITIONAL_JUMPS and target is not None and not start <= target <= end:
+            name = self.lookup(target, exact=True)
+            if name is not None:
+                return (mnemonic, name)
+
+        return sanitize(self, inst)
+
+    return wrapped_sanitize, wrapped_parse
+
+
 def install():
     """Patches reccmp so every Compare built afterwards reads the folding. Other tools call this."""
     measured = (OUT / "HYPERX.map").read_text(errors="replace").splitlines()
@@ -351,6 +379,8 @@ def install():
         return compare
 
     EntityDb.get = get
+    parse.ParseAsm.sanitize, parse.ParseAsm.parse_asm = name_far_jumps(
+        parse.ParseAsm.sanitize, parse.ParseAsm.parse_asm)
     functions.create_name_lookup = create_name_lookup
     asmcmp.Compare.from_target = classmethod(from_target)
 
@@ -367,7 +397,8 @@ def selftest():
     - the map's statics from "Static symbols" on: one listed, one missing, one by its object;
     - data through their functions: one pairs, one not held, one whose function has no pair;
     - scope tables: a __finally entry, a nested entry with a filter, a stop at the next table,
-      and a stop where our level differs."""
+      and a stop where our level differs;
+    - conditional jumps: one out of the function named, one to its end left alone."""
     measured = (
         " 0001:0002a200       ?A@@UAEPAV1@XZ 0042b200 f i a.obj\n"
         " 0001:0002a200       ?B@@UAEPAV1@XZ 0042b200 f i a.obj\n"
@@ -492,6 +523,17 @@ def selftest():
     tables[1]["address"] = "0x004d0218"
     assert pair_scope_entries(db, Bytes(0x4D0200, theirs), Bytes(0x4E0200, ours), EntityDb.get,
                               tables, sizes) == 0
+
+    class Parser:
+        def lookup(self, addr, exact=False):
+            return {0x500000: "__fast_exit", 0x401100: "__label"}.get(addr)
+
+    sanitize, parse_asm = name_far_jumps(lambda self, inst: (inst[2], "displacement"),
+                                         lambda self, data, start: None)
+    parser = Parser()
+    parse_asm(parser, bytes(0x100), 0x401000)
+    assert sanitize(parser, (0x401010, 6, "jne", "0x500000")) == ("jne", "__fast_exit")
+    assert sanitize(parser, (0x401010, 6, "jne", "0x401100")) == ("jne", "displacement")
 
     print("selftest passed")
     return 0

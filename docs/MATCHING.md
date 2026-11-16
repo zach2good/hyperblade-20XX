@@ -2693,6 +2693,12 @@ from `symbols/functions.csv`; one without its own row there is skipped. The tabl
 back with no terminator. The walk stops at the next row's table, at an entry whose level differs
 between the two sides, or at a word that isn't a funclet on both sides.
 
+reccmp names a `jmp`'s target but prints a conditional jump as a displacement, so a `jne` out of
+one function into another, as `_acos`, `_asin` and `_pow` make into `__fast_exit`, never pairs.
+foldcmp names a conditional jump's target when it leaves the function and has an exact name. A
+jump inside the function, or to its end, keeps its displacement, so a label only one side names,
+such as LIBCMT's `__NLG_Return2`, can't split a pair.
+
 #### Reaching the original's fold groups
 
 `python tools/fold_candidates.py` ranks the functions the original folds bodies onto where this
