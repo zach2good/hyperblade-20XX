@@ -77,7 +77,7 @@ address,name,size,convention,signature
 0x00405820,CollisionShape::GetTransform,4,__fastcall,void * __fastcall CollisionShape::GetTransform(void * pCollisionObj)
 0x00405830,CollisionShape::GetElasticity,4,__fastcall,float __fastcall CollisionShape::GetElasticity(void * pCollisionObj)
 0x00405840,CollisionShape::GetFriction,4,__fastcall,float __fastcall CollisionShape::GetFriction(void * pCollisionObj)
-0x00405850,CollisionObj::CollisionObj,11,__fastcall,void __fastcall CollisionObj::CollisionObj(dword * param_1)
+0x00405850,CollisionObj::~CollisionObj,11,__thiscall,void __thiscall CollisionObj::~CollisionObj(void)
 0x00405860,CollisionPlane::NormalAtPoint,6,__thiscall,"float * __thiscall CollisionPlane::NormalAtPoint(void * this, float * pVPoint)"
 0x00405870,CollisionShape::GetNormal,4,__fastcall,float * __fastcall CollisionShape::GetNormal(void * pCollisionObj)
 0x00405880,CollisionPlane::ForwardTransformRequest,62,__stdcall,"undefined __stdcall CollisionPlane::ForwardTransformRequest(undefined4 param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4, undefined4 param_5, undefined4 param_6)"
@@ -313,7 +313,7 @@ address,name,size,convention,signature
 0x00412d90,CProjectAndBouncePool::Init,213,__fastcall,undefined __fastcall CProjectAndBouncePool::Init(int param_1)
 0x00412e70,CProjectAndBouncePool::Alloc,119,__fastcall,int __fastcall CProjectAndBouncePool::Alloc(int param_1)
 0x00412ef0,CBeAttachedPool::Init,158,__fastcall,void __fastcall CBeAttachedPool::Init(int param_1)
-0x00412f90,AgendaItem::AgendaItem,7,__fastcall,void __fastcall AgendaItem::AgendaItem(dword * param_1)
+0x00412f90,AgendaItem::~AgendaItem,7,__thiscall,void __thiscall AgendaItem::~AgendaItem(void)
 0x00412fa0,CBeAttachedPool::Alloc,98,__fastcall,int __fastcall CBeAttachedPool::Alloc(int param_1)
 0x00413010,CSteerToTargetPool::Init,153,__fastcall,undefined __fastcall CSteerToTargetPool::Init(int param_1)
 0x004130b0,CSteerToTargetPool::Alloc,89,__fastcall,int __fastcall CSteerToTargetPool::Alloc(int param_1)
@@ -384,7 +384,7 @@ address,name,size,convention,signature
 0x00414d70,CCircleTrackPool::Alloc,83,__fastcall,int __fastcall CCircleTrackPool::Alloc(int param_1)
 0x00414dd0,PlanVM__InteractorPool_VDtor_A,30,__thiscall,"dword * __thiscall PlanVM__InteractorPool_VDtor_A(void * this, byte param_1)"
 0x00414df0,CGlideOnSurfacePool::~CGlideOnSurfacePool,121,__fastcall,void __fastcall CGlideOnSurfacePool::~CGlideOnSurfacePool(dword * param_1)
-0x00414e70,AgendaItemOwner::AgendaItemOwner,7,__fastcall,void __fastcall AgendaItemOwner::AgendaItemOwner(dword * param_1)
+0x00414e70,AgendaItemOwner::~AgendaItemOwner,7,__thiscall,void __thiscall AgendaItemOwner::~AgendaItemOwner(void)
 0x00414e80,DestroyScalar_414e80,32,__thiscall,"undefined4 * __thiscall DestroyScalar_414e80(void * this, byte param_1)"
 0x00414ea0,PlanVM__InteractorPool_VDtor_B,30,__thiscall,"dword * __thiscall PlanVM__InteractorPool_VDtor_B(void * this, byte param_1)"
 0x00414ec0,CSlideOnRailPool::~CSlideOnRailPool,121,__fastcall,void __fastcall CSlideOnRailPool::~CSlideOnRailPool(dword * param_1)
@@ -491,7 +491,7 @@ address,name,size,convention,signature
 0x00417880,AnimNamedRef::AnimNamedRef,94,__thiscall,"dword * __thiscall AnimNamedRef::AnimNamedRef(void * this, char * param_1, short param_2, word param_3)"
 0x004178e0,AnimNamedRef::~AnimNamedRef,34,__fastcall,void __fastcall AnimNamedRef::~AnimNamedRef(dword * param_1)
 0x00417910,AnimClip::AnimClip,28,__thiscall,dword * __thiscall AnimClip::AnimClip(void * this)
-0x00417930,AnimObject::AnimObject,7,__fastcall,void __fastcall AnimObject::AnimObject(dword * param_1)
+0x00417930,AnimObject::~AnimObject,7,__thiscall,void __thiscall AnimObject::~AnimObject(void)
 0x00417940,DestroyScalar_417940,32,__thiscall,"undefined4 * __thiscall DestroyScalar_417940(void * this, byte param_1)"
 0x00417960,AnimSet__vdtor,30,__thiscall,"dword * __thiscall AnimSet__vdtor(void * this, byte param_1)"
 0x00417980,thunk_InitializeGlobal004CB4EC,5,__stdcall,undefined __stdcall thunk_InitializeGlobal004CB4EC(void)
@@ -510,7 +510,7 @@ address,name,size,convention,signature
 0x004185c0,AnimScriptTable::CreateAnimDB,166,__thiscall,"bool __thiscall AnimScriptTable::CreateAnimDB(void * this, int * param_1, LPCSTR param_2, undefined4 param_3)"
 0x00418670,AnimScriptTable::ParseSegment,840,__stdcall,"dword __stdcall AnimScriptTable::ParseSegment(int * param_1, byte * param_2, dword * param_3)"
 0x004189c0,AnimScriptTable::ParseTrigger,466,__stdcall,"dword __stdcall AnimScriptTable::ParseTrigger(byte * param_1, byte * param_2, word * param_3, LPSTR param_4, LPSTR param_5, dword param_6, dword param_7)"
-0x00418ba0,AnimNode__Dtor,77,__fastcall,void __fastcall AnimNode__Dtor(int param_1)
+0x00418ba0,AnimScriptState::~AnimScriptState,77,__thiscall,void __thiscall AnimScriptState::~AnimScriptState(void)
 0x00418bf0,AnimSet__VDtor,30,__thiscall,"dword * __thiscall AnimSet__VDtor(void * this, byte param_1)"
 0x00418c10,GameApp::SetModelPath,172,__cdecl,void __cdecl GameApp::SetModelPath(int bTexEnabled)
 0x00418cc0,GDI::DrawBitmapToWindow,330,__cdecl,"HPALETTE __cdecl GDI::DrawBitmapToWindow(HWND param_1, dword param_2)"
@@ -740,7 +740,7 @@ address,name,size,convention,signature
 0x004208e0,BehObjCandyTrackingPool::Alloc,111,__fastcall,int __fastcall BehObjCandyTrackingPool::Alloc(int param_1)
 0x00420950,BehPoolMgr_GlideToObject__VDtor,30,__thiscall,"dword * __thiscall BehPoolMgr_GlideToObject__VDtor(void * this, byte param_1)"
 0x00420970,BehObjGlideToObjectPool::~BehObjGlideToObjectPool,121,__fastcall,void __fastcall BehObjGlideToObjectPool::~BehObjGlideToObjectPool(dword * param_1)
-0x004209f0,BehaviorOwner::BehaviorOwner,7,__fastcall,void __fastcall BehaviorOwner::BehaviorOwner(dword * param_1)
+0x004209f0,BehaviorOwner::~BehaviorOwner,7,__thiscall,void __thiscall BehaviorOwner::~BehaviorOwner(void)
 0x00420a00,DestroyScalar_420a00,32,__thiscall,"undefined4 * __thiscall DestroyScalar_420a00(void * this, byte param_1)"
 0x00420a20,BehPoolMgr_GlideToPosition__VDtor,30,__thiscall,"dword * __thiscall BehPoolMgr_GlideToPosition__VDtor(void * this, byte param_1)"
 0x00420a40,BehObjGlideToPositionPool::~BehObjGlideToPositionPool,121,__fastcall,void __fastcall BehObjGlideToPositionPool::~BehObjGlideToPositionPool(dword * param_1)
@@ -820,7 +820,7 @@ address,name,size,convention,signature
 0x00422d80,CameraProjectionState::InitializeProjection,37,__thiscall,"void __thiscall CameraProjectionState::InitializeProjection(void * this, byte bIsPerspective, void * pViewport, float flHalfFovH)"
 0x00422db0,CameraProjectionState::GetHalfFov,7,__fastcall,float10 __fastcall CameraProjectionState::GetHalfFov(int param_1)
 0x00422dc0,TransformObject__VDtor,30,__thiscall,"dword * __thiscall TransformObject__VDtor(void * this, byte param_1)"
-0x00422de0,TransformObject__ctor_2de0,5,__fastcall,void __fastcall TransformObject__ctor_2de0(dword * param_1)
+0x00422de0,CameraProjectionState::~CameraProjectionState,5,__thiscall,void __thiscall CameraProjectionState::~CameraProjectionState(void)
 0x00422df0,EngineObject::SetEntitySlot,13,__thiscall,"void __thiscall EngineObject::SetEntitySlot(void * this, dword param_1)"
 0x00422e00,EngineObject::GetObserver,10,__fastcall,dword __fastcall EngineObject::GetObserver(int param_1)
 0x00422e10,EngineObject::SetObserver,16,__thiscall,"void __thiscall EngineObject::SetObserver(void * this, dword param_1)"
@@ -885,7 +885,7 @@ address,name,size,convention,signature
 0x004251d0,AnimPlayer::SetClipDuration,68,__fastcall,"void __fastcall AnimPlayer::SetClipDuration(AnimDb * pAnimDb, short nClipSlot, float flDurationSec)"
 0x00425220,AnimPlayer::SetClip,438,__fastcall,"int __fastcall AnimPlayer::SetClip(AnimDb * pThis, short nAnimIndex, float flBlendWeight, short nLoopStart)"
 0x004253e0,AnimPlayer::OnClipEnd,101,__fastcall,dword __fastcall AnimPlayer::OnClipEnd(void * pThis)
-0x00425450,AnimBinding::AnimBinding,7,__fastcall,void __fastcall AnimBinding::AnimBinding(dword * param_1)
+0x00425450,AnimBinding::~AnimBinding,7,__thiscall,void __thiscall AnimBinding::~AnimBinding(void)
 0x00425460,DestroyAnimPlayerScalar,32,__thiscall,"void * __thiscall DestroyAnimPlayerScalar(void * this, byte bFreeStorage)"
 0x00425480,SlerpSeg::SlerpSeg,155,__thiscall,void * __thiscall SlerpSeg::SlerpSeg(void * this)
 0x00425520,EngineObject::PostEvent,25,__thiscall,"void __thiscall EngineObject::PostEvent(void * this, dword dwMsgId, dword dwPayload, dword dwSender)"
@@ -1034,7 +1034,7 @@ address,name,size,convention,signature
 0x0042cf20,VisualEffectFade::Tick,67,__fastcall,undefined4 __fastcall VisualEffectFade::Tick(int * param_1)
 0x0042cf70,VisualEffectFade::ApplyPhase,67,__thiscall,"bool __thiscall VisualEffectFade::ApplyPhase(void * this, int param_1)"
 0x0042cfc0,PaletteScalarFade::PaletteScalarFade,97,__thiscall,"dword * __thiscall PaletteScalarFade::PaletteScalarFade(void * this, dword * param_1)"
-0x0042d030,PaletteFade__Dtor_d030,5,__fastcall,void __fastcall PaletteFade__Dtor_d030(dword * param_1)
+0x0042d030,VisualEffectFade::~VisualEffectFade,5,__thiscall,void __thiscall VisualEffectFade::~VisualEffectFade(void)
 0x0042d040,PaletteScalarFade::Start,52,__thiscall,"dword __thiscall PaletteScalarFade::Start(void * this, dword * param_1)"
 0x0042d080,PaletteScalarFade::Tick,124,__fastcall,int __fastcall PaletteScalarFade::Tick(int * param_1)
 0x0042d100,PaletteScalarFade::ApplyPhase,240,__thiscall,"bool __thiscall PaletteScalarFade::ApplyPhase(void * this, int param_1)"
@@ -1639,7 +1639,7 @@ address,name,size,convention,signature
 0x0044d190,WndProc::OnActivate,397,__cdecl,"dword __cdecl WndProc::OnActivate(HWND param_1, uint param_2)"
 0x0044d320,SplashDialog::ShowAbout,110,__cdecl,"void __cdecl SplashDialog::ShowAbout(HINSTANCE param_1, HWND param_2)"
 0x0044d390,MainWindow::OpenPlanEditor,104,__cdecl,"void __cdecl MainWindow::OpenPlanEditor(HINSTANCE param_1, HWND param_2)"
-0x0044d400,TeamConfig__FreeFields,167,__fastcall,void __fastcall TeamConfig__FreeFields(int * param_1)
+0x0044d400,GameApp::~GameApp,167,__thiscall,void __thiscall GameApp::~GameApp(void)
 0x0044d4b0,UIScreen::~UIScreen,103,__fastcall,void __fastcall UIScreen::~UIScreen(dword * param_1)
 0x0044d520,GameObj_323c__VDtor,30,__thiscall,"dword * __thiscall GameObj_323c__VDtor(void * this, byte param_1)"
 0x0044d540,UIScreen::UIScreen,142,__fastcall,LPCSTR __fastcall UIScreen::UIScreen(LPCSTR param_1)
@@ -1659,7 +1659,7 @@ address,name,size,convention,signature
 0x0044f120,thunk_InitializeGlobal004CEFD4,5,__stdcall,undefined __stdcall thunk_InitializeGlobal004CEFD4(void)
 0x0044f130,InitializeSurface2ZeroC,11,__stdcall,undefined __stdcall InitializeSurface2ZeroC(void)
 0x0044f140,RLESpriteSurface::~RLESpriteSurface,97,__fastcall,void __fastcall RLESpriteSurface::~RLESpriteSurface(dword * param_1)
-0x0044f1b0,InfoBarSlot::InfoBarSlot,7,__fastcall,void __fastcall InfoBarSlot::InfoBarSlot(dword * param_1)
+0x0044f1b0,InfoBarSlot::~InfoBarSlot,7,__thiscall,void __thiscall InfoBarSlot::~InfoBarSlot(void)
 0x0044f1c0,DestroyScalar_44f1c0,32,__thiscall,"undefined4 * __thiscall DestroyScalar_44f1c0(void * this, byte param_1)"
 0x0044f1e0,CDDSurface2__VDtor,30,__thiscall,"dword * __thiscall CDDSurface2__VDtor(void * this, byte param_1)"
 0x0044f200,Util::SafeFree,16,__cdecl,void __cdecl Util::SafeFree(LPVOID param_1)
@@ -1749,7 +1749,7 @@ address,name,size,convention,signature
 0x00457250,LeagueSetupUIScreen::HideStatsPanel,108,__fastcall,void __fastcall LeagueSetupUIScreen::HideStatsPanel(int param_1)
 0x004572c0,LeagueSetupUIScreen::RefreshTeamDisplay,1104,__fastcall,void __fastcall LeagueSetupUIScreen::RefreshTeamDisplay(int param_1)
 0x00457710,ChampionshipSetupUIScreen::ChampionshipSetupUIScreen,2729,__fastcall,int * __fastcall ChampionshipSetupUIScreen::ChampionshipSetupUIScreen(int * param_1)
-0x004581c0,MatchInfoUIScreen::MatchInfoUIScreen,11,__fastcall,void __fastcall MatchInfoUIScreen::MatchInfoUIScreen(dword * param_1)
+0x004581c0,MatchInfoUIScreen::~MatchInfoUIScreen,11,__thiscall,void __thiscall MatchInfoUIScreen::~MatchInfoUIScreen(void)
 0x004581d0,ChampionshipSetupUIScreen::RefreshTabs,64,__fastcall,void __fastcall ChampionshipSetupUIScreen::RefreshTabs(int param_1)
 0x00458210,ChampionshipSetupUIScreen::OnExitTabClick,67,__fastcall,void __fastcall ChampionshipSetupUIScreen::OnExitTabClick(int param_1)
 0x00458260,ChampionshipSetupUIScreen::OnFirstPageTabClick,94,__fastcall,void __fastcall ChampionshipSetupUIScreen::OnFirstPageTabClick(int * param_1)
@@ -1800,10 +1800,10 @@ address,name,size,convention,signature
 0x0045d4c0,KeyboardDeviceObj::HandleKeyUp,418,__thiscall,"dword __thiscall KeyboardDeviceObj::HandleKeyUp(void * this, uint param_1)"
 0x0045d670,GamepadDeviceObj::GamepadDeviceObj,32,__thiscall,"dword * __thiscall GamepadDeviceObj::GamepadDeviceObj(void * this, PALETTEENTRY param_1, dword * param_2)"
 0x0045d690,KeyboardDevice__VDtor,30,__thiscall,"dword * __thiscall KeyboardDevice__VDtor(void * this, byte param_1)"
-0x0045d6b0,KeyboardDevice__Dtor,11,__fastcall,void __fastcall KeyboardDevice__Dtor(dword * param_1)
+0x0045d6b0,GamepadDeviceObj::~GamepadDeviceObj,11,__thiscall,void __thiscall GamepadDeviceObj::~GamepadDeviceObj(void)
 0x0045d6c0,JoystickDeviceObj::JoystickDeviceObj,32,__thiscall,"dword * __thiscall JoystickDeviceObj::JoystickDeviceObj(void * this, PALETTEENTRY param_1, dword * param_2)"
 0x0045d6e0,MouseDeviceObj::MouseDeviceObj,32,__thiscall,"dword * __thiscall MouseDeviceObj::MouseDeviceObj(void * this, PALETTEENTRY param_1, dword * param_2)"
-0x0045d700,DeviceObject::DeviceObject,11,__fastcall,void __fastcall DeviceObject::DeviceObject(dword * param_1)
+0x0045d700,DeviceObject::~DeviceObject,11,__thiscall,void __thiscall DeviceObject::~DeviceObject(void)
 0x0045d710,InputDevice__VDtor,30,__thiscall,"dword * __thiscall InputDevice__VDtor(void * this, byte param_1)"
 0x0045d730,MsgEvent::Pack,43,__cdecl,"uint __cdecl MsgEvent::Pack(byte param_1, short param_2, short param_3, uint param_4)"
 0x0045d760,MsgEvent::PackScene,40,__cdecl,"uint __cdecl MsgEvent::PackScene(uint param_1, uint param_2, uint param_3)"
@@ -2049,7 +2049,7 @@ address,name,size,convention,signature
 0x0046bd70,MsgInteractorPool::Alloc,105,__fastcall,int __fastcall MsgInteractorPool::Alloc(int param_1)
 0x0046bde0,CBoundBubbleList__VDtor,30,__thiscall,"dword * __thiscall CBoundBubbleList__VDtor(void * this, byte param_1)"
 0x0046be00,CollInteractorPool::~CollInteractorPool,121,__fastcall,void __fastcall CollInteractorPool::~CollInteractorPool(dword * param_1)
-0x0046be80,NodeOwner::NodeOwner,7,__fastcall,void __fastcall NodeOwner::NodeOwner(dword * param_1)
+0x0046be80,NodeOwner::~NodeOwner,7,__thiscall,void __thiscall NodeOwner::~NodeOwner(void)
 0x0046be90,DestroyBoundBubblePoolScalar,32,__thiscall,"void * __thiscall DestroyBoundBubblePoolScalar(void * this, byte bFreeStorage)"
 0x0046beb0,CBoundBubbleList2__VDtor,30,__thiscall,"dword * __thiscall CBoundBubbleList2__VDtor(void * this, byte param_1)"
 0x0046bed0,MsgInteractorPool::~MsgInteractorPool,121,__fastcall,void __fastcall MsgInteractorPool::~MsgInteractorPool(dword * param_1)
@@ -2165,7 +2165,7 @@ address,name,size,convention,signature
 0x004725c0,EngineObject::InitRenderSlotsAndShadowLinks,89,__thiscall,"dword __thiscall EngineObject::InitRenderSlotsAndShadowLinks(void * this, int * param_1, void * param_2, dword param_3, char param_4)"
 0x00472620,EngineObject::ApplyHeaderRotation,139,__thiscall,"void __thiscall EngineObject::ApplyHeaderRotation(void * this, float * pWbmBlob)"
 0x004726b0,Vec3::CrossProduct,59,__cdecl,"void __cdecl Vec3::CrossProduct(float * param_1, float * param_2, float * param_3)"
-0x004726f0,ObjectBase::ObjectBase,7,__fastcall,void __fastcall ObjectBase::ObjectBase(dword * param_1)
+0x004726f0,ObjectBase::~ObjectBase,7,__thiscall,void __thiscall ObjectBase::~ObjectBase(void)
 0x00472700,Object__VDtor_2700,32,__thiscall,"dword * __thiscall Object__VDtor_2700(void * this, byte param_1)"
 0x00472720,Object__VDtor,30,__thiscall,"dword * __thiscall Object__VDtor(void * this, byte param_1)"
 0x00472740,LODNode::Init,81,__thiscall,"void __thiscall LODNode::Init(void * this, word param_1)"
@@ -2229,7 +2229,7 @@ address,name,size,convention,signature
 0x00474bb0,ObjectStats::UpdateMomentumAndEnergy,373,__fastcall,void __fastcall ObjectStats::UpdateMomentumAndEnergy(float * param_1)
 0x00474d30,ParticleSystem::ParticleSystem,305,__thiscall,"dword * __thiscall ParticleSystem::ParticleSystem(void * this, PALETTEENTRY param_1, dword * param_2)"
 0x00474e70,ParticleSystem__VDtor,30,__thiscall,"dword * __thiscall ParticleSystem__VDtor(void * this, byte param_1)"
-0x00474e90,Object__Destructor_2,5,__fastcall,void __fastcall Object__Destructor_2(dword * param_1)
+0x00474e90,ParticleSystem::~ParticleSystem,5,__thiscall,void __thiscall ParticleSystem::~ParticleSystem(void)
 0x00474ea0,ParticleSystem::SpawnParticles,136,__thiscall,"void __thiscall ParticleSystem::SpawnParticles(void * this, float param_1, float param_2)"
 0x00474f30,ParticleSystem::SpawnParticlesUniform,136,__thiscall,"void __thiscall ParticleSystem::SpawnParticlesUniform(void * this, float param_1, float param_2)"
 0x00474fc0,ParticleSystem::Update,209,__thiscall,"void __thiscall ParticleSystem::Update(void * this, float param_1)"
@@ -2470,7 +2470,7 @@ address,name,size,convention,signature
 0x0047fb70,SWRend::ClipPolyAgainstPlane,273,__fastcall,"void __fastcall SWRend::ClipPolyAgainstPlane(int * param_1, int * param_2, int param_3, float param_4, float param_5)"
 0x0047fc90,RampObject::RampObject,431,__thiscall,"dword * __thiscall RampObject::RampObject(void * this, PALETTEENTRY param_1, dword * param_2)"
 0x0047fe40,Projectile__Dtor_A,30,__thiscall,"dword * __thiscall Projectile__Dtor_A(void * this, byte param_1)"
-0x0047fe60,Projectile__Dtor_B,151,__fastcall,void __fastcall Projectile__Dtor_B(dword * param_1)
+0x0047fe60,RampObject::~RampObject,151,__thiscall,void __thiscall RampObject::~RampObject(void)
 0x0047ff00,RampObject::InitCollisionPlanes,2105,__fastcall,void __fastcall RampObject::InitCollisionPlanes(int * param_1)
 0x00480740,CollisionObj::CollisionObj,100,__thiscall,"dword * __thiscall CollisionObj::CollisionObj(void * this, float * param_1, float * param_2, float * param_3, dword param_4, dword param_5)"
 0x004807b0,CollisionObj__CopyFields,152,__thiscall,"void __thiscall CollisionObj__CopyFields(void * this, int param_1)"
@@ -2722,7 +2722,7 @@ address,name,size,convention,signature
 0x00491330,Mixer::Open,904,__thiscall,"dword __thiscall Mixer::Open(void * this, DWORD param_1)"
 0x004916c0,Mixer::FadeVolume,212,__thiscall,"bool __thiscall Mixer::FadeVolume(void * this, undefined4 param_1)"
 0x004917a0,Mixer::ReadVolume,166,__fastcall,dword __fastcall Mixer::ReadVolume(dword * param_1)
-0x00491850,AudioMgrBase::AudioMgrBase,7,__fastcall,void __fastcall AudioMgrBase::AudioMgrBase(dword * param_1)
+0x00491850,AudioMgrBase::~AudioMgrBase,7,__thiscall,void __thiscall AudioMgrBase::~AudioMgrBase(void)
 0x00491860,AudioMgr__ScalarDtor,32,__thiscall,"dword * __thiscall AudioMgr__ScalarDtor(void * this, byte param_1)"
 0x00491880,MatchStats::ZeroInit,18,__fastcall,dword * __fastcall MatchStats::ZeroInit(dword * param_1)
 0x004918a0,MatchStats::GetAt,10,__thiscall,"float10 __thiscall MatchStats::GetAt(int param_1, int param_2)"
