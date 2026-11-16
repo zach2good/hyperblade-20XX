@@ -53,7 +53,7 @@ def read_only(path):
     ranges = []
 
     for section in image.sections:
-        if section.Characteristics & 0x80000000:
+        if section.Characteristics & pefile.SECTION_CHARACTERISTICS["IMAGE_SCN_MEM_WRITE"]:
             continue
         start = base + section.VirtualAddress
         ranges.append((start, start + section.Misc_VirtualSize))

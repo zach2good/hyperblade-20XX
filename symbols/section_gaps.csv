@@ -1,6 +1,11 @@
-# Globals whose section differs from the original's on purpose.
-# The floats: VC6 loads an extern const float in a different order from a writable one, and no
-# spelling gives both the original's loads and its section.
+# Globals whose section differs from the original's.
+#
+# tools/check_global_sections.py fails when a paired global not named here is read-only on one
+# side only, and when a row here starts to agree.
+#
+# The rows at 0x004b... are .rdata in the original and writable here; the four from 0x004c67b8
+# are .data in the original and const here. Each spelling is the one whose loads match: VC6 loads
+# an extern const float operand before the other one (docs/MATCHING.md, "an extern const float").
 address,name
 004b1524,g_flOneCollisionObj
 004b15ec,g_flOnePhysicsReset
