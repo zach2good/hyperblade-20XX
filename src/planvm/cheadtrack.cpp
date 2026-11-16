@@ -22,6 +22,7 @@
 #include "math/point.h"
 #include "graphics/viewextent.h"
 #include "engine/statids.h"
+#include "planvm/conditiontable.h"
 
 // The broadcast camera: the helmet view a spectator watches the match through.
 
@@ -83,6 +84,22 @@ extern const float g_flCamFracFull;
 extern const float g_flFourTracking;
 
 #define HEAD_BONE 9
+
+// FUNCTION: HYPERX100 0x00484df0
+// FUNCTION: HYPERX 0x0040a0d0
+void CHeadTrack::OnListChanged()
+{
+    if (m_bReady == 0)
+    {
+        m_pOwner    = 0;
+        m_pWatchPos = 0;
+        m_pWatchDir = 0;
+        m_pNext     = 0;
+        m_bReady    = 1;
+
+        g_apAgendaItemPools[m_wKind]->Insert(this);
+    }
+}
 
 // One function that Ghidra splits at 0x0040a2f8.
 // FUNCTION: HYPERX100 0x00484e30

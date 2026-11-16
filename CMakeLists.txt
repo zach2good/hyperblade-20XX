@@ -340,7 +340,6 @@ set(HYPERX_SOURCES
     src/planvm/cviewit.cpp
     src/planvm/baseresetagendaitem.cpp
     src/planvm/releasingagendaitem.cpp
-    src/planvm/cameraliteagendaitem.cpp
     src/graphics/graphics.cpp
     src/common/parseutil.cpp
     src/physics/collisionellipsoid.cpp

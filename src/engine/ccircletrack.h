@@ -14,6 +14,8 @@ class CCircleTrack : public CameraLiteAgendaItem
 public:
     virtual void Process(int nArg);
 
+    virtual void OnListChanged();
+
     virtual void Release(int);
 
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);

@@ -3,7 +3,7 @@
 
 #include "planvm/releasingagendaitem.h"
 
-// The other shared slot nine, held only by the two camera tables.
+// The two camera items' shared fields.
 class CameraLiteAgendaItem : public ReleasingAgendaItem
 {
 public:
@@ -16,8 +16,6 @@ public:
     , m_pWatchDir(pDir)
     {
     }
-
-    virtual void OnListChanged();
 
     Vec3* m_pWatchPos; // 0x10
     Vec3* m_pWatchDir; // 0x14

@@ -18,6 +18,7 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "engine/objectkind.h"
+#include "planvm/conditiontable.h"
 
 HYPERBLADE_FIELD_AT(CCircleTrack, m_pWatchPos, 0x10);
 
@@ -33,6 +34,22 @@ void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pWatchPos = &pOwner->GetPhysicsBody()->pos;
     m_pWatchDir = &pOwner->GetPhysicsBody()->velDir;
     m_nUnused   = g_pGameEngine->m_clock.nTickMs;
+}
+
+// CHeadTrack's body, which v1.0.0.1's link folds this onto.
+// FUNCTION: HYPERX100 0x00486c60
+void CCircleTrack::OnListChanged()
+{
+    if (m_bReady == 0)
+    {
+        m_pOwner    = 0;
+        m_pWatchPos = 0;
+        m_pWatchDir = 0;
+        m_pNext     = 0;
+        m_bReady    = 1;
+
+        g_apAgendaItemPools[m_wKind]->Insert(this);
+    }
 }
 
 // FUNCTION: HYPERX100 0x00486ca0
