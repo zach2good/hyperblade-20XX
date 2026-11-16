@@ -535,10 +535,10 @@ PROBES = (
      "        return \"%#x\" % min(twins.get(addr, {addr}))",
      "        return \"%#x\" % addr"),
 
-    # A per-call view that drops the slots each lea takes.
+    # A per-call view that reads roles in lea order rather than push order.
     ("frame.py --selftest", "tools/frame.py",
-     "            taken.extend(offsets)",
-     "            pass"),
+     "            this = (held[\"ecx\"],) if \"ecx\" in held else ()",
+     "            this = ()"),
 
     # A frame census that stops at an EH prologue's first push.
     ("frame.py --selftest", "tools/frame.py",

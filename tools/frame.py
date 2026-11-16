@@ -139,15 +139,26 @@ def census(code, base):
 
 
 def calls(listing):
-    """Each call's target and the slots the `lea`s since the previous call took the address of."""
+    """Each call's target and the frame slots it takes, by role: the slot in ECX first, then each
+    pushed slot from the last push to the first, so the order of the `lea`s doesn't count. A slot
+    whose address no push or ECX carries to the call is left out."""
     found = []
-    taken = []
+    held = {}
+    pushed = []
     for at, text, offsets, depth in listing:
-        if text.startswith("lea "):
-            taken.extend(offsets)
-        elif text.startswith("call "):
-            found.append((text[len("call "):], tuple(taken)))
-            taken = []
+        mnemonic, _, operands = text.partition(" ")
+        if mnemonic == "lea" and offsets:
+            held[operands.split(",")[0]] = offsets[0]
+        elif mnemonic == "push" and operands in held:
+            pushed.append(held.pop(operands))
+        elif mnemonic == "call":
+            this = (held["ecx"],) if "ecx" in held else ()
+            found.append((operands, this + tuple(reversed(pushed))))
+            held = {}
+            pushed = []
+        elif mnemonic in ("mov", "lea", "xor", "pop") and operands.split(",")[0] in held:
+            # The register now holds something else.
+            del held[operands.split(",")[0]]
     return found
 
 
@@ -319,15 +330,22 @@ def selftest():
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
               Instruction("sub", "esp, 0x1a8"), Instruction("call", "0x401000")]
     assert settled(framed) == -(0x10 + 0x1a8), settled(framed)
-    # One call each side: the client passes two slots, ours one, and a lea off a register
-    # adds none.
+    # One call: the client passes -0x20 pushed and -0x14 in ECX, and a lea off a register adds
+    # nothing.
     theirs = calls([(0, "lea eax, [esp + 0x10]", [-0x20], -0x30), (1, "push eax", [], -0x30),
                     (2, "lea edx, [eax + 4]", [], -0x34),
                     (3, "lea ecx, [esp + 0x18]", [-0x14], -0x34), (4, "call 0x401000", [], -0x34)])
-    ours = calls([(0, "lea eax, [esp + 0x14]", [-0x1c], -0x30), (1, "push eax", [], -0x30),
-                  (2, "call 0x401000", [], -0x34)])
-    assert theirs == [("0x401000", (-0x20, -0x14))], theirs
-    assert ours == [("0x401000", (-0x1c,))], ours
+    assert theirs == [("0x401000", (-0x14, -0x20))], theirs
+    # The same roles with the leas the other way round read the same.
+    reordered = calls([(0, "lea ecx, [esp + 0x18]", [-0x14], -0x30),
+                       (1, "lea eax, [esp + 0x10]", [-0x20], -0x30), (2, "push eax", [], -0x30),
+                       (3, "call 0x401000", [], -0x34)])
+    assert reordered == theirs, reordered
+    # Swapped roles differ.
+    swapped = calls([(0, "lea ecx, [esp + 0x10]", [-0x20], -0x30),
+                     (1, "lea eax, [esp + 0x18]", [-0x14], -0x30), (2, "push eax", [], -0x30),
+                     (3, "call 0x401000", [], -0x34)])
+    assert swapped != theirs, swapped
     print("selftest passed")
     return 0
 
