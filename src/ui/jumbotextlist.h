@@ -9,7 +9,10 @@ public:
         Init();
     }
 
-    ~JumboTextList();
+    ~JumboTextList()
+    {
+        FreeAll();
+    }
 
     JumboTextList* Init();
 
