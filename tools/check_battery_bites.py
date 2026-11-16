@@ -535,10 +535,10 @@ PROBES = (
      "        return \"%#x\" % min(twins.get(addr, {addr}))",
      "        return \"%#x\" % addr"),
 
-    # A per-call view that reads roles in lea order rather than push order.
+    # A per-call view that drops the register arguments' slots.
     ("frame.py --selftest", "tools/frame.py",
-     "            this = (held[\"ecx\"],) if \"ecx\" in held else ()",
-     "            this = ()"),
+     "            registers = tuple(held[name] for name in (\"ecx\", \"edx\") if name in held)",
+     "            registers = ()"),
 
     # A frame census that stops at an EH prologue's first push.
     ("frame.py --selftest", "tools/frame.py",

@@ -47,6 +47,8 @@ DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
 EH_FRAME = ("-1", "0xffffffff")
+# The registers a call leaves as they were.
+PRESERVED = ("ebx", "esi", "edi", "ebp")
 # The saved registers that end the stretch where a `push ecx` reserves four bytes.
 REGISTERS = ("ebx", "esi", "edi")
 
@@ -139,26 +141,32 @@ def census(code, base):
 
 
 def calls(listing):
-    """Each call's target and the frame slots it takes, by role: the slot in ECX first, then each
-    pushed slot from the last push to the first, so the order of the `lea`s doesn't count. A slot
-    whose address no push or ECX carries to the call is left out."""
+    """Each call's target and the frame slots it takes, by role: the slot in ECX, then in EDX (a
+    __fastcall's second argument), then each pushed slot from the last push to the first, so the
+    order of the `lea`s doesn't count. A `mov` between registers carries a slot; any other write to
+    a register drops it, and a call drops those in registers it may clobber. A slot whose address
+    no register or push carries to the call is left out."""
     found = []
     held = {}
     pushed = []
     for at, text, offsets, depth in listing:
         mnemonic, _, operands = text.partition(" ")
+        target = operands.split(",")[0].strip()
+        source = operands.split(",")[1].strip() if "," in operands else ""
         if mnemonic == "lea" and offsets:
-            held[operands.split(",")[0]] = offsets[0]
+            held[target] = offsets[0]
         elif mnemonic == "push" and operands in held:
-            pushed.append(held.pop(operands))
+            pushed.append(held[operands])
         elif mnemonic == "call":
-            this = (held["ecx"],) if "ecx" in held else ()
-            found.append((operands, this + tuple(reversed(pushed))))
-            held = {}
+            registers = tuple(held[name] for name in ("ecx", "edx") if name in held)
+            found.append((operands, registers + tuple(reversed(pushed))))
+            held = {name: slot for name, slot in held.items() if name in PRESERVED}
             pushed = []
-        elif mnemonic in ("mov", "lea", "xor", "pop") and operands.split(",")[0] in held:
+        elif mnemonic == "mov" and source in held:
+            held[target] = held[source]
+        elif mnemonic not in ("push", "cmp", "test") and target in held:
             # The register now holds something else.
-            del held[operands.split(",")[0]]
+            del held[target]
     return found
 
 
@@ -346,6 +354,15 @@ def selftest():
                      (1, "lea eax, [esp + 0x18]", [-0x14], -0x30), (2, "push eax", [], -0x30),
                      (3, "call 0x401000", [], -0x34)])
     assert swapped != theirs, swapped
+    # EDX is the second register argument; a slot moved into ECX keeps its role; an add drops it;
+    # ESI keeps its slot across a call.
+    fast = calls([(0, "lea eax, [esp + 0x10]", [-0x20], -0x30), (1, "mov ecx, eax", [], -0x30),
+                  (2, "lea edx, [esp + 0x18]", [-0x14], -0x30),
+                  (3, "lea esi, [esp + 0x1c]", [-0x10], -0x30),
+                  (4, "lea ebx, [esp + 0x20]", [-0xc], -0x30), (5, "add ebx, 4", [], -0x30),
+                  (6, "push ebx", [], -0x30), (7, "call 0x401000", [], -0x34),
+                  (8, "push esi", [], -0x30), (9, "call 0x401100", [], -0x34)])
+    assert fast == [("0x401000", (-0x20, -0x14)), ("0x401100", (-0x10,))], fast
     print("selftest passed")
     return 0
 
