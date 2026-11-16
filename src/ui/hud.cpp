@@ -431,12 +431,6 @@ HUD::HUD(int)
     LayoutSurfaces();
 }
 
-// Only restores InfoBarBase's vtable; slot nought calls it out of line.
-// FUNCTION: HYPERX 0x0043e120
-HUD::~HUD()
-{
-}
-
 #define DAMAGE_COLOUR_FOLLOWED   0xffff
 #define DAMAGE_COLOUR_FIRST_BAR  0xc8
 #define DAMAGE_COLOUR_SECOND_BAR 0xff

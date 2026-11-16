@@ -27,7 +27,13 @@ public:
     static void __stdcall UpdateFoeScoreboard(void);
 
     explicit HUD(int nUnused);
-    ~HUD();
+
+    // Only restores InfoBarBase's vtable; slot nought calls it out of line. Inline, so the linker
+    // folds InfoBarBase's destructor onto it.
+    // FUNCTION: HYPERX 0x0043e120
+    ~HUD()
+    {
+    }
 
     // Each forwards to the body the table names, except the four whose bodies are this class's own.
     virtual void Unused();
