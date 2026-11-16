@@ -1253,17 +1253,17 @@ int GameApp::MainUpdate(HWND hWnd)
 // FUNCTION: HYPERX 0x0044ca00
 void __cdecl GameApp::ShowHelp(HWND hWnd)
 {
-    String strHelpPath(g_gameApp.m_strExeDir.m_str);
-    char*  pszSlash = (char*)_mbsrchr((unsigned char*)strHelpPath.m_pchData, '\\');
+    PathString strHelpPath(g_gameApp.m_strExeDir);
+    char*      pszSlash = (char*)_mbsrchr((unsigned char*)strHelpPath.m_str.m_pchData, '\\');
     if (pszSlash != 0 && (pszSlash = (char*)_mbsrchr((unsigned char*)pszSlash, '\\')) != 0)
     {
         pszSlash[1] = 0;
     }
 
     // STRING: HYPERX 0x004c2de8
-    strHelpPath.AppendData(String::SafeStrlen("HELP.HLP"), "HELP.HLP");
+    strHelpPath.m_str.AppendData(String::SafeStrlen("HELP.HLP"), "HELP.HLP");
 
-    if (WinHelpA(hWnd, strHelpPath.m_pchData, HELP_FORCEFILE, 0) != 0)
+    if (WinHelpA(hWnd, strHelpPath.m_str.m_pchData, HELP_FORCEFILE, 0) != 0)
     {
         g_bHelpOpen = 1;
     }
