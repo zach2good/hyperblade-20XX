@@ -295,9 +295,9 @@ void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, s
             return;
         }
 
-        pSelf = g_pGameEngine->m_ppSlots[nSlot];
-
         const short nOther = (short)pArgs[ARG_FIRST].n;
+
+        pSelf = g_pGameEngine->m_ppSlots[nSlot];
 
         // Dead for a short; the client tests the short at 0x004051aa and indexes it at 0x004051c2.
         if ((unsigned short)((unsigned int)nOther >> 16) == PLAN_ARG_PRONOUN)
@@ -357,8 +357,8 @@ void __cdecl PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, s
         float flElasticity;
         float flFriction;
 
-        flFriction   = pOtherBody->flFriction;
         flElasticity = pOtherBody->flElasticity;
+        flFriction   = pOtherBody->flFriction;
 
         CollisionObj plane(&vNormal, &vOtherPos, flFriction, flElasticity);
 
