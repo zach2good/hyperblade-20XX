@@ -891,10 +891,13 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
 
     if (nChanged != 0)
     {
-        int nHalf;
+        int nHalf = ((unsigned int)nSlot >> 1) & 1;
 
-        // The original keeps this in its frame slot and compares it from there.
-        *(volatile int*)&nHalf = ((unsigned int)nSlot >> 1) & 1;
+        // Never runs; taking nHalf's address keeps it in a frame slot, as the original has it.
+        if (0)
+        {
+            RELEASE_ASSERT((int)&nHalf);
+        }
 
         for (i = 0; i < 4; i++)
         {
