@@ -46,3 +46,6 @@ extern const float  g_flZeroDisplay            = 0.0f;
 extern const float  g_flZeroWinMain            = 0.0f;
 extern const float  g_flZeroFace               = 0.0f;
 extern const float  g_flZeroMDM1               = 0.0f;
+
+// GLOBAL: HYPERX 0x004c67b4
+float g_flUnusedLightTenth = 0.1f;

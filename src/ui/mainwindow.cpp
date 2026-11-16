@@ -403,3 +403,9 @@ BOOL CALLBACK MainWindow::KeyboardDialogProc(HWND hDlg, UINT nMsg, UINT wParam, 
 
 short g_wUnusedBesidePalette = 1;
 short g_wPaletteMode         = 3;
+
+// GLOBAL: HYPERX 0x004c67a8
+int g_nUnusedAfterPalette = 1;
+
+// GLOBAL: HYPERX 0x004c67ac
+float g_flUnusedLightFifth = 0.2f;

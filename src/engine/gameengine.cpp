@@ -1213,6 +1213,9 @@ void GameEngine::InitMatchTimers()
     m_clock.nPauseMark     = -1;
 }
 
+// GLOBAL: HYPERX 0x004c705c
+int g_nUnusedBesideOptions = 1;
+
 char        g_bMultiplierColoursUnsaved = 1;
 int         g_nMultiplierColourPositive = 144;
 int         g_nMultiplierColourNegative = 160;

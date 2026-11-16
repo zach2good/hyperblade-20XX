@@ -526,5 +526,8 @@ unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned shor
     return 0;
 }
 
+// GLOBAL: HYPERX 0x004c2dd8
+int g_nUnusedBesideNearest = 1;
+
 int          g_nNearestPaletteIndex = 7;
 unsigned int g_clrNearest           = 0x00808080;

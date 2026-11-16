@@ -933,6 +933,12 @@ AnimPlayer::~AnimPlayer()
 {
 }
 
+// GLOBAL: HYPERX 0x004bc4f4
+float g_flUnusedBlendOne = 1.0f;
+
+// GLOBAL: HYPERX 0x004bc4f8
+float g_flUnusedBlendStep = 0.05f;
+
 // 0.35, the cap on a blend's duration.
 float g_flBlendDurationCap = 0.35f;
 

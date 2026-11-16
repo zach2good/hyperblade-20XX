@@ -9,6 +9,9 @@ float g_flUnusedMDM1A = g_flZeroMDM1;
 float g_flUnusedMDM1B = g_flZeroMDM1;
 float g_flUnusedMDM1C = g_flZeroMDM1;
 
+// GLOBAL: HYPERX 0x004c8e94
+float g_flUnusedMDM1Scale = 184.0f;
+
 // The decompressor's own arguments, which the refill reads through its EBP.
 #define CALLER_READ_FN     0x08
 #define CALLER_FILE        0x0c

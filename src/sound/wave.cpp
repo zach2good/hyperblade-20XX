@@ -8,6 +8,9 @@
 #include "globals.h"
 #include "app/gameapp.h"
 
+// GLOBAL: HYPERX 0x004c8c80
+int g_nUnusedWave = 1;
+
 enum WaveError
 {
     WAVE_ERR_OPEN      = 0xe100,

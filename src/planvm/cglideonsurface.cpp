@@ -641,5 +641,8 @@ void CGlideOnSurface::Release(int nTick)
     }
 }
 
+// GLOBAL: HYPERX 0x004bb618
+int g_anUnusedNibbleMasks[8] = { 0x0000000f, 0x000000f0, 0x00000f00, 0x0000f000, 0x000f0000, 0x00f00000, 0x0f000000, 0xf0000000 };
+
 // Thirty a second: above it a terrain frame adds its bank vector whatever the owner's class.
 float g_flBankFreeSpeed = 30.0f;
