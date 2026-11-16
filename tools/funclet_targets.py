@@ -6,7 +6,9 @@ first `call` or `jmp` is the destructor it runs. A state matches when build/repo
 original's destructor with ours, or with a copy HYPERX.exe folds ours with. The rest print grouped
 by the pair of names, with a count, and so do parents whose state counts differ. A state whose
 destructors pair but whose object operand differs, another frame slot or member, prints on its
-own. Read only.
+own. Then each paired parent whose try blocks or catches differ prints both sides: the try range,
+and per catch its const flag, caught type, catch-object displacement and handler offset. Read
+only.
 
     python tools/funclet_targets.py
     python tools/funclet_targets.py --list      # also each differing state's parent
@@ -123,8 +125,7 @@ def type_name(image, descriptor):
     if not descriptor:
         return "..."
 
-    name = image.read(descriptor + 8, 64)
-    return name[:name.index(0)].decode("latin-1")
+    return image.read(descriptor + 8, 64).split(b"\0", 1)[0].decode("latin-1")
 
 
 def catch_maps(image, funclets_start, funclets_end, starts):
@@ -214,18 +215,22 @@ def main():
     with (ROOT / "symbols" / "functions.csv").open(encoding="utf-8") as handle:
         starts = sorted(int(line.split(",")[0], 16) for line in handle if line.startswith("0x"))
 
-    theirs = unwind_targets(original, *original_funclets(original), starts)
-    ours = unwind_targets(detect_image(str(OUT / "HYPERX_sym.exe")),
-                          *funclet_range(OUT / "HYPERX_sym.map"), sorted(symbols))
+    their_range = original_funclets(original)
+    image = detect_image(str(OUT / "HYPERX_sym.exe"))
+    our_range = funclet_range(OUT / "HYPERX_sym.map")
+    theirs = unwind_targets(original, *their_range, starts)
+    ours = unwind_targets(image, *our_range, sorted(symbols))
 
     found = differing(theirs, ours, pairs, twins)
-    their_catches = catch_maps(original, *original_funclets(original), starts)
-    our_catches = catch_maps(detect_image(str(OUT / "HYPERX_sym.exe")),
-                             *funclet_range(OUT / "HYPERX_sym.map"), sorted(symbols))
-    for parent, blocks in sorted(their_catches.items()):
+    their_catches = catch_maps(original, *their_range, starts)
+    our_catches = catch_maps(image, *our_range, sorted(symbols))
+    # Every paired EH parent, so a try block only one side has prints too.
+    for parent in sorted(theirs):
+        blocks = their_catches.get(parent)
         mine = our_catches.get(pairs.get(parent))
-        if mine != blocks:
+        if pairs.get(parent) in ours and mine != blocks:
             print("catches differ: %s: %s / %s" % (names.get(parent, "%#x" % parent), blocks, mine))
+
     counts = collections.Counter()
     parents = collections.defaultdict(list)
     for parent, state, orig, recomp in found:
@@ -266,7 +271,8 @@ def original_funclets(original):
 
 def selftest():
     """Checks the walk on a toy image: a parent whose push comes after its frame setup, a handler
-    at the range's end, two states; then a pair, a fold twin, a mismatch and a count mismatch."""
+    at the range's end, two states; then a pair, a fold twin, a mismatch and a count mismatch;
+    then one try block's catch read back."""
     class Image:
         def __init__(self, blocks):
             self.blocks = blocks
