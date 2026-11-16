@@ -1,16 +1,17 @@
 """Name each unwind state's destructor on both sides, and print the states that differ.
 
-A function with a C++ EH frame opens `push -1; push <handler>`, and the handler in `.text$x` loads
-`mov eax, <FuncInfo>`, whose unwind map lists one action per state. An action's first `call` or
-`jmp` is the destructor it runs. A state matches when build/report.json pairs the original's
-destructor with ours, or with a copy HYPERX.exe folds ours with. The rest print grouped by the
-pair of names, with a count. Read only.
+A function with a C++ EH frame pushes `push -1; push <handler>` near its start, and the handler
+loads `mov eax, <FuncInfo>` in `.text$x`, whose unwind map lists one action per state. An action's
+first `call` or `jmp` is the destructor it runs. A state matches when build/report.json pairs the
+original's destructor with ours, or with a copy HYPERX.exe folds ours with. The rest print grouped
+by the pair of names, with a count, and so do parents whose state counts differ. Read only.
 
     python tools/funclet_targets.py
     python tools/funclet_targets.py --list      # also each differing state's parent
     python tools/funclet_targets.py --selftest
 """
 
+import bisect
 import collections
 import json
 import re
@@ -53,13 +54,15 @@ def first_branch(image, addr):
     return None
 
 
-def unwind_targets(image, funclets_start, funclets_end):
+def unwind_targets(image, funclets_start, funclets_end, starts):
     """Answers {parent function: [each state's destructor, or None]} for every handler in the
-    funclet range whose FuncInfo carries the magic and whose parent pushes it."""
+    funclet range whose FuncInfo carries the magic and whose parent pushes it. The parent is the
+    function in the sorted `starts` that holds the push."""
     funclets = image.read(funclets_start, funclets_end - funclets_start)
     text = image.read(TEXT_START, funclets_start - TEXT_START)
     found = {}
-    for at in range(len(funclets) - 10):
+    # A handler is `mov eax, imm32` and a 5-byte `jmp`: ten bytes.
+    for at in range(len(funclets) - 9):
         if funclets[at] != MOV_EAX or funclets[at + 5] != JMP:
             continue
 
@@ -81,7 +84,7 @@ def unwind_targets(image, funclets_start, funclets_end):
             action = struct.unpack("<iI", image.read(unwind_map + 8 * state, 8))[1]
             targets.append(first_branch(image, action) if action else None)
 
-        found[TEXT_START + push] = targets
+        found[starts[bisect.bisect_right(starts, TEXT_START + push) - 1]] = targets
 
     return found
 
@@ -98,11 +101,16 @@ def funclet_range(map_path):
 
 def differing(theirs, ours, pairs, twins):
     """Answers (original parent, state, original target, our target) for each state whose
-    destructors don't pair, through `twins`, which maps our address to its fold group."""
+    destructors don't pair, through `twins`, which maps our address to its fold group, and
+    (original parent, None, their count, our count) for a parent whose state counts differ."""
     found = []
     for parent, targets in theirs.items():
         mine = ours.get(pairs.get(parent))
         if mine is None:
+            continue
+
+        if len(targets) != len(mine):
+            found.append((parent, None, len(targets), len(mine)))
             continue
 
         for state, (orig, recomp) in enumerate(zip(targets, mine)):
@@ -134,14 +142,19 @@ def main():
 
     user = yaml.safe_load((ROOT / "reccmp-user.yml").read_text())
     original = detect_image(user["targets"]["HYPERX"]["path"])
-    theirs = unwind_targets(original, *original_funclets())
+    theirs = unwind_targets(original, *original_funclets(original), sorted(names))
     ours = unwind_targets(detect_image(str(OUT / "HYPERX_sym.exe")),
-                          *funclet_range(OUT / "HYPERX_sym.map"))
+                          *funclet_range(OUT / "HYPERX_sym.map"), sorted(symbols))
 
     found = differing(theirs, ours, pairs, twins)
     counts = collections.Counter()
     parents = collections.defaultdict(list)
     for parent, state, orig, recomp in found:
+        if state is None:
+            print("state counts differ: %s has %d, ours %d"
+                  % (names.get(parent, "%#x" % parent), orig, recomp))
+            continue
+
         key = (names.get(orig, "%#x" % orig if orig else "-"),
                symbols.get(recomp, "%#x" % recomp if recomp else "-"))
         counts[key] += 1
@@ -158,19 +171,18 @@ def main():
     return 0
 
 
-def original_funclets():
+def original_funclets(original):
     """The original's `.text$x` runs from its first `Unwind@` in symbols/functions.csv to the end
     of `.text`."""
     unwinds = [int(line.split(",")[0], 16) for line in (ROOT / "symbols" / "functions.csv").open()
                if ",Unwind@" in line]
-    user = yaml.safe_load((ROOT / "reccmp-user.yml").read_text())
-    text = next(section for section in detect_image(user["targets"]["HYPERX"]["path"]).sections
-                if section.name == ".text")
+    text = next(section for section in original.sections if section.name == ".text")
     return min(unwinds), text.virtual_address + text.virtual_size
 
 
 def selftest():
-    """Checks the walk on a toy image: one parent, two states, one destructor each side."""
+    """Checks the walk on a toy image: a parent whose push comes after its frame setup, a handler
+    at the range's end, two states; then a pair, a fold twin, a mismatch and a count mismatch."""
     class Image:
         def __init__(self, blocks):
             self.blocks = blocks
@@ -185,15 +197,16 @@ def selftest():
     def words(*values):
         return b"".join(value.to_bytes(4, "little") for value in values)
 
-    # Parent at 0x401000 pushes the handler at 0x402000, which loads FuncInfo 0x403000. State 0
-    # runs the action at 0x402010, `call 0x401100`; state 1 has no action.
-    text = b"\x6a\xff\x68" + words(0x402000) + bytes(0x1000 - 7)
-    funclets = bytes([MOV_EAX]) + words(0x403000) + bytes([JMP]) + bytes(10)
-    funclets += bytes([CALL]) + struct.pack("<i", 0x401100 - 0x402015) + bytes(0x20)
-    image = Image({0x401000: text, 0x402000: funclets,
+    # The parent at 0x401000 opens `push ebp; mov ebp, esp`, then pushes the handler at 0x402010,
+    # the last ten bytes of the range, which loads FuncInfo 0x403000. State 0 runs the action at
+    # 0x402000, `call 0x401100`; state 1 has no action.
+    text = bytes([0x55, 0x8B, 0xEC, 0x6A, 0xFF, 0x68]) + words(0x402010) + bytes(0x1000 - 10)
+    funclets = bytes([CALL]) + struct.pack("<i", 0x401100 - 0x402005) + bytes(11)
+    funclets += bytes([MOV_EAX]) + words(0x403000) + bytes([JMP]) + bytes(4)
+    image = Image({0x401000: text, 0x402000: funclets + bytes(0x20),
                    0x403000: words(FUNCINFO_MAGIC, 2, 0x403100),
-                   0x403100: words(0, 0x402010, 0, 0)})
-    found = unwind_targets(image, 0x402000, 0x402000 + len(funclets))
+                   0x403100: words(0, 0x402000, 0, 0)})
+    found = unwind_targets(image, 0x402000, 0x402000 + len(funclets), [0x400000, 0x401000])
     assert found == {0x401000: [0x401100, None]}, found
 
     # Our copy pairs; then our destructor is another that folds with the paired one.
@@ -203,6 +216,7 @@ def selftest():
     assert differing(found, {0x501000: [0x501200, None]}, pairs, twins) == []
     expected = [(0x401000, 0, 0x401100, 0x501300)]
     assert differing(found, {0x501000: [0x501300, None]}, pairs, twins) == expected
+    assert differing(found, {0x501000: [0x501100]}, pairs, {}) == [(0x401000, None, 2, 1)]
     print("selftest passed")
     return 0
 
