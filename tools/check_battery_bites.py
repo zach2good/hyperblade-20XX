@@ -537,8 +537,8 @@ PROBES = (
 
     # A per-call view that drops the register arguments' slots.
     ("frame.py --selftest", "tools/frame.py",
-     "            registers = tuple(held[name] for name in (\"ecx\", \"edx\") if name in held)",
-     "            registers = ()"),
+     "            registers = tuple(held[name] for name in (\"ecx\", \"edx\")",
+     "            registers = () + tuple(held[name] for name in ()"),
 
     # A frame census that stops at an EH prologue's first push.
     ("frame.py --selftest", "tools/frame.py",

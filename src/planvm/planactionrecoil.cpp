@@ -516,7 +516,7 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
     Vec3*         pNormalField;
     EngineObject* pSelf;
     EngineObject* pOther;
-    Vec3          vSteer;
+    Vec3          vScratch;
     Vec3          vDir;
     Vec3          vNormal;
     Vec3          vOtherPos;
@@ -550,12 +550,12 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
     PhysicsBody*       pSelfBody  = pSelf->GetPhysicsBody();
     PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
 
-    const Vec3* pSelfCentre = pSelf->GetWorldPos(&vSteer);
+    const Vec3* pSelfCentre = pSelf->GetWorldPos(&vScratch);
     vSelfPos                = *pSelfCentre;
 
-    vOtherPos = *pOther->GetWorldPos(&vSteer);
+    vOtherPos = *pOther->GetWorldPos(&vScratch);
 
-    vDir    = *Object::ComputeSteeringDirection(&vSteer, pOther, &vSelfPos);
+    vDir    = *Object::ComputeSteeringDirection(&vScratch, pOther, &vSelfPos);
     vNormal = vDir;
 
     Vec3 vEntryVel = pSelf->m_pBody->vel;
@@ -645,15 +645,15 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
             {
                 Vec3 vOtherScratch;
 
-                pSelfCentre              = pSelf->GetWorldPos(&vSteer);
+                pSelfCentre              = pSelf->GetWorldPos(&vScratch);
                 const Vec3* pOtherCentre = pOther->GetWorldPos(&vOtherScratch);
                 vDiff.x                  = pSelfCentre->x - pOtherCentre->x;
 
-                pSelfCentre  = pSelf->GetWorldPos(&vSteer);
+                pSelfCentre  = pSelf->GetWorldPos(&vScratch);
                 pOtherCentre = pOther->GetWorldPos(&vOtherScratch);
                 vDiff.y      = pSelfCentre->y - pOtherCentre->y;
 
-                pSelfCentre  = pSelf->GetWorldPos(&vSteer);
+                pSelfCentre  = pSelf->GetWorldPos(&vScratch);
                 pOtherCentre = pOther->GetWorldPos(&vOtherScratch);
                 vDiff.z      = pSelfCentre->z - pOtherCentre->z;
             }
@@ -743,11 +743,11 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
 
             flDot = vSurface.x * vVel.x + vVel.z * vSurface.z + vVel.y * vSurface.y;
 
-            vSteer.x = vSurface.x * flDot;
-            vSteer.y = vSurface.y * flDot;
+            vScratch.x = vSurface.x * flDot;
+            vScratch.y = vSurface.y * flDot;
 
-            vVel.x -= vSteer.x;
-            vVel.y -= vSteer.y;
+            vVel.x -= vScratch.x;
+            vVel.y -= vScratch.y;
             vVel.z -= flDot * vSurface.z;
 
             flScale = 3.0f / (g_pGameEngine->m_clock.flInvDelta * pSelfBody->flSpeed);

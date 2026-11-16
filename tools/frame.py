@@ -47,11 +47,14 @@ DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
 EH_FRAME = ("-1", "0xffffffff")
+# String instructions, whose operands name memory rather than the registers they write.
+STRING_OPS = ("movsd", "stosd", "movsb", "stosb")
 # Registers an instruction writes without naming them as its first operand.
 IMPLICIT = {"cdq": ("edx",), "mul": ("eax", "edx"), "imul": ("eax", "edx"), "div": ("eax", "edx"),
             "idiv": ("eax", "edx"), "rep movsd": ("esi", "edi", "ecx"),
             "rep stosd": ("edi", "ecx"), "rep movsb": ("esi", "edi", "ecx"),
-            "rep stosb": ("edi", "ecx")}
+            "rep stosb": ("edi", "ecx"), "movsd": ("esi", "edi"), "stosd": ("edi",),
+            "movsb": ("esi", "edi"), "stosb": ("edi",), "repne scasb": ("edi", "ecx")}
 # The saved registers that end the stretch where a `push ecx` reserves four bytes.
 REGISTERS = ("ebx", "esi", "edi")
 
@@ -152,6 +155,7 @@ def calls(listing):
     found = []
     held = {}
     pushed = []
+    carried = set()
     for at, text, offsets, depth in listing:
         mnemonic, _, operands = text.partition(" ")
         target = operands.split(",")[0].strip()
@@ -160,19 +164,23 @@ def calls(listing):
             held[target] = offsets[0]
         elif mnemonic == "push" and operands in held:
             pushed.append(held[operands])
+            # A register pushed as an argument isn't also the call's register argument.
+            carried.add(operands)
         elif mnemonic == "call":
-            registers = tuple(held[name] for name in ("ecx", "edx") if name in held)
+            registers = tuple(held[name] for name in ("ecx", "edx")
+                              if name in held and name not in carried)
             found.append((operands, registers + tuple(reversed(pushed))))
             held = {name: slot for name, slot in held.items() if name in SAVED}
             pushed = []
+            carried = set()
         elif mnemonic == "mov" and source in held and "[" not in target:
             held[target] = held[source]
         elif mnemonic not in ("push", "cmp", "test") and target in held:
             # The register now holds something else.
             del held[target]
         # A `rep` prefix names its string instruction; a two-operand imul writes only its target.
-        key = "rep " + operands.split()[0] if mnemonic == "rep" else mnemonic
-        if "," not in operands or mnemonic == "rep":
+        key = mnemonic + " " + operands.split()[0] if mnemonic in ("rep", "repne") else mnemonic
+        if "," not in operands or mnemonic in ("rep", "repne") or key in STRING_OPS:
             for written in IMPLICIT.get(key, ()):
                 held.pop(written, None)
     return found
@@ -379,6 +387,10 @@ def selftest():
                        (6, "push dword ptr [esp + 4]", [-0x2c], -0x30), (7, "push edi", [], -0x34),
                        (8, "call 0x401000", [], -0x38)])
     assert clobbered == [("0x401000", ())], clobbered
+    # ECX lea'd and then pushed is one pushed argument, not two.
+    once = calls([(0, "lea ecx, [esp + 0x10]", [-0x20], -0x30), (1, "push ecx", [], -0x30),
+                  (2, "call 0x401000", [], -0x34)])
+    assert once == [("0x401000", (-0x20,))], once
     print("selftest passed")
     return 0
 
