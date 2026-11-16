@@ -1,6 +1,7 @@
 // The destructor carries no marker: the linker folded every empty body onto 0x00416e30.
 
 #include "common/compat.h"
+#include "common/stub.h"
 #include "meshmaterial.h"
 #include "modeldatabase.h"
 #include "globals.h"
@@ -336,6 +337,12 @@ char __cdecl MeshMaterial::ParseFile(FileObj* pFile, const char*, MeshMaterial**
                     }
 
                     const int nKnownTextures = (short)nTexCount;
+
+                    // Never runs; taking its address keeps nKnownTextures in a frame slot.
+                    if (0)
+                    {
+                        RELEASE_ASSERT((int)&nKnownTextures);
+                    }
 
                     for (i = 0; i < nKnownTextures; i++)
                     {
