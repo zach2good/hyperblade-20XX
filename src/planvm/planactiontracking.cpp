@@ -955,7 +955,6 @@ void __cdecl PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int n
     PlanState*       pOwner;
     Vec3             vVelocity;
     Vec3             vOrigin;
-    Vec3             vScratch;
 
     pActor = pContext->GetActor();
 
@@ -977,19 +976,22 @@ void __cdecl PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int n
 
                 pBone = &pSpawn->m_pBones[HEAD_BONE];
 
-                pBone->m_world.TransformPoint(vOrigin, &vScratch);
+                {
+                    Vec3 vScratch;
+                    pBone->m_world.TransformPoint(vOrigin, &vScratch);
 
-                const Vec3 vHead = vScratch;
+                    const Vec3 vHead = vScratch;
 
-                vOrigin = vHead;
+                    vOrigin = vHead;
 
-                pActor->m_pBody->pos = vHead;
+                    pActor->m_pBody->pos = vHead;
+                }
 
                 pBone->SetFlags(MESHBONE_HIDDEN);
 
-                pSource   = pSpawn->GetPhysicsBody();
-                vVelocity = pSource->velDir;
-                vScratch  = pSpawn->m_pBody->vel;
+                pSource             = pSpawn->GetPhysicsBody();
+                vVelocity           = pSource->velDir;
+                const Vec3 vScratch = pSpawn->m_pBody->vel;
 
                 vVelocity.x = vVelocity.x + vScratch.x;
                 vVelocity.y = vScratch.y + vVelocity.y;
