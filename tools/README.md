@@ -113,6 +113,7 @@ which.
 | `duplicate_markers.py` | Find one original address claimed by more than one annotation. |
 | `enum_names.py` | Fail when an id the tree names disagrees with the developers' name, from ENUMIDS.H or a cache. |
 | `foldcmp.py` | Run reccmp's asmcmp with the measured build's identical-code folding applied. |
+| `frame.py` | Canonical frame slots for one function, on either side, as a map you can diff. |
 | `header_homes.py` | Reports which header defines each class, and whether that header is named after it. |
 | `implicit_narrowing.py` | Lists integer assignments that narrow a value without an explicit cast. |
 | `kind_names.py` | Compare every name the tree gives an object kind with the name the client gives it. |
@@ -214,7 +215,6 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `fix_row_extents.py` | Give every matching row the extent reccmp actually compared, and drop what that swallows. |
 | `fixincludes.py` | Builds, and adds the missing include to each failing file until the build passes. |
 | `fold_candidates.py` | Rank the functions the original folds bodies onto, where this build does not. |
-| `frame.py` | Canonical frame slots for one function, on either side, as a map you can diff. |
 | `frame_search.py` | Search an /Od function's local names for the frame map the client has. |
 | `funclet_targets.py` | Name each unwind state's destructor on both sides, and print the states that differ. |
 | `gap_shape.py` | Split the remaining accuracy by the shape of each row's difference. |

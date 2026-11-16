@@ -93,6 +93,7 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "placeholder_functions.py --max 0",
             "x87_precision.py --selftest",
             "plan_dump.py --selftest",
+            "frame.py --selftest",
             "foldcmp.py --selftest")
 
 # The checkers that read the original or a register of its differences. They join the battery

@@ -535,6 +535,11 @@ PROBES = (
      "        return \"%#x\" % min(twins.get(addr, {addr}))",
      "        return \"%#x\" % addr"),
 
+    # A frame census that stops at an EH prologue's first push.
+    ("frame.py --selftest", "tools/frame.py",
+     "        if instruction.mnemonic == \"push\" and (pushed in SAVED or pushed in EH_PUSHES",
+     "        if instruction.mnemonic == \"push\" and (pushed in SAVED"),
+
     # A FuncInfo read without its magic, so any `mov eax` before a `jmp` reads as a handler.
     ("funclet_targets.py --selftest", "tools/funclet_targets.py",
      "        if magic != FUNCINFO_MAGIC:",

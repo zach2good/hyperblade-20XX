@@ -17,6 +17,7 @@ The report's hunks elide instructions, so this disassembles the whole function f
     python tools/frame.py 0x004657b0 --ours      # this build's, at the paired address
     python tools/frame.py 0x004657b0 --compare   # both, and the slots only one side has
     python tools/frame.py 0x004657b0 --listing   # every instruction with its depth
+    python tools/frame.py --selftest
 
 Exit 1 when the address is not a row in `symbols/functions.csv` or the report has no pairing
 for it, and 2 when there is nothing built to read.
@@ -44,6 +45,7 @@ FUNCTIONS = os.path.join(ROOT, "symbols", "functions.csv")
 DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
+EH_PUSHES = ("-1", "0xffffffff", "eax")
 
 
 
@@ -65,10 +67,13 @@ def reserved(code):
 
 
 def settled(code):
-    """ESP relative to the entry, once the prologue's register pushes are done."""
+    """ESP relative to the entry, once the prologue's register pushes are done. A C++ EH frame's
+    `push -1`, `push <handler>` and `push eax` of the old fs:[0] count as prologue too."""
     depth = 0
     for instruction in code:
-        if instruction.mnemonic == "push" and instruction.op_str in SAVED:
+        pushed = instruction.op_str
+        if instruction.mnemonic == "push" and (pushed in SAVED or pushed in EH_PUSHES
+                                               or pushed.startswith("0x")):
             depth -= 4
             continue
         if instruction.mnemonic == "sub" and instruction.op_str.startswith("esp,"):
@@ -209,5 +214,27 @@ def main():
     return 0
 
 
+def selftest():
+    """Checks that an EH prologue settles past its three pushes and a plain one is unchanged."""
+    class Instruction:
+        def __init__(self, mnemonic, op_str):
+            self.mnemonic = mnemonic
+            self.op_str = op_str
+
+    plain = [Instruction("push", "ebx"), Instruction("sub", "esp, 0x10"),
+             Instruction("call", "0x401000")]
+    assert settled(plain) == -0x14, settled(plain)
+    framed = [Instruction("push", "ebp"), Instruction("mov", "ebp, esp"), Instruction("push", "-1"),
+              Instruction("push", "0x4ac990"), Instruction("mov", "eax, dword ptr fs:[0]"),
+              Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
+              Instruction("sub", "esp, 0x1a8"), Instruction("call", "0x401000")]
+    assert settled(framed) == -(0x10 + 0x1a8), settled(framed)
+    print("selftest passed")
+    return 0
+
+
 if __name__ == "__main__":
+    if sys.argv[1:] == ["--selftest"]:
+        sys.exit(selftest())
+
     sys.exit(main())
