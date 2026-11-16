@@ -105,6 +105,8 @@ cl   /nologo /MT /GX /GR- /Zp8 /Zi /W3 /DWIN32 /D_WINDOWS /DNDEBUG
 link /SUBSYSTEM:WINDOWS,4.0 /FIXED /BASE:0x400000 /FILEALIGN:4096 /INCREMENTAL:NO /OPT:REF /machine:X86
 ```
 
+`hyperx_image` adds `/STACK:0xc00000,0xc00000` and, through the `VERSION` property, `/version:4.2`.
+
 `CMakeLists.txt` adds the optimisation per source, so no flag overrides another:
 
 - The game's sources get `/O2`, including `/Ob1`: VC6 inlines only a function marked `inline` or
