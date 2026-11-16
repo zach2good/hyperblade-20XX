@@ -140,7 +140,6 @@ void CHeadTrack::Process(int nArg)
     {
         short nSlot;
         Vec3  vTarget;
-        Vec3  vStep;
         Vec3  vDir;
 
         vTarget = pSecondary->GetPhysicsBody()->pos;
@@ -150,6 +149,8 @@ void CHeadTrack::Process(int nArg)
         if (nSlot > PLAYER_OBJECT_COUNT)
         {
             m_pWatchPos->z = -10.0f;
+
+            Vec3 vStep;
 
             vStep.x = vTarget.x - m_pWatchPos->x;
             vStep.y = vTarget.y - m_pWatchPos->y;
@@ -165,6 +166,8 @@ void CHeadTrack::Process(int nArg)
         }
         else
         {
+            Vec3 vStep;
+
             vDir = pPrimary->GetPhysicsBody()->velDir;
 
             Math::Vec3Normalize(&vDir);
