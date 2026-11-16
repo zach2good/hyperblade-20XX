@@ -92,7 +92,6 @@ set(HYPERX_SOURCES
     src/graphics/texcacheentry.cpp
     src/anim/animplayer.cpp
     src/engine/cameraprojectionstate.cpp
-    src/physics/collisionplane.cpp
     src/ui/screens/trainingendscreen.cpp
     src/graphics/ddraw.cpp
     src/graphics/texture.cpp

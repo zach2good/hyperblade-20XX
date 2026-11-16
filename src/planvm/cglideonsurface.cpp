@@ -20,7 +20,6 @@
 #include "app/gameapp.h"
 #include "engine/playerobject.h"
 #include "net/gamesession.h"
-#include "physics/collisionplane.h"
 #include "math/mathops.h"
 #include "planvm/conditiontable.h"
 #include "engine/statids.h"

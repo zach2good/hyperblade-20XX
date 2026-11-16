@@ -10,7 +10,6 @@ struct Vec3;
 #include "engineglobals.h"
 #include "devicector.h"
 #include "common/staticassert.h"
-#include "physics/collisionplane.h"
 #include "physics/collisionobj.h"
 #include "engine/engineobject.h"
 

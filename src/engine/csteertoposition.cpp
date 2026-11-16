@@ -19,7 +19,6 @@
 #include "playerobject.h"
 #include <math.h>
 #include <stdlib.h>
-#include "physics/collisionplane.h"
 #include "arenastate.h"
 #include "physics/collisionellipsoid.h"
 #include "planvm/conditiontable.h"

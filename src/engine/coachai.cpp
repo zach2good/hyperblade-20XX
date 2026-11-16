@@ -42,7 +42,6 @@
 #include <mbstring.h>
 #include <windows.h>
 #include <stdio.h>
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "net/netrecords.h"
 #include "planvm/damagegate.h"

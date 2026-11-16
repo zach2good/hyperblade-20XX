@@ -55,7 +55,6 @@
 #include <stdlib.h>
 #include <mbstring.h>
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
@@ -119,7 +118,7 @@ void __cdecl PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, in
 
     Vec3* const pPoint = pObject->GetWorldPos(&vPoint);
 
-    CollisionPlane* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
+    CollisionObj* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
 
     pState->pShell = pPart;
 

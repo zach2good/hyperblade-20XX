@@ -11,7 +11,6 @@
 #include "planvm/planvm.h"
 #include "engine/objectclasses.h"
 #include "engine/objectstats.h"
-class CollisionPlane;
 #include "banking.h"
 #include "math/transformobject.h"
 #include "common/pooledclasses.h"
@@ -19,7 +18,6 @@ class CollisionPlane;
 #include <math.h>
 #include "engine/playerobject.h"
 #include "app/gameapp.h"
-#include "collisionplane.h"
 #include "engine/engineobject.h"
 #include "engine/cameraobject.h"
 #include "collisionobj.h"

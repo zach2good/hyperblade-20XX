@@ -45,7 +45,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include "app/bringup.h"
-#include "physics/collisionplane.h"
+#include "physics/collisionshape.h"
 #include "engine/engineobject.h"
 #include "net/netrecords.h"
 #include "net/netsequenceword.h"

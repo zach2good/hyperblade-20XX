@@ -12,7 +12,6 @@ class BoundBubble;
 class BubbleCmd;
 class CPlayer;
 class CameraObject;
-class CollisionPlane;
 class LODNode;
 struct MaterialListNode;
 class MeshBone;

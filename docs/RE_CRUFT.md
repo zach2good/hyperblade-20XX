@@ -357,7 +357,7 @@ Names with a number or a letter, each authored in ENUMIDS.H:
 
 Names for a shape, left:
 
-- The six arguments `CollisionPlane::ForwardTransformRequest` hands a getter that reads none: no
+- The six arguments `CollisionObj::ForwardTransformRequest` hands a getter that reads none: no
   call through slot 0x34 pushes its 24 bytes, and nothing calls 0x00405880 directly.
 
 One local for two values:

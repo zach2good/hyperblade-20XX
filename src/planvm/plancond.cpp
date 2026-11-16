@@ -76,7 +76,6 @@
 #include "ui/infobar.h"
 #include "app/bringup.h"
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
 #include "engine/objectphase.h"

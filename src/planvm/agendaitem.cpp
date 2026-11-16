@@ -9,7 +9,6 @@
 #include "engine/devicector.h"
 #include "physics/physicsbody.h"
 #include "engine/gameengine.h"
-#include "physics/collisionplane.h"
 #include "app/gameapp.h"
 #include "physics/collisionellipsoid.h"
 

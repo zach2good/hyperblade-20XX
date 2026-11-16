@@ -13,7 +13,7 @@
 #include "math/vector.h"
 #include <math.h>
 #include "playerobject.h"
-#include "physics/collisionplane.h"
+#include "physics/collisionshape.h"
 #include "planvm/plannode.h"
 #include "planvm/conditiontable.h"
 
