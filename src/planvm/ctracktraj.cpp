@@ -246,9 +246,9 @@ void CTrackTraj::Process(int nArg)
             Vec3::ScaleTo(&vMidOffset, (flMidLength - flRadius) * 0.6f, &vMidPull);
             Vec3::ScaleTo(&vTrajOffset, flTrajLength * 0.8f, &vTrajPull);
 
-            pAccel->x = (((vTrajPull.x + vMidPull.x) - pAccel->x * 0.6f) - g_flCamWatchMidpointScale * pCamPos->x) + pAccel->x;
-            pAccel->y = (((vTrajPull.y + vMidPull.y) - pAccel->y * 0.6f) - g_flCamWatchMidpointScale * pCamPos->y) + pAccel->y;
-            pAccel->z = (((vTrajPull.z + vMidPull.z) - pAccel->z * 0.6f) - (g_arenaEllipsoid.GetRadiusX() + pCamPos->z) * g_flCamWatchMidpointScale) + pAccel->z;
+            pAccel->x = (((vMidPull.x + vTrajPull.x) - pAccel->x * 0.6f) - g_flCamWatchMidpointScale * pCamPos->x) + pAccel->x;
+            pAccel->y = (((vMidPull.y + vTrajPull.y) - pAccel->y * 0.6f) - g_flCamWatchMidpointScale * pCamPos->y) + pAccel->y;
+            pAccel->z = (((vMidPull.z + vTrajPull.z) - pAccel->z * 0.6f) - (g_arenaEllipsoid.GetRadiusX() + pCamPos->z) * g_flCamWatchMidpointScale) + pAccel->z;
 
             // The first sum names the position first; the original loads it first.
             pCamPos->x += pAccel->x;
