@@ -105,10 +105,8 @@ void CTrack::Process(int nArg)
     Vec3  vFacing;
     Vec3  vRaw;
     Vec3  vSum;
-    Vec3  vScaled;
     Vec3  vUp;
     Vec3  vFarRay;
-    Vec3  vNearRay;
 
     const float flStep = (float)(g_pGameEngine->m_clock.GetDelta() * 50.0f);
 
@@ -152,6 +150,8 @@ void CTrack::Process(int nArg)
 
     if (pTracked->GetSlot() < PLAYER_OBJECT_COUNT)
     {
+        Vec3 vScaled;
+
         const TransformObject* const pWorld = &pTracked->m_pBones->m_world;
 
         aTarget.Set(pWorld->m_a[0][3], pWorld->m_a[1][3], pWorld->m_a[2][3]);
@@ -242,6 +242,8 @@ void CTrack::Process(int nArg)
 
     if (wState == BEH_FLY || wState == BEH_RAIL_SLIDE || m_wCountdown != 0)
     {
+        Vec3 vNearRay;
+
         float flSpeed;
 
         m_pVel->x = (m_pDesiredVel->x - m_pVel->x * 0.6f) + m_pVel->x;
@@ -282,6 +284,8 @@ void CTrack::Process(int nArg)
     }
     else
     {
+        Vec3 vNearRay;
+        Vec3 vScaled;
         Vec3 vBack;
 
         Vec3::ScaleTo(&vFacing, -GetCamera()->GetBungeeLength(), &vBack);
