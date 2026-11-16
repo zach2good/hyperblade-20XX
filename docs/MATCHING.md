@@ -2156,6 +2156,12 @@ cursor.
 `fs:[0]`, and a trylevel slot the function updates as objects finish constructing. The trylevel
 stores are the best evidence of what the source constructs.
 
+An object with a destructor gets its frame when the front end sees a call in its scope, and an
+inline callee counts if its body holds any call, even one the optimiser later removes. Where the
+client keeps an EH frame but stores no trylevel, look for an inline helper whose call is dead.
+Example: `PlanAction::GrayscaleRandomizer`, whose `PaintMaterials` asserts on a flag it is never
+passed clear.
+
 ### Construction order
 
 Constructor order is base, then members with constructors, then the vptr store, then the body. A

@@ -4115,13 +4115,32 @@ extern short g_awColorLatched[2];
 // Two rows of twenty saved colours. src/globals.cpp carries the marker.
 extern int g_aaColorSaved[2][20];
 
+namespace PlanAction
+{
+
+// Its only caller passes a set flag: VC6 drops the check, but its call keeps the caller's EH frame.
+inline void PaintMaterials(EngineObject* pObject, int nColour, short nEnable)
+{
+    if (nEnable == 0)
+    {
+        RELEASE_ASSERT(0);
+        return;
+    }
+
+    for (int nMat = 0; nMat < pObject->m_pModelBlock->m_nMatCount; nMat++)
+    {
+        pObject->m_pModelBlock->m_pMaterials[nMat].nColour = nColour;
+    }
+}
+
+} // namespace PlanAction
+
 // FUNCTION: HYPERX100 0x004ad180
 // FUNCTION: HYPERX 0x00463450
 void __cdecl PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* pObject;
     int           nValue;
-    PaletteRange  aRange;
 
     const short nEnable = (short)pArgs->m_pArgs[1].n;
 
@@ -4166,12 +4185,9 @@ void __cdecl PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pAr
 
     if (nEnable != 0)
     {
-        aRange = g_pColorPalette->GetFrameRange(1);
+        PaletteRange aRange = g_pColorPalette->GetFrameRange(1);
 
-        for (int nMat = 0; nMat < pObject->m_pModelBlock->m_nMatCount; nMat++)
-        {
-            pObject->m_pModelBlock->m_pMaterials[nMat].nColour = aRange.nFirst;
-        }
+        PaintMaterials(pObject, aRange.nFirst, nEnable);
 
         return;
     }
