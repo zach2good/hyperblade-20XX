@@ -7,6 +7,7 @@ address,symbol,size,object
 0x0045c6d0,_$E11,10,arenaellipsoidstatic.cpp.obj
 0x0049ed96,?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z,37,
 0x0049ee71,?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z,117,
+0x0049ef84,__unwind_handler,34,
 0x0049fa39,_doexit,165,
 0x0049faf0,__initterm,26,
 0x004a02d5,_shortsort,78,

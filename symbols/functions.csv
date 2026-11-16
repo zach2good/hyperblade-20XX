@@ -2998,7 +2998,7 @@ address,name,size,convention,signature
 0x0049edbb,EH__CppThrow,182,__cdecl,"dword __cdecl EH__CppThrow(dword * param_1, dword param_2, dword param_3, dword param_4, dword param_5, dword param_6, dword param_7)"
 0x0049ee71,EH__FrameHandlerDispatch,117,__cdecl,"dword __cdecl EH__FrameHandlerDispatch(PEXCEPTION_RECORD param_1, PVOID param_2, DWORD param_3)"
 0x0049eee6,EH__FindEnclosingTryLevel,123,__cdecl,"int __cdecl EH__FindEnclosingTryLevel(int param_1, int param_2, int param_3, uint * param_4, uint * param_5)"
-0x0049ef64,__global_unwind2,66,__cdecl,void __cdecl __global_unwind2(PVOID param_1)
+0x0049ef64,__global_unwind2,32,__cdecl,void __cdecl __global_unwind2(PVOID param_1)
 0x0049efa6,__local_unwind2,104,__cdecl,"void __cdecl __local_unwind2(int param_1, int param_2)"
 0x0049f00e,__abnormal_termination,35,__cdecl,int __cdecl __abnormal_termination(void)
 0x0049f031,__NLG_Notify1,9,__fastcall,void __fastcall __NLG_Notify1(dword param_1)
