@@ -2652,15 +2652,16 @@ Measured on `hyperx_sym`, against the `/OPT:NOREF` baseline:
 
 - `/OPT:NOREF /OPT:ICF`: 122 exact rows lost, 325.6 weighted bytes, 183 rows down and 8 up. Our
   fold groups put `Object::Trace`, `Stub::Assert` and 27 other bodies on one body, and the
-  survivor's lines belong to whichever function links first, so 29 rows lose their symbol.
+  survivor's lines belong to only one of them, so 29 rows lose their symbol.
 - `/Ox /Gf` with the folded slot bodies inline, as the original's vtables show them: 18 exact lost,
-  307.4 weighted bytes, 16 rows folded away and none up. Each fold group keeps the body that links
-  first, so most markers land on a body that folds away.
+  307.4 weighted bytes, 16 rows folded away and none up. Each fold group keeps one body, and most
+  markers land on one that folds away.
 
 Our `/OPT:ICF` also folds `__matherr` and the two libjpeg `ret` bodies, which the original keeps
 apart. Those library rows alone cost 5 to 10 exact rows and 38 to 50 weighted bytes, more than
-every call operand it could pair, so `/OPT:ICF` stays off. Our link order does not place functions
-where the original's did, so moving markers cannot pick the same survivors.
+every call operand it could pair, so `/OPT:ICF` stays off. Link 6.00.8447 doesn't keep the first
+body it loads: the survivor is fixed for a given set of objects but depends on everything loaded
+before the group, so neither markers nor link order can pick the original's survivors.
 
 The project scores with `python tools/foldcmp.py`, which applies our own folding and takes
 asmcmp's arguments. It reads which bodies `HYPERX.map` puts on one address and `HYPERX_sym.map`
