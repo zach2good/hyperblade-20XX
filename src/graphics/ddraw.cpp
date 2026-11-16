@@ -582,495 +582,495 @@ char* DDraw::ErrorToString(int hr)
     {
         case DDERR_OUTOFMEMORY:
             // STRING: HYPERX 0x004c0510
-            return "DirectDraw does not have enough memory to perform the operation.";
+            return "DirectDraw does not have enough memory to perform the operation.\0";
 
         case DDERR_GENERIC:
             // STRING: HYPERX 0x004c04fc
-            return "Generic failure.";
+            return "Generic failure.\0";
 
         case DDERR_UNSUPPORTED:
             // STRING: HYPERX 0x004c04e4
-            return "Action not supported.";
+            return "Action not supported.\0";
 
         case DDERR_INVALIDPARAMS:
             // STRING: HYPERX 0x004c049c
-            return "One or more of the parameters passed to the function are incorrect.";
+            return "One or more of the parameters passed to the function are incorrect.\0";
 
         case DDERR_CANNOTDETACHSURFACE:
             // STRING: HYPERX 0x004c045c
-            return "This surface can not be detached from the requested surface.";
+            return "This surface can not be detached from the requested surface.\0";
 
         case DDERR_CANNOTATTACHSURFACE:
             // STRING: HYPERX 0x004c0420
-            return "This surface can not be attached to the requested surface.";
+            return "This surface can not be attached to the requested surface.\0";
 
         case DDERR_ALREADYINITIALIZED:
             // STRING: HYPERX 0x004c03f8
-            return "This object is already initialized.";
+            return "This object is already initialized.\0";
 
         case DDERR_CURRENTLYNOTAVAIL:
             // STRING: HYPERX 0x004c03d0
-            return "Support is currently not available.";
+            return "Support is currently not available.\0";
 
         case DDERR_EXCEPTION:
             // STRING: HYPERX 0x004c0388
-            return "An exception was encountered while performing the requested operation.";
+            return "An exception was encountered while performing the requested operation.\0";
 
         case DDERR_HEIGHTALIGN:
             // STRING: HYPERX 0x004c0344
-            return "Height of rectangle provided is not a multiple of reqd alignment.";
+            return "Height of rectangle provided is not a multiple of reqd alignment.\0";
 
         case DDERR_INCOMPATIBLEPRIMARY:
             // STRING: HYPERX 0x004c02f0
-            return "Unable to match primary surface creation request with existing primary surface.";
+            return "Unable to match primary surface creation request with existing primary surface.\0";
 
         case DDERR_INVALIDCAPS:
             // STRING: HYPERX 0x004c02ac
-            return "One or more of the caps bits passed to the callback are incorrect.";
+            return "One or more of the caps bits passed to the callback are incorrect.\0";
 
         case DDERR_INVALIDCLIPLIST:
             // STRING: HYPERX 0x004c0278
-            return "DirectDraw does not support the provided cliplist.";
+            return "DirectDraw does not support the provided cliplist.\0";
 
         case DDERR_INVALIDMODE:
             // STRING: HYPERX 0x004c0244
-            return "DirectDraw does not support the requested mode.";
+            return "DirectDraw does not support the requested mode.\0";
 
         case DDERR_INVALIDOBJECT:
             // STRING: HYPERX 0x004c01fc
-            return "DirectDraw received a pointer that was an invalid DIRECTDRAW object.";
+            return "DirectDraw received a pointer that was an invalid DIRECTDRAW object.\0";
 
         case DDERR_INVALIDPIXELFORMAT:
             // STRING: HYPERX 0x004c01d0
-            return "The pixel format was invalid as specified.";
+            return "The pixel format was invalid as specified.\0";
 
         case DDERR_INVALIDRECT:
             // STRING: HYPERX 0x004c01ac
-            return "Rectangle provided was invalid.";
+            return "Rectangle provided was invalid.\0";
 
         case DDERR_LOCKEDSURFACES:
             // STRING: HYPERX 0x004c015c
-            return "Operation could not be carried out because one or more surfaces are locked.";
+            return "Operation could not be carried out because one or more surfaces are locked.\0";
 
         case DDERR_NO3D:
             // STRING: HYPERX 0x004c0140
-            return "There is no 3D present.";
+            return "There is no 3D present.\0";
 
         case DDERR_NOALPHAHW:
             // STRING: HYPERX 0x004c00d4
-            return "Operation could not be carried out because there is no alpha accleration hardware present or available.";
+            return "Operation could not be carried out because there is no alpha accleration hardware present or available.\0";
 
         case DDERR_NOCLIPLIST:
             // STRING: HYPERX 0x004c00bc
-            return "No cliplist available.";
+            return "No cliplist available.\0";
 
         case DDERR_NOCOLORCONVHW:
             // STRING: HYPERX 0x004c0054
-            return "Operation could not be carried out because there is no color conversion hardware present or available.";
+            return "Operation could not be carried out because there is no color conversion hardware present or available.\0";
 
         case DDERR_NOCOLORKEY:
             // STRING: HYPERX 0x004c0028
-            return "Surface doesn't currently have a color key";
+            return "Surface doesn't currently have a color key\0";
 
         case DDERR_NOCOLORKEYHW:
             // STRING: HYPERX 0x004bffc0
-            return "Operation could not be carried out because there is no hardware support of the destination color key.";
+            return "Operation could not be carried out because there is no hardware support of the destination color key.\0";
 
         case DDERR_NOCOOPERATIVELEVELSET:
             // STRING: HYPERX 0x004bff64
-            return "Create function called without DirectDraw object method SetCooperativeLevel being called.";
+            return "Create function called without DirectDraw object method SetCooperativeLevel being called.\0";
 
         case DDERR_NOEXCLUSIVEMODE:
             // STRING: HYPERX 0x004bfef4
-            return "Operation requires the application to have exclusive mode but the application does not have exclusive mode.";
+            return "Operation requires the application to have exclusive mode but the application does not have exclusive mode.\0";
 
         case DDERR_NOFLIPHW:
             // STRING: HYPERX 0x004bfec4
-            return "Flipping visible surfaces is not supported.";
+            return "Flipping visible surfaces is not supported.\0";
 
         case DDERR_NOGDI:
             // STRING: HYPERX 0x004bfea8
-            return "There is no GDI present.";
+            return "There is no GDI present.\0";
 
         case DDERR_NOMIRRORHW:
             // STRING: HYPERX 0x004bfe50
-            return "Operation could not be carried out because there is no hardware present or available.";
+            return "Operation could not be carried out because there is no hardware present or available.\0";
 
         case DDERR_NOTFOUND:
             // STRING: HYPERX 0x004bfe30
-            return "Requested item was not found.";
+            return "Requested item was not found.\0";
 
         case DDERR_NOOVERLAYHW:
             // STRING: HYPERX 0x004bfdd0
-            return "Operation could not be carried out because there is no overlay hardware present or available.";
+            return "Operation could not be carried out because there is no overlay hardware present or available.\0";
 
         case DDERR_NORASTEROPHW:
             // STRING: HYPERX 0x004bfd60
-            return "Operation could not be carried out because there is no appropriate raster op hardware present or available.";
+            return "Operation could not be carried out because there is no appropriate raster op hardware present or available.\0";
 
         case DDERR_NOROTATIONHW:
             // STRING: HYPERX 0x004bfd00
-            return "Operation could not be carried out because there is no rotation hardware present or available.";
+            return "Operation could not be carried out because there is no rotation hardware present or available.\0";
 
         case DDERR_NOSTRETCHHW:
             // STRING: HYPERX 0x004bfca4
-            return "Operation could not be carried out because there is no hardware support for stretching.";
+            return "Operation could not be carried out because there is no hardware support for stretching.\0";
 
         case DDERR_NOT4BITCOLOR:
             // STRING: HYPERX 0x004bfc38
-            return "DirectDrawSurface is not in 4 bit color palette and the requested operation requires 4 bit color palette.";
+            return "DirectDrawSurface is not in 4 bit color palette and the requested operation requires 4 bit color palette.\0";
 
         case DDERR_NOT4BITCOLORINDEX:
             // STRING: HYPERX 0x004bfbc0
-            return "DirectDrawSurface is not in 4 bit color index palette and the requested operation requires 4 bit color index palette.";
+            return "DirectDrawSurface is not in 4 bit color index palette and the requested operation requires 4 bit color index palette.\0";
 
         case DDERR_NOT8BITCOLOR:
             // STRING: HYPERX 0x004bfb60
-            return "DirectDrawSurface is not in 8 bit color mode and the requested operation requires 8 bit color.";
+            return "DirectDrawSurface is not in 8 bit color mode and the requested operation requires 8 bit color.\0";
 
         case DDERR_NOTEXTUREHW:
             // STRING: HYPERX 0x004bfaf8
-            return "Operation could not be carried out because there is no texture mapping hardware present or available.";
+            return "Operation could not be carried out because there is no texture mapping hardware present or available.\0";
 
         case DDERR_NOVSYNCHW:
             // STRING: HYPERX 0x004bfa80
-            return "Operation could not be carried out because there is no hardware support for vertical blank synchronized operations.";
+            return "Operation could not be carried out because there is no hardware support for vertical blank synchronized operations.\0";
 
         case DDERR_NOZBUFFERHW:
             // STRING: HYPERX 0x004bfa20
-            return "Operation could not be carried out because there is no hardware support for zbuffer blitting.";
+            return "Operation could not be carried out because there is no hardware support for zbuffer blitting.\0";
 
         case DDERR_NOZOVERLAYHW:
             // STRING: HYPERX 0x004bf9a0
-            return "Overlay surfaces could not be z layered based on their BltOrder because the hardware does not support z layering of overlays.";
+            return "Overlay surfaces could not be z layered based on their BltOrder because the hardware does not support z layering of overlays.\0";
 
         case DDERR_OUTOFCAPS:
             // STRING: HYPERX 0x004bf950
-            return "The hardware needed for the requested operation has already been allocated.";
+            return "The hardware needed for the requested operation has already been allocated.\0";
 
         case DDERR_OUTOFVIDEOMEMORY:
             // STRING: HYPERX 0x004c0510
-            return "DirectDraw does not have enough memory to perform the operation.";
+            return "DirectDraw does not have enough memory to perform the operation.\0";
 
         case DDERR_OVERLAYCANTCLIP:
             // STRING: HYPERX 0x004bf91c
-            return "The hardware does not support clipped overlays.";
+            return "The hardware does not support clipped overlays.\0";
 
         case DDERR_OVERLAYCOLORKEYONLYONEACTIVE:
             // STRING: HYPERX 0x004bf8dc
-            return "Can only have ony color key active at one time for overlays.";
+            return "Can only have ony color key active at one time for overlays.\0";
 
         case DDERR_PALETTEBUSY:
             // STRING: HYPERX 0x004bf878
-            return "Access to this palette is being refused because the palette is already locked by another thread.";
+            return "Access to this palette is being refused because the palette is already locked by another thread.\0";
 
         case DDERR_COLORKEYNOTSET:
             // STRING: HYPERX 0x004bf848
-            return "No src color key specified for this operation.";
+            return "No src color key specified for this operation.\0";
 
         case DDERR_SURFACEALREADYATTACHED:
             // STRING: HYPERX 0x004bf7fc
-            return "This surface is already attached to the surface it is being attached to.";
+            return "This surface is already attached to the surface it is being attached to.\0";
 
         case DDERR_SURFACEALREADYDEPENDENT:
             // STRING: HYPERX 0x004bf7a4
-            return "This surface is already a dependency of the surface it is being made a dependency of.";
+            return "This surface is already a dependency of the surface it is being made a dependency of.\0";
 
         case DDERR_SURFACEBUSY:
             // STRING: HYPERX 0x004bf740
-            return "Access to this surface is being refused because the surface is already locked by another thread.";
+            return "Access to this surface is being refused because the surface is already locked by another thread.\0";
 
         case DDERR_SURFACEISOBSCURED:
             // STRING: HYPERX 0x004bf704
-            return "Access to surface refused because the surface is obscured.";
+            return "Access to surface refused because the surface is obscured.\0";
 
         case DDERR_SURFACELOST:
             // STRING: HYPERX 0x004bf65c
-            return "Access to this surface is being refused because the surface memory is gone. The DirectDrawSurface object representing this surface should have Restore called on it.";
+            return "Access to this surface is being refused because the surface memory is gone. The DirectDrawSurface object representing this surface should have Restore called on it.\0";
 
         case DDERR_SURFACENOTATTACHED:
             // STRING: HYPERX 0x004bf634
-            return "The requested surface is not attached.";
+            return "The requested surface is not attached.\0";
 
         case DDERR_TOOBIGHEIGHT:
             // STRING: HYPERX 0x004bf604
-            return "Height requested by DirectDraw is too large.";
+            return "Height requested by DirectDraw is too large.\0";
 
         case DDERR_TOOBIGSIZE:
             // STRING: HYPERX 0x004bf5ac
-            return "Size requested by DirectDraw is too large, but the individual height and width are OK.";
+            return "Size requested by DirectDraw is too large, but the individual height and width are OK.\0";
 
         case DDERR_TOOBIGWIDTH:
             // STRING: HYPERX 0x004bf57c
-            return "Width requested by DirectDraw is too large.";
+            return "Width requested by DirectDraw is too large.\0";
 
         case DDERR_UNSUPPORTEDFORMAT:
             // STRING: HYPERX 0x004bf544
-            return "FOURCC format requested is unsupported by DirectDraw.";
+            return "FOURCC format requested is unsupported by DirectDraw.\0";
 
         case DDERR_UNSUPPORTEDMASK:
             // STRING: HYPERX 0x004bf4fc
-            return "Bitmask in the pixel format requested is unsupported by DirectDraw.";
+            return "Bitmask in the pixel format requested is unsupported by DirectDraw.\0";
 
         case DDERR_VERTICALBLANKINPROGRESS:
             // STRING: HYPERX 0x004bf4dc
-            return "Vertical blank is in progress.";
+            return "Vertical blank is in progress.\0";
 
         case DDERR_WASSTILLDRAWING:
             // STRING: HYPERX 0x004bf468
-            return "Informs DirectDraw that the previous Blt which is transfering information to or from this Surface is incomplete.";
+            return "Informs DirectDraw that the previous Blt which is transfering information to or from this Surface is incomplete.\0";
 
         case DDERR_XALIGN:
             // STRING: HYPERX 0x004bf420
-            return "Rectangle provided was not horizontally aligned on required boundary.";
+            return "Rectangle provided was not horizontally aligned on required boundary.\0";
 
         case DDERR_INVALIDDIRECTDRAWGUID:
             // STRING: HYPERX 0x004bf3cc
-            return "The GUID passed to DirectDrawCreate is not a valid DirectDraw driver identifier.";
+            return "The GUID passed to DirectDrawCreate is not a valid DirectDraw driver identifier.\0";
 
         case DDERR_BLTFASTCANTCLIP:
             // STRING: HYPERX 0x004bf370
-            return "Return if a clipper object is attached to the source surface passed into a BltFast call.";
+            return "Return if a clipper object is attached to the source surface passed into a BltFast call.\0";
 
         case DDERR_CANTCREATEDC:
             // STRING: HYPERX 0x004bf348
-            return "Windows can not create any more DCs.";
+            return "Windows can not create any more DCs.\0";
 
         case DDERR_CANTDUPLICATE:
             // STRING: HYPERX 0x004bf2f4
-            return "Can't duplicate primary & 3D surfaces, or surfaces that are implicitly created.";
+            return "Can't duplicate primary & 3D surfaces, or surfaces that are implicitly created.\0";
 
         case DDERR_CLIPPERISUSINGHWND:
             // STRING: HYPERX 0x004bf294
-            return "An attempt was made to set a cliplist for a clipper object that is already monitoring an hwnd.";
+            return "An attempt was made to set a cliplist for a clipper object that is already monitoring an hwnd.\0";
 
         case DDERR_DIRECTDRAWALREADYCREATED:
             // STRING: HYPERX 0x004bf238
-            return "A DirectDraw object representing this driver has already been created for this process.";
+            return "A DirectDraw object representing this driver has already been created for this process.\0";
 
         case DDERR_EXCLUSIVEMODEALREADYSET:
             // STRING: HYPERX 0x004bf1e0
-            return "An attempt was made to set the cooperative level when it was already set to exclusive.";
+            return "An attempt was made to set the cooperative level when it was already set to exclusive.\0";
 
         case DDERR_HWNDALREADYSET:
             // STRING: HYPERX 0x004bf164
-            return "The CooperativeLevel HWND has already been set. It can not be reset while the process has surfaces or palettes created.";
+            return "The CooperativeLevel HWND has already been set. It can not be reset while the process has surfaces or palettes created.\0";
 
         case DDERR_HWNDSUBCLASSED:
             // STRING: HYPERX 0x004bf0f4
-            return "HWND used by DirectDraw CooperativeLevel has been subclassed, this prevents DirectDraw from restoring state.";
+            return "HWND used by DirectDraw CooperativeLevel has been subclassed, this prevents DirectDraw from restoring state.\0";
 
         case DDERR_IMPLICITLYCREATED:
             // STRING: HYPERX 0x004bf0a4
-            return "This surface can not be restored because it is an implicitly created surface.";
+            return "This surface can not be restored because it is an implicitly created surface.\0";
 
         case DDERR_INVALIDPOSITION:
             // STRING: HYPERX 0x004bf03c
-            return "Returned when the position of the overlay on the destination is no longer legal for that destination.";
+            return "Returned when the position of the overlay on the destination is no longer legal for that destination.\0";
 
         case DDERR_NOBLTHW:
             // STRING: HYPERX 0x004bf01c
-            return "No blitter hardware present.";
+            return "No blitter hardware present.\0";
 
         case DDERR_NOCLIPPERATTACHED:
             // STRING: HYPERX 0x004befec
-            return "No clipper object attached to surface object.";
+            return "No clipper object attached to surface object.\0";
 
         case DDERR_NODC:
             // STRING: HYPERX 0x004befc0
-            return "No DC was ever created for this surface.";
+            return "No DC was ever created for this surface.\0";
 
         case DDERR_NODDROPSHW:
             // STRING: HYPERX 0x004befa0
-            return "No DirectDraw ROP hardware.";
+            return "No DirectDraw ROP hardware.\0";
 
         case DDERR_NODIRECTDRAWHW:
             // STRING: HYPERX 0x004bef38
-            return "A hardware-only DirectDraw object creation was attempted but the driver did not support any hardware.";
+            return "A hardware-only DirectDraw object creation was attempted but the driver did not support any hardware.\0";
 
         case DDERR_NOEMULATION:
             // STRING: HYPERX 0x004bef14
-            return "Software emulation not available.";
+            return "Software emulation not available.\0";
 
         case DDERR_NOHWND:
             // STRING: HYPERX 0x004beeac
-            return "Clipper notification requires an HWND or no HWND has previously been set as the CooperativeLevel HWND.";
+            return "Clipper notification requires an HWND or no HWND has previously been set as the CooperativeLevel HWND.\0";
 
         case DDERR_NOOVERLAYDEST:
             // STRING: HYPERX 0x004bee28
-            return "Returned when GetOverlayPosition is called on an overlay that UpdateOverlay has never been called on to establish a destination.";
+            return "Returned when GetOverlayPosition is called on an overlay that UpdateOverlay has never been called on to establish a destination.\0";
 
         case DDERR_NOPALETTEATTACHED:
             // STRING: HYPERX 0x004bedf8
-            return "No palette object attached to this surface.";
+            return "No palette object attached to this surface.\0";
 
         case DDERR_NOPALETTEHW:
             // STRING: HYPERX 0x004bedc4
-            return "No hardware support for 16 or 256 color palettes.";
+            return "No hardware support for 16 or 256 color palettes.\0";
 
         case DDERR_NOTAOVERLAYSURFACE:
             // STRING: HYPERX 0x004bed7c
-            return "Returned when an overlay member is called for a non-overlay surface.";
+            return "Returned when an overlay member is called for a non-overlay surface.\0";
 
         case DDERR_NOTFLIPPABLE:
             // STRING: HYPERX 0x004bed38
-            return "An attempt has been made to flip a surface that is not flippable.";
+            return "An attempt has been made to flip a surface that is not flippable.\0";
 
         case DDERR_NOTLOCKED:
             // STRING: HYPERX 0x004becb8
-            return "Surface was not locked.  An attempt to unlock a surface that was not locked at all, or by this process, has been attempted.";
+            return "Surface was not locked.  An attempt to unlock a surface that was not locked at all, or by this process, has been attempted.\0";
 
         case DDERR_NOTPALETTIZED:
             // STRING: HYPERX 0x004bec80
-            return "The surface being used is not a palette-based surface.";
+            return "The surface being used is not a palette-based surface.\0";
 
         case DDERR_OVERLAYNOTVISIBLE:
             // STRING: HYPERX 0x004bec3c
-            return "Returned when GetOverlayPosition is called on a hidden overlay.";
+            return "Returned when GetOverlayPosition is called on a hidden overlay.\0";
 
         case DDERR_PRIMARYSURFACEALREADYEXISTS:
             // STRING: HYPERX 0x004bec04
-            return "This process already has created a primary surface.";
+            return "This process already has created a primary surface.\0";
 
         case DDERR_REGIONTOOSMALL:
             // STRING: HYPERX 0x004bebcc
-            return "Region passed to Clipper::GetClipList is too small.";
+            return "Region passed to Clipper::GetClipList is too small.\0";
 
         case DDERR_WRONGMODE:
             // STRING: HYPERX 0x004beb7c
-            return "This surface can not be restored because it was created in a different mode.";
+            return "This surface can not be restored because it was created in a different mode.\0";
 
         case D3DERR_BADMAJORVERSION:
             // STRING: HYPERX 0x004beb64
-            return "D3DERR_BADMAJORVERSION";
+            return "D3DERR_BADMAJORVERSION\0";
 
         case D3DERR_BADMINORVERSION:
             // STRING: HYPERX 0x004beb4c
-            return "D3DERR_BADMINORVERSION";
+            return "D3DERR_BADMINORVERSION\0";
 
         case D3DERR_EXECUTE_LOCKED:
             // STRING: HYPERX 0x004beb34
-            return "D3DERR_EXECUTE_LOCKED";
+            return "D3DERR_EXECUTE_LOCKED\0";
 
         case D3DERR_EXECUTE_NOT_LOCKED:
             // STRING: HYPERX 0x004beb18
-            return "D3DERR_EXECUTE_NOT_LOCKED";
+            return "D3DERR_EXECUTE_NOT_LOCKED\0";
 
         case D3DERR_EXECUTE_CREATE_FAILED:
             // STRING: HYPERX 0x004beaf8
-            return "D3DERR_EXECUTE_CREATE_FAILED";
+            return "D3DERR_EXECUTE_CREATE_FAILED\0";
 
         case D3DERR_EXECUTE_DESTROY_FAILED:
             // STRING: HYPERX 0x004bead8
-            return "D3DERR_EXECUTE_DESTROY_FAILED";
+            return "D3DERR_EXECUTE_DESTROY_FAILED\0";
 
         case D3DERR_EXECUTE_LOCK_FAILED:
             // STRING: HYPERX 0x004beabc
-            return "D3DERR_EXECUTE_LOCK_FAILED";
+            return "D3DERR_EXECUTE_LOCK_FAILED\0";
 
         case D3DERR_EXECUTE_UNLOCK_FAILED:
             // STRING: HYPERX 0x004bea9c
-            return "D3DERR_EXECUTE_UNLOCK_FAILED";
+            return "D3DERR_EXECUTE_UNLOCK_FAILED\0";
 
         case D3DERR_EXECUTE_FAILED:
             // STRING: HYPERX 0x004bea84
-            return "D3DERR_EXECUTE_FAILED";
+            return "D3DERR_EXECUTE_FAILED\0";
 
         case D3DERR_EXECUTE_CLIPPED_FAILED:
             // STRING: HYPERX 0x004bea64
-            return "D3DERR_EXECUTE_CLIPPED_FAILED";
+            return "D3DERR_EXECUTE_CLIPPED_FAILED\0";
 
         case D3DERR_TEXTURE_NO_SUPPORT:
             // STRING: HYPERX 0x004bea48
-            return "D3DERR_TEXTURE_NO_SUPPORT";
+            return "D3DERR_TEXTURE_NO_SUPPORT\0";
 
         case D3DERR_TEXTURE_CREATE_FAILED:
             // STRING: HYPERX 0x004bea28
-            return "D3DERR_TEXTURE_CREATE_FAILED";
+            return "D3DERR_TEXTURE_CREATE_FAILED\0";
 
         case D3DERR_TEXTURE_DESTROY_FAILED:
             // STRING: HYPERX 0x004bea08
-            return "D3DERR_TEXTURE_DESTROY_FAILED";
+            return "D3DERR_TEXTURE_DESTROY_FAILED\0";
 
         case D3DERR_TEXTURE_LOCK_FAILED:
             // STRING: HYPERX 0x004be9ec
-            return "D3DERR_TEXTURE_LOCK_FAILED";
+            return "D3DERR_TEXTURE_LOCK_FAILED\0";
 
         case D3DERR_TEXTURE_UNLOCK_FAILED:
             // STRING: HYPERX 0x004be9cc
-            return "D3DERR_TEXTURE_UNLOCK_FAILED";
+            return "D3DERR_TEXTURE_UNLOCK_FAILED\0";
 
         case D3DERR_TEXTURE_LOAD_FAILED:
             // STRING: HYPERX 0x004be9b0
-            return "D3DERR_TEXTURE_LOAD_FAILED";
+            return "D3DERR_TEXTURE_LOAD_FAILED\0";
 
         case D3DERR_TEXTURE_LOCKED:
             // STRING: HYPERX 0x004be998
-            return "D3DERR_TEXTURELOCKED";
+            return "D3DERR_TEXTURELOCKED\0";
 
         case D3DERR_TEXTURE_NOT_LOCKED:
             // STRING: HYPERX 0x004be97c
-            return "D3DERR_TEXTURE_NOT_LOCKED";
+            return "D3DERR_TEXTURE_NOT_LOCKED\0";
 
         case D3DERR_MATRIX_CREATE_FAILED:
             // STRING: HYPERX 0x004be95c
-            return "D3DERR_MATRIX_CREATE_FAILED";
+            return "D3DERR_MATRIX_CREATE_FAILED\0";
 
         case D3DERR_MATRIX_DESTROY_FAILED:
             // STRING: HYPERX 0x004be93c
-            return "D3DERR_MATRIX_DESTROY_FAILED";
+            return "D3DERR_MATRIX_DESTROY_FAILED\0";
 
         case D3DERR_MATRIX_SETDATA_FAILED:
             // STRING: HYPERX 0x004be91c
-            return "D3DERR_MATRIX_SETDATA_FAILED";
+            return "D3DERR_MATRIX_SETDATA_FAILED\0";
 
         case D3DERR_SETVIEWPORTDATA_FAILED:
             // STRING: HYPERX 0x004be8fc
-            return "D3DERR_SETVIEWPORTDATA_FAILED";
+            return "D3DERR_SETVIEWPORTDATA_FAILED\0";
 
         case D3DERR_MATERIAL_CREATE_FAILED:
             // STRING: HYPERX 0x004be8dc
-            return "D3DERR_MATERIAL_CREATE_FAILED";
+            return "D3DERR_MATERIAL_CREATE_FAILED\0";
 
         case D3DERR_MATERIAL_DESTROY_FAILED:
             // STRING: HYPERX 0x004be8bc
-            return "D3DERR_MATERIAL_DESTROY_FAILED";
+            return "D3DERR_MATERIAL_DESTROY_FAILED\0";
 
         case D3DERR_MATERIAL_SETDATA_FAILED:
             // STRING: HYPERX 0x004be89c
-            return "D3DERR_MATERIAL_SETDATA_FAILED";
+            return "D3DERR_MATERIAL_SETDATA_FAILED\0";
 
         case D3DERR_MATERIAL_GETDATA_FAILED:
             // STRING: HYPERX 0x004be87c
-            return "D3DERR_MATERIAL_GETDATA_FAILED";
+            return "D3DERR_MATERIAL_GETDATA_FAILED\0";
 
         case D3DERR_LIGHT_SET_FAILED:
             // STRING: HYPERX 0x004be860
-            return "D3DERR_LIGHT_SET_FAILED";
+            return "D3DERR_LIGHT_SET_FAILED\0";
 
         case D3DERR_SCENE_NOT_IN_SCENE:
             // STRING: HYPERX 0x004be844
-            return "D3DERR_SCENE_NOT_IN_SCENE";
+            return "D3DERR_SCENE_NOT_IN_SCENE\0";
 
         case D3DERR_SCENE_IN_SCENE:
             // STRING: HYPERX 0x004be82c
-            return "D3DERR_SCENE_IN_SCENE";
+            return "D3DERR_SCENE_IN_SCENE\0";
 
         case D3DERR_SCENE_BEGIN_FAILED:
             // STRING: HYPERX 0x004be810
-            return "D3DERR_SCENE_BEGIN_FAILED";
+            return "D3DERR_SCENE_BEGIN_FAILED\0";
 
         case 0x00000000:
             // STRING: HYPERX 0x004be7e8
-            return "No error.";
+            return "No error.\0";
 
         case D3DERR_SCENE_END_FAILED:
             // STRING: HYPERX 0x004be7cc
-            return "D3DERR_SCENE_END_FAILED";
+            return "D3DERR_SCENE_END_FAILED\0";
     }
 
     // STRING: HYPERX 0x004be7f4
-    return "Unrecognized error value.";
+    return "Unrecognized error value.\0";
 }
 
 // FUNCTION: HYPERX100 0x0047df10
