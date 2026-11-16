@@ -153,11 +153,14 @@ void RampObject::InitCollisionPlanes()
         Vec3 vFarMinD;
         Vec3 vFarMaxD;
         Vec3 vPoint;
+        // The last block transforms into its own points; the three above reuse vMax and vMin.
+        Vec3 vFarMaxOut;
+        Vec3 vFarMinOut;
 
-        m_transformC.TransformPoint(vFarMax, &vMax);
-        vFarMaxD = vMax;
-        m_transformC.TransformPoint(vFarMin, &vMin);
-        vFarMinD = vMin;
+        m_transformC.TransformPoint(vFarMax, &vFarMaxOut);
+        vFarMaxD = vFarMaxOut;
+        m_transformC.TransformPoint(vFarMin, &vFarMinOut);
+        vFarMinD = vFarMinOut;
         m_transformC.TransformPoint(vTipMin, &vPoint);
         vTipMinD = vPoint;
 
