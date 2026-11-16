@@ -482,7 +482,7 @@ KeyBitmapEntry g_aKeyBitmaps[50] = {
     { 0xdd, "keyrbrk" },
 };
 
-// Last in .bss, in this order: the key loops address these through neighbours and the next float.
+// The original's .bss order, last in the unit; the ddraw float after the keys bounds the key loops.
 Vec3         g_vPlaneSegmentDir                       = { 0 };
 char         g_szEmptyString[1]                       = { 0 };
 unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT] = { 0 };

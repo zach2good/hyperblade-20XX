@@ -2416,10 +2416,11 @@ Three things limit a data move:
 - A global defined in the unit that reads it can compile differently there. Defined in
   `collinteractorpool.cpp`, `short g_wCollInteractorPoolSize` cost `CollInteractorPool::Init` its
   match, so the original defined it elsewhere.
-- A unit's `.bss` starts with its dynamically initialised globals, which VC6 orders by name alone,
-  then its zeroed globals in definition order. The key-config arrays end `keyconfigscreen.cpp`'s
-  `.bss`, linked just before ddraw.cpp, and `g_flScreenDensityCmProjection` is named so it lands
-  first in ddraw.cpp's, where the binding loops bound on it.
+- A unit's `.bss` starts with its dynamically initialised globals, in an order the name alone sets
+  (not alphabetical, likely a hash), then its zeroed globals in definition order. The key-config
+  arrays end `keyconfigscreen.cpp`'s `.bss`, linked just before ddraw.cpp, and
+  `g_flScreenDensityCmProjection` is named so it lands first in ddraw.cpp's, where the binding loops
+  bound on it.
 
 ### Declarations and markers
 
