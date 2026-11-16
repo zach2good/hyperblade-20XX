@@ -504,6 +504,11 @@ PROBES = (
      "    m_pSpline = 0;",
      "    // probe\x01\n    m_pSpline = 0;"),
 
+    # A NUL in a text file.
+    ("check_text_hygiene.py", "src/planvm/cslideonrail.cpp",
+     "    m_pSpline = 0;",
+     "    // probe\x00\n    m_pSpline = 0;"),
+
     # A comment that runs past 100 columns where it could wrap.
     ("check_prose_width.py", "src/planvm/cslideonrail.cpp",
      "    m_pSpline = 0;",

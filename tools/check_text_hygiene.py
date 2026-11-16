@@ -1,8 +1,9 @@
 """Fail on a control character in the tree's text files.
 
 A script that writes source can put a raw control byte where an escape was meant, such as a
-backspace for a regex's word boundary or a 0x01 for a group reference. The byte is invisible in
-most editors and a reviewer reads past it. Tab, line feed and carriage return are allowed.
+backspace for a regex's word boundary, a 0x01 for a group reference or a NUL for `\0`.
+The byte is invisible in most editors and a reviewer reads past it. Tab, line feed and
+carriage return are allowed. A file the attributes mark `-text` is skipped.
 
     python tools/check_text_hygiene.py
 """
@@ -17,9 +18,17 @@ CONTROL = set(range(32)) - ALLOWED | {127}
 
 
 def tracked():
-    """Every tracked file; a git failure stops the check rather than passing it."""
-    out = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT, check=True)
-    return out.stdout.splitlines()
+    """Every tracked file the attributes call text; a git failure stops the check rather than
+    passing it."""
+    out = subprocess.run(["git", "ls-files", "--eol"], capture_output=True, text=True, cwd=ROOT,
+                         check=True)
+    files = []
+    for line in out.stdout.splitlines():
+        flags, path = line.split("\t", 1)
+        if "attr/-text" not in flags.split():
+            files.append(path)
+
+    return files
 
 
 def main():
@@ -27,10 +36,6 @@ def main():
     for path in tracked():
         with open(os.path.join(ROOT, path), "rb") as handle:
             data = handle.read()
-
-        # A NUL marks a binary file, such as an image.
-        if 0 in data:
-            continue
 
         for number, line in enumerate(data.splitlines(True), 1):
             found = sorted({byte for byte in line if byte in CONTROL})
