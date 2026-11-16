@@ -4,7 +4,7 @@
 #include "input/actionbinding.h"
 
 // GLOBAL: HYPERX 0x004c4208
-const ActionBinding g_aActionBindings[ACTION_BINDING_COUNT] = {
+ActionBinding g_aActionBindings[ACTION_BINDING_COUNT] = {
     { ACTION_BINDING_HELD | 0x0002, 0x00000000, 0x00000081, 0x08 },
     { ACTION_BINDING_UP | 0x0008, 0x00000002, 0x00000081, 0x08 },
     { ACTION_BINDING_UP | ACTION_BINDING_QUICK | 0x0008, 0x00000002, 0x00000081, 0x08 },

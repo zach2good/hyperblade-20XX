@@ -34,7 +34,7 @@ extern const float g_flGoalFrameWidth;
 extern float g_flGoalZoneHeight;
 
 // GLOBAL: HYPERX 0x004c2fec
-extern const unsigned int g_nGoalScoreDebounceMs;
+extern unsigned int g_nGoalScoreDebounceMs;
 
 // One unit by ten for the acting object, one by four for its partner.
 // GLOBAL: HYPERX 0x004c459c
@@ -1055,13 +1055,13 @@ Vec3* __cdecl CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshB
 extern float g_flGoalZoneHeight;
 float        g_flGoalZoneHeight = 5.0f;
 
-extern const unsigned int g_nGoalScoreDebounceMs;
-const unsigned int        g_nGoalScoreDebounceMs = 400;
-float                     g_flVelBoxSizeX        = 1.0f;
-float                     g_flVelBoxSizeZ        = 1.0f;
-float                     g_flVelBoxSizeY        = 4.0f;
-float                     g_flVelBoxDropY        = 4.0f;
-float                     g_flVelHitSpeedGate    = 50.0f;
+extern unsigned int g_nGoalScoreDebounceMs;
+unsigned int        g_nGoalScoreDebounceMs = 400;
+float               g_flVelBoxSizeX        = 1.0f;
+float               g_flVelBoxSizeZ        = 1.0f;
+float               g_flVelBoxSizeY        = 4.0f;
+float               g_flVelBoxDropY        = 4.0f;
+float               g_flVelHitSpeedGate    = 50.0f;
 
 extern float g_flCapsuleSelfRadius;
 float        g_flCapsuleSelfRadius = 0.5f;

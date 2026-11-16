@@ -366,7 +366,7 @@ int __cdecl KeyConfigDialog::Init(HWND hDlg)
 
 // A second pointer to the empty default name.
 // GLOBAL: HYPERX 0x004b3854
-extern char* g_pszKeyConfigDefaultName;
+extern char* const g_pszKeyConfigDefaultName;
 
 #define FLAG_SET 1
 

@@ -273,7 +273,7 @@ void InfoBar::UpdateOwnTeamDisplay()
 
     aDamage[1] = (int)pObject->m_stats.GetScalar(RATING_DAMAGE);
 
-    ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
+    const ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
 
     aDamage[2] = (int)pTeam->aRows[pReserves->anRow[0]].aStat[RATING_DAMAGE];
     aDamage[3] = (int)pTeam->aRows[pReserves->anRow[1]].aStat[RATING_DAMAGE];
@@ -417,7 +417,7 @@ void InfoBar::UpdateFoeTeamDisplay()
 
     aDamage[1] = (int)pObject->m_stats.GetScalar(RATING_DAMAGE);
 
-    ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
+    const ReserveRows* const pReserves = g_pGameEngine->GetReserveRows(pTeam);
 
     aDamage[2] = (int)pTeam->aRows[pReserves->anRow[0]].aStat[RATING_DAMAGE];
     aDamage[3] = (int)pTeam->aRows[pReserves->anRow[1]].aStat[RATING_DAMAGE];

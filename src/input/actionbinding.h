@@ -42,6 +42,6 @@ struct ActionBindingGroup
     unsigned short m_anKey[INPUT_SLOT_COUNT];  // 0x108
 };
 
-extern const ActionBinding g_aActionBindings[ACTION_BINDING_COUNT];
+extern ActionBinding g_aActionBindings[ACTION_BINDING_COUNT];
 
 #endif

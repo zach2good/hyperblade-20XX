@@ -17,7 +17,7 @@
 
 // The application identifier a hosted session is created under.
 // GLOBAL: HYPERX 0x004c0ec0
-extern const GUID g_guidNetApplication;
+extern GUID g_guidNetApplication;
 
 struct GameSession
 {

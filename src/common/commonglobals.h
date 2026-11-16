@@ -30,7 +30,7 @@ extern char* g_pEmptyStringData;
 extern char g_szEmptyString[1];
 
 // GLOBAL: HYPERX 0x004b2964
-extern const char* g_pszCaptionSeparator;
+extern const char* const g_pszCaptionSeparator;
 
 // Globals the compiler-generated static initialisers read and write.
 // GLOBAL: HYPERX 0x004b3860

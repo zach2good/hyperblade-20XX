@@ -1479,7 +1479,7 @@ extern const char* const g_pszPercentF;
 
 // The one the ratings reader pushes, from the same run of format pointers.
 // GLOBAL: HYPERX 0x004b3f0c
-extern const char* g_pszPercentD;
+extern const char* const g_pszPercentD;
 
 // And the short one, which the collision reader's component index takes.
 // GLOBAL: HYPERX 0x004b3f04
@@ -5674,7 +5674,7 @@ void GameEngine::SetTeammateMode(int nOn)
 
 // FUNCTION: HYPERX100 0x004e0010
 // FUNCTION: HYPERX 0x004883b0
-ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
+const ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
 {
     return &g_aFormationTable[pTeam->aSeat[1] + pTeam->aSeat[0] * 4];
 }

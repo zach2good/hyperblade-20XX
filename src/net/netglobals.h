@@ -65,7 +65,7 @@ extern int g_nDPlayLastError;
 
 // Whether animation frames are stored compressed. Set at build time and never written.
 // GLOBAL: HYPERX 0x004bcc10
-extern const unsigned int g_bMovePackingEnabled;
+extern unsigned int g_bMovePackingEnabled;
 
 // GLOBAL: HYPERX 0x004c1258
 extern struct DPlayError g_aDPlayErrors[31];

@@ -17,11 +17,11 @@ extern int g_nSavedSoftRenderer;
 extern int g_nFpsTextLength;
 
 // GLOBAL: HYPERX 0x004b3858
-extern const char* g_pszScanFormat;
+extern const char* const g_pszScanFormat;
 
 // The one-character scan format the config reader uses to look at a line's first token.
 // GLOBAL: HYPERX 0x004b3eec
-extern const char* g_pszCharFormat;
+extern const char* const g_pszCharFormat;
 
 // GLOBAL: HYPERX 0x004c2ddc
 extern int g_nNearestPaletteIndex;

@@ -17,7 +17,7 @@ struct TeamCardNames
 
 // The one-character string the config readers split a key from its value on.
 // GLOBAL: HYPERX 0x004b3f20
-extern const char* g_pszEqualsSign;
+extern const char* const g_pszEqualsSign;
 
 // GLOBAL: HYPERX 0x004d2170
 extern int g_nCountdownLastSecs;
@@ -77,7 +77,7 @@ extern unsigned char g_bSuppressRokId;
 
 // Indexed aSeat[1] + aSeat[0] * 4.
 // GLOBAL: HYPERX 0x004b3f44
-extern ReserveRows g_aFormationTable[16];
+extern const ReserveRows g_aFormationTable[16];
 
 // GLOBAL: HYPERX 0x004d096c
 extern int g_nSortedListTotal;

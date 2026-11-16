@@ -120,7 +120,7 @@ extern const char* const g_pszWaveExtension;
 
 // The version a model file must carry, 1.7.
 // GLOBAL: HYPERX 0x004b2d40
-extern struct FileVersion g_modelVersion;
+extern const struct FileVersion g_modelVersion;
 
 // GLOBAL: HYPERX 0x004ceed0
 extern GameApp g_gameApp;

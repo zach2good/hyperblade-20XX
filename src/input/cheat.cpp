@@ -390,7 +390,7 @@ int __cdecl GameApp::HandleMatchKeypress(unsigned int nKey)
                             pTeamDef = pEngine->m_pTeamA;
                         }
 
-                        ReserveRows* const pReserves = pEngine->GetReserveRows(pTeamDef);
+                        const ReserveRows* const pReserves = pEngine->GetReserveRows(pTeamDef);
                         pEntity->PostSceneEvent(MSG_SUBSTITUTE_DROMER, pReserves->anRow[nKey - '1']);
                     }
 

@@ -565,4 +565,4 @@ NetSendBuffer* PlayerBase::GetSendBufBase()
     return &m_sendBuf;
 }
 
-const unsigned int g_bMovePackingEnabled = 1;
+unsigned int g_bMovePackingEnabled = 1;

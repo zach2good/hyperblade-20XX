@@ -75,7 +75,7 @@ ColorPalette*      g_pColorPalette;
 const char* const  g_pszModelExtension       = "wbm";
 const char* const  g_pszWaveExtension        = "wav";
 const float        g_flCamWatchMidpointScale = 0.5f;
-FileVersion        g_modelVersion            = { 1, 7, 0, 0, 0 };
+const FileVersion  g_modelVersion            = { 1, 7, 0, 0, 0 };
 GameApp            g_gameApp(2);
 HDC                g_hSoftBackDC;
 HPALETTE           g_hSplashPalette;
@@ -83,7 +83,7 @@ AudioMgr*          g_pAudioMgr;
 int                g_hrRestoreResult;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with
 // no formation.
-ReserveRows g_aFormationTable[16] = {
+const ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } },
     { { 2, 3 } },
     { { 1, 3 } },
@@ -112,7 +112,7 @@ int                  g_aStationarySlots[STATIONARY_SLOTS] = { 0 };
 int                  g_nStationaryCount;
 
 // STRING: HYPERX 0x004c724c
-const char*                g_pszEqualsSign = "=";
+const char* const          g_pszEqualsSign = "=";
 unsigned char              g_bNetworkGame;
 unsigned char              g_bShowLightingInfo;
 HPEN                       g_hRadarPen;
@@ -220,7 +220,7 @@ LightDir                  g_lightDirs[3]       = {
 };
 Vec3                g_vLightDirExtra;
 RECT                g_rcBltDest;
-const char*         g_pszScanFormat     = "%s";
+const char* const   g_pszScanFormat     = "%s";
 extern const double g_dNormalizeEpsilon = 1e-07;
 extern const float  g_flZero            = 0.0f;
 int                 g_bExecuteSuppressed;
@@ -241,7 +241,7 @@ int                 g_nPlayerMode;
 unsigned char       g_bSuppressRokId;
 int                 g_nDPlayLastError = -1;
 // STRING: HYPERX 0x004bc410
-const char* g_pszCaptionSeparator = " ";
+const char* const g_pszCaptionSeparator = " ";
 // STRING: HYPERX 0x004c0d70
 const char*        g_pszClockFormat = "%d:%02d";
 unsigned char      g_bDragOff;
@@ -336,7 +336,7 @@ int                 g_nOptionAttackMode;
 struct MessageNode* g_pMessageHead;
 struct MessageNode* g_pMessageTail;
 // STRING: HYPERX 0x004bb818
-const char*        g_pszCharFormat = "%c";
+const char* const  g_pszCharFormat = "%c";
 int                g_nNetSetupControlId;
 const GUID         g_iidTextureSurface      = { 0x2cdcd9e0, 0x25a0, 0x11cf, { 0xa3, 0x1a, 0x00, 0xaa, 0x00, 0xb9, 0x33, 0x56 } };
 extern const float g_flCollisionPartDefault = 0.0f;
@@ -344,7 +344,7 @@ extern const float g_flZeroMeshBone         = 0.0f;
 int                g_nBitmapCacheCount;
 BitmapCacheEntry*  g_pBitmapCache;
 // STRING: HYPERX 0x004bb810
-const char*        g_pszAnimNameFormat = "%s";
+const char* const  g_pszAnimNameFormat = "%s";
 extern const float g_flZeroAnimClipSet = 0.0f;
 NodeOwner*         g_pMsgInteractorPool;
 char               g_szClockText[32];
@@ -404,11 +404,11 @@ char              g_szNetSetupStatus[256];
 #include "engine/object.h"
 #include "input/cheat.h"
 #include "planvm/plannode.h"
-extern const GUID g_guidNetApplication = { 0xe759bc83, 0x184d, 0x11cf, { 0xa4, 0x7c, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 } };
-char              g_bLoadingMode       = 1;
-int               g_bGamepadConfigLoaded;
-unsigned int      g_dwPrevJoyXVKey;
-unsigned int      g_dwPrevJoyYVKey;
+GUID         g_guidNetApplication = { 0xe759bc83, 0x184d, 0x11cf, { 0xa4, 0x7c, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 } };
+char         g_bLoadingMode       = 1;
+int          g_bGamepadConfigLoaded;
+unsigned int g_dwPrevJoyXVKey;
+unsigned int g_dwPrevJoyYVKey;
 
 int                g_nBackBufferPixelCount;
 unsigned char      g_bBottomUpDIB;
@@ -577,7 +577,7 @@ extern const float g_flSteerBoxTopY;
 
 int g_nFlipChainCount;
 
-const char* g_pszBitmapExtension = "bmp";
+extern const char* const g_pszBitmapExtension = "bmp";
 
 int g_bSoftTexPaletteBuilt;
 
@@ -699,7 +699,7 @@ const char* const        g_pszAnimFloatFormat = "%f";
 extern const char* const g_pszAnimTokenDelimiters;
 const char* const        g_pszAnimTokenDelimiters = "	";
 
-char* g_pszKeyConfigDefaultName = "";
+extern char* const g_pszKeyConfigDefaultName = "";
 
 // Zero until the packet carrier registers, and zero again if registration fails.
 HANDLE g_hPacketCarrierEvent;
@@ -763,7 +763,7 @@ Vec3 g_vBubbleOwnCentre;
 extern const char* const g_pszPercentF = "%f";
 
 // The ratings reader scans a whole number and stores it as a float.
-const char* g_pszPercentD = "%d";
+extern const char* const g_pszPercentD = "%d";
 
 extern const char* const g_pszPercentHd = "%hd";
 
