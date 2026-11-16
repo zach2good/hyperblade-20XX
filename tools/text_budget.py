@@ -3,7 +3,8 @@
 Reads build/out/HYPERX.map for our regions: game, libjpeg, and LIBCMT with the import thunks. On
 the original's side a region starts at its lowest address build/report.json pairs, through
 HYPERX_sym.map, and `.text$x` starts at the first `Unwind@` in symbols/functions.csv. Also prints
-the `.CRT$XCU` entry counts and each original entry no row pairs. Read only.
+the `.CRT$XCU` entry counts and each original entry no row pairs, then the data sections' sizes:
+`.rdata`, `.data` up to its last non-zero byte, and the zeroed rest of `.data`. Read only.
 
     python tools/text_budget.py
     python tools/text_budget.py --selftest
@@ -14,6 +15,7 @@ import re
 import sys
 from pathlib import Path
 
+import pefile
 import yaml
 from reccmp.formats import detect_image
 
@@ -129,6 +131,20 @@ def xcu_entries(image):
     return entries
 
 
+def initialised(data):
+    """The length of `data` up to and including its last non-zero byte."""
+    return len(data.rstrip(bytes(1)))
+
+
+def data_sizes(path):
+    """Answers (.rdata size, initialised .data size, zeroed .data size) for an image."""
+    image = pefile.PE(str(path), fast_load=True)
+    sections = {section.Name.rstrip(bytes(1)).decode(): section for section in image.sections}
+    data = sections[".data"]
+    filled = initialised(data.get_data()[:data.Misc_VirtualSize])
+    return sections[".rdata"].Misc_VirtualSize, filled, data.Misc_VirtualSize - filled
+
+
 def main():
     lines = (OUT / "HYPERX.map").read_text(errors="replace").splitlines()
     symbols = symbol_addresses((OUT / "HYPERX_sym.map").read_text(errors="replace").splitlines())
@@ -154,6 +170,11 @@ def main():
     for index, addr in enumerate(theirs):
         if addr not in paired:
             print("  entry %d, %#x, has no pair" % (index, addr))
+
+    theirs = data_sizes(user["targets"]["HYPERX"]["path"])
+    for name, size, original_size in zip((".rdata", ".data", "zeroed .data"),
+                                         data_sizes(OUT / "HYPERX.exe"), theirs):
+        print("%-16s %#10x %#10x %+8d" % (name, size, original_size, size - original_size))
 
     return 0
 
@@ -187,6 +208,8 @@ def selftest():
     pairs[0x402280] = 0x500300
     assert budget(found, symbols, pairs, 0x500380) == [
         ("game", 0x180, 0xff200), ("libjpeg", 0x80, 0x100), ("LIBCMT, imports", 0x100, 0x80)]
+    assert initialised(bytes([1, 0, 2, 0, 0])) == 3
+    assert initialised(bytes(4)) == 0
     print("selftest passed")
     return 0
 
