@@ -106,7 +106,11 @@ def mispaired_thunks(marked):
 
     from reccmp.types import ImageId
 
+    import foldcmp
+
     logging.disable(logging.CRITICAL)
+    # A thunk calls a fold twin, such as ??1String on FreeBuffer, so read it as HYPERX.exe does.
+    foldcmp.install()
     compare = check_folded.engine()
     faults = []
 
