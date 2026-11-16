@@ -5,7 +5,6 @@
 #include "widget.h"
 #include <ctype.h>
 #include <mbstring.h>
-#include "ui/holdingwidget.h"
 #include "engine/object.h"
 
 #define TEXT_INPUT_CAPACITY 0x50
@@ -14,7 +13,7 @@
 // FUNCTION: HYPERX100 0x004777b0
 // FUNCTION: HYPERX 0x0042bce0
 TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark)
-: HoldingWidget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
+: Widget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
     m_nLength   = 0;
     m_nCapacity = TEXT_INPUT_CAPACITY;
@@ -28,7 +27,7 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
 #ifdef HYPERX_V100
 // FUNCTION: HYPERX100 0x004778a0
 TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nCapacity, int nSoundAtMark)
-: HoldingWidget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
+: Widget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
     m_nCapacity = nCapacity;
     m_nLength   = 0;
@@ -72,4 +71,12 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
     }
 
     return 0;
+}
+
+int TextInputWidget::OnMouseDown()
+{
+    m_bDepressed = 1;
+    m_bDirty     = 1;
+
+    return 1;
 }

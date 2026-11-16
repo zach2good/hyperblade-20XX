@@ -3,13 +3,15 @@
 
 #include "widget.h"
 #include "common/staticassert.h"
-#include "ui/holdingwidget.h"
 
 // Slot zero of 0x004b2af4; no other table holds 0x0042bda0.
 // VTABLE: HYPERX 0x004b2af4
-class TextInputWidget : public HoldingWidget
+class TextInputWidget : public Widget
 {
 public:
+    // HoldingWidget::OnMouseDown's body, so the linker folds the two.
+    virtual int OnMouseDown();
+
     // Slots four and five hold KeyConfigDialog::SaveKeysAs, so both keep a stand-in.
     // FUNCTION: HYPERX100 0x004779a0
     virtual int OnMouseUp()
