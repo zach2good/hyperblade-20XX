@@ -4118,7 +4118,7 @@ extern int g_aaColorSaved[2][20];
 namespace PlanAction
 {
 
-// Its only caller passes a set flag: VC6 drops the check, but its call keeps the caller's EH frame.
+// Its only caller passes a set flag: VC6 drops the assert, but its call keeps the caller's EH frame.
 inline void PaintMaterials(EngineObject* pObject, int nColour, short nEnable)
 {
     if (nEnable == 0)
