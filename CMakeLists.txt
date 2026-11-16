@@ -494,11 +494,14 @@ function(hyperx_image target output)
     cmake_parse_arguments(PARSE_ARGV 2 arg "STAMP" "" "LINK_OPTIONS")
 
     add_executable(${target} WIN32 $<TARGET_OBJECTS:hyperx_objects> ${HYPERX_RES})
+    # The original's image version and stack; CMake writes VERSION as /version.
     set_target_properties(${target} PROPERTIES
         OUTPUT_NAME "${output}"
-        RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}")
+        RUNTIME_OUTPUT_DIRECTORY "${HYPERX_OUT}"
+        VERSION 4.2)
     target_link_libraries(${target} PRIVATE jpeg6a ${HYPERX_LIBS})
-    target_link_options(${target} PRIVATE ${arg_LINK_OPTIONS} "/MAP:${HYPERX_OUT}/${output}.map")
+    target_link_options(${target} PRIVATE ${arg_LINK_OPTIONS} "/STACK:0xc00000,0xc00000"
+                        "/MAP:${HYPERX_OUT}/${output}.map")
 
     if(arg_STAMP)
         add_custom_command(TARGET ${target} POST_BUILD

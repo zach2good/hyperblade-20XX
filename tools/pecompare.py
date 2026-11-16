@@ -16,6 +16,7 @@ import argparse
 import datetime
 import hashlib
 import os
+import struct
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -30,6 +31,19 @@ def timestamp(image):
     return "%#010x (%s)" % (stamp, moment.strftime("%Y-%m-%d %H:%M"))
 
 
+def optional_word(image, offset, size):
+    """A field of the optional header, `size` bytes at `offset`."""
+    return struct.unpack_from("<H" if size == 2 else "<I", image.data, image.optional + offset)[0]
+
+
+def image_version(image):
+    return "%d.%d" % (optional_word(image, 44, 2), optional_word(image, 46, 2))
+
+
+def stack(image):
+    return "%#x / %#x" % (optional_word(image, 72, 4), optional_word(image, 76, 4))
+
+
 def field_table(built, original):
     rows = [
         ("size", len(built.data), len(original.data)),
@@ -42,6 +56,8 @@ def field_table(built, original):
         ("section align", hex(built.section_alignment), hex(original.section_alignment)),
         ("file align", hex(built.file_alignment), hex(original.file_alignment)),
         ("subsystem", built.subsystem, original.subsystem),
+        ("image version", image_version(built), image_version(original)),
+        ("stack", stack(built), stack(original)),
         ("characteristics", hex(built.characteristics), hex(original.characteristics)),
     ]
     print("%-16s %-24s %-24s" % ("field", "built", "original"))
