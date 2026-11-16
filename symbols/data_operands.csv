@@ -20,6 +20,8 @@ address,name,function
 0x004ca418,__rgcode_page_info,0x004a3183
 0x004ca508,__rgcode_page_info$end,0x004a3183
 0x004ca810,__dosmaperr$table,0x004a772e
+0x004ca9b0,__fnames,0x004a8688
+0x004ca9b4,__fnames$name,0x004a8688
 0x004cac70,_tzset$cache,0x004a8ccc
 0x004cad18,_rterrs,0x004a9989
 0x004cad1c,_rterrs$rterrtxt,0x004a9989

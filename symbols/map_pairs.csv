@@ -43,6 +43,7 @@ address,symbol,size,object
 0x004a6de3,_get_int_arg,13,
 0x004a6df0,_get_int64_arg,16,
 0x004a6e00,_get_short_arg,14,
+0x004a8688,__get_fname,37,
 0x004a8ccc,__tzset_lk,647,
 0x004a8f74,__isindst_lk,428,
 0x004a9120,_cvtdate,320,
