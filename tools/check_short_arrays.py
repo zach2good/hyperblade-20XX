@@ -14,9 +14,6 @@ output is ranked candidates to read, and the exit code is 0 unless --strict.
     python tools/check_short_arrays.py            # candidates, strongest first
     python tools/check_short_arrays.py --all      # every array global and its gap
     python tools/check_short_arrays.py --strict   # exit non-zero when any candidate stands
-
-Known false candidate: `g_aDefaultKeyBindings`. The bytes after it are a second table of the
-same rows at 0x004c4c84, which nothing in the program references.
 """
 import argparse
 import glob
