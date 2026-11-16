@@ -30,14 +30,14 @@ affiliated with Activision or WizBang! Software Productions.
   <img src="progress/status.svg" alt="HyperBlade decompilation status" width="480">
 </p>
 
-**2,869 of 3,054 game functions match exactly: 511,751 bytes, 81.39 per cent of game code.**
+**2,899 of 3,054 game functions match exactly: 519,314 bytes, 82.59 per cent of game code.**
 
 | Measure | Value |
 | --- | --- |
 | Game functions, below `0x004a0000` | 3,054 |
-| **Matching exactly** | **2,869** |
-| Effective but not exact | 25 |
-| Exact bytes of game code | 511,751 of 628,779 |
+| **Matching exactly** | **2,899** |
+| Effective but not exact | 27 |
+| Exact bytes of game code | 519,314 of 628,779 |
 | Rows in `symbols/functions.csv`, the C runtime included | 4,121 |
 
 ## Requirements
