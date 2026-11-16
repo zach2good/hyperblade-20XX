@@ -1,4 +1,4 @@
-# LIBCMT data no symbol names: scope tables, throw records and small .data tables. The paired
+# LIBCMT data with no symbol: scope tables, throw records and small .data tables. The paired
 # function holds the original's address as an immediate; tools/foldcmp.py reads ours at the
 # same offset in our copy and pairs the two.
 # Also a game static with no atexit thunk to read it from, such as a plain-data local static.
@@ -28,10 +28,10 @@ address,name,function
 0x004caf3c,__lpdays$before,0x004a9120
 0x004ce6d8,Radar::DrawObject::s_logBrush,0x0043f960
 0x004d2c60,_time$data,0x004a16bb
-0x004d2c84,ctrlc_action,0x004a26cb
-0x004d2c88,ctrlbreak_action,0x004a26cb
-0x004d2c8c,abort_action,0x004a26cb
-0x004d2c90,term_action,0x004a26cb
+0x004d2c84,_ctrlc_action,0x004a26cb
+0x004d2c88,_ctrlbreak_action,0x004a26cb
+0x004d2c8c,_abort_action,0x004a26cb
+0x004d2c90,_term_action,0x004a26cb
 0x004d2c98,_namebuf0,0x004a2f84
 0x004d2ca8,_namebuf1,0x004a2eae
 0x004d2d70,__tzset_lk$data0,0x004a8ccc
