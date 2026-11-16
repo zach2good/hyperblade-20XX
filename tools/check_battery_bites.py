@@ -525,6 +525,11 @@ PROBES = (
      "and not start <= target <= end:",
      "and not start <= target < end:"),
 
+    # A FuncInfo read without its magic, so any `mov eax` before a `jmp` reads as a handler.
+    ("funclet_targets.py --selftest", "tools/funclet_targets.py",
+     "        if magic != FUNCINFO_MAGIC:",
+     "        if magic == FUNCINFO_MAGIC:"),
+
     # A map pair that ignores its row's object.
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "            if row.get(\"object\"):",

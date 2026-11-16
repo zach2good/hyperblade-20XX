@@ -216,6 +216,7 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `fold_candidates.py` | Rank the functions the original folds bodies onto, where this build does not. |
 | `frame.py` | Canonical frame slots for one function, on either side, as a map you can diff. |
 | `frame_search.py` | Search an /Od function's local names for the frame map the client has. |
+| `funclet_targets.py` | Name each unwind state's destructor on both sides, and print the states that differ. |
 | `gap_shape.py` | Split the remaining accuracy by the shape of each row's difference. |
 | `ghidra_api.py` | Thin wrapper over the GhidraMCP HTTP bridge. |
 | `global_drift.py` | Measure how far each annotated global sits from the address the client puts it at. |
