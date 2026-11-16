@@ -10,8 +10,8 @@ when every function in the listing comes back unoptimised.
     python tools/probe_asm.py src/foo.cpp --func Widget__LoadArenaFrames
 
 Exits 1 when the compile fails, when cl reports a mangled flag, or when every function in the
-listing is unoptimised although the flags ask for optimisation. Exits 2 when there is no build directory
-to read the flags from.
+listing is unoptimised although the flags ask for optimisation. Exits 2 when there is no build
+directory to read the flags from.
 """
 
 import argparse

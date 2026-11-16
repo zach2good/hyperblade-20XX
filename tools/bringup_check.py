@@ -10,8 +10,8 @@ the baseline has never seen. It exits 1 for the first and the last, so "nothing 
 reads as a pass.
 
 The baseline, tools/bringup_baseline.json, describes your build and your install, so it is
-git-ignored. --save writes it. The baseline records a function and an offset, never an address. The bring-up image is linked
-/OPT:REF, so every function moves when a translation unit is added.
+git-ignored. --save writes it. The baseline records a function and an offset, never an address. The
+bring-up image is linked /OPT:REF, so every function moves when a translation unit is added.
 
 A state that newly fails is re-run (--confirm times) and one clean re-run clears it, because
 the sweep's wild-call fault comes in bursts that clear on their own. A state marked "flaky" in

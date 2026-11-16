@@ -15,7 +15,8 @@ For each address this reports:
     python tools/claims.py 0x004183e0
     python tools/claims.py 0x004183e0 0x00418670 0x004189c0
 
-The Ghidra bridge that tools/ghidra_api.py names is optional; without it the source half still reports.
+The Ghidra bridge that tools/ghidra_api.py names is optional; without it the source half still
+reports.
 """
 import glob
 import re

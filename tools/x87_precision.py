@@ -1,4 +1,4 @@
-"""Heuristic: find rows where this build rounds an x87 value through memory and the client does not, or the reverse.
+"""Heuristic: rows where one side rounds an x87 value through memory and the other does not.
 
 The client often squares, scales or compares a value straight from `st(n)`. A rewrite that
 stores it to a `float` slot and loads it back rounds it to 24 bits first, so the result can
@@ -28,9 +28,9 @@ already a float. A difference on constants that are exact in either width change
     python tools/x87_precision.py --selftest       # the recorded pre-fix glide fixture
 
 Exits 2 when the report, this build, its map or the original is missing. --selftest reads
-tools/x87_precision_fixture.json, the events of UpdateTerrainPhysics before the glide precision
-fix, which squared y and z from frame copies and compared a live flTarget; it exits 1 when those sites stop
-reading as differences or when the client's own events compared with themselves do not.
+tools/x87_precision_fixture.json, the events of UpdateTerrainPhysics before the glide precision fix,
+which squared y and z from frame copies and compared a live flTarget; it exits 1 when those sites
+stop reading as differences or when the client's own events compared with themselves do not.
 """
 
 import argparse

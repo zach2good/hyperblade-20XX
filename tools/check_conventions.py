@@ -10,10 +10,10 @@ The tool reads two facts from the original and compares them with the declaratio
 - A read of ECX or EDX before any write says that register carries an argument. The scan stops
   at the first write, call or branch. `XOR reg,reg` and CDQ count as writes.
 
-A __fastcall parameter goes in a register when its type fits in one; a float, double or
-by-value aggregate goes on the stack and the next one that fits takes the register. A
-__fastcall member spends ECX on `this`. CALLBACK, WINAPI, APIENTRY and PASCAL are __stdcall. Aggregate sizes come from scanning each struct's definition;
-a type the scan cannot size counts as four bytes.
+A __fastcall parameter goes in a register when its type fits in one; a float, double or by-value
+aggregate goes on the stack and the next one that fits takes the register. A __fastcall member
+spends ECX on `this`. CALLBACK, WINAPI, APIENTRY and PASCAL are __stdcall. Aggregate sizes come from
+scanning each struct's definition; a type the scan cannot size counts as four bytes.
 
 Each finding names the check that fired. A wrong RET usually means a miscounted parameter
 list; a wrong register usually means the function should be __fastcall or a member.

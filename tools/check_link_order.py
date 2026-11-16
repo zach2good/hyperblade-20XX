@@ -1,4 +1,4 @@
-"""Fail when a marked `$E` thunk pairs with another unit's thunk, or with the wrong thunk of its own.
+"""Fail when a marked `$E` thunk pairs with another unit's thunk or the wrong one of its own.
 
 VC6 names a unit's initialiser and atexit thunks `$E1`, `$E2` and so on, so several objects
 define each name. reccmp pairs a by-name marker with the lowest unmatched function of that name,

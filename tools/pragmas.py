@@ -1,4 +1,4 @@
-"""The compiler pragma state a source file puts in force at each line, for the tools that move bodies.
+"""The pragma state a source file puts in force at each line, for the tools that move bodies.
 
 Only the pragmas that change what a body compiles to are tracked: optimize, auto_inline,
 inline_depth, inline_recursion, function, intrinsic, check_stack, pack, code_seg and data_seg.

@@ -50,6 +50,18 @@ def prose(path, lines):
     else:
         return
 
+    # A Python tool's module docstring is prose at column nought; its indented lines are examples.
+    if path.endswith(".py") and lines and lines[0].startswith('"""'):
+        for number, line in enumerate(lines, 1):
+            if number > 1 and line.startswith('"""'):
+                break
+
+            if not line.startswith((" ", "\t")):
+                yield number, line
+
+            if number > 1 and line.rstrip().endswith('"""'):
+                break
+
     # Text indented past the marker's one space is an example or a list continuation.
     for number, line in enumerate(lines, 1):
         text = line.lstrip()

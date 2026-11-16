@@ -69,7 +69,7 @@ which.
 | `check_id_notes.py` | Find plan handler id notes that sit on another handler's body. |
 | `check_include_hygiene.py` | Fails on three include faults a build does not report clearly. |
 | `check_ledger_figures.py` | Report a ledger row whose recorded score the report no longer gives. |
-| `check_link_order.py` | Fail when a marked `$E` thunk pairs with another unit's thunk, or with the wrong thunk of its own. |
+| `check_link_order.py` | Fail when a marked `$E` thunk pairs with another unit's thunk or the wrong one of its own. |
 | `check_lint.py` | Run reccmp's annotation linter and fail on everything except the one rule this tree rejects. |
 | `check_lost_markers.py` | Report reccmp markers that were in HEAD and are no longer anywhere under src. |
 | `check_macro_enum_clash.py` | Finds an enumerator that another file also defines as a macro. |
@@ -130,7 +130,7 @@ which.
 | `unused_includes.py` | Finds an `#include` whose header introduces no name the including file writes. |
 | `unused_params.py` | Finds a parameter the body never names and no `(void)` cast admits. |
 | `view_classes.py` | Find classes that are the same class declared twice. |
-| `x87_precision.py` | Heuristic: find rows where this build rounds an x87 value through memory and the client does not, or the reverse. |
+| `x87_precision.py` | Heuristic: rows where one side rounds an x87 value through memory and the other does not. |
 
 ## Other checkers
 
@@ -239,7 +239,7 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `plan_graph.py` | Decode a compiled plan file into named behaviours, messages and actions. |
 | `plan_tables.py` | The plan handler registrations in src/planvm/planvm.cpp, with their indices resolved. |
 | `pointer_puns.py` | Counts `*(int*)&X` puns where X is a pointer or a four byte integer, the cases that are cruft. |
-| `pragmas.py` | The compiler pragma state a source file puts in force at each line, for the tools that move bodies. |
+| `pragmas.py` | The pragma state a source file puts in force at each line, for the tools that move bodies. |
 | `prior_work.py` | Reports everything already written down about an address, before you open it. |
 | `probe_asm.py` | Compile one source file to a `/FAs` listing with the build's own flags. |
 | `prove_neutral.py` | Prove a change moved no bytes, by holding every row against a snapshot taken before it. |
