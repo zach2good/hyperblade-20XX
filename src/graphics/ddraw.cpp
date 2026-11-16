@@ -578,6 +578,7 @@ BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
 // FUNCTION: HYPERX 0x00439ec0
 char* DDraw::ErrorToString(int hr)
 {
+    // Each literal's extra NUL gives it the original's padding in .data.
     switch (hr)
     {
         case DDERR_OUTOFMEMORY:
