@@ -537,8 +537,8 @@ PROBES = (
 
     # A frame census that stops at an EH prologue's first push.
     ("frame.py --selftest", "tools/frame.py",
-     "        if instruction.mnemonic == \"push\" and (pushed in SAVED or pushed in EH_PUSHES",
-     "        if instruction.mnemonic == \"push\" and (pushed in SAVED"),
+     "        elif framed and not handler and operands.startswith(\"0x\"):",
+     "        elif operands.startswith(\"0x\"):"),
 
     # A free_slots.csv row that excuses nothing.
     ("check_member_owner.py", "symbols/free_slots.csv",

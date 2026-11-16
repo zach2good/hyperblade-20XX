@@ -45,7 +45,7 @@ FUNCTIONS = os.path.join(ROOT, "symbols", "functions.csv")
 DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
-EH_PUSHES = ("-1", "0xffffffff", "eax")
+EH_FRAME = ("-1", "0xffffffff")
 
 
 
@@ -68,20 +68,40 @@ def reserved(code):
 
 def settled(code):
     """ESP relative to the entry, once the prologue's register pushes are done. A C++ EH frame's
-    `push -1`, `push <handler>` and `push eax` of the old fs:[0] count as prologue too."""
+    `push -1`, then its `push <handler>`, and the `push eax` of the old fs:[0] count as prologue
+    too; outside such a frame, an immediate or EAX pushed early is a call's argument."""
     depth = 0
+    framed = False
+    handler = False
+    linked = False
     for instruction in code:
-        pushed = instruction.op_str
-        if instruction.mnemonic == "push" and (pushed in SAVED or pushed in EH_PUSHES
-                                               or pushed.startswith("0x")):
-            depth -= 4
+        mnemonic = instruction.mnemonic
+        operands = instruction.op_str
+        if mnemonic == "mov" and operands.endswith("fs:[0]"):
+            linked = True
             continue
-        if instruction.mnemonic == "sub" and instruction.op_str.startswith("esp,"):
-            depth -= int(instruction.op_str.split(",")[1], 0)
+
+        if mnemonic == "sub" and operands.startswith("esp,"):
+            depth -= int(operands.split(",")[1], 0)
             continue
-        if instruction.mnemonic in ("mov", "lea", "xor", "test", "cmp"):
+
+        if mnemonic in ("mov", "lea", "xor", "test", "cmp"):
             continue
-        break
+
+        if mnemonic != "push":
+            break
+
+        if operands in EH_FRAME:
+            framed = True
+        elif framed and not handler and operands.startswith("0x"):
+            handler = True
+        elif linked and operands == "eax":
+            linked = False
+        elif operands not in SAVED:
+            break
+
+        depth -= 4
+
     return depth
 
 
@@ -224,6 +244,9 @@ def selftest():
     plain = [Instruction("push", "ebx"), Instruction("sub", "esp, 0x10"),
              Instruction("call", "0x401000")]
     assert settled(plain) == -0x14, settled(plain)
+    argument = [Instruction("push", "esi"), Instruction("push", "0x68"), Instruction("push", "eax"),
+                Instruction("call", "0x401000")]
+    assert settled(argument) == -4, settled(argument)
     framed = [Instruction("push", "ebp"), Instruction("mov", "ebp, esp"), Instruction("push", "-1"),
               Instruction("push", "0x4ac990"), Instruction("mov", "eax, dword ptr fs:[0]"),
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
