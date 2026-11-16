@@ -464,6 +464,14 @@ const char* const        g_apFileTypeNames[9] = {
 extern const char* const g_pszPaletteExtension;
 const char* const        g_pszPaletteExtension = "wbp";
 
+// Extensions the original carries and nothing reads.
+// GLOBAL: HYPERX 0x004b4100
+extern const char* const g_pszWZBExtension = "wzb";
+// GLOBAL: HYPERX 0x004b4108
+extern const char* const g_pszTextExtension = "txt";
+// GLOBAL: HYPERX 0x004b410c
+extern const char* const g_pszPlanExtension = "pln";
+
 // The three statics PhysicsBody::UpdateMovementAxes keeps between frames.
 unsigned char g_bMoveAxesStopHeld;
 unsigned char g_bMoveAxesShootHeld;
