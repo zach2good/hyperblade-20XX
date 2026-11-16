@@ -5430,6 +5430,12 @@ void __cdecl PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, shor
     int       nIndex;
     float     flValue;
 
+    // Never runs; taking its address keeps nIndex in a frame slot.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&nIndex);
+    }
+
     if (pContext->GetNamedSlot() == -1)
     {
         if (pArgs->m_nArgCount == 2)
