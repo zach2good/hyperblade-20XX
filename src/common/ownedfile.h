@@ -13,10 +13,7 @@ struct OwnedFile
         m_file.m_fd = 0;
     }
 
-    ~OwnedFile()
-    {
-        m_file.Close();
-    }
+    ~OwnedFile();
 
     FileObj m_file;
 };

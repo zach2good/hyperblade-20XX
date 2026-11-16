@@ -154,6 +154,7 @@ set(HYPERX_SOURCES
     src/graphics/colorpalette.cpp
     src/graphics/gdi.cpp
     src/common/fileobj.cpp
+    src/common/ownedfile.cpp
     src/anim/animscripttable.cpp
     src/anim/animclipentry.cpp
     src/anim/animdb.cpp
