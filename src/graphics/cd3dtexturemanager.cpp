@@ -377,6 +377,12 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
 
                                 const unsigned int nHigh = pSoftTex->GetHeight();
 
+                                // Never runs; taking its address keeps nHigh in a frame slot.
+                                if (0)
+                                {
+                                    RELEASE_ASSERT((int)&nHigh);
+                                }
+
                                 const int nHighLess = nHigh - 1;
 
                                 nScaledWidth = pFace->GetScaledWidth();
