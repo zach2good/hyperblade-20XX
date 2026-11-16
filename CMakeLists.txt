@@ -153,8 +153,8 @@ set(HYPERX_SOURCES
     src/common/flatbehaviorobject.cpp
     src/graphics/colorpalette.cpp
     src/graphics/gdi.cpp
-    src/common/fileobj.cpp
     src/common/ownedfile.cpp
+    src/common/fileobj.cpp
     src/anim/animscripttable.cpp
     src/anim/animclipentry.cpp
     src/anim/animdb.cpp
