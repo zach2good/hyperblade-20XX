@@ -128,7 +128,7 @@ int DSoundMgr::Init(HWND hWindow)
 
         return 1;
     }
-    catch (char* pszMessage)
+    catch (const char* pszMessage)
     {
         g_gameApp.Error(pszMessage);
 
