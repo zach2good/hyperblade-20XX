@@ -153,7 +153,7 @@ def census(code, base):
             slots[offset].append((instruction.address, text))
         listing.append((instruction.address, text, offsets, depth))
         register = instruction.op_str
-        if instruction.mnemonic == "push" and register in SAVED and depth <= frame:
+        if instruction.mnemonic == "push" and register in SAVED and depth == frame:
             if saves_register(code, position, register):
                 frame -= 4
                 saves.append(register)
@@ -175,7 +175,9 @@ def saves_register(code, position, register):
         if ahead.mnemonic.startswith("j"):
             continue
         if ahead.op_str.startswith(register + ","):
-            return ahead.mnemonic in ("mov", "lea", "xor", "movzx", "movsx")
+            source = ahead.op_str.split(",", 1)[1]
+            return (ahead.mnemonic in ("mov", "lea", "xor", "movzx", "movsx")
+                    and register not in source)
         if register in ahead.op_str:
             return False
     return False
@@ -366,6 +368,17 @@ def selftest():
             Instruction("mov", "eax, dword ptr [esp + 0x10]", 5)]
     arrived = census(arms, -0xc)[1][5][2]
     assert arrived == [4], arrived
+    # A mid-body save moves the frame a call returns to, and its pop moves it back; a reload of
+    # the pushed register through itself is an argument.
+    saved = [Instruction("sub", "esp, 8", 0), Instruction("push", "ebx", 1),
+             Instruction("mov", "ebx, eax", 2), Instruction("call", "0x401000", 3),
+             Instruction("mov", "eax, dword ptr [esp + 0x10]", 4), Instruction("pop", "ebx", 5),
+             Instruction("call", "0x401000", 6),
+             Instruction("mov", "eax, dword ptr [esp + 0x10]", 7)]
+    depths = [entry[2] for entry in census(saved, -8)[1]]
+    assert depths[4] == [4] and depths[7] == [8], depths
+    reload = [Instruction("push", "esi"), Instruction("mov", "esi, dword ptr [esi + 4]")]
+    assert not saves_register(reload, 0, "esi")
 
     plain = [Instruction("push", "ebx"), Instruction("sub", "esp, 0x10"),
              Instruction("call", "0x401000")]
