@@ -217,13 +217,11 @@ def main():
     where = tablesHolding(set(row[0] for row in found) | set(row[0] for row in free),
                           known)
     wrong = []
+    used = set()
     unpinned = 0
 
     for address, klass, name, method in sorted(found):
         owners = [known.get(table) for table in where.get(address, [])]
-
-        if address in accepted:
-            continue
 
         if not [owner for owner in owners if owner]:
             unpinned += 1
@@ -235,6 +233,10 @@ def main():
             continue
 
         if [owner for owner in owners if owner and owner in ancestry(klass, derived)]:
+            continue
+
+        if address in accepted:
+            used.add(address)
             continue
 
         wrong.append((address, klass, method, name, where.get(address, []), owners))
@@ -249,12 +251,13 @@ def main():
     loose = []
 
     for address, name, home in sorted(free):
-        if address in accepted:
-            continue
-
         owners = [known.get(table) for table in where.get(address, [])]
 
         if [owner for owner in owners if owner]:
+            if address in accepted:
+                used.add(address)
+                continue
+
             loose.append((address, name, home,
                           sorted(set(owner for owner in owners if owner))))
 
@@ -267,6 +270,11 @@ def main():
     print("%d marked free function%s, %d accepted by symbols/free_slots.csv, %d in a named table"
           % (len(free), "" if len(free) == 1 else "s", len(accepted), len(loose)))
 
+    # A row the checker never needs describes a move already made.
+    unused = sorted(set(accepted) - used)
+    for address in unused:
+        print("symbols/free_slots.csv  0x%08x excuses nothing; drop the row" % address)
+
     if wrong:
         print("The table that holds the address names the class, not what the body does.")
 
@@ -274,7 +282,7 @@ def main():
         print("Make each a member of the class whose table holds it, or give it a row in")
         print("symbols/free_slots.csv saying what blocks that.")
 
-    if wrong or loose:
+    if wrong or loose or unused:
         return 1
 
     return 0

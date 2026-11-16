@@ -540,6 +540,11 @@ PROBES = (
      "        if instruction.mnemonic == \"push\" and (pushed in SAVED or pushed in EH_PUSHES",
      "        if instruction.mnemonic == \"push\" and (pushed in SAVED"),
 
+    # A free_slots.csv row that excuses nothing.
+    ("check_member_owner.py", "symbols/free_slots.csv",
+     "address,slot_of,reason\n",
+     "address,slot_of,reason\n0x00401000,Nobody,\"probe\"\n"),
+
     # A FuncInfo read without its magic, so any `mov eax` before a `jmp` reads as a handler.
     ("funclet_targets.py --selftest", "tools/funclet_targets.py",
      "        if magic != FUNCINFO_MAGIC:",
