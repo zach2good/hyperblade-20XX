@@ -5488,6 +5488,12 @@ void GameEngine::SetScreenSize(int nStep)
 
         const int nBufferWidth = g_nBackBufferWidth;
 
+        // Never runs; taking its address keeps nBufferWidth in a frame slot.
+        if (0)
+        {
+            RELEASE_ASSERT((int)&nBufferWidth);
+        }
+
         nStep += SCREEN_TWELFTHS_MIN;
 
         const int nWidth  = nBufferWidth * nStep / 12;
