@@ -267,8 +267,10 @@ def main():
 
     print("%d marked member%s, %d in no named table, %d on the wrong class"
           % (len(found), "" if len(found) == 1 else "s", unpinned, len(wrong)))
-    print("%d marked free function%s, %d accepted by symbols/free_slots.csv, %d in a named table"
-          % (len(free), "" if len(free) == 1 else "s", len(accepted), len(loose)))
+    print("%d marked free function%s, %d in a named table; "
+          "%d symbols/free_slots.csv row%s, %d unused"
+          % (len(free), "" if len(free) == 1 else "s", len(loose), len(accepted),
+             "" if len(accepted) == 1 else "s", len(set(accepted) - used)))
 
     # A row the checker never needs describes a move already made.
     unused = sorted(set(accepted) - used)

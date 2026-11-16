@@ -69,11 +69,13 @@ def reserved(code):
 def settled(code):
     """ESP relative to the entry, once the prologue's register pushes are done. A C++ EH frame's
     `push -1`, then its `push <handler>`, and the `push eax` of the old fs:[0] count as prologue
-    too; outside such a frame, an immediate or EAX pushed early is a call's argument."""
+    too; outside such a frame, an immediate or EAX pushed early is a call's argument. The frame
+    opens the function, after `push ebp` at most, and a `push ecx` there reserves four bytes."""
     depth = 0
     framed = False
     handler = False
     linked = False
+    pushes = []
     for instruction in code:
         mnemonic = instruction.mnemonic
         operands = instruction.op_str
@@ -91,15 +93,19 @@ def settled(code):
         if mnemonic != "push":
             break
 
-        if operands in EH_FRAME:
+        opening = pushes in ([], ["ebp"])
+        if operands in EH_FRAME and opening:
             framed = True
         elif framed and not handler and operands.startswith("0x"):
             handler = True
         elif linked and operands == "eax":
             linked = False
+        elif operands == "ecx" and opening:
+            pass
         elif operands not in SAVED:
             break
 
+        pushes.append(operands)
         depth -= 4
 
     return depth
@@ -247,6 +253,15 @@ def selftest():
     argument = [Instruction("push", "esi"), Instruction("push", "0x68"), Instruction("push", "eax"),
                 Instruction("call", "0x401000")]
     assert settled(argument) == -4, settled(argument)
+    # An EAX pushed without the fs:[0] load is an argument, and so is a -1 after a saved push.
+    unlinked = [Instruction("push", "esi"), Instruction("push", "eax"),
+                Instruction("call", "0x401000")]
+    assert settled(unlinked) == -4, settled(unlinked)
+    late = [Instruction("push", "esi"), Instruction("push", "-1"), Instruction("call", "0x401000")]
+    assert settled(late) == -4, settled(late)
+    reserve = [Instruction("push", "ecx"), Instruction("push", "ebx"),
+               Instruction("call", "0x401000")]
+    assert settled(reserve) == -8, settled(reserve)
     framed = [Instruction("push", "ebp"), Instruction("mov", "ebp, esp"), Instruction("push", "-1"),
               Instruction("push", "0x4ac990"), Instruction("mov", "eax, dword ptr fs:[0]"),
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
