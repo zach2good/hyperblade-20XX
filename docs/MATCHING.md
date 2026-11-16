@@ -2199,9 +2199,10 @@ constructor.
 
 A trylevel the client raises that this build does not is a member with a destructor. VC6 raises
 the state once per constructed member whose type has a destructor, even an empty one. Wrap plain
-aggregate members to give them one, `struct RadarRect : RECT { ~RadarRect() {} };`, above the
+aggregate members to give them one, `struct RadarPoint : POINT { ~RadarPoint() {} };`, above the
 class's `VTABLE` marker. A constructor diff that is only the trylevel, or a destructor with an
-unexplained register swap, is this. Example: `Radar::Radar`.
+unexplained register swap, is this. Example: `Radar::Radar`. `python tools/funclet_targets.py`
+names each state's destructor and object, so it shows which members carry one.
 
 A local whose state goes to 0 before `String::Reserve` and to 1 before its next call is a
 `PathString`, `PathString strPath(n);`, with the next call its own statement. Example:

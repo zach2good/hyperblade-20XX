@@ -525,6 +525,11 @@ PROBES = (
      "and not start <= target <= end:",
      "and not start <= target < end:"),
 
+    # Object operands compared without reading the original's addresses as ours.
+    ("funclet_targets.py --selftest", "tools/funclet_targets.py",
+     "        return \"%#x\" % pairs.get(addr, addr)",
+     "        return \"%#x\" % addr"),
+
     # A FuncInfo read without its magic, so any `mov eax` before a `jmp` reads as a handler.
     ("funclet_targets.py --selftest", "tools/funclet_targets.py",
      "        if magic != FUNCINFO_MAGIC:",

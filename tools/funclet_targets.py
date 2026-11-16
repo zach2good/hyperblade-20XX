@@ -4,7 +4,9 @@ A function with a C++ EH frame pushes `push -1; push <handler>` near its start, 
 loads `mov eax, <FuncInfo>` in `.text$x`, whose unwind map lists one action per state. An action's
 first `call` or `jmp` is the destructor it runs. A state matches when build/report.json pairs the
 original's destructor with ours, or with a copy HYPERX.exe folds ours with. The rest print grouped
-by the pair of names, with a count, and so do parents whose state counts differ. Read only.
+by the pair of names, with a count, and so do parents whose state counts differ. A state whose
+destructors pair but whose object operand differs, another frame slot or member, prints on its
+own. Read only.
 
     python tools/funclet_targets.py
     python tools/funclet_targets.py --list      # also each differing state's parent
@@ -38,26 +40,45 @@ CALL = 0xE8
 BRANCH_WINDOW = 32
 DISASSEMBLER = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
 
+ADDRESS = re.compile(r"0x[0-9a-f]{6,8}")
+
 SECTION_LINE = re.compile(r"^ 0001:([0-9a-f]{8}) ([0-9a-f]{8})H \.text\$x\s")
 
 
 def first_branch(image, addr):
-    """Answers the target of the action's first `call` or `jmp`, or None."""
+    """Answers the target of the action's first `call` or `jmp`, or None, and the instructions
+    before it, which name the object: a `lea ecx, [ebp - N]` slot or an `add ecx, N` member. A
+    conditional jump inside the action keeps its mnemonic only, since its target never pairs."""
     code = image.read(addr, BRANCH_WINDOW)
+    before = []
     for inst in DISASSEMBLER.disasm(code, addr):
         if inst.mnemonic in ("call", "jmp"):
             if inst.op_str.startswith("0x"):
-                return int(inst.op_str, 16)
+                return int(inst.op_str, 16), tuple(before)
 
-            return None
+            return None, tuple(before)
 
-    return None
+        if inst.mnemonic.startswith("j"):
+            before.append(inst.mnemonic)
+        else:
+            before.append("%s %s" % (inst.mnemonic, inst.op_str))
+
+    return None, tuple(before)
+
+
+def mapped(operands, pairs):
+    """Answers the original's instructions with each address it names read as our paired one."""
+    def ours(found):
+        addr = int(found.group(0), 16)
+        return "%#x" % pairs.get(addr, addr)
+
+    return tuple(ADDRESS.sub(ours, line) for line in operands)
 
 
 def unwind_targets(image, funclets_start, funclets_end, starts):
-    """Answers {parent function: [each state's destructor, or None]} for every handler in the
-    funclet range whose FuncInfo carries the magic and whose parent pushes it. The parent is the
-    function in the sorted `starts` that holds the push."""
+    """Answers {parent function: [each state's (destructor, object operands)]} for each handler
+    in the funclet range whose FuncInfo carries the magic and whose parent pushes it. The parent
+    is the function in the sorted `starts` that holds the push."""
     funclets = image.read(funclets_start, funclets_end - funclets_start)
     text = image.read(TEXT_START, funclets_start - TEXT_START)
     found = {}
@@ -82,7 +103,7 @@ def unwind_targets(image, funclets_start, funclets_end, starts):
         targets = []
         for state in range(states):
             action = struct.unpack("<iI", image.read(unwind_map + 8 * state, 8))[1]
-            targets.append(first_branch(image, action) if action else None)
+            targets.append(first_branch(image, action) if action else (None, ()))
 
         found[starts[bisect.bisect_right(starts, TEXT_START + push) - 1]] = targets
 
@@ -101,8 +122,10 @@ def funclet_range(map_path):
 
 def differing(theirs, ours, pairs, twins):
     """Answers (original parent, state, original target, our target) for each state whose
-    destructors don't pair, through `twins`, which maps our address to its fold group, and
-    (original parent, None, their count, our count) for a parent whose state counts differ."""
+    destructors don't pair, through `twins`, which maps our address to its fold group; the same
+    with the two sides' object operands for a state whose destructors pair but whose objects
+    differ; and (original parent, None, their count, our count) for a parent whose state counts
+    differ."""
     found = []
     for parent, targets in theirs.items():
         mine = ours.get(pairs.get(parent))
@@ -113,13 +136,15 @@ def differing(theirs, ours, pairs, twins):
             found.append((parent, None, len(targets), len(mine)))
             continue
 
-        for state, (orig, recomp) in enumerate(zip(targets, mine)):
+        for state, ((orig, theirs_object), (recomp, our_object)) in enumerate(zip(targets, mine)):
             if orig is None and recomp is None:
                 continue
 
             group = twins.get(recomp, {recomp})
             if not any(pairs.get(orig) == copy for copy in group):
                 found.append((parent, state, orig, recomp))
+            elif mapped(theirs_object, pairs) != our_object:
+                found.append((parent, state, theirs_object, our_object))
 
     return found
 
@@ -157,6 +182,11 @@ def main():
         if state is None:
             print("state counts differ: %s has %d, ours %d"
                   % (names.get(parent, "%#x" % parent), orig, recomp))
+            continue
+
+        if isinstance(orig, tuple):
+            print("object differs: %s state %d: %s / %s"
+                  % (names.get(parent, "%#x" % parent), state, "; ".join(orig), "; ".join(recomp)))
             continue
 
         key = (names.get(orig, "%#x" % orig if orig else "-"),
@@ -211,16 +241,26 @@ def selftest():
                    0x403000: words(FUNCINFO_MAGIC, 2, 0x403100),
                    0x403100: words(0, 0x402000, 0, 0)})
     found = unwind_targets(image, 0x402000, 0x402000 + len(funclets), [0x400000, 0x401000])
-    assert found == {0x401000: [0x401100, None]}, found
+    assert found == {0x401000: [(0x401100, ()), (None, ())]}, found
 
     # Our copy pairs; then our destructor is another that folds with the paired one.
-    pairs = {0x401000: 0x501000, 0x401100: 0x501100}
-    assert differing(found, {0x501000: [0x501100, None]}, pairs, {}) == []
+    nothing = (None, ())
+    pairs = {0x401000: 0x501000, 0x401100: 0x501100, 0x4D0000: 0x5D0000}
+    assert differing(found, {0x501000: [(0x501100, ()), nothing]}, pairs, {}) == []
     twins = {0x501200: {0x501100, 0x501200}}
-    assert differing(found, {0x501000: [0x501200, None]}, pairs, twins) == []
+    assert differing(found, {0x501000: [(0x501200, ()), nothing]}, pairs, twins) == []
     expected = [(0x401000, 0, 0x401100, 0x501300)]
-    assert differing(found, {0x501000: [0x501300, None]}, pairs, twins) == expected
-    assert differing(found, {0x501000: [0x501100]}, pairs, {}) == [(0x401000, None, 2, 1)]
+    assert differing(found, {0x501000: [(0x501300, ()), nothing]}, pairs, twins) == expected
+    assert differing(found, {0x501000: [(0x501100, ())]}, pairs, {}) == [(0x401000, None, 2, 1)]
+
+    # The same destructor on another member is a difference; a paired address in the operand isn't.
+    member = {0x401000: [(0x401100, ("add ecx, 0xe8",)), nothing]}
+    moved = {0x501000: [(0x501100, ("add ecx, 0x114",)), nothing]}
+    expected = [(0x401000, 0, ("add ecx, 0xe8",), ("add ecx, 0x114",))]
+    assert differing(member, moved, pairs, {}) == expected
+    named = {0x401000: [(0x401100, ("mov ecx, 0x4d0000",)), nothing]}
+    ours = {0x501000: [(0x501100, ("mov ecx, 0x5d0000",)), nothing]}
+    assert differing(named, ours, pairs, {}) == []
     print("selftest passed")
     return 0
 
