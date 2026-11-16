@@ -10,4 +10,4 @@ SHORT,0x004d0654,g_pFaceRecords,"0x004d0658 is PlayerObject::UpdateRenderSlotTra
 SHORT,0x004d2bc8,g_flDotPitchInchModelFile,"The last GLOBAL before LIBCMT's own data: the name buffer, the time zone state and the multibyte tables that CRT code reaches. The library is linked, not written."
 SHORT,0x004cb5fc,g_dwPrevJoyYVKey,"0x004cb668 is AnimPlayer::ComputeScale's function-scope static TransformObject, with its guard byte at 0x004cb6e4."
 SHORT,0x004d06e0,g_flRokBoneShiftZ,"0x004d06e8 is RokObject::ApplyRenderSlotPose's function-scope static TransformObject, with its guard byte at 0x004d0764."
-BOUND,0x004cb7d8,g_anKeyConfigKeys,"The two loops end at the array's own end, ten keys. The original keeps g_flScreenDotsPerCmProjection there, which this build places elsewhere; the bound is layout, not a record."
+BOUND,0x004cb7d8,g_anKeyConfigKeys,"The two loops end at the array's own end, ten keys. The bound is g_flScreenDensityCmProjection, first in the next unit's .bss; layout, not a record."

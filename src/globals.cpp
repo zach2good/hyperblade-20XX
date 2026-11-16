@@ -482,12 +482,6 @@ const float        g_flDialogFloatDefault = 0.0f;
 
 extern const char* const g_pszDialogFloatFormat = "%f";
 
-// Contiguous in the image: the key-config constructor bounds its loops on the object that follows.
-Vec3         g_vPlaneSegmentDir                       = { 0 };
-char         g_szEmptyString[1]                       = { 0 };
-unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT] = { 0 };
-unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT]     = { 0 };
-
 // The animation peek sheet's "Enable Smart Cam" box.
 unsigned char g_bSmartCamEnabled = 0;
 

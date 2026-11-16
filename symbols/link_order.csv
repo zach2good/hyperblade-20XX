@@ -17,7 +17,7 @@
 0x00439520,globals.cpp,g_displayMode's initialiser thunk; table entry 99, in the unit with 0x00439570
 0x00439530,globals.cpp,g_displayMode's initialiser; jumped to by 0x00439520
 0x0046d670,config.cpp,g_flNetTracking's initialiser thunk; table entry 193 in the unit ahead of Config
-0x00430db0,ddraw.cpp,g_flScreenDotsPerCmProjection's initialiser thunk; table entry 69
+0x00430db0,ddraw.cpp,g_flScreenDensityCmProjection's initialiser thunk; table entry 69
 0x0045c6c0,arenaellipsoidstatic.cpp,g_arenaEllipsoid's atexit registration; jumped to by its initialiser thunk 0x0045c680
 0x0046d530,config.cpp,first initialiser thunk of the unit ahead of Config's code at 0x0046d700
 0x0046d6e0,config.cpp,g_strPrefs's atexit registration; the unit ahead of Config at 0x0046d700

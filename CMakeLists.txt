@@ -91,6 +91,7 @@ set(HYPERX_SOURCES
     src/anim/animfile.cpp
     src/graphics/texcacheentry.cpp
     src/anim/animplayer.cpp
+    src/ui/screens/keyconfigscreen.cpp
     src/engine/cameraprojectionstate.cpp
     src/ui/screens/trainingendscreen.cpp
     src/graphics/ddraw.cpp
@@ -372,7 +373,6 @@ set(HYPERX_SOURCES
     src/math/spline.cpp
     src/planvm/cbungeetoward.cpp
     src/planvm/csteerbetweenfacing.cpp
-    src/ui/screens/keyconfigscreen.cpp
     src/ui/dialog.cpp
     src/ui/animationpeekdialog.cpp
     src/math/quat.cpp

@@ -47,7 +47,7 @@
 float g_flDotPitchInchProjection      = g_flDotsPerInchProjection * g_flDotPitchProjection;
 float g_flScreenDotsPerInchProjection = g_flDotsPerInchProjection;
 float g_flDotPitchCmProjection        = g_flDotPitchInchProjection / g_flCmPerInchProjection;
-float g_flScreenDotsPerCmProjection   = g_flScreenDotsPerInchProjection / g_flCmPerInchProjection;
+float g_flScreenDensityCmProjection   = g_flScreenDotsPerInchProjection / g_flCmPerInchProjection;
 float g_flUnusedLightLevelA           = g_flZeroLightLevel;
 float g_flUnusedLightLevelB           = g_flZeroLightLevel;
 float g_flUnusedLightLevelC           = g_flZeroLightLevel;

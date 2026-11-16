@@ -481,3 +481,9 @@ KeyBitmapEntry g_aKeyBitmaps[50] = {
     // STRING: HYPERX 0x004bd220
     { 0xdd, "keyrbrk" },
 };
+
+// Last in .bss, in this order: the key loops address these through neighbours and the next float.
+Vec3         g_vPlaneSegmentDir                       = { 0 };
+char         g_szEmptyString[1]                       = { 0 };
+unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT] = { 0 };
+unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT]     = { 0 };

@@ -39,7 +39,7 @@ float CameraProjectionState::GetHalfFov()
 void CameraProjectionState::CreateProjectionState(char cFlag, LayoutState* pViewport, float flFov)
 {
     m_flCmPerPixel    = g_flDotPitchCmProjection;
-    m_flPixelsPerCm   = g_flScreenDotsPerCmProjection;
+    m_flPixelsPerCm   = g_flScreenDensityCmProjection;
     m_flHalfWidthCm   = g_flZeroProjection;
     m_flHalfHeightCm  = g_flZeroProjection;
     m_flHalfHeightPxB = g_flZeroProjection;

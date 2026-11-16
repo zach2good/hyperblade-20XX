@@ -497,7 +497,7 @@ extern class NodeOwner* g_pCollInteractorPool;
 extern class AnimRegistry* g_pAnimRegistry;
 
 // GLOBAL: HYPERX 0x004cb800
-extern float g_flScreenDotsPerCmProjection;
+extern float g_flScreenDensityCmProjection;
 // The Projection unit's marked thunks in ddraw.cpp.
 // SYNTHETIC: HYPERX 0x00430d30
 // $E2
