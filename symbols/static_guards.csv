@@ -11,7 +11,8 @@
 #
 # The guard has no declaration in the source, so no GLOBAL marker can carry it. Read the
 # address from the original's guard test, and copy the name from our side of the diff.
-# tools/check_markers_resolve.py fails on a guard in our build that has no row.
+# tools/check_markers_resolve.py fails on a guard in our build that has no row, and on a row
+# naming a guard our build no longer has.
 address,type,name
 0x004cb398,global,?$S10@?1??UpdateMovementAxes@PhysicsBody@@QAEXXZ@4EA
 0x004cb3c4,global,?$S1@?1??Process@CTrackPasser_Receiver@@UAEXH@Z@4EA

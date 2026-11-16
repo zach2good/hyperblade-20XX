@@ -12,7 +12,8 @@
 # as a function name on a data slot.
 #
 # A GUARD is a function-local static's guard byte (`?$S1@...`) in our build with no original
-# address. It has no declaration to mark, so symbols/static_guards.csv names it.
+# address. It has no declaration to mark, so symbols/static_guards.csv names it. A STALE GUARD
+# is a row of that register naming a guard our build no longer has, as a rename leaves behind.
 #
 # WRONG BYTES is a marker or symbols CSV row that pairs an original address with LIBCMT data our
 # build holds different bytes for. Library data is the same object code on both sides, so any
