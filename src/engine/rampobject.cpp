@@ -165,9 +165,7 @@ void RampObject::InitCollisionPlanes()
         m_transformC.TransformPoint(vTipMin, &vPoint);
         vTipMinD = vPoint;
 
-        CollisionObj planeFar(&vTipMinD, &vFarMinD, &vFarMaxD, flFriction, flElasticity);
-
-        m_planeFar = planeFar;
+        m_planeFar = CollisionObj(&vTipMinD, &vFarMinD, &vFarMaxD, flFriction, flElasticity);
     }
 }
 
