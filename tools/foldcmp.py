@@ -317,7 +317,7 @@ def name_far_jumps(sanitize, parse_asm):
     def wrapped_sanitize(self, inst):
         mnemonic = inst[2]
         target = parse.from_hex(inst[3])
-        start, end = getattr(self, "extent", (0, 0))
+        start, end = self.extent
         if mnemonic in CONDITIONAL_JUMPS and target is not None and not start <= target <= end:
             name = self.lookup(target, exact=True)
             if name is not None:
