@@ -16,6 +16,7 @@ The report's hunks elide instructions, so this disassembles the whole function f
     python tools/frame.py 0x004657b0             # the client's census
     python tools/frame.py 0x004657b0 --ours      # this build's, at the paired address
     python tools/frame.py 0x004657b0 --compare   # both, and the slots only one side has
+    python tools/frame.py 0x004657b0 --calls     # both, the slots each call takes, side by side
     python tools/frame.py 0x004657b0 --listing   # every instruction with its depth
     python tools/frame.py --selftest
 
@@ -137,6 +138,19 @@ def census(code, base):
     return slots, listing
 
 
+def calls(listing):
+    """Each call's target and the slots the `lea`s since the previous call took the address of."""
+    found = []
+    taken = []
+    for at, text, offsets, depth in listing:
+        if text.startswith("lea "):
+            taken.extend(offsets)
+        elif text.startswith("call "):
+            found.append((text[len("call "):], tuple(taken)))
+            taken = []
+    return found
+
+
 def advance(code, position, depth, base):
     """The stack effect of one instruction, both cleanup conventions included."""
     instruction = code[position]
@@ -190,6 +204,7 @@ def main():
     parser.add_argument("address")
     parser.add_argument("--ours", action="store_true")
     parser.add_argument("--compare", action="store_true")
+    parser.add_argument("--calls", action="store_true")
     parser.add_argument("--listing", action="store_true")
     parser.add_argument("--limit", type=lambda v: int(v, 0), default=None,
                         help="highest canonical offset to report; defaults to the "
@@ -217,7 +232,7 @@ def main():
     if not options.ours:
         code = disassemble(reference_path(), address, size)
         sides.append(("client 0x%08x" % address, code))
-    if options.ours or options.compare:
+    if options.ours or options.compare or options.calls:
         code = disassemble(OURS, recomp, size)
         sides.append(("ours   0x%08x" % recomp, code))
 
@@ -229,7 +244,9 @@ def main():
         if reservation is None:
             reservation = reserved(code)
         slots = {k: v for k, v in slots.items() if base <= k < 0}
-        maps.append((title, slots))
+        maps.append((title, slots, listing))
+        if options.calls:
+            continue
         if options.listing:
             print(title)
             for at, text, offsets, depth in listing:
@@ -237,6 +254,19 @@ def main():
                 print("  %08x  d=%-6d %-46s %s" % (at, depth, text, tag))
         else:
             show(slots, title)
+
+    if options.calls and len(maps) == 2:
+        # Paired by call order; a swap of roles inside an equal frame shows up here.
+        print("%-4s %-26s %-28s %s" % ("", "call", "client slots", "ours"))
+        theirs = calls(maps[0][2])
+        ours = calls(maps[1][2])
+        for number in range(max(len(theirs), len(ours))):
+            left = theirs[number] if number < len(theirs) else ("-", ())
+            right = ours[number] if number < len(ours) else ("-", ())
+            mark = "  " if left[1] == right[1] else "!="
+            print("%-2s %-4d %-26s %-28s %s" % (mark, number, left[0][:26],
+                                               " ".join("%+05x" % o for o in left[1]),
+                                               " ".join("%+05x" % o for o in right[1])))
 
     if options.compare and len(maps) == 2:
         left = maps[0][1]
@@ -288,6 +318,13 @@ def selftest():
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
               Instruction("sub", "esp, 0x1a8"), Instruction("call", "0x401000")]
     assert settled(framed) == -(0x10 + 0x1a8), settled(framed)
+    # One call each side; ours takes the two slots in the other order.
+    theirs = calls([(0, "lea eax, [esp + 0x10]", [-0x20], -0x30), (1, "push eax", [], -0x30),
+                    (2, "lea ecx, [esp + 0x18]", [-0x14], -0x34), (3, "call 0x401000", [], -0x34)])
+    ours = calls([(0, "lea eax, [esp + 0x14]", [-0x1c], -0x30), (1, "push eax", [], -0x30),
+                  (2, "call 0x401000", [], -0x34)])
+    assert theirs == [("0x401000", (-0x20, -0x14))], theirs
+    assert ours == [("0x401000", (-0x1c,))], ours
     print("selftest passed")
     return 0
 
