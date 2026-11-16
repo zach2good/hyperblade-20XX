@@ -28,7 +28,10 @@ address,name,function
 0x004cadb0,__ld12tod$data,0x004aa35e
 0x004cadc8,__ld12tof$data,0x004aa374
 0x004caf3c,__lpdays$before,0x004a9120
+0x004cb394,PhysicsBody::UpdateMovementAxes::s_nStartTick,0x00407c40
 0x004ce6d8,Radar::DrawObject::s_logBrush,0x0043f960
+0x004d2160,GameEngine::SetRunState::s_dwPauseBase,0x00486de0
+0x004d2168,GameEngine::BroadcastEvent::s_dwEventBase,0x00486a10
 0x004d2c60,_time$data,0x004a16bb
 0x004d2c84,_ctrlc_action,0x004a26cb
 0x004d2c88,_ctrlbreak_action,0x004a26cb
