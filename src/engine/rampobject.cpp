@@ -136,15 +136,15 @@ void RampObject::InitCollisionPlanes()
         Vec3 vNearMinC;
         Vec3 vPoint;
 
-        // vMax and vNearMax are free by now, so the plane's points pass through them.
+        // vMax and vNearMin are free by now, so the plane's points pass through them.
         m_transformC.TransformPoint(vNearMin, &vNearMinC);
         vPoint = vNearMinC;
         m_transformC.TransformPoint(vNearMax, &vNearMaxC);
-        vNearMax = vNearMaxC;
+        vNearMin = vNearMaxC;
         m_transformC.TransformPoint(vTipMax, &vTipMaxC);
         vMax = vTipMaxC;
 
-        CollisionObj planeNear(vMax, vNearMax, vPoint, flFriction, flElasticity);
+        CollisionObj planeNear(vMax, vNearMin, vPoint, flFriction, flElasticity);
 
         m_planeNear.CopyInline(planeNear);
     }
