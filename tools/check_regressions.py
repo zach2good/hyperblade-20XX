@@ -9,10 +9,11 @@ the total drops.
     python tools/foldcmp.py --target HYPERX --json build/report.json --silent
     python tools/check_regressions.py               # after
 
-It reports functions that vanished from the report, fell out of an exact match, reached one,
-are new since the baseline, or moved by more than a point, and lists as DIPPED every smaller
-drop, which it doesn't fail on. It also reports a retired or blocked row that is now exact. It exits 1 on a lost exact match, a vanished row, any row that dropped by
-more than a point, a stale retirement, or a stale build.
+It reports functions that vanished from the report, fell out of an exact match, reached one, are new
+since the baseline, or moved by more than a point, and lists as DIPPED every smaller drop, which it
+doesn't fail on. It also reports a retired or blocked row that is now exact. It exits 1 on a lost
+exact match, a vanished row, any row that dropped by more than a point, a stale retirement, or a
+stale build.
 
 `--save` refuses while the current report has a row more than a point below the baseline, or has
 lost one, since saving then would hide the drop from the next comparison. Pass `--accept-drops`
