@@ -137,6 +137,8 @@ one does. GCC and Clang build with `-Wall -Werror`, and MSVC with `/W4 /WX`.
 
 ### Browser
 
+Each push to `main` publishes the page to [GitHub Pages](https://zach2good.github.io/hyperblade-20XX/).
+To build it yourself,
 [docker/emscripten.Dockerfile](docker/emscripten.Dockerfile) builds a wasm64 page into `build-wasm/out`
 and runs the unit checks under Node:
 
