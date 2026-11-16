@@ -94,7 +94,10 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
             "x87_precision.py --selftest",
             "plan_dump.py --selftest",
             "frame.py --selftest",
-            "foldcmp.py --selftest")
+            "foldcmp.py --selftest",
+            "pecompare.py --selftest",
+            "funclet_targets.py --selftest",
+            "text_budget.py --selftest")
 
 # The checkers that read the original or a register of its differences. They join the battery
 # whenever the reference is configured; about ten seconds together.

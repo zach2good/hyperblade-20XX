@@ -108,9 +108,10 @@ def imports(path):
 
 def compare_imports(built, original):
     """Answers (DLL, names agree, slots agreeing, the original's slot count, [(name, our hint,
-    the original's hint)]) per DLL in the original."""
+    the original's hint)]) per DLL either image imports."""
     rows = []
-    for dll, theirs in sorted(original.items()):
+    for dll in sorted(set(original) | set(built)):
+        theirs = original.get(dll, {})
         ours = built.get(dll, {})
         same = sum(1 for address, (name, _) in theirs.items()
                    if ours.get(address, (None,))[0] == name)
@@ -140,6 +141,9 @@ def selftest():
     assert found == [("KERNEL32.DLL", True, 0, 2, [("Sleep", 7, 5)])], found
     built["KERNEL32.DLL"] = {0x100: ("Sleep", 5), 0x104: ("ExitProcess", 2)}
     assert compare_imports(built, original) == [("KERNEL32.DLL", True, 2, 2, [])]
+    # A DLL only one side imports reads as differing names.
+    built["WINMM.DLL"] = {0x200: ("timeGetTime", 1)}
+    assert compare_imports(built, original)[1] == ("WINMM.DLL", False, 0, 0, [])
     print("selftest passed")
     return 0
 

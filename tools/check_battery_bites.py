@@ -594,6 +594,21 @@ PROBES = (
     ("foldcmp.py --selftest", "tools/foldcmp.py",
      "        if seen[name] == 1:",
      "        if seen[name] >= 1:"),
+
+    # A slot holding another name counts as agreeing.
+    ("pecompare.py --selftest", "tools/pecompare.py",
+     "if ours.get(address, (None,))[0] == name)",
+     "if ours.get(address, (None,))[0] != name)"),
+
+    # A try block's catches are dropped.
+    ("funclet_targets.py --selftest", "tools/funclet_targets.py",
+     "            blocks.append((low, high, catch_high, entries))",
+     "            blocks.append((low, high, catch_high, []))"),
+
+    # A folded copy votes for the region its other map files it under.
+    ("text_budget.py --selftest", "tools/text_budget.py",
+     "            if home != run[0]:",
+     "            if False:"),
 )
 
 # Checkers with no probe, and what a probe would have to plant.

@@ -115,6 +115,7 @@ which.
 | `enum_names.py` | Fail when an id the tree names disagrees with the developers' name, from ENUMIDS.H or a cache. |
 | `foldcmp.py` | Run reccmp's asmcmp with the measured build's identical-code folding applied. |
 | `frame.py` | Canonical frame slots for one function, on either side, as a map you can diff. |
+| `funclet_targets.py` | Name each unwind state's destructor on both sides; print the states and catches that differ. |
 | `header_homes.py` | Reports which header defines each class, and whether that header is named after it. |
 | `implicit_narrowing.py` | Lists integer assignments that narrow a value without an explicit cast. |
 | `kind_names.py` | Compare every name the tree gives an object kind with the name the client gives it. |
@@ -129,6 +130,7 @@ which.
 | `rival_names.py` | Find offsets that a header names one thing and a .cpp's #define names another. |
 | `self_type_casts.py` | Find casts of a variable to the type it is already declared as. |
 | `shared_reserves.py` | Find bytes that several classes over one base each reserve for themselves. |
+| `text_budget.py` | Compare HYPERX.exe's `.text` with the original's region by region, and its data section sizes. |
 | `unused_includes.py` | Finds an `#include` whose header introduces no name the including file writes. |
 | `unused_params.py` | Finds a parameter the body never names and no `(void)` cast admits. |
 | `view_classes.py` | Find classes that are the same class declared twice. |
@@ -217,7 +219,6 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `fixincludes.py` | Builds, and adds the missing include to each failing file until the build passes. |
 | `fold_candidates.py` | Rank the functions the original folds bodies onto, where this build does not. |
 | `frame_search.py` | Search an /Od function's local names for the frame map the client has. |
-| `funclet_targets.py` | Name each unwind state's destructor on both sides; print the states and catches that differ. |
 | `gap_shape.py` | Split the remaining accuracy by the shape of each row's difference. |
 | `ghidra_api.py` | Thin wrapper over the GhidraMCP HTTP bridge. |
 | `global_drift.py` | Measure how far each annotated global sits from the address the client puts it at. |
@@ -258,7 +259,6 @@ One-offs, readers and diagnostics. Most are run by hand with an address.
 | `status.py` | Displays status across matching, clean-up and bring-up. |
 | `status_card.py` | Draw progress/status.svg, the status card, from build/report.json. |
 | `table_content.py` | Verify a dispatch table's content against the original, slot by slot. |
-| `text_budget.py` | Compare HYPERX.exe's `.text` with the original's region by region, and its data section sizes. |
 | `this_casts.py` | Report every member that casts `this` to a class it has no relation to. |
 | `undeclared_reads.py` | Rank classes by the bytes their own members reach and the class never declares. |
 | `undecoded_views.py` | Find records whose first member is a byte run, which is a view rather than a decode. |
