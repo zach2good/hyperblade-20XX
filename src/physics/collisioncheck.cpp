@@ -509,7 +509,7 @@ void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode
 
     BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
 
-    // Never runs; taking pColOwn's address keeps it in a frame slot, as the original has it.
+    // Never runs; taking its address keeps pColOwn in a frame slot.
     if (0)
     {
         RELEASE_ASSERT((int)&pColOwn);

@@ -415,7 +415,7 @@ void JoystickMgr::HandleJoyAxis(int nDevice, unsigned int, unsigned short nX, un
     const unsigned int nPrevPosY = m_pDevices[nDevice].m_infoPrevious.dwYpos;
     const unsigned int nPrevY    = g_dwPrevJoyYVKey;
 
-    // Never runs; taking nPrevPosY's address keeps it in a frame slot, as the original has it.
+    // Never runs; taking its address keeps nPrevPosY in a frame slot.
     if (0)
     {
         RELEASE_ASSERT((int)&nPrevPosY);

@@ -128,7 +128,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
     char cBackFace = cFlip;
 
-    // Never runs; taking cBackFace's address keeps it in a frame slot, as the original has it.
+    // Never runs; taking its address keeps cBackFace in a frame slot.
     if (0)
     {
         RELEASE_ASSERT((int)&cBackFace);

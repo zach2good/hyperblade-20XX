@@ -332,7 +332,7 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
         {
             TexCoord* pCoords = pMesh->Coords();
 
-            // Never runs; taking pCoords' address keeps it in a frame slot, as the original has it.
+            // Never runs; taking its address keeps pCoords in a frame slot.
             if (0)
             {
                 RELEASE_ASSERT((int)&pCoords);

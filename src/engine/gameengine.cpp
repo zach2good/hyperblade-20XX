@@ -3813,7 +3813,7 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     int        nDefIndex;
     int        nSide;
 
-    // Never runs; taking nDefIndex's address keeps it in a frame slot, as the original has it.
+    // Never runs; taking its address keeps nDefIndex in a frame slot.
     if (0)
     {
         RELEASE_ASSERT((int)&nDefIndex);

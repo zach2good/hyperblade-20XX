@@ -893,7 +893,7 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
     {
         int nHalf = ((unsigned int)nSlot >> 1) & 1;
 
-        // Never runs; taking nHalf's address keeps it in a frame slot, as the original has it.
+        // Never runs; taking its address keeps nHalf in a frame slot.
         if (0)
         {
             RELEASE_ASSERT((int)&nHalf);
