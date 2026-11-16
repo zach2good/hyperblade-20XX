@@ -28,8 +28,7 @@ public:
 
     explicit HUD(int nUnused);
 
-    // Only restores InfoBarBase's vtable; slot nought calls it out of line. Inline, so the linker
-    // folds InfoBarBase's destructor onto it.
+    // Inline, so the linker folds InfoBarBase's destructor onto it.
     // FUNCTION: HYPERX 0x0043e120
     ~HUD()
     {
