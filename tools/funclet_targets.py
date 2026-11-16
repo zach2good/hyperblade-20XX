@@ -1,4 +1,4 @@
-"""Name each unwind state's destructor on both sides, and print the states that differ.
+"""Name each unwind state's destructor on both sides; print the states and catches that differ.
 
 A function with a C++ EH frame pushes `push -1; push <handler>` near its start, and the handler
 loads `mov eax, <FuncInfo>` in `.text$x`, whose unwind map lists one action per state. An action's
@@ -77,13 +77,12 @@ def mapped(operands, pairs, twins):
     return tuple(ADDRESS.sub(ours, line) for line in operands)
 
 
-def unwind_targets(image, funclets_start, funclets_end, starts):
-    """Answers {parent function: [each state's (destructor, object operands)]} for each handler
-    in the funclet range whose FuncInfo carries the magic and whose parent pushes it. The parent
-    is the function in the sorted `starts` that holds the push."""
+def handlers(image, funclets_start, funclets_end, starts):
+    """Yields (parent function, FuncInfo address, state count, unwind map) for each handler in the
+    funclet range whose FuncInfo carries the magic and whose parent pushes it. The parent is the
+    function in the sorted `starts` that holds the push."""
     funclets = image.read(funclets_start, funclets_end - funclets_start)
     text = image.read(TEXT_START, funclets_start - TEXT_START)
-    found = {}
     # A handler is `mov eax, imm32` and a 5-byte `jmp`: ten bytes.
     for at in range(len(funclets) - 9):
         if funclets[at] != MOV_EAX or funclets[at + 5] != JMP:
@@ -102,12 +101,54 @@ def unwind_targets(image, funclets_start, funclets_end, starts):
         if push < 0:
             continue
 
+        yield starts[bisect.bisect_right(starts, TEXT_START + push) - 1], info, states, unwind_map
+
+
+def unwind_targets(image, funclets_start, funclets_end, starts):
+    """Answers {parent function: [each state's (destructor, object operands)]}."""
+    found = {}
+    for parent, _, states, unwind_map in handlers(image, funclets_start, funclets_end, starts):
         targets = []
         for state in range(states):
             action = struct.unpack("<iI", image.read(unwind_map + 8 * state, 8))[1]
             targets.append(first_branch(image, action) if action else (None, ()))
 
-        found[starts[bisect.bisect_right(starts, TEXT_START + push) - 1]] = targets
+        found[parent] = targets
+
+    return found
+
+
+def type_name(image, descriptor):
+    """The decorated name a TypeDescriptor holds after its vtable and spare words, or "..."."""
+    if not descriptor:
+        return "..."
+
+    name = image.read(descriptor + 8, 64)
+    return name[:name.index(0)].decode("latin-1")
+
+
+def catch_maps(image, funclets_start, funclets_end, starts):
+    """Answers {parent function: [each try block's (tryLow, tryHigh, catchHigh, [each catch's
+    (adjectives, type name, catch-object displacement, handler offset from the parent)])]} for
+    each parent with a try block."""
+    found = {}
+    for parent, info, _, _ in handlers(image, funclets_start, funclets_end, starts):
+        tries, try_map = struct.unpack("<II", image.read(info + 12, 8))
+        blocks = []
+        for block in range(tries):
+            low, high, catch_high, catches, array = struct.unpack(
+                "<iiiII", image.read(try_map + 20 * block, 20))
+            entries = []
+            for catch in range(catches):
+                adjectives, descriptor, displacement, handler = struct.unpack(
+                    "<IIiI", image.read(array + 16 * catch, 16))
+                entries.append((adjectives, type_name(image, descriptor), displacement,
+                                handler - parent))
+
+            blocks.append((low, high, catch_high, entries))
+
+        if blocks:
+            found[parent] = blocks
 
     return found
 
@@ -178,6 +219,13 @@ def main():
                           *funclet_range(OUT / "HYPERX_sym.map"), sorted(symbols))
 
     found = differing(theirs, ours, pairs, twins)
+    their_catches = catch_maps(original, *original_funclets(original), starts)
+    our_catches = catch_maps(detect_image(str(OUT / "HYPERX_sym.exe")),
+                             *funclet_range(OUT / "HYPERX_sym.map"), sorted(symbols))
+    for parent, blocks in sorted(their_catches.items()):
+        mine = our_catches.get(pairs.get(parent))
+        if mine != blocks:
+            print("catches differ: %s: %s / %s" % (names.get(parent, "%#x" % parent), blocks, mine))
     counts = collections.Counter()
     parents = collections.defaultdict(list)
     for parent, state, orig, recomp in found:
@@ -265,6 +313,14 @@ def selftest():
     assert differing(named, ours, pairs, {}) == []
     folded = {0x501000: [(0x501100, ("mov ecx, 0x5e0000",)), nothing]}
     assert differing(named, folded, pairs, {0x5E0000: {0x5D0000, 0x5E0000}}) == []
+
+    # One try block over state 0 with one const char* catch, whose handler sits 0x141 in.
+    image.blocks[0x403000] = words(FUNCINFO_MAGIC, 2, 0x403100, 1, 0x403200)
+    image.blocks[0x403200] = words(0, 0, 1, 1, 0x403300)
+    image.blocks[0x403300] = words(1, 0x403400, 8, 0x401141)
+    image.blocks[0x403400] = words(0, 0) + b".PAD\0" + bytes(64)
+    caught = catch_maps(image, 0x402000, 0x402000 + len(funclets), [0x400000, 0x401000])
+    assert caught == {0x401000: [(0, 0, 1, [(1, ".PAD", 8, 0x141)])]}, caught
     print("selftest passed")
     return 0
 
