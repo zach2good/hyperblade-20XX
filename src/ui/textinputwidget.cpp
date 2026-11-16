@@ -39,6 +39,15 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
 }
 #endif
 
+// FUNCTION: HYPERX100 0x00477990
+int TextInputWidget::OnMouseDown()
+{
+    m_bDepressed = 1;
+    m_bDirty     = 1;
+
+    return 1;
+}
+
 // Backspace on an empty field writes the terminator one byte before the buffer, as in the original.
 // FUNCTION: HYPERX100 0x004779c0
 // FUNCTION: HYPERX 0x0042bda0
@@ -71,13 +80,4 @@ int TextInputWidget::OnKeyPress(unsigned int nKey)
     }
 
     return 0;
-}
-
-// FUNCTION: HYPERX100 0x00477990
-int TextInputWidget::OnMouseDown()
-{
-    m_bDepressed = 1;
-    m_bDirty     = 1;
-
-    return 1;
 }

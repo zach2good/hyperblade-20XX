@@ -35,21 +35,21 @@ ButtonWidget::ButtonWidget(int nType, int nX, int nY, int nWidth, int nHeight, i
     }
 }
 
-// FUNCTION: HYPERX100 0x00477770
-// FUNCTION: HYPERX 0x0042bcb0
-int ButtonWidget::OnMouseUp()
+// FUNCTION: HYPERX100 0x00477760
+int ButtonWidget::OnMouseDown()
 {
-    m_pOwner->SetWidgetDepressedByType(GetTypeID(), 0);
-
     m_bDepressed = 1;
     m_bDirty     = 1;
 
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00477760
-int ButtonWidget::OnMouseDown()
+// FUNCTION: HYPERX100 0x00477770
+// FUNCTION: HYPERX 0x0042bcb0
+int ButtonWidget::OnMouseUp()
 {
+    m_pOwner->SetWidgetDepressedByType(GetTypeID(), 0);
+
     m_bDepressed = 1;
     m_bDirty     = 1;
 
