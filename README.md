@@ -148,8 +148,9 @@ docker run --rm -v "$PWD:/src:ro" -v "$PWD/.cpm-cache-linux:/cpm" -v "$PWD/build
 python -m http.server --directory build-wasm/out
 ```
 
-Open `hyperblade_20XX.html` in a desktop browser. The page asks for your HyperBlade folder once
-and keeps a copy in the browser, with your saves and career. The files never leave your machine.
+Open `hyperblade_20XX.html` in a desktop browser. The page asks for your HyperBlade folder, or its
+disc image as an ISO or a BIN with its CUE, once and keeps a copy in the browser, with your saves
+and career. A BIN's audio tracks become the music. The files never leave your machine.
 Command-line arguments go in the address, as `?args=-s -sim JAMCA LEEDS 2 7 fixed`; a simulation
 prints to the browser console.
 

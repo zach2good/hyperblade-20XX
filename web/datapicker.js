@@ -28,8 +28,10 @@ Module['preRun'].push(() => {
 
     const panel = document.createElement('div');
     panel.style.cssText = 'position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#111;color:#ddd;font:16px sans-serif;text-align:center;padding:16px';
-    panel.innerHTML = '<p>HyperBlade 20XX plays from your own copy of HyperBlade.<br>Pick the folder that holds HYPERX.EXE. It stays in this browser.</p>'
-        + '<label style="padding:8px 16px;border:1px solid #888;cursor:pointer">Choose folder<input type="file" webkitdirectory hidden></label>'
+    const button = 'padding:8px 16px;border:1px solid #888;cursor:pointer';
+    panel.innerHTML = '<p>HyperBlade 20XX plays from your own copy of HyperBlade.<br>Pick the folder that holds HYPERX.EXE, or the disc image: an ISO, or a BIN with its CUE.<br>It stays in this browser.</p>'
+        + `<label style="${button}">Choose folder<input class="folder" type="file" webkitdirectory hidden></label>`
+        + `<label style="${button}">Choose disc image<input class="disc" type="file" accept=".iso,.cue,.bin,.img" multiple hidden></label>`
         + '<p class="status"></p>';
 
     const status = panel.querySelector('.status');
@@ -63,12 +65,22 @@ Module['preRun'].push(() => {
         });
     };
 
-    panel.querySelector('input').addEventListener('change', (event) => {
+    panel.querySelector('.folder').addEventListener('change', (event) => {
         const pairs = [...event.target.files].map((file) => [file.webkitRelativePath.slice(file.webkitRelativePath.indexOf('/') + 1), file]);
 
         Module['hbLoadGameFiles'](pairs).catch((error) => {
             status.textContent = `Copying failed: ${error}`;
         });
+    });
+
+    panel.querySelector('.disc').addEventListener('change', (event) => {
+        status.textContent = 'Reading the disc image';
+
+        Module['hbReadDiscImage']([...event.target.files])
+            .then((pairs) => Module['hbLoadGameFiles'](pairs))
+            .catch((error) => {
+                status.textContent = `Reading the disc image failed: ${error.message}`;
+            });
     });
 
     FS.syncfs(true, () => {

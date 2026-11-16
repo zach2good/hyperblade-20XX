@@ -361,7 +361,7 @@ if(EMSCRIPTEN)
     if(HYPERX_WEB_PRELOAD)
         target_link_options(hyperx PRIVATE "--preload-file=${HYPERX_WEB_PRELOAD}/Data@/Data" "--preload-file=${HYPERX_WEB_PRELOAD}/HYPERX.EXE@/HYPERX.EXE")
     else()
-        list(APPEND HYPERX_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/web/datapicker.js")
+        list(APPEND HYPERX_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/web/discimage.js" "${CMAKE_SOURCE_DIR}/web/datapicker.js")
         target_link_options(hyperx PRIVATE -lidbfs.js)
     endif()
 
