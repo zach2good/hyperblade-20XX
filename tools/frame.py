@@ -229,7 +229,7 @@ def main():
 
     reservation = options.limit
     sides = []
-    if not options.ours:
+    if not options.ours or options.calls:
         code = disassemble(reference_path(), address, size)
         sides.append(("client 0x%08x" % address, code))
     if options.ours or options.compare or options.calls:
@@ -257,16 +257,17 @@ def main():
 
     if options.calls and len(maps) == 2:
         # Paired by call order; a swap of roles inside an equal frame shows up here.
-        print("%-4s %-26s %-28s %s" % ("", "call", "client slots", "ours"))
+        # Both targets print, so a call one side inlines shows as the pairing shifting.
+        row = "%-2s %-4s %-20s %-26s %-20s %s"
+        print(row % ("", "", "client call", "slots", "our call", "slots"))
         theirs = calls(maps[0][2])
         ours = calls(maps[1][2])
         for number in range(max(len(theirs), len(ours))):
             left = theirs[number] if number < len(theirs) else ("-", ())
             right = ours[number] if number < len(ours) else ("-", ())
             mark = "  " if left[1] == right[1] else "!="
-            print("%-2s %-4d %-26s %-28s %s" % (mark, number, left[0][:26],
-                                               " ".join("%+05x" % o for o in left[1]),
-                                               " ".join("%+05x" % o for o in right[1])))
+            print(row % (mark, number, left[0][:20], " ".join("%+05x" % o for o in left[1]),
+                         right[0][:20], " ".join("%+05x" % o for o in right[1])))
 
     if options.compare and len(maps) == 2:
         left = maps[0][1]
@@ -318,9 +319,11 @@ def selftest():
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
               Instruction("sub", "esp, 0x1a8"), Instruction("call", "0x401000")]
     assert settled(framed) == -(0x10 + 0x1a8), settled(framed)
-    # One call each side; ours takes the two slots in the other order.
+    # One call each side: the client passes two slots, ours one, and a lea off a register
+    # adds none.
     theirs = calls([(0, "lea eax, [esp + 0x10]", [-0x20], -0x30), (1, "push eax", [], -0x30),
-                    (2, "lea ecx, [esp + 0x18]", [-0x14], -0x34), (3, "call 0x401000", [], -0x34)])
+                    (2, "lea edx, [eax + 4]", [], -0x34),
+                    (3, "lea ecx, [esp + 0x18]", [-0x14], -0x34), (4, "call 0x401000", [], -0x34)])
     ours = calls([(0, "lea eax, [esp + 0x14]", [-0x1c], -0x30), (1, "push eax", [], -0x30),
                   (2, "call 0x401000", [], -0x34)])
     assert theirs == [("0x401000", (-0x20, -0x14))], theirs
