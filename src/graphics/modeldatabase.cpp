@@ -209,10 +209,12 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
                     delete[] g_pFaceRecords;
                 }
 
-                m_nFaceMax = nFaceMax;
+                const short nFaces = nFaceMax;
+
+                m_nFaceMax = nFaces;
 
                 // The face list is one based.
-                g_ppFaceList = new FaceRecord*[nFaceMax + 1];
+                g_ppFaceList = new FaceRecord*[nFaces + 1];
 
                 memset(g_ppFaceList, 0, m_nFaceMax * sizeof(FaceRecord*));
 
