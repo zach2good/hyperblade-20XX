@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "graphics/face.h"
 #include "texture.h"
 #include "globals.h"
@@ -330,6 +331,12 @@ int CD3DTextureManager::RescaleSoftTexCoords(short nMeshIndex, LODNode* pLod, Ma
         if (g_cD3DActive == 0 && pMesh->nCoordBytes != 0)
         {
             TexCoord* pCoords = pMesh->Coords();
+
+            // Never runs; taking pCoords' address keeps it in a frame slot, as the original has it.
+            if (0)
+            {
+                RELEASE_ASSERT((int)&pCoords);
+            }
 
             char* const pScratch = new char[pMesh->nCoordBytes];
 
