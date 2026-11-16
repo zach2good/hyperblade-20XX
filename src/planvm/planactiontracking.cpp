@@ -989,13 +989,13 @@ void __cdecl PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int n
 
                 pBone->SetFlags(MESHBONE_HIDDEN);
 
-                pSource             = pSpawn->GetPhysicsBody();
-                vVelocity           = pSource->velDir;
-                const Vec3 vScratch = pSpawn->m_pBody->vel;
+                pSource              = pSpawn->GetPhysicsBody();
+                vVelocity            = pSource->velDir;
+                const Vec3 vSpawnVel = pSpawn->m_pBody->vel;
 
-                vVelocity.x = vVelocity.x + vScratch.x;
-                vVelocity.y = vScratch.y + vVelocity.y;
-                vVelocity.z = vVelocity.z + vScratch.z;
+                vVelocity.x = vVelocity.x + vSpawnVel.x;
+                vVelocity.y = vSpawnVel.y + vVelocity.y;
+                vVelocity.z = vVelocity.z + vSpawnVel.z;
 
                 Vec3::ScaleTo(&vVelocity, 2.0f, &vVelocity);
 
