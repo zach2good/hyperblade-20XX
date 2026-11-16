@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "planvm/behaviorids.h"
 #include "engine/gameengine.h"
 #include "physicsbody.h"
@@ -507,6 +508,12 @@ void __cdecl CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode
     PhysicsBody* const pOtherBody = pOther->GetPhysicsBody();
 
     BoundBubble* const pColOwn = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
+
+    // Never runs; taking pColOwn's address keeps it in a frame slot, as the original has it.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&pColOwn);
+    }
 
     EngineObject* const pOwn     = pColOwn->m_pOwner;
     PhysicsBody* const  pOwnBody = pOwn->GetPhysicsBody();
