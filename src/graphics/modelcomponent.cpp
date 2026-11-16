@@ -229,7 +229,13 @@ void __cdecl ModelComponent::PrintMaterials(FileObj* pFile, FileObj* pOut)
     delete[] pMaterials;
 }
 
-static const char* const s_apszKeywords[] = { "id", "to", "jp", "ms", "mw", "tv", "usemtl", "rm", "matXref" };
+#endif
+
+// Only v1.0.0.0 reads it, but the table is emitted in both, as the original's is.
+// GLOBAL: HYPERX 0x004bdea4
+const char* g_apszModelKeywords[] = { "id", "to", "jp", "ms", "mw", "tv", "usemtl", "rm", "matXref" };
+
+#ifdef HYPERX_V100
 
 #define KEYWORD_COUNT 9
 
@@ -249,7 +255,7 @@ const char* __cdecl ModelComponent::MatchKeyword(const char* pszLine, short* pnK
     {
         sscanf(pszWord, "%s", szWord);
 
-        if (_stricmp(szWord, s_apszKeywords[nKeyword]) == 0)
+        if (_stricmp(szWord, g_apszModelKeywords[nKeyword]) == 0)
         {
             break;
         }
@@ -264,6 +270,6 @@ const char* __cdecl ModelComponent::MatchKeyword(const char* pszLine, short* pnK
 
     *pnKeyword = nKeyword + 1;
 
-    return pszLine + strlen(s_apszKeywords[nKeyword]) + nSkip;
+    return pszLine + strlen(g_apszModelKeywords[nKeyword]) + nSkip;
 }
 #endif
