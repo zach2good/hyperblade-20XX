@@ -229,7 +229,7 @@ def main():
 
     reservation = options.limit
     sides = []
-    if not options.ours or options.calls:
+    if not options.ours or options.calls or options.compare:
         code = disassemble(reference_path(), address, size)
         sides.append(("client 0x%08x" % address, code))
     if options.ours or options.compare or options.calls:
