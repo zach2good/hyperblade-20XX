@@ -45,7 +45,7 @@ endif()
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
 set(JPEG6A_DIR "${CMAKE_SOURCE_DIR}/third_party/jpeg-6a")
 
-# LIBCMT searched first puts its kernel32 import slots in the original's order.
+# LIBCMT searched first lays its kernel32 import slots out in the original's direction.
 set(HYPERX_LIBS
     LIBCMT.lib
     kernel32.lib
