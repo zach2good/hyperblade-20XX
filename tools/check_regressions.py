@@ -28,7 +28,7 @@ import sys
 REPORT = os.path.join("build", "report.json")
 BASELINE = os.path.join("build", "report_baseline.json")
 
-EXACT = 0.999
+EXACT = 1.0
 NOTABLE = 0.01
 
 
