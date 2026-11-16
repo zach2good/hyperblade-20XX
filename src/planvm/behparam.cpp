@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "planvm/behaviorids.h"
 #include "common/behobjglidebetweenfacing.h"
 #include "common/behobjglidetoposition.h"
@@ -77,6 +78,12 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
         if (pNode->m_pArgs[ARG_FIRST + nIndex].IsPronoun())
         {
             const unsigned int nPronoun = pNode->m_pArgs[ARG_FIRST + nIndex].wPronoun;
+
+            // Never runs; taking its address keeps nPronoun in a frame slot.
+            if (0)
+            {
+                RELEASE_ASSERT((int)&nPronoun);
+            }
 
             nValue = g_apPlanArgFns[nPronoun](&pActor->GetPlanState()->m_pOwner, 0, 0);
         }
