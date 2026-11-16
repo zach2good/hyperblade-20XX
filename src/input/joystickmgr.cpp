@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "joystickdevice.h"
 #include "engine/gameengine.h"
 #include "globals.h"
@@ -413,6 +414,12 @@ void JoystickMgr::HandleJoyAxis(int nDevice, unsigned int, unsigned short nX, un
     const unsigned int nVKeyY    = pnKeys[BINDING_DOWN];
     const unsigned int nPrevPosY = m_pDevices[nDevice].m_infoPrevious.dwYpos;
     const unsigned int nPrevY    = g_dwPrevJoyYVKey;
+
+    // Never runs; taking nPrevPosY's address keeps it in a frame slot, as the original has it.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&nPrevPosY);
+    }
 
     if (nY < (unsigned int)(m_pDevices[nDevice].m_nRangeY - m_pDevices[nDevice].m_nHalfRangeX))
     {
