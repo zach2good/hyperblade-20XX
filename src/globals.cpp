@@ -188,7 +188,7 @@ int g_nBackBufferHeight;
 int g_nBackBufferWidth;
 
 // GLOBAL: HYPERX 0x004c2c94
-int g_bUnusedBesideCursor = 1;
+int g_nUnusedBesideCursor = 1;
 
 CameraObject*    g_pScene;
 int              g_hrD3DResult;
