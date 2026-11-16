@@ -10,10 +10,10 @@ the total drops.
     python tools/check_regressions.py               # after
 
 It reports functions that vanished from the report, fell out of an exact match, reached one, are new
-since the baseline, or moved by more than a point, and lists as DIPPED every smaller drop, which it
-doesn't fail on. It also reports a retired or blocked row that is now exact. It exits 1 on a lost
-exact match, a vanished row, any row that dropped by more than a point, a stale retirement, or a
-stale build.
+since the baseline, or moved by more than a point, and lists as DIPPED every smaller drop and as
+ROSE every smaller gain, neither of which it fails on. It also reports a retired or blocked row that
+is now exact. It exits 1 on a lost exact match, a vanished row, any row that dropped by more than a
+point, a stale retirement, or a stale build.
 
 `--save` refuses while the current report has a row more than a point below the baseline, or has
 lost one, since saving then would hide the drop from the next comparison. Pass `--accept-drops`
@@ -173,6 +173,7 @@ lost = []
 gained = []
 moved = []
 dipped = []
+rose = []
 added = []
 gone = []
 
@@ -194,6 +195,8 @@ for address, row in after.items():
         moved.append((address, row["name"], old, new))
     elif new < old:
         dipped.append((address, row["name"], old, new))
+    elif new > old:
+        rose.append((address, row["name"], old, new))
 
 # An address missing from the new report, for example because its marker was deleted.
 for address, was in before.items():
@@ -219,6 +222,10 @@ for address, name, old, new in sorted(moved, key=lambda row: row[3] - row[2]):
 for address, name, old, new in sorted(dipped, key=lambda row: row[3] - row[2]):
     print("DIPPED      %-10s %-44s %.2f%% -> %.2f%%" % (address, name[:44], old * 100, new * 100))
 
+# So does a gain under a point, which a commit would otherwise record as no change.
+for address, name, old, new in sorted(rose, key=lambda row: row[2] - row[3]):
+    print("ROSE        %-10s %-44s %.2f%% -> %.2f%%" % (address, name[:44], old * 100, new * 100))
+
 vanished_exact = [row for row in gone if row[2] >= EXACT]
 
 # Every partial row that fell, beside the exact rows counted as lost.
@@ -231,9 +238,9 @@ for address, name in STALE_RETIRED:
 
 # The last line repeats the staleness warning, so `tail` still shows it.
 SUMMARY = ("%d lost, %d vanished (%d of them exact), %d gained, %d new, %d moved by more than a point,"
-           " %d dropped by more than a point, %d dipped by less" % (
+           " %d dropped by more than a point, %d dipped by less, %d rose by less" % (
                len(lost), len(gone), len(vanished_exact), len(gained), len(added), len(moved),
-               len(dropped), len(dipped)))
+               len(dropped), len(dipped), len(rose)))
 
 if STALE:
     SUMMARY = SUMMARY + "  [STALE BUILD, %d source(s) newer than the link: THIS COUNT IS NOT A MEASUREMENT]" % len(STALE)
