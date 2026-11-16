@@ -1,0 +1,38 @@
+# Globals whose section differs from the original's on purpose.
+# The floats: VC6 loads an extern const float in a different order from a writable one, and no
+# spelling gives both the original's loads and its section.
+address,name
+004b1524,g_flOneCollisionObj
+004b15ec,g_flOnePhysicsReset
+004b17ac,g_flOneAgendaItem
+004b17b0,g_flTwoAgendaItem
+004b17bc,g_flHalfAgendaItem
+004b2a4c,g_flOneWidget
+004b2a58,g_flDotsPerInchWidget
+004b2a5c,g_flDotPitchWidget
+004b2a60,g_flCmPerInchWidget
+004b2ca4,g_flDotsPerInchProjection
+004b2ca8,g_flDotPitchProjection
+004b2cac,g_flCmPerInchProjection
+004b2d38,g_flOneParseUtil
+004b2d50,g_flDotsPerInchParseUtil
+004b2d54,g_flDotPitchParseUtil
+004b2d58,g_flCmPerInchParseUtil
+004b345c,g_flArenaEllipsoidFriction
+004b3460,g_flArenaEllipsoidElasticity
+004b3704,g_flPlanRealDefault
+004b3738,g_flPlanStatScale
+004b3748,g_flSpawnEscapeDistance
+004b3860,g_flOneSteering
+004b3864,g_flTwoSteering
+004b39e8,g_flHalfRokObject
+004b3c74,g_flStatWeightScale
+004b3f28,g_flOneGameEngine
+004b40dc,g_flOneModelFile
+004b40e8,g_flDotsPerInchModelFile
+004b40ec,g_flDotPitchModelFile
+004b40f0,g_flCmPerInchModelFile
+004c67b8,g_flDebugLightDistance
+004c67bc,g_flLightAttenConstant
+004c67c0,g_flLightAttenLinear
+004c67c4,g_flLightAttenQuadratic

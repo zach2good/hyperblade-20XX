@@ -99,7 +99,7 @@ CHECKERS = ("check_field_offsets.py", "check_field_tiling.py", "check_member_own
 # The checkers that read the original or a register of its differences. They join the battery
 # whenever the reference is configured; about ten seconds together.
 REFERENCE = ("check_vtables.py", "check_folded.py", "check_datavalues.py",
-             "check_vtable_arity_declared.py")
+             "check_vtable_arity_declared.py", "check_global_sections.py")
 
 
 def refresh():

@@ -602,6 +602,7 @@ UNPROVEN = {
     "check_folded.py": "a rebuild with a FOLDED marker that matches nothing",
     "check_datavalues.py": "a rebuild with a global's initial value changed, and the reference image",
     "check_vtable_arity_declared.py": "a class declaring one virtual fewer, and the reference image",
+    "check_global_sections.py": "a rebuild with a const dropped from a .rdata global, and the reference image",
 }
 
 

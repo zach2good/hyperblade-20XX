@@ -65,6 +65,7 @@ which.
 | `check_folded.py` | Report identical-code folding in the measured build, and annotations that disagree about it. |
 | `check_functions.py` | Report an address given more than one FUNCTION, STUB or LIBRARY marker. |
 | `check_ghost_forwards.py` | Fails on a `class X;` forward declaration for an X this tree never defines. |
+| `check_global_sections.py` | Fails when a paired global sits in `.rdata` on one side and in a writable section on the other. |
 | `check_globals.py` | Report GLOBAL markers that name one address twice, or that overlap each other. |
 | `check_id_notes.py` | Find plan handler id notes that sit on another handler's body. |
 | `check_include_hygiene.py` | Fails on three include faults a build does not report clearly. |
