@@ -986,7 +986,9 @@ Example: the `BehObj_*::Init` rows.
 VC6 merges identical tails and cross-jumps identical suffixes, but not always where the client's
 compiler did.
 
-VC6 tail-merges in every function of a translation unit except the first one it optimises.
+VC6 tail-merges return tails in every function of a translation unit except the first body in
+the unit's `/FAs` listing (`tools/probe_asm.py`), which can be the `$E` initialiser of a global
+defined above the functions. Cross-jumps run the same in the first body.
 Where the first function in a unit needs a merge the client has, give the shared tail external
 linkage, so an out-of-line copy is emitted ahead of both, or put another function in front. A
 lever that depends on being first stops working when a body moves into a larger file.
