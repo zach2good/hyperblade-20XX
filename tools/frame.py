@@ -178,7 +178,7 @@ def saves_register(code, position, register):
             source = ahead.op_str.split(",", 1)[1]
             if ahead.mnemonic == "xor" and source.strip() == register:
                 return True
-            return (ahead.mnemonic in ("mov", "lea", "xor", "movzx", "movsx")
+            return (ahead.mnemonic in ("mov", "lea", "movzx", "movsx")
                     and register not in source)
         if register in ahead.op_str:
             return False
