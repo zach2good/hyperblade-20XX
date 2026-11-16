@@ -837,8 +837,6 @@ void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
                         EngineObject** ppSlots;
                         double         dDistance;
 
-                        ppSlots = g_pGameEngine->m_ppSlots;
-
                         pHeldPos = &g_pGameEngine->m_ppSlots[nHeldSlot]->GetPhysicsBody()->pos;
 
                         pGoaliePos = &g_pGameEngine->m_ppSlots[nGoalie]->GetPhysicsBody()->pos;
@@ -846,6 +844,8 @@ void __cdecl EngineObject::CoachUpdate(EngineObject* pActor)
                         pOppositePos = &g_pGameEngine->m_ppSlots[nHeldSlot ^ 2]->GetPhysicsBody()->pos;
 
                         pSelfPos = &pActor->GetPhysicsBody()->pos;
+
+                        ppSlots = g_pGameEngine->m_ppSlots;
 
                         if (nHeld & 1)
                         {
