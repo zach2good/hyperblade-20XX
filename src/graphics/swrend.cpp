@@ -230,9 +230,9 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         }
         else
         {
-            float flBackLevel = g_flZeroSWRend;
+            float flBackD3DLevel = g_flZeroSWRend;
 
-            nKind = MeshMaterial::CalcLightIntensity(&flBackLevel, pMaterial, &vNormal) & 0xff;
+            nKind = MeshMaterial::CalcLightIntensity(&flBackD3DLevel, pMaterial, &vNormal) & 0xff;
 
             switch (nKind)
             {
@@ -242,11 +242,11 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
                 case SHADE_SCALED:
                     dwColour =
-                        ((((unsigned int)(int)(pMaterial->acChannel[2] * flBackLevel) | COLOUR_ALPHA_BITS)
+                        ((((unsigned int)(int)(pMaterial->acChannel[2] * flBackD3DLevel) | COLOUR_ALPHA_BITS)
                               << 8 |
-                          (unsigned int)(int)(pMaterial->acChannel[1] * flBackLevel))
+                          (unsigned int)(int)(pMaterial->acChannel[1] * flBackD3DLevel))
                          << 8) |
-                        (unsigned int)(int)(pMaterial->acChannel[0] * flBackLevel);
+                        (unsigned int)(int)(pMaterial->acChannel[0] * flBackD3DLevel);
 
                     break;
 
