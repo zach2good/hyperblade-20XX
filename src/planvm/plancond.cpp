@@ -2616,6 +2616,11 @@ void __cdecl PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, shor
 
     float flBest = 200000000.0f;
     int   nBest  = MODEL_ID_NONE;
+    // Never runs; taking nBest's address keeps it in a frame slot, as the original has it.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&nBest);
+    }
 
     for (int nSlot = SLOT_MULTIPLIER; nSlot <= SLOT_MULTIPLIER_LAST; nSlot++)
     {
