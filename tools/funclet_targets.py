@@ -142,7 +142,11 @@ def main():
 
     user = yaml.safe_load((ROOT / "reccmp-user.yml").read_text())
     original = detect_image(user["targets"]["HYPERX"]["path"])
-    theirs = unwind_targets(original, *original_funclets(original), sorted(names))
+    # functions.csv lists every function start, where the report lists only the paired ones.
+    with (ROOT / "symbols" / "functions.csv").open(encoding="utf-8") as handle:
+        starts = sorted(int(line.split(",")[0], 16) for line in handle if line.startswith("0x"))
+
+    theirs = unwind_targets(original, *original_funclets(original), starts)
     ours = unwind_targets(detect_image(str(OUT / "HYPERX_sym.exe")),
                           *funclet_range(OUT / "HYPERX_sym.map"), sorted(symbols))
 

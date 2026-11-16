@@ -521,7 +521,7 @@ address,name,size,convention,signature
 0x00419580,GameApp::Shutdown,180,__stdcall,void __stdcall GameApp::Shutdown(void)
 0x00419640,GameApp::OnStartup,33,__stdcall,void __stdcall GameApp::OnStartup(void)
 0x00419670,GameApp::OnExit,312,__stdcall,void __stdcall GameApp::OnExit(void)
-0x004197b0,String::String,5,__fastcall,void __fastcall String::String(int * param_1)
+0x004197b0,PathString::~PathString,5,__thiscall,void __thiscall PathString::~PathString(void)
 0x004197c0,ColorPalette::Release,29,__fastcall,void __fastcall ColorPalette::Release(int param_1)
 0x004197e0,MainWindow::PhysicsConfigProc,596,__stdcall,"int __stdcall MainWindow::PhysicsConfigProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)"
 0x00419a40,MainWindow::RatingsDialogProc,84,__stdcall,"int __stdcall MainWindow::RatingsDialogProc(HWND hDlg, uint nMsg, uint wParam, long lParam)"
