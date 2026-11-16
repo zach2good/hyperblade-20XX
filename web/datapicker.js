@@ -7,7 +7,8 @@ Module['preRun'].push(() => {
     FS.mkdir(store);
     FS.mount(IDBFS, { autoPersist: true }, store);
 
-    const findExe = () => FS.readdir(store).find((name) => name.toUpperCase() === 'HYPERX.EXE');
+    // Each file persists as it's written, so a copy cut short by a reload must not count as done.
+    const copied = `${store}/.copied`;
 
     const start = () => {
         // The career file sits beside the executable, so it is linked in like the data.
@@ -18,7 +19,7 @@ Module['preRun'].push(() => {
         }
 
         for (const name of FS.readdir(store)) {
-            if (name !== '.' && name !== '..') {
+            if (!name.startsWith('.')) {
                 FS.symlink(`${store}/${name}`, `/${name}`);
             }
         }
@@ -53,6 +54,7 @@ Module['preRun'].push(() => {
             FS.writeFile(target, new Uint8Array(await blob.arrayBuffer()));
         }
 
+        FS.writeFile(copied, '');
         status.textContent = 'Saving to this browser';
 
         FS.syncfs(false, (error) => {
@@ -84,7 +86,7 @@ Module['preRun'].push(() => {
     });
 
     FS.syncfs(true, () => {
-        if (findExe()) {
+        if (FS.analyzePath(copied).exists) {
             start();
             return;
         }
