@@ -20,7 +20,8 @@ a tool most often breaks.
 - Link library code; never copy it. Pair runtime and JPEG routines with `// LIBRARY:` markers.
 - Write assembly only where the original was assembly, as listed in `symbols/original_asm.csv`.
 - Use `?:`, `goto` and `volatile` where they reach the original's bytes. Give a `volatile` a
-  one-line reason above it, as `tools/check_volatile.py` asks.
+  one-line reason above it, as `tools/check_volatile.py` asks. A dead `RELEASE_ASSERT` that takes
+  a local's address is a fair lever too.
 - Every function is a member or lives in a named namespace: no `Name__Function` free functions.
   One class, one `.h` and `.cpp` pair.
 - Commit nothing from the original. Commit one matched function at a time, titled as

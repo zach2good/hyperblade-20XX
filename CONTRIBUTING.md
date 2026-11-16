@@ -63,6 +63,9 @@ the change moved.
   keeps a load or a store the original has. Put the reason for a `volatile` on the line or the
   line above, naming the shared value or the original's load or store.
   `python tools/check_volatile.py` enforces the reason.
+- **A dead call that takes a local's address is a fair lever too**, written
+  `if (0) { RELEASE_ASSERT((int)&name); }` with a one-line comment above it. Keep it only where
+  the row rises.
 - **Put bring-up fixes inside `#ifdef HYPERX_BRINGUP`.** They must not change the measured image.
 - **Put v1.0.0.0's differences inside `#ifdef HYPERX_V100`.** Mark a function with
   `// FUNCTION: HYPERX100 0xADDRESS` above its `HYPERX` marker. [docs/v1000.md](docs/v1000.md)
