@@ -136,7 +136,7 @@ void RampObject::InitCollisionPlanes()
         Vec3 vNearMinC;
         Vec3 vPoint;
 
-        // vMax and vNearMin are free by now, so the plane's points pass through them.
+        // vMax and vNearMin are reused for the plane's points; vNearMin is read first.
         m_transformC.TransformPoint(vNearMin, &vNearMinC);
         vPoint = vNearMinC;
         m_transformC.TransformPoint(vNearMax, &vNearMaxC);

@@ -52,7 +52,6 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
     TexCacheEntry*      pMatTexture;
     const MeshMaterial* pMaterial;
     ClipVertex*         pVert;
-    float               flLevel;
     float               flLevel2;
     unsigned char       cShade;
     unsigned char       cColourIndex;
@@ -184,7 +183,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
             if (cColourIndex >= g_pColorPalette->m_rampBounds.nFirst && cColourIndex <= g_pColorPalette->m_rampBounds.nCount)
             {
-                flLevel             = g_flZeroSWRend;
+                float       flLevel = g_flZeroSWRend;
                 Vec3* const pNormal = &vNormal;
 
                 if (pNormal == 0)
