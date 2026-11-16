@@ -7,8 +7,6 @@
 #include "physics/collisionshape.h"
 #include "globals.h"
 
-struct Vec3;
-
 // VTABLE: HYPERX 0x004b155c
 class CollisionObj : public CollisionShape
 {

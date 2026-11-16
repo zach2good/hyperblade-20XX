@@ -14,7 +14,7 @@ extern const float g_flZeroBehavior;
 // GLOBAL: HYPERX 0x004b3c74
 extern float g_flStatWeightScale;
 // GLOBAL: HYPERX 0x004b1524
-extern float g_flOneCollisionPlane;
+extern float g_flOneCollisionObj;
 // GLOBAL: HYPERX 0x004b1484
 extern const float g_flZeroPlanLaunch;
 // GLOBAL: HYPERX 0x004b15e8

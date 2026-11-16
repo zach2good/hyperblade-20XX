@@ -56,7 +56,7 @@ int CollisionObj::PointNearSurface(const Vec3* pPoint)
 // FUNCTION: HYPERX 0x00405910
 float CollisionObj::RadiusForDirection(const Vec3*, int)
 {
-    return -g_flOneCollisionPlane;
+    return -g_flOneCollisionObj;
 }
 
 // FUNCTION: HYPERX100 0x00494e20

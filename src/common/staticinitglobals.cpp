@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "graphics/face.h"
 
-float               g_flOneCollisionPlane      = 1.0f;
+float               g_flOneCollisionObj        = 1.0f;
 extern const float  g_flZeroBehavior           = 0.0f;
 extern const float  g_flZeroFaceNormal         = 0.0f;
 float               g_flPlanRealDefault        = 666.666f;
