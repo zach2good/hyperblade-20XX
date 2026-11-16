@@ -1,9 +1,11 @@
 """Compare a built image against the original and report the first difference.
 
 Reports header fields, then the section table, then the first differing byte in each
-section that both images have.
+section that both images have, then each DLL's imports: whether the names agree, how many IAT
+slots hold the same name at the same address, and the hints that differ.
 
     python tools/pecompare.py build/out/HYPERX.exe .../HYPERX.EXE
+    python tools/pecompare.py --selftest
 
 Exits non-zero only when the COFF timestamp differs. Other fields may differ while the sources
 are incomplete. The timestamp may not: `tools/stamp.py` patches it after every link, so a
@@ -87,7 +89,65 @@ def first_difference(built, original):
     return identical
 
 
+def imports(path):
+    """Answers {DLL: {IAT slot address: (name, hint)}} for an image."""
+    import pefile
+
+    image = pefile.PE(path, fast_load=True)
+    image.parse_data_directories(
+        directories=[pefile.DIRECTORY_ENTRY["IMAGE_DIRECTORY_ENTRY_IMPORT"]])
+    found = {}
+    for entry in getattr(image, "DIRECTORY_ENTRY_IMPORT", []):
+        slots = found.setdefault(entry.dll.decode().upper(), {})
+        for symbol in entry.imports:
+            name = symbol.name.decode() if symbol.name else "#%d" % symbol.ordinal
+            slots[symbol.address] = (name, symbol.hint)
+
+    return found
+
+
+def compare_imports(built, original):
+    """Answers (DLL, names agree, slots agreeing, the original's slot count, [(name, our hint,
+    the original's hint)]) per DLL in the original."""
+    rows = []
+    for dll, theirs in sorted(original.items()):
+        ours = built.get(dll, {})
+        same = sum(1 for address, (name, _) in theirs.items()
+                   if ours.get(address, (None,))[0] == name)
+        our_hints = {name: hint for name, hint in ours.values()}
+        hints = sorted((name, our_hints[name], hint) for name, hint in theirs.values()
+                       if name in our_hints and our_hints[name] != hint)
+        names = {name for name, _ in ours.values()} == {name for name, _ in theirs.values()}
+        rows.append((dll, names, same, len(theirs), hints))
+
+    return rows
+
+
+def import_table(built, original):
+    print()
+    print("%-14s %-6s %s" % ("imports", "names", "slots at the original's address"))
+    for dll, names, same, total, hints in compare_imports(imports(built), imports(original)):
+        mark = " " if names and same == total else "*"
+        print("%s%-13s %-6s %d of %d" % (mark, dll, "same" if names else "differ", same, total))
+        for name, ours, theirs in hints:
+            print("    hint %s: %d, the original's %d" % (name, ours, theirs))
+
+
+def selftest():
+    original = {"KERNEL32.DLL": {0x100: ("Sleep", 5), 0x104: ("ExitProcess", 2)}}
+    built = {"KERNEL32.DLL": {0x100: ("ExitProcess", 2), 0x104: ("Sleep", 7)}}
+    found = compare_imports(built, original)
+    assert found == [("KERNEL32.DLL", True, 0, 2, [("Sleep", 7, 5)])], found
+    built["KERNEL32.DLL"] = {0x100: ("Sleep", 5), 0x104: ("ExitProcess", 2)}
+    assert compare_imports(built, original) == [("KERNEL32.DLL", True, 2, 2, [])]
+    print("selftest passed")
+    return 0
+
+
 def main():
+    if sys.argv[1:] == ["--selftest"]:
+        return selftest()
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("built")
     parser.add_argument("original")
@@ -113,6 +173,7 @@ def main():
     field_table(built, original)
     section_table(built, original)
     first_difference(built, original)
+    import_table(args.built, args.original)
     print("\nNot identical yet. This is expected until the sources are complete.")
 
     if built.timestamp != original.timestamp:
