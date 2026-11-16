@@ -40,6 +40,22 @@ void JumboTextList::FreeAll()
     }
 }
 
+// FreeAll's body, so the linker folds the two.
+JumboTextList::~JumboTextList()
+{
+    for (int iRow = 0; iRow < m_nCount; iRow++)
+    {
+        char** ppRow = &m_ppszText[iRow];
+
+        if (*ppRow != 0)
+        {
+            delete[] *ppRow;
+
+            *ppRow = 0;
+        }
+    }
+}
+
 #ifdef HYPERX_V100
 // FUNCTION: HYPERX100 0x00482ea0
 JumboTextList* JumboTextList::FreeRows()
