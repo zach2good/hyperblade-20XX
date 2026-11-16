@@ -2,6 +2,8 @@
 # symbols" section lists each with its address, so tools/foldcmp.py pairs the two by the map name.
 # A name the map lists in several objects takes the object it lives in.
 address,symbol,size,object
+0x004497d0,_$E8,5,gameengine.cpp.obj
+0x004497e0,_$E7,1,gameengine.cpp.obj
 0x0045c6d0,_$E11,10,arenaellipsoidstatic.cpp.obj
 0x0049ed96,?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z,37,
 0x0049ee71,?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z,117,
