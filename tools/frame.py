@@ -43,7 +43,7 @@ REPORT = os.path.join(ROOT, "build", "report.json")
 OURS = os.path.join(ROOT, "build", "out", "HYPERX_sym.exe")
 FUNCTIONS = os.path.join(ROOT, "symbols", "functions.csv")
 
-DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
+DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+|[0-9]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
 EH_FRAME = ("-1", "0xffffffff")
@@ -57,6 +57,7 @@ IMPLICIT = {"cdq": ("edx",), "mul": ("eax", "edx"), "imul": ("eax", "edx"), "div
             "movsb": ("esi", "edi"), "stosb": ("edi",), "repne scasb": ("edi", "ecx")}
 # The saved registers that end the stretch where a `push ecx` reserves four bytes.
 REGISTERS = ("ebx", "esi", "edi")
+WIDTHS = {"ebx": ("ebx", "bx", "bl", "bh"), "ebp": ("ebp", "bp"), "esi": ("esi", "si"), "edi": ("edi", "di")}
 
 
 
@@ -137,6 +138,8 @@ def census(code, base):
     frame = base
     saves = []
     arrivals = {}
+    # A callee-saved register pushed before anything writes it still holds the caller's value.
+    written = set()
     for position, instruction in enumerate(code):
         # Code after a jmp or ret starts at the depth of the first jump that reaches it.
         if (position and code[position - 1].mnemonic in ("jmp", "ret")
@@ -154,12 +157,26 @@ def census(code, base):
         listing.append((instruction.address, text, offsets, depth))
         register = instruction.op_str
         if instruction.mnemonic == "push" and register in SAVED and depth == frame:
-            if saves_register(code, position, register):
+            if register not in written or saves_register(code, position, register):
                 frame -= 4
                 saves.append(register)
         elif instruction.mnemonic == "pop" and register in saves:
             saves.remove(register)
             frame += 4
+        target = instruction.op_str.split(",")[0].strip()
+        if "," in instruction.op_str and instruction.mnemonic not in ("cmp", "test"):
+            for name in SAVED:
+                if target in WIDTHS[name]:
+                    written.add(name)
+        if instruction.mnemonic in ("pop", "inc", "dec", "neg", "not") and "[" not in target:
+            for name in SAVED:
+                if target in WIDTHS[name]:
+                    written.add(name)
+        key = instruction.mnemonic
+        if key in ("rep", "repne"):
+            key = key + " " + instruction.op_str.split()[0]
+        for name in IMPLICIT.get(key, ()):
+            written.add(name)
         depth = advance(code, position, depth, frame)
     return slots, listing
 
@@ -237,6 +254,9 @@ def advance(code, position, depth, base):
     if instruction.mnemonic in ("add", "sub") and instruction.op_str.startswith("esp,"):
         step = int(instruction.op_str.split(",")[1], 0)
         if instruction.mnemonic == "add":
+            # A cleanup shared by two cdecl calls can't lift ESP above the frame.
+            if depth < base < depth + step:
+                return base
             return depth + step
         return depth - step
     if instruction.mnemonic == "call":
@@ -390,6 +410,27 @@ def selftest():
                Instruction("mov", "eax, dword ptr [esp + 0x10]", 5)]
     after = census(pending, -8)[1][5][2]
     assert after == [8], after
+    # CoachUpdate's shape: EBX and EDI pushed before anything writes them, then a call with no
+    # arguments, are saves even though the call comes before the write.
+    untouched = [Instruction("sub", "esp, 8", 0), Instruction("push", "ebx", 1),
+                 Instruction("push", "edi", 2), Instruction("mov", "ecx, esi", 3),
+                 Instruction("call", "dword ptr [edx + 4]", 4), Instruction("movsx", "ebx, ax", 5),
+                 Instruction("mov", "eax, dword ptr [esp + 0xc]", 6)]
+    assert census(untouched, -8)[1][6][2] == [-4], census(untouched, -8)[1][6][2]
+    # Capstone writes a displacement below ten in decimal.
+    small = [Instruction("sub", "esp, 8", 0), Instruction("mov", "dword ptr [esp + 4], eax", 1)]
+    assert census(small, -8)[1][1][2] == [-4], census(small, -8)[1][1][2]
+    # Once EBX is written, a push of it is an argument again.
+    written = [Instruction("sub", "esp, 8", 0), Instruction("mov", "ebx, eax", 1),
+               Instruction("push", "ebx", 2), Instruction("call", "0x401000", 3),
+               Instruction("mov", "eax, dword ptr [esp + 0x10]", 4)]
+    assert census(written, -8)[1][4][2] == [8], census(written, -8)[1][4][2]
+    # Two cdecl calls share one cleanup; the first call keeps its arguments on the stack.
+    shared = [Instruction("sub", "esp, 8", 0), Instruction("push", "eax", 1),
+              Instruction("call", "0x401000", 2), Instruction("push", "ecx", 3),
+              Instruction("call", "0x401000", 4), Instruction("add", "esp, 8", 5),
+              Instruction("mov", "eax, dword ptr [esp + 0x10]", 6)]
+    assert census(shared, -8)[1][6][2] == [8], census(shared, -8)[1][6][2]
 
     plain = [Instruction("push", "ebx"), Instruction("sub", "esp, 0x10"),
              Instruction("call", "0x401000")]
