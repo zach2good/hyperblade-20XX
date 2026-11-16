@@ -990,6 +990,8 @@ VC6 tail-merges in every function of a translation unit except the first one it 
 Where the first function in a unit needs a merge the client has, give the shared tail external
 linkage, so an out-of-line copy is emitted ahead of both, or put another function in front. A
 lever that depends on being first stops working when a body moves into a larger file.
+Example: `WndProc::MainWndProc`, which merges its `DefWindowProcA` block once `WinMain` is in
+front of it.
 
 VC6 does not duplicate a block, so a block duplicated in the client is duplicated in the source.
 Write the call, the copy and the `return` in every arm. VC6 merges two written copies, but not a

@@ -22,6 +22,64 @@
 #include "graphics/swrend.h"
 #include "engine/gameengine.h"
 #include "engine/game.h"
+#include "app/frametimer.h"
+#include "window.h"
+
+// FUNCTION: HYPERX100 0x0048e360
+// FUNCTION: HYPERX 0x0044c070
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nShowCmd)
+{
+    MSG msg;
+
+    msg.wParam = 0;
+
+    if (Window::EnsureClassRegistered(hInstance))
+    {
+        return 0;
+    }
+
+    LPSTR      lpCmdLineArgs = GetCommandLineA();
+    const HWND hWnd          = GameApp::Initialize(hInstance, hPrevInstance, nShowCmd, lpCmdLineArgs);
+
+    g_bIsWindowCreated = (hWnd != 0);
+
+    if (g_bIsWindowCreated)
+    {
+        if (g_frameTimer.bFrameTimesOn)
+        {
+            g_frameTimer.nClockReads++;
+            g_frameTimer.dwFrameStartTime = timeGetTime();
+        }
+
+        for (;;)
+        {
+            if (PeekMessageA(&msg, 0, 0, 0, PM_REMOVE))
+            {
+                if (msg.message == WM_QUIT)
+                {
+                    break;
+                }
+
+                TranslateMessage(&msg);
+                DispatchMessageA(&msg);
+            }
+            else
+            {
+                if (GameApp::MainUpdate(g_gameApp.GetMainWindow()))
+                {
+                    WaitMessage();
+                }
+            }
+        }
+    }
+
+    if (Window::EnsureClassRegistered(hInstance))
+    {
+        return 0;
+    }
+
+    return msg.wParam;
+}
 
 // Key and button messages go to the input device during a match and to the screen otherwise.
 
