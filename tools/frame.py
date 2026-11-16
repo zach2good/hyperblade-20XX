@@ -46,6 +46,8 @@ DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
 EH_FRAME = ("-1", "0xffffffff")
+# The saved registers that end the stretch where a `push ecx` reserves four bytes.
+REGISTERS = ("ebx", "esi", "edi")
 
 
 
@@ -70,13 +72,14 @@ def settled(code):
     """ESP relative to the entry, once the prologue's register pushes are done. A C++ EH frame's
     `push -1`, then its `push <handler>`, and the `push eax` of the old fs:[0] count as prologue
     too; outside such a frame, an immediate or EAX pushed early is a call's argument. The frame
-    opens the function, after `push ebp` at most, and a `push ecx` there reserves four bytes."""
+    opens the function, after `push ebp` at most, with the handler push straight after `push -1`.
+    A `push ecx` before any other saved register reserves four bytes."""
     depth = 0
     framed = False
     handler = False
     linked = False
     pushes = []
-    for instruction in code:
+    for position, instruction in enumerate(code):
         mnemonic = instruction.mnemonic
         operands = instruction.op_str
         if mnemonic == "mov" and operands.endswith("fs:[0]"):
@@ -93,14 +96,15 @@ def settled(code):
         if mnemonic != "push":
             break
 
-        opening = pushes in ([], ["ebp"])
-        if operands in EH_FRAME and opening:
+        following = code[position + 1] if position + 1 < len(code) else None
+        if (operands in EH_FRAME and pushes in ([], ["ebp"]) and following is not None
+                and following.mnemonic == "push" and following.op_str.startswith("0x")):
             framed = True
         elif framed and not handler and operands.startswith("0x"):
             handler = True
         elif linked and operands == "eax":
             linked = False
-        elif operands == "ecx" and opening:
+        elif operands == "ecx" and not [saved for saved in pushes if saved in REGISTERS]:
             pass
         elif operands not in SAVED:
             break
@@ -262,6 +266,14 @@ def selftest():
     reserve = [Instruction("push", "ecx"), Instruction("push", "ebx"),
                Instruction("call", "0x401000")]
     assert settled(reserve) == -8, settled(reserve)
+    # A -1 with no handler after it is an argument; a reserve after the EH link still counts.
+    minus = [Instruction("push", "-1"), Instruction("push", "edx"), Instruction("call", "0x401000")]
+    assert settled(minus) == 0, settled(minus)
+    linked = [Instruction("push", "-1"), Instruction("push", "0x4ac990"),
+              Instruction("mov", "eax, dword ptr fs:[0]"), Instruction("push", "eax"),
+              Instruction("mov", "dword ptr fs:[0], esp"), Instruction("push", "ecx"),
+              Instruction("push", "esi"), Instruction("call", "0x401000")]
+    assert settled(linked) == -20, settled(linked)
     framed = [Instruction("push", "ebp"), Instruction("mov", "ebp, esp"), Instruction("push", "-1"),
               Instruction("push", "0x4ac990"), Instruction("mov", "eax, dword ptr fs:[0]"),
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),

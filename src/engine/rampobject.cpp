@@ -153,7 +153,8 @@ void RampObject::InitCollisionPlanes()
         Vec3 vFarMinD;
         Vec3 vFarMaxD;
         Vec3 vPoint;
-        // Like block two, the last transforms into its own points; one and three use vMax and vMin.
+        // Like block two, the last transforms into its own points; one and three transform into
+        // vMax and vMin.
         Vec3 vFarMaxOut;
         Vec3 vFarMinOut;
 
