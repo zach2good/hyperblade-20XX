@@ -176,6 +176,8 @@ def saves_register(code, position, register):
             continue
         if ahead.op_str.startswith(register + ","):
             source = ahead.op_str.split(",", 1)[1]
+            if ahead.mnemonic == "xor" and source.strip() == register:
+                return True
             return (ahead.mnemonic in ("mov", "lea", "xor", "movzx", "movsx")
                     and register not in source)
         if register in ahead.op_str:
@@ -379,6 +381,15 @@ def selftest():
     assert depths[4] == [4] and depths[7] == [8], depths
     reload = [Instruction("push", "esi"), Instruction("mov", "esi, dword ptr [esi + 4]")]
     assert not saves_register(reload, 0, "esi")
+    zeroed = [Instruction("push", "esi"), Instruction("xor", "esi, esi")]
+    assert saves_register(zeroed, 0, "esi")
+    # A push below a pending argument is an argument too, whatever follows it.
+    pending = [Instruction("sub", "esp, 8", 0), Instruction("push", "eax", 1),
+               Instruction("push", "esi", 2), Instruction("mov", "esi, ecx", 3),
+               Instruction("call", "0x401000", 4),
+               Instruction("mov", "eax, dword ptr [esp + 0x10]", 5)]
+    after = census(pending, -8)[1][5][2]
+    assert after == [8], after
 
     plain = [Instruction("push", "ebx"), Instruction("sub", "esp, 0x10"),
              Instruction("call", "0x401000")]
