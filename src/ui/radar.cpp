@@ -68,12 +68,12 @@ void Radar::ClearState()
     m_dCos = flSeed;
     m_dSin = flSeed;
 
-    m_ptDial.y = 0;
-    m_ptDial.x = 0;
-    m_nUnusedB = 0;
-    m_nUnusedA = 0;
+    m_ptDial.y   = 0;
+    m_ptDial.x   = 0;
+    m_ptUnused.y = 0;
+    m_ptUnused.x = 0;
 
-    SetRect((LPRECT)&m_rcOuter, 0, 0, 0, 0);
+    SetRect(&m_rcOuter, 0, 0, 0, 0);
     SetRect(&m_rcInner, 0, 0, 0, 0);
 }
 

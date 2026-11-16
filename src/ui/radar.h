@@ -5,10 +5,10 @@
 #include "common/staticassert.h"
 #include "math/vec3.h"
 
-// A RECT with a destructor, for the constructor's trylevel.
-struct RadarRect : public RECT
+// A POINT with a destructor, for the constructor's trylevel.
+struct RadarPoint : public POINT
 {
-    ~RadarRect()
+    ~RadarPoint()
     {
     }
 };
@@ -41,27 +41,26 @@ private:
     class CDDBitMap* m_hBackground; // 0x0c0
 
     // The followed object's position.
-    Vec3   m_vCentre;  // 0x0c4
-    float  m_flScaleX; // 0x0d0
-    float  m_flScaleY; // 0x0d4
-    double m_dSin;     // 0x0d8
-    double m_dCos;     // 0x0e0
-    POINT  m_ptDial;   // 0x0e8
-    // ClearState zeroes these two beside the dial point, and nothing in the image reads them.
-    int       m_nUnusedA;          // 0x0f0
-    int       m_nUnusedB;          // 0x0f4
-    DWORD     m_dwColourGreen;     // 0x0f8
-    DWORD     m_dwColourDimYellow; // 0x0fc
-    DWORD     m_dwColourYellow;    // 0x100
-    DWORD     m_dwColourDimBlue;   // 0x104
-    DWORD     m_dwColourBlue;      // 0x108
-    DWORD     m_dwColourRok;       // 0x10c
-    DWORD     m_dwColourBlack;     // 0x110
-    RadarRect m_rcInner;           // 0x114
-    RadarRect m_rcOuter;           // 0x124
-    int       m_nTeamHome;         // 0x134
-    int       m_nTeamAway;         // 0x138
-    int       m_nArena;            // 0x13c
+    Vec3       m_vCentre;  // 0x0c4
+    float      m_flScaleX; // 0x0d0
+    float      m_flScaleY; // 0x0d4
+    double     m_dSin;     // 0x0d8
+    double     m_dCos;     // 0x0e0
+    RadarPoint m_ptDial;   // 0x0e8
+    // ClearState zeroes it beside the dial point, and nothing in the image reads it.
+    RadarPoint m_ptUnused;          // 0x0f0
+    DWORD      m_dwColourGreen;     // 0x0f8
+    DWORD      m_dwColourDimYellow; // 0x0fc
+    DWORD      m_dwColourYellow;    // 0x100
+    DWORD      m_dwColourDimBlue;   // 0x104
+    DWORD      m_dwColourBlue;      // 0x108
+    DWORD      m_dwColourRok;       // 0x10c
+    DWORD      m_dwColourBlack;     // 0x110
+    RECT       m_rcInner;           // 0x114
+    RECT       m_rcOuter;           // 0x124
+    int        m_nTeamHome;         // 0x134
+    int        m_nTeamAway;         // 0x138
+    int        m_nArena;            // 0x13c
 };
 
 // SYNTHETIC: HYPERX 0x0043f3d0
