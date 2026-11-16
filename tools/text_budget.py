@@ -1,4 +1,4 @@
-"""Compare HYPERX.exe's `.text` with the original's, region by region.
+"""Compare HYPERX.exe's `.text` and data sections with the original's, region by region.
 
 Reads build/out/HYPERX.map for our regions: game, libjpeg, and LIBCMT with the import thunks. On
 the original's side a region starts at its lowest address build/report.json pairs, through
