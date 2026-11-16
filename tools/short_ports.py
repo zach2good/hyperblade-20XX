@@ -1,8 +1,10 @@
 """Lists functions reccmp scores over a prefix because this build is shorter.
 
 When reccmp does not know the original's function size, `compare_function` falls back to
-`min(max_size(ORIG), size(RECOMP))`, which is this build's length. A port shorter than the
-original is compared only as far as it goes, and the missing tail never appears in the diff.
+`min(max_size(ORIG), size(RECOMP))`, which is this build's length. foldcmp reads a game row to
+the original's own end, so this now matters only for library rows: a library port shorter than
+the original is compared only as far as it goes, and the missing tail never appears in the
+diff.
 
 A short port is often a complete one: cross-jumped case tails, folded switch arms, a tail call
 or a merged block all make it shorter. Read the diff before calling a function unfinished.

@@ -1651,8 +1651,8 @@ Declaration order does not decide which dead parameter slot a block local takes.
 locals land in each other's slots, the row is a frame-order wall: see [Known walls](#known-walls).
 Two out-parameter `lea`s at different displacements are two locals, however dead they look.
 
-A local the client keeps in a frame slot, stored once and reloaded after calls, has its address
-taken somewhere VC6's front end sees it. A dead call does that:
+A local the client keeps in a frame slot, stored once and reloaded after calls, often has its
+address taken somewhere VC6's front end sees it. A dead call does that:
 `if (0) { RELEASE_ASSERT((int)&nBest); }`. The optimiser drops the call, but the local keeps its
 home, and the other locals' registers change with it. It differs from a `volatile`, which reloads
 on every read. `(void)&x`, an unused pointer or `&x != 0` do not count. Build each one and keep

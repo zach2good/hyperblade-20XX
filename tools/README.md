@@ -153,7 +153,7 @@ Checks you run by hand. Some need the game data, the Ghidra bridge or a bring-up
 | `check_member_name_collisions.py` | List member names that more than one class declares. |
 | `check_model_files.py` | Walk every .WBM the way ModelComponent::ReadAll does, and name the ones that run short. |
 | `check_named_offsets.py` | Find `+ 0xNN` computed on a pointer whose own class already declares a field at 0xNN. |
-| `check_row_sizes.py` | Check every inventory size against the number of bytes reccmp actually compared. |
+| `check_row_sizes.py` | Check every inventory size against the number of bytes the scorer actually compared. |
 | `check_screens.py` | Walk to every menu state and fail when a screen stops drawing. |
 | `check_short_arrays.py` | Find array globals declared shorter than the storage the image gives them. |
 

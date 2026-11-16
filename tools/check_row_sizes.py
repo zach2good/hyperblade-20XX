@@ -1,8 +1,9 @@
-"""Check every inventory size against the number of bytes reccmp actually compared.
+"""Check every inventory size against the number of bytes the scorer actually compared.
 
-`progress.py` credits a row's declared size when reccmp scores it at a hundred. reccmp never
-reads the inventory: it compares our function's own length, cut short at the next annotated
-original address. So the metric is wrong wherever the two disagree:
+`progress.py` credits a row's declared size when the scorer gives it a hundred. A game row is
+compared to the next function in symbols/functions.csv, less its padding, as foldcmp reads it; a
+library row only as far as our function runs, cut short at the next annotated original address.
+So the metric is wrong wherever the two disagree:
 
   the row declares more than reccmp compared   bytes credited that nothing verified
   the row declares less than reccmp compared   bytes verified that nothing credits
@@ -44,11 +45,16 @@ def inventory():
 
 
 def compared_sizes():
-    """The byte count reccmp used for each exactly matching original function.
+    """The byte count the scorer used for each exactly matching original function.
 
-    This is `orig_size` in `reccmp.compare.functions.compare_function`, reproduced
-    rather than re-derived, so the number is the one the score was computed over.
+    This is `orig_size` in `reccmp.compare.functions.compare_function`, with foldcmp's own-end
+    rule for game rows, so the number is the one the score was computed over.
     """
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import bisect
+    import foldcmp
+
+    starts = sorted(foldcmp.function_sizes())
     logging.disable(logging.CRITICAL)
     project = RecCmpProject.from_directory(pathlib.Path(ROOT))
     # from_target prints one line per duplicate STRING annotation; silence it.
@@ -70,7 +76,11 @@ def compared_sizes():
             if recomp is None:
                 continue
             limit = match.max_size(ImageId.ORIG)
-            if limit is None:
+            following = bisect.bisect_right(starts, address)
+            if address < foldcmp.LIBRARY_START and limit and following < len(starts):
+                limit = min(limit, starts[following] - address)
+                size = foldcmp.own_end(compare.orig_bin.read(address, limit))
+            elif limit is None:
                 size = recomp
             else:
                 size = min(limit, recomp)
