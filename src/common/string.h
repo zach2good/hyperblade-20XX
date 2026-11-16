@@ -59,11 +59,8 @@ public:
     // 0x0042f420; not explicit, because callers convert from a C string.
     String(LPCSTR psz);
 
-    // FUNCTION: HYPERX 0x004197b0
-    ~String(void)
-    {
-        FreeBuffer();
-    }
+    // Out of line, with FreeBuffer's body, so the linker folds the two.
+    ~String(void);
 
     operator const char*() const
     {

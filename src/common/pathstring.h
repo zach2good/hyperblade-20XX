@@ -42,4 +42,7 @@ public:
     String m_str;
 };
 
+// SYNTHETIC: HYPERX 0x004197b0
+// PathString::~PathString
+
 #endif

@@ -321,6 +321,16 @@ String::String(LPCSTR psz)
     }
 }
 
+String::~String(void)
+{
+    StringHeader* const pHeader = GetHeader();
+
+    if (pHeader != g_pEmptyStringHeader)
+    {
+        operator delete(GetHeader());
+    }
+}
+
 // FUNCTION: HYPERX100 0x00414270
 // FUNCTION: HYPERX 0x0042f490
 void String::FreeBuffer(void)
