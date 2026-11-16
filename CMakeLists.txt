@@ -45,7 +45,9 @@ endif()
 set(HYPERX_OUT "${CMAKE_BINARY_DIR}/out")
 set(JPEG6A_DIR "${CMAKE_SOURCE_DIR}/third_party/jpeg-6a")
 
+# LIBCMT searched first keeps its kernel32 imports with the game's, as the original's table has them.
 set(HYPERX_LIBS
+    LIBCMT.lib
     kernel32.lib
     user32.lib
     gdi32.lib
