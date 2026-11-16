@@ -732,11 +732,6 @@ const float        g_flFourPlan = 4.0f;
 extern const float g_flFourPlayer;
 const float        g_flFourPlayer = 4.0f;
 
-// A second copy of the up axis.
-// GLOBAL: HYPERX 0x004b1460
-extern const Vec3 g_vRokAxis;
-const Vec3        g_vRokAxis = { 0.0f, 0.0f, 1.0f };
-
 int g_nInfoBarLastRokValue;
 
 Vec3 g_vCamPasserAim;

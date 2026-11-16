@@ -1076,8 +1076,9 @@ int g_anSubstitutePairs[8] = { 94, 95, 98, 99, 96, 97, 100, 101 };
 // GLOBAL: HYPERX 0x004bb304
 int g_anSubstituteBones[15] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
-// The up axis the burst directions are crossed with; marked in src/globals.cpp.
-extern const Vec3 g_vRokAxis;
+// The up axis the burst directions are crossed with.
+// GLOBAL: HYPERX 0x004b1460
+extern const Vec3 g_vRokAxis = { 0.0f, 0.0f, 1.0f };
 
 // FUNCTION: HYPERX100 0x004a1410
 // FUNCTION: HYPERX 0x00402a50
