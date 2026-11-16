@@ -162,6 +162,7 @@ def calls(listing):
         source = operands.split(",")[1].strip() if "," in operands else ""
         if mnemonic == "lea" and offsets:
             held[target] = offsets[0]
+            carried.discard(target)
         elif mnemonic == "push" and operands in held:
             pushed.append(held[operands])
             # A register pushed as an argument isn't also the call's register argument.
@@ -175,6 +176,7 @@ def calls(listing):
             carried = set()
         elif mnemonic == "mov" and source in held and "[" not in target:
             held[target] = held[source]
+            carried.discard(target)
         elif mnemonic not in ("push", "cmp", "test") and target in held:
             # The register now holds something else.
             del held[target]
@@ -391,6 +393,10 @@ def selftest():
     once = calls([(0, "lea ecx, [esp + 0x10]", [-0x20], -0x30), (1, "push ecx", [], -0x30),
                   (2, "call 0x401000", [], -0x34)])
     assert once == [("0x401000", (-0x20,))], once
+    # ECX pushed, then loaded again, is both a push and the call's register argument.
+    twice = calls([(0, "lea ecx, [esp + 0x10]", [-0x20], -0x30), (1, "push ecx", [], -0x30),
+                   (2, "lea ecx, [esp + 0x08]", [-0x28], -0x34), (3, "call 0x401000", [], -0x34)])
+    assert twice == [("0x401000", (-0x28, -0x20))], twice
     print("selftest passed")
     return 0
 
