@@ -232,6 +232,7 @@ void __cdecl ModelComponent::PrintMaterials(FileObj* pFile, FileObj* pOut)
 #endif
 
 // Only v1.0.0.0 reads it, but the table is emitted in both, as the original's is.
+// GLOBAL: HYPERX100 0x00511d40
 // GLOBAL: HYPERX 0x004bdea4
 const char* g_apszModelKeywords[] = { "id", "to", "jp", "ms", "mw", "tv", "usemtl", "rm", "matXref" };
 
