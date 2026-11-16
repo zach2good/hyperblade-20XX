@@ -2298,8 +2298,9 @@ displacement is the table less one element. Give both an explicit initialiser, s
 the client's order: `g_aStationaryPlans` directly before `g_aStationarySlots`.
 
 A literal written with an explicit trailing `\0` keeps both NULs, so it pads to `len + 2`
-rounded up to four. Where the gap after each string is one byte longer than `len + 1` allows,
-end the literal with `\0`. Example: `DDraw::ErrorToString`.
+rounded up to four. That differs only where `len + 1` is already a multiple of four, and then
+by four spare NUL bytes after the string; where the client has those, end the literal with `\0`.
+Example: `DDraw::ErrorToString`.
 
 VC6 pools a unit's string literals after all of its named data, so a table whose end bound is a
 literal pairs only when it is the last thing the file declares; `const` moves the table without
