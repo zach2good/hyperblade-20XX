@@ -591,8 +591,7 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
         Vec3        vSlideVel;
         const Vec3* pSaved;
         float       flDot;
-        float       flProjX;
-        float       flProjY;
+        Vec3        vProj;
         float       flProjZ;
 
         vSlideVel = pSelf->m_pBody->vel;
@@ -601,12 +600,12 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
 
         flDot = pSaved->x * vSlideVel.x + (vSlideVel.y * pSaved->y + vSlideVel.z * pSaved->z);
 
-        flProjX = pSaved->x * flDot;
-        flProjY = pSaved->y * flDot;
+        vProj.x = pSaved->x * flDot;
+        vProj.y = pSaved->y * flDot;
         flProjZ = flDot * pSaved->z;
 
-        vSlideVel.x -= flProjX;
-        vSlideVel.y -= flProjY;
+        vSlideVel.x -= vProj.x;
+        vSlideVel.y -= vProj.y;
         vSlideVel.z -= flProjZ;
 
         pSelf->SetVelocity(vSlideVel);
@@ -744,11 +743,11 @@ void __cdecl PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, 
 
             flDot = vSurface.x * vVel.x + vVel.z * vSurface.z + vVel.y * vSurface.y;
 
-            vPush.x = vSurface.x * flDot;
-            vPush.y = vSurface.y * flDot;
+            vSteer.x = vSurface.x * flDot;
+            vSteer.y = vSurface.y * flDot;
 
-            vVel.x -= vPush.x;
-            vVel.y -= vPush.y;
+            vVel.x -= vSteer.x;
+            vVel.y -= vSteer.y;
             vVel.z -= flDot * vSurface.z;
 
             flScale = 3.0f / (g_pGameEngine->m_clock.flInvDelta * pSelfBody->flSpeed);
