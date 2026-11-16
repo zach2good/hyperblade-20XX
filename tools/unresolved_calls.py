@@ -53,7 +53,7 @@ known = annotated()
 todo = []
 for entry in json.load(open('build/report.json'))['data']:
     address = int(entry['address'], 16)
-    if floor <= entry['matching'] <= 0.999:
+    if floor <= entry['matching'] < 1.0:
         todo.append(address)
 
 print('checking %d functions that do not match' % len(todo))

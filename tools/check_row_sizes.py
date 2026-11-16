@@ -5,8 +5,8 @@ compared to the next function in symbols/functions.csv, less its padding, as fol
 library row only as far as our function runs, cut short at the next annotated original address.
 So the metric is wrong wherever the two disagree:
 
-  the row declares more than reccmp compared   bytes credited that nothing verified
-  the row declares less than reccmp compared   bytes verified that nothing credits
+  the row declares more than was compared   bytes credited that nothing verified
+  the row declares less than was compared   bytes verified that nothing credits
 
 A disagreement is not always a fault. Where our function comes from LIBCMT.LIB, the PDB's
 symbol can be shorter than the original's function while every byte still matches, so read the
@@ -32,7 +32,11 @@ from reccmp.project.detect import RecCmpProject
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INVENTORY = os.path.join(ROOT, 'symbols', 'functions.csv')
 REPORT = os.path.join(ROOT, 'build', 'report.json')
-GAME_CODE_LIMIT = 0x004A0000
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import foldcmp  # noqa: E402
+
+# Game rows end where foldcmp's own-end rule stops.
+GAME_CODE_LIMIT = foldcmp.LIBRARY_START
 
 
 def inventory():
@@ -50,9 +54,7 @@ def compared_sizes():
     This is `orig_size` in `reccmp.compare.functions.compare_function`, with foldcmp's own-end
     rule for game rows, so the number is the one the score was computed over.
     """
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import bisect
-    import foldcmp
 
     starts = sorted(foldcmp.function_sizes())
     logging.disable(logging.CRITICAL)
@@ -120,8 +122,8 @@ def main():
           % (len(compared), agree, len(over), len(under)))
     lost = sum(d for d, a, _, _, _ in over if a < GAME_CODE_LIMIT and d >= args.threshold)
     gained = sum(d for d, a, _, _, _ in under if a < GAME_CODE_LIMIT and d >= args.threshold)
-    print('game bytes credited exact that reccmp never compared : %d' % lost)
-    print('game bytes reccmp matched that no row credits        : %d' % gained)
+    print('game bytes credited exact that were never compared : %d' % lost)
+    print('game bytes matched that no row credits             : %d' % gained)
     for title, group in (('declares more than was compared', over),
                          ('declares less than was compared', under)):
         rows = [r for r in group if r[0] >= args.threshold]
