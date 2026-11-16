@@ -47,8 +47,11 @@ DISPLACEMENT = re.compile(r"\[esp \+ (0x[0-9a-f]+)\]")
 BARE = re.compile(r"\[esp\]")
 SAVED = ("ebx", "ebp", "esi", "edi")
 EH_FRAME = ("-1", "0xffffffff")
-# The registers a call leaves as they were.
-PRESERVED = ("ebx", "esi", "edi", "ebp")
+# Registers an instruction writes without naming them as its first operand.
+IMPLICIT = {"cdq": ("edx",), "mul": ("eax", "edx"), "imul": ("eax", "edx"), "div": ("eax", "edx"),
+            "idiv": ("eax", "edx"), "rep movsd": ("esi", "edi", "ecx"),
+            "rep stosd": ("edi", "ecx"), "rep movsb": ("esi", "edi", "ecx"),
+            "rep stosb": ("edi", "ecx")}
 # The saved registers that end the stretch where a `push ecx` reserves four bytes.
 REGISTERS = ("ebx", "esi", "edi")
 
@@ -160,13 +163,18 @@ def calls(listing):
         elif mnemonic == "call":
             registers = tuple(held[name] for name in ("ecx", "edx") if name in held)
             found.append((operands, registers + tuple(reversed(pushed))))
-            held = {name: slot for name, slot in held.items() if name in PRESERVED}
+            held = {name: slot for name, slot in held.items() if name in SAVED}
             pushed = []
-        elif mnemonic == "mov" and source in held:
+        elif mnemonic == "mov" and source in held and "[" not in target:
             held[target] = held[source]
         elif mnemonic not in ("push", "cmp", "test") and target in held:
             # The register now holds something else.
             del held[target]
+        # A `rep` prefix names its string instruction; a two-operand imul writes only its target.
+        key = "rep " + operands.split()[0] if mnemonic == "rep" else mnemonic
+        if "," not in operands or mnemonic == "rep":
+            for written in IMPLICIT.get(key, ()):
+                held.pop(written, None)
     return found
 
 
@@ -363,6 +371,14 @@ def selftest():
                   (6, "push ebx", [], -0x30), (7, "call 0x401000", [], -0x34),
                   (8, "push esi", [], -0x30), (9, "call 0x401100", [], -0x34)])
     assert fast == [("0x401000", (-0x20, -0x14)), ("0x401100", (-0x10,))], fast
+    # A store keeps nothing; cdq and rep stosd clobber their registers.
+    clobbered = calls([(0, "lea eax, [esp + 0x10]", [-0x20], -0x30),
+                       (1, "mov dword ptr [esp + 4], eax", [-0x2c], -0x30),
+                       (2, "lea edx, [esp + 0x14]", [-0x1c], -0x30), (3, "cdq", [], -0x30),
+                       (4, "lea edi, [esp + 0x18]", [-0x18], -0x30), (5, "rep stosd", [], -0x30),
+                       (6, "push dword ptr [esp + 4]", [-0x2c], -0x30), (7, "push edi", [], -0x34),
+                       (8, "call 0x401000", [], -0x38)])
+    assert clobbered == [("0x401000", ())], clobbered
     print("selftest passed")
     return 0
 
