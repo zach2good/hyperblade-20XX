@@ -53,7 +53,7 @@ int __cdecl KeyConfigDialog::OnInitDialog(HWND hDlg, HWND, LPARAM)
 
 // Copied over the module's table when no file has filled it.
 // GLOBAL: HYPERX 0x004c4b8c
-extern short g_aDefaultKeyBindings[120];
+extern short g_aDefaultKeyBindings[124];
 
 #define FLAG_SHIFT   8
 #define FLAG_CONTROL 4

@@ -404,6 +404,10 @@ char              g_szNetSetupStatus[256];
 #include "engine/object.h"
 #include "input/cheat.h"
 #include "planvm/plannode.h"
+// A message nothing shows.
+// GLOBAL: HYPERX 0x004c0e78
+char g_szHostLost[] = "HOST player lost, terminating network\nplay.  Please re-start the game";
+
 GUID         g_guidNetApplication = { 0xe759bc83, 0x184d, 0x11cf, { 0xa4, 0x7c, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 } };
 char         g_bLoadingMode       = 1;
 int          g_bGamepadConfigLoaded;
