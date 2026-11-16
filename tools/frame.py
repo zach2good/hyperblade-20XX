@@ -73,11 +73,13 @@ def settled(code):
     `push -1`, then its `push <handler>`, and the `push eax` of the old fs:[0] count as prologue
     too; outside such a frame, an immediate or EAX pushed early is a call's argument. The frame
     opens the function, after `push ebp` at most, with the handler push straight after `push -1`.
-    A `push ecx` before any other saved register reserves four bytes."""
+    A `push ecx` before EBX, ESI or EDI reserves four bytes, unless ECX was written first, which
+    makes it an argument."""
     depth = 0
     framed = False
     handler = False
     linked = False
+    written = False
     pushes = []
     for position, instruction in enumerate(code):
         mnemonic = instruction.mnemonic
@@ -91,6 +93,8 @@ def settled(code):
             continue
 
         if mnemonic in ("mov", "lea", "xor", "test", "cmp"):
+            written = written or (mnemonic != "test" and mnemonic != "cmp"
+                                  and operands.startswith("ecx,"))
             continue
 
         if mnemonic != "push":
@@ -104,7 +108,8 @@ def settled(code):
             handler = True
         elif linked and operands == "eax":
             linked = False
-        elif operands == "ecx" and not [saved for saved in pushes if saved in REGISTERS]:
+        elif operands == "ecx" and not written and not [saved for saved in pushes
+                                                         if saved in REGISTERS]:
             pass
         elif operands not in SAVED:
             break
@@ -274,6 +279,10 @@ def selftest():
               Instruction("mov", "dword ptr fs:[0], esp"), Instruction("push", "ecx"),
               Instruction("push", "esi"), Instruction("call", "0x401000")]
     assert settled(linked) == -20, settled(linked)
+    # GDI::BeginPaint's shape: ECX loaded, then pushed as an argument.
+    loaded = [Instruction("mov", "ecx, dword ptr [esp + 4]"), Instruction("push", "ecx"),
+              Instruction("push", "eax"), Instruction("call", "0x401000")]
+    assert settled(loaded) == 0, settled(loaded)
     framed = [Instruction("push", "ebp"), Instruction("mov", "ebp, esp"), Instruction("push", "-1"),
               Instruction("push", "0x4ac990"), Instruction("mov", "eax, dword ptr fs:[0]"),
               Instruction("push", "eax"), Instruction("mov", "dword ptr fs:[0], esp"),
