@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "planvm/gamebehaviorobject.h"
 #include "planvm/decisionlog.h"
 #include "gameengine.h"
@@ -3811,6 +3812,12 @@ char GameEngine::SubstitutePlayer(int nSlot, int nWith)
     TeamBlock* pTeam;
     int        nDefIndex;
     int        nSide;
+
+    // Never runs; taking nDefIndex's address keeps it in a frame slot, as the original has it.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&nDefIndex);
+    }
 
     switch ((unsigned int)nWith)
     {
