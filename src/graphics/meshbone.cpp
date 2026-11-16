@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "planvm/planvm.h"
 #include "math/mathglobals.h"
 #include "math/transformobject.h"
@@ -203,6 +204,12 @@ void MeshBone::DrawFaces()
     {
         MeshFace* const     pFace = GetFace(nFace);
         MeshMaterial* const pMat  = &m_pOwner->m_pModelBlock->m_pMaterials[pFace->cMaterial];
+
+        // Never runs; taking its address keeps pFace in a frame slot.
+        if (0)
+        {
+            RELEASE_ASSERT((int)&pFace);
+        }
 
         nResult = Face::BackfaceCullAndClipCheck(pFace, g_pModelVertexBuf, (char)(pMat->nBackIndex >= 0), &cClip);
 
