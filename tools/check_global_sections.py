@@ -98,7 +98,10 @@ def register():
 
 def save(found):
     # The register's comment block says why its rows are kept, so a save keeps it.
-    comments = ["# Globals whose section differs from the original's on purpose.\n"]
+    comments = ["# Globals whose section differs from the original's.\n",
+                "#\n",
+                "# tools/check_global_sections.py fails when a paired global not named here is\n",
+                "# read-only on one side only, and when a row here starts to agree.\n"]
     if REGISTER.exists():
         with open(REGISTER) as handle:
             comments = [line for line in handle if line.startswith("#")]

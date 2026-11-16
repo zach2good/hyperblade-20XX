@@ -2661,7 +2661,8 @@ Our `/OPT:ICF` also folds `__matherr` and the two libjpeg `ret` bodies, which th
 apart. Those library rows alone cost 5 to 10 exact rows and 38 to 50 weighted bytes, more than
 every call operand it could pair, so `/OPT:ICF` stays off. Link 6.00.8447 doesn't keep the first
 body it loads: the survivor is fixed for a given set of objects but depends on everything loaded
-before the group, so neither markers nor link order can pick the original's survivors.
+before the group. Linking LIBCMT before libjpeg picks the original's survivors, but no order that
+keeps the original's layout does.
 
 The project scores with `python tools/foldcmp.py`, which applies our own folding and takes
 asmcmp's arguments. It reads which bodies `HYPERX.map` puts on one address and `HYPERX_sym.map`
