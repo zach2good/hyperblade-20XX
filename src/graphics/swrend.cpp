@@ -1,5 +1,6 @@
 #include "math/floatbits.h"
 #include "common/compat.h"
+#include "common/stub.h"
 #include "globals.h"
 #include "graphicsglobals.h"
 #include "engine/devicector.h"
@@ -126,6 +127,12 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 #endif
 
     char cBackFace = cFlip;
+
+    // Never runs; taking cBackFace's address keeps it in a frame slot, as the original has it.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&cBackFace);
+    }
 
     if ((cClipFlags & CLIP_NEAR) != 0)
     {
