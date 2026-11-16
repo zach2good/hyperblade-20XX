@@ -134,16 +134,51 @@ def census(code, base):
     slots = collections.defaultdict(list)
     listing = []
     depth = 0
+    frame = base
+    saves = []
+    arrivals = {}
     for position, instruction in enumerate(code):
+        # Code after a jmp or ret starts at the depth of the first jump that reaches it.
+        if (position and code[position - 1].mnemonic in ("jmp", "ret")
+                and instruction.address in arrivals):
+            depth, frame, saves = arrivals[instruction.address]
+            saves = list(saves)
         text = "%s %s" % (instruction.mnemonic, instruction.op_str)
+        if instruction.mnemonic.startswith("j") and instruction.op_str.startswith("0x"):
+            arrivals.setdefault(int(instruction.op_str, 16), (depth, frame, tuple(saves)))
         offsets = [int(m, 0) + depth for m in DISPLACEMENT.findall(text)]
         if BARE.search(text):
             offsets.append(depth)
         for offset in offsets:
             slots[offset].append((instruction.address, text))
         listing.append((instruction.address, text, offsets, depth))
-        depth = advance(code, position, depth, base)
+        register = instruction.op_str
+        if instruction.mnemonic == "push" and register in SAVED and depth <= frame:
+            if saves_register(code, position, register):
+                frame -= 4
+                saves.append(register)
+        elif instruction.mnemonic == "pop" and register in saves:
+            saves.remove(register)
+            frame += 4
+        depth = advance(code, position, depth, frame)
     return slots, listing
+
+
+def saves_register(code, position, register):
+    """Whether a mid-body push of a callee-saved register is a save rather than an argument: the
+    register is written before it is read, before the next call, push or jump."""
+    for ahead in code[position + 1:position + 13]:
+        if ahead.mnemonic == "push" and ahead.op_str in SAVED:
+            continue
+        if ahead.mnemonic in ("call", "push", "ret", "jmp"):
+            return False
+        if ahead.mnemonic.startswith("j"):
+            continue
+        if ahead.op_str.startswith(register + ","):
+            return ahead.mnemonic in ("mov", "lea", "xor", "movzx", "movsx")
+        if register in ahead.op_str:
+            return False
+    return False
 
 
 def calls(listing):
@@ -320,9 +355,17 @@ def main():
 def selftest():
     """Checks that an EH prologue settles past its three pushes and a plain one is unchanged."""
     class Instruction:
-        def __init__(self, mnemonic, op_str):
+        def __init__(self, mnemonic, op_str, address=0):
             self.mnemonic = mnemonic
             self.op_str = op_str
+            self.address = address
+
+    # Code after a jmp takes the depth of the je that reaches it, not of the push above it.
+    arms = [Instruction("push", "esi", 0), Instruction("sub", "esp, 8", 1),
+            Instruction("je", "0x5", 2), Instruction("push", "1", 3), Instruction("jmp", "0x6", 4),
+            Instruction("mov", "eax, dword ptr [esp + 0x10]", 5)]
+    arrived = census(arms, -0xc)[1][5][2]
+    assert arrived == [4], arrived
 
     plain = [Instruction("push", "ebx"), Instruction("sub", "esp, 0x10"),
              Instruction("call", "0x401000")]
