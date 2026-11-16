@@ -147,7 +147,7 @@ address,name,size,convention,signature
 0x00408f90,CTrack::OnListChanged,49,__fastcall,void __fastcall CTrack::OnListChanged(int param_1)
 0x00408fd0,CTrack::Process,4079,__thiscall,"void __thiscall CTrack::Process(void * this, dword param_1)"
 0x00409fc0,CHeadTrack::Bind,259,__thiscall,"void __thiscall CHeadTrack::Bind(void * this, int * param_1, undefined4 param_2)"
-0x0040a0d0,CameraLiteAgendaItem::OnListChanged,43,__fastcall,void __fastcall CameraLiteAgendaItem::OnListChanged(int param_1)
+0x0040a0d0,CHeadTrack::OnListChanged,43,__thiscall,void __thiscall CHeadTrack::OnListChanged(void)
 0x0040a100,CHeadTrack::Process,1027,__thiscall,"void __thiscall CHeadTrack::Process(void * this, dword param_1)"
 0x0040a510,CTrackTraj::CTrackTraj,137,__fastcall,void * __fastcall CTrackTraj::CTrackTraj(void * pPool)
 0x0040a5a0,PlanVM__InteractorBScalarDestructor,30,__thiscall,"void * __thiscall PlanVM__InteractorBScalarDestructor(void * this, bool bDeleteMemory)"

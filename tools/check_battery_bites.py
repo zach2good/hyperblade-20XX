@@ -530,6 +530,11 @@ PROBES = (
      "        addr = pairs.get(int(found.group(0), 16), int(found.group(0), 16))",
      "        addr = int(found.group(0), 16)"),
 
+    # Unwind operands compared without reading a folded twin as its group.
+    ("funclet_targets.py --selftest", "tools/funclet_targets.py",
+     "        return \"%#x\" % min(twins.get(addr, {addr}))",
+     "        return \"%#x\" % addr"),
+
     # A FuncInfo read without its magic, so any `mov eax` before a `jmp` reads as a handler.
     ("funclet_targets.py --selftest", "tools/funclet_targets.py",
      "        if magic != FUNCINFO_MAGIC:",

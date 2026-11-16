@@ -19,8 +19,8 @@ public:
     }
 
     virtual void Process(int nArg);
-    virtual void OnListChanged();
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
+    virtual void OnListChanged();
 
     char m_bAttached; // 0x18
 };
