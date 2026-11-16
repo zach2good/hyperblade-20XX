@@ -166,7 +166,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             volatile short nFaceMax   = m_nFaceMax;
             short          nVertexMax = m_nVertexMax;
 
-            // Never runs; taking its address keeps nFaceMax in a frame slot.
+            // Never runs; taking nFaceMax's address changes the other locals' registers.
             if (0)
             {
                 RELEASE_ASSERT((int)&nFaceMax);
