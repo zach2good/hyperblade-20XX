@@ -527,8 +527,8 @@ PROBES = (
 
     # Object operands compared without reading the original's addresses as ours.
     ("funclet_targets.py --selftest", "tools/funclet_targets.py",
-     "        return \"%#x\" % pairs.get(addr, addr)",
-     "        return \"%#x\" % addr"),
+     "        addr = pairs.get(int(found.group(0), 16), int(found.group(0), 16))",
+     "        addr = int(found.group(0), 16)"),
 
     # A FuncInfo read without its magic, so any `mov eax` before a `jmp` reads as a handler.
     ("funclet_targets.py --selftest", "tools/funclet_targets.py",

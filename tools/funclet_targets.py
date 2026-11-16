@@ -66,11 +66,13 @@ def first_branch(image, addr):
     return None, tuple(before)
 
 
-def mapped(operands, pairs):
-    """Answers the original's instructions with each address it names read as our paired one."""
+def mapped(operands, pairs, twins):
+    """Answers instructions with each address read as our copy, then as the lowest copy in its
+    fold group, so a folded twin reads as the copy the original's address pairs with. Pass
+    {} as `pairs` for our own instructions."""
     def ours(found):
-        addr = int(found.group(0), 16)
-        return "%#x" % pairs.get(addr, addr)
+        addr = pairs.get(int(found.group(0), 16), int(found.group(0), 16))
+        return "%#x" % min(twins.get(addr, {addr}))
 
     return tuple(ADDRESS.sub(ours, line) for line in operands)
 
@@ -143,7 +145,7 @@ def differing(theirs, ours, pairs, twins):
             group = twins.get(recomp, {recomp})
             if not any(pairs.get(orig) == copy for copy in group):
                 found.append((parent, state, orig, recomp))
-            elif mapped(theirs_object, pairs) != our_object:
+            elif mapped(theirs_object, pairs, twins) != mapped(our_object, {}, twins):
                 found.append((parent, state, theirs_object, our_object))
 
     return found
@@ -261,6 +263,8 @@ def selftest():
     named = {0x401000: [(0x401100, ("mov ecx, 0x4d0000",)), nothing]}
     ours = {0x501000: [(0x501100, ("mov ecx, 0x5d0000",)), nothing]}
     assert differing(named, ours, pairs, {}) == []
+    folded = {0x501000: [(0x501100, ("mov ecx, 0x5e0000",)), nothing]}
+    assert differing(named, folded, pairs, {0x5E0000: {0x5D0000, 0x5E0000}}) == []
     print("selftest passed")
     return 0
 
