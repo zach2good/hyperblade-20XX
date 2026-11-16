@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "modeldatabase.h"
 #include "globals.h"
 #include "graphicsglobals.h"
@@ -164,6 +165,12 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             // The original keeps the widest face count in a frame slot.
             volatile short nFaceMax   = m_nFaceMax;
             short          nVertexMax = m_nVertexMax;
+
+            // Never runs; taking its address keeps nFaceMax in a frame slot.
+            if (0)
+            {
+                RELEASE_ASSERT((int)&nFaceMax);
+            }
 
             for (i = 0; i < pBlob->m_nSubComponents; i++)
             {
