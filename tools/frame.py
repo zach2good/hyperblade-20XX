@@ -164,11 +164,9 @@ def census(code, base):
             saves.remove(register)
             frame += 4
         target = instruction.op_str.split(",")[0].strip()
-        if "," in instruction.op_str and instruction.mnemonic not in ("cmp", "test"):
-            for name in SAVED:
-                if target in WIDTHS[name]:
-                    written.add(name)
-        if instruction.mnemonic in ("pop", "inc", "dec", "neg", "not") and "[" not in target:
+        writes = (("," in instruction.op_str and instruction.mnemonic not in ("cmp", "test"))
+                  or instruction.mnemonic in ("pop", "inc", "dec", "neg", "not"))
+        if writes:
             for name in SAVED:
                 if target in WIDTHS[name]:
                     written.add(name)
