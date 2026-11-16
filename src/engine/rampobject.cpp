@@ -136,14 +136,14 @@ void RampObject::InitCollisionPlanes()
         Vec3 vNearMinC;
         Vec3 vPoint;
 
-        m_transformC.TransformPoint(vNearMin, &vMax);
-        vNearMinC = vMax;
-        m_transformC.TransformPoint(vNearMax, &vMin);
-        vNearMaxC = vMin;
-        m_transformC.TransformPoint(vTipMax, &vPoint);
-        vTipMaxC = vPoint;
+        m_transformC.TransformPoint(vNearMin, &vNearMinC);
+        vMax = vNearMinC;
+        m_transformC.TransformPoint(vNearMax, &vNearMaxC);
+        vNearMax = vNearMaxC;
+        m_transformC.TransformPoint(vTipMax, &vTipMaxC);
+        vPoint = vTipMaxC;
 
-        CollisionObj planeNear(vTipMaxC, vNearMaxC, vNearMinC, flFriction, flElasticity);
+        CollisionObj planeNear(vPoint, vNearMax, vMax, flFriction, flElasticity);
 
         m_planeNear.CopyInline(planeNear);
     }
@@ -153,8 +153,8 @@ void RampObject::InitCollisionPlanes()
         Vec3 vFarMinD;
         Vec3 vFarMaxD;
         Vec3 vPoint;
-        // Like block two, the last transforms into its own points; one and three transform into
-        // vMax and vMin.
+        // Like blocks two and three, the last transforms into its own points; block one transforms
+        // into vMax and vMin.
         Vec3 vFarMaxOut;
         Vec3 vFarMinOut;
 
