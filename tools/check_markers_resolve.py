@@ -141,10 +141,19 @@ for (kind, address) in sorted(markers, key=lambda pair: (pair[1], pair[0])):
 from reccmp.compare.db import ImageId
 
 guards = []
+ours_guards = set()
 for entity in compare._db.all(ImageId.RECOMP):
     name = entity.get('name') or ''
+    if name.startswith('?$S'):
+        ours_guards.add(name)
     if name.startswith('?$S') and entity.orig_addr is None:
         guards.append((entity.recomp_addr, name))
+
+# A rename leaves the old row behind, naming a guard our build no longer has.
+with open('symbols/static_guards.csv', encoding='utf-8') as handle:
+    rows = [line.split(',') for line in handle.read().splitlines()
+            if line.startswith('0x')]
+stale_guards = [(row[0], row[2]) for row in rows if row[2] not in ours_guards]
 
 # `0003:0000e920       ??_R0?AVtype_info@@@8      004cf920     LIBCMT:typinfo.obj`
 MAP_ROW = re.compile(r'^\s*[0-9a-f]{4}:[0-9a-f]{8}\s+\S+\s+([0-9a-f]{8})\s.*\s(\w+):\S+\.obj\s*$',
@@ -195,6 +204,8 @@ print('%d markers over %s' % (len(markers), '/'.join(
     '%d %s' % (per_kind[kind], kind) for kind in KINDS if per_kind[kind])))
 for address, name in guards:
     print('GUARD      0x%08x  %s has no row in symbols/static_guards.csv' % (address, name))
+for address, name in stale_guards:
+    print('STALE GUARD %s  %s names no guard in our build' % (address, name))
 for address, ours, name, offset in wrong_bytes:
     print('WRONG BYTES 0x%08x  %s differs from ours at 0x%08x from byte %d' %
           (address, name, ours, offset))
@@ -202,7 +213,8 @@ for name, address, theirs, ours in floats:
     print('FLOAT      %s  %s: %s against %s' % (address, name, theirs, ours))
 
 print('%d library data compared' % read_bytes)
-print('%d unresolved, %d wrong kind, %d unpaired guards, %d wrong bytes, %d float rows' % (
-    len(unresolved), len(wrong_kind), len(guards), len(wrong_bytes), len(floats)))
+print('%d unresolved, %d wrong kind, %d unpaired guards, %d stale guards, %d wrong bytes, '
+      '%d float rows' % (len(unresolved), len(wrong_kind), len(guards), len(stale_guards),
+                         len(wrong_bytes), len(floats)))
 
-sys.exit(1 if unresolved or wrong_kind or guards or wrong_bytes or floats else 0)
+sys.exit(1 if unresolved or wrong_kind or guards or stale_guards or wrong_bytes or floats else 0)

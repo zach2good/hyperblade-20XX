@@ -540,6 +540,11 @@ PROBES = (
      "        elif framed and not handler and operands.startswith(\"0x\"):",
      "        elif operands.startswith(\"0x\"):"),
 
+    # A static_guards.csv row whose guard our build no longer has.
+    ("check_markers_resolve.py", "symbols/static_guards.csv",
+     "?$S26@?1??BroadcastEvent@GameEngine@@QAEXHHH@Z@4EA",
+     "?$S26@?1??BroadcastEvent@GameEngine@@QAEXHHH@Z@4EA\n0x004cb3c8,global,?$S1@?1??Nothing@@YAXXZ@4EA"),
+
     # A free_slots.csv row that excuses nothing.
     ("check_member_owner.py", "symbols/free_slots.csv",
      "address,slot_of,reason\n",
