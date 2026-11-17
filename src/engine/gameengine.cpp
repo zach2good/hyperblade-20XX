@@ -3226,6 +3226,12 @@ char GameEngine::UpdateTeamSounds(short nHome, short nAway)
     int              i;
     int              n;
 
+    // Never runs; taking apCandidates' address keeps -1 in EBX, as the original has it.
+    if (0)
+    {
+        RELEASE_ASSERT((int)apCandidates);
+    }
+
     for (i = 0; i < TAUNT_NAMES; i++)
     {
         apNames[i] = new String;
