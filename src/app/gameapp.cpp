@@ -20,6 +20,8 @@
 #include "app/window.h"
 #include "common/pak.h"
 #include "common/stringtable.h"
+#include "common/gamebuild.h"
+#include "common/path.h"
 #include <SDL3/SDL.h>
 #include "graphics/gdi.h"
 #include "graphics/graphics.h"
@@ -160,6 +162,19 @@ bool GameApp::Initialize(const char* pszArguments)
     std::set_new_handler(GameApp::OutOfMemoryHandler);
     // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
     const auto* const pszBase = SDL_GetBasePath();
+
+    if (pszBase != nullptr)
+    {
+        GameBuilds::SetCurrent(GameBuilds::Detect(Path::Native((std::string(pszBase) + "HYPERX.EXE").c_str())));
+    }
+
+    // The demo's plans, models and palette are older formats than the retail game's.
+    if (GameBuilds::Current() == GameBuild::Demo)
+    {
+        Window::ShowMessage("This HyperBlade folder holds the August 1996 demo. Its data predates the full game's, and HyperBlade 20XX plays only the full game. Put hyperblade_20XX.exe in a full HyperBlade folder.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
+
+        std::_Exit(1);
+    }
 
     if (pszBase == nullptr || !StringTable::Load(pszBase))
     {

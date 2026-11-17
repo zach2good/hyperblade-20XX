@@ -85,6 +85,7 @@ set(HYPERX_SOURCES
     src/common/nodeowner.cpp
     src/common/parseutil.cpp
     src/common/pak.cpp
+    src/common/gamebuild.cpp
     src/common/path.cpp
     src/common/peresources.cpp
     src/common/sdlmemory.cpp
