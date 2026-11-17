@@ -12,7 +12,9 @@ enum MatchInfoWidget
     MATCHINFO_WIDGET_DONE   = UI_WIDGET_TAB_FIRST + 2,
     // Kiosk mode puts save and load in Done's slot and moves Done down one.
     MATCHINFO_WIDGET_SAVE_LOAD  = UI_WIDGET_TAB_FIRST + 2,
-    MATCHINFO_WIDGET_KIOSK_DONE = UI_WIDGET_TAB_FIRST + 3
+    MATCHINFO_WIDGET_KIOSK_DONE = UI_WIDGET_TAB_FIRST + 3,
+    // Outside kiosk mode the fourth slot is free, and holds Game Clips.
+    MATCHINFO_WIDGET_CLIPS = UI_WIDGET_TAB_FIRST + 3
 };
 
 // The constructor calls UIScreen's at 0x0044d540.
@@ -34,6 +36,9 @@ public:
     void UnloadBitmaps();
 
     int m_nNextState; // 0x474
+
+    // The fourth tab opens the game clips viewer rather than leaving.
+    bool m_bClipsTab = false;
 };
 
 // SYNTHETIC: HYPERX1001 0x0041bb90

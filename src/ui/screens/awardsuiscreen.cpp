@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "ui/scenes.h"
 #include "input/inputevent.h"
 #include "globals.h"
 #include "ui/hudglobals.h"
@@ -97,6 +98,13 @@ AwardsUIScreen::AwardsUIScreen()
 // FUNCTION: HYPERX1001 0x0041bbb0
 void AwardsUIScreen::OnExitTabClick()
 {
+    if (m_bClipsTab)
+    {
+        Scenes::Open(Scenes::Scene::GameClips);
+
+        return;
+    }
+
     if (g_bChampFromJumbotron != 0)
     {
         g_bChampFromJumbotron = 0;

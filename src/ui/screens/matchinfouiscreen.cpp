@@ -7,9 +7,59 @@ class MatchInfoUIScreen;
 #include "ui/widget.h"
 #include "ui/screens/matchinfouiscreen.h"
 #include "engine/game.h"
+#include "engine/gameclips.h"
+#include "graphics/gdi.h"
+#include "graphics/text.h"
+#include "ui/scenes.h"
+#include <string_view>
 
 #define MATCHINFO_LAST_WIDGET UI_WIDGET_PAGE
 constexpr auto kMatchinfoFirstPeriod = 1;
+
+namespace
+{
+
+// No disc has art for the demo's Game Clips tab, so it is the Information tab in the same state
+// with its lettering painted out and the label drawn over.
+GDI::Bitmap* MakeClipsTab(const char* pszFrom, std::uint32_t nInk, bool bShadow)
+{
+    constexpr auto kBevel = 6;
+    constexpr auto kLabel = std::string_view("GAME CLIPS");
+
+    auto* const pBitmap = GDI::LoadBitmapWithPalette(pszFrom, nullptr);
+
+    if (pBitmap == nullptr)
+    {
+        return nullptr;
+    }
+
+    // Each row takes the plate's colour just inside the bevel.
+    for (int y = kBevel; y < pBitmap->nHeight - kBevel; y++)
+    {
+        auto* const pRow = &pBitmap->pixels[static_cast<size_t>(y) * pBitmap->nWidth];
+
+        std::fill(pRow + kBevel + 2, pRow + pBitmap->nWidth - kBevel, pRow[kBevel]);
+    }
+
+    const auto font = Text::Find(14);
+    const auto size = Text::Measure(font, kLabel.data());
+    const auto nX   = (pBitmap->nWidth - size.nWidth) / 2;
+    const auto nY   = (pBitmap->nHeight - size.nHeight) / 2;
+
+    auto* const pBits  = pBitmap->pixels.data();
+    const auto  nPitch = pBitmap->nWidth * 4;
+
+    if (bShadow)
+    {
+        Text::Draw(font, pBits, nPitch, pBitmap->nWidth, pBitmap->nHeight, nX + 1, nY + 1, kLabel.data(), 0x4a5f88u);
+    }
+
+    Text::Draw(font, pBits, nPitch, pBitmap->nWidth, pBitmap->nHeight, nX, nY, kLabel.data(), nInk);
+
+    return pBitmap;
+}
+
+} // namespace
 
 // RegisterBitmaps claims every bitmap name's STRING marker.
 // FUNCTION: HYPERX1001 0x00435790
@@ -93,7 +143,18 @@ MatchInfoUIScreen::MatchInfoUIScreen()
     }
     else
     {
-        m_apWidgets[MATCHINFO_WIDGET_KIOSK_DONE]->SetHidden(1);
+        // The demo's fourth tab, while this match has clips; kiosk mode keeps the slot for Done.
+        m_bClipsTab = !GameClips::All().empty();
+
+        m_apWidgets[MATCHINFO_WIDGET_CLIPS]->SetHidden(static_cast<int>(!m_bClipsTab));
+
+        if (m_bClipsTab)
+        {
+            m_apWidgets[MATCHINFO_WIDGET_CLIPS]->ClearFrames();
+            m_apWidgets[MATCHINFO_WIDGET_CLIPS]->AddFrameBitmap(MakeClipsTab("info", 0x000000u, true), 0);
+            m_apWidgets[MATCHINFO_WIDGET_CLIPS]->AddFrameBitmap(MakeClipsTab("infor", 0xffffffu, false), 0);
+            m_apWidgets[MATCHINFO_WIDGET_CLIPS]->AddFrameBitmap(MakeClipsTab("infod", 0x00ff00u, false), 0);
+        }
 
         m_apWidgets[MATCHINFO_WIDGET_DONE]->ClearFrames();
 
@@ -153,6 +214,13 @@ void MatchInfoUIScreen::OnThirdTabClick()
 // FUNCTION: HYPERX1001 0x00435bd0
 void MatchInfoUIScreen::OnExitTabClick()
 {
+    if (m_bClipsTab)
+    {
+        Scenes::Open(Scenes::Scene::GameClips);
+
+        return;
+    }
+
     UnloadBitmaps();
 
     Game::SetEngineState(m_nNextState);
