@@ -17,10 +17,11 @@ decompilation.
 | 9 | [v1000_debug_directory.md](v1000_debug_directory.md) | The FPO data in v1.0.0.0 and what it tells us about v1.0.0.1 |
 | 10 | [v1000.md](v1000.md) | Building v1.0.0.0, its markers, and what the patch changed |
 | 11 | [v1000_cutting_room.md](v1000_cutting_room.md) | Cut and unfinished content v1.0.0.0 and the resources keep |
-| 12 | [OTHER_MODULES.md](OTHER_MODULES.md) | The other executables and DLLs on the disc, and why they're out of scope |
-| 13 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
-| 14 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
-| 15 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
+| 12 | [demo.md](demo.md) | The August 1996 demo build and how it differs from v1.0.0.0 |
+| 13 | [OTHER_MODULES.md](OTHER_MODULES.md) | The other executables and DLLs on the disc, and why they're out of scope |
+| 14 | [plan_bugs.md](plan_bugs.md) | Bugs in the shipped AI plans, with the plan VM rules they rest on |
+| 15 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
+| 16 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
 
 [tools/README.md](../tools/README.md) describes every tool, [src/README.md](../src/README.md)
 what each source folder holds, and [symbols/README.md](../symbols/README.md) the CSVs the build
