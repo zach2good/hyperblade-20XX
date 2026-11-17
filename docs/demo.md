@@ -35,10 +35,7 @@ lacks it.
 
 ## What the demo has
 
-- **An instant replay screen.** Buttons `camra1` to `camra4`, `rewind`, `forwrd`, `play`,
-  `pause`, `stop`, and clip buttons `savclp`, `lodclp` and `gamclp`. Their loaders are cases of a
-  20-way screen switch that the demo's `Game::UpdateState` calls. v1.0.0.0 keeps only the unused
-  strings "INSTANT REPLAY" and "Replay Screen".
+- **A game clips viewer**, with no working controls. See [below](#the-game-clips-viewer).
 - **A controls screen.** Joystick and keyboard frames `cntjs01` to `cntjs15` and `cntkb01` to
   `cntkb15`, on `cntbkg`.
 - **Eleven 15-frame image sequences**: `confu`, `elect`, `fstln`, `lpass`, `lshot`, `slwln`,
@@ -55,6 +52,33 @@ lacks it.
   doesn't compare `PLANS.CAT`, `ENUMIDS.H`, `COMMON.CFG` or the team and arena files between host
   and client.
 
+## The game clips viewer
+
+The demo's screen factory at 0x0047f5e0 switches on the engine state at 0x004f32d0 and stores the
+new screen at 0x004eb3dc, as `GameApp::InstantiateState` does. The lobby (3) and main menu (4)
+keep their numbers, and the clips viewer moves from 12 to 10. These are the post-match screens:
+
+| State | Constructor | Vtable | Screen |
+| --- | --- | --- | --- |
+| 10 | 0x004743a0 | 0x004d3a08 | Landing: the four tabs only |
+| 11 | 0x00479f90 | 0x004d3d38 | Info tab: roster and arena pages |
+| 12 | 0x004072f0 | 0x004d0028 | Game clips viewer |
+| 13 | 0x0042dd70 | 0x004d1838 | Awards tab |
+
+Each of the four screens draws the `Hviewl` holo frame and the tabs Info, Game Clips (`gamclp`),
+Awards and Done. Vtable slots 9 to 12 are the tab handlers: Info goes to state 11, Game Clips to
+12, Awards to 13 and Done to the lobby, state 3. Each records state 10 at 0x004eb3d8 as the state
+to return to. Lobby widget 0 goes to state 10, so a player can reach the viewer.
+
+The viewer adds `stop`, `rewind`, `play`, `pause` and `forwrd` buttons, clip buttons `lodclp` and
+`savclp`, and camera buttons `camra1` to `camra4`. Every handler behind them is a bare `ret`, and
+so is every slot it shares with the other post-match screens, 0x00407c80 to 0x00407da0. No
+string in the demo names a clip file. The viewer is a front end with nothing behind it.
+
+v1.0.0.1 keeps the state as `ESTATE_GAME_CLIPS_VIEWER`, 10, and `GameApp::InstantiateState`
+stops the game with "Invalid state detected: GameClipsViewer". v1.0.0.0 has none of the viewer's
+art names. Its string table keeps "INSTANT REPLAY" and "Replay Screen", which nothing loads.
+
 ## What only v1.0.0.0 has
 
 Save and load (`SAVE%02d.BIN`), game options and volume settings, the cheats ("Hidden teams
@@ -68,4 +92,4 @@ classes (`CTrack`, `CWatch`, `CCircleTrack`) and the CD checks. String table ent
 - Add a `HYPERXDEMO` target to `reccmp-project.yml` once a function carries a demo marker.
 - Raise the pair count. A matcher that reads struct offsets as fuzzy operands should pair most of
   the shifted code.
-- Decode the replay screen. Neither release has anything like it.
+- Map the rest of the demo's screen states onto v1.0.0.1's.
