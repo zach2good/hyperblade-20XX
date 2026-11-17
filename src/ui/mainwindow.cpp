@@ -19,7 +19,7 @@
 
 extern unsigned char g_bEnergyOn;
 
-// FUNCTION: HYPERX 0x0044d0d0
+// FUNCTION: HYPERX1001 0x0044d0d0
 int MainWindow::OnCreate()
 {
     g_pColorPalette->ReloadPalette(g_wPaletteMode);

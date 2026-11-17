@@ -9,7 +9,6 @@ struct Vec3;
 #include "globals.h"
 #include "engineglobals.h"
 #include "devicector.h"
-#include "physics/collisionplane.h"
 #include "physics/collisionobj.h"
 #include "engine/engineobject.h"
 
@@ -30,7 +29,7 @@ struct RampEdge : public PlaneEdge
     }
 };
 
-// VTABLE: HYPERX 0x004b3e64
+// VTABLE: HYPERX1001 0x004b3e64
 class RampObject : public EngineObject
 {
 public:
@@ -52,11 +51,11 @@ private:
     int          m_bPlanesReady; // 0xe84
 };
 
-// SYNTHETIC: HYPERX 0x0047fe40
+// SYNTHETIC: HYPERX1001 0x0047fe40
 // RampObject::`scalar deleting destructor'
 
 // Left to the compiler: a declared destructor would store RampObject's table first.
-// SYNTHETIC: HYPERX 0x0047fe60
+// SYNTHETIC: HYPERX1001 0x0047fe60
 // RampObject::~RampObject
 
 #endif

@@ -20,6 +20,8 @@
 #include "app/window.h"
 #include "common/pak.h"
 #include "common/stringtable.h"
+#include "common/gamebuild.h"
+#include "common/path.h"
 #include <SDL3/SDL.h>
 #include "graphics/gdi.h"
 #include "graphics/graphics.h"
@@ -98,13 +100,13 @@ float g_flUnusedConfigDialogC = g_flZeroConfigDialog;
 
 // id_ACF_AnimationPeek in DATA/ENUMIDS.H. The original's dialog was modal and paused the match;
 // this one leaves it running.
-// FUNCTION: HYPERX 0x004013d0
+// FUNCTION: HYPERX1001 0x004013d0
 void GameApp::AnimationPeek(Interactor*, PlanNode*, short*, int)
 {
     OriginalUI::OpenDialog(OriginalUI::kDialogAnimationPeek);
 }
 
-// FUNCTION: HYPERX 0x004017a0
+// FUNCTION: HYPERX1001 0x004017a0
 void GameApp::Fatal(const char* pszFormat, ...)
 {
     va_list argList;
@@ -116,7 +118,7 @@ void GameApp::Fatal(const char* pszFormat, ...)
     va_end(argList);
 }
 
-// FUNCTION: HYPERX 0x00411be0
+// FUNCTION: HYPERX1001 0x00411be0
 void GameApp::Error(const char* pszFormat, ...)
 {
     va_list argList;
@@ -128,17 +130,17 @@ void GameApp::Error(const char* pszFormat, ...)
     va_end(argList);
 }
 
-// FUNCTION: HYPERX 0x00418c10
+// FUNCTION: HYPERX1001 0x00418c10
 void GameApp::SetModelPath(int bTexEnabled)
 {
     if (bTexEnabled != 0)
     {
-        // STRING: HYPERX 0x004bba8c
+        // STRING: HYPERX1001 0x004bba8c
         g_gameApp.m_strModelPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Models\\Mdltxt"));
     }
     else
     {
-        // STRING: HYPERX 0x004bba7c
+        // STRING: HYPERX1001 0x004bba7c
         g_gameApp.m_strModelPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Models\\Mdlshd"));
     }
 }
@@ -150,7 +152,7 @@ const char* GameApp::Arguments()
     return s_arguments.c_str();
 }
 
-// FUNCTION: HYPERX 0x00418e10
+// FUNCTION: HYPERX1001 0x00418e10
 bool GameApp::Initialize(const char* pszArguments)
 {
     s_arguments = pszArguments;
@@ -160,6 +162,19 @@ bool GameApp::Initialize(const char* pszArguments)
     std::set_new_handler(GameApp::OutOfMemoryHandler);
     // The text comes from the player's own HYPERX.EXE the first time, and from the strings file after.
     const auto* const pszBase = SDL_GetBasePath();
+
+    if (pszBase != nullptr)
+    {
+        GameBuilds::SetCurrent(GameBuilds::Detect(Path::Native((std::string(pszBase) + "HYPERX.EXE").c_str())));
+    }
+
+    // The demo's plans, models and palette are older formats than the retail game's.
+    if (GameBuilds::Current() == GameBuild::Demo)
+    {
+        Window::ShowMessage("This HyperBlade folder holds the August 1996 demo. Its data predates the full game's, and HyperBlade 20XX plays only the full game. Put hyperblade_20XX.exe in a full HyperBlade folder.", "HyperBlade 20XX", Window::MessageButtons::OK, Window::MessageIcon::STOP);
+
+        std::_Exit(1);
+    }
 
     if (pszBase == nullptr || !StringTable::Load(pszBase))
     {
@@ -203,7 +218,7 @@ bool GameApp::Initialize(const char* pszArguments)
     // Windows shows its start-up busy cursor until a new program first takes its messages.
     Window::Pump();
 
-    // STRING: HYPERX 0x004bba9c
+    // STRING: HYPERX1001 0x004bba9c
     Config::LoadPreferences("Prefs.txt");
 
     Game::InitializeEngine();
@@ -224,7 +239,7 @@ bool GameApp::Initialize(const char* pszArguments)
     return bWindow;
 }
 
-// FUNCTION: HYPERX 0x00419070
+// FUNCTION: HYPERX1001 0x00419070
 void GameApp::InitializeResourcePaths()
 {
     auto* const pszClassName = g_gameApp.m_stringPool.LoadText(kStringHyperBlade);
@@ -241,24 +256,24 @@ void GameApp::InitializeResourcePaths()
         strDirectory.m_str.Assign(String::SafeStrlen(pszBase), pszBase);
     }
 
-    // STRING: HYPERX 0x004bbad8
+    // STRING: HYPERX1001 0x004bbad8
     g_gameApp.m_strExeDir.m_str.AssignFromString(String::Concat(strDirectory.m_str, "Data\\"));
 
-    // STRING: HYPERX 0x004bbad0
+    // STRING: HYPERX1001 0x004bbad0
     g_gameApp.m_strAssetsPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "assets8"));
 
-    // STRING: HYPERX 0x004bbac4
+    // STRING: HYPERX1001 0x004bbac4
     g_gameApp.m_strAnimDataPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "AnimData"));
 
     GameApp::SetModelPath(0);
 
-    // STRING: HYPERX 0x004bbabc
+    // STRING: HYPERX1001 0x004bbabc
     g_gameApp.m_strPlansPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Plans"));
 
-    // STRING: HYPERX 0x004bbab4
+    // STRING: HYPERX1001 0x004bbab4
     g_gameApp.m_strSoundsPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Sounds"));
 
-    // STRING: HYPERX 0x004bbaa8
+    // STRING: HYPERX1001 0x004bbaa8
     g_gameApp.m_strTexturesPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "Textures"));
 }
 
@@ -266,15 +281,15 @@ constexpr auto kSplashTime = std::chrono::seconds{ 3 };
 
 static Clock::Milliseconds s_splashShown{};
 
-// FUNCTION: HYPERX 0x00419290
+// FUNCTION: HYPERX1001 0x00419290
 void GameApp::NextSplash()
 {
     static const constexpr char* s_apszSplashes[] = {
-        // STRING: HYPERX 0x004bbaf4
+        // STRING: HYPERX1001 0x004bbaf4
         "SPLASHWZ",
-        // STRING: HYPERX 0x004bbae8
+        // STRING: HYPERX1001 0x004bbae8
         "SPLASHAC",
-        // STRING: HYPERX 0x004bbae0
+        // STRING: HYPERX1001 0x004bbae0
         "HBLOGO",
     };
 
@@ -318,7 +333,7 @@ bool GameApp::UpdateSplash()
 }
 
 // 'x' is skipped like a space.
-// FUNCTION: HYPERX 0x00419420
+// FUNCTION: HYPERX1001 0x00419420
 // The original skipped the program's name first; the arguments come without it.
 void GameApp::ParseCommandLine(const char* pszArguments)
 {
@@ -374,7 +389,7 @@ void GameApp::ParseCommandLine(const char* pszArguments)
     } while (*p == '-');
 }
 
-// FUNCTION: HYPERX 0x00419580
+// FUNCTION: HYPERX1001 0x00419580
 void GameApp::Shutdown()
 {
     Gamepad::Shutdown();
@@ -406,7 +421,7 @@ void GameApp::Shutdown()
     SDL_PushEvent(&quit);
 }
 
-// FUNCTION: HYPERX 0x00419640
+// FUNCTION: HYPERX1001 0x00419640
 void GameApp::OnStartup()
 {
     if (g_gameApp.m_bHasWindow)
@@ -415,12 +430,12 @@ void GameApp::OnStartup()
         return;
     }
 
-    // STRING: HYPERX 0x004bbb04
+    // STRING: HYPERX1001 0x004bbb04
     g_gameApp.Fatal("InitApp - Null window handle.");
 }
 
 // Never returns.
-// FUNCTION: HYPERX 0x00419670
+// FUNCTION: HYPERX1001 0x00419670
 void GameApp::OnExit()
 {
     Window::Destroy();
@@ -432,7 +447,7 @@ constexpr auto kCdromNotFound  = (-1);
 constexpr auto kCdromNotWanted = (-2);
 
 // Runs before WinMain.
-// FUNCTION: HYPERX 0x00422f90
+// FUNCTION: HYPERX1001 0x00422f90
 GameApp::GameApp(short nStringCount)
 : m_strExeDir(kMaxPathLength)
 , m_strAssetsPath(kMaxPathLength)
@@ -457,7 +472,7 @@ GameApp::GameApp(short nStringCount)
 
 #define CDROM_DRIVE_COUNT ('Z' - 'A' + 1)
 
-// FUNCTION: HYPERX 0x00423140
+// FUNCTION: HYPERX1001 0x00423140
 void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(), void (*pfnShutdown)())
 {
     m_bHasWindow  = bHasWindow;
@@ -469,7 +484,7 @@ void GameApp::SetWindowAndCallbacks(bool bHasWindow, void (*pfnStartup)(), void 
     }
 }
 
-// FUNCTION: HYPERX 0x00423160
+// FUNCTION: HYPERX1001 0x00423160
 void GameApp::OnShutdown()
 {
     if (g_pAudioMgr != nullptr)
@@ -483,7 +498,7 @@ void GameApp::OnShutdown()
     }
 }
 
-// FUNCTION: HYPERX 0x00423180
+// FUNCTION: HYPERX1001 0x00423180
 int GameApp::FindCDRomDrive(bool bRequired)
 {
     char szCaption[kMaxPathLength];
@@ -558,7 +573,7 @@ done:
 }
 
 // The scan carries on over the string it has just rewritten.
-// FUNCTION: HYPERX 0x004233d0
+// FUNCTION: HYPERX1001 0x004233d0
 char* GameApp::ResolveCDRomPath(char* pszPath)
 {
     char* p;
@@ -591,13 +606,13 @@ char* GameApp::ResolveCDRomPath(char* pszPath)
 #define ERROR_BOX(t, c) Window::ShowMessage(t, c, Window::MessageButtons::OK, Window::MessageIcon::STOP)
 
 // Files open through SDL, so SDL holds the reason the last one failed.
-// FUNCTION: HYPERX 0x004238b0
+// FUNCTION: HYPERX1001 0x004238b0
 void GameApp::ReportLastError()
 {
     Error("%s", SDL_GetError());
 }
 
-// FUNCTION: HYPERX 0x00423900
+// FUNCTION: HYPERX1001 0x00423900
 void GameApp::ShowErrorBox(String strMessage)
 {
     const auto nCursor = GameApp::SetCursorVisible(1);
@@ -625,7 +640,7 @@ void GameApp::ShowErrorBox(String strMessage)
     GameApp::SetCursorVisible(nCursor);
 }
 
-// FUNCTION: HYPERX 0x00423a00
+// FUNCTION: HYPERX1001 0x00423a00
 void GameApp::FatalErrorFmtString(const char* pszFormat, va_list args)
 {
     String strFormat(pszFormat);
@@ -635,7 +650,7 @@ void GameApp::FatalErrorFmtString(const char* pszFormat, va_list args)
 
 #define SHUT_DOWN(pApp) pApp->OnShutdown()
 
-// FUNCTION: HYPERX 0x00423a70
+// FUNCTION: HYPERX1001 0x00423a70
 void GameApp::ErrorFmt(const char* pszFormat, va_list args)
 {
     String::FormatAlloc(&m_stringPool.m_strMessage, pszFormat, args);
@@ -645,7 +660,7 @@ void GameApp::ErrorFmt(const char* pszFormat, va_list args)
     m_stringPool.m_strMessage.Empty();
 }
 
-// FUNCTION: HYPERX 0x00423ab0
+// FUNCTION: HYPERX1001 0x00423ab0
 void GameApp::FatalErrorFmt(const char* pszFormat, va_list args)
 {
     String::FormatAlloc(&m_stringPool.m_strMessage, pszFormat, args);
@@ -655,7 +670,7 @@ void GameApp::FatalErrorFmt(const char* pszFormat, va_list args)
     m_stringPool.m_strMessage.Empty();
 }
 
-// FUNCTION: HYPERX 0x00423af0
+// FUNCTION: HYPERX1001 0x00423af0
 void GameApp::FatalError(String strMessage)
 {
     ShowErrorBox(strMessage);
@@ -669,7 +684,7 @@ void GameApp::FatalError(String strMessage)
     SHUT_DOWN(this);
 }
 
-// FUNCTION: HYPERX 0x0042f3b0
+// FUNCTION: HYPERX1001 0x0042f3b0
 void GameApp::FatalString(const char* pszFormat, ...)
 {
     va_list argList;
@@ -681,7 +696,7 @@ void GameApp::FatalString(const char* pszFormat, ...)
     va_end(argList);
 }
 
-// FUNCTION: HYPERX 0x0044b350
+// FUNCTION: HYPERX1001 0x0044b350
 void GameApp::SetupViewports()
 {
     int nPrevHeight;
@@ -742,7 +757,7 @@ void GameApp::SetupViewports()
     pView->InitViewTransforms();
 }
 
-// FUNCTION: HYPERX 0x0044bca0
+// FUNCTION: HYPERX1001 0x0044bca0
 int GameApp::SetCursorVisible(int bVisible)
 {
     const int bWasVisible = (g_bCursorHidden == 0);
@@ -760,7 +775,7 @@ int GameApp::SetCursorVisible(int bVisible)
     return bWasVisible;
 }
 
-// FUNCTION: HYPERX 0x0044c160
+// FUNCTION: HYPERX1001 0x0044c160
 int GameApp::MainUpdate()
 {
     // A finished track is followed by the menu track, or a random one during play.
@@ -825,13 +840,13 @@ int GameApp::MainUpdate()
     return g_gameApp.m_bIsActive == 0;
 }
 
-// FUNCTION: HYPERX 0x0046eea0
+// FUNCTION: HYPERX1001 0x0046eea0
 int GameApp::GetInstallLevel()
 {
     return g_nInstallLevel;
 }
 
-// FUNCTION: HYPERX 0x0047adb0
+// FUNCTION: HYPERX1001 0x0047adb0
 Window::MessageAnswer GameApp::ShowMessageBox(const char* pszText, const char* pszCaption, Window::MessageButtons buttons)
 {
     const auto bWasVisible = GameApp::SetCursorVisible(1);
@@ -844,17 +859,17 @@ Window::MessageAnswer GameApp::ShowMessageBox(const char* pszText, const char* p
 }
 
 // Returning zero tells the runtime not to retry.
-// FUNCTION: HYPERX 0x0047adf0
+// FUNCTION: HYPERX1001 0x0047adf0
 void GameApp::OutOfMemoryHandler()
 {
-    // STRING: HYPERX 0x004c682c
+    // STRING: HYPERX1001 0x004c682c
     g_gameApp.Fatal("In C++ \"new\" method: Memory pool empty!");
 
     // The original's handler answered nought, failing the allocation.
     throw std::bad_alloc();
 }
 
-// FUNCTION: HYPERX 0x0048ceb0
+// FUNCTION: HYPERX1001 0x0048ceb0
 void GameApp::ResetToSinglePlayer()
 {
     g_nMainMenuTopChoice   = 1;
@@ -864,7 +879,7 @@ void GameApp::ResetToSinglePlayer()
 }
 
 // A failed allocation is stored through unchecked, as the original does.
-// FUNCTION: HYPERX 0x004922f0
+// FUNCTION: HYPERX1001 0x004922f0
 void GameApp::InstantiateState()
 {
     int nReturnState;
@@ -977,7 +992,7 @@ void GameApp::InstantiateState()
         }
 
         case kEstateGameClipsViewer:
-            // STRING: HYPERX 0x004c8c2c
+            // STRING: HYPERX1001 0x004c8c2c
             g_gameApp.Fatal("Invalid state detected: GameClipsViewer\n");
             break;
 
@@ -1064,7 +1079,7 @@ void GameApp::InstantiateState()
     }
 }
 
-// FUNCTION: HYPERX 0x00493870
+// FUNCTION: HYPERX1001 0x00493870
 bool GameApp::CreateMainWindow(const char* pszTitle)
 {
     // What WM_CREATE did before SDL made the window.

@@ -4,15 +4,13 @@
 #include "common/compat.h"
 #include "ui/widget.h"
 
-#include "ui/holdingwidget.h"
-
 #include "ui/buttonwidget.h"
 #include "globals.h"
 
 class Screen;
 
 // Table 0x004b2abc; its slot six, 0x0042bb20, steps the frame. FlipbookWidget never steps.
-// VTABLE: HYPERX 0x004b2abc
+// VTABLE: HYPERX1001 0x004b2abc
 class LoopFlipbookWidget : public InertWidget
 {
 public:

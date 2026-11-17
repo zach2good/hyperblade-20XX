@@ -17,17 +17,17 @@
 #include "math/mathops.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0040cee0
+// FUNCTION: HYPERX1001 0x0040cee0
 CSlideOnRail::CSlideOnRail()
 : m_pSpline(std::make_unique<Spline>())
 {
     m_pSpline->InitSegment(g_arenaEllipsoid.GetRadiusX(), g_arenaEllipsoid.GetRadiusY());
 }
 
-// FUNCTION: HYPERX 0x0040cfa0
+// FUNCTION: HYPERX1001 0x0040cfa0
 CSlideOnRail::~CSlideOnRail() = default;
 
-// FUNCTION: HYPERX 0x0040d010
+// FUNCTION: HYPERX1001 0x0040d010
 void CSlideOnRail::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -48,7 +48,7 @@ void CSlideOnRail::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pPrevTick         = &pOwner->GetPhysicsBody()->nPrevTick;
 }
 
-// FUNCTION: HYPERX 0x0040d0d0
+// FUNCTION: HYPERX1001 0x0040d0d0
 void CSlideOnRail::OnListChanged()
 {
     if (m_bReady == 0)
@@ -71,7 +71,7 @@ void CSlideOnRail::OnListChanged()
 }
 
 // The first of the two writes to the normal's z is dead in the original too.
-// FUNCTION: HYPERX 0x0040d110
+// FUNCTION: HYPERX1001 0x0040d110
 void CSlideOnRail::Process(int nArg)
 {
     m_pSurfNormal->z = g_flZeroAgendaItem;
@@ -117,7 +117,7 @@ void CSlideOnRail::Process(int nArg)
 
 // A pending net target moves the object by its own step over the frame before the rail takes it.
 
-// FUNCTION: HYPERX 0x0040d240
+// FUNCTION: HYPERX1001 0x0040d240
 void CSlideOnRail::Release(int nArg)
 {
     float flDelta;

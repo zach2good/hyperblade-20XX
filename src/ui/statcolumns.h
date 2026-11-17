@@ -18,12 +18,12 @@ inline void FormatClock(char* szText, short nValue)
 
     if (nSeconds < 10)
     {
-        // STRING: HYPERX 0x004c3c84
+        // STRING: HYPERX1001 0x004c3c84
         sprintf(szText, "%2hd:0%hd", nMinutes, nSeconds);
     }
     else
     {
-        // STRING: HYPERX 0x004c3c78
+        // STRING: HYPERX1001 0x004c3c78
         sprintf(szText, "%2hd:%2hd", nMinutes, nSeconds);
     }
 }

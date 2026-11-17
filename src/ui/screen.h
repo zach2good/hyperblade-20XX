@@ -15,7 +15,7 @@ constexpr auto kWidgetIDMouse  = 100;
 constexpr auto kWidgetIDReturn = 101;
 
 // The three virtuals are the whole of 0x004b4040; two are folded across a dozen tables.
-// VTABLE: HYPERX 0x004b4040
+// VTABLE: HYPERX1001 0x004b4040
 class Screen
 {
 public:
@@ -90,7 +90,7 @@ protected:
     SystemTimePair m_lastTick; // 0x458
 };
 
-// SYNTHETIC: HYPERX 0x0048bfc0
+// SYNTHETIC: HYPERX1001 0x0048bfc0
 // Screen::`scalar deleting destructor'
 
 #endif

@@ -7,7 +7,7 @@
 #include "engine/goalobject.h"
 #include "engine/engineobject.h"
 
-// FUNCTION: HYPERX 0x00474490
+// FUNCTION: HYPERX1001 0x00474490
 GoalObject::GoalObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
@@ -23,5 +23,5 @@ GoalObject::GoalObject(int nSlot, class ObjectDef* pDef)
     ApplyRenderSlotPose();
 }
 
-// FUNCTION: HYPERX 0x00474560
+// FUNCTION: HYPERX1001 0x00474560
 GoalObject::~GoalObject() = default;

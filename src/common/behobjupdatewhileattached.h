@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b26fc
+// VTABLE: HYPERX1001 0x004b26fc
 class BehObj_UpdateWhileAttached : public FlightBehaviorObject
 {
 public:
@@ -15,7 +15,7 @@ public:
     BehObj_UpdateWhileAttached();
 };
 
-// SYNTHETIC: HYPERX 0x0041e0c0
+// SYNTHETIC: HYPERX1001 0x0041e0c0
 // BehObj_UpdateWhileAttached::`scalar deleting destructor'
 
 #endif

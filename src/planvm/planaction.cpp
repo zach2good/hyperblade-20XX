@@ -53,7 +53,6 @@
 #include <cmath>
 #include <cstdlib>
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
@@ -66,7 +65,7 @@ constexpr auto kArgCountWithMessage = 2;
 
 // The second object's state block is fetched and never used, in the original too.
 
-// FUNCTION: HYPERX 0x0046a9e0
+// FUNCTION: HYPERX1001 0x0046a9e0
 void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vPoint;
@@ -85,7 +84,7 @@ void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
 
     auto* const pPoint = pObject->GetWorldPos(&vPoint);
 
-    CollisionPlane* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
+    CollisionObj* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
 
     pState->pShell = pPart;
 
@@ -97,7 +96,7 @@ constexpr auto kInfoBarHoldMs = 0x5dc;
 constexpr auto kMessageKindEven = 1;
 constexpr auto kMessageKindOdd  = 2;
 
-// FUNCTION: HYPERX 0x0046aa90
+// FUNCTION: HYPERX1001 0x0046aa90
 void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_nArgCount > 1)
@@ -109,7 +108,7 @@ void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
     }
 }
 
-// FUNCTION: HYPERX 0x0046aad0
+// FUNCTION: HYPERX1001 0x0046aad0
 void PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
 {
     if (pNode->m_nArgCount == kArgCountWithMessage)
@@ -123,7 +122,7 @@ void PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
 
 // The kind alternates with the slot's low bit so the two sides of a pairing get different rows.
 
-// FUNCTION: HYPERX 0x0046ab10
+// FUNCTION: HYPERX1001 0x0046ab10
 void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const char* pszName;
@@ -160,7 +159,7 @@ void PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*
 }
 
 // A slot of minus one means the actor has no team and nothing is pushed.
-// FUNCTION: HYPERX 0x0046aba0
+// FUNCTION: HYPERX1001 0x0046aba0
 void PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const char* pTeam;
@@ -192,7 +191,7 @@ void PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, 
 }
 
 // Set to one so the first save through each row wins.
-// GLOBAL: HYPERX 0x004c453c
+// GLOBAL: HYPERX1001 0x004c453c
 extern short g_awColorLatched[2];
 short        g_awColorLatched[2] = { 1, 1 };
 

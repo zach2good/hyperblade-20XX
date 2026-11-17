@@ -18,7 +18,7 @@ struct GameApp;
 #include "app/config.h"
 #include <SDL3/SDL.h>
 
-// FUNCTION: HYPERX 0x004181b0
+// FUNCTION: HYPERX1001 0x004181b0
 AnimScriptTable::~AnimScriptTable() = default;
 
 // A set is taken when its name holds the first; a clip starting with the second gets a kind.
@@ -26,7 +26,7 @@ constexpr auto kSetFilterResource  = std::uintptr_t{ 0x20 };
 constexpr auto kClipPrefixResource = std::uintptr_t{ 0x42 };
 
 // The parse stops at the first line the line parser refuses, so a bad line truncates the file.
-// FUNCTION: HYPERX 0x00418210
+// FUNCTION: HYPERX1001 0x00418210
 void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, int bBind)
 {
     OwnedFile file;
@@ -63,7 +63,7 @@ void AnimScriptTable::ParseScript(const char* pszPath, AnimRegistry* pAnimMgr, i
     else
     {
         // The original passes nothing for the %s.
-        // STRING: HYPERX 0x004bb8b4
+        // STRING: HYPERX1001 0x004bb8b4
         g_gameApp.Fatal("Assembly file %s could not be opened!");
     }
 
@@ -74,7 +74,7 @@ constexpr auto kRefChars  = 0x14;
 constexpr auto kNameChars = 0x18;
 
 // Blank lines and comments are skipped; a clip's message defaults to kMsgNomsg.
-// FUNCTION: HYPERX 0x004183e0
+// FUNCTION: HYPERX1001 0x004183e0
 unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptState* pState)
 {
     short   nSecond;
@@ -141,14 +141,14 @@ unsigned int AnimScriptTable::ParseScriptLine(const char* pszLine, AnimScriptSta
 }
 
 // The tab the two field walkers split on; src/common/commonglobals.h names the same character at 0x004b3f00.
-// GLOBAL: HYPERX 0x004b22d0
+// GLOBAL: HYPERX1001 0x004b22d0
 extern const char* const g_pszAnimTokenDelimiters;
 
 // The scanf format the two field readers push.
-// GLOBAL: HYPERX 0x004b22b8
+// GLOBAL: HYPERX1001 0x004b22b8
 extern const char* const g_pszAnimShortFormat;
 
-// GLOBAL: HYPERX 0x004b22c8
+// GLOBAL: HYPERX1001 0x004b22c8
 extern const char* const g_pszAnimFloatFormat;
 
 constexpr auto kSegmentTokenChars = 256;
@@ -156,7 +156,7 @@ constexpr auto kTriggerTokenChars = 0x50;
 
 constexpr auto kTriggerFields = 3;
 
-// FUNCTION: HYPERX 0x00418540
+// FUNCTION: HYPERX1001 0x00418540
 int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, const char** ppszCursor, const String& strFilter)
 {
     char szName[20];
@@ -179,7 +179,7 @@ int AnimScriptTable::ParseAndAddAnimDB(AnimDB** ppOut, const char* pszSource, co
     return nResult;
 }
 
-// FUNCTION: HYPERX 0x004185c0
+// FUNCTION: HYPERX1001 0x004185c0
 int AnimScriptTable::CreateAnimDB(AnimDB** ppOut, const char* pszName, const char* pszExtra)
 {
     const auto nBefore = GameApp::GetInstallLevel();
@@ -213,7 +213,7 @@ inline int AnimScriptTable::ScanFloat(const char** ppszCursor, char* pszToken, f
 }
 
 // A segment's description is freed on every path out; nothing clamps the fast rate.
-// FUNCTION: HYPERX 0x00418670
+// FUNCTION: HYPERX1001 0x00418670
 int AnimScriptTable::ParseSegment(std::unique_ptr<AnimNode>* ppSegment, const char* pszLine, const char** ppszCursor)
 {
     auto nResult = 0;
@@ -268,43 +268,43 @@ int AnimScriptTable::ParseSegment(std::unique_ptr<AnimNode>* ppSegment, const ch
                                 }
                                 else
                                 {
-                                    // STRING: HYPERX 0x004bb9b4
+                                    // STRING: HYPERX1001 0x004bb9b4
                                     g_gameApp.Fatal("ERROR: in Loop Count field -- %s.", pszLine);
                                 }
                             }
                             else
                             {
-                                // STRING: HYPERX 0x004bb994
+                                // STRING: HYPERX1001 0x004bb994
                                 g_gameApp.Fatal("ERROR: in Fast FPS field -- %s.", pszLine);
                             }
                         }
                         else
                         {
-                            // STRING: HYPERX 0x004bb970
+                            // STRING: HYPERX1001 0x004bb970
                             g_gameApp.Fatal("ERROR: in Standard FPS field -- %s.", pszLine);
                         }
                     }
                     else
                     {
-                        // STRING: HYPERX 0x004bb950
+                        // STRING: HYPERX1001 0x004bb950
                         g_gameApp.Fatal("ERROR: in Slow FPS field -- %s.", pszLine);
                     }
                 }
                 else
                 {
-                    // STRING: HYPERX 0x004bb92c
+                    // STRING: HYPERX1001 0x004bb92c
                     g_gameApp.Fatal("ERROR: in End Frame field -- %s.", pszLine);
                 }
             }
             else
             {
-                // STRING: HYPERX 0x004bb908
+                // STRING: HYPERX1001 0x004bb908
                 g_gameApp.Fatal("ERROR: in Start Frame field -- %s.", pszLine);
             }
         }
         else
         {
-            // STRING: HYPERX 0x004bb8dc
+            // STRING: HYPERX1001 0x004bb8dc
             g_gameApp.Fatal("ERROR in Segment Description field -- %s.", pszLine);
         }
 
@@ -314,7 +314,7 @@ int AnimScriptTable::ParseSegment(std::unique_ptr<AnimNode>* ppSegment, const ch
     return nResult;
 }
 
-// FUNCTION: HYPERX 0x004189c0
+// FUNCTION: HYPERX1001 0x004189c0
 int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* pnTriggerFrame, char* pszName, char* pszRef, short* pnSyncSegment, short* pnSyncFrame)
 {
     char szToken[kTriggerTokenChars];
@@ -341,14 +341,14 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
 
         if (String::ExtractToken(pszScan, szToken, &pszScan) <= 0 || sscanf(szToken, g_pszAnimShortFormat, pnSegment) != 1)
         {
-            // STRING: HYPERX 0x004bb9d8
+            // STRING: HYPERX1001 0x004bb9d8
             g_gameApp.Fatal("ERROR: in Trigger Segment field.");
 
             nResult = 0;
         }
         else if (String::ExtractToken(pszScan, szToken, &pszScan) <= 0 || sscanf(szToken, g_pszAnimShortFormat, pnTriggerFrame) != 1)
         {
-            // STRING: HYPERX 0x004bb9fc
+            // STRING: HYPERX1001 0x004bb9fc
             g_gameApp.Fatal("ERROR: in Trigger Frame field.");
 
             nResult = 0;
@@ -359,14 +359,14 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
             {
                 if (String::ExtractToken(pszScan, szToken, &pszScan) <= 0 || sscanf(szToken, g_pszAnimShortFormat, pnSyncSegment) != 1)
                 {
-                    // STRING: HYPERX 0x004bba40
+                    // STRING: HYPERX1001 0x004bba40
                     g_gameApp.Fatal("ERROR: in Sync Seg field.");
 
                     nResult = 0;
                 }
                 else if (String::ExtractToken(pszScan, szToken, &pszScan) <= 0 || sscanf(szToken, g_pszAnimShortFormat, pnSyncFrame) != 1)
                 {
-                    // STRING: HYPERX 0x004bba5c
+                    // STRING: HYPERX1001 0x004bba5c
                     g_gameApp.Fatal("ERROR: in Sync frame field.");
 
                     nResult = 0;
@@ -375,7 +375,7 @@ int AnimScriptTable::ParseTrigger(const char* pszLine, short* pnSegment, short* 
         }
         else
         {
-            // STRING: HYPERX 0x004bba1c
+            // STRING: HYPERX1001 0x004bba1c
             g_gameApp.Fatal("ERROR: in Trigger Keyword field.");
 
             nResult = 0;

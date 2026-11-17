@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "mathglobals.h"
 
-// FUNCTION: HYPERX 0x00406300
+// FUNCTION: HYPERX1001 0x00406300
 Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
 {
     Vec3 vDelta;
@@ -18,7 +18,7 @@ Vec3* Vec3::Subtract(Vec3* pOut, const Vec3* pB) const
     return pOut;
 }
 
-// FUNCTION: HYPERX 0x00430180
+// FUNCTION: HYPERX1001 0x00430180
 bool Vec3::NormalizeTo(Vec3* pOut) const
 {
     const auto dLength = sqrt(static_cast<double>(x * x + y * y + z * z));
@@ -39,7 +39,7 @@ bool Vec3::NormalizeTo(Vec3* pOut) const
     return false;
 }
 
-// FUNCTION: HYPERX 0x004301f0
+// FUNCTION: HYPERX1001 0x004301f0
 bool Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
 {
     const auto dLength = sqrt(static_cast<double>(*pX * *pX + *pZ * *pZ + *pY * *pY));
@@ -60,7 +60,7 @@ bool Vec3::NormalizeScattered(float* pX, float* pY, float* pZ)
     return false;
 }
 
-// FUNCTION: HYPERX 0x004302f0
+// FUNCTION: HYPERX1001 0x004302f0
 Vec3* Vec3::ScaleInPlace(float flScale)
 {
     x = flScale * x;
@@ -70,7 +70,7 @@ Vec3* Vec3::ScaleInPlace(float flScale)
     return this;
 }
 
-// FUNCTION: HYPERX 0x00430320
+// FUNCTION: HYPERX1001 0x00430320
 void Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 {
     pOut->x = flScale * pIn->x;
@@ -79,7 +79,7 @@ void Vec3::ScaleTo(const Vec3* pIn, float flScale, Vec3* pOut)
 }
 
 // The second point wins only on a strict improvement.
-// FUNCTION: HYPERX 0x00430340
+// FUNCTION: HYPERX1001 0x00430340
 Vec3* Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
 {
     auto dx = pFirst->x - pFrom->x;
@@ -102,19 +102,19 @@ Vec3* Vec3::FindClosest(Vec3* pFrom, Vec3* pFirst, Vec3* pSecond)
     return pSecond;
 }
 
-// FUNCTION: HYPERX 0x0044b050
+// FUNCTION: HYPERX1001 0x0044b050
 float Vec3::Dot(const Vec3* pA, const Vec3* pB)
 {
     return DotInline(pA, pB);
 }
 
-// FUNCTION: HYPERX 0x00466df0
+// FUNCTION: HYPERX1001 0x00466df0
 float Vec3::Length(const Vec3* pVec)
 {
     return pVec->Magnitude();
 }
 
-// FUNCTION: HYPERX 0x004726b0
+// FUNCTION: HYPERX1001 0x004726b0
 void Vec3::CrossProduct(const Vec3* pA, const Vec3* pB, Vec3* pOut)
 {
     pOut->x = pA->y * pB->z - pA->z * pB->y;

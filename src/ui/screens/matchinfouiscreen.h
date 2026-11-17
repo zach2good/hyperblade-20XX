@@ -12,11 +12,13 @@ enum MatchInfoWidget
     MATCHINFO_WIDGET_DONE   = UI_WIDGET_TAB_FIRST + 2,
     // Kiosk mode puts save and load in Done's slot and moves Done down one.
     MATCHINFO_WIDGET_SAVE_LOAD  = UI_WIDGET_TAB_FIRST + 2,
-    MATCHINFO_WIDGET_KIOSK_DONE = UI_WIDGET_TAB_FIRST + 3
+    MATCHINFO_WIDGET_KIOSK_DONE = UI_WIDGET_TAB_FIRST + 3,
+    // Outside kiosk mode the fourth slot is free, and holds Game Clips.
+    MATCHINFO_WIDGET_CLIPS = UI_WIDGET_TAB_FIRST + 3
 };
 
 // The constructor calls UIScreen's at 0x0044d540.
-// VTABLE: HYPERX 0x004b2350
+// VTABLE: HYPERX1001 0x004b2350
 class MatchInfoUIScreen : public UIScreen
 {
 public:
@@ -27,16 +29,19 @@ public:
     MatchInfoUIScreen();
 
     // Inline, so the derived screens that declare none share this body.
-    // FUNCTION: HYPERX 0x004581c0
+    // FUNCTION: HYPERX1001 0x004581c0
     ~MatchInfoUIScreen() override = default;
 
     void RegisterBitmaps();
     void UnloadBitmaps();
 
     int m_nNextState; // 0x474
+
+    // The fourth tab opens the game clips viewer rather than leaving.
+    bool m_bClipsTab = false;
 };
 
-// SYNTHETIC: HYPERX 0x0041bb90
+// SYNTHETIC: HYPERX1001 0x0041bb90
 // MatchInfoUIScreen::`scalar deleting destructor'
 
 #endif

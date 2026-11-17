@@ -10,9 +10,9 @@ struct SlotRow
     int nY;
 };
 
-// GLOBAL: HYPERX 0x004c4e70
+// GLOBAL: HYPERX1001 0x004c4e70
 extern int g_nSlotRowCount;
-// GLOBAL: HYPERX 0x004c4e78
+// GLOBAL: HYPERX1001 0x004c4e78
 extern SlotRow g_aSlotRows[10];
 
 #endif

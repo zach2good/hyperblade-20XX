@@ -14,10 +14,10 @@ public:
 };
 
 // No device class declares a destructor, so each deleter calls an inline copy of DeviceObject's.
-// SYNTHETIC: HYPERX 0x0045d690
+// SYNTHETIC: HYPERX1001 0x0045d690
 // GamepadDeviceObj::`scalar deleting destructor'
 
-// SYNTHETIC: HYPERX 0x0045d6b0
+// SYNTHETIC: HYPERX1001 0x0045d6b0
 // GamepadDeviceObj::~GamepadDeviceObj
 
 #endif

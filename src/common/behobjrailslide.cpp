@@ -5,18 +5,18 @@
 #include "planvm/planvmglobals.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041db30
+// FUNCTION: HYPERX1001 0x0041db30
 BehObj_RailSlide::BehObj_RailSlide() = default;
 
-// FUNCTION: HYPERX 0x0041db70
+// FUNCTION: HYPERX1001 0x0041db70
 BehObj_RailSlide::~BehObj_RailSlide() = default;
 
-// FUNCTION: HYPERX 0x0041db80
+// FUNCTION: HYPERX1001 0x0041db80
 void BehObj_RailSlide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForRailSlide();
 
-    // STRING: HYPERX 0x004bc2f0
+    // STRING: HYPERX1001 0x004bc2f0
     m_pszName = "RailSlide";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

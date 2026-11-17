@@ -17,8 +17,9 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "engine/objectkind.h"
+#include "planvm/conditiontable.h"
 
-// FUNCTION: HYPERX 0x0040b6d0
+// FUNCTION: HYPERX1001 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -31,7 +32,21 @@ void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_nUnused   = static_cast<int>(g_pGameEngine->m_clock.tick.count());
 }
 
-// FUNCTION: HYPERX 0x0040b720
+void CCircleTrack::OnListChanged()
+{
+    if (m_bReady == 0)
+    {
+        m_pOwner    = nullptr;
+        m_pWatchPos = nullptr;
+        m_pWatchDir = nullptr;
+        m_pNext     = nullptr;
+        m_bReady    = 1;
+
+        g_apAgendaItemPools[m_wKind]->Insert(this);
+    }
+}
+
+// FUNCTION: HYPERX1001 0x0040b720
 void CCircleTrack::Process(int nArg)
 {
     Vec3 vPos;
@@ -46,13 +61,13 @@ void CCircleTrack::Process(int nArg)
 
     if (pTracked == nullptr)
     {
-        // STRING: HYPERX 0x004bb5dc
+        // STRING: HYPERX1001 0x004bb5dc
         g_gameApp.Fatal("CCircleTrack::Process(): Null pointer for model to track\n");
     }
 
     if (pTracked->m_nKind != ObjectKind::kDromer)
     {
-        // STRING: HYPERX 0x004bb5a0
+        // STRING: HYPERX1001 0x004bb5a0
         g_gameApp.Fatal("CCircleTrack::Process(): Model to track is not a dromer\n");
     }
 

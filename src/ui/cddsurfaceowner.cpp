@@ -8,7 +8,7 @@
 #include <SDL3/SDL.h>
 #include <cstring>
 
-// FUNCTION: HYPERX 0x0044f8f0
+// FUNCTION: HYPERX1001 0x0044f8f0
 int CDDSurfaceOwner::LoadByName(const char* pszName)
 {
     if (m_pszName == nullptr || SDL_strcasecmp(pszName, m_pszName.get()) != 0)
@@ -40,7 +40,7 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0044f9b0
+// FUNCTION: HYPERX1001 0x0044f9b0
 int CDDSurfaceOwner::Draw()
 {
     if (m_pSprite != nullptr)

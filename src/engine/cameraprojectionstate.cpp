@@ -12,15 +12,15 @@
 #include <algorithm>
 
 float g_flDotPitchCmProjection      = g_flDotsPerInchProjection * g_flDotPitchProjection / g_flCmPerInchProjection;
-float g_flScreenDotsPerCmProjection = g_flDotsPerInchProjection / g_flCmPerInchProjection;
+float g_flScreenDensityCmProjection = g_flDotsPerInchProjection / g_flCmPerInchProjection;
 
-// FUNCTION: HYPERX 0x00422d60
+// FUNCTION: HYPERX1001 0x00422d60
 void CameraProjectionState::ResetProjection(LayoutState* pViewport, float flFov)
 {
     InitializeProjection(m_bHasRow3, pViewport, flFov);
 }
 
-// FUNCTION: HYPERX 0x00422d80
+// FUNCTION: HYPERX1001 0x00422d80
 void CameraProjectionState::InitializeProjection(char cFlag, LayoutState* pViewport, float flFov)
 {
     // Qualified, because the original calls the base's body directly rather than through slot two.
@@ -29,17 +29,17 @@ void CameraProjectionState::InitializeProjection(char cFlag, LayoutState* pViewp
     CreateProjectionState(cFlag, pViewport, flFov);
 }
 
-// FUNCTION: HYPERX 0x00422db0
+// FUNCTION: HYPERX1001 0x00422db0
 float CameraProjectionState::GetHalfFov()
 {
     return m_flHalfFov;
 }
 
-// FUNCTION: HYPERX 0x004303b0
+// FUNCTION: HYPERX1001 0x004303b0
 void CameraProjectionState::CreateProjectionState(char cFlag, LayoutState* pViewport, float flFov)
 {
     m_flCmPerPixel    = g_flDotPitchCmProjection;
-    m_flPixelsPerCm   = g_flScreenDotsPerCmProjection;
+    m_flPixelsPerCm   = g_flScreenDensityCmProjection;
     m_flHalfWidthCm   = g_flZeroProjection;
     m_flHalfHeightCm  = g_flZeroProjection;
     m_flHalfHeightPxB = g_flZeroProjection;
@@ -61,7 +61,7 @@ void CameraProjectionState::CreateProjectionState(char cFlag, LayoutState* pView
 
 // Assumes a 72-dot-per-inch screen for the centimetre conversion.
 
-// FUNCTION: HYPERX 0x004304a0
+// FUNCTION: HYPERX1001 0x004304a0
 void CameraProjectionState::Configure(LayoutState* pView, float flHalfFov, float flFarClip)
 {
     m_flHalfWidthPx = m_flHalfWidthPxB = m_flHalfWidthPxA = pView->nPrevWidth * 0.5f;
@@ -116,7 +116,7 @@ inline void CameraProjectionState::StoreTranslate(CameraProjectionState* pState,
     pState->m_vTranslate.z = flZ;
 }
 
-// FUNCTION: HYPERX 0x00430620
+// FUNCTION: HYPERX1001 0x00430620
 void CameraProjectionState::SetEyePoint(const Vec3* pEye)
 {
     m_vEye = *pEye;
@@ -126,7 +126,7 @@ void CameraProjectionState::SetEyePoint(const Vec3* pEye)
     ApplyTranslation();
 }
 
-// FUNCTION: HYPERX 0x00430660
+// FUNCTION: HYPERX1001 0x00430660
 void CameraProjectionState::GetEyePoint(Vec3* pOut)
 {
     pOut->x = m_vEye.x;
@@ -136,7 +136,7 @@ void CameraProjectionState::GetEyePoint(Vec3* pOut)
 
 // Maps camera space straight to pixels; the aspect fix is on the perspective path only.
 
-// FUNCTION: HYPERX 0x00430690
+// FUNCTION: HYPERX1001 0x00430690
 void CameraProjectionState::BuildMatrix()
 {
     if (m_bHasRow3 == 0)
@@ -232,7 +232,7 @@ void CameraProjectionState::BuildMatrix()
 
 // An identity matrix is written as the rotation rather than multiplied into.
 
-// FUNCTION: HYPERX 0x00430960
+// FUNCTION: HYPERX1001 0x00430960
 void CameraProjectionState::RotateY(float flAngle)
 {
     const auto flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
@@ -270,7 +270,7 @@ void CameraProjectionState::RotateY(float flAngle)
     MarkChanged();
 }
 
-// FUNCTION: HYPERX 0x00430a80
+// FUNCTION: HYPERX1001 0x00430a80
 void CameraProjectionState::RotateX(float flAngle)
 {
     const auto flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
@@ -308,7 +308,7 @@ void CameraProjectionState::RotateX(float flAngle)
     MarkChanged();
 }
 
-// FUNCTION: HYPERX 0x00430ba0
+// FUNCTION: HYPERX1001 0x00430ba0
 void CameraProjectionState::RotateZ(float flAngle)
 {
     const auto flCos = static_cast<float>(cos(static_cast<double>(flAngle)));
@@ -348,7 +348,7 @@ void CameraProjectionState::RotateZ(float flAngle)
 
 // The new translation also goes, negated, to m_vEye.
 
-// FUNCTION: HYPERX 0x00430cc0
+// FUNCTION: HYPERX1001 0x00430cc0
 void CameraProjectionState::SubtractTranslation(float flX, float flY, float flZ)
 {
     const auto flNewX = m_vTranslate.x - flX;

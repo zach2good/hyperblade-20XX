@@ -26,7 +26,7 @@
 #include <memory>
 
 // A held binding fires once its key stays down past the double-tap window; a release drops it.
-// FUNCTION: HYPERX 0x0045cb10
+// FUNCTION: HYPERX1001 0x0045cb10
 void KeyboardDeviceObj::CheckButtonTimeouts()
 {
     unsigned int nBit    = 1;
@@ -74,7 +74,7 @@ constexpr auto kDoubleTap  = Clock::Milliseconds{ 0xfa };
 constexpr auto kRepeatStep = Clock::Milliseconds{ 0x32 };
 
 // Each release time starts fifty milliseconds past its press, so a first press is never a double tap.
-// FUNCTION: HYPERX 0x0045cc10
+// FUNCTION: HYPERX1001 0x0045cc10
 KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 : DeviceObject(nSlot, pDef)
 {
@@ -116,7 +116,7 @@ KeyboardDeviceObj::KeyboardDeviceObj(int nSlot, class ObjectDef* pDef)
 constexpr auto kTableKeyCount = 8;
 
 // An up entry whose action folds to slot zero is reported and the build keeps going.
-// FUNCTION: HYPERX 0x0045cd20
+// FUNCTION: HYPERX1001 0x0045cd20
 char KeyboardDeviceObj::BuildActionBindingTable(std::unique_ptr<ActionBindingGroup>* ppTableOut, short* pnGroupsOut, KeyboardDeviceObj* pDevice)
 {
     int anUp[kInputSlotCount];
@@ -172,7 +172,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(std::unique_ptr<ActionBindingGro
                 }
                 else
                 {
-                    // STRING: HYPERX 0x004c4458
+                    // STRING: HYPERX1001 0x004c4458
                     g_gameApp.Error("NULL KEY UP KeyInput EVENT ENCOUNTERED IN InitKeyInput\n");
                 }
             }
@@ -243,7 +243,7 @@ char KeyboardDeviceObj::BuildActionBindingTable(std::unique_ptr<ActionBindingGro
 
 // Returns the one-based index of the highest set bit, or zero for an empty mask.
 
-// FUNCTION: HYPERX 0x0045cff0
+// FUNCTION: HYPERX1001 0x0045cff0
 int KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
 {
     if ((nMask & 0xff00) == 0)
@@ -335,7 +335,7 @@ int KeyboardDeviceObj::GetActionBitIndex(unsigned int nMask)
 }
 
 // Each record's copy of the keys is the identity with four and five exchanged, at most ten.
-// FUNCTION: HYPERX 0x0045d190
+// FUNCTION: HYPERX1001 0x0045d190
 void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount)
 {
     int nLimit;
@@ -368,31 +368,31 @@ void KeyboardDeviceObj::CommitKeyBindings(const unsigned int* pnKeys, int nCount
 
     for (nIndex = 0; nIndex < nWrite; nIndex++)
     {
-        // STRING: HYPERX 0x004c41d8
+        // STRING: HYPERX1001 0x004c41d8
         g_pGameOptions->WriteInt("Keys", g_apszKeyBindingNames[nIndex], pnKeys[nIndex]);
     }
 }
 
-// FUNCTION: HYPERX 0x0045d270
+// FUNCTION: HYPERX1001 0x0045d270
 unsigned int* KeyboardDeviceObj::GetDefaultKeyBindings() const
 {
     return g_anKeyBindingDefaults;
 }
 
-// FUNCTION: HYPERX 0x0045d280
+// FUNCTION: HYPERX1001 0x0045d280
 unsigned int* KeyboardDeviceObj::LoadBindingsFromIni()
 {
     for (int nKey = 0; nKey < kKeyBindingCount; nKey++)
     {
         g_anKeyBindings[nKey] = g_pGameOptions
-                                    // STRING: HYPERX 0x004c41d8
+                                    // STRING: HYPERX1001 0x004c41d8
                                     ->ReadInt("Keys", g_apszKeyBindingNames[nKey], g_anKeyBindingDefaults[nKey]);
     }
 
     return g_anKeyBindings;
 }
 
-// FUNCTION: HYPERX 0x0045d2c0
+// FUNCTION: HYPERX1001 0x0045d2c0
 int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 {
     if (nButton < static_cast<unsigned int>(m_pBindingTable->m_nKeyCount) && (m_nHeldMask & (1 << nButton)) != 0)
@@ -407,7 +407,7 @@ int KeyboardDeviceObj::OnButtonDown(unsigned int nButton)
 
 // Both key handlers copy m_nHeldMask into m_nPrevHeldMask, and nothing reads the copy.
 
-// FUNCTION: HYPERX 0x0045d320
+// FUNCTION: HYPERX1001 0x0045d320
 int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
 {
     auto nIndex        = 0;
@@ -497,7 +497,7 @@ int KeyboardDeviceObj::HandleKeyDown(unsigned int nKey)
     return nResult;
 }
 
-// FUNCTION: HYPERX 0x0045d4c0
+// FUNCTION: HYPERX1001 0x0045d4c0
 int KeyboardDeviceObj::HandleKeyUp(unsigned int nKey)
 {
     auto nIndex = 0;

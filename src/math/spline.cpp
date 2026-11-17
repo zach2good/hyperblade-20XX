@@ -7,12 +7,12 @@
 #include "math/splinecurve.h"
 #include "physics/collisionellipsoid.h"
 
-// GLOBAL: HYPERX 0x004b40bc
+// GLOBAL: HYPERX1001 0x004b40bc
 extern const float g_flSplineReflectScale;
 
 // The two curves point at each other through m_pNext, so the ring is closed before either fills.
 
-// FUNCTION: HYPERX 0x00492e90
+// FUNCTION: HYPERX1001 0x00492e90
 Spline::Spline()
 : m_pOwnedFirst(std::make_unique<SplineCurve>())
 , m_pOwnedSecond(std::make_unique<SplineCurve>())
@@ -24,12 +24,12 @@ Spline::Spline()
     m_pSecond->m_pNext = m_pCurve;
 }
 
-// FUNCTION: HYPERX 0x00492ec0
+// FUNCTION: HYPERX1001 0x00492ec0
 Spline::~Spline() = default;
 
 // Both curves take the upper-half evaluator; the tag is -35 past a second radius of three, else -1.
 
-// FUNCTION: HYPERX 0x00492f10
+// FUNCTION: HYPERX1001 0x00492f10
 Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 {
     m_pCurve->m_pfnEval  = Spline::EvalUpperHalf;
@@ -81,13 +81,13 @@ Spline* Spline::InitClamped(float flRadiusX, float flRadiusY)
 
 // Half an ellipse, reached only through m_pfnEval: the first radius times sqrt(1 - t*t/B).
 
-// FUNCTION: HYPERX 0x00492fe0
+// FUNCTION: HYPERX1001 0x00492fe0
 float Spline::EvalUpperHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
     return static_cast<float>(sqrt(static_cast<double>((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq)));
 }
 
-// FUNCTION: HYPERX 0x00493000
+// FUNCTION: HYPERX1001 0x00493000
 Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
 {
     m_pCurve->m_pfnEval  = Spline::EvalLowerHalf;
@@ -131,13 +131,13 @@ Spline* Spline::InitSymmetric(float flRadiusX, float flRadiusY)
     return this;
 }
 
-// FUNCTION: HYPERX 0x004930c0
+// FUNCTION: HYPERX1001 0x004930c0
 float Spline::EvalLowerHalf(float flT, float flHeightSq, float flWidthSq, float, float)
 {
     return -static_cast<float>(sqrt(static_cast<double>((flHeightSq * flWidthSq - flT * flT * flHeightSq) / flWidthSq)));
 }
 
-// FUNCTION: HYPERX 0x004930e0
+// FUNCTION: HYPERX1001 0x004930e0
 Spline* Spline::InitSegment(float flRadiusX, float flRadiusY)
 {
     m_pCurve->m_pfnEval  = Spline::EvalUpperHalf;
@@ -183,7 +183,7 @@ Spline* Spline::InitSegment(float flRadiusX, float flRadiusY)
 
 // The only initialiser that clears m_pfnEval; it stores the cosine evaluator in m_pfnSpringEval.
 
-// FUNCTION: HYPERX 0x004931a0
+// FUNCTION: HYPERX1001 0x004931a0
 Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
     m_pCurve->m_pfnEval       = nullptr;
@@ -211,7 +211,7 @@ Spline* Spline::InitSpringNode(float flAmplitude, float flFrequency, float flOff
     return this;
 }
 
-// FUNCTION: HYPERX 0x00493220
+// FUNCTION: HYPERX1001 0x00493220
 float Spline::EvalSpring(float flT, float flAmplitude, float flFrequency, float flOffset, float flPhase)
 {
     return static_cast<float>(cos(static_cast<double>(flT * flFrequency + flPhase))) * flAmplitude + flOffset;
@@ -219,7 +219,7 @@ float Spline::EvalSpring(float flT, float flAmplitude, float flFrequency, float 
 
 // A parameter that leaves the curve moves to the next one, reflected about its nearer limit.
 
-// FUNCTION: HYPERX 0x00493240
+// FUNCTION: HYPERX1001 0x00493240
 void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
 {
     Vec3 vTangent;
@@ -275,7 +275,7 @@ void Spline::UpdateTowardTarget(Vec3* pState, Vec3* pTarget)
 
 // UpdateTowardTarget's twin, stepping curves on the value range and with no tenth in its step.
 
-// FUNCTION: HYPERX 0x00493320
+// FUNCTION: HYPERX1001 0x00493320
 void Spline::UpdatePositionVelocity(Vec3* pPosition, Vec3* pVelocity)
 {
     auto* const pCurve = m_pCurve;

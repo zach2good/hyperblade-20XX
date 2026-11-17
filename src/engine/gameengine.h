@@ -142,7 +142,7 @@ struct GameEngine
     std::unique_ptr<TeamBlock> ParseTeamHTMFile(class FileObj* pFile);
     static int                 FindTeamDefinition(class FileObj* pFile, char** ppLine, char* pszToken);
 
-    ReserveRows* GetReserveRows(const TeamBlock* pTeam);
+    const ReserveRows* GetReserveRows(const TeamBlock* pTeam);
 
     float GetGravityDt() const
     {

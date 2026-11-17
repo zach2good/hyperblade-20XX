@@ -55,13 +55,12 @@ struct FlipbookSounds
 
 struct LayoutState;
 
-// VTABLE: HYPERX 0x004b2a68
+// VTABLE: HYPERX1001 0x004b2a68
 class Widget
 {
 public:
     // Free functions in the original.
     static LayoutState InitLayoutState(void* pBits, int nWidth, int nHeight, int nPitch, int nPrevWidth, int nPrevHeight, int nHalfWidth, int nHalfHeight);
-    static int         RefuseInput(int nX, int nY);
 
 public:
     WidgetKind GetTypeID() const;
@@ -91,7 +90,7 @@ public:
     // Nonzero on the display and looping flipbook widgets, which the focus walks skip.
     virtual int IsDisplayOnly() = 0;
 
-    // Unused names for HoldingWidget::OnMouseDown and FlipbookWidget::OnMouseUp.
+    // Unused names for FlipbookWidget::OnMouseDown and OnMouseUp.
     int          BeginWithoutHold();
     int          BeginWithHold();
     virtual void Draw(int nSlot);

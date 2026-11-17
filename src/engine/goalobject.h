@@ -5,7 +5,7 @@
 #include "engine/engineobject.h"
 
 // Lists only the slots this class overrides; symbols/vtable_gaps.csv lists the rest.
-// VTABLE: HYPERX 0x004b3b74
+// VTABLE: HYPERX1001 0x004b3b74
 class GoalObject : public EngineObject
 {
 public:
@@ -16,7 +16,7 @@ private:
     [[maybe_unused]] int m_nUnusedE; // 0xd14
 };
 
-// SYNTHETIC: HYPERX 0x00474540
+// SYNTHETIC: HYPERX1001 0x00474540
 // GoalObject::`scalar deleting destructor'
 
 #endif

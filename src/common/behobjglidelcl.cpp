@@ -6,18 +6,18 @@
 #include "planvm/cglideonsurface.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041da40
+// FUNCTION: HYPERX1001 0x0041da40
 BehObj_GlideLCL::BehObj_GlideLCL() = default;
 
-// FUNCTION: HYPERX 0x0041da80
+// FUNCTION: HYPERX1001 0x0041da80
 BehObj_GlideLCL::~BehObj_GlideLCL() = default;
 
-// FUNCTION: HYPERX 0x0041da90
+// FUNCTION: HYPERX1001 0x0041da90
 void BehObj_GlideLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForGlide();
 
-    // STRING: HYPERX 0x004bc2e4
+    // STRING: HYPERX1001 0x004bc2e4
     m_pszName = "GlideLCL";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

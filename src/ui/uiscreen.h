@@ -33,7 +33,7 @@ enum UIScreenWidget
     UI_WIDGET_OWN_FIRST = 23
 };
 
-// VTABLE: HYPERX 0x004b323c
+// VTABLE: HYPERX1001 0x004b323c
 class UIScreen : public Screen
 {
 public:
@@ -148,7 +148,7 @@ protected:
     int                    m_nUnusedD;     // 0x470
 };
 
-// SYNTHETIC: HYPERX 0x0044d520
+// SYNTHETIC: HYPERX1001 0x0044d520
 // UIScreen::`scalar deleting destructor'
 
 #endif

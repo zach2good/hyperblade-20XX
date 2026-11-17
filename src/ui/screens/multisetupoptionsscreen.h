@@ -16,7 +16,7 @@ enum MultiSetupOptionsWidget
     MULTI_SETUP_TEXT_INPUT
 };
 
-// VTABLE: HYPERX 0x004b3d8c
+// VTABLE: HYPERX1001 0x004b3d8c
 class MultiSetupOptionsScreen : public Screen
 {
 public:
@@ -26,7 +26,7 @@ public:
     void OnWidgetMessage(int nMsg, unsigned int nWidget) override;
 
     // Both go to the main menu.
-    // FUNCTION: HYPERX 0x00479840
+    // FUNCTION: HYPERX1001 0x00479840
     virtual void OnOkay()
     {
         Game::SetEngineState(kEstateMainMenu);
@@ -39,7 +39,7 @@ public:
     }
 };
 
-// SYNTHETIC: HYPERX 0x00479810
+// SYNTHETIC: HYPERX1001 0x00479810
 // MultiSetupOptionsScreen::`scalar deleting destructor'
 
 #endif

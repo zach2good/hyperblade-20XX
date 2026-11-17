@@ -5,21 +5,21 @@
 #include "engine/messageids.h"
 #include "engine/modelids.h"
 
-// FUNCTION: HYPERX 0x0041e600
+// FUNCTION: HYPERX1001 0x0041e600
 BehObj_OpenAndClose::BehObj_OpenAndClose()
 {
     m_wLatency = 1;
 }
 
-// FUNCTION: HYPERX 0x0041e650
+// FUNCTION: HYPERX1001 0x0041e650
 BehObj_OpenAndClose::~BehObj_OpenAndClose() = default;
 
-// FUNCTION: HYPERX 0x0041e660
+// FUNCTION: HYPERX1001 0x0041e660
 void BehObj_OpenAndClose::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc380
+    // STRING: HYPERX1001 0x004bc380
     m_pszName = "OpenAndClose";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
@@ -28,7 +28,7 @@ void BehObj_OpenAndClose::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlag
     m_apSlots[0] = nullptr;
 }
 
-// FUNCTION: HYPERX 0x0041e6b0
+// FUNCTION: HYPERX1001 0x0041e6b0
 void BehObj_OpenAndClose::SendTimedMessage()
 {
     m_pOwner->PostEvent(kMsgInitiate, 0, m_pOwner->GetSlot());

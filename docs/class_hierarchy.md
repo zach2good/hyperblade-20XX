@@ -9,7 +9,7 @@ agrees.
 A table's length is the distance to the next table. A reader that uses a fixed slot count walks
 into the next table and makes every class appear to override every slot.
 
-Each class in `src/` that owns a table carries a `// VTABLE: HYPERX 0x...` marker. To list them,
+Each class in `src/` that owns a table carries a `// VTABLE: HYPERX1001 0x...` marker. To list them,
 run `grep -rn "VTABLE: HYPERX" src`.
 
 ## The game object family

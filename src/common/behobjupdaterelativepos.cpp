@@ -5,18 +5,18 @@
 #include "engine/engineobject.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041d890
+// FUNCTION: HYPERX1001 0x0041d890
 BehObj_UpdateRelativePos::BehObj_UpdateRelativePos() = default;
 
-// FUNCTION: HYPERX 0x0041d8d0
+// FUNCTION: HYPERX1001 0x0041d8d0
 BehObj_UpdateRelativePos::~BehObj_UpdateRelativePos() = default;
 
-// FUNCTION: HYPERX 0x0041d8e0
+// FUNCTION: HYPERX1001 0x0041d8e0
 void BehObj_UpdateRelativePos::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc2c8
+    // STRING: HYPERX1001 0x004bc2c8
     m_pszName = "UpdateRelativePos";
 
     m_wKind = kBehUpdateRelativePos;

@@ -4,11 +4,11 @@
 #define HYPERBLADE_ANIMOBJECT_H
 #include "common/compat.h"
 
-// VTABLE: HYPERX 0x004b22a4
+// VTABLE: HYPERX1001 0x004b22a4
 class AnimObject
 {
 public:
-    // FUNCTION: HYPERX 0x00417930
+    // FUNCTION: HYPERX1001 0x00417930
     virtual ~AnimObject() = default;
 
     AnimObject()
@@ -19,7 +19,7 @@ public:
     int m_nInstallLevel; // 0x04
 };
 
-// SYNTHETIC: HYPERX 0x00417940
+// SYNTHETIC: HYPERX1001 0x00417940
 // AnimObject::`scalar deleting destructor'
 
 #endif

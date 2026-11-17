@@ -13,7 +13,6 @@
 #include "planvm/planvm.h"
 #include "engine/objectclasses.h"
 #include "engine/objectstats.h"
-class CollisionPlane;
 #include "banking.h"
 #include "math/transformobject.h"
 #include "common/pooledclasses.h"
@@ -21,7 +20,6 @@ class CollisionPlane;
 #include <cmath>
 #include "engine/playerobject.h"
 #include "app/gameapp.h"
-#include "collisionplane.h"
 #include "engine/engineobject.h"
 #include "engine/cameraobject.h"
 #include "collisionobj.h"
@@ -35,15 +33,15 @@ float g_flUnusedPhysicsBodyB = g_flZeroPhysicsBody;
 float g_flUnusedPhysicsBodyC = g_flZeroPhysicsBody;
 
 // The two vectors of nought this initialises from.
-// GLOBAL: HYPERX 0x004b1610
+// GLOBAL: HYPERX1001 0x004b1610
 extern const Vec3 g_vecZeroVelocity;
-// GLOBAL: HYPERX 0x004b1620
+// GLOBAL: HYPERX1001 0x004b1620
 extern const Vec3 g_vecZeroPosition;
 
 constexpr auto kBodyRingLength = 4;
 
 // EngineObject::EngineObject allocates 0x150 bytes and calls this; nothing else zeroes it.
-// FUNCTION: HYPERX 0x00407520
+// FUNCTION: HYPERX1001 0x00407520
 PhysicsBody::PhysicsBody()
 {
     pOwner  = nullptr;
@@ -112,7 +110,7 @@ PhysicsBody::~PhysicsBody()
 extern const float g_flGravity;
 
 // Speed and acceleration are premultiplied by the frame delta here; the heading is in degrees.
-// FUNCTION: HYPERX 0x00407780
+// FUNCTION: HYPERX1001 0x00407780
 void PhysicsBody::BindToObject(EngineObject* pOwnerObject, ObjectDef* pDefRec)
 {
     pOwner = pOwnerObject;
@@ -149,7 +147,7 @@ void PhysicsBody::BindToObject(EngineObject* pOwnerObject, ObjectDef* pDefRec)
 
 // Six of the fields are skipped for the main camera.
 
-// FUNCTION: HYPERX 0x00407890
+// FUNCTION: HYPERX1001 0x00407890
 void PhysicsBody::ResetSpeeds()
 {
     ResetDynamics();
@@ -173,7 +171,7 @@ void PhysicsBody::ResetSpeeds()
 }
 
 // Seeded from the frame's own delta, so a reset mid-frame carries that frame's timing.
-// FUNCTION: HYPERX 0x00407920
+// FUNCTION: HYPERX1001 0x00407920
 void PhysicsBody::ResetDynamics()
 {
     flSpeed        = g_flZeroPhysicsBody;
@@ -183,7 +181,7 @@ void PhysicsBody::ResetDynamics()
     flAccelDt        = g_pGameEngine->m_clock.flDeltaSquared * flAccel;
 }
 
-// FUNCTION: HYPERX 0x00407960
+// FUNCTION: HYPERX1001 0x00407960
 void PhysicsBody::PreUpdateTick()
 {
     const auto flStep = g_pGameEngine->m_clock.flDelta * g_pGameEngine->m_clock.flPrevInvDelta;
@@ -202,7 +200,7 @@ void PhysicsBody::PreUpdateTick()
 
 // The cleanup and speed update run whatever the phase; phases outside 1 to 3 report nothing.
 
-// FUNCTION: HYPERX 0x004079f0
+// FUNCTION: HYPERX1001 0x004079f0
 void PhysicsBody::PerFrameTick()
 {
     const auto scope = TwoPlayer::Scope(pOwner);
@@ -247,13 +245,13 @@ constexpr auto kShootDriveTail = Clock::Milliseconds{ 1000 };
 #define TURN_LIMIT 0.2f
 
 // Whether Shoot was held last frame, and the tick it was released.
-// GLOBAL: HYPERX 0x004cb3a9
+// GLOBAL: HYPERX1001 0x004cb3a9
 extern unsigned char g_bMoveAxesShootHeld;
-// GLOBAL: HYPERX 0x004cb3ac
+// GLOBAL: HYPERX1001 0x004cb3ac
 extern Clock::Milliseconds g_moveAxesShootReleaseTick;
 
 // The stop binding, published for the two steering blocks and cleared by each.
-// GLOBAL: HYPERX 0x004cb3a8
+// GLOBAL: HYPERX1001 0x004cb3a8
 extern unsigned char g_bMoveAxesStopHeld;
 
 inline float PhysicsBody::GetAxisX() const
@@ -261,21 +259,21 @@ inline float PhysicsBody::GetAxisX() const
     return axis.x;
 }
 
-// FUNCTION: HYPERX 0x00407a60
+// FUNCTION: HYPERX1001 0x00407a60
 void PhysicsBody::TakeSurfaceNormal(const Vec3* pPoint)
 {
     auto* const pNormal = pShell->NormalAtPoint(pPoint);
 
     if (pNormal == nullptr)
     {
-        // STRING: HYPERX 0x004bb3bc
+        // STRING: HYPERX1001 0x004bb3bc
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B!");
     }
 
     surfNormal = *pNormal;
 }
 
-// FUNCTION: HYPERX 0x00407ab0
+// FUNCTION: HYPERX1001 0x00407ab0
 void PhysicsBody::ResetOnSurface()
 {
     Vec3 vOrigin;
@@ -291,7 +289,7 @@ void PhysicsBody::ResetOnSurface()
 
     if (pNormal == nullptr)
     {
-        // STRING: HYPERX 0x004bb3bc
+        // STRING: HYPERX1001 0x004bb3bc
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B!");
     }
 
@@ -315,7 +313,7 @@ void PhysicsBody::ResetOnSurface()
 
     if (!Math::Vec3Normalize(&velDir))
     {
-        // STRING: HYPERX 0x004bb3e4
+        // STRING: HYPERX1001 0x004bb3e4
         g_gameApp.Fatal("Normalizing error: InitOnSurface routine!");
     }
 
@@ -334,7 +332,7 @@ void PhysicsBody::ResetOnSurface()
 
 // Holding Shoot drives the throttle, and the drive lasts a second past the release.
 
-// FUNCTION: HYPERX 0x00407c40
+// FUNCTION: HYPERX1001 0x00407c40
 void PhysicsBody::UpdateMovementAxes()
 {
     float flPush;
@@ -526,7 +524,7 @@ extern int g_bTwoPlayers;
 constexpr auto kSteerScaleThreshold = 1.000001;
 
 // The cross product and normalise run even when a second player skips the force.
-// FUNCTION: HYPERX 0x00408080
+// FUNCTION: HYPERX1001 0x00408080
 void PhysicsBody::ApplySteeringForce()
 {
     Vec3 vLateral;
@@ -561,11 +559,11 @@ void PhysicsBody::ApplySteeringForce()
 extern const float g_flZeroPhysicsBody;
 
 // Below this speed the heading is left alone.
-// GLOBAL: HYPERX 0x004b1600
+// GLOBAL: HYPERX1001 0x004b1600
 extern const float g_flMinVelDirSpeed;
 
 // Projects along the previous call's normal, so the result depends on the last call.
-// FUNCTION: HYPERX 0x00408190
+// FUNCTION: HYPERX1001 0x00408190
 void PhysicsBody::InitOnSurface(int)
 {
     Vec3 vNextPos;
@@ -585,7 +583,7 @@ void PhysicsBody::InitOnSurface(int)
 
     if (pNormal == nullptr)
     {
-        // STRING: HYPERX 0x004bb3bc
+        // STRING: HYPERX1001 0x004bb3bc
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B!");
     }
 
@@ -612,7 +610,7 @@ void PhysicsBody::InitOnSurface(int)
 }
 
 // A step over fifty snaps; the heading sum starts with y at one, so it never divides by nought.
-// FUNCTION: HYPERX 0x004082c0
+// FUNCTION: HYPERX1001 0x004082c0
 void PhysicsBody::IntegrateMotion()
 {
     Vec3 vSmooth;
@@ -697,7 +695,7 @@ void PhysicsBody::IntegrateMotion()
 
 // Pins the direction to the forty-five degree diagonal in x and z.
 
-// FUNCTION: HYPERX 0x00408540
+// FUNCTION: HYPERX1001 0x00408540
 void PhysicsBody::LaunchDiagonal()
 {
     ResetDynamics();
@@ -723,11 +721,11 @@ void PhysicsBody::LaunchDiagonal()
 }
 
 // Thirty-two, stored into the body's flGravAccel and scaling the engine's gravity.
-// GLOBAL: HYPERX 0x004b1604
+// GLOBAL: HYPERX1001 0x004b1604
 extern const float g_flGravity;
 
 // The whole-frame form of StepWithGravity; the gravity is re-read when it falls below 0.01.
-// FUNCTION: HYPERX 0x004085d0
+// FUNCTION: HYPERX1001 0x004085d0
 char PhysicsBody::IntegrateGravity()
 {
     prevPos.x = pos.x;
@@ -763,7 +761,7 @@ char PhysicsBody::IntegrateGravity()
 
 // A body slower than a thousandth keeps its direction, and the answer says so.
 
-// FUNCTION: HYPERX 0x004086a0
+// FUNCTION: HYPERX1001 0x004086a0
 char PhysicsBody::StepWithGravity(float flFrac)
 {
     prevPos.x = pos.x;
@@ -792,7 +790,7 @@ char PhysicsBody::StepWithGravity(float flFrac)
 }
 
 // Projects the velocity off the surface normal; below g_flMinVelDirSpeed it answers nought.
-// FUNCTION: HYPERX 0x00408760
+// FUNCTION: HYPERX1001 0x00408760
 char PhysicsBody::UpdateVelocityDirection()
 {
     char cResult;
@@ -836,7 +834,7 @@ char PhysicsBody::UpdateVelocityDirection()
 
 // The right vector is built in a global and normalised in place.
 
-// FUNCTION: HYPERX 0x00408880
+// FUNCTION: HYPERX1001 0x00408880
 void PhysicsBody::ApplyBankForce(unsigned char cDir, float flForce)
 {
     const Vec3* const pNormal = &surfNormal;
@@ -863,14 +861,14 @@ void PhysicsBody::ApplyBankForce(unsigned char cDir, float flForce)
 }
 
 // A tenth of a radian, about 5.73 degrees.
-// GLOBAL: HYPERX 0x004bb3b8
+// GLOBAL: HYPERX1001 0x004bb3b8
 extern float g_flBankingAngleRad;
 
 // The bone whose world position the camera follows.
 constexpr auto kCameraBone = 9;
 
 // Bits 2 and 3 enable the bank and bit 2 alone picks its sign; the angle is a tenth of a radian.
-// FUNCTION: HYPERX 0x00408940
+// FUNCTION: HYPERX1001 0x00408940
 void PhysicsBody::UpdateBanking()
 {
     float flAngle;
@@ -938,7 +936,7 @@ void PhysicsBody::UpdateBanking()
 }
 
 // The stored Z is re-read under the new position, not the one the caller passed.
-// FUNCTION: HYPERX 0x00408a60
+// FUNCTION: HYPERX1001 0x00408a60
 void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 {
     Vec3 vBasis;
@@ -960,7 +958,7 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 
     if (pNormal == nullptr)
     {
-        // STRING: HYPERX 0x004bb410
+        // STRING: HYPERX1001 0x004bb410
         g_gameApp.Fatal("BAD SURFACE NORMAL - SetFlat!");
     }
 
@@ -1024,7 +1022,7 @@ void PhysicsBody::SetFlatOnTerrain(Vec3* pTargetPos)
 }
 
 // Adds the animation's translation, rotated through the mesh's world axes, then zeroes it.
-// FUNCTION: HYPERX 0x00408cc0
+// FUNCTION: HYPERX1001 0x00408cc0
 void PhysicsBody::ApplyAnimDrivenForce()
 {
     auto* const pMesh      = pOwner->m_pBones.get();

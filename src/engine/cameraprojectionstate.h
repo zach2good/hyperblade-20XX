@@ -7,7 +7,7 @@
 #include "graphics/projrender.h"
 
 // Allocated with new, so the base's constructor carries an unwind state.
-// VTABLE: HYPERX 0x004b28f4
+// VTABLE: HYPERX1001 0x004b28f4
 class CameraProjectionState : public TransformObject
 {
 public:
@@ -78,10 +78,10 @@ private:
     static void StoreTranslate(CameraProjectionState* pState, float flX, float flY, float flZ);
 };
 
-// SYNTHETIC: HYPERX 0x00422de0
+// SYNTHETIC: HYPERX1001 0x00422de0
 // CameraProjectionState::~CameraProjectionState
 
-// SYNTHETIC: HYPERX 0x00422dc0
+// SYNTHETIC: HYPERX1001 0x00422dc0
 // CameraProjectionState::`scalar deleting destructor'
 
 #endif

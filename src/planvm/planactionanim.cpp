@@ -56,7 +56,6 @@
 #include <cmath>
 #include <cstdlib>
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
@@ -74,7 +73,7 @@ constexpr auto kArgRate = 2;
 #define RATE_NONE -1.0f
 
 // Applies the same limp swap as GameBehaviorObject::UpdateLimpAnim before handing the animation over.
-// FUNCTION: HYPERX 0x00401000
+// FUNCTION: HYPERX1001 0x00401000
 void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     EngineObject* pActor;
@@ -113,19 +112,19 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
     {
         const auto* const pszName = pAnim->GetName();
 
-        // STRING: HYPERX 0x004bb2a0
+        // STRING: HYPERX1001 0x004bb2a0
         if (strcmp(pszName, "AA_Skate_Std") == 0)
         {
             pAnim = (g_pAnimRegistry)
-                        // STRING: HYPERX 0x004bb290
+                        // STRING: HYPERX1001 0x004bb290
                         ->FindAnimByNamePtr("AA_LimpSkate");
         }
         else if (strcmp(pszName,
-                        // STRING: HYPERX 0x004bb280
+                        // STRING: HYPERX1001 0x004bb280
                         "AA_Skatefast") == 0)
         {
             pAnim = (g_pAnimRegistry)
-                        // STRING: HYPERX 0x004bb270
+                        // STRING: HYPERX1001 0x004bb270
                         ->FindAnimByNamePtr("AA_LimpSpeed");
         }
     }
@@ -149,7 +148,7 @@ void PlanAction::SetAnimation(Interactor* pContext, PlanNode* pArgs, short*, int
     pContext->GetActor()->StartClipPlayback(pAnim, RATE_NONE, -1);
 }
 
-// FUNCTION: HYPERX 0x00401140
+// FUNCTION: HYPERX1001 0x00401140
 void PlanAction::RestorePersistentAnimation(Interactor* pContext, PlanNode*, short*, int)
 {
     const unsigned int  nBehavior = pContext->m_nBehaviour;
@@ -174,7 +173,7 @@ constexpr auto kArgEventParam     = 4;
 constexpr auto kArgCountWithParam = 5;
 
 // Without a behaviour the four values go to the actor's own event channel.
-// FUNCTION: HYPERX 0x00401190
+// FUNCTION: HYPERX1001 0x00401190
 void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     EngineObject*       pActor;
@@ -237,7 +236,7 @@ void PlanAction::SetAnimationEvent(Interactor* pContext, PlanNode* pArgs, short*
     pActor->BindAnimEventChannel(pBlock[kArgEventChannel].n, nEventTarget, pBlock[kArgEventKind].n, nEventParam);
 }
 
-// FUNCTION: HYPERX 0x00401250
+// FUNCTION: HYPERX1001 0x00401250
 void PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     auto* const pActor = pContext->GetActor();
@@ -247,7 +246,7 @@ void PlanAction::SetAnimationState(Interactor* pContext, PlanNode* pArgs, short*
 
 // The speed is in hundredths and converts as unsigned, so a negative one becomes very large.
 
-// FUNCTION: HYPERX 0x00401270
+// FUNCTION: HYPERX1001 0x00401270
 void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     auto* const pActor = pContext->GetActor();
@@ -257,7 +256,7 @@ void PlanAction::SetAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*
     pActor->m_pAnimPlayer->SetPlaybackRate(flSpeed);
 }
 
-// FUNCTION: HYPERX 0x004012b0
+// FUNCTION: HYPERX1001 0x004012b0
 void PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     auto* const pRate   = pContext->GetActor()->m_pAnimPlayer.get();
@@ -267,7 +266,7 @@ void PlanAction::IncrAnimationSpeed(Interactor* pContext, PlanNode* pNode, short
         static_cast<float>(static_cast<unsigned int>(pNode->m_pArgs[1].n) * 0.01) * pRate->GetPlaybackRate());
 }
 
-// FUNCTION: HYPERX 0x00401310
+// FUNCTION: HYPERX1001 0x00401310
 void PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     PlanWord*     pBlock;
@@ -329,7 +328,7 @@ void PlanAction::SetAnimationDoneMessage(Interactor* pContext, PlanNode* pArgs, 
 
 // The Rok's carrier slots hold its carrier history; slot parity is the team.
 
-// FUNCTION: HYPERX 0x00401460
+// FUNCTION: HYPERX1001 0x00401460
 void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, int nSlot)
 {
     int nOld;
@@ -420,7 +419,7 @@ void PlanAction::Set_AttachPak(Interactor* pContext, PlanNode* pArgs, short*, in
     }
 }
 
-// FUNCTION: HYPERX 0x004015c0
+// FUNCTION: HYPERX1001 0x004015c0
 void PlanAction::Unset_AttachPak(Interactor* pContext, PlanNode*, short*, int)
 {
     auto* const pActor = pContext->GetActor();

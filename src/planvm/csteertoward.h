@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slot 0 is KindAgendaItem's shared deleting destructor.
-// VTABLE: HYPERX 0x004b1d04
+// VTABLE: HYPERX1001 0x004b1d04
 class CSteerToward : public KindAgendaItem
 {
 public:

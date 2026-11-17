@@ -28,100 +28,100 @@ struct StringHeader;
 class MessageQueue;
 
 // VC6 numbers globals.cpp's $E functions in definition order, so a dynamic initialiser added there renumbers these.
-// SYNTHETIC: HYPERX 0x00439570
+// SYNTHETIC: HYPERX1001 0x00439570
 // $E8
-// SYNTHETIC: HYPERX 0x00439580
+// SYNTHETIC: HYPERX1001 0x00439580
 // $E7
-// SYNTHETIC: HYPERX 0x00439530
+// SYNTHETIC: HYPERX1001 0x00439530
 // $E11
 
 constexpr auto kStationarySlots = 0x30;
 
 // Each entry's low word indexes the engine's object array.
-// GLOBAL: HYPERX 0x004ce864
+// GLOBAL: HYPERX1001 0x004ce864
 extern int g_aStationarySlots[kStationarySlots];
 
-// GLOBAL: HYPERX 0x004ce934
+// GLOBAL: HYPERX1001 0x004ce934
 extern int g_nStationaryCount;
 
 // A file-scope vector, as in the original, so the plane intersection is not re-entrant.
-// GLOBAL: HYPERX 0x004cb7a0
+// GLOBAL: HYPERX1001 0x004cb7a0
 extern Vec3 g_vPlaneSegmentDir;
 
-// GLOBAL: HYPERX 0x004d2b7c
+// GLOBAL: HYPERX1001 0x004d2b7c
 extern unsigned char g_bNetworkGame;
 
 // The first skips the network asset check; the second is the modem profile.
-// GLOBAL: HYPERX 0x004d219c
+// GLOBAL: HYPERX1001 0x004d219c
 extern int g_bSkipAssetValidation;
 
-// GLOBAL: HYPERX 0x004d21a0
+// GLOBAL: HYPERX1001 0x004d21a0
 extern int g_bModemPlay;
 
-// GLOBAL: HYPERX 0x004cf054
+// GLOBAL: HYPERX1001 0x004cf054
 extern std::unique_ptr<class CD3DTextureManager> g_pTexManager;
 
-// GLOBAL: HYPERX 0x004c1e88
+// GLOBAL: HYPERX1001 0x004c1e88
 extern int g_nDromeTextured;
 
-// GLOBAL: HYPERX 0x004c1e8c
+// GLOBAL: HYPERX1001 0x004c1e8c
 extern const char* g_pszDromeSection;
 
-// GLOBAL: HYPERX 0x004c1e90
+// GLOBAL: HYPERX1001 0x004c1e90
 extern const char* g_pszDromeTexturedKey;
 
-// GLOBAL: HYPERX 0x004d21a8
+// GLOBAL: HYPERX1001 0x004d21a8
 extern int g_nSavedCursorVisible;
 
 // Set by -m: the drome loads its shaded models, so the kF8 texture toggle is off.
-// GLOBAL: HYPERX 0x004cb4f0
+// GLOBAL: HYPERX1001 0x004cb4f0
 extern int g_bShadedDromeModels;
 
 // The splash on screen, counting from 1; 0 once the menus have taken over.
-// GLOBAL: HYPERX 0x004cb500
+// GLOBAL: HYPERX1001 0x004cb500
 extern int g_nSplashFrame;
 
-// GLOBAL: HYPERX 0x004cb6f0
+// GLOBAL: HYPERX1001 0x004cb6f0
 extern std::unique_ptr<ColorPalette> g_pColorPalette;
 
-// GLOBAL: HYPERX 0x004b40f8
+// GLOBAL: HYPERX1001 0x004b40f8
 extern const char* const g_pszModelExtension;
 
-// GLOBAL: HYPERX 0x004b4118
+// GLOBAL: HYPERX1001 0x004b4118
 extern const char* const g_pszWaveExtension;
 
 // The version a model file must carry, 1.7.
-// GLOBAL: HYPERX 0x004b2d40
+// GLOBAL: HYPERX1001 0x004b2d40
 extern struct FileVersion g_modelVersion;
 
-// GLOBAL: HYPERX 0x004ceed0
+// GLOBAL: HYPERX1001 0x004ceed0
 extern GameApp g_gameApp;
-// SYNTHETIC: HYPERX 0x0044c050
+// SYNTHETIC: HYPERX1001 0x0044c050
 // $E3
 // The atexit thunk for g_gameApp's destructor.
-// SYNTHETIC: HYPERX 0x0044c060
+// SYNTHETIC: HYPERX1001 0x0044c060
 // $E2
 
-// GLOBAL: HYPERX 0x004d094c
+// GLOBAL: HYPERX1001 0x004d094c
 extern unsigned char g_cMdmTexLoaded;
 
 // The pitch and the surface pointer are each stored to two places, for no known reason.
-// GLOBAL: HYPERX 0x004d095c
+// GLOBAL: HYPERX1001 0x004d095c
 extern int g_nSurfacePitchCopy;
 
-// GLOBAL: HYPERX 0x004d0a0c
+// GLOBAL: HYPERX1001 0x004d0a0c
 extern int g_nViewportOriginY;
 
-// GLOBAL: HYPERX 0x004d0a10
+// GLOBAL: HYPERX1001 0x004d0a10
 extern int g_nViewportOriginX;
 
-// GLOBAL: HYPERX 0x004d0a24
+// GLOBAL: HYPERX1001 0x004d0a24
 extern unsigned char* g_pBackBufferBitsCopy;
 
-// GLOBAL: HYPERX 0x004d0a14
+// GLOBAL: HYPERX1001 0x004d0a14
 extern int g_nBackBufferHeight;
 
-// GLOBAL: HYPERX 0x004d0a18
+// GLOBAL: HYPERX1001 0x004d0a18
 extern int g_nBackBufferWidth;
 
 // The HUD art toggle the debug menu flips; the second byte holds one and nothing reads it.
@@ -133,84 +133,84 @@ struct RenderFlags
     unsigned short wUnused;
 };
 
-// GLOBAL: HYPERX 0x004c2de4
+// GLOBAL: HYPERX1001 0x004c2de4
 extern RenderFlags g_renderFlags;
 
-// GLOBAL: HYPERX 0x004c2c9c
+// GLOBAL: HYPERX1001 0x004c2c9c
 extern int g_bFullScreen;
 
 // Set to whether the cursor is hidden.
-// GLOBAL: HYPERX 0x004c2c98
+// GLOBAL: HYPERX1001 0x004c2c98
 extern int g_bCursorHidden;
 
-// GLOBAL: HYPERX 0x004ce938
+// GLOBAL: HYPERX1001 0x004ce938
 extern FrameTimer g_frameTimer;
 // The atexit registration of g_frameTimer's destructor in frametimer.cpp.
-// SYNTHETIC: HYPERX 0x00442920
+// SYNTHETIC: HYPERX1001 0x00442920
 // $E3
 // g_frameTimer's destructor thunk, empty since the destructor is.
-// SYNTHETIC: HYPERX 0x00442930
+// SYNTHETIC: HYPERX1001 0x00442930
 // $E2
 
-// GLOBAL: HYPERX 0x004ced64
+// GLOBAL: HYPERX1001 0x004ced64
 extern char g_szFpsText[100];
 
-// GLOBAL: HYPERX 0x004cf068
+// GLOBAL: HYPERX1001 0x004cf068
 extern std::unique_ptr<GameOptions> g_pGameOptions;
 
-// GLOBAL: HYPERX 0x004cf060
+// GLOBAL: HYPERX1001 0x004cf060
 extern std::unique_ptr<AudioMgr> g_pAudioMgr;
 
-// GLOBAL: HYPERX 0x004cef49
+// GLOBAL: HYPERX1001 0x004cef49
 extern unsigned char g_bIsWindowCreated;
 
-// GLOBAL: HYPERX 0x004cefd0
+// GLOBAL: HYPERX1001 0x004cefd0
 extern std::unique_ptr<InfoBarBase> g_pRenderer;
 
-// GLOBAL: HYPERX 0x004cf058
+// GLOBAL: HYPERX1001 0x004cf058
 extern std::unique_ptr<struct GameEngine> g_pGameEngine;
 
-// GLOBAL: HYPERX 0x004d2764
+// GLOBAL: HYPERX1001 0x004d2764
 extern int g_nPrevEngineState;
 
-// GLOBAL: HYPERX 0x004d2778
+// GLOBAL: HYPERX1001 0x004d2778
 extern PaletteEntry g_aSoftTexPalette[256];
 
-// GLOBAL: HYPERX 0x004cb5dc
+// GLOBAL: HYPERX1001 0x004cb5dc
 extern CameraObject* g_pScene;
 
-// GLOBAL: HYPERX 0x004c8cd4
+// GLOBAL: HYPERX1001 0x004c8cd4
 extern int g_bPerspectiveTexturing;
 
 // The developer texture library; mdmtex.dll is 32-bit, so a 64-bit build never loads it.
-// GLOBAL: HYPERX 0x004ced5c
+// GLOBAL: HYPERX1001 0x004ced5c
 extern Handle<struct MdmTexLibraryTag> g_hMdmTexDll;
 
-// GLOBAL: HYPERX 0x004d2bb4
+// GLOBAL: HYPERX1001 0x004d2bb4
 extern int g_bBilinearFilter;
 
-// GLOBAL: HYPERX 0x004b2bc8
+// GLOBAL: HYPERX1001 0x004b2bc8
 extern const double g_dNormalizeEpsilon;
 
 struct ClipExtents;
 extern ClipExtents g_projRenderParams;
 
-// GLOBAL: HYPERX 0x004b3e14
+// GLOBAL: HYPERX1001 0x004b3e14
 extern const float g_flOne;
 
-// GLOBAL: HYPERX 0x004b3e18
+// GLOBAL: HYPERX1001 0x004b3e18
 extern const float g_flDegToRad;
 
-// GLOBAL: HYPERX 0x004b3e1c
+// GLOBAL: HYPERX1001 0x004b3e1c
 extern const float g_flHalfPi;
 
-// GLOBAL: HYPERX 0x004b36e4
+// GLOBAL: HYPERX1001 0x004b36e4
 extern const char* const g_pszEmptyName;
 
-// GLOBAL: HYPERX 0x004c6774
+// GLOBAL: HYPERX1001 0x004c6774
 extern LightDir g_lightDirs[3];
 
-// GLOBAL: HYPERX 0x004d01b8
+// GLOBAL: HYPERX1001 0x004d01b8
 extern String g_strPrefs;
 
 struct KeyRow
@@ -221,31 +221,31 @@ struct KeyRow
     unsigned short nIndex;
 };
 
-// GLOBAL: HYPERX 0x004d020a
+// GLOBAL: HYPERX1001 0x004d020a
 extern KeyRow g_aKeyRows[40];
 
-// GLOBAL: HYPERX 0x004cf064
+// GLOBAL: HYPERX1001 0x004cf064
 extern std::unique_ptr<MessageQueue> g_pMessageQueue;
 
-// GLOBAL: HYPERX 0x004b3f2c
+// GLOBAL: HYPERX1001 0x004b3f2c
 extern const float g_flGravityGameEngine;
 
-// GLOBAL: HYPERX 0x004ce92c
+// GLOBAL: HYPERX1001 0x004ce92c
 extern int g_bSessionActive; // gates the network pump; the disconnect clears it
 
 struct GameSession;
 
-// GLOBAL: HYPERX 0x004ce930
+// GLOBAL: HYPERX1001 0x004ce930
 extern GameSession* g_pGameSession;
 
 // Always nought and one; plan actions index GameEngine::m_apTracked with them.
-// GLOBAL: HYPERX 0x004bc47c
+// GLOBAL: HYPERX1001 0x004bc47c
 extern int g_nJoystickSlotA;
 
-// GLOBAL: HYPERX 0x004bc480
+// GLOBAL: HYPERX1001 0x004bc480
 extern int g_nJoystickSlotB;
 
-// GLOBAL: HYPERX 0x004cf06c
+// GLOBAL: HYPERX1001 0x004cf06c
 extern class KeyboardDeviceObj* g_pInputDevice;
 
 // DATA/ENUMIDS.H's object types, which index the id ranges below.
@@ -286,211 +286,211 @@ enum GameObjectType
 };
 
 // The first and last model id of each of the thirty one type ranges.
-// GLOBAL: HYPERX 0x004c70b0
+// GLOBAL: HYPERX1001 0x004c70b0
 extern unsigned char g_abObjectTypeBaseline[32];
 
-// GLOBAL: HYPERX 0x004c70d0
+// GLOBAL: HYPERX1001 0x004c70d0
 extern unsigned char g_abObjectTypeLimit[32];
 
-// GLOBAL: HYPERX 0x004d21b8
+// GLOBAL: HYPERX1001 0x004d21b8
 extern std::unique_ptr<class Screen> g_pActiveScreen;
 
-// GLOBAL: HYPERX 0x004d21bc
+// GLOBAL: HYPERX1001 0x004d21bc
 extern int g_nPlayerMode;
 
 constexpr auto kPlayerModeExhibition = 0;
 constexpr auto kPlayerModeTournament = 1;
 
 // Where Escape paused from: post-match, jumbotron, elsewhere, and the last of the three.
-// GLOBAL: HYPERX 0x004c8578
+// GLOBAL: HYPERX1001 0x004c8578
 extern unsigned int g_nPostMatchEscState;
 
-// GLOBAL: HYPERX 0x004c857c
+// GLOBAL: HYPERX1001 0x004c857c
 extern unsigned int g_nDefaultEscState;
 
-// GLOBAL: HYPERX 0x004c8580
+// GLOBAL: HYPERX1001 0x004c8580
 extern unsigned int g_nJumbotronEscState;
 
 // IDC_NET_TRACKING in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01bc
+// GLOBAL: HYPERX1001 0x004d01bc
 extern float g_flNetTracking;
 
 // IDC_BANDWIDTH in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01c0
+// GLOBAL: HYPERX1001 0x004d01c0
 extern float g_flBandwidth;
 
 // IDC_FORCE_RELAXATION in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01c4
+// GLOBAL: HYPERX1001 0x004d01c4
 extern float g_flForceRelaxation;
 
 // IDC_MAX_SPEED in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01c8
+// GLOBAL: HYPERX1001 0x004d01c8
 extern float g_flMaxSpeed;
 
 // IDC_MAX_ACCELERATION in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01cc
+// GLOBAL: HYPERX1001 0x004d01cc
 extern float g_flMaxAcceleration;
 
 // IDC_SPEED_BURST_FACTOR in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01d0
+// GLOBAL: HYPERX1001 0x004d01d0
 extern float g_flSpeedBurstFactor;
 
 // IDC_STOP_FORCE_FACTOR in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01d4
+// GLOBAL: HYPERX1001 0x004d01d4
 extern float g_flStopForceFactor;
 
 // IDC_FORCE_INCREMENT in the physics dialog, which is the original's own resource naming it.
-// GLOBAL: HYPERX 0x004d01d8
+// GLOBAL: HYPERX1001 0x004d01d8
 extern float g_flForceIncrement;
 
 // Set while Pause single-steps the match, so focus changes do not resume it.
-// GLOBAL: HYPERX 0x004d01dc
+// GLOBAL: HYPERX1001 0x004d01dc
 extern int g_bSingleStepActive;
 
 // z is IDC_VIEW_STEEPNESS in the physics dialog, the original's own resource naming it; nothing reads x or y.
-// GLOBAL: HYPERX 0x004d01f0
+// GLOBAL: HYPERX1001 0x004d01f0
 extern Vec3 g_vViewSteepness;
 
 // The config file scans it with %d, so the scan writes three bytes past it.
-// GLOBAL: HYPERX 0x004d01fc
+// GLOBAL: HYPERX1001 0x004d01fc
 extern unsigned char g_bVictimCam;
 
 // DATA/ENUMIDS.H's ID_OFS camera tracking offsets, which SetOffsetValues writes by index; the config file reads the first four.
-// GLOBAL: HYPERX 0x004d19e8
+// GLOBAL: HYPERX1001 0x004d19e8
 extern Vec3 g_vBirdsEyeTrackOffset;
-// GLOBAL: HYPERX 0x004d19f8
+// GLOBAL: HYPERX1001 0x004d19f8
 extern Vec3 g_vFirstPersonTrackOffset;
-// GLOBAL: HYPERX 0x004d1a08
+// GLOBAL: HYPERX1001 0x004d1a08
 extern Vec3 g_vOverShoulderTrackOffset;
-// GLOBAL: HYPERX 0x004d1a18
+// GLOBAL: HYPERX1001 0x004d1a18
 extern Vec3 g_vOverShoulderRokTrackOffset;
-// GLOBAL: HYPERX 0x004d1a28
+// GLOBAL: HYPERX1001 0x004d1a28
 extern Vec3 g_vFallTrackOffset;
 // The first ID_POS marker, not an ID_OFS offset; nothing writes it.
-// GLOBAL: HYPERX 0x004d1a38
+// GLOBAL: HYPERX1001 0x004d1a38
 extern Vec3 g_vNoOffset;
 
 // ID_OFS's five, which id_OFS_NOOFS counts. No plan passes id_OFS_NOOFS, which would read past it.
-// GLOBAL: HYPERX 0x004c6a74
+// GLOBAL: HYPERX1001 0x004c6a74
 extern Vec3* g_apTrackOffsets[5];
 
 // ID_POS's markers; the last entry is null and nothing sets it.
-// GLOBAL: HYPERX 0x004c6a88
+// GLOBAL: HYPERX1001 0x004c6a88
 extern Vec3* g_apPositionMarkers[11];
 
 // id_POS_NGoalCenter and id_POS_SGoalCenter, the markers a plan names.
 #define POS_N_GOAL_CENTER 8
 constexpr auto kPosSGoalCenter = 9;
 
-// GLOBAL: HYPERX 0x004b17ac
+// GLOBAL: HYPERX1001 0x004b17ac
 extern float g_flOneAgendaItem;
 
-// GLOBAL: HYPERX 0x004b17bc
+// GLOBAL: HYPERX1001 0x004b17bc
 extern float g_flHalfAgendaItem;
 
-// GLOBAL: HYPERX 0x004cf4e8
+// GLOBAL: HYPERX1001 0x004cf4e8
 extern std::unique_ptr<class PooledOwnerRoot> g_pCollInteractorPool;
 
-// GLOBAL: HYPERX 0x004cf05c
+// GLOBAL: HYPERX1001 0x004cf05c
 extern std::unique_ptr<class AnimRegistry> g_pAnimRegistry;
 
-// GLOBAL: HYPERX 0x004cb800
-extern float g_flScreenDotsPerCmProjection;
+// GLOBAL: HYPERX1001 0x004cb800
+extern float g_flScreenDensityCmProjection;
 
-// GLOBAL: HYPERX 0x004b15ec
+// GLOBAL: HYPERX1001 0x004b15ec
 extern float g_flOnePhysicsReset;
 
-// GLOBAL: HYPERX 0x004c8588
+// GLOBAL: HYPERX1001 0x004c8588
 extern int g_nBitmapCacheReady;
 
-// GLOBAL: HYPERX 0x004c2df4
+// GLOBAL: HYPERX1001 0x004c2df4
 extern int g_nSetupBitmapsUnloaded;
 
-// GLOBAL: HYPERX 0x004cf4ec
+// GLOBAL: HYPERX1001 0x004cf4ec
 extern std::unique_ptr<class PooledOwnerRoot> g_pMsgInteractorPool;
 
-// GLOBAL: HYPERX 0x004b2bd0
+// GLOBAL: HYPERX1001 0x004b2bd0
 extern const float g_flZeroCollisionObj;
 
-// GLOBAL: HYPERX 0x004b1b00
+// GLOBAL: HYPERX1001 0x004b1b00
 extern const double g_dHomingSix;
 
 // Set once the loader starts, so the renderer knows it is drawing a loading screen.
-// GLOBAL: HYPERX 0x004c1e84
+// GLOBAL: HYPERX1001 0x004c1e84
 extern char g_bLoadingMode;
 
 // The state the awards screen hands on to whatever it launches.
-// GLOBAL: HYPERX 0x004c85b8
+// GLOBAL: HYPERX1001 0x004c85b8
 extern int g_nSetupReturnState;
 
-// GLOBAL: HYPERX 0x004b17a8
+// GLOBAL: HYPERX1001 0x004b17a8
 extern const float g_flZeroAgendaItem;
 
-// GLOBAL: HYPERX 0x004bb430
+// GLOBAL: HYPERX1001 0x004bb430
 extern float g_flSolarWindFactor;
 
-// GLOBAL: HYPERX 0x004bb434
+// GLOBAL: HYPERX1001 0x004bb434
 extern float g_flSteadyCamBuffer;
 
-// GLOBAL: HYPERX 0x004bb438
+// GLOBAL: HYPERX1001 0x004bb438
 extern float g_flCameraLookHeight;
 
-// GLOBAL: HYPERX 0x004bb43c
+// GLOBAL: HYPERX1001 0x004bb43c
 extern float g_flCameraTrackingHeight;
 
-// GLOBAL: HYPERX 0x004bb440
+// GLOBAL: HYPERX1001 0x004bb440
 extern float g_flCameraMinHeight;
 
-// GLOBAL: HYPERX 0x004cb374
+// GLOBAL: HYPERX1001 0x004cb374
 extern unsigned char g_bScanningModesEnabled;
 
 // The blip colours are each skater's and the Rok's, by slot.
-// GLOBAL: HYPERX 0x004cef58
+// GLOBAL: HYPERX1001 0x004cef58
 extern int g_nRadarLineColour;
 
-// GLOBAL: HYPERX 0x004cef68
+// GLOBAL: HYPERX1001 0x004cef68
 extern int g_nRadarBlipColourRok;
 
-// GLOBAL: HYPERX 0x004cef6c
+// GLOBAL: HYPERX1001 0x004cef6c
 extern int g_nRadarBlipColourDromer3;
 
-// GLOBAL: HYPERX 0x004cef70
+// GLOBAL: HYPERX1001 0x004cef70
 extern int g_nRadarBlipColourDromer1;
 
-// GLOBAL: HYPERX 0x004cef74
+// GLOBAL: HYPERX1001 0x004cef74
 extern int g_nRadarBlipColourDromer2;
 
-// GLOBAL: HYPERX 0x004cef78
+// GLOBAL: HYPERX1001 0x004cef78
 extern int g_nRadarBlipColourDromer0;
 
-// GLOBAL: HYPERX 0x004ced44
+// GLOBAL: HYPERX1001 0x004ced44
 extern unsigned short* g_pRightStack;
 
-// GLOBAL: HYPERX 0x004ced48
+// GLOBAL: HYPERX1001 0x004ced48
 extern unsigned short* g_pLeftStack;
 
-// GLOBAL: HYPERX 0x004d0950
+// GLOBAL: HYPERX1001 0x004d0950
 extern int g_nPrevWidth;
 
-// GLOBAL: HYPERX 0x004d0954
+// GLOBAL: HYPERX1001 0x004d0954
 extern int g_nPrevHeight;
 
 // The product of the two above, kept so the blitters do not multiply per frame.
-// GLOBAL: HYPERX 0x004d0958
+// GLOBAL: HYPERX1001 0x004d0958
 extern int g_nBackBufferPixelCount;
 
 // A bottom-up back buffer; nothing sets it, and the soft renderer builds a top-down DIB.
-// GLOBAL: HYPERX 0x004d0a2c
+// GLOBAL: HYPERX1001 0x004d0a2c
 extern unsigned char g_bBottomUpDIB;
 
 // The Drag Off menu toggle: no start drag is broadcast and the period never runs out.
-// GLOBAL: HYPERX 0x004ce980
+// GLOBAL: HYPERX1001 0x004ce980
 extern unsigned char g_bDragOff;
 
-// GLOBAL: HYPERX 0x004d1794
+// GLOBAL: HYPERX1001 0x004d1794
 extern short g_wActiveScoreLine;
 
-// GLOBAL: HYPERX 0x004d064c
+// GLOBAL: HYPERX1001 0x004d064c
 extern struct TransformedVertex* g_pModelVertexBuf;
 
 constexpr auto kEstateInit              = 0;
@@ -519,20 +519,20 @@ constexpr auto kEstateFinalCeremony     = 26;
 constexpr auto kEstateGameIntro         = 27;
 constexpr auto kEstateTrainingEnd       = 28;
 
-// GLOBAL: HYPERX 0x004cefec
+// GLOBAL: HYPERX1001 0x004cefec
 extern char g_bChampFromJumbotron;
 // Bit i clips float i of the nine-float vertex; UV is added only on the textured path.
-// GLOBAL: HYPERX 0x004ced34
+// GLOBAL: HYPERX1001 0x004ced34
 extern int g_nSWVertexUVMask;
-// GLOBAL: HYPERX 0x004ced38
+// GLOBAL: HYPERX1001 0x004ced38
 extern int g_nSWVertexPosMask;
 // Seeded at start-up; the spawn and marker tables list it after the six offsets.
-// GLOBAL: HYPERX 0x004d1a48
+// GLOBAL: HYPERX1001 0x004d1a48
 extern Vec3 g_vZeroMarker;
-// GLOBAL: HYPERX 0x004d21c0
+// GLOBAL: HYPERX1001 0x004d21c0
 extern int g_nMainMenuPage;
-// GLOBAL: HYPERX 0x004d21c4
+// GLOBAL: HYPERX1001 0x004d21c4
 extern int g_nMainMenuTopChoice;
-// GLOBAL: HYPERX 0x004d21c8
+// GLOBAL: HYPERX1001 0x004d21c8
 extern int g_nMainMenuMatchChoice;
 #endif

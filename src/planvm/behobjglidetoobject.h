@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b25dc
+// VTABLE: HYPERX1001 0x004b25dc
 class BehObj_GlideToObject : public SurfaceBehaviorObject
 {
 public:
@@ -15,7 +15,7 @@ public:
     BehObj_GlideToObject();
 };
 
-// SYNTHETIC: HYPERX 0x0041d480
+// SYNTHETIC: HYPERX1001 0x0041d480
 // BehObj_GlideToObject::`scalar deleting destructor'
 
 #endif

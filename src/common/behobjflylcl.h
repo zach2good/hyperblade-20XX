@@ -8,7 +8,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b26b4
+// VTABLE: HYPERX1001 0x004b26b4
 class BehObj_FlyLCL : public FlightBehaviorObject
 {
 public:
@@ -41,7 +41,7 @@ public:
     BehObj_FlyLCL();
 };
 
-// SYNTHETIC: HYPERX 0x0041dd60
+// SYNTHETIC: HYPERX1001 0x0041dd60
 // BehObj_FlyLCL::`scalar deleting destructor'
 
 #endif

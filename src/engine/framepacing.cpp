@@ -6,6 +6,7 @@
 #include "engine/engineobject.h"
 #include "engine/game.h"
 #include "engine/gameengine.h"
+#include "engine/objectclasses.h"
 #include "engine/spectator.h"
 #include "graphics/meshbone.h"
 #include "graphics/transparentqueue.h"
@@ -32,7 +33,9 @@ constexpr auto kSnapDistanceSq = 64.0f * 64.0f;
 // A slow frame owes this many ticks at most; the rest of the time is dropped.
 constexpr auto kMaxCatchUp = 4;
 
-using Rows = std::array<float, 12>;
+using FramePacing::ReplayFrame;
+using FramePacing::ReplayObject;
+using FramePacing::Rows;
 
 struct ObjectPose
 {
@@ -60,20 +63,6 @@ struct View
 
 // The instant replay's last eight seconds of drawn ticks: bones, visibility and the main camera.
 constexpr auto kReplayTicks = 240;
-
-struct ReplayObject
-{
-    EngineObject*     pObject = nullptr;
-    std::vector<Rows> bones;
-    bool              bVisible = false;
-};
-
-struct ReplayFrame
-{
-    std::vector<ReplayObject> objects;
-    std::array<float, 16>     view = {};
-    Vec3                      eye  = {};
-};
 
 std::deque<ReplayFrame>  s_recorded;
 std::vector<ReplayFrame> s_playing;
@@ -250,6 +239,18 @@ void RecordReplayFrame(const CameraObject& camera)
         recorded.pObject  = pObject;
         recorded.bVisible = pObject->IsVisible() != 0;
         recorded.bones.assign(bones.begin(), bones.end());
+        recorded.locals.resize(static_cast<size_t>(pObject->m_wBoneCount));
+
+        for (short nBone = 0; nBone < pObject->m_wBoneCount; nBone++)
+        {
+            recorded.locals[static_cast<size_t>(nBone)] = pObject->m_pBones[nBone].m_local;
+        }
+    }
+
+    // The rok sets its bones only as it draws, so its own position is the one to follow.
+    if (auto* const pRok = g_pGameEngine->GetSlot(kSlotRok); pRok != nullptr)
+    {
+        frame.rok = *pRok->GetPositionPtr();
     }
 
     std::memcpy(frame.view.data(), camera.m_pView->m_a, sizeof(frame.view));
@@ -314,6 +315,11 @@ void PlayReplayFrame(CameraObject& camera, View& view)
         for (short nBone = 0; nBone < recorded.pObject->m_wBoneCount; nBone++)
         {
             auto* const pBone = &recorded.pObject->m_pBones[nBone];
+
+            if (static_cast<size_t>(nBone) < recorded.locals.size())
+            {
+                pBone->m_local = recorded.locals[static_cast<size_t>(nBone)];
+            }
 
             if (pBone->m_pMesh != nullptr && pBone->IsHidden() == 0)
             {
@@ -547,6 +553,11 @@ void FramePacing::StopReplay()
 bool FramePacing::Replaying()
 {
     return s_bReplaying;
+}
+
+std::vector<ReplayFrame> FramePacing::RecentFrames()
+{
+    return { s_recorded.begin(), s_recorded.end() };
 }
 
 float FramePacing::RunTicks()

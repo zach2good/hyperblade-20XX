@@ -2,7 +2,7 @@
 #include "planvm/interactor.h"
 #include "common/nodeowner.h"
 
-// FUNCTION: HYPERX 0x0046bd50
+// FUNCTION: HYPERX1001 0x0046bd50
 char NodeOwner::Insert(void* pNode)
 {
     auto* const pItem = static_cast<Interactor*>(pNode);

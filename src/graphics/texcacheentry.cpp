@@ -13,7 +13,7 @@
 
 // On failure the entry stays in the cache with a null texture.
 
-// FUNCTION: HYPERX 0x00492b90
+// FUNCTION: HYPERX1001 0x00492b90
 TexCacheEntry::TexCacheEntry(const char* pszName)
 : m_strName(pszName)
 {
@@ -30,7 +30,7 @@ TexCacheEntry::TexCacheEntry(const char* pszName)
     m_pSoftTexture = std::move(pTexture);
 }
 
-// FUNCTION: HYPERX 0x00492d70
+// FUNCTION: HYPERX1001 0x00492d70
 void* TexCacheEntry::DestroyTexObj()
 {
     m_pSoftTexture = nullptr;
@@ -39,7 +39,7 @@ void* TexCacheEntry::DestroyTexObj()
 }
 
 // Unlinks the rest of the list one entry at a time, so a long list cannot exhaust the stack.
-// FUNCTION: HYPERX 0x00492dc0
+// FUNCTION: HYPERX1001 0x00492dc0
 TexCacheEntry::~TexCacheEntry()
 {
     auto pNext = std::move(m_pNext);

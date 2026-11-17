@@ -6,18 +6,18 @@
 #include "engine/engineobject.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041d6a0
+// FUNCTION: HYPERX1001 0x0041d6a0
 BehObj_GlideBetweenFacing::BehObj_GlideBetweenFacing() = default;
 
-// FUNCTION: HYPERX 0x0041d6e0
+// FUNCTION: HYPERX1001 0x0041d6e0
 BehObj_GlideBetweenFacing::~BehObj_GlideBetweenFacing() = default;
 
-// FUNCTION: HYPERX 0x0041d6f0
+// FUNCTION: HYPERX1001 0x0041d6f0
 void BehObj_GlideBetweenFacing::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForGlideBetweenFacing();
 
-    // STRING: HYPERX 0x004bc2a8
+    // STRING: HYPERX1001 0x004bc2a8
     m_pszName = "GlideBetweenFacing";
 
     m_wKind = kBehGlideBetweenFacing;

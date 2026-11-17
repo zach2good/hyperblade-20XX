@@ -5,7 +5,7 @@
 #include "globals.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x00412700
+// FUNCTION: HYPERX1001 0x00412700
 void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_pNext    = nullptr;
@@ -17,7 +17,7 @@ void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nUnusedC = 0;
 }
 
-// FUNCTION: HYPERX 0x00412730
+// FUNCTION: HYPERX1001 0x00412730
 void CDopplerSnd::OnListChanged()
 {
     if (m_bReady == 0)
@@ -33,7 +33,7 @@ void CDopplerSnd::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x00412760
+// FUNCTION: HYPERX1001 0x00412760
 void CDopplerSnd::Process(int nArg)
 {
     auto* const pChain = m_pNext;

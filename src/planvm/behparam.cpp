@@ -53,7 +53,7 @@ constexpr auto kTargetCount = 3;
 #define ARG_FIRST  1
 #define ARG_PERIOD 4
 
-// FUNCTION: HYPERX 0x0041c780
+// FUNCTION: HYPERX1001 0x0041c780
 void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     auto* const pTarget = static_cast<BehObj_GlideBetweenFacing*>(pBehaviour);
@@ -67,7 +67,7 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
 
     if (pNode->m_nArgCount != kArgCount)
     {
-        // STRING: HYPERX 0x004bc234
+        // STRING: HYPERX1001 0x004bc234
         g_gameApp.Fatal("Unexpected number of args in Behavior parameterization functions.");
     }
 
@@ -110,13 +110,13 @@ void BehParam::SetModsTweenNFacing(EngineObject* pActor, PlanNode* pNode, GameBe
 
 // The node stores the value in hundredths of whatever the engine counts in.
 
-// FUNCTION: HYPERX 0x0041c8a0
+// FUNCTION: HYPERX1001 0x0041c8a0
 void BehParam::SetInteractorLatency(EngineObject*, PlanNode* pNode, GameBehaviorObject* pTarget)
 {
     pTarget->m_wLatency = static_cast<short>(g_pGameEngine->m_clock.flInvDelta * (static_cast<short>(pNode->m_pArgs[1].n) * 0.01));
 }
 
-// FUNCTION: HYPERX 0x0041c8e0
+// FUNCTION: HYPERX1001 0x0041c8e0
 void BehParam::SetDigressive(EngineObject*, PlanNode* pNode, GameBehaviorObject* pTarget)
 {
     pTarget->m_bDigressive = static_cast<char>(pNode->m_pArgs[1].n);
@@ -124,7 +124,7 @@ void BehParam::SetDigressive(EngineObject*, PlanNode* pNode, GameBehaviorObject*
 
 // The only data-driven way to set a behaviour's purged byte for an agenda id.
 
-// FUNCTION: HYPERX 0x0041c900
+// FUNCTION: HYPERX1001 0x0041c900
 void BehParam::SetPurgeFlag(EngineObject*, PlanNode* pItem, GameBehaviorObject* pTarget)
 {
     auto* const pArgs = pItem->m_pArgs;
@@ -132,14 +132,14 @@ void BehParam::SetPurgeFlag(EngineObject*, PlanNode* pItem, GameBehaviorObject* 
     pTarget->SetAgendaPurged(pArgs[1].n, static_cast<char>(pArgs[2].n));
 }
 
-// FUNCTION: HYPERX 0x0041c920
+// FUNCTION: HYPERX1001 0x0041c920
 void BehParam::SetTarget(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     static_cast<CSteerToTarget*>(pBehaviour->m_apSlots[0])->SetTargetObjectByIndex(static_cast<short>(pNode->m_pArgs[1].n));
 }
 
 // The receiver's copy at 0x98 is kept only when its kind is eleven, and nothing reads it.
-// FUNCTION: HYPERX 0x0041c940
+// FUNCTION: HYPERX1001 0x0041c940
 void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorObject* pReceiver)
 {
     if (pNotify->m_nArgCount == ARG_COUNT_MARKER)
@@ -201,27 +201,27 @@ void BehParam::SetTargetPosition(EngineObject*, PlanNode* pNotify, GameBehaviorO
 
 // A plan names a spot on the rink here, not a player.
 
-// FUNCTION: HYPERX 0x0041ca60
+// FUNCTION: HYPERX1001 0x0041ca60
 void BehParam::SetRelativePosition(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     static_cast<CSetPositionRelative*>(pBehaviour->m_apSlots[0])
         ->SetPositionWithTerrainHeight(g_apPositionMarkers[pNode->m_pArgs[1].n]);
 }
 
-// FUNCTION: HYPERX 0x0041ca80
+// FUNCTION: HYPERX1001 0x0041ca80
 void BehParam::SetModelImRelativeTo(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     static_cast<CSetPositionRelative*>(pBehaviour->m_apSlots[0])->SetSourceObjectByIndex(static_cast<short>(pNode->m_pArgs[1].n));
 }
 
-// FUNCTION: HYPERX 0x0041caa0
+// FUNCTION: HYPERX1001 0x0041caa0
 void BehParam::SetObjectToAvoid(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     static_cast<CAvoidObjects*>(pBehaviour->m_apSlots[0])->AddAvoidanceTarget(static_cast<short>(pNode->m_pArgs[1].n));
 }
 
 // kModelIDNone means nothing: the first two followers are told zero and the third not at all.
-// FUNCTION: HYPERX 0x0041cac0
+// FUNCTION: HYPERX1001 0x0041cac0
 void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorObject* pTrajectory)
 {
     if (pNotify->m_pArgs[1].n != kModelIDNone)
@@ -243,7 +243,7 @@ void BehParam::SetModelImFacing(EngineObject*, PlanNode* pNotify, GameBehaviorOb
     pTrajectory->m_apSlots[1]->OnKind(0);
 }
 
-// FUNCTION: HYPERX 0x0041cb20
+// FUNCTION: HYPERX1001 0x0041cb20
 void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, GameBehaviorObject* pOut)
 {
     AnimDB* pEntry;
@@ -259,10 +259,10 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
 
         if (((PlayerObject*)pActor)->m_stats.GetScalar(kRatingDamage) < flGate * GATE_SCALE)
         {
-            // STRING: HYPERX 0x004bb2a0
+            // STRING: HYPERX1001 0x004bb2a0
             if (nAnim == g_pAnimRegistry->FindAnimByNameIdx("AA_Skate_Std"))
             {
-                // STRING: HYPERX 0x004bb290
+                // STRING: HYPERX1001 0x004bb290
                 nAnim   = g_pAnimRegistry->FindAnimByNameIdx("AA_LimpSkate");
                 bLimped = 1;
             }
@@ -275,10 +275,10 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
 
         if (((PlayerObject*)pActor)->m_stats.GetScalar(kRatingDamage) < flGate * GATE_SCALE)
         {
-            // STRING: HYPERX 0x004bc278
+            // STRING: HYPERX1001 0x004bc278
             if (nAnim == g_pAnimRegistry->FindAnimByNameIdx("AA_Skate_Fast"))
             {
-                // STRING: HYPERX 0x004bb270
+                // STRING: HYPERX1001 0x004bb270
                 nAnim = g_pAnimRegistry->FindAnimByNameIdx("AA_LimpSpeed");
             }
         }
@@ -305,7 +305,7 @@ void BehParam::SetPersistentAnimation(EngineObject* pActor, PlanNode* pRef, Game
     pOut->m_nAnimationFlags  = 1;
 }
 
-// FUNCTION: HYPERX 0x0041cce0
+// FUNCTION: HYPERX1001 0x0041cce0
 void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     AnimDB* pClip;
@@ -327,7 +327,7 @@ void BehParam::SetAnimation(EngineObject*, PlanNode* pNode, GameBehaviorObject* 
     pBehaviour->m_nAnimationFlags = -1;
 }
 
-// FUNCTION: HYPERX 0x0041cd40
+// FUNCTION: HYPERX1001 0x0041cd40
 void BehParam::SetAnimationEvent(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     int nFourth;
@@ -351,7 +351,7 @@ void BehParam::SetAnimationEvent(EngineObject*, PlanNode* pNode, GameBehaviorObj
     pBehaviour->m_nEventKind   = nThird;
 }
 
-// FUNCTION: HYPERX 0x0041cd80
+// FUNCTION: HYPERX1001 0x0041cd80
 void BehParam::SetObjectToFollow(EngineObject*, PlanNode* pNode, GameBehaviorObject* pBehaviour)
 {
     auto* const pEntity = g_pGameEngine->m_ppSlots[static_cast<short>(pNode->m_pArgs[1].n)];
@@ -360,7 +360,7 @@ void BehParam::SetObjectToFollow(EngineObject*, PlanNode* pNode, GameBehaviorObj
     pTarget->Tick(pEntity->GetPositionPtr());
 }
 
-// FUNCTION: HYPERX 0x0041cdb0
+// FUNCTION: HYPERX1001 0x0041cdb0
 void BehParam::SetTargetGoal(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*)
 {
     ((PlayerObject*)pActor)->m_wTargetGoalSlot = static_cast<short>(pNode->m_pArgs[1].n);

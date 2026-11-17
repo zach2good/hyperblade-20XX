@@ -14,7 +14,7 @@
 // One past the last engine slot: no target.
 constexpr auto kTimerTargetNone = 0x66;
 
-// FUNCTION: HYPERX 0x00411a10
+// FUNCTION: HYPERX1001 0x00411a10
 void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_pNext       = nullptr;
@@ -27,7 +27,7 @@ void CTimerActivity::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nEventParam = 0;
 }
 
-// FUNCTION: HYPERX 0x00411a40
+// FUNCTION: HYPERX1001 0x00411a40
 void CTimerActivity::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
     m_pNext  = nullptr;
@@ -55,7 +55,7 @@ void CTimerActivity::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pl
     m_nEventParam = 0;
 }
 
-// FUNCTION: HYPERX 0x00411ac0
+// FUNCTION: HYPERX1001 0x00411ac0
 void CTimerActivity::OnListChanged()
 {
     if (m_bReady == 0)
@@ -72,7 +72,7 @@ void CTimerActivity::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x00411b00
+// FUNCTION: HYPERX1001 0x00411b00
 void CTimerActivity::Process(int nArg)
 {
     if (m_bReady != 0)
@@ -96,7 +96,7 @@ void CTimerActivity::Process(int nArg)
 
         if (this == m_pNext)
         {
-            // STRING: HYPERX 0x004bb76c
+            // STRING: HYPERX1001 0x004bb76c
             g_gameApp.Error("Timer Chasing Tail will be Terminated.");
 
             Detach();
@@ -123,7 +123,7 @@ void CTimerActivity::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX 0x00411c00
+// FUNCTION: HYPERX1001 0x00411c00
 void CTimerActivity::Release(int nArg)
 {
     if (g_pGameEngine->m_clock.tick > m_fireTick)

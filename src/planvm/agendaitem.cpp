@@ -10,11 +10,10 @@
 #include "engine/devicector.h"
 #include "physics/physicsbody.h"
 #include "engine/gameengine.h"
-#include "physics/collisionplane.h"
 #include "app/gameapp.h"
 #include "physics/collisionellipsoid.h"
 
-// FUNCTION: HYPERX 0x0040b930
+// FUNCTION: HYPERX1001 0x0040b930
 void AgendaItem::OnListChanged()
 {
     auto* const pNext = m_pNext;
@@ -27,7 +26,7 @@ void AgendaItem::OnListChanged()
     m_pNext = nullptr;
 }
 
-// FUNCTION: HYPERX 0x0040b990
+// FUNCTION: HYPERX1001 0x0040b990
 char AgendaItem::Activate()
 {
     const char  bInserted = 1;
@@ -134,7 +133,7 @@ char AgendaItem::Activate()
 
 // An agenda item not in the list is notified twice, as in the original.
 
-// FUNCTION: HYPERX 0x0040bb10
+// FUNCTION: HYPERX1001 0x0040bb10
 void AgendaItem::Detach()
 {
     AgendaItem* pNode;
@@ -175,12 +174,12 @@ void AgendaItem::Detach()
     OnListChanged();
 }
 
-// FUNCTION: HYPERX 0x0040bb80
+// FUNCTION: HYPERX1001 0x0040bb80
 void AgendaItem::BindWithNode(EngineObject*, GameBehaviorObject*, PlanNode*, int)
 {
 }
 
-// FUNCTION: HYPERX 0x0040fea0
+// FUNCTION: HYPERX1001 0x0040fea0
 char AgendaItem::FindByRef(EngineObject* pObject)
 {
     auto* pNode = (CAvoidObjects*)m_pOwner->GetObserver();

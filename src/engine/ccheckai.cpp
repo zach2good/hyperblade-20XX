@@ -10,7 +10,7 @@
 #include "globals.h"
 #include "engine/engineobject.h"
 
-// FUNCTION: HYPERX 0x00412b10
+// FUNCTION: HYPERX1001 0x00412b10
 void CCheckAI::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CCheckAI;
@@ -19,7 +19,7 @@ void CCheckAI::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
-// FUNCTION: HYPERX 0x00412b30
+// FUNCTION: HYPERX1001 0x00412b30
 void CCheckAI::Process(int nArg)
 {
     EngineObject** const ppObjects = g_pGameEngine->m_ppSlots.get();

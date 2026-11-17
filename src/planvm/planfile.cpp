@@ -82,14 +82,14 @@ const std::optional<std::vector<int> >& FixedPlan(const char* pszName, std::span
 } // namespace
 
 // A truncated file yields a short plan rather than a refusal.
-// FUNCTION: HYPERX 0x00436200
+// FUNCTION: HYPERX1001 0x00436200
 std::vector<int> PlanFile::ReadBinary(FILE* pFile)
 {
     unsigned int nCount = 0;
 
     if (fread(&nCount, 4, 1, pFile) != 1)
     {
-        // STRING: HYPERX 0x004bdf94
+        // STRING: HYPERX1001 0x004bdf94
         g_gameApp.Error("Misread binary plan");
     }
 
@@ -97,24 +97,24 @@ std::vector<int> PlanFile::ReadBinary(FILE* pFile)
 
     if (fread(words.data(), sizeof(int), nCount, pFile) != nCount)
     {
-        // STRING: HYPERX 0x004bdf94
+        // STRING: HYPERX1001 0x004bdf94
         g_gameApp.Error("Misread binary plan");
     }
 
     return words;
 }
 
-// FUNCTION: HYPERX 0x00436270
+// FUNCTION: HYPERX1001 0x00436270
 PlanFile::Blobs PlanFile::OpenBinary(const char* pszName)
 {
     PathString strPath(kMaxPathLength, g_gameApp.m_strPlansPath.m_str.m_pchData, pszName, g_pszPbnExtension);
 
-    // STRING: HYPERX 0x004bc938
+    // STRING: HYPERX1001 0x004bc938
     auto* const pFile = fopen(Path::Native(strPath.m_str.m_pchData).c_str(), "rb");
 
     if (pFile == nullptr)
     {
-        // STRING: HYPERX 0x004bdfa8
+        // STRING: HYPERX1001 0x004bdfa8
         g_gameApp.Error("Binary Plan %s could not be opened!", pszName);
 
         return {};

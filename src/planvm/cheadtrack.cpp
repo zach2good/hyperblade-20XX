@@ -22,12 +22,13 @@
 #include "math/point.h"
 #include "graphics/viewextent.h"
 #include "engine/statids.h"
+#include "planvm/conditiontable.h"
 
 // The broadcast camera: the helmet view a spectator watches the match through.
 
 constexpr auto kHistoryWindowOff = 1;
 
-// FUNCTION: HYPERX 0x00409fc0
+// FUNCTION: HYPERX1001 0x00409fc0
 void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 {
     m_pNext     = nullptr;
@@ -74,17 +75,32 @@ void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 }
 
 // One, which the broadcast camera clamps its fractions to and starts its shot power scale from.
-// GLOBAL: HYPERX 0x004b169c
+// GLOBAL: HYPERX1001 0x004b169c
 extern const float g_flCamFracFull;
 
 // Four, added to the look direction's third component before it is normalised.
-// GLOBAL: HYPERX 0x004b16a4
+// GLOBAL: HYPERX1001 0x004b16a4
 extern const float g_flFourTracking;
 
 #define HEAD_BONE 9
 
+// FUNCTION: HYPERX1001 0x0040a0d0
+void CHeadTrack::OnListChanged()
+{
+    if (m_bReady == 0)
+    {
+        m_pOwner    = nullptr;
+        m_pWatchPos = nullptr;
+        m_pWatchDir = nullptr;
+        m_pNext     = nullptr;
+        m_bReady    = 1;
+
+        g_apAgendaItemPools[m_wKind]->Insert(this);
+    }
+}
+
 // One function that Ghidra splits at 0x0040a2f8.
-// FUNCTION: HYPERX 0x0040a100
+// FUNCTION: HYPERX1001 0x0040a100
 void CHeadTrack::Process(int nArg)
 {
     AgendaItem* pNext;
@@ -121,7 +137,6 @@ void CHeadTrack::Process(int nArg)
     {
         short nSlot;
         Vec3  vTarget;
-        Vec3  vStep;
         Vec3  vDir;
 
         vTarget = pSecondary->GetPhysicsBody()->pos;
@@ -131,6 +146,8 @@ void CHeadTrack::Process(int nArg)
         if (nSlot > kPlayerObjectCount)
         {
             m_pWatchPos->z = -10.0f;
+
+            Vec3 vStep;
 
             vStep.x = vTarget.x - m_pWatchPos->x;
             vStep.y = vTarget.y - m_pWatchPos->y;
@@ -146,6 +163,8 @@ void CHeadTrack::Process(int nArg)
         }
         else
         {
+            Vec3 vStep;
+
             vDir = pPrimary->GetPhysicsBody()->velDir;
 
             Math::Vec3Normalize(&vDir);

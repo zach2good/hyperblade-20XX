@@ -30,20 +30,20 @@
 #include "engine/engineobject.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041d460
+// FUNCTION: HYPERX1001 0x0041d460
 BehObj_GlideToObject::BehObj_GlideToObject() = default;
 
-// FUNCTION: HYPERX 0x0041d4a0
+// FUNCTION: HYPERX1001 0x0041d4a0
 BehObj_GlideToObject::~BehObj_GlideToObject() = default;
 
-// FUNCTION: HYPERX 0x0041d4b0
+// FUNCTION: HYPERX1001 0x0041d4b0
 void BehObj_GlideToObject::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForGlideToObject();
 
     short nSlot = 0;
 
-    // STRING: HYPERX 0x004bc288
+    // STRING: HYPERX1001 0x004bc288
     m_pszName = "GlideToObject";
 
     m_wKind = nSlot;
@@ -71,7 +71,7 @@ void BehObj_GlideToObject::Init(EngineObject* pOwner, PlanNode* pBlock, int nFla
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);
 }
 
-// FUNCTION: HYPERX 0x0041d570
+// FUNCTION: HYPERX1001 0x0041d570
 void BehObj_GlideToObject::SendTimedMessage()
 {
     GameBehaviorObject::SendTimedMessage();

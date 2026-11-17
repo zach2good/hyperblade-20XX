@@ -42,7 +42,6 @@
 #include <cstring>
 #include <new>
 #include <cstdio>
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "net/netrecords.h"
 #include "planvm/damagegate.h"
@@ -100,7 +99,7 @@ float  g_flUnusedDistanceB = g_flZeroDistance;
 float  g_flUnusedDistanceC = g_flZeroDistance;
 double g_dMsPerMinute      = 60.0 * g_dMsPerSecond;
 
-// FUNCTION: HYPERX 0x00428010
+// FUNCTION: HYPERX1001 0x00428010
 float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
 {
     const auto posFirst  = pFirst->GetPhysicsBody()->pos;
@@ -113,7 +112,7 @@ float EngineObject::ComputeDistance(EngineObject* pFirst, EngineObject* pSecond)
     return static_cast<float>(sqrt(static_cast<double>(flDx * flDx + flDy * flDy + flDz * flDz)));
 }
 
-// FUNCTION: HYPERX 0x00428090
+// FUNCTION: HYPERX1001 0x00428090
 float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 {
     const auto a = *pA;
@@ -123,7 +122,7 @@ float Math::Vec3Distance(const Vec3* pA, const Vec3* pB)
 }
 
 // Spent markers read "Spin" or "ScoreSpin"; with none left the answer is 102, id_MOD_NOMODEL.
-// FUNCTION: HYPERX 0x00428100
+// FUNCTION: HYPERX1001 0x00428100
 int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 {
     int i;
@@ -139,10 +138,10 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
         {
             const auto* const pszName = pObject->GetPlanState()->m_pCurrent->m_pszName;
 
-            // STRING: HYPERX 0x004bcac8
+            // STRING: HYPERX1001 0x004bcac8
             if (strcmp(pszName, "Spin") != 0)
             {
-                // STRING: HYPERX 0x004bcabc
+                // STRING: HYPERX1001 0x004bcabc
                 if (strcmp(pszName, "ScoreSpin") != 0)
                 {
                     const auto flDistance = EngineObject::ComputeDistance(pFrom, pObject);
@@ -163,7 +162,7 @@ int GameEngine::FindNearestLiveMultiplier(EngineObject* pFrom)
 using CoachConditionFn = int (*)();
 
 // The thirteen conditions the coach evaluates, in the image's order.
-// GLOBAL: HYPERX 0x004bca88
+// GLOBAL: HYPERX1001 0x004bca88
 extern CoachConditionFn g_apfnCoachConditions[13];
 
 // The first of the thirteen answers, and the base the rest are reached from.
@@ -175,7 +174,7 @@ constexpr auto kCoachSlotLast   = 5;
 constexpr auto kTeamHome = 0;
 constexpr auto kTeamAway = 1;
 
-// FUNCTION: HYPERX 0x00428190
+// FUNCTION: HYPERX1001 0x00428190
 int EngineObject::IsRokCarrier(EngineObject* pActor)
 {
     auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
@@ -196,14 +195,14 @@ int EngineObject::IsRokCarrier(EngineObject* pActor)
 }
 
 // Neither the slot nor its teammate is a human plan, and the slot is not the viewed one.
-// FUNCTION: HYPERX 0x004281d0
+// FUNCTION: HYPERX1001 0x004281d0
 int GameEngine::IsComputerTeam(int nSlot)
 {
     const int nWide = static_cast<short>(nSlot);
 
     auto* pObject = g_pGameEngine->m_ppSlots[nWide];
 
-    // STRING: HYPERX 0x004bb340
+    // STRING: HYPERX1001 0x004bb340
     if (strcmp(pObject->GetPlanState()->GetName(), "Human") == 0)
     {
         return 0;
@@ -237,11 +236,11 @@ int GameEngine::IsComputerTeam(int nSlot)
 }
 
 // Three, the period a match is played over.
-// GLOBAL: HYPERX 0x004b3f34
+// GLOBAL: HYPERX1001 0x004b3f34
 extern const short g_nFinalPeriod;
 
 // The trailing team earns the handicap on a late lead, a weak opponent, or a wide multi spread.
-// FUNCTION: HYPERX 0x004282c0
+// FUNCTION: HYPERX1001 0x004282c0
 int GameEngine::CheckHandicapCondition()
 {
     PhysicsBody*  pBlock;
@@ -326,7 +325,7 @@ int GameEngine::CheckHandicapCondition()
 
 // DamageGate's third arm asks the difficulty and discards the answer.
 
-// FUNCTION: HYPERX 0x004284c0
+// FUNCTION: HYPERX1001 0x004284c0
 int GameEngine::IsAnyPlayerInjured()
 {
     int i;
@@ -350,7 +349,7 @@ int GameEngine::IsAnyPlayerInjured()
 constexpr auto kGoalieRatingIntelligence = 6;
 
 // The swarf and rok carriers must be on opposite sides; both are measured to the rok side's goal.
-// FUNCTION: HYPERX 0x00428550
+// FUNCTION: HYPERX1001 0x00428550
 int GameEngine::CheckOpposedCarriersRace()
 {
     short       nSlotA;
@@ -398,7 +397,7 @@ int GameEngine::CheckOpposedCarriersRace()
 
 // Yes only when slot 55's name is "DisplayOverArmory" and a player carries the rok.
 
-// FUNCTION: HYPERX 0x00428650
+// FUNCTION: HYPERX1001 0x00428650
 int GameEngine::CheckWeaponOutWhileRokCarried()
 {
     short nSlot;
@@ -410,7 +409,7 @@ int GameEngine::CheckWeaponOutWhileRokCarried()
         auto* const pDefinition = pDisplay->GetPlanState();
 
         if (strcmp(pDefinition->m_pCurrent->m_pszName,
-                   // STRING: HYPERX 0x004bcad0
+                   // STRING: HYPERX1001 0x004bcad0
                    "DisplayOverArmory") == 0)
         {
             for (nSlot = 0; nSlot < kPlayerSlotCount; nSlot++)
@@ -428,13 +427,13 @@ int GameEngine::CheckWeaponOutWhileRokCarried()
 
 // The coach condition that never fires; six of the thirteen entries point here.
 
-// FUNCTION: HYPERX 0x004286e0
+// FUNCTION: HYPERX1001 0x004286e0
 int GameEngine::CoachConditionNever()
 {
     return 0;
 }
 
-// FUNCTION: HYPERX 0x004286f0
+// FUNCTION: HYPERX1001 0x004286f0
 int GameEngine::CheckGoalieOutOfPosition()
 {
     PhysicsBody* pNetA;
@@ -467,7 +466,7 @@ int GameEngine::CheckGoalieOutOfPosition()
     return 0;
 }
 
-// FUNCTION: HYPERX 0x004287d0
+// FUNCTION: HYPERX1001 0x004287d0
 int GameEngine::CheckCarrierBreakaway()
 {
     AttachPak*  pSlot;
@@ -517,7 +516,7 @@ int GameEngine::CheckCarrierBreakaway()
 
 // Nothing checks there are four players, so fewer reads whatever is in the table.
 
-// FUNCTION: HYPERX 0x004288c0
+// FUNCTION: HYPERX1001 0x004288c0
 int GameEngine::CheckAnyPlayerNeedsSub()
 {
     short iPlayer;
@@ -540,7 +539,7 @@ int GameEngine::CheckAnyPlayerNeedsSub()
 constexpr auto kReserveCount = 2;
 
 // A harder game recovers faster: elapsed ms / 13500 over the difficulty gate.
-// FUNCTION: HYPERX 0x00428920
+// FUNCTION: HYPERX1001 0x00428920
 void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 {
     TeamBlock* pTeam;
@@ -582,7 +581,7 @@ void GameEngine::SubstituteRecoveredReserve(unsigned int nTeam)
 #define NEAR_SLOT_BOOST 0.05f
 
 // Near-half slots get a twentieth; the "limp" threshold at 0x004b1408 is a plain speed test here.
-// FUNCTION: HYPERX 0x00428a40
+// FUNCTION: HYPERX1001 0x00428a40
 int GameEngine::SelectSubstitute(EngineObject* pActor)
 {
     short            sIndex;
@@ -725,7 +724,7 @@ int GameEngine::SelectSubstitute(EngineObject* pActor)
 }
 
 // The six conditions with a body run in the order 0, 3, 4, 1, 9, 10; case ten discards a strcmp.
-// FUNCTION: HYPERX 0x00428d80
+// FUNCTION: HYPERX1001 0x00428d80
 void EngineObject::CoachUpdate(EngineObject* pActor)
 {
     int        nSlot;
@@ -745,7 +744,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
     auto* const pszName = pActor->GetPlanState()->m_pszName;
 
     if (SDL_strcasecmp(pszName,
-                       // STRING: HYPERX 0x004bb340
+                       // STRING: HYPERX1001 0x004bb340
                        "Human") == 0)
     {
         return;
@@ -790,9 +789,9 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
             {
                 case 0:
                     if (nSlot <= 3 && EngineObject::IsRokCarrier(pActor) != 0
-                        // STRING: HYPERX 0x004bcb94
+                        // STRING: HYPERX1001 0x004bcb94
                         && strcmp(szState, "RunThroughMultiplier") != 0
-                        // STRING: HYPERX 0x004bcb80
+                        // STRING: HYPERX1001 0x004bcb80
                         && strcmp(szState, "CompleatAnimation") != 0)
                     {
                         const auto nMarker = GameEngine::FindNearestLiveMultiplier(pActor);
@@ -814,16 +813,16 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
                 case 4:
                     if (pSwarf != nullptr && nSlot <= 3 && strcmp(pRok->GetPlanState()->m_pCurrent->m_pszName,
-                                                                  // STRING: HYPERX 0x004bcb74
+                                                                  // STRING: HYPERX1001 0x004bcb74
                                                                   "SitInGoal") != 0 &&
                         strcmp(pRok->GetPlanState()->m_pCurrent->m_pszName,
-                               // STRING: HYPERX 0x004bcb64
+                               // STRING: HYPERX1001 0x004bcb64
                                "SitInStartgun") != 0
-                        // STRING: HYPERX 0x004bcb50
+                        // STRING: HYPERX1001 0x004bcb50
                         && strcmp(szState, "RunThroughArmory") != 0
-                        // STRING: HYPERX 0x004bcb40
+                        // STRING: HYPERX1001 0x004bcb40
                         && strcmp(szState, "GettingThere") != 0
-                        // STRING: HYPERX 0x004bcb30
+                        // STRING: HYPERX1001 0x004bcb30
                         && strcmp(szState, "SkateToFaceOff") != 0 && strcmp(szState, "CompleatAnimation") != 0 && nHeld != -1 && nGoalie != 0 && nGoalie != 1 && nGoalie != 2 && nGoalie != 3 && (nHeldParity ^ nSelfParity))
                     {
                         const Vec3*    pHeldPos;
@@ -901,12 +900,12 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
                             case 1:
                                 if (EngineObject::IsRokCarrier(pActor) == 0)
                                 {
-                                    // STRING: HYPERX 0x004bb38c
+                                    // STRING: HYPERX1001 0x004bb38c
                                     if (strcmp(szRole, "OffWing") == 0)
                                     {
                                         pActor->PostSceneEvent(kMsgTest, 0);
                                     }
-                                    // STRING: HYPERX 0x004bb384
+                                    // STRING: HYPERX1001 0x004bb384
                                     else if (strcmp(szRole, "Defense") == 0)
                                     {
                                         pActor->PostSceneEvent(kMsgTest, 0);
@@ -920,13 +919,13 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
                 case 9:
                     if (nSlot == kGoalieSlotA || nSlot == kGoalieSlotB)
                     {
-                        // STRING: HYPERX 0x004bc4e4
+                        // STRING: HYPERX1001 0x004bc4e4
                         if (strcmp(szState, "Attack") == 0
-                            // STRING: HYPERX 0x004bcb20
+                            // STRING: HYPERX1001 0x004bcb20
                             || strcmp(szState, "SecondaryAttack") == 0
-                            // STRING: HYPERX 0x004bcb0c
+                            // STRING: HYPERX1001 0x004bcb0c
                             || strcmp(szState, "SecondaryLeadAttack") == 0
-                            // STRING: HYPERX 0x004bcaf4
+                            // STRING: HYPERX1001 0x004bcaf4
                             || strcmp(szState, "SecondaryOtherAttack") == 0)
                         {
                             pActor->PostSceneEvent(kMsgTimeOut, 0);
@@ -946,7 +945,7 @@ void EngineObject::CoachUpdate(EngineObject* pActor)
 
 // Thirteen match conditions, six coach updates, six substitution checks, then two goal notifications.
 
-// FUNCTION: HYPERX 0x00429620
+// FUNCTION: HYPERX1001 0x00429620
 void EngineObject::UpdateCoachAI()
 {
     int nSlot;
@@ -980,7 +979,7 @@ void EngineObject::UpdateCoachAI()
                 {
                     auto* const pszName = pActor->GetPlanState()->m_pszName;
 
-                    // STRING: HYPERX 0x004bb37c
+                    // STRING: HYPERX1001 0x004bb37c
                     if (strcmp(pszName, "Sideln") != 0)
                     {
                         pActor->PostSceneEvent(kMsgSubstituteDromer, nTarget);

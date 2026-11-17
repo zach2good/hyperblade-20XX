@@ -25,7 +25,7 @@
 // The bone whose world transform the homing aim tracks.
 constexpr auto kTargetBone = 15;
 
-// FUNCTION: HYPERX 0x0040f180
+// FUNCTION: HYPERX1001 0x0040f180
 void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -46,7 +46,7 @@ void CSteerToward::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pPrevTick         = &pOwner->GetPhysicsBody()->nPrevTick;
 }
 
-// FUNCTION: HYPERX 0x0040f220
+// FUNCTION: HYPERX1001 0x0040f220
 void CSteerToward::OnListChanged()
 {
     if (m_bReady == 0)
@@ -68,7 +68,7 @@ void CSteerToward::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x0040f260
+// FUNCTION: HYPERX1001 0x0040f260
 void CSteerToward::Process(int nArg)
 {
     // A launch at a rok with no carrier returns before it sets the target.
@@ -189,7 +189,7 @@ void CSteerToward::Process(int nArg)
 #define SPEED_EPSILON 0.0001
 
 // The same integrator as CProjectAndBounce::IntegrateSpringAndGravity, over different field offsets.
-// FUNCTION: HYPERX 0x0040f500
+// FUNCTION: HYPERX1001 0x0040f500
 void CSteerToward::IntegrateSpringAndGravity()
 {
     Vec3 vPull;
@@ -239,7 +239,7 @@ inline void CSteerToward::AddStep(Vec3* pTarget, const Vec3* pStep)
 }
 
 // Kind three's release step: seed the flight once, integrate, set the normal.
-// FUNCTION: HYPERX 0x0040f600
+// FUNCTION: HYPERX1001 0x0040f600
 void CSteerToward::Release(int nArg)
 {
     PhysicsBody* pBody;

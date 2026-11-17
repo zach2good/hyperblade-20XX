@@ -21,7 +21,7 @@ constexpr auto kSpawnCount = 100;
 #define SPAWN_LIMIT 150.0f
 
 // Copies five sets of twenty faces off the bone's blob into the hundred triangles.
-// FUNCTION: HYPERX 0x00474d30
+// FUNCTION: HYPERX1001 0x00474d30
 ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
@@ -58,7 +58,7 @@ ParticleSystem::ParticleSystem(int nSlot, class ObjectDef* pDef)
 
 // The first of two spawners; they differ only in the initialiser they call.
 // The count is re-read each pass because the initialiser can reach it.
-// FUNCTION: HYPERX 0x00474ea0
+// FUNCTION: HYPERX1001 0x00474ea0
 void ParticleSystem::SpawnParticles(float flSpread, float flRise)
 {
     Particle* pEmitter;
@@ -87,7 +87,7 @@ void ParticleSystem::SpawnParticles(float flSpread, float flRise)
     m_bAnyAlive = 1;
 }
 
-// FUNCTION: HYPERX 0x00474f30
+// FUNCTION: HYPERX1001 0x00474f30
 void ParticleSystem::SpawnParticlesUniform(float flSpread, float flRise)
 {
     Particle* pEmitter;
@@ -119,7 +119,7 @@ void ParticleSystem::SpawnParticlesUniform(float flSpread, float flRise)
 #define GRAVITY -32.0f
 
 // The alive flag stays set once any particle in the pass had life left.
-// FUNCTION: HYPERX 0x00474fc0
+// FUNCTION: HYPERX1001 0x00474fc0
 void ParticleSystem::Update(float flDt)
 {
     Vec3 vScaled;
@@ -152,7 +152,7 @@ void ParticleSystem::Update(float flDt)
 }
 
 // Moves three mesh vertices per live particle along its axes.
-// FUNCTION: HYPERX 0x004750a0
+// FUNCTION: HYPERX1001 0x004750a0
 void ParticleSystem::ApplyToMesh()
 {
     Vec3* pVerts;
@@ -191,7 +191,7 @@ void ParticleSystem::ApplyToMesh()
     }
 }
 
-// FUNCTION: HYPERX 0x004751d0
+// FUNCTION: HYPERX1001 0x004751d0
 void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirection)
 {
     Vec3 vDirection;
@@ -260,7 +260,7 @@ void ParticleSystem::SetOrientation(const Vec3* pPosition, const Vec3* pDirectio
     m_bAnyAlive = 1;
 }
 
-// FUNCTION: HYPERX 0x004753c0
+// FUNCTION: HYPERX1001 0x004753c0
 void ParticleSystem::Deactivate()
 {
     m_bAnyAlive = 0;

@@ -17,7 +17,7 @@ unsigned int g_dwDisplayWidth  = 640;
 unsigned int g_dwDisplayHeight = 480;
 
 // The back buffer resize result.
-// FUNCTION: HYPERX 0x0044b500
+// FUNCTION: HYPERX1001 0x0044b500
 int Display::Initialize()
 {
     Window::ApplyFullscreenStyle();
@@ -43,14 +43,14 @@ int Display::Initialize()
     return g_bBackBufferReady;
 }
 
-// FUNCTION: HYPERX 0x0044b850
+// FUNCTION: HYPERX1001 0x0044b850
 int Display::ChangeColorDepth(int)
 {
     // The game runs framed on the desktop and never changes the display mode.
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00493900
+// FUNCTION: HYPERX1001 0x00493900
 void Display::ApplyRenderOptions(int bTexEnabled, int bBilinearFilter)
 {
     GameApp::SetModelPath(bTexEnabled);

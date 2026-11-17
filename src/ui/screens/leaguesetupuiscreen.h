@@ -13,7 +13,7 @@ enum LeagueSetupWidget
 };
 
 // The constructor at 0x00452f80 calls MatchInfoUIScreen's at 0x00435790.
-// VTABLE: HYPERX 0x004b3370
+// VTABLE: HYPERX1001 0x004b3370
 class LeagueSetupUIScreen : public TeamSetupUIScreen
 {
 public:

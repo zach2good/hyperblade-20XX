@@ -7,7 +7,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slots 0 and 2 are shared bodies declared where they are defined; slot 7 shares CAvoidObjects::IsReplaceable's body.
-// VTABLE: HYPERX 0x004b1da0
+// VTABLE: HYPERX1001 0x004b1da0
 class CBungeeToward : public ReleasingAgendaItem
 {
     // m_bReady is this kind's released flag.

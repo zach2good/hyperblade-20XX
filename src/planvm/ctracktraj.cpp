@@ -20,18 +20,18 @@
 #include "engine/engineobject.h"
 #include "planvm/ctracktraj.h"
 
-// FUNCTION: HYPERX 0x0040a510
+// FUNCTION: HYPERX1001 0x0040a510
 CTrackTraj::CTrackTraj()
 : m_pSpline(std::make_unique<Spline>())
 {
 }
 
 // Two: the share of its own velocity the camera spends on position in each axis.
-// GLOBAL: HYPERX 0x004b16a0
+// GLOBAL: HYPERX1001 0x004b16a0
 extern const float g_flCamTrackVelocityGain;
 
 // The debug dialog's checkbox 0x4b8; while clear, the blended mode keeps its look direction.
-// GLOBAL: HYPERX 0x004bc3d4
+// GLOBAL: HYPERX1001 0x004bc3d4
 extern char g_bCamTrackLookEnabled;
 
 // Four, the clearance the camera keeps above the arena floor; marked in cheadtrack.cpp.
@@ -40,10 +40,10 @@ extern const float g_flFourTracking;
 constexpr auto kTrajectoryModeSpring = 0;
 constexpr auto kTrajectoryModeBlend  = 1;
 
-// FUNCTION: HYPERX 0x0040a5c0
+// FUNCTION: HYPERX1001 0x0040a5c0
 CTrackTraj::~CTrackTraj() = default;
 
-// FUNCTION: HYPERX 0x0040a630
+// FUNCTION: HYPERX1001 0x0040a630
 void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     EngineObject* pTracked;
@@ -65,7 +65,7 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
 // The high bound adds the frame-rate reference, eighty, which is not a distance here.
 
-// FUNCTION: HYPERX 0x0040a680
+// FUNCTION: HYPERX1001 0x0040a680
 void CTrackTraj::InitRange()
 {
     const double dLow   = g_arenaEllipsoid.GetRadiusX();
@@ -82,7 +82,7 @@ constexpr auto kRangeKindClamped   = 0;
 constexpr auto kRangeKindSymmetric = 2;
 
 // A low bound at or below the unset marker builds a symmetric range of kind two instead.
-// FUNCTION: HYPERX 0x0040a6c0
+// FUNCTION: HYPERX1001 0x0040a6c0
 void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
 {
     if (flLow > 0.0f)
@@ -101,10 +101,10 @@ void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
     m_nMode = kRangeKindSymmetric;
 }
 
-// GLOBAL: HYPERX 0x004b16ac
+// GLOBAL: HYPERX1001 0x004b16ac
 extern const float g_flPi;
 
-// FUNCTION: HYPERX 0x0040a730
+// FUNCTION: HYPERX1001 0x0040a730
 void CTrackTraj::InitComplexRange()
 {
     auto* const pArena = &g_arenaEllipsoid;
@@ -121,7 +121,7 @@ void CTrackTraj::InitComplexRange()
 
 // A negative fraction widens as unsigned and becomes a very large one.
 
-// FUNCTION: HYPERX 0x0040a790
+// FUNCTION: HYPERX1001 0x0040a790
 void CTrackTraj::SetBlendT(int nValue)
 {
     m_flBlend = static_cast<float>(static_cast<unsigned int>(nValue));
@@ -131,7 +131,7 @@ void CTrackTraj::SetBlendT(int nValue)
 constexpr auto kPressCamEase = 0.2f;
 
 // Mode zero chases the tracked object on a spring; mode one blends toward a scripted point.
-// FUNCTION: HYPERX 0x0040a7b0
+// FUNCTION: HYPERX1001 0x0040a7b0
 void CTrackTraj::Process(int nArg)
 {
     auto* const pCamPos = &m_pOwner->GetPhysicsBody()->pos;
@@ -148,7 +148,7 @@ void CTrackTraj::Process(int nArg)
 
         if (pViewer == nullptr)
         {
-            // STRING: HYPERX 0x004bb4c0
+            // STRING: HYPERX1001 0x004bb4c0
             g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for view owner\n");
         }
 
@@ -161,7 +161,7 @@ void CTrackTraj::Process(int nArg)
 
     if (pWatched == nullptr)
     {
-        // STRING: HYPERX 0x004bb488
+        // STRING: HYPERX1001 0x004bb488
         g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for model to watch\n");
     }
 
@@ -227,9 +227,9 @@ void CTrackTraj::Process(int nArg)
             Vec3::ScaleTo(&vMidOffset, (flMidLength - flRadius) * 0.6f, &vMidPull);
             Vec3::ScaleTo(&vTrajOffset, flTrajLength * 0.8f, &vTrajPull);
 
-            pAccel->x = (((vTrajPull.x + vMidPull.x) - pAccel->x * 0.6f) - g_flCamWatchMidpointScale * pCamPos->x) + pAccel->x;
-            pAccel->y = (((vTrajPull.y + vMidPull.y) - pAccel->y * 0.6f) - g_flCamWatchMidpointScale * pCamPos->y) + pAccel->y;
-            pAccel->z = (((vTrajPull.z + vMidPull.z) - pAccel->z * 0.6f) - (g_arenaEllipsoid.GetRadiusX() + pCamPos->z) * g_flCamWatchMidpointScale) + pAccel->z;
+            pAccel->x = (((vMidPull.x + vTrajPull.x) - pAccel->x * 0.6f) - g_flCamWatchMidpointScale * pCamPos->x) + pAccel->x;
+            pAccel->y = (((vMidPull.y + vTrajPull.y) - pAccel->y * 0.6f) - g_flCamWatchMidpointScale * pCamPos->y) + pAccel->y;
+            pAccel->z = (((vMidPull.z + vTrajPull.z) - pAccel->z * 0.6f) - (g_arenaEllipsoid.GetRadiusX() + pCamPos->z) * g_flCamWatchMidpointScale) + pAccel->z;
 
             // The first sum names the position first; the original loads it first.
             pCamPos->x += pAccel->x;

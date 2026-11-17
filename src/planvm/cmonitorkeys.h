@@ -11,7 +11,7 @@ constexpr auto kMonGoalieCtrl  = 1;
 constexpr auto kMonArcadeStyle = 2;
 
 // Slots 0 and 2 are bodies many tables share, declared where they are defined.
-// VTABLE: HYPERX 0x004b1e70
+// VTABLE: HYPERX1001 0x004b1e70
 class CMonitorKeys : public ReleasingAgendaItem
 {
 public:
@@ -32,7 +32,7 @@ public:
 };
 
 // The original folds many agenda items' deleters onto this one.
-// SYNTHETIC: HYPERX 0x004142f0
+// SYNTHETIC: HYPERX1001 0x004142f0
 // CMonitorKeys::`scalar deleting destructor'
 
 #endif

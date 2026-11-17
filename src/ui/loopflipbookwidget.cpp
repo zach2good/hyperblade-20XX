@@ -2,7 +2,7 @@
 #include "loopflipbookwidget.h"
 #include "engine/object.h"
 
-// FUNCTION: HYPERX 0x0042bac0
+// FUNCTION: HYPERX1001 0x0042bac0
 LoopFlipbookWidget::LoopFlipbookWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nLoopFlag, int nSoundAtMark)
 : InertWidget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
@@ -10,7 +10,7 @@ LoopFlipbookWidget::LoopFlipbookWidget(int nX, int nY, int nWidth, int nHeight, 
     m_nType     = WidgetKind::kLoopFlipbook;
 }
 
-// FUNCTION: HYPERX 0x0042bb20
+// FUNCTION: HYPERX1001 0x0042bb20
 void LoopFlipbookWidget::Draw(int nSlot)
 {
     if (m_bHidden == 1)

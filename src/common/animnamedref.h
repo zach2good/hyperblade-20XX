@@ -20,7 +20,7 @@ public:
     short m_nFrame;   // 0x06
 };
 
-// FUNCTION: HYPERX 0x004178e0
+// FUNCTION: HYPERX1001 0x004178e0
 // AnimNamedRef::~AnimNamedRef
 
 #endif

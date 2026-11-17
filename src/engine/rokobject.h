@@ -10,7 +10,7 @@
 // All ones takes the Rok off its spawn slot.
 constexpr auto kSpawnSlotAny = 0xffffffff;
 
-// VTABLE: HYPERX 0x004b39f4
+// VTABLE: HYPERX1001 0x004b39f4
 class RokObject : public EngineObject
 {
 public:
@@ -38,7 +38,7 @@ public:
     char m_bAtSpawnSlot; // 0xd2c
 };
 
-// SYNTHETIC: HYPERX 0x00473b60
+// SYNTHETIC: HYPERX1001 0x00473b60
 // RokObject::`scalar deleting destructor'
 
 inline RokObject* GameEngine::GetRok() const
@@ -47,7 +47,7 @@ inline RokObject* GameEngine::GetRok() const
 }
 
 // The atexit thunk for ApplyRenderSlotPose's scratch transform.
-// SYNTHETIC: HYPERX 0x00474140
+// SYNTHETIC: HYPERX1001 0x00474140
 // $E11
 
 #endif

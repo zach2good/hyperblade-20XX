@@ -15,16 +15,16 @@
 constexpr auto kButtonRok = 4;
 
 // Never written in this image; its three readers treat it as a two-player flag.
-// GLOBAL: HYPERX 0x004cb5e4
+// GLOBAL: HYPERX1001 0x004cb5e4
 extern int g_bTwoPlayers;
 
-// FUNCTION: HYPERX 0x0041def0
+// FUNCTION: HYPERX1001 0x0041def0
 BehObj_MonitorKeyboard::BehObj_MonitorKeyboard() = default;
 
-// FUNCTION: HYPERX 0x0041df40
+// FUNCTION: HYPERX1001 0x0041df40
 BehObj_MonitorKeyboard::~BehObj_MonitorKeyboard() = default;
 
-// FUNCTION: HYPERX 0x0041df50
+// FUNCTION: HYPERX1001 0x0041df50
 void BehObj_MonitorKeyboard::SendTimedMessage()
 {
     int nSlot;
@@ -63,12 +63,12 @@ void BehObj_MonitorKeyboard::SendTimedMessage()
     }
 }
 
-// FUNCTION: HYPERX 0x0041e010
+// FUNCTION: HYPERX1001 0x0041e010
 void BehObj_MonitorKeyboard::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc314
+    // STRING: HYPERX1001 0x004bc314
     m_pszName = "MonitorKeyboard";
 
     m_wKind = kBehMonitorKeyboard;

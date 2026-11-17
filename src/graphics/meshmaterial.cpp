@@ -15,7 +15,7 @@
 extern Vec3 g_vLightDirModel;
 
 // Answers the face's FaceShade and level; a face with no normal is lit white.
-// FUNCTION: HYPERX 0x00433820
+// FUNCTION: HYPERX1001 0x00433820
 FaceShade MeshMaterial::CalcLightIntensity(float* pflOut, const MeshMaterial* pMaterial, const Vec3* pNormal)
 {
     float flLevel;
@@ -50,7 +50,7 @@ constexpr auto kChannelMax  = 0xff;
 constexpr auto kMaterialMax = 0xff;
 
 // A complaint before the first newmtl names index minus one. r8 and r16 both store nought.
-// FUNCTION: HYPERX 0x004364e0
+// FUNCTION: HYPERX1001 0x004364e0
 char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMaterial[]>* ppMaterials, std::unique_ptr<MaterialName[]>* ppMatNames, std::unique_ptr<MaterialName[]>* ppTexNames, unsigned char* pnMatCount, short* pnTexCount)
 {
     float flValue;
@@ -81,22 +81,22 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
         if (nLength > kLineMax)
         {
             g_gameApp.Error(
-                // STRING: HYPERX 0x004be3ac
+                // STRING: HYPERX1001 0x004be3ac
                 "Read error: Material file line > 120 characters!");
 
             bResult = 0;
         }
         else
         {
-            // STRING: HYPERX 0x004be3a8
+            // STRING: HYPERX1001 0x004be3a8
             if (sscanf(pszLine, "%s ", szKeyword) == 1)
             {
-                // STRING: HYPERX 0x004be3a0
+                // STRING: HYPERX1001 0x004be3a0
                 if (SDL_strcasecmp(szKeyword, "newmtl") == 0)
                 {
                     (*pnMatCount)++;
                 }
-                // STRING: HYPERX 0x004be39c
+                // STRING: HYPERX1001 0x004be39c
                 else if (SDL_strcasecmp(szKeyword, "tx") == 0)
                 {
                     (*pnTexCount)++;
@@ -138,11 +138,11 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
         {
             if (SDL_strcasecmp(szKeyword, "newmtl") == 0)
             {
-                // STRING: HYPERX 0x004be394
+                // STRING: HYPERX1001 0x004be394
                 if (sscanf(pszLine, "%s %s", szKeyword, szValue) != 2)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be364
+                        // STRING: HYPERX1001 0x004be364
                         "Material File Error reading material name: %s!",
                         pszLine);
 
@@ -161,7 +161,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     if (strlen(szValue) >= kMaterialNameBytes)
                     {
                         g_gameApp.Error(
-                            // STRING: HYPERX 0x004be344
+                            // STRING: HYPERX1001 0x004be344
                             "material name %s > %d too long!",
                             szValue,
                             kMaterialNameBytes);
@@ -183,16 +183,16 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     pMaterials[nMatIndex].nBackIndex    = -1;
                 }
             }
-            // STRING: HYPERX 0x004be340
+            // STRING: HYPERX1001 0x004be340
             else if (SDL_strcasecmp(szKeyword, "Cr") == 0)
             {
-                // STRING: HYPERX 0x004be32c
+                // STRING: HYPERX1001 0x004be32c
                 const auto nFields = sscanf(pszLine, "%s %hd %hd %hd %s", szKeyword, &nRed, &nGreen, &nBlue, szRamp);
 
                 if (nFields < 4)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be2fc
+                        // STRING: HYPERX1001 0x004be2fc
                         "Material File Error reading color for: %s %s!",
                         paMatNames[nMatIndex],
                         pszLine);
@@ -212,16 +212,16 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
 
                     if (nFields == 5)
                     {
-                        // STRING: HYPERX 0x004be2f8
+                        // STRING: HYPERX1001 0x004be2f8
                         if (SDL_strcasecmp(szRamp, "r8") == 0)
                         {
                             pMaterials[nMatIndex].nColour = 0;
                         }
-                        // STRING: HYPERX 0x004be2f4
+                        // STRING: HYPERX1001 0x004be2f4
                         else if (SDL_strcasecmp(szRamp, "r16") != 0)
                         {
                             g_gameApp.Error(
-                                // STRING: HYPERX 0x004be2c4
+                                // STRING: HYPERX1001 0x004be2c4
                                 "Material File Error bad ramp code for: %s %s!",
                                 paMatNames[nMatIndex],
                                 pszLine);
@@ -239,14 +239,14 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     }
                 }
             }
-            // STRING: HYPERX 0x004be2c0
+            // STRING: HYPERX1001 0x004be2c0
             else if (SDL_strcasecmp(szKeyword, "Cp") == 0)
             {
-                // STRING: HYPERX 0x004be2b8
+                // STRING: HYPERX1001 0x004be2b8
                 if (sscanf(pszLine, "%s %hd", szKeyword, &nColourIndex) != 2)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be284
+                        // STRING: HYPERX1001 0x004be284
                         "Material File Error reading color index for: %s %s!",
                         paMatNames[nMatIndex],
                         pszLine);
@@ -258,14 +258,14 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     pMaterials[nMatIndex].nColour = nColourIndex;
                 }
             }
-            // STRING: HYPERX 0x004be280
+            // STRING: HYPERX1001 0x004be280
             else if (SDL_strcasecmp(szKeyword, "Ca") == 0)
             {
-                // STRING: HYPERX 0x004be278
+                // STRING: HYPERX1001 0x004be278
                 if (sscanf(pszLine, "%s %f", szKeyword, &flValue) != 2)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be240
+                        // STRING: HYPERX1001 0x004be240
                         "Material File Error reading ambient coeff for: %s %s!",
                         paMatNames[nMatIndex],
                         pszLine);
@@ -277,13 +277,13 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     pMaterials[nMatIndex].flAmbient = flValue;
                 }
             }
-            // STRING: HYPERX 0x004be23c
+            // STRING: HYPERX1001 0x004be23c
             else if (SDL_strcasecmp(szKeyword, "Cd") == 0)
             {
                 if (sscanf(pszLine, "%s %f", szKeyword, &flValue) != 2)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be204
+                        // STRING: HYPERX1001 0x004be204
                         "Material File Error reading disfuse coeff for: %s %s!",
                         paMatNames[nMatIndex],
                         pszLine);
@@ -295,14 +295,14 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     pMaterials[nMatIndex].flDiffuse = flValue;
                 }
             }
-            // STRING: HYPERX 0x004be200
+            // STRING: HYPERX1001 0x004be200
             else if (SDL_strcasecmp(szKeyword, "Ce") == 0)
             {
                 if (sscanf(pszLine, "%s %f", szKeyword, &flValue) != 2)
                 {
                     // The only complaint here that is fatal rather than a report.
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004be1c8
+                        // STRING: HYPERX1001 0x004be1c8
                         "Material File Error reading emittance coeff for: %s %s!",
                         paMatNames[nMatIndex],
                         pszLine);
@@ -319,7 +319,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                 if (sscanf(pszLine, "%s %s", szKeyword, szValue) != 2)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be190
+                        // STRING: HYPERX1001 0x004be190
                         "Material File Error decoding texture name for: %s %s!",
                         paMatNames[nMatIndex],
                         pszLine);
@@ -331,7 +331,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     if (strlen(szValue) >= kMaterialNameBytes)
                     {
                         g_gameApp.Error(
-                            // STRING: HYPERX 0x004be168
+                            // STRING: HYPERX1001 0x004be168
                             "texture name %s > %d too long for: %s!",
                             szValue,
                             kMaterialNameBytes,
@@ -364,13 +364,13 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     }
                 }
             }
-            // STRING: HYPERX 0x004be164
+            // STRING: HYPERX1001 0x004be164
             else if (SDL_strcasecmp(szKeyword, "bf") == 0)
             {
                 if (sscanf(pszLine, "%s %s", szKeyword, szValue) != 2)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004be124
+                        // STRING: HYPERX1001 0x004be124
                         "Material File Error decoding backface material name for: %s %s!",
                         paMatNames[nMatIndex],
                         szValue);
@@ -392,7 +392,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
                     if (j > nMatIndex)
                     {
                         g_gameApp.Error(
-                            // STRING: HYPERX 0x004be0e4
+                            // STRING: HYPERX1001 0x004be0e4
                             "Material File Error backface material name - not found for: %s!",
                             paMatNames[nMatIndex],
                             szValue);
@@ -409,7 +409,7 @@ char MeshMaterial::ParseFile(FileObj* pFile, const char*, std::unique_ptr<MeshMa
     if (nMatIndex > kMaterialMax)
     {
         g_gameApp.Error(
-            // STRING: HYPERX 0x004be0b4
+            // STRING: HYPERX1001 0x004be0b4
             "Material File Error: Material Count > 255:: %d!",
             nMatIndex);
 

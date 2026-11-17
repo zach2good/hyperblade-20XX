@@ -17,7 +17,6 @@ class BoundBubble;
 class BubbleCmd;
 class CPlayer;
 class CameraObject;
-class CollisionPlane;
 class LODNode;
 struct MaterialListNode;
 class MeshBone;
@@ -50,7 +49,7 @@ constexpr auto kCommandSetPlanAndBehavior = (-2);
 constexpr auto kCommandSetBehavior        = (-3);
 
 // 0xd14 bytes, where every derived class puts its first field; offsets past it are per class.
-// VTABLE: HYPERX 0x004b38f0
+// VTABLE: HYPERX1001 0x004b38f0
 class EngineObject : public ObjectBase
 {
 public:
@@ -325,11 +324,11 @@ public:
     static void CoachUpdate(class EngineObject* pActor);
 };
 
-// SYNTHETIC: HYPERX 0x00472720
+// SYNTHETIC: HYPERX1001 0x00472720
 // EngineObject::`scalar deleting destructor'
 
 // The atexit thunk for UpdateRenderSlotTransform's scratch transform.
-// SYNTHETIC: HYPERX 0x004716e0
+// SYNTHETIC: HYPERX1001 0x004716e0
 // $E14
 
 #endif

@@ -33,7 +33,7 @@ union MatrixRow
 };
 
 // Fifteen slots. src/graphics/meshbone.cpp writes this table into a static by hand.
-// VTABLE: HYPERX 0x004b223c
+// VTABLE: HYPERX1001 0x004b223c
 class TransformObject
 {
 public:
@@ -160,7 +160,7 @@ public:
     unsigned int m_nSerial;   // 0x78
 };
 
-// SYNTHETIC: HYPERX 0x00416f10
+// SYNTHETIC: HYPERX1001 0x00416f10
 // TransformObject::`scalar deleting destructor'
 
 inline TransformObject::TransformObject()

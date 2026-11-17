@@ -4,7 +4,7 @@
 #include "common/compat.h"
 #include "ui/screens/matchinfouiscreen.h"
 
-// VTABLE: HYPERX 0x004b22e0
+// VTABLE: HYPERX1001 0x004b22e0
 class AwardsUIScreen : public MatchInfoUIScreen
 {
 public:

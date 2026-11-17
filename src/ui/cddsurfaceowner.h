@@ -8,7 +8,7 @@
 #include <memory>
 
 // InfoBarSlot::InfoBarSlot at 0x00451be0 builds 0x38 bytes and writes table 0x004b3350.
-// VTABLE: HYPERX 0x004b32cc
+// VTABLE: HYPERX1001 0x004b32cc
 class CDDSurfaceOwner : public InfoBarSlot
 {
 public:

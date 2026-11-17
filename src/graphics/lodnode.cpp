@@ -2,7 +2,7 @@
 #include "lodnode.h"
 #include <cstring>
 
-// FUNCTION: HYPERX 0x00472740
+// FUNCTION: HYPERX1001 0x00472740
 LODNode* LODNode::Init(short nLodCount)
 {
     m_pRecord    = nullptr;
@@ -25,7 +25,7 @@ LODNode* LODNode::Init(short nLodCount)
 LODNode::LODNode() = default;
 
 // Unlinks the rest of the list one node at a time, so a long list cannot exhaust the stack.
-// FUNCTION: HYPERX 0x004727a0
+// FUNCTION: HYPERX1001 0x004727a0
 LODNode::~LODNode()
 {
     auto pNext = std::move(m_pNext);

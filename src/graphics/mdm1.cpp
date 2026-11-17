@@ -15,7 +15,7 @@ constexpr auto kWindowMargin = 0x80;
 
 constexpr auto kWindowBytes = 0x1000;
 
-// FUNCTION: HYPERX 0x00440140
+// FUNCTION: HYPERX1001 0x00440140
 Record<BitmapInfoHeader> MDM1::Decompress(FileObj* pFile)
 {
     int nSize;
@@ -40,7 +40,7 @@ Record<BitmapInfoHeader> MDM1::Decompress(FileObj* pFile)
     return pOut;
 }
 
-// FUNCTION: HYPERX 0x004401e0
+// FUNCTION: HYPERX1001 0x004401e0
 int MDM1::ReadCallback(char* pBuffer, int nCount, FileObj* pFile)
 {
     return pFile->Read(pBuffer, nCount);
@@ -51,7 +51,7 @@ int MDM1::ReadCallback(char* pBuffer, int nCount, FileObj* pFile)
 // flag word governs sixteen items, low bit first: clear is a literal byte, set is a reference
 // of 12 bits of distance and 4 of length. A long length that carries out ends the stream, except
 // at 0x10, which copies nothing.
-// FUNCTION: HYPERX 0x00493f80
+// FUNCTION: HYPERX1001 0x00493f80
 int MDM1::LZSSDecompress(MDM1ReadFn pfnRead, FileObj* pFile, unsigned char* pOut, int nOutCapacity, unsigned char* pWindow, int nWindowSize)
 {
     auto nAt  = nWindowSize;

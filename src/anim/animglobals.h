@@ -6,13 +6,13 @@
 
 #include "globals.h"
 
-// GLOBAL: HYPERX 0x004b228c
-extern const char* g_pszAnimNameFormat;
+// GLOBAL: HYPERX1001 0x004b228c
+extern const char* const g_pszAnimNameFormat;
 
-// GLOBAL: HYPERX 0x004b229c
+// GLOBAL: HYPERX1001 0x004b229c
 extern const float g_flZeroAnimClipSet;
 
-// GLOBAL: HYPERX 0x004b2970
+// GLOBAL: HYPERX1001 0x004b2970
 extern const float g_flOneAnimPlayer;
 
 #endif

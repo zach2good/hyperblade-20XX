@@ -7,7 +7,7 @@
 class Screen;
 
 // Table 0x004b2aa0 differs from FlipbookWidget's only in slot five: a sign is display only.
-// VTABLE: HYPERX 0x004b2aa0
+// VTABLE: HYPERX1001 0x004b2aa0
 class SignFlipbookWidget : public FlipbookWidget
 {
 public:

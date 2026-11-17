@@ -1,5 +1,6 @@
 #include "common/compat.h"
 #include "engine/spectator.h"
+#include "common/gamebuild.h"
 #include "common/clock.h"
 #include "common/sdlmemory.h"
 #include "ui/debugmenu.h"
@@ -746,6 +747,7 @@ void TimingTab()
     Checkbox("Uncapped", Switch::UNCAPPED, "A match draws as often as it can, blending between the 30 Hz simulation ticks. Off draws once a tick.");
 
     OriginalUI::SeparatorText("Simulation");
+    ImGui::Text("HYPERX.EXE is %s", GameBuilds::Name(GameBuilds::Current()));
     ImGui::Text("%d ticks a second", FramePacing::TicksPerSecond());
     OriginalUI::SetItemTooltip("Should read 30 in a match.");
     ImGui::Text("Clock drift %+.0f ms a second", FramePacing::DriftMs());
@@ -1370,6 +1372,7 @@ void DebugMenuOnBar()
         { "Model viewer", Scenes::Scene::ModelViewer },
         { "Sound player", Scenes::Scene::SoundPlayer },
         { "Image browser", Scenes::Scene::ImageBrowser },
+        { "Game clips", Scenes::Scene::GameClips },
     };
 
     for (const auto& [pszName, scene] : SCENES)

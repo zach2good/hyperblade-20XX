@@ -19,7 +19,7 @@ constexpr auto kReticleCommit = 2;
 
 constexpr auto kCameraHistoryCapacity = 25;
 
-// VTABLE: HYPERX 0x004b286c
+// VTABLE: HYPERX1001 0x004b286c
 class CameraObject : public EngineObject
 {
 public:
@@ -124,7 +124,7 @@ public:
     char m_bRearView; // 0x102c
 };
 
-// SYNTHETIC: HYPERX 0x00421c10
+// SYNTHETIC: HYPERX1001 0x00421c10
 // CameraObject::`scalar deleting destructor'
 
 inline CameraObject* GameEngine::GetCamera(int nSlot) const

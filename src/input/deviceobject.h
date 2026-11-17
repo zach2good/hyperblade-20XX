@@ -9,13 +9,13 @@
 class EngineObject;
 
 // The image carries this destructor pair twice; GamepadDeviceObj's implicit pair is the other.
-// VTABLE: HYPERX 0x004b3464
+// VTABLE: HYPERX1001 0x004b3464
 class DeviceObject : public EngineObject
 {
 public:
     DeviceObject(int nSlot, class ObjectDef* pDef);
 
-    // FUNCTION: HYPERX 0x0045d700
+    // FUNCTION: HYPERX1001 0x0045d700
     ~DeviceObject() override = default;
 
     // Public: KeyboardDeviceObj's constructor writes four of these, and the bring-up key replay reads them.
@@ -32,7 +32,7 @@ public:
     class EngineObject* m_pEntity; // 0xd24
 };
 
-// SYNTHETIC: HYPERX 0x0045d710
+// SYNTHETIC: HYPERX1001 0x0045d710
 // DeviceObject::`scalar deleting destructor'
 
 #endif

@@ -3,7 +3,7 @@
 #include "common/compat.h"
 #include "input/actionbinding.h"
 
-// GLOBAL: HYPERX 0x004c4208
+// GLOBAL: HYPERX1001 0x004c4208
 const ActionBinding g_aActionBindings[kActionBindingCount] = {
     { ACTION_BINDING_HELD | 0x0002, 0x00000000, 0x00000081, 0x08 },
     { kActionBindingUp | 0x0008, 0x00000002, 0x00000081, 0x08 },

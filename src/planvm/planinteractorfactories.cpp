@@ -9,7 +9,7 @@
 #include "planstate.h"
 #include "planvm/planinteractorfactories.h"
 
-// FUNCTION: HYPERX 0x0045d810
+// FUNCTION: HYPERX1001 0x0045d810
 void PlanInteractorFactories::ResetAll()
 {
     g_pCollInteractorPool->Init();
@@ -17,7 +17,7 @@ void PlanInteractorFactories::ResetAll()
     g_pMsgInteractorPool->Init();
 }
 
-// FUNCTION: HYPERX 0x0045d830
+// FUNCTION: HYPERX1001 0x0045d830
 void PlanInteractorFactories::DestroyAll()
 {
     if (g_pCollInteractorPool != nullptr)
@@ -32,7 +32,7 @@ void PlanInteractorFactories::DestroyAll()
 }
 
 // Links after the previous interactor, else heads the behaviour's chain, else the plan state's.
-// FUNCTION: HYPERX 0x0045dca0
+// FUNCTION: HYPERX1001 0x0045dca0
 CollInteractor* PlanInteractorFactories::CreateCollInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
 {
     CollInteractor* pInteractor;
@@ -64,7 +64,7 @@ CollInteractor* PlanInteractorFactories::CreateCollInteractor(EngineObject* pObj
 }
 
 // Links after the previous interactor, else heads the behaviour's chain, else the plan state's.
-// FUNCTION: HYPERX 0x0045df60
+// FUNCTION: HYPERX1001 0x0045df60
 MsgInteractor* PlanInteractorFactories::CreateMsgInteractor(EngineObject* pObject, PlanNode* pInstr, GameBehaviorObject* pNode, Interactor* pPrevious)
 {
     MsgInteractor* pInteractor;

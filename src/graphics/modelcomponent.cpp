@@ -11,7 +11,7 @@ struct ComponentFileHeader
     int          cBytes;
 };
 
-// FUNCTION: HYPERX 0x004361e0
+// FUNCTION: HYPERX1001 0x004361e0
 Record<ModelComponent> ModelComponent::ReadFirst(FileObj* pFile)
 {
     auto nSize = 0;
@@ -26,7 +26,7 @@ Record<ModelComponent> ModelComponent::ReadFirst(FileObj* pFile)
 }
 
 // The original met a damaged record with a fatal error, and MDLSHD's NEMPTM.WBM and CHISOM.WBM ship with one.
-// FUNCTION: HYPERX 0x004363a0
+// FUNCTION: HYPERX1001 0x004363a0
 bool ModelComponent::ReadAll(FileObj* pFile, std::vector<Record<MeshBlock> >* pBlocks)
 {
     ComponentFileHeader header;
@@ -68,7 +68,7 @@ bool ModelComponent::ReadAll(FileObj* pFile, std::vector<Record<MeshBlock> >* pB
 
         pFile->CloseAndTest();
 
-        // STRING: HYPERX 0x004be018
+        // STRING: HYPERX1001 0x004be018
         g_gameApp.Fatal("Component file totals error.\nRecord count expected: %d  found %d\nBytes expected: %d found %d!", header.cRecords, iEntry, header.cBytes, nTotal);
 
         return false;
@@ -76,14 +76,14 @@ bool ModelComponent::ReadAll(FileObj* pFile, std::vector<Record<MeshBlock> >* pB
 
     pFile->CloseAndTest();
 
-    // STRING: HYPERX 0x004bdfe8
+    // STRING: HYPERX1001 0x004bdfe8
     g_gameApp.Fatal("Read error loading component file record count!");
 
     return false;
 }
 
 // The block's first word is left to the caller.
-// FUNCTION: HYPERX 0x00436d30
+// FUNCTION: HYPERX1001 0x00436d30
 template <class T>
 Record<T> ModelComponent::Read(FileObj* pFile, int* pnSize)
 {

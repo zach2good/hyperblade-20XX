@@ -13,7 +13,7 @@
 #include "engine/cbeattached.h"
 #include "physics/physicsbody.h"
 
-// FUNCTION: HYPERX 0x0047cb30
+// FUNCTION: HYPERX1001 0x0047cb30
 short PlanFocusArg::GetViewOwner(EngineObject*, PlanNode*)
 {
     return g_pGameEngine->m_nViewedSlot;
@@ -21,7 +21,7 @@ short PlanFocusArg::GetViewOwner(EngineObject*, PlanNode*)
 
 // Three times the focus slot, mirroring PlanArg::GetMyCollisionBub.
 
-// FUNCTION: HYPERX 0x0047cb40
+// FUNCTION: HYPERX1001 0x0047cb40
 short PlanFocusArg::GetViewOwnerCOB(EngineObject*, PlanNode*)
 {
     return static_cast<short>(g_pGameEngine->m_nViewedSlot * 3);
@@ -29,7 +29,7 @@ short PlanFocusArg::GetViewOwnerCOB(EngineObject*, PlanNode*)
 
 // The view owner's awareness bubble, mirroring PlanArg::GetMyAwarenessBub.
 
-// FUNCTION: HYPERX 0x0047cb50
+// FUNCTION: HYPERX1001 0x0047cb50
 short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 {
     return static_cast<short>(g_pGameEngine->m_nViewedSlot + kCOBDr0Awareness);
@@ -37,7 +37,7 @@ short PlanFocusArg::GetVwOwnrAwarnsBub(EngineObject*, PlanNode*)
 
 // Three times the parity opposite the focus slot's, mirroring PlanArg::GetMyLeadOppnCollBub.
 
-// FUNCTION: HYPERX 0x0047cb60
+// FUNCTION: HYPERX1001 0x0047cb60
 short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 {
     const auto cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
@@ -47,7 +47,7 @@ short PlanFocusArg::GetViewOnrsOppn1COB(EngineObject*, PlanNode*)
 
 // The view owner's other opponent's collision bubble, mirroring PlanArg::GetMyOtherOppnCollBub.
 
-// FUNCTION: HYPERX 0x0047cb80
+// FUNCTION: HYPERX1001 0x0047cb80
 short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 {
     const auto cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
@@ -57,7 +57,7 @@ short PlanFocusArg::GetViewOnrsOppn2COB(EngineObject*, PlanNode*)
 
 // The empty slot answers nought rather than the minus one the camera stores.
 
-// FUNCTION: HYPERX 0x0047cba0
+// FUNCTION: HYPERX1001 0x0047cba0
 short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
 {
     auto nSlot = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nSecondaryTracked;
@@ -72,7 +72,7 @@ short PlanFocusArg::GetWatchedObject(EngineObject*, PlanNode*)
 
 // The first thing the camera follows, answered the same way.
 
-// FUNCTION: HYPERX 0x0047cbc0
+// FUNCTION: HYPERX1001 0x0047cbc0
 short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
 {
     auto nSlot = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nPrimaryTracked;
@@ -85,7 +85,7 @@ short PlanFocusArg::GetTrackedObject(EngineObject*, PlanNode*)
     return static_cast<short>(nSlot);
 }
 
-// FUNCTION: HYPERX 0x0047cbe0
+// FUNCTION: HYPERX1001 0x0047cbe0
 short PlanFocusArg::GetTrackedObjsTeammate(EngineObject*, PlanNode*)
 {
     const auto nTracked = g_pGameEngine->GetCamera(kCameraMainSlot)->m_nPrimaryTracked;
@@ -93,7 +93,7 @@ short PlanFocusArg::GetTrackedObjsTeammate(EngineObject*, PlanNode*)
     return static_cast<short>(TeammateSlot(static_cast<short>(nTracked)));
 }
 
-// FUNCTION: HYPERX 0x0047cc10
+// FUNCTION: HYPERX1001 0x0047cc10
 short PlanFocusArg::GetViewOwnersGoal(EngineObject*, PlanNode*)
 {
     return g_pGameEngine->GetPlayer(g_pGameEngine->m_nViewedSlot)->m_wTargetGoalSlot;
@@ -101,19 +101,19 @@ short PlanFocusArg::GetViewOwnersGoal(EngineObject*, PlanNode*)
 
 // The goalie of the side opposite the focus slot's, mirroring PlanArg::GetMyGoalie.
 
-// FUNCTION: HYPERX 0x0047cc30
+// FUNCTION: HYPERX1001 0x0047cc30
 short PlanFocusArg::GetVwOwnrOppnGoalie(EngineObject*, PlanNode*)
 {
     return static_cast<short>(((g_pGameEngine->m_nViewedSlot - 1) & 1) + kGoalieSlotA);
 }
 
-// FUNCTION: HYPERX 0x0047cc50
+// FUNCTION: HYPERX1001 0x0047cc50
 short PlanFocusArg::GetViewOwnersTeammate(EngineObject*, PlanNode*)
 {
     return static_cast<short>(TeammateSlot(g_pGameEngine->m_nViewedSlot));
 }
 
-// FUNCTION: HYPERX 0x0047cc70
+// FUNCTION: HYPERX1001 0x0047cc70
 short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
 {
     const auto cLocal = static_cast<char>(g_pGameEngine->m_nViewedSlot);
@@ -121,7 +121,7 @@ short PlanFocusArg::GetViewOnrsOppn1(EngineObject*, PlanNode*)
     return static_cast<char>(~cLocal) & 1;
 }
 
-// FUNCTION: HYPERX 0x0047cc80
+// FUNCTION: HYPERX1001 0x0047cc80
 short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 {
     const auto cFocus = static_cast<char>(g_pGameEngine->m_nViewedSlot);
@@ -130,7 +130,7 @@ short PlanFocusArg::GetViewOnrsOppn2(EngineObject*, PlanNode*)
 }
 
 // A slot of six or more, or no tracker, answers minus one.
-// FUNCTION: HYPERX 0x0047cc90
+// FUNCTION: HYPERX1001 0x0047cc90
 short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 {
     auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
@@ -146,14 +146,14 @@ short PlanFocusArg::GetRokCarrier(EngineObject*, PlanNode*)
 }
 
 // The Rok keeps its carrier slot itself; the last and previous carrier pronouns both answer it.
-// FUNCTION: HYPERX 0x0047ccc0
+// FUNCTION: HYPERX1001 0x0047ccc0
 short PlanFocusArg::GetLastRokCarrier(EngineObject*, PlanNode*)
 {
     return static_cast<short>((g_pGameEngine->GetRok())->m_nCarrierSlot);
 }
 
 // One word from whatever the tracker points at, or minus one for nothing.
-// FUNCTION: HYPERX 0x0047cce0
+// FUNCTION: HYPERX1001 0x0047cce0
 short PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 {
     auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();
@@ -169,7 +169,7 @@ short PlanFocusArg::GetRokCarrierCOB(EngineObject*, PlanNode*)
 }
 
 // A non-player or same-parity carrier answers minus one; otherwise three times its team mate's slot.
-// FUNCTION: HYPERX 0x0047cd10
+// FUNCTION: HYPERX1001 0x0047cd10
 short PlanFocusArg::GetNonRokCarryingOppn(EngineObject* pActor, PlanNode*)
 {
     auto* const pBlock = g_pGameEngine->m_ppSlots[kSlotRok]->GetPhysicsBody();

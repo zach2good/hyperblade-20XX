@@ -13,7 +13,7 @@ enum PauseMinimalWidget
     PAUSE_MINIMAL_QUIT
 };
 
-// VTABLE: HYPERX 0x004b3178
+// VTABLE: HYPERX1001 0x004b3178
 class PauseMenuMinimalScreen : public Screen
 {
 public:
@@ -26,7 +26,7 @@ private:
     [[maybe_unused]] int m_nUnusedD; // 0x464
 };
 
-// SYNTHETIC: HYPERX 0x00443960
+// SYNTHETIC: HYPERX1001 0x00443960
 // PauseMenuMinimalScreen::`scalar deleting destructor'
 
 #endif

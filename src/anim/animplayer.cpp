@@ -29,13 +29,13 @@
 
 constexpr auto kClipNext = (-1);
 
-// GLOBAL: HYPERX 0x004bc4fc
+// GLOBAL: HYPERX1001 0x004bc4fc
 extern float g_flBlendDurationCap;
 
-// GLOBAL: HYPERX 0x004b296c
+// GLOBAL: HYPERX1001 0x004b296c
 extern const float g_flAnimBlendZero;
 
-// FUNCTION: HYPERX 0x00417510
+// FUNCTION: HYPERX1001 0x00417510
 void AnimPlayer::SetObject(EngineObject* pObject)
 {
     m_pObject = pObject;
@@ -47,7 +47,7 @@ void AnimPlayer::SetObject(EngineObject* pObject)
 }
 
 // The base's table is stored before the blend slot array is built and the derived's after.
-// FUNCTION: HYPERX 0x00424490
+// FUNCTION: HYPERX1001 0x00424490
 AnimPlayer::AnimPlayer()
 {
     memset(&m_state, 0, sizeof(m_state));
@@ -71,7 +71,7 @@ AnimPlayer::AnimPlayer()
 
 // Loop mode zero loops forever, above zero counts down, below zero (including -2) plays once.
 
-// FUNCTION: HYPERX 0x00424590
+// FUNCTION: HYPERX1001 0x00424590
 char AnimPlayer::UpdateTick()
 {
     float flDelta;
@@ -181,7 +181,7 @@ char AnimPlayer::UpdateTick()
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00424760
+// FUNCTION: HYPERX1001 0x00424760
 int AnimPlayer::SetPlayDirection(int nDirection)
 {
     const auto nWas = m_state.nDirection;
@@ -192,7 +192,7 @@ int AnimPlayer::SetPlayDirection(int nDirection)
 }
 
 // Clamps to the end frame, or forward to a pending trigger frame; other directions answer no.
-// FUNCTION: HYPERX 0x00424770
+// FUNCTION: HYPERX1001 0x00424770
 unsigned char AnimPlayer::CheckLoopPoint()
 {
     int           nEnd;
@@ -256,7 +256,7 @@ unsigned char AnimPlayer::CheckLoopPoint()
     return bReached;
 }
 
-// FUNCTION: HYPERX 0x00424810
+// FUNCTION: HYPERX1001 0x00424810
 void AnimPlayer::SetPlaybackRate(float flRate)
 {
     if (m_pSet != nullptr && m_state.nPlayState != kAaDone && m_pClip != nullptr)
@@ -279,7 +279,7 @@ void AnimPlayer::SetPlaybackRate(float flRate)
 constexpr auto kSlotFlagMoved = 4;
 
 // kMsgNomsg marks an event consumed; a zero argument still poses the skeleton.
-// FUNCTION: HYPERX 0x00424880
+// FUNCTION: HYPERX1001 0x00424880
 void AnimPlayer::UpdateFrame(char bAdvance)
 {
     AnimClip*     pClip;
@@ -411,7 +411,7 @@ void AnimPlayer::UpdateFrame(char bAdvance)
 }
 
 // The blend's duration is capped at 0.35 and never shorter than the root's own travel.
-// FUNCTION: HYPERX 0x00424b40
+// FUNCTION: HYPERX1001 0x00424b40
 char AnimPlayer::ComputeScale(float flScale)
 {
     Vec3  vPos;
@@ -526,7 +526,7 @@ char AnimPlayer::ComputeScale(float flScale)
 }
 
 // Returns zero once the blend has run out; a bone in mode one is skipped.
-// FUNCTION: HYPERX 0x00424e60
+// FUNCTION: HYPERX1001 0x00424e60
 char AnimPlayer::Advance(float flDelta)
 {
     char cRunning;
@@ -564,7 +564,7 @@ char AnimPlayer::Advance(float flDelta)
     return cRunning;
 }
 
-// FUNCTION: HYPERX 0x00424f70
+// FUNCTION: HYPERX1001 0x00424f70
 char AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, int nParam)
 {
     if (m_pSet != nullptr)
@@ -577,7 +577,7 @@ char AnimPlayer::AssignAnimEventSlot(int nChannel, int nTarget, int nMessage, in
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00424fa0
+// FUNCTION: HYPERX1001 0x00424fa0
 char AnimPlayer::SetPlayState(int nState)
 {
     if (m_state.nPlayState == kAaDone)
@@ -596,7 +596,7 @@ char AnimPlayer::SetPlayState(int nState)
 }
 
 // Answers yes whether or not there was a set to drop.
-// FUNCTION: HYPERX 0x00424fd0
+// FUNCTION: HYPERX1001 0x00424fd0
 char AnimPlayer::ClearAnimationSet()
 {
     if (m_pSet != nullptr)
@@ -608,7 +608,7 @@ char AnimPlayer::ClearAnimationSet()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00424ff0
+// FUNCTION: HYPERX1001 0x00424ff0
 void AnimPlayer::SetCallbackTarget(int nSlot, int nArgA, int nArgB)
 {
     m_state.nSlot = nSlot;
@@ -617,7 +617,7 @@ void AnimPlayer::SetCallbackTarget(int nSlot, int nArgA, int nArgB)
 }
 
 // Starts the parked set, if there is one, and answers what SelectAnimationSet answered, or nought.
-// FUNCTION: HYPERX 0x00425010
+// FUNCTION: HYPERX1001 0x00425010
 char AnimPlayer::ConditionalDispatch(AnimNamedRef* pTransition)
 {
     char bResult = 0;
@@ -633,13 +633,13 @@ char AnimPlayer::ConditionalDispatch(AnimNamedRef* pTransition)
 }
 
 // Both forward to slot five with a deferred flag of minus one, which is off.
-// FUNCTION: HYPERX 0x00425040
+// FUNCTION: HYPERX1001 0x00425040
 char AnimPlayer::StartAnimSetAtRate(AnimDB* pAnimSet, float flRate)
 {
     return StartClipPlayback(pAnimSet, flRate, -1);
 }
 
-// FUNCTION: HYPERX 0x00425060
+// FUNCTION: HYPERX1001 0x00425060
 char AnimPlayer::StartAnimSetDefaultRate(AnimDB* pAnimSet)
 {
     return StartClipPlayback(pAnimSet, -1.0f, -1);
@@ -667,7 +667,7 @@ inline short AnimPlayer::TransitionLoopStart(const AnimNamedRef* pTransition)
 }
 
 // A deferred request parks in m_pending.pSet; asking for the playing set again does not restart it.
-// FUNCTION: HYPERX 0x00425080
+// FUNCTION: HYPERX1001 0x00425080
 char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferred, AnimNamedRef* pTransition)
 {
     if (nDeferred == 1)
@@ -727,7 +727,7 @@ char AnimPlayer::SelectAnimationSet(AnimDB* pAnimSet, float flRate, int nDeferre
 
 // A duration of zero divides by zero.
 
-// FUNCTION: HYPERX 0x004251d0
+// FUNCTION: HYPERX1001 0x004251d0
 void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 {
     m_state.aflClipDuration[nIndex] = flDuration;
@@ -745,7 +745,7 @@ void AnimPlayer::SetClipDuration(short nIndex, float flDuration)
 constexpr auto kClipDurationTimed = (-2);
 
 // A clip whose last frame precedes its first plays backwards with a negated step.
-// FUNCTION: HYPERX 0x00425220
+// FUNCTION: HYPERX1001 0x00425220
 char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
 {
     int nDirection;
@@ -857,7 +857,7 @@ char AnimPlayer::SetClip(short nClipIndex, float flBlend, short nLoopStart)
     return cResult;
 }
 
-// FUNCTION: HYPERX 0x004253e0
+// FUNCTION: HYPERX1001 0x004253e0
 char AnimPlayer::OnClipEnd()
 {
     char cResult = 0;
@@ -880,20 +880,20 @@ char AnimPlayer::OnClipEnd()
     return cResult;
 }
 
-// FUNCTION: HYPERX 0x00425540
+// FUNCTION: HYPERX1001 0x00425540
 int AnimPlayer::GetPlayState()
 {
     return m_state.nPlayState;
 }
 
-// FUNCTION: HYPERX 0x00425550
+// FUNCTION: HYPERX1001 0x00425550
 float AnimPlayer::GetPlaybackRate()
 {
     return m_state.flPlaybackRate;
 }
 
 // The blend slots' element destructor is Object::Trace in the original, folded by its linker.
-// FUNCTION: HYPERX 0x00425580
+// FUNCTION: HYPERX1001 0x00425580
 AnimPlayer::~AnimPlayer() = default;
 
 // 0.35, the cap on a blend's duration.

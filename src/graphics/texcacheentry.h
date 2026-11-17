@@ -6,8 +6,8 @@
 #include <memory>
 #include <string>
 
-// GLOBAL: HYPERX 0x004b4104
-extern const char* g_pszBitmapExtension;
+// GLOBAL: HYPERX1001 0x004b4104
+extern const char* const g_pszBitmapExtension;
 
 // Twenty four bytes.
 class TexCacheEntry
@@ -35,7 +35,7 @@ public:
 };
 
 // The flag sits in the four bytes in front of the table.
-// GLOBAL: HYPERX 0x004d2774
+// GLOBAL: HYPERX1001 0x004d2774
 extern int g_bSoftTexPaletteBuilt;
 
 #endif

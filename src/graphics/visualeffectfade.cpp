@@ -7,7 +7,7 @@
 #include "palettefade.h"
 
 // The phase turns only after the duration has passed since the last advance.
-// FUNCTION: HYPERX 0x0042cf20
+// FUNCTION: HYPERX1001 0x0042cf20
 int VisualEffectFade::Tick()
 {
     if (Clock::Now() - m_stepped > m_duration)
@@ -24,7 +24,7 @@ int VisualEffectFade::Tick()
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0042cf70
+// FUNCTION: HYPERX1001 0x0042cf70
 int VisualEffectFade::ApplyPhase(int bPhase)
 {
     if (bPhase != 0)

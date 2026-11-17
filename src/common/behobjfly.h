@@ -8,14 +8,14 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b269c
+// VTABLE: HYPERX1001 0x004b269c
 class BehObj_Fly : public FlightBehaviorObject
 {
 public:
     ~BehObj_Fly() override;
     void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags) override;
 
-    // FUNCTION: HYPERX 0x0041dce0
+    // FUNCTION: HYPERX1001 0x0041dce0
     void SendTimedMessage() override
     {
         m_pOwner->PostEvent(kMsgInitiate, 0, m_pOwner->GetSlot());
@@ -41,7 +41,7 @@ public:
     BehObj_Fly();
 };
 
-// SYNTHETIC: HYPERX 0x0041dc30
+// SYNTHETIC: HYPERX1001 0x0041dc30
 // BehObj_Fly::`scalar deleting destructor'
 
 #endif

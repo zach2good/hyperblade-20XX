@@ -9,7 +9,7 @@
 #include <cstring>
 
 // kPaletteReserved on the first entry means the entries already animate, and the fade goes inactive.
-// FUNCTION: HYPERX 0x0042cd10
+// FUNCTION: HYPERX1001 0x0042cd10
 PaletteFade::PaletteFade(const PaletteRange* pRange)
 : m_nKind(0)
 {
@@ -58,13 +58,13 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
     m_bPhase = 1;
 }
 
-// FUNCTION: HYPERX 0x0042ce60
+// FUNCTION: HYPERX1001 0x0042ce60
 PaletteFade::~PaletteFade()
 {
     RestoreEntries();
 }
 
-// FUNCTION: HYPERX 0x0042ce90
+// FUNCTION: HYPERX1001 0x0042ce90
 void PaletteFade::RestoreEntries()
 {
     if (m_bActive == 0)

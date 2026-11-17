@@ -8,7 +8,7 @@
 
 // Returns the conjugate of the textbook result; the fallback path leaves w near zero, not unit.
 
-// FUNCTION: HYPERX 0x0042e130
+// FUNCTION: HYPERX1001 0x0042e130
 void Quat::FromMatrix(TransformObject* pSource)
 {
     MatrixRow* pRows;
@@ -69,7 +69,7 @@ void Quat::FromMatrix(TransformObject* pSource)
 
 // Writes the transpose of the textbook rotation; Quat::FromMatrix inverts it exactly.
 
-// FUNCTION: HYPERX 0x0042e280
+// FUNCTION: HYPERX1001 0x0042e280
 void Quat::ToMatrix(TransformObject* pTarget)
 {
     MatrixRow* pRows;
@@ -99,7 +99,7 @@ void Quat::ToMatrix(TransformObject* pTarget)
     pRows[2].af[1] = (flFirst - flSecond) * g_flQuatTwo;
 }
 
-// FUNCTION: HYPERX 0x00430260
+// FUNCTION: HYPERX1001 0x00430260
 bool Quat::Normalize(float* pW, float* pX, float* pY, float* pZ)
 {
     const auto flLength = static_cast<float>(sqrt(static_cast<double>(*pW * *pW + *pX * *pX + *pY * *pY + *pZ * *pZ)));

@@ -9,7 +9,7 @@
 #include "planvm/collinteractor.h"
 #include "planvm/msginteractor.h"
 
-// FUNCTION: HYPERX 0x0046ba80
+// FUNCTION: HYPERX1001 0x0046ba80
 void CollInteractorPool::Init()
 {
     auto* pNode = m_nodes.emplace_back(std::make_unique<CollInteractor>()).get();
@@ -28,7 +28,7 @@ void CollInteractorPool::Init()
     }
 }
 
-// FUNCTION: HYPERX 0x0046bbd0
+// FUNCTION: HYPERX1001 0x0046bbd0
 void* CollInteractorPool::Alloc()
 {
     auto* const pHead = m_pHead;

@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b278c
+// VTABLE: HYPERX1001 0x004b278c
 class BehObj_OpenAndClose : public InPlaceBehaviorObject
 {
 public:
@@ -15,7 +15,7 @@ public:
     BehObj_OpenAndClose();
 };
 
-// SYNTHETIC: HYPERX 0x0041e630
+// SYNTHETIC: HYPERX1001 0x0041e630
 // BehObj_OpenAndClose::`scalar deleting destructor'
 
 #endif

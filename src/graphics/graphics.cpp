@@ -22,7 +22,7 @@ auto s_rightStack = std::vector<unsigned short>();
 } // namespace
 
 // The previous size is latched the first time either half is zero.
-// FUNCTION: HYPERX 0x0044b170
+// FUNCTION: HYPERX1001 0x0044b170
 void Graphics::Initialize(int bResize)
 {
     LayoutState layout;
@@ -40,7 +40,7 @@ void Graphics::Initialize(int bResize)
 
             if (g_pLeftStack == nullptr)
             {
-                // STRING: HYPERX 0x004c2d08
+                // STRING: HYPERX1001 0x004c2d08
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (left_stack)!");
             }
 
@@ -49,7 +49,7 @@ void Graphics::Initialize(int bResize)
 
             if (g_pRightStack == nullptr)
             {
-                // STRING: HYPERX 0x004c2cc8
+                // STRING: HYPERX1001 0x004c2cc8
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (right_stack)!");
             }
         }
@@ -85,19 +85,19 @@ void Graphics::Initialize(int bResize)
 }
 
 // Loads only when the command line carries the developer marker.
-// FUNCTION: HYPERX 0x0044b6f0
+// FUNCTION: HYPERX1001 0x0044b6f0
 unsigned int Graphics::LoadMdmTexDLL()
 {
     const auto* const pszCmdLine = GameApp::Arguments();
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
-    // STRING: HYPERX 0x004c2da0
+    // STRING: HYPERX1001 0x004c2da0
     if (strstr(pszCmdLine, "dmandappro!") == nullptr)
     {
         return 0;
     }
 
-    // STRING: HYPERX 0x004c2d94
+    // STRING: HYPERX1001 0x004c2d94
     auto* const pLibrary = SDL_LoadObject("mdmtex.dll");
 
     if (pLibrary == nullptr)
@@ -105,10 +105,10 @@ unsigned int Graphics::LoadMdmTexDLL()
         return 0;
     }
 
-    // STRING: HYPERX 0x004c2d84
+    // STRING: HYPERX1001 0x004c2d84
     g_pfnMdmInitDrawPoly = reinterpret_cast<MdmInitDrawPolyFn>(SDL_LoadFunction(pLibrary, "mdmInitDrawPoly"));
 
-    // STRING: HYPERX 0x004c2d74
+    // STRING: HYPERX1001 0x004c2d74
     g_pfnMdmDrawTexPoly = reinterpret_cast<MdmDrawTexPolyFn>(SDL_LoadFunction(pLibrary, "mdmDrawTexPoly"));
 
     // The original freed the library here and kept its handle, which then read as loaded.
@@ -126,7 +126,7 @@ unsigned int Graphics::LoadMdmTexDLL()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0044b7a0
+// FUNCTION: HYPERX1001 0x0044b7a0
 void Graphics::UnloadMdmTexDLL()
 {
     if (g_hMdmTexDll)

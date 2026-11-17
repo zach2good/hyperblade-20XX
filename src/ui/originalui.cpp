@@ -1291,7 +1291,7 @@ void PlanButton(unsigned short nControl)
         case kIDPlanProceedTo:
             if (pState == nullptr)
             {
-                // STRING: HYPERX 0x004c69dc
+                // STRING: HYPERX1001 0x004c69dc
                 g_gameApp.Error("This is not the Plan you think it is.  Press the Load Plan button.");
             }
             else if (nBehaviour >= 0)
@@ -1308,7 +1308,7 @@ void PlanButton(unsigned short nControl)
 
             if (pState == nullptr || pState->m_nIndex != nBehaviour)
             {
-                // STRING: HYPERX 0x004c6a20
+                // STRING: HYPERX1001 0x004c6a20
                 g_gameApp.Error("This is not the Behavior you think.  Press the Load Plan and Proceed To buttons.");
             }
             else if (nMessage >= 0)

@@ -11,7 +11,7 @@
 extern const float g_flAnimBlendZero;
 
 // Clears one of the animation binding's twenty 68-byte blend slots.
-// FUNCTION: HYPERX 0x00425480
+// FUNCTION: HYPERX1001 0x00425480
 SlerpSeg::SlerpSeg()
 {
     m_flTheta = g_flAnimBlendZero;
@@ -35,7 +35,7 @@ SlerpSeg::SlerpSeg()
 
 // A half angle under a thousandth of a radian stores zero, which tells Eval to do nothing.
 
-// FUNCTION: HYPERX 0x0042e360
+// FUNCTION: HYPERX1001 0x0042e360
 void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 {
     float flDot;
@@ -68,7 +68,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 
     if (flSin == 0.0f)
     {
-        // STRING: HYPERX 0x004bcf10
+        // STRING: HYPERX1001 0x004bcf10
         g_gameApp.Fatal("0 denom in InitSlerpSeg\n");
     }
 
@@ -86,7 +86,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 
 // Returns zero and writes nothing for a zero angle; Init already divided both by sin(theta).
 
-// FUNCTION: HYPERX 0x0042e480
+// FUNCTION: HYPERX1001 0x0042e480
 bool SlerpSeg::Eval(float flAt)
 {
     float flWeightFrom;

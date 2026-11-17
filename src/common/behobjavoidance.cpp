@@ -5,18 +5,18 @@
 #include "engine/engineobject.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041d7b0
+// FUNCTION: HYPERX1001 0x0041d7b0
 BehObj_Avoidance::BehObj_Avoidance() = default;
 
-// FUNCTION: HYPERX 0x0041d7f0
+// FUNCTION: HYPERX1001 0x0041d7f0
 BehObj_Avoidance::~BehObj_Avoidance() = default;
 
-// FUNCTION: HYPERX 0x0041d800
+// FUNCTION: HYPERX1001 0x0041d800
 void BehObj_Avoidance::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc2bc
+    // STRING: HYPERX1001 0x004bc2bc
     m_pszName = "Avoidance";
 
     m_wKind = kBehAvoidance;

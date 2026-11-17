@@ -7,7 +7,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slot 0 is KindAgendaItem's shared deleting destructor; slot 7 shares CAvoidObjects::IsReplaceable's body.
-// VTABLE: HYPERX 0x004b1ed8
+// VTABLE: HYPERX1001 0x004b1ed8
 class CRelaxToPosition : public KindAgendaItem
 {
 public:

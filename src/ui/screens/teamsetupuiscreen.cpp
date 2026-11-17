@@ -11,7 +11,7 @@ class TeamSetupUIScreen;
 #include "ui/screens/leaguesetupuiscreen.h"
 
 // Team one is a slot: the team is the quotient by four and the remainder a position.
-// FUNCTION: HYPERX 0x00458ed0
+// FUNCTION: HYPERX1001 0x00458ed0
 void TeamSetupUIScreen::StepHomeSelection(int nDirection)
 {
     short nTeam;
@@ -76,7 +76,7 @@ void TeamSetupUIScreen::StepHomeSelection(int nDirection)
     }
 }
 
-// FUNCTION: HYPERX 0x00459050
+// FUNCTION: HYPERX1001 0x00459050
 void TeamSetupUIScreen::StepArenaSelection(int nDirection)
 {
     int nTeam;

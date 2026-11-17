@@ -15,7 +15,7 @@ enum class ShapeKind
     kEllipsoid = 2
 };
 
-// VTABLE: HYPERX 0x004b2be0
+// VTABLE: HYPERX1001 0x004b2be0
 class CollisionShape
 {
 public:
@@ -36,14 +36,14 @@ public:
     virtual float         GetElasticity(); // 0x00405830
     virtual float         GetFriction();   // 0x00405840
 
-    // The 0x04 to 0x38 run CollisionPlane and CollisionEllipsoid share.
+    // The 0x04 to 0x38 run CollisionObj and CollisionEllipsoid share.
     ShapeKind GetShapeKind() const
     {
         return m_nShapeKind;
     }
 
 protected:
-    // The 0x04 to 0x38 run CollisionPlane and CollisionEllipsoid share.
+    // The 0x04 to 0x38 run CollisionObj and CollisionEllipsoid share.
     int  m_nUnusedA; // 0x004
     int  m_nUnusedB; // 0x008
     Vec3 m_vNormal;  // 0x00c
@@ -63,14 +63,14 @@ protected:
     ShapeKind m_nShapeKind;   // 0x034
 };
 
-// FUNCTION: HYPERX 0x0042e540
+// FUNCTION: HYPERX1001 0x0042e540
 // CollisionShape::~CollisionShape
 
 // The original's slot zero, which deletes the shape; nothing here calls it.
-// FUNCTION: HYPERX 0x00405800
+// FUNCTION: HYPERX1001 0x00405800
 // CollisionShape::Destroy
 
-// SYNTHETIC: HYPERX 0x00480850
+// SYNTHETIC: HYPERX1001 0x00480850
 // CollisionShape::operator=
 
 #endif

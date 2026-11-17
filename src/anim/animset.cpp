@@ -13,7 +13,7 @@
 #include "animnode.h"
 
 // Five kinds have their own offset; every other kind, zero included, returns one.
-// FUNCTION: HYPERX 0x00401410
+// FUNCTION: HYPERX1001 0x00401410
 int AnimSet::GetFieldOffset(short nKind)
 {
     switch (nKind)
@@ -40,7 +40,7 @@ int AnimSet::GetFieldOffset(short nKind)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00417220
+// FUNCTION: HYPERX1001 0x00417220
 AnimClipSet* AnimSet::LoadIntoRegistry(FileObj* pFile, AnimRegistry* pRegistry, int, const char* pszName)
 {
     auto& pSet = pRegistry->m_apSets[pRegistry->m_nSetCount];

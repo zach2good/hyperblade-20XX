@@ -52,7 +52,7 @@ private:
 
 } // namespace
 
-// FUNCTION: HYPERX 0x00493430
+// FUNCTION: HYPERX1001 0x00493430
 Wave::Result Wave::ReadInfo(const char* pszPath, Info& info)
 {
     const auto file = File(pszPath);

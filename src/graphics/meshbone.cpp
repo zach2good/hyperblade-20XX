@@ -42,20 +42,20 @@ float              g_flUnusedVertexColourA = g_flZeroVertexColour;
 float              g_flUnusedVertexColourB = g_flZeroVertexColour;
 float              g_flUnusedVertexColourC = g_flZeroVertexColour;
 
-// FUNCTION: HYPERX 0x0044be10
+// FUNCTION: HYPERX1001 0x0044be10
 void MeshBone::DrawFaceList(FaceRecord** ppRecords, int nCount)
 {
     SWRend::DrawFaceList(this, ppRecords, static_cast<short>(nCount));
 }
 
-// FUNCTION: HYPERX 0x0044be40
+// FUNCTION: HYPERX1001 0x0044be40
 void MeshBone::DispatchFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
     SWRend::DrawFace(pRend, cFlip, pFaceData, ppMaterials, pVertexColour, pVertexBufBase, pFaceNormal, cClipFlags);
 }
 
 // The animation scale is one shot: applying it twice would shrink the bone.
-// FUNCTION: HYPERX 0x0046ef10
+// FUNCTION: HYPERX1001 0x0046ef10
 void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, TransformObject* pRoot, TransformObject*)
 {
     if ((m_nFlags & kMeshboneAnimationDirty) != 0)
@@ -92,7 +92,7 @@ void MeshBone::PropagateTransforms(short nSlotIdx, TransformObject* pParent, Tra
     }
 }
 
-// FUNCTION: HYPERX 0x0046efe0
+// FUNCTION: HYPERX1001 0x0046efe0
 void MeshBone::UpdateLeafTransform(unsigned int, TransformObject* pParent)
 {
     if ((m_nFlags & kMeshboneAnimationDirty) != 0)
@@ -115,10 +115,10 @@ void MeshBone::UpdateLeafTransform(unsigned int, TransformObject* pParent)
 }
 
 // Float one.
-// GLOBAL: HYPERX 0x004b38dc
+// GLOBAL: HYPERX1001 0x004b38dc
 extern const float g_flVertexW;
 
-// GLOBAL: HYPERX 0x004d0930
+// GLOBAL: HYPERX1001 0x004d0930
 extern Vec3 g_vLightDirModel;
 
 extern class TransformObject* g_pCameraTransform;
@@ -291,7 +291,7 @@ void MeshBone::SubmitToHardware()
 }
 
 // The drawer walks the face list backwards from one past the last entry.
-// FUNCTION: HYPERX 0x0046f060
+// FUNCTION: HYPERX1001 0x0046f060
 void MeshBone::DrawFaces()
 {
     const Vec3*            pVertBase;
@@ -408,7 +408,7 @@ void MeshBone::DrawFaces()
 }
 
 // The queue is one based, and the overflow guard tests the count before the rise.
-// FUNCTION: HYPERX 0x0046f340
+// FUNCTION: HYPERX1001 0x0046f340
 void MeshBone::PushToRenderStack(CameraObject* pCamera)
 {
     const float (*pRows)[4];
@@ -435,7 +435,7 @@ void MeshBone::PushToRenderStack(CameraObject* pCamera)
     // The original checked the slot count after the queue was already full, and wrote on past Fatal.
     if (g_nTransparentCount + 1 >= g_nTransparentCapacity)
     {
-        // STRING: HYPERX 0x004c4fb0
+        // STRING: HYPERX1001 0x004c4fb0
         g_gameApp.Fatal("STACK OVERFLOW in pushModComp!");
 
         return;
@@ -448,7 +448,7 @@ void MeshBone::PushToRenderStack(CameraObject* pCamera)
 
 // The first word of the box is its valid flag. The mesh pointer is not checked, as in the original.
 
-// FUNCTION: HYPERX 0x0046f430
+// FUNCTION: HYPERX1001 0x0046f430
 MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
 {
     Vec3* pVerts;
@@ -493,7 +493,7 @@ MeshBoundingBox* MeshBone::GetBoundingBox(MeshBoundingBox* pOut)
 
 // The null test on m_world's matrix is dead, as in the original.
 
-// FUNCTION: HYPERX 0x0046f530
+// FUNCTION: HYPERX1001 0x0046f530
 void MeshBone::CalcVertexColors()
 {
     if (m_pFaceColours == nullptr)
@@ -592,7 +592,7 @@ void MeshBone::CalcVertexColors()
 
 // A mask of exactly 8 replaces the per-face colour buffer with a zeroed one.
 
-// FUNCTION: HYPERX 0x0046f8c0
+// FUNCTION: HYPERX1001 0x0046f8c0
 void MeshBone::SetFlags(unsigned short nFlags)
 {
     if (nFlags == kMeshboneColoursPresent)
@@ -604,7 +604,7 @@ void MeshBone::SetFlags(unsigned short nFlags)
 }
 
 // Clearing the colours flag alone releases the per-face colour buffer.
-// FUNCTION: HYPERX 0x0046f930
+// FUNCTION: HYPERX1001 0x0046f930
 void MeshBone::ClearFlags(unsigned short nFlags)
 {
     m_nFlags &= ~nFlags;
@@ -616,7 +616,7 @@ void MeshBone::ClearFlags(unsigned short nFlags)
 }
 
 // m_block is filled by its constructor and then cleared again, as in the original.
-// FUNCTION: HYPERX 0x0046fa50
+// FUNCTION: HYPERX1001 0x0046fa50
 MeshBone::MeshBone()
 : m_nUnused(0)
 , m_pOwner(nullptr)
@@ -631,7 +631,7 @@ MeshBone::MeshBone()
     m_vCentre.x = m_vCentre.y = m_vCentre.z = 0;
 }
 
-// FUNCTION: HYPERX 0x0046fb10
+// FUNCTION: HYPERX1001 0x0046fb10
 MeshBone::~MeshBone() = default;
 
 inline void MeshBone::StoreShadow(TransformObject* pTarget, float flX, float flY, float flZ)
@@ -642,7 +642,7 @@ inline void MeshBone::StoreShadow(TransformObject* pTarget, float flX, float flY
 }
 
 // A lookup answer of 1 computes the bounding sphere; any other sets flag two.
-// FUNCTION: HYPERX 0x0046fba0
+// FUNCTION: HYPERX1001 0x0046fba0
 int MeshBone::BindToLODMesh(CD3DTextureManager* pLookup, LODNode* pNode, EngineObject* pOwner, short nSlot)
 {
     const MeshBoneDesc* pEntry;
@@ -691,7 +691,7 @@ int MeshBone::BindToLODMesh(CD3DTextureManager* pLookup, LODNode* pNode, EngineO
 }
 
 // A node with no block leaves the entry null and the reads go through it.
-// FUNCTION: HYPERX 0x0046fc50
+// FUNCTION: HYPERX1001 0x0046fc50
 int MeshBone::BindToLODMeshShadowless(CD3DTextureManager* pLookup, LODNode* pNode, class EngineObject*, short nSlot)
 {
     const MeshBoneDesc* pEntry;
@@ -731,7 +731,7 @@ int MeshBone::BindToLODMeshShadowless(CD3DTextureManager* pLookup, LODNode* pNod
 }
 
 // The centre is the vertices' mean and the radius the furthest of them.
-// FUNCTION: HYPERX 0x0046fcf0
+// FUNCTION: HYPERX1001 0x0046fcf0
 void MeshBone::ComputeBoundingSphere()
 {
     Vec3* pVerts;

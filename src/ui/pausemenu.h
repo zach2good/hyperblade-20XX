@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include "globals.h"
-#include "ui/holdingwidget.h"
 
 namespace PauseMenu
 {
@@ -24,12 +23,12 @@ void ActionQuit();
 #include "graphics/gdi.h"
 
 // The sixty animation frames are the prefix formatted with a two-digit index.
-// GLOBAL: HYPERX 0x004c1eb0
+// GLOBAL: HYPERX1001 0x004c1eb0
 extern const char* g_pszFinaleBackground;
-// GLOBAL: HYPERX 0x004c1eb4
+// GLOBAL: HYPERX1001 0x004c1eb4
 extern const char* g_pszFinaleAnimPrefix;
 
-// GLOBAL: HYPERX 0x004c6484
+// GLOBAL: HYPERX1001 0x004c6484
 extern const char* g_pszMultiSetupBackground;
 
 #endif

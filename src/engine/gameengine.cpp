@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/gameclips.h"
 #include "input/twoplayer.h"
 #include "common/clock.h"
 #include <cstdint>
@@ -102,7 +103,7 @@ SurfacePoint g_ptPlanEditorOrigin(0x1c, 0x1c);
 
 constexpr auto kTeamKeywordCount = 9;
 
-// FUNCTION: HYPERX 0x0040b970
+// FUNCTION: HYPERX1001 0x0040b970
 void GameEngine::InitAgendaItemPools()
 {
     int nSlot;
@@ -121,7 +122,7 @@ void GameEngine::InitAgendaItemPools()
 }
 
 // The statement order is the original's: the first pool built goes into slot eleven.
-// FUNCTION: HYPERX 0x0040bbf0
+// FUNCTION: HYPERX1001 0x0040bbf0
 void GameEngine::CreateAgendaItemPools()
 {
     g_apAgendaItemPools[Agenda_CGlideOnSurface]       = std::make_unique<CGlideOnSurfacePool>();
@@ -164,7 +165,7 @@ void GameEngine::CreateAgendaItemPools()
 
 // Destroys each pool, stopping at the first null.
 
-// FUNCTION: HYPERX 0x0040c070
+// FUNCTION: HYPERX1001 0x0040c070
 void GameEngine::DestroyAgendaItemPools()
 {
     short iSlot = 0;
@@ -179,7 +180,7 @@ void GameEngine::DestroyAgendaItemPools()
 
 // Colours the multiplier's two materials by the rok's value; the first call saves their rest colours.
 
-// FUNCTION: HYPERX 0x00463220
+// FUNCTION: HYPERX1001 0x00463220
 void GameEngine::ShowRokValue(short nRokValue)
 {
     auto* const pObject = g_pGameEngine->m_ppSlots[kSlotMultiplier];
@@ -228,7 +229,7 @@ void GameEngine::ShowRokValue(short nRokValue)
 }
 
 // Counts the mines, then the swarfs, within ten units of slot nWhich.
-// FUNCTION: HYPERX 0x00465530
+// FUNCTION: HYPERX1001 0x00465530
 int GameEngine::CountEntitiesInRange(short nWhich)
 {
     int           iEntity;
@@ -292,7 +293,7 @@ constexpr auto kQueueFlagByte   = 0x02;
 constexpr auto kHiddenTeamA = 8;
 constexpr auto kHiddenTeamB = 2;
 
-// FUNCTION: HYPERX 0x00469380
+// FUNCTION: HYPERX1001 0x00469380
 int GameEngine::IsTeamWinning(unsigned char nTeam)
 {
     if ((nTeam & 1) != 0)
@@ -303,7 +304,7 @@ int GameEngine::IsTeamWinning(unsigned char nTeam)
     return g_pGameEngine->GetHomeScore() > g_pGameEngine->GetAwayScore();
 }
 
-// FUNCTION: HYPERX 0x0047acf0
+// FUNCTION: HYPERX1001 0x0047acf0
 unsigned short GameEngine::TogglePause(int bRestyle)
 {
     if (g_pGameEngine == nullptr)
@@ -337,7 +338,7 @@ unsigned short GameEngine::TogglePause(int bRestyle)
     return g_pGameEngine->m_wRunState;
 }
 
-// FUNCTION: HYPERX 0x00480d20
+// FUNCTION: HYPERX1001 0x00480d20
 GameEngine::GameEngine()
 {
     m_nLoadCost        = 0;
@@ -391,7 +392,7 @@ GameEngine::GameEngine()
 
     m_pSaveObject = std::make_unique<SaveObject>(kHiddenTeamA, kHiddenTeamB);
 
-    // STRING: HYPERX 0x004c7268
+    // STRING: HYPERX1001 0x004c7268
     m_pSaveObject->ParseGauntletConfig("gauntlet.cfg");
 
     m_nScoreHome = -1;
@@ -405,11 +406,11 @@ GameEngine::GameEngine()
     m_nTeammateMode = g_pGameOptions->ReadInt(g_pszOptionsSection, g_pszTeammateModeKey, 0);
 
     g_bSkipAssetValidation = g_pGameOptions
-                                 // STRING: HYPERX 0x004c725c
+                                 // STRING: HYPERX1001 0x004c725c
                                  ->ReadInt(g_pszOptionsSection, "NetNoVerify", 0);
 
     g_bModemPlay = g_pGameOptions
-                       // STRING: HYPERX 0x004c7250
+                       // STRING: HYPERX1001 0x004c7250
                        ->ReadInt(g_pszOptionsSection, "ModemPlay", 0);
 
     m_nScreenSize = -1;
@@ -437,7 +438,7 @@ constexpr auto kBracketEnd = (-1);
 
 // A drawn score with any away row still damaged restarts the bracket; awards nought and five
 // are written and never read.
-// FUNCTION: HYPERX 0x00480fc0
+// FUNCTION: HYPERX1001 0x00480fc0
 void GameEngine::AdvanceTournamentBracket()
 {
     int aAwardReady[kAwardCount];
@@ -558,7 +559,7 @@ extern float g_flFrameDelta;
 extern unsigned char g_bPeriodCountdownActive;
 
 // The five-slot ring holds the mean.
-// FUNCTION: HYPERX 0x00481130
+// FUNCTION: HYPERX1001 0x00481130
 void GameEngine::TickClock()
 {
     Clock::Milliseconds overtime;
@@ -721,7 +722,7 @@ void GameEngine::TickClock()
     }
 }
 
-// FUNCTION: HYPERX 0x00481590
+// FUNCTION: HYPERX1001 0x00481590
 char GameEngine::AreAllPlayersInjured()
 {
     float flLimit;
@@ -745,7 +746,7 @@ char GameEngine::AreAllPlayersInjured()
     return bAll;
 }
 
-// FUNCTION: HYPERX 0x00481620
+// FUNCTION: HYPERX1001 0x00481620
 unsigned char GameEngine::IsHomeTeamInjured()
 {
     char bBelow = 1;
@@ -796,7 +797,7 @@ unsigned char GameEngine::IsHomeTeamInjured()
     return bBelow;
 }
 
-// FUNCTION: HYPERX 0x004817a0
+// FUNCTION: HYPERX1001 0x004817a0
 unsigned char GameEngine::IsHomeTeamDead()
 {
     char bBelow = 1;
@@ -841,7 +842,7 @@ unsigned char GameEngine::IsHomeTeamDead()
     return bBelow;
 }
 
-// FUNCTION: HYPERX 0x00481820
+// FUNCTION: HYPERX1001 0x00481820
 unsigned char GameEngine::IsAwayTeamInjured()
 {
     char bBelow = 1;
@@ -910,7 +911,7 @@ constexpr auto kTextLineMain       = 1;
 constexpr auto kTextLineNames      = 2;
 constexpr auto kTextDuration       = 0x640;
 
-// FUNCTION: HYPERX 0x004819a0
+// FUNCTION: HYPERX1001 0x004819a0
 unsigned char GameEngine::IsAwayTeamDead()
 {
     char bBelow = 1;
@@ -957,7 +958,7 @@ unsigned char GameEngine::IsAwayTeamDead()
 
 // The order is the original's: reset flags, park the rok, idle the AI, then scale the stats.
 
-// FUNCTION: HYPERX 0x00481a20
+// FUNCTION: HYPERX1001 0x00481a20
 void GameEngine::BeginMatchPlay()
 {
     PlayerObject*    pObject;
@@ -1109,7 +1110,7 @@ void GameEngine::BeginMatchPlay()
 #define MATCH_STEP         (1.0f / 18.0f)
 
 // Eighteen frames per second; the ring starts at nought and the pause mark at minus one.
-// FUNCTION: HYPERX 0x00481d60
+// FUNCTION: HYPERX1001 0x00481d60
 void GameEngine::InitMatchTimers()
 {
     int nSlot;
@@ -1153,7 +1154,7 @@ const char* g_pszAttackModeKey          = "AttackMode";
 const char* g_pszTeammateModeKey        = "TeammateMode";
 
 // The keyword table; the index order is the switch below.
-// GLOBAL: HYPERX 0x004c706c
+// GLOBAL: HYPERX1001 0x004c706c
 static const char* s_apszKeywords[] = { "Environment", "HomeTeam", "AwayTeam" };
 
 constexpr auto kConfigKeywordCount = 3;
@@ -1165,10 +1166,10 @@ enum ConfigKeyword
     KEYWORD_AWAY  = 2
 };
 
-// FUNCTION: HYPERX 0x00481e10
+// FUNCTION: HYPERX1001 0x00481e10
 char GameEngine::LoadConfigFile(const char* pszFileName)
 {
-    // STRING: HYPERX 0x004c41b4
+    // STRING: HYPERX1001 0x004c41b4
     if (SDL_strcasecmp(pszFileName, "game.cfg") == 0)
     {
         LoadGameConfig(pszFileName);
@@ -1182,7 +1183,7 @@ char GameEngine::LoadConfigFile(const char* pszFileName)
 }
 
 // Reading game.cfg: the arena and the two teams; a known keyword with no value is fatal.
-// FUNCTION: HYPERX 0x00481e50
+// FUNCTION: HYPERX1001 0x00481e50
 char GameEngine::LoadGameConfig(const char* pszFileName)
 {
     OwnedFile  file;
@@ -1198,7 +1199,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
             auto* pRest = pLine;
 
             if (pRest != nullptr
-                // STRING: HYPERX 0x004c732c
+                // STRING: HYPERX1001 0x004c732c
                 && ParseUtil::ParseToken(pRest, szToken, nullptr, " \t", kParseTokenMax, &pRest) != 0 && (nKeyword = ParseUtil::FindKeyword(szToken, s_apszKeywords, kConfigKeywordCount)) >= 0)
             {
                 switch (nKeyword)
@@ -1207,11 +1208,11 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
                         pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
                         if (pRest == nullptr
-                            // STRING: HYPERX 0x004c7324
+                            // STRING: HYPERX1001 0x004c7324
                             || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0)
                         {
                             g_gameApp.Error(
-                                // STRING: HYPERX 0x004c7278
+                                // STRING: HYPERX1001 0x004c7278
                                 "Badly formed Game Config file Environment declaration %s!",
                                 pRest);
 
@@ -1230,7 +1231,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
                         if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0)
                         {
                             g_gameApp.Error(
-                                // STRING: HYPERX 0x004c72b4
+                                // STRING: HYPERX1001 0x004c72b4
                                 "Badly formed Game Config file HomeTeam declaration %s!",
                                 pRest);
 
@@ -1246,7 +1247,7 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
                         if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0)
                         {
                             g_gameApp.Error(
-                                // STRING: HYPERX 0x004c72ec
+                                // STRING: HYPERX1001 0x004c72ec
                                 "Badly formed Game Config file AwayTeam declaration %s!",
                                 pRest);
 
@@ -1268,10 +1269,10 @@ char GameEngine::LoadGameConfig(const char* pszFileName)
     return 0;
 }
 
-// GLOBAL: HYPERX 0x004c7078
+// GLOBAL: HYPERX1001 0x004c7078
 static const char* s_apszCommands[] = {
     "DefineObject", "EndObjectDefinition", "SetMotionParams", "SetRatings", "SetRatings1", "SetRatings2", "SetRatings3", "SetGoalieRatings", "SetGoalieRatings1", "SetGoalieRatings2", "SetGoalieRatings3", "SetSpecialGoalieRatings", "SetCollisionObject",
-    // STRING: HYPERX 0x004c7120
+    // STRING: HYPERX1001 0x004c7120
     "SetPlans"
 };
 
@@ -1313,7 +1314,7 @@ static short FindCommand(const char* pszCommand)
 constexpr auto kRatingUnset = -1.0f;
 
 // Fourteen commands; the ratings commands write without checking a definition exists.
-// FUNCTION: HYPERX 0x00482170
+// FUNCTION: HYPERX1001 0x00482170
 std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, unsigned int* pnModelId)
 {
     char* pLine;
@@ -1325,7 +1326,7 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
 
     while (pFile->GetNextLine(&pLine) > 0)
     {
-        // STRING: HYPERX 0x004c732c
+        // STRING: HYPERX1001 0x004c732c
         if (pLine != nullptr && ParseUtil::ParseToken(pLine, szCommand, nullptr, " \t", kParseTokenMax, &pLine) != 0 && (nCommand = FindCommand(szCommand)) >= 0)
         {
             switch (nCommand)
@@ -1425,7 +1426,7 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
             if (pDef == nullptr)
             {
                 g_gameApp.Fatal(
-                    // STRING: HYPERX 0x004c736c
+                    // STRING: HYPERX1001 0x004c736c
                     "Game Config file error: missing DefineObject before other parameters %s!",
                     pLine);
             }
@@ -1439,7 +1440,7 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
 
     if (pDef != nullptr)
     {
-        // STRING: HYPERX 0x004c7330
+        // STRING: HYPERX1001 0x004c7330
         g_gameApp.Fatal("Game Config file error: missing of EndOfDefinition for %s!",
                         pDef->m_pszName.get());
     }
@@ -1448,15 +1449,15 @@ std::unique_ptr<ObjectDef> GameEngine::ParseObjectDefinition(FileObj* pFile, uns
 }
 
 // The scanf format the motion reader pushes.
-// GLOBAL: HYPERX 0x004b3f14
+// GLOBAL: HYPERX1001 0x004b3f14
 extern const char* const g_pszPercentF;
 
 // The one the ratings reader pushes, from the same run of format pointers.
-// GLOBAL: HYPERX 0x004b3f0c
-extern const char* g_pszPercentD;
+// GLOBAL: HYPERX1001 0x004b3f0c
+extern const char* const g_pszPercentD;
 
 // And the short one, which the collision reader's component index takes.
-// GLOBAL: HYPERX 0x004b3f04
+// GLOBAL: HYPERX1001 0x004b3f04
 extern const char* const g_pszPercentHd;
 
 constexpr auto kAttributeCount = 6;
@@ -1482,21 +1483,21 @@ enum ObjectAttributeSeen
 #define NAME_SPACER '_'
 
 // SGoal counts as NGoal and HeadCam as MainCamera; the last of the 32 type names never matches.
-// FUNCTION: HYPERX 0x00482390
+// FUNCTION: HYPERX1001 0x00482390
 std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned int* pnModelId)
 {
     const char* apszAttributes[kAttributeCount] = {
-        // STRING: HYPERX 0x004c7650
+        // STRING: HYPERX1001 0x004c7650
         "None",
-        // STRING: HYPERX 0x004c7648
+        // STRING: HYPERX1001 0x004c7648
         "type",
-        // STRING: HYPERX 0x004c7640
+        // STRING: HYPERX1001 0x004c7640
         "modfile",
-        // STRING: HYPERX 0x004c7638
+        // STRING: HYPERX1001 0x004c7638
         "name",
-        // STRING: HYPERX 0x004c5538
+        // STRING: HYPERX1001 0x004c5538
         "mat",
-        // STRING: HYPERX 0x004c7628
+        // STRING: HYPERX1001 0x004c7628
         "UseMyPallette"
     };
 
@@ -1509,69 +1510,69 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
     auto nSeen = 0;
 
     const char* apszTypes[kTypeCount] = {
-        // STRING: HYPERX 0x004c7620
+        // STRING: HYPERX1001 0x004c7620
         "Null",
-        // STRING: HYPERX 0x004c7618
+        // STRING: HYPERX1001 0x004c7618
         "Dromer",
-        // STRING: HYPERX 0x004c1610
+        // STRING: HYPERX1001 0x004c1610
         "Rok",
-        // STRING: HYPERX 0x004c7610
+        // STRING: HYPERX1001 0x004c7610
         "Drome",
-        // STRING: HYPERX 0x004c7608
+        // STRING: HYPERX1001 0x004c7608
         "Ramp",
-        // STRING: HYPERX 0x004c7600
+        // STRING: HYPERX1001 0x004c7600
         "NGoal",
-        // STRING: HYPERX 0x004c75f8
+        // STRING: HYPERX1001 0x004c75f8
         "SGoal",
-        // STRING: HYPERX 0x004c75ec
+        // STRING: HYPERX1001 0x004c75ec
         "MainCamera",
-        // STRING: HYPERX 0x004c75e4
+        // STRING: HYPERX1001 0x004c75e4
         "HeadCam",
-        // STRING: HYPERX 0x004c75d8
+        // STRING: HYPERX1001 0x004c75d8
         "StartGun",
-        // STRING: HYPERX 0x004c75cc
+        // STRING: HYPERX1001 0x004c75cc
         "Turnstile",
-        // STRING: HYPERX 0x004c75c0
+        // STRING: HYPERX1001 0x004c75c0
         "Multiplier",
-        // STRING: HYPERX 0x004c75b4
+        // STRING: HYPERX1001 0x004c75b4
         "LaserHurdle",
-        // STRING: HYPERX 0x004c75a4
+        // STRING: HYPERX1001 0x004c75a4
         "GreenRandomizer",
-        // STRING: HYPERX 0x004c7594
+        // STRING: HYPERX1001 0x004c7594
         "RedRandomizer",
-        // STRING: HYPERX 0x004c7590
+        // STRING: HYPERX1001 0x004c7590
         "God",
-        // STRING: HYPERX 0x004c7584
+        // STRING: HYPERX1001 0x004c7584
         "SoundMan",
-        // STRING: HYPERX 0x004c7578
+        // STRING: HYPERX1001 0x004c7578
         "LimboPole",
-        // STRING: HYPERX 0x004c7570
+        // STRING: HYPERX1001 0x004c7570
         "Hurdle",
-        // STRING: HYPERX 0x004c7564
+        // STRING: HYPERX1001 0x004c7564
         "FastLane",
-        // STRING: HYPERX 0x004c7558
+        // STRING: HYPERX1001 0x004c7558
         "Explosion",
-        // STRING: HYPERX 0x004c7550
+        // STRING: HYPERX1001 0x004c7550
         "Armory",
-        // STRING: HYPERX 0x004c7544
+        // STRING: HYPERX1001 0x004c7544
         "Keyboard",
-        // STRING: HYPERX 0x004bc4ec
+        // STRING: HYPERX1001 0x004bc4ec
         "Gamepad",
-        // STRING: HYPERX 0x004c7538
+        // STRING: HYPERX1001 0x004c7538
         "Joystick",
-        // STRING: HYPERX 0x004c7530
+        // STRING: HYPERX1001 0x004c7530
         "Mouse",
-        // STRING: HYPERX 0x004c7524
+        // STRING: HYPERX1001 0x004c7524
         "SlowLane",
-        // STRING: HYPERX 0x004c15fc
+        // STRING: HYPERX1001 0x004c15fc
         "Mine",
-        // STRING: HYPERX 0x004c15f4
+        // STRING: HYPERX1001 0x004c15f4
         "Swarf",
-        // STRING: HYPERX 0x004c751c
+        // STRING: HYPERX1001 0x004c751c
         "Coach",
-        // STRING: HYPERX 0x004c7510
+        // STRING: HYPERX1001 0x004c7510
         "BodyPart",
-        // STRING: HYPERX 0x004c7508
+        // STRING: HYPERX1001 0x004c7508
         "Generic"
     };
 
@@ -1583,7 +1584,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
 
     while (pRest != nullptr)
     {
-        // STRING: HYPERX 0x004c7504
+        // STRING: HYPERX1001 0x004c7504
         if (ParseUtil::ParseToken(pRest, szToken, nullptr, " =\t", kParseTokenMax, &pRest) == 0)
         {
             break;
@@ -1602,11 +1603,11 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                 pRest = ParseUtil::SkipPastChar(pRest, g_pszEqualsSign);
 
                 if (pRest == nullptr
-                    // STRING: HYPERX 0x004c7324
+                    // STRING: HYPERX1001 0x004c7324
                     || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0 || (nType = ParseUtil::FindKeyword(szToken, apszTypes, kGOBNumOfTypes)) < 0)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c7464
+                        // STRING: HYPERX1001 0x004c7464
                         "Game Config file error: bad type keyword %s!",
                         szToken);
                     break;
@@ -1619,7 +1620,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                     if (pnModelId == nullptr)
                     {
                         g_gameApp.Fatal(
-                            // STRING: HYPERX 0x004c74d0
+                            // STRING: HYPERX1001 0x004c74d0
                             "ERROR: ParseModelObjDef: dromer model ID is NULL!");
                     }
 
@@ -1633,7 +1634,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                     {
                         if (static_cast<int>(*pnModelId) < kSlotBodyPart || static_cast<int>(*pnModelId) > kSlotBodyPartLast)
                         {
-                            // STRING: HYPERX 0x004c74b0
+                            // STRING: HYPERX1001 0x004c74b0
                             g_gameApp.Fatal("Invalid model ID for bodypart\n");
                         }
                     }
@@ -1642,7 +1643,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                         if (nType != kGOBRok || g_bSuppressRokId == 0)
                         {
                             g_gameApp.Fatal(
-                                // STRING: HYPERX 0x004c7494
+                                // STRING: HYPERX1001 0x004c7494
                                 "Error: Too many %s objects!",
                                 apszTypes[nType]);
                         }
@@ -1664,7 +1665,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                 if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c7438
+                        // STRING: HYPERX1001 0x004c7438
                         "Game Config file error: Bad model name: %s!",
                         szToken);
                     break;
@@ -1683,7 +1684,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                 if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c7408
+                        // STRING: HYPERX1001 0x004c7408
                         "Game Config file error: Bad object name: %s!",
                         szToken);
                     break;
@@ -1714,7 +1715,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
                 if (pRest == nullptr || ParseUtil::ParseToken(pRest, szToken, nullptr, " \t\n\r", kParseTokenMax, &pRest) == 0)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c73d8
+                        // STRING: HYPERX1001 0x004c73d8
                         "Game Config file error: Bad matXref name: %s!",
                         szToken);
                     break;
@@ -1734,7 +1735,7 @@ std::unique_ptr<ObjectDef> GameEngine::Cmd_DefineObject(char* pszLine, unsigned 
     if (static_cast<unsigned char>(nSeen & SEEN_REQUIRED) != SEEN_REQUIRED)
     {
         g_gameApp.Fatal(
-            // STRING: HYPERX 0x004c73b8
+            // STRING: HYPERX1001 0x004c73b8
             "Incomplete Game Object def: %s!",
             pszLine);
     }
@@ -1759,25 +1760,25 @@ enum ObjectDefKey
 };
 
 // Neither complaint names the failing field, and neither stops the walk.
-// FUNCTION: HYPERX 0x00482b00
+// FUNCTION: HYPERX1001 0x00482b00
 char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
 {
     const char* apszKeywords[kMotionKeywordCount] = {
         "None",
         "name",
-        // STRING: HYPERX 0x004c76a8
+        // STRING: HYPERX1001 0x004c76a8
         "pos",
-        // STRING: HYPERX 0x004c76a0
+        // STRING: HYPERX1001 0x004c76a0
         "accel",
-        // STRING: HYPERX 0x004c0b2c
+        // STRING: HYPERX1001 0x004c0b2c
         "speed",
-        // STRING: HYPERX 0x004c7698
+        // STRING: HYPERX1001 0x004c7698
         "azim",
-        // STRING: HYPERX 0x004c7690
+        // STRING: HYPERX1001 0x004c7690
         "elev",
-        // STRING: HYPERX 0x004c7688
+        // STRING: HYPERX1001 0x004c7688
         "fric",
-        // STRING: HYPERX 0x004c7680
+        // STRING: HYPERX1001 0x004c7680
         "elas"
     };
 
@@ -1825,7 +1826,7 @@ char GameEngine::Cmd_SetMotionParams(char* pszLine, ObjectDef* pDef)
                 if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &pDef->m_flAccel) != 1)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c7658
+                        // STRING: HYPERX1001 0x004c7658
                         "Game Config file error: accel param %s!",
                         szToken);
                 }
@@ -1936,7 +1937,7 @@ inline int GameEngine::FindTeamDefinition(FileObj* pFile, char** ppLine, char* p
 {
     do
     {
-        // STRING: HYPERX 0x004c732c
+        // STRING: HYPERX1001 0x004c732c
         if (ParseUtil::ParseToken(*ppLine, pszToken, nullptr, " \t", kParseTokenMax, ppLine) != 0 && SDL_strcasecmp(pszToken, "DefineTeam") == 0)
         {
             return 1;
@@ -1947,27 +1948,27 @@ inline int GameEngine::FindTeamDefinition(FileObj* pFile, char** ppLine, char* p
 }
 
 // The environment and dromext errors each name the other's field.
-// FUNCTION: HYPERX 0x00482e70
+// FUNCTION: HYPERX1001 0x00482e70
 std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 {
     const char* apszKeyword[kTeamKeywordCount] = {
-        // STRING: HYPERX 0x004c7638
+        // STRING: HYPERX1001 0x004c7638
         "name",
-        // STRING: HYPERX 0x004c7860
+        // STRING: HYPERX1001 0x004c7860
         "idlogo",
-        // STRING: HYPERX 0x004c7858
+        // STRING: HYPERX1001 0x004c7858
         "tslogo",
-        // STRING: HYPERX 0x004c7850
+        // STRING: HYPERX1001 0x004c7850
         "tstext",
-        // STRING: HYPERX 0x004c7848
+        // STRING: HYPERX1001 0x004c7848
         "tstitle",
-        // STRING: HYPERX 0x004c7840
+        // STRING: HYPERX1001 0x004c7840
         "tsanim",
-        // STRING: HYPERX 0x004c7834
+        // STRING: HYPERX1001 0x004c7834
         "environment",
-        // STRING: HYPERX 0x004c7828
+        // STRING: HYPERX1001 0x004c7828
         "DefineTeam",
-        // STRING: HYPERX 0x004c7820
+        // STRING: HYPERX1001 0x004c7820
         "dromext"
     };
 
@@ -1991,7 +1992,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
     while (pLine != nullptr)
     {
-        // STRING: HYPERX 0x004c7504
+        // STRING: HYPERX1001 0x004c7504
         if (ParseUtil::ParseToken(pLine, szToken, nullptr, " =\t", kParseTokenMax, &pLine) == 0)
         {
             break;
@@ -2018,7 +2019,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c7800
+                    // STRING: HYPERX1001 0x004c7800
                     g_gameApp.Error("Team asgn error: Team name: %s!", szToken);
 
                     goto failed;
@@ -2045,7 +2046,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c77d8
+                    // STRING: HYPERX1001 0x004c77d8
                     g_gameApp.Error("Team asgn error: Team LogoBMPname: %s!", szToken);
 
                     goto failed;
@@ -2060,7 +2061,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c77b0
+                    // STRING: HYPERX1001 0x004c77b0
                     g_gameApp.Error("Team asgn error: Team select logo: %s!", szToken);
 
                     goto failed;
@@ -2075,7 +2076,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c7788
+                    // STRING: HYPERX1001 0x004c7788
                     g_gameApp.Error("Team asgn error: Team select text: %s!", szToken);
 
                     goto failed;
@@ -2090,7 +2091,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c7760
+                    // STRING: HYPERX1001 0x004c7760
                     g_gameApp.Error("Team asgn error: Team select title: %s!", szToken);
 
                     goto failed;
@@ -2105,7 +2106,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c772c
+                    // STRING: HYPERX1001 0x004c772c
                     g_gameApp.Error("Team asgn error: Team select animation name: %s!", szToken);
 
                     goto failed;
@@ -2120,7 +2121,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c76f4
+                    // STRING: HYPERX1001 0x004c76f4
                     g_gameApp.Error("Team asgn error: Team select Drome exterior name: %s!", szToken);
 
                     goto failed;
@@ -2135,7 +2136,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, nullptr, " \t\n\r", kParseTokenMax, &pLine) == 0)
                 {
-                    // STRING: HYPERX 0x004c76c8
+                    // STRING: HYPERX1001 0x004c76c8
                     g_gameApp.Error("Team asgn error: Team environment name: %s!", szToken);
 
                     goto failed;
@@ -2149,7 +2150,7 @@ std::unique_ptr<TeamBlock> GameEngine::ParseTeamHTMFile(FileObj* pFile)
 
     if (pTeam->szName[0] == 0)
     {
-        // STRING: HYPERX 0x004c76ac
+        // STRING: HYPERX1001 0x004c76ac
         g_gameApp.Error("Incomplete Team def:\n%s!", pLine);
 
         return nullptr;
@@ -2164,77 +2165,77 @@ quit:
 
 // A RandomizerBubble on a RedRandomizer becomes the next kind ("MAJOR KLUDGE HERE").
 
-// FUNCTION: HYPERX 0x00483300
+// FUNCTION: HYPERX1001 0x00483300
 char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned int nModelId)
 {
     const char* apszAttributes[kAttrCount] = {
         "type",
-        // STRING: HYPERX 0x004c7bcc
+        // STRING: HYPERX1001 0x004c7bcc
         "component",
-        // STRING: HYPERX 0x004c7bc4
+        // STRING: HYPERX1001 0x004c7bc4
         "radius",
-        // STRING: HYPERX 0x004c7bb8
+        // STRING: HYPERX1001 0x004c7bb8
         "centroid",
-        // STRING: HYPERX 0x004c7bac
+        // STRING: HYPERX1001 0x004c7bac
         "attachPoint",
-        // STRING: HYPERX 0x004c7ba0
+        // STRING: HYPERX1001 0x004c7ba0
         "useDetail"
     };
 
     const char* apszBubbles[kBubbleCount] = {
-        // STRING: HYPERX 0x004c7b88
+        // STRING: HYPERX1001 0x004c7b88
         "DromerAwarenessBubble",
-        // STRING: HYPERX 0x004c7b74
+        // STRING: HYPERX1001 0x004c7b74
         "DromerModelBubble",
-        // STRING: HYPERX 0x004c7b60
+        // STRING: HYPERX1001 0x004c7b60
         "DromerBodyBubble",
-        // STRING: HYPERX 0x004c7b4c
+        // STRING: HYPERX1001 0x004c7b4c
         "DromerScoopBubble",
-        // STRING: HYPERX 0x004c7b40
+        // STRING: HYPERX1001 0x004c7b40
         "RampBubble",
-        // STRING: HYPERX 0x004c7b34
+        // STRING: HYPERX1001 0x004c7b34
         "RokBubble",
-        // STRING: HYPERX 0x004c7b24
+        // STRING: HYPERX1001 0x004c7b24
         "GoalSideBubble",
-        // STRING: HYPERX 0x004c7b14
+        // STRING: HYPERX1001 0x004c7b14
         "GoalZoneBubble",
-        // STRING: HYPERX 0x004c7b04
+        // STRING: HYPERX1001 0x004c7b04
         "GoalCaseBubble",
-        // STRING: HYPERX 0x004c7af4
+        // STRING: HYPERX1001 0x004c7af4
         "GoalPortBubble",
-        // STRING: HYPERX 0x004c7ae4
+        // STRING: HYPERX1001 0x004c7ae4
         "CameraBubble",
-        // STRING: HYPERX 0x004c7ad4
+        // STRING: HYPERX1001 0x004c7ad4
         "HeadCamBubble",
-        // STRING: HYPERX 0x004c7ac0
+        // STRING: HYPERX1001 0x004c7ac0
         "MultiplierBubble",
-        // STRING: HYPERX 0x004c7ab0
+        // STRING: HYPERX1001 0x004c7ab0
         "TurnstileBubble",
-        // STRING: HYPERX 0x004c7aa0
+        // STRING: HYPERX1001 0x004c7aa0
         "StartgunBubble",
-        // STRING: HYPERX 0x004c7a8c
+        // STRING: HYPERX1001 0x004c7a8c
         "LaserHurdleBubble",
-        // STRING: HYPERX 0x004c7a7c
+        // STRING: HYPERX1001 0x004c7a7c
         "ArmoryBubble",
-        // STRING: HYPERX 0x004c7a6c
+        // STRING: HYPERX1001 0x004c7a6c
         "LimboPoleBubble",
-        // STRING: HYPERX 0x004c7a5c
+        // STRING: HYPERX1001 0x004c7a5c
         "FastLaneBubble",
-        // STRING: HYPERX 0x004c7a4c
+        // STRING: HYPERX1001 0x004c7a4c
         "ExplosionBubble",
-        // STRING: HYPERX 0x004c7a3c
+        // STRING: HYPERX1001 0x004c7a3c
         "HurdleBubble",
-        // STRING: HYPERX 0x004c7a28
+        // STRING: HYPERX1001 0x004c7a28
         "RandomizerBubble",
-        // STRING: HYPERX 0x004c7a14
+        // STRING: HYPERX1001 0x004c7a14
         "MAJOR KLUDGE HERE",
-        // STRING: HYPERX 0x004c7a04
+        // STRING: HYPERX1001 0x004c7a04
         "SlowLaneBubble",
-        // STRING: HYPERX 0x004c79f8
+        // STRING: HYPERX1001 0x004c79f8
         "MineBubble",
-        // STRING: HYPERX 0x004c79ec
+        // STRING: HYPERX1001 0x004c79ec
         "SwarfBubble",
-        // STRING: HYPERX 0x004c79dc
+        // STRING: HYPERX1001 0x004c79dc
         "BodyPartBubble"
     };
 
@@ -2292,7 +2293,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
                 }
 
                 g_gameApp.Fatal(
-                    // STRING: HYPERX 0x004c799c
+                    // STRING: HYPERX1001 0x004c799c
                     "Game Config file error: bad collision object type keyword %s!",
                     szToken);
                 break;
@@ -2303,7 +2304,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
                 if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentHd, &nComponent) != 1)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c796c
+                        // STRING: HYPERX1001 0x004c796c
                         "Game Config file error: collision radius %s!",
                         pszLine);
                 }
@@ -2326,7 +2327,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
                 if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vCentroid.z) != 1)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c793c
+                        // STRING: HYPERX1001 0x004c793c
                         "Game Config file error: collision centroid %s!",
                         szToken);
                 }
@@ -2339,7 +2340,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
                 if (pszCursor == nullptr || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.x) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.y) != 1 || ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", kParseTokenMax, &pszCursor) == 0 || sscanf(szToken, g_pszPercentF, &vAttach.z) != 1)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c7908
+                        // STRING: HYPERX1001 0x004c7908
                         "Game Config file error: collision attachPoint %s!",
                         pszLine);
                 }
@@ -2355,7 +2356,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     if (nBubbleType == -1 || nBubbleType >= kBubbleCount)
     {
         g_gameApp.Fatal(
-            // STRING: HYPERX 0x004c78d0
+            // STRING: HYPERX1001 0x004c78d0
             "Game Config error: collision object type missing: %s!",
             pszLine);
     }
@@ -2363,7 +2364,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     if (flRadius == COLLISION_MISSING)
     {
         g_gameApp.Fatal(
-            // STRING: HYPERX 0x004c789c
+            // STRING: HYPERX1001 0x004c789c
             "Game Config error: collision radius missing: %s!",
             pszLine);
     }
@@ -2371,7 +2372,7 @@ char GameEngine::Cmd_SetCollisionObject(char* pszLine, ObjectDef* pDef, unsigned
     if (vCentroid.x == COLLISION_MISSING)
     {
         g_gameApp.Fatal(
-            // STRING: HYPERX 0x004c7868
+            // STRING: HYPERX1001 0x004c7868
             "Game Config error: collision centroid missing: %s!",
             pszLine);
     }
@@ -2433,172 +2434,172 @@ constexpr auto kRatingsGoalieCount = 0x11;
 #define GOALIE_RATING_DEFAULT 5.0f
 
 // Values are whole; EndRatings or anything past the end stores one past the array.
-// FUNCTION: HYPERX 0x00483b50
+// FUNCTION: HYPERX1001 0x00483b50
 int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nLevel)
 {
     const char* apszPlayer[kRatingsPlayerCount] = {
-        // STRING: HYPERX 0x004c8244
+        // STRING: HYPERX1001 0x004c8244
         "id_RAT_WeightClass",
-        // STRING: HYPERX 0x004c8234
+        // STRING: HYPERX1001 0x004c8234
         "id_RAT_Stamina",
-        // STRING: HYPERX 0x004c8224
+        // STRING: HYPERX1001 0x004c8224
         "id_RAT_Checking",
-        // STRING: HYPERX 0x004c8214
+        // STRING: HYPERX1001 0x004c8214
         "id_RAT_Balance",
-        // STRING: HYPERX 0x004c8204
+        // STRING: HYPERX1001 0x004c8204
         "id_RAT_Speed",
-        // STRING: HYPERX 0x004c81f0
+        // STRING: HYPERX1001 0x004c81f0
         "id_RAT_ShotPower",
-        // STRING: HYPERX 0x004c81dc
+        // STRING: HYPERX1001 0x004c81dc
         "id_RAT_ShotAccuracy",
-        // STRING: HYPERX 0x004c81c8
+        // STRING: HYPERX1001 0x004c81c8
         "id_RAT_PassAccuracy",
-        // STRING: HYPERX 0x004c81b0
+        // STRING: HYPERX1001 0x004c81b0
         "id_RAT_OffensiveAbility",
-        // STRING: HYPERX 0x004c8198
+        // STRING: HYPERX1001 0x004c8198
         "id_RAT_LongShotEnable",
-        // STRING: HYPERX 0x004c8188
+        // STRING: HYPERX1001 0x004c8188
         "id_RAT_Immunity",
-        // STRING: HYPERX 0x004c8170
+        // STRING: HYPERX1001 0x004c8170
         "id_RAT_LongPassEnable",
-        // STRING: HYPERX 0x004c8158
+        // STRING: HYPERX1001 0x004c8158
         "id_RAT_MultiPointSpread",
-        // STRING: HYPERX 0x004c8144
+        // STRING: HYPERX1001 0x004c8144
         "id_RAT_RokHandling",
-        // STRING: HYPERX 0x004c8130
+        // STRING: HYPERX1001 0x004c8130
         "id_RAT_ArmoryRange",
-        // STRING: HYPERX 0x004c8120
+        // STRING: HYPERX1001 0x004c8120
         "id_RAT_Damage",
-        // STRING: HYPERX 0x004c8110
+        // STRING: HYPERX1001 0x004c8110
         "id_RAT_Gender",
-        // STRING: HYPERX 0x004c80fc
+        // STRING: HYPERX1001 0x004c80fc
         "id_RAT_Speedburst0a",
-        // STRING: HYPERX 0x004c80e8
+        // STRING: HYPERX1001 0x004c80e8
         "id_RAT_Speedburst0b",
-        // STRING: HYPERX 0x004c80d4
+        // STRING: HYPERX1001 0x004c80d4
         "id_RAT_Speedburst1a",
-        // STRING: HYPERX 0x004c80c0
+        // STRING: HYPERX1001 0x004c80c0
         "id_RAT_Speedburst1b",
-        // STRING: HYPERX 0x004c80ac
+        // STRING: HYPERX1001 0x004c80ac
         "id_RAT_Speedburst2a",
-        // STRING: HYPERX 0x004c8098
+        // STRING: HYPERX1001 0x004c8098
         "id_RAT_Speedburst2b",
-        // STRING: HYPERX 0x004c8084
+        // STRING: HYPERX1001 0x004c8084
         "id_RAT_Speedburst3a",
-        // STRING: HYPERX 0x004c8070
+        // STRING: HYPERX1001 0x004c8070
         "id_RAT_Speedburst3b",
-        // STRING: HYPERX 0x004c805c
+        // STRING: HYPERX1001 0x004c805c
         "id_RAT_Speedburst4a",
-        // STRING: HYPERX 0x004c8048
+        // STRING: HYPERX1001 0x004c8048
         "id_RAT_Speedburst4b",
-        // STRING: HYPERX 0x004c8038
+        // STRING: HYPERX1001 0x004c8038
         "id_RAT_Bungee0",
-        // STRING: HYPERX 0x004c8028
+        // STRING: HYPERX1001 0x004c8028
         "id_RAT_Bungee1",
-        // STRING: HYPERX 0x004c8018
+        // STRING: HYPERX1001 0x004c8018
         "id_RAT_Bungee2",
-        // STRING: HYPERX 0x004c8008
+        // STRING: HYPERX1001 0x004c8008
         "id_RAT_Pass0",
-        // STRING: HYPERX 0x004c7ff8
+        // STRING: HYPERX1001 0x004c7ff8
         "id_RAT_Pass1",
-        // STRING: HYPERX 0x004c7fe8
+        // STRING: HYPERX1001 0x004c7fe8
         "id_RAT_Pass2",
-        // STRING: HYPERX 0x004c7fd0
+        // STRING: HYPERX1001 0x004c7fd0
         "id_RAT_WinCloseFreeRok",
-        // STRING: HYPERX 0x004c7fb8
+        // STRING: HYPERX1001 0x004c7fb8
         "id_RAT_LoseCloseFreeRok",
-        // STRING: HYPERX 0x004c7fa0
+        // STRING: HYPERX1001 0x004c7fa0
         "id_RAT_WinFarFreeRok",
-        // STRING: HYPERX 0x004c7f88
+        // STRING: HYPERX1001 0x004c7f88
         "id_RAT_LoseFarFreeRok",
-        // STRING: HYPERX 0x004c7f70
+        // STRING: HYPERX1001 0x004c7f70
         "id_RAT_WinOffWingJob",
-        // STRING: HYPERX 0x004c7f58
+        // STRING: HYPERX1001 0x004c7f58
         "id_RAT_LoseOffWingJob",
-        // STRING: HYPERX 0x004c7f44
+        // STRING: HYPERX1001 0x004c7f44
         "id_RAT_Multiplier0",
-        // STRING: HYPERX 0x004c7f30
+        // STRING: HYPERX1001 0x004c7f30
         "id_RAT_Multiplier1",
-        // STRING: HYPERX 0x004c7f1c
+        // STRING: HYPERX1001 0x004c7f1c
         "id_RAT_Turnstile0",
-        // STRING: HYPERX 0x004c7f08
+        // STRING: HYPERX1001 0x004c7f08
         "id_RAT_Turnstile1",
-        // STRING: HYPERX 0x004c7ef4
+        // STRING: HYPERX1001 0x004c7ef4
         "id_RAT_Killball0",
-        // STRING: HYPERX 0x004c7ee0
+        // STRING: HYPERX1001 0x004c7ee0
         "id_RAT_Killball1",
-        // STRING: HYPERX 0x004c7ecc
+        // STRING: HYPERX1001 0x004c7ecc
         "id_RAT_Randomize0",
-        // STRING: HYPERX 0x004c7eb8
+        // STRING: HYPERX1001 0x004c7eb8
         "id_RAT_Randomize1",
-        // STRING: HYPERX 0x004c7ea4
+        // STRING: HYPERX1001 0x004c7ea4
         "id_RAT_Fighting0",
-        // STRING: HYPERX 0x004c7e90
+        // STRING: HYPERX1001 0x004c7e90
         "id_RAT_Fighting1",
-        // STRING: HYPERX 0x004c7e7c
+        // STRING: HYPERX1001 0x004c7e7c
         "id_RAT_Fighting2",
-        // STRING: HYPERX 0x004c7e68
+        // STRING: HYPERX1001 0x004c7e68
         "id_RAT_Fighting3",
-        // STRING: HYPERX 0x004c7e54
+        // STRING: HYPERX1001 0x004c7e54
         "id_RAT_Fighting4",
-        // STRING: HYPERX 0x004c7e3c
+        // STRING: HYPERX1001 0x004c7e3c
         "id_RAT_FlyingRepetoire",
-        // STRING: HYPERX 0x004c7e20
+        // STRING: HYPERX1001 0x004c7e20
         "id_RAT_HalfpipeRepetoire",
-        // STRING: HYPERX 0x004c7e04
+        // STRING: HYPERX1001 0x004c7e04
         "id_RAT_CarryRokThrowDist",
-        // STRING: HYPERX 0x004c7de4
+        // STRING: HYPERX1001 0x004c7de4
         "id_RAT_WinCarryRokRegroupDist",
-        // STRING: HYPERX 0x004c7dc4
+        // STRING: HYPERX1001 0x004c7dc4
         "id_RAT_LoseCarryRokRegroupDist",
-        // STRING: HYPERX 0x004c7da4
+        // STRING: HYPERX1001 0x004c7da4
         "id_RAT_WinAggressionOnOthers",
-        // STRING: HYPERX 0x004c7d84
+        // STRING: HYPERX1001 0x004c7d84
         "id_RAT_LoseAggressionOnOthers",
-        // STRING: HYPERX 0x004c7d70
+        // STRING: HYPERX1001 0x004c7d70
         "id_RAT_SubOutDamage",
-        // STRING: HYPERX 0x004c7d5c
+        // STRING: HYPERX1001 0x004c7d5c
         "id_RAT_SubInDamage",
-        // STRING: HYPERX 0x004c7d48
+        // STRING: HYPERX1001 0x004c7d48
         "id_RAT_MultiRange",
-        // STRING: HYPERX 0x004c7d38
+        // STRING: HYPERX1001 0x004c7d38
         "id_RAT_MinSubIn",
-        // STRING: HYPERX 0x004c8258
+        // STRING: HYPERX1001 0x004c8258
         "EndRatings"
     };
 
     const char* apszGoalie[kRatingsGoalieCount] = {
-        // STRING: HYPERX 0x004c7d24
+        // STRING: HYPERX1001 0x004c7d24
         "id_GRT_WeightClass",
-        // STRING: HYPERX 0x004c7d14
+        // STRING: HYPERX1001 0x004c7d14
         "id_GRT_Strength",
-        // STRING: HYPERX 0x004c7d00
+        // STRING: HYPERX1001 0x004c7d00
         "id_GRT_ReactionTime",
-        // STRING: HYPERX 0x004c7cf0
+        // STRING: HYPERX1001 0x004c7cf0
         "id_GRT_Balance",
-        // STRING: HYPERX 0x004c7ce0
+        // STRING: HYPERX1001 0x004c7ce0
         "id_GRT_Speed",
-        // STRING: HYPERX 0x004c7ccc
+        // STRING: HYPERX1001 0x004c7ccc
         "id_GRT_PassAccuracy",
-        // STRING: HYPERX 0x004c7cb8
+        // STRING: HYPERX1001 0x004c7cb8
         "id_GRT_Intelligence",
-        // STRING: HYPERX 0x004c7ca0
+        // STRING: HYPERX1001 0x004c7ca0
         "id_GRT_UnderPressure",
-        // STRING: HYPERX 0x004c7c8c
+        // STRING: HYPERX1001 0x004c7c8c
         "id_GRT_SaveRight",
-        // STRING: HYPERX 0x004c7c7c
+        // STRING: HYPERX1001 0x004c7c7c
         "id_GRT_SaveLeft",
-        // STRING: HYPERX 0x004c7c6c
+        // STRING: HYPERX1001 0x004c7c6c
         "id_GRT_SaveHigh",
-        // STRING: HYPERX 0x004c7c5c
+        // STRING: HYPERX1001 0x004c7c5c
         "id_GRT_SaveLow",
-        // STRING: HYPERX 0x004c7c44
+        // STRING: HYPERX1001 0x004c7c44
         "id_GRT_ShieldBlocking",
-        // STRING: HYPERX 0x004c7c2c
+        // STRING: HYPERX1001 0x004c7c2c
         "id_GRT_CatchingAbility",
-        // STRING: HYPERX 0x004c7c18
+        // STRING: HYPERX1001 0x004c7c18
         "id_GRT_Aggression",
-        // STRING: HYPERX 0x004c7c08
+        // STRING: HYPERX1001 0x004c7c08
         "id_GRT_Overall",
         "EndRatings"
     };
@@ -2702,7 +2703,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
             if (nKeyword >= nLast)
             {
                 g_gameApp.Fatal(
-                    // STRING: HYPERX 0x004c7bd8
+                    // STRING: HYPERX1001 0x004c7bd8
                     "Game Config file error: ratings for object %s!",
                     szObject);
             }
@@ -2725,7 +2726,7 @@ int GameEngine::Cmd_SetRatings(char* pszLine, ObjectDef* pDef, int nMode, int nL
 
 // The modifier map: a bubble kind on the way in, its CollisionObjectID on the way out.
 
-// FUNCTION: HYPERX 0x00484070
+// FUNCTION: HYPERX1001 0x00484070
 void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
 {
     short aRow[4][6] = {
@@ -2840,7 +2841,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
             return;
         default:
             g_gameApp.Fatal(
-                // STRING: HYPERX 0x004c8264
+                // STRING: HYPERX1001 0x004c8264
                 "Game Config Error: unused mod ID %hd: in SetUpGameObjectAssignment!",
                 nModelId);
             break;
@@ -2851,7 +2852,7 @@ void GameEngine::MapModifierToId(short nModelId, BubbleCmd* pCmd)
 constexpr auto kPlanTokenMax = 0x50;
 
 // A token longer than the buffer overruns it.
-// FUNCTION: HYPERX 0x00484460
+// FUNCTION: HYPERX1001 0x00484460
 char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 {
     char szToken[kPlanTokenMax];
@@ -2862,7 +2863,7 @@ char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 
     while (pszCursor != nullptr)
     {
-        // STRING: HYPERX 0x004c7324
+        // STRING: HYPERX1001 0x004c7324
         if (ParseUtil::ParseToken(pszCursor, szToken, nullptr, " \t\n\r", static_cast<short>(strlen(pszCursor)), &pszCursor) == 0)
         {
             break;
@@ -2879,7 +2880,7 @@ char GameEngine::Cmd_SetPlans(char* pszText, ObjectDef* pDef)
 }
 
 // A type's id counter never goes below that type's baseline.
-// FUNCTION: HYPERX 0x00484be0
+// FUNCTION: HYPERX1001 0x00484be0
 void GameEngine::UnloadArena()
 {
     int nType;
@@ -2911,7 +2912,7 @@ void GameEngine::UnloadArena()
 }
 
 // The type id starts at 102, so a file that names no type still produces something.
-// FUNCTION: HYPERX 0x00484cf0
+// FUNCTION: HYPERX1001 0x00484cf0
 char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
 {
     OwnedFile  file;
@@ -2943,7 +2944,7 @@ char GameEngine::LoadObjectsFromConfig(const char* pszFileName)
 constexpr auto kArenaObjectMax = 100;
 
 // Fatal returns, so an object past the hundredth is still built and overruns anModelIds.
-// FUNCTION: HYPERX 0x00484e80
+// FUNCTION: HYPERX1001 0x00484e80
 char GameEngine::LoadArena(const char* pszArenaPath)
 {
     OwnedFile    file;
@@ -2973,7 +2974,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
             {
                 auto* const pApp = &g_gameApp;
 
-                // STRING: HYPERX 0x004c8384
+                // STRING: HYPERX1001 0x004c8384
                 pApp->Fatal("Too many objects in .ENV file");
             }
 
@@ -3004,7 +3005,7 @@ char GameEngine::LoadArena(const char* pszArenaPath)
 }
 
 // Selecting the arena already selected answers true at once.
-// FUNCTION: HYPERX 0x004850f0
+// FUNCTION: HYPERX1001 0x004850f0
 char GameEngine::SetArena(short nArena)
 {
     const char* pszPath;
@@ -3049,7 +3050,7 @@ char GameEngine::SetArena(short nArena)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x004851a0
+// FUNCTION: HYPERX1001 0x004851a0
 void GameEngine::UnloadEntitySet(TeamBlock* pSet)
 {
     int iRange;
@@ -3088,7 +3089,7 @@ void GameEngine::UnloadEntitySet(TeamBlock* pSet)
     }
 }
 
-// FUNCTION: HYPERX 0x00485250
+// FUNCTION: HYPERX1001 0x00485250
 char GameEngine::UnloadHomeTeam()
 {
     auto* const pSet = m_pTeamA.get();
@@ -3105,7 +3106,7 @@ char GameEngine::UnloadHomeTeam()
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00485280
+// FUNCTION: HYPERX1001 0x00485280
 char GameEngine::UnloadAwayTeam()
 {
     auto* const pSet = m_pTeamB.get();
@@ -3127,7 +3128,7 @@ constexpr auto kSecondRunLast  = 8;
 constexpr auto kFirstRunLast   = 2;
 
 // A rematch reloads the same teams; a failed load names the home team whichever half failed.
-// FUNCTION: HYPERX 0x004856f0
+// FUNCTION: HYPERX1001 0x004856f0
 char GameEngine::SetTeams(short nHome, short nAway)
 {
     TeamsBlock* pTable;
@@ -3163,7 +3164,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
 
         if (LoadHomeTeam(pszTeam) == 0)
         {
-            // STRING: HYPERX 0x004c83f0
+            // STRING: HYPERX1001 0x004c83f0
             g_gameApp.Fatal("Error initializing home team\n");
         }
 
@@ -3213,7 +3214,7 @@ char GameEngine::SetTeams(short nHome, short nAway)
 }
 
 // The body part slots' object ids, the home team's four and then the away team's four.
-// GLOBAL: HYPERX 0x004c70f0
+// GLOBAL: HYPERX1001 0x004c70f0
 extern int g_anBodyPartModelIds[8];
 
 constexpr auto kModelIDUnassigned = (-1);
@@ -3229,7 +3230,7 @@ constexpr auto kTeamSlotRok           = 9;
 constexpr auto kTeamPlayersOnDrome = 3;
 
 // Ten slots: five players, four body parts and the team's Rok; only four players get ratings.
-// FUNCTION: HYPERX 0x004858b0
+// FUNCTION: HYPERX1001 0x004858b0
 std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath, int nTeam)
 {
     OwnedFile                  file;
@@ -3249,7 +3250,7 @@ std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath,
 
         if (pTeamDef == nullptr)
         {
-            // STRING: HYPERX 0x004c8478
+            // STRING: HYPERX1001 0x004c8478
             g_gameApp.Fatal("Away team definition error in file %s!", pszTeamPath);
 
             Balance::EndTeam();
@@ -3301,7 +3302,7 @@ std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath,
 
             if (pObjDef == nullptr)
             {
-                // STRING: HYPERX 0x004c8454
+                // STRING: HYPERX1001 0x004c8454
                 g_gameApp.Fatal("Team definition file incomplete %s!", pszTeamPath);
             }
 
@@ -3336,7 +3337,7 @@ std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath,
                 case 4:
                     if (pObjDef->m_nType != kGOBDromer)
                     {
-                        // STRING: HYPERX 0x004c8430
+                        // STRING: HYPERX1001 0x004c8430
                         g_gameApp.Fatal("Team definition file invalid %s!", pszTeamPath);
                     }
 
@@ -3425,13 +3426,13 @@ std::unique_ptr<TeamBlock> GameEngine::LoadTeamFromFile(const char* pszTeamPath,
         return pTeamDef;
     }
 
-    // STRING: HYPERX 0x004c8410
+    // STRING: HYPERX1001 0x004c8410
     g_gameApp.Fatal("Can't Open away team file %s!", pszTeamPath);
 
     return nullptr;
 }
 
-// FUNCTION: HYPERX 0x00485c70
+// FUNCTION: HYPERX1001 0x00485c70
 char GameEngine::LoadHomeTeam(const char* pszTeamPath)
 {
     m_pTeamA = LoadTeamFromFile(pszTeamPath, 0);
@@ -3451,7 +3452,7 @@ char GameEngine::LoadHomeTeam(const char* pszTeamPath)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00485cb0
+// FUNCTION: HYPERX1001 0x00485cb0
 char GameEngine::LoadAwayTeam(const char* pszTeamPath)
 {
     m_pTeamB = LoadTeamFromFile(pszTeamPath, 1);
@@ -3471,7 +3472,7 @@ char GameEngine::LoadAwayTeam(const char* pszTeamPath)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00485cf0
+// FUNCTION: HYPERX1001 0x00485cf0
 ObjectDef* GameEngine::GetArenaRokDef()
 {
     if (m_pArena != nullptr)
@@ -3487,7 +3488,7 @@ ObjectDef* GameEngine::GetArenaRokDef()
     return nullptr;
 }
 
-// FUNCTION: HYPERX 0x00485d10
+// FUNCTION: HYPERX1001 0x00485d10
 ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
 {
     const TeamBlock* pCatalog;
@@ -3520,7 +3521,7 @@ ObjectDef* GameEngine::GetTeamRokDef(int nSlot)
 }
 
 // A reserve's recovery since leaving the ice is added once, clamped at a hundred.
-// FUNCTION: HYPERX 0x00485d50
+// FUNCTION: HYPERX1001 0x00485d50
 char GameEngine::SubstitutePlayer(int nSlot, int nWith)
 {
     TeamBlock* pTeam;
@@ -3640,7 +3641,7 @@ constexpr auto kSlotTeamOneSecond = 2;
 constexpr auto kSlotTeamTwoSecond = 3;
 
 // DamageGate's third arm asks the difficulty and discards the answer.
-// FUNCTION: HYPERX 0x00486030
+// FUNCTION: HYPERX1001 0x00486030
 unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
 {
     const TeamBlock* pTeam;
@@ -3721,7 +3722,7 @@ unsigned char GameEngine::IsFitSubstitute(unsigned int nSlot, int nWhich)
 }
 
 // The larger block goes into the 252-byte slots and the smaller into the 196-byte ones.
-// FUNCTION: HYPERX 0x00486140
+// FUNCTION: HYPERX1001 0x00486140
 void GameEngine::SyncPlayerDataToTeam()
 {
     TeamBlock* pTeam;
@@ -3760,7 +3761,7 @@ void GameEngine::SyncPlayerDataToTeam()
 }
 
 // Undecoded kinds fall to the base object; construction cost is charged to the install level.
-// FUNCTION: HYPERX 0x00486200
+// FUNCTION: HYPERX1001 0x00486200
 EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 {
     std::unique_ptr<EngineObject> pNew;
@@ -3791,7 +3792,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
         {
             if (m_wCameraCount == kCameraLimit)
             {
-                // STRING: HYPERX 0x004c84b8
+                // STRING: HYPERX1001 0x004c84b8
                 g_gameApp.Fatal("Too many cameras!");
             }
 
@@ -3808,7 +3809,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
         case ObjectKind::kKeyboard:
             if (m_wDeviceCount == kDeviceLimit)
             {
-                // STRING: HYPERX 0x004c84a0
+                // STRING: HYPERX1001 0x004c84a0
                 g_gameApp.Fatal("Too many input devices!");
             }
 
@@ -3898,7 +3899,7 @@ EngineObject* GameEngine::CreateObject(ObjectDef* pDef, unsigned int nModelId)
 }
 
 // The first slot array is the camera holder; stubbing it faults the graphics set-up.
-// FUNCTION: HYPERX 0x00486680
+// FUNCTION: HYPERX1001 0x00486680
 void GameEngine::Init(const char* pszConfig)
 {
     int nIndex;
@@ -3929,7 +3930,7 @@ void GameEngine::Init(const char* pszConfig)
 
     LoadConfigFile(pszConfig);
 
-    // STRING: HYPERX 0x004b3f38
+    // STRING: HYPERX1001 0x004b3f38
     LoadObjectsFromConfig("common.cfg");
 
     SyncRenderQueueSize();
@@ -3938,7 +3939,7 @@ void GameEngine::Init(const char* pszConfig)
     m_apTracked[1] = m_ppSlots[0];
 }
 
-// FUNCTION: HYPERX 0x004867b0
+// FUNCTION: HYPERX1001 0x004867b0
 char GameEngine::SyncRenderQueueSize()
 {
     if (m_nQueuedSlotCount == m_nSlotCount)
@@ -3965,7 +3966,7 @@ char GameEngine::SyncRenderQueueSize()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x004867f0
+// FUNCTION: HYPERX1001 0x004867f0
 void GameEngine::StartMatch()
 {
     short nSlot;
@@ -3974,7 +3975,7 @@ void GameEngine::StartMatch()
 
     if (m_pTeamA == nullptr || m_pTeamB == nullptr)
     {
-        // STRING: HYPERX 0x004c84cc
+        // STRING: HYPERX1001 0x004c84cc
         g_gameApp.Fatal("Home team or Away Team not Assigned!");
     }
 
@@ -3988,7 +3989,7 @@ void GameEngine::StartMatch()
     }
 }
 
-// FUNCTION: HYPERX 0x00486860
+// FUNCTION: HYPERX1001 0x00486860
 void GameEngine::InitPlanSystems()
 {
     BehaviorRegistry::Init();
@@ -4000,7 +4001,7 @@ void GameEngine::InitPlanSystems()
     PlanInteractorFactories::ResetAll();
 }
 
-// FUNCTION: HYPERX 0x00486890
+// FUNCTION: HYPERX1001 0x00486890
 void GameEngine::RegisterObject(int nSlot, std::unique_ptr<EngineObject> pObject)
 {
     // The original leaked an object registered over, and it went on ticking; freeing it here would
@@ -4020,7 +4021,7 @@ void GameEngine::RegisterObject(int nSlot, std::unique_ptr<EngineObject> pObject
     m_apSlotOwners[nSlot] = std::move(pObject);
 }
 
-// FUNCTION: HYPERX 0x004868c0
+// FUNCTION: HYPERX1001 0x004868c0
 std::unique_ptr<EngineObject> GameEngine::UnregisterObject(int nSlot)
 {
     EngineObject** ppSlot  = &m_ppSlots[nSlot];
@@ -4036,7 +4037,7 @@ std::unique_ptr<EngineObject> GameEngine::UnregisterObject(int nSlot)
 }
 
 // The first overlap found is processed and ends the walk.
-// FUNCTION: HYPERX 0x004868f0
+// FUNCTION: HYPERX1001 0x004868f0
 void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
 {
     auto* pNode = pChain;
@@ -4069,7 +4070,7 @@ void GameEngine::DispatchCollisionToRule(CollInteractor* pChain)
     }
 }
 
-// FUNCTION: HYPERX 0x004869c0
+// FUNCTION: HYPERX1001 0x004869c0
 void GameEngine::BroadcastCollisionEvents()
 {
     short nIndex;
@@ -4088,7 +4089,7 @@ void GameEngine::BroadcastCollisionEvents()
 
 // The sender is not told about its own event. A goal stops the clock, a shot restarts it and a
 // start drag zeroes it.
-// FUNCTION: HYPERX 0x00486a10
+// FUNCTION: HYPERX1001 0x00486a10
 void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 {
     short       nIndex;
@@ -4136,7 +4137,7 @@ void GameEngine::BroadcastEvent(int nEvent, int nParam, int nSender)
 
 // Mode three restarts the match, two hands the main camera its view, one is the ordinary frame.
 
-// FUNCTION: HYPERX 0x00486b20
+// FUNCTION: HYPERX1001 0x00486b20
 void GameEngine::PerFrameUpdate()
 {
     short nIndex;
@@ -4209,7 +4210,7 @@ void GameEngine::PerFrameUpdate()
     }
 }
 
-// FUNCTION: HYPERX 0x00486c20
+// FUNCTION: HYPERX1001 0x00486c20
 void GameEngine::SyncNetworkStateToObjects()
 {
     short nIndex;
@@ -4231,7 +4232,7 @@ void GameEngine::SyncNetworkStateToObjects()
     }
 }
 
-// FUNCTION: HYPERX 0x00486c70
+// FUNCTION: HYPERX1001 0x00486c70
 char GameEngine::InsertObjectSorted(short nId)
 {
     short i;
@@ -4284,7 +4285,7 @@ char GameEngine::InsertObjectSorted(short nId)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00486d60
+// FUNCTION: HYPERX1001 0x00486d60
 char GameEngine::RemoveFromSortedList(short nId)
 {
     short i;
@@ -4313,7 +4314,7 @@ char GameEngine::RemoveFromSortedList(short nId)
 }
 
 // The second argument is never read.
-// FUNCTION: HYPERX 0x00486de0
+// FUNCTION: HYPERX1001 0x00486de0
 void GameEngine::SetRunState(short bRunning, int)
 {
     static auto s_pauseBase = MatchNow();
@@ -4375,7 +4376,7 @@ Clock::Milliseconds GameEngine::MatchNow()
 }
 
 // A slot whose object is already released leaves the count wrong.
-// FUNCTION: HYPERX 0x00486ee0
+// FUNCTION: HYPERX1001 0x00486ee0
 GameEngine::~GameEngine()
 {
     for (short nSlot = 0; nSlot < kEngineSlotCount; nSlot++)
@@ -4401,7 +4402,7 @@ GameEngine::~GameEngine()
     m_pSaveObject.reset();
 }
 
-// FUNCTION: HYPERX 0x00486fb0
+// FUNCTION: HYPERX1001 0x00486fb0
 void GameEngine::ReplaceEntity(int nKind, ObjectDef* pDef)
 {
     auto pObject = UnregisterObject(nKind);
@@ -4414,7 +4415,7 @@ void GameEngine::ReplaceEntity(int nKind, ObjectDef* pDef)
 }
 
 // The tournament case clears the score block and both stat arrays.
-// FUNCTION: HYPERX 0x00486ff0
+// FUNCTION: HYPERX1001 0x00486ff0
 void GameEngine::RestartMatch()
 {
     short nIndex;
@@ -4434,6 +4435,7 @@ void GameEngine::RestartMatch()
     if (m_clock.nPeriod == kFirstPeriod)
     {
         CareerStats::StartMatch();
+        GameClips::Clear();
 
         Reset();
 
@@ -4472,7 +4474,7 @@ void GameEngine::RestartMatch()
 }
 
 // The original wrote the five words before checking for room, and the terminator one past the end.
-// FUNCTION: HYPERX 0x004870b0
+// FUNCTION: HYPERX1001 0x004870b0
 char GameEngine::PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender, int bFromInput)
 {
     if (m_nPendingCount >= kPendingQueueLength - 1)
@@ -4493,7 +4495,7 @@ char GameEngine::PostSceneMessage(int nSlot, int nMessage, int nArg, int nSender
 }
 
 // The lock is taken only around each pull; the pending list at the end runs unguarded.
-// FUNCTION: HYPERX 0x00487140
+// FUNCTION: HYPERX1001 0x00487140
 void GameEngine::ProcessInputCommandQueue()
 {
     short nPending;
@@ -4565,7 +4567,7 @@ void GameEngine::ProcessInputCommandQueue()
     }
 }
 
-// FUNCTION: HYPERX 0x00487340
+// FUNCTION: HYPERX1001 0x00487340
 void GameEngine::ClearPendingEvents()
 {
     if (m_nPendingCount > g_nMaxPendingSeen)
@@ -4577,25 +4579,25 @@ void GameEngine::ClearPendingEvents()
     m_aQueueMessage[0] = kMsgNomsg;
 }
 
-// FUNCTION: HYPERX 0x00487480
+// FUNCTION: HYPERX1001 0x00487480
 int GameEngine::GetArmoryCount() const
 {
     return m_abTypeHighWater[kGOBArmory] - g_abObjectTypeBaseline[kGOBArmory];
 }
 
-// FUNCTION: HYPERX 0x00487490
+// FUNCTION: HYPERX1001 0x00487490
 int GameEngine::GetSwarfCount() const
 {
     return m_abTypeHighWater[kGOBSwarf] - g_abObjectTypeBaseline[kGOBSwarf];
 }
 
-// FUNCTION: HYPERX 0x004874b0
+// FUNCTION: HYPERX1001 0x004874b0
 int GameEngine::GetMineCount() const
 {
     return m_abTypeHighWater[kGOBMine] - g_abObjectTypeBaseline[kGOBMine];
 }
 
-// FUNCTION: HYPERX 0x004874c0
+// FUNCTION: HYPERX1001 0x004874c0
 int GameEngine::GetEntityCountOfType(int nType)
 {
     if (nType >= 0 && nType < kGOBNumOfTypes)
@@ -4606,31 +4608,31 @@ int GameEngine::GetEntityCountOfType(int nType)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x004874f0
+// FUNCTION: HYPERX1001 0x004874f0
 int GameEngine::GetHomeScore() const
 {
     return m_nScoreHome;
 }
 
-// FUNCTION: HYPERX 0x00487500
+// FUNCTION: HYPERX1001 0x00487500
 int GameEngine::GetAwayScore() const
 {
     return m_nScoreAway;
 }
 
-// FUNCTION: HYPERX 0x00487510
+// FUNCTION: HYPERX1001 0x00487510
 void GameEngine::SetHomeScore(int nScoreHome)
 {
     m_nScoreHome = nScoreHome;
 }
 
-// FUNCTION: HYPERX 0x00487520
+// FUNCTION: HYPERX1001 0x00487520
 void GameEngine::SetAwayScore(int nScoreAway)
 {
     m_nScoreAway = nScoreAway;
 }
 
-// FUNCTION: HYPERX 0x00487530
+// FUNCTION: HYPERX1001 0x00487530
 int GameEngine::IncrementHomeScore()
 {
     m_nScoreHome++;
@@ -4638,7 +4640,7 @@ int GameEngine::IncrementHomeScore()
     return m_nScoreHome;
 }
 
-// FUNCTION: HYPERX 0x00487540
+// FUNCTION: HYPERX1001 0x00487540
 int GameEngine::IncrementAwayScore()
 {
     m_nScoreAway++;
@@ -4646,7 +4648,7 @@ int GameEngine::IncrementAwayScore()
     return m_nScoreAway;
 }
 
-// FUNCTION: HYPERX 0x00487550
+// FUNCTION: HYPERX1001 0x00487550
 void GameEngine::Reset()
 {
     m_nScoreHome = -1;
@@ -4656,7 +4658,7 @@ void GameEngine::Reset()
     InfoBar::IncrementScore(4);
 }
 
-// FUNCTION: HYPERX 0x00487580
+// FUNCTION: HYPERX1001 0x00487580
 void GameEngine::ResetPeriodToFirst()
 {
     m_clock.nPeriod = 1;
@@ -4665,7 +4667,7 @@ void GameEngine::ResetPeriodToFirst()
 constexpr auto kTeamCount = 2;
 
 // Writes only in tournament player mode.
-// FUNCTION: HYPERX 0x00487590
+// FUNCTION: HYPERX1001 0x00487590
 char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 {
     char                 szName[kMaxPathLength];
@@ -4687,7 +4689,7 @@ char GameEngine::WriteSaveFile(int nSlot, const char* pszLabel)
 
     OwnedFile file;
 
-    // STRING: HYPERX 0x004c84f4
+    // STRING: HYPERX1001 0x004c84f4
     sprintf(szName, "SAVE%02d.BIN", nSlot);
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, kMaxPathLength);
@@ -4806,7 +4808,7 @@ inline int GameEngine::SubstituteSlot(int nTeam, int nSeat)
 }
 
 // The teams are set first, because that builds the objects the rest writes into.
-// FUNCTION: HYPERX 0x004878f0
+// FUNCTION: HYPERX1001 0x004878f0
 char GameEngine::ReadSaveFile(int nSlot)
 {
     SaveBlock      block;
@@ -4824,7 +4826,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 
     OwnedFile file;
 
-    // STRING: HYPERX 0x004c84f4
+    // STRING: HYPERX1001 0x004c84f4
     sprintf(szName, "SAVE%02d.BIN", nSlot);
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData, kMaxPathLength);
@@ -4949,7 +4951,7 @@ char GameEngine::ReadSaveFile(int nSlot)
 }
 
 // Always answers false; the caller can tell success only by the buffer.
-// FUNCTION: HYPERX 0x00487cb0
+// FUNCTION: HYPERX1001 0x00487cb0
 char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 {
     char      szName[kMaxPathLength];
@@ -4960,7 +4962,7 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 
     OwnedFile file;
 
-    // STRING: HYPERX 0x004c84f4
+    // STRING: HYPERX1001 0x004c84f4
     sprintf(szName, "SAVE%02d.BIN", nSlot);
 
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, szName).m_pchData,
@@ -4992,14 +4994,14 @@ char GameEngine::ReadSlotLabel(int nSlot, char* pszLabel, int nMax)
 
 constexpr auto kSlotOrderCount = 4;
 
-// FUNCTION: HYPERX 0x00487e50
+// FUNCTION: HYPERX1001 0x00487e50
 DifficultyLevel GameEngine::GetDifficultyLevel() const
 {
     return m_nDifficulty;
 }
 
 // kRatingDamage is never copied; a level above two answers no.
-// FUNCTION: HYPERX 0x00487e60
+// FUNCTION: HYPERX1001 0x00487e60
 char GameEngine::SetDifficultyLevel(unsigned int nLevel)
 {
     TeamBlock*    pTeam;
@@ -5101,13 +5103,13 @@ char GameEngine::SetDifficultyLevel(unsigned int nLevel)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00488010
+// FUNCTION: HYPERX1001 0x00488010
 unsigned char GameEngine::IsTournamentMode()
 {
     return g_nPlayerMode == kPlayerModeTournament;
 }
 
-// FUNCTION: HYPERX 0x00488020
+// FUNCTION: HYPERX1001 0x00488020
 unsigned char GameEngine::IsExhibitionMode()
 {
     return g_nPlayerMode == kPlayerModeExhibition;
@@ -5118,7 +5120,7 @@ constexpr auto kScreenSizeMax     = 6;
 constexpr auto kScreenTwelfthsMin = 6;
 
 // The drawn area is (step + 6) twelfths of the buffer, centred.
-// FUNCTION: HYPERX 0x00488030
+// FUNCTION: HYPERX1001 0x00488030
 void GameEngine::SetScreenSize(int nStep)
 {
     LayoutState state;
@@ -5163,7 +5165,7 @@ void GameEngine::SetScreenSize(int nStep)
     }
 }
 
-// FUNCTION: HYPERX 0x00488130
+// FUNCTION: HYPERX1001 0x00488130
 void GameEngine::SetBrutality(int nValue)
 {
     if (nValue != m_nBrutality)
@@ -5174,7 +5176,7 @@ void GameEngine::SetBrutality(int nValue)
     }
 }
 
-// FUNCTION: HYPERX 0x00488160
+// FUNCTION: HYPERX1001 0x00488160
 void GameEngine::SetPeriodLengthMs(int nValue)
 {
     if (Clock::Milliseconds{ static_cast<std::uint32_t>(nValue) } != m_periodLength)
@@ -5185,13 +5187,13 @@ void GameEngine::SetPeriodLengthMs(int nValue)
     }
 }
 
-// FUNCTION: HYPERX 0x00488190
+// FUNCTION: HYPERX1001 0x00488190
 void GameEngine::SetAward(int nSlot, char cValue)
 {
     m_abAward[nSlot] = cValue;
 }
 
-// FUNCTION: HYPERX 0x004881b0
+// FUNCTION: HYPERX1001 0x004881b0
 void GameEngine::ClearAwards()
 {
     int nSlot;
@@ -5202,13 +5204,13 @@ void GameEngine::ClearAwards()
     }
 }
 
-// FUNCTION: HYPERX 0x004881d0
+// FUNCTION: HYPERX1001 0x004881d0
 char GameEngine::HasAward(int nSlot) const
 {
     return m_abAward[nSlot];
 }
 
-// FUNCTION: HYPERX 0x004881e0
+// FUNCTION: HYPERX1001 0x004881e0
 char GameEngine::EvalArcherAward()
 {
     int nRow;
@@ -5243,7 +5245,7 @@ char GameEngine::EvalArcherAward()
     return bEligible;
 }
 
-// FUNCTION: HYPERX 0x00488270
+// FUNCTION: HYPERX1001 0x00488270
 char GameEngine::EvalAnvilAward()
 {
     int nRemaining;
@@ -5267,7 +5269,7 @@ char GameEngine::EvalAnvilAward()
 }
 
 // The particle systems start sixty slots in; a count of one or less finds nothing.
-// FUNCTION: HYPERX 0x004882d0
+// FUNCTION: HYPERX1001 0x004882d0
 ParticleSystem* GameEngine::FindFreeParticleSystem()
 {
     int iSlot;
@@ -5287,7 +5289,7 @@ ParticleSystem* GameEngine::FindFreeParticleSystem()
     return nullptr;
 }
 
-// FUNCTION: HYPERX 0x00488310
+// FUNCTION: HYPERX1001 0x00488310
 void GameEngine::DeactivateParticleSystems()
 {
     const auto nCount = GetEntityCountOfType(kGOBExplosion);
@@ -5304,7 +5306,7 @@ void GameEngine::DeactivateParticleSystems()
     }
 }
 
-// FUNCTION: HYPERX 0x00488350
+// FUNCTION: HYPERX1001 0x00488350
 void GameEngine::SetAttackMode(int nOn)
 {
     const int nFlag = nOn != 0;
@@ -5314,7 +5316,7 @@ void GameEngine::SetAttackMode(int nOn)
     g_pGameOptions->WriteInt(g_pszOptionsSection, g_pszAttackModeKey, nFlag);
 }
 
-// FUNCTION: HYPERX 0x00488380
+// FUNCTION: HYPERX1001 0x00488380
 void GameEngine::SetTeammateMode(int nOn)
 {
     const int nFlag = nOn != 0;
@@ -5324,8 +5326,8 @@ void GameEngine::SetTeammateMode(int nOn)
     g_pGameOptions->WriteInt(g_pszOptionsSection, g_pszTeammateModeKey, nFlag);
 }
 
-// FUNCTION: HYPERX 0x004883b0
-ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
+// FUNCTION: HYPERX1001 0x004883b0
+const ReserveRows* GameEngine::GetReserveRows(const TeamBlock* pTeam)
 {
     return &g_aFormationTable[pTeam->aSeat[1] + pTeam->aSeat[0] * 4];
 }

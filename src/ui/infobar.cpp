@@ -38,14 +38,14 @@
 constexpr auto kPeriodLampCount = 3;
 
 // Where each of the three lamps sits, as an offset from the bar's own left edge.
-// GLOBAL: HYPERX 0x004c2f60
+// GLOBAL: HYPERX1001 0x004c2f60
 extern int g_anPeriodLightOffset[3];
 
 constexpr auto kPeriodLampTop = 0x28;
 
 constexpr auto kPeriodLampSide = 9;
 
-// GLOBAL: HYPERX 0x004cef64
+// GLOBAL: HYPERX1001 0x004cef64
 extern int g_nPeriodLightColour;
 
 constexpr auto kMetricRowGap = 0x19;
@@ -58,10 +58,10 @@ constexpr auto kRokLabelNegative = 0x2f;
 constexpr auto kRokTextBuffer = 0x50;
 
 // The info bar's own cache of the last rok value drawn.
-// GLOBAL: HYPERX 0x004cef54
+// GLOBAL: HYPERX1001 0x004cef54
 extern int g_nInfoBarLastRokValue;
 
-// FUNCTION: HYPERX 0x0044fc70
+// FUNCTION: HYPERX1001 0x0044fc70
 void InfoBar::DrawPeriodLight()
 {
     m_sPeriodFrame.Draw();
@@ -87,7 +87,7 @@ void InfoBar::DrawPeriodLight()
     SWRend::FillRect(nX, nY + kPeriodLampTop, kPeriodLampSide, kPeriodLampSide, nLamp);
 }
 
-// FUNCTION: HYPERX 0x00450160
+// FUNCTION: HYPERX1001 0x00450160
 void InfoBar::UpdateRokValue()
 {
     char szText[kRokTextBuffer];
@@ -104,7 +104,7 @@ void InfoBar::UpdateRokValue()
             {
                 g_nInfoBarLastRokValue = nRokValue;
 
-                // STRING: HYPERX 0x004c0d6c
+                // STRING: HYPERX1001 0x004c0d6c
                 sprintf(szText, "x%d", abs(nRokValue));
 
                 auto* const pLabel = &m_tRokValue;
@@ -128,14 +128,14 @@ void InfoBar::UpdateRokValue()
     }
 }
 
-// GLOBAL: HYPERX 0x004cef60
+// GLOBAL: HYPERX1001 0x004cef60
 extern int g_nDamageBarColourLit;
 
-// GLOBAL: HYPERX 0x004cef5c
+// GLOBAL: HYPERX1001 0x004cef5c
 extern int g_nDamageBarColourDim;
 
 // Never reads its own object.
-// FUNCTION: HYPERX 0x004501f0
+// FUNCTION: HYPERX1001 0x004501f0
 void InfoBar::UpdateDamageBar(InfoBarSlot* pBar, int nSlot)
 {
     auto* const pObject = g_pGameEngine->GetPlayer(static_cast<short>(nSlot));
@@ -178,27 +178,27 @@ void InfoBar::UpdateDamageBar(InfoBarSlot* pBar, int nSlot)
 }
 
 // All six start at minus one, which no display word or damage can be.
-// GLOBAL: HYPERX 0x004c2f6c
+// GLOBAL: HYPERX1001 0x004c2f6c
 extern int g_nInfoBarOwnHomeTeam;
 
-// GLOBAL: HYPERX 0x004c2f70
+// GLOBAL: HYPERX1001 0x004c2f70
 extern int g_nInfoBarOwnAwayTeam;
 
-// GLOBAL: HYPERX 0x004c2f74
+// GLOBAL: HYPERX1001 0x004c2f74
 extern int g_nInfoBarOwnViewedSlot;
 
-// GLOBAL: HYPERX 0x004c2f78
+// GLOBAL: HYPERX1001 0x004c2f78
 extern int g_anInfoBarOwnFormation[2];
 
-// GLOBAL: HYPERX 0x004c2f80
+// GLOBAL: HYPERX1001 0x004c2f80
 extern int g_anInfoBarOwnDamage[4];
 
 // Reads 0 1 3 4, so slot two is skipped.
-// GLOBAL: HYPERX 0x004c2f90
+// GLOBAL: HYPERX1001 0x004c2f90
 extern int g_anOwnFormationSlotMap[4];
 
 // Blank at or below the damage gate; yellow followed, green reserve, red otherwise.
-// FUNCTION: HYPERX 0x00450270
+// FUNCTION: HYPERX1001 0x00450270
 void InfoBar::UpdateOwnTeamDisplay()
 {
     char             szText[kTeamLabelBuffer];
@@ -335,23 +335,23 @@ void InfoBar::UpdateOwnTeamDisplay()
     m_atTeamNames[1].Draw();
 }
 
-// GLOBAL: HYPERX 0x004c2fa0
+// GLOBAL: HYPERX1001 0x004c2fa0
 extern int g_nInfoBarFoeHomeTeam;
 
-// GLOBAL: HYPERX 0x004c2fa4
+// GLOBAL: HYPERX1001 0x004c2fa4
 extern int g_nInfoBarFoeAwayTeam;
 
-// GLOBAL: HYPERX 0x004c2fa8
+// GLOBAL: HYPERX1001 0x004c2fa8
 extern int g_anInfoBarFoeFormation[2];
 
-// GLOBAL: HYPERX 0x004c2fb0
+// GLOBAL: HYPERX1001 0x004c2fb0
 extern int g_anInfoBarFoeDamage[4];
 
-// GLOBAL: HYPERX 0x004c2fc0
+// GLOBAL: HYPERX1001 0x004c2fc0
 extern int g_anFoeFormationSlotMap[4];
 
 // The viewed team's panel written again, minus the follow colour, reserve numbers and team names.
-// FUNCTION: HYPERX 0x00450600
+// FUNCTION: HYPERX1001 0x00450600
 void InfoBar::UpdateFoeTeamDisplay()
 {
     char             szText[kTeamLabelBuffer];
@@ -469,17 +469,17 @@ void InfoBar::UpdateFoeTeamDisplay()
 
 constexpr auto kTextColour = 0xffff;
 
-// GLOBAL: HYPERX 0x004cefe0
+// GLOBAL: HYPERX1001 0x004cefe0
 extern int g_nInfoBarLastSeconds;
 
-// GLOBAL: HYPERX 0x004c2fd0
+// GLOBAL: HYPERX1001 0x004c2fd0
 extern int g_nInfoBarLastHomeScore;
 
-// GLOBAL: HYPERX 0x004c2fd4
+// GLOBAL: HYPERX1001 0x004c2fd4
 extern int g_nInfoBarLastAwayScore;
 
 // Slot four. The quit prompts hide once five seconds have passed since they went up.
-// FUNCTION: HYPERX 0x004508f0
+// FUNCTION: HYPERX1001 0x004508f0
 void InfoBar::DrawHUD(int bFull)
 {
     char szText[kClockBuffer];
@@ -495,7 +495,7 @@ void InfoBar::DrawHUD(int bFull)
     {
         g_nInfoBarLastSeconds = nSeconds;
 
-        // STRING: HYPERX 0x004c0d70
+        // STRING: HYPERX1001 0x004c0d70
         sprintf(szText, "%d:%02d", nMinutes, nSeconds);
 
         m_tClock.SetText(szText, static_cast<std::uint32_t>(kTextColour));
@@ -522,7 +522,7 @@ void InfoBar::DrawHUD(int bFull)
 
     if (nScore != g_nInfoBarLastHomeScore)
     {
-        // STRING: HYPERX 0x004bb814
+        // STRING: HYPERX1001 0x004bb814
         sprintf(szText, "%d", nScore);
 
         m_tHomeScore.SetText(szText, static_cast<std::uint32_t>(kTextColour));
@@ -536,7 +536,7 @@ void InfoBar::DrawHUD(int bFull)
 
     if (nScore != g_nInfoBarLastAwayScore)
     {
-        // STRING: HYPERX 0x004bb814
+        // STRING: HYPERX1001 0x004bb814
         sprintf(szText, "%d", nScore);
 
         m_tAwayScore.SetText(szText, static_cast<std::uint32_t>(kTextColour));
@@ -592,7 +592,7 @@ constexpr auto kColourBarDim      = 0xc8;
 constexpr auto kColourRadarLine   = 0xe0ffff;
 
 // A null engine triggers the re-resolve, which then dereferences it, as in the original.
-// FUNCTION: HYPERX 0x00450b80
+// FUNCTION: HYPERX1001 0x00450b80
 void InfoBar::DrawScene(int bDraw)
 {
     if (g_pBackBufferBitsCopy != nullptr)
@@ -703,7 +703,7 @@ void InfoBar::DrawScene(int bDraw)
 
 // The two lists each stack four entries ten words apart by height, two pixels between.
 
-// FUNCTION: HYPERX 0x00450e60
+// FUNCTION: HYPERX1001 0x00450e60
 void InfoBar::LayoutSurfaces()
 {
     if (g_nBackBufferHeight == 0 || g_nBackBufferWidth == 0)
@@ -908,7 +908,7 @@ void InfoBar::LayoutSurfaces()
 
 // All eighteen fonts read the face from the global rather than the literal.
 
-// GLOBAL: HYPERX 0x004cef7c
+// GLOBAL: HYPERX1001 0x004cef7c
 extern char g_abInfoBarFontName[0x50];
 
 constexpr auto kInfobarNameBuffer = 0x50;
@@ -928,7 +928,7 @@ constexpr auto kBarUnitWidth  = 9;
 constexpr auto kBarMinHeight  = 2;
 constexpr auto kBarMaxHeight  = 8;
 
-// FUNCTION: HYPERX 0x00451280
+// FUNCTION: HYPERX1001 0x00451280
 InfoBar::InfoBar()
 {
     char szName[kInfobarNameBuffer];
@@ -946,7 +946,7 @@ InfoBar::InfoBar()
 
     m_sSpeedFrame.LoadByName(szName);
 
-    // STRING: HYPERX 0x004c2fe0
+    // STRING: HYPERX1001 0x004c2fe0
     sprintf(szName, "%s01", "speed");
 
     // This class's LoadByName at 0x0044f8f0; RLESpriteSurface's writes other fields.
@@ -1009,10 +1009,10 @@ InfoBar::InfoBar()
     m_bShotPowerWanted = 0;
     SetReticleState(0);
 
-    // STRING: HYPERX 0x004c0844
+    // STRING: HYPERX1001 0x004c0844
     m_sReticle.LoadByName("Reticl2");
 
-    // STRING: HYPERX 0x004c2fd8
+    // STRING: HYPERX1001 0x004c2fd8
     m_oShotPower.LoadByName("nhshotp");
 
     const Point ptShotSize = m_oShotPower.m_ptSize;
@@ -1062,7 +1062,7 @@ InfoBar::InfoBar()
     ForgetPalette();
 }
 
-// FUNCTION: HYPERX 0x00451ce0
+// FUNCTION: HYPERX1001 0x00451ce0
 InfoBar::~InfoBar()
 {
     Cleanup();
@@ -1073,19 +1073,19 @@ void InfoBar::Cleanup() noexcept
 {
 }
 
-// FUNCTION: HYPERX 0x00451ed0
+// FUNCTION: HYPERX1001 0x00451ed0
 void InfoBar::SetMessageText(const char* pszText, unsigned long color)
 {
     m_tMessage.SetText(pszText, color);
 }
 
-// FUNCTION: HYPERX 0x00451ef0
+// FUNCTION: HYPERX1001 0x00451ef0
 void InfoBar::ShowMessage()
 {
     m_bMessageVisible = 1;
 }
 
-// FUNCTION: HYPERX 0x00451f00
+// FUNCTION: HYPERX1001 0x00451f00
 inline void InfoBar::HideMessage()
 {
     m_bMessageVisible = 0;
@@ -1093,7 +1093,7 @@ inline void InfoBar::HideMessage()
 
 // Slot eight.
 
-// FUNCTION: HYPERX 0x00451f10
+// FUNCTION: HYPERX1001 0x00451f10
 void InfoBar::SetHomeLogo(char* pszName)
 {
     m_sTeamALogo.LoadByName(pszName);
@@ -1101,19 +1101,19 @@ void InfoBar::SetHomeLogo(char* pszName)
 
 // Slot nine.
 
-// FUNCTION: HYPERX 0x00451f30
+// FUNCTION: HYPERX1001 0x00451f30
 void InfoBar::SetAwayLogo(char* pszName)
 {
     m_sTeamBLogo.LoadByName(pszName);
 }
 
-// FUNCTION: HYPERX 0x00451f50
+// FUNCTION: HYPERX1001 0x00451f50
 void InfoBar::ShowHeadCam()
 {
     m_bHeadCamPending = 1;
 }
 
-// FUNCTION: HYPERX 0x00451f60
+// FUNCTION: HYPERX1001 0x00451f60
 void InfoBar::SetHeadCamText(const char* pszText)
 {
     m_tHeadCamText.SetText(pszText, static_cast<std::uint32_t>(-1));
@@ -1121,7 +1121,7 @@ void InfoBar::SetHeadCamText(const char* pszText)
 
 // Both answer constants; the unread stack point is the original's.
 
-// FUNCTION: HYPERX 0x00451f80
+// FUNCTION: HYPERX1001 0x00451f80
 ViewExtent InfoBar::GetHeadCamSize()
 {
     SurfacePoint pt;
@@ -1134,7 +1134,7 @@ ViewExtent InfoBar::GetHeadCamSize()
 }
 
 // The corner is twenty five pixels past each axis sum.
-// FUNCTION: HYPERX 0x00451fb0
+// FUNCTION: HYPERX1001 0x00451fb0
 ViewExtent InfoBar::GetHeadCamOrigin()
 {
     const Point ptOrigin = m_sHeadCamFrame.m_ptPosition;
@@ -1149,7 +1149,7 @@ ViewExtent InfoBar::GetHeadCamOrigin()
 }
 
 // The top clamp is count less one, so exactly a hundred lands on the last entry.
-// FUNCTION: HYPERX 0x00451fe0
+// FUNCTION: HYPERX1001 0x00451fe0
 void InfoBar::SetShotPower(float flPercent)
 {
     const auto nCount = m_oShotPower.m_nFrameCount;
@@ -1173,13 +1173,13 @@ void InfoBar::SetShotPower(float flPercent)
     m_oShotPower.m_nFrame = nIndex;
 }
 
-// FUNCTION: HYPERX 0x00452030
+// FUNCTION: HYPERX1001 0x00452030
 void InfoBar::ShowShotPower()
 {
     m_bShotPowerWanted = 1;
 }
 
-// FUNCTION: HYPERX 0x00452040
+// FUNCTION: HYPERX1001 0x00452040
 void InfoBar::SetReticlePos(int nX, int nY)
 {
     m_bReticleVisible           = 1;
@@ -1187,7 +1187,7 @@ void InfoBar::SetReticlePos(int nX, int nY)
     m_sReticle.m_ptDrawOffset.y = nY;
 }
 
-// FUNCTION: HYPERX 0x00452070
+// FUNCTION: HYPERX1001 0x00452070
 ViewExtent InfoBar::GetReticleSize()
 {
     ViewExtent extent;
@@ -1198,7 +1198,7 @@ ViewExtent InfoBar::GetReticleSize()
 }
 
 // A mode outside the four stores nothing.
-// FUNCTION: HYPERX 0x00452090
+// FUNCTION: HYPERX1001 0x00452090
 inline void InfoBar::SetReticleState(int nMode)
 {
     switch (nMode)
@@ -1224,7 +1224,7 @@ inline void InfoBar::SetReticleState(int nMode)
     }
 }
 
-// FUNCTION: HYPERX 0x004520d0
+// FUNCTION: HYPERX1001 0x004520d0
 ViewExtent InfoBar::GetPassBarSize()
 {
     SurfacePoint pt;
@@ -1236,7 +1236,7 @@ ViewExtent InfoBar::GetPassBarSize()
     return size;
 }
 
-// FUNCTION: HYPERX 0x00452100
+// FUNCTION: HYPERX1001 0x00452100
 void InfoBar::ShowQuitPrompt()
 {
     m_bQuitPromptVisible = 1;
@@ -1244,7 +1244,7 @@ void InfoBar::ShowQuitPrompt()
     m_quitPromptTick = g_pGameEngine->m_clock.tick;
 }
 
-// FUNCTION: HYPERX 0x00452120
+// FUNCTION: HYPERX1001 0x00452120
 void InfoBar::HideQuitPrompt()
 {
     m_bQuitPromptVisible = 0;
@@ -1252,13 +1252,13 @@ void InfoBar::HideQuitPrompt()
 
 // Only five (team one) and four (team two) do anything.
 
-// FUNCTION: HYPERX 0x0047ae70
+// FUNCTION: HYPERX1001 0x0047ae70
 void InfoBar::IncrementScore(int nWhich)
 {
     switch (nWhich)
     {
         case kScoreLineTeam1:
-            // STRING: HYPERX 0x004bb814
+            // STRING: HYPERX1001 0x004bb814
             g_nHomeScoreLength = sprintf(g_szHomeScore, "%d", g_pGameEngine->IncrementHomeScore());
 
             g_bHomeScoreDirty = 1;

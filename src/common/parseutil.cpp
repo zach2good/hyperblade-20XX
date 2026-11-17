@@ -21,7 +21,7 @@ float g_flScreenDotsPerCmParseUtil   = g_flScreenDotsPerInchParseUtil / g_flCmPe
 #define STREAM_EOF ((char)-1)
 
 // The original calls the multibyte _mbsicmp at 0x0049f2d2, not _stricmp.
-// FUNCTION: HYPERX 0x00435f90
+// FUNCTION: HYPERX1001 0x00435f90
 short ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable, short nCount)
 {
     for (short iEntry = 0; iEntry < nCount; iEntry++)
@@ -39,13 +39,13 @@ short ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable, short 
 }
 
 // An empty token is a failure, so a caller can loop on this until it stops.
-// FUNCTION: HYPERX 0x00487370
+// FUNCTION: HYPERX1001 0x00487370
 char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext)
 {
     char* pszStart;
     int   nLength;
 
-    // STRING: HYPERX 0x004c732c
+    // STRING: HYPERX1001 0x004c732c
     // The first character past the blanks, or null when there is none.
     char* const pszScan = [&]() -> char*
     {
@@ -110,7 +110,7 @@ char ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDel
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00487420
+// FUNCTION: HYPERX1001 0x00487420
 char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
     if (pszText != nullptr)
@@ -144,7 +144,7 @@ char* ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 }
 
 // Steps past the character, and answers null when there is none.
-// FUNCTION: HYPERX 0x00487460
+// FUNCTION: HYPERX1001 0x00487460
 char* ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 {
     auto* const pAt = ParseUtil::SkipToChar(pszText, pszStop);
@@ -158,7 +158,7 @@ char* ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 }
 
 // End of file is the byte 0xff, stored and then tested, so only an empty last line answers -1.
-// FUNCTION: HYPERX 0x00493ec0
+// FUNCTION: HYPERX1001 0x00493ec0
 int ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 {
     auto* const pStart = pszBuffer;

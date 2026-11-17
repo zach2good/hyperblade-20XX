@@ -20,7 +20,6 @@
 #include "playerobject.h"
 #include <cmath>
 #include <cstdlib>
-#include "physics/collisionplane.h"
 #include "arenastate.h"
 #include "physics/collisionellipsoid.h"
 #include "common/pooledownerroot.h"
@@ -32,7 +31,7 @@
 
 #define BANK_DEADZONE_HIGH 0.001f
 
-// FUNCTION: HYPERX 0x0040e780
+// FUNCTION: HYPERX1001 0x0040e780
 void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -51,7 +50,7 @@ void CSteerToPosition::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flUnused = 100.0f;
 }
 
-// FUNCTION: HYPERX 0x0040e7e0
+// FUNCTION: HYPERX1001 0x0040e7e0
 void CSteerToPosition::Tick(const Vec3* pTargetPos)
 {
     m_vTarget.x = pTargetPos->x;
@@ -64,7 +63,7 @@ void CSteerToPosition::Tick(const Vec3* pTargetPos)
     m_cArrived  = 0;
 }
 
-// FUNCTION: HYPERX 0x0040e820
+// FUNCTION: HYPERX1001 0x0040e820
 void CSteerToPosition::OnKind(short nSlot)
 {
     m_pChase = g_pGameEngine->m_ppSlots[nSlot];
@@ -93,14 +92,14 @@ void CSteerToPosition::OnKind(short nSlot)
 
     if (pNormal == nullptr)
     {
-        // STRING: HYPERX 0x004bb6c0
+        // STRING: HYPERX1001 0x004bb6c0
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
     }
 
     *m_pNormal = *pNormal;
 }
 
-// FUNCTION: HYPERX 0x0040e940
+// FUNCTION: HYPERX1001 0x0040e940
 void CSteerToPosition::OnListChanged()
 {
     if (m_bReady == 0)
@@ -124,7 +123,7 @@ void CSteerToPosition::OnListChanged()
 }
 
 // Brakes hard inside fifteen units and sends the arrival message once.
-// FUNCTION: HYPERX 0x0040e9b0
+// FUNCTION: HYPERX1001 0x0040e9b0
 void CSteerToPosition::Process(int nArg)
 {
     auto flForce = (((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.1f + 1.5f) * g_pGameEngine->m_clock.GetDeltaSquared() * 40.0f;
@@ -257,7 +256,7 @@ void CSteerToPosition::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX 0x004132c0
+// FUNCTION: HYPERX1001 0x004132c0
 Vec3* CSteerToPosition::GetVector()
 {
     return &m_vTarget;

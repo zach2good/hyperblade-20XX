@@ -7,31 +7,31 @@
 #include "physics/collisionshape.h"
 #include <memory>
 
-// FUNCTION: HYPERX 0x00405820
+// FUNCTION: HYPERX1001 0x00405820
 TransformObject* CollisionShape::GetTransform()
 {
     return m_pTransform.get();
 }
 
-// FUNCTION: HYPERX 0x00405830
+// FUNCTION: HYPERX1001 0x00405830
 float CollisionShape::GetElasticity()
 {
     return m_flElasticity;
 }
 
-// FUNCTION: HYPERX 0x00405840
+// FUNCTION: HYPERX1001 0x00405840
 float CollisionShape::GetFriction()
 {
     return m_flFriction;
 }
 
-// FUNCTION: HYPERX 0x00405870
+// FUNCTION: HYPERX1001 0x00405870
 Vec3* CollisionShape::GetNormal()
 {
     return &m_vNormal;
 }
 
-// FUNCTION: HYPERX 0x0042e4f0
+// FUNCTION: HYPERX1001 0x0042e4f0
 CollisionShape::CollisionShape()
 : m_nUnusedA(0)
 , m_nUnusedB(0)
@@ -47,7 +47,7 @@ CollisionShape::CollisionShape()
 
 // The plane's slot thirteen calls this with six arguments, so it is variadic and __cdecl.
 // An existing transform is reset through its own table; a failed allocation stores null.
-// FUNCTION: HYPERX 0x0042e5a0
+// FUNCTION: HYPERX1001 0x0042e5a0
 TransformObject* CollisionShape::GetOrCreateTransform(...)
 {
     if (m_pTransform == nullptr)

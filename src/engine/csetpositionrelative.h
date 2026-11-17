@@ -8,7 +8,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slot 0 is CGlideOnSurface's shared deleting destructor; slot 2 is a shared Release.
-// VTABLE: HYPERX 0x004b1c68
+// VTABLE: HYPERX1001 0x004b1c68
 class CSetPositionRelative : public ReleasingAgendaItem
 {
 public:

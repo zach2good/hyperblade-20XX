@@ -8,7 +8,7 @@
 #include "actionbinding.h"
 #include "engine/gameengine.h"
 
-// VTABLE: HYPERX 0x004b34e4
+// VTABLE: HYPERX1001 0x004b34e4
 class KeyboardDeviceObj : public DeviceObject
 {
 public:
@@ -40,10 +40,10 @@ public:
     static unsigned int* LoadBindingsFromIni();
 };
 
-// FUNCTION: HYPERX 0x0045d0b0
+// FUNCTION: HYPERX1001 0x0045d0b0
 // KeyboardDeviceObj::~KeyboardDeviceObj
 
-// SYNTHETIC: HYPERX 0x0045d090
+// SYNTHETIC: HYPERX1001 0x0045d090
 // KeyboardDeviceObj::`scalar deleting destructor'
 
 inline KeyboardDeviceObj* GameEngine::GetInputDevice(int nSlot) const

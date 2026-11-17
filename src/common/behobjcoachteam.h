@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b272c
+// VTABLE: HYPERX1001 0x004b272c
 class BehObj_CoachTeam : public InPlaceBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_CoachTeam();
 };
 
-// SYNTHETIC: HYPERX 0x0041e2d0
+// SYNTHETIC: HYPERX1001 0x0041e2d0
 // BehObj_CoachTeam::`scalar deleting destructor'
 
 #endif

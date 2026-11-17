@@ -5,18 +5,18 @@
 #include "planvm/planvmglobals.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041eb70
+// FUNCTION: HYPERX1001 0x0041eb70
 BehObj_CandyTracking::BehObj_CandyTracking() = default;
 
-// FUNCTION: HYPERX 0x0041ebc0
+// FUNCTION: HYPERX1001 0x0041ebc0
 BehObj_CandyTracking::~BehObj_CandyTracking() = default;
 
-// FUNCTION: HYPERX 0x0041ebd0
+// FUNCTION: HYPERX1001 0x0041ebd0
 void BehObj_CandyTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForCandyTracking();
 
-    // STRING: HYPERX 0x004bc3c4
+    // STRING: HYPERX1001 0x004bc3c4
     m_pszName = "CandyTracking";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

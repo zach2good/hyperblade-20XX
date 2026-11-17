@@ -22,7 +22,7 @@ struct StringPool
     char* LoadText(unsigned int uID);
 };
 
-// FUNCTION: HYPERX 0x00480af0
+// FUNCTION: HYPERX1001 0x00480af0
 // StringPool::~StringPool
 
 #endif

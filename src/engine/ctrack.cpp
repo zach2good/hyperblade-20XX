@@ -44,7 +44,7 @@ extern unsigned char g_bSmartCamEnabled;
 // The swing is cut into at most six steps however long the countdown is.
 constexpr auto kSwingSteps = 6;
 
-// FUNCTION: HYPERX 0x00408f20
+// FUNCTION: HYPERX1001 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -68,7 +68,7 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bUnused = 0;
 }
 
-// FUNCTION: HYPERX 0x00408f90
+// FUNCTION: HYPERX1001 0x00408f90
 void CTrack::OnListChanged()
 {
     if (m_bReady == 0)
@@ -85,7 +85,7 @@ void CTrack::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x00408fd0
+// FUNCTION: HYPERX1001 0x00408fd0
 void CTrack::Process(int nArg)
 {
     float flPull;
@@ -101,10 +101,8 @@ void CTrack::Process(int nArg)
     Vec3  vFacing;
     Vec3  vRaw;
     Vec3  vSum;
-    Vec3  vScaled;
     Vec3  vUp;
     Vec3  vFarRay;
-    Vec3  vNearRay;
 
     const auto flStep = (g_pGameEngine->m_clock.GetDelta() * 50.0f);
 
@@ -114,7 +112,7 @@ void CTrack::Process(int nArg)
 
     if (pTracked == nullptr)
     {
-        // STRING: HYPERX 0x004bb454
+        // STRING: HYPERX1001 0x004bb454
         g_gameApp.Fatal("CTrack::Process(): Null pointer for model to track\n");
     }
 
@@ -148,6 +146,8 @@ void CTrack::Process(int nArg)
 
     if (pTracked->GetSlot() < kPlayerObjectCount)
     {
+        Vec3 vScaled;
+
         const TransformObject* const pWorld = &pTracked->m_pBones[0].m_world;
 
         aTarget.Set(pWorld->m_a[0][3], pWorld->m_a[1][3], pWorld->m_a[2][3]);
@@ -238,6 +238,8 @@ void CTrack::Process(int nArg)
 
     if (wState == kBehFly || wState == kBehRailSlide || m_wCountdown != 0)
     {
+        Vec3 vNearRay;
+
         float flSpeed;
 
         m_pVel->x = (m_pDesiredVel->x - m_pVel->x * 0.6f) + m_pVel->x;
@@ -278,6 +280,8 @@ void CTrack::Process(int nArg)
     }
     else
     {
+        Vec3 vNearRay;
+        Vec3 vScaled;
         Vec3 vBack;
 
         Vec3::ScaleTo(&vFacing, -GetCamera()->GetBungeeLength(), &vBack);

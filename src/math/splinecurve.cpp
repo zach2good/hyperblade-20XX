@@ -6,10 +6,10 @@
 #include "spline.h"
 #include "math/splinecurve.h"
 
-// GLOBAL: HYPERX 0x004b40c8
+// GLOBAL: HYPERX1001 0x004b40c8
 extern const float g_flSplineTangentStep;
 
-// FUNCTION: HYPERX 0x00492df0
+// FUNCTION: HYPERX1001 0x00492df0
 void SplineCurve::ComputeTangent(float flT, Vec3* pTangent)
 {
     float flStep;

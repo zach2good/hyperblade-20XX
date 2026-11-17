@@ -192,16 +192,16 @@ private:
     SDL_AudioStream* m_pStream;
 };
 
-// FUNCTION: HYPERX 0x0048fc70
+// FUNCTION: HYPERX1001 0x0048fc70
 SoundMixer::SoundMixer() = default;
 
-// FUNCTION: HYPERX 0x0048fd10
+// FUNCTION: HYPERX1001 0x0048fd10
 SoundMixer::~SoundMixer()
 {
     Shutdown();
 }
 
-// FUNCTION: HYPERX 0x00490520
+// FUNCTION: HYPERX1001 0x00490520
 int SoundMixer::Init()
 {
     if (m_pImpl)
@@ -218,7 +218,7 @@ int SoundMixer::Init()
 
     if (ma_engine_init(&config, &pImpl->engine) != MA_SUCCESS)
     {
-        // STRING: HYPERX 0x004c8a58
+        // STRING: HYPERX1001 0x004c8a58
         g_gameApp.Error("Direct Sound Creation Failed.  Sound will be turned off");
 
         return 0;
@@ -243,7 +243,7 @@ int SoundMixer::Init()
         ma_sound_group_uninit(&pImpl->sfx);
         ma_engine_uninit(&pImpl->engine);
 
-        // STRING: HYPERX 0x004c8a58
+        // STRING: HYPERX1001 0x004c8a58
         g_gameApp.Error("Direct Sound Creation Failed.  Sound will be turned off");
 
         return 0;
@@ -259,7 +259,7 @@ int SoundMixer::Init()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x004906d0
+// FUNCTION: HYPERX1001 0x004906d0
 void SoundMixer::Shutdown()
 {
     if (!m_pImpl)
@@ -286,7 +286,7 @@ void SoundMixer::Shutdown()
 }
 
 // The start time is stamped only when playback succeeded.
-// FUNCTION: HYPERX 0x00490780
+// FUNCTION: HYPERX1001 0x00490780
 void SoundMixer::Play(SoundEntry* pSound)
 {
     if (!m_pImpl || pSound->m_nDataBytes == 0)
@@ -382,7 +382,7 @@ void SoundMixer::Play(SoundEntry* pSound)
     pSound->m_started    = Clock::Now();
 }
 
-// FUNCTION: HYPERX 0x004907d0
+// FUNCTION: HYPERX1001 0x004907d0
 void SoundMixer::StopEntry(SoundEntry* pOwner)
 {
     if (!m_pImpl)
@@ -401,7 +401,7 @@ void SoundMixer::StopEntry(SoundEntry* pOwner)
     }
 }
 
-// FUNCTION: HYPERX 0x00490800
+// FUNCTION: HYPERX1001 0x00490800
 void SoundMixer::StopAll()
 {
     if (!m_pImpl)
@@ -417,7 +417,7 @@ void SoundMixer::StopAll()
     }
 }
 
-// FUNCTION: HYPERX 0x00490490
+// FUNCTION: HYPERX1001 0x00490490
 bool SoundMixer::Update()
 {
     if (!m_pImpl)
@@ -445,13 +445,13 @@ bool SoundMixer::Update()
     return false;
 }
 
-// FUNCTION: HYPERX 0x004904c0
+// FUNCTION: HYPERX1001 0x004904c0
 int SoundMixer::ReadSfxVolume() const
 {
     return m_nVolumeStep;
 }
 
-// FUNCTION: HYPERX 0x004904d0
+// FUNCTION: HYPERX1001 0x004904d0
 int SoundMixer::FadeSfxVolume(int nStep)
 {
     m_nVolumeStep = std::clamp(nStep, 0, kMixerVolumeLevels - 1);
