@@ -33,8 +33,8 @@ You need your own copy of the game. Not affiliated with Activision or WizBang! S
 - Bot spectator mode: `-b`, or Tab for the side view
 - Cut content finished: One on One, local 2 Player Mode, instant replay (R), time outs (T) and a
   scouting report on pause, with the match's stats and both rosters' health
-- The demo's game clips viewer: each goal keeps a clip, played back from four cameras in F2's Debug
-  menu
+- The demo's game clips viewer: each goal keeps a clip, played back from four cameras from Match
+  Info's Game Clips tab
 - Lifetime stats for dromers and teams, saved beside the executable
 - Stats the original never recorded or got wrong: passes, interceptions, checks given, drags won,
   hang time, rail time, assists and one-timers ([docs/sim_results.md](docs/sim_results.md#match-stats))
