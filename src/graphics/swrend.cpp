@@ -49,14 +49,13 @@ extern Vec3 g_vLightDirModel;
 // FUNCTION: HYPERX 0x0044a200
 void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
-    const TexCoord*     pUVTable;
-    TexCacheEntry*      pMatTexture;
-    const MeshMaterial* pMaterial;
-    ClipVertex*         pVert;
-    float               flLevel2;
-    unsigned char       cShade;
-    unsigned char       cColourIndex;
-    int                 nKind;
+    const TexCoord* pUVTable;
+    TexCacheEntry*  pMatTexture;
+    ClipVertex*     pVert;
+    float           flLevel2;
+    unsigned char   cShade;
+    unsigned char   cColourIndex;
+    int             nKind;
     // The original keeps the edge walk's step in a frame slot.
     volatile short nStep;
     // The original keeps the edge walk's start in a frame slot.
@@ -176,7 +175,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
 
     if (cBackFace != 0)
     {
-        pMaterial = ppMaterials[1];
+        const MeshMaterial* const pMaterial = ppMaterials[1];
 
         Vec3 vNormal;
 
@@ -270,7 +269,7 @@ void __fastcall SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceDat
         }
         else
         {
-            pMaterial = ppMaterials[0];
+            const MeshMaterial* const pMaterial = ppMaterials[0];
 
             if (g_cD3DActive == 0)
             {
