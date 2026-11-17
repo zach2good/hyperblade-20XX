@@ -5,6 +5,7 @@
 #ifndef HYPERBLADE_FRAMEPACING_H
 #define HYPERBLADE_FRAMEPACING_H
 
+#include "math/transformobject.h"
 #include "math/vec3.h"
 #include <array>
 #include <vector>
@@ -21,19 +22,23 @@ constexpr auto kTickMs = 1000.0f / 30.0f;
 // One object's world bones as a tick drew them, three rows of four.
 using Rows = std::array<float, 12>;
 
+// The textured rig takes each bone's local rotation and only the root's world matrix, so both
+// are kept.
 struct ReplayObject
 {
-    EngineObject*     pObject = nullptr;
-    std::vector<Rows> bones;
-    bool              bVisible = false;
+    EngineObject*                pObject = nullptr;
+    std::vector<Rows>            bones;
+    std::vector<TransformObject> locals;
+    bool                         bVisible = false;
 };
 
-// One drawn tick: every object's bones and visibility, and the main camera.
+// One drawn tick: every object's bones and visibility, the main camera, and where the rok was.
 struct ReplayFrame
 {
     std::vector<ReplayObject> objects;
     std::array<float, 16>     view = {};
     Vec3                      eye  = {};
+    Vec3                      rok  = {};
 };
 
 // A copy of the instant replay's last eight seconds, oldest first.

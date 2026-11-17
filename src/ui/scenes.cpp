@@ -515,23 +515,6 @@ bool StillLoaded(const GameEngine& engine, const FramePacing::ReplayObject& reco
     return false;
 }
 
-Vec3 RokAt(GameEngine& engine, const FramePacing::ReplayFrame& frame)
-{
-    const auto* const pRok = engine.GetSlot(kSlotRok);
-
-    for (const auto& recorded : frame.objects)
-    {
-        if (recorded.pObject == pRok && !recorded.bones.empty())
-        {
-            const auto& rows = recorded.bones[0];
-
-            return Vec3{ rows[3], rows[7], rows[11] };
-        }
-    }
-
-    return frame.eye;
-}
-
 void StepClip()
 {
     const auto nNowNs = SDL_GetTicksNS();
@@ -567,7 +550,7 @@ void PlaceClipCamera(CameraObject& camera, GameEngine& engine, const GameClips::
         return;
     }
 
-    const auto vRok = RokAt(engine, frame);
+    const auto vRok = frame.rok;
 
     // The broadcast camera's distance sets the scale, so the others frame the play as it did.
     const auto vFromRok = Vec3{ frame.eye.x - vRok.x, frame.eye.y - vRok.y, frame.eye.z - vRok.z };
@@ -593,7 +576,7 @@ void PlaceClipCamera(CameraObject& camera, GameEngine& engine, const GameClips::
 
             case ClipCamera::Chase:
             {
-                const auto vBefore = RokAt(engine, clip.frames[nFrame - (std::min)(nFrame, size_t{ 6 })]);
+                const auto vBefore = clip.frames[nFrame - (std::min)(nFrame, size_t{ 6 })].rok;
 
                 auto vBack = Vec3{ vBefore.x - vRok.x, vBefore.y - vRok.y, 0.0f };
 
@@ -664,6 +647,7 @@ void DrawClip()
 
     auto liveVisible = std::vector<char>(static_cast<size_t>(pEngine->m_nObjectCount));
     auto liveBones   = std::vector<FramePacing::Rows>();
+    auto liveLocals  = std::vector<TransformObject>();
 
     for (short i = 0; i < pEngine->m_nObjectCount; i++)
     {
@@ -677,6 +661,7 @@ void DrawClip()
             auto& rows = liveBones.emplace_back();
 
             std::memcpy(rows.data(), pObject->m_pBones[nBone].m_world.m_a, sizeof(rows));
+            liveLocals.push_back(pObject->m_pBones[nBone].m_local);
         }
     }
 
@@ -701,6 +686,7 @@ void DrawClip()
             auto* const pBone = &recorded.pObject->m_pBones[nBone];
 
             std::memcpy(pBone->m_world.m_a, recorded.bones[static_cast<size_t>(nBone)].data(), sizeof(FramePacing::Rows));
+            pBone->m_local = recorded.locals[static_cast<size_t>(nBone)];
 
             if (pBone->m_pMesh != nullptr && pBone->IsHidden() == 0)
             {
@@ -721,7 +707,9 @@ void DrawClip()
 
         for (short nBone = 0; nBone < pObject->m_wBoneCount; nBone++)
         {
-            std::memcpy(pObject->m_pBones[nBone].m_world.m_a, liveBones[nNext++].data(), sizeof(FramePacing::Rows));
+            std::memcpy(pObject->m_pBones[nBone].m_world.m_a, liveBones[nNext].data(), sizeof(FramePacing::Rows));
+            pObject->m_pBones[nBone].m_local = liveLocals[nNext];
+            nNext++;
         }
     }
 
