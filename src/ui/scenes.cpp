@@ -6,6 +6,7 @@
 #include "engine/cameraprojectionstate.h"
 #include "engine/engineobject.h"
 #include "engine/framepacing.h"
+#include "engine/gameclips.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
 #include "globals.h"
@@ -29,6 +30,7 @@
 #include <cmath>
 #include <cstring>
 #include <filesystem>
+#include <utility>
 #include <string>
 #include <vector>
 #include <imgui.h>
@@ -458,6 +460,428 @@ void ModelViewerWindow()
 
     OriginalUI::SeparatorText("Renderer");
     DebugMenu::RendererControls();
+
+    ImGui::End();
+}
+
+// Game clips: the goals GameClips kept, played back from the camera that drew them or from three
+// more placed round the rok.
+
+enum class ClipCamera
+{
+    Broadcast,
+    Overhead,
+    Chase,
+    Orbit,
+};
+
+constexpr auto kClipCameraNames = std::array<const char*, 4>{ "Broadcast", "Overhead", "Chase", "Orbit" };
+
+struct ClipPlayer
+{
+    int        nClip    = -1;
+    float      flFrame  = 0.0f;
+    float      flSpeed  = 1.0f;
+    bool       bPlaying = false;
+    ClipCamera camera   = ClipCamera::Broadcast;
+    Uint64     nLastNs  = 0;
+};
+
+auto s_player = ClipPlayer();
+
+const GameClips::Clip* PlayingClip()
+{
+    const auto& clips = GameClips::All();
+
+    if (s_player.nClip < 0 || s_player.nClip >= static_cast<int>(clips.size()))
+    {
+        return nullptr;
+    }
+
+    return &clips[static_cast<size_t>(s_player.nClip)];
+}
+
+// A clip keeps pointers to the match's objects, which a later match replaces.
+bool StillLoaded(const GameEngine& engine, const FramePacing::ReplayObject& recorded)
+{
+    for (short i = 0; i < engine.m_nObjectCount; i++)
+    {
+        if (engine.m_ppObjects[i] == recorded.pObject)
+        {
+            return recorded.bones.size() == static_cast<size_t>(recorded.pObject->m_wBoneCount);
+        }
+    }
+
+    return false;
+}
+
+Vec3 RokAt(GameEngine& engine, const FramePacing::ReplayFrame& frame)
+{
+    const auto* const pRok = engine.GetSlot(kSlotRok);
+
+    for (const auto& recorded : frame.objects)
+    {
+        if (recorded.pObject == pRok && !recorded.bones.empty())
+        {
+            const auto& rows = recorded.bones[0];
+
+            return Vec3{ rows[3], rows[7], rows[11] };
+        }
+    }
+
+    return frame.eye;
+}
+
+void StepClip()
+{
+    const auto nNowNs = SDL_GetTicksNS();
+    const auto nLast  = std::exchange(s_player.nLastNs, nNowNs);
+
+    const auto* const pClip = PlayingClip();
+
+    if (pClip == nullptr || !s_player.bPlaying || nLast == 0)
+    {
+        return;
+    }
+
+    const auto flSeconds = static_cast<float>(nNowNs - nLast) / 1e9f;
+    const auto flLast    = static_cast<float>(pClip->frames.size() - 1);
+
+    s_player.flFrame = std::clamp(s_player.flFrame + flSeconds * 30.0f * s_player.flSpeed, 0.0f, flLast);
+
+    if (s_player.flFrame == flLast || s_player.flFrame == 0.0f)
+    {
+        s_player.bPlaying = false;
+    }
+}
+
+void PlaceClipCamera(CameraObject& camera, GameEngine& engine, const GameClips::Clip& clip, size_t nFrame)
+{
+    const auto& frame = clip.frames[nFrame];
+
+    if (s_player.camera == ClipCamera::Broadcast)
+    {
+        std::memcpy(camera.m_pView->m_a, frame.view.data(), sizeof(frame.view));
+        camera.m_pView->m_vEye = frame.eye;
+
+        return;
+    }
+
+    const auto vRok = RokAt(engine, frame);
+
+    // The broadcast camera's distance sets the scale, so the others frame the play as it did.
+    const auto vFromRok = Vec3{ frame.eye.x - vRok.x, frame.eye.y - vRok.y, frame.eye.z - vRok.z };
+    const auto flReach  = (std::max)(std::sqrt(vFromRok.x * vFromRok.x + vFromRok.y * vFromRok.y + vFromRok.z * vFromRok.z), 1.0f);
+
+    // The chase and orbit cameras keep a few dromer heights from the rok, as a broadcast close-up would.
+    const auto flDromer = [&]
+    {
+        if (const auto* const pDromer = engine.GetSlot(0); pDromer != nullptr)
+        {
+            return MeasureObject(*pDromer).flRadius;
+        }
+
+        return flReach * 0.1f;
+    }();
+
+    const auto vEye = [&]
+    {
+        switch (s_player.camera)
+        {
+            case ClipCamera::Overhead:
+                return Vec3{ vRok.x, vRok.y - flReach * 0.3f, vRok.z + flReach * 1.8f };
+
+            case ClipCamera::Chase:
+            {
+                const auto vBefore = RokAt(engine, clip.frames[nFrame - (std::min)(nFrame, size_t{ 6 })]);
+
+                auto vBack = Vec3{ vBefore.x - vRok.x, vBefore.y - vRok.y, 0.0f };
+
+                if (!Math::Vec3Normalize(&vBack))
+                {
+                    vBack = Vec3{ 0.0f, -1.0f, 0.0f };
+                }
+
+                return Vec3{ vRok.x + vBack.x * flDromer * 6.0f, vRok.y + vBack.y * flDromer * 6.0f, vRok.z + flDromer * 2.5f };
+            }
+
+            case ClipCamera::Orbit:
+            {
+                const auto flTurn = static_cast<float>(nFrame) * 0.02f;
+
+                return Vec3{ vRok.x + std::cos(flTurn) * flDromer * 8.0f, vRok.y + std::sin(flTurn) * flDromer * 8.0f, vRok.z + flDromer * 3.0f };
+            }
+
+            case ClipCamera::Broadcast:
+                break;
+        }
+
+        return frame.eye;
+    }();
+
+    auto vDir = Vec3{ vRok.x - vEye.x, vRok.y - vEye.y, vRok.z - vEye.z };
+
+    Math::Vec3Normalize(&vDir);
+
+    LookFrom(camera, vEye, vDir, Vec3{ 0.0f, 0.0f, 1.0f });
+}
+
+// ponytail: one tick's pose per frame, no blending between ticks; blend as FramePacing does if
+// slow motion looks steppy.
+void DrawClip()
+{
+    StepClip();
+
+    Renderer::ClearFrame();
+
+    auto* const pEngine = g_pGameEngine.get();
+    auto* const pClip   = PlayingClip();
+
+    if (pEngine == nullptr || pClip == nullptr || pClip->frames.empty())
+    {
+        return;
+    }
+
+    auto* const pCamera = pEngine->GetCamera(kCameraMainSlot);
+
+    if (pCamera == nullptr || pCamera->m_pView == nullptr)
+    {
+        return;
+    }
+
+    const auto  nFrame = (std::min)(static_cast<size_t>(s_player.flFrame), pClip->frames.size() - 1);
+    const auto& frame  = pClip->frames[nFrame];
+
+    // The match may be paused under the scene, so everything the clip moves is put back after.
+    auto& view = *pCamera->m_pView;
+
+    float aSavedView[4][4];
+
+    std::memcpy(aSavedView, view.m_a, sizeof(aSavedView));
+
+    const auto vSavedEye       = view.m_vEye;
+    const auto vSavedTranslate = view.m_vTranslate;
+
+    auto liveVisible = std::vector<char>(static_cast<size_t>(pEngine->m_nObjectCount));
+    auto liveBones   = std::vector<FramePacing::Rows>();
+
+    for (short i = 0; i < pEngine->m_nObjectCount; i++)
+    {
+        auto* const pObject = pEngine->m_ppObjects[i];
+
+        liveVisible[static_cast<size_t>(i)] = pObject->IsVisible();
+        pObject->SetVisible(0);
+
+        for (short nBone = 0; nBone < pObject->m_wBoneCount; nBone++)
+        {
+            auto& rows = liveBones.emplace_back();
+
+            std::memcpy(rows.data(), pObject->m_pBones[nBone].m_world.m_a, sizeof(rows));
+        }
+    }
+
+    PlaceClipCamera(*pCamera, *pEngine, *pClip, nFrame);
+
+    g_pScene = pCamera;
+    Renderer::SetCameraTransformAndViewport(pCamera->layout);
+
+    g_nTransparentCount = 0;
+
+    for (const auto& recorded : frame.objects)
+    {
+        if (!recorded.bVisible || !StillLoaded(*pEngine, recorded))
+        {
+            continue;
+        }
+
+        recorded.pObject->SetVisible(1);
+
+        for (short nBone = 0; nBone < recorded.pObject->m_wBoneCount; nBone++)
+        {
+            auto* const pBone = &recorded.pObject->m_pBones[nBone];
+
+            std::memcpy(pBone->m_world.m_a, recorded.bones[static_cast<size_t>(nBone)].data(), sizeof(FramePacing::Rows));
+
+            if (pBone->m_pMesh != nullptr && pBone->IsHidden() == 0)
+            {
+                pBone->PushToRenderStack(pCamera);
+            }
+        }
+    }
+
+    pCamera->DrawView();
+
+    auto nNext = size_t{ 0 };
+
+    for (short i = 0; i < pEngine->m_nObjectCount; i++)
+    {
+        auto* const pObject = pEngine->m_ppObjects[i];
+
+        pObject->SetVisible(liveVisible[static_cast<size_t>(i)]);
+
+        for (short nBone = 0; nBone < pObject->m_wBoneCount; nBone++)
+        {
+            std::memcpy(pObject->m_pBones[nBone].m_world.m_a, liveBones[nNext++].data(), sizeof(FramePacing::Rows));
+        }
+    }
+
+    std::memcpy(view.m_a, aSavedView, sizeof(aSavedView));
+    view.m_vEye       = vSavedEye;
+    view.m_vTranslate = vSavedTranslate;
+}
+
+void GameClipsWindow()
+{
+    ImGui::SetNextWindowPos(ImVec2(16.0f, 40.0f), ImGuiCond_FirstUseEver);
+    BeginSceneWindow("Game clips", ImGuiWindowFlags_AlwaysAutoResize);
+
+    const auto& clips = GameClips::All();
+
+    if (clips.empty())
+    {
+        ImGui::TextDisabled("No clips yet. Each goal in a match keeps one.");
+        ImGui::End();
+
+        return;
+    }
+
+    OriginalUI::SeparatorText("Clips");
+
+    if (ImGui::BeginListBox("##clips", ImVec2(300.0f, 120.0f)))
+    {
+        for (int i = 0; i < static_cast<int>(clips.size()); i++)
+        {
+            const auto strLabel = clips[static_cast<size_t>(i)].strTitle + "##" + std::to_string(i);
+
+            if (OriginalUI::Selectable(strLabel.c_str(), i == s_player.nClip))
+            {
+                s_player.nClip    = i;
+                s_player.flFrame  = 0.0f;
+                s_player.flSpeed  = 1.0f;
+                s_player.bPlaying = true;
+            }
+        }
+
+        ImGui::EndListBox();
+    }
+
+    const auto* const pClip = PlayingClip();
+
+    if (pClip == nullptr)
+    {
+        ImGui::End();
+
+        return;
+    }
+
+    const auto flLast = static_cast<float>(pClip->frames.size() - 1);
+
+    // 1 to 4 pick a camera, space plays and pauses, and the arrows step one tick.
+    if (!ImGui::GetIO().WantTextInput)
+    {
+        constexpr auto kCameraKeys = std::array<ImGuiKey, 4>{ ImGuiKey_1, ImGuiKey_2, ImGuiKey_3, ImGuiKey_4 };
+
+        for (size_t i = 0; i < kCameraKeys.size(); i++)
+        {
+            if (ImGui::IsKeyPressed(kCameraKeys[i], false))
+            {
+                s_player.camera = static_cast<ClipCamera>(i);
+            }
+        }
+
+        if (ImGui::IsKeyPressed(ImGuiKey_Space, false))
+        {
+            s_player.flSpeed  = 1.0f;
+            s_player.bPlaying = !s_player.bPlaying;
+
+            if (s_player.bPlaying && s_player.flFrame >= flLast)
+            {
+                s_player.flFrame = 0.0f;
+            }
+        }
+
+        if (ImGui::IsKeyPressed(ImGuiKey_LeftArrow))
+        {
+            s_player.bPlaying = false;
+            s_player.flFrame  = (std::max)(std::floor(s_player.flFrame) - 1.0f, 0.0f);
+        }
+
+        if (ImGui::IsKeyPressed(ImGuiKey_RightArrow))
+        {
+            s_player.bPlaying = false;
+            s_player.flFrame  = (std::min)(std::floor(s_player.flFrame) + 1.0f, flLast);
+        }
+    }
+
+    OriginalUI::SeparatorText("Playback");
+
+    // The demo's five buttons: stop, rewind, play, pause and forward.
+    if (OriginalUI::Button("Stop"))
+    {
+        s_player.flFrame  = 0.0f;
+        s_player.bPlaying = false;
+    }
+
+    ImGui::SameLine();
+
+    if (OriginalUI::Button("Rewind"))
+    {
+        s_player.flSpeed  = -2.0f;
+        s_player.bPlaying = true;
+    }
+
+    ImGui::SameLine();
+
+    if (OriginalUI::Button("Play"))
+    {
+        if (s_player.flFrame >= flLast)
+        {
+            s_player.flFrame = 0.0f;
+        }
+
+        s_player.flSpeed  = 1.0f;
+        s_player.bPlaying = true;
+    }
+
+    ImGui::SameLine();
+
+    if (OriginalUI::Button("Pause"))
+    {
+        s_player.bPlaying = false;
+    }
+
+    ImGui::SameLine();
+
+    if (OriginalUI::Button("Forward"))
+    {
+        s_player.flSpeed  = 2.0f;
+        s_player.bPlaying = true;
+    }
+
+    ImGui::SetNextItemWidth(300.0f);
+
+    if (ImGui::SliderFloat("##position", &s_player.flFrame, 0.0f, flLast, "%.0f"))
+    {
+        s_player.bPlaying = false;
+    }
+
+    ImGui::SetNextItemWidth(160.0f);
+    ImGui::SliderFloat("Speed", &s_player.flSpeed, 0.25f, 2.0f, "%.2fx");
+
+    OriginalUI::SeparatorText("Camera");
+
+    for (size_t i = 0; i < kClipCameraNames.size(); i++)
+    {
+        if (i > 0)
+        {
+            ImGui::SameLine();
+        }
+
+        if (OriginalUI::RadioButton(kClipCameraNames[i], s_player.camera == static_cast<ClipCamera>(i)))
+        {
+            s_player.camera = static_cast<ClipCamera>(i);
+        }
+    }
 
     ImGui::End();
 }
@@ -1036,6 +1460,14 @@ bool Scenes::Frame()
         return true;
     }
 
+    if (s_scene == Scene::GameClips)
+    {
+        DrawClip();
+        Renderer::PresentFrame();
+
+        return true;
+    }
+
     // The Windows 95 desktop's teal.
     Presenter::Clear(0, 128, 128);
 
@@ -1073,6 +1505,10 @@ void Scenes::DrawWindows()
 
         case Scene::ImageBrowser:
             ImageBrowserWindow();
+            break;
+
+        case Scene::GameClips:
+            GameClipsWindow();
             break;
 
         case Scene::None:

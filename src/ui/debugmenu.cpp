@@ -1372,6 +1372,7 @@ void DebugMenuOnBar()
         { "Model viewer", Scenes::Scene::ModelViewer },
         { "Sound player", Scenes::Scene::SoundPlayer },
         { "Image browser", Scenes::Scene::ImageBrowser },
+        { "Game clips", Scenes::Scene::GameClips },
     };
 
     for (const auto& [pszName, scene] : SCENES)

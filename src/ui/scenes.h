@@ -1,5 +1,6 @@
 // Tools that take over the screen from the menus or the match while they are open: a model viewer,
-// a sound player and an image browser. The game underneath waits until the scene closes.
+// a sound player, an image browser and the game clips viewer. The game underneath waits until the
+// scene closes.
 
 #ifndef HYPERBLADE_SCENES_H
 #define HYPERBLADE_SCENES_H
@@ -13,6 +14,7 @@ enum class Scene
     ModelViewer,
     SoundPlayer,
     ImageBrowser,
+    GameClips,
 };
 
 // Scene::None closes the open one. The change happens at the next Frame.
