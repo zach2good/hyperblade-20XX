@@ -1,6 +1,7 @@
 #include "math/squirrel5.h"
 #include "input/twoplayer.h"
 #include "common/compat.h"
+#include "engine/gameclips.h"
 #include "common/clock.h"
 #include <cstdint>
 #include <algorithm>
@@ -2948,6 +2949,11 @@ void PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, short*, in
 
         pTarget->m_matchStats.AccumulateStat(nStat,
                                              pSource->GetSlot());
+
+        if (nStat == kMatchStatGoals)
+        {
+            GameClips::OnGoal(pTarget->GetSlot());
+        }
 
         SettlePass(pTarget, nStat);
     }

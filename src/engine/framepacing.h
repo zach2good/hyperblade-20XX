@@ -5,13 +5,39 @@
 #ifndef HYPERBLADE_FRAMEPACING_H
 #define HYPERBLADE_FRAMEPACING_H
 
+#include "math/vec3.h"
+#include <array>
+#include <vector>
+
 class CameraObject;
+class EngineObject;
 class MeshBone;
 
 namespace FramePacing
 {
 
 constexpr auto kTickMs = 1000.0f / 30.0f;
+
+// One object's world bones as a tick drew them, three rows of four.
+using Rows = std::array<float, 12>;
+
+struct ReplayObject
+{
+    EngineObject*     pObject = nullptr;
+    std::vector<Rows> bones;
+    bool              bVisible = false;
+};
+
+// One drawn tick: every object's bones and visibility, and the main camera.
+struct ReplayFrame
+{
+    std::vector<ReplayObject> objects;
+    std::array<float, 16>     view = {};
+    Vec3                      eye  = {};
+};
+
+// A copy of the instant replay's last eight seconds, oldest first.
+std::vector<ReplayFrame> RecentFrames();
 
 void BeginTick();
 

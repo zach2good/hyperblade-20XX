@@ -32,7 +32,9 @@ constexpr auto kSnapDistanceSq = 64.0f * 64.0f;
 // A slow frame owes this many ticks at most; the rest of the time is dropped.
 constexpr auto kMaxCatchUp = 4;
 
-using Rows = std::array<float, 12>;
+using FramePacing::ReplayFrame;
+using FramePacing::ReplayObject;
+using FramePacing::Rows;
 
 struct ObjectPose
 {
@@ -60,20 +62,6 @@ struct View
 
 // The instant replay's last eight seconds of drawn ticks: bones, visibility and the main camera.
 constexpr auto kReplayTicks = 240;
-
-struct ReplayObject
-{
-    EngineObject*     pObject = nullptr;
-    std::vector<Rows> bones;
-    bool              bVisible = false;
-};
-
-struct ReplayFrame
-{
-    std::vector<ReplayObject> objects;
-    std::array<float, 16>     view = {};
-    Vec3                      eye  = {};
-};
 
 std::deque<ReplayFrame>  s_recorded;
 std::vector<ReplayFrame> s_playing;
@@ -547,6 +535,11 @@ void FramePacing::StopReplay()
 bool FramePacing::Replaying()
 {
     return s_bReplaying;
+}
+
+std::vector<ReplayFrame> FramePacing::RecentFrames()
+{
+    return { s_recorded.begin(), s_recorded.end() };
 }
 
 float FramePacing::RunTicks()

@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "engine/gameclips.h"
 #include "input/twoplayer.h"
 #include "common/clock.h"
 #include <cstdint>
@@ -4434,6 +4435,7 @@ void GameEngine::RestartMatch()
     if (m_clock.nPeriod == kFirstPeriod)
     {
         CareerStats::StartMatch();
+        GameClips::Clear();
 
         Reset();
 
