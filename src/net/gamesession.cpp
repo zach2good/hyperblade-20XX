@@ -1,4 +1,5 @@
 #include "common/compat.h"
+#include "common/stub.h"
 #include "globals.h"
 #include "session.h"
 #include "physics/physicsbody.h"
@@ -941,6 +942,12 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
     SyncCatalogBlock*  pLocalArenas;
     SyncCatalogBlock*  pLocalPlans;
     int                nIndex;
+
+    // Never runs; taking its address keeps pInfo in a frame slot.
+    if (0)
+    {
+        RELEASE_ASSERT((int)&pInfo);
+    }
 
     if (pLocal == 0 || pRemote == 0 || (pRemoteSettings = pRemote->Settings()) == 0 || (pRemoteTeams = pRemote->Teams()) == 0 || (pRemoteArenas = pRemote->Arenas()) == 0 || (pRemotePlans = pRemote->Plans()) == 0 || (pLocalSettings = pLocal->Settings()) == 0 || (pLocalTeams = pLocal->Teams()) == 0 || (pLocalArenas = pLocal->Arenas()) == 0 || (pLocalPlans = pLocal->Plans()) == 0)
     {
