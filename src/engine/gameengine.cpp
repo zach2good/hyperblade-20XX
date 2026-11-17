@@ -3229,7 +3229,7 @@ char GameEngine::UpdateTeamSounds(short nHome, short nAway)
     // Never runs; taking apCandidates' address keeps -1 in EBX, as the original has it.
     if (0)
     {
-        RELEASE_ASSERT((int)apCandidates);
+        RELEASE_ASSERT((int)&apCandidates);
     }
 
     for (i = 0; i < TAUNT_NAMES; i++)
