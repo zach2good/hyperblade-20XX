@@ -39,7 +39,7 @@ inline int Capsule::Overlaps(const Capsule* pMine, const Capsule* pOther)
     return (std::min)(pOther->vCentre.y + pOther->flHeight, pMine->vCentre.y + pMine->flHeight) >= (std::max)(pOther->Base(), pMine->Base()) && flRadii * flRadii >= vDelta.x * vDelta.x + vDelta.z * vDelta.z;
 }
 
-// FUNCTION: HYPERX 0x00429bc0
+// FUNCTION: HYPERX1001 0x00429bc0
 int Capsule::CheckCollision(const Vec3* pDirSelf, const Vec3* pDirOther, const Capsule* pOther)
 {
     float   flDistA;

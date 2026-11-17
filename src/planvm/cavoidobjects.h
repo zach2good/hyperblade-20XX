@@ -7,7 +7,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slots 0 and 2 are shared bodies defined elsewhere.
-// VTABLE: HYPERX 0x004b1d6c
+// VTABLE: HYPERX1001 0x004b1d6c
 class CAvoidObjects : public ReleasingAgendaItem
 {
 public:
@@ -16,7 +16,7 @@ public:
     void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 
     // Five tables share this body at slot seven or eight; the original's link folded the copies.
-    // FUNCTION: HYPERX 0x00413ef0
+    // FUNCTION: HYPERX1001 0x00413ef0
     char IsReplaceable() override
     {
         return 1;

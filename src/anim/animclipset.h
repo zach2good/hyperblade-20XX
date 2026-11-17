@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-// VTABLE: HYPERX 0x004b22a0
+// VTABLE: HYPERX1001 0x004b22a0
 class AnimClipSet : public AnimObject
 {
 public:
@@ -33,10 +33,10 @@ public:
     short                       m_wEndFrame;   // 0x1e, the bound the binder clamps a node's end frame to
 };
 
-// FUNCTION: HYPERX 0x004174a0
+// FUNCTION: HYPERX1001 0x004174a0
 // AnimClipSet::~AnimClipSet
 
-// SYNTHETIC: HYPERX 0x00417960
+// SYNTHETIC: HYPERX1001 0x00417960
 // AnimClipSet::`scalar deleting destructor'
 
 // The length AnimSet::LoadIntoRegistry asks operator new for.

@@ -100,7 +100,7 @@ std::unique_ptr<GDI::Bitmap> FromDIB(const BitmapInfoHeader* pDib)
 
 } // namespace
 
-// FUNCTION: HYPERX 0x00418cc0
+// FUNCTION: HYPERX1001 0x00418cc0
 void GDI::DrawBitmapToWindow(const char* pszResourceName)
 {
     auto* const pBitmap = GDI::LoadBitmapWithPalette(pszResourceName, nullptr);
@@ -116,7 +116,7 @@ void GDI::DrawBitmapToWindow(const char* pszResourceName)
 }
 
 // A file starting with MDM1 goes to the decompressor.
-// FUNCTION: HYPERX 0x0043fff0
+// FUNCTION: HYPERX1001 0x0043fff0
 Record<BitmapInfoHeader> GDI::ReadBitmapFile(const char* pszName)
 {
     FileObj      file;
@@ -341,7 +341,7 @@ union DibHeader
 };
 
 // The file header is optional, and an OS/2 core header is widened in place.
-// FUNCTION: HYPERX 0x00440200
+// FUNCTION: HYPERX1001 0x00440200
 Record<BitmapInfoHeader> GDI::ReadDIB(FileObj* pFile)
 {
     BitmapFileHeader bmfh;
@@ -469,13 +469,13 @@ Record<BitmapInfoHeader> GDI::ReadDIB(FileObj* pFile)
     return pDib;
 }
 
-// FUNCTION: HYPERX 0x0048f330
+// FUNCTION: HYPERX1001 0x0048f330
 GDI::Bitmap* GDI::LoadBitmapHandle(const char* pszName)
 {
     return GDI::LoadBitmapWithPalette(pszName, nullptr);
 }
 
-// FUNCTION: HYPERX 0x0048f340
+// FUNCTION: HYPERX1001 0x0048f340
 GDI::Bitmap* GDI::LoadBitmapAsBackground(const char* pszName, int* pbPaletted)
 {
     return GDI::LoadBitmapWithPalette(pszName, pbPaletted);
@@ -483,7 +483,7 @@ GDI::Bitmap* GDI::LoadBitmapAsBackground(const char* pszName, int* pbPaletted)
 
 // Every caller draws onto the menu canvas, in the System font's sixteen-pixel cell, which the
 // original never replaced with a font of its own.
-// FUNCTION: HYPERX 0x0048f3b0
+// FUNCTION: HYPERX1001 0x0048f3b0
 void GDI::DrawTransparentText(std::uint32_t color, int x, int y, const char* pszText, int, int)
 {
     constexpr auto kSystemFontHeight = 16;
@@ -494,7 +494,7 @@ void GDI::DrawTransparentText(std::uint32_t color, int x, int y, const char* psz
     Text::Draw(Text::Find(kSystemFontHeight), canvas.pBits, canvas.nWidth * 4, canvas.nWidth, canvas.nHeight, x, y, pszText, nRGB);
 }
 
-// FUNCTION: HYPERX 0x0048f410
+// FUNCTION: HYPERX1001 0x0048f410
 void GDI::SafeDeleteBitmap(Bitmap* pBitmap)
 {
     std::erase_if(
@@ -506,7 +506,7 @@ void GDI::SafeDeleteBitmap(Bitmap* pBitmap)
 }
 
 // A null bitmap leaves the size alone, as GetObject failing did.
-// FUNCTION: HYPERX 0x0048f430
+// FUNCTION: HYPERX1001 0x0048f430
 void GDI::GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize)
 {
     if (pBitmap != nullptr)
@@ -517,7 +517,7 @@ void GDI::GetBitmapDimensions(const Bitmap* pBitmap, BitmapSize* pSize)
 }
 
 // Copies onto the menu canvas, clipped to both the canvas and the bitmap.
-// FUNCTION: HYPERX 0x0048f4b0
+// FUNCTION: HYPERX1001 0x0048f4b0
 void GDI::Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX, int nSourceY)
 {
     if (pBitmap == nullptr)
@@ -551,7 +551,7 @@ void GDI::Blit(int x, int y, int cx, int cy, const Bitmap* pBitmap, int nSourceX
 }
 
 // A JPEG has no palette, so the flag is left alone.
-// FUNCTION: HYPERX 0x0048f540
+// FUNCTION: HYPERX1001 0x0048f540
 GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPaletted)
 {
     PathString strPath(kMaxPathLength);
@@ -560,7 +560,7 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
 
     if (std::error_code error; !std::filesystem::exists(Path::Native(strPath.m_str.m_pchData), error))
     {
-        // STRING: HYPERX 0x004c8960
+        // STRING: HYPERX1001 0x004c8960
         strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "jpg");
 
         if (std::error_code jpgError; !std::filesystem::exists(Path::Native(strPath.m_str.m_pchData), jpgError))
@@ -587,14 +587,14 @@ GDI::Bitmap* GDI::LoadBitmapWithPalette(const char* pszResourceName, int* pbPale
 
     if (pBitmap == nullptr)
     {
-        // STRING: HYPERX 0x004bc42c
+        // STRING: HYPERX1001 0x004bc42c
         g_gameApp.Error("Problem Creating DIBitmap %s, check palette!", pszResourceName);
     }
 
     return pBitmap;
 }
 
-// FUNCTION: HYPERX 0x0048f7d0
+// FUNCTION: HYPERX1001 0x0048f7d0
 GDI::Bitmap* GDI::LoadJPEGImage(const char* pszPath)
 {
     auto nWidth    = 0;

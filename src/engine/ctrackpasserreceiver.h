@@ -6,7 +6,7 @@
 class EngineObject;
 
 // The five pointers are what its init fills.
-// VTABLE: HYPERX 0x004b1fa8
+// VTABLE: HYPERX1001 0x004b1fa8
 class CTrackPasser_Receiver : public ReleasingAgendaItem
 {
     // m_pOwner is a camera for this kind.

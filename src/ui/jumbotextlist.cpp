@@ -12,7 +12,7 @@
 
 constexpr auto kJumboMessageMax = 128;
 
-// FUNCTION: HYPERX 0x0046bf50
+// FUNCTION: HYPERX1001 0x0046bf50
 JumboTextList* JumboTextList::Init()
 {
     m_rows.clear();
@@ -20,14 +20,14 @@ JumboTextList* JumboTextList::Init()
     return this;
 }
 
-// FUNCTION: HYPERX 0x0046bf60
+// FUNCTION: HYPERX1001 0x0046bf60
 void JumboTextList::FreeAll()
 {
     m_rows.clear();
 }
 
 // Reseeds from the clock every call, so calls within a second draw the same row.
-// FUNCTION: HYPERX 0x0046bfa0
+// FUNCTION: HYPERX1001 0x0046bfa0
 int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
     Math::SeedRand(static_cast<uint32_t>(time(nullptr)));
@@ -44,7 +44,7 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0046c010
+// FUNCTION: HYPERX1001 0x0046c010
 unsigned int JumboTextList::Load(const char* pszFileName)
 {
     OwnedFile  file;
@@ -54,7 +54,7 @@ unsigned int JumboTextList::Load(const char* pszFileName)
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
-        // STRING: HYPERX 0x004c4714
+        // STRING: HYPERX1001 0x004c4714
         g_gameApp.Fatal("ERROR OPENING JUMBOTRON ADDS LIST FILE ");
 
         return 0;

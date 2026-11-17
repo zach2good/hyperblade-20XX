@@ -14,7 +14,7 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 
-// FUNCTION: HYPERX 0x0040ad50
+// FUNCTION: HYPERX1001 0x0040ad50
 void CWatch::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CWatch;
@@ -23,7 +23,7 @@ void CWatch::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
-// FUNCTION: HYPERX 0x0040ad70
+// FUNCTION: HYPERX1001 0x0040ad70
 void CWatch::Process(int nArg)
 {
     Vec3 vDir;
@@ -33,13 +33,13 @@ void CWatch::Process(int nArg)
 
     if (pWatched == nullptr)
     {
-        // STRING: HYPERX 0x004bb528
+        // STRING: HYPERX1001 0x004bb528
         g_gameApp.Fatal("CWatch::Process(): Null pointer for model to watch\n");
     }
 
     if (pTracked == nullptr)
     {
-        // STRING: HYPERX 0x004bb4f4
+        // STRING: HYPERX1001 0x004bb4f4
         g_gameApp.Fatal("CWatch::Process(): Null pointer for model to track\n");
     }
 

@@ -11,7 +11,7 @@ constexpr auto kBehaviorSlotCount = 10;
 // m_wLatency until id_SET_InteractorLatency sets it.
 constexpr auto kBehaviorDefaultLatency = 0x0a;
 
-// VTABLE: HYPERX 0x004b23c8
+// VTABLE: HYPERX1001 0x004b23c8
 class GameBehaviorObject
 {
 public:
@@ -125,7 +125,7 @@ protected:
     char m_abAgendaPurged[Agenda_Count]; // 0x75
 };
 
-// SYNTHETIC: HYPERX 0x0041bfc0
+// SYNTHETIC: HYPERX1001 0x0041bfc0
 // GameBehaviorObject::`scalar deleting destructor'
 
 #endif

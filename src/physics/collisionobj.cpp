@@ -16,27 +16,27 @@ float g_flUnusedPlanA = g_flZeroPlan;
 float g_flUnusedPlanB = g_flZeroPlan;
 float g_flUnusedPlanC = g_flZeroPlan;
 
-// FUNCTION: HYPERX 0x00405860
+// FUNCTION: HYPERX1001 0x00405860
 Vec3* CollisionObj::NormalAtPoint(const Vec3*)
 {
     return &m_vNormal;
 }
 
 // Handing six values to the transform getter, which reads none of them.
-// FUNCTION: HYPERX 0x00405880
+// FUNCTION: HYPERX1001 0x00405880
 void CollisionObj::ForwardTransformRequest(int nA, int nB, float flC, float flD, float flE, float flF)
 {
     CollisionShape::GetOrCreateTransform(nA, nB, flC, flE, flD, flF);
 }
 
-// FUNCTION: HYPERX 0x004058c0
+// FUNCTION: HYPERX1001 0x004058c0
 unsigned char CollisionObj::PointInside(const Vec3*)
 {
     return 0x1;
 }
 
 // On the surface when the point's height is within a hundredth of the surface's.
-// FUNCTION: HYPERX 0x004058d0
+// FUNCTION: HYPERX1001 0x004058d0
 int CollisionObj::PointNearSurface(const Vec3* pPoint)
 {
     const float flHeight = GetZ(pPoint->x, pPoint->y);
@@ -49,13 +49,13 @@ int CollisionObj::PointNearSurface(const Vec3* pPoint)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00405910
+// FUNCTION: HYPERX1001 0x00405910
 float CollisionObj::RadiusForDirection(const Vec3*, int)
 {
     return -g_flOneCollisionObj;
 }
 
-// FUNCTION: HYPERX 0x0042e640
+// FUNCTION: HYPERX1001 0x0042e640
 CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFriction, float flElasticity)
 {
     m_vNormal.x = pNormal->x;
@@ -76,7 +76,7 @@ CollisionObj::CollisionObj(const Vec3* pNormal, const Vec3* pOrigin, float flFri
 }
 
 // The failure path passes a string resource id where a format string belongs.
-// FUNCTION: HYPERX 0x0042e710
+// FUNCTION: HYPERX1001 0x0042e710
 void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity)
 {
     const auto flUx = pB->x - pOrigin->x;
@@ -107,7 +107,7 @@ void CollisionObj::InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Ve
 }
 
 // The direction lives in a file-scope vector, so two of these cannot run at once.
-// FUNCTION: HYPERX 0x0042e7d0
+// FUNCTION: HYPERX1001 0x0042e7d0
 int CollisionObj::SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut)
 {
     g_vPlaneSegmentDir.x = pTo->x - pFrom->x;
@@ -118,7 +118,7 @@ int CollisionObj::SegmentIntersection(Vec3* pFrom, Vec3* pTo, Vec3* pOut)
 }
 
 // Tests the whole line: answers -1 for a null direction, 0 when parallel, 1 with the crossing.
-// FUNCTION: HYPERX 0x0042e810
+// FUNCTION: HYPERX1001 0x0042e810
 int CollisionObj::RayIntersection(Vec3* pVDir, Vec3* pVOrigin, Vec3* pVHitOut)
 {
     Vec3              vScaled;
@@ -157,7 +157,7 @@ int CollisionObj::RayIntersection(Vec3* pVDir, Vec3* pVOrigin, Vec3* pVHitOut)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0042e930
+// FUNCTION: HYPERX1001 0x0042e930
 float CollisionObj::GetZ(float x, float y)
 {
     if (m_bCached == 0)
@@ -188,7 +188,7 @@ float CollisionObj::GetZ(float x, float y)
 }
 
 // Maps a CollisionObjectID to its ModelType; an unknown id is fatal.
-// FUNCTION: HYPERX 0x0045e200
+// FUNCTION: HYPERX1001 0x0045e200
 int CollisionObj::GetModelId(int nIndex)
 {
     switch (nIndex)
@@ -251,14 +251,14 @@ int CollisionObj::GetModelId(int nIndex)
             return kSlotSwarf;
 
         default:
-            // STRING: HYPERX 0x004c45cc
+            // STRING: HYPERX1001 0x004c45cc
             g_gameApp.Fatal("ColObj to Model map unaccounted for.\n");
 
             return kModelIDNone;
     }
 }
 
-// FUNCTION: HYPERX 0x00480740
+// FUNCTION: HYPERX1001 0x00480740
 CollisionObj::CollisionObj(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity)
 {
     InitFrom3Points(pOrigin, pB, pC, flFriction, flElasticity);

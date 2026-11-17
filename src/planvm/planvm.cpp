@@ -33,7 +33,7 @@ struct GameApp;
 extern short g_awReactionByDamageAndSector[35];
 
 // The names the hit list's entries were found under; nothing reads them.
-// GLOBAL: HYPERX 0x004cf4f4
+// GLOBAL: HYPERX1001 0x004cf4f4
 extern char g_aAnimListNames[35][32];
 
 constexpr auto kAnimListLines = 5;
@@ -45,14 +45,14 @@ constexpr auto kAnimNameMax = 32;
 
 constexpr auto kAnimLineMax = 100;
 
-// GLOBAL: HYPERX 0x004cf4f0
+// GLOBAL: HYPERX1001 0x004cf4f0
 extern int g_nAnimListNamesLead;
 
 // The condition and opcode half of the dispatch array, and the action half: one storage, two bases.
-// GLOBAL: HYPERX 0x004cf084
+// GLOBAL: HYPERX1001 0x004cf084
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 
-// GLOBAL: HYPERX 0x004cf2b8
+// GLOBAL: HYPERX1001 0x004cf2b8
 extern PlanHandlerFn g_pfnPlanActionHandlers[140];
 
 constexpr auto kTokenBuffer = 0x28;
@@ -96,7 +96,7 @@ constexpr auto kUnreadableStringMessageLength = 26;
 constexpr auto kPlanStringLimit = 0x28;
 
 // Five action slots are never written, and only the hit list's names are kept.
-// FUNCTION: HYPERX 0x0046ac10
+// FUNCTION: HYPERX1001 0x0046ac10
 void PlanVM::LoadAnimationLists()
 {
     char aHitName[kAnimNamesPerLine][kAnimNameMax];
@@ -390,18 +390,18 @@ void PlanVM::LoadAnimationLists()
     g_pfnPlanOpcodeHandlers[kPlanDecisionBase + kDCFCheckScoreOnOwnGoal].pfnDecide        = PlanCond::CheckScoreOnOwnGoal;
 
     // Marked in src/graphics/colorpalette.cpp: without /GF each object keeps its own copy.
-    // STRING: HYPERX 0x004c4704
+    // STRING: HYPERX1001 0x004c4704
     auto* const pHitFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "HitAnims.lst")).c_str(), "r");
-    // STRING: HYPERX 0x004c46f4
+    // STRING: HYPERX1001 0x004c46f4
     auto* const pChkFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ChkAnims.lst")).c_str(), "r");
-    // STRING: HYPERX 0x004c46e4
+    // STRING: HYPERX1001 0x004c46e4
     auto* const pJmpFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "JmpAnims.lst")).c_str(), "r");
-    // STRING: HYPERX 0x004c46d4
+    // STRING: HYPERX1001 0x004c46d4
     auto* const pThrFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, "ThrAnims.lst")).c_str(), "r");
 
     if (pHitFile == nullptr || pChkFile == nullptr || pJmpFile == nullptr || pThrFile == nullptr)
     {
-        // STRING: HYPERX 0x004c46ac
+        // STRING: HYPERX1001 0x004c46ac
         g_gameApp.Fatal("Error opening Animation List files.\n");
     }
 
@@ -416,7 +416,7 @@ void PlanVM::LoadAnimationLists()
         ParseUtil::ReadLine(pJmpFile, szJmpLine);
         ParseUtil::ReadLine(pThrFile, szThrLine);
 
-        // STRING: HYPERX 0x004c4694
+        // STRING: HYPERX1001 0x004c4694
         const auto nHitRead = sscanf(szHitLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aHitName[0], aHitName[1], aHitName[2], aHitName[3], aHitName[4], aHitName[5], aHitName[6]);
         const auto nChkRead = sscanf(szChkLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aChkName[0], aChkName[1], aChkName[2], aChkName[3], aChkName[4], aChkName[5], aChkName[6]);
         const auto nJmpRead = sscanf(szJmpLine, "%s\t%s\t%s\t%s\t%s\t%s\t%s", aJmpName[0], aJmpName[1], aJmpName[2], aJmpName[3], aJmpName[4], aJmpName[5], aJmpName[6]);
@@ -424,7 +424,7 @@ void PlanVM::LoadAnimationLists()
 
         if (nHitRead != kAnimNamesPerLine || nChkRead != nHitRead || nJmpRead != nHitRead || nThrRead != nHitRead)
         {
-            // STRING: HYPERX 0x004c4670
+            // STRING: HYPERX1001 0x004c4670
             g_gameApp.Fatal("Error reading Animation List file.\n");
         }
 
@@ -458,7 +458,7 @@ void PlanVM::LoadAnimationLists()
     fclose(pThrFile);
 }
 
-// FUNCTION: HYPERX 0x0047cd60
+// FUNCTION: HYPERX1001 0x0047cd60
 void PlanVM::InitRuntimeOpcodeTable()
 {
     g_apPlanArgFns[PRN_ME]                        = PlanArg::GetMe;
@@ -545,7 +545,7 @@ constexpr auto kPlanNamedTokens       = 6;
 constexpr auto kPlanLastNumberedToken = 50;
 
 // Builds the two keyword tables; each ends in an empty-name entry valued minus one.
-// FUNCTION: HYPERX 0x0047d340
+// FUNCTION: HYPERX1001 0x0047d340
 PlanVM::PlanVM()
 {
     char szToken[8];
@@ -555,189 +555,189 @@ PlanVM::PlanVM()
 
     auto* pEntry = &m_aOpcodes[0];
 
-    // STRING: HYPERX 0x004c6d0c
+    // STRING: HYPERX1001 0x004c6d0c
     strcpy(pEntry->szName, "SET_COLLISION_INTERACTOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_COLLISION_INTERACTOR) | MEMBER_SET_COLLISION_INTERACTOR;
 
     pEntry = &m_aOpcodes[1];
 
-    // STRING: HYPERX 0x004c6cf4
+    // STRING: HYPERX1001 0x004c6cf4
     strcpy(pEntry->szName, "SET_MESSAGE_INTERACTOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_MESSAGE_INTERACTOR) | MEMBER_SET_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[2];
 
-    // STRING: HYPERX 0x004c6cd4
+    // STRING: HYPERX1001 0x004c6cd4
     strcpy(pEntry->szName, "SET_LOC_COLLISION_INTERACTOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_COLLISION_INTERACTOR) | MEMBER_SET_LOC_COLLISION_INTERACTOR;
 
     pEntry = &m_aOpcodes[3];
 
-    // STRING: HYPERX 0x004c6cb4
+    // STRING: HYPERX1001 0x004c6cb4
     strcpy(pEntry->szName, "SET_NET_COLLISION_INTERACTOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_MESSAGE_INTERACTOR) | MEMBER_SET_NET_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[4];
 
-    // STRING: HYPERX 0x004c6c98
+    // STRING: HYPERX1001 0x004c6c98
     strcpy(pEntry->szName, "SET_LOC_MESSAGE_INTERACTOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_MESSAGE_INTERACTOR) | MEMBER_SET_LOC_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[5];
 
-    // STRING: HYPERX 0x004c6c7c
+    // STRING: HYPERX1001 0x004c6c7c
     strcpy(pEntry->szName, "SET_NET_MESSAGE_INTERACTOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_MESSAGE_INTERACTOR) | MEMBER_SET_NET_MESSAGE_INTERACTOR;
 
     pEntry = &m_aOpcodes[6];
 
-    // STRING: HYPERX 0x004c6c6c
+    // STRING: HYPERX1001 0x004c6c6c
     strcpy(pEntry->szName, "ADD_AGENDA_ITEM");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_AGENDA) | MEMBER_ADD_AGENDA_ITEM;
 
     pEntry = &m_aOpcodes[7];
 
-    // STRING: HYPERX 0x004c6c58
+    // STRING: HYPERX1001 0x004c6c58
     strcpy(pEntry->szName, "REMOVE_AGENDA_ITEM");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_AGENDA) | MEMBER_REMOVE_AGENDA_ITEM;
 
     pEntry = &m_aOpcodes[8];
 
-    // STRING: HYPERX 0x004c6c48
+    // STRING: HYPERX1001 0x004c6c48
     strcpy(pEntry->szName, "SET_TIMEOUTMSG");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_AGENDA) | MEMBER_SET_TIMEOUTMSG;
 
     pEntry = &m_aOpcodes[9];
 
-    // STRING: HYPERX 0x004c6c34
+    // STRING: HYPERX1001 0x004c6c34
     strcpy(pEntry->szName, "GLOBAL_INTERACTORS");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = CATEGORY_GLOBAL_INTERACTORS;
 
     pEntry = &m_aOpcodes[10];
 
-    // STRING: HYPERX 0x004c6c24
+    // STRING: HYPERX1001 0x004c6c24
     strcpy(pEntry->szName, "CHANGE_OF_PLAN");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_PLAN_CHANGE) | MEMBER_CHANGE_OF_PLAN;
 
     pEntry = &m_aOpcodes[11];
 
-    // STRING: HYPERX 0x004c6c10
+    // STRING: HYPERX1001 0x004c6c10
     strcpy(pEntry->szName, "CHANGE_TO_BEHAVIOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_CHANGE_TO_BEHAVIOR;
 
     pEntry = &m_aOpcodes[12];
 
-    // STRING: HYPERX 0x004c6bfc
+    // STRING: HYPERX1001 0x004c6bfc
     strcpy(pEntry->szName, "DECLARE_BEHAVIOR");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_DECLARE_BEHAVIOR;
 
     pEntry = &m_aOpcodes[13];
 
-    // STRING: HYPERX 0x004c6be8
+    // STRING: HYPERX1001 0x004c6be8
     strcpy(pEntry->szName, "DECLARE_LOCAL_REALS");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_PLAN_CHANGE) | MEMBER_DECLARE_LOCAL_REALS;
 
     pEntry = &m_aOpcodes[14];
 
-    // STRING: HYPERX 0x004c6bd4
+    // STRING: HYPERX1001 0x004c6bd4
     strcpy(pEntry->szName, "SET_BEHAVIOR_PARAM");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_BEHAVIOUR) | MEMBER_SET_BEHAVIOR_PARAM;
 
     pEntry = &m_aOpcodes[15];
 
-    // STRING: HYPERX 0x004c6bbc
+    // STRING: HYPERX1001 0x004c6bbc
     strcpy(pEntry->szName, "SET_INTERACTOR_PARAM");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_ACTION) | MEMBER_SET_INTERACTOR_PARAM;
 
     pEntry = &m_aOpcodes[16];
 
-    // STRING: HYPERX 0x004c6bb0
+    // STRING: HYPERX1001 0x004c6bb0
     strcpy(pEntry->szName, "DO_ACTION");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_ACTION) | MEMBER_DO_ACTION;
 
     pEntry = &m_aOpcodes[17];
 
-    // STRING: HYPERX 0x004c6ba0
+    // STRING: HYPERX1001 0x004c6ba0
     strcpy(pEntry->szName, "DO_LOCAL_ACTION");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_ACTION) | MEMBER_DO_LOCAL_ACTION;
 
     pEntry = &m_aOpcodes[18];
 
-    // STRING: HYPERX 0x004c6b90
+    // STRING: HYPERX1001 0x004c6b90
     strcpy(pEntry->szName, "DO_NET_ACTION");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_ACTION) | MEMBER_DO_NET_ACTION;
 
     pEntry = &m_aOpcodes[19];
 
-    // STRING: HYPERX 0x004c6b80
+    // STRING: HYPERX1001 0x004c6b80
     strcpy(pEntry->szName, "DECIDE_BY_AMONG");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_DECIDE) | MEMBER_DECIDE_BY_AMONG;
 
     pEntry = &m_aOpcodes[20];
 
-    // STRING: HYPERX 0x004c6b68
+    // STRING: HYPERX1001 0x004c6b68
     strcpy(pEntry->szName, "DECIDE_BY_WITH_AMONG");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_DECIDE) | MEMBER_DECIDE_BY_WITH_AMONG;
 
     pEntry = &m_aOpcodes[21];
 
-    // STRING: HYPERX 0x004c6b5c
+    // STRING: HYPERX1001 0x004c6b5c
     strcpy(pEntry->szName, "SET_DEBUG");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_DEBUG) | MEMBER_SET_DEBUG;
 
     pEntry = &m_aOpcodes[22];
 
-    // STRING: HYPERX 0x004c6b50
+    // STRING: HYPERX1001 0x004c6b50
     strcpy(pEntry->szName, "SET_TRACE");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<int>(CATEGORY_DEBUG) | MEMBER_SET_TRACE;
 
     pEntry = &m_aOpcodes[23];
 
-    // STRING: HYPERX 0x004c6b48
+    // STRING: HYPERX1001 0x004c6b48
     strcpy(pEntry->szName, "Enable");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<unsigned int>(CATEGORY_ENABLE);
 
     pEntry = &m_aOpcodes[24];
 
-    // STRING: HYPERX 0x004c6b40
+    // STRING: HYPERX1001 0x004c6b40
     strcpy(pEntry->szName, "Block");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = CATEGORY_BLOCK;
 
     pEntry = &m_aOpcodes[25];
 
-    // STRING: HYPERX 0x004c6b34
+    // STRING: HYPERX1001 0x004c6b34
     strcpy(pEntry->szName, "DataBlock");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = CATEGORY_DATA_BLOCK;
 
     pEntry = &m_aOpcodes[26];
 
-    // STRING: HYPERX 0x004c6b28
+    // STRING: HYPERX1001 0x004c6b28
     strcpy(pEntry->szName, "END_PLAN");
     pEntry->nMagic = kPlanMarkerNode;
     pEntry->nValue = static_cast<unsigned int>(CATEGORY_END_PLAN);
@@ -750,31 +750,31 @@ PlanVM::PlanVM()
 
     pEntry = &m_aTokenRefs[0];
 
-    // STRING: HYPERX 0x004c6b1c
+    // STRING: HYPERX1001 0x004c6b1c
     strcpy(pEntry->szName, "_BROADCAST_");
     pEntry->nValue = kPlanTokenBroadcast;
 
     pEntry = &m_aTokenRefs[1];
 
-    // STRING: HYPERX 0x004c6b0c
+    // STRING: HYPERX1001 0x004c6b0c
     strcpy(pEntry->szName, "_STRAIGHTAHEAD_");
     pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_STRAIGHTAHEAD);
 
     pEntry = &m_aTokenRefs[2];
 
-    // STRING: HYPERX 0x004c6afc
+    // STRING: HYPERX1001 0x004c6afc
     strcpy(pEntry->szName, "_TEMPORARILY_");
     pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_TEMPORARILY);
 
     pEntry = &m_aTokenRefs[3];
 
-    // STRING: HYPERX 0x004c6aec
+    // STRING: HYPERX1001 0x004c6aec
     strcpy(pEntry->szName, "_MESSAGE_DATA_");
     pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_MESSAGE_DATA);
 
     pEntry = &m_aTokenRefs[4];
 
-    // STRING: HYPERX 0x004c6adc
+    // STRING: HYPERX1001 0x004c6adc
     strcpy(pEntry->szName, "_NO_BEH_CHANGE_");
     pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_NO_BEH_CHANGE);
 
@@ -782,7 +782,7 @@ PlanVM::PlanVM()
 
     pEntry = &m_aTokenRefs[5];
 
-    // STRING: HYPERX 0x004c6acc
+    // STRING: HYPERX1001 0x004c6acc
     strcpy(pEntry->szName, "_PREVIOUS_BEH_");
     pEntry->nValue = static_cast<unsigned int>(PLAN_TOKEN_PREVIOUS_BEH);
 
@@ -790,7 +790,7 @@ PlanVM::PlanVM()
 
     do
     {
-        // STRING: HYPERX 0x004c6ac4
+        // STRING: HYPERX1001 0x004c6ac4
         sprintf(szToken, "_%hd_", nIndex);
 
         pEntry = &m_aTokenRefs[nSlot++];
@@ -816,13 +816,13 @@ PlanVM::PlanVM()
     m_pStream = std::make_unique<PlanWord[]>(kPlanStreamWords);
 }
 
-// FUNCTION: HYPERX 0x0047dab0
+// FUNCTION: HYPERX1001 0x0047dab0
 PlanVM::~PlanVM() = default;
 
 constexpr auto kPathChars = 0x100;
 
 // The sentinel goes out too, and the descriptor is closed twice on the success path.
-// FUNCTION: HYPERX 0x0047daf0
+// FUNCTION: HYPERX1001 0x0047daf0
 char PlanVM::SaveBinary(char* pszName)
 {
     OwnedFile file;
@@ -849,7 +849,7 @@ char PlanVM::SaveBinary(char* pszName)
         return 1;
     }
 
-    // STRING: HYPERX 0x004c6d28
+    // STRING: HYPERX1001 0x004c6d28
     throw "Cannot open binary plan file. Is it locked?\n";
 }
 
@@ -857,7 +857,7 @@ char PlanVM::SaveBinary(char* pszName)
 constexpr auto kPlanTextLimit = 0x1387f;
 
 // Only the first byte of each of the four tables is cleared: a leading zero marks an empty slot.
-// FUNCTION: HYPERX 0x0047dca0
+// FUNCTION: HYPERX1001 0x0047dca0
 char PlanVM::ReadAll(FileObj* pFile)
 {
     char ch;
@@ -878,7 +878,7 @@ char PlanVM::ReadAll(FileObj* pFile)
 
         if (m_nLength >= kPlanTextLimit)
         {
-            // STRING: HYPERX 0x004c6d6c
+            // STRING: HYPERX1001 0x004c6d6c
             throw "This plan file is too large.  Why not break it up into separate plans?\n";
         }
     }
@@ -910,7 +910,7 @@ char PlanVM::ReadAll(FileObj* pFile)
 constexpr auto kPlanPathChars = 0x100;
 
 // The path is built beside the executable; a file that will not open throws.
-// FUNCTION: HYPERX 0x0047dd80
+// FUNCTION: HYPERX1001 0x0047dd80
 char PlanVM::LoadText(short nCamera, char* pszName)
 {
     char      szPath[kPlanPathChars];
@@ -929,13 +929,13 @@ char PlanVM::LoadText(short nCamera, char* pszName)
         return bResult;
     }
 
-    // STRING: HYPERX 0x004c6db4
+    // STRING: HYPERX1001 0x004c6db4
     throw "Plan file could not be opened.\n";
 }
 
 // An emit that fails throws, so the compile has one error path, which the editor dialog catches.
 
-// FUNCTION: HYPERX 0x0047df00
+// FUNCTION: HYPERX1001 0x0047df00
 unsigned char PlanVM::Compile()
 {
     if (ParseHeaderDeclarations() == 0)
@@ -959,7 +959,7 @@ unsigned char PlanVM::Compile()
 
         if (EmitArgToken() == 0)
         {
-            // STRING: HYPERX 0x004c6ddc
+            // STRING: HYPERX1001 0x004c6ddc
             throw (char*)"Aborting Plan Parse.\n";
         }
 
@@ -973,7 +973,7 @@ unsigned char PlanVM::Compile()
 }
 
 // The message name keeps its quotes, and the first behaviour's messages land in row one.
-// FUNCTION: HYPERX 0x0047df70
+// FUNCTION: HYPERX1001 0x0047df70
 char PlanVM::ParseHeaderDeclarations()
 {
     PlanWord count;
@@ -987,14 +987,14 @@ char PlanVM::ParseHeaderDeclarations()
     {
         ReadNextToken(szToken);
 
-        // STRING: HYPERX 0x004c6be8
+        // STRING: HYPERX1001 0x004c6be8
         if (SDL_strcasecmp(szToken, "DECLARE_LOCAL_REALS") == 0)
         {
             ReadNextToken(szToken);
 
             if (!IsIdentifierPrefix(szToken) && !IsNumericChar(szToken))
             {
-                // STRING: HYPERX 0x004c6ec0
+                // STRING: HYPERX1001 0x004c6ec0
                 throw "Expected an argument enumerator.  First two args are id and string name.\n";
             }
 
@@ -1006,7 +1006,7 @@ char PlanVM::ParseHeaderDeclarations()
 
                 if (szToken[0] != '"')
                 {
-                    // STRING: HYPERX 0x004c6e8c
+                    // STRING: HYPERX1001 0x004c6e8c
                     throw "Expected a string name in LocalVar Declaration.\n";
                 }
 
@@ -1015,7 +1015,7 @@ char PlanVM::ParseHeaderDeclarations()
             }
         }
 
-        // STRING: HYPERX 0x004c6bfc
+        // STRING: HYPERX1001 0x004c6bfc
         if (SDL_strcasecmp(szToken, "DECLARE_BEHAVIOR") == 0)
         {
             nMessages = 0;
@@ -1024,7 +1024,7 @@ char PlanVM::ParseHeaderDeclarations()
 
             if (!IsIdentifierPrefix(szToken) && !IsNumericChar(szToken))
             {
-                // STRING: HYPERX 0x004c6e68
+                // STRING: HYPERX1001 0x004c6e68
                 throw "Expected an argument enumerator.\n";
             }
 
@@ -1032,7 +1032,7 @@ char PlanVM::ParseHeaderDeclarations()
 
             if (!IsIdentifierPrefix(szToken))
             {
-                // STRING: HYPERX 0x004c6e48
+                // STRING: HYPERX1001 0x004c6e48
                 throw "Expected an id_BEH_ type id.\n";
             }
 
@@ -1040,7 +1040,7 @@ char PlanVM::ParseHeaderDeclarations()
 
             if (szToken[0] != '"')
             {
-                // STRING: HYPERX 0x004c6e14
+                // STRING: HYPERX1001 0x004c6e14
                 throw "Expected a string name in Behavior Declaration.\n";
             }
 
@@ -1048,7 +1048,7 @@ char PlanVM::ParseHeaderDeclarations()
                    PlanVM::UnquoteString(szToken));
         }
 
-        // STRING: HYPERX 0x004c6cf4
+        // STRING: HYPERX1001 0x004c6cf4
         if (SDL_strcasecmp(szToken, "SET_MESSAGE_INTERACTOR") == 0)
         {
             ReadNextToken(szToken);
@@ -1062,7 +1062,7 @@ char PlanVM::ParseHeaderDeclarations()
 
             if (!IsIdentifierPrefix(szToken) && !IsNumericChar(szToken))
             {
-                // STRING: HYPERX 0x004c6df4
+                // STRING: HYPERX1001 0x004c6df4
                 throw "Expected an id_MSG_ type id.\n";
             }
 
@@ -1070,7 +1070,7 @@ char PlanVM::ParseHeaderDeclarations()
                    szToken);
         }
 
-        // STRING: HYPERX 0x004c6bbc
+        // STRING: HYPERX1001 0x004c6bbc
         if (SDL_strcasecmp(szToken, "SET_INTERACTOR_PARAM") == 0)
         {
             ReadNextToken(szToken);
@@ -1082,7 +1082,7 @@ char PlanVM::ParseHeaderDeclarations()
 
             ReadNextToken(szToken);
 
-            // STRING: HYPERX 0x004c6f0c
+            // STRING: HYPERX1001 0x004c6f0c
             if (SDL_strcasecmp(szToken, "id_SET_InteractorName") == 0)
             {
                 ReadNextToken(szToken);
@@ -1107,11 +1107,11 @@ char PlanVM::ParseHeaderDeclarations()
 }
 
 // The one character that makes a token a float.
-// GLOBAL: HYPERX 0x004b3e50
+// GLOBAL: HYPERX1001 0x004b3e50
 extern const char* const g_pszDecimalPoint;
 
 // Four characters end a token: the two whitespace ones, the comma and the ampersand.
-// FUNCTION: HYPERX 0x0047e3a0
+// FUNCTION: HYPERX1001 0x0047e3a0
 int PlanVM::IsSeparatorChar()
 {
     const auto cAt = m_pszText[m_nCursor];
@@ -1125,7 +1125,7 @@ int PlanVM::IsSeparatorChar()
 }
 
 // Whether the token under the cursor opens a comment or a group.
-// FUNCTION: HYPERX 0x0047e3d0
+// FUNCTION: HYPERX1001 0x0047e3d0
 int PlanVM::IsCommentOrGroup()
 {
     if ((m_pszText[m_nCursor] == '/' && (m_pszText[m_nCursor + 1] == m_pszText[m_nCursor] || m_pszText[m_nCursor + 1] == '*')) || m_pszText[m_nCursor] == '(' || m_pszText[m_nCursor] == '#')
@@ -1137,7 +1137,7 @@ int PlanVM::IsCommentOrGroup()
 }
 
 // Accepts four prefixes: "id", a leading underscore, "A_" and "AA_".
-// FUNCTION: HYPERX 0x0047e400
+// FUNCTION: HYPERX1001 0x0047e400
 unsigned char PlanVM::IsIdentifierPrefix(const char* pszToken)
 {
     int bMatch;
@@ -1154,7 +1154,7 @@ unsigned char PlanVM::IsIdentifierPrefix(const char* pszToken)
     return static_cast<unsigned char>(bMatch);
 }
 
-// FUNCTION: HYPERX 0x0047e440
+// FUNCTION: HYPERX1001 0x0047e440
 int PlanVM::IsAAPrefix(const char* pszToken)
 {
     if (pszToken[0] == 'A' && pszToken[1] == 'A' && pszToken[2] == '_')
@@ -1166,7 +1166,7 @@ int PlanVM::IsAAPrefix(const char* pszToken)
 }
 
 // Nothing checks what follows, so "+" alone is numeric.
-// FUNCTION: HYPERX 0x0047e470
+// FUNCTION: HYPERX1001 0x0047e470
 unsigned char PlanVM::IsNumericChar(const char* pszToken)
 {
     const auto cFirst = pszToken[0];
@@ -1185,7 +1185,7 @@ unsigned char PlanVM::IsNumericChar(const char* pszToken)
     return static_cast<unsigned char>(bMatch);
 }
 
-// FUNCTION: HYPERX 0x0047e4a0
+// FUNCTION: HYPERX1001 0x0047e4a0
 unsigned char PlanVM::IsPRN(const char* pOpcode)
 {
     int bMatch;
@@ -1202,7 +1202,7 @@ unsigned char PlanVM::IsPRN(const char* pOpcode)
     return static_cast<unsigned char>(bMatch);
 }
 
-// FUNCTION: HYPERX 0x0047e4d0
+// FUNCTION: HYPERX1001 0x0047e4d0
 char PlanVM::EmitArgToken()
 {
     PlanOpcodeRef tok;
@@ -1411,12 +1411,12 @@ char PlanVM::EmitArgToken()
 }
 
 // A float token's bit pattern is stored raw where the other readings store an integer.
-// FUNCTION: HYPERX 0x0047ea50
+// FUNCTION: HYPERX1001 0x0047ea50
 char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
 {
     PlanWord value;
 
-    // STRING: HYPERX 0x004c6f94
+    // STRING: HYPERX1001 0x004c6f94
     if (pszText[strspn(pszText, "xXABCDEFabcdef0123456789.+-_")] == 0)
     {
         const auto nLength = static_cast<int>(strlen(pszText)) + 1;
@@ -1424,7 +1424,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
         auto        copy    = std::vector<char>(nLength);
         auto* const pszCopy = copy.data();
 
-        // STRING: HYPERX 0x004bb810
+        // STRING: HYPERX1001 0x004bb810
         sscanf(pszText, "%s", pszCopy);
 
         if (*pszCopy == '_' && pszCopy[nLength - 2] == '_')
@@ -1432,7 +1432,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
             value.n = atol(PlanVM::UnquoteString(pszCopy));
         }
         else if (nLength < 3 || *pszCopy != '0' || (pszCopy[1] != 'x' && pszCopy[1] != 'X')
-                 // STRING: HYPERX 0x004bb808
+                 // STRING: HYPERX1001 0x004bb808
                  || sscanf(pszText, "%x", &value.n) == 0)
         {
             if (strpbrk(pszText, g_pszDecimalPoint) != nullptr)
@@ -1454,7 +1454,7 @@ char PlanVM::ParseNumber(char* pszText, PlanWord* pOut)
 }
 
 // The last character over the limit is already in the stream when the failure is reported.
-// FUNCTION: HYPERX 0x0047eb30
+// FUNCTION: HYPERX1001 0x0047eb30
 char PlanVM::EmitStringLiteral(const char* pszToken, PlanWord* paStream, int* pnPos)
 {
     paStream[*pnPos].n = kPlanMarkerString;
@@ -1492,7 +1492,7 @@ char PlanVM::EmitStringLiteral(const char* pszToken, PlanWord* paStream, int* pn
 }
 
 // A closing brace with nothing copied is itself the token; an empty run goes round again.
-// FUNCTION: HYPERX 0x0047ebb0
+// FUNCTION: HYPERX1001 0x0047ebb0
 void PlanVM::ReadNextToken(char* pToken)
 {
     char cSeparator;
@@ -1604,7 +1604,7 @@ void PlanVM::ReadNextToken(char* pToken)
 }
 
 // Skips the rest of the line; the second scan only moves past a lone carriage return.
-// FUNCTION: HYPERX 0x0047ecd0
+// FUNCTION: HYPERX1001 0x0047ecd0
 short PlanVM::SkipLine()
 {
     while (!AtLineEnd())
@@ -1630,7 +1630,7 @@ short PlanVM::SkipLine()
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0047ed20
+// FUNCTION: HYPERX1001 0x0047ed20
 short PlanVM::SkipSeparators()
 {
     short nSkipped = 0;
@@ -1646,7 +1646,7 @@ short PlanVM::SkipSeparators()
 }
 
 // The address test on each entry is the array's own, so it never fails; the original has it too.
-// FUNCTION: HYPERX 0x0047ed50
+// FUNCTION: HYPERX1001 0x0047ed50
 short PlanVM::FindLocalRealIndex(char* pszName)
 {
     char szName[0x28];
@@ -1669,7 +1669,7 @@ short PlanVM::FindLocalRealIndex(char* pszName)
     return -1;
 }
 
-// FUNCTION: HYPERX 0x0047ee30
+// FUNCTION: HYPERX1001 0x0047ee30
 short PlanVM::FindInteractorNameIndex(char* pszName)
 {
     char szName[0x28];
@@ -1692,7 +1692,7 @@ short PlanVM::FindInteractorNameIndex(char* pszName)
     return -1;
 }
 
-// FUNCTION: HYPERX 0x0047ef10
+// FUNCTION: HYPERX1001 0x0047ef10
 PlanOpcodeRef PlanVM::LookupKeyword(char* pszName)
 {
     short nSlot = 0;
@@ -1711,7 +1711,7 @@ PlanOpcodeRef PlanVM::LookupKeyword(char* pszName)
 }
 
 // The token table is compared exactly and the loaded table without case.
-// FUNCTION: HYPERX 0x0047efc0
+// FUNCTION: HYPERX1001 0x0047efc0
 PlanOpcodeRef PlanVM::LookupSymbol(char* pszName)
 {
     short nToken = 0;
@@ -1753,7 +1753,7 @@ extern char g_szCouldNotFindInteractorNamed[34];
 
 // The behaviour table ends at the first empty name, and reaching it is the refusal.
 
-// FUNCTION: HYPERX 0x0047f0c0
+// FUNCTION: HYPERX1001 0x0047f0c0
 short PlanVM::FindBehaviorIndexOrThrow(char* pszName)
 {
     short nSlot = 0;
@@ -1774,7 +1774,7 @@ short PlanVM::FindBehaviorIndexOrThrow(char* pszName)
     return nSlot;
 }
 
-// FUNCTION: HYPERX 0x0047f1a0
+// FUNCTION: HYPERX1001 0x0047f1a0
 short PlanVM::FindInteractorNameIndexOrThrow(char* pszName)
 {
     for (short nSlot = 0; nSlot < kPlanVMInteractorNameLimit; nSlot++)
@@ -1814,7 +1814,7 @@ const char* PlanVM::FindSymbolName(unsigned int nValue, const char* pszPrefix) c
 #define TOKEN_OPEN  '{'
 #define TOKEN_CLOSE '}'
 
-// FUNCTION: HYPERX 0x0047f250
+// FUNCTION: HYPERX1001 0x0047f250
 void PlanVM::LoadSymbolTables()
 {
     PlanOpcodeRef* const pTable = m_aSymbols;
@@ -1829,7 +1829,7 @@ void PlanVM::LoadSymbolTables()
     char      szToken[kSymbolNameMax];
     char      szPrefixed[kSymbolNameMax];
 
-    // STRING: HYPERX 0x004c704c
+    // STRING: HYPERX1001 0x004c704c
     if (fileEnum.m_file.Open("Data\\enumIDs.h", FileMode::kRead) != 0)
     {
         m_nLength = 0;
@@ -1878,7 +1878,7 @@ void PlanVM::LoadSymbolTables()
         }
     }
 
-    // STRING: HYPERX 0x004c7030
+    // STRING: HYPERX1001 0x004c7030
     if (fileAnim.m_file.Open("Data\\AnimData\\Animassm.txt", FileMode::kRead) != 0)
     {
         m_nLength = 0;
@@ -1914,7 +1914,7 @@ void PlanVM::LoadSymbolTables()
         }
     }
 
-    // STRING: HYPERX 0x004c701c
+    // STRING: HYPERX1001 0x004c701c
     if (fileSound.m_file.Open("Data\\Sndfiles.lst", FileMode::kRead) != 0)
     {
         m_nLength = 0;
@@ -1941,7 +1941,7 @@ void PlanVM::LoadSymbolTables()
         }
         else
         {
-            // STRING: HYPERX 0x004c7014
+            // STRING: HYPERX1001 0x004c7014
             strcpy(szPrefixed, "id_SND_");
             strcat(szPrefixed, szToken);
 
@@ -1957,7 +1957,7 @@ void PlanVM::LoadSymbolTables()
         }
     }
 
-    // STRING: HYPERX 0x004c7000
+    // STRING: HYPERX1001 0x004c7000
     if (fileText.m_file.Open("Data\\Infobtxt.lst", FileMode::kRead) != 0)
     {
         m_nLength = 0;
@@ -1975,7 +1975,7 @@ void PlanVM::LoadSymbolTables()
         {
             ReadNextToken(szToken);
 
-            // STRING: HYPERX 0x004c6ff8
+            // STRING: HYPERX1001 0x004c6ff8
             strcpy(szPrefixed, "id_TXT_");
             strcat(szPrefixed, szToken);
 
@@ -1999,7 +1999,7 @@ void PlanVM::LoadSymbolTables()
 }
 
 // Takes the quotes off a token in place, without a copy.
-// FUNCTION: HYPERX 0x0047f730
+// FUNCTION: HYPERX1001 0x0047f730
 char* PlanVM::UnquoteString(char* pszText)
 {
     pszText[strlen(pszText) - 1] = 0;
@@ -2008,49 +2008,49 @@ char* PlanVM::UnquoteString(char* pszText)
 }
 
 // Each counts arguments since its keyword. They start at a hundred, past every test.
-// GLOBAL: HYPERX 0x004c6ab8
+// GLOBAL: HYPERX1001 0x004c6ab8
 extern short g_wArgsSinceDeclareBehavior;
 short        g_wArgsSinceDeclareBehavior = 100;
 
-// GLOBAL: HYPERX 0x004c6aba
+// GLOBAL: HYPERX1001 0x004c6aba
 extern short g_wArgsSinceChangeToBehavior;
 short        g_wArgsSinceChangeToBehavior = 100;
 
-// GLOBAL: HYPERX 0x004c6abc
+// GLOBAL: HYPERX1001 0x004c6abc
 extern short g_wArgsSinceChangeOfPlan;
 short        g_wArgsSinceChangeOfPlan = 100;
 
-// GLOBAL: HYPERX 0x004c6abe
+// GLOBAL: HYPERX1001 0x004c6abe
 extern short g_wArgsSinceSetInteractorParam;
 short        g_wArgsSinceSetInteractorParam = 100;
 
-// GLOBAL: HYPERX 0x004c6ac0
+// GLOBAL: HYPERX1001 0x004c6ac0
 extern short g_wArgsSinceDeclareLocalReals;
 short        g_wArgsSinceDeclareLocalReals = 100;
 
 // Three get the offending token appended, so each is a writable array.
-// GLOBAL: HYPERX 0x004c6f24
+// GLOBAL: HYPERX1001 0x004c6f24
 extern char g_szInabilityToReadString[28];
 char        g_szInabilityToReadString[28] = "Inability to read string: ";
 
-// GLOBAL: HYPERX 0x004c6f40
+// GLOBAL: HYPERX1001 0x004c6f40
 extern char g_szBadNumberInPlan[24];
 char        g_szBadNumberInPlan[24] = "Bad number in plan: ";
 
-// GLOBAL: HYPERX 0x004c6f58
+// GLOBAL: HYPERX1001 0x004c6f58
 extern char g_szExpectedArgEnumeration[40];
 char        g_szExpectedArgEnumeration[40] = "expected arg enumeration of localvars.";
 
-// GLOBAL: HYPERX 0x004c6f80
+// GLOBAL: HYPERX1001 0x004c6f80
 extern char g_szBadPlanIdValue[20];
 char        g_szBadPlanIdValue[20] = "Bad plan id value: ";
 
 // Written into: the terminator goes back at 31.
-// GLOBAL: HYPERX 0x004c6fb4
+// GLOBAL: HYPERX1001 0x004c6fb4
 extern char g_szCouldNotFindBehaviorNamed[32];
 char        g_szCouldNotFindBehaviorNamed[] = "Could not find behavior named: ";
 
 // Written into: the refusal puts the terminator back at 33 and appends the name.
-// GLOBAL: HYPERX 0x004c6fd4
+// GLOBAL: HYPERX1001 0x004c6fd4
 extern char g_szCouldNotFindInteractorNamed[34];
 char        g_szCouldNotFindInteractorNamed[] = "Could not find interactor named: ";

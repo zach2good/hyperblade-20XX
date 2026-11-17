@@ -24,61 +24,61 @@
 #include "engine/collisionobjectids.h"
 
 // One and nine: the goal frame's thickness and the span between the outsides of the posts.
-// GLOBAL: HYPERX 0x004b3364
+// GLOBAL: HYPERX1001 0x004b3364
 extern const float g_flGoalSpanWidth;
 
-// GLOBAL: HYPERX 0x004b3360
+// GLOBAL: HYPERX1001 0x004b3360
 extern const float g_flGoalFrameWidth;
 
 // Five, the goal mouth's height, and 400, the milliseconds a score is held against another.
-// GLOBAL: HYPERX 0x004c2fe8
+// GLOBAL: HYPERX1001 0x004c2fe8
 extern float g_flGoalZoneHeight;
 
-// GLOBAL: HYPERX 0x004c2fec
+// GLOBAL: HYPERX1001 0x004c2fec
 extern const Clock::Milliseconds g_goalScoreDebounce;
 
 // One unit by ten for the acting object, one by four for its partner.
-// GLOBAL: HYPERX 0x004c459c
+// GLOBAL: HYPERX1001 0x004c459c
 extern float g_flMultiplierSelfRadius;
 
-// GLOBAL: HYPERX 0x004c45a0
+// GLOBAL: HYPERX1001 0x004c45a0
 extern float g_flMultiplierSelfHeight;
 
-// GLOBAL: HYPERX 0x004c45a4
+// GLOBAL: HYPERX1001 0x004c45a4
 extern float g_flMultiplierOtherRadius;
 
-// GLOBAL: HYPERX 0x004c45a8
+// GLOBAL: HYPERX1001 0x004c45a8
 extern float g_flMultiplierOtherHeight;
 
 // Half a unit by ten for the acting object, one by four for its partner.
-// GLOBAL: HYPERX 0x004c4580
+// GLOBAL: HYPERX1001 0x004c4580
 extern float g_flCapsuleSelfRadius;
 
-// GLOBAL: HYPERX 0x004c4584
+// GLOBAL: HYPERX1001 0x004c4584
 extern float g_flCapsuleSelfHeight;
 
-// GLOBAL: HYPERX 0x004c4588
+// GLOBAL: HYPERX1001 0x004c4588
 extern float g_flCapsuleOtherRadius;
 
-// GLOBAL: HYPERX 0x004c458c
+// GLOBAL: HYPERX1001 0x004c458c
 extern float g_flCapsuleOtherHeight;
 
 // The box this check builds; the low y edge has its own value rather than half the height.
-// GLOBAL: HYPERX 0x004c456c
+// GLOBAL: HYPERX1001 0x004c456c
 extern float g_flVelBoxSizeX;
-// GLOBAL: HYPERX 0x004c4570
+// GLOBAL: HYPERX1001 0x004c4570
 extern float g_flVelBoxSizeZ;
-// GLOBAL: HYPERX 0x004c4574
+// GLOBAL: HYPERX1001 0x004c4574
 extern float g_flVelBoxSizeY;
-// GLOBAL: HYPERX 0x004c4578
+// GLOBAL: HYPERX1001 0x004c4578
 extern float g_flVelBoxDropY;
 
 // Fifty. The speed that separates the two hit answers.
-// GLOBAL: HYPERX 0x004c457c
+// GLOBAL: HYPERX1001 0x004c457c
 extern float g_flVelHitSpeedGate;
 
 // A post hit answers 1; a goal within 400 ms of the last answers 3, so it does not score twice.
-// FUNCTION: HYPERX 0x004521d0
+// FUNCTION: HYPERX1001 0x004521d0
 void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     float flGate;
@@ -258,7 +258,7 @@ void CollisionCheck::DromerLaserHurdleCollision(Interactor* pContext, PlanNode*,
 }
 
 // id_DCF_DromerRampCollision, opcode 68: a miss answers two, a hit one above speed 50.
-// FUNCTION: HYPERX 0x00469430
+// FUNCTION: HYPERX1001 0x00469430
 void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int             nHit;
@@ -367,15 +367,15 @@ void CollisionCheck::DromerRampCollision(Interactor* pContext, PlanNode*, short*
 }
 
 // One, nine and ten: the goal frame's thickness, the span between the posts, the mouth height.
-// GLOBAL: HYPERX 0x004c4590
+// GLOBAL: HYPERX1001 0x004c4590
 extern float g_flZoneFrameWidth;
-// GLOBAL: HYPERX 0x004c4594
+// GLOBAL: HYPERX1001 0x004c4594
 extern float g_flZoneSpanWidth;
-// GLOBAL: HYPERX 0x004c4598
+// GLOBAL: HYPERX1001 0x004c4598
 extern float g_flZoneHeight;
 
 // Swept capsules in the acting object's frame; a hit answers nought and a miss one.
-// FUNCTION: HYPERX 0x004697b0
+// FUNCTION: HYPERX1001 0x004697b0
 void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const auto nSlot = static_cast<short>(nArg);
@@ -474,7 +474,7 @@ void CollisionCheck::DromerRandomizerCollision(Interactor* pContext, PlanNode*, 
 }
 
 // id_DCF_DromerLimboCollision, opcode 65: a goal's posts and bar answer nought, its mouth two.
-// FUNCTION: HYPERX 0x00469a70
+// FUNCTION: HYPERX1001 0x00469a70
 void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int             nHitPostA;
@@ -633,7 +633,7 @@ void CollisionCheck::DromerLimboCollision(Interactor* pContext, PlanNode*, short
 }
 
 // id_DCF_BouncedInGoal in DATA/ENUMIDS.H: the plan opcode table registers this body at 124.
-// FUNCTION: HYPERX 0x00469ef0
+// FUNCTION: HYPERX1001 0x00469ef0
 void CollisionCheck::BouncedInGoal(Interactor*, PlanNode*, short* pResult, int)
 {
     auto* const pRok = g_pGameEngine->GetColObjPtr(kCOBRok);
@@ -660,15 +660,15 @@ void CollisionCheck::BouncedInGoal(Interactor*, PlanNode*, short* pResult, int)
 }
 
 // The box the test is built around, one dimension per axis.
-// GLOBAL: HYPERX 0x004c45ac
+// GLOBAL: HYPERX1001 0x004c45ac
 extern float g_flColBoxSizeX;
-// GLOBAL: HYPERX 0x004c45b0
+// GLOBAL: HYPERX1001 0x004c45b0
 extern float g_flColBoxSizeZ;
-// GLOBAL: HYPERX 0x004c45b4
+// GLOBAL: HYPERX1001 0x004c45b4
 extern float g_flColBoxSizeY;
 
 // 0x004697b0 with the acting object's capsule one unit thick rather than half.
-// FUNCTION: HYPERX 0x00469f90
+// FUNCTION: HYPERX1001 0x00469f90
 void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const auto nSlot = static_cast<short>(nArg);
@@ -767,7 +767,7 @@ void CollisionCheck::DromerMultiplierCollision(Interactor* pContext, PlanNode*, 
 }
 
 // id_DCF_DromerHurdleCollision, opcode 61: slot eight against slot seven's mesh; a hit is nought.
-// FUNCTION: HYPERX 0x0046a250
+// FUNCTION: HYPERX1001 0x0046a250
 void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3            vScratch;
@@ -859,15 +859,15 @@ void CollisionCheck::DromerHurdleCollision(Interactor* pContext, PlanNode*, shor
 }
 
 // The two radius divisors, and the zone box's width, height and depth.
-// GLOBAL: HYPERX 0x004c45b8
+// GLOBAL: HYPERX1001 0x004c45b8
 extern float g_flSplitBoxXDiv;
-// GLOBAL: HYPERX 0x004c45bc
+// GLOBAL: HYPERX1001 0x004c45bc
 extern float g_flSplitBoxZDiv;
-// GLOBAL: HYPERX 0x004c45c0
+// GLOBAL: HYPERX1001 0x004c45c0
 extern float g_flSplitZoneDepth;
-// GLOBAL: HYPERX 0x004c45c4
+// GLOBAL: HYPERX1001 0x004c45c4
 extern float g_flSplitZoneHeight;
-// GLOBAL: HYPERX 0x004c45c8
+// GLOBAL: HYPERX1001 0x004c45c8
 extern float g_flSplitZoneWidth;
 
 namespace CollisionCheck
@@ -885,7 +885,7 @@ inline void CollisionCheck::SetBoxCorners(MeshBoundingBox* pBox, const Vec3* pMi
 }
 
 // id_DCF_RokHurdleCollision, opcode 63: the box's y extent comes from the local z.
-// FUNCTION: HYPERX 0x0046a540
+// FUNCTION: HYPERX1001 0x0046a540
 void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3            vLocal;
@@ -973,7 +973,7 @@ void CollisionCheck::RokHurdleCollision(Interactor* pContext, PlanNode*, short* 
 }
 
 // Y is always zero, so the push-out never moves an object vertically.
-// FUNCTION: HYPERX 0x0046a890
+// FUNCTION: HYPERX1001 0x0046a890
 Vec3* CollisionCheck::ComputeNearestNormal(Vec3* pNormalOut, const MeshBoundingBox* pBox, Vec3* pPoint)
 {
     Vec3  vNormal;

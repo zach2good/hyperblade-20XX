@@ -15,7 +15,7 @@ enum PauseNoSaveWidget
     PAUSE_NO_SAVE_QUIT
 };
 
-// VTABLE: HYPERX 0x004b3184
+// VTABLE: HYPERX1001 0x004b3184
 class PauseMenuNoSaveScreen : public Screen
 {
 public:
@@ -28,7 +28,7 @@ private:
     [[maybe_unused]] int m_nUnusedD; // 0x464
 };
 
-// SYNTHETIC: HYPERX 0x00443c90
+// SYNTHETIC: HYPERX1001 0x00443c90
 // PauseMenuNoSaveScreen::`scalar deleting destructor'
 
 #endif

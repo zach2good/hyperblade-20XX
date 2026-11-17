@@ -29,7 +29,7 @@ struct EmptyString
 };
 
 // Reference count minus one, so nothing ever frees it.
-// GLOBAL: HYPERX 0x004bcf2c
+// GLOBAL: HYPERX1001 0x004bcf2c
 extern EmptyString g_emptyString;
 
 class String
@@ -127,7 +127,7 @@ private:
 };
 
 // Each caller now frees the old block by moving it into a local.
-// FUNCTION: HYPERX 0x0042f700
+// FUNCTION: HYPERX1001 0x0042f700
 // String::FreeHeader
 
 #endif

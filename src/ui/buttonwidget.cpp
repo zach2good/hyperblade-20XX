@@ -6,7 +6,7 @@
 #include "common/stub.h"
 
 // A type outside the four is a stub call rather than a default id.
-// FUNCTION: HYPERX 0x0042bb90
+// FUNCTION: HYPERX1001 0x0042bb90
 ButtonWidget::ButtonWidget(int nType, int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark)
 : Widget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
@@ -42,7 +42,7 @@ int ButtonWidget::OnMouseDown()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0042bcb0
+// FUNCTION: HYPERX1001 0x0042bcb0
 int ButtonWidget::OnMouseUp()
 {
     m_pOwner->SetWidgetDepressedByType(GetTypeID(), 0);

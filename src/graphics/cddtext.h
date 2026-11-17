@@ -7,11 +7,11 @@
 #include <cstdint>
 #include <string>
 
-// VTABLE: HYPERX 0x004b32d4
+// VTABLE: HYPERX1001 0x004b32d4
 class CDDText : public CDDDrawable
 {
 public:
-    // FUNCTION: HYPERX 0x00451c60
+    // FUNCTION: HYPERX1001 0x00451c60
     CDDText()
     : m_color(0)
     {
@@ -38,7 +38,7 @@ public:
     Text::Font    m_font;
 };
 
-// SYNTHETIC: HYPERX 0x0044fa20
+// SYNTHETIC: HYPERX1001 0x0044fa20
 // CDDText::`scalar deleting destructor'
 
 #endif

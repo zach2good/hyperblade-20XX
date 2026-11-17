@@ -27,8 +27,8 @@ public:
         }
     }
 
-    // FUNCTION: HYPERX 0x00414990
-    // FUNCTION: HYPERX 0x0041ed00
+    // FUNCTION: HYPERX1001 0x00414990
+    // FUNCTION: HYPERX1001 0x0041ed00
     char Insert(void* pNode) override
     {
         auto* const pItem = static_cast<Base*>(pNode);

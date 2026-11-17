@@ -44,7 +44,7 @@ extern unsigned char g_bSmartCamEnabled;
 // The swing is cut into at most six steps however long the countdown is.
 constexpr auto kSwingSteps = 6;
 
-// FUNCTION: HYPERX 0x00408f20
+// FUNCTION: HYPERX1001 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -68,7 +68,7 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bUnused = 0;
 }
 
-// FUNCTION: HYPERX 0x00408f90
+// FUNCTION: HYPERX1001 0x00408f90
 void CTrack::OnListChanged()
 {
     if (m_bReady == 0)
@@ -85,7 +85,7 @@ void CTrack::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x00408fd0
+// FUNCTION: HYPERX1001 0x00408fd0
 void CTrack::Process(int nArg)
 {
     float flPull;
@@ -112,7 +112,7 @@ void CTrack::Process(int nArg)
 
     if (pTracked == nullptr)
     {
-        // STRING: HYPERX 0x004bb454
+        // STRING: HYPERX1001 0x004bb454
         g_gameApp.Fatal("CTrack::Process(): Null pointer for model to track\n");
     }
 

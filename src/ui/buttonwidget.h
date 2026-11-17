@@ -12,7 +12,7 @@ class Screen;
 #include "graphics/gdi.h"
 
 // Table 0x004b2ad8; slot four holds a body no other table has.
-// VTABLE: HYPERX 0x004b2ad8
+// VTABLE: HYPERX1001 0x004b2ad8
 class ButtonWidget : public Widget
 {
 public:

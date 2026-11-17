@@ -8,33 +8,33 @@
 #include "net/gamesession.h"
 #include "engine/game.h"
 
-// FUNCTION: HYPERX 0x00443930
+// FUNCTION: HYPERX1001 0x00443930
 void PauseMenu::ActionSave()
 {
     g_nSetupReturnState = Game::SetEngineState(kEstateSaveLoad);
 }
 
 // The state comes from a global, so the return state is configurable at run time.
-// FUNCTION: HYPERX 0x00443940
+// FUNCTION: HYPERX1001 0x00443940
 void PauseMenu::ActionReturn()
 {
     Game::SetEngineState(g_nPostMatchEscState);
 }
 
-// FUNCTION: HYPERX 0x00443c70
+// FUNCTION: HYPERX1001 0x00443c70
 void PauseMenu::ActionReturnTraining()
 {
     Game::SetEngineState(g_nDefaultEscState);
 }
 
-// FUNCTION: HYPERX 0x00444120
+// FUNCTION: HYPERX1001 0x00444120
 void PauseMenu::ActionOptions()
 {
     Game::SetEngineState(kEstateGameConfig);
 }
 
 // The post-match flag goes up first, so the match reads as finished rather than abandoned.
-// FUNCTION: HYPERX 0x00444130
+// FUNCTION: HYPERX1001 0x00444130
 void PauseMenu::ActionExitToMenu()
 {
     g_pGameEngine->m_bMatchOver = 1;
@@ -51,13 +51,13 @@ void PauseMenu::ActionExitToMenu()
     Game::SetEngineState(kEstateMainMenu);
 }
 
-// FUNCTION: HYPERX 0x00444170
+// FUNCTION: HYPERX1001 0x00444170
 void PauseMenu::ActionReturnNoSave()
 {
     Game::SetEngineState(g_nJumbotronEscState);
 }
 
-// FUNCTION: HYPERX 0x00444180
+// FUNCTION: HYPERX1001 0x00444180
 void PauseMenu::ActionQuit()
 {
     Game::SetEngineState(kEstateQuit);

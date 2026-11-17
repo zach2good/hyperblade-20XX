@@ -26,13 +26,13 @@ struct GameApp;
 constexpr auto kTickIntervalMs = 50;
 
 // Slot zero is the shared answer-nothing at 0x0041bf40; slot two is the pure-virtual trap.
-// FUNCTION: HYPERX 0x0041bf40
+// FUNCTION: HYPERX1001 0x0041bf40
 int Screen::OnKeyMessage(unsigned int, unsigned int)
 {
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0048bf00
+// FUNCTION: HYPERX1001 0x0048bf00
 Screen::Screen()
 {
     if (g_nBitmapCacheReady != 0)
@@ -62,12 +62,12 @@ Screen::Screen()
 }
 
 // The original's link folded it with every other empty two-argument member.
-// FUNCTION: HYPERX 0x00480fb0
+// FUNCTION: HYPERX1001 0x00480fb0
 void Screen::OnWidgetMessage(int, unsigned int)
 {
 }
 
-// FUNCTION: HYPERX 0x0048bfe0
+// FUNCTION: HYPERX1001 0x0048bfe0
 Screen::~Screen()
 {
     // A widget's destructor compares its frames against m_hBackground, so it must still be set.
@@ -84,7 +84,7 @@ Screen::~Screen()
     m_bPaletted = 0;
 }
 
-// FUNCTION: HYPERX 0x0048c060
+// FUNCTION: HYPERX1001 0x0048c060
 void Screen::InitFrame()
 {
     m_bFramePaintPending = 1;
@@ -92,7 +92,7 @@ void Screen::InitFrame()
     Window::InvalidateAndUpdate();
 }
 
-// FUNCTION: HYPERX 0x0048c070
+// FUNCTION: HYPERX1001 0x0048c070
 int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
 {
     if (nMsg == kInputLeftUp)
@@ -190,7 +190,7 @@ int Screen::OnMouseMessage(unsigned int nMsg, unsigned int, int nX, int nY)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0048c2a0
+// FUNCTION: HYPERX1001 0x0048c2a0
 int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 {
     int i;
@@ -298,7 +298,7 @@ int Screen::HandleKeyMessage(int nMsg, unsigned int wParam, unsigned int lParam)
 }
 
 // The backward walk gives up after a full turn; the forward one does not and can spin forever.
-// FUNCTION: HYPERX 0x0048c4f0
+// FUNCTION: HYPERX1001 0x0048c4f0
 void Screen::MoveFocusPrev()
 {
     int nGuard;
@@ -393,7 +393,7 @@ inline int Screen::FindHighlightedWidget(int* pnIndex)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0048c600
+// FUNCTION: HYPERX1001 0x0048c600
 void Screen::MoveFocusNext()
 {
     int i;
@@ -446,7 +446,7 @@ void Screen::MoveFocusNext()
 }
 
 // Twenty frames a second: below fifty milliseconds nothing moves.
-// FUNCTION: HYPERX 0x0048c710
+// FUNCTION: HYPERX1001 0x0048c710
 int Screen::TickAnimations()
 {
     SystemTimePair now;
@@ -481,7 +481,7 @@ int Screen::TickAnimations()
 }
 
 // m_bRepaintBackground gates the background and caption.
-// FUNCTION: HYPERX 0x0048c7c0
+// FUNCTION: HYPERX1001 0x0048c7c0
 int Screen::PaintToWindow()
 {
     GDI::BitmapSize bitmap;
@@ -536,7 +536,7 @@ int Screen::PaintToWindow()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0048c9e0
+// FUNCTION: HYPERX1001 0x0048c9e0
 void Screen::SetWidgetDepressedByType(WidgetKind nType, int nValue)
 {
     for (int nSlot = 0; nSlot <= m_nLastWidget; nSlot++)
@@ -549,7 +549,7 @@ void Screen::SetWidgetDepressedByType(WidgetKind nType, int nValue)
     }
 }
 
-// FUNCTION: HYPERX 0x0048ca30
+// FUNCTION: HYPERX1001 0x0048ca30
 void Screen::ResetAllDepressedStates(int nValue)
 {
     for (int i = 0; i <= m_nLastWidget; i++)
@@ -562,7 +562,7 @@ void Screen::ResetAllDepressedStates(int nValue)
     }
 }
 
-// FUNCTION: HYPERX 0x0048cab0
+// FUNCTION: HYPERX1001 0x0048cab0
 void Screen::ResetAllHighlights(int nValue)
 {
     for (int i = 0; i <= m_nLastWidget; i++)
@@ -575,7 +575,7 @@ void Screen::ResetAllHighlights(int nValue)
     }
 }
 
-// FUNCTION: HYPERX 0x0048cb00
+// FUNCTION: HYPERX1001 0x0048cb00
 int Screen::IsButtonWidget(int nSlot)
 {
     if (m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton0 || m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton1 || m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton2 || m_apWidgets[nSlot]->GetTypeID() == WidgetKind::kButton3)
@@ -586,14 +586,14 @@ int Screen::IsButtonWidget(int nSlot)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0048cb60
+// FUNCTION: HYPERX1001 0x0048cb60
 void Screen::SetRepaintBackground(int nValue)
 {
     m_bRepaintBackground = nValue;
 }
 
 // Nothing stops the array being overrun: the bounds check goes to a stub that discards it.
-// FUNCTION: HYPERX 0x0048cb70
+// FUNCTION: HYPERX1001 0x0048cb70
 Widget* Screen::AppendWidget(std::unique_ptr<Widget> pWidget)
 {
     RELEASE_ASSERT(m_nWidgetCount <= m_nLastWidget);
@@ -614,7 +614,7 @@ int Screen::HasPalette() const
 }
 
 // The consistency check is handed to a stub that discards it.
-// FUNCTION: HYPERX 0x0048cbc0
+// FUNCTION: HYPERX1001 0x0048cbc0
 void Screen::InitAllWidgets()
 {
     RELEASE_ASSERT(m_nWidgetCount == m_nLastWidget + 1);
@@ -627,7 +627,7 @@ void Screen::InitAllWidgets()
 
 constexpr auto kBitmapCacheSlots = 128;
 
-// FUNCTION: HYPERX 0x0048cc10
+// FUNCTION: HYPERX1001 0x0048cc10
 void Screen::InitBitmapCache()
 {
     FlushBitmapCache();
@@ -646,7 +646,7 @@ void Screen::InitBitmapCache()
     g_nBitmapCacheReady = 0;
 }
 
-// FUNCTION: HYPERX 0x0048cc60
+// FUNCTION: HYPERX1001 0x0048cc60
 int Screen::AddBitmap(const char* pszName)
 {
     g_nBitmapCacheCount++;
@@ -664,7 +664,7 @@ int Screen::AddBitmap(const char* pszName)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0048ccc0
+// FUNCTION: HYPERX1001 0x0048ccc0
 int Screen::RemoveBitmap(const char* pszName)
 {
     if (g_nBitmapCacheCount != 0)
@@ -694,7 +694,7 @@ int Screen::RemoveBitmap(const char* pszName)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x0048cd80
+// FUNCTION: HYPERX1001 0x0048cd80
 GDI::Bitmap* Screen::CacheLookup(const char* pszName, int* pbCached)
 {
     for (int nSlot = 0; nSlot < kBitmapCacheSlots; nSlot++)
@@ -716,7 +716,7 @@ GDI::Bitmap* Screen::CacheLookup(const char* pszName, int* pbCached)
     return GDI::LoadBitmapWithPalette(pszName, nullptr);
 }
 
-// FUNCTION: HYPERX 0x0048cde0
+// FUNCTION: HYPERX1001 0x0048cde0
 void Screen::FlushBitmapCache()
 {
     if (g_pBitmapCache != nullptr)
@@ -740,7 +740,7 @@ void Screen::FlushBitmapCache()
 
 // Ignores its argument; the two call sites disagree about the arity.
 
-// FUNCTION: HYPERX 0x0048ce60
+// FUNCTION: HYPERX1001 0x0048ce60
 int Screen::FindFocusedWidget()
 {
     for (int i = 0; i < m_nLastWidget + 1; i++)
@@ -755,13 +755,13 @@ int Screen::FindFocusedWidget()
 }
 
 // A member: its callers load this into ECX though the body never reads it.
-// FUNCTION: HYPERX 0x0048ef20
+// FUNCTION: HYPERX1001 0x0048ef20
 void Screen::ShowMatchInfo()
 {
     Game::SetEngineState(kEstateMatchInfo);
 }
 
-// FUNCTION: HYPERX 0x0048ef30
+// FUNCTION: HYPERX1001 0x0048ef30
 void Screen::ClearBlack(...)
 {
     const auto canvas = Window::MenuPixels();

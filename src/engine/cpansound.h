@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slot 0 is CGlideOnSurface's shared deleting destructor; slot 2 is a shared Release.
-// VTABLE: HYPERX 0x004b2010
+// VTABLE: HYPERX1001 0x004b2010
 class CPanSound : public ReleasingAgendaItem
 {
 public:

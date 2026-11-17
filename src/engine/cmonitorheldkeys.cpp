@@ -7,7 +7,7 @@
 #include "engine/cmonitorheldkeys.h"
 #include "input/keyboarddeviceobj.h"
 
-// FUNCTION: HYPERX 0x00410db0
+// FUNCTION: HYPERX1001 0x00410db0
 void CMonitorHeldKeys::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CMonitorHeldKeys;
@@ -16,7 +16,7 @@ void CMonitorHeldKeys::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
-// FUNCTION: HYPERX 0x00410dd0
+// FUNCTION: HYPERX1001 0x00410dd0
 void CMonitorHeldKeys::Process(int nArg)
 {
     ((KeyboardDeviceObj*)m_pOwner)->CheckButtonTimeouts();

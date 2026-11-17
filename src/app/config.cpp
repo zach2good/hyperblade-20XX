@@ -91,7 +91,7 @@ float g_flStopForceFactor  = g_flOneSteering;
 float g_flForceIncrement   = g_flOneSteering;
 Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteering };
 // The separator is doubled: VC6 turns the unrecognised escape into a bare D.
-// STRING: HYPERX 0x004c4750
+// STRING: HYPERX1001 0x004c4750
 String g_strPrefs("Data\\DftKeybd.cfg");
 
 namespace
@@ -101,20 +101,20 @@ constexpr auto kTuningFile = "Tuning.cfg";
 
 } // namespace
 
-// FUNCTION: HYPERX 0x0046d710
+// FUNCTION: HYPERX1001 0x0046d710
 void Config::LoadPreferences(const char* pszFileName)
 {
     char  szBuffer[kMaxPathLength];
     FILE* pFile;
 
-    // STRING: HYPERX 0x004bc990
+    // STRING: HYPERX1001 0x004bc990
     if ((pFile = fopen(Path::Native(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName)).c_str(), "r")) != nullptr)
     {
         if (fscanf(pFile, g_pszScanFormat, szBuffer) == 0)
         {
             fclose(pFile);
 
-            // STRING: HYPERX 0x004c4de0
+            // STRING: HYPERX1001 0x004c4de0
             g_gameApp.Fatal("Zero bytes read from %s!", String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData);
         }
 
@@ -124,10 +124,10 @@ void Config::LoadPreferences(const char* pszFileName)
     }
     else
     {
-        // STRING: HYPERX 0x004c4da8
+        // STRING: HYPERX1001 0x004c4da8
         g_gameApp.Error("Preferences file \"%s\" is missing or cannot be opened.", String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData);
 
-        // STRING: HYPERX 0x004c4750
+        // STRING: HYPERX1001 0x004c4750
         g_strPrefs.Assign(String::SafeStrlen("Data\\DftKeybd.cfg"),
                           "Data\\DftKeybd.cfg");
     }
@@ -188,7 +188,7 @@ bool Config::SaveTuning(const KeyRow* pRows)
 }
 
 // A missing file still returns true.
-// FUNCTION: HYPERX 0x0046d8b0
+// FUNCTION: HYPERX1001 0x0046d8b0
 int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 {
     auto* const pFile = fopen(Path::Native(pszData).c_str(), "r");
@@ -203,7 +203,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
 
         for (int nRow = 0; nRow < 40; nRow++)
         {
-            // STRING: HYPERX 0x004c4e60
+            // STRING: HYPERX1001 0x004c4e60
             [[maybe_unused]] const auto nFields = fscanf(pFile, "%d %d %d: ", &nFlags, &nKey, &nIndex);
 
             pRows[nRow].cFlags = static_cast<unsigned char>(nFlags);
@@ -211,12 +211,12 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
             pRows[nRow].nIndex = static_cast<unsigned short>(nIndex);
         }
 
-        // STRING: HYPERX 0x004c4e50
+        // STRING: HYPERX1001 0x004c4e50
         auto bRead = fscanf(pFile, " %f %f %f %f", &g_flForceIncrement, &g_flMaxAcceleration, &g_flMaxSpeed, &g_flForceRelaxation) == 4;
 
         auto nVictimCam = 0;
 
-        // STRING: HYPERX 0x004c4e34
+        // STRING: HYPERX1001 0x004c4e34
         bRead = bRead && fscanf(pFile, "  @v02 %d %f %f %f %f %f :", &nVictimCam, &g_flBandwidth, &g_flNetTracking, &g_flStopForceFactor, &g_flSpeedBurstFactor, &g_vViewSteepness.z) == 6;
 
         if (bRead)
@@ -224,7 +224,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
             g_bVictimCam = static_cast<unsigned char>(nVictimCam);
         }
 
-        // STRING: HYPERX 0x004c4d9c
+        // STRING: HYPERX1001 0x004c4d9c
         bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vBirdsEyeTrackOffset.x, &g_vBirdsEyeTrackOffset.y, &g_vBirdsEyeTrackOffset.z) == 3;
         bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vFirstPersonTrackOffset.x, &g_vFirstPersonTrackOffset.y, &g_vFirstPersonTrackOffset.z) == 3;
         bRead = bRead && fscanf(pFile, " %f %f %f :", &g_vOverShoulderTrackOffset.x, &g_vOverShoulderTrackOffset.y, &g_vOverShoulderTrackOffset.z) == 3;
@@ -235,7 +235,7 @@ int Config::ParseFile(const char* pszData, const char*, KeyRow* pRows)
         return 1;
     }
 
-    // STRING: HYPERX 0x004c4dfc
+    // STRING: HYPERX1001 0x004c4dfc
     g_gameApp.Fatal("Configuration file \"%s\" is missing or cannot be opened.", pszData);
 
     return 1;
@@ -275,7 +275,7 @@ void Config::SetEscapePauses(bool bOn)
 constexpr auto kMsgPaused = 0x4f;
 #define MSG_TOGGLE_MS 0x5dc
 
-// FUNCTION: HYPERX 0x0046d9f0
+// FUNCTION: HYPERX1001 0x0046d9f0
 void GameApp::HandleGlobalKeyEvent(int nKey)
 {
     if (g_pRenderer != nullptr && g_pRenderer->m_bQuitPromptVisible != 0)
@@ -434,7 +434,7 @@ void GameApp::HandleGlobalKeyEvent(int nKey)
     }
 }
 
-// FUNCTION: HYPERX 0x00480c60
+// FUNCTION: HYPERX1001 0x00480c60
 int Config::IsCommentLine(const char* pszLine)
 {
     char cFirst;

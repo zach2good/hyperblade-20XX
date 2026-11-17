@@ -9,7 +9,7 @@
 #include <memory>
 
 // A head node and then g_wMsgInteractorPoolSize more, each linked to the last.
-// FUNCTION: HYPERX 0x0046bc40
+// FUNCTION: HYPERX1001 0x0046bc40
 void MsgInteractorPool::Init()
 {
     auto* pNode = m_nodes.emplace_back(std::make_unique<MsgInteractor>()).get();
@@ -30,7 +30,7 @@ void MsgInteractorPool::Init()
 
 // The list is refilled only when unlinking the head emptied it.
 
-// FUNCTION: HYPERX 0x0046bd70
+// FUNCTION: HYPERX1001 0x0046bd70
 void* MsgInteractorPool::Alloc()
 {
     auto* const pHead = m_pHead;

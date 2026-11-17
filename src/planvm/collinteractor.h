@@ -4,7 +4,7 @@
 #include "common/compat.h"
 #include "planvm/interactor.h"
 
-// VTABLE: HYPERX 0x004b37bc
+// VTABLE: HYPERX1001 0x004b37bc
 class CollInteractor : public Interactor
 {
 public:
@@ -24,7 +24,7 @@ public:
     void            Process(int nArg, short* pOutcome, int nMode);
 };
 
-// SYNTHETIC: HYPERX 0x0046bd30
+// SYNTHETIC: HYPERX1001 0x0046bd30
 // CollInteractor::`scalar deleting destructor'
 
 #endif

@@ -24,7 +24,7 @@ constexpr auto kForceANSI = 0x10000;
 constexpr auto kForceUnicode = 0x20000;
 
 // MFC's CString::FormatV with the names changed.
-// FUNCTION: HYPERX 0x00448980
+// FUNCTION: HYPERX1001 0x00448980
 void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList)
 {
     va_list argListSave;
@@ -249,17 +249,17 @@ void String::FormatAlloc(String* pString, const char* pszFormat, va_list argList
     pString->SetLength(-1);
 }
 
-// FUNCTION: HYPERX 0x00423860
+// FUNCTION: HYPERX1001 0x00423860
 String* String::FormatResourcePath(const char* pszDirectory, const char* pszName, const char* pszExtension)
 {
     if (pszDirectory != nullptr && *pszDirectory != 0)
     {
-        // STRING: HYPERX 0x004bc468
+        // STRING: HYPERX1001 0x004bc468
         String::Format(this, "%s\\%s.%s", pszDirectory, pszName, pszExtension);
     }
     else
     {
-        // STRING: HYPERX 0x004bc460
+        // STRING: HYPERX1001 0x004bc460
         String::Format(this, "%s.%s", pszName, pszExtension);
     }
 
@@ -267,13 +267,13 @@ String* String::FormatResourcePath(const char* pszDirectory, const char* pszName
 }
 
 // A default-constructed string points at the one shared empty buffer.
-// FUNCTION: HYPERX 0x0042f3d0
+// FUNCTION: HYPERX1001 0x0042f3d0
 char** String::GetGlobalStringPtr()
 {
     return &g_pEmptyStringData;
 }
 
-// FUNCTION: HYPERX 0x0042f3e0
+// FUNCTION: HYPERX1001 0x0042f3e0
 String::String(const String& src)
 {
     m_pchData = *GetGlobalStringPtr();
@@ -310,7 +310,7 @@ String& String::operator=(String&& src) noexcept
     return *this;
 }
 
-// FUNCTION: HYPERX 0x0042f420
+// FUNCTION: HYPERX1001 0x0042f420
 String::String(const char* psz)
 {
     m_pchData = *GetGlobalStringPtr();
@@ -335,14 +335,14 @@ String::String(const char* psz)
     }
 }
 
-// FUNCTION: HYPERX 0x0042f490
+// FUNCTION: HYPERX1001 0x0042f490
 void String::FreeBuffer()
 {
     m_pBlock.reset();
     m_pchData = *GetGlobalStringPtr();
 }
 
-// FUNCTION: HYPERX 0x0042f4b0
+// FUNCTION: HYPERX1001 0x0042f4b0
 bool String::AssignResourceId(unsigned int nID)
 {
     const auto* const pszText = StringTable::Find(nID);
@@ -352,7 +352,7 @@ bool String::AssignResourceId(unsigned int nID)
     return pszText[0] != 0;
 }
 
-// FUNCTION: HYPERX 0x0042f530
+// FUNCTION: HYPERX1001 0x0042f530
 String* String::AssignFromString(const String& src)
 {
     Assign(src.GetHeader()->nDataLength, src.m_pchData);
@@ -360,7 +360,7 @@ String* String::AssignFromString(const String& src)
     return this;
 }
 
-// FUNCTION: HYPERX 0x0042f550
+// FUNCTION: HYPERX1001 0x0042f550
 String String::Concat(const String& source, const char* pszSuffix)
 {
     String temp;
@@ -383,7 +383,7 @@ String String::Concat(const String& source, const char* pszSuffix)
     return temp;
 }
 
-// FUNCTION: HYPERX 0x0042f5f0
+// FUNCTION: HYPERX1001 0x0042f5f0
 void String::Format(String* pString, const char* pszFormat, ...)
 {
     va_list argList;
@@ -395,7 +395,7 @@ void String::Format(String* pString, const char* pszFormat, ...)
     va_end(argList);
 }
 
-// FUNCTION: HYPERX 0x0042f610
+// FUNCTION: HYPERX1001 0x0042f610
 char* String::Reserve(int nLength)
 {
     auto* const pOldHeader = GetHeader();
@@ -421,7 +421,7 @@ char* String::Reserve(int nLength)
     return m_pchData;
 }
 
-// FUNCTION: HYPERX 0x0042f680
+// FUNCTION: HYPERX1001 0x0042f680
 void String::SetLength(int nLength)
 {
     MakeUnique();
@@ -435,7 +435,7 @@ void String::SetLength(int nLength)
     m_pchData[nLength]       = 0;
 }
 
-// FUNCTION: HYPERX 0x0042f6b0
+// FUNCTION: HYPERX1001 0x0042f6b0
 char* String::Resize(int nLength)
 {
     Reserve(nLength);
@@ -446,7 +446,7 @@ char* String::Resize(int nLength)
     return m_pchData;
 }
 
-// FUNCTION: HYPERX 0x0042f6d0
+// FUNCTION: HYPERX1001 0x0042f6d0
 void String::ClearAndFree()
 {
     m_pBlock.reset();
@@ -454,7 +454,7 @@ void String::ClearAndFree()
 }
 
 // MFC's CString::Empty; the null test on the fixed buffer never fires, as in the original.
-// FUNCTION: HYPERX 0x0042f720
+// FUNCTION: HYPERX1001 0x0042f720
 void String::Empty()
 {
     if (GetHeader()->nRefs >= 0)
@@ -467,7 +467,7 @@ void String::Empty()
     }
 }
 
-// FUNCTION: HYPERX 0x0042f770
+// FUNCTION: HYPERX1001 0x0042f770
 void String::AllocBuffer(int nLength)
 {
     if (nLength == 0)
@@ -486,7 +486,7 @@ void String::AllocBuffer(int nLength)
     m_pchData = pHeader->Data();
 }
 
-// FUNCTION: HYPERX 0x0042f7c0
+// FUNCTION: HYPERX1001 0x0042f7c0
 void String::PrepareForWrite(int nLength)
 {
     if (GetHeader()->nRefs > 1 || nLength > GetHeader()->nAllocLength)
@@ -496,7 +496,7 @@ void String::PrepareForWrite(int nLength)
     }
 }
 
-// FUNCTION: HYPERX 0x0042f7f0
+// FUNCTION: HYPERX1001 0x0042f7f0
 void String::Assign(unsigned int nLength, const char* pchData)
 {
     PrepareForWrite(nLength);
@@ -507,7 +507,7 @@ void String::Assign(unsigned int nLength, const char* pchData)
     m_pchData[nLength]       = 0;
 }
 
-// FUNCTION: HYPERX 0x0042f830
+// FUNCTION: HYPERX1001 0x0042f830
 void String::ConcatAlloc(int nLength1, const char* pchData1, int nLength2, const char* pchData2)
 {
     if (nLength2 + nLength1 == 0)
@@ -521,7 +521,7 @@ void String::ConcatAlloc(int nLength1, const char* pchData1, int nLength2, const
     memcpy(m_pchData + nLength1, pchData2, nLength2);
 }
 
-// FUNCTION: HYPERX 0x0042f890
+// FUNCTION: HYPERX1001 0x0042f890
 void String::AppendData(int nLength, const char* pchData)
 {
     auto* const pchOld = m_pchData;
@@ -544,7 +544,7 @@ void String::AppendData(int nLength, const char* pchData)
     ConcatAlloc(HeaderOf(pchOld)->nDataLength, pchOld, nLength, pchData);
 }
 
-// FUNCTION: HYPERX 0x0042f910
+// FUNCTION: HYPERX1001 0x0042f910
 void String::MakeUnique()
 {
     auto* const pchOld = m_pchData;
@@ -559,7 +559,7 @@ void String::MakeUnique()
     }
 }
 
-// FUNCTION: HYPERX 0x00480bd0
+// FUNCTION: HYPERX1001 0x00480bd0
 int String::ExtractToken(const char* pszSource, char* pszDest, const char** ppszNext)
 {
     const char* pszEnd;

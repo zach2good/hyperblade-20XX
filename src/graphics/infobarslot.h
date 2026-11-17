@@ -5,11 +5,11 @@
 #include "graphics/rlespritesurface.h"
 
 // Its destructor puts the shared surface table back and does nothing else.
-// VTABLE: HYPERX 0x004b3350
+// VTABLE: HYPERX1001 0x004b3350
 class InfoBarSlot : public CDDDrawable
 {
 public:
-    // FUNCTION: HYPERX 0x00451be0
+    // FUNCTION: HYPERX1001 0x00451be0
     InfoBarSlot()
     : m_nFrameCount(0)
     , m_nFrame(0)
@@ -22,7 +22,7 @@ public:
     }
 
     // Inline because the original inlines it into CDDSurfaceOwner's and InfoBar's destructors.
-    // FUNCTION: HYPERX 0x0044f1b0
+    // FUNCTION: HYPERX1001 0x0044f1b0
     ~InfoBarSlot() noexcept override = default;
 
     int Draw() override;
@@ -46,7 +46,7 @@ public:
     float m_flScalar;    // 0x34
 };
 
-// SYNTHETIC: HYPERX 0x00451c40
+// SYNTHETIC: HYPERX1001 0x00451c40
 // InfoBarSlot::`scalar deleting destructor'
 
 #endif

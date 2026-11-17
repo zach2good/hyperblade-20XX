@@ -17,7 +17,7 @@
 #include "engine/objectclasses.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x00410400
+// FUNCTION: HYPERX1001 0x00410400
 void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -31,7 +31,7 @@ void CSetAttitude::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pSurfNormal = &pOwner->GetPhysicsBody()->surfNormal;
 }
 
-// FUNCTION: HYPERX 0x00410460
+// FUNCTION: HYPERX1001 0x00410460
 void CSetAttitude::OnKind(short nSlot)
 {
     auto* const pAnchorBlock = m_pOwner->GetPhysicsBody();
@@ -62,14 +62,14 @@ void CSetAttitude::OnKind(short nSlot)
 
     if (pNormal == nullptr)
     {
-        // STRING: HYPERX 0x004bb6c0
+        // STRING: HYPERX1001 0x004bb6c0
         g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
     }
 
     *m_pSurfNormal = *pNormal;
 }
 
-// FUNCTION: HYPERX 0x00410560
+// FUNCTION: HYPERX1001 0x00410560
 void CSetAttitude::OnListChanged()
 {
     if (m_bReady == 0)
@@ -87,7 +87,7 @@ void CSetAttitude::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x004105a0
+// FUNCTION: HYPERX1001 0x004105a0
 void CSetAttitude::Process(int nArg)
 {
     TransformObject* pTransform;
@@ -170,7 +170,7 @@ void CSetAttitude::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX 0x00410760
+// FUNCTION: HYPERX1001 0x00410760
 void CSetAttitude::Release(int nArg)
 {
     TransformObject* pTransform;

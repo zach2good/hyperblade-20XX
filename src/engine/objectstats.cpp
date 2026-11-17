@@ -14,7 +14,7 @@
 extern unsigned char g_bEnergyOn;
 
 // Set while energy drains towards thirty; one flag for every skater.
-// GLOBAL: HYPERX 0x004c55d8
+// GLOBAL: HYPERX1001 0x004c55d8
 extern unsigned char g_bEnergyDraining;
 
 constexpr auto kStatsCount = 0x3f;
@@ -23,7 +23,7 @@ constexpr auto kScaleOneBits = 0x3f800000;
 
 // Everything is five except the first and seventeenth, a hundred, and the sixth, seven.
 
-// FUNCTION: HYPERX 0x004748e0
+// FUNCTION: HYPERX1001 0x004748e0
 ObjectStats* ObjectStats::InitDefaults()
 {
     int i;
@@ -44,7 +44,7 @@ ObjectStats* ObjectStats::InitDefaults()
     return this;
 }
 
-// FUNCTION: HYPERX 0x00474930
+// FUNCTION: HYPERX1001 0x00474930
 float ObjectStats::GetWeightedStat(int nIndex)
 {
     auto flEnergy = m_aStats[0];
@@ -56,7 +56,7 @@ float ObjectStats::GetWeightedStat(int nIndex)
 
 // The stat index is a word offset from the body's second field, not a table lookup.
 
-// FUNCTION: HYPERX 0x00474950
+// FUNCTION: HYPERX1001 0x00474950
 float ObjectStats::GetScalar(int nWhich) const
 {
     return m_aStats[nWhich + 1];
@@ -64,7 +64,7 @@ float ObjectStats::GetScalar(int nWhich) const
 
 // Only eight of the 63 stats are scaled: four cap at twelve and four at fifteen.
 
-// FUNCTION: HYPERX 0x00474960
+// FUNCTION: HYPERX1001 0x00474960
 void ObjectStats::ScaleTo(int nSlot)
 {
     float* pStat;
@@ -150,7 +150,7 @@ void ObjectStats::ScaleTo(int nSlot)
 
 // Only eight of the first fourteen are restored; the sentinel in m_flScale marks a restored block.
 
-// FUNCTION: HYPERX 0x00474b30
+// FUNCTION: HYPERX1001 0x00474b30
 void ObjectStats::CopyBaseStats()
 {
     int i;
@@ -181,7 +181,7 @@ void ObjectStats::CopyBaseStats()
     m_flScale = g_flBaseStatsSentinel;
 }
 
-// FUNCTION: HYPERX 0x00474bb0
+// FUNCTION: HYPERX1001 0x00474bb0
 void ObjectStats::UpdateMomentumAndEnergy()
 {
     float flMomentum;

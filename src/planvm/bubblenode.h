@@ -9,7 +9,7 @@ class EngineObject;
 class BoundBubble;
 enum class BubbleShape : short;
 
-// VTABLE: HYPERX 0x004b2a2c
+// VTABLE: HYPERX1001 0x004b2a2c
 class BubbleNode
 {
 public:

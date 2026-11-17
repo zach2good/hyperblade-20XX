@@ -5,7 +5,7 @@
 #include <memory>
 
 // Slot zero of 0x004b2af4; no other table holds 0x0042bda0.
-// VTABLE: HYPERX 0x004b2af4
+// VTABLE: HYPERX1001 0x004b2af4
 class TextInputWidget : public Widget
 {
 public:

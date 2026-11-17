@@ -4,7 +4,7 @@
 #include "graphics/surfacepoint.h"
 
 // The root of the 2D items drawn on screen: text, sprites, surfaces and the info bar slots.
-// VTABLE: HYPERX 0x004b32bc
+// VTABLE: HYPERX1001 0x004b32bc
 class CDDDrawable
 {
 public:
@@ -12,7 +12,7 @@ public:
 
     virtual int Draw() = 0;
 
-    // FUNCTION: HYPERX 0x00451b90
+    // FUNCTION: HYPERX1001 0x00451b90
     CDDDrawable()
     {
         m_ptDrawOffset.y = 0;
@@ -38,7 +38,7 @@ public:
     SurfacePoint m_ptDrawOffset; // 0x14
 };
 
-// SYNTHETIC: HYPERX 0x0044f1c0
+// SYNTHETIC: HYPERX1001 0x0044f1c0
 // CDDDrawable::`scalar deleting destructor'
 
 #endif

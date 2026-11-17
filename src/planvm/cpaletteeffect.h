@@ -12,7 +12,7 @@
 class EngineObject;
 
 // Slot 0 is the shared deleting destructor; slot 8 shares CAvoidObjects::IsReplaceable's body.
-// VTABLE: HYPERX 0x004b20ac
+// VTABLE: HYPERX1001 0x004b20ac
 // The four effect kinds the jump table covers, three of them scalar.
 enum class EffectKind
 {

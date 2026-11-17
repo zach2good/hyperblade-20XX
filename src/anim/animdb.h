@@ -11,7 +11,7 @@ class AnimClipEntry;
 
 class AnimNode;
 
-// VTABLE: HYPERX 0x004b22a8
+// VTABLE: HYPERX1001 0x004b22a8
 class AnimDB : public AnimObject
 {
 public:
@@ -67,7 +67,7 @@ public:
     short                          m_nEntryCount;   // 0x64
 };
 
-// SYNTHETIC: HYPERX 0x004175a0
+// SYNTHETIC: HYPERX1001 0x004175a0
 // AnimDB::`scalar deleting destructor'
 
 #endif

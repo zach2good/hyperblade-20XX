@@ -13,7 +13,7 @@
 FrameTimer g_frameTimer;
 
 // Reports every five seconds. Every caller discards the result.
-// FUNCTION: HYPERX 0x00442940
+// FUNCTION: HYPERX1001 0x00442940
 double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 {
     double dFrameRate;
@@ -39,7 +39,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     memset(g_szFpsText, 0, sizeof(g_szFpsText));
 
-    // STRING: HYPERX 0x004c1e58
+    // STRING: HYPERX1001 0x004c1e58
     sprintf(g_szFpsText, "FPS %02d BLIT", g_gameApp.m_nFrameRate);
 
     timer->frameStart = timer->Restart();
@@ -47,7 +47,7 @@ double FrameTimer::EndFrameUpdate(FrameTimer* timer)
     return dFrameRate;
 }
 
-// FUNCTION: HYPERX 0x00442a70
+// FUNCTION: HYPERX1001 0x00442a70
 double FrameTimer::Calibrate()
 {
     const auto start = Clock::Now();
@@ -66,7 +66,7 @@ double FrameTimer::Calibrate()
     return dResult;
 }
 
-// FUNCTION: HYPERX 0x00442b50
+// FUNCTION: HYPERX1001 0x00442b50
 double FrameTimer::BenchmarkResolution()
 {
     const auto start = Clock::Now();
@@ -85,7 +85,7 @@ double FrameTimer::BenchmarkResolution()
     return dResult;
 }
 
-// FUNCTION: HYPERX 0x00442ca0
+// FUNCTION: HYPERX1001 0x00442ca0
 void FrameTimer::ProcessInitialFrameUpdate()
 {
     if (bFrameTimesOn == 0)
@@ -97,7 +97,7 @@ void FrameTimer::ProcessInitialFrameUpdate()
     dSampleCost    = BenchmarkResolution();
 
     // The original timed a hundred GDI draws of the label here; the label no longer goes through GDI.
-    // STRING: HYPERX 0x004c1e78
+    // STRING: HYPERX1001 0x004c1e78
     g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", static_cast<int>(floor(30.5)));
     dFpsTextCost     = 0.0;
 

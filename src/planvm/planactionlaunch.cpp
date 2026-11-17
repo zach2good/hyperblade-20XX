@@ -80,7 +80,7 @@ constexpr auto kShotPowerReset = 0x32;
 constexpr auto kShotUnaimed = 0xffff0000;
 
 // The human packs the head camera's aim and shot power into the shot; any other plan sends it unaimed.
-// FUNCTION: HYPERX 0x004031e0
+// FUNCTION: HYPERX1001 0x004031e0
 void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 {
     unsigned int nPacked;
@@ -91,7 +91,7 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
     {
         const char* const pszName = pTarget->GetPlanState()->m_pszName;
 
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         if (strcmp("Human", pszName) == 0)
         {
             auto* const pHeadCam = g_pGameEngine->GetCamera(kCameraHeadSlot);
@@ -112,11 +112,11 @@ void PlanAction::SendLaunchMessage(Interactor* pContext, PlanNode*, short*, int)
 }
 
 // Three, divided into the pi beside it.
-// GLOBAL: HYPERX 0x004b148c
+// GLOBAL: HYPERX1001 0x004b148c
 extern const float g_flThreeThrow;
 
 // The packed parameter holds three signed bytes: elevation, spin and range gate.
-// FUNCTION: HYPERX 0x00403290
+// FUNCTION: HYPERX1001 0x00403290
 void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const ShotWord shot = { static_cast<unsigned int>(nArg) };
@@ -428,7 +428,7 @@ void PlanAction::Launch(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 }
 
 // Hands the rok the velocity of whatever the camera is watching, behind four gates.
-// FUNCTION: HYPERX 0x00403a30
+// FUNCTION: HYPERX1001 0x00403a30
 void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 {
     auto* const pVel   = &pContext->GetActor()->GetPhysicsBody()->velDir;
@@ -473,7 +473,7 @@ void PlanAction::Throw(Interactor* pContext, PlanNode*, short*, int)
 #define VERTICAL_HALVING 0.5f
 #define HORIZONTAL_SCALE (-0.25f)
 
-// FUNCTION: HYPERX 0x00403cf0
+// FUNCTION: HYPERX1001 0x00403cf0
 void PlanAction::KickDownToSurface(Interactor* pContext, PlanNode*, short*, int)
 {
     auto* const pActor = pContext->GetActor();
@@ -507,7 +507,7 @@ constexpr auto kDiceNarrow = 6;
 constexpr auto kJitterSpan = 21;
 constexpr auto kJitterBias = 10;
 
-// FUNCTION: HYPERX 0x00403d70
+// FUNCTION: HYPERX1001 0x00403d70
 void PlanAction::LaunchAt(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     Vec3* pGoal;
@@ -722,7 +722,7 @@ constexpr auto kArgOperand             = 1;
 
 #define SPEED_FLOOR 10.0f
 
-// FUNCTION: HYPERX 0x00404320
+// FUNCTION: HYPERX1001 0x00404320
 void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const PlanWord param = { nArg };
@@ -762,7 +762,7 @@ void PlanAction::LaunchToward(Interactor* pContext, PlanNode* pArgs, short*, int
 
     if ((nOperand & 0xffff) > kSlotDromer3)
     {
-        // STRING: HYPERX 0x004bb348
+        // STRING: HYPERX1001 0x004bb348
         g_gameApp.Fatal("Fatal failure to initialize the receiver of a pass!");
     }
 

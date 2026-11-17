@@ -8,7 +8,7 @@
 #include <cstring>
 #include "app/gameapp.h"
 
-// FUNCTION: HYPERX 0x004491c0
+// FUNCTION: HYPERX1001 0x004491c0
 SoundManager::SoundManager()
 {
     m_nUnusedA = 0;
@@ -36,14 +36,14 @@ constexpr auto kSoundNameMax    = 0x20;
 // No group read yet.
 constexpr auto kGroupNone = (-1);
 
-// FUNCTION: HYPERX 0x00449210
+// FUNCTION: HYPERX1001 0x00449210
 void SoundManager::FreeEntries()
 {
     m_apSounds.clear();
 }
 
 // The first line is a header; both walks stop at the first blank line, not at the end of file.
-// FUNCTION: HYPERX 0x00449280
+// FUNCTION: HYPERX1001 0x00449280
 unsigned short SoundManager::Load(const char* pszListName)
 {
     auto       nLongest = 0;
@@ -61,7 +61,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FileMode::kRead) == 0)
     {
-        // STRING: HYPERX 0x004c28a8
+        // STRING: HYPERX1001 0x004c28a8
         sprintf(szMessage, "Cannot open sound list file %s!\n", pszListName);
 
         throw szMessage;
@@ -88,7 +88,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     file.m_file.GetNextLine(&pLine);
 
-    // STRING: HYPERX 0x004c28a0
+    // STRING: HYPERX1001 0x004c28a0
     sscanf(pLine, "%d %s ", &nScanned, szName);
 
     while (file.m_file.GetNextLine(&pLine) > 0)
@@ -98,7 +98,7 @@ unsigned short SoundManager::Load(const char* pszListName)
             continue;
         }
 
-        // STRING: HYPERX 0x004c2894
+        // STRING: HYPERX1001 0x004c2894
         nScanned = sscanf(pLine, "%s %d %d %d", szName, &nDuration, &nGroup, &nFlag);
 
         if (nScanned == 0 || nScanned == -1)
@@ -163,11 +163,11 @@ unsigned short SoundManager::Load(const char* pszListName)
 }
 
 // Signed and shared by every group, so two groups picked in one frame get different halves.
-// GLOBAL: HYPERX 0x004ce994
+// GLOBAL: HYPERX1001 0x004ce994
 extern short g_wSoundSequence;
 
 // Alternates between a group's first two sounds; a negative counter returns no sound.
-// FUNCTION: HYPERX 0x00449680
+// FUNCTION: HYPERX1001 0x00449680
 SoundEntry* SoundManager::PickFromGroup(int nGroup)
 {
     auto nIndex = g_wSoundSequence % 2 + m_awGroupFirst[nGroup];

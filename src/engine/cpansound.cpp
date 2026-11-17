@@ -8,7 +8,7 @@
 #include "common/pooledownerroot.h"
 #include "sound/soundmanager.h"
 
-// FUNCTION: HYPERX 0x00412260
+// FUNCTION: HYPERX1001 0x00412260
 void CPanSound::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_pNext      = nullptr;
@@ -21,7 +21,7 @@ void CPanSound::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nPanStep   = 0;
 }
 
-// FUNCTION: HYPERX 0x00412290
+// FUNCTION: HYPERX1001 0x00412290
 void CPanSound::OnListChanged()
 {
     if (m_bReady == 0)
@@ -38,7 +38,7 @@ void CPanSound::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x004122d0
+// FUNCTION: HYPERX1001 0x004122d0
 void CPanSound::Process(int nArg)
 {
     if (m_pSound == nullptr || m_pSound->m_bPannable == 0 || abs(m_nPan - m_nPanTarget) <= abs(m_nPanStep))

@@ -9,7 +9,7 @@
 class EngineObject;
 class Spline;
 
-// VTABLE: HYPERX 0x004b1710
+// VTABLE: HYPERX1001 0x004b1710
 class CTrackTraj : public BaseResetAgendaItem
 {
 public:
@@ -32,7 +32,7 @@ public:
     float                   m_flBlend;  // 0x24
 };
 
-// SYNTHETIC: HYPERX 0x0040a5a0
+// SYNTHETIC: HYPERX1001 0x0040a5a0
 // CTrackTraj::`scalar deleting destructor'
 
 #endif

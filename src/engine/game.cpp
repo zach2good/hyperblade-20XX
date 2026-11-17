@@ -51,7 +51,7 @@ Vec3  g_vFallTrackOffset            = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZe
 Vec3  g_vNoOffset                   = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 Vec3  g_vZeroMarker                 = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 
-// FUNCTION: HYPERX 0x0044c1b0
+// FUNCTION: HYPERX1001 0x0044c1b0
 void Game::RunFrame()
 {
     Game::Tick();
@@ -118,7 +118,7 @@ void Game::Draw(float flAlpha)
 }
 
 // Builds the game's owners in the original's order, timing each stage.
-// FUNCTION: HYPERX 0x0045c700
+// FUNCTION: HYPERX1001 0x0045c700
 void Game::InitializeEngine()
 {
     auto nStart = GameApp::GetInstallLevel();
@@ -166,7 +166,7 @@ void Game::InitializeEngine()
 
     g_pAnimRegistry = std::make_unique<AnimRegistry>();
 
-    // STRING: HYPERX 0x004c41c0
+    // STRING: HYPERX1001 0x004c41c0
     g_pAnimRegistry->LoadFromPath("animdata\\AnimAssm.txt");
 
     nDelta = GameApp::GetInstallLevel() - nStart;
@@ -177,7 +177,7 @@ void Game::InitializeEngine()
 
     g_pRenderer = InfoBarBase::Create();
 
-    // STRING: HYPERX 0x004c41b4
+    // STRING: HYPERX1001 0x004c41b4
     g_pGameEngine->Init("game.cfg");
 
     g_pGameEngine->StartMatch();
@@ -188,12 +188,12 @@ void Game::InitializeEngine()
 
     g_pMessageQueue = std::make_unique<MessageQueue>();
 
-    // STRING: HYPERX 0x004c41a4
+    // STRING: HYPERX1001 0x004c41a4
     g_pMessageQueue->LoadList("infobtxt.lst");
 }
 
 // The message queue is emptied and kept, as the original keeps it.
-// FUNCTION: HYPERX 0x0045c9c0
+// FUNCTION: HYPERX1001 0x0045c9c0
 void Game::ShutdownEngine()
 {
     if (g_pMessageQueue != nullptr)
@@ -210,7 +210,7 @@ void Game::ShutdownEngine()
 }
 
 // Eight markers against the arena ellipsoid; the y-minus one asks for its height at y = +6, not -6.
-// FUNCTION: HYPERX 0x0047d1c0
+// FUNCTION: HYPERX1001 0x0047d1c0
 void Game::InitMatchMarkers()
 {
     g_vMarkerRimEast.x = g_arenaEllipsoid.GetRadiusX() + 2.0f;
@@ -247,7 +247,7 @@ void Game::InitMatchMarkers()
     g_vMarkerGoalMouthSouth.y = 3.0f - g_arenaEllipsoid.GetRadiusY();
 }
 
-// FUNCTION: HYPERX 0x00491dd0
+// FUNCTION: HYPERX1001 0x00491dd0
 extern "C" unsigned int Game::SetEngineState(unsigned int state)
 {
     const auto previous = g_gameApp.m_nEngineState;
@@ -258,7 +258,7 @@ extern "C" unsigned int Game::SetEngineState(unsigned int state)
 }
 
 // Runs on the frame the state changed; every other frame only ticks the current screen.
-// FUNCTION: HYPERX 0x00491de0
+// FUNCTION: HYPERX1001 0x00491de0
 unsigned int Game::UpdateState()
 {
     char* pszText;

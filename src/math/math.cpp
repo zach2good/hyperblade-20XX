@@ -9,11 +9,11 @@
 #include "math/randroll.h"
 
 // The bias that makes the range inclusive.
-// GLOBAL: HYPERX 0x004b39f0
+// GLOBAL: HYPERX1001 0x004b39f0
 extern const float g_flRandRangeBias;
 
 // A = A * B for four by four matrices, with B read only.
-// FUNCTION: HYPERX 0x0042ff20
+// FUNCTION: HYPERX1001 0x0042ff20
 void Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
 {
     const auto flRow0X = pA[0][0];
@@ -57,7 +57,7 @@ void Math::MatrixMultiplyInPlace(float (*pA)[4], const float (*pB)[4])
     pA[3][3] = ((flRow3W * pB[3][3] + flRow3Z * pB[2][3]) + flRow3X * pB[0][3]) + flRow3Y * pB[1][3];
 }
 
-// FUNCTION: HYPERX 0x00430110
+// FUNCTION: HYPERX1001 0x00430110
 bool Math::Vec3Normalize(Vec3* pVec)
 {
     const auto dLength = sqrt(static_cast<double>(Vec3::DotInline(pVec, pVec)));
@@ -78,7 +78,7 @@ bool Math::Vec3Normalize(Vec3* pVec)
     return false;
 }
 
-// FUNCTION: HYPERX 0x004753e0
+// FUNCTION: HYPERX1001 0x004753e0
 int Math::RandInt(int nMin, int nMax)
 {
     const auto flRoll = Math::RandMagnitude();
@@ -88,7 +88,7 @@ int Math::RandInt(int nMin, int nMax)
     return static_cast<int>(flRoll * (nMax + g_flRandRangeBias * 2.0f) + (nMin - g_flRandRangeBias) + 0.5);
 }
 
-// FUNCTION: HYPERX 0x0047ab30
+// FUNCTION: HYPERX1001 0x0047ab30
 Vec3 Math::SphericalToCartesian(const Vec3* pIn)
 {
     Vec3 vDir;

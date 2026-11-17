@@ -8,13 +8,13 @@
 #include "graphics/gdi.h"
 #include "engine/game.h"
 
-// FUNCTION: HYPERX 0x004490f0
+// FUNCTION: HYPERX1001 0x004490f0
 GameIntroScreen::GameIntroScreen()
 {
     m_hBackground = GDI::LoadBitmapAsBackground(g_pszIntroBackground, &m_bPaletted);
 }
 
-// FUNCTION: HYPERX 0x00449150
+// FUNCTION: HYPERX1001 0x00449150
 void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
     if (nWidget >= kWidgetIDMouse && nWidget <= kWidgetIDReturn)
@@ -26,8 +26,8 @@ void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
     }
 }
 
-// FUNCTION: HYPERX 0x004491b0
+// FUNCTION: HYPERX1001 0x004491b0
 GameIntroScreen::~GameIntroScreen() = default;
 
-// STRING: HYPERX 0x004c282c
+// STRING: HYPERX1001 0x004c282c
 const char* g_pszIntroBackground = "gintro";

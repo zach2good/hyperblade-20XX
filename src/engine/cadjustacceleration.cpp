@@ -6,7 +6,7 @@
 #include "physics/physicsbody.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0040f740
+// FUNCTION: HYPERX1001 0x0040f740
 void CAdjustAcceleration::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -22,7 +22,7 @@ void CAdjustAcceleration::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pflStep    = pflAccelDt;
 }
 
-// FUNCTION: HYPERX 0x0040f7a0
+// FUNCTION: HYPERX1001 0x0040f7a0
 void CAdjustAcceleration::OnListChanged()
 {
     if (m_bReady == 0)
@@ -39,7 +39,7 @@ void CAdjustAcceleration::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x0040f7e0
+// FUNCTION: HYPERX1001 0x0040f7e0
 void CAdjustAcceleration::Process(int nArg)
 {
     m_pSmoothVel->x = GetStep() * m_pVelDir->x + m_pSmoothVel->x;

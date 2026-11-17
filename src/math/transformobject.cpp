@@ -6,7 +6,7 @@
 #include <cstring>
 #include "math/mathops.h"
 
-// FUNCTION: HYPERX 0x00403110
+// FUNCTION: HYPERX1001 0x00403110
 void TransformObject::TransformPoint(Vec3 vPoint, Vec3* pOut)
 {
     pOut->x = m_a[0][0] * vPoint.x + m_a[0][1] * vPoint.y + m_a[0][2] * vPoint.z + m_a[0][3];
@@ -14,7 +14,7 @@ void TransformObject::TransformPoint(Vec3 vPoint, Vec3* pOut)
     pOut->z = m_a[2][0] * vPoint.x + m_a[2][1] * vPoint.y + m_a[2][2] * vPoint.z + m_a[2][3];
 }
 
-// FUNCTION: HYPERX 0x00406de0
+// FUNCTION: HYPERX1001 0x00406de0
 void TransformObject::TransformDirection(Vec3 vec, Vec3* pOut)
 {
     auto flRow = m_a[0][2] * vec.z;
@@ -31,7 +31,7 @@ void TransformObject::TransformDirection(Vec3 vec, Vec3* pOut)
 }
 
 // The direction applies the transpose, which for a rotation is the inverse.
-// FUNCTION: HYPERX 0x00406e40
+// FUNCTION: HYPERX1001 0x00406e40
 void TransformObject::TransformDirectionByRows(Vec3 vDir, Vec3* pOut)
 {
     auto flRow = m_a[2][0] * vDir.z;
@@ -49,20 +49,20 @@ void TransformObject::TransformDirectionByRows(Vec3 vDir, Vec3* pOut)
 
 // Resets the transform through its own third slot, handing it the byte it already holds.
 
-// FUNCTION: HYPERX 0x00416e40
+// FUNCTION: HYPERX1001 0x00416e40
 void TransformObject::ResetToIdentity()
 {
     Reset(m_bHasRow3);
 }
 
-// FUNCTION: HYPERX 0x00416e50
+// FUNCTION: HYPERX1001 0x00416e50
 Vec3* TransformObject::GetTranslationPtr()
 {
     return &m_vTranslate;
 }
 
 // Neither updates m_vTranslate, so the two copies drift apart.
-// FUNCTION: HYPERX 0x00416e60
+// FUNCTION: HYPERX1001 0x00416e60
 void TransformObject::AddTranslation(float flX, float flY, float flZ)
 {
     m_a[0][3] += flX;
@@ -72,7 +72,7 @@ void TransformObject::AddTranslation(float flX, float flY, float flZ)
     MarkChanged();
 }
 
-// FUNCTION: HYPERX 0x00416ea0
+// FUNCTION: HYPERX1001 0x00416ea0
 void TransformObject::AddTranslationVec(const Vec3* pDelta)
 {
     m_a[0][3] += pDelta->x;
@@ -82,7 +82,7 @@ void TransformObject::AddTranslationVec(const Vec3* pDelta)
     MarkChanged();
 }
 
-// FUNCTION: HYPERX 0x00416ee0
+// FUNCTION: HYPERX1001 0x00416ee0
 Vec3* TransformObject::GetScaleVec(Vec3* pOut)
 {
     *pOut = m_vScale;
@@ -90,18 +90,18 @@ Vec3* TransformObject::GetScaleVec(Vec3* pOut)
     return pOut;
 }
 
-// FUNCTION: HYPERX 0x00416f00
+// FUNCTION: HYPERX1001 0x00416f00
 MatrixRow* TransformObject::GetMatrixPtr()
 {
     return m_aMatrixRows;
 }
 
-// FUNCTION: HYPERX 0x00426a60
+// FUNCTION: HYPERX1001 0x00426a60
 TransformObject::~TransformObject()
 {
 }
 
-// FUNCTION: HYPERX 0x00426a70
+// FUNCTION: HYPERX1001 0x00426a70
 void TransformObject::Reset(char bHasRow3)
 {
     memset(m_a, 0, sizeof(m_a));
@@ -129,7 +129,7 @@ void TransformObject::Reset(char bHasRow3)
 
 // Scales per column where 0x00426c20 scales per row; only their identity arms agree.
 
-// FUNCTION: HYPERX 0x00426b20
+// FUNCTION: HYPERX1001 0x00426b20
 void TransformObject::ApplyScale()
 {
     if (m_bIdentity != 0)
@@ -168,7 +168,7 @@ void TransformObject::ApplyScale()
 
 // Scales per row where 0x00426b20 scales per column; only their identity arms agree.
 
-// FUNCTION: HYPERX 0x00426c20
+// FUNCTION: HYPERX1001 0x00426c20
 void TransformObject::ApplyScaleToTarget(float flScaleX, float flScaleY, float flScaleZ, TransformObject* pDest)
 {
     pDest->m_vScale.x = flScaleX;
@@ -211,7 +211,7 @@ void TransformObject::ApplyScaleToTarget(float flScaleX, float flScaleY, float f
 
 // A fresh matrix takes the vector as its translation; otherwise it folds into each row.
 
-// FUNCTION: HYPERX 0x00426d40
+// FUNCTION: HYPERX1001 0x00426d40
 void TransformObject::ApplyTranslation()
 {
     if (m_bIdentity != 0)
@@ -237,7 +237,7 @@ void TransformObject::ApplyTranslation()
 
 // The translation lives twice, as column 3 and as m_vTranslate; both are written.
 
-// FUNCTION: HYPERX 0x00426df0
+// FUNCTION: HYPERX1001 0x00426df0
 void TransformObject::SetTranslation(float flX, float flY, float flZ)
 {
     m_vTranslate.x = flX;
@@ -253,7 +253,7 @@ void TransformObject::SetTranslation(float flX, float flY, float flZ)
 
 // Also turns the fourth row, which the angle-taking version does not, and keeps the translation.
 
-// FUNCTION: HYPERX 0x00426e40
+// FUNCTION: HYPERX1001 0x00426e40
 void TransformObject::RotateAroundY()
 {
     if (m_bIdentity != 0)
@@ -293,7 +293,7 @@ void TransformObject::RotateAroundY()
 
 // The two fourth-row flags pick one of four multiplies; only four by four calls Math::MatrixMultiplyInPlace.
 
-// FUNCTION: HYPERX 0x00426f40
+// FUNCTION: HYPERX1001 0x00426f40
 void TransformObject::Compose(const TransformObject* pOther)
 {
     unsigned char cMode = 0;
@@ -432,7 +432,7 @@ void TransformObject::Compose(const TransformObject* pOther)
 
 // The same four shapes as the in-place compose, written into a third transform.
 
-// FUNCTION: HYPERX 0x00427400
+// FUNCTION: HYPERX1001 0x00427400
 void TransformObject::Multiply(TransformObject* pResult, const TransformObject* pRhs) const
 {
     float flAcc;
@@ -885,7 +885,7 @@ void TransformObject::Multiply(TransformObject* pResult, const TransformObject* 
 }
 
 // Uses the m_rotX.flCos and m_rotX.flSin that whoever set the angle staged.
-// FUNCTION: HYPERX 0x00427940
+// FUNCTION: HYPERX1001 0x00427940
 void TransformObject::RotateXStaged()
 {
     if (m_bIdentity != 0)
@@ -928,7 +928,7 @@ void TransformObject::RotateXStaged()
 
 // Uses the sine and cosine already held; an identity matrix is written, not multiplied.
 
-// FUNCTION: HYPERX 0x00427a10
+// FUNCTION: HYPERX1001 0x00427a10
 void TransformObject::ApplyRotationZ()
 {
     float flFirst;
@@ -971,7 +971,7 @@ void TransformObject::ApplyRotationZ()
     MarkChanged();
 }
 
-// FUNCTION: HYPERX 0x00427ae0
+// FUNCTION: HYPERX1001 0x00427ae0
 void TransformObject::ToTransposed()
 {
     auto flSwap = m_a[0][1];
@@ -999,7 +999,7 @@ void TransformObject::ToTransposed()
     m_a[3][2] = flSwap;
 }
 
-// FUNCTION: HYPERX 0x00427b30
+// FUNCTION: HYPERX1001 0x00427b30
 void TransformObject::CopyTransposed(TransformObject* pOut)
 {
     pOut->m_a[0][0] = m_a[0][0];
@@ -1024,7 +1024,7 @@ void TransformObject::CopyTransposed(TransformObject* pOut)
 
 // A singular matrix returns zero and leaves the destination alone.
 
-// FUNCTION: HYPERX 0x00427ba0
+// FUNCTION: HYPERX1001 0x00427ba0
 char TransformObject::ComputeInverse(TransformObject* pDest)
 {
     float flDet;
@@ -1064,7 +1064,7 @@ char TransformObject::ComputeInverse(TransformObject* pDest)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x00427d60
+// FUNCTION: HYPERX1001 0x00427d60
 void TransformObject::Multiply4x4(float* pOut, const float* pA, const float* pB)
 {
     pOut[0] = pA[0] * pB[0] + pA[1] * pB[4] + pA[2] * pB[8] + pA[3] * pB[12];
@@ -1090,7 +1090,7 @@ void TransformObject::Multiply4x4(float* pOut, const float* pA, const float* pB)
 
 // Asking for no mirror leaves the scale alone rather than restoring it.
 
-// FUNCTION: HYPERX 0x004305f0
+// FUNCTION: HYPERX1001 0x004305f0
 void TransformObject::MirrorZ(char bMirror)
 {
     if (bMirror != 0)

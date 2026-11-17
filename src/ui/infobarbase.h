@@ -8,7 +8,7 @@
 
 // The renderer interface: a destructor, one no-op and twenty three pure slots.
 // SLOT TABLE 0x004b3068
-// VTABLE: HYPERX 0x004b3068
+// VTABLE: HYPERX1001 0x004b3068
 class InfoBarBase : public Renderer
 {
 public:
@@ -31,7 +31,7 @@ public:
     static std::unique_ptr<InfoBarBase> Create();
 };
 
-// SYNTHETIC: HYPERX 0x0043e0d0
+// SYNTHETIC: HYPERX1001 0x0043e0d0
 // InfoBarBase::`scalar deleting destructor'
 
 #endif

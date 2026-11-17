@@ -72,7 +72,7 @@ float              g_flUnusedPlanTrackingC = g_flZeroPlanTracking;
 extern int g_bTwoPlayers;
 
 // With two players, the slot's low bit picks which joystick half of the tracked pair is written.
-// FUNCTION: HYPERX 0x00401820
+// FUNCTION: HYPERX1001 0x00401820
 void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*, int nSlot)
 {
     short nValue;
@@ -132,7 +132,7 @@ void PlanAction::SetObjectToTrack(Interactor* pContext, PlanNode* pArgs, short*,
 
 // A camera tracking the Rok moves to the target only while the Rok is attached to it.
 
-// FUNCTION: HYPERX 0x00401900
+// FUNCTION: HYPERX1001 0x00401900
 void PlanAction::IfNotRokTrackMe(Interactor* pContext, PlanNode*, short*, int)
 {
     CameraObject* pObject;
@@ -167,7 +167,7 @@ void PlanAction::IfNotRokTrackMe(Interactor* pContext, PlanNode*, short*, int)
     pObject->m_nPrimaryTracked = nTarget;
 }
 
-// FUNCTION: HYPERX 0x00401960
+// FUNCTION: HYPERX1001 0x00401960
 void PlanAction::SetTrackToViewOwner(Interactor* pContext, PlanNode*, short*, int)
 {
     CameraObject* pObject;
@@ -187,7 +187,7 @@ void PlanAction::SetTrackToViewOwner(Interactor* pContext, PlanNode*, short*, in
 
 // A count of two copies a marker's floats; otherwise the arguments are whole units.
 
-// FUNCTION: HYPERX 0x004019a0
+// FUNCTION: HYPERX1001 0x004019a0
 void PlanAction::SetTrackingOffset(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     CameraObject* pActor;
@@ -218,7 +218,7 @@ void PlanAction::SetTrackingOffset(Interactor* pContext, PlanNode* pArgs, short*
     pActor->m_pSettings->z = static_cast<float>(pArgs->m_pArgs[3].n);
 }
 
-// FUNCTION: HYPERX 0x00401a40
+// FUNCTION: HYPERX1001 0x00401a40
 void PlanAction::IncrementTrackingOffset(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     CameraObject* pActor;
@@ -253,7 +253,7 @@ void PlanAction::IncrementTrackingOffset(Interactor* pContext, PlanNode* pArgs, 
         static_cast<float>(pArgs->m_pArgs[3].n * 0.1 + pActor->m_pSettings->z);
 }
 
-// FUNCTION: HYPERX 0x00401b10
+// FUNCTION: HYPERX1001 0x00401b10
 void PlanAction::IncrementCameraDir(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_nArgCount == 2)
@@ -278,7 +278,7 @@ void PlanAction::IncrementCameraDir(Interactor* pContext, PlanNode* pArgs, short
     Math::Vec3Normalize(&pBody->velDir);
 }
 
-// FUNCTION: HYPERX 0x00401c00
+// FUNCTION: HYPERX1001 0x00401c00
 void PlanAction::IncrementBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     float flValue;
@@ -292,7 +292,7 @@ void PlanAction::IncrementBungeeLength(Interactor* pContext, PlanNode* pArgs, sh
     pActor->m_flBungeeLength = flValue;
 }
 
-// FUNCTION: HYPERX 0x00401c40
+// FUNCTION: HYPERX1001 0x00401c40
 void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const auto flValue = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
@@ -303,43 +303,43 @@ void PlanAction::SetBungeeLength(Interactor* pContext, PlanNode* pArgs, short*, 
 }
 
 // Plan operations that write one setting each; the three camera heights and the buffer factor take tenths.
-// FUNCTION: HYPERX 0x00401c70
+// FUNCTION: HYPERX1001 0x00401c70
 void PlanAction::SetTrackHeight(Interactor*, PlanNode* pArgs, short*, int)
 {
     g_flCameraTrackingHeight = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
-// FUNCTION: HYPERX 0x00401c90
+// FUNCTION: HYPERX1001 0x00401c90
 void PlanAction::SetMinHeight(Interactor*, PlanNode* pArgs, short*, int)
 {
     g_flCameraMinHeight = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
-// FUNCTION: HYPERX 0x00401cb0
+// FUNCTION: HYPERX1001 0x00401cb0
 void PlanAction::SetLookHeight(Interactor*, PlanNode* pArgs, short*, int)
 {
     g_flCameraLookHeight = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
-// FUNCTION: HYPERX 0x00401cd0
+// FUNCTION: HYPERX1001 0x00401cd0
 void PlanAction::SetCamBufferFactor(Interactor*, PlanNode* pArgs, short*, int)
 {
     g_flSteadyCamBuffer = static_cast<float>(pArgs->m_pArgs[1].n * 0.1);
 }
 
-// FUNCTION: HYPERX 0x00401cf0
+// FUNCTION: HYPERX1001 0x00401cf0
 void PlanAction::SetScanModes(Interactor*, PlanNode* pArgs, short*, int)
 {
     g_bScanningModesEnabled = pArgs->m_pArgs[1].n != 0;
 }
 
-// FUNCTION: HYPERX 0x00401d10
+// FUNCTION: HYPERX1001 0x00401d10
 void PlanAction::SetSolarWindFactor(Interactor*, PlanNode* pArgs, short*, int)
 {
     g_flSolarWindFactor = pArgs->m_pArgs[1].fl;
 }
 
-// FUNCTION: HYPERX 0x00401d30
+// FUNCTION: HYPERX1001 0x00401d30
 void PlanAction::SetOffsetValues(Interactor*, PlanNode* pArgs, short*, int)
 {
     auto* const pPos = g_apTrackOffsets[pArgs->m_pArgs[1].n];
@@ -352,7 +352,7 @@ void PlanAction::SetOffsetValues(Interactor*, PlanNode* pArgs, short*, int)
 constexpr auto kTrackedSlotLimit = 8;
 
 // Every rejection writes -1, so an invalid request clears the tracked object.
-// FUNCTION: HYPERX 0x00401d70
+// FUNCTION: HYPERX1001 0x00401d70
 void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*, int nSlot)
 {
     CameraObject* pTarget;
@@ -419,7 +419,7 @@ void PlanAction::SetObjectToWatch(Interactor* pContext, PlanNode* pArgs, short*,
 }
 
 // The wrap is one short of the object count, so the last entry is never selected.
-// FUNCTION: HYPERX 0x00401e40
+// FUNCTION: HYPERX1001 0x00401e40
 void PlanAction::IncrementObjectToWatch(Interactor*, PlanNode*, short*, int)
 {
     g_nSecondaryCamCursorA++;
@@ -432,7 +432,7 @@ void PlanAction::IncrementObjectToWatch(Interactor*, PlanNode*, short*, int)
     g_pGameEngine->GetCamera(kCameraMainSlot)->SetSecondaryTrackedObject(g_pGameEngine->m_ppObjects[g_nSecondaryCamCursorA]);
 }
 
-// FUNCTION: HYPERX 0x00401e90
+// FUNCTION: HYPERX1001 0x00401e90
 void PlanAction::IncrementObjectToTrack(Interactor*, PlanNode*, short*, int)
 {
     g_nSecondaryCamCursorB++;
@@ -449,7 +449,7 @@ void PlanAction::IncrementObjectToTrack(Interactor*, PlanNode*, short*, int)
 #define DIR_WINDOW_SECONDS 0.4
 
 // Sizes the smoothing windows from the frame rate; at the default factor the position one saturates above about 55 fps.
-// FUNCTION: HYPERX 0x00401ee0
+// FUNCTION: HYPERX1001 0x00401ee0
 void PlanAction::ResetCameraBufferSize(Interactor*, PlanNode*, short*, int)
 {
     auto* pEngine = g_pGameEngine.get();
@@ -498,7 +498,7 @@ constexpr auto kArgMode = 2;
 // A half; its marker is in src/globals.cpp.
 extern const float g_flViewFracHalf;
 
-// FUNCTION: HYPERX 0x00401f80
+// FUNCTION: HYPERX1001 0x00401f80
 void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     CameraObject* pCamera;
@@ -542,7 +542,7 @@ void PlanAction::ResetReticle(Interactor* pContext, PlanNode* pArgs, short*, int
 
 // The renderer hears only if there is text; the reticle goes off either way.
 
-// FUNCTION: HYPERX 0x00402040
+// FUNCTION: HYPERX1001 0x00402040
 void PlanAction::SetHeadCamText(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     if (g_pRenderer != nullptr)
@@ -555,7 +555,7 @@ void PlanAction::SetHeadCamText(Interactor* pContext, PlanNode* pArgs, short*, i
 
 // Leads the tracked object by three frames of its velocity.
 
-// FUNCTION: HYPERX 0x00402070
+// FUNCTION: HYPERX1001 0x00402070
 void PlanAction::InitRearViewPos(Interactor* pContext, PlanNode*, short*, int)
 {
     auto* const pTarget = &pContext->GetActor()->GetPhysicsBody()->pos;
@@ -578,7 +578,7 @@ void PlanAction::InitRearViewPos(Interactor* pContext, PlanNode*, short*, int)
     }
 }
 
-// FUNCTION: HYPERX 0x00402100
+// FUNCTION: HYPERX1001 0x00402100
 void PlanAction::SetCamOffsetToLocation(Interactor*, PlanNode*, short*, int)
 {
     auto* const pCamera = g_pGameEngine->GetCamera(kCameraMainSlot);
@@ -593,7 +593,7 @@ void PlanAction::SetCamOffsetToLocation(Interactor*, PlanNode*, short*, int)
 
 // Scales the aim by the frame's delta so it survives one tick of integration.
 
-// FUNCTION: HYPERX 0x00402160
+// FUNCTION: HYPERX1001 0x00402160
 void PlanAction::RelaxYawToFace(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     Vec3          vAim;
@@ -635,7 +635,7 @@ constexpr auto kArgSpeed  = 2;
 #define DEFAULT_SPREAD 20.0f
 #define DEFAULT_SPEED  50.0f
 
-// FUNCTION: HYPERX 0x00402230
+// FUNCTION: HYPERX1001 0x00402230
 void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     float flSpread;
@@ -679,7 +679,7 @@ void PlanAction::ExplodeFlat(Interactor* pContext, PlanNode* pNode, short*, int)
 
 // The three aimed bursts differ in emitter direction: against, along, and world up (+Z); the up one spawns uniformly.
 
-// FUNCTION: HYPERX 0x00402300
+// FUNCTION: HYPERX1001 0x00402300
 void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pTarget;
@@ -733,7 +733,7 @@ void PlanAction::ExplodeAgainstVelocity(Interactor* pContext, PlanNode* pNode, s
     pAgendaItem->Activate();
 }
 
-// FUNCTION: HYPERX 0x00402420
+// FUNCTION: HYPERX1001 0x00402420
 void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pTarget;
@@ -780,7 +780,7 @@ void PlanAction::ExplodeWithVelocity(Interactor* pContext, PlanNode* pNode, shor
     pAgendaItem->Activate();
 }
 
-// FUNCTION: HYPERX 0x00402510
+// FUNCTION: HYPERX1001 0x00402510
 void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pTarget;
@@ -830,7 +830,7 @@ void PlanAction::ExplodeUniform(Interactor* pContext, PlanNode* pNode, short*, i
 
 // The two blood spurts fire only with brutality on and a free particle system; the small one lifts only a player's.
 
-// FUNCTION: HYPERX 0x004025f0
+// FUNCTION: HYPERX1001 0x004025f0
 void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vStart;
@@ -865,7 +865,7 @@ void PlanAction::SmallBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
     }
 }
 
-// FUNCTION: HYPERX 0x004026d0
+// FUNCTION: HYPERX1001 0x004026d0
 void PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vStart;
@@ -901,11 +901,11 @@ void PlanAction::LargeBloodSpurt(Interactor* pContext, PlanNode*, short*, int)
 #define HEAD_BONE 9
 
 // Nought, copied into all three components of the point it transforms.
-// GLOBAL: HYPERX 0x004b1458
+// GLOBAL: HYPERX1001 0x004b1458
 extern const float g_flOriginComponent;
 
 // Only the Rok does anything, and only onto a player's slot.
-// FUNCTION: HYPERX 0x004027a0
+// FUNCTION: HYPERX1001 0x004027a0
 void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 {
     const auto nSlot = static_cast<unsigned int>(nArg);
@@ -999,7 +999,7 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 }
 
 // A player clears its own and its head bone's hidden flag; the Rok is put back on a spawn slot.
-// FUNCTION: HYPERX 0x004029f0
+// FUNCTION: HYPERX1001 0x004029f0
 void PlanAction::RegainHead(Interactor* pContext, PlanNode*, short*, int)
 {
     auto* const pActor = pContext->GetActor();
@@ -1033,18 +1033,18 @@ short g_nSecondaryCamCursorA = -1;
 short g_nSecondaryCamCursorB = -1;
 
 // Slots four and five, the goalies, pass the guard and read bone indices as entity slots; the overrun is shipped.
-// GLOBAL: HYPERX 0x004bb2e4
+// GLOBAL: HYPERX1001 0x004bb2e4
 int g_anSubstitutePairs[8] = { 94, 95, 98, 99, 96, 97, 100, 101 };
 
-// GLOBAL: HYPERX 0x004bb304
+// GLOBAL: HYPERX1001 0x004bb304
 int g_anSubstituteBones[15] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
 // The up axis the burst directions are crossed with.
-// GLOBAL: HYPERX 0x004b1460
+// GLOBAL: HYPERX1001 0x004b1460
 extern const Vec3 g_vRokAxis;
 const Vec3        g_vRokAxis = { 0.0f, 0.0f, 1.0f };
 
-// FUNCTION: HYPERX 0x00402a50
+// FUNCTION: HYPERX1001 0x00402a50
 void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pSubject;

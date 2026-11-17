@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b27ec
+// VTABLE: HYPERX1001 0x004b27ec
 class BehObj_TrackTrajectory : public FlightBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_TrackTrajectory();
 };
 
-// SYNTHETIC: HYPERX 0x0041e9a0
+// SYNTHETIC: HYPERX1001 0x0041e9a0
 // BehObj_TrackTrajectory::`scalar deleting destructor'
 
 #endif

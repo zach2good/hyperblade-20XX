@@ -8,7 +8,7 @@
 #include "gameengine.h"
 #include "physics/bubblecmd.h"
 
-// FUNCTION: HYPERX 0x00484580
+// FUNCTION: HYPERX1001 0x00484580
 ObjectDef::ObjectDef(const char* pszModel)
 {
     m_nType        = 0;
@@ -37,5 +37,5 @@ ObjectDef::ObjectDef(const char* pszModel)
     }
 }
 
-// FUNCTION: HYPERX 0x00484660
+// FUNCTION: HYPERX1001 0x00484660
 ObjectDef::~ObjectDef() = default;

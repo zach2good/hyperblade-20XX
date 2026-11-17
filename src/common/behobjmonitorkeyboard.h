@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b26e4
+// VTABLE: HYPERX1001 0x004b26e4
 class BehObj_MonitorKeyboard : public SurfaceBehaviorObject
 {
 public:
@@ -15,7 +15,7 @@ public:
     BehObj_MonitorKeyboard();
 };
 
-// SYNTHETIC: HYPERX 0x0041df20
+// SYNTHETIC: HYPERX1001 0x0041df20
 // BehObj_MonitorKeyboard::`scalar deleting destructor'
 
 #endif

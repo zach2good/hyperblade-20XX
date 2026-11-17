@@ -16,7 +16,7 @@ enum PauseFullWidget
     PAUSE_FULL_QUIT
 };
 
-// VTABLE: HYPERX 0x004b316c
+// VTABLE: HYPERX1001 0x004b316c
 class PauseMenuFullScreen : public Screen
 {
 public:
@@ -29,7 +29,7 @@ private:
     [[maybe_unused]] int m_nUnusedD; // 0x464
 };
 
-// SYNTHETIC: HYPERX 0x004433d0
+// SYNTHETIC: HYPERX1001 0x004433d0
 // PauseMenuFullScreen::`scalar deleting destructor'
 
 #endif

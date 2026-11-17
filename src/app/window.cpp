@@ -41,7 +41,7 @@
 // The game's one window, which SDL made and owns.
 static SDL_Window* s_pWindow = nullptr;
 
-// FUNCTION: HYPERX 0x0044bd60
+// FUNCTION: HYPERX1001 0x0044bd60
 void Window::ApplyFullscreenStyle()
 {
     // SDL made the window framed and resizable. Every pause toggle comes here, and only the first
@@ -62,7 +62,7 @@ void Window::ApplyFullscreenStyle()
     SDL_SetWindowPosition(s_pWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
-// FUNCTION: HYPERX 0x0048f450
+// FUNCTION: HYPERX1001 0x0048f450
 void Window::InvalidateAndUpdate()
 {
     WndProc::HandlePaint();
@@ -460,7 +460,7 @@ bool Window::Create(const char* pszTitle)
     // The resource's own icon, at the size the desktop asks for; SDL's class icon is the small one.
     const auto hWnd = (HWND)SDL_GetPointerProperty(SDL_GetWindowProperties(s_pWindow), SDL_PROP_WINDOW_WIN32_HWND_POINTER, 0);
 
-    // STRING: HYPERX 0x004c8ccc
+    // STRING: HYPERX1001 0x004c8ccc
     const auto hIcon = LoadIconA(GetModuleHandleA(0), "APPICON");
 
     SendMessageA(hWnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
@@ -492,7 +492,7 @@ void Window::ApplyCurrentSize()
     WndProc::OnResize(nWidth, nHeight);
 }
 
-// FUNCTION: HYPERX 0x0048f470
+// FUNCTION: HYPERX1001 0x0048f470
 bool Window::AskYesNo(const char* pszText, const char* pszCaption)
 {
     return ShowMessage(pszText, pszCaption, MessageButtons::YES_NO, MessageIcon::INFO) == MessageAnswer::YES;

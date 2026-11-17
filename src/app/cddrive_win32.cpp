@@ -8,10 +8,10 @@ bool CdDrive::Supported()
     return true;
 }
 
-// FUNCTION: HYPERX 0x004233b0
+// FUNCTION: HYPERX1001 0x004233b0
 bool CdDrive::IsCDRom(int nDrive)
 {
-    // STRING: HYPERX 0x004bc418
+    // STRING: HYPERX1001 0x004bc418
     char szRoot[] = "A:\\";
 
     szRoot[0] = (char)(szRoot[0] + nDrive);
@@ -21,7 +21,7 @@ bool CdDrive::IsCDRom(int nDrive)
 
 std::string CdDrive::VolumeLabel(int nDrive)
 {
-    // STRING: HYPERX 0x004bc418
+    // STRING: HYPERX1001 0x004bc418
     char szRoot[] = "A:\\";
 
     szRoot[0] = (char)(szRoot[0] + nDrive);

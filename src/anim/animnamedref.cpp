@@ -3,7 +3,7 @@
 #include <cstring>
 #include <memory>
 
-// FUNCTION: HYPERX 0x00417880
+// FUNCTION: HYPERX1001 0x00417880
 AnimNamedRef::AnimNamedRef(const char* pszName, short nSegment, short nFrame)
 {
     m_nFrame = nFrame;

@@ -9,10 +9,10 @@
 #include "graphics/paletterange.h"
 #include <memory>
 
-// GLOBAL: HYPERX 0x004cb780
+// GLOBAL: HYPERX1001 0x004cb780
 extern int g_nPaletteAnimated;
 
-// VTABLE: HYPERX 0x004b2b58
+// VTABLE: HYPERX1001 0x004b2b58
 class PaletteFade
 {
 public:
@@ -47,7 +47,7 @@ protected:
 constexpr auto kPlainFadeKind     = 2;
 constexpr auto kPlainFadeDuration = Clock::Milliseconds{ 500 };
 
-// SYNTHETIC: HYPERX 0x0042ce40
+// SYNTHETIC: HYPERX1001 0x0042ce40
 // PaletteFade::`scalar deleting destructor'
 
 #endif

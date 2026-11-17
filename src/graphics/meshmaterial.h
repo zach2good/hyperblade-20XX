@@ -19,7 +19,7 @@ class FileObj;
 struct MeshMaterial
 {
     // D3DRend::DrawFace is unoptimised and still expands this constructor and the destructor inline.
-    // FUNCTION: HYPERX 0x00436380
+    // FUNCTION: HYPERX1001 0x00436380
     inline MeshMaterial()
     {
         flAmbient  = 0.0f;

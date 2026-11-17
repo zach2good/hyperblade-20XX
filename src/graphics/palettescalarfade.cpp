@@ -13,7 +13,7 @@
 constexpr auto kScalarKind     = 3;
 constexpr auto kScalarDuration = Clock::Milliseconds{ 500 };
 
-// FUNCTION: HYPERX 0x0042cfc0
+// FUNCTION: HYPERX1001 0x0042cfc0
 PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 : PaletteFade(pRange)
 {
@@ -44,7 +44,7 @@ PaletteScalarFade::PaletteScalarFade(const PaletteRange* pRange)
 // The double constant at 0x004b1ac0.
 #define MS_TO_SECONDS 0.001
 
-// FUNCTION: HYPERX 0x0042d040
+// FUNCTION: HYPERX1001 0x0042d040
 int PaletteScalarFade::Start(const PaletteEntry* pStartColour)
 {
     if (m_bActive != 0)
@@ -58,7 +58,7 @@ int PaletteScalarFade::Start(const PaletteEntry* pStartColour)
 }
 
 // The step is retimed on each turn so the fade keeps its wall-clock duration.
-// FUNCTION: HYPERX 0x0042d080
+// FUNCTION: HYPERX1001 0x0042d080
 int PaletteScalarFade::Tick()
 {
     unsigned char cStep;
@@ -89,7 +89,7 @@ constexpr auto kFadeAllArrived = 0xff;
 extern int g_nPaletteAnimateResult;
 
 // Fades green out to nought or in to the source; 0xff in the mask means all eight arrived.
-// FUNCTION: HYPERX 0x0042d100
+// FUNCTION: HYPERX1001 0x0042d100
 int PaletteScalarFade::ApplyPhase(int bPhase)
 {
     int nAnswer;

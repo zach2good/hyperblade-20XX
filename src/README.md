@@ -1,6 +1,6 @@
 # Source
 
-One class per `.h` and `.cpp` pair. The `// FUNCTION: HYPERX 0x...` markers come from the decomp
+One class per `.h` and `.cpp` pair. The `// FUNCTION: HYPERX1001 0x...` markers come from the decomp
 and name each function's address in the original.
 
 | Folder | What's in it |

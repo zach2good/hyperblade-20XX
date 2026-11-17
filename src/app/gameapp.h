@@ -98,7 +98,7 @@ struct GameApp
     static bool UpdateSplash();
 };
 
-// SYNTHETIC: HYPERX 0x0044d400
+// SYNTHETIC: HYPERX1001 0x0044d400
 // GameApp::~GameApp
 
 #endif

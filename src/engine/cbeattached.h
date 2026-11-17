@@ -7,7 +7,7 @@ class EngineObject;
 struct AttachPak;
 
 // Slot 0 is the shared deleting destructor, declared on CGlideOnSurface.
-// VTABLE: HYPERX 0x004b1c00
+// VTABLE: HYPERX1001 0x004b1c00
 class CBeAttached : public KindAgendaItem
 {
 public:

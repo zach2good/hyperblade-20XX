@@ -29,14 +29,14 @@ constexpr auto kWrongSideLimit = 0x14;
 extern float g_flTwoAgendaItem;
 
 // Four bytes between two pool counts in .data, read by this instruction alone.
-// GLOBAL: HYPERX 0x004bb654
+// GLOBAL: HYPERX1001 0x004bb654
 extern float g_flSwerveMinSpeed;
 
 // Frames running on the wrong side of the first target; only this function uses it.
-// GLOBAL: HYPERX 0x004cb4d8
+// GLOBAL: HYPERX1001 0x004cb4d8
 extern short g_nWrongSideFrames;
 
-// FUNCTION: HYPERX 0x0040f830
+// FUNCTION: HYPERX1001 0x0040f830
 void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -57,7 +57,7 @@ void CAvoidObjects::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pDrawTarget     = nullptr;
 }
 
-// FUNCTION: HYPERX 0x0040f890
+// FUNCTION: HYPERX1001 0x0040f890
 void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int nArg)
 {
     const auto nFallbackIndex = static_cast<short>(nArg);
@@ -103,7 +103,7 @@ void CAvoidObjects::BindWithNode(EngineObject* pObject, GameBehaviorObject*, Pla
     }
 }
 
-// FUNCTION: HYPERX 0x0040f970
+// FUNCTION: HYPERX1001 0x0040f970
 void CAvoidObjects::OnListChanged()
 {
     if (m_bReady == 0)
@@ -134,7 +134,7 @@ inline short CAvoidObjects::SignTowardGoal(short nGoalSlot)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0040f9c0
+// FUNCTION: HYPERX1001 0x0040f9c0
 void CAvoidObjects::Process(int nArg)
 {
     Vec3 vGap;
@@ -306,7 +306,7 @@ void CAvoidObjects::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX 0x0040fe30
+// FUNCTION: HYPERX1001 0x0040fe30
 void CAvoidObjects::AddAvoidanceTarget(short nIndex)
 {
     if (FindByRef(g_pGameEngine->GetSlot(nIndex)) != 0)
@@ -323,7 +323,7 @@ void CAvoidObjects::AddAvoidanceTarget(short nIndex)
             return;
         }
 
-        // STRING: HYPERX 0x004bb744
+        // STRING: HYPERX1001 0x004bb744
         g_gameApp.Fatal("Can't avoid more than a coupla things.");
     }
 }

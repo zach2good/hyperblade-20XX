@@ -7,7 +7,7 @@
 #include "physics/collisionshape.h"
 #include "globals.h"
 
-// VTABLE: HYPERX 0x004b155c
+// VTABLE: HYPERX1001 0x004b155c
 class CollisionObj : public CollisionShape
 {
 public:
@@ -36,7 +36,7 @@ public:
 
 public:
     // 0x00405850 stores this table and jumps to ~CollisionShape.
-    // FUNCTION: HYPERX 0x00405850
+    // FUNCTION: HYPERX1001 0x00405850
     ~CollisionObj() noexcept = default;
 
     CollisionObj(const CollisionObj&)                = delete;
@@ -61,7 +61,7 @@ public:
     void InitFrom3Points(const Vec3* pOrigin, const Vec3* pB, const Vec3* pC, float flFriction, float flElasticity);
 };
 
-// SYNTHETIC: HYPERX 0x004807b0
+// SYNTHETIC: HYPERX1001 0x004807b0
 // CollisionObj::operator=
 
 #endif

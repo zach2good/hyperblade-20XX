@@ -9,7 +9,7 @@
 
 // m_pAnimPlayer learns its owner before the six fields clear; the last two are this.
 
-// FUNCTION: HYPERX 0x0045ca90
+// FUNCTION: HYPERX1001 0x0045ca90
 DeviceObject::DeviceObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {

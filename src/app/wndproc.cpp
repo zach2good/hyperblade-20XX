@@ -195,7 +195,7 @@ void WndProc::OnMouseMove(unsigned int nButtons, int nX, int nY)
 }
 
 // The window procedure's WM_SIZE.
-// FUNCTION: HYPERX 0x0044c330
+// FUNCTION: HYPERX1001 0x0044c330
 void WndProc::OnResize(int cx, int cy)
 {
     Window::OnSize(cx, cy);
@@ -209,7 +209,7 @@ void WndProc::OnDestroy()
     g_bShuttingDown = 1;
 }
 
-// FUNCTION: HYPERX 0x0044c910
+// FUNCTION: HYPERX1001 0x0044c910
 int WndProc::HandlePaint()
 {
     if (g_nSplashFrame != 0)
@@ -244,7 +244,7 @@ int WndProc::HandlePaint()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0044d190
+// FUNCTION: HYPERX1001 0x0044d190
 int WndProc::OnActivate(unsigned int bActive)
 {
     if (g_bShuttingDown == 0 && bActive != g_gameApp.m_bIsActive)
@@ -320,7 +320,7 @@ int WndProc::OnActivate(unsigned int bActive)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x004939b0
+// FUNCTION: HYPERX1001 0x004939b0
 unsigned int WndProc::HandleRenderMenuCommand(unsigned short nCommand)
 {
     const auto opt = Renderer::GetRenderOptions();

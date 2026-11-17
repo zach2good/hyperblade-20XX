@@ -8,11 +8,11 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b217c
+// VTABLE: HYPERX1001 0x004b217c
 class CExplosionAnimation : public BaseResetAgendaItem
 {
 public:
-    // FUNCTION: HYPERX 0x004127a0
+    // FUNCTION: HYPERX1001 0x004127a0
     void Process(int nArg) override
     {
         auto* const pSystem = (ParticleSystem*)m_pOwner;

@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b2714
+// VTABLE: HYPERX1001 0x004b2714
 class BehObj_SetInPlace : public InPlaceBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_SetInPlace();
 };
 
-// SYNTHETIC: HYPERX 0x0041e200
+// SYNTHETIC: HYPERX1001 0x0041e200
 // BehObj_SetInPlace::`scalar deleting destructor'
 
 #endif

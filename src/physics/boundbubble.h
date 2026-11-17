@@ -25,11 +25,11 @@ public:
 
 #include "planvm/bubblenode.h"
 
-// SYNTHETIC: HYPERX 0x0042a1c0
+// SYNTHETIC: HYPERX1001 0x0042a1c0
 // BubbleNode::`scalar deleting destructor'
 
 // Named CBoundBubble in the database.
-// VTABLE: HYPERX 0x004b2a38
+// VTABLE: HYPERX1001 0x004b2a38
 class BoundBubble : public BubbleNode
 {
 public:
@@ -62,10 +62,10 @@ public:
     std::unique_ptr<BoundBubble[]> m_pChildBlock;
 };
 
-// FUNCTION: HYPERX 0x0042a8f0
+// FUNCTION: HYPERX1001 0x0042a8f0
 // BoundBubble::~BoundBubble
 
-// SYNTHETIC: HYPERX 0x0042ac10
+// SYNTHETIC: HYPERX1001 0x0042ac10
 // BoundBubble::`vector deleting destructor'
 
 #include "physics/bubblecmd.h"
@@ -84,7 +84,7 @@ inline BoundBubble* GameEngine::GetColObjPtr(short nSlot) const
 
     if (pBubble == nullptr)
     {
-        // STRING: HYPERX 0x004bb2b0
+        // STRING: HYPERX1001 0x004bb2b0
         g_gameApp.Fatal("ERROR: GetColObjPtr: NULL Pointer\n");
     }
 

@@ -10,7 +10,7 @@
 #include "graphics/visualeffectfade.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x00410b10
+// FUNCTION: HYPERX1001 0x00410b10
 void CPaletteEffect::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind       = Agenda_CPaletteEffect;
@@ -20,7 +20,7 @@ void CPaletteEffect::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner      = pSubject;
 }
 
-// FUNCTION: HYPERX 0x00410b30
+// FUNCTION: HYPERX1001 0x00410b30
 void CPaletteEffect::OnListChanged()
 {
     if (m_bReady != 0)
@@ -40,7 +40,7 @@ void CPaletteEffect::OnListChanged()
 }
 
 // Kind two's fade runs five hundred where the constructor sets a thousand.
-// FUNCTION: HYPERX 0x00410b70
+// FUNCTION: HYPERX1001 0x00410b70
 int CPaletteEffect::CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry peStart, int nDuration)
 {
     const auto anRange = g_pColorPalette->GetFrameRange(nAnim);
@@ -79,7 +79,7 @@ int CPaletteEffect::CreateVisualEffect(EffectKind kind, int nAnim, PaletteEntry 
 }
 
 // The deadline comparison is unsigned, so a wrapped deadline keeps the effect alive.
-// FUNCTION: HYPERX 0x00410cf0
+// FUNCTION: HYPERX1001 0x00410cf0
 void CPaletteEffect::Process(int nArg)
 {
     m_pEffect->Tick();

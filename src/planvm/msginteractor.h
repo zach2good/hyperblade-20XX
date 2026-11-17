@@ -5,7 +5,7 @@
 #include "planvm/interactor.h"
 #include "engine/messageids.h"
 
-// VTABLE: HYPERX 0x004b3814
+// VTABLE: HYPERX1001 0x004b3814
 class MsgInteractor : public Interactor
 {
 public:

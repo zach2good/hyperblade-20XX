@@ -5,7 +5,7 @@
 #include "engine/engineobject.h"
 #include "anim/animplayer.h"
 
-// FUNCTION: HYPERX 0x00410d30
+// FUNCTION: HYPERX1001 0x00410d30
 void CStepAnimation::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CStepAnimation;
@@ -14,7 +14,7 @@ void CStepAnimation::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_pOwner = pSubject;
 }
 
-// FUNCTION: HYPERX 0x00410d50
+// FUNCTION: HYPERX1001 0x00410d50
 void CStepAnimation::Process(int nArg)
 {
     m_pOwner->m_pAnimPlayer->UpdateTick();
@@ -27,7 +27,7 @@ void CStepAnimation::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX 0x00410d80
+// FUNCTION: HYPERX1001 0x00410d80
 void CStepAnimation::Release(int nArg)
 {
     m_pOwner->m_pAnimPlayer->UpdateTick();

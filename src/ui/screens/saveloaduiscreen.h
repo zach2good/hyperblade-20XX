@@ -17,11 +17,11 @@ enum SaveLoadWidget
     SAVELOAD_SLOT_COUNT  = 10
 };
 
-// VTABLE: HYPERX 0x004b3868
+// VTABLE: HYPERX1001 0x004b3868
 class SaveLoadUIScreen : public UIScreen
 {
 public:
-    // FUNCTION: HYPERX 0x0046eb40
+    // FUNCTION: HYPERX1001 0x0046eb40
     void OnOkayClick() override
     {
         Game::SetEngineState(static_cast<unsigned int>(m_nReturnState));
@@ -54,7 +54,7 @@ public:
     int m_nSelectedLabelWidget; // 0x47c
 };
 
-// SYNTHETIC: HYPERX 0x0046e930
+// SYNTHETIC: HYPERX1001 0x0046e930
 // SaveLoadUIScreen::`scalar deleting destructor'
 
 #endif

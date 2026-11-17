@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b281c
+// VTABLE: HYPERX1001 0x004b281c
 class BehObj_CandyTracking : public FlightBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_CandyTracking();
 };
 
-// SYNTHETIC: HYPERX 0x0041eba0
+// SYNTHETIC: HYPERX1001 0x0041eba0
 // BehObj_CandyTracking::`scalar deleting destructor'
 
 #endif

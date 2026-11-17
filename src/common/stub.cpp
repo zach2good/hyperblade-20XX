@@ -4,7 +4,7 @@
 #include "engine/object.h"
 #include "common/stub.h"
 
-// FUNCTION: HYPERX 0x0043e130
+// FUNCTION: HYPERX1001 0x0043e130
 void Stub::Assert(int)
 {
 }

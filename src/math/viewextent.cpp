@@ -4,7 +4,7 @@
 #include "graphics/renderer.h"
 #include "graphics/viewextent.h"
 
-// FUNCTION: HYPERX 0x0042f9a0
+// FUNCTION: HYPERX1001 0x0042f9a0
 void ViewExtent::ShrinkClamp(int nAmount, int)
 {
     x -= nAmount;

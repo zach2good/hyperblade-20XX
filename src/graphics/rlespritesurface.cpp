@@ -17,10 +17,10 @@ float              g_flUnusedSurface2C = g_flZeroSurface2;
 
 // The multibyte compare. See library.h.
 
-// FUNCTION: HYPERX 0x0044f140
+// FUNCTION: HYPERX1001 0x0044f140
 RLESpriteSurface::~RLESpriteSurface() = default;
 
-// FUNCTION: HYPERX 0x0044f210
+// FUNCTION: HYPERX1001 0x0044f210
 int RLESpriteSurface::Draw()
 {
     if (m_pSprite != nullptr)
@@ -32,7 +32,7 @@ int RLESpriteSurface::Draw()
 }
 
 // CDDSurfaceOwner::LoadByName is the same body over different fields.
-// FUNCTION: HYPERX 0x0044f3c0
+// FUNCTION: HYPERX1001 0x0044f3c0
 int RLESpriteSurface::LoadByName(const char* pszName)
 {
     if (m_strName.empty() || SDL_strcasecmp(pszName, m_strName.c_str()) != 0)

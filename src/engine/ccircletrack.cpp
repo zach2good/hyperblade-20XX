@@ -19,7 +19,7 @@
 #include "engine/objectkind.h"
 #include "planvm/conditiontable.h"
 
-// FUNCTION: HYPERX 0x0040b6d0
+// FUNCTION: HYPERX1001 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -46,7 +46,7 @@ void CCircleTrack::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x0040b720
+// FUNCTION: HYPERX1001 0x0040b720
 void CCircleTrack::Process(int nArg)
 {
     Vec3 vPos;
@@ -61,13 +61,13 @@ void CCircleTrack::Process(int nArg)
 
     if (pTracked == nullptr)
     {
-        // STRING: HYPERX 0x004bb5dc
+        // STRING: HYPERX1001 0x004bb5dc
         g_gameApp.Fatal("CCircleTrack::Process(): Null pointer for model to track\n");
     }
 
     if (pTracked->m_nKind != ObjectKind::kDromer)
     {
-        // STRING: HYPERX 0x004bb5a0
+        // STRING: HYPERX1001 0x004bb5a0
         g_gameApp.Fatal("CCircleTrack::Process(): Model to track is not a dromer\n");
     }
 

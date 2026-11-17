@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-// VTABLE: HYPERX 0x004b3794
+// VTABLE: HYPERX1001 0x004b3794
 class MsgInteractorPool : public NodeOwner
 {
 public:
@@ -22,10 +22,10 @@ private:
     std::vector<std::unique_ptr<Interactor> > m_nodes;
 };
 
-// FUNCTION: HYPERX 0x0046bed0
+// FUNCTION: HYPERX1001 0x0046bed0
 // MsgInteractorPool::~MsgInteractorPool
 
-// SYNTHETIC: HYPERX 0x0046beb0
+// SYNTHETIC: HYPERX1001 0x0046beb0
 // MsgInteractorPool::`scalar deleting destructor'
 
 #endif

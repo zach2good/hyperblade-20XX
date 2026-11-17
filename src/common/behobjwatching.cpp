@@ -5,18 +5,18 @@
 #include "planvm/planvmglobals.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041e8b0
+// FUNCTION: HYPERX1001 0x0041e8b0
 BehObj_Watching::BehObj_Watching() = default;
 
-// FUNCTION: HYPERX 0x0041e8f0
+// FUNCTION: HYPERX1001 0x0041e8f0
 BehObj_Watching::~BehObj_Watching() = default;
 
-// FUNCTION: HYPERX 0x0041e900
+// FUNCTION: HYPERX1001 0x0041e900
 void BehObj_Watching::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForWatching();
 
-    // STRING: HYPERX 0x004bc39c
+    // STRING: HYPERX1001 0x004bc39c
     m_pszName = "Watch";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

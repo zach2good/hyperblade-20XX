@@ -13,29 +13,29 @@
 
 constexpr auto kDegreesPerTurn = 360;
 
-// GLOBAL: HYPERX 0x004d0990
+// GLOBAL: HYPERX1001 0x004d0990
 extern char g_szDebugLightLine[0x64];
 
-// GLOBAL: HYPERX 0x004c67b8
+// GLOBAL: HYPERX1001 0x004c67b8
 extern const float g_flDebugLightDistance;
 
-// FUNCTION: HYPERX 0x0047ab90
+// FUNCTION: HYPERX1001 0x0047ab90
 void DebugHUD::UpdateLightingInfo()
 {
     int nLength;
 
-    // STRING: HYPERX 0x004c67fc
+    // STRING: HYPERX1001 0x004c67fc
     nLength = sprintf(g_szDebugLightLine, "Light: Distance  %0.2f Attenuation %0.2f", g_flDebugLightDistance, g_flLightAttenuation);
 
     DebugHUD::PushLightString(g_szDebugLightLine, static_cast<short>(nLength));
 
-    // STRING: HYPERX 0x004c67c8
+    // STRING: HYPERX1001 0x004c67c8
     nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", static_cast<int>((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % kDegreesPerTurn, static_cast<int>(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % kDegreesPerTurn);
 
     DebugHUD::PushLightString(g_szDebugLightLine, static_cast<short>(nLength));
 }
 
-// FUNCTION: HYPERX 0x0047ae10
+// FUNCTION: HYPERX1001 0x0047ae10
 void DebugHUD::PushLightString(const char* pszSource, short nLength)
 {
     if (g_nDebugLineNext == 10)

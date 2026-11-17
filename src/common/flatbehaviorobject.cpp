@@ -2,7 +2,7 @@
 #include "common/pooledclasses.h"
 #include "physics/physicsbody.h"
 
-// FUNCTION: HYPERX 0x0041e470
+// FUNCTION: HYPERX1001 0x0041e470
 void FlatBehaviorObject::StartMotion()
 {
     auto* const pBody = m_pBody;

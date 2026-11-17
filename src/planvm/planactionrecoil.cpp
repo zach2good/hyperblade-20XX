@@ -74,24 +74,24 @@ constexpr auto kArgSecond = 2;
 constexpr auto kSlotExplicitPair = (-1);
 
 // Three, the facing step before the cross product decides whether to mirror it.
-// GLOBAL: HYPERX 0x004b1528
+// GLOBAL: HYPERX1001 0x004b1528
 extern const float g_flFacingStepBase;
 
 // Seven animation ids per speed step; src/engine/object.cpp marks 0x004cf9fc.
 extern short g_awReactionByDamageAndSector[35];
 
 // The two steps the table is indexed by, published before they are used.
-// GLOBAL: HYPERX 0x004d2b80
+// GLOBAL: HYPERX1001 0x004d2b80
 extern short g_nCheckImpulseStep;
-// GLOBAL: HYPERX 0x004d2b82
+// GLOBAL: HYPERX1001 0x004d2b82
 extern short g_nCheckImpulseFacing;
 
-// GLOBAL: HYPERX 0x004cb384
+// GLOBAL: HYPERX1001 0x004cb384
 extern short g_nCheckImpulseOtherSlot;
-// GLOBAL: HYPERX 0x004cb386
+// GLOBAL: HYPERX1001 0x004cb386
 extern short g_nCheckImpulseSelfSlot;
 
-// FUNCTION: HYPERX 0x00404d20
+// FUNCTION: HYPERX1001 0x00404d20
 void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
     BoundBubble*  pColOther;
@@ -241,10 +241,10 @@ void PlanAction::RecoilOffWall(Interactor* pContext, PlanNode* pNode, short*, in
 // Action 76, a partial twin of ReflectOffModel: box geometry instead of the shape dispatch.
 
 // Five, the box's top.
-// GLOBAL: HYPERX 0x004b1548
+// GLOBAL: HYPERX1001 0x004b1548
 extern const float g_flWallBoxTopY;
 
-// FUNCTION: HYPERX 0x004050d0
+// FUNCTION: HYPERX1001 0x004050d0
 void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
     const auto nSlot = static_cast<short>(nArg);
@@ -505,7 +505,7 @@ void PlanAction::ReflectOffWall(Interactor* pContext, PlanNode* pNode, short*, i
 
 // Action 78: the velocity copy scaled by minus ten is overwritten unread, in the original too.
 
-// FUNCTION: HYPERX 0x00405920
+// FUNCTION: HYPERX1001 0x00405920
 void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, int nSlot)
 {
     BoundBubble*  pColOther;
@@ -758,7 +758,7 @@ void PlanAction::ReflectOffModel(Interactor* pContext, PlanNode* pNode, short*, 
 
 // Slows the collision's own object to three tenths of its velocity and picks its reaction animation.
 
-// FUNCTION: HYPERX 0x00405fd0
+// FUNCTION: HYPERX1001 0x00405fd0
 void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* pAnnounce;
@@ -885,7 +885,7 @@ void PlanAction::ClothesLineRecoil(Interactor* pContext, PlanNode*, short*, int)
 #define SPEED_IN_WEIGHT 5.0f
 #define WEIGHT_FLOOR    0.001f
 
-// FUNCTION: HYPERX 0x00406770
+// FUNCTION: HYPERX1001 0x00406770
 void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 {
     float flSelfWeight;
@@ -982,7 +982,7 @@ void PlanAction::ManOnManRecoil(Interactor* pContext, PlanNode*, short*, int)
 
 // A nearly stopped object leaves along the other's reversed velocity, and always upwards.
 
-// FUNCTION: HYPERX 0x00406ba0
+// FUNCTION: HYPERX1001 0x00406ba0
 void PlanAction::BounceOffDromer(Interactor* pContext, PlanNode* pParams, short*, int)
 {
     Vec3 vDir;

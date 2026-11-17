@@ -16,7 +16,7 @@ constexpr auto kArgMessageFirst = 1;
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 
-// FUNCTION: HYPERX 0x0045dc20
+// FUNCTION: HYPERX1001 0x0045dc20
 void MsgInteractor::Discard()
 {
     m_nActiveState = 0;
@@ -27,7 +27,7 @@ void MsgInteractor::Discard()
     g_pMsgInteractorPool->Insert(this);
 }
 
-// FUNCTION: HYPERX 0x0045dfc0
+// FUNCTION: HYPERX1001 0x0045dfc0
 MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
 {
     m_pOwner           = pObject;
@@ -74,7 +74,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
                 break;
 
             default:
-                // STRING: HYPERX 0x004c44fc
+                // STRING: HYPERX1001 0x004c44fc
                 throw "Invalid Instruction object in MsgInteractor setup\n";
         }
 
@@ -84,7 +84,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     return this;
 }
 
-// FUNCTION: HYPERX 0x0045e0b0
+// FUNCTION: HYPERX1001 0x0045e0b0
 void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
 {
     m_otherSlot.n = nSender;
@@ -92,7 +92,7 @@ void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
     Dispatch(nArg, pState);
 }
 
-// FUNCTION: HYPERX 0x0045e0d0
+// FUNCTION: HYPERX1001 0x0045e0d0
 void MsgInteractor::Dispatch(int nArg, short* pState)
 {
     PlanWord* pCursor = nullptr;
@@ -133,7 +133,7 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
     }
 }
 
-// FUNCTION: HYPERX 0x0046bd20
+// FUNCTION: HYPERX1001 0x0046bd20
 short MsgInteractor::GetTargetSlot()
 {
     return static_cast<short>(m_otherSlot.n);

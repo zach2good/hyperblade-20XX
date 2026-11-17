@@ -11,7 +11,7 @@
 constexpr auto kTextInputCapacity = 0x50;
 
 // The length is read back as the index, so the terminator lands at offset zero.
-// FUNCTION: HYPERX 0x0042bce0
+// FUNCTION: HYPERX1001 0x0042bce0
 TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark)
 : Widget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
@@ -33,7 +33,7 @@ int TextInputWidget::OnMouseDown()
 }
 
 // Backspace on an empty field writes the terminator one byte before the buffer, as in the original.
-// FUNCTION: HYPERX 0x0042bda0
+// FUNCTION: HYPERX1001 0x0042bda0
 int TextInputWidget::OnKeyPress(unsigned int nKey)
 {
     const int nChar = nKey;

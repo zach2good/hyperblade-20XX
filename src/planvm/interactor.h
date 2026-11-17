@@ -10,7 +10,7 @@ class CameraObject;
 struct PlanNode;
 
 // The base of the collision and message interactors; the re-arm walk calls only slot 10.
-// VTABLE: HYPERX 0x004b37e8
+// VTABLE: HYPERX1001 0x004b37e8
 class Interactor
 {
 public:
@@ -59,7 +59,7 @@ public:
 
     virtual int GetActiveState();
 
-    // FUNCTION: HYPERX 0x0046bb50
+    // FUNCTION: HYPERX1001 0x0046bb50
     virtual void SetMember(int nMember)
     {
         m_nMember = nMember;
@@ -68,7 +68,7 @@ public:
     // Zero, one or two: the phase the object below is checked against.
     virtual int GetState();
 
-    // FUNCTION: HYPERX 0x0046bb70
+    // FUNCTION: HYPERX1001 0x0046bb70
     virtual EngineObject* GetActor()
     {
         return m_pOwner;
@@ -79,7 +79,7 @@ public:
     CameraObject* GetCameraActor();
 
     // The message id EngineObject::RegisterSceneMessageHandler indexes its byte table by.
-    // FUNCTION: HYPERX 0x0046bba0
+    // FUNCTION: HYPERX1001 0x0046bba0
     virtual short GetNamedSlot()
     {
         return -1;
@@ -127,7 +127,7 @@ public:
     short m_wEventKind;    // 0x032
 };
 
-// SYNTHETIC: HYPERX 0x0046bbb0
+// SYNTHETIC: HYPERX1001 0x0046bbb0
 // Interactor::`scalar deleting destructor'
 
 #endif

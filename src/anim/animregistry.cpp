@@ -19,7 +19,7 @@
 
 // The parse runs on m_pScripts and this one is only the owner.
 
-// FUNCTION: HYPERX 0x00416fd0
+// FUNCTION: HYPERX1001 0x00416fd0
 void AnimRegistry::LoadFromPath(const char* pszPath)
 {
     const char* pszJoined;
@@ -32,7 +32,7 @@ void AnimRegistry::LoadFromPath(const char* pszPath)
 }
 
 // Both name lookups use the multibyte compare, not _stricmp.
-// FUNCTION: HYPERX 0x00417040
+// FUNCTION: HYPERX1001 0x00417040
 AnimDB* AnimRegistry::FindAnimByNamePtr(const char* pszName)
 {
     for (short iAnim = 0; iAnim < m_pScripts->m_nCount; iAnim++)
@@ -46,7 +46,7 @@ AnimDB* AnimRegistry::FindAnimByNamePtr(const char* pszName)
     return nullptr;
 }
 
-// FUNCTION: HYPERX 0x004170a0
+// FUNCTION: HYPERX1001 0x004170a0
 short AnimRegistry::FindAnimByNameIdx(const char* pszName)
 {
     for (short iAnim = 0; iAnim < m_pScripts->m_nCount; iAnim++)
@@ -60,7 +60,7 @@ short AnimRegistry::FindAnimByNameIdx(const char* pszName)
     return -1;
 }
 
-// FUNCTION: HYPERX 0x004170f0
+// FUNCTION: HYPERX1001 0x004170f0
 AnimClipSet* AnimRegistry::FindOrLoad(const char* pszName)
 {
     auto* const pSet = FindInCache(pszName);
@@ -74,7 +74,7 @@ AnimClipSet* AnimRegistry::FindOrLoad(const char* pszName)
 }
 
 // Parses the name with sscanf once per slot; compares case-insensitively up to 32 characters.
-// FUNCTION: HYPERX 0x00417120
+// FUNCTION: HYPERX1001 0x00417120
 AnimClipSet* AnimRegistry::FindInCache(const char* pszName)
 {
     char szParsed[32];
@@ -101,7 +101,7 @@ AnimClipSet* AnimRegistry::FindInCache(const char* pszName)
 }
 
 // The first walk stops at the first empty slot, so a hole in the array ends the bind.
-// FUNCTION: HYPERX 0x004171a0
+// FUNCTION: HYPERX1001 0x004171a0
 AnimDB* AnimRegistry::BindAnimSets(AnimDB* pDb)
 {
     short i;

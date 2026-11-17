@@ -6,18 +6,18 @@
 #include "engine/engineobject.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041d590
+// FUNCTION: HYPERX1001 0x0041d590
 BehObj_GlideToPosition::BehObj_GlideToPosition() = default;
 
-// FUNCTION: HYPERX 0x0041d5d0
+// FUNCTION: HYPERX1001 0x0041d5d0
 BehObj_GlideToPosition::~BehObj_GlideToPosition() = default;
 
-// FUNCTION: HYPERX 0x0041d5e0
+// FUNCTION: HYPERX1001 0x0041d5e0
 void BehObj_GlideToPosition::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForGlideToPosition();
 
-    // STRING: HYPERX 0x004bc298
+    // STRING: HYPERX1001 0x004bc298
     m_pszName = "GlideToPosition";
 
     m_wKind = kBehGlideToPosition;

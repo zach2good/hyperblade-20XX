@@ -12,7 +12,7 @@ class MatchInfoUIScreen;
 constexpr auto kMatchinfoFirstPeriod = 1;
 
 // RegisterBitmaps claims every bitmap name's STRING marker.
-// FUNCTION: HYPERX 0x00435790
+// FUNCTION: HYPERX1001 0x00435790
 MatchInfoUIScreen::MatchInfoUIScreen()
 {
     int nFound;
@@ -68,15 +68,15 @@ MatchInfoUIScreen::MatchInfoUIScreen()
     {
         m_apWidgets[MATCHINFO_WIDGET_SAVE_LOAD]->ClearFrames();
 
-        // STRING: HYPERX 0x004bdddc
+        // STRING: HYPERX1001 0x004bdddc
         pBitmap = CacheLookup("savlod", &nFound);
         m_apWidgets[MATCHINFO_WIDGET_SAVE_LOAD]->AddFrameBitmap(pBitmap, nFound);
 
-        // STRING: HYPERX 0x004bddd4
+        // STRING: HYPERX1001 0x004bddd4
         pBitmap = CacheLookup("savlodr", &nFound);
         m_apWidgets[MATCHINFO_WIDGET_SAVE_LOAD]->AddFrameBitmap(pBitmap, nFound);
 
-        // STRING: HYPERX 0x004bddcc
+        // STRING: HYPERX1001 0x004bddcc
         pBitmap = CacheLookup("savlodd", &nFound);
         m_apWidgets[MATCHINFO_WIDGET_SAVE_LOAD]->AddFrameBitmap(pBitmap, nFound);
 
@@ -108,7 +108,7 @@ MatchInfoUIScreen::MatchInfoUIScreen()
     }
 }
 
-// FUNCTION: HYPERX 0x00435b20
+// FUNCTION: HYPERX1001 0x00435b20
 void MatchInfoUIScreen::OnFirstTabClick()
 {
     g_nSetupReturnState = kEstateMatchInfo;
@@ -125,7 +125,7 @@ void MatchInfoUIScreen::OnFirstTabClick()
     }
 }
 
-// FUNCTION: HYPERX 0x00435b50
+// FUNCTION: HYPERX1001 0x00435b50
 void MatchInfoUIScreen::OnSecondTabClick()
 {
     g_nSetupReturnState = kEstateMatchInfo;
@@ -133,7 +133,7 @@ void MatchInfoUIScreen::OnSecondTabClick()
     Game::SetEngineState(kEstateAwards);
 }
 
-// FUNCTION: HYPERX 0x00435b70
+// FUNCTION: HYPERX1001 0x00435b70
 void MatchInfoUIScreen::OnThirdTabClick()
 {
     if ((g_pGameEngine->IsTournamentMode() != 0 && g_pGameEngine->m_clock.nPeriod == kMatchinfoFirstPeriod) || (g_pGameEngine->IsTournamentMode() != 0 && g_nPrevEngineState == kEstateDromeExterior))
@@ -150,7 +150,7 @@ void MatchInfoUIScreen::OnThirdTabClick()
     Game::SetEngineState(m_nNextState);
 }
 
-// FUNCTION: HYPERX 0x00435bd0
+// FUNCTION: HYPERX1001 0x00435bd0
 void MatchInfoUIScreen::OnExitTabClick()
 {
     UnloadBitmaps();
@@ -159,52 +159,52 @@ void MatchInfoUIScreen::OnExitTabClick()
 }
 
 // Nine images in three states each: plain, "r" rollover and "d" depressed.
-// FUNCTION: HYPERX 0x00435bf0
+// FUNCTION: HYPERX1001 0x00435bf0
 void MatchInfoUIScreen::RegisterBitmaps()
 {
-    // STRING: HYPERX 0x004bde0c
+    // STRING: HYPERX1001 0x004bde0c
     AddBitmap("info");
 
-    // STRING: HYPERX 0x004bde04
+    // STRING: HYPERX1001 0x004bde04
     AddBitmap("infor");
 
-    // STRING: HYPERX 0x004bddfc
+    // STRING: HYPERX1001 0x004bddfc
     AddBitmap("infod");
 
-    // STRING: HYPERX 0x004bddf4
+    // STRING: HYPERX1001 0x004bddf4
     AddBitmap("award");
 
-    // STRING: HYPERX 0x004bddec
+    // STRING: HYPERX1001 0x004bddec
     AddBitmap("awardr");
 
-    // STRING: HYPERX 0x004bdde4
+    // STRING: HYPERX1001 0x004bdde4
     AddBitmap("awardd");
 
-    // STRING: HYPERX 0x004bddc4
+    // STRING: HYPERX1001 0x004bddc4
     AddBitmap("done");
 
-    // STRING: HYPERX 0x004bddbc
+    // STRING: HYPERX1001 0x004bddbc
     AddBitmap("doner");
 
-    // STRING: HYPERX 0x004bddb4
+    // STRING: HYPERX1001 0x004bddb4
     AddBitmap("doned");
 
-    // STRING: HYPERX 0x004bde9c
+    // STRING: HYPERX1001 0x004bde9c
     AddBitmap("roster");
 
-    // STRING: HYPERX 0x004bde94
+    // STRING: HYPERX1001 0x004bde94
     AddBitmap("rosterr");
 
-    // STRING: HYPERX 0x004bde8c
+    // STRING: HYPERX1001 0x004bde8c
     AddBitmap("rosterd");
 
-    // STRING: HYPERX 0x004bde84
+    // STRING: HYPERX1001 0x004bde84
     AddBitmap("gamob1");
 
-    // STRING: HYPERX 0x004bde7c
+    // STRING: HYPERX1001 0x004bde7c
     AddBitmap("gamob1r");
 
-    // STRING: HYPERX 0x004bde74
+    // STRING: HYPERX1001 0x004bde74
     AddBitmap("gamob1d");
 
     AddBitmap("Arena");
@@ -225,63 +225,63 @@ void MatchInfoUIScreen::RegisterBitmaps()
 
     AddBitmap("Stleftd");
 
-    // STRING: HYPERX 0x004bde24
+    // STRING: HYPERX1001 0x004bde24
     AddBitmap("gamob2");
 
-    // STRING: HYPERX 0x004bde1c
+    // STRING: HYPERX1001 0x004bde1c
     AddBitmap("gamob2r");
 
-    // STRING: HYPERX 0x004bde14
+    // STRING: HYPERX1001 0x004bde14
     AddBitmap("gamob2d");
     g_nMatchInfoBitmapsUnloaded = 0;
 }
 
-// FUNCTION: HYPERX 0x00435d50
+// FUNCTION: HYPERX1001 0x00435d50
 void MatchInfoUIScreen::UnloadBitmaps()
 {
-    // STRING: HYPERX 0x004bde0c
+    // STRING: HYPERX1001 0x004bde0c
     RemoveBitmap("info");
 
-    // STRING: HYPERX 0x004bde04
+    // STRING: HYPERX1001 0x004bde04
     RemoveBitmap("infor");
 
-    // STRING: HYPERX 0x004bddfc
+    // STRING: HYPERX1001 0x004bddfc
     RemoveBitmap("infod");
 
-    // STRING: HYPERX 0x004bddf4
+    // STRING: HYPERX1001 0x004bddf4
     RemoveBitmap("award");
 
-    // STRING: HYPERX 0x004bddec
+    // STRING: HYPERX1001 0x004bddec
     RemoveBitmap("awardr");
 
-    // STRING: HYPERX 0x004bdde4
+    // STRING: HYPERX1001 0x004bdde4
     RemoveBitmap("awardd");
 
-    // STRING: HYPERX 0x004bddc4
+    // STRING: HYPERX1001 0x004bddc4
     RemoveBitmap("done");
 
-    // STRING: HYPERX 0x004bddbc
+    // STRING: HYPERX1001 0x004bddbc
     RemoveBitmap("doner");
 
-    // STRING: HYPERX 0x004bddb4
+    // STRING: HYPERX1001 0x004bddb4
     RemoveBitmap("doned");
 
-    // STRING: HYPERX 0x004bde9c
+    // STRING: HYPERX1001 0x004bde9c
     RemoveBitmap("roster");
 
-    // STRING: HYPERX 0x004bde94
+    // STRING: HYPERX1001 0x004bde94
     RemoveBitmap("rosterr");
 
-    // STRING: HYPERX 0x004bde8c
+    // STRING: HYPERX1001 0x004bde8c
     RemoveBitmap("rosterd");
 
-    // STRING: HYPERX 0x004bde84
+    // STRING: HYPERX1001 0x004bde84
     RemoveBitmap("gamob1");
 
-    // STRING: HYPERX 0x004bde7c
+    // STRING: HYPERX1001 0x004bde7c
     RemoveBitmap("gamob1r");
 
-    // STRING: HYPERX 0x004bde74
+    // STRING: HYPERX1001 0x004bde74
     RemoveBitmap("gamob1d");
 
     RemoveBitmap("Arena");
@@ -302,13 +302,13 @@ void MatchInfoUIScreen::UnloadBitmaps()
 
     RemoveBitmap("Stleftd");
 
-    // STRING: HYPERX 0x004bde24
+    // STRING: HYPERX1001 0x004bde24
     RemoveBitmap("gamob2");
 
-    // STRING: HYPERX 0x004bde1c
+    // STRING: HYPERX1001 0x004bde1c
     RemoveBitmap("gamob2r");
 
-    // STRING: HYPERX 0x004bde14
+    // STRING: HYPERX1001 0x004bde14
     RemoveBitmap("gamob2d");
     g_nMatchInfoBitmapsUnloaded = 1;
 }

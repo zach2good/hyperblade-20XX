@@ -18,11 +18,11 @@ constexpr auto kBindingSlots       = 20;
 constexpr auto kBindingHeadBytes   = 0x208;
 
 // This table fills two slots and leaves fourteen __purecall; 0x004b2974 fills all sixteen.
-// VTABLE: HYPERX 0x004b29b4
+// VTABLE: HYPERX1001 0x004b29b4
 class AnimBinding
 {
 public:
-    // FUNCTION: HYPERX 0x00425450
+    // FUNCTION: HYPERX1001 0x00425450
     virtual ~AnimBinding() = default;
 
     virtual char  UpdateTick()                                                                                             = 0;
@@ -66,7 +66,7 @@ public:
     Vec3               m_vDelta;       // 0x1fc
 };
 
-// SYNTHETIC: HYPERX 0x00425460
+// SYNTHETIC: HYPERX1001 0x00425460
 // AnimBinding::`scalar deleting destructor'
 
 inline AnimBinding::AnimBinding()

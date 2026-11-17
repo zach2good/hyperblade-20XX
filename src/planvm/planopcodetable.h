@@ -11,7 +11,7 @@ union PlanWord;
 
 using PlanArgFn = short (*)(EngineObject** ppActor, const PlanWord* pStream, int* pResult);
 
-// GLOBAL: HYPERX 0x004d187c
+// GLOBAL: HYPERX1001 0x004d187c
 extern PlanArgFn g_apPlanArgFns[PRN_COUNT];
 
 #endif

@@ -23,11 +23,11 @@ struct InstallCost
 };
 
 // The root of the game-object family, abstract: a destructor and 25 _purecall slots.
-// VTABLE: HYPERX 0x004b3970
+// VTABLE: HYPERX1001 0x004b3970
 class ObjectBase
 {
 public:
-    // FUNCTION: HYPERX 0x004726f0
+    // FUNCTION: HYPERX1001 0x004726f0
     virtual ~ObjectBase() = default;
 
     virtual short             GetSlot()                                                                                                 = 0;
@@ -61,7 +61,7 @@ public:
     InstallCost m_installCost; // 0x004, the vtable slot at 0x000 being the compiler's
 };
 
-// SYNTHETIC: HYPERX 0x00472700
+// SYNTHETIC: HYPERX1001 0x00472700
 // ObjectBase::`scalar deleting destructor'
 
 #endif

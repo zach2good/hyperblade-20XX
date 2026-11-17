@@ -22,7 +22,7 @@ std::vector<unsigned char> s_backBuffer;
 } // namespace
 
 // The width rounds up to a multiple of four; the answer is only whether that changed it.
-// FUNCTION: HYPERX 0x0044ba50
+// FUNCTION: HYPERX1001 0x0044ba50
 int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 {
     auto bWidthRounded = 0;
@@ -61,7 +61,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
     return bWidthRounded;
 }
 
-// FUNCTION: HYPERX 0x0044b7c0
+// FUNCTION: HYPERX1001 0x0044b7c0
 void SoftRenderer::FreeBackBuffer()
 {
     s_backBuffer = {};
@@ -69,12 +69,12 @@ void SoftRenderer::FreeBackBuffer()
     g_pBackBufferBitsCopy = nullptr;
 }
 
-// FUNCTION: HYPERX 0x0044f480
+// FUNCTION: HYPERX1001 0x0044f480
 Record<RLESprite> SoftRenderer::LoadRLESprite(const char* pszName)
 {
     PathString strPath(kMaxPathLength);
 
-    // STRING: HYPERX 0x004bc45c
+    // STRING: HYPERX1001 0x004bc45c
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszName, "bmp");
 
     const auto pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
@@ -89,7 +89,7 @@ Record<RLESprite> SoftRenderer::LoadRLESprite(const char* pszName)
 
 char g_szTopDownDibName[12] = "TopDownDIB ";
 
-// STRING: HYPERX 0x004c2ca8
+// STRING: HYPERX1001 0x004c2ca8
 const char* g_pszDibOrientationName = "BottomUpDIB";
 
 // 50x50, 8 bits: the back buffer the original builds before it knows the display mode.

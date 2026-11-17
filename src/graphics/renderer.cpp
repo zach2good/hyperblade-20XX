@@ -68,13 +68,13 @@ constexpr auto kDrawPolyDepth = 8;
 
 extern int g_bDromePass;
 
-// GLOBAL: HYPERX 0x004c1e94
+// GLOBAL: HYPERX1001 0x004c1e94
 extern int g_bDromeIniDirty;
 
 constexpr auto kDromeTexturedDefault = 1;
 
 // A network or loading frame relights the first slots from fixed directions first.
-// FUNCTION: HYPERX 0x00442d20
+// FUNCTION: HYPERX1001 0x00442d20
 void Renderer::DrawAllMeshes()
 {
     MeshBone* pBone;
@@ -164,13 +164,13 @@ void Renderer::DrawAllMeshes()
     g_bLoadingMode = 0;
 }
 
-// FUNCTION: HYPERX 0x00442f40
+// FUNCTION: HYPERX1001 0x00442f40
 void Renderer::SetLoadingMode()
 {
     g_bLoadingMode = 1;
 }
 
-// FUNCTION: HYPERX 0x00442f50
+// FUNCTION: HYPERX1001 0x00442f50
 int Renderer::SetDromeTextured(int nEnable)
 {
     if (g_cMdmTexLoaded == 0 && !HwRenderer::Capturing())
@@ -190,13 +190,13 @@ int Renderer::SetDromeTextured(int nEnable)
     return g_nDromeTextured;
 }
 
-// FUNCTION: HYPERX 0x00442fa0
+// FUNCTION: HYPERX1001 0x00442fa0
 int Renderer::ToggleDromeTextured()
 {
     return Renderer::SetDromeTextured(g_nDromeTextured == 0);
 }
 
-// FUNCTION: HYPERX 0x0044b2c0
+// FUNCTION: HYPERX1001 0x0044b2c0
 void Renderer::DrawWholeScene()
 {
     DrawPolySurface surface;
@@ -222,7 +222,7 @@ void Renderer::DrawWholeScene()
     g_pScene->DrawShadowAndTransparentPass(&g_arenaEllipsoid);
 }
 
-// FUNCTION: HYPERX 0x0044bc30
+// FUNCTION: HYPERX1001 0x0044bc30
 int Renderer::PresentFrame()
 {
     // The splash owns the screen, so the start-up timing frames are drawn but not shown.
@@ -236,19 +236,19 @@ int Renderer::PresentFrame()
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0044bc80
+// FUNCTION: HYPERX1001 0x0044bc80
 void Renderer::DrawSceneDispatch()
 {
     Renderer::DrawWholeScene();
 }
 
-// FUNCTION: HYPERX 0x0044be80
+// FUNCTION: HYPERX1001 0x0044be80
 RenderOptions Renderer::GetRenderOptions()
 {
     return g_renderOptions;
 }
 
-// FUNCTION: HYPERX 0x0044beb0
+// FUNCTION: HYPERX1001 0x0044beb0
 void Renderer::SetRenderOption(RenderOption nOption, int nValue)
 {
     switch (nOption)
@@ -268,17 +268,17 @@ void Renderer::SetRenderOption(RenderOption nOption, int nValue)
     }
 }
 
-// GLOBAL: HYPERX 0x004d0a28
+// GLOBAL: HYPERX1001 0x004d0a28
 class TransformObject* g_pCameraTransform;
 
 // The back buffer lock writes pBits and nPitch.
-// GLOBAL: HYPERX 0x004d0a30
+// GLOBAL: HYPERX1001 0x004d0a30
 LayoutState g_cameraViewportBlock;
 
-// GLOBAL: HYPERX 0x004d1a68
+// GLOBAL: HYPERX1001 0x004d1a68
 ClipExtents g_projRenderParams;
 
-// FUNCTION: HYPERX 0x0044bf60
+// FUNCTION: HYPERX1001 0x0044bf60
 void Renderer::ClearFrame()
 {
     if (g_pBackBufferBitsCopy != nullptr)
@@ -297,7 +297,7 @@ void Renderer::ClearFrame()
     }
 }
 
-// FUNCTION: HYPERX 0x0047a980
+// FUNCTION: HYPERX1001 0x0047a980
 void Renderer::SetCameraTransformAndViewport(LayoutState block)
 {
     g_cameraViewportBlock = block;
@@ -314,7 +314,7 @@ void Renderer::SetCameraTransformAndViewport(LayoutState block)
 }
 
 // Azimuths 303, 54 and 180 degrees; the first fills two table entries.
-// FUNCTION: HYPERX 0x0047aa20
+// FUNCTION: HYPERX1001 0x0047aa20
 void Renderer::InitializeLightDirections()
 {
     Vec3 vSpherical2;
@@ -344,9 +344,9 @@ void Renderer::InitializeLightDirections()
 
 int g_nDromeTextured = 1;
 
-// STRING: HYPERX 0x004c1ea8
+// STRING: HYPERX1001 0x004c1ea8
 const char* g_pszDromeSection = "Misc";
 
-// STRING: HYPERX 0x004c1e98
+// STRING: HYPERX1001 0x004c1e98
 const char* g_pszDromeTexturedKey = "DromeTextured";
 int         g_bDromeIniDirty      = 1;

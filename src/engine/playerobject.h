@@ -11,7 +11,7 @@
 #include "engine/gameengine.h"
 #include "planvm/interactor.h"
 
-// VTABLE: HYPERX 0x004b3af4
+// VTABLE: HYPERX1001 0x004b3af4
 class PlayerObject : public EngineObject
 {
 public:
@@ -46,7 +46,7 @@ public:
     PowerUpRestore m_powerUpRestore;
 };
 
-// SYNTHETIC: HYPERX 0x00474300
+// SYNTHETIC: HYPERX1001 0x00474300
 // PlayerObject::`scalar deleting destructor'
 
 inline PlayerObject* GameEngine::GetPlayer(int nSlot) const
@@ -60,7 +60,7 @@ inline PlayerObject* Interactor::GetPlayerActor()
 }
 
 // The atexit thunk for UpdateRenderSlotTransform's scratch transform.
-// SYNTHETIC: HYPERX 0x00474480
+// SYNTHETIC: HYPERX1001 0x00474480
 // $E2
 
 #endif

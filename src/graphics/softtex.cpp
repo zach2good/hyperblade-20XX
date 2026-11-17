@@ -16,7 +16,7 @@ constexpr auto kRLEMaxRun  = 0x7f;
 constexpr auto kRLELiteral = 0x80;
 
 // Top bit set: literal pixels follow; clear: transparent skip. 255 is transparent.
-// FUNCTION: HYPERX 0x0044f550
+// FUNCTION: HYPERX1001 0x0044f550
 Record<RLESprite> SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
 {
     char aRun[128];
@@ -113,7 +113,7 @@ Record<RLESprite> SoftTex::CompressToRLE(const BitmapInfoHeader* pDib)
 }
 
 // The newest texture is unlinked first.
-// FUNCTION: HYPERX 0x004928a0
+// FUNCTION: HYPERX1001 0x004928a0
 SoftTex::SoftTex()
 {
     memset(&m_image, 0, sizeof(m_image));
@@ -124,7 +124,7 @@ SoftTex::SoftTex()
 }
 
 // A texture not in the list sets the head to its own next pointer.
-// FUNCTION: HYPERX 0x004928d0
+// FUNCTION: HYPERX1001 0x004928d0
 void SoftTex::RemoveFromList()
 {
     m_pDib = nullptr;
@@ -156,7 +156,7 @@ void SoftTex::RemoveFromList()
 
 // The palette is built from the first bitmap loaded, so later textures show through its colours.
 
-// FUNCTION: HYPERX 0x00492920
+// FUNCTION: HYPERX1001 0x00492920
 char SoftTex::Load(const char* pszName)
 {
     char szPath[kMaxPathLength];
@@ -166,10 +166,10 @@ char SoftTex::Load(const char* pszName)
         strcpy(szPath, g_gameApp.m_strTexturesPath.m_str.m_pchData);
         szPath[strlen(szPath) - 1] = '8';
 
-        // STRING: HYPERX 0x004c8c7c
+        // STRING: HYPERX1001 0x004c8c7c
         strcat(szPath, "\\");
         strcat(szPath, pszName);
-        // STRING: HYPERX 0x004bdf7c
+        // STRING: HYPERX1001 0x004bdf7c
         strcat(szPath, ".");
         strcat(szPath, g_pszBitmapExtension);
 
@@ -218,7 +218,7 @@ char SoftTex::Load(const char* pszName)
             return 0;
         }
 
-        // STRING: HYPERX 0x004c8c58
+        // STRING: HYPERX1001 0x004c8c58
         g_gameApp.Error("Texture Map cannot be opened!\n%s\n", pszName);
     }
 
@@ -228,7 +228,7 @@ char SoftTex::Load(const char* pszName)
 constexpr auto kTexpolyEdgeCount = 0x1f;
 
 // The entry point is loaded at run time; a null one drops the polygon.
-// FUNCTION: HYPERX 0x00492b60
+// FUNCTION: HYPERX1001 0x00492b60
 void SoftTex::DrawTexPoly(TransformObject*, FacePolyBuffer* pPoly, float)
 {
     if (g_pfnMdmDrawTexPoly != nullptr)
@@ -237,7 +237,7 @@ void SoftTex::DrawTexPoly(TransformObject*, FacePolyBuffer* pPoly, float)
     }
 }
 
-// FUNCTION: HYPERX 0x00492b40
+// FUNCTION: HYPERX1001 0x00492b40
 int SoftTex::GetWidth() const
 {
     return m_image.nWidth;

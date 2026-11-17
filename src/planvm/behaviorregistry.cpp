@@ -11,7 +11,7 @@
 
 // Destroys each pool, stopping at the first null.
 
-// FUNCTION: HYPERX 0x0041c650
+// FUNCTION: HYPERX1001 0x0041c650
 void BehaviorRegistry::DestroyAll()
 {
     short iSlot = 0;
@@ -24,7 +24,7 @@ void BehaviorRegistry::DestroyAll()
     }
 }
 
-// FUNCTION: HYPERX 0x0041c690
+// FUNCTION: HYPERX1001 0x0041c690
 void BehaviorRegistry::InitAll()
 {
     short iSlot = 0;
@@ -41,11 +41,11 @@ void BehaviorRegistry::InitAll()
     }
 }
 
-// GLOBAL: HYPERX 0x004cb508
+// GLOBAL: HYPERX1001 0x004cb508
 extern BehParamHandlerFn g_apfnBehaviorParamHandlers[kSetBehaviorParamCount];
 
 // Called once by GameEngine::InitPlanSystems; the registry ends at its first null slot.
-// FUNCTION: HYPERX 0x0041cdd0
+// FUNCTION: HYPERX1001 0x0041cdd0
 void BehaviorRegistry::Init()
 {
     g_apfnBehaviorParamHandlers[kSetModsTweenNFacing]    = BehParam::SetModsTweenNFacing;

@@ -4,7 +4,7 @@
 #include "common/pooledclasses.h"
 #include "physics/physicsbody.h"
 
-// FUNCTION: HYPERX 0x0041e620
+// FUNCTION: HYPERX1001 0x0041e620
 void InPlaceBehaviorObject::StartMotion()
 {
     m_pBody->ResetSpeeds();

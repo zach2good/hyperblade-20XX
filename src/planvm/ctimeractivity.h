@@ -8,7 +8,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slots 7 and 8 must answer one here, or the Rok would sit in the start gun for the whole match.
-// VTABLE: HYPERX 0x004b1f0c
+// VTABLE: HYPERX1001 0x004b1f0c
 class CTimerActivity : public KindAgendaItem
 {
 public:

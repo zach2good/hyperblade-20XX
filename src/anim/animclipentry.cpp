@@ -6,7 +6,7 @@
 #include "app/gameapp.h"
 #include "animnode.h"
 
-// FUNCTION: HYPERX 0x004177c0
+// FUNCTION: HYPERX1001 0x004177c0
 AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
 {
     auto* const pRef = m_pRef.get();
@@ -36,7 +36,7 @@ AnimClipEntry* AnimClipEntry::SyncCheck(AnimDB* pDb)
         }
     }
 
-    // STRING: HYPERX 0x004bb85c
+    // STRING: HYPERX1001 0x004bb85c
     g_gameApp.Error("Sync Data< %s seg: %d frm: %d > is bad for assem: %s and will be left out\n",
                     pRef->m_pszName.get(),
                     nNode,

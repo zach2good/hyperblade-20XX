@@ -5,7 +5,7 @@
 
 #include "math/vec3.h"
 
-// GLOBAL: HYPERX 0x004bb2d8
+// GLOBAL: HYPERX1001 0x004bb2d8
 extern Vec3 g_vUpAxis;
 
 #endif

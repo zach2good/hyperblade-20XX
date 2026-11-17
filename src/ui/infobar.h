@@ -24,7 +24,7 @@ class InfoBarBase;
 constexpr auto kScoreLineTeam2 = 4;
 constexpr auto kScoreLineTeam1 = 5;
 
-// VTABLE: HYPERX 0x004b32ec
+// VTABLE: HYPERX1001 0x004b32ec
 class InfoBar : public InfoBarBase
 {
 public:
@@ -135,7 +135,7 @@ public:
     }
 };
 
-// SYNTHETIC: HYPERX 0x00451cc0
+// SYNTHETIC: HYPERX1001 0x00451cc0
 // InfoBar::`scalar deleting destructor'
 
 #endif

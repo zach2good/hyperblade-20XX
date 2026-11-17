@@ -20,10 +20,10 @@
 #include "common/stub.h"
 #include "sound/soundids.h"
 
-// FUNCTION: HYPERX 0x0044d4b0
+// FUNCTION: HYPERX1001 0x0044d4b0
 UIScreen::~UIScreen() = default;
 
-// FUNCTION: HYPERX 0x0044d540
+// FUNCTION: HYPERX1001 0x0044d540
 UIScreen::UIScreen()
 {
     g_pAudioMgr->PlaySpecific(kSoundScreenon);
@@ -43,106 +43,106 @@ UIScreen::UIScreen()
 }
 
 // Widgets that show nothing yet get three empty frames so their indices line up.
-// FUNCTION: HYPERX 0x0044d5d0
+// FUNCTION: HYPERX1001 0x0044d5d0
 void UIScreen::InitWidgets()
 {
     GDI::BitmapSize bm;
     int             nFlag;
-    // STRING: HYPERX 0x004c2eb8
+    // STRING: HYPERX1001 0x004c2eb8
     m_hBackground = GDI::LoadBitmapAsBackground("Hviewl", &m_bPaletted);
 
-    // STRING: HYPERX 0x004c2eb0
+    // STRING: HYPERX1001 0x004c2eb0
     m_hBitmap = CacheLookup("1data3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
     Widget* pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(0, 362, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2ea8
+    // STRING: HYPERX1001 0x004c2ea8
     m_hBitmap = CacheLookup("1data4", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2ea0
+    // STRING: HYPERX1001 0x004c2ea0
     m_hBitmap = CacheLookup("1data5", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e98
+    // STRING: HYPERX1001 0x004c2e98
     m_hBitmap = CacheLookup("1gray6", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e90
+    // STRING: HYPERX1001 0x004c2e90
     m_hBitmap = CacheLookup("1data1", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e88
+    // STRING: HYPERX1001 0x004c2e88
     m_hBitmap = CacheLookup("1data2", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     m_hBitmap = CacheLookup("1data3", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c2e80
+    // STRING: HYPERX1001 0x004c2e80
     m_hBitmap = CacheLookup("2five3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
     pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(104, 428, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e78
+    // STRING: HYPERX1001 0x004c2e78
     m_hBitmap = CacheLookup("2five4", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e70
+    // STRING: HYPERX1001 0x004c2e70
     m_hBitmap = CacheLookup("2five5", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c21b0
+    // STRING: HYPERX1001 0x004c21b0
     m_hBitmap = CacheLookup("2gray6", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e68
+    // STRING: HYPERX1001 0x004c2e68
     m_hBitmap = CacheLookup("2five1", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e60
+    // STRING: HYPERX1001 0x004c2e60
     m_hBitmap = CacheLookup("2five2", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     m_hBitmap = CacheLookup("2five3", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c2e58
+    // STRING: HYPERX1001 0x004c2e58
     m_hBitmap = CacheLookup("3gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
     pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(540, 390, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameWithPos(m_hBackground, nFlag, bm.nWidth, bm.nHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e50
+    // STRING: HYPERX1001 0x004c2e50
     m_hBitmap = CacheLookup("3gray4", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e48
+    // STRING: HYPERX1001 0x004c2e48
     m_hBitmap = CacheLookup("3gray5", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e40
+    // STRING: HYPERX1001 0x004c2e40
     m_hBitmap = CacheLookup("3gray6", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e38
+    // STRING: HYPERX1001 0x004c2e38
     m_hBitmap = CacheLookup("3game1", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e30
+    // STRING: HYPERX1001 0x004c2e30
     m_hBitmap = CacheLookup("3game2", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c2e28
+    // STRING: HYPERX1001 0x004c2e28
     m_hBitmap = CacheLookup("4gray3", &nFlag);
     GDI::GetBitmapDimensions(m_hBitmap, &bm);
     pWidget = AppendWidget(std::make_unique<LoopFlipbookWidget>(106, 389, bm.nWidth, bm.nHeight, 0, 1, 6, 0, 6, 6, this, 0, -1));
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e20
+    // STRING: HYPERX1001 0x004c2e20
     m_hBitmap = CacheLookup("4gray4", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e18
+    // STRING: HYPERX1001 0x004c2e18
     m_hBitmap = CacheLookup("4gray5", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e10
+    // STRING: HYPERX1001 0x004c2e10
     m_hBitmap = CacheLookup("4gray6", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e08
+    // STRING: HYPERX1001 0x004c2e08
     m_hBitmap = CacheLookup("4stat1", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2e00
+    // STRING: HYPERX1001 0x004c2e00
     m_hBitmap = CacheLookup("4stat2", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
-    // STRING: HYPERX 0x004c2df8
+    // STRING: HYPERX1001 0x004c2df8
     m_hBitmap = CacheLookup("4stat3", &nFlag);
     pWidget->AddFrameBitmap(m_hBitmap, nFlag);
     pWidget->InitAfterLoad();
@@ -270,7 +270,7 @@ static bool IsMissing(const char* pszPath)
 }
 
 // A team is locked when its panel bitmap is missing. Probes run by team code, not id.
-// FUNCTION: HYPERX 0x0044e5d0
+// FUNCTION: HYPERX1001 0x0044e5d0
 void UIScreen::BuildLockedFlagsArray()
 {
     int nTeam;
@@ -289,59 +289,59 @@ void UIScreen::BuildLockedFlagsArray()
 
     PathString strPath(kMaxPathLength);
 
-    // STRING: HYPERX 0x004c2f28
+    // STRING: HYPERX1001 0x004c2f28
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Chiplcd", "bmp");
     m_pLockedFlags[0] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2f20
+    // STRING: HYPERX1001 0x004c2f20
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Houplcd", "bmp");
     m_pLockedFlags[1] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2f18
+    // STRING: HYPERX1001 0x004c2f18
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Jamplcd", "bmp");
     m_pLockedFlags[2] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2f10
+    // STRING: HYPERX1001 0x004c2f10
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Lndplcd", "bmp");
     m_pLockedFlags[4] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2f08
+    // STRING: HYPERX1001 0x004c2f08
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Losplcd", "bmp");
     m_pLockedFlags[5] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2f00
+    // STRING: HYPERX1001 0x004c2f00
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Mosplcd", "bmp");
     m_pLockedFlags[6] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ef8
+    // STRING: HYPERX1001 0x004c2ef8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Munplcd", "bmp");
     m_pLockedFlags[7] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ef0
+    // STRING: HYPERX1001 0x004c2ef0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Nemplcd", "bmp");
     m_pLockedFlags[8] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ee8
+    // STRING: HYPERX1001 0x004c2ee8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Newplcd", "bmp");
     m_pLockedFlags[9] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ee0
+    // STRING: HYPERX1001 0x004c2ee0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Seaplcd", "bmp");
     m_pLockedFlags[10] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ed8
+    // STRING: HYPERX1001 0x004c2ed8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Tokplcd", "bmp");
     m_pLockedFlags[11] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ed0
+    // STRING: HYPERX1001 0x004c2ed0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Torplcd", "bmp");
     m_pLockedFlags[12] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ec8
+    // STRING: HYPERX1001 0x004c2ec8
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Vegplcd", "bmp");
     m_pLockedFlags[3] = IsMissing(strPath.m_str.m_pchData);
 
-    // STRING: HYPERX 0x004c2ec0
+    // STRING: HYPERX1001 0x004c2ec0
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, "Warplcd", "bmp");
     m_pLockedFlags[13] = IsMissing(strPath.m_str.m_pchData);
 
@@ -351,7 +351,7 @@ void UIScreen::BuildLockedFlagsArray()
     }
 }
 
-// FUNCTION: HYPERX 0x0044ea10
+// FUNCTION: HYPERX1001 0x0044ea10
 void UIScreen::RefreshTabs()
 {
     m_apWidgets[UI_WIDGET_TAB_FIRST]->SetDirtyFlag(1);
@@ -365,7 +365,7 @@ void UIScreen::RefreshTabs()
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 }
 
-// FUNCTION: HYPERX 0x0044ea50
+// FUNCTION: HYPERX1001 0x0044ea50
 void UIScreen::RefreshPageTabs()
 {
     m_apWidgets[UI_WIDGET_PAGE_TAB_FIRST]->SetDirtyFlag(1);
@@ -381,7 +381,7 @@ void UIScreen::RefreshPageTabs()
     m_apWidgets[UI_WIDGET_PAGE_TAB_FIRST + 5]->SetDirtyFlag(1);
 }
 
-// FUNCTION: HYPERX 0x0044eaa0
+// FUNCTION: HYPERX1001 0x0044eaa0
 void UIScreen::RefreshConfirmButtons()
 {
     m_apWidgets[UI_WIDGET_OKAY]->SetDirtyFlag(1);
@@ -390,7 +390,7 @@ void UIScreen::RefreshConfirmButtons()
 }
 
 // The stat row redraws before the arrows.
-// FUNCTION: HYPERX 0x0044eac0
+// FUNCTION: HYPERX1001 0x0044eac0
 void UIScreen::RefreshStatRow()
 {
     m_apWidgets[UI_WIDGET_STAT_FIRST]->SetDirtyFlag(1);
@@ -406,13 +406,13 @@ void UIScreen::RefreshStatRow()
     m_apWidgets[UI_WIDGET_RIGHT_ARROW]->SetDirtyFlag(1);
 }
 
-// FUNCTION: HYPERX 0x0044eb10
+// FUNCTION: HYPERX1001 0x0044eb10
 void UIScreen::OnOtherButton(int, unsigned int)
 {
     RELEASE_ASSERT(0);
 }
 
-// FUNCTION: HYPERX 0x0044eb20
+// FUNCTION: HYPERX1001 0x0044eb20
 void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     switch (nId)
@@ -611,7 +611,7 @@ void UIScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 }
 
 // "2gray6" appears in two blocks and "4gamcl3" twice in a row.
-// FUNCTION: HYPERX 0x0044ef00
+// FUNCTION: HYPERX1001 0x0044ef00
 void UIScreen::PreloadBitmaps()
 {
     AddBitmap("1data3");
@@ -664,22 +664,22 @@ void UIScreen::PreloadBitmaps()
 
     AddBitmap("4stat3");
 
-    // STRING: HYPERX 0x004c2f58
+    // STRING: HYPERX1001 0x004c2f58
     AddBitmap("4gamgr3");
 
-    // STRING: HYPERX 0x004c2f50
+    // STRING: HYPERX1001 0x004c2f50
     AddBitmap("4gamgr4");
 
-    // STRING: HYPERX 0x004c2f48
+    // STRING: HYPERX1001 0x004c2f48
     AddBitmap("4gamgr5");
 
-    // STRING: HYPERX 0x004c2f40
+    // STRING: HYPERX1001 0x004c2f40
     AddBitmap("4gamcl1");
 
-    // STRING: HYPERX 0x004c2f38
+    // STRING: HYPERX1001 0x004c2f38
     AddBitmap("4gamcl2");
 
-    // STRING: HYPERX 0x004c2f30
+    // STRING: HYPERX1001 0x004c2f30
     AddBitmap("4gamcl3");
 
     AddBitmap("4gamcl3");
@@ -698,7 +698,7 @@ void UIScreen::PreloadBitmaps()
     g_nSetupBitmapsUnloaded = 0;
 }
 
-// FUNCTION: HYPERX 0x00488bd0
+// FUNCTION: HYPERX1001 0x00488bd0
 void UIScreen::ResetFrameOnLoopDone(int nMsg)
 {
     if (nMsg == kWidgetMsgLoopDone)

@@ -12,7 +12,7 @@ public:
     {
     }
 
-    // FUNCTION: HYPERX 0x0042be70
+    // FUNCTION: HYPERX1001 0x0042be70
     int HitTest(int, int) override
     {
         return 0;

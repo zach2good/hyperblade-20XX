@@ -5,12 +5,12 @@
 #include "graphics/hudlayer.h"
 #include "graphics/colorpalette.h"
 
-// FUNCTION: HYPERX 0x0044f9f0
+// FUNCTION: HYPERX1001 0x0044f9f0
 CDDText::~CDDText() = default;
 
 // Draws into whatever the back-buffer globals point at, the HUD layer during a match, in the palette
 // entry nearest the colour, as GDI matched a colour against the DIB's table.
-// FUNCTION: HYPERX 0x0044fa40
+// FUNCTION: HYPERX1001 0x0044fa40
 int CDDText::Draw()
 {
     if (!m_strText.empty() && g_pBackBufferBitsCopy != nullptr)
@@ -24,7 +24,7 @@ int CDDText::Draw()
 }
 
 // A colour of -1 leaves the colour alone.
-// FUNCTION: HYPERX 0x0044faf0
+// FUNCTION: HYPERX1001 0x0044faf0
 int CDDText::SetText(const char* pszText, std::uint32_t color)
 {
     m_strText.clear();
@@ -53,7 +53,7 @@ int CDDText::SetText(const char* pszText, std::uint32_t color)
 }
 
 // A null face name drops the font and answers success. Every face draws as MS Sans Serif.
-// FUNCTION: HYPERX 0x0044fc10
+// FUNCTION: HYPERX1001 0x0044fc10
 int CDDText::CreateFontFace(const char* pszFaceName, int nHeight)
 {
     if (pszFaceName == nullptr)

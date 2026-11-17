@@ -8,18 +8,18 @@
 #include "engine/objectclasses.h"
 #include "pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x0041e450
+// FUNCTION: HYPERX1001 0x0041e450
 BehObj_SetMovingInPlace::BehObj_SetMovingInPlace() = default;
 
-// FUNCTION: HYPERX 0x0041e4a0
+// FUNCTION: HYPERX1001 0x0041e4a0
 BehObj_SetMovingInPlace::~BehObj_SetMovingInPlace() = default;
 
-// FUNCTION: HYPERX 0x0041e4b0
+// FUNCTION: HYPERX1001 0x0041e4b0
 void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForSetMovingInPlace();
 
-    // STRING: HYPERX 0x004bc360
+    // STRING: HYPERX1001 0x004bc360
     m_pszName = "SetMovingInPlace";
 
     m_wKind = kBehSetMovingInPlace;

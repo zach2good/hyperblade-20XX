@@ -79,7 +79,7 @@ extern class TransformObject* g_pCameraTransform;
 #define SW_ROUND_BIAS 12582912.0f
 
 // Screen coordinates are rounded by adding a large constant and reading the float's low word.
-// FUNCTION: HYPERX 0x0044a200
+// FUNCTION: HYPERX1001 0x0044a200
 void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, char cClipFlags)
 {
     const TexCoord*     pUVTable;
@@ -372,7 +372,7 @@ void SWRend::DrawFace(MeshBone* pRend, char cFlip, MeshFace* pFaceData, MeshMate
 }
 
 // A one-indexed heapsort keyed on the depth four bytes into each face.
-// FUNCTION: HYPERX 0x0044aa90
+// FUNCTION: HYPERX1001 0x0044aa90
 void SWRend::SortFaces(short nCount)
 {
     FaceRecord* pHeld;
@@ -444,7 +444,7 @@ void SWRend::SortFaces(short nCount)
 
 // Fills the spans between the two edge stacks, one row at a time, from g_wSpanYMin to
 // g_wSpanYMax. A row whose right edge is left of its left edge is skipped.
-// FUNCTION: HYPERX 0x0044ab40
+// FUNCTION: HYPERX1001 0x0044ab40
 void SWRend::FillSpans(int nColour)
 {
     const auto nTop    = static_cast<int>(static_cast<unsigned short>(g_wSpanYMin));
@@ -470,7 +470,7 @@ void SWRend::FillSpans(int nColour)
 // each row into the left stack for a falling edge and the right stack for a rising one, and
 // widens the span's rows. A flat edge walks nothing. The rising arm widens both bounds by its top
 // row only, as the original does.
-// FUNCTION: HYPERX 0x0044ad00
+// FUNCTION: HYPERX1001 0x0044ad00
 unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned short nX2, unsigned short nY2)
 {
     if (nY1 == nY2)
@@ -648,7 +648,7 @@ unsigned char SWRend::ScanEdge(unsigned short nX1, unsigned short nY1, unsigned 
     return g_bEdgeWalked;
 }
 
-// FUNCTION: HYPERX 0x0044aeb0
+// FUNCTION: HYPERX1001 0x0044aeb0
 void SWRend::FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour)
 {
     g_wSpanYMin = static_cast<short>(g_nBackBufferHeight - 1);
@@ -674,7 +674,7 @@ void SWRend::FillPolygon(const Point* pPoints, int nPoints, unsigned int nColour
 
 // Draws a line into the locked back buffer, one byte per pixel, with Bresenham's method. A line
 // whose height is at least its width and at most one row draws only its first pixel.
-// FUNCTION: HYPERX 0x0044af70
+// FUNCTION: HYPERX1001 0x0044af70
 void SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
 {
     const auto nPitch = g_nSurfacePitchCopy;
@@ -767,7 +767,7 @@ void SWRend::DrawLine(int nX1, int nY1, int nX2, int nY2, int nColour)
 // edges. Each row is a list of runs; a byte with the top bit set starts a run of that many
 // opaque pixels, which are copied, and any other byte skips that many transparent ones.
 // Why assembly: no C spelling of the copy gives the byte, word, dword order the original has.
-// FUNCTION: HYPERX 0x0044f240
+// FUNCTION: HYPERX1001 0x0044f240
 void SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* pSprite)
 {
     char**         ppRows;
@@ -871,7 +871,7 @@ void SWRend::BlitRLESprite(int nX, int nY, int nWidth, int nHeight, RLESprite* p
     } while (nRows != 0);
 }
 
-// FUNCTION: HYPERX 0x0044f7d0
+// FUNCTION: HYPERX1001 0x0044f7d0
 void SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int nHeight, int nColour)
 {
     unsigned char* pRow;
@@ -922,7 +922,7 @@ void SWRend::FillRect(unsigned int nX, unsigned int nY, unsigned int nWidth, int
 }
 
 // With no second material the previous face's stays; the rasteriser reads it only when told to.
-// FUNCTION: HYPERX 0x0046f970
+// FUNCTION: HYPERX1001 0x0046f970
 void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
 {
     MeshMaterial* apMaterials[2];
@@ -962,7 +962,7 @@ void SWRend::DrawFaceList(MeshBone* pThis, FaceRecord** ppFaces, short nCount)
     }
 }
 
-// FUNCTION: HYPERX 0x0047fb70
+// FUNCTION: HYPERX1001 0x0047fb70
 void SWRend::ClipPolyAgainstPlane(ClipPolyBuffer* pIn, ClipPolyBuffer* pOut, int nAxis, float flAxisScale, float flWScale)
 {
     pOut->nCount          = 0;

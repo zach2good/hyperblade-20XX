@@ -6,7 +6,7 @@
 #include "ui/widget.h"
 #include "ui/screen.h"
 
-// VTABLE: HYPERX 0x004b2c88
+// VTABLE: HYPERX1001 0x004b2c88
 class KeyConfigScreen : public Screen
 {
 public:
@@ -25,7 +25,7 @@ private:
     int m_nActiveRemap; // 0x464
 };
 
-// SYNTHETIC: HYPERX 0x0042fc10
+// SYNTHETIC: HYPERX1001 0x0042fc10
 // KeyConfigScreen::`scalar deleting destructor'
 
 #endif

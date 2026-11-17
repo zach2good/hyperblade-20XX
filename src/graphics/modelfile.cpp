@@ -21,7 +21,7 @@ constexpr auto kModelNameLength      = 6;
 constexpr auto kModelTagDirectory    = 1;
 constexpr auto kModelInternalNameMax = 32;
 
-// FUNCTION: HYPERX 0x00435fe0
+// FUNCTION: HYPERX1001 0x00435fe0
 char ModelFile::Open(FileObj* pFile, const char* pszModelName)
 {
     char        bSuccess = 1;
@@ -30,16 +30,16 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
     FileVersion version;
 
     if (g_bShadedDromeModels != 0 && g_cMdmTexLoaded != 0 && strlen(pszModelName) == kModelNameLength
-        // STRING: HYPERX 0x004bdf90
+        // STRING: HYPERX1001 0x004bdf90
         && SDL_strcasecmp((pszModelName + 3), "dro") == 0)
     {
         strPath.m_str.AssignFromString(String::Concat(
             String::Concat(
                 String::Concat(
-                    // STRING: HYPERX 0x004bdf80
+                    // STRING: HYPERX1001 0x004bdf80
                     String::Concat(g_gameApp.m_strExeDir.m_str, "Models\\MdlShd\\"),
                     pszModelName),
-                // STRING: HYPERX 0x004bdf7c
+                // STRING: HYPERX1001 0x004bdf7c
                 "."),
             g_pszModelExtension));
     }
@@ -58,7 +58,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
             pFile->CloseAndTest();
 
             g_gameApp.Error(
-                // STRING: HYPERX 0x004bdf5c
+                // STRING: HYPERX1001 0x004bdf5c
                 "Wrong Version in model file %s.",
                 strPath.m_str.m_pchData);
         }
@@ -67,7 +67,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
             pFile->CloseAndTest();
 
             g_gameApp.Error(
-                // STRING: HYPERX 0x004bdf18
+                // STRING: HYPERX1001 0x004bdf18
                 "Wrong Type in file %s. Expected database file - found DB directory.",
                 strPath.m_str.m_pchData);
         }
@@ -75,7 +75,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
     else
     {
         g_gameApp.Error(
-            // STRING: HYPERX 0x004bdef4
+            // STRING: HYPERX1001 0x004bdef4
             "Model file %s could not be opened!",
             strPath.m_str.m_pchData);
     }
@@ -86,7 +86,7 @@ done:
     return bSuccess;
 }
 
-// FUNCTION: HYPERX 0x00493be0
+// FUNCTION: HYPERX1001 0x00493be0
 int ModelFile::ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion* pVersion)
 {
     FileHeader header;

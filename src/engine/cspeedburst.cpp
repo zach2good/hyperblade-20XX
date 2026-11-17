@@ -20,7 +20,7 @@
 #define STAMINA_FLOOR 0.05f
 #define BOOST_EPSILON 1e-5f
 
-// FUNCTION: HYPERX 0x004112e0
+// FUNCTION: HYPERX1001 0x004112e0
 CSpeedBurst::CSpeedBurst() noexcept
 {
     m_pOpponentA = nullptr;
@@ -29,7 +29,7 @@ CSpeedBurst::CSpeedBurst() noexcept
     m_flTarget   = g_flZeroAgendaItem;
 }
 
-// FUNCTION: HYPERX 0x00411310
+// FUNCTION: HYPERX1001 0x00411310
 void CSpeedBurst::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = nullptr;
@@ -50,7 +50,7 @@ void CSpeedBurst::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flTarget = g_flZeroAgendaItem;
 }
 
-// FUNCTION: HYPERX 0x004113a0
+// FUNCTION: HYPERX1001 0x004113a0
 void CSpeedBurst::OnListChanged()
 {
     if (m_bReady == 0)
@@ -70,7 +70,7 @@ void CSpeedBurst::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x004113f0
+// FUNCTION: HYPERX1001 0x004113f0
 void CSpeedBurst::Process(int nArg)
 {
     float      flDelta;

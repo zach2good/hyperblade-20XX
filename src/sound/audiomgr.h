@@ -10,7 +10,7 @@
 constexpr auto kCDTrackRandom = (-1);
 constexpr auto kCDTrackMenu   = 10;
 
-// VTABLE: HYPERX 0x004b4080
+// VTABLE: HYPERX1001 0x004b4080
 struct AudioMgr : public AudioMgrBase
 {
     void StopAllSfx();
@@ -61,7 +61,7 @@ struct AudioMgr : public AudioMgrBase
     int   nUnused; // 0x014
 };
 
-// SYNTHETIC: HYPERX 0x00490860
+// SYNTHETIC: HYPERX1001 0x00490860
 // AudioMgr::`scalar deleting destructor'
 
 #endif

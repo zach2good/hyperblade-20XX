@@ -7,7 +7,7 @@
 class EngineObject;
 
 // Slots 0 and 2 are bodies many tables share, declared where they are defined.
-// VTABLE: HYPERX 0x004b2114
+// VTABLE: HYPERX1001 0x004b2114
 class CUpdateShotPower : public ReleasingAgendaItem
 {
 public:

@@ -16,15 +16,15 @@
 constexpr auto kTrickHold = Clock::Milliseconds{ 100 };
 
 // The trick and boost-grab steps, and the tick the hold started at; minus one means untimed.
-// GLOBAL: HYPERX 0x004cb4da
+// GLOBAL: HYPERX1001 0x004cb4da
 extern short g_nTrickSeqStep;
-// GLOBAL: HYPERX 0x004cb4dc
+// GLOBAL: HYPERX1001 0x004cb4dc
 extern short g_nBoostGrabStep;
-// GLOBAL: HYPERX 0x004bb668
+// GLOBAL: HYPERX1001 0x004bb668
 extern std::optional<Clock::Milliseconds> g_trickHoldStamp;
 
 // The forward key picks trick or boost-grab; a hundred milliseconds of quiet fires the neutral trick.
-// FUNCTION: HYPERX 0x004110f0
+// FUNCTION: HYPERX1001 0x004110f0
 void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 {
     if (pPlayer->GetPhysicsBody()->flFriction >= 1.0)
@@ -124,7 +124,7 @@ void Player::ProcessTrickInput(EngineObject* pPlayer, short* pnInput)
 // Four.
 extern const float g_flFourPlayer;
 
-// GLOBAL: HYPERX 0x004b17b4
+// GLOBAL: HYPERX1001 0x004b17b4
 extern const float g_flPassAngleStep;
 
 // The two reaction-table steps, published for src/planvm/planactionrecoil.cpp.
@@ -132,7 +132,7 @@ extern short g_nCheckImpulseStep;
 extern short g_nCheckImpulseFacing;
 
 // The opponents one and three slots on; a lead under -4 or a difference over 18 finds none.
-// FUNCTION: HYPERX 0x00411550
+// FUNCTION: HYPERX1001 0x00411550
 EngineObject* Player::FindBungeeVictim(EngineObject* pActor, float* pflOut)
 {
     EngineObject* pTarget;

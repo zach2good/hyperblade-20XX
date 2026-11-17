@@ -26,7 +26,7 @@ constexpr auto kMsgSpeedBurstArg = 0x96;
 #define BANK_DEADZONE_LOW  -0.001
 #define BANK_DEADZONE_HIGH 0.001f
 
-// FUNCTION: HYPERX 0x0040eda0
+// FUNCTION: HYPERX1001 0x0040eda0
 void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)
 {
     m_pNext  = nullptr;
@@ -45,7 +45,7 @@ void CSteerBetweenFacing::Bind(EngineObject* pOwner, GameBehaviorObject* pNode)
     m_flUnused = 100.0f;
 }
 
-// FUNCTION: HYPERX 0x0040ee00
+// FUNCTION: HYPERX1001 0x0040ee00
 void CSteerBetweenFacing::OnListChanged()
 {
     if (m_bReady == 0)
@@ -65,7 +65,7 @@ void CSteerBetweenFacing::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX 0x0040ee50
+// FUNCTION: HYPERX1001 0x0040ee50
 void CSteerBetweenFacing::Process(int nArg)
 {
     const auto flForce = ((PlayerObject*)m_pOwner)->m_stats.GetWeightedStat(kRatingBalance) * 0.12f + 0.2f;

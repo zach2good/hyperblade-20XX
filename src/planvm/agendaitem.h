@@ -10,12 +10,12 @@ class AgendaItem;
 // src/globals.h declares it too, but reaches Windows types this header does not want.
 extern const float g_flZeroAgendaItem;
 
-// VTABLE: HYPERX 0x004b1744
+// VTABLE: HYPERX1001 0x004b1744
 class AgendaItem
 {
 public:
     // The whole body is the vptr store; the deleting destructors call it out of line.
-    // FUNCTION: HYPERX 0x00412f90
+    // FUNCTION: HYPERX1001 0x00412f90
     virtual ~AgendaItem() = default;
 
     // Slot one, folded onto slot ten's body; nothing in the image reads the argument.
@@ -38,7 +38,7 @@ public:
     virtual char Activate();
     virtual void Detach();
 
-    // FUNCTION: HYPERX 0x0040b920
+    // FUNCTION: HYPERX1001 0x0040b920
     virtual unsigned char GetReadyFlag()
     {
         return 0;
@@ -52,7 +52,7 @@ public:
 
     virtual void OnListChanged();
 
-    // FUNCTION: HYPERX 0x0040b910
+    // FUNCTION: HYPERX1001 0x0040b910
     virtual void Tick(const struct Vec3*)
     {
     }
@@ -98,7 +98,7 @@ public:
     char FindByRef(class EngineObject* pObject);
 };
 
-// SYNTHETIC: HYPERX 0x0040b950
+// SYNTHETIC: HYPERX1001 0x0040b950
 // AgendaItem::`scalar deleting destructor'
 
 #endif

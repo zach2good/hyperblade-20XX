@@ -9,7 +9,7 @@
 
 class Screen;
 
-// VTABLE: HYPERX 0x004b2a84
+// VTABLE: HYPERX1001 0x004b2a84
 class FlipbookWidget : public Widget
 {
 public:

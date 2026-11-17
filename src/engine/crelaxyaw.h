@@ -7,7 +7,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slot 0 is CGlideOnSurface's shared deleting destructor.
-// VTABLE: HYPERX 0x004b1e08
+// VTABLE: HYPERX1001 0x004b1e08
 class CRelaxYaw : public KindAgendaItem
 {
 public:

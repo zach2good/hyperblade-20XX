@@ -17,7 +17,7 @@ float g_flUnusedWinMainB = g_flZeroWinMain;
 float g_flUnusedWinMainC = g_flZeroWinMain;
 
 // SDL_main supplies the platform's entry point and splits the command line.
-// FUNCTION: HYPERX 0x0044c070
+// FUNCTION: HYPERX1001 0x0044c070
 int main(int argc, char* argv[])
 {
     auto arguments = std::string();

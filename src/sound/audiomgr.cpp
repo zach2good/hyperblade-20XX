@@ -20,7 +20,7 @@
 #include <filesystem>
 #include <system_error>
 
-// FUNCTION: HYPERX 0x00490830
+// FUNCTION: HYPERX1001 0x00490830
 AudioMgr::AudioMgr()
 : nInitTimeMs(0)
 , wNoSound(0)
@@ -30,7 +30,7 @@ AudioMgr::AudioMgr()
 }
 
 // The mixer stops before the samples it may be reading are freed.
-// FUNCTION: HYPERX 0x00490880
+// FUNCTION: HYPERX1001 0x00490880
 AudioMgr::~AudioMgr()
 {
     g_soundMixer.Shutdown();
@@ -39,12 +39,12 @@ AudioMgr::~AudioMgr()
 }
 
 // A device that will not open mutes the manager; the mixer lines are set up either way.
-// FUNCTION: HYPERX 0x00490990
+// FUNCTION: HYPERX1001 0x00490990
 void AudioMgr::Init()
 {
     pEntries = std::make_unique<SoundManager>();
 
-    // STRING: HYPERX 0x004c8a90
+    // STRING: HYPERX1001 0x004c8a90
     pEntries->Load("SndFiles.lst");
 
     // -s opens no audio device at all.
@@ -82,7 +82,7 @@ void AudioMgr::Init()
 }
 
 // Only mode one reads the bytes; the others keep the offset for the streamer to come back to.
-// FUNCTION: HYPERX 0x00490aa0
+// FUNCTION: HYPERX1001 0x00490aa0
 int AudioMgr::LoadSound(SoundEntry* pEntry)
 {
     if (pEntry->m_nLoadState < 0 || pEntry->m_nLoadState > kSoundLoadLastTry)
@@ -146,7 +146,7 @@ int AudioMgr::LoadSound(SoundEntry* pEntry)
     return pEntry->m_nDataBytes;
 }
 
-// FUNCTION: HYPERX 0x00490c80
+// FUNCTION: HYPERX1001 0x00490c80
 void AudioMgr::PlayGroup(int nGroup)
 {
     if (wNoSound == 0)
@@ -166,7 +166,7 @@ void AudioMgr::PlayGroup(int nGroup)
 }
 
 // A playing sound restarts only when it does not loop and its samples are resident.
-// FUNCTION: HYPERX 0x00490cc0
+// FUNCTION: HYPERX1001 0x00490cc0
 void AudioMgr::PlaySpecific(int nVoice)
 {
     if (wNoSound == 0)
@@ -191,7 +191,7 @@ void AudioMgr::PlaySpecific(int nVoice)
     }
 }
 
-// FUNCTION: HYPERX 0x00490d30
+// FUNCTION: HYPERX1001 0x00490d30
 void AudioMgr::StopEntry(int nSlot)
 {
     if (nSlot < pEntries->m_nSoundCount)
@@ -205,7 +205,7 @@ void AudioMgr::StopEntry(int nSlot)
     }
 }
 
-// FUNCTION: HYPERX 0x00490d60
+// FUNCTION: HYPERX1001 0x00490d60
 int AudioMgr::IsPlaying(int nVoice)
 {
     if (nVoice < pEntries->m_nSoundCount)
@@ -224,7 +224,7 @@ int AudioMgr::IsPlaying(int nVoice)
     return 0;
 }
 
-// FUNCTION: HYPERX 0x00490da0
+// FUNCTION: HYPERX1001 0x00490da0
 void AudioMgr::SfxFadeVolume(int nVolume)
 {
     if (wNoSound == 0)
@@ -234,7 +234,7 @@ void AudioMgr::SfxFadeVolume(int nVolume)
 }
 
 // A set mute word returns zero without reaching the fader.
-// FUNCTION: HYPERX 0x00490dc0
+// FUNCTION: HYPERX1001 0x00490dc0
 int AudioMgr::SfxReadVolume()
 {
     if (wNoSound != 0)
@@ -246,7 +246,7 @@ int AudioMgr::SfxReadVolume()
 }
 
 // Twenty recent tracks, minus one until played; only PlayCDTrack touches it or its cursor.
-// GLOBAL: HYPERX 0x004c89ac
+// GLOBAL: HYPERX1001 0x004c89ac
 int g_anCDRecentTracks[20] = {
     -1,
     -1,
@@ -270,10 +270,10 @@ int g_anCDRecentTracks[20] = {
     -1,
 };
 
-// GLOBAL: HYPERX 0x004c89fc
+// GLOBAL: HYPERX1001 0x004c89fc
 int g_nCDRecentTracks = 20;
 
-// GLOBAL: HYPERX 0x004d21d8
+// GLOBAL: HYPERX1001 0x004d21d8
 int g_nCDRecentCursor;
 
 // The CD's audio tracks, ripped to Data/Music/TrackNN.flac, .mp3 or .wav.
@@ -325,7 +325,7 @@ const std::vector<int>& AudioMgr::MusicTracks()
 }
 
 // A random track is one not in the recent-tracks ring; with no tracks the music stays off.
-// FUNCTION: HYPERX 0x00490de0
+// FUNCTION: HYPERX1001 0x00490de0
 void AudioMgr::PlayCDTrack(int nTrack)
 {
     if (wNoCD != 0)
@@ -394,19 +394,19 @@ void AudioMgr::PlayCDTrack(int nTrack)
     }
 }
 
-// FUNCTION: HYPERX 0x00491070
+// FUNCTION: HYPERX1001 0x00491070
 void AudioMgr::StopCD()
 {
     g_soundMixer.StopMusic();
 }
 
-// FUNCTION: HYPERX 0x00491090
+// FUNCTION: HYPERX1001 0x00491090
 int AudioMgr::CDReadVolume()
 {
     return g_soundMixer.ReadMusicVolume();
 }
 
-// FUNCTION: HYPERX 0x004910a0
+// FUNCTION: HYPERX1001 0x004910a0
 void AudioMgr::CDFadeVolume(int nVolume)
 {
     if (wNoCD == 0)
@@ -416,7 +416,7 @@ void AudioMgr::CDFadeVolume(int nVolume)
 }
 
 // Returns how many it loaded; a short read throws the size away so the entry reads unloaded.
-// FUNCTION: HYPERX 0x004910f0
+// FUNCTION: HYPERX1001 0x004910f0
 int AudioMgr::PreloadGroup(int nGroup)
 {
     SoundEntry* pSnd;
@@ -477,7 +477,7 @@ int AudioMgr::PreloadGroup(int nGroup)
     return nLoaded;
 }
 
-// FUNCTION: HYPERX 0x004912d0
+// FUNCTION: HYPERX1001 0x004912d0
 void AudioMgr::FreeGroupBuffers(int nGroup)
 {
     const int nEntries = pEntries->m_nSoundCount;
@@ -493,7 +493,7 @@ void AudioMgr::FreeGroupBuffers(int nGroup)
     }
 }
 
-// FUNCTION: HYPERX 0x00491320
+// FUNCTION: HYPERX1001 0x00491320
 void AudioMgr::StopAllSfx()
 {
     g_soundMixer.StopAll();

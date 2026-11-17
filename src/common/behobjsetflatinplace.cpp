@@ -2,18 +2,18 @@
 #include "planvm/behaviorids.h"
 #include "common/pooledclasses.h"
 
-// FUNCTION: HYPERX 0x0041e380
+// FUNCTION: HYPERX1001 0x0041e380
 BehObj_SetFlatInPlace::BehObj_SetFlatInPlace() = default;
 
-// FUNCTION: HYPERX 0x0041e3c0
+// FUNCTION: HYPERX1001 0x0041e3c0
 BehObj_SetFlatInPlace::~BehObj_SetFlatInPlace() = default;
 
-// FUNCTION: HYPERX 0x0041e3d0
+// FUNCTION: HYPERX1001 0x0041e3d0
 void BehObj_SetFlatInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc350
+    // STRING: HYPERX1001 0x004bc350
     m_pszName = "SetFlatInPlace";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

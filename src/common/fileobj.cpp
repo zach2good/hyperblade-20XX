@@ -48,7 +48,7 @@ SDL_IOStream* OpenStream(const char* pszPath, FileMode mode)
 } // namespace
 
 // Callers close twice, and close a failed open.
-// FUNCTION: HYPERX 0x00440460
+// FUNCTION: HYPERX1001 0x00440460
 void FileObj::Close()
 {
     if (m_stream)
@@ -58,7 +58,7 @@ void FileObj::Close()
     }
 }
 
-// FUNCTION: HYPERX 0x00440470
+// FUNCTION: HYPERX1001 0x00440470
 char FileObj::Open(const char* pszPath, FileMode mode)
 {
     char szResolved[kMaxPathLength];
@@ -93,7 +93,7 @@ char FileObj::Open(const char* pszPath, FileMode mode)
 }
 
 // The loader's origins are one to three where SDL, as the C library, wants zero to two.
-// FUNCTION: HYPERX 0x00440550
+// FUNCTION: HYPERX1001 0x00440550
 int FileObj::SeekRelative(long nOffset, FileSeekOrigin origin)
 {
     const auto whence = [&]
@@ -116,14 +116,14 @@ int FileObj::SeekRelative(long nOffset, FileSeekOrigin origin)
     return static_cast<int>(SDL_SeekIO(IO(*this), nOffset, whence));
 }
 
-// FUNCTION: HYPERX 0x004405b0
+// FUNCTION: HYPERX1001 0x004405b0
 int FileObj::Write(const void* pBuf, unsigned int nCount)
 {
     return static_cast<int>(SDL_WriteIO(IO(*this), pBuf, nCount));
 }
 
 // Each line feed gains a carriage return, so a line of line feeds overruns the second buffer.
-// FUNCTION: HYPERX 0x004405d0
+// FUNCTION: HYPERX1001 0x004405d0
 int FileObj::PrintFormatted(const char* pszFormat, ...)
 {
     char    szText[kTextMax];
@@ -165,13 +165,13 @@ int FileObj::PrintFormatted(const char* pszFormat, ...)
     return Write(szOut, static_cast<unsigned int>(strlen(szOut)));
 }
 
-// FUNCTION: HYPERX 0x00440670
+// FUNCTION: HYPERX1001 0x00440670
 int FileObj::Read(void* pBuffer, int nCount)
 {
     return static_cast<int>(SDL_ReadIO(IO(*this), pBuffer, static_cast<size_t>(nCount)));
 }
 
-// FUNCTION: HYPERX 0x00440690
+// FUNCTION: HYPERX1001 0x00440690
 int FileObj::CloseAndTest()
 {
     if (!m_stream)
@@ -186,7 +186,7 @@ int FileObj::CloseAndTest()
     return static_cast<int>(bClosed);
 }
 
-// FUNCTION: HYPERX 0x004406b0
+// FUNCTION: HYPERX1001 0x004406b0
 int FileObj::GetNextLine(char** ppLine)
 {
     char chSkipped;

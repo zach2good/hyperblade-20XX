@@ -17,7 +17,7 @@
 #include "graphics/swrend.h"
 
 // The points are zeroed by the helper and then again field by field, as in the original.
-// FUNCTION: HYPERX 0x0044fcd0
+// FUNCTION: HYPERX1001 0x0044fcd0
 InfoBarRadar::InfoBarRadar()
 {
     m_ptDrawOffset.y = 0;
@@ -39,11 +39,11 @@ InfoBarRadar::InfoBarRadar()
     m_nSlot = kModelIDNone;
 }
 
-// FUNCTION: HYPERX 0x0044fd60
+// FUNCTION: HYPERX1001 0x0044fd60
 InfoBarRadar::~InfoBarRadar() noexcept = default;
 
 // The limits and a third, unread value arrive as one twelve-byte block.
-// FUNCTION: HYPERX 0x0044fd70
+// FUNCTION: HYPERX1001 0x0044fd70
 void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
 {
     float flDivisor;
@@ -62,7 +62,7 @@ void InfoBarRadar::ComputeScale(const CDDDrawable* pFrame, Vec3 vLimits)
     m_flScaleY = static_cast<float>(nHalfHeight) / flDivisor;
 }
 
-// FUNCTION: HYPERX 0x0044fdd0
+// FUNCTION: HYPERX1001 0x0044fdd0
 int InfoBarRadar::TrackSlot(int nSlot)
 {
     auto* const pObject = g_pGameEngine->m_ppSlots[static_cast<short>(nSlot)];
@@ -93,7 +93,7 @@ int InfoBarRadar::TrackSlot(int nSlot)
     return 1;
 }
 
-// FUNCTION: HYPERX 0x0044fe70
+// FUNCTION: HYPERX1001 0x0044fe70
 void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 {
     Point ptCentre;
@@ -167,7 +167,7 @@ void InfoBarRadar::DrawBlip(int nSlot, int bTrail)
 
 constexpr auto kArrowPoints = 3;
 
-// FUNCTION: HYPERX 0x00450000
+// FUNCTION: HYPERX1001 0x00450000
 void InfoBarRadar::DrawMarker(int)
 {
     Point apt[kArrowPoints];
@@ -207,7 +207,7 @@ void InfoBarRadar::DrawMarker(int)
 }
 
 // The marker is drawn only when slot six tracks the engine's slot; the four low slots draw no line.
-// FUNCTION: HYPERX 0x004500e0
+// FUNCTION: HYPERX1001 0x004500e0
 int InfoBarRadar::Draw()
 {
     PhysicsBody* pBlock;

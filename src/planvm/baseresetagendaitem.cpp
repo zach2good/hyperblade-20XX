@@ -3,7 +3,7 @@
 #include "globals.h"
 #include "common/pooledownerroot.h"
 
-// FUNCTION: HYPERX 0x00412360
+// FUNCTION: HYPERX1001 0x00412360
 void BaseResetAgendaItem::OnListChanged()
 {
     if (m_bReady == 0)

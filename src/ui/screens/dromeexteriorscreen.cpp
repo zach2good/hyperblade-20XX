@@ -16,10 +16,10 @@
 #include "graphics/gdi.h"
 #include "engine/game.h"
 
-// FUNCTION: HYPERX 0x0048ef70
+// FUNCTION: HYPERX1001 0x0048ef70
 DromeExteriorScreen::~DromeExteriorScreen() = default;
 
-// FUNCTION: HYPERX 0x0048efa0
+// FUNCTION: HYPERX1001 0x0048efa0
 DromeExteriorScreen::DromeExteriorScreen()
 {
     const char* pszName;
@@ -38,7 +38,7 @@ DromeExteriorScreen::DromeExteriorScreen()
 
     if (*pszName == 0)
     {
-        // STRING: HYPERX 0x004c8958
+        // STRING: HYPERX1001 0x004c8958
         pszName = "Dromext";
     }
 
@@ -117,7 +117,7 @@ DromeExteriorScreen::DromeExteriorScreen()
     }
 }
 
-// FUNCTION: HYPERX 0x0048f2c0
+// FUNCTION: HYPERX1001 0x0048f2c0
 void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     if (nId != 2)
@@ -143,13 +143,13 @@ void DromeExteriorScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 
 int g_nSetupReturnState = kEstateLobby;
 
-// STRING: HYPERX 0x004c871c
+// STRING: HYPERX1001 0x004c871c
 const char* g_pszKioskWhite = "kioswht";
 
-// STRING: HYPERX 0x004c8714
+// STRING: HYPERX1001 0x004c8714
 const char* g_pszKioskBlue = "kiosblu";
 
-// STRING: HYPERX 0x004c870c
+// STRING: HYPERX1001 0x004c870c
 const char* g_pszKioskGreen = "kiosgrn";
 
 const char* g_apszVersusBanner[14] = {

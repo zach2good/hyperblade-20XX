@@ -38,7 +38,7 @@ enum GameConfigWidget
 };
 
 // The constructor calls UIScreen's at 0x0044d540.
-// VTABLE: HYPERX 0x004b3da0
+// VTABLE: HYPERX1001 0x004b3da0
 class GameConfigUIScreen : public UIScreen
 {
 public:
@@ -57,7 +57,7 @@ public:
     int m_nReturnState; // 0x474, the engine state to return to
 };
 
-// SYNTHETIC: HYPERX 0x00479ae0
+// SYNTHETIC: HYPERX1001 0x00479ae0
 // GameConfigUIScreen::`scalar deleting destructor'
 
 #endif

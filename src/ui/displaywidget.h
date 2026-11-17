@@ -16,7 +16,7 @@
 class Screen;
 
 // Table 0x004b2b10; every slot it changes from Widget's is a shared body.
-// VTABLE: HYPERX 0x004b2b10
+// VTABLE: HYPERX1001 0x004b2b10
 class DisplayWidget : public InertWidget
 {
 public:

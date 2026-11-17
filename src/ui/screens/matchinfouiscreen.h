@@ -16,7 +16,7 @@ enum MatchInfoWidget
 };
 
 // The constructor calls UIScreen's at 0x0044d540.
-// VTABLE: HYPERX 0x004b2350
+// VTABLE: HYPERX1001 0x004b2350
 class MatchInfoUIScreen : public UIScreen
 {
 public:
@@ -27,7 +27,7 @@ public:
     MatchInfoUIScreen();
 
     // Inline, so the derived screens that declare none share this body.
-    // FUNCTION: HYPERX 0x004581c0
+    // FUNCTION: HYPERX1001 0x004581c0
     ~MatchInfoUIScreen() override = default;
 
     void RegisterBitmaps();
@@ -36,7 +36,7 @@ public:
     int m_nNextState; // 0x474
 };
 
-// SYNTHETIC: HYPERX 0x0041bb90
+// SYNTHETIC: HYPERX1001 0x0041bb90
 // MatchInfoUIScreen::`scalar deleting destructor'
 
 #endif

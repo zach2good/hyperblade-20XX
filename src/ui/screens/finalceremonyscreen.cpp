@@ -17,7 +17,7 @@
 #include "engine/game.h"
 
 // The flipbook frames are "finan01" to "finan60"; the prefix is re-read every iteration.
-// FUNCTION: HYPERX 0x00442fc0
+// FUNCTION: HYPERX1001 0x00442fc0
 FinalCeremonyScreen::FinalCeremonyScreen()
 {
     char        szFrameName[80];
@@ -44,7 +44,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
     Widget* const pWidget = AppendWidget(std::make_unique<DisplayWidget>(0x2d, 0x4f, 0, 0, this, -1));
     pWidget->AppendFrame(hBitmap);
 
-    // STRING: HYPERX 0x004c1f30
+    // STRING: HYPERX1001 0x004c1f30
     hBitmap = GDI::LoadBitmapHandle("finan01");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     GDI::SafeDeleteBitmap(hBitmap);
@@ -52,7 +52,7 @@ FinalCeremonyScreen::FinalCeremonyScreen()
 
     for (int i = 0; i < 60; i++)
     {
-        // STRING: HYPERX 0x004bc1a4
+        // STRING: HYPERX1001 0x004bc1a4
         sprintf(szFrameName, "%s%02d", g_pszFinaleAnimPrefix, i + 1);
         m_apWidgets[FINAL_CEREMONY_ANIMATION]->AppendFrame(GDI::LoadBitmapHandle(szFrameName));
     }
@@ -60,11 +60,11 @@ FinalCeremonyScreen::FinalCeremonyScreen()
     InitAllWidgets();
 }
 
-// FUNCTION: HYPERX 0x00443190
+// FUNCTION: HYPERX1001 0x00443190
 FinalCeremonyScreen::~FinalCeremonyScreen() = default;
 
 // The id is compared unsigned.
-// FUNCTION: HYPERX 0x004431a0
+// FUNCTION: HYPERX1001 0x004431a0
 void FinalCeremonyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     if (nId >= kWidgetIDMouse && nId <= kWidgetIDReturn && (nMsg == kInputKeyUp || nMsg == kInputKeyDown || (m_bPointerOnWidget == 0 && nMsg == kInputLeftUp)))
@@ -83,8 +83,8 @@ void FinalCeremonyScreen::OnWidgetMessage(int nMsg, unsigned int nId)
     }
 }
 
-// STRING: HYPERX 0x004c1f28
+// STRING: HYPERX1001 0x004c1f28
 const char* g_pszFinaleBackground = "finext";
 
-// STRING: HYPERX 0x004c1f20
+// STRING: HYPERX1001 0x004c1f20
 const char* g_pszFinaleAnimPrefix = "finan";

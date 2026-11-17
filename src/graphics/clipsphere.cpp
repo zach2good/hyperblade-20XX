@@ -4,7 +4,7 @@
 #include "engine/clipsphere.h"
 
 // Answers two when inside and nought when not. The far test is >= where the others are strict.
-// FUNCTION: HYPERX 0x0047fa80
+// FUNCTION: HYPERX1001 0x0047fa80
 char ClipSphere::FrustumCull(float flRadius)
 {
     char cVisible;

@@ -6,7 +6,7 @@
 constexpr auto kFlagHasTable = 0x80;
 constexpr auto kFlagSizeMask = 0x07;
 
-// FUNCTION: HYPERX 0x004496e0
+// FUNCTION: HYPERX1001 0x004496e0
 int CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
 {
     unsigned short nCount = 0;

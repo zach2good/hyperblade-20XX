@@ -42,7 +42,7 @@ public:
     std::unique_ptr<AnimScriptTable>                                m_pScripts; // 0x0c
 };
 
-// FUNCTION: HYPERX 0x00416f70
+// FUNCTION: HYPERX1001 0x00416f70
 // AnimRegistry::~AnimRegistry
 
 #endif

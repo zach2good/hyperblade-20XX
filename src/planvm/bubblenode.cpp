@@ -7,7 +7,7 @@
 #include "physics/collisioncage.h"
 #include "physics/physicsbody.h"
 
-// FUNCTION: HYPERX 0x0042a150
+// FUNCTION: HYPERX1001 0x0042a150
 BubbleNode::BubbleNode()
 {
     m_nShape      = BubbleShape::kSphere;
@@ -19,5 +19,5 @@ BubbleNode::BubbleNode()
     m_bUseDetail  = false;
 }
 
-// FUNCTION: HYPERX 0x0042a1f0
+// FUNCTION: HYPERX1001 0x0042a1f0
 BubbleNode::~BubbleNode() = default;

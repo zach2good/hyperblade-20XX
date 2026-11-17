@@ -8,7 +8,7 @@
 #include <cstring>
 #include "app/gameapp.h"
 
-// FUNCTION: HYPERX 0x004172a0
+// FUNCTION: HYPERX1001 0x004172a0
 void AnimClipSet::Init()
 {
     m_strName.clear();
@@ -22,7 +22,7 @@ void AnimClipSet::Init()
 }
 
 // A clip that will not load is fatal and names the set, as is a header that will not read.
-// FUNCTION: HYPERX 0x004172d0
+// FUNCTION: HYPERX1001 0x004172d0
 void AnimClipSet::Load(FileObj* pFile, const char* pszName)
 {
     Init();
@@ -48,7 +48,7 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
         {
             if (pClips->Load(pFile, &header) == 0)
             {
-                // STRING: HYPERX 0x004bb840
+                // STRING: HYPERX1001 0x004bb840
                 g_gameApp.Fatal("Error loading animation %s!", pszName);
             }
 
@@ -57,7 +57,7 @@ void AnimClipSet::Load(FileObj* pFile, const char* pszName)
     }
     else
     {
-        // STRING: HYPERX 0x004bb820
+        // STRING: HYPERX1001 0x004bb820
         g_gameApp.Fatal("Error reading AnimHeader %s!", pszName);
     }
 }
