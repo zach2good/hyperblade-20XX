@@ -4,7 +4,6 @@
 #include "planvm/kindagendaitem.h"
 
 class EngineObject;
-class CollisionPlane;
 
 // Overrides slots 0, 1, 2, 4 and 9 of the base's thirteen.
 // VTABLE: HYPERX 0x004b1b98

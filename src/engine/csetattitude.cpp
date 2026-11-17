@@ -12,7 +12,7 @@
 #include <cmath>
 #include "physics/physicsbody.h"
 #include "app/gameapp.h"
-#include "physics/collisionplane.h"
+#include "physics/collisionshape.h"
 #include "engine/gameengine.h"
 #include "engine/objectclasses.h"
 #include "common/pooledownerroot.h"

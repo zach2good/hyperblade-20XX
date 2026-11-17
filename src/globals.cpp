@@ -65,7 +65,7 @@ FileVersion                   g_modelVersion            = { 1, 7, 0, 0, 0 };
 GameApp                       g_gameApp(2);
 std::unique_ptr<AudioMgr>     g_pAudioMgr;
 // The reserves for each pair of seats, indexed aSeat[1] + aSeat[0] * 4. Minus one marks a pair with no formation.
-ReserveRows g_aFormationTable[16] = {
+extern const ReserveRows g_aFormationTable[16] = {
     { { -1, -1 } },
     { { 2, 3 } },
     { { 1, 3 } },
@@ -89,7 +89,7 @@ int                  g_aStationarySlots[kStationarySlots] = { 0 };
 int                  g_nStationaryCount;
 
 // STRING: HYPERX 0x004c724c
-const char*                         g_pszEqualsSign = "=";
+extern const char* const            g_pszEqualsSign = "=";
 unsigned char                       g_bNetworkGame;
 unsigned char                       g_bShowLightingInfo;
 int                                 g_bSkipAssetValidation;
@@ -261,8 +261,8 @@ extern const float                  g_flZeroMeshBone         = 0.0f;
 int                                 g_nBitmapCacheCount;
 std::unique_ptr<BitmapCacheEntry[]> g_pBitmapCache;
 // STRING: HYPERX 0x004bb810
-const char*        g_pszAnimNameFormat = "%s";
-extern const float g_flZeroAnimClipSet = 0.0f;
+extern const char* const g_pszAnimNameFormat = "%s";
+extern const float       g_flZeroAnimClipSet = 0.0f;
 
 std::unique_ptr<PooledOwnerRoot> g_pMsgInteractorPool;
 
@@ -452,7 +452,7 @@ extern const float g_flOriginComponent;
 extern const float g_flFacingStepBase;
 extern const float g_flSteerBoxTopY;
 
-const char* g_pszBitmapExtension = "bmp";
+extern const char* const g_pszBitmapExtension = "bmp";
 
 int g_bSoftTexPaletteBuilt;
 
@@ -563,11 +563,6 @@ const float        g_flFourPlan = 4.0f;
 extern const float g_flFourPlayer;
 const float        g_flFourPlayer = 4.0f;
 
-// A second copy of the up axis.
-// GLOBAL: HYPERX 0x004b1460
-extern const Vec3 g_vRokAxis;
-const Vec3        g_vRokAxis = { 0.0f, 0.0f, 1.0f };
-
 int g_nInfoBarLastRokValue;
 
 Vec3 g_vCamPasserAim;
@@ -602,7 +597,7 @@ Vec3 g_vBubbleOwnCentre;
 extern const char* const g_pszPercentF = "%f";
 
 // The ratings reader scans a whole number and stores it as a float.
-const char* g_pszPercentD = "%d";
+extern const char* const g_pszPercentD = "%d";
 
 extern const char* const g_pszPercentHd = "%hd";
 

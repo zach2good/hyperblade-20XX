@@ -8,7 +8,7 @@
 
 struct Vec3;
 
-// A sibling of CollisionPlane: this table has thirteen slots to the plane's fourteen.
+// A sibling of CollisionObj: this table has thirteen slots to the plane's fourteen.
 // VTABLE: HYPERX 0x004b16bc
 class CollisionEllipsoid : public CollisionShape
 {

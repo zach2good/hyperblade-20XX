@@ -56,7 +56,6 @@
 #include <cmath>
 #include <cstdlib>
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
@@ -923,7 +922,6 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
     PlanState*       pOwner;
     Vec3             vVelocity;
     Vec3             vOrigin;
-    Vec3             vScratch;
 
     pActor = pContext->GetActor();
 
@@ -945,6 +943,7 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 
                 pBone = &pSpawn->m_pBones[HEAD_BONE];
 
+                Vec3 vScratch;
                 pBone->m_world.TransformPoint(vOrigin, &vScratch);
 
                 const auto vHead = vScratch;
@@ -955,13 +954,13 @@ void PlanAction::LoseHead(Interactor* pContext, PlanNode*, short*, int nArg)
 
                 pBone->SetFlags(kMeshboneHidden);
 
-                pSource   = pSpawn->GetPhysicsBody();
-                vVelocity = pSource->velDir;
-                vScratch  = pSpawn->m_pBody->vel;
+                pSource              = pSpawn->GetPhysicsBody();
+                vVelocity            = pSource->velDir;
+                const auto vSpawnVel = pSpawn->m_pBody->vel;
 
-                vVelocity.x = vVelocity.x + vScratch.x;
-                vVelocity.y = vScratch.y + vVelocity.y;
-                vVelocity.z = vVelocity.z + vScratch.z;
+                vVelocity.x = vVelocity.x + vSpawnVel.x;
+                vVelocity.y = vSpawnVel.y + vVelocity.y;
+                vVelocity.z = vVelocity.z + vSpawnVel.z;
 
                 Vec3::ScaleTo(&vVelocity, 2.0f, &vVelocity);
 
@@ -1040,8 +1039,10 @@ int g_anSubstitutePairs[8] = { 94, 95, 98, 99, 96, 97, 100, 101 };
 // GLOBAL: HYPERX 0x004bb304
 int g_anSubstituteBones[15] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
 
-// The up axis the burst directions are crossed with; marked in src/globals.cpp.
+// The up axis the burst directions are crossed with.
+// GLOBAL: HYPERX 0x004b1460
 extern const Vec3 g_vRokAxis;
+const Vec3        g_vRokAxis = { 0.0f, 0.0f, 1.0f };
 
 // FUNCTION: HYPERX 0x00402a50
 void PlanAction::BodySplit(Interactor* pContext, PlanNode* pNode, short*, int)

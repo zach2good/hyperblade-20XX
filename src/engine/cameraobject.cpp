@@ -28,7 +28,6 @@
 #include "anim/animplayer.h"
 #include "app/gameapp.h"
 #include "ui/widget.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "math/point.h"
 #include "engine/framepacing.h"

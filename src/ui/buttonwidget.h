@@ -3,7 +3,6 @@
 
 #include "common/compat.h"
 #include "globals.h"
-#include "ui/holdingwidget.h"
 
 class Screen;
 
@@ -14,9 +13,12 @@ class Screen;
 
 // Table 0x004b2ad8; slot four holds a body no other table has.
 // VTABLE: HYPERX 0x004b2ad8
-class ButtonWidget : public HoldingWidget
+class ButtonWidget : public Widget
 {
 public:
+    // The original's linker folds this onto FlipbookWidget::OnMouseDown.
+    int OnMouseDown() override;
+
     // Reached only through this table.
     int OnMouseUp() override;
 

@@ -4,8 +4,6 @@
 #include "common/compat.h"
 #include "ui/widget.h"
 
-#include "ui/holdingwidget.h"
-
 #include "ui/buttonwidget.h"
 #include "globals.h"
 

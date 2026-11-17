@@ -20,7 +20,6 @@
 #include "playerobject.h"
 #include <cmath>
 #include <cstdlib>
-#include "physics/collisionplane.h"
 #include "arenastate.h"
 #include "physics/collisionellipsoid.h"
 #include "common/pooledownerroot.h"

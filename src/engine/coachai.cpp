@@ -42,7 +42,6 @@
 #include <cstring>
 #include <new>
 #include <cstdio>
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "net/netrecords.h"
 #include "planvm/damagegate.h"

@@ -53,7 +53,7 @@
 #include <new>
 #include <cstdio>
 #include <string>
-#include "physics/collisionplane.h"
+#include "physics/collisionshape.h"
 #include "engine/engineobject.h"
 #include "input/twoplayer.h"
 #include "net/netrecords.h"

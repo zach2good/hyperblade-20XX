@@ -63,7 +63,6 @@ public:
     // 0x0042f420; not explicit, because callers convert from a C string.
     String(const char* psz);
 
-    // FUNCTION: HYPERX 0x004197b0
     ~String() = default;
 
     operator const char*() const

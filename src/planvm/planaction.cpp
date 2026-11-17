@@ -53,7 +53,6 @@
 #include <cmath>
 #include <cstdlib>
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
@@ -85,7 +84,7 @@ void PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
 
     auto* const pPoint = pObject->GetWorldPos(&vPoint);
 
-    CollisionPlane* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
+    CollisionObj* const pPart = ((RampObject*)pOther)->GetCollisionObjForPoint(pPoint);
 
     pState->pShell = pPart;
 

@@ -3,7 +3,7 @@
 #include "common/compat.h"
 #include "ui/widget.h"
 
-// Slots one and two of 0x004b2abc and 0x004b2b10 hold Widget::RefuseInput.
+// Slots one and two of 0x004b2abc and 0x004b2b10 share one body, which the linker folds.
 class InertWidget : public Widget
 {
 public:
@@ -12,7 +12,7 @@ public:
     {
     }
 
-    // Both slots hold Widget::RefuseInput, which carries the marker.
+    // FUNCTION: HYPERX 0x0042be70
     int HitTest(int, int) override
     {
         return 0;

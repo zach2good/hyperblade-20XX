@@ -12,6 +12,7 @@ the simulated matches are the port's own.
 | [plan_bugs_skaters.md](plan_bugs_skaters.md) | Findings in the skater and goalie plans |
 | [plan_bugs_objects.md](plan_bugs_objects.md) | Findings in the object plans and the team ratings files |
 | [sim_results.md](sim_results.md) | Simulated round robins against the menu ratings, the match stats the port records, and balance proposals for the top and bottom teams |
+| [demo.md](demo.md) | The August 1996 demo build, its game clips viewer and how it differs from v1.0.0.0 |
 
 [src/README.md](../src/README.md) says what each source folder holds.
 

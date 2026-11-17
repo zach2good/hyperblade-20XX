@@ -60,7 +60,6 @@
 #include <cmath>
 #include <cstdlib>
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"

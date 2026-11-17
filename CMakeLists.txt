@@ -222,7 +222,6 @@ set(HYPERX_SOURCES
     src/physics/collisioncheck.cpp
     src/physics/collisionellipsoid.cpp
     src/physics/collisionobj.cpp
-    src/physics/collisionplane.cpp
     src/physics/collisionshape.cpp
     src/physics/msginteractorpool.cpp
     src/physics/physicsbody.cpp
@@ -232,7 +231,6 @@ set(HYPERX_SOURCES
     src/planvm/behobjglidetoobject.cpp
     src/planvm/behparam.cpp
     src/planvm/bubblenode.cpp
-    src/planvm/cameraliteagendaitem.cpp
     src/planvm/cavoidobjects.cpp
     src/planvm/cbungeetoward.cpp
     src/planvm/cdopplersnd.cpp
@@ -282,7 +280,6 @@ set(HYPERX_SOURCES
     src/ui/dialogtemplates.cpp
     src/ui/displaywidget.cpp
     src/ui/flipbookwidget.cpp
-    src/ui/holdingwidget.cpp
     src/ui/inertwidget.cpp
     src/ui/infobar.cpp
     src/ui/infobarbase.cpp

@@ -2,14 +2,16 @@
 #define HYPERBLADE_TEXTINPUTWIDGET_H
 
 #include "widget.h"
-#include "ui/holdingwidget.h"
 #include <memory>
 
 // Slot zero of 0x004b2af4; no other table holds 0x0042bda0.
 // VTABLE: HYPERX 0x004b2af4
-class TextInputWidget : public HoldingWidget
+class TextInputWidget : public Widget
 {
 public:
+    // The original's linker folds this onto FlipbookWidget::OnMouseDown.
+    int OnMouseDown() override;
+
     // Slots four and five hold KeyConfigDialog::SaveKeysAs, so both keep a stand-in.
     int OnMouseUp() override
     {

@@ -17,6 +17,7 @@
 #include "app/gameapp.h"
 #include "engine/engineobject.h"
 #include "engine/objectkind.h"
+#include "planvm/conditiontable.h"
 
 // FUNCTION: HYPERX 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
@@ -29,6 +30,20 @@ void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pWatchPos = &pOwner->GetPhysicsBody()->pos;
     m_pWatchDir = &pOwner->GetPhysicsBody()->velDir;
     m_nUnused   = static_cast<int>(g_pGameEngine->m_clock.tick.count());
+}
+
+void CCircleTrack::OnListChanged()
+{
+    if (m_bReady == 0)
+    {
+        m_pOwner    = nullptr;
+        m_pWatchPos = nullptr;
+        m_pWatchDir = nullptr;
+        m_pNext     = nullptr;
+        m_bReady    = 1;
+
+        g_apAgendaItemPools[m_wKind]->Insert(this);
+    }
 }
 
 // FUNCTION: HYPERX 0x0040b720

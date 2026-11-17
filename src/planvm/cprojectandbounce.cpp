@@ -16,7 +16,6 @@
 #include <cmath>
 #include "app/gameapp.h"
 #include "physics/collisionshape.h"
-#include "physics/collisionplane.h"
 #include "planvmglobals.h"
 #include "common/pooledownerroot.h"
 #include "engine/messageids.h"

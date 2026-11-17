@@ -19,7 +19,6 @@
 #include "app/gameapp.h"
 #include "engine/playerobject.h"
 #include "net/gamesession.h"
-#include "physics/collisionplane.h"
 #include "math/mathops.h"
 #include "common/pooledownerroot.h"
 #include "engine/statids.h"

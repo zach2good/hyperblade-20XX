@@ -149,13 +149,14 @@ sends itself a data-0 `id_MSG_YerHit` from `id_MSG_Initiate`.
                                 CHANGE_OF_PLAN "Sideln" 8 "SkateToLockerRoom"
                     [1] CHANGE_TO_BEHAVIOR _NO_BEH_CHANGE_
 
-`ClockStoppedSemaphore` (0x00463e00) answers 1 while the actor's clock-stopped flag is set. Only
-one path sends this message to an AI skater: HUMAN "GettingThere", the face-off behaviour, forwards
-the substitute keys to an AI teammate with `SendMessage(id_PRN_MyTeammate,
-id_MSG_SubstituteDromer, _MESSAGE_DATA_)`. At a face-off every AI skater is in DEFENSE "SkateToFaceOff"
-or "GettingThere", and every plan's `id_MSG_GoalScored` and `id_MSG_StartDrag` handler has set the
-flag to 1 on the way there. So the request always takes arm [1] and does nothing. The OFFWING,
-CARRYROK and HUMAN handlers have no such gate, and play sound 126 when they refuse.
+`ClockStoppedSemaphore` (0x00463e00) answers 1 while the actor's clock-stopped flag is set. Only one
+path sends this message to an AI skater: HUMAN "GettingThere", the face-off behaviour, forwards the
+substitute keys to an AI teammate with
+`SendMessage(id_PRN_MyTeammate, id_MSG_SubstituteDromer, _MESSAGE_DATA_)`. At a face-off every AI
+skater is in DEFENSE "SkateToFaceOff" or "GettingThere", and every plan's `id_MSG_GoalScored` and
+`id_MSG_StartDrag` handler has set the flag to 1 on the way there. So the request always takes arm
+[1] and does nothing. The OFFWING, CARRYROK and HUMAN handlers have no such gate, and play sound 126
+when they refuse.
 
 Correction: not every AI skater is in DEFENSE at a face-off. At a drag, DEFENSE's
 `id_MSG_StartDrag` sends an injured AI skater to SIDELN 9 "InjSubstitute", whose
@@ -207,13 +208,13 @@ Fix: change the timer's message leaf from `id_MSG_TimeOutMessage` (69) to `id_MS
     ADD_AGENDA_ITEM id_AGD_CAvoidObjects, id_PRN_MyTeammate, 9                 (17 in DEFENSE and OFFWING)
     ADD_AGENDA_ITEM id_AGD_CAvoidObjects, id_PRN_MyLeadOpponent, id_PRN_MyOtherOpponent  (6 in CARRYROK)
 
-`CAvoidObjects::BindWithNode` (0x0040f890, `src/planvm/cavoidobjects.cpp`) sets only the
-two targets for a three-leaf node. It leaves range and strength as they were. A recycled
-agenda item has both at 0 from `OnListChanged` (0x0040f970). A never-recycled one has whatever the
-heap held: the pool's `operator new(0x30)` (0x00413660, 0x004136f0) sets only +4 to +0xc and the
-vtable, so range and strength are uninitialised, though fresh heap pages are very likely zero. The
-one-leaf `Bind` (0x0040f830) sets 80 and -6.5, and the five-leaf form sets them from the node. With a range of 0 the gate
-`|dx| + |dy| < range` never passes, so no avoidance force is added. The item still raises
+`CAvoidObjects::BindWithNode` (0x0040f890, `src/planvm/cavoidobjects.cpp`) sets only the two targets
+for a three-leaf node. It leaves range and strength as they were. A recycled agenda item has both at
+0 from `OnListChanged` (0x0040f970). A never-recycled one has whatever the heap held: the pool's
+`operator new(0x30)` (0x00413660, 0x004136f0) sets only +4 to +0xc and the vtable, so range and
+strength are uninitialised, though fresh heap pages are very likely zero. The one-leaf `Bind`
+(0x0040f830) sets 80 and -6.5, and the five-leaf form sets them from the node. With a range of 0 the
+gate `|dx| + |dy| < range` never passes, so no avoidance force is added. The item still raises
 `id_MSG_Blocked` and `id_MSG_Breakaway`, which the plans do listen for.
 
 The second leaf `9` in DEFENSE and OFFWING is slot 9, the main camera. Nothing suggests the

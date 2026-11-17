@@ -19,6 +19,7 @@ public:
 
     void Process(int nArg) override;
     void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
+    void OnListChanged() override;
 
     char m_bAttached; // 0x18
 };

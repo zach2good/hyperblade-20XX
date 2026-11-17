@@ -36,14 +36,14 @@ public:
     virtual float         GetElasticity(); // 0x00405830
     virtual float         GetFriction();   // 0x00405840
 
-    // The 0x04 to 0x38 run CollisionPlane and CollisionEllipsoid share.
+    // The 0x04 to 0x38 run CollisionObj and CollisionEllipsoid share.
     ShapeKind GetShapeKind() const
     {
         return m_nShapeKind;
     }
 
 protected:
-    // The 0x04 to 0x38 run CollisionPlane and CollisionEllipsoid share.
+    // The 0x04 to 0x38 run CollisionObj and CollisionEllipsoid share.
     int  m_nUnusedA; // 0x004
     int  m_nUnusedB; // 0x008
     Vec3 m_vNormal;  // 0x00c

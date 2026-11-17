@@ -10,7 +10,6 @@
 #include "math/transformobject.h"
 #include "math/vector.h"
 #include "physics/collisionobj.h"
-#include "physics/collisionplane.h"
 #include "engine/engineobject.h"
 #include <utility>
 

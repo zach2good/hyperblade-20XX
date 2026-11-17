@@ -12,7 +12,7 @@
 #include <algorithm>
 
 float g_flDotPitchCmProjection      = g_flDotsPerInchProjection * g_flDotPitchProjection / g_flCmPerInchProjection;
-float g_flScreenDotsPerCmProjection = g_flDotsPerInchProjection / g_flCmPerInchProjection;
+float g_flScreenDensityCmProjection = g_flDotsPerInchProjection / g_flCmPerInchProjection;
 
 // FUNCTION: HYPERX 0x00422d60
 void CameraProjectionState::ResetProjection(LayoutState* pViewport, float flFov)
@@ -39,7 +39,7 @@ float CameraProjectionState::GetHalfFov()
 void CameraProjectionState::CreateProjectionState(char cFlag, LayoutState* pViewport, float flFov)
 {
     m_flCmPerPixel    = g_flDotPitchCmProjection;
-    m_flPixelsPerCm   = g_flScreenDotsPerCmProjection;
+    m_flPixelsPerCm   = g_flScreenDensityCmProjection;
     m_flHalfWidthCm   = g_flZeroProjection;
     m_flHalfHeightCm  = g_flZeroProjection;
     m_flHalfHeightPxB = g_flZeroProjection;

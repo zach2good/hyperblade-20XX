@@ -175,12 +175,6 @@ int Interactor::GetState()
     return m_nMember;
 }
 
-// FUNCTION: HYPERX 0x0046bb70
-EngineObject* Interactor::GetActor()
-{
-    return m_pOwner;
-}
-
 // FUNCTION: HYPERX 0x0046bb80
 void Interactor::SetActiveState(int nState)
 {

@@ -7,7 +7,7 @@
 #include <string>
 
 // GLOBAL: HYPERX 0x004b4104
-extern const char* g_pszBitmapExtension;
+extern const char* const g_pszBitmapExtension;
 
 // Twenty four bytes.
 class TexCacheEntry

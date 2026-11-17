@@ -81,7 +81,6 @@
 #include "ui/infobarbase.h"
 #include "ui/infobar.h"
 #include "engine/particlesystem.h"
-#include "physics/collisionplane.h"
 #include "physics/collisioncheck.h"
 #include "engine/object.h"
 #include "engine/objectphase.h"

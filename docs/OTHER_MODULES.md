@@ -4,9 +4,9 @@ HyperBlade ships more than `HYPERX.EXE`. The disc's root holds 10 DLLs and 7 oth
 `DIRECTX/` holds the DirectX redistributable. Does any of them belong in this project, and what
 would it cost?
 
-The eighteen DLLs under `DIRECTX/` are Microsoft's DirectX 2 redistributable and are out of
-scope. Three small DLLs are the game team's own code. They're easy to reverse, but they belong to the
-CD front end rather than the game, and each was built with a compiler we don't have.
+The eighteen DLLs under `DIRECTX/` are Microsoft's DirectX 2 redistributable and are out of scope.
+Three small DLLs are the game team's own code. They're easy to reverse, but they belong to the CD
+front end rather than the game, and each was built with a compiler we don't have.
 
 Every claim below can be checked against the files on the game's disc.
 

@@ -21,6 +21,8 @@ public:
 
     void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode) override;
 
+    void OnListChanged() override;
+
     // Bind stores the engine clock; nothing reads it, as the circle's angle is a constant zero.
     int m_nUnused; // 0x18
 };

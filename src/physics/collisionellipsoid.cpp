@@ -95,7 +95,6 @@ int CollisionEllipsoid::RayIntersection(Vec3* pDirection, Vec3* pOrigin, Vec3* p
 int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNearOut, Vec3* pFarOut)
 {
     double dSlopeA;
-    double dSlopeB;
     double dQuad;
     double dHalfB;
     double dArmA;
@@ -116,6 +115,8 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
 
     if (dDirX > AXIS_EPS_UPPER || dDirX < AXIS_EPS_LOWER)
     {
+        double dSlopeB;
+
         dSlopeA = dDirY / dDirX;
         dSlopeB = dDirZ / dDirX;
 
@@ -176,6 +177,8 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
     }
     else if (dDirY <= AXIS_EPS_UPPER && dDirY >= AXIS_EPS_LOWER)
     {
+        double dSlopeB;
+
         dSlopeA = dDirY / dDirZ;
         dSlopeB = dDirX / dDirZ;
 
@@ -236,6 +239,8 @@ int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNea
     }
     else
     {
+        double dSlopeB;
+
         dSlopeB = dDirX / dDirY;
         dSlopeA = dDirZ / dDirY;
 
