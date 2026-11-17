@@ -44,7 +44,7 @@ jobs:
       - name: Name the original
         shell: bash
         run: |
-          printf 'targets:\n  HYPERX:\n    path: %s\n' "$(pwd -W)/reference/HYPERX.EXE" > reccmp-user.yml
+          printf 'targets:\n  HYPERX:\n    path: %s\n' "$(pwd -W)/reference/v1.0.0.1/HYPERX.EXE" > reccmp-user.yml
           python tools/reference.py
 
       - name: Install reccmp
