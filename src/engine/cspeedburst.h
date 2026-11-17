@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slot 0 is CGlideOnSurface's shared deleting destructor; slot 2 is a shared Release.
-// VTABLE: HYPERX 0x004b1b40
+// VTABLE: HYPERX1001 0x004b1b40
 class CSpeedBurst : public ReleasingAgendaItem
 {
     // m_bReady is this kind's finished flag; m_pOwner is a player.

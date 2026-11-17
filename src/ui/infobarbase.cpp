@@ -4,8 +4,8 @@
 #include "hud.h"
 #include "common/stub.h"
 
-// FUNCTION: HYPERX100 0x004bdd70
-// FUNCTION: HYPERX 0x00452130
+// FUNCTION: HYPERX1000 0x004bdd70
+// FUNCTION: HYPERX1001 0x00452130
 InfoBarBase* __cdecl InfoBarBase::Create(int nKind, HDC hDC)
 {
     if (nKind == 0)

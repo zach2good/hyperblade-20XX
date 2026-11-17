@@ -5,10 +5,10 @@
 // TODO: The field count is a guess; nothing in v1.0.0.0 fills or bounds the table.
 #define PACKED_FIELD_COUNT 16
 
-// GLOBAL: HYPERX100 0x005265e8
+// GLOBAL: HYPERX1000 0x005265e8
 PackedField g_aPackedFields[PACKED_FIELD_COUNT];
 
-// FUNCTION: HYPERX100 0x00493290
+// FUNCTION: HYPERX1000 0x00493290
 int __cdecl PackedFields::Pack(unsigned int* pWords, int nField, unsigned int nValue)
 {
     const PackedField& field = g_aPackedFields[nField];
@@ -18,7 +18,7 @@ int __cdecl PackedFields::Pack(unsigned int* pWords, int nField, unsigned int nV
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004932d0
+// FUNCTION: HYPERX1000 0x004932d0
 int __cdecl PackedFields::Unpack(unsigned int* pWords, int nField, unsigned int* pValue)
 {
     const int nWord = g_aPackedFields[nField].nWord;

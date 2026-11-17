@@ -18,8 +18,8 @@ float g_flUnusedFaceC = g_flZeroFace;
 
 #define CLIP_ALL 0xff
 
-// FUNCTION: HYPERX100 0x0045fa50
-// FUNCTION: HYPERX 0x0044a9a0
+// FUNCTION: HYPERX1000 0x0045fa50
+// FUNCTION: HYPERX1001 0x0044a9a0
 int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const TransformedVertex* pVertexBuf, char cFacing, char* pcClipOut)
 {
     const char cClip = Face::ClipCodeAndCullCheck(pFace, pVertexBuf);
@@ -76,8 +76,8 @@ int __fastcall Face::BackfaceCullAndClipCheck(MeshFace* pFace, const Transformed
 }
 
 // Screen y grows down, so y below zero is above the top edge. Near is strict and far is not.
-// FUNCTION: HYPERX100 0x00499520
-// FUNCTION: HYPERX 0x0047f7b0
+// FUNCTION: HYPERX1000 0x00499520
+// FUNCTION: HYPERX1001 0x0047f7b0
 char __fastcall Face::ClipCodeAndCullCheck(const MeshFace* pFace, const TransformedVertex* pVertices)
 {
     const short* pIndices = pFace->aCorners;
@@ -163,8 +163,8 @@ char __fastcall Face::ClipCodeAndCullCheck(const MeshFace* pFace, const Transfor
 #define AXIS_Y 1
 #define AXIS_Z 2
 
-// FUNCTION: HYPERX100 0x004996e0
-// FUNCTION: HYPERX 0x0047f8f0
+// FUNCTION: HYPERX1000 0x004996e0
+// FUNCTION: HYPERX1001 0x0047f8f0
 unsigned char __fastcall Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char cClipFlags)
 {
     ClipPolyBuffer* pSwap;
@@ -279,7 +279,7 @@ unsigned char __fastcall Face::ClipPolygon(ClipPolyBuffer* pPoly, unsigned char 
 #ifdef HYPERX_V100
 // Two when every vertex is inside, nought when the polygon is rejected or clipped away, one when
 // clipped. The outcodes test against nought, but the clip planes use the minimum extents.
-// FUNCTION: HYPERX100 0x004998f0
+// FUNCTION: HYPERX1000 0x004998f0
 unsigned char __fastcall Face::ClassifyAndClipPolygon(ClipPolyBuffer* pPoly)
 {
     ClipPolyBuffer* pSwap;

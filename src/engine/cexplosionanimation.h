@@ -8,12 +8,12 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b217c
+// VTABLE: HYPERX1001 0x004b217c
 class CExplosionAnimation : public BaseResetAgendaItem
 {
 public:
-    // FUNCTION: HYPERX100 0x0042cc10
-    // FUNCTION: HYPERX 0x004127a0
+    // FUNCTION: HYPERX1000 0x0042cc10
+    // FUNCTION: HYPERX1001 0x004127a0
     virtual void Process(int nArg)
     {
         ParticleSystem* const pSystem = (ParticleSystem*)m_pOwner;
@@ -36,7 +36,7 @@ public:
     }
 
     // The original's linker folded this body onto Process, which carries the marker.
-    // FUNCTION: HYPERX100 0x0042cc80
+    // FUNCTION: HYPERX1000 0x0042cc80
     virtual void Release(int nArg)
     {
         ParticleSystem* const pSystem = (ParticleSystem*)m_pOwner;

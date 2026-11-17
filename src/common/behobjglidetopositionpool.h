@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b25b4
+// VTABLE: HYPERX1001 0x004b25b4
 class BehObjGlideToPositionPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjGlideToPositionPool();
 };
 
-// SYNTHETIC: HYPERX 0x00420a20
+// SYNTHETIC: HYPERX1001 0x00420a20
 // BehObjGlideToPositionPool::`scalar deleting destructor'
 
 #endif

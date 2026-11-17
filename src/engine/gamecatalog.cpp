@@ -16,7 +16,7 @@
 // The definitions all land in the ninth record.
 #define GAMECAT_WRITTEN_GAME 8
 
-// FUNCTION: HYPERX100 0x00437dd0
+// FUNCTION: HYPERX1000 0x00437dd0
 GameCatalog::GameCatalog()
 {
     char szPath[64];
@@ -38,7 +38,7 @@ GameCatalog::GameCatalog()
     OwnedFile catFile;
 
     strcpy(szPath, g_gameApp.m_strExeDir.m_str.m_pchData);
-    // STRING: HYPERX100 0x0050f824
+    // STRING: HYPERX1000 0x0050f824
     strcat(szPath, "year.cat");
 
     if (catFile.m_file.Open(szPath, FILE_MODE_READ) != 0)
@@ -50,7 +50,7 @@ GameCatalog::GameCatalog()
 }
 
 // Sets both ids of every secret game, capped at seven; each store's zero test never passes.
-// FUNCTION: HYPERX100 0x00437fa0
+// FUNCTION: HYPERX1000 0x00437fa0
 void GameCatalog::AssignTeams(int nTeam)
 {
     int nWas;
@@ -106,31 +106,31 @@ void GameCatalog::AssignTeams(int nTeam)
 
 // The three counts and the away score share one error message; the game index is parsed and
 // dropped.
-// FUNCTION: HYPERX100 0x00438180
+// FUNCTION: HYPERX1000 0x00438180
 void GameCatalog::ParseGameCat(FileObj* pFile)
 {
     const char* apszKeyword[GAMECAT_KEYWORD_COUNT] = {
-        // STRING: HYPERX100 0x0050f9e8
+        // STRING: HYPERX1000 0x0050f9e8
         "SeasonCount",
-        // STRING: HYPERX100 0x0050f9d4
+        // STRING: HYPERX1000 0x0050f9d4
         "TournamentCount",
-        // STRING: HYPERX100 0x0050f9c4
+        // STRING: HYPERX1000 0x0050f9c4
         "SecretCount",
-        // STRING: HYPERX100 0x0050f9b4
+        // STRING: HYPERX1000 0x0050f9b4
         "StartDefine",
-        // STRING: HYPERX100 0x0050f9a4
+        // STRING: HYPERX1000 0x0050f9a4
         "DefineGame",
-        // STRING: HYPERX100 0x0050f998
+        // STRING: HYPERX1000 0x0050f998
         "EndDefine",
-        // STRING: HYPERX100 0x0050f988
+        // STRING: HYPERX1000 0x0050f988
         "HomeTeamID",
-        // STRING: HYPERX100 0x0050f978
+        // STRING: HYPERX1000 0x0050f978
         "AwayTeamID",
-        // STRING: HYPERX100 0x0050f96c
+        // STRING: HYPERX1000 0x0050f96c
         "gameindex",
-        // STRING: HYPERX100 0x0050f960
+        // STRING: HYPERX1000 0x0050f960
         "HomeScore",
-        // STRING: HYPERX100 0x0050f954
+        // STRING: HYPERX1000 0x0050f954
         "AwayScore"
     };
 
@@ -142,13 +142,13 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
 
     while (pFile->GetNextLine(&pLine) > 0)
     {
-        // STRING: HYPERX100 0x0050f950
+        // STRING: HYPERX1000 0x0050f950
         if (ParseUtil::ParseToken(pLine, szToken, 0, " \t", PARSE_TOKEN_MAX, &pLine) == 0)
         {
             continue;
         }
 
-        // STRING: HYPERX100 0x0050f940
+        // STRING: HYPERX1000 0x0050f940
         if (_mbsicmp((const unsigned char*)szToken, (const unsigned char*)"DefineTeam") == 0)
         {
             bFound = 1;
@@ -168,7 +168,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
 
     while (pLine != 0)
     {
-        // STRING: HYPERX100 0x0050f93c
+        // STRING: HYPERX1000 0x0050f93c
         if (ParseUtil::ParseToken(pLine, szToken, 0, " =\t", PARSE_TOKEN_MAX, &pLine) == 0)
         {
             return;
@@ -193,7 +193,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
             case 0:
                 pLine++;
 
-                // STRING: HYPERX100 0x0050f90c
+                // STRING: HYPERX1000 0x0050f90c
                 if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                     goto awayScoreError;
@@ -227,7 +227,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
             case 3:
                 if (m_nSecretCount == 0)
                 {
-                    // STRING: HYPERX100 0x0050f914
+                    // STRING: HYPERX1000 0x0050f914
                     g_gameApp.Error("Check series definition--  %s!", szToken);
 
                     return;
@@ -253,7 +253,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
-                    // STRING: HYPERX100 0x0050f8e0
+                    // STRING: HYPERX1000 0x0050f8e0
                     g_gameApp.Error("ParseGameCat--HomeTeamID error:  %s!", szToken);
 
                     return;
@@ -267,7 +267,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
-                    // STRING: HYPERX100 0x0050f8b4
+                    // STRING: HYPERX1000 0x0050f8b4
                     g_gameApp.Error("ParseGameCat--AwayTeamID error: %s!", szToken);
 
                     return;
@@ -281,7 +281,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
-                    // STRING: HYPERX100 0x0050f888
+                    // STRING: HYPERX1000 0x0050f888
                     g_gameApp.Error("ParseGameCat--gameindex error: %s!", szToken);
 
                     return;
@@ -295,7 +295,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
 
                 if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
-                    // STRING: HYPERX100 0x0050f85c
+                    // STRING: HYPERX1000 0x0050f85c
                     g_gameApp.Error("ParseGameCat--HomeScore error: %s!", szToken);
 
                     return;
@@ -310,7 +310,7 @@ void GameCatalog::ParseGameCat(FileObj* pFile)
                 if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r", PARSE_TOKEN_MAX, &pLine) == 0)
                 {
                 awayScoreError:
-                    // STRING: HYPERX100 0x0050f830
+                    // STRING: HYPERX1000 0x0050f830
                     g_gameApp.Error("ParseGameCat--AwayScore error: %s!", szToken);
 
                     return;

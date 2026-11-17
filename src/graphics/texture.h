@@ -9,7 +9,7 @@
 
 struct IDirectDrawSurface;
 
-// GLOBAL: HYPERX 0x004cd4c8
+// GLOBAL: HYPERX1001 0x004cd4c8
 extern LPDIRECTDRAWSURFACE g_pSurfaceBack;
 
 struct TextureRect
@@ -20,7 +20,7 @@ struct TextureRect
     int nBottom;
 };
 
-// VTABLE: HYPERX 0x004b2d5c
+// VTABLE: HYPERX1001 0x004b2d5c
 class Texture
 {
 public:
@@ -39,16 +39,16 @@ public:
     virtual void  DispatchRect(int nLeft, int nTop, int nRight, int nBottom);
 
     // Inline, so it stays apart from the out-of-line accessors of the same bytes.
-    // FUNCTION: HYPERX100 0x00440bf0
-    // FUNCTION: HYPERX 0x004338e0
+    // FUNCTION: HYPERX1000 0x00440bf0
+    // FUNCTION: HYPERX1001 0x004338e0
     virtual IDirectDrawSurface* GetSurface()
     {
         return m_pSurface;
     }
 
     // Nothing calls it.
-    // FUNCTION: HYPERX100 0x00440c00
-    // FUNCTION: HYPERX 0x004338f0
+    // FUNCTION: HYPERX1000 0x00440c00
+    // FUNCTION: HYPERX1001 0x004338f0
     virtual Texture* GetSourceSurface()
     {
         return m_pSourceSurface;
@@ -59,15 +59,15 @@ public:
     virtual int   GetBgColor();
 
     // Inline, as slot 18 is, so the linker folds slot 18 onto this one as the original's did.
-    // FUNCTION: HYPERX100 0x00441000
-    // FUNCTION: HYPERX 0x00437250
+    // FUNCTION: HYPERX1000 0x00441000
+    // FUNCTION: HYPERX1001 0x00437250
     virtual void SetColorMode(int nScrollColor)
     {
         m_dwScrollColor = nScrollColor;
     }
 
     // Slot 18 holds slot 17's address in five of the six tables; only ScrollBitmap overrides it.
-    // FUNCTION: HYPERX100 0x00440fc0
+    // FUNCTION: HYPERX1000 0x00440fc0
     virtual void SetScrollColorMode(int nScrollColor)
     {
         m_dwScrollColor = nScrollColor;
@@ -81,7 +81,7 @@ public:
     virtual void Unlock();
 
     // Slot 24 is KeyConfigDialog::SaveKeysAs in the base, shared with unrelated tables.
-    // FUNCTION: HYPERX100 0x00441080
+    // FUNCTION: HYPERX1000 0x00441080
     virtual int RestoreContents()
     {
         return 0;
@@ -119,7 +119,7 @@ public:
     HRESULT      m_hr;            // 0x0bc
 };
 
-// SYNTHETIC: HYPERX 0x00436df0
+// SYNTHETIC: HYPERX1001 0x00436df0
 // Texture::`scalar deleting destructor'
 
 #endif

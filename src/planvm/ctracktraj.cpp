@@ -21,19 +21,19 @@
 #include "engine/engineobject.h"
 #include "planvm/ctracktraj.h"
 
-// FUNCTION: HYPERX100 0x00485360
-// FUNCTION: HYPERX 0x0040a510
+// FUNCTION: HYPERX1000 0x00485360
+// FUNCTION: HYPERX1001 0x0040a510
 CTrackTraj::CTrackTraj()
 {
     m_pSpline = new Spline;
 }
 
 // Two: the share of its own velocity the camera spends on position in each axis.
-// GLOBAL: HYPERX 0x004b16a0
+// GLOBAL: HYPERX1001 0x004b16a0
 extern const float g_flCamTrackVelocityGain;
 
 // The debug dialog's checkbox 0x4b8; while clear, the blended mode keeps its look direction.
-// GLOBAL: HYPERX 0x004bc3d4
+// GLOBAL: HYPERX1001 0x004bc3d4
 extern char g_bCamTrackLookEnabled;
 
 // Four, the clearance the camera keeps above the arena floor; marked in cheadtrack.cpp.
@@ -42,8 +42,8 @@ extern const float g_flFourTracking;
 #define TRAJECTORY_MODE_SPRING 0
 #define TRAJECTORY_MODE_BLEND  1
 
-// FUNCTION: HYPERX100 0x00485470
-// FUNCTION: HYPERX 0x0040a5c0
+// FUNCTION: HYPERX1000 0x00485470
+// FUNCTION: HYPERX1001 0x0040a5c0
 CTrackTraj::~CTrackTraj()
 {
     Spline* const pList = m_pSpline;
@@ -56,8 +56,8 @@ CTrackTraj::~CTrackTraj()
     }
 }
 
-// FUNCTION: HYPERX100 0x00485510
-// FUNCTION: HYPERX 0x0040a630
+// FUNCTION: HYPERX1000 0x00485510
+// FUNCTION: HYPERX1001 0x0040a630
 void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     EngineObject* pTracked;
@@ -79,8 +79,8 @@ void CTrackTraj::Bind(EngineObject* pOwner, GameBehaviorObject*)
 
 // The high bound adds the frame-rate reference, eighty, which is not a distance here.
 
-// FUNCTION: HYPERX100 0x00485580
-// FUNCTION: HYPERX 0x0040a680
+// FUNCTION: HYPERX1000 0x00485580
+// FUNCTION: HYPERX1001 0x0040a680
 void CTrackTraj::InitRange()
 {
     const double dLow   = g_arenaEllipsoid.GetRadiusX();
@@ -97,8 +97,8 @@ void CTrackTraj::InitRange()
 #define RANGE_KIND_SYMMETRIC 2
 
 // A low bound at or below the unset marker builds a symmetric range of kind two instead.
-// FUNCTION: HYPERX100 0x004855d0
-// FUNCTION: HYPERX 0x0040a6c0
+// FUNCTION: HYPERX1000 0x004855d0
+// FUNCTION: HYPERX1001 0x0040a6c0
 void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
 {
     if (flLow > 0.0f)
@@ -117,11 +117,11 @@ void CTrackTraj::SetDirectedRange(float flLow, float flHigh)
     m_nMode = RANGE_KIND_SYMMETRIC;
 }
 
-// GLOBAL: HYPERX 0x004b16ac
+// GLOBAL: HYPERX1001 0x004b16ac
 extern const float g_flPi;
 
-// FUNCTION: HYPERX100 0x00485650
-// FUNCTION: HYPERX 0x0040a730
+// FUNCTION: HYPERX1000 0x00485650
+// FUNCTION: HYPERX1001 0x0040a730
 void CTrackTraj::InitComplexRange()
 {
     CollisionEllipsoid* const pArena = &g_arenaEllipsoid;
@@ -138,16 +138,16 @@ void CTrackTraj::InitComplexRange()
 
 // A negative fraction widens as unsigned and becomes a very large one.
 
-// FUNCTION: HYPERX100 0x004856f0
-// FUNCTION: HYPERX 0x0040a790
+// FUNCTION: HYPERX1000 0x004856f0
+// FUNCTION: HYPERX1001 0x0040a790
 void CTrackTraj::SetBlendT(int nValue)
 {
     m_flBlend = (float)(unsigned int)nValue;
 }
 
 // Mode zero chases the tracked object on a spring; mode one blends toward a scripted point.
-// FUNCTION: HYPERX100 0x00485750
-// FUNCTION: HYPERX 0x0040a7b0
+// FUNCTION: HYPERX1000 0x00485750
+// FUNCTION: HYPERX1001 0x0040a7b0
 void CTrackTraj::Process(int nArg)
 {
     Vec3* const pCamPos = &m_pOwner->GetPhysicsBody()->pos;
@@ -167,7 +167,7 @@ void CTrackTraj::Process(int nArg)
 
         if (pViewer == 0)
         {
-            // STRING: HYPERX 0x004bb4c0
+            // STRING: HYPERX1001 0x004bb4c0
             g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for view owner\n");
         }
 
@@ -180,7 +180,7 @@ void CTrackTraj::Process(int nArg)
 
     if (pWatched == 0)
     {
-        // STRING: HYPERX 0x004bb488
+        // STRING: HYPERX1001 0x004bb488
         g_gameApp.Fatal("CTrackTraj::Process(): Null pointer for model to watch\n");
     }
 

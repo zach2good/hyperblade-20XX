@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b24ec
+// VTABLE: HYPERX1001 0x004b24ec
 class BehObjMonitorKeyboardPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjMonitorKeyboardPool();
 };
 
-// SYNTHETIC: HYPERX 0x00421060
+// SYNTHETIC: HYPERX1001 0x00421060
 // BehObjMonitorKeyboardPool::`scalar deleting destructor'
 
 #endif

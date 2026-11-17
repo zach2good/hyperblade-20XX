@@ -7,16 +7,16 @@
 #include "graphics/texcoord.h"
 #include "graphics/transformedvertex.h"
 
-// GLOBAL: HYPERX 0x004cb810
+// GLOBAL: HYPERX1001 0x004cb810
 extern FacePolyBuffer g_d3dFaceBuffer;
 
-// GLOBAL: HYPERX 0x004cd498
+// GLOBAL: HYPERX1001 0x004cd498
 extern unsigned int g_dwCurrentTexHandle;
 
 extern class TransformObject* g_pCameraTransform;
 
 // The texture gate reads it as a third condition.
-// GLOBAL: HYPERX 0x004bd4f0
+// GLOBAL: HYPERX1001 0x004bd4f0
 extern int g_nMdmTexturesReady;
 
 // D3DTLVERTEX's layout, kept apart because DrawFace copies the position and the UV as records.

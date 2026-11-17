@@ -21,15 +21,15 @@ class JumbotronScreen;
 #include "engine/game.h"
 #include "net/network.h"
 
-// FUNCTION: HYPERX100 0x004170f0
-// FUNCTION: HYPERX 0x0048e710
+// FUNCTION: HYPERX1000 0x004170f0
+// FUNCTION: HYPERX1001 0x0048e710
 JumbotronScreen::~JumbotronScreen()
 {
 }
 
 // The advert comes from jumbo.txt. Separators two and three show only for three or four periods.
-// FUNCTION: HYPERX100 0x00417190
-// FUNCTION: HYPERX 0x0048e740
+// FUNCTION: HYPERX1000 0x00417190
+// FUNCTION: HYPERX1001 0x0048e740
 JumbotronScreen::JumbotronScreen()
 {
     char        szHomeScore[20];
@@ -40,16 +40,16 @@ JumbotronScreen::JumbotronScreen()
 
     JumboTextList list;
 
-    // STRING: HYPERX 0x004c894c
+    // STRING: HYPERX1001 0x004c894c
     list.Load("jumbo.txt");
     // Its store makes VC6 hold the constant 1 in a register, as the original does.
     volatile int nOne = 1;
 
-    // STRING: HYPERX 0x004c8944
+    // STRING: HYPERX1001 0x004c8944
     m_hBackground = GDI::LoadBitmapAsBackground("Jumbo", &m_hPalette);
     m_nLastWidget = 10;
 
-    // STRING: HYPERX 0x004c893c
+    // STRING: HYPERX1001 0x004c893c
     m_hBitmap = GDI::LoadBitmapHandle("Perlite");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
 
@@ -124,7 +124,7 @@ JumbotronScreen::JumbotronScreen()
     AppendWidget(new DisplayWidget(0x81, 0x160, 0, 0, this, -1));
 
     pWidget = AppendWidget(new DisplayWidget(0xe1, 0x9b, 0, 0, this, -1));
-    // STRING: HYPERX 0x004bb814
+    // STRING: HYPERX1001 0x004bb814
     sprintf(szHomeScore, "%d", g_pGameEngine->GetHomeScore());
     pWidget->SetTextFlag(1);
     pWidget->SetText(szHomeScore);
@@ -134,14 +134,14 @@ JumbotronScreen::JumbotronScreen()
     pWidget->SetTextFlag(1);
     pWidget->SetText(szAwayScore);
 
-    // STRING: HYPERX 0x004c8934
+    // STRING: HYPERX1001 0x004c8934
     m_hBitmap = GDI::LoadBitmapHandle("jumdata");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new FlipbookWidget(0x177, 0x16e, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(m_hBitmap);
-    // STRING: HYPERX 0x004c8928
+    // STRING: HYPERX1001 0x004c8928
     pWidget->AppendFrame(GDI::LoadBitmapHandle("jumdatar"));
-    // STRING: HYPERX 0x004c891c
+    // STRING: HYPERX1001 0x004c891c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("jumdatad"));
     pWidget->InitAfterLoad();
 
@@ -160,8 +160,8 @@ JumbotronScreen::JumbotronScreen()
 #define WIDGET_BACK          9
 #define MATCH_STATE_FINISHED 4
 
-// FUNCTION: HYPERX100 0x00417b70
-// FUNCTION: HYPERX 0x0048ee40
+// FUNCTION: HYPERX1000 0x00417b70
+// FUNCTION: HYPERX1001 0x0048ee40
 void JumbotronScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     if (nId != WIDGET_BACK)

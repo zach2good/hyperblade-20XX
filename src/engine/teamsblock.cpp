@@ -22,8 +22,8 @@
 // A record starts with its 32-byte filename, followed by the name the checksum reads.
 #define TEAM_FILENAME_MAX 32
 
-// FUNCTION: HYPERX100 0x004db140
-// FUNCTION: HYPERX 0x004847d0
+// FUNCTION: HYPERX1000 0x004db140
+// FUNCTION: HYPERX1001 0x004847d0
 TeamsBlock::TeamsBlock()
 {
     TeamBlock* apTeams[TEAM_MAX];
@@ -31,7 +31,7 @@ TeamsBlock::TeamsBlock()
     char       szTeamFilename[PARSE_TOKEN_MAX];
     char*      pLine;
     short      nTeams = 0;
-    // STRING: HYPERX 0x004c8378
+    // STRING: HYPERX1001 0x004c8378
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "teams.cat").m_pchData, MAX_PATH);
 
     if (catFile.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
@@ -39,13 +39,13 @@ TeamsBlock::TeamsBlock()
         while (catFile.m_file.GetNextLine(&pLine) > 0)
         {
             if (pLine != 0
-                // STRING: HYPERX 0x004c7324
+                // STRING: HYPERX1001 0x004c7324
                 && ParseUtil::ParseToken(pLine, szTeamFilename, 0, " \t\n\r", (short)strlen(pLine), &pLine) != 0 && szTeamFilename[0] != COMMENT_CHAR)
             {
                 if (nTeams == TEAM_MAX)
                 {
                     g_gameApp.Error(
-                        // STRING: HYPERX 0x004c82c4
+                        // STRING: HYPERX1001 0x004c82c4
                         "More than max allowed teams ( %d ) in catalog!",
                         TEAM_MAX);
 
@@ -57,7 +57,7 @@ TeamsBlock::TeamsBlock()
                 if (strlen(szTeamFilename) >= TEAM_FILENAME_MAX)
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c835c
+                        // STRING: HYPERX1001 0x004c835c
                         "Team filename to long %s!",
                         szTeamFilename);
                 }
@@ -77,7 +77,7 @@ TeamsBlock::TeamsBlock()
                         catFile.m_file.CloseAndTest();
 
                         g_gameApp.Fatal(
-                            // STRING: HYPERX 0x004c8338
+                            // STRING: HYPERX1001 0x004c8338
                             "Team definition error in file %s!",
                             szTeamFilename);
                     }
@@ -94,7 +94,7 @@ TeamsBlock::TeamsBlock()
                     catFile.m_file.CloseAndTest();
 
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c82f4
+                        // STRING: HYPERX1001 0x004c82f4
                         "team definition file could not be opened while building catalog %s!",
                         szTeamFilename);
                 }
@@ -106,7 +106,7 @@ TeamsBlock::TeamsBlock()
         if (nTeams < 1)
         {
             g_gameApp.Fatal(
-                // STRING: HYPERX 0x004c82a8
+                // STRING: HYPERX1001 0x004c82a8
                 "Error: empty team catalog!");
         }
 
@@ -128,8 +128,8 @@ TeamsBlock::TeamsBlock()
 
 // Three characters of every lowercased name, summed; the low byte of the total is dropped.
 
-// FUNCTION: HYPERX100 0x004db590
-// FUNCTION: HYPERX 0x00484b30
+// FUNCTION: HYPERX1000 0x004db590
+// FUNCTION: HYPERX1001 0x00484b30
 int TeamsBlock::ComputeTeamNameChecksum()
 {
     char* pszName;
@@ -165,7 +165,7 @@ int TeamsBlock::ComputeTeamNameChecksum()
 #ifdef HYPERX_V100
 #include "teamblock.h"
 
-// FUNCTION: HYPERX100 0x004db680
+// FUNCTION: HYPERX1000 0x004db680
 unsigned char TeamsBlock::FindTeamByName(const char* pszName) const
 {
     const char* pszTeamName;
@@ -190,7 +190,7 @@ unsigned char TeamsBlock::FindTeamByName(const char* pszName) const
     return 0xff;
 }
 
-// FUNCTION: HYPERX100 0x004db6f0
+// FUNCTION: HYPERX1000 0x004db6f0
 TeamsBlock::~TeamsBlock()
 {
     while (m_wTeamCount-- != 0)

@@ -28,7 +28,7 @@ struct AnimScriptState
 };
 
 // The parser's unwind destroys a half-built state through the out-of-line copy.
-// SYNTHETIC: HYPERX 0x00418ba0
+// SYNTHETIC: HYPERX1001 0x00418ba0
 // AnimScriptState::~AnimScriptState
 
 #endif

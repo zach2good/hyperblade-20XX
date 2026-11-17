@@ -8,14 +8,14 @@
 #include "ui/radar.h"
 #include "graphics/gdi.h"
 
-// FUNCTION: HYPERX100 0x00434d50
-// FUNCTION: HYPERX 0x004433c0
+// FUNCTION: HYPERX1000 0x00434d50
+// FUNCTION: HYPERX1001 0x004433c0
 PauseMenuFullScreen::~PauseMenuFullScreen()
 {
 }
 
-// FUNCTION: HYPERX100 0x00434df0
-// FUNCTION: HYPERX 0x004433f0
+// FUNCTION: HYPERX1000 0x00434df0
+// FUNCTION: HYPERX1001 0x004433f0
 PauseMenuFullScreen::PauseMenuFullScreen()
 {
     m_nLastWidget = PAUSE_FULL_QUIT;
@@ -23,74 +23,74 @@ PauseMenuFullScreen::PauseMenuFullScreen()
     Init();
 }
 
-// FUNCTION: HYPERX100 0x00434e80
-// FUNCTION: HYPERX 0x00443450
+// FUNCTION: HYPERX1000 0x00434e80
+// FUNCTION: HYPERX1001 0x00443450
 void PauseMenuFullScreen::Init()
 {
     BITMAP bm;
 
-    // STRING: HYPERX 0x004c1fb8
+    // STRING: HYPERX1001 0x004c1fb8
     m_hBackground = GDI::LoadBitmapAsBackground("escape1", &m_hPalette);
 
-    // STRING: HYPERX 0x004c1fb0
+    // STRING: HYPERX1001 0x004c1fb0
     HBITMAP hBitmap = GDI::LoadBitmapHandle("Essave");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 35, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1fa8
+    // STRING: HYPERX1001 0x004c1fa8
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Essaver"));
-    // STRING: HYPERX 0x004c1fa0
+    // STRING: HYPERX1001 0x004c1fa0
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Essaved"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c1f98
+    // STRING: HYPERX1001 0x004c1f98
     hBitmap = GDI::LoadBitmapHandle("Esops");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     pWidget = AppendWidget(new ButtonWidget(0, 163, 94, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1f90
+    // STRING: HYPERX1001 0x004c1f90
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esopsr"));
-    // STRING: HYPERX 0x004c1f88
+    // STRING: HYPERX1001 0x004c1f88
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esopsd"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c1f80
+    // STRING: HYPERX1001 0x004c1f80
     hBitmap = GDI::LoadBitmapHandle("Esexit");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     pWidget = AppendWidget(new ButtonWidget(0, 163, 151, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1f78
+    // STRING: HYPERX1001 0x004c1f78
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esexitr"));
-    // STRING: HYPERX 0x004c1f70
+    // STRING: HYPERX1001 0x004c1f70
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esexitd"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c1f68
+    // STRING: HYPERX1001 0x004c1f68
     hBitmap = GDI::LoadBitmapHandle("Esretur");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     pWidget = AppendWidget(new ButtonWidget(0, 163, 210, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1f5c
+    // STRING: HYPERX1001 0x004c1f5c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esreturr"));
-    // STRING: HYPERX 0x004c1f50
+    // STRING: HYPERX1001 0x004c1f50
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esreturd"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c1f48
+    // STRING: HYPERX1001 0x004c1f48
     hBitmap = GDI::LoadBitmapHandle("Esquit");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     pWidget = AppendWidget(new ButtonWidget(0, 163, 267, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1f40
+    // STRING: HYPERX1001 0x004c1f40
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esquitr"));
-    // STRING: HYPERX 0x004c1f38
+    // STRING: HYPERX1001 0x004c1f38
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esquitd"));
     pWidget->InitAfterLoad();
 }
 
 // The id is compared unsigned, so an id above the table falls to the default.
-// FUNCTION: HYPERX100 0x004354a0
-// FUNCTION: HYPERX 0x00443820
+// FUNCTION: HYPERX1000 0x004354a0
+// FUNCTION: HYPERX1001 0x00443820
 void PauseMenuFullScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     switch (nId)

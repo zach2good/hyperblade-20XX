@@ -96,7 +96,7 @@
 #define ARG_FIRST  1
 
 // One, the plan files' own copy. src/globals.h's g_flOne is at a different address.
-// GLOBAL: HYPERX 0x004b36ec
+// GLOBAL: HYPERX1001 0x004b36ec
 extern const float g_flOnePlan;
 
 // The velocity is fifty plus a roll of fifty, scaled by the frame delta, at a fixed climb.
@@ -116,8 +116,8 @@ extern const float g_flOnePlan;
 #define INTERACT_RANGE      7.5f
 #define INTERACT_SCALE_HALF 0.5f
 
-// FUNCTION: HYPERX100 0x00469550
-// FUNCTION: HYPERX 0x004015e0
+// FUNCTION: HYPERX1000 0x00469550
+// FUNCTION: HYPERX1001 0x004015e0
 void __cdecl PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* pRange;
@@ -148,7 +148,7 @@ void __cdecl PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short*
 
             if (pColObj == 0)
             {
-                // STRING: HYPERX 0x004bb2b0
+                // STRING: HYPERX1001 0x004bb2b0
                 g_gameApp.Fatal("ERROR: GetColObjPtr: NULL Pointer\n");
             }
 
@@ -183,8 +183,8 @@ void __cdecl PlanCond::Decide_Attachment(Interactor* pContext, PlanNode*, short*
 }
 
 // Answers through the third argument; with no object in the slot it leaves it untouched.
-// FUNCTION: HYPERX100 0x00437c50
-// FUNCTION: HYPERX 0x00402130
+// FUNCTION: HYPERX1000 0x00437c50
+// FUNCTION: HYPERX1001 0x00402130
 void PlanCond::ForceRearView(Interactor*, PlanNode*, short* pResult, int)
 {
     CameraObject* const pSub = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT);
@@ -196,8 +196,8 @@ void PlanCond::ForceRearView(Interactor*, PlanNode*, short* pResult, int)
     }
 }
 
-// FUNCTION: HYPERX100 0x004d5430
-// FUNCTION: HYPERX 0x00403b70
+// FUNCTION: HYPERX1000 0x004d5430
+// FUNCTION: HYPERX1001 0x00403b70
 void __cdecl PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const Vec3* pGoalCentre;
@@ -254,8 +254,8 @@ void __cdecl PlanCond::DecideGoalieLaunch(Interactor* pContext, PlanNode*, short
 
 // Starts at one and is only cleared; OffWing, Defense and Sideln are rejected by name.
 
-// FUNCTION: HYPERX100 0x004d6240
-// FUNCTION: HYPERX 0x00404590
+// FUNCTION: HYPERX1000 0x004d6240
+// FUNCTION: HYPERX1001 0x00404590
 void __cdecl PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOutValid, int)
 {
     *pOutValid = 1;
@@ -274,11 +274,11 @@ void __cdecl PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOu
     char* const pszName = g_pGameEngine->m_ppSlots[nTarget]->GetPlanState()->m_pszName;
 
     if (pszName == 0
-        // STRING: HYPERX 0x004bb38c
+        // STRING: HYPERX1001 0x004bb38c
         || _strcmpi(pszName, "OffWing") == 0
-        // STRING: HYPERX 0x004bb384
+        // STRING: HYPERX1001 0x004bb384
         || _strcmpi(pszName, "Defense") == 0
-        // STRING: HYPERX 0x004bb37c
+        // STRING: HYPERX1001 0x004bb37c
         || _strcmpi(pszName, "Sideln") == 0)
     {
         *pOutValid = 0;
@@ -295,8 +295,8 @@ void __cdecl PlanCond::OkToLaunchRok(Interactor* pContext, PlanNode*, short* pOu
     }
 }
 
-// FUNCTION: HYPERX100 0x004a6180
-// FUNCTION: HYPERX 0x0045e2f0
+// FUNCTION: HYPERX1000 0x004a6180
+// FUNCTION: HYPERX1001 0x0045e2f0
 void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBehaviorObject*, Interactor* pInteractor)
 {
     const short nIndex = (short)pNode->m_pArgs[1].n;
@@ -308,8 +308,8 @@ void PlanCond::SetInteractorName(EngineObject* pActor, PlanNode* pNode, GameBeha
 #define ARG_COUNT_INDEXED 3
 
 // A count of three indexes the named interactors only under a PLAN_ARG_INTERACTOR_NAME high half.
-// FUNCTION: HYPERX100 0x004a61b0
-// FUNCTION: HYPERX 0x0045e320
+// FUNCTION: HYPERX1000 0x004a61b0
+// FUNCTION: HYPERX1001 0x0045e320
 void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, GameBehaviorObject*, Interactor* pInteractor)
 {
     const short nArgCount = pArgs->m_nArgCount;
@@ -343,8 +343,8 @@ void __cdecl PlanCond::SetActiveState(EngineObject* pActor, PlanNode* pArgs, Gam
     }
 }
 
-// FUNCTION: HYPERX100 0x004a62e0
-// FUNCTION: HYPERX 0x0045e3f0
+// FUNCTION: HYPERX1000 0x004a62e0
+// FUNCTION: HYPERX1001 0x0045e3f0
 void PlanCond::Decide_Celebration(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     if (g_wActiveScoreLine == -1)
@@ -359,8 +359,8 @@ void PlanCond::Decide_Celebration(Interactor* pContext, PlanNode*, short* pResul
     *pResult = (short)(pActor->GetSlot() & 1) != g_wActiveScoreLine;
 }
 
-// FUNCTION: HYPERX100 0x004a6330
-// FUNCTION: HYPERX 0x0045e430
+// FUNCTION: HYPERX1000 0x004a6330
+// FUNCTION: HYPERX1001 0x0045e430
 void __cdecl PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, short*, int)
 {
     float flSign;
@@ -399,8 +399,8 @@ void __cdecl PlanAction::LaunchGunDirection(Interactor* pContext, PlanNode*, sho
 #define ARG_START    3
 #define ARG_DURATION 4
 
-// FUNCTION: HYPERX100 0x004a63f0
-// FUNCTION: HYPERX 0x0045e4d0
+// FUNCTION: HYPERX1000 0x004a63f0
+// FUNCTION: HYPERX1001 0x0045e4d0
 void PlanAction::SetPaletteEffect(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     AgendaItem* const pAgendaItem = AllocAgendaItem(Agenda_CPaletteEffect);
@@ -420,8 +420,8 @@ void PlanAction::SetPaletteEffect(Interactor* pContext, PlanNode* pNode, short*,
     pAgendaItem->OnListChanged();
 }
 
-// FUNCTION: HYPERX100 0x004a6460
-// FUNCTION: HYPERX 0x0045e530
+// FUNCTION: HYPERX1000 0x004a6460
+// FUNCTION: HYPERX1001 0x0045e530
 void PlanAction::SetDeviceOwner(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* pTarget;
@@ -447,8 +447,8 @@ void PlanAction::SetDeviceOwner(Interactor* pContext, PlanNode* pArgs, short*, i
     }
 }
 
-// FUNCTION: HYPERX100 0x004a6500
-// FUNCTION: HYPERX 0x0045e5a0
+// FUNCTION: HYPERX1000 0x004a6500
+// FUNCTION: HYPERX1001 0x0045e5a0
 void PlanAction::SignalKeystate(Interactor*, PlanNode* pArgs, short*, int)
 {
     const PlanWord* pBlock = pArgs->m_pArgs;
@@ -457,8 +457,8 @@ void PlanAction::SignalKeystate(Interactor*, PlanNode* pArgs, short*, int)
 }
 
 // A target of _MESSAGE_DATA_ uses the interpreter's value, and _BROADCAST_ reaches everyone.
-// FUNCTION: HYPERX100 0x004a6530
-// FUNCTION: HYPERX 0x0045e5d0
+// FUNCTION: HYPERX1000 0x004a6530
+// FUNCTION: HYPERX1001 0x0045e5d0
 void __cdecl PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     unsigned int  nTarget;
@@ -506,8 +506,8 @@ void __cdecl PlanAction::ReallySendMsg(Interactor* pContext, PlanNode* pArgs, sh
     pTarget->DispatchSceneMessage(nEvent, nArg, DECISION_LOG_FRESH, pActor->GetSlot(), 0);
 }
 
-// FUNCTION: HYPERX100 0x004a6630
-// FUNCTION: HYPERX 0x0045e6a0
+// FUNCTION: HYPERX1000 0x004a6630
+// FUNCTION: HYPERX1001 0x0045e6a0
 void __cdecl PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     unsigned int  nTarget;
@@ -560,8 +560,8 @@ void __cdecl PlanAction::SendMsg(Interactor* pContext, PlanNode* pArgs, short*, 
 
 #define POSSESSION_TIME_SCALE 100.0f
 
-// FUNCTION: HYPERX100 0x004a6740
-// FUNCTION: HYPERX 0x0045e770
+// FUNCTION: HYPERX1000 0x004a6740
+// FUNCTION: HYPERX1001 0x0045e770
 void __cdecl PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, int nArg)
 {
     const PossessionSyncWord packed = { nArg };
@@ -614,7 +614,7 @@ void __cdecl PlanAction::SyncPossession(Interactor* pActor, PlanNode*, short*, i
 // The pause must be asked for three frames running before the mark moves and is broadcast.
 
 // How many frames running have asked for a pause state the engine is not in.
-// GLOBAL: HYPERX 0x004cfa50
+// GLOBAL: HYPERX1001 0x004cfa50
 extern int g_nPauseRequestStreak;
 
 #define PAUSE_MARK_NONE (-1)
@@ -626,8 +626,8 @@ extern int g_nPauseRequestStreak;
 
 // Matches the host's clock by replaying the goal plans' broadcasts: a shot starts it, a goal stops
 // it.
-// FUNCTION: HYPERX100 0x004a6920
-// FUNCTION: HYPERX 0x0045e890
+// FUNCTION: HYPERX1000 0x004a6920
+// FUNCTION: HYPERX1001 0x0045e890
 void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
 {
     const SystemSyncWord packed = { nArg };
@@ -697,8 +697,8 @@ void PlanAction::SyncSystem(Interactor* pContext, PlanNode*, short*, int nArg)
 
 #define ARG_COUNT_WITH_SLOT 2
 
-// FUNCTION: HYPERX100 0x004a6aa0
-// FUNCTION: HYPERX 0x0045e980
+// FUNCTION: HYPERX1000 0x004a6aa0
+// FUNCTION: HYPERX1001 0x0045e980
 void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -710,8 +710,8 @@ void PlanAction::SyncDamage(Interactor* pContext, PlanNode*, short*, int nValue)
 }
 
 // In a network session this machine must drive both the actor and the target.
-// FUNCTION: HYPERX100 0x004a6af0
-// FUNCTION: HYPERX 0x0045e9c0
+// FUNCTION: HYPERX1000 0x004a6af0
+// FUNCTION: HYPERX1001 0x0045e9c0
 void __cdecl PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* pArgs, short*, int nSlot)
 {
     int nIndex;
@@ -757,8 +757,8 @@ void __cdecl PlanAction::TransferViewOwnership(Interactor* pContext, PlanNode* p
 #define ARG_COUNT_WITH_VALUE 3
 
 // In a network session the actor must be the viewed slot or driven by this machine.
-// FUNCTION: HYPERX100 0x004a6c20
-// FUNCTION: HYPERX 0x0045ea90
+// FUNCTION: HYPERX1000 0x004a6c20
+// FUNCTION: HYPERX1001 0x0045ea90
 void __cdecl PlanAction::SendMessageToMyCamera(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     EngineObject* pActor;
@@ -807,8 +807,8 @@ void __cdecl PlanAction::SendMessageToMyCamera(Interactor* pContext, PlanNode* p
 #define ARG_PERIOD 1
 
 // A nought period removes the speed burst; any other starts one.
-// FUNCTION: HYPERX100 0x004a6ce0
-// FUNCTION: HYPERX 0x0045eb30
+// FUNCTION: HYPERX1000 0x004a6ce0
+// FUNCTION: HYPERX1001 0x0045eb30
 void __cdecl PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     float flScale;
@@ -876,8 +876,8 @@ void __cdecl PlanAction::Set_SpeedBurst(Interactor* pContext, PlanNode* pNode, s
 #define ARG_COUNT_SLOT  3
 
 // Tells whichever of the mine, the swarf and the Rok the actor carries to deploy.
-// FUNCTION: HYPERX100 0x004a6ed0
-// FUNCTION: HYPERX 0x0045ecc0
+// FUNCTION: HYPERX1000 0x004a6ed0
+// FUNCTION: HYPERX1001 0x0045ecc0
 void __cdecl PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* pActor;
@@ -948,8 +948,8 @@ void __cdecl PlanAction::DeployWeapon(Interactor* pContext, PlanNode*, short*, i
 }
 
 // Refuses a slot outside the players or the actor's own, writing minus one.
-// FUNCTION: HYPERX100 0x004a7060
-// FUNCTION: HYPERX 0x0045edd0
+// FUNCTION: HYPERX1000 0x004a7060
+// FUNCTION: HYPERX1001 0x0045edd0
 void __cdecl PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     short nSlot = (short)pArgs->m_pArgs[1].n;
@@ -969,8 +969,8 @@ void __cdecl PlanAction::SetAttackee(Interactor* pContext, PlanNode* pArgs, shor
     pActor->m_wAttackeeSlot = nSlot;
 }
 
-// FUNCTION: HYPERX100 0x004a70c0
-// FUNCTION: HYPERX 0x0045ee20
+// FUNCTION: HYPERX1000 0x004a70c0
+// FUNCTION: HYPERX1001 0x0045ee20
 void __cdecl PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -994,8 +994,8 @@ void __cdecl PlanAction::SetKnockedDownState(Interactor* pContext, PlanNode* pAr
     }
 }
 
-// FUNCTION: HYPERX100 0x004a7140
-// FUNCTION: HYPERX 0x0045ee80
+// FUNCTION: HYPERX1000 0x004a7140
+// FUNCTION: HYPERX1001 0x0045ee80
 void PlanAction::HoverAboveArmory(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     AxisFrame     f;
@@ -1054,8 +1054,8 @@ void PlanAction::HoverAboveArmory(Interactor* pContext, PlanNode* pNode, short*,
 
 // The ellipsoid's out-of-bounds height answer of one is not checked, in the original too.
 
-// FUNCTION: HYPERX100 0x004a72f0
-// FUNCTION: HYPERX 0x0045efc0
+// FUNCTION: HYPERX1000 0x004a72f0
+// FUNCTION: HYPERX1001 0x0045efc0
 void __cdecl PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, short*, int nMarkerIndex)
 {
     Vec3* pPos;
@@ -1145,8 +1145,8 @@ void __cdecl PlanAction::SetLocation(Interactor* pContext, PlanNode* pNode, shor
 // Below this length the heading is left alone.
 #define MIN_VELOCITY_LENGTH 0.001f
 
-// FUNCTION: HYPERX100 0x004a76c0
-// FUNCTION: HYPERX 0x0045f2a0
+// FUNCTION: HYPERX1000 0x004a76c0
+// FUNCTION: HYPERX1001 0x0045f2a0
 void __cdecl PlanAction::SetVelocity(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     PlanWord* pnArgs;
@@ -1268,8 +1268,8 @@ inline short TackleCountdown(bool bLoose)
 } // namespace PlanAction
 
 // A tackle with the rok loose is shorter and has a stricter dot gate.
-// FUNCTION: HYPERX100 0x004a78f0
-// FUNCTION: HYPERX 0x0045f450
+// FUNCTION: HYPERX1000 0x004a78f0
+// FUNCTION: HYPERX1001 0x0045f450
 void __cdecl PlanAction::Engage_Opponent(Interactor* pContext, PlanNode*, short*, int)
 {
     // The original keeps the carrier slot in the frame.
@@ -1407,8 +1407,8 @@ inline bool CanEngage(Interactor* pContext, PlayerObject* pOpponent, float flDam
 } // namespace PlanCond
 
 // Answers zero for the plus-one opponent, one for plus-three and two for neither.
-// FUNCTION: HYPERX100 0x004a7cc0
-// FUNCTION: HYPERX 0x0045f740
+// FUNCTION: HYPERX1000 0x004a7cc0
+// FUNCTION: HYPERX1001 0x0045f740
 void __cdecl PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* pTarget;
@@ -1478,8 +1478,8 @@ void __cdecl PlanCond::EngageWhichOpponent(Interactor* pContext, PlanNode*, shor
 
 // A holder whose slot agrees with the actor's in its low bit is the same side, which answers zero.
 
-// FUNCTION: HYPERX100 0x004a80e0
-// FUNCTION: HYPERX 0x0045fa70
+// FUNCTION: HYPERX1000 0x004a80e0
+// FUNCTION: HYPERX1001 0x0045fa70
 void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     AttachPak* const pState = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
@@ -1507,8 +1507,8 @@ void PlanCond::TeammateHasRok(Interactor* pContext, PlanNode*, short* pResult, i
 #define ANNOUNCER_GAG_MS 0x3a98
 
 // Inside the gag window it answers one past the highest draw.
-// FUNCTION: HYPERX100 0x004a8170
-// FUNCTION: HYPERX 0x0045fac0
+// FUNCTION: HYPERX1000 0x004a8170
+// FUNCTION: HYPERX1001 0x0045fac0
 void __cdecl PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOut, int)
 {
     const int nNow = g_pGameEngine->m_clock.nTickMs;
@@ -1525,15 +1525,15 @@ void __cdecl PlanCond::GagTheAnnouncer(Interactor*, PlanNode* pArgs, short* pnOu
     g_nAnnouncerLineMs = nNow;
 }
 
-// FUNCTION: HYPERX100 0x004a81f0
-// FUNCTION: HYPERX 0x0045fb30
+// FUNCTION: HYPERX1000 0x004a81f0
+// FUNCTION: HYPERX1001 0x0045fb30
 void PlanCond::VictimCamIsOn(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = g_bVictimCam == 0;
 }
 
-// FUNCTION: HYPERX100 0x004a8210
-// FUNCTION: HYPERX 0x0045fb50
+// FUNCTION: HYPERX1000 0x004a8210
+// FUNCTION: HYPERX1001 0x0045fb50
 void PlanCond::IsScanningModeOn(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = !g_bScanningModesEnabled;
@@ -1542,8 +1542,8 @@ void PlanCond::IsScanningModeOn(Interactor*, PlanNode*, short* pResult, int)
 // Zero only when the second object heads away from the first, both move the same way, and they are
 // within a hundred and fifty.
 
-// FUNCTION: HYPERX100 0x004a8230
-// FUNCTION: HYPERX 0x0045fb70
+// FUNCTION: HYPERX1000 0x004a8230
+// FUNCTION: HYPERX1001 0x0045fb70
 void __cdecl PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* pFirst;
@@ -1593,15 +1593,15 @@ void __cdecl PlanCond::AttackerIsInRear(Interactor* pContext, PlanNode*, short* 
 #define STATE_WINDOW_MS 800
 
 // The tick the arming selector last ran at.
-// GLOBAL: HYPERX 0x004cf9f8
+// GLOBAL: HYPERX1001 0x004cf9f8
 extern unsigned int g_nRokCameraArmedTick;
 
 // The tick this condition last answered at.
-// GLOBAL: HYPERX 0x004cf9f4
+// GLOBAL: HYPERX1001 0x004cf9f4
 extern unsigned int g_nRokCameraStateTick;
 
-// FUNCTION: HYPERX100 0x004a8410
-// FUNCTION: HYPERX 0x0045fcf0
+// FUNCTION: HYPERX1000 0x004a8410
+// FUNCTION: HYPERX1001 0x0045fcf0
 void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector)
 {
     AttachPak* pTarget;
@@ -1806,8 +1806,8 @@ void PlanCond::AnalyzePadA(Interactor*, PlanNode*, short* pResult, int nSelector
 #define RELATIONSHIP_KIND_DIRECTION 0x16
 
 // Kind 0x16 normalises a direction nothing reads, in the original too.
-// FUNCTION: HYPERX100 0x004a8a60
-// FUNCTION: HYPERX 0x00460140
+// FUNCTION: HYPERX1000 0x004a8a60
+// FUNCTION: HYPERX1001 0x00460140
 void __cdecl PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int nKind)
 {
     EngineObject* pTarget;
@@ -1864,8 +1864,8 @@ void __cdecl PlanCond::AnalyzePadB(Interactor*, PlanNode*, short* pResult, int n
 // it.
 #define FAR_RANGE_SQUARED 500.0f
 
-// FUNCTION: HYPERX100 0x004a8bf0
-// FUNCTION: HYPERX 0x00460240
+// FUNCTION: HYPERX1000 0x004a8bf0
+// FUNCTION: HYPERX1001 0x00460240
 void __cdecl PlanCond::InRangeToAttack(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3 vNear;
@@ -1904,8 +1904,8 @@ void __cdecl PlanCond::InRangeToAttack(Interactor* pContext, PlanNode*, short* p
 // How much longer the path through the actor may be than the direct one.
 #define PATH_SLACK 1.6f
 
-// FUNCTION: HYPERX100 0x004a8d70
-// FUNCTION: HYPERX 0x00460340
+// FUNCTION: HYPERX1000 0x004a8d70
+// FUNCTION: HYPERX1001 0x00460340
 void __cdecl PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const Vec3* pFirst;
@@ -1986,8 +1986,8 @@ void __cdecl PlanCond::Decide_BlockOrGoOut(Interactor* pContext, PlanNode*, shor
     *pResult = 1;
 }
 
-// FUNCTION: HYPERX100 0x004a90b0
-// FUNCTION: HYPERX 0x004605a0
+// FUNCTION: HYPERX1000 0x004a90b0
+// FUNCTION: HYPERX1001 0x004605a0
 void PlanCond::SpeedBurstIsRelaxed(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -2004,8 +2004,8 @@ void PlanCond::SpeedBurstIsRelaxed(Interactor* pContext, PlanNode*, short* pResu
 
 // Higher damage is healthier in this bank, so at or below the limit means hurt.
 
-// FUNCTION: HYPERX100 0x004a9100
-// FUNCTION: HYPERX 0x004605e0
+// FUNCTION: HYPERX1000 0x004a9100
+// FUNCTION: HYPERX1001 0x004605e0
 void __cdecl PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const Vec3* pRokAt;
@@ -2083,8 +2083,8 @@ void __cdecl PlanCond::WhichOppnIsClosestToRok(Interactor* pContext, PlanNode*, 
 // Both team mates hurt; the goalie's plan passes to the opponents' goal instead.
 #define NO_PASS_TARGET 4
 
-// FUNCTION: HYPERX100 0x004a94e0
-// FUNCTION: HYPERX 0x004608a0
+// FUNCTION: HYPERX1000 0x004a94e0
+// FUNCTION: HYPERX1001 0x004608a0
 void __cdecl PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const Vec3* pGoalCentre;
@@ -2138,8 +2138,8 @@ void __cdecl PlanCond::BallGotBehindMe(Interactor* pContext, PlanNode*, short* p
 }
 
 // A team mate in the Sideln plan counts as hurt.
-// FUNCTION: HYPERX100 0x004a96d0
-// FUNCTION: HYPERX 0x004609d0
+// FUNCTION: HYPERX1000 0x004a96d0
+// FUNCTION: HYPERX1001 0x004609d0
 void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pOwner = pContext->GetActor();
@@ -2182,7 +2182,7 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
 
     const unsigned char* pszNear = (const unsigned char*)pNear->GetPlanState()->m_pszName;
 
-    // STRING: HYPERX 0x004bb37c
+    // STRING: HYPERX1001 0x004bb37c
     if (_mbscmp(pszNear, (const unsigned char*)"Sideln") == 0)
     {
         flDamageNear = 0.0f;
@@ -2190,7 +2190,7 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
 
     const unsigned char* pszFar = (const unsigned char*)pFar->GetPlanState()->m_pszName;
 
-    // STRING: HYPERX 0x004bb37c
+    // STRING: HYPERX1001 0x004bb37c
     if (_mbscmp(pszFar, (const unsigned char*)"Sideln") == 0)
     {
         flDamageFar = 0.0f;
@@ -2220,8 +2220,8 @@ void __cdecl PlanCond::GoaliePassingTarget(Interactor* pContext, PlanNode*, shor
 
 // Answers zero or one for the opponent to attack and two for neither, DECIDE's child index.
 
-// FUNCTION: HYPERX100 0x004a9ac0
-// FUNCTION: HYPERX 0x00460c80
+// FUNCTION: HYPERX1000 0x004a9ac0
+// FUNCTION: HYPERX1001 0x00460c80
 void __cdecl PlanCond::WhichOppnToAttack(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pOwner = pContext->GetActor();
@@ -2289,8 +2289,8 @@ void __cdecl PlanCond::WhichOppnToAttack(Interactor* pContext, PlanNode*, short*
 
 // Like WhichOppnToAttack, but falls back on plain distance when facing neither opponent.
 
-// FUNCTION: HYPERX100 0x004a9e60
-// FUNCTION: HYPERX 0x00460f20
+// FUNCTION: HYPERX1000 0x004a9e60
+// FUNCTION: HYPERX1001 0x00460f20
 void __cdecl PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3 vOffsetA;
@@ -2399,8 +2399,8 @@ void __cdecl PlanCond::WhichOppnIsClosestToMe(Interactor* pContext, PlanNode*, s
 // A tenth of a thousandth, below which the forward axis is left alone.
 #define MIN_SPEED_FOR_FACING 0.0001
 
-// FUNCTION: HYPERX100 0x004aa480
-// FUNCTION: HYPERX 0x00461370
+// FUNCTION: HYPERX1000 0x004aa480
+// FUNCTION: HYPERX1001 0x00461370
 void __cdecl PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     AttachPak* pnTargetSlot;
@@ -2492,8 +2492,8 @@ void __cdecl PlanCond::ClosestTargetToProjectile(Interactor* pContext, PlanNode*
 
 // A null behaviour target still reaches the vtable: the original's null test jumps into the block.
 
-// FUNCTION: HYPERX100 0x004aa7d0
-// FUNCTION: HYPERX 0x004615e0
+// FUNCTION: HYPERX1000 0x004aa7d0
+// FUNCTION: HYPERX1001 0x004615e0
 void __cdecl PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* pTarget;
@@ -2607,8 +2607,8 @@ void __cdecl PlanCond::ClosestUncoveredOppn(Interactor* pContext, PlanNode*, sho
 
 // Slots named Spin or ScoreSpin are the scoring spinners and are skipped; the answer is one-based.
 
-// FUNCTION: HYPERX100 0x004aaca0
-// FUNCTION: HYPERX 0x00461960
+// FUNCTION: HYPERX1000 0x004aaca0
+// FUNCTION: HYPERX1001 0x00461960
 void __cdecl PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor    = pContext->GetActor();
@@ -2630,9 +2630,9 @@ void __cdecl PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, shor
         {
             const unsigned char* pszName = (const unsigned char*)pMultiplier->GetPlanState()->m_pCurrent->m_pszName;
 
-            // STRING: HYPERX 0x004bcac8
+            // STRING: HYPERX1001 0x004bcac8
             if (_mbscmp(pszName, (const unsigned char*)"Spin") != 0
-                // STRING: HYPERX 0x004bcabc
+                // STRING: HYPERX1001 0x004bcabc
                 && _mbscmp(pszName, (const unsigned char*)"ScoreSpin") != 0)
             {
                 const Vec3* pOther = pMultiplier->GetPositionPtr();
@@ -2662,8 +2662,8 @@ void __cdecl PlanCond::NearestSuspenseMult(Interactor* pContext, PlanNode*, shor
     }
 }
 
-// FUNCTION: HYPERX100 0x004aae30
-// FUNCTION: HYPERX 0x00461a50
+// FUNCTION: HYPERX1000 0x004aae30
+// FUNCTION: HYPERX1001 0x00461a50
 void __cdecl PlanCond::OffenseOrWRok(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     short nSlot;
@@ -2716,8 +2716,8 @@ void __cdecl PlanCond::OffenseOrWRok(Interactor* pContext, PlanNode*, short* pRe
     }
 }
 
-// FUNCTION: HYPERX100 0x004aaf10
-// FUNCTION: HYPERX 0x00461ae0
+// FUNCTION: HYPERX1000 0x004aaf10
+// FUNCTION: HYPERX1001 0x00461ae0
 void PlanCond::HostIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 {
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
@@ -2737,8 +2737,8 @@ void PlanCond::HostIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 1;
 }
 
-// FUNCTION: HYPERX100 0x004aaf90
-// FUNCTION: HYPERX 0x00461b20
+// FUNCTION: HYPERX1000 0x004aaf90
+// FUNCTION: HYPERX1001 0x00461b20
 void PlanCond::RokInWhichTeamsPoss(Interactor*, PlanNode*, short* pResult, int)
 {
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
@@ -2761,8 +2761,8 @@ void PlanCond::RokInWhichTeamsPoss(Interactor*, PlanNode*, short* pResult, int)
 // Zero when the rok is loose, else one to four by which skater holds it relative to the actor; a
 // goalie holder leaves the answer alone.
 
-// FUNCTION: HYPERX100 0x004ab010
-// FUNCTION: HYPERX 0x00461b60
+// FUNCTION: HYPERX1000 0x004ab010
+// FUNCTION: HYPERX1001 0x00461b60
 void __cdecl PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     short nSlot;
@@ -2822,8 +2822,8 @@ void __cdecl PlanCond::WhoHasRok(Interactor* pContext, PlanNode*, short* pResult
     *pResult = 0;
 }
 
-// FUNCTION: HYPERX100 0x004ab180
-// FUNCTION: HYPERX 0x00461c00
+// FUNCTION: HYPERX1000 0x004ab180
+// FUNCTION: HYPERX1001 0x00461c00
 void PlanCond::IsDoubleScore(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     if (g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach != 0)
@@ -2850,8 +2850,8 @@ void PlanCond::IsDoubleScore(Interactor* pContext, PlanNode*, short* pResult, in
 // The word at 0x004d2b82, named and marked in src/planvm/planactionrecoil.cpp.
 extern short g_nCheckImpulseFacing;
 
-// FUNCTION: HYPERX100 0x004ab1e0
-// FUNCTION: HYPERX 0x00461c40
+// FUNCTION: HYPERX1000 0x004ab1e0
+// FUNCTION: HYPERX1001 0x00461c40
 void __cdecl PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* pResult, int nFlags)
 {
     EngineObject*  pTarget;
@@ -2898,8 +2898,8 @@ void __cdecl PlanCond::BungeeVictimLorR(Interactor* pContext, PlanNode*, short* 
 
 // The stat handler is asked twice with the same index and its two answers are used differently.
 
-// FUNCTION: HYPERX100 0x004ab310
-// FUNCTION: HYPERX 0x00461d20
+// FUNCTION: HYPERX1000 0x004ab310
+// FUNCTION: HYPERX1001 0x00461d20
 void __cdecl PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* pSource;
@@ -2923,8 +2923,8 @@ void __cdecl PlanAction::IncrementStat(Interactor* pContext, PlanNode* pArgs, sh
 #define BUNGEE_NEAR_RANGE 1.5f
 
 // A packed argument whose top half is 0xfedc names its entity slot through a pronoun.
-// FUNCTION: HYPERX100 0x004ab3e0
-// FUNCTION: HYPERX 0x00461dc0
+// FUNCTION: HYPERX1000 0x004ab3e0
+// FUNCTION: HYPERX1001 0x00461dc0
 void __cdecl PlanAction::StartStatTimer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     PlanWord* const pBlock = pArgs->m_pArgs;
@@ -2942,8 +2942,8 @@ void __cdecl PlanAction::StartStatTimer(Interactor* pContext, PlanNode* pArgs, s
     }
 }
 
-// FUNCTION: HYPERX100 0x004ab470
-// FUNCTION: HYPERX 0x00461e30
+// FUNCTION: HYPERX1000 0x004ab470
+// FUNCTION: HYPERX1001 0x00461e30
 void __cdecl PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     PlanWord* const pBlock = pArgs->m_pArgs;
@@ -2961,8 +2961,8 @@ void __cdecl PlanAction::EndStatTimer(Interactor* pContext, PlanNode* pArgs, sho
     }
 }
 
-// FUNCTION: HYPERX100 0x004ab500
-// FUNCTION: HYPERX 0x00461ea0
+// FUNCTION: HYPERX1000 0x004ab500
+// FUNCTION: HYPERX1001 0x00461ea0
 void __cdecl PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     BoundBubble* const pColObj = g_pGameEngine->GetColObjPtr((short)pNode->m_pArgs[ARG_COL_OBJECT].n);
@@ -2980,8 +2980,8 @@ void __cdecl PlanAction::ScaleBubToRating(Interactor* pContext, PlanNode* pNode,
 
 // Slot one on the tracked object answers a short, read here as a slot and elsewhere as a team.
 
-// FUNCTION: HYPERX100 0x004ab5b0
-// FUNCTION: HYPERX 0x00461f30
+// FUNCTION: HYPERX1000 0x004ab5b0
+// FUNCTION: HYPERX1001 0x00461f30
 void PlanAction::SetTargetWithData(Interactor* pContext, PlanNode*, short*, int nArg)
 {
     const short nIndex = (short)nArg;
@@ -3026,8 +3026,8 @@ void PlanAction::SetTargetWithData(Interactor* pContext, PlanNode*, short*, int 
 }
 
 // Points a fresh bungee at whatever the current behaviour's first bungee tracks, if anything.
-// FUNCTION: HYPERX100 0x004ab720
-// FUNCTION: HYPERX 0x00462040
+// FUNCTION: HYPERX1000 0x004ab720
+// FUNCTION: HYPERX1001 0x00462040
 void __cdecl PlanAction::BungeeTowardTarget(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* pTracked;
@@ -3056,8 +3056,8 @@ void __cdecl PlanAction::BungeeTowardTarget(Interactor* pContext, PlanNode*, sho
 // The fifty the owner's energy is measured against.
 #define ENERGY_SPLIT 50.0
 
-// FUNCTION: HYPERX100 0x004ab7b0
-// FUNCTION: HYPERX 0x004620c0
+// FUNCTION: HYPERX1000 0x004ab7b0
+// FUNCTION: HYPERX1001 0x004620c0
 void __cdecl PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     float flSign;
@@ -3118,11 +3118,11 @@ void __cdecl PlanCond::Decide_PassOrRun(Interactor* pContext, PlanNode*, short* 
 #define FACING_MIN 0.1f
 
 // Two, negated at run time: the height the body's pos.z has to beat.
-// GLOBAL: HYPERX 0x004b36f0
+// GLOBAL: HYPERX1001 0x004b36f0
 extern const float g_flTwoPlan;
 
-// FUNCTION: HYPERX100 0x004ab900
-// FUNCTION: HYPERX 0x004621b0
+// FUNCTION: HYPERX1000 0x004ab900
+// FUNCTION: HYPERX1001 0x004621b0
 void __cdecl PlanCond::Decide_HPSpin_Rail_orNot(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     AttachPak* pnTracked;
@@ -3173,8 +3173,8 @@ void __cdecl PlanCond::Decide_HPSpin_Rail_orNot(Interactor* pContext, PlanNode*,
 
 // The rail-hug impulse, behaviour six in HUMAN.PBN; its vertical part is never below one.
 
-// FUNCTION: HYPERX100 0x004aba60
-// FUNCTION: HYPERX 0x004622b0
+// FUNCTION: HYPERX1000 0x004aba60
+// FUNCTION: HYPERX1001 0x004622b0
 void __cdecl PlanAction::KickOffRim(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vDirection;
@@ -3200,8 +3200,8 @@ void __cdecl PlanAction::KickOffRim(Interactor* pContext, PlanNode*, short*, int
 
 // The two axis tests answer two and one, and the answer is their sum.
 
-// FUNCTION: HYPERX100 0x004abb30
-// FUNCTION: HYPERX 0x00462360
+// FUNCTION: HYPERX1000 0x004abb30
+// FUNCTION: HYPERX1001 0x00462360
 void PlanCond::PickACell(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor    = pContext->GetActor();
@@ -3232,8 +3232,8 @@ void PlanCond::PickACell(Interactor* pContext, PlanNode*, short* pResult, int)
     *pResult = nHalf + nSide;
 }
 
-// FUNCTION: HYPERX100 0x004abb90
-// FUNCTION: HYPERX 0x004623c0
+// FUNCTION: HYPERX1000 0x004abb90
+// FUNCTION: HYPERX1001 0x004623c0
 void PlanCond::Random(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
     *pResult = (short)(rand() * (pArgs->m_nArgCount - 1) / (RAND_MAX + 1));
@@ -3241,8 +3241,8 @@ void PlanCond::Random(Interactor*, PlanNode* pArgs, short* pResult, int)
 
 // Turns the head camera's shot power into a child index, inverted and clamped.
 
-// FUNCTION: HYPERX100 0x004abbc0
-// FUNCTION: HYPERX 0x004623f0
+// FUNCTION: HYPERX1000 0x004abbc0
+// FUNCTION: HYPERX1001 0x004623f0
 void __cdecl PlanCond::ShotPower(Interactor*, PlanNode* pArgs, short* pResult, int)
 {
     const int nScaled = g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_nShotPowerLevel * (pArgs->m_nArgCount - 1);
@@ -3267,8 +3267,8 @@ void __cdecl PlanCond::ShotPower(Interactor*, PlanNode* pArgs, short* pResult, i
 #define SPAWN_RESULT_TEAM_MOVING 2
 
 // The third axis difference is always zero: both operands are the same shared zero.
-// FUNCTION: HYPERX100 0x004abc40
-// FUNCTION: HYPERX 0x00462450
+// FUNCTION: HYPERX1000 0x004abc40
+// FUNCTION: HYPERX1001 0x00462450
 void __cdecl PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 {
     Vec3  vSquare;
@@ -3335,8 +3335,8 @@ void __cdecl PlanCond::IfInFaceOff(Interactor*, PlanNode*, short* pResult, int)
 #define ARENA_TRACK_UP   7
 #define ARENA_TRACK_DOWN 8
 
-// FUNCTION: HYPERX100 0x004abe50
-// FUNCTION: HYPERX 0x00462620
+// FUNCTION: HYPERX1000 0x004abe50
+// FUNCTION: HYPERX1001 0x00462620
 void PlanAction::EndPeriodNow(Interactor*, PlanNode*, short*, int)
 {
     g_pGameEngine->m_bEndPeriodRequested = 1;
@@ -3344,8 +3344,8 @@ void PlanAction::EndPeriodNow(Interactor*, PlanNode*, short*, int)
 
 // Three when both teams say yes, one for the first only, two for the second only, else zero.
 
-// FUNCTION: HYPERX100 0x004abe60
-// FUNCTION: HYPERX 0x00462630
+// FUNCTION: HYPERX1000 0x004abe60
+// FUNCTION: HYPERX1001 0x00462630
 void PlanCond::TeamIsDead(Interactor*, PlanNode*, short* pResult, int)
 {
     const unsigned char bHome = g_pGameEngine->IsHomeTeamDead();
@@ -3375,8 +3375,8 @@ void PlanCond::TeamIsDead(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 0;
 }
 
-// FUNCTION: HYPERX100 0x004abed0
-// FUNCTION: HYPERX 0x00462680
+// FUNCTION: HYPERX1000 0x004abed0
+// FUNCTION: HYPERX1001 0x00462680
 void PlanCond::TeamIsInjured(Interactor*, PlanNode*, short* pResult, int)
 {
     const unsigned char bHome = g_pGameEngine->IsHomeTeamInjured();
@@ -3406,8 +3406,8 @@ void PlanCond::TeamIsInjured(Interactor*, PlanNode*, short* pResult, int)
     *pResult = 0;
 }
 
-// FUNCTION: HYPERX100 0x004abf40
-// FUNCTION: HYPERX 0x004626d0
+// FUNCTION: HYPERX1000 0x004abf40
+// FUNCTION: HYPERX1001 0x004626d0
 void PlanCond::MyTeamIsInjured(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -3424,8 +3424,8 @@ void PlanCond::MyTeamIsInjured(Interactor* pContext, PlanNode*, short* pResult, 
 
 // One means team two won: a dead team loses outright, and a draw goes to team two.
 
-// FUNCTION: HYPERX100 0x004abfb0
-// FUNCTION: HYPERX 0x00462720
+// FUNCTION: HYPERX1000 0x004abfb0
+// FUNCTION: HYPERX1001 0x00462720
 void PlanCond::WhoWonTheGame(Interactor*, PlanNode*, short* pResult, int)
 {
     if (g_pGameEngine->IsHomeTeamDead() != 0)
@@ -3444,8 +3444,8 @@ void PlanCond::WhoWonTheGame(Interactor*, PlanNode*, short* pResult, int)
 
 // Two is the answer when the target and the actor are the same object.
 
-// FUNCTION: HYPERX100 0x004ac030
-// FUNCTION: HYPERX 0x00462780
+// FUNCTION: HYPERX1000 0x004ac030
+// FUNCTION: HYPERX1001 0x00462780
 void PlanCond::IsSenderTeammate(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     // Not TeammateSlot: the client adds two without an else arm (0x00462794 to 0x004627a8).
@@ -3470,8 +3470,8 @@ void PlanCond::IsSenderTeammate(Interactor* pContext, PlanNode*, short* pResult,
     }
 }
 
-// FUNCTION: HYPERX100 0x004ac0b0
-// FUNCTION: HYPERX 0x004627f0
+// FUNCTION: HYPERX1000 0x004ac0b0
+// FUNCTION: HYPERX1001 0x004627f0
 void PlanCond::AmMainDromer(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -3479,8 +3479,8 @@ void PlanCond::AmMainDromer(Interactor* pContext, PlanNode*, short* pResult, int
     *pResult = pActor->GetSlot() >= 2;
 }
 
-// FUNCTION: HYPERX100 0x004ac0e0
-// FUNCTION: HYPERX 0x00462820
+// FUNCTION: HYPERX1000 0x004ac0e0
+// FUNCTION: HYPERX1001 0x00462820
 void PlanCond::MyID(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* pActor = pContext->GetActor();
@@ -3497,36 +3497,36 @@ void PlanCond::MyID(Interactor* pContext, PlanNode*, short* pResult, int)
     }
 }
 
-// FUNCTION: HYPERX100 0x004ac150
-// FUNCTION: HYPERX 0x00462870
+// FUNCTION: HYPERX1000 0x004ac150
+// FUNCTION: HYPERX1001 0x00462870
 void PlanCond::MessageDataNibl0(Interactor*, PlanNode*, short* pResult, int nArg)
 {
     *pResult = MessageNibble(nArg, 0);
 }
 
-// FUNCTION: HYPERX100 0x004ac170
-// FUNCTION: HYPERX 0x00462880
+// FUNCTION: HYPERX1000 0x004ac170
+// FUNCTION: HYPERX1001 0x00462880
 void PlanCond::MessageDataNibl1(Interactor*, PlanNode*, short* pResult, int nArg)
 {
     *pResult = MessageNibble(nArg, 4);
 }
 
-// FUNCTION: HYPERX100 0x004ac190
-// FUNCTION: HYPERX 0x004628a0
+// FUNCTION: HYPERX1000 0x004ac190
+// FUNCTION: HYPERX1001 0x004628a0
 void PlanCond::MessageDataNibl4(Interactor*, PlanNode*, short* pResult, int nArg)
 {
     *pResult = MessageNibble(nArg, 16);
 }
 
-// FUNCTION: HYPERX100 0x004ac1b0
-// FUNCTION: HYPERX 0x004628c0
+// FUNCTION: HYPERX1000 0x004ac1b0
+// FUNCTION: HYPERX1001 0x004628c0
 void PlanCond::MsgData4Nibl1X2Nibl0(Interactor*, PlanNode*, short* pResult, int nArg)
 {
     *pResult = MessageNibble(nArg, 0) + MessageNibble(nArg, 4) * 2;
 }
 
-// FUNCTION: HYPERX100 0x004ac1e0
-// FUNCTION: HYPERX 0x004628e0
+// FUNCTION: HYPERX1000 0x004ac1e0
+// FUNCTION: HYPERX1001 0x004628e0
 void PlanCond::SideKeysAreDown(Interactor*, PlanNode*, short* pResult, int)
 {
     EngineObject* pObject;
@@ -3537,8 +3537,8 @@ void PlanCond::SideKeysAreDown(Interactor*, PlanNode*, short* pResult, int)
     *pResult = ((char)pState->nHeldBindings & HELD_ROTATE) == 0;
 }
 
-// FUNCTION: HYPERX100 0x004ac220
-// FUNCTION: HYPERX 0x00462910
+// FUNCTION: HYPERX1000 0x004ac220
+// FUNCTION: HYPERX1001 0x00462910
 void __cdecl PlanCond::AmViewOwner(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     // Nought when the actor is either tracked object.
@@ -3578,8 +3578,8 @@ store:
 }
 
 // An actor on the Input plan stands in for the viewed slot when finding its team mate.
-// FUNCTION: HYPERX100 0x004ac2c0
-// FUNCTION: HYPERX 0x00462990
+// FUNCTION: HYPERX1000 0x004ac2c0
+// FUNCTION: HYPERX1001 0x00462990
 void __cdecl PlanCond::TeammateIsViewOwner(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -3588,14 +3588,14 @@ void __cdecl PlanCond::TeammateIsViewOwner(Interactor* pContext, PlanNode*, shor
 
     const unsigned char* pszName = (const unsigned char*)pActor->GetPlanState()->m_pszName;
 
-    // STRING: HYPERX 0x004c45f4
+    // STRING: HYPERX1001 0x004c45f4
     if (_mbscmp((const unsigned char*)"Input", pszName) == 0)
     {
         nTeam = g_pGameEngine->m_nViewedSlot;
     }
 
     *pResult = (unsigned short)(
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         _mbscmp((const unsigned char*)"Human",
                 (const unsigned char*)g_pGameEngine->m_ppSlots[TeammateSlot((short)nTeam)]
                     ->GetPlanState()
@@ -3603,8 +3603,8 @@ void __cdecl PlanCond::TeammateIsViewOwner(Interactor* pContext, PlanNode*, shor
 }
 
 // Answers one for a bot team mate that is fit and wants no substitute, else nought.
-// FUNCTION: HYPERX100 0x004ac360
-// FUNCTION: HYPERX 0x00462a10
+// FUNCTION: HYPERX1000 0x004ac360
+// FUNCTION: HYPERX1001 0x00462a10
 void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     short nIsBot;
@@ -3615,7 +3615,7 @@ void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*,
 
     const unsigned char* pszName = (const unsigned char*)pActor->GetPlanState()->m_pszName;
 
-    // STRING: HYPERX 0x004c45f4
+    // STRING: HYPERX1001 0x004c45f4
     if (_mbscmp((const unsigned char*)"Input", pszName) == 0)
     {
         nTeam = g_pGameEngine->m_nViewedSlot;
@@ -3624,7 +3624,7 @@ void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*,
     const short nSlot = (short)TeammateSlot((short)nTeam);
 
     nIsBot = (short)(
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         _mbscmp((const unsigned char*)"Human",
                 (const unsigned char*)g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
 
@@ -3644,8 +3644,8 @@ void __cdecl PlanCond::TeammateIsHumanOrInjured(Interactor* pContext, PlanNode*,
     }
 }
 
-// FUNCTION: HYPERX100 0x004ac4e0
-// FUNCTION: HYPERX 0x00462b30
+// FUNCTION: HYPERX1000 0x004ac4e0
+// FUNCTION: HYPERX1001 0x00462b30
 void __cdecl PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const short nTeam = pContext->GetActor()->GetSlot();
@@ -3653,7 +3653,7 @@ void __cdecl PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, sho
     const short nSlot = (short)TeammateSlot(nTeam);
 
     *pResult = (short)(
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         _mbscmp((const unsigned char*)"Human",
                 (const unsigned char*)g_pGameEngine->m_ppSlots[nSlot]->GetPlanState()->m_pszName) != 0);
 
@@ -3672,8 +3672,8 @@ void __cdecl PlanCond::OkToSwitchToTeammate(Interactor* pContext, PlanNode*, sho
     }
 }
 
-// FUNCTION: HYPERX100 0x004ac660
-// FUNCTION: HYPERX 0x00462c40
+// FUNCTION: HYPERX1000 0x004ac660
+// FUNCTION: HYPERX1001 0x00462c40
 void __cdecl PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const short nTeam = pContext->GetActor()->GetSlot();
@@ -3712,8 +3712,8 @@ void __cdecl PlanCond::OkToPassToTeammate(Interactor* pContext, PlanNode*, short
 #define STATE_HELD  4
 #define STATE_GATED 5
 
-// FUNCTION: HYPERX100 0x004ac7b0
-// FUNCTION: HYPERX 0x00462d20
+// FUNCTION: HYPERX1000 0x004ac7b0
+// FUNCTION: HYPERX1001 0x00462d20
 void __cdecl PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     AttachPak* pnTargetSlot;
@@ -3780,8 +3780,8 @@ void __cdecl PlanCond::DecidePosition(Interactor* pContext, PlanNode*, short* pR
     *pResult = (unsigned short)(pContext->GetActor()->GetSlot() >= SLOT_FAR_HALF);
 }
 
-// FUNCTION: HYPERX100 0x004ac970
-// FUNCTION: HYPERX 0x00462e50
+// FUNCTION: HYPERX1000 0x004ac970
+// FUNCTION: HYPERX1001 0x00462e50
 void __cdecl PlanCond::CollisionDetail(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     // The first object is fetched only to be checked: nothing reads it afterwards.
@@ -3801,8 +3801,8 @@ void __cdecl PlanCond::CollisionDetail(Interactor* pContext, PlanNode*, short* p
     *pResult = 1;
 }
 
-// FUNCTION: HYPERX100 0x004aca20
-// FUNCTION: HYPERX 0x00462ee0
+// FUNCTION: HYPERX1000 0x004aca20
+// FUNCTION: HYPERX1001 0x00462ee0
 void PlanCond::OwnerIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 {
     AttachPak* const pSlot = g_pGameEngine->m_ppSlots[SLOT_ROK]->GetPhysicsBody()->pAttach;
@@ -3825,8 +3825,8 @@ void PlanCond::OwnerIsViewOwner(Interactor*, PlanNode*, short* pResult, int)
 #define SLOT_WRAP   0x03
 #define SLOT_PAIRED 0x04
 
-// FUNCTION: HYPERX100 0x004acaa0
-// FUNCTION: HYPERX 0x00462f20
+// FUNCTION: HYPERX1000 0x004acaa0
+// FUNCTION: HYPERX1001 0x00462f20
 void __cdecl PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOutFacing, int)
 {
     Vec3* pThere;
@@ -3871,8 +3871,8 @@ void __cdecl PlanCond::ViewOwnersMateInFront(Interactor*, PlanNode*, short* pOut
     *pOutFacing = nFacing;
 }
 
-// FUNCTION: HYPERX100 0x004acb70
-// FUNCTION: HYPERX 0x00462fd0
+// FUNCTION: HYPERX1000 0x004acb70
+// FUNCTION: HYPERX1001 0x00462fd0
 void __cdecl PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult, int nFlag)
 {
     const AttachPak* pCarrier;
@@ -3924,8 +3924,8 @@ void __cdecl PlanCond::IHaveRok(Interactor* pContext, PlanNode*, short* pResult,
 }
 
 // Inverted: zero when the carrier matches; the tag test cannot fire, as the slot is narrowed first.
-// FUNCTION: HYPERX100 0x004acd10
-// FUNCTION: HYPERX 0x004630d0
+// FUNCTION: HYPERX1000 0x004acd10
+// FUNCTION: HYPERX1001 0x004630d0
 void __cdecl PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPrevSlot)
 {
     int nSlot;
@@ -3956,8 +3956,8 @@ void __cdecl PlanCond::DromerHasRok(Interactor* pContext, PlanNode* pArgs, short
     *pResult = 1;
 }
 
-// FUNCTION: HYPERX100 0x004ac140
-// FUNCTION: HYPERX 0x00463170
+// FUNCTION: HYPERX1000 0x004ac140
+// FUNCTION: HYPERX1001 0x00463170
 void PlanCond::MessageData(Interactor*, PlanNode*, short* pResult, int nValue)
 {
     *pResult = (short)nValue;
@@ -3969,8 +3969,8 @@ void PlanCond::RunTimeData(Interactor*, PlanNode*, short* pResult, int nValue)
     *pResult = (short)nValue;
 }
 
-// FUNCTION: HYPERX100 0x004ace10
-// FUNCTION: HYPERX 0x00463180
+// FUNCTION: HYPERX1000 0x004ace10
+// FUNCTION: HYPERX1001 0x00463180
 void __cdecl PlanCond::IsRokInMyZone(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int nAnswer;
@@ -3987,8 +3987,8 @@ void __cdecl PlanCond::IsRokInMyZone(Interactor* pContext, PlanNode*, short* pRe
     *pResult = (short)nAnswer;
 }
 
-// FUNCTION: HYPERX100 0x004ace90
-// FUNCTION: HYPERX 0x004631f0
+// FUNCTION: HYPERX1000 0x004ace90
+// FUNCTION: HYPERX1001 0x004631f0
 void PlanAction::SetRenderFlag(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* pActor;
@@ -4009,8 +4009,8 @@ void PlanAction::SetRenderFlag(Interactor* pContext, PlanNode* pArgs, short*, in
 
 // The upper arm announces once more going up than the lower one does coming down.
 
-// FUNCTION: HYPERX100 0x004acfe0
-// FUNCTION: HYPERX 0x00463300
+// FUNCTION: HYPERX1000 0x004acfe0
+// FUNCTION: HYPERX1001 0x00463300
 void __cdecl PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int nArg)
 {
     const unsigned char nFlag = (unsigned char)nArg;
@@ -4075,8 +4075,8 @@ void __cdecl PlanAction::IncRokValue(Interactor*, PlanNode* pArgs, short*, int n
     pRok->SetRenderSlotFlags();
 }
 
-// FUNCTION: HYPERX100 0x004ad0c0
-// FUNCTION: HYPERX 0x004633c0
+// FUNCTION: HYPERX1000 0x004ad0c0
+// FUNCTION: HYPERX1001 0x004633c0
 void __cdecl PlanAction::SetRokKillState(Interactor*, PlanNode* pArgs, short*, int nArg)
 {
     const short nDefault = (short)nArg;
@@ -4140,8 +4140,8 @@ inline void PaintMaterials(EngineObject* pObject, int nColour, short nEnable)
 
 } // namespace PlanAction
 
-// FUNCTION: HYPERX100 0x004ad180
-// FUNCTION: HYPERX 0x00463450
+// FUNCTION: HYPERX1000 0x004ad180
+// FUNCTION: HYPERX1001 0x00463450
 void __cdecl PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* pObject;
@@ -4210,8 +4210,8 @@ void __cdecl PlanAction::GrayscaleRandomizer(Interactor* pContext, PlanNode* pAr
 #define ARG_Z                   4
 #define ARG_COUNT_WITH_POSITION 5
 
-// FUNCTION: HYPERX100 0x004ad390
-// FUNCTION: HYPERX 0x004635e0
+// FUNCTION: HYPERX1000 0x004ad390
+// FUNCTION: HYPERX1001 0x004635e0
 void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const PlanWord* pBlock  = pArgs->m_pArgs;
@@ -4226,8 +4226,8 @@ void PlanAction::SetLocalReal(Interactor* pContext, PlanNode* pArgs, short*, int
 
 // The CTrackTraj belongs to the plan's object; the position goes to the camera in slot nine.
 
-// FUNCTION: HYPERX100 0x004ad3d0
-// FUNCTION: HYPERX 0x00463620
+// FUNCTION: HYPERX1000 0x004ad3d0
+// FUNCTION: HYPERX1001 0x00463620
 void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     if (pNode->m_pArgs[ARG_GUARD].n != 0)
@@ -4263,8 +4263,8 @@ void PlanAction::SetInDrag(Interactor* pContext, PlanNode* pNode, short*, int)
 #define ARG_COUNT_WITH_RANGE 3
 
 // With both arguments a mode of nought picks the directed range and any other the complex one.
-// FUNCTION: HYPERX100 0x004ad4b0
-// FUNCTION: HYPERX 0x004636e0
+// FUNCTION: HYPERX1000 0x004ad4b0
+// FUNCTION: HYPERX1001 0x004636e0
 void PlanAction::SetOnRim(Interactor*, PlanNode* pNode, short*, int)
 {
     EngineObject* pActor;
@@ -4304,8 +4304,8 @@ void PlanAction::SetOnRim(Interactor*, PlanNode* pNode, short*, int)
 #define STEER_SCALE_THRESHOLD 0x19
 
 // The camera's plan sets the blend fraction; any other object takes a hundredth as its friction.
-// FUNCTION: HYPERX100 0x004ad580
-// FUNCTION: HYPERX 0x00463790
+// FUNCTION: HYPERX1000 0x004ad580
+// FUNCTION: HYPERX1001 0x00463790
 void PlanAction::SetFriction(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pActor = pContext->GetActor();
@@ -4346,8 +4346,8 @@ void PlanAction::SetFriction(Interactor* pContext, PlanNode* pNode, short*, int)
 // The top of the range every amount is clamped to; the bottom is nought.
 #define STAT_CEILING 10.0f
 
-// FUNCTION: HYPERX100 0x004ad650
-// FUNCTION: HYPERX 0x00463840
+// FUNCTION: HYPERX1000 0x004ad650
+// FUNCTION: HYPERX1001 0x00463840
 void PlanAction::SetMyGravity(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -4357,8 +4357,8 @@ void PlanAction::SetMyGravity(Interactor* pContext, PlanNode* pArgs, short*, int
     pActor->GetPhysicsBody()->flGravAccel = flValue;
 }
 
-// FUNCTION: HYPERX100 0x004ad6a0
-// FUNCTION: HYPERX 0x00463880
+// FUNCTION: HYPERX1000 0x004ad6a0
+// FUNCTION: HYPERX1001 0x00463880
 void __cdecl PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short*, int)
 {
     int nReds;
@@ -4373,8 +4373,8 @@ void __cdecl PlanAction::ModifyAvailableReds(Interactor*, PlanNode* pArgs, short
 
 // The two enable ratings are flags; every other rating is added and clamped to nought and ten.
 
-// FUNCTION: HYPERX100 0x004ad730
-// FUNCTION: HYPERX 0x00463900
+// FUNCTION: HYPERX1000 0x004ad730
+// FUNCTION: HYPERX1001 0x00463900
 void __cdecl PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -4450,8 +4450,8 @@ void __cdecl PlanAction::ModifyRating(Interactor* pContext, PlanNode* pArgs, sho
 }
 
 // Nothing moves unless the judge or the named object is the actor itself.
-// FUNCTION: HYPERX100 0x004ad8a0
-// FUNCTION: HYPERX 0x00463a30
+// FUNCTION: HYPERX1000 0x004ad8a0
+// FUNCTION: HYPERX1001 0x00463a30
 void __cdecl PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, short*, int nPassed)
 {
     const short nDefaultSlot = (short)nPassed;
@@ -4557,8 +4557,8 @@ void __cdecl PlanAction::SwapRandomizers(Interactor* pContext, PlanNode* pNode, 
 #define ARG_COUNT_WITH_TRACKED 3
 
 // A positive damage rating clears the killer slot to minus one.
-// FUNCTION: HYPERX100 0x004adb10
-// FUNCTION: HYPERX 0x00463c20
+// FUNCTION: HYPERX1000 0x004adb10
+// FUNCTION: HYPERX1001 0x00463c20
 void __cdecl PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, short*, int nMessageData)
 {
     int nObject;
@@ -4622,8 +4622,8 @@ void __cdecl PlanAction::SetKilledDromer(Interactor* pContext, PlanNode* pArgs, 
 // What a read answers when m_wDesiredSubstitute is minus one, no substitute: one past the skaters.
 #define SUBSTITUTE_NONE_ANSWER 4
 
-// FUNCTION: HYPERX100 0x004adc30
-// FUNCTION: HYPERX 0x00463d20
+// FUNCTION: HYPERX1000 0x004adc30
+// FUNCTION: HYPERX1001 0x00463d20
 void PlanAction::ResetCameraTrack(Interactor* pContext, PlanNode*, short*, int)
 {
     CameraObject* const pCamera = pContext->GetCameraActor();
@@ -4631,8 +4631,8 @@ void PlanAction::ResetCameraTrack(Interactor* pContext, PlanNode*, short*, int)
     pCamera->SetLastTrackedObject(0);
 }
 
-// FUNCTION: HYPERX100 0x004adc50
-// FUNCTION: HYPERX 0x00463d40
+// FUNCTION: HYPERX1000 0x004adc50
+// FUNCTION: HYPERX1001 0x00463d40
 void PlanAction::ClearBehaviorAnimation(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* pActor = pContext->GetActor();
@@ -4644,8 +4644,8 @@ void PlanAction::ClearBehaviorAnimation(Interactor* pContext, PlanNode*, short*,
     pActor->GetPlanState()->m_pCurrent->m_pPersistentAnimation = 0;
 }
 
-// FUNCTION: HYPERX100 0x004adca0
-// FUNCTION: HYPERX 0x00463d80
+// FUNCTION: HYPERX1000 0x004adca0
+// FUNCTION: HYPERX1001 0x00463d80
 void PlanAction::FlyingSemaphore(Interactor* pContext, PlanNode* pArgs, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -4660,8 +4660,8 @@ void PlanAction::FlyingSemaphore(Interactor* pContext, PlanNode* pArgs, short* p
     }
 }
 
-// FUNCTION: HYPERX100 0x004adcf0
-// FUNCTION: HYPERX 0x00463dc0
+// FUNCTION: HYPERX1000 0x004adcf0
+// FUNCTION: HYPERX1001 0x00463dc0
 void PlanAction::AnimationSemaphore(Interactor* pContext, PlanNode* pArgs, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -4676,8 +4676,8 @@ void PlanAction::AnimationSemaphore(Interactor* pContext, PlanNode* pArgs, short
     }
 }
 
-// FUNCTION: HYPERX100 0x004add40
-// FUNCTION: HYPERX 0x00463e00
+// FUNCTION: HYPERX1000 0x004add40
+// FUNCTION: HYPERX1001 0x00463e00
 void PlanAction::ClockStoppedSemaphore(Interactor* pContext, PlanNode* pArgs, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -4694,8 +4694,8 @@ void PlanAction::ClockStoppedSemaphore(Interactor* pContext, PlanNode* pArgs, sh
 
 // A count of two writes and any other reads.
 
-// FUNCTION: HYPERX100 0x004add90
-// FUNCTION: HYPERX 0x00463e40
+// FUNCTION: HYPERX1000 0x004add90
+// FUNCTION: HYPERX1001 0x00463e40
 void __cdecl PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPassed)
 {
     const unsigned int nSlot = (unsigned int)nPassed;
@@ -4737,8 +4737,8 @@ void __cdecl PlanAction::DesiredSubstitute(Interactor* pContext, PlanNode* pArgs
     }
 }
 
-// FUNCTION: HYPERX100 0x004ade30
-// FUNCTION: HYPERX 0x00463ed0
+// FUNCTION: HYPERX1000 0x004ade30
+// FUNCTION: HYPERX1001 0x00463ed0
 void PlanCond::SubstitutionSemaphore(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -4751,8 +4751,8 @@ void PlanCond::SubstitutionSemaphore(Interactor* pContext, PlanNode*, short* pRe
 // Answered when no substitute is fit.
 #define SLOT_ANSWER_NONE 4
 
-// FUNCTION: HYPERX100 0x004ade60
-// FUNCTION: HYPERX 0x00463ef0
+// FUNCTION: HYPERX1000 0x004ade60
+// FUNCTION: HYPERX1001 0x00463ef0
 void __cdecl PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     short            sIndex;
@@ -4899,8 +4899,8 @@ void __cdecl PlanCond::PickValidSubstitute(Interactor* pContext, PlanNode*, shor
         return;                                                                        \
     }
 
-// FUNCTION: HYPERX100 0x004ae200
-// FUNCTION: HYPERX 0x00464140
+// FUNCTION: HYPERX1000 0x004ae200
+// FUNCTION: HYPERX1001 0x00464140
 void PlanAction::SubstitutePlayer(Interactor* pContext, PlanNode* pArgs, short* pResult, int nParam)
 {
     PlayerObject* const pPlayer = pContext->GetPlayerActor();
@@ -4927,8 +4927,8 @@ void PlanAction::SubstitutePlayer(Interactor* pContext, PlanNode* pArgs, short* 
 
 // Whether the team mate may substitute in; the byte answer is normalised to one or zero.
 
-// FUNCTION: HYPERX100 0x004ae2a0
-// FUNCTION: HYPERX 0x004641b0
+// FUNCTION: HYPERX1000 0x004ae2a0
+// FUNCTION: HYPERX1001 0x004641b0
 void __cdecl PlanCond::OkToSubstituteTeammate(Interactor* pContext, PlanNode*, short* pResult, int nParam)
 {
     pContext->GetActor();
@@ -4940,8 +4940,8 @@ void __cdecl PlanCond::OkToSubstituteTeammate(Interactor* pContext, PlanNode*, s
     *pResult = (unsigned short)(g_pGameEngine->IsFitSubstitute(TeammateSlot((short)nSlot), nParam) != 0);
 }
 
-// FUNCTION: HYPERX100 0x004ae310
-// FUNCTION: HYPERX 0x00464200
+// FUNCTION: HYPERX1000 0x004ae310
+// FUNCTION: HYPERX1001 0x00464200
 void PlanAction::TrackTurnstile(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     int nValue = pArgs->m_pArgs[1].n;
@@ -4958,8 +4958,8 @@ void PlanAction::TrackTurnstile(Interactor* pContext, PlanNode* pArgs, short*, i
 
 // Nothing is credited when hitter and target are on the same side, the two parities.
 
-// FUNCTION: HYPERX100 0x004ae350
-// FUNCTION: HYPERX 0x00464230
+// FUNCTION: HYPERX1000 0x004ae350
+// FUNCTION: HYPERX1001 0x00464230
 void __cdecl PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     int nOther;
@@ -4997,8 +4997,8 @@ void __cdecl PlanAction::CreditDamage(Interactor* pContext, PlanNode* pArgs, sho
 #define SCALE_HARD        1.0f
 #define SCALE_NETWORK_BOT 0.5f
 
-// FUNCTION: HYPERX100 0x004ae830
-// FUNCTION: HYPERX 0x004644a0
+// FUNCTION: HYPERX1000 0x004ae830
+// FUNCTION: HYPERX1001 0x004644a0
 void PlanAction::SetMaxSpeed(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     pContext->GetActor();
@@ -5010,8 +5010,8 @@ void PlanAction::SetMaxSpeed(Interactor* pContext, PlanNode* pArgs, short*, int)
 
 // Nought or less is scaled by difficulty; the damage is added and clamped to nought to a hundred.
 
-// FUNCTION: HYPERX100 0x004ae850
-// FUNCTION: HYPERX 0x004644c0
+// FUNCTION: HYPERX1000 0x004ae850
+// FUNCTION: HYPERX1001 0x004644c0
 void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, short*, int nParam)
 {
     PlayerObject*   pObject;
@@ -5094,7 +5094,7 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
         {
             char* const pszName = pObject->GetPlanState()->m_pszName;
 
-            // STRING: HYPERX 0x004bb340
+            // STRING: HYPERX1001 0x004bb340
             if (_mbscmp((const unsigned char*)"Human", (const unsigned char*)pszName) != 0)
             {
                 flScale = SCALE_NETWORK_BOT;
@@ -5152,13 +5152,13 @@ void __cdecl PlanAction::ModifyDamage(Interactor* pContext, PlanNode* pArgs, sho
 #define SPEED_UNSET_BITS 0xbf800000
 
 // The cache of the four skaters' speeds and its dirty word, which ships set.
-// GLOBAL: HYPERX 0x004c4540
+// GLOBAL: HYPERX1001 0x004c4540
 extern float g_aOpposSpeedCache[SPEED_CACHE_COUNT];
-// GLOBAL: HYPERX 0x004c4550
+// GLOBAL: HYPERX1001 0x004c4550
 extern short g_nOpposSpeedCacheStale;
 
-// FUNCTION: HYPERX100 0x004aeb40
-// FUNCTION: HYPERX 0x00464720
+// FUNCTION: HYPERX1000 0x004aeb40
+// FUNCTION: HYPERX1001 0x00464720
 void PlanAction::IncrementScore(Interactor*, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_pArgs[1].n != 0)
@@ -5173,8 +5173,8 @@ void PlanAction::IncrementScore(Interactor*, PlanNode* pArgs, short*, int)
 
 // The twin of ModifySpeedRating, writing a pair: the complement's low bit and that slot plus two.
 
-// FUNCTION: HYPERX100 0x004aeb70
-// FUNCTION: HYPERX 0x00464750
+// FUNCTION: HYPERX1000 0x004aeb70
+// FUNCTION: HYPERX1001 0x00464750
 void __cdecl PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -5288,14 +5288,14 @@ void __cdecl PlanAction::ModifyOpposTeamFriction(Interactor* pContext, PlanNode*
 }
 
 // The cache of the four skaters' speeds and its dirty word, which ships set.
-// GLOBAL: HYPERX 0x004c4554
+// GLOBAL: HYPERX1001 0x004c4554
 extern float g_aSpeedCache[SPEED_CACHE_COUNT];
-// GLOBAL: HYPERX 0x004c4564
+// GLOBAL: HYPERX1001 0x004c4564
 extern short g_nSpeedCacheStale;
 
 // The reading is (speed + 1) times the cached speed, rounded to a short, plus 0.99.
-// FUNCTION: HYPERX100 0x004aede0
-// FUNCTION: HYPERX 0x00464940
+// FUNCTION: HYPERX1000 0x004aede0
+// FUNCTION: HYPERX1001 0x00464940
 void __cdecl PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode, short*, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -5420,8 +5420,8 @@ void __cdecl PlanAction::ModifySpeedRating(Interactor* pContext, PlanNode* pNode
 
 #define LAUNCH_MESSAGE_ARG 2
 
-// FUNCTION: HYPERX100 0x004af010
-// FUNCTION: HYPERX 0x00464b10
+// FUNCTION: HYPERX1000 0x004af010
+// FUNCTION: HYPERX1001 0x00464b10
 void __cdecl PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, short*, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -5474,8 +5474,8 @@ void __cdecl PlanAction::SetImmunity(Interactor* pContext, PlanNode* pArgs, shor
     g_pGameEngine->GetPlayer(nIndex)->m_stats.m_aStats[RATING_SLOT(RATING_IMMUNITY)] = flValue;
 }
 
-// FUNCTION: HYPERX100 0x004af130
-// FUNCTION: HYPERX 0x00464c00
+// FUNCTION: HYPERX1000 0x004af130
+// FUNCTION: HYPERX1001 0x00464c00
 void PlanCond::GetImmunity(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -5491,8 +5491,8 @@ void PlanCond::GetImmunity(Interactor* pContext, PlanNode*, short* pResult, int)
 }
 
 // Under five arguments the target is whichever flanking opponent the owner faces, plus one first.
-// FUNCTION: HYPERX100 0x004af170
-// FUNCTION: HYPERX 0x00464c40
+// FUNCTION: HYPERX1000 0x004af170
+// FUNCTION: HYPERX1001 0x00464c40
 void __cdecl PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pWinner;
@@ -5592,8 +5592,8 @@ void __cdecl PlanAction::ThrowBungee(Interactor* pContext, PlanNode* pNode, shor
 
 // The holder slot is compared even on the path that never wrote it, an uninitialised read.
 
-// FUNCTION: HYPERX100 0x004af540
-// FUNCTION: HYPERX 0x00464f40
+// FUNCTION: HYPERX1000 0x004af540
+// FUNCTION: HYPERX1001 0x00464f40
 void PlanCond::AttachedToSender(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     short nHolderSlot;
@@ -5615,8 +5615,8 @@ void PlanCond::AttachedToSender(Interactor* pContext, PlanNode*, short* pResult,
 extern const float g_flFourPlan;
 
 // Without a carrier nCarrier is unset; VC6 homes it on pResult's slot, as the original does.
-// FUNCTION: HYPERX100 0x004af5a0
-// FUNCTION: HYPERX 0x00464f80
+// FUNCTION: HYPERX1000 0x004af5a0
+// FUNCTION: HYPERX1001 0x00464f80
 void __cdecl PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const short nOwnerSlot = (short)nArg;
@@ -5668,8 +5668,8 @@ void __cdecl PlanCond::AmIKnockedLoose(Interactor* pContext, PlanNode*, short* p
 // The south goal clamps the Rok's value up to one; the north clamps it down to minus one and flips
 // it.
 
-// FUNCTION: HYPERX100 0x004af7c0
-// FUNCTION: HYPERX 0x00465150
+// FUNCTION: HYPERX1000 0x004af7c0
+// FUNCTION: HYPERX1001 0x00465150
 void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int nClamped;
@@ -5727,8 +5727,8 @@ void PlanCond::RokScoreValue(Interactor* pContext, PlanNode*, short* pResult, in
     }
 }
 
-// FUNCTION: HYPERX100 0x004af8a0
-// FUNCTION: HYPERX 0x00465210
+// FUNCTION: HYPERX1000 0x004af8a0
+// FUNCTION: HYPERX1001 0x00465210
 void PlanCond::CatchBlockOrMiss(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
@@ -5743,8 +5743,8 @@ void PlanCond::CatchBlockOrMiss(Interactor* pContext, PlanNode*, short* pResult,
 // Ten units a second, at 0x004b14d4.
 #define SPEED_THRESHOLD 10.0f
 
-// FUNCTION: HYPERX100 0x004af920
-// FUNCTION: HYPERX 0x00465280
+// FUNCTION: HYPERX1000 0x004af920
+// FUNCTION: HYPERX1001 0x00465280
 void __cdecl PlanCond::Jumping(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     BoundBubble* const pCollision = g_pGameEngine->GetColObjPtr(pContext->GetModelSlot());
@@ -5783,8 +5783,8 @@ enum NearestAnswer
     ANSWER_NEITHER = 3
 };
 
-// FUNCTION: HYPERX100 0x004af9c0
-// FUNCTION: HYPERX 0x00465310
+// FUNCTION: HYPERX1000 0x004af9c0
+// FUNCTION: HYPERX1001 0x00465310
 void __cdecl PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     short nAtFirst  = 0;
@@ -5860,8 +5860,8 @@ void __cdecl PlanCond::RandomInactiveWeapon(Interactor* pContext, PlanNode*, sho
 }
 
 // The answer is one-based, so zero means no armory holds fewer than every weapon.
-// FUNCTION: HYPERX100 0x004afc50
-// FUNCTION: HYPERX 0x004654b0
+// FUNCTION: HYPERX1000 0x004afc50
+// FUNCTION: HYPERX1001 0x004654b0
 void __cdecl PlanCond::RandomEmptyArmory(Interactor*, PlanNode*, short* pResult, int)
 {
     const int nSlots = g_pGameEngine->GetArmoryCount();
@@ -5894,8 +5894,8 @@ void __cdecl PlanCond::RandomEmptyArmory(Interactor*, PlanNode*, short* pResult,
 
 // Two arms pick a different killed answer when GameEngine::m_nBrutality is off.
 
-// FUNCTION: HYPERX100 0x004afef0
-// FUNCTION: HYPERX 0x00465650
+// FUNCTION: HYPERX1000 0x004afef0
+// FUNCTION: HYPERX1001 0x00465650
 void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     char bBrutalityOff = 0;
@@ -6005,8 +6005,8 @@ void PlanCond::WhoKilledMe(Interactor* pContext, PlanNode*, short* pResult, int)
 #define HIT_DAMAGE_CEILING 0x14
 
 // An object that hits carries its own slot as the attack; the engine's own hit is the far goalie's.
-// FUNCTION: HYPERX100 0x004b00f0
-// FUNCTION: HYPERX 0x004657b0
+// FUNCTION: HYPERX1000 0x004b00f0
+// FUNCTION: HYPERX1001 0x004657b0
 void __cdecl PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* pResult, int nAttack)
 {
     float flOtherDamage;
@@ -6247,8 +6247,8 @@ void __cdecl PlanCond::TakeDamage(Interactor* pContext, PlanNode* pArgs, short* 
 #define DOT_FRONT         0.5
 #define DOT_BEHIND        -0.8
 
-// FUNCTION: HYPERX100 0x004b06f0
-// FUNCTION: HYPERX 0x00465c00
+// FUNCTION: HYPERX1000 0x004b06f0
+// FUNCTION: HYPERX1001 0x00465c00
 void __cdecl PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short* pResult, int nAttack)
 {
     int   nReaction;
@@ -6549,8 +6549,8 @@ void __cdecl PlanCond::AttackedAnim(Interactor* pContext, PlanNode* pArgs, short
 // states nine and thirteen.
 
 // GameEngine::SetTeams writes the first from its home argument and the second from its away one.
-// FUNCTION: HYPERX100 0x004b0d10
-// FUNCTION: HYPERX 0x00466190
+// FUNCTION: HYPERX1000 0x004b0d10
+// FUNCTION: HYPERX1001 0x00466190
 void __cdecl PlanCond::SpecialAttacks(Interactor* pContext, PlanNode*, short* pResult, int nAnim)
 {
     short nState;
@@ -6568,28 +6568,28 @@ void __cdecl PlanCond::SpecialAttacks(Interactor* pContext, PlanNode*, short* pR
         nState = g_pGameEngine->m_nTeamAwayIndex;
     }
 
-    // STRING: HYPERX 0x004c4658
+    // STRING: HYPERX1001 0x004c4658
     g_pAnimRegistry->FindAnimByNameIdx("AA_StrtarmL");
 
-    // STRING: HYPERX 0x004c464c
+    // STRING: HYPERX1001 0x004c464c
     const short nHipcheck = g_pAnimRegistry->FindAnimByNameIdx("AA_Hipcheck");
 
-    // STRING: HYPERX 0x004c463c
+    // STRING: HYPERX1001 0x004c463c
     const short nClothesLineL = g_pAnimRegistry->FindAnimByNameIdx("AA_ClthslneL");
 
-    // STRING: HYPERX 0x004c462c
+    // STRING: HYPERX1001 0x004c462c
     const short nClothesLineR = g_pAnimRegistry->FindAnimByNameIdx("AA_ClthslneR");
 
-    // STRING: HYPERX 0x004c4620
+    // STRING: HYPERX1001 0x004c4620
     const short nShoulderL = g_pAnimRegistry->FindAnimByNameIdx("AA_ShlchekL");
 
-    // STRING: HYPERX 0x004c4614
+    // STRING: HYPERX1001 0x004c4614
     const short nShoulderR = g_pAnimRegistry->FindAnimByNameIdx("AA_ShlchekR");
 
-    // STRING: HYPERX 0x004c4608
+    // STRING: HYPERX1001 0x004c4608
     const short nLegTripL = g_pAnimRegistry->FindAnimByNameIdx("AA_LegtripL");
 
-    // STRING: HYPERX 0x004c45fc
+    // STRING: HYPERX1001 0x004c45fc
     const short nLegTripR = g_pAnimRegistry->FindAnimByNameIdx("AA_LegtripR");
 
     switch (nState)
@@ -6677,8 +6677,8 @@ void __cdecl PlanCond::SpecialAttacks(Interactor* pContext, PlanNode*, short* pR
 
 // A rok bound to the actor or its team mate always counts as close.
 
-// FUNCTION: HYPERX100 0x004b0fc0
-// FUNCTION: HYPERX 0x004663f0
+// FUNCTION: HYPERX1000 0x004b0fc0
+// FUNCTION: HYPERX1001 0x004663f0
 void __cdecl PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const Vec3* pRokAt;
@@ -6749,8 +6749,8 @@ void __cdecl PlanCond::MeOrTeammateClosestToRok(Interactor* pContext, PlanNode*,
 
 // Team two's score is read first, so the difference is the away team's lead; only its size matters.
 
-// FUNCTION: HYPERX100 0x004b1230
-// FUNCTION: HYPERX 0x004665b0
+// FUNCTION: HYPERX1000 0x004b1230
+// FUNCTION: HYPERX1001 0x004665b0
 void PlanCond::TenOrMorePtSpread(Interactor*, PlanNode*, short* pResult, int)
 {
     int nDiff;
@@ -6763,8 +6763,8 @@ void PlanCond::TenOrMorePtSpread(Interactor*, PlanNode*, short* pResult, int)
 #define GREEN_RANDOMIZER_COUNT (SLOT_RED_RANDOMIZER - SLOT_GREEN_RANDOMIZER)
 
 // The answer is one past the chosen slot, so zero means none.
-// FUNCTION: HYPERX100 0x004b1280
-// FUNCTION: HYPERX 0x004665f0
+// FUNCTION: HYPERX1000 0x004b1280
+// FUNCTION: HYPERX1001 0x004665f0
 void __cdecl PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, int)
 {
     int aFound[GREEN_RANDOMIZER_COUNT];
@@ -6799,8 +6799,8 @@ void __cdecl PlanCond::RedIsAvailable(Interactor*, PlanNode*, short* pResult, in
 #define SPEED_GATE 10.0f
 
 // The rating index comes from the node, so one condition thresholds any stat.
-// FUNCTION: HYPERX100 0x004b1350
-// FUNCTION: HYPERX 0x00466680
+// FUNCTION: HYPERX1000 0x004b1350
+// FUNCTION: HYPERX1001 0x00466680
 void __cdecl PlanCond::RatingMaxedOut(Interactor* pContext, PlanNode* pNode, short* pnResult, int nArg)
 {
     const short nDefaultSlot = (short)nArg;
@@ -6828,8 +6828,8 @@ void __cdecl PlanCond::RatingMaxedOut(Interactor* pContext, PlanNode* pNode, sho
     }
 }
 
-// FUNCTION: HYPERX100 0x004b1410
-// FUNCTION: HYPERX 0x00466710
+// FUNCTION: HYPERX1000 0x004b1410
+// FUNCTION: HYPERX1001 0x00466710
 void __cdecl PlanCond::ChooseTeamTune(Interactor* pContext, PlanNode*, short* pResult, int nTeam)
 {
     int   nIndex;
@@ -6859,8 +6859,8 @@ void __cdecl PlanCond::ChooseTeamTune(Interactor* pContext, PlanNode*, short* pR
     *pResult = nTeamIndex;
 }
 
-// FUNCTION: HYPERX100 0x004b1480
-// FUNCTION: HYPERX 0x00466770
+// FUNCTION: HYPERX1000 0x004b1480
+// FUNCTION: HYPERX1001 0x00466770
 void __cdecl PlanCond::MyTeamLosingByAtLeast(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     unsigned int nValue;
@@ -6908,8 +6908,8 @@ void __cdecl PlanCond::MyTeamLosingByAtLeast(Interactor* pContext, PlanNode*, sh
 
 // The range is two below the argument count, and one is the floor.
 
-// FUNCTION: HYPERX100 0x004b1540
-// FUNCTION: HYPERX 0x00466800
+// FUNCTION: HYPERX1000 0x004b1540
+// FUNCTION: HYPERX1001 0x00466800
 void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -6933,8 +6933,8 @@ void PlanCond::DecideWithRating(Interactor* pContext, PlanNode* pArgs, short* pR
 
 // The rok is asked only while its kill state is not minus one.
 
-// FUNCTION: HYPERX100 0x004b15d0
-// FUNCTION: HYPERX 0x00466870
+// FUNCTION: HYPERX1000 0x004b15d0
+// FUNCTION: HYPERX1001 0x00466870
 void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const short nBase = (short)nArg;
@@ -7018,8 +7018,8 @@ void PlanCond::AttackOrDeployWeapon(Interactor* pContext, PlanNode*, short* pRes
     *pResult = (short)(nBase + 1);
 }
 
-// FUNCTION: HYPERX100 0x004b1760
-// FUNCTION: HYPERX 0x00466960
+// FUNCTION: HYPERX1000 0x004b1760
+// FUNCTION: HYPERX1001 0x00466960
 void __cdecl PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResult, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -7052,8 +7052,8 @@ void __cdecl PlanCond::DromerNearMine(Interactor*, PlanNode* pArgs, short* pResu
 
 // Only even directions between minus four and two answer; everything else answers zero.
 
-// FUNCTION: HYPERX100 0x004b1840
-// FUNCTION: HYPERX 0x004669f0
+// FUNCTION: HYPERX1000 0x004b1840
+// FUNCTION: HYPERX1001 0x004669f0
 void PlanCond::RokValueInMyFavor(Interactor*, PlanNode*, short* pResult, int)
 {
     RokObject* const pCarrier = g_pGameEngine->GetRok();
@@ -7105,8 +7105,8 @@ void PlanCond::RokValueInMyFavor(Interactor*, PlanNode*, short* pResult, int)
 #define PASS_NEAR_RANGE_SQUARED 22000.0f
 
 // A team mate with long passes enabled, or one on its feet within range, answers nought.
-// FUNCTION: HYPERX100 0x004b1940
-// FUNCTION: HYPERX 0x00466a80
+// FUNCTION: HYPERX1000 0x004b1940
+// FUNCTION: HYPERX1001 0x00466a80
 void __cdecl PlanCond::CheckPassingDistance(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3 vDiff;
@@ -7149,8 +7149,8 @@ void __cdecl PlanCond::CheckPassingDistance(Interactor* pContext, PlanNode*, sho
 extern const float g_flPiPlan;
 
 // In a single player game a pass to the human team mate is never offered.
-// FUNCTION: HYPERX100 0x004b1a70
-// FUNCTION: HYPERX 0x00466b70
+// FUNCTION: HYPERX1000 0x004b1a70
+// FUNCTION: HYPERX1001 0x00466b70
 void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg)
 {
     const PlanWord param = { nArg };
@@ -7174,7 +7174,7 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 
     if ((nOperand & 0xffff) > SLOT_DROMER3)
     {
-        // STRING: HYPERX 0x004bb348
+        // STRING: HYPERX1001 0x004bb348
         g_gameApp.Fatal("Fatal failure to initialize the receiver of a pass!");
     }
 
@@ -7230,7 +7230,7 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 
     if (g_pGameEngine->m_nTeammateMode == 0)
     {
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         if (_mbscmp((const unsigned char*)"Human",
                     (const unsigned char*)pMate->GetPlanState()->m_pszName) == 0)
         {
@@ -7247,8 +7247,8 @@ void __cdecl PlanCond::RecvrInRangeNView(Interactor* pContext, PlanNode* pArgs, 
 #define MIDDLE_SLOT_BIAS 4
 
 // Squared distances, so the limits of ten and just under eight read as a hundred and sixty.
-// FUNCTION: HYPERX100 0x004b1e20
-// FUNCTION: HYPERX 0x00466e20
+// FUNCTION: HYPERX1000 0x004b1e20
+// FUNCTION: HYPERX1001 0x00466e20
 void __cdecl PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     float flSign;
@@ -7343,8 +7343,8 @@ void __cdecl PlanCond::ChoosePassingPlay(Interactor* pContext, PlanNode*, short*
 
 // A missing model name falls back on the shared empty name, which never matches.
 
-// FUNCTION: HYPERX100 0x004b2190
-// FUNCTION: HYPERX 0x004670a0
+// FUNCTION: HYPERX1000 0x004b2190
+// FUNCTION: HYPERX1001 0x004670a0
 void PlanCond::Ducking(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     const char* pszName;
@@ -7362,14 +7362,14 @@ void PlanCond::Ducking(Interactor* pContext, PlanNode*, short* pResult, int)
         pszName = g_pszEmptyName;
     }
 
-    // STRING: HYPERX 0x004c4664
+    // STRING: HYPERX1001 0x004c4664
     *pResult = _mbscmp((const unsigned char*)pszName, (const unsigned char*)"AA_QuikDuck") != 0;
 }
 
 // Two is added while the rok sits at its spawn slot.
 
-// FUNCTION: HYPERX100 0x004b2220
-// FUNCTION: HYPERX 0x00467110
+// FUNCTION: HYPERX1000 0x004b2220
+// FUNCTION: HYPERX1001 0x00467110
 void PlanCond::RokIsCharged(Interactor*, PlanNode*, short* pResult, int)
 {
     RokObject* const pRok = g_pGameEngine->GetRok();
@@ -7385,8 +7385,8 @@ void PlanCond::RokIsCharged(Interactor*, PlanNode*, short* pResult, int)
 
 // The collision object's kind is fetched and never read; only the rok's own word decides.
 
-// FUNCTION: HYPERX100 0x004b2260
-// FUNCTION: HYPERX 0x00467150
+// FUNCTION: HYPERX1000 0x004b2260
+// FUNCTION: HYPERX1001 0x00467150
 void PlanCond::RokIsChargedAgainst(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     RokObject* const pCarrier = g_pGameEngine->GetRok();
@@ -7405,8 +7405,8 @@ void PlanCond::RokIsChargedAgainst(Interactor* pContext, PlanNode*, short* pResu
 #define TURNSTILE_RATE 0.95f
 
 // The spin is minus ten or ten by which side of the object's velocity the actor stands on.
-// FUNCTION: HYPERX100 0x004b22f0
-// FUNCTION: HYPERX 0x004671c0
+// FUNCTION: HYPERX1000 0x004b22f0
+// FUNCTION: HYPERX1001 0x004671c0
 void __cdecl PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -7450,8 +7450,8 @@ void __cdecl PlanAction::SpinTurnstile(Interactor* pContext, PlanNode*, short*, 
 // The corridor's half width squared; marked in src/globals.cpp.
 extern float g_flInterceptCorridorSq;
 
-// FUNCTION: HYPERX100 0x004b2480
-// FUNCTION: HYPERX 0x004672d0
+// FUNCTION: HYPERX1000 0x004b2480
+// FUNCTION: HYPERX1001 0x004672d0
 void __cdecl PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -7509,8 +7509,8 @@ void __cdecl PlanCond::SpinUp(Interactor* pContext, PlanNode*, short* pResult, i
 
 #define DEG_TO_RAD 0.017453292f
 
-// FUNCTION: HYPERX100 0x004b2630
-// FUNCTION: HYPERX 0x00467410
+// FUNCTION: HYPERX1000 0x004b2630
+// FUNCTION: HYPERX1001 0x00467410
 void __cdecl PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* pObject;
@@ -7556,8 +7556,8 @@ void __cdecl PlanAction::ModifyPitch(Interactor* pContext, PlanNode* pNode, shor
 #define DRAG_BUNGEE_SECOND_RANGE 45.0f
 #define DRAG_BUNGEE_DURATION     150
 
-// FUNCTION: HYPERX100 0x004b2730
-// FUNCTION: HYPERX 0x004674e0
+// FUNCTION: HYPERX1000 0x004b2730
+// FUNCTION: HYPERX1001 0x004674e0
 void __cdecl PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* const pTarget = pContext->GetActor();
@@ -7607,8 +7607,8 @@ void __cdecl PlanAction::HookDragBungeesOn(Interactor* pContext, PlanNode* pNode
 #define ARG_KIND_MASK 2
 
 // No plan calls this; the field is the one every CTrackTraj range setup clears.
-// FUNCTION: HYPERX100 0x004b2840
-// FUNCTION: HYPERX 0x004675d0
+// FUNCTION: HYPERX1000 0x004b2840
+// FUNCTION: HYPERX1001 0x004675d0
 void PlanAction::ResetAccTransient(Interactor* pContext, PlanNode*, short*, int)
 {
     EngineObject* const pActor     = pContext->GetActor();
@@ -7620,8 +7620,8 @@ void PlanAction::ResetAccTransient(Interactor* pContext, PlanNode*, short*, int)
 // Every input device is written as a KeyboardDeviceObj, so on the 0xd28-byte gamepad, joystick and
 // mouse the mask lands past the object, as the original's writes at 0x0046763a and 0x00467649 do
 // (allocated at 0x004863f0).
-// FUNCTION: HYPERX100 0x004b2870
-// FUNCTION: HYPERX 0x004675f0
+// FUNCTION: HYPERX1000 0x004b2870
+// FUNCTION: HYPERX1001 0x004675f0
 void __cdecl PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     EngineObject* const pOwner = pContext->GetActor();
@@ -7662,8 +7662,8 @@ void __cdecl PlanAction::ResetKeystateFlags(Interactor* pContext, PlanNode* pNod
 
 #define ARG_CURVE 1
 
-// FUNCTION: HYPERX100 0x004b2970
-// FUNCTION: HYPERX 0x004676e0
+// FUNCTION: HYPERX1000 0x004b2970
+// FUNCTION: HYPERX1001 0x004676e0
 void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     float flDamage;
@@ -7694,8 +7694,8 @@ void PlanAction::IncrAnimSpeedWRating(Interactor* pContext, PlanNode* pNode, sho
 #undef ARG_PERIOD
 #define ARG_PERIOD 2
 
-// FUNCTION: HYPERX100 0x004b2a20
-// FUNCTION: HYPERX 0x00467760
+// FUNCTION: HYPERX1000 0x004b2a20
+// FUNCTION: HYPERX1001 0x00467760
 void __cdecl PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNode, short*, int)
 {
     float flScale;
@@ -7765,7 +7765,7 @@ void __cdecl PlanAction::SpeedBurstSituation(Interactor* pContext, PlanNode* pNo
 }
 
 // Eight hundred, the ceiling both squared-distance thresholds are clamped to.
-// GLOBAL: HYPERX 0x004b378c
+// GLOBAL: HYPERX1001 0x004b378c
 extern const float g_flRangeLimit;
 
 #define RATINGS_RANGE 800.0f
@@ -7773,8 +7773,8 @@ extern const float g_flRangeLimit;
 #define ONE_IN_CHANCE 8
 
 // One roll in eight inverts the answer, and a local match never attacks around a human team mate.
-// FUNCTION: HYPERX100 0x004b2c50
-// FUNCTION: HYPERX 0x00467930
+// FUNCTION: HYPERX1000 0x004b2c50
+// FUNCTION: HYPERX1001 0x00467930
 void __cdecl PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     float flSign;
@@ -7879,7 +7879,7 @@ void __cdecl PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short
 
     if (g_pGameEngine->m_nTeammateMode == 0)
     {
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         if (_mbscmp((const unsigned char*)"Human",
                     (const unsigned char*)pMate->GetPlanState()->m_pszName) == 0)
         {
@@ -7892,8 +7892,8 @@ void __cdecl PlanCond::PassOrRunByRatings(Interactor* pContext, PlanNode*, short
 
 #define BRANCH_MAX 3
 
-// FUNCTION: HYPERX100 0x004b3030
-// FUNCTION: HYPERX 0x00467c30
+// FUNCTION: HYPERX1000 0x004b3030
+// FUNCTION: HYPERX1001 0x00467c30
 void __cdecl PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* pOwner;
@@ -7981,8 +7981,8 @@ void __cdecl PlanCond::LooseRokWhatToDo(Interactor* pContext, PlanNode*, short* 
 #define PERCENT_RANGE 100
 
 // The figure is halved before the roll, so a perfect actor is capped at half the die.
-// FUNCTION: HYPERX100 0x004b3350
-// FUNCTION: HYPERX 0x00467e80
+// FUNCTION: HYPERX1000 0x004b3350
+// FUNCTION: HYPERX1001 0x00467e80
 void __cdecl PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pnResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -8006,7 +8006,7 @@ void __cdecl PlanCond::JostledDropRok(Interactor* pContext, PlanNode*, short* pn
 // While the coach's first condition flag is set the threshold is four, so the answer is zero.
 
 // The coach's thirteen condition answers, written once a frame by EngineObject::UpdateCoachAI.
-// GLOBAL: HYPERX 0x004cb70c
+// GLOBAL: HYPERX1001 0x004cb70c
 extern int g_anCoachConditions[13];
 
 // The delta the guard rejects, and the threshold the coach flag forces.
@@ -8016,8 +8016,8 @@ extern int g_anCoachConditions[13];
 #define TRACK_RATING_LIMIT   4
 #define TRACK_RATING_DEFAULT 2
 
-// FUNCTION: HYPERX100 0x004b3400
-// FUNCTION: HYPERX 0x00467f10
+// FUNCTION: HYPERX1000 0x004b3400
+// FUNCTION: HYPERX1001 0x00467f10
 void __cdecl PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* pOwner;
@@ -8093,8 +8093,8 @@ void __cdecl PlanCond::GoThroughMuliplier(Interactor* pContext, PlanNode*, short
 #define OPTION_ATTACK_MODE_ON 1
 
 // The answer is one past an ID_ATK attack; nought deploys the Rok, mine or swarf the actor carries.
-// FUNCTION: HYPERX100 0x004b3550
-// FUNCTION: HYPERX 0x00468000
+// FUNCTION: HYPERX1000 0x004b3550
+// FUNCTION: HYPERX1001 0x00468000
 void __cdecl PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PhysicsBody* pWeaponBody;
@@ -8272,8 +8272,8 @@ void __cdecl PlanCond::PickAttackMove(Interactor* pContext, PlanNode*, short* pR
 
 #define OFF_WING_JOB_MAX 2
 
-// FUNCTION: HYPERX100 0x004b3970
-// FUNCTION: HYPERX 0x004682d0
+// FUNCTION: HYPERX1000 0x004b3970
+// FUNCTION: HYPERX1001 0x004682d0
 void __cdecl PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* pOwner;
@@ -8321,8 +8321,8 @@ void __cdecl PlanCond::OffWingJob(Interactor* pContext, PlanNode*, short* pResul
 
 // Rolls over half the range while the owner is below fifty units a second.
 
-// FUNCTION: HYPERX100 0x004b3b70
-// FUNCTION: HYPERX 0x00468440
+// FUNCTION: HYPERX1000 0x004b3b70
+// FUNCTION: HYPERX1001 0x00468440
 void __cdecl PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, short* pResult, int)
 {
     Vec3 vVelocity = pContext->GetActor()->m_pBody->vel;
@@ -8341,8 +8341,8 @@ void __cdecl PlanCond::PickFlyingMove(Interactor* pContext, PlanNode* pArgs, sho
 
 // Picks one of the set bits of the seven-bit RATING_HALFPIPE_REPERTOIRE mask, with equal weight.
 
-// FUNCTION: HYPERX100 0x004b3c40
-// FUNCTION: HYPERX 0x004684e0
+// FUNCTION: HYPERX1000 0x004b3c40
+// FUNCTION: HYPERX1001 0x004684e0
 void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     int nBit   = 0;
@@ -8452,8 +8452,8 @@ void PlanCond::PickHalfpipeMove(Interactor* pContext, PlanNode*, short* pResult,
     *pResult = 6;
 }
 
-// FUNCTION: HYPERX100 0x004b3dc0
-// FUNCTION: HYPERX 0x00468610
+// FUNCTION: HYPERX1000 0x004b3dc0
+// FUNCTION: HYPERX1001 0x00468610
 void PlanCond::AvoidSpinningTurnstile(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* const pActor = pContext->GetPlayerActor();
@@ -8461,8 +8461,8 @@ void PlanCond::AvoidSpinningTurnstile(Interactor* pContext, PlanNode*, short* pR
     *pResult = (int)pActor->m_stats.GetScalar(RATING_TURNSTILE0) == 0;
 }
 
-// FUNCTION: HYPERX100 0x004b3e00
-// FUNCTION: HYPERX 0x00468640
+// FUNCTION: HYPERX1000 0x004b3e00
+// FUNCTION: HYPERX1001 0x00468640
 void PlanCond::TargetTurnstile(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = 0;
@@ -8486,8 +8486,8 @@ void PlanCond::UseRandomizer(Interactor*, PlanNode*, short* pResult, int)
 #define RANGE_DEFAULT 150
 
 // An authored range outside ten to 350 becomes 150; a local match never shoots past a human mate.
-// FUNCTION: HYPERX100 0x004b3e30
-// FUNCTION: HYPERX 0x00468650
+// FUNCTION: HYPERX1000 0x004b3e30
+// FUNCTION: HYPERX1001 0x00468650
 void __cdecl PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* pGoal;
@@ -8567,7 +8567,7 @@ void __cdecl PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pR
 
     if (g_pGameEngine->m_nTeammateMode == 0)
     {
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         if (_mbscmp((const unsigned char*)"Human",
                     (const unsigned char*)pMate->GetPlanState()->m_pszName) == 0)
         {
@@ -8577,8 +8577,8 @@ void __cdecl PlanCond::ShootSituation(Interactor* pContext, PlanNode*, short* pR
 }
 
 // Every value it fetches is discarded and the answer is always zero; the calls are the point.
-// FUNCTION: HYPERX100 0x004b40a0
-// FUNCTION: HYPERX 0x00468830
+// FUNCTION: HYPERX1000 0x004b40a0
+// FUNCTION: HYPERX1001 0x00468830
 void __cdecl PlanCond::RegroupSituation(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     PlayerObject* pOwner;
@@ -8619,8 +8619,8 @@ void __cdecl PlanCond::RegroupSituation(Interactor* pContext, PlanNode*, short* 
 #define AGGRESSION_RADIUS_MAX 400
 
 // The radius is compared against a squared distance without being squared itself.
-// FUNCTION: HYPERX100 0x004b4160
-// FUNCTION: HYPERX 0x004688d0
+// FUNCTION: HYPERX1000 0x004b4160
+// FUNCTION: HYPERX1001 0x004688d0
 void __cdecl PlanCond::AggressionOnOthers(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     Vec3*         pSecond;
@@ -8693,8 +8693,8 @@ void __cdecl PlanCond::AggressionOnOthers(Interactor* pContext, PlanNode*, short
     *pResult = 1;
 }
 
-// FUNCTION: HYPERX100 0x004b4380
-// FUNCTION: HYPERX 0x00468a60
+// FUNCTION: HYPERX1000 0x004b4380
+// FUNCTION: HYPERX1001 0x00468a60
 void PlanAction::SetShotPowerMeter(Interactor*, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_nArgCount > 1 && pArgs->m_pArgs[1].n == 1)
@@ -8707,8 +8707,8 @@ void PlanAction::SetShotPowerMeter(Interactor*, PlanNode* pArgs, short*, int)
     }
 }
 
-// FUNCTION: HYPERX100 0x004b43d0
-// FUNCTION: HYPERX 0x00468aa0
+// FUNCTION: HYPERX1000 0x004b43d0
+// FUNCTION: HYPERX1001 0x00468aa0
 void __cdecl PlanCond::NearObjectBy(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg)
 {
     const short nSlot = (short)nArg;
@@ -8733,8 +8733,8 @@ void __cdecl PlanCond::NearObjectBy(Interactor* pContext, PlanNode* pArgs, short
     *pResult = 2;
 }
 
-// FUNCTION: HYPERX100 0x004b44a0
-// FUNCTION: HYPERX 0x00468b30
+// FUNCTION: HYPERX1000 0x004b44a0
+// FUNCTION: HYPERX1001 0x00468b30
 void PlanCond::OkToGetRok(Interactor* pContext, PlanNode*, short* pResult, int nParam)
 {
     pContext->GetTargetSlot();
@@ -8760,8 +8760,8 @@ void PlanCond::OkToGetRok(Interactor* pContext, PlanNode*, short* pResult, int n
 
 // The Rok's carrier slot must name one of the four skaters; anything else answers yes.
 
-// FUNCTION: HYPERX100 0x004b4520
-// FUNCTION: HYPERX 0x00468b90
+// FUNCTION: HYPERX1000 0x004b4520
+// FUNCTION: HYPERX1001 0x00468b90
 void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -8784,8 +8784,8 @@ void PlanCond::CheckScoreOnOwnGoal(Interactor* pContext, PlanNode*, short* pResu
     }
 }
 
-// FUNCTION: HYPERX100 0x004b45a0
-// FUNCTION: HYPERX 0x00468bf0
+// FUNCTION: HYPERX1000 0x004b45a0
+// FUNCTION: HYPERX1001 0x00468bf0
 void PlanCond::Interception(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     pContext->GetTargetSlot();
@@ -8802,8 +8802,8 @@ void PlanCond::Interception(Interactor* pContext, PlanNode*, short* pResult, int
 #define RANGE_CEILING 150.0f
 #define FACING_DOT    -0.8f
 
-// FUNCTION: HYPERX100 0x004b4610
-// FUNCTION: HYPERX 0x00468c40
+// FUNCTION: HYPERX1000 0x004b4610
+// FUNCTION: HYPERX1001 0x00468c40
 void __cdecl PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* pResult, int nArg)
 {
     const unsigned int nRange = nArg;
@@ -8904,8 +8904,8 @@ void __cdecl PlanCond::RokInRange(Interactor* pContext, PlanNode* pArgs, short* 
 #define RANGE_START 600.0f
 
 // Goalies at slots four and five are never damage-gated, so they stay in the running.
-// FUNCTION: HYPERX100 0x004b48b0
-// FUNCTION: HYPERX 0x00468e50
+// FUNCTION: HYPERX1000 0x004b48b0
+// FUNCTION: HYPERX1001 0x00468e50
 void __cdecl PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult, int)
 {
     EngineObject* apActor[PLAYER_OBJECT_COUNT];
@@ -9010,15 +9010,15 @@ void __cdecl PlanCond::ClosestDromerToRok(Interactor*, PlanNode*, short* pResult
     }
 }
 
-// FUNCTION: HYPERX100 0x004b4c50
-// FUNCTION: HYPERX 0x00469110
+// FUNCTION: HYPERX1000 0x004b4c50
+// FUNCTION: HYPERX1001 0x00469110
 void PlanCond::SoundBank(Interactor*, PlanNode*, short* pResult, int)
 {
     *pResult = PlanUtil::CheckSequenceStep((unsigned int)-1) == 0;
 }
 
-// FUNCTION: HYPERX100 0x004a1c70
-// FUNCTION: HYPERX 0x00469130
+// FUNCTION: HYPERX1000 0x004a1c70
+// FUNCTION: HYPERX1001 0x00469130
 void PlanCond::HomeOrAwayTeam(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -9034,8 +9034,8 @@ void PlanCond::BodyPartAnimation(Interactor* pContext, PlanNode*, short* pResult
     *pResult = (signed char)(pActor->GetSlot() & 1);
 }
 
-// FUNCTION: HYPERX100 0x004b4cb0
-// FUNCTION: HYPERX 0x00469150
+// FUNCTION: HYPERX1000 0x004b4cb0
+// FUNCTION: HYPERX1001 0x00469150
 void PlanCond::WinningOrLosing(Interactor* pContext, PlanNode*, short* pResult, int)
 {
     EngineObject* const pActor = pContext->GetActor();
@@ -9046,8 +9046,8 @@ void PlanCond::WinningOrLosing(Interactor* pContext, PlanNode*, short* pResult, 
 
 // A network session always answers two.
 
-// FUNCTION: HYPERX100 0x004b4cf0
-// FUNCTION: HYPERX 0x00469180
+// FUNCTION: HYPERX1000 0x004b4cf0
+// FUNCTION: HYPERX1001 0x00469180
 void __cdecl PlanCond::IsDromerKnockedDown(Interactor*, PlanNode* pArgs, short* pResult, int nDefault)
 {
     int nSlot = pArgs->m_pArgs[1].pNode->m_pArgs[0].n;
@@ -9075,8 +9075,8 @@ void __cdecl PlanCond::IsDromerKnockedDown(Interactor*, PlanNode* pArgs, short* 
     }
 }
 
-// FUNCTION: HYPERX100 0x004b4de0
-// FUNCTION: HYPERX 0x00469240
+// FUNCTION: HYPERX1000 0x004b4de0
+// FUNCTION: HYPERX1001 0x00469240
 void __cdecl PlanCond::IsDromerInjured(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPrevSlot)
 {
     const PlanWord arg = pArgs->m_pArgs[1].pNode->m_pArgs[0];
@@ -9110,8 +9110,8 @@ void __cdecl PlanCond::IsDromerInjured(Interactor* pContext, PlanNode* pArgs, sh
     *pResult = 2;
 }
 
-// FUNCTION: HYPERX100 0x004b4ef0
-// FUNCTION: HYPERX 0x00469310
+// FUNCTION: HYPERX1000 0x004b4ef0
+// FUNCTION: HYPERX1001 0x00469310
 void __cdecl PlanCond::CheckRenderFlag(Interactor* pContext, PlanNode* pArgs, short* pResult, int nPrevSlot)
 {
     const PlanWord arg = pArgs->m_pArgs[1].pNode->m_pArgs[0];
@@ -9142,22 +9142,22 @@ void __cdecl PlanCond::CheckRenderFlag(Interactor* pContext, PlanNode* pArgs, sh
 }
 
 // 2.2, about a unit and a half either side of a slot's line.
-// GLOBAL: HYPERX 0x004c4568
+// GLOBAL: HYPERX1001 0x004c4568
 extern float g_flInterceptCorridorSq;
 float        g_flInterceptCorridorSq = 2.2f;
 
 // Out of line, so the linker folds these empty bodies onto Stub::Assert, as the original's did.
-// FUNCTION: HYPERX100 0x004a8be0
+// FUNCTION: HYPERX1000 0x004a8be0
 void PlanCond::AnalyzePadC(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004ab140
+// FUNCTION: HYPERX1000 0x004ab140
 void PlanCond::TryForKillball(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004ab150
+// FUNCTION: HYPERX1000 0x004ab150
 void PlanCond::TargetAcquired(Interactor*, PlanNode*, short*, int)
 {
 }

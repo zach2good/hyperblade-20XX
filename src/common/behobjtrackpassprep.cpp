@@ -4,24 +4,24 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
-// FUNCTION: HYPERX100 0x004cd1f0
-// FUNCTION: HYPERX 0x0041ea60
+// FUNCTION: HYPERX1000 0x004cd1f0
+// FUNCTION: HYPERX1001 0x0041ea60
 BehObj_TrackPassPrep::BehObj_TrackPassPrep()
 {
 }
 
-// FUNCTION: HYPERX 0x0041eaa0
+// FUNCTION: HYPERX1001 0x0041eaa0
 BehObj_TrackPassPrep::~BehObj_TrackPassPrep()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cd310
-// FUNCTION: HYPERX 0x0041eab0
+// FUNCTION: HYPERX1000 0x004cd310
+// FUNCTION: HYPERX1001 0x0041eab0
 void BehObj_TrackPassPrep::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForTrackPassPrep();
 
-    // STRING: HYPERX 0x004bc3b4
+    // STRING: HYPERX1001 0x004bc3b4
     m_pszName = "TrackPassPrep";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

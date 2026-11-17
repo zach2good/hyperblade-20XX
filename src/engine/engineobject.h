@@ -43,7 +43,7 @@ struct Vec3;
 #define COMMAND_SET_BEHAVIOR          (-3)
 
 // 0xd14 bytes, where every derived class puts its first field; offsets past it are per class.
-// VTABLE: HYPERX 0x004b38f0
+// VTABLE: HYPERX1001 0x004b38f0
 class EngineObject : public ObjectBase
 {
 public:
@@ -98,7 +98,7 @@ public:
 
     // Slots twenty six to thirty one, which the base's table does not have.
     // The original folds this with every bare `ret` at 0x00416e30, so it carries no marker.
-    // FUNCTION: HYPERX100 0x00460c90
+    // FUNCTION: HYPERX1000 0x00460c90
     virtual void Postpass()
     {
     }
@@ -311,11 +311,11 @@ public:
     static void __cdecl CoachUpdate(class EngineObject* pActor);
 };
 
-// SYNTHETIC: HYPERX 0x00472720
+// SYNTHETIC: HYPERX1001 0x00472720
 // EngineObject::`scalar deleting destructor'
 
 // The atexit thunk for UpdateRenderSlotTransform's scratch transform.
-// SYNTHETIC: HYPERX 0x004716e0
+// SYNTHETIC: HYPERX1001 0x004716e0
 // $E14
 
 #endif

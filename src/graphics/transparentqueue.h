@@ -11,20 +11,20 @@ struct TransparentEntry
 };
 
 // The entry a component builds before it is pushed.
-// GLOBAL: HYPERX 0x004d0510
+// GLOBAL: HYPERX1001 0x004d0510
 extern TransparentEntry g_renderPushEntry;
 
-// GLOBAL: HYPERX 0x004cb5b8
+// GLOBAL: HYPERX1001 0x004cb5b8
 extern TransparentEntry g_transparentSiftEntry;
 
 // How many entries the queue was last built for, which is not the same as how many are in it.
-// GLOBAL: HYPERX 0x004cb5c4
+// GLOBAL: HYPERX1001 0x004cb5c4
 extern short g_nTransparentCapacity;
 
-// GLOBAL: HYPERX 0x004cb5c8
+// GLOBAL: HYPERX1001 0x004cb5c8
 extern TransparentEntry* g_pTransparentQueue;
 
-// GLOBAL: HYPERX 0x004cb5cc
+// GLOBAL: HYPERX1001 0x004cb5cc
 extern short g_nTransparentCount;
 
 #endif

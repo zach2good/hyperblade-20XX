@@ -26,7 +26,7 @@ def annotated():
     out = set()
     for path in glob.glob('src/**/*.cpp', recursive=True) + glob.glob('src/**/*.h', recursive=True):
         text = open(path, encoding='utf-8', newline='').read()
-        for hit in re.finditer(r'//\s*(FUNCTION|LIBRARY|STUB):\s*HYPERX\s+0x([0-9a-fA-F]{8})',
+        for hit in re.finditer(r'//\s*(FUNCTION|LIBRARY|STUB):\s*HYPERX1001\s+0x([0-9a-fA-F]{8})',
                                text):
             out.add(int(hit.group(2), 16))
     return out

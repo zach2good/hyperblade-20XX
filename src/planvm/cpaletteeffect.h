@@ -7,7 +7,7 @@
 class EngineObject;
 
 // Slot 0 is the shared deleting destructor; slot 8 shares CAvoidObjects::IsReplaceable's body.
-// VTABLE: HYPERX 0x004b20ac
+// VTABLE: HYPERX1001 0x004b20ac
 class CPaletteEffect : public ReleasingAgendaItem
 {
 public:
@@ -21,7 +21,7 @@ public:
     virtual void Process(int nArg);
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
 
-    // FUNCTION: HYPERX100 0x00425150
+    // FUNCTION: HYPERX1000 0x00425150
     virtual char IsReplaceable()
     {
         return 1;

@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "src")
 
 # Comment lines may sit between the marker and the class it pins.
-PIN = re.compile("// *(?:VTABLE: *HYPERX +(0x[0-9a-fA-F]+)|SLOT TABLE +(0x[0-9a-fA-F]+))"
+PIN = re.compile("// *(?:VTABLE: *HYPERX1001 +(0x[0-9a-fA-F]+)|SLOT TABLE +(0x[0-9a-fA-F]+))"
                  + r"[^" + chr(10) + r"]*" + chr(10)
                  + r"(?://[^" + chr(10) + r"]*" + chr(10) + r")*"
                  + r"(?:class|struct) ([0-9A-Za-z_]+)")

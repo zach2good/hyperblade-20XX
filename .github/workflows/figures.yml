@@ -44,7 +44,7 @@ jobs:
       - name: Name the original
         shell: bash
         run: |
-          printf 'targets:\n  HYPERX:\n    path: %s\n' "$(pwd -W)/reference/v1.0.0.1/HYPERX.EXE" > reccmp-user.yml
+          printf 'targets:\n  HYPERX1001:\n    path: %s\n' "$(pwd -W)/reference/v1.0.0.1/HYPERX.EXE" > reccmp-user.yml
           python tools/reference.py
 
       - name: Install reccmp
@@ -64,7 +64,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          python tools/foldcmp.py --target HYPERX --json build/report.json --silent
+          python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
           python tools/check_readme.py --write
           python tools/status_card.py
           python tools/check_readme.py --strict

@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b263c
+// VTABLE: HYPERX1001 0x004b263c
 class BehObj_UpdateRelativePos : public SurfaceBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_UpdateRelativePos();
 };
 
-// SYNTHETIC: HYPERX 0x0041d8b0
+// SYNTHETIC: HYPERX1001 0x0041d8b0
 // BehObj_UpdateRelativePos::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_UpdateRelativePos) == 0x98);

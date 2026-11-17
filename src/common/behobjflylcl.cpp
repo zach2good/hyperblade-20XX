@@ -6,24 +6,24 @@
 #include "engine/engineobject.h"
 #include "planvm/cprojectandbounce.h"
 
-// FUNCTION: HYPERX100 0x004cb720
-// FUNCTION: HYPERX 0x0041dd40
+// FUNCTION: HYPERX1000 0x004cb720
+// FUNCTION: HYPERX1001 0x0041dd40
 BehObj_FlyLCL::BehObj_FlyLCL()
 {
 }
 
-// FUNCTION: HYPERX 0x0041dd80
+// FUNCTION: HYPERX1001 0x0041dd80
 BehObj_FlyLCL::~BehObj_FlyLCL()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cb840
-// FUNCTION: HYPERX 0x0041dd90
+// FUNCTION: HYPERX1000 0x004cb840
+// FUNCTION: HYPERX1001 0x0041dd90
 void BehObj_FlyLCL::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForFly();
 
-    // STRING: HYPERX 0x004bc300
+    // STRING: HYPERX1001 0x004bc300
     m_pszName = "FlyLCL";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

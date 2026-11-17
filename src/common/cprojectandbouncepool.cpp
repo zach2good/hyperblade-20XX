@@ -4,8 +4,8 @@
 #include "planvm/cprojectandbounce.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004214c0
-// FUNCTION: HYPERX 0x00412d90
+// FUNCTION: HYPERX1000 0x004214c0
+// FUNCTION: HYPERX1001 0x00412d90
 void CProjectAndBouncePool::Init()
 {
     AgendaItem* pNode = new CProjectAndBounce;
@@ -34,8 +34,8 @@ char CProjectAndBouncePool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423f90
-// FUNCTION: HYPERX 0x00412e70
+// FUNCTION: HYPERX1000 0x00423f90
+// FUNCTION: HYPERX1001 0x00412e70
 void* CProjectAndBouncePool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CProjectAndBouncePool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00414f60
+// FUNCTION: HYPERX1001 0x00414f60
 CProjectAndBouncePool::~CProjectAndBouncePool()
 {
     while (m_pHead != 0)

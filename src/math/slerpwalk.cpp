@@ -5,7 +5,7 @@
 #include "slerpseg.h"
 #include <math.h>
 
-// FUNCTION: HYPERX100 0x004a2c20
+// FUNCTION: HYPERX1000 0x004a2c20
 void SlerpWalk::StepBack()
 {
     SlerpSeg* const pSeg = m_pSeg;

@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c88b0
-// FUNCTION: HYPERX 0x0041ec50
+// FUNCTION: HYPERX1000 0x004c88b0
+// FUNCTION: HYPERX1001 0x0041ec50
 void BehObjGlideToObjectPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_GlideToObject;
@@ -24,8 +24,8 @@ void BehObjGlideToObjectPool::Init()
 }
 
 // Every behaviour pool's copy folds onto this one; v1.0.0.0 keeps them apart.
-// FUNCTION: HYPERX100 0x004c89d0
-// FUNCTION: HYPERX 0x0041ed00
+// FUNCTION: HYPERX1000 0x004c89d0
+// FUNCTION: HYPERX1001 0x0041ed00
 char BehObjGlideToObjectPool::Insert(void* pNode)
 {
     GameBehaviorObject* const pItem = (GameBehaviorObject*)pNode;
@@ -36,8 +36,8 @@ char BehObjGlideToObjectPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c9ef0
-// FUNCTION: HYPERX 0x0041ed20
+// FUNCTION: HYPERX1000 0x004c9ef0
+// FUNCTION: HYPERX1001 0x0041ed20
 void* BehObjGlideToObjectPool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -53,7 +53,7 @@ void* BehObjGlideToObjectPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00420970
+// FUNCTION: HYPERX1001 0x00420970
 BehObjGlideToObjectPool::~BehObjGlideToObjectPool()
 {
     while (m_pHead != 0)

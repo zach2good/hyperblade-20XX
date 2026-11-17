@@ -21,7 +21,7 @@ import urllib.request
 
 from ghidra_api import BASE  # noqa: E402
 
-MARKER = re.compile(r'//\s*GLOBAL:\s*HYPERX\s+0x([0-9a-fA-F]{8})')
+MARKER = re.compile(r'//\s*GLOBAL:\s*HYPERX1001\s+0x([0-9a-fA-F]{8})')
 NAME = re.compile(r'([A-Za-z_][A-Za-z0-9_]*)\s*(?:\[[^\]]*\]\s*)*[;={]')
 
 # What may stand in front of the name in a definition: a type, and nothing else. It has to

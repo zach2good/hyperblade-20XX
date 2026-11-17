@@ -12,7 +12,7 @@ but does not fail the run; it is usually an unmarked scalar-deleting destructor.
 
 To diff one table slot by slot with reccmp:
 
-    python tools/foldcmp.py --target HYPERX --verbose 0x4b323c --no-color
+    python tools/foldcmp.py --target HYPERX1001 --verbose 0x4b323c --no-color
 
     python tools/vtable_slots.py                   # every table with a suspect slot
     python tools/vtable_slots.py --table 0x4b3370  # one table, every slot
@@ -120,7 +120,7 @@ def read_markers():
     bases = {}
     virtuals = {}
 
-    marker = re.compile(r"//\s*(VTABLE|FUNCTION):\s*HYPERX\s+0x([0-9a-fA-F]+)")
+    marker = re.compile(r"//\s*(VTABLE|FUNCTION):\s*HYPERX1001\s+0x([0-9a-fA-F]+)")
     declared = re.compile(r"^\s*(?:class|struct)\s+(\w+)\s*(?::\s*(.+?))?\s*$")
     defined = re.compile(r"([\w~]+)::([\w~]+)\s*\(")
     inherit = re.compile(r"(?:public|protected|private)?\s*(\w+)")

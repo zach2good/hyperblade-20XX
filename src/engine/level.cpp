@@ -21,12 +21,12 @@
 #define GROUP_PRODUCT_MAX 0xffff
 
 // The node counts and behaviour groups the network host sends, one record per stationary slot.
-// GLOBAL: HYPERX 0x004ce6e4
+// GLOBAL: HYPERX1001 0x004ce6e4
 extern StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS];
 
 // Plan chains are counted to at most 256 nodes; four accumulators hold the addressing budget.
-// FUNCTION: HYPERX100 0x00493380
-// FUNCTION: HYPERX 0x004415f0
+// FUNCTION: HYPERX1000 0x00493380
+// FUNCTION: HYPERX1001 0x004415f0
 int __stdcall Level::IndexStationaryObjects(void)
 {
     int aAcc[4];
@@ -51,7 +51,7 @@ int __stdcall Level::IndexStationaryObjects(void)
                             g_nStationaryCount = 0;
 
                             g_gameApp.Error(
-                                // STRING: HYPERX 0x004c19c0
+                                // STRING: HYPERX1001 0x004c19c0
                                 "Too many stationary objects for the network buffers");
 
                             return 0;
@@ -63,7 +63,7 @@ int __stdcall Level::IndexStationaryObjects(void)
 
                         if (g_pGameEngine->m_ppSlots[(short)nIndex]->m_nPlanCount != 1)
                         {
-                            // STRING: HYPERX 0x004c1990
+                            // STRING: HYPERX1001 0x004c1990
                             g_gameApp.Fatal("Static model %d:-%s- has more than one plan\n",
                                             nIndex,
                                             g_pGameEngine->m_ppSlots[(short)nIndex]
@@ -94,7 +94,7 @@ int __stdcall Level::IndexStationaryObjects(void)
                             if (nGroup > STATIONARY_GROUPS)
                             {
                                 g_gameApp.Error(
-                                    // STRING: HYPERX 0x004c195c
+                                    // STRING: HYPERX1001 0x004c195c
                                     "Too many behaviors for static objects (for network)");
 
                                 return 0;
@@ -119,8 +119,8 @@ int __stdcall Level::IndexStationaryObjects(void)
 }
 
 // Checks that both ends of a network match built the same arena.
-// FUNCTION: HYPERX100 0x00494200
-// FUNCTION: HYPERX 0x00442140
+// FUNCTION: HYPERX1000 0x00494200
+// FUNCTION: HYPERX1001 0x00442140
 int __cdecl Level::ValidateArenaObjects(SyncBlocks*, SyncBlocks* pRemote)
 {
     const SyncSettingsBlock* pLevel = pRemote->Settings();
@@ -128,9 +128,9 @@ int __cdecl Level::ValidateArenaObjects(SyncBlocks*, SyncBlocks* pRemote)
     if (pLevel->nSlotCount != (unsigned char)g_nStationaryCount)
     {
         g_gameApp.Error(
-            // STRING: HYPERX 0x004c1bb8
+            // STRING: HYPERX1001 0x004c1bb8
             "%s Arena object count has %d instead of %d\nChange arenas and teams, then try again\n",
-            // STRING: HYPERX 0x004c1208
+            // STRING: HYPERX1001 0x004c1208
             "Network connection failed because HOST and CLIENT had different asset files.\n",
             g_nStationaryCount,
             pLevel->nSlotCount);
@@ -143,9 +143,9 @@ int __cdecl Level::ValidateArenaObjects(SyncBlocks*, SyncBlocks* pRemote)
         if (pLevel->aSlots[nIndex] != (unsigned char)g_aStationarySlots[nIndex])
         {
             g_gameApp.Error(
-                // STRING: HYPERX 0x004c1b90
+                // STRING: HYPERX1001 0x004c1b90
                 "%s REF object %d is %d instead of %d\n",
-                // STRING: HYPERX 0x004c1208
+                // STRING: HYPERX1001 0x004c1208
                 "Network connection failed because HOST and CLIENT had different asset files.\n",
                 nIndex,
                 g_aStationarySlots[nIndex],

@@ -15,25 +15,25 @@
 
 #define DEGREES_PER_TURN 360
 
-// GLOBAL: HYPERX 0x004d0990
+// GLOBAL: HYPERX1001 0x004d0990
 extern char g_szDebugLightLine[0x64];
 
-// GLOBAL: HYPERX 0x004c67b8
+// GLOBAL: HYPERX1001 0x004c67b8
 extern const float g_flDebugLightDistance;
 
-// GLOBAL: HYPERX 0x004d0a70
+// GLOBAL: HYPERX1001 0x004d0a70
 extern CDDTextSurface* g_pDebugLightRangePanel;
 
-// GLOBAL: HYPERX 0x004d0a74
+// GLOBAL: HYPERX1001 0x004d0a74
 extern CDDTextSurface* g_pDebugLightAnglePanel;
 
-// FUNCTION: HYPERX100 0x00473ab0
-// FUNCTION: HYPERX 0x0047ab90
+// FUNCTION: HYPERX1000 0x00473ab0
+// FUNCTION: HYPERX1001 0x0047ab90
 void DebugHUD::UpdateLightingInfo(void)
 {
     int nLength;
 
-    // STRING: HYPERX 0x004c67fc
+    // STRING: HYPERX1001 0x004c67fc
     nLength = sprintf(g_szDebugLightLine, "Light: Distance  %0.2f Attenuation %0.2f", g_flDebugLightDistance, g_flLightAttenuation);
 
     DebugHUD::PushLightString(g_szDebugLightLine, (short)nLength);
@@ -61,7 +61,7 @@ void DebugHUD::UpdateLightingInfo(void)
         pPanel->RestoreContents();
     }
 
-    // STRING: HYPERX 0x004c67c8
+    // STRING: HYPERX1001 0x004c67c8
     nLength = sprintf(g_szDebugLightLine, "Light: Elevation Angle  %03d Azimuth Angle  %03d", (int)((g_flHalfPi + g_gameApp.m_vLightSpherical.z) / g_flDegToRad) % DEGREES_PER_TURN, (int)(g_gameApp.m_vLightSpherical.x / g_flDegToRad) % DEGREES_PER_TURN);
 
     DebugHUD::PushLightString(g_szDebugLightLine, (short)nLength);
@@ -90,8 +90,8 @@ void DebugHUD::UpdateLightingInfo(void)
     }
 }
 
-// FUNCTION: HYPERX100 0x00487470
-// FUNCTION: HYPERX 0x0047ae10
+// FUNCTION: HYPERX1000 0x00487470
+// FUNCTION: HYPERX1001 0x0047ae10
 void __cdecl DebugHUD::PushLightString(const char* pszSource, short nLength)
 {
     if (g_nDebugLineNext == 10)

@@ -12,8 +12,8 @@ shorter body is scored against the original's whole tail and a longer one never 
 
 Takes asmcmp's arguments unchanged:
 
-    python tools/foldcmp.py --target HYPERX --json build/report.json --silent
-    python tools/foldcmp.py --target HYPERX --verbose 0x004b3794 --no-color
+    python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
+    python tools/foldcmp.py --target HYPERX1001 --verbose 0x004b3794 --no-color
     python tools/foldcmp.py --selftest
 """
 

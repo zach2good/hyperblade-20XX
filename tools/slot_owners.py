@@ -65,7 +65,7 @@ def poolTables():
 
 
 # A marked body and its signature, which may wrap, up to the opening brace.
-BODY = re.compile(r"// FUNCTION: HYPERX (0x00[0-9a-fA-F]{6})" + chr(10)
+BODY = re.compile(r"// FUNCTION: HYPERX1001 (0x00[0-9a-fA-F]{6})" + chr(10)
                   + r"([^" + chr(10) + r"]*" + chr(10) + r"?[^{]*)\{")
 
 

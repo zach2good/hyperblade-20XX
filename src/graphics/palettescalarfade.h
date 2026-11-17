@@ -5,7 +5,7 @@
 
 #include "common/compat.h"
 
-// VTABLE: HYPERX 0x004b2b6c
+// VTABLE: HYPERX1001 0x004b2b6c
 class PaletteScalarFade : public PaletteFade
 {
 public:

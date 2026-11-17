@@ -20,7 +20,7 @@ union FloatWord
 };
 
 // Angles are in degrees; each matrix cell packs to 16 bits, the inverse of UnpackFixed16ToFloat.
-// FUNCTION: HYPERX 0x00416ba0
+// FUNCTION: HYPERX1001 0x00416ba0
 void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOutput, short nFrames, const AnimClipHeader* pHeader, TransformObject* pTempXform)
 {
     const float*    pFrameEuler = pInputEulers;
@@ -114,7 +114,7 @@ void __cdecl Anim::EulerToMatrix(const float* pInputEulers, PackedRotation* pOut
 // bit fifteen picks the sign. The values are a three by three block written into rows of four.
 // Why assembly: C cannot load a word into AX without clearing the rest of EAX, nor branch on the
 // bit a shift leaves in the carry.
-// FUNCTION: HYPERX 0x00416cf0
+// FUNCTION: HYPERX1001 0x00416cf0
 void __cdecl Anim::UnpackFixed16ToFloat(const PackedRotation* pIn, float* pOut)
 {
     __asm

@@ -62,7 +62,7 @@ def compared_sizes():
     # from_target prints one line per duplicate STRING annotation; silence it.
     noise = io.StringIO()
     with contextlib.redirect_stdout(noise):
-        compare = Compare.from_target(project.get('HYPERX'))
+        compare = Compare.from_target(project.get('HYPERX1001'))
     ratios = {}
     with open(REPORT, encoding='utf-8') as handle:
         for row in json.load(handle)['data']:
@@ -98,7 +98,7 @@ def main():
 
     if not os.path.exists(REPORT):
         print('no build/report.json. Run:')
-        print('  python tools/foldcmp.py --target HYPERX --json build/report.json --silent')
+        print('  python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent')
         return 1
 
     sizes = inventory()

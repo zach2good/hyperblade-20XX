@@ -20,7 +20,7 @@ from ghidra_api import BASE
 from reference import reference_path
 
 EXE = reference_path()
-MARKER = re.compile(r'//\s*(FUNCTION|STUB|GLOBAL|VTABLE|STRING):\s*HYPERX\s+0x([0-9a-fA-F]{8})')
+MARKER = re.compile(r'//\s*(FUNCTION|STUB|GLOBAL|VTABLE|STRING):\s*HYPERX1001\s+0x([0-9a-fA-F]{8})')
 
 
 def sections():

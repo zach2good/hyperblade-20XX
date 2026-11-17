@@ -20,8 +20,8 @@
 #define SPLASH_SUBBLOCK_STRING 0x3c
 #define SPLASH_FACE_STRING     0x3d
 
-// FUNCTION: HYPERX100 0x004be2c0
-// FUNCTION: HYPERX 0x004070b0
+// FUNCTION: HYPERX1000 0x004be2c0
+// FUNCTION: HYPERX1001 0x004070b0
 BOOL CALLBACK SplashDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {
     switch (nMsg)
@@ -48,8 +48,8 @@ BOOL CALLBACK SplashDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
     return FALSE;
 }
 
-// FUNCTION: HYPERX100 0x004be3b0
-// FUNCTION: HYPERX 0x00407150
+// FUNCTION: HYPERX1000 0x004be3b0
+// FUNCTION: HYPERX1001 0x00407150
 BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
 {
     DWORD dwHandle;
@@ -116,8 +116,8 @@ BOOL __cdecl SplashDialog::OnInitDialog(HWND hDlg, UINT, LONG)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004be680
-// FUNCTION: HYPERX 0x00407360
+// FUNCTION: HYPERX1000 0x004be680
+// FUNCTION: HYPERX1001 0x00407360
 int SplashDialog::OnCommand(HWND hDlg, int nId, LONG, int)
 {
     switch (nId)
@@ -133,8 +133,8 @@ int SplashDialog::OnCommand(HWND hDlg, int nId, LONG, int)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x004be6d0
-// FUNCTION: HYPERX 0x004073a0
+// FUNCTION: HYPERX1000 0x004be6d0
+// FUNCTION: HYPERX1001 0x004073a0
 BOOL __cdecl SplashDialog::PaintSplashBitmap(HWND hDlg)
 {
     HPALETTE hPalette;
@@ -144,7 +144,7 @@ BOOL __cdecl SplashDialog::PaintSplashBitmap(HWND hDlg)
 
     if (GetDlgItem(hDlg, ID_SPLASH_PLAY) == 0)
     {
-        // STRING: HYPERX 0x004bb3ac
+        // STRING: HYPERX1001 0x004bb3ac
         const HBITMAP hBitmap = GDI::LoadBitmapWithPalette("Final512", &hPalette);
 
         if (hBitmap != 0)
@@ -186,8 +186,8 @@ BOOL __cdecl SplashDialog::PaintSplashBitmap(HWND hDlg)
     return bPainted;
 }
 
-// FUNCTION: HYPERX100 0x0048fc70
-// FUNCTION: HYPERX 0x0044d320
+// FUNCTION: HYPERX1000 0x0048fc70
+// FUNCTION: HYPERX1001 0x0044d320
 void SplashDialog::ShowAbout(HINSTANCE hInstance, HWND hWnd)
 {
     switch (DialogBoxParamA(hInstance, MAKEINTRESOURCEA(DIALOG_SPLASH), hWnd, SplashDialog::Proc, 0))

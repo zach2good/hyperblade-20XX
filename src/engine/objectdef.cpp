@@ -7,8 +7,8 @@
 #include "gameengine.h"
 #include "physics/bubblecmd.h"
 
-// FUNCTION: HYPERX100 0x004daeb0
-// FUNCTION: HYPERX 0x00484580
+// FUNCTION: HYPERX1000 0x004daeb0
+// FUNCTION: HYPERX1001 0x00484580
 ObjectDef::ObjectDef(const char* pszModel)
 {
     m_pszModel       = 0;
@@ -42,8 +42,8 @@ ObjectDef::ObjectDef(const char* pszModel)
     }
 }
 
-// FUNCTION: HYPERX100 0x004daf80
-// FUNCTION: HYPERX 0x00484660
+// FUNCTION: HYPERX1000 0x004daf80
+// FUNCTION: HYPERX1001 0x00484660
 ObjectDef::~ObjectDef()
 {
     m_nTypeId = 0;

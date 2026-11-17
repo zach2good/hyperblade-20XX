@@ -25,7 +25,7 @@
 #include "engine/messageids.h"
 
 // The aim point the camera springs at, rebuilt every frame.
-// GLOBAL: HYPERX 0x004cb3b8
+// GLOBAL: HYPERX1001 0x004cb3b8
 extern Vec3 g_vCamPasserAim;
 
 // Two: the aim point's added height and the fresh acceleration's factor. Marker in ctracktraj.cpp.
@@ -36,8 +36,8 @@ extern const float g_flFourTracking;
 
 HYPERBLADE_FIELD_AT(CTrackPasser_Receiver, m_pReceiverPos, 0x10);
 
-// FUNCTION: HYPERX100 0x004860e0
-// FUNCTION: HYPERX 0x0040aec0
+// FUNCTION: HYPERX1000 0x004860e0
+// FUNCTION: HYPERX1001 0x0040aec0
 void CTrackPasser_Receiver::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext        = 0;
@@ -53,8 +53,8 @@ void CTrackPasser_Receiver::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flSeed      = g_flZeroTracking;
 }
 
-// FUNCTION: HYPERX100 0x00486150
-// FUNCTION: HYPERX 0x0040af20
+// FUNCTION: HYPERX1000 0x00486150
+// FUNCTION: HYPERX1001 0x0040af20
 void CTrackPasser_Receiver::OnListChanged()
 {
     if (m_bReady == 0)
@@ -75,8 +75,8 @@ void CTrackPasser_Receiver::OnListChanged()
 }
 
 // A carrier turning across the camera drags the aim point sideways.
-// FUNCTION: HYPERX100 0x004861a0
-// FUNCTION: HYPERX 0x0040af60
+// FUNCTION: HYPERX1000 0x004861a0
+// FUNCTION: HYPERX1001 0x0040af60
 void CTrackPasser_Receiver::Process(int nArg)
 {
     Vec3 vAxis;
@@ -90,7 +90,7 @@ void CTrackPasser_Receiver::Process(int nArg)
 
     if (pTracked == 0)
     {
-        // STRING: HYPERX 0x004bb55c
+        // STRING: HYPERX1001 0x004bb55c
         g_gameApp.Fatal("CTrackPasser_Receiver::Process(): Null pointer for model to track\n");
     }
 

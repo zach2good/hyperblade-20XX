@@ -43,7 +43,7 @@ def engine():
     if not project:
         raise SystemExit("no reccmp project at %s" % ROOT)
 
-    target = project.get("HYPERX")
+    target = project.get("HYPERX1001")
 
     for path in (target.original_path, target.recompiled_path, target.recompiled_pdb):
         if not Path(path).is_file():

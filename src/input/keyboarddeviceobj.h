@@ -8,7 +8,7 @@
 #include "common/staticassert.h"
 #include "engine/gameengine.h"
 
-// VTABLE: HYPERX 0x004b34e4
+// VTABLE: HYPERX1001 0x004b34e4
 class KeyboardDeviceObj : public DeviceObject
 {
 public:
@@ -42,7 +42,7 @@ public:
     static unsigned int* LoadBindingsFromIni(void);
 };
 
-// SYNTHETIC: HYPERX 0x0045d090
+// SYNTHETIC: HYPERX1001 0x0045d090
 // KeyboardDeviceObj::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(KeyboardDeviceObj) == 0xe78);

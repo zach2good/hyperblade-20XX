@@ -4,8 +4,8 @@
 #include "engine/cexplosionanimation.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041d7c0
-// FUNCTION: HYPERX 0x00414b10
+// FUNCTION: HYPERX1000 0x0041d7c0
+// FUNCTION: HYPERX1001 0x00414b10
 void CExplosionAnimationPool::Init()
 {
     AgendaItem* pNode = new CExplosionAnimation;
@@ -34,8 +34,8 @@ char CExplosionAnimationPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004220c0
-// FUNCTION: HYPERX 0x00414ba0
+// FUNCTION: HYPERX1000 0x004220c0
+// FUNCTION: HYPERX1001 0x00414ba0
 void* CExplosionAnimationPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CExplosionAnimationPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00416220
+// FUNCTION: HYPERX1001 0x00416220
 CExplosionAnimationPool::~CExplosionAnimationPool()
 {
     while (m_pHead != 0)

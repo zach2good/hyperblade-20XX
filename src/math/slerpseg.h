@@ -37,7 +37,7 @@ public:
     Quat  m_q1Div;
 };
 
-// FUNCTION: HYPERX100 0x00439600
+// FUNCTION: HYPERX1000 0x00439600
 inline SlerpSeg::~SlerpSeg()
 {
 }

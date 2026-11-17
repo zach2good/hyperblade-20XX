@@ -5,8 +5,8 @@
 #include "net/movecodec.h"
 #include "net/movescaleflags.h"
 
-// FUNCTION: HYPERX100 0x0044b200
-// FUNCTION: HYPERX 0x0042bef0
+// FUNCTION: HYPERX1000 0x0044b200
+// FUNCTION: HYPERX1001 0x0042bef0
 void __cdecl MoveCodec::Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVelocity)
 {
     MoveVelocityWord velocity;
@@ -66,8 +66,8 @@ void __cdecl MoveCodec::Decode(const PackedMove* pIn, Vec3* pPosition, Vec3* pVe
 
 // A component shifted past 31 bits is stored as zero; an out-of-range exponent refuses the move.
 
-// FUNCTION: HYPERX100 0x0044b450
-// FUNCTION: HYPERX 0x0042c030
+// FUNCTION: HYPERX1000 0x0044b450
+// FUNCTION: HYPERX1001 0x0042c030
 int __cdecl MoveCodec::Encode(PackedMove* pOut, const Vec3* pPosition, const Vec3* pVelocity)
 {
     unsigned int nPosExp;

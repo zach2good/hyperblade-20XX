@@ -19,8 +19,8 @@ float              g_flUnusedSurface2C = g_flZeroSurface2;
 
 // The multibyte compare. See library.h.
 
-// FUNCTION: HYPERX100 0x004b8d80
-// FUNCTION: HYPERX 0x0044f140
+// FUNCTION: HYPERX1000 0x004b8d80
+// FUNCTION: HYPERX1001 0x0044f140
 RLESpriteSurface::~RLESpriteSurface()
 {
     if (m_pSprite != 0)
@@ -34,8 +34,8 @@ RLESpriteSurface::~RLESpriteSurface()
     }
 }
 
-// FUNCTION: HYPERX100 0x004b8eb0
-// FUNCTION: HYPERX 0x0044f210
+// FUNCTION: HYPERX1000 0x004b8eb0
+// FUNCTION: HYPERX1001 0x0044f210
 int RLESpriteSurface::Draw()
 {
     if (m_pSprite != 0)
@@ -47,8 +47,8 @@ int RLESpriteSurface::Draw()
 }
 
 // CDDSurfaceOwner::LoadByName is the same body over different fields.
-// FUNCTION: HYPERX100 0x004b9100
-// FUNCTION: HYPERX 0x0044f3c0
+// FUNCTION: HYPERX1000 0x004b9100
+// FUNCTION: HYPERX1001 0x0044f3c0
 int RLESpriteSurface::LoadByName(const char* pszName)
 {
     if (m_pszName == 0 || _mbsicmp((const unsigned char*)pszName, (const unsigned char*)m_pszName) != 0)

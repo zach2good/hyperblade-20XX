@@ -24,8 +24,8 @@ into the next table and makes every class appear to override every slot.
 | `tools/check_vtbl_stores.py` | Fails when a member stores a vtable that is not its own class's. |
 | `tools/check_self_casts.py`, `tools/this_casts.py` | Find members that cast `this` to their own class or to an unrelated one. |
 
-Each class in `src/` that owns a table carries a `// VTABLE: HYPERX 0x...` marker. To list them,
-run `grep -rn "VTABLE: HYPERX" src`.
+Each class in `src/` that owns a table carries a `// VTABLE: HYPERX1001 0x...` marker. To list them,
+run `grep -rn "VTABLE: HYPERX1001" src`.
 
 ## The game object family
 

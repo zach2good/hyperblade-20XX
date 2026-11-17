@@ -7,8 +7,8 @@
 // are built without optimisation, as in the original.
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x00419040
-// FUNCTION: HYPERX 0x0042a050
+// FUNCTION: HYPERX1000 0x00419040
+// FUNCTION: HYPERX1001 0x0042a050
 BubbleCmd::BubbleCmd()
 {
     m_nSlot       = COB_NONE;
@@ -19,8 +19,8 @@ BubbleCmd::BubbleCmd()
     m_pPos        = 0;
 }
 
-// FUNCTION: HYPERX100 0x004190b0
-// FUNCTION: HYPERX 0x0042a0a0
+// FUNCTION: HYPERX1000 0x004190b0
+// FUNCTION: HYPERX1001 0x0042a0a0
 BubbleCmd::~BubbleCmd()
 {
     if (m_pPos != 0)

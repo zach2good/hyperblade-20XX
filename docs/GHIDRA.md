@@ -5,7 +5,7 @@ local Ghidra project (`.gpr`).
 
 The repository, not Ghidra, is the source of truth:
 
-- The C++ source in `src/`, its headers and its markers (`// FUNCTION: HYPERX 0xADDR`) define
+- The C++ source in `src/`, its headers and its markers (`// FUNCTION: HYPERX1001 0xADDR`) define
   function identities, names, signatures and types.
 - `symbols/functions.csv`, `symbols/vtable_gaps.csv` and `symbols/data_gaps.csv` hold the
   function inventory and the known gaps.

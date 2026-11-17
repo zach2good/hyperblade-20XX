@@ -12,8 +12,8 @@
 #define MIXER_NOT_FOUND ((unsigned int)-1)
 
 // Every exit from the search is a throw; zero is the fader found and minus one is none.
-// FUNCTION: HYPERX100 0x0048c920
-// FUNCTION: HYPERX 0x00491330
+// FUNCTION: HYPERX1000 0x0048c920
+// FUNCTION: HYPERX1001 0x00491330
 int Mixer::Open(unsigned int nComponentType)
 {
     char              szMessage[MIXER_MESSAGE_MAX];
@@ -131,47 +131,47 @@ int Mixer::Open(unsigned int nComponentType)
                 return 1;
 
             case MMSYSERR_BADDEVICEID:
-                // STRING: HYPERX 0x004c8bec
+                // STRING: HYPERX1001 0x004c8bec
                 strcpy(szMessage, "The hmxobj parameter specifies an invalid device identifier.");
                 break;
 
             case MMSYSERR_INVALFLAG:
-                // STRING: HYPERX 0x004c8bcc
+                // STRING: HYPERX1001 0x004c8bcc
                 strcpy(szMessage, "One or more flags are invalid.");
                 break;
 
             case MMSYSERR_INVALHANDLE:
-                // STRING: HYPERX 0x004c8b98
+                // STRING: HYPERX1001 0x004c8b98
                 strcpy(szMessage, "The hmxobj parameter specifies an invalid handle.");
                 break;
 
             case MMSYSERR_INVALPARAM:
-                // STRING: HYPERX 0x004c8b74
+                // STRING: HYPERX1001 0x004c8b74
                 strcpy(szMessage, "One or more parameters are invalid.");
                 break;
 
             case MMSYSERR_NODRIVER:
-                // STRING: HYPERX 0x004c8b30
+                // STRING: HYPERX1001 0x004c8b30
                 strcpy(szMessage, "No mixer device is available for the object specified by hmxobj.");
                 break;
 
             case MIXERR_INVALLINE:
-                // STRING: HYPERX 0x004c8b08
+                // STRING: HYPERX1001 0x004c8b08
                 strcpy(szMessage, "The audio line reference is invalid.");
                 break;
 
             case MIXER_NOT_FOUND:
-                // STRING: HYPERX 0x004c8ad8
+                // STRING: HYPERX1001 0x004c8ad8
                 strcpy(szMessage, "No CD Audio mixer found.");
                 break;
 
             case MIXERR_INVALCONTROL:
-                // STRING: HYPERX 0x004c8ab4
+                // STRING: HYPERX1001 0x004c8ab4
                 strcpy(szMessage, "The control reference is invalid.");
                 break;
 
             default:
-                // STRING: HYPERX 0x004c8af4
+                // STRING: HYPERX1001 0x004c8af4
                 sprintf(szMessage, "mixer error: %08X\n", nResult);
                 break;
         }
@@ -196,8 +196,8 @@ int Mixer::Open(unsigned int nComponentType)
 #define MIXER_DETAIL_SLOTS 32
 
 // Unlike ReadVolume, the result is clamped to the control's own bounds.
-// FUNCTION: HYPERX100 0x0048cdd0
-// FUNCTION: HYPERX 0x004916c0
+// FUNCTION: HYPERX1000 0x0048cdd0
+// FUNCTION: HYPERX1001 0x004916c0
 int Mixer::FadeVolume(int nVolume)
 {
     MIXERCONTROLDETAILS        details;
@@ -242,8 +242,8 @@ int Mixer::FadeVolume(int nVolume)
 }
 
 // Nothing clamps the result, so a control outside its own bounds returns a step out of range.
-// FUNCTION: HYPERX100 0x0048cee0
-// FUNCTION: HYPERX 0x004917a0
+// FUNCTION: HYPERX1000 0x0048cee0
+// FUNCTION: HYPERX1001 0x004917a0
 int Mixer::ReadVolume()
 {
     MIXERCONTROLDETAILS        details;

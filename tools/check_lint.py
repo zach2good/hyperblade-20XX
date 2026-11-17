@@ -30,7 +30,7 @@ def main():
     show_all = "--all" in sys.argv[1:]
 
     result = subprocess.run(
-        [sys.executable, "-m", "reccmp.tools.decomplint", "--target", "HYPERX", "src"],
+        [sys.executable, "-m", "reccmp.tools.decomplint", "--target", "HYPERX1001", "src"],
         cwd=str(ROOT), capture_output=True, text=True)
 
     lines = COLOUR.sub("", result.stdout + result.stderr).splitlines()

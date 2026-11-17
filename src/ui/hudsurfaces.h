@@ -68,23 +68,23 @@ STATIC_ASSERT(offsetof(HudSurfaces, bHud320) == 0xb0);
 STATIC_ASSERT(offsetof(HudSurfaces, nShotPowerPosition) == 0x1b8);
 STATIC_ASSERT(sizeof(HudSurfaces) == 0x70 * 4);
 
-// GLOBAL: HYPERX 0x004cd4e8
+// GLOBAL: HYPERX1001 0x004cd4e8
 extern HudSurfaces g_hudSurfaces;
 
-// GLOBAL: HYPERX 0x004cd4d0
+// GLOBAL: HYPERX1001 0x004cd4d0
 extern SurfacePoint g_ptHudMargin;
 // Only y is read.
-// GLOBAL: HYPERX 0x004cd4d8
+// GLOBAL: HYPERX1001 0x004cd4d8
 extern SurfacePoint g_ptHudInset;
 
-// GLOBAL: HYPERX 0x004cedd8
+// GLOBAL: HYPERX1001 0x004cedd8
 extern SurfacePoint g_ptHudClockAnchor;
 
-// GLOBAL: HYPERX 0x004cede0
+// GLOBAL: HYPERX1001 0x004cede0
 extern SurfacePoint g_ptHudFpsAnchor;
 
 // The right margin, which is the screen width less ten.
-// GLOBAL: HYPERX 0x004ceeb4
+// GLOBAL: HYPERX1001 0x004ceeb4
 extern int g_nHudRightMargin;
 
 #endif

@@ -7,13 +7,13 @@
 #include "ui/hudglobals.h"
 #include <math.h>
 
-// FUNCTION: HYPERX 0x00408e90
+// FUNCTION: HYPERX1001 0x00408e90
 CollisionEllipsoid::~CollisionEllipsoid()
 {
 }
 
-// FUNCTION: HYPERX100 0x00409c20
-// FUNCTION: HYPERX 0x00408ea0
+// FUNCTION: HYPERX1000 0x00409c20
+// FUNCTION: HYPERX1001 0x00408ea0
 unsigned char CollisionEllipsoid::PointInside(const Vec3* pPoint)
 {
     int nInside;
@@ -25,8 +25,8 @@ unsigned char CollisionEllipsoid::PointInside(const Vec3* pPoint)
     return (unsigned char)nInside;
 }
 
-// FUNCTION: HYPERX100 0x00409c70
-// FUNCTION: HYPERX 0x00408ee0
+// FUNCTION: HYPERX1000 0x00409c70
+// FUNCTION: HYPERX1001 0x00408ee0
 int CollisionEllipsoid::PointNearSurface(const Vec3* pPoint)
 {
     const float flSum = m_flInvZZ * pPoint->z * pPoint->z + m_flInvYY * pPoint->y * pPoint->y + m_flInvXX * pPoint->x * pPoint->x;
@@ -40,8 +40,8 @@ int CollisionEllipsoid::PointNearSurface(const Vec3* pPoint)
 }
 
 // The camera's shell passes friction 0.01 and elasticity 0.5; the arena's 0.01 and 0.95.
-// FUNCTION: HYPERX100 0x00495410
-// FUNCTION: HYPERX 0x0042e9b0
+// FUNCTION: HYPERX1000 0x00495410
+// FUNCTION: HYPERX1001 0x0042e9b0
 CollisionEllipsoid::CollisionEllipsoid(float flX, float flY, float flZ, float flFriction, float flElasticity)
 : m_flRadiusX(flX)
 , m_flRadiusY(flY)
@@ -56,8 +56,8 @@ CollisionEllipsoid::CollisionEllipsoid(float flX, float flY, float flZ, float fl
 }
 
 // The ray's origin is the second point, not the first; the plane's version uses the first.
-// FUNCTION: HYPERX100 0x00495550
-// FUNCTION: HYPERX 0x0042ea30
+// FUNCTION: HYPERX1000 0x00495550
+// FUNCTION: HYPERX1001 0x0042ea30
 int CollisionEllipsoid::SegmentIntersection(Vec3* pFirst, Vec3* pSecond, Vec3* pNearOutIn)
 {
     Vec3 vDirection;
@@ -70,8 +70,8 @@ int CollisionEllipsoid::SegmentIntersection(Vec3* pFirst, Vec3* pSecond, Vec3* p
     return IntersectRay(&vDirection, pSecond, pNearOutIn, &vFarUnused);
 }
 
-// FUNCTION: HYPERX100 0x004955b0
-// FUNCTION: HYPERX 0x0042ea80
+// FUNCTION: HYPERX1000 0x004955b0
+// FUNCTION: HYPERX1001 0x0042ea80
 int CollisionEllipsoid::IntersectSegment(Vec3* pFirst, Vec3* pSecond, Vec3* pNearOut, Vec3* pFarOut)
 {
     Vec3 vDirection;
@@ -85,8 +85,8 @@ int CollisionEllipsoid::IntersectSegment(Vec3* pFirst, Vec3* pSecond, Vec3* pNea
 
 // The far point goes into a scratch vector that is never read.
 
-// FUNCTION: HYPERX100 0x00495610
-// FUNCTION: HYPERX 0x0042ead0
+// FUNCTION: HYPERX1000 0x00495610
+// FUNCTION: HYPERX1001 0x0042ead0
 int CollisionEllipsoid::RayIntersection(Vec3* pDirection, Vec3* pOrigin, Vec3* pPointOut)
 {
     Vec3 vFarUnused;
@@ -99,8 +99,8 @@ int CollisionEllipsoid::RayIntersection(Vec3* pDirection, Vec3* pOrigin, Vec3* p
 #define AXIS_EPS_LOWER -0.0001
 
 // Parameterised by the first safe direction component, not the largest; solved in double.
-// FUNCTION: HYPERX100 0x00495640
-// FUNCTION: HYPERX 0x0042eb00
+// FUNCTION: HYPERX1000 0x00495640
+// FUNCTION: HYPERX1001 0x0042eb00
 int CollisionEllipsoid::IntersectRay(Vec3* pDirection, Vec3* pOrigin, Vec3* pNearOut, Vec3* pFarOut)
 {
     double dSlopeA;
@@ -308,8 +308,8 @@ found:
 #define AXIS_EPS_SQUARE 1e-05f
 
 // Wrong near the axis: with |x| under 1e-5 it answers about (-a, 0, z) instead of (0, +/-b, z).
-// FUNCTION: HYPERX100 0x00496050
-// FUNCTION: HYPERX 0x0042f040
+// FUNCTION: HYPERX1000 0x00496050
+// FUNCTION: HYPERX1001 0x0042f040
 void CollisionEllipsoid::ComputeRadialBoundaryXY(Vec3* pIn, Vec3* pOut)
 {
     char  bOffAxis = 1;
@@ -348,8 +348,8 @@ void CollisionEllipsoid::ComputeRadialBoundaryXY(Vec3* pIn, Vec3* pOut)
 
 // A point outside the ellipse answers one, the value the solve started from.
 
-// FUNCTION: HYPERX100 0x00496150
-// FUNCTION: HYPERX 0x0042f0d0
+// FUNCTION: HYPERX1000 0x00496150
+// FUNCTION: HYPERX1001 0x0042f0d0
 float CollisionEllipsoid::GetZ(float flX, float flY)
 {
     float flRemainder;
@@ -365,8 +365,8 @@ float CollisionEllipsoid::GetZ(float flX, float flY)
 #define AXIS_BAND 0.0001
 
 // Returns a pointer to m_vNormal, so it is not re-entrant; null only at the centre.
-// FUNCTION: HYPERX100 0x004961c0
-// FUNCTION: HYPERX 0x0042f120
+// FUNCTION: HYPERX1000 0x004961c0
+// FUNCTION: HYPERX1001 0x0042f120
 Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 {
     Vec3* pNormalOut;
@@ -454,8 +454,8 @@ Vec3* CollisionEllipsoid::NormalAtPoint(const Vec3* pPoint)
 #define DIRECTION_EPS 1e-08
 
 // The third semi-axis is never read and /3 is a tuning constant; the plane's slot answers -1.
-// FUNCTION: HYPERX100 0x00496720
-// FUNCTION: HYPERX 0x0042f350
+// FUNCTION: HYPERX1000 0x00496720
+// FUNCTION: HYPERX1001 0x0042f350
 float CollisionEllipsoid::RadiusForDirection(const Vec3* pVDir, int)
 {
     const float flHorizontal = (float)((fabs(pVDir->x) + fabs(pVDir->z)) / g_flTwoEllipsoid);
@@ -473,7 +473,7 @@ float CollisionEllipsoid::RadiusForDirection(const Vec3* pVDir, int)
 #ifdef HYPERX_V100
 // A row starts where the last row's final point would go; with no columns, that reads before the
 // grid.
-// FUNCTION: HYPERX100 0x00496530
+// FUNCTION: HYPERX1000 0x00496530
 TransformObject* CollisionEllipsoid::BuildHeightGrid(short nRows, short nCols, float flMinX, float flMinY, float flMaxX, float flMaxY)
 {
     CollisionShape::GetOrCreateTransform(nRows, nCols);

@@ -23,7 +23,7 @@ Vec3* __cdecl ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos);
 #pragma warning(push)
 #pragma warning(disable : 4716)
 
-// FUNCTION: HYPERX 0x00416e30
+// FUNCTION: HYPERX1001 0x00416e30
 inline int Object::Trace(const char*, ...)
 {
 }

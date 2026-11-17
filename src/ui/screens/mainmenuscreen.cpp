@@ -17,59 +17,59 @@
 #include "common/stub.h"
 #include "sound/soundids.h"
 
-// FUNCTION: HYPERX100 0x00415d90
-// FUNCTION: HYPERX 0x0048d8f0
+// FUNCTION: HYPERX1000 0x00415d90
+// FUNCTION: HYPERX1001 0x0048d8f0
 MainMenuScreen::~MainMenuScreen()
 {
 }
 
-// FUNCTION: HYPERX100 0x00415e30
-// FUNCTION: HYPERX 0x0048d920
+// FUNCTION: HYPERX1000 0x00415e30
+// FUNCTION: HYPERX1001 0x0048d920
 MainMenuScreen::MainMenuScreen()
 {
     Widget* pWidget;
-    // STRING: HYPERX 0x004c888c
+    // STRING: HYPERX1001 0x004c888c
     m_hBackground = GDI::LoadBitmapAsBackground("Lounge", &m_hPalette);
     m_nLastWidget = MAIN_MENU_TO_LOBBY;
 
-    // STRING: HYPERX 0x004c8884
+    // STRING: HYPERX1001 0x004c8884
     m_hBitmap = GDI::LoadBitmapHandle("Ardoor1");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new FlipbookWidget(370, 214, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 4, 0, 4, 4, this, SOUND_DOOROPN2, SOUND_DOORCLS2, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
-    // STRING: HYPERX 0x004c887c
+    // STRING: HYPERX1001 0x004c887c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Ardoor2"));
-    // STRING: HYPERX 0x004c8874
+    // STRING: HYPERX1001 0x004c8874
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Ardoor3"));
-    // STRING: HYPERX 0x004c886c
+    // STRING: HYPERX1001 0x004c886c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Ardoor4"));
-    // STRING: HYPERX 0x004c8864
+    // STRING: HYPERX1001 0x004c8864
     m_hBitmap = GDI::LoadBitmapHandle("gs01");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new LoopFlipbookWidget(45, 177, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 1, 11, 0, 11, 11, this, 0, -1));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
     pWidget->AppendFrame(m_hBitmap);
-    // STRING: HYPERX 0x004c885c
+    // STRING: HYPERX1001 0x004c885c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs02"));
-    // STRING: HYPERX 0x004c8854
+    // STRING: HYPERX1001 0x004c8854
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs03"));
-    // STRING: HYPERX 0x004c884c
+    // STRING: HYPERX1001 0x004c884c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs04"));
-    // STRING: HYPERX 0x004c8844
+    // STRING: HYPERX1001 0x004c8844
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs05"));
-    // STRING: HYPERX 0x004c883c
+    // STRING: HYPERX1001 0x004c883c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs06"));
-    // STRING: HYPERX 0x004c8834
+    // STRING: HYPERX1001 0x004c8834
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs07"));
-    // STRING: HYPERX 0x004c882c
+    // STRING: HYPERX1001 0x004c882c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs08"));
-    // STRING: HYPERX 0x004c8824
+    // STRING: HYPERX1001 0x004c8824
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs09"));
-    // STRING: HYPERX 0x004c881c
+    // STRING: HYPERX1001 0x004c881c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("gs10"));
     pWidget->AppendFrameWithPos(m_hBackground, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, pWidget->GetPositionX(), pWidget->GetPositionY());
-    // STRING: HYPERX 0x004c8814
+    // STRING: HYPERX1001 0x004c8814
     m_hBitmap = GDI::LoadBitmapHandle("Singl");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, 96, 208, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
@@ -79,7 +79,7 @@ MainMenuScreen::MainMenuScreen()
     pWidget->AppendFrame(0);
     pWidget->SetHidden(1);
 
-    // STRING: HYPERX 0x004c880c
+    // STRING: HYPERX1001 0x004c880c
     m_hBitmap = GDI::LoadBitmapHandle("Multi");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, 96, 235, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
@@ -89,7 +89,7 @@ MainMenuScreen::MainMenuScreen()
     pWidget->AppendFrame(0);
     pWidget->SetHidden(1);
 
-    // STRING: HYPERX 0x004c8804
+    // STRING: HYPERX1001 0x004c8804
     m_hBitmap = GDI::LoadBitmapHandle("Loadgm");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, 96, 262, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, SOUND_SXBUTT5));
@@ -105,7 +105,7 @@ MainMenuScreen::MainMenuScreen()
     pWidget->AppendFrame(0);
     pWidget->SetHidden(1);
 
-    // STRING: HYPERX 0x004c87fc
+    // STRING: HYPERX1001 0x004c87fc
     m_hBitmap = GDI::LoadBitmapHandle("tolobb");
     GDI::GetBitmapDimensions(m_hBitmap, &m_bitmap);
     pWidget = AppendWidget(new FlipbookWidget(96, 315, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, SOUND_SXBUTT5));
@@ -120,8 +120,8 @@ MainMenuScreen::MainMenuScreen()
 }
 
 // Each case names its slot by the top page's button; the inner switch picks the page.
-// FUNCTION: HYPERX100 0x00416770
-// FUNCTION: HYPERX 0x0048df90
+// FUNCTION: HYPERX1000 0x00416770
+// FUNCTION: HYPERX1001 0x0048df90
 void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     switch (nId)
@@ -344,8 +344,8 @@ void MainMenuScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 }
 
 // Plain, "r" rollover and "d" pressed. Empty buttons keep three frames so indices line up.
-// FUNCTION: HYPERX100 0x00416c70
-// FUNCTION: HYPERX 0x0048e350
+// FUNCTION: HYPERX1000 0x00416c70
+// FUNCTION: HYPERX1001 0x0048e350
 void MainMenuScreen::LoadButtonBitmaps()
 {
     for (int i = 0; i < MAIN_MENU_BUTTON_COUNT; i++)
@@ -356,19 +356,19 @@ void MainMenuScreen::LoadButtonBitmaps()
     switch (g_nMainMenuPage)
     {
         case MAIN_MENU_PAGE_SINGLE:
-            // STRING: HYPERX 0x004c8914
+            // STRING: HYPERX1001 0x004c8914
             m_apWidgets[MAIN_MENU_EXHIBITION]->AppendFrame(GDI::LoadBitmapHandle("Exhib"));
-            // STRING: HYPERX 0x004c890c
+            // STRING: HYPERX1001 0x004c890c
             m_apWidgets[MAIN_MENU_EXHIBITION]->AppendFrame(GDI::LoadBitmapHandle("Exhibr"));
-            // STRING: HYPERX 0x004c8904
+            // STRING: HYPERX1001 0x004c8904
             m_apWidgets[MAIN_MENU_EXHIBITION]->AppendFrame(GDI::LoadBitmapHandle("Exhibd"));
             m_apWidgets[MAIN_MENU_EXHIBITION]->InitAfterLoad();
 
-            // STRING: HYPERX 0x004c88fc
+            // STRING: HYPERX1001 0x004c88fc
             m_apWidgets[MAIN_MENU_TOURNAMENT]->AppendFrame(GDI::LoadBitmapHandle("Tourn"));
-            // STRING: HYPERX 0x004c88f4
+            // STRING: HYPERX1001 0x004c88f4
             m_apWidgets[MAIN_MENU_TOURNAMENT]->AppendFrame(GDI::LoadBitmapHandle("Tournr"));
-            // STRING: HYPERX 0x004c88ec
+            // STRING: HYPERX1001 0x004c88ec
             m_apWidgets[MAIN_MENU_TOURNAMENT]->AppendFrame(GDI::LoadBitmapHandle("Tournd"));
             m_apWidgets[MAIN_MENU_TOURNAMENT]->InitAfterLoad();
 
@@ -382,11 +382,11 @@ void MainMenuScreen::LoadButtonBitmaps()
             m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
             m_apWidgets[MAIN_MENU_GAP]->InitAfterLoad();
 
-            // STRING: HYPERX 0x004c88e4
+            // STRING: HYPERX1001 0x004c88e4
             m_apWidgets[MAIN_MENU_PREVIOUS]->AppendFrame(GDI::LoadBitmapHandle("Prvius"));
-            // STRING: HYPERX 0x004c88dc
+            // STRING: HYPERX1001 0x004c88dc
             m_apWidgets[MAIN_MENU_PREVIOUS]->AppendFrame(GDI::LoadBitmapHandle("Prviusr"));
-            // STRING: HYPERX 0x004c88d4
+            // STRING: HYPERX1001 0x004c88d4
             m_apWidgets[MAIN_MENU_PREVIOUS]->AppendFrame(GDI::LoadBitmapHandle("Prviusd"));
             m_apWidgets[MAIN_MENU_PREVIOUS]->InitAfterLoad();
 
@@ -409,27 +409,27 @@ void MainMenuScreen::LoadButtonBitmaps()
             break;
 
         case MAIN_MENU_PAGE_TOP:
-            // STRING: HYPERX 0x004c8814
+            // STRING: HYPERX1001 0x004c8814
             m_apWidgets[MAIN_MENU_SINGLE]->AppendFrame(GDI::LoadBitmapHandle("Singl"));
-            // STRING: HYPERX 0x004c88cc
+            // STRING: HYPERX1001 0x004c88cc
             m_apWidgets[MAIN_MENU_SINGLE]->AppendFrame(GDI::LoadBitmapHandle("Singlr"));
-            // STRING: HYPERX 0x004c88c4
+            // STRING: HYPERX1001 0x004c88c4
             m_apWidgets[MAIN_MENU_SINGLE]->AppendFrame(GDI::LoadBitmapHandle("Singld"));
             m_apWidgets[MAIN_MENU_SINGLE]->InitAfterLoad();
 
-            // STRING: HYPERX 0x004c880c
+            // STRING: HYPERX1001 0x004c880c
             m_apWidgets[MAIN_MENU_MULTI]->AppendFrame(GDI::LoadBitmapHandle("Multi"));
-            // STRING: HYPERX 0x004c88bc
+            // STRING: HYPERX1001 0x004c88bc
             m_apWidgets[MAIN_MENU_MULTI]->AppendFrame(GDI::LoadBitmapHandle("Multir"));
-            // STRING: HYPERX 0x004c88b4
+            // STRING: HYPERX1001 0x004c88b4
             m_apWidgets[MAIN_MENU_MULTI]->AppendFrame(GDI::LoadBitmapHandle("Multid"));
             m_apWidgets[MAIN_MENU_MULTI]->InitAfterLoad();
 
-            // STRING: HYPERX 0x004c8804
+            // STRING: HYPERX1001 0x004c8804
             m_apWidgets[MAIN_MENU_LOAD_GAME]->AppendFrame(GDI::LoadBitmapHandle("Loadgm"));
-            // STRING: HYPERX 0x004c88ac
+            // STRING: HYPERX1001 0x004c88ac
             m_apWidgets[MAIN_MENU_LOAD_GAME]->AppendFrame(GDI::LoadBitmapHandle("Loadgmr"));
-            // STRING: HYPERX 0x004c88a4
+            // STRING: HYPERX1001 0x004c88a4
             m_apWidgets[MAIN_MENU_LOAD_GAME]->AppendFrame(GDI::LoadBitmapHandle("Loadgmd"));
             m_apWidgets[MAIN_MENU_LOAD_GAME]->InitAfterLoad();
 
@@ -438,11 +438,11 @@ void MainMenuScreen::LoadButtonBitmaps()
             m_apWidgets[MAIN_MENU_GAP]->AppendFrame(0);
             m_apWidgets[MAIN_MENU_GAP]->InitAfterLoad();
 
-            // STRING: HYPERX 0x004c87fc
+            // STRING: HYPERX1001 0x004c87fc
             m_apWidgets[MAIN_MENU_TO_LOBBY]->AppendFrame(GDI::LoadBitmapHandle("tolobb"));
-            // STRING: HYPERX 0x004c889c
+            // STRING: HYPERX1001 0x004c889c
             m_apWidgets[MAIN_MENU_TO_LOBBY]->AppendFrame(GDI::LoadBitmapHandle("tolobbr"));
-            // STRING: HYPERX 0x004c8894
+            // STRING: HYPERX1001 0x004c8894
             m_apWidgets[MAIN_MENU_TO_LOBBY]->AppendFrame(GDI::LoadBitmapHandle("tolobbd"));
             m_apWidgets[MAIN_MENU_TO_LOBBY]->InitAfterLoad();
 

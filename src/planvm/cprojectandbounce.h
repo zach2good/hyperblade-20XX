@@ -7,7 +7,7 @@ class CollisionShape;
 class EngineObject;
 
 // Slot 0 is KindAgendaItem's deleting destructor, which thirty three tables share.
-// VTABLE: HYPERX 0x004b1bcc
+// VTABLE: HYPERX1001 0x004b1bcc
 class CProjectAndBounce : public KindAgendaItem
 {
 public:

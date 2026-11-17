@@ -7,8 +7,8 @@ technique.
 
 ## Markers
 
-Each marker is one line, `// KIND: HYPERX 0xADDRESS`, alone on its line and directly above what it
-names.
+Each marker is one line, `// KIND: HYPERX1001 0xADDRESS`, alone on its line and directly above
+what it names.
 
 | Marker | Names | Rule |
 |---|---|---|
@@ -26,10 +26,11 @@ A by-name marker takes its name from the comment line under it: the mangled or C
 library's. By-name markers go in headers: reccmp's `decomplint` reports one in a `.cpp` file as
 `byname_function_in_cpp`.
 
-v1.0.0.0 has its own module, `HYPERX100`. Its marker goes directly above the `HYPERX` marker, so
-the `HYPERX` marker stays next to the declaration. [v1000.md](v1000.md) has the rules.
+v1.0.0.0 has its own module, `HYPERX1000`. Its marker goes directly above the `HYPERX1001`
+marker, so the `HYPERX1001` marker stays next to the declaration. [v1000.md](v1000.md) has the
+rules.
 
-`FUNCTION: HYPERX 0xADDR FOLDED` tells reccmp that several markers may claim one recompiled
+`FUNCTION: HYPERX1001 0xADDR FOLDED` tells reccmp that several markers may claim one recompiled
 address, for a build that folds our own bodies. It can't restore a symbol the linker discarded,
 and it does nothing for the original's folds.
 
@@ -119,7 +120,7 @@ code before the table is the same length.
 python tools/check_markers_resolve.py      # needs a current build and build/report.json
 python tools/marker_next_line.py
 python tools/duplicate_markers.py
-python -m reccmp.tools.decomplint --target HYPERX src
+python -m reccmp.tools.decomplint --target HYPERX1001 src
 ```
 
 ## Where exceptions are recorded
@@ -194,7 +195,7 @@ parameters and globals for what they are. Directly above the marker, write this 
 // Hand-written assembly in the original: <the idioms that prove it, one line each>.
 // What it does: <the routine in plain words>.
 // Why assembly: <what C cannot express, such as the register or frame contract>.
-// FUNCTION: HYPERX 0x0044af70
+// FUNCTION: HYPERX1001 0x0044af70
 ```
 
 `tools/check_asm_bodies.py` fails on an `__asm` or `__declspec(naked)` outside a function in the

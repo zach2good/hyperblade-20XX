@@ -6,7 +6,7 @@ LIBCMT marker. Its bar is the share that match exactly, and its second line the 
 score of the game functions written, with an effective match counted as exact. It is drawn here,
 not from reccmp's own card template, and it carries no artwork.
 
-    python tools/foldcmp.py --target HYPERX --json build/report.json --silent
+    python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
     python tools/status_card.py
     python tools/status_card.py --html    # also reccmp's HTML report, progress/status.html
 """
@@ -30,7 +30,7 @@ FUNCTION = 1
 GAME_CODE_LIMIT = 0x004A0000
 BAR_W = 400
 
-LIBRARY = re.compile(r"//\s*LIBRARY:\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+LIBRARY = re.compile(r"//\s*LIBRARY:\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 
 
 def library_addresses():
@@ -123,7 +123,7 @@ def main():
           % ((os.path.relpath(SVG_OUT, ROOT),) + figures))
 
     if args.html:
-        return subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX",
+        return subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX1001",
                                "--html", HTML_OUT, "--silent"], cwd=ROOT).returncode
     return 0
 

@@ -12,7 +12,7 @@
 // A frame bitmap over a bar bitmap drawn clipped to a width, the speed meter.
 // Derives from CDDBitMap and repeats ScrollBitmap's run from 0xd8 to 0x108; shared bodies folded.
 // SLOT TABLE 0x004b2f08
-// VTABLE: HYPERX 0x004b2f08
+// VTABLE: HYPERX1001 0x004b2f08
 class FramedBarBitmap : public CDDBitMap
 {
 public:
@@ -20,7 +20,7 @@ public:
 
     // ScrollBitmap carries the markers for slots four and twenty: the original's linker folded each
     // pair.
-    // FUNCTION: HYPERX100 0x004446d0
+    // FUNCTION: HYPERX1000 0x004446d0
     virtual int BltFillColour(unsigned int dwFillColor)
     {
         RECT rc;
@@ -63,7 +63,7 @@ public:
     virtual void SetPosition(Point pt);
     virtual void SetScrollColorMode(int nScrollColor);
 
-    // FUNCTION: HYPERX100 0x00444510
+    // FUNCTION: HYPERX1000 0x00444510
     virtual void SetClipRect(int nClipped, Point pt)
     {
         CDDBitMap::SetClipRect(nClipped, pt);
@@ -116,7 +116,7 @@ public:
     class CDDBitMap* m_pBar;     // 0x10c
 };
 
-// SYNTHETIC: HYPERX 0x00439160
+// SYNTHETIC: HYPERX1001 0x00439160
 // FramedBarBitmap::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(FramedBarBitmap) == 0x110);

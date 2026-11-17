@@ -106,7 +106,7 @@ def allocations(image):
     return found
 
 
-BODY = re.compile(r"// FUNCTION: HYPERX (0x00[0-9a-fA-F]{6})" + chr(10)
+BODY = re.compile(r"// FUNCTION: HYPERX1001 (0x00[0-9a-fA-F]{6})" + chr(10)
                   + r"([^" + chr(10) + r"]*" + chr(10) + r"?[^{]*)" + chr(92) + r"{")
 
 

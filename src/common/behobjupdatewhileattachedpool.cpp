@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c7b30
-// FUNCTION: HYPERX 0x0041fa50
+// FUNCTION: HYPERX1000 0x004c7b30
+// FUNCTION: HYPERX1001 0x0041fa50
 void BehObjUpdateWhileAttachedPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_UpdateWhileAttached;
@@ -33,8 +33,8 @@ char BehObjUpdateWhileAttachedPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c95f0
-// FUNCTION: HYPERX 0x0041fb00
+// FUNCTION: HYPERX1000 0x004c95f0
+// FUNCTION: HYPERX1001 0x0041fb00
 void* BehObjUpdateWhileAttachedPool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* BehObjUpdateWhileAttachedPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00421120
+// FUNCTION: HYPERX1001 0x00421120
 BehObjUpdateWhileAttachedPool::~BehObjUpdateWhileAttachedPool()
 {
     while (m_pHead != 0)

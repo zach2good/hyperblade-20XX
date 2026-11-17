@@ -26,7 +26,7 @@ import slot_owners as s
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "src")
 
-PIN = re.compile(r"// *(?:VTABLE: *HYPERX +(0x[0-9a-fA-F]+)|SLOT TABLE +(0x[0-9a-fA-F]+))")
+PIN = re.compile(r"// *(?:VTABLE: *HYPERX1001 +(0x[0-9a-fA-F]+)|SLOT TABLE +(0x[0-9a-fA-F]+))")
 
 # Below this a run is a jump table or a pair of handlers, not a vtable. See the note above.
 LEAST = 3

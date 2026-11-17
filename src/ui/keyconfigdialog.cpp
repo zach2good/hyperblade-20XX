@@ -27,8 +27,8 @@
 
 // The Ratings dialog handler in ratingsdialog.cpp is the same, down to the string id.
 
-// FUNCTION: HYPERX100 0x00467980
-// FUNCTION: HYPERX 0x0046c300
+// FUNCTION: HYPERX1000 0x00467980
+// FUNCTION: HYPERX1001 0x0046c300
 int __cdecl KeyConfigDialog::OnInitDialog(HWND hDlg, HWND, LPARAM)
 {
     if (KeyConfigDialog::Init(hDlg) != 0)
@@ -52,7 +52,7 @@ int __cdecl KeyConfigDialog::OnInitDialog(HWND hDlg, HWND, LPARAM)
 // Resource 0x139. The table copy is 0xf6 bytes for 0xf0 bytes of rows.
 
 // Copied over the module's table when no file has filled it.
-// GLOBAL: HYPERX 0x004c4b8c
+// GLOBAL: HYPERX1001 0x004c4b8c
 extern short g_aDefaultKeyBindings[124];
 
 #define FLAG_SHIFT   8
@@ -65,8 +65,8 @@ extern short g_aDefaultKeyBindings[124];
 #define ACTION_COUNT 40
 #define KEY_COUNT    59
 
-// FUNCTION: HYPERX100 0x00467a10
-// FUNCTION: HYPERX 0x0046c370
+// FUNCTION: HYPERX1000 0x00467a10
+// FUNCTION: HYPERX1001 0x0046c370
 int __cdecl KeyConfigDialog::Init(HWND hDlg)
 {
     KeyConfigState* pState;
@@ -78,206 +78,206 @@ int __cdecl KeyConfigDialog::Init(HWND hDlg)
     if (pState != 0)
     {
         char* apszKeys[KEY_COUNT] = {
-            // STRING: HYPERX 0x004c4b58
+            // STRING: HYPERX1001 0x004c4b58
             "Up Arrow",
-            // STRING: HYPERX 0x004c4b4c
+            // STRING: HYPERX1001 0x004c4b4c
             "Down Arrow",
-            // STRING: HYPERX 0x004c4b40
+            // STRING: HYPERX1001 0x004c4b40
             "Left Arrow",
-            // STRING: HYPERX 0x004c4b34
+            // STRING: HYPERX1001 0x004c4b34
             "Right Arrow",
-            // STRING: HYPERX 0x004c4b28
+            // STRING: HYPERX1001 0x004c4b28
             "Enter Key",
-            // STRING: HYPERX 0x004c4b20
+            // STRING: HYPERX1001 0x004c4b20
             "Esc Key",
-            // STRING: HYPERX 0x004c4b18
+            // STRING: HYPERX1001 0x004c4b18
             "Tab Key",
-            // STRING: HYPERX 0x004c4b0c
+            // STRING: HYPERX1001 0x004c4b0c
             "Space Bar",
-            // STRING: HYPERX 0x004c4af8
+            // STRING: HYPERX1001 0x004c4af8
             "Left Mouse Button",
-            // STRING: HYPERX 0x004c4ae4
+            // STRING: HYPERX1001 0x004c4ae4
             "Right Mouse Button",
-            // STRING: HYPERX 0x004c4ae0
+            // STRING: HYPERX1001 0x004c4ae0
             "F1",
-            // STRING: HYPERX 0x004c4adc
+            // STRING: HYPERX1001 0x004c4adc
             "F2",
-            // STRING: HYPERX 0x004c4ad8
+            // STRING: HYPERX1001 0x004c4ad8
             "F3",
-            // STRING: HYPERX 0x004c4ad4
+            // STRING: HYPERX1001 0x004c4ad4
             "F4",
-            // STRING: HYPERX 0x004c4ad0
+            // STRING: HYPERX1001 0x004c4ad0
             "F5",
-            // STRING: HYPERX 0x004c4acc
+            // STRING: HYPERX1001 0x004c4acc
             "F6",
-            // STRING: HYPERX 0x004c4ac8
+            // STRING: HYPERX1001 0x004c4ac8
             "F7",
-            // STRING: HYPERX 0x004c4ac4
+            // STRING: HYPERX1001 0x004c4ac4
             "F8",
-            // STRING: HYPERX 0x004c4ac0
+            // STRING: HYPERX1001 0x004c4ac0
             "F9",
-            // STRING: HYPERX 0x004c4abc
+            // STRING: HYPERX1001 0x004c4abc
             "F10",
-            // STRING: HYPERX 0x004c4ab8
+            // STRING: HYPERX1001 0x004c4ab8
             "F11",
-            // STRING: HYPERX 0x004c4ab4
+            // STRING: HYPERX1001 0x004c4ab4
             "F12",
-            // STRING: HYPERX 0x004c4ab0
+            // STRING: HYPERX1001 0x004c4ab0
             "a",
-            // STRING: HYPERX 0x004c4aac
+            // STRING: HYPERX1001 0x004c4aac
             "b",
-            // STRING: HYPERX 0x004c4aa8
+            // STRING: HYPERX1001 0x004c4aa8
             "c",
-            // STRING: HYPERX 0x004c4aa4
+            // STRING: HYPERX1001 0x004c4aa4
             "d",
-            // STRING: HYPERX 0x004c4aa0
+            // STRING: HYPERX1001 0x004c4aa0
             "e",
-            // STRING: HYPERX 0x004c4a9c
+            // STRING: HYPERX1001 0x004c4a9c
             "f",
-            // STRING: HYPERX 0x004c4a98
+            // STRING: HYPERX1001 0x004c4a98
             "g",
-            // STRING: HYPERX 0x004c4a94
+            // STRING: HYPERX1001 0x004c4a94
             "h",
-            // STRING: HYPERX 0x004c4a90
+            // STRING: HYPERX1001 0x004c4a90
             "i",
-            // STRING: HYPERX 0x004c4a8c
+            // STRING: HYPERX1001 0x004c4a8c
             "j",
-            // STRING: HYPERX 0x004c4a88
+            // STRING: HYPERX1001 0x004c4a88
             "m",
-            // STRING: HYPERX 0x004c4a84
+            // STRING: HYPERX1001 0x004c4a84
             "n",
-            // STRING: HYPERX 0x004c4a80
+            // STRING: HYPERX1001 0x004c4a80
             "o",
-            // STRING: HYPERX 0x004c4a7c
+            // STRING: HYPERX1001 0x004c4a7c
             "p",
-            // STRING: HYPERX 0x004c4a78
+            // STRING: HYPERX1001 0x004c4a78
             "q",
             "r",
-            // STRING: HYPERX 0x004c4a74
+            // STRING: HYPERX1001 0x004c4a74
             "s",
-            // STRING: HYPERX 0x004c4a70
+            // STRING: HYPERX1001 0x004c4a70
             "t",
-            // STRING: HYPERX 0x004c4a6c
+            // STRING: HYPERX1001 0x004c4a6c
             "x",
-            // STRING: HYPERX 0x004c4a68
+            // STRING: HYPERX1001 0x004c4a68
             "y",
-            // STRING: HYPERX 0x004c4a64
+            // STRING: HYPERX1001 0x004c4a64
             "z",
-            // STRING: HYPERX 0x004c4a58
+            // STRING: HYPERX1001 0x004c4a58
             "NUMPAD 0",
-            // STRING: HYPERX 0x004c4a4c
+            // STRING: HYPERX1001 0x004c4a4c
             "NUMPAD 1",
-            // STRING: HYPERX 0x004c4a40
+            // STRING: HYPERX1001 0x004c4a40
             "NUMPAD 2",
-            // STRING: HYPERX 0x004c4a34
+            // STRING: HYPERX1001 0x004c4a34
             "NUMPAD 3",
-            // STRING: HYPERX 0x004c4a28
+            // STRING: HYPERX1001 0x004c4a28
             "NUMPAD 4",
-            // STRING: HYPERX 0x004c4a1c
+            // STRING: HYPERX1001 0x004c4a1c
             "NUMPAD 5",
-            // STRING: HYPERX 0x004c4a10
+            // STRING: HYPERX1001 0x004c4a10
             "NUMPAD 6",
-            // STRING: HYPERX 0x004c4a04
+            // STRING: HYPERX1001 0x004c4a04
             "NUMPAD 7",
-            // STRING: HYPERX 0x004c49f8
+            // STRING: HYPERX1001 0x004c49f8
             "NUMPAD 8",
-            // STRING: HYPERX 0x004c49ec
+            // STRING: HYPERX1001 0x004c49ec
             "NUMPAD 9",
-            // STRING: HYPERX 0x004c49dc
+            // STRING: HYPERX1001 0x004c49dc
             "Decimal Point",
-            // STRING: HYPERX 0x004c49d4
+            // STRING: HYPERX1001 0x004c49d4
             "Plus",
-            // STRING: HYPERX 0x004c49cc
+            // STRING: HYPERX1001 0x004c49cc
             "Minus",
-            // STRING: HYPERX 0x004c49c8
+            // STRING: HYPERX1001 0x004c49c8
             "*",
-            // STRING: HYPERX 0x004c49c4
+            // STRING: HYPERX1001 0x004c49c4
             "/",
-            // STRING: HYPERX 0x004c49b8
+            // STRING: HYPERX1001 0x004c49b8
             "UnMapped"
         };
 
         // The original reserves a slot past the last name and clears it.
         char* apszActions[ACTION_COUNT + 1] = {
-            // STRING: HYPERX 0x004c49a4
+            // STRING: HYPERX1001 0x004c49a4
             "Accelerate/Forward",
-            // STRING: HYPERX 0x004c498c
+            // STRING: HYPERX1001 0x004c498c
             "Decelerate/Backwards",
-            // STRING: HYPERX 0x004c4980
+            // STRING: HYPERX1001 0x004c4980
             "Turn Left",
-            // STRING: HYPERX 0x004c4974
+            // STRING: HYPERX1001 0x004c4974
             "Turn Right",
-            // STRING: HYPERX 0x004c4964
+            // STRING: HYPERX1001 0x004c4964
             "Spin 180 Left",
-            // STRING: HYPERX 0x004c4954
+            // STRING: HYPERX1001 0x004c4954
             "Spin 180 Right",
-            // STRING: HYPERX 0x004c4940
+            // STRING: HYPERX1001 0x004c4940
             "Spin 180 to Forward",
-            // STRING: HYPERX 0x004c4934
+            // STRING: HYPERX1001 0x004c4934
             "Shoot Rok",
-            // STRING: HYPERX 0x004c492c
+            // STRING: HYPERX1001 0x004c492c
             "Test",
-            // STRING: HYPERX 0x004c4920
+            // STRING: HYPERX1001 0x004c4920
             "Look Left",
-            // STRING: HYPERX 0x004c4914
+            // STRING: HYPERX1001 0x004c4914
             "Look Right",
-            // STRING: HYPERX 0x004c4904
+            // STRING: HYPERX1001 0x004c4904
             "Look Forward",
-            // STRING: HYPERX 0x004c48f8
+            // STRING: HYPERX1001 0x004c48f8
             "GamePad A",
-            // STRING: HYPERX 0x004c48ec
+            // STRING: HYPERX1001 0x004c48ec
             "GamePad B",
-            // STRING: HYPERX 0x004c48e0
+            // STRING: HYPERX1001 0x004c48e0
             "GamePad C",
-            // STRING: HYPERX 0x004c48d4
+            // STRING: HYPERX1001 0x004c48d4
             "GamePad D",
-            // STRING: HYPERX 0x004c48c8
+            // STRING: HYPERX1001 0x004c48c8
             "Pause Game",
-            // STRING: HYPERX 0x004c48b8
+            // STRING: HYPERX1001 0x004c48b8
             "Move Eye Left",
-            // STRING: HYPERX 0x004c48a8
+            // STRING: HYPERX1001 0x004c48a8
             "Move Eye Right",
-            // STRING: HYPERX 0x004c4898
+            // STRING: HYPERX1001 0x004c4898
             "Move Eye Back",
-            // STRING: HYPERX 0x004c4884
+            // STRING: HYPERX1001 0x004c4884
             "Move Eye Forward",
-            // STRING: HYPERX 0x004c4874
+            // STRING: HYPERX1001 0x004c4874
             "Move Eye Down",
-            // STRING: HYPERX 0x004c4868
+            // STRING: HYPERX1001 0x004c4868
             "Move Eye Up",
-            // STRING: HYPERX 0x004c485c
+            // STRING: HYPERX1001 0x004c485c
             "Swap Views",
-            // STRING: HYPERX 0x004c484c
+            // STRING: HYPERX1001 0x004c484c
             "Force Attach",
-            // STRING: HYPERX 0x004c4840
+            // STRING: HYPERX1001 0x004c4840
             "Quit Game",
-            // STRING: HYPERX 0x004c4834
+            // STRING: HYPERX1001 0x004c4834
             "Pass Rok",
-            // STRING: HYPERX 0x004c4820
+            // STRING: HYPERX1001 0x004c4820
             "Swap Watched Obj",
-            // STRING: HYPERX 0x004c480c
+            // STRING: HYPERX1001 0x004c480c
             "Swap Tracked Obj",
-            // STRING: HYPERX 0x004c4800
+            // STRING: HYPERX1001 0x004c4800
             "Speed Burst",
-            // STRING: HYPERX 0x004c47f4
+            // STRING: HYPERX1001 0x004c47f4
             "Kick/Punch",
-            // STRING: HYPERX 0x004c47ec
+            // STRING: HYPERX1001 0x004c47ec
             "Zoom In",
-            // STRING: HYPERX 0x004c47e0
+            // STRING: HYPERX1001 0x004c47e0
             "Zoom Out",
-            // STRING: HYPERX 0x004c47cc
+            // STRING: HYPERX1001 0x004c47cc
             "Control Teammate",
-            // STRING: HYPERX 0x004c47bc
+            // STRING: HYPERX1001 0x004c47bc
             "Alternate Shoot",
-            // STRING: HYPERX 0x004c47ac
+            // STRING: HYPERX1001 0x004c47ac
             "Alternate Pass",
-            // STRING: HYPERX 0x004c479c
+            // STRING: HYPERX1001 0x004c479c
             "Engage Opponent",
-            // STRING: HYPERX 0x004c478c
+            // STRING: HYPERX1001 0x004c478c
             "Become Goalie",
-            // STRING: HYPERX 0x004c4778
+            // STRING: HYPERX1001 0x004c4778
             "Shorten Cam Bungee",
-            // STRING: HYPERX 0x004c4764
+            // STRING: HYPERX1001 0x004c4764
             "Lengthen Cam Bungee"
         };
 
@@ -287,12 +287,12 @@ int __cdecl KeyConfigDialog::Init(HWND hDlg)
         pState->nSource = SOURCE_NONE;
 
         pState->pszPrimary = strcpy(
-            // STRING: HYPERX 0x004c4750
+            // STRING: HYPERX1001 0x004c4750
             new char[strlen("Data\\DftKeybd.cfg") + 1],
             "Data\\DftKeybd.cfg");
 
         pState->pszAlternate = strcpy(
-            // STRING: HYPERX 0x004c473c
+            // STRING: HYPERX1001 0x004c473c
             new char[strlen("Data\\DftStick.cfg") + 1],
             "Data\\DftStick.cfg");
 
@@ -365,7 +365,7 @@ int __cdecl KeyConfigDialog::Init(HWND hDlg)
 }
 
 // A second pointer to the empty default name.
-// GLOBAL: HYPERX 0x004b3854
+// GLOBAL: HYPERX1001 0x004b3854
 extern char* const g_pszKeyConfigDefaultName;
 
 #define FLAG_SET 1
@@ -373,8 +373,8 @@ extern char* const g_pszKeyConfigDefaultName;
 #pragma inline_depth(0)
 
 // The check boxes toggle: a clear box XORs the flag, so a clear box on a clear flag sets it.
-// FUNCTION: HYPERX100 0x00468240
-// FUNCTION: HYPERX 0x0046ca00
+// FUNCTION: HYPERX1000 0x00468240
+// FUNCTION: HYPERX1001 0x0046ca00
 unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hControl, int nNotify)
 {
     int         nRow;
@@ -590,8 +590,8 @@ unsigned int __cdecl KeyConfigDialog::OnCommand(HWND hDlg, int nCommand, HWND hC
 
 #pragma inline_depth()
 
-// FUNCTION: HYPERX100 0x00468e90
-// FUNCTION: HYPERX 0x0046d320
+// FUNCTION: HYPERX1000 0x00468e90
+// FUNCTION: HYPERX1001 0x0046d320
 void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
 {
     KeyConfigState* const pState = (KeyConfigState*)GetWindowLongA(hWnd, GWL_USERDATA);
@@ -621,13 +621,13 @@ void __cdecl KeyConfigDialog::CloseDialog(HWND hWnd, INT_PTR nResult)
 }
 
 // The buffer handed to the writer is allocated and never filled; the original does the same.
-// FUNCTION: HYPERX100 0x00468f20
-// FUNCTION: HYPERX 0x0046d3a0
+// FUNCTION: HYPERX1000 0x00468f20
+// FUNCTION: HYPERX1001 0x0046d3a0
 int Config::SavePreferences(HWND hWnd, const char* pszText)
 {
     OwnedFile file;
 
-    // STRING: HYPERX 0x004bba9c
+    // STRING: HYPERX1001 0x004bba9c
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, "Prefs.txt").m_pchData,
                        MAX_PATH);
 
@@ -643,7 +643,7 @@ int Config::SavePreferences(HWND hWnd, const char* pszText)
 
         if (nWritten == 0)
         {
-            // STRING: HYPERX 0x004c4b64
+            // STRING: HYPERX1001 0x004c4b64
             g_gameApp.Fatal("Zero bytes written to Preferences!");
         }
 
@@ -672,7 +672,7 @@ KeyHandlerFn g_apfnV100KeyHandlers[0x200];
 
 // The open for reading is the wrong way round: a file that opens is overwritten without asking.
 // The prompt text is passed as the caption.
-// FUNCTION: HYPERX100 0x00410c80
+// FUNCTION: HYPERX1000 0x00410c80
 int __cdecl KeyConfigDialog::SaveKeys(HWND hDlg, KeyRow* pRows)
 {
     char      szBuffer[KEY_FILE_BUFFER];
@@ -736,7 +736,7 @@ int __cdecl KeyConfigDialog::SaveKeys(HWND hDlg, KeyRow* pRows)
 }
 
 // One key per set bit, for the first seven actions, the movement ones.
-// FUNCTION: HYPERX100 0x004108e0
+// FUNCTION: HYPERX1000 0x004108e0
 void __cdecl KeyConfigDialog::GetHeldMoveKeys(unsigned int nHeldBindings, unsigned int* pnKeys)
 {
     if (g_aKeyRows[0].cFlags == 0)
@@ -755,7 +755,7 @@ void __cdecl KeyConfigDialog::GetHeldMoveKeys(unsigned int nHeldBindings, unsign
 }
 
 // Lifts every held movement key, changes the modifier, then presses them again under it.
-// FUNCTION: HYPERX100 0x00410940
+// FUNCTION: HYPERX1000 0x00410940
 void __cdecl KeyConfigDialog::ApplyModifier80(int nContext, char bSet, int nSlot)
 {
     unsigned int  anKeys[ACTION_COUNT + 1] = { 0 };
@@ -805,7 +805,7 @@ void __cdecl KeyConfigDialog::ApplyModifier80(int nContext, char bSet, int nSlot
     }
 }
 
-// FUNCTION: HYPERX100 0x00410ae0
+// FUNCTION: HYPERX1000 0x00410ae0
 void __cdecl KeyConfigDialog::ApplyModifier100(int nContext, char bSet, int nSlot)
 {
     unsigned int  anKeys[ACTION_COUNT + 1] = { 0 };

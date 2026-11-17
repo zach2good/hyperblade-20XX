@@ -6,7 +6,7 @@ the total drops.
 
     python tools/check_regressions.py --save        # before touching anything
     ...work...
-    python tools/foldcmp.py --target HYPERX --json build/report.json --silent
+    python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
     python tools/check_regressions.py               # after
 
 It reports functions that vanished from the report, fell out of an exact match, reached one, are new
@@ -46,7 +46,7 @@ def stale_sources():
     A source edited after the last link shifts its line numbers against the PDB, and
     reccmp can drop its functions from the report, which reads as VANISHED.
 
-    The image is HYPERX_sym.exe, which `--target HYPERX` does not rebuild. Build the
+    The image is HYPERX_sym.exe, which `--target HYPERX1001` does not rebuild. Build the
     default target, `cmake --build build`.
     """
     if not os.path.exists(IMAGE):

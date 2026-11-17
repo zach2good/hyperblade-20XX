@@ -53,15 +53,15 @@ inline void ReleaseObject(T*& pObject)
 
 } // namespace D3DRend
 
-// FUNCTION: HYPERX 0x004310a0
+// FUNCTION: HYPERX1001 0x004310a0
 void D3DRend::ResetState(void)
 {
     D3DRend::InitRenderState();
 }
 
 // Safe to call twice: every pointer is cleared, except the matrix handles.
-// FUNCTION: HYPERX100 0x004d0fa0
-// FUNCTION: HYPERX 0x004310b0
+// FUNCTION: HYPERX1000 0x004d0fa0
+// FUNCTION: HYPERX1001 0x004310b0
 int D3DRend::ReleaseAllBuffers(void)
 {
     ReleaseObject(g_d3dState.pD3DMaterial);
@@ -115,8 +115,8 @@ int D3DRend::ReleaseAllBuffers(void)
 #define BATCH_VERTEX_CAPACITY   1024
 #define BATCH_TRIANGLE_CAPACITY 800
 
-// FUNCTION: HYPERX100 0x004d17b0
-// FUNCTION: HYPERX 0x004316a0
+// FUNCTION: HYPERX1000 0x004d17b0
+// FUNCTION: HYPERX1001 0x004316a0
 void D3DRend::InitBatchPools(void)
 {
     g_d3dState.pBatchVertex     = (D3DBatchVertex*)malloc(BATCH_VERTEX_CAPACITY * sizeof(D3DBatchVertex));
@@ -130,8 +130,8 @@ void D3DRend::InitBatchPools(void)
     D3DRend::ResetBatchBuffers(1);
 }
 
-// FUNCTION: HYPERX100 0x004d1bf0
-// FUNCTION: HYPERX 0x00431970
+// FUNCTION: HYPERX1000 0x004d1bf0
+// FUNCTION: HYPERX1001 0x00431970
 void D3DRend::InitRenderState(void)
 {
     memset(&g_d3dState, 0, sizeof(g_d3dState));
@@ -161,8 +161,8 @@ void D3DRend::InitRenderState(void)
 
 #define STATE_PAIR_COUNT 0x0f
 
-// FUNCTION: HYPERX100 0x004d25d0
-// FUNCTION: HYPERX 0x00431f80
+// FUNCTION: HYPERX1000 0x004d25d0
+// FUNCTION: HYPERX1001 0x00431f80
 int __cdecl D3DRend::SetupRenderStates(IDirect3DDevice* pDevice, IDirect3DViewport* pViewport, int nTexturePerspective)
 {
     D3DEXECUTEBUFFERDESC    desc;
@@ -269,8 +269,8 @@ int __cdecl D3DRend::SetupRenderStates(IDirect3DDevice* pDevice, IDirect3DViewpo
 
 // The diffuse is a flat grey of 80/255 on each channel with alpha nought.
 
-// FUNCTION: HYPERX100 0x004d2930
-// FUNCTION: HYPERX 0x00432230
+// FUNCTION: HYPERX1000 0x004d2930
+// FUNCTION: HYPERX1001 0x00432230
 int __cdecl D3DRend::CreateMaterial(void)
 {
     D3DMATERIAL material;
@@ -316,8 +316,8 @@ int __cdecl D3DRend::CreateMaterial(void)
     return g_hrD3DResult == 0;
 }
 
-// FUNCTION: HYPERX100 0x004d2a40
-// FUNCTION: HYPERX 0x00432300
+// FUNCTION: HYPERX1000 0x004d2a40
+// FUNCTION: HYPERX1001 0x00432300
 int __cdecl D3DRend::CreateExecuteBuffer(IDirect3DDevice* pDevice, IDirect3D*)
 {
     memset(&g_d3dState.execBufferDesc, 0, sizeof(g_d3dState.execBufferDesc));
@@ -335,8 +335,8 @@ int __cdecl D3DRend::CreateExecuteBuffer(IDirect3DDevice* pDevice, IDirect3D*)
 }
 
 // The second material record is filled only when the first names a back material.
-// FUNCTION: HYPERX100 0x004d2af0
-// FUNCTION: HYPERX 0x004323a0
+// FUNCTION: HYPERX1000 0x004d2af0
+// FUNCTION: HYPERX1001 0x004323a0
 void __cdecl D3DRend::DrawFaceList(MeshBone* pRend, FaceRecord** ppRecords, short nCount)
 {
     EngineObject* const pRendOwner = pRend->m_pOwner;
@@ -375,8 +375,8 @@ void __cdecl D3DRend::DrawFaceList(MeshBone* pRend, FaceRecord** ppRecords, shor
     }
 }
 
-// FUNCTION: HYPERX100 0x004d2c10
-// FUNCTION: HYPERX 0x00432490
+// FUNCTION: HYPERX1000 0x004d2c10
+// FUNCTION: HYPERX1001 0x00432490
 int D3DRend::BuildAndSubmitExecuteBuffer(int nVertexCount)
 {
     D3DEXECUTEBUFFERDESC desc = g_d3dState.execBufferDesc;
@@ -476,8 +476,8 @@ int D3DRend::BuildAndSubmitExecuteBuffer(int nVertexCount)
 
 // The argument is never read.
 
-// FUNCTION: HYPERX100 0x004d2f60
-// FUNCTION: HYPERX 0x00432730
+// FUNCTION: HYPERX1000 0x004d2f60
+// FUNCTION: HYPERX1001 0x00432730
 void D3DRend::ResetBatchBuffers(int)
 {
     D3DTRIANGLE* const pBatchTriangle = g_d3dState.pBatchTriangleBase;
@@ -498,8 +498,8 @@ void D3DRend::ResetBatchBuffers(int)
 }
 
 // An empty batch reports success.
-// FUNCTION: HYPERX100 0x004d2fc0
-// FUNCTION: HYPERX 0x00432780
+// FUNCTION: HYPERX1000 0x004d2fc0
+// FUNCTION: HYPERX1001 0x00432780
 int D3DRend::FlushBatch(int nWhich)
 {
     if (g_d3dState.nBatchVertexCount != 0 && g_d3dState.nBatchTriangleCount != 0)
@@ -531,8 +531,8 @@ inline int D3DRend::UsesHardwareShading()
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004d3020
-// FUNCTION: HYPERX 0x004327c0
+// FUNCTION: HYPERX1000 0x004d3020
+// FUNCTION: HYPERX1001 0x004327c0
 int D3DRend::ExecuteScene(int nWhich)
 {
     const int nViewport = g_pScene->nViewportId;
@@ -596,8 +596,8 @@ int D3DRend::ExecuteScene(int nWhich)
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004d3130
-// FUNCTION: HYPERX 0x004328c0
+// FUNCTION: HYPERX1000 0x004d3130
+// FUNCTION: HYPERX1001 0x004328c0
 void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace* pFaceData, MeshMaterial** ppMaterials, int* pVertexColour, struct TransformedVertex* pVertexBufBase, struct Vec3* pFaceNormal, unsigned char cClipFlags)
 {
     short nPosVert;
@@ -943,8 +943,8 @@ void __fastcall D3DRend::DrawFace(MeshBone* pRend, unsigned char cFlip, MeshFace
 
 #pragma optimize("", on)
 
-// FUNCTION: HYPERX100 0x004d4600
-// FUNCTION: HYPERX 0x004337d0
+// FUNCTION: HYPERX1000 0x004d4600
+// FUNCTION: HYPERX1001 0x004337d0
 void D3DRend::SetRenderQuality(int nWhich, int nValue)
 {
     if (g_ddrawDevice.bD3DActive != 0)
@@ -972,8 +972,8 @@ void D3DRend::SetRenderQuality(int nWhich, int nValue)
     }
 }
 
-// FUNCTION: HYPERX100 0x0046e500
-// FUNCTION: HYPERX 0x0044bee0
+// FUNCTION: HYPERX1000 0x0046e500
+// FUNCTION: HYPERX1001 0x0044bee0
 void __cdecl D3DRend::SetQualityIfEnabled(int nWhich, int nValue)
 {
     if (g_cUseSoftRenderer == 0)
@@ -984,7 +984,7 @@ void __cdecl D3DRend::SetQualityIfEnabled(int nWhich, int nValue)
 
 #ifdef HYPERX_V100
 // The original copies the fifteen globals as one block.
-// FUNCTION: HYPERX100 0x004d0ba0
+// FUNCTION: HYPERX1000 0x004d0ba0
 void __cdecl D3DRend::GetRenderStates(D3DRenderStates* pStates)
 {
     pStates->nZEnable            = g_nRenderStateZEnable;
@@ -1005,7 +1005,7 @@ void __cdecl D3DRend::GetRenderStates(D3DRenderStates* pStates)
 }
 
 // CreateMatrix's result is dropped, so the test reads whatever the last call left.
-// FUNCTION: HYPERX100 0x004d1b90
+// FUNCTION: HYPERX1000 0x004d1b90
 int D3DRend::CreateWorldMatrix(void)
 {
     g_d3dState.pDevice->CreateMatrix(&g_d3dState.dwMatrixHandle0);

@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1800
+// VTABLE: HYPERX1001 0x004b1800
 class CDisplayPassBarPool : public AgendaItemOwner
 {
 public:
@@ -13,8 +13,8 @@ public:
     }
 
     // Every pool's copy folds onto this one; v1.0.0.0 keeps them apart.
-    // FUNCTION: HYPERX100 0x0044b970
-    // FUNCTION: HYPERX 0x00414b00
+    // FUNCTION: HYPERX1000 0x0044b970
+    // FUNCTION: HYPERX1001 0x00414b00
     virtual AgendaItemOwner* Destroy()
     {
         delete this;
@@ -29,7 +29,7 @@ public:
     ~CDisplayPassBarPool();
 };
 
-// SYNTHETIC: HYPERX 0x00416160
+// SYNTHETIC: HYPERX1001 0x00416160
 // CDisplayPassBarPool::`scalar deleting destructor'
 
 #endif

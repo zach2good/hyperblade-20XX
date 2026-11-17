@@ -42,7 +42,7 @@ DATA_KINDS = ('GLOBAL', 'VTABLE', 'STRING')
 KINDS = CODE_KINDS + DATA_KINDS
 
 # The address is read to its end, not to eight digits: poolcounts.h writes ten.
-MARKER = re.compile(r'//\s*(%s):\s*HYPERX\s+0x([0-9a-fA-F]+)' % '|'.join(KINDS))
+MARKER = re.compile(r'//\s*(%s):\s*HYPERX1001\s+0x([0-9a-fA-F]+)' % '|'.join(KINDS))
 
 IMAGE_SCN_MEM_EXECUTE = 0x20000000
 
@@ -89,7 +89,7 @@ def load_compare():
     project = RecCmpProject.from_directory(Path.cwd())
     if project is None:
         raise RuntimeError('no reccmp project in this directory')
-    target = project.get('HYPERX')
+    target = project.get('HYPERX1001')
     return target, Compare.from_target(target)
 
 

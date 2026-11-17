@@ -8,8 +8,8 @@
 #include "planvm/collinteractor.h"
 #include "planvm/msginteractor.h"
 
-// FUNCTION: HYPERX100 0x004b8620
-// FUNCTION: HYPERX 0x0046ba80
+// FUNCTION: HYPERX1000 0x004b8620
+// FUNCTION: HYPERX1001 0x0046ba80
 void CollInteractorPool::Init()
 {
     CollInteractor* pNode = new CollInteractor;
@@ -38,8 +38,8 @@ char CollInteractorPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004b89f0
-// FUNCTION: HYPERX 0x0046bbd0
+// FUNCTION: HYPERX1000 0x004b89f0
+// FUNCTION: HYPERX1001 0x0046bbd0
 void* CollInteractorPool::Alloc()
 {
     Interactor* const pHead = m_pHead;
@@ -55,7 +55,7 @@ void* CollInteractorPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x0046be00
+// FUNCTION: HYPERX1001 0x0046be00
 CollInteractorPool::~CollInteractorPool()
 {
     while (m_pHead != 0)

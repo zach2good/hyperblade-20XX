@@ -47,8 +47,8 @@ Vec3  g_vFallTrackOffset            = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZe
 Vec3  g_vNoOffset                   = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 Vec3  g_vZeroMarker                 = { g_flZeroPlanArg, g_flZeroPlanArg, g_flZeroPlanArg };
 
-// FUNCTION: HYPERX100 0x0048e500
-// FUNCTION: HYPERX 0x0044c1b0
+// FUNCTION: HYPERX1000 0x0048e500
+// FUNCTION: HYPERX1001 0x0044c1b0
 void __stdcall Game::RunFrame(void)
 {
     unsigned int dwFrameStart;
@@ -115,8 +115,8 @@ void __stdcall Game::RunFrame(void)
 }
 
 // Builds the game's owners in the original's order, timing each stage.
-// FUNCTION: HYPERX100 0x004097a0
-// FUNCTION: HYPERX 0x0045c700
+// FUNCTION: HYPERX1000 0x004097a0
+// FUNCTION: HYPERX1001 0x0045c700
 void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPalette, HDC hSoftBackDC)
 {
     int nStart = GameApp::GetInstallLevel();
@@ -160,7 +160,7 @@ void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPa
 
     g_pAnimRegistry = pAnimDb;
 
-    // STRING: HYPERX 0x004c41c0
+    // STRING: HYPERX1001 0x004c41c0
     g_pAnimRegistry->LoadFromPath("animdata\\AnimAssm.txt");
 
     nDelta = GameApp::GetInstallLevel() - nStart;
@@ -184,7 +184,7 @@ void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPa
         g_pRenderer = InfoBarBase::Create(0, hSoftBackDC);
     }
 
-    // STRING: HYPERX 0x004c41b4
+    // STRING: HYPERX1001 0x004c41b4
     g_pGameEngine->Init("game.cfg");
 
     g_pGameEngine->StartMatch();
@@ -195,13 +195,13 @@ void __cdecl Game::InitializeEngine(HWND hWnd, HINSTANCE hInstance, HPALETTE hPa
 
     g_pMessageQueue = new MessageQueue;
 
-    // STRING: HYPERX 0x004c41a4
+    // STRING: HYPERX1001 0x004c41a4
     g_pMessageQueue->LoadList("infobtxt.lst");
 }
 
 // The renderer is not nulled, so a second call would tear it down again.
-// FUNCTION: HYPERX100 0x00409cf0
-// FUNCTION: HYPERX 0x0045c9c0
+// FUNCTION: HYPERX1000 0x00409cf0
+// FUNCTION: HYPERX1001 0x0045c9c0
 void __cdecl Game::ShutdownEngine(void)
 {
     if (g_pMessageQueue != 0)
@@ -251,8 +251,8 @@ void __cdecl Game::ShutdownEngine(void)
 }
 
 // Eight markers against the arena ellipsoid; the y-minus one asks for its height at y = +6, not -6.
-// FUNCTION: HYPERX100 0x004e1750
-// FUNCTION: HYPERX 0x0047d1c0
+// FUNCTION: HYPERX1000 0x004e1750
+// FUNCTION: HYPERX1001 0x0047d1c0
 void Game::InitMatchMarkers(void)
 {
     g_vMarkerRimEast.x = g_arenaEllipsoid.GetRadiusX() + 2.0f;
@@ -289,8 +289,8 @@ void Game::InitMatchMarkers(void)
     g_vMarkerGoalMouthSouth.y = 3.0f - g_arenaEllipsoid.GetRadiusY();
 }
 
-// FUNCTION: HYPERX100 0x0040c910
-// FUNCTION: HYPERX 0x00491dd0
+// FUNCTION: HYPERX1000 0x0040c910
+// FUNCTION: HYPERX1001 0x00491dd0
 extern "C" unsigned int Game::SetEngineState(unsigned int state)
 {
     const unsigned int previous = g_gameApp.m_nEngineState;
@@ -301,8 +301,8 @@ extern "C" unsigned int Game::SetEngineState(unsigned int state)
 }
 
 // Runs on the frame the state changed; every other frame only ticks the current screen.
-// FUNCTION: HYPERX100 0x0040c930
-// FUNCTION: HYPERX 0x00491de0
+// FUNCTION: HYPERX1000 0x0040c930
+// FUNCTION: HYPERX1001 0x00491de0
 unsigned int __stdcall Game::UpdateState(void)
 {
     char* pszText;
@@ -655,7 +655,7 @@ unsigned int __stdcall Game::UpdateState(void)
 #include "rokobject.h"
 #include "objectclasses.h"
 
-// FUNCTION: HYPERX100 0x004e1070
+// FUNCTION: HYPERX1000 0x004e1070
 short Game::GetOpponentTargetGoalSlot(void)
 {
     const short nSlot = (short)((g_pGameEngine->m_nViewedSlot & 1) == 0);
@@ -663,7 +663,7 @@ short Game::GetOpponentTargetGoalSlot(void)
     return ((PlayerObject*)g_pGameEngine->m_ppSlots[nSlot])->m_wTargetGoalSlot;
 }
 
-// FUNCTION: HYPERX100 0x004e11b0
+// FUNCTION: HYPERX1000 0x004e11b0
 short Game::GetRokPrevCarrierSlot(void)
 {
     return (short)((RokObject*)g_pGameEngine->m_ppSlots[SLOT_ROK])->m_nPrevCarrierSlot;

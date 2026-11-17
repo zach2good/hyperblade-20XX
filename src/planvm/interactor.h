@@ -11,7 +11,7 @@ class CameraObject;
 struct PlanNode;
 
 // The base of the collision and message interactors; the re-arm walk calls only slot 10.
-// VTABLE: HYPERX 0x004b37e8
+// VTABLE: HYPERX1001 0x004b37e8
 class Interactor
 {
 public:
@@ -51,21 +51,21 @@ public:
         }
     }
 
-    // FUNCTION: HYPERX100 0x004b8b30
+    // FUNCTION: HYPERX1000 0x004b8b30
     virtual ~Interactor()
     {
     }
 
     // Object::Trace, which eleven tables share; CollInteractor overrides it.
-    // FUNCTION: HYPERX100 0x004b8b40
+    // FUNCTION: HYPERX1000 0x004b8b40
     virtual void Discard()
     {
     }
 
     virtual int GetActiveState();
 
-    // FUNCTION: HYPERX100 0x004b8b60
-    // FUNCTION: HYPERX 0x0046bb50
+    // FUNCTION: HYPERX1000 0x004b8b60
+    // FUNCTION: HYPERX1001 0x0046bb50
     virtual void SetMember(int nMember)
     {
         m_nMember = nMember;
@@ -74,8 +74,8 @@ public:
     // Zero, one or two: the phase the object below is checked against.
     virtual int GetState();
 
-    // FUNCTION: HYPERX100 0x004b8b80
-    // FUNCTION: HYPERX 0x0046bb70
+    // FUNCTION: HYPERX1000 0x004b8b80
+    // FUNCTION: HYPERX1001 0x0046bb70
     virtual EngineObject* GetActor()
     {
         return m_pOwner;
@@ -86,26 +86,26 @@ public:
     CameraObject* GetCameraActor();
 
     // The message id EngineObject::RegisterSceneMessageHandler indexes its byte table by.
-    // FUNCTION: HYPERX100 0x004b8b90
-    // FUNCTION: HYPERX 0x0046bba0
+    // FUNCTION: HYPERX1000 0x004b8b90
+    // FUNCTION: HYPERX1001 0x0046bba0
     virtual short GetNamedSlot()
     {
         return -1;
     }
 
-    // FUNCTION: HYPERX100 0x004b8ba0
+    // FUNCTION: HYPERX1000 0x004b8ba0
     virtual short GetOtherSlot()
     {
         return -1;
     }
 
-    // FUNCTION: HYPERX100 0x004b8bb0
+    // FUNCTION: HYPERX1000 0x004b8bb0
     virtual short GetModelSlot()
     {
         return -1;
     }
 
-    // FUNCTION: HYPERX100 0x004b8bc0
+    // FUNCTION: HYPERX1000 0x004b8bc0
     virtual short GetTargetSlot()
     {
         return -1;
@@ -138,7 +138,7 @@ public:
     short m_wEventKind;    // 0x032
 };
 
-// SYNTHETIC: HYPERX 0x0046bbb0
+// SYNTHETIC: HYPERX1001 0x0046bbb0
 // Interactor::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(Interactor) == 0x34);

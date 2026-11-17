@@ -6,10 +6,10 @@
 #include "common/compat.h"
 #include "graphics/paletterange.h"
 
-// GLOBAL: HYPERX 0x004cb780
+// GLOBAL: HYPERX1001 0x004cb780
 extern int g_nPaletteAnimated;
 
-// VTABLE: HYPERX 0x004b2b58
+// VTABLE: HYPERX1001 0x004b2b58
 class PaletteFade
 {
 public:
@@ -40,7 +40,7 @@ protected:
 #define PLAIN_FADE_KIND     2
 #define PLAIN_FADE_DURATION 500
 
-// SYNTHETIC: HYPERX 0x0042ce40
+// SYNTHETIC: HYPERX1001 0x0042ce40
 // PaletteFade::`scalar deleting destructor'
 
 #endif

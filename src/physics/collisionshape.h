@@ -14,7 +14,7 @@ enum ShapeKind
     SHAPE_KIND_ELLIPSOID = 2
 };
 
-// VTABLE: HYPERX 0x004b2be0
+// VTABLE: HYPERX1001 0x004b2be0
 class CollisionShape
 {
 public:

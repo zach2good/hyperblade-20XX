@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1a58
+// VTABLE: HYPERX1001 0x004b1a58
 class CSlideOnRailPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CSlideOnRailPool();
 };
 
-// SYNTHETIC: HYPERX 0x00414ea0
+// SYNTHETIC: HYPERX1001 0x00414ea0
 // CSlideOnRailPool::`scalar deleting destructor'
 
 #endif

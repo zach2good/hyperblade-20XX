@@ -45,8 +45,8 @@ extern unsigned char g_bSmartCamEnabled;
 
 HYPERBLADE_FIELD_AT(CTrack, m_pPos, 0x10);
 
-// FUNCTION: HYPERX100 0x00483540
-// FUNCTION: HYPERX 0x00408f20
+// FUNCTION: HYPERX1000 0x00483540
+// FUNCTION: HYPERX1001 0x00408f20
 void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -70,8 +70,8 @@ void CTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_bUnused = 0;
 }
 
-// FUNCTION: HYPERX100 0x004835d0
-// FUNCTION: HYPERX 0x00408f90
+// FUNCTION: HYPERX1000 0x004835d0
+// FUNCTION: HYPERX1001 0x00408f90
 void CTrack::OnListChanged()
 {
     if (m_bReady == 0)
@@ -88,8 +88,8 @@ void CTrack::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x00483630
-// FUNCTION: HYPERX 0x00408fd0
+// FUNCTION: HYPERX1000 0x00483630
+// FUNCTION: HYPERX1001 0x00408fd0
 void CTrack::Process(int nArg)
 {
     float flPull;
@@ -116,7 +116,7 @@ void CTrack::Process(int nArg)
 
     if (pTracked == 0)
     {
-        // STRING: HYPERX 0x004bb454
+        // STRING: HYPERX1001 0x004bb454
         g_gameApp.Fatal("CTrack::Process(): Null pointer for model to track\n");
     }
 

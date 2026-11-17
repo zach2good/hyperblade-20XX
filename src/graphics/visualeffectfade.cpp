@@ -6,7 +6,7 @@
 
 // Folded with PaletteScalarFade::Start onto one address, so it carries no marker and keeps that
 // body.
-// FUNCTION: HYPERX100 0x00497b80
+// FUNCTION: HYPERX1000 0x00497b80
 int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
 {
     if (m_bActive != 0)
@@ -22,8 +22,8 @@ int VisualEffectFade::Start(const PALETTEENTRY* pStartColour)
 }
 
 // The phase turns only after the duration has passed since the last advance.
-// FUNCTION: HYPERX100 0x00497bd0
-// FUNCTION: HYPERX 0x0042cf20
+// FUNCTION: HYPERX1000 0x00497bd0
+// FUNCTION: HYPERX1001 0x0042cf20
 int VisualEffectFade::Tick()
 {
     if (timeGetTime() - m_dwStepped > m_nDuration)
@@ -40,8 +40,8 @@ int VisualEffectFade::Tick()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00497c20
-// FUNCTION: HYPERX 0x0042cf70
+// FUNCTION: HYPERX1000 0x00497c20
+// FUNCTION: HYPERX1001 0x0042cf70
 int VisualEffectFade::ApplyPhase(int bPhase)
 {
     if (bPhase != 0)

@@ -4,8 +4,8 @@
 #include "planvm/cpaletteeffect.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041dff0
-// FUNCTION: HYPERX 0x00414720
+// FUNCTION: HYPERX1000 0x0041dff0
+// FUNCTION: HYPERX1001 0x00414720
 void CPaletteEffectPool::Init()
 {
     AgendaItem* pNode = new CPaletteEffect;
@@ -34,8 +34,8 @@ char CPaletteEffectPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004224c0
-// FUNCTION: HYPERX 0x004147c0
+// FUNCTION: HYPERX1000 0x004224c0
+// FUNCTION: HYPERX1001 0x004147c0
 void* CPaletteEffectPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CPaletteEffectPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415fa0
+// FUNCTION: HYPERX1001 0x00415fa0
 CPaletteEffectPool::~CPaletteEffectPool()
 {
     while (m_pHead != 0)

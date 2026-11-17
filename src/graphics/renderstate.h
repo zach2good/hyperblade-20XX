@@ -88,7 +88,7 @@ STATIC_ASSERT(offsetof(D3DStateBlock, pBatchVertexBase) == 0x189c);
 STATIC_ASSERT(offsetof(D3DStateBlock, nBatchInstructionOffset) == 0x18c0);
 STATIC_ASSERT(sizeof(D3DStateBlock) == 0x631 * 4);
 
-// GLOBAL: HYPERX 0x004cbbc8
+// GLOBAL: HYPERX1001 0x004cbbc8
 extern D3DStateBlock g_d3dState;
 
 #endif

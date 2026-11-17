@@ -4,7 +4,7 @@
 #include "planvm/interactor.h"
 
 // A root class, as BehaviorOwner is.
-// VTABLE: HYPERX 0x004b3840
+// VTABLE: HYPERX1001 0x004b3840
 class NodeOwner
 {
 public:
@@ -12,8 +12,8 @@ public:
     {
     }
 
-    // FUNCTION: HYPERX100 0x004b8380
-    // FUNCTION: HYPERX 0x0046be80
+    // FUNCTION: HYPERX1000 0x004b8380
+    // FUNCTION: HYPERX1001 0x0046be80
     virtual ~NodeOwner()
     {
     }
@@ -31,7 +31,7 @@ public:
     class Interactor* m_pHead;
 };
 
-// SYNTHETIC: HYPERX 0x0046be90
+// SYNTHETIC: HYPERX1001 0x0046be90
 // NodeOwner::`scalar deleting destructor'
 
 #endif

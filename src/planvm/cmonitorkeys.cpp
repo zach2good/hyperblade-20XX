@@ -22,8 +22,8 @@
 // Four, the arena edge margin; marked in src/globals.cpp.
 extern const float g_flFourPlayer;
 
-// FUNCTION: HYPERX100 0x0042a830
-// FUNCTION: HYPERX 0x00410df0
+// FUNCTION: HYPERX1000 0x0042a830
+// FUNCTION: HYPERX1001 0x00410df0
 void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -41,8 +41,8 @@ void CMonitorKeys::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_nMode        = MON_DRIVE_YER_GUY;
 }
 
-// FUNCTION: HYPERX100 0x0042a8b0
-// FUNCTION: HYPERX 0x00410e60
+// FUNCTION: HYPERX1000 0x0042a8b0
+// FUNCTION: HYPERX1001 0x00410e60
 void CMonitorKeys::OnListChanged()
 {
     if (m_bReady == 0)
@@ -58,8 +58,8 @@ void CMonitorKeys::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x0042a8f0
-// FUNCTION: HYPERX 0x00410e90
+// FUNCTION: HYPERX1000 0x0042a8f0
+// FUNCTION: HYPERX1001 0x00410e90
 void CMonitorKeys::Process(int nArg)
 {
     float        flEdge;

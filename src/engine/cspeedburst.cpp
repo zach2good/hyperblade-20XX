@@ -23,8 +23,8 @@
 
 HYPERBLADE_FIELD_AT(CSpeedBurst, m_pOpponentA, 0x10);
 
-// FUNCTION: HYPERX100 0x0042ae60
-// FUNCTION: HYPERX 0x004112e0
+// FUNCTION: HYPERX1000 0x0042ae60
+// FUNCTION: HYPERX1001 0x004112e0
 CSpeedBurst::CSpeedBurst() throw()
 {
     m_pOpponentA = 0;
@@ -33,8 +33,8 @@ CSpeedBurst::CSpeedBurst() throw()
     m_flTarget   = g_flZeroAgendaItem;
 }
 
-// FUNCTION: HYPERX100 0x0042af90
-// FUNCTION: HYPERX 0x00411310
+// FUNCTION: HYPERX1000 0x0042af90
+// FUNCTION: HYPERX1001 0x00411310
 void CSpeedBurst::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -55,8 +55,8 @@ void CSpeedBurst::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_flTarget = g_flZeroAgendaItem;
 }
 
-// FUNCTION: HYPERX100 0x0042b040
-// FUNCTION: HYPERX 0x004113a0
+// FUNCTION: HYPERX1000 0x0042b040
+// FUNCTION: HYPERX1001 0x004113a0
 void CSpeedBurst::OnListChanged()
 {
     if (m_bReady == 0)
@@ -76,8 +76,8 @@ void CSpeedBurst::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x0042b0a0
-// FUNCTION: HYPERX 0x004113f0
+// FUNCTION: HYPERX1000 0x0042b0a0
+// FUNCTION: HYPERX1001 0x004113f0
 void CSpeedBurst::Process(int nArg)
 {
     float      flDelta;

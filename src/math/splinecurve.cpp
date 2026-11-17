@@ -6,11 +6,11 @@
 #include "spline.h"
 #include "math/splinecurve.h"
 
-// GLOBAL: HYPERX 0x004b40c8
+// GLOBAL: HYPERX1001 0x004b40c8
 extern const float g_flSplineTangentStep;
 
-// FUNCTION: HYPERX100 0x004362e0
-// FUNCTION: HYPERX 0x00492df0
+// FUNCTION: HYPERX1000 0x004362e0
+// FUNCTION: HYPERX1001 0x00492df0
 void SplineCurve::ComputeTangent(float flT, Vec3* pTangent)
 {
     float flStep;
@@ -35,7 +35,7 @@ void SplineCurve::ComputeTangent(float flT, Vec3* pTangent)
 #ifdef HYPERX_V100
 #include <math.h>
 
-// FUNCTION: HYPERX100 0x004363c0
+// FUNCTION: HYPERX1000 0x004363c0
 void SplineCurve::ComputeValueTangent(float flValue, Vec3* pTangent)
 {
     float flStep = g_flSplineTangentStep + flValue;
@@ -54,7 +54,7 @@ void SplineCurve::ComputeValueTangent(float flValue, Vec3* pTangent)
 }
 
 // A near-vertical direction takes a slope of 1e8.
-// FUNCTION: HYPERX100 0x004361a0
+// FUNCTION: HYPERX1000 0x004361a0
 void SplineCurve::IntersectLine(const Vec3* pDir, const Vec3* pPoint, Vec3* pOut)
 {
     float flSlope;

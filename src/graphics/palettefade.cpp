@@ -7,8 +7,8 @@
 #include <windows.h>
 
 // PC_RESERVED on the first entry means the entries already animate, and the fade goes inactive.
-// FUNCTION: HYPERX100 0x004978c0
-// FUNCTION: HYPERX 0x0042cd10
+// FUNCTION: HYPERX1000 0x004978c0
+// FUNCTION: HYPERX1001 0x0042cd10
 PaletteFade::PaletteFade(const PaletteRange* pRange)
 : m_nKind(0)
 {
@@ -73,8 +73,8 @@ PaletteFade::PaletteFade(const PaletteRange* pRange)
 }
 
 // The two blocks are freed without a null check.
-// FUNCTION: HYPERX100 0x00497a60
-// FUNCTION: HYPERX 0x0042ce60
+// FUNCTION: HYPERX1000 0x00497a60
+// FUNCTION: HYPERX1001 0x0042ce60
 PaletteFade::~PaletteFade()
 {
     RestoreEntries();
@@ -83,8 +83,8 @@ PaletteFade::~PaletteFade()
     delete[] m_pWorkEntries;
 }
 
-// FUNCTION: HYPERX100 0x00497aa0
-// FUNCTION: HYPERX 0x0042ce90
+// FUNCTION: HYPERX1000 0x00497aa0
+// FUNCTION: HYPERX1001 0x0042ce90
 void PaletteFade::RestoreEntries()
 {
     if (m_bActive == 0)

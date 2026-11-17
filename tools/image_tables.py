@@ -111,7 +111,7 @@ def knownTables():
     for path in sourceFiles((".h", ".cpp")):
         text = open(path, encoding="utf-8", errors="replace").read()
 
-        for hit in re.findall(r"VTABLE: HYPERX (0x004[0-9a-fA-F]{5})", text):
+        for hit in re.findall(r"VTABLE: HYPERX1001 (0x004[0-9a-fA-F]{5})", text):
             found.add(int(hit, 16))
 
         for hit in re.findall(r"g_vtbl(004[bB][0-9a-fA-F]{4})", text):

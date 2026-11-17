@@ -7,7 +7,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slots 7 and 8 must answer one here, or the Rok would sit in the start gun for the whole match.
-// VTABLE: HYPERX 0x004b1f0c
+// VTABLE: HYPERX1001 0x004b1f0c
 class CTimerActivity : public KindAgendaItem
 {
 public:
@@ -17,7 +17,7 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
-    // FUNCTION: HYPERX100 0x00425680
+    // FUNCTION: HYPERX1000 0x00425680
     virtual unsigned char GetReadyFlag()
     {
         return 1;
@@ -25,7 +25,7 @@ public:
 
     // Slot eight answering one keeps several timers of one kind; nought would evict all but the
     // last.
-    // FUNCTION: HYPERX100 0x00425690
+    // FUNCTION: HYPERX1000 0x00425690
     virtual char IsReplaceable()
     {
         return 1;

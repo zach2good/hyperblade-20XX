@@ -5,8 +5,8 @@
 #include "graphics/ddrawapi.h"
 #endif
 
-// FUNCTION: HYPERX100 0x00443e70
-// FUNCTION: HYPERX 0x00438f40
+// FUNCTION: HYPERX1000 0x00443e70
+// FUNCTION: HYPERX1001 0x00438f40
 int PassBar::DrawAtPos(int nPosition)
 {
     if (m_bVisible != 0)
@@ -19,8 +19,8 @@ int PassBar::DrawAtPos(int nPosition)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00443ea0
-// FUNCTION: HYPERX 0x00438f70
+// FUNCTION: HYPERX1000 0x00443ea0
+// FUNCTION: HYPERX1001 0x00438f70
 int PassBar::AutoScroll()
 {
     if (m_bVisible != 0)
@@ -33,8 +33,8 @@ int PassBar::AutoScroll()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00443ed0
-// FUNCTION: HYPERX 0x00438fa0
+// FUNCTION: HYPERX1000 0x00443ed0
+// FUNCTION: HYPERX1001 0x00438fa0
 int PassBar::UpdateScrollPos(int nPosition)
 {
     int nChanged = 0;
@@ -87,7 +87,7 @@ int PassBar::UpdateScrollPos(int nPosition)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00443830
+// FUNCTION: HYPERX1000 0x00443830
 PassBar::PassBar(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : CDDBitMap(pDDraw, pPrimary, pBack)
 {
@@ -98,14 +98,14 @@ PassBar::PassBar(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawS
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x00443920
+// FUNCTION: HYPERX1000 0x00443920
 void PassBar::SetScrollColorMode(int nScrollColor)
 {
     m_dwScrollColor = nScrollColor;
     m_nPosition     = m_ptRange.y + 1;
 }
 
-// FUNCTION: HYPERX100 0x00443940
+// FUNCTION: HYPERX1000 0x00443940
 PassBar::PassBar()
 {
     m_ptRange.Zero();
@@ -115,7 +115,7 @@ PassBar::PassBar()
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x004439f0
+// FUNCTION: HYPERX1000 0x004439f0
 void PassBar::ClearState()
 {
     m_ptInset.y      = 2;
@@ -131,7 +131,7 @@ void PassBar::ClearState()
     m_flScale        = (float)(m_ptSize.x - 4) * 0.01f;
 }
 
-// FUNCTION: HYPERX100 0x00443a80
+// FUNCTION: HYPERX1000 0x00443a80
 PassBar::~PassBar()
 {
     if (m_pMarkerTexture != 0)
@@ -142,7 +142,7 @@ PassBar::~PassBar()
     m_pMarkerTexture = 0;
 }
 
-// FUNCTION: HYPERX100 0x00443b10
+// FUNCTION: HYPERX1000 0x00443b10
 int PassBar::LoadFromFile(const char* pszBarName, const char* pszMarkerName, int bColourKey, int bSystemMemory)
 {
     int nResult = CDDBitMap::LoadFromFile(pszBarName, bColourKey, bSystemMemory);
@@ -166,7 +166,7 @@ int PassBar::LoadFromFile(const char* pszBarName, const char* pszMarkerName, int
 
     if (m_pMarkerTexture == 0)
     {
-        // STRING: HYPERX100 0x00510ff4
+        // STRING: HYPERX1000 0x00510ff4
         g_gameApp.Error("Cannot create surface for Meter indicator!");
     }
 
@@ -179,7 +179,7 @@ int PassBar::LoadFromFile(const char* pszBarName, const char* pszMarkerName, int
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x00443cb0
+// FUNCTION: HYPERX1000 0x00443cb0
 void PassBar::SetClipRect(int nClipped, Point pt)
 {
     CDDBitMap::SetClipRect(nClipped, pt);
@@ -205,7 +205,7 @@ void PassBar::SetClipRect(int nClipped, Point pt)
     }
 }
 
-// FUNCTION: HYPERX100 0x00443d80
+// FUNCTION: HYPERX1000 0x00443d80
 int PassBar::RestoreContents()
 {
     int bResult = CDDBitMap::RestoreContents();
@@ -219,7 +219,7 @@ int PassBar::RestoreContents()
 }
 
 // The marker sits at the bar's horizontal centre and on its bottom edge.
-// FUNCTION: HYPERX100 0x00443db0
+// FUNCTION: HYPERX1000 0x00443db0
 void PassBar::SetPosition(Point pt)
 {
     CDDBitMap::SetPosition(pt);
@@ -234,7 +234,7 @@ void PassBar::SetPosition(Point pt)
     m_pMarkerTexture->SetPosition(m_ptMarker);
 }
 
-// FUNCTION: HYPERX100 0x00443e50
+// FUNCTION: HYPERX1000 0x00443e50
 int PassBar::Step()
 {
     return DrawAtPos(m_nPosition + m_nUnusedB);

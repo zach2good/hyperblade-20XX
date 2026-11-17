@@ -22,7 +22,7 @@ from comments import code
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEFINES = re.compile(r"^\s*(?:class|struct)\s+([A-Z]\w*)\s*(?:final\s*)?(?::[^;{]*)?\{", re.M)
-MARKED = re.compile(r"^// FUNCTION: HYPERX 0x[0-9a-f]+\r?\n(?://[^\r\n]*\r?\n)*"
+MARKED = re.compile(r"^// FUNCTION: HYPERX1001 0x[0-9a-f]+\r?\n(?://[^\r\n]*\r?\n)*"
                     r"[^\r\n(]*?\b([A-Za-z_]\w*)::(~?\w+)\s*\(", re.M)
 
 SKIP = ("src/jpeg/",)

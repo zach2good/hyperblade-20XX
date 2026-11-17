@@ -9,7 +9,7 @@
 
 class Screen;
 
-// VTABLE: HYPERX 0x004b2a84
+// VTABLE: HYPERX1001 0x004b2a84
 class FlipbookWidget : public Widget
 {
 public:
@@ -19,7 +19,7 @@ public:
     virtual int OnMouseDown();
     virtual int OnMouseUp(); // 0x0042ba50
 
-    // FUNCTION: HYPERX100 0x00477340
+    // FUNCTION: HYPERX1000 0x00477340
     virtual int IsDisplayOnly()
     {
         return 0;

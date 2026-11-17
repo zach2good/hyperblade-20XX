@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c6ff0
-// FUNCTION: HYPERX 0x004205e0
+// FUNCTION: HYPERX1000 0x004c6ff0
+// FUNCTION: HYPERX1001 0x004205e0
 void BehObjTrackPassPrepPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_TrackPassPrep;
@@ -33,8 +33,8 @@ char BehObjTrackPassPrepPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c8e70
-// FUNCTION: HYPERX 0x004206a0
+// FUNCTION: HYPERX1000 0x004c8e70
+// FUNCTION: HYPERX1001 0x004206a0
 void* BehObjTrackPassPrepPool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* BehObjTrackPassPrepPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00421760
+// FUNCTION: HYPERX1001 0x00421760
 BehObjTrackPassPrepPool::~BehObjTrackPassPrepPool()
 {
     while (m_pHead != 0)

@@ -15,7 +15,7 @@
 #include "graphics/d3dapi.h"
 #include "graphics/ddrawapi.h"
 
-// GLOBAL: HYPERX 0x004b4f10
+// GLOBAL: HYPERX1001 0x004b4f10
 extern const GUID g_iidDirect3D;
 
 #define TEXFORMAT_NONE (-100)
@@ -30,8 +30,8 @@ struct IDirectDraw;
 
 #define PREFERRED_BPP 16
 
-// FUNCTION: HYPERX100 0x004d0f20
-// FUNCTION: HYPERX 0x00431050
+// FUNCTION: HYPERX1000 0x004d0f20
+// FUNCTION: HYPERX1001 0x00431050
 int __cdecl D3D::Initialize(IDirectDraw* pDDraw)
 {
     if (g_bForceSoftwareRender != 0)
@@ -43,7 +43,7 @@ int __cdecl D3D::Initialize(IDirectDraw* pDDraw)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd544
+        // STRING: HYPERX1001 0x004bd544
         g_gameApp.Error("Creation of Direct3D interface failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -53,8 +53,8 @@ int __cdecl D3D::Initialize(IDirectDraw* pDDraw)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004d1150
-// FUNCTION: HYPERX 0x004311e0
+// FUNCTION: HYPERX1000 0x004d1150
+// FUNCTION: HYPERX1001 0x004311e0
 int __cdecl D3D::BppToDDBD(int nBpp)
 {
     switch (nBpp)
@@ -84,8 +84,8 @@ int __cdecl D3D::BppToDDBD(int nBpp)
     return TEXFORMAT_NONE;
 }
 
-// FUNCTION: HYPERX100 0x004d1200
-// FUNCTION: HYPERX 0x00431270
+// FUNCTION: HYPERX1000 0x004d1200
+// FUNCTION: HYPERX1001 0x00431270
 int D3D::EnumDrivers(void)
 {
     g_d3dState.nD3DDriverCount = 0;
@@ -94,7 +94,7 @@ int D3D::EnumDrivers(void)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd570
+        // STRING: HYPERX1001 0x004bd570
         g_gameApp.Error("Enumeration of drivers failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -107,8 +107,8 @@ int D3D::EnumDrivers(void)
 }
 
 // The count is also the index, and the enumeration stops at five records.
-// FUNCTION: HYPERX100 0x004d1270
-// FUNCTION: HYPERX 0x004312d0
+// FUNCTION: HYPERX1000 0x004d1270
+// FUNCTION: HYPERX1001 0x004312d0
 HRESULT __stdcall D3D::EnumDriversCallback(GUID* pGuid, char* pszDescription, char* pszName, D3DDEVICEDESC* pHardwareDesc, D3DDEVICEDESC* pEmulationDesc, void*)
 {
     if (pHardwareDesc->dcmColorModel != 0 && g_d3dState.bOnlyEmulation != 0)
@@ -153,8 +153,8 @@ HRESULT __stdcall D3D::EnumDriversCallback(GUID* pGuid, char* pszDescription, ch
     return g_d3dState.nD3DDriverCount != D3D_DRIVER_LIMIT;
 }
 
-// FUNCTION: HYPERX100 0x004d1d00
-// FUNCTION: HYPERX 0x00431a00
+// FUNCTION: HYPERX1000 0x004d1d00
+// FUNCTION: HYPERX1001 0x00431a00
 int __cdecl D3D::GetCurrentDisplayMode(struct IDirectDraw* pDDraw)
 {
     DDSURFACEDESC desc;
@@ -169,7 +169,7 @@ int __cdecl D3D::GetCurrentDisplayMode(struct IDirectDraw* pDDraw)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd64c
+        // STRING: HYPERX1001 0x004bd64c
         g_gameApp.Error("Getting the current display mode failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -184,8 +184,8 @@ int __cdecl D3D::GetCurrentDisplayMode(struct IDirectDraw* pDDraw)
 }
 
 // Both return one; -100 in the out parameter means nothing was found.
-// FUNCTION: HYPERX100 0x004d1db0
-// FUNCTION: HYPERX 0x00431a80
+// FUNCTION: HYPERX1000 0x004d1db0
+// FUNCTION: HYPERX1001 0x00431a80
 int __cdecl D3D::FindDeviceByFormat(int* pnDriver, unsigned int nFormatMask)
 {
     int nBest;
@@ -233,8 +233,8 @@ int __cdecl D3D::FindDeviceByFormat(int* pnDriver, unsigned int nFormatMask)
 }
 
 // Prefers 640x480 at 16 bits.
-// FUNCTION: HYPERX100 0x004d1fc0
-// FUNCTION: HYPERX 0x00431b50
+// FUNCTION: HYPERX1000 0x004d1fc0
+// FUNCTION: HYPERX1001 0x00431b50
 int __cdecl D3D::FindDisplayMode(int* pnMode, unsigned int nDepthMask)
 {
     int nMode;
@@ -272,8 +272,8 @@ int __cdecl D3D::FindDisplayMode(int* pnMode, unsigned int nDepthMask)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004d20a0
-// FUNCTION: HYPERX 0x00431c00
+// FUNCTION: HYPERX1000 0x004d20a0
+// FUNCTION: HYPERX1001 0x00431c00
 int __cdecl D3D::SelectDisplayMode(int* pnDriver, int* pnMode)
 {
     *pnDriver = DRIVER_ANY;
@@ -290,8 +290,8 @@ int __cdecl D3D::SelectDisplayMode(int* pnDriver, int* pnMode)
 }
 
 // The last 16-bit RGB format wins, and nothing resets the counter between enumerations.
-// FUNCTION: HYPERX100 0x004d44e0
-// FUNCTION: HYPERX 0x00433700
+// FUNCTION: HYPERX1000 0x004d44e0
+// FUNCTION: HYPERX1001 0x00433700
 HRESULT __stdcall D3D::EnumTextureFormatsCallback(DDSURFACEDESC* pFormat, void* pContext)
 {
     int* pnChosen = (int*)pContext;
@@ -330,7 +330,7 @@ HRESULT __stdcall D3D::EnumTextureFormatsCallback(DDSURFACEDESC* pFormat, void* 
 struct IDirectDraw;
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x004d1cb0
+// FUNCTION: HYPERX1000 0x004d1cb0
 int D3D::RestoreDisplayMode(void)
 {
     g_hrD3DResult = g_d3dState.pDDraw->RestoreDisplayMode();
@@ -347,7 +347,7 @@ int D3D::RestoreDisplayMode(void)
 
 // Sets each mode's last word when the driver renders at its depth and, on hardware, the frame fits
 // in video memory.
-// FUNCTION: HYPERX100 0x004d1ee0
+// FUNCTION: HYPERX1000 0x004d1ee0
 int __cdecl D3D::MarkFittingModes(int nDriver)
 {
     const unsigned int nDepths = g_d3dState.aD3DDrivers[nDriver].deviceDesc.dwDeviceRenderBitDepth;

@@ -11,8 +11,8 @@
 #include "joystickmgr.h"
 #include "engine/gameoptions.h"
 
-// FUNCTION: HYPERX100 0x00498380
-// FUNCTION: HYPERX 0x00423bf0
+// FUNCTION: HYPERX1000 0x00498380
+// FUNCTION: HYPERX1001 0x00423bf0
 void __cdecl JoystickMgr::StartCapture(int nTwoPlayers)
 {
     if (g_pJoystickMgr != 0)
@@ -69,8 +69,8 @@ void __cdecl JoystickMgr::StartCapture(int nTwoPlayers)
 }
 
 // Only ports that answer joyGetPosEx are counted, so with no stick m_pDevices stays null.
-// FUNCTION: HYPERX100 0x004984a0
-// FUNCTION: HYPERX 0x00423ca0
+// FUNCTION: HYPERX1000 0x004984a0
+// FUNCTION: HYPERX1001 0x00423ca0
 JoystickMgr::JoystickMgr(HWND hWnd, int bCaptureEnabled)
 {
     JOYINFOEX    probe;
@@ -125,8 +125,8 @@ JoystickMgr::JoystickMgr(HWND hWnd, int bCaptureEnabled)
     }
 }
 
-// FUNCTION: HYPERX100 0x00498800
-// FUNCTION: HYPERX 0x00423e00
+// FUNCTION: HYPERX1000 0x00498800
+// FUNCTION: HYPERX1001 0x00423e00
 JoystickMgr::~JoystickMgr()
 {
     for (unsigned int nJoy = 0; nJoy < m_nDeviceCount; nJoy++)
@@ -142,8 +142,8 @@ JoystickMgr::~JoystickMgr()
     }
 }
 
-// FUNCTION: HYPERX100 0x00498870
-// FUNCTION: HYPERX 0x00423e60
+// FUNCTION: HYPERX1000 0x00498870
+// FUNCTION: HYPERX1001 0x00423e60
 int JoystickMgr::CaptureJoystick(UINT uJoyID, HWND hWnd)
 {
     int nResult = JOYERR_NOCANDO;
@@ -160,8 +160,8 @@ int JoystickMgr::CaptureJoystick(UINT uJoyID, HWND hWnd)
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x004988c0
-// FUNCTION: HYPERX 0x00423ea0
+// FUNCTION: HYPERX1000 0x004988c0
+// FUNCTION: HYPERX1001 0x00423ea0
 int JoystickMgr::SetThreshold(UINT uJoyID, int nShift)
 {
     const UINT uThreshold = 1 << nShift;
@@ -187,8 +187,8 @@ int JoystickMgr::SetThreshold(UINT uJoyID, int nShift)
 }
 
 // Outside a live match the pad sends menu keys.
-// FUNCTION: HYPERX100 0x00498d80
-// FUNCTION: HYPERX 0x00423f20
+// FUNCTION: HYPERX1000 0x00498d80
+// FUNCTION: HYPERX1001 0x00423f20
 void JoystickMgr::HandleButtonPress(int, unsigned int nButton, unsigned int, unsigned int)
 {
     if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
@@ -254,8 +254,8 @@ void JoystickMgr::HandleButtonPress(int, unsigned int nButton, unsigned int, uns
 }
 
 // Each button defaults to its own position; a value outside one to four leaves it unbound.
-// FUNCTION: HYPERX100 0x00498fa0
-// FUNCTION: HYPERX 0x004240d0
+// FUNCTION: HYPERX1000 0x00498fa0
+// FUNCTION: HYPERX1001 0x004240d0
 void JoystickMgr::LoadButtonConfig(void)
 {
     int nButton;
@@ -274,7 +274,7 @@ void JoystickMgr::LoadButtonConfig(void)
 
     for (int i = 0; i < 4; i++)
     {
-        // STRING: HYPERX 0x004bc4ec
+        // STRING: HYPERX1001 0x004bc4ec
         nButton = g_pGameOptions->ReadInt("Gamepad", g_apszGamepadButtonKey[i], i + 1) - 1;
 
         if (nButton >= 0 && nButton < 4)
@@ -288,8 +288,8 @@ void JoystickMgr::LoadButtonConfig(void)
     }
 }
 
-// FUNCTION: HYPERX100 0x00499020
-// FUNCTION: HYPERX 0x00424140
+// FUNCTION: HYPERX1000 0x00499020
+// FUNCTION: HYPERX1001 0x00424140
 void JoystickMgr::HandleButtonRelease(int, unsigned int nButton, unsigned int, unsigned int)
 {
     if (g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE && g_pGameEngine->m_wRunState == ENGINE_RUN_PLAYING)
@@ -351,8 +351,8 @@ void JoystickMgr::HandleButtonRelease(int, unsigned int nButton, unsigned int, u
     }
 }
 
-// FUNCTION: HYPERX100 0x004991f0
-// FUNCTION: HYPERX 0x004242b0
+// FUNCTION: HYPERX1000 0x004991f0
+// FUNCTION: HYPERX1001 0x004242b0
 void JoystickMgr::HandleJoyAxis(int nDevice, unsigned int, unsigned short nX, unsigned short nY)
 {
     unsigned int* pnKeys;
@@ -463,7 +463,7 @@ void JoystickMgr::HandleJoyAxis(int nDevice, unsigned int, unsigned short nX, un
 
 #ifdef HYPERX_V100
 // The bound test lets nDevice equal the count, one past the last device.
-// FUNCTION: HYPERX100 0x00498950
+// FUNCTION: HYPERX1000 0x00498950
 JOYINFOEX* JoystickMgr::PollDevice(unsigned int nDevice)
 {
     UINT uJoyID = (UINT)-1;
@@ -496,7 +496,7 @@ JOYINFOEX* JoystickMgr::PollDevice(unsigned int nDevice)
 #define JOY_POLL_SHIFT 11
 
 // The polled counterpart of HandleJoyAxis, which also turns the four buttons into keys.
-// FUNCTION: HYPERX100 0x00498a00
+// FUNCTION: HYPERX1000 0x00498a00
 JOYINFOEX* JoystickMgr::PollAndSendKeys(unsigned int nDevice)
 {
     JOYINFOEX* const pInfo = PollDevice(nDevice);

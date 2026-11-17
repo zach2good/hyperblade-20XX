@@ -1,5 +1,5 @@
 # reccmp pairs this project's build against the original, function by function,
-# through the // FUNCTION: HYPERX 0xADDR annotations in src/.
+# through the // FUNCTION: HYPERX1001 0xADDR annotations in src/.
 #
 # reccmp is AGPL-3.0. It is an external dependency and its source is not vendored here.
 #
@@ -18,7 +18,7 @@
 project: hyperblade-decomp
 
 targets:
-  HYPERX:
+  HYPERX1001:
     filename: HYPERX.EXE
     source-root: src
     # The original is linked /FIXED and has no relocations, so reccmp cannot find its
@@ -30,8 +30,14 @@ targets:
     hash:
       sha256: 514bcec6805f27136bed6e4de8796e75d99f224a94e3d7098a4477b029ea24cd
   # v1.0.0.0. Its markers are best guesses until the VC4 toolchain can build it.
-  HYPERX100:
+  HYPERX1000:
     filename: HYPERX.EXE
     source-root: src
     hash:
       sha256: 08c7b7a462847089d41a4e3ac0d61df3409ec8c9107cb97deff08364c4c0de60
+  # The August 1996 demo. No source carries its markers yet.
+  HYPERXDEMO:
+    filename: HYPERX.EXE
+    source-root: src
+    hash:
+      sha256: 73a9925d072b27dda09b84d1cfea9e7fb759b0d3f35c37074411c9947dff9d89

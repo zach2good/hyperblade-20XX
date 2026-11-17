@@ -4,8 +4,8 @@
 #include "planvm/cglideonsurface.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00421840
-// FUNCTION: HYPERX 0x00412b80
+// FUNCTION: HYPERX1000 0x00421840
+// FUNCTION: HYPERX1001 0x00412b80
 void CGlideOnSurfacePool::Init()
 {
     AgendaItem* pNode = new CGlideOnSurface;
@@ -34,8 +34,8 @@ char CGlideOnSurfacePool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00424170
-// FUNCTION: HYPERX 0x00412c10
+// FUNCTION: HYPERX1000 0x00424170
+// FUNCTION: HYPERX1001 0x00412c10
 void* CGlideOnSurfacePool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CGlideOnSurfacePool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00414df0
+// FUNCTION: HYPERX1001 0x00414df0
 CGlideOnSurfacePool::~CGlideOnSurfacePool()
 {
     while (m_pHead != 0)

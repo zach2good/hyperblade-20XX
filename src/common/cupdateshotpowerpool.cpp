@@ -4,8 +4,8 @@
 #include "planvm/cupdateshotpower.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041dbd0
-// FUNCTION: HYPERX 0x00414910
+// FUNCTION: HYPERX1000 0x0041dbd0
+// FUNCTION: HYPERX1001 0x00414910
 void CUpdateShotPowerPool::Init()
 {
     AgendaItem* pNode = new CUpdateShotPower;
@@ -25,8 +25,8 @@ void CUpdateShotPowerPool::Init()
 }
 
 // Every agenda item pool's copy folds onto this one; v1.0.0.0 keeps them apart.
-// FUNCTION: HYPERX100 0x00421a60
-// FUNCTION: HYPERX 0x00414990
+// FUNCTION: HYPERX1000 0x00421a60
+// FUNCTION: HYPERX1001 0x00414990
 char CUpdateShotPowerPool::Insert(void* pNode)
 {
     AgendaItem* const pItem = (AgendaItem*)pNode;
@@ -37,8 +37,8 @@ char CUpdateShotPowerPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004222c0
-// FUNCTION: HYPERX 0x004149b0
+// FUNCTION: HYPERX1000 0x004222c0
+// FUNCTION: HYPERX1001 0x004149b0
 void* CUpdateShotPowerPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -54,7 +54,7 @@ void* CUpdateShotPowerPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004160e0
+// FUNCTION: HYPERX1001 0x004160e0
 CUpdateShotPowerPool::~CUpdateShotPowerPool()
 {
     while (m_pHead != 0)

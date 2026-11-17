@@ -3,7 +3,7 @@
 
 #include "common/nodeowner.h"
 
-// VTABLE: HYPERX 0x004b3794
+// VTABLE: HYPERX1001 0x004b3794
 class MsgInteractorPool : public NodeOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~MsgInteractorPool();
 };
 
-// SYNTHETIC: HYPERX 0x0046beb0
+// SYNTHETIC: HYPERX1001 0x0046beb0
 // MsgInteractorPool::`scalar deleting destructor'
 
 #endif

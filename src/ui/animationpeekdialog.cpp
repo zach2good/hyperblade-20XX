@@ -13,13 +13,13 @@
 #include "ui/dialog.h"
 #include "app/win32.h"
 
-// GLOBAL: HYPERX 0x004b22ac
+// GLOBAL: HYPERX1001 0x004b22ac
 extern char* const g_pszEmptyDefaultName;
 
 // The marker is in src/planvm/ctracktraj.cpp.
 extern char g_bCamTrackLookEnabled;
 
-// GLOBAL: HYPERX 0x004cb42c
+// GLOBAL: HYPERX1001 0x004cb42c
 extern unsigned char g_bSmartCamEnabled;
 
 namespace AnimationPeekDialog
@@ -39,8 +39,8 @@ const char* AnimationPeekDialog::NameOrDefault(const AnimDB* pSet)
     return g_pszEmptyDefaultName;
 }
 
-// FUNCTION: HYPERX100 0x004c0e50
-// FUNCTION: HYPERX 0x00417a40
+// FUNCTION: HYPERX1000 0x004c0e50
+// FUNCTION: HYPERX1001 0x00417a40
 unsigned int __cdecl AnimationPeekDialog::OnInit(HWND hDlg, unsigned int, long)
 {
     Win32::CenterWindow(hDlg, GetParent(hDlg));
@@ -106,13 +106,13 @@ unsigned int __cdecl AnimationPeekDialog::OnInit(HWND hDlg, unsigned int, long)
 }
 
 // One in the image; ObjectStats::UpdateMomentumAndEnergy reads it before any of its energy work.
-// GLOBAL: HYPERX 0x004c4b88
+// GLOBAL: HYPERX1001 0x004c4b88
 extern unsigned char g_bEnergyOn;
 
 // OK stores the second direction field over the first, and clears two physics-sheet flags.
 // 0x40e and 0x41e belong to the physics sheet; GetDlgItem answers null for both here.
-// FUNCTION: HYPERX100 0x004c13d0
-// FUNCTION: HYPERX 0x00417e80
+// FUNCTION: HYPERX1000 0x004c13d0
+// FUNCTION: HYPERX1001 0x00417e80
 unsigned int __cdecl AnimationPeekDialog::OnCommand(HWND hDlg, int nCommand, HWND, int nNotify)
 {
     switch (nCommand)

@@ -21,7 +21,7 @@ enum SingleMatchSetupWidget
     TOURNAMENT_SETUP_TEAM_EMBLEM
 };
 
-// VTABLE: HYPERX 0x004b3fcc
+// VTABLE: HYPERX1001 0x004b3fcc
 class TournamentSetupUIScreen : public UIScreen
 {
 public:
@@ -29,7 +29,7 @@ public:
 
     // The linker folded this body onto HeadToHeadSetupUIScreen::OnOkayClick, which carries the
     // marker.
-    // FUNCTION: HYPERX100 0x00447320
+    // FUNCTION: HYPERX1000 0x00447320
     virtual void OnCancelClick()
     {
         Game::SetEngineState(g_nSetupReturnState);
@@ -59,12 +59,12 @@ private:
 
 STATIC_ASSERT(sizeof(TournamentSetupUIScreen) == 0x488);
 
-// SYNTHETIC: HYPERX 0x00488410
+// SYNTHETIC: HYPERX1001 0x00488410
 // TournamentSetupUIScreen::`scalar deleting destructor'
 
-// GLOBAL: HYPERX 0x004ce98c
+// GLOBAL: HYPERX1001 0x004ce98c
 extern int g_nMatchSetupFlagA;
-// GLOBAL: HYPERX 0x004ce990
+// GLOBAL: HYPERX1001 0x004ce990
 extern int g_nMatchSetupFlagB;
 
 #endif

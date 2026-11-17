@@ -210,7 +210,7 @@ def main():
     twins = {addr: group for group in groups for addr in group}
 
     user = yaml.safe_load((ROOT / "reccmp-user.yml").read_text())
-    original = detect_image(user["targets"]["HYPERX"]["path"])
+    original = detect_image(user["targets"]["HYPERX1001"]["path"])
     # functions.csv lists every function start, where the report lists only the paired ones.
     with (ROOT / "symbols" / "functions.csv").open(encoding="utf-8") as handle:
         starts = sorted(int(line.split(",")[0], 16) for line in handle if line.startswith("0x"))

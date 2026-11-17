@@ -22,8 +22,8 @@
 
 HYPERBLADE_FIELD_AT(CCircleTrack, m_pWatchPos, 0x10);
 
-// FUNCTION: HYPERX100 0x00486c00
-// FUNCTION: HYPERX 0x0040b6d0
+// FUNCTION: HYPERX1000 0x00486c00
+// FUNCTION: HYPERX1001 0x0040b6d0
 void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -37,7 +37,7 @@ void CCircleTrack::Bind(EngineObject* pOwner, GameBehaviorObject*)
 }
 
 // CHeadTrack's body, which v1.0.0.1's link folds this onto.
-// FUNCTION: HYPERX100 0x00486c60
+// FUNCTION: HYPERX1000 0x00486c60
 void CCircleTrack::OnListChanged()
 {
     if (m_bReady == 0)
@@ -52,8 +52,8 @@ void CCircleTrack::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x00486ca0
-// FUNCTION: HYPERX 0x0040b720
+// FUNCTION: HYPERX1000 0x00486ca0
+// FUNCTION: HYPERX1001 0x0040b720
 void CCircleTrack::Process(int nArg)
 {
     Vec3 vPos;
@@ -68,13 +68,13 @@ void CCircleTrack::Process(int nArg)
 
     if (pTracked == 0)
     {
-        // STRING: HYPERX 0x004bb5dc
+        // STRING: HYPERX1001 0x004bb5dc
         g_gameApp.Fatal("CCircleTrack::Process(): Null pointer for model to track\n");
     }
 
     if (pTracked->m_nKind != KIND_DROMER)
     {
-        // STRING: HYPERX 0x004bb5a0
+        // STRING: HYPERX1001 0x004bb5a0
         g_gameApp.Fatal("CCircleTrack::Process(): Model to track is not a dromer\n");
     }
 
@@ -132,7 +132,7 @@ void CCircleTrack::Process(int nArg)
 }
 
 // Out of line, so the linker folds it onto EngineObject::CheckObjectAI, as the original's did.
-// FUNCTION: HYPERX100 0x00486f30
+// FUNCTION: HYPERX1000 0x00486f30
 void CCircleTrack::Release(int)
 {
 }

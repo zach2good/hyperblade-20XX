@@ -8,8 +8,8 @@
 #include "poolcounts.h"
 #include "planvm/collinteractor.h"
 
-// FUNCTION: HYPERX100 0x0041f3d0
-// FUNCTION: HYPERX 0x00413d80
+// FUNCTION: HYPERX1000 0x0041f3d0
+// FUNCTION: HYPERX1001 0x00413d80
 void CRelaxToPositionPool::Init()
 {
     AgendaItem* pNode = new CRelaxToPosition;
@@ -38,8 +38,8 @@ char CRelaxToPositionPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00422eb0
-// FUNCTION: HYPERX 0x00413e00
+// FUNCTION: HYPERX1000 0x00422eb0
+// FUNCTION: HYPERX1001 0x00413e00
 void* CRelaxToPositionPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -55,7 +55,7 @@ void* CRelaxToPositionPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415960
+// FUNCTION: HYPERX1001 0x00415960
 CRelaxToPositionPool::~CRelaxToPositionPool()
 {
     while (m_pHead != 0)

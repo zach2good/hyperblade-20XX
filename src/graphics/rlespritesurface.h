@@ -4,7 +4,7 @@
 #include "graphics/cdddrawable.h"
 
 // A software-rendered RLE sprite, loaded by name.
-// VTABLE: HYPERX 0x004b32c4
+// VTABLE: HYPERX1001 0x004b32c4
 class RLESpriteSurface : public CDDDrawable
 {
 public:
@@ -23,7 +23,7 @@ public:
     char*             m_pszName; // 0x20
 };
 
-// SYNTHETIC: HYPERX 0x0044f1e0
+// SYNTHETIC: HYPERX1001 0x0044f1e0
 // RLESpriteSurface::`scalar deleting destructor'
 
 #endif

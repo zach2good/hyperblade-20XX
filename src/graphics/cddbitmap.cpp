@@ -17,31 +17,31 @@
 #include "graphics/gdi.h"
 #endif
 
-// FUNCTION: HYPERX100 0x00442100
-// FUNCTION: HYPERX 0x00437f30
+// FUNCTION: HYPERX1000 0x00442100
+// FUNCTION: HYPERX1001 0x00437f30
 CDDBitMap::CDDBitMap()
 {
     ClearBounds();
 }
 
-// FUNCTION: HYPERX100 0x004421b0
-// FUNCTION: HYPERX 0x00437fa0
+// FUNCTION: HYPERX1000 0x004421b0
+// FUNCTION: HYPERX1001 0x00437fa0
 CDDBitMap::CDDBitMap(Texture* pSource)
 : Texture(pSource)
 {
     ClearBounds();
 }
 
-// FUNCTION: HYPERX100 0x00442240
-// FUNCTION: HYPERX 0x00437ff0
+// FUNCTION: HYPERX1000 0x00442240
+// FUNCTION: HYPERX1001 0x00437ff0
 CDDBitMap::CDDBitMap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : Texture(pDDraw, pPrimary, pBack)
 {
     ClearBounds();
 }
 
-// FUNCTION: HYPERX100 0x004422e0
-// FUNCTION: HYPERX 0x00438050
+// FUNCTION: HYPERX1000 0x004422e0
+// FUNCTION: HYPERX1001 0x00438050
 void CDDBitMap::ClearBounds()
 {
     m_pName = 0;
@@ -51,8 +51,8 @@ void CDDBitMap::ClearBounds()
     m_pOverlay = 0;
 }
 
-// FUNCTION: HYPERX100 0x00442320
-// FUNCTION: HYPERX 0x00438080
+// FUNCTION: HYPERX1000 0x00442320
+// FUNCTION: HYPERX1001 0x00438080
 CDDBitMap::~CDDBitMap()
 {
     if (m_pOverlay != 0)
@@ -73,8 +73,8 @@ CDDBitMap::~CDDBitMap()
 }
 
 // A failed name allocation stores null and the load runs anyway.
-// FUNCTION: HYPERX100 0x00442400
-// FUNCTION: HYPERX 0x00438110
+// FUNCTION: HYPERX1000 0x00442400
+// FUNCTION: HYPERX1001 0x00438110
 int CDDBitMap::LoadFromFile(const char* pszName, int bColourKey, int bSystemMemory)
 {
     m_pName = new String(pszName);
@@ -83,8 +83,8 @@ int CDDBitMap::LoadFromFile(const char* pszName, int bColourKey, int bSystemMemo
 }
 
 // A bitmap GetObjectA rejects is deleted here, since nothing else holds it.
-// FUNCTION: HYPERX100 0x004424d0
-// FUNCTION: HYPERX 0x004381a0
+// FUNCTION: HYPERX1000 0x004424d0
+// FUNCTION: HYPERX1001 0x004381a0
 int CDDBitMap::CreateFromHBitmap(HBITMAP hBitmap, int bColourKey, int bSystemMemory)
 {
     BITMAP bm;
@@ -112,15 +112,15 @@ int CDDBitMap::CreateFromHBitmap(HBITMAP hBitmap, int bColourKey, int bSystemMem
         return 0;
     }
 
-    // STRING: HYPERX 0x004be5d0
+    // STRING: HYPERX1001 0x004be5d0
     g_gameApp.Error("CDDBitMap::Create FAILED! No BitMap loaded!\n");
 
     return 0;
 }
 
 // Ignores case when comparing the name.
-// FUNCTION: HYPERX100 0x004425c0
-// FUNCTION: HYPERX 0x00438230
+// FUNCTION: HYPERX1000 0x004425c0
+// FUNCTION: HYPERX1001 0x00438230
 void CDDBitMap::SetFile(const char* pszName, int bColourKey)
 {
     String*     pName      = m_pName;
@@ -151,8 +151,8 @@ void CDDBitMap::SetFile(const char* pszName, int bColourKey)
     LoadFromFile(pszName, bColourKey, m_bSystemMemory);
 }
 
-// FUNCTION: HYPERX100 0x00442660
-// FUNCTION: HYPERX 0x004382b0
+// FUNCTION: HYPERX1000 0x00442660
+// FUNCTION: HYPERX1001 0x004382b0
 int CDDBitMap::Draw()
 {
     if (m_bVisible != 0 && m_pSurface != 0)
@@ -168,8 +168,8 @@ int CDDBitMap::Draw()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x004426a0
-// FUNCTION: HYPERX 0x004382e0
+// FUNCTION: HYPERX1000 0x004426a0
+// FUNCTION: HYPERX1001 0x004382e0
 int CDDBitMap::SetTextOverlay(const char* pszName, int nSize, const char* pszText, int bColourKey)
 {
     int nResult;
@@ -188,8 +188,8 @@ int CDDBitMap::SetTextOverlay(const char* pszName, int nSize, const char* pszTex
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x00442790
-// FUNCTION: HYPERX 0x00438390
+// FUNCTION: HYPERX1000 0x00442790
+// FUNCTION: HYPERX1001 0x00438390
 void CDDBitMap::SetPosition(Point pt)
 {
     m_ptPosition.Point::operator=(pt);
@@ -209,8 +209,8 @@ void CDDBitMap::SetPosition(Point pt)
 }
 
 // Returns success whatever the reload did.
-// FUNCTION: HYPERX100 0x00442840
-// FUNCTION: HYPERX 0x00438410
+// FUNCTION: HYPERX1000 0x00442840
+// FUNCTION: HYPERX1001 0x00438410
 int CDDBitMap::OnSurfaceLost()
 {
     Texture::OnSurfaceLost();
@@ -225,8 +225,8 @@ int CDDBitMap::OnSurfaceLost()
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00442870
-// FUNCTION: HYPERX 0x00438440
+// FUNCTION: HYPERX1000 0x00442870
+// FUNCTION: HYPERX1001 0x00438440
 int CDDBitMap::RestoreContents()
 {
     HBITMAP pBitmap = 0;
@@ -240,8 +240,8 @@ int CDDBitMap::RestoreContents()
 }
 
 // The source colour key is the first pixel, masked to the surface's bit depth.
-// FUNCTION: HYPERX100 0x004428a0
-// FUNCTION: HYPERX 0x00438470
+// FUNCTION: HYPERX1000 0x004428a0
+// FUNCTION: HYPERX1001 0x00438470
 int CDDBitMap::CopyBitmap(HBITMAP hBitmap)
 {
     HDC hdcSurface;
@@ -259,7 +259,7 @@ int CDDBitMap::CopyBitmap(HBITMAP hBitmap)
 
         if (m_hr != 0)
         {
-            // STRING: HYPERX 0x004be66c
+            // STRING: HYPERX1001 0x004be66c
             g_gameApp.Fatal("CDDBitMap::RestoreContents Surface Restore failed!\n%s\n",
                             DDraw::ErrorToString(m_hr));
         }
@@ -268,7 +268,7 @@ int CDDBitMap::CopyBitmap(HBITMAP hBitmap)
 
         if (m_hr == DDERR_SURFACELOST)
         {
-            // STRING: HYPERX 0x004be634
+            // STRING: HYPERX1001 0x004be634
             g_gameApp.Fatal("CDDBitMap::RestoreContents Surface GetDC failed!\n%s\n",
                             DDraw::ErrorToString(m_hr));
         }
@@ -310,7 +310,7 @@ int CDDBitMap::CopyBitmap(HBITMAP hBitmap)
 
             if (m_hr != 0)
             {
-                // STRING: HYPERX 0x004be600
+                // STRING: HYPERX1001 0x004be600
                 g_gameApp.Fatal("CDDBitMap::RestoreBitMap Surface Restore failed %d!",
                                 m_hr & DDRAW_ERROR_CODE_MASK);
             }
@@ -344,8 +344,8 @@ int CDDBitMap::CopyBitmap(HBITMAP hBitmap)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00442b20
-// FUNCTION: HYPERX 0x00438650
+// FUNCTION: HYPERX1000 0x00442b20
+// FUNCTION: HYPERX1001 0x00438650
 void CDDBitMap::SetClipRect(int nClipped, Point pt)
 {
     Texture::SetClipRect(nClipped, pt);
@@ -363,7 +363,7 @@ void CDDBitMap::SetClipRect(int nClipped, Point pt)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00442590
+// FUNCTION: HYPERX1000 0x00442590
 void CDDBitMap::ReloadBitmap()
 {
     CopyBitmap(GDI::LoadBitmapWithPalette(m_pName->m_pchData, 0));

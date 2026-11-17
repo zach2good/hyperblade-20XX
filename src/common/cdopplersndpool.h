@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1864
+// VTABLE: HYPERX1001 0x004b1864
 class CDopplerSndPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CDopplerSndPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415e40
+// SYNTHETIC: HYPERX1001 0x00415e40
 // CDopplerSndPool::`scalar deleting destructor'
 
 #endif

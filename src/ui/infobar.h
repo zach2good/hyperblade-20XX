@@ -28,7 +28,7 @@ class InfoBarBase;
 #define SCORE_LINE_TEAM2 4
 #define SCORE_LINE_TEAM1 5
 
-// VTABLE: HYPERX 0x004b32ec
+// VTABLE: HYPERX1001 0x004b32ec
 class InfoBar : public InfoBarBase
 {
 public:
@@ -135,7 +135,7 @@ public:
     }
 };
 
-// SYNTHETIC: HYPERX 0x00451cc0
+// SYNTHETIC: HYPERX1001 0x00451cc0
 // InfoBar::`scalar deleting destructor'
 
 HYPERBLADE_FIELD_AT(InfoBar, m_nCachedHomeTeam, 0x00c);

@@ -68,38 +68,38 @@
 // The second object's state block is fetched and never used, in the original too.
 
 // Out of line, so these empty bodies fold onto Stub::Assert; v1.0.0.0 keeps them apart.
-// FUNCTION: HYPERX100 0x0044f0e0
+// FUNCTION: HYPERX1000 0x0044f0e0
 void PlanAction::SetLaserHurdleCharge(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004a64e0
+// FUNCTION: HYPERX1000 0x004a64e0
 void PlanAction::SetInputMode(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004a64f0
+// FUNCTION: HYPERX1000 0x004a64f0
 void PlanAction::GetKeystateFlags(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004ab160
+// FUNCTION: HYPERX1000 0x004ab160
 void PlanAction::KillBallStaging(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004ab170
+// FUNCTION: HYPERX1000 0x004ab170
 void PlanAction::KillBallExecute(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004ab300
+// FUNCTION: HYPERX1000 0x004ab300
 void PlanAction::NoteStats4Possessors(Interactor*, PlanNode*, short*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x004b6c60
-// FUNCTION: HYPERX 0x0046a9e0
+// FUNCTION: HYPERX1000 0x004b6c60
+// FUNCTION: HYPERX1001 0x0046a9e0
 void __cdecl PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, int)
 {
     Vec3 vPoint;
@@ -130,8 +130,8 @@ void __cdecl PlanAction::GlideOnRamp(Interactor* pContext, PlanNode*, short*, in
 #define MESSAGE_KIND_EVEN 1
 #define MESSAGE_KIND_ODD  2
 
-// FUNCTION: HYPERX100 0x004b6d40
-// FUNCTION: HYPERX 0x0046aa90
+// FUNCTION: HYPERX1000 0x004b6d40
+// FUNCTION: HYPERX1001 0x0046aa90
 void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     if (pArgs->m_nArgCount > 1)
@@ -143,8 +143,8 @@ void PlanAction::Trace(Interactor* pContext, PlanNode* pArgs, short*, int)
     }
 }
 
-// FUNCTION: HYPERX100 0x004b6d90
-// FUNCTION: HYPERX 0x0046aad0
+// FUNCTION: HYPERX1000 0x004b6d90
+// FUNCTION: HYPERX1001 0x0046aad0
 void __cdecl PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, int)
 {
     if (pNode->m_nArgCount == ARG_COUNT_WITH_MESSAGE)
@@ -158,8 +158,8 @@ void __cdecl PlanAction::SetInfoBarText(Interactor*, PlanNode* pNode, short*, in
 
 // The kind alternates with the slot's low bit so the two sides of a pairing get different rows.
 
-// FUNCTION: HYPERX100 0x004b6dd0
-// FUNCTION: HYPERX 0x0046ab10
+// FUNCTION: HYPERX1000 0x004b6dd0
+// FUNCTION: HYPERX1001 0x0046ab10
 void __cdecl PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const char* pszName;
@@ -196,8 +196,8 @@ void __cdecl PlanAction::SetInfoTextDromer(Interactor* pContext, PlanNode* pArgs
 }
 
 // A slot of minus one means the actor has no team and nothing is pushed.
-// FUNCTION: HYPERX100 0x004b6e70
-// FUNCTION: HYPERX 0x0046aba0
+// FUNCTION: HYPERX1000 0x004b6e70
+// FUNCTION: HYPERX1001 0x0046aba0
 void __cdecl PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, short*, int)
 {
     const char* pTeam;
@@ -229,7 +229,7 @@ void __cdecl PlanAction::SetInfoTextTeam(Interactor* pContext, PlanNode* pArgs, 
 }
 
 // Set to one so the first save through each row wins.
-// GLOBAL: HYPERX 0x004c453c
+// GLOBAL: HYPERX1001 0x004c453c
 extern short g_awColorLatched[2];
 short        g_awColorLatched[2] = { 1, 1 };
 

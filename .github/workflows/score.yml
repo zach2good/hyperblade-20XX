@@ -70,7 +70,7 @@ jobs:
       - name: Name the original
         shell: bash
         run: |
-          printf 'targets:\n  HYPERX:\n    path: %s\n' "$(pwd -W)/reference/v1.0.0.1/HYPERX.EXE" > reccmp-user.yml
+          printf 'targets:\n  HYPERX1001:\n    path: %s\n' "$(pwd -W)/reference/v1.0.0.1/HYPERX.EXE" > reccmp-user.yml
           python tools/reference.py
 
       - name: Install reccmp
@@ -95,7 +95,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          python tools/foldcmp.py --target HYPERX --json build/report.json --silent
+          python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
           cp build/report.json build/report_baseline.json
 
       - name: Download the pull request's image
@@ -145,7 +145,7 @@ jobs:
         if: github.event.workflow_run.event == 'pull_request'
         shell: bash
         run: |
-          python tools/foldcmp.py --target HYPERX --json build/report.json --silent || exit 1
+          python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent || exit 1
           set +e
           python tools/check_regressions.py > regressions.txt 2>&1
           echo "status=$?" >> "$GITHUB_OUTPUT"

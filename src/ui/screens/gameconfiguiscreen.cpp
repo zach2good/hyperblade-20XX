@@ -34,14 +34,14 @@ enum PeriodLength
     PERIOD_LENGTH_LONG   = 420000,
 };
 
-// FUNCTION: HYPERX100 0x00433b00
-// FUNCTION: HYPERX 0x00479ad0
+// FUNCTION: HYPERX1000 0x00433b00
+// FUNCTION: HYPERX1001 0x00479ad0
 GameConfigUIScreen::~GameConfigUIScreen()
 {
 }
 
-// FUNCTION: HYPERX100 0x00433be0
-// FUNCTION: HYPERX 0x00479b00
+// FUNCTION: HYPERX1000 0x00433be0
+// FUNCTION: HYPERX1001 0x00479b00
 GameConfigUIScreen::GameConfigUIScreen()
 {
     m_nLastWidget = GAME_CONFIG_DIFFICULTY_RIGHT;
@@ -79,14 +79,14 @@ GameConfigUIScreen::GameConfigUIScreen()
     SetupWidgets();
 }
 
-// FUNCTION: HYPERX100 0x00433da0
-// FUNCTION: HYPERX 0x00479c40
+// FUNCTION: HYPERX1000 0x00433da0
+// FUNCTION: HYPERX1001 0x00479c40
 void GameConfigUIScreen::SetupWidgets()
 {
     BITMAP bm;
     int    nOption;
 
-    // STRING: HYPERX 0x004c2eb8
+    // STRING: HYPERX1001 0x004c2eb8
     m_hBackground = GDI::LoadBitmapAsBackground("Hviewl", &m_hPalette);
 
     m_apWidgets[UI_WIDGET_TAB_PLATE]->SetHidden(1);
@@ -111,22 +111,22 @@ void GameConfigUIScreen::SetupWidgets()
     m_apWidgets[UI_WIDGET_CONFIRM_PLATE]->SetDepressed(1);
 
     m_apWidgets[UI_WIDGET_OKAY]->ClearFrames();
-    // STRING: HYPERX 0x004c2168
+    // STRING: HYPERX1001 0x004c2168
     m_apWidgets[UI_WIDGET_OKAY]->AppendFrame(GDI::LoadBitmapHandle("Okay"));
-    // STRING: HYPERX 0x004c2160
+    // STRING: HYPERX1001 0x004c2160
     m_apWidgets[UI_WIDGET_OKAY]->AppendFrame(GDI::LoadBitmapHandle("Okayr"));
-    // STRING: HYPERX 0x004c2158
+    // STRING: HYPERX1001 0x004c2158
     m_apWidgets[UI_WIDGET_OKAY]->AppendFrame(GDI::LoadBitmapHandle("Okayd"));
 
     m_apWidgets[UI_WIDGET_CANCEL]->ClearFrames();
-    // STRING: HYPERX 0x004c2150
+    // STRING: HYPERX1001 0x004c2150
     m_apWidgets[UI_WIDGET_CANCEL]->AppendFrame(GDI::LoadBitmapHandle("Cancl"));
-    // STRING: HYPERX 0x004c2148
+    // STRING: HYPERX1001 0x004c2148
     m_apWidgets[UI_WIDGET_CANCEL]->AppendFrame(GDI::LoadBitmapHandle("Canclr"));
-    // STRING: HYPERX 0x004c2140
+    // STRING: HYPERX1001 0x004c2140
     m_apWidgets[UI_WIDGET_CANCEL]->AppendFrame(GDI::LoadBitmapHandle("Cancld"));
 
-    // STRING: HYPERX 0x004c6718
+    // STRING: HYPERX1001 0x004c6718
     HBITMAP hBitmap = GDI::LoadBitmapHandle("Optbkgd");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new LoopFlipbookWidget(0, 0, 0, 0, 0, 1, 0, 0, 0, 0, this, 0, -1));
@@ -224,8 +224,8 @@ void GameConfigUIScreen::SetupWidgets()
 
 #define VOLUME_MAX 7
 
-// FUNCTION: HYPERX100 0x00434460
-// FUNCTION: HYPERX 0x0047a160
+// FUNCTION: HYPERX1000 0x00434460
+// FUNCTION: HYPERX1001 0x0047a160
 void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
     char      szMessage[OPTIONS_MESSAGE_MAX];
@@ -455,8 +455,8 @@ void GameConfigUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 
 // The difficulty setter's answer is discarded.
 
-// FUNCTION: HYPERX100 0x00434a00
-// FUNCTION: HYPERX 0x0047a5e0
+// FUNCTION: HYPERX1000 0x00434a00
+// FUNCTION: HYPERX1001 0x0047a5e0
 void GameConfigUIScreen::OnOkayClick()
 {
     g_pGameEngine->SetAttackMode(g_nOptionAttackMode);
@@ -471,8 +471,8 @@ void GameConfigUIScreen::OnOkayClick()
 
 // Only the volumes are undone; nothing else is written until OK.
 
-// FUNCTION: HYPERX100 0x00434a90
-// FUNCTION: HYPERX 0x0047a650
+// FUNCTION: HYPERX1000 0x00434a90
+// FUNCTION: HYPERX1001 0x0047a650
 void GameConfigUIScreen::OnCancelClick()
 {
     g_pAudioMgr->SfxFadeVolume(g_nOptionsSavedSfxVolume);
@@ -482,8 +482,8 @@ void GameConfigUIScreen::OnCancelClick()
 }
 
 // Also sets the period length: 180000, 300000 or 420000 ms.
-// FUNCTION: HYPERX100 0x00434ae0
-// FUNCTION: HYPERX 0x0047a690
+// FUNCTION: HYPERX1000 0x00434ae0
+// FUNCTION: HYPERX1001 0x0047a690
 const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
 {
     int nLevel;
@@ -505,18 +505,18 @@ const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
             {
                 g_nPeriodLengthMs = PERIOD_LENGTH_MEDIUM;
 
-                // STRING: HYPERX 0x004c675c
+                // STRING: HYPERX1001 0x004c675c
                 return "perleng5";
             }
             else if (g_nOptionPeriodLength == 3)
             {
                 g_nPeriodLengthMs = PERIOD_LENGTH_LONG;
 
-                // STRING: HYPERX 0x004c6750
+                // STRING: HYPERX1001 0x004c6750
                 return "perleng7";
             }
 
-            // STRING: HYPERX 0x004c6768
+            // STRING: HYPERX1001 0x004c6768
             return "perleng3";
 
         case GAME_CONFIG_MUSIC_VOLUME:
@@ -531,7 +531,7 @@ const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
                 nLevel = 7;
             }
 
-            // STRING: HYPERX 0x004c6748
+            // STRING: HYPERX1001 0x004c6748
             sprintf(g_szMusicBarName, "opbar%d", nLevel + 1);
 
             return g_szMusicBarName;
@@ -555,13 +555,13 @@ const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
         case GAME_CONFIG_BRUTALITY:
             if (g_nOptionBrutality == 0)
             {
-                // STRING: HYPERX 0x004c6740
+                // STRING: HYPERX1001 0x004c6740
                 return "brutal1";
             }
 
             if (g_nOptionBrutality == 1)
             {
-                // STRING: HYPERX 0x004c6738
+                // STRING: HYPERX1001 0x004c6738
                 return "brutal2";
             }
             break;
@@ -569,30 +569,30 @@ const char* GameConfigUIScreen::GetOptionBitmapName(int nId)
         case GAME_CONFIG_DIFFICULTY:
             if (g_nOptionDifficulty == 0)
             {
-                // STRING: HYPERX 0x004c6730
+                // STRING: HYPERX1001 0x004c6730
                 return "diffic1";
             }
 
             if (g_nOptionDifficulty == 1)
             {
-                // STRING: HYPERX 0x004c6728
+                // STRING: HYPERX1001 0x004c6728
                 return "diffic2";
             }
 
             if (g_nOptionDifficulty == 2)
             {
-                // STRING: HYPERX 0x004c6720
+                // STRING: HYPERX1001 0x004c6720
                 return "diffic3";
             }
             break;
     }
 
-    // STRING: HYPERX 0x004c6490
+    // STRING: HYPERX1001 0x004c6490
     return "opbar0";
 }
 
-// FUNCTION: HYPERX100 0x00434ca0
-// FUNCTION: HYPERX 0x0047a7f0
+// FUNCTION: HYPERX1000 0x00434ca0
+// FUNCTION: HYPERX1001 0x0047a7f0
 void GameConfigUIScreen::LoadOptionBitmap(int nOption)
 {
     m_apWidgets[nOption]->ClearFrames();
@@ -607,19 +607,19 @@ void GameConfigUIScreen::LoadOptionBitmap(int nOption)
 // Each string marker has to stay on its own line above its literal.
 const char* g_aConfigButtonArt[2][3] = {
     {
-        // STRING: HYPERX 0x004c6710
+        // STRING: HYPERX1001 0x004c6710
         "cuskey",
-        // STRING: HYPERX 0x004c6708
+        // STRING: HYPERX1001 0x004c6708
         "cuskeyr",
-        // STRING: HYPERX 0x004c6700
+        // STRING: HYPERX1001 0x004c6700
         "cuskeyd"
     },
     {
-        // STRING: HYPERX 0x004c66f8
+        // STRING: HYPERX1001 0x004c66f8
         "opjoy",
-        // STRING: HYPERX 0x004c66f0
+        // STRING: HYPERX1001 0x004c66f0
         "opjoyr",
-        // STRING: HYPERX 0x004c66e8
+        // STRING: HYPERX1001 0x004c66e8
         "opjoyd"
     }
 };
@@ -629,19 +629,19 @@ ConfigPoint g_aConfigButtonPos[2] = { { 44, 55 }, { 44, 87 } };
 
 // The button loop's end bound is this table's address.
 ConfigOptionLabel g_aConfigOptionLabels[7] = {
-    // STRING: HYPERX 0x004c66e0
+    // STRING: HYPERX1001 0x004c66e0
     { "opattkr", 44, 119 },
-    // STRING: HYPERX 0x004c66d8
+    // STRING: HYPERX1001 0x004c66d8
     { "opteamr", 44, 151 },
-    // STRING: HYPERX 0x004c66d0
+    // STRING: HYPERX1001 0x004c66d0
     { "perlwht", 44, 183 },
-    // STRING: HYPERX 0x004c66c8
+    // STRING: HYPERX1001 0x004c66c8
     { "musvol", 44, 215 },
-    // STRING: HYPERX 0x004c66c0
+    // STRING: HYPERX1001 0x004c66c0
     { "sfxvol", 44, 247 },
-    // STRING: HYPERX 0x004c66b8
+    // STRING: HYPERX1001 0x004c66b8
     { "brutwht", 44, 279 },
-    // STRING: HYPERX 0x004c66b0
+    // STRING: HYPERX1001 0x004c66b0
     { "diffwht", 44, 311 }
 };
 
@@ -653,34 +653,34 @@ ConfigPoint g_aConfigArrowPos[14] = {
     { 323, 124 }, { 536, 124 }, { 323, 156 }, { 536, 156 }, { 323, 188 }, { 536, 188 }, { 323, 220 }, { 536, 220 }, { 323, 252 }, { 536, 252 }, { 323, 284 }, { 536, 284 }, { 323, 316 }, { 536, 316 }
 };
 
-// STRING: HYPERX 0x004c66a8
+// STRING: HYPERX1001 0x004c66a8
 const char* g_pszOptionArrowLeft1 = "oparlt1";
 
-// STRING: HYPERX 0x004c66a0
+// STRING: HYPERX1001 0x004c66a0
 const char* g_pszOptionArrowLeft2 = "oparlt2";
 
-// STRING: HYPERX 0x004c6698
+// STRING: HYPERX1001 0x004c6698
 const char* g_pszOptionArrowLeft3 = "oparlt3";
 
-// STRING: HYPERX 0x004c6690
+// STRING: HYPERX1001 0x004c6690
 const char* g_pszOptionArrowRight1 = "oparrt1";
 
-// STRING: HYPERX 0x004c6688
+// STRING: HYPERX1001 0x004c6688
 const char* g_pszOptionArrowRight2 = "oparrt2";
 
-// STRING: HYPERX 0x004c6680
+// STRING: HYPERX1001 0x004c6680
 const char* g_pszOptionArrowRight3 = "oparrt3";
 
 const char* g_apAttackModeBitmapNames[2] = {
-    // STRING: HYPERX 0x004c6678
+    // STRING: HYPERX1001 0x004c6678
     "attack1",
-    // STRING: HYPERX 0x004c6670
+    // STRING: HYPERX1001 0x004c6670
     "attack2",
 };
 
 const char* g_apTeammateModeBitmapNames[2] = {
-    // STRING: HYPERX 0x004c6668
+    // STRING: HYPERX1001 0x004c6668
     "teamb1",
-    // STRING: HYPERX 0x004c6660
+    // STRING: HYPERX1001 0x004c6660
     "teamb2",
 };

@@ -3,7 +3,7 @@
 
 #include "common/nodeowner.h"
 
-// VTABLE: HYPERX 0x004b37a8
+// VTABLE: HYPERX1001 0x004b37a8
 class CollInteractorPool : public NodeOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CollInteractorPool();
 };
 
-// SYNTHETIC: HYPERX 0x0046bde0
+// SYNTHETIC: HYPERX1001 0x0046bde0
 // CollInteractorPool::`scalar deleting destructor'
 
 #endif

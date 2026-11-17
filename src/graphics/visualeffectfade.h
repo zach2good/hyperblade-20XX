@@ -5,7 +5,7 @@
 #include "common/staticassert.h"
 
 // The original inlines the constructor into its one caller.
-// VTABLE: HYPERX 0x004b1b18
+// VTABLE: HYPERX1001 0x004b1b18
 class VisualEffectFade : public PaletteFade
 {
 public:
@@ -26,10 +26,10 @@ public:
 STATIC_ASSERT(sizeof(VisualEffectFade) == 0x30);
 
 // The linker folds PaletteScalarFade's empty destructor and deleter onto these two.
-// SYNTHETIC: HYPERX 0x00410cd0
+// SYNTHETIC: HYPERX1001 0x00410cd0
 // VisualEffectFade::`scalar deleting destructor'
 
-// SYNTHETIC: HYPERX 0x0042d030
+// SYNTHETIC: HYPERX1001 0x0042d030
 // VisualEffectFade::~VisualEffectFade
 
 #endif

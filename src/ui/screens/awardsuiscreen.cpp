@@ -28,8 +28,8 @@ class AwardsUIScreen;
 #define AWARDS_STRIP_X 0xf6
 #define AWARDS_STRIP_Y 0x29
 
-// FUNCTION: HYPERX100 0x00435710
-// FUNCTION: HYPERX 0x0041b870
+// FUNCTION: HYPERX1000 0x00435710
+// FUNCTION: HYPERX1001 0x0041b870
 AwardsUIScreen::AwardsUIScreen()
 {
     Widget* pWidget;
@@ -95,8 +95,8 @@ AwardsUIScreen::AwardsUIScreen()
     pWidget->SetHidden(1);
 }
 
-// FUNCTION: HYPERX100 0x00435cc0
-// FUNCTION: HYPERX 0x0041bbb0
+// FUNCTION: HYPERX1000 0x00435cc0
+// FUNCTION: HYPERX1001 0x0041bbb0
 void AwardsUIScreen::OnExitTabClick()
 {
     if (g_bChampFromJumbotron != 0)
@@ -113,7 +113,7 @@ void AwardsUIScreen::OnExitTabClick()
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00435d10
+// FUNCTION: HYPERX1000 0x00435d10
 char AwardsUIScreen::IsChampFromJumbotron()
 {
     return g_bChampFromJumbotron;
@@ -124,8 +124,8 @@ char AwardsUIScreen::IsChampFromJumbotron()
 
 #define AWARDS_NO_SOUND (-1)
 
-// FUNCTION: HYPERX100 0x00435d20
-// FUNCTION: HYPERX 0x0041bbf0
+// FUNCTION: HYPERX1000 0x00435d20
+// FUNCTION: HYPERX1001 0x0041bbf0
 void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)
 {
     if (nMsg != WM_LBUTTONUP)
@@ -181,8 +181,8 @@ void AwardsUIScreen::OnOtherButton(int nMsg, unsigned int nId)
     OnEnter();
 }
 
-// FUNCTION: HYPERX100 0x00435ed0
-// FUNCTION: HYPERX 0x0041bd30
+// FUNCTION: HYPERX1000 0x00435ed0
+// FUNCTION: HYPERX1001 0x0041bd30
 void AwardsUIScreen::OnEnter()
 {
     char szName[0x50];
@@ -228,7 +228,7 @@ void AwardsUIScreen::OnEnter()
 
     for (nSlot = 0; nSlot < AWARDS_STRIP_FRAMES; nSlot++)
     {
-        // STRING: HYPERX 0x004bc1a4
+        // STRING: HYPERX1001 0x004bc1a4
         sprintf(szName, "%s%02d", g_apszAwardStripPrefix[m_nAward], nSlot);
 
         m_apWidgets[AWARDS_STRIP]->AppendFrame(GDI::LoadBitmapHandle(szName));
@@ -254,66 +254,66 @@ const char* g_pszAwardsBackdrop   = "awbkgd";
 const char* g_pszAwardsBackground = "awbkgd";
 
 AwardIcon g_aAwardIcons[6] = {
-    // STRING: HYPERX 0x004bc194
+    // STRING: HYPERX1001 0x004bc194
     { "icortw", 285, 64 },
-    // STRING: HYPERX 0x004bc18c
+    // STRING: HYPERX1001 0x004bc18c
     { "icoanvl", 208, 152 },
-    // STRING: HYPERX 0x004bc184
+    // STRING: HYPERX1001 0x004bc184
     { "icocrus", 360, 152 },
-    // STRING: HYPERX 0x004bc17c
+    // STRING: HYPERX1001 0x004bc17c
     { "icoarch", 133, 242 },
-    // STRING: HYPERX 0x004bc174
+    // STRING: HYPERX1001 0x004bc174
     { "icosupr", 284, 242 },
-    // STRING: HYPERX 0x004bc16c
+    // STRING: HYPERX1001 0x004bc16c
     { "icorazr", 434, 242 }
 };
 
 AwardButton g_aAwardButtons[6] = {
-    // STRING: HYPERX 0x004bc168
+    // STRING: HYPERX1001 0x004bc168
     { "rtw",
-      // STRING: HYPERX 0x004bc160
+      // STRING: HYPERX1001 0x004bc160
       "rtwr",
-      // STRING: HYPERX 0x004bc158
+      // STRING: HYPERX1001 0x004bc158
       "rtwd",
       284,
       129 },
-    // STRING: HYPERX 0x004bc150
+    // STRING: HYPERX1001 0x004bc150
     { "anvil",
-      // STRING: HYPERX 0x004bc148
+      // STRING: HYPERX1001 0x004bc148
       "anvilr",
-      // STRING: HYPERX 0x004bc140
+      // STRING: HYPERX1001 0x004bc140
       "anvild",
       207,
       217 },
-    // STRING: HYPERX 0x004bc138
+    // STRING: HYPERX1001 0x004bc138
     { "crush",
-      // STRING: HYPERX 0x004bc130
+      // STRING: HYPERX1001 0x004bc130
       "crushr",
-      // STRING: HYPERX 0x004bc128
+      // STRING: HYPERX1001 0x004bc128
       "crushd",
       360,
       217 },
-    // STRING: HYPERX 0x004bc120
+    // STRING: HYPERX1001 0x004bc120
     { "arch",
-      // STRING: HYPERX 0x004bc118
+      // STRING: HYPERX1001 0x004bc118
       "archr",
-      // STRING: HYPERX 0x004bc110
+      // STRING: HYPERX1001 0x004bc110
       "archd",
       138,
       308 },
-    // STRING: HYPERX 0x004bc108
+    // STRING: HYPERX1001 0x004bc108
     { "super",
-      // STRING: HYPERX 0x004bc100
+      // STRING: HYPERX1001 0x004bc100
       "superr",
-      // STRING: HYPERX 0x004bc0f8
+      // STRING: HYPERX1001 0x004bc0f8
       "superd",
       283,
       308 },
-    // STRING: HYPERX 0x004bc0f0
+    // STRING: HYPERX1001 0x004bc0f0
     { "razor",
-      // STRING: HYPERX 0x004bc0e8
+      // STRING: HYPERX1001 0x004bc0e8
       "razorr",
-      // STRING: HYPERX 0x004bc0e0
+      // STRING: HYPERX1001 0x004bc0e0
       "razord",
       434,
       308 }

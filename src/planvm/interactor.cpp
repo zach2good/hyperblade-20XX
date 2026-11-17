@@ -24,8 +24,8 @@ extern PlanHandlerFn     g_pfnPlanActionHandlers[140];
 extern PlanOpcodeSlot    g_pfnPlanOpcodeHandlers[141];
 extern BehParamHandlerFn g_apfnBehaviorParamHandlers[17];
 
-// FUNCTION: HYPERX100 0x004cd7c0
-// FUNCTION: HYPERX 0x0045d860
+// FUNCTION: HYPERX1000 0x004cd7c0
+// FUNCTION: HYPERX1001 0x0045d860
 void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short* pState)
 {
     PlanNode*   pNode;
@@ -157,7 +157,7 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
                 break;
 
             default:
-                // STRING: HYPERX 0x004c4494
+                // STRING: HYPERX1001 0x004c4494
                 throw "Invalid Instruction object in Interactor Process\n";
         }
 
@@ -165,22 +165,22 @@ void Interactor::ExecuteScript(PlanWord* pCursor, short nCount, int nArg, short*
     }
 }
 
-// FUNCTION: HYPERX100 0x004b8b50
-// FUNCTION: HYPERX 0x0046bb40
+// FUNCTION: HYPERX1000 0x004b8b50
+// FUNCTION: HYPERX1001 0x0046bb40
 int Interactor::GetActiveState()
 {
     return m_nActiveState;
 }
 
-// FUNCTION: HYPERX100 0x004b8b70
-// FUNCTION: HYPERX 0x0046bb60
+// FUNCTION: HYPERX1000 0x004b8b70
+// FUNCTION: HYPERX1001 0x0046bb60
 int Interactor::GetState()
 {
     return m_nMember;
 }
 
-// FUNCTION: HYPERX100 0x004b8bd0
-// FUNCTION: HYPERX 0x0046bb80
+// FUNCTION: HYPERX1000 0x004b8bd0
+// FUNCTION: HYPERX1001 0x0046bb80
 void Interactor::SetActiveState(int nState)
 {
     m_nActiveState = nState;

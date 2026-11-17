@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b23e8
+// VTABLE: HYPERX1001 0x004b23e8
 class BehObjCandyTrackingPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjCandyTrackingPool();
 };
 
-// SYNTHETIC: HYPERX 0x00421880
+// SYNTHETIC: HYPERX1001 0x00421880
 // BehObjCandyTrackingPool::`scalar deleting destructor'
 
 #endif

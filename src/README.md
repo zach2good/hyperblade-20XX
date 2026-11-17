@@ -1,6 +1,6 @@
 # Source
 
-One class per `.h` and `.cpp` pair, and each function carries a `// FUNCTION: HYPERX 0x...`
+One class per `.h` and `.cpp` pair, and each function carries a `// FUNCTION: HYPERX1001 0x...`
 marker naming its address in the original. `CMakeLists.txt` lists the files in link order, which
 is part of the match.
 

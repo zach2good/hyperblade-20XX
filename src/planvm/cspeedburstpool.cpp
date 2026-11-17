@@ -5,8 +5,8 @@
 #include "engine/cspeedburst.h"
 #include "common/poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041f5e0
-// FUNCTION: HYPERX 0x00413cd0
+// FUNCTION: HYPERX1000 0x0041f5e0
+// FUNCTION: HYPERX1001 0x00413cd0
 void CSpeedBurstPool::Init()
 {
     AgendaItem* pNode = new CSpeedBurst;
@@ -36,8 +36,8 @@ char CSpeedBurstPool::Insert(void* pNode)
 }
 
 // A failed refill writes null over the head, which is already null.
-// FUNCTION: HYPERX100 0x00422fb0
-// FUNCTION: HYPERX 0x00413d30
+// FUNCTION: HYPERX1000 0x00422fb0
+// FUNCTION: HYPERX1001 0x00413d30
 void* CSpeedBurstPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -53,7 +53,7 @@ void* CSpeedBurstPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004158c0
+// FUNCTION: HYPERX1001 0x004158c0
 CSpeedBurstPool::~CSpeedBurstPool()
 {
     while (m_pHead != 0)

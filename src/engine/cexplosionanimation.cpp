@@ -10,8 +10,8 @@
 #include "engine/cexplosionanimation.h"
 #include "engine/particlesystem.h"
 
-// FUNCTION: HYPERX100 0x0042cbc0
-// FUNCTION: HYPERX 0x00412780
+// FUNCTION: HYPERX1000 0x0042cbc0
+// FUNCTION: HYPERX1001 0x00412780
 void CExplosionAnimation::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CExplosionAnimation;

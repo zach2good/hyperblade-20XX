@@ -15,7 +15,7 @@ enum FinalCeremonyWidget
 
 // 0x00442fc0 makes no base constructor call, so the base is Screen.
 // SLOT TABLE 0x004b3158
-// VTABLE: HYPERX 0x004b3154
+// VTABLE: HYPERX1001 0x004b3154
 class FinalCeremonyScreen : public Screen
 {
 public:
@@ -26,7 +26,7 @@ public:
 
 STATIC_ASSERT(sizeof(FinalCeremonyScreen) == 0x464);
 
-// SYNTHETIC: HYPERX 0x00443170
+// SYNTHETIC: HYPERX1001 0x00443170
 // FinalCeremonyScreen::`scalar deleting destructor'
 
 #endif

@@ -4,8 +4,8 @@
 #include "planvm/ctimeractivity.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041f1c0
-// FUNCTION: HYPERX 0x00413e60
+// FUNCTION: HYPERX1000 0x0041f1c0
+// FUNCTION: HYPERX1001 0x00413e60
 void CTimerActivityPool::Init()
 {
     AgendaItem* pNode = new CTimerActivity;
@@ -34,8 +34,8 @@ char CTimerActivityPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00422db0
-// FUNCTION: HYPERX 0x00413f00
+// FUNCTION: HYPERX1000 0x00422db0
+// FUNCTION: HYPERX1001 0x00413f00
 void* CTimerActivityPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CTimerActivityPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415a00
+// FUNCTION: HYPERX1001 0x00415a00
 CTimerActivityPool::~CTimerActivityPool()
 {
     while (m_pHead != 0)

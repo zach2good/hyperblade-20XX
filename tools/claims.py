@@ -26,7 +26,7 @@ import urllib.request
 
 from ghidra_api import BASE as BRIDGE  # noqa: E402
 
-MARKER = re.compile(r"^//\s*(STUB|FUNCTION|LIBRARY|VTABLE|GLOBAL|STRING):\s*HYPERX\s+"
+MARKER = re.compile(r"^//\s*(STUB|FUNCTION|LIBRARY|VTABLE|GLOBAL|STRING):\s*HYPERX1001\s+"
                     r"(0x[0-9a-fA-F]+)\s*$")
 
 # The word before the opening parenthesis, which is the name a caller has to write.

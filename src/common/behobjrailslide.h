@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b2684
+// VTABLE: HYPERX1001 0x004b2684
 class BehObj_RailSlide : public SurfaceBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_RailSlide();
 };
 
-// SYNTHETIC: HYPERX 0x0041db50
+// SYNTHETIC: HYPERX1001 0x0041db50
 // BehObj_RailSlide::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_RailSlide) == 0x98);

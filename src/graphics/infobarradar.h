@@ -7,7 +7,7 @@
 #include "math/vector.h"
 #include "graphics/cdddrawable.h"
 
-// VTABLE: HYPERX 0x004b32dc
+// VTABLE: HYPERX1001 0x004b32dc
 class InfoBarRadar : public CDDDrawable
 {
 public:
@@ -33,7 +33,7 @@ public:
     float m_flCos;     // 0x03c
 };
 
-// SYNTHETIC: HYPERX 0x0044fd40
+// SYNTHETIC: HYPERX1001 0x0044fd40
 // InfoBarRadar::`scalar deleting destructor'
 
 #endif

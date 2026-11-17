@@ -18,7 +18,7 @@ static void         write_colormap(j_decompress_ptr cinfo, bmp_dest_ptr dest, in
 
 } // namespace BmpWriter
 
-// FUNCTION: HYPERX 0x00494693
+// FUNCTION: HYPERX1001 0x00494693
 djpeg_dest_ptr __cdecl BmpWriter::Create(j_decompress_ptr cinfo, boolean is_os2)
 {
     bmp_dest_ptr dest;
@@ -82,12 +82,12 @@ djpeg_dest_ptr __cdecl BmpWriter::Create(j_decompress_ptr cinfo, boolean is_os2)
 }
 
 // The original's link folded every other empty hook onto this one.
-// FUNCTION: HYPERX 0x0049ce32
+// FUNCTION: HYPERX1001 0x0049ce32
 void __cdecl BmpWriter::start_output_bmp(j_decompress_ptr, djpeg_dest_ptr)
 {
 }
 
-// FUNCTION: HYPERX 0x00494759
+// FUNCTION: HYPERX1001 0x00494759
 void __cdecl BmpWriter::put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION)
 {
     bmp_dest_ptr dest = (bmp_dest_ptr)dinfo;
@@ -117,7 +117,7 @@ void __cdecl BmpWriter::put_pixel_rows(j_decompress_ptr cinfo, djpeg_dest_ptr di
     }
 }
 
-// FUNCTION: HYPERX 0x004947bd
+// FUNCTION: HYPERX1001 0x004947bd
 void __cdecl BmpWriter::put_gray_rows(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo, JDIMENSION)
 {
     bmp_dest_ptr dest = (bmp_dest_ptr)dinfo;
@@ -143,7 +143,7 @@ void __cdecl BmpWriter::put_gray_rows(j_decompress_ptr cinfo, djpeg_dest_ptr din
     }
 }
 
-// FUNCTION: HYPERX 0x00494813
+// FUNCTION: HYPERX1001 0x00494813
 void __cdecl BmpWriter::finish_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr dinfo)
 {
     bmp_dest_ptr    dest    = (bmp_dest_ptr)dinfo;
@@ -209,7 +209,7 @@ void __cdecl BmpWriter::finish_output_bmp(j_decompress_ptr cinfo, djpeg_dest_ptr
      array[offset + 2] = (char)(((value) >> 16) & 0xFF), \
      array[offset + 3] = (char)(((value) >> 24) & 0xFF))
 
-// FUNCTION: HYPERX 0x004948d1
+// FUNCTION: HYPERX1001 0x004948d1
 void BmpWriter::write_bmp_header(j_decompress_ptr cinfo, bmp_dest_ptr dest)
 {
     char bmpfileheader[14];
@@ -282,7 +282,7 @@ void BmpWriter::write_bmp_header(j_decompress_ptr cinfo, bmp_dest_ptr dest)
     }
 }
 
-// FUNCTION: HYPERX 0x00494aa9
+// FUNCTION: HYPERX1001 0x00494aa9
 void BmpWriter::write_os2_header(j_decompress_ptr cinfo, bmp_dest_ptr dest)
 {
     char bmpfileheader[14];
@@ -345,7 +345,7 @@ void BmpWriter::write_os2_header(j_decompress_ptr cinfo, bmp_dest_ptr dest)
     }
 }
 
-// FUNCTION: HYPERX 0x00494bee
+// FUNCTION: HYPERX1001 0x00494bee
 void BmpWriter::write_colormap(j_decompress_ptr cinfo, bmp_dest_ptr dest, int map_colors, int map_entry_size)
 {
     JSAMPARRAY  colormap   = cinfo->colormap;

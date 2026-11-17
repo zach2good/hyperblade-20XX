@@ -49,7 +49,7 @@ enum MainMenuMatchChoice
     MAIN_MENU_MATCH_TOURNAMENT = 5
 };
 
-// VTABLE: HYPERX 0x004b4058
+// VTABLE: HYPERX1001 0x004b4058
 class MainMenuScreen : public Screen
 {
 public:
@@ -61,7 +61,7 @@ public:
 
 STATIC_ASSERT(sizeof(MainMenuScreen) == 0x464);
 
-// SYNTHETIC: HYPERX 0x0048d900
+// SYNTHETIC: HYPERX1001 0x0048d900
 // MainMenuScreen::`scalar deleting destructor'
 
 #endif

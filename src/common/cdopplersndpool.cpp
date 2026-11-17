@@ -4,8 +4,8 @@
 #include "planvm/cdopplersnd.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041e450
-// FUNCTION: HYPERX 0x00414540
+// FUNCTION: HYPERX1000 0x0041e450
+// FUNCTION: HYPERX1001 0x00414540
 void CDopplerSndPool::Init()
 {
     AgendaItem* pNode = new CDopplerSnd;
@@ -34,8 +34,8 @@ char CDopplerSndPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004226f0
-// FUNCTION: HYPERX 0x004145c0
+// FUNCTION: HYPERX1000 0x004226f0
+// FUNCTION: HYPERX1001 0x004145c0
 void* CDopplerSndPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CDopplerSndPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415e60
+// FUNCTION: HYPERX1001 0x00415e60
 CDopplerSndPool::~CDopplerSndPool()
 {
     while (m_pHead != 0)

@@ -4,8 +4,8 @@
 #include "engine/cdisplaypassbar.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041d9c0
-// FUNCTION: HYPERX 0x00414a10
+// FUNCTION: HYPERX1000 0x0041d9c0
+// FUNCTION: HYPERX1001 0x00414a10
 void CDisplayPassBarPool::Init()
 {
     AgendaItem* pNode = new CDisplayPassBar;
@@ -34,8 +34,8 @@ char CDisplayPassBarPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004221c0
-// FUNCTION: HYPERX 0x00414aa0
+// FUNCTION: HYPERX1000 0x004221c0
+// FUNCTION: HYPERX1001 0x00414aa0
 void* CDisplayPassBarPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CDisplayPassBarPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00416180
+// FUNCTION: HYPERX1001 0x00416180
 CDisplayPassBarPool::~CDisplayPassBarPool()
 {
     while (m_pHead != 0)

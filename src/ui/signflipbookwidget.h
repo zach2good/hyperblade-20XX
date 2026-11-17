@@ -7,7 +7,7 @@
 class Screen;
 
 // Table 0x004b2aa0 differs from FlipbookWidget's only in slot five: a sign is display only.
-// VTABLE: HYPERX 0x004b2aa0
+// VTABLE: HYPERX1001 0x004b2aa0
 class SignFlipbookWidget : public FlipbookWidget
 {
 public:
@@ -18,7 +18,7 @@ public:
     }
 
     // Slot five holds KeyConfigDialog::ClearKeys, one address several tables share.
-    // FUNCTION: HYPERX100 0x00477480
+    // FUNCTION: HYPERX1000 0x00477480
     virtual int IsDisplayOnly()
     {
         return 1;

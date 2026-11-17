@@ -10,8 +10,8 @@
 #define PARTICLE_ROW_RATE_MAX 100.0f
 
 // A faster particle lives longer: the vertical roll sets both life and span.
-// FUNCTION: HYPERX100 0x0042ccf0
-// FUNCTION: HYPERX 0x004127f0
+// FUNCTION: HYPERX1000 0x0042ccf0
+// FUNCTION: HYPERX1001 0x004127f0
 void Particle::InitRandom(float flSpread, float flRise)
 {
     m_vPosition.x = m_vPosition.y = m_vPosition.z = 0.0f;
@@ -39,8 +39,8 @@ void Particle::InitRandom(float flSpread, float flRise)
 }
 
 // Unlike InitRandom, half the particles leave downwards and they live half as long.
-// FUNCTION: HYPERX100 0x0042ce40
-// FUNCTION: HYPERX 0x00412900
+// FUNCTION: HYPERX1000 0x0042ce40
+// FUNCTION: HYPERX1001 0x00412900
 void Particle::InitRandomUniform(float flSpread, float flRise)
 {
     m_vPosition.x = m_vPosition.y = m_vPosition.z = 0.0f;
@@ -74,8 +74,8 @@ void Particle::InitRandomUniform(float flSpread, float flRise)
     m_flRow        = (float)nRow;
 }
 
-// FUNCTION: HYPERX100 0x0042cf90
-// FUNCTION: HYPERX 0x00412a10
+// FUNCTION: HYPERX1000 0x0042cf90
+// FUNCTION: HYPERX1001 0x00412a10
 void Particle::IntegrateStep(const Vec3* pAccel, float flDt)
 {
     Vec3 vStep;
@@ -106,8 +106,8 @@ void Particle::IntegrateStep(const Vec3* pAccel, float flDt)
     }
 }
 
-// FUNCTION: HYPERX100 0x0042d060
-// FUNCTION: HYPERX 0x00412ad0
+// FUNCTION: HYPERX1000 0x0042d060
+// FUNCTION: HYPERX1001 0x00412ad0
 void Particle::AdvanceRow(float flDelta)
 {
     m_flRow += flDelta;

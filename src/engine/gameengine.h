@@ -78,7 +78,7 @@ struct GameEngine
     static int         CoachConditionNever(void);
 
     // The linker folded this empty body onto KeyConfigDialog::SaveKeysAs, which carries the marker.
-    // FUNCTION: HYPERX100 0x0045d750
+    // FUNCTION: HYPERX1000 0x0045d750
     static int CoachConditionUnused(void)
     {
         return 0;

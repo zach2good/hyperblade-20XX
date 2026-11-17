@@ -129,14 +129,14 @@ every body apart, so an operand that names a folded body can only be judged in `
 
 ## How a function is scored
 
-reccmp pairs each `// FUNCTION: HYPERX 0xADDR` marker with the symbol under it in
+reccmp pairs each `// FUNCTION: HYPERX1001 0xADDR` marker with the symbol under it in
 `HYPERX_sym.pdb`, disassembles both, and aligns the two listings. `reccmp-project.yml` names the
-target, `HYPERX`. `symbols/float_constants.csv` names the x87 constants, because the original is
+target, `HYPERX1001`. `symbols/float_constants.csv` names the x87 constants, because the original is
 linked `/FIXED` and has no relocations to find them by.
 
 ```sh
-python tools/foldcmp.py --target HYPERX --json build/report.json --silent
-python tools/foldcmp.py --target HYPERX --verbose 0xADDR --no-color
+python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
+python tools/foldcmp.py --target HYPERX1001 --verbose 0xADDR --no-color
 ```
 
 The first writes `build/report.json`, which holds every row's score and its whole instruction

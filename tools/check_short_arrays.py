@@ -35,7 +35,7 @@ FORMATS = {1: 'b', 2: 'h', 4: 'i'}
 # A gap wider than this is a different global that nobody has annotated, not a tail.
 GAP_LIMIT = 0x400
 
-DECL = re.compile(r'// GLOBAL: HYPERX (0x[0-9a-fA-F]{8})[ ]*\r?\n([^\r\n]+)')
+DECL = re.compile(r'// GLOBAL: HYPERX1001 (0x[0-9a-fA-F]{8})[ ]*\r?\n([^\r\n]+)')
 # Every dimension: a declaration of [2][3] is six elements.
 ARRAY = re.compile(r'^(?:extern\s+)?(?:const\s+)?([A-Za-z_][\w ]*?)\s*(\**)\s*'
                    r'(?:const\s+)?(\w+)\s*((?:\[\s*\d+\s*\])+)')
@@ -58,7 +58,7 @@ def original():
     if not project:
         raise SystemExit('no reccmp project at %s' % ROOT)
 
-    found = project.get('HYPERX')
+    found = project.get('HYPERX1001')
 
     if not Path(found.original_path).is_file():
         raise SystemExit('%s is missing' % found.original_path)
@@ -112,7 +112,7 @@ def annotated():
     """Every annotated address of any kind, which is where a gap has to stop."""
     marks = set()
     pattern = re.compile(r'// (?:GLOBAL|VTABLE|STRING|FUNCTION|LIBRARY|STUB): '
-                         r'HYPERX (0x[0-9a-fA-F]{8})')
+                         r'HYPERX1001 (0x[0-9a-fA-F]{8})')
 
     for path in sorted(glob.glob(os.path.join('src', '**', '*.h'), recursive=True)
                        + glob.glob(os.path.join('src', '**', '*.cpp'), recursive=True)):

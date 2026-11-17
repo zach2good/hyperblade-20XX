@@ -4,8 +4,8 @@
 #include "planvm/cstepanimation.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041fb20
-// FUNCTION: HYPERX 0x00413a10
+// FUNCTION: HYPERX1000 0x0041fb20
+// FUNCTION: HYPERX1001 0x00413a10
 void CStepAnimationPool::Init()
 {
     AgendaItem* pNode = new CStepAnimation;
@@ -34,8 +34,8 @@ char CStepAnimationPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423280
-// FUNCTION: HYPERX 0x00413a90
+// FUNCTION: HYPERX1000 0x00423280
+// FUNCTION: HYPERX1001 0x00413a90
 void* CStepAnimationPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CStepAnimationPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004156e0
+// FUNCTION: HYPERX1001 0x004156e0
 CStepAnimationPool::~CStepAnimationPool()
 {
     while (m_pHead != 0)

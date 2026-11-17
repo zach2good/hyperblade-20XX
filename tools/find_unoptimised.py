@@ -33,7 +33,7 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from ghidra_api import BASE as BRIDGE  # noqa: E402
 
-MARKER = re.compile(r"//\s*(?:FUNCTION|STUB|LIBRARY):\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"//\s*(?:FUNCTION|STUB|LIBRARY):\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 EBP_LOCAL = re.compile(r"\[EBP \+ -0x")
 # A read of a local, rather than a write to one.
 EBP_READ = re.compile(r"^(?:MOV \w+,dword ptr \[EBP \+ -0x|CMP dword ptr \[EBP \+ -0x|MOVSX \w+,word ptr \[EBP \+ -0x)")

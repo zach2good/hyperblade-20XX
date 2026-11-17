@@ -4,7 +4,7 @@
 class GameBehaviorObject;
 
 // A root class: with a base destructor to call, VC6 stops inlining this one into the deleter.
-// VTABLE: HYPERX 0x004b2834
+// VTABLE: HYPERX1001 0x004b2834
 class BehaviorOwner
 {
 public:
@@ -12,8 +12,8 @@ public:
     {
     }
 
-    // FUNCTION: HYPERX100 0x004c6c10
-    // FUNCTION: HYPERX 0x004209f0
+    // FUNCTION: HYPERX1000 0x004c6c10
+    // FUNCTION: HYPERX1001 0x004209f0
     virtual ~BehaviorOwner()
     {
     }
@@ -31,7 +31,7 @@ public:
     GameBehaviorObject* m_pHead;
 };
 
-// SYNTHETIC: HYPERX 0x00420a00
+// SYNTHETIC: HYPERX1001 0x00420a00
 // BehaviorOwner::`scalar deleting destructor'
 
 #endif

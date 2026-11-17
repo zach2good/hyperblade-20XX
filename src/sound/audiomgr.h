@@ -7,7 +7,7 @@
 #define CD_TRACK_RANDOM (-1)
 #define CD_TRACK_MENU   10
 
-// VTABLE: HYPERX 0x004b4080
+// VTABLE: HYPERX1001 0x004b4080
 struct AudioMgr : public AudioMgrBase
 {
     void StopAllSfx();
@@ -51,7 +51,7 @@ struct AudioMgr : public AudioMgrBase
     unsigned short wMciDevice; // 0x018
 };
 
-// SYNTHETIC: HYPERX 0x00490860
+// SYNTHETIC: HYPERX1001 0x00490860
 // AudioMgr::`scalar deleting destructor'
 
 #endif

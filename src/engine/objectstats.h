@@ -7,7 +7,7 @@
 class ObjectStats
 {
 public:
-    // FUNCTION: HYPERX100 0x004719f0
+    // FUNCTION: HYPERX1000 0x004719f0
     ~ObjectStats()
     {
     }

@@ -20,8 +20,8 @@
 #include "graphics/meshbone.h"
 
 // Frees every node whatever its reference count.
-// FUNCTION: HYPERX100 0x00477d40
-// FUNCTION: HYPERX 0x00472830
+// FUNCTION: HYPERX1000 0x00477d40
+// FUNCTION: HYPERX1001 0x00472830
 ModelDatabase::~ModelDatabase()
 {
     while (m_pListHead != 0)
@@ -72,11 +72,11 @@ ModelDatabase::~ModelDatabase()
 
 // Later levels store the squared threshold bands, so the runtime never takes a square root.
 
-// GLOBAL: HYPERX 0x004b39d8
+// GLOBAL: HYPERX1001 0x004b39d8
 extern const float g_flDegreesToRadians;
 
-// FUNCTION: HYPERX100 0x00477e50
-// FUNCTION: HYPERX 0x004728e0
+// FUNCTION: HYPERX1000 0x00477e50
+// FUNCTION: HYPERX1001 0x004728e0
 LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 {
     LODNode* pResult;
@@ -100,7 +100,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
         if (nCode == 0 || file.m_file.Read(afThresholds, sizeof(afThresholds)) == 0)
         {
             g_gameApp.Error(
-                // STRING: HYPERX 0x004c5364
+                // STRING: HYPERX1001 0x004c5364
                 "Error reading Model Lod header!");
 
             return 0;
@@ -235,7 +235,7 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
             file.m_file.CloseAndTest();
 
             g_gameApp.Error(
-                // STRING: HYPERX 0x004c5384
+                // STRING: HYPERX1001 0x004c5384
                 "Error initializing Model file %s!",
                 pszModelName);
 
@@ -252,8 +252,8 @@ LODNode* ModelDatabase::LoadLOD(char* pszModelName)
 
 // Count, source file name, skipped names, MeshMaterial[count], then texture count and names.
 
-// FUNCTION: HYPERX100 0x00478310
-// FUNCTION: HYPERX 0x00472c00
+// FUNCTION: HYPERX1000 0x00478310
+// FUNCTION: HYPERX1001 0x00472c00
 void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 {
     unsigned char     nMatCount;
@@ -287,7 +287,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
                             if (pFile->Read(paTexNames[0], nTexBytes) == 0)
                             {
                                 g_gameApp.Fatal(
-                                    // STRING: HYPERX 0x004c5488
+                                    // STRING: HYPERX1001 0x004c5488
                                     "Error reading texture names for model %s!",
                                     pLodNode->m_pRecord->m_szName);
                             }
@@ -302,7 +302,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
                     else
                     {
                         g_gameApp.Fatal(
-                            // STRING: HYPERX 0x004c545c
+                            // STRING: HYPERX1001 0x004c545c
                             "Error reading texture count for model %s!",
                             pLodNode->m_pRecord->m_szName);
                     }
@@ -310,7 +310,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
                 else
                 {
                     g_gameApp.Fatal(
-                        // STRING: HYPERX 0x004c5434
+                        // STRING: HYPERX1001 0x004c5434
                         "Error reading Materials for model %s!",
                         pLodNode->m_pRecord->m_szName);
                 }
@@ -318,7 +318,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
             else
             {
                 g_gameApp.Fatal(
-                    // STRING: HYPERX 0x004c5408
+                    // STRING: HYPERX1001 0x004c5408
                     "Error reading Material names for model %s!",
                     pLodNode->m_pRecord->m_szName);
             }
@@ -326,7 +326,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
         else
         {
             g_gameApp.Fatal(
-                // STRING: HYPERX 0x004c53d8
+                // STRING: HYPERX1001 0x004c53d8
                 "Error reading material file name for model %s!",
                 pLodNode->m_pRecord->m_szName);
         }
@@ -334,7 +334,7 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
     else
     {
         g_gameApp.Fatal(
-            // STRING: HYPERX 0x004c53a8
+            // STRING: HYPERX1001 0x004c53a8
             "Error reading Material List count for model %s!",
             pLodNode->m_pRecord->m_szName);
     }
@@ -344,8 +344,8 @@ void ModelDatabase::ReadMaterials(FileObj* pFile, LODNode* pLodNode)
 
 // The multibyte compare at 0x0049f2d2, not _stricmp.
 
-// FUNCTION: HYPERX100 0x004785b0
-// FUNCTION: HYPERX 0x00472e10
+// FUNCTION: HYPERX1000 0x004785b0
+// FUNCTION: HYPERX1001 0x00472e10
 MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* pszName)
 {
     MaterialListNode* pLookup = pLod->m_pMaterials;
@@ -373,7 +373,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
         short         nTexCount  = 0;
         unsigned char nMatCount  = 0;
 
-        // STRING: HYPERX 0x004c5538
+        // STRING: HYPERX1001 0x004c5538
         PathString path(MAX_PATH, g_gameApp.m_strModelPath.m_str.m_pchData, pszName, "mat");
         OwnedFile  file;
 
@@ -398,7 +398,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
                 file.m_file.CloseAndTest();
 
                 g_gameApp.Fatal(
-                    // STRING: HYPERX 0x004c54f4
+                    // STRING: HYPERX1001 0x004c54f4
                     "materialList File  %s in model directory could not be initialized!",
                     path.m_str.m_pchData);
 
@@ -408,7 +408,7 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
         else
         {
             g_gameApp.Fatal(
-                // STRING: HYPERX 0x004c54b4
+                // STRING: HYPERX1001 0x004c54b4
                 "MaterialList File %s in model directory could not be opened!",
                 path.m_str.m_pchData);
 
@@ -421,8 +421,8 @@ MaterialListNode* ModelDatabase::FindOrLoadMaterialList(LODNode* pLod, char* psz
     return pLookup;
 }
 
-// FUNCTION: HYPERX100 0x00478b20
-// FUNCTION: HYPERX 0x00473240
+// FUNCTION: HYPERX1000 0x00478b20
+// FUNCTION: HYPERX1001 0x00473240
 short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 {
     MeshBlock**    pBlobs;
@@ -459,8 +459,8 @@ short ModelDatabase::LinkComponents(FileObj* pFile, LODNode* pLodNode)
 }
 
 // A miss takes its reference without testing the pointer, as in the original.
-// FUNCTION: HYPERX100 0x00478c60
-// FUNCTION: HYPERX 0x00473330
+// FUNCTION: HYPERX1000 0x00478c60
+// FUNCTION: HYPERX1001 0x00473330
 TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 {
     TexCacheEntry* pEntry = m_pTextureList;
@@ -496,8 +496,8 @@ TexCacheEntry* ModelDatabase::FindOrLoadTexture(char* pszName)
 }
 
 // The cross product is the second edge crossed with the first.
-// FUNCTION: HYPERX100 0x00478e50
-// FUNCTION: HYPERX 0x004734a0
+// FUNCTION: HYPERX1000 0x00478e50
+// FUNCTION: HYPERX1001 0x004734a0
 void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
 {
     const Vec3* pVerts;
@@ -542,8 +542,8 @@ void ModelDatabase::ComputeNormals(MeshBlock* pBlob, LODNode*)
     }
 }
 
-// FUNCTION: HYPERX100 0x00479010
-// FUNCTION: HYPERX 0x004735c0
+// FUNCTION: HYPERX1000 0x00479010
+// FUNCTION: HYPERX1001 0x004735c0
 LODNode* ModelDatabase::FindLOD(const char* pszName)
 {
     LODNode* pNode = m_pListHead;
@@ -561,8 +561,8 @@ LODNode* ModelDatabase::FindLOD(const char* pszName)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x004790f0
-// FUNCTION: HYPERX 0x00473660
+// FUNCTION: HYPERX1000 0x004790f0
+// FUNCTION: HYPERX1001 0x00473660
 MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, unsigned char nMatCount, MaterialName* paTexNames, short nTexCount)
 {
     MaterialListNode* const pLookup = new MaterialListNode(nMatCount);
@@ -582,7 +582,7 @@ MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, un
             if (pLookup->m_pMaterials[i].pTexture == 0)
             {
                 g_gameApp.Fatal(
-                    // STRING: HYPERX 0x004c55b0
+                    // STRING: HYPERX1001 0x004c55b0
                     "Error reading activating texture %s!",
                     *pszName);
             }
@@ -598,7 +598,7 @@ MaterialListNode* ModelDatabase::CreateMaterialList(MeshMaterial* pMaterials, un
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00479050
+// FUNCTION: HYPERX1000 0x00479050
 LODNode* ModelDatabase::FindLODById(short nId)
 {
     LODNode* pNode = m_pListHead;

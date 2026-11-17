@@ -8,11 +8,11 @@
 struct Vec3;
 
 // The banking scratchpad.
-// GLOBAL: HYPERX 0x004cb388
+// GLOBAL: HYPERX1001 0x004cb388
 extern Vec3 g_vBankRight;
 
 // Which of the two directions counts as banking right.
-// GLOBAL: HYPERX 0x004cb3b0
+// GLOBAL: HYPERX1001 0x004cb3b0
 extern short g_nBankDirRight;
 
 #endif

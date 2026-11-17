@@ -14,7 +14,7 @@ public:
 };
 
 // Each leaf's deleter calls its out-of-line destructor, so the three fold onto Gamepad's.
-// SYNTHETIC: HYPERX 0x0045d690
+// SYNTHETIC: HYPERX1001 0x0045d690
 // GamepadDeviceObj::`scalar deleting destructor'
 
 #endif

@@ -4,24 +4,24 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
-// FUNCTION: HYPERX100 0x004caf20
-// FUNCTION: HYPERX 0x0041d960
+// FUNCTION: HYPERX1000 0x004caf20
+// FUNCTION: HYPERX1001 0x0041d960
 BehObj_Glide::BehObj_Glide()
 {
 }
 
-// FUNCTION: HYPERX 0x0041d9a0
+// FUNCTION: HYPERX1001 0x0041d9a0
 BehObj_Glide::~BehObj_Glide()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cb040
-// FUNCTION: HYPERX 0x0041d9b0
+// FUNCTION: HYPERX1000 0x004cb040
+// FUNCTION: HYPERX1001 0x0041d9b0
 void BehObj_Glide::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForGlide();
 
-    // STRING: HYPERX 0x004bc2dc
+    // STRING: HYPERX1001 0x004bc2dc
     m_pszName = "Glide";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b197c
+// VTABLE: HYPERX1001 0x004b197c
 class CSetAttitudePool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CSetAttitudePool();
 };
 
-// SYNTHETIC: HYPERX 0x00415580
+// SYNTHETIC: HYPERX1001 0x00415580
 // CSetAttitudePool::`scalar deleting destructor'
 
 #endif

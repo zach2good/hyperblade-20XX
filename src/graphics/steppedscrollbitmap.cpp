@@ -11,8 +11,8 @@
 #include <ddraw.h>
 #include "graphics/ddrawapi.h"
 
-// FUNCTION: HYPERX100 0x004435b0
-// FUNCTION: HYPERX 0x00438d40
+// FUNCTION: HYPERX1000 0x004435b0
+// FUNCTION: HYPERX1001 0x00438d40
 void SteppedScrollBitmap::SetDirty()
 {
     m_bDirty = 1;
@@ -23,8 +23,8 @@ void SteppedScrollBitmap::SetDirty()
 #define SCROLL_BAND_HEIGHT  2
 
 // A wide display scrolls fifteen steps across and one down, a narrow one eight across and none.
-// FUNCTION: HYPERX100 0x004435c0
-// FUNCTION: HYPERX 0x00438d50
+// FUNCTION: HYPERX1000 0x004435c0
+// FUNCTION: HYPERX1001 0x00438d50
 int SteppedScrollBitmap::InitAndLoad(const char* pszName, int nCount, int bColourKey, int bSystemMemory)
 {
     if (g_hudSurfaces.bHud320 != 0)
@@ -46,8 +46,8 @@ int SteppedScrollBitmap::InitAndLoad(const char* pszName, int nCount, int bColou
 }
 
 // With m_bHorizontal clear the end is read unwritten, as in the original.
-// FUNCTION: HYPERX100 0x00443640
-// FUNCTION: HYPERX 0x00438dc0
+// FUNCTION: HYPERX1000 0x00443640
+// FUNCTION: HYPERX1001 0x00438dc0
 int SteppedScrollBitmap::DrawScrolled()
 {
     int  nEnd;

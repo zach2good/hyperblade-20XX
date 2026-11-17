@@ -5,8 +5,8 @@
 #include "globals.h"
 #include "planvm/conditiontable.h"
 
-// FUNCTION: HYPERX100 0x0042cb00
-// FUNCTION: HYPERX 0x00412700
+// FUNCTION: HYPERX1000 0x0042cb00
+// FUNCTION: HYPERX1001 0x00412700
 void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_pNext    = 0;
@@ -18,8 +18,8 @@ void CDopplerSnd::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nUnusedC = 0;
 }
 
-// FUNCTION: HYPERX100 0x0042cb30
-// FUNCTION: HYPERX 0x00412730
+// FUNCTION: HYPERX1000 0x0042cb30
+// FUNCTION: HYPERX1001 0x00412730
 void CDopplerSnd::OnListChanged()
 {
     if (m_bReady == 0)
@@ -35,8 +35,8 @@ void CDopplerSnd::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x0042cb70
-// FUNCTION: HYPERX 0x00412760
+// FUNCTION: HYPERX1000 0x0042cb70
+// FUNCTION: HYPERX1001 0x00412760
 void CDopplerSnd::Process(int nArg)
 {
     AgendaItem* const pChain = m_pNext;

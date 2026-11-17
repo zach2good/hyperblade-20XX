@@ -32,10 +32,10 @@ and the checkers read.
 | Term | Meaning |
 | --- | --- |
 | the original, the client | The retail `HYPERX.EXE` v1.0.0.1. "The client" is the original's side of a diff. |
-| v1.0.0.0 | The 1996 release, reccmp target `HYPERX100`. See [v1000.md](v1000.md). |
+| v1.0.0.0 | The 1996 release, reccmp target `HYPERX1000`. See [v1000.md](v1000.md). |
 | this build, ours | The image this repository builds, `build/out/HYPERX_sym.exe` for scoring. |
 | row | One function in `symbols/functions.csv`, and its line in reccmp's report. |
-| marker | A comment such as `// FUNCTION: HYPERX 0x00401000` that pairs source with an address. See [ANNOTATIONS.md](ANNOTATIONS.md). |
+| marker | A comment such as `// FUNCTION: HYPERX1001 0x00401000` that pairs source with an address. See [ANNOTATIONS.md](ANNOTATIONS.md). |
 | exact | A row whose bytes match the original's, 100 per cent. Only exact rows count in the byte share. |
 | effective | A row reccmp scores 100.00 that still differs in something it judges harmless, such as a register name. It is not exact. |
 | near miss | A row close to exact. `tools/near_misses.py` ranks them by what closing them is worth. |

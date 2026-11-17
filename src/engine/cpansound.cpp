@@ -8,8 +8,8 @@
 #include "planvm/conditiontable.h"
 #include "sound/soundmanager.h"
 
-// FUNCTION: HYPERX100 0x0042c480
-// FUNCTION: HYPERX 0x00412260
+// FUNCTION: HYPERX1000 0x0042c480
+// FUNCTION: HYPERX1001 0x00412260
 void CPanSound::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_pNext      = 0;
@@ -22,8 +22,8 @@ void CPanSound::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_nPanStep   = 0;
 }
 
-// FUNCTION: HYPERX100 0x0042c4b0
-// FUNCTION: HYPERX 0x00412290
+// FUNCTION: HYPERX1000 0x0042c4b0
+// FUNCTION: HYPERX1001 0x00412290
 void CPanSound::OnListChanged()
 {
     if (m_bReady == 0)
@@ -40,8 +40,8 @@ void CPanSound::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x0042c4f0
-// FUNCTION: HYPERX 0x004122d0
+// FUNCTION: HYPERX1000 0x0042c4f0
+// FUNCTION: HYPERX1001 0x004122d0
 void CPanSound::Process(int nArg)
 {
     if (m_pSound == 0 || m_pSound->m_bPannable == 0 || abs(m_nPan - m_nPanTarget) <= abs(m_nPanStep))

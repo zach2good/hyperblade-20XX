@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1a30
+// VTABLE: HYPERX1001 0x004b1a30
 class CBeAttachedPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CBeAttachedPool();
 };
 
-// SYNTHETIC: HYPERX 0x00414fe0
+// SYNTHETIC: HYPERX1001 0x00414fe0
 // CBeAttachedPool::`scalar deleting destructor'
 
 #endif

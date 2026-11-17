@@ -52,7 +52,7 @@ double        s_dNearest;
 
 } // namespace DepthSort
 
-// FUNCTION: HYPERX100 0x00408fd0
+// FUNCTION: HYPERX1000 0x00408fd0
 void __cdecl DepthSort::Init(void)
 {
     s_pNodes    = (DepthNode*)malloc(NODE_COUNT * sizeof(DepthNode));
@@ -68,7 +68,7 @@ void __cdecl DepthSort::Init(void)
     s_deepest.d = -100000.0;
 }
 
-// FUNCTION: HYPERX100 0x00409060
+// FUNCTION: HYPERX1000 0x00409060
 void __cdecl DepthSort::Free(void)
 {
     free(s_pNodes);
@@ -83,7 +83,7 @@ void __cdecl DepthSort::Free(void)
 
 // Keeps each bucket sorted by sort depth, deepest first. A full pool or a bucket past the end drops
 // the entry.
-// FUNCTION: HYPERX100 0x004090c0
+// FUNCTION: HYPERX1000 0x004090c0
 void __cdecl DepthSort::Insert(TransparentEntry* pEntry, int nBucket)
 {
     if (nBucket >= BUCKET_COUNT || s_pFreeNode == s_pNodesEnd)
@@ -148,7 +148,7 @@ void __cdecl DepthSort::Insert(TransparentEntry* pEntry, int nBucket)
 }
 
 // Draws the buckets from the deepest down, empties each, and resets the pool and the range.
-// FUNCTION: HYPERX100 0x004092f0
+// FUNCTION: HYPERX1000 0x004092f0
 void __cdecl DepthSort::DrawAll(void)
 {
     s_deepest.d = s_deepest.d - s_dNearest;

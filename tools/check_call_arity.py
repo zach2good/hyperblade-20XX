@@ -42,7 +42,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INVENTORY = os.path.join(ROOT, "symbols", "functions.csv")
 SOURCE_ROOT = os.path.join(ROOT, "src")
 
-MARKER = re.compile(r"//\s*FUNCTION:\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"//\s*FUNCTION:\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 
 # Types wider than a dword occupy two argument slots.
 WIDE = ("double", "long long", "__int64", "LARGE_INTEGER", "ULARGE_INTEGER")

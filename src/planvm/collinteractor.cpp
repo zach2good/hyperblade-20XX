@@ -20,8 +20,8 @@
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 
-// FUNCTION: HYPERX100 0x004cdd60
-// FUNCTION: HYPERX 0x0045dc00
+// FUNCTION: HYPERX1000 0x004cdd60
+// FUNCTION: HYPERX1001 0x0045dc00
 void CollInteractor::Discard()
 {
     m_nActiveState = 0;
@@ -32,8 +32,8 @@ void CollInteractor::Discard()
     g_pCollInteractorPool->Insert(this);
 }
 
-// FUNCTION: HYPERX100 0x004cddc0
-// FUNCTION: HYPERX 0x0045dc40
+// FUNCTION: HYPERX1000 0x004cddc0
+// FUNCTION: HYPERX1001 0x0045dc40
 short CollInteractor::GetOtherSlot()
 {
     if (m_otherSlot.IsPronoun())
@@ -44,8 +44,8 @@ short CollInteractor::GetOtherSlot()
     return (short)m_otherSlot.n;
 }
 
-// FUNCTION: HYPERX100 0x004cddf0
-// FUNCTION: HYPERX 0x0045dc70
+// FUNCTION: HYPERX1000 0x004cddf0
+// FUNCTION: HYPERX1001 0x0045dc70
 short CollInteractor::GetModelSlot()
 {
     if (m_ownSlotOrMessage.IsPronoun())
@@ -56,8 +56,8 @@ short CollInteractor::GetModelSlot()
     return (short)m_ownSlotOrMessage.n;
 }
 
-// FUNCTION: HYPERX100 0x004cdea0
-// FUNCTION: HYPERX 0x0045dd00
+// FUNCTION: HYPERX1000 0x004cdea0
+// FUNCTION: HYPERX1001 0x0045dd00
 CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
 {
     m_pOwner           = pObject;
@@ -104,7 +104,7 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
                 break;
 
             default:
-                // STRING: HYPERX 0x004c44c8
+                // STRING: HYPERX1001 0x004c44c8
                 throw "Invalid Instruction object in CollInteractor setup\n";
         }
 
@@ -114,8 +114,8 @@ CollInteractor* CollInteractor::Setup(EngineObject* pObject, PlanNode* pPlan)
     return this;
 }
 
-// FUNCTION: HYPERX100 0x004cdfe0
-// FUNCTION: HYPERX 0x0045ddf0
+// FUNCTION: HYPERX1000 0x004cdfe0
+// FUNCTION: HYPERX1001 0x0045ddf0
 void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
 {
     PlanWord* pCursor;
@@ -179,7 +179,7 @@ void CollInteractor::Process(int nArg, short* pOutcome, int nMode)
     }
 }
 
-// FUNCTION: HYPERX 0x0046bb90
+// FUNCTION: HYPERX1001 0x0046bb90
 CollInteractor::~CollInteractor()
 {
 }

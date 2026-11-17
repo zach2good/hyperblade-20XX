@@ -25,8 +25,8 @@
 
 #define MESSAGE_DRIFTED_PARAM 0x96
 
-// FUNCTION: HYPERX100 0x004272b0
-// FUNCTION: HYPERX 0x0040e490
+// FUNCTION: HYPERX1000 0x004272b0
+// FUNCTION: HYPERX1001 0x0040e490
 void CSetPositionRelative::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_pNext     = 0;
@@ -40,8 +40,8 @@ void CSetPositionRelative::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_wMode                                 = 0;
 }
 
-// FUNCTION: HYPERX100 0x00427300
-// FUNCTION: HYPERX 0x0040e4e0
+// FUNCTION: HYPERX1000 0x00427300
+// FUNCTION: HYPERX1001 0x0040e4e0
 void CSetPositionRelative::BindWithNode(EngineObject* pObject,
                                         GameBehaviorObject*,
                                         PlanNode* pNode,
@@ -61,8 +61,8 @@ void CSetPositionRelative::BindWithNode(EngineObject* pObject,
     m_vOffset.x = m_vOffset.y = m_vOffset.z = g_flZeroAgendaItem;
 }
 
-// FUNCTION: HYPERX100 0x00427390
-// FUNCTION: HYPERX 0x0040e560
+// FUNCTION: HYPERX1000 0x00427390
+// FUNCTION: HYPERX1001 0x0040e560
 void CSetPositionRelative::SetPositionWithTerrainHeight(Vec3* pMarker)
 {
     m_pMarker = pMarker;
@@ -72,15 +72,15 @@ void CSetPositionRelative::SetPositionWithTerrainHeight(Vec3* pMarker)
     m_pMarker->z = pShell->GetZ(m_pMarker->x, m_pMarker->y);
 }
 
-// FUNCTION: HYPERX100 0x004273d0
-// FUNCTION: HYPERX 0x0040e5a0
+// FUNCTION: HYPERX1000 0x004273d0
+// FUNCTION: HYPERX1001 0x0040e5a0
 void CSetPositionRelative::SetSourceObjectByIndex(short nIndex)
 {
     m_pTracked = g_pGameEngine->m_ppSlots[nIndex];
 }
 
-// FUNCTION: HYPERX100 0x004273f0
-// FUNCTION: HYPERX 0x0040e5c0
+// FUNCTION: HYPERX1000 0x004273f0
+// FUNCTION: HYPERX1001 0x0040e5c0
 void CSetPositionRelative::SetOffset(Vec3 offset)
 {
     m_vOffset.x = offset.x;
@@ -88,8 +88,8 @@ void CSetPositionRelative::SetOffset(Vec3 offset)
     m_vOffset.z = offset.z;
 }
 
-// FUNCTION: HYPERX100 0x00427410
-// FUNCTION: HYPERX 0x0040e5e0
+// FUNCTION: HYPERX1000 0x00427410
+// FUNCTION: HYPERX1001 0x0040e5e0
 void CSetPositionRelative::OnListChanged()
 {
     if (m_bReady == 0)
@@ -106,8 +106,8 @@ void CSetPositionRelative::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x00427460
-// FUNCTION: HYPERX 0x0040e630
+// FUNCTION: HYPERX1000 0x00427460
+// FUNCTION: HYPERX1001 0x0040e630
 void CSetPositionRelative::Process(int nArg)
 {
     const Vec3*            pTracked;

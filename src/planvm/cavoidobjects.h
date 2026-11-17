@@ -7,7 +7,7 @@ class EngineObject;
 struct PlanNode;
 
 // Slots 0 and 2 are shared bodies defined elsewhere.
-// VTABLE: HYPERX 0x004b1d6c
+// VTABLE: HYPERX1001 0x004b1d6c
 class CAvoidObjects : public ReleasingAgendaItem
 {
 public:
@@ -16,8 +16,8 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
 
     // Five tables share this body at slot seven or eight; the original's link folded the copies.
-    // FUNCTION: HYPERX100 0x00425130
-    // FUNCTION: HYPERX 0x00413ef0
+    // FUNCTION: HYPERX1000 0x00425130
+    // FUNCTION: HYPERX1001 0x00413ef0
     virtual char IsReplaceable()
     {
         return 1;

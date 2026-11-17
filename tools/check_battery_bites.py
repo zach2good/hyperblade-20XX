@@ -128,8 +128,8 @@ PROBES = (
 
     # A comment between a marker and its declaration, which reccmp reads as the symbol's name.
     ("check_marker_comments.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cee0",
-     "// FUNCTION: HYPERX 0x0040cee0\n// A sentence where the declaration should be."),
+     "// FUNCTION: HYPERX1001 0x0040cee0",
+     "// FUNCTION: HYPERX1001 0x0040cee0\n// A sentence where the declaration should be."),
     # An alias of this that the body goes on to never read.
     ("check_dead_this_alias.py", "src/planvm/cslideonrail.cpp",
      "    *m_pPrevPos = *m_pPosition;",
@@ -191,7 +191,7 @@ PROBES = (
     # Two GLOBAL markers naming one address, which leaves reccmp's choice of name arbitrary.
     ("check_globals.py", "src/globals.h",
      "// Globals shared across translation units.",
-     "// GLOBAL: HYPERX 0x004cb440\nextern int g_nProbeDouble;\n"
+     "// GLOBAL: HYPERX1001 0x004cb440\nextern int g_nProbeDouble;\n"
      "// Globals shared across translation units."),
 
     # A field declared at offset nought on a class whose vptr already holds those bytes.
@@ -212,9 +212,9 @@ PROBES = (
 
     # A score written into a source comment.
     ("check_score_prose.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cee0",
+     "// FUNCTION: HYPERX1001 0x0040cee0",
      "// It went 50.00 to exact for the spelling above.\n"
-     "// FUNCTION: HYPERX 0x0040cee0"),
+     "// FUNCTION: HYPERX1001 0x0040cee0"),
 
     # A volatile spelled to force a store, with no shared or hardware reason beside it.
     ("check_volatile.py", "src/planvm/cslideonrail.cpp",
@@ -237,7 +237,7 @@ PROBES = (
      "void CGlideOnSurface::Process(int nArg)"),
     # A table in the image that no class names, made by breaking the class's marker.
     ("check_tables_named.py", "src/planvm/cslideonrail.h",
-     "// VTABLE: HYPERX 0x004b1a84",
+     "// VTABLE: HYPERX1001 0x004b1a84",
      "// The table that used to be named here was 0x004b1a84."),
 
     # A member storing a g_vtbl array that is not its own class's table (0x004b1a84).
@@ -400,8 +400,8 @@ PROBES = (
 
     # Two markers of one unit renumbered, so each pairs with the other's thunk in the right file.
     ("check_link_order.py", "src/common/staticinit.h",
-     "// SYNTHETIC: HYPERX 0x00401800\n// $E8\n// SYNTHETIC: HYPERX 0x00401810\n// $E7",
-     "// SYNTHETIC: HYPERX 0x00401800\n// $E7\n// SYNTHETIC: HYPERX 0x00401810\n// $E8"),
+     "// SYNTHETIC: HYPERX1001 0x00401800\n// $E8\n// SYNTHETIC: HYPERX1001 0x00401810\n// $E7",
+     "// SYNTHETIC: HYPERX1001 0x00401800\n// $E7\n// SYNTHETIC: HYPERX1001 0x00401810\n// $E8"),
 
     # A retired row that names a function the tree has renamed.
     ("check_retired.py", "symbols/retired.csv",
@@ -440,37 +440,37 @@ PROBES = (
      "#define COB_ROK              0x14"),
 
     ("marker_next_line.py", "src/math/vec3.cpp",
-     "// FUNCTION: HYPERX 0x00430320",
-     "// FUNCTION: HYPERX 0x00430320\n// A sentence where the declaration should be."),
+     "// FUNCTION: HYPERX1001 0x00430320",
+     "// FUNCTION: HYPERX1001 0x00430320\n// A sentence where the declaration should be."),
 
     # Two markers on one address.
     ("check_lint.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cfa0",
-     "// FUNCTION: HYPERX 0x0040cee0"),
+     "// FUNCTION: HYPERX1001 0x0040cfa0",
+     "// FUNCTION: HYPERX1001 0x0040cee0"),
 
     # A class spelled into a free function's name.
     ("check_prefixed_functions.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cee0",
+     "// FUNCTION: HYPERX1001 0x0040cee0",
      "static void SlideOnRailInteractor__Probe(void)\n{\n}\n\n"
-     "// FUNCTION: HYPERX 0x0040cee0"),
+     "// FUNCTION: HYPERX1001 0x0040cee0"),
 
     # A body of a class whose bodies all sit in another file.
     ("namespace_spread.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cee0",
+     "// FUNCTION: HYPERX1001 0x0040cee0",
      "void RokObject::ProbeSpread(void)\n{\n}\n\n"
-     "// FUNCTION: HYPERX 0x0040cee0"),
+     "// FUNCTION: HYPERX1001 0x0040cee0"),
 
     # A game function at global scope, which belongs to a class or a namespace.
     ("namespace_spread.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cee0",
+     "// FUNCTION: HYPERX1001 0x0040cee0",
      "void ProbeAtGlobalScope(void)\n{\n}\n\n"
-     "// FUNCTION: HYPERX 0x0040cee0"),
+     "// FUNCTION: HYPERX1001 0x0040cee0"),
 
     # A marked body for a class that shares its header: MeshBoneDesc is defined in meshbone.h.
     ("header_homes.py", "src/planvm/cslideonrail.cpp",
-     "// FUNCTION: HYPERX 0x0040cee0",
-     "// FUNCTION: HYPERX 0x0040cee0\nvoid MeshBoneDesc::Probe(void)\n{\n}\n\n"
-     "// FUNCTION: HYPERX 0x0040cee0"),
+     "// FUNCTION: HYPERX1001 0x0040cee0",
+     "// FUNCTION: HYPERX1001 0x0040cee0\nvoid MeshBoneDesc::Probe(void)\n{\n}\n\n"
+     "// FUNCTION: HYPERX1001 0x0040cee0"),
 
     # A class with no marked body that shares a header: a virtual function makes it one.
     ("header_homes.py", "src/graphics/meshbone.h",
@@ -487,17 +487,17 @@ PROBES = (
      "        return short((word & 0xfff) | branch | 0x9000)",
      "        return short((word & 0xfff) | branch | 0xa000)"),
 
-    # A HYPERX marker below a higher one, and a v1.0.0.0-only body outside its neighbours.
+    # A HYPERX1001 marker below a higher one, and a v1.0.0.0-only body outside its neighbours.
     ("check_address_order.py", "src/anim/animplayer.cpp",
-     "// FUNCTION: HYPERX 0x00425550",
-     "// FUNCTION: HYPERX 0x00425530"),
+     "// FUNCTION: HYPERX1001 0x00425550",
+     "// FUNCTION: HYPERX1001 0x00425530"),
     ("check_address_order.py", "src/ui/infobar.cpp",
-     "// FUNCTION: HYPERX100 0x004bdd30",
-     "// FUNCTION: HYPERX100 0x004bdd50"),
+     "// FUNCTION: HYPERX1000 0x004bdd30",
+     "// FUNCTION: HYPERX1000 0x004bdd50"),
     # The #else of an #ifdef HYPERX_V100 is v1.0.0.1's, so a low marker there is a descent.
     ("check_address_order.py", "src/app/gameapp.cpp",
      "#else\n                g_bForceSoftwareRender = 1;",
-     "#else\n// FUNCTION: HYPERX 0x00400000\n                g_bForceSoftwareRender = 1;"),
+     "#else\n// FUNCTION: HYPERX1001 0x00400000\n                g_bForceSoftwareRender = 1;"),
 
     # A control byte where an escape was meant.
     ("check_text_hygiene.py", "src/planvm/cslideonrail.cpp",

@@ -103,7 +103,7 @@ def build():
     if not found:
         raise SystemExit("no reccmp project at %s" % ROOT)
 
-    target = found.get("HYPERX")
+    target = found.get("HYPERX1001")
 
     if not Path(target.original_path).is_file():
         raise SystemExit("your copy of the original is not at %s; name it in reccmp-user.yml"
@@ -126,7 +126,7 @@ def main():
     target = build()
 
     command = [sys.executable, "-m", "reccmp.ghidra.ghidra_import",
-               "--target", "HYPERX",
+               "--target", "HYPERX1001",
                "--local-project-dir", str(directory),
                "--local-project-name", name,
                "--file", inside]

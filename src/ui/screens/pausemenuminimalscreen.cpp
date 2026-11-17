@@ -5,14 +5,14 @@
 #include "ui/radar.h"
 #include "graphics/gdi.h"
 
-// FUNCTION: HYPERX100 0x0049a6c0
-// FUNCTION: HYPERX 0x00443950
+// FUNCTION: HYPERX1000 0x0049a6c0
+// FUNCTION: HYPERX1001 0x00443950
 PauseMenuMinimalScreen::~PauseMenuMinimalScreen()
 {
 }
 
-// FUNCTION: HYPERX100 0x0049a760
-// FUNCTION: HYPERX 0x00443980
+// FUNCTION: HYPERX1000 0x0049a760
+// FUNCTION: HYPERX1001 0x00443980
 PauseMenuMinimalScreen::PauseMenuMinimalScreen()
 {
     m_nLastWidget = PAUSE_MINIMAL_QUIT;
@@ -20,40 +20,40 @@ PauseMenuMinimalScreen::PauseMenuMinimalScreen()
     Init();
 }
 
-// FUNCTION: HYPERX100 0x0049a7f0
-// FUNCTION: HYPERX 0x004439e0
+// FUNCTION: HYPERX1000 0x0049a7f0
+// FUNCTION: HYPERX1001 0x004439e0
 void PauseMenuMinimalScreen::Init()
 {
     BITMAP bm;
 
-    // STRING: HYPERX 0x004c1fc0
+    // STRING: HYPERX1001 0x004c1fc0
     m_hBackground = GDI::LoadBitmapAsBackground("escape2", &m_hPalette);
 
-    // STRING: HYPERX 0x004c1f68
+    // STRING: HYPERX1001 0x004c1f68
     HBITMAP hBitmap = GDI::LoadBitmapHandle("Esretur");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     Widget* pWidget = AppendWidget(new ButtonWidget(0, 163, 210, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1f5c
+    // STRING: HYPERX1001 0x004c1f5c
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esreturr"));
-    // STRING: HYPERX 0x004c1f50
+    // STRING: HYPERX1001 0x004c1f50
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esreturd"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c1f48
+    // STRING: HYPERX1001 0x004c1f48
     hBitmap = GDI::LoadBitmapHandle("Esquit");
     GDI::GetBitmapDimensions(hBitmap, &bm);
     pWidget = AppendWidget(new ButtonWidget(0, 163, 267, bm.bmWidth, bm.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c1f40
+    // STRING: HYPERX1001 0x004c1f40
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esquitr"));
-    // STRING: HYPERX 0x004c1f38
+    // STRING: HYPERX1001 0x004c1f38
     pWidget->AppendFrame(GDI::LoadBitmapHandle("Esquitd"));
     pWidget->InitAfterLoad();
 }
 
-// FUNCTION: HYPERX100 0x0049aa80
-// FUNCTION: HYPERX 0x00443ba0
+// FUNCTION: HYPERX1000 0x0049aa80
+// FUNCTION: HYPERX1001 0x00443ba0
 void PauseMenuMinimalScreen::OnWidgetMessage(int nMsg, unsigned int nId)
 {
     switch (nId)

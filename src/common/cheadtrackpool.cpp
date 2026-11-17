@@ -3,8 +3,8 @@
 #include "engine/cheadtrack.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041e220
-// FUNCTION: HYPERX 0x00414620
+// FUNCTION: HYPERX1000 0x0041e220
+// FUNCTION: HYPERX1001 0x00414620
 void CHeadTrackPool::Init()
 {
     AgendaItem* pNode = new CHeadTrack;
@@ -33,8 +33,8 @@ char CHeadTrackPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004225e0
-// FUNCTION: HYPERX 0x004146c0
+// FUNCTION: HYPERX1000 0x004225e0
+// FUNCTION: HYPERX1001 0x004146c0
 void* CHeadTrackPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* CHeadTrackPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415f00
+// FUNCTION: HYPERX1001 0x00415f00
 CHeadTrackPool::~CHeadTrackPool()
 {
     while (m_pHead != 0)

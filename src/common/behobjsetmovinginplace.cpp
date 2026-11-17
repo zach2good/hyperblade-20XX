@@ -7,24 +7,24 @@
 #include "engine/engineobject.h"
 #include "engine/objectclasses.h"
 
-// FUNCTION: HYPERX100 0x004cc510
-// FUNCTION: HYPERX 0x0041e450
+// FUNCTION: HYPERX1000 0x004cc510
+// FUNCTION: HYPERX1001 0x0041e450
 BehObj_SetMovingInPlace::BehObj_SetMovingInPlace()
 {
 }
 
-// FUNCTION: HYPERX 0x0041e4a0
+// FUNCTION: HYPERX1001 0x0041e4a0
 BehObj_SetMovingInPlace::~BehObj_SetMovingInPlace()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cc630
-// FUNCTION: HYPERX 0x0041e4b0
+// FUNCTION: HYPERX1000 0x004cc630
+// FUNCTION: HYPERX1001 0x0041e4b0
 void BehObj_SetMovingInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForSetMovingInPlace();
 
-    // STRING: HYPERX 0x004bc360
+    // STRING: HYPERX1001 0x004bc360
     m_pszName = "SetMovingInPlace";
 
     m_wKind = BEH_SET_MOVING_IN_PLACE;

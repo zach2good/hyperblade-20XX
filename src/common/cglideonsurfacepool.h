@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1a6c
+// VTABLE: HYPERX1001 0x004b1a6c
 class CGlideOnSurfacePool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CGlideOnSurfacePool();
 };
 
-// SYNTHETIC: HYPERX 0x00414dd0
+// SYNTHETIC: HYPERX1001 0x00414dd0
 // CGlideOnSurfacePool::`scalar deleting destructor'
 
 #endif

@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041eea0
-// FUNCTION: HYPERX 0x00414050
+// FUNCTION: HYPERX1000 0x0041eea0
+// FUNCTION: HYPERX1001 0x00414050
 void CTrackTrajPool::Init()
 {
     AgendaItem* pNode = new CTrackTraj;
@@ -33,8 +33,8 @@ char CTrackTrajPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00422bf0
-// FUNCTION: HYPERX 0x00414100
+// FUNCTION: HYPERX1000 0x00422bf0
+// FUNCTION: HYPERX1001 0x00414100
 void* CTrackTrajPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* CTrackTrajPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415b40
+// FUNCTION: HYPERX1001 0x00415b40
 CTrackTrajPool::~CTrackTrajPool()
 {
     while (m_pHead != 0)

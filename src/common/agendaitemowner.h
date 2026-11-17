@@ -4,7 +4,7 @@
 class AgendaItem;
 
 // A root class, as BehaviorOwner is.
-// VTABLE: HYPERX 0x004b2218
+// VTABLE: HYPERX1001 0x004b2218
 class AgendaItemOwner
 {
 public:
@@ -12,8 +12,8 @@ public:
     {
     }
 
-    // FUNCTION: HYPERX100 0x0041d140
-    // FUNCTION: HYPERX 0x00414e70
+    // FUNCTION: HYPERX1000 0x0041d140
+    // FUNCTION: HYPERX1001 0x00414e70
     virtual ~AgendaItemOwner()
     {
     }
@@ -31,7 +31,7 @@ public:
     AgendaItem* m_pHead;
 };
 
-// SYNTHETIC: HYPERX 0x00414e80
+// SYNTHETIC: HYPERX1001 0x00414e80
 // AgendaItemOwner::`scalar deleting destructor'
 
 #endif

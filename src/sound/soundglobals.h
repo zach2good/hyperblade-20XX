@@ -6,7 +6,7 @@
 
 #include "globals.h"
 
-// GLOBAL: HYPERX 0x004d21dc
+// GLOBAL: HYPERX1001 0x004d21dc
 extern volatile int g_nSoundTimerDepth; // Shared with a re-entered timer tick.
 
 #endif

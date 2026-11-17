@@ -6,7 +6,7 @@ struct Vec3;
 class EngineObject;
 class BoundBubble;
 
-// VTABLE: HYPERX 0x004b2a2c
+// VTABLE: HYPERX1001 0x004b2a2c
 class BubbleNode
 {
 public:

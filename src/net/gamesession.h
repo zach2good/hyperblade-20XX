@@ -16,7 +16,7 @@
 #include "net/directplay.h"
 
 // The application identifier a hosted session is created under.
-// GLOBAL: HYPERX 0x004c0ec0
+// GLOBAL: HYPERX1001 0x004c0ec0
 extern GUID g_guidNetApplication;
 
 struct GameSession

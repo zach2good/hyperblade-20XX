@@ -26,7 +26,7 @@ enum HeadToHeadSetupWidgetId
     H2H_LAST_WIDGET  = 29
 };
 
-// VTABLE: HYPERX 0x004b3190
+// VTABLE: HYPERX1001 0x004b3190
 class HeadToHeadSetupUIScreen : public UIScreen
 {
 public:
@@ -34,15 +34,15 @@ public:
     virtual void OnSecondPageTabClick();
     virtual void OnThirdPageTabClick();
 
-    // FUNCTION: HYPERX100 0x0043b750
-    // FUNCTION: HYPERX 0x00444b30
+    // FUNCTION: HYPERX1000 0x0043b750
+    // FUNCTION: HYPERX1001 0x00444b30
     virtual void OnOkayClick()
     {
         Game::SetEngineState(g_nSetupReturnState);
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
-    // FUNCTION: HYPERX100 0x0043b770
+    // FUNCTION: HYPERX1000 0x0043b770
     virtual void OnCancelClick()
     {
         Game::SetEngineState(g_nSetupReturnState);
@@ -73,7 +73,7 @@ private:
     int m_nSelectionLimit; // 0x47c
 };
 
-// SYNTHETIC: HYPERX 0x004441a0
+// SYNTHETIC: HYPERX1001 0x004441a0
 // HeadToHeadSetupUIScreen::`scalar deleting destructor'
 
 #endif

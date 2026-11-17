@@ -4,8 +4,8 @@
 #include "engine/crelaxyaw.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041fd30
-// FUNCTION: HYPERX 0x00413930
+// FUNCTION: HYPERX1000 0x0041fd30
+// FUNCTION: HYPERX1001 0x00413930
 void CRelaxYawPool::Init()
 {
     AgendaItem* pNode = new CRelaxYaw;
@@ -34,8 +34,8 @@ char CRelaxYawPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423380
-// FUNCTION: HYPERX 0x004139b0
+// FUNCTION: HYPERX1000 0x00423380
+// FUNCTION: HYPERX1001 0x004139b0
 void* CRelaxYawPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CRelaxYawPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415640
+// FUNCTION: HYPERX1001 0x00415640
 CRelaxYawPool::~CRelaxYawPool()
 {
     while (m_pHead != 0)

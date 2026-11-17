@@ -9,8 +9,8 @@
 #include "graphics/d3dviewport.h"
 
 // The scales are the dimensions halved, so both maxima come out one.
-// FUNCTION: HYPERX100 0x004d1810
-// FUNCTION: HYPERX 0x004316f0
+// FUNCTION: HYPERX1000 0x004d1810
+// FUNCTION: HYPERX1001 0x004316f0
 int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* pDevice, int nWidth, int nHeight, int nX, int nY)
 {
     D3DVIEWPORT desc;
@@ -19,7 +19,7 @@ int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* 
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd628
+        // STRING: HYPERX1001 0x004bd628
         g_gameApp.Error("Direct3D CreateViewport failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -30,7 +30,7 @@ int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* 
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd608
+        // STRING: HYPERX1001 0x004bd608
         g_gameApp.Error("Direct3D AddViewport failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -64,7 +64,7 @@ int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* 
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd5e8
+        // STRING: HYPERX1001 0x004bd5e8
         g_gameApp.Error("Direct3D SetViewport failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -75,8 +75,8 @@ int __cdecl D3DViewport::Setup(IDirect3DViewport** ppViewport, IDirect3DDevice* 
 }
 
 // The width rounds up to a multiple of four, except in v1.0.0.0; the height does not.
-// FUNCTION: HYPERX100 0x004d1a60
-// FUNCTION: HYPERX 0x00431880
+// FUNCTION: HYPERX1000 0x004d1a60
+// FUNCTION: HYPERX1001 0x00431880
 int __cdecl D3DViewport::SetForTexture(unsigned int nViewportId, Texture* pSource)
 {
     Point extent = pSource->GetSize();
@@ -108,8 +108,8 @@ int __cdecl D3DViewport::SetForTexture(unsigned int nViewportId, Texture* pSourc
     return g_hrD3DResult == 0;
 }
 
-// FUNCTION: HYPERX100 0x004d2ac0
-// FUNCTION: HYPERX 0x00432370
+// FUNCTION: HYPERX1000 0x004d2ac0
+// FUNCTION: HYPERX1001 0x00432370
 int __stdcall D3DViewport::Clear(void)
 {
     g_hrD3DResult = g_d3dState.apViewports[0]->Clear(1, g_d3dState.aViewportRects, D3DCLEAR_TARGET);

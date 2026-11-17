@@ -7,11 +7,11 @@
 #define DPLAY_ERROR_COUNT 31
 
 // An unknown code returns a fixed string rather than a null.
-// FUNCTION: HYPERX100 0x00494bf0
-// FUNCTION: HYPERX 0x00442880
+// FUNCTION: HYPERX1000 0x00494bf0
+// FUNCTION: HYPERX1001 0x00442880
 char* __cdecl DirectPlay::GetErrorString(int hr)
 {
-    // STRING: HYPERX 0x004c1e48
+    // STRING: HYPERX1001 0x004c1e48
     char* pszText = "unknown error";
 
     for (unsigned int nIndex = 0; nIndex < DPLAY_ERROR_COUNT; nIndex++)
@@ -57,6 +57,6 @@ DPlayError g_aDPlayErrors[DPLAY_ERROR_COUNT] = {
     { DPERR_UNAVAILABLE, "DPERR_UNAVAILABLE" },
     { DPERR_UNSUPPORTED, "DPERR_UNSUPPORTED" },
     { DPERR_BUSY, "DPERR_BUSY" },
-    // STRING: HYPERX 0x004c1350
+    // STRING: HYPERX1001 0x004c1350
     { DPERR_USERCANCEL, "DPERR_USERCANCEL" }
 };

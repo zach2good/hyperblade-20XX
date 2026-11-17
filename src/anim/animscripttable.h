@@ -21,7 +21,7 @@ struct AnimScriptHead
 };
 
 // Its table at 0x004b22d4 is one slot: the destructor and nothing else.
-// VTABLE: HYPERX 0x004b22d4
+// VTABLE: HYPERX1001 0x004b22d4
 class AnimScriptTable
 {
 public:
@@ -61,7 +61,7 @@ public:
     class PlanVM* m_pPlanVm; // 0x4bc
 };
 
-// SYNTHETIC: HYPERX 0x00418bf0
+// SYNTHETIC: HYPERX1001 0x00418bf0
 // AnimScriptTable::`scalar deleting destructor'
 
 STATIC_ASSERT((int)(size_t)&((AnimScriptTable*)0)->m_apEntries == 0x008);

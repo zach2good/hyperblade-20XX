@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b192c
+// VTABLE: HYPERX1001 0x004b192c
 class CMonitorHeldKeysPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CMonitorHeldKeysPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415800
+// SYNTHETIC: HYPERX1001 0x00415800
 // CMonitorHeldKeysPool::`scalar deleting destructor'
 
 #endif

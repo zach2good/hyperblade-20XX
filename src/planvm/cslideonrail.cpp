@@ -17,8 +17,8 @@
 
 // The field holds InitSegment's answer, not the new block.
 
-// FUNCTION: HYPERX100 0x004256b0
-// FUNCTION: HYPERX 0x0040cee0
+// FUNCTION: HYPERX1000 0x004256b0
+// FUNCTION: HYPERX1001 0x0040cee0
 CSlideOnRail::CSlideOnRail()
 {
     float flSegmentA;
@@ -26,8 +26,8 @@ CSlideOnRail::CSlideOnRail()
     m_pSpline = (new Spline)->InitSegment(flSegmentA = g_arenaEllipsoid.GetRadiusX(), g_arenaEllipsoid.GetRadiusY());
 }
 
-// FUNCTION: HYPERX100 0x004257d0
-// FUNCTION: HYPERX 0x0040cfa0
+// FUNCTION: HYPERX1000 0x004257d0
+// FUNCTION: HYPERX1001 0x0040cfa0
 CSlideOnRail::~CSlideOnRail()
 {
     delete m_pSpline;
@@ -36,8 +36,8 @@ CSlideOnRail::~CSlideOnRail()
     m_pSpline = 0;
 }
 
-// FUNCTION: HYPERX100 0x00425870
-// FUNCTION: HYPERX 0x0040d010
+// FUNCTION: HYPERX1000 0x00425870
+// FUNCTION: HYPERX1001 0x0040d010
 void CSlideOnRail::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -58,8 +58,8 @@ void CSlideOnRail::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pPrevTick         = &pOwner->GetPhysicsBody()->nPrevTick;
 }
 
-// FUNCTION: HYPERX100 0x00425940
-// FUNCTION: HYPERX 0x0040d0d0
+// FUNCTION: HYPERX1000 0x00425940
+// FUNCTION: HYPERX1001 0x0040d0d0
 void CSlideOnRail::OnListChanged()
 {
     if (m_bReady == 0)
@@ -82,8 +82,8 @@ void CSlideOnRail::OnListChanged()
 }
 
 // The first of the two writes to the normal's z is dead in the original too.
-// FUNCTION: HYPERX100 0x004259a0
-// FUNCTION: HYPERX 0x0040d110
+// FUNCTION: HYPERX1000 0x004259a0
+// FUNCTION: HYPERX1001 0x0040d110
 void CSlideOnRail::Process(int nArg)
 {
     m_pSurfNormal->z = g_flZeroAgendaItem;
@@ -121,8 +121,8 @@ void CSlideOnRail::Process(int nArg)
 
 // A pending net target moves the object by its own step over the frame before the rail takes it.
 
-// FUNCTION: HYPERX100 0x00425b10
-// FUNCTION: HYPERX 0x0040d240
+// FUNCTION: HYPERX1000 0x00425b10
+// FUNCTION: HYPERX1001 0x0040d240
 void CSlideOnRail::Release(int nArg)
 {
     float flDelta;

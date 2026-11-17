@@ -4,8 +4,8 @@
 #include <string.h>
 #include "objectdef.h"
 
-// FUNCTION: HYPERX100 0x004db080
-// FUNCTION: HYPERX 0x00484730
+// FUNCTION: HYPERX1000 0x004db080
+// FUNCTION: HYPERX1001 0x00484730
 TeamBlock::TeamBlock()
 {
     szTsAnim[0]      = 0;
@@ -26,8 +26,8 @@ TeamBlock::TeamBlock()
 
 // The slot keeps the freed pointer: this runs at shutdown and nothing reads the table again.
 
-// FUNCTION: HYPERX100 0x004db100
-// FUNCTION: HYPERX 0x004847a0
+// FUNCTION: HYPERX1000 0x004db100
+// FUNCTION: HYPERX1001 0x004847a0
 TeamBlock::~TeamBlock()
 {
     for (int nIndex = 0; nIndex < TEAM_BLOCK_SLOTS; nIndex++)

@@ -34,7 +34,7 @@ WORD = re.compile(r"\b(?:[gs]|DAT|PTR)_\w+")
 DECL = re.compile(r"^(?:(?:extern|static|const|unsigned|signed|struct|class)\s+|\"C\"\s+)*"
                   r"[\w:]+[\s*&]+(?:const\s+)?(\w+)\s*(?:\[[^\]\n]*\]\s*)*[;=\[(]", re.M)
 
-MARKER = re.compile(r"//\s*(?:FUNCTION|STUB|LIBRARY|SYNTHETIC):\s*HYPERX\s+0x[0-9a-fA-F]+")
+MARKER = re.compile(r"//\s*(?:FUNCTION|STUB|LIBRARY|SYNTHETIC):\s*HYPERX1001\s+0x[0-9a-fA-F]+")
 SIGNATURE = re.compile(r"([\w:~]+)\s*\(")
 
 # What follows a name that is being written: an assignment, compound or not, or an increment.

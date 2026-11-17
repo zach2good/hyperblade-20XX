@@ -4,8 +4,8 @@
 #include "engine/cwatch.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041ec90
-// FUNCTION: HYPERX 0x00414170
+// FUNCTION: HYPERX1000 0x0041ec90
+// FUNCTION: HYPERX1001 0x00414170
 void CWatchPool::Init()
 {
     AgendaItem* pNode = new CWatch;
@@ -34,8 +34,8 @@ char CWatchPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00422af0
-// FUNCTION: HYPERX 0x00414200
+// FUNCTION: HYPERX1000 0x00422af0
+// FUNCTION: HYPERX1001 0x00414200
 void* CWatchPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CWatchPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415be0
+// FUNCTION: HYPERX1001 0x00415be0
 CWatchPool::~CWatchPool()
 {
     while (m_pHead != 0)

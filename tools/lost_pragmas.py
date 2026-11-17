@@ -23,7 +23,7 @@ import sys
 
 import pragmas
 
-MARKER = re.compile(r"^//\s*FUNCTION:\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"^//\s*FUNCTION:\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 NULL_BLOB = "0" * 40
 
 

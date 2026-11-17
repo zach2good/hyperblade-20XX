@@ -10,14 +10,14 @@
 #include "common/staticassert.h"
 #include "graphics/surfacepoint.h"
 
-// VTABLE: HYPERX 0x004b2e98
+// VTABLE: HYPERX1001 0x004b2e98
 class ScrollBitmap : public CDDBitMap
 {
 public:
     virtual ~ScrollBitmap();
 
-    // FUNCTION: HYPERX100 0x00443340
-    // FUNCTION: HYPERX 0x00438b60
+    // FUNCTION: HYPERX1000 0x00443340
+    // FUNCTION: HYPERX1001 0x00438b60
     virtual int BltFillColour(unsigned int dwFillColor)
     {
         RECT rc;
@@ -59,8 +59,8 @@ public:
 
     virtual void SetScrollColorMode(int nScrollColor);
 
-    // FUNCTION: HYPERX100 0x00442f40
-    // FUNCTION: HYPERX 0x00438940
+    // FUNCTION: HYPERX1000 0x00442f40
+    // FUNCTION: HYPERX1001 0x00438940
     virtual void SetClipRect(int nClipped, Point pt)
     {
         CDDBitMap::SetClipRect(nClipped, pt);
@@ -118,7 +118,7 @@ public:
     int  m_bDirty;      // 0x108
 };
 
-// SYNTHETIC: HYPERX 0x00438740
+// SYNTHETIC: HYPERX1001 0x00438740
 // ScrollBitmap::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(ScrollBitmap) == 0x10c);

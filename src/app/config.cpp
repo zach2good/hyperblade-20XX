@@ -88,24 +88,24 @@ float g_flStopForceFactor  = g_flOneSteering;
 float g_flForceIncrement   = g_flOneSteering;
 Vec3  g_vViewSteepness     = { g_flZeroSteering, g_flZeroSteering, g_flTwoSteering };
 // The separator is doubled: VC6 turns the unrecognised escape into a bare D.
-// STRING: HYPERX 0x004c4750
+// STRING: HYPERX1001 0x004c4750
 String g_strPrefs("Data\\DftKeybd.cfg");
 
-// FUNCTION: HYPERX100 0x00411140
-// FUNCTION: HYPERX 0x0046d710
+// FUNCTION: HYPERX1000 0x00411140
+// FUNCTION: HYPERX1001 0x0046d710
 void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
 {
     char  szBuffer[MAX_PATH];
     FILE* pFile;
 
-    // STRING: HYPERX 0x004bc990
+    // STRING: HYPERX1001 0x004bc990
     if ((pFile = fopen(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName), "r")) != 0)
     {
         if (fscanf(pFile, g_pszScanFormat, szBuffer) == 0)
         {
             fclose(pFile);
 
-            // STRING: HYPERX 0x004c4de0
+            // STRING: HYPERX1001 0x004c4de0
             g_gameApp.Fatal("Zero bytes read from %s!", String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData);
         }
 
@@ -115,10 +115,10 @@ void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
     }
     else
     {
-        // STRING: HYPERX 0x004c4da8
+        // STRING: HYPERX1001 0x004c4da8
         g_gameApp.Error("Preferences file \"%s\" is missing or cannot be opened.", String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData);
 
-        // STRING: HYPERX 0x004c4750
+        // STRING: HYPERX1001 0x004c4750
         g_strPrefs.Assign(String::SafeStrlen("Data\\DftKeybd.cfg"),
                           "Data\\DftKeybd.cfg");
     }
@@ -127,8 +127,8 @@ void Config::LoadPreferences(HWND hWnd, LPCSTR pszFileName)
 }
 
 // A missing file still returns true.
-// FUNCTION: HYPERX100 0x00411340
-// FUNCTION: HYPERX 0x0046d8b0
+// FUNCTION: HYPERX1000 0x00411340
+// FUNCTION: HYPERX1001 0x0046d8b0
 int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRows)
 {
     FILE* const pFile = fopen(pszData, "r");
@@ -141,18 +141,18 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
         {
             // BUG: Each %d writes four bytes into a one or two byte field, so the last row overruns
             // the table.
-            // STRING: HYPERX 0x004c4e60
+            // STRING: HYPERX1001 0x004c4e60
             fscanf(pFile, "%d %d %d: ", &pRows[nRow].cFlags, &pRows[nRow].nKey, &pRows[nRow].nIndex);
         }
 
-        // STRING: HYPERX 0x004c4e50
+        // STRING: HYPERX1001 0x004c4e50
         fscanf(pFile, " %f %f %f %f", &g_flForceIncrement, &g_flMaxAcceleration, &g_flMaxSpeed, &g_flForceRelaxation);
 
         // BUG: The %d writes four bytes into the one byte g_bVictimCam.
-        // STRING: HYPERX 0x004c4e34
+        // STRING: HYPERX1001 0x004c4e34
         fscanf(pFile, "  @v02 %d %f %f %f %f %f :", &g_bVictimCam, &g_flBandwidth, &g_flNetTracking, &g_flStopForceFactor, &g_flSpeedBurstFactor, &g_vViewSteepness.z);
 
-        // STRING: HYPERX 0x004c4d9c
+        // STRING: HYPERX1001 0x004c4d9c
         fscanf(pFile, " %f %f %f :", &g_vBirdsEyeTrackOffset.x, &g_vBirdsEyeTrackOffset.y, &g_vBirdsEyeTrackOffset.z);
 
         fscanf(pFile, " %f %f %f :", &g_vFirstPersonTrackOffset.x, &g_vFirstPersonTrackOffset.y, &g_vFirstPersonTrackOffset.z);
@@ -166,7 +166,7 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
         return 1;
     }
 
-    // STRING: HYPERX 0x004c4dfc
+    // STRING: HYPERX1001 0x004c4dfc
     g_gameApp.Fatal("Configuration file \"%s\" is missing or cannot be opened.", pszData);
 
     return 1;
@@ -176,8 +176,8 @@ int Config::ParseFile(HWND, LPCSTR pszData, LPCSTR pszFallbackPath, KeyRow* pRow
 #define MSG_PAUSED    0x4f
 #define MSG_TOGGLE_MS 0x5dc
 
-// FUNCTION: HYPERX100 0x004114e0
-// FUNCTION: HYPERX 0x0046d9f0
+// FUNCTION: HYPERX1000 0x004114e0
+// FUNCTION: HYPERX1001 0x0046d9f0
 void __cdecl GameApp::HandleGlobalKeyEvent(HWND, int nKey)
 {
     if (g_pRenderer != 0 && g_pRenderer->m_bQuitPromptVisible != 0)
@@ -267,8 +267,8 @@ void __cdecl GameApp::HandleGlobalKeyEvent(HWND, int nKey)
     }
 }
 
-// FUNCTION: HYPERX100 0x0043fe10
-// FUNCTION: HYPERX 0x00480c60
+// FUNCTION: HYPERX1000 0x0043fe10
+// FUNCTION: HYPERX1001 0x00480c60
 int __cdecl Config::IsCommentLine(const char* pszLine)
 {
     char cFirst;
@@ -296,11 +296,11 @@ short g_aDefaultKeyBindings[124] = {
 };
 
 // A second set of rows nothing reads.
-// GLOBAL: HYPERX 0x004c4c84
+// GLOBAL: HYPERX1001 0x004c4c84
 short g_aUnusedKeyBindings[124] = { 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 5, 37, 2, 5, 39, 3, 5, 38, 0, 1, 112, 10, 1, 32, 5, 9, 37, 1, 9, 39, 2, 9, 38, 0, 1, 2, 7, 1, 1, 6, 5, 2, 7, 5, 1, 6, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 0, 58, 1, 114, 12, 1, 0, 58, 1, 0, 58, 1, 113, 11, 1, 115, 13, 1, 120, 16, 1, 121, 17, 1, 13, 4, 1, 32, 7, 1, 67, 24, 1, 79, 32, 5, 13, 4, 1, 66, 23, 5, 66, 23, 0, 0, 0 };
 
 // A file dialog's filter nothing passes.
-// GLOBAL: HYPERX 0x004c4d7c
+// GLOBAL: HYPERX1001 0x004c4d7c
 char g_szConfigFilter[] = "Config Files (*.CFG)\0*.CFG";
 
 short g_nTabCycle = 1;

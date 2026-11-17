@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b188c
+// VTABLE: HYPERX1001 0x004b188c
 class CViewItPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CViewItPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415d00
+// SYNTHETIC: HYPERX1001 0x00415d00
 // CViewItPool::`scalar deleting destructor'
 
 #endif

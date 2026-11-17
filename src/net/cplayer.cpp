@@ -31,8 +31,8 @@ extern NetSendFlags g_aSendFlagsByType[22];
 
 // The buffers and the state block are inside the object; pState at +0x270 points at the block.
 
-// FUNCTION: HYPERX100 0x0046e680
-// FUNCTION: HYPERX 0x0042d1f0
+// FUNCTION: HYPERX1000 0x0046e680
+// FUNCTION: HYPERX1001 0x0042d1f0
 CPlayer::CPlayer(GameSession* pSession)
 {
     InitDirectPlayParams();
@@ -76,8 +76,8 @@ CPlayer::CPlayer(GameSession* pSession)
 
 // Drains what DirectPlay holds for the player, stops its receive thread and destroys it.
 
-// FUNCTION: HYPERX100 0x0046e880
-// FUNCTION: HYPERX 0x0042d370
+// FUNCTION: HYPERX1000 0x0046e880
+// FUNCTION: HYPERX1001 0x0042d370
 CPlayer::~CPlayer()
 {
     if (g_hNetworkThread != 0 && pDPlay != 0)
@@ -103,7 +103,7 @@ CPlayer::~CPlayer()
 
         if (nResult != 0)
         {
-            // STRING: HYPERX 0x004bcd78
+            // STRING: HYPERX1001 0x004bcd78
             g_gameApp.Error("pIDC->DestroyPlayer failed with %s\n",
                             DirectPlay::GetErrorString(nResult));
         }
@@ -114,8 +114,8 @@ CPlayer::~CPlayer()
 
 // Both buffers are 58 bytes, and a null one is skipped.
 
-// FUNCTION: HYPERX100 0x0046e9e0
-// FUNCTION: HYPERX 0x0042d460
+// FUNCTION: HYPERX1000 0x0046e9e0
+// FUNCTION: HYPERX1001 0x0042d460
 void CPlayer::ResetState()
 {
     pBufferB->message.nSlot = (unsigned char)pState->nSlotFlags;
@@ -145,8 +145,8 @@ void CPlayer::ResetState()
 }
 
 // The second drain loop runs only for the player that drives God.
-// FUNCTION: HYPERX100 0x0046ea90
-// FUNCTION: HYPERX 0x0042d4f0
+// FUNCTION: HYPERX1000 0x0046ea90
+// FUNCTION: HYPERX1001 0x0042d4f0
 void CPlayer::AssignObject(int nObject)
 {
     int nPayload;
@@ -201,8 +201,8 @@ void CPlayer::AssignObject(int nObject)
 }
 
 // GetLastError is called and its answer dropped.
-// FUNCTION: HYPERX100 0x0046ebe0
-// FUNCTION: HYPERX 0x0042d610
+// FUNCTION: HYPERX1000 0x0046ebe0
+// FUNCTION: HYPERX1001 0x0042d610
 void CPlayer::DetachObject()
 {
     int nPayload;
@@ -288,8 +288,8 @@ void CPlayer::DetachObject()
 
 #define QUEUE_LIMIT 0x96
 
-// FUNCTION: HYPERX100 0x0046eed0
-// FUNCTION: HYPERX 0x0042d810
+// FUNCTION: HYPERX1000 0x0046eed0
+// FUNCTION: HYPERX1001 0x0042d810
 char CPlayer::EnqueueNetRecord(const NetMoveRecord* pRecord)
 {
     while (nQueueCount + 1 > QUEUE_LIMIT)
@@ -305,8 +305,8 @@ char CPlayer::EnqueueNetRecord(const NetMoveRecord* pRecord)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0046ef80
-// FUNCTION: HYPERX 0x0042d8a0
+// FUNCTION: HYPERX1000 0x0046ef80
+// FUNCTION: HYPERX1001 0x0042d8a0
 NetMoveRecord* CPlayer::DequeueNetRecord()
 {
     const int nCount = nQueueCount;
@@ -325,8 +325,8 @@ NetMoveRecord* CPlayer::DequeueNetRecord()
 
 // A type not in the table keeps the player's default flag; a queue depth throttles the send.
 
-// FUNCTION: HYPERX100 0x0046efe0
-// FUNCTION: HYPERX 0x0042d8f0
+// FUNCTION: HYPERX1000 0x0046efe0
+// FUNCTION: HYPERX1001 0x0042d8f0
 int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDataSize)
 {
     IDirectPlay* pDPlay;
@@ -338,7 +338,7 @@ int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDat
 
     if (pLocal == 0 || g_pGameSession->apPlayers[SESSION_LOCAL_PLAYER]->pState->nPlayerId == DPID_UNKNOWN)
     {
-        // STRING: HYPERX 0x004bcd9c
+        // STRING: HYPERX1001 0x004bcd9c
         g_gameApp.Error("Attempting to do a Send() without a MSDP player\n");
     }
     else
@@ -374,8 +374,8 @@ int __fastcall CPlayer::SendPacket(DWORD idTo, NetMessage* pMessage, DWORD dwDat
 
 // One global handle serves every player; the thread runs time-critical.
 
-// FUNCTION: HYPERX100 0x0046f0f0
-// FUNCTION: HYPERX 0x0042d9c0
+// FUNCTION: HYPERX1000 0x0046f0f0
+// FUNCTION: HYPERX1001 0x0042d9c0
 HANDLE CPlayer::StartNetworkThread(HANDLE hEvent)
 {
     if (hEvent != 0)
@@ -392,7 +392,7 @@ HANDLE CPlayer::StartNetworkThread(HANDLE hEvent)
         }
 
         // The name goes out as the whole wire record, from its role byte on.
-        // STRING: HYPERX 0x004bcdd0
+        // STRING: HYPERX1001 0x004bcdd0
         g_gameApp.Error("CreateThread failed for %s! LastError Code %0X\n",
                         &pState->slotName.cSlotFlags,
                         GetLastError());
@@ -403,8 +403,8 @@ HANDLE CPlayer::StartNetworkThread(HANDLE hEvent)
 
 // The global handle is also the shutdown flag, so it is closed before the event is set.
 
-// FUNCTION: HYPERX100 0x0046f1a0
-// FUNCTION: HYPERX 0x0042da40
+// FUNCTION: HYPERX1000 0x0046f1a0
+// FUNCTION: HYPERX1001 0x0042da40
 int CPlayer::StopNetworkThread()
 {
     if (g_hNetworkThread != 0)
@@ -434,8 +434,8 @@ int CPlayer::StopNetworkThread()
 
 // Once the loop is entered the only way out is ExitThread.
 
-// FUNCTION: HYPERX100 0x0046f220
-// FUNCTION: HYPERX 0x0042daa0
+// FUNCTION: HYPERX1000 0x0046f220
+// FUNCTION: HYPERX1001 0x0042daa0
 unsigned int CPlayer::NetworkReceiveLoop()
 {
     if (g_hNetworkThread != 0)
@@ -480,8 +480,8 @@ unsigned int CPlayer::NetworkReceiveLoop()
 #define MSG_DROP_PLAYER      0x15
 
 // Messages from this player's own id are dropped; group, session and connect notices are ignored.
-// FUNCTION: HYPERX100 0x0046f2b0
-// FUNCTION: HYPERX 0x0042db10
+// FUNCTION: HYPERX1000 0x0046f2b0
+// FUNCTION: HYPERX1001 0x0042db10
 unsigned int __fastcall CPlayer::DispatchPacket()
 {
     IDirectPlay* pDPlay;
@@ -496,7 +496,7 @@ unsigned int __fastcall CPlayer::DispatchPacket()
 
     if (this != g_pGameSession->apPlayers[SESSION_LOCAL_PLAYER])
     {
-        // STRING: HYPERX 0x004bced8
+        // STRING: HYPERX1001 0x004bced8
         g_gameApp.Error("RCV: Received by player %d which is not the MSDP player",
                         this->pState->nSlotFlags);
     }
@@ -516,7 +516,7 @@ unsigned int __fastcall CPlayer::DispatchPacket()
     {
         if (hr != 0)
         {
-            // STRING: HYPERX 0x004bceb4
+            // STRING: HYPERX1001 0x004bceb4
             g_gameApp.Error("CPlayer::Receive failed with %s\n",
                             DirectPlay::GetErrorString(hr));
         }
@@ -563,7 +563,7 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                         break;
 
                     default:
-                        // STRING: HYPERX 0x004bce80
+                        // STRING: HYPERX1001 0x004bce80
                         g_gameApp.Error("CPlayer 0x%X received Unknown System Message %X!\n",
                                         m_nSlot,
                                         nMessage);
@@ -651,7 +651,7 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                         }
                         else
                         {
-                            // STRING: HYPERX 0x004bce54
+                            // STRING: HYPERX1001 0x004bce54
                             g_gameApp.Error("RCV: MovingPacket for unknown player %X!\n", nSlot);
                         }
 
@@ -670,14 +670,14 @@ unsigned int __fastcall CPlayer::DispatchPacket()
                         }
                         else
                         {
-                            // STRING: HYPERX 0x004bce30
+                            // STRING: HYPERX1001 0x004bce30
                             g_gameApp.Error("RCV: STATIC packet for NULL REF\n");
                         }
 
                         break;
 
                     default:
-                        // STRING: HYPERX 0x004bce00
+                        // STRING: HYPERX1001 0x004bce00
                         g_gameApp.Error("CPlayer %s received Unknown Message Type%X!\n",
                                         &pState->slotName.cSlotFlags,
                                         nMessage & 0xff);
@@ -692,8 +692,8 @@ unsigned int __fastcall CPlayer::DispatchPacket()
 
 // The DirectPlay destination id rides in EDX; every caller passes DPID_ALLPLAYERS.
 
-// FUNCTION: HYPERX100 0x0046f6e0
-// FUNCTION: HYPERX 0x0042df20
+// FUNCTION: HYPERX1000 0x0046f6e0
+// FUNCTION: HYPERX1001 0x0042df20
 void __fastcall CPlayer::SendHostStart(unsigned long idTo)
 {
     NetShortMessage msg;
@@ -704,8 +704,8 @@ void __fastcall CPlayer::SendHostStart(unsigned long idTo)
     SendPacket(idTo, &msg, sizeof(msg));
 }
 
-// FUNCTION: HYPERX100 0x0046f720
-// FUNCTION: HYPERX 0x0042df50
+// FUNCTION: HYPERX1000 0x0046f720
+// FUNCTION: HYPERX1001 0x0042df50
 void __fastcall CPlayer::SendPlayerReady(unsigned long idTo)
 {
     NetShortMessage msg;
@@ -716,8 +716,8 @@ void __fastcall CPlayer::SendPlayerReady(unsigned long idTo)
     SendPacket(idTo, &msg, sizeof(msg));
 }
 
-// FUNCTION: HYPERX100 0x0046f760
-// FUNCTION: HYPERX 0x0042df80
+// FUNCTION: HYPERX1000 0x0046f760
+// FUNCTION: HYPERX1001 0x0042df80
 void __fastcall CPlayer::SendPlayerConnected(unsigned long idTo, int nValue)
 {
     NetShortMessage msg;
@@ -728,8 +728,8 @@ void __fastcall CPlayer::SendPlayerConnected(unsigned long idTo, int nValue)
     SendPacket(idTo, &msg, sizeof(msg));
 }
 
-// FUNCTION: HYPERX100 0x0046f790
-// FUNCTION: HYPERX 0x0042dfa0
+// FUNCTION: HYPERX1000 0x0046f790
+// FUNCTION: HYPERX1001 0x0042dfa0
 void __fastcall CPlayer::SendSlotAccepted(unsigned long idTo, char cValue)
 {
     NetShortMessage msg;
@@ -740,8 +740,8 @@ void __fastcall CPlayer::SendSlotAccepted(unsigned long idTo, char cValue)
     SendPacket(idTo, &msg, sizeof(msg));
 }
 
-// FUNCTION: HYPERX100 0x0046f7c0
-// FUNCTION: HYPERX 0x0042dfc0
+// FUNCTION: HYPERX1000 0x0046f7c0
+// FUNCTION: HYPERX1001 0x0042dfc0
 void __fastcall CPlayer::SendSlotRejected(unsigned long idTo, char cValue)
 {
     NetShortMessage msg;
@@ -754,8 +754,8 @@ void __fastcall CPlayer::SendSlotRejected(unsigned long idTo, char cValue)
 
 // The text is a wire name, so the copy fills the name record and the whole message goes.
 
-// FUNCTION: HYPERX100 0x0046f7f0
-// FUNCTION: HYPERX 0x0042dfe0
+// FUNCTION: HYPERX1000 0x0046f7f0
+// FUNCTION: HYPERX1001 0x0042dfe0
 void __fastcall CPlayer::SendStringMsg(unsigned long idTo, int nValue, const char* pszText)
 {
     NetPlayerNameMessage msg;
@@ -768,8 +768,8 @@ void __fastcall CPlayer::SendStringMsg(unsigned long idTo, int nValue, const cha
     SendPacket(idTo, &msg, sizeof(msg));
 }
 
-// FUNCTION: HYPERX100 0x0046f860
-// FUNCTION: HYPERX 0x0042e040
+// FUNCTION: HYPERX1000 0x0046f860
+// FUNCTION: HYPERX1001 0x0042e040
 void __fastcall CPlayer::SendDataMsg(unsigned long idTo, const void* pData, int nLength)
 {
     NetSendBuffer* const  pSend   = pBufferB;
@@ -789,8 +789,8 @@ void __fastcall CPlayer::SendDataMsg(unsigned long idTo, const void* pData, int 
     SendPacket(idTo, pPacket, nLength + PACKET_OVERHEAD);
 }
 
-// FUNCTION: HYPERX100 0x0046f8d0
-// FUNCTION: HYPERX 0x0042e0a0
+// FUNCTION: HYPERX1000 0x0046f8d0
+// FUNCTION: HYPERX1001 0x0042e0a0
 void __fastcall CPlayer::SendRawMsg(unsigned long idTo, NetMessage* pMessage, int nLength)
 {
     SendPacket(idTo, pMessage, nLength);
@@ -798,8 +798,8 @@ void __fastcall CPlayer::SendRawMsg(unsigned long idTo, NetMessage* pMessage, in
 
 // Sends one byte and leaves the second as it found it.
 
-// FUNCTION: HYPERX100 0x0046f8f0
-// FUNCTION: HYPERX 0x0042e0c0
+// FUNCTION: HYPERX1000 0x0046f8f0
+// FUNCTION: HYPERX1001 0x0042e0c0
 void __fastcall CPlayer::SendAssetRequest(unsigned long idTo)
 {
     NetShortMessage msg;
@@ -809,8 +809,8 @@ void __fastcall CPlayer::SendAssetRequest(unsigned long idTo)
     SendPacket(idTo, &msg, sizeof(msg));
 }
 
-// FUNCTION: HYPERX100 0x0046f910
-// FUNCTION: HYPERX 0x0042e0e0
+// FUNCTION: HYPERX1000 0x0046f910
+// FUNCTION: HYPERX1001 0x0042e0e0
 int __fastcall CPlayer::SendDropPlayer(unsigned long idTo)
 {
     NetShortMessage msg;
@@ -825,8 +825,8 @@ int __fastcall CPlayer::SendDropPlayer(unsigned long idTo)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0046f190
-// FUNCTION: HYPERX 0x0042e120
+// FUNCTION: HYPERX1000 0x0046f190
+// FUNCTION: HYPERX1001 0x0042e120
 unsigned int __cdecl CPlayer::NetworkReceiveThreadProc(CPlayer* pPlayer)
 {
     return pPlayer->NetworkReceiveLoop();
@@ -834,7 +834,7 @@ unsigned int __cdecl CPlayer::NetworkReceiveThreadProc(CPlayer* pPlayer)
 
 // Last in the file so the unit's literals follow it. The walk is bounded by the count, and entry
 // zero matches kind zero before the trailing one can.
-// GLOBAL: HYPERX 0x004bccc8
+// GLOBAL: HYPERX1001 0x004bccc8
 NetSendFlags g_aSendFlagsByType[22] = {
     { 0x00, 0 }, { 0x01, DPSEND_GUARANTEED }, { 0x02, DPSEND_GUARANTEED }, { 0x03, DPSEND_GUARANTEED }, { 0x04, DPSEND_GUARANTEED }, { 0x05, DPSEND_GUARANTEED }, { 0x06, 0 }, { 0x07, 0 }, { 0x08, DPSEND_GUARANTEED }, { 0x09, DPSEND_GUARANTEED }, { 0x0a, DPSEND_GUARANTEED }, { 0x0b, DPSEND_GUARANTEED }, { 0x0c, DPSEND_GUARANTEED }, { 0x0d, DPSEND_GUARANTEED }, { 0x0e, DPSEND_GUARANTEED }, { 0x0f, 0 }, { 0x10, 0 }, { 0x11, 0 }, { 0x12, 0 }, { 0x13, 0 }, { 0x14, 0 }, { 0x00, 0 }
 };

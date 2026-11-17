@@ -6,8 +6,8 @@
 
 #include "engine/messageids.h"
 
-// FUNCTION: HYPERX100 0x0045a160
-// FUNCTION: HYPERX 0x00417530
+// FUNCTION: HYPERX1000 0x0045a160
+// FUNCTION: HYPERX1001 0x00417530
 AnimDB::AnimDB(const char* pszName, const char*)
 : m_pOwnedBlock(0)
 , m_wNodeCount(0)
@@ -21,8 +21,8 @@ AnimDB::AnimDB(const char* pszName, const char*)
 
 // An entry owns its m_pRef; the database owns m_pOwnedBlock.
 
-// FUNCTION: HYPERX100 0x0045a250
-// FUNCTION: HYPERX 0x004175c0
+// FUNCTION: HYPERX1000 0x0045a250
+// FUNCTION: HYPERX1001 0x004175c0
 AnimDB::~AnimDB()
 {
     if (m_pOwnedBlock != 0)
@@ -69,8 +69,8 @@ AnimDB::~AnimDB()
     }
 }
 
-// FUNCTION: HYPERX100 0x0045a490
-// FUNCTION: HYPERX 0x004176b0
+// FUNCTION: HYPERX1000 0x0045a490
+// FUNCTION: HYPERX1001 0x004176b0
 void AnimDB::SetName(const char* pszName)
 {
     if (pszName != 0)
@@ -84,8 +84,8 @@ void AnimDB::SetName(const char* pszName)
 }
 
 // The slot is written even when the allocation failed; only success advances the count.
-// FUNCTION: HYPERX100 0x0045a4c0
-// FUNCTION: HYPERX 0x004176d0
+// FUNCTION: HYPERX1000 0x0045a4c0
+// FUNCTION: HYPERX1001 0x004176d0
 void AnimDB::AddClipEntry(unsigned short wSegment, unsigned short wTriggerFrame, const char* pszName, int nMessage, const char* pszRef, short nSyncSegment, short nSyncFrame)
 {
     AnimClipEntry* const pEntry = new AnimClipEntry(wSegment, wTriggerFrame, pszName, nMessage);
@@ -104,7 +104,7 @@ void AnimDB::AddClipEntry(unsigned short wSegment, unsigned short wTriggerFrame,
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x0045a3c0
+// FUNCTION: HYPERX1000 0x0045a3c0
 char AnimDB::AddNode(AnimNode* pNode)
 {
     if (m_wNodeCount < 6)
@@ -118,7 +118,7 @@ char AnimDB::AddNode(AnimNode* pNode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0045a3f0
+// FUNCTION: HYPERX1000 0x0045a3f0
 char AnimDB::RemoveNode(AnimNode* pNode)
 {
     for (short nSlot = 0; nSlot < m_wNodeCount; nSlot++)

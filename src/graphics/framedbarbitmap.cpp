@@ -15,16 +15,16 @@
 #include "math/point.h"
 #include "graphics/ddrawapi.h"
 
-// FUNCTION: HYPERX100 0x00444050
-// FUNCTION: HYPERX 0x004390d0
+// FUNCTION: HYPERX1000 0x00444050
+// FUNCTION: HYPERX1001 0x004390d0
 FramedBarBitmap::FramedBarBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : CDDBitMap(pDDraw, pPrimary, pBack)
 {
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x00444120
-// FUNCTION: HYPERX 0x00439140
+// FUNCTION: HYPERX1000 0x00444120
+// FUNCTION: HYPERX1001 0x00439140
 void FramedBarBitmap::SetScrollColorMode(int nScrollColor)
 {
     const int nNext = m_ptSteps.y + 1;
@@ -34,8 +34,8 @@ void FramedBarBitmap::SetScrollColorMode(int nScrollColor)
     m_nScrollPos = nNext;
 }
 
-// FUNCTION: HYPERX100 0x004441d0
-// FUNCTION: HYPERX 0x00439180
+// FUNCTION: HYPERX1000 0x004441d0
+// FUNCTION: HYPERX1001 0x00439180
 void FramedBarBitmap::ClearState()
 {
     m_ptInset.y   = 2;
@@ -54,8 +54,8 @@ void FramedBarBitmap::ClearState()
     SetRect(&m_rcScroll, 0, 0, 0, 0);
 }
 
-// FUNCTION: HYPERX100 0x00444270
-// FUNCTION: HYPERX 0x00439200
+// FUNCTION: HYPERX1000 0x00444270
+// FUNCTION: HYPERX1001 0x00439200
 FramedBarBitmap::~FramedBarBitmap()
 {
     if (m_pBar != 0)
@@ -71,8 +71,8 @@ FramedBarBitmap::~FramedBarBitmap()
 #define BITMAP_KEY_COLOUR 0xffffff
 #define BITMAP_NAME_MAX   0x100
 
-// FUNCTION: HYPERX100 0x00444300
-// FUNCTION: HYPERX 0x00439270
+// FUNCTION: HYPERX1000 0x00444300
+// FUNCTION: HYPERX1001 0x00439270
 int FramedBarBitmap::LoadFromFile(const char* pszName, int nUnused, int bColourKey, int)
 {
     char      szName[BITMAP_NAME_MAX];
@@ -102,7 +102,7 @@ int FramedBarBitmap::LoadFromFile(const char* pszName, int nUnused, int bColourK
         }
     }
 
-    // STRING: HYPERX 0x004be6a4
+    // STRING: HYPERX1001 0x004be6a4
     sprintf(szName, "fr%s", pszName);
 
     const int nResult = CDDBitMap::LoadFromFile(szName, bColourKey, m_bSystemMemory);
@@ -111,7 +111,7 @@ int FramedBarBitmap::LoadFromFile(const char* pszName, int nUnused, int bColourK
 
     if (m_pBar != 0)
     {
-        // STRING: HYPERX 0x004bc1a4
+        // STRING: HYPERX1001 0x004bc1a4
         sprintf(szName, "%s%02d", pszName, 1);
 
         m_pBar->LoadFromFile(szName, bColourKey, m_bSystemMemory);
@@ -135,8 +135,8 @@ int FramedBarBitmap::LoadFromFile(const char* pszName, int nUnused, int bColourK
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x00444620
-// FUNCTION: HYPERX 0x00439400
+// FUNCTION: HYPERX1000 0x00444620
+// FUNCTION: HYPERX1001 0x00439400
 int FramedBarBitmap::RestoreContents()
 {
     if (m_pBar != 0)
@@ -147,8 +147,8 @@ int FramedBarBitmap::RestoreContents()
     return CDDBitMap::RestoreContents();
 }
 
-// FUNCTION: HYPERX100 0x00444650
-// FUNCTION: HYPERX 0x00439420
+// FUNCTION: HYPERX1000 0x00444650
+// FUNCTION: HYPERX1001 0x00439420
 int FramedBarBitmap::DrawWithWidth(int nWidth)
 {
     if (m_bVisible != 0)
@@ -176,8 +176,8 @@ int FramedBarBitmap::DrawWithWidth(int nWidth)
 }
 
 // The four zeros are the whole message; the owned bitmap reads the position back itself.
-// FUNCTION: HYPERX100 0x00444810
-// FUNCTION: HYPERX 0x00439490
+// FUNCTION: HYPERX1000 0x00444810
+// FUNCTION: HYPERX1001 0x00439490
 void FramedBarBitmap::SetPosition(Point pt)
 {
     m_ptPosition.x = pt.x;

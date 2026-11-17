@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b253c
+// VTABLE: HYPERX1001 0x004b253c
 class BehObjRailSlidePool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjRailSlidePool();
 };
 
-// SYNTHETIC: HYPERX 0x00420de0
+// SYNTHETIC: HYPERX1001 0x00420de0
 // BehObjRailSlidePool::`scalar deleting destructor'
 
 #endif

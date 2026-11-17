@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b19b8
+// VTABLE: HYPERX1001 0x004b19b8
 class CAdjustAccelerationPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CAdjustAccelerationPool();
 };
 
-// SYNTHETIC: HYPERX 0x004153a0
+// SYNTHETIC: HYPERX1001 0x004153a0
 // CAdjustAccelerationPool::`scalar deleting destructor'
 
 #endif

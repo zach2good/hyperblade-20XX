@@ -16,7 +16,7 @@ seen = collections.defaultdict(set)
 
 for path in sorted(glob.glob(os.path.join('src', '**', '*.cpp'), recursive=True) + glob.glob(os.path.join('src', '**', '*.h'), recursive=True)):
     text = open(path, encoding='utf-8').read()
-    for match in re.finditer(r'// (FUNCTION|STUB|LIBRARY): HYPERX (0x[0-9a-fA-F]{8})', text):
+    for match in re.finditer(r'// (FUNCTION|STUB|LIBRARY): HYPERX1001 (0x[0-9a-fA-F]{8})', text):
         seen[match.group(2).lower()].add((os.path.basename(path), match.group(1)))
 
 duplicates = {a: d for a, d in seen.items() if len(d) > 1}

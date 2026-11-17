@@ -17,8 +17,8 @@
 #include "graphics/display.h"
 #include "d3dviewport.h"
 
-// FUNCTION: HYPERX100 0x004d1510
-// FUNCTION: HYPERX 0x004314d0
+// FUNCTION: HYPERX1000 0x004d1510
+// FUNCTION: HYPERX1001 0x004314d0
 int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
 {
     if (g_d3dState.pDirect3D != 0)
@@ -30,7 +30,7 @@ int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
 
             if (g_hrD3DResult != 0)
             {
-                // STRING: HYPERX 0x004bd594
+                // STRING: HYPERX1001 0x004bd594
                 g_gameApp.Fatal("QueryInterface for Direct3D Driver failed!\nChange your video mode to 16 bpp.\n%s\n", DDraw::ErrorToString(g_hrD3DResult));
 
                 return D3DRend::ReleaseAllBuffers();
@@ -100,8 +100,8 @@ int __cdecl D3DDevice::Init(IDirectDrawSurface* pSurface)
     return D3DRend::ReleaseAllBuffers();
 }
 
-// FUNCTION: HYPERX100 0x004d20f0
-// FUNCTION: HYPERX 0x00431c40
+// FUNCTION: HYPERX1000 0x004d20f0
+// FUNCTION: HYPERX1001 0x00431c40
 int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
 {
     unsigned int nMask;
@@ -112,7 +112,7 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
     if (nMode == MODE_USE_WINDOW && g_d3dState.bIsPrimary == 0)
     {
         g_gameApp.Error(
-            // STRING: HYPERX 0x004bd818
+            // STRING: HYPERX1001 0x004bd818
             "Cannot render to a window when the DirectDraw device is not the primary.\n");
 
         return 0;
@@ -130,7 +130,7 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
             if (nDriver == SELECT_NONE)
             {
                 g_gameApp.Error(
-                    // STRING: HYPERX 0x004bd7c0
+                    // STRING: HYPERX1001 0x004bd7c0
                     "Cannot find a D3D device driver which is compatible with the current display depth.\n");
 
                 return 0;
@@ -166,7 +166,7 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
             if (nDriver == SELECT_NONE)
             {
                 g_gameApp.Error(
-                    // STRING: HYPERX 0x004bd748
+                    // STRING: HYPERX1001 0x004bd748
                     "Cannot find a D3D device driver which is compatible with the current display depth or any supported fullscreen mode.\n");
             }
         }
@@ -182,7 +182,7 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
             if (nDriver == SELECT_NONE)
             {
                 g_gameApp.Error(
-                    // STRING: HYPERX 0x004bd6ec
+                    // STRING: HYPERX1001 0x004bd6ec
                     "Cannot find a D3D device driver which is compatible with the specified fullscreen mode.\n");
 
                 return 0;
@@ -213,7 +213,7 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
         if (nMode == SELECT_NONE)
         {
             g_gameApp.Error(
-                // STRING: HYPERX 0x004bd678
+                // STRING: HYPERX1001 0x004bd678
                 "The selected D3D device driver is not compatible with the current display depth or any supported fullscreen modes.\n");
 
             return 0;
@@ -286,8 +286,8 @@ int __cdecl D3DDevice::SelectDriverAndMode(int* pnDriver, int* pnMode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004d3080
-// FUNCTION: HYPERX 0x00432810
+// FUNCTION: HYPERX1000 0x004d3080
+// FUNCTION: HYPERX1001 0x00432810
 int __stdcall D3DDevice::BeginScene(void)
 {
     g_hrD3DResult = g_d3dState.pDevice->BeginScene();
@@ -302,8 +302,8 @@ int __stdcall D3DDevice::BeginScene(void)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x004d30c0
-// FUNCTION: HYPERX 0x00432840
+// FUNCTION: HYPERX1000 0x004d30c0
+// FUNCTION: HYPERX1001 0x00432840
 int __stdcall D3DDevice::EndDeviceScene(void)
 {
     D3DRend::FlushBatch(1);
@@ -321,8 +321,8 @@ int __stdcall D3DDevice::EndDeviceScene(void)
 }
 
 // Answers nought whatever happened.
-// FUNCTION: HYPERX100 0x004822c0
-// FUNCTION: HYPERX 0x0043d850
+// FUNCTION: HYPERX1000 0x004822c0
+// FUNCTION: HYPERX1001 0x0043d850
 int __stdcall D3DDevice::EndScene(void)
 {
     if (g_ddrawDevice.bD3DActive != 0)

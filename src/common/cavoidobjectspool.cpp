@@ -4,8 +4,8 @@
 #include "planvm/cavoidobjects.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00420370
-// FUNCTION: HYPERX 0x00413660
+// FUNCTION: HYPERX1000 0x00420370
+// FUNCTION: HYPERX1001 0x00413660
 void CAvoidObjectsPool::Init()
 {
     AgendaItem* pNode = new CAvoidObjects;
@@ -34,8 +34,8 @@ char CAvoidObjectsPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423680
-// FUNCTION: HYPERX 0x004136f0
+// FUNCTION: HYPERX1000 0x00423680
+// FUNCTION: HYPERX1001 0x004136f0
 void* CAvoidObjectsPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CAvoidObjectsPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415460
+// FUNCTION: HYPERX1001 0x00415460
 CAvoidObjectsPool::~CAvoidObjectsPool()
 {
     while (m_pHead != 0)

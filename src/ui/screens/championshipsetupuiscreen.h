@@ -16,7 +16,7 @@ enum ChampionshipSetupWidget
 };
 
 // The constructor at 0x00457710 calls MatchInfoUIScreen's at 0x00435790.
-// VTABLE: HYPERX 0x004b33e4
+// VTABLE: HYPERX1001 0x004b33e4
 class ChampionshipSetupUIScreen : public TeamSetupUIScreen
 {
 public:

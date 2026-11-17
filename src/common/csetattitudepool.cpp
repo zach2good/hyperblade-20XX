@@ -4,8 +4,8 @@
 #include "engine/csetattitude.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041ff40
-// FUNCTION: HYPERX 0x00413830
+// FUNCTION: HYPERX1000 0x0041ff40
+// FUNCTION: HYPERX1001 0x00413830
 void CSetAttitudePool::Init()
 {
     AgendaItem* pNode = new CSetAttitude;
@@ -34,8 +34,8 @@ char CSetAttitudePool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423480
-// FUNCTION: HYPERX 0x004138d0
+// FUNCTION: HYPERX1000 0x00423480
+// FUNCTION: HYPERX1001 0x004138d0
 void* CSetAttitudePool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CSetAttitudePool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004155a0
+// FUNCTION: HYPERX1001 0x004155a0
 CSetAttitudePool::~CSetAttitudePool()
 {
     while (m_pHead != 0)

@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b260c
+// VTABLE: HYPERX1001 0x004b260c
 class BehObj_GlideBetweenFacing : public SurfaceBehaviorObject
 {
 public:
@@ -37,7 +37,7 @@ public:
     float m_flBlendStep; // 0xa4
 };
 
-// SYNTHETIC: HYPERX 0x0041d6c0
+// SYNTHETIC: HYPERX1001 0x0041d6c0
 // BehObj_GlideBetweenFacing::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_GlideBetweenFacing) == 0xa8);

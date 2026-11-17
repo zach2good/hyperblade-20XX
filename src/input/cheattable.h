@@ -9,7 +9,7 @@ struct CheatEntry
 };
 
 // The code table ends where the team order table begins.
-// GLOBAL: HYPERX 0x004c28d0
+// GLOBAL: HYPERX1001 0x004c28d0
 extern CheatEntry g_aCheatCodes[15];
 
 #endif

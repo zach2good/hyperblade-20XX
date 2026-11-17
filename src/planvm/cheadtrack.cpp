@@ -28,8 +28,8 @@
 
 #define HISTORY_WINDOW_OFF 1
 
-// FUNCTION: HYPERX100 0x00484cb0
-// FUNCTION: HYPERX 0x00409fc0
+// FUNCTION: HYPERX1000 0x00484cb0
+// FUNCTION: HYPERX1001 0x00409fc0
 void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 {
     m_pNext     = 0;
@@ -76,17 +76,17 @@ void CHeadTrack::Bind(EngineObject* pCamera, GameBehaviorObject*)
 }
 
 // One, which the broadcast camera clamps its fractions to and starts its shot power scale from.
-// GLOBAL: HYPERX 0x004b169c
+// GLOBAL: HYPERX1001 0x004b169c
 extern const float g_flCamFracFull;
 
 // Four, added to the look direction's third component before it is normalised.
-// GLOBAL: HYPERX 0x004b16a4
+// GLOBAL: HYPERX1001 0x004b16a4
 extern const float g_flFourTracking;
 
 #define HEAD_BONE 9
 
-// FUNCTION: HYPERX100 0x00484df0
-// FUNCTION: HYPERX 0x0040a0d0
+// FUNCTION: HYPERX1000 0x00484df0
+// FUNCTION: HYPERX1001 0x0040a0d0
 void CHeadTrack::OnListChanged()
 {
     if (m_bReady == 0)
@@ -102,8 +102,8 @@ void CHeadTrack::OnListChanged()
 }
 
 // One function that Ghidra splits at 0x0040a2f8.
-// FUNCTION: HYPERX100 0x00484e30
-// FUNCTION: HYPERX 0x0040a100
+// FUNCTION: HYPERX1000 0x00484e30
+// FUNCTION: HYPERX1001 0x0040a100
 void CHeadTrack::Process(int nArg)
 {
     AgendaItem* pNext;

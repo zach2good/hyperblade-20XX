@@ -75,7 +75,7 @@ STATIC_ASSERT(offsetof(DisplayStateBlock, displayMode) == 0x338);
 STATIC_ASSERT(offsetof(DisplayStateBlock, nDisplayModeIndex) == 0x34c);
 STATIC_ASSERT(sizeof(DisplayStateBlock) == 0xd9 * 4);
 
-// GLOBAL: HYPERX 0x004cd6a8
+// GLOBAL: HYPERX1001 0x004cd6a8
 extern DisplayStateBlock g_displayState;
 
 #endif

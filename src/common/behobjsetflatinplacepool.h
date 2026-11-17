@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b24b0
+// VTABLE: HYPERX1001 0x004b24b0
 class BehObjSetFlatInPlacePool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjSetFlatInPlacePool();
 };
 
-// SYNTHETIC: HYPERX 0x00421240
+// SYNTHETIC: HYPERX1001 0x00421240
 // BehObjSetFlatInPlacePool::`scalar deleting destructor'
 
 #endif

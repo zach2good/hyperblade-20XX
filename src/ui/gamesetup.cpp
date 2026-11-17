@@ -16,8 +16,8 @@
 #include "app/dialogresources.h"
 
 // A bad network state shows the first dialog forever.
-// FUNCTION: HYPERX100 0x0049acd0
-// FUNCTION: HYPERX 0x004754a0
+// FUNCTION: HYPERX1000 0x0049acd0
+// FUNCTION: HYPERX1001 0x004754a0
 int GameSetup::ShowPreMatchDialogs(void)
 {
     int nResult;
@@ -46,7 +46,7 @@ int GameSetup::ShowPreMatchDialogs(void)
             }
         }
 
-        // STRING: HYPERX 0x004c561c
+        // STRING: HYPERX1001 0x004c561c
         g_gameApp.Error("Trying to continue setup in unknown state %d",
                         g_nNetSetupState);
     }
@@ -58,8 +58,8 @@ done:
 // The marker is in src/net/netsetupdialog.cpp.
 extern DPSESSIONDESC* g_pSelectedSession;
 
-// FUNCTION: HYPERX100 0x0049ae70
-// FUNCTION: HYPERX 0x00475510
+// FUNCTION: HYPERX1000 0x0049ae70
+// FUNCTION: HYPERX1001 0x00475510
 BOOL CALLBACK GameSetup::SessionListDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     int nHandled = 0;
@@ -186,8 +186,8 @@ extern int g_bChatEntryActive;
 #define POLL_INTERVAL_MS 0x7d0
 
 // Template 0x25f. The host button means six things by setup state; the chat box outranks state six.
-// FUNCTION: HYPERX100 0x0049b2a0
-// FUNCTION: HYPERX 0x004757f0
+// FUNCTION: HYPERX1000 0x0049b2a0
+// FUNCTION: HYPERX1001 0x004757f0
 BOOL CALLBACK GameSetup::SessionConnectDialogProc(HWND hDlg, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
     int nHandled = 0;
@@ -223,7 +223,7 @@ BOOL CALLBACK GameSetup::SessionConnectDialogProc(HWND hDlg, UINT nMsg, WPARAM w
             }
             else
             {
-                // STRING: HYPERX 0x004c561c
+                // STRING: HYPERX1001 0x004c561c
                 g_gameApp.Error("Trying to continue setup in unknown state %d",
                                 g_nNetSetupState);
                 EndDialog(hDlg, 0);
@@ -235,7 +235,7 @@ BOOL CALLBACK GameSetup::SessionConnectDialogProc(HWND hDlg, UINT nMsg, WPARAM w
             {
                 Network::AbortAndCleanup(hDlg);
 
-                // STRING: HYPERX 0x004c564c
+                // STRING: HYPERX1001 0x004c564c
                 g_gameApp.Error("NETSETUP timer failed");
 
                 return 0;

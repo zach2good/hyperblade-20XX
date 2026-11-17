@@ -7,8 +7,8 @@
 #include "graphics/softrenderer.h"
 #include "common/util.h"
 
-// FUNCTION: HYPERX100 0x004b9730
-// FUNCTION: HYPERX 0x0044f890
+// FUNCTION: HYPERX1000 0x004b9730
+// FUNCTION: HYPERX1001 0x0044f890
 CDDSurfaceOwner::~CDDSurfaceOwner() throw()
 {
     if (m_pSprite != 0)
@@ -22,8 +22,8 @@ CDDSurfaceOwner::~CDDSurfaceOwner() throw()
     }
 }
 
-// FUNCTION: HYPERX100 0x004b9860
-// FUNCTION: HYPERX 0x0044f8f0
+// FUNCTION: HYPERX1000 0x004b9860
+// FUNCTION: HYPERX1001 0x0044f8f0
 int CDDSurfaceOwner::LoadByName(const char* pszName)
 {
     if (m_pszName == 0 || _mbsicmp((const unsigned char*)pszName, (const unsigned char*)m_pszName) != 0)
@@ -70,8 +70,8 @@ int CDDSurfaceOwner::LoadByName(const char* pszName)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004b9960
-// FUNCTION: HYPERX 0x0044f9b0
+// FUNCTION: HYPERX1000 0x004b9960
+// FUNCTION: HYPERX1001 0x0044f9b0
 int CDDSurfaceOwner::Draw()
 {
     if (m_pSprite != 0)

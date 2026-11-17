@@ -25,7 +25,7 @@ from collections import defaultdict
 KINDS = ('STUB', 'FUNCTION', 'GLOBAL', 'VTABLE', 'LIBRARY')
 
 # The address is read to its end, not to eight digits: some markers write ten.
-MARKER = re.compile(r'//\s*(%s):\s*HYPERX\s+0x([0-9a-fA-F]+)' % '|'.join(KINDS))
+MARKER = re.compile(r'//\s*(%s):\s*HYPERX1001\s+0x([0-9a-fA-F]+)' % '|'.join(KINDS))
 
 seen = defaultdict(list)
 for path in sorted(glob.glob('src/**/*.cpp', recursive=True) + glob.glob('src/**/*.h', recursive=True)):

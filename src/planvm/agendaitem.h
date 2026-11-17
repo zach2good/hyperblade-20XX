@@ -10,25 +10,25 @@ class AgendaItem;
 // src/globals.h declares it too, but reaches Windows types this header does not want.
 extern const float g_flZeroAgendaItem;
 
-// VTABLE: HYPERX 0x004b1744
+// VTABLE: HYPERX1001 0x004b1744
 class AgendaItem
 {
 public:
     // The whole body is the vptr store; the deleting destructors call it out of line.
-    // FUNCTION: HYPERX100 0x00424280
-    // FUNCTION: HYPERX 0x00412f90
+    // FUNCTION: HYPERX1000 0x00424280
+    // FUNCTION: HYPERX1001 0x00412f90
     virtual ~AgendaItem()
     {
     }
 
     // Slot one, folded onto slot ten's body; nothing in the image reads the argument.
-    // FUNCTION: HYPERX100 0x00424290
+    // FUNCTION: HYPERX1000 0x00424290
     virtual void Process(int)
     {
     }
 
     // Slot two, folded onto slot ten's body.
-    // FUNCTION: HYPERX100 0x004242a0
+    // FUNCTION: HYPERX1000 0x004242a0
     virtual void Release(int)
     {
     }
@@ -40,15 +40,15 @@ public:
     virtual char Activate();
     virtual void Detach();
 
-    // FUNCTION: HYPERX100 0x004242b0
-    // FUNCTION: HYPERX 0x0040b920
+    // FUNCTION: HYPERX1000 0x004242b0
+    // FUNCTION: HYPERX1001 0x0040b920
     virtual unsigned char GetReadyFlag()
     {
         return 0;
     }
 
     // Slot eight, folded onto slot seven's body.
-    // FUNCTION: HYPERX100 0x004242c0
+    // FUNCTION: HYPERX1000 0x004242c0
     virtual char IsReplaceable()
     {
         return 0;
@@ -56,20 +56,20 @@ public:
 
     virtual void OnListChanged();
 
-    // FUNCTION: HYPERX100 0x004242f0
-    // FUNCTION: HYPERX 0x0040b910
+    // FUNCTION: HYPERX1000 0x004242f0
+    // FUNCTION: HYPERX1001 0x0040b910
     virtual void Tick(const struct Vec3*)
     {
     }
 
     // Slots eleven and twelve, folded no-ops in the base.
-    // FUNCTION: HYPERX100 0x00424410
+    // FUNCTION: HYPERX1000 0x00424410
     virtual struct Vec3* GetVector()
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x00424300
+    // FUNCTION: HYPERX1000 0x00424300
     virtual void OnKind(short)
     {
     }
@@ -105,7 +105,7 @@ public:
     char FindByRef(class EngineObject* pObject);
 };
 
-// SYNTHETIC: HYPERX 0x0040b950
+// SYNTHETIC: HYPERX1001 0x0040b950
 // AgendaItem::`scalar deleting destructor'
 
 #endif

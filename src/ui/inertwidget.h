@@ -12,14 +12,14 @@ public:
     {
     }
 
-    // FUNCTION: HYPERX100 0x00477560
-    // FUNCTION: HYPERX 0x0042be70
+    // FUNCTION: HYPERX1000 0x00477560
+    // FUNCTION: HYPERX1001 0x0042be70
     virtual int HitTest(int, int)
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x00477570
+    // FUNCTION: HYPERX1000 0x00477570
     virtual int TryActivate(int, int)
     {
         return 0;

@@ -12,8 +12,8 @@
 #include "app/gameapp.h"
 #include "physics/collisionellipsoid.h"
 
-// FUNCTION: HYPERX100 0x004242d0
-// FUNCTION: HYPERX 0x0040b930
+// FUNCTION: HYPERX1000 0x004242d0
+// FUNCTION: HYPERX1001 0x0040b930
 void AgendaItem::OnListChanged()
 {
     AgendaItem* const pNext = m_pNext;
@@ -26,8 +26,8 @@ void AgendaItem::OnListChanged()
     m_pNext = 0;
 }
 
-// FUNCTION: HYPERX100 0x0048dd20
-// FUNCTION: HYPERX 0x0040b990
+// FUNCTION: HYPERX1000 0x0048dd20
+// FUNCTION: HYPERX1001 0x0040b990
 char AgendaItem::Activate()
 {
     char        bInserted = 1;
@@ -138,8 +138,8 @@ char AgendaItem::Activate()
 
 // An agenda item not in the list is notified twice, as in the original.
 
-// FUNCTION: HYPERX100 0x0048df20
-// FUNCTION: HYPERX 0x0040bb10
+// FUNCTION: HYPERX1000 0x0048df20
+// FUNCTION: HYPERX1001 0x0040bb10
 void AgendaItem::Detach()
 {
     AgendaItem* pNode;
@@ -181,19 +181,19 @@ void AgendaItem::Detach()
 }
 
 // Out of line, so the linker folds it onto Screen::OnWidgetMessage, as the original's did.
-// FUNCTION: HYPERX100 0x0048dfd0
+// FUNCTION: HYPERX1000 0x0048dfd0
 void AgendaItem::Bind(class EngineObject*, class GameBehaviorObject*)
 {
 }
 
-// FUNCTION: HYPERX100 0x0048e060
-// FUNCTION: HYPERX 0x0040bb80
+// FUNCTION: HYPERX1000 0x0048e060
+// FUNCTION: HYPERX1001 0x0040bb80
 void AgendaItem::BindWithNode(EngineObject*, GameBehaviorObject*, PlanNode*, int)
 {
 }
 
-// FUNCTION: HYPERX100 0x00429380
-// FUNCTION: HYPERX 0x0040fea0
+// FUNCTION: HYPERX1000 0x00429380
+// FUNCTION: HYPERX1001 0x0040fea0
 char AgendaItem::FindByRef(EngineObject* pObject)
 {
     CAvoidObjects* pNode = (CAvoidObjects*)m_pOwner->GetObserver();

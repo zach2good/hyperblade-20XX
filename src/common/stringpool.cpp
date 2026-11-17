@@ -9,8 +9,8 @@
 
 // The count is clamped up to two and every slot gets a fixed 256-byte buffer.
 
-// FUNCTION: HYPERX100 0x00446340
-// FUNCTION: HYPERX 0x00480a50
+// FUNCTION: HYPERX1000 0x00446340
+// FUNCTION: HYPERX1001 0x00480a50
 StringPool::StringPool(short nCount)
 : wIndex(0)
 {
@@ -32,8 +32,8 @@ StringPool::StringPool(short nCount)
     }
 }
 
-// FUNCTION: HYPERX100 0x00446430
-// FUNCTION: HYPERX 0x00480af0
+// FUNCTION: HYPERX1000 0x00446430
+// FUNCTION: HYPERX1001 0x00480af0
 StringPool::~StringPool()
 {
     if (apBuffers != 0)
@@ -51,8 +51,8 @@ StringPool::~StringPool()
 
 // Reads a string resource into the next buffer of the ring and answers it.
 
-// FUNCTION: HYPERX100 0x004464f0
-// FUNCTION: HYPERX 0x00480b80
+// FUNCTION: HYPERX1000 0x004464f0
+// FUNCTION: HYPERX1001 0x00480b80
 char* StringPool::LoadText(HINSTANCE hInstance, unsigned int uID)
 {
     if (wIndex >= wCount)
@@ -66,7 +66,7 @@ char* StringPool::LoadText(HINSTANCE hInstance, unsigned int uID)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00446550
+// FUNCTION: HYPERX1000 0x00446550
 char* StringPool::LoadTextCopy(HINSTANCE hInstance, unsigned int uID)
 {
     if (wIndex >= wCount)

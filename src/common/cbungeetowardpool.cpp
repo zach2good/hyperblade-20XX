@@ -4,8 +4,8 @@
 #include "planvm/cbungeetoward.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00420160
-// FUNCTION: HYPERX 0x00413750
+// FUNCTION: HYPERX1000 0x00420160
+// FUNCTION: HYPERX1001 0x00413750
 void CBungeeTowardPool::Init()
 {
     AgendaItem* pNode = new CBungeeToward;
@@ -34,8 +34,8 @@ char CBungeeTowardPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423580
-// FUNCTION: HYPERX 0x004137d0
+// FUNCTION: HYPERX1000 0x00423580
+// FUNCTION: HYPERX1001 0x004137d0
 void* CBungeeTowardPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CBungeeTowardPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415500
+// FUNCTION: HYPERX1001 0x00415500
 CBungeeTowardPool::~CBungeeTowardPool()
 {
     while (m_pHead != 0)

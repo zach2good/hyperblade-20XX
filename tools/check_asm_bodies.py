@@ -28,7 +28,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGISTER = os.path.join("symbols", "original_asm.csv")
 
 ASM = re.compile(r"\b_?_asm\b|__declspec\s*\(\s*naked\s*\)")
-MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 HEADINGS = ("Hand-written assembly in the original:", "What it does:", "Why assembly:")
 MIN_WORDS = 4
 

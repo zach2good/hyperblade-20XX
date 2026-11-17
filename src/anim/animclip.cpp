@@ -12,8 +12,8 @@
 
 // Neither field is nulled after it is freed, so this is a teardown and not a reset.
 
-// FUNCTION: HYPERX100 0x004e1940
-// FUNCTION: HYPERX 0x004163e0
+// FUNCTION: HYPERX1000 0x004e1940
+// FUNCTION: HYPERX1001 0x004163e0
 AnimClip::~AnimClip()
 {
     switch (m_nFormat)
@@ -111,8 +111,8 @@ AnimClip::~AnimClip()
 }
 
 // Two of the eight formats are unimplemented; a size not a multiple of four overruns the buffer.
-// FUNCTION: HYPERX100 0x004e1b10
-// FUNCTION: HYPERX 0x00416510
+// FUNCTION: HYPERX1000 0x004e1b10
+// FUNCTION: HYPERX1001 0x00416510
 unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 {
     unsigned char   bSuccess = 0;
@@ -199,12 +199,12 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
                     break;
 
                 case 7:
-                    // STRING: HYPERX 0x004bb7cc
+                    // STRING: HYPERX1001 0x004bb7cc
                     g_gameApp.Fatal("ANIM SETUP ERROR: ONE_TRAN_3x3 format not yet support!");
                     break;
 
                 case 8:
-                    // STRING: HYPERX 0x004bb794
+                    // STRING: HYPERX1001 0x004bb794
                     g_gameApp.Fatal("ANIM SETUP ERROR: ALL_TRAN_3x3 format not yet support!");
                     break;
             }
@@ -220,8 +220,8 @@ unsigned char AnimClip::Load(FileObj* pFile, const AnimHeader* pSetHeader)
 
 // Reading one frame out of a clip, whichever way the clip stores it.
 
-// FUNCTION: HYPERX100 0x004e1ee0
-// FUNCTION: HYPERX 0x00416800
+// FUNCTION: HYPERX1000 0x004e1ee0
+// FUNCTION: HYPERX1001 0x00416800
 unsigned char AnimClip::GetBoneTransform(MatrixRow* pDest, short nFrame)
 {
     const PackedBoneMatrix* pSrc;
@@ -266,7 +266,7 @@ unsigned char AnimClip::GetBoneTransform(MatrixRow* pDest, short nFrame)
 extern const float g_flOneBone;
 
 // Formats five and seven take the clip's single translation whatever frame was asked for.
-// FUNCTION: HYPERX 0x00416930
+// FUNCTION: HYPERX1001 0x00416930
 unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
 {
     const PackedBoneMatrix* pSrc;
@@ -350,8 +350,8 @@ unsigned char AnimClip::GetBoneTransformFull(MatrixRow* pDest, short nFrame)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0045a050
-// FUNCTION: HYPERX 0x00417910
+// FUNCTION: HYPERX1000 0x0045a050
+// FUNCTION: HYPERX1001 0x00417910
 AnimClip::AnimClip()
 : m_nSegment(0)
 , m_nFrame(0)

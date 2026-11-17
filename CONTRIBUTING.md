@@ -42,7 +42,7 @@ the change moved.
 - **Keep the original's statement order.** Don't move repeated code into helpers, and don't cache a
   value the original reads again.
 - **Keep the program's behaviour.** Don't fix the original's bugs.
-- **Mark each function.** Put `// FUNCTION: HYPERX 0xADDRESS` directly above each function you
+- **Mark each function.** Put `// FUNCTION: HYPERX1001 0xADDRESS` directly above each function you
   write. [docs/ANNOTATIONS.md](docs/ANNOTATIONS.md) lists the other marker kinds.
 - **Every function is a member or lives in a named namespace.** Don't write `Name__Function` free
   functions: a `Name__` prefix means a member of `Name` or a function in `namespace Name`.
@@ -68,7 +68,7 @@ the change moved.
   the row rises.
 - **Put bring-up fixes inside `#ifdef HYPERX_BRINGUP`.** They must not change the measured image.
 - **Put v1.0.0.0's differences inside `#ifdef HYPERX_V100`.** Mark a function with
-  `// FUNCTION: HYPERX100 0xADDRESS` above its `HYPERX` marker. [docs/v1000.md](docs/v1000.md)
+  `// FUNCTION: HYPERX1000 0xADDRESS` above its `HYPERX1001` marker. [docs/v1000.md](docs/v1000.md)
   has the rules.
 - **Source comments describe the code.** They never record scores, percentages or match history.
   Default to no comment. When one is needed, state the unusual fact about the original in one
@@ -139,8 +139,8 @@ the change moved.
    and every figure you read is from the previous build.
 
    ```sh
-   python tools/foldcmp.py --target HYPERX --json build/report.json --silent
-   python tools/foldcmp.py --target HYPERX --verbose 0xADDRESS --no-color
+   python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent
+   python tools/foldcmp.py --target HYPERX1001 --verbose 0xADDRESS --no-color
    ```
 
 7. **Check for regressions.** A change to a header, a global or a marker moves rows in files you

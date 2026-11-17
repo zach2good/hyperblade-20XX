@@ -86,7 +86,7 @@ A different hash usually means v1.0.0.0, the unpatched release. Install the 1.0.
 cmake --preset vc6sp3
 cmake --build --preset vc6sp3
 cmake --build build --target verify
-python tools/foldcmp.py --target HYPERX --verbose 0xADDRESS --no-color
+python tools/foldcmp.py --target HYPERX1001 --verbose 0xADDRESS --no-color
 ```
 
 `verify` scores every function and runs the structural checks. The last line shows one
@@ -114,14 +114,14 @@ To play by hand, run `build-bringup/out/hyperx_bringup_soft.exe`. `src/app/bring
 ## Building v1.0.0.0
 
 The `v100` preset builds the 1996 release from the same sources, with `HYPERX_V100` defined, into
-`build-v100/`. Name your v1.0.0.0 copy under `HYPERX100` in `reccmp-user.yml`. It compiles with
+`build-v100/`. Name your v1.0.0.0 copy under `HYPERX1000` in `reccmp-user.yml`. It compiles with
 VC6 until the Visual C++ 4.0 toolchain that built it is in, so its scores are a guide.
 [docs/v1000.md](docs/v1000.md) has the details.
 
 ```sh
 cmake --preset v100
 cmake --build build-v100
-python -m reccmp.tools.asmcmp --target HYPERX100 --json build-v100/report.json --silent
+python -m reccmp.tools.asmcmp --target HYPERX1000 --json build-v100/report.json --silent
 ```
 
 ## Extracting the game's data

@@ -66,12 +66,12 @@ extern int g_anNetworkSlotObject[16];
 
 #define PERIOD_SCALE 1000
 
-// STRING: HYPERX 0x004c1208
+// STRING: HYPERX1001 0x004c1208
 #define ASSETS_DIFFER "Network connection failed because HOST and CLIENT had different asset files.\n"
 
 // The undo walk after a failed allocation runs one slot past the last success.
-// FUNCTION: HYPERX100 0x004920c0
-// FUNCTION: HYPERX 0x00440850
+// FUNCTION: HYPERX1000 0x004920c0
+// FUNCTION: HYPERX1001 0x00440850
 GameSession::GameSession(HWND hDlgIn, IDirectPlay* pLobby)
 {
     memset(&sessionDesc, 0, sizeof(sessionDesc));
@@ -93,7 +93,7 @@ GameSession::GameSession(HWND hDlgIn, IDirectPlay* pLobby)
 
         if (pPlayer == 0)
         {
-            // STRING: HYPERX 0x004c167c
+            // STRING: HYPERX1001 0x004c167c
             g_gameApp.Error("Memory allocation (new) failed in CDirectPlay() constructor");
 
             for (int i = 0; i <= nSlot; i++)
@@ -111,11 +111,11 @@ GameSession::GameSession(HWND hDlgIn, IDirectPlay* pLobby)
     }
 }
 
-// GLOBAL: HYPERX 0x004ce924
+// GLOBAL: HYPERX1001 0x004ce924
 extern HANDLE g_hPacketCarrierEvent;
 
-// FUNCTION: HYPERX100 0x00492220
-// FUNCTION: HYPERX 0x00440940
+// FUNCTION: HYPERX1000 0x00492220
+// FUNCTION: HYPERX1001 0x00440940
 GameSession::~GameSession()
 {
     if (pDPlay != 0)
@@ -135,8 +135,8 @@ GameSession::~GameSession()
 }
 
 // The wait between retries does not wait: it spins only once the deadline has already passed.
-// FUNCTION: HYPERX100 0x00492290
-// FUNCTION: HYPERX 0x00440980
+// FUNCTION: HYPERX1000 0x00492290
+// FUNCTION: HYPERX1001 0x00440980
 int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
 {
     sessionDesc = *pDesc;
@@ -169,7 +169,7 @@ int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
 
     if (nResult != 0)
     {
-        // STRING: HYPERX 0x004c0e48
+        // STRING: HYPERX1001 0x004c0e48
         g_gameApp.Error("Network connection failed.\nPlease try again.\n");
 
         return 0;
@@ -180,8 +180,8 @@ int GameSession::OpenSession(DWORD dwFlags, const DPSESSIONDESC* pDesc)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00492380
-// FUNCTION: HYPERX 0x00440a60
+// FUNCTION: HYPERX1000 0x00492380
+// FUNCTION: HYPERX1001 0x00440a60
 int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
 {
     PlayerState* pAssign;
@@ -193,7 +193,7 @@ int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
     {
         if (((nFlags & PLAYER_NAME_HOST) == 0 && bHosting != 0) || ((nFlags & PLAYER_NAME_HOST) != 0 && bHosting == 0))
         {
-            // STRING: HYPERX 0x004c173c
+            // STRING: HYPERX1001 0x004c173c
             g_gameApp.Error("Invalid remote host/join flag in CreatePlayer()");
 
             return 0;
@@ -201,7 +201,7 @@ int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
 
         if (pAssign->nSlotFlags != 0)
         {
-            // STRING: HYPERX 0x004c16e8
+            // STRING: HYPERX1001 0x004c16e8
             g_gameApp.Error("Sorry, -%s- position has just been filled by\nanother player.  Try another position\n",
                             g_apNetworkSlotNames[nSlot]);
 
@@ -232,7 +232,7 @@ int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
         return 1;
     }
 
-    // STRING: HYPERX 0x004c16b8
+    // STRING: HYPERX1001 0x004c16b8
     g_gameApp.Error("Player[%d] is set to NULL in CreatePlayer()\n", nSlot);
 
     return 0;
@@ -240,22 +240,22 @@ int GameSession::AssignPlayerSlot(unsigned int nFlags, PlayerSlotName* pName)
 
 // Slot fifteen is " Packet Carrier"; the leading space keeps it first in a sorted list.
 
-// FUNCTION: HYPERX100 0x00492610
-// FUNCTION: HYPERX 0x00440be0
+// FUNCTION: HYPERX1000 0x00492610
+// FUNCTION: HYPERX1001 0x00440be0
 unsigned int GameSession::CreatePacketCarrier()
 {
     apPlayers[SESSION_LOCAL_PLAYER]->InitDirectPlayParams();
 
     apPlayers[SESSION_LOCAL_PLAYER]->ResetState();
 
-    // STRING: HYPERX 0x004c17ac
+    // STRING: HYPERX1001 0x004c17ac
     strcpy(apPlayers[SESSION_LOCAL_PLAYER]->pState->slotName.GetWireName(), " Packet Carrier");
 
     g_hPacketCarrierEvent = 0;
 
     if (pDPlay->CreatePlayer(&apPlayers[SESSION_LOCAL_PLAYER]->pState->nPlayerId, " Packet Carrier", " Packet Carrier", &g_hPacketCarrierEvent) != 0)
     {
-        // STRING: HYPERX 0x004c0e48
+        // STRING: HYPERX1001 0x004c0e48
         g_gameApp.Error("Network connection failed.\nPlease try again.\n");
 
         return 0;
@@ -271,7 +271,7 @@ unsigned int GameSession::CreatePacketCarrier()
 
     apPlayers[SESSION_LOCAL_PLAYER]->StopNetworkThread();
 
-    // STRING: HYPERX 0x004c176c
+    // STRING: HYPERX1001 0x004c176c
     g_gameApp.Error("Failed to start thread with event handle from CreatePlayer()");
 
     return 0;
@@ -279,15 +279,15 @@ unsigned int GameSession::CreatePacketCarrier()
 
 // The plan starts only when the object's current plan is named Human, compared with _strcmpi.
 
-// FUNCTION: HYPERX100 0x00492990
-// FUNCTION: HYPERX 0x00440e90
+// FUNCTION: HYPERX1000 0x00492990
+// FUNCTION: HYPERX1001 0x00440e90
 void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
 {
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[(short)g_anNetworkSlotObject[nSlot]];
 
     if (pObject == 0)
     {
-        // STRING: HYPERX 0x004c1838
+        // STRING: HYPERX1001 0x004c1838
         g_gameApp.Error("Trying to take over invalid model %d", nSlot);
 
         return;
@@ -313,7 +313,7 @@ void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
     {
         const char* const pszName = pObject->GetPlanState()->m_pszName;
 
-        // STRING: HYPERX 0x004bb340
+        // STRING: HYPERX1001 0x004bb340
         if (_strcmpi(pszName, "Human") == 0)
         {
             g_pGameEngine->m_ppSlots[(short)g_anNetworkSlotObject[nSlot]]->SelectAndActivatePlan();
@@ -323,8 +323,8 @@ void __fastcall GameSession::ActivatePlayerSlot(int nSlot, unsigned int bHost)
 
 // The second slot chain has no final arm; its fall-through reads an unassigned local.
 
-// FUNCTION: HYPERX100 0x00492b50
-// FUNCTION: HYPERX 0x00441000
+// FUNCTION: HYPERX1000 0x00492b50
+// FUNCTION: HYPERX1001 0x00441000
 void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
 {
     char szMessage[0x100];
@@ -354,7 +354,7 @@ void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
     else
     {
         g_gameApp.Fatal(
-            // STRING: HYPERX 0x004c1860
+            // STRING: HYPERX1001 0x004c1860
             "Invalid player position %d in ReplaceClient()\n",
             nIndex);
 
@@ -362,7 +362,7 @@ void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
     }
 
     sprintf(szMessage,
-            // STRING: HYPERX 0x004c1890
+            // STRING: HYPERX1001 0x004c1890
             "%s has left the game",
             g_pGameSession->apPlayers[nIndex]->pState->slotName.szName);
 
@@ -461,8 +461,8 @@ void __fastcall GameSession::HandlePlayerDisconnect(int nIndex)
 
 // Answers whether there was a session, not whether any command was handled.
 
-// FUNCTION: HYPERX100 0x00492fb0
-// FUNCTION: HYPERX 0x00441360
+// FUNCTION: HYPERX1000 0x00492fb0
+// FUNCTION: HYPERX1001 0x00441360
 int GameSession::PumpNetworkCommands()
 {
     CPlayer**    ppPlayer;
@@ -507,8 +507,8 @@ int GameSession::PumpNetworkCommands()
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00493080
-// FUNCTION: HYPERX 0x00441400
+// FUNCTION: HYPERX1000 0x00493080
+// FUNCTION: HYPERX1001 0x00441400
 int GameSession::AreAllSlotsReady()
 {
     PlayerState* pState;
@@ -560,8 +560,8 @@ int GameSession::AreAllSlotsReady()
 
 // An empty slot zero skips the whole loop and leaves the rest attached.
 
-// FUNCTION: HYPERX100 0x00493160
-// FUNCTION: HYPERX 0x004414b0
+// FUNCTION: HYPERX1000 0x00493160
+// FUNCTION: HYPERX1001 0x004414b0
 GameSession* GameSession::Destroy()
 {
     int nPlayerId;
@@ -585,7 +585,7 @@ GameSession* GameSession::Destroy()
 
             if (hr != 0)
             {
-                // STRING: HYPERX 0x004c18c8
+                // STRING: HYPERX1001 0x004c18c8
                 g_gameApp.Error("pIDC->DestroyPlayer() failed with %s", DirectPlay::GetErrorString(hr));
             }
         }
@@ -614,7 +614,7 @@ GameSession* GameSession::Destroy()
 
         if (hr != 0)
         {
-            // STRING: HYPERX 0x004c18a8
+            // STRING: HYPERX1001 0x004c18a8
             g_gameApp.Error("pIDC->Close() failed with %s", DirectPlay::GetErrorString(hr));
         }
     }
@@ -625,8 +625,8 @@ GameSession* GameSession::Destroy()
 }
 
 // The settings are narrowed to their packet width, so both machines agree on a truncated value.
-// FUNCTION: HYPERX100 0x004935f0
-// FUNCTION: HYPERX 0x004417d0
+// FUNCTION: HYPERX1000 0x004935f0
+// FUNCTION: HYPERX1001 0x004417d0
 int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 {
     PathString         strPath(MAX_PATH);
@@ -639,7 +639,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 
     if (g_pGameEngine == 0 || g_pGameEngine->m_pTeamTable == 0 || g_pGameEngine->m_pTeamTable->GetTeamCount() == 0)
     {
-        // STRING: HYPERX 0x004c19f4
+        // STRING: HYPERX1001 0x004c19f4
         g_gameApp.Error("%s could not find Scene Manager info\n", ASSETS_DIFFER);
 
         return 0;
@@ -684,12 +684,12 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
     g_pGameEngine->SetBrutality(pSettings->nBrutality);
     g_pGameEngine->SetPeriodLengthMs(pSettings->nPeriod * PERIOD_SCALE);
 
-    // STRING: HYPERX 0x004c1b70
+    // STRING: HYPERX1001 0x004c1b70
     strPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "ENUMIDS.H"));
 
     if (GameSession::GetFileInfo(strPath.m_str.m_pchData, &nWriteTime, &nSize) == 0)
     {
-        // STRING: HYPERX 0x004c1b50
+        // STRING: HYPERX1001 0x004c1b50
         g_gameApp.Error("%s could not find ENUMIDS.H\n", ASSETS_DIFFER);
 
         return 0;
@@ -699,12 +699,12 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
     pSettings->enumIds.wTimeLow  = (short)nWriteTime;
     pSettings->enumIds.wSize     = (short)nSize;
 
-    // STRING: HYPERX 0x004c1b44
+    // STRING: HYPERX1001 0x004c1b44
     strPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "TEAMS.CAT"));
 
     if (GameSession::GetFileInfo(strPath.m_str.m_pchData, &nWriteTime, &nSize) == 0)
     {
-        // STRING: HYPERX 0x004c1b24
+        // STRING: HYPERX1001 0x004c1b24
         g_gameApp.Error("%s could not find TEAMS.CAT\n", ASSETS_DIFFER);
 
         return 0;
@@ -714,12 +714,12 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
     pSettings->teams.wTimeLow  = (short)nWriteTime;
     pSettings->teams.wSize     = (short)nSize;
 
-    // STRING: HYPERX 0x004c1b18
+    // STRING: HYPERX1001 0x004c1b18
     strPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "PLANS.CAT"));
 
     if (GameSession::GetFileInfo(strPath.m_str.m_pchData, &nWriteTime, &nSize) == 0)
     {
-        // STRING: HYPERX 0x004c1af8
+        // STRING: HYPERX1001 0x004c1af8
         g_gameApp.Error("%s could not find PLANS.CAT\n", ASSETS_DIFFER);
 
         return 0;
@@ -729,12 +729,12 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
     pSettings->plans.wTimeLow  = (short)nWriteTime;
     pSettings->plans.wSize     = (short)nSize;
 
-    // STRING: HYPERX 0x004c1aec
+    // STRING: HYPERX1001 0x004c1aec
     strPath.m_str.AssignFromString(String::Concat(g_gameApp.m_strExeDir.m_str, "COMMON.CFG"));
 
     if (GameSession::GetFileInfo(strPath.m_str.m_pchData, &nWriteTime, &nSize) == 0)
     {
-        // STRING: HYPERX 0x004c1acc
+        // STRING: HYPERX1001 0x004c1acc
         g_gameApp.Error("%s could not find COMMON.CFG\n", ASSETS_DIFFER);
 
         return 0;
@@ -762,7 +762,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
         }
         else
         {
-            // STRING: HYPERX 0x004c1aac
+            // STRING: HYPERX1001 0x004c1aac
             g_gameApp.Error("%s could not find team file %s\n", ASSETS_DIFFER, g_pGameEngine->m_pTeamTable->GetTeamPath(nIndex));
 
             return 0;
@@ -787,7 +787,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
         }
         else
         {
-            // STRING: HYPERX 0x004c1a74
+            // STRING: HYPERX1001 0x004c1a74
             g_gameApp.Error("%s could not find arena file %s.ENV\n",
                             ASSETS_DIFFER,
                             g_pGameEngine->m_pTeamTable->GetTeamEnvironment(nIndex));
@@ -806,7 +806,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 
     if ((unsigned char)nPlans <= 0 || (unsigned char)nPlans > PLAN_LIMIT)
     {
-        // STRING: HYPERX 0x004c1a1c
+        // STRING: HYPERX1001 0x004c1a1c
         g_gameApp.Error("%s corrupted or missing PLANS.CAT file (%d lines found)\n",
                         ASSETS_DIFFER,
                         (unsigned char)nPlans);
@@ -820,10 +820,10 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 
         strPath.m_str.AssignFromString(
             String::Concat(String::Concat(String::Concat(g_gameApp.m_strExeDir.m_str,
-                                                         // STRING: HYPERX 0x004c1aa4
+                                                         // STRING: HYPERX1001 0x004c1aa4
                                                          "PLANS\\"),
                                           szName),
-                           // STRING: HYPERX 0x004c1a9c
+                           // STRING: HYPERX1001 0x004c1a9c
                            ".PBN"));
 
         if (GameSession::GetFileInfo(strPath.m_str.m_pchData, &nWriteTime, &nSize) != 0)
@@ -834,7 +834,7 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
         }
         else
         {
-            // STRING: HYPERX 0x004c1a58
+            // STRING: HYPERX1001 0x004c1a58
             g_gameApp.Error("%s could not find %s.PBN\n", ASSETS_DIFFER, szName);
 
             return 0;
@@ -845,8 +845,8 @@ int __cdecl GameSession::BuildSyncPacket(SyncBlocks* pBlocks, SyncBlocks*)
 }
 
 // Opens a find handle only to read the write time and size; a missing file answers zero.
-// FUNCTION: HYPERX100 0x00493f30
-// FUNCTION: HYPERX 0x00441f00
+// FUNCTION: HYPERX1000 0x00493f30
+// FUNCTION: HYPERX1001 0x00441f00
 int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int* pnSize)
 {
     struct _finddata_t data;
@@ -871,8 +871,8 @@ int __cdecl GameSession::GetFileInfo(const char* pszPath, int* pnWriteTime, int*
 #define SCAT_COMMENT '#'
 
 // Fills the name with eight question marks first; a hash starts a comment line.
-// FUNCTION: HYPERX100 0x00493fa0
-// FUNCTION: HYPERX 0x00441f60
+// FUNCTION: HYPERX1000 0x00493fa0
+// FUNCTION: HYPERX1001 0x00441f60
 int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, int nWanted)
 {
     PathString strPath(String::Concat(g_gameApp.m_strExeDir.m_str, pszFileName).m_pchData, MAX_PATH);
@@ -882,7 +882,7 @@ int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, i
 
     int nSeen = 0;
 
-    // STRING: HYPERX 0x004c1b84
+    // STRING: HYPERX1001 0x004c1b84
     strcpy(pszName, "????????");
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) != 0)
@@ -894,7 +894,7 @@ int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, i
                 continue;
             }
 
-            // STRING: HYPERX 0x004c1b7c
+            // STRING: HYPERX1001 0x004c1b7c
             if (ParseUtil::ParseToken(pLine, szToken, 0, " \t\n\r.", (short)strlen(pLine), &pLine) == 0)
             {
                 continue;
@@ -927,8 +927,8 @@ int __cdecl GameSession::GetPlansEntry(const char* pszFileName, char* pszName, i
 
 // The host's difficulty, brutality, period, arena and teams win; the period arrives in seconds.
 
-// FUNCTION: HYPERX100 0x004942c0
-// FUNCTION: HYPERX 0x004421d0
+// FUNCTION: HYPERX1000 0x004942c0
+// FUNCTION: HYPERX1001 0x004421d0
 int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* pRemote)
 {
     char               szName[ASSET_NAME_MAX];
@@ -951,21 +951,21 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 
     if (pLocal == 0 || pRemote == 0 || (pRemoteSettings = pRemote->Settings()) == 0 || (pRemoteTeams = pRemote->Teams()) == 0 || (pRemoteArenas = pRemote->Arenas()) == 0 || (pRemotePlans = pRemote->Plans()) == 0 || (pLocalSettings = pLocal->Settings()) == 0 || (pLocalTeams = pLocal->Teams()) == 0 || (pLocalArenas = pLocal->Arenas()) == 0 || (pLocalPlans = pLocal->Plans()) == 0)
     {
-        // STRING: HYPERX 0x004c1c0c
+        // STRING: HYPERX1001 0x004c1c0c
         g_gameApp.Error("%s asset list is NULL\n", ASSETS_DIFFER);
 
         return 0;
     }
     else if (pRemoteSettings->IsEmpty() || pRemoteTeams->IsEmpty() || pRemoteArenas->IsEmpty() || pRemotePlans->IsEmpty() || pLocalSettings->IsEmpty() || pLocalTeams->IsEmpty() || pLocalArenas->IsEmpty() || pLocalPlans->IsEmpty())
     {
-        // STRING: HYPERX 0x004c1c24
+        // STRING: HYPERX1001 0x004c1c24
         g_gameApp.Error("%s asset list is empty\n", ASSETS_DIFFER);
 
         return 0;
     }
     else if (g_pGameEngine == 0 || (pInfo = g_pGameEngine->m_pTeamTable) == 0 || pInfo->GetTeamCount() == 0)
     {
-        // STRING: HYPERX 0x004c19f4
+        // STRING: HYPERX1001 0x004c19f4
         g_gameApp.Error("%s could not find Scene Manager info\n", ASSETS_DIFFER);
 
         return 0;
@@ -974,7 +974,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
     {
         if (pLocalSettings->nVersion != pRemoteSettings->nVersion)
         {
-            // STRING: HYPERX 0x004c1e1c
+            // STRING: HYPERX1001 0x004c1e1c
             g_gameApp.Error("%s incorrect version (need %X, have %X)\n",
                             ASSETS_DIFFER,
                             pRemoteSettings->nVersion,
@@ -987,7 +987,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
         {
             if (pLocalSettings->enumIds.wTimeLow != pRemoteSettings->enumIds.wTimeLow || pLocalSettings->enumIds.wTimeHigh != pRemoteSettings->enumIds.wTimeHigh || pLocalSettings->enumIds.wSize != pRemoteSettings->enumIds.wSize)
             {
-                // STRING: HYPERX 0x004c1d3c
+                // STRING: HYPERX1001 0x004c1d3c
                 g_gameApp.Error("%s file ENUMIDS.H does not match\nhave=%X,%X\nneed=%X,%X",
                                 ASSETS_DIFFER,
                                 (pLocalSettings->enumIds.wTimeLow << 16) + pLocalSettings->enumIds.wTimeHigh,
@@ -1000,7 +1000,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 
             if (pLocalSettings->teams.wTimeLow != pRemoteSettings->teams.wTimeLow || pLocalSettings->teams.wTimeHigh != pRemoteSettings->teams.wTimeHigh || pLocalSettings->teams.wSize != pRemoteSettings->teams.wSize)
             {
-                // STRING: HYPERX 0x004c1d74
+                // STRING: HYPERX1001 0x004c1d74
                 g_gameApp.Error("%s file TEAMS.CAT does not match\nhave=%X,%X\nneed=%X,%X",
                                 ASSETS_DIFFER,
                                 (pLocalSettings->teams.wTimeLow << 16) + pLocalSettings->teams.wTimeHigh,
@@ -1013,7 +1013,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 
             if (pLocalSettings->plans.wTimeLow != pRemoteSettings->plans.wTimeLow || pLocalSettings->plans.wTimeHigh != pRemoteSettings->plans.wTimeHigh || pLocalSettings->plans.wSize != pRemoteSettings->plans.wSize)
             {
-                // STRING: HYPERX 0x004c1dac
+                // STRING: HYPERX1001 0x004c1dac
                 g_gameApp.Error("%s file PLANS.CAT does not match\nhave=%X,%X\nneed=%X,%X",
                                 ASSETS_DIFFER,
                                 (pLocalSettings->plans.wTimeLow << 16) + pLocalSettings->plans.wTimeHigh,
@@ -1026,7 +1026,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 
             if (pLocalSettings->common.wTimeLow != pRemoteSettings->common.wTimeLow || pLocalSettings->common.wTimeHigh != pRemoteSettings->common.wTimeHigh || pLocalSettings->common.wSize != pRemoteSettings->common.wSize)
             {
-                // STRING: HYPERX 0x004c1de4
+                // STRING: HYPERX1001 0x004c1de4
                 g_gameApp.Error("%s file COMMON.CFG does not match\nhave=%X,%X\nneed=%X,%X",
                                 ASSETS_DIFFER,
                                 (pLocalSettings->common.wTimeLow << 16) + pLocalSettings->common.wTimeHigh,
@@ -1042,7 +1042,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
         {
             if (pLocalTeams->nCount != pRemoteTeams->nCount)
             {
-                // STRING: HYPERX 0x004c1d0c
+                // STRING: HYPERX1001 0x004c1d0c
                 g_gameApp.Error("%s number of TEAM (*.HTM) files does not match\n", ASSETS_DIFFER);
 
                 return 0;
@@ -1052,7 +1052,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
             {
                 if (pRemoteTeams->aStamps[nIndex].wTimeLow != pLocalTeams->aStamps[nIndex].wTimeLow || pRemoteTeams->aStamps[nIndex].wTimeHigh != pLocalTeams->aStamps[nIndex].wTimeHigh || pRemoteTeams->aStamps[nIndex].wSize != pLocalTeams->aStamps[nIndex].wSize)
                 {
-                    // STRING: HYPERX 0x004c1c74
+                    // STRING: HYPERX1001 0x004c1c74
                     g_gameApp.Error("%s file %d:%s does not match\nhave=%X,%X\nneed=%X,%X",
                                     ASSETS_DIFFER,
                                     nIndex,
@@ -1068,7 +1068,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 
             if (pLocalArenas->nCount != pRemoteArenas->nCount)
             {
-                // STRING: HYPERX 0x004c1cd8
+                // STRING: HYPERX1001 0x004c1cd8
                 g_gameApp.Error("%s number of ARENA (*.ENV) files does not match\n", ASSETS_DIFFER);
 
                 return 0;
@@ -1078,7 +1078,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
             {
                 if (pRemoteArenas->aStamps[nIndex].wTimeLow != pLocalArenas->aStamps[nIndex].wTimeLow || pRemoteArenas->aStamps[nIndex].wTimeHigh != pLocalArenas->aStamps[nIndex].wTimeHigh || pRemoteArenas->aStamps[nIndex].wSize != pLocalArenas->aStamps[nIndex].wSize)
                 {
-                    // STRING: HYPERX 0x004c1c74
+                    // STRING: HYPERX1001 0x004c1c74
                     g_gameApp.Error("%s file %d:%s does not match\nhave=%X,%X\nneed=%X,%X",
                                     ASSETS_DIFFER,
                                     nIndex,
@@ -1094,7 +1094,7 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 
             if (pLocalPlans->nCount != pRemotePlans->nCount)
             {
-                // STRING: HYPERX 0x004c1ca8
+                // STRING: HYPERX1001 0x004c1ca8
                 g_gameApp.Error("%s number of PLAN (*.PBN) files does not match\n", ASSETS_DIFFER);
 
                 return 0;
@@ -1104,10 +1104,10 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
             {
                 if (pRemotePlans->aStamps[nIndex].wTimeLow != pLocalPlans->aStamps[nIndex].wTimeLow || pRemotePlans->aStamps[nIndex].wTimeHigh != pLocalPlans->aStamps[nIndex].wTimeHigh || pRemotePlans->aStamps[nIndex].wSize != pLocalPlans->aStamps[nIndex].wSize)
                 {
-                    // STRING: HYPERX 0x004c1b18
+                    // STRING: HYPERX1001 0x004c1b18
                     GameSession::GetPlansEntry("PLANS.CAT", szName, nIndex);
 
-                    // STRING: HYPERX 0x004c1c3c
+                    // STRING: HYPERX1001 0x004c1c3c
                     g_gameApp.Error("%s file %d:%s.PBN does not match\nhave=%X,%X\nneed=%X,%X",
                                     ASSETS_DIFFER,
                                     nIndex,
@@ -1135,8 +1135,8 @@ int __cdecl GameSession::ValidateAndApplyAssets(SyncBlocks* pLocal, SyncBlocks* 
 }
 
 // Frees the catalogue's buffer and wipes both descriptors.
-// FUNCTION: HYPERX100 0x00494b90
-// FUNCTION: HYPERX 0x00442830
+// FUNCTION: HYPERX1000 0x00494b90
+// FUNCTION: HYPERX1001 0x00442830
 int GameSession::FreeAssetBuffer(SyncBlocks* pCatalog, SyncBlocks* pDescriptor)
 {
     if (pCatalog->apBlocks[SYNC_BLOCK_SETTINGS] != 0)
@@ -1158,8 +1158,8 @@ int GameSession::FreeAssetBuffer(SyncBlocks* pCatalog, SyncBlocks* pDescriptor)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004a02d0
-// FUNCTION: HYPERX 0x004793b0
+// FUNCTION: HYPERX1000 0x004a02d0
+// FUNCTION: HYPERX1001 0x004793b0
 void __stdcall GameSession::Disconnect(void)
 {
     GameSession* const pSession = g_pGameSession;

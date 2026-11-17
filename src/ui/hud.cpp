@@ -41,32 +41,32 @@ SurfacePoint g_ptHudMargin(0x14, 0x14);
 
 #define SCORE_NAME_BUFFER 0x50
 
-// GLOBAL: HYPERX 0x004c0cf4
+// GLOBAL: HYPERX1001 0x004c0cf4
 extern int g_nOwnRowStampB;
 
 // Every one ships at minus one, so the first frame after a load rebuilds.
-// GLOBAL: HYPERX 0x004c0cf0
+// GLOBAL: HYPERX1001 0x004c0cf0
 extern int g_nOwnRowStampA;
 
-// GLOBAL: HYPERX 0x004c0cf8
+// GLOBAL: HYPERX1001 0x004c0cf8
 extern int g_nOwnRowSlot;
 
-// GLOBAL: HYPERX 0x004c0cfc
+// GLOBAL: HYPERX1001 0x004c0cfc
 extern int g_nOwnRowFormationRow;
 
-// GLOBAL: HYPERX 0x004c0d00
+// GLOBAL: HYPERX1001 0x004c0d00
 extern int g_nOwnRowFormationColumn;
 
-// GLOBAL: HYPERX 0x004c0d04
+// GLOBAL: HYPERX1001 0x004c0d04
 extern int g_nOwnRowDamage0;
 
-// GLOBAL: HYPERX 0x004c0d08
+// GLOBAL: HYPERX1001 0x004c0d08
 extern int g_nOwnRowDamage1;
 
-// GLOBAL: HYPERX 0x004c0d0c
+// GLOBAL: HYPERX1001 0x004c0d0c
 extern int g_nOwnRowRating0;
 
-// GLOBAL: HYPERX 0x004c0d10
+// GLOBAL: HYPERX1001 0x004c0d10
 extern int g_nOwnRowRating1;
 
 #define COLOUR_BLACK 0
@@ -89,7 +89,7 @@ inline int HUD::RowColour(int nRow)
 }
 
 // The third is skipped.
-// GLOBAL: HYPERX 0x004c0d14
+// GLOBAL: HYPERX1001 0x004c0d14
 extern int g_anOwnRowNameOrder[4];
 
 inline void HUD::SetLabelText(CDDTextSurface* pLabel, const char* pszText)
@@ -101,43 +101,43 @@ inline void HUD::SetLabelText(CDDTextSurface* pLabel, const char* pszText)
     pLabel->RestoreContents();
 }
 
-// GLOBAL: HYPERX 0x004c0d24
+// GLOBAL: HYPERX1001 0x004c0d24
 extern int g_nFoeRowStampA;
 
-// GLOBAL: HYPERX 0x004c0d28
+// GLOBAL: HYPERX1001 0x004c0d28
 extern int g_nFoeRowStampB;
 
-// GLOBAL: HYPERX 0x004c0d2c
+// GLOBAL: HYPERX1001 0x004c0d2c
 extern int g_nFoeRowSlot;
 
-// GLOBAL: HYPERX 0x004c0d30
+// GLOBAL: HYPERX1001 0x004c0d30
 extern int g_nFoeRowFormationRow;
 
-// GLOBAL: HYPERX 0x004c0d34
+// GLOBAL: HYPERX1001 0x004c0d34
 extern int g_nFoeRowFormationColumn;
 
-// GLOBAL: HYPERX 0x004c0d38
+// GLOBAL: HYPERX1001 0x004c0d38
 extern int g_nFoeRowDamage0;
 
-// GLOBAL: HYPERX 0x004c0d3c
+// GLOBAL: HYPERX1001 0x004c0d3c
 extern int g_nFoeRowDamage1;
 
-// GLOBAL: HYPERX 0x004c0d40
+// GLOBAL: HYPERX1001 0x004c0d40
 extern int g_nFoeRowRating0;
 
-// GLOBAL: HYPERX 0x004c0d44
+// GLOBAL: HYPERX1001 0x004c0d44
 extern int g_nFoeRowRating1;
 
 // Two active players, then two on the bench.
 #define FOE_ROWS        4
 #define FOE_ACTIVE_ROWS 2
 
-// GLOBAL: HYPERX 0x004c0d48
+// GLOBAL: HYPERX1001 0x004c0d48
 extern int g_anFoeRowNameOrder[4];
 
 // symbols/hud_surfaces.csv maps these surface names to the database's.
-// FUNCTION: HYPERX100 0x00482350
-// FUNCTION: HYPERX 0x0043d8d0
+// FUNCTION: HYPERX1000 0x00482350
+// FUNCTION: HYPERX1001 0x0043d8d0
 void __stdcall HUD::PlaceSurfaces(void)
 {
     Point ptFrameSize;
@@ -417,8 +417,8 @@ void __stdcall HUD::PlaceSurfaces(void)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c18f0
-// FUNCTION: HYPERX 0x0043e070
+// FUNCTION: HYPERX1000 0x004c18f0
+// FUNCTION: HYPERX1001 0x0043e070
 HUD::HUD(int)
 {
     m_bMessageVisible  = 0;
@@ -448,19 +448,19 @@ inline void HUD::AssignName(CDDTextSurface* pLabel, const char* psz)
     pName->Assign(String::SafeStrlen(psz), psz);
 }
 
-// FUNCTION: HYPERX 0x0043e140
+// FUNCTION: HYPERX1001 0x0043e140
 void HUD::LayoutSurfaces()
 {
     HUD::PlaceSurfaces();
 }
 
-// FUNCTION: HYPERX100 0x004c1a20
+// FUNCTION: HYPERX1000 0x004c1a20
 void HUD::Unused()
 {
 }
 
-// FUNCTION: HYPERX100 0x004c1b10
-// FUNCTION: HYPERX 0x0043e150
+// FUNCTION: HYPERX1000 0x004c1b10
+// FUNCTION: HYPERX1001 0x0043e150
 void HUD::DrawScene(int bDraw)
 {
     char szClock[CLOCK_BUFFER];
@@ -480,7 +480,7 @@ void HUD::DrawScene(int bDraw)
     {
         g_nLastClockSeconds = nSeconds;
 
-        // STRING: HYPERX 0x004c0d70
+        // STRING: HYPERX1001 0x004c0d70
         sprintf(szClock, "%d:%02d", nMinutes, nSeconds);
 
         CDDTextSurface* const pLabel = g_hudSurfaces.pClockText;
@@ -756,7 +756,7 @@ void HUD::DrawScene(int bDraw)
             {
                 g_nLastRokValue = nRokValue;
 
-                // STRING: HYPERX 0x004c0d6c
+                // STRING: HYPERX1001 0x004c0d6c
                 sprintf(g_szRokValueText, "x%d", abs(nRokValue));
 
                 if (nRokValue > 0)
@@ -800,8 +800,8 @@ void HUD::DrawScene(int bDraw)
 }
 
 // The own-team row and the opposing row are one function written twice.
-// FUNCTION: HYPERX100 0x004c22b0
-// FUNCTION: HYPERX 0x0043e740
+// FUNCTION: HYPERX1000 0x004c22b0
+// FUNCTION: HYPERX1001 0x0043e740
 void __stdcall HUD::UpdateOwnScoreboard(void)
 {
     char       szName[SCORE_NAME_BUFFER];
@@ -920,7 +920,7 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
 
                 if (i >= 2)
                 {
-                    // STRING: HYPERX 0x004c0d78
+                    // STRING: HYPERX1001 0x004c0d78
                     sprintf(szName, "%c. %s", i + '0' - 1, pTeam->GetRosterName(g_anOwnRowNameOrder[pReserves->anRow[i - 2]]));
                 }
                 else
@@ -954,8 +954,8 @@ void __stdcall HUD::UpdateOwnScoreboard(void)
     g_hudSurfaces.apTeamNames[1]->Draw();
 }
 
-// FUNCTION: HYPERX100 0x004c2810
-// FUNCTION: HYPERX 0x0043eb30
+// FUNCTION: HYPERX1000 0x004c2810
+// FUNCTION: HYPERX1001 0x0043eb30
 void __stdcall HUD::UpdateFoeScoreboard(void)
 {
     char       szName[SCORE_NAME_BUFFER];
@@ -1082,8 +1082,8 @@ void __stdcall HUD::UpdateFoeScoreboard(void)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2be0
-// FUNCTION: HYPERX 0x0043ee50
+// FUNCTION: HYPERX1000 0x004c2be0
+// FUNCTION: HYPERX1001 0x0043ee50
 void HUD::SetMessageText(const char* pszText, unsigned long nCode)
 {
     int nLength;
@@ -1116,22 +1116,22 @@ void HUD::SetMessageText(const char* pszText, unsigned long nCode)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2c60
-// FUNCTION: HYPERX 0x0043eeb0
+// FUNCTION: HYPERX1000 0x004c2c60
+// FUNCTION: HYPERX1001 0x0043eeb0
 void HUD::ShowMessage()
 {
     m_bMessageVisible = 1;
 }
 
-// FUNCTION: HYPERX100 0x004c2c70
-// FUNCTION: HYPERX 0x0043eec0
+// FUNCTION: HYPERX1000 0x004c2c70
+// FUNCTION: HYPERX1001 0x0043eec0
 void HUD::HideMessage()
 {
     m_bMessageVisible = 0;
 }
 
-// FUNCTION: HYPERX100 0x004c2c80
-// FUNCTION: HYPERX 0x0043eed0
+// FUNCTION: HYPERX1000 0x004c2c80
+// FUNCTION: HYPERX1001 0x0043eed0
 void HUD::SetHomeLogo(char* pTeamData)
 {
     if (g_hudSurfaces.pTeamABitmap != 0)
@@ -1140,8 +1140,8 @@ void HUD::SetHomeLogo(char* pTeamData)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2cb0
-// FUNCTION: HYPERX 0x0043eef0
+// FUNCTION: HYPERX1000 0x004c2cb0
+// FUNCTION: HYPERX1001 0x0043eef0
 void HUD::SetAwayLogo(char* pTeamData)
 {
     if (g_hudSurfaces.pTeamBBitmap != 0)
@@ -1150,15 +1150,15 @@ void HUD::SetAwayLogo(char* pTeamData)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2ce0
-// FUNCTION: HYPERX 0x0043ef10
+// FUNCTION: HYPERX1000 0x004c2ce0
+// FUNCTION: HYPERX1001 0x0043ef10
 Texture* HUD::GetHeadCamSurface()
 {
     return g_hudSurfaces.pHeadCamFrame;
 }
 
-// FUNCTION: HYPERX100 0x004c2cf0
-// FUNCTION: HYPERX 0x0043ef20
+// FUNCTION: HYPERX1000 0x004c2cf0
+// FUNCTION: HYPERX1001 0x0043ef20
 void HUD::ShowHeadCam()
 {
     if (g_hudSurfaces.pHeadCamFrame != 0)
@@ -1169,8 +1169,8 @@ void HUD::ShowHeadCam()
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2d20
-// FUNCTION: HYPERX 0x0043ef40
+// FUNCTION: HYPERX1000 0x004c2d20
+// FUNCTION: HYPERX1001 0x0043ef40
 void HUD::SetHeadCamText(const char* pszText)
 {
     int nLength;
@@ -1203,8 +1203,8 @@ void HUD::SetHeadCamText(const char* pszText)
 
 // The point is shrunk by the pair twice over.
 
-// FUNCTION: HYPERX100 0x004c2d80
-// FUNCTION: HYPERX 0x0043ef90
+// FUNCTION: HYPERX1000 0x004c2d80
+// FUNCTION: HYPERX1001 0x0043ef90
 ViewExtent HUD::GetHeadCamSize()
 {
     ViewExtent pt;
@@ -1225,8 +1225,8 @@ ViewExtent HUD::GetHeadCamSize()
 }
 
 // The scratch point is zeroed and never read.
-// FUNCTION: HYPERX100 0x004c2e30
-// FUNCTION: HYPERX 0x0043f010
+// FUNCTION: HYPERX1000 0x004c2e30
+// FUNCTION: HYPERX1001 0x0043f010
 ViewExtent HUD::GetHeadCamOrigin()
 {
     ViewExtent pt;
@@ -1241,8 +1241,8 @@ ViewExtent HUD::GetHeadCamOrigin()
 }
 
 // The truncated reading is also kept in a global nothing else reads.
-// FUNCTION: HYPERX100 0x004c2e70
-// FUNCTION: HYPERX 0x0043f030
+// FUNCTION: HYPERX1000 0x004c2e70
+// FUNCTION: HYPERX1001 0x0043f030
 void HUD::SetShotPower(float flPower)
 {
     if (g_hudSurfaces.pShotPowerMeter != 0)
@@ -1260,8 +1260,8 @@ void HUD::SetShotPower(float flPower)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2ed0
-// FUNCTION: HYPERX 0x0043f080
+// FUNCTION: HYPERX1000 0x004c2ed0
+// FUNCTION: HYPERX1001 0x0043f080
 void HUD::ShowShotPower()
 {
     if (g_hudSurfaces.pShotPowerMeter != 0)
@@ -1274,8 +1274,8 @@ void HUD::ShowShotPower()
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2f00
-// FUNCTION: HYPERX 0x0043f0b0
+// FUNCTION: HYPERX1000 0x004c2f00
+// FUNCTION: HYPERX1001 0x0043f0b0
 void HUD::SetReticlePos(int nDx, int nDy)
 {
     if (g_hudSurfaces.pHeadCamFrame != 0 && g_hudSurfaces.pReticle != 0)
@@ -1289,8 +1289,8 @@ void HUD::SetReticlePos(int nDx, int nDy)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c2fa0
-// FUNCTION: HYPERX 0x0043f130
+// FUNCTION: HYPERX1000 0x004c2fa0
+// FUNCTION: HYPERX1001 0x0043f130
 ViewExtent HUD::GetReticleSize()
 {
     ViewExtent pt;
@@ -1308,8 +1308,8 @@ ViewExtent HUD::GetReticleSize()
 
 #define RETICLE_FILE_KEEP 1
 
-// FUNCTION: HYPERX100 0x004c3010
-// FUNCTION: HYPERX 0x0043f190
+// FUNCTION: HYPERX1000 0x004c3010
+// FUNCTION: HYPERX1001 0x0043f190
 void HUD::SetReticleState(int nMode)
 {
     if (g_hudSurfaces.pReticle != 0)
@@ -1323,21 +1323,21 @@ void HUD::SetReticleState(int nMode)
             case 1:
                 g_hudSurfaces.pReticle->SetVisible(1);
 
-                // STRING: HYPERX 0x004c0844
+                // STRING: HYPERX1001 0x004c0844
                 g_hudSurfaces.pReticle->SetFile("Reticl2", RETICLE_FILE_KEEP);
                 return;
 
             case 2:
                 g_hudSurfaces.pReticle->SetVisible(1);
 
-                // STRING: HYPERX 0x004c0d88
+                // STRING: HYPERX1001 0x004c0d88
                 g_hudSurfaces.pReticle->SetFile("Reticl3", RETICLE_FILE_KEEP);
                 return;
 
             case 3:
                 g_hudSurfaces.pReticle->SetVisible(1);
 
-                // STRING: HYPERX 0x004c0d80
+                // STRING: HYPERX1001 0x004c0d80
                 g_hudSurfaces.pReticle->SetFile("Reticl4", RETICLE_FILE_KEEP);
                 return;
         }
@@ -1345,8 +1345,8 @@ void HUD::SetReticleState(int nMode)
 }
 
 // 100 by 10 when there is no bar.
-// FUNCTION: HYPERX100 0x004c30f0
-// FUNCTION: HYPERX 0x0043f220
+// FUNCTION: HYPERX1000 0x004c30f0
+// FUNCTION: HYPERX1001 0x0043f220
 ViewExtent HUD::GetPassBarSize()
 {
     ViewExtent pt;
@@ -1362,8 +1362,8 @@ ViewExtent HUD::GetPassBarSize()
     return pt;
 }
 
-// FUNCTION: HYPERX100 0x004c3150
-// FUNCTION: HYPERX 0x0043f280
+// FUNCTION: HYPERX1000 0x004c3150
+// FUNCTION: HYPERX1001 0x0043f280
 void HUD::SetPassBarMarker(int nPosition)
 {
     if (g_hudSurfaces.pPassBar != 0)
@@ -1376,8 +1376,8 @@ void HUD::SetPassBarMarker(int nPosition)
     }
 }
 
-// FUNCTION: HYPERX100 0x004c3190
-// FUNCTION: HYPERX 0x0043f2b0
+// FUNCTION: HYPERX1000 0x004c3190
+// FUNCTION: HYPERX1001 0x0043f2b0
 void HUD::ShowPassBar()
 {
     if (g_hudSurfaces.pPassBar != 0)
@@ -1388,8 +1388,8 @@ void HUD::ShowPassBar()
     }
 }
 
-// FUNCTION: HYPERX100 0x004c31c0
-// FUNCTION: HYPERX 0x0043f2d0
+// FUNCTION: HYPERX1000 0x004c31c0
+// FUNCTION: HYPERX1001 0x0043f2d0
 void HUD::ShowQuitPrompt()
 {
     m_bQuitPromptVisible = 1;
@@ -1407,8 +1407,8 @@ void HUD::ShowQuitPrompt()
     m_nQuitPromptTick = g_pGameEngine->m_clock.nTickMs;
 }
 
-// FUNCTION: HYPERX100 0x004c3210
-// FUNCTION: HYPERX 0x0043f320
+// FUNCTION: HYPERX1000 0x004c3210
+// FUNCTION: HYPERX1001 0x0043f320
 void HUD::HideQuitPrompt()
 {
     m_bQuitPromptVisible = 0;

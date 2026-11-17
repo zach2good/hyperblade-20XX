@@ -88,7 +88,7 @@ struct AnimClipHeader
 
 #pragma pack(pop)
 
-// VTABLE: HYPERX 0x004b2238
+// VTABLE: HYPERX1001 0x004b2238
 class AnimClip
 {
 public:
@@ -118,7 +118,7 @@ public:
 };
 
 // Ghidra calls this class a plan condition expression; it is not one (docs/re_corrections.md).
-// SYNTHETIC: HYPERX 0x00417440
+// SYNTHETIC: HYPERX1001 0x00417440
 // AnimClip::`vector deleting destructor'
 
 #endif

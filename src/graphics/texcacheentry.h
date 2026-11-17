@@ -7,7 +7,7 @@
 class CD3DTexture;
 class SoftTex;
 
-// GLOBAL: HYPERX 0x004b4104
+// GLOBAL: HYPERX1001 0x004b4104
 extern const char* const g_pszBitmapExtension;
 
 // Twenty four bytes.
@@ -39,7 +39,7 @@ public:
 };
 
 // The flag sits in the four bytes in front of the table.
-// GLOBAL: HYPERX 0x004d2774
+// GLOBAL: HYPERX1001 0x004d2774
 extern int g_bSoftTexPaletteBuilt;
 
 STATIC_ASSERT(sizeof(TexCacheEntry) == 0x18);

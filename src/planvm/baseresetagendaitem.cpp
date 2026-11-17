@@ -3,8 +3,8 @@
 #include "globals.h"
 #include "planvm/conditiontable.h"
 
-// FUNCTION: HYPERX100 0x0042a700
-// FUNCTION: HYPERX 0x00412360
+// FUNCTION: HYPERX1000 0x0042a700
+// FUNCTION: HYPERX1001 0x00412360
 void BaseResetAgendaItem::OnListChanged()
 {
     if (m_bReady == 0)

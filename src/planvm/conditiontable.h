@@ -7,7 +7,7 @@
 class AgendaItem;
 
 // One pool per agenda item, built by GameEngine::CreateAgendaItemPools, then a null.
-// GLOBAL: HYPERX 0x004cb43c
+// GLOBAL: HYPERX1001 0x004cb43c
 extern AgendaItemOwner* g_apAgendaItemPools[Agenda_Count + 1];
 
 // Every pool in the table hands out agenda items.

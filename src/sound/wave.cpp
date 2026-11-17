@@ -8,7 +8,7 @@
 #include "globals.h"
 #include "app/gameapp.h"
 
-// GLOBAL: HYPERX 0x004c8c80
+// GLOBAL: HYPERX1001 0x004c8c80
 int g_nUnusedWave = 1;
 
 enum WaveError
@@ -20,8 +20,8 @@ enum WaveError
     WAVE_ERR_MEMORY    = 0xe000
 };
 
-// FUNCTION: HYPERX100 0x00432dd0
-// FUNCTION: HYPERX 0x00493430
+// FUNCTION: HYPERX1000 0x00432dd0
+// FUNCTION: HYPERX1001 0x00493430
 int Wave::Open(const char* pszPath, HMMIO* phmmio, WAVEFORMATEX** ppFormat, MMCKINFO* pParent)
 {
     PCMWAVEFORMAT pcm;
@@ -146,13 +146,13 @@ cleanup:
 }
 
 // Seeks four bytes past the parent chunk's data offset, which skips the form type.
-// FUNCTION: HYPERX100 0x00432ff0
-// FUNCTION: HYPERX 0x004935f0
+// FUNCTION: HYPERX1000 0x00432ff0
+// FUNCTION: HYPERX1001 0x004935f0
 int Wave::FindDataChunk(HMMIO* phmmio, MMCKINFO* pChunk, MMCKINFO* pParent)
 {
     if (mmioSeek(*phmmio, pParent->dwDataOffset + 4, SEEK_SET) == -1)
     {
-        // STRING: HYPERX 0x004c8c84
+        // STRING: HYPERX1001 0x004c8c84
         g_gameApp.Fatal("mmioSeek failure in Wave.cpp line 186");
     }
 
@@ -162,8 +162,8 @@ int Wave::FindDataChunk(HMMIO* phmmio, MMCKINFO* pChunk, MMCKINFO* pParent)
 }
 
 // A failing mmioGetInfo returns one, not MMIO's code.
-// FUNCTION: HYPERX100 0x00433060
-// FUNCTION: HYPERX 0x00493640
+// FUNCTION: HYPERX1000 0x00433060
+// FUNCTION: HYPERX1001 0x00493640
 int Wave::ReadChunk(HMMIO hmmio, int nBytes, char* pBuffer, MMCKINFO* pChunk, int* pnRead)
 {
     MMIOINFO     info;
@@ -227,8 +227,8 @@ done:
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x00433200
-// FUNCTION: HYPERX 0x00493710
+// FUNCTION: HYPERX1000 0x00433200
+// FUNCTION: HYPERX1001 0x00493710
 int Wave::Close(HMMIO* phmmio, WAVEFORMATEX** ppFormat)
 {
     if (*ppFormat != 0)
@@ -254,7 +254,7 @@ int Wave::Close(HMMIO* phmmio, WAVEFORMATEX** ppFormat)
 // The fact chunk's placeholder, which CloseWrite replaces with the sample count.
 #define WAVE_UNKNOWN_SAMPLES 0xffffffff
 
-// FUNCTION: HYPERX100 0x00433250
+// FUNCTION: HYPERX1000 0x00433250
 int Wave::Create(LPSTR pszPath, HMMIO* phmmio, WAVEFORMATEX* pFormat, MMCKINFO* pChunk, MMCKINFO* pRiff)
 {
     DWORD    nFactSamples = WAVE_UNKNOWN_SAMPLES;
@@ -335,7 +335,7 @@ int Wave::Create(LPSTR pszPath, HMMIO* phmmio, WAVEFORMATEX* pFormat, MMCKINFO* 
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x004333f0
+// FUNCTION: HYPERX1000 0x004333f0
 int Wave::StartDataWrite(HMMIO* phmmio, MMCKINFO* pChunk, MMIOINFO* pInfo)
 {
     int nResult;
@@ -354,7 +354,7 @@ int Wave::StartDataWrite(HMMIO* phmmio, MMCKINFO* pChunk, MMIOINFO* pInfo)
 }
 
 // The chunk is unread.
-// FUNCTION: HYPERX100 0x00433440
+// FUNCTION: HYPERX1000 0x00433440
 int Wave::Write(HMMIO hmmio, unsigned int nBytes, const char* pData, MMCKINFO*, unsigned int* pnWritten, MMIOINFO* pInfo)
 {
     int nResult = 0;
@@ -383,7 +383,7 @@ int Wave::Write(HMMIO hmmio, unsigned int nBytes, const char* pData, MMCKINFO*, 
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x004334c0
+// FUNCTION: HYPERX1000 0x004334c0
 int Wave::CloseWrite(HMMIO* phmmio, MMCKINFO* pChunk, MMCKINFO* pRiff, MMIOINFO* pInfo, DWORD nSamples)
 {
     int nResult;
@@ -434,7 +434,7 @@ int Wave::CloseWrite(HMMIO* phmmio, MMCKINFO* pChunk, MMCKINFO* pRiff, MMIOINFO*
     }
     else
     {
-        // STRING: HYPERX100 0x0050f19c
+        // STRING: HYPERX1000 0x0050f19c
         g_gameApp.Fatal("mmioDescend failure in Wave.cpp line 589");
     }
 
@@ -452,7 +452,7 @@ error:
 }
 
 // Copies the DISP and plst chunks, then leaves the file just past the parent's form type.
-// FUNCTION: HYPERX100 0x00433600
+// FUNCTION: HYPERX1000 0x00433600
 int Wave::CopyUselessChunks(HMMIO* phmmioIn, MMCKINFO* pChunk, MMCKINFO* pRiff, HMMIO* phmmioOut)
 {
     int nResult;
@@ -491,7 +491,7 @@ int Wave::CopyUselessChunks(HMMIO* phmmioIn, MMCKINFO* pChunk, MMCKINFO* pRiff, 
 }
 
 // Answers one when the chunk was copied whole.
-// FUNCTION: HYPERX100 0x00433700
+// FUNCTION: HYPERX1000 0x00433700
 int Wave::CopyChunk(HMMIO hmmioSource, HMMIO hmmioDest, const MMCKINFO* pChunk)
 {
     MMCKINFO chunk;
@@ -533,7 +533,7 @@ int Wave::CopyChunk(HMMIO hmmioSource, HMMIO hmmioDest, const MMCKINFO* pChunk)
 }
 
 // The sample count is unread.
-// FUNCTION: HYPERX100 0x004337e0
+// FUNCTION: HYPERX1000 0x004337e0
 int Wave::Load(LPSTR pszPath, unsigned int* pnBytes, DWORD*, WAVEFORMATEX** ppFormat, char** ppData)
 {
     HMMIO    hmmio;
@@ -604,7 +604,7 @@ done:
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x00433910
+// FUNCTION: HYPERX1000 0x00433910
 int Wave::Save(LPSTR pszPath, unsigned int nBytes, DWORD nSamples, WAVEFORMATEX* pFormat, const char* pData)
 {
     HMMIO        hmmio;

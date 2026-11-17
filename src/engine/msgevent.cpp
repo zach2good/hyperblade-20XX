@@ -4,24 +4,24 @@
 #include "engine/msgevent.h"
 
 // Four fields, one per octet, with the top bit set to mark the word; only the low field is masked.
-// FUNCTION: HYPERX100 0x004cd630
-// FUNCTION: HYPERX 0x0045d730
+// FUNCTION: HYPERX1000 0x004cd630
+// FUNCTION: HYPERX1001 0x0045d730
 int __cdecl MsgEvent::Pack(short nKind, short nHigh, short nMiddle, short nLow)
 {
     return (((((nKind | 0x80) * 0x100) | nHigh) * 0x100 | nMiddle) * 0x100) | (nLow & 0xff);
 }
 
 // Fields of ten, eight and fourteen bits, each masked to its width.
-// FUNCTION: HYPERX100 0x004cd670
-// FUNCTION: HYPERX 0x0045d760
+// FUNCTION: HYPERX1000 0x004cd670
+// FUNCTION: HYPERX1001 0x0045d760
 unsigned int __cdecl MsgEvent::PackScene(unsigned int nMessage, unsigned int nSender, short nValue)
 {
     return ((nMessage & 0x3ff) << 8 | nSender & 0xff) * 0x4000 | nValue & 0x3fff;
 }
 
 // Splits a PackScene word into its three fields; each lands in a short.
-// FUNCTION: HYPERX100 0x004cd6a0
-// FUNCTION: HYPERX 0x0045d790
+// FUNCTION: HYPERX1000 0x004cd6a0
+// FUNCTION: HYPERX1001 0x0045d790
 void MsgEvent::UnpackScene(unsigned int nPacked, short* pMessage, short* pSender, short* pValue)
 {
     *pMessage = (short)((nPacked >> 22) & 0x3ff);
@@ -29,8 +29,8 @@ void MsgEvent::UnpackScene(unsigned int nPacked, short* pMessage, short* pSender
     *pValue   = (short)(nPacked & 0x3fff);
 }
 
-// FUNCTION: HYPERX100 0x004cd700
-// FUNCTION: HYPERX 0x0045d7d0
+// FUNCTION: HYPERX1000 0x004cd700
+// FUNCTION: HYPERX1001 0x0045d7d0
 void MsgEvent::Unpack(unsigned int nPacked, short* pKind, short* pHigh, short* pMiddle, short* pLow)
 {
     *pKind   = (short)((nPacked >> 24) & 0x7f);

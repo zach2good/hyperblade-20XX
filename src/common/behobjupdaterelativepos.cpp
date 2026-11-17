@@ -4,25 +4,25 @@
 #include "planvm/conditiontable.h"
 #include "engine/engineobject.h"
 
-// FUNCTION: HYPERX100 0x004cad50
-// FUNCTION: HYPERX 0x0041d890
+// FUNCTION: HYPERX1000 0x004cad50
+// FUNCTION: HYPERX1001 0x0041d890
 BehObj_UpdateRelativePos::BehObj_UpdateRelativePos()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cae10
-// FUNCTION: HYPERX 0x0041d8d0
+// FUNCTION: HYPERX1000 0x004cae10
+// FUNCTION: HYPERX1001 0x0041d8d0
 BehObj_UpdateRelativePos::~BehObj_UpdateRelativePos()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cae80
-// FUNCTION: HYPERX 0x0041d8e0
+// FUNCTION: HYPERX1000 0x004cae80
+// FUNCTION: HYPERX1001 0x0041d8e0
 void BehObj_UpdateRelativePos::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc2c8
+    // STRING: HYPERX1001 0x004bc2c8
     m_pszName = "UpdateRelativePos";
 
     m_wKind = BEH_UPDATE_RELATIVE_POS;

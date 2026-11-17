@@ -15,7 +15,7 @@ struct ParticleRow
 {
     Vec3 aCorners[3];
 
-    // FUNCTION: HYPERX100 0x00472bb0
+    // FUNCTION: HYPERX1000 0x00472bb0
     ParticleRow()
     {
         int nCorner;
@@ -31,7 +31,7 @@ struct ParticleRow
 
 // The explosion entity: a hundred shard particles posed by rows copied off the model's faces.
 // Slot three returns the transform and slot twenty five applies the render-slot pose.
-// VTABLE: HYPERX 0x004b3c88
+// VTABLE: HYPERX1001 0x004b3c88
 class ParticleSystem : public EngineObject
 {
 public:
@@ -53,10 +53,10 @@ public:
     int      m_bAnyAlive;       // 0x02c58
 };
 
-// SYNTHETIC: HYPERX 0x00474e70
+// SYNTHETIC: HYPERX1001 0x00474e70
 // ParticleSystem::`scalar deleting destructor'
 
-// SYNTHETIC: HYPERX 0x00474e90
+// SYNTHETIC: HYPERX1001 0x00474e90
 // ParticleSystem::~ParticleSystem
 
 STATIC_ASSERT(sizeof(ParticleSystem) == 0x2c5c);

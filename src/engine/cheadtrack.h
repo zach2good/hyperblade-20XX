@@ -7,7 +7,7 @@
 class EngineObject;
 
 // Slot 0 is CGlideOnSurface's shared deleting destructor; slots 2 and 9 are shared too.
-// VTABLE: HYPERX 0x004b2078
+// VTABLE: HYPERX1001 0x004b2078
 class CHeadTrack : public CameraLiteAgendaItem
 {
     // m_pOwner is a camera for this kind.

@@ -176,7 +176,7 @@ public:
 
 STATIC_ASSERT(sizeof(MeshBone) == 0x15c);
 // The atexit thunk for DrawFaces' s_worldView.
-// SYNTHETIC: HYPERX 0x0046f330
+// SYNTHETIC: HYPERX1001 0x0046f330
 // $E11
 
 #endif

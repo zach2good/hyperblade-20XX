@@ -43,7 +43,7 @@ IMAGE = os.path.join(ROOT, "build", "out", "HYPERX_sym.exe")
 TEXT_VIRTUAL_SIZE = 0xAF12B
 GAME_CODE_LIMIT = 0x004A0000
 
-MARKER = re.compile(r"//\s*FUNCTION:\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"//\s*FUNCTION:\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 
 
 def written_addresses():
@@ -79,7 +79,7 @@ def main():
 
     if not os.path.exists(REPORT):
         print("No report. Run:")
-        print("  python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
+        print("  python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent")
         return 1
 
     late = report_is_stale(ROOT, IMAGE, REPORT)
@@ -95,7 +95,7 @@ def main():
     if os.path.exists(IMAGE) and os.path.getmtime(IMAGE) > os.path.getmtime(REPORT):
         print("STALE REPORT: the image is newer than build/report.json.")
         print("Every figure below is the PREVIOUS build. Regenerate first:")
-        print("  python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
+        print("  python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent")
         print()
 
     sizes = load_sizes()

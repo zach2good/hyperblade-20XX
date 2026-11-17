@@ -16,8 +16,8 @@
 // Its marker is in src/planvm/planvm.cpp.
 extern PlanOpcodeSlot g_pfnPlanOpcodeHandlers[141];
 
-// FUNCTION: HYPERX100 0x004cdd90
-// FUNCTION: HYPERX 0x0045dc20
+// FUNCTION: HYPERX1000 0x004cdd90
+// FUNCTION: HYPERX1001 0x0045dc20
 void MsgInteractor::Discard()
 {
     m_nActiveState = 0;
@@ -28,8 +28,8 @@ void MsgInteractor::Discard()
     g_pMsgInteractorPool->Insert(this);
 }
 
-// FUNCTION: HYPERX100 0x004ce240
-// FUNCTION: HYPERX 0x0045dfc0
+// FUNCTION: HYPERX1000 0x004ce240
+// FUNCTION: HYPERX1001 0x0045dfc0
 MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
 {
     m_pOwner           = pObject;
@@ -76,7 +76,7 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
                 break;
 
             default:
-                // STRING: HYPERX 0x004c44fc
+                // STRING: HYPERX1001 0x004c44fc
                 throw "Invalid Instruction object in MsgInteractor setup\n";
         }
 
@@ -86,8 +86,8 @@ MsgInteractor* MsgInteractor::Setup(EngineObject* pObject, PlanNode* pPlanArg)
     return this;
 }
 
-// FUNCTION: HYPERX100 0x004ce380
-// FUNCTION: HYPERX 0x0045e0b0
+// FUNCTION: HYPERX1000 0x004ce380
+// FUNCTION: HYPERX1001 0x0045e0b0
 void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
 {
     m_otherSlot.n = nSender;
@@ -95,8 +95,8 @@ void MsgInteractor::SetSenderAndDispatch(int nArg, short* pState, int nSender)
     Dispatch(nArg, pState);
 }
 
-// FUNCTION: HYPERX100 0x004ce3b0
-// FUNCTION: HYPERX 0x0045e0d0
+// FUNCTION: HYPERX1000 0x004ce3b0
+// FUNCTION: HYPERX1001 0x0045e0d0
 void MsgInteractor::Dispatch(int nArg, short* pState)
 {
     PlanWord* pCursor;
@@ -140,14 +140,14 @@ void MsgInteractor::Dispatch(int nArg, short* pState)
 }
 
 // Out of line, so the linker folds it onto EngineObject::GetComponentCount, as the original's did.
-// FUNCTION: HYPERX100 0x004b8be0
+// FUNCTION: HYPERX1000 0x004b8be0
 short MsgInteractor::GetNamedSlot()
 {
     return (short)m_ownSlotOrMessage.n;
 }
 
-// FUNCTION: HYPERX100 0x004b8bf0
-// FUNCTION: HYPERX 0x0046bd20
+// FUNCTION: HYPERX1000 0x004b8bf0
+// FUNCTION: HYPERX1001 0x0046bd20
 short MsgInteractor::GetTargetSlot()
 {
     return (short)m_otherSlot.n;

@@ -8,7 +8,7 @@
 #include "common/staticassert.h"
 #include "net/netrecords.h"
 
-// VTABLE: HYPERX 0x004b2b80
+// VTABLE: HYPERX1001 0x004b2b80
 class CPlayer : public PlayerBase
 {
 public:
@@ -79,7 +79,7 @@ public:
     int StopNetworkThread();
 };
 
-// SYNTHETIC: HYPERX 0x0042d350
+// SYNTHETIC: HYPERX1001 0x0042d350
 // CPlayer::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(CPlayer) == 0x2518);

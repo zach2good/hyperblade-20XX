@@ -21,8 +21,8 @@
 // Two; src/globals.cpp defines it.
 extern float g_flTwoAgendaItem;
 
-// FUNCTION: HYPERX100 0x00425ce0
-// FUNCTION: HYPERX 0x0040d3b0
+// FUNCTION: HYPERX1000 0x00425ce0
+// FUNCTION: HYPERX1001 0x0040d3b0
 void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -56,8 +56,8 @@ void CProjectAndBounce::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pnPrevTick = pLast;
 }
 
-// FUNCTION: HYPERX100 0x00425e20
-// FUNCTION: HYPERX 0x0040d4c0
+// FUNCTION: HYPERX1000 0x00425e20
+// FUNCTION: HYPERX1001 0x0040d4c0
 void CProjectAndBounce::OnListChanged()
 {
     if (m_bReady == 0)
@@ -83,8 +83,8 @@ void CProjectAndBounce::OnListChanged()
 }
 
 // One frame of a projectile riding the arena's collision ellipsoid; the argument is never read.
-// FUNCTION: HYPERX100 0x00425e80
-// FUNCTION: HYPERX 0x0040d510
+// FUNCTION: HYPERX1000 0x00425e80
+// FUNCTION: HYPERX1001 0x0040d510
 void CProjectAndBounce::ProjectAndBounce(int)
 {
     Vec3* pStep;
@@ -148,7 +148,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             if (pNormal == 0)
             {
-                // STRING: HYPERX 0x004bb710
+                // STRING: HYPERX1001 0x004bb710
                 g_gameApp.Fatal("BAD SURFACE NORMAL - CProjectAndBounce::Process().");
             }
 
@@ -216,7 +216,7 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
             if (pNormal == 0)
             {
-                // STRING: HYPERX 0x004bb6e8
+                // STRING: HYPERX1001 0x004bb6e8
                 g_gameApp.Fatal("BAD SURFACE NORMAL - ProjectAndBounce.");
             }
 
@@ -282,8 +282,8 @@ void CProjectAndBounce::ProjectAndBounce(int)
 
 #define SPEED_EPSILON 0.0001
 
-// FUNCTION: HYPERX100 0x00426430
-// FUNCTION: HYPERX 0x0040d960
+// FUNCTION: HYPERX1000 0x00426430
+// FUNCTION: HYPERX1001 0x0040d960
 void CProjectAndBounce::Process(int nArg)
 {
     ProjectAndBounce(nArg);
@@ -297,8 +297,8 @@ void CProjectAndBounce::Process(int nArg)
 }
 
 // The vertical axis gets this frame's gravity before its step; the other two do not.
-// FUNCTION: HYPERX100 0x00426460
-// FUNCTION: HYPERX 0x0040d980
+// FUNCTION: HYPERX1000 0x00426460
+// FUNCTION: HYPERX1001 0x0040d980
 void CProjectAndBounce::IntegrateSpringAndGravity()
 {
     Vec3 vPull;
@@ -350,8 +350,8 @@ inline void CProjectAndBounce::AddStep(const Vec3* pStep)
 }
 
 // Mode zero is the whole integrator; any other mode hands the frame to the projecting worker.
-// FUNCTION: HYPERX100 0x004265b0
-// FUNCTION: HYPERX 0x0040da80
+// FUNCTION: HYPERX1000 0x004265b0
+// FUNCTION: HYPERX1001 0x0040da80
 void CProjectAndBounce::Release(int nMessage)
 {
     PhysicsBody* pBody;

@@ -17,8 +17,8 @@ struct ComponentFileHeader
     int          cBytes;
 };
 
-// FUNCTION: HYPERX100 0x0044f530
-// FUNCTION: HYPERX 0x004361e0
+// FUNCTION: HYPERX1000 0x0044f530
+// FUNCTION: HYPERX1001 0x004361e0
 ModelComponent* __cdecl ModelComponent::ReadFirst(FileObj* pFile)
 {
     int                   nSize;
@@ -33,8 +33,8 @@ ModelComponent* __cdecl ModelComponent::ReadFirst(FileObj* pFile)
 }
 
 // The read error reports the identifier from the iteration before, or nought at the first record.
-// FUNCTION: HYPERX100 0x0044fd00
-// FUNCTION: HYPERX 0x004363a0
+// FUNCTION: HYPERX1000 0x0044fd00
+// FUNCTION: HYPERX1001 0x004363a0
 int __cdecl ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsigned short* pnCount)
 {
     ComponentFileHeader header;
@@ -59,7 +59,7 @@ int __cdecl ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsi
             {
                 pFile->CloseAndTest();
 
-                // STRING: HYPERX 0x004be078
+                // STRING: HYPERX1001 0x004be078
                 g_gameApp.Fatal("Read error loading ModelComponents\n Last component read %d!", nLastId);
 
                 return 0;
@@ -82,7 +82,7 @@ int __cdecl ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsi
 
         pFile->CloseAndTest();
 
-        // STRING: HYPERX 0x004be018
+        // STRING: HYPERX1001 0x004be018
         g_gameApp.Fatal("Component file totals error.\nRecord count expected: %d  found %d\nBytes expected: %d found %d!", header.cRecords, iEntry, header.cBytes, nTotal);
 
         return 0;
@@ -90,15 +90,15 @@ int __cdecl ModelComponent::ReadAll(FileObj* pFile, MeshBlock*** pppBlocks, unsi
 
     pFile->CloseAndTest();
 
-    // STRING: HYPERX 0x004bdfe8
+    // STRING: HYPERX1001 0x004bdfe8
     g_gameApp.Fatal("Read error loading component file record count!");
 
     return 0;
 }
 
 // The block's first word is left to the caller.
-// FUNCTION: HYPERX100 0x004509b0
-// FUNCTION: HYPERX 0x00436d30
+// FUNCTION: HYPERX1000 0x004509b0
+// FUNCTION: HYPERX1001 0x00436d30
 void* __cdecl ModelComponent::Read(FileObj* pFile, int* pnSize)
 {
     int nSize;
@@ -121,7 +121,7 @@ void* __cdecl ModelComponent::Read(FileObj* pFile, int* pnSize)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x0044f800
+// FUNCTION: HYPERX1000 0x0044f800
 ModelComponent* __cdecl ModelComponent::ReadFirstOrFail(FileObj* pFile)
 {
     int                   nSize;
@@ -141,7 +141,7 @@ ModelComponent* __cdecl ModelComponent::ReadFirstOrFail(FileObj* pFile)
 
 // Reads a model's material block and prints it; each material's texture index is cleared as it
 // goes.
-// FUNCTION: HYPERX100 0x0044f860
+// FUNCTION: HYPERX1000 0x0044f860
 void __cdecl ModelComponent::PrintMaterials(FileObj* pFile, FileObj* pOut)
 {
     unsigned char nMaterials;
@@ -232,8 +232,8 @@ void __cdecl ModelComponent::PrintMaterials(FileObj* pFile, FileObj* pOut)
 #endif
 
 // Only v1.0.0.0 reads it, but the table is emitted in both, as the original's is.
-// GLOBAL: HYPERX100 0x00511d40
-// GLOBAL: HYPERX 0x004bdea4
+// GLOBAL: HYPERX1000 0x00511d40
+// GLOBAL: HYPERX1001 0x004bdea4
 const char* g_apszModelKeywords[] = { "id", "to", "jp", "ms", "mw", "tv", "usemtl", "rm", "matXref" };
 
 #ifdef HYPERX_V100
@@ -241,7 +241,7 @@ const char* g_apszModelKeywords[] = { "id", "to", "jp", "ms", "mw", "tv", "usemt
 #define KEYWORD_COUNT 9
 
 // Sets the one-based keyword number and answers the text after the keyword, or nought for none.
-// FUNCTION: HYPERX100 0x0044fc40
+// FUNCTION: HYPERX1000 0x0044fc40
 const char* __cdecl ModelComponent::MatchKeyword(const char* pszLine, short* pnKeyword)
 {
     char szWord[20];

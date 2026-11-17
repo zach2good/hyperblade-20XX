@@ -34,10 +34,10 @@ def annotated():
     globals_ = set()
     for path in glob.glob('src/**/*.cpp', recursive=True) + glob.glob('src/**/*.h', recursive=True):
         text = open(path, encoding='utf-8', newline='').read()
-        for hit in re.finditer(r'//\s*(FUNCTION|LIBRARY|STUB|SYNTHETIC):\s*HYPERX\s+0x([0-9a-fA-F]{8})',
+        for hit in re.finditer(r'//\s*(FUNCTION|LIBRARY|STUB|SYNTHETIC):\s*HYPERX1001\s+0x([0-9a-fA-F]{8})',
                                text):
             functions.add(int(hit.group(2), 16))
-        for hit in re.finditer(r'//\s*(GLOBAL|STRING|VTABLE):\s*HYPERX\s+0x([0-9a-fA-F]{8})',
+        for hit in re.finditer(r'//\s*(GLOBAL|STRING|VTABLE):\s*HYPERX1001\s+0x([0-9a-fA-F]{8})',
                                text):
             globals_.add(int(hit.group(2), 16))
     # Float constants are named in symbols/float_constants.csv. Its comment lines are dropped
@@ -56,7 +56,7 @@ def unwritten():
     marked = set()
     for path in glob.glob('src/**/*.cpp', recursive=True) + glob.glob('src/**/*.h', recursive=True):
         text = open(path, encoding='utf-8', newline='').read()
-        for hit in re.finditer(r'//\s*(FUNCTION|LIBRARY|STUB|SYNTHETIC):\s*HYPERX\s+0x([0-9a-fA-F]{8})',
+        for hit in re.finditer(r'//\s*(FUNCTION|LIBRARY|STUB|SYNTHETIC):\s*HYPERX1001\s+0x([0-9a-fA-F]{8})',
                                text):
             marked.add(int(hit.group(2), 16))
     # A retired row was measured and given up, so it is not work.

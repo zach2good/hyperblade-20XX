@@ -6,11 +6,11 @@
 
 // 0x004b313c points to the pooled "%f" in .data.
 
-// GLOBAL: HYPERX 0x004b313c
+// GLOBAL: HYPERX1001 0x004b313c
 extern const char* const g_pszDialogFloatFormat;
 
-// FUNCTION: HYPERX100 0x00451ce0
-// FUNCTION: HYPERX 0x00440760
+// FUNCTION: HYPERX1000 0x00451ce0
+// FUNCTION: HYPERX1001 0x00440760
 BOOL __cdecl Dialog::SetItemText(HWND hDlg, int nIDDlgItem, float flValue)
 {
     String str;
@@ -22,11 +22,11 @@ BOOL __cdecl Dialog::SetItemText(HWND hDlg, int nIDDlgItem, float flValue)
 
 // An empty control reads as the default at 0x004b3140, nought.
 
-// GLOBAL: HYPERX 0x004b3140
+// GLOBAL: HYPERX1001 0x004b3140
 extern const float g_flDialogFloatDefault;
 
-// FUNCTION: HYPERX100 0x00451da0
-// FUNCTION: HYPERX 0x004407f0
+// FUNCTION: HYPERX1000 0x00451da0
+// FUNCTION: HYPERX1001 0x004407f0
 float __cdecl Dialog::GetItemFloat(HWND hDlg, int nIDDlgItem, int* pbValid)
 {
     char* pszText;

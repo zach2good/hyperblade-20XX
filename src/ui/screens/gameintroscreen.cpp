@@ -7,15 +7,15 @@
 #include "graphics/gdi.h"
 #include "engine/game.h"
 
-// FUNCTION: HYPERX100 0x004c4300
-// FUNCTION: HYPERX 0x004490f0
+// FUNCTION: HYPERX1000 0x004c4300
+// FUNCTION: HYPERX1001 0x004490f0
 GameIntroScreen::GameIntroScreen()
 {
     m_hBackground = GDI::LoadBitmapAsBackground(g_pszIntroBackground, &m_hPalette);
 }
 
-// FUNCTION: HYPERX100 0x004c4420
-// FUNCTION: HYPERX 0x00449150
+// FUNCTION: HYPERX1000 0x004c4420
+// FUNCTION: HYPERX1001 0x00449150
 void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
     if (nWidget >= WIDGET_ID_MOUSE && nWidget <= WIDGET_ID_RETURN)
@@ -27,10 +27,10 @@ void GameIntroScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
     }
 }
 
-// FUNCTION: HYPERX 0x004491b0
+// FUNCTION: HYPERX1001 0x004491b0
 GameIntroScreen::~GameIntroScreen()
 {
 }
 
-// STRING: HYPERX 0x004c282c
+// STRING: HYPERX1001 0x004c282c
 const char* g_pszIntroBackground = "gintro";

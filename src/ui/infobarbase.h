@@ -7,7 +7,7 @@
 // The renderer interface: a destructor, one no-op and twenty three pure slots. A root class, so
 // VC6 inlines the destructor into the deleter.
 // SLOT TABLE 0x004b3068
-// VTABLE: HYPERX 0x004b3068
+// VTABLE: HYPERX1001 0x004b3068
 class InfoBarBase
 {
 public:
@@ -16,13 +16,13 @@ public:
     {
     }
 
-    // FUNCTION: HYPERX100 0x004bd820
+    // FUNCTION: HYPERX1000 0x004bd820
     virtual ~InfoBarBase()
     {
     }
 
     // Slot one is Object::Trace in the original, a shared free function.
-    // FUNCTION: HYPERX100 0x004bd830
+    // FUNCTION: HYPERX1000 0x004bd830
     virtual void Unused()
     {
     }
@@ -68,7 +68,7 @@ public:
     static InfoBarBase* __cdecl Create(int nKind, HDC hDC);
 };
 
-// SYNTHETIC: HYPERX 0x0043e0d0
+// SYNTHETIC: HYPERX1001 0x0043e0d0
 // InfoBarBase::`scalar deleting destructor'
 
 #endif

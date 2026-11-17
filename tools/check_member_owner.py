@@ -30,18 +30,18 @@ import image_tables as image
 
 SRC = os.path.join(image.ROOT, "src")
 
-FREE = re.compile(r"// FUNCTION: HYPERX (0x00[0-9a-f]{6})" + chr(10)
+FREE = re.compile(r"// FUNCTION: HYPERX1001 (0x00[0-9a-f]{6})" + chr(10)
                   + r"(?:[^" + chr(10) + r"]*" + chr(10) + r")?"
                   + r"[\w:*&<>\s]*?" + chr(92) + r"b([0-9A-Za-z_]+)" + chr(92) + r"s*"
                   + chr(92) + r"([^;{]*" + chr(92) + r")" + chr(92) + r"s*" + chr(10)
                   + r"?" + chr(92) + r"{")
 
-BODY = re.compile(r"// FUNCTION: HYPERX (0x00[0-9a-f]{6})" + chr(10)
+BODY = re.compile(r"// FUNCTION: HYPERX1001 (0x00[0-9a-f]{6})" + chr(10)
                   + r"(?:[^" + chr(10) + r"]*" + chr(10) + r")?"
                   + r"[\w:*&<>\s]*?" + chr(92) + r"b([0-9A-Za-z_]+)::([~0-9A-Za-z_]+)" + chr(92)
                   + r"s*" + chr(92) + r"(")
 
-MARKER = re.compile(r"// (?:VTABLE: HYPERX|SLOT TABLE) (0x00[0-9a-fA-F]{6})[^" + chr(10) + r"]*"
+MARKER = re.compile(r"// (?:VTABLE: HYPERX1001|SLOT TABLE) (0x00[0-9a-fA-F]{6})[^" + chr(10) + r"]*"
                     + chr(10) + r"(?:class|struct) ([0-9A-Za-z_]+)")
 
 BASE_OF = re.compile("^(?:class|struct) ([0-9A-Za-z_]+) *: *public ([0-9A-Za-z_]+)", re.M)

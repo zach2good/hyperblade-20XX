@@ -4,8 +4,8 @@
 #include "engine/cmonitorheldkeys.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041f6f0
-// FUNCTION: HYPERX 0x00413be0
+// FUNCTION: HYPERX1000 0x0041f6f0
+// FUNCTION: HYPERX1001 0x00413be0
 void CMonitorHeldKeysPool::Init()
 {
     AgendaItem* pNode = new CMonitorHeldKeys;
@@ -34,8 +34,8 @@ char CMonitorHeldKeysPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423070
-// FUNCTION: HYPERX 0x00413c70
+// FUNCTION: HYPERX1000 0x00423070
+// FUNCTION: HYPERX1001 0x00413c70
 void* CMonitorHeldKeysPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CMonitorHeldKeysPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415820
+// FUNCTION: HYPERX1001 0x00415820
 CMonitorHeldKeysPool::~CMonitorHeldKeysPool()
 {
     while (m_pHead != 0)

@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c8790
-// FUNCTION: HYPERX 0x0041ed90
+// FUNCTION: HYPERX1000 0x004c8790
+// FUNCTION: HYPERX1001 0x0041ed90
 void BehObjGlideToPositionPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_GlideToPosition;
@@ -33,8 +33,8 @@ char BehObjGlideToPositionPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c9e30
-// FUNCTION: HYPERX 0x0041ee50
+// FUNCTION: HYPERX1000 0x004c9e30
+// FUNCTION: HYPERX1001 0x0041ee50
 void* BehObjGlideToPositionPool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* BehObjGlideToPositionPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00420a40
+// FUNCTION: HYPERX1001 0x00420a40
 BehObjGlideToPositionPool::~BehObjGlideToPositionPool()
 {
     while (m_pHead != 0)

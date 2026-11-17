@@ -8,8 +8,8 @@
 #define SWP_MOVE_FLAGS (SWP_SHOWWINDOW | SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE)
 
 // The second argument is unread.
-// FUNCTION: HYPERX100 0x0046e280
-// FUNCTION: HYPERX 0x0044bd60
+// FUNCTION: HYPERX1000 0x0046e280
+// FUNCTION: HYPERX1001 0x0044bd60
 void Window::ApplyFullscreenStyle(HWND hWnd, int)
 {
     if (g_gameApp.m_hMenu != 0)
@@ -33,8 +33,8 @@ void Window::ApplyFullscreenStyle(HWND hWnd, int)
 }
 
 // The original swaps X and Y too; SWP_NOMOVE ignores both.
-// FUNCTION: HYPERX100 0x0046e2f0
-// FUNCTION: HYPERX 0x0044bdb0
+// FUNCTION: HYPERX1000 0x0046e2f0
+// FUNCTION: HYPERX1001 0x0044bdb0
 unsigned int Window::OnWindowMove(HWND hWnd, int nFlag)
 {
     RECT rc;
@@ -51,14 +51,14 @@ unsigned int Window::OnWindowMove(HWND hWnd, int nFlag)
     return 0;
 }
 
-// GLOBAL: HYPERX 0x004d2b88
+// GLOBAL: HYPERX1001 0x004d2b88
 WNDCLASSA g_wndClass;
 
-// GLOBAL: HYPERX 0x004d2bb0
+// GLOBAL: HYPERX1001 0x004d2bb0
 WNDCLASSA* g_pWndClass;
 
-// FUNCTION: HYPERX100 0x00479830
-// FUNCTION: HYPERX 0x0048f450
+// FUNCTION: HYPERX1000 0x00479830
+// FUNCTION: HYPERX1001 0x0048f450
 void Window::InvalidateAndUpdate(void)
 {
     InvalidateRgn(g_gameApp.m_hWnd, 0, 0);
@@ -67,11 +67,11 @@ void Window::InvalidateAndUpdate(void)
 }
 
 // Non-zero when the class already existed. The class name's typo is shipped.
-// FUNCTION: HYPERX100 0x00408730
-// FUNCTION: HYPERX 0x00493750
+// FUNCTION: HYPERX1000 0x00408730
+// FUNCTION: HYPERX1001 0x00493750
 int Window::EnsureClassRegistered(HINSTANCE hInstance)
 {
-    // STRING: HYPERX 0x004c8cac
+    // STRING: HYPERX1001 0x004c8cac
     const BOOL bClassExists = GetClassInfoA(hInstance, "HyberBlade Atom String", &g_wndClass);
 
     if (g_pWndClass != 0)
@@ -109,7 +109,7 @@ int Window::EnsureClassRegistered(HINSTANCE hInstance)
 
 #ifdef HYPERX_V100
 // TODO: The flag is matched to g_cD3DActive by its place among the renderer flags.
-// FUNCTION: HYPERX100 0x0046e360
+// FUNCTION: HYPERX1000 0x0046e360
 BOOL Window::Destroy(HWND hWnd)
 {
     const BOOL bResult = DestroyWindow(hWnd);

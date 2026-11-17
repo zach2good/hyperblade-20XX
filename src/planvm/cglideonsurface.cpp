@@ -28,11 +28,11 @@
 #define ROK_CARRIER_SPEED_SCALE 0.9f
 
 // Thirty a second, in .data rather than .rdata.
-// GLOBAL: HYPERX 0x004bb63c
+// GLOBAL: HYPERX1001 0x004bb63c
 extern float g_flBankFreeSpeed;
 
-// FUNCTION: HYPERX100 0x00424420
-// FUNCTION: HYPERX 0x0040c0b0
+// FUNCTION: HYPERX1000 0x00424420
+// FUNCTION: HYPERX1001 0x0040c0b0
 void CGlideOnSurface::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -65,8 +65,8 @@ void CGlideOnSurface::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_nOnSurface = 0;
 }
 
-// FUNCTION: HYPERX100 0x00424580
-// FUNCTION: HYPERX 0x0040c200
+// FUNCTION: HYPERX1000 0x00424580
+// FUNCTION: HYPERX1001 0x0040c200
 void CGlideOnSurface::OnListChanged()
 {
     if (m_bReady == 0)
@@ -115,8 +115,8 @@ static inline Vec3 Sum(const Vec3& vA, const Vec3& vB)
 
 } // namespace TerrainStep
 
-// FUNCTION: HYPERX100 0x00424610
-// FUNCTION: HYPERX 0x0040c270
+// FUNCTION: HYPERX1000 0x00424610
+// FUNCTION: HYPERX1001 0x0040c270
 void CGlideOnSurface::UpdateTerrainPhysics(int)
 {
     PhysicsBody* pBody;
@@ -232,7 +232,7 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
         if (pFound == 0)
         {
-            // STRING: HYPERX 0x004bb6c0
+            // STRING: HYPERX1001 0x004bb6c0
             g_gameApp.Fatal("BAD SURFACE NORMAL - InitOnSurface B.");
         }
 
@@ -461,8 +461,8 @@ void CGlideOnSurface::UpdateTerrainPhysics(int)
 
 HYPERBLADE_FIELD_AT(CGlideOnSurface, m_pflFriction, 0x10);
 
-// FUNCTION: HYPERX100 0x00425160
-// FUNCTION: HYPERX 0x0040cb00
+// FUNCTION: HYPERX1000 0x00425160
+// FUNCTION: HYPERX1001 0x0040cb00
 void CGlideOnSurface::Process(int nArg)
 {
     UpdateTerrainPhysics(nArg);
@@ -476,8 +476,8 @@ void CGlideOnSurface::Process(int nArg)
 }
 
 // m_pNetTargetPending is the network correction; its z drift reads the x term back.
-// FUNCTION: HYPERX100 0x00425190
-// FUNCTION: HYPERX 0x0040cb20
+// FUNCTION: HYPERX1000 0x00425190
+// FUNCTION: HYPERX1001 0x0040cb20
 void CGlideOnSurface::Release(int nTick)
 {
     PhysicsBody* pBody;
@@ -641,7 +641,7 @@ void CGlideOnSurface::Release(int nTick)
     }
 }
 
-// GLOBAL: HYPERX 0x004bb618
+// GLOBAL: HYPERX1001 0x004bb618
 unsigned int g_anUnusedNibbleMasks[8] = { 0x0000000f, 0x000000f0, 0x00000f00, 0x0000f000, 0x000f0000, 0x00f00000, 0x0f000000, 0xf0000000 };
 
 // Thirty a second: above it a terrain frame adds its bank vector whatever the owner's class.

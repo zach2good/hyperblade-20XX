@@ -31,7 +31,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAP = os.path.join(ROOT, "build", "out", "HYPERX_sym.map")
 REGISTER = os.path.join(ROOT, "symbols", "link_order.csv")
 
-MARKER = re.compile(r"^// SYNTHETIC: HYPERX (0x[0-9a-fA-F]+)\r?\n// (\$E\d+)\r?$", re.M)
+MARKER = re.compile(r"^// SYNTHETIC: HYPERX1001 (0x[0-9a-fA-F]+)\r?\n// (\$E\d+)\r?$", re.M)
 MAP_ROW = re.compile(r"^\s*0001:[0-9a-f]{8}\s+_(\$E\d+)\s+([0-9a-f]{8}) f\s+(?:\S+:)?(\S+)\.obj\s*$")
 
 

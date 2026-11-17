@@ -10,8 +10,8 @@
 #include "engine/statids.h"
 #include <string.h>
 
-// FUNCTION: HYPERX100 0x00491810
-// FUNCTION: HYPERX 0x00491880
+// FUNCTION: HYPERX1000 0x00491810
+// FUNCTION: HYPERX1001 0x00491880
 MatchStats* MatchStats::ZeroInit()
 {
     memset(m_aStat, 0, sizeof(m_aStat));
@@ -19,15 +19,15 @@ MatchStats* MatchStats::ZeroInit()
     return this;
 }
 
-// FUNCTION: HYPERX100 0x00491830
-// FUNCTION: HYPERX 0x004918a0
+// FUNCTION: HYPERX1000 0x00491830
+// FUNCTION: HYPERX1001 0x004918a0
 float MatchStats::GetAt(int nIndex) const
 {
     return m_aStat[nIndex];
 }
 
-// FUNCTION: HYPERX100 0x00491840
-// FUNCTION: HYPERX 0x004918b0
+// FUNCTION: HYPERX1000 0x00491840
+// FUNCTION: HYPERX1001 0x004918b0
 float MatchStats::SetAt(int nIndex, float flValue)
 {
     m_aStat[nIndex] = flValue;
@@ -38,8 +38,8 @@ float MatchStats::SetAt(int nIndex, float flValue)
 // Open from MATCH_STAT_POSS_START to MATCH_STAT_POSS_STOP; src/globals.cpp defines it.
 extern char g_bStatIntervalOpen;
 
-// FUNCTION: HYPERX100 0x00491860
-// FUNCTION: HYPERX 0x004918d0
+// FUNCTION: HYPERX1000 0x00491860
+// FUNCTION: HYPERX1001 0x004918d0
 float MatchStats::AccumulateStat(int nStatId, int)
 {
     switch (nStatId)
@@ -184,8 +184,8 @@ float MatchStats::AccumulateStat(int nStatId, int)
     return m_aStat[nStatId];
 }
 
-// FUNCTION: HYPERX100 0x00491e30
-// FUNCTION: HYPERX 0x00491c90
+// FUNCTION: HYPERX1000 0x00491e30
+// FUNCTION: HYPERX1001 0x00491c90
 float MatchStats::StartTimer(int nIndex)
 {
     if (m_aStat[nIndex] == 0.0f)
@@ -198,8 +198,8 @@ float MatchStats::StartTimer(int nIndex)
 
 // Every index records the clock; four also close an interval into a running total.
 
-// FUNCTION: HYPERX100 0x00491e80
-// FUNCTION: HYPERX 0x00491cd0
+// FUNCTION: HYPERX1000 0x00491e80
+// FUNCTION: HYPERX1001 0x00491cd0
 float MatchStats::StopTimer(int nIndex)
 {
     const float flNow = (float)g_pGameEngine->m_clock.nTickMs;

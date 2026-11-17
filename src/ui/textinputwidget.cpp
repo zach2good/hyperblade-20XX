@@ -10,8 +10,8 @@
 #define TEXT_INPUT_CAPACITY 0x50
 
 // The length is read back as the index, so the terminator lands at offset zero.
-// FUNCTION: HYPERX100 0x004777b0
-// FUNCTION: HYPERX 0x0042bce0
+// FUNCTION: HYPERX1000 0x004777b0
+// FUNCTION: HYPERX1001 0x0042bce0
 TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark)
 : Widget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
@@ -25,7 +25,7 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x004778a0
+// FUNCTION: HYPERX1000 0x004778a0
 TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nCapacity, int nSoundAtMark)
 : Widget(nX, nY, nWidth, nHeight, nHighlighted, nDepressed, nRows, nFrameIdle, nFrameHighlighted, nTargetFrame, pOwner, nSoundAtMark)
 {
@@ -39,7 +39,7 @@ TextInputWidget::TextInputWidget(int nX, int nY, int nWidth, int nHeight, int nH
 }
 #endif
 
-// FUNCTION: HYPERX100 0x00477990
+// FUNCTION: HYPERX1000 0x00477990
 int TextInputWidget::OnMouseDown()
 {
     m_bDepressed = 1;
@@ -49,8 +49,8 @@ int TextInputWidget::OnMouseDown()
 }
 
 // Backspace on an empty field writes the terminator one byte before the buffer, as in the original.
-// FUNCTION: HYPERX100 0x004779c0
-// FUNCTION: HYPERX 0x0042bda0
+// FUNCTION: HYPERX1000 0x004779c0
+// FUNCTION: HYPERX1001 0x0042bda0
 int TextInputWidget::OnKeyPress(unsigned int nKey)
 {
     const int nChar = nKey;

@@ -4,8 +4,8 @@
 #include "engine/ctrack.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041efb0
-// FUNCTION: HYPERX 0x00413f60
+// FUNCTION: HYPERX1000 0x0041efb0
+// FUNCTION: HYPERX1001 0x00413f60
 void CTrackPool::Init()
 {
     AgendaItem* pNode = new CTrack;
@@ -34,8 +34,8 @@ char CTrackPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00422cb0
-// FUNCTION: HYPERX 0x00413ff0
+// FUNCTION: HYPERX1000 0x00422cb0
+// FUNCTION: HYPERX1001 0x00413ff0
 void* CTrackPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CTrackPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415aa0
+// FUNCTION: HYPERX1001 0x00415aa0
 CTrackPool::~CTrackPool()
 {
     while (m_pHead != 0)

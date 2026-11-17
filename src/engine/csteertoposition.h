@@ -6,7 +6,7 @@
 class EngineObject;
 
 // The widest pool kind: six of its thirteen slots are its own.
-// VTABLE: HYPERX 0x004b1c9c
+// VTABLE: HYPERX1001 0x004b1c9c
 class CSteerToPosition : public ReleasingAgendaItem
 {
 public:

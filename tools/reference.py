@@ -4,7 +4,7 @@ The original is never committed, so its path is a local setting. It comes from t
 `reccmp-user.yml` that reccmp itself reads, or from an environment variable that overrides it.
 
     python tools/reference.py                     prints the v1.0.0.1 path, or explains why there is none
-    python tools/reference.py --target HYPERX100  the same for v1.0.0.0
+    python tools/reference.py --target HYPERX1000  the same for v1.0.0.0
 
 Exits 1 with a message on stderr when no copy is configured.
 """
@@ -21,13 +21,13 @@ This build reads the resources out of your own copy of the game, because the rep
 carries none of the original's content. Write %s:
 
 targets:
-  HYPERX:
+  HYPERX1001:
     path: C:/path/to/your/HYPERX.EXE
 
 The file is git-ignored. Setting HYPERX_REFERENCE in the environment overrides it."""
 
 
-def reference_path(required=True, target="HYPERX"):
+def reference_path(required=True, target="HYPERX1001"):
     from_env = os.environ.get("HYPERX_REFERENCE", "").strip()
 
     if from_env:
@@ -66,7 +66,7 @@ def fail(message, required):
 
 
 if __name__ == "__main__":
-    wanted = "HYPERX"
+    wanted = "HYPERX1001"
 
     if len(sys.argv) == 3 and sys.argv[1] == "--target":
         wanted = sys.argv[2]

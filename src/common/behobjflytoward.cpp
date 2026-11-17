@@ -4,24 +4,24 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
-// FUNCTION: HYPERX100 0x004cb980
-// FUNCTION: HYPERX 0x0041de20
+// FUNCTION: HYPERX1000 0x004cb980
+// FUNCTION: HYPERX1001 0x0041de20
 BehObj_FlyToward::BehObj_FlyToward()
 {
 }
 
-// FUNCTION: HYPERX 0x0041de60
+// FUNCTION: HYPERX1001 0x0041de60
 BehObj_FlyToward::~BehObj_FlyToward()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cbaa0
-// FUNCTION: HYPERX 0x0041de70
+// FUNCTION: HYPERX1000 0x004cbaa0
+// FUNCTION: HYPERX1001 0x0041de70
 void BehObj_FlyToward::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForFly();
 
-    // STRING: HYPERX 0x004bc308
+    // STRING: HYPERX1001 0x004bc308
     m_pszName = "FlyToward";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

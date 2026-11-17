@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1954
+// VTABLE: HYPERX1001 0x004b1954
 class CStepAnimationPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CStepAnimationPool();
 };
 
-// SYNTHETIC: HYPERX 0x004156c0
+// SYNTHETIC: HYPERX1001 0x004156c0
 // CStepAnimationPool::`scalar deleting destructor'
 
 #endif

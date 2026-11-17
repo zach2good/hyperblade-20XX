@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 
-MARKED = re.compile(r"^// FUNCTION: HYPERX 0x[0-9a-f]+\r?\n(?://[^\r\n]*\r?\n)*"
+MARKED = re.compile(r"^// FUNCTION: HYPERX1001 0x[0-9a-f]+\r?\n(?://[^\r\n]*\r?\n)*"
                     r"[^\r\n(]*?\b([A-Za-z_]\w*)::(~?\w+)\s*\(", re.M)
 
 SKIP = ("src/jpeg/",)

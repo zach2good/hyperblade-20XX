@@ -20,18 +20,18 @@
 #include "engine/objectclasses.h"
 
 // The post width, the span across both posts, and the height: three, nine and ten.
-// GLOBAL: HYPERX 0x004bb394
+// GLOBAL: HYPERX1001 0x004bb394
 extern float g_flDromePostWidth;
 
-// GLOBAL: HYPERX 0x004bb39c
+// GLOBAL: HYPERX1001 0x004bb39c
 extern float g_flDromeHeight;
 
-// GLOBAL: HYPERX 0x004bb398
+// GLOBAL: HYPERX1001 0x004bb398
 extern float g_flDromeSpanWidth;
 
 // The receiving object always leaves upwards; the translation is not copied.
-// FUNCTION: HYPERX100 0x004a1860
-// FUNCTION: HYPERX 0x00402dc0
+// FUNCTION: HYPERX1000 0x004a1860
+// FUNCTION: HYPERX1001 0x00402dc0
 void __cdecl Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest, char bBoost)
 {
     Vec3 vVel;
@@ -78,8 +78,8 @@ void __cdecl Object::CopyPhysicsStateTo(EngineObject* pSrc, EngineObject* pDest,
 }
 
 // Puts one object six units to one side of another.
-// FUNCTION: HYPERX100 0x004a1a00
-// FUNCTION: HYPERX 0x00402f20
+// FUNCTION: HYPERX1000 0x004a1a00
+// FUNCTION: HYPERX1001 0x00402f20
 void __cdecl Object::SpawnAtObjectRotated(EngineObject* pSrc, EngineObject* pDest, char bMirrored)
 {
     Vec3 vOffset;
@@ -137,12 +137,12 @@ extern const float g_flSteerBoxSizeX;
 extern const float g_flSteerBoxSizeZ;
 
 // Five, the box's top; its bottom is nought.
-// GLOBAL: HYPERX 0x004b153c
+// GLOBAL: HYPERX1001 0x004b153c
 extern const float g_flSteerBoxTopY;
 
 // Picks one of the gate's two posts or the bar between them by where the point is.
-// FUNCTION: HYPERX100 0x004640c0
-// FUNCTION: HYPERX 0x00404670
+// FUNCTION: HYPERX1000 0x004640c0
+// FUNCTION: HYPERX1001 0x00404670
 Vec3* __cdecl Object::ComputePoleGateNormal(Vec3* pDirOut, Vec3* pQueryPos)
 {
     MeshBoundingBox aBoxes[2];
@@ -260,8 +260,8 @@ static inline Vec3 ToObjectFrame(EngineObject* pObject, const Vec3* pQueryPos)
 } // namespace Object
 
 // A slot no range claims returns whatever the frame held, as in the original.
-// FUNCTION: HYPERX100 0x00464490
-// FUNCTION: HYPERX 0x00404910
+// FUNCTION: HYPERX1000 0x00464490
+// FUNCTION: HYPERX1001 0x00404910
 Vec3* __cdecl Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObject, const Vec3* pQueryPos)
 {
     Vec3 vResult;
@@ -375,13 +375,13 @@ Vec3* __cdecl Object::ComputeSteeringDirection(Vec3* pDirOut, EngineObject* pObj
 #define REACTION_SET_STOPPED 4
 
 // HITANIMS.LST's five rows of seven sectors: 0 to 3 by damage, and 4 for the stopped case.
-// GLOBAL: HYPERX 0x004cf9fc
+// GLOBAL: HYPERX1001 0x004cf9fc
 extern short g_awReactionByDamageAndSector[35];
 
 // Contact with no energy does not nudge the local player; the reaction is sent as
 // MSG_SET_ANIMATION and then MSG_YER_HIT.
-// FUNCTION: HYPERX100 0x004662f0
-// FUNCTION: HYPERX 0x00406350
+// FUNCTION: HYPERX1000 0x004662f0
+// FUNCTION: HYPERX1001 0x00406350
 void __cdecl Object::HandleObjectCollisionBounce(EngineObject* pSelf,
                                                  EngineObject* pOther,
                                                  const Vec3*,
@@ -493,8 +493,8 @@ void __cdecl Object::HandleObjectCollisionBounce(EngineObject* pSelf,
 }
 
 // Both scalings are cumulative, so the bone moves as well as grows.
-// FUNCTION: HYPERX100 0x004c03f0
-// FUNCTION: HYPERX 0x004499d0
+// FUNCTION: HYPERX1000 0x004c03f0
+// FUNCTION: HYPERX1001 0x004499d0
 void Object::ScaleBones(int* pBoneIndices, int nCount, float flScaleX, float flScaleY, float flScaleZ)
 {
     Vec3 vOut;

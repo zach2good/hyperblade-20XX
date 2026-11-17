@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b19e0
+// VTABLE: HYPERX1001 0x004b19e0
 class CSteerBetweenFacingPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CSteerBetweenFacingPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415260
+// SYNTHETIC: HYPERX1001 0x00415260
 // CSteerBetweenFacingPool::`scalar deleting destructor'
 
 #endif

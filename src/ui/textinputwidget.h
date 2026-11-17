@@ -5,7 +5,7 @@
 #include "common/staticassert.h"
 
 // Slot zero of 0x004b2af4; no other table holds 0x0042bda0.
-// VTABLE: HYPERX 0x004b2af4
+// VTABLE: HYPERX1001 0x004b2af4
 class TextInputWidget : public Widget
 {
 public:
@@ -13,13 +13,13 @@ public:
     virtual int OnMouseDown();
 
     // Slots four and five hold KeyConfigDialog::SaveKeysAs, so both keep a stand-in.
-    // FUNCTION: HYPERX100 0x004779a0
+    // FUNCTION: HYPERX1000 0x004779a0
     virtual int OnMouseUp()
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x004779b0
+    // FUNCTION: HYPERX1000 0x004779b0
     virtual int IsDisplayOnly()
     {
         return 0;

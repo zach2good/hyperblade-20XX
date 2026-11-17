@@ -7,8 +7,8 @@
 #include "math/transformobject.h"
 #include "physics/collisionshape.h"
 
-// FUNCTION: HYPERX100 0x00409670
-// FUNCTION: HYPERX 0x00405800
+// FUNCTION: HYPERX1000 0x00409670
+// FUNCTION: HYPERX1001 0x00405800
 int CollisionShape::Destroy()
 {
     delete this;
@@ -16,36 +16,36 @@ int CollisionShape::Destroy()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00409690
-// FUNCTION: HYPERX 0x00405820
+// FUNCTION: HYPERX1000 0x00409690
+// FUNCTION: HYPERX1001 0x00405820
 TransformObject* CollisionShape::GetTransform()
 {
     return m_pTransform;
 }
 
-// FUNCTION: HYPERX100 0x00409750
-// FUNCTION: HYPERX 0x00405830
+// FUNCTION: HYPERX1000 0x00409750
+// FUNCTION: HYPERX1001 0x00405830
 float CollisionShape::GetElasticity()
 {
     return m_flElasticity;
 }
 
-// FUNCTION: HYPERX100 0x00409760
-// FUNCTION: HYPERX 0x00405840
+// FUNCTION: HYPERX1000 0x00409760
+// FUNCTION: HYPERX1001 0x00405840
 float CollisionShape::GetFriction()
 {
     return m_flFriction;
 }
 
-// FUNCTION: HYPERX100 0x004096e0
-// FUNCTION: HYPERX 0x00405870
+// FUNCTION: HYPERX1000 0x004096e0
+// FUNCTION: HYPERX1001 0x00405870
 Vec3* CollisionShape::GetNormal()
 {
     return &m_vNormal;
 }
 
-// FUNCTION: HYPERX100 0x00494c80
-// FUNCTION: HYPERX 0x0042e4f0
+// FUNCTION: HYPERX1000 0x00494c80
+// FUNCTION: HYPERX1001 0x0042e4f0
 CollisionShape::CollisionShape()
 : m_nUnusedA(0)
 , m_nUnusedB(0)
@@ -60,8 +60,8 @@ CollisionShape::CollisionShape()
     m_vNormal.x = m_vNormal.y = m_vNormal.z = g_flZeroCollisionObj;
 }
 
-// FUNCTION: HYPERX100 0x00494cd0
-// FUNCTION: HYPERX 0x0042e540
+// FUNCTION: HYPERX1000 0x00494cd0
+// FUNCTION: HYPERX1001 0x0042e540
 CollisionShape::~CollisionShape()
 {
     if (m_pUnusedA != 0)
@@ -91,8 +91,8 @@ CollisionShape::~CollisionShape()
 
 // The plane's slot thirteen calls this with six arguments, so it is variadic and __cdecl.
 // An existing transform is reset through its own table; a failed allocation stores null.
-// FUNCTION: HYPERX100 0x00494d60
-// FUNCTION: HYPERX 0x0042e5a0
+// FUNCTION: HYPERX1000 0x00494d60
+// FUNCTION: HYPERX1001 0x0042e5a0
 TransformObject* CollisionShape::GetOrCreateTransform(...)
 {
     if (m_pTransform == 0)
@@ -107,8 +107,8 @@ TransformObject* CollisionShape::GetOrCreateTransform(...)
     return m_pTransform;
 }
 
-// FUNCTION: HYPERX100 0x0046cc60
-// FUNCTION: HYPERX 0x00480850
+// FUNCTION: HYPERX1000 0x0046cc60
+// FUNCTION: HYPERX1001 0x00480850
 CollisionShape& CollisionShape::operator=(const CollisionShape& other)
 {
     m_nUnusedA     = other.m_nUnusedA;

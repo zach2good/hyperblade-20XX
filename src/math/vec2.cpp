@@ -7,7 +7,7 @@
 #include <math.h>
 
 // The length is tested before it is rounded to a float, and divided by after.
-// FUNCTION: HYPERX100 0x00445370
+// FUNCTION: HYPERX1000 0x00445370
 bool Vec2::Normalize()
 {
     const double dLength  = sqrt(y * y + x * x);
@@ -27,7 +27,7 @@ bool Vec2::Normalize()
     return false;
 }
 
-// FUNCTION: HYPERX100 0x00445420
+// FUNCTION: HYPERX1000 0x00445420
 bool Vec2::SetNormalized(float flX, float flY)
 {
     const double dLength  = sqrt(flX * flX + flY * flY);

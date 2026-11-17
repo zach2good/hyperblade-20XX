@@ -8,7 +8,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b26b4
+// VTABLE: HYPERX1001 0x004b26b4
 class BehObj_FlyLCL : public FlightBehaviorObject
 {
 public:
@@ -16,7 +16,7 @@ public:
     virtual void Init(class EngineObject* pOwner, struct PlanNode* pNode, int nFlags);
 
     // v1.0.0.1 folds it onto BehObj_Fly::SendTimedMessage.
-    // FUNCTION: HYPERX100 0x004cb900
+    // FUNCTION: HYPERX1000 0x004cb900
     virtual void SendTimedMessage()
     {
         m_pOwner->PostEvent(MSG_INITIATE, 0, m_pOwner->GetSlot());
@@ -42,7 +42,7 @@ public:
     BehObj_FlyLCL();
 };
 
-// SYNTHETIC: HYPERX 0x0041dd60
+// SYNTHETIC: HYPERX1001 0x0041dd60
 // BehObj_FlyLCL::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_FlyLCL) == 0x98);

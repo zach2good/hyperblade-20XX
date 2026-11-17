@@ -4,8 +4,8 @@
 #include "planvm/cviewit.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041e870
-// FUNCTION: HYPERX 0x00414370
+// FUNCTION: HYPERX1000 0x0041e870
+// FUNCTION: HYPERX1001 0x00414370
 void CViewItPool::Init()
 {
     AgendaItem* pNode = new CViewIt;
@@ -34,8 +34,8 @@ char CViewItPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004228f0
-// FUNCTION: HYPERX 0x00414400
+// FUNCTION: HYPERX1000 0x004228f0
+// FUNCTION: HYPERX1001 0x00414400
 void* CViewItPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CViewItPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415d20
+// FUNCTION: HYPERX1001 0x00415d20
 CViewItPool::~CViewItPool()
 {
     while (m_pHead != 0)

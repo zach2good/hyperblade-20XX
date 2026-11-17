@@ -36,7 +36,7 @@ struct DrawPolySurface
 
 extern int g_bDromePass;
 
-// GLOBAL: HYPERX 0x004c1e94
+// GLOBAL: HYPERX1001 0x004c1e94
 extern int g_bDromeIniDirty;
 
 // The arena pass substitutes the ini's answer for its duration.
@@ -45,8 +45,8 @@ extern int g_nMdmTexturesReady;
 #define DROME_TEXTURED_DEFAULT 1
 
 // Only a null target clears first. The answer is always nought.
-// FUNCTION: HYPERX100 0x004d45d0
-// FUNCTION: HYPERX 0x004337b0
+// FUNCTION: HYPERX1000 0x004d45d0
+// FUNCTION: HYPERX1001 0x004337b0
 int __cdecl Renderer::RenderFrame(const Texture* pTarget)
 {
     if (pTarget == 0)
@@ -60,8 +60,8 @@ int __cdecl Renderer::RenderFrame(const Texture* pTarget)
 }
 
 // A network or loading frame relights the first slots from fixed directions first.
-// FUNCTION: HYPERX100 0x00445ee0
-// FUNCTION: HYPERX 0x00442d20
+// FUNCTION: HYPERX1000 0x00445ee0
+// FUNCTION: HYPERX1001 0x00442d20
 void __cdecl Renderer::DrawAllMeshes(void)
 {
     MeshBone* pBone;
@@ -163,15 +163,15 @@ void __cdecl Renderer::DrawAllMeshes(void)
     g_bLoadingMode = 0;
 }
 
-// FUNCTION: HYPERX100 0x004461b0
-// FUNCTION: HYPERX 0x00442f40
+// FUNCTION: HYPERX1000 0x004461b0
+// FUNCTION: HYPERX1001 0x00442f40
 void __cdecl Renderer::SetLoadingMode(void)
 {
     g_bLoadingMode = 1;
 }
 
-// FUNCTION: HYPERX100 0x004461c0
-// FUNCTION: HYPERX 0x00442f50
+// FUNCTION: HYPERX1000 0x004461c0
+// FUNCTION: HYPERX1001 0x00442f50
 int __cdecl Renderer::SetDromeTextured(int nEnable)
 {
     if (g_cMdmTexLoaded == 0)
@@ -191,15 +191,15 @@ int __cdecl Renderer::SetDromeTextured(int nEnable)
     return g_nDromeTextured;
 }
 
-// FUNCTION: HYPERX100 0x00446220
-// FUNCTION: HYPERX 0x00442fa0
+// FUNCTION: HYPERX1000 0x00446220
+// FUNCTION: HYPERX1001 0x00442fa0
 int __cdecl Renderer::ToggleDromeTextured(void)
 {
     return Renderer::SetDromeTextured(g_nDromeTextured == 0);
 }
 
-// FUNCTION: HYPERX100 0x0046d5a0
-// FUNCTION: HYPERX 0x0044b2c0
+// FUNCTION: HYPERX1000 0x0046d5a0
+// FUNCTION: HYPERX1001 0x0044b2c0
 void __stdcall Renderer::DrawWholeScene(void)
 {
     DrawPolySurface surface;
@@ -225,8 +225,8 @@ void __stdcall Renderer::DrawWholeScene(void)
     g_pScene->DrawShadowAndTransparentPass(&g_arenaEllipsoid);
 }
 
-// FUNCTION: HYPERX100 0x0046dc50
-// FUNCTION: HYPERX 0x0044b7c0
+// FUNCTION: HYPERX1000 0x0046dc50
+// FUNCTION: HYPERX1001 0x0044b7c0
 void __stdcall Renderer::DestroyBackBuffer(void)
 {
     if (g_cUseSoftRenderer == 0)
@@ -249,8 +249,8 @@ void __stdcall Renderer::DestroyBackBuffer(void)
 }
 
 // The flip is skipped while the cursor shows.
-// FUNCTION: HYPERX100 0x0046e120
-// FUNCTION: HYPERX 0x0044bc30
+// FUNCTION: HYPERX1000 0x0046e120
+// FUNCTION: HYPERX1001 0x0044bc30
 int __stdcall Renderer::PresentFrame(void)
 {
     if (g_cUseSoftRenderer == 0)
@@ -278,8 +278,8 @@ int __stdcall Renderer::PresentFrame(void)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0046e190
-// FUNCTION: HYPERX 0x0044bc80
+// FUNCTION: HYPERX1000 0x0046e190
+// FUNCTION: HYPERX1001 0x0044bc80
 void __stdcall Renderer::DrawSceneDispatch(void)
 {
     if (g_cUseSoftRenderer == 0)
@@ -292,15 +292,15 @@ void __stdcall Renderer::DrawSceneDispatch(void)
     }
 }
 
-// FUNCTION: HYPERX100 0x0046e480
-// FUNCTION: HYPERX 0x0044be80
+// FUNCTION: HYPERX1000 0x0046e480
+// FUNCTION: HYPERX1001 0x0044be80
 RenderOptions __cdecl Renderer::GetRenderOptions()
 {
     return g_renderOptions;
 }
 
-// FUNCTION: HYPERX100 0x0046e4b0
-// FUNCTION: HYPERX 0x0044beb0
+// FUNCTION: HYPERX1000 0x0046e4b0
+// FUNCTION: HYPERX1001 0x0044beb0
 void __cdecl Renderer::SetRenderOption(RenderOption nOption, int nValue)
 {
     switch (nOption)
@@ -320,19 +320,19 @@ void __cdecl Renderer::SetRenderOption(RenderOption nOption, int nValue)
     }
 }
 
-// GLOBAL: HYPERX 0x004d0a28
+// GLOBAL: HYPERX1001 0x004d0a28
 class TransformObject* g_pCameraTransform;
 
 // The back buffer lock writes pBits and nPitch.
-// GLOBAL: HYPERX 0x004d0a30
+// GLOBAL: HYPERX1001 0x004d0a30
 LayoutState g_cameraViewportBlock;
 
-// GLOBAL: HYPERX 0x004d1a68
+// GLOBAL: HYPERX1001 0x004d1a68
 ClipExtents g_projRenderParams;
 
 // The software path has nothing to bracket and reports success.
-// FUNCTION: HYPERX100 0x0046e530
-// FUNCTION: HYPERX 0x0044bf00
+// FUNCTION: HYPERX1000 0x0046e530
+// FUNCTION: HYPERX1001 0x0044bf00
 int __stdcall Renderer::BeginScene(void)
 {
     int nResult;
@@ -354,8 +354,8 @@ int __stdcall Renderer::BeginScene(void)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0046e570
-// FUNCTION: HYPERX 0x0044bf40
+// FUNCTION: HYPERX1000 0x0046e570
+// FUNCTION: HYPERX1001 0x0044bf40
 int __stdcall Renderer::EndScene(void)
 {
     if (g_cUseSoftRenderer == 0)
@@ -366,8 +366,8 @@ int __stdcall Renderer::EndScene(void)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0046e5a0
-// FUNCTION: HYPERX 0x0044bf60
+// FUNCTION: HYPERX1000 0x0046e5a0
+// FUNCTION: HYPERX1001 0x0044bf60
 void __cdecl Renderer::ClearFrame(void)
 {
     if (g_cUseSoftRenderer == 0)
@@ -394,8 +394,8 @@ void __cdecl Renderer::ClearFrame(void)
 }
 
 // Under Direct3D the second and fourth projection floats gain a pixel.
-// FUNCTION: HYPERX100 0x00473630
-// FUNCTION: HYPERX 0x0047a980
+// FUNCTION: HYPERX1000 0x00473630
+// FUNCTION: HYPERX1001 0x0047a980
 void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
 {
     g_cameraViewportBlock = block;
@@ -418,8 +418,8 @@ void __cdecl Renderer::SetCameraTransformAndViewport(LayoutState block)
 }
 
 // Azimuths 303, 54 and 180 degrees; the first fills two table entries.
-// FUNCTION: HYPERX100 0x00473700
-// FUNCTION: HYPERX 0x0047aa20
+// FUNCTION: HYPERX1000 0x00473700
+// FUNCTION: HYPERX1001 0x0047aa20
 void __stdcall Renderer::InitializeLightDirections(void)
 {
     Vec3 vSpherical2;
@@ -449,9 +449,9 @@ void __stdcall Renderer::InitializeLightDirections(void)
 
 int g_nDromeTextured = 1;
 
-// STRING: HYPERX 0x004c1ea8
+// STRING: HYPERX1001 0x004c1ea8
 const char* g_pszDromeSection = "Misc";
 
-// STRING: HYPERX 0x004c1e98
+// STRING: HYPERX1001 0x004c1e98
 const char* g_pszDromeTexturedKey = "DromeTextured";
 int         g_bDromeIniDirty      = 1;

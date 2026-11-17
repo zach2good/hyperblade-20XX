@@ -10,8 +10,8 @@
 
 // A frame of nought draws one block; otherwise each segment is a unit wider and a step taller.
 
-// FUNCTION: HYPERX100 0x004b94f0
-// FUNCTION: HYPERX 0x0044f6d0
+// FUNCTION: HYPERX1000 0x004b94f0
+// FUNCTION: HYPERX1001 0x0044f6d0
 int InfoBarSlot::Draw()
 {
     int nWidth;

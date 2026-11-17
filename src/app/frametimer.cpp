@@ -10,8 +10,8 @@
 FrameTimer g_frameTimer;
 
 // Reports every five seconds. Every caller discards the result.
-// FUNCTION: HYPERX100 0x00475d20
-// FUNCTION: HYPERX 0x00442940
+// FUNCTION: HYPERX1000 0x00475d20
+// FUNCTION: HYPERX1001 0x00442940
 double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 {
     const unsigned int dwStart = timer->dwFrameStartTime;
@@ -39,12 +39,12 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 
     if (g_bHWFlipAvailable != 0)
     {
-        // STRING: HYPERX 0x004c1e68
+        // STRING: HYPERX1001 0x004c1e68
         sprintf(g_szFpsText, "FPS %02d FLIP", g_gameApp.m_nFrameRate);
     }
     else
     {
-        // STRING: HYPERX 0x004c1e58
+        // STRING: HYPERX1001 0x004c1e58
         sprintf(g_szFpsText, "FPS %02d BLIT", g_gameApp.m_nFrameRate);
     }
 
@@ -54,8 +54,8 @@ double __fastcall FrameTimer::EndFrameUpdate(FrameTimer* timer)
 }
 
 // Passes an uninitialised period to timeEndPeriod when timeGetDevCaps fails.
-// FUNCTION: HYPERX100 0x004760e0
-// FUNCTION: HYPERX 0x00442a70
+// FUNCTION: HYPERX1000 0x004760e0
+// FUNCTION: HYPERX1001 0x00442a70
 double FrameTimer::Calibrate(void)
 {
     unsigned int uPeriod;
@@ -92,8 +92,8 @@ double FrameTimer::Calibrate(void)
     return dResult;
 }
 
-// FUNCTION: HYPERX100 0x00476230
-// FUNCTION: HYPERX 0x00442b50
+// FUNCTION: HYPERX1000 0x00476230
+// FUNCTION: HYPERX1001 0x00442b50
 double FrameTimer::BenchmarkResolution(void)
 {
     unsigned int nTotal = 0;
@@ -114,11 +114,11 @@ double FrameTimer::BenchmarkResolution(void)
     return dResult;
 }
 
-// FUNCTION: HYPERX100 0x00476310
-// FUNCTION: HYPERX 0x00442be0
+// FUNCTION: HYPERX1000 0x00476310
+// FUNCTION: HYPERX1001 0x00442be0
 double FrameTimer::BenchmarkTextSpeed(HDC hDC)
 {
-    // STRING: HYPERX 0x004c1e78
+    // STRING: HYPERX1001 0x004c1e78
     g_nFpsTextLength = sprintf(g_szFpsText, "FPS %02d", (int)floor(30.5));
 
     const unsigned int dwStart = timeGetTime();
@@ -137,8 +137,8 @@ double FrameTimer::BenchmarkTextSpeed(HDC hDC)
     return dResult;
 }
 
-// FUNCTION: HYPERX100 0x00476410
-// FUNCTION: HYPERX 0x00442ca0
+// FUNCTION: HYPERX1000 0x00476410
+// FUNCTION: HYPERX1001 0x00442ca0
 void FrameTimer::ProcessInitialFrameUpdate(HWND hWnd, HDC hDC)
 {
     if (bFrameTimesOn == 0)

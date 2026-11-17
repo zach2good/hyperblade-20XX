@@ -6,7 +6,7 @@
 #include "engine/weaponobject.h"
 
 // Lists only the slots this class overrides; symbols/vtable_gaps.csv lists the rest.
-// VTABLE: HYPERX 0x004b3bf4
+// VTABLE: HYPERX1001 0x004b3bf4
 class DromeObject : public EngineObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     ~DromeObject();
 };
 
-// SYNTHETIC: HYPERX 0x004748b0
+// SYNTHETIC: HYPERX1001 0x004748b0
 // DromeObject::`scalar deleting destructor'
 
 #endif

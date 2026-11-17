@@ -5,8 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-// FUNCTION: HYPERX100 0x004b99b0
-// FUNCTION: HYPERX 0x0044f9f0
+// FUNCTION: HYPERX1000 0x004b99b0
+// FUNCTION: HYPERX1001 0x0044f9f0
 CDDText::~CDDText() throw()
 {
     if (m_hFont != 0)
@@ -20,8 +20,8 @@ CDDText::~CDDText() throw()
     }
 }
 
-// FUNCTION: HYPERX100 0x004b9a80
-// FUNCTION: HYPERX 0x0044fa40
+// FUNCTION: HYPERX1000 0x004b9a80
+// FUNCTION: HYPERX1001 0x0044fa40
 int CDDText::Draw()
 {
     HGDIOBJ hOldFont;
@@ -49,8 +49,8 @@ int CDDText::Draw()
 }
 
 // A colour of -1 leaves the colour alone.
-// FUNCTION: HYPERX100 0x004b9b60
-// FUNCTION: HYPERX 0x0044faf0
+// FUNCTION: HYPERX1000 0x004b9b60
+// FUNCTION: HYPERX1001 0x0044faf0
 int CDDText::SetText(const char* pszText, COLORREF color)
 {
     HGDIOBJ hOldFont;
@@ -120,8 +120,8 @@ int CDDText::SetText(const char* pszText, COLORREF color)
 }
 
 // A null face name drops the font and answers success.
-// FUNCTION: HYPERX100 0x004b9cd0
-// FUNCTION: HYPERX 0x0044fc10
+// FUNCTION: HYPERX1000 0x004b9cd0
+// FUNCTION: HYPERX1001 0x0044fc10
 int CDDText::CreateFontFace(const char* pszFaceName, int nHeight)
 {
     if (m_hFont != 0)

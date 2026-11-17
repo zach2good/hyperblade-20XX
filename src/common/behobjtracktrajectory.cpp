@@ -5,24 +5,24 @@
 #include "planvm/planvmglobals.h"
 #include "engine/engineobject.h"
 
-// FUNCTION: HYPERX100 0x004cd010
-// FUNCTION: HYPERX 0x0041e980
+// FUNCTION: HYPERX1000 0x004cd010
+// FUNCTION: HYPERX1001 0x0041e980
 BehObj_TrackTrajectory::BehObj_TrackTrajectory()
 {
 }
 
-// FUNCTION: HYPERX 0x0041e9c0
+// FUNCTION: HYPERX1001 0x0041e9c0
 BehObj_TrackTrajectory::~BehObj_TrackTrajectory()
 {
 }
 
-// FUNCTION: HYPERX100 0x004cd130
-// FUNCTION: HYPERX 0x0041e9d0
+// FUNCTION: HYPERX1000 0x004cd130
+// FUNCTION: HYPERX1001 0x0041e9d0
 void BehObj_TrackTrajectory::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForTrackTrajectory();
 
-    // STRING: HYPERX 0x004bc3a4
+    // STRING: HYPERX1001 0x004bc3a4
     m_pszName = "TrackTrajectory";
 
     m_wKind = BEH_TRACK_TRAJECTORY;

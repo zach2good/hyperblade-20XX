@@ -38,7 +38,7 @@ float              g_flUnusedCameraC = g_flZeroCamera;
 extern const float g_flOneCamera;
 
 // A half, copied into both viewport dimensions.
-// GLOBAL: HYPERX 0x004b2854
+// GLOBAL: HYPERX1001 0x004b2854
 extern const float g_flHalfCamera;
 
 // Two, defined further down this file beside the camera's own pi.
@@ -46,8 +46,8 @@ extern const float g_flTwoCamera;
 
 // Both rings are seeded with the entity's position and a look a hundred behind the origin.
 
-// FUNCTION: HYPERX100 0x00473cf0
-// FUNCTION: HYPERX 0x00421980
+// FUNCTION: HYPERX1000 0x00473cf0
+// FUNCTION: HYPERX1001 0x00421980
 CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
@@ -129,8 +129,8 @@ CameraObject::CameraObject(int nSlot, class ObjectDef* pDef)
     m_bRearView = 0;
 }
 
-// FUNCTION: HYPERX100 0x004740a0
-// FUNCTION: HYPERX 0x00421c30
+// FUNCTION: HYPERX1000 0x004740a0
+// FUNCTION: HYPERX1001 0x00421c30
 void CameraObject::ResizeTransparentQueue(short nHighest)
 {
     if (g_nTransparentCapacity != nHighest + 1)
@@ -150,8 +150,8 @@ void CameraObject::ResizeTransparentQueue(short nHighest)
 
 // Each release's answer is stored back over the pointer it released.
 
-// FUNCTION: HYPERX100 0x00474130
-// FUNCTION: HYPERX 0x00421ca0
+// FUNCTION: HYPERX1000 0x00474130
+// FUNCTION: HYPERX1001 0x00421ca0
 CameraObject::~CameraObject()
 {
     m_nSecondaryTracked = -1;
@@ -189,8 +189,8 @@ CameraObject::~CameraObject()
     }
 }
 
-// FUNCTION: HYPERX100 0x00474460
-// FUNCTION: HYPERX 0x00421d80
+// FUNCTION: HYPERX1000 0x00474460
+// FUNCTION: HYPERX1001 0x00421d80
 void CameraObject::UpdateSmoothing()
 {
     PhysicsBody* const pSource = m_pBody;
@@ -225,8 +225,8 @@ void CameraObject::UpdateSmoothing()
 
 // Answers nothing; its one caller ignores EAX.
 
-// FUNCTION: HYPERX100 0x00474710
-// FUNCTION: HYPERX 0x00421ef0
+// FUNCTION: HYPERX1000 0x00474710
+// FUNCTION: HYPERX1001 0x00421ef0
 void CameraObject::UpdateDirSmoothing()
 {
     const int nIndex = m_wDirIndex;
@@ -245,13 +245,13 @@ void CameraObject::UpdateDirSmoothing()
 }
 
 // Three, the shake vector's z.
-// GLOBAL: HYPERX 0x004bc3d8
+// GLOBAL: HYPERX1001 0x004bc3d8
 extern float g_flCameraShakeZ;
 
 // The shake vector's roll comes from the position history; flag bit four hides an object.
 
-// FUNCTION: HYPERX100 0x004748b0
-// FUNCTION: HYPERX 0x00421f90
+// FUNCTION: HYPERX1000 0x004748b0
+// FUNCTION: HYPERX1001 0x00421f90
 void CameraObject::ViewIt()
 {
     Vec3       vRight;
@@ -281,7 +281,7 @@ void CameraObject::ViewIt()
 
     if (pTracked == 0)
     {
-        // STRING: HYPERX 0x004bc3dc
+        // STRING: HYPERX1001 0x004bc3dc
         g_gameApp.Fatal("Camera::ViewIt(): Null pointer for ModelToTrack\n");
     }
 
@@ -407,11 +407,11 @@ void CameraObject::ViewIt()
 }
 
 // One, the numerator of the boxcar weight.
-// GLOBAL: HYPERX 0x004b284c
+// GLOBAL: HYPERX1001 0x004b284c
 extern const float g_flOneCamera;
 
-// FUNCTION: HYPERX100 0x00474ee0
-// FUNCTION: HYPERX 0x00422450
+// FUNCTION: HYPERX1000 0x00474ee0
+// FUNCTION: HYPERX1001 0x00422450
 void CameraObject::SetReticleState(int nState)
 {
     m_nReticleState = nState;
@@ -433,8 +433,8 @@ void CameraObject::SetReticleState(int nState)
 }
 
 // A count of 0 divides by 0; only the callers' clamp to [1, 25] prevents it.
-// FUNCTION: HYPERX100 0x00474f40
-// FUNCTION: HYPERX 0x00422490
+// FUNCTION: HYPERX1000 0x00474f40
+// FUNCTION: HYPERX1001 0x00422490
 void CameraObject::SetPosHistorySize(short nCount)
 {
     Vec3 vSum;
@@ -474,8 +474,8 @@ void CameraObject::SetPosHistorySize(short nCount)
     m_posOut.z = vSum.z;
 }
 
-// FUNCTION: HYPERX100 0x004750e0
-// FUNCTION: HYPERX 0x004225a0
+// FUNCTION: HYPERX1000 0x004750e0
+// FUNCTION: HYPERX1001 0x004225a0
 void CameraObject::SetDirHistorySize(short nCount)
 {
     Vec3 vSum;
@@ -518,8 +518,8 @@ void CameraObject::SetDirHistorySize(short nCount)
 
 // The view is the extent less twice the border, rounded up to a multiple of four in width.
 
-// FUNCTION: HYPERX100 0x00475280
-// FUNCTION: HYPERX 0x004226b0
+// FUNCTION: HYPERX1000 0x00475280
+// FUNCTION: HYPERX1001 0x004226b0
 void CameraObject::SetViewTransform(unsigned int nViewport, Texture* pSource)
 {
     LayoutState state;
@@ -540,12 +540,12 @@ void CameraObject::SetViewTransform(unsigned int nViewport, Texture* pSource)
 }
 
 // Two, beside the camera's own pi.
-// GLOBAL: HYPERX 0x004b2850
+// GLOBAL: HYPERX1001 0x004b2850
 extern const float g_flTwoCamera;
 
 // The two transforms built on the stack are constructed, destroyed and never read.
-// FUNCTION: HYPERX100 0x00475360
-// FUNCTION: HYPERX 0x00422750
+// FUNCTION: HYPERX1000 0x00475360
+// FUNCTION: HYPERX1001 0x00422750
 void CameraObject::InitViewTransforms()
 {
     if (m_pView != 0)
@@ -608,8 +608,8 @@ void CameraObject::InitViewTransforms()
 }
 
 // The Numerical Recipes heapsort, one-based, so element zero is never touched.
-// FUNCTION: HYPERX100 0x004757d0
-// FUNCTION: HYPERX 0x00422a30
+// FUNCTION: HYPERX1000 0x004757d0
+// FUNCTION: HYPERX1001 0x00422a30
 void CameraObject::SortTransparentQueue()
 {
     if (g_nTransparentCount < 2)
@@ -672,8 +672,8 @@ void CameraObject::SortTransparentQueue()
 }
 
 // The transparent queue is one-based and walked back to front.
-// FUNCTION: HYPERX100 0x004759d0
-// FUNCTION: HYPERX 0x00422ba0
+// FUNCTION: HYPERX1000 0x004759d0
+// FUNCTION: HYPERX1001 0x00422ba0
 void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
 {
     const Vec3* pLightDir;
@@ -717,8 +717,8 @@ void CameraObject::DrawShadowAndTransparentPass(CollisionShape* pSurface)
 
 // The slot is tested as a dword and read as a word, so one above 32767 indexes backwards.
 
-// FUNCTION: HYPERX100 0x00475ac0
-// FUNCTION: HYPERX 0x00422c70
+// FUNCTION: HYPERX1000 0x00475ac0
+// FUNCTION: HYPERX1001 0x00422c70
 EngineObject* CameraObject::GetSecondaryTrackedObject()
 {
     const int nSlot = m_nSecondaryTracked;
@@ -731,8 +731,8 @@ EngineObject* CameraObject::GetSecondaryTrackedObject()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00475af0
-// FUNCTION: HYPERX 0x00422c90
+// FUNCTION: HYPERX1000 0x00475af0
+// FUNCTION: HYPERX1001 0x00422c90
 void CameraObject::SetSecondaryTrackedObject(EngineObject* pObject)
 {
     if (pObject == 0)
@@ -745,8 +745,8 @@ void CameraObject::SetSecondaryTrackedObject(EngineObject* pObject)
     m_nSecondaryTracked = pObject->GetSlot();
 }
 
-// FUNCTION: HYPERX100 0x00475b30
-// FUNCTION: HYPERX 0x00422cc0
+// FUNCTION: HYPERX1000 0x00475b30
+// FUNCTION: HYPERX1001 0x00422cc0
 EngineObject* CameraObject::GetLastTrackedObject()
 {
     if (m_nLastTracked == -1)
@@ -758,8 +758,8 @@ EngineObject* CameraObject::GetLastTrackedObject()
 }
 
 // A tracked object that goes away leaves a stale index; nothing tracked is minus one.
-// FUNCTION: HYPERX100 0x00475b60
-// FUNCTION: HYPERX 0x00422ce0
+// FUNCTION: HYPERX1000 0x00475b60
+// FUNCTION: HYPERX1001 0x00422ce0
 void CameraObject::SetLastTrackedObject(EngineObject* pObject)
 {
     if (pObject == 0)
@@ -772,8 +772,8 @@ void CameraObject::SetLastTrackedObject(EngineObject* pObject)
     m_nLastTracked = pObject->GetSlot();
 }
 
-// FUNCTION: HYPERX100 0x00475ba0
-// FUNCTION: HYPERX 0x00422d10
+// FUNCTION: HYPERX1000 0x00475ba0
+// FUNCTION: HYPERX1001 0x00422d10
 EngineObject* CameraObject::GetTrackedObject()
 {
     if (m_nPrimaryTracked == -1)
@@ -784,8 +784,8 @@ EngineObject* CameraObject::GetTrackedObject()
     return g_pGameEngine->m_ppSlots[(short)m_nPrimaryTracked];
 }
 
-// FUNCTION: HYPERX100 0x00475bd0
-// FUNCTION: HYPERX 0x00422d30
+// FUNCTION: HYPERX1000 0x00475bd0
+// FUNCTION: HYPERX1001 0x00422d30
 void CameraObject::SetTrackedObject(EngineObject* pObject)
 {
     if (pObject == 0)
@@ -801,14 +801,14 @@ void CameraObject::SetTrackedObject(EngineObject* pObject)
 float g_flCameraShakeZ = 3.0f;
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00474320
+// FUNCTION: HYPERX1000 0x00474320
 void CameraObject::InitBuffers()
 {
     EngineObject* const pTracked = GetTrackedObject();
 
     if (pTracked == 0)
     {
-        // STRING: HYPERX100 0x00514484
+        // STRING: HYPERX1000 0x00514484
         g_gameApp.Fatal("Camera::InitBuffers(): Null pointer for ModelToTrack\n");
     }
 
@@ -825,7 +825,7 @@ void CameraObject::InitBuffers()
     m_dirOut = vDir;
 }
 
-// FUNCTION: HYPERX100 0x00474620
+// FUNCTION: HYPERX1000 0x00474620
 void CameraObject::UpdatePosSmoothing()
 {
     PhysicsBody* const pSource = m_pBody;
@@ -840,7 +840,7 @@ void CameraObject::UpdatePosSmoothing()
     m_wPosIndex = (short)((m_wPosIndex + 1) % m_wPosCount);
 }
 
-// FUNCTION: HYPERX100 0x004747e0
+// FUNCTION: HYPERX1000 0x004747e0
 void CameraObject::UpdateDirSmoothingFrom(const Vec3* pDir)
 {
     const int   nIndex  = m_wDirIndex;
@@ -855,7 +855,7 @@ void CameraObject::UpdateDirSmoothingFrom(const Vec3* pDir)
     m_wDirIndex = (short)((m_wDirIndex + 1) % m_wDirCount);
 }
 
-// FUNCTION: HYPERX100 0x00475750
+// FUNCTION: HYPERX1000 0x00475750
 void CameraObject::ApplyFovStep()
 {
     if (m_nUnusedD == 1)

@@ -4,8 +4,8 @@
 #include "planvm/csteerbetweenfacing.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004209e0
-// FUNCTION: HYPERX 0x00413340
+// FUNCTION: HYPERX1000 0x004209e0
+// FUNCTION: HYPERX1001 0x00413340
 void CSteerBetweenFacingPool::Init()
 {
     AgendaItem* pNode = new CSteerBetweenFacing;
@@ -34,8 +34,8 @@ char CSteerBetweenFacingPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004239e0
-// FUNCTION: HYPERX 0x004133e0
+// FUNCTION: HYPERX1000 0x004239e0
+// FUNCTION: HYPERX1001 0x004133e0
 void* CSteerBetweenFacingPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CSteerBetweenFacingPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415280
+// FUNCTION: HYPERX1001 0x00415280
 CSteerBetweenFacingPool::~CSteerBetweenFacingPool()
 {
     while (m_pHead != 0)

@@ -4,24 +4,24 @@
 #include "planvm/conditiontable.h"
 #include "planvm/planvmglobals.h"
 
-// FUNCTION: HYPERX100 0x004ccc70
-// FUNCTION: HYPERX 0x0041e7e0
+// FUNCTION: HYPERX1000 0x004ccc70
+// FUNCTION: HYPERX1001 0x0041e7e0
 BehObj_HeadTracking::BehObj_HeadTracking()
 {
 }
 
-// FUNCTION: HYPERX 0x0041e820
+// FUNCTION: HYPERX1001 0x0041e820
 BehObj_HeadTracking::~BehObj_HeadTracking()
 {
 }
 
-// FUNCTION: HYPERX100 0x004ccd90
-// FUNCTION: HYPERX 0x0041e830
+// FUNCTION: HYPERX1000 0x004ccd90
+// FUNCTION: HYPERX1001 0x0041e830
 void BehObj_HeadTracking::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     PurgeAgendaForTracking();
 
-    // STRING: HYPERX 0x004bc390
+    // STRING: HYPERX1001 0x004bc390
     m_pszName = "Tracking";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

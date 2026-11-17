@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b2488
+// VTABLE: HYPERX1001 0x004b2488
 class BehObjDoNothingPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjDoNothingPool();
 };
 
-// SYNTHETIC: HYPERX 0x00421380
+// SYNTHETIC: HYPERX1001 0x00421380
 // BehObjDoNothingPool::`scalar deleting destructor'
 
 #endif

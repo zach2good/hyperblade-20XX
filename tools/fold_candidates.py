@@ -67,7 +67,7 @@ def changed_lines(row):
 
 def main():
     if not os.path.exists(REPORT):
-        print("no build/report.json; run python tools/foldcmp.py --target HYPERX --json build/report.json --silent")
+        print("no build/report.json; run python tools/foldcmp.py --target HYPERX1001 --json build/report.json --silent")
         return 1
 
     counts = collections.Counter()

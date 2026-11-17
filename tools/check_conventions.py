@@ -33,7 +33,7 @@ import urllib.request
 
 from ghidra_api import BASE as BRIDGE  # noqa: E402
 
-MARKER = re.compile(r"^//\s*(STUB|FUNCTION):\s*HYPERX\s+(0x[0-9a-fA-F]+)\s*$")
+MARKER = re.compile(r"^//\s*(STUB|FUNCTION):\s*HYPERX1001\s+(0x[0-9a-fA-F]+)\s*$")
 
 CONVENTIONS = ("__cdecl", "__stdcall", "__fastcall", "__thiscall")
 NAMESPACES = set()

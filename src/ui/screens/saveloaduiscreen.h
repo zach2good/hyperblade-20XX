@@ -17,19 +17,19 @@ enum SaveLoadWidget
     SAVELOAD_SLOT_COUNT  = 10
 };
 
-// VTABLE: HYPERX 0x004b3868
+// VTABLE: HYPERX1001 0x004b3868
 class SaveLoadUIScreen : public UIScreen
 {
 public:
-    // FUNCTION: HYPERX100 0x0046b7e0
-    // FUNCTION: HYPERX 0x0046eb40
+    // FUNCTION: HYPERX1000 0x0046b7e0
+    // FUNCTION: HYPERX1001 0x0046eb40
     virtual void OnOkayClick()
     {
         Game::SetEngineState((unsigned int)m_nReturnState);
     }
 
     // The linker folded this body onto OnOkayClick, which carries the marker.
-    // FUNCTION: HYPERX100 0x0046b800
+    // FUNCTION: HYPERX1000 0x0046b800
     virtual void OnCancelClick()
     {
         Game::SetEngineState((unsigned int)m_nReturnState);
@@ -60,7 +60,7 @@ public:
     int m_nSelectedLabelWidget; // 0x47c
 };
 
-// SYNTHETIC: HYPERX 0x0046e930
+// SYNTHETIC: HYPERX1001 0x0046e930
 // SaveLoadUIScreen::`scalar deleting destructor'
 
 #endif

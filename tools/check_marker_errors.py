@@ -64,7 +64,7 @@ os.close(handle)
 try:
     run = subprocess.run(
         [sys.executable, "-m", "reccmp.tools.asmcmp",
-         "--target", "HYPERX", "--json", report, "--no-color"],
+         "--target", "HYPERX1001", "--json", report, "--no-color"],
         cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
         encoding="utf-8", errors="replace")
 finally:

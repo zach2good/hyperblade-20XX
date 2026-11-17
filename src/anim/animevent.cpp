@@ -16,8 +16,8 @@
 
 // An index past the bank's count writes through a null pointer and faults.
 
-// FUNCTION: HYPERX100 0x00408bc0
-// FUNCTION: HYPERX 0x00406ea0
+// FUNCTION: HYPERX1000 0x00408bc0
+// FUNCTION: HYPERX1001 0x00406ea0
 void __cdecl AnimEvent::PlaySnd(Interactor*, PlanNode* pEvent, short*, int)
 {
     SoundEntry* pSlot;
@@ -42,8 +42,8 @@ void __cdecl AnimEvent::PlaySnd(Interactor*, PlanNode* pEvent, short*, int)
 }
 
 // A tag of _MESSAGE_DATA_ sends the caller's own argument as the group.
-// FUNCTION: HYPERX100 0x00408c20
-// FUNCTION: HYPERX 0x00406ef0
+// FUNCTION: HYPERX1000 0x00408c20
+// FUNCTION: HYPERX1001 0x00406ef0
 void AnimEvent::PlaySndType(Interactor*, PlanNode* pArgs, short*, int nGroup)
 {
     const int nTag = pArgs->m_pArgs[1].n;
@@ -59,8 +59,8 @@ void AnimEvent::PlaySndType(Interactor*, PlanNode* pArgs, short*, int nGroup)
 }
 
 // id_ACF_PanSndType in DATA/ENUMIDS.H: the plan action table registers this body at 13.
-// FUNCTION: HYPERX100 0x00408c60
-// FUNCTION: HYPERX 0x00406f20
+// FUNCTION: HYPERX1000 0x00408c60
+// FUNCTION: HYPERX1001 0x00406f20
 void __cdecl AnimEvent::PanSndType(Interactor*, PlanNode* pEvent, short*, int nGroup)
 {
     if (g_pAudioMgr->wNoSound != 0)
@@ -80,8 +80,8 @@ void __cdecl AnimEvent::PanSndType(Interactor*, PlanNode* pEvent, short*, int nG
 }
 
 // id_ACF_DopplerSound, plan action 51: plays the sound with no distance test.
-// FUNCTION: HYPERX100 0x00408cd0
-// FUNCTION: HYPERX 0x00406f50
+// FUNCTION: HYPERX1000 0x00408cd0
+// FUNCTION: HYPERX1001 0x00406f50
 void AnimEvent::DopplerSound(Interactor*, PlanNode* pArgs, short*, int)
 {
     if (g_pAudioMgr->wNoSound == 0)
@@ -91,8 +91,8 @@ void AnimEvent::DopplerSound(Interactor*, PlanNode* pArgs, short*, int)
 }
 
 // Plays while the emitter is within about 267 units, quieter the further it is.
-// FUNCTION: HYPERX100 0x00408d00
-// FUNCTION: HYPERX 0x00406f70
+// FUNCTION: HYPERX1000 0x00408d00
+// FUNCTION: HYPERX1001 0x00406f70
 void __cdecl AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEvent, short*, int)
 {
     SoundEntry* pSlot;
@@ -134,8 +134,8 @@ void __cdecl AnimEvent::PlaySoundByDistance(Interactor* pContext, PlanNode* pEve
 }
 
 // id_DCF_IsAmbient in DATA/ENUMIDS.H: the plan opcode table registers this body at 60.
-// FUNCTION: HYPERX100 0x00408e30
-// FUNCTION: HYPERX 0x00407050
+// FUNCTION: HYPERX1000 0x00408e30
+// FUNCTION: HYPERX1001 0x00407050
 void __cdecl AnimEvent::IsAmbient(Interactor*, PlanNode*, short* pResult, int nEntry)
 {
     SoundEntry* pEntry;

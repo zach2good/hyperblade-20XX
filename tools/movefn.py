@@ -37,7 +37,7 @@ def lift(b, qual):
         head = re.escape(cls.encode()) + rb'::' + re.escape(fn.encode())
     else:
         head = rb'(?<![:\w])' + re.escape(qual.encode())
-    pat = re.compile(rb'// FUNCTION: HYPERX (0x[0-9a-f]+)\r?\n[^\n]*?' + head + rb'\(')
+    pat = re.compile(rb'// FUNCTION: HYPERX1001 (0x[0-9a-f]+)\r?\n[^\n]*?' + head + rb'\(')
     m = pat.search(b)
     assert m, qual
     start = m.start()
@@ -86,7 +86,7 @@ for qual in names:
     if not block.endswith(tnl):
         block += tnl
     pos = None
-    for mm in re.finditer(rb'// FUNCTION: HYPERX (0x[0-9a-f]+)', tgt):
+    for mm in re.finditer(rb'// FUNCTION: HYPERX1001 (0x[0-9a-f]+)', tgt):
         if int(mm.group(1), 16) > addr:
             p = mm.start()
             while True:

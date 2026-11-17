@@ -104,14 +104,14 @@ const ReserveRows g_aFormationTable[16] = {
 HudSurfaces       g_hudSurfaces;
 DisplayStateBlock g_displayState;
 DDrawDeviceBlock  g_ddrawDevice;
-// STRING: HYPERX 0x004cb4e0
+// STRING: HYPERX1001 0x004cb4e0
 String               g_strHudDefaultName("");
 int                  g_nAnnouncerLineMs;
 StationaryPlanRecord g_aStationaryPlans[STATIONARY_SLOTS] = { 0 };
 int                  g_aStationarySlots[STATIONARY_SLOTS] = { 0 };
 int                  g_nStationaryCount;
 
-// STRING: HYPERX 0x004c724c
+// STRING: HYPERX1001 0x004c724c
 const char* const          g_pszEqualsSign = "=";
 unsigned char              g_bNetworkGame;
 unsigned char              g_bShowLightingInfo;
@@ -187,7 +187,7 @@ HDC g_hScreenBltDC;
 int g_nBackBufferHeight;
 int g_nBackBufferWidth;
 
-// GLOBAL: HYPERX 0x004c2c94
+// GLOBAL: HYPERX1001 0x004c2c94
 int g_nUnusedBesideCursor = 1;
 
 CameraObject*    g_pScene;
@@ -243,9 +243,9 @@ short               g_wActiveScoreLine;
 int                 g_nPlayerMode;
 unsigned char       g_bSuppressRokId;
 int                 g_nDPlayLastError = -1;
-// STRING: HYPERX 0x004bc410
+// STRING: HYPERX1001 0x004bc410
 const char* const g_pszCaptionSeparator = " ";
-// STRING: HYPERX 0x004c0d70
+// STRING: HYPERX1001 0x004c0d70
 const char*        g_pszClockFormat = "%d:%02d";
 unsigned char      g_bDragOff;
 unsigned short*    g_pRightStack;
@@ -275,21 +275,21 @@ short              g_wMultiplierRestColour2;
 const float        g_flBaseStatsSentinel = 1.0f;
 const float        g_flSpeedRateBase     = 2.0f;
 // The eight match-start markers Game::InitMatchMarkers derives, sixteen bytes apart.
-// GLOBAL: HYPERX 0x004d1960
+// GLOBAL: HYPERX1001 0x004d1960
 Vec3 g_vMarkerGoalMouthSouth;
-// GLOBAL: HYPERX 0x004d1970
+// GLOBAL: HYPERX1001 0x004d1970
 Vec3 g_vMarkerGoalMouthNorth;
-// GLOBAL: HYPERX 0x004d1980
+// GLOBAL: HYPERX1001 0x004d1980
 Vec3 g_vMarkerSurfaceCentre;
-// GLOBAL: HYPERX 0x004d1990
+// GLOBAL: HYPERX1001 0x004d1990
 Vec3 g_vMarkerSurfaceYMinus;
-// GLOBAL: HYPERX 0x004d19a0
+// GLOBAL: HYPERX1001 0x004d19a0
 Vec3 g_vMarkerSurfaceYPlus;
-// GLOBAL: HYPERX 0x004d19b0
+// GLOBAL: HYPERX1001 0x004d19b0
 Vec3 g_vMarkerGoalSouth;
-// GLOBAL: HYPERX 0x004d19c0
+// GLOBAL: HYPERX1001 0x004d19c0
 Vec3 g_vMarkerGoalNorth;
-// GLOBAL: HYPERX 0x004d19d0
+// GLOBAL: HYPERX1001 0x004d19d0
 Vec3 g_vMarkerRimEast;
 
 float               g_flOneAgendaItem      = 1.0f;
@@ -338,7 +338,7 @@ int                 g_nOptionTeammateMode;
 int                 g_nOptionAttackMode;
 struct MessageNode* g_pMessageHead;
 struct MessageNode* g_pMessageTail;
-// STRING: HYPERX 0x004bb818
+// STRING: HYPERX1001 0x004bb818
 const char* const  g_pszCharFormat = "%c";
 int                g_nNetSetupControlId;
 const GUID         g_iidTextureSurface      = { 0x2cdcd9e0, 0x25a0, 0x11cf, { 0xa3, 0x1a, 0x00, 0xaa, 0x00, 0xb9, 0x33, 0x56 } };
@@ -346,7 +346,7 @@ extern const float g_flCollisionPartDefault = 0.0f;
 extern const float g_flZeroMeshBone         = 0.0f;
 int                g_nBitmapCacheCount;
 BitmapCacheEntry*  g_pBitmapCache;
-// STRING: HYPERX 0x004bb810
+// STRING: HYPERX1001 0x004bb810
 const char* const  g_pszAnimNameFormat = "%s";
 extern const float g_flZeroAnimClipSet = 0.0f;
 NodeOwner*         g_pMsgInteractorPool;
@@ -408,7 +408,7 @@ char              g_szNetSetupStatus[256];
 #include "input/cheat.h"
 #include "planvm/plannode.h"
 // A message nothing shows.
-// GLOBAL: HYPERX 0x004c0e78
+// GLOBAL: HYPERX1001 0x004c0e78
 char g_szHostLost[] = "HOST player lost, terminating network\nplay.  Please re-start the game";
 
 GUID         g_guidNetApplication = { 0xe759bc83, 0x184d, 0x11cf, { 0xa4, 0x7c, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00 } };
@@ -472,11 +472,11 @@ extern const char* const g_pszPaletteExtension;
 const char* const        g_pszPaletteExtension = "wbp";
 
 // Extensions the original carries and nothing reads.
-// GLOBAL: HYPERX 0x004b4100
+// GLOBAL: HYPERX1001 0x004b4100
 extern const char* const g_pszWZBExtension = "wzb";
-// GLOBAL: HYPERX 0x004b4108
+// GLOBAL: HYPERX1001 0x004b4108
 extern const char* const g_pszTextExtension = "txt";
-// GLOBAL: HYPERX 0x004b410c
+// GLOBAL: HYPERX1001 0x004b410c
 extern const char* const g_pszPlanExtension = "pln";
 
 // The three statics PhysicsBody::UpdateMovementAxes keeps between frames.
@@ -693,10 +693,10 @@ int        g_bDoubleResMode;
 DisplayModeSize g_displayMode = { g_dwDisplayWidth, g_dwDisplayHeight };
 
 // Bit twenty six of the driver capability word.
-// GLOBAL: HYPERX 0x004cee80
+// GLOBAL: HYPERX1001 0x004cee80
 int g_bBltColourFill;
 
-// GLOBAL: HYPERX 0x004ce620
+// GLOBAL: HYPERX1001 0x004ce620
 unsigned int g_nVidMemTotal;
 
 extern const float g_flTwoCamera;
@@ -727,15 +727,15 @@ int g_nNetProviderCount;
 // Tells the dialog whether Return belongs to the chat box or the default button.
 int g_bChatEntryActive;
 
-// GLOBAL: HYPERX 0x004b36f4
+// GLOBAL: HYPERX1001 0x004b36f4
 extern const float g_flThreePlan;
 const float        g_flThreePlan = 3.0f;
 
-// GLOBAL: HYPERX 0x004b36f8
+// GLOBAL: HYPERX1001 0x004b36f8
 extern const float g_flFourPlan;
 const float        g_flFourPlan = 4.0f;
 
-// GLOBAL: HYPERX 0x004b17b8
+// GLOBAL: HYPERX1001 0x004b17b8
 extern const float g_flFourPlayer;
 const float        g_flFourPlayer = 4.0f;
 
@@ -744,24 +744,24 @@ int g_nInfoBarLastRokValue;
 Vec3 g_vCamPasserAim;
 
 // Float nought, g_flZeroBone, sits four bytes below.
-// GLOBAL: HYPERX 0x004b2230
+// GLOBAL: HYPERX1001 0x004b2230
 extern const float g_flOneBone;
 const float        g_flOneBone = 1.0f;
 
-// GLOBAL: HYPERX 0x004b1438
+// GLOBAL: HYPERX1001 0x004b1438
 extern const float g_flViewFracHalf;
 const float        g_flViewFracHalf = 0.5f;
 
-// GLOBAL: HYPERX 0x004cf954
+// GLOBAL: HYPERX1001 0x004cf954
 extern int g_aaColorSaved[2][20];
 int        g_aaColorSaved[2][20];
 
-// GLOBAL: HYPERX 0x004d1a54
+// GLOBAL: HYPERX1001 0x004d1a54
 extern PlanWord g_planParsedLocalReal;
 PlanWord        g_planParsedLocalReal;
 
 // Only the low byte is kept.
-// GLOBAL: HYPERX 0x004cb784
+// GLOBAL: HYPERX1001 0x004cb784
 extern int g_nPaletteAnimateResult;
 int        g_nPaletteAnimateResult;
 
@@ -778,17 +778,17 @@ extern const char* const g_pszPercentD = "%d";
 extern const char* const g_pszPercentHd = "%hd";
 
 // Milliseconds before the averaging weight is applied, seconds after.
-// GLOBAL: HYPERX 0x004d2178
+// GLOBAL: HYPERX1001 0x004d2178
 extern float g_flFrameDelta;
 float        g_flFrameDelta;
 
 // Whether the period's last ten seconds are being counted down.
-// GLOBAL: HYPERX 0x004d2188
+// GLOBAL: HYPERX1001 0x004d2188
 extern unsigned char g_bPeriodCountdownActive;
 unsigned char        g_bPeriodCountdownActive;
 
 // Open from MATCH_STAT_POSS_START to MATCH_STAT_POSS_STOP.
-// GLOBAL: HYPERX 0x004d2754
+// GLOBAL: HYPERX1001 0x004d2754
 extern char g_bStatIntervalOpen;
 char        g_bStatIntervalOpen;
 

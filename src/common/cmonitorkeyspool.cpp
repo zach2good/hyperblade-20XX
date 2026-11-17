@@ -4,8 +4,8 @@
 #include "planvm/cmonitorkeys.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041f900
-// FUNCTION: HYPERX 0x00413af0
+// FUNCTION: HYPERX1000 0x0041f900
+// FUNCTION: HYPERX1001 0x00413af0
 void CMonitorKeysPool::Init()
 {
     AgendaItem* pNode = new CMonitorKeys;
@@ -34,8 +34,8 @@ char CMonitorKeysPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423170
-// FUNCTION: HYPERX 0x00413b80
+// FUNCTION: HYPERX1000 0x00423170
+// FUNCTION: HYPERX1001 0x00413b80
 void* CMonitorKeysPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CMonitorKeysPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415780
+// FUNCTION: HYPERX1001 0x00415780
 CMonitorKeysPool::~CMonitorKeysPool()
 {
     while (m_pHead != 0)

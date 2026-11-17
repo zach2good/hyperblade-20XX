@@ -1,4 +1,4 @@
-# HYPERX markers that sit below a higher one in their file, from before
+# HYPERX1001 markers that sit below a higher one in their file, from before
 # tools/check_address_order.py. A new descent fails; remove a row once it is fixed.
 path,address,reason
 src/common/string.cpp,0x00423860,older than this check; moving the body is unmeasured

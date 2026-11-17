@@ -12,18 +12,18 @@
 #include <stdio.h>
 #include "engine/bmpwriter.h"
 
-// GLOBAL: HYPERX 0x004c2ca4
+// GLOBAL: HYPERX1001 0x004c2ca4
 extern int g_nDisplayBitsPerPixel;
 
-// GLOBAL: HYPERX 0x004cee88
+// GLOBAL: HYPERX1001 0x004cee88
 extern int g_nDisplayHorzRes;
 
-// GLOBAL: HYPERX 0x004cee8c
+// GLOBAL: HYPERX1001 0x004cee8c
 extern int g_nDisplayVertRes;
 
 // The loader's palette is returned whether or not anything was drawn.
-// FUNCTION: HYPERX100 0x004bf0a0
-// FUNCTION: HYPERX 0x00418cc0
+// FUNCTION: HYPERX1000 0x004bf0a0
+// FUNCTION: HYPERX1001 0x00418cc0
 HPALETTE GDI::DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName)
 {
     HPALETTE hPalette = 0;
@@ -93,8 +93,8 @@ HPALETTE GDI::DrawBitmapToWindow(HWND hWnd, LPCSTR pszResourceName)
 }
 
 // A file starting with MDM1 goes to the decompressor.
-// FUNCTION: HYPERX100 0x0048d5d0
-// FUNCTION: HYPERX 0x0043fff0
+// FUNCTION: HYPERX1000 0x0048d5d0
+// FUNCTION: HYPERX1001 0x0043fff0
 BITMAPINFOHEADER* __cdecl GDI::ReadBitmapFile(const char* pszName)
 {
     FileObj           file;
@@ -186,8 +186,8 @@ union DibHeader
 };
 
 // The file header is optional, and an OS/2 core header is widened in place.
-// FUNCTION: HYPERX100 0x0048d8d0
-// FUNCTION: HYPERX 0x00440200
+// FUNCTION: HYPERX1000 0x0048d8d0
+// FUNCTION: HYPERX1001 0x00440200
 BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
 {
     BITMAPFILEHEADER bmfh;
@@ -320,7 +320,7 @@ BITMAPINFOHEADER* GDI::ReadDIB(FileObj* pFile)
     return pDib;
 }
 
-// FUNCTION: HYPERX 0x0044b810
+// FUNCTION: HYPERX1001 0x0044b810
 void GDI::QueryDisplayCaps(void)
 {
     const HDC hdc = GetWindowDC(g_hWndGame);
@@ -330,28 +330,28 @@ void GDI::QueryDisplayCaps(void)
     g_nDisplayVertRes      = GetDeviceCaps(hdc, VERTRES);
 }
 
-// FUNCTION: HYPERX100 0x00418290
-// FUNCTION: HYPERX 0x0048f330
+// FUNCTION: HYPERX1000 0x00418290
+// FUNCTION: HYPERX1001 0x0048f330
 HBITMAP GDI::LoadBitmapHandle(const char* pszName)
 {
     return GDI::LoadBitmapWithPalette(pszName, 0);
 }
 
-// FUNCTION: HYPERX100 0x004182b0
-// FUNCTION: HYPERX 0x0048f340
+// FUNCTION: HYPERX1000 0x004182b0
+// FUNCTION: HYPERX1001 0x0048f340
 HBITMAP GDI::LoadBitmapAsBackground(const char* pszName, HPALETTE* phPalette)
 {
     return GDI::LoadBitmapWithPalette(pszName, phPalette);
 }
 
-// FUNCTION: HYPERX 0x0048f360
+// FUNCTION: HYPERX1001 0x0048f360
 HDC GDI::BeginPaint(LPPAINTSTRUCT pPaint)
 {
     return ::BeginPaint(g_gameApp.GetMainWindow(), pPaint);
 }
 
-// FUNCTION: HYPERX100 0x004796d0
-// FUNCTION: HYPERX 0x0048f380
+// FUNCTION: HYPERX1000 0x004796d0
+// FUNCTION: HYPERX1001 0x0048f380
 HPALETTE GDI::SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackground)
 {
     g_hSplashPalette = hPalette;
@@ -359,15 +359,15 @@ HPALETTE GDI::SelectSplashPalette(HDC hdc, HPALETTE hPalette, BOOL bForceBackgro
     return SelectPalette(hdc, hPalette, bForceBackground);
 }
 
-// FUNCTION: HYPERX100 0x00479700
-// FUNCTION: HYPERX 0x0048f3a0
+// FUNCTION: HYPERX1000 0x00479700
+// FUNCTION: HYPERX1001 0x0048f3a0
 UINT GDI::RealizePalette(HDC hdc)
 {
     return ::RealizePalette(hdc);
 }
 
-// FUNCTION: HYPERX100 0x00479720
-// FUNCTION: HYPERX 0x0048f3b0
+// FUNCTION: HYPERX1000 0x00479720
+// FUNCTION: HYPERX1001 0x0048f3b0
 void GDI::DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char* pszText, int cchText, int)
 {
     SetTextAlign(hdc, 0);
@@ -377,14 +377,14 @@ void GDI::DrawTransparentText(HDC hdc, COLORREF color, int x, int y, const char*
     TextOutA(hdc, x, y, pszText, cchText);
 }
 
-// FUNCTION: HYPERX 0x0048f3f0
+// FUNCTION: HYPERX1001 0x0048f3f0
 BOOL GDI::EndPaint(const PAINTSTRUCT* pPaint)
 {
     return ::EndPaint(g_gameApp.m_hWnd, pPaint);
 }
 
-// FUNCTION: HYPERX100 0x004797d0
-// FUNCTION: HYPERX 0x0048f410
+// FUNCTION: HYPERX1000 0x004797d0
+// FUNCTION: HYPERX1001 0x0048f410
 void GDI::SafeDeleteBitmap(HBITMAP hBitmap)
 {
     if (hBitmap != 0)
@@ -393,23 +393,23 @@ void GDI::SafeDeleteBitmap(HBITMAP hBitmap)
     }
 }
 
-// FUNCTION: HYPERX100 0x004797f0
-// FUNCTION: HYPERX 0x0048f420
+// FUNCTION: HYPERX1000 0x004797f0
+// FUNCTION: HYPERX1001 0x0048f420
 BOOL GDI::DeleteObject(HGDIOBJ hObject)
 {
     return ::DeleteObject(hObject);
 }
 
-// FUNCTION: HYPERX100 0x00479810
-// FUNCTION: HYPERX 0x0048f430
+// FUNCTION: HYPERX1000 0x00479810
+// FUNCTION: HYPERX1001 0x0048f430
 void GDI::GetBitmapDimensions(HBITMAP hBitmap, BITMAP* pBitmap)
 {
     GetObjectA(hBitmap, sizeof(BITMAP), pBitmap);
 }
 
 // The raster operation is not read: the blit is always a straight copy.
-// FUNCTION: HYPERX100 0x00479960
-// FUNCTION: HYPERX 0x0048f4b0
+// FUNCTION: HYPERX1000 0x00479960
+// FUNCTION: HYPERX1001 0x0048f4b0
 int GDI::BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, HPALETTE hPalette, int x1, int y1, DWORD)
 {
     const HDC hdcMem = CreateCompatibleDC(hdc);
@@ -432,8 +432,8 @@ int GDI::BlitBitmapToDC(HDC hdc, int x, int y, int cx, int cy, HBITMAP hBitmap, 
 }
 
 // The JPEG loader returns a device bitmap and no palette.
-// FUNCTION: HYPERX100 0x00479a60
-// FUNCTION: HYPERX 0x0048f540
+// FUNCTION: HYPERX1000 0x00479a60
+// FUNCTION: HYPERX1001 0x0048f540
 HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 {
     int        cColors = 256;
@@ -445,7 +445,7 @@ HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 
     if (_access(strPath.m_str.m_pchData, 0) == -1)
     {
-        // STRING: HYPERX 0x004c8960
+        // STRING: HYPERX1001 0x004c8960
         strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszResourceName, "jpg");
 
         if (_access(strPath.m_str.m_pchData, 0) == -1)
@@ -498,7 +498,7 @@ HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 
         if (hbm == 0)
         {
-            // STRING: HYPERX 0x004bc42c
+            // STRING: HYPERX1001 0x004bc42c
             g_gameApp.Error("Problem Creating DIBitmap %s, check palette!", pszResourceName);
         }
 
@@ -509,8 +509,8 @@ HBITMAP GDI::LoadBitmapWithPalette(LPCSTR pszResourceName, HPALETTE* phPalette)
 }
 
 // Entries 10 to 245 are marked reserved, leaving the system colours in place.
-// FUNCTION: HYPERX100 0x00479c50
-// FUNCTION: HYPERX 0x0048f720
+// FUNCTION: HYPERX1000 0x00479c50
+// FUNCTION: HYPERX1001 0x0048f720
 HPALETTE GDI::CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors)
 {
     HPALETTE hPalette = 0;
@@ -556,7 +556,7 @@ HPALETTE GDI::CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors)
 }
 
 // The error manager's table of application message codes: one null entry.
-// GLOBAL: HYPERX 0x004b407c
+// GLOBAL: HYPERX1001 0x004b407c
 extern const char* const cdjpeg_message_table[1];
 
 const char* const cdjpeg_message_table[1] = { 0 };
@@ -569,7 +569,7 @@ static boolean __cdecl COM_handler(j_decompress_ptr cinfo);
 
 } // namespace GDI
 
-// FUNCTION: HYPERX 0x0048f7d0
+// FUNCTION: HYPERX1001 0x0048f7d0
 HBITMAP GDI::LoadJPEGImage(const char* pszPath)
 {
     struct jpeg_decompress_struct cinfo;
@@ -590,15 +590,15 @@ HBITMAP GDI::LoadJPEGImage(const char* pszPath)
     jpeg_set_marker_processor(&cinfo, JPEG_COM, COM_handler);
     enable_signal_catcher((j_common_ptr)&cinfo);
 
-    // STRING: HYPERX 0x004bc938
+    // STRING: HYPERX1001 0x004bc938
     FILE* const pFile = fopen(pszPath, "rb");
 
     if (pFile == 0)
     {
         fprintf(stderr,
-                // STRING: HYPERX 0x004c8964
+                // STRING: HYPERX1001 0x004c8964
                 "%s: can't open %s\n",
-                // STRING: HYPERX 0x004c8978
+                // STRING: HYPERX1001 0x004c8978
                 "LoadJPEGImage",
                 pszPath);
         exit(EXIT_FAILURE);
@@ -678,7 +678,7 @@ HBITMAP GDI::LoadJPEGImage(const char* pszPath)
 
 // djpeg's comment-marker handler: skips the marker, printing its text to stderr when tracing.
 
-// FUNCTION: HYPERX 0x0048fa00
+// FUNCTION: HYPERX1001 0x0048fa00
 boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
 {
     boolean      traceit = (cinfo->err->trace_level >= 1);
@@ -690,7 +690,7 @@ boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
 
     if (traceit)
     {
-        // STRING: HYPERX 0x004c8994
+        // STRING: HYPERX1001 0x004c8994
         fprintf(stderr, "Comment, length %ld:\n", length);
     }
 
@@ -702,7 +702,7 @@ boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
         {
             if (ch == '\r')
             {
-                // STRING: HYPERX 0x004bc414
+                // STRING: HYPERX1001 0x004bc414
                 fprintf(stderr, "\n");
             }
             else if (ch == '\n')
@@ -714,7 +714,7 @@ boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
             }
             else if (ch == '\\')
             {
-                // STRING: HYPERX 0x004c8990
+                // STRING: HYPERX1001 0x004c8990
                 fprintf(stderr, "\\\\");
             }
             else if (isprint(ch))
@@ -723,7 +723,7 @@ boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
             }
             else
             {
-                // STRING: HYPERX 0x004c8988
+                // STRING: HYPERX1001 0x004c8988
                 fprintf(stderr, "\\%03o", ch);
             }
 
@@ -739,7 +739,7 @@ boolean __cdecl GDI::COM_handler(j_decompress_ptr cinfo)
     return TRUE;
 }
 
-// FUNCTION: HYPERX 0x0048fb00
+// FUNCTION: HYPERX1001 0x0048fb00
 int __cdecl GDI::jpeg_getc(j_decompress_ptr cinfo)
 {
     struct jpeg_source_mgr* datasrc = cinfo->src;

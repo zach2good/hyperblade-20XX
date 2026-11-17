@@ -73,8 +73,8 @@ inline void CollisionCage::ComputeNormal(CollisionCage* pCage, short nFace)
 
 // The eight bound stores recompute the same four pairs on every face pass.
 
-// FUNCTION: HYPERX100 0x00419350
-// FUNCTION: HYPERX 0x0042a280
+// FUNCTION: HYPERX1000 0x00419350
+// FUNCTION: HYPERX1001 0x0042a280
 void CollisionCage::ComputeFaceNormals()
 {
     MeshFace*       pFace;

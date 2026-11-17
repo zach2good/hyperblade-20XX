@@ -15,8 +15,8 @@
 #define INFOBAR_MESSAGE_MAX 128
 
 // src/engine/game.cpp allocates this as a sixteen-byte block.
-// FUNCTION: HYPERX100 0x0040f950
-// FUNCTION: HYPERX 0x00452710
+// FUNCTION: HYPERX1000 0x0040f950
+// FUNCTION: HYPERX1001 0x00452710
 MessageQueue::MessageQueue()
 {
     m_wCount      = 0;
@@ -30,8 +30,8 @@ MessageQueue::MessageQueue()
 #define MESSAGE_COLOUR_RED    0xff
 
 // Zero expiry means idle. Releasing the text can run arbitrary code, so the head is re-read.
-// FUNCTION: HYPERX100 0x0040f9d0
-// FUNCTION: HYPERX 0x00452730
+// FUNCTION: HYPERX1000 0x0040f9d0
+// FUNCTION: HYPERX1001 0x00452730
 void MessageQueue::Update()
 {
     int nColour;
@@ -114,8 +114,8 @@ void MessageQueue::Update()
 }
 
 // An index past the end, an empty entry or a failed allocation leaves the queue untouched.
-// FUNCTION: HYPERX100 0x0040fb30
-// FUNCTION: HYPERX 0x00452850
+// FUNCTION: HYPERX1000 0x0040fb30
+// FUNCTION: HYPERX1001 0x00452850
 void MessageQueue::PushFromTable(int nIndex, int nLine, int nDurationMs)
 {
     if (nIndex < m_wCount && m_ppNames[nIndex] != 0)
@@ -124,8 +124,8 @@ void MessageQueue::PushFromTable(int nIndex, int nLine, int nDurationMs)
     }
 }
 
-// FUNCTION: HYPERX100 0x0040fc70
-// FUNCTION: HYPERX 0x00452930
+// FUNCTION: HYPERX1000 0x0040fc70
+// FUNCTION: HYPERX1001 0x00452930
 void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLine, int nDurationMs)
 {
     char szName[MAX_PATH];
@@ -149,16 +149,16 @@ void MessageQueue::PushNamedFromTable(const char* pszPrefix, int nIndex, int nLi
     new MessageNode(szName, nLine, nDurationMs);
 }
 
-// FUNCTION: HYPERX100 0x0040fee0
-// FUNCTION: HYPERX 0x00452a80
+// FUNCTION: HYPERX1000 0x0040fee0
+// FUNCTION: HYPERX1001 0x00452a80
 void MessageQueue::Push(const char* pszText, int nLine, int nDurationMs)
 {
     new MessageNode(pszText, nLine, nDurationMs);
 }
 
 // The block pointer is not cleared, so the queue keeps a pointer to freed memory.
-// FUNCTION: HYPERX100 0x00410000
-// FUNCTION: HYPERX 0x00452b40
+// FUNCTION: HYPERX1000 0x00410000
+// FUNCTION: HYPERX1001 0x00452b40
 MessageQueue* MessageQueue::FreeAll()
 {
     for (int iName = 0; iName < m_wCount; iName++)
@@ -182,7 +182,7 @@ MessageQueue* MessageQueue::FreeAll()
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x0040f970
+// FUNCTION: HYPERX1000 0x0040f970
 void MessageQueue::FreeAllNoReturn()
 {
     for (int iName = 0; iName < m_wCount; iName++)
@@ -204,16 +204,16 @@ void MessageQueue::FreeAllNoReturn()
 }
 #endif
 
-// FUNCTION: HYPERX100 0x00410070
-// FUNCTION: HYPERX 0x00452b90
+// FUNCTION: HYPERX1000 0x00410070
+// FUNCTION: HYPERX1001 0x00452b90
 int MessageQueue::GetAt(int nIndex) const
 {
     return m_pnIds[nIndex];
 }
 
 // "id text" per line. A malformed line becomes a complaint message rather than being dropped.
-// FUNCTION: HYPERX100 0x00410080
-// FUNCTION: HYPERX 0x00452ba0
+// FUNCTION: HYPERX1000 0x00410080
+// FUNCTION: HYPERX1001 0x00452ba0
 unsigned int MessageQueue::LoadList(const char* pszFileName)
 {
     OwnedFile  file;
@@ -227,7 +227,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
     {
-        // STRING: HYPERX 0x004c3030
+        // STRING: HYPERX1001 0x004c3030
         g_gameApp.Fatal("ERROR OPENING INFOBAR LIST FILE ");
 
         return 0;
@@ -270,7 +270,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
                 }
                 else
                 {
-                    // STRING: HYPERX 0x004c3014
+                    // STRING: HYPERX1001 0x004c3014
                     sprintf(szNoString, "!EEK no string on line: %d\n", m_wCount);
 
                     pszText = strcpy(new char[strlen(szNoString) + 1], szNoString);
@@ -278,7 +278,7 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
             }
             else
             {
-                // STRING: HYPERX 0x004c2ff0
+                // STRING: HYPERX1001 0x004c2ff0
                 sprintf(szNoDescription, "!EEK empty description on line: %d\n", m_wCount);
 
                 pszText = strcpy(new char[strlen(szNoDescription) + 1], szNoDescription);
@@ -298,8 +298,8 @@ unsigned int MessageQueue::LoadList(const char* pszFileName)
 }
 
 // Freeing the text can run arbitrary code, so the head is re-read afterwards.
-// FUNCTION: HYPERX100 0x00410500
-// FUNCTION: HYPERX 0x00452ee0
+// FUNCTION: HYPERX1000 0x00410500
+// FUNCTION: HYPERX1001 0x00452ee0
 void MessageQueue::ProcessAndClear(void)
 {
     MessageNode* pWalk;

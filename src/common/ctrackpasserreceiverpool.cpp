@@ -4,8 +4,8 @@
 #include "engine/ctrackpasserreceiver.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041ea80
-// FUNCTION: HYPERX 0x00414260
+// FUNCTION: HYPERX1000 0x0041ea80
+// FUNCTION: HYPERX1001 0x00414260
 void CTrackPasser_ReceiverPool::Init()
 {
     AgendaItem* pNode = new CTrackPasser_Receiver;
@@ -34,8 +34,8 @@ char CTrackPasser_ReceiverPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004229f0
-// FUNCTION: HYPERX 0x00414310
+// FUNCTION: HYPERX1000 0x004229f0
+// FUNCTION: HYPERX1001 0x00414310
 void* CTrackPasser_ReceiverPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CTrackPasser_ReceiverPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415c80
+// FUNCTION: HYPERX1001 0x00415c80
 CTrackPasser_ReceiverPool::~CTrackPasser_ReceiverPool()
 {
     while (m_pHead != 0)

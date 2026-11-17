@@ -13,7 +13,7 @@ struct RadarPoint : public POINT
     }
 };
 
-// VTABLE: HYPERX 0x004b30d4
+// VTABLE: HYPERX1001 0x004b30d4
 class Radar : public Texture
 {
 public:
@@ -63,7 +63,7 @@ private:
     int        m_nArena;            // 0x13c
 };
 
-// SYNTHETIC: HYPERX 0x0043f3d0
+// SYNTHETIC: HYPERX1001 0x0043f3d0
 // Radar::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(Radar) == 0x140);

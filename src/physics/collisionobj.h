@@ -7,7 +7,7 @@
 #include "physics/collisionshape.h"
 #include "globals.h"
 
-// VTABLE: HYPERX 0x004b155c
+// VTABLE: HYPERX1001 0x004b155c
 class CollisionObj : public CollisionShape
 {
 public:
@@ -35,8 +35,8 @@ public:
 
 public:
     // 0x00405850 stores this table and jumps to ~CollisionShape.
-    // FUNCTION: HYPERX100 0x00412270
-    // FUNCTION: HYPERX 0x00405850
+    // FUNCTION: HYPERX1000 0x00412270
+    // FUNCTION: HYPERX1001 0x00405850
     ~CollisionObj() throw()
     {
     }

@@ -15,58 +15,58 @@
 
 // The original's messages call this class CDDSurface.
 
-// FUNCTION: HYPERX100 0x00440b60
-// FUNCTION: HYPERX 0x00433890
+// FUNCTION: HYPERX1000 0x00440b60
+// FUNCTION: HYPERX1001 0x00433890
 void Texture::SetVisible(int nVisible)
 {
     m_bVisible = nVisible;
 }
 
-// FUNCTION: HYPERX100 0x00440b70
-// FUNCTION: HYPERX 0x004338a0
+// FUNCTION: HYPERX1000 0x00440b70
+// FUNCTION: HYPERX1001 0x004338a0
 void Texture::SetPosition(Point pt)
 {
     m_ptPosition.x = pt.x;
     m_ptPosition.y = pt.y;
 }
 
-// FUNCTION: HYPERX100 0x00440bc0
-// FUNCTION: HYPERX 0x004338c0
+// FUNCTION: HYPERX1000 0x00440bc0
+// FUNCTION: HYPERX1001 0x004338c0
 Point Texture::GetPosition()
 {
     return m_ptPosition;
 }
 
-// FUNCTION: HYPERX100 0x00440c10
-// FUNCTION: HYPERX 0x00433900
+// FUNCTION: HYPERX1000 0x00440c10
+// FUNCTION: HYPERX1001 0x00433900
 Point Texture::GetSize()
 {
     return m_ptSize;
 }
 
-// FUNCTION: HYPERX100 0x00440c30
-// FUNCTION: HYPERX 0x00433920
+// FUNCTION: HYPERX1000 0x00440c30
+// FUNCTION: HYPERX1001 0x00433920
 int Texture::GetForeColor()
 {
     return m_dwScrollColor;
 }
 
-// FUNCTION: HYPERX100 0x00440c40
-// FUNCTION: HYPERX 0x00433930
+// FUNCTION: HYPERX1000 0x00440c40
+// FUNCTION: HYPERX1001 0x00433930
 int Texture::GetBgColor()
 {
     return m_dwFillColor;
 }
 
-// FUNCTION: HYPERX100 0x00440c50
-// FUNCTION: HYPERX 0x00433940
+// FUNCTION: HYPERX1000 0x00440c50
+// FUNCTION: HYPERX1001 0x00433940
 Point Texture::GetInset()
 {
     return m_ptInset;
 }
 
-// FUNCTION: HYPERX100 0x00440c80
-// FUNCTION: HYPERX 0x00433960
+// FUNCTION: HYPERX1000 0x00440c80
+// FUNCTION: HYPERX1001 0x00433960
 void Texture::Unlock()
 {
     m_pSurface->Unlock(0);
@@ -74,16 +74,16 @@ void Texture::Unlock()
 
 SurfacePoint g_ptSurfacePixels;
 
-// FUNCTION: HYPERX100 0x00440810
-// FUNCTION: HYPERX 0x00436db0
+// FUNCTION: HYPERX1000 0x00440810
+// FUNCTION: HYPERX1001 0x00436db0
 Texture::Texture()
 : m_nUnusedA(0)
 {
     Init(0);
 }
 
-// FUNCTION: HYPERX100 0x00440890
-// FUNCTION: HYPERX 0x00436e10
+// FUNCTION: HYPERX1000 0x00440890
+// FUNCTION: HYPERX1001 0x00436e10
 Texture::Texture(Texture* pSource)
 : m_nUnusedA(0)
 {
@@ -91,8 +91,8 @@ Texture::Texture(Texture* pSource)
 }
 
 // The pixel counters are cleared only when nothing has been recorded before.
-// FUNCTION: HYPERX100 0x004408e0
-// FUNCTION: HYPERX 0x00436e50
+// FUNCTION: HYPERX1000 0x004408e0
+// FUNCTION: HYPERX1001 0x00436e50
 Texture::Texture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : m_nUnusedA(0)
 {
@@ -111,8 +111,8 @@ Texture::Texture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawS
 
 // Fatal when a DirectDraw pointer is missing. The GetCaps result is overwritten with nought.
 
-// FUNCTION: HYPERX100 0x00440970
-// FUNCTION: HYPERX 0x00436ed0
+// FUNCTION: HYPERX1000 0x00440970
+// FUNCTION: HYPERX1001 0x00436ed0
 void Texture::Init(Texture* pSource)
 {
     DDrawCaps caps;
@@ -168,26 +168,26 @@ void Texture::Init(Texture* pSource)
 
     if (g_pSurfaceDDraw == 0)
     {
-        // STRING: HYPERX 0x004be44c
+        // STRING: HYPERX1001 0x004be44c
         g_gameApp.Fatal("Cannot create CDDSurface: NULL DirectDraw object.");
     }
 
     if (g_pSurfaceFront == 0)
     {
-        // STRING: HYPERX 0x004be41c
+        // STRING: HYPERX1001 0x004be41c
         g_gameApp.Fatal("Cannot create CDDSurface: NULL Front Surface.");
     }
 
     if (g_pSurfaceBack == 0)
     {
-        // STRING: HYPERX 0x004be3ec
+        // STRING: HYPERX1001 0x004be3ec
         g_gameApp.Fatal("Cannot create CDDSurface: NULL Back Surface.");
     }
 }
 
 // Where the surface lives picks which pixel total it comes off.
-// FUNCTION: HYPERX100 0x00440ca0
-// FUNCTION: HYPERX 0x00437050
+// FUNCTION: HYPERX1000 0x00440ca0
+// FUNCTION: HYPERX1001 0x00437050
 Texture::~Texture()
 {
     if (m_bSystemMemory != 0)
@@ -226,8 +226,8 @@ struct IDirectDrawSurface;
 #define KEY_WHITE 0xffffff
 
 // System memory answers nought and adds to .x; video memory answers the pixel count and adds to .y.
-// FUNCTION: HYPERX100 0x00440d40
-// FUNCTION: HYPERX 0x004370e0
+// FUNCTION: HYPERX1000 0x00440d40
+// FUNCTION: HYPERX1001 0x004370e0
 int Texture::AllocSurface(SurfacePoint size, int bColourKey, int bSystemMemory)
 {
     DDrawCaps caps;
@@ -291,15 +291,15 @@ int Texture::AllocSurface(SurfacePoint size, int bColourKey, int bSystemMemory)
     return m_ptSize.y * m_ptSize.x;
 }
 
-// FUNCTION: HYPERX100 0x00440f80
-// FUNCTION: HYPERX 0x00437240
+// FUNCTION: HYPERX1000 0x00440f80
+// FUNCTION: HYPERX1001 0x00437240
 void Texture::SetFillColor(int nFillColor)
 {
     m_dwFillColor = nFillColor;
 }
 
-// FUNCTION: HYPERX100 0x00441030
-// FUNCTION: HYPERX 0x00437260
+// FUNCTION: HYPERX1000 0x00441030
+// FUNCTION: HYPERX1001 0x00437260
 int Texture::OnSurfaceLost()
 {
     IDirectDrawSurface* const pSource = m_pSurface;
@@ -310,7 +310,7 @@ int Texture::OnSurfaceLost()
 
         if (m_hr != 0)
         {
-            // STRING: HYPERX 0x004be480
+            // STRING: HYPERX1001 0x004be480
             g_gameApp.Fatal("CDDSurface::Restore Surface Failed %d!",
                             m_hr & DDRAW_ERROR_CODE_MASK);
         }
@@ -320,8 +320,8 @@ int Texture::OnSurfaceLost()
 }
 
 // The key is the surface's own pixel for white, so it works at any depth.
-// FUNCTION: HYPERX100 0x00441090
-// FUNCTION: HYPERX 0x004372a0
+// FUNCTION: HYPERX1000 0x00441090
+// FUNCTION: HYPERX1001 0x004372a0
 IDirectDrawSurface* Texture::CreateSurface(int nWidth, int nHeight, int bColourKey, int bSystemMemory)
 {
     DDSURFACEDESC desc;
@@ -347,7 +347,7 @@ IDirectDrawSurface* Texture::CreateSurface(int nWidth, int nHeight, int bColourK
     if (m_hr < 0)
     {
         g_gameApp.Error(
-            // STRING: HYPERX 0x004be4a8
+            // STRING: HYPERX1001 0x004be4a8
             "CDDSurface::CreateSurface FAILED, rc = %d!",
             m_hr & DDRAW_ERROR_CODE_MASK);
 
@@ -372,8 +372,8 @@ IDirectDrawSurface* Texture::CreateSurface(int nWidth, int nHeight, int bColourK
     return pSurface;
 }
 
-// FUNCTION: HYPERX100 0x004411d0
-// FUNCTION: HYPERX 0x004373b0
+// FUNCTION: HYPERX1000 0x004411d0
+// FUNCTION: HYPERX1001 0x004373b0
 void Texture::DispatchRect(int nLeft, int nTop, int nRight, int nBottom)
 {
     TextureRect rect;
@@ -387,8 +387,8 @@ void Texture::DispatchRect(int nLeft, int nTop, int nRight, int nBottom)
 }
 
 // A high-edge nudge subtracts the size, so nudging the right edge moves the origin left.
-// FUNCTION: HYPERX100 0x00441210
-// FUNCTION: HYPERX 0x004373f0
+// FUNCTION: HYPERX1000 0x00441210
+// FUNCTION: HYPERX1001 0x004373f0
 void Texture::SetOffset(TextureRect rect)
 {
     Point ptExtent;
@@ -436,8 +436,8 @@ void Texture::SetOffset(TextureRect rect)
 }
 
 // A lost screen is the only error handled; a failed restore is fatal.
-// FUNCTION: HYPERX100 0x00441360
-// FUNCTION: HYPERX 0x004374e0
+// FUNCTION: HYPERX1000 0x00441360
+// FUNCTION: HYPERX1001 0x004374e0
 int Texture::Draw()
 {
     if (m_bVisible != 0)
@@ -451,7 +451,7 @@ int Texture::Draw()
 
             if (m_hr != 0)
             {
-                // STRING: HYPERX 0x004be4d4
+                // STRING: HYPERX1001 0x004be4d4
                 g_gameApp.Fatal("CDDSurface::Draw Primary Surface Restore failed!\n%s\n",
                                 DDraw::ErrorToString(m_hr));
             }
@@ -467,8 +467,8 @@ int Texture::Draw()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00441420
-// FUNCTION: HYPERX 0x00437570
+// FUNCTION: HYPERX1000 0x00441420
+// FUNCTION: HYPERX1001 0x00437570
 void Texture::SetClipRect(int nClipped, Point pt)
 {
     m_bClipped  = nClipped;
@@ -476,8 +476,8 @@ void Texture::SetClipRect(int nClipped, Point pt)
     m_ptInset.y = pt.y;
 }
 
-// FUNCTION: HYPERX100 0x00441450
-// FUNCTION: HYPERX 0x004375a0
+// FUNCTION: HYPERX1000 0x00441450
+// FUNCTION: HYPERX1001 0x004375a0
 int Texture::BltFill()
 {
     RECT rc;
@@ -508,8 +508,8 @@ int Texture::BltFill()
     return m_hr == 0;
 }
 
-// FUNCTION: HYPERX100 0x00441540
-// FUNCTION: HYPERX 0x00437650
+// FUNCTION: HYPERX1000 0x00441540
+// FUNCTION: HYPERX1001 0x00437650
 int Texture::BltFillColour(unsigned int nColour)
 {
     RECT rc;
@@ -541,8 +541,8 @@ int Texture::BltFillColour(unsigned int nColour)
 }
 
 // A clipped surface answers the clip origin's pixel.
-// FUNCTION: HYPERX100 0x00441650
-// FUNCTION: HYPERX 0x00437710
+// FUNCTION: HYPERX1000 0x00441650
+// FUNCTION: HYPERX1001 0x00437710
 unsigned char* Texture::LockAndGetPitch(int* pnPitch)
 {
     DDSURFACEDESC desc;
@@ -563,7 +563,7 @@ unsigned char* Texture::LockAndGetPitch(int* pnPitch)
 
     if (m_hr != 0 || m_pSurface == 0)
     {
-        // STRING: HYPERX 0x004be50c
+        // STRING: HYPERX1001 0x004be50c
         g_gameApp.Fatal("CDDSurface::Lock failed %d!", m_hr & DDRAW_ERROR_CODE_MASK);
     }
 
@@ -577,8 +577,8 @@ unsigned char* Texture::LockAndGetPitch(int* pnPitch)
     return (unsigned char*)desc.lpSurface;
 }
 
-// FUNCTION: HYPERX100 0x00441730
-// FUNCTION: HYPERX 0x004377e0
+// FUNCTION: HYPERX1000 0x00441730
+// FUNCTION: HYPERX1001 0x004377e0
 void Texture::Unused(int, int, int)
 {
 }

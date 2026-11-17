@@ -5,7 +5,7 @@
 
 // What a DefineObject of type Joystick builds, object type 0x16.
 // Overrides only the deleting destructor, shared with the other two device classes.
-// VTABLE: HYPERX 0x004b35e4
+// VTABLE: HYPERX1001 0x004b35e4
 class JoystickDeviceObj : public InputDeviceObj
 {
 public:

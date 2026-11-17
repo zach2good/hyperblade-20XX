@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slots 0 and 2 are bodies many tables share, declared where they are defined.
-// VTABLE: HYPERX 0x004b1cd0
+// VTABLE: HYPERX1001 0x004b1cd0
 class CSteerBetweenFacing : public ReleasingAgendaItem
 {
 public:

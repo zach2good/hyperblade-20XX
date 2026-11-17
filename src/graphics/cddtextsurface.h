@@ -6,7 +6,7 @@
 #include "common/pathstring.h"
 #include "common/staticassert.h"
 
-// VTABLE: HYPERX 0x004b2dc4
+// VTABLE: HYPERX1001 0x004b2dc4
 class CDDTextSurface : public Texture
 {
 public:
@@ -41,7 +41,7 @@ public:
 #endif
 };
 
-// SYNTHETIC: HYPERX 0x00437860
+// SYNTHETIC: HYPERX1001 0x00437860
 // CDDTextSurface::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(CDDTextSurface) == 0xd0);

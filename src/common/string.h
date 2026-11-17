@@ -28,7 +28,7 @@ struct EmptyString
 };
 
 // Reference count minus one, so nothing ever frees it.
-// GLOBAL: HYPERX 0x004bcf2c
+// GLOBAL: HYPERX1001 0x004bcf2c
 extern EmptyString g_emptyString;
 
 class String

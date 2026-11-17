@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1968
+// VTABLE: HYPERX1001 0x004b1968
 class CRelaxYawPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CRelaxYawPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415620
+// SYNTHETIC: HYPERX1001 0x00415620
 // CRelaxYawPool::`scalar deleting destructor'
 
 #endif

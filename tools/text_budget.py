@@ -163,7 +163,7 @@ def main():
     print("%-14s %#10x, the original's at %#x" % (".text$x", funclets, min(unwinds)))
 
     user = yaml.safe_load((ROOT / "reccmp-user.yml").read_text())
-    original = detect_image(user["targets"]["HYPERX"]["path"])
+    original = detect_image(user["targets"]["HYPERX1001"]["path"])
     ours = xcu_entries(detect_image(str(OUT / "HYPERX.exe")))
     theirs = xcu_entries(original)
     print(".CRT$XCU: %d entries, the original's %d" % (len(ours), len(theirs)))
@@ -171,7 +171,7 @@ def main():
         if addr not in paired:
             print("  entry %d, %#x, has no pair" % (index, addr))
 
-    theirs = data_sizes(user["targets"]["HYPERX"]["path"])
+    theirs = data_sizes(user["targets"]["HYPERX1001"]["path"])
     for name, size, original_size in zip((".rdata", ".data", "zeroed .data"),
                                          data_sizes(OUT / "HYPERX.exe"), theirs):
         print("%-16s %#10x %#10x %+8d" % (name, size, original_size, size - original_size))

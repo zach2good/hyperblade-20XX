@@ -6,7 +6,7 @@
 class EngineObject;
 
 // The four pointers are what its init fills; m_vLastDir is last frame's swung look.
-// VTABLE: HYPERX 0x004b1f40
+// VTABLE: HYPERX1001 0x004b1f40
 class CTrack : public ReleasingAgendaItem
 {
     // m_pOwner is a camera for this kind.

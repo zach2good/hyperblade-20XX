@@ -12,7 +12,7 @@ struct TorchBitmaps
     const char* pszLost;
 };
 
-// GLOBAL: HYPERX 0x004c3f88
+// GLOBAL: HYPERX1001 0x004c3f88
 extern TorchBitmaps g_aTorchBitmaps[14];
 
 #endif

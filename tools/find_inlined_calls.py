@@ -22,7 +22,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MARKER = re.compile(r"// FUNCTION: HYPERX (0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"// FUNCTION: HYPERX1001 (0x[0-9a-fA-F]+)")
 MISSING = re.compile(r":\s*-(?:call|jmp) ([\w:~`'@$?]+) \(FUNCTION\)")
 PRESENT = re.compile(r":\s*\+(?:call|jmp) ([\w:~`'@$?]+) \(FUNCTION\)")
 
@@ -54,7 +54,7 @@ def main():
         if (row.get("matching") or 0) >= 1 or address not in home:
             continue
 
-        out = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX",
+        out = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "foldcmp.py"), "--target", "HYPERX1001",
                               "--verbose", hex(address)],
                              capture_output=True, text=True, errors="ignore").stdout
         out = re.sub(r"\x1b\[[0-9;]*m", "", out)

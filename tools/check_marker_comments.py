@@ -21,7 +21,7 @@ import glob
 import re
 import sys
 
-MARKER = re.compile(r"^\s*//\s*(GLOBAL|VTABLE|STRING|FUNCTION):\s*HYPERX\s+0x[0-9a-fA-F]+\s*$")
+MARKER = re.compile(r"^\s*//\s*(GLOBAL|VTABLE|STRING|FUNCTION):\s*HYPERX1001\s+0x[0-9a-fA-F]+\s*$")
 
 # What reccmp's class_decl_regex accepts as a commented declaration under a VTABLE marker.
 CLASS_DECL = re.compile(r"^(class|struct)\s+\S")

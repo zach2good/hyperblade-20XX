@@ -2,11 +2,12 @@
 
 Each .cpp lists its bodies in the order the original placed them. Two rules:
 
-1. HYPERX markers ascend down the file. symbols/address_order.csv lists the descents that predate
-   this check, so only a new one fails.
-2. A body with a HYPERX100 marker and no HYPERX one, outside v1.0.0.0-only code, sits between the
-   nearest HYPERX100 markers above and below it when those two ascend, or on the right side of
-   the only one it has. v1.0.0.0's order is not checked otherwise: its link order differs.
+1. HYPERX1001 markers ascend down the file. symbols/address_order.csv lists the descents that
+   predate this check, so only a new one fails.
+2. A body with a HYPERX1000 marker and no HYPERX1001 one, outside v1.0.0.0-only code, sits
+   between the nearest HYPERX1000 markers above and below it when those two ascend, or on the
+   right side of the only one it has. v1.0.0.0's order is not checked otherwise: its link order
+   differs.
 
     python tools/check_address_order.py
     python tools/check_address_order.py --save    # write the register from today's descents
@@ -26,11 +27,11 @@ REASON = "older than this check; moving the body is unmeasured"
 V100 = ("HYPERX_V100", "defined(HYPERX_V100)")
 NOT_V100 = ("!defined(HYPERX_V100)", "!HYPERX_V100")
 
-MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*(HYPERX100|HYPERX)\s+0x([0-9a-fA-F]+)")
+MARKER = re.compile(r"^\s*//\s*FUNCTION:\s*(HYPERX1000|HYPERX1001)\s+0x([0-9a-fA-F]+)")
 
 
 def bodies(path):
-    """Answers (line, HYPERX address or None, HYPERX100 address or None) for each marked body."""
+    """Answers (line, HYPERX1001 address or None, HYPERX1000 address or None) for each marked body."""
     found = []
     pending = {}
     # One [only v1.0.0.0, a branch excluded v1.0.0.0] pair per open #if. Only a branch whose whole
@@ -70,7 +71,7 @@ def bodies(path):
             continue
 
         if pending and not any(only for only, _ in stack):
-            found.append((number, pending.get("HYPERX"), pending.get("HYPERX100")))
+            found.append((number, pending.get("HYPERX1001"), pending.get("HYPERX1000")))
 
         pending = {}
 
@@ -126,7 +127,7 @@ def main():
 
     if "--save" in sys.argv:
         with open(REGISTER, "w", newline="\n", encoding="utf-8") as handle:
-            handle.write("# HYPERX markers that sit below a higher one in their file, from before\n")
+            handle.write("# HYPERX1001 markers that sit below a higher one in their file, from before\n")
             handle.write("# tools/check_address_order.py. A new descent fails; remove a row once it is fixed.\n")
             writer = csv.writer(handle, lineterminator="\n")
             writer.writerow(("path", "address", "reason"))
@@ -142,7 +143,7 @@ def main():
             continue
 
         bad += 1
-        print("%s:%d: %s 0x%08x out of order" % (shown, number, "HYPERX100" if kind == "v100" else "HYPERX", addr))
+        print("%s:%d: %s 0x%08x out of order" % (shown, number, "HYPERX1000" if kind == "v100" else "HYPERX1001", addr))
 
     stale = known - set(descents)
     for shown, addr in sorted(stale):

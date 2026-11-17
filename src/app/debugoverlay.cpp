@@ -21,91 +21,91 @@
 // TODO: Size guessed; the next known global is not near it.
 #define DEBUG_TEXT_BYTES 0x100
 
-// GLOBAL: HYPERX100 0x005131f0
+// GLOBAL: HYPERX1000 0x005131f0
 char g_bShowDromerEnergy = 1;
 
-// GLOBAL: HYPERX100 0x005131e4
+// GLOBAL: HYPERX1000 0x005131e4
 char g_bShowPolyCounts;
 
-// GLOBAL: HYPERX100 0x005131ec
+// GLOBAL: HYPERX1000 0x005131ec
 char g_bShowLogA;
 
-// GLOBAL: HYPERX100 0x005131e8
+// GLOBAL: HYPERX1000 0x005131e8
 char g_bShowLogB;
 
-// GLOBAL: HYPERX100 0x00523410
+// GLOBAL: HYPERX1000 0x00523410
 char g_szDebugText[DEBUG_TEXT_BYTES];
 
 // TODO: The software renderer's counters, presumably; nothing in v1.0.0.1 keeps them.
-// GLOBAL: HYPERX100 0x005122bc
+// GLOBAL: HYPERX1000 0x005122bc
 unsigned int g_nPolysTotal;
 
-// GLOBAL: HYPERX100 0x005122c0
+// GLOBAL: HYPERX1000 0x005122c0
 unsigned int g_nPolysInView;
 
-// GLOBAL: HYPERX100 0x005122c4
+// GLOBAL: HYPERX1000 0x005122c4
 unsigned int g_nPolysDrawn;
 
-// GLOBAL: HYPERX100 0x005122c8
+// GLOBAL: HYPERX1000 0x005122c8
 unsigned int g_nPolysBackFace;
 
-// GLOBAL: HYPERX100 0x005122cc
+// GLOBAL: HYPERX1000 0x005122cc
 unsigned int g_nPolysClipped;
 
-// GLOBAL: HYPERX100 0x005122d0
+// GLOBAL: HYPERX1000 0x005122d0
 unsigned int g_nPolysClippedOut;
 
-// GLOBAL: HYPERX100 0x005122d4
+// GLOBAL: HYPERX1000 0x005122d4
 unsigned int g_nPolysClippedIn;
 
-// GLOBAL: HYPERX100 0x005253c0
+// GLOBAL: HYPERX1000 0x005253c0
 char g_aszLogA[DEBUG_LOG_LINES][DEBUG_LOG_LINE_BYTES];
 
-// GLOBAL: HYPERX100 0x00525ae0
+// GLOBAL: HYPERX1000 0x00525ae0
 UINT g_anLogALength[DEBUG_LOG_LINES];
 
-// GLOBAL: HYPERX100 0x00517ad0
+// GLOBAL: HYPERX1000 0x00517ad0
 short g_nLogACount;
 
-// GLOBAL: HYPERX100 0x00517ad4
+// GLOBAL: HYPERX1000 0x00517ad4
 short g_nLogAHead;
 
-// GLOBAL: HYPERX100 0x00517ad8
+// GLOBAL: HYPERX1000 0x00517ad8
 short g_nLogASequence;
 
-// GLOBAL: HYPERX100 0x00517b20
+// GLOBAL: HYPERX1000 0x00517b20
 short g_nLogAX = 10;
 
 // TODO: Nothing in v1.0.0.0 adds to the second log.
-// GLOBAL: HYPERX100 0x00524de0
+// GLOBAL: HYPERX1000 0x00524de0
 char g_aszLogB[DEBUG_LOG_LINES][DEBUG_LOG_LINE_BYTES];
 
-// GLOBAL: HYPERX100 0x00525ab0
+// GLOBAL: HYPERX1000 0x00525ab0
 UINT g_anLogBLength[DEBUG_LOG_LINES];
 
-// GLOBAL: HYPERX100 0x00517acc
+// GLOBAL: HYPERX1000 0x00517acc
 short g_nLogBCount;
 
-// GLOBAL: HYPERX100 0x00517b1c
+// GLOBAL: HYPERX1000 0x00517b1c
 short g_nLogBX = 300;
 
-// GLOBAL: HYPERX100 0x005259c8
+// GLOBAL: HYPERX1000 0x005259c8
 TextOutRecord* g_apTextStack[DEBUG_TEXT_STACK];
 
-// GLOBAL: HYPERX100 0x00517adc
+// GLOBAL: HYPERX1000 0x00517adc
 short g_nTextStackDepth;
 
-// GLOBAL: HYPERX100 0x00525a70
+// GLOBAL: HYPERX1000 0x00525a70
 TextOutRecord* g_apBatchStack[DEBUG_BATCH_STACK];
 
-// GLOBAL: HYPERX100 0x005259a8
+// GLOBAL: HYPERX1000 0x005259a8
 short g_anBatchCount[DEBUG_BATCH_STACK];
 
-// GLOBAL: HYPERX100 0x00517ae0
+// GLOBAL: HYPERX1000 0x00517ae0
 short g_nBatchStackDepth;
 
 // TODO: The screen size globals are matched to the back buffer's by use.
-// FUNCTION: HYPERX100 0x00475ed0
+// FUNCTION: HYPERX1000 0x00475ed0
 void __cdecl DebugOverlay::DrawDromerEnergy(HDC hDC)
 {
     if (g_bShowDromerEnergy == 0)
@@ -134,7 +134,7 @@ void __cdecl DebugOverlay::DrawDromerEnergy(HDC hDC)
 }
 
 // The orientation name is drawn ten characters long, which cuts it short.
-// FUNCTION: HYPERX100 0x00475fe0
+// FUNCTION: HYPERX1000 0x00475fe0
 void __cdecl DebugOverlay::DrawPolyCounts(HDC hDC)
 {
     if (g_bShowPolyCounts == 0)
@@ -153,7 +153,7 @@ void __cdecl DebugOverlay::DrawPolyCounts(HDC hDC)
     ExtTextOutA(hDC, 210, 20, 0, 0, g_szDebugText, nLength, 0);
 }
 
-// FUNCTION: HYPERX100 0x00487270
+// FUNCTION: HYPERX1000 0x00487270
 void __cdecl DebugOverlay::DrawLogs(HDC hDC)
 {
     short nLine;
@@ -175,7 +175,7 @@ void __cdecl DebugOverlay::DrawLogs(HDC hDC)
     }
 }
 
-// FUNCTION: HYPERX100 0x00487380
+// FUNCTION: HYPERX1000 0x00487380
 void __cdecl DebugOverlay::AddLogLine(const char* pszText, short nLength)
 {
     g_nLogASequence++;
@@ -185,7 +185,7 @@ void __cdecl DebugOverlay::AddLogLine(const char* pszText, short nLength)
         g_nLogASequence = 1;
     }
 
-    // STRING: HYPERX100 0x00517b24
+    // STRING: HYPERX1000 0x00517b24
     sprintf(g_aszLogA[g_nLogAHead], "%4d: ", g_nLogASequence);
 
     const UINT nLineLength = nLength + DEBUG_LOG_PREFIX;
@@ -207,7 +207,7 @@ void __cdecl DebugOverlay::AddLogLine(const char* pszText, short nLength)
     }
 }
 
-// FUNCTION: HYPERX100 0x004874e0
+// FUNCTION: HYPERX1000 0x004874e0
 TextOutRecord* __cdecl DebugOverlay::PopText(void)
 {
     if (g_nTextStackDepth - 1 < 0)
@@ -220,7 +220,7 @@ TextOutRecord* __cdecl DebugOverlay::PopText(void)
     return g_apTextStack[g_nTextStackDepth];
 }
 
-// FUNCTION: HYPERX100 0x00487510
+// FUNCTION: HYPERX1000 0x00487510
 char __cdecl DebugOverlay::PushText(TextOutRecord* pRecord)
 {
     if (g_nTextStackDepth == DEBUG_TEXT_STACK)
@@ -233,7 +233,7 @@ char __cdecl DebugOverlay::PushText(TextOutRecord* pRecord)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00487550
+// FUNCTION: HYPERX1000 0x00487550
 char __cdecl DebugOverlay::PopTextBatch(TextOutRecord** ppRecords, short* pnCount)
 {
     if (g_nBatchStackDepth - 1 < 0)
@@ -249,7 +249,7 @@ char __cdecl DebugOverlay::PopTextBatch(TextOutRecord** ppRecords, short* pnCoun
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004875b0
+// FUNCTION: HYPERX1000 0x004875b0
 char __cdecl DebugOverlay::PushTextBatch(TextOutRecord* pRecords, short nCount)
 {
     if (g_nBatchStackDepth == DEBUG_BATCH_STACK)
@@ -265,7 +265,7 @@ char __cdecl DebugOverlay::PushTextBatch(TextOutRecord* pRecords, short nCount)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00487600
+// FUNCTION: HYPERX1000 0x00487600
 void __cdecl DebugOverlay::DrawQueuedText(HDC hDC)
 {
     COLORREF       clrLast = 0;
@@ -284,7 +284,7 @@ void __cdecl DebugOverlay::DrawQueuedText(HDC hDC)
     }
 }
 
-// FUNCTION: HYPERX100 0x00487670
+// FUNCTION: HYPERX1000 0x00487670
 void __cdecl DebugOverlay::DrawQueuedBatches(HDC hDC)
 {
     COLORREF       clrLast = DEBUG_NO_COLOUR;

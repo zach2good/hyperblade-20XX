@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b2424
+// VTABLE: HYPERX1001 0x004b2424
 class BehObjTrackTrajectoryPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjTrackTrajectoryPool();
 };
 
-// SYNTHETIC: HYPERX 0x004216a0
+// SYNTHETIC: HYPERX1001 0x004216a0
 // BehObjTrackTrajectoryPool::`scalar deleting destructor'
 
 #endif

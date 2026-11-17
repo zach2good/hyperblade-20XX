@@ -25,8 +25,8 @@
 #include "app/frametimer.h"
 #include "window.h"
 
-// FUNCTION: HYPERX100 0x0048e360
-// FUNCTION: HYPERX 0x0044c070
+// FUNCTION: HYPERX1000 0x0048e360
+// FUNCTION: HYPERX1001 0x0044c070
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nShowCmd)
 {
     MSG msg;
@@ -83,8 +83,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR, int nSho
 
 // Key and button messages go to the input device during a match and to the screen otherwise.
 
-// FUNCTION: HYPERX100 0x0048e6d0
-// FUNCTION: HYPERX 0x0044c330
+// FUNCTION: HYPERX1000 0x0048e6d0
+// FUNCTION: HYPERX1001 0x0044c330
 LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -314,8 +314,8 @@ LRESULT CALLBACK WndProc::MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 }
 
-// FUNCTION: HYPERX100 0x0048ef70
-// FUNCTION: HYPERX 0x0044c910
+// FUNCTION: HYPERX1000 0x0048ef70
+// FUNCTION: HYPERX1001 0x0044c910
 int __cdecl WndProc::HandlePaint(HWND hWnd)
 {
     if (g_pActiveScreen == NULL || g_gameApp.m_nEngineState == ESTATE_MATCH_LIVE)
@@ -350,8 +350,8 @@ int __cdecl WndProc::HandlePaint(HWND hWnd)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0048fa80
-// FUNCTION: HYPERX 0x0044d190
+// FUNCTION: HYPERX1000 0x0048fa80
+// FUNCTION: HYPERX1001 0x0044d190
 int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
 {
 #ifdef HYPERX_BRINGUP
@@ -445,8 +445,8 @@ int __cdecl WndProc::OnActivate(HWND hWnd, unsigned int bActive, LPARAM)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x004bdfb0
-// FUNCTION: HYPERX 0x004939b0
+// FUNCTION: HYPERX1000 0x004bdfb0
+// FUNCTION: HYPERX1001 0x004939b0
 unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned short nCommand)
 {
     RenderOptions opt = Renderer::GetRenderOptions();
@@ -526,7 +526,7 @@ unsigned int __cdecl WndProc::HandleRenderMenuCommand(HMENU hMenu, unsigned shor
     return 0;
 }
 
-// GLOBAL: HYPERX 0x004c2dd8
+// GLOBAL: HYPERX1001 0x004c2dd8
 int g_nUnusedBesideNearest = 1;
 
 int          g_nNearestPaletteIndex = 7;

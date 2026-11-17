@@ -11,20 +11,20 @@
 // The DirectX 3 DDCAPS, which is what v1.0.0.0 hands GetCaps.
 #define DX3_DDCAPS_SIZE 0x13c
 
-// FUNCTION: HYPERX100 0x00444860
+// FUNCTION: HYPERX1000 0x00444860
 FrameBitmap::FrameBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : CDDBitMap(pDDraw, pPrimary, pBack)
 {
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x00444930
+// FUNCTION: HYPERX1000 0x00444930
 FrameBitmap::FrameBitmap()
 {
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x004449b0
+// FUNCTION: HYPERX1000 0x004449b0
 void FrameBitmap::ClearState()
 {
     m_ppFrames    = 0;
@@ -32,7 +32,7 @@ void FrameBitmap::ClearState()
     m_nFrame      = 0;
 }
 
-// FUNCTION: HYPERX100 0x004449d0
+// FUNCTION: HYPERX1000 0x004449d0
 FrameBitmap::~FrameBitmap()
 {
     // The surface is the current frame's, so the base must not release it.
@@ -57,7 +57,7 @@ FrameBitmap::~FrameBitmap()
 }
 
 // Answers the number of frames tried, or nought when the table or the caps query fails.
-// FUNCTION: HYPERX100 0x00444ad0
+// FUNCTION: HYPERX1000 0x00444ad0
 unsigned char FrameBitmap::LoadFrames(const char* pszBaseName, int nCount, int bColourKey, int)
 {
     char          szName[256];
@@ -127,7 +127,7 @@ unsigned char FrameBitmap::LoadFrames(const char* pszBaseName, int nCount, int b
 }
 
 // Each frame restores its own surface, and the answer is always one.
-// FUNCTION: HYPERX100 0x00444d50
+// FUNCTION: HYPERX1000 0x00444d50
 int FrameBitmap::RestoreContents()
 {
     if (m_ppFrames != 0)
@@ -145,7 +145,7 @@ int FrameBitmap::RestoreContents()
 }
 
 // The back buffer is unlocked until it reports it is not locked, but locked again only once.
-// FUNCTION: HYPERX100 0x00444db0
+// FUNCTION: HYPERX1000 0x00444db0
 int FrameBitmap::BltFrame(RECT rcDest)
 {
     DDSURFACEDESC ddsd;
@@ -214,7 +214,7 @@ int FrameBitmap::BltFrame(RECT rcDest)
     return bResult;
 }
 
-// FUNCTION: HYPERX100 0x00444f10
+// FUNCTION: HYPERX1000 0x00444f10
 int FrameBitmap::SetFrame(unsigned char nFrame, RECT rcDest)
 {
     if (m_bVisible != 0)
@@ -230,7 +230,7 @@ int FrameBitmap::SetFrame(unsigned char nFrame, RECT rcDest)
 
 // GDI::CreatePaletteFromDIB without the reserved entries: every flag is zero.
 // TODO: The owner is a guess. It follows SetFrame in the image and nothing calls it.
-// FUNCTION: HYPERX100 0x00444f70
+// FUNCTION: HYPERX1000 0x00444f70
 HPALETTE FrameBitmap::CreatePaletteFromDIB(BITMAPINFO* pbmi, int* pcColors)
 {
     HPALETTE hPalette = 0;

@@ -14,7 +14,7 @@ import re
 import subprocess
 import sys
 
-MARKER = re.compile(r"//\s*(FUNCTION|STUB|LIBRARY|GLOBAL|VTABLE):\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+MARKER = re.compile(r"//\s*(FUNCTION|STUB|LIBRARY|GLOBAL|VTABLE):\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 
 
 def markers(text):

@@ -130,7 +130,7 @@ struct GameApp
     static void __stdcall SplashTimerCallback(UINT uTimerID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2);
 };
 
-// SYNTHETIC: HYPERX 0x0044d400
+// SYNTHETIC: HYPERX1001 0x0044d400
 // GameApp::~GameApp
 
 #endif

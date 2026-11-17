@@ -5,9 +5,9 @@
 #include "common/staticinit.h"
 
 // A hundredth and nineteen twentieths.
-// GLOBAL: HYPERX 0x004b345c
+// GLOBAL: HYPERX1001 0x004b345c
 extern float g_flArenaEllipsoidFriction;
-// GLOBAL: HYPERX 0x004b3460
+// GLOBAL: HYPERX1001 0x004b3460
 extern float g_flArenaEllipsoidElasticity;
 
 float g_flArenaEllipsoidZ = 70.0f * g_flTrackingEllipsoidScale;

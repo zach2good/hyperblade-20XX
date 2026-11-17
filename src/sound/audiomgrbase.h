@@ -3,12 +3,12 @@
 #include "common/compat.h"
 
 // Abstract: its table at 0x004b4098 is a destructor and five _purecall.
-// VTABLE: HYPERX 0x004b4098
+// VTABLE: HYPERX1001 0x004b4098
 class AudioMgrBase
 {
 public:
-    // FUNCTION: HYPERX100 0x0048bb50
-    // FUNCTION: HYPERX 0x00491850
+    // FUNCTION: HYPERX1000 0x0048bb50
+    // FUNCTION: HYPERX1001 0x00491850
     virtual ~AudioMgrBase()
     {
     }
@@ -20,7 +20,7 @@ public:
     virtual void StopCD()                 = 0;
 };
 
-// SYNTHETIC: HYPERX 0x00491860
+// SYNTHETIC: HYPERX1001 0x00491860
 // AudioMgrBase::`scalar deleting destructor'
 
 #endif

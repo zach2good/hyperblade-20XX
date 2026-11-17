@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c7350
-// FUNCTION: HYPERX 0x00420270
+// FUNCTION: HYPERX1000 0x004c7350
+// FUNCTION: HYPERX1001 0x00420270
 void BehObjHeadTrackingPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_HeadTracking;
@@ -33,8 +33,8 @@ char BehObjHeadTrackingPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c90b0
-// FUNCTION: HYPERX 0x00420320
+// FUNCTION: HYPERX1000 0x004c90b0
+// FUNCTION: HYPERX1001 0x00420320
 void* BehObjHeadTrackingPool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* BehObjHeadTrackingPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00421580
+// FUNCTION: HYPERX1001 0x00421580
 BehObjHeadTrackingPool::~BehObjHeadTrackingPool()
 {
     while (m_pHead != 0)

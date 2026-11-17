@@ -17,7 +17,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MARK = re.compile(r"^// FUNCTION: HYPERX (0x[0-9a-f]+)\r?\n(?://[^\r\n]*\r?\n)*"
+MARK = re.compile(r"^// FUNCTION: HYPERX1001 (0x[0-9a-f]+)\r?\n(?://[^\r\n]*\r?\n)*"
                   r"[^\r\n(]*?\b([A-Za-z_]\w*(?:::~?\w+)?)\s*\(", re.M)
 
 CLAIM = re.compile(r"\b([A-Z]\w*(?:::~?\w+)?)\s+at\s+(0x[0-9a-fA-F]{6,8})\b")

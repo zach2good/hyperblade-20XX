@@ -13,8 +13,8 @@
 #include "graphics/softrenderer.h"
 
 // The width rounds up to a multiple of four; the answer is only whether that changed it.
-// FUNCTION: HYPERX100 0x0046dec0
-// FUNCTION: HYPERX 0x0044ba50
+// FUNCTION: HYPERX1000 0x0046dec0
+// FUNCTION: HYPERX1001 0x0044ba50
 int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 {
     int bWidthRounded = 0;
@@ -73,7 +73,7 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
 
         if (g_hSoftBackBitmap == 0)
         {
-            // STRING: HYPERX 0x004c2dac
+            // STRING: HYPERX1001 0x004c2dac
             g_gameApp.Fatal("Error allocating graphics display buffer!");
         }
 
@@ -96,13 +96,13 @@ int SoftRenderer::ResizeBackBuffer(int* pWidth, int* pHeight)
     return bWidthRounded;
 }
 
-// FUNCTION: HYPERX100 0x004b9200
-// FUNCTION: HYPERX 0x0044f480
+// FUNCTION: HYPERX1000 0x004b9200
+// FUNCTION: HYPERX1001 0x0044f480
 RLESprite* __cdecl SoftRenderer::LoadRLESprite(const char* pszName)
 {
     PathString strPath(MAX_PATH);
 
-    // STRING: HYPERX 0x004bc45c
+    // STRING: HYPERX1001 0x004bc45c
     strPath.m_str.FormatResourcePath(g_gameApp.m_strAssetsPath.m_str.m_pchData, pszName, "bmp");
 
     BITMAPINFOHEADER* const pDib = GDI::ReadBitmapFile(strPath.m_str.m_pchData);
@@ -121,7 +121,7 @@ RLESprite* __cdecl SoftRenderer::LoadRLESprite(const char* pszName)
 
 char g_szTopDownDibName[12] = "TopDownDIB ";
 
-// STRING: HYPERX 0x004c2ca8
+// STRING: HYPERX1001 0x004c2ca8
 char* g_pszDibOrientationName = "BottomUpDIB";
 
 // 50x50, 8 bits: the back buffer the original builds before it knows the display mode.

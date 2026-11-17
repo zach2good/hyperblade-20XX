@@ -8,38 +8,38 @@
 #include "net/gamesession.h"
 #include "engine/game.h"
 
-// FUNCTION: HYPERX100 0x00435600
-// FUNCTION: HYPERX 0x00443930
+// FUNCTION: HYPERX1000 0x00435600
+// FUNCTION: HYPERX1001 0x00443930
 void PauseMenu::ActionSave(void)
 {
     g_nSetupReturnState = Game::SetEngineState(ESTATE_SAVE_LOAD);
 }
 
 // The state comes from a global, so the return state is configurable at run time.
-// FUNCTION: HYPERX100 0x00435670
-// FUNCTION: HYPERX 0x00443940
+// FUNCTION: HYPERX1000 0x00435670
+// FUNCTION: HYPERX1001 0x00443940
 void PauseMenu::ActionReturn(void)
 {
     Game::SetEngineState(g_nPostMatchEscState);
 }
 
-// FUNCTION: HYPERX100 0x0049ab80
-// FUNCTION: HYPERX 0x00443c70
+// FUNCTION: HYPERX1000 0x0049ab80
+// FUNCTION: HYPERX1001 0x00443c70
 void PauseMenu::ActionReturnTraining(void)
 {
     Game::SetEngineState(g_nDefaultEscState);
 }
 
-// FUNCTION: HYPERX100 0x004355f0
-// FUNCTION: HYPERX 0x00444120
+// FUNCTION: HYPERX1000 0x004355f0
+// FUNCTION: HYPERX1001 0x00444120
 void PauseMenu::ActionOptions(void)
 {
     Game::SetEngineState(ESTATE_GAME_CONFIG);
 }
 
 // The post-match flag goes up first, so the match reads as finished rather than abandoned.
-// FUNCTION: HYPERX100 0x00435620
-// FUNCTION: HYPERX 0x00444130
+// FUNCTION: HYPERX1000 0x00435620
+// FUNCTION: HYPERX1001 0x00444130
 void PauseMenu::ActionExitToMenu(void)
 {
     g_pGameEngine->m_bMatchOver = 1;
@@ -56,15 +56,15 @@ void PauseMenu::ActionExitToMenu(void)
     Game::SetEngineState(ESTATE_MAIN_MENU);
 }
 
-// FUNCTION: HYPERX100 0x00440770
-// FUNCTION: HYPERX 0x00444170
+// FUNCTION: HYPERX1000 0x00440770
+// FUNCTION: HYPERX1001 0x00444170
 void PauseMenu::ActionReturnNoSave(void)
 {
     Game::SetEngineState(g_nJumbotronEscState);
 }
 
-// FUNCTION: HYPERX100 0x00435690
-// FUNCTION: HYPERX 0x00444180
+// FUNCTION: HYPERX1000 0x00435690
+// FUNCTION: HYPERX1001 0x00444180
 void PauseMenu::ActionQuit(void)
 {
     Game::SetEngineState(ESTATE_QUIT);

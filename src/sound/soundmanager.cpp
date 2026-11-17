@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #endif
 
-// FUNCTION: HYPERX100 0x004698a0
-// FUNCTION: HYPERX 0x004491c0
+// FUNCTION: HYPERX1000 0x004698a0
+// FUNCTION: HYPERX1001 0x004491c0
 SoundManager::SoundManager()
 {
     m_nUnusedA = 0;
@@ -41,8 +41,8 @@ SoundManager::SoundManager()
 // No group read yet.
 #define GROUP_NONE (-1)
 
-// FUNCTION: HYPERX100 0x00469900
-// FUNCTION: HYPERX 0x00449210
+// FUNCTION: HYPERX1000 0x00469900
+// FUNCTION: HYPERX1001 0x00449210
 void SoundManager::FreeEntries()
 {
     for (short i = 0; i < m_nSoundCount; i++)
@@ -62,8 +62,8 @@ void SoundManager::FreeEntries()
 }
 
 // The first line is a header; both walks stop at the first blank line, not at the end of file.
-// FUNCTION: HYPERX100 0x00469990
-// FUNCTION: HYPERX 0x00449280
+// FUNCTION: HYPERX1000 0x00469990
+// FUNCTION: HYPERX1001 0x00449280
 unsigned short SoundManager::Load(const char* pszListName)
 {
     int        nLongest = 0;
@@ -81,7 +81,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
     {
-        // STRING: HYPERX 0x004c28a8
+        // STRING: HYPERX1001 0x004c28a8
         sprintf(szMessage, "Cannot open sound list file %s!\n", pszListName);
 
         throw szMessage;
@@ -109,7 +109,7 @@ unsigned short SoundManager::Load(const char* pszListName)
 
     file.m_file.GetNextLine(&pLine);
 
-    // STRING: HYPERX 0x004c28a0
+    // STRING: HYPERX1001 0x004c28a0
     sscanf(pLine, "%d %s ", &nScanned, szName);
 
     while (file.m_file.GetNextLine(&pLine) > 0)
@@ -119,7 +119,7 @@ unsigned short SoundManager::Load(const char* pszListName)
             continue;
         }
 
-        // STRING: HYPERX 0x004c2894
+        // STRING: HYPERX1001 0x004c2894
         nScanned = sscanf(pLine, "%s %d %d %d", szName, &nDuration, &nGroup, &nFlag);
 
         if (nScanned == 0 || nScanned == -1)
@@ -189,12 +189,12 @@ unsigned short SoundManager::Load(const char* pszListName)
 }
 
 // Signed and shared by every group, so two groups picked in one frame get different halves.
-// GLOBAL: HYPERX 0x004ce994
+// GLOBAL: HYPERX1001 0x004ce994
 extern short g_wSoundSequence;
 
 // Alternates between a group's first two sounds; a negative counter returns no sound.
-// FUNCTION: HYPERX100 0x00469f10
-// FUNCTION: HYPERX 0x00449680
+// FUNCTION: HYPERX1000 0x00469f10
+// FUNCTION: HYPERX1001 0x00449680
 SoundEntry* SoundManager::PickFromGroup(int nGroup)
 {
     int nIndex = g_wSoundSequence % 2 + m_awGroupFirst[nGroup];
@@ -226,7 +226,7 @@ SoundEntry* SoundManager::PickFromGroup(int nGroup)
 // A sound in a group past this ends the walk with no answer.
 #define SOUNDMGR_GROUP_LIMIT 0x299
 
-// FUNCTION: HYPERX100 0x00469f80
+// FUNCTION: HYPERX1000 0x00469f80
 SoundEntry* SoundManager::PickUnplayedFromGroup(int nGroup)
 {
     SoundEntry* apCandidates[SOUNDMGR_PICK_LIMIT];
@@ -257,7 +257,7 @@ SoundEntry* SoundManager::PickUnplayedFromGroup(int nGroup)
     return FindResidentInGroup(nGroup);
 }
 
-// FUNCTION: HYPERX100 0x0046a040
+// FUNCTION: HYPERX1000 0x0046a040
 SoundEntry* SoundManager::FindResidentInGroup(int nGroup)
 {
     short       nIndex = m_awGroupFirst[nGroup];
@@ -265,7 +265,7 @@ SoundEntry* SoundManager::FindResidentInGroup(int nGroup)
 
     if (nIndex < 0)
     {
-        // STRING: HYPERX100 0x00513c88
+        // STRING: HYPERX1000 0x00513c88
         g_gameApp.Error("No resident sound");
 
         return 0;
@@ -286,7 +286,7 @@ SoundEntry* SoundManager::FindResidentInGroup(int nGroup)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0046a0e0
+// FUNCTION: HYPERX1000 0x0046a0e0
 SoundEntry* SoundManager::FindNewestStopped()
 {
     SoundEntry*  pNewest   = 0;
@@ -311,7 +311,7 @@ SoundEntry* SoundManager::FindNewestStopped()
     return pNewest;
 }
 
-// FUNCTION: HYPERX100 0x0046a180
+// FUNCTION: HYPERX1000 0x0046a180
 SoundEntry* SoundManager::FindOldestIdleInGroup(int nGroup)
 {
     SoundEntry*  pOldest   = 0;

@@ -6,19 +6,19 @@
 
 extern const float g_flDebugLightDistance;
 
-// GLOBAL: HYPERX 0x004c67bc
+// GLOBAL: HYPERX1001 0x004c67bc
 extern const float g_flLightAttenConstant;
 const float        g_flLightAttenConstant = 0.25f;
 
-// GLOBAL: HYPERX 0x004c67c0
+// GLOBAL: HYPERX1001 0x004c67c0
 extern const float g_flLightAttenLinear;
 const float        g_flLightAttenLinear = 0.25f;
 
-// GLOBAL: HYPERX 0x004c67c4
+// GLOBAL: HYPERX1001 0x004c67c4
 extern const float g_flLightAttenQuadratic;
 const float        g_flLightAttenQuadratic = 0.5f;
 
-// GLOBAL: HYPERX 0x004b3e10
+// GLOBAL: HYPERX1001 0x004b3e10
 extern const float g_flAttenFloor;
 const float        g_flAttenFloor = 0.0f;
 

@@ -16,7 +16,7 @@ struct AnimPendingRequest
 };
 
 // Slots one and five hold bodies the linker folded onto other classes.
-// VTABLE: HYPERX 0x004b2974
+// VTABLE: HYPERX1001 0x004b2974
 class AnimPlayer : public AnimBinding
 {
 public:
@@ -98,11 +98,11 @@ public:
 
 STATIC_ASSERT(sizeof(AnimPlayer) == ANIM_DB_BINDING_BYTES);
 
-// SYNTHETIC: HYPERX 0x00425560
+// SYNTHETIC: HYPERX1001 0x00425560
 // AnimPlayer::`scalar deleting destructor'
 
 // The atexit thunk for ComputeScale's blend transform.
-// SYNTHETIC: HYPERX 0x00424e50
+// SYNTHETIC: HYPERX1001 0x00424e50
 // $E2
 
 #endif

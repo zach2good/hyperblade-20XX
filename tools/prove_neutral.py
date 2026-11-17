@@ -23,7 +23,7 @@ import sys
 REPORT = os.path.join('build', 'report.json')
 SNAPSHOT = os.path.join('build', 'neutral_snapshot.json')
 
-# The image the report is made from. `--target HYPERX` does not build it, so a source edited
+# The image the report is made from. `--target HYPERX1001` does not build it, so a source edited
 # after the last full build reads as stale here exactly as it does in check_regressions.py.
 IMAGE = os.path.join('build', 'out', 'HYPERX_sym.exe')
 

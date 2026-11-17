@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b2514
+// VTABLE: HYPERX1001 0x004b2514
 class BehObjFlyLCLPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjFlyLCLPool();
 };
 
-// SYNTHETIC: HYPERX 0x00420f20
+// SYNTHETIC: HYPERX1001 0x00420f20
 // BehObjFlyLCLPool::`scalar deleting destructor'
 
 #endif

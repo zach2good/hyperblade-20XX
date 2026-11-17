@@ -1,7 +1,7 @@
 """Report identical-code folding in the measured build, and annotations that disagree about it.
 
 When two functions have identical bytes, the linker can keep one copy at one address. reccmp's
-marker `// FUNCTION: HYPERX 0xADDRESS FOLDED` says that several annotations legitimately
+marker `// FUNCTION: HYPERX1001 0xADDRESS FOLDED` says that several annotations legitimately
 resolve to the same recompiled address.
 
 `hyperx_sym` is linked `/OPT:NOREF`, so no folding is expected, and an unannotated fold means
@@ -40,7 +40,7 @@ def engine():
     if not project:
         raise SystemExit("no reccmp project at %s" % ROOT)
 
-    target = project.get("HYPERX")
+    target = project.get("HYPERX1001")
 
     for path in (target.original_path, target.recompiled_path, target.recompiled_pdb):
         if not Path(path).is_file():

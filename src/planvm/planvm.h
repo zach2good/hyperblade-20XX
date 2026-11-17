@@ -126,7 +126,7 @@ typedef short(__cdecl* PlanStatFn)(class EngineObject* pActor, PlanNode* pArgs);
 // Two callers read the whole return register, so they call through this view of the table.
 typedef int(__cdecl* PlanStatFnWide)(class EngineObject* pActor, PlanNode* pArgs);
 
-// GLOBAL: HYPERX 0x004d1798
+// GLOBAL: HYPERX1001 0x004d1798
 extern PlanStatFn g_apPlanStatFns[PRN_COUNT];
 
 #endif

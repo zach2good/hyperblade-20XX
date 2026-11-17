@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b2624
+// VTABLE: HYPERX1001 0x004b2624
 class BehObj_Avoidance : public SurfaceBehaviorObject
 {
 public:
@@ -17,7 +17,7 @@ private:
     int m_anUnused[3]; // 0x98
 };
 
-// SYNTHETIC: HYPERX 0x0041d7d0
+// SYNTHETIC: HYPERX1001 0x0041d7d0
 // BehObj_Avoidance::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_Avoidance) == 0xa4);

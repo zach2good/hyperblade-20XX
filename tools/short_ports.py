@@ -48,7 +48,7 @@ def used_sizes():
     project = RecCmpProject.from_directory(pathlib.Path(ROOT))
     noise = io.StringIO()
     with contextlib.redirect_stdout(noise):
-        compare = Compare.from_target(project.get("HYPERX"))
+        compare = Compare.from_target(project.get("HYPERX1001"))
     out = {}
     for match in compare._db.get_functions():
         size = match.size(ImageId.ORIG)

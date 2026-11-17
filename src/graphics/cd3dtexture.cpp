@@ -20,8 +20,8 @@
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004ce820
-// FUNCTION: HYPERX 0x004339a0
+// FUNCTION: HYPERX1000 0x004ce820
+// FUNCTION: HYPERX1001 0x004339a0
 CD3DTexture::CD3DTexture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : Texture(pDDraw, pPrimary, pBack)
 {
@@ -29,13 +29,13 @@ CD3DTexture::CD3DTexture(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDir
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x004ce510
+// FUNCTION: HYPERX1000 0x004ce510
 CD3DTexture::CD3DTexture()
 {
     ClearRecord();
 }
 
-// FUNCTION: HYPERX100 0x004ce740
+// FUNCTION: HYPERX1000 0x004ce740
 CD3DTexture::CD3DTexture(Texture* pSource)
 : Texture(pSource)
 {
@@ -44,8 +44,8 @@ CD3DTexture::CD3DTexture(Texture* pSource)
 #endif
 
 // The one caller qualifies the call, or it becomes the inlined scalar deleting destructor.
-// FUNCTION: HYPERX100 0x004ce5e0
-// FUNCTION: HYPERX 0x00433a20
+// FUNCTION: HYPERX1000 0x004ce5e0
+// FUNCTION: HYPERX1001 0x00433a20
 CD3DTexture::~CD3DTexture()
 {
     if (m_pDest != 0)
@@ -67,8 +67,8 @@ CD3DTexture::~CD3DTexture()
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004ce900
-// FUNCTION: HYPERX 0x00433ae0
+// FUNCTION: HYPERX1000 0x004ce900
+// FUNCTION: HYPERX1001 0x00433ae0
 void CD3DTexture::ClearRecord()
 {
     m_strName.Empty();
@@ -93,15 +93,15 @@ void CD3DTexture::ClearRecord()
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004cea30
-// FUNCTION: HYPERX 0x00433bb0
+// FUNCTION: HYPERX1000 0x004cea30
+// FUNCTION: HYPERX1001 0x00433bb0
 int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 {
     int nSurfaceResult;
 
     if (g_d3dState.nTextureFormat < 0)
     {
-        // STRING: HYPERX 0x004bd928
+        // STRING: HYPERX1001 0x004bd928
         TRACE("CD3DTexture::Create - No texture formats available!\n Create Failed!\n");
 
         return 0;
@@ -119,7 +119,7 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
     }
     else
     {
-        // STRING: HYPERX 0x004bd8f4
+        // STRING: HYPERX1001 0x004bd8f4
         g_gameApp.Error("CD3DTexture::Create FAILED! No BitMap loaded!\n%s\n", pszName);
 
         return 0;
@@ -138,7 +138,7 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bd8bc
+        // STRING: HYPERX1001 0x004bd8bc
         TRACE("CD3DTexture::Create - Could not create texture %s.\n%s\n",
               pszName,
               DDraw::ErrorToString(m_hr));
@@ -164,7 +164,7 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bd890
+        // STRING: HYPERX1001 0x004bd890
         TRACE("Could not get from dest texture handle.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -175,7 +175,7 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bd864
+        // STRING: HYPERX1001 0x004bd864
         TRACE("Could not load src texture into dest.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -199,8 +199,8 @@ int CD3DTexture::Create(const char* pszName, int bColourKey, int bSystemMemory)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004ced70
-// FUNCTION: HYPERX 0x00433ed0
+// FUNCTION: HYPERX1000 0x004ced70
+// FUNCTION: HYPERX1001 0x00433ed0
 int CD3DTexture::OnSurfaceLost()
 {
     return RestoreContents();
@@ -210,8 +210,8 @@ int CD3DTexture::OnSurfaceLost()
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004ceda0
-// FUNCTION: HYPERX 0x00433ef0
+// FUNCTION: HYPERX1000 0x004ceda0
+// FUNCTION: HYPERX1001 0x00433ef0
 int CD3DTexture::Restore(const char* pName)
 {
     if (LoadBitmapFile(pName) != 0)
@@ -221,7 +221,7 @@ int CD3DTexture::Restore(const char* pName)
     }
     else
     {
-        // STRING: HYPERX 0x004bda94
+        // STRING: HYPERX1001 0x004bda94
         TRACE("CD3DTexture::RestoreContents FAILED! No BitMap loaded!\n");
 
         return 0;
@@ -233,7 +233,7 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_pSurface == 0)
     {
-        // STRING: HYPERX 0x004bda50
+        // STRING: HYPERX1001 0x004bda50
         TRACE("CD3DTexture::RestoreContents FAILED! No source surface created!\n");
 
         return 0;
@@ -243,7 +243,7 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bda10
+        // STRING: HYPERX1001 0x004bda10
         TRACE("CD3DTexture::RestoreContents - QueryInterface failed!\n%s\n%s\n",
               pName,
               DDraw::ErrorToString(m_hr));
@@ -255,7 +255,7 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bd9bc
+        // STRING: HYPERX1001 0x004bd9bc
         TRACE("CD3DTexture::RestoreContents - Could not restore destination texture surface.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -278,7 +278,7 @@ int CD3DTexture::Restore(const char* pName)
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bd970
+        // STRING: HYPERX1001 0x004bd970
         TRACE("CD3DTexture::RestoreContents - Could not load src texture into dest.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -312,8 +312,8 @@ int CD3DTexture::Restore(const char* pName)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004cf160
-// FUNCTION: HYPERX 0x00434220
+// FUNCTION: HYPERX1000 0x004cf160
+// FUNCTION: HYPERX1001 0x00434220
 int CD3DTexture::RestoreContents()
 {
     if (!m_strName.IsEmpty())
@@ -335,8 +335,8 @@ struct IDirectDrawSurface;
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004cf1f0
-// FUNCTION: HYPERX 0x00434260
+// FUNCTION: HYPERX1000 0x004cf1f0
+// FUNCTION: HYPERX1001 0x00434260
 IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int)
 {
     int                  nColourCount;
@@ -404,7 +404,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bdbc8
+        // STRING: HYPERX1001 0x004bdbc8
         g_gameApp.Error("CD3DTexture::CreateSurface FAILED!\n%s\n",
                         DDraw::ErrorToString(m_hr));
 
@@ -423,7 +423,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
     {
         pSurfacePtr->Release();
 
-        // STRING: HYPERX 0x004bdb98
+        // STRING: HYPERX1001 0x004bdb98
         TRACE("Lock failed while loading texture surface.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -528,7 +528,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
 
                 m_pBitmapRecord = 0;
 
-                // STRING: HYPERX 0x004bdb68
+                // STRING: HYPERX1001 0x004bdb68
                 TRACE("Unknown pixel format while loading texture. %d\n",
                       sd.ddpfPixelFormat.dwRGBBitCount);
 
@@ -621,7 +621,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
             pSurfacePtr->Unlock(0);
             pSurfacePtr->Release();
 
-            // STRING: HYPERX 0x004bdb40
+            // STRING: HYPERX1001 0x004bdb40
             TRACE("Palette burst while loading texture!\n");
 
             return 0;
@@ -647,7 +647,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
         {
             pSurfacePtr->Release();
 
-            // STRING: HYPERX 0x004bdb04
+            // STRING: HYPERX1001 0x004bdb04
             TRACE("Create palette failed while loading texture surface.\n%s\n",
                   DDraw::ErrorToString(m_hr));
 
@@ -661,7 +661,7 @@ IDirectDrawSurface* CD3DTexture::CreateSurface(int nWidth, int nHeight, int, int
             pSurfacePtr->Release();
             pPalette->Release();
 
-            // STRING: HYPERX 0x004bdacc
+            // STRING: HYPERX1001 0x004bdacc
             TRACE("SetPalette failed while loading texture surface.\n%s\n",
                   DDraw::ErrorToString(m_hr));
 
@@ -686,8 +686,8 @@ struct IDirectDrawSurface;
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004cffc0
-// FUNCTION: HYPERX 0x00434f90
+// FUNCTION: HYPERX1000 0x004cffc0
+// FUNCTION: HYPERX1001 0x00434f90
 int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurface** ppSurface, IDirect3DTexture** ppTexture)
 {
     DDSURFACEDESC desc;
@@ -722,7 +722,7 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004bdc7c
+        // STRING: HYPERX1001 0x004bdc7c
         TRACE("Create surface in CreateVidTexture failed.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -750,7 +750,7 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
                 *ppSurface = 0;
             }
 
-            // STRING: HYPERX 0x004bdc4c
+            // STRING: HYPERX1001 0x004bdc4c
             TRACE("CreatePalette in CreateVidTexture failed.\n%s\n",
                   DDraw::ErrorToString(m_hr));
 
@@ -775,7 +775,7 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
                 pPalIface = 0;
             }
 
-            // STRING: HYPERX 0x004bdc20
+            // STRING: HYPERX1001 0x004bdc20
             TRACE("SetPalette in CreateVidTexture failed.\n%s\n",
                   DDraw::ErrorToString(m_hr));
 
@@ -801,7 +801,7 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
             pPalIface = 0;
         }
 
-        // STRING: HYPERX 0x004bdbf0
+        // STRING: HYPERX1001 0x004bdbf0
         TRACE("QueryInterface in CreateVidTexture failed.\n%s\n",
               DDraw::ErrorToString(m_hr));
 
@@ -815,8 +815,8 @@ int CD3DTexture::CreateVidTexture(IDirectDrawSurface* pSource, IDirectDrawSurfac
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004d0310
-// FUNCTION: HYPERX 0x00435310
+// FUNCTION: HYPERX1000 0x004d0310
+// FUNCTION: HYPERX1001 0x00435310
 unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 {
     // Three slots the original reserves and never reads.
@@ -838,7 +838,7 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 
             if (m_nWidthLog2 == 0)
             {
-                // STRING: HYPERX 0x004bdd84
+                // STRING: HYPERX1001 0x004bdd84
                 g_gameApp.Fatal("Texture Map %s width is not a power of 2!", pszName);
 
                 return 0;
@@ -857,7 +857,7 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 
             if (m_nHeightLog2 == 0)
             {
-                // STRING: HYPERX 0x004bdd58
+                // STRING: HYPERX1001 0x004bdd58
                 g_gameApp.Fatal("Texture Map %s height is not a power of 2!", pszName);
 
                 return 0;
@@ -869,7 +869,7 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
         }
         else
         {
-            // STRING: HYPERX 0x004bdd2c
+            // STRING: HYPERX1001 0x004bdd2c
             g_gameApp.Error("Texture Map %s is a %d bit/pixel bit map!\n", pszName, m_pBitmapRecord->biBitCount);
 
             return 0;
@@ -877,7 +877,7 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 
         if (m_pBitmapRecord->biBitCount == 8)
         {
-            // STRING: HYPERX 0x004bdce8
+            // STRING: HYPERX1001 0x004bdce8
             g_gameApp.Error("Texture Map is a %d bit/pixel bit map! Expecting 24 bit/pixel!\n%s\n",
                             m_pBitmapRecord->biBitCount,
                             pszName);
@@ -892,13 +892,13 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 
         if (m_pBitmapRecord->biBitCount == 24)
         {
-            // STRING: HYPERX 0x004bdcd0
+            // STRING: HYPERX1001 0x004bdcd0
             TRACE("Texture Map is 24 bit.\n");
         }
     }
     else
     {
-        // STRING: HYPERX 0x004bdcac
+        // STRING: HYPERX1001 0x004bdcac
         g_gameApp.Fatal("Texture Map %s cannot be opened!", pszName);
 
         return 0;
@@ -912,8 +912,8 @@ unsigned char CD3DTexture::LoadBitmapFile(const char* pszName)
 // 1012 stands where 1024 belongs, so a texture 1024 across is a fatal error.
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x004d0770
-// FUNCTION: HYPERX 0x004355e0
+// FUNCTION: HYPERX1000 0x004d0770
+// FUNCTION: HYPERX1001 0x004355e0
 int __cdecl CD3DTexture::GetLog2Size(unsigned int nSize)
 {
     switch (nSize)

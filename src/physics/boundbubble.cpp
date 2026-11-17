@@ -12,19 +12,19 @@
 
 #define SHAPE_WORLD_SPACE (-2)
 
-// GLOBAL: HYPERX 0x004cb760
+// GLOBAL: HYPERX1001 0x004cb760
 extern Vec3 g_vBubbleOwnCentre;
 
-// GLOBAL: HYPERX 0x004cb750
+// GLOBAL: HYPERX1001 0x004cb750
 extern Vec3 g_vBubbleOtherCentre;
 
-// GLOBAL: HYPERX 0x004cb740
+// GLOBAL: HYPERX1001 0x004cb740
 extern Vec3 g_vBubbleSeparation;
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x00419d40
-// FUNCTION: HYPERX 0x0042a8f0
+// FUNCTION: HYPERX1000 0x00419d40
+// FUNCTION: HYPERX1001 0x0042a8f0
 BoundBubble::~BoundBubble()
 {
     if (m_pShapeNode != 0)
@@ -40,8 +40,8 @@ BoundBubble::~BoundBubble()
     }
 }
 
-// FUNCTION: HYPERX100 0x00419e50
-// FUNCTION: HYPERX 0x0042a9a0
+// FUNCTION: HYPERX1000 0x00419e50
+// FUNCTION: HYPERX1001 0x0042a9a0
 void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 {
     short i;
@@ -94,7 +94,7 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
                     break;
 
                 default:
-                    // STRING: HYPERX 0x004bcbac
+                    // STRING: HYPERX1001 0x004bcbac
                     g_gameApp.Fatal("CBoundBubble - BAD TYPE\n");
                     break;
             }
@@ -107,8 +107,8 @@ void BoundBubble::Init(EngineObject* pOwner, BubbleCmd* pShape)
 }
 
 // Not finding the bone is fatal, and the message names InitAttachPaks.
-// FUNCTION: HYPERX100 0x0041a290
-// FUNCTION: HYPERX 0x0042ac80
+// FUNCTION: HYPERX1000 0x0041a290
+// FUNCTION: HYPERX1001 0x0042ac80
 void BoundBubble::FindAttachComponent(AttachPak* pRequest)
 {
     for (short i = 0; i < m_pOwner->GetBoneCount(); i++)
@@ -122,12 +122,12 @@ void BoundBubble::FindAttachComponent(AttachPak* pRequest)
         }
     }
 
-    // STRING: HYPERX 0x004bcbc8
+    // STRING: HYPERX1001 0x004bcbc8
     g_gameApp.Fatal("InitAttachPaks: can't find component!");
 }
 
-// FUNCTION: HYPERX100 0x0041a390
-// FUNCTION: HYPERX 0x0042ad20
+// FUNCTION: HYPERX1000 0x0041a390
+// FUNCTION: HYPERX1001 0x0042ad20
 void BoundBubble::GetWorldPosition(Vec3* pOut)
 {
     Vec3                   local      = m_pShapeNode->m_vCentre;
@@ -145,8 +145,8 @@ void BoundBubble::GetWorldPosition(Vec3* pOut)
 // Only a sphere is handled; the fatal message misspells the function it names.
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x0041a490
-// FUNCTION: HYPERX 0x0042ade0
+// FUNCTION: HYPERX1000 0x0041a490
+// FUNCTION: HYPERX1001 0x0042ade0
 unsigned char BoundBubble::DoesIntersect(BoundBubble* pOther)
 {
     if (pOther->m_nShape == BUBBLE_SHAPE_SPHERE)
@@ -154,14 +154,14 @@ unsigned char BoundBubble::DoesIntersect(BoundBubble* pOther)
         return SphereSphereOverlap(pOther);
     }
 
-    // STRING: HYPERX 0x004bcbf0
+    // STRING: HYPERX1001 0x004bcbf0
     g_gameApp.Fatal("NO BUBBLE TYPE IN DoesInterset!");
 
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0041a580
-// FUNCTION: HYPERX 0x0042ae20
+// FUNCTION: HYPERX1000 0x0041a580
+// FUNCTION: HYPERX1001 0x0042ae20
 unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 {
     float flRadiusSum;
@@ -207,8 +207,8 @@ unsigned char BoundBubble::SphereSphereOverlap(BoundBubble* pOther)
 #pragma optimize("", on)
 
 // The array element's default constructor, which new BoundBubble[n] names.
-// FUNCTION: HYPERX100 0x0041a210
-// FUNCTION: HYPERX 0x0042b000
+// FUNCTION: HYPERX1000 0x0041a210
+// FUNCTION: HYPERX1001 0x0042b000
 BoundBubble::BoundBubble()
 : m_pShapeNode(0)
 , m_flRadius(g_flZeroFaceNormal)
@@ -218,13 +218,13 @@ BoundBubble::BoundBubble()
 #ifdef HYPERX_V100
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x0041a500
+// FUNCTION: HYPERX1000 0x0041a500
 void BoundBubble::Collide(BoundBubble* pOther)
 {
     TestOverlap(pOther);
 }
 
-// FUNCTION: HYPERX100 0x0041a530
+// FUNCTION: HYPERX1000 0x0041a530
 void BoundBubble::TestOverlap(BoundBubble* pOther)
 {
     // TODO: Both arms are empty in the original. Was a response left unwritten here?

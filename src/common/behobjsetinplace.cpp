@@ -2,25 +2,25 @@
 #include "planvm/behaviorids.h"
 #include "common/pooledclasses.h"
 
-// FUNCTION: HYPERX100 0x004cc090
-// FUNCTION: HYPERX 0x0041e1e0
+// FUNCTION: HYPERX1000 0x004cc090
+// FUNCTION: HYPERX1001 0x0041e1e0
 BehObj_SetInPlace::BehObj_SetInPlace()
 {
 }
 
-// FUNCTION: HYPERX 0x0041e220
+// FUNCTION: HYPERX1001 0x0041e220
 BehObj_SetInPlace::~BehObj_SetInPlace()
 {
 }
 
 // The first slot is nulled and then read back, so the walk never runs.
-// FUNCTION: HYPERX100 0x004cc1b0
-// FUNCTION: HYPERX 0x0041e230
+// FUNCTION: HYPERX1000 0x004cc1b0
+// FUNCTION: HYPERX1001 0x0041e230
 void BehObj_SetInPlace::Init(EngineObject* pOwner, PlanNode* pBlock, int nFlags)
 {
     FillAgendaPurged();
 
-    // STRING: HYPERX 0x004bc334
+    // STRING: HYPERX1001 0x004bc334
     m_pszName = "SetInPlace";
 
     GameBehaviorObject::Init(pOwner, pBlock, nFlags);

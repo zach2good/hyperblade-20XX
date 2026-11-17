@@ -30,10 +30,10 @@ option(HYPERX_NO_REFERENCE
 option(HYPERX_V100 "Build v1.0.0.0 rather than v1.0.0.1." OFF)
 
 if(HYPERX_V100)
-    set(HYPERX_TARGET HYPERX100)
+    set(HYPERX_TARGET HYPERX1000)
     add_compile_definitions(HYPERX_V100)
 else()
-    set(HYPERX_TARGET HYPERX)
+    set(HYPERX_TARGET HYPERX1001)
 endif()
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
@@ -546,7 +546,7 @@ function(hyperx_check name tool comment)
 endfunction()
 
 add_custom_target(match
-    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tools/foldcmp.py" --target HYPERX --no-color
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tools/foldcmp.py" --target HYPERX1001 --no-color
     DEPENDS hyperx_sym
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
     COMMENT "Scoring every annotated function against the original"

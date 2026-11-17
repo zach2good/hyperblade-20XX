@@ -70,7 +70,7 @@ def noteAbove(raw, at, skip=0):
 
     note = " ".join(reversed(kept))
 
-    # Marker lines such as `// FUNCTION: HYPERX 0x...` are not notes.
+    # Marker lines such as `// FUNCTION: HYPERX1001 0x...` are not notes.
     note = re.sub(r"(?:FUNCTION|GLOBAL|STRING|VTABLE|SYNTHETIC|LIBRARY|STUB|SLOT TABLE):"
                   r"\s*\w*\s*0x[0-9a-fA-F]+", " ", note)
 

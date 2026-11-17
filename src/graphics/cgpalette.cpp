@@ -9,8 +9,8 @@
 #define FLAG_HAS_TABLE 0x80
 #define FLAG_SIZE_MASK 0x07
 
-// FUNCTION: HYPERX100 0x00499fd0
-// FUNCTION: HYPERX 0x004496e0
+// FUNCTION: HYPERX1000 0x00499fd0
+// FUNCTION: HYPERX1001 0x004496e0
 int __cdecl CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
 {
     unsigned short nCount = 0;
@@ -53,7 +53,7 @@ int __cdecl CGPalette::ReadGifScreen(GifScreen* pScreen, FILE* pFile)
 #ifdef HYPERX_V100
 // The block readers answer -1 on a read error, and 1 when a data buffer cannot be allocated.
 
-// FUNCTION: HYPERX100 0x0049a130
+// FUNCTION: HYPERX1000 0x0049a130
 int __cdecl CGPalette::ReadGifImage(GifImage* pImage, FILE* pFile)
 {
     short nWord = 0;
@@ -94,7 +94,7 @@ int __cdecl CGPalette::ReadGifImage(GifImage* pImage, FILE* pFile)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0049a280
+// FUNCTION: HYPERX1000 0x0049a280
 int __cdecl CGPalette::ReadGifControl(GifControl* pControl, FILE* pFile)
 {
     pControl->cBlockSize = (unsigned char)fgetc(pFile);
@@ -114,7 +114,7 @@ int __cdecl CGPalette::ReadGifControl(GifControl* pControl, FILE* pFile)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0049a300
+// FUNCTION: HYPERX1000 0x0049a300
 int __cdecl CGPalette::ReadGifPlainText(GifPlainText* pText, FILE* pFile)
 {
     pText->cBlockSize = (unsigned char)fgetc(pFile);
@@ -157,7 +157,7 @@ int __cdecl CGPalette::ReadGifPlainText(GifPlainText* pText, FILE* pFile)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0049a440
+// FUNCTION: HYPERX1000 0x0049a440
 int __cdecl CGPalette::ReadGifApplication(GifApplication* pApplication, FILE* pFile)
 {
     pApplication->cBlockSize = (unsigned char)fgetc(pFile);
@@ -189,7 +189,7 @@ int __cdecl CGPalette::ReadGifApplication(GifApplication* pApplication, FILE* pF
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0049a540
+// FUNCTION: HYPERX1000 0x0049a540
 int __cdecl CGPalette::ReadGifComment(GifComment* pComment, FILE* pFile)
 {
     pComment->pData = CGPalette::ReadGifSubBlocks(pFile);
@@ -211,7 +211,7 @@ int __cdecl CGPalette::ReadGifComment(GifComment* pComment, FILE* pFile)
 
 // Keeps each sub-block's length byte. Every grow asks for only the next block's size, not the
 // total.
-// FUNCTION: HYPERX100 0x0049a580
+// FUNCTION: HYPERX1000 0x0049a580
 char* __cdecl CGPalette::ReadGifSubBlocks(FILE* pFile)
 {
     unsigned short nTotal = 0;

@@ -59,7 +59,7 @@ def load_tables(image, names):
     for path in sourceFiles((".cpp", ".h")):
         text = open(path, encoding="utf-8", errors="replace").read()
 
-        for hit in re.findall(r"VTABLE: HYPERX (0x004[0-9a-fA-F]{5})", text):
+        for hit in re.findall(r"VTABLE: HYPERX1001 (0x004[0-9a-fA-F]{5})", text):
             known.add(int(hit, 16))
 
         for hit in re.findall(r"g_vtbl(004[bB][0-9a-fA-F]{4})", text):

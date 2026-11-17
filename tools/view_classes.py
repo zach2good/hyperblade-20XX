@@ -101,7 +101,7 @@ def views():
 # Every way a class says it is not a stand-in: reccmp's marker, the slot-table pin that
 # tools/check_slot_arity.py reads, and a COM interface's mark. Both patterns take `class` or
 # `struct`.
-DECODED_MARKER = re.compile("// *(?:VTABLE: *HYPERX +0x[0-9a-fA-F]+|SLOT TABLE +0x[0-9a-fA-F]+"
+DECODED_MARKER = re.compile("// *(?:VTABLE: *HYPERX1001 +0x[0-9a-fA-F]+|SLOT TABLE +0x[0-9a-fA-F]+"
                             + "|COM VTABLE)[^" + chr(10) + "]*"
                             + chr(10) + "(?:class|struct) ([0-9A-Za-z_]+)(?![0-9A-Za-z_])")
 BASE_OF = re.compile("^(?:class|struct) ([0-9A-Za-z_]+) : public ([0-9A-Za-z_]+)", re.M)

@@ -8,7 +8,7 @@
 class EngineObject;
 class Spline;
 
-// VTABLE: HYPERX 0x004b1a84
+// VTABLE: HYPERX1001 0x004b1a84
 class CSlideOnRail : public AgendaItem
 {
 public:
@@ -38,7 +38,7 @@ public:
     unsigned int* m_pPrevTick; // 0x3c
 };
 
-// SYNTHETIC: HYPERX 0x0040cf80
+// SYNTHETIC: HYPERX1001 0x0040cf80
 // CSlideOnRail::`scalar deleting destructor'
 
 HYPERBLADE_FIELD_AT(CSlideOnRail, m_pVelocity, 0x10);

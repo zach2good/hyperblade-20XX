@@ -8,7 +8,7 @@
 #include "graphics/graphicsglobals.h"
 #include <d3d.h>
 
-// VTABLE: HYPERX 0x004b2cc4
+// VTABLE: HYPERX1001 0x004b2cc4
 class CD3DTexture : public Texture
 {
 public:
@@ -61,7 +61,7 @@ private:
     static int __cdecl GetLog2Size(unsigned int nSize);
 };
 
-// SYNTHETIC: HYPERX 0x00433970
+// SYNTHETIC: HYPERX1001 0x00433970
 // CD3DTexture::`scalar deleting destructor'
 
 #endif

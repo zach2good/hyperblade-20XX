@@ -60,14 +60,14 @@ extern int          g_bDoubleResMode;
 #define DDRAW_EXCLUSIVE_FULLSCREEN (DDSCL_FULLSCREEN | DDSCL_EXCLUSIVE | DDSCL_ALLOWMODEX)
 
 // Written here and read nowhere else.
-// GLOBAL: HYPERX 0x004cbb84
+// GLOBAL: HYPERX1001 0x004cbb84
 extern unsigned int g_nVideoMemoryTotal;
 
 struct IDirectDraw;
 struct IDirectDrawSurface;
 
-// FUNCTION: HYPERX100 0x004d0bc0
-// FUNCTION: HYPERX 0x00430e40
+// FUNCTION: HYPERX1000 0x004d0bc0
+// FUNCTION: HYPERX1001 0x00430e40
 HRESULT WINAPI DDraw::EnumDisplayModesCallback(DDSURFACEDESC* pDesc, void*)
 {
 #ifdef HYPERX_BRINGUP
@@ -90,8 +90,8 @@ HRESULT WINAPI DDraw::EnumDisplayModesCallback(DDSURFACEDESC* pDesc, void*)
 }
 
 // Deepest first, then widest, then tallest.
-// FUNCTION: HYPERX100 0x004d0c40
-// FUNCTION: HYPERX 0x00430ea0
+// FUNCTION: HYPERX1000 0x004d0c40
+// FUNCTION: HYPERX1001 0x00430ea0
 int __cdecl DDraw::CompareDisplayModes(const void* pLeft, const void* pRight)
 {
     const DisplayModeEntry* pA = (const DisplayModeEntry*)pLeft;
@@ -135,8 +135,8 @@ int __cdecl DDraw::CompareDisplayModes(const void* pLeft, const void* pRight)
 }
 
 // The scan keeps looking after a hit, so the last matching entry wins.
-// FUNCTION: HYPERX100 0x004d0d60
-// FUNCTION: HYPERX 0x00430f00
+// FUNCTION: HYPERX1000 0x004d0d60
+// FUNCTION: HYPERX1001 0x00430f00
 int __cdecl DDraw::EnumDisplayModes(struct IDirectDraw* pDDraw)
 {
     DDrawCaps caps;
@@ -151,7 +151,7 @@ int __cdecl DDraw::EnumDisplayModes(struct IDirectDraw* pDDraw)
     {
         g_bFullScreen = 0;
 
-        // STRING: HYPERX 0x004bd510
+        // STRING: HYPERX1001 0x004bd510
         g_gameApp.Error("GetCaps failed while enumerating display modes.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -165,7 +165,7 @@ int __cdecl DDraw::EnumDisplayModes(struct IDirectDraw* pDDraw)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004bd4f4
+        // STRING: HYPERX1001 0x004bd4f4
         g_gameApp.Error("EnumDisplayModes failed.\n%s",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -199,8 +199,8 @@ int __cdecl DDraw::EnumDisplayModes(struct IDirectDraw* pDDraw)
 
 #define TIMED_FRAMES 100
 
-// FUNCTION: HYPERX100 0x0047c8d0
-// FUNCTION: HYPERX 0x00439620
+// FUNCTION: HYPERX1000 0x0047c8d0
+// FUNCTION: HYPERX1001 0x00439620
 unsigned int __cdecl DDraw::DetectFlipCapability(void)
 {
     DDSCAPS       caps;
@@ -373,8 +373,8 @@ releasePrimary:
 }
 
 // rcWindow.top gets a dead store from the client area, as in the original.
-// FUNCTION: HYPERX100 0x0047cef0
-// FUNCTION: HYPERX 0x00439a90
+// FUNCTION: HYPERX1000 0x0047cef0
+// FUNCTION: HYPERX1001 0x00439a90
 unsigned int DDraw::BlitBackToWindow(HWND hWnd, int bMenu)
 {
     RECT rcClient;
@@ -427,8 +427,8 @@ unsigned int DDraw::BlitBackToWindow(HWND hWnd, int bMenu)
 }
 
 // The body never reads pDDraw, but its one caller pushes it, so the parameter stays declared.
-// FUNCTION: HYPERX100 0x0047d0a0
-// FUNCTION: HYPERX 0x00439bb0
+// FUNCTION: HYPERX1000 0x0047d0a0
+// FUNCTION: HYPERX1001 0x00439bb0
 int DDraw::GetCurrentDisplayMode(struct IDirectDraw*)
 {
     DDSURFACEDESC ddsd;
@@ -441,7 +441,7 @@ int DDraw::GetCurrentDisplayMode(struct IDirectDraw*)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004be6c0
+        // STRING: HYPERX1001 0x004be6c0
         g_gameApp.Error("Getting the current display mode failed.\n%s\n",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -455,8 +455,8 @@ int DDraw::GetCurrentDisplayMode(struct IDirectDraw*)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0047d140
-// FUNCTION: HYPERX 0x00439c30
+// FUNCTION: HYPERX1000 0x0047d140
+// FUNCTION: HYPERX1001 0x00439c30
 int __stdcall DDraw::CheckDisplayMode(void)
 {
     DDSURFACEDESC desc;
@@ -469,7 +469,7 @@ int __stdcall DDraw::CheckDisplayMode(void)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004be6c0
+        // STRING: HYPERX1001 0x004be6c0
         g_gameApp.Error("Getting the current display mode failed.\n%s\n", DDraw::ErrorToString(g_hrD3DResult));
     }
     else if (g_ddrawDevice.nDisplayWidth == (int)desc.dwWidth && g_ddrawDevice.nDisplayHeight == (int)desc.dwHeight && g_ddrawDevice.nDisplayBpp == (int)desc.ddpfPixelFormat.dwRGBBitCount)
@@ -480,8 +480,8 @@ int __stdcall DDraw::CheckDisplayMode(void)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047d2c0
-// FUNCTION: HYPERX 0x00439cc0
+// FUNCTION: HYPERX1000 0x0047d2c0
+// FUNCTION: HYPERX1001 0x00439cc0
 int __cdecl DDraw::GetCaps(struct DDrawCaps* pDriver, struct DDrawCaps* pHel)
 {
     memset(pDriver, 0, sizeof(int));
@@ -493,7 +493,7 @@ int __cdecl DDraw::GetCaps(struct DDrawCaps* pDriver, struct DDrawCaps* pHel)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004be6f0
+        // STRING: HYPERX1001 0x004be6f0
         g_gameApp.Error("GetCaps failed in while checking driver capabilities.\n%s\n",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -510,8 +510,8 @@ int __cdecl DDraw::GetCaps(struct DDrawCaps* pDriver, struct DDrawCaps* pHel)
 
 // The capability blocks are 380 bytes, the DirectX 6 DDCAPS; this tree's ddraw.h declares 364.
 
-// FUNCTION: HYPERX100 0x0047d360
-// FUNCTION: HYPERX 0x00439d50
+// FUNCTION: HYPERX1000 0x0047d360
+// FUNCTION: HYPERX1001 0x00439d50
 BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
 {
     IDirectDraw* pDDraw;
@@ -527,7 +527,7 @@ BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004be77c
+        // STRING: HYPERX1001 0x004be77c
         g_gameApp.Error("Failing while creating a DD device for testing.  Continuing with execution.\n%s\n",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -544,7 +544,7 @@ BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004be72c
+        // STRING: HYPERX1001 0x004be72c
         g_gameApp.Error("GetCaps failed in while testing a DD device.  Continuing with execution.\n%s\n",
                         DDraw::ErrorToString(g_hrD3DResult));
     }
@@ -574,508 +574,508 @@ BOOL CALLBACK DDraw::EnumDriversCallback(GUID* pGuid, char*, char*, void* pCtx)
     return DDENUMRET_OK;
 }
 
-// FUNCTION: HYPERX100 0x0047d510
-// FUNCTION: HYPERX 0x00439ec0
+// FUNCTION: HYPERX1000 0x0047d510
+// FUNCTION: HYPERX1001 0x00439ec0
 char* DDraw::ErrorToString(int hr)
 {
     // Each literal's extra NUL gives it the original's padding in .data.
     switch (hr)
     {
         case DDERR_OUTOFMEMORY:
-            // STRING: HYPERX 0x004c0510
+            // STRING: HYPERX1001 0x004c0510
             return "DirectDraw does not have enough memory to perform the operation.\0";
 
         case DDERR_GENERIC:
-            // STRING: HYPERX 0x004c04fc
+            // STRING: HYPERX1001 0x004c04fc
             return "Generic failure.\0";
 
         case DDERR_UNSUPPORTED:
-            // STRING: HYPERX 0x004c04e4
+            // STRING: HYPERX1001 0x004c04e4
             return "Action not supported.\0";
 
         case DDERR_INVALIDPARAMS:
-            // STRING: HYPERX 0x004c049c
+            // STRING: HYPERX1001 0x004c049c
             return "One or more of the parameters passed to the function are incorrect.\0";
 
         case DDERR_CANNOTDETACHSURFACE:
-            // STRING: HYPERX 0x004c045c
+            // STRING: HYPERX1001 0x004c045c
             return "This surface can not be detached from the requested surface.\0";
 
         case DDERR_CANNOTATTACHSURFACE:
-            // STRING: HYPERX 0x004c0420
+            // STRING: HYPERX1001 0x004c0420
             return "This surface can not be attached to the requested surface.\0";
 
         case DDERR_ALREADYINITIALIZED:
-            // STRING: HYPERX 0x004c03f8
+            // STRING: HYPERX1001 0x004c03f8
             return "This object is already initialized.\0";
 
         case DDERR_CURRENTLYNOTAVAIL:
-            // STRING: HYPERX 0x004c03d0
+            // STRING: HYPERX1001 0x004c03d0
             return "Support is currently not available.\0";
 
         case DDERR_EXCEPTION:
-            // STRING: HYPERX 0x004c0388
+            // STRING: HYPERX1001 0x004c0388
             return "An exception was encountered while performing the requested operation.\0";
 
         case DDERR_HEIGHTALIGN:
-            // STRING: HYPERX 0x004c0344
+            // STRING: HYPERX1001 0x004c0344
             return "Height of rectangle provided is not a multiple of reqd alignment.\0";
 
         case DDERR_INCOMPATIBLEPRIMARY:
-            // STRING: HYPERX 0x004c02f0
+            // STRING: HYPERX1001 0x004c02f0
             return "Unable to match primary surface creation request with existing primary surface.\0";
 
         case DDERR_INVALIDCAPS:
-            // STRING: HYPERX 0x004c02ac
+            // STRING: HYPERX1001 0x004c02ac
             return "One or more of the caps bits passed to the callback are incorrect.\0";
 
         case DDERR_INVALIDCLIPLIST:
-            // STRING: HYPERX 0x004c0278
+            // STRING: HYPERX1001 0x004c0278
             return "DirectDraw does not support the provided cliplist.\0";
 
         case DDERR_INVALIDMODE:
-            // STRING: HYPERX 0x004c0244
+            // STRING: HYPERX1001 0x004c0244
             return "DirectDraw does not support the requested mode.\0";
 
         case DDERR_INVALIDOBJECT:
-            // STRING: HYPERX 0x004c01fc
+            // STRING: HYPERX1001 0x004c01fc
             return "DirectDraw received a pointer that was an invalid DIRECTDRAW object.\0";
 
         case DDERR_INVALIDPIXELFORMAT:
-            // STRING: HYPERX 0x004c01d0
+            // STRING: HYPERX1001 0x004c01d0
             return "The pixel format was invalid as specified.\0";
 
         case DDERR_INVALIDRECT:
-            // STRING: HYPERX 0x004c01ac
+            // STRING: HYPERX1001 0x004c01ac
             return "Rectangle provided was invalid.\0";
 
         case DDERR_LOCKEDSURFACES:
-            // STRING: HYPERX 0x004c015c
+            // STRING: HYPERX1001 0x004c015c
             return "Operation could not be carried out because one or more surfaces are locked.\0";
 
         case DDERR_NO3D:
-            // STRING: HYPERX 0x004c0140
+            // STRING: HYPERX1001 0x004c0140
             return "There is no 3D present.\0";
 
         case DDERR_NOALPHAHW:
-            // STRING: HYPERX 0x004c00d4
+            // STRING: HYPERX1001 0x004c00d4
             return "Operation could not be carried out because there is no alpha accleration hardware present or available.\0";
 
         case DDERR_NOCLIPLIST:
-            // STRING: HYPERX 0x004c00bc
+            // STRING: HYPERX1001 0x004c00bc
             return "No cliplist available.\0";
 
         case DDERR_NOCOLORCONVHW:
-            // STRING: HYPERX 0x004c0054
+            // STRING: HYPERX1001 0x004c0054
             return "Operation could not be carried out because there is no color conversion hardware present or available.\0";
 
         case DDERR_NOCOLORKEY:
-            // STRING: HYPERX 0x004c0028
+            // STRING: HYPERX1001 0x004c0028
             return "Surface doesn't currently have a color key\0";
 
         case DDERR_NOCOLORKEYHW:
-            // STRING: HYPERX 0x004bffc0
+            // STRING: HYPERX1001 0x004bffc0
             return "Operation could not be carried out because there is no hardware support of the destination color key.\0";
 
         case DDERR_NOCOOPERATIVELEVELSET:
-            // STRING: HYPERX 0x004bff64
+            // STRING: HYPERX1001 0x004bff64
             return "Create function called without DirectDraw object method SetCooperativeLevel being called.\0";
 
         case DDERR_NOEXCLUSIVEMODE:
-            // STRING: HYPERX 0x004bfef4
+            // STRING: HYPERX1001 0x004bfef4
             return "Operation requires the application to have exclusive mode but the application does not have exclusive mode.\0";
 
         case DDERR_NOFLIPHW:
-            // STRING: HYPERX 0x004bfec4
+            // STRING: HYPERX1001 0x004bfec4
             return "Flipping visible surfaces is not supported.\0";
 
         case DDERR_NOGDI:
-            // STRING: HYPERX 0x004bfea8
+            // STRING: HYPERX1001 0x004bfea8
             return "There is no GDI present.\0";
 
         case DDERR_NOMIRRORHW:
-            // STRING: HYPERX 0x004bfe50
+            // STRING: HYPERX1001 0x004bfe50
             return "Operation could not be carried out because there is no hardware present or available.\0";
 
         case DDERR_NOTFOUND:
-            // STRING: HYPERX 0x004bfe30
+            // STRING: HYPERX1001 0x004bfe30
             return "Requested item was not found.\0";
 
         case DDERR_NOOVERLAYHW:
-            // STRING: HYPERX 0x004bfdd0
+            // STRING: HYPERX1001 0x004bfdd0
             return "Operation could not be carried out because there is no overlay hardware present or available.\0";
 
         case DDERR_NORASTEROPHW:
-            // STRING: HYPERX 0x004bfd60
+            // STRING: HYPERX1001 0x004bfd60
             return "Operation could not be carried out because there is no appropriate raster op hardware present or available.\0";
 
         case DDERR_NOROTATIONHW:
-            // STRING: HYPERX 0x004bfd00
+            // STRING: HYPERX1001 0x004bfd00
             return "Operation could not be carried out because there is no rotation hardware present or available.\0";
 
         case DDERR_NOSTRETCHHW:
-            // STRING: HYPERX 0x004bfca4
+            // STRING: HYPERX1001 0x004bfca4
             return "Operation could not be carried out because there is no hardware support for stretching.\0";
 
         case DDERR_NOT4BITCOLOR:
-            // STRING: HYPERX 0x004bfc38
+            // STRING: HYPERX1001 0x004bfc38
             return "DirectDrawSurface is not in 4 bit color palette and the requested operation requires 4 bit color palette.\0";
 
         case DDERR_NOT4BITCOLORINDEX:
-            // STRING: HYPERX 0x004bfbc0
+            // STRING: HYPERX1001 0x004bfbc0
             return "DirectDrawSurface is not in 4 bit color index palette and the requested operation requires 4 bit color index palette.\0";
 
         case DDERR_NOT8BITCOLOR:
-            // STRING: HYPERX 0x004bfb60
+            // STRING: HYPERX1001 0x004bfb60
             return "DirectDrawSurface is not in 8 bit color mode and the requested operation requires 8 bit color.\0";
 
         case DDERR_NOTEXTUREHW:
-            // STRING: HYPERX 0x004bfaf8
+            // STRING: HYPERX1001 0x004bfaf8
             return "Operation could not be carried out because there is no texture mapping hardware present or available.\0";
 
         case DDERR_NOVSYNCHW:
-            // STRING: HYPERX 0x004bfa80
+            // STRING: HYPERX1001 0x004bfa80
             return "Operation could not be carried out because there is no hardware support for vertical blank synchronized operations.\0";
 
         case DDERR_NOZBUFFERHW:
-            // STRING: HYPERX 0x004bfa20
+            // STRING: HYPERX1001 0x004bfa20
             return "Operation could not be carried out because there is no hardware support for zbuffer blitting.\0";
 
         case DDERR_NOZOVERLAYHW:
-            // STRING: HYPERX 0x004bf9a0
+            // STRING: HYPERX1001 0x004bf9a0
             return "Overlay surfaces could not be z layered based on their BltOrder because the hardware does not support z layering of overlays.\0";
 
         case DDERR_OUTOFCAPS:
-            // STRING: HYPERX 0x004bf950
+            // STRING: HYPERX1001 0x004bf950
             return "The hardware needed for the requested operation has already been allocated.\0";
 
         case DDERR_OUTOFVIDEOMEMORY:
-            // STRING: HYPERX 0x004c0510
+            // STRING: HYPERX1001 0x004c0510
             return "DirectDraw does not have enough memory to perform the operation.\0";
 
         case DDERR_OVERLAYCANTCLIP:
-            // STRING: HYPERX 0x004bf91c
+            // STRING: HYPERX1001 0x004bf91c
             return "The hardware does not support clipped overlays.\0";
 
         case DDERR_OVERLAYCOLORKEYONLYONEACTIVE:
-            // STRING: HYPERX 0x004bf8dc
+            // STRING: HYPERX1001 0x004bf8dc
             return "Can only have ony color key active at one time for overlays.\0";
 
         case DDERR_PALETTEBUSY:
-            // STRING: HYPERX 0x004bf878
+            // STRING: HYPERX1001 0x004bf878
             return "Access to this palette is being refused because the palette is already locked by another thread.\0";
 
         case DDERR_COLORKEYNOTSET:
-            // STRING: HYPERX 0x004bf848
+            // STRING: HYPERX1001 0x004bf848
             return "No src color key specified for this operation.\0";
 
         case DDERR_SURFACEALREADYATTACHED:
-            // STRING: HYPERX 0x004bf7fc
+            // STRING: HYPERX1001 0x004bf7fc
             return "This surface is already attached to the surface it is being attached to.\0";
 
         case DDERR_SURFACEALREADYDEPENDENT:
-            // STRING: HYPERX 0x004bf7a4
+            // STRING: HYPERX1001 0x004bf7a4
             return "This surface is already a dependency of the surface it is being made a dependency of.\0";
 
         case DDERR_SURFACEBUSY:
-            // STRING: HYPERX 0x004bf740
+            // STRING: HYPERX1001 0x004bf740
             return "Access to this surface is being refused because the surface is already locked by another thread.\0";
 
         case DDERR_SURFACEISOBSCURED:
-            // STRING: HYPERX 0x004bf704
+            // STRING: HYPERX1001 0x004bf704
             return "Access to surface refused because the surface is obscured.\0";
 
         case DDERR_SURFACELOST:
-            // STRING: HYPERX 0x004bf65c
+            // STRING: HYPERX1001 0x004bf65c
             return "Access to this surface is being refused because the surface memory is gone. The DirectDrawSurface object representing this surface should have Restore called on it.\0";
 
         case DDERR_SURFACENOTATTACHED:
-            // STRING: HYPERX 0x004bf634
+            // STRING: HYPERX1001 0x004bf634
             return "The requested surface is not attached.\0";
 
         case DDERR_TOOBIGHEIGHT:
-            // STRING: HYPERX 0x004bf604
+            // STRING: HYPERX1001 0x004bf604
             return "Height requested by DirectDraw is too large.\0";
 
         case DDERR_TOOBIGSIZE:
-            // STRING: HYPERX 0x004bf5ac
+            // STRING: HYPERX1001 0x004bf5ac
             return "Size requested by DirectDraw is too large, but the individual height and width are OK.\0";
 
         case DDERR_TOOBIGWIDTH:
-            // STRING: HYPERX 0x004bf57c
+            // STRING: HYPERX1001 0x004bf57c
             return "Width requested by DirectDraw is too large.\0";
 
         case DDERR_UNSUPPORTEDFORMAT:
-            // STRING: HYPERX 0x004bf544
+            // STRING: HYPERX1001 0x004bf544
             return "FOURCC format requested is unsupported by DirectDraw.\0";
 
         case DDERR_UNSUPPORTEDMASK:
-            // STRING: HYPERX 0x004bf4fc
+            // STRING: HYPERX1001 0x004bf4fc
             return "Bitmask in the pixel format requested is unsupported by DirectDraw.\0";
 
         case DDERR_VERTICALBLANKINPROGRESS:
-            // STRING: HYPERX 0x004bf4dc
+            // STRING: HYPERX1001 0x004bf4dc
             return "Vertical blank is in progress.\0";
 
         case DDERR_WASSTILLDRAWING:
-            // STRING: HYPERX 0x004bf468
+            // STRING: HYPERX1001 0x004bf468
             return "Informs DirectDraw that the previous Blt which is transfering information to or from this Surface is incomplete.\0";
 
         case DDERR_XALIGN:
-            // STRING: HYPERX 0x004bf420
+            // STRING: HYPERX1001 0x004bf420
             return "Rectangle provided was not horizontally aligned on required boundary.\0";
 
         case DDERR_INVALIDDIRECTDRAWGUID:
-            // STRING: HYPERX 0x004bf3cc
+            // STRING: HYPERX1001 0x004bf3cc
             return "The GUID passed to DirectDrawCreate is not a valid DirectDraw driver identifier.\0";
 
         case DDERR_BLTFASTCANTCLIP:
-            // STRING: HYPERX 0x004bf370
+            // STRING: HYPERX1001 0x004bf370
             return "Return if a clipper object is attached to the source surface passed into a BltFast call.\0";
 
         case DDERR_CANTCREATEDC:
-            // STRING: HYPERX 0x004bf348
+            // STRING: HYPERX1001 0x004bf348
             return "Windows can not create any more DCs.\0";
 
         case DDERR_CANTDUPLICATE:
-            // STRING: HYPERX 0x004bf2f4
+            // STRING: HYPERX1001 0x004bf2f4
             return "Can't duplicate primary & 3D surfaces, or surfaces that are implicitly created.\0";
 
         case DDERR_CLIPPERISUSINGHWND:
-            // STRING: HYPERX 0x004bf294
+            // STRING: HYPERX1001 0x004bf294
             return "An attempt was made to set a cliplist for a clipper object that is already monitoring an hwnd.\0";
 
         case DDERR_DIRECTDRAWALREADYCREATED:
-            // STRING: HYPERX 0x004bf238
+            // STRING: HYPERX1001 0x004bf238
             return "A DirectDraw object representing this driver has already been created for this process.\0";
 
         case DDERR_EXCLUSIVEMODEALREADYSET:
-            // STRING: HYPERX 0x004bf1e0
+            // STRING: HYPERX1001 0x004bf1e0
             return "An attempt was made to set the cooperative level when it was already set to exclusive.\0";
 
         case DDERR_HWNDALREADYSET:
-            // STRING: HYPERX 0x004bf164
+            // STRING: HYPERX1001 0x004bf164
             return "The CooperativeLevel HWND has already been set. It can not be reset while the process has surfaces or palettes created.\0";
 
         case DDERR_HWNDSUBCLASSED:
-            // STRING: HYPERX 0x004bf0f4
+            // STRING: HYPERX1001 0x004bf0f4
             return "HWND used by DirectDraw CooperativeLevel has been subclassed, this prevents DirectDraw from restoring state.\0";
 
         case DDERR_IMPLICITLYCREATED:
-            // STRING: HYPERX 0x004bf0a4
+            // STRING: HYPERX1001 0x004bf0a4
             return "This surface can not be restored because it is an implicitly created surface.\0";
 
         case DDERR_INVALIDPOSITION:
-            // STRING: HYPERX 0x004bf03c
+            // STRING: HYPERX1001 0x004bf03c
             return "Returned when the position of the overlay on the destination is no longer legal for that destination.\0";
 
         case DDERR_NOBLTHW:
-            // STRING: HYPERX 0x004bf01c
+            // STRING: HYPERX1001 0x004bf01c
             return "No blitter hardware present.\0";
 
         case DDERR_NOCLIPPERATTACHED:
-            // STRING: HYPERX 0x004befec
+            // STRING: HYPERX1001 0x004befec
             return "No clipper object attached to surface object.\0";
 
         case DDERR_NODC:
-            // STRING: HYPERX 0x004befc0
+            // STRING: HYPERX1001 0x004befc0
             return "No DC was ever created for this surface.\0";
 
         case DDERR_NODDROPSHW:
-            // STRING: HYPERX 0x004befa0
+            // STRING: HYPERX1001 0x004befa0
             return "No DirectDraw ROP hardware.\0";
 
         case DDERR_NODIRECTDRAWHW:
-            // STRING: HYPERX 0x004bef38
+            // STRING: HYPERX1001 0x004bef38
             return "A hardware-only DirectDraw object creation was attempted but the driver did not support any hardware.\0";
 
         case DDERR_NOEMULATION:
-            // STRING: HYPERX 0x004bef14
+            // STRING: HYPERX1001 0x004bef14
             return "Software emulation not available.\0";
 
         case DDERR_NOHWND:
-            // STRING: HYPERX 0x004beeac
+            // STRING: HYPERX1001 0x004beeac
             return "Clipper notification requires an HWND or no HWND has previously been set as the CooperativeLevel HWND.\0";
 
         case DDERR_NOOVERLAYDEST:
-            // STRING: HYPERX 0x004bee28
+            // STRING: HYPERX1001 0x004bee28
             return "Returned when GetOverlayPosition is called on an overlay that UpdateOverlay has never been called on to establish a destination.\0";
 
         case DDERR_NOPALETTEATTACHED:
-            // STRING: HYPERX 0x004bedf8
+            // STRING: HYPERX1001 0x004bedf8
             return "No palette object attached to this surface.\0";
 
         case DDERR_NOPALETTEHW:
-            // STRING: HYPERX 0x004bedc4
+            // STRING: HYPERX1001 0x004bedc4
             return "No hardware support for 16 or 256 color palettes.\0";
 
         case DDERR_NOTAOVERLAYSURFACE:
-            // STRING: HYPERX 0x004bed7c
+            // STRING: HYPERX1001 0x004bed7c
             return "Returned when an overlay member is called for a non-overlay surface.\0";
 
         case DDERR_NOTFLIPPABLE:
-            // STRING: HYPERX 0x004bed38
+            // STRING: HYPERX1001 0x004bed38
             return "An attempt has been made to flip a surface that is not flippable.\0";
 
         case DDERR_NOTLOCKED:
-            // STRING: HYPERX 0x004becb8
+            // STRING: HYPERX1001 0x004becb8
             return "Surface was not locked.  An attempt to unlock a surface that was not locked at all, or by this process, has been attempted.\0";
 
         case DDERR_NOTPALETTIZED:
-            // STRING: HYPERX 0x004bec80
+            // STRING: HYPERX1001 0x004bec80
             return "The surface being used is not a palette-based surface.\0";
 
         case DDERR_OVERLAYNOTVISIBLE:
-            // STRING: HYPERX 0x004bec3c
+            // STRING: HYPERX1001 0x004bec3c
             return "Returned when GetOverlayPosition is called on a hidden overlay.\0";
 
         case DDERR_PRIMARYSURFACEALREADYEXISTS:
-            // STRING: HYPERX 0x004bec04
+            // STRING: HYPERX1001 0x004bec04
             return "This process already has created a primary surface.\0";
 
         case DDERR_REGIONTOOSMALL:
-            // STRING: HYPERX 0x004bebcc
+            // STRING: HYPERX1001 0x004bebcc
             return "Region passed to Clipper::GetClipList is too small.\0";
 
         case DDERR_WRONGMODE:
-            // STRING: HYPERX 0x004beb7c
+            // STRING: HYPERX1001 0x004beb7c
             return "This surface can not be restored because it was created in a different mode.\0";
 
         case D3DERR_BADMAJORVERSION:
-            // STRING: HYPERX 0x004beb64
+            // STRING: HYPERX1001 0x004beb64
             return "D3DERR_BADMAJORVERSION\0";
 
         case D3DERR_BADMINORVERSION:
-            // STRING: HYPERX 0x004beb4c
+            // STRING: HYPERX1001 0x004beb4c
             return "D3DERR_BADMINORVERSION\0";
 
         case D3DERR_EXECUTE_LOCKED:
-            // STRING: HYPERX 0x004beb34
+            // STRING: HYPERX1001 0x004beb34
             return "D3DERR_EXECUTE_LOCKED\0";
 
         case D3DERR_EXECUTE_NOT_LOCKED:
-            // STRING: HYPERX 0x004beb18
+            // STRING: HYPERX1001 0x004beb18
             return "D3DERR_EXECUTE_NOT_LOCKED\0";
 
         case D3DERR_EXECUTE_CREATE_FAILED:
-            // STRING: HYPERX 0x004beaf8
+            // STRING: HYPERX1001 0x004beaf8
             return "D3DERR_EXECUTE_CREATE_FAILED\0";
 
         case D3DERR_EXECUTE_DESTROY_FAILED:
-            // STRING: HYPERX 0x004bead8
+            // STRING: HYPERX1001 0x004bead8
             return "D3DERR_EXECUTE_DESTROY_FAILED\0";
 
         case D3DERR_EXECUTE_LOCK_FAILED:
-            // STRING: HYPERX 0x004beabc
+            // STRING: HYPERX1001 0x004beabc
             return "D3DERR_EXECUTE_LOCK_FAILED\0";
 
         case D3DERR_EXECUTE_UNLOCK_FAILED:
-            // STRING: HYPERX 0x004bea9c
+            // STRING: HYPERX1001 0x004bea9c
             return "D3DERR_EXECUTE_UNLOCK_FAILED\0";
 
         case D3DERR_EXECUTE_FAILED:
-            // STRING: HYPERX 0x004bea84
+            // STRING: HYPERX1001 0x004bea84
             return "D3DERR_EXECUTE_FAILED\0";
 
         case D3DERR_EXECUTE_CLIPPED_FAILED:
-            // STRING: HYPERX 0x004bea64
+            // STRING: HYPERX1001 0x004bea64
             return "D3DERR_EXECUTE_CLIPPED_FAILED\0";
 
         case D3DERR_TEXTURE_NO_SUPPORT:
-            // STRING: HYPERX 0x004bea48
+            // STRING: HYPERX1001 0x004bea48
             return "D3DERR_TEXTURE_NO_SUPPORT\0";
 
         case D3DERR_TEXTURE_CREATE_FAILED:
-            // STRING: HYPERX 0x004bea28
+            // STRING: HYPERX1001 0x004bea28
             return "D3DERR_TEXTURE_CREATE_FAILED\0";
 
         case D3DERR_TEXTURE_DESTROY_FAILED:
-            // STRING: HYPERX 0x004bea08
+            // STRING: HYPERX1001 0x004bea08
             return "D3DERR_TEXTURE_DESTROY_FAILED\0";
 
         case D3DERR_TEXTURE_LOCK_FAILED:
-            // STRING: HYPERX 0x004be9ec
+            // STRING: HYPERX1001 0x004be9ec
             return "D3DERR_TEXTURE_LOCK_FAILED\0";
 
         case D3DERR_TEXTURE_UNLOCK_FAILED:
-            // STRING: HYPERX 0x004be9cc
+            // STRING: HYPERX1001 0x004be9cc
             return "D3DERR_TEXTURE_UNLOCK_FAILED\0";
 
         case D3DERR_TEXTURE_LOAD_FAILED:
-            // STRING: HYPERX 0x004be9b0
+            // STRING: HYPERX1001 0x004be9b0
             return "D3DERR_TEXTURE_LOAD_FAILED\0";
 
         case D3DERR_TEXTURE_LOCKED:
-            // STRING: HYPERX 0x004be998
+            // STRING: HYPERX1001 0x004be998
             return "D3DERR_TEXTURELOCKED\0";
 
         case D3DERR_TEXTURE_NOT_LOCKED:
-            // STRING: HYPERX 0x004be97c
+            // STRING: HYPERX1001 0x004be97c
             return "D3DERR_TEXTURE_NOT_LOCKED\0";
 
         case D3DERR_MATRIX_CREATE_FAILED:
-            // STRING: HYPERX 0x004be95c
+            // STRING: HYPERX1001 0x004be95c
             return "D3DERR_MATRIX_CREATE_FAILED\0";
 
         case D3DERR_MATRIX_DESTROY_FAILED:
-            // STRING: HYPERX 0x004be93c
+            // STRING: HYPERX1001 0x004be93c
             return "D3DERR_MATRIX_DESTROY_FAILED\0";
 
         case D3DERR_MATRIX_SETDATA_FAILED:
-            // STRING: HYPERX 0x004be91c
+            // STRING: HYPERX1001 0x004be91c
             return "D3DERR_MATRIX_SETDATA_FAILED\0";
 
         case D3DERR_SETVIEWPORTDATA_FAILED:
-            // STRING: HYPERX 0x004be8fc
+            // STRING: HYPERX1001 0x004be8fc
             return "D3DERR_SETVIEWPORTDATA_FAILED\0";
 
         case D3DERR_MATERIAL_CREATE_FAILED:
-            // STRING: HYPERX 0x004be8dc
+            // STRING: HYPERX1001 0x004be8dc
             return "D3DERR_MATERIAL_CREATE_FAILED\0";
 
         case D3DERR_MATERIAL_DESTROY_FAILED:
-            // STRING: HYPERX 0x004be8bc
+            // STRING: HYPERX1001 0x004be8bc
             return "D3DERR_MATERIAL_DESTROY_FAILED\0";
 
         case D3DERR_MATERIAL_SETDATA_FAILED:
-            // STRING: HYPERX 0x004be89c
+            // STRING: HYPERX1001 0x004be89c
             return "D3DERR_MATERIAL_SETDATA_FAILED\0";
 
         case D3DERR_MATERIAL_GETDATA_FAILED:
-            // STRING: HYPERX 0x004be87c
+            // STRING: HYPERX1001 0x004be87c
             return "D3DERR_MATERIAL_GETDATA_FAILED\0";
 
         case D3DERR_LIGHT_SET_FAILED:
-            // STRING: HYPERX 0x004be860
+            // STRING: HYPERX1001 0x004be860
             return "D3DERR_LIGHT_SET_FAILED\0";
 
         case D3DERR_SCENE_NOT_IN_SCENE:
-            // STRING: HYPERX 0x004be844
+            // STRING: HYPERX1001 0x004be844
             return "D3DERR_SCENE_NOT_IN_SCENE\0";
 
         case D3DERR_SCENE_IN_SCENE:
-            // STRING: HYPERX 0x004be82c
+            // STRING: HYPERX1001 0x004be82c
             return "D3DERR_SCENE_IN_SCENE\0";
 
         case D3DERR_SCENE_BEGIN_FAILED:
-            // STRING: HYPERX 0x004be810
+            // STRING: HYPERX1001 0x004be810
             return "D3DERR_SCENE_BEGIN_FAILED\0";
 
         case 0x00000000:
-            // STRING: HYPERX 0x004be7e8
+            // STRING: HYPERX1001 0x004be7e8
             return "No error.\0";
 
         case D3DERR_SCENE_END_FAILED:
-            // STRING: HYPERX 0x004be7cc
+            // STRING: HYPERX1001 0x004be7cc
             return "D3DERR_SCENE_END_FAILED\0";
     }
 
-    // STRING: HYPERX 0x004be7f4
+    // STRING: HYPERX1001 0x004be7f4
     return "Unrecognized error value.\0";
 }
 
-// FUNCTION: HYPERX100 0x0047df10
-// FUNCTION: HYPERX 0x0043a6c0
+// FUNCTION: HYPERX1000 0x0047df10
+// FUNCTION: HYPERX1001 0x0043a6c0
 unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 {
     DDrawCaps    capsDriver;
@@ -1088,7 +1088,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 
     if (g_hrD3DResult != 0)
     {
-        // STRING: HYPERX 0x004c073c
+        // STRING: HYPERX1001 0x004c073c
         g_gameApp.Error("DirectDrawEnumerate failed.\n%s\n",
                         DDraw::ErrorToString(g_hrD3DResult));
 
@@ -1124,7 +1124,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c071c
+            // STRING: HYPERX1001 0x004c071c
             g_gameApp.Error("SetCooperativeLevel failed!\n%s\n",
                             DDraw::ErrorToString(g_hrLastResult));
 
@@ -1198,7 +1198,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
         {
             if (g_displayMode.nWidth != 640 || g_displayMode.nHeight != 480)
             {
-                // STRING: HYPERX 0x004c06fc
+                // STRING: HYPERX1001 0x004c06fc
                 g_gameApp.Error("Can't set mode trying 640x480!\n");
 
                 g_displayMode.nWidth  = 640;
@@ -1212,7 +1212,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
             {
                 if (g_dwDisplayBpp != 8)
                 {
-                    // STRING: HYPERX 0x004c06d8
+                    // STRING: HYPERX1001 0x004c06d8
                     g_gameApp.Error("Can't set mode trying 640x480x8!\n");
 
                     g_dwDisplayBpp = 8;
@@ -1225,7 +1225,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 
                 if (g_hrLastResult != 0)
                 {
-                    // STRING: HYPERX 0x004c06c4
+                    // STRING: HYPERX1001 0x004c06c4
                     g_gameApp.Error("SetMode failed!\n%s\n",
                                     DDraw::ErrorToString(g_hrLastResult));
 
@@ -1241,7 +1241,7 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 
         if (g_ddrawDevice.bIsPrimary == 0)
         {
-            // STRING: HYPERX 0x004c0660
+            // STRING: HYPERX1001 0x004c0660
             g_gameApp.Fatal("This graphics accelerator card does not support drawing in a window!\nChange to fullscreen mode.\n");
         }
 
@@ -1326,20 +1326,20 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
             {
                 if ((capsDriver.dwCaps & DDCAPS_CANBLTSYSMEM) != 0)
                 {
-                    // STRING: HYPERX 0x004c05d4
+                    // STRING: HYPERX1001 0x004c05d4
                     g_gameApp.Error("Insufficient free video memory for double buffered graphics.\nPlacing back buffer in system memory.\n\n%0.2f KB Available.\n%0.2f KB Required.\n", capsDriver.dwVidMemTotal / 1024.0f, nNeeded / 1024.0f);
 
                     g_bUseOffscreenSurface = 1;
                 }
                 else
                 {
-                    // STRING: HYPERX 0x004c0554
+                    // STRING: HYPERX1001 0x004c0554
                     g_gameApp.Fatal("Insufficient free video memory for graphics buffers.\nTry reducing desktop resolution.\n\n%0.2f KB Available.\n%0.2f KB Required.\n", capsDriver.dwVidMemTotal / 1024.0f, nNeeded / 1024.0f);
                 }
             }
             else
             {
-                // STRING: HYPERX 0x004c0554
+                // STRING: HYPERX1001 0x004c0554
                 g_gameApp.Fatal("Insufficient free video memory for graphics buffers.\nTry reducing desktop resolution.\n\n%0.2f KB Available.\n%0.2f KB Required.\n", capsDriver.dwVidMemTotal / 1024.0f, nNeeded / 1024.0f);
             }
         }
@@ -1387,8 +1387,8 @@ unsigned int DDraw::InitDeviceAndSurfaces(HPALETTE hPalette)
 }
 
 // The 2904 byte device block, the 868 byte display state and the 448 byte HUD surfaces.
-// FUNCTION: HYPERX100 0x0047e920
-// FUNCTION: HYPERX 0x0043ade0
+// FUNCTION: HYPERX1000 0x0047e920
+// FUNCTION: HYPERX1001 0x0043ade0
 void DDraw::ClearDeviceState(void)
 {
     memset(&g_ddrawDevice, 0, sizeof(g_ddrawDevice));
@@ -1400,11 +1400,11 @@ void DDraw::ClearDeviceState(void)
     D3DRend::ResetState();
 }
 
-// GLOBAL: HYPERX 0x004cee68
+// GLOBAL: HYPERX1001 0x004cee68
 extern int g_bDoubleResMode;
 
-// FUNCTION: HYPERX100 0x0047e970
-// FUNCTION: HYPERX 0x0043ae20
+// FUNCTION: HYPERX1000 0x0047e970
+// FUNCTION: HYPERX1001 0x0043ae20
 int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 {
     const HDC hdc = GetDC(0);
@@ -1424,7 +1424,7 @@ int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c071c
+            // STRING: HYPERX1001 0x004c071c
             g_gameApp.Error("SetCooperativeLevel failed!\n%s\n",
                             DDraw::ErrorToString(g_hrLastResult));
 
@@ -1436,7 +1436,7 @@ int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c06c4
+            // STRING: HYPERX1001 0x004c06c4
             g_gameApp.Fatal("SetMode failed!\n%s\n", DDraw::ErrorToString(g_hrLastResult));
 
             return DDraw::FailInitialization(g_hrLastResult & DDRAW_ERROR_CODE_MASK);
@@ -1461,21 +1461,21 @@ int __cdecl DDraw::SetFullscreenMode(HWND hWnd, int nBpp)
 }
 
 // Nothing returns from the fatal box, so the zero below is unreachable.
-// FUNCTION: HYPERX100 0x0047eae0
-// FUNCTION: HYPERX 0x0043af20
+// FUNCTION: HYPERX1000 0x0047eae0
+// FUNCTION: HYPERX1001 0x0043af20
 int __cdecl DDraw::FailInitialization(int nError)
 {
     DDraw::DestroyAllSurfaces();
 
-    // STRING: HYPERX 0x004c075c
+    // STRING: HYPERX1001 0x004c075c
     g_gameApp.Fatal("DirectDraw initialization failed err=%d!", nError);
 
     return 0;
 }
 
 // Eight bits per pixel has no masks, so the key is 0xff.
-// FUNCTION: HYPERX100 0x0047eb10
-// FUNCTION: HYPERX 0x0043af40
+// FUNCTION: HYPERX1000 0x0047eb10
+// FUNCTION: HYPERX1001 0x0043af40
 unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 {
     DDrawCaps     caps;
@@ -1527,7 +1527,7 @@ unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 
         if (hr != DD_OK)
         {
-            // STRING: HYPERX 0x004c0788
+            // STRING: HYPERX1001 0x004c0788
             g_gameApp.Error("CreateSurface FAILED!\n%s\n", DDraw::ErrorToString(hr));
 
             return DDraw::FailInitialization(hr & DDRAW_ERROR_CODE_MASK);
@@ -1547,7 +1547,7 @@ unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 
             if (hr != DD_OK)
             {
-                // STRING: HYPERX 0x004c07c4
+                // STRING: HYPERX1001 0x004c07c4
                 g_gameApp.Error("CreateSurface on back buffer FAILED!\n%s\n",
                                 DDraw::ErrorToString(hr));
 
@@ -1565,7 +1565,7 @@ unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 
             if (hr != DD_OK)
             {
-                // STRING: HYPERX 0x004c07a4
+                // STRING: HYPERX1001 0x004c07a4
                 g_gameApp.Error("GetAttachedSurface failed!\n%s\n",
                                 DDraw::ErrorToString(hr));
 
@@ -1582,7 +1582,7 @@ unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
     {
         if (g_ddrawDevice.bIsPrimary == 0)
         {
-            // STRING: HYPERX 0x004c0660
+            // STRING: HYPERX1001 0x004c0660
             g_gameApp.Fatal("This graphics accelerator card does not support drawing in a window!\nChange to fullscreen mode.\n");
         }
 
@@ -1593,7 +1593,7 @@ unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 
         if (hr != DD_OK)
         {
-            // STRING: HYPERX 0x004c0788
+            // STRING: HYPERX1001 0x004c0788
             g_gameApp.Error("CreateSurface FAILED!\n%s\n", DDraw::ErrorToString(hr));
 
             return DDraw::FailInitialization(hr & DDRAW_ERROR_CODE_MASK);
@@ -1689,12 +1689,12 @@ unsigned int __stdcall DDraw::CreatePrimaryAndBackBuffer(void)
 
 #define RADAR_ORIGIN 100
 
-// GLOBAL: HYPERX 0x004be6bc
+// GLOBAL: HYPERX1001 0x004be6bc
 extern int g_nHudColourMode;
 
 #define BORDER_ORIGIN 2
 
-// GLOBAL: HYPERX 0x004cda18
+// GLOBAL: HYPERX1001 0x004cda18
 extern char g_szHudSampleText[128];
 
 #define SCORE_POINTS 0xf
@@ -1737,8 +1737,8 @@ inline void HUD::AssignName(String* pName, const char* psz)
 
 #define WIDGET_POINTS 9
 
-// FUNCTION: HYPERX100 0x0047f100
-// FUNCTION: HYPERX 0x0043b330
+// FUNCTION: HYPERX1000 0x0047f100
+// FUNCTION: HYPERX1001 0x0043b330
 int __cdecl HUD::CreateSurfaces(void)
 {
     Point           pt;
@@ -1761,13 +1761,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pTeamAFrame == 0)
     {
-        // STRING: HYPERX 0x004c0adc
+        // STRING: HYPERX1001 0x004c0adc
         g_gameApp.Error("Cannot create surface for team A logo borders!");
     }
     else
     {
         nResult += g_hudSurfaces.pTeamAFrame
-                       // STRING: HYPERX 0x004c0ad4
+                       // STRING: HYPERX1001 0x004c0ad4
                        ->LoadFromFile("frdamgA", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
@@ -1779,13 +1779,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pTeamABitmap == 0)
     {
-        // STRING: HYPERX 0x004c0aa8
+        // STRING: HYPERX1001 0x004c0aa8
         g_gameApp.Error("Cannot create surface for team A logos!\n");
     }
     else
     {
         nResult += g_hudSurfaces.pTeamABitmap
-                       // STRING: HYPERX 0x004c0aa0
+                       // STRING: HYPERX1001 0x004c0aa0
                        ->LoadFromFile("hudlos", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
@@ -1795,24 +1795,24 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pMessageFrame == 0)
     {
-        // STRING: HYPERX 0x004c0a74
+        // STRING: HYPERX1001 0x004c0a74
         g_gameApp.Error("Cannot create surface for Message border!\n");
     }
     else
     {
         nResult += g_hudSurfaces.pMessageFrame
-                       // STRING: HYPERX 0x004c0a6c
+                       // STRING: HYPERX1001 0x004c0a6c
                        ->LoadFromFile("frmsg", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
     g_hudSurfaces.pMessageText = new CDDTextSurface(g_hudSurfaces.pMessageFrame);
 
-    // STRING: HYPERX 0x004c0a44
+    // STRING: HYPERX1001 0x004c0a44
     sprintf(g_szHudSampleText, "This is the Length of Longest String.");
 
     if (g_hudSurfaces.pMessageText == 0)
     {
-        // STRING: HYPERX 0x004c0a20
+        // STRING: HYPERX1001 0x004c0a20
         g_gameApp.Error("Cannot create surface for Messages!");
     }
     else
@@ -1825,13 +1825,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pPeriodFrame == 0)
     {
-        // STRING: HYPERX 0x004c09f4
+        // STRING: HYPERX1001 0x004c09f4
         g_gameApp.Error("Cannot create surface for Period border!\n");
     }
     else
     {
         nResult += g_hudSurfaces.pPeriodFrame
-                       // STRING: HYPERX 0x004c09ec
+                       // STRING: HYPERX1001 0x004c09ec
                        ->LoadFromFile("frper", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
@@ -1839,13 +1839,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pPeriodOverlay == 0)
     {
-        // STRING: HYPERX 0x004c09c0
+        // STRING: HYPERX1001 0x004c09c0
         g_gameApp.Error("Cannot create surface for Period light!\n");
     }
     else
     {
         nResult += g_hudSurfaces.pPeriodOverlay
-                       // STRING: HYPERX 0x004c09b8
+                       // STRING: HYPERX1001 0x004c09b8
                        ->LoadFromFile("period", 0, g_bUseOffscreenSurface);
     }
 
@@ -1855,7 +1855,7 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pTeamAScoreText == 0)
     {
-        // STRING: HYPERX 0x004c0988
+        // STRING: HYPERX1001 0x004c0988
         g_gameApp.Error("Cannot create surface for team A Score Text!");
     }
     else
@@ -1869,7 +1869,7 @@ int __cdecl HUD::CreateSurfaces(void)
     if (g_hudSurfaces.pSmallText != 0)
     {
         nResult += g_hudSurfaces.pSmallText
-                       // STRING: HYPERX 0x004c0984
+                       // STRING: HYPERX1001 0x004c0984
                        ->SetFont(g_strHudDefaultName.m_pchData, SMALL_POINTS, "x4", COLOUR_KEYED, g_bUseOffscreenSurface);
     }
 
@@ -1877,13 +1877,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pTeamBFrame == 0)
     {
-        // STRING: HYPERX 0x004c0954
+        // STRING: HYPERX1001 0x004c0954
         g_gameApp.Error("Cannot create surface for team B logo borders!");
     }
     else
     {
         nResult += g_hudSurfaces.pTeamBFrame
-                       // STRING: HYPERX 0x004c094c
+                       // STRING: HYPERX1001 0x004c094c
                        ->LoadFromFile("frdamgB", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
@@ -1893,13 +1893,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pTeamBBitmap == 0)
     {
-        // STRING: HYPERX 0x004c0924
+        // STRING: HYPERX1001 0x004c0924
         g_gameApp.Error("Cannot create surface for team B logos!");
     }
     else
     {
         nResult += g_hudSurfaces.pTeamBBitmap
-                       // STRING: HYPERX 0x004c091c
+                       // STRING: HYPERX1001 0x004c091c
                        ->LoadFromFile("hudsea", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
@@ -1909,7 +1909,7 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pTeamBScoreText == 0)
     {
-        // STRING: HYPERX 0x004c08ec
+        // STRING: HYPERX1001 0x004c08ec
         g_gameApp.Error("Cannot create surface for team B Score Text!");
     }
     else
@@ -1922,13 +1922,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pNetworkIcon == 0)
     {
-        // STRING: HYPERX 0x004c08c4
+        // STRING: HYPERX1001 0x004c08c4
         g_gameApp.Error("Cannot create surface for network icon!");
     }
     else
     {
         nResult += g_hudSurfaces.pNetworkIcon
-                       // STRING: HYPERX 0x004c08bc
+                       // STRING: HYPERX1001 0x004c08bc
                        ->LoadFromFile("network", g_nHudColourMode, g_bUseOffscreenSurface);
     }
 
@@ -1936,7 +1936,7 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pHeadCamFrame == 0)
     {
-        // STRING: HYPERX 0x004c0890
+        // STRING: HYPERX1001 0x004c0890
         g_gameApp.Error("Cannot create surface for second camera!");
     }
     else
@@ -1944,7 +1944,7 @@ int __cdecl HUD::CreateSurfaces(void)
         if (g_ddrawDevice.bD3DActive != 0)
         {
             nResult += g_hudSurfaces.pHeadCamFrame
-                           // STRING: HYPERX 0x004c0888
+                           // STRING: HYPERX1001 0x004c0888
                            ->LoadFromFile("frshot", g_nHudColourMode, g_bUseOffscreenSurface);
         }
         else
@@ -1974,14 +1974,14 @@ int __cdecl HUD::CreateSurfaces(void)
         SHOT_CAM_COLOUR));
 
     nResult += g_hudSurfaces.pHeadCamFrame
-                   // STRING: HYPERX 0x004c087c
+                   // STRING: HYPERX1001 0x004c087c
                    ->SetTextOverlay(g_strHudDefaultName.m_pchData, SHOT_CAM_POINTS, "Shot Camera", COLOUR_KEYED);
 
     g_hudSurfaces.pReticle = new CDDBitMap(g_hudSurfaces.pHeadCamFrame);
 
     if (g_hudSurfaces.pReticle == 0)
     {
-        // STRING: HYPERX 0x004c084c
+        // STRING: HYPERX1001 0x004c084c
         g_gameApp.Error("Cannot create surface for camera reticle icon!");
     }
     else
@@ -1994,13 +1994,13 @@ int __cdecl HUD::CreateSurfaces(void)
 
     if (g_hudSurfaces.pShotPowerMeter == 0)
     {
-        // STRING: HYPERX 0x004c0818
+        // STRING: HYPERX1001 0x004c0818
         g_gameApp.Error("Cannot create surface for shot power meter!");
     }
     else
     {
         nResult += g_hudSurfaces.pShotPowerMeter
-                       // STRING: HYPERX 0x004c0810
+                       // STRING: HYPERX1001 0x004c0810
                        ->LoadFromFile("frshotp", COLOUR_KEYED, g_bUseOffscreenSurface);
     }
 
@@ -2022,7 +2022,7 @@ int __cdecl HUD::CreateSurfaces(void)
 
         strcpy(szExitPrompt, pszSrc);
 
-        // STRING: HYPERX 0x004c080c
+        // STRING: HYPERX1001 0x004c080c
         strcat(szExitPrompt, "X");
 
         nResult += g_hudSurfaces.pExitMatchText
@@ -2067,7 +2067,7 @@ int __cdecl HUD::CreateSurfaces(void)
     g_hudSurfaces.apTeamNames[0] = pText;
 
     nResult += pText->SetFont(g_strHudDefaultName.m_pchData, TICKER_POINTS,
-                              // STRING: HYPERX 0x004c07f0
+                              // STRING: HYPERX1001 0x004c07f0
                               "XXXXXXXXXXXXXXXXXXXXXXXXXXX",
                               COLOUR_KEYED,
                               g_bUseOffscreenSurface);
@@ -2091,8 +2091,8 @@ int __cdecl HUD::CreateSurfaces(void)
 }
 
 // The clipper is released until its count reaches nought.
-// FUNCTION: HYPERX100 0x00480180
-// FUNCTION: HYPERX 0x0043bf80
+// FUNCTION: HYPERX1000 0x00480180
+// FUNCTION: HYPERX1001 0x0043bf80
 void __stdcall DDraw::DestroyAllSurfaces(void)
 {
     int i;
@@ -2333,8 +2333,8 @@ void __stdcall DDraw::DestroyAllSurfaces(void)
 }
 
 // A windowed run never changes the mode and answers success.
-// FUNCTION: HYPERX100 0x004806c0
-// FUNCTION: HYPERX 0x0043c310
+// FUNCTION: HYPERX1000 0x004806c0
+// FUNCTION: HYPERX1001 0x0043c310
 int __cdecl DDraw::ChangeDisplayMode(int nMode)
 {
     DEVMODEA dm;
@@ -2390,15 +2390,15 @@ int __cdecl DDraw::ChangeDisplayMode(int nMode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00480800
-// FUNCTION: HYPERX 0x0043c410
+// FUNCTION: HYPERX1000 0x00480800
+// FUNCTION: HYPERX1001 0x0043c410
 int DDraw::GetLastError(void)
 {
     return g_hrLastResult;
 }
 
-// FUNCTION: HYPERX100 0x00480810
-// FUNCTION: HYPERX 0x0043c420
+// FUNCTION: HYPERX1000 0x00480810
+// FUNCTION: HYPERX1001 0x0043c420
 int __stdcall DDraw::RestoreAllSurfaces(void)
 {
     int hr = g_ddrawDevice.pDDrawPrimary->Restore();
@@ -2562,13 +2562,13 @@ int __stdcall DDraw::RestoreAllSurfaces(void)
 }
 
 // The millisecond line is formatted before its surface exists, so it measures "0:00".
-// FUNCTION: HYPERX100 0x00480bc0
-// FUNCTION: HYPERX 0x0043c700
+// FUNCTION: HYPERX1000 0x00480bc0
+// FUNCTION: HYPERX1001 0x0043c700
 int __stdcall HUD::CreateFPSText(void)
 {
     int nResult = 0;
 
-    // STRING: HYPERX 0x004c0b1c
+    // STRING: HYPERX1001 0x004c0b1c
     AssignName(&g_strHudDefaultName, "MS Sans Serif");
 
     g_ddrawDevice.pFpsText = new CDDTextSurface(g_pDDrawDevice, g_ddrawDevice.pDDrawPrimary, g_ddrawDevice.pBackSurface);
@@ -2576,7 +2576,7 @@ int __stdcall HUD::CreateFPSText(void)
     if (g_ddrawDevice.pFpsText != 0)
     {
         nResult = g_ddrawDevice.pFpsText
-                      // STRING: HYPERX 0x004c0b0c
+                      // STRING: HYPERX1001 0x004c0b0c
                       ->SetFontScaled(g_strHudDefaultName.m_pchData, "FPS 00000.00", COLOUR_KEYED, g_bUseOffscreenSurface);
     }
 
@@ -2594,8 +2594,8 @@ int __stdcall HUD::CreateFPSText(void)
 }
 
 // A meter that exists but did not load still reaches the caller as a failure.
-// FUNCTION: HYPERX100 0x00480d70
-// FUNCTION: HYPERX 0x0043c830
+// FUNCTION: HYPERX1000 0x00480d70
+// FUNCTION: HYPERX1001 0x0043c830
 int __cdecl HUD::CreateSpeedMeter(void)
 {
     Point pt;
@@ -2609,7 +2609,7 @@ int __cdecl HUD::CreateSpeedMeter(void)
     }
 
     nResult = g_hudSurfaces.pSpeedMeter
-                  // STRING: HYPERX 0x004c0b2c
+                  // STRING: HYPERX1001 0x004c0b2c
                   ->LoadFromFile("speed", METER_UNUSED, METER_COLOUR_MODE, g_bUseOffscreenSurface);
 
     pt.Set(1, 1);
@@ -2620,8 +2620,8 @@ int __cdecl HUD::CreateSpeedMeter(void)
 }
 
 // The answer is the five loads summed. The Point set to a hundred is never read.
-// FUNCTION: HYPERX100 0x00480e80
-// FUNCTION: HYPERX 0x0043c900
+// FUNCTION: HYPERX1000 0x00480e80
+// FUNCTION: HYPERX1001 0x0043c900
 int __cdecl HUD::CreateDamageAndRadar(void)
 {
     Point pt;
@@ -2637,7 +2637,7 @@ int __cdecl HUD::CreateDamageAndRadar(void)
     }
 
     nResult = g_hudSurfaces.pTeamADamageBar1
-                  // STRING: HYPERX 0x004c0b50
+                  // STRING: HYPERX1001 0x004c0b50
                   ->InitAndLoad("BDamgBar", DAMAGE_BAR_STEPS, DAMAGE_COLOUR_MODE, g_bUseOffscreenSurface);
 
     pt.Set(DAMAGE_ORIGIN, DAMAGE_ORIGIN);
@@ -2653,7 +2653,7 @@ int __cdecl HUD::CreateDamageAndRadar(void)
     }
 
     nResult += g_hudSurfaces.pTeamADamageBar2
-                   // STRING: HYPERX 0x004c0b50
+                   // STRING: HYPERX1001 0x004c0b50
                    ->InitAndLoad("BDamgBar", DAMAGE_BAR_STEPS, DAMAGE_COLOUR_MODE, g_bUseOffscreenSurface);
 
     g_hudSurfaces.pTeamADamageBar2->SetClipRect(1, pt);
@@ -2667,7 +2667,7 @@ int __cdecl HUD::CreateDamageAndRadar(void)
     }
 
     nResult += g_hudSurfaces.pTeamBDamageBar1
-                   // STRING: HYPERX 0x004c0b44
+                   // STRING: HYPERX1001 0x004c0b44
                    ->InitAndLoad("RDamgBar", DAMAGE_BAR_STEPS, DAMAGE_COLOUR_MODE, g_bUseOffscreenSurface);
 
     g_hudSurfaces.pTeamBDamageBar1->SetClipRect(1, pt);
@@ -2681,7 +2681,7 @@ int __cdecl HUD::CreateDamageAndRadar(void)
     }
 
     nResult += g_hudSurfaces.pTeamBDamageBar2
-                   // STRING: HYPERX 0x004c0b44
+                   // STRING: HYPERX1001 0x004c0b44
                    ->InitAndLoad("RDamgBar", DAMAGE_BAR_STEPS, DAMAGE_COLOUR_MODE, g_bUseOffscreenSurface);
 
     g_hudSurfaces.pTeamBDamageBar2->SetClipRect(1, pt);
@@ -2702,12 +2702,12 @@ int __cdecl HUD::CreateDamageAndRadar(void)
 
     if (g_hudSurfaces.bHud320 != 0)
     {
-        // STRING: HYPERX 0x004c0b3c
+        // STRING: HYPERX1001 0x004c0b3c
         nResult += g_hudSurfaces.pRadar->Init("320radr", &vScale, g_bUseOffscreenSurface);
     }
     else
     {
-        // STRING: HYPERX 0x004c0b34
+        // STRING: HYPERX1001 0x004c0b34
         nResult += g_hudSurfaces.pRadar->Init("frradar", &vScale, g_bUseOffscreenSurface);
     }
 
@@ -2715,8 +2715,8 @@ int __cdecl HUD::CreateDamageAndRadar(void)
 }
 
 // A lost surface is restored and a failed restore is fatal; any other failure is an error.
-// FUNCTION: HYPERX100 0x00481380
-// FUNCTION: HYPERX 0x0043cc80
+// FUNCTION: HYPERX1000 0x00481380
+// FUNCTION: HYPERX1001 0x0043cc80
 int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 {
     DDBLTFX fx;
@@ -2746,7 +2746,7 @@ int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 
                 if (g_hrLastResult != 0)
                 {
-                    // STRING: HYPERX 0x004c0bb8
+                    // STRING: HYPERX1001 0x004c0bb8
                     g_gameApp.Fatal("DDClearBackBuffer: Paint Surface Restore failed!\n%s\n",
                                     DDraw::ErrorToString(g_hrLastResult));
                 }
@@ -2757,7 +2757,7 @@ int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 
                 if (g_hrLastResult != 0)
                 {
-                    // STRING: HYPERX 0x004c0b80
+                    // STRING: HYPERX1001 0x004c0b80
                     g_gameApp.Fatal("DDClearBackBuffer: Primary Surface Restore failed!\n%s\n",
                                     DDraw::ErrorToString(g_hrLastResult));
                 }
@@ -2766,7 +2766,7 @@ int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c0b5c
+            // STRING: HYPERX1001 0x004c0b5c
             g_gameApp.Error("DDClearBackBuffer: Blt failed!\n%s\n",
                             DDraw::ErrorToString(g_hrLastResult));
         }
@@ -2781,8 +2781,8 @@ int __cdecl DDraw::ClearBackBuffer(unsigned int nColour)
 
 #define CLEAR_PASSES 4
 
-// FUNCTION: HYPERX100 0x00481500
-// FUNCTION: HYPERX 0x0043cda0
+// FUNCTION: HYPERX1000 0x00481500
+// FUNCTION: HYPERX1001 0x0043cda0
 int __stdcall DDraw::ClearAllBuffers(void)
 {
     DDBLTFX bltfx;
@@ -2829,11 +2829,11 @@ int __stdcall DDraw::ClearAllBuffers(void)
 // The page lock needs IDirectDrawSurface2, but a surface without it is still usable.
 
 // Declared here so the marker has a name; dxguid.lib supplies it.
-// GLOBAL: HYPERX 0x004b4f20
+// GLOBAL: HYPERX1001 0x004b4f20
 EXTERN_C const GUID IID_IDirectDrawSurface2;
 
-// FUNCTION: HYPERX100 0x00481600
-// FUNCTION: HYPERX 0x0043ce60
+// FUNCTION: HYPERX1000 0x00481600
+// FUNCTION: HYPERX1001 0x0043ce60
 LPDIRECTDRAWSURFACE DDraw::CreateOffscreenSurface(int nWidth, int nHeight, int bSystemMemory, int bColourKey)
 {
     DDCOLORKEY    key;
@@ -2882,7 +2882,7 @@ LPDIRECTDRAWSURFACE DDraw::CreateOffscreenSurface(int nWidth, int nHeight, int b
     }
     else
     {
-        // STRING: HYPERX 0x004c0bf0
+        // STRING: HYPERX1001 0x004c0bf0
         g_gameApp.Error("CreateSurface FAILED, rc = %ld! %s\n", HRESULT_CODE(g_hrLastResult), DDraw::ErrorToString(g_hrLastResult));
 
         pSurface = 0;
@@ -2899,8 +2899,8 @@ LPDIRECTDRAWSURFACE DDraw::CreateOffscreenSurface(int nWidth, int nHeight, int b
 // The surface's pixel for a colour, in through GDI and back through Lock; no device context answers
 // nought.
 
-// FUNCTION: HYPERX100 0x004817b0
-// FUNCTION: HYPERX 0x0043cfc0
+// FUNCTION: HYPERX1000 0x004817b0
+// FUNCTION: HYPERX1001 0x0043cfc0
 unsigned int __cdecl DDraw::ColourToPixel(IDirectDrawSurface* pSurface,
                                           unsigned int        nColour)
 {
@@ -2951,8 +2951,8 @@ unsigned int __cdecl DDraw::ColourToPixel(IDirectDrawSurface* pSurface,
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00481950
-// FUNCTION: HYPERX 0x0043d0b0
+// FUNCTION: HYPERX1000 0x00481950
+// FUNCTION: HYPERX1001 0x0043d0b0
 int __stdcall DDraw::Flip(void)
 {
 #ifdef HYPERX_BRINGUP
@@ -2963,8 +2963,8 @@ int __stdcall DDraw::Flip(void)
     return g_ddrawDevice.pDDrawPrimary->Flip(0, DDFLIP_WAIT) == 0;
 }
 
-// FUNCTION: HYPERX100 0x00481970
-// FUNCTION: HYPERX 0x0043d0d0
+// FUNCTION: HYPERX1000 0x00481970
+// FUNCTION: HYPERX1001 0x0043d0d0
 int __stdcall DDraw::BltFrontFromBack(void)
 {
 #ifdef HYPERX_BRINGUP
@@ -2981,8 +2981,8 @@ int __stdcall DDraw::BltFrontFromBack(void)
     return hr;
 }
 
-// FUNCTION: HYPERX100 0x004819b0
-// FUNCTION: HYPERX 0x0043d100
+// FUNCTION: HYPERX1000 0x004819b0
+// FUNCTION: HYPERX1001 0x0043d100
 int __stdcall DDraw::FlipOrBlt(void)
 {
 #ifdef HYPERX_BRINGUP
@@ -3003,8 +3003,8 @@ int __stdcall DDraw::FlipOrBlt(void)
 }
 
 // A failure returns zeroes, which read as a card with no memory.
-// FUNCTION: HYPERX100 0x004819e0
-// FUNCTION: HYPERX 0x0043d130
+// FUNCTION: HYPERX1000 0x004819e0
+// FUNCTION: HYPERX1001 0x0043d130
 VideoMemory* DDraw::GetVideoMemory(VideoMemory* pMemory, IDirectDraw* pDevice)
 {
     DDrawCaps caps;
@@ -3018,7 +3018,7 @@ VideoMemory* DDraw::GetVideoMemory(VideoMemory* pMemory, IDirectDraw* pDevice)
 
     if (g_hrLastResult != 0)
     {
-        // STRING: HYPERX 0x004c0c14
+        // STRING: HYPERX1001 0x004c0c14
         g_gameApp.Error("GetCaps failed!\n%s\n", DDraw::ErrorToString(g_hrLastResult));
 
         pMemory->nTotal = vidMem.x;
@@ -3033,8 +3033,8 @@ VideoMemory* DDraw::GetVideoMemory(VideoMemory* pMemory, IDirectDraw* pDevice)
     return pMemory;
 }
 
-// FUNCTION: HYPERX100 0x00481a90
-// FUNCTION: HYPERX 0x0043d1c0
+// FUNCTION: HYPERX1000 0x00481a90
+// FUNCTION: HYPERX1001 0x0043d1c0
 int __cdecl DDraw::GetSurfaceDesc(DDSURFACEDESC* pDesc, struct IDirectDrawSurface* pSurface)
 {
     memset(pDesc, 0, sizeof(*pDesc));
@@ -3046,8 +3046,8 @@ int __cdecl DDraw::GetSurfaceDesc(DDSURFACEDESC* pDesc, struct IDirectDrawSurfac
     return g_hrD3DResult == 0;
 }
 
-// FUNCTION: HYPERX100 0x00481ad0
-// FUNCTION: HYPERX 0x0043d200
+// FUNCTION: HYPERX1000 0x00481ad0
+// FUNCTION: HYPERX1001 0x0043d200
 void __stdcall DDraw::LockBackBuffer(void)
 {
     DDSURFACEDESC ddsd;
@@ -3064,7 +3064,7 @@ void __stdcall DDraw::LockBackBuffer(void)
 
             if (g_hrLastResult != 0)
             {
-                // STRING: HYPERX 0x004c0cbc
+                // STRING: HYPERX1001 0x004c0cbc
                 g_gameApp.Fatal("PaintSurface: Primary Surface Restore failed!\n%s\n", DDraw::ErrorToString(g_hrLastResult));
             }
 
@@ -3073,7 +3073,7 @@ void __stdcall DDraw::LockBackBuffer(void)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c0c8c
+            // STRING: HYPERX1001 0x004c0c8c
             g_gameApp.Fatal("PaintSurface: lpPaintSurface lock failed!\n%s\n", DDraw::ErrorToString(g_hrLastResult));
         }
     }
@@ -3087,7 +3087,7 @@ void __stdcall DDraw::LockBackBuffer(void)
 
             if (g_hrLastResult != 0)
             {
-                // STRING: HYPERX 0x004c0c54
+                // STRING: HYPERX1001 0x004c0c54
                 g_gameApp.Fatal("PaintSurface: Primary Surface Restore failed!\n%s %d\n", DDraw::ErrorToString(g_hrLastResult), g_hrLastResult & DDRAW_ERROR_CODE_MASK);
             }
 
@@ -3096,7 +3096,7 @@ void __stdcall DDraw::LockBackBuffer(void)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c0c28
+            // STRING: HYPERX1001 0x004c0c28
             g_gameApp.Fatal("PaintSurface: BackBuffer lock failed!\n%s\n", DDraw::ErrorToString(g_hrLastResult));
         }
     }
@@ -3109,8 +3109,8 @@ void __stdcall DDraw::LockBackBuffer(void)
     g_nBackBufferHeight          = g_dwDisplayHeight;
 }
 
-// FUNCTION: HYPERX100 0x00481c70
-// FUNCTION: HYPERX 0x0043d370
+// FUNCTION: HYPERX1000 0x00481c70
+// FUNCTION: HYPERX1001 0x0043d370
 void __stdcall DDraw::UnlockBackBuffer(void)
 {
     if (g_bUseOffscreenSurface)
@@ -3124,8 +3124,8 @@ void __stdcall DDraw::UnlockBackBuffer(void)
 }
 
 // Returns an uninitialised value when there is no surface, as the original does.
-// FUNCTION: HYPERX100 0x00481cb0
-// FUNCTION: HYPERX 0x0043d3a0
+// FUNCTION: HYPERX1000 0x00481cb0
+// FUNCTION: HYPERX1001 0x0043d3a0
 HDC __stdcall DDraw::GetBackBufferDC(void)
 {
     HDC                 hdc;
@@ -3151,8 +3151,8 @@ HDC __stdcall DDraw::GetBackBufferDC(void)
     return hdc;
 }
 
-// FUNCTION: HYPERX100 0x00481d30
-// FUNCTION: HYPERX 0x0043d3e0
+// FUNCTION: HYPERX1000 0x00481d30
+// FUNCTION: HYPERX1001 0x0043d3e0
 void DDraw::ReleaseBackBufferDC(HDC hdc)
 {
     if (hdc != 0)
@@ -3169,8 +3169,8 @@ void DDraw::ReleaseBackBufferDC(HDC hdc)
 }
 
 // A failed lock on the back buffer is fatal.
-// FUNCTION: HYPERX100 0x00481d70
-// FUNCTION: HYPERX 0x0043d410
+// FUNCTION: HYPERX1000 0x00481d70
+// FUNCTION: HYPERX1001 0x0043d410
 void __stdcall DDraw::PaintSurface(void)
 {
     DDSURFACEDESC ddsd;
@@ -3200,7 +3200,7 @@ void __stdcall DDraw::PaintSurface(void)
 
             if (g_hrLastResult != 0)
             {
-                // STRING: HYPERX 0x004c0cbc
+                // STRING: HYPERX1001 0x004c0cbc
                 g_gameApp.Fatal("PaintSurface: Primary Surface Restore failed!\n%s\n",
                                 DDraw::ErrorToString(g_hrLastResult));
             }
@@ -3210,7 +3210,7 @@ void __stdcall DDraw::PaintSurface(void)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c0c8c
+            // STRING: HYPERX1001 0x004c0c8c
             g_gameApp.Error("PaintSurface: lpPaintSurface lock failed!\n%s\n",
                             DDraw::ErrorToString(g_hrLastResult));
 
@@ -3237,7 +3237,7 @@ void __stdcall DDraw::PaintSurface(void)
 
         if (g_hrLastResult != 0)
         {
-            // STRING: HYPERX 0x004c0c54
+            // STRING: HYPERX1001 0x004c0c54
             g_gameApp.Fatal("PaintSurface: Primary Surface Restore failed!\n%s %d\n",
                             DDraw::ErrorToString(g_hrLastResult),
                             g_hrLastResult & DDRAW_ERROR_CODE_MASK);
@@ -3248,7 +3248,7 @@ void __stdcall DDraw::PaintSurface(void)
 
     if (g_hrLastResult != 0)
     {
-        // STRING: HYPERX 0x004c0c28
+        // STRING: HYPERX1001 0x004c0c28
         g_gameApp.Fatal("PaintSurface: BackBuffer lock failed!\n%s\n",
                         DDraw::ErrorToString(g_hrLastResult));
     }
@@ -3263,8 +3263,8 @@ void __stdcall DDraw::PaintSurface(void)
     g_ddrawDevice.pBackSurface->Unlock(0);
 }
 
-// FUNCTION: HYPERX100 0x00481fc0
-// FUNCTION: HYPERX 0x0043d600
+// FUNCTION: HYPERX1000 0x00481fc0
+// FUNCTION: HYPERX1001 0x0043d600
 int DDraw::FlipToGDISurface(int bShowGDI)
 {
     int hr;
@@ -3294,8 +3294,8 @@ int DDraw::FlipToGDISurface(int bShowGDI)
     return hr == 0;
 }
 
-// FUNCTION: HYPERX100 0x00482030
-// FUNCTION: HYPERX 0x0043d660
+// FUNCTION: HYPERX1000 0x00482030
+// FUNCTION: HYPERX1001 0x0043d660
 int __stdcall DDraw::BlitPrimaryToScreen(void)
 {
     if (g_ddrawDevice.bIsPrimary == 0)
@@ -3330,8 +3330,8 @@ struct DibInfo565
 };
 
 // The size is the screen globals', so a larger surface is read short.
-// FUNCTION: HYPERX100 0x004820f0
-// FUNCTION: HYPERX 0x0043d6f0
+// FUNCTION: HYPERX1000 0x004820f0
+// FUNCTION: HYPERX1001 0x0043d6f0
 HBITMAP DDraw::SurfaceToGDIBitmap(struct IDirectDrawSurface* pSurface)
 {
     DibInfo565    bmi;
@@ -3402,7 +3402,7 @@ int g_nHudColourMode = 1;
 
 // The message says free memory, but the total is what is read: the driver's, or the emulation
 // layer's when that is nought.
-// FUNCTION: HYPERX100 0x0047d200
+// FUNCTION: HYPERX1000 0x0047d200
 unsigned int DDraw::GetTotalVideoMemory(void)
 {
     DDCAPS capsDriver;
@@ -3433,7 +3433,7 @@ unsigned int DDraw::GetTotalVideoMemory(void)
 // Nothing writes it, so the zoom copies an empty rectangle.
 RECT g_rcZoomSource;
 
-// FUNCTION: HYPERX100 0x004818d0
+// FUNCTION: HYPERX1000 0x004818d0
 int DDraw::BltZoom(void)
 {
     if (g_ddrawDevice.pZoomSurface != 0)

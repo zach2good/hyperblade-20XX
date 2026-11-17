@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slot 10 holds Interactor::SetMember, a body the linker shared with this class's Tick.
-// VTABLE: HYPERX 0x004b1d38
+// VTABLE: HYPERX1001 0x004b1d38
 class CAdjustAcceleration : public ReleasingAgendaItem
 {
 public:
@@ -22,7 +22,7 @@ public:
     virtual void Bind(class EngineObject* pSubject, class GameBehaviorObject* pNode);
     virtual void OnListChanged();
 
-    // FUNCTION: HYPERX100 0x00425120
+    // FUNCTION: HYPERX1000 0x00425120
     virtual void Tick(const Vec3* pTargetPos)
     {
         m_pTargetPos = pTargetPos;

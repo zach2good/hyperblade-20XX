@@ -4,7 +4,7 @@ reccmp resolves a direct `[base]` reference by name, so a misplaced global costs
 A scaled index, `[reg*4 + base]`, is compared as a literal address, so a table out of place
 costs every function that indexes it.
 
-This reads every `// GLOBAL: HYPERX 0xADDR` marker, looks the symbol up in the measured build's
+This reads every `// GLOBAL: HYPERX1001 0xADDR` marker, looks the symbol up in the measured build's
 map file, and prints the ones that disagree, worst first. A global lands where the section and
 the declaration order put it, so moving one means changing what is declared in front of it.
 
@@ -25,7 +25,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAP = os.path.join(ROOT, "build", "out", "HYPERX_sym.map")
 REPORT = os.path.join(ROOT, "build", "report.json")
 
-MARKER = re.compile(r"//\s*GLOBAL:\s*HYPERX\s+0x([0-9a-fA-F]+)")
+MARKER = re.compile(r"//\s*GLOBAL:\s*HYPERX1001\s+0x([0-9a-fA-F]+)")
 DECL = re.compile(r"\b(\w+)\s*(?:\[|=|;|\))")
 
 # `0001:0000f2a0  _g_name  004102a0  f  file.obj`

@@ -32,8 +32,8 @@ float              g_flUnusedRokObjectB = g_flZeroRokObject;
 float              g_flUnusedRokObjectC = g_flZeroRokObject;
 
 // Every mesh bone past the first is hidden.
-// FUNCTION: HYPERX100 0x00470c20
-// FUNCTION: HYPERX 0x00473a80
+// FUNCTION: HYPERX1000 0x00470c20
+// FUNCTION: HYPERX1001 0x00473a80
 RokObject::RokObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
@@ -55,21 +55,21 @@ RokObject::RokObject(int nSlot, class ObjectDef* pDef)
 }
 
 // The scratch position the loop fills and hands to the slot's own transform.
-// GLOBAL: HYPERX 0x004d06d8
+// GLOBAL: HYPERX1001 0x004d06d8
 extern float g_flRokBoneShiftX;
-// GLOBAL: HYPERX 0x004d06dc
+// GLOBAL: HYPERX1001 0x004d06dc
 extern float g_flRokBoneShiftY;
-// GLOBAL: HYPERX 0x004d06e0
+// GLOBAL: HYPERX1001 0x004d06e0
 extern float g_flRokBoneShiftZ;
 
-// FUNCTION: HYPERX 0x00473b80
+// FUNCTION: HYPERX1001 0x00473b80
 RokObject::~RokObject()
 {
 }
 
 // Every slot is hidden, then one is shown; an uncovered multiplier leaves everything hidden.
-// FUNCTION: HYPERX100 0x00470dc0
-// FUNCTION: HYPERX 0x00473b90
+// FUNCTION: HYPERX1000 0x00470dc0
+// FUNCTION: HYPERX1001 0x00473b90
 void RokObject::SetRenderSlotFlags()
 {
     int nSlot;
@@ -117,8 +117,8 @@ void RokObject::SetRenderSlotFlags()
     }
 }
 
-// FUNCTION: HYPERX100 0x00470ee0
-// FUNCTION: HYPERX 0x00473c50
+// FUNCTION: HYPERX1000 0x00470ee0
+// FUNCTION: HYPERX1001 0x00473c50
 void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
 {
     ObjectDef* pDef;
@@ -156,8 +156,8 @@ void RokObject::ActivateAtSpawnSlot(unsigned int nSlot)
 #define BOT_SLOT_LIMIT    7
 
 // Sent at most every 500 ms; the phase compare reads two bytes that were never written.
-// FUNCTION: HYPERX100 0x00470f60
-// FUNCTION: HYPERX 0x00473cc0
+// FUNCTION: HYPERX1000 0x00470f60
+// FUNCTION: HYPERX1001 0x00473cc0
 void RokObject::Postpass()
 {
     int              nMessage;
@@ -277,8 +277,8 @@ void RokObject::Postpass()
 }
 
 // The scratch transform is constructed on the first call and never read.
-// FUNCTION: HYPERX100 0x00471430
-// FUNCTION: HYPERX 0x00473f40
+// FUNCTION: HYPERX1000 0x00471430
+// FUNCTION: HYPERX1001 0x00473f40
 void RokObject::ApplyRenderSlotPose()
 {
     static TransformObject s_scratch;

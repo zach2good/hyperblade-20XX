@@ -10,8 +10,8 @@
 extern const float g_flAnimBlendZero;
 
 // Clears one of the animation binding's twenty 68-byte blend slots.
-// FUNCTION: HYPERX100 0x00439520
-// FUNCTION: HYPERX 0x00425480
+// FUNCTION: HYPERX1000 0x00439520
+// FUNCTION: HYPERX1001 0x00425480
 SlerpSeg::SlerpSeg()
 {
     m_flTheta = g_flAnimBlendZero;
@@ -35,8 +35,8 @@ SlerpSeg::SlerpSeg()
 
 // A half angle under a thousandth of a radian stores zero, which tells Eval to do nothing.
 
-// FUNCTION: HYPERX100 0x004a2fa0
-// FUNCTION: HYPERX 0x0042e360
+// FUNCTION: HYPERX1000 0x004a2fa0
+// FUNCTION: HYPERX1001 0x0042e360
 void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 {
     float flDot;
@@ -69,7 +69,7 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 
     if (flSin == 0.0f)
     {
-        // STRING: HYPERX 0x004bcf10
+        // STRING: HYPERX1001 0x004bcf10
         g_gameApp.Fatal("0 denom in InitSlerpSeg\n");
     }
 
@@ -87,8 +87,8 @@ void SlerpSeg::Init(TransformObject* pStartMat, TransformObject* pEndMat)
 
 // Returns zero and writes nothing for a zero angle; Init already divided both by sin(theta).
 
-// FUNCTION: HYPERX100 0x004a3170
-// FUNCTION: HYPERX 0x0042e480
+// FUNCTION: HYPERX1000 0x004a3170
+// FUNCTION: HYPERX1001 0x0042e480
 bool SlerpSeg::Eval(float flAt)
 {
     float flWeightFrom;
@@ -110,7 +110,7 @@ bool SlerpSeg::Eval(float flAt)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x004a2cb0
+// FUNCTION: HYPERX1000 0x004a2cb0
 void SlerpSeg::InitFromQuats(const Quat* pQ0, Quat* pQ1)
 {
     float flDot = pQ1->y * pQ0->y + pQ0->x * pQ1->x + pQ1->z * pQ0->z + pQ1->w * pQ0->w;
@@ -131,7 +131,7 @@ void SlerpSeg::InitFromQuats(const Quat* pQ0, Quat* pQ1)
 
     if (dSin == 0.0f)
     {
-        // STRING: HYPERX100 0x0051bd98
+        // STRING: HYPERX1000 0x0051bd98
         g_gameApp.Fatal("0 denom in InitSlerpSeg\n");
     }
 
@@ -147,7 +147,7 @@ void SlerpSeg::InitFromQuats(const Quat* pQ0, Quat* pQ1)
     m_q1Div.z = pQ1->z * flInvSin;
 }
 
-// FUNCTION: HYPERX100 0x004a2e30
+// FUNCTION: HYPERX1000 0x004a2e30
 void SlerpSeg::InitInPlace()
 {
     float flDot = m_q1Div.z * m_q0Div.z + m_q0Div.x * m_q1Div.x + m_q1Div.y * m_q0Div.y + m_q0Div.w * m_q1Div.w;

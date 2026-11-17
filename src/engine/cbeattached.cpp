@@ -18,8 +18,8 @@
 #include "engine/engineobject.h"
 #include "planvm/conditiontable.h"
 
-// FUNCTION: HYPERX100 0x00426760
-// FUNCTION: HYPERX 0x0040dbe0
+// FUNCTION: HYPERX1000 0x00426760
+// FUNCTION: HYPERX1001 0x0040dbe0
 void CBeAttached::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -34,8 +34,8 @@ void CBeAttached::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pAttach  = pOwner->GetPhysicsBody()->pAttach;
 }
 
-// FUNCTION: HYPERX100 0x004267d0
-// FUNCTION: HYPERX 0x0040dc40
+// FUNCTION: HYPERX1000 0x004267d0
+// FUNCTION: HYPERX1001 0x0040dc40
 void CBeAttached::OnListChanged()
 {
     if (m_bReady == 0)
@@ -53,8 +53,8 @@ void CBeAttached::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x00426820
-// FUNCTION: HYPERX 0x0040dc80
+// FUNCTION: HYPERX1000 0x00426820
+// FUNCTION: HYPERX1001 0x0040dc80
 void CBeAttached::Process(int nArg)
 {
     TransformObject* pTransform;
@@ -120,8 +120,8 @@ void CBeAttached::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX100 0x00426a80
-// FUNCTION: HYPERX 0x0040de50
+// FUNCTION: HYPERX1000 0x00426a80
+// FUNCTION: HYPERX1001 0x0040de50
 void CBeAttached::Release(int nArg)
 {
     TransformObject* pTransform;

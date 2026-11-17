@@ -14,7 +14,7 @@ class EngineObject;
 
 // Abstract: slot ten is _purecall here and CPlayer::SendPacket in the derived table.
 // SLOT TABLE 0x004b2b2c
-// VTABLE: HYPERX 0x004b2b2c
+// VTABLE: HYPERX1001 0x004b2b2c
 class PlayerBase
 {
 public:
@@ -37,8 +37,8 @@ public:
     virtual NetReceiveBuffer* GetRecvBufBase();
     virtual NetSendBuffer*    GetSendBufBase();
 
-    // FUNCTION: HYPERX100 0x0044b9a0
-    // FUNCTION: HYPERX 0x0042cce0
+    // FUNCTION: HYPERX1000 0x0044b9a0
+    // FUNCTION: HYPERX1001 0x0042cce0
     virtual unsigned char* GetSendPayloadPtr()
     {
         return GetSendBufBase()->aBytes + NET_SEND_HEADER_BYTES;
@@ -72,7 +72,7 @@ public:
     CRITICAL_SECTION m_lock;      // 0x254
 };
 
-// SYNTHETIC: HYPERX 0x0042ccf0
+// SYNTHETIC: HYPERX1001 0x0042ccf0
 // PlayerBase::`scalar deleting destructor'
 
 #endif

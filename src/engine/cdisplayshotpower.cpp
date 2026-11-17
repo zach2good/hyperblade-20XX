@@ -14,8 +14,8 @@
 #include "ui/screens/gameconfiguiscreen.h"
 #include "graphics/gdi.h"
 
-// FUNCTION: HYPERX100 0x0042c5a0
-// FUNCTION: HYPERX 0x00412330
+// FUNCTION: HYPERX1000 0x0042c5a0
+// FUNCTION: HYPERX1001 0x00412330
 void CDisplayShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind  = Agenda_CDisplayShotPower;
@@ -26,8 +26,8 @@ void CDisplayShotPower::Bind(EngineObject* pSubject, GameBehaviorObject*)
     g_pGameEngine->GetCamera(CAMERA_HEAD_SLOT)->m_nShotPowerLevel = 1;
 }
 
-// FUNCTION: HYPERX100 0x0042c610
-// FUNCTION: HYPERX 0x00412390
+// FUNCTION: HYPERX1000 0x0042c610
+// FUNCTION: HYPERX1001 0x00412390
 void CDisplayShotPower::Process(int nArg)
 {
     if (g_pRenderer != 0)

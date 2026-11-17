@@ -17,24 +17,24 @@
 class Screen;
 
 // Table 0x004b2b10; every slot it changes from Widget's is a shared body.
-// VTABLE: HYPERX 0x004b2b10
+// VTABLE: HYPERX1001 0x004b2b10
 class DisplayWidget : public InertWidget
 {
 public:
     // Stand-ins for shared stubs whose addresses several tables hold, so none carries a marker.
-    // FUNCTION: HYPERX100 0x00477b30
+    // FUNCTION: HYPERX1000 0x00477b30
     virtual int OnMouseDown()
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x00477b40
+    // FUNCTION: HYPERX1000 0x00477b40
     virtual int OnMouseUp()
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x00477b50
+    // FUNCTION: HYPERX1000 0x00477b50
     virtual int IsDisplayOnly()
     {
         return 1;

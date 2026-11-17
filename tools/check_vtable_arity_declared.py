@@ -4,7 +4,7 @@ A class declaring fewer virtuals than its table has is incomplete, and is listed
 class declaring more is a fault: its extra slots run past the end of the table. A table's length
 is the distance to the next known table, as in tools/vtable_forest.py.
 
-A class names its table by a `// VTABLE: HYPERX 0x004bxxxx` marker above it, or by a store of
+A class names its table by a `// VTABLE: HYPERX1001 0x004bxxxx` marker above it, or by a store of
 `g_vtbl004bxxxx` in its own constructor or destructor.
 
 An overrun can come from a constructor that stores its base's table, so the chain is measured
@@ -40,7 +40,7 @@ WRITES = re.compile(r"^(\w+)::~?\1\([^)]*\)[^{]*\n\{(.*?)^\}", re.S | re.M)
 VTABLE = re.compile(r"g_vtbl(004b[0-9a-f]{4})")
 VIRTUAL = re.compile(r"^\s+virtual\s", re.M)
 NAMED = re.compile(r"^\s+virtual\s[\w:*&~ ]*?(~?\w+)\s*\(", re.M)
-MARKED = re.compile(r"^// VTABLE: HYPERX 0x(004b[0-9a-f]{4})\n(?:^//[^\n]*\n)*^class (\w+)", re.M)
+MARKED = re.compile(r"^// VTABLE: HYPERX1001 0x(004b[0-9a-f]{4})\n(?:^//[^\n]*\n)*^class (\w+)", re.M)
 CLASS = re.compile(r"^class (\w+)(?: : public (\w+))?\n\{\n(.*?)^\};", re.S | re.M)
 
 
@@ -75,7 +75,7 @@ def boundaries():
     for path in sources():
         text = text_of(path)
 
-        for hit in re.findall(r"VTABLE: HYPERX (0x004[0-9a-fA-F]{5})", text):
+        for hit in re.findall(r"VTABLE: HYPERX1001 (0x004[0-9a-fA-F]{5})", text):
             found.add(int(hit, 16))
 
         for hit in re.findall(r"g_vtbl(004[bB][0-9a-fA-F]{4})", text):

@@ -14,7 +14,7 @@ DSoundMgr g_dsoundMgr;
 // The streaming timer's period, in milliseconds.
 #define DSOUND_TIMER_MS 0x36
 
-// FUNCTION: HYPERX 0x0048fc70
+// FUNCTION: HYPERX1001 0x0048fc70
 DSoundMgr::DSoundMgr()
 : m_pDevice(0)
 , m_pPrimary(0)
@@ -24,15 +24,15 @@ DSoundMgr::DSoundMgr()
 {
 }
 
-// FUNCTION: HYPERX100 0x0048aa20
-// FUNCTION: HYPERX 0x0048fd10
+// FUNCTION: HYPERX1000 0x0048aa20
+// FUNCTION: HYPERX1001 0x0048fd10
 DSoundMgr::~DSoundMgr()
 {
     Shutdown();
 }
 
-// FUNCTION: HYPERX100 0x0048b5d0
-// FUNCTION: HYPERX 0x00490490
+// FUNCTION: HYPERX1000 0x0048b5d0
+// FUNCTION: HYPERX1001 0x00490490
 void DSoundMgr::Update()
 {
     for (int nIndex = 0; nIndex < DSOUND_CHANNEL_COUNT; nIndex++)
@@ -44,15 +44,15 @@ void DSoundMgr::Update()
     }
 }
 
-// FUNCTION: HYPERX 0x004904c0
+// FUNCTION: HYPERX1001 0x004904c0
 int DSoundMgr::ReadSfxVolume()
 {
     return g_mixerWaveOut.ReadVolume();
 }
 
 // The options are written only when the fade took.
-// FUNCTION: HYPERX100 0x0048b610
-// FUNCTION: HYPERX 0x004904d0
+// FUNCTION: HYPERX1000 0x0048b610
+// FUNCTION: HYPERX1001 0x004904d0
 int DSoundMgr::FadeSfxVolume(int nStep)
 {
     if (nStep < 0)
@@ -75,8 +75,8 @@ int DSoundMgr::FadeSfxVolume(int nStep)
 }
 
 // The original's descriptor is 36 bytes where this SDK's is 20; DirectSound takes either.
-// FUNCTION: HYPERX100 0x0048b670
-// FUNCTION: HYPERX 0x00490520
+// FUNCTION: HYPERX1000 0x0048b670
+// FUNCTION: HYPERX1001 0x00490520
 int DSoundMgr::Init(HWND hWindow)
 {
     SoundBufferDesc desc;
@@ -94,19 +94,19 @@ int DSoundMgr::Init(HWND hWindow)
 
         if (m_nTimerId == 0)
         {
-            // STRING: HYPERX 0x004c8a58
+            // STRING: HYPERX1001 0x004c8a58
             throw "Direct Sound Creation Failed.  Sound will be turned off";
         }
 
         if (DirectSoundCreate(0, &m_pDevice, 0) != DS_OK)
         {
-            // STRING: HYPERX 0x004c8a58
+            // STRING: HYPERX1001 0x004c8a58
             throw "Direct Sound Creation Failed.  Sound will be turned off";
         }
 
         if (m_pDevice->SetCooperativeLevel(m_hWnd, DSSCL_NORMAL) != DS_OK)
         {
-            // STRING: HYPERX 0x004c8a2c
+            // STRING: HYPERX1001 0x004c8a2c
             throw "Direct Sound Set Cooperative Level Failed";
         }
 
@@ -121,7 +121,7 @@ int DSoundMgr::Init(HWND hWindow)
 
             if (m_pDevice->CreateSoundBuffer((LPCDSBUFFERDESC)&desc, &m_pPrimary, 0) != DS_OK)
             {
-                // STRING: HYPERX 0x004c8a00
+                // STRING: HYPERX1001 0x004c8a00
                 throw "Cannot create primary Direct Sound buffer";
             }
         }
@@ -139,8 +139,8 @@ int DSoundMgr::Init(HWND hWindow)
 }
 
 // A counter, not a flag, guards re-entry: a nested tick is dropped and the count comes back.
-// FUNCTION: HYPERX100 0x0048b870
-// FUNCTION: HYPERX 0x004906a0
+// FUNCTION: HYPERX1000 0x0048b870
+// FUNCTION: HYPERX1001 0x004906a0
 void __stdcall DSoundMgr::TimerProc(HWND, UINT, UINT, DWORD)
 {
     g_nSoundTimerDepth++;
@@ -153,8 +153,8 @@ void __stdcall DSoundMgr::TimerProc(HWND, UINT, UINT, DWORD)
     g_nSoundTimerDepth--;
 }
 
-// FUNCTION: HYPERX100 0x0048b8a0
-// FUNCTION: HYPERX 0x004906d0
+// FUNCTION: HYPERX1000 0x0048b8a0
+// FUNCTION: HYPERX1001 0x004906d0
 void DSoundMgr::Shutdown()
 {
     if (m_nTimerId != 0)
@@ -189,8 +189,8 @@ void DSoundMgr::Shutdown()
     }
 }
 
-// FUNCTION: HYPERX100 0x0048b930
-// FUNCTION: HYPERX 0x00490750
+// FUNCTION: HYPERX1000 0x0048b930
+// FUNCTION: HYPERX1001 0x00490750
 SoundChannel* DSoundMgr::FindFreeChannel()
 {
     SoundChannel* pFound = 0;
@@ -208,8 +208,8 @@ SoundChannel* DSoundMgr::FindFreeChannel()
 }
 
 // The start time is stamped only when playback succeeded.
-// FUNCTION: HYPERX100 0x0048b980
-// FUNCTION: HYPERX 0x00490780
+// FUNCTION: HYPERX1000 0x0048b980
+// FUNCTION: HYPERX1001 0x00490780
 void DSoundMgr::Play(SoundEntry* pSound)
 {
     SoundChannel* const pChannel = FindFreeChannel();
@@ -225,8 +225,8 @@ void DSoundMgr::Play(SoundEntry* pSound)
     }
 }
 
-// FUNCTION: HYPERX100 0x0048b9e0
-// FUNCTION: HYPERX 0x004907d0
+// FUNCTION: HYPERX1000 0x0048b9e0
+// FUNCTION: HYPERX1001 0x004907d0
 void DSoundMgr::StopEntry(SoundEntry* pOwner)
 {
     for (int nIndex = 0; nIndex < DSOUND_CHANNEL_COUNT; nIndex++)
@@ -238,8 +238,8 @@ void DSoundMgr::StopEntry(SoundEntry* pOwner)
     }
 }
 
-// FUNCTION: HYPERX100 0x0048ba20
-// FUNCTION: HYPERX 0x00490800
+// FUNCTION: HYPERX1000 0x0048ba20
+// FUNCTION: HYPERX1001 0x00490800
 void DSoundMgr::StopAll()
 {
     for (int nIndex = 0; nIndex < DSOUND_CHANNEL_COUNT; nIndex++)

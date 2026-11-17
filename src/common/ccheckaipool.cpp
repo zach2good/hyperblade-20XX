@@ -4,8 +4,8 @@
 #include "engine/ccheckai.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041d5c0
-// FUNCTION: HYPERX 0x00414c00
+// FUNCTION: HYPERX1000 0x0041d5c0
+// FUNCTION: HYPERX1001 0x00414c00
 void CCheckAIPool::Init()
 {
     AgendaItem* pNode = new CCheckAI;
@@ -34,8 +34,8 @@ char CCheckAIPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00421fc0
-// FUNCTION: HYPERX 0x00414c80
+// FUNCTION: HYPERX1000 0x00421fc0
+// FUNCTION: HYPERX1001 0x00414c80
 void* CCheckAIPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CCheckAIPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004162c0
+// FUNCTION: HYPERX1001 0x004162c0
 CCheckAIPool::~CCheckAIPool()
 {
     while (m_pHead != 0)

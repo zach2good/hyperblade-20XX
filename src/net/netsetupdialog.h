@@ -36,9 +36,9 @@ int __cdecl          PopulateSessionList(HWND hDlg);
 
 } // namespace NetSetupDialog
 
-// GLOBAL: HYPERX 0x004c55dc
+// GLOBAL: HYPERX1001 0x004c55dc
 extern int g_aPlayerReadyButtonId[16];
-// GLOBAL: HYPERX 0x004d0788
+// GLOBAL: HYPERX1001 0x004d0788
 extern HWND g_hWndNetSetupDlg;
 
 #endif

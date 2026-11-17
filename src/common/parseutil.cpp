@@ -21,8 +21,8 @@ float g_flScreenDotsPerCmParseUtil   = g_flScreenDotsPerInchParseUtil / g_flCmPe
 #define STREAM_EOF ((char)0xff)
 
 // The original calls the multibyte _mbsicmp at 0x0049f2d2, not _stricmp.
-// FUNCTION: HYPERX100 0x0044f220
-// FUNCTION: HYPERX 0x00435f90
+// FUNCTION: HYPERX1000 0x0044f220
+// FUNCTION: HYPERX1001 0x00435f90
 short __cdecl ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable, short nCount)
 {
     for (short iEntry = 0; iEntry < nCount; iEntry++)
@@ -40,14 +40,14 @@ short __cdecl ParseUtil::FindKeyword(const char* pszWord, const char** ppszTable
 }
 
 // An empty token is a failure, so a caller can loop on this until it stops.
-// FUNCTION: HYPERX100 0x004dec10
-// FUNCTION: HYPERX 0x00487370
+// FUNCTION: HYPERX1000 0x004dec10
+// FUNCTION: HYPERX1001 0x00487370
 char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char* pszDelimitersA, const char* pszDelimitersB, short nMaxLength, char** ppszNext)
 {
     char* pszStart;
     int   nLength;
 
-    // STRING: HYPERX 0x004c732c
+    // STRING: HYPERX1001 0x004c732c
     char* const pszScan = (char*)_mbsspnp((const unsigned char*)pszInput, (const unsigned char*)" 	");
 
     if (pszScan == 0)
@@ -101,8 +101,8 @@ char __cdecl ParseUtil::ParseToken(char* pszInput, char* pszOutToken, const char
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004decf0
-// FUNCTION: HYPERX 0x00487420
+// FUNCTION: HYPERX1000 0x004decf0
+// FUNCTION: HYPERX1001 0x00487420
 char* __cdecl ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 {
     if (pszText != 0)
@@ -136,8 +136,8 @@ char* __cdecl ParseUtil::SkipToChar(char* pszText, const char* pszStop)
 }
 
 // Steps past the character, and answers null when there is none.
-// FUNCTION: HYPERX100 0x004ded50
-// FUNCTION: HYPERX 0x00487460
+// FUNCTION: HYPERX1000 0x004ded50
+// FUNCTION: HYPERX1001 0x00487460
 char* __cdecl ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 {
     char* const pAt = ParseUtil::SkipToChar(pszText, pszStop);
@@ -151,8 +151,8 @@ char* __cdecl ParseUtil::SkipPastChar(char* pszText, const char* pszStop)
 }
 
 // End of file is the byte 0xff, stored and then tested, so only an empty last line answers -1.
-// FUNCTION: HYPERX100 0x004a0850
-// FUNCTION: HYPERX 0x00493ec0
+// FUNCTION: HYPERX1000 0x004a0850
+// FUNCTION: HYPERX1001 0x00493ec0
 int __cdecl ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 {
     char* const pStart = pszBuffer;
@@ -182,7 +182,7 @@ int __cdecl ParseUtil::ReadLine(FILE* pStream, char* pszBuffer)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x004465e0
+// FUNCTION: HYPERX1000 0x004465e0
 char __cdecl ParseUtil::LastChar(LPCSTR pszText)
 {
     LPCSTR pszLast;
@@ -196,7 +196,7 @@ char __cdecl ParseUtil::LastChar(LPCSTR pszText)
     return *pszLast;
 }
 
-// FUNCTION: HYPERX100 0x0045c490
+// FUNCTION: HYPERX1000 0x0045c490
 unsigned char* __cdecl ParseUtil::StripExtension(unsigned char* pszPath)
 {
     unsigned char* const pDot = _mbsrchr(pszPath, '.');

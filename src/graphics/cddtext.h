@@ -4,12 +4,12 @@
 #include "common/compat.h"
 #include "rlespritesurface.h"
 
-// VTABLE: HYPERX 0x004b32d4
+// VTABLE: HYPERX1001 0x004b32d4
 class CDDText : public CDDDrawable
 {
 public:
-    // FUNCTION: HYPERX100 0x004bd970
-    // FUNCTION: HYPERX 0x00451c60
+    // FUNCTION: HYPERX1000 0x004bd970
+    // FUNCTION: HYPERX1001 0x00451c60
     CDDText()
     : m_pszText(0)
     , m_color(0)
@@ -34,7 +34,7 @@ public:
     HFONT       m_hFont;   // 0x24
 };
 
-// SYNTHETIC: HYPERX 0x0044fa20
+// SYNTHETIC: HYPERX1001 0x0044fa20
 // CDDText::`scalar deleting destructor'
 
 #endif

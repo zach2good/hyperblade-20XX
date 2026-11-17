@@ -9,8 +9,8 @@
 
 HYPERBLADE_FIELD_AT(CAdjustAcceleration, m_pSmoothVel, 0x10);
 
-// FUNCTION: HYPERX100 0x004289c0
-// FUNCTION: HYPERX 0x0040f740
+// FUNCTION: HYPERX1000 0x004289c0
+// FUNCTION: HYPERX1001 0x0040f740
 void CAdjustAcceleration::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -26,8 +26,8 @@ void CAdjustAcceleration::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pflStep    = pflAccelDt;
 }
 
-// FUNCTION: HYPERX100 0x00428a30
-// FUNCTION: HYPERX 0x0040f7a0
+// FUNCTION: HYPERX1000 0x00428a30
+// FUNCTION: HYPERX1001 0x0040f7a0
 void CAdjustAcceleration::OnListChanged()
 {
     if (m_bReady == 0)
@@ -44,8 +44,8 @@ void CAdjustAcceleration::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x00428a70
-// FUNCTION: HYPERX 0x0040f7e0
+// FUNCTION: HYPERX1000 0x00428a70
+// FUNCTION: HYPERX1001 0x0040f7e0
 void CAdjustAcceleration::Process(int nArg)
 {
     m_pSmoothVel->x = GetStep() * m_pVelDir->x + m_pSmoothVel->x;

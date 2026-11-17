@@ -6,7 +6,7 @@
 
 class String;
 
-// VTABLE: HYPERX 0x004b2e2c
+// VTABLE: HYPERX1001 0x004b2e2c
 class CDDBitMap : public Texture
 {
 public:
@@ -40,7 +40,7 @@ public:
 #endif
 };
 
-// SYNTHETIC: HYPERX 0x00437f80
+// SYNTHETIC: HYPERX1001 0x00437f80
 // CDDBitMap::`scalar deleting destructor'
 
 #endif

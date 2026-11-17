@@ -2,7 +2,7 @@
 
 Declaration order is slot order. For each table, symbols/vtablearity.h records how many bytes
 each slot pops, read from the `ret N` of the real function. A class pinned to a table with
-`// VTABLE: HYPERX 0x004bxxxx` or `// SLOT TABLE 0x004bxxxx` is checked slot by slot. SLOT
+`// VTABLE: HYPERX1001 0x004bxxxx` or `// SLOT TABLE 0x004bxxxx` is checked slot by slot. SLOT
 TABLE pins a class without asking reccmp to compare the table.
 
 The slot list is built the way C++ builds it: the base's slots in order, then the derived
@@ -39,7 +39,7 @@ LENGTH = re.compile(r"^#define VTABLE_SLOTS_(004b[0-9a-f]{4}) (\d+)", re.M)
 POP = re.compile(r"VP(\d+)")
 
 # Either pin on the line above a class. Only a VTABLE marker adds a reccmp row.
-MARKED = re.compile("// *(?:VTABLE: *HYPERX|SLOT TABLE) +(0x[0-9a-fA-F]+)[^" + chr(10) + "]*"
+MARKED = re.compile("// *(?:VTABLE: *HYPERX1001|SLOT TABLE) +(0x[0-9a-fA-F]+)[^" + chr(10) + "]*"
                     + chr(10) + "class ([0-9A-Za-z_]+)")
 
 CLASS = re.compile(r"^(?:class|struct) (?:__declspec\(\w+\) )?([0-9A-Za-z_]+)(?: *: *public ([0-9A-Za-z_]+))? *"

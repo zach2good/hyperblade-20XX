@@ -6,7 +6,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b25f4
+// VTABLE: HYPERX1001 0x004b25f4
 class BehObj_GlideToPosition : public SurfaceBehaviorObject
 {
 public:
@@ -18,7 +18,7 @@ public:
     Vec3 m_vTarget; // 0x98
 };
 
-// SYNTHETIC: HYPERX 0x0041d5b0
+// SYNTHETIC: HYPERX1001 0x0041d5b0
 // BehObj_GlideToPosition::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_GlideToPosition) == 0xa4);

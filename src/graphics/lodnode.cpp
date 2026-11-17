@@ -2,8 +2,8 @@
 #include "lodnode.h"
 #include "graphics/modelcomponent.h"
 
-// FUNCTION: HYPERX100 0x00477bb0
-// FUNCTION: HYPERX 0x00472740
+// FUNCTION: HYPERX1000 0x00477bb0
+// FUNCTION: HYPERX1001 0x00472740
 LODNode* LODNode::Init(short nLodCount)
 {
     m_pRecord    = 0;
@@ -21,8 +21,8 @@ LODNode* LODNode::Init(short nLodCount)
 
 // Leaves the level count at minus one.
 
-// FUNCTION: HYPERX100 0x00477c80
-// FUNCTION: HYPERX 0x004727a0
+// FUNCTION: HYPERX1000 0x00477c80
+// FUNCTION: HYPERX1001 0x004727a0
 LODNode::~LODNode()
 {
     for (short nLevel = 0; nLevel < m_wLodCount; nLevel++)
@@ -48,7 +48,7 @@ LODNode::~LODNode()
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00477c20
+// FUNCTION: HYPERX1000 0x00477c20
 LODNode::LODNode()
 {
     m_wLodCount  = 0;

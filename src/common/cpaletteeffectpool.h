@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b183c
+// VTABLE: HYPERX1001 0x004b183c
 class CPaletteEffectPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CPaletteEffectPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415f80
+// SYNTHETIC: HYPERX1001 0x00415f80
 // CPaletteEffectPool::`scalar deleting destructor'
 
 #endif

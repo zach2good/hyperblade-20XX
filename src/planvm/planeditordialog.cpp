@@ -37,8 +37,8 @@ inline char* PlanEditorDialog::PlanName(EngineObject* pObject, short nIndex)
     return g_pszDefaultPlanName;
 }
 
-// FUNCTION: HYPERX100 0x00479ec0
-// FUNCTION: HYPERX 0x0047b9a0
+// FUNCTION: HYPERX1000 0x00479ec0
+// FUNCTION: HYPERX1001 0x0047b9a0
 short PlanEditorDialog::ApplyCameraSelection(HWND hDlg)
 {
     EngineObject* pObject;
@@ -49,28 +49,28 @@ short PlanEditorDialog::ApplyCameraSelection(HWND hDlg)
     return pObject->GetSlot();
 }
 
-// FUNCTION: HYPERX100 0x00479f10
-// FUNCTION: HYPERX 0x0047b9e0
+// FUNCTION: HYPERX1000 0x00479f10
+// FUNCTION: HYPERX1001 0x0047b9e0
 LRESULT PlanEditorDialog::GetBehaviorSel(HWND hDlg)
 {
     return SendMessageA(GetDlgItem(hDlg, IDC_PLAN_BEHAVIOR), CB_GETCURSEL, 0, 0);
 }
 
-// FUNCTION: HYPERX100 0x00479f40
-// FUNCTION: HYPERX 0x0047ba10
+// FUNCTION: HYPERX1000 0x00479f40
+// FUNCTION: HYPERX1001 0x0047ba10
 LRESULT PlanEditorDialog::GetNodeSel(HWND hDlg)
 {
     return SendMessageA(GetDlgItem(hDlg, IDC_PLAN_NODE), CB_GETCURSEL, 0, 0);
 }
 
-// FUNCTION: HYPERX 0x0047ba40
+// FUNCTION: HYPERX1001 0x0047ba40
 LRESULT PlanEditorDialog::GetCondSel(HWND hDlg)
 {
     return SendMessageA(GetDlgItem(hDlg, IDC_PLAN_CONDITION), CB_GETCURSEL, 0, 0);
 }
 
-// FUNCTION: HYPERX100 0x00479fa0
-// FUNCTION: HYPERX 0x0047ba70
+// FUNCTION: HYPERX1000 0x00479fa0
+// FUNCTION: HYPERX1001 0x0047ba70
 BOOL CALLBACK PlanEditorDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lParam)
 {
     switch (nMsg)
@@ -87,8 +87,8 @@ BOOL CALLBACK PlanEditorDialog::Proc(HWND hDlg, UINT nMsg, UINT wParam, LONG lPa
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047a020
-// FUNCTION: HYPERX 0x0047bad0
+// FUNCTION: HYPERX1000 0x0047a020
+// FUNCTION: HYPERX1001 0x0047bad0
 int PlanEditorDialog::OnInit(HWND hDlg, HWND, LPARAM lParam)
 {
     Win32::CenterWindow(hDlg, GetParent(hDlg));
@@ -109,8 +109,8 @@ int PlanEditorDialog::OnInit(HWND hDlg, HWND, LPARAM lParam)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0047a0c0
-// FUNCTION: HYPERX 0x0047bb50
+// FUNCTION: HYPERX1000 0x0047a0c0
+// FUNCTION: HYPERX1001 0x0047bb50
 int PlanEditorDialog::PopulateCameraList(HWND hDlg)
 {
     int nResult = 0;
@@ -133,8 +133,8 @@ int PlanEditorDialog::PopulateCameraList(HWND hDlg)
 }
 
 // The list ends at the first empty name, which PlanName answers past the count.
-// FUNCTION: HYPERX100 0x0047a150
-// FUNCTION: HYPERX 0x0047bbc0
+// FUNCTION: HYPERX1000 0x0047a150
+// FUNCTION: HYPERX1001 0x0047bbc0
 void PlanEditorDialog::PopulateBehaviorList(HWND hDlg, short nCamera)
 {
     char* pszName;
@@ -162,8 +162,8 @@ void PlanEditorDialog::PopulateBehaviorList(HWND hDlg, short nCamera)
     }
 }
 
-// FUNCTION: HYPERX100 0x0047a270
-// FUNCTION: HYPERX 0x0047bc90
+// FUNCTION: HYPERX1000 0x0047a270
+// FUNCTION: HYPERX1001 0x0047bc90
 int PlanEditorDialog::OnCommand(HWND hDlg, int nId, HWND hwndCtl, int nCode)
 {
     switch (nId)
@@ -200,8 +200,8 @@ int PlanEditorDialog::OnCommand(HWND hDlg, int nId, HWND hwndCtl, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047a410
-// FUNCTION: HYPERX 0x0047be10
+// FUNCTION: HYPERX1000 0x0047a410
+// FUNCTION: HYPERX1001 0x0047be10
 int PlanEditorDialog::OnClose(HWND hDlg, int, HWND, int nCode)
 {
     if (nCode == BN_CLICKED)
@@ -218,8 +218,8 @@ int PlanEditorDialog::OnClose(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047a460
-// FUNCTION: HYPERX 0x0047be50
+// FUNCTION: HYPERX1000 0x0047a460
+// FUNCTION: HYPERX1001 0x0047be50
 int PlanEditorDialog::OnCameraChanged(HWND hDlg, int, HWND, int nCode)
 {
     if (nCode == CBN_SELCHANGE)
@@ -235,8 +235,8 @@ int PlanEditorDialog::OnCameraChanged(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047a4e0
-// FUNCTION: HYPERX 0x0047beb0
+// FUNCTION: HYPERX1000 0x0047a4e0
+// FUNCTION: HYPERX1001 0x0047beb0
 int PlanEditorDialog::OnBehaviorChanged(HWND hDlg, int, HWND, int nCode)
 {
     if (nCode == CBN_SELCHANGE)
@@ -250,15 +250,15 @@ int PlanEditorDialog::OnBehaviorChanged(HWND hDlg, int, HWND, int nCode)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00479f70
+// FUNCTION: HYPERX1000 0x00479f70
 void PlanEditorDialog::ClearConditionList(HWND hDlg)
 {
     SendMessageA(GetDlgItem(hDlg, IDC_PLAN_CONDITION), CB_RESETCONTENT, 0, 0);
 }
 #endif
 
-// FUNCTION: HYPERX100 0x0047a520
-// FUNCTION: HYPERX 0x0047bee0
+// FUNCTION: HYPERX1000 0x0047a520
+// FUNCTION: HYPERX1001 0x0047bee0
 int PlanEditorDialog::OnNodeChanged(HWND hDlg, int, HWND, int nCode)
 {
     if (nCode == CBN_SELCHANGE)
@@ -271,8 +271,8 @@ int PlanEditorDialog::OnNodeChanged(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047a610
-// FUNCTION: HYPERX 0x0047bf10
+// FUNCTION: HYPERX1000 0x0047a610
+// FUNCTION: HYPERX1001 0x0047bf10
 int PlanEditorDialog::OnLoadPlan(HWND hDlg, int, HWND, int nCode)
 {
     char* pszName;
@@ -296,7 +296,7 @@ int PlanEditorDialog::OnLoadPlan(HWND hDlg, int, HWND, int nCode)
         {
             if (g_pGameEngine->m_ppSlots[nCamera]->GetPlanState()->SetAndInit(pBinary) == 0)
             {
-                // STRING: HYPERX 0x004c69a4
+                // STRING: HYPERX1001 0x004c69a4
                 g_gameApp.Error("Cannot set and init this plan");
 
                 delete[] pBinary;
@@ -309,7 +309,7 @@ int PlanEditorDialog::OnLoadPlan(HWND hDlg, int, HWND, int nCode)
 
                 g_pGameEngine->m_ppSlots[nCamera]->GetPlanState()->ActivateBehavior(0);
 
-                // STRING: HYPERX 0x004c6984
+                // STRING: HYPERX1001 0x004c6984
                 g_gameApp.Error("New plan successfully loaded");
             }
         }
@@ -318,8 +318,8 @@ int PlanEditorDialog::OnLoadPlan(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047a830
-// FUNCTION: HYPERX 0x0047c0a0
+// FUNCTION: HYPERX1000 0x0047a830
+// FUNCTION: HYPERX1001 0x0047c0a0
 int PlanEditorDialog::OnCompilePlan(HWND hDlg, int, HWND, int nCode)
 {
     if (nCode != 0)
@@ -338,7 +338,7 @@ int PlanEditorDialog::OnCompilePlan(HWND hDlg, int, HWND, int nCode)
         {
             pFile->SaveBinary(PlanName(g_pGameEngine->m_ppSlots[nCamera], nBehavior));
 
-            // STRING: HYPERX 0x004c69c4
+            // STRING: HYPERX1001 0x004c69c4
             g_gameApp.Error("Compilation successful!");
         }
     }
@@ -365,8 +365,8 @@ int PlanEditorDialog::OnCompilePlan(HWND hDlg, int, HWND, int nCode)
 
 // The try sits inside both loops, so a plan that throws costs only its own name.
 
-// FUNCTION: HYPERX100 0x0047a9b0
-// FUNCTION: HYPERX 0x0047c1a0
+// FUNCTION: HYPERX1000 0x0047a9b0
+// FUNCTION: HYPERX1001 0x0047c1a0
 int PlanEditorDialog::OnCompileAll(HWND hDlg, int, HWND, int nCode)
 {
     char* pszName;
@@ -419,15 +419,15 @@ int PlanEditorDialog::OnCompileAll(HWND hDlg, int, HWND, int nCode)
         }
     }
 
-    // STRING: HYPERX 0x004c69c4
+    // STRING: HYPERX1001 0x004c69c4
     g_gameApp.Error("Compilation successful!");
 
     return 0;
 }
 
 // A mismatch means the list shows a plan that has since been replaced.
-// FUNCTION: HYPERX100 0x0047ab80
-// FUNCTION: HYPERX 0x0047c2f0
+// FUNCTION: HYPERX1000 0x0047ab80
+// FUNCTION: HYPERX1001 0x0047c2f0
 int PlanEditorDialog::OnActivateBehavior(HWND hDlg, int, HWND, int nCode)
 {
     char szText[MAX_PATH];
@@ -445,7 +445,7 @@ int PlanEditorDialog::OnActivateBehavior(HWND hDlg, int, HWND, int nCode)
 
     if (_mbscmp((const unsigned char*)pszName, (const unsigned char*)szText) != 0)
     {
-        // STRING: HYPERX 0x004c69dc
+        // STRING: HYPERX1001 0x004c69dc
         g_gameApp.Error("This is not the Plan you think it is.  Press the Load Plan button.");
 
         return 0;
@@ -457,8 +457,8 @@ int PlanEditorDialog::OnActivateBehavior(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047ac90
-// FUNCTION: HYPERX 0x0047c3c0
+// FUNCTION: HYPERX1000 0x0047ac90
+// FUNCTION: HYPERX1001 0x0047c3c0
 int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
 {
     char szNode[MAX_PATH];
@@ -485,7 +485,7 @@ int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
 
                 if (_mbscmp((const unsigned char*)pCurrent->GetName(), (const unsigned char*)szNode) != 0)
                 {
-                    // STRING: HYPERX 0x004c6a20
+                    // STRING: HYPERX1001 0x004c6a20
                     g_gameApp.Error("This is not the Behavior you think.  Press the Load Plan and Proceed To buttons.");
                 }
                 else
@@ -507,8 +507,8 @@ int PlanEditorDialog::OnTriggerCondition(HWND hDlg, int, HWND, int nCode)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x0047ae20
-// FUNCTION: HYPERX 0x0047c4f0
+// FUNCTION: HYPERX1000 0x0047ae20
+// FUNCTION: HYPERX1001 0x0047c4f0
 PlanVM* __cdecl PlanEditorDialog::LoadPlanText(HWND hDlg, short nBehavior, short nCamera)
 {
     PlanVM* const pFile = (PlanVM*)GetWindowLongA(hDlg, GWL_USERDATA);

@@ -3,7 +3,7 @@
 
 #include "common/behaviorowner.h"
 
-// VTABLE: HYPERX 0x004b2578
+// VTABLE: HYPERX1001 0x004b2578
 class BehObjUpdateRelativePosPool : public BehaviorOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~BehObjUpdateRelativePosPool();
 };
 
-// SYNTHETIC: HYPERX 0x00420c00
+// SYNTHETIC: HYPERX1001 0x00420c00
 // BehObjUpdateRelativePosPool::`scalar deleting destructor'
 
 #endif

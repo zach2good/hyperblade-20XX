@@ -13,37 +13,37 @@
 #include "math/point.h"
 #include "graphics/ddrawapi.h"
 
-// FUNCTION: HYPERX100 0x00441740
-// FUNCTION: HYPERX 0x004377f0
+// FUNCTION: HYPERX1000 0x00441740
+// FUNCTION: HYPERX1001 0x004377f0
 CDDTextSurface::CDDTextSurface()
 {
     InitFields();
 }
 
-// FUNCTION: HYPERX 0x00437850
+// FUNCTION: HYPERX1001 0x00437850
 int CDDTextSurface::Draw()
 {
     return Texture::Draw();
 }
 
-// FUNCTION: HYPERX100 0x00441830
-// FUNCTION: HYPERX 0x00437880
+// FUNCTION: HYPERX1000 0x00441830
+// FUNCTION: HYPERX1001 0x00437880
 CDDTextSurface::CDDTextSurface(Texture* pSource)
 : Texture(pSource)
 {
     InitFields();
 }
 
-// FUNCTION: HYPERX100 0x004418e0
-// FUNCTION: HYPERX 0x004378f0
+// FUNCTION: HYPERX1000 0x004418e0
+// FUNCTION: HYPERX1001 0x004378f0
 CDDTextSurface::CDDTextSurface(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : Texture(pDDraw, pPrimary, pBack)
 {
     InitFields();
 }
 
-// FUNCTION: HYPERX100 0x004419a0
-// FUNCTION: HYPERX 0x00437960
+// FUNCTION: HYPERX1000 0x004419a0
+// FUNCTION: HYPERX1001 0x00437960
 void CDDTextSurface::InitFields()
 {
     // The client holds the name in EDI (0x0043796b).
@@ -57,8 +57,8 @@ void CDDTextSurface::InitFields()
     m_nTextAlign = 0;
 }
 
-// FUNCTION: HYPERX100 0x00441a00
-// FUNCTION: HYPERX 0x004379b0
+// FUNCTION: HYPERX1000 0x00441a00
+// FUNCTION: HYPERX1001 0x004379b0
 CDDTextSurface::~CDDTextSurface()
 {
     if (m_hFont != 0)
@@ -75,8 +75,8 @@ CDDTextSurface::~CDDTextSurface()
 #define FONT_POINTS_WIDE   18
 #define FONT_POINTS_NARROW 12
 
-// FUNCTION: HYPERX100 0x00441ab0
-// FUNCTION: HYPERX 0x00437a20
+// FUNCTION: HYPERX1000 0x00441ab0
+// FUNCTION: HYPERX1001 0x00437a20
 int CDDTextSurface::SetFontScaled(const char* pszName, const char* pszText, int bColourKey, int bSystemMemory)
 {
     return SetFont(pszName, g_nPrevWidth <= WIDE_SCREEN_WIDTH ? FONT_POINTS_NARROW : FONT_POINTS_WIDE, pszText, bColourKey, bSystemMemory);
@@ -89,8 +89,8 @@ STATIC_ASSERT(offsetof(DDBLTFX, dwFillColor) == 0x50);
 #define COLOUR_ENABLED  0xffffff
 #define COLOUR_DISABLED 0x808080
 
-// FUNCTION: HYPERX100 0x00441b00
-// FUNCTION: HYPERX 0x00437a60
+// FUNCTION: HYPERX1000 0x00441b00
+// FUNCTION: HYPERX1001 0x00437a60
 int CDDTextSurface::SetFont(const char* pszName, int nSize, const char* pszText, int bColourKey, int bSystemMemory)
 {
     String* const pText = &m_strText;
@@ -174,8 +174,8 @@ int CDDTextSurface::SetFont(const char* pszName, int nSize, const char* pszText,
 
 #define CLIP_EXTENT 0x2710
 
-// FUNCTION: HYPERX100 0x00441d20
-// FUNCTION: HYPERX 0x00437c10
+// FUNCTION: HYPERX1000 0x00441d20
+// FUNCTION: HYPERX1001 0x00437c10
 SurfacePoint CDDTextSurface::RenderText(int bColourKey)
 {
     HDC   hdc;
@@ -235,15 +235,15 @@ SurfacePoint CDDTextSurface::RenderText(int bColourKey)
     return SurfacePoint(size);
 }
 
-// FUNCTION: HYPERX 0x00437d60
+// FUNCTION: HYPERX1001 0x00437d60
 int CDDTextSurface::OnSurfaceLost()
 {
     return Texture::OnSurfaceLost();
 }
 
 // All three fatal strings name it CDDText::RestoreContents.
-// FUNCTION: HYPERX100 0x00441ed0
-// FUNCTION: HYPERX 0x00437d70
+// FUNCTION: HYPERX1000 0x00441ed0
+// FUNCTION: HYPERX1001 0x00437d70
 int CDDTextSurface::RestoreContents()
 {
     HDC hdc;
@@ -261,7 +261,7 @@ int CDDTextSurface::RestoreContents()
 
         if (m_hr != 0)
         {
-            // STRING: HYPERX 0x004be59c
+            // STRING: HYPERX1001 0x004be59c
             g_gameApp.Fatal("CDDText::RestoreContents Buffer Restore failed %d!",
                             m_hr & DDRAW_ERROR_CODE_MASK);
         }
@@ -275,7 +275,7 @@ int CDDTextSurface::RestoreContents()
 
         if (m_hr != 0)
         {
-            // STRING: HYPERX 0x004be55c
+            // STRING: HYPERX1001 0x004be55c
             g_gameApp.Fatal("CDDText::RestoreContents Buffer getdc after restore failed %d!",
                             m_hr & DDRAW_ERROR_CODE_MASK);
         }
@@ -283,7 +283,7 @@ int CDDTextSurface::RestoreContents()
 
     if (m_hr != 0)
     {
-        // STRING: HYPERX 0x004be528
+        // STRING: HYPERX1001 0x004be528
         g_gameApp.Fatal("CDDText::RestoreContents Buffer getdc 1 failed %d!",
                         m_hr & DDRAW_ERROR_CODE_MASK);
     }
@@ -307,8 +307,8 @@ int CDDTextSurface::RestoreContents()
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004420a0
-// FUNCTION: HYPERX 0x00437ee0
+// FUNCTION: HYPERX1000 0x004420a0
+// FUNCTION: HYPERX1001 0x00437ee0
 int CDDTextSurface::DrawText(const char* pszText)
 {
     if (m_bVisible != 0 && m_pSurface != 0)
@@ -329,7 +329,7 @@ int CDDTextSurface::DrawText(const char* pszText)
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00442090
+// FUNCTION: HYPERX1000 0x00442090
 void CDDTextSurface::SetTextAlignment(UINT nTextAlign)
 {
     m_nTextAlign = nTextAlign;

@@ -9,7 +9,7 @@
 
 // CDDBitMap's twenty seven slots and seven of its own.
 
-// VTABLE: HYPERX 0x004b2f84
+// VTABLE: HYPERX1001 0x004b2f84
 class DamageBar : public SteppedScrollBitmap
 {
 public:
@@ -25,7 +25,7 @@ public:
     }
 };
 
-// SYNTHETIC: HYPERX 0x0043cc50
+// SYNTHETIC: HYPERX1001 0x0043cc50
 // DamageBar::`scalar deleting destructor'
 
 #endif

@@ -13,7 +13,7 @@ class CDDTextSurface;
 class String;
 
 // Table 0x004b3004 is the renderer interface's; the destructor restores InfoBarBase's 0x004b3068.
-// VTABLE: HYPERX 0x004b3004
+// VTABLE: HYPERX1001 0x004b3004
 class HUD : public InfoBarBase
 {
 public:
@@ -29,7 +29,7 @@ public:
     explicit HUD(int nUnused);
 
     // Inline, so the linker folds InfoBarBase's destructor onto it.
-    // FUNCTION: HYPERX 0x0043e120
+    // FUNCTION: HYPERX1001 0x0043e120
     ~HUD()
     {
     }
@@ -41,8 +41,8 @@ public:
     virtual void DrawScene(int bDraw); // 0x0043e150
 
     // Inline, so it stays apart from the out-of-line empty bodies, as the original keeps it.
-    // FUNCTION: HYPERX100 0x004c1a10
-    // FUNCTION: HYPERX 0x0043e0f0
+    // FUNCTION: HYPERX1000 0x004c1a10
+    // FUNCTION: HYPERX1001 0x0043e0f0
     virtual void DrawHUD(int, HDC)
     {
     }
@@ -85,7 +85,7 @@ private:
     static int  RowColour(int nRow);
 };
 
-// SYNTHETIC: HYPERX 0x0043e100
+// SYNTHETIC: HYPERX1001 0x0043e100
 // HUD::`scalar deleting destructor'
 
 #endif

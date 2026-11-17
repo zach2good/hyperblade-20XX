@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slots 0, 2 and 9 are bodies many tables share, declared where they are defined.
-// VTABLE: HYPERX 0x004b1fdc
+// VTABLE: HYPERX1001 0x004b1fdc
 class CViewIt : public BaseResetAgendaItem
 {
 public:

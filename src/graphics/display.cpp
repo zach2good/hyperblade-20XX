@@ -21,8 +21,8 @@ extern int g_nDisplayVertRes;
 extern int g_nDisplayBitsPerPixel;
 
 // The hardware path returns 0 or 1; the software path returns the back buffer resize result.
-// FUNCTION: HYPERX100 0x0046d8a0
-// FUNCTION: HYPERX 0x0044b500
+// FUNCTION: HYPERX1000 0x0046d8a0
+// FUNCTION: HYPERX1001 0x0044b500
 int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
 {
     VideoMemory videoMemory;
@@ -87,7 +87,7 @@ int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
 
     if (g_hSoftBackDC == 0)
     {
-        // STRING: HYPERX 0x004c2d48
+        // STRING: HYPERX1001 0x004c2d48
         g_gameApp.Fatal("Error allocating graphics device context!");
         exit(1);
     }
@@ -114,8 +114,8 @@ int Display::Initialize(HWND hWnd, HDC hDisplayDC, HPALETTE hPalette)
     return g_bBackBufferReady;
 }
 
-// FUNCTION: HYPERX100 0x0046dcc0
-// FUNCTION: HYPERX 0x0044b850
+// FUNCTION: HYPERX1000 0x0046dcc0
+// FUNCTION: HYPERX1001 0x0044b850
 LONG __cdecl Display::ChangeColorDepth(int nMode)
 {
     LONG         lResult = 0;
@@ -242,8 +242,8 @@ LONG __cdecl Display::ChangeColorDepth(int nMode)
     return lResult;
 }
 
-// FUNCTION: HYPERX100 0x004bdeb0
-// FUNCTION: HYPERX 0x00493900
+// FUNCTION: HYPERX1000 0x004bdeb0
+// FUNCTION: HYPERX1001 0x00493900
 void Display::ApplyRenderOptions(HMENU hMenu, int bTexEnabled, int bBilinearFilter)
 {
     GameApp::SetModelPath(bTexEnabled);

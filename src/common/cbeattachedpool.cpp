@@ -4,8 +4,8 @@
 #include "engine/cbeattached.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00421290
-// FUNCTION: HYPERX 0x00412ef0
+// FUNCTION: HYPERX1000 0x00421290
+// FUNCTION: HYPERX1001 0x00412ef0
 void CBeAttachedPool::Init()
 {
     AgendaItem* pNode = new CBeAttached;
@@ -34,8 +34,8 @@ char CBeAttachedPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423e60
-// FUNCTION: HYPERX 0x00412fa0
+// FUNCTION: HYPERX1000 0x00423e60
+// FUNCTION: HYPERX1001 0x00412fa0
 void* CBeAttachedPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CBeAttachedPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415000
+// FUNCTION: HYPERX1001 0x00415000
 CBeAttachedPool::~CBeAttachedPool()
 {
     while (m_pHead != 0)

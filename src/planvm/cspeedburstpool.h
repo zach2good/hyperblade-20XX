@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1918
+// VTABLE: HYPERX1001 0x004b1918
 class CSpeedBurstPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CSpeedBurstPool();
 };
 
-// SYNTHETIC: HYPERX 0x004158a0
+// SYNTHETIC: HYPERX1001 0x004158a0
 // CSpeedBurstPool::`scalar deleting destructor'
 
 #endif

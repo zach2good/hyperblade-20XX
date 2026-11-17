@@ -36,7 +36,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKIP = ("jpeg/",)
 
 MARKER = re.compile(r"^\s*//\s*(FUNCTION|LIBRARY|SYNTHETIC|TEMPLATE|STRING|GLOBAL|VTABLE):"
-                    r"\s*HYPERX\s+(0x[0-9a-fA-F]+)")
+                    r"\s*HYPERX1001\s+(0x[0-9a-fA-F]+)")
 COMMENT = re.compile(r"^\s*//(.*)$")
 IDENT = re.compile(r"(?<![0-9A-Za-z_])[A-Za-z_][A-Za-z0-9_]*")
 NUMBER = re.compile(r"(?<![\w.])(0[xX][0-9a-fA-F]+|\d+)(?![\w.])")

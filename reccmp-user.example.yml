@@ -1,8 +1,10 @@
 # Copy this file to reccmp-user.yml and point it at your own copy of HYPERX.EXE (v1.0.0.1), and
-# optionally your v1.0.0.0 copy for the HYPERX100 target.
+# optionally your v1.0.0.0 and demo copies for the HYPERX1000 and HYPERXDEMO targets.
 # reccmp-user.yml is git-ignored, so the path never leaves your machine.
 targets:
-  HYPERX:
+  HYPERX1001:
     path: C:/Games/HyperBlade/HYPERX.EXE
-  HYPERX100:
+  HYPERX1000:
     path: C:/Games/HyperBlade v1.0.0.0/HYPERX.EXE
+  HYPERXDEMO:
+    path: C:/Games/HyperBlade Demo/HYPERX.EXE

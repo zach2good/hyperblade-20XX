@@ -21,8 +21,8 @@ float g_flScreenDotsPerCmModelFile   = g_flScreenDotsPerInchModelFile / g_flCmPe
 #define MODEL_TAG_DIRECTORY     1
 #define MODEL_INTERNAL_NAME_MAX 32
 
-// FUNCTION: HYPERX100 0x0044f280
-// FUNCTION: HYPERX 0x00435fe0
+// FUNCTION: HYPERX1000 0x0044f280
+// FUNCTION: HYPERX1001 0x00435fe0
 char ModelFile::Open(FileObj* pFile, const char* pszModelName)
 {
     char        bSuccess = 1;
@@ -31,16 +31,16 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
     FileVersion version;
 
     if (g_bShadedDromeModels != 0 && g_cMdmTexLoaded != 0 && strlen(pszModelName) == MODEL_NAME_LENGTH
-        // STRING: HYPERX 0x004bdf90
+        // STRING: HYPERX1001 0x004bdf90
         && _mbsicmp((const unsigned char*)(pszModelName + 3), (const unsigned char*)"dro") == 0)
     {
         strPath.m_str.AssignFromString(String::Concat(
             String::Concat(
                 String::Concat(
-                    // STRING: HYPERX 0x004bdf80
+                    // STRING: HYPERX1001 0x004bdf80
                     String::Concat(g_gameApp.m_strExeDir.m_str, "Models\\MdlShd\\"),
                     pszModelName),
-                // STRING: HYPERX 0x004bdf7c
+                // STRING: HYPERX1001 0x004bdf7c
                 "."),
             g_pszModelExtension));
     }
@@ -59,7 +59,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
             pFile->CloseAndTest();
 
             g_gameApp.Error(
-                // STRING: HYPERX 0x004bdf5c
+                // STRING: HYPERX1001 0x004bdf5c
                 "Wrong Version in model file %s.",
                 strPath.m_str.m_pchData);
         }
@@ -68,7 +68,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
             pFile->CloseAndTest();
 
             g_gameApp.Error(
-                // STRING: HYPERX 0x004bdf18
+                // STRING: HYPERX1001 0x004bdf18
                 "Wrong Type in file %s. Expected database file - found DB directory.",
                 strPath.m_str.m_pchData);
         }
@@ -76,7 +76,7 @@ char ModelFile::Open(FileObj* pFile, const char* pszModelName)
     else
     {
         g_gameApp.Error(
-            // STRING: HYPERX 0x004bdef4
+            // STRING: HYPERX1001 0x004bdef4
             "Model file %s could not be opened!",
             strPath.m_str.m_pchData);
     }
@@ -87,8 +87,8 @@ done:
     return bSuccess;
 }
 
-// FUNCTION: HYPERX100 0x004a0390
-// FUNCTION: HYPERX 0x00493be0
+// FUNCTION: HYPERX1000 0x004a0390
+// FUNCTION: HYPERX1001 0x00493be0
 int ModelFile::ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion* pVersion)
 {
     FileHeader header;
@@ -109,7 +109,7 @@ int ModelFile::ReadHeader(FileObj* pFile, int* pnTag, char* pszName, FileVersion
 
 #ifdef HYPERX_V100
 // Answers fread's count, or -1 with no file.
-// FUNCTION: HYPERX100 0x004a0410
+// FUNCTION: HYPERX1000 0x004a0410
 size_t ModelFile::ReadHeaderFromStream(FILE* pFile, int* pnTag, char* pszName, FileVersion* pVersion)
 {
     FileHeader header;

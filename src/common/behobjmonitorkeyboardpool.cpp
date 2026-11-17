@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c7c50
-// FUNCTION: HYPERX 0x0041f920
+// FUNCTION: HYPERX1000 0x004c7c50
+// FUNCTION: HYPERX1001 0x0041f920
 void BehObjMonitorKeyboardPool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_MonitorKeyboard;
@@ -33,8 +33,8 @@ char BehObjMonitorKeyboardPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c96b0
-// FUNCTION: HYPERX 0x0041f9e0
+// FUNCTION: HYPERX1000 0x004c96b0
+// FUNCTION: HYPERX1001 0x0041f9e0
 void* BehObjMonitorKeyboardPool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* BehObjMonitorKeyboardPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00421080
+// FUNCTION: HYPERX1001 0x00421080
 BehObjMonitorKeyboardPool::~BehObjMonitorKeyboardPool()
 {
     while (m_pHead != 0)

@@ -3,8 +3,8 @@
 #include "animdb.h"
 #include "animnode.h"
 
-// FUNCTION: HYPERX100 0x00459850
-// FUNCTION: HYPERX 0x00416f30
+// FUNCTION: HYPERX1000 0x00459850
+// FUNCTION: HYPERX1001 0x00416f30
 AnimNode::AnimNode(char bHasDescription)
 {
     m_nUnused = 0;

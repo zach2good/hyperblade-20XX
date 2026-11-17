@@ -39,7 +39,7 @@ enum GameConfigWidget
 };
 
 // The constructor calls UIScreen's at 0x0044d540.
-// VTABLE: HYPERX 0x004b3da0
+// VTABLE: HYPERX1001 0x004b3da0
 class GameConfigUIScreen : public UIScreen
 {
 public:
@@ -60,7 +60,7 @@ public:
 
 STATIC_ASSERT(sizeof(GameConfigUIScreen) == 0x478);
 
-// SYNTHETIC: HYPERX 0x00479ae0
+// SYNTHETIC: HYPERX1001 0x00479ae0
 // GameConfigUIScreen::`scalar deleting destructor'
 
 #endif

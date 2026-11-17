@@ -9,7 +9,7 @@
 struct Vec3;
 
 // A sibling of CollisionObj: this table has thirteen slots to the plane's fourteen.
-// VTABLE: HYPERX 0x004b16bc
+// VTABLE: HYPERX1001 0x004b16bc
 class CollisionEllipsoid : public CollisionShape
 {
 public:
@@ -77,17 +77,17 @@ public:
 };
 
 // The trackers' own ellipsoid, 2.2 inside the arena's so the camera steers inside the wall.
-// GLOBAL: HYPERX 0x004cb3d0
+// GLOBAL: HYPERX1001 0x004cb3d0
 extern CollisionEllipsoid g_camTrackEllipsoid;
-// SYNTHETIC: HYPERX 0x00408e70
+// SYNTHETIC: HYPERX1001 0x00408e70
 // $E12
 
-// SYNTHETIC: HYPERX 0x00408e80
+// SYNTHETIC: HYPERX1001 0x00408e80
 // $E11
 
-// GLOBAL: HYPERX 0x004ceff8
+// GLOBAL: HYPERX1001 0x004ceff8
 extern CollisionEllipsoid g_arenaEllipsoid;
-// SYNTHETIC: HYPERX 0x0045c6c0
+// SYNTHETIC: HYPERX1001 0x0045c6c0
 // $E12
 
 #endif

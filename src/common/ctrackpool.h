@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b18dc
+// VTABLE: HYPERX1001 0x004b18dc
 class CTrackPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CTrackPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415a80
+// SYNTHETIC: HYPERX1001 0x00415a80
 // CTrackPool::`scalar deleting destructor'
 
 #endif

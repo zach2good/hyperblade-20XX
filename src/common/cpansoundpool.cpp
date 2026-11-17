@@ -4,8 +4,8 @@
 #include "engine/cpansound.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041e660
-// FUNCTION: HYPERX 0x00414460
+// FUNCTION: HYPERX1000 0x0041e660
+// FUNCTION: HYPERX1001 0x00414460
 void CPanSoundPool::Init()
 {
     AgendaItem* pNode = new CPanSound;
@@ -34,8 +34,8 @@ char CPanSoundPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004227f0
-// FUNCTION: HYPERX 0x004144e0
+// FUNCTION: HYPERX1000 0x004227f0
+// FUNCTION: HYPERX1001 0x004144e0
 void* CPanSoundPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CPanSoundPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00415dc0
+// FUNCTION: HYPERX1001 0x00415dc0
 CPanSoundPool::~CPanSoundPool()
 {
     while (m_pHead != 0)

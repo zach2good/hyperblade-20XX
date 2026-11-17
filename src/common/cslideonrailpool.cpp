@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00421730
-// FUNCTION: HYPERX 0x00412c70
+// FUNCTION: HYPERX1000 0x00421730
+// FUNCTION: HYPERX1001 0x00412c70
 void CSlideOnRailPool::Init()
 {
     AgendaItem* pNode = new CSlideOnRail;
@@ -33,8 +33,8 @@ char CSlideOnRailPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004240b0
-// FUNCTION: HYPERX 0x00412d20
+// FUNCTION: HYPERX1000 0x004240b0
+// FUNCTION: HYPERX1001 0x00412d20
 void* CSlideOnRailPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* CSlideOnRailPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00414ec0
+// FUNCTION: HYPERX1001 0x00414ec0
 CSlideOnRailPool::~CSlideOnRailPool()
 {
     while (m_pHead != 0)

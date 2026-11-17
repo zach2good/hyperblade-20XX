@@ -22,8 +22,8 @@
 // Two rotations stage their cosine and sine in m_transformB; a skater copies 63 ratings, a goalie
 // 16. The home team's players default to the keyboard's model id and the away team's to the
 // gamepad's.
-// FUNCTION: HYPERX100 0x004716c0
-// FUNCTION: HYPERX 0x00474150
+// FUNCTION: HYPERX1000 0x004716c0
+// FUNCTION: HYPERX1001 0x00474150
 PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 : EngineObject(nSlot, pDef)
 {
@@ -102,21 +102,21 @@ PlayerObject::PlayerObject(int nSlot, class ObjectDef* pDef)
 
 #define DAMAGE_UPDATE_INTERVAL 2000
 
-// FUNCTION: HYPERX100 0x00471a00
-// FUNCTION: HYPERX 0x004742f0
+// FUNCTION: HYPERX1000 0x00471a00
+// FUNCTION: HYPERX1001 0x004742f0
 inline void PlayerObject::ApplyRenderSlotPose()
 {
     UpdateRenderSlotTransform(m_wRenderSlot);
 }
 
-// FUNCTION: HYPERX 0x00474320
+// FUNCTION: HYPERX1001 0x00474320
 PlayerObject::~PlayerObject()
 {
 }
 
 // At most every two seconds; the damage is truncated to a byte, so 256 or more wraps.
-// FUNCTION: HYPERX100 0x00471a10
-// FUNCTION: HYPERX 0x00474330
+// FUNCTION: HYPERX1000 0x00471a10
+// FUNCTION: HYPERX1001 0x00474330
 void PlayerObject::Postpass()
 {
     if (g_bSessionActive != 0 && g_pGameEngine != 0)
@@ -138,8 +138,8 @@ void PlayerObject::Postpass()
 }
 
 // One static scratch transform serves every object; 0x00471630 is the same source in another unit.
-// FUNCTION: HYPERX100 0x00471ad0
-// FUNCTION: HYPERX 0x004743d0
+// FUNCTION: HYPERX1000 0x00471ad0
+// FUNCTION: HYPERX1001 0x004743d0
 void PlayerObject::UpdateRenderSlotTransform(short nSlotIdx)
 {
     // The original's object at 0x004d0658 takes no marker; symbols/static_guards.csv names its

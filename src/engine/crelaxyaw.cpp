@@ -16,8 +16,8 @@
 // The band's upper bound is the tenth at 0x004b1440.
 #define SPIN_BAND 0.1
 
-// FUNCTION: HYPERX100 0x0042a0c0
-// FUNCTION: HYPERX 0x00410920
+// FUNCTION: HYPERX1000 0x0042a0c0
+// FUNCTION: HYPERX1001 0x00410920
 void CRelaxYaw::Bind(EngineObject* pSubject, GameBehaviorObject*)
 {
     m_wKind   = Agenda_CRelaxYaw;
@@ -28,8 +28,8 @@ void CRelaxYaw::Bind(EngineObject* pSubject, GameBehaviorObject*)
     m_flDecay = 0.92f;
 }
 
-// FUNCTION: HYPERX100 0x0042a100
-// FUNCTION: HYPERX 0x00410950
+// FUNCTION: HYPERX1000 0x0042a100
+// FUNCTION: HYPERX1001 0x00410950
 void CRelaxYaw::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNode* pNode, int)
 {
     m_wKind  = Agenda_CRelaxYaw;
@@ -55,8 +55,8 @@ void CRelaxYaw::BindWithNode(EngineObject* pObject, GameBehaviorObject*, PlanNod
     m_flDecay = 0.92f;
 }
 
-// FUNCTION: HYPERX100 0x0042a170
-// FUNCTION: HYPERX 0x004109a0
+// FUNCTION: HYPERX1000 0x0042a170
+// FUNCTION: HYPERX1001 0x004109a0
 void CRelaxYaw::OnListChanged()
 {
     if (m_bReady == 0)
@@ -70,8 +70,8 @@ void CRelaxYaw::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x0042a1b0
-// FUNCTION: HYPERX 0x004109d0
+// FUNCTION: HYPERX1000 0x0042a1b0
+// FUNCTION: HYPERX1001 0x004109d0
 void CRelaxYaw::Process(int nArg)
 {
     if (m_flAngle != g_flZeroAgendaItem)
@@ -105,8 +105,8 @@ void CRelaxYaw::Process(int nArg)
     }
 }
 
-// FUNCTION: HYPERX100 0x0042a290
-// FUNCTION: HYPERX 0x00410a70
+// FUNCTION: HYPERX1000 0x0042a290
+// FUNCTION: HYPERX1001 0x00410a70
 void CRelaxYaw::Release(int nArg)
 {
     if (m_flAngle != g_flZeroAgendaItem)

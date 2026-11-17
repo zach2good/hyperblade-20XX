@@ -7,30 +7,30 @@
 #include "graphics/ddrawcaps.h"
 #include "graphics/ddrawapi.h"
 
-// FUNCTION: HYPERX100 0x00442ba0
-// FUNCTION: HYPERX 0x004386c0
+// FUNCTION: HYPERX1000 0x00442ba0
+// FUNCTION: HYPERX1001 0x004386c0
 ScrollBitmap::ScrollBitmap(IDirectDraw* pDDraw, IDirectDrawSurface* pPrimary, IDirectDrawSurface* pBack)
 : CDDBitMap(pDDraw, pPrimary, pBack)
 {
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x00442c70
-// FUNCTION: HYPERX 0x00438730
+// FUNCTION: HYPERX1000 0x00442c70
+// FUNCTION: HYPERX1001 0x00438730
 void ScrollBitmap::SetScrollColorMode(int nScrollColor)
 {
     m_dwScrollColor = nScrollColor;
 }
 
-// FUNCTION: HYPERX100 0x00442c80
-// FUNCTION: HYPERX 0x00438760
+// FUNCTION: HYPERX1000 0x00442c80
+// FUNCTION: HYPERX1001 0x00438760
 ScrollBitmap::ScrollBitmap()
 {
     ClearState();
 }
 
-// FUNCTION: HYPERX100 0x00442d10
-// FUNCTION: HYPERX 0x004387c0
+// FUNCTION: HYPERX1000 0x00442d10
+// FUNCTION: HYPERX1001 0x004387c0
 void ScrollBitmap::ClearState()
 {
     m_ptInset.y   = 2;
@@ -52,16 +52,16 @@ void ScrollBitmap::ClearState()
     m_bDirty = 0;
 }
 
-// FUNCTION: HYPERX100 0x00442dc0
-// FUNCTION: HYPERX 0x00438850
+// FUNCTION: HYPERX1000 0x00442dc0
+// FUNCTION: HYPERX1001 0x00438850
 ScrollBitmap::~ScrollBitmap()
 {
 }
 
 #define BITMAP_KEY_COLOUR 0xffffff
 
-// FUNCTION: HYPERX100 0x00442e30
-// FUNCTION: HYPERX 0x00438860
+// FUNCTION: HYPERX1000 0x00442e30
+// FUNCTION: HYPERX1001 0x00438860
 int ScrollBitmap::LoadFromFile(const char* pszName, int bColourKey, int)
 {
     DDrawCaps caps;
@@ -107,8 +107,8 @@ int ScrollBitmap::LoadFromFile(const char* pszName, int bColourKey, int)
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x00443050
-// FUNCTION: HYPERX 0x00438a10
+// FUNCTION: HYPERX1000 0x00443050
+// FUNCTION: HYPERX1001 0x00438a10
 int ScrollBitmap::RestoreContents()
 {
     if (CDDBitMap::RestoreContents() != 0)
@@ -120,8 +120,8 @@ int ScrollBitmap::RestoreContents()
 }
 
 // The float input is the lower bound plus the position, and both edge comparisons are unsigned.
-// FUNCTION: HYPERX100 0x00443090
-// FUNCTION: HYPERX 0x00438a30
+// FUNCTION: HYPERX1000 0x00443090
+// FUNCTION: HYPERX1001 0x00438a30
 int ScrollBitmap::ScrollTo(int nPosition)
 {
     if (m_bVisible != 0)
@@ -188,8 +188,8 @@ int ScrollBitmap::ScrollTo(int nPosition)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00443480
-// FUNCTION: HYPERX 0x00438c50
+// FUNCTION: HYPERX1000 0x00443480
+// FUNCTION: HYPERX1001 0x00438c50
 int ScrollBitmap::DrawScrolled()
 {
     RECT rc;
@@ -230,14 +230,14 @@ int ScrollBitmap::DrawScrolled()
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00443070
+// FUNCTION: HYPERX1000 0x00443070
 int ScrollBitmap::ScrollStep()
 {
     return ScrollTo(m_nScrollPos + m_nUnusedB);
 }
 
 // The target is m_nUnusedA; unlike ScrollTo, an unmoved bar is not redrawn.
-// FUNCTION: HYPERX100 0x00443200
+// FUNCTION: HYPERX1000 0x00443200
 int ScrollBitmap::ScrollToTarget()
 {
     if (m_bVisible == 0)

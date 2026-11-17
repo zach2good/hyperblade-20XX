@@ -1,8 +1,8 @@
 project: .
 targets:
-  HYPERX:
+  HYPERX1001:
     path: build/out/HYPERX_sym.exe
     pdb: build/out/HYPERX_sym.pdb
-  HYPERX100:
+  HYPERX1000:
     path: build-v100/out/HYPERX_sym.exe
     pdb: build-v100/out/HYPERX_sym.pdb

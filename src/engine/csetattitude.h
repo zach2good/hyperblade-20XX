@@ -6,7 +6,7 @@
 class EngineObject;
 
 // Slot 0 is CGlideOnSurface's shared deleting destructor.
-// VTABLE: HYPERX 0x004b1dd4
+// VTABLE: HYPERX1001 0x004b1dd4
 class CSetAttitude : public KindAgendaItem
 {
 public:

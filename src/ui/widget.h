@@ -87,7 +87,7 @@ struct FlipbookSounds
 
 struct LayoutState;
 
-// VTABLE: HYPERX 0x004b2a68
+// VTABLE: HYPERX1001 0x004b2a68
 class Widget
 {
 public:

@@ -30,18 +30,18 @@ class KeyConfigScreen;
 // Twelve entries in, which is what the original's base address says and nothing else explains.
 #define KEY_START_FRAME 12
 
-// GLOBAL: HYPERX 0x004bd090
+// GLOBAL: HYPERX1001 0x004bd090
 extern KeyBitmapEntry g_aKeyBitmaps[KEY_BITMAP_COUNT];
 
-// GLOBAL: HYPERX 0x004cb7d8
+// GLOBAL: HYPERX1001 0x004cb7d8
 extern unsigned int g_anKeyConfigKeys[KEY_BINDING_COUNT];
 
 // Written and never read.
-// GLOBAL: HYPERX 0x004cb7b0
+// GLOBAL: HYPERX1001 0x004cb7b0
 extern unsigned int g_anKeyConfigAccepted[KEY_BINDING_COUNT];
 
-// FUNCTION: HYPERX100 0x00438850
-// FUNCTION: HYPERX 0x0042f9d0
+// FUNCTION: HYPERX1000 0x00438850
+// FUNCTION: HYPERX1001 0x0042f9d0
 KeyConfigScreen::KeyConfigScreen()
 {
     Widget*      pWidget;
@@ -91,7 +91,7 @@ KeyConfigScreen::KeyConfigScreen()
 
         if (nIndex >= KEY_BITMAP_COUNT)
         {
-            // STRING: HYPERX 0x004bd4e8
+            // STRING: HYPERX1001 0x004bd4e8
             pWidget->AppendFrame(GDI::LoadBitmapHandle("key-"));
         }
         else
@@ -110,16 +110,16 @@ KeyConfigScreen::KeyConfigScreen()
 #define KEY_BITMAP_SLOT 12
 
 // Screen row to device action slot: 0 1 2 3 5 6 8 7 9 4.
-// GLOBAL: HYPERX 0x004b2c38
+// GLOBAL: HYPERX1001 0x004b2c38
 extern const int g_anKeyConfigActionSlots[KEY_BINDING_COUNT];
 
-// FUNCTION: HYPERX 0x0042fc30
+// FUNCTION: HYPERX1001 0x0042fc30
 KeyConfigScreen::~KeyConfigScreen()
 {
 }
 
-// FUNCTION: HYPERX100 0x00438c10
-// FUNCTION: HYPERX 0x0042fc40
+// FUNCTION: HYPERX1000 0x00438c10
+// FUNCTION: HYPERX1001 0x0042fc40
 void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 {
     FramePos     posNamed;
@@ -185,7 +185,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 
                     if (nIndex >= KEY_BITMAP_COUNT)
                     {
-                        // STRING: HYPERX 0x004bd4e8
+                        // STRING: HYPERX1001 0x004bd4e8
                         pOld->AppendFrame(GDI::LoadBitmapHandle("key-"));
                     }
                     else
@@ -203,7 +203,7 @@ void KeyConfigScreen::OnWidgetMessage(int nMsg, unsigned int nWidget)
 
                 pNew->ClearFrames();
 
-                // STRING: HYPERX 0x004bd4e8
+                // STRING: HYPERX1001 0x004bd4e8
                 const HBITMAP hKey = GDI::LoadBitmapHandle("key-");
                 pNew->AppendFrame(hKey);
 
@@ -232,8 +232,8 @@ inline int KeyConfigScreen::FindActiveRow()
 }
 
 // Tab and Escape keep the key. A duplicate or unknown key plays a refusal.
-// FUNCTION: HYPERX100 0x00438e00
-// FUNCTION: HYPERX 0x0042fdc0
+// FUNCTION: HYPERX1000 0x00438e00
+// FUNCTION: HYPERX1001 0x0042fdc0
 int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 {
     unsigned int nIndex;
@@ -294,7 +294,7 @@ int KeyConfigScreen::OnKeyMessage(unsigned int nKeyCode, unsigned int)
 
     if (nIndex >= KEY_BITMAP_COUNT)
     {
-        // STRING: HYPERX 0x004bd4e8
+        // STRING: HYPERX1001 0x004bd4e8
         pBitmap->AppendFrame(GDI::LoadBitmapHandle("key-"));
     }
     else
@@ -320,103 +320,103 @@ const int g_anKeyConfigActionSlots[KEY_BINDING_COUNT] = { 0, 1, 2, 3, 5, 6, 8, 7
 const int g_anKeyConfigDefaultSlots[KEY_BINDING_COUNT] = { 0, 1, 2, 3, 9, 4, 5, 7, 6, 8 };
 
 // Adjacent on purpose: the button loop's end bound lies inside the display positions.
-// STRING: HYPERX 0x004bd4e0
+// STRING: HYPERX1001 0x004bd4e0
 const char* g_pszKeyConfigBackground = "KEYOPS";
 
 KeyActionButton g_aKeyActionButtons[12] = {
-    // STRING: HYPERX 0x004bd4d8
+    // STRING: HYPERX1001 0x004bd4d8
     { "OPFRWD",
-      // STRING: HYPERX 0x004bd4d0
+      // STRING: HYPERX1001 0x004bd4d0
       "OPFRWDD",
-      // STRING: HYPERX 0x004bd4c8
+      // STRING: HYPERX1001 0x004bd4c8
       "OPFRWDR",
       122,
       113 },
-    // STRING: HYPERX 0x004bd4c0
+    // STRING: HYPERX1001 0x004bd4c0
     { "OPSTOP",
-      // STRING: HYPERX 0x004bd4b8
+      // STRING: HYPERX1001 0x004bd4b8
       "OPSTOPD",
-      // STRING: HYPERX 0x004bd4b0
+      // STRING: HYPERX1001 0x004bd4b0
       "OPSTOPR",
       173,
       152 },
-    // STRING: HYPERX 0x004bd4a8
+    // STRING: HYPERX1001 0x004bd4a8
     { "ROTALT",
-      // STRING: HYPERX 0x004bd4a0
+      // STRING: HYPERX1001 0x004bd4a0
       "ROTALTD",
-      // STRING: HYPERX 0x004bd498
+      // STRING: HYPERX1001 0x004bd498
       "ROTALTR",
       75,
       190 },
-    // STRING: HYPERX 0x004bd490
+    // STRING: HYPERX1001 0x004bd490
     { "ROTART",
-      // STRING: HYPERX 0x004bd488
+      // STRING: HYPERX1001 0x004bd488
       "ROTARTD",
-      // STRING: HYPERX 0x004bd480
+      // STRING: HYPERX1001 0x004bd480
       "ROTARTR",
       56,
       228 },
-    // STRING: HYPERX 0x004bd478
+    // STRING: HYPERX1001 0x004bd478
     { "OPJUMP",
-      // STRING: HYPERX 0x004bd470
+      // STRING: HYPERX1001 0x004bd470
       "OPJUMPD",
-      // STRING: HYPERX 0x004bd468
+      // STRING: HYPERX1001 0x004bd468
       "OPJUMPR",
       52,
       264 },
-    // STRING: HYPERX 0x004bd460
+    // STRING: HYPERX1001 0x004bd460
     { "ATTACK",
-      // STRING: HYPERX 0x004bd458
+      // STRING: HYPERX1001 0x004bd458
       "ATTACKD",
-      // STRING: HYPERX 0x004bd450
+      // STRING: HYPERX1001 0x004bd450
       "ATTACKR",
       389,
       114 },
-    // STRING: HYPERX 0x004bd448
+    // STRING: HYPERX1001 0x004bd448
     { "BURST",
-      // STRING: HYPERX 0x004bd440
+      // STRING: HYPERX1001 0x004bd440
       "BURSTD",
-      // STRING: HYPERX 0x004bd438
+      // STRING: HYPERX1001 0x004bd438
       "BURSTR",
       388,
       152 },
-    // STRING: HYPERX 0x004bd430
+    // STRING: HYPERX1001 0x004bd430
     { "OPPASS",
-      // STRING: HYPERX 0x004bd428
+      // STRING: HYPERX1001 0x004bd428
       "OPPASSD",
-      // STRING: HYPERX 0x004bd420
+      // STRING: HYPERX1001 0x004bd420
       "OPPASSR",
       386,
       188 },
-    // STRING: HYPERX 0x004bd418
+    // STRING: HYPERX1001 0x004bd418
     { "OPPSHOT",
-      // STRING: HYPERX 0x004bd40c
+      // STRING: HYPERX1001 0x004bd40c
       "OPPSHOTD",
-      // STRING: HYPERX 0x004bd400
+      // STRING: HYPERX1001 0x004bd400
       "OPPSHOTR",
       386,
       226 },
-    // STRING: HYPERX 0x004bd3f8
+    // STRING: HYPERX1001 0x004bd3f8
     { "OPQSHOT",
-      // STRING: HYPERX 0x004bd3ec
+      // STRING: HYPERX1001 0x004bd3ec
       "OPQSHOTD",
-      // STRING: HYPERX 0x004bd3e0
+      // STRING: HYPERX1001 0x004bd3e0
       "OPQSHOTR",
       386,
       264 },
-    // STRING: HYPERX 0x004bd3d8
+    // STRING: HYPERX1001 0x004bd3d8
     { "OPOKAY",
-      // STRING: HYPERX 0x004bd3d0
+      // STRING: HYPERX1001 0x004bd3d0
       "OPOKAYD",
-      // STRING: HYPERX 0x004bd3c8
+      // STRING: HYPERX1001 0x004bd3c8
       "OPOKAYR",
       170,
       305 },
-    // STRING: HYPERX 0x004bd3c0
+    // STRING: HYPERX1001 0x004bd3c0
     { "OPCANC",
-      // STRING: HYPERX 0x004bd3b8
+      // STRING: HYPERX1001 0x004bd3b8
       "OPCANCD",
-      // STRING: HYPERX 0x004bd3b0
+      // STRING: HYPERX1001 0x004bd3b0
       "OPCANCR",
       344,
       305 }
@@ -478,7 +478,7 @@ KeyBitmapEntry g_aKeyBitmaps[50] = {
     { 0xbe, "keyperi" },
     { 0xdb, "keylbrk" },
     // The first string after the table, so 0x004bd220 is both the end bound and this literal.
-    // STRING: HYPERX 0x004bd220
+    // STRING: HYPERX1001 0x004bd220
     { 0xdd, "keyrbrk" },
 };
 

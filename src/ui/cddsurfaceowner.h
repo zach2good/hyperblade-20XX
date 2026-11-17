@@ -7,7 +7,7 @@
 struct RLESprite;
 
 // InfoBarSlot::InfoBarSlot at 0x00451be0 builds 0x38 bytes and writes table 0x004b3350.
-// VTABLE: HYPERX 0x004b32cc
+// VTABLE: HYPERX1001 0x004b32cc
 class CDDSurfaceOwner : public InfoBarSlot
 {
 public:
@@ -28,7 +28,7 @@ public:
     struct RLESprite* m_pSprite; // 0x3c
 };
 
-// SYNTHETIC: HYPERX 0x0044f8d0
+// SYNTHETIC: HYPERX1001 0x0044f8d0
 // CDDSurfaceOwner::`scalar deleting destructor'
 
 #endif

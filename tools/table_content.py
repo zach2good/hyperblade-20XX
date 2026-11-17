@@ -5,7 +5,7 @@ at the wrong handler, which crashes at run time.
 
 It reads the original's instruction listing from the Ghidra bridge, resolves every
 `MOV [absolute], <code address>` store (including ones VC6 hoists into a register), names each
-target from the `// FUNCTION: HYPERX` markers in src/, and compares that map with the
+target from the `// FUNCTION: HYPERX1001` markers in src/, and compares that map with the
 assignments the source file makes into the given arrays.
 
     python tools/table_content.py 0x0046ac10 src/planvm/planvm.cpp \
@@ -30,13 +30,13 @@ WRITES_DESTINATION = {
 
 
 def marker_map():
-    """Every `// FUNCTION: HYPERX 0x...` marker in src/, as address -> names."""
+    """Every `// FUNCTION: HYPERX1001 0x...` marker in src/, as address -> names."""
     out = {}
     for path in glob.glob(os.path.join(ROOT, "src", "**", "*.cpp"), recursive=True) + glob.glob(os.path.join(ROOT, "src", "**", "*.h"), recursive=True):
         with open(path, encoding="utf-8", errors="replace") as handle:
             lines = handle.read().split("\n")
         for index, line in enumerate(lines):
-            found = re.search(r"//\s*FUNCTION:\s*HYPERX\s+(0x[0-9a-fA-F]+)", line)
+            found = re.search(r"//\s*FUNCTION:\s*HYPERX1001\s+(0x[0-9a-fA-F]+)", line)
             if not found:
                 continue
             for ahead in range(index + 1, min(index + 6, len(lines))):

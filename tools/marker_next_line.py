@@ -22,7 +22,7 @@ MARKER = re.compile(r"^\s*//\s*(FUNCTION|GLOBAL|STRING|VTABLE|SYNTHETIC|LIBRARY|
 
 # A marker's text anywhere other than alone on its own comment line. A rewrap can fold a marker
 # into the prose above it, and reccmp then treats the address as not implemented.
-BURIED = re.compile(r"HYPERX\s+0x[0-9a-fA-F]+")
+BURIED = re.compile(r"HYPERX1001\s+0x[0-9a-fA-F]+")
 
 
 def sourceNames(root):

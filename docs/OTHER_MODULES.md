@@ -139,8 +139,8 @@ VC6 introduced the Rich header, so its absence is evidence of an older toolchain
 
 The product column uses the standard mapping from linker version to product, and is inference.
 The timestamps agree with it, but these files state no compiler version the way `@comp.id` does
-in a VC6 object. For `HYPERX` the toolchain is provable. For these, a match of the generated code
-would have to establish it.
+in a VC6 object. For `HYPERX1001` the toolchain is provable. For these, a match of the generated
+code would have to establish it.
 
 Our method assumes VC6. `cmake/toolchain-vc6sp3.cmake` takes the VC6 tree from
 `VC6_ROOT` and stops configuration when the tree lacks one of its tools, and
@@ -151,7 +151,7 @@ VC 4.x target needs a hand-written NMAKE makefile driven from CMake.
 
 ## Two obstacles to byte-exact DLLs
 
-Both apply to `VIDDLL` and `MIDIDLL`. Neither applies to `HYPERX`.
+Both apply to `VIDDLL` and `MIDIDLL`. Neither applies to `HYPERX1001`.
 
 **Incremental linking.** The thunk table shows `/INCREMENTAL:YES`. The game executable was linked
 `/INCREMENTAL:NO /OPT:REF`, so its layout follows from its objects. An incremental link leaves
@@ -177,7 +177,7 @@ result must say so.
 ## What reccmp would need
 
 reccmp supports several targets: `RecCmpProject.targets` is a dictionary, `asmcmp --target`
-selects one, and markers already carry the target name (`// FUNCTION: HYPERX 0x...`). A `GET3D`
+selects one, and markers already carry the target name (`// FUNCTION: HYPERX1001 0x...`). A `GET3D`
 target needs:
 
 1. A `GET3D` entry in `reccmp-project.yml` with `filename`, `source-root` and `hash`.
@@ -185,7 +185,7 @@ target needs:
 3. A `.def` file, so the export gets the right name and ordinal.
 4. A second object library in `CMakeLists.txt`, linked twice like `hyperx` and `hyperx_sym`. The
    `/OPT:NOREF` reason for the sym build applies unchanged.
-5. `verify-toolchain` limited to the `HYPERX` target. `pecompare.py` works on any PE file.
+5. `verify-toolchain` limited to the `HYPERX1001` target. `pecompare.py` works on any PE file.
 
 ## Ranking
 

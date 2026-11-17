@@ -12,8 +12,8 @@
 
 #define JUMBO_MESSAGE_MAX 128
 
-// FUNCTION: HYPERX100 0x00482e30
-// FUNCTION: HYPERX 0x0046bf50
+// FUNCTION: HYPERX1000 0x00482e30
+// FUNCTION: HYPERX1001 0x0046bf50
 JumboTextList* JumboTextList::Init()
 {
     m_nCount   = 0;
@@ -23,8 +23,8 @@ JumboTextList* JumboTextList::Init()
 }
 
 // A null row is skipped.
-// FUNCTION: HYPERX100 0x00482e50
-// FUNCTION: HYPERX 0x0046bf60
+// FUNCTION: HYPERX1000 0x00482e50
+// FUNCTION: HYPERX1001 0x0046bf60
 void JumboTextList::FreeAll()
 {
     for (int iRow = 0; iRow < m_nCount; iRow++)
@@ -41,7 +41,7 @@ void JumboTextList::FreeAll()
 }
 
 #ifdef HYPERX_V100
-// FUNCTION: HYPERX100 0x00482ea0
+// FUNCTION: HYPERX1000 0x00482ea0
 JumboTextList* JumboTextList::FreeRows()
 {
     for (int iRow = 0; iRow < m_nCount; iRow++)
@@ -61,8 +61,8 @@ JumboTextList* JumboTextList::FreeRows()
 #endif
 
 // Reseeds from the clock every call, so calls within a second draw the same row.
-// FUNCTION: HYPERX100 0x00482ef0
-// FUNCTION: HYPERX 0x0046bfa0
+// FUNCTION: HYPERX1000 0x00482ef0
+// FUNCTION: HYPERX1001 0x0046bfa0
 int JumboTextList::GetRandom(char* pszOut, int nMax)
 {
     srand(time(0));
@@ -79,8 +79,8 @@ int JumboTextList::GetRandom(char* pszOut, int nMax)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00482f90
-// FUNCTION: HYPERX 0x0046c010
+// FUNCTION: HYPERX1000 0x00482f90
+// FUNCTION: HYPERX1001 0x0046c010
 unsigned int JumboTextList::Load(const char* pszFileName)
 {
     OwnedFile  file;
@@ -91,7 +91,7 @@ unsigned int JumboTextList::Load(const char* pszFileName)
 
     if (file.m_file.Open(strPath.m_str.m_pchData, FILE_MODE_READ) == 0)
     {
-        // STRING: HYPERX 0x004c4714
+        // STRING: HYPERX1001 0x004c4714
         g_gameApp.Fatal("ERROR OPENING JUMBOTRON ADDS LIST FILE ");
 
         return 0;

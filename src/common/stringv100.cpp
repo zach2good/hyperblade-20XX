@@ -4,7 +4,7 @@
 #include "common/stringv100.h"
 #include <string.h>
 
-// FUNCTION: HYPERX100 0x00414370
+// FUNCTION: HYPERX1000 0x00414370
 String __stdcall StringV100::Concat(const String& first, const String& second)
 {
     String temp;
@@ -14,7 +14,7 @@ String __stdcall StringV100::Concat(const String& first, const String& second)
     return temp;
 }
 
-// FUNCTION: HYPERX100 0x00414520
+// FUNCTION: HYPERX1000 0x00414520
 String __stdcall StringV100::Concat(const char* pszFirst, const String& second)
 {
     String temp;
@@ -24,7 +24,7 @@ String __stdcall StringV100::Concat(const char* pszFirst, const String& second)
     return temp;
 }
 
-// FUNCTION: HYPERX100 0x00414600
+// FUNCTION: HYPERX1000 0x00414600
 String __stdcall StringV100::Concat(const String& first, char chSecond)
 {
     String temp;
@@ -34,7 +34,7 @@ String __stdcall StringV100::Concat(const String& first, char chSecond)
     return temp;
 }
 
-// FUNCTION: HYPERX100 0x004146d0
+// FUNCTION: HYPERX1000 0x004146d0
 String __stdcall StringV100::Concat(char chFirst, const String& second)
 {
     String temp;
@@ -45,7 +45,7 @@ String __stdcall StringV100::Concat(char chFirst, const String& second)
 }
 
 // TODO: The original passes a frame slot below the locals as the va_list, not the arguments.
-// FUNCTION: HYPERX100 0x00414870
+// FUNCTION: HYPERX1000 0x00414870
 void __cdecl StringV100::FormatResource(String* pString, UINT nFormatID, ...)
 {
     String  strFormat;
@@ -60,7 +60,7 @@ void __cdecl StringV100::FormatResource(String* pString, UINT nFormatID, ...)
     va_end(argList);
 }
 
-// FUNCTION: HYPERX100 0x00414a10
+// FUNCTION: HYPERX1000 0x00414a10
 void StringV100::FreeExtra(String* pString)
 {
     StringHeader* const pOldHeader = pString->GetHeader();

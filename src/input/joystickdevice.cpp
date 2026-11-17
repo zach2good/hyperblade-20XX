@@ -3,8 +3,8 @@
 #include "common/compat.h"
 #include "joystickdevice.h"
 
-// FUNCTION: HYPERX100 0x004982d0
-// FUNCTION: HYPERX 0x00423b60
+// FUNCTION: HYPERX1000 0x004982d0
+// FUNCTION: HYPERX1001 0x00423b60
 int JoystickDevice::Poll(UINT uJoyID) throw()
 {
     JOYINFOEX* const pInfo = &m_info;
@@ -31,8 +31,8 @@ int JoystickDevice::Poll(UINT uJoyID) throw()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00498680
-// FUNCTION: HYPERX 0x00423dc0
+// FUNCTION: HYPERX1000 0x00498680
+// FUNCTION: HYPERX1001 0x00423dc0
 JoystickDevice::JoystickDevice()
 {
     JOYINFOEX* pInfo = &m_info;

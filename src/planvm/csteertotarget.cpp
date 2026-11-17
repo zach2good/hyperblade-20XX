@@ -33,8 +33,8 @@
 
 HYPERBLADE_FIELD_AT(CSteerToTarget, m_pAxis, 0x10);
 
-// FUNCTION: HYPERX100 0x00426ce0
-// FUNCTION: HYPERX 0x0040e020
+// FUNCTION: HYPERX1000 0x00426ce0
+// FUNCTION: HYPERX1001 0x0040e020
 void CSteerToTarget::Bind(EngineObject* pOwner, GameBehaviorObject*)
 {
     m_pNext  = 0;
@@ -48,8 +48,8 @@ void CSteerToTarget::Bind(EngineObject* pOwner, GameBehaviorObject*)
     m_pAxis   = pWatched;
 }
 
-// FUNCTION: HYPERX100 0x00426d20
-// FUNCTION: HYPERX 0x0040e060
+// FUNCTION: HYPERX1000 0x00426d20
+// FUNCTION: HYPERX1001 0x0040e060
 void CSteerToTarget::SetTargetObjectByIndex(short nIndex)
 {
     EngineObject* const pObject = g_pGameEngine->m_ppSlots[nIndex];
@@ -58,8 +58,8 @@ void CSteerToTarget::SetTargetObjectByIndex(short nIndex)
     m_pTarget  = pObject;
 }
 
-// FUNCTION: HYPERX100 0x00426d50
-// FUNCTION: HYPERX 0x0040e080
+// FUNCTION: HYPERX1000 0x00426d50
+// FUNCTION: HYPERX1001 0x0040e080
 void CSteerToTarget::OnListChanged()
 {
     if (m_bReady == 0)
@@ -75,8 +75,8 @@ void CSteerToTarget::OnListChanged()
     }
 }
 
-// FUNCTION: HYPERX100 0x00426d90
-// FUNCTION: HYPERX 0x0040e0b0
+// FUNCTION: HYPERX1000 0x00426d90
+// FUNCTION: HYPERX1001 0x0040e0b0
 void CSteerToTarget::Process(int nArg)
 {
     float flForce;

@@ -4,8 +4,8 @@
 #include "engine/cadjustacceleration.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00420580
-// FUNCTION: HYPERX 0x00413560
+// FUNCTION: HYPERX1000 0x00420580
+// FUNCTION: HYPERX1001 0x00413560
 void CAdjustAccelerationPool::Init()
 {
     AgendaItem* pNode = new CAdjustAcceleration;
@@ -34,8 +34,8 @@ char CAdjustAccelerationPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423780
-// FUNCTION: HYPERX 0x00413600
+// FUNCTION: HYPERX1000 0x00423780
+// FUNCTION: HYPERX1001 0x00413600
 void* CAdjustAccelerationPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CAdjustAccelerationPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004153c0
+// FUNCTION: HYPERX1001 0x004153c0
 CAdjustAccelerationPool::~CAdjustAccelerationPool()
 {
     while (m_pHead != 0)

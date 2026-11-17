@@ -13,8 +13,8 @@
 #include "graphics/graphics.h"
 
 // The previous size is latched the first time either half is zero.
-// FUNCTION: HYPERX100 0x0046d3e0
-// FUNCTION: HYPERX 0x0044b170
+// FUNCTION: HYPERX1000 0x0046d3e0
+// FUNCTION: HYPERX1001 0x0044b170
 void Graphics::Initialize(int bResize)
 {
     LayoutState layout;
@@ -31,7 +31,7 @@ void Graphics::Initialize(int bResize)
 
             if (g_pLeftStack == 0)
             {
-                // STRING: HYPERX 0x004c2d08
+                // STRING: HYPERX1001 0x004c2d08
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (left_stack)!");
             }
 
@@ -39,7 +39,7 @@ void Graphics::Initialize(int bResize)
 
             if (g_pRightStack == 0)
             {
-                // STRING: HYPERX 0x004c2cc8
+                // STRING: HYPERX1001 0x004c2cc8
                 g_gameApp.Fatal("Insufficient memory for Graphics Render Engine! (right_stack)!");
             }
         }
@@ -78,8 +78,8 @@ void Graphics::Initialize(int bResize)
 }
 
 // Loads only when the command line carries the developer marker.
-// FUNCTION: HYPERX100 0x0046db40
-// FUNCTION: HYPERX 0x0044b6f0
+// FUNCTION: HYPERX1000 0x0046db40
+// FUNCTION: HYPERX1001 0x0044b6f0
 unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
 {
     LPSTR pszCmdLine = GetCommandLineA();
@@ -90,7 +90,7 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
     }
 
     // The original calls _mbsstr, the multibyte wrapper at 0x0049f75c, not the plain routine.
-    // STRING: HYPERX 0x004c2da0
+    // STRING: HYPERX1001 0x004c2da0
     if (_mbsstr((const unsigned char*)pszCmdLine, (const unsigned char*)"dmandappro!") == 0)
     {
         return 0;
@@ -98,7 +98,7 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
 
     const UINT uOldErrorMode = SetErrorMode(SEM_NOOPENFILEERRORBOX);
 
-    // STRING: HYPERX 0x004c2d94
+    // STRING: HYPERX1001 0x004c2d94
     g_hMdmTexDll = LoadLibraryA("mdmtex.dll");
 
     SetErrorMode(uOldErrorMode);
@@ -108,10 +108,10 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
         return 0;
     }
 
-    // STRING: HYPERX 0x004c2d84
+    // STRING: HYPERX1001 0x004c2d84
     g_pfnMdmInitDrawPoly = (MdmInitDrawPolyFn)GetProcAddress(g_hMdmTexDll, "mdmInitDrawPoly");
 
-    // STRING: HYPERX 0x004c2d74
+    // STRING: HYPERX1001 0x004c2d74
     g_pfnMdmDrawTexPoly = (MdmDrawTexPolyFn)GetProcAddress(g_hMdmTexDll, "mdmDrawTexPoly");
 
     if (g_pfnMdmInitDrawPoly == 0 || g_pfnMdmDrawTexPoly == 0)
@@ -126,8 +126,8 @@ unsigned int __stdcall Graphics::LoadMdmTexDLL(void)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x0046dc20
-// FUNCTION: HYPERX 0x0044b7a0
+// FUNCTION: HYPERX1000 0x0046dc20
+// FUNCTION: HYPERX1001 0x0044b7a0
 void Graphics::UnloadMdmTexDLL(void)
 {
     if (g_hMdmTexDll != 0)

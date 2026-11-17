@@ -40,7 +40,7 @@ seen = collections.defaultdict(set)
 
 for path in sorted(glob.glob(os.path.join('src', '**', '*.h'), recursive=True) + glob.glob(os.path.join('src', '**', '*.cpp'), recursive=True)):
     text = open(path, encoding='utf-8').read()
-    for match in re.finditer(r'// GLOBAL: HYPERX (0x[0-9a-fA-F]{8})[ ]*[\r]?[\n]([^\r\n]+)', text):
+    for match in re.finditer(r'// GLOBAL: HYPERX1001 (0x[0-9a-fA-F]{8})[ ]*[\r]?[\n]([^\r\n]+)', text):
         seen[int(match.group(1), 16)].add((os.path.basename(path), match.group(2).strip()))
 
 faults = 0

@@ -19,12 +19,12 @@ class AnimNode;
 #define BINDING_HEAD_BYTES    0x14
 
 // This table fills two slots and leaves fourteen __purecall; 0x004b2974 fills all sixteen.
-// VTABLE: HYPERX 0x004b29b4
+// VTABLE: HYPERX1001 0x004b29b4
 class AnimBinding
 {
 public:
-    // FUNCTION: HYPERX100 0x0043a090
-    // FUNCTION: HYPERX 0x00425450
+    // FUNCTION: HYPERX1000 0x0043a090
+    // FUNCTION: HYPERX1001 0x00425450
     virtual ~AnimBinding()
     {
     }
@@ -53,7 +53,7 @@ public:
     short               m_wBoneCount; // 0x010
 };
 
-// SYNTHETIC: HYPERX 0x00425460
+// SYNTHETIC: HYPERX1001 0x00425460
 // AnimBinding::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(AnimBinding) == BINDING_HEAD_BYTES);
@@ -68,7 +68,7 @@ inline AnimBinding::AnimBinding()
 
 // Slot one of this table and AnimPlayer's is CDisplayPassBarPool::Destroy's folded body, which
 // holds the marker.
-// FUNCTION: HYPERX100 0x0043a0a0
+// FUNCTION: HYPERX1000 0x0043a0a0
 inline AnimBinding* AnimBinding::DestroyViaVtable()
 {
     if (this != 0)

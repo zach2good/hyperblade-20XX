@@ -3,7 +3,7 @@
 
 #include "common/agendaitemowner.h"
 
-// VTABLE: HYPERX 0x004b1878
+// VTABLE: HYPERX1001 0x004b1878
 class CPanSoundPool : public AgendaItemOwner
 {
 public:
@@ -26,7 +26,7 @@ public:
     ~CPanSoundPool();
 };
 
-// SYNTHETIC: HYPERX 0x00415da0
+// SYNTHETIC: HYPERX1001 0x00415da0
 // CPanSoundPool::`scalar deleting destructor'
 
 #endif

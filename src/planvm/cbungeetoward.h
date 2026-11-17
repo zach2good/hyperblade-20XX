@@ -8,7 +8,7 @@ struct PlanNode;
 
 // Slots 0 and 2 are shared bodies declared where they are defined; slot 7 shares
 // CAvoidObjects::IsReplaceable's body.
-// VTABLE: HYPERX 0x004b1da0
+// VTABLE: HYPERX1001 0x004b1da0
 class CBungeeToward : public ReleasingAgendaItem
 {
     // m_bReady is this kind's released flag.
@@ -21,7 +21,7 @@ public:
 
     // Slot seven answers one where the base answers nought; the original folds it onto one shared
     // body.
-    // FUNCTION: HYPERX100 0x00425140
+    // FUNCTION: HYPERX1000 0x00425140
     virtual unsigned char GetReadyFlag()
     {
         return 1;

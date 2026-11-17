@@ -30,8 +30,8 @@
 #define SLOT_ROW_X     0x69
 #define SLOT_ROW_WIDTH 0x1ab
 
-// FUNCTION: HYPERX100 0x0046a2d0
-// FUNCTION: HYPERX 0x0046dc50
+// FUNCTION: HYPERX1000 0x0046a2d0
+// FUNCTION: HYPERX1001 0x0046dc50
 SaveLoadUIScreen::SaveLoadUIScreen()
 {
     int nFlag;
@@ -96,110 +96,110 @@ SaveLoadUIScreen::SaveLoadUIScreen()
 
     m_nLastWidget = SAVELOAD_LAST_WIDGET;
 
-    // STRING: HYPERX 0x004c4f98
+    // STRING: HYPERX1001 0x004c4f98
     const HBITMAP hHeader = GDI::LoadBitmapHandle("savload");
     GDI::GetBitmapDimensions(hHeader, &m_bitmap);
     const int nHeaderWidth = m_bitmap.bmWidth;
     Widget*   pWidget      = AppendWidget(new DisplayWidget(0, 0, 0, 0, this, -1));
     pWidget->AppendFrame(hHeader);
 
-    // STRING: HYPERX 0x004c4f90
+    // STRING: HYPERX1001 0x004c4f90
     HBITMAP hBitmap = GDI::LoadBitmapHandle("savwht1");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x58, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savwht1"));
-    // STRING: HYPERX 0x004c4f88
+    // STRING: HYPERX1001 0x004c4f88
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn1"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f80
+    // STRING: HYPERX1001 0x004c4f80
     hBitmap = GDI::LoadBitmapHandle("savwht2");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x6f, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f78
+    // STRING: HYPERX1001 0x004c4f78
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn2"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f70
+    // STRING: HYPERX1001 0x004c4f70
     hBitmap = GDI::LoadBitmapHandle("savwht3");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x86, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f68
+    // STRING: HYPERX1001 0x004c4f68
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn3"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f60
+    // STRING: HYPERX1001 0x004c4f60
     hBitmap = GDI::LoadBitmapHandle("savwht4");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x9d, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f58
+    // STRING: HYPERX1001 0x004c4f58
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn4"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f50
+    // STRING: HYPERX1001 0x004c4f50
     hBitmap = GDI::LoadBitmapHandle("savwht5");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xb4, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f48
+    // STRING: HYPERX1001 0x004c4f48
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn5"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f40
+    // STRING: HYPERX1001 0x004c4f40
     hBitmap = GDI::LoadBitmapHandle("savwht6");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xcb, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f38
+    // STRING: HYPERX1001 0x004c4f38
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn6"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f30
+    // STRING: HYPERX1001 0x004c4f30
     hBitmap = GDI::LoadBitmapHandle("savwht7");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xe2, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f28
+    // STRING: HYPERX1001 0x004c4f28
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn7"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f20
+    // STRING: HYPERX1001 0x004c4f20
     hBitmap = GDI::LoadBitmapHandle("savwht8");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0xf9, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f18
+    // STRING: HYPERX1001 0x004c4f18
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn8"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f10
+    // STRING: HYPERX1001 0x004c4f10
     hBitmap = GDI::LoadBitmapHandle("savwht9");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x110, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4f08
+    // STRING: HYPERX1001 0x004c4f08
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn9"));
     pWidget->InitAfterLoad();
 
-    // STRING: HYPERX 0x004c4f00
+    // STRING: HYPERX1001 0x004c4f00
     hBitmap = GDI::LoadBitmapHandle("savwht0");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new ButtonWidget(0, SLOT_ROW_X, 0x127, SLOT_ROW_WIDTH, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1));
     pWidget->AppendFrame(hBitmap);
     pWidget->AppendFrame(0);
-    // STRING: HYPERX 0x004c4ef8
+    // STRING: HYPERX1001 0x004c4ef8
     pWidget->AppendFrame(GDI::LoadBitmapHandle("savgrn0"));
     pWidget->InitAfterLoad();
 
@@ -222,14 +222,14 @@ SaveLoadUIScreen::SaveLoadUIScreen()
 
     if (g_pGameEngine->IsTournamentMode() == 0 || g_pGameEngine->m_pSaveObject->GetBracketPos() <= nMaxSaves)
     {
-        // STRING: HYPERX 0x004c4ef0
+        // STRING: HYPERX1001 0x004c4ef0
         hBitmap = GDI::LoadBitmapHandle("save");
         GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
         pWidget = AppendWidget(new FlipbookWidget(0x32, 400, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
         pWidget->AppendFrame(hBitmap);
-        // STRING: HYPERX 0x004c4ee8
+        // STRING: HYPERX1001 0x004c4ee8
         pWidget->AppendFrame(GDI::LoadBitmapHandle("saver"));
-        // STRING: HYPERX 0x004c4ee0
+        // STRING: HYPERX1001 0x004c4ee0
         pWidget->AppendFrame(GDI::LoadBitmapHandle("saved"));
         pWidget->InitAfterLoad();
     }
@@ -238,14 +238,14 @@ SaveLoadUIScreen::SaveLoadUIScreen()
         AppendWidget(new FlipbookWidget(0x32, 400, 0, 0, 0, 0, 0, 0, 0, 0, this, -1, -1, -1));
     }
 
-    // STRING: HYPERX 0x004c4ed8
+    // STRING: HYPERX1001 0x004c4ed8
     hBitmap = GDI::LoadBitmapHandle("load");
     GDI::GetBitmapDimensions(hBitmap, &m_bitmap);
     pWidget = AppendWidget(new FlipbookWidget(0x140, 400, m_bitmap.bmWidth, m_bitmap.bmHeight, 0, 0, 2, 0, 1, 2, this, -1, -1, -1));
     pWidget->AppendFrame(hBitmap);
-    // STRING: HYPERX 0x004c4ed0
+    // STRING: HYPERX1001 0x004c4ed0
     pWidget->AppendFrame(GDI::LoadBitmapHandle("loadr"));
-    // STRING: HYPERX 0x004c4ec8
+    // STRING: HYPERX1001 0x004c4ec8
     pWidget->AppendFrame(GDI::LoadBitmapHandle("loadd"));
     pWidget->InitAfterLoad();
 
@@ -271,13 +271,13 @@ SaveLoadUIScreen::SaveLoadUIScreen()
     RefreshSlotLabels();
 }
 
-// FUNCTION: HYPERX 0x0046e950
+// FUNCTION: HYPERX1001 0x0046e950
 SaveLoadUIScreen::~SaveLoadUIScreen()
 {
 }
 
-// FUNCTION: HYPERX100 0x0046b570
-// FUNCTION: HYPERX 0x0046e960
+// FUNCTION: HYPERX1000 0x0046b570
+// FUNCTION: HYPERX1001 0x0046e960
 void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 {
     switch (nWidget)
@@ -422,18 +422,18 @@ void SaveLoadUIScreen::OnOtherButton(int nMessage, unsigned int nWidget)
 #define PART_MAX 0x100
 
 // Out of line, so the linker folds these onto Stub::Assert; v1.0.0.0 keeps them apart.
-// FUNCTION: HYPERX100 0x0046b820
+// FUNCTION: HYPERX1000 0x0046b820
 void SaveLoadUIScreen::OnLeftArrowClick()
 {
 }
 
-// FUNCTION: HYPERX100 0x0046b830
+// FUNCTION: HYPERX1000 0x0046b830
 void SaveLoadUIScreen::OnRightArrowClick()
 {
 }
 
-// FUNCTION: HYPERX100 0x0046b840
-// FUNCTION: HYPERX 0x0046eb50
+// FUNCTION: HYPERX1000 0x0046b840
+// FUNCTION: HYPERX1001 0x0046eb50
 void SaveLoadUIScreen::SaveGame()
 {
     char szDescription[DESCRIPTION_MAX];
@@ -458,8 +458,8 @@ void SaveLoadUIScreen::SaveGame()
     InitFrame();
 }
 
-// FUNCTION: HYPERX100 0x0046b900
-// FUNCTION: HYPERX 0x0046ebf0
+// FUNCTION: HYPERX1000 0x0046b900
+// FUNCTION: HYPERX1001 0x0046ebf0
 void SaveLoadUIScreen::LoadGame()
 {
     if (m_nSlot == SLOT_NONE)
@@ -473,13 +473,13 @@ void SaveLoadUIScreen::LoadGame()
 }
 
 // Out of line, so the linker folds it onto Stub::Assert; v1.0.0.0 keeps it apart.
-// FUNCTION: HYPERX100 0x0046b930
+// FUNCTION: HYPERX1000 0x0046b930
 void SaveLoadUIScreen::RefreshSelection()
 {
 }
 
-// FUNCTION: HYPERX100 0x0046b940
-// FUNCTION: HYPERX 0x0046ec20
+// FUNCTION: HYPERX1000 0x0046b940
+// FUNCTION: HYPERX1001 0x0046ec20
 void SaveLoadUIScreen::RefreshFrames()
 {
     m_apWidgets[UI_WIDGET_PAGE]->ClearFrames();
@@ -487,8 +487,8 @@ void SaveLoadUIScreen::RefreshFrames()
     m_apWidgets[UI_WIDGET_PAGE]->SetDirtyFlag(1);
 }
 
-// FUNCTION: HYPERX100 0x0046b960
-// FUNCTION: HYPERX 0x0046ec40
+// FUNCTION: HYPERX1000 0x0046b960
+// FUNCTION: HYPERX1001 0x0046ec40
 void SaveLoadUIScreen::RefreshSlotLabels()
 {
     char szLabel[SLOT_LABEL_BYTES];
@@ -504,15 +504,15 @@ void SaveLoadUIScreen::RefreshSlotLabels()
     }
 }
 
-// FUNCTION: HYPERX100 0x0046b9e0
-// FUNCTION: HYPERX 0x0046eca0
+// FUNCTION: HYPERX1000 0x0046b9e0
+// FUNCTION: HYPERX1001 0x0046eca0
 void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
 {
     char szPart[PART_MAX];
 
     const int nRound = g_pGameEngine->m_pSaveObject->GetBracketPos();
 
-    // STRING: HYPERX 0x004c4fa8
+    // STRING: HYPERX1001 0x004c4fa8
     strcpy(szPart, "Match ");
 
     int nOut = 0;
@@ -531,7 +531,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
         nAt++;
     }
 
-    // STRING: HYPERX 0x004bb814
+    // STRING: HYPERX1001 0x004bb814
     sprintf(szPart, "%d", nRound + 1);
 
     nAt = 0;
@@ -549,7 +549,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
         nAt++;
     }
 
-    // STRING: HYPERX 0x004bc410
+    // STRING: HYPERX1001 0x004bc410
     strcpy(szPart, " ");
 
     nAt = 0;
@@ -584,7 +584,7 @@ void SaveLoadUIScreen::FormatSaveDescription(char* pszOut, int nMax)
         nAt++;
     }
 
-    // STRING: HYPERX 0x004c4fa0
+    // STRING: HYPERX1001 0x004c4fa0
     strcpy(szPart, " VS. ");
 
     nAt = 0;

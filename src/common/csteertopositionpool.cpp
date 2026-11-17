@@ -4,8 +4,8 @@
 #include "engine/csteertoposition.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00420c10
-// FUNCTION: HYPERX 0x00413210
+// FUNCTION: HYPERX1000 0x00420c10
+// FUNCTION: HYPERX1001 0x00413210
 void CSteerToPositionPool::Init()
 {
     AgendaItem* pNode = new CSteerToPosition;
@@ -34,8 +34,8 @@ char CSteerToPositionPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423b00
-// FUNCTION: HYPERX 0x004132d0
+// FUNCTION: HYPERX1000 0x00423b00
+// FUNCTION: HYPERX1001 0x004132d0
 void* CSteerToPositionPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CSteerToPositionPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004151e0
+// FUNCTION: HYPERX1001 0x004151e0
 CSteerToPositionPool::~CSteerToPositionPool()
 {
     while (m_pHead != 0)

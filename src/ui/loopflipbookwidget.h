@@ -10,24 +10,24 @@
 class Screen;
 
 // Table 0x004b2abc; its slot six, 0x0042bb20, steps the frame. FlipbookWidget never steps.
-// VTABLE: HYPERX 0x004b2abc
+// VTABLE: HYPERX1001 0x004b2abc
 class LoopFlipbookWidget : public InertWidget
 {
 public:
     // Three shared addresses in slots three to five, three stand-ins.
-    // FUNCTION: HYPERX100 0x00477580
+    // FUNCTION: HYPERX1000 0x00477580
     virtual int OnMouseDown()
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x00477590
+    // FUNCTION: HYPERX1000 0x00477590
     virtual int OnMouseUp()
     {
         return 0;
     }
 
-    // FUNCTION: HYPERX100 0x00477630
+    // FUNCTION: HYPERX1000 0x00477630
     virtual int IsDisplayOnly()
     {
         return 1;

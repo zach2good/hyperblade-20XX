@@ -13,8 +13,8 @@ Mixer g_mixerWaveOut;
 
 #define SOUND_LOCK_RETRIES 2
 
-// FUNCTION: HYPERX100 0x0048abd0
-// FUNCTION: HYPERX 0x0048fcc0
+// FUNCTION: HYPERX1000 0x0048abd0
+// FUNCTION: HYPERX1001 0x0048fcc0
 SoundChannel::SoundChannel()
 : m_pSource(0)
 , m_nState(CHANNEL_IDLE)
@@ -28,14 +28,14 @@ SoundChannel::SoundChannel()
 {
 }
 
-// FUNCTION: HYPERX 0x0048fce0
+// FUNCTION: HYPERX1001 0x0048fce0
 SoundChannel::~SoundChannel()
 {
     SoundChannel::Stop();
 }
 
-// FUNCTION: HYPERX100 0x0048acd0
-// FUNCTION: HYPERX 0x0048fe10
+// FUNCTION: HYPERX1000 0x0048acd0
+// FUNCTION: HYPERX1001 0x0048fe10
 unsigned int SoundChannel::ReadFromFile(void* pBuffer, unsigned int nBytes)
 {
     unsigned int nRead = 0;
@@ -46,8 +46,8 @@ unsigned int SoundChannel::ReadFromFile(void* pBuffer, unsigned int nBytes)
 }
 
 // A lost buffer is restored once; an exhausted source loops back or pads with silence.
-// FUNCTION: HYPERX100 0x0048ad20
-// FUNCTION: HYPERX 0x0048fe40
+// FUNCTION: HYPERX1000 0x0048ad20
+// FUNCTION: HYPERX1001 0x0048fe40
 int SoundChannel::FillBuffer(unsigned int nBytes, unsigned int nOffset)
 {
     int   nRetry;
@@ -202,8 +202,8 @@ __inline int SoundChannel::IsResidentGroup(const SoundEntry* pEntry, int nGroup)
 }
 
 // Anything over 0x8800 bytes streams through a ring; the busy count guards the setup.
-// FUNCTION: HYPERX100 0x0048b010
-// FUNCTION: HYPERX 0x00490070
+// FUNCTION: HYPERX1000 0x0048b010
+// FUNCTION: HYPERX1001 0x00490070
 unsigned int SoundChannel::StartPlayback(IDirectSound* pDevice, SoundEntry* pSource, int bLooping)
 {
     unsigned int   nResult;
@@ -339,8 +339,8 @@ done:
     return nResult;
 }
 
-// FUNCTION: HYPERX100 0x0048b410
-// FUNCTION: HYPERX 0x00490330
+// FUNCTION: HYPERX1000 0x0048b410
+// FUNCTION: HYPERX1001 0x00490330
 void SoundChannel::Stop()
 {
     m_nBusy++;
@@ -386,8 +386,8 @@ void SoundChannel::Stop()
 }
 
 // A re-entrancy guard; a drained channel stops here, which is how a stream ends.
-// FUNCTION: HYPERX100 0x0048b4b0
-// FUNCTION: HYPERX 0x004903b0
+// FUNCTION: HYPERX1000 0x0048b4b0
+// FUNCTION: HYPERX1001 0x004903b0
 void SoundChannel::StreamUpdate()
 {
     m_nBusy++;

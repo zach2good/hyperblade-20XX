@@ -4,8 +4,8 @@
 #include "engine/ccircletrack.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041d380
-// FUNCTION: HYPERX 0x00414ce0
+// FUNCTION: HYPERX1000 0x0041d380
+// FUNCTION: HYPERX1001 0x00414ce0
 void CCircleTrackPool::Init()
 {
     AgendaItem* pNode = new CCircleTrack;
@@ -34,8 +34,8 @@ char CCircleTrackPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00421ec0
-// FUNCTION: HYPERX 0x00414d70
+// FUNCTION: HYPERX1000 0x00421ec0
+// FUNCTION: HYPERX1001 0x00414d70
 void* CCircleTrackPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CCircleTrackPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00416360
+// FUNCTION: HYPERX1001 0x00416360
 CCircleTrackPool::~CCircleTrackPool()
 {
     while (m_pHead != 0)

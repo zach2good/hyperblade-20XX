@@ -4,8 +4,8 @@
 #include "planvm/csteertotarget.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x00421070
-// FUNCTION: HYPERX 0x00413010
+// FUNCTION: HYPERX1000 0x00421070
+// FUNCTION: HYPERX1001 0x00413010
 void CSteerToTargetPool::Init()
 {
     AgendaItem* pNode = new CSteerToTarget;
@@ -34,8 +34,8 @@ char CSteerToTargetPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x00423d50
-// FUNCTION: HYPERX 0x004130b0
+// FUNCTION: HYPERX1000 0x00423d50
+// FUNCTION: HYPERX1001 0x004130b0
 void* CSteerToTargetPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CSteerToTargetPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x004150a0
+// FUNCTION: HYPERX1001 0x004150a0
 CSteerToTargetPool::~CSteerToTargetPool()
 {
     while (m_pHead != 0)

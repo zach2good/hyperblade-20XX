@@ -62,7 +62,7 @@ MAP = os.path.join(ROOT, "build", "out", "HYPERX.map")
 FUNCTIONS = os.path.join(ROOT, "symbols", "functions.csv")
 REGISTER = os.path.join(ROOT, "symbols", "scattered_records.csv")
 
-OTHER_MARKER = re.compile(r"//\s*(FUNCTION|LIBRARY|STUB|VTABLE|STRING):\s*HYPERX\s+0x([0-9a-fA-F]+)")
+OTHER_MARKER = re.compile(r"//\s*(FUNCTION|LIBRARY|STUB|VTABLE|STRING):\s*HYPERX1001\s+0x([0-9a-fA-F]+)")
 
 # How far a pointer is followed: instructions per function, and callee depth.
 SCAN_LIMIT = 400

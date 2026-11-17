@@ -4,8 +4,8 @@
 #include "engine/cdisplayshotpower.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x0041dde0
-// FUNCTION: HYPERX 0x00414820
+// FUNCTION: HYPERX1000 0x0041dde0
+// FUNCTION: HYPERX1001 0x00414820
 void CDisplayShotPowerPool::Init()
 {
     AgendaItem* pNode = new CDisplayShotPower;
@@ -34,8 +34,8 @@ char CDisplayShotPowerPool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004223c0
-// FUNCTION: HYPERX 0x004148b0
+// FUNCTION: HYPERX1000 0x004223c0
+// FUNCTION: HYPERX1001 0x004148b0
 void* CDisplayShotPowerPool::Alloc()
 {
     AgendaItem* const pHead = m_pHead;
@@ -51,7 +51,7 @@ void* CDisplayShotPowerPool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00416040
+// FUNCTION: HYPERX1001 0x00416040
 CDisplayShotPowerPool::~CDisplayShotPowerPool()
 {
     while (m_pHead != 0)

@@ -3,8 +3,8 @@
 #include "pooledclasses.h"
 #include "poolcounts.h"
 
-// FUNCTION: HYPERX100 0x004c80d0
-// FUNCTION: HYPERX 0x0041f480
+// FUNCTION: HYPERX1000 0x004c80d0
+// FUNCTION: HYPERX1001 0x0041f480
 void BehObjRailSlidePool::Init()
 {
     GameBehaviorObject* pNode = new BehObj_RailSlide;
@@ -33,8 +33,8 @@ char BehObjRailSlidePool::Insert(void* pNode)
     return 1;
 }
 
-// FUNCTION: HYPERX100 0x004c99b0
-// FUNCTION: HYPERX 0x0041f540
+// FUNCTION: HYPERX1000 0x004c99b0
+// FUNCTION: HYPERX1001 0x0041f540
 void* BehObjRailSlidePool::Alloc()
 {
     GameBehaviorObject* const pHead = m_pHead;
@@ -50,7 +50,7 @@ void* BehObjRailSlidePool::Alloc()
     return pHead;
 }
 
-// FUNCTION: HYPERX 0x00420e00
+// FUNCTION: HYPERX1001 0x00420e00
 BehObjRailSlidePool::~BehObjRailSlidePool()
 {
     while (m_pHead != 0)

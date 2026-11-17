@@ -22,8 +22,8 @@ float g_flDotPitchCmWidget        = g_flDotPitchInchWidget / g_flCmPerInchWidget
 float g_flScreenDotsPerCmWidget   = g_flScreenDotsPerInchWidget / g_flCmPerInchWidget;
 
 // The first pass nulls duplicates and the screen's background; the second frees the rest.
-// FUNCTION: HYPERX100 0x004765a0
-// FUNCTION: HYPERX 0x0042b110
+// FUNCTION: HYPERX1000 0x004765a0
+// FUNCTION: HYPERX1001 0x0042b110
 Widget::~Widget()
 {
     int i;
@@ -89,8 +89,8 @@ Widget::~Widget()
 extern "C" int __cdecl _purecall(void);
 
 // The seventh argument is the row count; one extra row is allocated, even for a negative count.
-// FUNCTION: HYPERX100 0x004767a0
-// FUNCTION: HYPERX 0x0042b220
+// FUNCTION: HYPERX1000 0x004767a0
+// FUNCTION: HYPERX1001 0x0042b220
 Widget::Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nDepressed, int nRows, int nFrameIdle, int nFrameHighlighted, int nTargetFrame, Screen* pOwner, int nSoundAtMark)
 {
     m_nX                = nX;
@@ -129,7 +129,7 @@ Widget::Widget(int nX, int nY, int nWidth, int nHeight, int nHighlighted, int nD
 
 #ifdef HYPERX_V100
 // Nothing is allocated, so the frame table stays null.
-// FUNCTION: HYPERX100 0x00476700
+// FUNCTION: HYPERX1000 0x00476700
 Widget::Widget()
 {
     m_nType             = WIDGET_FLIPBOOK;
@@ -160,31 +160,31 @@ Widget::Widget()
     m_flipbook.m_nMarkFrame           = -1;
 }
 
-// FUNCTION: HYPERX100 0x00476c90
+// FUNCTION: HYPERX1000 0x00476c90
 void Widget::SetFrameIdle(int nFrameIdle)
 {
     m_nFrameIdle = nFrameIdle;
 }
 
-// FUNCTION: HYPERX100 0x00476ca0
+// FUNCTION: HYPERX1000 0x00476ca0
 int Widget::GetFrameIdle() const
 {
     return m_nFrameIdle;
 }
 
-// FUNCTION: HYPERX100 0x00476cc0
+// FUNCTION: HYPERX1000 0x00476cc0
 int Widget::GetTargetFrame() const
 {
     return m_nTargetFrame;
 }
 
-// FUNCTION: HYPERX100 0x00476cf0
+// FUNCTION: HYPERX1000 0x00476cf0
 void Widget::SetType(int nType)
 {
     m_nType = nType;
 }
 
-// FUNCTION: HYPERX100 0x00477010
+// FUNCTION: HYPERX1000 0x00477010
 void Widget::SetSize(int nWidth, int nHeight)
 {
     m_nWidth  = nWidth;
@@ -193,8 +193,8 @@ void Widget::SetSize(int nWidth, int nHeight)
 #endif
 
 // Half open at the far edge. m_bHidden set to one also blocks the hit test.
-// FUNCTION: HYPERX100 0x004768a0
-// FUNCTION: HYPERX 0x0042b2f0
+// FUNCTION: HYPERX1000 0x004768a0
+// FUNCTION: HYPERX1001 0x0042b2f0
 int Widget::HitTest(int nX, int nY)
 {
     if (m_bHidden != 1)
@@ -217,8 +217,8 @@ int Widget::HitTest(int nX, int nY)
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00476900
-// FUNCTION: HYPERX 0x0042b330
+// FUNCTION: HYPERX1000 0x00476900
+// FUNCTION: HYPERX1001 0x0042b330
 int Widget::TryActivate(int, int)
 {
     if (m_bHidden != 1 && m_bHighlighted == 0)
@@ -235,8 +235,8 @@ int Widget::TryActivate(int, int)
 }
 
 // A step sets its limit before testing its event, so a mode with no event still moves the limit.
-// FUNCTION: HYPERX100 0x00476a00
-// FUNCTION: HYPERX 0x0042b370
+// FUNCTION: HYPERX1000 0x00476a00
+// FUNCTION: HYPERX1001 0x0042b370
 int Widget::AdvanceFrame()
 {
     const FlipbookSounds* const pSounds = &m_flipbook;
@@ -296,8 +296,8 @@ int Widget::AdvanceFrame()
 
 // Drawing clears the dirty flag whether or not there was a frame.
 
-// FUNCTION: HYPERX100 0x00476b30
-// FUNCTION: HYPERX 0x0042b450
+// FUNCTION: HYPERX1000 0x00476b30
+// FUNCTION: HYPERX1001 0x0042b450
 void Widget::Draw(HDC hdc, HPALETTE hPalette, int)
 {
     if (m_bHidden == 1)
@@ -344,86 +344,86 @@ void Widget::Draw(HDC hdc, HPALETTE hPalette, int)
     }
 }
 
-// FUNCTION: HYPERX100 0x00476c50
-// FUNCTION: HYPERX 0x0042b530
+// FUNCTION: HYPERX1000 0x00476c50
+// FUNCTION: HYPERX1001 0x0042b530
 void Widget::SetHighlighted(int nHighlighted)
 {
     m_bHighlighted = nHighlighted;
 }
 
-// FUNCTION: HYPERX100 0x00476c60
-// FUNCTION: HYPERX 0x0042b540
+// FUNCTION: HYPERX1000 0x00476c60
+// FUNCTION: HYPERX1001 0x0042b540
 int Widget::GetHighlighted() const
 {
     return m_bHighlighted;
 }
 
-// FUNCTION: HYPERX100 0x00476c70
-// FUNCTION: HYPERX 0x0042b550
+// FUNCTION: HYPERX1000 0x00476c70
+// FUNCTION: HYPERX1001 0x0042b550
 void Widget::SetDepressed(int nDepressed)
 {
     m_bDepressed = nDepressed;
 }
 
-// FUNCTION: HYPERX100 0x00476c80
-// FUNCTION: HYPERX 0x0042b560
+// FUNCTION: HYPERX1000 0x00476c80
+// FUNCTION: HYPERX1001 0x0042b560
 int Widget::GetDepressed() const
 {
     return m_bDepressed;
 }
 
-// FUNCTION: HYPERX100 0x00476cb0
-// FUNCTION: HYPERX 0x0042b570
+// FUNCTION: HYPERX1000 0x00476cb0
+// FUNCTION: HYPERX1001 0x0042b570
 void Widget::SetTargetFrame(int nTargetFrame)
 {
     m_nTargetFrame = nTargetFrame;
 }
 
-// FUNCTION: HYPERX100 0x00476cd0
-// FUNCTION: HYPERX 0x0042b580
+// FUNCTION: HYPERX1000 0x00476cd0
+// FUNCTION: HYPERX1001 0x0042b580
 void Widget::SetDirtyFlag(int nDirty)
 {
     m_bDirty = nDirty;
 }
 
-// FUNCTION: HYPERX100 0x00476d10
-// FUNCTION: HYPERX 0x0042b590
+// FUNCTION: HYPERX1000 0x00476d10
+// FUNCTION: HYPERX1001 0x0042b590
 int Widget::GetPositionY() const
 {
     return m_nY;
 }
 
-// FUNCTION: HYPERX100 0x00476d20
-// FUNCTION: HYPERX 0x0042b5a0
+// FUNCTION: HYPERX1000 0x00476d20
+// FUNCTION: HYPERX1001 0x0042b5a0
 void Widget::SetHidden(int nHidden)
 {
     m_bHidden = nHidden;
 }
 
-// FUNCTION: HYPERX100 0x00476d30
-// FUNCTION: HYPERX 0x0042b5b0
+// FUNCTION: HYPERX1000 0x00476d30
+// FUNCTION: HYPERX1001 0x0042b5b0
 int Widget::GetHidden() const
 {
     return m_bHidden;
 }
 
-// FUNCTION: HYPERX100 0x00476d40
-// FUNCTION: HYPERX 0x0042b5c0
+// FUNCTION: HYPERX1000 0x00476d40
+// FUNCTION: HYPERX1001 0x0042b5c0
 FramePos Widget::AppendFrameWithPos(HBITMAP hBitmap, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY)
 {
     return AddFrameWithPos(hBitmap, 0, nWidth, nHeight, nOffsetX, nOffsetY, nSourceX, nSourceY);
 }
 
 // A null bitmap gives a zero-sized frame rather than being refused.
-// FUNCTION: HYPERX100 0x00476d90
-// FUNCTION: HYPERX 0x0042b610
+// FUNCTION: HYPERX1000 0x00476d90
+// FUNCTION: HYPERX1001 0x0042b610
 FramePos Widget::AppendFrame(HBITMAP hBitmap)
 {
     return AddFrameBitmap(hBitmap, 0);
 }
 
-// FUNCTION: HYPERX100 0x00476db0
-// FUNCTION: HYPERX 0x0042b640
+// FUNCTION: HYPERX1000 0x00476db0
+// FUNCTION: HYPERX1001 0x0042b640
 FramePos Widget::AddFrameBitmap(HBITMAP hBitmap, int bCached)
 {
     FramePos pos;
@@ -465,8 +465,8 @@ FramePos Widget::AddFrameBitmap(HBITMAP hBitmap, int bCached)
 }
 
 // The capacity check goes to a stub, so too many frames write past the end.
-// FUNCTION: HYPERX100 0x00476f00
-// FUNCTION: HYPERX 0x0042b750
+// FUNCTION: HYPERX1000 0x00476f00
+// FUNCTION: HYPERX1001 0x0042b750
 FramePos Widget::AddFrameWithPos(HBITMAP hBitmap, int bCached, int nWidth, int nHeight, int nOffsetX, int nOffsetY, int nSourceX, int nSourceY)
 {
     FramePos pos;
@@ -495,8 +495,8 @@ FramePos Widget::AddFrameWithPos(HBITMAP hBitmap, int bCached, int nWidth, int n
     return pos;
 }
 
-// FUNCTION: HYPERX100 0x00477030
-// FUNCTION: HYPERX 0x0042b830
+// FUNCTION: HYPERX1000 0x00477030
+// FUNCTION: HYPERX1001 0x0042b830
 FramePos Widget::GetSize()
 {
     FramePos pos;
@@ -507,8 +507,8 @@ FramePos Widget::GetSize()
     return pos;
 }
 
-// FUNCTION: HYPERX100 0x00477050
-// FUNCTION: HYPERX 0x0042b850
+// FUNCTION: HYPERX1000 0x00477050
+// FUNCTION: HYPERX1001 0x0042b850
 void Widget::ClearFrames()
 {
     HBITMAP hOwned = 0;
@@ -567,23 +567,23 @@ void Widget::ClearFrames()
     m_nFrame       = 0;
 }
 
-// FUNCTION: HYPERX100 0x00477170
-// FUNCTION: HYPERX 0x0042b940
+// FUNCTION: HYPERX1000 0x00477170
+// FUNCTION: HYPERX1001 0x0042b940
 void Widget::SetCurrentFrame(int nFrame)
 {
     m_nFrame = nFrame;
 }
 
-// FUNCTION: HYPERX100 0x00477180
-// FUNCTION: HYPERX 0x0042b950
+// FUNCTION: HYPERX1000 0x00477180
+// FUNCTION: HYPERX1001 0x0042b950
 void Widget::SetText(const char* pszText)
 {
     m_pszText = Str::Copy(m_pszText, pszText);
 }
 
 // Both checks go to a stub that discards them.
-// FUNCTION: HYPERX100 0x004771e0
-// FUNCTION: HYPERX 0x0042b9a0
+// FUNCTION: HYPERX1000 0x004771e0
+// FUNCTION: HYPERX1001 0x0042b9a0
 void Widget::InitAfterLoad(void)
 {
     if (m_nFrameIndex == 0)
@@ -596,16 +596,16 @@ void Widget::InitAfterLoad(void)
     RELEASE_ASSERT(m_nFrameIndex == m_nFrameCount + 1);
 }
 
-// FUNCTION: HYPERX100 0x00477230
-// FUNCTION: HYPERX 0x0042b9d0
+// FUNCTION: HYPERX1000 0x00477230
+// FUNCTION: HYPERX1001 0x0042b9d0
 void Widget::SetTextFlag(int nFlag)
 {
     m_nTextFlag = nFlag;
 }
 
 // Table 0x004b2a68. Slot nought's `return 0` also serves FlipbookWidget's table.
-// FUNCTION: HYPERX100 0x004766f0
-// FUNCTION: HYPERX 0x0042be80
+// FUNCTION: HYPERX1000 0x004766f0
+// FUNCTION: HYPERX1001 0x0042be80
 int Widget::OnKeyPress(unsigned int)
 {
     return 0;
@@ -629,8 +629,8 @@ int Widget::IsDisplayOnly()
     return 0;
 }
 
-// FUNCTION: HYPERX100 0x00473550
-// FUNCTION: HYPERX 0x0047a8d0
+// FUNCTION: HYPERX1000 0x00473550
+// FUNCTION: HYPERX1001 0x0047a8d0
 LayoutState __cdecl Widget::InitLayoutState(void* pBits, int nWidth, int nHeight, int nPitch, int nPrevWidth, int nPrevHeight, int nHalfWidth, int nHalfHeight)
 {
     LayoutState state;
@@ -655,15 +655,15 @@ LayoutState __cdecl Widget::InitLayoutState(void* pBits, int nWidth, int nHeight
     return state;
 }
 
-// FUNCTION: HYPERX100 0x00476d00
-// FUNCTION: HYPERX 0x0048cbb0
+// FUNCTION: HYPERX1000 0x00476d00
+// FUNCTION: HYPERX1001 0x0048cbb0
 int Widget::GetPositionX() const
 {
     return m_nX;
 }
 
-// FUNCTION: HYPERX100 0x00476ce0
-// FUNCTION: HYPERX 0x00492b50
+// FUNCTION: HYPERX1000 0x00476ce0
+// FUNCTION: HYPERX1001 0x00492b50
 int Widget::GetTypeID() const
 {
     return m_nType;

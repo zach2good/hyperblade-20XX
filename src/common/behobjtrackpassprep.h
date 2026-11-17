@@ -5,7 +5,7 @@
 
 class EngineObject;
 
-// VTABLE: HYPERX 0x004b2804
+// VTABLE: HYPERX1001 0x004b2804
 class BehObj_TrackPassPrep : public FlightBehaviorObject
 {
 public:
@@ -14,7 +14,7 @@ public:
     BehObj_TrackPassPrep();
 };
 
-// SYNTHETIC: HYPERX 0x0041ea80
+// SYNTHETIC: HYPERX1001 0x0041ea80
 // BehObj_TrackPassPrep::`scalar deleting destructor'
 
 STATIC_ASSERT(sizeof(BehObj_TrackPassPrep) == 0x98);

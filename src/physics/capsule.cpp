@@ -40,8 +40,8 @@ inline int Capsule::Overlaps(const Capsule* pMine, const Capsule* pOther)
 
 #pragma optimize("", off)
 
-// FUNCTION: HYPERX100 0x00418990
-// FUNCTION: HYPERX 0x00429bc0
+// FUNCTION: HYPERX1000 0x00418990
+// FUNCTION: HYPERX1001 0x00429bc0
 int Capsule::CheckCollision(const Vec3* pDirSelf, const Vec3* pDirOther, const Capsule* pOther)
 {
     float   flDistA;

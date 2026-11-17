@@ -8,7 +8,7 @@ namespace PlanVMV100
 {
 
 // A group skips to the character after its ')'; a block comment's scan stops early on any '*'.
-// FUNCTION: HYPERX100 0x00489b80
+// FUNCTION: HYPERX1000 0x00489b80
 short SkipComment(PlanVM* pVM)
 {
     const char* const pAt = &pVM->m_pszText[pVM->m_nCursor];
