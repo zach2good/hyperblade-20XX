@@ -23,6 +23,17 @@ endif()
 set(HYPERX_GAME_DATA "" CACHE PATH
     "Directory holding the game's HYPERX.EXE and its Data, DIRECTX, AVI, DOS and ACRODOS folders")
 
+# The private hyperblade-reference checkout: each build's HYPERX.EXE and DATA, for the checks that
+# play every build. Found beside this checkout when there.
+set(HYPERX_REFERENCE_DEFAULT "")
+
+if(EXISTS "${PROJECT_SOURCE_DIR}/../hyperblade-reference/v1.0.0.1/HYPERX.EXE")
+    cmake_path(GET PROJECT_SOURCE_DIR PARENT_PATH parent)
+    set(HYPERX_REFERENCE_DEFAULT "${parent}/hyperblade-reference")
+endif()
+
+set(HYPERX_REFERENCE "${HYPERX_REFERENCE_DEFAULT}" CACHE PATH "The hyperblade-reference checkout")
+
 include(cmake/dependencies.cmake)
 include(cmake/shaders.cmake)
 include(cmake/pak.cmake)
@@ -455,6 +466,12 @@ if(NOT EMSCRIPTEN)
     add_test(NAME simnodata COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DSDL=$<TARGET_FILE:SDL3::SDL3>
         -DPAK=${HYPERX_OUT}/${HYPERX_PAK_NAME} -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simnodata -P "${PROJECT_SOURCE_DIR}/tests/sim_nodata.cmake")
     set_tests_properties(simnodata PROPERTIES LABELS unit TIMEOUT 60)
+endif()
+
+# Each build in the reference checkout: both releases play the same matches, and the demo is turned away.
+if(HYPERX_REFERENCE AND NOT EMSCRIPTEN)
+    add_test(NAME simbuilds COMMAND "${CMAKE_COMMAND}" -DGAME=$<TARGET_FILE:hyperx> -DREFERENCE=${HYPERX_REFERENCE} -DOUT=${CMAKE_CURRENT_BINARY_DIR}/simbuilds -P "${PROJECT_SOURCE_DIR}/tests/sim_builds.cmake")
+    set_tests_properties(simbuilds PROPERTIES LABELS data TIMEOUT 300)
 endif()
 
 # Two games at once play the same seeded matches, and must write the same stats.
