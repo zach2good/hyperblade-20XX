@@ -477,6 +477,8 @@ enum class ClipCamera
 
 constexpr auto kClipCameraNames = std::array<const char*, 4>{ "Broadcast", "Overhead", "Chase", "Orbit" };
 
+constexpr auto kDegToRad = 3.14159265f / 180.0f;
+
 struct ClipPlayer
 {
     int        nClip    = -1;
@@ -484,6 +486,8 @@ struct ClipPlayer
     float      flSpeed  = 1.0f;
     bool       bPlaying = false;
     ClipCamera camera   = ClipCamera::Broadcast;
+    float      flZoom   = 1.0f;
+    float      flTurn   = 0.0f;
     Uint64     nLastNs  = 0;
 };
 
@@ -542,15 +546,30 @@ void PlaceClipCamera(CameraObject& camera, GameEngine& engine, const GameClips::
 {
     const auto& frame = clip.frames[nFrame];
 
+    const auto vRok = frame.rok;
+
+    // Zooming in brings each camera nearer the rok along its own line to it.
+    const auto flNearer = 1.0f / s_player.flZoom;
+
     if (s_player.camera == ClipCamera::Broadcast)
     {
-        std::memcpy(camera.m_pView->m_a, frame.view.data(), sizeof(frame.view));
-        camera.m_pView->m_vEye = frame.eye;
+        auto& view = *camera.m_pView;
+
+        const auto vEye = Vec3{ vRok.x + (frame.eye.x - vRok.x) * flNearer, vRok.y + (frame.eye.y - vRok.y) * flNearer, vRok.z + (frame.eye.z - vRok.z) * flNearer };
+
+        std::memcpy(view.m_a, frame.view.data(), sizeof(frame.view));
+
+        // The recorded matrix already moves the world by the recorded eye, so only the step to the
+        // new eye is added.
+        view.m_vTranslate = Vec3{ frame.eye.x - vEye.x, frame.eye.y - vEye.y, frame.eye.z - vEye.z };
+        view.ApplyTranslation();
+        view.m_vEye = vEye;
 
         return;
     }
 
-    const auto vRok = frame.rok;
+    const auto flCosTurn = std::cos(s_player.flTurn * kDegToRad);
+    const auto flSinTurn = std::sin(s_player.flTurn * kDegToRad);
 
     // The broadcast camera's distance sets the scale, so the others frame the play as it did.
     const auto vFromRok = Vec3{ frame.eye.x - vRok.x, frame.eye.y - vRok.y, frame.eye.z - vRok.z };
@@ -572,7 +591,7 @@ void PlaceClipCamera(CameraObject& camera, GameEngine& engine, const GameClips::
         switch (s_player.camera)
         {
             case ClipCamera::Overhead:
-                return Vec3{ vRok.x, vRok.y - flReach * 0.3f, vRok.z + flReach * 1.8f };
+                return Vec3{ vRok.x, vRok.y - flReach * 0.3f * flNearer, vRok.z + flReach * 1.8f * flNearer };
 
             case ClipCamera::Chase:
             {
@@ -585,14 +604,18 @@ void PlaceClipCamera(CameraObject& camera, GameEngine& engine, const GameClips::
                     vBack = Vec3{ 0.0f, -1.0f, 0.0f };
                 }
 
-                return Vec3{ vRok.x + vBack.x * flDromer * 6.0f, vRok.y + vBack.y * flDromer * 6.0f, vRok.z + flDromer * 2.5f };
+                const auto vTurned = Vec3{ vBack.x * flCosTurn - vBack.y * flSinTurn, vBack.x * flSinTurn + vBack.y * flCosTurn, 0.0f };
+                const auto flBack  = flDromer * 6.0f * flNearer;
+
+                return Vec3{ vRok.x + vTurned.x * flBack, vRok.y + vTurned.y * flBack, vRok.z + flDromer * 2.5f * flNearer };
             }
 
             case ClipCamera::Orbit:
             {
-                const auto flTurn = static_cast<float>(nFrame) * 0.02f;
+                const auto flTurn  = static_cast<float>(nFrame) * 0.02f + s_player.flTurn * kDegToRad;
+                const auto flRound = flDromer * 8.0f * flNearer;
 
-                return Vec3{ vRok.x + std::cos(flTurn) * flDromer * 8.0f, vRok.y + std::sin(flTurn) * flDromer * 8.0f, vRok.z + flDromer * 3.0f };
+                return Vec3{ vRok.x + std::cos(flTurn) * flRound, vRok.y + std::sin(flTurn) * flRound, vRok.z + flDromer * 3.0f * flNearer };
             }
 
             case ClipCamera::Broadcast:
@@ -869,6 +892,21 @@ void GameClipsWindow()
         {
             s_player.camera = static_cast<ClipCamera>(i);
         }
+    }
+
+    ImGui::SetNextItemWidth(160.0f);
+    ImGui::SliderFloat("Zoom", &s_player.flZoom, 0.5f, 4.0f, "%.2fx", ImGuiSliderFlags_Logarithmic);
+
+    // Turning only means something for the cameras placed round the rok's path.
+    ImGui::BeginDisabled(s_player.camera != ClipCamera::Chase && s_player.camera != ClipCamera::Orbit);
+    ImGui::SetNextItemWidth(160.0f);
+    ImGui::SliderFloat("Rotation", &s_player.flTurn, -180.0f, 180.0f, "%.0f\xc2\xb0");
+    ImGui::EndDisabled();
+
+    if (OriginalUI::Button("Reset view"))
+    {
+        s_player.flZoom = 1.0f;
+        s_player.flTurn = 0.0f;
     }
 
     ImGui::End();
